@@ -1,0 +1,83 @@
+name: ForgeOS Remote Project Build
+run-name: ForgeOS remote build - ${{ inputs.request_id }}
+on:
+  workflow_dispatch:
+    inputs:
+      request_path:
+        description: Build request ZIP path on build-requests branch
+        required: true
+        type: string
+      request_id:
+        description: ForgeOS request identifier
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: forgeos-remote-${{ inputs.request_id }}
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout build request
+        uses: actions/checkout@v4
+        with:
+          ref: build-requests
+      - name: Validate request path
+        shell: bash
+        run: |
+          set -euo pipefail
+          P="${{ inputs.request_path }}"
+          case "$P" in build-requests/*.zip) ;; *) echo "Invalid request path"; exit 2;; esac
+          test -f "$P"
+          test "$(stat -c%s "$P")" -le 104857600
+      - name: Extract project safely
+        shell: python
+        run: |
+          import os, zipfile
+          p="${{ inputs.request_path }}"; out="remote-project"; os.makedirs(out,exist_ok=True)
+          base=os.path.realpath(out)+os.sep
+          with zipfile.ZipFile(p) as z:
+            total=0
+            for i in z.infolist():
+              total += i.file_size
+              if total > 250*1024*1024: raise SystemExit("Unpacked project exceeds 250MB")
+              target=os.path.realpath(os.path.join(out,i.filename))
+              if not target.startswith(base): raise SystemExit("Unsafe ZIP path")
+            z.extractall(out)
+      - name: Locate Gradle project
+        id: project
+        shell: bash
+        run: |
+          set -euo pipefail
+          ROOT="$(find remote-project -maxdepth 5 -type f \( -name settings.gradle -o -name settings.gradle.kts \) -printf '%h\n' | head -1)"
+          test -n "$ROOT"
+          echo "root=$ROOT" >> "$GITHUB_OUTPUT"
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - name: Set up Gradle 8.10.2
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.10.2"
+      - name: Build debug APK
+        working-directory: ${{ steps.project.outputs.root }}
+        run: gradle --no-daemon --stacktrace assembleDebug
+      - name: Collect APK
+        shell: bash
+        run: |
+          mkdir -p forgeos-output
+          find "${{ steps.project.outputs.root }}" -type f -path '*/build/outputs/apk/debug/*.apk' -exec cp {} forgeos-output/ \;
+          test -n "$(find forgeos-output -name '*.apk' -print -quit)"
+          sha256sum forgeos-output/*.apk | tee forgeos-output/SHA256SUMS.txt
+      - name: Upload built APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: ForgeOS-remote-apk-${{ inputs.request_id }}
+          path: forgeos-output/
+          if-no-files-found: error
+          retention-days: 7
