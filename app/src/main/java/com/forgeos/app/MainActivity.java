@@ -30,7 +30,7 @@ public class MainActivity extends Activity {
   r.addView(txt("PROJECT",12,GOLD,true));projects=panel();projects.addView(txt("No project imported yet",15,Color.LTGRAY,false));r.addView(projects);
   r.addView(txt("FILES",12,GOLD,true));files=panel();files.addView(txt("Workspace empty",13,Color.GRAY,false));r.addView(files);
   r.addView(txt("ACTIVITY LOG",12,GOLD,true));log=txt("ForgeOS initialized.",12,Color.LTGRAY,false);LinearLayout lp=panel();lp.addView(log);r.addView(lp);
-  r.addView(txt("ForgeOS v0.3 - Remote Build Engine",11,Color.GRAY,false));return s;
+  r.addView(txt("ForgeOS v0.3.1 - Remote Build Engine",11,Color.GRAY,false));return s;
  }
  @Override protected void onActivityResult(int q,int result,Intent data){super.onActivityResult(q,result,data);if(q==100&&result==RESULT_OK&&data!=null&&data.getData()!=null)importZip(data.getData());}
  private void importZip(Uri uri){
@@ -82,9 +82,9 @@ public class MainActivity extends Activity {
   String id="android-"+System.currentTimeMillis();String path="build-requests/"+id+".zip";
   try{
    byte[] zip=zipWorkspace(active);if(zip.length>90L*1024*1024)throw new IOException("Compressed project exceeds 90 MB remote request limit");
-   String body="{\\\"message\\\":\\\"ForgeOS remote request "+id+"\\\",\\\"content\\\":\\\""+Base64.encodeToString(zip,Base64.NO_WRAP)+"\\\",\\\"branch\\\":\\\"build-requests\\\"}";
+   String body="{\"message\":\"ForgeOS remote request "+id+"\",\"content\":\""+Base64.encodeToString(zip,Base64.NO_WRAP)+"\",\"branch\":\"build-requests\"}";
    api("PUT","https://api.github.com/repos/diljotsinghdj-creator/Forgeos/contents/"+path,token,body);
-   String dispatch="{\\\"ref\\\":\\\"main\\\",\\\"inputs\\\":{\\\"request_path\\\":\\\""+path+"\\\",\\\"request_id\\\":\\\""+id+"\\\"}}";
+   String dispatch="{\"ref\":\"main\",\"inputs\":{\"request_path\":\""+path+"\",\"request_id\":\""+id+"\"}}";
    api("POST","https://api.github.com/repos/diljotsinghdj-creator/Forgeos/actions/workflows/remote-project-build.yml/dispatches",token,dispatch);
    runOnUiThread(()->{status.setText("Remote build submitted");append("Remote build submitted: "+id);append("Open GitHub Actions to watch live logs and retrieve the APK artifact.");build.setEnabled(true);
     new AlertDialog.Builder(this).setTitle("Build submitted").setMessage("Request "+id+" is running in isolated GitHub Actions. The project ZIP was uploaded to the dedicated build-requests branch.").setPositiveButton("OPEN ACTIONS",(d,w)->startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("https://github.com/diljotsinghdj-creator/Forgeos/actions/workflows/remote-project-build.yml")))).setNegativeButton("CLOSE",null).show();
@@ -98,7 +98,7 @@ public class MainActivity extends Activity {
   File[] a=f.listFiles();if(a==null)return;for(File x:a){String rel=root.toURI().relativize(x.toURI()).getPath();if(rel.startsWith(".git/")||rel.contains("/build/")||rel.startsWith("build/"))continue;if(x.isDirectory())zipDir(root,x,z);else{z.putNextEntry(new ZipEntry(rel));try(InputStream in=new FileInputStream(x)){byte[] q=new byte[16384];int n;while((n=in.read(q))>0)z.write(q,0,n);}z.closeEntry();}}
  }
  private String api(String method,String url,String token,String body)throws Exception{
-  HttpsURLConnection h=(HttpsURLConnection)new URL(url).openConnection();h.setRequestMethod(method);h.setConnectTimeout(20000);h.setReadTimeout(30000);h.setRequestProperty("Authorization","Bearer "+token);h.setRequestProperty("Accept","application/vnd.github+json");h.setRequestProperty("X-GitHub-Api-Version","2022-11-28");h.setRequestProperty("User-Agent","ForgeOS-Android/0.3");
+  HttpsURLConnection h=(HttpsURLConnection)new URL(url).openConnection();h.setRequestMethod(method);h.setConnectTimeout(20000);h.setReadTimeout(30000);h.setRequestProperty("Authorization","Bearer "+token);h.setRequestProperty("Accept","application/vnd.github+json");h.setRequestProperty("X-GitHub-Api-Version","2022-11-28");h.setRequestProperty("User-Agent","ForgeOS-Android/0.3.1");
   if(body!=null){h.setDoOutput(true);h.setRequestProperty("Content-Type","application/json");try(OutputStream o=h.getOutputStream()){o.write(body.getBytes("UTF-8"));}}
   int code=h.getResponseCode();InputStream in=code>=200&&code<300?h.getInputStream():h.getErrorStream();StringBuilder s=new StringBuilder();if(in!=null)try(BufferedReader r=new BufferedReader(new InputStreamReader(in))){String line;while((line=r.readLine())!=null)s.append(line);}
   if(code<200||code>=300)throw new IOException("GitHub HTTP "+code+": "+s);return s.toString();
