@@ -92,6 +92,12 @@ jobs:
               if target not in names:
                   zout.writestr(target,src)
           os.replace(t,p)
+      - name: Restore build sources
+        shell: bash
+        run: |
+          ROOT="${{ steps.project.outputs.root }}"
+          mkdir -p "$ROOT/app/src/main/java/com/forgeos/app/build"
+          cp repair-sources/*.kt "$ROOT/app/src/main/java/com/forgeos/app/build/"
       - name: Build debug APK
         id: gradle_build
         working-directory: ${{ steps.project.outputs.root }}
