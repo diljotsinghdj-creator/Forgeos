@@ -82,6 +82,7 @@ public class MainActivity extends Activity {
   String id="android-"+System.currentTimeMillis();String path="build-requests/"+id+".zip";
   try{
    byte[] zip=zipWorkspace(active);if(zip.length>90L*1024*1024)throw new IOException("Compressed project exceeds 90 MB remote request limit");
+   ensureBuildRequestsBranch(token);
    String body="{\"message\":\"ForgeOS remote request "+id+"\",\"content\":\""+Base64.encodeToString(zip,Base64.NO_WRAP)+"\",\"branch\":\"build-requests\"}";
    api("PUT","https://api.github.com/repos/diljotsinghdj-creator/Forgeos/contents/"+path,token,body);
    String dispatch="{\"ref\":\"main\",\"inputs\":{\"request_path\":\""+path+"\",\"request_id\":\""+id+"\"}}";
@@ -96,6 +97,18 @@ public class MainActivity extends Activity {
  }
  private void zipDir(File root,File f,ZipOutputStream z)throws Exception{
   File[] a=f.listFiles();if(a==null)return;for(File x:a){String rel=root.toURI().relativize(x.toURI()).getPath();if(rel.startsWith(".git/")||rel.contains("/build/")||rel.startsWith("build/"))continue;if(x.isDirectory())zipDir(root,x,z);else{z.putNextEntry(new ZipEntry(rel));try(InputStream in=new FileInputStream(x)){byte[] q=new byte[16384];int n;while((n=in.read(q))>0)z.write(q,0,n);}z.closeEntry();}}
+ }
+ private void ensureBuildRequestsBranch(String token)throws Exception{
+  String repo="https://api.github.com/repos/diljotsinghdj-creator/Forgeos";
+  try{api("GET",repo+"/git/ref/heads/build-requests",token,null);return;}catch(IOException e){
+   if(!e.getMessage().startsWith("GitHub HTTP 404:"))throw e;
+  }
+  String main=api("GET",repo+"/git/ref/heads/main",token,null);
+  String needle="\\\"sha\\\":\\\"";int p=main.indexOf(needle);if(p<0)throw new IOException("Unable to resolve main branch SHA");
+  int start=p+needle.length(),end=main.indexOf('\\\"',start);if(end<0)throw new IOException("Malformed GitHub ref response");
+  String sha=main.substring(start,end);
+  try{api("POST",repo+"/git/refs",token,"{\\\"ref\\\":\\\"refs/heads/build-requests\\\",\\\"sha\\\":\\\""+sha+"\\\"}");}
+  catch(IOException e){if(!e.getMessage().startsWith("GitHub HTTP 422:"))throw e;}
  }
  private String api(String method,String url,String token,String body)throws Exception{
   HttpsURLConnection h=(HttpsURLConnection)new URL(url).openConnection();h.setRequestMethod(method);h.setConnectTimeout(20000);h.setReadTimeout(30000);h.setRequestProperty("Authorization","Bearer "+token);h.setRequestProperty("Accept","application/vnd.github+json");h.setRequestProperty("X-GitHub-Api-Version","2022-11-28");h.setRequestProperty("User-Agent","ForgeOS-Android/0.3.1");
