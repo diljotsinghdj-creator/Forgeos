@@ -37,7 +37,7 @@ public final class ContinuousEngine {
  }
  private void run(String id,MissionTask task){
   try{
-   if(!store.claim(id))return;
+   String lease=store.claimLease(id);if(lease==null)return;
    store.checkpoint(id,MissionStore.State.RUNNING,"Mission worker started");
    task.run(new MissionContext(id,store));
    store.checkpoint(id,MissionStore.State.VERIFIED,"Mission task completed without exception");
