@@ -1,7 +1,7 @@
 name: Build ForgeOS APK
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "forgeos-v0.4-continuous-engine", "forgeos-v*" ]
   workflow_dispatch:
 permissions:
   contents: read
