@@ -1,0 +1,110 @@
+package com.creatorforge.app
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import com.creatorforge.app.data.ProjectStore
+import com.creatorforge.app.generation.GenerationResult
+import com.creatorforge.app.generation.*
+import com.creatorforge.app.model.*
+import com.creatorforge.app.security.SecureTokenStore
+import com.creatorforge.app.timeline.TimelineEngine
+import com.creatorforge.app.render.*
+import kotlinx.coroutines.launch
+import java.io.File
+import java.util.UUID
+
+private val Gold=Color(0xFFD4AF37); private val Black=Color(0xFF090909); private val Panel=Color(0xFF151515)
+class MainActivity:ComponentActivity(){override fun onCreate(savedInstanceState:Bundle?){super.onCreate(savedInstanceState);setContent{CreatorForge()}}}
+
+@Composable fun CreatorForge(){
+ val context=androidx.compose.ui.platform.LocalContext.current; val store=remember{ProjectStore(context)}; val secure=remember{SecureTokenStore(context)}
+ var projects by remember{mutableStateOf(store.load())}; var tab by remember{mutableIntStateOf(0)}
+ fun persist(next:List<CreatorProject>){projects=next;store.save(next)}
+ MaterialTheme(colorScheme=darkColorScheme(primary=Gold,background=Black,surface=Panel)){Scaffold(bottomBar={NavigationBar(containerColor=Panel){listOf("Home","Create","Projects","Studio","Settings").forEachIndexed{i,n->NavigationBarItem(selected=tab==i,onClick={tab=i},label={Text(n)},icon={Text(if(tab==i)"◆" else "◇",color=Gold)})}}}){pad->Box(Modifier.fillMaxSize().padding(pad).padding(18.dp)){when(tab){0->Home(projects.size);1->Create{p->persist(projects+p);tab=2};2->Projects(projects,secure,::persist);3->Studio(projects);else->Settings(secure)}}}}
+}
+@Composable fun Header(t:String,s:String){Column{Text(t,color=Gold,fontSize=30.sp);Text(s,color=Color.LightGray);Spacer(Modifier.height(18.dp))}}
+@Composable fun Home(count:Int){Column{Header("CREATORFORGE","AI filmmaking workspace");Card{Column(Modifier.padding(18.dp)){Text("RC10.3 • SCROLLABLE EXPORT STUDIO",color=Gold);Text("$count saved projects");Text("Timeline • captions • synchronized scene timing • persistent recovery queue")}}}}
+@Composable fun Create(done:(CreatorProject)->Unit){var prompt by remember{mutableStateOf("")};var long by remember{mutableStateOf(false)};Column{Header("CREATE","Start with an idea");OutlinedTextField(prompt,{prompt=it},Modifier.fillMaxWidth(),label={Text("Describe your video")},minLines=5);Row{Switch(long,{long=it});Text(if(long)" Long-form" else " Short-form",Modifier.padding(top=12.dp))};Button(enabled=prompt.isNotBlank(),onClick={val c=if(long)10 else 5;done(CreatorProject(UUID.randomUUID().toString(),prompt.take(40),if(long)ProjectType.LONG_FORM else ProjectType.SHORT_FORM,if(long)AspectRatio.LANDSCAPE_16_9 else AspectRatio.VERTICAL_9_16,prompt,(1..c).map{i->Scene(UUID.randomUUID().toString(),i,"Scene $i","Narration planned for scene $i.","Hyper-realistic cinematic scene $i. $prompt",if(long)12 else 6)}))}){Text("CREATE PROJECT")}}}
+
+@Composable fun Projects(projects:List<CreatorProject>,secure:SecureTokenStore,persist:(List<CreatorProject>)->Unit){
+ val context=androidx.compose.ui.platform.LocalContext.current; val prefs=remember{context.getSharedPreferences("creatorforge_provider",0)}; val scope=rememberCoroutineScope(); var busy by remember{mutableStateOf<String?>(null)}; var message by remember{mutableStateOf<String?>(null)}
+ Column{Header("PROJECTS","Generate verified scene visuals");message?.let{Text(it,color=if(it.startsWith("PASS"))Gold else MaterialTheme.colorScheme.error);Spacer(Modifier.height(8.dp))};if(projects.isEmpty())Text("No projects yet.") else LazyColumn(verticalArrangement=Arrangement.spacedBy(12.dp)){items(projects,key={it.id}){p->Card{Column(Modifier.padding(16.dp)){Text(p.title,color=Gold,fontSize=20.sp);Text("${p.scenes.size} scenes");Spacer(Modifier.height(8.dp));p.scenes.sortedBy{it.order}.forEach{s->HorizontalDivider();Spacer(Modifier.height(8.dp));Text("${s.order}. ${s.title}",color=Gold);Text(s.visualPrompt,color=Color.LightGray);Text("STATE: ${s.status}",color=when(s.status){SceneStatus.READY->Gold;SceneStatus.FAILED->MaterialTheme.colorScheme.error;else->Color.Gray});s.visualAssetPath?.let{path->Spacer(Modifier.height(8.dp));AsyncImage(model=File(path),contentDescription="Generated scene ${s.order}",modifier=Modifier.fillMaxWidth().height(180.dp))};Button(enabled=busy==null,onClick={val base=prefs.getString("base_url","").orEmpty();if(base.isBlank()){message="FAILED: Configure local provider URL in Settings";return@Button};busy=s.id;persist(projects.map{proj->if(proj.id!=p.id)proj else proj.copy(scenes=proj.scenes.map{scene->if(scene.id==s.id)scene.copy(status=SceneStatus.GENERATING) else scene})});message="Generating scene ${s.order} locally…";scope.launch{val provider=SelfHostedImageProvider(context,LocalProviderConfig(base));when(val r=provider.generate(s.visualPrompt,p.aspectRatio)){is GenerationResult.Success->{persist(storeScene(projects,p.id,s.id,SceneStatus.READY,r.file.absolutePath));message="PASS: verified local image saved for scene ${s.order}"};is GenerationResult.Failure->{persist(storeScene(projects,p.id,s.id,SceneStatus.FAILED,null));message="FAILED: ${r.message}"}};busy=null}}){Text(if(busy==s.id)"GENERATING…" else if(s.visualAssetPath!=null)"REGENERATE LOCAL IMAGE" else "GENERATE LOCAL IMAGE")};Spacer(Modifier.height(8.dp));Button(enabled=busy==null,onClick=narration@{val base=prefs.getString("base_url","").orEmpty();if(base.isBlank()){message="FAILED: Configure local provider URL in Settings";return@narration};busy="voice_${s.id}";message="Generating narration ${s.order} locally…";scope.launch{when(val r=SelfHostedVoiceEngine(context,LocalProviderConfig(base)).generate(s.narration)){is GenerationResult.Success->{persist(storeAudio(projects,p.id,s.id,r.file.absolutePath));message="PASS: verified local WAV saved for scene ${s.order}"};is GenerationResult.Failure->{message="FAILED: ${r.message}"}};busy=null}}){Text(if(busy=="voice_${s.id}")"GENERATING VOICE…" else if(s.audioAssetPath!=null)"REGENERATE NARRATION" else "GENERATE NARRATION")};s.audioAssetPath?.let{Text("Narration: READY",color=Gold,fontSize=12.sp)};Spacer(Modifier.height(8.dp))}}}}}}
+}
+fun storeScene(projects:List<CreatorProject>,projectId:String,sceneId:String,status:SceneStatus,path:String?)=projects.map{p->if(p.id!=projectId)p else p.copy(scenes=p.scenes.map{s->if(s.id==sceneId)s.copy(status=status,visualAssetPath=path?:s.visualAssetPath) else s})}
+fun storeAudio(projects:List<CreatorProject>,projectId:String,sceneId:String,path:String)=projects.map{p->if(p.id!=projectId)p else p.copy(scenes=p.scenes.map{s->if(s.id==sceneId)s.copy(audioAssetPath=path) else s})}
+
+@Composable fun Settings(secure:SecureTokenStore){
+ val context=androidx.compose.ui.platform.LocalContext.current;val prefs=remember{context.getSharedPreferences("creatorforge_provider",0)};val scope=rememberCoroutineScope()
+ var url by remember{mutableStateOf(prefs.getString("base_url","").orEmpty())};var savedUrl by remember{mutableStateOf(url)};var health by remember{mutableStateOf("Not tested")};var checking by remember{mutableStateOf(false)}
+ Column{Header("SETTINGS","Local-first generation");Card{Column(Modifier.padding(16.dp)){Text("PRIMARY PROVIDER",color=Gold);Text("Your self-hosted CreatorForge worker • no generation credits");Spacer(Modifier.height(10.dp));OutlinedTextField(url,{url=it},Modifier.fillMaxWidth(),label={Text("Worker URL (http://… or https://…)")},singleLine=true);Row(horizontalArrangement=Arrangement.spacedBy(8.dp)){Button(enabled=url.startsWith("http://")||url.startsWith("https://"),onClick={savedUrl=url.trim().trimEnd('/');prefs.edit().putString("base_url",savedUrl).apply();health="Saved • test connection next"}){Text("SAVE")};OutlinedButton(enabled=savedUrl.isNotBlank()&&!checking,onClick={checking=true;health="Checking…";scope.launch{val h=LocalWorkerClient(LocalProviderConfig(savedUrl)).health();health=if(h.ok)"ONLINE${h.version?.let{" • v$it"}?:""}" else "OFFLINE • ${h.message}";checking=false}}){Text(if(checking)"TESTING…" else "TEST CONNECTION")}};Text(if(savedUrl.isBlank())"Not configured" else "Configured: $savedUrl",color=if(savedUrl.isBlank())Color.Gray else Gold);Text(health,color=if(health.startsWith("ONLINE"))Gold else Color.LightGray);Spacer(Modifier.height(12.dp));Text("RC10 QUEUE",color=Gold);Text("GET /health → worker readiness\nPOST /v1/images/generate → verified PNG/JPEG\nPOST /v1/voice/generate → verified WAV\nPOST /v1/video/jobs → queued video job\nGET /v1/video/jobs/{id} → progress/result\nDELETE /v1/video/jobs/{id} → cancel",color=Color.LightGray)}};Spacer(Modifier.height(12.dp));Text("RC10 preserves RC9 and adds persistent queue state with progress, retry, cancel and terminal cleanup foundations.",color=Gold)}
+}
+@Composable fun Studio(projects:List<CreatorProject>){
+ val context=androidx.compose.ui.platform.LocalContext.current
+ val scope=rememberCoroutineScope()
+ var exportMessage by remember{mutableStateOf<String?>(null)}
+ var exporting by remember{mutableStateOf(false)}
+ var selectedId by remember(projects){mutableStateOf(projects.lastOrNull()?.id)}
+ val project=projects.firstOrNull{it.id==selectedId}
+ Column{
+  Header("STUDIO","Timeline • captions • render readiness")
+  if(projects.isEmpty()){Text("Create a project first.",color=Color.LightGray);return@Column}
+  if(projects.size>1){
+   Text("PROJECT",color=Gold)
+   projects.forEach{p->OutlinedButton(onClick={selectedId=p.id},modifier=Modifier.fillMaxWidth()){Text(if(p.id==selectedId)"◆ ${p.title}" else p.title)}}
+   Spacer(Modifier.height(8.dp))
+  }
+  project?.let{p->
+   val timeline=remember(p){TimelineEngine.build(p)}
+   val ready=p.scenes.count{it.status==SceneStatus.READY && it.visualAssetPath!=null}
+   val voiced=p.scenes.count{!it.audioAssetPath.isNullOrBlank() && File(it.audioAssetPath!!).isFile}
+   Card{Column(Modifier.padding(16.dp)){
+    Text(p.title,color=Gold,fontSize=20.sp)
+    Text("${p.scenes.size} scenes • ${timeline.durationMs/1000}s timeline")
+    Text("$ready/${p.scenes.size} visual assets ready",color=Color.LightGray)
+    Text("$voiced/${p.scenes.size} narration assets ready",color=Color.LightGray)
+    Spacer(Modifier.height(10.dp))
+    LinearProgressIndicator(progress={if(p.scenes.isEmpty())0f else ready.toFloat()/p.scenes.size},modifier=Modifier.fillMaxWidth())
+   }}
+   Spacer(Modifier.height(12.dp))
+   Text("TIMELINE",color=Gold)
+   LazyColumn(modifier=Modifier.fillMaxWidth().weight(1f),verticalArrangement=Arrangement.spacedBy(8.dp),contentPadding=PaddingValues(bottom=24.dp)){
+    items(timeline.clips,key={it.sceneId}){clip->
+     Card{Column(Modifier.padding(12.dp)){
+      Text("Scene ${clip.order}  •  ${clip.startMs/1000}s–${clip.endMs/1000}s",color=Gold)
+      val scene=p.scenes.firstOrNull{it.id==clip.sceneId}; Text("Visual: ${scene?.status?:SceneStatus.PLANNED}",color=if(scene?.status==SceneStatus.FAILED)MaterialTheme.colorScheme.error else Color.LightGray)
+      Text("Captions: ${clip.captions.size} cues",color=Color.LightGray)
+      clip.captions.take(2).forEach{cue->Text("“${cue.text}”",fontSize=12.sp,color=Color.Gray)}
+     }}
+    }
+    item{
+     Spacer(Modifier.height(4.dp))
+     val exportReady=ready==p.scenes.size && voiced==p.scenes.size && p.scenes.isNotEmpty()
+     Button(enabled=exportReady&&!exporting,onClick={
+      exporting=true;exportMessage="Validating export…"
+      scope.launch{
+       val output=File(context.getExternalFilesDir(null)?:context.filesDir,"CreatorForge_${p.id.take(8)}.mp4")
+       val exporter=AvExportCoordinator(AndroidMediaCodecVideoRenderer(),AndroidAacNarrationComposer())
+       val result=exporter.export(timeline,RenderRequest(p.id,output.absolutePath),onProgress={pr->exportMessage="${pr.message} • ${(pr.fraction*100).toInt()}%"})
+       exportMessage=if(result.success)"PASS: MP4 exported → ${result.outputPath}" else "FAILED: ${result.error}"
+       exporting=false
+      }
+     },modifier=Modifier.fillMaxWidth()){Text(if(exporting)"EXPORTING…" else "EXPORT MP4")}
+     exportMessage?.let{Text(it,color=if(it.startsWith("PASS"))Gold else Color.LightGray,fontSize=12.sp)}
+     Text(when{ready!=p.scenes.size->"Export locked: generate every scene visual.";voiced!=p.scenes.size->"Export locked: generate narration for every scene.";else->"Render pipeline ready: H.264 video + AAC narration + caption burn-in + MP4 mux verification."},color=Color.Gray,fontSize=12.sp)
+     Spacer(Modifier.height(24.dp))
+    }
+   }
+  }
+ }
+}

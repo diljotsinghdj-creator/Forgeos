@@ -1,0 +1,52 @@
+"""In-process Hugging Face diffusers pipeline. Default model FLUX.1-schnell (Apache-2.0,
+4 steps). Requires a CUDA/MPS GPU in practice: pip install 'creatorforge-worker[diffusers]'."""
+from __future__ import annotations
+
+import threading
+from pathlib import Path
+
+from .base import NotConfigured, ProviderError
+
+
+class DiffusersImageProvider:
+    _lock = threading.Lock()
+
+    def __init__(self, model: str = "", steps: int = 0):
+        self.model = model or "black-forest-labs/FLUX.1-schnell"
+        self.steps = steps or (4 if "schnell" in self.model.lower() else 30)
+        self.id = f"diffusers:{self.model}"
+        self._pipe = None
+
+    def _load(self):
+        if self._pipe is None:
+            try:
+                import torch
+                from diffusers import AutoPipelineForText2Image
+            except ImportError as e:
+                raise NotConfigured("diffusers backend not installed: pip install 'creatorforge-worker[diffusers]'") from e
+            device = "cuda" if torch.cuda.is_available() else ("mps" if torch.backends.mps.is_available() else "cpu")
+            dtype = torch.bfloat16 if device == "cuda" else torch.float32
+            pipe = AutoPipelineForText2Image.from_pretrained(self.model, torch_dtype=dtype)
+            if device == "cuda":
+                pipe.enable_model_cpu_offload()
+            else:
+                pipe = pipe.to(device)
+            self._pipe = pipe
+        return self._pipe
+
+    def generate(self, prompt: str, negative: str, width: int, height: int, seed: int, out: Path) -> None:
+        import torch
+
+        with self._lock:
+            pipe = self._load()
+            kwargs = dict(prompt=prompt, width=width, height=height, num_inference_steps=self.steps,
+                          generator=torch.Generator("cpu").manual_seed(seed))
+            if "schnell" in self.model.lower():
+                kwargs["guidance_scale"] = 0.0
+            elif negative:
+                kwargs["negative_prompt"] = negative
+            try:
+                image = pipe(**kwargs).images[0]
+            except Exception as e:  # noqa: BLE001 - surface any backend failure
+                raise ProviderError(f"diffusers generation failed: {e}") from e
+            image.save(out, format="PNG")
