@@ -28,6 +28,16 @@ if ! command -v nvidia-smi >/dev/null || ! nvidia-smi >/dev/null 2>&1; then
 fi
 nvidia-smi --query-gpu=name,memory.total --format=csv,noheader
 
+say "Checking disk space"
+FREE_GB=$(df -BG --output=avail "$HOME_DIR" | tail -1 | tr -dc '0-9')
+NEED_GB=$([ "$VIDEO" = "max" ] && echo 180 || ([ "$VIDEO" = "off" ] && echo 50 || echo 80))
+echo "  free: ${FREE_GB} GB, needed for models: ~${NEED_GB} GB (in $HOME_DIR)"
+if [ "${FREE_GB:-0}" -lt "$NEED_GB" ]; then
+  echo "Not enough disk. Stop the pod, edit it and raise the disk / volume size to at least ${NEED_GB} GB"
+  echo "(or run with CF_HOME pointing at a bigger disk). Then run this command again."
+  exit 1
+fi
+
 say "Installing system packages (ffmpeg, espeak-ng, fonts)"
 export DEBIAN_FRONTEND=noninteractive
 apt-get update -qq
@@ -104,10 +114,25 @@ for k, v in h["providers"].items():
 print("  production_ready:", h["production_ready"])
 PY
 
-if [ -n "${RUNPOD_POD_ID:-}" ]; then
-  URL="https://${RUNPOD_POD_ID}-${PORT}.proxy.runpod.net"
-else
-  URL="http://$(curl -fs https://api.ipify.org || hostname -I | awk '{print $1}'):$PORT"
+say "Opening a secure public link (no port settings needed)"
+# A free Cloudflare quick tunnel gives an https:// address that reaches this worker from anywhere.
+if [ ! -x "$HOME_DIR/cloudflared" ]; then
+  curl -fsSL -o "$HOME_DIR/cloudflared" https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64
+  chmod +x "$HOME_DIR/cloudflared"
+fi
+pkill -f "cloudflared tunnel" 2>/dev/null || true
+nohup "$HOME_DIR/cloudflared" tunnel --no-autoupdate --url "http://127.0.0.1:$PORT" > tunnel.log 2>&1 &
+URL=""
+for _ in $(seq 1 45); do
+  URL=$(grep -oE 'https://[a-z0-9-]+\.trycloudflare\.com' tunnel.log | head -1 || true)
+  [ -n "$URL" ] && break
+  sleep 1
+done
+ALT=""
+if [ -n "${RUNPOD_POD_ID:-}" ]; then ALT="https://${RUNPOD_POD_ID}-${PORT}.proxy.runpod.net (only if port $PORT is exposed)"; fi
+if [ -z "$URL" ]; then
+  echo "Could not open the Cloudflare link (see $HOME_DIR/tunnel.log)."
+  URL="${ALT:-http://$(curl -fs https://api.ipify.org || hostname -I | awk '{print $1}'):$PORT}"
 fi
 cat <<DONE
 
@@ -119,6 +144,8 @@ cat <<DONE
    Worker token: $TOKEN
 
  Tap SAVE, SAVE TOKEN, then TEST CONNECTION.
+ (The link changes each time you run this command - paste the new one.)
+${ALT:+ Alternative URL: $ALT}
  The first video loads models into memory and is slow (several
  minutes). Turn on "AI video clips" in Generate for realistic motion:
  each scene takes a few minutes to animate on a 24 GB GPU.

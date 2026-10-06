@@ -8,9 +8,10 @@ app. There's no subscription, and you pay only while the machine is running.
 1. Sign up at runpod.io and add a little credit.
 2. **Pods → Deploy**. Pick a **24 GB GPU**: RTX 4090, L4, RTX A5000 or RTX 3090.
 3. Template: **RunPod PyTorch** (any 2.x).
-4. Press **Edit Template**:
-   - **Volume disk: 100 GB** (models are stored here and survive restarts)
-   - **Expose HTTP ports: `8765`**
+4. Make sure the pod has **at least 100 GB of disk** (Volume or Container disk; it's usually
+   under **Edit**, **Customize** or **Edit Template**). The setup checks this and tells you if
+   there isn't enough. You **don't** need to expose any ports: the setup opens a free secure
+   `https://…trycloudflare.com` link on its own.
 5. **Deploy**, wait until it says *Running*, then **Connect → Start Web Terminal → Connect to Web Terminal**.
 
 ## 2. Paste this one command
@@ -69,7 +70,7 @@ into `/workspace/creatorforge/music` and `/workspace/creatorforge/sfx`.
 ## If something goes wrong
 
 - `tail -n 50 /workspace/creatorforge/worker.log` shows the worker's errors.
-- **TEST CONNECTION says OFFLINE:** check that port 8765 is exposed as an HTTP port on the pod
-  and that the pod is running.
+- **TEST CONNECTION says OFFLINE:** check the pod is running, then run the command again and paste the
+  new link it prints (the trycloudflare link changes on every run).
 - **The model download asks for a login:** create a free Hugging Face token, then run
   `export HF_TOKEN=...` before the command.
