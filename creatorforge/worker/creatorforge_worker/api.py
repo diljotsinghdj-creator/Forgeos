@@ -60,7 +60,11 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
             except NotConfigured as e:
                 status[name] = {"ready": False, "error": str(e)}
         status["captions"] = {"ready": True, "id": "whisper" if cfg.asr_provider == "whisper" else "estimated"}
-        status["music"] = {"ready": True, "id": cfg.music_dir or "none"}
+        try:
+            gen = providers.build_music(cfg)
+            status["music"] = {"ready": True, "id": gen.id if gen else (f"library:{cfg.music_dir}" if cfg.music_dir else "none")}
+        except NotConfigured as e:
+            status["music"] = {"ready": False, "error": str(e)}
         return status
 
     def job_or_404(job_id: str) -> dict:

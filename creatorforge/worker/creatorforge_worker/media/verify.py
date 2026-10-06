@@ -33,6 +33,18 @@ def wav(path: Path) -> float:
     return d
 
 
+def audio(path: Path) -> float:
+    if not path.is_file() or path.stat().st_size < 1000:
+        raise MediaError("audio missing or too small")
+    info = probe(path)
+    if not [s for s in info["streams"] if s.get("codec_type") == "audio"]:
+        raise MediaError("file has no audio stream")
+    d = float(info["format"].get("duration") or 0)
+    if d < 1.0:
+        raise MediaError("music shorter than 1s")
+    return d
+
+
 def clip(path: Path) -> float:
     if not path.is_file() or path.stat().st_size < 2000:
         raise MediaError("video clip missing or too small")

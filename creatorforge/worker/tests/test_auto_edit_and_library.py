@@ -63,3 +63,13 @@ def test_character_library_crud_and_snapshot(cfg):
 def test_caption_emphasis_markup():
     assert captions._highlight("Robots change everything!", {"everything"}) == \
         "Robots change {\\c&H0037AFD4&\\fscx112\\fscy112}everything!{\\r}"
+
+
+def test_generated_music_is_used_when_configured(cfg):
+    cfg.music_provider = "mock"
+    with TestClient(create_app(cfg)) as c:
+        jid = c.post("/v1/productions", json={"idea": "Morning routine tips", "duration_s": 12}).json()["id"]
+        job = done(c, jid)
+        assert job["status"] == "READY", job
+        assert job["providers"]["music"].startswith("mock-music")
+        assert len(list((cfg.cache_dir / "music").iterdir())) == 1

@@ -45,6 +45,7 @@ missing.
 | `CF_VOICES` | Voice profiles as JSON: `[{"id":"deep","name":"Deep male","provider":"piper","voice":"/models/x.onnx","speed":0.95}, {"id":"warm","name":"Warm female","provider":"kokoro","voice":"af_heart"}]` |
 | `CF_ASR_PROVIDER=whisper`, `CF_WHISPER_MODEL`, `CF_WHISPER_DEVICE` | Whisper caption timing. When unset, captions are timed from the script and the measured narration length, and the production records `captions: estimated` |
 | `CF_MUSIC_DIR` | Folder of music tracks. A track is picked when its filename matches the scene's mood (for example `epic_cinematic_1.mp3`) |
+| `CF_MUSIC_PROVIDER`, `CF_MUSIC_MODEL`, `CF_MUSIC_URL` | Optional AI-generated score instead of the library. `stable-audio` runs Stable Audio Open on the worker GPU and makes a bed of up to 47s, which loops under longer videos. `http` calls your own server at `POST {url}/v1/music/generate` with JSON `prompt, seconds, seed` and expects audio bytes back. Check the model licence |
 | `CF_ALLOW_MOCK=1` | **Tests only.** Turns on placeholder providers (`mock`). Every production records the providers that made it |
 
 Check the licence of each model you install: some popular voice and music models are not

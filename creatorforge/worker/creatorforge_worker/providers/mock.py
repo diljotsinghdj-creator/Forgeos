@@ -66,3 +66,12 @@ class MockVideo:
         frames = max(2, int(seconds * 24))
         _ffmpeg(["-i", str(image), "-vf", f"scale={width}:{height},zoompan=z='1+0.002*on':d={frames}:s={width}x{height}:fps=24",
                  "-frames:v", str(frames), "-c:v", "libx264", "-pix_fmt", "yuv420p", str(out)])
+
+
+class MockMusic:
+    id = "mock-music"
+    max_seconds = 30.0
+
+    def generate(self, prompt: str, seconds: float, seed: int, out: Path) -> None:
+        _ffmpeg(["-f", "lavfi", "-i", f"sine=frequency=196:sample_rate=44100:duration={min(seconds, self.max_seconds):.2f}",
+                 "-ac", "2", str(out)])

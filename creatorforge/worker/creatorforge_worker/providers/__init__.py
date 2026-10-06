@@ -97,6 +97,26 @@ def build_video(cfg: Config):
     return prov
 
 
+def build_music(cfg: Config):
+    """Returns None when no music model is configured (the local track library is used instead)."""
+    p = cfg.music_provider
+    if not p:
+        return None
+    if p == "mock":
+        _mock_allowed(cfg, "CF_MUSIC_PROVIDER")
+        from .mock import MockMusic
+        return MockMusic()
+    if p == "http":
+        if not cfg.music_url:
+            raise NotConfigured("CF_MUSIC_URL is required for the http music provider")
+        from .music import HttpMusicProvider
+        return HttpMusicProvider(cfg.music_url)
+    if p == "stable-audio":
+        from .music import StableAudioProvider
+        return StableAudioProvider(cfg.music_model)
+    raise NotConfigured(f"Unknown music provider '{p}'")
+
+
 _asr = None
 
 

@@ -281,8 +281,22 @@ class Pipeline:
             self._stage(job, "music", "SKIPPED")
             return
         mood = job["plan"].get("music_mood") or TEMPLATES[spec.template].music_mood
+        gen = providers.build_music(self.cfg)
+        if gen is not None:
+            # Generated score: one bed per production (looped under longer videos), cached by mood + length.
+            total = sum(self._timings(job)) + render.TRANSITION_S
+            seconds = round(min(total, gen.max_seconds), 1)
+            prompt = f"{mood}, instrumental background score for a short video, no vocals, steady, mixable"
+            seed = int(job["id"][:8], 16) % 2**31
+            src = self._cached("music", _key(gen.id, prompt, seconds, seed), ".wav",
+                               lambda p: gen.generate(prompt, seconds, seed, p), verify.audio)
+            dst = self.store.dir(job["id"]) / "music.wav"
+            shutil.copyfile(src, dst)
+            job["providers"]["music"] = f"{gen.id} ({mood})"
+            job["music_track"] = str(dst)
+            return
         track = render.pick_music(self.cfg.music_dir, mood, job["id"])
-        job["providers"]["music"] = track.name if track else "none (no music library configured)"
+        job["providers"]["music"] = track.name if track else "none (no music library or model configured)"
         job["music_track"] = str(track) if track else None
 
     def _assembly(self, job: dict, cancel) -> None:
