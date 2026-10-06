@@ -12,7 +12,15 @@ public final class MissionCommandRunner {
  public Outcome resume(JSONObject m)throws Exception{
   String type=m.optString("commandType","GENERIC");
   if("BUILD_ANDROID".equals(type))return resumeBuild(m);
+  if("INSPECT_LOCAL".equals(type))return resumeInspect(m);
   return Outcome.NEEDS_SECURE_REBIND;
+ }
+ private Outcome resumeInspect(JSONObject m)throws Exception{
+  String p=m.optString("workspacePath","");
+  if(p.length()==0)return Outcome.FAILED;
+  File workspace=new File(p); if(!workspace.isDirectory())return Outcome.FAILED;
+  BuildAdapter.BuildResult r=new LocalInspectAdapter().submit(m.getString("id"),workspace);
+  return r.accepted?Outcome.COMPLETE:Outcome.FAILED;
  }
  private Outcome resumeBuild(JSONObject m)throws Exception{
   String p=m.optString("workspacePath","");
