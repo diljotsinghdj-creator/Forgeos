@@ -14,14 +14,29 @@ public final class MissionRecoveryWorker extends Worker {
   if(id==null||id.length()==0)return Result.failure();
   try{
    MissionStore s=new MissionStore(getApplicationContext());
-   JSONObject j=s.read(id);
-   String state=j.optString("state","");
+   JSONObject current=s.read(id);
+   String state=current.optString("state","");
    if(MissionStore.State.COMPLETE.name().equals(state)||MissionStore.State.VERIFIED.name().equals(state))return Result.success();
-   MissionCommandRunner.Outcome outcome=new MissionCommandRunner(getApplicationContext()).resume(j);
-   if(outcome==MissionCommandRunner.Outcome.COMPLETE){s.checkpoint(id,MissionStore.State.COMPLETE,"Recovered mission completed");return Result.success();}
-   if(outcome==MissionCommandRunner.Outcome.RETRYABLE){s.checkpoint(id,MissionStore.State.CHECKPOINTED,"Recovery deferred for retry");return getRunAttemptCount()<3?Result.retry():Result.failure();}
-   if(outcome==MissionCommandRunner.Outcome.NEEDS_SECURE_REBIND){s.checkpoint(id,MissionStore.State.BLOCKED,"Recovered safely; privileged adapter requires secure rebind");return Result.success();}
-   s.checkpoint(id,MissionStore.State.FAILED,"Mission could not be reconstructed safely");return Result.failure();
+
+   // Recovery must participate in the same lease protocol as live execution.
+   // Never replay work or write a terminal checkpoint without ownership.
+   String lease=s.claimLease(id);
+   if(lease==null)return Result.success();
+   JSONObject owned=s.read(id);
+   if(!lease.equals(owned.optString("lease","")))return Result.success();
+
+   MissionCommandRunner.Outcome outcome=new MissionCommandRunner(getApplicationContext()).resume(owned);
+   if(outcome==MissionCommandRunner.Outcome.COMPLETE){
+    return s.checkpointOwned(id,lease,MissionStore.State.COMPLETE,"Recovered mission completed")?Result.success():Result.retry();
+   }
+   if(outcome==MissionCommandRunner.Outcome.RETRYABLE){
+    boolean saved=s.checkpointOwned(id,lease,MissionStore.State.CHECKPOINTED,"Recovery deferred for retry");
+    return saved&&getRunAttemptCount()<3?Result.retry():Result.failure();
+   }
+   if(outcome==MissionCommandRunner.Outcome.NEEDS_SECURE_REBIND){
+    return s.checkpointOwned(id,lease,MissionStore.State.BLOCKED,"Recovered safely; privileged adapter requires secure rebind")?Result.success():Result.retry();
+   }
+   return s.checkpointOwned(id,lease,MissionStore.State.FAILED,"Mission could not be reconstructed safely")?Result.failure():Result.retry();
   }catch(java.io.FileNotFoundException e){return Result.failure();}
    catch(Exception e){return getRunAttemptCount()<3?Result.retry():Result.failure();}
  }
