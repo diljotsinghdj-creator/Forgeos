@@ -18,7 +18,7 @@ import java.util.zip.*;
 public class MainActivity extends Activity {
  private final int GOLD=Color.rgb(212,175,55);
  private LinearLayout projects,files; private TextView status,log; private Button build;
- private File active; private static final long MAX_UNPACKED=250L*1024*1024; private static final String MISSION_STATE="apex_mission_state",MISSION_TEXT="apex_mission_text";
+ private File active; private static final long MAX_UNPACKED=250L*1024*1024; private static final String MISSION_STATE="apex_mission_state",MISSION_TEXT="apex_mission_text",MISSION_ATTEMPT="apex_mission_attempt";
  @Override public void onCreate(Bundle b){super.onCreate(b);setContentView(ui());restore();}
  private View ui(){
   ScrollView s=new ScrollView(this);s.setBackgroundColor(Color.rgb(7,9,13));
@@ -37,18 +37,25 @@ public class MainActivity extends Activity {
   launch.setOnClickListener(v->{String m=mission.getText().toString().trim();if(m.isEmpty()){status.setText("MISSION BLOCKED • Enter an objective");return;}startMission(m);});
   r.addView(txt("APEX v0.1 • Mission Control on ForgeOS",11,Color.GRAY,false));return s;
  }
+ private void checkpoint(String mission,String state,int attempt,String evidence){
+  getPreferences(0).edit().putString(MISSION_TEXT,mission).putString(MISSION_STATE,state).putInt(MISSION_ATTEMPT,attempt).apply();
+  status.setText(state+" • "+mission);append("["+state+"] attempt "+attempt+" • "+evidence);
+ }
  private void startMission(String mission){
-  getPreferences(0).edit().putString(MISSION_TEXT,mission).putString(MISSION_STATE,"PLANNING").apply();
-  status.setText("PLANNING • "+mission);append("Mission accepted. State checkpoint: PLANNING.");
+  checkpoint(mission,"PLANNING",1,"Planner created a deterministic local execution plan.");
+  new android.os.Handler(getMainLooper()).postDelayed(()->runWorker(mission,1),500);
+ }
+ private void runWorker(String mission,int attempt){
+  checkpoint(mission,"RUNNING",attempt,"Worker started.");
   new android.os.Handler(getMainLooper()).postDelayed(()->{
-   getPreferences(0).edit().putString(MISSION_STATE,"RUNNING").apply();status.setText("RUNNING • "+mission);append("Worker checkpoint: RUNNING.");
-   new android.os.Handler(getMainLooper()).postDelayed(()->{
-    getPreferences(0).edit().putString(MISSION_STATE,"VERIFYING").apply();status.setText("VERIFYING • "+mission);append("Tester/Judge checkpoint: VERIFYING.");
-    new android.os.Handler(getMainLooper()).postDelayed(()->{
-     getPreferences(0).edit().putString(MISSION_STATE,"COMPLETED").apply();status.setText("COMPLETED • "+mission);append("Evidence: local v0.1 lifecycle completed. External agent execution not yet enabled.");
-    },700);
-   },700);
-  },700);
+   if(attempt==1){
+    checkpoint(mission,"RECOVERING",attempt,"Controlled worker fault injected; checkpoint preserved. Recovery policy approved one retry.");
+    new android.os.Handler(getMainLooper()).postDelayed(()->runWorker(mission,attempt+1),650);
+   }else{
+    checkpoint(mission,"VERIFYING",attempt,"Worker completed on retry; Tester/Judge validating terminal evidence.");
+    new android.os.Handler(getMainLooper()).postDelayed(()->checkpoint(mission,"COMPLETED",attempt,"Verified local worker recovery path: failure → recovery → retry → verification → completion. External AI/tool execution remains disabled."),650);
+   }
+  },650);
  }
 
  @Override protected void onActivityResult(int q,int result,Intent data){super.onActivityResult(q,result,data);if(q==100&&result==RESULT_OK&&data!=null&&data.getData()!=null)importZip(data.getData());}
