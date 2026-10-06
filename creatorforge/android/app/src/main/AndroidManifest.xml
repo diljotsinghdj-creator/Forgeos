@@ -1,5 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Android 11+ package visibility: needed to find the phone's text-to-speech engine. -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE" />
+        </intent>
+    </queries>
     <!-- Cleartext is allowed so a worker on your own LAN (http://192.168.x.x) works; use https:// elsewhere. -->
     <application android:theme="@style/Theme.CreatorForge" android:label="CreatorForge" android:allowBackup="true"
         android:usesCleartextTraffic="true">

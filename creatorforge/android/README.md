@@ -1,4 +1,4 @@
-# CreatorForge v1.0 RC14 (Android controller)
+# CreatorForge v1.0 RC15 (Android controller)
 
 Your phone runs the studio. The heavy AI generation runs on your self-hosted worker
 (`../worker`).
@@ -23,5 +23,9 @@ Your phone runs the studio. The heavy AI generation runs on your self-hosted wor
   uses the same description.
 - **Settings**: worker URL and worker token (stored encrypted). Plain `http://` is allowed so a
   worker on your home network works. Use `https://` anywhere else.
+- **Make on this phone (no worker)**: in **Create**, paste a script and it's split into scenes.
+  In **Projects**, tap **MAKE ON THIS PHONE**: each scene gets narration from Android's built-in
+  voice (free, offline) and a styled title card. Then **Studio → EXPORT MP4** renders the video on
+  the phone with burned-in captions.
 - **Create / Projects / Studio**: the RC10 manual workflow (per-scene generation and on-device
   MP4 export). It still works offline from the worker's render pipeline.
