@@ -10,9 +10,13 @@ public final class MissionStore {
  public enum State { QUEUED, RUNNING, CHECKPOINTED, BLOCKED, VERIFIED, COMPLETE, FAILED }
  private final File dir;
  public MissionStore(Context c){ dir=new File(c.getFilesDir(),"missions"); if(!dir.exists())dir.mkdirs(); }
- public synchronized String create(String objective)throws Exception{
+ public synchronized String create(String objective)throws Exception{return create(objective,"GENERIC",null,null);}
+ public synchronized String create(String objective,String commandType,String workspacePath,String adapterId)throws Exception{
   String id="mission-"+UUID.randomUUID(); JSONObject j=new JSONObject();
-  j.put("id",id);j.put("objective",objective);j.put("state",State.QUEUED.name());
+  j.put("id",id);j.put("objective",objective);j.put("commandType",commandType==null?"GENERIC":commandType);
+  if(workspacePath!=null)j.put("workspacePath",workspacePath);
+  if(adapterId!=null)j.put("adapterId",adapterId);
+  j.put("state",State.QUEUED.name());
   j.put("attempt",0);j.put("createdAt",System.currentTimeMillis());j.put("updatedAt",System.currentTimeMillis());
   write(id,j); return id;
  }
