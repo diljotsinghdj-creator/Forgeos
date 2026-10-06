@@ -33,6 +33,9 @@ class Config:
     image_url: str = ""
     image_model: str = ""
     image_steps: int = 0
+    video_provider: str = ""  # "diffusers" | "http" | "mock" ("" = AI video clips unavailable)
+    video_url: str = ""
+    video_model: str = ""
     asr_provider: str = ""  # "whisper" | "" (estimated captions)
     whisper_model: str = "small"
     whisper_device: str = "auto"
@@ -69,6 +72,9 @@ class Config:
             image_url=_env("CF_IMAGE_URL"),
             image_model=_env("CF_IMAGE_MODEL"),
             image_steps=int(_env("CF_IMAGE_STEPS", "0") or 0),
+            video_provider=_env("CF_VIDEO_PROVIDER"),
+            video_url=_env("CF_VIDEO_URL"),
+            video_model=_env("CF_VIDEO_MODEL"),
             asr_provider=_env("CF_ASR_PROVIDER"),
             whisper_model=_env("CF_WHISPER_MODEL", "small"),
             whisper_device=_env("CF_WHISPER_DEVICE", "auto"),

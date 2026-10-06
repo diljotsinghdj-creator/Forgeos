@@ -8,9 +8,9 @@ import time
 import uuid
 from pathlib import Path
 
-STAGES = ["director", "prompts", "images", "narration", "captions", "music", "assembly", "verify"]
-WEIGHTS = {"director": .10, "prompts": .02, "images": .38, "narration": .20, "captions": .05, "music": .03,
-           "assembly": .17, "verify": .05}
+STAGES = ["director", "prompts", "images", "review", "narration", "clips", "captions", "music", "assembly", "verify"]
+WEIGHTS = {"director": .08, "prompts": .02, "images": .30, "review": 0.0, "narration": .15, "clips": .20,
+           "captions": .04, "music": .02, "assembly": .15, "verify": .04}
 TERMINAL = {"READY", "FAILED", "CANCELLED"}
 
 
@@ -41,7 +41,10 @@ class JobStore:
             p = self.dir(job_id) / "job.json"
             if not p.is_file():
                 raise KeyError(job_id)
-            return json.loads(p.read_text())
+            job = json.loads(p.read_text())
+            for s in STAGES:  # productions created before a stage existed simply skip it
+                job["stages"].setdefault(s, {"state": "SKIPPED", "error": None})
+            return job
 
     def save(self, job: dict) -> None:
         with self._lock:

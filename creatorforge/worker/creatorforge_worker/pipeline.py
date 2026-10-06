@@ -29,6 +29,10 @@ class StageFailed(Exception):
     pass
 
 
+class ReviewPause(Exception):
+    pass
+
+
 def _key(*parts) -> str:
     return hashlib.sha256(json.dumps(parts, sort_keys=True).encode()).hexdigest()[:32]
 
@@ -65,7 +69,8 @@ class Pipeline:
         if state == "RUNNING":
             job["message"] = {"director": "AI Director writing script and shot list",
                               "prompts": "PromptForge building generation prompts",
-                              "images": "Generating scene visuals", "narration": "Recording narration",
+                              "images": "Generating scene visuals", "review": "Waiting for storyboard approval",
+                              "narration": "Recording narration", "clips": "Animating scenes into video clips",
                               "captions": "Synchronizing captions", "music": "Scoring music",
                               "assembly": "Assembling timeline, transitions and overlays",
                               "verify": "Verifying the exported MP4"}[name]
@@ -91,12 +96,14 @@ class Pipeline:
                 if job["stages"][name]["state"] == "RUNNING":
                     self._stage(job, name, "READY")
             job.update(status="READY", message="Finished: verified MP4 ready")
+        except ReviewPause:
+            job.update(status="REVIEW", message="Storyboard ready - edit any scene, then approve to render")
         except Cancelled:
             for s in job["stages"].values():
                 if s["state"] == "RUNNING":
                     s["state"] = "PENDING"
             for sc in job["scenes"]:
-                for k in ("image_state", "voice_state"):
+                for k in ("image_state", "voice_state", "clip_state"):
                     if sc.get(k) == "GENERATING":
                         sc[k] = "QUEUED"
             job.update(status="CANCELLED", message="Cancelled - finished assets are kept; retry resumes")
@@ -116,8 +123,8 @@ class Pipeline:
         job["providers"]["llm"] = llm.id
         plan = director.direct(llm, spec)
         job["plan"] = plan.to_dict()
-        job["scenes"] = [{"index": i, "image_state": "PLANNED", "voice_state": "PLANNED", "image": None,
-                          "narration": None, "narration_s": None, "error": None}
+        job["scenes"] = [{"index": i, "image_state": "PLANNED", "voice_state": "PLANNED", "clip_state": "PLANNED",
+                          "image": None, "narration": None, "narration_s": None, "clip": None, "error": None}
                          for i in range(len(plan.scenes))]
 
     def _prompts(self, job: dict, cancel) -> None:
@@ -165,6 +172,50 @@ class Pipeline:
         self._stage(job, "images", "RUNNING", done=sum(1 for s in scenes if s["image_state"] == "READY"))
         if failures:
             raise StageFailed(f"{len(failures)} scene image(s) failed - {failures[0]}")
+
+    def _review(self, job: dict, cancel) -> None:
+        if not self._spec(job).review:
+            self._stage(job, "review", "SKIPPED")
+        elif not job.get("approved"):
+            self._stage(job, "review", "WAITING")
+            raise ReviewPause()
+
+    def _clips(self, job: dict, cancel) -> None:
+        spec = self._spec(job)
+        if spec.motion != "ai_video":
+            job["providers"]["clips"] = "off (camera motion on stills)"
+            self._stage(job, "clips", "SKIPPED")
+            return
+        video = providers.build_video(self.cfg)
+        job["providers"]["clips"] = video.id
+        gen, _ = ASPECTS[spec.aspect]
+        jdir = self.store.dir(job["id"])
+        scenes, shots = job["scenes"], job["plan"]["scenes"]
+        for sc, shot, slot in zip(scenes, shots, self._timings(job)):
+            self._stage(job, "clips", "RUNNING", done=sum(1 for s in scenes if s.get("clip_state") == "READY"),
+                        total=len(scenes))
+            if sc.get("clip_state") == "READY" and sc.get("clip") and (jdir / sc["clip"]).is_file():
+                continue
+            if cancel.is_set():
+                raise Cancelled()
+            sc.update(clip_state="GENERATING")
+            self.store.save(job)
+            image = jdir / sc["image"]
+            seconds = round(slot + render.TRANSITION_S, 2)
+            seed = (int(job["id"][:8], 16) + sc["index"] * 104729) % 2**31
+            key = _key(video.id, hashlib.sha256(image.read_bytes()).hexdigest(), shot["prompt"], seconds, gen, seed)
+            try:
+                src = self._cached("clips", key, ".mp4",
+                                   lambda p: video.generate(image, shot["prompt"], seconds, gen[0], gen[1], seed, p),
+                                   verify.clip)
+                dst = jdir / f"scene_{sc['index'] + 1:02d}.mp4"
+                shutil.copyfile(src, dst)
+                sc.update(clip_state="READY", clip=dst.name)
+            except (ProviderError, MediaError) as e:
+                sc.update(clip_state="FAILED", error=f"clip: {e}")
+                self.store.save(job)
+                raise StageFailed(f"scene {sc['index'] + 1} video clip failed - {e}") from e
+            self.store.save(job)
 
     def _narration(self, job: dict, cancel) -> None:
         spec = self._spec(job)
@@ -269,8 +320,12 @@ class Pipeline:
             ass = work / "captions.ass"
             cap.write_ass(ass, w, h, t.caption_scale, t.caption_position, cues, overlays)
 
-        clips = [render.Clip(jdir / sc["image"], d, shot.get("camera", ""), t.transitions[i % len(t.transitions)])
+        use_video = spec.motion == "ai_video"
+        clips = [render.Clip(jdir / sc["image"], d, shot.get("camera", ""), t.transitions[i % len(t.transitions)],
+                             jdir / sc["clip"] if use_video and sc.get("clip") else None)
                  for i, (sc, shot, d) in enumerate(zip(job["scenes"], shots, timings))]
+        if use_video and any(c.video is None for c in clips):
+            raise StageFailed("AI video mode but a scene has no clip")
         out = jdir / "work" / "render.mp4"
         expected = render.render_video(clips, mixed, ass, w, h, out, work, cancel)
         job["render"] = {"file": "work/render.mp4", "expected_s": round(expected, 3), "width": w, "height": h}

@@ -54,3 +54,12 @@ class MockVoice:
         seconds = max(1.0, len(text.split()) / 2.6)
         _ffmpeg(["-f", "lavfi", "-i", f"sine=frequency=220:sample_rate=24000:duration={seconds:.2f}",
                  "-ac", "1", str(out_wav)])
+
+
+class MockVideo:
+    id = "mock-video"
+
+    def generate(self, image: Path, prompt: str, seconds: float, width: int, height: int, seed: int, out: Path) -> None:
+        frames = max(2, int(seconds * 24))
+        _ffmpeg(["-i", str(image), "-vf", f"scale={width}:{height},zoompan=z='1+0.002*on':d={frames}:s={width}x{height}:fps=24",
+                 "-frames:v", str(frames), "-c:v", "libx264", "-pix_fmt", "yuv420p", str(out)])

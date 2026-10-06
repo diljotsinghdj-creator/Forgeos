@@ -71,6 +71,32 @@ def build_voice(cfg: Config, profile: VoiceProfile):
     raise NotConfigured(f"Unknown voice provider '{profile.provider}'")
 
 
+_video_cache: dict[tuple, object] = {}
+
+
+def build_video(cfg: Config):
+    key = (cfg.video_provider, cfg.video_url, cfg.video_model)
+    if key in _video_cache:
+        return _video_cache[key]
+    p = cfg.video_provider
+    if p == "mock":
+        _mock_allowed(cfg, "CF_VIDEO_PROVIDER")
+        from .mock import MockVideo
+        prov = MockVideo()
+    elif p == "http":
+        if not cfg.video_url:
+            raise NotConfigured("CF_VIDEO_URL is required for the http video provider")
+        from .video import HttpVideoProvider
+        prov = HttpVideoProvider(cfg.video_url)
+    elif p == "diffusers":
+        from .video import DiffusersVideoProvider
+        prov = DiffusersVideoProvider(cfg.video_model)
+    else:
+        raise NotConfigured("No video model configured (set CF_VIDEO_PROVIDER to diffusers or http)")
+    _video_cache[key] = prov
+    return prov
+
+
 _asr = None
 
 

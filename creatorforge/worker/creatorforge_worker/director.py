@@ -36,6 +36,8 @@ class ProductionSpec:
     characters: list[Character] = field(default_factory=list)
     music: bool = True
     captions: bool = True
+    motion: str = "stills"  # "stills" (camera motion on images) | "ai_video" (image-to-video clips)
+    review: bool = False  # pause after scene visuals so the storyboard can be edited/approved
 
     @staticmethod
     def from_dict(d: dict) -> "ProductionSpec":
@@ -54,6 +56,8 @@ class ProductionSpec:
             characters=[c for c in chars if c.name and c.description],
             music=bool(d.get("music", True)),
             captions=bool(d.get("captions", True)),
+            motion=str(d.get("motion", "") or "stills"),
+            review=bool(d.get("review", False)),
         )
         spec.validate()
         return spec
@@ -73,6 +77,8 @@ class ProductionSpec:
             raise ValueError("aspect must be 9:16, 16:9 or 1:1")
         if self.pacing not in PACING:
             raise ValueError("pacing must be slow, medium or fast")
+        if self.motion not in ("stills", "ai_video"):
+            raise ValueError("motion must be stills or ai_video")
 
     def to_dict(self) -> dict:
         return asdict(self)
@@ -195,11 +201,13 @@ def direct(llm, spec: ProductionSpec) -> ProductionPlan:
     return plan
 
 
-def prompt_forge(plan: ProductionPlan, spec: ProductionSpec) -> None:
+def prompt_forge(plan: ProductionPlan, spec: ProductionSpec, only: int | None = None) -> None:
     """Builds each scene's generation prompt from the shot, Director Mode and characters."""
     t = TEMPLATES[spec.template]
     style = spec.style or t.style
-    for s in plan.scenes:
+    for i, s in enumerate(plan.scenes):
+        if only is not None and i != only:
+            continue
         parts = [s.visual.rstrip(".")]
         shot = ", ".join(x for x in [f"{s.shot} shot" if s.shot else "", spec.camera or s.camera,
                                      f"{spec.mood or s.mood} mood" if (spec.mood or s.mood) else ""] if x)

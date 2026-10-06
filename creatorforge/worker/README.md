@@ -5,8 +5,10 @@ Your phone sends one request and gets back a finished, checked MP4. No step requ
 subscription or credit-based service.
 
 ```
-idea → AI Director (script, hook, shot list, CTA) → PromptForge → scene images → narration
-     → captions (Whisper) → music (your library) → assembly (motion, transitions, overlays)
+idea → AI Director (script, hook, shot list, CTA) → PromptForge → scene images
+     → [optional storyboard review: edit any scene, then approve] → narration
+     → [optional AI video clips: image-to-video per scene] → captions (Whisper)
+     → music (your library) → assembly (motion, transitions, overlays)
      → render (H.264/AAC MP4) → verify (codecs, resolution, duration, full decode)
 ```
 
@@ -38,6 +40,7 @@ missing.
 | `CF_LLM_URL`, `CF_LLM_MODEL`, `CF_LLM_API_KEY` | Any OpenAI-compatible chat endpoint: Ollama, llama.cpp, vLLM, LM Studio, or a hosted API if you choose |
 | `CF_IMAGE_PROVIDER` | `a1111` (HTTP to SD WebUI / Forge) or `diffusers` (in-process, needs a GPU) |
 | `CF_IMAGE_URL`, `CF_IMAGE_MODEL`, `CF_IMAGE_STEPS` | Provider settings. The `diffusers` default is `black-forest-labs/FLUX.1-schnell` |
+| `CF_VIDEO_PROVIDER`, `CF_VIDEO_MODEL`, `CF_VIDEO_URL` | Optional AI video clips. `diffusers` runs image-to-video on the worker's own CUDA GPU (default model `Lightricks/LTX-Video`; Wan 2.x I2V models also work). `http` calls your own server at `POST {url}/v1/video/i2v` with JSON `image_base64, prompt, seconds, width, height, seed` and expects MP4 bytes back. Productions ask for clips with `"motion": "ai_video"` |
 | `CF_PIPER_MODEL` / `CF_KOKORO_VOICE` | Sets up one default narrator |
 | `CF_VOICES` | Voice profiles as JSON: `[{"id":"deep","name":"Deep male","provider":"piper","voice":"/models/x.onnx","speed":0.95}, {"id":"warm","name":"Warm female","provider":"kokoro","voice":"af_heart"}]` |
 | `CF_ASR_PROVIDER=whisper`, `CF_WHISPER_MODEL`, `CF_WHISPER_DEVICE` | Whisper caption timing. When unset, captions are timed from the script and the measured narration length, and the production records `captions: estimated` |
@@ -53,11 +56,13 @@ licensed for commercial use.
 |---|---|---|
 | GET | `/health` | Readiness, plus the status of each provider |
 | GET | `/v1/capabilities` | Templates, aspect ratios, pacing options, voice profiles |
-| POST | `/v1/productions` | **One-button production.** Body: `{"idea", "duration_s", "template", "aspect", "voice", "pacing", "style", "mood", "camera", "characters":[{"name","description"}], "music", "captions"}`. Returns `202` with the production |
+| POST | `/v1/productions` | **One-button production.** Body: `{"idea", "duration_s", "template", "aspect", "voice", "pacing", "style", "mood", "camera", "characters":[{"name","description"}], "music", "captions", "motion": "stills"\|"ai_video", "review": bool}`. Returns `202` with the production |
 | GET | `/v1/productions` / `/{id}` | Status, stages, per-scene states, progress, errors, providers used |
 | DELETE | `/v1/productions/{id}` | Cancel. Finished assets are kept |
 | POST | `/v1/productions/{id}/retry[?from_stage=images]` | Resume from the failed stage, or redo from a chosen stage |
 | POST | `/v1/productions/{id}/scenes/{n}/regenerate` | Generate a new visual for one scene and re-render. Nothing else is regenerated |
+| PATCH | `/v1/productions/{id}/scenes/{n}` | Edit a scene's `narration` and/or `visual`. Only the assets that depend on the change are regenerated. Moves the production to `REVIEW` |
+| POST | `/v1/productions/{id}/approve` | Approve the storyboard (or your edits) and render |
 | GET | `/v1/productions/{id}/video` | The verified MP4. Only available once the production is `READY` |
 | GET | `/v1/productions/{id}/scenes/{n}/image` | Storyboard image for scene `n` |
 | POST | `/v1/images/generate`, `/v1/voice/generate` | Single-asset endpoints used by the RC10 app |

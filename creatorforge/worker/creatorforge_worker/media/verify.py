@@ -33,6 +33,19 @@ def wav(path: Path) -> float:
     return d
 
 
+def clip(path: Path) -> float:
+    if not path.is_file() or path.stat().st_size < 2000:
+        raise MediaError("video clip missing or too small")
+    info = probe(path)
+    v = [s for s in info["streams"] if s.get("codec_type") == "video"]
+    if not v:
+        raise MediaError("video clip has no video stream")
+    d = float(info["format"].get("duration") or 0)
+    if d < 0.5:
+        raise MediaError("video clip shorter than 0.5s")
+    return d
+
+
 def mp4(path: Path, width: int, height: int, expected_s: float) -> dict:
     """Checks container, codecs, resolution, duration, then fully decodes the file."""
     if not path.is_file() or path.stat().st_size < 10_000:

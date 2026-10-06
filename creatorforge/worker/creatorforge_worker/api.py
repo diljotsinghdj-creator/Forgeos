@@ -51,7 +51,8 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
     def provider_status() -> dict:
         status = {}
         for name, build in [("llm", lambda: providers.build_llm(cfg)), ("image", lambda: providers.build_image(cfg)),
-                            ("voice", lambda: providers.build_voice(cfg, providers.voice_profile(cfg, None)))]:
+                            ("voice", lambda: providers.build_voice(cfg, providers.voice_profile(cfg, None))),
+                            ("video", lambda: providers.build_video(cfg))]:
             try:
                 status[name] = {"ready": True, "id": build().id}
             except NotConfigured as e:
@@ -76,13 +77,15 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
     def health() -> dict:
         st = provider_status()
         return {"ok": True, "version": __version__, "auth_required": bool(cfg.token),
-                "production_ready": all(v["ready"] for v in st.values()), "providers": st,
+                "production_ready": all(v["ready"] for k, v in st.items() if k != "video"),
+                "ai_video_ready": st["video"]["ready"], "providers": st,
                 "mock": cfg.allow_mock}
 
     @app.get("/v1/capabilities", dependencies=[Depends(auth)])
     def capabilities() -> dict:
         return {"templates": [{"id": t.id, "name": t.name, "aspect": t.aspect} for t in TEMPLATES.values()],
                 "aspects": list(ASPECTS), "pacing": ["slow", "medium", "fast"],
+                "motion": ["stills"] + (["ai_video"] if cfg.video_provider else []),
                 "voices": [{"id": v.id, "name": v.name, "provider": v.provider} for v in cfg.voices],
                 "providers": provider_status()}
 
@@ -124,6 +127,20 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
             return public(runner.regenerate_scene(job_id, index))
         except ValueError as e:
             raise HTTPException(409, str(e)) from None
+
+    @app.patch("/v1/productions/{job_id}/scenes/{index}", dependencies=[Depends(auth)])
+    async def edit_scene(job_id: str, index: int, request: Request) -> dict:
+        job_or_404(job_id)
+        body = await request.json()
+        try:
+            return public(runner.edit_scene(job_id, index, body.get("narration"), body.get("visual")))
+        except ValueError as e:
+            raise HTTPException(409, str(e)) from None
+
+    @app.post("/v1/productions/{job_id}/approve", dependencies=[Depends(auth)])
+    def approve_production(job_id: str) -> dict:
+        job_or_404(job_id)
+        return public(runner.approve(job_id))
 
     @app.get("/v1/productions/{job_id}/video", dependencies=[Depends(auth)])
     def production_video(job_id: str):

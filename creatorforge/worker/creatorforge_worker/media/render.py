@@ -22,6 +22,7 @@ class Clip:
     duration: float  # time this scene owns on the timeline (narration + breathing room)
     camera: str
     transition: str  # transition INTO this clip (ignored for the first clip)
+    video: Path | None = None  # AI-generated clip; when absent the still gets camera motion
 
 
 def to_pcm(src: Path, dst: Path, cancel: threading.Event | None = None) -> None:
@@ -96,6 +97,14 @@ def render_video(clips: list[Clip], audio: Path, captions: Path | None, width: i
     graph: list[str] = []
     for i, c in enumerate(clips):
         frames = max(2, round((c.duration + t) * FPS))
+        if c.video is not None:
+            # Fit the clip to the slot: cover-crop, hold the last frame if the model's clip is shorter.
+            length = frames / FPS
+            args += ["-i", str(c.video)]
+            graph.append(f"[{i}:v]scale={width}:{height}:force_original_aspect_ratio=increase,crop={width}:{height},"
+                         f"setsar=1,fps={FPS},tpad=stop_mode=clone:stop_duration={length:.3f},"
+                         f"trim=end_frame={frames},setpts=PTS-STARTPTS,format=yuv420p[v{i}]")
+            continue
         args += ["-i", str(c.image)]
         sw, sh = int(width * 1.5) // 2 * 2, int(height * 1.5) // 2 * 2
         graph.append(f"[{i}:v]scale={sw}:{sh}:force_original_aspect_ratio=increase,crop={sw}:{sh},setsar=1,"
