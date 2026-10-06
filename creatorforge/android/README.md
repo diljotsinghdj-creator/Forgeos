@@ -1,4 +1,4 @@
-# CreatorForge v1.0 RC13 (Android controller)
+# CreatorForge v1.0 RC14 (Android controller)
 
 Your phone runs the studio. The heavy AI generation runs on your self-hosted worker
 (`../worker`).
