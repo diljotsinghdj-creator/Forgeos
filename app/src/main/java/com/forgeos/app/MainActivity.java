@@ -21,16 +21,20 @@ public class MainActivity extends Activity {
  private File active; private static final long MAX_UNPACKED=250L*1024*1024;
  @Override public void onCreate(Bundle b){super.onCreate(b);setContentView(ui());restore();}
  private View ui(){
-  ScrollView s=new ScrollView(this);s.setBackgroundColor(Color.rgb(9,9,9));
-  LinearLayout r=new LinearLayout(this);r.setOrientation(LinearLayout.VERTICAL);r.setPadding(dp(22),dp(24),dp(22),dp(28));s.addView(r);
-  r.addView(txt("FORGEOS",30,GOLD,true));r.addView(txt("Android Development Workspace",14,Color.LTGRAY,false));
-  LinearLayout c=panel();c.addView(txt("WORKSPACE CONTROL",12,GOLD,true));status=txt("Ready",16,Color.WHITE,true);c.addView(status);c.addView(txt("Import a project ZIP. ForgeOS extracts it into an isolated private workspace, validates Android/Gradle structure and preserves it between launches.",13,Color.LTGRAY,false));r.addView(c);
-  Button imp=btn("IMPORT PROJECT ZIP");imp.setOnClickListener(v->{Intent x=new Intent(Intent.ACTION_OPEN_DOCUMENT);x.setType("application/zip");x.addCategory(Intent.CATEGORY_OPENABLE);startActivityForResult(x,100);});r.addView(imp);
-  build=btn("BUILD APK");build.setEnabled(false);build.setOnClickListener(v->requestRemoteBuild());r.addView(build);
-  r.addView(txt("PROJECT",12,GOLD,true));projects=panel();projects.addView(txt("No project imported yet",15,Color.LTGRAY,false));r.addView(projects);
-  r.addView(txt("FILES",12,GOLD,true));files=panel();files.addView(txt("Workspace empty",13,Color.GRAY,false));r.addView(files);
-  r.addView(txt("ACTIVITY LOG",12,GOLD,true));log=txt("ForgeOS initialized.",12,Color.LTGRAY,false);LinearLayout lp=panel();lp.addView(log);r.addView(lp);
-  r.addView(txt("ForgeOS v0.3.1 - Remote Build Engine",11,Color.GRAY,false));return s;
+  ScrollView s=new ScrollView(this);s.setBackgroundColor(Color.rgb(7,9,13));
+  LinearLayout r=new LinearLayout(this);r.setOrientation(LinearLayout.VERTICAL);r.setPadding(dp(22),dp(22),dp(22),dp(30));s.addView(r);
+  r.addView(txt("APEX",32,GOLD,true));r.addView(txt("Mission Control • v0.1",13,Color.LTGRAY,false));
+  LinearLayout hero=panel();hero.addView(txt("COMMAND APEX",12,GOLD,true));hero.addView(txt("What do you want accomplished?",20,Color.WHITE,true));
+  EditText mission=new EditText(this);mission.setHint("Describe a mission…");mission.setTextColor(Color.WHITE);mission.setHintTextColor(Color.GRAY);mission.setMinLines(3);mission.setGravity(android.view.Gravity.TOP);hero.addView(mission);
+  Button launch=btn("LAUNCH MISSION");hero.addView(launch);r.addView(hero);
+  LinearLayout live=panel();live.addView(txt("MISSION STATUS",12,GOLD,true));status=txt("IDLE • Awaiting mission",16,Color.WHITE,true);live.addView(status);
+  live.addView(txt("Planner  •  Worker  •  Tester  •  Judge",12,Color.LTGRAY,false));r.addView(live);
+  LinearLayout evidence=panel();evidence.addView(txt("EVIDENCE & RECOVERY",12,GOLD,true));log=txt("No mission evidence yet. Failures will be surfaced here before recovery.",12,Color.LTGRAY,false);evidence.addView(log);r.addView(evidence);
+  LinearLayout nav=panel();nav.addView(txt("SYSTEMS",12,GOLD,true));nav.addView(txt("Missions   Agents   Projects & Memory",13,Color.WHITE,true));nav.addView(txt("CreatorForge   Growth Intelligence",13,Color.WHITE,true));nav.addView(txt("Evidence   Security & Settings",13,Color.WHITE,true));r.addView(nav);
+  r.addView(txt("ENGINEERING BRIDGE",12,GOLD,true));projects=panel();projects.addView(txt("ForgeOS build engine available beneath APEX.",12,Color.LTGRAY,false));r.addView(projects);
+  files=panel();files.setVisibility(View.GONE);r.addView(files);build=btn("BUILD ENGINE");build.setVisibility(View.GONE);r.addView(build);
+  launch.setOnClickListener(v->{String m=mission.getText().toString().trim();if(m.isEmpty()){status.setText("MISSION BLOCKED • Enter an objective");return;}status.setText("PLANNING • "+m);append("Mission accepted locally. Runtime execution wiring is the next gate.");});
+  r.addView(txt("APEX v0.1 • Mission Control on ForgeOS",11,Color.GRAY,false));return s;
  }
  @Override protected void onActivityResult(int q,int result,Intent data){super.onActivityResult(q,result,data);if(q==100&&result==RESULT_OK&&data!=null&&data.getData()!=null)importZip(data.getData());}
  private void importZip(Uri uri){
