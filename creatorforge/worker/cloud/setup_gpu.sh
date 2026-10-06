@@ -10,6 +10,7 @@ HOME_DIR="${CF_HOME:-/workspace/creatorforge}"   # /workspace survives pod resta
 PORT="${CF_PORT:-8765}"
 LLM_MODEL="${CF_LLM_MODEL:-qwen2.5:7b-instruct}"
 IMAGE_MODEL="${CF_IMAGE_MODEL:-black-forest-labs/FLUX.1-schnell}"
+IDLE_MINUTES="${CF_IDLE_MINUTES:-30}"   # stop the pod after this many minutes with no video work (0 = never)
 VIDEO="${CF_VIDEO:-fast}"   # fast = Wan 2.2 TI2V-5B (720p, 24 GB GPU) | max = Wan 2.2 I2V-A14B (80 GB GPU, ~200 GB disk) | off
 case "$VIDEO" in
   fast) VIDEO_MODEL="Wan-AI/Wan2.2-TI2V-5B-Diffusers" ;;
@@ -114,6 +115,40 @@ for k, v in h["providers"].items():
 print("  production_ready:", h["production_ready"])
 PY
 
+say "Money guard: auto-stop after $IDLE_MINUTES idle minutes"
+cat > idle_guard.sh <<'GUARD'
+#!/usr/bin/env bash
+# Stops this pod when no production has been queued or running for IDLE_MINUTES, so a forgotten
+# pod never keeps billing. Finished videos and models stay on the volume.
+PORT="$1"; IDLE_MINUTES="$2"; TOKEN="$3"
+last_busy=$(date +%s)
+while sleep 60; do
+  busy=$(curl -fs -H "Authorization: Bearer $TOKEN" "http://127.0.0.1:$PORT/v1/productions" |
+         python3 -c "import json,sys; print(any(j['status'] in ('QUEUED','RUNNING') for j in json.load(sys.stdin)))" 2>/dev/null)
+  [ "$busy" = "True" ] && last_busy=$(date +%s)
+  # touching this file (any request from the app) also counts as activity
+  [ -f "$HOME_DIR_ACTIVITY" ] && [ "$(stat -c %Y "$HOME_DIR_ACTIVITY")" -gt "$last_busy" ] && last_busy=$(stat -c %Y "$HOME_DIR_ACTIVITY")
+  idle=$(( ( $(date +%s) - last_busy ) / 60 ))
+  if [ "$idle" -ge "$IDLE_MINUTES" ]; then
+    echo "$(date) idle ${idle} min - stopping pod"
+    if command -v runpodctl >/dev/null && [ -n "${RUNPOD_POD_ID:-}" ]; then runpodctl stop pod "$RUNPOD_POD_ID"; fi
+    sleep 120
+  fi
+done
+GUARD
+chmod +x idle_guard.sh
+pkill -f idle_guard.sh 2>/dev/null || true
+if [ "$IDLE_MINUTES" != "0" ]; then
+  if command -v runpodctl >/dev/null && [ -n "${RUNPOD_POD_ID:-}" ]; then
+    HOME_DIR_ACTIVITY="$HOME_DIR/data/last_request" nohup ./idle_guard.sh "$PORT" "$IDLE_MINUTES" "$TOKEN" > idle_guard.log 2>&1 &
+    GUARD_MSG="Auto-stop is ON: the pod stops itself after $IDLE_MINUTES minutes without video work."
+  else
+    GUARD_MSG="Auto-stop is NOT available here - remember to stop the machine yourself."
+  fi
+else
+  GUARD_MSG="Auto-stop is OFF (CF_IDLE_MINUTES=0) - remember to stop the pod yourself."
+fi
+
 say "Opening a secure public link (no port settings needed)"
 # A free Cloudflare quick tunnel gives an https:// address that reaches this worker from anywhere.
 if [ ! -x "$HOME_DIR/cloudflared" ]; then
@@ -153,6 +188,7 @@ ${ALT:+ Alternative URL: $ALT}
  Logs:   tail -f $HOME_DIR/worker.log
  Music:  put royalty-free tracks in $HOME_DIR/music (name them by mood)
  SFX:    put whoosh/impact/pop files in $HOME_DIR/sfx
- STOP THE MACHINE when you're done - you pay while it runs.
+ $GUARD_MSG
+ Still: STOP THE POD when you're done - you pay while it runs.
 ================================================================
 DONE

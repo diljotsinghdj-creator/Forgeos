@@ -46,6 +46,18 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
     app = FastAPI(title="CreatorForge Worker", version=__version__, lifespan=lifespan)
     app.state.cfg, app.state.store, app.state.runner = cfg, store, runner
 
+    activity = cfg.data_dir / "last_request"
+
+    @app.middleware("http")
+    async def mark_activity(request: Request, call_next):
+        # Lets the cloud idle guard know someone is using the studio (it stops idle pods to save money).
+        if request.url.path != "/health":
+            try:
+                activity.touch()
+            except OSError:
+                pass
+        return await call_next(request)
+
     def auth(request: Request) -> None:
         if not cfg.token:
             return

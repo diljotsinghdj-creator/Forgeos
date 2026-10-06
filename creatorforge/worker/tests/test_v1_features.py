@@ -171,3 +171,12 @@ def test_style_presets_motion_prompts_and_clip_stretch(cfg):
         # mock clips are capped at 5s like real models; longer scenes are slowed, not frozen
         assert all(1.0 <= s <= 1.6 for s in job["edit"]["clip_stretch"])
         assert job["result"]["verification"]["decode_check"] == "passed"
+
+
+def test_requests_mark_activity_for_idle_guard(cfg):
+    with TestClient(create_app(cfg)) as c:
+        marker = cfg.data_dir / "last_request"
+        c.get("/health")
+        assert not marker.exists()  # health checks are not user activity
+        c.get("/v1/productions")
+        assert marker.exists()
