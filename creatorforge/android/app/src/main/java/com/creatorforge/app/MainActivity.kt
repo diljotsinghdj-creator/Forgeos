@@ -57,6 +57,7 @@ fun storeAudio(projects:List<CreatorProject>,projectId:String,sceneId:String,pat
  val scope=rememberCoroutineScope()
  var exportMessage by remember{mutableStateOf<String?>(null)}
  var exporting by remember{mutableStateOf(false)}
+ var exported by remember{mutableStateOf<File?>(null)}
  var selectedId by remember(projects){mutableStateOf(projects.lastOrNull()?.id)}
  val project=projects.firstOrNull{it.id==selectedId}
  Column{
@@ -94,16 +95,24 @@ fun storeAudio(projects:List<CreatorProject>,projectId:String,sceneId:String,pat
      Spacer(Modifier.height(4.dp))
      val exportReady=ready==p.scenes.size && voiced==p.scenes.size && p.scenes.isNotEmpty()
      Button(enabled=exportReady&&!exporting,onClick={
-      exporting=true;exportMessage="Validating export…"
+      exporting=true;exported=null;exportMessage="Validating export…"
       scope.launch{
        val output=File(context.getExternalFilesDir(null)?:context.filesDir,"CreatorForge_${p.id.take(8)}.mp4")
        val exporter=AvExportCoordinator(AndroidMediaCodecVideoRenderer(),AndroidAacNarrationComposer())
        val result=exporter.export(timeline,RenderRequest(p.id,output.absolutePath),onProgress={pr->exportMessage="${pr.message} • ${(pr.fraction*100).toInt()}%"})
-       exportMessage=if(result.success)"PASS: MP4 exported → ${result.outputPath}" else "FAILED: ${result.error}"
+       exportMessage=if(result.success)"PASS: MP4 exported and verified" else "FAILED: ${result.error}"
+       if(result.success)exported=result.outputPath?.let{File(it)}?.takeIf{it.isFile}
        exporting=false
       }
      },modifier=Modifier.fillMaxWidth()){Text(if(exporting)"EXPORTING…" else "EXPORT MP4")}
      exportMessage?.let{Text(it,color=if(it.startsWith("PASS"))Gold else Color.LightGray,fontSize=12.sp)}
+     exported?.let{f->
+      Row(horizontalArrangement=Arrangement.spacedBy(8.dp)){
+       Button(onClick={com.creatorforge.app.production.openVideo(context,f,android.content.Intent.ACTION_VIEW)}){Text("PLAY")}
+       OutlinedButton(onClick={com.creatorforge.app.production.openVideo(context,f,android.content.Intent.ACTION_SEND)}){Text("SHARE")}
+       OutlinedButton(onClick={exportMessage=com.creatorforge.app.production.saveToGallery(context,f)}){Text("SAVE")}
+      }
+     }
      Text(when{ready!=p.scenes.size->"Export locked: generate every scene visual.";voiced!=p.scenes.size->"Export locked: generate narration for every scene.";else->"Render pipeline ready: H.264 video + AAC narration + caption burn-in + MP4 mux verification."},color=Color.Gray,fontSize=12.sp)
      Spacer(Modifier.height(24.dp))
     }
