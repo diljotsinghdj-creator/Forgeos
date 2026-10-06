@@ -108,7 +108,12 @@ public class MainActivity extends Activity {
   int start=p+needle.length(),end=main.indexOf('"',start);if(end<0)throw new IOException("Malformed GitHub ref response");
   String sha=main.substring(start,end);
   try{api("POST",repo+"/git/refs",token,"{\\\"ref\\\":\\\"refs/heads/build-requests\\\",\\\"sha\\\":\\\""+sha+"\\\"}");}
-  catch(IOException e){if(!e.getMessage().startsWith("GitHub HTTP 422:"))throw e;}
+  catch(IOException e){
+   if(!e.getMessage().startsWith("GitHub HTTP 422:"))throw e;
+   // A concurrent client may have created the branch after our initial 404.
+   // Never treat an arbitrary 422 as success: prove the branch now exists.
+   api("GET",repo+"/git/ref/heads/build-requests",token,null);
+  }
  }
  private String api(String method,String url,String token,String body)throws Exception{
   HttpsURLConnection h=(HttpsURLConnection)new URL(url).openConnection();h.setRequestMethod(method);h.setConnectTimeout(20000);h.setReadTimeout(30000);h.setRequestProperty("Authorization","Bearer "+token);h.setRequestProperty("Accept","application/vnd.github+json");h.setRequestProperty("X-GitHub-Api-Version","2022-11-28");h.setRequestProperty("User-Agent","ForgeOS-Android/0.3.1");
