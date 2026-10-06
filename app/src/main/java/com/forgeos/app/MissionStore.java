@@ -55,6 +55,14 @@ public final class MissionStore {
   if(!State.RUNNING.name().equals(j.optString("state","")))return false;
   long now=System.currentTimeMillis();j.put("leaseUntil",now+5L*60*1000);j.put("updatedAt",now);write(id,j);return true;
  }
+ public synchronized boolean checkpointOwned(String id,String lease,State state,String note)throws Exception{
+  JSONObject j=read(id); if(lease==null||!lease.equals(j.optString("lease","")))return false;
+  if(!State.RUNNING.name().equals(j.optString("state","")))return false;
+  long now=System.currentTimeMillis(); if(j.optLong("leaseUntil",0)<=now)return false;
+  j.put("state",state.name());j.put("note",note==null?"":note);
+  if(state==State.RUNNING){j.put("leaseUntil",now+5L*60*1000);}else{j.remove("lease");j.remove("leaseUntil");}
+  j.put("attempt",j.optInt("attempt",0)+1);j.put("updatedAt",now);write(id,j);return true;
+ }
  public synchronized void checkpoint(String id,State state,String note)throws Exception{
   JSONObject j=read(id);j.put("state",state.name());j.put("note",note==null?"":note);if(state!=State.RUNNING){j.remove("lease");j.remove("leaseUntil");}
   j.put("attempt",j.optInt("attempt",0)+1);j.put("updatedAt",System.currentTimeMillis());write(id,j);
