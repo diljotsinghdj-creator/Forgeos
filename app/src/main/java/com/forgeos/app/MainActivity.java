@@ -16,14 +16,14 @@ import java.util.zip.ZipEntry;
 public class MainActivity extends Activity {
  private final int GOLD=Color.rgb(212,175,55);
  private LinearLayout projects,files; private TextView status,log; private Button build,inspect;
- private File active; private static final long MAX_UNPACKED=250L*1024*1024;
+ private File active; private static final long MAX_UNPACKED=250L*1024*1024; private static final int MAX_ZIP_ENTRIES=20000, MAX_PROJECT_DEPTH=8;
  @Override public void onCreate(Bundle b){super.onCreate(b);setContentView(ui());restore();}
  private View ui(){
   ScrollView s=new ScrollView(this);s.setBackgroundColor(Color.rgb(9,9,9));
   LinearLayout r=new LinearLayout(this);r.setOrientation(LinearLayout.VERTICAL);r.setPadding(dp(22),dp(24),dp(22),dp(28));s.addView(r);
   r.addView(txt("FORGEOS",30,GOLD,true));r.addView(txt("Android Development Workspace",14,Color.LTGRAY,false));
   LinearLayout c=panel();c.addView(txt("WORKSPACE CONTROL",12,GOLD,true));status=txt("Ready",16,Color.WHITE,true);c.addView(status);c.addView(txt("Import a project ZIP. ForgeOS extracts it into an isolated private workspace, validates Android/Gradle structure and preserves it between launches.",13,Color.LTGRAY,false));r.addView(c);
-  Button imp=btn("IMPORT PROJECT ZIP");imp.setOnClickListener(v->{Intent x=new Intent(Intent.ACTION_OPEN_DOCUMENT);x.setType("application/zip");x.addCategory(Intent.CATEGORY_OPENABLE);startActivityForResult(x,100);});r.addView(imp);
+  Button imp=btn("IMPORT PROJECT ZIP");imp.setOnClickListener(v->{Intent x=new Intent(Intent.ACTION_OPEN_DOCUMENT);x.setType("*/*");x.putExtra(Intent.EXTRA_MIME_TYPES,new String[]{"application/zip","application/x-zip-compressed","application/octet-stream"});x.addCategory(Intent.CATEGORY_OPENABLE);startActivityForResult(x,100);});r.addView(imp);
   inspect=btn("SOVEREIGN INSPECT");inspect.setEnabled(false);inspect.setOnClickListener(v->runLocalInspection());r.addView(inspect);
   build=btn("BUILD APK");build.setEnabled(false);build.setOnClickListener(v->requestRemoteBuild());r.addView(build);
   r.addView(txt("PROJECT",12,GOLD,true));projects=panel();projects.addView(txt("No project imported yet",15,Color.LTGRAY,false));r.addView(projects);
@@ -36,29 +36,38 @@ public class MainActivity extends Activity {
   status.setText("Importing project...");build.setEnabled(false);inspect.setEnabled(false);
   new Thread(()->{try{
    File root=new File(getFilesDir(),"workspaces");if(!root.exists())root.mkdirs();
-   File dst=new File(root,"project_"+System.currentTimeMillis());dst.mkdirs();
-   unzip(uri,dst);File project=findProjectRoot(dst);
-   if(project==null)throw new IOException("No settings.gradle(.kts) or build.gradle(.kts) found");
+   File dst=new File(root,"project_"+System.currentTimeMillis());if(!dst.mkdirs())throw new IOException("Cannot create private workspace");
+   try{unzip(uri,dst);}catch(Exception e){deleteTree(dst);throw e;}File project=findProjectRoot(dst,0);
+   if(project==null){deleteTree(dst);throw new IOException("ZIP extracted, but no Android/Gradle project root was found");}
    active=project;getPreferences(0).edit().putString("active",active.getAbsolutePath()).apply();
    runOnUiThread(()->render("Imported and validated Android/Gradle workspace."));
   }catch(Exception e){runOnUiThread(()->{status.setText("Import failed");append("ERROR: "+e.getMessage());});}}).start();
  }
  private void unzip(Uri uri,File dst)throws Exception{
-  long total=0;byte[] buf=new byte[16384];
+  long total=0;int entries=0;byte[] buf=new byte[16384];
   try(ZipInputStream z=new ZipInputStream(new BufferedInputStream(getContentResolver().openInputStream(uri)))){
    ZipEntry e;while((e=z.getNextEntry())!=null){
-    String n=e.getName();if(n.contains("..")||n.startsWith("/")||n.startsWith("\\"))throw new IOException("Unsafe ZIP path blocked");
+    if(++entries>MAX_ZIP_ENTRIES)throw new IOException("ZIP contains too many entries");
+    String n=e.getName();if(n==null||n.trim().isEmpty())continue;if(n.contains("..")||n.startsWith("/")||n.startsWith("\\"))throw new IOException("Unsafe ZIP path blocked");
     File out=new File(dst,n);String base=dst.getCanonicalPath()+File.separator;if(!out.getCanonicalPath().startsWith(base))throw new IOException("ZIP traversal blocked");
     if(e.isDirectory()){out.mkdirs();continue;}File p=out.getParentFile();if(p!=null)p.mkdirs();
     try(OutputStream o=new BufferedOutputStream(new FileOutputStream(out))){int k;while((k=z.read(buf))>0){total+=k;if(total>MAX_UNPACKED)throw new IOException("Project exceeds 250 MB safety limit");o.write(buf,0,k);}}
    }
   }
  }
- private File findProjectRoot(File f){
-  if(new File(f,"settings.gradle.kts").exists()||new File(f,"settings.gradle").exists()||new File(f,"build.gradle.kts").exists()||new File(f,"build.gradle").exists())return f;
-  File[] a=f.listFiles(File::isDirectory);if(a!=null)for(File x:a){File r=findProjectRoot(x);if(r!=null)return r;}return null;
+ private File findProjectRoot(File f,int depth){
+  if(f==null||depth>MAX_PROJECT_DEPTH)return null;
+  boolean settings=new File(f,"settings.gradle.kts").isFile()||new File(f,"settings.gradle").isFile();
+  boolean topBuild=new File(f,"build.gradle.kts").isFile()||new File(f,"build.gradle").isFile();
+  boolean appBuild=new File(new File(f,"app"),"build.gradle.kts").isFile()||new File(new File(f,"app"),"build.gradle").isFile();
+  boolean manifest=new File(f,"app/src/main/AndroidManifest.xml").isFile();
+  if(settings||(topBuild&&(appBuild||manifest)))return f;
+  File[] a=f.listFiles(x->x.isDirectory()&&!x.getName().equals("__MACOSX")&&!x.getName().equals(".git")&&!x.getName().equals("build"));
+  if(a!=null){Arrays.sort(a,Comparator.comparing(File::getName));for(File x:a){File r=findProjectRoot(x,depth+1);if(r!=null)return r;}}return null;
  }
- private void restore(){String p=getPreferences(0).getString("active",null);if(p!=null){File f=new File(p);if(f.isDirectory()){active=f;render("Workspace restored.");}}}
+ private void deleteTree(File f){if(f==null)return;File[] a=f.listFiles();if(a!=null)for(File x:a)deleteTree(x);f.delete();}
+ private boolean activeValid(){return active!=null&&active.isDirectory()&&findProjectRoot(active,0)!=null;}
+ private void restore(){String p=getPreferences(0).getString("active",null);if(p!=null){File f=new File(p);if(f.isDirectory()&&findProjectRoot(f,0)!=null){active=f;render("Workspace restored.");}else getPreferences(0).edit().remove("active").apply();}}
  private void render(String message){
   status.setText("Workspace ready");projects.removeAllViews();projects.addView(txt(active.getName(),16,Color.WHITE,true));
   boolean gradle=new File(active,"settings.gradle.kts").exists()||new File(active,"settings.gradle").exists();
@@ -70,7 +79,7 @@ public class MainActivity extends Activity {
   int shown=0;for(File f:a){if(shown++>=40){box.addView(txt("...more files",12,Color.GRAY,false));break;}String pad="";for(int i=0;i<depth;i++)pad+="  ";box.addView(txt(pad+(f.isDirectory()?"[DIR] ":"[FILE] ")+f.getName(),12,f.isDirectory()?GOLD:Color.LTGRAY,false));if(f.isDirectory()&&depth<1)showFiles(f,box,depth+1);}
  }
  private void runLocalInspection(){
-  if(active==null){append("Inspection blocked: import a workspace first.");return;}
+  if(!activeValid()){status.setText("Import a valid project first");return;}
   final File workspace=active;
   try{
    String missionId=ContinuousEngine.get(this).submit("Inspect Android workspace locally","INSPECT_LOCAL",workspace.getAbsolutePath(),"local-inspect",ctx->{
@@ -83,7 +92,7 @@ public class MainActivity extends Activity {
   }catch(Exception e){status.setText("Inspection failed");append("ERROR: "+e.getMessage());}
  }
  private void requestRemoteBuild(){
-  if(active==null)return;
+  if(!activeValid()){status.setText("Import a valid project first");return;}
   final EditText input=new EditText(this);input.setHint("Fine-grained GitHub token");input.setSingleLine(true);
   new AlertDialog.Builder(this).setTitle("Secure remote build").setMessage("Enter a GitHub token with Contents read/write and Actions read/write access to diljotsinghdj-creator/Forgeos. ForgeOS uses it for this build only and does not save it.").setView(input).setNegativeButton("Cancel",null).setPositiveButton("BUILD",(d,w)->{
    String token=input.getText().toString().trim();if(token.length()<20){append("Build blocked: GitHub token missing or invalid.");return;}
