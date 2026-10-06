@@ -18,11 +18,26 @@ public final class GitHubBuildAdapter implements BuildAdapter {
   String path="build-requests/"+requestId+".zip";
   byte[] zip=zipWorkspace(workspace);
   if(zip.length>90L*1024*1024)throw new IOException("Compressed project exceeds 90 MB remote request limit");
+  ensureBuildRequestsBranch();
   String body="{\"message\":\"ForgeOS mission "+missionId+"\",\"content\":\""+Base64.encodeToString(zip,Base64.NO_WRAP)+"\",\"branch\":\"build-requests\"}";
   api("PUT","https://api.github.com/repos/diljotsinghdj-creator/Forgeos/contents/"+path,body);
   String dispatch="{\"ref\":\"main\",\"inputs\":{\"request_path\":\""+path+"\",\"request_id\":\""+requestId+"\"}}";
   api("POST","https://api.github.com/repos/diljotsinghdj-creator/Forgeos/actions/workflows/remote-project-build.yml/dispatches",dispatch);
   return new BuildResult(true,requestId,"Remote build submitted");
+ }
+ private void ensureBuildRequestsBranch()throws Exception{
+  String repo="https://api.github.com/repos/diljotsinghdj-creator/Forgeos";
+  try{api("GET",repo+"/git/ref/heads/build-requests",null);return;}catch(IOException e){
+   if(!String.valueOf(e.getMessage()).startsWith("GitHub HTTP 404:"))throw e;
+  }
+  String sha=new org.json.JSONObject(api("GET",repo+"/git/ref/heads/main",null)).getJSONObject("object").getString("sha");
+  org.json.JSONObject ref=new org.json.JSONObject();ref.put("ref","refs/heads/build-requests");ref.put("sha",sha);
+  try{api("POST",repo+"/git/refs",ref.toString());}
+  catch(IOException e){
+   if(!String.valueOf(e.getMessage()).startsWith("GitHub HTTP 422:"))throw e;
+   // A concurrent client may have created the branch after our 404; prove it exists rather than trusting any 422.
+   api("GET",repo+"/git/ref/heads/build-requests",null);
+  }
  }
  private byte[] zipWorkspace(File root)throws Exception{
   ByteArrayOutputStream b=new ByteArrayOutputStream();try(ZipOutputStream z=new ZipOutputStream(b)){zipDir(root,root,z);}return b.toByteArray();

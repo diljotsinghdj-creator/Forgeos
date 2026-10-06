@@ -83,10 +83,12 @@ public class MainActivity extends Activity {
   final File workspace=active;
   try{
    String missionId=ContinuousEngine.get(this).submit("Inspect Android workspace locally","INSPECT_LOCAL",workspace.getAbsolutePath(),"local-inspect",ctx->{
-    ctx.checkpoint("Running sovereign local inspection");
-    BuildAdapter.BuildResult result=new LocalInspectAdapter().submit(ctx.id,workspace);
-    if(!result.accepted)throw new IOException(result.message);
-    runOnUiThread(()->{status.setText("Sovereign inspection complete");append("Local proof: "+result.reference);});
+    try{
+     ctx.checkpoint("Running sovereign local inspection");
+     BuildAdapter.BuildResult result=new LocalInspectAdapter().submit(ctx.id,workspace);
+     if(!result.accepted)throw new IOException(result.message);
+     runOnUiThread(()->{status.setText("Sovereign inspection complete");append("Local proof: "+result.reference);});
+    }catch(Exception e){runOnUiThread(()->{status.setText("Inspection failed");append("ERROR: "+e.getMessage());});throw e;}
    });
    status.setText("Local inspection queued");append("Sovereign mission queued: "+missionId);
   }catch(Exception e){status.setText("Inspection failed");append("ERROR: "+e.getMessage());}
@@ -104,13 +106,15 @@ public class MainActivity extends Activity {
   try{
    ContinuousEngine engine=ContinuousEngine.get(this);
    String missionId=engine.submit("Build Android workspace","BUILD_ANDROID",workspace.getAbsolutePath(),"github-actions",ctx->{
-    ctx.checkpoint("Selecting execution adapter");
-    BuildAdapter adapter=new BuildAdapterRegistry().add(new GitHubBuildAdapter(token)).firstAvailable();
-    if(adapter==null){ctx.block("No build adapter available");throw new IOException("No build adapter available");}
-    ctx.checkpoint("Submitting via "+adapter.id());
-    BuildAdapter.BuildResult result=adapter.submit(ctx.id,workspace);
-    if(!result.accepted)throw new IOException(result.message);
-    runOnUiThread(()->{status.setText("Build mission submitted");append("Mission "+ctx.id+" -> "+result.reference+" via "+adapter.id());build.setEnabled(true);});
+    try{
+     ctx.checkpoint("Selecting execution adapter");
+     BuildAdapter adapter=new BuildAdapterRegistry().add(new GitHubBuildAdapter(token)).firstAvailable();
+     if(adapter==null){ctx.block("No build adapter available");throw new IOException("No build adapter available");}
+     ctx.checkpoint("Submitting via "+adapter.id());
+     BuildAdapter.BuildResult result=adapter.submit(ctx.id,workspace);
+     if(!result.accepted)throw new IOException(result.message);
+     runOnUiThread(()->{status.setText("Build mission submitted");append("Mission "+ctx.id+" -> "+result.reference+" via "+adapter.id());build.setEnabled(true);});
+    }catch(Exception e){runOnUiThread(()->{status.setText("Build mission failed");append("ERROR: "+e.getMessage());build.setEnabled(true);});throw e;}
    });
    runOnUiThread(()->{status.setText("Mission queued");append("Durable mission queued: "+missionId);});
   }catch(Exception e){runOnUiThread(()->{status.setText("Build mission failed");append("ERROR: "+e.getMessage());build.setEnabled(true);});}
