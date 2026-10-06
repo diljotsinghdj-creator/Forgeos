@@ -16,6 +16,8 @@ public final class BuildReadinessAnalyzer {
   check(checks,"gradle_root",settings!=null||top!=null,"Gradle root markers");
   File app=new File(root,"app"), appBuild=first(app,"build.gradle.kts","build.gradle");
   check(checks,"app_module",appBuild!=null,"Android app module build file");
+  boolean sourceRoot=new File(app,"src/main").isDirectory();
+  check(checks,"source_root",sourceRoot,"app/src/main source root");
   File manifest=new File(app,"src/main/AndroidManifest.xml");
   check(checks,"manifest",manifest.isFile(),"AndroidManifest.xml");
   if(manifest.isFile()){
@@ -33,7 +35,9 @@ public final class BuildReadinessAnalyzer {
    if(min!=null)out.put("minSdk",min);
    if(target!=null)out.put("targetSdk",target);
    if(compile!=null&&target!=null&&target>compile)warnings.put("targetSdk exceeds compileSdk");
-   if(!g.contains("com.android.application")&&!g.contains("com.android.library"))warnings.put("Android Gradle plugin not detected in app module");
+   boolean androidPlugin=g.contains("com.android.application")||g.contains("com.android.library");
+   check(checks,"android_plugin",androidPlugin,"Android Gradle plugin detected");
+   if(!androidPlugin)warnings.put("Android Gradle plugin not detected in app module");
   }
   File wrapper=new File(root,"gradle/wrapper/gradle-wrapper.properties");
   if(!wrapper.isFile())warnings.put("Gradle wrapper metadata missing; reproducible build may depend on external Gradle");
