@@ -29,8 +29,9 @@ public final class ContinuousEngine {
   if(INSTANCE==null)synchronized(ContinuousEngine.class){if(INSTANCE==null)INSTANCE=new ContinuousEngine(c);}
   return INSTANCE;
  }
- public String submit(String objective, MissionTask task)throws Exception{
-  final String id=store.create(objective);
+ public String submit(String objective, MissionTask task)throws Exception{return submit(objective,"GENERIC",null,null,task);}
+ public String submit(String objective,String commandType,String workspacePath,String adapterId,MissionTask task)throws Exception{
+  final String id=store.create(objective,commandType,workspacePath,adapterId);
   executor.submit(()->run(id,task));
   return id;
  }
