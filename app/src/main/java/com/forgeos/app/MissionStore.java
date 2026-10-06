@@ -4,6 +4,7 @@ import android.content.Context;
 import org.json.JSONObject;
 import java.io.*;
 import java.util.UUID;
+import java.security.MessageDigest;
 
 /** Durable on-device mission state. No network or GitHub dependency. */
 public final class MissionStore {
@@ -23,7 +24,13 @@ public final class MissionStore {
  public synchronized JSONObject read(String id)throws Exception{
   File f=file(id); if(!f.isFile())throw new FileNotFoundException(id);
   StringBuilder s=new StringBuilder(); try(BufferedReader r=new BufferedReader(new FileReader(f))){String x;while((x=r.readLine())!=null)s.append(x);}
-  return new JSONObject(s.toString());
+  JSONObject j=new JSONObject(s.toString());
+  String stored=j.optString("integrity","");
+  if(stored.length()==0)throw new IOException("Mission integrity metadata missing");
+  j.remove("integrity");
+  String actual=sha256(j.toString().getBytes("UTF-8"));
+  if(!stored.equals(actual))throw new IOException("Mission integrity verification failed");
+  j.put("integrity",stored); return j;
  }
  public synchronized java.util.List<JSONObject> recoverable()throws Exception{
   java.util.List<JSONObject> out=new java.util.ArrayList<>(); File[] fs=dir.listFiles();
@@ -42,7 +49,9 @@ public final class MissionStore {
   j.put("attempt",j.optInt("attempt",0)+1);j.put("updatedAt",System.currentTimeMillis());write(id,j);
  }
  private File file(String id){return new File(dir,id.replaceAll("[^A-Za-z0-9._-]","_")+".json");}
+ private String sha256(byte[] b)throws Exception{byte[] h=MessageDigest.getInstance("SHA-256").digest(b);StringBuilder s=new StringBuilder();for(byte x:h)s.append(String.format(java.util.Locale.US,"%02x",x&255));return s.toString();}
  private void write(String id,JSONObject j)throws Exception{
+  j.remove("integrity"); j.put("integrity",sha256(j.toString().getBytes("UTF-8")));
   File f=file(id),tmp=new File(f.getPath()+".tmp");
   try(FileOutputStream o=new FileOutputStream(tmp)){o.write(j.toString().getBytes("UTF-8"));o.getFD().sync();}
   if(f.exists()&&!f.delete())throw new IOException("Cannot replace mission");if(!tmp.renameTo(f))throw new IOException("Cannot commit mission checkpoint");
