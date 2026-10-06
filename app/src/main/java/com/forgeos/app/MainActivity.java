@@ -80,7 +80,7 @@ public class MainActivity extends Activity {
   final File workspace=active;
   try{
    ContinuousEngine engine=ContinuousEngine.get(this);
-   String missionId=engine.submit("Build Android workspace",ctx->{
+   String missionId=engine.submit("Build Android workspace","BUILD_ANDROID",workspace.getAbsolutePath(),"github-actions",ctx->{
     ctx.checkpoint("Selecting execution adapter");
     BuildAdapter adapter=new BuildAdapterRegistry().add(new GitHubBuildAdapter(token)).firstAvailable();
     if(adapter==null){ctx.block("No build adapter available");throw new IOException("No build adapter available");}
