@@ -1,4 +1,4 @@
-# CreatorForge v1.0 RC19 (Android controller)
+# CreatorForge v1.0 RC20 (Android controller)
 
 Your phone runs the studio. The heavy AI generation runs on your self-hosted worker
 (`../worker`).
@@ -23,6 +23,11 @@ Your phone runs the studio. The heavy AI generation runs on your self-hosted wor
   uses the same description.
 - **From my script**: on Generate, switch to *From my script* and paste your narration. It's
   used word for word, and CreatorForge builds the visuals, captions, music and edit around it.
+- **Realistic AI video: Off / Hook only / Every scene**. *Hook only* animates just the opening
+  shot with AI video, which is the cheap way to get scroll-stopping motion.
+- **Batch**: put a line with `---` between ideas or scripts and tap **GENERATE N VIDEOS** to queue
+  them all with the same settings. **Library → SAVE ALL TO GALLERY** downloads every finished
+  video before you shut the GPU down.
 - **Edit timeline**: on a finished or in-review video, reorder or remove scenes, change scene
   lengths and transitions, and edit the hook, callouts and call to action. Then approve to
   re-render. Only the timing-dependent steps are redone.

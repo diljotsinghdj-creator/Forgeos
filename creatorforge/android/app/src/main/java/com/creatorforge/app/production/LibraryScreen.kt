@@ -106,13 +106,29 @@ fun LibraryScreen() {
             Column {
                 Text("LIBRARY", color = Gold, fontSize = 30.sp)
                 Text("Videos, voices, assets and characters on your worker", color = Color.LightGray)
-                message?.let { Text(it, color = if (it.startsWith("Saved")) Gold else Danger, fontSize = 12.sp) }
+                message?.let { Text(it, color = if (it.startsWith("Sav")) Gold else Danger, fontSize = 12.sp) }
                 if (busy == "upload") LinearProgressIndicator(Modifier.fillMaxWidth())
             }
         }
 
         // ---- videos ----
-        item { Section("VIDEOS") }
+        item {
+            Row {
+                Section("VIDEOS")
+                if (videos.isNotEmpty()) TextButton({
+                    launchOp("saveall") {
+                        val dir = context.getExternalFilesDir("Movies") ?: context.filesDir
+                        videos.forEachIndexed { i, v ->
+                            message = "Saving ${i + 1} of ${videos.size}…"
+                            val dest = File(dir, "CreatorForge_${v.id}.mp4")
+                            if (!(dest.isFile && isMp4(dest))) client.fetch(v.videoPath, dest, ::isMp4)
+                            saveToGallery(context, dest)
+                        }
+                        message = "Saved all ${videos.size} videos to Movies/CreatorForge"
+                    }
+                }, enabled = busy == null) { Text(if (busy == "saveall") "SAVING…" else "SAVE ALL TO GALLERY") }
+            }
+        }
         if (videos.isEmpty()) item { Text("No finished videos yet.", color = Color.Gray) }
         items(videos, key = { "v" + it.id }) { v ->
             Card(Modifier.fillMaxWidth()) {

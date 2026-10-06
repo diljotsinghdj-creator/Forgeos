@@ -211,13 +211,18 @@ class Pipeline:
             self._stage(job, "clips", "SKIPPED")
             return
         video = providers.build_video(self.cfg)
-        job["providers"]["clips"] = video.id
+        chosen = self._mark_video_scenes(job)
+        job["providers"]["clips"] = f"{video.id} ({len(chosen)}/{len(job['scenes'])} scenes)"
         gen, _ = ASPECTS[spec.aspect]
         jdir = self.store.dir(job["id"])
         scenes, shots = job["scenes"], job["plan"]["scenes"]
         for sc, shot, slot in zip(scenes, shots, self._timings(job)):
-            self._stage(job, "clips", "RUNNING", done=sum(1 for s in scenes if s.get("clip_state") == "READY"),
-                        total=len(scenes))
+            if not sc.get("ai_video"):
+                if sc.get("clip_source") != "asset":
+                    sc["clip_state"] = "SKIPPED"
+                continue
+            self._stage(job, "clips", "RUNNING", done=sum(1 for s in scenes if s.get("ai_video") and s.get("clip_state") == "READY"),
+                        total=len(chosen))
             if sc.get("clip_state") == "READY" and sc.get("clip") and (jdir / sc["clip"]).is_file():
                 continue
             if cancel.is_set():
@@ -241,6 +246,17 @@ class Pipeline:
                 self.store.save(job)
                 raise StageFailed(f"scene {sc['index'] + 1} video clip failed - {e}") from e
             self.store.save(job)
+
+    def _mark_video_scenes(self, job: dict) -> list[int]:
+        """Decides once which scenes get AI video (saved per scene, so timeline edits keep the choice)."""
+        scenes = job["scenes"]
+        if not any("ai_video" in sc for sc in scenes):
+            sel = self._spec(job).ai_video_scenes
+            wanted = (set(range(len(scenes))) if sel == "all" else {0} if sel == "hook"
+                      else {n - 1 for n in sel if 1 <= n <= len(scenes)})
+            for i, sc in enumerate(scenes):
+                sc["ai_video"] = i in wanted
+        return [i for i, sc in enumerate(scenes) if sc.get("ai_video")]
 
     def _narration(self, job: dict, cancel) -> None:
         spec = self._spec(job)
@@ -361,7 +377,7 @@ class Pipeline:
 
         def clip_for(sc: dict) -> Path | None:
             # Imported clips are always used; generated clips only in AI video mode.
-            if sc.get("clip") and (use_video or sc.get("clip_source") == "asset"):
+            if sc.get("clip") and ((use_video and sc.get("ai_video", True)) or sc.get("clip_source") == "asset"):
                 return jdir / sc["clip"]
             return None
 
@@ -371,8 +387,8 @@ class Pipeline:
             if c.video is not None:
                 c.video_duration = ff.duration(c.video)
 
-        if use_video and any(c.video is None for c in clips):
-            raise StageFailed("AI video mode but a scene has no clip")
+        if use_video and any(c.video is None and sc.get("ai_video", True) for c, sc in zip(clips, job["scenes"])):
+            raise StageFailed("AI video mode but a chosen scene has no clip")
 
         plan = job["plan"]
         overlays, start = [], 0.0

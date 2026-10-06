@@ -180,3 +180,27 @@ def test_requests_mark_activity_for_idle_guard(cfg):
         assert not marker.exists()  # health checks are not user activity
         c.get("/v1/productions")
         assert marker.exists()
+
+
+def test_ai_video_on_hook_only(cfg):
+    cfg.video_provider = "mock"
+    with TestClient(create_app(cfg)) as c:
+        assert c.post("/v1/productions", json={"idea": "x" * 10, "motion": "ai_video", "ai_video_scenes": "every"}).status_code == 422
+        jid = c.post("/v1/productions", json={"idea": "Ocean facts for kids", "duration_s": 20, "motion": "ai_video",
+                                              "ai_video_scenes": "hook"}).json()["id"]
+        job = settle(c, jid)
+        assert job["status"] == "READY", job
+        assert [s["ai_video"] for s in job["scenes"]] == [True] + [False] * (len(job["scenes"]) - 1)
+        assert job["scenes"][0]["clip_state"] == "READY"
+        assert all(s["clip_state"] == "SKIPPED" for s in job["scenes"][1:])
+        assert job["providers"]["clips"].endswith(f"(1/{len(job['scenes'])} scenes)")
+        # moving the hook scene later keeps its AI clip with it
+        n = len(job["scenes"])
+        body = {"scenes": [{"index": i} for i in list(range(1, n)) + [0]]}
+        c.patch(f"/v1/productions/{jid}/timeline", json=body)
+        c.post(f"/v1/productions/{jid}/approve")
+        job = settle(c, jid)
+        assert job["status"] == "READY" and job["scenes"][-1]["ai_video"] is True
+        picked = c.post("/v1/productions", json={"idea": "Ocean facts for kids", "duration_s": 20, "motion": "ai_video",
+                                                 "ai_video_scenes": [2]}).json()["id"]
+        assert [s["ai_video"] for s in settle(c, picked)["scenes"]][:2] == [False, True]

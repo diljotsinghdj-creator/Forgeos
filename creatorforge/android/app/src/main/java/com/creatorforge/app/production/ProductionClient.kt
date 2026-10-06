@@ -42,7 +42,7 @@ data class ProductionRequest(
     val pacing: String, val style: String, val mood: String, val camera: String,
     val characters: List<Pair<String, String>>, val music: Boolean, val captions: Boolean,
     val aiVideo: Boolean, val review: Boolean, val autoEdit: Boolean, val characterIds: List<String>,
-    val script: String = "", val musicAssetId: String = "", val sfx: Boolean = true
+    val script: String = "", val musicAssetId: String = "", val sfx: Boolean = true, val aiVideoScenes: String = "all"
 )
 
 data class LibraryVoice(val id: String, val name: String, val provider: String, val voice: String, val speed: Double, val builtin: Boolean)
@@ -106,7 +106,7 @@ class ProductionClient(baseUrl: String) {
         val body = JSONObject().put("idea", r.idea).put("duration_s", r.durationS).put("aspect", r.aspect)
             .put("template", r.template).put("voice", r.voice).put("pacing", r.pacing).put("style", r.style)
             .put("mood", r.mood).put("camera", r.camera).put("music", r.music).put("captions", r.captions)
-            .put("motion", if (r.aiVideo) "ai_video" else "stills").put("review", r.review)
+            .put("motion", if (r.aiVideo) "ai_video" else "stills").put("review", r.review).put("ai_video_scenes", r.aiVideoScenes)
             .put("auto_edit", r.autoEdit).put("character_ids", JSONArray(r.characterIds))
             .put("script", r.script).put("music_asset_id", r.musicAssetId).put("sfx", r.sfx)
             .put("characters", JSONArray().apply { r.characters.forEach { (n, d) -> put(JSONObject().put("name", n).put("description", d)) } })

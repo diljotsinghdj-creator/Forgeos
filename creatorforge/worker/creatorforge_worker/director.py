@@ -41,6 +41,7 @@ class ProductionSpec:
     captions: bool = True
     motion: str = "stills"  # "stills" (camera motion on images) | "ai_video" (image-to-video clips)
     review: bool = False  # pause after scene visuals so the storyboard can be edited/approved
+    ai_video_scenes: object = "all"  # with motion=ai_video: "all", "hook" (first scene) or a list of scene numbers (1-based)
     auto_edit: bool = True  # let the Director choose transitions, caption emphasis and dramatic holds
     character_ids: list[str] = field(default_factory=list)  # resolved from the Character Library at submit
     music_asset_id: str = ""  # use a track from the Asset Library as the score
@@ -66,6 +67,7 @@ class ProductionSpec:
             captions=bool(d.get("captions", True)),
             motion=str(d.get("motion", "") or "stills"),
             review=bool(d.get("review", False)),
+            ai_video_scenes=d.get("ai_video_scenes", "all") or "all",
             auto_edit=bool(d.get("auto_edit", True)),
             character_ids=[str(x) for x in d.get("character_ids") or []][:10],
             script=str(d.get("script", "") or "").strip(),
@@ -102,6 +104,11 @@ class ProductionSpec:
             raise ValueError("pacing must be slow, medium or fast")
         if self.motion not in ("stills", "ai_video"):
             raise ValueError("motion must be stills or ai_video")
+        if isinstance(self.ai_video_scenes, list):
+            if not self.ai_video_scenes or not all(isinstance(n, int) and n >= 1 for n in self.ai_video_scenes):
+                raise ValueError("ai_video_scenes must list scene numbers starting at 1")
+        elif self.ai_video_scenes not in ("all", "hook"):
+            raise ValueError("ai_video_scenes must be 'all', 'hook' or a list of scene numbers")
 
     def to_dict(self) -> dict:
         return asdict(self)

@@ -66,7 +66,8 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
     var mood by remember { mutableStateOf(prefs.getString("mood", "").orEmpty()) }
     var camera by remember { mutableStateOf(prefs.getString("camera", "").orEmpty()) }
     var characters by remember { mutableStateOf(prefs.getString("characters", "").orEmpty()) }
-    var aiVideo by remember { mutableStateOf(prefs.getBoolean("ai_video", false)) }
+    var videoScope by remember { mutableStateOf(prefs.getString("video_scope", null) ?: if (prefs.getBoolean("ai_video", false)) "all" else "off") }
+    val aiVideo = videoScope != "off"
     var review by remember { mutableStateOf(prefs.getBoolean("review", false)) }
     var editing by remember { mutableStateOf<SceneView?>(null) }
     var autoEdit by remember { mutableStateOf(prefs.getBoolean("auto_edit", true)) }
@@ -261,7 +262,16 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                 }
                 Label("PACING")
                 ChipRow(listOf("slow" to "Slow", "medium" to "Medium", "fast" to "Fast"), pacing) { pacing = it }
-                Row { Switch(aiVideo, { aiVideo = it }, enabled = caps?.aiVideo == true || aiVideo); Text(if (caps?.aiVideo == false) " AI video clips (no video model on worker)" else " AI video clips - realistic motion (slower)", Modifier.padding(top = 12.dp)) }
+                Label("REALISTIC AI VIDEO")
+                if (caps?.aiVideo == false) Text("No video model on this worker - scenes use AI images with camera motion.", color = Color.Gray, fontSize = 12.sp)
+                else {
+                    ChipRow(listOf("off" to "Off", "hook" to "Hook only (cheap)", "all" to "Every scene"), videoScope) { videoScope = it }
+                    Text(when (videoScope) {
+                        "hook" -> "The opening shot is animated with AI video; the rest use AI images + camera motion."
+                        "all" -> "Every scene animated - most realistic, several minutes of GPU per scene."
+                        else -> "AI images with camera motion - fastest and cheapest."
+                    }, color = Color.Gray, fontSize = 12.sp)
+                }
                 Row { Switch(autoEdit, { autoEdit = it }); Text(" Auto Edit (AI picks transitions, emphasis, pauses)", Modifier.padding(top = 12.dp)) }
                 Row { Switch(review, { review = it }); Text(" Review storyboard before render", Modifier.padding(top = 12.dp)) }
                 val tracks = assets.filter { it.kind == "music" }
@@ -293,16 +303,37 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                         .putString("template", template).putString("voice", voice).putString("pacing", pacing)
                         .putBoolean("music", music).putBoolean("captions", captions).putString("style", style)
                         .putString("mood", mood).putString("camera", camera).putString("characters", characters)
-                        .putBoolean("ai_video", aiVideo).putBoolean("review", review)
+                        .putString("video_scope", videoScope).putBoolean("review", review)
                         .putBoolean("auto_edit", autoEdit).putStringSet("character_ids", picked)
                         .putBoolean("script_mode", scriptMode).putBoolean("sfx", sfx).putString("music_asset", musicAsset).apply()
                     val chars = characters.lines().mapNotNull { l ->
                         val i = l.indexOf(':'); if (i > 0) l.substring(0, i).trim() to l.substring(i + 1).trim() else null
                     }.filter { it.first.isNotBlank() && it.second.isNotBlank() }
-                    act { client.create(ProductionRequest(if (scriptMode) "" else idea.trim(), duration, aspect, template, voice, pacing,
+                    fun request(text: String) = ProductionRequest(if (scriptMode) "" else text, duration, aspect, template, voice, pacing,
                         style.trim(), mood.trim(), camera.trim(), chars, music, captions, aiVideo, review, autoEdit, picked.toList(),
-                        script = if (scriptMode) idea.trim() else "", musicAssetId = if (music) musicAsset else "", sfx = sfx)) }
-                }) { Text(if (busy) "STARTING…" else "GENERATE VIDEO", fontSize = 18.sp) }
+                        script = if (scriptMode) text else "", musicAssetId = if (music) musicAsset else "", sfx = sfx,
+                        aiVideoScenes = if (videoScope == "hook") "hook" else "all")
+                    val pieces = batchPieces(idea)
+                    if (pieces.size <= 1) act { client.create(request(idea.trim())) }
+                    else {
+                        busy = true
+                        scope.launch {
+                            var ok = 0
+                            pieces.forEachIndexed { i, text ->
+                                notice = "Queuing ${i + 1} of ${pieces.size}…"
+                                runCatching { client.create(request(text)) }.onSuccess { ok++ }.onFailure { error = "Video ${i + 1}: ${it.message}" }
+                            }
+                            notice = "Queued $ok of ${pieces.size} videos. The worker makes them one after another - leave the pod running and check Library."
+                            runCatching { client.list() }.onSuccess { recent = it }
+                            busy = false
+                        }
+                    }
+                }) {
+                    val n = batchPieces(idea).size
+                    Text(if (busy) "STARTING…" else if (n > 1) "GENERATE $n VIDEOS" else "GENERATE VIDEO", fontSize = 18.sp)
+                }
+                Text("Batch: put a line with --- between ideas or scripts to queue many videos with the same settings.",
+                    color = Color.Gray, fontSize = 12.sp)
             }
             if (recent.isNotEmpty()) {
                 item { Label("RECENT PRODUCTIONS") }
@@ -317,6 +348,10 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
         }
     }
 }
+
+/** Splits a batch on lines containing only dashes; every piece becomes its own production. */
+private fun batchPieces(text: String): List<String> =
+    text.split(Regex("\\n\\s*-{3,}\\s*(\\n|$)")).map { it.trim() }.filter { it.length >= 5 }
 
 @Composable
 private fun Label(t: String) { Spacer(Modifier.height(8.dp)); Text(t, color = Gold, fontSize = 12.sp) }
