@@ -32,6 +32,9 @@ public final class LocalInspectAdapter implements BuildAdapter {
  private void walk(File root,File f,JSONArray out,long[] stats)throws Exception{
   File[] list=f.listFiles();if(list==null)return;Arrays.sort(list,Comparator.comparing(File::getName));
   for(File x:list){
+   String rootPath=root.getCanonicalPath()+File.separator;
+   String canonical=x.getCanonicalPath();
+   if(!canonical.startsWith(rootPath))throw new IOException("Inspection blocked: path escapes workspace");
    String rel=root.toURI().relativize(x.toURI()).getPath();
    if(rel.startsWith(".forgeos/")||rel.startsWith(".git/")||rel.contains("/build/")||rel.startsWith("build/"))continue;
    if(x.isDirectory())walk(root,x,out,stats);else{
