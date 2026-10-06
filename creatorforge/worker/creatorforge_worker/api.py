@@ -16,7 +16,8 @@ from fastapi.responses import FileResponse, JSONResponse, Response
 
 from . import __version__, providers
 from .config import Config
-from .director import ProductionSpec
+from .director import Character, ProductionSpec
+from .library import CharacterStore
 from .media import verify
 from .media.ff import MediaError
 from .pipeline import Pipeline
@@ -31,6 +32,7 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
     store = JobStore(cfg.jobs_dir)
     pipeline = Pipeline(cfg, store)
     runner = Runner(pipeline, store)
+    characters = CharacterStore(cfg.data_dir / "library" / "characters.json")
 
     @asynccontextmanager
     async def lifespan(_app: FastAPI):
@@ -94,6 +96,11 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
     async def create_production(request: Request) -> dict:
         try:
             spec = ProductionSpec.from_dict(await request.json())
+            # Snapshot library characters so later library edits never change a production mid-flight.
+            known = {c.name.lower() for c in spec.characters}
+            for c in characters.get_many(spec.character_ids):
+                if c["name"].lower() not in known:
+                    spec.characters.append(Character(c["name"], c["description"]))
         except (ValueError, TypeError) as e:
             raise HTTPException(422, str(e)) from None
         job = store.create(spec.to_dict())
@@ -156,6 +163,49 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
         if not 0 <= index < len(job["scenes"]) or not job["scenes"][index].get("image"):
             raise HTTPException(404, "scene image not ready")
         return FileResponse(store.dir(job_id) / job["scenes"][index]["image"], media_type="image/png")
+
+    # ---- libraries -----------------------------------------------------------------------
+    @app.get("/v1/library/characters", dependencies=[Depends(auth)])
+    def list_characters() -> list[dict]:
+        return characters.list()
+
+    @app.post("/v1/library/characters", status_code=201, dependencies=[Depends(auth)])
+    async def create_character(request: Request) -> dict:
+        try:
+            return characters.create(await request.json())
+        except ValueError as e:
+            raise HTTPException(422, str(e)) from None
+
+    @app.put("/v1/library/characters/{cid}", dependencies=[Depends(auth)])
+    async def update_character(cid: str, request: Request) -> dict:
+        try:
+            return characters.update(cid, await request.json())
+        except ValueError as e:
+            raise HTTPException(422, str(e)) from None
+        except KeyError:
+            raise HTTPException(404, "character not found") from None
+
+    @app.delete("/v1/library/characters/{cid}", status_code=204, dependencies=[Depends(auth)])
+    def delete_character(cid: str) -> Response:
+        try:
+            characters.delete(cid)
+        except KeyError:
+            raise HTTPException(404, "character not found") from None
+        return Response(status_code=204)
+
+    @app.get("/v1/library/videos", dependencies=[Depends(auth)])
+    def list_videos() -> list[dict]:
+        """Media Library: every finished, verified production."""
+        out = []
+        for j in store.all():
+            if j["status"] == "READY" and j.get("result"):
+                v = j["result"]["verification"]
+                out.append({"id": j["id"], "title": j["result"].get("title") or j["spec"]["idea"][:60],
+                            "aspect": j["spec"]["aspect"], "template": j["spec"]["template"],
+                            "duration_s": v["duration_s"], "bytes": v["bytes"], "created_at": j["created_at"],
+                            "video_url": f"/v1/productions/{j['id']}/video",
+                            "thumbnail_url": f"/v1/productions/{j['id']}/scenes/0/image"})
+        return out
 
     # ---- legacy single-asset endpoints used by CreatorForge RC10 ---------------------------
     @app.post("/v1/images/generate", dependencies=[Depends(auth)])

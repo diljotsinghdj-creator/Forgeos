@@ -11,7 +11,13 @@ from pathlib import Path
 from . import ff
 
 FPS = 30
-TRANSITION_S = 0.5
+TRANSITION_S = 0.5  # longest transition; also the tail after the last scene
+# Editorial transition vocabulary used by templates and Auto Edit -> (FFmpeg xfade, seconds).
+TRANSITIONS = {
+    "cut": ("fade", 0.08), "fade": ("fade", 0.5), "dissolve": ("dissolve", 0.5), "dip": ("fadeblack", 0.5),
+    "flash": ("fadewhite", 0.3), "slide": ("slideleft", 0.4), "wipe": ("wipeleft", 0.4),
+    "whip": ("smoothleft", 0.3), "zoom": ("circleopen", 0.45), "reveal": ("vertopen", 0.45),
+}
 SAMPLE_RATE = 48000
 AUDIO_EXT = (".mp3", ".wav", ".m4a", ".aac", ".ogg", ".flac")
 
@@ -92,11 +98,14 @@ def _motion(camera: str, frames: int) -> str:
 def render_video(clips: list[Clip], audio: Path, captions: Path | None, width: int, height: int,
                  out: Path, work: Path, cancel: threading.Event) -> float:
     """Returns the expected duration of the rendered file."""
-    t = TRANSITION_S if len(clips) > 1 else 0.0
+    tail = TRANSITION_S if len(clips) > 1 else 0.0
+    trans = [TRANSITIONS.get(c.transition, TRANSITIONS["fade"]) for c in clips]
     args: list[str] = []
     graph: list[str] = []
     for i, c in enumerate(clips):
-        frames = max(2, round((c.duration + t) * FPS))
+        # Each clip overlaps the next by the incoming transition's length (the last one by the tail).
+        overlap = trans[i + 1][1] if i + 1 < len(clips) else tail
+        frames = max(2, round((c.duration + overlap) * FPS))
         if c.video is not None:
             # Fit the clip to the slot: cover-crop, hold the last frame if the model's clip is shorter.
             length = frames / FPS
@@ -114,9 +123,10 @@ def render_video(clips: list[Clip], audio: Path, captions: Path | None, width: i
     offset = 0.0
     for i in range(1, len(clips)):
         offset += clips[i - 1].duration
-        graph.append(f"[{last}][v{i}]xfade=transition={clips[i].transition}:duration={t}:offset={offset:.3f}[x{i}]")
+        name, dur = trans[i]
+        graph.append(f"[{last}][v{i}]xfade=transition={name}:duration={dur}:offset={offset:.3f}[x{i}]")
         last = f"x{i}"
-    total = sum(c.duration for c in clips) + t
+    total = sum(c.duration for c in clips) + tail
     if captions is not None:
         graph.append(f"[{last}]subtitles=filename={captions.name}[vout]")
         last = "vout"

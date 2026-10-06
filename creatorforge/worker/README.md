@@ -56,7 +56,7 @@ licensed for commercial use.
 |---|---|---|
 | GET | `/health` | Readiness, plus the status of each provider |
 | GET | `/v1/capabilities` | Templates, aspect ratios, pacing options, voice profiles |
-| POST | `/v1/productions` | **One-button production.** Body: `{"idea", "duration_s", "template", "aspect", "voice", "pacing", "style", "mood", "camera", "characters":[{"name","description"}], "music", "captions", "motion": "stills"\|"ai_video", "review": bool}`. Returns `202` with the production |
+| POST | `/v1/productions` | **One-button production.** Body: `{"idea", "duration_s", "template", "aspect", "voice", "pacing", "style", "mood", "camera", "characters":[{"name","description"}], "music", "captions", "motion": "stills"\|"ai_video", "review": bool, "auto_edit": bool, "character_ids": [..]}`. Returns `202` with the production |
 | GET | `/v1/productions` / `/{id}` | Status, stages, per-scene states, progress, errors, providers used |
 | DELETE | `/v1/productions/{id}` | Cancel. Finished assets are kept |
 | POST | `/v1/productions/{id}/retry[?from_stage=images]` | Resume from the failed stage, or redo from a chosen stage |
@@ -65,7 +65,15 @@ licensed for commercial use.
 | POST | `/v1/productions/{id}/approve` | Approve the storyboard (or your edits) and render |
 | GET | `/v1/productions/{id}/video` | The verified MP4. Only available once the production is `READY` |
 | GET | `/v1/productions/{id}/scenes/{n}/image` | Storyboard image for scene `n` |
+| GET/POST | `/v1/library/characters` | Character Library. Saved characters are injected into the prompt of every scene that mentions them by name. Productions reference them with `character_ids`, and each production keeps a snapshot of the character as it was at submit time |
+| PUT/DELETE | `/v1/library/characters/{id}` | Edit or remove a saved character |
+| GET | `/v1/library/videos` | Media Library: every finished, verified video with its thumbnail URL |
 | POST | `/v1/images/generate`, `/v1/voice/generate` | Single-asset endpoints used by the RC10 app |
+
+**Auto Edit** (`auto_edit`, on by default): the AI Director picks the transition into each scene
+(`cut, fade, dissolve, dip, flash, slide, wipe, whip, zoom, reveal`), the key words that are
+highlighted in the captions, and short dramatic pauses. Each production records the edit
+decisions it used in `edit`. With Auto Edit off, the template's transition rhythm is used.
 
 Templates: `shorts_cinematic`, `reels_punchy`, `square_social`, `explainer`, `youtube_longform`.
 

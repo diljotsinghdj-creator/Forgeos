@@ -246,7 +246,9 @@ class Pipeline:
             self.store.save(job)
 
     def _timings(self, job: dict) -> list[float]:
-        return [max(MIN_SCENE_S, sc["narration_s"] + SCENE_GAP_S) for sc in job["scenes"]]
+        auto = self._spec(job).auto_edit
+        return [max(MIN_SCENE_S, sc["narration_s"] + SCENE_GAP_S + (shot.get("hold", 0.0) if auto else 0.0))
+                for sc, shot in zip(job["scenes"], job["plan"]["scenes"])]
 
     def _captions(self, job: dict, cancel) -> None:
         spec = self._spec(job)
@@ -318,12 +320,19 @@ class Pipeline:
             if plan.get("cta"):
                 overlays.append(cap.Overlay(max(0.0, total - 3.0), total, plan["cta"], "CTA"))
             ass = work / "captions.ass"
-            cap.write_ass(ass, w, h, t.caption_scale, t.caption_position, cues, overlays)
+            emphasis = {wd for s in shots for wd in s.get("emphasis", [])} if spec.auto_edit else set()
+            cap.write_ass(ass, w, h, t.caption_scale, t.caption_position, cues, overlays, emphasis)
 
         use_video = spec.motion == "ai_video"
-        clips = [render.Clip(jdir / sc["image"], d, shot.get("camera", ""), t.transitions[i % len(t.transitions)],
+        def transition(i: int, shot: dict) -> str:
+            chosen = shot.get("transition", "")
+            return chosen if spec.auto_edit and chosen in render.TRANSITIONS else t.transitions[i % len(t.transitions)]
+
+        clips = [render.Clip(jdir / sc["image"], d, shot.get("camera", ""), transition(i, shot),
                              jdir / sc["clip"] if use_video and sc.get("clip") else None)
                  for i, (sc, shot, d) in enumerate(zip(job["scenes"], shots, timings))]
+        job["edit"] = {"auto_edit": spec.auto_edit, "transitions": [c.transition for c in clips[1:]],
+                       "durations": [round(d, 2) for d in timings]}
         if use_video and any(c.video is None for c in clips):
             raise StageFailed("AI video mode but a scene has no clip")
         out = jdir / "work" / "render.mp4"

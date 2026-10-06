@@ -32,6 +32,9 @@ class MockLLM:
                 "camera": "slow push in",
                 "mood": "cinematic",
                 "overlay": "Key point" if i == 1 else "",
+                "transition": ["whip", "flash", "dissolve", "zoom"][i % 4],
+                "emphasis": ["narration"],
+                "hold": 0.5 if i == 0 else 0,
             }
             for i in range(n)
         ]

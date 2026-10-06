@@ -53,8 +53,22 @@ def _esc(t: str) -> str:
     return t.replace("\\", "\\\\").replace("{", "(").replace("}", ")").replace("\n", " ").strip()
 
 
+def _norm(w: str) -> str:
+    return "".join(ch for ch in w.lower() if ch.isalnum())
+
+
+def _highlight(text: str, words: set[str]) -> str:
+    """Auto Edit emphasis: key words pop in gold and slightly larger."""
+    out = []
+    for w in text.split():
+        e = _esc(w)
+        out.append(f"{{\\c&H0037AFD4&\\fscx112\\fscy112}}{e}{{\\r}}" if words and _norm(w) in words else e)
+    return " ".join(out)
+
+
 def write_ass(path: Path, width: int, height: int, scale: float, position: float,
-              cues: list[Word], overlays: list[Overlay]) -> None:
+              cues: list[Word], overlays: list[Overlay], emphasis: set[str] | None = None) -> None:
+    emphasis = {_norm(w) for w in (emphasis or set()) if _norm(w)}
     fs = int(height * scale)
     big = int(fs * 1.35)
     small = int(fs * 0.85)
@@ -79,7 +93,7 @@ def write_ass(path: Path, width: int, height: int, scale: float, position: float
         "", "[Events]", "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text",
     ]
     for c in cues:
-        lines.append(f"Dialogue: 0,{_ts(c.start)},{_ts(c.end)},Caption,,0,0,0,,{_esc(c.text)}")
+        lines.append(f"Dialogue: 0,{_ts(c.start)},{_ts(c.end)},Caption,,0,0,0,,{_highlight(c.text, emphasis)}")
     for o in overlays:
         if o.text.strip() and o.end > o.start:
             lines.append(f"Dialogue: 1,{_ts(o.start)},{_ts(o.end)},{o.style},,0,0,0,,{{\\fad(200,200)}}{_esc(o.text)}")

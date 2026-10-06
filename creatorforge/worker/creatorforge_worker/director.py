@@ -10,6 +10,7 @@ import re
 from dataclasses import asdict, dataclass, field
 
 from .providers.base import ProviderError
+from .media.render import TRANSITIONS
 from .templates import PACING, TEMPLATES, WORDS_PER_SECOND, Template
 
 NEGATIVE = ("text, watermark, logo, caption, subtitles, letters, signature, blurry, low quality, "
@@ -38,6 +39,8 @@ class ProductionSpec:
     captions: bool = True
     motion: str = "stills"  # "stills" (camera motion on images) | "ai_video" (image-to-video clips)
     review: bool = False  # pause after scene visuals so the storyboard can be edited/approved
+    auto_edit: bool = True  # let the Director choose transitions, caption emphasis and dramatic holds
+    character_ids: list[str] = field(default_factory=list)  # resolved from the Character Library at submit
 
     @staticmethod
     def from_dict(d: dict) -> "ProductionSpec":
@@ -58,6 +61,8 @@ class ProductionSpec:
             captions=bool(d.get("captions", True)),
             motion=str(d.get("motion", "") or "stills"),
             review=bool(d.get("review", False)),
+            auto_edit=bool(d.get("auto_edit", True)),
+            character_ids=[str(x) for x in d.get("character_ids") or []][:10],
         )
         spec.validate()
         return spec
@@ -94,6 +99,9 @@ class ShotPlan:
     overlay: str = ""
     prompt: str = ""
     negative: str = ""
+    transition: str = ""  # Auto Edit: transition INTO this scene
+    emphasis: list[str] = field(default_factory=list)  # Auto Edit: words highlighted in captions
+    hold: float = 0.0  # Auto Edit: extra seconds to let a moment land
 
 
 @dataclass
@@ -149,7 +157,10 @@ Return exactly this JSON shape:
       "shot": "wide | medium | close-up | extreme close-up | aerial | over-the-shoulder",
       "camera": "e.g. slow push in, pan left, static, low angle",
       "mood": "e.g. tense, hopeful, awe",
-      "overlay": "optional short on-screen callout (max 5 words) or empty string"}}
+      "overlay": "optional short on-screen callout (max 5 words) or empty string",
+      "transition": "edit INTO this scene: {' | '.join(TRANSITIONS)}",
+      "emphasis": ["1-3 key words from this scene's narration to highlight in captions"],
+      "hold": "seconds (0 to 1.5) to pause after the line for impact; usually 0"}}
   ]}}
 The scenes array must contain exactly {n} scenes. Scene 1 narration must open with the hook idea."""
 
@@ -175,8 +186,18 @@ def _validate(d: dict, n: int) -> ProductionPlan:
         narration, visual = str(s.get("narration", "")).strip(), str(s.get("visual", "")).strip()
         if not narration or not visual:
             raise ValueError(f"scene {i} needs both narration and visual")
+        transition = str(s.get("transition", "") or "").strip().lower()
+        emphasis = s.get("emphasis") or []
+        if isinstance(emphasis, str):
+            emphasis = [emphasis]
+        try:
+            hold = min(1.5, max(0.0, float(s.get("hold") or 0)))
+        except (TypeError, ValueError):
+            hold = 0.0
         out.append(ShotPlan(narration, visual, str(s.get("shot", "")).strip(), str(s.get("camera", "")).strip(),
-                            str(s.get("mood", "")).strip(), str(s.get("overlay", "") or "").strip()[:60]))
+                            str(s.get("mood", "")).strip(), str(s.get("overlay", "") or "").strip()[:60],
+                            transition=transition if transition in TRANSITIONS else "",
+                            emphasis=[str(w).strip()[:30] for w in emphasis if str(w).strip()][:3], hold=hold))
     return ProductionPlan(str(d.get("title", "")).strip()[:100] or "Untitled", str(d.get("hook", "")).strip()[:80],
                           str(d.get("cta", "")).strip()[:60], str(d.get("music_mood", "")).strip()[:60], out)
 

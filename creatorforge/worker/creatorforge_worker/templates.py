@@ -30,11 +30,11 @@ TEMPLATES: dict[str, Template] = {t.id: t for t in [
     Template("shorts_cinematic", "Cinematic Short", "9:16", 5.0,
              "cinematic, photorealistic, dramatic lighting, shallow depth of field, 35mm film still, high detail",
              "punchy and curiosity-driven, short sentences, strong hook in the first line",
-             ("fade", "smoothleft", "circleopen", "dissolve"), 3, 0.045, 0.70, "epic cinematic"),
+             ("fade", "whip", "zoom", "dissolve"), 3, 0.045, 0.70, "epic cinematic"),
     Template("reels_punchy", "Punchy Reel / TikTok", "9:16", 3.5,
              "vibrant, high contrast, bold saturated colors, dynamic composition, ultra detailed",
              "energetic and fast, conversational, every line delivers a new point",
-             ("slideleft", "wipeleft", "smoothup", "circleopen"), 2, 0.05, 0.62, "upbeat electronic"),
+             ("slide", "cut", "flash", "whip"), 2, 0.05, 0.62, "upbeat electronic"),
     Template("explainer", "Clear Explainer", "16:9", 7.0,
              "clean modern digital illustration, soft studio lighting, clear subject, high detail",
              "clear, friendly and educational, explain one idea per scene",
@@ -42,11 +42,11 @@ TEMPLATES: dict[str, Template] = {t.id: t for t in [
     Template("youtube_longform", "YouTube Documentary", "16:9", 10.0,
              "cinematic documentary photography, natural light, realistic textures, high detail",
              "engaging documentary narration with a clear story arc",
-             ("fade", "dissolve", "fadeblack"), 6, 0.036, 0.86, "ambient documentary"),
+             ("fade", "dissolve", "dip"), 6, 0.036, 0.86, "ambient documentary"),
     Template("square_social", "Square Social Post", "1:1", 4.5,
              "bold editorial photography, striking composition, high detail",
              "direct and scroll-stopping, short sentences",
-             ("fade", "slideleft", "dissolve"), 3, 0.05, 0.74, "modern upbeat"),
+             ("fade", "slide", "dissolve"), 3, 0.05, 0.74, "modern upbeat"),
 ]}
 
 PACING = {"slow": 1.3, "medium": 1.0, "fast": 0.75}
