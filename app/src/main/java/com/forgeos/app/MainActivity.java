@@ -30,7 +30,7 @@ public class MainActivity extends Activity {
   r.addView(txt("PROJECT",12,GOLD,true));projects=panel();projects.addView(txt("No project imported yet",15,Color.LTGRAY,false));r.addView(projects);
   r.addView(txt("FILES",12,GOLD,true));files=panel();files.addView(txt("Workspace empty",13,Color.GRAY,false));r.addView(files);
   r.addView(txt("ACTIVITY LOG",12,GOLD,true));log=txt("ForgeOS initialized.",12,Color.LTGRAY,false);LinearLayout lp=panel();lp.addView(log);r.addView(lp);
-  r.addView(txt("ForgeOS v0.3.1 - Remote Build Engine",11,Color.GRAY,false));return s;
+  r.addView(txt("ForgeOS v0.4.0 - Continuous Engine",11,Color.GRAY,false));return s;
  }
  @Override protected void onActivityResult(int q,int result,Intent data){super.onActivityResult(q,result,data);if(q==100&&result==RESULT_OK&&data!=null&&data.getData()!=null)importZip(data.getData());}
  private void importZip(Uri uri){
@@ -79,17 +79,20 @@ public class MainActivity extends Activity {
   }).show();
  }
  private void remoteBuild(String token){
-  String id="android-"+System.currentTimeMillis();String path="build-requests/"+id+".zip";
+  final File workspace=active;
   try{
-   byte[] zip=zipWorkspace(active);if(zip.length>90L*1024*1024)throw new IOException("Compressed project exceeds 90 MB remote request limit");
-   String body="{\"message\":\"ForgeOS remote request "+id+"\",\"content\":\""+Base64.encodeToString(zip,Base64.NO_WRAP)+"\",\"branch\":\"build-requests\"}";
-   api("PUT","https://api.github.com/repos/diljotsinghdj-creator/Forgeos/contents/"+path,token,body);
-   String dispatch="{\"ref\":\"main\",\"inputs\":{\"request_path\":\""+path+"\",\"request_id\":\""+id+"\"}}";
-   api("POST","https://api.github.com/repos/diljotsinghdj-creator/Forgeos/actions/workflows/remote-project-build.yml/dispatches",token,dispatch);
-   runOnUiThread(()->{status.setText("Remote build submitted");append("Remote build submitted: "+id);append("Open GitHub Actions to watch live logs and retrieve the APK artifact.");build.setEnabled(true);
-    new AlertDialog.Builder(this).setTitle("Build submitted").setMessage("Request "+id+" is running in isolated GitHub Actions. The project ZIP was uploaded to the dedicated build-requests branch.").setPositiveButton("OPEN ACTIONS",(d,w)->startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("https://github.com/diljotsinghdj-creator/Forgeos/actions/workflows/remote-project-build.yml")))).setNegativeButton("CLOSE",null).show();
+   ContinuousEngine engine=ContinuousEngine.get(this);
+   String missionId=engine.submit("Build Android workspace",ctx->{
+    ctx.checkpoint("Selecting execution adapter");
+    BuildAdapter adapter=new BuildAdapterRegistry().add(new GitHubBuildAdapter(token)).firstAvailable();
+    if(adapter==null){ctx.block("No build adapter available");throw new IOException("No build adapter available");}
+    ctx.checkpoint("Submitting via "+adapter.id());
+    BuildAdapter.BuildResult result=adapter.submit(ctx.id,workspace);
+    if(!result.accepted)throw new IOException(result.message);
+    runOnUiThread(()->{status.setText("Build mission submitted");append("Mission "+ctx.id+" -> "+result.reference+" via "+adapter.id());build.setEnabled(true);});
    });
-  }catch(Exception e){runOnUiThread(()->{status.setText("Remote build failed");append("ERROR: "+e.getMessage());build.setEnabled(true);});}
+   runOnUiThread(()->{status.setText("Mission queued");append("Durable mission queued: "+missionId);});
+  }catch(Exception e){runOnUiThread(()->{status.setText("Build mission failed");append("ERROR: "+e.getMessage());build.setEnabled(true);});}
  }
  private byte[] zipWorkspace(File root)throws Exception{
   ByteArrayOutputStream b=new ByteArrayOutputStream();try(ZipOutputStream z=new ZipOutputStream(b)){zipDir(root,root,z);}return b.toByteArray();
