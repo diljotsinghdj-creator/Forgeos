@@ -34,8 +34,12 @@ data class ProductionRequest(
     val idea: String, val durationS: Int, val aspect: String, val template: String, val voice: String,
     val pacing: String, val style: String, val mood: String, val camera: String,
     val characters: List<Pair<String, String>>, val music: Boolean, val captions: Boolean,
-    val aiVideo: Boolean, val review: Boolean
+    val aiVideo: Boolean, val review: Boolean, val autoEdit: Boolean, val characterIds: List<String>
 )
+
+data class LibraryCharacter(val id: String, val name: String, val description: String)
+
+data class LibraryVideo(val id: String, val title: String, val aspect: String, val durationS: Double, val videoPath: String, val thumbnailPath: String)
 
 class WorkerException(message: String) : Exception(message)
 
@@ -90,6 +94,7 @@ class ProductionClient(baseUrl: String) {
             .put("template", r.template).put("voice", r.voice).put("pacing", r.pacing).put("style", r.style)
             .put("mood", r.mood).put("camera", r.camera).put("music", r.music).put("captions", r.captions)
             .put("motion", if (r.aiVideo) "ai_video" else "stills").put("review", r.review)
+            .put("auto_edit", r.autoEdit).put("character_ids", JSONArray(r.characterIds))
             .put("characters", JSONArray().apply { r.characters.forEach { (n, d) -> put(JSONObject().put("name", n).put("description", d)) } })
         parse(call("POST", "/v1/productions", body))
     }
@@ -108,6 +113,28 @@ class ProductionClient(baseUrl: String) {
         val a = JSONArray(call("GET", "/v1/productions"))
         (0 until a.length()).map { i ->
             a.getJSONObject(i).let { ProductionSummary(it.getString("id"), it.optString("title"), it.optString("status"), it.optDouble("progress", 0.0).toFloat()) }
+        }
+    }
+
+    suspend fun characters(): List<LibraryCharacter> = withContext(Dispatchers.IO) {
+        val a = JSONArray(call("GET", "/v1/library/characters"))
+        (0 until a.length()).map { i -> a.getJSONObject(i).let { LibraryCharacter(it.getString("id"), it.optString("name"), it.optString("description")) } }
+    }
+
+    suspend fun saveCharacter(id: String?, name: String, description: String): Unit = withContext(Dispatchers.IO) {
+        val body = JSONObject().put("name", name).put("description", description)
+        if (id == null) call("POST", "/v1/library/characters", body) else call("PUT", "/v1/library/characters/$id", body)
+    }
+
+    suspend fun deleteCharacter(id: String): Unit = withContext(Dispatchers.IO) { call("DELETE", "/v1/library/characters/$id") }
+
+    suspend fun videos(): List<LibraryVideo> = withContext(Dispatchers.IO) {
+        val a = JSONArray(call("GET", "/v1/library/videos"))
+        (0 until a.length()).map { i ->
+            a.getJSONObject(i).let {
+                LibraryVideo(it.getString("id"), it.optString("title"), it.optString("aspect"), it.optDouble("duration_s"),
+                    it.optString("video_url"), it.optString("thumbnail_url"))
+            }
         }
     }
 

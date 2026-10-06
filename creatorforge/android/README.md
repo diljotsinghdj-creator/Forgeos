@@ -1,4 +1,4 @@
-# CreatorForge v1.0 RC12 (Android controller)
+# CreatorForge v1.0 RC13 (Android controller)
 
 Your phone runs the studio. The heavy AI generation runs on your self-hosted worker
 (`../worker`).
@@ -16,6 +16,11 @@ Your phone runs the studio. The heavy AI generation runs on your self-hosted wor
   - **Cancel** keeps finished assets. **Retry / Resume** continues from the failed stage.
   - When the production is ready, the verified MP4 downloads and you can **Play**, **Share** or
     **Save** it to `Movies/CreatorForge`.
+- **Generate** also has **Auto Edit** (the AI picks transitions, highlighted caption words and
+  dramatic pauses) and lets you pick saved characters from the library.
+- **Library** tab: every finished video on the worker (Play / Share / Save) and the
+  **Character Library**. Save a character's look once; every scene that names that character
+  uses the same description.
 - **Settings**: worker URL and worker token (stored encrypted). Plain `http://` is allowed so a
   worker on your home network works. Use `https://` anywhere else.
 - **Create / Projects / Studio**: the RC10 manual workflow (per-scene generation and on-device

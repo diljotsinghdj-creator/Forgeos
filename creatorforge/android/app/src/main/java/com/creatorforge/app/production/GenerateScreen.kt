@@ -36,6 +36,7 @@ private val STAGE_LABELS = mapOf(
     "verify" to "Verify MP4"
 )
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GenerateScreen() {
     val context = LocalContext.current
@@ -62,6 +63,9 @@ fun GenerateScreen() {
     var aiVideo by remember { mutableStateOf(prefs.getBoolean("ai_video", false)) }
     var review by remember { mutableStateOf(prefs.getBoolean("review", false)) }
     var editing by remember { mutableStateOf<SceneView?>(null) }
+    var autoEdit by remember { mutableStateOf(prefs.getBoolean("auto_edit", true)) }
+    var library by remember { mutableStateOf<List<LibraryCharacter>>(emptyList()) }
+    var picked by remember { mutableStateOf(prefs.getStringSet("character_ids", emptySet())!!.toSet()) }
 
     var activeId by remember { mutableStateOf(prefs.getString("active", null)) }
     var production by remember { mutableStateOf<ProductionView?>(null) }
@@ -79,6 +83,7 @@ fun GenerateScreen() {
             if (voice.isBlank() || c.voices.none { it.id == voice }) voice = c.voices.firstOrNull()?.id.orEmpty()
         }.onFailure { capsError = it.message }
         runCatching { client.list() }.onSuccess { recent = it }
+        runCatching { client.characters() }.onSuccess { cs -> library = cs; picked = picked.filter { id -> cs.any { it.id == id } }.toSet() }
     }
 
     // Poll the active production until it reaches a terminal state, then fetch the verified MP4.
@@ -141,8 +146,8 @@ fun GenerateScreen() {
                     onRetry = { act { client.retry(p.id) } },
                     onApprove = { act { client.approve(p.id) } },
                     onNew = { setActive(null) },
-                    onPlay = { f -> open(context, f, Intent.ACTION_VIEW) },
-                    onShare = { f -> open(context, f, Intent.ACTION_SEND) },
+                    onPlay = { f -> openVideo(context, f, Intent.ACTION_VIEW) },
+                    onShare = { f -> openVideo(context, f, Intent.ACTION_SEND) },
                     onSave = { f -> notice = saveToGallery(context, f) },
                     onDownload = { pollKey++ })
             }
@@ -190,9 +195,19 @@ fun GenerateScreen() {
                 caps?.voices?.takeIf { it.isNotEmpty() }?.let { vs ->
                     Label("VOICE"); ChipRow(vs.map { it.id to it.name }, voice) { voice = it }
                 }
+                if (library.isNotEmpty()) {
+                    Label("CHARACTERS (LIBRARY)")
+                    Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                        library.forEach { ch ->
+                            FilterChip(selected = ch.id in picked, onClick = { picked = if (ch.id in picked) picked - ch.id else picked + ch.id },
+                                label = { Text(ch.name) })
+                        }
+                    }
+                }
                 Label("PACING")
                 ChipRow(listOf("slow" to "Slow", "medium" to "Medium", "fast" to "Fast"), pacing) { pacing = it }
                 Row { Switch(aiVideo, { aiVideo = it }, enabled = caps?.aiVideo == true || aiVideo); Text(if (caps?.aiVideo == false) " AI video clips (no video model on worker)" else " AI video clips", Modifier.padding(top = 12.dp)) }
+                Row { Switch(autoEdit, { autoEdit = it }); Text(" Auto Edit (AI picks transitions, emphasis, pauses)", Modifier.padding(top = 12.dp)) }
                 Row { Switch(review, { review = it }); Text(" Review storyboard before render", Modifier.padding(top = 12.dp)) }
                 Row { Switch(music, { music = it }); Text(" Music", Modifier.padding(top = 12.dp, end = 16.dp)); Switch(captions, { captions = it }); Text(" Captions", Modifier.padding(top = 12.dp)) }
                 TextButton({ director = !director }) { Text(if (director) "▾ Director Mode" else "▸ Director Mode", color = Gold) }
@@ -210,11 +225,12 @@ fun GenerateScreen() {
                         .putString("template", template).putString("voice", voice).putString("pacing", pacing)
                         .putBoolean("music", music).putBoolean("captions", captions).putString("style", style)
                         .putString("mood", mood).putString("camera", camera).putString("characters", characters)
-                        .putBoolean("ai_video", aiVideo).putBoolean("review", review).apply()
+                        .putBoolean("ai_video", aiVideo).putBoolean("review", review)
+                        .putBoolean("auto_edit", autoEdit).putStringSet("character_ids", picked).apply()
                     val chars = characters.lines().mapNotNull { l ->
                         val i = l.indexOf(':'); if (i > 0) l.substring(0, i).trim() to l.substring(i + 1).trim() else null
                     }.filter { it.first.isNotBlank() && it.second.isNotBlank() }
-                    act { client.create(ProductionRequest(idea.trim(), duration, aspect, template, voice, pacing, style.trim(), mood.trim(), camera.trim(), chars, music, captions, aiVideo, review)) }
+                    act { client.create(ProductionRequest(idea.trim(), duration, aspect, template, voice, pacing, style.trim(), mood.trim(), camera.trim(), chars, music, captions, aiVideo, review, autoEdit, picked.toList())) }
                 }) { Text(if (busy) "STARTING…" else "GENERATE VIDEO", fontSize = 18.sp) }
             }
             if (recent.isNotEmpty()) {
@@ -335,7 +351,7 @@ private suspend fun syncStoryboard(context: Context, client: ProductionClient, p
     if (any) changed()
 }
 
-private fun open(context: Context, file: File, action: String) {
+internal fun openVideo(context: Context, file: File, action: String) {
     val uri = FileProvider.getUriForFile(context, "${context.packageName}.files", file)
     val intent = Intent(action).addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
     if (action == Intent.ACTION_SEND) intent.setType("video/mp4").putExtra(Intent.EXTRA_STREAM, uri)
@@ -344,7 +360,7 @@ private fun open(context: Context, file: File, action: String) {
 }
 
 /** Copies the MP4 into the shared Movies/CreatorForge folder. Returns an error message or null. */
-private fun saveToGallery(context: Context, file: File): String? {
+internal fun saveToGallery(context: Context, file: File): String? {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) return "Kept in app storage: ${file.absolutePath} (use SHARE to export on this Android version)"
     return runCatching {
         val values = ContentValues().apply {
