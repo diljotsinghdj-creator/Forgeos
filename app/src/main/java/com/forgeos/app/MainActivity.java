@@ -24,6 +24,7 @@ public class MainActivity extends Activity {
   r.addView(txt("FORGEOS",30,GOLD,true));r.addView(txt("Android Development Workspace",14,Color.LTGRAY,false));
   LinearLayout c=panel();c.addView(txt("WORKSPACE CONTROL",12,GOLD,true));status=txt("Ready",16,Color.WHITE,true);c.addView(status);c.addView(txt("Import a project ZIP. ForgeOS extracts it into an isolated private workspace, validates Android/Gradle structure and preserves it between launches.",13,Color.LTGRAY,false));r.addView(c);
   Button imp=btn("IMPORT PROJECT ZIP");imp.setOnClickListener(v->{Intent x=new Intent(Intent.ACTION_OPEN_DOCUMENT);x.setType("application/zip");x.addCategory(Intent.CATEGORY_OPENABLE);startActivityForResult(x,100);});r.addView(imp);
+  Button inspect=btn("SOVEREIGN INSPECT");inspect.setOnClickListener(v->runLocalInspection());r.addView(inspect);
   build=btn("BUILD APK");build.setEnabled(false);build.setOnClickListener(v->requestRemoteBuild());r.addView(build);
   r.addView(txt("PROJECT",12,GOLD,true));projects=panel();projects.addView(txt("No project imported yet",15,Color.LTGRAY,false));r.addView(projects);
   r.addView(txt("FILES",12,GOLD,true));files=panel();files.addView(txt("Workspace empty",13,Color.GRAY,false));r.addView(files);
@@ -67,6 +68,19 @@ public class MainActivity extends Activity {
  private void showFiles(File d,LinearLayout box,int depth){
   File[] a=d.listFiles();if(a==null)return;Arrays.sort(a,(x,y)->x.getName().compareToIgnoreCase(y.getName()));
   int shown=0;for(File f:a){if(shown++>=40){box.addView(txt("...more files",12,Color.GRAY,false));break;}String pad="";for(int i=0;i<depth;i++)pad+="  ";box.addView(txt(pad+(f.isDirectory()?"[DIR] ":"[FILE] ")+f.getName(),12,f.isDirectory()?GOLD:Color.LTGRAY,false));if(f.isDirectory()&&depth<1)showFiles(f,box,depth+1);}
+ }
+ private void runLocalInspection(){
+  if(active==null){append("Inspection blocked: import a workspace first.");return;}
+  final File workspace=active;
+  try{
+   String missionId=ContinuousEngine.get(this).submit("Inspect Android workspace locally","INSPECT_LOCAL",workspace.getAbsolutePath(),"local-inspect",ctx->{
+    ctx.checkpoint("Running sovereign local inspection");
+    BuildAdapter.BuildResult result=new LocalInspectAdapter().submit(ctx.id,workspace);
+    if(!result.accepted)throw new IOException(result.message);
+    runOnUiThread(()->{status.setText("Sovereign inspection complete");append("Local proof: "+result.reference);});
+   });
+   status.setText("Local inspection queued");append("Sovereign mission queued: "+missionId);
+  }catch(Exception e){status.setText("Inspection failed");append("ERROR: "+e.getMessage());}
  }
  private void requestRemoteBuild(){
   if(active==null)return;
