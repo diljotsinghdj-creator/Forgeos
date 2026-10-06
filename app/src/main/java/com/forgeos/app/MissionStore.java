@@ -44,11 +44,16 @@ public final class MissionStore {
   }
   return out;
  }
- public synchronized boolean claim(String id)throws Exception{
+ public synchronized String claimLease(String id)throws Exception{
   JSONObject j=read(id); String s=j.optString("state",""); long now=System.currentTimeMillis();
-  if(State.COMPLETE.name().equals(s)||State.VERIFIED.name().equals(s))return false;
-  if(State.RUNNING.name().equals(s)&&j.optLong("leaseUntil",0)>now)return false;
-  j.put("state",State.RUNNING.name());j.put("lease",UUID.randomUUID().toString());j.put("leaseUntil",now+5L*60*1000);j.put("updatedAt",now);write(id,j);return true;
+  if(State.COMPLETE.name().equals(s)||State.VERIFIED.name().equals(s))return null;
+  if(State.RUNNING.name().equals(s)&&j.optLong("leaseUntil",0)>now)return null;
+  String lease=UUID.randomUUID().toString();j.put("state",State.RUNNING.name());j.put("lease",lease);j.put("leaseUntil",now+5L*60*1000);j.put("updatedAt",now);write(id,j);return lease;
+ }
+ public synchronized boolean renewLease(String id,String lease)throws Exception{
+  JSONObject j=read(id);if(lease==null||!lease.equals(j.optString("lease","")))return false;
+  if(!State.RUNNING.name().equals(j.optString("state","")))return false;
+  long now=System.currentTimeMillis();j.put("leaseUntil",now+5L*60*1000);j.put("updatedAt",now);write(id,j);return true;
  }
  public synchronized void checkpoint(String id,State state,String note)throws Exception{
   JSONObject j=read(id);j.put("state",state.name());j.put("note",note==null?"":note);if(state!=State.RUNNING){j.remove("lease");j.remove("leaseUntil");}
