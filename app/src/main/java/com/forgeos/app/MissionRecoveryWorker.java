@@ -17,9 +17,11 @@ public final class MissionRecoveryWorker extends Worker {
    JSONObject j=s.read(id);
    String state=j.optString("state","");
    if(MissionStore.State.COMPLETE.name().equals(state)||MissionStore.State.VERIFIED.name().equals(state))return Result.success();
-   // Credentials are deliberately not persisted. Interrupted external execution must be safely rebound.
-   s.checkpoint(id,MissionStore.State.BLOCKED,"Recovered by Android scheduler; secure execution adapter must be rebound");
-   return Result.success();
+   MissionCommandRunner.Outcome outcome=new MissionCommandRunner(getApplicationContext()).resume(j);
+   if(outcome==MissionCommandRunner.Outcome.COMPLETE){s.checkpoint(id,MissionStore.State.COMPLETE,"Recovered mission completed");return Result.success();}
+   if(outcome==MissionCommandRunner.Outcome.RETRYABLE){s.checkpoint(id,MissionStore.State.CHECKPOINTED,"Recovery deferred for retry");return getRunAttemptCount()<3?Result.retry():Result.failure();}
+   if(outcome==MissionCommandRunner.Outcome.NEEDS_SECURE_REBIND){s.checkpoint(id,MissionStore.State.BLOCKED,"Recovered safely; privileged adapter requires secure rebind");return Result.success();}
+   s.checkpoint(id,MissionStore.State.FAILED,"Mission could not be reconstructed safely");return Result.failure();
   }catch(java.io.FileNotFoundException e){return Result.failure();}
    catch(Exception e){return getRunAttemptCount()<3?Result.retry():Result.failure();}
  }
