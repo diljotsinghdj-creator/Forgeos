@@ -7,7 +7,7 @@ import org.json.*;
 /** Static, offline dependency inventory. Does not resolve or execute dependencies. */
 public final class DependencyInspector {
  private static final long MAX=2L*1024*1024;
- private static final Pattern COORD=Pattern.compile("[\"']([A-Za-z0-9_.-]+):([A-Za-z0-9_.-]+):([^\\"']+)[\"']");
+ private static final Pattern COORD=Pattern.compile("[\\\"']([A-Za-z0-9_.-]+):([A-Za-z0-9_.-]+):([^\\\"']+)[\\\"']");
  public JSONArray inspect(File root)throws Exception{
   JSONArray out=new JSONArray(); inspectFile(new File(root,"build.gradle"),out);inspectFile(new File(root,"build.gradle.kts"),out);
   File app=new File(root,"app");inspectFile(new File(app,"build.gradle"),out);inspectFile(new File(app,"build.gradle.kts"),out);
