@@ -40,11 +40,18 @@ jobs:
         with:
           gradle-version: "8.10.2"
 
-      - name: Compile and test
+      - name: Static source guard
         shell: bash
         run: |
           set -euo pipefail
-          gradle --no-daemon --stacktrace testDebugUnitTest assembleDebug
+          ! grep -RIn --exclude-dir=build --exclude-dir=.git -E '(ghp_|github_pat_)[A-Za-z0-9_]+' .
+          ! grep -RIn --exclude-dir=build --exclude-dir=.git -E 'http://api\.github\.com' app/src || true
+
+      - name: Compile, lint and test
+        shell: bash
+        run: |
+          set -euo pipefail
+          gradle --no-daemon --stacktrace lintDebug testDebugUnitTest assembleDebug
 
       - name: Verify APK
         shell: bash
