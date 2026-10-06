@@ -18,7 +18,7 @@ import java.util.zip.*;
 public class MainActivity extends Activity {
  private final int GOLD=Color.rgb(212,175,55);
  private LinearLayout projects,files; private TextView status,log; private Button build;
- private File active; private static final long MAX_UNPACKED=250L*1024*1024;
+ private File active; private static final long MAX_UNPACKED=250L*1024*1024; private static final String MISSION_STATE="apex_mission_state",MISSION_TEXT="apex_mission_text";
  @Override public void onCreate(Bundle b){super.onCreate(b);setContentView(ui());restore();}
  private View ui(){
   ScrollView s=new ScrollView(this);s.setBackgroundColor(Color.rgb(7,9,13));
@@ -33,9 +33,24 @@ public class MainActivity extends Activity {
   LinearLayout nav=panel();nav.addView(txt("SYSTEMS",12,GOLD,true));nav.addView(txt("Missions   Agents   Projects & Memory",13,Color.WHITE,true));nav.addView(txt("CreatorForge   Growth Intelligence",13,Color.WHITE,true));nav.addView(txt("Evidence   Security & Settings",13,Color.WHITE,true));r.addView(nav);
   r.addView(txt("ENGINEERING BRIDGE",12,GOLD,true));projects=panel();projects.addView(txt("ForgeOS build engine available beneath APEX.",12,Color.LTGRAY,false));r.addView(projects);
   files=panel();files.setVisibility(View.GONE);r.addView(files);build=btn("BUILD ENGINE");build.setVisibility(View.GONE);r.addView(build);
-  launch.setOnClickListener(v->{String m=mission.getText().toString().trim();if(m.isEmpty()){status.setText("MISSION BLOCKED • Enter an objective");return;}status.setText("PLANNING • "+m);append("Mission accepted locally. Runtime execution wiring is the next gate.");});
+  String savedMission=getPreferences(0).getString(MISSION_TEXT,"");String savedState=getPreferences(0).getString(MISSION_STATE,"IDLE");if(!savedMission.isEmpty())mission.setText(savedMission);if(!"IDLE".equals(savedState))status.setText(savedState+" • "+savedMission);
+  launch.setOnClickListener(v->{String m=mission.getText().toString().trim();if(m.isEmpty()){status.setText("MISSION BLOCKED • Enter an objective");return;}startMission(m);});
   r.addView(txt("APEX v0.1 • Mission Control on ForgeOS",11,Color.GRAY,false));return s;
  }
+ private void startMission(String mission){
+  getPreferences(0).edit().putString(MISSION_TEXT,mission).putString(MISSION_STATE,"PLANNING").apply();
+  status.setText("PLANNING • "+mission);append("Mission accepted. State checkpoint: PLANNING.");
+  new android.os.Handler(getMainLooper()).postDelayed(()->{
+   getPreferences(0).edit().putString(MISSION_STATE,"RUNNING").apply();status.setText("RUNNING • "+mission);append("Worker checkpoint: RUNNING.");
+   new android.os.Handler(getMainLooper()).postDelayed(()->{
+    getPreferences(0).edit().putString(MISSION_STATE,"VERIFYING").apply();status.setText("VERIFYING • "+mission);append("Tester/Judge checkpoint: VERIFYING.");
+    new android.os.Handler(getMainLooper()).postDelayed(()->{
+     getPreferences(0).edit().putString(MISSION_STATE,"COMPLETED").apply();status.setText("COMPLETED • "+mission);append("Evidence: local v0.1 lifecycle completed. External agent execution not yet enabled.");
+    },700);
+   },700);
+  },700);
+ }
+
  @Override protected void onActivityResult(int q,int result,Intent data){super.onActivityResult(q,result,data);if(q==100&&result==RESULT_OK&&data!=null&&data.getData()!=null)importZip(data.getData());}
  private void importZip(Uri uri){
   status.setText("Importing project...");build.setEnabled(false);
