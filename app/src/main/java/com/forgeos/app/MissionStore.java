@@ -44,6 +44,11 @@ public final class MissionStore {
   }
   return out;
  }
+ public synchronized boolean claim(String id)throws Exception{
+  JSONObject j=read(id); String s=j.optString("state","");
+  if(State.COMPLETE.name().equals(s)||State.VERIFIED.name().equals(s)||State.RUNNING.name().equals(s))return false;
+  j.put("state",State.RUNNING.name());j.put("lease",UUID.randomUUID().toString());j.put("updatedAt",System.currentTimeMillis());write(id,j);return true;
+ }
  public synchronized void checkpoint(String id,State state,String note)throws Exception{
   JSONObject j=read(id);j.put("state",state.name());j.put("note",note==null?"":note);
   j.put("attempt",j.optInt("attempt",0)+1);j.put("updatedAt",System.currentTimeMillis());write(id,j);
