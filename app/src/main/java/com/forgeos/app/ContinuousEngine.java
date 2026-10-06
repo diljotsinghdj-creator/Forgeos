@@ -7,9 +7,11 @@ import java.util.concurrent.*;
 public final class ContinuousEngine {
  private static volatile ContinuousEngine INSTANCE;
  private final MissionStore store;
+ private final Context appContext;
  private final ExecutorService executor=Executors.newSingleThreadExecutor();
  private ContinuousEngine(Context c){
-  store=new MissionStore(c.getApplicationContext());
+  appContext=c.getApplicationContext();
+  store=new MissionStore(appContext);
   recoverInterrupted();
  }
  private void recoverInterrupted(){
@@ -22,12 +24,14 @@ public final class ContinuousEngine {
    }catch(Exception ignored){}
   });
  }
+ private Context storeContext(){return appContext;}
  public static ContinuousEngine get(Context c){
   if(INSTANCE==null)synchronized(ContinuousEngine.class){if(INSTANCE==null)INSTANCE=new ContinuousEngine(c);}
   return INSTANCE;
  }
  public String submit(String objective, MissionTask task)throws Exception{
   final String id=store.create(objective);
+  MissionRecoveryWorker.schedule(storeContext(),id);
   executor.submit(()->run(id,task));
   return id;
  }
