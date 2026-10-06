@@ -13,11 +13,11 @@ import java.util.concurrent.TimeUnit
 
 data class Choice(val id: String, val name: String)
 
-data class Capabilities(val templates: List<Choice>, val voices: List<Choice>, val productionReady: Boolean, val problems: List<String>)
+data class Capabilities(val templates: List<Choice>, val voices: List<Choice>, val productionReady: Boolean, val problems: List<String>, val aiVideo: Boolean)
 
 data class StageView(val name: String, val state: String, val done: Int, val total: Int, val error: String?)
 
-data class SceneView(val index: Int, val narration: String, val imageState: String, val voiceState: String, val hasImage: Boolean, val error: String?)
+data class SceneView(val index: Int, val narration: String, val visual: String, val imageState: String, val voiceState: String, val clipState: String, val hasImage: Boolean, val error: String?)
 
 data class ProductionView(
     val id: String, val status: String, val message: String, val error: String?, val progress: Float,
@@ -25,6 +25,7 @@ data class ProductionView(
     val providers: Map<String, String>, val verification: String?
 ) {
     val terminal get() = status in setOf("READY", "FAILED", "CANCELLED")
+    val inReview get() = status == "REVIEW"
 }
 
 data class ProductionSummary(val id: String, val title: String, val status: String, val progress: Float)
@@ -32,7 +33,8 @@ data class ProductionSummary(val id: String, val title: String, val status: Stri
 data class ProductionRequest(
     val idea: String, val durationS: Int, val aspect: String, val template: String, val voice: String,
     val pacing: String, val style: String, val mood: String, val camera: String,
-    val characters: List<Pair<String, String>>, val music: Boolean, val captions: Boolean
+    val characters: List<Pair<String, String>>, val music: Boolean, val captions: Boolean,
+    val aiVideo: Boolean, val review: Boolean
 )
 
 class WorkerException(message: String) : Exception(message)
@@ -75,7 +77,8 @@ class ProductionClient(baseUrl: String) {
         }.toList()
         Capabilities(
             choices(c.optJSONArray("templates")), choices(c.optJSONArray("voices")),
-            health.optBoolean("production_ready"), problems
+            health.optBoolean("production_ready"), problems,
+            (0 until (c.optJSONArray("motion")?.length() ?: 0)).any { c.getJSONArray("motion").optString(it) == "ai_video" }
         )
     }
 
@@ -86,6 +89,7 @@ class ProductionClient(baseUrl: String) {
         val body = JSONObject().put("idea", r.idea).put("duration_s", r.durationS).put("aspect", r.aspect)
             .put("template", r.template).put("voice", r.voice).put("pacing", r.pacing).put("style", r.style)
             .put("mood", r.mood).put("camera", r.camera).put("music", r.music).put("captions", r.captions)
+            .put("motion", if (r.aiVideo) "ai_video" else "stills").put("review", r.review)
             .put("characters", JSONArray().apply { r.characters.forEach { (n, d) -> put(JSONObject().put("name", n).put("description", d)) } })
         parse(call("POST", "/v1/productions", body))
     }
@@ -95,6 +99,10 @@ class ProductionClient(baseUrl: String) {
     suspend fun retry(id: String) = withContext(Dispatchers.IO) { parse(call("POST", "/v1/productions/$id/retry")) }
     suspend fun regenerateScene(id: String, index: Int) =
         withContext(Dispatchers.IO) { parse(call("POST", "/v1/productions/$id/scenes/$index/regenerate")) }
+    suspend fun editScene(id: String, index: Int, narration: String, visual: String) = withContext(Dispatchers.IO) {
+        parse(call("PATCH", "/v1/productions/$id/scenes/$index", JSONObject().put("narration", narration).put("visual", visual)))
+    }
+    suspend fun approve(id: String) = withContext(Dispatchers.IO) { parse(call("POST", "/v1/productions/$id/approve")) }
 
     suspend fun list(): List<ProductionSummary> = withContext(Dispatchers.IO) {
         val a = JSONArray(call("GET", "/v1/productions"))
@@ -128,7 +136,7 @@ class ProductionClient(baseUrl: String) {
         val plan = j.optJSONObject("plan")
         val shots = plan?.optJSONArray("scenes")
         val stagesJ = j.optJSONObject("stages") ?: JSONObject()
-        val order = listOf("director", "prompts", "images", "narration", "captions", "music", "assembly", "verify")
+        val order = listOf("director", "prompts", "images", "review", "narration", "clips", "captions", "music", "assembly", "verify")
         val stages = order.filter { stagesJ.has(it) }.map { n ->
             val s = stagesJ.getJSONObject(n)
             StageView(n, s.optString("state"), s.optInt("done"), s.optInt("total"), s.optString("error").takeIf { it.isNotBlank() && it != "null" })
@@ -137,7 +145,8 @@ class ProductionClient(baseUrl: String) {
         val scenes = (0 until scenesJ.length()).map { i ->
             val s = scenesJ.getJSONObject(i)
             SceneView(s.optInt("index", i), shots?.optJSONObject(i)?.optString("narration").orEmpty(),
-                s.optString("image_state"), s.optString("voice_state"),
+                shots?.optJSONObject(i)?.optString("visual").orEmpty(),
+                s.optString("image_state"), s.optString("voice_state"), s.optString("clip_state"),
                 s.optString("image").let { it.isNotBlank() && it != "null" },
                 s.optString("error").takeIf { it.isNotBlank() && it != "null" })
         }

@@ -32,7 +32,7 @@ private val FALLBACK_TEMPLATES = listOf(
 )
 private val STAGE_LABELS = mapOf(
     "director" to "AI Director • script & shots", "prompts" to "PromptForge", "images" to "Scene visuals",
-    "narration" to "Narration", "captions" to "Captions", "music" to "Music", "assembly" to "Edit & render",
+    "review" to "Storyboard review", "narration" to "Narration", "clips" to "AI video clips", "captions" to "Captions", "music" to "Music", "assembly" to "Edit & render",
     "verify" to "Verify MP4"
 )
 
@@ -59,6 +59,9 @@ fun GenerateScreen() {
     var mood by remember { mutableStateOf(prefs.getString("mood", "").orEmpty()) }
     var camera by remember { mutableStateOf(prefs.getString("camera", "").orEmpty()) }
     var characters by remember { mutableStateOf(prefs.getString("characters", "").orEmpty()) }
+    var aiVideo by remember { mutableStateOf(prefs.getBoolean("ai_video", false)) }
+    var review by remember { mutableStateOf(prefs.getBoolean("review", false)) }
+    var editing by remember { mutableStateOf<SceneView?>(null) }
 
     var activeId by remember { mutableStateOf(prefs.getString("active", null)) }
     var production by remember { mutableStateOf<ProductionView?>(null) }
@@ -94,7 +97,7 @@ fun GenerateScreen() {
                         runCatching { client.fetch("/v1/productions/${p.id}/video", dest, ::isMp4) }
                             .onFailure { error = it.message }.getOrNull()
                 }
-                if (p.terminal) break
+                if (p.terminal || p.inReview) break
             }
             delay(2000)
         }
@@ -136,6 +139,7 @@ fun GenerateScreen() {
                 ProductionCard(p, videoFile, busy,
                     onCancel = { act { client.cancel(p.id) } },
                     onRetry = { act { client.retry(p.id) } },
+                    onApprove = { act { client.approve(p.id) } },
                     onNew = { setActive(null) },
                     onPlay = { f -> open(context, f, Intent.ACTION_VIEW) },
                     onShare = { f -> open(context, f, Intent.ACTION_SEND) },
@@ -143,16 +147,28 @@ fun GenerateScreen() {
                     onDownload = { pollKey++ })
             }
             if (p.scenes.isNotEmpty()) item {
-                key(storyboardVersion) { Storyboard(context, p, busy || !p.terminal) { i ->
-                    storyboardFile(context, p.id, i).delete()
-                    act { client.regenerateScene(p.id, i) }
-                } }
+                key(storyboardVersion) { Storyboard(context, p, busy || !(p.terminal || p.inReview),
+                    onEdit = { s -> editing = s },
+                    onRegenerate = { i ->
+                        storyboardFile(context, p.id, i).delete()
+                        act { client.regenerateScene(p.id, i) }
+                    }) }
             }
         }
         if (production == null && activeId != null) item {
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text("Loading production…", color = Color.LightGray, modifier = Modifier.padding(top = 12.dp))
                 OutlinedButton({ setActive(null) }) { Text("NEW VIDEO") }
+            }
+        }
+        editing?.let { s ->
+            item {
+                SceneEditor(s, onDismiss = { editing = null }) { narration, visual ->
+                    val pid = production?.id ?: return@SceneEditor
+                    editing = null
+                    if (visual != s.visual) storyboardFile(context, pid, s.index).delete()
+                    act { client.editScene(pid, s.index, narration, visual) }
+                }
             }
         }
         error?.let { item { Text(it, color = Danger) } }
@@ -176,6 +192,8 @@ fun GenerateScreen() {
                 }
                 Label("PACING")
                 ChipRow(listOf("slow" to "Slow", "medium" to "Medium", "fast" to "Fast"), pacing) { pacing = it }
+                Row { Switch(aiVideo, { aiVideo = it }, enabled = caps?.aiVideo == true || aiVideo); Text(if (caps?.aiVideo == false) " AI video clips (no video model on worker)" else " AI video clips", Modifier.padding(top = 12.dp)) }
+                Row { Switch(review, { review = it }); Text(" Review storyboard before render", Modifier.padding(top = 12.dp)) }
                 Row { Switch(music, { music = it }); Text(" Music", Modifier.padding(top = 12.dp, end = 16.dp)); Switch(captions, { captions = it }); Text(" Captions", Modifier.padding(top = 12.dp)) }
                 TextButton({ director = !director }) { Text(if (director) "▾ Director Mode" else "▸ Director Mode", color = Gold) }
                 if (director) {
@@ -191,11 +209,12 @@ fun GenerateScreen() {
                     prefs.edit().putString("idea", idea).putInt("duration", duration).putString("aspect", aspect)
                         .putString("template", template).putString("voice", voice).putString("pacing", pacing)
                         .putBoolean("music", music).putBoolean("captions", captions).putString("style", style)
-                        .putString("mood", mood).putString("camera", camera).putString("characters", characters).apply()
+                        .putString("mood", mood).putString("camera", camera).putString("characters", characters)
+                        .putBoolean("ai_video", aiVideo).putBoolean("review", review).apply()
                     val chars = characters.lines().mapNotNull { l ->
                         val i = l.indexOf(':'); if (i > 0) l.substring(0, i).trim() to l.substring(i + 1).trim() else null
                     }.filter { it.first.isNotBlank() && it.second.isNotBlank() }
-                    act { client.create(ProductionRequest(idea.trim(), duration, aspect, template, voice, pacing, style.trim(), mood.trim(), camera.trim(), chars, music, captions)) }
+                    act { client.create(ProductionRequest(idea.trim(), duration, aspect, template, voice, pacing, style.trim(), mood.trim(), camera.trim(), chars, music, captions, aiVideo, review)) }
                 }) { Text(if (busy) "STARTING…" else "GENERATE VIDEO", fontSize = 18.sp) }
             }
             if (recent.isNotEmpty()) {
@@ -225,18 +244,18 @@ private fun ChipRow(options: List<Pair<String, String>>, selected: String, onSel
 
 @Composable
 private fun ProductionCard(
-    p: ProductionView, video: File?, busy: Boolean, onCancel: () -> Unit, onRetry: () -> Unit, onNew: () -> Unit,
+    p: ProductionView, video: File?, busy: Boolean, onCancel: () -> Unit, onRetry: () -> Unit, onApprove: () -> Unit, onNew: () -> Unit,
     onPlay: (File) -> Unit, onShare: (File) -> Unit, onSave: (File) -> Unit, onDownload: () -> Unit
 ) {
     Card { Column(Modifier.padding(16.dp)) {
         Text(p.title.ifBlank { "New production" }, color = Gold, fontSize = 20.sp)
         if (p.hook.isNotBlank()) Text("Hook: ${p.hook}", color = Color.LightGray, fontSize = 13.sp)
-        Text("${p.status} • ${p.message}", color = when (p.status) { "READY" -> Gold; "FAILED" -> Danger; else -> Color.White })
+        Text("${p.status} • ${p.message}", color = when (p.status) { "READY", "REVIEW" -> Gold; "FAILED" -> Danger; else -> Color.White })
         Spacer(Modifier.height(8.dp))
         LinearProgressIndicator(progress = { p.progress }, modifier = Modifier.fillMaxWidth())
         Spacer(Modifier.height(8.dp))
         p.stages.forEach { s ->
-            val mark = when (s.state) { "READY" -> "✓"; "SKIPPED" -> "–"; "RUNNING" -> "●"; "FAILED" -> "✗"; else -> "○" }
+            val mark = when (s.state) { "READY" -> "✓"; "SKIPPED" -> "–"; "RUNNING" -> "●"; "FAILED" -> "✗"; "WAITING" -> "⏸"; else -> "○" }
             val count = if (s.total > 0 && s.state == "RUNNING") " ${s.done}/${s.total}" else ""
             Text("$mark ${STAGE_LABELS[s.name] ?: s.name}$count", fontSize = 13.sp,
                 color = when (s.state) { "READY" -> Gold; "FAILED" -> Danger; "RUNNING" -> Color.White; else -> Color.Gray })
@@ -246,6 +265,7 @@ private fun ProductionCard(
         if (p.providers.isNotEmpty()) Text(p.providers.entries.joinToString(" • ") { "${it.key}: ${it.value}" }, color = Color.Gray, fontSize = 11.sp)
         Spacer(Modifier.height(10.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            if (p.inReview) Button(onApprove, enabled = !busy) { Text("APPROVE & RENDER") }
             if (!p.terminal) OutlinedButton(onCancel, enabled = !busy) { Text("CANCEL") }
             if (p.status == "FAILED" || p.status == "CANCELLED") Button(onRetry, enabled = !busy) { Text("RETRY / RESUME") }
             if (p.terminal) OutlinedButton(onNew) { Text("NEW VIDEO") }
@@ -262,20 +282,45 @@ private fun ProductionCard(
 }
 
 @Composable
-private fun Storyboard(context: Context, p: ProductionView, locked: Boolean, onRegenerate: (Int) -> Unit) {
+private fun Storyboard(context: Context, p: ProductionView, locked: Boolean, onEdit: (SceneView) -> Unit, onRegenerate: (Int) -> Unit) {
     Column {
         Label("STORYBOARD")
         p.scenes.forEach { s ->
             Card(Modifier.fillMaxWidth().padding(vertical = 4.dp)) { Column(Modifier.padding(12.dp)) {
-                Text("Scene ${s.index + 1} • visual ${s.imageState} • voice ${s.voiceState}", color = Gold, fontSize = 12.sp)
+                Text("Scene ${s.index + 1} • visual ${s.imageState} • voice ${s.voiceState}" +
+                    if (s.clipState.isNotBlank() && s.clipState != "PLANNED" && s.clipState != "null") " • clip ${s.clipState}" else "",
+                    color = Gold, fontSize = 12.sp)
                 val f = storyboardFile(context, p.id, s.index)
                 if (f.isFile) AsyncImage(model = f, contentDescription = "Scene ${s.index + 1}", modifier = Modifier.fillMaxWidth().height(200.dp))
                 if (s.narration.isNotBlank()) Text("“${s.narration}”", color = Color.LightGray, fontSize = 13.sp)
                 s.error?.let { Text(it, color = Danger, fontSize = 11.sp) }
-                if (s.hasImage) TextButton({ onRegenerate(s.index) }, enabled = !locked) { Text("REGENERATE VISUAL") }
+                if (s.visual.isNotBlank()) Text("Visual: ${s.visual}", color = Color.Gray, fontSize = 12.sp)
+                Row {
+                    if (s.hasImage) TextButton({ onRegenerate(s.index) }, enabled = !locked) { Text("REGENERATE VISUAL") }
+                    TextButton({ onEdit(s) }, enabled = !locked) { Text("EDIT SCENE") }
+                }
             } }
         }
     }
+}
+
+@Composable
+private fun SceneEditor(scene: SceneView, onDismiss: () -> Unit, onSave: (String, String) -> Unit) {
+    var narration by remember(scene) { mutableStateOf(scene.narration) }
+    var visual by remember(scene) { mutableStateOf(scene.visual) }
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Edit scene ${scene.index + 1}") },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                OutlinedTextField(narration, { narration = it }, Modifier.fillMaxWidth(), minLines = 3, label = { Text("Narration") })
+                OutlinedTextField(visual, { visual = it }, Modifier.fillMaxWidth(), minLines = 3, label = { Text("Visual") })
+                Text("Only what you change is regenerated. Approve afterwards to render.", fontSize = 12.sp, color = Color.Gray)
+            }
+        },
+        confirmButton = { Button({ onSave(narration.trim(), visual.trim()) }, enabled = narration.isNotBlank() && visual.isNotBlank()) { Text("SAVE") } },
+        dismissButton = { TextButton(onDismiss) { Text("CANCEL") } }
+    )
 }
 
 private fun storyboardFile(context: Context, id: String, index: Int) =
