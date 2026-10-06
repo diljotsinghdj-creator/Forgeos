@@ -15,7 +15,7 @@ import java.util.zip.ZipEntry;
 
 public class MainActivity extends Activity {
  private final int GOLD=Color.rgb(212,175,55);
- private LinearLayout projects,files; private TextView status,log; private Button build;
+ private LinearLayout projects,files; private TextView status,log; private Button build,inspect;
  private File active; private static final long MAX_UNPACKED=250L*1024*1024;
  @Override public void onCreate(Bundle b){super.onCreate(b);setContentView(ui());restore();}
  private View ui(){
@@ -24,7 +24,7 @@ public class MainActivity extends Activity {
   r.addView(txt("FORGEOS",30,GOLD,true));r.addView(txt("Android Development Workspace",14,Color.LTGRAY,false));
   LinearLayout c=panel();c.addView(txt("WORKSPACE CONTROL",12,GOLD,true));status=txt("Ready",16,Color.WHITE,true);c.addView(status);c.addView(txt("Import a project ZIP. ForgeOS extracts it into an isolated private workspace, validates Android/Gradle structure and preserves it between launches.",13,Color.LTGRAY,false));r.addView(c);
   Button imp=btn("IMPORT PROJECT ZIP");imp.setOnClickListener(v->{Intent x=new Intent(Intent.ACTION_OPEN_DOCUMENT);x.setType("application/zip");x.addCategory(Intent.CATEGORY_OPENABLE);startActivityForResult(x,100);});r.addView(imp);
-  Button inspect=btn("SOVEREIGN INSPECT");inspect.setOnClickListener(v->runLocalInspection());r.addView(inspect);
+  inspect=btn("SOVEREIGN INSPECT");inspect.setEnabled(false);inspect.setOnClickListener(v->runLocalInspection());r.addView(inspect);
   build=btn("BUILD APK");build.setEnabled(false);build.setOnClickListener(v->requestRemoteBuild());r.addView(build);
   r.addView(txt("PROJECT",12,GOLD,true));projects=panel();projects.addView(txt("No project imported yet",15,Color.LTGRAY,false));r.addView(projects);
   r.addView(txt("FILES",12,GOLD,true));files=panel();files.addView(txt("Workspace empty",13,Color.GRAY,false));r.addView(files);
@@ -33,7 +33,7 @@ public class MainActivity extends Activity {
  }
  @Override protected void onActivityResult(int q,int result,Intent data){super.onActivityResult(q,result,data);if(q==100&&result==RESULT_OK&&data!=null&&data.getData()!=null)importZip(data.getData());}
  private void importZip(Uri uri){
-  status.setText("Importing project...");build.setEnabled(false);
+  status.setText("Importing project...");build.setEnabled(false);inspect.setEnabled(false);
   new Thread(()->{try{
    File root=new File(getFilesDir(),"workspaces");if(!root.exists())root.mkdirs();
    File dst=new File(root,"project_"+System.currentTimeMillis());dst.mkdirs();
@@ -63,7 +63,7 @@ public class MainActivity extends Activity {
   status.setText("Workspace ready");projects.removeAllViews();projects.addView(txt(active.getName(),16,Color.WHITE,true));
   boolean gradle=new File(active,"settings.gradle.kts").exists()||new File(active,"settings.gradle").exists();
   projects.addView(txt(gradle?"Gradle project detected":"Gradle build files detected",12,GOLD,false));
-  files.removeAllViews();showFiles(active,files,0);build.setEnabled(true);append(message);
+  files.removeAllViews();showFiles(active,files,0);inspect.setEnabled(true);build.setEnabled(true);append(message);
  }
  private void showFiles(File d,LinearLayout box,int depth){
   File[] a=d.listFiles();if(a==null)return;Arrays.sort(a,(x,y)->x.getName().compareToIgnoreCase(y.getName()));
