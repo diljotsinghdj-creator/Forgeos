@@ -31,7 +31,6 @@ public final class ContinuousEngine {
  }
  public String submit(String objective, MissionTask task)throws Exception{
   final String id=store.create(objective);
-  MissionRecoveryWorker.schedule(storeContext(),id);
   executor.submit(()->run(id,task));
   return id;
  }
