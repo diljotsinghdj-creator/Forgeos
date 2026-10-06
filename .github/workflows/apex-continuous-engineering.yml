@@ -51,7 +51,24 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          gradle --no-daemon --stacktrace lintDebug testDebugUnitTest assembleDebug
+          mkdir -p apex-diagnostics
+          set +e
+          gradle --no-daemon --stacktrace lintDebug testDebugUnitTest assembleDebug 2>&1 | tee apex-diagnostics/gradle.log
+          rc=${PIPESTATUS[0]}
+          set -e
+          if [ "$rc" -ne 0 ]; then
+            grep -E '(^FAILURE:|^\* What went wrong:|^Execution failed|error:|Exception|Caused by:)' apex-diagnostics/gradle.log | tail -n 120 > apex-diagnostics/failure-summary.txt || true
+            exit "$rc"
+          fi
+
+      - name: Upload failure diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: apex-failure-diagnostics-${{ github.sha }}
+          path: apex-diagnostics/
+          if-no-files-found: warn
+          retention-days: 14
 
       - name: Verify APK
         shell: bash
