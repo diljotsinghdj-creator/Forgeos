@@ -36,21 +36,28 @@ public final class ContinuousEngine {
   return id;
  }
  private void run(String id,MissionTask task){
+  String lease=null;
   try{
-   String lease=store.claimLease(id);if(lease==null)return;
-   store.checkpoint(id,MissionStore.State.RUNNING,"Mission worker started");
-   task.run(new MissionContext(id,store));
-   store.checkpoint(id,MissionStore.State.VERIFIED,"Mission task completed without exception");
+   lease=store.claimLease(id);if(lease==null)return;
+   if(!store.checkpointOwned(id,lease,MissionStore.State.RUNNING,"Mission worker started"))return;
+   task.run(new MissionContext(id,lease,store));
+   if(!store.checkpointOwned(id,lease,MissionStore.State.VERIFIED,"Mission task completed without exception"))return;
    store.checkpoint(id,MissionStore.State.COMPLETE,"Mission complete");
   }catch(Throwable t){
-   try{store.checkpoint(id,MissionStore.State.FAILED,t.getClass().getSimpleName()+": "+String.valueOf(t.getMessage()));}catch(Exception ignored){}
+   try{
+    if(lease!=null)store.checkpointOwned(id,lease,MissionStore.State.FAILED,t.getClass().getSimpleName()+": "+String.valueOf(t.getMessage()));
+   }catch(Exception ignored){}
   }
  }
  public interface MissionTask { void run(MissionContext context)throws Exception; }
  public static final class MissionContext {
-  public final String id; private final MissionStore store;
-  MissionContext(String id,MissionStore s){this.id=id;store=s;}
-  public void checkpoint(String note)throws Exception{store.checkpoint(id,MissionStore.State.CHECKPOINTED,note);}
-  public void block(String note)throws Exception{store.checkpoint(id,MissionStore.State.BLOCKED,note);}
+  public final String id; private final String lease; private final MissionStore store;
+  MissionContext(String id,String lease,MissionStore s){this.id=id;this.lease=lease;store=s;}
+  public void checkpoint(String note)throws Exception{
+   if(!store.checkpointOwned(id,lease,MissionStore.State.RUNNING,note))throw new IllegalStateException("Mission lease lost");
+  }
+  public void block(String note)throws Exception{
+   if(!store.checkpointOwned(id,lease,MissionStore.State.BLOCKED,note))throw new IllegalStateException("Mission lease lost");
+  }
  }
 }
