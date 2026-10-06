@@ -8,7 +8,20 @@ public final class ContinuousEngine {
  private static volatile ContinuousEngine INSTANCE;
  private final MissionStore store;
  private final ExecutorService executor=Executors.newSingleThreadExecutor();
- private ContinuousEngine(Context c){store=new MissionStore(c.getApplicationContext());}
+ private ContinuousEngine(Context c){
+  store=new MissionStore(c.getApplicationContext());
+  recoverInterrupted();
+ }
+ private void recoverInterrupted(){
+  executor.submit(()->{
+   try{
+    for(org.json.JSONObject j:store.recoverable()){
+     String id=j.getString("id");
+     store.checkpoint(id,MissionStore.State.BLOCKED,"Recovered after process restart; execution payload requires explicit safe rebind");
+    }
+   }catch(Exception ignored){}
+  });
+ }
  public static ContinuousEngine get(Context c){
   if(INSTANCE==null)synchronized(ContinuousEngine.class){if(INSTANCE==null)INSTANCE=new ContinuousEngine(c);}
   return INSTANCE;
