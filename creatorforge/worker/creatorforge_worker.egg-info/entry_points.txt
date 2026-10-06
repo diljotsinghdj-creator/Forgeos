@@ -1,0 +1,2 @@
+[console_scripts]
+creatorforge-worker = creatorforge_worker.__main__:main

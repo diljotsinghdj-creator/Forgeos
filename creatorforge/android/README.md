@@ -1,15 +1,18 @@
-# CreatorForge v1.0 RC10.2 — v1.0 production-path wiring
+# CreatorForge v1.0 RC11 (Android controller)
 
-Built forward from the verified RC10.1 device checkpoint.
+Your phone runs the studio. The heavy AI generation runs on your self-hosted worker
+(`../worker`).
 
-This release wires existing components into the real production path instead of adding decorative features:
-- per-scene self-hosted WAV narration generation
-- narration path persistence in the existing project model/store
-- Studio export gate requires every visual AND every narration asset
-- real AndroidMediaCodecVideoRenderer invocation
-- real AndroidAacNarrationComposer invocation
-- MP4 audio/video muxing through AvExportCoordinator
-- live export progress/error state in Studio
-- fail-closed export if required assets are missing
-
-Real model generation and MP4 device output are not claimed until tested on the connected worker/device.
+- **Generate** tab, the one-button flow: type an idea, then choose length, format
+  (9:16 / 16:9 / 1:1), template, voice and pacing. Optionally set Director Mode: style, mood,
+  camera and recurring characters. Tap **GENERATE VIDEO**.
+  - While it runs you see each stage live: Director → PromptForge → visuals → narration →
+    captions → music → edit/render → verify.
+  - A storyboard appears as each scene's image arrives, and you can regenerate any single scene.
+  - **Cancel** keeps finished assets. **Retry / Resume** continues from the failed stage.
+  - When the production is ready, the verified MP4 downloads and you can **Play**, **Share** or
+    **Save** it to `Movies/CreatorForge`.
+- **Settings**: worker URL and worker token (stored encrypted). Plain `http://` is allowed so a
+  worker on your home network works. Use `https://` anywhere else.
+- **Create / Projects / Studio**: the RC10 manual workflow (per-scene generation and on-device
+  MP4 export). It still works offline from the worker's render pipeline.

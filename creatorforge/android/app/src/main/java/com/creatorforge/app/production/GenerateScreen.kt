@@ -1,0 +1,314 @@
+package com.creatorforge.app.production
+
+import android.content.ContentValues
+import android.content.Context
+import android.content.Intent
+import android.os.Build
+import android.provider.MediaStore
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.core.content.FileProvider
+import coil.compose.AsyncImage
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import java.io.File
+
+private val Gold = Color(0xFFD4AF37)
+private val Danger = Color(0xFFE57373)
+
+private val FALLBACK_TEMPLATES = listOf(
+    Choice("shorts_cinematic", "Cinematic Short"), Choice("reels_punchy", "Punchy Reel / TikTok"),
+    Choice("square_social", "Square Social Post"), Choice("explainer", "Clear Explainer"),
+    Choice("youtube_longform", "YouTube Documentary")
+)
+private val STAGE_LABELS = mapOf(
+    "director" to "AI Director • script & shots", "prompts" to "PromptForge", "images" to "Scene visuals",
+    "narration" to "Narration", "captions" to "Captions", "music" to "Music", "assembly" to "Edit & render",
+    "verify" to "Verify MP4"
+)
+
+@Composable
+fun GenerateScreen() {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val worker = remember { context.getSharedPreferences("creatorforge_provider", 0) }
+    val prefs = remember { context.getSharedPreferences("creatorforge_generate", 0) }
+    val client = remember { ProductionClient(worker.getString("base_url", "").orEmpty()) }
+
+    var caps by remember { mutableStateOf<Capabilities?>(null) }
+    var capsError by remember { mutableStateOf<String?>(null) }
+    var idea by remember { mutableStateOf(prefs.getString("idea", "").orEmpty()) }
+    var duration by remember { mutableIntStateOf(prefs.getInt("duration", 45)) }
+    var aspect by remember { mutableStateOf(prefs.getString("aspect", "9:16").orEmpty()) }
+    var template by remember { mutableStateOf(prefs.getString("template", "shorts_cinematic").orEmpty()) }
+    var voice by remember { mutableStateOf(prefs.getString("voice", "").orEmpty()) }
+    var pacing by remember { mutableStateOf(prefs.getString("pacing", "medium").orEmpty()) }
+    var music by remember { mutableStateOf(prefs.getBoolean("music", true)) }
+    var captions by remember { mutableStateOf(prefs.getBoolean("captions", true)) }
+    var director by remember { mutableStateOf(false) }
+    var style by remember { mutableStateOf(prefs.getString("style", "").orEmpty()) }
+    var mood by remember { mutableStateOf(prefs.getString("mood", "").orEmpty()) }
+    var camera by remember { mutableStateOf(prefs.getString("camera", "").orEmpty()) }
+    var characters by remember { mutableStateOf(prefs.getString("characters", "").orEmpty()) }
+
+    var activeId by remember { mutableStateOf(prefs.getString("active", null)) }
+    var production by remember { mutableStateOf<ProductionView?>(null) }
+    var error by remember { mutableStateOf<String?>(null) }
+    var notice by remember { mutableStateOf<String?>(null) }
+    var pollKey by remember { mutableIntStateOf(0) }
+    var busy by remember { mutableStateOf(false) }
+    var recent by remember { mutableStateOf<List<ProductionSummary>>(emptyList()) }
+    var videoFile by remember { mutableStateOf<File?>(null) }
+    var storyboardVersion by remember { mutableIntStateOf(0) }
+
+    LaunchedEffect(Unit) {
+        runCatching { client.capabilities() }.onSuccess { c ->
+            caps = c
+            if (voice.isBlank() || c.voices.none { it.id == voice }) voice = c.voices.firstOrNull()?.id.orEmpty()
+        }.onFailure { capsError = it.message }
+        runCatching { client.list() }.onSuccess { recent = it }
+    }
+
+    // Poll the active production until it reaches a terminal state, then fetch the verified MP4.
+    LaunchedEffect(activeId, pollKey) {
+        val id = activeId ?: return@LaunchedEffect
+        videoFile = null
+        while (true) {
+            val p = runCatching { client.get(id) }.onFailure { error = it.message }.getOrNull()
+            if (p != null) {
+                production = p
+                error = null
+                syncStoryboard(context, client, p) { storyboardVersion++ }
+                if (p.status == "READY") {
+                    val dest = File(context.getExternalFilesDir("Movies") ?: context.filesDir, "CreatorForge_${p.id}.mp4")
+                    videoFile = if (dest.isFile && isMp4(dest)) dest else
+                        runCatching { client.fetch("/v1/productions/${p.id}/video", dest, ::isMp4) }
+                            .onFailure { error = it.message }.getOrNull()
+                }
+                if (p.terminal) break
+            }
+            delay(2000)
+        }
+        runCatching { client.list() }.onSuccess { recent = it }
+    }
+
+    fun setActive(id: String?) {
+        activeId = id
+        production = null
+        prefs.edit().putString("active", id).apply()
+    }
+
+    fun act(block: suspend () -> ProductionView) {
+        busy = true
+        notice = null
+        scope.launch {
+            runCatching { block() }.onSuccess { p ->
+                production = p
+                error = null
+                if (activeId != p.id) { activeId = p.id; prefs.edit().putString("active", p.id).apply() }
+                if (!p.terminal) pollKey++ // (re)start polling after create / retry / regenerate
+            }.onFailure { error = it.message }
+            busy = false
+        }
+    }
+
+    LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp), contentPadding = PaddingValues(bottom = 32.dp)) {
+        item { Column {
+            Text("GENERATE VIDEO", color = Gold, fontSize = 30.sp)
+            Text("One idea in. One verified MP4 out.", color = Color.LightGray)
+            caps?.let { c ->
+                if (!c.productionReady) Text("Worker not fully configured:\n" + c.problems.joinToString("\n"), color = Danger, fontSize = 12.sp)
+            }
+            capsError?.let { Text(it, color = Danger, fontSize = 12.sp) }
+        } }
+
+        production?.let { p ->
+            item {
+                ProductionCard(p, videoFile, busy,
+                    onCancel = { act { client.cancel(p.id) } },
+                    onRetry = { act { client.retry(p.id) } },
+                    onNew = { setActive(null) },
+                    onPlay = { f -> open(context, f, Intent.ACTION_VIEW) },
+                    onShare = { f -> open(context, f, Intent.ACTION_SEND) },
+                    onSave = { f -> notice = saveToGallery(context, f) },
+                    onDownload = { pollKey++ })
+            }
+            if (p.scenes.isNotEmpty()) item {
+                key(storyboardVersion) { Storyboard(context, p, busy || !p.terminal) { i ->
+                    storyboardFile(context, p.id, i).delete()
+                    act { client.regenerateScene(p.id, i) }
+                } }
+            }
+        }
+        if (production == null && activeId != null) item {
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text("Loading production…", color = Color.LightGray, modifier = Modifier.padding(top = 12.dp))
+                OutlinedButton({ setActive(null) }) { Text("NEW VIDEO") }
+            }
+        }
+        error?.let { item { Text(it, color = Danger) } }
+        notice?.let { item { Text(it, color = Gold) } }
+
+        if (production == null && activeId == null) {
+            item {
+                OutlinedTextField(idea, { idea = it }, Modifier.fillMaxWidth(), minLines = 4,
+                    label = { Text("Your idea") },
+                    placeholder = { Text("A 45-second cinematic short explaining how humanoid robots could change warehouses") })
+            }
+            item { Column {
+                Label("LENGTH")
+                ChipRow(listOf(15, 30, 45, 60, 90, 180).map { "$it" to "${it}s" }, "$duration") { duration = it.toInt() }
+                Label("FORMAT")
+                ChipRow(listOf("9:16" to "9:16 Shorts", "16:9" to "16:9 YouTube", "1:1" to "1:1 Square"), aspect) { aspect = it }
+                Label("TEMPLATE")
+                ChipRow((caps?.templates ?: FALLBACK_TEMPLATES).map { it.id to it.name }, template) { template = it }
+                caps?.voices?.takeIf { it.isNotEmpty() }?.let { vs ->
+                    Label("VOICE"); ChipRow(vs.map { it.id to it.name }, voice) { voice = it }
+                }
+                Label("PACING")
+                ChipRow(listOf("slow" to "Slow", "medium" to "Medium", "fast" to "Fast"), pacing) { pacing = it }
+                Row { Switch(music, { music = it }); Text(" Music", Modifier.padding(top = 12.dp, end = 16.dp)); Switch(captions, { captions = it }); Text(" Captions", Modifier.padding(top = 12.dp)) }
+                TextButton({ director = !director }) { Text(if (director) "▾ Director Mode" else "▸ Director Mode", color = Gold) }
+                if (director) {
+                    OutlinedTextField(style, { style = it }, Modifier.fillMaxWidth(), label = { Text("Visual style (blank = template)") })
+                    OutlinedTextField(mood, { mood = it }, Modifier.fillMaxWidth(), label = { Text("Mood") })
+                    OutlinedTextField(camera, { camera = it }, Modifier.fillMaxWidth(), label = { Text("Camera direction") })
+                    OutlinedTextField(characters, { characters = it }, Modifier.fillMaxWidth(), minLines = 2,
+                        label = { Text("Characters - one per line: Name: description") })
+                }
+            } }
+            item {
+                Button(enabled = idea.trim().length >= 5 && !busy, modifier = Modifier.fillMaxWidth().height(56.dp), onClick = {
+                    prefs.edit().putString("idea", idea).putInt("duration", duration).putString("aspect", aspect)
+                        .putString("template", template).putString("voice", voice).putString("pacing", pacing)
+                        .putBoolean("music", music).putBoolean("captions", captions).putString("style", style)
+                        .putString("mood", mood).putString("camera", camera).putString("characters", characters).apply()
+                    val chars = characters.lines().mapNotNull { l ->
+                        val i = l.indexOf(':'); if (i > 0) l.substring(0, i).trim() to l.substring(i + 1).trim() else null
+                    }.filter { it.first.isNotBlank() && it.second.isNotBlank() }
+                    act { client.create(ProductionRequest(idea.trim(), duration, aspect, template, voice, pacing, style.trim(), mood.trim(), camera.trim(), chars, music, captions)) }
+                }) { Text(if (busy) "STARTING…" else "GENERATE VIDEO", fontSize = 18.sp) }
+            }
+            if (recent.isNotEmpty()) {
+                item { Label("RECENT PRODUCTIONS") }
+                recent.take(10).forEach { r ->
+                    item {
+                        OutlinedButton({ setActive(r.id) }, Modifier.fillMaxWidth()) {
+                            Text("${r.title.take(40)}  •  ${r.status}${if (r.status == "RUNNING") " ${(r.progress * 100).toInt()}%" else ""}")
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun Label(t: String) { Spacer(Modifier.height(8.dp)); Text(t, color = Gold, fontSize = 12.sp) }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ChipRow(options: List<Pair<String, String>>, selected: String, onSelect: (String) -> Unit) {
+    Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+        options.forEach { (id, label) -> FilterChip(selected = id == selected, onClick = { onSelect(id) }, label = { Text(label) }) }
+    }
+}
+
+@Composable
+private fun ProductionCard(
+    p: ProductionView, video: File?, busy: Boolean, onCancel: () -> Unit, onRetry: () -> Unit, onNew: () -> Unit,
+    onPlay: (File) -> Unit, onShare: (File) -> Unit, onSave: (File) -> Unit, onDownload: () -> Unit
+) {
+    Card { Column(Modifier.padding(16.dp)) {
+        Text(p.title.ifBlank { "New production" }, color = Gold, fontSize = 20.sp)
+        if (p.hook.isNotBlank()) Text("Hook: ${p.hook}", color = Color.LightGray, fontSize = 13.sp)
+        Text("${p.status} • ${p.message}", color = when (p.status) { "READY" -> Gold; "FAILED" -> Danger; else -> Color.White })
+        Spacer(Modifier.height(8.dp))
+        LinearProgressIndicator(progress = { p.progress }, modifier = Modifier.fillMaxWidth())
+        Spacer(Modifier.height(8.dp))
+        p.stages.forEach { s ->
+            val mark = when (s.state) { "READY" -> "✓"; "SKIPPED" -> "–"; "RUNNING" -> "●"; "FAILED" -> "✗"; else -> "○" }
+            val count = if (s.total > 0 && s.state == "RUNNING") " ${s.done}/${s.total}" else ""
+            Text("$mark ${STAGE_LABELS[s.name] ?: s.name}$count", fontSize = 13.sp,
+                color = when (s.state) { "READY" -> Gold; "FAILED" -> Danger; "RUNNING" -> Color.White; else -> Color.Gray })
+            s.error?.let { Text("   $it", color = Danger, fontSize = 11.sp) }
+        }
+        p.verification?.let { Spacer(Modifier.height(6.dp)); Text("Verified: $it", color = Gold, fontSize = 12.sp) }
+        if (p.providers.isNotEmpty()) Text(p.providers.entries.joinToString(" • ") { "${it.key}: ${it.value}" }, color = Color.Gray, fontSize = 11.sp)
+        Spacer(Modifier.height(10.dp))
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            if (!p.terminal) OutlinedButton(onCancel, enabled = !busy) { Text("CANCEL") }
+            if (p.status == "FAILED" || p.status == "CANCELLED") Button(onRetry, enabled = !busy) { Text("RETRY / RESUME") }
+            if (p.terminal) OutlinedButton(onNew) { Text("NEW VIDEO") }
+        }
+        if (p.status == "READY") {
+            if (video == null) OutlinedButton(onDownload) { Text("DOWNLOAD MP4") }
+            else Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Button({ onPlay(video) }) { Text("PLAY") }
+                OutlinedButton({ onShare(video) }) { Text("SHARE") }
+                OutlinedButton({ onSave(video) }) { Text("SAVE") }
+            }
+        }
+    } }
+}
+
+@Composable
+private fun Storyboard(context: Context, p: ProductionView, locked: Boolean, onRegenerate: (Int) -> Unit) {
+    Column {
+        Label("STORYBOARD")
+        p.scenes.forEach { s ->
+            Card(Modifier.fillMaxWidth().padding(vertical = 4.dp)) { Column(Modifier.padding(12.dp)) {
+                Text("Scene ${s.index + 1} • visual ${s.imageState} • voice ${s.voiceState}", color = Gold, fontSize = 12.sp)
+                val f = storyboardFile(context, p.id, s.index)
+                if (f.isFile) AsyncImage(model = f, contentDescription = "Scene ${s.index + 1}", modifier = Modifier.fillMaxWidth().height(200.dp))
+                if (s.narration.isNotBlank()) Text("“${s.narration}”", color = Color.LightGray, fontSize = 13.sp)
+                s.error?.let { Text(it, color = Danger, fontSize = 11.sp) }
+                if (s.hasImage) TextButton({ onRegenerate(s.index) }, enabled = !locked) { Text("REGENERATE VISUAL") }
+            } }
+        }
+    }
+}
+
+private fun storyboardFile(context: Context, id: String, index: Int) =
+    File(File(context.cacheDir, "storyboard").apply { mkdirs() }, "${id}_$index.png")
+
+private suspend fun syncStoryboard(context: Context, client: ProductionClient, p: ProductionView, changed: () -> Unit) {
+    var any = false
+    p.scenes.filter { it.hasImage && it.imageState == "READY" }.forEach { s ->
+        val f = storyboardFile(context, p.id, s.index)
+        if (!f.isFile && runCatching { client.fetch("/v1/productions/${p.id}/scenes/${s.index}/image", f, ::isImage) }.isSuccess) any = true
+    }
+    if (any) changed()
+}
+
+private fun open(context: Context, file: File, action: String) {
+    val uri = FileProvider.getUriForFile(context, "${context.packageName}.files", file)
+    val intent = Intent(action).addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+    if (action == Intent.ACTION_SEND) intent.setType("video/mp4").putExtra(Intent.EXTRA_STREAM, uri)
+    else intent.setDataAndType(uri, "video/mp4")
+    context.startActivity(Intent.createChooser(intent, null).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+}
+
+/** Copies the MP4 into the shared Movies/CreatorForge folder. Returns an error message or null. */
+private fun saveToGallery(context: Context, file: File): String? {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) return "Kept in app storage: ${file.absolutePath} (use SHARE to export on this Android version)"
+    return runCatching {
+        val values = ContentValues().apply {
+            put(MediaStore.Video.Media.DISPLAY_NAME, file.name)
+            put(MediaStore.Video.Media.MIME_TYPE, "video/mp4")
+            put(MediaStore.Video.Media.RELATIVE_PATH, "Movies/CreatorForge")
+        }
+        val uri = context.contentResolver.insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values) ?: error("MediaStore refused the file")
+        context.contentResolver.openOutputStream(uri)!!.use { out -> file.inputStream().use { it.copyTo(out) } }
+        "Saved to Movies/CreatorForge"
+    }.getOrElse { "Save failed: ${it.message}" }
+}

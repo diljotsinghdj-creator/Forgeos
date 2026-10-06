@@ -1,0 +1,62 @@
+name: CreatorForge
+on:
+  push:
+    branches: [ "**" ]
+    paths: [ "creatorforge/**", ".github/workflows/creatorforge.yml" ]
+  pull_request:
+    branches: [ "main" ]
+    paths: [ "creatorforge/**", ".github/workflows/creatorforge.yml" ]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: creatorforge-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  worker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: creatorforge/worker
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install FFmpeg
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends ffmpeg fonts-dejavu-core
+      - name: Install worker
+        run: pip install -e ".[test]"
+      - name: End-to-end tests (render + verify real MP4s)
+        run: pytest -q
+  android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: creatorforge/android
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.10.2"
+      - name: Build debug APK
+        run: gradle --no-daemon --stacktrace assembleDebug
+      - name: Verify APK
+        run: |
+          set -euo pipefail
+          mkdir -p out
+          cp app/build/outputs/apk/debug/*.apk out/CreatorForge-debug.apk
+          test -s out/CreatorForge-debug.apk
+          (cd out && sha256sum *.apk | tee SHA256SUMS.txt)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: CreatorForge-debug-apk
+          path: creatorforge/android/out/
+          if-no-files-found: error
+          retention-days: 14

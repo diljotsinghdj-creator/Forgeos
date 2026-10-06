@@ -2,7 +2,7 @@ name: Build ForgeOS APK
 on:
   push:
     branches: [ "**" ]
-    paths-ignore: [ "build-requests/**", "repair-sources/**" ]
+    paths-ignore: [ "build-requests/**", "repair-sources/**", "creatorforge/**" ]
   pull_request:
     branches: [ "main" ]
   workflow_dispatch:
