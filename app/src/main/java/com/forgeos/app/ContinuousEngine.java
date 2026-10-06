@@ -41,8 +41,7 @@ public final class ContinuousEngine {
    lease=store.claimLease(id);if(lease==null)return;
    if(!store.checkpointOwned(id,lease,MissionStore.State.RUNNING,"Mission worker started"))return;
    task.run(new MissionContext(id,lease,store));
-   if(!store.checkpointOwned(id,lease,MissionStore.State.VERIFIED,"Mission task completed without exception"))return;
-   store.checkpoint(id,MissionStore.State.COMPLETE,"Mission complete");
+   if(!store.checkpointOwned(id,lease,MissionStore.State.COMPLETE,"Mission verified and complete"))return;
   }catch(Throwable t){
    try{
     if(lease!=null)store.checkpointOwned(id,lease,MissionStore.State.FAILED,t.getClass().getSimpleName()+": "+String.valueOf(t.getMessage()));
