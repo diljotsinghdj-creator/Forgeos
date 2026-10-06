@@ -14,7 +14,8 @@ import java.util.concurrent.TimeUnit
 
 data class Choice(val id: String, val name: String)
 
-data class Capabilities(val templates: List<Choice>, val voices: List<Choice>, val productionReady: Boolean, val problems: List<String>, val aiVideo: Boolean)
+data class Capabilities(val templates: List<Choice>, val voices: List<Choice>, val productionReady: Boolean, val problems: List<String>, val aiVideo: Boolean,
+                        val styles: List<Choice> = emptyList())
 
 data class StageView(val name: String, val state: String, val done: Int, val total: Int, val error: String?)
 
@@ -93,7 +94,8 @@ class ProductionClient(baseUrl: String) {
         Capabilities(
             choices(c.optJSONArray("templates")), choices(c.optJSONArray("voices")),
             health.optBoolean("production_ready"), problems,
-            (0 until (c.optJSONArray("motion")?.length() ?: 0)).any { c.getJSONArray("motion").optString(it) == "ai_video" }
+            (0 until (c.optJSONArray("motion")?.length() ?: 0)).any { c.getJSONArray("motion").optString(it) == "ai_video" },
+            choices(c.optJSONArray("styles"))
         )
     }
 

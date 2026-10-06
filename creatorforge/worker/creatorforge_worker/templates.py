@@ -51,3 +51,20 @@ TEMPLATES: dict[str, Template] = {t.id: t for t in [
 
 PACING = {"slow": 1.3, "medium": 1.0, "fast": 0.75}
 WORDS_PER_SECOND = 2.5
+
+# Director Mode looks. Applied to every scene image and carried into the animation prompt.
+STYLE_PRESETS: dict[str, tuple[str, str]] = {
+    "hyperreal": ("Hyper-realistic", "hyper-realistic photograph, 8k detail, natural skin texture, real-world lighting, "
+                  "shot on a full-frame camera, 50mm lens, true-to-life colors"),
+    "cinematic": ("Cinematic film", "cinematic film still, anamorphic lens, dramatic volumetric lighting, film grain, "
+                  "teal and orange grade, shallow depth of field"),
+    "documentary": ("Documentary", "documentary photography, natural available light, candid, realistic textures, "
+                    "handheld feel, muted natural colors"),
+    "animated_3d": ("3D animated", "high-end 3D animated feature film style, expressive stylized characters, soft global "
+                    "illumination, subsurface scattering, vibrant colors"),
+    "anime": ("Anime", "anime key visual, cel shading, crisp line art, vivid colors, detailed painted background"),
+    "claymation": ("Claymation", "stop-motion claymation style, handmade clay figures, visible fingerprints, miniature "
+                   "set, soft studio lighting"),
+    "watercolor": ("Watercolor", "watercolor illustration, soft washes, paper texture, gentle hand-drawn lines"),
+    "comic": ("Comic book", "comic book art, bold ink outlines, halftone shading, dynamic composition, saturated colors"),
+}

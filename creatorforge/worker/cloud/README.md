@@ -19,12 +19,13 @@ app. There's no subscription, and you pay only while the machine is running.
 curl -fsSL https://raw.githubusercontent.com/diljotsinghdj-creator/Forgeos/claude/forgeos-visibility-47vgwp/creatorforge/worker/cloud/setup_gpu.sh | bash
 ```
 
-The first run downloads about 35 GB of open models and takes 10–20 minutes:
+The first run downloads about 60 GB of open models and takes 15–30 minutes:
 
 | Job | Model |
 |---|---|
 | Script writing | Qwen 2.5 7B, via Ollama |
 | Images | FLUX.1-schnell (Apache-2.0) |
+| Realistic AI video | **Wan 2.2** TI2V-5B (Apache-2.0, 720p) |
 | Voices | Kokoro: warm US female, deep US male, British female, British male |
 | Captions | Whisper |
 
@@ -42,6 +43,11 @@ Worker token: <random token>
 
 The first video is slow because the models load into GPU memory. Later videos are much faster.
 
+For realistic moving shots, turn on **AI video clips** in Generate and pick a look under
+**Director Mode → Style** (Hyper-realistic, Cinematic, 3D animated, Anime and so on). Animating
+takes a few minutes per scene on a 24 GB GPU, so a 45-second video can take 20–40 minutes. Start
+with 15–30 seconds.
+
 ## Every time after that
 
 - **Start** the pod in RunPod, open the web terminal, and paste the same command. It takes about a
@@ -52,7 +58,8 @@ The first video is slow because the models load into GPU memory. Later videos ar
 
 | Variable | Effect |
 |---|---|
-| `CF_ENABLE_VIDEO=1` | Also downloads LTX-Video, so **AI video clips** can be used. Pick a 48 GB GPU (A6000 / L40S) for this |
+| `CF_VIDEO=max` | Uses **Wan 2.2 I2V-A14B**, the most realistic motion. Needs an **80 GB GPU** (A100 / H100) and a 200 GB volume |
+| `CF_VIDEO=off` | Skips the video model (stills with camera motion only) |
 | `CF_LLM_MODEL=qwen2.5:14b-instruct` | A stronger script writer (needs more VRAM) |
 | `CF_IMAGE_MODEL=...` | A different diffusers image model. Check its licence |
 

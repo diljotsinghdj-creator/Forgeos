@@ -26,7 +26,7 @@ from .pipeline import Pipeline
 from .providers.base import NotConfigured, ProviderError
 from .runner import Runner
 from .store import JobStore
-from .templates import ASPECTS, TEMPLATES
+from .templates import ASPECTS, STYLE_PRESETS, TEMPLATES
 
 
 def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
@@ -95,6 +95,7 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
         return {"templates": [{"id": t.id, "name": t.name, "aspect": t.aspect} for t in TEMPLATES.values()],
                 "aspects": list(ASPECTS), "pacing": ["slow", "medium", "fast"],
                 "motion": ["stills"] + (["ai_video"] if cfg.video_provider else []),
+                "styles": [{"id": k, "name": v[0]} for k, v in STYLE_PRESETS.items()],
                 "voices": [{"id": v.id, "name": v.name, "provider": v.provider} for v in cfg.voices + pipeline.library_voices()],
                 "providers": provider_status()}
 

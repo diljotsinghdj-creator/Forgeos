@@ -30,6 +30,11 @@ private val FALLBACK_TEMPLATES = listOf(
     Choice("square_social", "Square Social Post"), Choice("explainer", "Clear Explainer"),
     Choice("youtube_longform", "YouTube Documentary")
 )
+private val FALLBACK_STYLES = listOf(
+    Choice("hyperreal", "Hyper-realistic"), Choice("cinematic", "Cinematic film"), Choice("documentary", "Documentary"),
+    Choice("animated_3d", "3D animated"), Choice("anime", "Anime"), Choice("claymation", "Claymation"),
+    Choice("watercolor", "Watercolor"), Choice("comic", "Comic book")
+)
 private val STAGE_LABELS = mapOf(
     "director" to "AI Director • script & shots", "prompts" to "PromptForge", "images" to "Scene visuals",
     "review" to "Storyboard review", "narration" to "Narration", "clips" to "AI video clips", "captions" to "Captions", "music" to "Music", "assembly" to "Edit & render",
@@ -57,6 +62,7 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
     var captions by remember { mutableStateOf(prefs.getBoolean("captions", true)) }
     var director by remember { mutableStateOf(false) }
     var style by remember { mutableStateOf(prefs.getString("style", "").orEmpty()) }
+    var customLook by remember { mutableStateOf(style.isNotBlank() && FALLBACK_STYLES.none { it.id == style }) }
     var mood by remember { mutableStateOf(prefs.getString("mood", "").orEmpty()) }
     var camera by remember { mutableStateOf(prefs.getString("camera", "").orEmpty()) }
     var characters by remember { mutableStateOf(prefs.getString("characters", "").orEmpty()) }
@@ -255,7 +261,7 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                 }
                 Label("PACING")
                 ChipRow(listOf("slow" to "Slow", "medium" to "Medium", "fast" to "Fast"), pacing) { pacing = it }
-                Row { Switch(aiVideo, { aiVideo = it }, enabled = caps?.aiVideo == true || aiVideo); Text(if (caps?.aiVideo == false) " AI video clips (no video model on worker)" else " AI video clips", Modifier.padding(top = 12.dp)) }
+                Row { Switch(aiVideo, { aiVideo = it }, enabled = caps?.aiVideo == true || aiVideo); Text(if (caps?.aiVideo == false) " AI video clips (no video model on worker)" else " AI video clips - realistic motion (slower)", Modifier.padding(top = 12.dp)) }
                 Row { Switch(autoEdit, { autoEdit = it }); Text(" Auto Edit (AI picks transitions, emphasis, pauses)", Modifier.padding(top = 12.dp)) }
                 Row { Switch(review, { review = it }); Text(" Review storyboard before render", Modifier.padding(top = 12.dp)) }
                 val tracks = assets.filter { it.kind == "music" }
@@ -267,7 +273,14 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                 Row { Switch(music, { music = it }); Text(" Music", Modifier.padding(top = 12.dp, end = 16.dp)); Switch(captions, { captions = it }); Text(" Captions", Modifier.padding(top = 12.dp)) }
                 TextButton({ director = !director }) { Text(if (director) "▾ Director Mode" else "▸ Director Mode", color = Gold) }
                 if (director) {
-                    OutlinedTextField(style, { style = it }, Modifier.fillMaxWidth(), label = { Text("Visual style (blank = template)") })
+                    val presets = caps?.styles?.takeIf { it.isNotEmpty() } ?: FALLBACK_STYLES
+                    Label("LOOK")
+                    ChipRow(listOf("" to "Template") + presets.map { it.id to it.name } + listOf("__custom" to "Custom…"),
+                        if (customLook) "__custom" else style) { choice ->
+                        customLook = choice == "__custom"
+                        style = if (customLook) "" else choice
+                    }
+                    if (customLook) OutlinedTextField(style, { style = it }, Modifier.fillMaxWidth(), label = { Text("Describe the look") })
                     OutlinedTextField(mood, { mood = it }, Modifier.fillMaxWidth(), label = { Text("Mood") })
                     OutlinedTextField(camera, { camera = it }, Modifier.fillMaxWidth(), label = { Text("Camera direction") })
                     OutlinedTextField(characters, { characters = it }, Modifier.fillMaxWidth(), minLines = 2,

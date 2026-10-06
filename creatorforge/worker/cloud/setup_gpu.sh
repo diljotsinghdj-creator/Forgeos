@@ -10,7 +10,13 @@ HOME_DIR="${CF_HOME:-/workspace/creatorforge}"   # /workspace survives pod resta
 PORT="${CF_PORT:-8765}"
 LLM_MODEL="${CF_LLM_MODEL:-qwen2.5:7b-instruct}"
 IMAGE_MODEL="${CF_IMAGE_MODEL:-black-forest-labs/FLUX.1-schnell}"
-ENABLE_VIDEO="${CF_ENABLE_VIDEO:-0}"                 # 1 = also download LTX-Video (needs ~40 GB+ VRAM to be comfortable)
+VIDEO="${CF_VIDEO:-fast}"   # fast = Wan 2.2 TI2V-5B (720p, 24 GB GPU) | max = Wan 2.2 I2V-A14B (80 GB GPU, ~200 GB disk) | off
+case "$VIDEO" in
+  fast) VIDEO_MODEL="Wan-AI/Wan2.2-TI2V-5B-Diffusers" ;;
+  max)  VIDEO_MODEL="Wan-AI/Wan2.2-I2V-A14B-Diffusers" ;;
+  off)  VIDEO_MODEL="" ;;
+  *) echo "CF_VIDEO must be fast, max or off"; exit 1 ;;
+esac
 
 say() { printf '\n\033[1;33m==> %s\033[0m\n' "$*"; }
 mkdir -p "$HOME_DIR"/{data,hf,ollama,music,sfx}
@@ -50,9 +56,9 @@ from huggingface_hub import snapshot_download
 # diffusers needs the per-component folders, not the duplicate single-file checkpoints
 snapshot_download("$IMAGE_MODEL", ignore_patterns=["flux1-*.safetensors", "ae.safetensors", "*.md", "*.png", "*.jpg"])
 PY
-if [ "$ENABLE_VIDEO" = "1" ]; then
-  say "Downloading video model Lightricks/LTX-Video"
-  python -c "from huggingface_hub import snapshot_download; snapshot_download('Lightricks/LTX-Video', allow_patterns=['model_index.json','scheduler/*','text_encoder/*','tokenizer/*','transformer/*','vae/*'])"
+if [ -n "$VIDEO_MODEL" ]; then
+  say "Downloading realistic video model $VIDEO_MODEL (first time 20-60 GB; reused afterwards)"
+  python -c "from huggingface_hub import snapshot_download; snapshot_download('$VIDEO_MODEL', ignore_patterns=['*.md', 'assets/*', 'examples/*'])"
 fi
 
 say "Installing Ollama and the script model $LLM_MODEL"
@@ -83,7 +89,7 @@ CF_WHISPER_DEVICE=cuda
 CF_MUSIC_DIR=$HOME_DIR/music
 CF_SFX_DIR=$HOME_DIR/sfx
 ENV
-if [ "$ENABLE_VIDEO" = "1" ]; then echo "CF_VIDEO_PROVIDER=diffusers" >> worker.env; fi
+if [ -n "$VIDEO_MODEL" ]; then printf 'CF_VIDEO_PROVIDER=diffusers\nCF_VIDEO_MODEL=%s\n' "$VIDEO_MODEL" >> worker.env; fi
 
 say "Starting the worker on port $PORT"
 pkill -f "bin/creatorforge-worker" 2>/dev/null || true
@@ -113,8 +119,9 @@ cat <<DONE
    Worker token: $TOKEN
 
  Tap SAVE, SAVE TOKEN, then TEST CONNECTION.
- The first video downloads models into memory and is slow (several
- minutes); later videos are much faster.
+ The first video loads models into memory and is slow (several
+ minutes). Turn on "AI video clips" in Generate for realistic motion:
+ each scene takes a few minutes to animate on a 24 GB GPU.
 
  Logs:   tail -f $HOME_DIR/worker.log
  Music:  put royalty-free tracks in $HOME_DIR/music (name them by mood)

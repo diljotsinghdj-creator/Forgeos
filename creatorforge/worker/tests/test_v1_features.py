@@ -152,3 +152,22 @@ def test_timeline_reorder_delete_retime_and_overlays(cfg):
         assert c.patch(f"/v1/productions/{jid}/timeline", json={"scenes": [{"index": 7}]}).status_code == 409
         # the new scene 2 (old index 0) entering transition is the director's; scene 1 transition locked to cut
         assert job["plan"]["scenes"][0]["transition_locked"] is True
+
+
+# Realistic AI video ---------------------------------------------------------------------------------
+def test_style_presets_motion_prompts_and_clip_stretch(cfg):
+    cfg.video_provider = "mock"
+    with TestClient(create_app(cfg)) as c:
+        styles = {s["id"] for s in c.get("/v1/capabilities").json()["styles"]}
+        assert {"hyperreal", "anime", "animated_3d", "claymation"} <= styles
+        jid = c.post("/v1/productions", json={"idea": "London in 2035 with robots and self-driving cars", "duration_s": 25,
+                                              "motion": "ai_video", "style": "hyperreal"}).json()["id"]
+        job = settle(c, jid)
+        assert job["status"] == "READY", job
+        shot = job["plan"]["scenes"][0]
+        assert "hyper-realistic photograph" in shot["prompt"]
+        assert shot["video_prompt"].startswith("crowd walks past while drone 1 glides overhead")
+        assert "flicker" in shot["video_negative"]
+        # mock clips are capped at 5s like real models; longer scenes are slowed, not frozen
+        assert all(1.0 <= s <= 1.6 for s in job["edit"]["clip_stretch"])
+        assert job["result"]["verification"]["decode_check"] == "passed"

@@ -28,7 +28,8 @@ class Clip:
     duration: float  # time this scene owns on the timeline (narration + breathing room)
     camera: str
     transition: str  # transition INTO this clip (ignored for the first clip)
-    video: Path | None = None  # AI-generated clip; when absent the still gets camera motion
+    video: Path | None = None  # AI-generated or imported clip; when absent the still gets camera motion
+    video_duration: float | None = None
 
 
 def to_pcm(src: Path, dst: Path, cancel: threading.Event | None = None) -> None:
@@ -128,8 +129,12 @@ def render_video(clips: list[Clip], audio: Path, captions: Path | None, width: i
         if c.video is not None:
             # Fit the clip to the slot: cover-crop, hold the last frame if the model's clip is shorter.
             length = frames / FPS
+            # A clip shorter than its slot is slowed gently (max 1.6x) before holding the last frame,
+            # so motion keeps going instead of freezing.
+            stretch = min(1.6, length / c.video_duration) if c.video_duration and c.video_duration < length else 1.0
             args += ["-i", str(c.video)]
-            graph.append(f"[{i}:v]scale={width}:{height}:force_original_aspect_ratio=increase,crop={width}:{height},"
+            graph.append(f"[{i}:v]setpts={stretch:.4f}*(PTS-STARTPTS),"
+                         f"scale={width}:{height}:force_original_aspect_ratio=increase,crop={width}:{height},"
                          f"setsar=1,fps={FPS},tpad=stop_mode=clone:stop_duration={length:.3f},"
                          f"trim=end_frame={frames},setpts=PTS-STARTPTS,format=yuv420p[v{i}]")
             continue

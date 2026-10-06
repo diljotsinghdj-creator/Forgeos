@@ -17,6 +17,7 @@ from .config import Config, VoiceProfile
 from .library import Library
 from .media import captions as cap
 from .media import render, sfx, verify
+from .media import ff
 from .media.ff import Cancelled, MediaError
 from .providers.base import NotConfigured, ProviderError, Word
 from .store import STAGES, JobStore
@@ -226,10 +227,12 @@ class Pipeline:
             image = jdir / sc["image"]
             seconds = round(slot + render.TRANSITION_S, 2)
             seed = (int(job["id"][:8], 16) + sc["index"] * 104729) % 2**31
-            key = _key(video.id, hashlib.sha256(image.read_bytes()).hexdigest(), shot["prompt"], seconds, gen, seed)
+            vprompt = shot.get("video_prompt") or shot["prompt"]
+            vneg = shot.get("video_negative") or director.VIDEO_NEGATIVE
+            key = _key(video.id, hashlib.sha256(image.read_bytes()).hexdigest(), vprompt, seconds, gen, seed)
             try:
                 src = self._cached("clips", key, ".mp4",
-                                   lambda p: video.generate(image, shot["prompt"], seconds, gen[0], gen[1], seed, p),
+                                   lambda p: video.generate(image, vprompt, vneg, seconds, gen[0], gen[1], seed, p),
                                    verify.clip)
                 dst = self._replace_file(jdir, sc.get("clip"), f"scene_{sc['index'] + 1:02d}_{key[:8]}.mp4", src)
                 sc.update(clip_state="READY", clip=dst.name, clip_source="generated")
@@ -364,6 +367,10 @@ class Pipeline:
 
         clips = [render.Clip(jdir / sc["image"], d, shot.get("camera", ""), transition(i, shot), clip_for(sc))
                  for i, (sc, shot, d) in enumerate(zip(job["scenes"], shots, timings))]
+        for c in clips:
+            if c.video is not None:
+                c.video_duration = ff.duration(c.video)
+
         if use_video and any(c.video is None for c in clips):
             raise StageFailed("AI video mode but a scene has no clip")
 
@@ -405,7 +412,10 @@ class Pipeline:
 
         job["edit"] = {"auto_edit": spec.auto_edit, "transitions": [c.transition for c in clips[1:]],
                        "durations": [round(d, 2) for d in timings],
-                       "sfx": [{"file": p.name, "at": round(at, 2)} for p, at, _ in sfx_hits]}
+                       "sfx": [{"file": p.name, "at": round(at, 2)} for p, at, _ in sfx_hits],
+                       "clip_stretch": [round(min(1.6, (d + render.TRANSITION_S) / c.video_duration), 2)
+                                        if c.video_duration and c.video_duration < d + render.TRANSITION_S else 1.0
+                                        for c, d in zip(clips, timings)]}
         out = jdir / "work" / "render.mp4"
         expected = render.render_video(clips, mixed, ass, w, h, out, work, cancel)
         job["render"] = {"file": "work/render.mp4", "expected_s": round(expected, 3), "width": w, "height": h}

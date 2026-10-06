@@ -11,10 +11,12 @@ from dataclasses import asdict, dataclass, field
 
 from .providers.base import ProviderError
 from .media.render import TRANSITIONS
-from .templates import PACING, TEMPLATES, WORDS_PER_SECOND, Template
+from .templates import PACING, STYLE_PRESETS, TEMPLATES, WORDS_PER_SECOND, Template
 
 NEGATIVE = ("text, watermark, logo, caption, subtitles, letters, signature, blurry, low quality, "
             "jpeg artifacts, deformed, distorted face, extra fingers, extra limbs")
+VIDEO_NEGATIVE = ("static, frozen frame, flicker, jitter, morphing, warped face, melting, extra limbs, distorted hands, "
+                  "text, watermark, low quality, blurry, overexposed, cartoonish artifacts")
 
 
 @dataclass
@@ -118,6 +120,9 @@ class ShotPlan:
     transition: str = ""  # Auto Edit: transition INTO this scene
     emphasis: list[str] = field(default_factory=list)  # Auto Edit: words highlighted in captions
     hold: float = 0.0  # Auto Edit: extra seconds to let a moment land
+    motion: str = ""  # what moves in the shot (people, objects, environment) for AI video
+    video_prompt: str = ""
+    video_negative: str = ""
 
 
 @dataclass
@@ -176,7 +181,8 @@ Return exactly this JSON shape:
       "overlay": "optional short on-screen callout (max 5 words) or empty string",
       "transition": "edit INTO this scene: {' | '.join(TRANSITIONS)}",
       "emphasis": ["1-3 key words from this scene's narration to highlight in captions"],
-      "hold": "seconds (0 to 1.5) to pause after the line for impact; usually 0"}}
+      "hold": "seconds (0 to 1.5) to pause after the line for impact; usually 0",
+      "motion": "what physically moves during the shot, e.g. 'robot arm lifts a crate, workers walk past, dust in light beams'"}}
   ]}}
 The scenes array must contain exactly {n} scenes. Scene 1 narration must open with the hook idea."""
 
@@ -213,7 +219,8 @@ def _validate(d: dict, n: int) -> ProductionPlan:
         out.append(ShotPlan(narration, visual, str(s.get("shot", "")).strip(), str(s.get("camera", "")).strip(),
                             str(s.get("mood", "")).strip(), str(s.get("overlay", "") or "").strip()[:60],
                             transition=transition if transition in TRANSITIONS else "",
-                            emphasis=[str(w).strip()[:30] for w in emphasis if str(w).strip()][:3], hold=hold))
+                            emphasis=[str(w).strip()[:30] for w in emphasis if str(w).strip()][:3], hold=hold,
+                            motion=str(s.get("motion", "") or "").strip()[:300]))
     return ProductionPlan(str(d.get("title", "")).strip()[:100] or "Untitled", str(d.get("hook", "")).strip()[:80],
                           str(d.get("cta", "")).strip()[:60], str(d.get("music_mood", "")).strip()[:60], out)
 
@@ -241,7 +248,7 @@ def direct(llm, spec: ProductionSpec) -> ProductionPlan:
 def prompt_forge(plan: ProductionPlan, spec: ProductionSpec, only: int | None = None) -> None:
     """Builds each scene's generation prompt from the shot, Director Mode and characters."""
     t = TEMPLATES[spec.template]
-    style = spec.style or t.style
+    style = STYLE_PRESETS[spec.style][1] if spec.style in STYLE_PRESETS else (spec.style or t.style)
     for i, s in enumerate(plan.scenes):
         if only is not None and i != only:
             continue
@@ -257,6 +264,12 @@ def prompt_forge(plan: ProductionPlan, spec: ProductionSpec, only: int | None = 
         parts.append(style)
         s.prompt = ". ".join(parts)
         s.negative = NEGATIVE
+        # The animation prompt leads with motion: image-to-video models already see the still.
+        camera = spec.camera or s.camera or "slow cinematic camera move"
+        motion = s.motion or f"subtle natural movement in the scene: {s.visual.rstrip('.')}"
+        s.video_prompt = (f"{motion}. Camera: {camera}. {s.visual.rstrip('.')}. {style}. "
+                          "Smooth realistic motion, natural physics, consistent identity, stable details")
+        s.video_negative = VIDEO_NEGATIVE
 
 
 # ---- script mode ---------------------------------------------------------------------------
@@ -332,7 +345,8 @@ Return exactly this JSON shape with exactly {len(segments)} scenes in the same o
 {{"title": "short video title", "hook": "on-screen hook text, max 7 words", "cta": "on-screen call to action, max 6 words",
   "music_mood": "2-4 words",
   "scenes": [{{"visual": "...", "shot": "...", "camera": "...", "mood": "...", "overlay": "optional max 5 words or empty",
-              "transition": "{' | '.join(TRANSITIONS)}", "emphasis": ["1-3 key words from this scene"], "hold": 0}}]}}"""
+              "transition": "{' | '.join(TRANSITIONS)}", "emphasis": ["1-3 key words from this scene"], "hold": 0,
+              "motion": "what physically moves during the shot"}}]}}"""
     error = ""
     for _ in range(2):
         raw = llm.complete_json(SCRIPT_SYSTEM, user if not error else f"{user}\n\nYour previous answer was invalid: {error}. Return corrected JSON only.")

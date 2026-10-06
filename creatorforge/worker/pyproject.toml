@@ -13,7 +13,7 @@ dependencies = [
 # Install only the backends you use.
 whisper = ["faster-whisper>=1.0"]
 kokoro = ["kokoro>=0.9", "soundfile>=0.12", "numpy"]
-diffusers = ["diffusers>=0.30", "transformers", "accelerate", "torch", "sentencepiece", "protobuf"]
+diffusers = ["diffusers>=0.35", "transformers", "accelerate", "torch", "sentencepiece", "protobuf", "ftfy", "imageio", "imageio-ffmpeg"]
 test = ["pytest>=8"]
 
 [project.scripts]

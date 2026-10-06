@@ -61,7 +61,7 @@ missing.
 | `CF_LLM_URL`, `CF_LLM_MODEL`, `CF_LLM_API_KEY` | Any OpenAI-compatible chat endpoint: Ollama, llama.cpp, vLLM, LM Studio, or a hosted API if you choose |
 | `CF_IMAGE_PROVIDER` | `a1111` (HTTP to SD WebUI / Forge) or `diffusers` (in-process, needs a GPU) |
 | `CF_IMAGE_URL`, `CF_IMAGE_MODEL`, `CF_IMAGE_STEPS` | Provider settings. The `diffusers` default is `black-forest-labs/FLUX.1-schnell` |
-| `CF_VIDEO_PROVIDER`, `CF_VIDEO_MODEL`, `CF_VIDEO_URL` | Optional AI video clips. `diffusers` runs image-to-video on the worker's own CUDA GPU (default model `Lightricks/LTX-Video`; Wan 2.x I2V models also work). `http` calls your own server at `POST {url}/v1/video/i2v` with JSON `image_base64, prompt, seconds, width, height, seed` and expects MP4 bytes back. Productions ask for clips with `"motion": "ai_video"` |
+| `CF_VIDEO_PROVIDER`, `CF_VIDEO_MODEL`, `CF_VIDEO_URL` | Optional realistic AI video clips. `diffusers` runs image-to-video on the worker's CUDA GPU. Default `Wan-AI/Wan2.2-TI2V-5B-Diffusers` (Apache-2.0, 720p, 24 GB); `Wan-AI/Wan2.2-I2V-A14B-Diffusers` gives the most realistic motion (48–80 GB); LTX-Video also works. The Director writes a per-shot motion description that leads the animation prompt, and clips shorter than their scene are slowed up to 1.6× instead of freezing. `http` calls your own server at `POST {url}/v1/video/i2v` with JSON `image_base64, prompt, seconds, width, height, seed` and expects MP4 bytes back. Productions ask for clips with `"motion": "ai_video"` |
 | `CF_PIPER_MODEL` / `CF_KOKORO_VOICE` | Sets up one default narrator |
 | `CF_VOICES` | Voice profiles as JSON: `[{"id":"deep","name":"Deep male","provider":"piper","voice":"/models/x.onnx","speed":0.95}, {"id":"warm","name":"Warm female","provider":"kokoro","voice":"af_heart"}]` |
 | `CF_ASR_PROVIDER=whisper`, `CF_WHISPER_MODEL`, `CF_WHISPER_DEVICE` | Whisper caption timing. When unset, captions are timed from the script and the measured narration length, and the production records `captions: estimated` |
@@ -102,6 +102,10 @@ licensed for commercial use.
 | DELETE | `/v1/productions/{id}?purge=true` | Delete a finished production and its files |
 | GET | `/v1/library/videos` | Media Library: every finished, verified video with its thumbnail URL |
 | POST | `/v1/images/generate`, `/v1/voice/generate` | Single-asset endpoints used by the RC10 app |
+
+**Looks** (`style`): `hyperreal`, `cinematic`, `documentary`, `animated_3d`, `anime`, `claymation`,
+`watercolor`, `comic`, or any free-text description. The look is applied to every image and carried
+into the animation prompt.
 
 **Auto Edit** (`auto_edit`, on by default): the AI Director picks the transition into each scene
 (`cut, fade, dissolve, dip, flash, slide, wipe, whip, zoom, reveal`), the key words that are
