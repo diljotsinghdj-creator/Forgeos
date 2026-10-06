@@ -6,14 +6,12 @@ import android.content.*;
 import android.graphics.*;
 import android.graphics.Typeface;
 import android.net.Uri;
-import android.util.Base64;
-import java.net.*;
-import javax.net.ssl.HttpsURLConnection;
 import android.view.View;
 import android.widget.*;
 import java.io.*;
 import java.util.*;
-import java.util.zip.*;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipEntry;
 
 public class MainActivity extends Activity {
  private final int GOLD=Color.rgb(212,175,55);
@@ -93,18 +91,6 @@ public class MainActivity extends Activity {
    });
    runOnUiThread(()->{status.setText("Mission queued");append("Durable mission queued: "+missionId);});
   }catch(Exception e){runOnUiThread(()->{status.setText("Build mission failed");append("ERROR: "+e.getMessage());build.setEnabled(true);});}
- }
- private byte[] zipWorkspace(File root)throws Exception{
-  ByteArrayOutputStream b=new ByteArrayOutputStream();try(ZipOutputStream z=new ZipOutputStream(b)){zipDir(root,root,z);}return b.toByteArray();
- }
- private void zipDir(File root,File f,ZipOutputStream z)throws Exception{
-  File[] a=f.listFiles();if(a==null)return;for(File x:a){String rel=root.toURI().relativize(x.toURI()).getPath();if(rel.startsWith(".git/")||rel.contains("/build/")||rel.startsWith("build/"))continue;if(x.isDirectory())zipDir(root,x,z);else{z.putNextEntry(new ZipEntry(rel));try(InputStream in=new FileInputStream(x)){byte[] q=new byte[16384];int n;while((n=in.read(q))>0)z.write(q,0,n);}z.closeEntry();}}
- }
- private String api(String method,String url,String token,String body)throws Exception{
-  HttpsURLConnection h=(HttpsURLConnection)new URL(url).openConnection();h.setRequestMethod(method);h.setConnectTimeout(20000);h.setReadTimeout(30000);h.setRequestProperty("Authorization","Bearer "+token);h.setRequestProperty("Accept","application/vnd.github+json");h.setRequestProperty("X-GitHub-Api-Version","2022-11-28");h.setRequestProperty("User-Agent","ForgeOS-Android/0.3.1");
-  if(body!=null){h.setDoOutput(true);h.setRequestProperty("Content-Type","application/json");try(OutputStream o=h.getOutputStream()){o.write(body.getBytes("UTF-8"));}}
-  int code=h.getResponseCode();InputStream in=code>=200&&code<300?h.getInputStream():h.getErrorStream();StringBuilder s=new StringBuilder();if(in!=null)try(BufferedReader r=new BufferedReader(new InputStreamReader(in))){String line;while((line=r.readLine())!=null)s.append(line);}
-  if(code<200||code>=300)throw new IOException("GitHub HTTP "+code+": "+s);return s.toString();
  }
  private void append(String x){if(log!=null)log.setText(log.getText()+"\n"+x);}
  private LinearLayout panel(){LinearLayout l=new LinearLayout(this);l.setOrientation(LinearLayout.VERTICAL);l.setPadding(dp(18),dp(16),dp(18),dp(16));l.setBackgroundColor(Color.rgb(24,24,24));return l;}
