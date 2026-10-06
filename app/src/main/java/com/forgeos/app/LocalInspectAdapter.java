@@ -7,6 +7,7 @@ import org.json.*;
 
 /** Credential-free local ForgeOS capability. Works without GitHub/network. */
 public final class LocalInspectAdapter implements BuildAdapter {
+ private static final long MAX_FILES=20000, MAX_BYTES=500L*1024*1024, MAX_SINGLE_FILE=100L*1024*1024;
  public String id(){return "local-inspect";}
  public boolean isAvailable(){return true;}
  public BuildResult submit(String missionId,File workspace)throws Exception{
@@ -34,6 +35,9 @@ public final class LocalInspectAdapter implements BuildAdapter {
    String rel=root.toURI().relativize(x.toURI()).getPath();
    if(rel.startsWith(".forgeos/")||rel.startsWith(".git/")||rel.contains("/build/")||rel.startsWith("build/"))continue;
    if(x.isDirectory())walk(root,x,out,stats);else{
+    if(x.length()>MAX_SINGLE_FILE)throw new IOException("Inspection blocked: file exceeds 100 MB: "+rel);
+    if(stats[0]+1>MAX_FILES)throw new IOException("Inspection blocked: more than 20,000 files");
+    if(stats[1]+x.length()>MAX_BYTES)throw new IOException("Inspection blocked: workspace exceeds 500 MB inspected limit");
     JSONObject e=new JSONObject();e.put("path",rel);e.put("bytes",x.length());e.put("sha256",sha256(x));out.put(e);stats[0]++;stats[1]+=x.length();
    }
   }
