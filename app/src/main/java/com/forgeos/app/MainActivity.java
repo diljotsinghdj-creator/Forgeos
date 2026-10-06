@@ -105,7 +105,7 @@ public class MainActivity extends Activity {
   }
   String main=api("GET",repo+"/git/ref/heads/main",token,null);
   String needle="\\\"sha\\\":\\\"";int p=main.indexOf(needle);if(p<0)throw new IOException("Unable to resolve main branch SHA");
-  int start=p+needle.length(),end=main.indexOf('\\\"',start);if(end<0)throw new IOException("Malformed GitHub ref response");
+  int start=p+needle.length(),end=main.indexOf('"',start);if(end<0)throw new IOException("Malformed GitHub ref response");
   String sha=main.substring(start,end);
   try{api("POST",repo+"/git/refs",token,"{\\\"ref\\\":\\\"refs/heads/build-requests\\\",\\\"sha\\\":\\\""+sha+"\\\"}");}
   catch(IOException e){if(!e.getMessage().startsWith("GitHub HTTP 422:"))throw e;}
