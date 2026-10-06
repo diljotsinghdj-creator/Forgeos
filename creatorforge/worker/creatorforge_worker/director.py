@@ -41,6 +41,9 @@ class ProductionSpec:
     review: bool = False  # pause after scene visuals so the storyboard can be edited/approved
     auto_edit: bool = True  # let the Director choose transitions, caption emphasis and dramatic holds
     character_ids: list[str] = field(default_factory=list)  # resolved from the Character Library at submit
+    music_asset_id: str = ""  # use a track from the Asset Library as the score
+    sfx: bool = True  # auto-place sound effects when an SFX folder or SFX assets exist
+    script: str = ""  # script mode: the user's exact narration; the Director only plans visuals and the edit
 
     @staticmethod
     def from_dict(d: dict) -> "ProductionSpec":
@@ -63,11 +66,24 @@ class ProductionSpec:
             review=bool(d.get("review", False)),
             auto_edit=bool(d.get("auto_edit", True)),
             character_ids=[str(x) for x in d.get("character_ids") or []][:10],
+            script=str(d.get("script", "") or "").strip(),
+            music_asset_id=str(d.get("music_asset_id", "") or ""),
+            sfx=bool(d.get("sfx", True)),
         )
         spec.validate()
         return spec
 
     def validate(self) -> None:
+        if self.script:
+            if len(self.script) < 10:
+                raise ValueError("script must be at least 10 characters")
+            if len(self.script) > 20000:
+                raise ValueError("script is too long (max 20000 characters)")
+            if not split_sentences(self.script):
+                raise ValueError("script has no speakable sentences")
+            if not self.idea:
+                self.idea = script_title(self.script)
+            self.duration_s = max(10, min(900, round(len(self.script.split()) / WORDS_PER_SECOND)))
         if len(self.idea) < 5:
             raise ValueError("idea must be at least 5 characters")
         if len(self.idea) > 4000:
@@ -241,3 +257,99 @@ def prompt_forge(plan: ProductionPlan, spec: ProductionSpec, only: int | None = 
         parts.append(style)
         s.prompt = ". ".join(parts)
         s.negative = NEGATIVE
+
+
+# ---- script mode ---------------------------------------------------------------------------
+_ABBREV = re.compile(r"(?:\b(?:Mr|Mrs|Ms|Dr|Jr|Sr|St|vs|etc|No|Inc|Ltd)\.|\b(?:[A-Z]\.){2,})$")
+_SYMBOLS = re.compile("[\U0001F000-\U0001FAFF\u2600-\u27BF\uFE0F\u200D]")
+
+
+def split_sentences(text: str) -> list[str]:
+    """Sentence split that keeps abbreviations like "U.S." and "Dr." inside their sentence."""
+    text = _SYMBOLS.sub(" ", text)
+    out: list[str] = []
+    for block in re.split(r"\n+", text):
+        pieces = re.split(r"(?<=[.!?\u2026])\s+", block.strip())
+        buf = ""
+        for p in pieces:
+            buf = f"{buf} {p}".strip() if buf else p.strip()
+            if not _ABBREV.search(buf):
+                out.append(buf)
+                buf = ""
+        if buf:
+            out.append(buf)
+    return [re.sub(r"\s+", " ", s).strip() for s in out if any(ch.isalnum() for ch in s)]
+
+
+def script_title(text: str) -> str:
+    first = (split_sentences(text) or ["Untitled"])[0]
+    return first[:60].rstrip(" ,.") or "Untitled"
+
+
+def split_script(spec: ProductionSpec) -> list[str]:
+    """Groups the script's sentences into scenes of roughly the template's scene length."""
+    sentences = split_sentences(spec.script)
+    words = sum(len(s.split()) for s in sentences)
+    seconds = TEMPLATES[spec.template].scene_seconds * PACING[spec.pacing]
+    n = max(1, min(len(sentences), 40, round(words / WORDS_PER_SECOND / seconds) or 1))
+    target = words / n
+    groups: list[list[str]] = [[]]
+    count = 0
+    for i, sent in enumerate(sentences):
+        if groups[-1] and len(groups) < n and (count >= target * len(groups) or len(sentences) - i <= n - len(groups)):
+            groups.append([])
+        groups[-1].append(sent)
+        count += len(sent.split())
+    return [" ".join(g) for g in groups if g]
+
+
+SCRIPT_SYSTEM = """You are CreatorForge's AI Director. The narration script is FINAL and already split into
+scenes; never change, add or remove words. For each scene, design ONE concrete filmable image (subject,
+setting, action, lighting; no on-screen text) that illustrates what is being said, plus the edit.
+Respond with JSON only."""
+
+
+def direct_script(llm, spec: ProductionSpec) -> ProductionPlan:
+    """Script mode: exact narration from the user; the LLM (if configured) plans visuals and the edit.
+    Without an LLM, each scene's visual is derived from its own words."""
+    segments = split_script(spec)
+    if llm is None:
+        plan = ProductionPlan(script_title(spec.script), "", "", "", [ShotPlan(seg, seg) for seg in segments])
+        prompt_forge(plan, spec)
+        return plan
+    t = TEMPLATES[spec.template]
+    numbered = "\n".join(f"{i + 1}. {seg}" for i, seg in enumerate(segments))
+    chars = "\n".join(f"- {c.name}: {c.description}" for c in spec.characters) or "(none)"
+    user = f"""FORMAT: {t.name}, aspect {spec.aspect}
+TONE: {t.tone}
+MOOD: {spec.mood or 'choose what fits'}
+RECURRING CHARACTERS:
+{chars}
+SCENES (narration, final):
+{numbered}
+
+Return exactly this JSON shape with exactly {len(segments)} scenes in the same order:
+{{"title": "short video title", "hook": "on-screen hook text, max 7 words", "cta": "on-screen call to action, max 6 words",
+  "music_mood": "2-4 words",
+  "scenes": [{{"visual": "...", "shot": "...", "camera": "...", "mood": "...", "overlay": "optional max 5 words or empty",
+              "transition": "{' | '.join(TRANSITIONS)}", "emphasis": ["1-3 key words from this scene"], "hold": 0}}]}}"""
+    error = ""
+    for _ in range(2):
+        raw = llm.complete_json(SCRIPT_SYSTEM, user if not error else f"{user}\n\nYour previous answer was invalid: {error}. Return corrected JSON only.")
+        try:
+            d = _extract_json(raw)
+            scenes = d.get("scenes")
+            if not isinstance(scenes, list) or len(scenes) != len(segments):
+                raise ValueError(f"expected exactly {len(segments)} scenes")
+            for sc, seg in zip(scenes, segments):
+                if not isinstance(sc, dict):
+                    raise ValueError("each scene must be an object")
+                sc["narration"] = seg  # the user's words are authoritative
+            plan = _validate(d, len(segments))
+            break
+        except (ValueError, json.JSONDecodeError) as e:
+            error = str(e)
+    else:
+        raise ProviderError(f"AI Director returned an invalid shot list twice: {error}")
+    prompt_forge(plan, spec)
+    return plan

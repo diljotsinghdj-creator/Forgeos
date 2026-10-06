@@ -60,7 +60,8 @@ def test_square_output_and_scene_regeneration_reuses_other_assets(cfg):
         assert c.post(f"/v1/productions/{jid}/scenes/1/regenerate").status_code == 200
         job = finished(c, jid)
         assert job["status"] == "READY", job
-        assert [s["image"] for s in job["scenes"]] == before  # same filenames, scene 2 re-rendered
+        after = [s["image"] for s in job["scenes"]]
+        assert after[1] != before[1] and after[:1] + after[2:] == before[:1] + before[2:]  # only scene 2 changed
         assert len(list((cfg.cache_dir / "images").iterdir())) == cache_files + 1  # only one new image generated
         assert job["stages"]["narration"]["state"] == "READY"
 

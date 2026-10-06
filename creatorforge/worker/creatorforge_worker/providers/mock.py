@@ -22,6 +22,12 @@ class MockLLM:
     id = "mock-llm"
 
     def complete_json(self, system: str, user: str) -> str:
+        if "SCENES (narration, final):" in user:
+            n = len(re.findall(r"^\d+\. ", user, flags=re.M))
+            return json.dumps({"title": "Script video", "hook": "Listen up", "cta": "Follow for more", "music_mood": "tense",
+                               "scenes": [{"visual": f"Scene {i + 1} illustration", "shot": "wide", "camera": "slow push in",
+                                           "mood": "tense", "overlay": "", "transition": "dissolve", "emphasis": [],
+                                           "hold": 0} for i in range(n)]})
         n = int(re.search(r"SCENE_COUNT:\s*(\d+)", user).group(1))
         idea = re.search(r"IDEA:\s*(.+)", user).group(1).strip()
         scenes = [

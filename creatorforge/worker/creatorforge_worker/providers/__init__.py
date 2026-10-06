@@ -47,12 +47,13 @@ def build_image(cfg: Config):
     return prov
 
 
-def voice_profile(cfg: Config, voice_id: str | None) -> VoiceProfile:
-    if not cfg.voices:
-        raise NotConfigured("No narration voice configured (set CF_PIPER_MODEL, CF_KOKORO_VOICE or CF_VOICES)")
+def voice_profile(cfg: Config, voice_id: str | None, extra: list[VoiceProfile] | None = None) -> VoiceProfile:
+    voices = list(cfg.voices) + list(extra or [])
+    if not voices:
+        raise NotConfigured("No narration voice configured (set CF_PIPER_MODEL, CF_KOKORO_VOICE, CF_VOICES or add one in the app)")
     if not voice_id:
-        return cfg.voices[0]
-    for v in cfg.voices:
+        return voices[0]
+    for v in voices:
         if v.id == voice_id:
             return v
     raise NotConfigured(f"Unknown voice profile '{voice_id}'")

@@ -40,6 +40,7 @@ class Config:
     whisper_model: str = "small"
     whisper_device: str = "auto"
     music_dir: str = ""
+    sfx_dir: str = ""
     music_provider: str = ""  # "stable-audio" | "http" | "mock" ("" = use the local library)
     music_url: str = ""
     music_model: str = ""
@@ -82,6 +83,7 @@ class Config:
             whisper_model=_env("CF_WHISPER_MODEL", "small"),
             whisper_device=_env("CF_WHISPER_DEVICE", "auto"),
             music_dir=_env("CF_MUSIC_DIR"),
+            sfx_dir=_env("CF_SFX_DIR"),
             music_provider=_env("CF_MUSIC_PROVIDER"),
             music_url=_env("CF_MUSIC_URL"),
             music_model=_env("CF_MUSIC_MODEL"),

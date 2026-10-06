@@ -62,6 +62,7 @@ missing.
 | `CF_ASR_PROVIDER=whisper`, `CF_WHISPER_MODEL`, `CF_WHISPER_DEVICE` | Whisper caption timing. When unset, captions are timed from the script and the measured narration length, and the production records `captions: estimated` |
 | `CF_MUSIC_DIR` | Folder of music tracks. A track is picked when its filename matches the scene's mood (for example `epic_cinematic_1.mp3`) |
 | `CF_MUSIC_PROVIDER`, `CF_MUSIC_MODEL`, `CF_MUSIC_URL` | Optional AI-generated score instead of the library. `stable-audio` runs Stable Audio Open on the worker GPU and makes a bed of up to 47s, which loops under longer videos. `http` calls your own server at `POST {url}/v1/music/generate` with JSON `prompt, seconds, seed` and expects audio bytes back. Check the model licence |
+| `CF_SFX_DIR` | Optional sound-effects folder. Files are matched to roles by name: `whoosh`/`swoosh` (moving transitions), `hit`/`impact`/`boom` (hard cuts, the hook), `pop`/`click`/`ding` (callouts, CTA). Sound-effect assets you upload are used as well |
 | `CF_ALLOW_MOCK=1` | **Tests only.** Turns on placeholder providers (`mock`). Every production records the providers that made it |
 
 Check the licence of each model you install: some popular voice and music models are not
@@ -73,7 +74,7 @@ licensed for commercial use.
 |---|---|---|
 | GET | `/health` | Readiness, plus the status of each provider |
 | GET | `/v1/capabilities` | Templates, aspect ratios, pacing options, voice profiles |
-| POST | `/v1/productions` | **One-button production.** Body: `{"idea", "duration_s", "template", "aspect", "voice", "pacing", "style", "mood", "camera", "characters":[{"name","description"}], "music", "captions", "motion": "stills"\|"ai_video", "review": bool, "auto_edit": bool, "character_ids": [..]}`. Returns `202` with the production |
+| POST | `/v1/productions` | **One-button production.** Body: `{"idea", "duration_s", "template", "aspect", "voice", "pacing", "style", "mood", "camera", "characters":[{"name","description"}], "music", "captions", "motion": "stills"\|"ai_video", "review": bool, "auto_edit": bool, "character_ids": [..], "script": "exact narration", "music_asset_id": "...", "sfx": bool}`. With `script`, the narration is used word for word (split into scenes on sentence boundaries) and the Director plans only visuals and the edit; script mode also works with no LLM configured. Returns `202` with the production |
 | GET | `/v1/productions` / `/{id}` | Status, stages, per-scene states, progress, errors, providers used |
 | DELETE | `/v1/productions/{id}` | Cancel. Finished assets are kept |
 | POST | `/v1/productions/{id}/retry[?from_stage=images]` | Resume from the failed stage, or redo from a chosen stage |
@@ -84,6 +85,16 @@ licensed for commercial use.
 | GET | `/v1/productions/{id}/scenes/{n}/image` | Storyboard image for scene `n` |
 | GET/POST | `/v1/library/characters` | Character Library. Saved characters are injected into the prompt of every scene that mentions them by name. Productions reference them with `character_ids`, and each production keeps a snapshot of the character as it was at submit time |
 | PUT/DELETE | `/v1/library/characters/{id}` | Edit or remove a saved character |
+| GET/POST | `/v1/library/voices` | Voice Profiles. Built-in voices come from `CF_VOICES`; voices saved from the app are added with `{"name","provider":"piper"\|"kokoro","voice","speed"}` |
+| PUT/DELETE | `/v1/library/voices/{id}` | Edit or remove a saved voice (built-in voices are read-only) |
+| POST | `/v1/library/voices/{id}/preview` | Speak a short sample (WAV) |
+| GET | `/v1/library/assets[?kind=&generated=true]` | Asset Library. Uploads, plus every generated scene image, clip and narration |
+| POST | `/v1/library/assets?kind=image\|video\|audio\|music\|sfx&name=` | Upload with the raw file as the body (300 MB max). Files are checked to be what they claim to be |
+| PATCH/DELETE | `/v1/library/assets/{id}` | Rename or delete an asset |
+| PATCH | `/v1/productions/{id}/scenes/{n}` with `{"asset_id"}` | Put an image, clip or voice-over into one scene |
+| PATCH | `/v1/productions/{id}/timeline` | Timeline editor. `{"hook","cta","scenes":[{"index","duration_s","transition","overlay"}]}`: list the scenes in their new order (leave one out to remove it). A length can't be shorter than its narration. Moves the production to `REVIEW` |
+| PATCH | `/v1/productions/{id}` | Rename `{"title"}` |
+| DELETE | `/v1/productions/{id}?purge=true` | Delete a finished production and its files |
 | GET | `/v1/library/videos` | Media Library: every finished, verified video with its thumbnail URL |
 | POST | `/v1/images/generate`, `/v1/voice/generate` | Single-asset endpoints used by the RC10 app |
 

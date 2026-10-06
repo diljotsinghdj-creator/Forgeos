@@ -1,4 +1,4 @@
-# CreatorForge v1.0 RC16 (Android controller)
+# CreatorForge v1.0 RC17 (Android controller)
 
 Your phone runs the studio. The heavy AI generation runs on your self-hosted worker
 (`../worker`).
@@ -21,6 +21,18 @@ Your phone runs the studio. The heavy AI generation runs on your self-hosted wor
 - **Library** tab: every finished video on the worker (Play / Share / Save) and the
   **Character Library**. Save a character's look once; every scene that names that character
   uses the same description.
+- **From my script**: on Generate, switch to *From my script* and paste your narration. It's
+  used word for word, and CreatorForge builds the visuals, captions, music and edit around it.
+- **Edit timeline**: on a finished or in-review video, reorder or remove scenes, change scene
+  lengths and transitions, and edit the hook, callouts and call to action. Then approve to
+  re-render. Only the timing-dependent steps are redone.
+- **Use asset**: put your own image, clip or voice-over into any storyboard scene.
+- **Library tab**: Videos (play, share, save, rename, delete), **Voice Profiles** (add Kokoro or
+  Piper voices, set speed, preview), **Asset Library** (import images, clips, voice-overs, music
+  and sound effects) and Characters.
+- **Sound effects** switch: auto-placed whooshes, hits and pops from the worker's SFX folder or
+  your SFX assets. **Music**: pick one of your imported tracks, or leave it on Auto.
+- **Projects**: rename or delete phone projects.
 - **Settings**: worker URL and worker token (stored encrypted). Plain `http://` is allowed so a
   worker on your home network works. Use `https://` anywhere else.
 - **Make on this phone (no worker)**: in **Create**, paste a script and it's split into scenes.

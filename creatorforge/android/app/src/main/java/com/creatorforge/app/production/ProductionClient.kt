@@ -6,6 +6,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
+import okio.source
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
@@ -17,11 +18,16 @@ data class Capabilities(val templates: List<Choice>, val voices: List<Choice>, v
 
 data class StageView(val name: String, val state: String, val done: Int, val total: Int, val error: String?)
 
-data class SceneView(val index: Int, val narration: String, val visual: String, val imageState: String, val voiceState: String, val clipState: String, val hasImage: Boolean, val error: String?)
+data class SceneView(
+    val index: Int, val narration: String, val visual: String, val imageState: String, val voiceState: String,
+    val clipState: String, val hasImage: Boolean, val error: String?,
+    val narrationS: Double? = null, val durationOverride: Double? = null, val transition: String = "", val overlay: String = "",
+    val imageSource: String = "", val clipSource: String = "", val voiceSource: String = ""
+)
 
 data class ProductionView(
     val id: String, val status: String, val message: String, val error: String?, val progress: Float,
-    val title: String, val hook: String, val stages: List<StageView>, val scenes: List<SceneView>,
+    val title: String, val hook: String, val cta: String, val stages: List<StageView>, val scenes: List<SceneView>,
     val providers: Map<String, String>, val verification: String?
 ) {
     val terminal get() = status in setOf("READY", "FAILED", "CANCELLED")
@@ -34,8 +40,13 @@ data class ProductionRequest(
     val idea: String, val durationS: Int, val aspect: String, val template: String, val voice: String,
     val pacing: String, val style: String, val mood: String, val camera: String,
     val characters: List<Pair<String, String>>, val music: Boolean, val captions: Boolean,
-    val aiVideo: Boolean, val review: Boolean, val autoEdit: Boolean, val characterIds: List<String>
+    val aiVideo: Boolean, val review: Boolean, val autoEdit: Boolean, val characterIds: List<String>,
+    val script: String = "", val musicAssetId: String = "", val sfx: Boolean = true
 )
+
+data class LibraryVoice(val id: String, val name: String, val provider: String, val voice: String, val speed: Double, val builtin: Boolean)
+
+data class LibraryAsset(val id: String, val kind: String, val name: String, val source: String, val fileUrl: String, val durationS: Double?)
 
 data class LibraryCharacter(val id: String, val name: String, val description: String)
 
@@ -95,6 +106,7 @@ class ProductionClient(baseUrl: String) {
             .put("mood", r.mood).put("camera", r.camera).put("music", r.music).put("captions", r.captions)
             .put("motion", if (r.aiVideo) "ai_video" else "stills").put("review", r.review)
             .put("auto_edit", r.autoEdit).put("character_ids", JSONArray(r.characterIds))
+            .put("script", r.script).put("music_asset_id", r.musicAssetId).put("sfx", r.sfx)
             .put("characters", JSONArray().apply { r.characters.forEach { (n, d) -> put(JSONObject().put("name", n).put("description", d)) } })
         parse(call("POST", "/v1/productions", body))
     }
@@ -127,6 +139,81 @@ class ProductionClient(baseUrl: String) {
     }
 
     suspend fun deleteCharacter(id: String): Unit = withContext(Dispatchers.IO) { call("DELETE", "/v1/library/characters/$id") }
+
+    // ---- voice profiles ----
+    suspend fun voices(): List<LibraryVoice> = withContext(Dispatchers.IO) {
+        val a = JSONArray(call("GET", "/v1/library/voices"))
+        (0 until a.length()).map { i ->
+            a.getJSONObject(i).let {
+                LibraryVoice(it.getString("id"), it.optString("name"), it.optString("provider"), it.optString("voice"),
+                    it.optDouble("speed", 1.0), it.optBoolean("builtin"))
+            }
+        }
+    }
+
+    suspend fun saveVoice(id: String?, name: String, provider: String, voice: String, speed: Double): Unit = withContext(Dispatchers.IO) {
+        val body = JSONObject().put("name", name).put("provider", provider).put("voice", voice).put("speed", speed)
+        if (id == null) call("POST", "/v1/library/voices", body) else call("PUT", "/v1/library/voices/$id", body)
+    }
+
+    suspend fun deleteVoice(id: String): Unit = withContext(Dispatchers.IO) { call("DELETE", "/v1/library/voices/$id") }
+
+    /** Downloads a short spoken sample of a voice profile as WAV. */
+    suspend fun previewVoice(id: String, dest: File): File = withContext(Dispatchers.IO) {
+        val req = Request.Builder().workerAuth().url("$base/v1/library/voices/$id/preview")
+            .post(JSONObject().toString().toRequestBody(json)).build()
+        download.newCall(req).execute().use { r ->
+            if (!r.isSuccessful) throw WorkerException("Preview failed (HTTP ${r.code}): ${r.body?.string()?.take(200).orEmpty()}")
+            dest.outputStream().use { out -> r.body!!.byteStream().copyTo(out) }
+        }
+        dest
+    }
+
+    // ---- asset library ----
+    suspend fun assets(kind: String? = null, generated: Boolean = false): List<LibraryAsset> = withContext(Dispatchers.IO) {
+        val q = listOfNotNull(kind?.let { "kind=$it" }, if (generated) "generated=true" else null).joinToString("&")
+        val a = JSONArray(call("GET", "/v1/library/assets" + if (q.isBlank()) "" else "?$q"))
+        (0 until a.length()).map { i ->
+            a.getJSONObject(i).let {
+                LibraryAsset(it.getString("id"), it.optString("kind"), it.optString("name"), it.optString("source"),
+                    it.optString("file_url"), if (it.has("duration_s")) it.optDouble("duration_s") else null)
+            }
+        }
+    }
+
+    /** Streams a file picked on the phone to the worker's Asset Library. */
+    suspend fun uploadAsset(kind: String, name: String, open: () -> java.io.InputStream): Unit = withContext(Dispatchers.IO) {
+        if (base.isBlank()) throw WorkerException("Set your worker URL in Settings first")
+        val body = object : okhttp3.RequestBody() {
+            override fun contentType() = "application/octet-stream".toMediaType()
+            override fun writeTo(sink: okio.BufferedSink) { open().use { input -> sink.writeAll(input.source()) } }
+        }
+        val url = "$base/v1/library/assets?kind=$kind&name=" + java.net.URLEncoder.encode(name, "UTF-8")
+        download.newCall(Request.Builder().workerAuth().url(url).post(body).build()).execute().use { r ->
+            if (!r.isSuccessful) {
+                val text = r.body?.string().orEmpty()
+                throw WorkerException(runCatching { JSONObject(text).optString("detail") }.getOrNull()?.ifBlank { null } ?: "Upload failed (HTTP ${r.code})")
+            }
+        }
+    }
+
+    suspend fun deleteAsset(id: String): Unit = withContext(Dispatchers.IO) { call("DELETE", "/v1/library/assets/$id") }
+    suspend fun renameAsset(id: String, name: String): Unit = withContext(Dispatchers.IO) {
+        call("PATCH", "/v1/library/assets/$id", JSONObject().put("name", name))
+    }
+
+    suspend fun useAsset(id: String, index: Int, assetId: String) = withContext(Dispatchers.IO) {
+        parse(call("PATCH", "/v1/productions/$id/scenes/$index", JSONObject().put("asset_id", assetId)))
+    }
+
+    // ---- production management ----
+    suspend fun editTimeline(id: String, body: JSONObject) = withContext(Dispatchers.IO) {
+        parse(call("PATCH", "/v1/productions/$id/timeline", body))
+    }
+    suspend fun renameProduction(id: String, title: String): Unit = withContext(Dispatchers.IO) {
+        call("PATCH", "/v1/productions/$id", JSONObject().put("title", title))
+    }
+    suspend fun deleteProduction(id: String): Unit = withContext(Dispatchers.IO) { call("DELETE", "/v1/productions/$id?purge=true") }
 
     suspend fun videos(): List<LibraryVideo> = withContext(Dispatchers.IO) {
         val a = JSONArray(call("GET", "/v1/library/videos"))
@@ -171,19 +258,24 @@ class ProductionClient(baseUrl: String) {
         val scenesJ = j.optJSONArray("scenes") ?: JSONArray()
         val scenes = (0 until scenesJ.length()).map { i ->
             val s = scenesJ.getJSONObject(i)
-            SceneView(s.optInt("index", i), shots?.optJSONObject(i)?.optString("narration").orEmpty(),
-                shots?.optJSONObject(i)?.optString("visual").orEmpty(),
+            val shot = shots?.optJSONObject(i)
+            SceneView(s.optInt("index", i), shot?.optString("narration").orEmpty(), shot?.optString("visual").orEmpty(),
                 s.optString("image_state"), s.optString("voice_state"), s.optString("clip_state"),
                 s.optString("image").let { it.isNotBlank() && it != "null" },
-                s.optString("error").takeIf { it.isNotBlank() && it != "null" })
+                s.optString("error").takeIf { it.isNotBlank() && it != "null" },
+                if (s.isNull("narration_s") || !s.has("narration_s")) null else s.optDouble("narration_s"),
+                if (s.isNull("duration_override") || !s.has("duration_override")) null else s.optDouble("duration_override"),
+                shot?.optString("transition").orEmpty(), shot?.optString("overlay").orEmpty(),
+                s.optString("image_source"), s.optString("clip_source"), s.optString("voice_source"))
         }
         val prov = j.optJSONObject("providers") ?: JSONObject()
         val v = j.optJSONObject("result")?.optJSONObject("verification")
         return ProductionView(
             j.getString("id"), j.optString("status"), j.optString("message"),
             j.optString("error").takeIf { it.isNotBlank() && it != "null" }, j.optDouble("progress", 0.0).toFloat(),
-            plan?.optString("title").orEmpty().ifBlank { j.optJSONObject("spec")?.optString("idea").orEmpty().take(60) },
-            plan?.optString("hook").orEmpty(), stages, scenes,
+            j.optString("title").takeIf { it.isNotBlank() && it != "null" }
+                ?: plan?.optString("title").orEmpty().ifBlank { j.optJSONObject("spec")?.optString("idea").orEmpty().take(60) },
+            plan?.optString("hook").orEmpty(), plan?.optString("cta").orEmpty(), stages, scenes,
             prov.keys().asSequence().associateWith { prov.optString(it) },
             v?.let { "${it.optInt("width")}x${it.optInt("height")} • ${"%.1f".format(it.optDouble("duration_s"))}s • H.264/AAC • decode ${it.optString("decode_check")}" }
         )

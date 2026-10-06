@@ -66,6 +66,12 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
     var autoEdit by remember { mutableStateOf(prefs.getBoolean("auto_edit", true)) }
     var library by remember { mutableStateOf<List<LibraryCharacter>>(emptyList()) }
     var picked by remember { mutableStateOf(prefs.getStringSet("character_ids", emptySet())!!.toSet()) }
+    var scriptMode by remember { mutableStateOf(prefs.getBoolean("script_mode", false)) }
+    var sfx by remember { mutableStateOf(prefs.getBoolean("sfx", true)) }
+    var musicAsset by remember { mutableStateOf(prefs.getString("music_asset", "").orEmpty()) }
+    var assets by remember { mutableStateOf<List<LibraryAsset>>(emptyList()) }
+    var pickingFor by remember { mutableStateOf<Int?>(null) }
+    var editingTimeline by remember { mutableStateOf(false) }
 
     var activeId by remember { mutableStateOf(prefs.getString("active", null)) }
     var production by remember { mutableStateOf<ProductionView?>(null) }
@@ -84,6 +90,7 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
         }.onFailure { capsError = it.message }
         runCatching { client.list() }.onSuccess { recent = it }
         runCatching { client.characters() }.onSuccess { cs -> library = cs; picked = picked.filter { id -> cs.any { it.id == id } }.toSet() }
+        runCatching { client.assets() }.onSuccess { a -> assets = a; if (a.none { it.id == musicAsset }) musicAsset = "" }
     }
 
     // Poll the active production until it reaches a terminal state, then fetch the verified MP4.
@@ -159,6 +166,7 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                     onCancel = { act { client.cancel(p.id) } },
                     onRetry = { act { client.retry(p.id) } },
                     onApprove = { act { client.approve(p.id) } },
+                    onEditTimeline = { editingTimeline = true },
                     onNew = { setActive(null) },
                     onPlay = { f -> openVideo(context, f, Intent.ACTION_VIEW) },
                     onShare = { f -> openVideo(context, f, Intent.ACTION_SEND) },
@@ -168,6 +176,7 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
             if (p.scenes.isNotEmpty()) item {
                 key(storyboardVersion) { Storyboard(context, p, busy || !(p.terminal || p.inReview),
                     onEdit = { s -> editing = s },
+                    onUseAsset = { i -> scope.launch { runCatching { client.assets() }.onSuccess { assets = it } }; pickingFor = i },
                     onRegenerate = { i ->
                         storyboardFile(context, p.id, i).delete()
                         act { client.regenerateScene(p.id, i) }
@@ -178,6 +187,24 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text("Loading production…", color = Color.LightGray, modifier = Modifier.padding(top = 12.dp))
                 OutlinedButton({ setActive(null) }) { Text("NEW VIDEO") }
+            }
+        }
+        if (editingTimeline) production?.let { p ->
+            item {
+                TimelineEditor(p, onDismiss = { editingTimeline = false }) { body ->
+                    editingTimeline = false
+                    act { client.editTimeline(p.id, body) }
+                }
+            }
+        }
+        pickingFor?.let { i ->
+            item {
+                AssetPicker(assets, i + 1, onDismiss = { pickingFor = null }) { a ->
+                    val pid = production?.id ?: return@AssetPicker
+                    pickingFor = null
+                    storyboardFile(context, pid, i).delete()
+                    act { client.useAsset(pid, i, a.id) }
+                }
             }
         }
         editing?.let { s ->
@@ -195,13 +222,21 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
 
         if (production == null && activeId == null) {
             item {
-                OutlinedTextField(idea, { idea = it }, Modifier.fillMaxWidth(), minLines = 4,
-                    label = { Text("Your idea") },
-                    placeholder = { Text("A 45-second cinematic short explaining how humanoid robots could change warehouses") })
+                Column {
+                    ChipRow(listOf("idea" to "From an idea", "script" to "From my script"), if (scriptMode) "script" else "idea") { scriptMode = it == "script" }
+                    OutlinedTextField(idea, { idea = it }, Modifier.fillMaxWidth(), minLines = if (scriptMode) 8 else 4,
+                        label = { Text(if (scriptMode) "Your script - narrated word for word" else "Your idea") },
+                        placeholder = { Text(if (scriptMode) "Paste the exact narration. CreatorForge splits it into scenes and builds visuals, captions and the edit around your words."
+                            else "A 45-second cinematic short explaining how humanoid robots could change warehouses") })
+                }
             }
             item { Column {
-                Label("LENGTH")
-                ChipRow(listOf(15, 30, 45, 60, 90, 180).map { "$it" to "${it}s" }, "$duration") { duration = it.toInt() }
+                if (scriptMode) Text("Length follows your script (about ${(idea.split(Regex("\\s+")).count { it.isNotBlank() } / 2.5).toInt()}s).",
+                    color = Color.Gray, fontSize = 12.sp)
+                else {
+                    Label("LENGTH")
+                    ChipRow(listOf(15, 30, 45, 60, 90, 180).map { "$it" to "${it}s" }, "$duration") { duration = it.toInt() }
+                }
                 Label("FORMAT")
                 ChipRow(listOf("9:16" to "9:16 Shorts", "16:9" to "16:9 YouTube", "1:1" to "1:1 Square"), aspect) { aspect = it }
                 Label("TEMPLATE")
@@ -223,6 +258,12 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                 Row { Switch(aiVideo, { aiVideo = it }, enabled = caps?.aiVideo == true || aiVideo); Text(if (caps?.aiVideo == false) " AI video clips (no video model on worker)" else " AI video clips", Modifier.padding(top = 12.dp)) }
                 Row { Switch(autoEdit, { autoEdit = it }); Text(" Auto Edit (AI picks transitions, emphasis, pauses)", Modifier.padding(top = 12.dp)) }
                 Row { Switch(review, { review = it }); Text(" Review storyboard before render", Modifier.padding(top = 12.dp)) }
+                val tracks = assets.filter { it.kind == "music" }
+                if (music && tracks.isNotEmpty()) {
+                    Label("MUSIC")
+                    ChipRow(listOf("" to "Auto") + tracks.map { it.id to it.name }, musicAsset) { musicAsset = it }
+                }
+                Row { Switch(sfx, { sfx = it }); Text(" Sound effects (whooshes, hits, pops)", Modifier.padding(top = 12.dp)) }
                 Row { Switch(music, { music = it }); Text(" Music", Modifier.padding(top = 12.dp, end = 16.dp)); Switch(captions, { captions = it }); Text(" Captions", Modifier.padding(top = 12.dp)) }
                 TextButton({ director = !director }) { Text(if (director) "▾ Director Mode" else "▸ Director Mode", color = Gold) }
                 if (director) {
@@ -240,11 +281,14 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                         .putBoolean("music", music).putBoolean("captions", captions).putString("style", style)
                         .putString("mood", mood).putString("camera", camera).putString("characters", characters)
                         .putBoolean("ai_video", aiVideo).putBoolean("review", review)
-                        .putBoolean("auto_edit", autoEdit).putStringSet("character_ids", picked).apply()
+                        .putBoolean("auto_edit", autoEdit).putStringSet("character_ids", picked)
+                        .putBoolean("script_mode", scriptMode).putBoolean("sfx", sfx).putString("music_asset", musicAsset).apply()
                     val chars = characters.lines().mapNotNull { l ->
                         val i = l.indexOf(':'); if (i > 0) l.substring(0, i).trim() to l.substring(i + 1).trim() else null
                     }.filter { it.first.isNotBlank() && it.second.isNotBlank() }
-                    act { client.create(ProductionRequest(idea.trim(), duration, aspect, template, voice, pacing, style.trim(), mood.trim(), camera.trim(), chars, music, captions, aiVideo, review, autoEdit, picked.toList())) }
+                    act { client.create(ProductionRequest(if (scriptMode) "" else idea.trim(), duration, aspect, template, voice, pacing,
+                        style.trim(), mood.trim(), camera.trim(), chars, music, captions, aiVideo, review, autoEdit, picked.toList(),
+                        script = if (scriptMode) idea.trim() else "", musicAssetId = if (music) musicAsset else "", sfx = sfx)) }
                 }) { Text(if (busy) "STARTING…" else "GENERATE VIDEO", fontSize = 18.sp) }
             }
             if (recent.isNotEmpty()) {
@@ -274,7 +318,8 @@ private fun ChipRow(options: List<Pair<String, String>>, selected: String, onSel
 
 @Composable
 private fun ProductionCard(
-    p: ProductionView, video: File?, busy: Boolean, onCancel: () -> Unit, onRetry: () -> Unit, onApprove: () -> Unit, onNew: () -> Unit,
+    p: ProductionView, video: File?, busy: Boolean, onCancel: () -> Unit, onRetry: () -> Unit, onApprove: () -> Unit,
+    onEditTimeline: () -> Unit, onNew: () -> Unit,
     onPlay: (File) -> Unit, onShare: (File) -> Unit, onSave: (File) -> Unit, onDownload: () -> Unit
 ) {
     Card { Column(Modifier.padding(16.dp)) {
@@ -300,6 +345,9 @@ private fun ProductionCard(
             if (p.status == "FAILED" || p.status == "CANCELLED") Button(onRetry, enabled = !busy) { Text("RETRY / RESUME") }
             if (p.terminal) OutlinedButton(onNew) { Text("NEW VIDEO") }
         }
+        if ((p.terminal || p.inReview) && p.scenes.isNotEmpty() && p.scenes.all { it.narrationS != null }) {
+            OutlinedButton(onEditTimeline, enabled = !busy) { Text("EDIT TIMELINE") }
+        }
         if (p.status == "READY") {
             if (video == null) OutlinedButton(onDownload) { Text("DOWNLOAD MP4") }
             else Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -312,7 +360,8 @@ private fun ProductionCard(
 }
 
 @Composable
-private fun Storyboard(context: Context, p: ProductionView, locked: Boolean, onEdit: (SceneView) -> Unit, onRegenerate: (Int) -> Unit) {
+private fun Storyboard(context: Context, p: ProductionView, locked: Boolean, onEdit: (SceneView) -> Unit,
+                       onUseAsset: (Int) -> Unit, onRegenerate: (Int) -> Unit) {
     Column {
         Label("STORYBOARD")
         p.scenes.forEach { s ->
@@ -325,9 +374,10 @@ private fun Storyboard(context: Context, p: ProductionView, locked: Boolean, onE
                 if (s.narration.isNotBlank()) Text("“${s.narration}”", color = Color.LightGray, fontSize = 13.sp)
                 s.error?.let { Text(it, color = Danger, fontSize = 11.sp) }
                 if (s.visual.isNotBlank()) Text("Visual: ${s.visual}", color = Color.Gray, fontSize = 12.sp)
-                Row {
+                Row(Modifier.horizontalScroll(rememberScrollState())) {
                     if (s.hasImage) TextButton({ onRegenerate(s.index) }, enabled = !locked) { Text("REGENERATE VISUAL") }
                     TextButton({ onEdit(s) }, enabled = !locked) { Text("EDIT SCENE") }
+                    TextButton({ onUseAsset(s.index) }, enabled = !locked) { Text("USE ASSET") }
                 }
             } }
         }

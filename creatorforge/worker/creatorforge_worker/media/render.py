@@ -66,19 +66,38 @@ def pick_music(music_dir: str, mood: str, seed: str) -> Path | None:
     return pool[int(hashlib.sha256(seed.encode()).hexdigest(), 16) % len(pool)]
 
 
-def mix_audio(narration: Path, music: Path | None, total: float, out: Path, cancel: threading.Event) -> None:
-    if music is None:
-        ff.run(["-i", str(narration), "-af", f"apad,atrim=0:{total:.3f}", "-ar", str(SAMPLE_RATE), "-ac", "2",
-                "-c:a", "pcm_s16le", str(out)], cancel)
-        return
-    fade_out = max(0.0, total - 2.0)
-    graph = (f"[1:a]aresample={SAMPLE_RATE},aformat=channel_layouts=stereo,volume=0.35,"
-             f"afade=t=in:d=1,afade=t=out:st={fade_out:.3f}:d=2,atrim=0:{total:.3f}[m];"
-             f"[0:a]aresample={SAMPLE_RATE},aformat=channel_layouts=stereo,apad,atrim=0:{total:.3f},asplit=2[n][key];"
-             f"[m][key]sidechaincompress=threshold=0.03:ratio=8:attack=20:release=400[duck];"
-             f"[n][duck]amix=inputs=2:duration=first:normalize=0,alimiter=limit=0.95[a]")
-    ff.run(["-i", str(narration), "-stream_loop", "-1", "-i", str(music), "-filter_complex", graph,
-            "-map", "[a]", "-t", f"{total:.3f}", "-c:a", "pcm_s16le", str(out)], cancel)
+def mix_audio(narration: Path, music: Path | None, total: float, out: Path, cancel: threading.Event,
+              sfx: list[tuple[Path, float, float]] | None = None) -> None:
+    """Narration + optional music bed (ducked under the voice) + optional timed sound effects."""
+    sfx = sfx or []
+    args = ["-i", str(narration)]
+    graph = [f"[0:a]aresample={SAMPLE_RATE},aformat=channel_layouts=stereo,apad,atrim=0:{total:.3f}"
+             + (",asplit=2[n][key]" if music is not None else "[n]")]
+    mix = ["[n]"]
+    idx = 1
+    if music is not None:
+        fade_out = max(0.0, total - 2.0)
+        args += ["-stream_loop", "-1", "-i", str(music)]
+        graph.append(f"[{idx}:a]aresample={SAMPLE_RATE},aformat=channel_layouts=stereo,volume=0.35,"
+                     f"afade=t=in:d=1,afade=t=out:st={fade_out:.3f}:d=2,atrim=0:{total:.3f}[m]")
+        graph.append("[m][key]sidechaincompress=threshold=0.03:ratio=8:attack=20:release=400[duck]")
+        mix.append("[duck]")
+        idx += 1
+    for k, (path, at, gain) in enumerate(sfx):
+        if at >= total:
+            continue
+        ms = int(at * 1000)
+        args += ["-i", str(path)]
+        graph.append(f"[{idx}:a]aresample={SAMPLE_RATE},aformat=channel_layouts=stereo,volume={gain:.2f},"
+                     f"adelay={ms}|{ms}[s{k}]")
+        mix.append(f"[s{k}]")
+        idx += 1
+    if len(mix) == 1:
+        graph.append("[n]anull[a]")
+    else:
+        graph.append(f"{''.join(mix)}amix=inputs={len(mix)}:duration=first:normalize=0,alimiter=limit=0.95[a]")
+    ff.run([*args, "-filter_complex", ";".join(graph), "-map", "[a]", "-t", f"{total:.3f}",
+            "-ar", str(SAMPLE_RATE), "-c:a", "pcm_s16le", str(out)], cancel)
 
 
 def _motion(camera: str, frames: int) -> str:

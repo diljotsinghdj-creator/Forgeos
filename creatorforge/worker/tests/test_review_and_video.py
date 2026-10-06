@@ -64,7 +64,7 @@ def test_storyboard_review_edit_and_approve(cfg):
         job = settled(c, jid)
         assert job["status"] == "READY", job
         assert job["plan"]["scenes"][1]["narration"] == "Bees visit thousands of flowers."
-        assert [s["image"] for s in job["scenes"]] == images
+        assert [s["image"] for i, s in enumerate(job["scenes"]) if i != 1] == [im for i, im in enumerate(images) if i != 1]
         assert len(list((cfg.cache_dir / "images").iterdir())) == len(images) + 1  # only the edited scene re-ran
 
         # Editing a finished video returns it to review; approve re-renders.

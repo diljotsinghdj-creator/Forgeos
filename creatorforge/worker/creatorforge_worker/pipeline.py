@@ -13,11 +13,12 @@ import threading
 from pathlib import Path
 
 from . import director, providers
-from .config import Config
+from .config import Config, VoiceProfile
+from .library import Library
 from .media import captions as cap
-from .media import render, verify
+from .media import render, sfx, verify
 from .media.ff import Cancelled, MediaError
-from .providers.base import ProviderError, Word
+from .providers.base import NotConfigured, ProviderError, Word
 from .store import STAGES, JobStore
 from .templates import ASPECTS, TEMPLATES
 
@@ -38,9 +39,14 @@ def _key(*parts) -> str:
 
 
 class Pipeline:
-    def __init__(self, cfg: Config, store: JobStore):
+    def __init__(self, cfg: Config, store: JobStore, library: Library | None = None):
         self.cfg = cfg
         self.store = store
+        self.library = library or Library(cfg.data_dir / "library", cfg.allow_mock)
+
+    def library_voices(self) -> list[VoiceProfile]:
+        return [VoiceProfile(v["id"], v["name"], v["provider"], v["voice"], v.get("speed", 1.0), v.get("lang", "a"))
+                for v in self.library.voices.list()]
 
     # -- helpers ---------------------------------------------------------------------------
     def _cached(self, kind: str, key: str, suffix: str, make, check) -> Path:
@@ -63,6 +69,16 @@ class Pipeline:
             raise
         tmp.replace(path)
         return path
+
+    @staticmethod
+    def _replace_file(jdir: Path, old: str | None, new_name: str, src: Path) -> Path:
+        """Scene files carry a content key in their name, so reordering scenes can never make two
+        scenes share or overwrite a file."""
+        dst = jdir / new_name
+        shutil.copyfile(src, dst)
+        if old and old != new_name:
+            (jdir / old).unlink(missing_ok=True)
+        return dst
 
     def _stage(self, job: dict, name: str, state: str, **extra) -> None:
         job["stages"][name].update(state=state, **extra)
@@ -119,9 +135,17 @@ class Pipeline:
 
     def _director(self, job: dict, cancel) -> None:
         spec = self._spec(job)
-        llm = providers.build_llm(self.cfg)
-        job["providers"]["llm"] = llm.id
-        plan = director.direct(llm, spec)
+        if spec.script:
+            try:
+                llm = providers.build_llm(self.cfg)
+            except NotConfigured:
+                llm = None
+            job["providers"]["llm"] = f"{llm.id} (script mode)" if llm else "none (script mode: visuals from your words)"
+            plan = director.direct_script(llm, spec)
+        else:
+            llm = providers.build_llm(self.cfg)
+            job["providers"]["llm"] = llm.id
+            plan = director.direct(llm, spec)
         job["plan"] = plan.to_dict()
         job["scenes"] = [{"index": i, "image_state": "PLANNED", "voice_state": "PLANNED", "clip_state": "PLANNED",
                           "image": None, "narration": None, "narration_s": None, "clip": None, "error": None}
@@ -162,9 +186,8 @@ class Pipeline:
                 src = self._cached("images", key, ".png",
                                    lambda p: img.generate(shot["prompt"], shot["negative"], gen[0], gen[1], seed, p),
                                    verify.image)
-                dst = jdir / f"scene_{sc['index'] + 1:02d}.png"
-                shutil.copyfile(src, dst)
-                sc.update(image_state="READY", image=dst.name)
+                dst = self._replace_file(jdir, sc.get("image"), f"scene_{sc['index'] + 1:02d}_{key[:8]}.png", src)
+                sc.update(image_state="READY", image=dst.name, image_source="generated")
             except (ProviderError, MediaError) as e:
                 sc.update(image_state="FAILED", error=f"image: {e}")
                 failures.append(f"scene {sc['index'] + 1}: {e}")
@@ -208,9 +231,8 @@ class Pipeline:
                 src = self._cached("clips", key, ".mp4",
                                    lambda p: video.generate(image, shot["prompt"], seconds, gen[0], gen[1], seed, p),
                                    verify.clip)
-                dst = jdir / f"scene_{sc['index'] + 1:02d}.mp4"
-                shutil.copyfile(src, dst)
-                sc.update(clip_state="READY", clip=dst.name)
+                dst = self._replace_file(jdir, sc.get("clip"), f"scene_{sc['index'] + 1:02d}_{key[:8]}.mp4", src)
+                sc.update(clip_state="READY", clip=dst.name, clip_source="generated")
             except (ProviderError, MediaError) as e:
                 sc.update(clip_state="FAILED", error=f"clip: {e}")
                 self.store.save(job)
@@ -219,7 +241,7 @@ class Pipeline:
 
     def _narration(self, job: dict, cancel) -> None:
         spec = self._spec(job)
-        profile = providers.voice_profile(self.cfg, spec.voice)
+        profile = providers.voice_profile(self.cfg, spec.voice, self.library_voices())
         voice = providers.build_voice(self.cfg, profile)
         job["providers"]["voice"] = f"{profile.id} ({voice.id})"
         jdir = self.store.dir(job["id"])
@@ -236,7 +258,9 @@ class Pipeline:
             key = _key(voice.id, profile.speed, shot["narration"])
             try:
                 src = self._cached("voice", key, ".wav", lambda p: voice.synthesize(shot["narration"], p), verify.wav)
-                dst = jdir / f"scene_{sc['index'] + 1:02d}.wav"
+                dst = jdir / f"scene_{sc['index'] + 1:02d}_{key[:8]}.wav"
+                if sc.get("narration") and sc["narration"] != dst.name:
+                    (jdir / sc["narration"]).unlink(missing_ok=True)
                 render.to_pcm(src, dst, cancel)
                 sc.update(voice_state="READY", narration=dst.name, narration_s=round(verify.wav(dst), 3))
             except (ProviderError, MediaError) as e:
@@ -247,8 +271,13 @@ class Pipeline:
 
     def _timings(self, job: dict) -> list[float]:
         auto = self._spec(job).auto_edit
-        return [max(MIN_SCENE_S, sc["narration_s"] + SCENE_GAP_S + (shot.get("hold", 0.0) if auto else 0.0))
-                for sc, shot in zip(job["scenes"], job["plan"]["scenes"])]
+        out = []
+        for sc, shot in zip(job["scenes"], job["plan"]["scenes"]):
+            natural = max(MIN_SCENE_S, sc["narration_s"] + SCENE_GAP_S + (shot.get("hold", 0.0) if auto else 0.0))
+            override = sc.get("duration_override")
+            # A timeline-edited length wins, but can never cut the narration short.
+            out.append(max(float(override), sc["narration_s"] + 0.1) if override else natural)
+        return out
 
     def _captions(self, job: dict, cancel) -> None:
         spec = self._spec(job)
@@ -281,6 +310,14 @@ class Pipeline:
             self._stage(job, "music", "SKIPPED")
             return
         mood = job["plan"].get("music_mood") or TEMPLATES[spec.template].music_mood
+        if spec.music_asset_id:
+            try:
+                a = self.library.assets.get(spec.music_asset_id)
+            except KeyError:
+                raise StageFailed("the chosen music track was deleted from the Asset Library") from None
+            job["providers"]["music"] = f"asset: {a['name']}"
+            job["music_track"] = str(self.library.assets.path(a))
+            return
         gen = providers.build_music(self.cfg)
         if gen is not None:
             # Generated score: one bed per production (looped under longer videos), cached by mood + length.
@@ -311,44 +348,64 @@ class Pipeline:
         tail = render.TRANSITION_S if len(timings) > 1 else 0.0
         total = sum(timings) + tail
 
+        use_video = spec.motion == "ai_video"
+
+        def transition(i: int, shot: dict) -> str:
+            chosen = shot.get("transition", "")
+            if chosen in render.TRANSITIONS and (spec.auto_edit or shot.get("transition_locked")):
+                return chosen
+            return t.transitions[i % len(t.transitions)]
+
+        def clip_for(sc: dict) -> Path | None:
+            # Imported clips are always used; generated clips only in AI video mode.
+            if sc.get("clip") and (use_video or sc.get("clip_source") == "asset"):
+                return jdir / sc["clip"]
+            return None
+
+        clips = [render.Clip(jdir / sc["image"], d, shot.get("camera", ""), transition(i, shot), clip_for(sc))
+                 for i, (sc, shot, d) in enumerate(zip(job["scenes"], shots, timings))]
+        if use_video and any(c.video is None for c in clips):
+            raise StageFailed("AI video mode but a scene has no clip")
+
+        plan = job["plan"]
+        overlays, start = [], 0.0
+        if plan.get("hook"):
+            overlays.append(cap.Overlay(0.0, min(3.0, timings[0]), plan["hook"], "Hook"))
+        for i, (shot, slot) in enumerate(zip(shots, timings)):
+            if shot.get("overlay") and i > 0:
+                overlays.append(cap.Overlay(start + 0.3, start + slot - 0.2, shot["overlay"], "Callout"))
+            start += slot
+        if plan.get("cta"):
+            overlays.append(cap.Overlay(max(0.0, total - 3.0), total, plan["cta"], "CTA"))
+
+        sfx_hits: list[tuple[Path, float, float]] = []
+        if spec.sfx:
+            bank = sfx.SfxBank.load(self.cfg.sfx_dir, [self.library.assets.path(a) for a in self.library.assets.list("sfx")])
+            sfx_hits = sfx.place(bank, [c.transition for c in clips], timings,
+                                 [(o.start, o.style) for o in overlays if spec.captions], job["id"])
+            job["providers"]["sfx"] = f"{len(sfx_hits)} cues from {bank.describe()}" if bank.any() else "none (no SFX folder or SFX assets)"
+        else:
+            job["providers"]["sfx"] = "off"
+
         narr = work / "narration.wav"
         render.narration_track([jdir / sc["narration"] for sc in job["scenes"]], timings, tail, narr)
         music = Path(job["music_track"]) if job.get("music_track") else None
         if music is not None and not music.is_file():
             raise StageFailed(f"music track disappeared: {music}")
         mixed = work / "audio.wav"
-        render.mix_audio(narr, music, total, mixed, cancel)
+        render.mix_audio(narr, music, total, mixed, cancel, sfx_hits)
 
         ass = None
         if spec.captions:
             words = [Word(**d) for d in json.loads((jdir / "words.json").read_text())]
             cues = cap.group(words, t.words_per_caption)
-            overlays, start = [], 0.0
-            plan = job["plan"]
-            if plan.get("hook"):
-                overlays.append(cap.Overlay(0.0, min(3.0, timings[0]), plan["hook"], "Hook"))
-            for i, (shot, slot) in enumerate(zip(shots, timings)):
-                if shot.get("overlay") and i > 0:
-                    overlays.append(cap.Overlay(start + 0.3, start + slot - 0.2, shot["overlay"], "Callout"))
-                start += slot
-            if plan.get("cta"):
-                overlays.append(cap.Overlay(max(0.0, total - 3.0), total, plan["cta"], "CTA"))
             ass = work / "captions.ass"
             emphasis = {wd for s in shots for wd in s.get("emphasis", [])} if spec.auto_edit else set()
             cap.write_ass(ass, w, h, t.caption_scale, t.caption_position, cues, overlays, emphasis)
 
-        use_video = spec.motion == "ai_video"
-        def transition(i: int, shot: dict) -> str:
-            chosen = shot.get("transition", "")
-            return chosen if spec.auto_edit and chosen in render.TRANSITIONS else t.transitions[i % len(t.transitions)]
-
-        clips = [render.Clip(jdir / sc["image"], d, shot.get("camera", ""), transition(i, shot),
-                             jdir / sc["clip"] if use_video and sc.get("clip") else None)
-                 for i, (sc, shot, d) in enumerate(zip(job["scenes"], shots, timings))]
         job["edit"] = {"auto_edit": spec.auto_edit, "transitions": [c.transition for c in clips[1:]],
-                       "durations": [round(d, 2) for d in timings]}
-        if use_video and any(c.video is None for c in clips):
-            raise StageFailed("AI video mode but a scene has no clip")
+                       "durations": [round(d, 2) for d in timings],
+                       "sfx": [{"file": p.name, "at": round(at, 2)} for p, at, _ in sfx_hits]}
         out = jdir / "work" / "render.mp4"
         expected = render.render_video(clips, mixed, ass, w, h, out, work, cancel)
         job["render"] = {"file": "work/render.mp4", "expected_s": round(expected, 3), "width": w, "height": h}
