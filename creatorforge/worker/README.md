@@ -15,6 +15,22 @@ idea → AI Director (script, hook, shot list, CTA) → PromptForge → scene im
 Each stage saves its output. A crash, cancel or failure resumes from the first unfinished
 stage. Finished images and narration are cached by content, so they are never paid for twice.
 
+## Try it in 2 minutes (demo mode, no AI models)
+
+You need Python 3.10+ and FFmpeg on a computer that's on the same Wi-Fi as your phone.
+
+```bash
+pip install -e .
+python run_demo.py
+```
+
+In the app, open **Settings**, set **Worker URL** to the address it prints
+(`http://192.168.x.x:8765`), and tap **Test connection**. Then go to **Generate** and tap
+**Generate video**. Demo mode uses placeholder AI: coloured images, a tone instead of a voice,
+and a canned script. Everything else is real: the stage tracking, storyboard, review/edit,
+editing, captions, render, verification, download and library. If the phone can't connect,
+allow port 8765 through the computer's firewall.
+
 ## Run
 
 ```bash
