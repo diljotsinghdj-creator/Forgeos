@@ -25,7 +25,7 @@ public final class LocalInspectAdapter implements BuildAdapter {
   j.put("gradleSettings",settings);j.put("gradleBuild",build);
   if(!settings&&!build)throw new IOException("No Gradle project markers");
   JSONArray files=new JSONArray();long[] stats={0,0};walk(root,root,files,stats);
-  j.put("fileCount",stats[0]);j.put("bytes",stats[1]);j.put("files",files);j.put("buildReadiness",new BuildReadinessAnalyzer().analyze(root));j.put("dependencies",new DependencyInspector().inspect(root));
+  j.put("fileCount",stats[0]);j.put("bytes",stats[1]);j.put("files",files);j.put("buildReadiness",new BuildReadinessAnalyzer().analyze(root));j.put("dependencies",new DependencyInspector().inspect(root));j.put("supplyChain",new SupplyChainScanner().scan(root));
   j.put("manifestSha256",sha256(files.toString().getBytes("UTF-8")));j.put("verifiedAt",System.currentTimeMillis());
   return j;
  }
