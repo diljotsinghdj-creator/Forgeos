@@ -15,6 +15,11 @@ idea → AI Director (script, hook, shot list, CTA) → PromptForge → scene im
 Each stage saves its output. A crash, cancel or failure resumes from the first unfinished
 stage. Finished images and narration are cached by content, so they are never paid for twice.
 
+## No computer? Rent a GPU by the hour
+
+See **[cloud/README.md](cloud/README.md)**. You start a GPU machine, paste one command, and copy
+the URL and token it prints into the app. The whole setup works from a phone browser.
+
 ## Try it in 2 minutes (demo mode, no AI models)
 
 You need Python 3.10+ and FFmpeg on a computer that's on the same Wi-Fi as your phone.

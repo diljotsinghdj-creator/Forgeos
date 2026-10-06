@@ -86,20 +86,44 @@ class AndroidMediaCodecVideoRenderer(
                 }
             }
 
-            timeline.clips.forEach { clip ->
-                val bitmap = BitmapFactory.decodeFile(clip.visualPath)
-                    ?: return@withContext RenderResult(false, error = "Cannot decode visual for scene ${clip.order}")
+            // Smart edit on the phone: slow zoom/pan per scene, crossfade into the next scene,
+            // fade from/to black, bold captions. Two bitmaps (current + next) are kept decoded.
+            val clips = timeline.clips.sortedBy { it.startMs }
+            val fadeFrames = (fps * 0.4).toInt()
+            fun decode(i: Int) = clips.getOrNull(i)?.let {
+                BitmapFactory.decodeFile(it.visualPath) ?: error("Cannot decode visual for scene ${it.order}")
+            }
+            var current = decode(0)
+            var next = decode(1)
+            clips.forEachIndexed { ci, clip ->
                 val frames = max(1, ((clip.durationMs * fps) / 1000L).toInt())
+                val cur = current ?: error("Missing visual for scene ${clip.order}")
                 repeat(frames) { localFrame ->
                     if (isCancelled()) return@withContext RenderResult(false, error = "Render cancelled")
                     val canvas = surface.lockCanvas(null)
                     try {
-                        drawCover(canvas, bitmap, width, height)
+                        val t = localFrame.toFloat() / frames
+                        drawCover(canvas, cur, width, height, zoom = 1f + 0.10f * t, pan = if (ci % 2 == 0) t else 1f - t)
+                        val remaining = frames - localFrame
+                        val nxt = next
+                        if (nxt != null && remaining <= fadeFrames) {
+                            val a = 1f - remaining.toFloat() / fadeFrames
+                            drawCover(canvas, nxt, width, height, zoom = 1f, pan = if ((ci + 1) % 2 == 0) 0f else 1f, alpha = a)
+                        }
                         if (request.burnCaptions) {
                             val localMs = (localFrame * 1000L) / fps
                             val cue = clip.captions.firstOrNull { localMs in it.startMs until it.endMs }
                             if (cue != null) drawCaption(canvas, cue, width, height)
                         }
+                        // fade in from black at the very start, out to black at the very end
+                        val global = frameIndex
+                        val tail = totalFrames - global
+                        val black = when {
+                            global < fadeFrames -> 1f - global.toFloat() / fadeFrames
+                            tail < fadeFrames -> 1f - tail.toFloat() / fadeFrames
+                            else -> 0f
+                        }
+                        if (black > 0f) canvas.drawColor(Color.argb((black.coerceIn(0f, 1f) * 255).toInt(), 0, 0, 0))
                     } finally { surface.unlockCanvasAndPost(canvas) }
                     frameIndex++
                     if (frameIndex % fps == 0L) {
@@ -107,7 +131,9 @@ class AndroidMediaCodecVideoRenderer(
                     }
                     drain(false)
                 }
-                bitmap.recycle()
+                cur.recycle()
+                current = next
+                next = decode(ci + 2)
             }
             drain(true)
             onProgress(RenderProgress(RenderState.SUCCEEDED, 1f, "Video track encoded"))
@@ -124,24 +150,43 @@ class AndroidMediaCodecVideoRenderer(
         else RenderResult(true, outputPath = out.absolutePath)
     }
 
-    private fun drawCover(canvas: Canvas, bitmap: android.graphics.Bitmap, width: Int, height: Int) {
-        canvas.drawColor(Color.BLACK)
-        val scale = max(width.toFloat() / bitmap.width, height.toFloat() / bitmap.height)
-        val dw = (bitmap.width * scale).toInt(); val dh = (bitmap.height * scale).toInt()
-        val left = (width - dw) / 2; val top = (height - dh) / 2
-        canvas.drawBitmap(bitmap, null, Rect(left, top, left + dw, top + dh), Paint(Paint.ANTI_ALIAS_FLAG or Paint.FILTER_BITMAP_FLAG))
+    private val bitmapPaint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.FILTER_BITMAP_FLAG)
+
+    /** Cover-fit with Ken Burns zoom; [pan] slides along the longer overflow axis (0..1). */
+    private fun drawCover(canvas: Canvas, bitmap: android.graphics.Bitmap, width: Int, height: Int,
+                          zoom: Float = 1f, pan: Float = 0.5f, alpha: Float = 1f) {
+        if (alpha >= 1f) canvas.drawColor(Color.BLACK)
+        val scale = max(width.toFloat() / bitmap.width, height.toFloat() / bitmap.height) * zoom
+        val dw = bitmap.width * scale; val dh = bitmap.height * scale
+        val left = -(dw - width) * (if (dw - width > dh - height) pan else 0.5f)
+        val top = -(dh - height) * (if (dh - height >= dw - width) pan else 0.5f)
+        bitmapPaint.alpha = (alpha.coerceIn(0f, 1f) * 255).toInt()
+        canvas.drawBitmap(bitmap, null, android.graphics.RectF(left, top, left + dw, top + dh), bitmapPaint)
+        bitmapPaint.alpha = 255
     }
 
+    /** Bold white captions with a thick black outline, wrapped to at most two lines. */
     private fun drawCaption(canvas: Canvas, cue: CaptionCue, width: Int, height: Int) {
-        val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-            color = Color.WHITE; textAlign = Paint.Align.CENTER; textSize = width * 0.045f
-            setShadowLayer(8f, 0f, 3f, Color.BLACK)
+        val size = minOf(width, height) * if (height > width) 0.068f else 0.055f
+        val fill = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            color = Color.WHITE; textAlign = Paint.Align.CENTER; textSize = size
+            typeface = android.graphics.Typeface.create(android.graphics.Typeface.DEFAULT, android.graphics.Typeface.BOLD)
         }
-        val bg = Paint().apply { color = 0x99000000.toInt() }
-        val y = height * 0.86f
-        val pad = width * 0.035f
-        val measured = paint.measureText(cue.text).coerceAtMost(width * 0.9f)
-        canvas.drawRoundRect(width/2f-measured/2-pad, y-paint.textSize-pad, width/2f+measured/2+pad, y+pad, 18f, 18f, bg)
-        canvas.drawText(cue.text, width / 2f, y, paint)
+        val stroke = Paint(fill).apply { color = Color.BLACK; style = Paint.Style.STROKE; strokeWidth = size * 0.16f; strokeJoin = Paint.Join.ROUND }
+        val maxW = width * 0.86f
+        val lines = mutableListOf<String>()
+        var line = ""
+        for (word in cue.text.split(' ')) {
+            val trial = if (line.isEmpty()) word else "$line $word"
+            if (fill.measureText(trial) > maxW && line.isNotEmpty()) { lines += line; line = word } else line = trial
+        }
+        if (line.isNotEmpty()) lines += line
+        val shown = if (lines.size > 2) listOf(lines[0], lines.drop(1).joinToString(" ")) else lines
+        val baseY = height * (if (height > width) 0.72f else 0.86f)
+        shown.forEachIndexed { i, l ->
+            val y = baseY + i * size * 1.2f
+            canvas.drawText(l, width / 2f, y, stroke)
+            canvas.drawText(l, width / 2f, y, fill)
+        }
     }
 }

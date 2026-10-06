@@ -21,7 +21,8 @@ import kotlin.math.min
  */
 class AndroidAacNarrationComposer(
     private val sampleRate: Int = 44_100,
-    private val bitRate: Int = 128_000
+    private val bitRate: Int = 128_000,
+    private val whooshes: Boolean = true
 ) : AacNarrationComposer {
 
     override suspend fun compose(
@@ -100,24 +101,27 @@ class AndroidAacNarrationComposer(
                 }
             }
 
-            for (clip in timeline.clips.sortedBy { it.startMs }) {
+            // Build the whole soundtrack in memory: narration at each scene's start (trimmed or
+            // padded to the scene), plus a soft synthesized whoosh leading into every scene change.
+            val totalTarget = max(1L, timeline.durationMs * sampleRate / 1000L).toInt()
+            val mix = IntArray(totalTarget)
+            val clips = timeline.clips.sortedBy { it.startMs }
+            for (clip in clips) {
                 if (isCancelled()) throw InterruptedException("Export cancelled")
-                val targetStart = clip.startMs * sampleRate / 1000L
-                if (submittedSamples < targetStart) submit(ShortArray((targetStart - submittedSamples).toInt()))
-
+                val start = (clip.startMs * sampleRate / 1000L).toInt()
                 val decoded = decodeToMono(File(clip.audioPath!!), isCancelled)
                 val converted = resample(decoded.samples, decoded.sampleRate, sampleRate)
-                val targetCount = max(1L, clip.durationMs * sampleRate / 1000L).toInt()
-                if (converted.size >= targetCount) {
-                    submit(converted.copyOf(targetCount))
-                } else {
-                    submit(converted)
-                    submit(ShortArray(targetCount - converted.size))
+                val count = min(converted.size, (clip.durationMs * sampleRate / 1000L).toInt())
+                for (i in 0 until count) if (start + i < totalTarget) mix[start + i] += converted[i].toInt()
+            }
+            if (whooshes) {
+                val whoosh = synthWhoosh()
+                clips.drop(1).forEach { clip ->
+                    val at = ((clip.startMs - 250) * sampleRate / 1000L).toInt().coerceAtLeast(0)
+                    for (i in whoosh.indices) if (at + i < totalTarget) mix[at + i] += whoosh[i]
                 }
             }
-
-            val totalTarget = timeline.durationMs * sampleRate / 1000L
-            if (submittedSamples < totalTarget) submit(ShortArray((totalTarget - submittedSamples).toInt()))
+            submit(ShortArray(totalTarget) { mix[it].coerceIn(Short.MIN_VALUE.toInt(), Short.MAX_VALUE.toInt()).toShort() })
             submit(ShortArray(0), eos = true)
             drain(true)
 
@@ -132,6 +136,22 @@ class AndroidAacNarrationComposer(
             try { encoder.release() } catch (_: Throwable) {}
             outputFile.delete()
             return AudioComposeResult(false, error = t.message ?: t.javaClass.simpleName)
+        }
+    }
+
+    /** Band-limited noise with a rise-and-fall envelope: a soft "whoosh", no sound files needed. */
+    private fun synthWhoosh(): IntArray {
+        val n = (sampleRate * 0.45).toInt()
+        val rnd = java.util.Random(42)
+        var low = 0.0
+        var band = 0.0
+        return IntArray(n) { i ->
+            val t = i.toDouble() / n
+            val cutoff = 0.02 + 0.10 * kotlin.math.sin(Math.PI * t)  // filter sweeps open then closed
+            low += cutoff * (rnd.nextGaussian() - low)
+            band += 0.5 * (low - band)
+            val env = kotlin.math.sin(Math.PI * t).let { it * it }
+            (band * env * 9000).toInt()
         }
     }
 

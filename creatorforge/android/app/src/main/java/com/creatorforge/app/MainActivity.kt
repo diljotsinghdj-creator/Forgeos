@@ -38,7 +38,7 @@ class MainActivity:ComponentActivity(){override fun onCreate(savedInstanceState:
 }
 @Composable fun Header(t:String,s:String){Column{Text(t,color=Gold,fontSize=30.sp);Text(s,color=Color.LightGray);Spacer(Modifier.height(18.dp))}}
 @Composable fun Home(count:Int){Column{Header("CREATORFORGE","AI filmmaking workspace");Card{Column(Modifier.padding(18.dp)){Text("RC10.3 • SCROLLABLE EXPORT STUDIO",color=Gold);Text("$count saved projects");Text("Timeline • captions • synchronized scene timing • persistent recovery queue")}}}}
-@Composable fun Create(done:(CreatorProject)->Unit){var prompt by remember{mutableStateOf("")};var long by remember{mutableStateOf(false)};Column{Header("CREATE","Paste a script - each sentence group becomes a scene");OutlinedTextField(prompt,{prompt=it},Modifier.fillMaxWidth(),label={Text("Your script (narration)")},minLines=5);Row{Switch(long,{long=it});Text(if(long)" Long-form" else " Short-form",Modifier.padding(top=12.dp))};Button(enabled=prompt.isNotBlank(),onClick={val beats=com.creatorforge.app.script.ScriptSplitter.split(prompt,if(long)20 else 10);if(beats.isEmpty())return@Button;done(CreatorProject(UUID.randomUUID().toString(),com.creatorforge.app.script.ScriptSplitter.title(prompt),if(long)ProjectType.LONG_FORM else ProjectType.SHORT_FORM,if(long)AspectRatio.LANDSCAPE_16_9 else AspectRatio.VERTICAL_9_16,prompt,beats.mapIndexed{i,b->Scene(UUID.randomUUID().toString(),i+1,"Scene ${i+1}",b.narration,"Hyper-realistic cinematic photograph illustrating: ${b.narration}",b.seconds)}))}){Text("CREATE PROJECT")}}}
+@Composable fun Create(done:(CreatorProject)->Unit){var prompt by remember{mutableStateOf("")};var long by remember{mutableStateOf(false)};var square by remember{mutableStateOf(false)};Column{Header("CREATE","Paste a script - each sentence group becomes a scene");OutlinedTextField(prompt,{prompt=it},Modifier.fillMaxWidth(),label={Text("Your script (narration)")},minLines=5);Row{Switch(long,{long=it;if(it)square=false});Text(if(long)" Long-form 16:9" else " Short-form 9:16",Modifier.padding(top=12.dp))};Row{Switch(square,{square=it;if(it)long=false});Text(" Square 1:1",Modifier.padding(top=12.dp))};Button(enabled=prompt.isNotBlank(),onClick={val beats=com.creatorforge.app.script.ScriptSplitter.split(prompt,if(long)20 else 10);if(beats.isEmpty())return@Button;done(CreatorProject(UUID.randomUUID().toString(),com.creatorforge.app.script.ScriptSplitter.title(prompt),if(long)ProjectType.LONG_FORM else ProjectType.SHORT_FORM,if(square)AspectRatio.SQUARE_1_1 else if(long)AspectRatio.LANDSCAPE_16_9 else AspectRatio.VERTICAL_9_16,prompt,beats.mapIndexed{i,b->Scene(UUID.randomUUID().toString(),i+1,"Scene ${i+1}",b.narration,"Hyper-realistic cinematic photograph illustrating: ${b.narration}",b.seconds)}))}){Text("CREATE PROJECT")}}}
 
 @Composable fun Projects(projects:List<CreatorProject>,secure:SecureTokenStore,persist:(List<CreatorProject>)->Unit){
  val context=androidx.compose.ui.platform.LocalContext.current; val prefs=remember{context.getSharedPreferences("creatorforge_provider",0)}; val scope=rememberCoroutineScope(); var busy by remember{mutableStateOf<String?>(null)}; var message by remember{mutableStateOf<String?>(null)}
@@ -58,6 +58,7 @@ fun storeAudio(projects:List<CreatorProject>,projectId:String,sceneId:String,pat
  var exportMessage by remember{mutableStateOf<String?>(null)}
  var exporting by remember{mutableStateOf(false)}
  var exported by remember{mutableStateOf<File?>(null)}
+ var whooshes by remember{mutableStateOf(true)}
  var selectedId by remember(projects){mutableStateOf(projects.lastOrNull()?.id)}
  val project=projects.firstOrNull{it.id==selectedId}
  Column{
@@ -94,12 +95,13 @@ fun storeAudio(projects:List<CreatorProject>,projectId:String,sceneId:String,pat
     item{
      Spacer(Modifier.height(4.dp))
      val exportReady=ready==p.scenes.size && voiced==p.scenes.size && p.scenes.isNotEmpty()
+     Row{Switch(whooshes,{whooshes=it});Text(" Whoosh on scene changes",Modifier.padding(top=12.dp),color=Color.LightGray)}
      Button(enabled=exportReady&&!exporting,onClick={
       exporting=true;exported=null;exportMessage="Validating export…"
       scope.launch{
        val output=File(context.getExternalFilesDir(null)?:context.filesDir,"CreatorForge_${p.id.take(8)}.mp4")
-       val exporter=AvExportCoordinator(AndroidMediaCodecVideoRenderer(),AndroidAacNarrationComposer())
-       val result=exporter.export(timeline,RenderRequest(p.id,output.absolutePath),onProgress={pr->exportMessage="${pr.message} • ${(pr.fraction*100).toInt()}%"})
+       val exporter=AvExportCoordinator(AndroidMediaCodecVideoRenderer(),AndroidAacNarrationComposer(whooshes=whooshes))
+       val result=exporter.export(timeline,RenderRequest(p.id,output.absolutePath,quality=RenderQuality.forAspect(p.aspectRatio)),onProgress={pr->exportMessage="${pr.message} • ${(pr.fraction*100).toInt()}%"})
        exportMessage=if(result.success)"PASS: MP4 exported and verified" else "FAILED: ${result.error}"
        if(result.success)exported=result.outputPath?.let{File(it)}?.takeIf{it.isFile}
        exporting=false
@@ -113,7 +115,7 @@ fun storeAudio(projects:List<CreatorProject>,projectId:String,sceneId:String,pat
        OutlinedButton(onClick={exportMessage=com.creatorforge.app.production.saveToGallery(context,f)}){Text("SAVE")}
       }
      }
-     Text(when{ready!=p.scenes.size->"Export locked: generate every scene visual.";voiced!=p.scenes.size->"Export locked: generate narration for every scene.";else->"Render pipeline ready: H.264 video + AAC narration + caption burn-in + MP4 mux verification."},color=Color.Gray,fontSize=12.sp)
+     Text(when{ready!=p.scenes.size->"Export locked: generate every scene visual.";voiced!=p.scenes.size->"Export locked: generate narration for every scene.";else->"Ready: ${when(p.aspectRatio){AspectRatio.VERTICAL_9_16->"1080×1920";AspectRatio.SQUARE_1_1->"1080×1080";else->"1920×1080"}} • slow zoom • crossfades • bold captions • voice + whoosh."},color=Color.Gray,fontSize=12.sp)
      Spacer(Modifier.height(24.dp))
     }
    }

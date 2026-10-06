@@ -1,4 +1,4 @@
-# CreatorForge v1.0 RC17 (Android controller)
+# CreatorForge v1.0 RC18 (Android controller)
 
 Your phone runs the studio. The heavy AI generation runs on your self-hosted worker
 (`../worker`).
@@ -38,6 +38,9 @@ Your phone runs the studio. The heavy AI generation runs on your self-hosted wor
 - **Make on this phone (no worker)**: in **Create**, paste a script and it's split into scenes.
   In **Projects**, tap **MAKE ON THIS PHONE**: each scene gets narration from Android's built-in
   voice (free, offline) and a styled title card. Then **Studio → EXPORT MP4** renders the video on
-  the phone with burned-in captions.
+  the phone in the project's real format (1080×1920, 1920×1080 or 1080×1080). It adds a slow
+  zoom/pan on each scene, crossfades, a fade from and to black, bold outlined captions, and a
+  synthesized whoosh on every scene change (there's a switch to turn it off). Create offers 9:16,
+  16:9 and 1:1.
 - **Create / Projects / Studio**: the RC10 manual workflow (per-scene generation and on-device
   MP4 export). It still works offline from the worker's render pipeline.
