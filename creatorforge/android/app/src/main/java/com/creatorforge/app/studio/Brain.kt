@@ -1,0 +1,288 @@
+package com.creatorforge.app.studio
+
+import org.json.JSONArray
+import org.json.JSONObject
+import java.time.LocalDate
+import java.util.UUID
+
+/**
+ * The studio's writing brain, on the phone: ideas, grounded scripts, Director chat, scene breakdowns with
+ * image/video prompts, and weekly channel plans. With a [TextModel] it uses AI; without one it falls back
+ * to simple templates so the app still works offline and with no key.
+ */
+class Brain(private val model: TextModel?) {
+    val usesAi get() = model != null
+
+    private fun ask(system: String, user: String, check: (JSONObject) -> Any): Any {
+        val m = model ?: throw AiException("No Script AI set up")
+        var error = ""
+        repeat(2) {
+            val raw = m.complete(system, if (error.isEmpty()) user else "$user\n\nYour previous answer was invalid: $error. Return corrected JSON only.")
+            try { return check(extractJson(raw)) } catch (e: AiException) { throw e } catch (e: Exception) { error = e.message ?: "invalid JSON" }
+        }
+        throw AiException("The AI gave an unusable answer twice ($error). Try again.")
+    }
+
+    // ---- ideas ----------------------------------------------------------------------------------
+    fun ideas(trend: Trend, count: Int = 5, format: String = "short", niche: String = "", period: String = "week"): List<Idea> {
+        val n = count.coerceIn(1, 10)
+        if (model == null) return templateIdeas(trend, n, format)
+        val user = "TOPIC: ${trend.title}\nPERIOD: trending this $period\nNICHE: ${niche.ifBlank { "general" }}\n" +
+            "FORMAT: $format (${when (format) { "short" -> "<= 60 seconds"; "long" -> "6-12 minutes"; else -> "mix of both" }})\nCOUNT: $n\nSIGNALS:\n${signalsBlock(trend)}"
+        @Suppress("UNCHECKED_CAST")
+        return ask(IDEAS_SYSTEM, user) { d ->
+            val a = d.optJSONArray("ideas") ?: JSONArray()
+            val out = (0 until a.length()).mapNotNull { i -> a.optJSONObject(i)?.let { cleanIdea(it, format) } }
+            require(out.isNotEmpty()) { "no usable ideas (each needs a title and a hook)" }
+            out.take(n)
+        } as List<Idea>
+    }
+
+    private fun cleanIdea(j: JSONObject, wanted: String): Idea? {
+        val title = j.optString("title").trim().take(120)
+        val hook = j.optString("hook").trim().take(140)
+        if (title.isBlank() || hook.isBlank()) return null
+        val f = j.optString("format").lowercase().let { if (it == "short" || it == "long") it else if (wanted == "long") "long" else "short" }
+        var secs = j.optInt("seconds", 0).let { if (it > 0) it else if (f == "long") 600 else 45 }
+        secs = if (f == "short") secs.coerceIn(15, 60) else secs.coerceIn(120, 900)
+        return Idea(title, hook, j.optString("angle").trim().take(400), f, j.optString("why_now").trim().take(240), secs)
+    }
+
+    private fun templateIdeas(trend: Trend, n: Int, format: String): List<Idea> {
+        val t = trend.title
+        val pool = listOf(
+            "What actually happened with $t" to "Here's what really happened with $t.",
+            "$t explained in 60 seconds" to "You've seen $t everywhere. Here's why.",
+            "3 things nobody tells you about $t" to "Three things about $t nobody is telling you.",
+            "Why everyone is talking about $t" to "Everyone is talking about $t. This is why.",
+            "$t: myth vs fact" to "Most people get $t wrong.",
+            "The story behind $t" to "The story behind $t is stranger than you think.",
+            "$t - what happens next?" to "What happens next with $t?",
+        )
+        return (0 until n).map { i ->
+            val (title, hook) = pool[i % pool.size]
+            val long = format == "long" || (format == "mixed" && i % 4 == 3)
+            Idea(title, hook, "Use the real headlines as the backbone; keep claims to what they say.", if (long) "long" else "short",
+                if (trend.sources.isEmpty()) "" else "Trending on ${trend.sources.joinToString(", ")}", if (long) 600 else 45)
+        }
+    }
+
+    // ---- scripts --------------------------------------------------------------------------------
+    fun script(trend: Trend, idea: Idea, seconds: Int = idea.seconds): Script {
+        val secs = seconds.coerceIn(15, 900)
+        val words = Math.round(secs * WORDS_PER_SECOND).toInt()
+        if (model == null) return templateScript(trend, idea, secs)
+        val user = "IDEA: ${idea.title}\nHOOK: ${idea.hook}\nANGLE: ${idea.angle}\nTOPIC: ${trend.title}\n" +
+            "TARGET: about $words words ($secs seconds of narration)\nSOURCES:\n${signalsBlock(trend)}"
+        return ask(SCRIPT_SYSTEM, user) { d ->
+            val text = d.optString("script").replace(Regex("\\s+"), " ").trim()
+            val count = text.split(" ").count { it.isNotBlank() }
+            require(count >= maxOf(15, words / 3)) { "script is too short ($count words, need about $words)" }
+            val used = (0 until (d.optJSONArray("facts_used")?.length() ?: 0)).mapNotNull { d.getJSONArray("facts_used").optInt(it, 0).takeIf { n -> n in 1..trend.signals.size } }
+            Script(d.optString("title").ifBlank { idea.title }.take(100), text.take(20000), d.optString("description").trim().take(1500),
+                hashtags(d.optJSONArray("hashtags")), secs, used.map { trend.signals[it - 1].let { s -> s.title to s.url } }, VERIFY)
+        } as Script
+    }
+
+    private fun templateScript(trend: Trend, idea: Idea, secs: Int): Script {
+        val facts = (listOf(trend.title) + trend.headlines).distinct().take(maxOf(2, secs / 10))
+        val body = facts.drop(1).joinToString(" ") { "Reports say: ${it.trimEnd('.')}." }
+        val text = "${idea.hook} ${if (body.isBlank()) "Here is what we know about ${trend.title}." else body} " +
+            "That's the story so far. Follow for more."
+        return Script(idea.title, text, "${idea.title}. ${trend.headlines.firstOrNull().orEmpty()}".trim(),
+            listOf("#shorts") + RadarWords.tags(trend.title), secs, trend.signals.take(3).map { it.title to it.url },
+            "Template script (no Script AI set up) - add a free key in Settings for a real script. $VERIFY")
+    }
+
+    // ---- Director chat --------------------------------------------------------------------------
+    fun chat(messages: List<Pair<String, String>>, draft: Draft): ChatReply {
+        val convo = messages.filter { it.second.isNotBlank() }.takeLast(20)
+        require(convo.isNotEmpty() && convo.last().first == "user") { "say something first" }
+        if (model == null) {
+            val last = convo.last().second.trim()
+            val d = draft.copy(title = draft.title.ifBlank { last.take(60) }, idea = if (draft.idea.isBlank()) last else "${draft.idea}\n$last")
+            return ChatReply("Saved to your draft. Without Script AI I can't write for you yet - add a free key in Settings (Script AI) and I'll plan, write and polish it with you.",
+                true, d, listOf("How do I get a free key?"))
+        }
+        val transcript = convo.joinToString("\n") { (r, c) -> "${if (r == "user") "CREATOR" else "DIRECTOR"}: ${c.trim().take(4000)}" }
+        val user = "CURRENT DRAFT: ${draft.toJson()}\n\nCONVERSATION:\n$transcript\n\nReply as DIRECTOR."
+        return ask(CHAT_SYSTEM, user) { d ->
+            val reply = d.optString("reply").trim()
+            require(reply.isNotBlank()) { "missing reply" }
+            val nd = cleanDraft(d.optJSONObject("draft"), draft)
+            val sugg = strings(d.optJSONArray("suggestions")).map { it.trim().take(60) }.filter { it.isNotBlank() }.take(3)
+            ChatReply(reply.take(2000), d.optBoolean("ready") && !nd.isEmpty, nd, sugg)
+        } as ChatReply
+    }
+
+    private fun cleanDraft(j: JSONObject?, old: Draft): Draft {
+        if (j == null) return old
+        fun s(k: String, cur: String) = j.optString(k).trim().ifBlank { cur }
+        val dur = j.optInt("duration_s", old.durationS).coerceIn(10, 900)
+        val template = s("template", old.template).let { t -> if (Styles.templates.any { it.first == t }) t else if (dur > 90) "youtube_longform" else "shorts_cinematic" }
+        val style = s("style", old.style).let { st -> if (Styles.presets.any { it.first == st }) st else "cinematic" }
+        val ai = s("ai_video", old.aiVideo).let { if (it in setOf("off", "hook", "all")) it else "off" }
+        return Draft(s("title", old.title).take(100), s("idea", old.idea).take(3000), s("hook", old.hook).take(160),
+            s("script", old.script).take(20000), dur, template, style, ai)
+    }
+
+    // ---- scene breakdown + prompts ---------------------------------------------------------------
+    /** Splits a script (or an idea) into scenes with ready-to-paste image and video prompts. */
+    fun scenes(text: String, isScript: Boolean, style: String, template: String, seconds: Int = 45): List<Scene> {
+        val look = Styles.prompt(style)
+        if (model == null || isScript && text.split(Regex("\\s+")).size < 8) {
+            val parts = if (isScript) groupSentences(text, template) else listOf(text)
+            return parts.map { p -> forge(p, p.trimEnd('.'), "medium", "slow push in", "", "", look) }
+        }
+        val n = if (isScript) groupSentences(text, template).size
+        else Math.round(seconds / (Styles.sceneSeconds[template] ?: 5.0)).toInt().coerceIn(3, 40)
+        val user = (if (isScript) "SCRIPT (final - keep these exact words, already split):\n" +
+            groupSentences(text, template).mapIndexed { i, s -> "${i + 1}. $s" }.joinToString("\n")
+        else "IDEA: $text\nLENGTH: about $seconds seconds") + "\nSCENE_COUNT: $n\nLOOK: ${Styles.name(style)}"
+        @Suppress("UNCHECKED_CAST")
+        return ask(SCENES_SYSTEM, user) { d ->
+            val a = d.optJSONArray("scenes") ?: JSONArray()
+            val fixed = if (isScript) groupSentences(text, template) else null
+            val out = (0 until a.length()).mapNotNull { i ->
+                val s = a.optJSONObject(i) ?: return@mapNotNull null
+                val narration = fixed?.getOrNull(i) ?: s.optString("narration").trim()
+                val visual = s.optString("visual").trim()
+                if (narration.isBlank() || visual.isBlank()) null
+                else forge(narration, visual, s.optString("shot"), s.optString("camera"), s.optString("mood"), s.optString("motion"), look)
+            }
+            require(out.size >= minOf(n, 2)) { "expected $n scenes, got ${out.size}" }
+            out
+        } as List<Scene>
+    }
+
+    private fun forge(narration: String, visual: String, shot: String, camera: String, mood: String, motion: String, look: String): Scene {
+        val v = visual.trimEnd('.')
+        val framing = listOfNotNull(shot.takeIf { it.isNotBlank() }?.let { "$it shot" }, camera.ifBlank { null }, mood.takeIf { it.isNotBlank() }?.let { "$it mood" })
+        val image = (listOf(v) + listOfNotNull(framing.joinToString(", ").ifBlank { null }) + look).joinToString(". ")
+        val video = "${motion.ifBlank { "subtle natural movement in the scene: $v" }}. Camera: ${camera.ifBlank { "slow cinematic camera move" }}. $v. $look. " +
+            "Smooth realistic motion, natural physics, consistent identity, stable details"
+        return Scene(narration, visual, shot, camera, mood, image, video, Styles.NEGATIVE)
+    }
+
+    // ---- channel plans ----------------------------------------------------------------------------
+    fun plan(channel: Channel, trends: List<Trend>, start: LocalDate = LocalDate.now().plusDays(1)): List<Slot> {
+        val n = channel.perWeek.coerceIn(1, 21)
+        val formats = (0 until n).map { i -> when (channel.format) { "long" -> "long"; "mixed" -> if (i % 4 == 3) "long" else "short"; else -> "short" } }
+        val note = listOf(Niches[channel.niche].name, channel.tone.takeIf { it.isNotBlank() }?.let { "tone: $it" },
+            channel.audience.takeIf { it.isNotBlank() }?.let { "audience: $it" }).filterNotNull().joinToString("; ")
+        val pool = trends.ifEmpty { listOf(Trend.manual("Evergreen " + channel.keyword.ifBlank { Niches[channel.niche].name })) }
+        val per = if (n > 3) 2 else 1
+        val picked = mutableListOf<Pair<Trend, Idea>>()
+        var t = 0
+        while (picked.size < n && t < pool.size + 3) {
+            val trend = pool[t % pool.size]
+            val need = minOf(per, n - picked.size)
+            val f = formats.subList(picked.size, picked.size + need).let { if (it.toSet().size == 1) it[0] else "mixed" }
+            for (idea in ideas(trend, need, f, note, "week")) {
+                if (picked.size >= n) break
+                val want = formats[picked.size]
+                picked += trend to (if (idea.format == want) idea else idea.copy(format = want, seconds = if (want == "short") 45 else 600))
+            }
+            t++
+        }
+        return picked.mapIndexed { i, (trend, idea) ->
+            Slot(UUID.randomUUID().toString().take(10), start.plusDays((i * 7L) / maxOf(picked.size, 1)).toString(), channel.postTime,
+                "planned", idea, trend.copy(signals = trend.signals.take(8), headlines = trend.headlines.take(6)))
+        }
+    }
+
+    companion object {
+        const val WORDS_PER_SECOND = 2.5
+        const val VERIFY = "Check names, dates and numbers against the sources before posting."
+
+        fun signalsBlock(t: Trend): String {
+            val lines = t.signals.mapIndexed { i, s ->
+                val metric = if (s.metric > 0 && s.metricLabel.isNotBlank()) " %,d %s".format(s.metric, s.metricLabel) else ""
+                val snippet = if (s.snippet.isNotBlank()) " - ${s.snippet.take(240)}" else ""
+                "${i + 1}. [${s.publisher.ifBlank { s.source }}$metric] ${s.title}$snippet"
+            }
+            return lines.ifEmpty { (t.headlines.ifEmpty { listOf(t.title) }).mapIndexed { i, h -> "${i + 1}. $h" } }.joinToString("\n")
+        }
+
+        fun hashtags(a: JSONArray?): List<String> = strings(a).map { "#" + it.replace(Regex("[^\\p{L}\\p{N}_]"), "") }
+            .filter { it.length > 1 }.distinctBy { it.lowercase() }.take(12)
+
+        private val ABBREV = Regex("(?:\\b(?:Mr|Mrs|Ms|Dr|Jr|Sr|St|vs|etc|No|Inc|Ltd)\\.|\\b(?:[A-Z]\\.){2,})$")
+
+        fun sentences(text: String): List<String> {
+            val out = mutableListOf<String>()
+            for (block in text.split(Regex("\n+"))) {
+                var buf = ""
+                for (p in block.trim().split(Regex("(?<=[.!?…])\\s+"))) {
+                    buf = if (buf.isNotEmpty()) "$buf ${p.trim()}" else p.trim()
+                    if (!ABBREV.containsMatchIn(buf)) { out += buf; buf = "" }
+                }
+                if (buf.isNotEmpty()) out += buf
+            }
+            return out.map { it.replace(Regex("\\s+"), " ").trim() }.filter { s -> s.any { it.isLetterOrDigit() } }
+        }
+
+        /** Same grouping the worker uses in script mode, so the phone's scenes match the rendered video. */
+        fun groupSentences(text: String, template: String): List<String> {
+            val sents = sentences(text)
+            if (sents.isEmpty()) return emptyList()
+            val words = sents.sumOf { it.split(" ").size }
+            val n = Math.round(words / WORDS_PER_SECOND / (Styles.sceneSeconds[template] ?: 5.0)).toInt().coerceIn(1, minOf(sents.size, 40))
+            val target = words.toDouble() / n
+            val groups = mutableListOf(mutableListOf<String>())
+            var count = 0
+            sents.forEachIndexed { i, s ->
+                if (groups.last().isNotEmpty() && groups.size < n && (count >= target * groups.size || sents.size - i <= n - groups.size)) groups += mutableListOf<String>()
+                groups.last() += s
+                count += s.split(" ").size
+            }
+            return groups.filter { it.isNotEmpty() }.map { it.joinToString(" ") }
+        }
+
+        private const val IDEAS_SYSTEM = """You are the strategist for faceless YouTube Shorts, TikTok and long-form channels.
+Given a trending topic and the real signals behind it, propose video ideas that ride the trend.
+Rules:
+- Hooks are at most 12 words and make the viewer need the answer. No lies, no fake quotes.
+- Every angle must be supported by the SIGNALS. Do not invent facts, numbers or events.
+- For short videos (<= 60s) pick one sharp angle. For long videos pick an angle with depth (story, explainer, timeline, top-list).
+- Mix formats: explainer, story, "what nobody tells you", top-N list, myth vs fact, timeline, prediction (clearly labelled opinion).
+- why_now: one sentence on why this is worth posting now.
+Return JSON only: {"ideas":[{"title":"...","hook":"...","angle":"...","format":"short|long","why_now":"...","seconds":45}]}"""
+
+        private const val SCRIPT_SYSTEM = """You write narration for faceless social videos.
+Write a voice-over script about the IDEA using ONLY facts found in the numbered SOURCES.
+Rules:
+- First sentence is the hook. Last sentence is a short call to action.
+- Plain spoken English, short sentences, no stage directions, no emojis, no headings, no scene labels.
+- If a detail is not in the SOURCES, do not state it as fact. You may give clearly labelled opinion ("I think", "it might").
+- Never invent quotes, statistics, dates or names.
+- Hit the target word count.
+Return JSON only: {"title":"...","script":"...","description":"one-paragraph video description","hashtags":["#..."],"facts_used":[1,2]}"""
+
+        private const val CHAT_SYSTEM = """You are the AI Director of CreatorForge, a studio for faceless YouTube Shorts, TikTok and YouTube videos.
+Talk with the creator like a sharp, friendly producer. Help them turn a rough thought into a video that will perform.
+Each turn:
+- Answer in 1-4 short sentences. Ask at most ONE question, only when it really matters.
+- Keep a DRAFT of the video up to date. Fill in sensible defaults yourself; don't make the creator choose everything.
+- If the creator asks for a script, write the full narration in draft.script (spoken words only, hook first, CTA last).
+- If they ask for ideas, list them in your reply and put the best one in the draft.
+- Never invent facts presented as news. For real events, keep claims general or ask the creator for sources.
+- Set ready=true once the draft is good enough to produce.
+Templates: shorts_cinematic, reels_punchy (9:16 shorts), square_social (1:1), explainer, youtube_longform (16:9 long).
+Styles: cinematic, hyperreal, documentary, animated_3d, anime, claymation, watercolor, comic.
+ai_video: "off" (stills with camera motion, cheapest), "hook" (AI motion on the first scene), "all" (every scene).
+Return JSON only:
+{"reply":"...","ready":false,"suggestions":["up to 3 short replies the creator might tap"],
+"draft":{"title":"...","idea":"one paragraph brief","hook":"...","script":"","duration_s":45,"template":"shorts_cinematic","style":"cinematic","ai_video":"off"}}"""
+
+        private const val SCENES_SYSTEM = """You are a storyboard artist for faceless social videos. Break the video into scenes.
+For each scene give the narration (if a SCRIPT is given, copy each numbered part exactly, one per scene) and ONE concrete,
+filmable image: subject, setting, action, lighting. No on-screen text in images. Keep characters and places consistent.
+Return JSON only: {"scenes":[{"narration":"...","visual":"...","shot":"wide|medium|close-up|aerial|...","camera":"slow push in|pan left|static|...","mood":"...","motion":"what moves in the shot"}]}"""
+    }
+}
+
+/** Small helper for no-AI hashtags. */
+object RadarWords {
+    fun tags(title: String): List<String> = TrendRadar.tokens(title).filter { it.length >= 4 }.take(5).map { "#$it" }
+}

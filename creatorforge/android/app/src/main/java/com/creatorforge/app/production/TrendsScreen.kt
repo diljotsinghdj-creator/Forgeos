@@ -23,8 +23,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.creatorforge.app.studio.Idea
+import com.creatorforge.app.studio.Niches
+import com.creatorforge.app.studio.ProductionBodies
+import com.creatorforge.app.studio.Regions
+import com.creatorforge.app.studio.SavedScript
+import com.creatorforge.app.studio.Script
+import com.creatorforge.app.studio.Trend
+import com.creatorforge.app.studio.TrendScan
 import kotlinx.coroutines.launch
 import org.json.JSONObject
+import java.util.UUID
 
 private val Gold = Color(0xFFD4AF37)
 private val Danger = Color(0xFFE57373)
@@ -32,77 +41,77 @@ private val Dim = Color(0xFF9E9E9E)
 private val Card2 = Color(0xFF1D1D1D)
 
 private val PERIODS = listOf("week" to "This week", "month" to "This month", "year" to "This year")
-private val FALLBACK_NICHES = listOf(
-    Choice("all", "Everything"), Choice("tech", "Tech & Gadgets"), Choice("ai", "AI"), Choice("money", "Money & Finance"),
-    Choice("business", "Business & Side Hustles"), Choice("crypto", "Crypto"), Choice("science", "Science & Space"),
-    Choice("history", "History"), Choice("mystery", "Mystery & True Crime"), Choice("facts", "Facts & Curiosities"),
-    Choice("motivation", "Motivation & Self-improvement"), Choice("health", "Health & Fitness"), Choice("gaming", "Gaming"),
-    Choice("entertainment", "Movies, TV & Music"), Choice("sports", "Sports"), Choice("custom", "My keyword")
-)
-private val FALLBACK_REGIONS = listOf(Choice("GB", "UK"), Choice("US", "US"), Choice("IN", "India"), Choice("CA", "Canada"), Choice("AU", "Australia"))
 
-/** Trend Radar: what is trending this week, month or year, turned into ideas, scripts and videos in a few taps. */
+/**
+ * Trend Radar: what is trending this week, month or year, turned into ideas and scripts - all on the phone.
+ * The worker (pod) is only used by "MAKE VIDEOS".
+ */
 @Composable
-fun TrendsScreen(onOpenSettings: () -> Unit = {}, onOpenGenerate: () -> Unit = {}) {
+fun TrendsScreen(onOpenSettings: () -> Unit = {}, onOpenGenerate: () -> Unit = {}, onOpenScripts: () -> Unit = {}) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val worker = remember { context.getSharedPreferences("creatorforge_provider", 0) }
     val prefs = remember { context.getSharedPreferences("creatorforge_trends", 0) }
-    val client = remember { ProductionClient(worker.getString("base_url", "").orEmpty()) }
+    val radar = remember { StudioHub.radar(context) }
 
     var period by remember { mutableStateOf(prefs.getString("period", "week").orEmpty()) }
     var niche by remember { mutableStateOf(prefs.getString("niche", "all").orEmpty()) }
     var region by remember { mutableStateOf(prefs.getString("region", "GB").orEmpty()) }
     var keyword by remember { mutableStateOf(prefs.getString("keyword", "").orEmpty()) }
-    var niches by remember { mutableStateOf(FALLBACK_NICHES) }
-    var regions by remember { mutableStateOf(FALLBACK_REGIONS) }
-    var youtube by remember { mutableStateOf(true) }
+    var myTopic by remember { mutableStateOf("") }
 
     var scan by remember { mutableStateOf<TrendScan?>(null) }
+    var extra by remember { mutableStateOf<List<Trend>>(emptyList()) } // topics typed by the user
     var loading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf<String?>(null) }
     var notice by remember { mutableStateOf<String?>(null) }
     var open by remember { mutableStateOf<String?>(null) }
-    val ideas = remember { mutableStateMapOf<String, List<TrendIdea>>() }
+    val ideas = remember { mutableStateMapOf<String, List<Idea>>() }
     val picked = remember { mutableStateMapOf<String, Boolean>() } // "trendId|ideaIndex"
-    val scripts = remember { mutableStateMapOf<String, TrendScript>() } // "trendId|ideaIndex"
-    var working by remember { mutableStateOf<String?>(null) } // what is busy right now (key)
+    val scripts = remember { mutableStateMapOf<String, Script>() } // "trendId|ideaIndex"
+    var working by remember { mutableStateOf<String?>(null) }
 
     fun load(refresh: Boolean) {
         if (niche == "custom" && keyword.trim().length < 2) { error = "Type a keyword first"; return }
         prefs.edit().putString("period", period).putString("niche", niche).putString("region", region).putString("keyword", keyword).apply()
         loading = true; error = null; notice = null
         scope.launch {
-            runCatching { client.trends(period, niche, region, if (niche == "custom") keyword.trim() else "", refresh) }
+            runCatching { studio { radar.scan(period, niche, region, keyword, refresh) } }
                 .onSuccess { scan = it; open = null }
                 .onFailure { error = it.message }
             loading = false
         }
     }
 
-    LaunchedEffect(Unit) {
-        runCatching { client.trendOptions() }.onSuccess { (n, r, yt) -> if (n.isNotEmpty()) niches = n; if (r.isNotEmpty()) regions = r; youtube = yt }
-        load(false)
+    LaunchedEffect(Unit) { load(false) }
+
+    fun saveScript(sc: Script, idea: Idea, trend: Trend): SavedScript {
+        val saved = SavedScript(UUID.randomUUID().toString().take(12), sc.title.ifBlank { idea.title }, sc.text, idea.hook, sc.description,
+            sc.hashtags, template = if (sc.seconds > 60) "youtube_longform" else "shorts_cinematic", source = "Trend: ${trend.title}")
+        StudioHub.scripts(context).upsert(saved)
+        return saved
     }
 
-    fun sendToGenerate(script: TrendScript) {
+    fun sendToGenerate(sc: Script) {
         val g = context.getSharedPreferences("creatorforge_generate", 0)
-        val long = script.seconds() > 60
+        val long = sc.seconds > 60
         val current = g.getString("template", "shorts_cinematic").orEmpty()
         val template = if (long) "youtube_longform" else if (current == "reels_punchy") current else "shorts_cinematic"
-        g.edit().putString("idea", script.script).putBoolean("script_mode", true).putString("template", template)
-            .putString("aspect", if (long) "16:9" else "9:16").apply()
+        g.edit().putString("idea", sc.text).putBoolean("script_mode", true).putString("template", template)
+            .putString("aspect", if (long) "16:9" else "9:16").putString("active", null).apply()
         onOpenGenerate()
     }
+
+    val topics = extra + scan?.items.orEmpty()
 
     LazyColumn(verticalArrangement = Arrangement.spacedBy(10.dp)) {
         item {
             Text("TREND RADAR", color = Gold, fontSize = 28.sp, fontWeight = FontWeight.Bold)
-            Text("What people are watching and searching - turned into videos.", color = Color.LightGray)
+            Text("What people are watching and searching - turned into ideas and scripts. No pod needed.", color = Color.LightGray)
         }
+        item { AiBanner(onOpenSettings) }
         item { Chips(PERIODS, period) { period = it; load(false) } }
-        item { Chips(niches.map { it.id to it.name }, niche) { niche = it; if (it != "custom") load(false) } }
-        item { Chips(regions.map { it.id to it.name }, region, small = true) { region = it; load(false) } }
+        item { Chips(Niches.all.map { it.id to it.name }, niche) { niche = it; if (it != "custom") load(false) } }
+        item { Chips(Regions.all.map { it.id to it.name }, region, small = true) { region = it; load(false) } }
         if (niche == "custom") item {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 OutlinedTextField(keyword, { keyword = it }, Modifier.weight(1f), singleLine = true, label = { Text("Keyword or topic") },
@@ -113,42 +122,49 @@ fun TrendsScreen(onOpenSettings: () -> Unit = {}, onOpenGenerate: () -> Unit = {
         }
         item {
             Row(verticalAlignment = Alignment.CenterVertically) {
+                OutlinedTextField(myTopic, { myTopic = it }, Modifier.weight(1f), singleLine = true, label = { Text("…or brainstorm any topic") },
+                    placeholder = { Text("e.g. the deepest hole on Earth") })
+                Spacer(Modifier.width(8.dp))
+                OutlinedButton(enabled = myTopic.trim().length >= 3, onClick = {
+                    val t = Trend.manual(myTopic); extra = listOf(t) + extra.filter { it.id != t.id }; open = t.id; myTopic = ""
+                }) { Text("ADD") }
+            }
+        }
+        item {
+            Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(scan?.let { s -> "${s.items.size} topics • " + if (s.cached) "saved scan" else "fresh scan" } ?: "", color = Dim, fontSize = 12.sp,
                     modifier = Modifier.weight(1f))
                 TextButton(onClick = { load(true) }, enabled = !loading) { Text(if (loading) "SCANNING…" else "↻ REFRESH", color = Gold) }
             }
             if (loading) LinearProgressIndicator(Modifier.fillMaxWidth(), color = Gold)
             scan?.let { s ->
-                Text(s.sources.joinToString("  ") { (if (it.ok) "✓ " else "✗ ") + it.name + if (it.ok) " ${it.count}" else "" },
-                    color = Dim, fontSize = 11.sp)
+                Text(s.sources.joinToString("  ") { (if (it.ok) "✓ " else "✗ ") + it.name + if (it.ok) " ${it.count}" else "" }, color = Dim, fontSize = 11.sp)
                 s.sources.filter { !it.ok && it.error.isNotBlank() }.forEach { Text("${it.name}: ${it.error}", color = Dim, fontSize = 11.sp) }
             }
         }
-        error?.let { e ->
-            item {
-                Card(colors = CardDefaults.cardColors(containerColor = Card2)) {
-                    Column(Modifier.padding(14.dp)) {
-                        Text(e, color = Danger)
-                        if ("Settings" in e || "unreachable" in e) TextButton(onClick = onOpenSettings) { Text("OPEN SETTINGS", color = Gold) }
-                    }
+        error?.let { e -> item {
+            Card(colors = CardDefaults.cardColors(containerColor = Card2)) {
+                Column(Modifier.padding(14.dp)) {
+                    Text(e, color = Danger)
+                    if ("Settings" in e || "key" in e) TextButton(onClick = onOpenSettings) { Text("OPEN SETTINGS", color = Gold) }
                 }
             }
-        }
+        } }
         notice?.let { n -> item { Text(n, color = Gold) } }
 
-        items(scan?.items.orEmpty(), key = { it.id }) { t ->
+        items(topics, key = { it.id }) { t ->
             val expanded = open == t.id
             Card(colors = CardDefaults.cardColors(containerColor = Card2), modifier = Modifier.fillMaxWidth().clickable { open = if (expanded) null else t.id }) {
                 Column(Modifier.padding(14.dp)) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(heatLabel(t.heat), fontSize = 12.sp, color = Gold, modifier = Modifier.width(70.dp))
+                    if (t.sources.isNotEmpty()) Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(heatLabel(t.heat), fontSize = 12.sp, color = Gold, modifier = Modifier.width(78.dp))
                         Box(Modifier.weight(1f).height(6.dp).clip(RoundedCornerShape(3.dp)).background(Color(0xFF2A2A2A))) {
                             Box(Modifier.fillMaxWidth(t.heat.coerceIn(4, 100) / 100f).fillMaxHeight().background(Gold))
                         }
-                    }
+                    } else Text("✎ YOUR TOPIC", fontSize = 12.sp, color = Gold)
                     Spacer(Modifier.height(6.dp))
                     Text(t.title, color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
-                    Text(t.sources.joinToString(" • ") + metricText(t.metrics), color = Dim, fontSize = 12.sp)
+                    if (t.sources.isNotEmpty()) Text(t.sources.joinToString(" • ") + metricText(t.metrics), color = Dim, fontSize = 12.sp)
                     t.headlines.take(if (expanded) 6 else 2).forEach { Text("“$it”", color = Color.LightGray, fontSize = 13.sp, maxLines = if (expanded) 3 else 1) }
 
                     if (expanded) {
@@ -158,7 +174,7 @@ fun TrendsScreen(onOpenSettings: () -> Unit = {}, onOpenGenerate: () -> Unit = {
                                 OutlinedButton(enabled = working == null, onClick = {
                                     working = "${t.id}|ideas"; error = null
                                     scope.launch {
-                                        runCatching { client.trendIdeas(t.id, if (fmt == "short") 5 else 3, fmt, niche, period) }
+                                        runCatching { studio { StudioHub.brain(context).ideas(t, if (fmt == "short") 5 else 3, fmt, Niches[niche].name, period) } }
                                             .onSuccess { ideas[t.id] = it; it.indices.forEach { i -> picked["${t.id}|$i"] = true } }
                                             .onFailure { error = it.message }
                                         working = null
@@ -166,10 +182,8 @@ fun TrendsScreen(onOpenSettings: () -> Unit = {}, onOpenGenerate: () -> Unit = {
                                 }) { Text(label, fontSize = 12.sp) }
                             }
                         }
-                        if (working == "${t.id}|ideas") Text("The AI Director is reading the sources…", color = Dim, fontSize = 12.sp)
-                        TextButton(onClick = { t.signals.firstOrNull { it.url.isNotBlank() }?.let { openUrl(context, it.url) } }) {
-                            Text("OPEN TOP SOURCE", color = Gold, fontSize = 12.sp)
-                        }
+                        if (working == "${t.id}|ideas") Text("Writing ideas from the real headlines…", color = Dim, fontSize = 12.sp)
+                        t.signals.firstOrNull { it.url.isNotBlank() }?.let { s -> TextButton(onClick = { openUrl(context, s.url) }) { Text("OPEN TOP SOURCE", color = Gold, fontSize = 12.sp) } }
 
                         ideas[t.id]?.let { list ->
                             list.forEachIndexed { i, idea ->
@@ -190,57 +204,61 @@ fun TrendsScreen(onOpenSettings: () -> Unit = {}, onOpenGenerate: () -> Unit = {
                                         TextButton(enabled = working == null, onClick = {
                                             working = key; error = null
                                             scope.launch {
-                                                runCatching { client.trendScript(t.id, idea) }.onSuccess { scripts[key] = it }.onFailure { error = it.message }
+                                                runCatching { studio { StudioHub.brain(context).script(t, idea) } }.onSuccess { scripts[key] = it }.onFailure { error = it.message }
                                                 working = null
                                             }
                                         }) { Text(if (working == key) "WRITING SCRIPT…" else "WRITE SCRIPT", color = Gold) }
                                     } else {
                                         Spacer(Modifier.height(6.dp))
-                                        Text(sc.script, color = Color.White, fontSize = 13.sp)
+                                        Text(sc.text, color = Color.White, fontSize = 13.sp)
                                         if (sc.hashtags.isNotEmpty()) Text(sc.hashtags.joinToString(" "), color = Gold, fontSize = 12.sp)
                                         sc.sources.forEach { (title, url) ->
                                             Text("Source: $title", color = Dim, fontSize = 11.sp, maxLines = 1,
                                                 modifier = Modifier.clickable(enabled = url.isNotBlank()) { openUrl(context, url) })
                                         }
                                         if (sc.verify.isNotBlank()) Text(sc.verify, color = Dim, fontSize = 11.sp)
-                                        Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                                            TextButton(onClick = { sendToGenerate(sc) }) { Text("OPEN IN GENERATE", color = Gold, fontSize = 12.sp) }
+                                        Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                                            TextButton(onClick = { saveScript(sc, idea, t); notice = "Saved to Scripts - break it into scenes & prompts there"; onOpenScripts() }) {
+                                                Text("SCENES & PROMPTS", color = Gold, fontSize = 12.sp)
+                                            }
+                                            TextButton(onClick = { saveScript(sc, idea, t); notice = "Saved to Director → Scripts" }) { Text("SAVE", color = Gold, fontSize = 12.sp) }
                                             TextButton(onClick = {
-                                                copy(context, "${sc.title}\n\n${sc.script}\n\n${sc.description}\n\n${sc.hashtags.joinToString(" ")}")
+                                                copy(context, "${sc.title}\n\n${sc.text}\n\n${sc.description}\n\n${sc.hashtags.joinToString(" ")}")
                                                 notice = "Script, description and hashtags copied"
                                             }) { Text("COPY", color = Gold, fontSize = 12.sp) }
+                                            TextButton(onClick = { sendToGenerate(sc) }) { Text("TO GENERATE", color = Gold, fontSize = 12.sp) }
                                         }
                                     }
                                 }
                             }
                             val chosen = list.indices.filter { picked["${t.id}|$it"] == true }
                             Button(enabled = chosen.isNotEmpty() && working == null, modifier = Modifier.fillMaxWidth().height(52.dp), onClick = {
+                                if (!StudioHub.hasWorker(context)) {
+                                    chosen.forEach { i -> scripts["${t.id}|$i"]?.let { saveScript(it, list[i], t) } }
+                                    notice = "Making videos needs your pod (Settings → Video worker). Written scripts were saved to Scripts for later."
+                                    return@Button
+                                }
                                 working = "${t.id}|produce"; error = null
                                 scope.launch {
-                                    runCatching {
-                                        client.trendProduce(t.id, chosen.map { list[it] to (scripts["${t.id}|$it"]?.script ?: "") }, studioDefaults(context))
-                                    }.onSuccess { n ->
-                                        notice = "Queued $n video${if (n == 1) "" else "s"} about “${t.title}”. They render one after another - follow them in Generate or Library."
-                                    }.onFailure { error = it.message }
+                                    val client = ProductionClient(StudioHub.workerUrl(context))
+                                    var ok = 0
+                                    for (i in chosen) {
+                                        val body = ProductionBodies.fromIdea(t, list[i], scripts["${t.id}|$i"]?.text.orEmpty(), studioDefaults(context))
+                                        runCatching { client.createJson(body) }.onSuccess { ok++ }.onFailure { error = it.message }
+                                    }
+                                    notice = "Queued $ok video${if (ok == 1) "" else "s"} about “${t.title}”. Follow them in Library → Production Line."
                                     working = null
                                 }
-                            }) { Text(if (working == "${t.id}|produce") "QUEUING…" else "MAKE ${chosen.size} VIDEO${if (chosen.size == 1) "" else "S"}") }
-                            Text("Uses your voice, look and AI-video choice from Generate. Ideas with a written script are narrated word for word.",
-                                color = Dim, fontSize = 11.sp)
+                            }) { Text(if (working == "${t.id}|produce") "QUEUING…" else "MAKE ${chosen.size} VIDEO${if (chosen.size == 1) "" else "S"} (POD)") }
+                            Text("Ideas and scripts are free on the phone. Making the videos uses your pod.", color = Dim, fontSize = 11.sp)
                         }
                     }
                 }
             }
         }
         if (scan != null && scan!!.items.isEmpty()) item { Text("Nothing trending found for this filter. Try another niche or period.", color = Dim) }
-        if (!youtube) item {
-            Text("Tip: add a free YouTube Data API key on the worker (CF_YOUTUBE_API_KEY) to include YouTube's most-watched videos.",
-                color = Dim, fontSize = 11.sp)
-        }
     }
 }
-
-private fun TrendScript.seconds(): Int = (script.split(Regex("\\s+")).count { it.isNotBlank() } / 2.5).toInt()
 
 private fun heatLabel(heat: Int) = when {
     heat >= 75 -> "🔥 HOT $heat"
@@ -260,7 +278,7 @@ private fun compact(n: Long): String = when {
     else -> n.toString()
 }
 
-private fun openUrl(context: Context, url: String) {
+internal fun openUrl(context: Context, url: String) {
     runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }
 }
 
@@ -270,7 +288,7 @@ private fun copy(context: Context, text: String) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun Chips(options: List<Pair<String, String>>, selected: String, small: Boolean = false, onSelect: (String) -> Unit) {
+internal fun Chips(options: List<Pair<String, String>>, selected: String, small: Boolean = false, onSelect: (String) -> Unit) {
     Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
         options.forEach { (id, label) ->
             FilterChip(selected = id == selected, onClick = { onSelect(id) },
@@ -280,7 +298,7 @@ private fun Chips(options: List<Pair<String, String>>, selected: String, small: 
     }
 }
 
-/** The look, voice and AI-video choice from the Generate tab, reused by Trends, the Director and Autopilot. */
+/** The look, voice and AI-video choice from the Generate tab, reused when the phone sends videos to the worker. */
 internal fun studioDefaults(context: Context): JSONObject {
     val g = context.getSharedPreferences("creatorforge_generate", 0)
     val scopeVideo = g.getString("video_scope", "off").orEmpty()

@@ -53,33 +53,6 @@ data class LibraryCharacter(val id: String, val name: String, val description: S
 
 data class LibraryVideo(val id: String, val title: String, val aspect: String, val durationS: Double, val videoPath: String, val thumbnailPath: String)
 
-data class TrendSignal(val source: String, val title: String, val url: String, val metric: Long, val metricLabel: String, val publisher: String)
-
-data class TrendItem(val id: String, val title: String, val heat: Int, val sources: List<String>, val metrics: Map<String, Long>,
-                     val headlines: List<String>, val signals: List<TrendSignal>)
-
-data class TrendSource(val name: String, val ok: Boolean, val count: Int, val error: String)
-
-data class TrendScan(val items: List<TrendItem>, val sources: List<TrendSource>, val cached: Boolean, val fetchedAt: String)
-
-data class TrendIdea(val title: String, val hook: String, val angle: String, val format: String, val whyNow: String, val seconds: Int)
-
-data class TrendScript(val title: String, val script: String, val description: String, val hashtags: List<String>,
-                       val sources: List<Pair<String, String>>, val verify: String)
-
-data class ChatTurn(val reply: String, val ready: Boolean, val draft: JSONObject, val suggestions: List<String>)
-
-data class PlanSlot(val id: String, val day: String, val time: String, val status: String, val productionId: String,
-                    val trendTitle: String, val title: String, val hook: String, val angle: String, val format: String, val seconds: Int)
-
-data class Channel(val id: String, val raw: JSONObject, val slots: List<PlanSlot>) {
-    val name get() = raw.optString("name")
-    val niche get() = raw.optString("niche")
-    val perWeek get() = raw.optInt("per_week", 7)
-    val format get() = raw.optString("format", "shorts")
-    val autoProduce get() = raw.optBoolean("auto_produce")
-}
-
 data class PublishKit(val titles: List<String>, val description: String, val hashtags: List<String>, val pinnedComment: String, val thumbnailText: String) {
     fun asText() = "${titles.firstOrNull().orEmpty()}\n\n$description\n\n${hashtags.joinToString(" ")}"
 }
@@ -287,100 +260,10 @@ class ProductionClient(baseUrl: String) {
             j.optString("pinned_comment"), j.optString("thumbnail_text"))
     }
 
-    // ---- Chat with your Director ----
-    suspend fun directorChat(messages: List<Pair<String, String>>, draft: JSONObject?): ChatTurn = withContext(Dispatchers.IO) {
-        val body = JSONObject().put("messages", JSONArray().apply { messages.forEach { (r, c) -> put(JSONObject().put("role", r).put("content", c)) } })
-        if (draft != null) body.put("draft", draft)
-        val j = JSONObject(call("POST", "/v1/director/chat", body))
-        ChatTurn(j.optString("reply"), j.optBoolean("ready"), j.optJSONObject("draft") ?: JSONObject(), strings(j.optJSONArray("suggestions")))
-    }
-
-    suspend fun directorProduce(draft: JSONObject, production: JSONObject): ProductionView = withContext(Dispatchers.IO) {
-        parse(call("POST", "/v1/director/produce", JSONObject().put("draft", draft).put("production", production)))
-    }
-
-    // ---- Channel Autopilot ----
-    private fun parseChannel(j: JSONObject): Channel {
-        val items = j.optJSONObject("plan")?.optJSONArray("items") ?: JSONArray()
-        return Channel(j.getString("id"), j, (0 until items.length()).map { i -> items.getJSONObject(i).let {
-            val idea = it.optJSONObject("idea") ?: JSONObject()
-            PlanSlot(it.getString("id"), it.optString("day"), it.optString("time"), it.optString("status"),
-                it.optString("production_id").takeIf { p -> p != "null" }.orEmpty(), it.optString("trend_title"),
-                idea.optString("title"), idea.optString("hook"), idea.optString("angle"), idea.optString("format"), idea.optInt("seconds", 45))
-        } })
-    }
-
-    suspend fun channels(): List<Channel> = withContext(Dispatchers.IO) {
-        val a = JSONArray(call("GET", "/v1/channels"))
-        (0 until a.length()).map { parseChannel(a.getJSONObject(it)) }
-    }
-    suspend fun saveChannel(id: String?, body: JSONObject): Channel = withContext(Dispatchers.IO) {
-        parseChannel(JSONObject(if (id == null) call("POST", "/v1/channels", body) else call("PUT", "/v1/channels/$id", body)))
-    }
-    suspend fun deleteChannel(id: String): Unit = withContext(Dispatchers.IO) { call("DELETE", "/v1/channels/$id") }
-    suspend fun planChannel(id: String): Channel = withContext(Dispatchers.IO) { parseChannel(JSONObject(call("POST", "/v1/channels/$id/plan"))) }
-    suspend fun editSlot(id: String, slot: String, body: JSONObject): Channel = withContext(Dispatchers.IO) {
-        parseChannel(JSONObject(call("PATCH", "/v1/channels/$id/plan/$slot", body)))
-    }
-    suspend fun producePlan(id: String, slots: List<String> = emptyList()): Pair<Int, Channel> = withContext(Dispatchers.IO) {
-        val j = JSONObject(call("POST", "/v1/channels/$id/plan/produce", JSONObject().put("item_ids", JSONArray(slots))))
-        (j.optJSONArray("productions")?.length() ?: 0) to parseChannel(j.getJSONObject("channel"))
-    }
-
-    // ---- Trend Radar ----
-    suspend fun trendOptions(): Triple<List<Choice>, List<Choice>, Boolean> = withContext(Dispatchers.IO) {
-        val j = JSONObject(call("GET", "/v1/trends/options"))
-        Triple(choices(j.optJSONArray("niches")), choices(j.optJSONArray("regions")), j.optBoolean("youtube"))
-    }
-
-    suspend fun trends(period: String, niche: String, region: String, query: String, refresh: Boolean): TrendScan = withContext(Dispatchers.IO) {
-        val q = java.net.URLEncoder.encode(query, "UTF-8")
-        val j = JSONObject(call("GET", "/v1/trends?period=$period&niche=$niche&region=$region&q=$q&refresh=$refresh&limit=40"))
-        val items = j.optJSONArray("items") ?: JSONArray()
-        val src = j.optJSONObject("sources") ?: JSONObject()
-        TrendScan(
-            (0 until items.length()).map { i -> parseTrend(items.getJSONObject(i)) },
-            src.keys().asSequence().map { k -> src.getJSONObject(k).let { TrendSource(it.optString("name", k), it.optBoolean("ok"), it.optInt("count"), it.optString("error")) } }.toList(),
-            j.optBoolean("cached"), j.optString("fetched_at")
-        )
-    }
-
-    private fun parseTrend(t: JSONObject): TrendItem {
-        val m = t.optJSONObject("metrics") ?: JSONObject()
-        val sig = t.optJSONArray("signals") ?: JSONArray()
-        return TrendItem(t.getString("id"), t.optString("title"), t.optInt("heat"), strings(t.optJSONArray("sources")),
-            m.keys().asSequence().associateWith { m.optLong(it) }, strings(t.optJSONArray("headlines")),
-            (0 until sig.length()).map { i -> sig.getJSONObject(i).let {
-                TrendSignal(it.optString("source"), it.optString("title"), it.optString("url"), it.optLong("metric"), it.optString("metric_label"), it.optString("publisher"))
-            } })
-    }
-
     private fun strings(a: JSONArray?) = (0 until (a?.length() ?: 0)).map { a!!.optString(it) }
 
-    private fun ideaJson(i: TrendIdea, script: String = "") = JSONObject().put("title", i.title).put("hook", i.hook).put("angle", i.angle)
-        .put("format", i.format).put("seconds", i.seconds).apply { if (script.isNotBlank()) put("script", script) }
-
-    suspend fun trendIdeas(trendId: String, count: Int, format: String, niche: String, period: String): List<TrendIdea> = withContext(Dispatchers.IO) {
-        val body = JSONObject().put("trend_id", trendId).put("count", count).put("format", format).put("niche", niche).put("period", period)
-        val a = JSONObject(call("POST", "/v1/trends/ideas", body)).optJSONArray("ideas") ?: JSONArray()
-        (0 until a.length()).map { i -> a.getJSONObject(i).let {
-            TrendIdea(it.optString("title"), it.optString("hook"), it.optString("angle"), it.optString("format"), it.optString("why_now"), it.optInt("seconds", 45))
-        } }
-    }
-
-    suspend fun trendScript(trendId: String, idea: TrendIdea): TrendScript = withContext(Dispatchers.IO) {
-        val j = JSONObject(call("POST", "/v1/trends/script", JSONObject().put("trend_id", trendId).put("idea", ideaJson(idea)).put("seconds", idea.seconds)))
-        val src = j.optJSONArray("sources") ?: JSONArray()
-        TrendScript(j.optString("title"), j.optString("script"), j.optString("description"), strings(j.optJSONArray("hashtags")),
-            (0 until src.length()).map { i -> src.getJSONObject(i).let { it.optString("title") to it.optString("url") } }, j.optString("verify"))
-    }
-
-    /** Queues one production per idea; ideas with a written script are narrated word for word. */
-    suspend fun trendProduce(trendId: String, ideas: List<Pair<TrendIdea, String>>, production: JSONObject): Int = withContext(Dispatchers.IO) {
-        val body = JSONObject().put("trend_id", trendId).put("production", production)
-            .put("ideas", JSONArray().apply { ideas.forEach { (i, s) -> put(ideaJson(i, s)) } })
-        JSONObject(call("POST", "/v1/trends/produce", body)).optJSONArray("productions")?.length() ?: 0
-    }
+    /** Queues a production from a ready-made request body (built on the phone by the studio). */
+    suspend fun createJson(body: JSONObject): ProductionView = withContext(Dispatchers.IO) { parse(call("POST", "/v1/productions", body)) }
 
     private fun parse(raw: String): ProductionView {
         val j = JSONObject(raw)
