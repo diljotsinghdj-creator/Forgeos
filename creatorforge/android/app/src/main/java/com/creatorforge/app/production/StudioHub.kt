@@ -82,6 +82,7 @@ fun AiSettingsCard(secure: SecureTokenStore) {
     var hasKey by remember { mutableStateOf(secure.has("ai")) }
     var ytKey by remember { mutableStateOf("") }
     var hasYt by remember { mutableStateOf(secure.has("youtube")) }
+    var ytStatus by remember { mutableStateOf<String?>(null) }
     var status by remember { mutableStateOf<String?>(null) }
     var testing by remember { mutableStateOf(false) }
     val p = AiPresets[preset]
@@ -164,7 +165,15 @@ fun AiSettingsCard(secure: SecureTokenStore) {
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(ytKey, { ytKey = it }, Modifier.weight(1f), singleLine = true, visualTransformation = PasswordVisualTransformation(),
                 label = { Text(if (hasYt) "Saved - paste to replace" else "YouTube API key") })
-            Button({ if (ytKey.isNotBlank()) { secure.save("youtube", ytKey.trim()); ytKey = ""; hasYt = true } }, enabled = ytKey.isNotBlank()) { Text("SAVE") }
+            Button({ if (ytKey.isNotBlank()) { secure.save("youtube", ytKey.trim().trim('"', ' ')); ytKey = ""; hasYt = true }
+                scope.launch {
+                    ytStatus = "Testing…"
+                    ytStatus = runCatching { studio { YouTubeStats.test(HttpFetcher(), StudioHub.youtubeKey(context)) } }
+                        .fold({ it?.let { e -> "✗ $e" } ?: "✓ YouTube key works" }, { "✗ ${it.message}" })
+                }
+            }, enabled = ytKey.isNotBlank() || hasYt) { Text(if (ytKey.isBlank() && hasYt) "TEST" else "SAVE & TEST") }
         }
+        ytStatus?.let { Text(it, color = if (it.startsWith("✓")) Gold else if (it.startsWith("✗")) Danger else Dim, fontSize = 12.sp) }
+        if (hasYt) TextButton({ secure.clear("youtube"); hasYt = false; ytStatus = "YouTube key removed" }) { Text("REMOVE YOUTUBE KEY", color = Danger) }
     } }
 }

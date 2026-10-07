@@ -50,6 +50,7 @@ object Sources {
 
     private fun json(f: Fetcher, url: String): JSONObject {
         val (code, body) = f.get(url)
+        if (code >= 400 && "googleapis.com/youtube" in url) throw SourceException(YouTubeStats.explain(code, body))
         if (code >= 400) throw SourceException("HTTP $code")
         return try { JSONObject(body) } catch (e: Exception) { throw SourceException("unexpected response (not JSON)") }
     }

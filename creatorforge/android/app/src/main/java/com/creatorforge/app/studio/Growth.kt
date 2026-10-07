@@ -151,10 +151,35 @@ object YouTubeStats {
     private const val API = "https://www.googleapis.com/youtube/v3"
     private fun enc(s: String) = URLEncoder.encode(s, "UTF-8")
 
+    /** Turns Google's error into a plain fix ("turn on the API", "remove the Android restriction", ...). */
+    fun explain(code: Int, body: String): String {
+        val b = body.lowercase()
+        val google = runCatching { JSONObject(body).getJSONObject("error").optString("message") }.getOrDefault("").take(160)
+        return when {
+            "quota" in b -> "YouTube's free daily limit is used up - it resets at midnight Pacific time."
+            "has not been used in project" in b || "accessnotconfigured" in b || "service_disabled" in b || "is disabled" in b ->
+                "YouTube Data API v3 isn't turned on for this key's project. Google Cloud → APIs & Services → Library → YouTube Data API v3 → Enable, then wait 2 minutes."
+            "api_key_invalid" in b || "keyinvalid" in b || "api key not valid" in b -> "Google says the key isn't valid - copy it again from Google Cloud → Credentials (it starts with AIza)."
+            "android" in b && ("blocked" in b || "client application" in b) || "api_key_android_app_blocked" in b ->
+                "The key is limited to Android apps. In Google Cloud → Credentials → your key, set Application restrictions to None and save."
+            "referer" in b || "api_key_http_referrer_blocked" in b -> "The key is limited to websites. Set Application restrictions to None and save."
+            "api_key_service_blocked" in b || "are blocked" in b ->
+                "The key isn't allowed to use YouTube. Under API restrictions, tick YouTube Data API v3 (or choose Don't restrict) and save."
+            "ip address" in b || "api_key_ip_address_blocked" in b -> "The key is limited to certain IP addresses. Set Application restrictions to None."
+            else -> "YouTube said HTTP $code" + if (google.isNotBlank()) ": $google" else " - check the key in Settings."
+        }
+    }
+
+    /** One cheap call (1 quota unit) to prove the key works. Returns the error explanation or null when fine. */
+    fun test(f: Fetcher, key: String): String? {
+        if (key.isBlank()) return "Paste a key first"
+        val (code, body) = f.get("$API/videos?part=id&chart=mostPopular&maxResults=1&regionCode=GB&key=${enc(key.trim())}")
+        return if (code in 200..299) null else explain(code, body)
+    }
+
     private fun json(f: Fetcher, url: String): JSONObject {
         val (code, body) = f.get(url)
-        if (code == 403 && "quota" in body.lowercase()) throw SourceException("YouTube's daily free limit is used up - try again tomorrow")
-        if (code >= 400) throw SourceException("YouTube said HTTP $code - check the YouTube key in Settings")
+        if (code >= 400) throw SourceException(explain(code, body))
         return JSONObject(body)
     }
 
