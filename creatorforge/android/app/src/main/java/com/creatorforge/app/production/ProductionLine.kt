@@ -56,6 +56,8 @@ fun ProductionLine(client: ProductionClient, onFinished: () -> Unit = {}) {
             error?.let { Text(it, color = Danger, fontSize = 12.sp) }
             active.forEach { j -> JobRow(j, onCancel = {
                 scope.launch { runCatching { client.cancel(j.id) }.onFailure { error = it.message }; tick++ }
+            }, onApprove = {
+                scope.launch { runCatching { client.approve(j.id) }.onFailure { error = it.message }; tick++ }
             }) }
             if (failed.isNotEmpty()) {
                 TextButton(onClick = { showFailed = !showFailed }) {
@@ -72,19 +74,20 @@ fun ProductionLine(client: ProductionClient, onFinished: () -> Unit = {}) {
 }
 
 @Composable
-private fun JobRow(j: ProductionSummary, onCancel: (() -> Unit)? = null, onRetry: (() -> Unit)? = null) {
+private fun JobRow(j: ProductionSummary, onCancel: (() -> Unit)? = null, onRetry: (() -> Unit)? = null, onApprove: (() -> Unit)? = null) {
     Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(10.dp)).background(Color(0xFF111111)).padding(10.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Column(Modifier.weight(1f)) {
                 Text(j.title.ifBlank { j.id }, color = Color.White, maxLines = 1, fontSize = 14.sp)
                 Text(when (j.status) {
                     "QUEUED" -> "Waiting in line"
-                    "REVIEW" -> "Storyboard ready - open it in Generate to approve"
+                    "REVIEW" -> "Paused for your storyboard check - approve here, or edit scenes in Generate"
                     else -> j.message.ifBlank { j.status }
                 }, color = if (j.status == "FAILED") Danger else Dim, fontSize = 11.sp, maxLines = 2)
             }
             Text("${(j.progress * 100).toInt()}%", color = Gold, fontSize = 12.sp)
-            onCancel?.let { if (j.status != "REVIEW") TextButton(onClick = it) { Text("CANCEL", color = Danger, fontSize = 11.sp) } }
+            if (j.status == "REVIEW") onApprove?.let { TextButton(onClick = it) { Text("APPROVE", color = Gold, fontSize = 11.sp) } }
+            else onCancel?.let { TextButton(onClick = it) { Text("CANCEL", color = Danger, fontSize = 11.sp) } }
             onRetry?.let { TextButton(onClick = it) { Text("RETRY", color = Gold, fontSize = 11.sp) } }
         }
         LinearProgressIndicator(progress = { j.progress.coerceIn(0f, 1f) }, modifier = Modifier.fillMaxWidth(), color = Gold)
