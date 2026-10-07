@@ -101,6 +101,8 @@ fi
 ollama pull "$LLM_MODEL"
 
 say "Configuring the worker"
+# A token set as a pod environment variable survives restarts even without a volume disk, so the app stays connected.
+if [ -n "${CF_WORKER_TOKEN:-}" ]; then printf '%s\n' "$CF_WORKER_TOKEN" > token; fi
 [ -s token ] || python -c "import secrets; print(secrets.token_urlsafe(24))" > token
 TOKEN="$(cat token)"
 cat > worker.env <<ENV
