@@ -46,7 +46,9 @@ apt-get install -y -qq ffmpeg espeak-ng git curl fonts-dejavu-core python3-venv 
 
 say "Fetching CreatorForge ($BRANCH)"
 if [ -d Forgeos/.git ]; then
-  git -C Forgeos fetch -q --depth 1 origin "$BRANCH" && git -C Forgeos checkout -q -B "$BRANCH" FETCH_HEAD
+  # The pod's copy is never edited by hand, so throw away anything installing changed (e.g. build metadata).
+  git -C Forgeos fetch -q --depth 1 origin "$BRANCH" && git -C Forgeos checkout -q -f -B "$BRANCH" FETCH_HEAD \
+    && git -C Forgeos reset -q --hard FETCH_HEAD && git -C Forgeos clean -q -fd creatorforge/worker
 else
   git clone -q --depth 1 -b "$BRANCH" https://github.com/diljotsinghdj-creator/Forgeos.git
 fi
