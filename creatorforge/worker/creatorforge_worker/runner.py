@@ -14,6 +14,7 @@ from pathlib import Path
 from . import director
 from .media import ff, render, verify
 from .pipeline import Pipeline
+from .providers.base import set_cancel
 from .store import STAGES, TERMINAL, JobStore
 
 
@@ -60,10 +61,26 @@ class Runner:
                 self.store.save(job)
                 return job
             ev = self._cancel.get(job_id)
-            if ev:
-                ev.set()
-            job["message"] = "Cancelling..."
+            if job_id != self._current or ev is None:
+                # Nothing is working on it (e.g. the worker restarted or the pod moved mid-run): stop it right here.
+                for st in job["stages"].values():
+                    if st["state"] == "RUNNING":
+                        st["state"] = "PENDING"
+                for sc in job["scenes"]:
+                    for k in ("image_state", "voice_state", "clip_state"):
+                        if sc.get(k) == "GENERATING":
+                            sc[k] = "QUEUED"
+                job.update(status="CANCELLED", message="Cancelled - finished assets are kept; retry resumes")
+                self.store.save(job)
+                return job
+            ev.set()
+            job["message"] = "Cancelling - stops after the current step"
+            job["cancelling"] = True
             return job
+
+    def cancelling(self, job_id: str) -> bool:
+        ev = self._cancel.get(job_id)
+        return ev is not None and ev.is_set()
 
     def retry(self, job_id: str, from_stage: str | None = None) -> dict:
         job = self.store.load(job_id)
@@ -374,6 +391,7 @@ class Runner:
                 job_id = self._queue.popleft()
                 self._current = job_id
                 ev = self._cancel[job_id] = threading.Event()
+            set_cancel(ev)
             try:
                 self.pipeline.run(job_id, ev)
             finally:

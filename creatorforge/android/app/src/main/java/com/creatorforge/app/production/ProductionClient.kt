@@ -36,7 +36,8 @@ data class ProductionView(
 }
 
 data class ProductionSummary(val id: String, val title: String, val status: String, val progress: Float, val message: String = "",
-                             val variantOf: String = "", val hookGroup: String = "", val hookVariant: String = "", val language: String = "")
+                             val variantOf: String = "", val hookGroup: String = "", val hookVariant: String = "", val language: String = "",
+                             val cancelling: Boolean = false)
 
 data class ClipItem(val index: Int, val title: String, val hook: String, val start: Double, val end: Double, val durationS: Double)
 data class ClipJob(val id: String, val status: String, val message: String, val error: String, val title: String, val clips: List<ClipItem>)
@@ -143,7 +144,7 @@ class ProductionClient(baseUrl: String) {
                 val ht = it.optJSONObject("hook_test")
                 ProductionSummary(it.getString("id"), it.optString("title"), it.optString("status"), it.optDouble("progress", 0.0).toFloat(), it.optString("message"),
                     it.optString("variant_of").takeIf { v -> v != "null" }.orEmpty(), ht?.optString("group").orEmpty(), ht?.optString("variant").orEmpty(),
-                    it.optString("language").takeIf { v -> v != "null" }.orEmpty())
+                    it.optString("language").takeIf { v -> v != "null" }.orEmpty(), it.optBoolean("cancelling"))
             }
         }
     }

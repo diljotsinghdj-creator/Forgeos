@@ -11,8 +11,8 @@ android {
         applicationId = "com.creatorforge.app"
         minSdk = 26
         targetSdk = 35
-        versionCode = 38
-        versionName = "1.0.0-rc29"
+        versionCode = 39
+        versionName = "1.0.0-rc30"
     }
     buildFeatures { compose = true; buildConfig = true }
     compileOptions { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }

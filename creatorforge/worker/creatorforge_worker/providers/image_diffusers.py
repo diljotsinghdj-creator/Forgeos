@@ -5,7 +5,7 @@ from __future__ import annotations
 import threading
 from pathlib import Path
 
-from .base import NotConfigured, ProviderError
+from .base import cancelled, step_callback, NotConfigured, ProviderError
 
 
 class DiffusersImageProvider:
@@ -45,8 +45,12 @@ class DiffusersImageProvider:
                 kwargs["guidance_scale"] = 0.0
             elif negative:
                 kwargs["negative_prompt"] = negative
+            kwargs.update(step_callback(pipe))
             try:
                 image = pipe(**kwargs).images[0]
             except Exception as e:  # noqa: BLE001 - surface any backend failure
                 raise ProviderError(f"diffusers generation failed: {e}") from e
+            if cancelled():
+                from ..media.ff import Cancelled
+                raise Cancelled()
             image.save(out, format="PNG")

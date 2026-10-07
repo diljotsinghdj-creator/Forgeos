@@ -13,7 +13,7 @@ from pathlib import Path
 
 import httpx
 
-from .base import NotConfigured, ProviderError
+from .base import cancelled, step_callback, NotConfigured, ProviderError
 
 
 class HttpVideoProvider:
@@ -99,8 +99,14 @@ class DiffusersVideoProvider:
                           generator=torch.Generator("cpu").manual_seed(seed))
             if negative:
                 kwargs["negative_prompt"] = negative
+            kwargs.update(step_callback(pipe))
             try:
                 result = pipe(**kwargs)
+                if cancelled():
+                    from ..media.ff import Cancelled
+                    raise Cancelled()
                 export_to_video(result.frames[0], str(out), fps=self.fps)
             except Exception as e:  # noqa: BLE001
+                if type(e).__name__ == "Cancelled":
+                    raise
                 raise ProviderError(f"video generation failed: {e}") from e

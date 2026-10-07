@@ -65,6 +65,8 @@ fun ProductionLine(client: ProductionClient, onFinished: () -> Unit = {}) {
                 }
                 if (showFailed) failed.take(10).forEach { j -> JobRow(j, onRetry = {
                     scope.launch { runCatching { client.retry(j.id) }.onFailure { error = it.message }; tick++ }
+                }, onRemove = {
+                    scope.launch { runCatching { client.deleteProduction(j.id) }.onFailure { error = it.message }; tick++ }
                 }) }
             }
             if (active.size > 1) Text("The worker renders one video at a time. Keep the pod running until the line is empty.",
@@ -74,20 +76,23 @@ fun ProductionLine(client: ProductionClient, onFinished: () -> Unit = {}) {
 }
 
 @Composable
-private fun JobRow(j: ProductionSummary, onCancel: (() -> Unit)? = null, onRetry: (() -> Unit)? = null, onApprove: (() -> Unit)? = null) {
+private fun JobRow(j: ProductionSummary, onCancel: (() -> Unit)? = null, onRetry: (() -> Unit)? = null, onApprove: (() -> Unit)? = null,
+                   onRemove: (() -> Unit)? = null) {
     Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(10.dp)).background(Color(0xFF111111)).padding(10.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Column(Modifier.weight(1f)) {
                 Text(j.title.ifBlank { j.id }, color = Color.White, maxLines = 1, fontSize = 14.sp)
                 Text(when (j.status) {
                     "QUEUED" -> "Waiting in line"
-                    "REVIEW" -> "Paused for your storyboard check - approve here, or edit scenes in Generate"
-                    else -> j.message.ifBlank { j.status }
+                    "REVIEW" -> "Paused for your storyboard check - approve, or cancel"
+                    else -> if (j.cancelling) "Cancelling - stops after the current step" else j.message.ifBlank { j.status }
                 }, color = if (j.status == "FAILED") Danger else Dim, fontSize = 11.sp, maxLines = 2)
             }
             Text("${(j.progress * 100).toInt()}%", color = Gold, fontSize = 12.sp)
             if (j.status == "REVIEW") onApprove?.let { TextButton(onClick = it) { Text("APPROVE", color = Gold, fontSize = 11.sp) } }
+            if (j.cancelling) Text(" stopping…", color = Dim, fontSize = 11.sp)
             else onCancel?.let { TextButton(onClick = it) { Text("CANCEL", color = Danger, fontSize = 11.sp) } }
+            onRemove?.let { TextButton(onClick = it) { Text("REMOVE", color = Dim, fontSize = 11.sp) } }
             onRetry?.let { TextButton(onClick = it) { Text("RETRY", color = Gold, fontSize = 11.sp) } }
         }
         LinearProgressIndicator(progress = { j.progress.coerceIn(0f, 1f) }, modifier = Modifier.fillMaxWidth(), color = Gold)

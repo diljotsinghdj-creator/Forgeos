@@ -131,3 +131,43 @@ def test_clipper_picks_without_ai():
     assert 1 <= len(picks) <= 2 and all(10 <= p["end"] - p["start"] <= 20.5 for p in picks)
     assert any(p["start"] <= words[12 * 6].start <= p["end"] for p in picks)  # the curious bit is chosen
     assert all(a["end"] <= b["start"] for a, b in zip(picks, picks[1:]))
+
+
+def test_cancel_stuck_and_review_jobs(cfg):
+    """A job left RUNNING by a restart (nothing working on it) and a job in review both cancel at once."""
+    app = create_app(cfg, start_runner=False)
+    c = TestClient(app)
+    jid = c.post("/v1/productions", json={"idea": "The future has arrived", "duration_s": 12}).json()["id"]
+    store = app.state.store
+    job = store.load(jid)
+    job["status"] = "RUNNING"; job["stages"]["images"]["state"] = "RUNNING"
+    store.save(job)
+    app.state.runner._queue.clear()  # simulate: the worker restarted and lost track of it
+    r = c.delete(f"/v1/productions/{jid}").json()
+    assert r["status"] == "CANCELLED" and r["stages"]["images"]["state"] == "PENDING"
+    assert c.get(f"/v1/productions/{jid}").json()["status"] == "CANCELLED"
+    job = store.load(jid); job["status"] = "REVIEW"; store.save(job)
+    assert c.delete(f"/v1/productions/{jid}").json()["status"] == "CANCELLED"
+
+
+def test_cancel_reaches_inside_model_calls():
+    import threading
+    from creatorforge_worker.providers.base import cancelled, set_cancel, step_callback
+
+    class Pipe:
+        def __call__(self, prompt="", callback_on_step_end=None):
+            for i in range(5):
+                callback_on_step_end(self, i, 0, {})
+                if getattr(self, "_interrupt", False):
+                    return "stopped"
+            return "done"
+
+    ev = threading.Event()
+    set_cancel(ev)
+    p = Pipe()
+    assert p(**step_callback(p)) == "done"
+    ev.set()
+    p2 = Pipe()
+    assert p2(**step_callback(p2)) == "stopped" and cancelled()
+    set_cancel(None)
+    assert step_callback(object()) == {}

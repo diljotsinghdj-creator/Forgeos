@@ -128,6 +128,8 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
 
     def public(job: dict) -> dict:
         j = {k: v for k, v in job.items() if k not in ("music_track", "render")}
+        if j.get("status") == "RUNNING" and runner.cancelling(j["id"]):
+            j.update(message="Cancelling - stops after the current step", cancelling=True)
         if j.get("result"):
             j["result"] = {**j["result"], "video_url": f"/v1/productions/{job['id']}/video"}
         return j
@@ -194,6 +196,7 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
     def list_productions() -> list[dict]:
         return [{"id": j["id"], "status": j["status"], "progress": j["progress"], "message": j["message"],
                  "title": j.get("title") or (j.get("plan") or {}).get("title") or j["spec"]["idea"][:60],
+                 "cancelling": j["status"] == "RUNNING" and runner.cancelling(j["id"]),
                  "created_at": j["created_at"], "variant_of": j.get("variant_of"), "hook_test": j.get("hook_test"),
                  "language": j["spec"].get("language", "")} for j in store.all() if visible(j)]
 
