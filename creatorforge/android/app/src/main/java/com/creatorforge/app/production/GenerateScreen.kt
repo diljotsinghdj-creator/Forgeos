@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.provider.MediaStore
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -79,6 +80,8 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
     var assets by remember { mutableStateOf<List<LibraryAsset>>(emptyList()) }
     var pickingFor by remember { mutableStateOf<Int?>(null) }
     var editingTimeline by remember { mutableStateOf(false) }
+    var swipe by remember { mutableStateOf(true) }
+    var kit by remember { mutableStateOf<PublishKit?>(null) }
 
     var activeId by remember { mutableStateOf(prefs.getString("active", null)) }
     var production by remember { mutableStateOf<ProductionView?>(null) }
@@ -178,9 +181,39 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                     onPlay = { f -> openVideo(context, f, Intent.ACTION_VIEW) },
                     onShare = { f -> openVideo(context, f, Intent.ACTION_SEND) },
                     onSave = { f -> notice = saveToGallery(context, f) },
-                    onDownload = { pollKey++ })
+                    onDownload = { pollKey++ },
+                    onKit = {
+                        busy = true
+                        scope.launch {
+                            runCatching { client.publishKit(p.id) }.onSuccess { kit = it }.onFailure { error = it.message }
+                            busy = false
+                        }
+                    },
+                    onCapCut = {
+                        busy = true; notice = "Preparing the CapCut pack…"
+                        scope.launch {
+                            runCatching {
+                                runCatching { client.publishKit(p.id) } // so publish.txt has real titles and hashtags
+                                val zip = File(context.getExternalFilesDir("Exports") ?: context.filesDir, "CreatorForge_${p.id}.zip")
+                                client.fetch("/v1/productions/${p.id}/export", zip, ::isZip)
+                                kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) { unpackForEditors(context, zip, p.title) }
+                            }.onSuccess { msg ->
+                                notice = msg + if (openCapCut(context)) "" else " CapCut isn't installed - the files are ready for any editor."
+                            }.onFailure { error = it.message; notice = null }
+                            busy = false
+                        }
+                    })
             }
-            if (p.scenes.isNotEmpty()) item {
+            if (p.inReview && swipe && p.scenes.isNotEmpty()) item {
+                key(p.id) {
+                    SwipeStoryboard(context, p, busy, storyboardVersion,
+                        onRedraw = { rejected -> rejected.forEach { storyboardFile(context, p.id, it).delete() }; act { client.redraw(p.id, rejected) } },
+                        onEdit = { s -> editing = s },
+                        onApprove = { act { client.approve(p.id) } },
+                        onListView = { swipe = false })
+                }
+            } else if (p.scenes.isNotEmpty()) item { Column {
+                if (p.inReview) TextButton({ swipe = true }) { Text("SWIPE REVIEW", color = Gold) }
                 key(storyboardVersion) { Storyboard(context, p, busy || !(p.terminal || p.inReview),
                     onEdit = { s -> editing = s },
                     onUseAsset = { i -> scope.launch { runCatching { client.assets() }.onSuccess { assets = it } }; pickingFor = i },
@@ -188,7 +221,7 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                         storyboardFile(context, p.id, i).delete()
                         act { client.regenerateScene(p.id, i) }
                     }) }
-            }
+            } }
         }
         if (production == null && activeId != null) item {
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -226,6 +259,21 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
         }
         error?.let { item { Text(it, color = Danger) } }
         notice?.let { item { Text(it, color = Gold) } }
+        kit?.let { k -> item {
+            Card(colors = CardDefaults.cardColors(containerColor = Color(0xFF1A1A1A))) { Column(Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                Text("PUBLISH KIT", color = Gold, fontSize = 12.sp)
+                k.titles.forEach { t -> Text("• $t", color = Color.White, modifier = Modifier.clickable { copyText(context, t); notice = "Title copied" }) }
+                Text(k.description, color = Color.LightGray, fontSize = 13.sp)
+                Text(k.hashtags.joinToString(" "), color = Gold, fontSize = 12.sp)
+                if (k.pinnedComment.isNotBlank()) Text("Pinned comment: ${k.pinnedComment}", color = Color.Gray, fontSize = 12.sp)
+                if (k.thumbnailText.isNotBlank()) Text("Thumbnail text: ${k.thumbnailText}", color = Color.Gray, fontSize = 12.sp)
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Button({ copyText(context, k.asText()); notice = "Title, description and hashtags copied - paste them when you post" }) { Text("COPY ALL") }
+                    TextButton({ kit = null }) { Text("CLOSE") }
+                }
+                Text("Tap a title to copy just that one.", color = Color.Gray, fontSize = 11.sp)
+            } }
+        } }
 
         if (production == null && activeId == null) {
             item {
@@ -368,7 +416,8 @@ private fun ChipRow(options: List<Pair<String, String>>, selected: String, onSel
 private fun ProductionCard(
     p: ProductionView, video: File?, busy: Boolean, onCancel: () -> Unit, onRetry: () -> Unit, onApprove: () -> Unit,
     onEditTimeline: () -> Unit, onNew: () -> Unit,
-    onPlay: (File) -> Unit, onShare: (File) -> Unit, onSave: (File) -> Unit, onDownload: () -> Unit
+    onPlay: (File) -> Unit, onShare: (File) -> Unit, onSave: (File) -> Unit, onDownload: () -> Unit,
+    onKit: () -> Unit = {}, onCapCut: () -> Unit = {}
 ) {
     Card { Column(Modifier.padding(16.dp)) {
         Text(p.title.ifBlank { "New production" }, color = Gold, fontSize = 20.sp)
@@ -402,6 +451,10 @@ private fun ProductionCard(
                 Button({ onPlay(video) }) { Text("PLAY") }
                 OutlinedButton({ onShare(video) }) { Text("SHARE") }
                 OutlinedButton({ onSave(video) }) { Text("SAVE") }
+            }
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                OutlinedButton(onKit, enabled = !busy) { Text("PUBLISH KIT") }
+                OutlinedButton(onCapCut, enabled = !busy) { Text("SEND TO CAPCUT") }
             }
         }
     } }
@@ -451,7 +504,7 @@ private fun SceneEditor(scene: SceneView, onDismiss: () -> Unit, onSave: (String
     )
 }
 
-private fun storyboardFile(context: Context, id: String, index: Int) =
+internal fun storyboardFile(context: Context, id: String, index: Int) =
     File(File(context.cacheDir, "storyboard").apply { mkdirs() }, "${id}_$index.png")
 
 private suspend fun syncStoryboard(context: Context, client: ProductionClient, p: ProductionView, changed: () -> Unit) {
@@ -461,6 +514,11 @@ private suspend fun syncStoryboard(context: Context, client: ProductionClient, p
         if (!f.isFile && runCatching { client.fetch("/v1/productions/${p.id}/scenes/${s.index}/image", f, ::isImage) }.isSuccess) any = true
     }
     if (any) changed()
+}
+
+internal fun copyText(context: Context, text: String) {
+    (context.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager)
+        .setPrimaryClip(android.content.ClipData.newPlainText("CreatorForge", text))
 }
 
 internal fun openVideo(context: Context, file: File, action: String) {

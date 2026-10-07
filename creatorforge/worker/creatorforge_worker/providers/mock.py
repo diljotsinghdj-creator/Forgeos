@@ -22,6 +22,21 @@ class MockLLM:
     id = "mock-llm"
 
     def complete_json(self, system: str, user: str) -> str:
+        if "PUBLISH_KIT" in system:
+            title = re.search(r"TITLE:\s*(.*)", user).group(1).strip() or "Video"
+            return json.dumps({"titles": [title, f"The truth about {title}", f"3 facts: {title}"],
+                               "description": f"Everything about {title}. Follow for more.",
+                               "hashtags": ["#shorts", "facts", "#Facts", "#learn"], "pinned_comment": "Which fact surprised you?",
+                               "thumbnail_text": "YOU WON'T BELIEVE"})
+        if "DIRECTOR_CHAT" in system:
+            last = user.rsplit("CREATOR:", 1)[-1].split("\n")[0].strip()
+            wants_script = "script" in last.lower()
+            draft = {"title": last[:40] or "Untitled", "idea": f"A short video about {last}", "hook": "You won't believe this",
+                     "duration_s": 30, "template": "reels_punchy", "style": "anime", "ai_video": "hook"}
+            if wants_script:
+                draft["script"] = " ".join(f"Line {i + 1} of the script about {last[:30]}." for i in range(12))
+            return json.dumps({"reply": f"Love it. Here's a plan for: {last}", "ready": True, "draft": draft,
+                               "suggestions": ["Write the script", "Make it longer"]})
         if "TREND_IDEAS" in system:
             topic = re.search(r"TOPIC:\s*(.+)", user).group(1).strip()
             n = int(re.search(r"COUNT:\s*(\d+)", user).group(1))

@@ -7,8 +7,10 @@ from __future__ import annotations
 
 import hashlib
 import hmac
+import re
 import shutil
 import tempfile
+import threading
 from contextlib import asynccontextmanager
 from pathlib import Path
 
@@ -17,6 +19,8 @@ from fastapi.responses import FileResponse, JSONResponse, Response
 
 from . import __version__, providers
 from .config import Config
+from . import autopilot, publish
+from . import chat as director_chat
 from .director import Character, ProductionSpec
 from .library import ASSET_KINDS, Library
 from .media import ff
@@ -40,12 +44,16 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
     runner = Runner(pipeline, store)
     characters = library.characters
     radar = TrendRadar(cfg.data_dir, cfg.youtube_api_key)
+    channels = autopilot.ChannelStore(cfg.data_dir / "library" / "channels.json")
 
     @asynccontextmanager
     async def lifespan(_app: FastAPI):
+        stop = threading.Event()
         if start_runner:
             runner.start()
+            threading.Thread(target=autopilot_loop, args=(stop,), daemon=True, name="autopilot").start()
         yield
+        stop.set()
 
     app = FastAPI(title="CreatorForge Worker", version=__version__, lifespan=lifespan)
     app.state.cfg, app.state.store, app.state.runner, app.state.radar = cfg, store, runner, radar
@@ -129,8 +137,8 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
             raise HTTPException(422, str(e)) from None
         return spec
 
-    def submit(spec: ProductionSpec) -> dict:
-        job = store.create(spec.to_dict())
+    def submit(spec: ProductionSpec, title: str = "") -> dict:
+        job = store.create(spec.to_dict(), title)
         runner.submit(job["id"])
         return public(job)
 
@@ -172,6 +180,15 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
         except ValueError as e:
             raise HTTPException(409, str(e)) from None
 
+    @app.post("/v1/productions/{job_id}/redraw", dependencies=[Depends(auth)])
+    async def redraw_scenes(job_id: str, request: Request) -> dict:
+        job_or_404(job_id)
+        body = await request.json()
+        try:
+            return public(runner.redraw_scenes(job_id, [int(i) for i in body.get("scenes") or []]))
+        except (ValueError, TypeError) as e:
+            raise HTTPException(409 if "busy" in str(e) else 422, str(e)) from None
+
     @app.patch("/v1/productions/{job_id}/scenes/{index}", dependencies=[Depends(auth)])
     async def edit_scene(job_id: str, index: int, request: Request) -> dict:
         job_or_404(job_id)
@@ -211,6 +228,38 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
         if not path.is_file():
             raise HTTPException(404, "file not found")
         return FileResponse(path, media_type=_media_type(path))
+
+    @app.post("/v1/productions/{job_id}/publish-kit", dependencies=[Depends(auth)])
+    def publish_kit(job_id: str, refresh: bool = False) -> dict:
+        job = job_or_404(job_id)
+        if not job.get("plan"):
+            raise HTTPException(409, "the video has no script yet")
+        if job.get("publish_kit") and not refresh:
+            return job["publish_kit"]
+        try:
+            llm = providers.build_llm(cfg)
+        except NotConfigured:
+            llm = None
+        try:
+            kit = publish.make_kit(llm, job)
+        except ProviderError as e:
+            raise HTTPException(502, str(e)) from None
+        if job["status"] not in ("QUEUED", "RUNNING"):  # never race the runner's own saves
+            job = store.load(job_id)
+            job["publish_kit"] = kit
+            store.save(job)
+        return kit
+
+    @app.get("/v1/productions/{job_id}/export", dependencies=[Depends(auth)])
+    def export_production(job_id: str):
+        """CapCut / editor export: media in order, voice-over, music, SRT, timeline, MP4 and publish kit."""
+        job = job_or_404(job_id)
+        if job["status"] != "READY":
+            raise HTTPException(409, "the video isn't finished yet")
+        jdir = store.dir(job_id)
+        out = publish.export_zip(job, jdir, jdir / "work" / "export.zip", job.get("publish_kit"))
+        safe = re.sub(r"[^A-Za-z0-9]+", "_", job.get("title") or (job.get("plan") or {}).get("title") or job_id).strip("_")[:50]
+        return FileResponse(out, media_type="application/zip", filename=f"CreatorForge_{safe or job_id}.zip")
 
     @app.post("/v1/productions/{job_id}/approve", dependencies=[Depends(auth)])
     def approve_production(job_id: str) -> dict:
@@ -401,6 +450,136 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
                             "video_url": f"/v1/productions/{j['id']}/video",
                             "thumbnail_url": f"/v1/productions/{j['id']}/scenes/0/image"})
         return out
+
+    # ---- Chat with your Director ---------------------------------------------------------
+    @app.post("/v1/director/chat", dependencies=[Depends(auth)])
+    async def director_chat_turn(request: Request) -> dict:
+        body = await request.json()
+        try:
+            return director_chat.chat(llm_or_503(), body.get("messages") or [],
+                                      body.get("draft") if isinstance(body.get("draft"), dict) else None)
+        except ValueError as e:
+            raise HTTPException(422, str(e)) from None
+        except ProviderError as e:
+            raise HTTPException(502, str(e)) from None
+
+    @app.post("/v1/director/produce", status_code=202, dependencies=[Depends(auth)])
+    async def director_produce(request: Request) -> dict:
+        body = await request.json()
+        draft = body.get("draft") if isinstance(body.get("draft"), dict) else {}
+        base = body.get("production") if isinstance(body.get("production"), dict) else {}
+        return submit(build_spec(director_chat.production_body(draft, base)))
+
+    # ---- Channel Autopilot ---------------------------------------------------------------
+    def channel_or_404(cid: str) -> dict:
+        try:
+            return channels.get(cid)
+        except KeyError:
+            raise HTTPException(404, "channel not found") from None
+
+    def produce_items(ch: dict, items: list[dict]) -> list[dict]:
+        specs = [(i, build_spec(autopilot.production_body(ch, i))) for i in items]  # validate all first
+        out = []
+        for item, spec in specs:
+            job = submit(spec, item["idea"]["title"])
+            item.update(status="queued", production_id=job["id"])
+            out.append(job)
+        channels.save(ch)
+        return out
+
+    def autopilot_tick(today=None) -> int:
+        """Queues approved slots that are due (used by the background loop and by tests)."""
+        from datetime import datetime, timezone
+        today = today or datetime.now(timezone.utc).date()
+        n = 0
+        for ch in channels.list():
+            if ch.get("auto_produce"):
+                due = autopilot.due_items(ch, today)
+                if due:
+                    try:
+                        n += len(produce_items(ch, due))
+                    except HTTPException:
+                        pass
+        return n
+
+    app.state.autopilot_tick = autopilot_tick
+
+    def autopilot_loop(stop: threading.Event) -> None:
+        while not stop.wait(600):
+            try:
+                autopilot_tick()
+            except Exception:  # never let a bad channel stop the worker
+                pass
+
+    @app.get("/v1/channels", dependencies=[Depends(auth)])
+    def list_channels() -> list[dict]:
+        return channels.list()
+
+    @app.post("/v1/channels", status_code=201, dependencies=[Depends(auth)])
+    async def create_channel(request: Request) -> dict:
+        try:
+            return channels.create(await request.json())
+        except ValueError as e:
+            raise HTTPException(422, str(e)) from None
+
+    @app.put("/v1/channels/{cid}", dependencies=[Depends(auth)])
+    async def update_channel(cid: str, request: Request) -> dict:
+        channel_or_404(cid)
+        try:
+            return channels.update(cid, await request.json())
+        except ValueError as e:
+            raise HTTPException(422, str(e)) from None
+
+    @app.delete("/v1/channels/{cid}", status_code=204, dependencies=[Depends(auth)])
+    def delete_channel(cid: str) -> Response:
+        channel_or_404(cid)
+        channels.delete(cid)
+        return Response(status_code=204)
+
+    @app.post("/v1/channels/{cid}/plan", dependencies=[Depends(auth)])
+    def plan_channel(cid: str) -> dict:
+        ch = channel_or_404(cid)
+        try:
+            ch["plan"] = autopilot.make_plan(llm_or_503(), radar, ch)
+        except ValueError as e:
+            raise HTTPException(422, str(e)) from None
+        except ProviderError as e:
+            raise HTTPException(502, str(e)) from None
+        return channels.save(ch)
+
+    @app.patch("/v1/channels/{cid}/plan/{item_id}", dependencies=[Depends(auth)])
+    async def edit_plan_item(cid: str, item_id: str, request: Request) -> dict:
+        ch = channel_or_404(cid)
+        body = await request.json()
+        item = next((i for i in (ch.get("plan") or {}).get("items", []) if i["id"] == item_id), None)
+        if item is None:
+            raise HTTPException(404, "plan slot not found")
+        if item.get("production_id"):
+            raise HTTPException(409, "this slot is already in production")
+        if "status" in body:
+            if body["status"] not in ("planned", "approved", "skipped"):
+                raise HTTPException(422, "status must be planned, approved or skipped")
+            item["status"] = body["status"]
+        for k in ("title", "hook", "angle"):
+            if str(body.get(k, "")).strip():
+                item["idea"][k] = str(body[k]).strip()[:400]
+        if str(body.get("script", "")).strip():
+            item["idea"]["script"] = str(body["script"]).strip()[:20000]
+        if body.get("day"):
+            item["day"] = str(body["day"])[:10]
+        return channels.save(ch)
+
+    @app.post("/v1/channels/{cid}/plan/produce", status_code=202, dependencies=[Depends(auth)])
+    async def produce_plan(cid: str, request: Request) -> dict:
+        """Queues the chosen slots now (default: every approved slot not yet produced)."""
+        ch = channel_or_404(cid)
+        body = await request.json()
+        wanted = set(body.get("item_ids") or [])
+        items = [i for i in (ch.get("plan") or {}).get("items", []) if not i.get("production_id") and i["status"] != "skipped"
+                 and ((i["id"] in wanted) if wanted else i["status"] == "approved")]
+        if not items:
+            raise HTTPException(422, "approve at least one slot first")
+        return {"productions": produce_items(ch, items), "channel": channels.get(cid)}
 
     # ---- Trend Radar ---------------------------------------------------------------------
     @app.get("/v1/trends/options", dependencies=[Depends(auth)])

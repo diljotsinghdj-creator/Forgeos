@@ -102,6 +102,16 @@ licensed for commercial use.
 | PATCH | `/v1/productions/{id}` | Rename `{"title"}` |
 | DELETE | `/v1/productions/{id}?purge=true` | Delete a finished production and its files |
 | GET | `/v1/library/videos` | Media Library: every finished, verified video with its thumbnail URL |
+| POST | `/v1/productions/{id}/redraw` | Swipe Storyboard: `{"scenes":[0,3]}` draws new pictures for those scenes, then pauses at the storyboard again (review-mode productions) |
+| POST | `/v1/productions/{id}/publish-kit[?refresh=true]` | Titles (3-5 styles), description, hashtags, pinned comment and thumbnail text, saved with the production. Works without a script model (simple fallback) |
+| GET | `/v1/productions/{id}/export` | CapCut / editor pack (zip): `media/01_scene.png|mp4…` in timeline order, `audio/voiceover.wav`, music, `captions.srt`, `timeline.csv`, the finished MP4, `publish.txt` and a README. The app's **SEND TO CAPCUT** unpacks it into the phone gallery and opens CapCut |
+| POST | `/v1/director/chat` | Chat with your Director: `{"messages":[{"role":"user","content":"..."}], "draft":{...}}` → `{"reply", "draft":{title, idea, hook, script, duration_s, template, style, ai_video}, "ready", "suggestions"}` |
+| POST | `/v1/director/produce` | `{"draft", "production":{voice...}}` → queues the draft as a production |
+| GET/POST | `/v1/channels` | Channel Autopilot: `{"name","niche","keyword","region","format":"shorts"\|"long"\|"mixed","per_week","style","voice","ai_video","tone","audience","post_time","auto_produce"}` |
+| PUT/DELETE | `/v1/channels/{id}` | Edit or remove a channel |
+| POST | `/v1/channels/{id}/plan` | Builds next week's dated plan from this week's trends in the channel's niche (evergreen topics fill quiet weeks) |
+| PATCH | `/v1/channels/{id}/plan/{slot}` | `{"status":"approved"\|"skipped"\|"planned", "title", "hook", "angle", "script"}` |
+| POST | `/v1/channels/{id}/plan/produce` | Queues the chosen slots (`item_ids`) or every approved slot. With `auto_produce` on, approved slots are queued automatically the day before they're due while the worker runs |
 | GET | `/v1/trends?period=week\|month\|year&niche=&region=GB&q=&refresh=` | **Trend Radar.** Topics ranked by how strongly several free sources agree: Wikipedia most-read, Google Trends searches (week only), Google News, Reddit top posts, Hacker News and, with a key, YouTube. Each topic has a `heat` score from 0 to 100, its headlines and the source links. Scans are cached (2 h for week, 12 h for month, 48 h for year). A source that fails is listed in `sources` with the reason and the rest still count |
 | GET | `/v1/trends/options` | Niches (Everything, Tech, AI, Money, Business, Crypto, Science, History, Mystery, Facts, Motivation, Health, Gaming, Entertainment, Sports, or `custom` with `q=`), countries |
 | POST | `/v1/trends/ideas` | `{"trend_id", "count", "format": "short"\|"long"\|"mixed"}` → video ideas with a hook, angle and "why now", based only on the topic's real signals |

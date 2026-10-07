@@ -178,3 +178,60 @@ def test_api_trends_to_productions(cfg):
     specs = [c.get(f"/v1/productions/{j['id']}").json()["spec"] for j in jobs]
     assert specs[1]["script"] == script["script"] and not specs[0]["script"]
     assert c.post("/v1/trends/ideas", json={"topic": "Comet Atlas", "count": 1}).status_code == 200
+
+
+def test_director_chat_and_produce(cfg):
+    c = TestClient(create_app(cfg, start_runner=False))
+    assert c.post("/v1/director/chat", json={"messages": []}).status_code == 422
+    r = c.post("/v1/director/chat", json={"messages": [{"role": "user", "content": "A video about deep sea creatures"}]}).json()
+    assert r["reply"] and r["ready"] and r["draft"]["template"] == "reels_punchy" and r["draft"]["ai_video"] == "hook"
+    msgs = [{"role": "user", "content": "A video about deep sea creatures"}, {"role": "assistant", "content": r["reply"]},
+            {"role": "user", "content": "Write the script please"}]
+    r2 = c.post("/v1/director/chat", json={"messages": msgs, "draft": r["draft"]}).json()
+    assert r2["draft"]["script"].startswith("Line 1")
+    job = c.post("/v1/director/produce", json={"draft": r2["draft"], "production": {"voice": "narrator"}})
+    assert job.status_code == 202
+    spec = c.get(f"/v1/productions/{job.json()['id']}").json()["spec"]
+    assert spec["script"].startswith("Line 1") and spec["motion"] == "ai_video" and spec["ai_video_scenes"] == "hook"
+    # bad values from the model are replaced with safe defaults
+    from creatorforge_worker.chat import _clean_draft
+    d = _clean_draft({"template": "nope", "style": "??", "duration_s": "abc", "ai_video": "max"}, {})
+    assert d["template"] == "shorts_cinematic" and d["style"] == "cinematic" and d["duration_s"] == 45 and d["ai_video"] == "off"
+
+
+def test_channel_autopilot_plan_approve_produce(cfg):
+    app = create_app(cfg, start_runner=False)
+    app.state.radar.fetch = fake_fetch()
+    app.state.radar.today = lambda: date(2026, 10, 7)
+    c = TestClient(app)
+    assert c.post("/v1/channels", json={"name": "x"}).status_code == 422
+    assert c.post("/v1/channels", json={"name": "Deep Facts", "niche": "nope"}).status_code == 422
+    ch = c.post("/v1/channels", json={"name": "Deep Facts", "niche": "science", "per_week": 5, "format": "mixed",
+                                      "style": "documentary", "voice": "narrator", "ai_video": "hook",
+                                      "tone": "calm and curious"}).json()
+    assert c.post("/v1/channels", json={"name": "deep facts"}).status_code == 422  # duplicate name
+    plan = c.post(f"/v1/channels/{ch['id']}/plan").json()["plan"]
+    items = plan["items"]
+    assert len(items) == 5 and [i["idea"]["format"] for i in items] == ["short", "short", "short", "long", "short"]
+    days = [i["day"] for i in items]
+    assert days == sorted(days) and len(set(days)) == 5 and all(i["status"] == "planned" for i in items)
+    assert c.post(f"/v1/channels/{ch['id']}/plan/produce", json={}).status_code == 422  # nothing approved yet
+    c.patch(f"/v1/channels/{ch['id']}/plan/{items[0]['id']}", json={"status": "approved", "title": "My better title"})
+    c.patch(f"/v1/channels/{ch['id']}/plan/{items[1]['id']}", json={"status": "skipped"})
+    out = c.post(f"/v1/channels/{ch['id']}/plan/produce", json={}).json()
+    assert len(out["productions"]) == 1
+    job = c.get(f"/v1/productions/{out['productions'][0]['id']}").json()
+    assert job["title"] == "My better title" and job["spec"]["style"] == "documentary" and job["spec"]["voice"] == "narrator"
+    assert job["spec"]["motion"] == "ai_video" and job["spec"]["ai_video_scenes"] == "hook"
+    slot = out["channel"]["plan"]["items"][0]
+    assert slot["status"] == "queued" and slot["production_id"] == job["id"]
+    assert c.patch(f"/v1/channels/{ch['id']}/plan/{slot['id']}", json={"status": "skipped"}).status_code == 409
+    # auto-produce: approved slots due tomorrow are queued by the background tick
+    c.put(f"/v1/channels/{ch['id']}", json={"auto_produce": True})
+    c.patch(f"/v1/channels/{ch['id']}/plan/{items[2]['id']}", json={"status": "approved"})
+    due_day = date.fromisoformat(items[2]["day"])
+    from datetime import timedelta
+    assert app.state.autopilot_tick(due_day - timedelta(days=3)) == 0
+    assert app.state.autopilot_tick(due_day - timedelta(days=1)) == 1
+    assert c.delete(f"/v1/channels/{ch['id']}").status_code == 204
+    assert c.get("/v1/channels").json() == []

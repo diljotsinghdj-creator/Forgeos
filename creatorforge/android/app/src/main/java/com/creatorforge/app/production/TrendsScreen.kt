@@ -85,17 +85,6 @@ fun TrendsScreen(onOpenSettings: () -> Unit = {}, onOpenGenerate: () -> Unit = {
         load(false)
     }
 
-    fun productionDefaults(): JSONObject {
-        // Re-use the look, voice and AI-video choice from the Generate tab; the worker picks Short vs long-form per idea.
-        val g = context.getSharedPreferences("creatorforge_generate", 0)
-        val scopeVideo = g.getString("video_scope", "off").orEmpty()
-        return JSONObject().put("voice", g.getString("voice", "").orEmpty()).put("style", g.getString("style", "").orEmpty())
-            .put("pacing", g.getString("pacing", "medium").orEmpty()).put("music", g.getBoolean("music", true))
-            .put("captions", g.getBoolean("captions", true)).put("sfx", g.getBoolean("sfx", true))
-            .put("auto_edit", g.getBoolean("auto_edit", true))
-            .put("motion", if (scopeVideo == "off") "stills" else "ai_video").put("ai_video_scenes", if (scopeVideo == "all") "all" else "hook")
-    }
-
     fun sendToGenerate(script: TrendScript) {
         val g = context.getSharedPreferences("creatorforge_generate", 0)
         val long = script.seconds() > 60
@@ -229,7 +218,7 @@ fun TrendsScreen(onOpenSettings: () -> Unit = {}, onOpenGenerate: () -> Unit = {
                                 working = "${t.id}|produce"; error = null
                                 scope.launch {
                                     runCatching {
-                                        client.trendProduce(t.id, chosen.map { list[it] to (scripts["${t.id}|$it"]?.script ?: "") }, productionDefaults())
+                                        client.trendProduce(t.id, chosen.map { list[it] to (scripts["${t.id}|$it"]?.script ?: "") }, studioDefaults(context))
                                     }.onSuccess { n ->
                                         notice = "Queued $n video${if (n == 1) "" else "s"} about “${t.title}”. They render one after another - follow them in Generate or Library."
                                     }.onFailure { error = it.message }
@@ -289,4 +278,15 @@ private fun Chips(options: List<Pair<String, String>>, selected: String, small: 
                 colors = FilterChipDefaults.filterChipColors(selectedContainerColor = Gold, selectedLabelColor = Color.Black))
         }
     }
+}
+
+/** The look, voice and AI-video choice from the Generate tab, reused by Trends, the Director and Autopilot. */
+internal fun studioDefaults(context: Context): JSONObject {
+    val g = context.getSharedPreferences("creatorforge_generate", 0)
+    val scopeVideo = g.getString("video_scope", "off").orEmpty()
+    return JSONObject().put("voice", g.getString("voice", "").orEmpty()).put("style", g.getString("style", "").orEmpty())
+        .put("pacing", g.getString("pacing", "medium").orEmpty()).put("music", g.getBoolean("music", true))
+        .put("captions", g.getBoolean("captions", true)).put("sfx", g.getBoolean("sfx", true))
+        .put("auto_edit", g.getBoolean("auto_edit", true))
+        .put("motion", if (scopeVideo == "off") "stills" else "ai_video").put("ai_video_scenes", if (scopeVideo == "all") "all" else "hook")
 }

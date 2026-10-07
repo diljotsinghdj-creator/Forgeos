@@ -25,13 +25,15 @@ class JobStore:
             raise KeyError(job_id)
         return self.root / job_id
 
-    def create(self, spec: dict) -> dict:
+    def create(self, spec: dict, title: str = "") -> dict:
         job_id = uuid.uuid4().hex[:16]
         now = time.time()
         job = {"id": job_id, "created_at": now, "updated_at": now, "status": "QUEUED", "message": "Queued",
                "error": None, "progress": 0.0, "spec": spec, "plan": None, "scenes": [],
                "stages": {s: {"state": "PENDING", "error": None} for s in STAGES},
                "providers": {}, "result": None}
+        if title:
+            job["title"] = title[:100]
         self.dir(job_id).mkdir(parents=True)
         self.save(job)
         return job

@@ -23,6 +23,8 @@ import com.creatorforge.app.render.*
 import com.creatorforge.app.production.GenerateScreen
 import com.creatorforge.app.production.LibraryScreen
 import com.creatorforge.app.production.TrendsScreen
+import com.creatorforge.app.production.DirectorScreen
+import com.creatorforge.app.production.ChannelsScreen
 import com.creatorforge.app.production.WorkerAuth
 import kotlinx.coroutines.launch
 import java.io.File
@@ -35,7 +37,17 @@ class MainActivity:ComponentActivity(){override fun onCreate(savedInstanceState:
  val context=androidx.compose.ui.platform.LocalContext.current; val store=remember{ProjectStore(context)}; val secure=remember{SecureTokenStore(context).also{WorkerAuth.token=it.load("worker").orEmpty()}}
  var projects by remember{mutableStateOf(store.load())}; var tab by remember{mutableIntStateOf(0)}
  fun persist(next:List<CreatorProject>){projects=next;store.save(next)}
- MaterialTheme(colorScheme=darkColorScheme(primary=Gold,background=Black,surface=Panel)){Scaffold(bottomBar={NavigationBar(containerColor=Panel){listOf("Trends","Generate","Library","Create","Projects","Studio","Settings").forEachIndexed{i,n->NavigationBarItem(selected=tab==i,onClick={tab=i},label={Text(n,fontSize=9.sp,maxLines=1)},icon={Text(if(tab==i)"◆" else "◇",color=Gold)})}}}){pad->Box(Modifier.fillMaxSize().padding(pad).padding(18.dp)){when(tab){0->TrendsScreen(onOpenSettings={tab=6},onOpenGenerate={tab=1});1->GenerateScreen(onOpenSettings={tab=6});2->LibraryScreen();3->Create{p->persist(projects+p);tab=4};4->Projects(projects,secure,::persist);5->Studio(projects);else->Settings(secure)}}}}
+ MaterialTheme(colorScheme=darkColorScheme(primary=Gold,background=Black,surface=Panel)){Scaffold(bottomBar={NavigationBar(containerColor=Panel){listOf("Trends" to "📈","Director" to "💬","Generate" to "🎬","Library" to "🗂","Channels" to "📅","Phone" to "📱","Settings" to "⚙").forEachIndexed{i,(n,ic)->NavigationBarItem(selected=tab==i,onClick={tab=i},label={Text(n,fontSize=9.sp,maxLines=1)},icon={Text(ic,fontSize=if(tab==i)20.sp else 16.sp)})}}}){pad->Box(Modifier.fillMaxSize().padding(pad).padding(18.dp)){when(tab){0->TrendsScreen(onOpenSettings={tab=6},onOpenGenerate={tab=2});1->DirectorScreen(onOpenGenerate={tab=2},onOpenSettings={tab=6});2->GenerateScreen(onOpenSettings={tab=6});3->LibraryScreen();4->ChannelsScreen(onOpenSettings={tab=6});5->PhoneStudio(projects,secure,::persist);else->Settings(secure)}}}}
+}
+
+/** The original on-device tools (make a video entirely on this phone), grouped under one tab. */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable fun PhoneStudio(projects:List<CreatorProject>,secure:SecureTokenStore,persist:(List<CreatorProject>)->Unit){
+ var sub by remember{mutableIntStateOf(0)}; var list by remember{mutableStateOf(projects)}
+ fun save(next:List<CreatorProject>){list=next;persist(next)}
+ Column{Row(horizontalArrangement=Arrangement.spacedBy(6.dp)){listOf("Create","Projects","Studio").forEachIndexed{i,n->FilterChip(selected=sub==i,onClick={sub=i},label={Text(n)})}}
+  Spacer(Modifier.height(8.dp))
+  when(sub){0->Create{p->save(list+p);sub=1};1->Projects(list,secure,::save);else->Studio(list)}}
 }
 @Composable fun Header(t:String,s:String){Column{Text(t,color=Gold,fontSize=30.sp);Text(s,color=Color.LightGray);Spacer(Modifier.height(18.dp))}}
 @Composable fun Home(count:Int){Column{Header("CREATORFORGE","AI filmmaking workspace");Card{Column(Modifier.padding(18.dp)){Text("RC10.3 • SCROLLABLE EXPORT STUDIO",color=Gold);Text("$count saved projects");Text("Timeline • captions • synchronized scene timing • persistent recovery queue")}}}}

@@ -5,6 +5,12 @@
         <intent>
             <action android:name="android.intent.action.TTS_SERVICE" />
         </intent>
+        <intent>
+            <action android:name="android.speech.action.RECOGNIZE_SPEECH" />
+        </intent>
+        <package android:name="com.lemon.lvoverseas" />
+        <package android:name="com.ss.android.ugc.trill.capcut" />
+        <package android:name="com.lemon.lv" />
     </queries>
     <!-- Cleartext is allowed so a worker on your own LAN (http://192.168.x.x) works; use https:// elsewhere. -->
     <application android:theme="@style/Theme.CreatorForge" android:label="CreatorForge" android:allowBackup="true"

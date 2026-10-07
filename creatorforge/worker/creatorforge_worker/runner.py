@@ -102,6 +102,29 @@ class Runner:
         self.submit(job_id)
         return job
 
+    def redraw_scenes(self, job_id: str, indices: list[int]) -> dict:
+        """Swipe Storyboard: new visuals for the rejected scenes, then pause for review again."""
+        job = self.store.load(job_id)
+        if job["status"] in ("QUEUED", "RUNNING"):
+            raise ValueError("production is busy")
+        if not job.get("plan"):
+            raise ValueError("production has no storyboard yet")
+        picked = sorted({int(i) for i in indices})
+        if not picked or not all(0 <= i < len(job["scenes"]) for i in picked):
+            raise ValueError("pick at least one existing scene")
+        for i in picked:
+            sc = job["scenes"][i]
+            sc.update(image_state="QUEUED", error=None, reroll=sc.get("reroll", 0) + 1, image_source="generated")
+            if sc.get("clip_source") != "asset":
+                sc["clip_state"] = "QUEUED"
+            job["plan"]["scenes"][i]["prompt"] += f" (variation {sc['reroll']})"
+        self._reset(job, "images", "review", "clips", "assembly", "verify")
+        job["approved"] = not job["spec"].get("review", False)  # review-mode productions stop at the storyboard again
+        job.update(status="QUEUED", message=f"Redrawing {len(picked)} scene(s)", result=None)
+        self.store.save(job)
+        self.submit(job_id)
+        return job
+
     @staticmethod
     def _reset(job: dict, *stages: str) -> None:
         for s in stages:

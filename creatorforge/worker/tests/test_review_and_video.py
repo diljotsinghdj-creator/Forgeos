@@ -81,3 +81,47 @@ def test_cancel_during_review(cfg):
                                               "review": True}).json()["id"]
         assert settled(c, jid)["status"] == "REVIEW"
         assert c.delete(f"/v1/productions/{jid}").json()["status"] == "CANCELLED"
+
+
+def test_swipe_redraw_pauses_for_review_again(cfg):
+    with TestClient(create_app(cfg)) as c:
+        jid = c.post("/v1/productions", json={"idea": "Why octopuses are smart", "duration_s": 12,
+                                              "review": True}).json()["id"]
+        job = settled(c, jid)
+        assert job["status"] == "REVIEW"
+        before = [s["image"] for s in job["scenes"]]
+        assert c.post(f"/v1/productions/{jid}/redraw", json={"scenes": []}).status_code == 422
+        assert c.post(f"/v1/productions/{jid}/redraw", json={"scenes": [99]}).status_code == 422
+        r = c.post(f"/v1/productions/{jid}/redraw", json={"scenes": [0, 2]})
+        assert r.status_code == 200 and r.json()["status"] == "QUEUED"
+        job = settled(c, jid)
+        assert job["status"] == "REVIEW" and job["stages"]["narration"]["state"] == "PENDING"
+        after = [s["image"] for s in job["scenes"]]
+        assert after[0] != before[0] and after[2] != before[2] and after[1] == before[1]
+        c.post(f"/v1/productions/{jid}/approve")
+        assert settled(c, jid)["status"] == "READY"
+
+
+def test_publish_kit_and_capcut_export(cfg):
+    import io
+    import zipfile
+    with TestClient(create_app(cfg)) as c:
+        jid = c.post("/v1/productions", json={"idea": "Why cats purr", "duration_s": 12}).json()["id"]
+        assert c.get(f"/v1/productions/{jid}/export").status_code in (409, 200)
+        job = settled(c, jid)
+        assert job["status"] == "READY", job
+        kit = c.post(f"/v1/productions/{jid}/publish-kit").json()
+        assert len(kit["titles"]) == 3 and kit["hashtags"] == ["#shorts", "#facts", "#learn"] and kit["pinned_comment"]
+        assert c.get(f"/v1/productions/{jid}").json()["publish_kit"]["titles"] == kit["titles"]
+        r = c.get(f"/v1/productions/{jid}/export")
+        assert r.status_code == 200 and r.headers["content-type"] == "application/zip"
+        z = zipfile.ZipFile(io.BytesIO(r.content))
+        names = set(z.namelist())
+        n = len(job["scenes"])
+        assert {f"media/{i + 1:02d}_scene.png" for i in range(n)} <= names
+        assert {"audio/voiceover.wav", "captions.srt", "timeline.csv", "creatorforge.mp4", "publish.txt", "README.txt"} <= names
+        assert any(x.startswith("audio/music") for x in names)
+        srt = z.read("captions.srt").decode()
+        assert srt.startswith("1\n00:00:0") and " --> " in srt
+        assert "The truth about" in z.read("publish.txt").decode()
+        assert len(z.read("timeline.csv").decode().strip().splitlines()) == n + 1

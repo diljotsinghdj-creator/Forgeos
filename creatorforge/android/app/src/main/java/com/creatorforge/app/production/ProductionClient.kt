@@ -67,6 +67,23 @@ data class TrendIdea(val title: String, val hook: String, val angle: String, val
 data class TrendScript(val title: String, val script: String, val description: String, val hashtags: List<String>,
                        val sources: List<Pair<String, String>>, val verify: String)
 
+data class ChatTurn(val reply: String, val ready: Boolean, val draft: JSONObject, val suggestions: List<String>)
+
+data class PlanSlot(val id: String, val day: String, val time: String, val status: String, val productionId: String,
+                    val trendTitle: String, val title: String, val hook: String, val angle: String, val format: String, val seconds: Int)
+
+data class Channel(val id: String, val raw: JSONObject, val slots: List<PlanSlot>) {
+    val name get() = raw.optString("name")
+    val niche get() = raw.optString("niche")
+    val perWeek get() = raw.optInt("per_week", 7)
+    val format get() = raw.optString("format", "shorts")
+    val autoProduce get() = raw.optBoolean("auto_produce")
+}
+
+data class PublishKit(val titles: List<String>, val description: String, val hashtags: List<String>, val pinnedComment: String, val thumbnailText: String) {
+    fun asText() = "${titles.firstOrNull().orEmpty()}\n\n$description\n\n${hashtags.joinToString(" ")}"
+}
+
 class WorkerException(message: String) : Exception(message)
 
 /** Client for the worker's one-button production API. */
@@ -134,6 +151,9 @@ class ProductionClient(baseUrl: String) {
         withContext(Dispatchers.IO) { parse(call("POST", "/v1/productions/$id/scenes/$index/regenerate")) }
     suspend fun editScene(id: String, index: Int, narration: String, visual: String) = withContext(Dispatchers.IO) {
         parse(call("PATCH", "/v1/productions/$id/scenes/$index", JSONObject().put("narration", narration).put("visual", visual)))
+    }
+    suspend fun redraw(id: String, scenes: List<Int>) = withContext(Dispatchers.IO) {
+        parse(call("POST", "/v1/productions/$id/redraw", JSONObject().put("scenes", JSONArray(scenes))))
     }
     suspend fun approve(id: String) = withContext(Dispatchers.IO) { parse(call("POST", "/v1/productions/$id/approve")) }
 
@@ -259,6 +279,52 @@ class ProductionClient(baseUrl: String) {
         } catch (e: Exception) {
             tmp.delete(); throw WorkerException("Download failed: ${e.message}")
         }
+    }
+
+    suspend fun publishKit(id: String, refresh: Boolean = false): PublishKit = withContext(Dispatchers.IO) {
+        val j = JSONObject(call("POST", "/v1/productions/$id/publish-kit?refresh=$refresh"))
+        PublishKit(strings(j.optJSONArray("titles")), j.optString("description"), strings(j.optJSONArray("hashtags")),
+            j.optString("pinned_comment"), j.optString("thumbnail_text"))
+    }
+
+    // ---- Chat with your Director ----
+    suspend fun directorChat(messages: List<Pair<String, String>>, draft: JSONObject?): ChatTurn = withContext(Dispatchers.IO) {
+        val body = JSONObject().put("messages", JSONArray().apply { messages.forEach { (r, c) -> put(JSONObject().put("role", r).put("content", c)) } })
+        if (draft != null) body.put("draft", draft)
+        val j = JSONObject(call("POST", "/v1/director/chat", body))
+        ChatTurn(j.optString("reply"), j.optBoolean("ready"), j.optJSONObject("draft") ?: JSONObject(), strings(j.optJSONArray("suggestions")))
+    }
+
+    suspend fun directorProduce(draft: JSONObject, production: JSONObject): ProductionView = withContext(Dispatchers.IO) {
+        parse(call("POST", "/v1/director/produce", JSONObject().put("draft", draft).put("production", production)))
+    }
+
+    // ---- Channel Autopilot ----
+    private fun parseChannel(j: JSONObject): Channel {
+        val items = j.optJSONObject("plan")?.optJSONArray("items") ?: JSONArray()
+        return Channel(j.getString("id"), j, (0 until items.length()).map { i -> items.getJSONObject(i).let {
+            val idea = it.optJSONObject("idea") ?: JSONObject()
+            PlanSlot(it.getString("id"), it.optString("day"), it.optString("time"), it.optString("status"),
+                it.optString("production_id").takeIf { p -> p != "null" }.orEmpty(), it.optString("trend_title"),
+                idea.optString("title"), idea.optString("hook"), idea.optString("angle"), idea.optString("format"), idea.optInt("seconds", 45))
+        } })
+    }
+
+    suspend fun channels(): List<Channel> = withContext(Dispatchers.IO) {
+        val a = JSONArray(call("GET", "/v1/channels"))
+        (0 until a.length()).map { parseChannel(a.getJSONObject(it)) }
+    }
+    suspend fun saveChannel(id: String?, body: JSONObject): Channel = withContext(Dispatchers.IO) {
+        parseChannel(JSONObject(if (id == null) call("POST", "/v1/channels", body) else call("PUT", "/v1/channels/$id", body)))
+    }
+    suspend fun deleteChannel(id: String): Unit = withContext(Dispatchers.IO) { call("DELETE", "/v1/channels/$id") }
+    suspend fun planChannel(id: String): Channel = withContext(Dispatchers.IO) { parseChannel(JSONObject(call("POST", "/v1/channels/$id/plan"))) }
+    suspend fun editSlot(id: String, slot: String, body: JSONObject): Channel = withContext(Dispatchers.IO) {
+        parseChannel(JSONObject(call("PATCH", "/v1/channels/$id/plan/$slot", body)))
+    }
+    suspend fun producePlan(id: String, slots: List<String> = emptyList()): Pair<Int, Channel> = withContext(Dispatchers.IO) {
+        val j = JSONObject(call("POST", "/v1/channels/$id/plan/produce", JSONObject().put("item_ids", JSONArray(slots))))
+        (j.optJSONArray("productions")?.length() ?: 0) to parseChannel(j.getJSONObject("channel"))
     }
 
     // ---- Trend Radar ----
