@@ -56,7 +56,7 @@ say "Installing the worker (Python packages; first run takes a few minutes)"
 # shellcheck disable=SC1091
 . venv/bin/activate
 pip install -q --upgrade pip
-pip install -q -e "Forgeos/creatorforge/worker[whisper,kokoro,diffusers]" huggingface_hub
+pip install -q -e "Forgeos/creatorforge/worker[whisper,kokoro,diffusers]" huggingface_hub qrcode
 PYBIN="$(command -v python)"
 "$PYBIN" -c "import creatorforge_worker, torch; assert torch.cuda.is_available(), 'PyTorch cannot see the GPU'; print('PyTorch', torch.__version__, 'CUDA OK')"
 python -m spacy download en_core_web_sm -q >/dev/null 2>&1 || true   # used by Kokoro's English text front-end
@@ -182,27 +182,39 @@ for _ in $(seq 1 45); do
   [ -n "$URL" ] && break
   sleep 1
 done
-ALT=""
-if [ -n "${RUNPOD_POD_ID:-}" ]; then ALT="https://${RUNPOD_POD_ID}-${PORT}.proxy.runpod.net (only if port $PORT is exposed)"; fi
-if [ -z "$URL" ]; then
-  echo "Could not open the Cloudflare link (see $HOME_DIR/tunnel.log)."
-  URL="${ALT:-http://$(curl -fs https://api.ipify.org || hostname -I | awk '{print $1}'):$PORT}"
+# RunPod gives every pod a permanent address for exposed ports. When port $PORT is exposed it never changes,
+# so the app only needs to be set up once. The Cloudflare link above changes on every start.
+FIXED=""
+if [ -n "${RUNPOD_POD_ID:-}" ]; then
+  PROXY="https://${RUNPOD_POD_ID}-${PORT}.proxy.runpod.net"
+  if curl -fs -m 15 "$PROXY/health" >/dev/null 2>&1; then FIXED="$PROXY"; fi
 fi
+if [ -z "$URL" ] && [ -z "$FIXED" ]; then
+  echo "Could not open the Cloudflare link (see $HOME_DIR/tunnel.log)."
+  URL="http://$(curl -fs https://api.ipify.org || hostname -I | awk '{print $1}'):$PORT"
+fi
+MAIN="${FIXED:-$URL}"
+if [ -n "$FIXED" ]; then
+  LINK_NOTE="This address is PERMANENT for this pod - set it up once, it keeps working after restarts."
+elif [ -n "${RUNPOD_POD_ID:-}" ]; then
+  LINK_NOTE="This link changes every start. For a permanent one: RunPod -> your pod -> Edit -> Expose HTTP Ports -> add $PORT, save, run this command again."
+else
+  LINK_NOTE="This link changes every start - scan the new QR code each time."
+fi
+CONNECT=$("$PYBIN" -c "import sys, urllib.parse as u; print('creatorforge://connect?url=' + u.quote(sys.argv[1], safe='') + '&token=' + u.quote(sys.argv[2], safe=''))" "$MAIN" "$TOKEN")
+echo "$CONNECT" > "$HOME_DIR/connect_link.txt"
 cat <<DONE | tee "$HOME_DIR/connection.txt"
 
 ================================================================
  CreatorForge worker is running.
 
- In the app -> Settings:
-   Worker URL:   $URL
+ EASIEST: in the app -> Settings -> Video worker -> SCAN QR,
+ and scan the code below. Or type these in:
+   Worker URL:   $MAIN
    Worker token: $TOKEN
 
- Tap SAVE, SAVE TOKEN, then TEST CONNECTION.
- (The link changes each time you run this command - paste the new one.)
-${ALT:+ Alternative URL: $ALT}
- The first video loads models into memory and is slow (several
- minutes). Turn on "AI video clips" in Generate for realistic motion:
- each scene takes a few minutes to animate on a 24 GB GPU.
+ $LINK_NOTE
+ The first video loads models into memory and is slow (several minutes).
 
  Logs:   tail -f $HOME_DIR/worker.log
  Music:  put royalty-free tracks in $HOME_DIR/music (name them by mood)
@@ -211,3 +223,11 @@ ${ALT:+ Alternative URL: $ALT}
  Still: STOP THE POD when you're done - you pay while it runs.
 ================================================================
 DONE
+"$PYBIN" - "$CONNECT" <<'QR' || echo "(QR code unavailable - type the URL and token instead)"
+import sys
+import qrcode
+q = qrcode.QRCode(border=2, error_correction=qrcode.constants.ERROR_CORRECT_L)
+q.add_data(sys.argv[1])
+q.make(fit=True)
+q.print_ascii(invert=True)
+QR

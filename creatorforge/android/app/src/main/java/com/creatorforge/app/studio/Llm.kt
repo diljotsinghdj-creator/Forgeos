@@ -49,6 +49,8 @@ class OpenAiCompatible(baseUrl: String, private val model: String, private val k
                 when {
                     r.code == 401 || r.code == 403 -> throw AiException("The AI service rejected the key - check it in Settings")
                     r.code == 429 -> throw AiException("The free AI limit was reached for now - wait a minute and try again")
+                    r.code == 404 -> throw AiException("The AI service doesn't know the model '$model' - pick another model name in Settings")
+                    r.code == 400 && "API key" in t -> throw AiException("The AI service rejected the key - check it in Settings")
                     !r.isSuccessful -> throw AiException("AI service error ${r.code}: ${t.take(200)}")
                 }
                 t

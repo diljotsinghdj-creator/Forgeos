@@ -10,9 +10,12 @@ app. There's no subscription, and you pay only while the machine is running.
 3. Template: **RunPod PyTorch** (any 2.x).
 4. Make sure the pod has **at least 100 GB of disk** (Volume or Container disk; it's usually
    under **Edit**, **Customize** or **Edit Template**). The setup checks this and tells you if
-   there isn't enough. You **don't** need to expose any ports: the setup opens a free secure
-   `https://…trycloudflare.com` link on its own.
-5. **Deploy**, wait until it says *Running*, then **Connect → Start Web Terminal → Connect to Web Terminal**.
+   there isn't enough.
+5. **Recommended: a permanent address.** In the same Edit/Customize screen, find **Expose HTTP
+   Ports** and add **8765**. Then the pod's address (`https://<pod-id>-8765.proxy.runpod.net`)
+   never changes and you connect the app only once. Without it the setup still works: it opens a
+   free `https://…trycloudflare.com` link, but that link changes on every start.
+6. **Deploy**, wait until it says *Running*, then **Connect → Start Web Terminal → Connect to Web Terminal**.
 
 ## 2. Paste this one command
 
@@ -34,17 +37,15 @@ The first run downloads about 60 GB of open models and takes 15–30 minutes:
 | Voices | Kokoro: warm US female, deep US male, British female, British male |
 | Captions | Whisper |
 
-When it finishes it prints:
-
-```
-Worker URL:   https://<pod-id>-8765.proxy.runpod.net
-Worker token: <random token>
-```
+When it finishes it prints the Worker URL, the token, and a **QR code**.
 
 ## 3. Connect the app
 
-**Settings** → paste the **Worker URL** → **SAVE** → paste the **Worker token** → **SAVE TOKEN** →
-**TEST CONNECTION**. It should say **ONLINE**. Then go to **Generate**.
+**Settings → Connect your pod → 📷 SCAN QR** and point the phone at the QR code in the terminal.
+That saves the address and the token in one go. (Or type them under **Video worker**.)
+
+With the permanent RunPod address (step 1.5) you only do this once; it keeps working every time
+you start the pod. With the Cloudflare link, scan the new QR code after each start.
 
 The first video is slow because the models load into GPU memory. Later videos are much faster.
 

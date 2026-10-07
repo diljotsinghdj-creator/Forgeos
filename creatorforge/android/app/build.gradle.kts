@@ -11,8 +11,8 @@ android {
         applicationId = "com.creatorforge.app"
         minSdk = 26
         targetSdk = 35
-        versionCode = 32
-        versionName = "1.0.0-rc23"
+        versionCode = 33
+        versionName = "1.0.0-rc24"
     }
     buildFeatures { compose = true; buildConfig = true }
     compileOptions { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
@@ -26,7 +26,10 @@ dependencies {
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("io.coil-kt:coil-compose:2.7.0")
+    // QR scanner from Google Play services: no camera permission, the scan UI is provided by the system.
+    implementation("com.google.android.gms:play-services-code-scanner:16.1.0")
     debugImplementation("androidx.compose.ui:ui-tooling")
 }

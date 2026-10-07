@@ -67,7 +67,7 @@ class ProductionClient(baseUrl: String) {
     private val json = "application/json".toMediaType()
 
     private fun call(method: String, path: String, body: JSONObject? = null): String {
-        if (base.isBlank()) throw WorkerException("Set your worker URL in Settings first")
+        if (base.isBlank()) throw WorkerException("Not connected to your pod - start it and tap Settings → SCAN QR (writing tools work without it)")
         val req = Request.Builder().workerAuth().url("$base$path")
             .method(method, body?.toString()?.toRequestBody(json) ?: if (method == "POST") "{}".toRequestBody(json) else null)
             .build()
@@ -192,7 +192,7 @@ class ProductionClient(baseUrl: String) {
 
     /** Streams a file picked on the phone to the worker's Asset Library. */
     suspend fun uploadAsset(kind: String, name: String, open: () -> java.io.InputStream): Unit = withContext(Dispatchers.IO) {
-        if (base.isBlank()) throw WorkerException("Set your worker URL in Settings first")
+        if (base.isBlank()) throw WorkerException("Not connected to your pod - start it and tap Settings → SCAN QR (writing tools work without it)")
         val body = object : okhttp3.RequestBody() {
             override fun contentType() = "application/octet-stream".toMediaType()
             override fun writeTo(sink: okio.BufferedSink) { open().use { input -> sink.writeAll(input.source()) } }

@@ -157,14 +157,10 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
         capsError?.let { err ->
             item {
                 Card(Modifier.fillMaxWidth()) { Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                    Text("CONNECT YOUR WORKER", color = Gold, fontSize = 12.sp)
+                    Text("CONNECT YOUR POD TO MAKE VIDEOS", color = Gold, fontSize = 12.sp)
                     Text(err, color = Danger, fontSize = 13.sp)
-                    Text("CreatorForge's AI runs on a computer you control (the worker); this phone is the studio controller. " +
-                        "To try it right now without AI models, on a computer on the same Wi-Fi run:", color = Color.LightGray, fontSize = 13.sp)
-                    Text("cd creatorforge/worker\npip install -e .\npython run_demo.py", color = Color.White, fontSize = 13.sp,
-                        fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace)
-                    Text("Then enter the address it prints (http://192.168.x.x:8765) in Settings and tap TEST CONNECTION.",
-                        color = Color.LightGray, fontSize = 13.sp)
+                    Text("Making videos uses your pod (the GPU computer). Start it, run the start command, then tap " +
+                        "Settings → 📷 SCAN QR. Trends, Director, Scripts, Channels and Tools all work without it.", color = Color.LightGray, fontSize = 13.sp)
                     Button(onOpenSettings) { Text("OPEN SETTINGS") }
                 }}
             }

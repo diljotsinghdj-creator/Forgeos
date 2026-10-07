@@ -164,6 +164,27 @@ class Brain(private val model: TextModel?) {
         return Scene(narration, visual, shot, camera, mood, image, video, Styles.NEGATIVE)
     }
 
+    // ---- thumbnail text --------------------------------------------------------------------------
+    /** Short, punchy thumbnail texts: (line1, line2, highlight word). */
+    fun thumbnailIdeas(topic: String, count: Int = 5): List<Triple<String, String, String>> {
+        val t = topic.trim().ifBlank { "this" }
+        if (model == null) {
+            val w = t.split(Regex("\\s+")).take(3).joinToString(" ")
+            return listOf(Triple("NOBODY", "SAW THIS COMING", "NOBODY"), Triple(w, "EXPLAINED", "EXPLAINED"), Triple("THE TRUTH", "ABOUT $w", "TRUTH"),
+                Triple("DON'T", "MAKE THIS MISTAKE", "DON'T"), Triple("$w", "IN 60 SECONDS", "60")).take(count)
+        }
+        @Suppress("UNCHECKED_CAST")
+        return ask(THUMB_SYSTEM, "TOPIC: $t\nCOUNT: $count") { d ->
+            val a = d.optJSONArray("ideas") ?: JSONArray()
+            val out = (0 until a.length()).mapNotNull { i -> a.optJSONObject(i)?.let {
+                val l1 = it.optString("line1").trim().take(24); val l2 = it.optString("line2").trim().take(28)
+                if (l1.isBlank()) null else Triple(l1, l2, it.optString("highlight").trim().take(20))
+            } }
+            require(out.isNotEmpty()) { "no thumbnail ideas" }
+            out.take(count)
+        } as List<Triple<String, String, String>>
+    }
+
     // ---- channel plans ----------------------------------------------------------------------------
     fun plan(channel: Channel, trends: List<Trend>, start: LocalDate = LocalDate.now().plusDays(1)): List<Slot> {
         val n = channel.perWeek.coerceIn(1, 21)
@@ -274,6 +295,11 @@ ai_video: "off" (stills with camera motion, cheapest), "hook" (AI motion on the 
 Return JSON only:
 {"reply":"...","ready":false,"suggestions":["up to 3 short replies the creator might tap"],
 "draft":{"title":"...","idea":"one paragraph brief","hook":"...","script":"","duration_s":45,"template":"shorts_cinematic","style":"cinematic","ai_video":"off"}}"""
+
+        private const val THUMB_SYSTEM = """You write YouTube and Shorts thumbnail text that makes people click without lying.
+Each idea: line1 (1-3 words) and optional line2 (1-4 words), all short enough to read on a phone; highlight = the one word to colour.
+Use curiosity, contrast, numbers or a bold claim the video actually delivers. No emojis, no hashtags.
+Return JSON only: {"ideas":[{"line1":"...","line2":"...","highlight":"..."}]}"""
 
         private const val SCENES_SYSTEM = """You are a storyboard artist for faceless social videos. Break the video into scenes.
 For each scene give the narration (if a SCRIPT is given, copy each numbered part exactly, one per scene) and ONE concrete,
