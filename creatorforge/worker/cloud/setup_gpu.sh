@@ -32,7 +32,10 @@ nvidia-smi --query-gpu=name,memory.total --format=csv,noheader
 say "Checking disk space"
 FREE_GB=$(df -BG --output=avail "$HOME_DIR" | tail -1 | tr -dc '0-9')
 NEED_GB=$([ "$VIDEO" = "max" ] && echo 180 || ([ "$VIDEO" = "off" ] && echo 50 || echo 80))
-echo "  free: ${FREE_GB} GB, needed for models: ~${NEED_GB} GB (in $HOME_DIR)"
+# Models already downloaded by an earlier run count towards the total (re-runs just update the code).
+HAVE_GB=$(du -s -BG "$HOME_DIR/hf" "$HOME_DIR/ollama" "$HOME_DIR/venv" 2>/dev/null | awk '{s+=$1} END {print s+0}')
+NEED_GB=$(( NEED_GB > HAVE_GB ? NEED_GB - HAVE_GB : 5 ))
+echo "  free: ${FREE_GB} GB, already downloaded: ${HAVE_GB} GB, still needed: ~${NEED_GB} GB (in $HOME_DIR)"
 if [ "${FREE_GB:-0}" -lt "$NEED_GB" ]; then
   echo "Not enough disk. Stop the pod, edit it and raise the disk / volume size to at least ${NEED_GB} GB"
   echo "(or run with CF_HOME pointing at a bigger disk). Then run this command again."
