@@ -15,14 +15,24 @@ fun interface Fetcher {
     fun get(url: String): Pair<Int, String>
 }
 
-class HttpFetcher : Fetcher {
+class HttpFetcher : HeaderFetcher {
     private val client = OkHttpClient.Builder().connectTimeout(12, TimeUnit.SECONDS).readTimeout(20, TimeUnit.SECONDS).build()
-    override fun get(url: String): Pair<Int, String> = try {
-        client.newCall(Request.Builder().url(url).header("User-Agent", USER_AGENT).header("Accept", "*/*").build()).execute()
-            .use { r -> r.code to (r.body?.string().orEmpty()) }
+    override fun get(url: String): Pair<Int, String> = get(url, emptyMap())
+    override fun get(url: String, headers: Map<String, String>): Pair<Int, String> = try {
+        val b = Request.Builder().url(url).header("User-Agent", USER_AGENT).header("Accept", "*/*")
+        headers.forEach { (k, v) -> b.header(k, v) }
+        client.newCall(b.build()).execute().use { r -> r.code to (r.body?.string().orEmpty()) }
     } catch (e: Exception) {
         throw SourceException("unreachable: ${e.message ?: e.javaClass.simpleName}")
     }
+
+    /** Raw bytes (for downloading stock photos). */
+    fun bytes(url: String): ByteArray = try {
+        client.newCall(Request.Builder().url(url).header("User-Agent", USER_AGENT).build()).execute().use { r ->
+            if (!r.isSuccessful) throw SourceException("download failed (HTTP ${r.code})")
+            r.body?.bytes() ?: ByteArray(0)
+        }
+    } catch (e: SourceException) { throw e } catch (e: Exception) { throw SourceException("download failed: ${e.message}") }
 
     companion object {
         const val USER_AGENT = "CreatorForge-TrendRadar/1.0 (Android; +https://github.com/diljotsinghdj-creator/Forgeos)"

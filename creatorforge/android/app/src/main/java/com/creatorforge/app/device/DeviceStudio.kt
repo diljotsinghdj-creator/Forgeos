@@ -105,12 +105,37 @@ class DeviceStudio(private val context: Context) {
             val wav = File(dir, "scene_${i + 1}.wav")
             val seconds = narrate(s.narration, wav)
             val png = File(dir, "scene_${i + 1}.png")
-            titleCard(headline(s.narration), i, scenes.size, project.aspectRatio, png)
+            if (!(stockKey.isNotBlank() && stockPhoto(s.narration, project.aspectRatio, png, onProgress, i, scenes.size))) {
+                titleCard(headline(s.narration), i, scenes.size, project.aspectRatio, png)
+            }
             s.copy(status = SceneStatus.READY, visualAssetPath = png.absolutePath, audioAssetPath = wav.absolutePath,
                 durationSeconds = ceil(seconds + 0.4).toInt().coerceAtLeast(2))
         }
         project.copy(scenes = updated)
     }
+
+    private val stockKey: String by lazy { com.creatorforge.app.security.SecureTokenStore(context).load("stock").orEmpty() }
+
+    /** A free stock photo for the scene (Pexels/Pixabay key in Settings), centre-cropped to the video size. */
+    private fun stockPhoto(line: String, ratio: AspectRatio, out: File, onProgress: (String) -> Unit, i: Int, total: Int): Boolean = runCatching {
+        onProgress("Scene ${i + 1}/$total: finding a stock photo")
+        val (w, h) = when (ratio) { AspectRatio.VERTICAL_9_16 -> 1080 to 1920; AspectRatio.LANDSCAPE_16_9 -> 1920 to 1080; AspectRatio.SQUARE_1_1 -> 1080 to 1080 }
+        val fetcher = com.creatorforge.app.studio.HttpFetcher()
+        val photo = com.creatorforge.app.studio.StockPhotos.search(fetcher, stockKey, line,
+            when (ratio) { AspectRatio.VERTICAL_9_16 -> "portrait"; AspectRatio.LANDSCAPE_16_9 -> "landscape"; else -> "square" }).firstOrNull() ?: return false
+        val bytes = fetcher.bytes(photo.url)
+        val src = BitmapFactory.decodeByteArray(bytes, 0, bytes.size) ?: return false
+        val bmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+        val c = Canvas(bmp)
+        val scale = maxOf(w.toFloat() / src.width, h.toFloat() / src.height)
+        val dw = src.width * scale; val dh = src.height * scale
+        c.drawBitmap(src, null, RectF((w - dw) / 2, (h - dh) / 2, (w + dw) / 2, (h + dh) / 2), Paint(Paint.FILTER_BITMAP_FLAG))
+        c.drawRect(0f, 0f, w.toFloat(), h.toFloat(), Paint().apply { color = Color.argb(50, 0, 0, 0) }) // keeps captions readable
+        val credit = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.argb(170, 255, 255, 255); textSize = h * 0.012f }
+        c.drawText(photo.credit, w * 0.03f, h * 0.985f, credit)
+        out.outputStream().use { bmp.compress(Bitmap.CompressFormat.PNG, 100, it) }
+        true
+    }.getOrDefault(false)
 
     /** The first clause of the narration, so the card reads like a headline while captions carry the full line. */
     private fun headline(narration: String): String {

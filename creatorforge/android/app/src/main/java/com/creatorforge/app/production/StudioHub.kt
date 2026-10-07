@@ -122,6 +122,17 @@ fun AiSettingsCard(secure: SecureTokenStore) {
         }
         status?.let { Text(it, color = if (it.startsWith("✓")) Gold else Danger, fontSize = 12.sp) }
         HorizontalDivider(Modifier.padding(vertical = 6.dp))
+        Text("Stock photos for Phone Video (optional)", color = Gold, fontSize = 13.sp)
+        Text("A free Pexels key (pexels.com/api) puts real photos behind each scene instead of title cards. For Pixabay type pixabay:YOURKEY.", color = Dim, fontSize = 12.sp)
+        var stock by remember { mutableStateOf("") }
+        var hasStock by remember { mutableStateOf(secure.has("stock")) }
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            OutlinedTextField(stock, { stock = it }, Modifier.weight(1f), singleLine = true, visualTransformation = PasswordVisualTransformation(),
+                label = { Text(if (hasStock) "Saved - paste to replace" else "Pexels API key") })
+            Button({ if (stock.isNotBlank()) { secure.save("stock", stock.trim()); stock = ""; hasStock = true } }, enabled = stock.isNotBlank()) { Text("SAVE") }
+        }
+        if (hasStock) TextButton({ secure.clear("stock"); hasStock = false }) { Text("REMOVE STOCK KEY", color = Danger) }
+        HorizontalDivider(Modifier.padding(vertical = 6.dp))
         Text("YouTube trends (optional)", color = Gold, fontSize = 13.sp)
         Text("A free YouTube Data API key adds YouTube's most-watched videos to Trends.", color = Dim, fontSize = 12.sp)
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {

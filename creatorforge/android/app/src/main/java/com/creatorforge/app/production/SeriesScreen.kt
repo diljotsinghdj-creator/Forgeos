@@ -55,7 +55,7 @@ fun SeriesScreen(onOpenSettings: () -> Unit, onOpenGenerate: () -> Unit) {
                 }
             }
         } else item { OutlinedButton({ adding = true }) { Text("+ NEW SERIES") } }
-        Note(message)
+        item { Note(message) }
         items(all, key = { it.id }) { s ->
             val expanded = open == s.id
             Section(s.name, "${s.episodes.size} episode${if (s.episodes.size == 1) "" else "s"} • ${Styles.name(s.style)} • ${s.seconds}s each") {
