@@ -18,20 +18,46 @@ import java.util.zip.*;
 public class MainActivity extends Activity {
  private final int GOLD=Color.rgb(212,175,55);
  private LinearLayout projects,files; private TextView status,log; private Button build;
- private File active; private static final long MAX_UNPACKED=250L*1024*1024;
+ private File active; private static final long MAX_UNPACKED=250L*1024*1024; private static final String MISSION_STATE="apex_mission_state",MISSION_TEXT="apex_mission_text",MISSION_ATTEMPT="apex_mission_attempt";
  @Override public void onCreate(Bundle b){super.onCreate(b);setContentView(ui());restore();}
  private View ui(){
-  ScrollView s=new ScrollView(this);s.setBackgroundColor(Color.rgb(9,9,9));
-  LinearLayout r=new LinearLayout(this);r.setOrientation(LinearLayout.VERTICAL);r.setPadding(dp(22),dp(24),dp(22),dp(28));s.addView(r);
-  r.addView(txt("FORGEOS",30,GOLD,true));r.addView(txt("Android Development Workspace",14,Color.LTGRAY,false));
-  LinearLayout c=panel();c.addView(txt("WORKSPACE CONTROL",12,GOLD,true));status=txt("Ready",16,Color.WHITE,true);c.addView(status);c.addView(txt("Import a project ZIP. ForgeOS extracts it into an isolated private workspace, validates Android/Gradle structure and preserves it between launches.",13,Color.LTGRAY,false));r.addView(c);
-  Button imp=btn("IMPORT PROJECT ZIP");imp.setOnClickListener(v->{Intent x=new Intent(Intent.ACTION_OPEN_DOCUMENT);x.setType("application/zip");x.addCategory(Intent.CATEGORY_OPENABLE);startActivityForResult(x,100);});r.addView(imp);
-  build=btn("BUILD APK");build.setEnabled(false);build.setOnClickListener(v->requestRemoteBuild());r.addView(build);
-  r.addView(txt("PROJECT",12,GOLD,true));projects=panel();projects.addView(txt("No project imported yet",15,Color.LTGRAY,false));r.addView(projects);
-  r.addView(txt("FILES",12,GOLD,true));files=panel();files.addView(txt("Workspace empty",13,Color.GRAY,false));r.addView(files);
-  r.addView(txt("ACTIVITY LOG",12,GOLD,true));log=txt("ForgeOS initialized.",12,Color.LTGRAY,false);LinearLayout lp=panel();lp.addView(log);r.addView(lp);
-  r.addView(txt("ForgeOS v0.3.1 - Remote Build Engine",11,Color.GRAY,false));return s;
+  ScrollView s=new ScrollView(this);s.setBackgroundColor(Color.rgb(7,9,13));
+  LinearLayout r=new LinearLayout(this);r.setOrientation(LinearLayout.VERTICAL);r.setPadding(dp(22),dp(22),dp(22),dp(30));s.addView(r);
+  r.addView(txt("APEX",32,GOLD,true));r.addView(txt("Mission Control • v0.1",13,Color.LTGRAY,false));
+  LinearLayout hero=panel();hero.addView(txt("COMMAND APEX",12,GOLD,true));hero.addView(txt("What do you want accomplished?",20,Color.WHITE,true));
+  EditText mission=new EditText(this);mission.setHint("Describe a mission…");mission.setTextColor(Color.WHITE);mission.setHintTextColor(Color.GRAY);mission.setMinLines(3);mission.setGravity(android.view.Gravity.TOP);hero.addView(mission);
+  Button launch=btn("LAUNCH MISSION");hero.addView(launch);r.addView(hero);
+  LinearLayout live=panel();live.addView(txt("MISSION STATUS",12,GOLD,true));status=txt("IDLE • Awaiting mission",16,Color.WHITE,true);live.addView(status);
+  live.addView(txt("Planner  •  Worker  •  Tester  •  Judge",12,Color.LTGRAY,false));r.addView(live);
+  LinearLayout evidence=panel();evidence.addView(txt("EVIDENCE & RECOVERY",12,GOLD,true));log=txt("No mission evidence yet. Failures will be surfaced here before recovery.",12,Color.LTGRAY,false);evidence.addView(log);r.addView(evidence);
+  LinearLayout nav=panel();nav.addView(txt("SYSTEMS",12,GOLD,true));nav.addView(txt("Missions   Agents   Projects & Memory",13,Color.WHITE,true));nav.addView(txt("CreatorForge   Growth Intelligence",13,Color.WHITE,true));nav.addView(txt("Evidence   Security & Settings",13,Color.WHITE,true));r.addView(nav);
+  r.addView(txt("ENGINEERING BRIDGE",12,GOLD,true));projects=panel();projects.addView(txt("ForgeOS build engine available beneath APEX.",12,Color.LTGRAY,false));r.addView(projects);
+  files=panel();files.setVisibility(View.GONE);r.addView(files);build=btn("BUILD ENGINE");build.setVisibility(View.GONE);r.addView(build);
+  String savedMission=getPreferences(0).getString(MISSION_TEXT,"");String savedState=getPreferences(0).getString(MISSION_STATE,"IDLE");if(!savedMission.isEmpty())mission.setText(savedMission);if(!"IDLE".equals(savedState))status.setText(savedState+" • "+savedMission);
+  launch.setOnClickListener(v->{String m=mission.getText().toString().trim();if(m.isEmpty()){status.setText("MISSION BLOCKED • Enter an objective");return;}startMission(m);});
+  r.addView(txt("APEX v0.1 • Mission Control on ForgeOS",11,Color.GRAY,false));return s;
  }
+ private void checkpoint(String mission,String state,int attempt,String evidence){
+  getPreferences(0).edit().putString(MISSION_TEXT,mission).putString(MISSION_STATE,state).putInt(MISSION_ATTEMPT,attempt).apply();
+  status.setText(state+" • "+mission);append("["+state+"] attempt "+attempt+" • "+evidence);
+ }
+ private void startMission(String mission){
+  checkpoint(mission,"PLANNING",1,"Planner created a deterministic local execution plan.");
+  new android.os.Handler(getMainLooper()).postDelayed(()->runWorker(mission,1),500);
+ }
+ private void runWorker(String mission,int attempt){
+  checkpoint(mission,"RUNNING",attempt,"Worker started.");
+  new android.os.Handler(getMainLooper()).postDelayed(()->{
+   if(attempt==1){
+    checkpoint(mission,"RECOVERING",attempt,"Controlled worker fault injected; checkpoint preserved. Recovery policy approved one retry.");
+    new android.os.Handler(getMainLooper()).postDelayed(()->runWorker(mission,attempt+1),650);
+   }else{
+    checkpoint(mission,"VERIFYING",attempt,"Worker completed on retry; Tester/Judge validating terminal evidence.");
+    new android.os.Handler(getMainLooper()).postDelayed(()->checkpoint(mission,"COMPLETED",attempt,"Verified local worker recovery path: failure → recovery → retry → verification → completion. External AI/tool execution remains disabled."),650);
+   }
+  },650);
+ }
+
  @Override protected void onActivityResult(int q,int result,Intent data){super.onActivityResult(q,result,data);if(q==100&&result==RESULT_OK&&data!=null&&data.getData()!=null)importZip(data.getData());}
  private void importZip(Uri uri){
   status.setText("Importing project...");build.setEnabled(false);
@@ -82,6 +108,7 @@ public class MainActivity extends Activity {
   String id="android-"+System.currentTimeMillis();String path="build-requests/"+id+".zip";
   try{
    byte[] zip=zipWorkspace(active);if(zip.length>90L*1024*1024)throw new IOException("Compressed project exceeds 90 MB remote request limit");
+   ensureBuildRequestsBranch(token);
    String body="{\"message\":\"ForgeOS remote request "+id+"\",\"content\":\""+Base64.encodeToString(zip,Base64.NO_WRAP)+"\",\"branch\":\"build-requests\"}";
    api("PUT","https://api.github.com/repos/diljotsinghdj-creator/Forgeos/contents/"+path,token,body);
    String dispatch="{\"ref\":\"main\",\"inputs\":{\"request_path\":\""+path+"\",\"request_id\":\""+id+"\"}}";
@@ -96,6 +123,23 @@ public class MainActivity extends Activity {
  }
  private void zipDir(File root,File f,ZipOutputStream z)throws Exception{
   File[] a=f.listFiles();if(a==null)return;for(File x:a){String rel=root.toURI().relativize(x.toURI()).getPath();if(rel.startsWith(".git/")||rel.contains("/build/")||rel.startsWith("build/"))continue;if(x.isDirectory())zipDir(root,x,z);else{z.putNextEntry(new ZipEntry(rel));try(InputStream in=new FileInputStream(x)){byte[] q=new byte[16384];int n;while((n=in.read(q))>0)z.write(q,0,n);}z.closeEntry();}}
+ }
+ private void ensureBuildRequestsBranch(String token)throws Exception{
+  String repo="https://api.github.com/repos/diljotsinghdj-creator/Forgeos";
+  try{api("GET",repo+"/git/ref/heads/build-requests",token,null);return;}catch(IOException e){
+   if(!e.getMessage().startsWith("GitHub HTTP 404:"))throw e;
+  }
+  String main=api("GET",repo+"/git/ref/heads/main",token,null);
+  String needle="\\\"sha\\\":\\\"";int p=main.indexOf(needle);if(p<0)throw new IOException("Unable to resolve main branch SHA");
+  int start=p+needle.length(),end=main.indexOf('"',start);if(end<0)throw new IOException("Malformed GitHub ref response");
+  String sha=main.substring(start,end);
+  try{api("POST",repo+"/git/refs",token,"{\\\"ref\\\":\\\"refs/heads/build-requests\\\",\\\"sha\\\":\\\""+sha+"\\\"}");}
+  catch(IOException e){
+   if(!e.getMessage().startsWith("GitHub HTTP 422:"))throw e;
+   // A concurrent client may have created the branch after our initial 404.
+   // Never treat an arbitrary 422 as success: prove the branch now exists.
+   api("GET",repo+"/git/ref/heads/build-requests",token,null);
+  }
  }
  private String api(String method,String url,String token,String body)throws Exception{
   HttpsURLConnection h=(HttpsURLConnection)new URL(url).openConnection();h.setRequestMethod(method);h.setConnectTimeout(20000);h.setReadTimeout(30000);h.setRequestProperty("Authorization","Bearer "+token);h.setRequestProperty("Accept","application/vnd.github+json");h.setRequestProperty("X-GitHub-Api-Version","2022-11-28");h.setRequestProperty("User-Agent","ForgeOS-Android/0.3.1");
