@@ -118,6 +118,7 @@ CF_MUSIC_DIR=$HOME_DIR/music
 CF_SFX_DIR=$HOME_DIR/sfx
 ENV
 if [ -n "$VIDEO_MODEL" ]; then printf 'CF_VIDEO_PROVIDER=diffusers\nCF_VIDEO_MODEL=%s\n' "$VIDEO_MODEL" >> worker.env; fi
+if [ -n "${CF_YOUTUBE_API_KEY:-}" ]; then printf 'CF_YOUTUBE_API_KEY=%s\n' "$CF_YOUTUBE_API_KEY" >> worker.env; fi
 
 say "Starting the worker on port $PORT"
 pkill -f "creatorforge_worker" 2>/dev/null || true

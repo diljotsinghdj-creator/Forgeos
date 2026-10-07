@@ -23,7 +23,7 @@ def test_ai_video_clips_are_generated_and_used(cfg):
         assert job["status"] == "READY", job
         assert job["stages"]["clips"]["state"] == "READY"
         assert all(s["clip_state"] == "READY" and s["clip"].endswith(".mp4") for s in job["scenes"])
-        assert job["providers"]["clips"] == "mock-video"
+        assert job["providers"]["clips"] == "mock-video (3/3 scenes)"
         v = job["result"]["verification"]
         assert (v["width"], v["height"]) == (1920, 1080) and v["decode_check"] == "passed"
 

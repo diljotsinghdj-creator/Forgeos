@@ -22,6 +22,20 @@ class MockLLM:
     id = "mock-llm"
 
     def complete_json(self, system: str, user: str) -> str:
+        if "TREND_IDEAS" in system:
+            topic = re.search(r"TOPIC:\s*(.+)", user).group(1).strip()
+            n = int(re.search(r"COUNT:\s*(\d+)", user).group(1))
+            fmt = "long" if "FORMAT: long" in user else "short"
+            return json.dumps({"ideas": [{"title": f"{topic}: angle {i + 1}", "hook": f"Nobody is telling you this about {topic}",
+                                          "angle": "Explain what happened and why it matters", "format": fmt,
+                                          "why_now": "It is trending this week", "seconds": 45 if fmt == "short" else 600}
+                                         for i in range(n)]})
+        if "TREND_SCRIPT" in system:
+            words = int(re.search(r"about (\d+) words", user).group(1))
+            idea = re.search(r"IDEA:\s*(.+)", user).group(1).strip()
+            body = " ".join(f"Sentence {i + 1} about {idea} keeps the story moving." for i in range(max(2, words // 9)))
+            return json.dumps({"title": idea, "script": f"Here is what happened. {body} Follow for more.",
+                               "description": f"All about {idea}.", "hashtags": ["#trending", "news"], "facts_used": [1, 2]})
         if "SCENES (narration, final):" in user:
             n = len(re.findall(r"^\d+\. ", user, flags=re.M))
             return json.dumps({"title": "Script video", "hook": "Listen up", "cta": "Follow for more", "music_mood": "tense",

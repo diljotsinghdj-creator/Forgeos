@@ -68,6 +68,7 @@ missing.
 | `CF_MUSIC_DIR` | Folder of music tracks. A track is picked when its filename matches the scene's mood (for example `epic_cinematic_1.mp3`) |
 | `CF_MUSIC_PROVIDER`, `CF_MUSIC_MODEL`, `CF_MUSIC_URL` | Optional AI-generated score instead of the library. `stable-audio` runs Stable Audio Open on the worker GPU and makes a bed of up to 47s, which loops under longer videos. `http` calls your own server at `POST {url}/v1/music/generate` with JSON `prompt, seconds, seed` and expects audio bytes back. Check the model licence |
 | `CF_SFX_DIR` | Optional sound-effects folder. Files are matched to roles by name: `whoosh`/`swoosh` (moving transitions), `hit`/`impact`/`boom` (hard cuts, the hook), `pop`/`click`/`ding` (callouts, CTA). Sound-effect assets you upload are used as well |
+| `CF_YOUTUBE_API_KEY` | Optional, free ([Google Cloud console](https://console.cloud.google.com/apis/library/youtube.googleapis.com) → YouTube Data API v3 → API key). Adds YouTube's most-watched videos to the Trend Radar. Everything else in the radar needs no key |
 | `CF_ALLOW_MOCK=1` | **Tests only.** Turns on placeholder providers (`mock`). Every production records the providers that made it |
 
 Check the licence of each model you install: some popular voice and music models are not
@@ -101,6 +102,11 @@ licensed for commercial use.
 | PATCH | `/v1/productions/{id}` | Rename `{"title"}` |
 | DELETE | `/v1/productions/{id}?purge=true` | Delete a finished production and its files |
 | GET | `/v1/library/videos` | Media Library: every finished, verified video with its thumbnail URL |
+| GET | `/v1/trends?period=week\|month\|year&niche=&region=GB&q=&refresh=` | **Trend Radar.** Topics ranked by how strongly several free sources agree: Wikipedia most-read, Google Trends searches (week only), Google News, Reddit top posts, Hacker News and, with a key, YouTube. Each topic has a `heat` score from 0 to 100, its headlines and the source links. Scans are cached (2 h for week, 12 h for month, 48 h for year). A source that fails is listed in `sources` with the reason and the rest still count |
+| GET | `/v1/trends/options` | Niches (Everything, Tech, AI, Money, Business, Crypto, Science, History, Mystery, Facts, Motivation, Health, Gaming, Entertainment, Sports, or `custom` with `q=`), countries |
+| POST | `/v1/trends/ideas` | `{"trend_id", "count", "format": "short"\|"long"\|"mixed"}` → video ideas with a hook, angle and "why now", based only on the topic's real signals |
+| POST | `/v1/trends/script` | `{"trend_id", "idea", "seconds"}` → narration that uses only facts from the numbered sources, with description, hashtags and the sources it used |
+| POST | `/v1/trends/produce` | `{"trend_id", "ideas":[...], "production":{voice, style, motion...}}` → queues one production per idea (up to 20). Ideas with a `script` are narrated word for word; the others are written by the Director from the idea and the trend's headlines. Short ideas use `shorts_cinematic`, long ones `youtube_longform`, unless `production.template` is set |
 | POST | `/v1/images/generate`, `/v1/voice/generate` | Single-asset endpoints used by the RC10 app |
 
 **Looks** (`style`): `hyperreal`, `cinematic`, `documentary`, `animated_3d`, `anime`, `claymation`,

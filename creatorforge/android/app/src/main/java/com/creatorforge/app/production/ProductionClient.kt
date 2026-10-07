@@ -35,7 +35,7 @@ data class ProductionView(
     val inReview get() = status == "REVIEW"
 }
 
-data class ProductionSummary(val id: String, val title: String, val status: String, val progress: Float)
+data class ProductionSummary(val id: String, val title: String, val status: String, val progress: Float, val message: String = "")
 
 data class ProductionRequest(
     val idea: String, val durationS: Int, val aspect: String, val template: String, val voice: String,
@@ -52,6 +52,20 @@ data class LibraryAsset(val id: String, val kind: String, val name: String, val 
 data class LibraryCharacter(val id: String, val name: String, val description: String)
 
 data class LibraryVideo(val id: String, val title: String, val aspect: String, val durationS: Double, val videoPath: String, val thumbnailPath: String)
+
+data class TrendSignal(val source: String, val title: String, val url: String, val metric: Long, val metricLabel: String, val publisher: String)
+
+data class TrendItem(val id: String, val title: String, val heat: Int, val sources: List<String>, val metrics: Map<String, Long>,
+                     val headlines: List<String>, val signals: List<TrendSignal>)
+
+data class TrendSource(val name: String, val ok: Boolean, val count: Int, val error: String)
+
+data class TrendScan(val items: List<TrendItem>, val sources: List<TrendSource>, val cached: Boolean, val fetchedAt: String)
+
+data class TrendIdea(val title: String, val hook: String, val angle: String, val format: String, val whyNow: String, val seconds: Int)
+
+data class TrendScript(val title: String, val script: String, val description: String, val hashtags: List<String>,
+                       val sources: List<Pair<String, String>>, val verify: String)
 
 class WorkerException(message: String) : Exception(message)
 
@@ -126,7 +140,7 @@ class ProductionClient(baseUrl: String) {
     suspend fun list(): List<ProductionSummary> = withContext(Dispatchers.IO) {
         val a = JSONArray(call("GET", "/v1/productions"))
         (0 until a.length()).map { i ->
-            a.getJSONObject(i).let { ProductionSummary(it.getString("id"), it.optString("title"), it.optString("status"), it.optDouble("progress", 0.0).toFloat()) }
+            a.getJSONObject(i).let { ProductionSummary(it.getString("id"), it.optString("title"), it.optString("status"), it.optDouble("progress", 0.0).toFloat(), it.optString("message")) }
         }
     }
 
@@ -245,6 +259,61 @@ class ProductionClient(baseUrl: String) {
         } catch (e: Exception) {
             tmp.delete(); throw WorkerException("Download failed: ${e.message}")
         }
+    }
+
+    // ---- Trend Radar ----
+    suspend fun trendOptions(): Triple<List<Choice>, List<Choice>, Boolean> = withContext(Dispatchers.IO) {
+        val j = JSONObject(call("GET", "/v1/trends/options"))
+        Triple(choices(j.optJSONArray("niches")), choices(j.optJSONArray("regions")), j.optBoolean("youtube"))
+    }
+
+    suspend fun trends(period: String, niche: String, region: String, query: String, refresh: Boolean): TrendScan = withContext(Dispatchers.IO) {
+        val q = java.net.URLEncoder.encode(query, "UTF-8")
+        val j = JSONObject(call("GET", "/v1/trends?period=$period&niche=$niche&region=$region&q=$q&refresh=$refresh&limit=40"))
+        val items = j.optJSONArray("items") ?: JSONArray()
+        val src = j.optJSONObject("sources") ?: JSONObject()
+        TrendScan(
+            (0 until items.length()).map { i -> parseTrend(items.getJSONObject(i)) },
+            src.keys().asSequence().map { k -> src.getJSONObject(k).let { TrendSource(it.optString("name", k), it.optBoolean("ok"), it.optInt("count"), it.optString("error")) } }.toList(),
+            j.optBoolean("cached"), j.optString("fetched_at")
+        )
+    }
+
+    private fun parseTrend(t: JSONObject): TrendItem {
+        val m = t.optJSONObject("metrics") ?: JSONObject()
+        val sig = t.optJSONArray("signals") ?: JSONArray()
+        return TrendItem(t.getString("id"), t.optString("title"), t.optInt("heat"), strings(t.optJSONArray("sources")),
+            m.keys().asSequence().associateWith { m.optLong(it) }, strings(t.optJSONArray("headlines")),
+            (0 until sig.length()).map { i -> sig.getJSONObject(i).let {
+                TrendSignal(it.optString("source"), it.optString("title"), it.optString("url"), it.optLong("metric"), it.optString("metric_label"), it.optString("publisher"))
+            } })
+    }
+
+    private fun strings(a: JSONArray?) = (0 until (a?.length() ?: 0)).map { a!!.optString(it) }
+
+    private fun ideaJson(i: TrendIdea, script: String = "") = JSONObject().put("title", i.title).put("hook", i.hook).put("angle", i.angle)
+        .put("format", i.format).put("seconds", i.seconds).apply { if (script.isNotBlank()) put("script", script) }
+
+    suspend fun trendIdeas(trendId: String, count: Int, format: String, niche: String, period: String): List<TrendIdea> = withContext(Dispatchers.IO) {
+        val body = JSONObject().put("trend_id", trendId).put("count", count).put("format", format).put("niche", niche).put("period", period)
+        val a = JSONObject(call("POST", "/v1/trends/ideas", body)).optJSONArray("ideas") ?: JSONArray()
+        (0 until a.length()).map { i -> a.getJSONObject(i).let {
+            TrendIdea(it.optString("title"), it.optString("hook"), it.optString("angle"), it.optString("format"), it.optString("why_now"), it.optInt("seconds", 45))
+        } }
+    }
+
+    suspend fun trendScript(trendId: String, idea: TrendIdea): TrendScript = withContext(Dispatchers.IO) {
+        val j = JSONObject(call("POST", "/v1/trends/script", JSONObject().put("trend_id", trendId).put("idea", ideaJson(idea)).put("seconds", idea.seconds)))
+        val src = j.optJSONArray("sources") ?: JSONArray()
+        TrendScript(j.optString("title"), j.optString("script"), j.optString("description"), strings(j.optJSONArray("hashtags")),
+            (0 until src.length()).map { i -> src.getJSONObject(i).let { it.optString("title") to it.optString("url") } }, j.optString("verify"))
+    }
+
+    /** Queues one production per idea; ideas with a written script are narrated word for word. */
+    suspend fun trendProduce(trendId: String, ideas: List<Pair<TrendIdea, String>>, production: JSONObject): Int = withContext(Dispatchers.IO) {
+        val body = JSONObject().put("trend_id", trendId).put("production", production)
+            .put("ideas", JSONArray().apply { ideas.forEach { (i, s) -> put(ideaJson(i, s)) } })
+        JSONObject(call("POST", "/v1/trends/produce", body)).optJSONArray("productions")?.length() ?: 0
     }
 
     private fun parse(raw: String): ProductionView {

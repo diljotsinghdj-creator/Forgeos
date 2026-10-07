@@ -67,9 +67,13 @@ with 15–30 seconds.
 | `CF_VIDEO=off` | Skips the video model (stills with camera motion only) |
 | `CF_LLM_MODEL=qwen2.5:14b-instruct` | A stronger script writer (needs more VRAM) |
 | `CF_IMAGE_MODEL=...` | A different diffusers image model. Check its licence |
+| `CF_YOUTUBE_API_KEY=...` | Adds YouTube's most-watched videos to the **Trends** tab (free key from Google Cloud → YouTube Data API v3). The other trend sources need no key |
 
 Music and sound effects: upload them from the app (**Library → Asset Library**), or copy files
 into `/workspace/creatorforge/music` and `/workspace/creatorforge/sfx`.
+
+Trends tab: Reddit sometimes blocks requests from cloud servers. When that happens the tab shows
+"✗ Reddit" with the reason and ranks topics from the other sources.
 
 ## If something goes wrong
 

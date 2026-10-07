@@ -27,6 +27,9 @@ from .providers.base import NotConfigured, ProviderError
 from .runner import Runner
 from .store import JobStore
 from .templates import ASPECTS, STYLE_PRESETS, TEMPLATES
+from .trends import NICHES, PERIODS, REGIONS, TrendRadar
+from .trends import writer as trend_writer
+from .trends.sources import SourceError
 
 
 def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
@@ -36,6 +39,7 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
     pipeline = Pipeline(cfg, store, library)
     runner = Runner(pipeline, store)
     characters = library.characters
+    radar = TrendRadar(cfg.data_dir, cfg.youtube_api_key)
 
     @asynccontextmanager
     async def lifespan(_app: FastAPI):
@@ -44,7 +48,7 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
         yield
 
     app = FastAPI(title="CreatorForge Worker", version=__version__, lifespan=lifespan)
-    app.state.cfg, app.state.store, app.state.runner = cfg, store, runner
+    app.state.cfg, app.state.store, app.state.runner, app.state.radar = cfg, store, runner, radar
 
     activity = cfg.data_dir / "last_request"
 
@@ -109,13 +113,13 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
                 "motion": ["stills"] + (["ai_video"] if cfg.video_provider else []),
                 "styles": [{"id": k, "name": v[0]} for k, v in STYLE_PRESETS.items()],
                 "voices": [{"id": v.id, "name": v.name, "provider": v.provider} for v in cfg.voices + pipeline.library_voices()],
+                "trends": {"youtube": bool(cfg.youtube_api_key)},
                 "providers": provider_status()}
 
     # ---- one-button production -----------------------------------------------------------
-    @app.post("/v1/productions", status_code=202, dependencies=[Depends(auth)])
-    async def create_production(request: Request) -> dict:
+    def build_spec(body: dict) -> ProductionSpec:
         try:
-            spec = ProductionSpec.from_dict(await request.json())
+            spec = ProductionSpec.from_dict(body)
             # Snapshot library characters so later library edits never change a production mid-flight.
             known = {c.name.lower() for c in spec.characters}
             for c in characters.get_many(spec.character_ids):
@@ -123,9 +127,16 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
                     spec.characters.append(Character(c["name"], c["description"]))
         except (ValueError, TypeError) as e:
             raise HTTPException(422, str(e)) from None
+        return spec
+
+    def submit(spec: ProductionSpec) -> dict:
         job = store.create(spec.to_dict())
         runner.submit(job["id"])
         return public(job)
+
+    @app.post("/v1/productions", status_code=202, dependencies=[Depends(auth)])
+    async def create_production(request: Request) -> dict:
+        return submit(build_spec(await request.json()))
 
     @app.get("/v1/productions", dependencies=[Depends(auth)])
     def list_productions() -> list[dict]:
@@ -390,6 +401,83 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
                             "video_url": f"/v1/productions/{j['id']}/video",
                             "thumbnail_url": f"/v1/productions/{j['id']}/scenes/0/image"})
         return out
+
+    # ---- Trend Radar ---------------------------------------------------------------------
+    @app.get("/v1/trends/options", dependencies=[Depends(auth)])
+    def trend_options() -> dict:
+        return {"periods": list(PERIODS), "niches": [{"id": n.id, "name": n.name} for n in NICHES.values()],
+                "regions": [{"id": k, "name": v["name"]} for k, v in REGIONS.items()],
+                "youtube": bool(cfg.youtube_api_key)}
+
+    @app.get("/v1/trends", dependencies=[Depends(auth)])
+    def trends(period: str = "week", niche: str = "all", region: str = "GB", q: str = "", refresh: bool = False,
+               limit: int = 30) -> dict:
+        try:
+            return radar.scan(period, niche, region, q, refresh, max(1, min(60, limit)))
+        except ValueError as e:
+            raise HTTPException(422, str(e)) from None
+        except SourceError as e:
+            raise HTTPException(502, str(e)) from None
+
+    def resolve_trend(body: dict) -> dict:
+        if body.get("trend_id"):
+            found = radar.find(str(body["trend_id"]))
+            if not found:
+                raise HTTPException(404, "trend not found; refresh the Trend Radar and try again")
+            return found
+        t = body.get("trend")
+        if isinstance(t, dict) and str(t.get("title", "")).strip():
+            return {"title": str(t["title"]).strip()[:200], "headlines": [str(h)[:300] for h in t.get("headlines") or []][:10],
+                    "signals": [x for x in t.get("signals") or [] if isinstance(x, dict)][:10]}
+        topic = str(body.get("topic", "")).strip()
+        if len(topic) >= 3:
+            return {"title": topic[:200], "headlines": [], "signals": []}
+        raise HTTPException(422, "send trend_id, trend {title, headlines} or topic")
+
+    def llm_or_503():
+        try:
+            return providers.build_llm(cfg)
+        except NotConfigured as e:
+            raise HTTPException(503, str(e)) from None
+
+    @app.post("/v1/trends/ideas", dependencies=[Depends(auth)])
+    async def trend_ideas(request: Request) -> dict:
+        body = await request.json()
+        trend = resolve_trend(body)
+        try:
+            out = trend_writer.ideas(llm_or_503(), trend, body.get("count", 5), str(body.get("format", "short")),
+                                     str(body.get("niche", "")), str(body.get("period", "week")))
+        except ValueError as e:
+            raise HTTPException(422, str(e)) from None
+        except ProviderError as e:
+            raise HTTPException(502, str(e)) from None
+        return {"trend": {"id": trend.get("id", ""), "title": trend["title"]}, "ideas": out}
+
+    @app.post("/v1/trends/script", dependencies=[Depends(auth)])
+    async def trend_script(request: Request) -> dict:
+        body = await request.json()
+        trend = resolve_trend(body)
+        idea = body.get("idea") if isinstance(body.get("idea"), dict) else {"title": trend["title"]}
+        try:
+            return trend_writer.script(llm_or_503(), trend, idea, body.get("seconds") or idea.get("seconds") or 45)
+        except (ValueError, TypeError) as e:
+            raise HTTPException(422, str(e)) from None
+        except ProviderError as e:
+            raise HTTPException(502, str(e)) from None
+
+    @app.post("/v1/trends/produce", status_code=202, dependencies=[Depends(auth)])
+    async def trend_produce(request: Request) -> dict:
+        """One tap: queue a production for each chosen idea (batch)."""
+        body = await request.json()
+        trend = resolve_trend(body)
+        ideas = [i for i in body.get("ideas") or [] if isinstance(i, dict)]
+        if not ideas:
+            ideas = [{"title": trend["title"], "hook": "", "angle": ""}]
+        if len(ideas) > 20:
+            raise HTTPException(422, "at most 20 videos per batch")
+        base = body.get("production") if isinstance(body.get("production"), dict) else {}
+        specs = [build_spec(trend_writer.production_spec(trend, i, base)) for i in ideas]  # validate all first
+        return {"productions": [submit(s) for s in specs]}
 
     # ---- legacy single-asset endpoints used by CreatorForge RC10 ---------------------------
     @app.post("/v1/images/generate", dependencies=[Depends(auth)])

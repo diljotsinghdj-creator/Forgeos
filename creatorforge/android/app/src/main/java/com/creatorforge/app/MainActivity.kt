@@ -22,6 +22,7 @@ import com.creatorforge.app.timeline.TimelineEngine
 import com.creatorforge.app.render.*
 import com.creatorforge.app.production.GenerateScreen
 import com.creatorforge.app.production.LibraryScreen
+import com.creatorforge.app.production.TrendsScreen
 import com.creatorforge.app.production.WorkerAuth
 import kotlinx.coroutines.launch
 import java.io.File
@@ -34,7 +35,7 @@ class MainActivity:ComponentActivity(){override fun onCreate(savedInstanceState:
  val context=androidx.compose.ui.platform.LocalContext.current; val store=remember{ProjectStore(context)}; val secure=remember{SecureTokenStore(context).also{WorkerAuth.token=it.load("worker").orEmpty()}}
  var projects by remember{mutableStateOf(store.load())}; var tab by remember{mutableIntStateOf(0)}
  fun persist(next:List<CreatorProject>){projects=next;store.save(next)}
- MaterialTheme(colorScheme=darkColorScheme(primary=Gold,background=Black,surface=Panel)){Scaffold(bottomBar={NavigationBar(containerColor=Panel){listOf("Generate","Library","Create","Projects","Studio","Settings").forEachIndexed{i,n->NavigationBarItem(selected=tab==i,onClick={tab=i},label={Text(n,fontSize=10.sp,maxLines=1)},icon={Text(if(tab==i)"◆" else "◇",color=Gold)})}}}){pad->Box(Modifier.fillMaxSize().padding(pad).padding(18.dp)){when(tab){0->GenerateScreen(onOpenSettings={tab=5});1->LibraryScreen();2->Create{p->persist(projects+p);tab=3};3->Projects(projects,secure,::persist);4->Studio(projects);else->Settings(secure)}}}}
+ MaterialTheme(colorScheme=darkColorScheme(primary=Gold,background=Black,surface=Panel)){Scaffold(bottomBar={NavigationBar(containerColor=Panel){listOf("Trends","Generate","Library","Create","Projects","Studio","Settings").forEachIndexed{i,n->NavigationBarItem(selected=tab==i,onClick={tab=i},label={Text(n,fontSize=9.sp,maxLines=1)},icon={Text(if(tab==i)"◆" else "◇",color=Gold)})}}}){pad->Box(Modifier.fillMaxSize().padding(pad).padding(18.dp)){when(tab){0->TrendsScreen(onOpenSettings={tab=6},onOpenGenerate={tab=1});1->GenerateScreen(onOpenSettings={tab=6});2->LibraryScreen();3->Create{p->persist(projects+p);tab=4};4->Projects(projects,secure,::persist);5->Studio(projects);else->Settings(secure)}}}}
 }
 @Composable fun Header(t:String,s:String){Column{Text(t,color=Gold,fontSize=30.sp);Text(s,color=Color.LightGray);Spacer(Modifier.height(18.dp))}}
 @Composable fun Home(count:Int){Column{Header("CREATORFORGE","AI filmmaking workspace");Card{Column(Modifier.padding(18.dp)){Text("RC10.3 • SCROLLABLE EXPORT STUDIO",color=Gold);Text("$count saved projects");Text("Timeline • captions • synchronized scene timing • persistent recovery queue")}}}}

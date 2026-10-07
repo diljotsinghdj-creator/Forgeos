@@ -45,6 +45,7 @@ class Config:
     music_url: str = ""
     music_model: str = ""
     voices: list[VoiceProfile] = field(default_factory=list)
+    youtube_api_key: str = ""  # optional, free: adds YouTube to the Trend Radar
     allow_mock: bool = False
 
     @property
@@ -88,6 +89,7 @@ class Config:
             music_url=_env("CF_MUSIC_URL"),
             music_model=_env("CF_MUSIC_MODEL"),
             voices=voices,
+            youtube_api_key=_env("CF_YOUTUBE_API_KEY"),
             allow_mock=_env("CF_ALLOW_MOCK") == "1",
         )
         return cfg

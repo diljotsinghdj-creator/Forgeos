@@ -111,6 +111,8 @@ fun LibraryScreen() {
             }
         }
 
+        item { ProductionLine(client) { refresh++ } }
+
         // ---- videos ----
         item {
             Row {

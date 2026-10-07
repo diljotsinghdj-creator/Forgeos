@@ -5,6 +5,7 @@ creatorforge_worker/__main__.py
 creatorforge_worker/api.py
 creatorforge_worker/config.py
 creatorforge_worker/director.py
+creatorforge_worker/library.py
 creatorforge_worker/pipeline.py
 creatorforge_worker/runner.py
 creatorforge_worker/store.py
@@ -19,6 +20,7 @@ creatorforge_worker/media/__init__.py
 creatorforge_worker/media/captions.py
 creatorforge_worker/media/ff.py
 creatorforge_worker/media/render.py
+creatorforge_worker/media/sfx.py
 creatorforge_worker/media/verify.py
 creatorforge_worker/providers/__init__.py
 creatorforge_worker/providers/asr_whisper.py
@@ -27,6 +29,16 @@ creatorforge_worker/providers/image_a1111.py
 creatorforge_worker/providers/image_diffusers.py
 creatorforge_worker/providers/llm_openai.py
 creatorforge_worker/providers/mock.py
+creatorforge_worker/providers/music.py
 creatorforge_worker/providers/tts.py
+creatorforge_worker/providers/video.py
+creatorforge_worker/trends/__init__.py
+creatorforge_worker/trends/niches.py
+creatorforge_worker/trends/radar.py
+creatorforge_worker/trends/sources.py
+creatorforge_worker/trends/writer.py
+tests/test_auto_edit_and_library.py
 tests/test_director.py
 tests/test_production.py
+tests/test_review_and_video.py
+tests/test_v1_features.py
