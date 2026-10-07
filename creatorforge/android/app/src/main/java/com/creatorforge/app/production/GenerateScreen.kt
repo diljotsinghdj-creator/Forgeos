@@ -49,7 +49,8 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
     val scope = rememberCoroutineScope()
     val worker = remember { context.getSharedPreferences("creatorforge_provider", 0) }
     val prefs = remember { context.getSharedPreferences("creatorforge_generate", 0) }
-    val client = remember { ProductionClient(worker.getString("base_url", "").orEmpty()) }
+    var reload by remember { mutableIntStateOf(0) }
+    val client = remember(reload) { ProductionClient(worker.getString("base_url", "").orEmpty()) }
 
     var caps by remember { mutableStateOf<Capabilities?>(null) }
     var capsError by remember { mutableStateOf<String?>(null) }
@@ -93,9 +94,9 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
     var videoFile by remember { mutableStateOf<File?>(null) }
     var storyboardVersion by remember { mutableIntStateOf(0) }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(reload) {
         runCatching { client.capabilities() }.onSuccess { c ->
-            caps = c
+            caps = c; capsError = null
             if (voice.isBlank() || c.voices.none { it.id == voice }) voice = c.voices.firstOrNull()?.id.orEmpty()
         }.onFailure { capsError = it.message }
         runCatching { client.list() }.onSuccess { recent = it }
@@ -160,7 +161,10 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                     Text(err, color = Danger, fontSize = 13.sp)
                     Text("Making videos uses your pod (the GPU computer). Start it, run the start command, then tap " +
                         "Settings → 📷 SCAN QR. Trends, Director, Scripts, Channels and Tools all work without it.", color = Color.LightGray, fontSize = 13.sp)
-                    Button(onOpenSettings) { Text("OPEN SETTINGS") }
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Button(onOpenSettings) { Text("OPEN SETTINGS") }
+                        OutlinedButton({ capsError = null; error = null; reload++ }) { Text("TRY AGAIN") }
+                    }
                 }}
             }
         }

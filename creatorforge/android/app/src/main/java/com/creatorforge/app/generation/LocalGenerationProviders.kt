@@ -35,7 +35,16 @@ class LocalWorkerClient(private val config:LocalProviderConfig){
         try { client.newCall(Request.Builder().workerAuth().url("${config.normalized()}/health").get().build()).execute().use { r ->
             if(!r.isSuccessful)return@withContext WorkerHealth(false,"Worker health HTTP ${r.code}")
             val body=r.body?.string().orEmpty(); val j=runCatching{JSONObject(body)}.getOrNull()
-            if(j?.optBoolean("ok",false)!=true) WorkerHealth(false,"Worker did not report ready") else WorkerHealth(true,"Worker online",j.optString("version").ifBlank{null})
+            if(j?.optBoolean("ok",false)!=true) return@withContext WorkerHealth(false,"Worker did not report ready")
+            val version=j.optString("version").ifBlank{null}
+            // /health is public, so also check the token against a protected endpoint.
+            client.newCall(Request.Builder().workerAuth().url("${config.normalized()}/v1/capabilities").get().build()).execute().use { a ->
+                when {
+                    a.code==401 -> WorkerHealth(false,"pod is up but the TOKEN IS WRONG - scan the QR again or paste the token from connection.txt",version)
+                    !a.isSuccessful -> WorkerHealth(false,"pod is up but returned HTTP ${a.code}",version)
+                    else -> WorkerHealth(true,"Worker online • token OK",version)
+                }
+            }
         }} catch(e:Exception){WorkerHealth(false,"Worker unavailable: ${e.message?:"connection error"}")}
     }
 }
