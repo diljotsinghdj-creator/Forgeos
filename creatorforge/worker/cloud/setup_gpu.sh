@@ -57,31 +57,32 @@ say "Installing the worker (Python packages; first run takes a few minutes)"
 . venv/bin/activate
 pip install -q --upgrade pip
 pip install -q -e "Forgeos/creatorforge/worker[whisper,kokoro,diffusers]" huggingface_hub
-python -c "import torch; assert torch.cuda.is_available(), 'PyTorch cannot see the GPU'; print('PyTorch', torch.__version__, 'CUDA OK')"
+PYBIN="$(command -v python)"
+"$PYBIN" -c "import creatorforge_worker, torch; assert torch.cuda.is_available(), 'PyTorch cannot see the GPU'; print('PyTorch', torch.__version__, 'CUDA OK')"
 python -m spacy download en_core_web_sm -q >/dev/null 2>&1 || true   # used by Kokoro's English text front-end
 
 export HF_HOME="$HOME_DIR/hf"
 say "Downloading image model $IMAGE_MODEL (first time ~10-25 GB; reused afterwards)"
 # FLUX now needs a (free) Hugging Face login; without HF_TOKEN we fall back to SDXL, which needs none.
-IMAGE_MODEL=$(python - "$IMAGE_MODEL" <<'PY'
+python - "$IMAGE_MODEL" "$HOME_DIR/image_model.txt" <<'PY'
 import sys
 from huggingface_hub import snapshot_download
 SKIP = ["flux1-*.safetensors", "ae.safetensors", "sd_xl_*.safetensors", "*.bin", "*.onnx", "*.onnx_data",
         "*.msgpack", "*openvino*", "*.md", "*.png", "*.jpg"]
 FALLBACK = "stabilityai/stable-diffusion-xl-base-1.0"
-model = sys.argv[1]
+model, out = sys.argv[1], sys.argv[2]
 try:
     snapshot_download(model, ignore_patterns=SKIP)
 except Exception as e:  # gated repo / missing token
     if model == FALLBACK:
         raise
-    print(f"  {model} needs a Hugging Face login ({type(e).__name__}); using {FALLBACK} instead.", file=sys.stderr)
-    print("  (For FLUX later: accept its licence on huggingface.co, then run with HF_TOKEN=... set.)", file=sys.stderr)
+    print(f"  {model} needs a Hugging Face login ({type(e).__name__}); using {FALLBACK} instead.")
+    print("  (For FLUX later: accept its licence on huggingface.co, then run with HF_TOKEN=... set.)")
     model = FALLBACK
     snapshot_download(model, ignore_patterns=SKIP)
-print(model)
+open(out, "w").write(model)
 PY
-)
+IMAGE_MODEL="$(cat "$HOME_DIR/image_model.txt")"
 echo "  image model: $IMAGE_MODEL"
 if [ -n "$VIDEO_MODEL" ]; then
   say "Downloading realistic video model $VIDEO_MODEL (first time 20-60 GB; reused afterwards)"
@@ -119,10 +120,11 @@ ENV
 if [ -n "$VIDEO_MODEL" ]; then printf 'CF_VIDEO_PROVIDER=diffusers\nCF_VIDEO_MODEL=%s\n' "$VIDEO_MODEL" >> worker.env; fi
 
 say "Starting the worker on port $PORT"
+pkill -f "creatorforge_worker" 2>/dev/null || true
 pkill -f "bin/creatorforge-worker" 2>/dev/null || true
-nohup bash -c "set -a; . '$HOME_DIR/worker.env'; set +a; exec '$HOME_DIR/venv/bin/creatorforge-worker'" > worker.log 2>&1 &
+nohup bash -c "set -a; . '$HOME_DIR/worker.env'; set +a; exec '$PYBIN' -m creatorforge_worker" > worker.log 2>&1 &
 for _ in $(seq 1 60); do curl -fs "http://127.0.0.1:$PORT/health" >/dev/null && break; sleep 1; done
-curl -fs "http://127.0.0.1:$PORT/health" >/dev/null || { echo "Worker did not start - see $HOME_DIR/worker.log"; tail -n 40 worker.log; exit 1; }
+curl -fs "http://127.0.0.1:$PORT/health" >/dev/null || { echo "Worker did not start - last lines of $HOME_DIR/worker.log:"; tail -n 40 worker.log; exit 1; }
 python - <<PY
 import json, urllib.request
 h = json.load(urllib.request.urlopen("http://127.0.0.1:$PORT/health"))
