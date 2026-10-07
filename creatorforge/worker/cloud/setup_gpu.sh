@@ -126,7 +126,7 @@ CF_LLM_URL=http://127.0.0.1:11434/v1
 CF_LLM_MODEL=$LLM_MODEL
 CF_IMAGE_PROVIDER=diffusers
 CF_IMAGE_MODEL=$IMAGE_MODEL
-CF_VOICES='[{"id":"warm","name":"Warm (US female)","provider":"kokoro","voice":"af_heart"},{"id":"deep","name":"Deep (US male)","provider":"kokoro","voice":"am_michael"},{"id":"british_f","name":"British female","provider":"kokoro","voice":"bf_emma","lang":"b"},{"id":"british_m","name":"British male","provider":"kokoro","voice":"bm_george","lang":"b"},{"id":"es_f","name":"Spanish (female)","provider":"kokoro","voice":"ef_dora","lang":"e"},{"id":"fr_f","name":"French (female)","provider":"kokoro","voice":"ff_siwis","lang":"f"},{"id":"hi_f","name":"Hindi (female)","provider":"kokoro","voice":"hf_alpha","lang":"h"},{"id":"it_f","name":"Italian (female)","provider":"kokoro","voice":"if_sara","lang":"i"},{"id":"pt_f","name":"Portuguese BR (female)","provider":"kokoro","voice":"pf_dora","lang":"p"}]'
+CF_VOICES='[{"id":"warm","name":"Warm (US female)","provider":"kokoro","voice":"af_heart","lang":"a"},{"id":"deep_doc","name":"Deep documentary narrator ★ human-like","provider":"chatterbox","voice":"kokoro:am_onyx","style":"documentary"},{"id":"storyteller_uk","name":"British storyteller ★ human-like","provider":"chatterbox","voice":"kokoro:bm_george","style":"documentary"},{"id":"warm_human","name":"Warm female ★ human-like","provider":"chatterbox","voice":"kokoro:af_heart","style":"natural"},{"id":"calm_human","name":"Calm female ★ human-like","provider":"chatterbox","voice":"kokoro:af_bella","style":"calm"},{"id":"host_human","name":"Energetic host ★ human-like","provider":"chatterbox","voice":"kokoro:am_puck","style":"energetic"},{"id":"natural_human","name":"Natural ★ human-like","provider":"chatterbox","voice":"default","style":"natural"},{"id":"deep","name":"Deep (US male)","provider":"kokoro","voice":"am_michael","lang":"a"},{"id":"onyx","name":"Low & deep (US male)","provider":"kokoro","voice":"am_onyx","lang":"a"},{"id":"fenrir","name":"Bold (US male)","provider":"kokoro","voice":"am_fenrir","lang":"a"},{"id":"puck","name":"Upbeat (US male)","provider":"kokoro","voice":"am_puck","lang":"a"},{"id":"bella","name":"Bright (US female)","provider":"kokoro","voice":"af_bella","lang":"a"},{"id":"nicole","name":"Soft whisper (US female)","provider":"kokoro","voice":"af_nicole","lang":"a"},{"id":"sarah","name":"Clear (US female)","provider":"kokoro","voice":"af_sarah","lang":"a"},{"id":"british_f","name":"British female","provider":"kokoro","voice":"bf_emma","lang":"b"},{"id":"british_isabella","name":"Elegant (British female)","provider":"kokoro","voice":"bf_isabella","lang":"b"},{"id":"british_m","name":"British male","provider":"kokoro","voice":"bm_george","lang":"b"},{"id":"fable","name":"Storyteller (British male)","provider":"kokoro","voice":"bm_fable","lang":"b"},{"id":"es_f","name":"Spanish (female)","provider":"kokoro","voice":"ef_dora","lang":"e"},{"id":"fr_f","name":"French (female)","provider":"kokoro","voice":"ff_siwis","lang":"f"},{"id":"hi_f","name":"Hindi (female)","provider":"kokoro","voice":"hf_alpha","lang":"h"},{"id":"it_f","name":"Italian (female)","provider":"kokoro","voice":"if_sara","lang":"i"},{"id":"pt_f","name":"Portuguese BR (female)","provider":"kokoro","voice":"pf_dora","lang":"p"}]'
 CF_ASR_PROVIDER=whisper
 CF_WHISPER_MODEL=small
 CF_WHISPER_DEVICE=cuda
@@ -158,6 +158,20 @@ for k, v in h["providers"].items():
     print(f"  {k:9} {'OK  ' if v['ready'] else 'MISSING'} {v.get('id') or v.get('error')}")
 print("  production_ready:", h["production_ready"])
 PY
+
+say "Human-like narrator (Chatterbox) installs in the background (log: $HOME_DIR/chatterbox.log)"
+# Chatterbox pins its own torch/diffusers versions, so it lives in a separate Python 3.11 environment and
+# runs as a small local server. Until it's up, "human-like" voices fall back to their Kokoro voice.
+pkill -f "chatterbox_server.py" 2>/dev/null || true
+nohup bash -c "
+  set -e
+  pip install -q uv
+  [ -x '$HOME_DIR/chatterbox_venv/bin/python' ] || uv venv -q --python 3.11 '$HOME_DIR/chatterbox_venv'
+  uv pip install -q --python '$HOME_DIR/chatterbox_venv/bin/python' chatterbox-tts
+  echo 'Chatterbox installed - starting the narration server'
+  export HF_HOME='$HOME_DIR/hf'
+  exec '$HOME_DIR/chatterbox_venv/bin/python' '$HOME_DIR/Forgeos/creatorforge/worker/creatorforge_worker/chatterbox_server.py' 8770
+" > chatterbox.log 2>&1 &
 
 if [ -n "$VIDEO_MODEL" ]; then
   # Videos with AI images work right away; the big AI-video model finishes downloading in the background

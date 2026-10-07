@@ -548,17 +548,42 @@ internal fun openVideo(context: Context, file: File, action: String) {
     context.startActivity(Intent.createChooser(intent, null).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
 }
 
-/** Copies the MP4 into the shared Movies/CreatorForge folder. Returns an error message or null. */
-internal fun saveToGallery(context: Context, file: File): String? {
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) return "Kept in app storage: ${file.absolutePath} (use SHARE to export on this Android version)"
-    return runCatching {
+/** Copies the MP4 into the shared Movies/CreatorForge folder (shows in Gallery / Photos). Returns a message,
+ *  and also pops it up as a toast, because inline notices can be scrolled out of sight. */
+internal fun saveToGallery(context: Context, file: File): String {
+    val msg = if (!file.isFile || file.length() == 0L) "Save failed: the video isn't downloaded yet - wait for it to finish, then try again"
+    else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) runCatching {
+        @Suppress("DEPRECATION")
+        val dir = File(android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_MOVIES), "CreatorForge").apply { mkdirs() }
+        val dest = File(dir, file.name)
+        file.copyTo(dest, overwrite = true)
+        android.media.MediaScannerConnection.scanFile(context, arrayOf(dest.absolutePath), arrayOf("video/mp4"), null)
+        "✓ Saved to Movies/CreatorForge"
+    }.getOrElse { "Couldn't save on this Android version - use SHARE → Save instead (${it.message})" }
+    else runCatching {
+        val resolver = context.contentResolver
         val values = ContentValues().apply {
-            put(MediaStore.Video.Media.DISPLAY_NAME, file.name)
+            put(MediaStore.Video.Media.DISPLAY_NAME, file.nameWithoutExtension + "_" + System.currentTimeMillis() / 1000 + ".mp4")
             put(MediaStore.Video.Media.MIME_TYPE, "video/mp4")
             put(MediaStore.Video.Media.RELATIVE_PATH, "Movies/CreatorForge")
+            put(MediaStore.Video.Media.IS_PENDING, 1)
         }
-        val uri = context.contentResolver.insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values) ?: error("MediaStore refused the file")
-        context.contentResolver.openOutputStream(uri)!!.use { out -> file.inputStream().use { it.copyTo(out) } }
-        "Saved to Movies/CreatorForge"
+        val uri = resolver.insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values) ?: error("the gallery refused the file")
+        try {
+            resolver.openOutputStream(uri)?.use { out -> file.inputStream().use { it.copyTo(out) } } ?: error("couldn't open the gallery file")
+            resolver.update(uri, ContentValues().apply { put(MediaStore.Video.Media.IS_PENDING, 0) }, null, null)
+        } catch (e: Exception) {
+            resolver.delete(uri, null, null)
+            throw e
+        }
+        "✓ Saved to your gallery (Movies/CreatorForge)"
     }.getOrElse { "Save failed: ${it.message}" }
+    toast(context, msg)
+    return msg
+}
+
+internal fun toast(context: Context, msg: String) {
+    android.os.Handler(android.os.Looper.getMainLooper()).post {
+        android.widget.Toast.makeText(context.applicationContext, msg, android.widget.Toast.LENGTH_LONG).show()
+    }
 }

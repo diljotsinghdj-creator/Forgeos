@@ -362,7 +362,7 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
     @app.get("/v1/library/voices", dependencies=[Depends(auth)])
     def list_voices() -> list[dict]:
         builtin = [{"id": v.id, "name": v.name, "provider": v.provider, "voice": v.voice, "speed": v.speed,
-                    "builtin": True} for v in cfg.voices]
+                    "style": v.style, "builtin": True} for v in cfg.voices]
         return builtin + [{**v, "builtin": False} for v in library.voices.list()]
 
     @app.post("/v1/library/voices", status_code=201, dependencies=[Depends(auth)])

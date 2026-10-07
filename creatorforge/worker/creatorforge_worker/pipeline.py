@@ -46,7 +46,8 @@ class Pipeline:
         self.library = library or Library(cfg.data_dir / "library", cfg.allow_mock)
 
     def library_voices(self) -> list[VoiceProfile]:
-        return [VoiceProfile(v["id"], v["name"], v["provider"], v["voice"], v.get("speed", 1.0), v.get("lang", "a"))
+        return [VoiceProfile(v["id"], v["name"], v["provider"], v["voice"], v.get("speed", 1.0), v.get("lang", "a"),
+                             v.get("style", ""))
                 for v in self.library.voices.list()]
 
     # -- helpers ---------------------------------------------------------------------------
@@ -264,7 +265,14 @@ class Pipeline:
         spec = self._spec(job)
         profile = providers.voice_profile(self.cfg, spec.voice, self.library_voices())
         voice = providers.build_voice(self.cfg, profile)
-        job["providers"]["voice"] = f"{profile.id} ({voice.id})"
+        note = ""
+        if profile.provider == "chatterbox" and not providers.chatterbox_ready(self.cfg):
+            # The human-like engine installs in the background after a pod start; don't fail the video over it.
+            fallback = profile.voice.split(":", 1)[1] if profile.voice.startswith("kokoro:") else "af_heart"
+            voice = providers.build_voice(self.cfg, VoiceProfile(profile.id, profile.name, "kokoro", fallback, 1.0,
+                                                                 fallback[0] if fallback[:1] in tuple("abefhijpz") else "a"))
+            note = " - human-like engine still installing, used its Kokoro voice instead"
+        job["providers"]["voice"] = f"{profile.id} ({voice.id}){note}"
         jdir = self.store.dir(job["id"])
         scenes, shots = job["scenes"], job["plan"]["scenes"]
         for sc, shot in zip(scenes, shots):

@@ -59,16 +59,27 @@ def voice_profile(cfg: Config, voice_id: str | None, extra: list[VoiceProfile] |
     raise NotConfigured(f"Unknown voice profile '{voice_id}'")
 
 
+def chatterbox_ready(cfg: Config) -> bool:
+    """True when the local Chatterbox server answers (it installs in the background after a pod start)."""
+    try:
+        import httpx
+        return httpx.get(f"{cfg.chatterbox_url.rstrip('/')}/health", timeout=3).status_code == 200
+    except Exception:  # noqa: BLE001
+        return False
+
+
 def build_voice(cfg: Config, profile: VoiceProfile):
     if profile.provider == "mock":
         _mock_allowed(cfg, f"voice profile {profile.id}")
         from .mock import MockVoice
         return MockVoice()
-    from .tts import KokoroVoice, PiperVoice
+    from .tts import ChatterboxVoice, KokoroVoice, PiperVoice
     if profile.provider == "piper":
         return PiperVoice(profile.voice, profile.speed)
     if profile.provider == "kokoro":
         return KokoroVoice(profile.voice, profile.speed, profile.lang)
+    if profile.provider == "chatterbox":
+        return ChatterboxVoice(profile.voice, profile.style or "natural", cfg.data_dir, cfg.chatterbox_url)
     raise NotConfigured(f"Unknown voice provider '{profile.provider}'")
 
 

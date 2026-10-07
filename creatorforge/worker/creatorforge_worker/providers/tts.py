@@ -58,3 +58,76 @@ class KokoroVoice:
             w.setsampwidth(2)
             w.setframerate(24000)
             w.writeframes(pcm)
+
+
+REF_TEXT = ("Long before the first cities rose, people gathered around fires and told stories. "
+            "Some were warnings, some were dreams, and a few were simply too strange to forget. "
+            "Tonight, we follow one of them, from the very beginning.")
+
+
+class ChatterboxVoice:
+    """Human-sounding narration via the local Chatterbox server (see chatterbox_server.py).
+
+    voice: "default" (Chatterbox's own voice), "kokoro:<id>" (a Kokoro voice used as the timbre, spoken with
+    Chatterbox's natural rhythm), "asset:<id>" (a voice sample the creator uploaded - their own voice, or one
+    they have permission to use) or a path to a WAV on the worker.
+    style: delivery preset - documentary (slow, deep, deliberate), natural, calm, energetic."""
+    STYLES = {"documentary": (0.35, 0.25), "natural": (0.5, 0.5), "calm": (0.3, 0.4), "energetic": (0.8, 0.45)}
+    _ref_lock = threading.Lock()
+
+    def __init__(self, voice: str, style: str = "natural", data_dir: Path | None = None, url: str = "http://127.0.0.1:8770"):
+        self.voice = voice or "default"
+        self.style = style if style in self.STYLES else "natural"
+        self.data_dir = Path(data_dir or ".")
+        self.url = url.rstrip("/")
+        self.id = f"chatterbox:{self.voice}:{self.style}"
+
+    def reference(self) -> str:
+        v = self.voice
+        if v == "default":
+            return ""
+        if v.startswith("kokoro:"):
+            vid = v.split(":", 1)[1]
+            ref = self.data_dir / "voice_refs" / f"kokoro_{vid}.wav"
+            with self._ref_lock:
+                if not ref.is_file():
+                    ref.parent.mkdir(parents=True, exist_ok=True)
+                    tmp = ref.with_suffix(".tmp.wav")
+                    KokoroVoice(vid, 0.95, vid[0] if vid[:1] in tuple("abefhijpz") else "a").synthesize(REF_TEXT, tmp)
+                    tmp.replace(ref)
+            return str(ref)
+        if v.startswith("asset:"):
+            aid = v.split(":", 1)[1]
+            hits = sorted((self.data_dir / "library" / "assets" / "files").glob(f"{aid}.*"))
+            if not hits:
+                raise NotConfigured("This voice's sample was deleted from the Asset Library - upload it again")
+            # Phone recordings are usually m4a/mp3: hand Chatterbox a clean mono WAV (max 30 s) instead.
+            ref = self.data_dir / "voice_refs" / f"asset_{aid}.wav"
+            with self._ref_lock:
+                if not ref.is_file():
+                    ref.parent.mkdir(parents=True, exist_ok=True)
+                    tmp = ref.with_suffix(".tmp.wav")
+                    p = subprocess.run(["ffmpeg", "-nostdin", "-v", "error", "-y", "-i", str(hits[0]), "-t", "30",
+                                        "-ac", "1", "-ar", "24000", str(tmp)], capture_output=True, timeout=120)
+                    if p.returncode != 0:
+                        raise ProviderError(f"couldn't read the voice sample: {p.stderr.decode(errors='replace')[-200:]}")
+                    tmp.replace(ref)
+            return str(ref)
+        if Path(v).is_file():
+            return v
+        raise NotConfigured(f"Chatterbox voice not found: {v}")
+
+    def synthesize(self, text: str, out_wav: Path) -> None:
+        import httpx
+
+        ex, cw = self.STYLES[self.style]
+        body = {"text": text, "out": str(Path(out_wav).resolve()), "ref": self.reference(), "exaggeration": ex, "cfg_weight": cw}
+        try:
+            r = httpx.post(f"{self.url}/tts", json=body, timeout=1800)
+        except httpx.HTTPError as e:
+            raise NotConfigured("The human-like voice engine (Chatterbox) isn't running yet - it installs in the "
+                                "background a few minutes after the pod starts. Pick another voice or try again soon.") from e
+        if r.status_code >= 400:
+            raise ProviderError(f"chatterbox: {r.text[:300]}")
+        if not Path(out_wav).is_file():
+            raise ProviderError("chatterbox produced no audio")

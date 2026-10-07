@@ -53,7 +53,8 @@ data class ProductionRequest(
     val videoQuality: String = "fast"
 )
 
-data class LibraryVoice(val id: String, val name: String, val provider: String, val voice: String, val speed: Double, val builtin: Boolean)
+data class LibraryVoice(val id: String, val name: String, val provider: String, val voice: String, val speed: Double, val builtin: Boolean,
+                        val style: String = "")
 
 data class LibraryAsset(val id: String, val kind: String, val name: String, val source: String, val fileUrl: String, val durationS: Double?)
 
@@ -187,13 +188,13 @@ class ProductionClient(baseUrl: String) {
         (0 until a.length()).map { i ->
             a.getJSONObject(i).let {
                 LibraryVoice(it.getString("id"), it.optString("name"), it.optString("provider"), it.optString("voice"),
-                    it.optDouble("speed", 1.0), it.optBoolean("builtin"))
+                    it.optDouble("speed", 1.0), it.optBoolean("builtin"), it.optString("style"))
             }
         }
     }
 
-    suspend fun saveVoice(id: String?, name: String, provider: String, voice: String, speed: Double): Unit = withContext(Dispatchers.IO) {
-        val body = JSONObject().put("name", name).put("provider", provider).put("voice", voice).put("speed", speed)
+    suspend fun saveVoice(id: String?, name: String, provider: String, voice: String, speed: Double, style: String = ""): Unit = withContext(Dispatchers.IO) {
+        val body = JSONObject().put("name", name).put("provider", provider).put("voice", voice).put("speed", speed).put("style", style)
         if (id == null) call("POST", "/v1/library/voices", body) else call("PUT", "/v1/library/voices/$id", body)
     }
 

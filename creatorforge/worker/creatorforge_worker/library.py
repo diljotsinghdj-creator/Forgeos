@@ -79,7 +79,7 @@ class CharacterStore:
 
 class VoiceStore:
     """Voice Profiles saved from the app (in addition to read-only ones from CF_VOICES)."""
-    PROVIDERS = ("piper", "kokoro")
+    PROVIDERS = ("piper", "kokoro", "chatterbox")
 
     def __init__(self, path: Path, allow_mock: bool = False):
         self.path = path
@@ -112,10 +112,15 @@ class VoiceStore:
             raise ValueError("voice is required (Piper: path to a .onnx model on the worker; Kokoro: a voice id like af_heart)")
         if provider == "piper" and not Path(voice).is_file():
             raise ValueError(f"Piper model not found on the worker: {voice}")
+        if provider == "chatterbox" and not (voice == "default" or voice.startswith(("kokoro:", "asset:"))):
+            raise ValueError("Chatterbox voice must be 'default', 'kokoro:<voice id>' or 'asset:<voice sample id>'")
+        style = str(d.get("style", "") or "")
+        if style not in ("", "documentary", "natural", "calm", "energetic"):
+            raise ValueError("style must be documentary, natural, calm or energetic")
         if not 0.5 <= speed <= 2.0:
             raise ValueError("speed must be between 0.5 and 2.0")
         return {"name": name, "provider": provider, "voice": voice, "speed": round(speed, 2),
-                "lang": str(d.get("lang", "a") or "a")[:5]}
+                "lang": str(d.get("lang", "a") or "a")[:5], "style": style}
 
     def list(self) -> list[dict]:
         with self._lock:

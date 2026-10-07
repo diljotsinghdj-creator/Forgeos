@@ -198,3 +198,27 @@ def test_ai_video_speed_presets():
     assert ProductionSpec.from_dict({"idea": "a calm ocean story", "video_quality": "balanced"}).video_quality == "balanced"
     with pytest.raises(ValueError):
         ProductionSpec.from_dict({"idea": "a calm ocean story", "video_quality": "ultra"})
+
+
+def test_human_like_voice_profiles(tmp_path):
+    import pytest
+    from creatorforge_worker.library import Library
+    from creatorforge_worker.providers.base import NotConfigured
+    from creatorforge_worker.providers.tts import ChatterboxVoice
+
+    lib = Library(tmp_path / "library")
+    v = lib.voices.create({"name": "My voice", "provider": "chatterbox", "voice": "asset:abc123", "style": "documentary"}, set())
+    assert (v["provider"], v["style"]) == ("chatterbox", "documentary")
+    with pytest.raises(ValueError):
+        lib.voices.create({"name": "Bad", "provider": "chatterbox", "voice": "/etc/passwd"}, set())
+    with pytest.raises(ValueError):
+        lib.voices.create({"name": "Bad", "provider": "chatterbox", "voice": "default", "style": "shouty"}, set())
+
+    files = tmp_path / "library" / "assets" / "files"
+    files.mkdir(parents=True, exist_ok=True)
+    import subprocess
+    subprocess.run(["ffmpeg", "-v", "error", "-f", "lavfi", "-i", "sine=d=2", "-y", str(files / "abc123.m4a")], check=True)
+    voice = ChatterboxVoice("asset:abc123", "documentary", tmp_path, url="http://127.0.0.1:9")
+    assert voice.reference().endswith("asset_abc123.wav")   # phone m4a converted to WAV for Chatterbox
+    with pytest.raises(NotConfigured):   # engine not running -> clear message, not a crash
+        voice.synthesize("Hello there.", tmp_path / "x.wav")

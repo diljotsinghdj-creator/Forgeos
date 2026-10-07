@@ -15,10 +15,11 @@ def _env(name: str, default: str = "") -> str:
 class VoiceProfile:
     id: str
     name: str
-    provider: str  # "piper" | "kokoro" | "mock"
-    voice: str  # piper: path to .onnx model; kokoro: voice id (e.g. af_heart)
+    provider: str  # "piper" | "kokoro" | "chatterbox" | "mock"
+    voice: str  # piper: .onnx path; kokoro: voice id (af_heart); chatterbox: default | kokoro:<id> | asset:<id>
     speed: float = 1.0
     lang: str = "a"  # kokoro language code
+    style: str = ""  # chatterbox delivery: documentary | natural | calm | energetic
 
 
 @dataclass
@@ -36,6 +37,7 @@ class Config:
     video_provider: str = ""  # "diffusers" | "http" | "mock" ("" = AI video clips unavailable)
     video_url: str = ""
     video_model: str = ""
+    chatterbox_url: str = "http://127.0.0.1:8770"
     video_quality: str = "fast"  # "fast" | "balanced" | "best" (AI video clips: speed vs detail)
     asr_provider: str = ""  # "whisper" | "" (estimated captions)
     whisper_model: str = "small"
@@ -82,6 +84,7 @@ class Config:
             video_url=_env("CF_VIDEO_URL"),
             video_model=_env("CF_VIDEO_MODEL"),
             video_quality=_env("CF_VIDEO_QUALITY", "fast"),
+            chatterbox_url=_env("CF_CHATTERBOX_URL", "http://127.0.0.1:8770"),
             asr_provider=_env("CF_ASR_PROVIDER"),
             whisper_model=_env("CF_WHISPER_MODEL", "small"),
             whisper_device=_env("CF_WHISPER_DEVICE", "auto"),
