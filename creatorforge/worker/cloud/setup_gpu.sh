@@ -61,12 +61,28 @@ python -c "import torch; assert torch.cuda.is_available(), 'PyTorch cannot see t
 python -m spacy download en_core_web_sm -q >/dev/null 2>&1 || true   # used by Kokoro's English text front-end
 
 export HF_HOME="$HOME_DIR/hf"
-say "Downloading image model $IMAGE_MODEL (first time ~25 GB; reused afterwards)"
-python - <<PY
+say "Downloading image model $IMAGE_MODEL (first time ~10-25 GB; reused afterwards)"
+# FLUX now needs a (free) Hugging Face login; without HF_TOKEN we fall back to SDXL, which needs none.
+IMAGE_MODEL=$(python - "$IMAGE_MODEL" <<'PY'
+import sys
 from huggingface_hub import snapshot_download
-# diffusers needs the per-component folders, not the duplicate single-file checkpoints
-snapshot_download("$IMAGE_MODEL", ignore_patterns=["flux1-*.safetensors", "ae.safetensors", "*.md", "*.png", "*.jpg"])
+SKIP = ["flux1-*.safetensors", "ae.safetensors", "sd_xl_*.safetensors", "*.bin", "*.onnx", "*.onnx_data",
+        "*.msgpack", "*openvino*", "*.md", "*.png", "*.jpg"]
+FALLBACK = "stabilityai/stable-diffusion-xl-base-1.0"
+model = sys.argv[1]
+try:
+    snapshot_download(model, ignore_patterns=SKIP)
+except Exception as e:  # gated repo / missing token
+    if model == FALLBACK:
+        raise
+    print(f"  {model} needs a Hugging Face login ({type(e).__name__}); using {FALLBACK} instead.", file=sys.stderr)
+    print("  (For FLUX later: accept its licence on huggingface.co, then run with HF_TOKEN=... set.)", file=sys.stderr)
+    model = FALLBACK
+    snapshot_download(model, ignore_patterns=SKIP)
+print(model)
 PY
+)
+echo "  image model: $IMAGE_MODEL"
 if [ -n "$VIDEO_MODEL" ]; then
   say "Downloading realistic video model $VIDEO_MODEL (first time 20-60 GB; reused afterwards)"
   python -c "from huggingface_hub import snapshot_download; snapshot_download('$VIDEO_MODEL', ignore_patterns=['*.md', 'assets/*', 'examples/*'])"
