@@ -130,12 +130,21 @@ if [ -n "${CF_YOUTUBE_API_KEY:-}" ]; then printf 'CF_YOUTUBE_API_KEY=%s\n' "$CF_
 say "Starting the worker on port $PORT"
 pkill -f "creatorforge_worker" 2>/dev/null || true
 pkill -f "bin/creatorforge-worker" 2>/dev/null || true
+# Wait for the old worker to let go of the port, otherwise its last /health answer fools the check below.
+for _ in $(seq 1 30); do curl -fs "http://127.0.0.1:$PORT/health" >/dev/null || break; sleep 1; done
+pkill -9 -f "creatorforge_worker" 2>/dev/null || true
 nohup bash -c "set -a; . '$HOME_DIR/worker.env'; set +a; exec '$PYBIN' -m creatorforge_worker" > worker.log 2>&1 &
 for _ in $(seq 1 60); do curl -fs "http://127.0.0.1:$PORT/health" >/dev/null && break; sleep 1; done
 curl -fs "http://127.0.0.1:$PORT/health" >/dev/null || { echo "Worker did not start - last lines of $HOME_DIR/worker.log:"; tail -n 40 worker.log; exit 1; }
-python - <<PY
-import json, urllib.request
-h = json.load(urllib.request.urlopen("http://127.0.0.1:$PORT/health"))
+python - <<PY || echo "  (couldn't read provider status - check $HOME_DIR/worker.log)"
+import json, time, urllib.request
+for attempt in range(30):
+    try:
+        h = json.load(urllib.request.urlopen("http://127.0.0.1:$PORT/health")); break
+    except OSError:
+        time.sleep(2)
+else:
+    raise SystemExit("worker not answering on port $PORT")
 for k, v in h["providers"].items():
     print(f"  {k:9} {'OK  ' if v['ready'] else 'MISSING'} {v.get('id') or v.get('error')}")
 print("  production_ready:", h["production_ready"])
