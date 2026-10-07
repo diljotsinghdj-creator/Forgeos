@@ -41,7 +41,7 @@ fun Note(text: String?, error: Boolean = false) {
 fun PodGate(onOpenSettings: () -> Unit, what: String): Boolean {
     val context = LocalContext.current
     if (StudioHub.hasWorker(context)) return true
-    Section("CONNECT YOUR POD", "$what runs on your GPU pod. Start it, run the start command, then scan its QR code.") {
+    Section("START YOUR POD", "$what runs on your GPU pod. Settings → Pod Power starts it with one tap (or scan its QR code once).") {
         Button(onOpenSettings) { Text("OPEN SETTINGS") }
     }
     return false

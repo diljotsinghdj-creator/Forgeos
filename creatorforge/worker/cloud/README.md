@@ -54,6 +54,20 @@ For realistic moving shots, turn on **AI video clips** in Generate and pick a lo
 takes a few minutes per scene on a 24 GB GPU, so a 45-second video can take 20–40 minutes. Start
 with 15–30 seconds.
 
+## Never type the command again (recommended)
+
+1. On runpod.io: your pod → **⋮ → Edit Pod**.
+2. **Container Start Command** - paste:
+   ```
+   bash -c "(/start.sh &) ; sleep 15 ; curl -fsSL https://raw.githubusercontent.com/diljotsinghdj-creator/Forgeos/claude/forgeos-visibility-47vgwp/creatorforge/worker/cloud/start.sh | bash ; sleep infinity"
+   ```
+   (The app has a **COPY START COMMAND** button under Settings → Pod Power.)
+3. **Expose HTTP Ports**: add **8765**. **Save**.
+
+From then on CreatorForge starts by itself every time the pod starts, always on the latest version.
+Add your RunPod API key in the app (**Settings → Pod Power**) and you can **▶ START / ■ STOP** the pod
+from your phone; the app waits until CreatorForge is ready.
+
 ## Every time after that
 
 - **Start** the pod in RunPod, open the web terminal, and paste the same command. It takes about a
