@@ -22,6 +22,10 @@ class MockLLM:
     id = "mock-llm"
 
     def complete_json(self, system: str, user: str) -> str:
+        if "SHORTS_CLIPPER" in system:
+            n = len(re.findall(r"^\d+\. \[", user, flags=re.M))
+            return json.dumps({"clips": [{"start": 1, "end": max(1, n), "title": "Best bit", "hook": "Strong open"},
+                                         {"start": 99, "end": 120, "title": "bad"}]})
         if "PUBLISH_KIT" in system:
             title = re.search(r"TITLE:\s*(.*)", user).group(1).strip() or "Video"
             return json.dumps({"titles": [title, f"The truth about {title}", f"3 facts: {title}"],

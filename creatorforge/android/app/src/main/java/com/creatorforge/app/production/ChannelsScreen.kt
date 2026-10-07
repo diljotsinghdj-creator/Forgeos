@@ -70,7 +70,6 @@ fun ChannelsScreen(onOpenSettings: () -> Unit = {}) {
         item {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
-                    Text("CHANNELS", color = Gold, fontSize = 28.sp, fontWeight = FontWeight.Bold)
                     Text("Weekly plans from what's trending in your niche. No pod needed to plan.", color = Color.LightGray, fontSize = 13.sp)
                 }
                 Button({ adding = true }) { Text("+ CHANNEL") }

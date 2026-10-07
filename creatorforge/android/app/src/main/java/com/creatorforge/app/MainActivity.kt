@@ -34,32 +34,66 @@ import java.io.File
 import java.util.UUID
 
 private val Gold=Color(0xFFD4AF37); private val Black=Color(0xFF090909); private val Panel=Color(0xFF151515)
+object PendingRoute{@Volatile var value:String?=null}
 class MainActivity:ComponentActivity(){
  override fun onCreate(savedInstanceState:Bundle?){super.onCreate(savedInstanceState);takeLink(intent);setContent{CreatorForge()}}
  override fun onNewIntent(intent:android.content.Intent){super.onNewIntent(intent);takeLink(intent)}
- private fun takeLink(i:android.content.Intent?){i?.data?.takeIf{it.scheme=="creatorforge"}?.let{com.creatorforge.app.production.WorkerConnect.pending=it.toString()}}
+ private fun takeLink(i:android.content.Intent?){i?.data?.takeIf{it.scheme=="creatorforge"}?.let{com.creatorforge.app.production.WorkerConnect.pending=it.toString()};i?.getStringExtra("route")?.let{PendingRoute.value=it}}
 }
 
 @Composable fun CreatorForge(){
  val context=androidx.compose.ui.platform.LocalContext.current; val store=remember{ProjectStore(context)}; val secure=remember{SecureTokenStore(context).also{WorkerAuth.token=it.load("worker").orEmpty()}}
- var projects by remember{mutableStateOf(store.load())}; var tab by remember{mutableIntStateOf(0)}; var scriptsFirst by remember{mutableStateOf(false)}
+ val nav=remember{context.getSharedPreferences("creatorforge_nav",0)}
+ var projects by remember{mutableStateOf(store.load())}
+ var route by remember{mutableStateOf(nav.getString("route","trends")!!.let{if(it in AVAILABLE)it else "trends"})}
+ fun go(r:String){route=r;nav.edit().putString("route",r).apply()}
  fun persist(next:List<CreatorProject>){projects=next;store.save(next)}
  var connectNote by remember{mutableStateOf<String?>(null)}; var settingsKey by remember{mutableIntStateOf(0)}
  val lifecycle=androidx.lifecycle.compose.LocalLifecycleOwner.current
- DisposableEffect(lifecycle){val obs=androidx.lifecycle.LifecycleEventObserver{_,e->if(e==androidx.lifecycle.Lifecycle.Event.ON_RESUME){com.creatorforge.app.production.WorkerConnect.pending?.let{link->com.creatorforge.app.production.WorkerConnect.pending=null;connectNote=com.creatorforge.app.production.WorkerConnect.apply(context,link);settingsKey++;tab=6}}};lifecycle.lifecycle.addObserver(obs);onDispose{lifecycle.lifecycle.removeObserver(obs)}}
- MaterialTheme(colorScheme=darkColorScheme(primary=Gold,background=Black,surface=Panel)){Scaffold(bottomBar={NavigationBar(containerColor=Panel){listOf("Trends" to "📈","Director" to "💬","Generate" to "🎬","Library" to "🗂","Channels" to "📅","Tools" to "🧰","Settings" to "⚙").forEachIndexed{i,(n,ic)->NavigationBarItem(selected=tab==i,onClick={tab=i;scriptsFirst=false},label={Text(n,fontSize=9.sp,maxLines=1)},icon={Text(ic,fontSize=if(tab==i)20.sp else 16.sp)})}}}){pad->Box(Modifier.fillMaxSize().padding(pad).padding(18.dp)){when(tab){0->TrendsScreen(onOpenSettings={tab=6},onOpenGenerate={tab=2},onOpenScripts={scriptsFirst=true;tab=1});1->key(scriptsFirst){DirectorScreen(onOpenGenerate={tab=2},onOpenSettings={tab=6},startOnScripts=scriptsFirst)};2->GenerateScreen(onOpenSettings={tab=6});3->LibraryScreen();4->ChannelsScreen(onOpenSettings={tab=6});5->PhoneStudio(projects,secure,::persist);else->key(settingsKey){Settings(secure,connectNote){msg->connectNote=msg;settingsKey++}}}}}}
+ DisposableEffect(lifecycle){val obs=androidx.lifecycle.LifecycleEventObserver{_,e->if(e==androidx.lifecycle.Lifecycle.Event.ON_RESUME){PendingRoute.value?.let{r->PendingRoute.value=null;if(r in AVAILABLE)go(r)};com.creatorforge.app.production.WorkerConnect.pending?.let{link->com.creatorforge.app.production.WorkerConnect.pending=null;connectNote=com.creatorforge.app.production.WorkerConnect.apply(context,link);settingsKey++;go("settings")}}};lifecycle.lifecycle.addObserver(obs);onDispose{lifecycle.lifecycle.removeObserver(obs)}}
+ MaterialTheme(colorScheme=darkColorScheme(primary=Gold,background=Black,surface=Panel)){
+  AppShell(route,AVAILABLE,::go){
+   val settings={go("settings")}; val generate={go("generate")}
+   key(route){when(route){
+    "trends"->TrendsScreen(onOpenSettings=settings,onOpenGenerate=generate,onOpenScripts={go("scripts")})
+    "director"->DirectorScreen(onOpenGenerate=generate,onOpenSettings=settings,onOpenScripts={go("scripts")})
+    "scripts"->com.creatorforge.app.production.ScriptsPanel(generate,settings)
+    "thumbnails"->com.creatorforge.app.production.ThumbnailScreen(settings)
+    "generate"->GenerateScreen(onOpenSettings=settings)
+    "library"->LibraryScreen()
+    "phone"->PhoneStudio(projects,secure,::persist)
+    "channels"->ChannelsScreen(onOpenSettings=settings)
+    "series"->com.creatorforge.app.production.SeriesScreen(settings,generate)
+    "hooks"->com.creatorforge.app.production.HookLabScreen(settings)
+    "clipper"->com.creatorforge.app.production.ClipperScreen(settings)
+    "dubbing"->com.creatorforge.app.production.DubbingScreen(settings)
+    "calendar"->com.creatorforge.app.production.CalendarScreen{go("channels")}
+    "analytics"->com.creatorforge.app.production.AnalyticsScreen(settings)
+    "templates"->com.creatorforge.app.production.TemplatesScreen{go("channels")}
+    "brand"->com.creatorforge.app.production.BrandKitScreen(settings)
+    "safety"->com.creatorforge.app.production.SafetyScreen(settings)
+    "team"->com.creatorforge.app.production.TeamScreen(settings)
+    "cloud"->com.creatorforge.app.production.CloudScreen(settings)
+    else->key(settingsKey){Settings(secure,connectNote){msg->connectNote=msg;settingsKey++}}
+   }}
+  }
+ }
 }
+
+/** Every sidebar entry is built. */
+val AVAILABLE=Dests.all.map{it.id}.toSet()
 
 /** The original on-device tools (make a video entirely on this phone), grouped under one tab. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable fun PhoneStudio(projects:List<CreatorProject>,secure:SecureTokenStore,persist:(List<CreatorProject>)->Unit){
  var sub by remember{mutableIntStateOf(0)}; var list by remember{mutableStateOf(projects)}
  fun save(next:List<CreatorProject>){list=next;persist(next)}
- Column{Row(Modifier.horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(6.dp)){listOf("🖼 Thumbnail","Phone video","Projects","Studio").forEachIndexed{i,n->FilterChip(selected=sub==i,onClick={sub=i},label={Text(n)})}}
+ Column{Text("Make a simple video entirely on this phone - no pod, no internet.",color=Color.LightGray,fontSize=13.sp)
+  Row(Modifier.horizontalScroll(rememberScrollState()),horizontalArrangement=Arrangement.spacedBy(6.dp)){listOf("Create","Projects","Export").forEachIndexed{i,n->FilterChip(selected=sub==i,onClick={sub=i},label={Text(n)})}}
   Spacer(Modifier.height(8.dp))
-  when(sub){0->com.creatorforge.app.production.ThumbnailScreen();1->Create{p->save(list+p);sub=2};2->Projects(list,secure,::save);else->Studio(list)}}
+  when(sub){0->Create{p->save(list+p);sub=1};1->Projects(list,secure,::save);else->Studio(list)}}
 }
-@Composable fun Header(t:String,s:String){Column{Text(t,color=Gold,fontSize=30.sp);Text(s,color=Color.LightGray);Spacer(Modifier.height(18.dp))}}
+@Composable fun Header(t:String,s:String){Column{Text(t,color=Gold,fontSize=18.sp);Text(s,color=Color.LightGray);Spacer(Modifier.height(18.dp))}}
 @Composable fun Home(count:Int){Column{Header("CREATORFORGE","AI filmmaking workspace");Card{Column(Modifier.padding(18.dp)){Text("RC10.3 • SCROLLABLE EXPORT STUDIO",color=Gold);Text("$count saved projects");Text("Timeline • captions • synchronized scene timing • persistent recovery queue")}}}}
 @Composable fun Create(done:(CreatorProject)->Unit){var prompt by remember{mutableStateOf("")};var long by remember{mutableStateOf(false)};var square by remember{mutableStateOf(false)};Column{Header("CREATE","Paste a script - each sentence group becomes a scene");OutlinedTextField(prompt,{prompt=it},Modifier.fillMaxWidth(),label={Text("Your script (narration)")},minLines=5);Row{Switch(long,{long=it;if(it)square=false});Text(if(long)" Long-form 16:9" else " Short-form 9:16",Modifier.padding(top=12.dp))};Row{Switch(square,{square=it;if(it)long=false});Text(" Square 1:1",Modifier.padding(top=12.dp))};Button(enabled=prompt.isNotBlank(),onClick={val beats=com.creatorforge.app.script.ScriptSplitter.split(prompt,if(long)20 else 10);if(beats.isEmpty())return@Button;done(CreatorProject(UUID.randomUUID().toString(),com.creatorforge.app.script.ScriptSplitter.title(prompt),if(long)ProjectType.LONG_FORM else ProjectType.SHORT_FORM,if(square)AspectRatio.SQUARE_1_1 else if(long)AspectRatio.LANDSCAPE_16_9 else AspectRatio.VERTICAL_9_16,prompt,beats.mapIndexed{i,b->Scene(UUID.randomUUID().toString(),i+1,"Scene ${i+1}",b.narration,"Hyper-realistic cinematic photograph illustrating: ${b.narration}",b.seconds)}))}){Text("CREATE PROJECT")}}}
 
@@ -73,7 +107,7 @@ fun storeAudio(projects:List<CreatorProject>,projectId:String,sceneId:String,pat
 @Composable fun Settings(secure:SecureTokenStore,connectNote:String?=null,onConnected:(String)->Unit={}){
  val context=androidx.compose.ui.platform.LocalContext.current;val prefs=remember{context.getSharedPreferences("creatorforge_provider",0)};val scope=rememberCoroutineScope()
  var url by remember{mutableStateOf(prefs.getString("base_url","").orEmpty())};var savedUrl by remember{mutableStateOf(url)};var health by remember{mutableStateOf("Not tested")};var checking by remember{mutableStateOf(false)};var token by remember{mutableStateOf("")};var hasToken by remember{mutableStateOf(secure.has("worker"))}
- Column(Modifier.verticalScroll(rememberScrollState())){Header("SETTINGS","Writing runs on your phone • the worker only makes videos");com.creatorforge.app.production.AiSettingsCard(secure);Spacer(Modifier.height(12.dp));connectNote?.let{Text(it,color=Gold)};com.creatorforge.app.production.WorkerQuickConnect{msg->onConnected(msg)};Spacer(Modifier.height(12.dp));Card{Column(Modifier.padding(16.dp)){Text("VIDEO WORKER (only needed to make videos)",color=Gold);Text("Your GPU pod or PC. Trends, Director, Scripts and Channels work without it.");Spacer(Modifier.height(10.dp));OutlinedTextField(url,{url=it},Modifier.fillMaxWidth(),label={Text("Worker URL (http://… or https://…)")},singleLine=true);Row(horizontalArrangement=Arrangement.spacedBy(8.dp)){Button(enabled=url.startsWith("http://")||url.startsWith("https://"),onClick={savedUrl=url.trim().trimEnd('/');prefs.edit().putString("base_url",savedUrl).apply();health="Saved • test connection next"}){Text("SAVE")};OutlinedButton(enabled=savedUrl.isNotBlank()&&!checking,onClick={checking=true;health="Checking…";scope.launch{val h=LocalWorkerClient(LocalProviderConfig(savedUrl)).health();health=if(h.ok)"ONLINE${h.version?.let{" • v$it"}?:""}" else "OFFLINE • ${h.message}";checking=false}}){Text(if(checking)"TESTING…" else "TEST CONNECTION")}};Text(if(savedUrl.isBlank())"Not configured" else "Configured: $savedUrl",color=if(savedUrl.isBlank())Color.Gray else Gold);Text(health,color=if(health.startsWith("ONLINE"))Gold else Color.LightGray);Spacer(Modifier.height(10.dp));OutlinedTextField(token,{token=it},Modifier.fillMaxWidth(),label={Text(if(hasToken)"Worker token (saved • enter to replace)" else "Worker token (CF_WORKER_TOKEN)")},singleLine=true,visualTransformation=androidx.compose.ui.text.input.PasswordVisualTransformation());Row(horizontalArrangement=Arrangement.spacedBy(8.dp)){Button(enabled=token.isNotBlank(),onClick={secure.save("worker",token.trim());WorkerAuth.token=token.trim();token="";hasToken=true;health="Token saved (encrypted) • test connection next"}){Text("SAVE TOKEN")};if(hasToken)OutlinedButton(onClick={secure.clear("worker");WorkerAuth.token="";hasToken=false;health="Token removed"}){Text("REMOVE TOKEN")}};Text("Use https:// when the worker is reachable outside your home network.",color=Color.Gray,fontSize=12.sp)}};Spacer(Modifier.height(12.dp));Text("CreatorForge ${com.creatorforge.app.BuildConfig.VERSION_NAME} • your studio, no credits required.",color=Gold);TextButton({com.creatorforge.app.production.openUrl(context,"https://github.com/diljotsinghdj-creator/Forgeos/actions/workflows/creatorforge.yml")}){Text("GET THE LATEST BUILD ↗",color=Gold)};Spacer(Modifier.height(24.dp))}
+ Column(Modifier.verticalScroll(rememberScrollState())){Text("Writing runs on your phone • the pod only makes videos",color=Color.LightGray,fontSize=13.sp);Spacer(Modifier.height(10.dp));com.creatorforge.app.production.AiSettingsCard(secure);Spacer(Modifier.height(12.dp));connectNote?.let{Text(it,color=Gold)};com.creatorforge.app.production.WorkerQuickConnect{msg->onConnected(msg)};Spacer(Modifier.height(12.dp));Card{Column(Modifier.padding(16.dp)){Text("VIDEO WORKER (only needed to make videos)",color=Gold);Text("Your GPU pod or PC. Trends, Director, Scripts and Channels work without it.");Spacer(Modifier.height(10.dp));OutlinedTextField(url,{url=it},Modifier.fillMaxWidth(),label={Text("Worker URL (http://… or https://…)")},singleLine=true);Row(horizontalArrangement=Arrangement.spacedBy(8.dp)){Button(enabled=url.startsWith("http://")||url.startsWith("https://"),onClick={savedUrl=url.trim().trimEnd('/');prefs.edit().putString("base_url",savedUrl).apply();health="Saved • test connection next"}){Text("SAVE")};OutlinedButton(enabled=savedUrl.isNotBlank()&&!checking,onClick={checking=true;health="Checking…";scope.launch{val h=LocalWorkerClient(LocalProviderConfig(savedUrl)).health();health=if(h.ok)"ONLINE${h.version?.let{" • v$it"}?:""}" else "OFFLINE • ${h.message}";checking=false}}){Text(if(checking)"TESTING…" else "TEST CONNECTION")}};Text(if(savedUrl.isBlank())"Not configured" else "Configured: $savedUrl",color=if(savedUrl.isBlank())Color.Gray else Gold);Text(health,color=if(health.startsWith("ONLINE"))Gold else Color.LightGray);Spacer(Modifier.height(10.dp));OutlinedTextField(token,{token=it},Modifier.fillMaxWidth(),label={Text(if(hasToken)"Worker token (saved • enter to replace)" else "Worker token (CF_WORKER_TOKEN)")},singleLine=true,visualTransformation=androidx.compose.ui.text.input.PasswordVisualTransformation());Row(horizontalArrangement=Arrangement.spacedBy(8.dp)){Button(enabled=token.isNotBlank(),onClick={secure.save("worker",token.trim());WorkerAuth.token=token.trim();token="";hasToken=true;health="Token saved (encrypted) • test connection next"}){Text("SAVE TOKEN")};if(hasToken)OutlinedButton(onClick={secure.clear("worker");WorkerAuth.token="";hasToken=false;health="Token removed"}){Text("REMOVE TOKEN")}};Text("Use https:// when the worker is reachable outside your home network.",color=Color.Gray,fontSize=12.sp)}};Spacer(Modifier.height(12.dp));Text("CreatorForge ${com.creatorforge.app.BuildConfig.VERSION_NAME} • your studio, no credits required.",color=Gold);TextButton({com.creatorforge.app.production.openUrl(context,"https://github.com/diljotsinghdj-creator/Forgeos/actions/workflows/creatorforge.yml")}){Text("GET THE LATEST BUILD ↗",color=Gold)};Spacer(Modifier.height(24.dp))}
 }
 @Composable fun Studio(projects:List<CreatorProject>){
  val context=androidx.compose.ui.platform.LocalContext.current

@@ -105,7 +105,6 @@ fun TrendsScreen(onOpenSettings: () -> Unit = {}, onOpenGenerate: () -> Unit = {
 
     LazyColumn(verticalArrangement = Arrangement.spacedBy(10.dp)) {
         item {
-            Text("TREND RADAR", color = Gold, fontSize = 28.sp, fontWeight = FontWeight.Bold)
             Text("What people are watching and searching - turned into ideas and scripts. No pod needed.", color = Color.LightGray)
         }
         item { AiBanner(onOpenSettings) }

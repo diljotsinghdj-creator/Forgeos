@@ -47,6 +47,7 @@ class ProductionSpec:
     music_asset_id: str = ""  # use a track from the Asset Library as the score
     sfx: bool = True  # auto-place sound effects when an SFX folder or SFX assets exist
     script: str = ""  # script mode: the user's exact narration; the Director only plans visuals and the edit
+    brand: dict = field(default_factory=dict)  # brand kit: logo, caption colours, intro/outro text
 
     @staticmethod
     def from_dict(d: dict) -> "ProductionSpec":
@@ -73,6 +74,7 @@ class ProductionSpec:
             script=str(d.get("script", "") or "").strip(),
             music_asset_id=str(d.get("music_asset_id", "") or ""),
             sfx=bool(d.get("sfx", True)),
+            brand=clean_brand(d.get("brand")),
         )
         spec.validate()
         return spec
@@ -112,6 +114,38 @@ class ProductionSpec:
 
     def to_dict(self) -> dict:
         return asdict(self)
+
+
+_HEX = re.compile(r"^#[0-9A-Fa-f]{6}$")
+LOGO_POSITIONS = ("top-right", "top-left", "bottom-right", "bottom-left")
+
+
+def clean_brand(b) -> dict:
+    """Brand kit: everything optional; bad values are rejected rather than silently rendered wrong."""
+    if not b:
+        return {}
+    if not isinstance(b, dict):
+        raise ValueError("brand must be an object")
+    out: dict = {}
+    for k in ("caption_color", "highlight_color"):
+        if b.get(k):
+            if not _HEX.match(str(b[k])):
+                raise ValueError(f"brand.{k} must look like #FFD400")
+            out[k] = str(b[k]).upper()
+    if b.get("logo_asset_id"):
+        out["logo_asset_id"] = str(b["logo_asset_id"])[:40]
+        pos = str(b.get("logo_position") or "top-right")
+        if pos not in LOGO_POSITIONS:
+            raise ValueError(f"brand.logo_position must be one of {', '.join(LOGO_POSITIONS)}")
+        out["logo_position"] = pos
+        try:
+            out["logo_opacity"] = min(1.0, max(0.2, float(b.get("logo_opacity", 0.85))))
+        except (TypeError, ValueError):
+            raise ValueError("brand.logo_opacity must be a number") from None
+    for k, n in (("intro_text", 40), ("outro_text", 50), ("name", 60)):
+        if str(b.get(k, "")).strip():
+            out[k] = str(b[k]).strip()[:n]
+    return out
 
 
 @dataclass

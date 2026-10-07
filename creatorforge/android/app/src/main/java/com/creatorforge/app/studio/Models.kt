@@ -136,11 +136,13 @@ data class Channel(
     val id: String, val name: String, val niche: String = "facts", val keyword: String = "", val region: String = "GB",
     val format: String = "shorts", val perWeek: Int = 7, val style: String = "cinematic", val voice: String = "",
     val aiVideo: String = "off", val tone: String = "", val audience: String = "", val postTime: String = "18:00",
-    val slots: List<Slot> = emptyList(), val plannedAt: Long = 0
+    val slots: List<Slot> = emptyList(), val plannedAt: Long = 0, val brand: Brand = Brand(), val youtube: String = "",
+    val insights: String = ""
 ) {
     fun toJson(): JSONObject = JSONObject().put("id", id).put("name", name).put("niche", niche).put("keyword", keyword).put("region", region)
         .put("format", format).put("per_week", perWeek).put("style", style).put("voice", voice).put("ai_video", aiVideo)
         .put("tone", tone).put("audience", audience).put("post_time", postTime).put("planned_at", plannedAt)
+        .put("brand", brand.toJson()).put("youtube", youtube).put("insights", insights)
         .put("slots", JSONArray().apply { slots.forEach { put(it.toJson()) } })
 
     companion object {
@@ -149,22 +151,24 @@ data class Channel(
             return Channel(j.getString("id"), j.optString("name"), j.optString("niche", "facts"), j.optString("keyword"), j.optString("region", "GB"),
                 j.optString("format", "shorts"), j.optInt("per_week", 7), j.optString("style", "cinematic"), j.optString("voice"),
                 j.optString("ai_video", "off"), j.optString("tone"), j.optString("audience"), j.optString("post_time", "18:00"),
-                (0 until s.length()).map { Slot.from(s.getJSONObject(it)) }, j.optLong("planned_at"))
+                (0 until s.length()).map { Slot.from(s.getJSONObject(it)) }, j.optLong("planned_at"), Brand.from(j.optJSONObject("brand")),
+                j.optString("youtube"), j.optString("insights"))
         }
     }
 }
 
 data class Slot(
     val id: String, val day: String, val time: String, val status: String, val idea: Idea, val trend: Trend,
-    val script: String = "", val productionId: String = ""
+    val script: String = "", val productionId: String = "", val posted: Boolean = false, val remind: Boolean = false
 ) {
     fun toJson(): JSONObject = JSONObject().put("id", id).put("day", day).put("time", time).put("status", status)
         .put("idea", idea.toJson()).put("trend", trend.toJson()).put("script", script).put("production_id", productionId)
+        .put("posted", posted).put("remind", remind)
 
     companion object {
         fun from(j: JSONObject) = Slot(j.getString("id"), j.optString("day"), j.optString("time"), j.optString("status", "planned"),
             Idea.from(j.optJSONObject("idea") ?: JSONObject()), Trend.from(j.optJSONObject("trend") ?: JSONObject().put("id", "")),
-            j.optString("script"), j.optString("production_id"))
+            j.optString("script"), j.optString("production_id"), j.optBoolean("posted"), j.optBoolean("remind"))
     }
 }
 

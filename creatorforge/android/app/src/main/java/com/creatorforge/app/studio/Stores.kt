@@ -29,6 +29,8 @@ open class JsonListStore<T>(private val file: File, private val read: (JSONObjec
 }
 
 class ScriptStore(dir: File) : JsonListStore<SavedScript>(File(dir, "scripts.json"), SavedScript::from, SavedScript::toJson, SavedScript::id)
+class SeriesStore(dir: File) : JsonListStore<Series>(File(dir, "series.json"), Series::from, Series::toJson, Series::id)
+class TemplateStore(dir: File) : JsonListStore<ChannelTemplate>(File(dir, "templates.json"), ChannelTemplate::from, ChannelTemplate::toJson, ChannelTemplate::id)
 class ChannelStore(dir: File) : JsonListStore<Channel>(File(dir, "channels.json"), Channel::from, Channel::toJson, Channel::id)
 
 /** Builds the worker's /v1/productions body. The worker is only needed for this last step: making the video. */
@@ -56,6 +58,7 @@ object ProductionBodies {
         val b = JSONObject(base.toString()).put("style", ch.style).put("motion", if (ch.aiVideo == "off") "stills" else "ai_video")
             .put("ai_video_scenes", if (ch.aiVideo == "all") "all" else "hook")
         if (ch.voice.isNotBlank()) b.put("voice", ch.voice)
+        b.put("brand", ch.brand.forWorker())
         b.remove("template"); b.remove("duration_s")
         return fromIdea(slot.trend, slot.idea, slot.script, b)
     }

@@ -115,8 +115,13 @@ def _motion(camera: str, frames: int) -> str:
     return f"z='1+0.15*on/{d}':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)'"  # default: slow push in
 
 
+LOGO_XY = {"top-right": ("W-w-{m}", "{m}"), "top-left": ("{m}", "{m}"),
+           "bottom-right": ("W-w-{m}", "H-h-{m}"), "bottom-left": ("{m}", "H-h-{m}")}
+
+
 def render_video(clips: list[Clip], audio: Path, captions: Path | None, width: int, height: int,
-                 out: Path, work: Path, cancel: threading.Event) -> float:
+                 out: Path, work: Path, cancel: threading.Event,
+                 logo: tuple[Path, str, float] | None = None) -> float:
     """Returns the expected duration of the rendered file."""
     tail = TRANSITION_S if len(clips) > 1 else 0.0
     trans = [TRANSITIONS.get(c.transition, TRANSITIONS["fade"]) for c in clips]
@@ -151,11 +156,23 @@ def render_video(clips: list[Clip], audio: Path, captions: Path | None, width: i
         graph.append(f"[{last}][v{i}]xfade=transition={name}:duration={dur}:offset={offset:.3f}[x{i}]")
         last = f"x{i}"
     total = sum(c.duration for c in clips) + tail
+    audio_idx = len(clips)
+    if logo is not None:
+        # Brand watermark: about 14% of the frame width, in a corner, slightly transparent. Captions go on top.
+        path, pos, opacity = logo
+        m = int(min(width, height) * 0.035)
+        x, y = (v.format(m=m) for v in LOGO_XY.get(pos, LOGO_XY["top-right"]))
+        graph.append(f"[{audio_idx + 1}:v]scale={int(width * 0.14) // 2 * 2}:-2,format=rgba,"
+                     f"colorchannelmixer=aa={opacity:.2f}[logo]")
+        graph.append(f"[{last}][logo]overlay=x={x}:y={y}:shortest=1,format=yuv420p[vlogo]")
+        last = "vlogo"
     if captions is not None:
         graph.append(f"[{last}]subtitles=filename={captions.name}[vout]")
         last = "vout"
-    audio_idx = len(clips)
-    args += ["-i", str(audio), "-filter_complex", ";".join(graph), "-map", f"[{last}]", "-map", f"{audio_idx}:a",
+    args += ["-i", str(audio)]
+    if logo is not None:
+        args += ["-loop", "1", "-i", str(logo[0])]
+    args += ["-filter_complex", ";".join(graph), "-map", f"[{last}]", "-map", f"{audio_idx}:a",
              "-c:v", "libx264", "-preset", "veryfast", "-crf", "20", "-pix_fmt", "yuv420p", "-r", str(FPS),
              "-c:a", "aac", "-b:a", "192k", "-ar", str(SAMPLE_RATE), "-movflags", "+faststart",
              "-t", f"{total:.3f}", str(out)]

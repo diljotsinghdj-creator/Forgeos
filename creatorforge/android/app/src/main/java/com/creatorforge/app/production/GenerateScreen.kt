@@ -148,7 +148,6 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
 
     LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp), contentPadding = PaddingValues(bottom = 32.dp)) {
         item { Column {
-            Text("GENERATE VIDEO", color = Gold, fontSize = 30.sp)
             Text("One idea in. One verified MP4 out.", color = Color.LightGray)
             caps?.let { c ->
                 if (!c.productionReady) Text("Worker not fully configured:\n" + c.problems.joinToString("\n"), color = Danger, fontSize = 12.sp)

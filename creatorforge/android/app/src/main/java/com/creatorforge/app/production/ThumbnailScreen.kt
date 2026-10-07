@@ -86,7 +86,6 @@ fun ThumbnailScreen(onOpenSettings: () -> Unit = {}) {
     }
 
     Column(Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text("THUMBNAILS", color = Gold, fontSize = 26.sp, fontWeight = FontWeight.Bold)
         Text("Big readable text on your picture - saved straight to the gallery.", color = Color.LightGray, fontSize = 13.sp)
         preview?.let { Image(it.asImageBitmap(), "Thumbnail preview", Modifier.fillMaxWidth().heightIn(max = 420.dp), contentScale = ContentScale.Fit) }
         Chips(listOf("16:9" to "YouTube 16:9", "9:16" to "Shorts 9:16"), format) { format = it }

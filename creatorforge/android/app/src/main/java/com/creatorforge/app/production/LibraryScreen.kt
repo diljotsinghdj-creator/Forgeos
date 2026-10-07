@@ -104,7 +104,6 @@ fun LibraryScreen() {
     LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp), contentPadding = PaddingValues(bottom = 32.dp)) {
         item {
             Column {
-                Text("LIBRARY", color = Gold, fontSize = 30.sp)
                 Text("Videos, voices, assets and characters on your worker", color = Color.LightGray)
                 message?.let { Text(it, color = if (it.startsWith("Sav")) Gold else Danger, fontSize = 12.sp) }
                 if (busy == "upload") LinearProgressIndicator(Modifier.fillMaxWidth())

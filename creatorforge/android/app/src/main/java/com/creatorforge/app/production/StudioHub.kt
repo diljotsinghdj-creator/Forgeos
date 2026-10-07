@@ -43,6 +43,8 @@ object StudioHub {
     fun radar(c: Context) = TrendRadar(File(c.cacheDir, "trends"), { youtubeKey(c) })
     fun scripts(c: Context) = ScriptStore(dir(c))
     fun channels(c: Context) = ChannelStore(dir(c))
+    fun series(c: Context) = SeriesStore(dir(c))
+    fun templates(c: Context) = TemplateStore(dir(c))
     fun workerUrl(c: Context) = c.getSharedPreferences("creatorforge_provider", 0).getString("base_url", "").orEmpty()
     fun hasWorker(c: Context) = workerUrl(c).isNotBlank()
 

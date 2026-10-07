@@ -6,6 +6,9 @@ One-button production: POST /v1/productions and friends (see README)."""
 from __future__ import annotations
 
 import hashlib
+import uuid
+import time
+import json
 import hmac
 import re
 import shutil
@@ -15,11 +18,12 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import Depends, FastAPI, HTTPException, Request
-from fastapi.responses import FileResponse, JSONResponse, Response
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse, Response
 
 from . import __version__, providers
 from .config import Config
-from . import autopilot, publish
+from . import accounts as acct
+from . import autopilot, clipper, publish
 from . import chat as director_chat
 from .director import Character, ProductionSpec
 from .library import ASSET_KINDS, Library
@@ -45,6 +49,8 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
     characters = library.characters
     radar = TrendRadar(cfg.data_dir, cfg.youtube_api_key)
     channels = autopilot.ChannelStore(cfg.data_dir / "library" / "channels.json")
+    accounts = acct.AccountStore(cfg.data_dir / "accounts.json")
+    clips = clipper.ClipJobs(cfg.data_dir / "clips")
 
     @asynccontextmanager
     async def lifespan(_app: FastAPI):
@@ -70,12 +76,29 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
                 pass
         return await call_next(request)
 
-    def auth(request: Request) -> None:
-        if not cfg.token:
-            return
+    async def auth(request: Request) -> None:
+        """The owner's token (CF_WORKER_TOKEN) sees everything; account keys see only their own work."""
         header = request.headers.get("authorization", "")
-        if not hmac.compare_digest(header.encode(), f"Bearer {cfg.token}".encode()):
-            raise HTTPException(401, "missing or invalid worker token")
+        key = header[7:].strip() if header.lower().startswith("bearer ") else ""
+        if cfg.token and hmac.compare_digest(key.encode(), cfg.token.encode()):
+            acct.current.set(None)
+            return
+        a = accounts.by_key(key)
+        if a is not None:
+            acct.current.set(a)
+            return
+        if not cfg.token and not accounts.any():
+            acct.current.set(None)
+            return
+        raise HTTPException(401, "missing or invalid worker token")
+
+    def admin_only() -> None:
+        if acct.current.get() is not None:
+            raise HTTPException(403, "only the worker owner can do this")
+
+    def visible(job: dict) -> bool:
+        a = acct.current.get()
+        return a is None or job.get("owner") == a["id"]
 
     def provider_status() -> dict:
         status = {}
@@ -96,9 +119,12 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
 
     def job_or_404(job_id: str) -> dict:
         try:
-            return store.load(job_id)
+            job = store.load(job_id)
         except KeyError:
             raise HTTPException(404, "production not found") from None
+        if not visible(job):
+            raise HTTPException(404, "production not found")
+        return job
 
     def public(job: dict) -> dict:
         j = {k: v for k, v in job.items() if k not in ("music_track", "render")}
@@ -137,8 +163,26 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
             raise HTTPException(422, str(e)) from None
         return spec
 
+    def charge(spec_dict: dict) -> str:
+        """Takes credits from the calling account (the owner is never charged). Returns the owner id."""
+        a = acct.current.get()
+        if a is None:
+            return ""
+        if a["role"] == "client":
+            raise HTTPException(403, "client accounts can review videos but not create them")
+        try:
+            accounts.charge(a["id"], acct.cost(spec_dict))
+        except PermissionError as e:
+            raise HTTPException(402, str(e)) from None
+        return a["id"]
+
     def submit(spec: ProductionSpec, title: str = "") -> dict:
-        job = store.create(spec.to_dict(), title)
+        d = spec.to_dict()
+        owner = charge(d)
+        job = store.create(d, title)
+        if owner:
+            job["owner"] = owner
+            store.save(job)
         runner.submit(job["id"])
         return public(job)
 
@@ -150,7 +194,8 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
     def list_productions() -> list[dict]:
         return [{"id": j["id"], "status": j["status"], "progress": j["progress"], "message": j["message"],
                  "title": j.get("title") or (j.get("plan") or {}).get("title") or j["spec"]["idea"][:60],
-                 "created_at": j["created_at"]} for j in store.all()]
+                 "created_at": j["created_at"], "variant_of": j.get("variant_of"), "hook_test": j.get("hook_test"),
+                 "language": j["spec"].get("language", "")} for j in store.all() if visible(j)]
 
     @app.get("/v1/productions/{job_id}", dependencies=[Depends(auth)])
     def get_production(job_id: str) -> dict:
@@ -442,7 +487,7 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
         """Media Library: every finished, verified production."""
         out = []
         for j in store.all():
-            if j["status"] == "READY" and j.get("result"):
+            if j["status"] == "READY" and j.get("result") and visible(j):
                 v = j["result"]["verification"]
                 out.append({"id": j["id"], "title": j.get("title") or j["result"].get("title") or j["spec"]["idea"][:60],
                             "aspect": j["spec"]["aspect"], "template": j["spec"]["template"],
@@ -469,6 +514,222 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
         draft = body.get("draft") if isinstance(body.get("draft"), dict) else {}
         base = body.get("production") if isinstance(body.get("production"), dict) else {}
         return submit(build_spec(director_chat.production_body(draft, base)))
+
+    # ---- Dubbing and Hook Lab --------------------------------------------------------------
+    def variant_charge(job: dict, factor: float = 1.0) -> str:
+        a = acct.current.get()
+        if a is None:
+            return ""
+        if a["role"] == "client":
+            raise HTTPException(403, "client accounts can review videos but not create them")
+        try:
+            accounts.charge(a["id"], max(1, round(acct.cost(job["spec"]) * factor)))
+        except PermissionError as e:
+            raise HTTPException(402, str(e)) from None
+        return a["id"]
+
+    def own_new(jobs: list[dict], owner: str) -> None:
+        if owner:
+            for j in jobs:
+                j = store.load(j["id"])
+                j["owner"] = owner
+                store.save(j)
+
+    @app.post("/v1/productions/{job_id}/dub", status_code=202, dependencies=[Depends(auth)])
+    async def dub_production(job_id: str, request: Request) -> dict:
+        """Same visuals, new language. The phone translates (so no worker LLM is needed) and sends one line per scene."""
+        src = job_or_404(job_id)
+        body = await request.json()
+        language = str(body.get("language", "")).strip()
+        if not language:
+            raise HTTPException(422, "language is required")
+        owner = variant_charge(src, 0.5)  # visuals are reused, so dubbing costs half
+        try:
+            job = runner.dub(job_id, language, str(body.get("voice", "")), body.get("narrations") or [], str(body.get("title", "")))
+        except ValueError as e:
+            raise HTTPException(409 if "busy" in str(e) else 422, str(e)) from None
+        own_new([job], owner)
+        return public(job)
+
+    @app.post("/v1/productions/{job_id}/hook-variants", status_code=202, dependencies=[Depends(auth)])
+    async def hook_variants(job_id: str, request: Request) -> dict:
+        src = job_or_404(job_id)
+        hooks = (await request.json()).get("hooks") or []
+        owner = variant_charge(src, 0.25 * max(1, len(hooks)))
+        try:
+            jobs = runner.hook_variants(job_id, [str(h) for h in hooks])
+        except ValueError as e:
+            raise HTTPException(409 if "busy" in str(e) else 422, str(e)) from None
+        own_new(jobs, owner)
+        return {"productions": [public(j) for j in jobs]}
+
+    # ---- Shorts Clipper -------------------------------------------------------------------
+    def clip_source(body: dict) -> tuple[dict, Path, list]:
+        from .providers.base import Word
+        if body.get("production_id"):
+            job = job_or_404(str(body["production_id"]))
+            if job["status"] != "READY":
+                raise HTTPException(409, "the video isn't finished yet")
+            jdir = store.dir(job["id"])
+            words_file = jdir / "words.json"
+            if not words_file.is_file():
+                raise HTTPException(409, "this video has no captions to find moments in - turn captions on")
+            words = [Word(**d) for d in json.loads(words_file.read_text())]
+            return {"production_id": job["id"], "title": job.get("title") or job["plan"]["title"]}, jdir / "creatorforge.mp4", words
+        if body.get("asset_id"):
+            path, kind, name = resolve_asset(str(body["asset_id"]))
+            if kind != "video":
+                raise HTTPException(422, "pick a video asset")
+            try:
+                asr = providers.build_asr(cfg)
+            except NotConfigured as e:
+                raise HTTPException(503, str(e)) from None
+            if asr is None:
+                raise HTTPException(503, "clipping an uploaded video needs Whisper on the worker (CF_ASR_PROVIDER=whisper)")
+            return {"asset_id": str(body["asset_id"]), "title": name}, path, asr.words(path)
+        raise HTTPException(422, "send production_id or asset_id")
+
+    @app.post("/v1/clips", status_code=202, dependencies=[Depends(auth)])
+    async def create_clips(request: Request) -> dict:
+        body = await request.json()
+        count = max(1, min(8, int(body.get("count", 3))))
+        seconds = max(15.0, min(60.0, float(body.get("seconds", 45))))
+        source, path, words = clip_source(body)
+        a = acct.current.get()
+        if a is not None:
+            if a["role"] == "client":
+                raise HTTPException(403, "client accounts can review videos but not create them")
+            try:
+                accounts.charge(a["id"], count)
+            except PermissionError as e:
+                raise HTTPException(402, str(e)) from None
+        try:
+            llm = providers.build_llm(cfg)
+        except NotConfigured:
+            llm = None
+        brand = director.clean_brand(body.get("brand")) if body.get("brand") else {}
+        job = clips.create(source, count, seconds, brand, a["id"] if a else "")
+        threading.Thread(target=clips.run, args=(job["id"], path, words, llm), daemon=True).start()
+        return job
+
+    def clip_or_404(cid: str) -> dict:
+        try:
+            job = clips.load(cid)
+        except KeyError:
+            raise HTTPException(404, "clip job not found") from None
+        a = acct.current.get()
+        if a is not None and job.get("owner") != a["id"]:
+            raise HTTPException(404, "clip job not found")
+        return job
+
+    @app.get("/v1/clips", dependencies=[Depends(auth)])
+    def list_clips() -> list[dict]:
+        a = acct.current.get()
+        return [j for j in clips.all() if a is None or j.get("owner") == a["id"]]
+
+    @app.get("/v1/clips/{cid}", dependencies=[Depends(auth)])
+    def get_clips(cid: str) -> dict:
+        return clip_or_404(cid)
+
+    @app.get("/v1/clips/{cid}/files/{n}", dependencies=[Depends(auth)])
+    def clip_file(cid: str, n: int):
+        job = clip_or_404(cid)
+        item = next((c for c in job["clips"] if c["index"] == n), None)
+        if item is None:
+            raise HTTPException(404, "clip not found")
+        return FileResponse(clips.dir(cid) / item["file"], media_type="video/mp4", filename=f"short_{n:02d}.mp4")
+
+    # ---- Team: client review links --------------------------------------------------------
+    def review_job(token: str) -> dict:
+        if not token.isalnum() or len(token) < 16:
+            raise HTTPException(404, "review link not found")
+        for j in store.all():
+            if (j.get("review") or {}).get("token") == token:
+                return j
+        raise HTTPException(404, "review link not found")
+
+    @app.post("/v1/productions/{job_id}/review-link", dependencies=[Depends(auth)])
+    def make_review_link(job_id: str) -> dict:
+        job = job_or_404(job_id)
+        if job["status"] != "READY":
+            raise HTTPException(409, "the video isn't finished yet")
+        if not job.get("review"):
+            job = store.load(job_id)
+            job["review"] = {"token": uuid.uuid4().hex + uuid.uuid4().hex[:8], "status": "pending", "comments": []}
+            store.save(job)
+        return {"path": f"/review/{job['review']['token']}", "status": job["review"]["status"],
+                "comments": job["review"]["comments"]}
+
+    @app.get("/v1/reviews", dependencies=[Depends(auth)])
+    def list_reviews() -> list[dict]:
+        return [{"id": j["id"], "title": j.get("title") or (j.get("plan") or {}).get("title", ""), "path": f"/review/{j['review']['token']}",
+                 "status": j["review"]["status"], "comments": j["review"]["comments"]}
+                for j in store.all() if j.get("review") and visible(j)]
+
+    @app.get("/review/{token}", response_class=HTMLResponse)
+    def review_page(token: str):
+        import html as _h
+        j = review_job(token)
+        comments = "".join(f"<li><b>{_h.escape(c['decision'])}</b> {_h.escape(c['comment'])}</li>" for c in j["review"]["comments"])
+        return acct.REVIEW_PAGE.format(title=_h.escape(j.get("title") or j["plan"]["title"]), status=_h.escape(j["review"]["status"]),
+                                       token=token, comments=comments)
+
+    @app.get("/review/{token}/video")
+    def review_video(token: str):
+        j = review_job(token)
+        return FileResponse(store.dir(j["id"]) / "creatorforge.mp4", media_type="video/mp4")
+
+    @app.post("/review/{token}")
+    async def review_decision(token: str, request: Request):
+        from urllib.parse import parse_qs
+        j = review_job(token)
+        form = {k: v[0] for k, v in parse_qs((await request.body()).decode(errors="replace")).items()}
+        decision = form.get("decision", "")
+        if decision not in ("approved", "changes"):
+            raise HTTPException(422, "decision must be approved or changes")
+        j = store.load(j["id"])
+        j["review"]["status"] = decision
+        j["review"]["comments"].append({"decision": decision, "comment": form.get("comment", "")[:2000], "at": time.time()})
+        store.save(j)
+        return RedirectResponse(f"/review/{token}", status_code=303)
+
+    # ---- Accounts (hosted-ready) ----------------------------------------------------------
+    @app.get("/v1/me", dependencies=[Depends(auth)])
+    def me() -> dict:
+        a = acct.current.get()
+        if a is None:
+            return {"role": "owner", "name": "Worker owner", "credits": None, "used": None, "accounts": len(accounts.list())}
+        return acct.public(a)
+
+    @app.get("/v1/accounts", dependencies=[Depends(auth), Depends(admin_only)])
+    def list_accounts() -> list[dict]:
+        return [acct.public(a) for a in accounts.list()]
+
+    @app.post("/v1/accounts", status_code=201, dependencies=[Depends(auth), Depends(admin_only)])
+    async def create_account(request: Request) -> dict:
+        body = await request.json()
+        try:
+            return acct.public(accounts.create(str(body.get("name", "")), str(body.get("role", "creator")), int(body.get("credits", 0))), with_key=True)
+        except (ValueError, TypeError) as e:
+            raise HTTPException(422, str(e)) from None
+
+    @app.patch("/v1/accounts/{aid}", dependencies=[Depends(auth), Depends(admin_only)])
+    async def update_account(aid: str, request: Request) -> dict:
+        body = await request.json()
+        try:
+            return acct.public(accounts.update(aid, int(body.get("add_credits", 0)), str(body.get("name", "")), str(body.get("role", ""))))
+        except KeyError:
+            raise HTTPException(404, "account not found") from None
+        except (ValueError, TypeError) as e:
+            raise HTTPException(422, str(e)) from None
+
+    @app.delete("/v1/accounts/{aid}", status_code=204, dependencies=[Depends(auth), Depends(admin_only)])
+    def delete_account(aid: str) -> Response:
+        try:
+            accounts.delete(aid)
+        except KeyError:
+            raise HTTPException(404, "account not found") from None
+        return Response(status_code=204)
 
     # ---- Channel Autopilot ---------------------------------------------------------------
     def channel_or_404(cid: str) -> dict:

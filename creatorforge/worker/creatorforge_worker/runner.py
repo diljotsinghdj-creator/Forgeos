@@ -2,6 +2,8 @@
 retry and resume after a worker restart."""
 from __future__ import annotations
 
+import copy
+
 import threading
 from collections import deque
 
@@ -124,6 +126,76 @@ class Runner:
         self.store.save(job)
         self.submit(job_id)
         return job
+
+    # ---- variants: dubbing and hook tests -------------------------------------------------
+    def _clone(self, job_id: str, title: str, spec_changes: dict) -> dict:
+        """Copies a production (plan, scene images, clips, voices) into a new one, ready to re-render."""
+        src = self.store.load(job_id)
+        if src["status"] in ("QUEUED", "RUNNING"):
+            raise ValueError("production is busy")
+        if not src.get("plan") or not src["scenes"] or any(sc.get("image_state") != "READY" for sc in src["scenes"]):
+            raise ValueError("the storyboard must be finished first (all scene pictures ready)")
+        spec = dict(src["spec"], **spec_changes)
+        spec["review"] = False
+        job = self.store.create(spec, title)
+        sdir, ddir = self.store.dir(job_id), self.store.dir(job["id"])
+        job["plan"] = copy.deepcopy(src["plan"])
+        job["scenes"] = copy.deepcopy(src["scenes"])
+        for sc in job["scenes"]:
+            for k in ("image", "clip", "narration"):
+                if sc.get(k) and (sdir / sc[k]).is_file():
+                    shutil.copy2(sdir / sc[k], ddir / sc[k])
+            sc["error"] = None
+        for name, st in src["stages"].items():
+            job["stages"][name] = dict(st, error=None)
+        job["stages"]["review"]["state"] = "SKIPPED"
+        job["providers"] = dict(src.get("providers") or {})
+        if src.get("music_track"):
+            job["music_track"] = src["music_track"]
+        job["variant_of"] = job_id
+        self._reset(job, "assembly", "verify")
+        return job
+
+    def dub(self, job_id: str, language: str, voice: str, narrations: list[str], title: str = "") -> dict:
+        """Same pictures, new language: every scene gets the translated line and a voice in that language."""
+        src = self.store.load(job_id)
+        scenes = (src.get("plan") or {}).get("scenes") or []
+        lines = [str(n).strip() for n in narrations]
+        if len(lines) != len(scenes) or not all(lines):
+            raise ValueError(f"send one translated line per scene ({len(scenes)} scenes)")
+        job = self._clone(job_id, title or f"{src.get('title') or src['plan']['title']} [{language}]",
+                          {"voice": voice, "language": language[:20]})
+        for sc, shot, line in zip(job["scenes"], job["plan"]["scenes"], lines):
+            shot["narration"] = line[:1000]
+            sc.update(voice_state="QUEUED", voice_source="generated")
+        job["plan"]["hook"] = ""  # on-screen English text would clash with the new language
+        job["plan"]["cta"] = ""
+        self._reset(job, "narration", "captions", "assembly", "verify")
+        job.update(status="QUEUED", message=f"Dubbing into {language}")
+        self.store.save(job)
+        self.submit(job["id"])
+        return job
+
+    def hook_variants(self, job_id: str, hooks: list[str]) -> list[dict]:
+        """Hook Lab: copies of a video that differ only in the opening line, to test which hook holds viewers."""
+        clean = [h.strip()[:300] for h in hooks if str(h).strip()][:5]
+        if not clean:
+            raise ValueError("send at least one hook")
+        src = self.store.load(job_id)
+        base = src.get("title") or (src.get("plan") or {}).get("title") or "Video"
+        out = []
+        for i, hook in enumerate(clean, 1):
+            job = self._clone(job_id, f"{base} - hook {chr(64 + i)}", {})
+            job["plan"]["scenes"][0]["narration"] = hook
+            job["plan"]["hook"] = " ".join(hook.split()[:7])
+            job["scenes"][0].update(voice_state="QUEUED", voice_source="generated")
+            job["hook_test"] = {"group": job_id, "variant": chr(64 + i), "hook": hook}
+            self._reset(job, "narration", "captions", "assembly", "verify")
+            job.update(status="QUEUED", message=f"Hook {chr(64 + i)}")
+            self.store.save(job)
+            self.submit(job["id"])
+            out.append(job)
+        return out
 
     @staticmethod
     def _reset(job: dict, *stages: str) -> None:

@@ -185,12 +185,92 @@ class Brain(private val model: TextModel?) {
         } as List<Triple<String, String, String>>
     }
 
+    // ---- series ---------------------------------------------------------------------------------
+    /** Writes the next episode with the story so far in mind. */
+    fun nextEpisode(series: Series): Episode {
+        val n = series.episodes.size + 1
+        val words = Math.round(series.seconds * WORDS_PER_SECOND).toInt()
+        if (model == null) {
+            val prev = series.episodes.lastOrNull()
+            val text = "Part $n of ${series.name}. " + (prev?.let { "Last time: ${it.summary} " } ?: "") +
+                "${series.premise.trimEnd('.')}. What happens next will surprise you. Follow so you don't miss part ${n + 1}."
+            return Episode(n, "${series.name} - Part $n", "Part $n continues: ${series.premise.take(80)}", text)
+        }
+        val story = series.episodes.takeLast(8).joinToString("\n") { "Part ${it.number}: ${it.summary}" }.ifBlank { "(this is the first episode)" }
+        val user = "SERIES: ${series.name}\nPREMISE: ${series.premise}\nCHARACTERS: ${series.characters.ifBlank { "(invent consistent ones)" }}\n" +
+            "STORY SO FAR:\n$story\nWRITE: part $n, about $words words (${series.seconds} seconds)"
+        return ask(SERIES_SYSTEM, user) { d ->
+            val text = d.optString("script").replace(Regex("\\s+"), " ").trim()
+            require(text.split(" ").size >= maxOf(15, words / 3)) { "episode script too short" }
+            Episode(n, d.optString("title").ifBlank { "${series.name} - Part $n" }.take(100), d.optString("summary").trim().take(400), text.take(20000))
+        } as Episode
+    }
+
+    // ---- safety ---------------------------------------------------------------------------------
+    /** Rule checks always run; with AI, a careful reviewer adds anything the rules can't see. */
+    fun safety(script: String): List<SafetyIssue> {
+        val rules = SafetyRules.scan(script)
+        if (model == null || script.isBlank()) return rules
+        @Suppress("UNCHECKED_CAST")
+        val ai = runCatching {
+            ask(SAFETY_SYSTEM, "SCRIPT:\n${script.take(12000)}") { d ->
+                val a = d.optJSONArray("issues") ?: JSONArray()
+                (0 until a.length()).mapNotNull { i -> a.optJSONObject(i)?.let {
+                    val lvl = it.optString("level").lowercase().let { l -> if (l in setOf("high", "medium", "low")) l else "medium" }
+                    it.optString("issue").trim().takeIf { t -> t.isNotBlank() }?.let { t -> SafetyIssue(lvl, t.take(200), it.optString("fix").trim().take(240)) }
+                } }
+            } as List<SafetyIssue>
+        }.getOrDefault(emptyList())
+        return (rules + ai).distinctBy { it.text.lowercase() }.sortedBy { listOf("high", "medium", "low").indexOf(it.level) }
+    }
+
+    // ---- analytics insights ------------------------------------------------------------------------
+    fun insights(stats: ChannelStats): List<String> {
+        val base = YouTubeStats.patterns(stats)
+        if (model == null || stats.videos.size < 4) return base
+        val list = stats.videos.sortedByDescending { it.views }.take(40)
+            .joinToString("\n") { "${it.views} views | ${if (it.isShort) "Short" else "${it.seconds / 60} min"} | ${it.title}" }
+        @Suppress("UNCHECKED_CAST")
+        return runCatching {
+            ask(INSIGHTS_SYSTEM, "CHANNEL: ${stats.title}\nVIDEOS (views | length | title):\n$list") { d ->
+                strings(d.optJSONArray("insights")).map { it.trim().take(240) }.filter { it.isNotBlank() }.take(6).also { require(it.isNotEmpty()) { "no insights" } }
+            } as List<String>
+        }.getOrDefault(base)
+    }
+
+    // ---- translation for dubbing -------------------------------------------------------------------
+    fun translate(lines: List<String>, language: String): List<String> {
+        val m = model ?: throw AiException("Dubbing needs Script AI to translate - add your Gemini key in Settings")
+        if (lines.isEmpty()) return emptyList()
+        val user = "LANGUAGE: $language\nLINES:\n" + lines.mapIndexed { i, l -> "${i + 1}. $l" }.joinToString("\n")
+        @Suppress("UNCHECKED_CAST")
+        return ask(TRANSLATE_SYSTEM, user) { d ->
+            val out = strings(d.optJSONArray("lines")).map { it.trim() }
+            require(out.size == lines.size && out.all { it.isNotBlank() }) { "expected ${lines.size} translated lines, got ${out.size}" }
+            out
+        } as List<String>
+    }
+
+    // ---- hooks -----------------------------------------------------------------------------------
+    fun hooks(script: String, count: Int = 3): List<String> {
+        val first = sentences(script).firstOrNull().orEmpty()
+        if (model == null) {
+            val topic = first.trimEnd('.', '!', '?').take(60)
+            return listOf("Nobody talks about this: $topic.", "You won't believe what happened next.", "Here's the truth about $topic.").take(count)
+        }
+        @Suppress("UNCHECKED_CAST")
+        return ask(HOOKS_SYSTEM, "CURRENT OPENING: $first\nSCRIPT:\n${script.take(6000)}\nCOUNT: $count") { d ->
+            strings(d.optJSONArray("hooks")).map { it.trim().take(200) }.filter { it.isNotBlank() }.take(count).also { require(it.isNotEmpty()) { "no hooks" } }
+        } as List<String>
+    }
+
     // ---- channel plans ----------------------------------------------------------------------------
     fun plan(channel: Channel, trends: List<Trend>, start: LocalDate = LocalDate.now().plusDays(1)): List<Slot> {
         val n = channel.perWeek.coerceIn(1, 21)
         val formats = (0 until n).map { i -> when (channel.format) { "long" -> "long"; "mixed" -> if (i % 4 == 3) "long" else "short"; else -> "short" } }
         val note = listOf(Niches[channel.niche].name, channel.tone.takeIf { it.isNotBlank() }?.let { "tone: $it" },
-            channel.audience.takeIf { it.isNotBlank() }?.let { "audience: $it" }).filterNotNull().joinToString("; ")
+            channel.audience.takeIf { it.isNotBlank() }?.let { "audience: $it" },
+            channel.insights.takeIf { it.isNotBlank() }?.let { "what works on this channel: ${it.take(600)}" }).filterNotNull().joinToString("; ")
         val pool = trends.ifEmpty { listOf(Trend.manual("Evergreen " + channel.keyword.ifBlank { Niches[channel.niche].name })) }
         val per = if (n > 3) 2 else 1
         val picked = mutableListOf<Pair<Trend, Idea>>()
@@ -295,6 +375,27 @@ ai_video: "off" (stills with camera motion, cheapest), "hook" (AI motion on the 
 Return JSON only:
 {"reply":"...","ready":false,"suggestions":["up to 3 short replies the creator might tap"],
 "draft":{"title":"...","idea":"one paragraph brief","hook":"...","script":"","duration_s":45,"template":"shorts_cinematic","style":"cinematic","ai_video":"off"}}"""
+
+        private const val SERIES_SYSTEM = """You write episodes of a faceless narrated series. Keep characters, names and facts consistent with the STORY SO FAR.
+Open with a one-line recap only if it helps, end on a cliffhanger and "follow for part N+1". Spoken words only, no stage directions.
+Return JSON only: {"title":"...","script":"...","summary":"two sentences of what happens, for the next episode's memory"}"""
+
+        private const val SAFETY_SYSTEM = """You review scripts for faceless YouTube/TikTok videos before they're posted. Flag only real risks:
+defamation (calling real people criminals), medical or financial advice presented as fact, unverifiable claims stated as certain,
+copyrighted lyrics or long quotes, hate or harassment, dangerous instructions, content unsuitable for advertisers.
+Return JSON only: {"issues":[{"level":"high|medium|low","issue":"what's wrong, quoting the words","fix":"how to reword"}]} - an empty list if it's fine."""
+
+        private const val INSIGHTS_SYSTEM = """You are a YouTube growth analyst. From the channel's videos and their views, find what works:
+topics, title styles, hook patterns, length, Shorts vs long. Be concrete and practical. 3-6 short bullet points, each one an action
+("Do more X", "Stop Y"). Return JSON only: {"insights":["..."]}"""
+
+        private const val TRANSLATE_SYSTEM = """You translate voice-over lines for dubbing. Keep the meaning, tone and roughly the same length
+so timing still fits. Natural spoken language, not literal. Keep names. One output line per input line, same order.
+Return JSON only: {"lines":["..."]}"""
+
+        private const val HOOKS_SYSTEM = """You write opening lines (hooks) for Shorts and TikToks. Each hook is one spoken sentence of 6-16 words
+that makes the viewer need to keep watching, and it must fit the script that follows. Use different techniques: question,
+shocking fact, bold claim, story start. No lies. Return JSON only: {"hooks":["..."]}"""
 
         private const val THUMB_SYSTEM = """You write YouTube and Shorts thumbnail text that makes people click without lying.
 Each idea: line1 (1-3 words) and optional line2 (1-4 words), all short enough to read on a phone; highlight = the one word to colour.

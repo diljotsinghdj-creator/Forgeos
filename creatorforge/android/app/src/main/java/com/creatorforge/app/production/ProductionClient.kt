@@ -35,7 +35,13 @@ data class ProductionView(
     val inReview get() = status == "REVIEW"
 }
 
-data class ProductionSummary(val id: String, val title: String, val status: String, val progress: Float, val message: String = "")
+data class ProductionSummary(val id: String, val title: String, val status: String, val progress: Float, val message: String = "",
+                             val variantOf: String = "", val hookGroup: String = "", val hookVariant: String = "", val language: String = "")
+
+data class ClipItem(val index: Int, val title: String, val hook: String, val start: Double, val end: Double, val durationS: Double)
+data class ClipJob(val id: String, val status: String, val message: String, val error: String, val title: String, val clips: List<ClipItem>)
+data class ReviewItem(val id: String, val title: String, val path: String, val status: String, val comments: List<Pair<String, String>>)
+data class Account(val id: String, val name: String, val role: String, val credits: Int, val used: Int, val key: String = "")
 
 data class ProductionRequest(
     val idea: String, val durationS: Int, val aspect: String, val template: String, val voice: String,
@@ -133,7 +139,12 @@ class ProductionClient(baseUrl: String) {
     suspend fun list(): List<ProductionSummary> = withContext(Dispatchers.IO) {
         val a = JSONArray(call("GET", "/v1/productions"))
         (0 until a.length()).map { i ->
-            a.getJSONObject(i).let { ProductionSummary(it.getString("id"), it.optString("title"), it.optString("status"), it.optDouble("progress", 0.0).toFloat(), it.optString("message")) }
+            a.getJSONObject(i).let {
+                val ht = it.optJSONObject("hook_test")
+                ProductionSummary(it.getString("id"), it.optString("title"), it.optString("status"), it.optDouble("progress", 0.0).toFloat(), it.optString("message"),
+                    it.optString("variant_of").takeIf { v -> v != "null" }.orEmpty(), ht?.optString("group").orEmpty(), ht?.optString("variant").orEmpty(),
+                    it.optString("language").takeIf { v -> v != "null" }.orEmpty())
+            }
         }
     }
 
@@ -191,7 +202,7 @@ class ProductionClient(baseUrl: String) {
     }
 
     /** Streams a file picked on the phone to the worker's Asset Library. */
-    suspend fun uploadAsset(kind: String, name: String, open: () -> java.io.InputStream): Unit = withContext(Dispatchers.IO) {
+    suspend fun uploadAsset(kind: String, name: String, open: () -> java.io.InputStream): String = withContext(Dispatchers.IO) {
         if (base.isBlank()) throw WorkerException("Not connected to your pod - start it and tap Settings → SCAN QR (writing tools work without it)")
         val body = object : okhttp3.RequestBody() {
             override fun contentType() = "application/octet-stream".toMediaType()
@@ -203,6 +214,7 @@ class ProductionClient(baseUrl: String) {
                 val text = r.body?.string().orEmpty()
                 throw WorkerException(runCatching { JSONObject(text).optString("detail") }.getOrNull()?.ifBlank { null } ?: "Upload failed (HTTP ${r.code})")
             }
+            runCatching { JSONObject(r.body?.string().orEmpty()).optString("id") }.getOrDefault("")
         }
     }
 
@@ -261,6 +273,52 @@ class ProductionClient(baseUrl: String) {
     }
 
     private fun strings(a: JSONArray?) = (0 until (a?.length() ?: 0)).map { a!!.optString(it) }
+
+    // ---- dubbing, Hook Lab, Shorts Clipper ----
+    suspend fun dub(id: String, language: String, voice: String, narrations: List<String>): ProductionView = withContext(Dispatchers.IO) {
+        parse(call("POST", "/v1/productions/$id/dub", JSONObject().put("language", language).put("voice", voice).put("narrations", JSONArray(narrations))))
+    }
+
+    suspend fun hookVariants(id: String, hooks: List<String>): Int = withContext(Dispatchers.IO) {
+        JSONObject(call("POST", "/v1/productions/$id/hook-variants", JSONObject().put("hooks", JSONArray(hooks)))).optJSONArray("productions")?.length() ?: 0
+    }
+
+    private fun parseClipJob(j: JSONObject): ClipJob {
+        val a = j.optJSONArray("clips") ?: JSONArray()
+        return ClipJob(j.getString("id"), j.optString("status"), j.optString("message"), j.optString("error").takeIf { it != "null" }.orEmpty(),
+            j.optJSONObject("source")?.optString("title").orEmpty(),
+            (0 until a.length()).map { a.getJSONObject(it).let { c -> ClipItem(c.optInt("index"), c.optString("title"), c.optString("hook"),
+                c.optDouble("start"), c.optDouble("end"), c.optDouble("duration_s")) } })
+    }
+
+    suspend fun createClips(productionId: String?, assetId: String?, count: Int, seconds: Int, brand: JSONObject?): ClipJob = withContext(Dispatchers.IO) {
+        val body = JSONObject().put("count", count).put("seconds", seconds)
+        productionId?.let { body.put("production_id", it) }; assetId?.let { body.put("asset_id", it) }; brand?.let { body.put("brand", it) }
+        parseClipJob(JSONObject(call("POST", "/v1/clips", body)))
+    }
+    suspend fun clipJob(id: String): ClipJob = withContext(Dispatchers.IO) { parseClipJob(JSONObject(call("GET", "/v1/clips/$id"))) }
+    suspend fun clipJobs(): List<ClipJob> = withContext(Dispatchers.IO) {
+        val a = JSONArray(call("GET", "/v1/clips")); (0 until a.length()).map { parseClipJob(a.getJSONObject(it)) }
+    }
+
+    // ---- team & accounts ----
+    suspend fun reviewLink(id: String): String = withContext(Dispatchers.IO) { base + JSONObject(call("POST", "/v1/productions/$id/review-link")).getString("path") }
+    suspend fun reviews(): List<ReviewItem> = withContext(Dispatchers.IO) {
+        val a = JSONArray(call("GET", "/v1/reviews"))
+        (0 until a.length()).map { a.getJSONObject(it).let { r ->
+            val c = r.optJSONArray("comments") ?: JSONArray()
+            ReviewItem(r.getString("id"), r.optString("title"), base + r.optString("path"), r.optString("status"),
+                (0 until c.length()).map { i -> c.getJSONObject(i).let { x -> x.optString("decision") to x.optString("comment") } })
+        } }
+    }
+    private fun parseAccount(j: JSONObject) = Account(j.getString("id"), j.optString("name"), j.optString("role"), j.optInt("credits"), j.optInt("used"), j.optString("key"))
+    suspend fun me(): JSONObject = withContext(Dispatchers.IO) { JSONObject(call("GET", "/v1/me")) }
+    suspend fun accounts(): List<Account> = withContext(Dispatchers.IO) { JSONArray(call("GET", "/v1/accounts")).let { a -> (0 until a.length()).map { parseAccount(a.getJSONObject(it)) } } }
+    suspend fun createAccount(name: String, role: String, credits: Int): Account = withContext(Dispatchers.IO) {
+        parseAccount(JSONObject(call("POST", "/v1/accounts", JSONObject().put("name", name).put("role", role).put("credits", credits))))
+    }
+    suspend fun addCredits(id: String, n: Int): Account = withContext(Dispatchers.IO) { parseAccount(JSONObject(call("PATCH", "/v1/accounts/$id", JSONObject().put("add_credits", n)))) }
+    suspend fun deleteAccount(id: String): Unit = withContext(Dispatchers.IO) { call("DELETE", "/v1/accounts/$id") }
 
     /** Queues a production from a ready-made request body (built on the phone by the studio). */
     suspend fun createJson(body: JSONObject): ProductionView = withContext(Dispatchers.IO) { parse(call("POST", "/v1/productions", body)) }

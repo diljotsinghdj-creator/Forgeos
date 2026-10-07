@@ -44,18 +44,10 @@ private val STARTERS = listOf(
     "Write a script: why we dream"
 )
 
-/** Director tab: chat (typing or voice) and the Scripts library. Runs on the phone; only MAKE IT uses the pod. */
+/** Director: chat (typing or voice). Runs on the phone; only MAKE IT uses the pod. */
 @Composable
-fun DirectorScreen(onOpenGenerate: () -> Unit = {}, onOpenSettings: () -> Unit = {}, startOnScripts: Boolean = false) {
-    var section by remember { mutableStateOf(if (startOnScripts) "scripts" else "chat") }
-    Column(Modifier.fillMaxSize()) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text("DIRECTOR", color = Gold, fontSize = 28.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
-            Chips(listOf("chat" to "💬 Chat", "scripts" to "📝 Scripts"), section) { section = it }
-        }
-        if (section == "chat") DirectorChat(onOpenGenerate, onOpenSettings) { section = "scripts" }
-        else ScriptsPanel(onOpenGenerate, onOpenSettings)
-    }
+fun DirectorScreen(onOpenGenerate: () -> Unit = {}, onOpenSettings: () -> Unit = {}, onOpenScripts: () -> Unit = {}) {
+    DirectorChat(onOpenGenerate, onOpenSettings, onOpenScripts)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

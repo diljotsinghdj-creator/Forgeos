@@ -398,8 +398,12 @@ class Pipeline:
             if shot.get("overlay") and i > 0:
                 overlays.append(cap.Overlay(start + 0.3, start + slot - 0.2, shot["overlay"], "Callout"))
             start += slot
-        if plan.get("cta"):
-            overlays.append(cap.Overlay(max(0.0, total - 3.0), total, plan["cta"], "CTA"))
+        brand = spec.brand or {}
+        cta = brand.get("outro_text") or plan.get("cta")
+        if cta:
+            overlays.append(cap.Overlay(max(0.0, total - 3.0), total, cta, "CTA"))
+        if brand.get("intro_text"):
+            overlays.append(cap.Overlay(0.0, min(2.5, total), brand["intro_text"], "Brand"))
 
         sfx_hits: list[tuple[Path, float, float]] = []
         if spec.sfx:
@@ -424,7 +428,8 @@ class Pipeline:
             cues = cap.group(words, t.words_per_caption)
             ass = work / "captions.ass"
             emphasis = {wd for s in shots for wd in s.get("emphasis", [])} if spec.auto_edit else set()
-            cap.write_ass(ass, w, h, t.caption_scale, t.caption_position, cues, overlays, emphasis)
+            cap.write_ass(ass, w, h, t.caption_scale, t.caption_position, cues, overlays, emphasis,
+                          brand.get("caption_color", ""), brand.get("highlight_color", ""))
 
         job["edit"] = {"auto_edit": spec.auto_edit, "transitions": [c.transition for c in clips[1:]],
                        "durations": [round(d, 2) for d in timings],
@@ -433,7 +438,17 @@ class Pipeline:
                                         if c.video_duration and c.video_duration < d + render.TRANSITION_S else 1.0
                                         for c, d in zip(clips, timings)]}
         out = jdir / "work" / "render.mp4"
-        expected = render.render_video(clips, mixed, ass, w, h, out, work, cancel)
+        logo = None
+        if brand.get("logo_asset_id"):
+            try:
+                a = self.library.assets.get(brand["logo_asset_id"])
+            except KeyError:
+                raise StageFailed("the brand logo was deleted from the Asset Library") from None
+            if a["kind"] != "image":
+                raise StageFailed("the brand logo must be an image asset")
+            logo = (self.library.assets.path(a), brand.get("logo_position", "top-right"), brand.get("logo_opacity", 0.85))
+            job["providers"]["brand"] = f"logo {a['name']} ({logo[1]})"
+        expected = render.render_video(clips, mixed, ass, w, h, out, work, cancel, logo)
         job["render"] = {"file": "work/render.mp4", "expected_s": round(expected, 3), "width": w, "height": h}
 
     def _verify(self, job: dict, cancel) -> None:
