@@ -71,11 +71,13 @@ class ProductionSpec:
             ai_video_scenes=d.get("ai_video_scenes", "all") or "all",
             auto_edit=bool(d.get("auto_edit", True)),
             character_ids=[str(x) for x in d.get("character_ids") or []][:10],
-            script=str(d.get("script", "") or "").strip(),
+            script=clean_script(str(d.get("script", "") or "")),
             music_asset_id=str(d.get("music_asset_id", "") or ""),
             sfx=bool(d.get("sfx", True)),
             brand=clean_brand(d.get("brand")),
         )
+        if spec.script and not d.get("idea"):
+            spec.idea = script_heading(str(d.get("script", ""))) or spec.idea
         spec.validate()
         return spec
 
@@ -333,6 +335,46 @@ def split_sentences(text: str) -> list[str]:
         if buf:
             out.append(buf)
     return [re.sub(r"\s+", " ", s).strip() for s in out if any(ch.isalnum() for ch in s)]
+
+
+_LABEL = re.compile(r"^\s*(?:\*\*|__)?(?:voice\s*-?\s*over|vo|v\.o\.|narrator|narration|script|hook|cta|outro|intro)"
+                    r"(?:\s*\([^)]*\))?\s*(?:\*\*|__)?\s*[:\-\u2013\u2014]\s*(?:\*\*|__)?", re.I)
+_DIRECTION = re.compile(r"^\s*(?:\*\*|__)?(?:visuals?|on[- ]screen(?: text)?|text overlay|b-?roll|shot|camera|sfx|music|"
+                        r"scene\s*\d*|title|caption|thumbnail|duration|\d+\s*[-\u2013]\s*\d+\s*s(?:ec)?)\b[^:]{0,30}:", re.I)
+
+
+def _is_heading(line: str) -> bool:
+    """A short line with no sentence punctuation, e.g. "Nobody Noticed (Brain Glitch)" or "# Episode 3"."""
+    t = line.strip().strip("#*_ ").strip()
+    return bool(t) and len(t.split()) <= 10 and not re.search(r"[.!?…]", t)
+
+
+def script_heading(text: str) -> str:
+    lines = [l for l in text.splitlines() if l.strip()]
+    if len(lines) > 1 and _is_heading(lines[0]) and not _LABEL.match(lines[0]):
+        return lines[0].strip().strip("#*_ ").strip()[:80]
+    return ""
+
+
+def clean_script(text: str) -> str:
+    """Keeps only the words to be spoken: drops a title line, "Voiceover:"-style labels, stage directions
+    ("Visual: ...", "[cut to black]", "(beat)") and markdown, so pasted scripts aren't read out literally."""
+    lines = [l for l in text.replace("\r", "").splitlines() if l.strip()]
+    if script_heading(text):
+        lines = lines[1:]
+    out = []
+    for line in lines:
+        if _DIRECTION.match(line) and not _LABEL.match(line):
+            continue
+        line = _LABEL.sub("", line)
+        line = re.sub(r"\[[^\]]*\]", " ", line)
+        line = re.sub(r"^\s*\([^)]*\)\s*$", " ", line)
+        line = re.sub(r"[*_#>`]+", "", line)
+        line = re.sub(r"^\s*[-\u2022]\s+", "", line)
+        line = re.sub(r"\s+", " ", line).strip().strip('"\u201c\u201d').strip()
+        if line:
+            out.append(line)
+    return "\n".join(out).strip()
 
 
 def script_title(text: str) -> str:

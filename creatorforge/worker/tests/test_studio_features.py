@@ -171,3 +171,15 @@ def test_cancel_reaches_inside_model_calls():
     assert p2(**step_callback(p2)) == "stopped" and cancelled()
     set_cancel(None)
     assert step_callback(object()) == {}
+
+
+def test_pasted_script_drops_title_labels_and_directions():
+    from creatorforge_worker.director import ProductionSpec, clean_script
+
+    raw = ("Nobody Noticed (Brain Glitch)\nVoiceover: Nobody noticed your moment. Here's the proof.\n"
+           "[Visual: crowded room]\nVisual: close-up\n**VO:** Researchers at Cornell checked.\n(beat)\nSo relax.")
+    assert clean_script(raw) == "Nobody noticed your moment. Here's the proof.\nResearchers at Cornell checked.\nSo relax."
+    spec = ProductionSpec.from_dict({"script": raw})
+    assert spec.idea == "Nobody Noticed (Brain Glitch)"
+    assert "Voiceover" not in spec.script and "Visual" not in spec.script
+    assert clean_script("Just a plain script. Two sentences.") == "Just a plain script. Two sentences."
