@@ -17,8 +17,12 @@ app. There's no subscription, and you pay only while the machine is running.
 ## 2. Paste this one command
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/diljotsinghdj-creator/Forgeos/claude/forgeos-visibility-47vgwp/creatorforge/worker/cloud/setup_gpu.sh | bash
+curl -fsSL https://raw.githubusercontent.com/diljotsinghdj-creator/Forgeos/claude/forgeos-visibility-47vgwp/creatorforge/worker/cloud/start.sh | bash
 ```
+
+The setup runs in the background on the pod, so closing the tab or losing signal doesn't stop
+it. To watch progress again later: `tail -f /workspace/creatorforge/setup.log`. When it's done,
+`cat /workspace/creatorforge/connection.txt` shows the URL and token.
 
 The first run downloads about 60 GB of open models and takes 15–30 minutes:
 

@@ -169,7 +169,7 @@ if [ -z "$URL" ]; then
   echo "Could not open the Cloudflare link (see $HOME_DIR/tunnel.log)."
   URL="${ALT:-http://$(curl -fs https://api.ipify.org || hostname -I | awk '{print $1}'):$PORT}"
 fi
-cat <<DONE
+cat <<DONE | tee "$HOME_DIR/connection.txt"
 
 ================================================================
  CreatorForge worker is running.
