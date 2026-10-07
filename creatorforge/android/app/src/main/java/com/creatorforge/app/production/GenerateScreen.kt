@@ -70,6 +70,7 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
     var characters by remember { mutableStateOf(prefs.getString("characters", "").orEmpty()) }
     var videoScope by remember { mutableStateOf(prefs.getString("video_scope", null) ?: if (prefs.getBoolean("ai_video", false)) "all" else "off") }
     val aiVideo = videoScope != "off"
+    var videoQuality by remember { mutableStateOf(prefs.getString("video_quality", "fast").orEmpty()) }
     var review by remember { mutableStateOf(prefs.getBoolean("review", false)) }
     var editing by remember { mutableStateOf<SceneView?>(null) }
     var autoEdit by remember { mutableStateOf(prefs.getBoolean("auto_edit", true)) }
@@ -328,6 +329,15 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                         "all" -> "Every scene animated - most realistic, several minutes of GPU per scene."
                         else -> "AI images with camera motion - fastest and cheapest."
                     }, color = Color.Gray, fontSize = 12.sp)
+                    if (aiVideo) {
+                        Label("AI VIDEO SPEED")
+                        ChipRow(listOf("fast" to "Fast", "balanced" to "Balanced", "best" to "Best detail"), videoQuality) { videoQuality = it }
+                        Text(when (videoQuality) {
+                            "best" -> "Full 720p, 40 steps - sharpest, about 5x slower than Fast."
+                            "balanced" -> "Middle ground - about 2x slower than Fast."
+                            else -> "Quickest - smaller clips upscaled to 1080p; looks great on phones."
+                        }, color = Color.Gray, fontSize = 12.sp)
+                    }
                 }
                 Row { Switch(autoEdit, { autoEdit = it }); Text(" Auto Edit (AI picks transitions, emphasis, pauses)", Modifier.padding(top = 12.dp)) }
                 Row { Switch(review, { review = it }); Text(" Review storyboard before render", Modifier.padding(top = 12.dp)) }
@@ -360,7 +370,7 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                         .putString("template", template).putString("voice", voice).putString("pacing", pacing)
                         .putBoolean("music", music).putBoolean("captions", captions).putString("style", style)
                         .putString("mood", mood).putString("camera", camera).putString("characters", characters)
-                        .putString("video_scope", videoScope).putBoolean("review", review)
+                        .putString("video_scope", videoScope).putString("video_quality", videoQuality).putBoolean("review", review)
                         .putBoolean("auto_edit", autoEdit).putStringSet("character_ids", picked)
                         .putBoolean("script_mode", scriptMode).putBoolean("sfx", sfx).putString("music_asset", musicAsset).apply()
                     val chars = characters.lines().mapNotNull { l ->
@@ -369,7 +379,7 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                     fun request(text: String) = ProductionRequest(if (scriptMode) "" else text, duration, aspect, template, voice, pacing,
                         style.trim(), mood.trim(), camera.trim(), chars, music, captions, aiVideo, review, autoEdit, picked.toList(),
                         script = if (scriptMode) text else "", musicAssetId = if (music) musicAsset else "", sfx = sfx,
-                        aiVideoScenes = if (videoScope == "hook") "hook" else "all")
+                        aiVideoScenes = if (videoScope == "hook") "hook" else "all", videoQuality = videoQuality)
                     val pieces = batchPieces(idea)
                     if (pieces.size <= 1) act { client.create(request(idea.trim())) }
                     else {

@@ -13,7 +13,7 @@ from pathlib import Path
 
 import httpx
 
-from .base import cancelled, step_callback, NotConfigured, ProviderError
+from .base import cancelled, is_oom, place_on_gpu, step_callback, NotConfigured, ProviderError
 
 
 class HttpVideoProvider:
@@ -44,6 +44,16 @@ _PROFILES = {
 }
 
 
+# Speed/quality presets (CF_VIDEO_QUALITY): (max long side, steps, max frames). Generation time grows with
+# pixels x frames x steps, so "fast" is roughly 5x quicker than "best". Clips are upscaled to 1080p when the
+# video is assembled, and Shorts are watched on phones, so "fast" (480p-class, Wan's native low size) looks fine.
+QUALITY = {
+    "fast": (832, 20, 81),
+    "balanced": (1024, 30, 97),
+    "best": (0, 40, 0),   # 0 = the model's own maximum
+}
+
+
 def _profile(model: str) -> tuple[int, int, int, int, float]:
     m = model.lower()
     for key, prof in _PROFILES.items():
@@ -56,11 +66,22 @@ class DiffusersVideoProvider:
     """Image-to-video on the worker GPU. Default: Wan 2.2 TI2V-5B (Apache-2.0)."""
     _lock = threading.Lock()
 
-    def __init__(self, model: str = "", steps: int = 0):
+    def __init__(self, model: str = "", steps: int = 0, quality: str = "fast"):
         self.model = model or "Wan-AI/Wan2.2-TI2V-5B-Diffusers"
         self.fps, self.step, self.max_frames, self.max_side, self.guidance = _profile(self.model)
-        self.steps = steps or (40 if "wan" in self.model.lower() else 40)
-        self.id = f"diffusers-i2v:{self.model}"
+        self._fixed_steps = steps
+        self._model_limits = (self.max_side, self.max_frames)
+        self.placement = ""
+        self.set_quality(quality)
+
+    def set_quality(self, quality: str) -> None:
+        """Switches the speed preset for the next clips (same loaded model, no reload)."""
+        self.quality = quality if quality in QUALITY else "fast"
+        side, q_steps, frames = QUALITY[self.quality]
+        self.max_side = min(self._model_limits[0], side) if side else self._model_limits[0]
+        self.max_frames = min(self._model_limits[1], frames) if frames else self._model_limits[1]
+        self.steps = self._fixed_steps or q_steps
+        self.id = f"diffusers-i2v:{self.model}:{self.quality}"
         self._pipe = None
 
     def _load(self):
@@ -74,7 +95,8 @@ class DiffusersVideoProvider:
                 raise NotConfigured("AI video clips need a CUDA GPU on the worker")
             cls = getattr(diffusers, "WanImageToVideoPipeline", None) if "wan" in self.model.lower() else None
             pipe = (cls or diffusers.DiffusionPipeline).from_pretrained(self.model, torch_dtype=torch.bfloat16)
-            pipe.enable_model_cpu_offload()
+            # Wan 2.2 5B needs ~24 GB with its text encoder; keep it all on the GPU when there's room.
+            self.placement = place_on_gpu(pipe, keep_resident_gb=40)
             if hasattr(pipe, "vae") and hasattr(pipe.vae, "enable_tiling"):
                 pipe.vae.enable_tiling()
             self._pipe = pipe
@@ -101,7 +123,13 @@ class DiffusersVideoProvider:
                 kwargs["negative_prompt"] = negative
             kwargs.update(step_callback(pipe))
             try:
-                result = pipe(**kwargs)
+                try:
+                    result = pipe(**kwargs)
+                except Exception as e:  # noqa: BLE001
+                    if not (is_oom(e) and self.placement == "gpu"):
+                        raise
+                    pipe.to("cpu"); torch.cuda.empty_cache(); pipe.enable_model_cpu_offload(); self.placement = "offload"
+                    result = pipe(**kwargs)
                 if cancelled():
                     from ..media.ff import Cancelled
                     raise Cancelled()

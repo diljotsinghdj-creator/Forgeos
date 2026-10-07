@@ -36,6 +36,7 @@ class Config:
     video_provider: str = ""  # "diffusers" | "http" | "mock" ("" = AI video clips unavailable)
     video_url: str = ""
     video_model: str = ""
+    video_quality: str = "fast"  # "fast" | "balanced" | "best" (AI video clips: speed vs detail)
     asr_provider: str = ""  # "whisper" | "" (estimated captions)
     whisper_model: str = "small"
     whisper_device: str = "auto"
@@ -80,6 +81,7 @@ class Config:
             video_provider=_env("CF_VIDEO_PROVIDER"),
             video_url=_env("CF_VIDEO_URL"),
             video_model=_env("CF_VIDEO_MODEL"),
+            video_quality=_env("CF_VIDEO_QUALITY", "fast"),
             asr_provider=_env("CF_ASR_PROVIDER"),
             whisper_model=_env("CF_WHISPER_MODEL", "small"),
             whisper_device=_env("CF_WHISPER_DEVICE", "auto"),

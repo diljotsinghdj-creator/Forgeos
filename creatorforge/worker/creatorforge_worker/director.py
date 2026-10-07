@@ -41,6 +41,7 @@ class ProductionSpec:
     captions: bool = True
     motion: str = "stills"  # "stills" (camera motion on images) | "ai_video" (image-to-video clips)
     review: bool = False  # pause after scene visuals so the storyboard can be edited/approved
+    video_quality: str = ""  # AI clip speed: "fast" | "balanced" | "best" ("" = the worker's default)
     ai_video_scenes: object = "all"  # with motion=ai_video: "all", "hook" (first scene) or a list of scene numbers (1-based)
     auto_edit: bool = True  # let the Director choose transitions, caption emphasis and dramatic holds
     character_ids: list[str] = field(default_factory=list)  # resolved from the Character Library at submit
@@ -69,6 +70,7 @@ class ProductionSpec:
             motion=str(d.get("motion", "") or "stills"),
             review=bool(d.get("review", False)),
             ai_video_scenes=d.get("ai_video_scenes", "all") or "all",
+            video_quality=str(d.get("video_quality", "") or ""),
             auto_edit=bool(d.get("auto_edit", True)),
             character_ids=[str(x) for x in d.get("character_ids") or []][:10],
             script=clean_script(str(d.get("script", "") or "")),
@@ -108,6 +110,8 @@ class ProductionSpec:
             raise ValueError("pacing must be slow, medium or fast")
         if self.motion not in ("stills", "ai_video"):
             raise ValueError("motion must be stills or ai_video")
+        if self.video_quality not in ("", "fast", "balanced", "best"):
+            raise ValueError("video_quality must be fast, balanced or best")
         if isinstance(self.ai_video_scenes, list):
             if not self.ai_video_scenes or not all(isinstance(n, int) and n >= 1 for n in self.ai_video_scenes):
                 raise ValueError("ai_video_scenes must list scene numbers starting at 1")

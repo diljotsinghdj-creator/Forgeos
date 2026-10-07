@@ -77,3 +77,28 @@ def step_callback(pipe) -> dict:
             p._interrupt = True
         return callback_kwargs
     return {"callback_on_step_end": on_step_end}
+
+
+def gpu_memory_gb() -> float:
+    """Total memory of the first CUDA GPU (0 when there is none)."""
+    try:
+        import torch
+        if torch.cuda.is_available():
+            return torch.cuda.get_device_properties(0).total_memory / 1024**3
+    except Exception:  # noqa: BLE001
+        pass
+    return 0.0
+
+
+def place_on_gpu(pipe, keep_resident_gb: float) -> str:
+    """Keeps the whole pipeline in GPU memory on big GPUs (fast); streams it from system RAM on small
+    ones (enable_model_cpu_offload: fits, but every call copies the models to the GPU again)."""
+    if gpu_memory_gb() >= keep_resident_gb:
+        pipe.to("cuda")
+        return "gpu"
+    pipe.enable_model_cpu_offload()
+    return "offload"
+
+
+def is_oom(e: BaseException) -> bool:
+    return "out of memory" in str(e).lower() or type(e).__name__ == "OutOfMemoryError"

@@ -183,3 +183,18 @@ def test_pasted_script_drops_title_labels_and_directions():
     assert spec.idea == "Nobody Noticed (Brain Glitch)"
     assert "Voiceover" not in spec.script and "Visual" not in spec.script
     assert clean_script("Just a plain script. Two sentences.") == "Just a plain script. Two sentences."
+
+
+def test_ai_video_speed_presets():
+    import pytest
+    from creatorforge_worker.director import ProductionSpec
+    from creatorforge_worker.providers.video import DiffusersVideoProvider
+
+    v = DiffusersVideoProvider("")
+    assert (v.quality, v.steps, v._size(768, 1344)) == ("fast", 20, (448, 832))
+    v.set_quality("best")
+    assert (v.steps, v.max_frames, v._size(768, 1344)) == (40, 121, (704, 1280))
+    assert v.id.endswith(":best")   # clip cache keys differ per preset
+    assert ProductionSpec.from_dict({"idea": "a calm ocean story", "video_quality": "balanced"}).video_quality == "balanced"
+    with pytest.raises(ValueError):
+        ProductionSpec.from_dict({"idea": "a calm ocean story", "video_quality": "ultra"})

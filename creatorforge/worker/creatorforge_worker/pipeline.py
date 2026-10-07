@@ -211,6 +211,8 @@ class Pipeline:
             self._stage(job, "clips", "SKIPPED")
             return
         video = providers.build_video(self.cfg)
+        if hasattr(video, "set_quality"):
+            video.set_quality(spec.video_quality or self.cfg.video_quality)
         chosen = self._mark_video_scenes(job)
         job["providers"]["clips"] = f"{video.id} ({len(chosen)}/{len(job['scenes'])} scenes)"
         gen, _ = ASPECTS[spec.aspect]

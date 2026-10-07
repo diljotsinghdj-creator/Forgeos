@@ -76,7 +76,7 @@ _video_cache: dict[tuple, object] = {}
 
 
 def build_video(cfg: Config):
-    key = (cfg.video_provider, cfg.video_url, cfg.video_model)
+    key = (cfg.video_provider, cfg.video_url, cfg.video_model, cfg.video_quality)
     if key in _video_cache:
         return _video_cache[key]
     p = cfg.video_provider
@@ -91,7 +91,7 @@ def build_video(cfg: Config):
         prov = HttpVideoProvider(cfg.video_url)
     elif p == "diffusers":
         from .video import DiffusersVideoProvider
-        prov = DiffusersVideoProvider(cfg.video_model)
+        prov = DiffusersVideoProvider(cfg.video_model, quality=cfg.video_quality)
     else:
         raise NotConfigured("No video model configured (set CF_VIDEO_PROVIDER to diffusers or http)")
     _video_cache[key] = prov
