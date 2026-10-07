@@ -39,7 +39,13 @@ object StudioHub {
     /** AI is "on" when a key is saved, or a custom server (e.g. Ollama on a PC) is set. */
     fun aiReady(c: Context) = baseUrl(c).isNotBlank() && model(c).isNotBlank() && (key(c).isNotBlank() || preset(c).id == "custom")
 
-    fun brain(c: Context): Brain = Brain(if (aiReady(c)) OpenAiCompatible(baseUrl(c), model(c), key(c)) else null)
+    fun textModel(c: Context, modelName: String = model(c)): TextModel =
+        if (preset(c).id == "gemini") GeminiNative(modelName, key(c)) else OpenAiCompatible(baseUrl(c), modelName, key(c))
+
+    fun models(c: Context): List<String> =
+        if (preset(c).id == "gemini") GeminiNative.listModels(key(c)) else listModels(baseUrl(c), key(c))
+
+    fun brain(c: Context): Brain = Brain(if (aiReady(c)) textModel(c) else null)
     fun radar(c: Context) = TrendRadar(File(c.cacheDir, "trends"), { youtubeKey(c) })
     fun scripts(c: Context) = ScriptStore(dir(c))
     fun channels(c: Context) = ChannelStore(dir(c))
@@ -105,7 +111,8 @@ fun AiSettingsCard(secure: SecureTokenStore) {
         TextButton({
             scope.launch {
                 if (key.isNotBlank()) { secure.save("ai", key.trim()); key = ""; hasKey = true }
-                runCatching { studio { listModels(baseUrl, StudioHub.key(context)) } }
+                StudioHub.save(context, preset, baseUrl, model)
+                runCatching { studio { StudioHub.models(context) } }
                     .onSuccess { list -> models = list.filter { pickTextModel(listOf(it)) != null }.take(30); if (models.isEmpty()) status = "✗ No models found for this key" }
                     .onFailure { status = "✗ ${it.message}" }
             }
@@ -124,15 +131,16 @@ fun AiSettingsCard(secure: SecureTokenStore) {
                     val result = runCatching {
                         studio {
                             require(StudioHub.aiReady(context)) { "Add a key first" }
-                            val base = StudioHub.baseUrl(context); val k = StudioHub.key(context)
+                            val base = StudioHub.baseUrl(context)
                             try {
-                                OpenAiCompatible(base, StudioHub.model(context), k).complete("Reply with the single word OK.", "Say OK")
+                                StudioHub.textModel(context).complete("Reply with the single word OK.", "Say OK")
                                 StudioHub.model(context) to false
                             } catch (e: AiException) {
-                                if ("doesn't know the model" !in (e.message ?: "")) throw e
+                                val m = e.message ?: ""
+                                if ("doesn't know the model" !in m && "doesn't offer the model" !in m) throw e
                                 // The model was retired or renamed: ask the service what this key can use and switch to it.
-                                val pick = pickTextModel(listModels(base, k)) ?: throw e
-                                OpenAiCompatible(base, pick, k).complete("Reply with the single word OK.", "Say OK")
+                                val pick = pickTextModel(StudioHub.models(context)) ?: throw e
+                                StudioHub.textModel(context, pick).complete("Reply with the single word OK.", "Say OK")
                                 StudioHub.save(context, preset, base, pick)
                                 pick to true
                             }

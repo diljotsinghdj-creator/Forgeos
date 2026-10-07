@@ -24,6 +24,10 @@ object AiPresets {
             "https://aistudio.google.com/apikey", "Free key with your Google account. Generous daily limit."),
         AiPreset("groq", "Groq (free tier)", "https://api.groq.com/openai/v1", "llama-3.3-70b-versatile",
             "https://console.groq.com/keys", "Free key, very fast open models (Llama)."),
+        AiPreset("mistral", "Mistral (free tier)", "https://api.mistral.ai/v1", "mistral-small-latest",
+            "https://console.mistral.ai/api-keys", "Free 'Experiment' plan - sign up, verify your phone, create a key."),
+        AiPreset("cerebras", "Cerebras (free tier)", "https://api.cerebras.ai/v1", "llama-3.3-70b",
+            "https://cloud.cerebras.ai", "Free key, extremely fast Llama models."),
         AiPreset("openrouter", "OpenRouter (free models)", "https://openrouter.ai/api/v1", "meta-llama/llama-3.3-70b-instruct:free",
             "https://openrouter.ai/keys", "One key for many models; ':free' models cost nothing."),
         AiPreset("custom", "Custom / my own server", "", "", "", "Any OpenAI-compatible address, e.g. Ollama on a PC: http://192.168.x.x:11434/v1"),
@@ -64,6 +68,73 @@ class OpenAiCompatible(baseUrl: String, private val model: String, private val k
             JSONObject(text).getJSONArray("choices").getJSONObject(0).getJSONObject("message").getString("content")
         } catch (e: Exception) {
             throw AiException("The AI service sent an unexpected answer: ${text.take(200)}")
+        }
+    }
+}
+
+/**
+ * Google Gemini through its own REST API (generateContent with an AI Studio key). More dependable than the
+ * OpenAI-compatible route, and its errors are passed through so the user sees Google's exact reason.
+ */
+class GeminiNative(private val model: String, private val key: String) : TextModel {
+    private val client = OkHttpClient.Builder().connectTimeout(15, TimeUnit.SECONDS).readTimeout(120, TimeUnit.SECONDS).build()
+
+    override fun complete(system: String, user: String): String {
+        if (key.isBlank()) throw AiException("Add your Gemini key in Settings")
+        val m = model.trim().removePrefix("models/").ifBlank { "gemini-flash-latest" }
+        val body = JSONObject()
+            .put("systemInstruction", JSONObject().put("parts", JSONArray().put(JSONObject().put("text", system))))
+            .put("contents", JSONArray().put(JSONObject().put("role", "user").put("parts", JSONArray().put(JSONObject().put("text", user)))))
+            .put("generationConfig", JSONObject().put("temperature", 0.8))
+        val req = Request.Builder().url("$GEMINI/models/$m:generateContent").header("x-goog-api-key", key.trim())
+            .post(body.toString().toRequestBody("application/json".toMediaType())).build()
+        val text = try {
+            client.newCall(req).execute().use { r ->
+                val t = r.body?.string().orEmpty()
+                if (!r.isSuccessful) throw AiException(geminiError(r.code, t, m))
+                t
+            }
+        } catch (e: AiException) { throw e } catch (e: Exception) { throw AiException("Can't reach Google Gemini: ${e.message ?: e.javaClass.simpleName}") }
+        val j = JSONObject(text)
+        val cand = j.optJSONArray("candidates")?.optJSONObject(0)
+            ?: throw AiException("Gemini returned no answer" + (j.optJSONObject("promptFeedback")?.optString("blockReason")?.let { " (blocked: $it)" } ?: ""))
+        val parts = cand.optJSONObject("content")?.optJSONArray("parts") ?: throw AiException("Gemini returned an empty answer (${cand.optString("finishReason")})")
+        return (0 until parts.length()).joinToString("") { parts.getJSONObject(it).optString("text") }
+    }
+
+    companion object {
+        const val GEMINI = "https://generativelanguage.googleapis.com/v1beta"
+
+        fun listModels(key: String): List<String> {
+            val client = OkHttpClient.Builder().connectTimeout(15, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build()
+            val req = Request.Builder().url("$GEMINI/models?pageSize=200").header("x-goog-api-key", key.trim()).build()
+            val text = try {
+                client.newCall(req).execute().use { r ->
+                    val t = r.body?.string().orEmpty()
+                    if (!r.isSuccessful) throw AiException(geminiError(r.code, t, ""))
+                    t
+                }
+            } catch (e: AiException) { throw e } catch (e: Exception) { throw AiException("Can't reach Google Gemini: ${e.message}") }
+            val arr = JSONObject(text).optJSONArray("models") ?: return emptyList()
+            return (0 until arr.length()).map { arr.getJSONObject(it) }
+                .filter { m -> (0 until (m.optJSONArray("supportedGenerationMethods")?.length() ?: 0)).any { m.getJSONArray("supportedGenerationMethods").optString(it) == "generateContent" } }
+                .map { it.optString("name").removePrefix("models/") }
+        }
+
+        /** Google's error, in plain words, with the fix. */
+        fun geminiError(code: Int, body: String, model: String): String {
+            val msg = runCatching { JSONObject(body).getJSONObject("error").optString("message") }.getOrDefault(body.take(200))
+            val b = body.lowercase()
+            return when {
+                "api key not valid" in b || "api_key_invalid" in b -> "Google says the key isn't valid. Make a new one at aistudio.google.com/apikey (it starts with AIza) and paste it again."
+                "has not been used in project" in b || "service_disabled" in b || "is disabled" in b ->
+                    "The Gemini API is switched off for this key's Google Cloud project. Easiest fix: make the key at aistudio.google.com/apikey instead."
+                "user location is not supported" in b || "failed_precondition" in b && "location" in b -> "Google doesn't offer the free Gemini API in this region. Use Groq instead (free)."
+                code == 429 || "resource_exhausted" in b -> "The free Gemini limit is used up for now - wait a minute (or until tomorrow) and try again."
+                code == 404 -> "Google doesn't offer the model '$model' to this key. Tap SHOW MODELS MY KEY CAN USE and pick one."
+                code == 403 -> "Google refused the request: $msg"
+                else -> "Gemini error $code: $msg"
+            }
         }
     }
 }
