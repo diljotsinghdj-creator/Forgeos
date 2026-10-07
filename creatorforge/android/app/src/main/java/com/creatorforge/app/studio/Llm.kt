@@ -20,7 +20,7 @@ data class AiPreset(val id: String, val name: String, val baseUrl: String, val m
 
 object AiPresets {
     val all = listOf(
-        AiPreset("gemini", "Google Gemini (free tier)", "https://generativelanguage.googleapis.com/v1beta/openai", "gemini-2.5-flash",
+        AiPreset("gemini", "Google Gemini (free tier)", "https://generativelanguage.googleapis.com/v1beta/openai", "gemini-flash-latest",
             "https://aistudio.google.com/apikey", "Free key with your Google account. Generous daily limit."),
         AiPreset("groq", "Groq (free tier)", "https://api.groq.com/openai/v1", "llama-3.3-70b-versatile",
             "https://console.groq.com/keys", "Free key, very fast open models (Llama)."),
@@ -66,6 +66,31 @@ class OpenAiCompatible(baseUrl: String, private val model: String, private val k
             throw AiException("The AI service sent an unexpected answer: ${text.take(200)}")
         }
     }
+}
+
+/** Asks the service which models this key can use (OpenAI-style GET /models). Names come back without "models/". */
+fun listModels(baseUrl: String, key: String): List<String> {
+    val client = OkHttpClient.Builder().connectTimeout(15, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).build()
+    val req = Request.Builder().url(baseUrl.trim().trimEnd('/') + "/models").apply { if (key.isNotBlank()) header("Authorization", "Bearer $key") }.build()
+    val text = try {
+        client.newCall(req).execute().use { r ->
+            val t = r.body?.string().orEmpty()
+            if (r.code == 401 || r.code == 403 || (r.code == 400 && "API key" in t)) throw AiException("The AI service rejected the key - check it in Settings")
+            if (!r.isSuccessful) throw AiException("Couldn't list models (HTTP ${r.code})")
+            t
+        }
+    } catch (e: AiException) { throw e } catch (e: Exception) { throw AiException("Can't reach the AI service: ${e.message}") }
+    val data = runCatching { JSONObject(text).getJSONArray("data") }.getOrNull() ?: return emptyList()
+    return (0 until data.length()).map { data.getJSONObject(it).optString("id").removePrefix("models/") }.filter { it.isNotBlank() }
+}
+
+/** Picks the best everyday text model from a list: a fast "flash" chat model, newest first; never image/audio/embedding models. */
+fun pickTextModel(models: List<String>): String? {
+    val text = models.filter { m -> listOf("embed", "image", "imagen", "tts", "audio", "vision", "live", "veo", "aqa", "learnlm", "guard", "whisper").none { it in m.lowercase() } }
+    fun version(m: String) = Regex("(\\d+(?:\\.\\d+)?)").find(m)?.value?.toDoubleOrNull() ?: 0.0
+    val ranked = text.sortedWith(compareByDescending<String> { "latest" in it }.thenByDescending { version(it) })
+    return ranked.firstOrNull { "flash" in it && "lite" !in it && "preview" !in it && "exp" !in it }
+        ?: ranked.firstOrNull { "flash" in it } ?: ranked.firstOrNull { "llama-3.3-70b" in it } ?: ranked.firstOrNull()
 }
 
 /** Pulls the first JSON object out of a model answer (models sometimes wrap it in ``` fences or prose). */

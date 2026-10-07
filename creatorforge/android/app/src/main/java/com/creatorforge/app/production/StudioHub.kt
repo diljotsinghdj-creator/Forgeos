@@ -100,6 +100,18 @@ fun AiSettingsCard(secure: SecureTokenStore) {
         }) { Text("GET A FREE KEY ↗", color = Gold) }
         if (preset == "custom") OutlinedTextField(baseUrl, { baseUrl = it }, Modifier.fillMaxWidth(), singleLine = true, label = { Text("Server address (…/v1)") })
         OutlinedTextField(model, { model = it }, Modifier.fillMaxWidth(), singleLine = true, label = { Text("Model") })
+        var models by remember { mutableStateOf<List<String>>(emptyList()) }
+        TextButton({
+            scope.launch {
+                if (key.isNotBlank()) { secure.save("ai", key.trim()); key = ""; hasKey = true }
+                runCatching { studio { listModels(baseUrl, StudioHub.key(context)) } }
+                    .onSuccess { list -> models = list.filter { pickTextModel(listOf(it)) != null }.take(30); if (models.isEmpty()) status = "✗ No models found for this key" }
+                    .onFailure { status = "✗ ${it.message}" }
+            }
+        }) { Text("SHOW MODELS MY KEY CAN USE", color = Gold, fontSize = 12.sp) }
+        if (models.isNotEmpty()) Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            models.forEach { m -> FilterChip(selected = m == model, onClick = { model = m }, label = { Text(m, fontSize = 11.sp) }) }
+        }
         OutlinedTextField(key, { key = it }, Modifier.fillMaxWidth(), singleLine = true, visualTransformation = PasswordVisualTransformation(),
             label = { Text(if (hasKey) "API key saved - paste to replace" else "API key") })
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -108,13 +120,27 @@ fun AiSettingsCard(secure: SecureTokenStore) {
                 if (key.isNotBlank()) { secure.save("ai", key.trim()); key = ""; hasKey = true }
                 testing = true; status = null
                 scope.launch {
-                    status = runCatching {
+                    val result = runCatching {
                         studio {
                             require(StudioHub.aiReady(context)) { "Add a key first" }
-                            OpenAiCompatible(StudioHub.baseUrl(context), StudioHub.model(context), StudioHub.key(context)).complete("Reply with the single word OK.", "Say OK")
+                            val base = StudioHub.baseUrl(context); val k = StudioHub.key(context)
+                            try {
+                                OpenAiCompatible(base, StudioHub.model(context), k).complete("Reply with the single word OK.", "Say OK")
+                                StudioHub.model(context) to false
+                            } catch (e: AiException) {
+                                if ("doesn't know the model" !in (e.message ?: "")) throw e
+                                // The model was retired or renamed: ask the service what this key can use and switch to it.
+                                val pick = pickTextModel(listModels(base, k)) ?: throw e
+                                OpenAiCompatible(base, pick, k).complete("Reply with the single word OK.", "Say OK")
+                                StudioHub.save(context, preset, base, pick)
+                                pick to true
+                            }
                         }
                     }
-                        .fold({ "✓ Script AI works" }, { "✗ ${it.message}" })
+                    status = result.fold({ (m, switched) ->
+                        model = m
+                        if (switched) "✓ Script AI works - switched to $m" else "✓ Script AI works ($m)"
+                    }, { "✗ ${it.message}" })
                     testing = false
                 }
             }, enabled = !testing) { Text(if (testing) "TESTING…" else "SAVE & TEST") }
