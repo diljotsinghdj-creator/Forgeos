@@ -62,12 +62,27 @@ say "Installing the worker (Python packages; first run takes a few minutes)"
 # shellcheck disable=SC1091
 . venv/bin/activate
 pip install -q --upgrade pip
-pip install -q -e "Forgeos/creatorforge/worker[whisper,kokoro,diffusers]" huggingface_hub qrcode
+pip install -q -e "Forgeos/creatorforge/worker[whisper,kokoro,diffusers]" huggingface_hub hf_transfer qrcode
 PYBIN="$(command -v python)"
 "$PYBIN" -c "import creatorforge_worker, torch; assert torch.cuda.is_available(), 'PyTorch cannot see the GPU'; print('PyTorch', torch.__version__, 'CUDA OK')"
 python -m spacy download en_core_web_sm -q >/dev/null 2>&1 || true   # used by Kokoro's English text front-end
 
-export HF_HOME="$HOME_DIR/hf"
+export HF_HOME="$HOME_DIR/hf" HF_HUB_ENABLE_HF_TRANSFER=1   # hf_transfer: parallel, many times faster downloads
+
+# The script model downloads at the same time as the image model (separate log), to cut start-up time.
+say "Installing Ollama and the script model $LLM_MODEL (in parallel - log: $HOME_DIR/ollama_setup.log)"
+export OLLAMA_MODELS="$HOME_DIR/ollama" OLLAMA_KEEP_ALIVE=2m   # free VRAM soon after the script is written
+(
+  set -e
+  command -v ollama >/dev/null || curl -fsSL https://ollama.com/install.sh | sh
+  if ! curl -fs http://127.0.0.1:11434/api/tags >/dev/null; then
+    nohup ollama serve > "$HOME_DIR/ollama.log" 2>&1 &
+    for _ in $(seq 1 30); do curl -fs http://127.0.0.1:11434/api/tags >/dev/null && break; sleep 1; done
+  fi
+  ollama pull "$LLM_MODEL"
+) > ollama_setup.log 2>&1 &
+OLLAMA_JOB=$!
+
 say "Downloading image model $IMAGE_MODEL (first time ~10-25 GB; reused afterwards)"
 # FLUX now needs a (free) Hugging Face login; without HF_TOKEN we fall back to SDXL, which needs none.
 python - "$IMAGE_MODEL" "$HOME_DIR/image_model.txt" <<'PY'
@@ -90,19 +105,10 @@ open(out, "w").write(model)
 PY
 IMAGE_MODEL="$(cat "$HOME_DIR/image_model.txt")"
 echo "  image model: $IMAGE_MODEL"
-if [ -n "$VIDEO_MODEL" ]; then
-  say "Downloading realistic video model $VIDEO_MODEL (first time 20-60 GB; reused afterwards)"
-  python -c "from huggingface_hub import snapshot_download; snapshot_download('$VIDEO_MODEL', ignore_patterns=['*.md', 'assets/*', 'examples/*'])"
-fi
 
-say "Installing Ollama and the script model $LLM_MODEL"
-command -v ollama >/dev/null || curl -fsSL https://ollama.com/install.sh | sh
-export OLLAMA_MODELS="$HOME_DIR/ollama" OLLAMA_KEEP_ALIVE=2m   # free VRAM soon after the script is written
-if ! curl -fs http://127.0.0.1:11434/api/tags >/dev/null; then
-  nohup ollama serve > ollama.log 2>&1 &
-  for _ in $(seq 1 30); do curl -fs http://127.0.0.1:11434/api/tags >/dev/null && break; sleep 1; done
-fi
-ollama pull "$LLM_MODEL"
+say "Waiting for the script model"
+if ! wait "$OLLAMA_JOB"; then echo "Ollama setup failed - last lines of ollama_setup.log:"; tail -n 30 ollama_setup.log; exit 1; fi
+tail -n 2 ollama_setup.log
 
 say "Configuring the worker"
 # A token set as a pod environment variable survives restarts even without a volume disk, so the app stays connected.
@@ -114,6 +120,7 @@ CF_DATA_DIR=$HOME_DIR/data
 CF_PORT=$PORT
 CF_WORKER_TOKEN=$TOKEN
 HF_HOME=$HOME_DIR/hf
+HF_HUB_ENABLE_HF_TRANSFER=1
 CF_LLM_URL=http://127.0.0.1:11434/v1
 CF_LLM_MODEL=$LLM_MODEL
 CF_IMAGE_PROVIDER=diffusers
@@ -150,6 +157,14 @@ for k, v in h["providers"].items():
     print(f"  {k:9} {'OK  ' if v['ready'] else 'MISSING'} {v.get('id') or v.get('error')}")
 print("  production_ready:", h["production_ready"])
 PY
+
+if [ -n "$VIDEO_MODEL" ]; then
+  # Videos with AI images work right away; the big AI-video model finishes downloading in the background
+  # (the worker would also fetch it on first use, this just gets it ready sooner).
+  say "AI video model $VIDEO_MODEL is downloading in the background (log: $HOME_DIR/video_download.log)"
+  pkill -f "snapshot_download('$VIDEO_MODEL'" 2>/dev/null || true
+  nohup "$PYBIN" -c "from huggingface_hub import snapshot_download; snapshot_download('$VIDEO_MODEL', ignore_patterns=['*.md', 'assets/*', 'examples/*']); print('AI video model ready')" > video_download.log 2>&1 &
+fi
 
 say "Money guard: auto-stop after $IDLE_MINUTES idle minutes"
 cat > idle_guard.sh <<'GUARD'

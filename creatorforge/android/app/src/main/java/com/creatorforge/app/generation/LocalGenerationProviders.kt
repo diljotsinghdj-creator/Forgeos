@@ -29,10 +29,12 @@ data class LocalProviderConfig(val baseUrl:String){
 data class WorkerHealth(val ok:Boolean,val message:String,val version:String?=null)
 
 class LocalWorkerClient(private val config:LocalProviderConfig){
-    private val client=OkHttpClient.Builder().connectTimeout(5,TimeUnit.SECONDS).readTimeout(8,TimeUnit.SECONDS).callTimeout(10,TimeUnit.SECONDS).build()
+    private val client=OkHttpClient.Builder().connectTimeout(10,TimeUnit.SECONDS).readTimeout(20,TimeUnit.SECONDS).callTimeout(30,TimeUnit.SECONDS).build()
     suspend fun health():WorkerHealth=withContext(Dispatchers.IO){
         config.validationError()?.let{return@withContext WorkerHealth(false,it)}
         try { client.newCall(Request.Builder().workerAuth().url("${config.normalized()}/health").get().build()).execute().use { r ->
+            if(r.code in 502..504)return@withContext WorkerHealth(false,"pod is on, still setting up - "+com.creatorforge.app.production.WARMING_UP.substringAfter("- "))
+            if(r.code==404)return@withContext WorkerHealth(false,"nothing at this address (HTTP 404) - the pod is stopped/deleted, or port 8765 isn't exposed")
             if(!r.isSuccessful)return@withContext WorkerHealth(false,"Worker health HTTP ${r.code}")
             val body=r.body?.string().orEmpty(); val j=runCatching{JSONObject(body)}.getOrNull()
             if(j?.optBoolean("ok",false)!=true) return@withContext WorkerHealth(false,"Worker did not report ready")
@@ -45,7 +47,9 @@ class LocalWorkerClient(private val config:LocalProviderConfig){
                     else -> WorkerHealth(true,"Worker online • token OK",version)
                 }
             }
-        }} catch(e:Exception){WorkerHealth(false,"Worker unavailable: ${e.message?:"connection error"}")}
+        }} catch(e:java.net.ConnectException){WorkerHealth(false,com.creatorforge.app.production.UNREACHABLE)
+        } catch(e:java.net.SocketTimeoutException){WorkerHealth(false,"the pod is slow to answer (weak connection or still starting) - try again")
+        } catch(e:Exception){WorkerHealth(false,"Worker unavailable: ${e.message?:"connection error"}")}
     }
 }
 

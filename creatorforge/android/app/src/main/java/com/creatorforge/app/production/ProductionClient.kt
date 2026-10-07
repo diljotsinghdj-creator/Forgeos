@@ -66,33 +66,52 @@ data class PublishKit(val titles: List<String>, val description: String, val has
 
 class WorkerException(message: String) : Exception(message)
 
+const val WARMING_UP = "Your pod is on but CreatorForge isn't answering yet - it may still be setting up (about 10-15 min after a start). Try again shortly."
+const val UNREACHABLE = "Can't reach your pod - is it running? (Settings → Pod Power, or RunPod → Start)"
+
 /** Client for the worker's one-button production API. */
 class ProductionClient(baseUrl: String) {
     private val base = baseUrl.trim().trimEnd('/')
-    private val client = OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).readTimeout(60, TimeUnit.SECONDS).build()
+    private val client = OkHttpClient.Builder().connectTimeout(15, TimeUnit.SECONDS).readTimeout(90, TimeUnit.SECONDS).retryOnConnectionFailure(true).build()
     private val download = OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).readTimeout(300, TimeUnit.SECONDS).build()
     private val json = "application/json".toMediaType()
 
     private fun call(method: String, path: String, body: JSONObject? = null): String {
         if (base.isBlank()) throw WorkerException("Not connected to your pod - start it and tap Settings → SCAN QR (writing tools work without it)")
-        val req = Request.Builder().workerAuth().url("$base$path")
-            .method(method, body?.toString()?.toRequestBody(json) ?: if (method == "POST") "{}".toRequestBody(json) else null)
-            .build()
-        try {
-            client.newCall(req).execute().use { r ->
-                val text = r.body?.string().orEmpty()
-                if (r.code == 401) throw WorkerException("Worker rejected the token - check Settings")
-                if (!r.isSuccessful) {
-                    val detail = runCatching { JSONObject(text).opt("detail")?.toString() }.getOrNull() ?: text.take(240)
-                    throw WorkerException("Worker HTTP ${r.code}: $detail")
-                }
-                return text
+        // RunPod's proxy drops or 502s requests now and then (weak signal, pod busy loading a model). Reads are
+        // retried quietly; writes only when the request never reached the pod, so nothing is created twice.
+        var last: WorkerException? = null
+        for (attempt in 0 until 3) {
+            if (attempt > 0) Thread.sleep(1500L * attempt)
+            val req = Request.Builder().workerAuth().url("$base$path")
+                .method(method, body?.toString()?.toRequestBody(json) ?: if (method == "POST") "{}".toRequestBody(json) else null)
+                .build()
+            try {
+                client.newCall(req).execute().use { r ->
+                    val text = r.body?.string().orEmpty()
+                    if (r.code == 401) throw WorkerException("Worker rejected the token - check Settings (scan the pod's QR again)")
+                    if (r.code in 502..504) {
+                        last = WorkerException(WARMING_UP)
+                        if (method == "GET") return@use null else throw last!!
+                    }
+                    if (!r.isSuccessful) {
+                        val detail = runCatching { JSONObject(text).opt("detail")?.toString() }.getOrNull() ?: text.take(240)
+                        throw WorkerException("Worker HTTP ${r.code}: $detail")
+                    }
+                    text
+                }?.let { return it }
+            } catch (e: WorkerException) {
+                throw e
+            } catch (e: java.net.ConnectException) {
+                last = WorkerException(UNREACHABLE)
+            } catch (e: java.net.UnknownHostException) {
+                last = WorkerException("No internet connection (or the pod address is wrong)")
+            } catch (e: Exception) {
+                last = WorkerException("Connection to your pod dropped (${e.message ?: e.javaClass.simpleName}) - try again")
+                if (method != "GET") throw last!!
             }
-        } catch (e: WorkerException) {
-            throw e
-        } catch (e: Exception) {
-            throw WorkerException("Worker unreachable: ${e.message ?: e.javaClass.simpleName}")
         }
+        throw last ?: WorkerException(UNREACHABLE)
     }
 
     suspend fun capabilities(): Capabilities = withContext(Dispatchers.IO) {

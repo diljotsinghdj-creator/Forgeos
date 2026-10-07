@@ -108,21 +108,31 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
     LaunchedEffect(activeId, pollKey) {
         val id = activeId ?: return@LaunchedEffect
         videoFile = null
+        var misses = 0
         while (true) {
-            val p = runCatching { client.get(id) }.onFailure { error = it.message }.getOrNull()
+            val p = runCatching { client.get(id) }.onFailure {
+                // One dropped poll on a weak connection is normal; only speak up when it keeps happening.
+                misses++
+                if (misses >= 2) error = "Reconnecting to your pod… (${it.message})"
+            }.getOrNull()
             if (p != null) {
+                misses = 0
                 production = p
                 error = null
                 syncStoryboard(context, client, p) { storyboardVersion++ }
                 if (p.status == "READY") {
                     val dest = File(context.getExternalFilesDir("Movies") ?: context.filesDir, "CreatorForge_${p.id}.mp4")
-                    videoFile = if (dest.isFile && isMp4(dest)) dest else
-                        runCatching { client.fetch("/v1/productions/${p.id}/video", dest, ::isMp4) }
-                            .onFailure { error = it.message }.getOrNull()
+                    for (attempt in 1..3) {
+                        videoFile = if (dest.isFile && isMp4(dest)) dest else
+                            runCatching { client.fetch("/v1/productions/${p.id}/video", dest, ::isMp4) }
+                                .onFailure { error = "Downloading the video (try $attempt of 3)… ${it.message}" }.getOrNull()
+                        if (videoFile != null) { error = null; break }
+                        delay(3000L * attempt)
+                    }
                 }
                 if (p.terminal || p.inReview) break
             }
-            delay(2000)
+            delay(if (misses == 0) 2000 else minOf(15000L, 2000L * (1 shl minOf(misses, 3))))
         }
         runCatching { client.list() }.onSuccess { recent = it }
     }
