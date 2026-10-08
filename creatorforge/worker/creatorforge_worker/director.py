@@ -340,7 +340,69 @@ def _clean_beats(raw) -> list[dict]:
         if isinstance(b, dict) and str(b.get("text", "")).strip() and str(b.get("visual", "")).strip():
             out.append({"text": str(b["text"]).strip()[:300], "visual": str(b["visual"]).strip()[:400],
                         "emotion": str(b.get("emotion", "") or "").strip()[:60]})
-    return out[:4] if len(out) >= 2 else []
+    return out[:8] if len(out) >= 2 else []
+
+
+BEAT_WORDS = 5   # ~2 seconds of speech at 2.5 words/second: the longest a picture stays on screen
+
+
+def _words(text: str) -> list[str]:
+    return re.findall(r"[a-z0-9']+", text.lower())
+
+
+def _phrases(text: str, limit: int = BEAT_WORDS) -> list[str]:
+    """Narration cut into spoken phrases of at most `limit` words, preferring breaks at punctuation."""
+    out, cur = [], []
+    for tok in text.split():
+        cur.append(tok)
+        if len(cur) >= limit or (len(cur) >= 3 and re.search(r"[.!?,;:\u2014\u2026]$", tok)):
+            out.append(" ".join(cur))
+            cur = []
+    if cur:
+        if out and len(cur) <= 2:
+            out[-1] += " " + " ".join(cur)
+        else:
+            out.append(" ".join(cur))
+    return out
+
+
+BEATS_SYSTEM = """You are the picture editor of a viral faceless video. You get ONE scene's narration. Split it into
+beats of 3-5 consecutive words (copy the words exactly, in order, covering every word). For each beat describe ONE
+concrete image that literally shows what THOSE words say - the subject and action the viewer hears at that moment -
+in the scene's setting with the same characters. Add the emotion on screen (facial expression or atmosphere).
+Respond with JSON only: {"beats": [{"text": "...", "visual": "...", "emotion": "..."}]}"""
+
+
+def _beats_match(beats: list[dict], narration: str) -> bool:
+    import difflib
+    said = _words(narration)
+    planned = [w for b in beats for w in _words(b["text"])]
+    return bool(said) and difflib.SequenceMatcher(None, said, planned).ratio() >= 0.85
+
+
+def plan_beats(llm, plan: ProductionPlan, spec: ProductionSpec) -> None:
+    """Fast cuts for every scene: a new picture at most every ~2 s, each showing exactly what is being said.
+    Uses the Director's beats when they fit; otherwise asks the LLM one scene at a time (small models do this
+    well); if that fails too, cuts the narration into phrases and illustrates each phrase directly."""
+    chars = "\n".join(f"- {c.name}: {c.description}" for c in spec.characters) or "(none)"
+    for s in plan.scenes:
+        if len(_words(s.narration)) <= BEAT_WORDS + 1:
+            s.beats = []            # a short line is already a quick shot
+            continue
+        ok = (s.beats and _beats_match(s.beats, s.narration)
+              and all(len(_words(b["text"])) <= BEAT_WORDS + 2 for b in s.beats))
+        if not ok and llm is not None:
+            try:
+                user = (f"SCENE SETTING: {s.visual}\nEMOTION: {s.emotion or 'what fits'}\nRECURRING CHARACTERS:\n{chars}\n"
+                        f"NARRATION: {s.narration}")
+                beats = _clean_beats(_extract_json(llm.complete_json(BEATS_SYSTEM, user)).get("beats"))
+                if beats and _beats_match(beats, s.narration) and all(len(_words(b["text"])) <= BEAT_WORDS + 2 for b in beats):
+                    s.beats, ok = beats, True
+            except Exception:  # noqa: BLE001 - fall through to the phrase split
+                pass
+        if not ok:
+            s.beats = [{"text": p, "visual": f"{p.strip(' .,!?')} - {s.visual}", "emotion": s.emotion}
+                       for p in _phrases(s.narration)][:8]
 
 
 def direct(llm, spec: ProductionSpec) -> ProductionPlan:

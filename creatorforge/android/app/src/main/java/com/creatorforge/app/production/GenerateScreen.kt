@@ -291,6 +291,11 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
             item {
                 Column {
                     ChipRow(listOf("idea" to "From an idea", "script" to "From my script"), if (scriptMode) "script" else "idea") { scriptMode = it == "script" }
+                    if (StudioHub.directorLlm(context) == null) Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
+                        Text("⚠ Script AI is off - the pod's small AI will plan the story and pictures (weaker matching). " +
+                            "Turn on Gemini or Groq in Settings for much better results.", color = Danger, fontSize = 12.sp, modifier = Modifier.weight(1f))
+                        TextButton(onOpenSettings) { Text("SETTINGS", color = Gold, fontSize = 12.sp) }
+                    } else Text("✓ Story & shots planned by your ${StudioHub.preset(context).name.substringBefore(" (")}", color = Gold, fontSize = 12.sp)
                     OutlinedTextField(idea, { idea = it }, Modifier.fillMaxWidth(), minLines = if (scriptMode) 8 else 4,
                         label = { Text(if (scriptMode) "Your script - narrated word for word" else "Your idea") },
                         placeholder = { Text(if (scriptMode) "Paste the exact narration. CreatorForge splits it into scenes and builds visuals, captions and the edit around your words."

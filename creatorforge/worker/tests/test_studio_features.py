@@ -294,8 +294,28 @@ def test_fast_cuts_give_each_phrase_its_own_picture(cfg):
         jid = c.post("/v1/productions", json={"idea": "fast cuts test about lying", "duration_s": 15}).json()["id"]
         job = wait_for(lambda: (lambda j: j if j["status"] in ("READY", "FAILED") else None)(c.get(f"/v1/productions/{jid}").json()))
         assert job["status"] == "READY", job
-        n = len(job["scenes"])
-        assert job["edit"]["shots"] == 2 * n                     # two beats per scene -> two pictures per scene
         shot = job["plan"]["scenes"][0]
+        beats_per_scene = len(shot["beats"])
+        assert beats_per_scene >= 2 and all(len(b["text"].split()) <= 7 for b in shot["beats"])   # <= ~2 s each
+        assert job["edit"]["shots"] == beats_per_scene * len(job["scenes"])                       # a picture per beat
         assert "shock" in shot["beats"][0]["prompt"] and "fear" in shot["beats"][1]["prompt"]
+        assert job["scenes"][0].get("word_starts")              # cuts land on real word timings
     assert ProductionSpec.from_dict({"idea": "a calm ocean story"}).faces == "show"
+
+
+def test_beats_fall_back_to_phrase_cuts_when_the_ai_cannot_plan_them():
+    from creatorforge_worker.director import ProductionPlan, ProductionSpec, ShotPlan, plan_beats
+
+    spec = ProductionSpec.from_dict({"idea": "the spotlight effect explained"})
+    plan = ProductionPlan("t", "", "", "", [ShotPlan("Researchers at Cornell had students walk into a room wearing a "
+                                                     "Barry Manilow T-shirt. In front of everyone.", "a lecture hall")])
+
+    class Broken:
+        def complete_json(self, system, user):
+            return "nope"
+
+    plan_beats(Broken(), plan, spec)
+    beats = plan.scenes[0].beats
+    assert len(beats) >= 3 and all(len(b["text"].split()) <= 6 for b in beats)
+    assert " ".join(b["text"] for b in beats).split() == plan.scenes[0].narration.split()
+    assert beats[1]["visual"].startswith("walk into a room")

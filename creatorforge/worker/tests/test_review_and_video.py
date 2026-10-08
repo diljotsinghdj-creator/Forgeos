@@ -40,7 +40,7 @@ def test_ai_video_without_provider_fails_closed(cfg):
 
 def test_storyboard_review_edit_and_approve(cfg):
     with TestClient(create_app(cfg)) as c:
-        jid = c.post("/v1/productions", json={"idea": "How bees make honey", "duration_s": 12,
+        jid = c.post("/v1/productions", json={"idea": "How bees make honey", "duration_s": 12, "fast_cuts": False,
                                               "review": True}).json()["id"]
         job = settled(c, jid)
         assert job["status"] == "REVIEW", job

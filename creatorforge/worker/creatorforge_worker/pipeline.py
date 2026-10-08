@@ -41,6 +41,24 @@ def _key(*parts) -> str:
     return hashlib.sha256(json.dumps(parts, sort_keys=True).encode()).hexdigest()[:32]
 
 
+def _beat_lengths(texts: list[str], word_starts: list[float], total: float) -> list[float]:
+    """Screen time per beat. With Whisper's word timings each cut lands on the first word of its phrase;
+    without them, time is shared in proportion to the words."""
+    counts = [max(1, len(t.split())) for t in texts]
+    n = sum(counts)
+    proportional = [total * c / n for c in counts]
+    if len(word_starts) < 2:
+        return proportional
+    cuts, seen = [0.0], 0
+    for c in counts[:-1]:
+        seen += c
+        cuts.append(word_starts[min(len(word_starts) - 1, round(seen * len(word_starts) / n))])
+    cuts.append(total)
+    lengths = [b - a for a, b in zip(cuts, cuts[1:])]
+    # Whisper can merge or drop words; if the timings don't give every beat a visible moment, share evenly.
+    return lengths if all(x >= 0.3 for x in lengths) else proportional
+
+
 class Pipeline:
     def __init__(self, cfg: Config, store: JobStore, library: Library | None = None):
         self.cfg = cfg
@@ -150,6 +168,8 @@ class Pipeline:
             llm = providers.director_llm(self.cfg, job["id"])
             plan = director.direct(llm, spec)
             job["providers"]["llm"] = llm.id
+        if spec.fast_cuts:
+            director.plan_beats(llm, plan, spec)
         job["plan"] = plan.to_dict()
         job["scenes"] = [{"index": i, "image_state": "PLANNED", "voice_state": "PLANNED", "clip_state": "PLANNED",
                           "image": None, "narration": None, "narration_s": None, "clip": None, "error": None}
@@ -368,8 +388,11 @@ class Pipeline:
                 if not ws:
                     raise StageFailed(f"Whisper heard no words in scene {sc['index'] + 1}")
                 words += [Word(w.text, start + w.start, start + w.end) for w in ws]
+                sc["word_starts"] = [round(w.start, 3) for w in ws]   # fast cuts land exactly on these
             else:
-                words += cap.estimate_words(shot["narration"], start, sc["narration_s"])
+                est = cap.estimate_words(shot["narration"], start, sc["narration_s"])
+                words += est
+                sc["word_starts"] = [round(w.start - start, 3) for w in est]
             start += slot
         job["providers"]["captions"] = asr.id if asr else "estimated (Whisper not configured)"
         (jdir / "words.json").write_text(json.dumps([w.__dict__ for w in words]))
@@ -443,13 +466,13 @@ class Pipeline:
                 # Cut on the beat: each phrase gets screen time in proportion to its words, so the picture
                 # changes exactly when the narration moves on.
                 images = [jdir / sc["image"]] + [jdir / n if n and (jdir / n).is_file() else None for n in extra]
-                words = [max(1, len(b["text"].split())) for b in beats]
+                lengths = _beat_lengths([b["text"] for b in beats], sc.get("word_starts") or [], d)
                 cams = ["slow push in", "pull back", "pan left", "pan right"]
-                for k, (b, w) in enumerate(zip(beats, words)):
+                for k, length in enumerate(lengths):
                     if k and images[k] is None:      # failed beat image: previous picture holds instead
-                        clips[-1].duration += d * w / sum(words)
+                        clips[-1].duration += length
                         continue
-                    clips.append(render.Clip(images[k], d * w / sum(words),
+                    clips.append(render.Clip(images[k], length,
                                              shot.get("camera", "") if k == 0 else cams[(i + k) % 4],
                                              transition(i, shot) if k == 0 else "cut"))
             else:
