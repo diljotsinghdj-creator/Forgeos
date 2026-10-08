@@ -465,14 +465,16 @@ Return exactly this JSON shape with exactly {len(segments)} scenes in the same o
   "scenes": [{{"visual": "...", "shot": "...", "camera": "...", "mood": "...", "overlay": "optional max 5 words or empty",
               "transition": "{' | '.join(TRANSITIONS)}", "emphasis": ["1-3 key words from this scene"], "hold": 0,
               "motion": "what physically moves during the shot"}}]}}"""
-    error = ""
+    error, best = "", {}
     for _ in range(2):
         raw = llm.complete_json(SCRIPT_SYSTEM, user if not error else f"{user}\n\nYour previous answer was invalid: {error}. Return corrected JSON only.")
         try:
             d = _extract_json(raw)
+            if isinstance(d, dict) and isinstance(d.get("scenes"), list):
+                best = d
             scenes = d.get("scenes")
             if not isinstance(scenes, list) or len(scenes) != len(segments):
-                raise ValueError(f"expected exactly {len(segments)} scenes")
+                raise ValueError(f"expected exactly {len(segments)} scenes, got {len(scenes) if isinstance(scenes, list) else 0}")
             for sc, seg in zip(scenes, segments):
                 if not isinstance(sc, dict):
                     raise ValueError("each scene must be an object")
@@ -482,6 +484,24 @@ Return exactly this JSON shape with exactly {len(segments)} scenes in the same o
         except (ValueError, json.JSONDecodeError) as e:
             error = str(e)
     else:
-        raise ProviderError(f"AI Director returned an invalid shot list twice: {error}")
+        # Small local models often miscount long scripts. Never fail the video over it: keep the scenes it did
+        # plan (in order) and give any missing ones a visual drawn from their own narration.
+        plan = _repair(best, segments)
     prompt_forge(plan, spec)
     return plan
+
+
+def _repair(d: dict, segments: list[str]) -> "ProductionPlan":
+    got = [sc for sc in (d.get("scenes") or []) if isinstance(sc, dict)]
+    scenes = []
+    for i, seg in enumerate(segments):
+        sc = dict(got[i]) if i < len(got) else {}
+        if not str(sc.get("visual", "")).strip():
+            sc["visual"] = seg
+        sc["narration"] = seg
+        scenes.append(sc)
+    fixed = {**{k: v for k, v in d.items() if k != "scenes"}, "scenes": scenes}
+    try:
+        return _validate(fixed, len(segments))
+    except ValueError:
+        return ProductionPlan(script_title(" ".join(segments)), "", "", "", [ShotPlan(seg, seg) for seg in segments])

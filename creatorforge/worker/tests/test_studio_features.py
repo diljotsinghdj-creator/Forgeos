@@ -238,3 +238,27 @@ def test_faceless_framing_only_for_people_shots():
     shown = ProductionSpec.from_dict({"idea": "the spotlight effect explained", "faces": "show"})
     prompt_forge(plan, shown)
     assert "faceless framing" not in plan.scenes[0].prompt
+
+
+def test_script_mode_survives_llm_miscounting_scenes():
+    import json
+    from creatorforge_worker.director import ProductionSpec, direct_script, split_script
+
+    script = " ".join(f"Sentence number {i} tells part of the story about people lying every day." for i in range(1, 40))
+    spec = ProductionSpec.from_dict({"script": script})
+    n = len(split_script(spec))
+
+    class Miscounting:
+        def complete_json(self, system, user):
+            return json.dumps({"title": "Everyone Is Lying", "scenes": [{"visual": f"shot {i}"} for i in range(n - 3)]})
+
+    plan = direct_script(Miscounting(), spec)
+    assert len(plan.scenes) == n
+    assert plan.scenes[0].visual.startswith("shot 0")
+    assert plan.scenes[-1].visual == plan.scenes[-1].narration   # gap filled from its own words
+
+    class Garbage:
+        def complete_json(self, system, user):
+            return "not json at all"
+
+    assert len(direct_script(Garbage(), spec).scenes) == n
