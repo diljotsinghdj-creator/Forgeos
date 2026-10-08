@@ -64,3 +64,32 @@ def test_spec_validation():
         ProductionSpec.from_dict({"idea": "a valid idea", "aspect": "4:3"})
     s = ProductionSpec.from_dict({"idea": "a valid idea", "template": "explainer"})
     assert s.aspect == "16:9"
+
+
+def test_writer_shot_list_gives_each_line_its_own_picture():
+    """A "Visual:" under every spoken line is a shot list, not the look of the whole video."""
+    from creatorforge_worker import director as d
+    raw = ("Copy their movements, and they'll trust you.\n"
+           "Visual: Dark mirror reflecting a silhouette\n"
+           "0:03-0:05 It sounds fake. It's real science.\n"
+           "Visual: A hand pressing against cold glass\n"
+           "0:05-0:07 And one mistake makes it backfire.\n"
+           "Visual: A glowing question mark in the dark\n"
+           "0:07-0:09 In 1999, two psychologists tested it.\n"
+           "Visual: Dim university corridor\n")
+    spec = d.ProductionSpec.from_dict({"script": raw, "duration_s": 20})
+    assert spec.visual_direction == "" and len(spec.shots) == 4
+    assert "Visual" not in spec.script and "0:03" not in spec.script
+    plan = d.direct_script(None, spec)
+    d.plan_beats(None, plan, spec)
+    beats = [b for s in plan.scenes for b in (s.beats or [{"text": s.narration, "visual": s.visual}])]
+    assert [b["visual"] for b in beats] == ["Dark mirror reflecting a silhouette", "A hand pressing against cold glass",
+                                            "A glowing question mark in the dark", "Dim university corridor"]
+    assert all(b["prompt"].lower().startswith(b["visual"].lower()[:12]) for s in plan.scenes for b in s.beats)
+
+
+def test_one_visuals_line_is_still_the_look_of_the_video():
+    from creatorforge_worker import director as d
+    spec = d.ProductionSpec.from_dict({"script": "A man walks in. He sits down. Nobody speaks.\n"
+                                                 "Visuals: black-and-white 1950s lab footage", "duration_s": 15})
+    assert spec.shots == [] and spec.visual_direction.startswith("black-and-white")

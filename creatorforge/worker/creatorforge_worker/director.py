@@ -70,6 +70,7 @@ class ProductionSpec:
     voice_speed: float = 1.0  # narration tempo (pitch kept); 1.1 is the common Shorts pace
     hook_text: str = ""  # on-screen hook, e.g. from a writer's "On-screen hook:" line
     visual_direction: str = ""  # the look of the whole video, e.g. "black-and-white 1950s lab footage"
+    shots: list = field(default_factory=list)  # writer's shot list: [[spoken line, picture for it]], in order
     roles: list = field(default_factory=list)  # writer's story roles per line: [["TWIST", "Every single one..."]]
     publish: dict = field(default_factory=dict)  # title / cover / hashtags / source from the writer
     video_quality: str = ""  # AI clip speed: "fast" | "balanced" | "best" ("" = the worker's default)
@@ -121,6 +122,11 @@ class ProductionSpec:
         spec.hook_text = str(d.get("hook_text") or meta.get("hook_text") or "").strip()[:80]
         spec.visual_direction = str(d.get("visual_direction") or meta.get("visual_direction") or "").strip()[:400]
         spec.roles = [list(r)[:2] for r in (d.get("roles") or meta.get("roles") or []) if len(r) >= 2][:60]
+        shots = [[clean_script(str(a)), str(b).strip()] for a, b in (d.get("shots") or meta.get("shots") or [])]
+        shots = [x for x in shots if x[0] and x[1]][:120]
+        if shots and sum(len(a.split()) for a, _ in shots) == len(spec.script.split()) + len(shots[0][0].split()):
+            shots = shots[1:]       # the first line was a title the script dropped
+        spec.shots = shots
         spec.publish = d.get("publish") if isinstance(d.get("publish"), dict) else \
             {k: meta[k] for k in ("title", "cover", "hashtags", "source") if k in meta}
         spec.validate()
@@ -411,6 +417,11 @@ def plan_beats(llm, plan: ProductionPlan, spec: ProductionSpec) -> None:
     well); if that fails too, cuts the narration into phrases and illustrates each phrase directly."""
     chars = "\n".join(f"- {c.name}: {c.description}" for c in spec.characters) or "(none)"
     for s in plan.scenes:
+        if any(b.get("writer") for b in s.beats or []):
+            continue                # the writer's own shot list
+        if spec.shots and len(_words(s.narration)) <= BEAT_WORDS + 3:
+            s.beats = []            # one writer line: the scene picture is already the writer's visual
+            continue
         if len(_words(s.narration)) <= BEAT_WORDS + 1:
             s.beats = []            # a short line is already a quick shot
             continue
@@ -558,6 +569,8 @@ def parse_script(raw: str) -> tuple[str, dict]:
     (HOOK, TWIST, ...), the on-screen hook, visual direction and posting details. Timestamps are dropped."""
     meta: dict = {"roles": []}
     spoken = []
+    shots: list[list[str]] = []      # [spoken line, the writer's picture for it]
+    looks: list[str] = []            # visual lines not tied to a spoken line: the look of the whole video
     for line in raw.replace("\r", "").splitlines():
         parts = _META.split(line)
         body, pairs = parts[0], list(zip(parts[1::2], parts[2::2]))
@@ -565,8 +578,14 @@ def parse_script(raw: str) -> tuple[str, dict]:
             k, v = key.lower().replace("on screen", "on-screen").replace("onscreen", "on-screen"), value.strip().rstrip(".")
             if k in ("on-screen hook", "hook text", "cover", "thumbnail"):
                 meta.setdefault("hook_text" if "hook" in k else "cover", re.sub(r"#\w+", "", v).strip(" .")[:80])
-            elif k in ("visuals", "visual", "visual style", "b-roll", "broll"):
-                meta["visual_direction"] = (meta.get("visual_direction", "") + " " + v).strip()[:400]
+            elif k in ("visuals", "visual", "b-roll", "broll"):
+                said = _STAMP.sub("", re.sub(r"#\w+", "", body)).strip()
+                line_said = said or (spoken[-1] if spoken and not (shots and shots[-1][0] == spoken[-1]) else "")
+                if line_said and v:
+                    shots.append([line_said, v[:200]])
+                looks.append(v)
+            elif k == "visual style":
+                looks.insert(0, v)
             elif k in ("post", "title"):
                 meta.setdefault("title", v[:100])
             elif k in ("hashtags", "tags"):
@@ -585,6 +604,12 @@ def parse_script(raw: str) -> tuple[str, dict]:
             meta["roles"].append((m.group(1).replace(" ", "-"), body.strip()))
         if body.strip() and re.search(r"[A-Za-z]", body):
             spoken.append(body.strip())
+    # A "Visual:" under (or beside) most spoken lines is a shot list: each picture belongs to its own line. One or
+    # two visual lines describe the look of the whole video instead.
+    if len(shots) >= 3:
+        meta["shots"] = shots[:120]
+    elif looks:
+        meta["visual_direction"] = " ".join(looks).strip()[:400]
     return "\n".join(spoken), meta
 
 
@@ -607,7 +632,7 @@ def _looks_like_script(text: str) -> bool:
     if not text.strip():
         return False
     spoken, meta = parse_script(text)
-    if meta["roles"] or meta.get("hook_text") or meta.get("visual_direction") or _STAMP.search(text):
+    if meta["roles"] or meta.get("hook_text") or meta.get("visual_direction") or meta.get("shots") or _STAMP.search(text):
         return True
     return len(_words(spoken)) >= 60 and len(split_sentences(spoken)) >= 5
 
@@ -742,10 +767,36 @@ def _apply_writer(plan: "ProductionPlan", spec: ProductionSpec) -> None:
     """The writer's own choices win: on-screen hook, title and per-role emotion and cuts."""
     if spec.roles:
         apply_roles(plan, spec.roles)
+    if spec.shots:
+        apply_shots(plan, spec.shots)
     if spec.hook_text:
         plan.hook = spec.hook_text
     if spec.publish.get("title"):
         plan.title = spec.publish["title"][:100]
+
+
+def apply_shots(plan: "ProductionPlan", shots: list) -> None:
+    """The writer's shot list decides the pictures: each spoken line becomes a beat showing the writer's own
+    visual, cut exactly when that line starts. Lines are matched to scenes word by word, so a line that spans
+    two scenes is shared between them. If the words don't line up (edited script), nothing changes."""
+    tokens = [(i, t) for i, s in enumerate(plan.scenes) for t in s.narration.split()]
+    if sum(len(str(line).split()) for line, _ in shots) != len(tokens):
+        return
+    per_scene: list[list[dict]] = [[] for _ in plan.scenes]
+    pos = 0
+    for line, visual in shots:
+        n = len(str(line).split())
+        chunk = tokens[pos:pos + n]
+        pos += n
+        for i in dict.fromkeys(i for i, _ in chunk):
+            words = " ".join(t for j, t in chunk if j == i)
+            per_scene[i].append({"text": words, "visual": str(visual), "emotion": plan.scenes[i].emotion,
+                                 "stock": "", "writer": True})
+    for s, beats in zip(plan.scenes, per_scene):
+        if not beats:
+            continue
+        s.visual = beats[0]["visual"]
+        s.beats = beats if len(beats) >= 2 else []
 
 
 def _repair(d: dict, segments: list[str]) -> "ProductionPlan":
