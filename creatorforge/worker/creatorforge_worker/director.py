@@ -309,7 +309,7 @@ BEATS_SHAPE = ('[{"text": "the exact words of this scene\'s narration for this b
 BEATS_RULE = ("BEATS: split every scene's narration into 2-4 beats of about 3-7 spoken words (1-2 seconds each). Each beat gets "
               "its own picture showing exactly what those words say - a new subject, angle or close-up - so the video cuts "
               "every 1-2 seconds like a top Shorts edit. Same characters and place across beats. Put strong, readable "
-              "emotion on faces when people appear (shock, fear, suspicion, disgust, awe). " + 'STOCK: when a beat can be shown with generic REAL footage (a city street, a crowd, hands typing, waves, a clock), put a 2-4 word search in "stock"; leave it empty when the beat needs the story\'s own characters, a specific era or the video\'s visual direction.')
+              "emotion on faces when people appear (shock, fear, suspicion, disgust, awe). " + 'STOCK: when a beat can be shown with generic REAL footage (a city street, a crowd, hands typing, waves, a clock, a rocket launch, a famous real place or event), put a 2-4 word search in "stock"; leave it empty when the beat needs the story\'s own characters, a specific era or the video\'s visual direction.')
 
 
 def _extract_json(text: str) -> dict:
@@ -386,7 +386,7 @@ def _phrases(text: str, limit: int = BEAT_WORDS) -> list[str]:
 
 
 STOCK_RULE = ("STOCK: when a beat can be shown with generic REAL footage (a city street, a crowd, hands typing, waves, "
-              "a clock), put a 2-4 word search in \"stock\"; leave it empty when the beat needs the story's own characters, "
+              "a clock, a rocket launch, a famous real place or event), put a 2-4 word search in \"stock\"; leave it empty when the beat needs the story's own characters, "
               "a specific era or the video's visual direction.")
 
 
@@ -394,7 +394,7 @@ BEATS_SYSTEM = """You are the picture editor of a viral faceless video. You get 
 beats of 3-5 consecutive words (copy the words exactly, in order, covering every word). For each beat describe ONE
 concrete image that literally shows what THOSE words say - the subject and action the viewer hears at that moment -
 in the scene's setting with the same characters. Add the emotion on screen (facial expression or atmosphere).
-STOCK: when a beat can be shown with generic REAL footage (a city street, a crowd, hands typing, waves, a clock), put a 2-4 word search in "stock"; leave it empty when the beat needs the story's own characters, a specific era or the video's visual direction.
+STOCK: when a beat can be shown with generic REAL footage (a city street, a crowd, hands typing, waves, a clock, a rocket launch, a famous real place or event), put a 2-4 word search in "stock"; leave it empty when the beat needs the story's own characters, a specific era or the video's visual direction.
 Respond with JSON only: {"beats": [{"text": "...", "visual": "...", "emotion": "...", "stock": ""}]}"""
 
 

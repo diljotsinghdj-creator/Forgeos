@@ -186,8 +186,10 @@ fun AiSettingsCard(secure: SecureTokenStore) {
         status?.let { Text(it, color = if (it.startsWith("✓")) Gold else Danger, fontSize = 12.sp) }
         HorizontalDivider(Modifier.padding(vertical = 6.dp))
         Text("Real stock footage (free, optional)", color = Gold, fontSize = 13.sp)
-        Text("With a free Pixabay key the AI mixes real video clips - crowds, cities, hands, nature - into your fast cuts, " +
-            "free for commercial use. Get it: sign up at pixabay.com, then open pixabay.com/api/docs - your key is shown there.", color = Dim, fontSize = 12.sp)
+        Text("Your videos already mix in real footage from NASA (space, science, Earth) and Wikimedia Commons (history, " +
+            "real events, animals) - no key needed; their credits go into the post description. " +
+            "Add a free Pixabay key for everyday clips - crowds, cities, hands, nature - free for commercial use. " +
+            "Get it: sign up at pixabay.com, then open pixabay.com/api/docs - your key is shown there.", color = Dim, fontSize = 12.sp)
         TextButton({ openUrl(context, "https://pixabay.com/api/docs/") }) { Text("GET A FREE PIXABAY KEY ↗", color = Gold, fontSize = 12.sp) }
         var stock by remember { mutableStateOf("") }
         var hasStock by remember { mutableStateOf(secure.has("stock")) }

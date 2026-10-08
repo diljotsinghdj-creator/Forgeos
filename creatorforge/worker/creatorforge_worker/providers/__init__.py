@@ -78,6 +78,20 @@ def stock_key(job_id: str) -> tuple[str, str] | None:
     return _stock_keys.get(job_id)
 
 
+def stock_sources(job_id: str, cfg: Config) -> list[tuple[str, str]]:
+    """Where this production looks for real footage: the app's keyed library first, then the keyless ones."""
+    keyed = _stock_keys.get(job_id)
+    if keyed and keyed[0] == "mock":
+        return [keyed]
+    free = [(name, "") for name in stock_video_free()] if cfg.free_stock else []
+    return ([keyed] if keyed else []) + free
+
+
+def stock_video_free() -> tuple[str, ...]:
+    from .stock_video import FREE_SOURCES
+    return FREE_SOURCES
+
+
 _image_cache: dict[tuple, object] = {}
 
 

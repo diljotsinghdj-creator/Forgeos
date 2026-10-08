@@ -231,7 +231,7 @@ class Pipeline:
         """Fast cuts: one extra picture per beat after the first (beat 1 uses the scene image). A beat image that
         fails is skipped - the scene simply holds its previous picture longer."""
         jdir = self.store.dir(job["id"])
-        stock = providers.stock_key(job["id"])
+        stock = providers.stock_sources(job["id"], self.cfg)
         for sc, shot in zip(job["scenes"], job["plan"]["scenes"]):
             beats = shot.get("beats") or []
             if len(beats) < 2 or sc.get("image_source") == "asset":
@@ -281,7 +281,7 @@ class Pipeline:
         if self._spec(job).consistent_character and not job.get("character_ref") and director._has_people(visual):
             job["character_ref"] = image.name
 
-    def _stock_clips(self, job: dict, sc: dict, beats: list, stock: tuple[str, str], jdir: Path) -> None:
+    def _stock_clips(self, job: dict, sc: dict, beats: list, stock: list[tuple[str, str]], jdir: Path) -> None:
         """Real footage for beats the planner marked with a stock search (best effort, cached)."""
         from .providers import stock_video
         clips = list(sc.get("beat_clips") or [])[: len(beats)]
@@ -290,21 +290,22 @@ class Pipeline:
         for k, b in enumerate(beats):
             if clips[k] and (jdir / clips[k]).is_file() or not b.get("stock"):
                 continue
-            try:
-                found = stock_video.search(stock[0], stock[1], b["stock"], portrait)
-                if found:
-                    src = stock_video.fetch(found[0], self.cfg.cache_dir / "stock")
-                    dst = jdir / f"scene_{sc['index'] + 1:02d}_stock{k + 1}{src.suffix}"
-                    if not dst.is_file():
-                        shutil.copyfile(src, dst)
-                    clips[k] = dst.name
-                    job.setdefault("stock_credits", [])
-                    if found[0]["credit"] not in job["stock_credits"]:
-                        job["stock_credits"].append(found[0]["credit"])
-            except (ProviderError, MediaError, OSError):
-                clips[k] = None          # no footage: this beat gets an AI image as usual
+            for found in stock_video.search_any(stock, b["stock"], portrait)[:3]:
+                try:
+                    src = stock_video.fetch(found, self.cfg.cache_dir / "stock")
+                except (ProviderError, MediaError, OSError):
+                    continue     # try the next candidate; none left -> this beat gets an AI image as usual
+                dst = jdir / f"scene_{sc['index'] + 1:02d}_stock{k + 1}{src.suffix}"
+                if not dst.is_file():
+                    shutil.copyfile(src, dst)
+                clips[k] = dst.name
+                job.setdefault("stock_credits", [])
+                if found["credit"] not in job["stock_credits"]:
+                    job["stock_credits"].append(found["credit"])
+                break
         sc["beat_clips"] = clips
-        job["providers"]["stock"] = f"{stock[0]} ({sum(1 for c in clips if c)} clips in scene {sc['index'] + 1})"
+        used = sum(1 for c in job.get("scenes", []) for n in (c.get("beat_clips") or []) if n)
+        job["providers"]["stock"] = f"{', '.join(p for p, _ in stock)} ({used} real clip{'s' if used != 1 else ''} so far)"
         self.store.save(job)
 
     def _review(self, job: dict, cancel) -> None:

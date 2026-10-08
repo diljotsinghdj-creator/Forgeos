@@ -50,6 +50,7 @@ class Config:
     music_model: str = ""
     voices: list[VoiceProfile] = field(default_factory=list)
     youtube_api_key: str = ""  # optional, free: adds YouTube to the Trend Radar
+    free_stock: bool = False  # keyless footage (NASA, Wikimedia Commons) for beats the planner marks; on for real pods
     allow_mock: bool = False
 
     @property
@@ -98,5 +99,6 @@ class Config:
             voices=voices,
             youtube_api_key=_env("CF_YOUTUBE_API_KEY"),
             allow_mock=_env("CF_ALLOW_MOCK") == "1",
+            free_stock=_env("CF_FREE_STOCK", "1") != "0",
         )
         return cfg
