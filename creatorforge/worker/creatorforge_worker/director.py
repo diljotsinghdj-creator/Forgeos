@@ -65,6 +65,10 @@ class ProductionSpec:
     review: bool = False  # pause after scene visuals so the storyboard can be edited/approved
     faces: str = "show"  # "show": expressive faces | "faceless": people from behind / silhouettes / hands / wide shots
     fast_cuts: bool = True  # split scenes into phrase-level beats (new picture every 1-2 s)
+    hook_text: str = ""  # on-screen hook, e.g. from a writer's "On-screen hook:" line
+    visual_direction: str = ""  # the look of the whole video, e.g. "black-and-white 1950s lab footage"
+    roles: list = field(default_factory=list)  # writer's story roles per line: [["TWIST", "Every single one..."]]
+    publish: dict = field(default_factory=dict)  # title / cover / hashtags / source from the writer
     video_quality: str = ""  # AI clip speed: "fast" | "balanced" | "best" ("" = the worker's default)
     ai_video_scenes: object = "all"  # with motion=ai_video: "all", "hook" (first scene) or a list of scene numbers (1-based)
     auto_edit: bool = True  # let the Director choose transitions, caption emphasis and dramatic holds
@@ -99,13 +103,19 @@ class ProductionSpec:
             fast_cuts=bool(d.get("fast_cuts", True)),
             auto_edit=bool(d.get("auto_edit", True)),
             character_ids=[str(x) for x in d.get("character_ids") or []][:10],
-            script=clean_script(str(d.get("script", "") or "")),
+            script=clean_script(parse_script(str(d.get("script", "") or ""))[0]),
             music_asset_id=str(d.get("music_asset_id", "") or ""),
             sfx=bool(d.get("sfx", True)),
             brand=clean_brand(d.get("brand")),
         )
+        meta = parse_script(str(d.get("script", "") or ""))[1] if d.get("script") else {}
         if spec.script and not d.get("idea"):
-            spec.idea = script_heading(str(d.get("script", ""))) or spec.idea
+            spec.idea = meta.get("title") or script_heading(parse_script(str(d.get("script", "")))[0]) or spec.idea
+        spec.hook_text = str(d.get("hook_text") or meta.get("hook_text") or "").strip()[:80]
+        spec.visual_direction = str(d.get("visual_direction") or meta.get("visual_direction") or "").strip()[:400]
+        spec.roles = [list(r)[:2] for r in (d.get("roles") or meta.get("roles") or []) if len(r) >= 2][:60]
+        spec.publish = d.get("publish") if isinstance(d.get("publish"), dict) else \
+            {k: meta[k] for k in ("title", "cover", "hashtags", "source") if k in meta}
         spec.validate()
         return spec
 
@@ -428,7 +438,9 @@ def direct(llm, spec: ProductionSpec) -> ProductionPlan:
 def _image_prompt(visual: str, emotion: str, s: "ShotPlan", spec: ProductionSpec, style: str,
                   shot_size: str = "") -> tuple[str, str]:
     # SDXL reads only ~77 tokens: keep the subject short and put framing, emotion + quality early so they aren't cut.
-    parts = [_clip_words(visual.rstrip("."), 40)]
+    parts = [_clip_words(visual.rstrip("."), 30 if spec.visual_direction else 40)]
+    if spec.visual_direction:
+        parts.append(_clip_words(spec.visual_direction.split(",")[0], 8))   # the look, e.g. "black-and-white 1950s lab footage"
     people = _has_people(f"{visual} {s.shot}")
     faceless = spec.faces == "faceless" and people
     if faceless:
@@ -510,6 +522,71 @@ def _is_heading(line: str) -> bool:
     return bool(t) and len(t.split()) <= 10 and not re.search(r"[.!?…]", t)
 
 
+# ---- writer's scripts: "0:05 SETUP A student thinks...", "On-screen hook: ...", "Visuals: ...", "Post: ..." ----------
+_META_KEYS = ("on-screen hook", "on screen hook", "onscreen hook", "hook text", "visuals", "visual", "visual style",
+              "b-roll", "broll", "post", "title", "cover", "thumbnail", "caption", "description", "hashtags", "tags",
+              "source", "sources", "music", "sfx")
+_META = re.compile(r"(?i)(?:^|(?<=[\s.]))(" + "|".join(re.escape(k) for k in sorted(_META_KEYS, key=len, reverse=True)) +
+                   r")\s*:\s*")
+_STAMP = re.compile(r"^\s*(?:[-\u2022*]\s*)?\(?(?:\d{0,2}:\d{2})(?:\s*[-\u2013]\s*\d{0,2}:\d{2})?\)?\s*")
+_ROLE = re.compile(r"^\[?([A-Z][A-Z]+(?:[- ][A-Z]{2,})?)\]?\s*[:\-\u2013\u2014]?\s+(?=\S)")
+# Story roles a writer tags lines with -> the feeling on screen and the cut into that moment.
+ROLE_EDIT = {"HOOK": ("intrigue", "flash"), "STAKES": ("unease", ""), "SETUP": ("curiosity", ""),
+             "GAP": ("suspense", ""), "TWIST": ("shock", "flash"), "REVEAL": ("shock", "flash"),
+             "TURN": ("tension", "whip"), "PROOF": ("confident", ""), "NUMBER": ("surprise", "zoom"),
+             "RE-HOOK": ("intrigue", "zoom"), "TAKEAWAY": ("calm resolve", "dissolve"), "PAYOFF": ("awe", "flash"),
+             "LOOP": ("suspense", "dip"), "CTA": ("warm", "")}
+
+
+def parse_script(raw: str) -> tuple[str, dict]:
+    """Splits a writer's script into the words to speak and the direction around them: per-line story roles
+    (HOOK, TWIST, ...), the on-screen hook, visual direction and posting details. Timestamps are dropped."""
+    meta: dict = {"roles": []}
+    spoken = []
+    for line in raw.replace("\r", "").splitlines():
+        parts = _META.split(line)
+        body, pairs = parts[0], list(zip(parts[1::2], parts[2::2]))
+        for key, value in pairs:
+            k, v = key.lower().replace("on screen", "on-screen").replace("onscreen", "on-screen"), value.strip().rstrip(".")
+            if k in ("on-screen hook", "hook text", "cover", "thumbnail"):
+                meta.setdefault("hook_text" if "hook" in k else "cover", re.sub(r"#\w+", "", v).strip(" .")[:80])
+            elif k in ("visuals", "visual", "visual style", "b-roll", "broll"):
+                meta["visual_direction"] = (meta.get("visual_direction", "") + " " + v).strip()[:400]
+            elif k in ("post", "title"):
+                meta.setdefault("title", v[:100])
+            elif k in ("hashtags", "tags"):
+                meta["hashtags"] = re.findall(r"#\w+", v) or v.split()
+            elif k in ("source", "sources"):
+                meta["source"] = v[:200]
+        tags = re.findall(r"#\w+", body + " ".join(v for _, v in pairs))
+        if tags:
+            meta["hashtags"] = list(dict.fromkeys(meta.get("hashtags", []) + tags))
+        body = re.sub(r"#\w+", "", body)
+        stamped = bool(_STAMP.match(body))
+        body = _STAMP.sub("", body)
+        m = _ROLE.match(body)
+        if m and (stamped or m.group(1).replace(" ", "-") in ROLE_EDIT):
+            body = body[m.end():]
+            meta["roles"].append((m.group(1).replace(" ", "-"), body.strip()))
+        if body.strip() and re.search(r"[A-Za-z]", body):
+            spoken.append(body.strip())
+    return "\n".join(spoken), meta
+
+
+def apply_roles(plan: "ProductionPlan", roles: list) -> None:
+    """Gives each scene the emotion and cut of the writer's role for the line it opens with."""
+    for s in plan.scenes:
+        said = _words(s.narration)
+        for role, text in roles:
+            head = _words(text)[:4]
+            if head and " ".join(head) in " ".join(said[:12]):
+                emotion, cut = ROLE_EDIT.get(role, ("", ""))
+                s.emotion = s.emotion or emotion
+                if cut:
+                    s.transition = cut
+                break
+
+
 def script_heading(text: str) -> str:
     lines = [l for l in text.splitlines() if l.strip()]
     if len(lines) > 1 and _is_heading(lines[0]) and not _LABEL.match(lines[0]):
@@ -574,12 +651,19 @@ def direct_script(llm, spec: ProductionSpec) -> ProductionPlan:
     segments = split_script(spec)
     if llm is None:
         plan = ProductionPlan(script_title(spec.script), "", "", "", [ShotPlan(seg, seg) for seg in segments])
+        _apply_writer(plan, spec)
         prompt_forge(plan, spec)
         return plan
     t = TEMPLATES[spec.template]
     numbered = "\n".join(f"{i + 1}. {seg}" for i, seg in enumerate(segments))
     chars = "\n".join(f"- {c.name}: {c.description}" for c in spec.characters) or "(none)"
-    user = f"""FORMAT: {t.name}, aspect {spec.aspect}
+    direction = ""
+    if spec.visual_direction:
+        direction += f"VISUAL DIRECTION (the look of every shot - follow it): {spec.visual_direction}\n"
+    if spec.roles:
+        direction += "WRITER'S STORY ROLES (match the image and emotion to each role):\n" + \
+            "\n".join(f"- {r}: {txt}" for r, txt in spec.roles) + "\n"
+    user = f"""{direction}FORMAT: {t.name}, aspect {spec.aspect}
 TONE: {t.tone}
 MOOD: {spec.mood or 'choose what fits'}
 RECURRING CHARACTERS:
@@ -618,8 +702,19 @@ Return exactly this JSON shape with exactly {len(segments)} scenes in the same o
         # Small local models often miscount long scripts. Never fail the video over it: keep the scenes it did
         # plan (in order) and give any missing ones a visual drawn from their own narration.
         plan = _repair(best, segments)
+    _apply_writer(plan, spec)
     prompt_forge(plan, spec)
     return plan
+
+
+def _apply_writer(plan: "ProductionPlan", spec: ProductionSpec) -> None:
+    """The writer's own choices win: on-screen hook, title and per-role emotion and cuts."""
+    if spec.roles:
+        apply_roles(plan, spec.roles)
+    if spec.hook_text:
+        plan.hook = spec.hook_text
+    if spec.publish.get("title"):
+        plan.title = spec.publish["title"][:100]
 
 
 def _repair(d: dict, segments: list[str]) -> "ProductionPlan":

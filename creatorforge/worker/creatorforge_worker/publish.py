@@ -37,7 +37,7 @@ def fallback_kit(job: dict) -> dict:
             "thumbnail_text": " ".join(title.split()[:4]), "source": "fallback (no script model)"}
 
 
-def make_kit(llm, job: dict) -> dict:
+def _make_kit(llm, job: dict) -> dict:
     if llm is None:
         return fallback_kit(job)
     plan = job.get("plan") or {}
@@ -147,3 +147,18 @@ def export_zip(job: dict, jdir: Path, out: Path, kit: dict | None) -> Path:
         z.writestr("README.txt", README.format(title=title))
     tmp.replace(out)
     return out
+
+
+def make_kit(llm, job: dict) -> dict:
+    """The posting kit, with the writer's own title, cover text, hashtags and source taking priority."""
+    kit = _make_kit(llm, job)
+    w = (job.get("spec") or {}).get("publish") or {}
+    if w.get("title"):
+        kit["titles"] = [w["title"]] + [t for t in kit["titles"] if t != w["title"]][:4]
+    if w.get("hashtags"):
+        kit["hashtags"] = list(dict.fromkeys(list(w["hashtags"]) + kit["hashtags"]))[:15]
+    if w.get("cover"):
+        kit["thumbnail_text"] = w["cover"]
+    if w.get("source") and w["source"] not in kit["description"]:
+        kit["description"] = (kit["description"] + f"\n\nSource: {w['source']}").strip()
+    return kit

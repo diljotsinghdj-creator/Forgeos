@@ -319,3 +319,34 @@ def test_beats_fall_back_to_phrase_cuts_when_the_ai_cannot_plan_them():
     assert len(beats) >= 3 and all(len(b["text"].split()) <= 6 for b in beats)
     assert " ".join(b["text"] for b in beats).split() == plan.scenes[0].narration.split()
     assert beats[1]["visual"].startswith("walk into a room")
+
+
+WRITER_SCRIPT = """:00 HOOK Everyone here is lying.
+• 0:02 STAKES You just don't know it. Nineteen fifty-one.
+• 0:05 SETUP A student thinks he's taking an eye test.
+• 0:12 TWIST Every single one picks the wrong line. On purpose. They're actors.
+• 1:06 LOOP Because behind every nod, there's someone quietly hiding their doubt. Which means, in that room...
+On-screen hook: EVERYONE IS LYING. Visuals: black-and-white 1950s lab footage, cards with lines, row of suited men all pointing.
+Post: The Experiment Where Everyone Lied On Purpose. Cover: EVERYONE IS LYING. #psychology #conformity. Source: Asch, 1951."""
+
+
+def test_writer_script_format_is_understood(cfg):
+    from fastapi.testclient import TestClient
+    from creatorforge_worker.api import create_app
+    from .conftest import wait_for
+
+    with TestClient(create_app(cfg)) as c:
+        jid = c.post("/v1/productions", json={"script": WRITER_SCRIPT}).json()["id"]
+        job = wait_for(lambda: (lambda j: j if j["status"] in ("READY", "FAILED") else None)(c.get(f"/v1/productions/{jid}").json()))
+        assert job["status"] == "READY", job
+        spoken = " ".join(s["narration"] for s in job["plan"]["scenes"])
+        for junk in ("HOOK", "0:02", "TWIST", "Post", "Cover", "Source", "#psychology", "Visuals"):
+            assert junk not in spoken, junk
+        assert spoken.startswith("Everyone here is lying.") and spoken.endswith("in that room...")
+        assert job["plan"]["hook"] == "EVERYONE IS LYING"
+        assert job["plan"]["title"] == "The Experiment Where Everyone Lied On Purpose"
+        assert "black-and-white 1950s lab footage" in job["plan"]["scenes"][0]["prompt"]
+        spec = job["spec"]
+        assert spec["publish"]["hashtags"] == ["#psychology", "#conformity"] and spec["publish"]["source"] == "Asch, 1951"
+        twist = next(s for s in job["plan"]["scenes"] if "picks the wrong line" in s["narration"])
+        assert twist["emotion"] == "shock"

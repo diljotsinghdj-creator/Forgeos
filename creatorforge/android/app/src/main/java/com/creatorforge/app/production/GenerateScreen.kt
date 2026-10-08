@@ -297,7 +297,7 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                         TextButton(onOpenSettings) { Text("SETTINGS", color = Gold, fontSize = 12.sp) }
                     } else Text("✓ Story & shots planned by your ${StudioHub.preset(context).name.substringBefore(" (")}", color = Gold, fontSize = 12.sp)
                     OutlinedTextField(idea, { idea = it }, Modifier.fillMaxWidth(), minLines = if (scriptMode) 8 else 4,
-                        label = { Text(if (scriptMode) "Your script - narrated word for word" else "Your idea") },
+                        label = { Text(if (scriptMode) "Your script - timestamps, HOOK/TWIST labels, On-screen hook, Visuals, Post lines all understood" else "Your idea") },
                         placeholder = { Text(if (scriptMode) "Paste the exact narration. CreatorForge splits it into scenes and builds visuals, captions and the edit around your words."
                             else "A 45-second cinematic short explaining how humanoid robots could change warehouses") })
                 }
