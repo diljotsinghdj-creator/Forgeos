@@ -34,6 +34,7 @@ class Config:
     image_url: str = ""
     image_model: str = ""
     image_steps: int = 0
+    image_hires: bool = True  # SDXL-family 1.5x refine pass (sharper faces and detail)
     video_provider: str = ""  # "diffusers" | "http" | "mock" ("" = AI video clips unavailable)
     video_url: str = ""
     video_model: str = ""
@@ -80,6 +81,7 @@ class Config:
             image_url=_env("CF_IMAGE_URL"),
             image_model=_env("CF_IMAGE_MODEL"),
             image_steps=int(_env("CF_IMAGE_STEPS", "0") or 0),
+            image_hires=_env("CF_IMAGE_HIRES", "1") not in ("0", "false", "off"),
             video_provider=_env("CF_VIDEO_PROVIDER"),
             video_url=_env("CF_VIDEO_URL"),
             video_model=_env("CF_VIDEO_MODEL"),

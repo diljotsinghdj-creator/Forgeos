@@ -222,3 +222,19 @@ def test_human_like_voice_profiles(tmp_path):
     assert voice.reference().endswith("asset_abc123.wav")   # phone m4a converted to WAV for Chatterbox
     with pytest.raises(NotConfigured):   # engine not running -> clear message, not a crash
         voice.synthesize("Hello there.", tmp_path / "x.wav")
+
+
+def test_faceless_framing_only_for_people_shots():
+    from creatorforge_worker.director import ProductionPlan, ProductionSpec, ShotPlan, prompt_forge
+
+    spec = ProductionSpec.from_dict({"idea": "the spotlight effect explained"})
+    assert spec.faces == "faceless"
+    plan = ProductionPlan("t", "", "", "", [ShotPlan("n1", "A student walks into a crowded lecture hall"),
+                                           ShotPlan("n2", "A lighthouse on a stormy cliff at night")])
+    prompt_forge(plan, spec)
+    people, scenery = plan.scenes
+    assert "faceless framing" in people.prompt and "visible face" in people.negative
+    assert "faceless framing" not in scenery.prompt and "visible face" not in scenery.negative
+    shown = ProductionSpec.from_dict({"idea": "the spotlight effect explained", "faces": "show"})
+    prompt_forge(plan, shown)
+    assert "faceless framing" not in plan.scenes[0].prompt

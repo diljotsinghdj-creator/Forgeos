@@ -15,6 +15,28 @@ from .templates import PACING, STYLE_PRESETS, TEMPLATES, WORDS_PER_SECOND, Templ
 
 NEGATIVE = ("text, watermark, logo, caption, subtitles, letters, signature, blurry, low quality, "
             "jpeg artifacts, deformed, distorted face, extra fingers, extra limbs")
+# Faceless channels: show people without showing faces - also avoids the uncanny, smeared faces image models make.
+FACELESS = ("faceless framing: person seen from behind or in silhouette, face hidden or out of frame, "
+            "hands and objects in focus, or a wide shot where people are small")
+FACELESS_NEGATIVE = ", visible face, facial close-up, portrait, looking at camera"
+
+
+_PEOPLE = re.compile(r"\b(person|people|man|men|woman|women|boy|girl|child|children|kid|kids|teen\w*|student\w*|"
+                     r"crowd|worker\w*|scientist\w*|researcher\w*|someone|couple|friend\w*|guy|lady|soldier\w*|"
+                     r"king|queen|doctor|nurse|teacher|mother|father|parent\w*|he|she|they|his|her|face\w*|"
+                     r"portrait|character|figure|astronaut|detective|officer|audience|family|baby|old\s+\w+|young\s+\w+)\b",
+                     re.I)
+
+
+def _has_people(text: str) -> bool:
+    return bool(_PEOPLE.search(text))
+
+
+def _clip_words(text: str, n: int) -> str:
+    words = text.split()
+    return " ".join(words[:n]) + ("…" if len(words) > n else "")
+
+
 VIDEO_NEGATIVE = ("static, frozen frame, flicker, jitter, morphing, warped face, melting, extra limbs, distorted hands, "
                   "text, watermark, low quality, blurry, overexposed, cartoonish artifacts")
 
@@ -41,6 +63,7 @@ class ProductionSpec:
     captions: bool = True
     motion: str = "stills"  # "stills" (camera motion on images) | "ai_video" (image-to-video clips)
     review: bool = False  # pause after scene visuals so the storyboard can be edited/approved
+    faces: str = "faceless"  # "faceless": people from behind / silhouettes / hands / wide shots | "show"
     video_quality: str = ""  # AI clip speed: "fast" | "balanced" | "best" ("" = the worker's default)
     ai_video_scenes: object = "all"  # with motion=ai_video: "all", "hook" (first scene) or a list of scene numbers (1-based)
     auto_edit: bool = True  # let the Director choose transitions, caption emphasis and dramatic holds
@@ -71,6 +94,7 @@ class ProductionSpec:
             review=bool(d.get("review", False)),
             ai_video_scenes=d.get("ai_video_scenes", "all") or "all",
             video_quality=str(d.get("video_quality", "") or ""),
+            faces=str(d.get("faces", "faceless") or "faceless"),
             auto_edit=bool(d.get("auto_edit", True)),
             character_ids=[str(x) for x in d.get("character_ids") or []][:10],
             script=clean_script(str(d.get("script", "") or "")),
@@ -110,6 +134,8 @@ class ProductionSpec:
             raise ValueError("pacing must be slow, medium or fast")
         if self.motion not in ("stills", "ai_video"):
             raise ValueError("motion must be stills or ai_video")
+        if self.faces not in ("faceless", "show"):
+            raise ValueError("faces must be faceless or show")
         if self.video_quality not in ("", "fast", "balanced", "best"):
             raise ValueError("video_quality must be fast, balanced or best")
         if isinstance(self.ai_video_scenes, list):
@@ -299,7 +325,12 @@ def prompt_forge(plan: ProductionPlan, spec: ProductionSpec, only: int | None = 
     for i, s in enumerate(plan.scenes):
         if only is not None and i != only:
             continue
-        parts = [s.visual.rstrip(".")]
+        # SDXL reads only ~77 tokens: keep the subject short and put framing + quality early so they aren't cut.
+        parts = [_clip_words(s.visual.rstrip("."), 40)]
+        faceless = spec.faces == "faceless" and _has_people(f"{s.visual} {s.shot}")
+        if faceless:
+            parts.append(FACELESS)
+        parts.append("sharp focus, highly detailed")
         shot = ", ".join(x for x in [f"{s.shot} shot" if s.shot else "", spec.camera or s.camera,
                                      f"{spec.mood or s.mood} mood" if (spec.mood or s.mood) else ""] if x)
         if shot:
@@ -310,7 +341,7 @@ def prompt_forge(plan: ProductionPlan, spec: ProductionSpec, only: int | None = 
                 parts.append(f"{c.name}: {c.description}")
         parts.append(style)
         s.prompt = ". ".join(parts)
-        s.negative = NEGATIVE
+        s.negative = NEGATIVE + (FACELESS_NEGATIVE if faceless else "")
         # The animation prompt leads with motion: image-to-video models already see the still.
         camera = spec.camera or s.camera or "slow cinematic camera move"
         motion = s.motion or f"subtle natural movement in the scene: {s.visual.rstrip('.')}"

@@ -50,7 +50,7 @@ data class ProductionRequest(
     val characters: List<Pair<String, String>>, val music: Boolean, val captions: Boolean,
     val aiVideo: Boolean, val review: Boolean, val autoEdit: Boolean, val characterIds: List<String>,
     val script: String = "", val musicAssetId: String = "", val sfx: Boolean = true, val aiVideoScenes: String = "all",
-    val videoQuality: String = "fast"
+    val videoQuality: String = "fast", val faces: String = "faceless"
 )
 
 data class LibraryVoice(val id: String, val name: String, val provider: String, val voice: String, val speed: Double, val builtin: Boolean,
@@ -139,7 +139,7 @@ class ProductionClient(baseUrl: String) {
             .put("template", r.template).put("voice", r.voice).put("pacing", r.pacing).put("style", r.style)
             .put("mood", r.mood).put("camera", r.camera).put("music", r.music).put("captions", r.captions)
             .put("motion", if (r.aiVideo) "ai_video" else "stills").put("review", r.review).put("ai_video_scenes", r.aiVideoScenes)
-            .put("video_quality", r.videoQuality).put("auto_edit", r.autoEdit).put("character_ids", JSONArray(r.characterIds))
+            .put("video_quality", r.videoQuality).put("faces", r.faces).put("auto_edit", r.autoEdit).put("character_ids", JSONArray(r.characterIds))
             .put("script", r.script).put("music_asset_id", r.musicAssetId).put("sfx", r.sfx)
             .put("characters", JSONArray().apply { r.characters.forEach { (n, d) -> put(JSONObject().put("name", n).put("description", d)) } })
         parse(call("POST", "/v1/productions", body))

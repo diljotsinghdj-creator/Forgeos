@@ -40,7 +40,7 @@ def build_image(cfg: Config):
         prov = A1111ImageProvider(cfg.image_url, cfg.image_steps)
     elif p == "diffusers":
         from .image_diffusers import DiffusersImageProvider
-        prov = DiffusersImageProvider(cfg.image_model, cfg.image_steps)
+        prov = DiffusersImageProvider(cfg.image_model, cfg.image_steps, cfg.image_hires)
     else:
         raise NotConfigured("No image model configured (set CF_IMAGE_PROVIDER to a1111 or diffusers)")
     _image_cache[key] = prov

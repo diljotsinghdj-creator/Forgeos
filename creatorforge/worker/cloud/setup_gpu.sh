@@ -84,24 +84,26 @@ export OLLAMA_MODELS="$HOME_DIR/ollama" OLLAMA_KEEP_ALIVE=2m   # free VRAM soon 
 OLLAMA_JOB=$!
 
 say "Downloading image model $IMAGE_MODEL (first time ~10-25 GB; reused afterwards)"
-# FLUX now needs a (free) Hugging Face login; without HF_TOKEN we fall back to SDXL, which needs none.
+# FLUX needs a (free) Hugging Face login (HF_TOKEN). Without it we use RealVisXL V5 - a photoreal SDXL model with far
+# better faces and skin than SDXL base - and SDXL base only as a last resort. Each must be a diffusers-format repo.
 python - "$IMAGE_MODEL" "$HOME_DIR/image_model.txt" <<'PY'
+import os
 import sys
 from huggingface_hub import snapshot_download
-SKIP = ["flux1-*.safetensors", "ae.safetensors", "sd_xl_*.safetensors", "*.bin", "*.onnx", "*.onnx_data",
-        "*.msgpack", "*openvino*", "*.md", "*.png", "*.jpg"]
-FALLBACK = "stabilityai/stable-diffusion-xl-base-1.0"
+SKIP = ["flux1-*.safetensors", "ae.safetensors", "sd_xl_*.safetensors", "RealVisXL*.safetensors", "*.bin", "*.onnx",
+        "*.onnx_data", "*.msgpack", "*openvino*", "*.md", "*.png", "*.jpg"]
 model, out = sys.argv[1], sys.argv[2]
-try:
-    snapshot_download(model, ignore_patterns=SKIP)
-except Exception as e:  # gated repo / missing token
-    if model == FALLBACK:
-        raise
-    print(f"  {model} needs a Hugging Face login ({type(e).__name__}); using {FALLBACK} instead.")
-    print("  (For FLUX later: accept its licence on huggingface.co, then run with HF_TOKEN=... set.)")
-    model = FALLBACK
-    snapshot_download(model, ignore_patterns=SKIP)
-open(out, "w").write(model)
+for candidate in dict.fromkeys([model, "SG161222/RealVisXL_V5.0", "stabilityai/stable-diffusion-xl-base-1.0"]):
+    try:
+        path = snapshot_download(candidate, ignore_patterns=SKIP)
+        if not os.path.isfile(os.path.join(path, "model_index.json")):
+            raise RuntimeError("not a diffusers model")
+        break
+    except Exception as e:  # gated repo / missing token / wrong format
+        print(f"  {candidate} unavailable ({type(e).__name__}: {str(e)[:120]}); trying the next model.")
+else:
+    raise SystemExit("No image model could be downloaded")
+open(out, "w").write(candidate)
 PY
 IMAGE_MODEL="$(cat "$HOME_DIR/image_model.txt")"
 echo "  image model: $IMAGE_MODEL"

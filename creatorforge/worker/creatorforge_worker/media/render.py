@@ -139,13 +139,13 @@ def render_video(clips: list[Clip], audio: Path, captions: Path | None, width: i
             stretch = min(1.6, length / c.video_duration) if c.video_duration and c.video_duration < length else 1.0
             args += ["-i", str(c.video)]
             graph.append(f"[{i}:v]setpts={stretch:.4f}*(PTS-STARTPTS),"
-                         f"scale={width}:{height}:force_original_aspect_ratio=increase,crop={width}:{height},"
+                         f"scale={width}:{height}:force_original_aspect_ratio=increase:flags=lanczos,crop={width}:{height},"
                          f"setsar=1,fps={FPS},tpad=stop_mode=clone:stop_duration={length:.3f},"
                          f"trim=end_frame={frames},setpts=PTS-STARTPTS,format=yuv420p[v{i}]")
             continue
         args += ["-i", str(c.image)]
         sw, sh = int(width * 1.5) // 2 * 2, int(height * 1.5) // 2 * 2
-        graph.append(f"[{i}:v]scale={sw}:{sh}:force_original_aspect_ratio=increase,crop={sw}:{sh},setsar=1,"
+        graph.append(f"[{i}:v]scale={sw}:{sh}:force_original_aspect_ratio=increase:flags=lanczos,crop={sw}:{sh},setsar=1,"
                      f"zoompan={_motion(c.camera, frames)}:d={frames}:s={width}x{height}:fps={FPS},"
                      f"trim=end_frame={frames},setpts=PTS-STARTPTS,format=yuv420p[v{i}]")
     last = "v0"
