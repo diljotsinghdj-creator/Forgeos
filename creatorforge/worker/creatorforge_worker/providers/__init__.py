@@ -21,6 +21,47 @@ def build_llm(cfg: Config):
     return OpenAICompatibleLLM(cfg.llm_url, cfg.llm_model, cfg.llm_api_key)
 
 
+# The app can lend its own (usually much stronger) text AI - Gemini, Groq, ... - to plan a production's script and
+# shots. Kept in memory per job only; if it fails, the pod's local model takes over.
+_director_llms: dict[str, tuple[str, str, str]] = {}
+
+
+def set_director_llm(job_id: str, d: dict) -> None:
+    url, model, key = str(d.get("url", "")).strip(), str(d.get("model", "")).strip(), str(d.get("key", "")).strip()
+    if url.startswith("https://") and model and len(_director_llms) < 500:
+        _director_llms[job_id] = (url, model, key)
+
+
+class _FallbackLLM:
+    def __init__(self, primary, backup):
+        self.primary, self.backup = primary, backup
+        self.id = f"{primary.id} (from app)" + (f", backup {backup.id}" if backup else "")
+
+    def complete_json(self, system: str, user: str) -> str:
+        try:
+            return self.primary.complete_json(system, user)
+        except Exception:  # noqa: BLE001 - quota, bad key, network: keep the video going
+            if self.backup is None:
+                raise
+            self.id = f"{self.backup.id} (app AI failed)"
+            return self.backup.complete_json(system, user)
+
+
+def director_llm(cfg: Config, job_id: str):
+    """The best script/shot planner for a job: the app's AI when lent, the pod's local model as backup."""
+    try:
+        local = build_llm(cfg)
+    except NotConfigured:
+        local = None
+    lent = _director_llms.get(job_id)
+    if lent and cfg.llm_url != "mock":
+        from .llm_openai import OpenAICompatibleLLM
+        return _FallbackLLM(OpenAICompatibleLLM(lent[0], lent[1], lent[2], timeout=180), local)
+    if local is None:
+        raise NotConfigured("No script model configured (set CF_LLM_URL and CF_LLM_MODEL)")
+    return local
+
+
 _image_cache: dict[tuple, object] = {}
 
 

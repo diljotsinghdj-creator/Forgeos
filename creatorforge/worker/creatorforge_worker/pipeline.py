@@ -141,15 +141,15 @@ class Pipeline:
         spec = self._spec(job)
         if spec.script:
             try:
-                llm = providers.build_llm(self.cfg)
+                llm = providers.director_llm(self.cfg, job["id"])
             except NotConfigured:
                 llm = None
-            job["providers"]["llm"] = f"{llm.id} (script mode)" if llm else "none (script mode: visuals from your words)"
             plan = director.direct_script(llm, spec)
+            job["providers"]["llm"] = f"{llm.id} (script mode)" if llm else "none (script mode: visuals from your words)"
         else:
-            llm = providers.build_llm(self.cfg)
-            job["providers"]["llm"] = llm.id
+            llm = providers.director_llm(self.cfg, job["id"])
             plan = director.direct(llm, spec)
+            job["providers"]["llm"] = llm.id
         job["plan"] = plan.to_dict()
         job["scenes"] = [{"index": i, "image_state": "PLANNED", "voice_state": "PLANNED", "clip_state": "PLANNED",
                           "image": None, "narration": None, "narration_s": None, "clip": None, "error": None}

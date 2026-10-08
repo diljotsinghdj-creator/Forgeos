@@ -139,16 +139,22 @@ def render_video(clips: list[Clip], audio: Path, captions: Path | None, width: i
         overlap = trans[i + 1][1] if i + 1 < len(clips) else tail
         frames = max(2, round((c.duration + overlap) * FPS))
         if c.video is not None:
-            # Fit the clip to the slot: cover-crop, hold the last frame if the model's clip is shorter.
+            # Fit the clip to the slot: cover-crop; a clip shorter than its slot is slowed gently (max 1.25x), and
+            # if that's still short it plays forward then backward (boomerang) instead of freezing on its last frame.
             length = frames / FPS
-            # A clip shorter than its slot is slowed gently (max 1.6x) before holding the last frame,
-            # so motion keeps going instead of freezing.
-            stretch = min(1.6, length / c.video_duration) if c.video_duration and c.video_duration < length else 1.0
+            stretch = min(1.25, length / c.video_duration) if c.video_duration and c.video_duration < length else 1.0
+            boomerang = bool(c.video_duration) and c.video_duration * stretch < length - 0.05
             args += ["-i", str(c.video)]
-            graph.append(f"[{i}:v]setpts={stretch:.4f}*(PTS-STARTPTS),"
-                         f"scale={width}:{height}:force_original_aspect_ratio=increase:flags=lanczos,crop={width}:{height},"
-                         f"setsar=1,fps={FPS},tpad=stop_mode=clone:stop_duration={length:.3f},"
-                         f"trim=end_frame={frames},setpts=PTS-STARTPTS,format=yuv420p[v{i}]")
+            base = (f"[{i}:v]setpts={stretch:.4f}*(PTS-STARTPTS),"
+                    f"scale={width}:{height}:force_original_aspect_ratio=increase:flags=lanczos,crop={width}:{height},"
+                    f"setsar=1,fps={FPS}")
+            if boomerang:
+                graph.append(f"{base},split[f{i}][b{i}];[b{i}]reverse[r{i}];[f{i}][r{i}]concat=n=2:v=1:a=0,fps={FPS},settb=1/{FPS},"
+                             f"tpad=stop_mode=clone:stop_duration={length:.3f},"
+                             f"trim=end_frame={frames},setpts=PTS-STARTPTS,format=yuv420p[v{i}]")
+            else:
+                graph.append(f"{base},tpad=stop_mode=clone:stop_duration={length:.3f},"
+                             f"trim=end_frame={frames},setpts=PTS-STARTPTS,format=yuv420p[v{i}]")
             continue
         args += ["-i", str(c.image)]
         # zoompan moves in whole input pixels; on a 4x canvas each step is a quarter output pixel, so slow

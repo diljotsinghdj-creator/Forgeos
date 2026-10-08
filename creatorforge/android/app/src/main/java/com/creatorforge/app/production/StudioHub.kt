@@ -39,6 +39,13 @@ object StudioHub {
     /** AI is "on" when a key is saved, or a custom server (e.g. Ollama on a PC) is set. */
     fun aiReady(c: Context) = baseUrl(c).isNotBlank() && model(c).isNotBlank() && (key(c).isNotBlank() || preset(c).id == "custom")
 
+    /** Your Script AI (Gemini, Groq, ...), lent to the pod to plan each video's story and shots - far stronger than the
+     *  pod's small local model. Only https services; the pod keeps it in memory for that one video. */
+    fun directorLlm(c: Context): org.json.JSONObject? {
+        if (!aiReady(c) || !baseUrl(c).startsWith("https://")) return null
+        return org.json.JSONObject().put("url", baseUrl(c).trimEnd('/')).put("model", model(c).removePrefix("models/")).put("key", key(c))
+    }
+
     fun textModel(c: Context, modelName: String = model(c)): TextModel =
         if (preset(c).id == "gemini") GeminiNative(modelName, key(c)) else OpenAiCompatible(baseUrl(c), modelName, key(c))
 

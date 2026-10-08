@@ -73,6 +73,11 @@ const val UNREACHABLE = "Can't reach your pod - is it running? (Settings → Pod
 
 /** Client for the worker's one-button production API. */
 class ProductionClient(baseUrl: String) {
+    companion object {
+        /** Supplies the app's Script AI for planning (set once at startup). */
+        @Volatile var directorLlm: (() -> JSONObject?)? = null
+    }
+
     private val base = baseUrl.trim().trimEnd('/')
     private val client = OkHttpClient.Builder().connectTimeout(15, TimeUnit.SECONDS).readTimeout(90, TimeUnit.SECONDS).retryOnConnectionFailure(true).build()
     private val download = OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).readTimeout(300, TimeUnit.SECONDS).build()
@@ -142,7 +147,7 @@ class ProductionClient(baseUrl: String) {
             .put("video_quality", r.videoQuality).put("faces", r.faces).put("auto_edit", r.autoEdit).put("character_ids", JSONArray(r.characterIds))
             .put("script", r.script).put("music_asset_id", r.musicAssetId).put("sfx", r.sfx)
             .put("characters", JSONArray().apply { r.characters.forEach { (n, d) -> put(JSONObject().put("name", n).put("description", d)) } })
-        parse(call("POST", "/v1/productions", body))
+        parse(call("POST", "/v1/productions", withDirector(body)))
     }
 
     suspend fun get(id: String) = withContext(Dispatchers.IO) { parse(call("GET", "/v1/productions/$id")) }
@@ -343,7 +348,12 @@ class ProductionClient(baseUrl: String) {
     suspend fun deleteAccount(id: String): Unit = withContext(Dispatchers.IO) { call("DELETE", "/v1/accounts/$id") }
 
     /** Queues a production from a ready-made request body (built on the phone by the studio). */
-    suspend fun createJson(body: JSONObject): ProductionView = withContext(Dispatchers.IO) { parse(call("POST", "/v1/productions", body)) }
+    suspend fun createJson(body: JSONObject): ProductionView = withContext(Dispatchers.IO) { parse(call("POST", "/v1/productions", withDirector(body))) }
+
+    private fun withDirector(body: JSONObject): JSONObject {
+        directorLlm?.invoke()?.let { if (!body.has("director_llm")) body.put("director_llm", it) }
+        return body
+    }
 
     private fun parse(raw: String): ProductionView {
         val j = JSONObject(raw)

@@ -353,8 +353,12 @@ Return JSON only: {"ideas":[{"title":"...","hook":"...","angle":"...","format":"
         private const val SCRIPT_SYSTEM = """You write narration for faceless social videos.
 Write a voice-over script about the IDEA using ONLY facts found in the numbered SOURCES.
 Rules:
-- First sentence is the hook. Last sentence is a short call to action.
-- Plain spoken English, short sentences, no stage directions, no emojis, no headings, no scene labels.
+- Plain spoken English, no stage directions, no emojis, no headings, no scene labels.
+- RETENTION: second 1 is the hook (curiosity gap, bold claim or tension) - never a greeting or "in this video".
+- Short spoken sentences, mostly under 12 words. Open loops: tease what's coming, escalate every 2-3 sentences, payoff at the end.
+- Every sentence names something the viewer can SEE, so it can be illustrated.
+- 60 seconds or less: end with a LOOP - the last line flows straight back into the first line so the replay is seamless; no
+  "like and subscribe" at the end. Longer videos: last sentence is a short call to action.
 - If a detail is not in the SOURCES, do not state it as fact. You may give clearly labelled opinion ("I think", "it might").
 - Never invent quotes, statistics, dates or names.
 - Hit the target word count.
@@ -365,7 +369,9 @@ Talk with the creator like a sharp, friendly producer. Help them turn a rough th
 Each turn:
 - Answer in 1-4 short sentences. Ask at most ONE question, only when it really matters.
 - Keep a DRAFT of the video up to date. Fill in sensible defaults yourself; don't make the creator choose everything.
-- If the creator asks for a script, write the full narration in draft.script (spoken words only, hook first, CTA last).
+- If the creator asks for a script, write the full narration in draft.script (spoken words only). Scripts must hold attention:
+  hook in second 1 (never a greeting), short visual sentences, open loops with a payoff at the end; videos of 60s or less end with
+  a line that loops back into the first line (no "like and subscribe").
 - If they ask for ideas, list them in your reply and put the best one in the draft.
 - Never invent facts presented as news. For real events, keep claims general or ask the creator for sources.
 - Set ready=true once the draft is good enough to produce.
@@ -404,7 +410,9 @@ Return JSON only: {"ideas":[{"line1":"...","line2":"...","highlight":"..."}]}"""
 
         private const val SCENES_SYSTEM = """You are a storyboard artist for faceless social videos. Break the video into scenes.
 For each scene give the narration (if a SCRIPT is given, copy each numbered part exactly, one per scene) and ONE concrete,
-filmable image: subject, setting, action, lighting. No on-screen text in images. Keep characters and places consistent.
+filmable image: subject, setting, action, lighting. The image must literally show what that scene's narration says (its key
+subject and action). Keep the same character, place and look across scenes by repeating the same descriptors. Vary shot sizes
+(wide, medium, close-up). No on-screen text in images.
 Return JSON only: {"scenes":[{"narration":"...","visual":"...","shot":"wide|medium|close-up|aerial|...","camera":"slow push in|pan left|static|...","mood":"...","motion":"what moves in the shot"}]}"""
     }
 }

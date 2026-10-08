@@ -178,19 +178,23 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
             raise HTTPException(402, str(e)) from None
         return a["id"]
 
-    def submit(spec: ProductionSpec, title: str = "") -> dict:
+    def submit(spec: ProductionSpec, title: str = "", director_llm: dict | None = None) -> dict:
         d = spec.to_dict()
         owner = charge(d)
         job = store.create(d, title)
         if owner:
             job["owner"] = owner
             store.save(job)
+        if director_llm:
+            providers.set_director_llm(job["id"], director_llm)   # memory only - the key is never written to disk
         runner.submit(job["id"])
         return public(job)
 
     @app.post("/v1/productions", status_code=202, dependencies=[Depends(auth)])
     async def create_production(request: Request) -> dict:
-        return submit(build_spec(await request.json()))
+        body = await request.json()
+        director_llm = body.pop("director_llm", None) if isinstance(body, dict) else None
+        return submit(build_spec(body), director_llm=director_llm if isinstance(director_llm, dict) else None)
 
     @app.get("/v1/productions", dependencies=[Depends(auth)])
     def list_productions() -> list[dict]:

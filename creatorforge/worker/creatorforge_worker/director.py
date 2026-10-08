@@ -221,11 +221,27 @@ def target_scene_count(spec: ProductionSpec) -> int:
     return max(3, min(40, round(spec.duration_s / seconds)))
 
 
+RETENTION = """RETENTION RULES (viewers must watch to the end and replay):
+- Second 1 is the hook: a curiosity gap, bold claim or tension. Never a greeting, intro or "in this video".
+- Short spoken sentences (mostly under 12 words). One idea per sentence. No filler, no throat-clearing.
+- Open loops: tease what's coming ("but that wasn't the strange part"), escalate every 2-3 sentences, save the payoff for the end.
+- Concrete and visual: every sentence names something the viewer can SEE (a person, place, object, action).
+- Videos of 60 seconds or less end with a LOOP: the last line flows straight back into the first line so the replay feels
+  seamless. No "like and subscribe" at the end of a short; for longer videos a one-line CTA is fine."""
+
+VISUAL_RULES = """VISUAL RULES (the picture must match the words):
+- Each visual shows exactly what that scene's narration is saying - its key subject and action, literally.
+- Keep the same main character, place, era and look across scenes (repeat the same descriptors every time).
+- Vary the shot size scene to scene (wide, medium, close-up) so the edit feels alive.
+- No text, captions, logos or signs in images."""
+
 SYSTEM = """You are CreatorForge's AI Director and ScriptForge. You turn one idea into a complete,
 production-ready short video plan: a scroll-stopping hook, a tight narrated script split into
 scenes, a shot list and a call to action. Narration is spoken by a voice-over; visuals are
 generated as still images, so every 'visual' must describe ONE concrete, filmable image
-(subject, setting, action, lighting) with no on-screen text. Respond with JSON only."""
+(subject, setting, action, lighting) with no on-screen text. Respond with JSON only.
+
+""" + RETENTION + "\n\n" + VISUAL_RULES
 
 
 def _user_prompt(spec: ProductionSpec, t: Template, n: int) -> str:
@@ -437,7 +453,9 @@ def split_script(spec: ProductionSpec) -> list[str]:
 SCRIPT_SYSTEM = """You are CreatorForge's AI Director. The narration script is FINAL and already split into
 scenes; never change, add or remove words. For each scene, design ONE concrete filmable image (subject,
 setting, action, lighting; no on-screen text) that illustrates what is being said, plus the edit.
-Respond with JSON only."""
+Respond with JSON only.
+
+""" + VISUAL_RULES
 
 
 def direct_script(llm, spec: ProductionSpec) -> ProductionPlan:

@@ -262,3 +262,24 @@ def test_script_mode_survives_llm_miscounting_scenes():
             return "not json at all"
 
     assert len(direct_script(Garbage(), spec).scenes) == n
+
+
+def test_app_lends_its_ai_for_planning_with_local_fallback(tmp_path):
+    from creatorforge_worker import providers
+    from creatorforge_worker.config import Config
+
+    cfg = Config(data_dir=tmp_path, llm_url="http://127.0.0.1:9/v1", llm_model="local-7b")
+    providers.set_director_llm("job1", {"url": "http://insecure.example/v1", "model": "m", "key": "k"})
+    assert providers.director_llm(cfg, "job1").id == "llm:local-7b"          # only https is accepted
+    providers.set_director_llm("job2", {"url": "https://127.0.0.1:9/v1", "model": "gemini-x", "key": "k"})
+    llm = providers.director_llm(cfg, "job2")
+    assert llm.id.startswith("llm:gemini-x (from app)")
+
+    class Local:
+        id = "llm:local-7b"
+        def complete_json(self, system, user):
+            return '{"ok": true}'
+
+    llm.backup = Local()
+    assert llm.complete_json("s", "u") == '{"ok": true}'                       # app AI unreachable -> local model
+    assert "app AI failed" in llm.id
