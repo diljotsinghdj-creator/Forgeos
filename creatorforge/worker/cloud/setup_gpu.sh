@@ -29,13 +29,21 @@ if ! command -v nvidia-smi >/dev/null || ! nvidia-smi >/dev/null 2>&1; then
 fi
 nvidia-smi --query-gpu=name,memory.total --format=csv,noheader
 
+say "Freeing disk space (installer caches, image models no longer used)"
+# pip/uv keep copies of every wheel (several GB of torch); old image models linger after a model switch.
+rm -rf /root/.cache/pip /root/.cache/uv 2>/dev/null || true
+# SDXL base was replaced by RealVisXL (it re-downloads only if RealVisXL ever fails); FLUX is unusable without HF_TOKEN.
+rm -rf "$HOME_DIR"/hf/hub/models--stabilityai--stable-diffusion-xl-base-1.0 2>/dev/null || true
+[ -n "${HF_TOKEN:-}" ] || rm -rf "$HOME_DIR"/hf/hub/models--black-forest-labs--FLUX.1-schnell 2>/dev/null || true
+rm -rf "$HOME_DIR"/data/cache/clips/*.tmp* 2>/dev/null || true
+
 say "Checking disk space"
 FREE_GB=$(df -BG --output=avail "$HOME_DIR" | tail -1 | tr -dc '0-9')
 NEED_GB=$([ "$VIDEO" = "max" ] && echo 180 || ([ "$VIDEO" = "off" ] && echo 50 || echo 80))
 # Models already downloaded by an earlier run mean a re-run only needs room for updates. (Checked by
 # folder, not by adding up file sizes - that takes minutes on RunPod's network disks.)
 HAVE="no"
-if [ -d "$HOME_DIR/hf/hub" ] && [ -d "$HOME_DIR/venv" ]; then HAVE="yes"; NEED_GB=10; fi
+if [ -d "$HOME_DIR/hf/hub" ] && [ -d "$HOME_DIR/venv" ]; then HAVE="yes"; NEED_GB=18; fi   # room for an image model update
 echo "  free: ${FREE_GB} GB, models already downloaded: ${HAVE}, needed: ~${NEED_GB} GB (in $HOME_DIR)"
 if [ "${FREE_GB:-0}" -lt "$NEED_GB" ]; then
   echo "Not enough disk. Stop the pod, edit it and raise the disk / volume size to at least ${NEED_GB} GB"
@@ -62,7 +70,7 @@ say "Installing the worker (Python packages; first run takes a few minutes)"
 # shellcheck disable=SC1091
 . venv/bin/activate
 pip install -q --upgrade pip
-pip install -q -e "Forgeos/creatorforge/worker[whisper,kokoro,diffusers]" huggingface_hub hf_transfer qrcode
+pip install -q --no-cache-dir -e "Forgeos/creatorforge/worker[whisper,kokoro,diffusers]" huggingface_hub hf_transfer qrcode
 PYBIN="$(command -v python)"
 "$PYBIN" -c "import creatorforge_worker, torch; assert torch.cuda.is_available(), 'PyTorch cannot see the GPU'; print('PyTorch', torch.__version__, 'CUDA OK')"
 python -m spacy download en_core_web_sm -q >/dev/null 2>&1 || true   # used by Kokoro's English text front-end
@@ -170,6 +178,7 @@ nohup bash -c "
   pip install -q uv
   [ -x '$HOME_DIR/chatterbox_venv/bin/python' ] || uv venv -q --python 3.11 '$HOME_DIR/chatterbox_venv'
   uv pip install -q --python '$HOME_DIR/chatterbox_venv/bin/python' chatterbox-tts 'setuptools<81'
+  uv cache clean -q || true
   echo 'Chatterbox installed - starting the narration server'
   export HF_HOME='$HOME_DIR/hf'
   exec '$HOME_DIR/chatterbox_venv/bin/python' '$HOME_DIR/Forgeos/creatorforge/worker/creatorforge_worker/chatterbox_server.py' 8770
