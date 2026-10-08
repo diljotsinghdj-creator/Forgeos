@@ -133,43 +133,84 @@ LOGO_XY = {"top-right": ("W-w-{m}", "{m}"), "top-left": ("{m}", "{m}"),
            "bottom-right": ("W-w-{m}", "H-h-{m}"), "bottom-left": ("{m}", "H-h-{m}")}
 
 
+def _segment_args(c: Clip, frames: int, width: int, height: int) -> list[str]:
+    if c.video is not None:
+        # Fit the clip to the slot: cover-crop; a clip shorter than its slot is slowed gently (max 1.25x), and
+        # if that's still short it plays forward then backward (boomerang) instead of freezing on its last frame.
+        length = frames / FPS
+        stretch = min(1.25, length / c.video_duration) if c.video_duration and c.video_duration < length else 1.0
+        boomerang = bool(c.video_duration) and c.video_duration * stretch < length - 0.05
+        base = (f"setpts={stretch:.4f}*(PTS-STARTPTS),"
+                f"scale={width}:{height}:force_original_aspect_ratio=increase:flags=lanczos,crop={width}:{height},"
+                f"setsar=1,fps={FPS}")
+        if boomerang:
+            vf = (f"[0:v]{base},split[f][b];[b]reverse[r];[f][r]concat=n=2:v=1:a=0,fps={FPS},settb=1/{FPS},"
+                  f"tpad=stop_mode=clone:stop_duration={length:.3f},trim=end_frame={frames},setpts=PTS-STARTPTS,"
+                  f"format=yuv420p[v]")
+        else:
+            vf = (f"[0:v]{base},tpad=stop_mode=clone:stop_duration={length:.3f},"
+                  f"trim=end_frame={frames},setpts=PTS-STARTPTS,format=yuv420p[v]")
+        src = ["-i", str(c.video)]
+    else:
+        # zoompan moves in whole input pixels; on a 4x canvas each step is a quarter output pixel, so slow
+        # push-ins and pans glide instead of shaking. (Scaled once per still, so it's cheap.)
+        sw, sh = width * 4, height * 4
+        vf = (f"[0:v]scale={sw}:{sh}:force_original_aspect_ratio=increase:flags=lanczos,crop={sw}:{sh},setsar=1,"
+              f"zoompan={_motion(c.camera, frames)}:d={frames}:s={width}x{height}:fps={FPS},"
+              f"trim=end_frame={frames},setpts=PTS-STARTPTS,format=yuv420p[v]")
+        src = ["-i", str(c.image)]
+    return [*src, "-filter_complex", vf, "-map", "[v]", "-an", "-frames:v", str(frames), "-r", str(FPS),
+            "-c:v", "libx264", "-preset", "veryfast", "-crf", "14", "-pix_fmt", "yuv420p"]
+
+
+def _segments(jobs: list[tuple[Clip, int]], width: int, height: int, work: Path,
+              cancel: threading.Event) -> list[Path]:
+    import os
+    from concurrent.futures import ThreadPoolExecutor
+    work.mkdir(parents=True, exist_ok=True)
+    plan = []
+    for c, frames in jobs:
+        args = _segment_args(c, frames, width, height)
+        src = c.video or c.image
+        stamp = f"{src.stat().st_size}:{src.stat().st_mtime_ns}" if src.is_file() else ""
+        key = hashlib.sha256(("|".join(args) + stamp).encode()).hexdigest()[:20]
+        plan.append((work / f"seg_{key}.mp4", args))
+
+    def make(item):
+        dst, args = item
+        if dst.is_file() and dst.stat().st_size > 1000:
+            return
+        tmp = dst.with_name(dst.stem + ".part.mp4")
+        ff.run([*args, str(tmp)], cancel)
+        tmp.replace(dst)
+
+    with ThreadPoolExecutor(max_workers=max(2, min(8, (os.cpu_count() or 2) // 2))) as pool:
+        for _ in pool.map(make, plan):   # re-raises the first failure (or Cancelled)
+            pass
+    return [dst for dst, _ in plan]
+
+
 def render_video(clips: list[Clip], audio: Path, captions: Path | None, width: int, height: int,
                  out: Path, work: Path, cancel: threading.Event,
                  logo: tuple[Path, str, float] | None = None, grade: str = "film") -> float:
     """Returns the expected duration of the rendered file."""
     tail = TRANSITION_S if len(clips) > 1 else 0.0
     trans = [TRANSITIONS.get(c.transition, TRANSITIONS["fade"]) for c in clips]
-    args: list[str] = []
-    graph: list[str] = []
+    # Pass 1: every shot becomes its own short, uniform segment (same size, fps, pixel format), several at a time.
+    # One FFmpeg graph holding a hundred stills on a 4x canvas plus stock clips of mixed sizes is slow, needs a
+    # lot of memory, and can crash when a clip changes size mid-stream; small separate jobs avoid all three, and a
+    # retry reuses the segments that were already made.
+    jobs = []
     for i, c in enumerate(clips):
         # Each clip overlaps the next by the incoming transition's length (the last one by the tail).
         overlap = trans[i + 1][1] if i + 1 < len(clips) else tail
-        frames = max(2, round((c.duration + overlap) * FPS))
-        if c.video is not None:
-            # Fit the clip to the slot: cover-crop; a clip shorter than its slot is slowed gently (max 1.25x), and
-            # if that's still short it plays forward then backward (boomerang) instead of freezing on its last frame.
-            length = frames / FPS
-            stretch = min(1.25, length / c.video_duration) if c.video_duration and c.video_duration < length else 1.0
-            boomerang = bool(c.video_duration) and c.video_duration * stretch < length - 0.05
-            args += ["-i", str(c.video)]
-            base = (f"[{i}:v]setpts={stretch:.4f}*(PTS-STARTPTS),"
-                    f"scale={width}:{height}:force_original_aspect_ratio=increase:flags=lanczos,crop={width}:{height},"
-                    f"setsar=1,fps={FPS}")
-            if boomerang:
-                graph.append(f"{base},split[f{i}][b{i}];[b{i}]reverse[r{i}];[f{i}][r{i}]concat=n=2:v=1:a=0,fps={FPS},settb=1/{FPS},"
-                             f"tpad=stop_mode=clone:stop_duration={length:.3f},"
-                             f"trim=end_frame={frames},setpts=PTS-STARTPTS,format=yuv420p[v{i}]")
-            else:
-                graph.append(f"{base},tpad=stop_mode=clone:stop_duration={length:.3f},"
-                             f"trim=end_frame={frames},setpts=PTS-STARTPTS,format=yuv420p[v{i}]")
-            continue
-        args += ["-i", str(c.image)]
-        # zoompan moves in whole input pixels; on a 4x canvas each step is a quarter output pixel, so slow
-        # push-ins and pans glide instead of shaking. (Scaled once per still, so it's cheap.)
-        sw, sh = width * 4, height * 4
-        graph.append(f"[{i}:v]scale={sw}:{sh}:force_original_aspect_ratio=increase:flags=lanczos,crop={sw}:{sh},setsar=1,"
-                     f"zoompan={_motion(c.camera, frames)}:d={frames}:s={width}x{height}:fps={FPS},"
-                     f"trim=end_frame={frames},setpts=PTS-STARTPTS,format=yuv420p[v{i}]")
+        jobs.append((c, max(2, round((c.duration + overlap) * FPS))))
+    segments = _segments(jobs, width, height, work, cancel)
+    args: list[str] = []
+    graph: list[str] = []
+    for i, seg in enumerate(segments):
+        args += ["-threads", "1", "-i", str(seg.resolve())]   # many inputs: one decoder thread each keeps memory low
+        graph.append(f"[{i}:v]settb=1/{FPS},setpts=PTS-STARTPTS,format=yuv420p[v{i}]")
     last = "v0"
     offset = 0.0
     for i in range(1, len(clips)):

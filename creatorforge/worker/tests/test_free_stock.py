@@ -88,3 +88,31 @@ def test_free_sources_follow_config(cfg):
     assert providers.stock_sources("nojob", cfg) == []          # tests never touch the network
     cfg.free_stock = True
     assert providers.stock_sources("nojob", cfg) == [("nasa", ""), ("wikimedia", "")]
+
+
+def test_render_survives_a_clip_that_changes_size_mid_stream(tmp_path):
+    """Stock footage can switch resolution part-way through; each shot is rendered on its own so the final
+    edit never has to rebuild a giant filter graph mid-stream (that crashed FFmpeg on a real pod)."""
+    import threading
+    from PIL import Image
+    from creatorforge_worker.media import ff, render
+    parts = []
+    for i, size in enumerate(("640x360", "320x568")):
+        p = tmp_path / f"p{i}.ts"
+        subprocess.run(["ffmpeg", "-y", "-v", "error", "-f", "lavfi", "-i", f"testsrc2=s={size}:d=1.5:r=24",
+                        "-c:v", "libx264", "-pix_fmt", "yuv420p", "-f", "mpegts", str(p)], check=True)
+        parts.append(p.read_bytes())
+    mixed = tmp_path / "mixed.ts"
+    mixed.write_bytes(b"".join(parts))
+    still = tmp_path / "s.png"
+    Image.new("RGB", (540, 960), (90, 40, 40)).save(still)
+    audio = tmp_path / "a.wav"
+    subprocess.run(["ffmpeg", "-y", "-v", "error", "-f", "lavfi", "-i", "anullsrc=r=48000:cl=stereo", "-t", "6",
+                    str(audio)], check=True)
+    clips = [render.Clip(still, 1.5, "push in", "cut"), render.Clip(still, 2.5, "pan left", "cut", mixed, ff.duration(mixed)),
+             render.Clip(still, 1.5, "punch", "flash")]
+    out = tmp_path / "out.mp4"
+    total = render.render_video(clips, audio, None, 270, 480, out, tmp_path / "work", threading.Event(), grade="film")
+    assert abs(ff.duration(out) - total) < 0.2
+    again = sorted((tmp_path / "work").glob("seg_*.mp4"))
+    assert len(again) == 3                       # a retry reuses these instead of re-rendering
