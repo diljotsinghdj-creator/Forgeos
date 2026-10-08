@@ -9,6 +9,7 @@ from __future__ import annotations
 import hashlib
 import json
 import shutil
+import tempfile
 import threading
 from pathlib import Path
 
@@ -266,12 +267,21 @@ class Pipeline:
         profile = providers.voice_profile(self.cfg, spec.voice, self.library_voices())
         voice = providers.build_voice(self.cfg, profile)
         note = ""
-        if profile.provider == "chatterbox" and not providers.chatterbox_ready(self.cfg):
-            # The human-like engine installs in the background after a pod start; don't fail the video over it.
-            fallback = profile.voice.split(":", 1)[1] if profile.voice.startswith("kokoro:") else "af_heart"
-            voice = providers.build_voice(self.cfg, VoiceProfile(profile.id, profile.name, "kokoro", fallback, 1.0,
-                                                                 fallback[0] if fallback[:1] in tuple("abefhijpz") else "a"))
-            note = " - human-like engine still installing, used its Kokoro voice instead"
+        if profile.provider == "chatterbox":
+            # The human-like engine installs in the background after a pod start and is the newest part of the
+            # pod; if it isn't up or can't speak, use the matching Kokoro voice so the video still finishes.
+            problem = "" if providers.chatterbox_ready(self.cfg) else "still installing"
+            if not problem and not any(s.get("voice_state") == "READY" for s in job["scenes"]):
+                try:
+                    with tempfile.TemporaryDirectory() as d:
+                        voice.synthesize("Testing.", Path(d) / "probe.wav")
+                except Exception as e:  # noqa: BLE001
+                    problem = f"failed ({str(e)[:160]})"
+            if problem:
+                fallback = profile.voice.split(":", 1)[1] if profile.voice.startswith("kokoro:") else "af_heart"
+                voice = providers.build_voice(self.cfg, VoiceProfile(profile.id, profile.name, "kokoro", fallback, 1.0,
+                                                                     fallback[0] if fallback[:1] in tuple("abefhijpz") else "a"))
+                note = f" - human-like engine {problem}; used its standard voice instead"
         job["providers"]["voice"] = f"{profile.id} ({voice.id}){note}"
         jdir = self.store.dir(job["id"])
         scenes, shots = job["scenes"], job["plan"]["scenes"]

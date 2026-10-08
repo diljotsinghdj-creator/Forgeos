@@ -167,7 +167,7 @@ nohup bash -c "
   set -e
   pip install -q uv
   [ -x '$HOME_DIR/chatterbox_venv/bin/python' ] || uv venv -q --python 3.11 '$HOME_DIR/chatterbox_venv'
-  uv pip install -q --python '$HOME_DIR/chatterbox_venv/bin/python' chatterbox-tts
+  uv pip install -q --python '$HOME_DIR/chatterbox_venv/bin/python' chatterbox-tts 'setuptools<81'
   echo 'Chatterbox installed - starting the narration server'
   export HF_HOME='$HOME_DIR/hf'
   exec '$HOME_DIR/chatterbox_venv/bin/python' '$HOME_DIR/Forgeos/creatorforge/worker/creatorforge_worker/chatterbox_server.py' 8770

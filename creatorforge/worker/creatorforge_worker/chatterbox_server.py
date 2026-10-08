@@ -19,16 +19,29 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 import numpy as np
 import torch
-from chatterbox.tts import ChatterboxTTS
+
+try:  # Chatterbox's watermark helper (resemble-perth) is None when its optional deps don't load; that makes
+    import perth  # ChatterboxTTS crash with "'NoneType' object is not callable". Fall back to a no-op watermark.
+    if getattr(perth, "PerthImplicitWatermarker", None) is None:
+        class _NoWatermark:
+            def apply_watermark(self, wav, sample_rate=None, **_):
+                return wav
+        perth.PerthImplicitWatermarker = getattr(perth, "DummyWatermarker", None) or _NoWatermark
+except ImportError:
+    pass
+
+from chatterbox.tts import ChatterboxTTS  # noqa: E402
 
 _model = None
 _lock = threading.Lock()
+_load_lock = threading.Lock()
 
 
 def model():
     global _model
-    if _model is None:
-        _model = ChatterboxTTS.from_pretrained(device="cuda" if torch.cuda.is_available() else "cpu")
+    with _load_lock:   # the background preload and the first request must not load it twice
+        if _model is None:
+            _model = ChatterboxTTS.from_pretrained(device="cuda" if torch.cuda.is_available() else "cpu")
     return _model
 
 
