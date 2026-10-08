@@ -1,6 +1,7 @@
 package com.creatorforge.app
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -31,24 +32,32 @@ object Dests {
         Dest("director", "💬", "Director", "CREATE"),
         Dest("scripts", "📝", "Scripts", "CREATE"),
         Dest("series", "📚", "Series", "CREATE"),
-        Dest("hooks", "🪝", "Hook Lab", "CREATE"),
         Dest("thumbnails", "🖼", "Thumbnails", "CREATE"),
         Dest("generate", "🎬", "Generate", "PRODUCE"),
         Dest("library", "🗂", "Library", "PRODUCE"),
         Dest("clipper", "✂️", "Shorts Clipper", "PRODUCE"),
         Dest("dubbing", "🌍", "Dubbing", "PRODUCE"),
-        Dest("phone", "📱", "Phone Video", "PRODUCE"),
         Dest("channels", "📅", "Channels", "GROW"),
-        Dest("calendar", "🗓", "Publish Calendar", "GROW"),
         Dest("analytics", "📊", "Analytics", "GROW"),
-        Dest("templates", "🧩", "Templates", "GROW"),
-        Dest("brand", "🎨", "Brand Kits", "BRAND & SAFETY"),
-        Dest("safety", "🛡", "Safety Check", "BRAND & SAFETY"),
-        Dest("team", "👥", "Team & Clients", "ACCOUNT"),
-        Dest("cloud", "☁️", "Cloud Studio", "ACCOUNT"),
-        Dest("settings", "⚙", "Settings", "ACCOUNT"),
+        Dest("brand", "🎨", "Brand Kits", "BRAND"),
+        Dest("team", "👥", "Team & Clients", "ADVANCED"),
+        Dest("cloud", "☁️", "Cloud Studio", "ADVANCED"),
+        Dest("settings", "⚙", "Settings", "SETTINGS"),
     )
+    /** Pages that now live as tabs inside another page: old route -> (page, tab). */
+    val moved = mapOf("hooks" to ("scripts" to 1), "safety" to ("scripts" to 2), "calendar" to ("channels" to 1), "templates" to ("channels" to 2))
     operator fun get(id: String) = all.firstOrNull { it.id == id } ?: all[0]
+}
+
+/** Pill tabs across the top of a page that groups related tools (keeps the sidebar short). */
+@Composable
+fun TabbedPage(tabs: List<String>, selected: Int, onSelect: (Int) -> Unit, content: @Composable (Int) -> Unit) {
+    Column(Modifier.fillMaxSize()) {
+        Row(Modifier.horizontalScroll(rememberScrollState()).padding(bottom = 8.dp), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            tabs.forEachIndexed { i, t -> FilterChip(selected = i == selected, onClick = { onSelect(i) }, label = { Text(t) }) }
+        }
+        Box(Modifier.weight(1f).fillMaxWidth()) { content(selected) }
+    }
 }
 
 /** Clean shell: a slim top bar with the page name, and a sidebar with every tool grouped by what it's for. */
