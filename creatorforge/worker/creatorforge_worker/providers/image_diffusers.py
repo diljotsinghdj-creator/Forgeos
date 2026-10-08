@@ -36,6 +36,11 @@ class DiffusersImageProvider:
             if "xl" in self.model.lower() and "schnell" not in self.model.lower():
                 from diffusers import DPMSolverMultistepScheduler
                 pipe.scheduler = DPMSolverMultistepScheduler.from_config(pipe.scheduler.config, use_karras_sigmas=True)
+            if dtype == torch.bfloat16 and hasattr(pipe, "vae") and getattr(pipe.vae.config, "force_upcast", False):
+                # SDXL's VAE "upcasts" to float32 to avoid fp16 overflow. bf16 doesn't overflow, and the upcast
+                # (plus the img2img pass's own up/down casting) can leave the VAE float32 while latents are bf16:
+                # "Input type (BFloat16) and bias type (float) should be the same". Keep everything bf16.
+                pipe.vae.register_to_config(force_upcast=False)
             if device == "cuda":
                 self.placement = place_on_gpu(pipe, keep_resident_gb=20)   # SDXL ~7 GB, FLUX ~24 GB in bf16
             else:
@@ -55,6 +60,7 @@ class DiffusersImageProvider:
             elif negative:
                 kwargs["negative_prompt"] = negative
             kwargs.update(step_callback(pipe))
+            self._same_dtype(pipe)
             try:
                 try:
                     image = pipe(**kwargs).images[0]
@@ -74,6 +80,13 @@ class DiffusersImageProvider:
                 image = self._refine(pipe, image, prompt, negative, width, height, seed)
             image.save(out, format="PNG")
 
+    @staticmethod
+    def _same_dtype(pipe) -> None:
+        """Belt and braces: the VAE must match the UNet's dtype before every call."""
+        unet, vae = getattr(pipe, "unet", None) or getattr(pipe, "transformer", None), getattr(pipe, "vae", None)
+        if unet is not None and vae is not None and vae.dtype != unet.dtype:
+            vae.to(dtype=unet.dtype)
+
     def _refine(self, pipe, image, prompt: str, negative: str, width: int, height: int, seed: int):
         import torch
         from PIL import Image
@@ -88,8 +101,11 @@ class DiffusersImageProvider:
             if negative:
                 kwargs["negative_prompt"] = negative
             kwargs.update(step_callback(self._img2img))
+            self._same_dtype(self._img2img)
             return self._img2img(**kwargs).images[0]
         except Exception as e:  # noqa: BLE001 - the base image is still good; never fail a scene over the extra pass
             if is_oom(e):
                 torch.cuda.empty_cache()
             return image
+        finally:
+            self._same_dtype(pipe)   # never leave the shared VAE in another dtype for the next image
