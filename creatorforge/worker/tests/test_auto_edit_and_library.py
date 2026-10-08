@@ -23,7 +23,7 @@ def test_auto_edit_uses_director_transitions_holds_and_emphasis(cfg):
         n = len(job["scenes"])
         assert job["edit"]["transitions"] == ["flash", "dissolve", "zoom", "whip"][: n - 1]
         # scene 1 got the Director's 0.5s hold on top of narration + gap
-        assert job["edit"]["durations"][0] == round(job["scenes"][0]["narration_s"] + 0.35 + 0.5, 2)
+        assert job["edit"]["durations"][0] == round(job["scenes"][0]["narration_s"] + 0.12 + 0.5, 2)
         ass = (app.state.store.dir(jid) / "work" / "captions.ass").read_text()
         assert "\\c&H0037AFD4&" in ass and "narration" in ass
 

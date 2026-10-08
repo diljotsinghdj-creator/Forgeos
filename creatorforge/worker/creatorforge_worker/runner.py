@@ -283,7 +283,7 @@ class Runner:
             self._reset(job, "assembly", "verify")
         elif kind == "audio":
             wav = jdir / f"scene_{index + 1:02d}_asset_{tag}.wav"
-            render.to_pcm(asset_path, wav)
+            render.to_pcm(asset_path, wav, tighten=False)   # the creator's own recording: keep their timing
             self._drop(jdir, sc.get("narration"))
             sc.update(narration=wav.name, narration_s=round(verify.wav(wav), 3), voice_state="READY", voice_source="asset")
             if ai_video and sc.get("clip_source") != "asset":

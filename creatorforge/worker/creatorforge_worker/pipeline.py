@@ -24,8 +24,9 @@ from .providers.base import NotConfigured, ProviderError, Word
 from .store import STAGES, JobStore
 from .templates import ASPECTS, TEMPLATES
 
-SCENE_GAP_S = 0.35
-MIN_SCENE_S = 2.0
+SCENE_GAP_S = 0.12   # breath between scenes - longer gaps lose viewers
+MIN_SCENE_S = 1.5
+MAX_HOLD_S = 0.5     # cap on the Director's dramatic pauses
 
 
 class StageFailed(Exception):
@@ -312,7 +313,7 @@ class Pipeline:
         auto = self._spec(job).auto_edit
         out = []
         for sc, shot in zip(job["scenes"], job["plan"]["scenes"]):
-            natural = max(MIN_SCENE_S, sc["narration_s"] + SCENE_GAP_S + (shot.get("hold", 0.0) if auto else 0.0))
+            natural = max(MIN_SCENE_S, sc["narration_s"] + SCENE_GAP_S + (min(MAX_HOLD_S, shot.get("hold", 0.0)) if auto else 0.0))
             override = sc.get("duration_override")
             # A timeline-edited length wins, but can never cut the narration short.
             out.append(max(float(override), sc["narration_s"] + 0.1) if override else natural)

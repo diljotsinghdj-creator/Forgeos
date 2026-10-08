@@ -254,7 +254,7 @@ Return exactly this JSON shape:
       "overlay": "optional short on-screen callout (max 5 words) or empty string",
       "transition": "edit INTO this scene: {' | '.join(TRANSITIONS)}",
       "emphasis": ["1-3 key words from this scene's narration to highlight in captions"],
-      "hold": "seconds (0 to 1.5) to pause after the line for impact; usually 0",
+      "hold": "seconds (0 to 0.5) to pause after the line for impact; almost always 0 - pauses lose viewers",
       "motion": "what physically moves during the shot, e.g. 'robot arm lifts a crate, workers walk past, dust in light beams'"}}
   ]}}
 The scenes array must contain exactly {n} scenes. Scene 1 narration must open with the hook idea."""
@@ -286,7 +286,7 @@ def _validate(d: dict, n: int) -> ProductionPlan:
         if isinstance(emphasis, str):
             emphasis = [emphasis]
         try:
-            hold = min(1.5, max(0.0, float(s.get("hold") or 0)))
+            hold = min(0.5, max(0.0, float(s.get("hold") or 0)))
         except (TypeError, ValueError):
             hold = 0.0
         out.append(ShotPlan(narration, visual, str(s.get("shot", "")).strip(), str(s.get("camera", "")).strip(),

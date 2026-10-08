@@ -86,7 +86,7 @@ class Handler(BaseHTTPRequestHandler):
             ex, cw = float(body.get("exaggeration", 0.5)), float(body.get("cfg_weight", 0.5))
             with _lock:
                 m = model()
-                pause = np.zeros(int(m.sr * 0.15), dtype=np.float32)
+                pause = np.zeros(int(m.sr * 0.08), dtype=np.float32)
                 parts = []
                 for c in chunks(text):
                     wav = m.generate(c, audio_prompt_path=ref, exaggeration=ex, cfg_weight=cw)

@@ -32,8 +32,15 @@ class Clip:
     video_duration: float | None = None
 
 
-def to_pcm(src: Path, dst: Path, cancel: threading.Event | None = None) -> None:
-    ff.run(["-i", str(src), "-ac", "1", "-ar", str(SAMPLE_RATE), "-c:a", "pcm_s16le", str(dst)], cancel)
+# Retention: TTS engines pad every line with silence and some pause too long between sentences. Cut the lead-in,
+# shorten any pause over 0.25 s to 0.15 s, and drop the tail, so the voice flows like a real creator's edit.
+TIGHTEN = ("silenceremove=start_periods=1:start_threshold=-45dB:stop_periods=-1:stop_duration=0.25"
+           ":stop_threshold=-45dB:stop_silence=0.15")
+
+
+def to_pcm(src: Path, dst: Path, cancel: threading.Event | None = None, tighten: bool = True) -> None:
+    af = ["-af", TIGHTEN] if tighten else []
+    ff.run(["-i", str(src), *af, "-ac", "1", "-ar", str(SAMPLE_RATE), "-c:a", "pcm_s16le", str(dst)], cancel)
 
 
 def narration_track(pcm_wavs: list[Path], durations: list[float], tail: float, out: Path) -> None:
@@ -144,7 +151,9 @@ def render_video(clips: list[Clip], audio: Path, captions: Path | None, width: i
                          f"trim=end_frame={frames},setpts=PTS-STARTPTS,format=yuv420p[v{i}]")
             continue
         args += ["-i", str(c.image)]
-        sw, sh = int(width * 1.5) // 2 * 2, int(height * 1.5) // 2 * 2
+        # zoompan moves in whole input pixels; on a 4x canvas each step is a quarter output pixel, so slow
+        # push-ins and pans glide instead of shaking. (Scaled once per still, so it's cheap.)
+        sw, sh = width * 4, height * 4
         graph.append(f"[{i}:v]scale={sw}:{sh}:force_original_aspect_ratio=increase:flags=lanczos,crop={sw}:{sh},setsar=1,"
                      f"zoompan={_motion(c.camera, frames)}:d={frames}:s={width}x{height}:fps={FPS},"
                      f"trim=end_frame={frames},setpts=PTS-STARTPTS,format=yuv420p[v{i}]")
