@@ -77,7 +77,7 @@ class ProductionClient(baseUrl: String) {
     companion object {
         /** Supplies the app's Script AI for planning (set once at startup). */
         @Volatile var directorLlm: (() -> JSONObject?)? = null
-        /** Supplies the Pexels/Pixabay key so the pod can use real stock footage. */
+        /** Supplies the Pixabay key so the pod can use real stock footage. */
         @Volatile var stockKey: (() -> JSONObject?)? = null
     }
 

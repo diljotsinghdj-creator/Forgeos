@@ -36,9 +36,9 @@ object StockPhotos {
         }
     }
 
-    /** "pexels:KEY" or "pixabay:KEY" (a bare key is treated as Pexels). */
+    /** "pixabay:KEY" or "pexels:KEY" (a bare key is treated as Pixabay - Pexels no longer issues new keys). */
     fun search(f: Fetcher, setting: String, line: String, orientation: String): List<Photo> {
-        val (provider, key) = if (':' in setting) setting.substringBefore(':') to setting.substringAfter(':') else "pexels" to setting
+        val (provider, key) = if (':' in setting) setting.substringBefore(':').lowercase() to setting.substringAfter(':') else "pixabay" to setting
         if (key.isBlank()) return emptyList()
         val q = query(line)
         return if (provider == "pixabay") pixabay(f, key, q, orientation) else pexels(f, key, q, orientation)

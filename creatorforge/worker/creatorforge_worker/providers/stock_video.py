@@ -1,5 +1,5 @@
-"""Real stock footage for beats that don't need a specific character: Pexels or Pixabay videos (free keys,
-free for commercial use). The app lends its key per production; clips are cached by URL."""
+"""Real stock footage for beats that don't need a specific character: Pixabay videos (free key, free for
+commercial use; old Pexels keys also work). The app lends its key per production; clips are cached by URL."""
 from __future__ import annotations
 
 import hashlib
@@ -11,9 +11,12 @@ from .base import ProviderError
 
 
 def detect(key: str) -> str:
-    """Pixabay keys look like 12345678-0a1b2c...; anything else is treated as a Pexels key."""
+    """Pixabay is the default (Pexels no longer issues new keys). Old Pexels keys - long, letters and digits only,
+    no dash - are still recognised."""
     head, _, tail = key.partition("-")
-    return "pixabay" if head.isdigit() and len(tail) >= 20 else "pexels"
+    if head.isdigit() and tail:
+        return "pixabay"
+    return "pexels" if len(key) >= 40 and key.isalnum() else "pixabay"
 
 
 def search(provider: str, key: str, query: str, portrait: bool = True, timeout: float = 20) -> list[dict]:

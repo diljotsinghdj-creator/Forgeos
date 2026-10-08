@@ -41,11 +41,11 @@ object StudioHub {
 
     /** Your Script AI (Gemini, Groq, ...), lent to the pod to plan each video's story and shots - far stronger than the
      *  pod's small local model. Only https services; the pod keeps it in memory for that one video. */
-    /** Pexels or Pixabay key (Settings), lent to the pod for real stock footage in fast cuts. */
+    /** Pixabay key (Settings), lent to the pod for real stock footage in fast cuts. "pexels:KEY" still works for old Pexels keys. */
     fun stockKey(c: Context): org.json.JSONObject? =
         SecureTokenStore(c).load("stock")?.trim()?.takeIf { it.isNotBlank() }?.let { k ->
-            if (k.startsWith("pixabay:", ignoreCase = true)) org.json.JSONObject().put("provider", "pixabay").put("key", k.substringAfter(":").trim())
-            else org.json.JSONObject().put("provider", if (k.startsWith("pexels:", true)) "pexels" else "").put("key", k.substringAfter("pexels:").trim())
+            if (k.startsWith("pexels:", ignoreCase = true)) org.json.JSONObject().put("provider", "pexels").put("key", k.substringAfter(":").trim())
+            else org.json.JSONObject().put("provider", "pixabay").put("key", k.removePrefix("pixabay:").removePrefix("Pixabay:").trim())
         }
 
     fun directorLlm(c: Context): org.json.JSONObject? {
@@ -172,13 +172,14 @@ fun AiSettingsCard(secure: SecureTokenStore) {
         status?.let { Text(it, color = if (it.startsWith("✓")) Gold else Danger, fontSize = 12.sp) }
         HorizontalDivider(Modifier.padding(vertical = 6.dp))
         Text("Real stock footage (free, optional)", color = Gold, fontSize = 13.sp)
-        Text("With a free Pexels key (pexels.com/api) the AI mixes real video clips - crowds, cities, hands, nature - into your fast cuts, " +
-            "free for commercial use. For Pixabay type pixabay:YOURKEY.", color = Dim, fontSize = 12.sp)
+        Text("With a free Pixabay key the AI mixes real video clips - crowds, cities, hands, nature - into your fast cuts, " +
+            "free for commercial use. Get it: sign up at pixabay.com, then open pixabay.com/api/docs - your key is shown there.", color = Dim, fontSize = 12.sp)
+        TextButton({ openUrl(context, "https://pixabay.com/api/docs/") }) { Text("GET A FREE PIXABAY KEY ↗", color = Gold, fontSize = 12.sp) }
         var stock by remember { mutableStateOf("") }
         var hasStock by remember { mutableStateOf(secure.has("stock")) }
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(stock, { stock = it }, Modifier.weight(1f), singleLine = true, visualTransformation = PasswordVisualTransformation(),
-                label = { Text(if (hasStock) "Saved - paste to replace" else "Pexels API key") })
+                label = { Text(if (hasStock) "Saved - paste to replace" else "Pixabay API key") })
             Button({ if (stock.isNotBlank()) { secure.save("stock", stock.trim()); stock = ""; hasStock = true } }, enabled = stock.isNotBlank()) { Text("SAVE") }
         }
         if (hasStock) TextButton({ secure.clear("stock"); hasStock = false }) { Text("REMOVE STOCK KEY", color = Danger) }
