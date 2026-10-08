@@ -48,6 +48,20 @@ object StudioHub {
             else org.json.JSONObject().put("provider", "pixabay").put("key", k.removePrefix("pixabay:").removePrefix("Pixabay:").trim())
         }
 
+    /** Checks the saved stock key with Pixabay itself (one tiny search): null when it works, else the reason. */
+    fun testStockKey(c: Context): String? {
+        val k = stockKey(c) ?: return "Add a key first"
+        if (k.getString("provider") != "pixabay") return null
+        val (code, body) = com.creatorforge.app.studio.HttpFetcher().get(
+            "https://pixabay.com/api/videos/?key=${Uri.encode(k.getString("key"))}&q=city&per_page=3")
+        return when {
+            code == 200 && "\"hits\"" in body -> null
+            code == 400 || code == 401 || "key" in body.lowercase() -> "Pixabay rejected this key - copy it again from pixabay.com/api/docs (logged in)"
+            code == 429 -> "Pixabay says too many requests - wait a minute and test again"
+            else -> "Pixabay answered HTTP $code"
+        }
+    }
+
     fun directorLlm(c: Context): org.json.JSONObject? {
         if (!aiReady(c) || !baseUrl(c).startsWith("https://")) return null
         return org.json.JSONObject().put("url", baseUrl(c).trimEnd('/')).put("model", model(c).removePrefix("models/")).put("key", key(c))
@@ -177,12 +191,20 @@ fun AiSettingsCard(secure: SecureTokenStore) {
         TextButton({ openUrl(context, "https://pixabay.com/api/docs/") }) { Text("GET A FREE PIXABAY KEY ↗", color = Gold, fontSize = 12.sp) }
         var stock by remember { mutableStateOf("") }
         var hasStock by remember { mutableStateOf(secure.has("stock")) }
+        var stockStatus by remember { mutableStateOf<String?>(null) }
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedTextField(stock, { stock = it }, Modifier.weight(1f), singleLine = true, visualTransformation = PasswordVisualTransformation(),
                 label = { Text(if (hasStock) "Saved - paste to replace" else "Pixabay API key") })
-            Button({ if (stock.isNotBlank()) { secure.save("stock", stock.trim()); stock = ""; hasStock = true } }, enabled = stock.isNotBlank()) { Text("SAVE") }
+            Button({ if (stock.isNotBlank()) { secure.save("stock", stock.trim().trim('"', ' ')); stock = ""; hasStock = true }
+                scope.launch {
+                    stockStatus = "Testing…"
+                    stockStatus = runCatching { studio { StudioHub.testStockKey(context) } }
+                        .fold({ it?.let { e -> "✗ $e" } ?: "✓ Pixabay key works - stock clips will be mixed into your videos" }, { "✗ ${it.message}" })
+                }
+            }, enabled = stock.isNotBlank() || hasStock) { Text(if (stock.isBlank() && hasStock) "TEST" else "SAVE & TEST") }
         }
-        if (hasStock) TextButton({ secure.clear("stock"); hasStock = false }) { Text("REMOVE STOCK KEY", color = Danger) }
+        stockStatus?.let { Text(it, color = if (it.startsWith("✓")) Gold else if (it.startsWith("✗")) Danger else Dim, fontSize = 12.sp) }
+        if (hasStock) TextButton({ secure.clear("stock"); hasStock = false; stockStatus = null }) { Text("REMOVE STOCK KEY", color = Danger) }
         HorizontalDivider(Modifier.padding(vertical = 6.dp))
         Text("YouTube trends (optional)", color = Gold, fontSize = 13.sp)
         Text("A free YouTube Data API key adds YouTube's most-watched videos to Trends.", color = Dim, fontSize = 12.sp)
