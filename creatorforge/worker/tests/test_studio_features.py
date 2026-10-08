@@ -364,3 +364,22 @@ def test_script_pasted_into_the_idea_box_is_treated_as_a_script(cfg):
         assert job["providers"]["llm"].endswith("(script mode)")
         spoken = " ".join(s["narration"] for s in job["plan"]["scenes"])
         assert spoken.startswith("Everyone here is lying.") and "HOOK" not in spoken
+
+
+def test_editing_upgrades_sound_design_pace_and_pop_captions(cfg):
+    from fastapi.testclient import TestClient
+    from creatorforge_worker.api import create_app
+    from .conftest import wait_for
+
+    def make(c, **extra):
+        jid = c.post("/v1/productions", json={"idea": "fast cuts test about lying", "duration_s": 15, **extra}).json()["id"]
+        return wait_for(lambda: (lambda j: j if j["status"] in ("READY", "FAILED") else None)(c.get(f"/v1/productions/{jid}").json()))
+
+    with TestClient(create_app(cfg)) as c:
+        normal, fast = make(c), make(c, voice_speed=1.1)
+        assert normal["status"] == "READY" and fast["status"] == "READY", (normal, fast)
+        assert sum(s["narration_s"] for s in fast["scenes"]) < sum(s["narration_s"] for s in normal["scenes"]) * 0.97
+        sounds = {s["file"] for s in normal["edit"]["sfx"]}
+        assert {"riser_tension.wav"} & sounds and any(f.startswith(("impact_", "whoosh_")) for f in sounds), sounds
+        ass = cfg.jobs_dir / normal["id"] / "work" / "captions.ass"
+        assert ass.is_file() and "\\t(0,120" in ass.read_text()      # pop-in caption animation

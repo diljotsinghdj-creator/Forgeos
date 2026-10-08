@@ -13,10 +13,12 @@ ROLES = {
     "whoosh": ("whoosh", "swoosh", "swish", "woosh", "swipe", "transition"),
     "hit": ("hit", "impact", "boom", "thud", "punch", "slam"),
     "pop": ("pop", "click", "ding", "blip", "tick", "notification"),
+    "riser": ("riser", "rise", "build", "tension", "swell"),
 }
 TRANSITION_ROLE = {"whip": "whoosh", "slide": "whoosh", "wipe": "whoosh", "zoom": "whoosh", "reveal": "whoosh",
                    "cut": "hit", "flash": "hit"}
-GAIN = {"whoosh": 0.55, "hit": 0.6, "pop": 0.45}
+GAIN = {"whoosh": 0.55, "hit": 0.6, "pop": 0.45, "riser": 0.4}
+REVEALS = {"flash", "zoom"}   # twists / reveals: a riser builds into the cut, a deep hit lands on it
 
 
 @dataclass
@@ -64,6 +66,9 @@ def place(bank: SfxBank, transitions: list[str], timings: list[float], overlays:
             if sound:
                 lead = 0.25 if role == "whoosh" else 0.0  # whooshes swell into the cut
                 hits.append((sound, max(0.0, offset - lead), GAIN[role]))
+            riser = bank.pick("riser", f"{seed}:r{i}") if transitions[i] in REVEALS else None
+            if riser and offset >= 1.6:
+                hits.append((riser, offset - 1.55, GAIN["riser"]))
         offset += d
     for n, (start, style) in enumerate(overlays):
         role = {"Hook": "hit", "Callout": "pop", "CTA": "pop"}.get(style)

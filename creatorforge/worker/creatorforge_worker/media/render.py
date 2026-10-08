@@ -38,8 +38,9 @@ TIGHTEN = ("silenceremove=start_periods=1:start_threshold=-45dB:stop_periods=-1:
            ":stop_threshold=-45dB:stop_silence=0.15")
 
 
-def to_pcm(src: Path, dst: Path, cancel: threading.Event | None = None, tighten: bool = True) -> None:
-    af = ["-af", TIGHTEN] if tighten else []
+def to_pcm(src: Path, dst: Path, cancel: threading.Event | None = None, tighten: bool = True, speed: float = 1.0) -> None:
+    chain = ([TIGHTEN] if tighten else []) + ([f"atempo={speed:.3f}"] if abs(speed - 1.0) > 0.01 else [])
+    af = ["-af", ",".join(chain)] if chain else []
     ff.run(["-i", str(src), *af, "-ac", "1", "-ar", str(SAMPLE_RATE), "-c:a", "pcm_s16le", str(dst)], cancel)
 
 
@@ -111,6 +112,12 @@ def mix_audio(narration: Path, music: Path | None, total: float, out: Path, canc
 def _motion(camera: str, frames: int) -> str:
     c = camera.lower()
     d = max(frames - 1, 1)
+    # Emotion effects (input is a 4x canvas, so 40 px here = 10 px on screen).
+    if c == "shake":   # reveal: quick punch-in with a short, decaying camera shake
+        return (f"z='min(1.16,1+0.02*on)':x='iw/2-(iw/zoom/2)+if(lt(on,18),(18-on)*2.4*sin(on*2.9),0)'"
+                f":y='ih/2-(ih/zoom/2)+if(lt(on,18),(18-on)*2.0*cos(on*3.7),0)'")
+    if c == "punch":   # shock word: fast zoom-in that lands and holds
+        return "z='min(1.18,1+0.03*on)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)'"
     if "pull" in c or "zoom out" in c or "dolly out" in c:
         return f"z='1.15-0.15*on/{d}':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)'"
     if "pan left" in c or "truck left" in c:
@@ -128,7 +135,7 @@ LOGO_XY = {"top-right": ("W-w-{m}", "{m}"), "top-left": ("{m}", "{m}"),
 
 def render_video(clips: list[Clip], audio: Path, captions: Path | None, width: int, height: int,
                  out: Path, work: Path, cancel: threading.Event,
-                 logo: tuple[Path, str, float] | None = None) -> float:
+                 logo: tuple[Path, str, float] | None = None, grade: bool = True) -> float:
     """Returns the expected duration of the rendered file."""
     tail = TRANSITION_S if len(clips) > 1 else 0.0
     trans = [TRANSITIONS.get(c.transition, TRANSITIONS["fade"]) for c in clips]
@@ -172,6 +179,11 @@ def render_video(clips: list[Clip], audio: Path, captions: Path | None, width: i
         last = f"x{i}"
     total = sum(c.duration for c in clips) + tail
     audio_idx = len(clips)
+    if grade:
+        # One consistent "film" look over every shot: a touch of contrast and colour, soft vignette, fine grain.
+        graph.append(f"[{last}]eq=contrast=1.06:saturation=1.08:gamma=0.98,vignette=angle=PI/5,"
+                     f"noise=alls=5:allf=t+u,format=yuv420p[graded]")
+        last = "graded"
     if logo is not None:
         # Brand watermark: about 14% of the frame width, in a corner, slightly transparent. Captions go on top.
         path, pos, opacity = logo

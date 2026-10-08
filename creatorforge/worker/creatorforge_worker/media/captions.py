@@ -106,7 +106,9 @@ def write_ass(path: Path, width: int, height: int, scale: float, position: float
         "", "[Events]", "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text",
     ]
     for c in cues:
-        lines.append(f"Dialogue: 0,{_ts(c.start)},{_ts(c.end)},Caption,,0,0,0,,{_highlight(c.text, emphasis, hi)}")
+        # Pop-in: each caption lands at 75% size and springs to full size in 0.12 s (the Shorts "bounce").
+        pop = "{\\fscx75\\fscy75\\t(0,120,\\fscx104\\fscy104)\\t(120,180,\\fscx100\\fscy100)}"
+        lines.append(f"Dialogue: 0,{_ts(c.start)},{_ts(c.end)},Caption,,0,0,0,,{pop}{_highlight(c.text, emphasis, hi)}")
     for o in overlays:
         if o.text.strip() and o.end > o.start:
             lines.append(f"Dialogue: 1,{_ts(o.start)},{_ts(o.end)},{o.style},,0,0,0,,{{\\fad(200,200)}}{_esc(o.text)}")

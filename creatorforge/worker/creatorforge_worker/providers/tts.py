@@ -80,6 +80,7 @@ class ChatterboxVoice:
         self.style = style if style in self.STYLES else "natural"
         self.data_dir = Path(data_dir or ".")
         self.url = url.rstrip("/")
+        self.mood = ""   # set per scene by the pipeline: the emotion of the line being spoken
         self.id = f"chatterbox:{self.voice}:{self.style}"
 
     def reference(self) -> str:
@@ -121,6 +122,11 @@ class ChatterboxVoice:
         import httpx
 
         ex, cw = self.STYLES[self.style]
+        m = (self.mood or "").lower()
+        if any(w in m for w in ("shock", "fear", "terror", "horror", "tension", "suspense", "intrigue", "anger", "disgust")):
+            ex, cw = min(1.0, ex + 0.25), max(0.2, cw - 0.1)     # sharper, more urgent delivery
+        elif any(w in m for w in ("calm", "resolve", "relief", "warm", "curiosity")):
+            ex = max(0.25, ex - 0.1)                              # settle the voice for set-up and takeaways
         body = {"text": text, "out": str(Path(out_wav).resolve()), "ref": self.reference(), "exaggeration": ex, "cfg_weight": cw}
         try:
             r = httpx.post(f"{self.url}/tts", json=body, timeout=1800)

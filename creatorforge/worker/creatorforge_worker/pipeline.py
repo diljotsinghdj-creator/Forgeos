@@ -27,6 +27,9 @@ from .templates import ASPECTS, TEMPLATES
 SCENE_GAP_S = 0.12   # breath between scenes - longer gaps lose viewers
 MIN_SCENE_S = 1.5
 MAX_HOLD_S = 0.5     # cap on the Director's dramatic pauses
+REVEAL_PAUSE_S = 0.3
+REVEAL_EMOTIONS = {"shock", "surprise", "awe"}
+SHOCK_EMOTIONS = {"shock", "surprise", "fear", "horror", "disgust", "terror"}
 
 
 class StageFailed(Exception):
@@ -346,13 +349,16 @@ class Pipeline:
                 raise Cancelled()
             sc.update(voice_state="GENERATING")
             self.store.save(job)
-            key = _key(voice.id, profile.speed, shot["narration"])
+            mood = shot.get("emotion", "")
+            if hasattr(voice, "mood"):
+                voice.mood = mood          # human-like voice: more intensity on shocks, calmer on set-up
+            key = _key(voice.id, profile.speed, shot["narration"], mood if hasattr(voice, "mood") else "")
             try:
                 src = self._cached("voice", key, ".wav", lambda p: voice.synthesize(shot["narration"], p), verify.wav)
-                dst = jdir / f"scene_{sc['index'] + 1:02d}_{key[:8]}.wav"
+                dst = jdir / f"scene_{sc['index'] + 1:02d}_{_key(key, spec.voice_speed)[:8]}.wav"
                 if sc.get("narration") and sc["narration"] != dst.name:
                     (jdir / sc["narration"]).unlink(missing_ok=True)
-                render.to_pcm(src, dst, cancel)
+                render.to_pcm(src, dst, cancel, speed=spec.voice_speed)
                 sc.update(voice_state="READY", narration=dst.name, narration_s=round(verify.wav(dst), 3))
             except (ProviderError, MediaError) as e:
                 sc.update(voice_state="FAILED", error=f"narration: {e}")
@@ -363,8 +369,11 @@ class Pipeline:
     def _timings(self, job: dict) -> list[float]:
         auto = self._spec(job).auto_edit
         out = []
-        for sc, shot in zip(job["scenes"], job["plan"]["scenes"]):
+        shots = job["plan"]["scenes"]
+        for i, (sc, shot) in enumerate(zip(job["scenes"], shots)):
             natural = max(MIN_SCENE_S, sc["narration_s"] + SCENE_GAP_S + (min(MAX_HOLD_S, shot.get("hold", 0.0)) if auto else 0.0))
+            if auto and i + 1 < len(shots) and shots[i + 1].get("emotion") in REVEAL_EMOTIONS:
+                natural += REVEAL_PAUSE_S   # a beat of silence before the twist lands
             override = sc.get("duration_override")
             # A timeline-edited length wins, but can never cut the narration short.
             out.append(max(float(override), sc["narration_s"] + 0.1) if override else natural)
@@ -472,11 +481,15 @@ class Pipeline:
                     if k and images[k] is None:      # failed beat image: previous picture holds instead
                         clips[-1].duration += length
                         continue
-                    clips.append(render.Clip(images[k], length,
-                                             shot.get("camera", "") if k == 0 else cams[(i + k) % 4],
-                                             transition(i, shot) if k == 0 else "cut"))
+                    cam = shot.get("camera", "") if k == 0 else cams[(i + k) % 4]
+                    if spec.auto_edit and (beats[k].get("emotion") or shot.get("emotion", "")).lower() in SHOCK_EMOTIONS:
+                        cam = "shake" if k == 0 and transition(i, shot) in ("flash", "zoom") else "punch"
+                    clips.append(render.Clip(images[k], length, cam, transition(i, shot) if k == 0 else "cut"))
             else:
-                clips.append(render.Clip(jdir / sc["image"], d, shot.get("camera", ""), transition(i, shot), video))
+                cam = shot.get("camera", "")
+                if spec.auto_edit and video is None and shot.get("emotion", "").lower() in SHOCK_EMOTIONS:
+                    cam = "shake" if transition(i, shot) in ("flash", "zoom") else "punch"
+                clips.append(render.Clip(jdir / sc["image"], d, cam, transition(i, shot), video))
         for c in clips:
             if c.video is not None:
                 c.video_duration = ff.duration(c.video)
@@ -502,7 +515,9 @@ class Pipeline:
 
         sfx_hits: list[tuple[Path, float, float]] = []
         if spec.sfx:
-            bank = sfx.SfxBank.load(self.cfg.sfx_dir, [self.library.assets.path(a) for a in self.library.assets.list("sfx")])
+            from .media import sfx_builtin
+            bank = sfx.SfxBank.load(self.cfg.sfx_dir, [self.library.assets.path(a) for a in self.library.assets.list("sfx")]
+                                    + sfx_builtin.ensure(self.cfg.data_dir / "sfx_builtin"))
             sfx_hits = sfx.place(bank, [c.transition for c in heads], timings,
                                  [(o.start, o.style) for o in overlays if spec.captions], job["id"])
             job["providers"]["sfx"] = f"{len(sfx_hits)} cues from {bank.describe()}" if bank.any() else "none (no SFX folder or SFX assets)"
@@ -520,7 +535,7 @@ class Pipeline:
         ass = None
         if spec.captions:
             words = [Word(**d) for d in json.loads((jdir / "words.json").read_text())]
-            cues = cap.group(words, t.words_per_caption)
+            cues = cap.group(words, min(3, t.words_per_caption))   # 1-3 words at a time: easy to read at a glance
             ass = work / "captions.ass"
             emphasis = {wd for s in shots for wd in s.get("emphasis", [])} if spec.auto_edit else set()
             cap.write_ass(ass, w, h, t.caption_scale, t.caption_position, cues, overlays, emphasis,
@@ -544,7 +559,7 @@ class Pipeline:
                 raise StageFailed("the brand logo must be an image asset")
             logo = (self.library.assets.path(a), brand.get("logo_position", "top-right"), brand.get("logo_opacity", 0.85))
             job["providers"]["brand"] = f"logo {a['name']} ({logo[1]})"
-        expected = render.render_video(clips, mixed, ass, w, h, out, work, cancel, logo)
+        expected = render.render_video(clips, mixed, ass, w, h, out, work, cancel, logo, grade=spec.film_grade)
         job["render"] = {"file": "work/render.mp4", "expected_s": round(expected, 3), "width": w, "height": h}
 
     def _verify(self, job: dict, cancel) -> None:

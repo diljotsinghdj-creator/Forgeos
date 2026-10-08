@@ -72,6 +72,7 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
     val aiVideo = videoScope != "off"
     var faces by remember { mutableStateOf(prefs.getString("faces2", "show").orEmpty()) }
     var fastCuts by remember { mutableStateOf(prefs.getBoolean("fast_cuts", true)) }
+    var voicePace by remember { mutableStateOf(prefs.getString("voice_pace", "1.1").orEmpty()) }
     var videoQuality by remember { mutableStateOf(prefs.getString("video_quality", "fast").orEmpty()) }
     var review by remember { mutableStateOf(prefs.getBoolean("review", false)) }
     var editing by remember { mutableStateOf<SceneView?>(null) }
@@ -315,6 +316,8 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                 ChipRow((caps?.templates ?: FALLBACK_TEMPLATES).map { it.id to it.name }, template) { template = it }
                 caps?.voices?.takeIf { it.isNotEmpty() }?.let { vs ->
                     Label("VOICE"); ChipRow(vs.map { it.id to it.name }, voice) { voice = it }
+                    Label("VOICE PACE")
+                    ChipRow(listOf("1.0" to "Natural", "1.1" to "Shorts pace 1.1×", "1.2" to "Fast 1.2×"), voicePace) { voicePace = it }
                 }
                 if (library.isNotEmpty()) {
                     Label("CHARACTERS (LIBRARY)")
@@ -383,7 +386,7 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                         .putString("template", template).putString("voice", voice).putString("pacing", pacing)
                         .putBoolean("music", music).putBoolean("captions", captions).putString("style", style)
                         .putString("mood", mood).putString("camera", camera).putString("characters", characters)
-                        .putString("video_scope", videoScope).putString("video_quality", videoQuality).putString("faces2", faces).putBoolean("fast_cuts", fastCuts).putBoolean("review", review)
+                        .putString("video_scope", videoScope).putString("video_quality", videoQuality).putString("faces2", faces).putBoolean("fast_cuts", fastCuts).putString("voice_pace", voicePace).putBoolean("review", review)
                         .putBoolean("auto_edit", autoEdit).putStringSet("character_ids", picked)
                         .putBoolean("script_mode", scriptMode).putBoolean("sfx", sfx).putString("music_asset", musicAsset).apply()
                     val chars = characters.lines().mapNotNull { l ->
@@ -392,7 +395,7 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                     fun request(text: String) = ProductionRequest(if (scriptMode) "" else text, duration, aspect, template, voice, pacing,
                         style.trim(), mood.trim(), camera.trim(), chars, music, captions, aiVideo, review, autoEdit, picked.toList(),
                         script = if (scriptMode) text else "", musicAssetId = if (music) musicAsset else "", sfx = sfx,
-                        aiVideoScenes = if (videoScope == "hook") "hook" else "all", videoQuality = videoQuality, faces = faces, fastCuts = fastCuts)
+                        aiVideoScenes = if (videoScope == "hook") "hook" else "all", videoQuality = videoQuality, faces = faces, fastCuts = fastCuts, voiceSpeed = voicePace.toDoubleOrNull() ?: 1.1)
                     val pieces = batchPieces(idea)
                     if (pieces.size <= 1) act { client.create(request(idea.trim())) }
                     else {

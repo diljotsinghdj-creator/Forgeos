@@ -65,6 +65,8 @@ class ProductionSpec:
     review: bool = False  # pause after scene visuals so the storyboard can be edited/approved
     faces: str = "show"  # "show": expressive faces | "faceless": people from behind / silhouettes / hands / wide shots
     fast_cuts: bool = True  # split scenes into phrase-level beats (new picture every 1-2 s)
+    film_grade: bool = True  # one consistent look: contrast, vignette, fine grain
+    voice_speed: float = 1.0  # narration tempo (pitch kept); 1.1 is the common Shorts pace
     hook_text: str = ""  # on-screen hook, e.g. from a writer's "On-screen hook:" line
     visual_direction: str = ""  # the look of the whole video, e.g. "black-and-white 1950s lab footage"
     roles: list = field(default_factory=list)  # writer's story roles per line: [["TWIST", "Every single one..."]]
@@ -102,6 +104,8 @@ class ProductionSpec:
             video_quality=str(d.get("video_quality", "") or ""),
             faces=str(d.get("faces", "show") or "show"),
             fast_cuts=bool(d.get("fast_cuts", True)),
+            film_grade=bool(d.get("film_grade", True)),
+            voice_speed=min(1.4, max(0.8, float(d.get("voice_speed", 1.0) or 1.0))),
             auto_edit=bool(d.get("auto_edit", True)),
             character_ids=[str(x) for x in d.get("character_ids") or []][:10],
             script=clean_script(parse_script(str(d.get("script", "") or ""))[0]),
