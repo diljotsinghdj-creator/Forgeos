@@ -80,6 +80,7 @@ class ProductionSpec:
 
     @staticmethod
     def from_dict(d: dict) -> "ProductionSpec":
+        d = _script_pasted_as_idea(d)
         chars = [Character(str(c.get("name", "")).strip(), str(c.get("description", "")).strip())
                  for c in d.get("characters") or [] if isinstance(c, dict)]
         spec = ProductionSpec(
@@ -316,8 +317,8 @@ def _validate(d: dict, n: int) -> ProductionPlan:
     scenes = d.get("scenes")
     if not isinstance(scenes, list) or not scenes:
         raise ValueError("'scenes' must be a non-empty list")
-    if abs(len(scenes) - n) > max(2, n // 3):
-        raise ValueError(f"expected {n} scenes, got {len(scenes)}")
+    if not 2 <= len(scenes) <= max(60, n * 3):   # the planned count is a guide; a good story may need more cuts
+        raise ValueError(f"expected about {n} scenes, got {len(scenes)}")
     out = []
     for i, s in enumerate(scenes, 1):
         if not isinstance(s, dict):
@@ -585,6 +586,22 @@ def apply_roles(plan: "ProductionPlan", roles: list) -> None:
                 if cut:
                     s.transition = cut
                 break
+
+
+def _looks_like_script(text: str) -> bool:
+    """A finished script pasted into the idea box: writer tags/timestamps/direction lines, or simply long prose."""
+    if not text.strip():
+        return False
+    spoken, meta = parse_script(text)
+    if meta["roles"] or meta.get("hook_text") or meta.get("visual_direction") or _STAMP.search(text):
+        return True
+    return len(_words(spoken)) >= 60 and len(split_sentences(spoken)) >= 5
+
+
+def _script_pasted_as_idea(d: dict) -> dict:
+    if not str(d.get("script", "") or "").strip() and _looks_like_script(str(d.get("idea", "") or "")):
+        d = {**d, "script": d["idea"], "idea": ""}
+    return d
 
 
 def script_heading(text: str) -> str:

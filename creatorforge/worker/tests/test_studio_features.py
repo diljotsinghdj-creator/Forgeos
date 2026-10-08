@@ -350,3 +350,17 @@ def test_writer_script_format_is_understood(cfg):
         assert spec["publish"]["hashtags"] == ["#psychology", "#conformity"] and spec["publish"]["source"] == "Asch, 1951"
         twist = next(s for s in job["plan"]["scenes"] if "picks the wrong line" in s["narration"])
         assert twist["emotion"] == "shock"
+
+
+def test_script_pasted_into_the_idea_box_is_treated_as_a_script(cfg):
+    from fastapi.testclient import TestClient
+    from creatorforge_worker.api import create_app
+    from .conftest import wait_for
+
+    with TestClient(create_app(cfg)) as c:
+        jid = c.post("/v1/productions", json={"idea": WRITER_SCRIPT, "duration_s": 60}).json()["id"]
+        job = wait_for(lambda: (lambda j: j if j["status"] in ("READY", "FAILED") else None)(c.get(f"/v1/productions/{jid}").json()))
+        assert job["status"] == "READY", job
+        assert job["providers"]["llm"].endswith("(script mode)")
+        spoken = " ".join(s["narration"] for s in job["plan"]["scenes"])
+        assert spoken.startswith("Everyone here is lying.") and "HOOK" not in spoken
