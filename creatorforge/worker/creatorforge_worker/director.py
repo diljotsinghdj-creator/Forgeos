@@ -539,7 +539,7 @@ def split_sentences(text: str) -> list[str]:
 _LABEL = re.compile(r"^\s*(?:\*\*|__)?(?:voice\s*-?\s*over|vo|v\.o\.|narrator|narration|script|hook|cta|outro|intro)"
                     r"(?:\s*\([^)]*\))?\s*(?:\*\*|__)?\s*[:\-\u2013\u2014]\s*(?:\*\*|__)?", re.I)
 _DIRECTION = re.compile(r"^\s*(?:\*\*|__)?(?:visuals?|on[- ]screen(?: text)?|text overlay|b-?roll|shot|camera|sfx|music|"
-                        r"scene\s*\d*|title|caption|thumbnail|duration|\d+\s*[-\u2013]\s*\d+\s*s(?:ec)?)\b[^:]{0,30}:", re.I)
+                        r"scene\s*\d*|(?:post |video )?title|caption|thumbnail|duration|run\s*-?time|length|word count|\d+\s*[-\u2013]\s*\d+\s*s(?:ec)?)\b[^:]{0,30}:", re.I)
 
 
 def _is_heading(line: str) -> bool:
@@ -550,7 +550,7 @@ def _is_heading(line: str) -> bool:
 
 # ---- writer's scripts: "0:05 SETUP A student thinks...", "On-screen hook: ...", "Visuals: ...", "Post: ..." ----------
 _META_KEYS = ("on-screen hook", "on screen hook", "onscreen hook", "hook text", "visuals", "visual", "visual style",
-              "b-roll", "broll", "post", "title", "cover", "thumbnail", "caption", "description", "hashtags", "tags",
+              "b-roll", "broll", "post title", "video title", "post", "title", "cover", "thumbnail", "caption", "description", "hashtags", "tags",
               "source", "sources", "music", "sfx")
 _META = re.compile(r"(?i)(?:^|(?<=[\s.]))(" + "|".join(re.escape(k) for k in sorted(_META_KEYS, key=len, reverse=True)) +
                    r")\s*:\s*")
@@ -586,7 +586,7 @@ def parse_script(raw: str) -> tuple[str, dict]:
                 looks.append(v)
             elif k == "visual style":
                 looks.insert(0, v)
-            elif k in ("post", "title"):
+            elif k in ("post", "title", "post title", "video title"):
                 meta.setdefault("title", v[:100])
             elif k in ("hashtags", "tags"):
                 meta["hashtags"] = re.findall(r"#\w+", v) or v.split()

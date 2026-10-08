@@ -93,3 +93,11 @@ def test_one_visuals_line_is_still_the_look_of_the_video():
     spec = d.ProductionSpec.from_dict({"script": "A man walks in. He sits down. Nobody speaks.\n"
                                                  "Visuals: black-and-white 1950s lab footage", "duration_s": 15})
     assert spec.shots == [] and spec.visual_direction.startswith("black-and-white")
+
+
+def test_header_lines_are_not_read_aloud():
+    from creatorforge_worker import director as d
+    spec = d.ProductionSpec.from_dict({"script": "Post title: The Silent Trick\nRuntime: about 100 seconds\n"
+                                                 "Say nothing. It wins negotiations. Then wait.", "duration_s": 30})
+    assert spec.script == "Say nothing. It wins negotiations. Then wait."
+    assert spec.publish["title"] == "The Silent Trick"
