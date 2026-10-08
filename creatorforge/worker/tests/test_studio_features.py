@@ -227,8 +227,7 @@ def test_human_like_voice_profiles(tmp_path):
 def test_faceless_framing_only_for_people_shots():
     from creatorforge_worker.director import ProductionPlan, ProductionSpec, ShotPlan, prompt_forge
 
-    spec = ProductionSpec.from_dict({"idea": "the spotlight effect explained"})
-    assert spec.faces == "faceless"
+    spec = ProductionSpec.from_dict({"idea": "the spotlight effect explained", "faces": "faceless"})
     plan = ProductionPlan("t", "", "", "", [ShotPlan("n1", "A student walks into a crowded lecture hall"),
                                            ShotPlan("n2", "A lighthouse on a stormy cliff at night")])
     prompt_forge(plan, spec)
@@ -283,3 +282,20 @@ def test_app_lends_its_ai_for_planning_with_local_fallback(tmp_path):
     llm.backup = Local()
     assert llm.complete_json("s", "u") == '{"ok": true}'                       # app AI unreachable -> local model
     assert "app AI failed" in llm.id
+
+
+def test_fast_cuts_give_each_phrase_its_own_picture(cfg):
+    from fastapi.testclient import TestClient
+    from creatorforge_worker.api import create_app
+    from creatorforge_worker.director import ProductionSpec
+    from .conftest import wait_for
+
+    with TestClient(create_app(cfg)) as c:
+        jid = c.post("/v1/productions", json={"idea": "fast cuts test about lying", "duration_s": 15}).json()["id"]
+        job = wait_for(lambda: (lambda j: j if j["status"] in ("READY", "FAILED") else None)(c.get(f"/v1/productions/{jid}").json()))
+        assert job["status"] == "READY", job
+        n = len(job["scenes"])
+        assert job["edit"]["shots"] == 2 * n                     # two beats per scene -> two pictures per scene
+        shot = job["plan"]["scenes"][0]
+        assert "shock" in shot["beats"][0]["prompt"] and "fear" in shot["beats"][1]["prompt"]
+    assert ProductionSpec.from_dict({"idea": "a calm ocean story"}).faces == "show"

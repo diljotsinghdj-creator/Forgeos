@@ -197,8 +197,39 @@ class Pipeline:
                 failures.append(f"scene {sc['index'] + 1}: {e}")
             self.store.save(job)
         self._stage(job, "images", "RUNNING", done=sum(1 for s in scenes if s["image_state"] == "READY"))
+        self._beat_images(job, img, gen, seed_base, cancel)
         if failures:
             raise StageFailed(f"{len(failures)} scene image(s) failed - {failures[0]}")
+
+    def _beat_images(self, job: dict, img, gen, seed_base: int, cancel) -> None:
+        """Fast cuts: one extra picture per beat after the first (beat 1 uses the scene image). A beat image that
+        fails is skipped - the scene simply holds its previous picture longer."""
+        jdir = self.store.dir(job["id"])
+        for sc, shot in zip(job["scenes"], job["plan"]["scenes"]):
+            beats = shot.get("beats") or []
+            if len(beats) < 2 or sc.get("image_source") == "asset":
+                continue
+            names = list(sc.get("beat_images") or [])[: len(beats) - 1]
+            names += [None] * (len(beats) - 1 - len(names))
+            for k, b in enumerate(beats[1:]):
+                if names[k] and (jdir / names[k]).is_file():
+                    continue
+                if cancel.is_set():
+                    raise Cancelled()
+                seed = (seed_base + sc["index"] * 7919 + (k + 1) * 104729) % 2**31
+                key = _key(img.id, b.get("prompt", ""), b.get("negative", ""), gen, seed)
+                try:
+                    src = self._cached("images", key, ".png",
+                                       lambda p, b=b, seed=seed: img.generate(b["prompt"], b["negative"], gen[0], gen[1], seed, p),
+                                       verify.image)
+                    dst = jdir / f"scene_{sc['index'] + 1:02d}_beat{k + 2}_{key[:8]}.png"
+                    if not dst.is_file():
+                        shutil.copyfile(src, dst)
+                    names[k] = dst.name
+                except (ProviderError, MediaError):
+                    names[k] = None
+                sc["beat_images"] = names
+                self.store.save(job)
 
     def _review(self, job: dict, cancel) -> None:
         if not self._spec(job).review:
@@ -402,13 +433,33 @@ class Pipeline:
                 return jdir / sc["clip"]
             return None
 
-        clips = [render.Clip(jdir / sc["image"], d, shot.get("camera", ""), transition(i, shot), clip_for(sc))
-                 for i, (sc, shot, d) in enumerate(zip(job["scenes"], shots, timings))]
+        clips, firsts = [], []   # firsts[i]: index in clips of scene i's opening shot
+        for i, (sc, shot, d) in enumerate(zip(job["scenes"], shots, timings)):
+            firsts.append(len(clips))
+            video = clip_for(sc)
+            beats = [b for b in (shot.get("beats") or [])] if spec.fast_cuts and video is None else []
+            extra = list(sc.get("beat_images") or [])
+            if len(beats) >= 2 and sc.get("image_source") != "asset" and any(n and (jdir / n).is_file() for n in extra):
+                # Cut on the beat: each phrase gets screen time in proportion to its words, so the picture
+                # changes exactly when the narration moves on.
+                images = [jdir / sc["image"]] + [jdir / n if n and (jdir / n).is_file() else None for n in extra]
+                words = [max(1, len(b["text"].split())) for b in beats]
+                cams = ["slow push in", "pull back", "pan left", "pan right"]
+                for k, (b, w) in enumerate(zip(beats, words)):
+                    if k and images[k] is None:      # failed beat image: previous picture holds instead
+                        clips[-1].duration += d * w / sum(words)
+                        continue
+                    clips.append(render.Clip(images[k], d * w / sum(words),
+                                             shot.get("camera", "") if k == 0 else cams[(i + k) % 4],
+                                             transition(i, shot) if k == 0 else "cut"))
+            else:
+                clips.append(render.Clip(jdir / sc["image"], d, shot.get("camera", ""), transition(i, shot), video))
         for c in clips:
             if c.video is not None:
                 c.video_duration = ff.duration(c.video)
 
-        if use_video and any(c.video is None and sc.get("ai_video", True) for c, sc in zip(clips, job["scenes"])):
+        heads = [clips[j] for j in firsts]   # one per scene, for scene-level bookkeeping below
+        if use_video and any(c.video is None and sc.get("ai_video", True) for c, sc in zip(heads, job["scenes"])):
             raise StageFailed("AI video mode but a chosen scene has no clip")
 
         plan = job["plan"]
@@ -429,7 +480,7 @@ class Pipeline:
         sfx_hits: list[tuple[Path, float, float]] = []
         if spec.sfx:
             bank = sfx.SfxBank.load(self.cfg.sfx_dir, [self.library.assets.path(a) for a in self.library.assets.list("sfx")])
-            sfx_hits = sfx.place(bank, [c.transition for c in clips], timings,
+            sfx_hits = sfx.place(bank, [c.transition for c in heads], timings,
                                  [(o.start, o.style) for o in overlays if spec.captions], job["id"])
             job["providers"]["sfx"] = f"{len(sfx_hits)} cues from {bank.describe()}" if bank.any() else "none (no SFX folder or SFX assets)"
         else:
@@ -452,12 +503,13 @@ class Pipeline:
             cap.write_ass(ass, w, h, t.caption_scale, t.caption_position, cues, overlays, emphasis,
                           brand.get("caption_color", ""), brand.get("highlight_color", ""))
 
-        job["edit"] = {"auto_edit": spec.auto_edit, "transitions": [c.transition for c in clips[1:]],
+        job["edit"] = {"auto_edit": spec.auto_edit, "transitions": [c.transition for c in heads[1:]],
+                       "shots": len(clips),
                        "durations": [round(d, 2) for d in timings],
                        "sfx": [{"file": p.name, "at": round(at, 2)} for p, at, _ in sfx_hits],
                        "clip_stretch": [round(min(1.6, (d + render.TRANSITION_S) / c.video_duration), 2)
                                         if c.video_duration and c.video_duration < d + render.TRANSITION_S else 1.0
-                                        for c, d in zip(clips, timings)]}
+                                        for c, d in zip(heads, timings)]}
         out = jdir / "work" / "render.mp4"
         logo = None
         if brand.get("logo_asset_id"):

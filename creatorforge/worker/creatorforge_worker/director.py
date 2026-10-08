@@ -63,7 +63,8 @@ class ProductionSpec:
     captions: bool = True
     motion: str = "stills"  # "stills" (camera motion on images) | "ai_video" (image-to-video clips)
     review: bool = False  # pause after scene visuals so the storyboard can be edited/approved
-    faces: str = "faceless"  # "faceless": people from behind / silhouettes / hands / wide shots | "show"
+    faces: str = "show"  # "show": expressive faces | "faceless": people from behind / silhouettes / hands / wide shots
+    fast_cuts: bool = True  # split scenes into phrase-level beats (new picture every 1-2 s)
     video_quality: str = ""  # AI clip speed: "fast" | "balanced" | "best" ("" = the worker's default)
     ai_video_scenes: object = "all"  # with motion=ai_video: "all", "hook" (first scene) or a list of scene numbers (1-based)
     auto_edit: bool = True  # let the Director choose transitions, caption emphasis and dramatic holds
@@ -94,7 +95,8 @@ class ProductionSpec:
             review=bool(d.get("review", False)),
             ai_video_scenes=d.get("ai_video_scenes", "all") or "all",
             video_quality=str(d.get("video_quality", "") or ""),
-            faces=str(d.get("faces", "faceless") or "faceless"),
+            faces=str(d.get("faces", "show") or "show"),
+            fast_cuts=bool(d.get("fast_cuts", True)),
             auto_edit=bool(d.get("auto_edit", True)),
             character_ids=[str(x) for x in d.get("character_ids") or []][:10],
             script=clean_script(str(d.get("script", "") or "")),
@@ -196,6 +198,10 @@ class ShotPlan:
     motion: str = ""  # what moves in the shot (people, objects, environment) for AI video
     video_prompt: str = ""
     video_negative: str = ""
+    emotion: str = ""  # the feeling on screen: shock, fear, suspicion, disgust, awe...
+    # Fast cuts: the narration split into 2-4 phrases, each with its own picture, so the visual changes every
+    # 1-2 seconds and always shows what is being said right then. [{"text","visual","emotion","prompt","negative"}]
+    beats: list = field(default_factory=list)
 
 
 @dataclass
@@ -271,9 +277,21 @@ Return exactly this JSON shape:
       "transition": "edit INTO this scene: {' | '.join(TRANSITIONS)}",
       "emphasis": ["1-3 key words from this scene's narration to highlight in captions"],
       "hold": "seconds (0 to 0.5) to pause after the line for impact; almost always 0 - pauses lose viewers",
-      "motion": "what physically moves during the shot, e.g. 'robot arm lifts a crate, workers walk past, dust in light beams'"}}
+      "motion": "what physically moves during the shot, e.g. 'robot arm lifts a crate, workers walk past, dust in light beams'",
+      "emotion": "the feeling on screen, e.g. shock, fear, suspicion, disgust, awe, relief",
+      "beats": {BEATS_SHAPE}}}
   ]}}
-The scenes array must contain exactly {n} scenes. Scene 1 narration must open with the hook idea."""
+The scenes array must contain exactly {n} scenes. Scene 1 narration must open with the hook idea.
+{BEATS_RULE}"""
+
+
+BEATS_SHAPE = ('[{"text": "the exact words of this scene\'s narration for this beat (in order, together they cover the whole '
+               'narration)", "visual": "one concrete image of exactly what those words say", '
+               '"emotion": "facial expression / body language in this beat"}]')
+BEATS_RULE = ("BEATS: split every scene's narration into 2-4 beats of about 3-7 spoken words (1-2 seconds each). Each beat gets "
+              "its own picture showing exactly what those words say - a new subject, angle or close-up - so the video cuts "
+              "every 1-2 seconds like a top Shorts edit. Same characters and place across beats. Put strong, readable "
+              "emotion on faces when people appear (shock, fear, suspicion, disgust, awe).")
 
 
 def _extract_json(text: str) -> dict:
@@ -309,9 +327,20 @@ def _validate(d: dict, n: int) -> ProductionPlan:
                             str(s.get("mood", "")).strip(), str(s.get("overlay", "") or "").strip()[:60],
                             transition=transition if transition in TRANSITIONS else "",
                             emphasis=[str(w).strip()[:30] for w in emphasis if str(w).strip()][:3], hold=hold,
-                            motion=str(s.get("motion", "") or "").strip()[:300]))
+                            motion=str(s.get("motion", "") or "").strip()[:300],
+                            emotion=str(s.get("emotion", "") or "").strip()[:60], beats=_clean_beats(s.get("beats"))))
     return ProductionPlan(str(d.get("title", "")).strip()[:100] or "Untitled", str(d.get("hook", "")).strip()[:80],
                           str(d.get("cta", "")).strip()[:60], str(d.get("music_mood", "")).strip()[:60], out)
+
+
+def _clean_beats(raw) -> list[dict]:
+    """Keeps 2-4 well-formed beats; anything else means the scene stays one shot."""
+    out = []
+    for b in raw if isinstance(raw, list) else []:
+        if isinstance(b, dict) and str(b.get("text", "")).strip() and str(b.get("visual", "")).strip():
+            out.append({"text": str(b["text"]).strip()[:300], "visual": str(b["visual"]).strip()[:400],
+                        "emotion": str(b.get("emotion", "") or "").strip()[:60]})
+    return out[:4] if len(out) >= 2 else []
 
 
 def direct(llm, spec: ProductionSpec) -> ProductionPlan:
@@ -334,6 +363,33 @@ def direct(llm, spec: ProductionSpec) -> ProductionPlan:
     return plan
 
 
+def _image_prompt(visual: str, emotion: str, s: "ShotPlan", spec: ProductionSpec, style: str,
+                  shot_size: str = "") -> tuple[str, str]:
+    # SDXL reads only ~77 tokens: keep the subject short and put framing, emotion + quality early so they aren't cut.
+    parts = [_clip_words(visual.rstrip("."), 40)]
+    people = _has_people(f"{visual} {s.shot}")
+    faceless = spec.faces == "faceless" and people
+    if faceless:
+        parts.append(FACELESS)
+        if emotion:
+            parts.append(f"body language showing {emotion}")
+    elif emotion and people:
+        parts.append(f"face clearly showing {emotion}, intense expressive eyes, emotional")
+    elif emotion:
+        parts.append(f"{emotion} atmosphere")
+    parts.append("sharp focus, highly detailed")
+    shot = ", ".join(x for x in [f"{shot_size or s.shot} shot" if (shot_size or s.shot) else "", spec.camera or s.camera,
+                                 f"{spec.mood or s.mood} mood" if (spec.mood or s.mood) else ""] if x)
+    if shot:
+        parts.append(shot)
+    text = f"{visual} {s.narration}".lower()
+    for c in spec.characters:
+        if c.name.lower() in text:
+            parts.append(f"{c.name}: {c.description}")
+    parts.append(style)
+    return ". ".join(parts), NEGATIVE + (FACELESS_NEGATIVE if faceless else ", blank expression, dead eyes")
+
+
 def prompt_forge(plan: ProductionPlan, spec: ProductionSpec, only: int | None = None) -> None:
     """Builds each scene's generation prompt from the shot, Director Mode and characters."""
     t = TEMPLATES[spec.template]
@@ -341,23 +397,15 @@ def prompt_forge(plan: ProductionPlan, spec: ProductionSpec, only: int | None = 
     for i, s in enumerate(plan.scenes):
         if only is not None and i != only:
             continue
-        # SDXL reads only ~77 tokens: keep the subject short and put framing + quality early so they aren't cut.
-        parts = [_clip_words(s.visual.rstrip("."), 40)]
-        faceless = spec.faces == "faceless" and _has_people(f"{s.visual} {s.shot}")
-        if faceless:
-            parts.append(FACELESS)
-        parts.append("sharp focus, highly detailed")
-        shot = ", ".join(x for x in [f"{s.shot} shot" if s.shot else "", spec.camera or s.camera,
-                                     f"{spec.mood or s.mood} mood" if (spec.mood or s.mood) else ""] if x)
-        if shot:
-            parts.append(shot)
-        text = f"{s.visual} {s.narration}".lower()
-        for c in spec.characters:
-            if c.name.lower() in text:
-                parts.append(f"{c.name}: {c.description}")
-        parts.append(style)
-        s.prompt = ". ".join(parts)
-        s.negative = NEGATIVE + (FACELESS_NEGATIVE if faceless else "")
+        s.prompt, s.negative = _image_prompt(s.visual, s.emotion, s, spec, style)
+        if not spec.fast_cuts:
+            s.beats = []
+        for k, b in enumerate(s.beats):
+            # Alternate shot sizes so consecutive beats feel like real coverage, not the same frame twice.
+            size = ("close-up", "medium", "extreme close-up", "wide")[(i + k) % 4] if k else (s.shot or "medium")
+            b["prompt"], b["negative"] = _image_prompt(b["visual"], b.get("emotion") or s.emotion, s, spec, style, size)
+        if s.beats:
+            s.prompt, s.negative = s.beats[0]["prompt"], s.beats[0]["negative"]
         # The animation prompt leads with motion: image-to-video models already see the still.
         camera = spec.camera or s.camera or "slow cinematic camera move"
         motion = s.motion or f"subtle natural movement in the scene: {s.visual.rstrip('.')}"
@@ -482,7 +530,10 @@ Return exactly this JSON shape with exactly {len(segments)} scenes in the same o
   "music_mood": "2-4 words",
   "scenes": [{{"visual": "...", "shot": "...", "camera": "...", "mood": "...", "overlay": "optional max 5 words or empty",
               "transition": "{' | '.join(TRANSITIONS)}", "emphasis": ["1-3 key words from this scene"], "hold": 0,
-              "motion": "what physically moves during the shot"}}]}}"""
+              "motion": "what physically moves during the shot",
+              "emotion": "the feeling on screen, e.g. shock, fear, suspicion, disgust, awe",
+              "beats": {BEATS_SHAPE}}}]}}
+{BEATS_RULE} Beat texts must be copied word for word from that scene's narration."""
     error, best = "", {}
     for _ in range(2):
         raw = llm.complete_json(SCRIPT_SYSTEM, user if not error else f"{user}\n\nYour previous answer was invalid: {error}. Return corrected JSON only.")

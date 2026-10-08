@@ -70,7 +70,8 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
     var characters by remember { mutableStateOf(prefs.getString("characters", "").orEmpty()) }
     var videoScope by remember { mutableStateOf(prefs.getString("video_scope", null) ?: if (prefs.getBoolean("ai_video", false)) "all" else "off") }
     val aiVideo = videoScope != "off"
-    var faces by remember { mutableStateOf(prefs.getString("faces", "faceless").orEmpty()) }
+    var faces by remember { mutableStateOf(prefs.getString("faces2", "show").orEmpty()) }
+    var fastCuts by remember { mutableStateOf(prefs.getBoolean("fast_cuts", true)) }
     var videoQuality by remember { mutableStateOf(prefs.getString("video_quality", "fast").orEmpty()) }
     var review by remember { mutableStateOf(prefs.getBoolean("review", false)) }
     var editing by remember { mutableStateOf<SceneView?>(null) }
@@ -320,9 +321,11 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                     }
                 }
                 Label("PEOPLE IN SHOTS")
-                ChipRow(listOf("faceless" to "Faceless (recommended)", "show" to "Show faces"), faces) { faces = it }
-                Text(if (faces == "faceless") "People appear from behind, in silhouette, as hands or small in wide shots - the faceless-channel look, and no weird AI faces."
-                     else "Faces visible. Close-up AI faces can look uncanny.", color = Color.Gray, fontSize = 12.sp)
+                ChipRow(listOf("show" to "Expressive faces", "faceless" to "Faceless"), faces) { faces = it }
+                Text(if (faces == "faceless") "People from behind, in silhouette or as hands - emotion shown through body language."
+                     else "Faces show the emotion of each moment - shock, fear, suspicion, disgust.", color = Color.Gray, fontSize = 12.sp)
+                Label("CUTS")
+                ChipRow(listOf("fast" to "Fast - new picture every 1-2 s", "calm" to "Calm - one picture per scene"), if (fastCuts) "fast" else "calm") { fastCuts = it == "fast" }
                 Label("PACING")
                 ChipRow(listOf("slow" to "Slow", "medium" to "Medium", "fast" to "Fast"), pacing) { pacing = it }
                 Label("REALISTIC AI VIDEO")
@@ -375,7 +378,7 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                         .putString("template", template).putString("voice", voice).putString("pacing", pacing)
                         .putBoolean("music", music).putBoolean("captions", captions).putString("style", style)
                         .putString("mood", mood).putString("camera", camera).putString("characters", characters)
-                        .putString("video_scope", videoScope).putString("video_quality", videoQuality).putString("faces", faces).putBoolean("review", review)
+                        .putString("video_scope", videoScope).putString("video_quality", videoQuality).putString("faces2", faces).putBoolean("fast_cuts", fastCuts).putBoolean("review", review)
                         .putBoolean("auto_edit", autoEdit).putStringSet("character_ids", picked)
                         .putBoolean("script_mode", scriptMode).putBoolean("sfx", sfx).putString("music_asset", musicAsset).apply()
                     val chars = characters.lines().mapNotNull { l ->
@@ -384,7 +387,7 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                     fun request(text: String) = ProductionRequest(if (scriptMode) "" else text, duration, aspect, template, voice, pacing,
                         style.trim(), mood.trim(), camera.trim(), chars, music, captions, aiVideo, review, autoEdit, picked.toList(),
                         script = if (scriptMode) text else "", musicAssetId = if (music) musicAsset else "", sfx = sfx,
-                        aiVideoScenes = if (videoScope == "hook") "hook" else "all", videoQuality = videoQuality, faces = faces)
+                        aiVideoScenes = if (videoScope == "hook") "hook" else "all", videoQuality = videoQuality, faces = faces, fastCuts = fastCuts)
                     val pieces = batchPieces(idea)
                     if (pieces.size <= 1) act { client.create(request(idea.trim())) }
                     else {

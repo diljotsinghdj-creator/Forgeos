@@ -78,6 +78,11 @@ class MockLLM:
             }
             for i in range(n)
         ]
+        if "fast cuts test" in idea:
+            for i, sc in enumerate(scenes):
+                words = sc["narration"].split()
+                sc["beats"] = [{"text": " ".join(words[:5]), "visual": f"extreme close-up {i}a", "emotion": "shock"},
+                               {"text": " ".join(words[5:]), "visual": f"wide reveal {i}b", "emotion": "fear"}]
         return json.dumps({"title": idea[:50], "hook": "Watch this", "cta": "Follow for more",
                            "music_mood": "cinematic", "scenes": scenes})
 
