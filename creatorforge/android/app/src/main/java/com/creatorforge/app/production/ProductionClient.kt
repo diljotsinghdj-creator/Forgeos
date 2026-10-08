@@ -77,6 +77,8 @@ class ProductionClient(baseUrl: String) {
     companion object {
         /** Supplies the app's Script AI for planning (set once at startup). */
         @Volatile var directorLlm: (() -> JSONObject?)? = null
+        /** Supplies the Pexels/Pixabay key so the pod can use real stock footage. */
+        @Volatile var stockKey: (() -> JSONObject?)? = null
     }
 
     private val base = baseUrl.trim().trimEnd('/')
@@ -353,6 +355,7 @@ class ProductionClient(baseUrl: String) {
 
     private fun withDirector(body: JSONObject): JSONObject {
         directorLlm?.invoke()?.let { if (!body.has("director_llm")) body.put("director_llm", it) }
+        stockKey?.invoke()?.let { if (!body.has("stock")) body.put("stock", it) }
         return body
     }
 

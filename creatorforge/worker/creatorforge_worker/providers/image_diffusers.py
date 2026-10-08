@@ -22,6 +22,11 @@ class DiffusersImageProvider:
         self.id = f"diffusers:{self.model}" + (":hires" if self.hires else "")
         self._img2img = None
         self._pipe = None
+        # Same character in every shot: the pipeline sets a reference image (the first shot of the main character)
+        # and a strength per image; IP-Adapter (plus-face, SDXL) carries that face into the new picture.
+        self.reference: Path | None = None
+        self.ref_strength = 0.0
+        self._ip_ready: bool | None = None
 
     def _load(self):
         if self._pipe is None:
@@ -59,6 +64,8 @@ class DiffusersImageProvider:
                 kwargs["guidance_scale"] = 0.0
             elif negative:
                 kwargs["negative_prompt"] = negative
+            ip = self._ip_kwargs(pipe)
+            kwargs.update(ip)
             kwargs.update(step_callback(pipe))
             self._same_dtype(pipe)
             try:
@@ -77,7 +84,7 @@ class DiffusersImageProvider:
                 from ..media.ff import Cancelled
                 raise Cancelled()
             if self.hires:
-                image = self._refine(pipe, image, prompt, negative, width, height, seed)
+                image = self._refine(pipe, image, prompt, negative, width, height, seed, ip)
             image.save(out, format="PNG")
 
     @staticmethod
@@ -87,7 +94,32 @@ class DiffusersImageProvider:
         if unet is not None and vae is not None and vae.dtype != unet.dtype:
             vae.to(dtype=unet.dtype)
 
-    def _refine(self, pipe, image, prompt: str, negative: str, width: int, height: int, seed: int):
+    def _ip_kwargs(self, pipe) -> dict:
+        """IP-Adapter arguments for this image (empty when the feature is off or unavailable)."""
+        if self.reference is None and not self._ip_ready:
+            return {}
+        if "xl" not in self.model.lower() or not self._load_ip(pipe):
+            return {}
+        from PIL import Image
+        pipe.set_ip_adapter_scale(self.ref_strength if self.reference is not None else 0.0)
+        ref = Image.open(self.reference).convert("RGB") if self.reference is not None else Image.new("RGB", (224, 224))
+        return {"ip_adapter_image": ref}
+
+    def _load_ip(self, pipe) -> bool:
+        if self._ip_ready is None:
+            try:
+                pipe.load_ip_adapter("h94/IP-Adapter", subfolder="sdxl_models",
+                                     weight_name="ip-adapter-plus-face_sdxl_vit-h.safetensors",
+                                     image_encoder_folder="models/image_encoder")
+                if getattr(pipe, "image_encoder", None) is not None and getattr(self, "placement", "") == "gpu":
+                    pipe.image_encoder.to("cuda", dtype=pipe.unet.dtype)
+                self._img2img = None         # rebuild the refine pipe so it shares the adapter
+                self._ip_ready = True
+            except Exception:  # noqa: BLE001 - no adapter: pictures still work, just without the face lock
+                self._ip_ready = False
+        return bool(self._ip_ready)
+
+    def _refine(self, pipe, image, prompt: str, negative: str, width: int, height: int, seed: int, ip: dict | None = None):
         import torch
         from PIL import Image
 
@@ -97,7 +129,8 @@ class DiffusersImageProvider:
                 self._img2img = AutoPipelineForImage2Image.from_pipe(pipe)   # shares the loaded weights
             w, h = int(width * 1.5) // 8 * 8, int(height * 1.5) // 8 * 8
             kwargs = dict(prompt=prompt, image=image.resize((w, h), Image.LANCZOS), strength=0.3,
-                          num_inference_steps=max(20, self.steps), generator=torch.Generator("cpu").manual_seed(seed))
+                          num_inference_steps=max(20, self.steps), generator=torch.Generator("cpu").manual_seed(seed),
+                          **(ip or {}))
             if negative:
                 kwargs["negative_prompt"] = negative
             kwargs.update(step_callback(self._img2img))

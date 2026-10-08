@@ -65,6 +65,7 @@ class ProductionSpec:
     review: bool = False  # pause after scene visuals so the storyboard can be edited/approved
     faces: str = "show"  # "show": expressive faces | "faceless": people from behind / silhouettes / hands / wide shots
     fast_cuts: bool = True  # split scenes into phrase-level beats (new picture every 1-2 s)
+    consistent_character: bool = True  # lock the main character's face across shots (IP-Adapter)
     film_grade: bool = True  # one consistent look: contrast, vignette, fine grain
     voice_speed: float = 1.0  # narration tempo (pitch kept); 1.1 is the common Shorts pace
     hook_text: str = ""  # on-screen hook, e.g. from a writer's "On-screen hook:" line
@@ -105,6 +106,7 @@ class ProductionSpec:
             faces=str(d.get("faces", "show") or "show"),
             fast_cuts=bool(d.get("fast_cuts", True)),
             film_grade=bool(d.get("film_grade", True)),
+            consistent_character=bool(d.get("consistent_character", True)),
             voice_speed=min(1.4, max(0.8, float(d.get("voice_speed", 1.0) or 1.0))),
             auto_edit=bool(d.get("auto_edit", True)),
             character_ids=[str(x) for x in d.get("character_ids") or []][:10],
@@ -302,11 +304,12 @@ The scenes array must contain exactly {n} scenes. Scene 1 narration must open wi
 
 BEATS_SHAPE = ('[{"text": "the exact words of this scene\'s narration for this beat (in order, together they cover the whole '
                'narration)", "visual": "one concrete image of exactly what those words say", '
-               '"emotion": "facial expression / body language in this beat"}]')
+               '"emotion": "facial expression / body language in this beat", '
+               '"stock": "2-4 word real-footage search, or empty"}]')
 BEATS_RULE = ("BEATS: split every scene's narration into 2-4 beats of about 3-7 spoken words (1-2 seconds each). Each beat gets "
               "its own picture showing exactly what those words say - a new subject, angle or close-up - so the video cuts "
               "every 1-2 seconds like a top Shorts edit. Same characters and place across beats. Put strong, readable "
-              "emotion on faces when people appear (shock, fear, suspicion, disgust, awe).")
+              "emotion on faces when people appear (shock, fear, suspicion, disgust, awe). " + 'STOCK: when a beat can be shown with generic REAL footage (a city street, a crowd, hands typing, waves, a clock), put a 2-4 word search in "stock"; leave it empty when the beat needs the story\'s own characters, a specific era or the video\'s visual direction.')
 
 
 def _extract_json(text: str) -> dict:
@@ -354,7 +357,8 @@ def _clean_beats(raw) -> list[dict]:
     for b in raw if isinstance(raw, list) else []:
         if isinstance(b, dict) and str(b.get("text", "")).strip() and str(b.get("visual", "")).strip():
             out.append({"text": str(b["text"]).strip()[:300], "visual": str(b["visual"]).strip()[:400],
-                        "emotion": str(b.get("emotion", "") or "").strip()[:60]})
+                        "emotion": str(b.get("emotion", "") or "").strip()[:60],
+                        "stock": " ".join(str(b.get("stock", "") or "").split()[:5])[:60]})
     return out[:8] if len(out) >= 2 else []
 
 
@@ -381,11 +385,17 @@ def _phrases(text: str, limit: int = BEAT_WORDS) -> list[str]:
     return out
 
 
+STOCK_RULE = ("STOCK: when a beat can be shown with generic REAL footage (a city street, a crowd, hands typing, waves, "
+              "a clock), put a 2-4 word search in \"stock\"; leave it empty when the beat needs the story's own characters, "
+              "a specific era or the video's visual direction.")
+
+
 BEATS_SYSTEM = """You are the picture editor of a viral faceless video. You get ONE scene's narration. Split it into
 beats of 3-5 consecutive words (copy the words exactly, in order, covering every word). For each beat describe ONE
 concrete image that literally shows what THOSE words say - the subject and action the viewer hears at that moment -
 in the scene's setting with the same characters. Add the emotion on screen (facial expression or atmosphere).
-Respond with JSON only: {"beats": [{"text": "...", "visual": "...", "emotion": "..."}]}"""
+STOCK: when a beat can be shown with generic REAL footage (a city street, a crowd, hands typing, waves, a clock), put a 2-4 word search in "stock"; leave it empty when the beat needs the story's own characters, a specific era or the video's visual direction.
+Respond with JSON only: {"beats": [{"text": "...", "visual": "...", "emotion": "...", "stock": ""}]}"""
 
 
 def _beats_match(beats: list[dict], narration: str) -> bool:

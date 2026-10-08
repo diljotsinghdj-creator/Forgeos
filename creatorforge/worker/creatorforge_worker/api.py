@@ -178,7 +178,7 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
             raise HTTPException(402, str(e)) from None
         return a["id"]
 
-    def submit(spec: ProductionSpec, title: str = "", director_llm: dict | None = None) -> dict:
+    def submit(spec: ProductionSpec, title: str = "", director_llm: dict | None = None, stock: dict | None = None) -> dict:
         d = spec.to_dict()
         owner = charge(d)
         job = store.create(d, title)
@@ -187,6 +187,8 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
             store.save(job)
         if director_llm:
             providers.set_director_llm(job["id"], director_llm)   # memory only - the key is never written to disk
+        if stock:
+            providers.set_stock_key(job["id"], stock)
         runner.submit(job["id"])
         return public(job)
 
@@ -194,7 +196,9 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
     async def create_production(request: Request) -> dict:
         body = await request.json()
         director_llm = body.pop("director_llm", None) if isinstance(body, dict) else None
-        return submit(build_spec(body), director_llm=director_llm if isinstance(director_llm, dict) else None)
+        stock = body.pop("stock", None) if isinstance(body, dict) else None
+        return submit(build_spec(body), director_llm=director_llm if isinstance(director_llm, dict) else None,
+                      stock=stock if isinstance(stock, dict) else None)
 
     @app.get("/v1/productions", dependencies=[Depends(auth)])
     def list_productions() -> list[dict]:

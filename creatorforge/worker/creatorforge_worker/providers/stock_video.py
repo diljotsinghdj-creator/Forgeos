@@ -19,6 +19,8 @@ def detect(key: str) -> str:
 def search(provider: str, key: str, query: str, portrait: bool = True, timeout: float = 20) -> list[dict]:
     """Candidate clips: [{"url", "width", "height", "duration", "credit"}], best first."""
     out: list[dict] = []
+    if provider == "mock":
+        return [{"url": f"mock://{query}", "width": 1080, "height": 1920, "duration": 4.0, "credit": "test"}]
     try:
         if provider == "pixabay":
             r = httpx.get("https://pixabay.com/api/videos/", params={"key": key, "q": query, "per_page": 10,
@@ -56,6 +58,12 @@ def fetch(clip: dict, cache: Path, timeout: float = 120) -> Path:
     if dst.is_file() and dst.stat().st_size > 10_000:
         return dst
     tmp = dst.with_suffix(".part")
+    if clip["url"].startswith("mock://"):
+        from ..media import ff
+        ff.run(["-f", "lavfi", "-i", "testsrc2=s=540x960:d=4:r=24", "-pix_fmt", "yuv420p", "-c:v", "libx264",
+                "-preset", "ultrafast", "-f", "mp4", str(tmp)])
+        tmp.replace(dst)
+        return dst
     try:
         with httpx.stream("GET", clip["url"], timeout=timeout, follow_redirects=True) as r:
             r.raise_for_status()

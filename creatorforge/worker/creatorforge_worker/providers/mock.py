@@ -82,7 +82,8 @@ class MockLLM:
             for i, sc in enumerate(scenes):
                 words = sc["narration"].split()
                 sc["beats"] = [{"text": " ".join(words[k:k + 5]), "visual": f"shot {i}-{k}",
-                                "emotion": ("shock", "fear", "disgust")[(k // 5) % 3]} for k in range(0, len(words), 5)]
+                                "emotion": ("shock", "fear", "disgust")[(k // 5) % 3],
+                                "stock": "city street" if k == 5 else ""} for k in range(0, len(words), 5)]
         return json.dumps({"title": idea[:50], "hook": "Watch this", "cta": "Follow for more",
                            "music_mood": "cinematic", "scenes": scenes})
 

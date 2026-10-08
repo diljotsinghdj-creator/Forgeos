@@ -169,6 +169,9 @@ for k, v in h["providers"].items():
 print("  production_ready:", h["production_ready"])
 PY
 
+# Face lock (same character in every shot): IP-Adapter plus-face for SDXL and its image encoder (~3.5 GB).
+nohup "$PYBIN" -c "from huggingface_hub import snapshot_download; snapshot_download('h94/IP-Adapter', allow_patterns=['sdxl_models/ip-adapter-plus-face_sdxl_vit-h.safetensors', 'models/image_encoder/*']); print('face lock ready')" > ip_adapter_download.log 2>&1 &
+
 say "Human-like narrator (Chatterbox) installs in the background (log: $HOME_DIR/chatterbox.log)"
 # Chatterbox pins its own torch/diffusers versions, so it lives in a separate Python 3.11 environment and
 # runs as a small local server. Until it's up, "human-like" voices fall back to their Kokoro voice.

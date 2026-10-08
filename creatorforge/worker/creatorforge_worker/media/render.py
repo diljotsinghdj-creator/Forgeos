@@ -135,7 +135,7 @@ LOGO_XY = {"top-right": ("W-w-{m}", "{m}"), "top-left": ("{m}", "{m}"),
 
 def render_video(clips: list[Clip], audio: Path, captions: Path | None, width: int, height: int,
                  out: Path, work: Path, cancel: threading.Event,
-                 logo: tuple[Path, str, float] | None = None, grade: bool = True) -> float:
+                 logo: tuple[Path, str, float] | None = None, grade: str = "film") -> float:
     """Returns the expected duration of the rendered file."""
     tail = TRANSITION_S if len(clips) > 1 else 0.0
     trans = [TRANSITIONS.get(c.transition, TRANSITIONS["fade"]) for c in clips]
@@ -181,8 +181,9 @@ def render_video(clips: list[Clip], audio: Path, captions: Path | None, width: i
     audio_idx = len(clips)
     if grade:
         # One consistent "film" look over every shot: a touch of contrast and colour, soft vignette, fine grain.
-        graph.append(f"[{last}]eq=contrast=1.06:saturation=1.08:gamma=0.98,vignette=angle=PI/5,"
-                     f"noise=alls=5:allf=t+u,format=yuv420p[graded]")
+        # "bw": the writer asked for a black-and-white look - AI shots and stock footage are matched to it.
+        tone = "hue=s=0,eq=contrast=1.12:gamma=0.97" if grade == "bw" else "eq=contrast=1.06:saturation=1.08:gamma=0.98"
+        graph.append(f"[{last}]{tone},vignette=angle=PI/5,noise=alls={7 if grade == 'bw' else 5}:allf=t+u,format=yuv420p[graded]")
         last = "graded"
     if logo is not None:
         # Brand watermark: about 14% of the frame width, in a corner, slightly transparent. Captions go on top.

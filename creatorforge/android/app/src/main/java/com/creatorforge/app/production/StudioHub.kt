@@ -41,6 +41,13 @@ object StudioHub {
 
     /** Your Script AI (Gemini, Groq, ...), lent to the pod to plan each video's story and shots - far stronger than the
      *  pod's small local model. Only https services; the pod keeps it in memory for that one video. */
+    /** Pexels or Pixabay key (Settings), lent to the pod for real stock footage in fast cuts. */
+    fun stockKey(c: Context): org.json.JSONObject? =
+        SecureTokenStore(c).load("stock")?.trim()?.takeIf { it.isNotBlank() }?.let { k ->
+            if (k.startsWith("pixabay:", ignoreCase = true)) org.json.JSONObject().put("provider", "pixabay").put("key", k.substringAfter(":").trim())
+            else org.json.JSONObject().put("provider", if (k.startsWith("pexels:", true)) "pexels" else "").put("key", k.substringAfter("pexels:").trim())
+        }
+
     fun directorLlm(c: Context): org.json.JSONObject? {
         if (!aiReady(c) || !baseUrl(c).startsWith("https://")) return null
         return org.json.JSONObject().put("url", baseUrl(c).trimEnd('/')).put("model", model(c).removePrefix("models/")).put("key", key(c))
@@ -164,8 +171,9 @@ fun AiSettingsCard(secure: SecureTokenStore) {
         }
         status?.let { Text(it, color = if (it.startsWith("✓")) Gold else Danger, fontSize = 12.sp) }
         HorizontalDivider(Modifier.padding(vertical = 6.dp))
-        Text("Stock photos for Phone Video (optional)", color = Gold, fontSize = 13.sp)
-        Text("A free Pexels key (pexels.com/api) puts real photos behind each scene instead of title cards. For Pixabay type pixabay:YOURKEY.", color = Dim, fontSize = 12.sp)
+        Text("Real stock footage (free, optional)", color = Gold, fontSize = 13.sp)
+        Text("With a free Pexels key (pexels.com/api) the AI mixes real video clips - crowds, cities, hands, nature - into your fast cuts, " +
+            "free for commercial use. For Pixabay type pixabay:YOURKEY.", color = Dim, fontSize = 12.sp)
         var stock by remember { mutableStateOf("") }
         var hasStock by remember { mutableStateOf(secure.has("stock")) }
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {

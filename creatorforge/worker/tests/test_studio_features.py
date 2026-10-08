@@ -383,3 +383,43 @@ def test_editing_upgrades_sound_design_pace_and_pop_captions(cfg):
         assert {"riser_tension.wav"} & sounds and any(f.startswith(("impact_", "whoosh_")) for f in sounds), sounds
         ass = cfg.jobs_dir / normal["id"] / "work" / "captions.ass"
         assert ass.is_file() and "\\t(0,120" in ass.read_text()      # pop-in caption animation
+
+
+def test_stock_footage_fills_beats_marked_by_the_planner(cfg):
+    from fastapi.testclient import TestClient
+    from creatorforge_worker.api import create_app
+    from .conftest import wait_for
+
+    with TestClient(create_app(cfg)) as c:
+        body = {"idea": "fast cuts test about lying", "duration_s": 15, "stock": {"provider": "mock", "key": "k"},
+                "visual_direction": "black-and-white 1950s lab footage"}
+        jid = c.post("/v1/productions", json=body).json()["id"]
+        job = wait_for(lambda: (lambda j: j if j["status"] in ("READY", "FAILED") else None)(c.get(f"/v1/productions/{jid}").json()))
+        assert job["status"] == "READY", job
+        sc = job["scenes"][0]
+        assert sc["beat_clips"][1] and not sc["beat_clips"][0]      # beat 2 asked for "city street" footage
+        assert (cfg.jobs_dir / jid / sc["beat_clips"][1]).is_file()
+        assert sc["beat_images"][0] is None                          # ...so no AI image was generated for it
+        assert job["stock_credits"] == ["test"] and "key" not in str(job["spec"])
+
+
+def test_main_character_face_is_locked_across_people_shots(cfg, tmp_path):
+    from creatorforge_worker.pipeline import Pipeline
+    from creatorforge_worker.store import JobStore
+
+    pipe = Pipeline(cfg, JobStore(cfg.jobs_dir))
+
+    class FaceAwareImage:
+        reference, ref_strength = None, 0.0
+
+    img = FaceAwareImage()
+    job = {"spec": {"idea": "the spotlight effect explained"}}
+    (tmp_path / "scene_01.png").write_bytes(b"png")
+    assert pipe._face_lock(img, job, tmp_path, "A student walks into a hall") == ""      # no reference yet
+    pipe._remember_face(job, tmp_path / "scene_01.png", "A student walks into a hall")
+    assert job["character_ref"] == "scene_01.png"
+    assert pipe._face_lock(img, job, tmp_path, "close-up of the student's eyes") == "face:scene_01.png:0.6"
+    assert img.reference == tmp_path / "scene_01.png" and img.ref_strength == 0.6
+    assert pipe._face_lock(img, job, tmp_path, "an empty lighthouse at night") == "" and img.reference is None
+    off = {"spec": {"idea": "the spotlight effect explained", "consistent_character": False}, "character_ref": "scene_01.png"}
+    assert pipe._face_lock(img, off, tmp_path, "the student smiles") == ""

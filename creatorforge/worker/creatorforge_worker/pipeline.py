@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 import shutil
 import tempfile
 import threading
@@ -208,13 +209,15 @@ class Pipeline:
             sc.update(image_state="GENERATING", error=None)
             self.store.save(job)
             seed = (seed_base + sc["index"] * 7919) % 2**31
-            key = _key(img.id, shot["prompt"], shot["negative"], gen, seed)
+            face = self._face_lock(img, job, jdir, shot["visual"])
+            key = _key(img.id, shot["prompt"], shot["negative"], gen, seed, face)
             try:
                 src = self._cached("images", key, ".png",
                                    lambda p: img.generate(shot["prompt"], shot["negative"], gen[0], gen[1], seed, p),
                                    verify.image)
                 dst = self._replace_file(jdir, sc.get("image"), f"scene_{sc['index'] + 1:02d}_{key[:8]}.png", src)
                 sc.update(image_state="READY", image=dst.name, image_source="generated")
+                self._remember_face(job, dst, shot["visual"])
             except (ProviderError, MediaError) as e:
                 sc.update(image_state="FAILED", error=f"image: {e}")
                 failures.append(f"scene {sc['index'] + 1}: {e}")
@@ -228,19 +231,26 @@ class Pipeline:
         """Fast cuts: one extra picture per beat after the first (beat 1 uses the scene image). A beat image that
         fails is skipped - the scene simply holds its previous picture longer."""
         jdir = self.store.dir(job["id"])
+        stock = providers.stock_key(job["id"])
         for sc, shot in zip(job["scenes"], job["plan"]["scenes"]):
             beats = shot.get("beats") or []
             if len(beats) < 2 or sc.get("image_source") == "asset":
                 continue
+            if stock:
+                self._stock_clips(job, sc, beats, stock, jdir)
+            clips = sc.get("beat_clips") or []
             names = list(sc.get("beat_images") or [])[: len(beats) - 1]
             names += [None] * (len(beats) - 1 - len(names))
             for k, b in enumerate(beats[1:]):
                 if names[k] and (jdir / names[k]).is_file():
                     continue
+                if k + 1 < len(clips) and clips[k + 1]:
+                    continue                 # real footage covers this beat - no AI image needed
                 if cancel.is_set():
                     raise Cancelled()
                 seed = (seed_base + sc["index"] * 7919 + (k + 1) * 104729) % 2**31
-                key = _key(img.id, b.get("prompt", ""), b.get("negative", ""), gen, seed)
+                face = self._face_lock(img, job, jdir, b["visual"])
+                key = _key(img.id, b.get("prompt", ""), b.get("negative", ""), gen, seed, face)
                 try:
                     src = self._cached("images", key, ".png",
                                        lambda p, b=b, seed=seed: img.generate(b["prompt"], b["negative"], gen[0], gen[1], seed, p),
@@ -253,6 +263,49 @@ class Pipeline:
                     names[k] = None
                 sc["beat_images"] = names
                 self.store.save(job)
+
+    def _face_lock(self, img, job: dict, jdir: Path, visual: str) -> str:
+        """Points the image model at the video's character reference for shots with people; returns a cache tag."""
+        if not hasattr(img, "reference"):
+            return ""
+        ref = job.get("character_ref")
+        people = director._has_people(visual)
+        if self._spec(job).consistent_character and ref and people and (jdir / ref).is_file():
+            img.reference, img.ref_strength = jdir / ref, 0.6
+            return f"face:{ref}:0.6"
+        img.reference, img.ref_strength = None, 0.0
+        return ""
+
+    def _remember_face(self, job: dict, image: Path, visual: str) -> None:
+        """The first generated shot showing people becomes the character reference for the rest of the video."""
+        if self._spec(job).consistent_character and not job.get("character_ref") and director._has_people(visual):
+            job["character_ref"] = image.name
+
+    def _stock_clips(self, job: dict, sc: dict, beats: list, stock: tuple[str, str], jdir: Path) -> None:
+        """Real footage for beats the planner marked with a stock search (best effort, cached)."""
+        from .providers import stock_video
+        clips = list(sc.get("beat_clips") or [])[: len(beats)]
+        clips += [None] * (len(beats) - len(clips))
+        portrait = self._spec(job).aspect == "9:16"
+        for k, b in enumerate(beats):
+            if clips[k] and (jdir / clips[k]).is_file() or not b.get("stock"):
+                continue
+            try:
+                found = stock_video.search(stock[0], stock[1], b["stock"], portrait)
+                if found:
+                    src = stock_video.fetch(found[0], self.cfg.cache_dir / "stock")
+                    dst = jdir / f"scene_{sc['index'] + 1:02d}_stock{k + 1}{src.suffix}"
+                    if not dst.is_file():
+                        shutil.copyfile(src, dst)
+                    clips[k] = dst.name
+                    job.setdefault("stock_credits", [])
+                    if found[0]["credit"] not in job["stock_credits"]:
+                        job["stock_credits"].append(found[0]["credit"])
+            except (ProviderError, MediaError, OSError):
+                clips[k] = None          # no footage: this beat gets an AI image as usual
+        sc["beat_clips"] = clips
+        job["providers"]["stock"] = f"{stock[0]} ({sum(1 for c in clips if c)} clips in scene {sc['index'] + 1})"
+        self.store.save(job)
 
     def _review(self, job: dict, cancel) -> None:
         if not self._spec(job).review:
@@ -471,20 +524,25 @@ class Pipeline:
             video = clip_for(sc)
             beats = [b for b in (shot.get("beats") or [])] if spec.fast_cuts and video is None else []
             extra = list(sc.get("beat_images") or [])
-            if len(beats) >= 2 and sc.get("image_source") != "asset" and any(n and (jdir / n).is_file() for n in extra):
+            stock_clips = [jdir / n if n and (jdir / n).is_file() else None for n in (sc.get("beat_clips") or [])]
+            stock_clips += [None] * (len(beats) - len(stock_clips))
+            if len(beats) >= 2 and sc.get("image_source") != "asset" and (
+                    any(n and (jdir / n).is_file() for n in extra) or any(stock_clips)):
                 # Cut on the beat: each phrase gets screen time in proportion to its words, so the picture
                 # changes exactly when the narration moves on.
                 images = [jdir / sc["image"]] + [jdir / n if n and (jdir / n).is_file() else None for n in extra]
+                images += [None] * (len(beats) - len(images))
                 lengths = _beat_lengths([b["text"] for b in beats], sc.get("word_starts") or [], d)
                 cams = ["slow push in", "pull back", "pan left", "pan right"]
                 for k, length in enumerate(lengths):
-                    if k and images[k] is None:      # failed beat image: previous picture holds instead
+                    if k and images[k] is None and stock_clips[k] is None:   # nothing for this beat: hold the last shot
                         clips[-1].duration += length
                         continue
                     cam = shot.get("camera", "") if k == 0 else cams[(i + k) % 4]
                     if spec.auto_edit and (beats[k].get("emotion") or shot.get("emotion", "")).lower() in SHOCK_EMOTIONS:
                         cam = "shake" if k == 0 and transition(i, shot) in ("flash", "zoom") else "punch"
-                    clips.append(render.Clip(images[k], length, cam, transition(i, shot) if k == 0 else "cut"))
+                    clips.append(render.Clip(images[k] or images[0], length, cam, transition(i, shot) if k == 0 else "cut",
+                                             stock_clips[k]))
             else:
                 cam = shot.get("camera", "")
                 if spec.auto_edit and video is None and shot.get("emotion", "").lower() in SHOCK_EMOTIONS:
@@ -559,7 +617,9 @@ class Pipeline:
                 raise StageFailed("the brand logo must be an image asset")
             logo = (self.library.assets.path(a), brand.get("logo_position", "top-right"), brand.get("logo_opacity", 0.85))
             job["providers"]["brand"] = f"logo {a['name']} ({logo[1]})"
-        expected = render.render_video(clips, mixed, ass, w, h, out, work, cancel, logo, grade=spec.film_grade)
+        look = re.sub(r"[^a-z]", "", spec.visual_direction.lower())
+        grade = ("bw" if "blackandwhite" in look or "monochrome" in look else "film") if spec.film_grade else ""
+        expected = render.render_video(clips, mixed, ass, w, h, out, work, cancel, logo, grade=grade)
         job["render"] = {"file": "work/render.mp4", "expected_s": round(expected, 3), "width": w, "height": h}
 
     def _verify(self, job: dict, cancel) -> None:

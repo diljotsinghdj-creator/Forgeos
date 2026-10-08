@@ -62,6 +62,22 @@ def director_llm(cfg: Config, job_id: str):
     return local
 
 
+_stock_keys: dict[str, tuple[str, str]] = {}
+
+
+def set_stock_key(job_id: str, d: dict) -> None:
+    """Stock-footage key lent by the app (Pexels or Pixabay), memory only."""
+    from .stock_video import detect
+    key = str(d.get("key", "")).strip()
+    if key and len(_stock_keys) < 500:
+        provider = str(d.get("provider", "") or "").strip().lower()
+        _stock_keys[job_id] = (provider if provider in ("pexels", "pixabay", "mock") else detect(key), key)
+
+
+def stock_key(job_id: str) -> tuple[str, str] | None:
+    return _stock_keys.get(job_id)
+
+
 _image_cache: dict[tuple, object] = {}
 
 
