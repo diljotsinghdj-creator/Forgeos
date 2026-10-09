@@ -1,0 +1,46 @@
+The Hidden Cost of Free
+On-screen hook: WHO PAYS FOR FREE?
+Title: The Hidden Cost of Free Apps (It's Not Always Your Data)
+Tags: #HiddenEconomics #freeapps #privacy #advertising #businessmodels
+
+This app costs nothing. So who is paying the developers?
+Visual: Phone on a desk showing a grid of generic app tiles, icons unreadable, desk lamp
+Text: WHO PAYS FOR FREE?
+
+Servers, designers and engineers all cost real money every month.
+Visual: Wide shot of a dark server room, rows of blinking lights
+Stock: server room lights
+
+Usually the bill is paid in one of three ways.
+Visual: Three coins laid in a row on dark wood, overhead shot
+Text: 3 BUSINESS MODELS
+
+First, upgrades. Free to start, with extras you pay to unlock.
+Visual: Phone screen with a generic padlock icon and one bright button, text unreadable
+Text: 1. UPGRADES
+
+Second, subscriptions. The free version leads to a monthly plan.
+Visual: Paper calendar with the first of each month circled in red
+Text: 2. SUBSCRIPTIONS
+
+Third, advertising. And this one works differently.
+Visual: Close-up of a thumb scrolling past a generic banner block in a feed, text unreadable
+Text: 3. ADVERTISING
+
+Here your attention is the product. The longer you look, the more ads.
+Visual: Extreme close-up of an eye reflected in a phone screen, cool light
+
+So is your personal data being sold too? Not necessarily.
+Visual: Hand resting calmly beside a closed laptop, soft warm light
+Text: NOT EVERY APP SELLS DATA
+
+But it does mean you should know which deal you've agreed to.
+Visual: Phone showing a generic settings page with toggles, text unreadable
+Text: FICTIONAL INTERFACE
+
+Open the privacy settings of one app you use daily, and read them.
+Visual: Thumb switching a toggle off on a phone, crisp morning light
+Stock: phone settings toggle
+
+So who pays for free? Now you know where to look.
+Visual: Phone face down on the desk, lamp turning off
