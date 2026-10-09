@@ -101,3 +101,18 @@ def test_header_lines_are_not_read_aloud():
                                                  "Say nothing. It wins negotiations. Then wait.", "duration_s": 30})
     assert spec.script == "Say nothing. It wins negotiations. Then wait."
     assert spec.publish["title"] == "The Silent Trick"
+
+
+def test_writer_text_and_stock_lines_belong_to_their_spoken_line():
+    from creatorforge_worker import director as d
+    raw = ("Six months becomes seventy-two pounds.\nVisual: Calendar pages flipping\nText: £12 × 6 = £72\n"
+           "Stock: calendar pages\nThat is an illustration, not a real company.\nVisual: Blurred phone screen\n"
+           "Text: ILLUSTRATION\nOpen your bank statement today.\n"
+           "Find one payment you would not choose again.\nVisual: Finger pausing over a phone\n")
+    spec = d.ProductionSpec.from_dict({"script": raw, "duration_s": 20})
+    assert "Text" not in spec.script and "Stock" not in spec.script and "£" not in spec.script
+    plan = d.direct_script(None, spec)
+    beats = [b for s in plan.scenes for b in s.beats]
+    assert beats[0]["overlay"] == "£12 × 6 = £72" and beats[0]["stock"] == "calendar pages"
+    assert beats[1]["overlay"] == "ILLUSTRATION" and beats[1]["stock"] == ""
+    assert beats[2]["overlay"] == "" and beats[2]["visual"]            # no visual given: the scene's picture

@@ -589,6 +589,18 @@ class Pipeline:
         for i, (shot, slot) in enumerate(zip(shots, timings)):
             if shot.get("overlay") and i > 0:
                 overlays.append(cap.Overlay(start + 0.3, start + slot - 0.2, shot["overlay"], "Callout"))
+            beats = shot.get("beats") or []
+            if spec.fast_cuts and any(b.get("overlay") for b in beats):
+                # The writer's on-screen text appears exactly while its line is spoken.
+                at = start
+                for b, length in zip(beats, _beat_lengths([b["text"] for b in beats],
+                                                          job["scenes"][i].get("word_starts") or [], slot)):
+                    begin = at + 0.1
+                    if plan.get("hook") and begin < min(3.0, timings[0]):
+                        begin = min(3.0, timings[0])           # after the opening hook text, not on top of it
+                    if b.get("overlay") and begin < at + length - 0.4:
+                        overlays.append(cap.Overlay(begin, at + max(0.6, length - 0.1), b["overlay"], "Callout"))
+                    at += length
             start += slot
         brand = spec.brand or {}
         cta = brand.get("outro_text") or plan.get("cta")

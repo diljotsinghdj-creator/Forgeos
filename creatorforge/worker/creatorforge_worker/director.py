@@ -122,9 +122,10 @@ class ProductionSpec:
         spec.hook_text = str(d.get("hook_text") or meta.get("hook_text") or "").strip()[:80]
         spec.visual_direction = str(d.get("visual_direction") or meta.get("visual_direction") or "").strip()[:400]
         spec.roles = [list(r)[:2] for r in (d.get("roles") or meta.get("roles") or []) if len(r) >= 2][:60]
-        shots = [[clean_script(str(a)), str(b).strip()] for a, b in (d.get("shots") or meta.get("shots") or [])]
-        shots = [x for x in shots if x[0] and x[1]][:120]
-        if shots and sum(len(a.split()) for a, _ in shots) == len(spec.script.split()) + len(shots[0][0].split()):
+        shots = [[clean_script(str(x[0]))] + [str(v).strip() for v in (list(x[1:4]) + ["", "", ""])[:3]]
+                 for x in (d.get("shots") or meta.get("shots") or []) if isinstance(x, (list, tuple)) and x]
+        shots = [x for x in shots if x[0]][:240]
+        if shots and sum(len(x[0].split()) for x in shots) == len(spec.script.split()) + len(shots[0][0].split()):
             shots = shots[1:]       # the first line was a title the script dropped
         spec.shots = shots
         spec.publish = d.get("publish") if isinstance(d.get("publish"), dict) else \
@@ -551,7 +552,8 @@ def _is_heading(line: str) -> bool:
 # ---- writer's scripts: "0:05 SETUP A student thinks...", "On-screen hook: ...", "Visuals: ...", "Post: ..." ----------
 _META_KEYS = ("on-screen hook", "on screen hook", "onscreen hook", "hook text", "visuals", "visual", "visual style",
               "b-roll", "broll", "post title", "video title", "post", "title", "cover", "thumbnail", "caption", "description", "hashtags", "tags",
-              "source", "sources", "music", "sfx")
+              "source", "sources", "music", "sfx", "on-screen text", "on screen text", "text on screen", "text",
+              "stock footage", "stock")
 _META = re.compile(r"(?i)(?:^|(?<=[\s.]))(" + "|".join(re.escape(k) for k in sorted(_META_KEYS, key=len, reverse=True)) +
                    r")\s*:\s*")
 _STAMP = re.compile(r"^\s*(?:[-\u2022*]\s*)?\(?(?:\d{0,2}:\d{2})(?:\s*[-\u2013]\s*\d{0,2}:\d{2})?\)?\s*")
@@ -566,32 +568,15 @@ ROLE_EDIT = {"HOOK": ("intrigue", "flash"), "STAKES": ("unease", ""), "SETUP": (
 
 def parse_script(raw: str) -> tuple[str, dict]:
     """Splits a writer's script into the words to speak and the direction around them: per-line story roles
-    (HOOK, TWIST, ...), the on-screen hook, visual direction and posting details. Timestamps are dropped."""
+    (HOOK, TWIST, ...), the on-screen hook, visual direction and posting details. Timestamps are dropped.
+    Per-line direction ("Visual:", "Text:", "Stock:" under or beside a spoken line) belongs to that line."""
     meta: dict = {"roles": []}
-    spoken = []
-    shots: list[list[str]] = []      # [spoken line, the writer's picture for it]
+    spoken: list[str] = []
+    per: dict[int, dict] = {}        # spoken line index -> {"visual", "text", "stock"} from the writer
     looks: list[str] = []            # visual lines not tied to a spoken line: the look of the whole video
     for line in raw.replace("\r", "").splitlines():
         parts = _META.split(line)
         body, pairs = parts[0], list(zip(parts[1::2], parts[2::2]))
-        for key, value in pairs:
-            k, v = key.lower().replace("on screen", "on-screen").replace("onscreen", "on-screen"), value.strip().rstrip(".")
-            if k in ("on-screen hook", "hook text", "cover", "thumbnail"):
-                meta.setdefault("hook_text" if "hook" in k else "cover", re.sub(r"#\w+", "", v).strip(" .")[:80])
-            elif k in ("visuals", "visual", "b-roll", "broll"):
-                said = _STAMP.sub("", re.sub(r"#\w+", "", body)).strip()
-                line_said = said or (spoken[-1] if spoken and not (shots and shots[-1][0] == spoken[-1]) else "")
-                if line_said and v:
-                    shots.append([line_said, v[:200]])
-                looks.append(v)
-            elif k == "visual style":
-                looks.insert(0, v)
-            elif k in ("post", "title", "post title", "video title"):
-                meta.setdefault("title", v[:100])
-            elif k in ("hashtags", "tags"):
-                meta["hashtags"] = re.findall(r"#\w+", v) or v.split()
-            elif k in ("source", "sources"):
-                meta["source"] = v[:200]
         tags = re.findall(r"#\w+", body + " ".join(v for _, v in pairs))
         if tags:
             meta["hashtags"] = list(dict.fromkeys(meta.get("hashtags", []) + tags))
@@ -604,10 +589,34 @@ def parse_script(raw: str) -> tuple[str, dict]:
             meta["roles"].append((m.group(1).replace(" ", "-"), body.strip()))
         if body.strip() and re.search(r"[A-Za-z]", body):
             spoken.append(body.strip())
+        target = len(spoken) - 1     # this line's own words, or the spoken line just above a direction line
+        for key, value in pairs:
+            k, v = key.lower().replace("on screen", "on-screen").replace("onscreen", "on-screen"), value.strip().rstrip(".")
+            if k in ("on-screen hook", "hook text", "cover", "thumbnail"):
+                meta.setdefault("hook_text" if "hook" in k else "cover", re.sub(r"#\w+", "", v).strip(" .")[:80])
+            elif k in ("visuals", "visual", "b-roll", "broll"):
+                if target >= 0 and v and "visual" not in per.setdefault(target, {}):
+                    per[target]["visual"] = v[:200]
+                looks.append(v)
+            elif k in ("text", "on-screen text", "text on-screen", "on-screen"):
+                if target >= 0 and v:
+                    per.setdefault(target, {})["text"] = value.strip()[:60]
+            elif k in ("stock", "stock footage"):
+                if target >= 0 and v:
+                    per.setdefault(target, {})["stock"] = " ".join(v.split()[:5])[:60]
+            elif k == "visual style":
+                looks.insert(0, v)
+            elif k in ("post", "title", "post title", "video title"):
+                meta.setdefault("title", v[:100])
+            elif k in ("hashtags", "tags"):
+                meta["hashtags"] = re.findall(r"#\w+", v) or v.split()
+            elif k in ("source", "sources"):
+                meta["source"] = v[:200]
     # A "Visual:" under (or beside) most spoken lines is a shot list: each picture belongs to its own line. One or
     # two visual lines describe the look of the whole video instead.
-    if len(shots) >= 3:
-        meta["shots"] = shots[:120]
+    if sum(1 for d in per.values() if d.get("visual")) >= 3:
+        meta["shots"] = [[line, per.get(i, {}).get("visual", ""), per.get(i, {}).get("text", ""),
+                          per.get(i, {}).get("stock", "")] for i, line in enumerate(spoken)][:240]
     elif looks:
         meta["visual_direction"] = " ".join(looks).strip()[:400]
     return "\n".join(spoken), meta
@@ -777,26 +786,29 @@ def _apply_writer(plan: "ProductionPlan", spec: ProductionSpec) -> None:
 
 def apply_shots(plan: "ProductionPlan", shots: list) -> None:
     """The writer's shot list decides the pictures: each spoken line becomes a beat showing the writer's own
-    visual, cut exactly when that line starts. Lines are matched to scenes word by word, so a line that spans
-    two scenes is shared between them. If the words don't line up (edited script), nothing changes."""
+    visual (and on-screen text / stock search, if given), cut exactly when that line starts. Lines are matched to
+    scenes word by word, so a line that spans two scenes is shared between them. A line without a visual keeps
+    the Director's picture for its scene. If the words don't line up (edited script), nothing changes."""
     tokens = [(i, t) for i, s in enumerate(plan.scenes) for t in s.narration.split()]
-    if sum(len(str(line).split()) for line, _ in shots) != len(tokens):
+    if sum(len(str(x[0]).split()) for x in shots) != len(tokens):
         return
     per_scene: list[list[dict]] = [[] for _ in plan.scenes]
     pos = 0
-    for line, visual in shots:
+    for line, visual, text, stock in ((list(x) + ["", "", ""])[:4] for x in shots):
         n = len(str(line).split())
         chunk = tokens[pos:pos + n]
         pos += n
-        for i in dict.fromkeys(i for i, _ in chunk):
+        for k, i in enumerate(dict.fromkeys(i for i, _ in chunk)):
             words = " ".join(t for j, t in chunk if j == i)
-            per_scene[i].append({"text": words, "visual": str(visual), "emotion": plan.scenes[i].emotion,
-                                 "stock": "", "writer": True})
+            s = plan.scenes[i]
+            per_scene[i].append({"text": words, "visual": str(visual) or s.visual, "emotion": s.emotion,
+                                 "stock": str(stock), "overlay": str(text) if k == 0 else "", "writer": True})
     for s, beats in zip(plan.scenes, per_scene):
         if not beats:
             continue
         s.visual = beats[0]["visual"]
         s.beats = beats if len(beats) >= 2 else []
+        s.overlay = "" if s.beats else beats[0]["overlay"]   # the writer decides what text appears, and when
 
 
 def _repair(d: dict, segments: list[str]) -> "ProductionPlan":
