@@ -22,7 +22,7 @@ Stock: pricing clothes in shop
 By the end, you will know how to tell a discount from a saving,
 Visual: Two glass jars on a shelf, coins dropping into one while the other slowly empties
 
-and how to spot the kind of countdown clock a retailer admitted was misleading in a British court.
+and how to spot the countdown clock a retailer admitted was misleading.
 Visual: A red digital countdown glowing in a dark room, its digits flickering and jumping backwards, digits blurred
 Text: A CLOCK THAT LIED?
 
