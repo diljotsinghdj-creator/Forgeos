@@ -4,7 +4,6 @@ the same slow camera move as an AI still. Credits go into the post description."
 from __future__ import annotations
 
 import hashlib
-import io
 from pathlib import Path
 
 import httpx
@@ -94,30 +93,32 @@ def search_any(sources: list[tuple[str, str]], query: str, portrait: bool = True
 
 
 def fetch(photo: dict, cache: Path, timeout: float = 60) -> Path:
-    """Downloads and checks the photo; returns a JPEG in the cache."""
-    from PIL import Image
+    """Downloads the photo and re-encodes it with FFmpeg (which also proves it is a real image); returns a JPEG."""
+    from ..media import ff
     cache.mkdir(parents=True, exist_ok=True)
     dst = cache / f"{hashlib.sha256(photo['url'].encode()).hexdigest()[:24]}.jpg"
     if dst.is_file() and dst.stat().st_size > 10_000:
         return dst
-    if photo["url"].startswith("mock://"):
-        Image.new("RGB", (1080, 1920), (40, 60, 90)).save(dst, quality=90)
-        return dst
+    raw = dst.with_suffix(".download")
+    out = dst.with_suffix(".part.jpg")
     try:
-        r = httpx.get(photo["url"], timeout=timeout, follow_redirects=True, headers={"User-Agent": UA})
-        r.raise_for_status()
-        if len(r.content) > 40 * 1024 * 1024:
-            raise ProviderError("stock photo larger than 40 MB")
-        im = Image.open(io.BytesIO(r.content))
-        im.load()
-    except (httpx.HTTPError, OSError, ValueError) as e:
+        if photo["url"].startswith("mock://"):
+            ff.run(["-f", "lavfi", "-i", "color=c=0x283c5a:s=1080x1920", "-frames:v", "1", str(out)])
+        else:
+            r = httpx.get(photo["url"], timeout=timeout, follow_redirects=True, headers={"User-Agent": UA})
+            r.raise_for_status()
+            if len(r.content) > 40 * 1024 * 1024:
+                raise ProviderError("stock photo larger than 40 MB")
+            raw.write_bytes(r.content)
+            # Longest side at most 2400 px; plenty for the slow zoom on a 1080x1920 frame.
+            ff.run(["-i", str(raw), "-frames:v", "1", "-vf",
+                    "scale='if(gt(iw,ih),min(2400,iw),-2)':'if(gt(iw,ih),-2,min(2400,ih))'", "-q:v", "2", str(out)])
+    except (httpx.HTTPError, OSError, ff.MediaError) as e:
+        out.unlink(missing_ok=True)
         raise ProviderError(f"stock photo download failed: {e}") from e
-    im = im.convert("RGB")
-    if max(im.size) > 2400:
-        im.thumbnail((2400, 2400))
-    tmp = dst.with_suffix(".part.jpg")
-    im.save(tmp, quality=92)
-    tmp.replace(dst)
+    finally:
+        raw.unlink(missing_ok=True)
+    out.replace(dst)
     if photo.get("track"):
         try:   # best effort: Unsplash counts the download for the photographer
             httpx.get(photo["track"], timeout=10, headers={"Authorization": f"Client-ID {photo.get('key', '')}"})

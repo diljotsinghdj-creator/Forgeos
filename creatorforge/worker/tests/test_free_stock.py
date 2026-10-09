@@ -94,7 +94,6 @@ def test_render_survives_a_clip_that_changes_size_mid_stream(tmp_path):
     """Stock footage can switch resolution part-way through; each shot is rendered on its own so the final
     edit never has to rebuild a giant filter graph mid-stream (that crashed FFmpeg on a real pod)."""
     import threading
-    from PIL import Image
     from creatorforge_worker.media import ff, render
     parts = []
     for i, size in enumerate(("640x360", "320x568")):
@@ -105,7 +104,8 @@ def test_render_survives_a_clip_that_changes_size_mid_stream(tmp_path):
     mixed = tmp_path / "mixed.ts"
     mixed.write_bytes(b"".join(parts))
     still = tmp_path / "s.png"
-    Image.new("RGB", (540, 960), (90, 40, 40)).save(still)
+    subprocess.run(["ffmpeg", "-y", "-v", "error", "-f", "lavfi", "-i", "color=c=0x5a2828:s=540x960", "-frames:v", "1",
+                    str(still)], check=True)
     audio = tmp_path / "a.wav"
     subprocess.run(["ffmpeg", "-y", "-v", "error", "-f", "lavfi", "-i", "anullsrc=r=48000:cl=stereo", "-t", "6",
                     str(audio)], check=True)
@@ -170,3 +170,25 @@ def test_photo_sources_order(cfg):
     cfg.free_stock = True
     assert providers.photo_sources("job-x", cfg) == [("unsplash", "uk"), ("pixabay", "pk"), ("openverse", "")]
     assert providers.stock_sources("job-x", cfg) == [("pixabay", "pk"), ("nasa", ""), ("wikimedia", ""), ("archive", "")]
+
+
+def test_photo_fetch_reencodes_and_rejects_junk(tmp_path, monkeypatch):
+    from creatorforge_worker.providers import stock_photo
+    src = tmp_path / "big.png"
+    subprocess.run(["ffmpeg", "-y", "-v", "error", "-f", "lavfi", "-i", "testsrc2=s=3000x2000", "-frames:v", "1", str(src)],
+                   check=True)
+
+    class Resp:
+        def __init__(self, data):
+            self.content = data
+
+        def raise_for_status(self):
+            pass
+    monkeypatch.setattr(httpx, "get", lambda url, **kw: Resp(src.read_bytes() if "good" in url else b"<html>nope</html>"))
+    from creatorforge_worker.media import ff
+    out = stock_photo.fetch({"url": "https://x/good.png", "credit": "c"}, tmp_path / "cache")
+    stream = ff.probe(out)["streams"][0]
+    w, h = int(stream["width"]), int(stream["height"])
+    assert out.suffix == ".jpg" and (w, h) == (2400, 1600)
+    with pytest.raises(ProviderError):
+        stock_photo.fetch({"url": "https://x/bad.png", "credit": "c"}, tmp_path / "cache")
