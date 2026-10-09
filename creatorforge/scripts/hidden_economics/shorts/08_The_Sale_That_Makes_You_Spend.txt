@@ -1,0 +1,54 @@
+The Sale That Makes You Spend
+On-screen hook: SAVED £6 · SPENT £54
+Title: The Sale That Makes You Spend: Saved £6, Spent £54
+Tags: #HiddenEconomics #sales #vouchers #behaviouraleconomics #money
+Source: Richard Thaler, Mental Accounting and Consumer Choice, Marketing Science 4(3) 1985, 199-214 (https://doi.org/10.1287/mksc.4.3.199)
+
+Your receipt says you saved six pounds. Your bank says you spent fifty-four.
+Visual: A paper receipt and a phone banking screen side by side on a dark kitchen counter, text unreadable
+Text: SAVED £6 · SPENT £54
+
+Which one is right?
+Visual: Extreme close-up of the bottom of the receipt, the savings line blurred, harsh side light
+Text: WHICH IS TRUE?
+
+You opened an app planning to buy nothing.
+Visual: A person from behind on a sofa at night, scrolling a phone, room dark
+Text: PLAN: BUY NOTHING · ILLUSTRATION
+Stock: person scrolling phone sofa
+
+Then a voucher appeared. Ten percent off a sixty-pound item.
+Visual: Phone screen with a bright generic voucher banner sliding in, text unreadable
+Text: £60 − 10% = £54
+
+So why did spending fifty-four feel like winning?
+Visual: Close-up of a thumb tapping a glowing buy button, a small burst of light on the screen
+Text: WHY DOES IT FEEL LIKE WINNING?
+
+Economist Richard Thaler called it transaction utility, the pleasure of the deal itself.
+Visual: An old economics journal open on a desk under a lamp, pages unreadable
+Text: TRANSACTION UTILITY · THALER, 1985
+
+The voucher sells you the deal. The deal sells you the item.
+Visual: A red sale label peeled half off a plain cardboard box, macro shot
+Text: VOUCHER → DEAL → ITEM
+
+So what does the receipt never print?
+Visual: Close-up of a receipt curling out of a till printer in a dark shop
+Text: WHAT'S MISSING?
+
+The plan you started with, spending nothing.
+Visual: An empty open wallet on a dark table, coins still tucked inside, soft lamp light
+Text: £0 OPTION
+
+Against that plan, you did not save six. You spent fifty-four.
+Visual: Fifty-four coins counted out in small stacks on a wooden table, harsh side light
+Text: VS PLAN: −£54
+
+Next time ask, would I buy this at full price, without the voucher?
+Visual: The same item photo on a phone screen with the red banner removed, calm white light, text unreadable
+Text: WOULD I PAY £60?
+
+If not, close the app, and the receipt and the bank finally agree.
+Visual: A phone screen going dark on the kitchen counter beside the receipt, morning light
+Text: SAVED £54

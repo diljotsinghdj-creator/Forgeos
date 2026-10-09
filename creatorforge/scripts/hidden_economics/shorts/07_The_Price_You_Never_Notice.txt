@@ -1,0 +1,59 @@
+The Price You Never Notice
+On-screen hook: £30 BECAME £41
+Title: The Price You Never Notice: How £30 Becomes £41 at Checkout
+Tags: #HiddenEconomics #dripricing #hiddenfees #onlineshopping #consumerrights
+Source: Digital Markets, Competition and Consumers Act 2024, drip pricing rules in force 6 April 2025 (https://www.legislation.gov.uk/ukpga/2024/13/contents); summary of the rules (https://www.taylorwessing.com/de/insights-and-events/insights/2025/04/dmcca-drip-pricing); first CMA fine under the Act (https://www.tlt.com/insights-and-events/insight/cma-issues-first-fine-for-breach-of-consumer-law-under-the-dmcc-act-in-drip-pricing-case)
+
+Thirty pounds on the first screen. Forty-one at checkout. Where did eleven go?
+Visual: Two phones on a dark desk, a generic product page on one and a checkout page on the other, text unreadable
+Text: £30 → £41? · ILLUSTRATION
+
+Step one, delivery, five pounds.
+Visual: Close-up of a cardboard parcel on a doorstep, soft grey morning light
+Text: + £5 DELIVERY
+Stock: parcel on doorstep
+
+Step two, a service fee, three pounds.
+Visual: Phone screen with a generic checkout list, a new line sliding in, text unreadable
+Text: + £3 SERVICE FEE
+
+Step three, pre-ticked protection. Three more.
+Visual: Extreme close-up of a small ticked checkbox on a phone screen, shallow focus, text unreadable
+Text: + £3 PRE-TICKED EXTRA
+
+Ten minutes in, would you really start again?
+Visual: A person from behind at a desk at night, a clock on the wall behind them, phone glowing
+Text: START AGAIN?
+
+That slow drip has a name, drip pricing.
+Visual: Macro shot of water dripping from a tap into a dark basin, slow motion
+Text: DRIP PRICING
+Stock: water dripping tap slow motion
+
+So is it even allowed?
+Visual: Close-up of a hand pausing above a phone's checkout button, text unreadable
+Text: IS IT ALLOWED?
+
+In the UK, since April twenty twenty-five, compulsory fees belong in the headline price.
+Visual: A thick printed act of parliament lying on a wooden desk under lamp light, text unreadable
+Text: UK · DMCC ACT · FROM 6 APRIL 2025
+
+The regulator's first fine under these rules was for a fee revealed only at checkout.
+Visual: A judge's gavel resting beside a closed laptop on a dark desk
+Text: FIRST FINE: LATE-SHOWN BOOKING FEE
+
+But optional extras can still be offered. So what protects you?
+Visual: The pre-ticked checkbox again, a fingertip moving towards it
+Text: OPTIONAL EXTRAS = STILL LEGAL
+
+Untick what you did not choose, then read the total.
+Visual: A thumb unticking a checkbox on a phone screen, the total line below it highlighted, text unreadable
+Text: UNTICK · READ THE TOTAL
+
+Compare totals between shops, never headline prices.
+Visual: Two phones side by side, only the bottom total lines highlighted, text blurred
+Text: COMPARE TOTALS
+
+Because thirty pounds was never the price. Forty-one was.
+Visual: A receipt printing slowly from a small till printer in a dark shop, final line glowing
+Text: THE REAL PRICE: £41

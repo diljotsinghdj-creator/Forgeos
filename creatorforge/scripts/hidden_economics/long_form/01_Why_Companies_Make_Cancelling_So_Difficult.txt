@@ -1,0 +1,370 @@
+Why Companies Make Cancelling So Difficult
+On-screen hook: 10 MILLION UNWANTED
+Title: Why Companies Make Cancelling So Difficult (The £1.6bn Subscription Trap)
+Tags: #HiddenEconomics #subscriptions #darkpatterns #consumerrights #behaviouraleconomics
+Source: UK Government, New measures to crack down on subscription traps, Nov 2024, https://www.gov.uk/government/news/new-measures-unveiled-to-crack-down-on-subscription-traps; DBT Subscription traps impact assessment, https://assets.publishing.service.gov.uk/media/64464e6f529eda00123b02c4/annex_2-subscription_traps_impact_assessment.pdf; DellaVigna and Malmendier, Paying Not to Go to the Gym, American Economic Review 96(3), 2006, https://eml.berkeley.edu/~ulrike/Papers/gym.pdf; ICPEN Dark Patterns Sweep public report, July 2024, https://icpen.org/news/1360; FTC, ICPEN, GPEN dark patterns review, July 2024, https://www.ftc.gov/news-events/news/press-releases/2024/07/ftc-icpen-gpen-announce-results-review-use-dark-patterns-affecting-subscription-services-privacy; Custom Communications v FTC, 8th Cir. No. 24-3137, 8 July 2025; DBT Government response on subscription contracts regime, 2026, https://www.gov.uk/government/consultations/consultation-on-the-implementation-of-the-new-subscription-contracts-regime
+
+Nearly ten million subscriptions in Britain are ones people do not want.
+Visual: Wide shot of a dark city at night, thousands of lit windows, each with a faint phone glow
+Text: ~10 MILLION UNWANTED SUBSCRIPTIONS
+
+That is the government's own estimate, out of about one hundred and fifty-five million.
+Visual: Macro of a printed government report on a desk under a warm lamp, text out of focus
+Text: ~10m of 155m (UK Govt, 2024)
+
+Together, they cost people around one point six billion pounds a year.
+Visual: A tall stack of pound coins on a dark wooden table, harsh side light
+Text: £1.6bn A YEAR
+
+That is a central estimate. The official range runs from half a billion to nearly four.
+Visual: Three coin stacks of very different heights in a row, the middle one lit
+Text: RANGE £0.53bn – £3.89bn
+
+So why does nobody simply press cancel?
+Visual: Extreme close-up of a thumb hovering over a phone screen, a small grey button, text unreadable
+Text: WHY NOT JUST CANCEL?
+
+The answer runs through a gym, a court ruling and two buttons.
+Visual: Three objects on a dark desk, a gym key fob, a folded legal document, a phone
+Stock: gym membership card
+
+Start with something simple, a fictional seven-day streaming trial.
+Visual: Phone screen showing a generic streaming app sign-up page, one bright button, text unreadable
+Text: FICTIONAL INTERFACE
+
+Joining takes ten seconds, one tap and a card number.
+Visual: Close-up of a hand tapping a payment card against a phone, warm desk-lamp light
+Text: SIGN-UP: 10 SECONDS
+Stock: contactless card payment phone
+
+They watch something on the first evening, and then life gets busy.
+Visual: A sofa in a dim living room, a television glowing, a mug of tea going cold
+
+Days later, the trial quietly ends and a payment leaves their account.
+Visual: Close-up of a banking app on a phone, one line highlighted in red, text blurred
+Text: −£10 (ILLUSTRATION)
+
+Nothing illegal has happened. They agreed to it.
+Visual: Macro of a ticked checkbox on a glowing screen, everything else blurred
+
+But here is the question that matters for the business.
+Visual: Silhouette of a person at a window, phone in hand, city lights behind
+
+Is forgetting an accident, or is it part of the revenue?
+Visual: Calendar on a wall with a single red circle, lamp light falling across it
+Text: ACCIDENT OR REVENUE?
+
+To see why it matters, look at the arithmetic of staying.
+Visual: Overhead shot of a notepad, a pencil and a calculator on a dark desk
+
+Imagine a fictional company with one hundred thousand subscribers.
+Visual: Wide aerial shot of a packed stadium crowd at dusk
+Text: 100,000 SUBSCRIBERS (HYPOTHETICAL)
+Stock: stadium crowd aerial
+
+Each pays ten pounds a month.
+Visual: Ten pound coins laid in a neat row on black slate
+Text: £10 / MONTH
+
+That is one million pounds every month, before costs.
+Visual: Bundles of banknotes in soft focus on a table, dramatic top light
+Text: 100,000 × £10 = £1,000,000
+
+Now ten thousand of them cancel.
+Visual: A line of small wooden figures on a desk, a tenth of them knocked over
+Text: −10,000
+
+If they would otherwise have renewed, that is one hundred thousand pounds a month gone.
+Visual: A hand sweeping a pile of coins off the edge of a table into darkness
+Text: −£100,000 / MONTH
+
+These numbers are an illustration, not any real company's results.
+Visual: Blurred glowing spreadsheet on a laptop, nothing readable
+Text: ILLUSTRATION ONLY
+
+But the logic is real. Each renewal arrives without a new sale.
+Visual: Close-up of an automatic payment being approved on a card terminal, green light
+Stock: card terminal approved
+
+No advert, no persuasion, no decision from the customer at all.
+Visual: An empty shop counter at night, a card reader glowing on its own
+
+So does inertia really keep people paying? Economists measured it.
+Visual: Stack of academic journals on a library desk, lamp light, spines unreadable
+Text: DOES INERTIA KEEP US PAYING?
+
+In two thousand and six, two economists studied three American health clubs.
+Visual: Wide shot of an empty gym at night, rows of machines lit by a single strip light
+Text: DellaVigna & Malmendier, AER 2006
+Stock: empty gym at night
+
+They tracked seven thousand seven hundred and fifty-two members over three years.
+Visual: A wall of lockers in a changing room, rows receding into shadow
+Text: 7,752 MEMBERS · 3 YEARS
+
+Members on a monthly plan paid over seventy dollars a month.
+Visual: Close-up of a gym membership card beside a monthly bank statement, figures blurred
+Text: $70+ A MONTH
+
+On average, they turned up four point three times a month.
+Visual: A gym entry turnstile with a single person walking through, seen from behind
+Text: 4.3 VISITS / MONTH
+
+That works out at more than seventeen dollars a visit.
+Visual: Macro of a receipt with one figure circled in pencil, other text unreadable
+Text: $70 ÷ 4.3 = $17+ PER VISIT
+
+Yet a ten-visit pass would have cost them just ten dollars a visit.
+Visual: Two piles of coins side by side, one clearly larger than the other
+Text: PASS: $10 PER VISIT
+
+The researchers estimated they forgo about six hundred dollars over their membership.
+Visual: A gym bag sitting unopened by a front door, dust on the zip
+Text: ~$600 FORGONE
+
+And then came the detail that matters most for this story.
+Visual: Extreme close-up of a contract's small print, words blurred, a pen tip resting on it
+
+Monthly plans renew automatically. Annual plans need you to sign up again.
+Visual: Two contracts on a desk, one with a circular arrow drawn on it, one with a blank signature line
+Text: AUTO-RENEW vs RE-SIGN
+
+Monthly members were seventeen percent more likely to still be enrolled after a year.
+Visual: Calendar pages flipping in lamp light, one year passing
+Text: +17% STILL ENROLLED AFTER 1 YEAR
+Stock: calendar pages flipping
+
+The researchers pointed to overconfidence. People expect their future selves to try harder.
+Visual: Running shoes still in their box on a bedroom floor, morning light
+Text: OVERCONFIDENCE
+
+So silence alone keeps people paying. What happens when a business adds friction?
+Visual: Close-up of a phone screen with a tiny, faint button in a corner, text unreadable
+Text: DEFAULT + FRICTION = ?
+
+Wanting customers to stay is perfectly legitimate.
+Visual: A shopkeeper's hands handing a paper bag across a counter, seen from the shoulder
+
+Good products, fair prices and useful reminders are all honest ways to keep them.
+Visual: A phone on a bedside table showing a soft notification glow, text unreadable
+
+The problem starts when design, not value, becomes the reason people remain.
+Visual: Two doors in a dark corridor, one wide open and bright, one narrow and shadowed
+Text: DESIGN vs VALUE
+
+Picture a fictional app with a huge, bright button to join.
+Visual: Phone screen showing a generic app with one large glowing green button, text unreadable
+Text: FICTIONAL INTERFACE
+
+And a pale grey link to leave, three menus deep.
+Visual: Extreme close-up of a tiny grey link at the bottom of a phone screen, text unreadable
+Text: CANCEL? 3 MENUS DEEP
+
+Designers have a name for this kind of trick. A dark pattern.
+Visual: A maze drawn in pencil on paper, a single exit hidden in a corner
+Text: DARK PATTERN
+
+Not every hurdle is one. Checking it is really you can protect your account.
+Visual: Close-up of a phone showing a generic security code screen, digits blurred
+Text: NOT EVERY STEP IS A TRICK
+
+The question is whether each step helps you, or only slows you down.
+Visual: A hand stuck at a closed gate on a footpath at dusk
+
+Remember the gym. Silence was already enough to keep people paying.
+Visual: The empty gym from earlier, one treadmill lit in the dark
+
+Every extra screen simply raises the price of acting on a decision you have made.
+Visual: A staircase in shadow, each step a little higher than the last
+Text: FRICTION = A PRICE ON LEAVING
+
+So how common are these designs? In twenty twenty-four, regulators went looking.
+Visual: Wide shot of a darkened office at night, rows of monitors glowing, no faces
+Text: HOW COMMON? 2024
+
+Officials from twenty-seven authorities in twenty-six countries ran a joint sweep.
+Visual: A world map pinned to a wall with small coloured pins spread across continents
+Text: 27 AUTHORITIES · 26 COUNTRIES
+
+They examined six hundred and forty-two subscription websites and apps.
+Visual: Grid of many phone and laptop screens on a table, all glowing, text unreadable
+Text: 642 SITES & APPS (ICPEN 2024)
+
+Nearly seventy-six percent showed at least one possible dark pattern.
+Visual: Three out of four phones in a row lit with a red glow, the fourth dark
+Text: 75.7% AT LEAST ONE
+
+Nearly sixty-seven percent showed several.
+Visual: Two out of three paper cups on a desk marked with red tape
+Text: 66.8% MULTIPLE
+
+The most common problem appeared at the very moment of signing up.
+Visual: Close-up of a finger about to press a glowing purchase button, text unreadable
+
+Many services gave no way to switch off auto-renewal while buying.
+Visual: A light switch on a dark wall with tape over it
+Text: NO OPTION TO TURN OFF AUTO-RENEW
+
+Others left out how to cancel, or the date you had to cancel by.
+Visual: Paper calendar with a date torn out, the gap lit by lamp light
+Text: NO CANCEL STEPS · NO DEADLINE
+
+Now the qualification, and it matters.
+Visual: A judge's gavel resting on a dark wooden block, shallow focus
+Stock: gavel on wooden desk
+
+The sweep did not decide whether any of this was illegal.
+Visual: An unsigned legal document on a desk, pen beside it, no ink yet
+Text: NO LEGAL FINDINGS
+
+Possible manipulation is evidence. It is not a court's verdict.
+Visual: A magnifying glass over a blurred screen, lamp light
+Text: EVIDENCE ≠ VERDICT
+
+So did anyone change the law? America tried. It lasted under a year.
+Visual: Wide shot of a classical government building at dusk, flag still
+Text: A RULE THAT LASTED ~9 MONTHS
+Stock: government building dusk
+
+In late twenty twenty-four, the American regulator finalised a click-to-cancel rule.
+Visual: Close-up of a stamped official document on a desk, seal visible, text blurred
+Text: CLICK-TO-CANCEL RULE, 2024
+
+The idea was simple. Leaving should be as easy as joining.
+Visual: Split image of two identical bright buttons side by side on a dark screen
+Text: EXIT = ENTRY
+
+On the eighth of July, twenty twenty-five, a federal appeals court struck it down.
+Visual: Courtroom benches empty in low light, wood grain catching the lamp
+Text: VACATED · 8 JULY 2025
+Stock: empty courtroom
+
+That was six days before businesses had to comply.
+Visual: Calendar with six days crossed out in red pencil
+Text: 6 DAYS BEFORE IT APPLIED
+
+But the court did not say easy cancelling was a bad idea.
+Visual: A closed law book on a desk, a single ribbon marker
+Text: NOT A RULING ON THE IDEA
+
+It ruled the regulator had skipped a required cost analysis.
+Visual: Macro of a ledger with an empty column, pencil resting across it
+Text: PROCEDURE, NOT PRINCIPLE
+
+Britain is taking a different route. Its rules are already law, waiting to start.
+Visual: Wide shot of a parliament building across a river at dusk
+Text: DMCC ACT 2024
+Stock: parliament river dusk
+
+Under the two thousand and twenty-four Act, subscribers get reminders before renewals.
+Visual: Phone on a desk lighting up with a generic reminder, text unreadable
+Text: RENEWAL REMINDERS
+
+They also get fourteen days to cancel after a free trial turns paid.
+Visual: Fourteen pebbles laid in a line on a dark table, lamp light
+Text: 14-DAY COOLING-OFF
+
+And leaving must be straightforward. The government expects this to begin in twenty twenty-seven.
+Visual: A door slightly ajar with warm light spilling through
+Text: EXPECTED 2027
+
+Which raises the real question. What does a fair exit actually look like?
+Visual: Close-up of a hand resting on a door handle in a dim hallway
+Text: WHAT IS A FAIR EXIT?
+
+Here are two fictional cancellation journeys.
+Visual: Two phones side by side on a dark desk, both glowing, text unreadable
+Text: FICTIONAL INTERFACES
+
+In the first, you open account settings and choose cancel.
+Visual: Phone screen showing a generic settings page with one clear button, text unreadable
+Text: ACCOUNT › CANCEL
+
+You see the date your access ends, and a confirmation arrives.
+Visual: Phone screen showing a generic confirmation with a tick icon, text unreadable
+Text: ACCESS ENDS 30 JUNE · CONFIRMED
+
+Two steps, and you know exactly where you stand.
+Visual: Overhead shot of a tidy desk, a single phone face up, warm light
+
+In the second, the same choice hides behind five menus.
+Visual: Extreme close-up of a phone screen showing nested grey menus, text unreadable
+Text: 5 MENUS
+
+Then three buttons whose wording leaves you unsure which one actually leaves.
+Visual: Three identical grey buttons glowing on a dark screen, labels blurred
+Text: STAY? PAUSE? CONTINUE?
+
+Both companies might offer you a discount to stay. That is fine.
+Visual: Phone screen with a generic offer card, a small gift icon, text unreadable
+Text: OFFERS ARE FINE
+
+Only one lets you understand how to go.
+Visual: A lit exit sign above a doorway in a dark corridor, no lettering legible
+
+Remember the sweep. What was often missing was simply how and when to leave.
+Visual: A blank paper map on a desk, no route drawn, lamp light
+Text: MISSING: HOW TO LEAVE
+
+The difference is not politeness. It is control.
+Visual: A hand firmly closing a laptop lid in a dim room
+Text: IT IS CONTROL
+
+So how do you take that control back today?
+Visual: Close-up of a bank statement under a desk lamp, a pen poised above it
+Text: TAKE CONTROL BACK
+
+Open your statements and list every recurring payment.
+Visual: Hands highlighting lines on a printed bank statement, figures blurred
+Stock: highlighting bank statement
+
+The government's estimate puts the average unwanted subscription at about fourteen pounds a month.
+Visual: Fourteen pound coins stacked beside a phone on a dark desk
+Text: ~£14 / MONTH EACH (UK Govt)
+
+For each one, ask three questions.
+Visual: A notepad with three numbered lines, pencil beside it, words unreadable
+
+Did I use it this month?
+Visual: A remote control lying untouched on a dusty sofa arm
+Text: 1. USED IT THIS MONTH?
+
+Would I sign up again today?
+Visual: A thumb hovering over a bright sign-up button on a phone, text unreadable
+Text: 2. WOULD I JOIN TODAY?
+
+And when does it renew?
+Visual: Wall calendar with one date ringed in red, lamp light
+Text: 3. WHEN DOES IT RENEW?
+
+Before any free trial, find the cancellation steps first.
+Visual: Close-up of a hand scrolling small print on a phone, text unreadable
+Text: FIND THE EXIT FIRST
+
+Then put the renewal date in your own calendar.
+Visual: Phone calendar showing a generic reminder being set, text unreadable
+
+When you cancel, keep the confirmation.
+Visual: A screenshot printed and pinned to a corkboard, contents blurred
+Text: KEEP THE PROOF
+
+Remember the gym members paying seventeen dollars a visit.
+Visual: The empty gym from earlier, now with lights switching off row by row
+
+They were not foolish. They trusted a future version of themselves.
+Visual: Silhouette of a person standing in a doorway, looking out at morning light
+
+A good subscription earns its next payment by staying useful.
+Visual: A well-used book on a bedside table, spine worn, warm light
+
+It should never depend on you forgetting to leave.
+Visual: A phone screen dimming to black on a dark desk
+Text: IT SHOULD NOT NEED YOU TO FORGET
+
+Subscriptions work on your memory over months. What about a shop that needs seconds?
+Visual: Extreme close-up of a red price tag swinging on a jacket in a shop, lamp light
+Text: NEXT EPISODE
+
+Next time, a crossed-out price that changes what you think an item is worth.
+Visual: Macro of a price tag with one number struck through in red, figures blurred
+Text: NEXT: THE DISCOUNT TRAP

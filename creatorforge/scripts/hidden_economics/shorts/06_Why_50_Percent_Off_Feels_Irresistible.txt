@@ -1,0 +1,57 @@
+Why 50 Percent Off Feels Irresistible
+On-screen hook: SAVED £50?
+Title: Why 50% Off Feels Irresistible (And When It Costs You £50)
+Tags: #HiddenEconomics #anchoring #discounts #shopping #psychology
+Source: Tversky and Kahneman, Judgment under Uncertainty, Heuristics and Biases, Science 185 (1974) 1124-1131 (https://doi.org/10.1126/science.185.4157.1124)
+
+You saved fifty pounds. So why is your account fifty lighter?
+Visual: A shopping bag on a dark hallway floor beside a phone showing a banking screen, text unreadable
+Text: SAVED £50? SPENT £50?
+
+The tag said one hundred pounds, crossed out. Now fifty.
+Visual: Close-up of a paper price tag hanging from a dark wool jacket sleeve, a red line struck through the old price
+Text: £100 → £50 · ILLUSTRATION
+
+You compared fifty to a hundred, not to zero.
+Visual: Two coins on a dark table, one large and one small, side by side in hard side light
+Text: £50 vs £100, NOT £50 vs £0
+
+Why is that first number so powerful?
+Visual: Extreme close-up of the crossed-out number on the tag, shallow focus, number blurred
+Text: WHY THE FIRST NUMBER?
+
+Psychologists call this anchoring, studied by Tversky and Kahneman.
+Visual: An old academic journal lying open on a desk under lamp light, text unreadable
+Text: ANCHORING · TVERSKY & KAHNEMAN, 1974
+
+The first number drags your judgement towards it.
+Visual: A small boat anchor resting on a dark wooden table, a chain trailing out of frame
+Text: FIRST NUMBER = ANCHOR
+
+So who chose that anchor?
+Visual: Wide shot of a clothing rail in a dim shop, rows of tags dangling, nobody in frame
+Text: WHO CHOSE £100?
+Stock: clothing rack shop
+
+The seller. And it works even if you never wanted a jacket.
+Visual: A hand lifting the jacket off the rail, seen from behind, soft spotlight
+
+So ask, were you looking for a jacket this morning?
+Visual: A person from behind standing at a front door in morning light, coat hook empty
+Text: WERE YOU LOOKING FOR IT?
+
+If yes, fifty off is a genuine saving.
+Visual: Close-up of the jacket folded neatly on a bed, warm morning light
+Text: YES → SAVED £50
+
+If no, you did not save fifty. You spent fifty.
+Visual: Close-up of a phone banking screen with one payment highlighted, text blurred
+Text: NO → SPENT £50
+
+Decide you want it first. Then look at the percentage.
+Visual: A hand covering a price tag with one finger while holding the garment up to the light
+Text: WANT IT FIRST · PRICE SECOND
+
+Half off something you never wanted is still fifty pounds gone.
+Visual: The shopping bag from the opening, now on the floor of a dark wardrobe, untouched
+Text: 50% OFF ≠ SAVED

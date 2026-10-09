@@ -1,0 +1,58 @@
+Where Did the Cancel Button Go
+On-screen hook: 1 TAP IN, 5 TAPS OUT?
+Title: Where Did the Cancel Button Go? 76% of Subscription Sites Checked
+Tags: #HiddenEconomics #darkpatterns #subscriptions #cancel #consumerrights
+Source: FTC, ICPEN and GPEN review of 642 subscription websites and apps, July 2024 (https://www.ftc.gov/news-events/news/press-releases/2024/07/ftc-icpen-gpen-announce-results-review-use-dark-patterns-affecting-subscription-services-privacy)
+
+Joining took one tap. So why does leaving take five?
+Visual: Split image of two phones on a dark desk, one showing a single huge glowing button, the other a dim cluttered menu, text unreadable
+Text: 1 TAP IN · 5 TAPS OUT? · FICTIONAL APP
+
+Tap one, settings. Tap two, account. Tap three, manage plan.
+Visual: Close-up of a thumb moving through a generic phone menu, small grey icons, text unreadable, cool screen glow
+Text: SETTINGS › ACCOUNT › MANAGE PLAN
+
+Tap four offers you a discount to stay.
+Visual: Phone screen with a bright generic pop-up and a gift icon, text unreadable, dark room
+Text: WAIT! 50% OFF TO STAY · FICTIONAL
+
+Tap five, in tiny grey letters, lets you go.
+Visual: Extreme close-up of a tiny faint link at the bottom of a phone screen, shallow focus, text unreadable
+Text: TAP 5: CANCEL
+
+Clumsy design, or something common?
+Visual: Wide shot of a person from behind at a dark desk, staring at a glowing phone
+Text: CLUMSY OR COMMON?
+
+In twenty twenty-four, regulators checked six hundred and forty-two subscription sites and apps.
+Visual: A wall of dozens of glowing phone and laptop screens in a dark room, all blurred, nothing readable
+Text: 642 SITES & APPS · 2024 REVIEW
+Stock: many screens dark room
+
+About three in four used at least one possible dark pattern.
+Visual: Overhead shot of four phones on a dark table, three of them glowing red, one glowing white
+Text: ~76%: AT LEAST ONE
+
+Meaning, design that steers you against your own choice.
+Visual: A maze drawn in pencil on paper, a fingertip tracing a path that dead-ends, desk lamp light
+Text: DARK PATTERN = DESIGN THAT STEERS YOU
+
+Possible, not proven illegal. So where is the line?
+Visual: Close-up of a hand hovering over two generic buttons on a phone screen, one large, one tiny, text unreadable
+Text: POSSIBLE ≠ PROVEN ILLEGAL
+
+Checking it is really you is fair.
+Visual: Phone screen showing a generic padlock icon and a code entry box, soft blue light, text unreadable
+Text: FAIR: SECURITY CHECK
+
+Hiding the exit until you give up is not.
+Visual: A thumb pausing over a phone, then the phone set face down on the desk, untouched
+Text: UNFAIR: HIDDEN EXIT
+
+A fair exit is as easy as the entrance.
+Visual: Phone screen with two equal-sized generic buttons side by side, clean and calm, text unreadable
+Text: SAME SIZE · SAME STEPS
+
+If joining took one tap, leaving should too.
+Visual: A single thumb tapping one clear button on a phone, the screen fading to a calm empty state
+Text: 1 TAP IN · 1 TAP OUT

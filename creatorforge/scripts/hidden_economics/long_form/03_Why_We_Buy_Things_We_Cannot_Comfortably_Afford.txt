@@ -1,0 +1,343 @@
+Why We Buy Things We Cannot Comfortably Afford
+On-screen hook: THE NEIGHBOUR EFFECT
+Title: Why Your Neighbour's Luck Can Cost You Money: The Hidden Price of Keeping Up
+Tags: #HiddenEconomics #psychology #personalfinance #buynowpaylater #behaviouraleconomics
+Source: Agarwal, Mikhed & Scholnick, Peers' Income and Financial Distress, Review of Financial Studies 2020 (Philadelphia Fed WP 18-22) https://www.philadelphiafed.org/consumer-finance/consumer-credit/peers-income-and-financial-distress-evidence-from-lottery-winners-and-neighboring-bankruptcies; Kuhn, Kooreman, Soetevent & Kapteyn, Dutch Postcode Lottery, American Economic Review 2011 https://econpapers.repec.org/article/aeaaecrev/v_3a101_3ay_3a2011_3ai_3a5_3ap_3a2226-47.htm; Veblen, The Theory of the Leisure Class 1899 https://www.gutenberg.org/ebooks/833; Brickman, Coates & Janoff-Bulman, Lottery winners and accident victims, J Pers Soc Psychol 1978 https://doi.org/10.1037/0022-3514.36.8.917; Prelec & Simester, Always Leave Home Without It, Marketing Letters 2001 https://doi.org/10.1023/A:1008196717017; FCA Woolard Review press release Feb 2021 https://www.fca.org.uk/news/press-releases/fca-publishes-woolard-review-unsecured-credit-market; FCA BNPL press release 31 Oct 2023 https://www.fca.org.uk/news/press-releases/fca-secures-contract-changes-bnpl-customers-more-consumers-use-product; FCA PS26/1 final BNPL rules, in force 15 July 2026 https://www.fca.org.uk/news/press-releases/fca-publishes-final-rules-buy-now-pay-later-products
+
+When a neighbour wins the lottery, the people next door go bankrupt more often.
+Visual: Wide night shot of a quiet suburban street, one house lit warmly, the neighbouring houses dark
+Text: THE NEIGHBOUR EFFECT
+
+Not the winner. The neighbours who won nothing.
+Visual: Close-up of an unopened envelope on a doormat in a dim hallway, lamp light from the side
+
+So how can someone else's luck cost you money?
+Visual: Silhouette of a person at a window, looking across at a lit house opposite
+Text: WHY?
+
+The answer runs through a handbag, a car and a monthly payment.
+Visual: Three objects on a dark wooden table under a desk lamp, a leather bag, a toy car, a phone
+
+And it starts with an idea from eighteen ninety-nine.
+Visual: Macro shot of an old cloth-bound book opening, dust in a beam of warm light
+Text: 1899
+
+The economist Thorstein Veblen noticed something odd about wealthy Americans.
+Visual: Sepia photograph style scene of a grand Victorian drawing room, figures seen from behind
+Text: THORSTEIN VEBLEN
+
+They bought certain things less for use than to be seen owning them.
+Visual: Close-up of a gloved hand resting on a silver-topped cane, the face out of frame
+
+He called it conspicuous consumption.
+Visual: Extreme close-up of an engraved pocket watch catching candlelight
+Text: CONSPICUOUS CONSUMPTION
+
+More than a century later, picture two identical journeys to work.
+Visual: Wide shot of commuters walking through a station concourse at dawn, seen from behind
+Stock: commuters walking station
+
+Same train, same office, same salary.
+Visual: Two pairs of feet side by side on a train platform edge, morning light
+
+One person carries an ordinary bag. The other carries a visibly expensive one.
+Visual: Split frame of two hands holding bag handles, one plain canvas, one glossy leather, no logos visible
+
+The expensive bag may be genuinely better made.
+Visual: Macro shot of neat stitching on leather under a warm lamp
+
+But what if the main difference is how its owner expects to be seen?
+Visual: Reflection of a person holding a bag in a dark shop window, face blurred
+
+That is not vanity. It is how humans signal taste, success and belonging.
+Visual: Overhead shot of a café table, coffee cups, a folded scarf, a set of keys, warm light
+
+So does this signalling actually change what ordinary people spend?
+Visual: Close-up of a hand hovering over a card reader at a shop counter
+Text: DOES IT CHANGE SPENDING?
+
+The Netherlands ran an accidental experiment.
+Visual: Wide aerial-style shot of rows of Dutch terraced houses along a canal at dusk
+Stock: dutch houses canal
+
+Each week, the Dutch Postcode Lottery picks one postcode at random.
+Visual: A hand drawing a folded paper slip from a glass bowl, lamp light, nothing readable
+Text: DUTCH POSTCODE LOTTERY
+
+Players in that postcode win cash, and some win a brand-new car.
+Visual: A shiny new car parked on a narrow residential street, a bow on the bonnet, seen from a distance
+
+Here is the first twist. Most winners of the new car simply sold it.
+Visual: A car with a for-sale sign in the windscreen, parked on a wet street at dusk, sign text unreadable
+Text: MOST WINNERS SOLD THE CAR
+
+So the economists looked past the winners, at the households around them.
+Visual: Overhead illustration of a street map with one house glowing, neighbours shaded, no labels
+
+Neighbours who had not even played bought more cars than similar households elsewhere.
+Visual: Close-up of new car keys being placed into an open palm, the person out of frame
+Text: NON-PLAYERS BOUGHT MORE CARS
+
+Their income had not changed. Their street had.
+Visual: Wide shot of the same street at dusk, two new cars now parked where there was one
+
+That is the first clue. Comparison is local, and it is visible.
+Visual: Close-up of a hand pulling a curtain slightly aside, light from the street outside
+Text: LOCAL + VISIBLE
+
+But buying a car is not the same as going broke.
+Visual: A single car key resting on a pile of opened bank letters under a desk lamp
+
+So where does the money for keeping up actually come from?
+Visual: Close-up of an open wallet on a table, nearly empty, harsh side light
+Text: WHERE DOES THE MONEY COME FROM?
+
+Researchers in Canada asked exactly that.
+Visual: Wide shot of snowy suburban houses at twilight, warm windows
+Stock: snowy suburb houses evening
+
+They matched lottery wins to bankruptcy records in tiny postcode areas.
+Visual: Overhead shot of a hand-drawn grid of small houses on paper, one marked with a gold coin
+Text: ~13 HOUSEHOLDS PER POSTCODE
+
+Many of those areas held only around thirteen households.
+Visual: Thirteen small wooden house models arranged in a tight cluster on a dark table
+
+The pattern was striking. The bigger a neighbour's prize, the more bankruptcies followed nearby.
+Visual: A row of small wooden houses with one tall stack of coins beside one house, shadows falling on the rest
+Text: BIGGER PRIZE → MORE BANKRUPTCIES NEARBY
+
+And look at what the bankrupt neighbours owned.
+Visual: A bankruptcy-style document folder lying open on a desk, pages blurred, lamp light
+
+More visible assets, like houses and cars.
+Visual: Close-up of a toy house and a toy car placed on a stack of unpaid bills
+
+Not more savings. Not more cash in the bank.
+Visual: An empty glass savings jar on a shelf, a single coin at the bottom
+Text: VISIBLE ↑   SAVINGS —
+
+You cannot see a neighbour's pension. You can see their driveway.
+Visual: Wide shot of a gravel driveway with a gleaming car, the house behind dark
+
+So the spending that spreads is the spending other people can watch.
+Visual: Two neighbouring driveways side by side, both now holding new cars, dusk light
+
+They had borrowed to keep up with what they could see.
+Visual: A hand signing a loan agreement, pen tip in focus, paper text unreadable
+Text: BORROWED TO KEEP UP
+
+Bankruptcy is rare, and this is one province in one country.
+Visual: Wide shot of a quiet Canadian street, a single lit window
+Text: ONE STUDY · ONE PROVINCE
+
+But it shows the mechanism. Seeing someone else's gain can change your own decisions.
+Visual: Silhouette at a window again, now with the opposite house brighter than before
+
+Surely, though, the purchase makes people happier. Doesn't that justify it?
+Visual: Close-up of hands untying the ribbon on a gift box under warm light
+Text: WORTH IT?
+
+In nineteen seventy-eight, psychologists interviewed major lottery winners in Illinois.
+Visual: Vintage-style lottery tickets scattered on a nineteen-seventies kitchen table, text unreadable
+Text: ILLINOIS, 1978
+
+Twenty-two people who had each won at least fifty thousand dollars.
+Visual: Stacked bundles of banknotes on a wooden table, harsh side light
+Text: 22 WINNERS · $50,000+
+
+They were compared with twenty-two people from the same areas.
+Visual: Two rows of identical empty chairs facing each other in a dim room
+Text: 22 vs 22
+
+The winners were not significantly happier than their neighbours.
+Visual: Close-up of a still cup of tea going cold beside a lottery ticket
+
+They even reported less pleasure from ordinary daily things.
+Visual: A slice of toast on a plate, untouched, morning light through blinds
+
+It is a small study, with no measurement before the wins.
+Visual: A magnifying glass resting on a thin stapled report, text unreadable
+Text: SMALL STUDY · NO BASELINE
+
+But it fits a pattern psychologists call hedonic adaptation.
+Visual: Time-lapse style shot of a fresh flower in a vase slowly wilting
+Text: HEDONIC ADAPTATION
+
+The new thing feels exciting. Then it becomes normal.
+Visual: A shiny new phone being unboxed, then the same phone lying scuffed on a cluttered desk
+
+And once it is normal, the next upgrade starts to look reasonable.
+Visual: A hand reaching past an old bag towards a newer one on a shelf
+
+The finish line keeps moving. So how do people keep paying for it?
+Visual: A running track at dusk, the finish line chalk smudged and faint
+Text: THE FINISH LINE MOVES
+
+Part of the answer is how the payment feels.
+Visual: Close-up of a contactless card tapping a reader, a soft glow
+
+Two MIT researchers auctioned real tickets to a professional basketball game.
+Visual: Wide shot of an empty basketball arena under dim lights
+Stock: empty basketball arena
+
+Half the bidders were told they would pay cash. Half would pay by card.
+Visual: Split frame of a hand holding banknotes and another hand holding a plain bank card
+
+The card group bid roughly twice as much.
+Visual: Two stacks of coins on a table, one about double the height of the other
+Text: CARD BIDS ≈ 2× CASH
+
+Same tickets. The only difference was how they would pay.
+Visual: Two identical paper tickets side by side under a lamp, print unreadable
+
+One likely explanation is that a card pushes the pain of paying into the future.
+Visual: A bank card sliding into a wallet slot, the bill envelope pushed to the back of a drawer
+Text: THE PAIN OF PAYING, DELAYED
+
+Now take that feeling and split it into instalments.
+Visual: A large coin being cut into smaller slices with a knife on a dark board
+Text: SPLIT THE COST
+
+Here is a fictional example. A six-hundred-pound item, offered at fifty pounds a month.
+Visual: Phone screen showing a generic checkout page with a large price and a small monthly figure, text unreadable
+Text: ILLUSTRATION · £600 = £50 × 12
+
+Fifty pounds feels manageable. Six hundred might not.
+Visual: A single banknote beside a tall stack of twelve banknotes on a dark table
+Text: £50 feels small · £600 is the cost
+
+But the obligation is still six hundred pounds, and fees can push it higher.
+Visual: Calendar with twelve months each marked with a small circle in red pen
+Text: 12 PAYMENTS · STILL £600+
+
+Splitting the cost changes the experience of paying. It does not erase the cost.
+Visual: Extreme close-up of a red pen circling the last month on the calendar
+
+So how many people in Britain are paying this way?
+Visual: Wide shot of a busy high street at dusk, shoppers with bags, seen from behind
+Stock: busy shopping street evening
+
+In twenty twenty alone, buy now, pay later use nearly quadrupled.
+Visual: Four stacks of coins rising in height left to right on a dark table, lamp light
+Text: 2020: NEARLY 4× · £2.7 BILLION
+
+It reached two point seven billion pounds that year, and it kept growing.
+Visual: A line of shopping parcels stacked higher and higher by a front door
+
+According to the Financial Conduct Authority, a lot of them.
+Visual: Exterior of a modern glass office building at night, lights on, no signage visible
+Text: FINANCIAL CONDUCT AUTHORITY
+
+Around fourteen million adults used buy now, pay later in six months.
+Visual: A crowd of shoppers crossing a street, seen from above, blurred motion
+Text: ~14 MILLION ADULTS · 27%
+
+That was roughly twenty-seven percent of adults, in six months to January twenty twenty-three.
+Visual: Overhead shot of one hundred small figurines with twenty-seven painted gold
+Text: 6 MONTHS TO JAN 2023
+
+Users were also more than twice as likely to hold high-cost credit.
+Visual: Two stacks of credit cards on a desk, one noticeably taller
+Text: HIGH-COST CREDIT 48% vs 22%
+
+And over four times as likely to have recently missed bills or credit payments.
+Visual: Three red-stamped envelopes fanned out on a doormat, text unreadable
+Text: MISSED PAYMENTS 27% vs 6%
+
+That does not prove instalments cause debt. People already struggling may use them more.
+Visual: Close-up of a hand holding a calculator above a pile of bills, lamp light
+Text: LINK, NOT PROOF
+
+But the regulator was concerned enough that the rules have now changed.
+Visual: A gavel resting on a closed folder under a desk lamp
+
+Since fifteenth July twenty twenty-six, third-party instalment lenders are regulated in Britain.
+Visual: Calendar page for July with the fifteenth circled in black ink
+Text: REGULATED FROM 15 JULY 2026
+
+Lenders must now check whether borrowers can afford them, even for small amounts.
+Visual: Close-up of a person's hands reviewing a budget sheet with a pencil, numbers unreadable
+Text: AFFORDABILITY CHECKS
+
+But a check only asks whether you can repay.
+Visual: A phone lying on a table beside a shopping bag, screen dark
+
+It never asks why you wanted the thing in the first place.
+Visual: Close-up of a shopping bag on a chair, tissue paper spilling out, lamp light
+Text: CAN YOU PAY? ≠ WHY BUY?
+
+So which purchases are really about the object, and which are about the audience?
+Visual: A shop mannequin in a dark window display, lit by a single spotlight
+Text: OBJECT OR AUDIENCE?
+
+Here is the uncomfortable test.
+Visual: Close-up of a hand holding a price tag, the number unreadable
+
+Would you still want it if nobody else could ever see it?
+Visual: A luxury watch in a closed drawer, light barely reaching it
+Text: IF NOBODY COULD SEE IT?
+
+Try it on the last three things you bought.
+Visual: Three shopping bags lined up on a bed in warm lamp light
+
+Not every purchase has to pass. Design and quality can bring real joy.
+Visual: Hands gently running over a well-made wooden chair in warm afternoon light
+
+Veblen's point was never that nice things are wrong.
+Visual: The old book from earlier, now closed on the table under the lamp
+
+It was that some of the price pays for an audience.
+Visual: Empty rows of theatre seats facing a single spotlit object on a stage
+Stock: empty theatre seats
+
+And as the lottery neighbours showed, that audience can be the people next door.
+Visual: The suburban street at night again, viewed from one dark window towards the lit house
+
+So what do you actually do before you tap pay?
+Visual: Thumb hovering over a phone screen with a single glowing button, text unreadable
+Text: BEFORE YOU TAP PAY
+
+Ask three questions.
+Visual: Three small cards laid face down on a dark table under a lamp
+Text: THREE QUESTIONS
+
+First, what will I actually use this for?
+Visual: First card turned over, a simple drawing of a hand holding a tool, no words
+Text: 1. WHAT WILL I USE IT FOR?
+
+Be specific. How often, where, and instead of what.
+Visual: Close-up of a worn rucksack hanging by a door, clearly used daily
+
+Second, what is the total cost, including fees and finance charges?
+Visual: Second card turned over, a drawing of twelve coins in a row
+Text: 2. WHAT IS THE TOTAL COST?
+
+Multiply the monthly figure by the number of months, every time.
+Visual: A hand writing a multiplication on a notepad with a pencil, numbers unreadable
+Text: £ per month × months = real price
+
+Third, would I choose it without the logo or the attention?
+Visual: Third card turned over, a drawing of a plain bag with no marks
+Text: 3. WITHOUT THE LOGO?
+
+If the answers still support it, buy it deliberately, and enjoy it.
+Visual: Hands placing a well-chosen bag on a shelf in a calm, tidy room
+
+If not, a pause may save you from a purchase made on borrowed expectations.
+Visual: A phone placed face down beside a closed wallet, warm lamp light
+Text: PAUSE
+
+So the next time a new car appears on your street, notice the feeling.
+Visual: Wide shot of a new car parked outside a house at dusk, a silhouette watching from across the road
+
+It is not need. It is comparison, and comparison can be priced.
+Visual: Close-up of the window silhouette letting the curtain fall closed
+Text: COMPARISON HAS A PRICE
+
+But there is a stranger bargain still to come.
+Visual: A phone lighting up on a dark bedside table, the room otherwise black
+
+What if something costs nothing at checkout, yet earns a fortune from your attention?
+Visual: Extreme close-up of a glowing phone screen in a pitch-dark room, screen content blurred
+Text: FREE... FOR WHOM?

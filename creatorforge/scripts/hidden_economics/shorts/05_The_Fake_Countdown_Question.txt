@@ -1,0 +1,54 @@
+The Fake Countdown Question
+On-screen hook: THE TIMER HIT ZERO
+Title: The Fake Countdown Question: What Happens When the Timer Hits Zero?
+Tags: #HiddenEconomics #countdowntimer #darkpatterns #onlineshopping #consumerrights
+Source: Mathur et al., Dark Patterns at Scale, Findings from a Crawl of 11K Shopping Websites, Proc. ACM HCI (CSCW) 2019 (https://arxiv.org/abs/1907.07032)
+
+The timer hit zero. So why is the offer still there?
+Visual: Close-up of a phone on a dark desk showing a generic shop page with a red countdown at zero, text unreadable
+Text: 00:00:00 · OFFER STILL LIVE?
+
+On this fictional shop, a sale clock counts down ten minutes.
+Visual: Phone screen with a generic product photo and a glowing red timer bar beneath it, text unreadable, moody lamp light
+Text: FICTIONAL SHOP · 10:00
+
+Its one job is rushing you before you compare.
+Visual: Extreme close-up of a thumb hovering over a bright buy button, the timer glowing above it, shallow focus
+Text: NO TIME TO COMPARE
+
+But how often are these clocks honest?
+Visual: Wide shot of a person from behind at a desk at night, face lit only by a phone
+Text: HONEST CLOCK?
+
+In twenty nineteen, Princeton researchers crawled about eleven thousand shopping websites.
+Visual: Rows of server lights blinking in a dark data room, slow push in
+Text: 2019 · ~11,000 SHOPPING SITES
+Stock: server room lights
+
+They found three hundred and ninety-three countdown timers.
+Visual: A grid of dozens of small glowing red timers on blurred phone screens, nothing readable
+Text: 393 TIMERS · 361 SITES
+
+On some, the offer stayed valid after the timer ran out.
+Visual: The same phone from the opening, timer at zero, the generic buy button still glowing
+Text: TIMER ENDED · OFFER DIDN'T
+
+Not every timer is fake. So how do you tell?
+Visual: Two phones side by side on a dark table, both showing red timers, text unreadable
+Text: REAL OR FAKE?
+
+Let it run out, or come back to the page tomorrow.
+Visual: A phone placed face down next to a cup of tea, a window showing early morning light
+Stock: phone face down table
+
+A real deadline survives a second look.
+Visual: A hand turning the phone back over the next morning, screen glowing, text unreadable
+Text: SECOND LOOK TEST
+
+Then compare prices where the clock cannot follow.
+Visual: A laptop and a phone side by side, two generic shop pages open, prices blurred
+Text: COMPARE THE FULL PRICE
+
+Because a timer that hits zero and changes nothing was never a deadline.
+Visual: Macro shot of the red zero digits on a phone screen slowly fading to black
+Text: NOT A DEADLINE
