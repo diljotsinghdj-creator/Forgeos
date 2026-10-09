@@ -2,10 +2,14 @@ How Free Apps Turn Your Attention Into a Business
 On-screen hook: FREE APP. $160 BILLION.
 Title: You Paid £0 for This App. Who Earned From Your 20 Minutes?
 Tags: #HiddenEconomics #attentioneconomy #screentime #digitalwellbeing #behaviouraleconomics
-Source: Ofcom Online Nation 2025 (May 2025 data) https://www.ofcom.org.uk/media-use-and-attitudes/online-habits/online-nation; Simon, Designing Organizations for an Information-Rich World, 1971 https://www.gwern.net/doc/design/1971-simon.pdf; CMA Online platforms and digital advertising market study, final report July 2020 https://www.gov.uk/cma-cases/online-platforms-and-digital-advertising-market-study; Meta Platforms Form 10-K FY2024 https://www.sec.gov/Archives/edgar/data/1326801/000132680125000017/meta-20241231.htm; Kushlev, Proulx & Dunn, Silence Your Phones, CHI 2016 https://www.interruptions.net/literature/Kushlev-CHI16.pdf; Allcott, Braghieri, Eichmeyer & Gentzkow, The Welfare Effects of Social Media, AER 2020 https://www.aeaweb.org/doi/10.1257/aer.20190658; Allcott, Gentzkow & Song, Digital Addiction, NBER WP 28936 https://www.nber.org/papers/w28936; EU Digital Services Act Art. 25 and Recital 67 https://eur-lex.europa.eu/eli/reg/2022/2065/oj; European Commission IP/26/312, 6 Feb 2026 https://ec.europa.eu/commission/presscorner/detail/en/ip_26_312
+Source: Ofcom Online Nation 2025 (May 2025 data) https://www.ofcom.org.uk/media-use-and-attitudes/online-habits/online-nation; Simon, Designing Organizations for an Information-Rich World, 1971 https://www.gwern.net/doc/design/1971-simon.pdf; CMA Online platforms and digital advertising market study, final report July 2020 https://www.gov.uk/cma-cases/online-platforms-and-digital-advertising-market-study; Meta Platforms Form 10-K FY2024 https://www.sec.gov/Archives/edgar/data/1326801/000132680125000017/meta-20241231.htm; Kushlev, Proulx & Dunn, Silence Your Phones, CHI 2016 https://www.interruptions.net/literature/Kushlev-CHI16.pdf; Allcott, Braghieri, Eichmeyer & Gentzkow, The Welfare Effects of Social Media, AER 2020 https://www.aeaweb.org/doi/10.1257/aer.20190658; Allcott, Gentzkow & Song, Digital Addiction, NBER WP 28936 https://www.nber.org/papers/w28936; EU Digital Services Act Art. 25 and Recital 67 https://eur-lex.europa.eu/eli/reg/2022/2065/oj; European Commission IP/26/312, 6 Feb 2026 https://ec.europa.eu/commission/presscorner/detail/en/ip_26_312; TikTok response reported by Euronews, 6 Feb 2026 https://www.euronews.com/next/2026/02/06/tiktoks-addictive-design-breaches-eu-law-commission-says
 
-You pay nothing for these apps. One company still earned a hundred and sixty billion dollars from them.
+The most-used apps on your phone cost you nothing.
 Visual: Extreme close-up of a glowing phone in a pitch-dark bedroom, a slow cascade of gold coins pouring out of the screen onto the duvet
+Text: £0
+
+Yet one company earned a hundred and sixty billion dollars from ads in a year.
+Visual: Low angle on a towering stack of coins rising out of darkness, a single beam of light climbing it
 Text: META 2024 · $160.6B FROM ADS
 
 That was nearly all of Meta's revenue in twenty twenty-four. Ninety-eight dollars in every hundred.
@@ -19,6 +23,10 @@ Text: WHAT WAS SOLD?
 Your attention. And British adults spend four and a half hours a day online.
 Visual: An analogue clock face, a blue wedge of light sweeping round to fill four and a half hours
 Text: 4h 30m A DAY · OFCOM 2025
+
+That is outside work, and ten minutes more than the year before.
+Visual: The same clock face, the blue wedge of light creeping a little further round
+Text: +10 MINUTES IN A YEAR
 
 By the end, you will know who buys that time, and how it is taken.
 Visual: Wide shot of a dark city at night, thousands of tiny phone glows in windows like stars
@@ -70,6 +78,9 @@ A wealth of information creates a poverty of attention.
 Visual: Wide shot of a lone figure from behind at a desk, swallowed by the shifting glow of many screens
 Text: WEALTH OF INFO = POVERTY OF ATTENTION
 
+He wrote that decades before the first smartphone existed.
+Visual: An old rotary telephone and a modern smartphone on one desk, a lamp swinging slowly between them
+
 If attention is the scarce thing, someone will pay for it. Who?
 Visual: An hourglass on a table, sand running through, blue phone light rippling across the glass
 Text: WHO BUYS ATTENTION?
@@ -77,6 +88,9 @@ Text: WHO BUYS ATTENTION?
 Mostly, advertisers.
 Visual: Wide shot of a rainy city street at night lined with glowing billboards, all content blurred
 Stock: city billboards night
+
+Every minute Maya scrolls is space on her screen they can buy.
+Visual: Close-up of a phone screen in the dark, a blurred ad tile sliding into view between posts, a coin clinking down beside it
 
 Britain's competition regulator found UK digital advertising worth about fourteen billion pounds in twenty nineteen.
 Visual: Tall stacks of banknotes under a single spotlight, the light slowly sweeping across them
@@ -94,6 +108,9 @@ And Meta's own filing credits more ads shown, and a higher price per ad.
 Visual: A conveyor belt of identical small cards speeding up under a spotlight
 Text: MORE AD IMPRESSIONS + HIGHER PRICE
 
+More ads seen, at a higher price. Both depend on time spent looking.
+Visual: Extreme close-up of an eye-level phone screen reflected in a dark window, a feed sliding past, text unreadable
+
 Not every app works this way. But where ads pay, more time means more ads.
 Visual: Phone screen showing a generic feed, a small ad box sliding in between posts, text unreadable
 Text: FICTIONAL INTERFACE
@@ -104,7 +121,7 @@ Visual: Overhead shot of Maya's bed in darkness, the phone a pool of blue light,
 A newspaper has a last page. An episode has credits.
 Visual: A hand folding a printed newspaper shut on a breakfast table, morning light
 
-Maya's feed has no last page.
+Maya's feed has no last page. It refills every time she reaches the bottom.
 Visual: A thumb scrolling as content streams upwards like a waterfall of light, nothing readable
 Text: NO LAST PAGE
 
@@ -156,7 +173,7 @@ In twenty eighteen, economists paid American volunteers to deactivate Facebook f
 Visual: A phone screen fading to black on a table, a paper calendar beside it with four weeks circled
 Text: PAID TO QUIT · 4 WEEKS
 
-Those who quit spent more time offline, including with friends and family.
+Those who quit spent more time offline, with friends and family, and even watching television.
 Visual: Hands passing a steaming dish across a dinner table in warm light, faces out of frame
 Stock: family dinner table
 
@@ -164,11 +181,11 @@ They reported slightly higher wellbeing.
 Visual: Morning light spreading across a tidy kitchen, a phone left charging in the corner
 Text: WELLBEING ↑
 
-Then the twist. When the experiment ended, and they could go straight back, many did not.
+Then the twist. Once the experiment ended and they could go back, their use stayed lower.
 Visual: A phone lying unused on a windowsill, dust motes drifting through a beam of sunlight
 Text: USE STAYED LOWER AFTERWARDS
 
-They used it less than before, and valued it less too.
+And they now valued the app less than they had before.
 Visual: A balance scale, a phone on one side slowly rising as if it had lost weight
 
 If people truly wanted all that time, why would a break change their minds?
@@ -193,7 +210,7 @@ Text: MODEL ESTIMATE
 Close to a third of the scrolling, which people themselves would rather not do.
 Visual: A clock face with a third of it shaded grey, phone light pulsing nearby
 
-So if a feed is built to keep us past the point we choose, is that legal?
+If a feed keeps us past the point we would choose, is that even legal?
 Visual: A gavel resting beside a phone on a dark desk, the phone lighting up and dimming
 Text: IS IT LEGAL?
 
@@ -255,6 +272,9 @@ Visual: A hand gently setting a phone down on a bedside table
 Here is a one-week experiment, built from that research.
 Visual: A paper wall calendar, a pencil ticking off seven days one by one
 Text: ONE-WEEK EXPERIMENT
+
+Seven days, three settings, about ten minutes to set up.
+Visual: Overhead shot of a phone, a pencil and a kitchen timer on a wooden table, morning light sliding across them
 
 First, turn off every notification you would not miss.
 Visual: Thumb sliding a generic notification toggle to off, the screen dimming, text unreadable
