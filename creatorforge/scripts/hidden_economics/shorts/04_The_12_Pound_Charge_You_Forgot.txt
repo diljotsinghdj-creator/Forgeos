@@ -7,7 +7,7 @@ Twelve pounds a month just cost you seven hundred and twenty this year.
 Visual: A single coin on a dark table casting an enormous shadow shaped like a tall stack of coins, harsh side light
 Text: £12 → £720? · ILLUSTRATION
 
-Picture five services, each twelve pounds. Music, video, storage, fitness, news.
+Picture five services at twelve pounds each.
 Visual: Overhead shot of five small paper receipts laid in a row on a dark wooden desk, text unreadable
 Text: 5 × £12 · ILLUSTRATION
 
@@ -24,7 +24,7 @@ Visual: Extreme close-up of a tall stack of coins on a dark table, focus pulling
 Text: £60 × 12 = £720 A YEAR
 Stock: stack of coins
 
-Decided once, never revisited. So which ones would you pay upfront?
+Decided once, never revisited. Which would you pay upfront?
 Visual: The five receipts spread out again, a fingertip hovering between them
 Text: WHICH WOULD YOU PAY UPFRONT?
 
@@ -32,10 +32,10 @@ Multiply each by twelve. One hundred and forty-four pounds.
 Visual: Close-up of a hand writing a simple sum on a notepad with a pencil, warm desk lamp, numbers blurred
 Text: £12 × 12 = £144
 
-Would you hand that over today, in one go?
+Would you hand that over today?
 Visual: Hands holding a small fan of banknotes over a desk, pausing mid-gesture
 Text: £144 TODAY?
 
-Keep the yeses, cancel the rest, and twelve pounds stops feeling small.
+Keep the yeses, cancel the rest. Twelve pounds is never small.
 Visual: Three receipts kept on the desk, two crumpled beside the single coin, its long shadow gone, morning light
 Text: KEEP THE YESES

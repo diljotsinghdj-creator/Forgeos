@@ -8,9 +8,9 @@ The countdown hit zero. The sale price is still there.
 Visual: An old kitchen egg timer at zero on a dark desk beside a phone still glowing with a generic sale page, text unreadable
 Text: 00:00:00 · STILL ON SALE?
 
-So what was it counting down to?
+So what was it counting?
 Visual: Extreme close-up of red zero digits glowing on a phone screen, shallow focus
-Text: COUNTING DOWN TO WHAT?
+Text: COUNTING TO WHAT?
 
 This fictional shop gives you ten minutes. Too short to compare.
 Visual: Phone screen with a generic product photo and a glowing red timer bar beneath it, a thumb hovering over a bright buy button, text unreadable
@@ -33,7 +33,7 @@ On some, the offer stayed valid after the timer ran out.
 Visual: The same phone from the opening, timer at zero, the generic buy button still glowing
 Text: TIMER ENDED · OFFER DIDN'T
 
-So how do you tell? Let it run out, or come back tomorrow.
+So how do you tell? Let it run out, or return tomorrow.
 Visual: A phone placed face down next to a cup of tea, a window showing early morning light
 Text: SECOND LOOK TEST
 Stock: phone face down table

@@ -6,7 +6,7 @@ Source: Take Five to Stop Fraud (UK Finance), https://www.takefive-stopfraud.org
 
 The caller says your money isn't safe. Then asks you to move it all.
 Visual: Coins sliding off the edge of a dark table into blackness, a phone glowing beside them, screen blurred
-Text: MOVE IT TO BE SAFE?
+Text: FICTIONAL SCAM SCRIPT: MOVE IT?
 
 Criminals are draining your account right now.
 Visual: Close-up of a banking app balance on a phone, digits blurred, red tint
