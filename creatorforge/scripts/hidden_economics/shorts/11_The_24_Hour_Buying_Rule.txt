@@ -1,13 +1,13 @@
 The 24 Hour Buying Rule
-On-screen hook: WAIT ONE NIGHT
-Title: The 24-Hour Rule That Tests Every Impulse Buy
+On-screen hook: 11PM. WANT IT TOMORROW?
+Title: 11pm Impulse Buy? The 24-Hour Rule That Tests It by Breakfast
 Tags: #HiddenEconomics #impulsebuying #budgeting #personalfinance #moneytips
 
-It's eleven at night, and your thumb is already on the buy button.
-Visual: Phone glowing in a dark bedroom, a thumb hovering over a bright button, text unreadable
-Text: 11:00 PM
+Eleven at night, thumb on buy. Will you still want it at breakfast?
+Visual: A phone glowing alone in a pitch-black bedroom, a single thumb frozen above a bright button, text unreadable
+Text: 11:00 PM · STILL WANT IT AT 8?
 
-Here's a test that costs nothing and takes one night.
+Here's a free one-night test.
 Visual: Hand placing the phone face down on a bedside table, lamp switching off
 Text: COST £0
 
@@ -15,28 +15,25 @@ Copy the item onto a list. Then close the shopping app.
 Visual: Close-up of a pen adding a line to a paper notepad, writing unreadable
 Stock: writing list notepad
 
-Now sleep on it. Twenty-four hours, no peeking.
+Sleep on it. Twenty-four hours, no peeking.
 Visual: Wide shot of a dim bedroom at night, phone dark on the nightstand
 Text: 24 HOURS
 
-Tomorrow, read the list in daylight.
-Visual: Morning sun across the same notepad on a kitchen table, mug beside it
-Stock: morning kitchen sunlight
-
-Still want it? Check the full price, delivery included, against your budget.
-Visual: Hands holding a paper receipt next to a calculator, crisp side light
-Text: FULL PRICE vs BUDGET
-
-Why would one night change anything? It's not a law of psychology.
+Why would one night change anything?
 Visual: Extreme close-up of a sand timer, last grains falling
 
-But a pause turns a late-night mood into a daytime decision.
+It's no law of psychology. A pause turns a mood into a decision.
 Visual: Split light on a desk, half dark blue night, half warm morning
 
-Often the item you craved at eleven barely feels worth a second look.
+Still want it in daylight? Check the full price against your budget.
+Visual: Hands holding a paper receipt next to a calculator, crisp morning side light
+Text: FULL PRICE vs BUDGET
+Stock: morning kitchen sunlight
+
+Often the thing you craved at eleven barely earns a second look.
 Visual: Finger crossing out a line on the notepad, soft morning glow
 Text: ILLUSTRATION
 
-So next time it's eleven at night, let the button wait until morning.
+So at eleven at night, let the button wait until breakfast.
 Visual: The notepad and closed phone side by side in calm daylight, wide shot
 Text: WAIT ONE NIGHT

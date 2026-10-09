@@ -1,42 +1,32 @@
 The Question That Breaks the Trap
-On-screen hook: ASK THIS FIRST
-Title: The One Question That Breaks Every Pressure Trap
+On-screen hook: 1 QUESTION. 3 TRAPS.
+Title: 1 Question Beats 3 Traps: Who Benefits If I Act Now?
 Tags: #HiddenEconomics #psychology #scams #personalfinance #decisionmaking
 
-There is one question that defuses most pressure tactics.
-Visual: A single lit match in a dark room, flame steady
-Text: ONE QUESTION
+A ticking timer, a midnight buzz, a panicked caller. One question beats all three.
+Visual: A single lit match held over a ticking kitchen timer in a pitch-black room, three phones glowing faintly around it
+Text: 1 QUESTION. 3 TRAPS.
 
 Who benefits if I act right now?
 Visual: Close-up of a hand pausing above a phone screen, screen details unreadable
 Text: WHO BENEFITS IF I ACT NOW?
 
-Try it on a fictional flash sale with a ticking timer.
+The flash sale with a timer? The seller, because fast buyers compare less.
 Visual: A phone screen showing a generic shop page with a red countdown bar, text unreadable
 Text: FICTIONAL SALE
 
-The seller benefits, because a fast buyer compares less.
-Visual: An empty shopping basket on a shop floor under bright lights
-Stock: empty shopping basket
-
-Try it on an app that buzzes at midnight.
-Visual: A phone lighting up on a dark bedside table, notification glow
-
-The app benefits, because your attention is what it sells.
+The midnight buzz? The app, because your attention is what it sells.
 Visual: Silhouette of a person in bed scrolling a glowing phone, room dark
 Stock: person scrolling phone in bed
 
-Now try it on a caller saying your account is at risk.
+And the caller saying your account is at risk?
 Visual: Phone held to an ear in silhouette by a dark window
-
-Here the answer is the most revealing of all.
-Visual: Extreme close-up of an eye-level phone screen reflection in a dark window
 
 The only person who needs you to skip checking is the scammer.
 Visual: A shadowed figure from behind standing in a dim doorway
 Text: WHO NEEDS YOU NOT TO CHECK?
 
-The question does not prove anyone is guilty. It reveals the incentive.
+The question proves no one guilty. It reveals the incentive.
 Visual: Macro shot of a magnifying glass over a set of coins, warm lamp light
 Text: IT REVEALS THE INCENTIVE
 

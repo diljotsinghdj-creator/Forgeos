@@ -1,44 +1,38 @@
 The Missing Stop Button
-On-screen hook: 5... 4... 3...
-Title: The Missing Stop Button: Who Chose The Next Episode?
+On-screen hook: YOU NEVER PRESSED PLAY
+Title: 5, 4, 3... You Never Pressed Play: The Missing Stop Button
 Tags: #HiddenEconomics #autoplay #bingewatching #attention #screentime
 
-Five. Four. Three. The next episode starts before you've decided anything.
-Visual: Dark living room, a television glowing with a generic countdown circle, text unreadable
+Five. Four. Three. The next episode started. You never pressed play.
+Visual: A television glowing in a pitch-black room in front of an empty sofa, a generic countdown circle on screen, remote untouched, text unreadable
 Text: 5... 4... 3...
 
 So who actually chose to keep watching?
 Visual: Close-up of a remote control resting untouched on a sofa arm, blue screen light
 
-That's autoplay. It makes continuing effortless.
+That's autoplay. Sometimes genuinely convenient.
 Visual: Wide shot from behind a silhouette on a sofa, screen light flickering
 Stock: watching tv dark room
 
-Sometimes that's genuinely convenient. Halfway through a series, it saves a click.
-Visual: Hand reaching into a bowl of popcorn, warm lamp beside the sofa
-
-But notice what flipped. Stopping now needs an action. Continuing needs none.
+But notice what flipped. Stopping needs an action. Continuing needs none.
 Visual: Extreme close-up of a thumb hovering above a remote's buttons, not pressing
 Text: STOP = ACTION · CONTINUE = NOTHING
 
-The decision is made by default, not deliberately.
+The decision is made by default. So how do you take it back?
 Visual: Clock on a dark shelf, hands moving past midnight
 Stock: clock midnight
 
-Many streaming and video apps let you switch autoplay off in settings.
+Many video apps let you switch autoplay off in settings.
 Visual: Phone showing a generic settings page with one toggle sliding off, text unreadable
 Text: FICTIONAL INTERFACE
 
-Try it for a week, and watch what happens to your evenings.
+Try it for a week. What happens to your evenings?
 Visual: Paper calendar on a fridge, seven days marked in pencil
 Text: 7 DAYS
-
-Every next episode becomes a choice you actually make.
-Visual: Thumb pressing a single play button on a remote, deliberate and slow
 
 Some nights you'll press play. Some nights you'll go to bed.
 Visual: Television switching off, the room falling into darkness
 
-Either way, three, two, one is no longer deciding for you.
+Either way, five, four, three is no longer deciding for you.
 Visual: The dark screen reflecting a lamp being switched on
 Text: YOUR CHOICE

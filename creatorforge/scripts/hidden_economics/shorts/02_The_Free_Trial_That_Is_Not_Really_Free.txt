@@ -1,50 +1,39 @@
 The Free Trial That Is Not Really Free
-On-screen hook: FREE UNTIL DAY 8
-Title: The Free Trial That Is Not Really Free: What Happens on Day 8
+On-screen hook: FREE → £9.99?
+Title: Free for 7 Days, £9.99 on Day 8: The Trial That Isn't Free
 Tags: #HiddenEconomics #freetrial #subscriptions #personalfinance #money
 
-Your free trial costs nothing, right up until day eight.
-Visual: A phone on a dark bedside table at night, screen glowing softly, a paper calendar beside it
-Text: FREE... UNTIL DAY 8
+It said free. Day eight took nine pounds ninety-nine.
+Visual: A paper wall calendar in a dark room, the eighth square cut open like a tiny door with a single coin glinting inside, lamp light
+Text: FREE → DAY 8: −£9.99 · ILLUSTRATION
 
-Day one, you enter your card for seven free days.
-Visual: Close-up of hands holding a bank card next to a phone showing a generic sign-up form, text unreadable, warm lamp light
-Text: 7-DAY FREE TRIAL · FICTIONAL
-Stock: typing card details phone
-
-So why does a free trial need your card?
-Visual: Extreme close-up of the raised numbers on a plain bank card, shallow focus, dark background
+So why did a free trial need your card?
+Visual: Extreme close-up of the raised numbers on a plain bank card beside a phone sign-up form, shallow focus, text unreadable
 Text: WHY YOUR CARD?
+Stock: typing card details phone
 
 Because the trial is not the product. The renewal is.
 Visual: A wall calendar with seven days crossed out in pencil and the eighth day circled in red
+Text: THE PRODUCT = THE RENEWAL
 
-Day seven passes quietly, with nothing that feels like a decision.
+Day seven passes. Nothing feels like a decision.
 Visual: Wide shot of a dim living room, a phone face down on the sofa arm, evening light fading
-
-Day eight, nine pounds ninety-nine leaves your account.
-Visual: Close-up of a phone banking screen with one new payment line highlighted, text blurred
-Text: DAY 8: −£9.99 · ILLUSTRATION
 
 So when did you actually buy it?
 Visual: Macro shot of a fingertip resting on a dark phone screen, a reflection of a lamp in the glass
 Text: WHEN DID YOU BUY IT?
 
-Day one, when you agreed to the renewal terms.
+Day one, the moment you accepted the renewal terms.
 Visual: A thumb pressing a large glowing button on a generic sign-up screen, text unreadable
 Text: DAY 1 = THE PURCHASE
 
-The word free described seven days, not what came after.
+Free described seven days, not what came after.
 Visual: Seven coins lined up on a dark wooden table, an eighth coin set apart in harsh side light
 Text: FREE = 7 DAYS ONLY
 
-Before tapping start, read the renewal price.
-Visual: Close-up of a generic subscription screen with small print at the bottom, magnifying glass over it, text unreadable
-Text: CHECK THE RENEWAL PRICE
-
-Then set a reminder for day six.
+Before tapping start, read the renewal price. Set a day-six reminder.
 Visual: Hands setting an alarm on a phone above a kitchen table, morning light through a window
-Text: REMINDER: DAY 6
+Text: CHECK THE PRICE · REMIND: DAY 6
 Stock: setting phone reminder
 
 Keep it, or cancel while it is still free.
@@ -52,5 +41,5 @@ Visual: A phone screen showing two generic buttons, one glowing red, text unread
 Text: KEEP OR CANCEL?
 
 Then day eight costs only what you chose.
-Visual: The same wall calendar, day eight circled in green instead of red, soft morning light
+Visual: The same wall calendar, the eighth square closed and circled in green, soft morning light
 Text: DAY 8: YOUR CHOICE

@@ -1,30 +1,22 @@
 How Scammers Create Urgency
-On-screen hook: YOUR MONEY ISN'T SAFE?
-Title: How Scammers Create Urgency: The Safe Account Script
+On-screen hook: MOVE IT TO BE SAFE?
+Title: Move Your Money to Stay Safe? The Scam Script Banks Never Use
 Tags: #HiddenEconomics #scams #fraud #safeaccount #takefive
 Source: Take Five to Stop Fraud (UK Finance), https://www.takefive-stopfraud.org.uk/; Crimestoppers UK, Protecting yourself against financial fraud, https://crimestoppers-uk.org/keeping-safe/fraud/protecting-yourself-against-financial-fraud
 
-A scammer wants your money, but first they need your speed.
-Visual: A stopwatch ticking on a dark table beside a phone, harsh side light
-Text: SPEED FIRST
+The caller says your money isn't safe. Then asks you to move it all.
+Visual: Coins sliding off the edge of a dark table into blackness, a phone glowing beside them, screen blurred
+Text: MOVE IT TO BE SAFE?
 
-Here is a common script, told as a fictional example.
-Visual: A phone screen showing a generic incoming message, text unreadable
-Text: FICTIONAL EXAMPLE
-
-Your account has been compromised. Criminals are draining it right now.
+Criminals are draining your account right now.
 Visual: Close-up of a banking app balance on a phone, digits blurred, red tint
-Text: "YOUR ACCOUNT IS AT RISK"
+Text: FICTIONAL EXAMPLE
 
 Move everything to a safe account before it is gone.
 Visual: Extreme close-up of a thumb over a transfer button, screen text unreadable
 Text: "MOVE IT TO A SAFE ACCOUNT"
 
-Every sentence is designed to stop you checking.
-Visual: A hand frozen above a phone keypad, a clock blurred in the background
-Stock: hand hesitating over phone
-
-But there is a detail that breaks the whole script.
+So why the rush? One detail breaks the whole script.
 Visual: Wide shot of a quiet kitchen at night, one lamp on, phone on the table
 
 Banks and police do not ask you to move money to a safe account.
@@ -35,14 +27,10 @@ That account belongs to the scammer.
 Visual: A shadowed figure from behind walking away down a dim corridor
 Text: IT'S THEIR ACCOUNT
 
-A real problem will still be there in ten minutes.
-Visual: An hourglass on a windowsill, sand still running, dawn light outside
-Stock: hourglass on table
-
-Hang up, then call your bank using a number you look up yourself.
+Hang up, then call your bank on a number you look up yourself.
 Visual: Hands holding a phone at a kitchen table in calm morning light
 Text: HANG UP. CALL BACK. VERIFY.
 
-They needed your speed. So give them none of it.
-Visual: The stopwatch from the opening, now stopped, lying beside a face-down phone
-Text: TAKE YOUR TIME
+The real danger was never the account. It was the transfer.
+Visual: The same coins now stacked safely on the table, the phone face down beside them, dawn light
+Text: THE MOVE WAS THE RISK

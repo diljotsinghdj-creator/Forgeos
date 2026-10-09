@@ -1,28 +1,25 @@
 The Monthly Payment Illusion
-On-screen hook: £50 OR £600?
-Title: The Monthly Payment Illusion: £50 a Month Is Still £600
+On-screen hook: £50 = £600?
+Title: £50 a Month Is Really £600: The Monthly Payment Illusion
 Tags: #HiddenEconomics #buynowpaylater #debt #personalfinance #budgeting
 
-Which sounds cheaper, fifty pounds or six hundred pounds?
-Visual: Two price tags on a dark wooden counter, one small, one large, numbers unreadable
-Text: £50 or £600?
+Fifty pounds or six hundred? Trick question. Same price.
+Visual: A single banknote on a dark counter casting a giant shadow shaped like a tall stack of notes on the wall behind, denominations not visible
+Text: £50 = £600?
 
-Obvious answer. Now let's make them the same price.
-Visual: Hand sliding the small tag next to the large one, warm lamp light
-
-Fifty pounds a month, for twelve months.
+Fifty pounds a month, for twelve months, is six hundred.
 Visual: Overhead shot of a paper calendar, twelve months laid out in a grid
-Text: £50 × 12
+Text: £50 × 12 = £600
 
-That's six hundred pounds, before a single fee.
+Before a single fee. How high can it go?
 Visual: Neat stack of banknotes on a desk, harsh side light, denominations not visible
-Text: = £600
+Text: + FEES?
 
-Now picture a plan that adds a twenty-pound arrangement fee.
+Picture a plan that adds a twenty-pound arrangement fee.
 Visual: Phone screen showing a generic payment plan, three rows, text unreadable
 Text: FICTIONAL PLAN · ILLUSTRATION
 
-The total becomes six hundred and twenty, yet the advert still says fifty.
+The total becomes six hundred and twenty. The advert still says fifty.
 Visual: Close-up of the phone with one large figure glowing, the small print blurred
 Text: £600 + £20 = £620
 
@@ -30,13 +27,13 @@ Splitting costs can genuinely help budgeting. So where's the risk?
 Visual: Hands writing a household budget in a notebook, desk lamp glow, writing unreadable
 Stock: budget planning notebook
 
-Because it shrinks the number your brain actually weighs.
+It shrinks the number your brain actually weighs.
 Visual: Extreme close-up of a magnifying glass over fine print on a contract, words unreadable
 
-So before you sign, multiply. Payment times months, plus every fee.
+Before you sign, multiply. Payment times months, plus every fee.
 Visual: Finger tapping a calculator on top of a contract, crisp morning light
 Text: TOTAL = PAYMENT × MONTHS + FEES
 
 Fifty or six hundred? Only one of those is the real price.
-Visual: The two price tags again, now side by side and equal in size
+Visual: Two price tags on the dark counter, now side by side and equal in size, numbers unreadable
 Text: £600+

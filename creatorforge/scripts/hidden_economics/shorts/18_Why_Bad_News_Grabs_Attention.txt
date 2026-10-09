@@ -1,44 +1,40 @@
 Why Bad News Grabs Attention
-On-screen hook: ONE HEADLINE VS 100 DAYS
-Title: Why One Scary Headline Beats 100 Ordinary Days
+On-screen hook: 100 CALM DAYS VS 1?
+Title: 100 Calm Days vs 1 Scary Headline: Why Bad News Wins
 Tags: #HiddenEconomics #psychology #news #negativitybias #behaviouraleconomics
 Source: Soroka, Fournier & Nir (2019) PNAS, Cross-national evidence of a negativity bias in psychophysiological reactions to news, https://doi.org/10.1073/pnas.1908369116; Tversky & Kahneman (1973) Availability heuristic, Cognitive Psychology, https://doi.org/10.1016/0010-0285(73)90033-9
 
-Why does one frightening headline outweigh a hundred quiet days?
-Visual: A single folded newspaper on a dark table under one harsh spotlight, headline area blurred
-Text: 1 HEADLINE VS 100 DAYS
+A hundred calm days. One scary headline. Which do you remember?
+Visual: A hundred neatly folded newspapers in rows on a dark floor, one smouldering at the corner, headlines blurred
+Text: 100 DAYS VS 1 HEADLINE
 
-Researchers wired people up and played them real news.
+Researchers wired up people in seventeen countries and played them news.
 Visual: Close-up of fingertip sensors with thin wires resting beside a laptop, dim blue light
 Text: 17 COUNTRIES
 
-Bad stories raised sweating and heart responses more than good ones.
+Bad stories triggered stronger body responses than good ones.
 Visual: Extreme close-up of a fingertip with a small sensor clip, faint glow on the skin
 Text: NEGATIVE NEWS = STRONGER REACTION
 
-So your body treats the threat as urgent before you have judged it.
+Your body reacts before you have judged the threat.
 Visual: Silhouette of a person leaning towards a glowing laptop in a dark room
 Stock: person reading news laptop night
 
-Yet in many countries, large minorities showed no such bias at all.
+Yet many people showed no such bias at all.
 Visual: Rows of empty chairs in a dim lecture room, one chair lit
 Text: NOT EVERYONE REACTED
 
-So why does bad news still feel everywhere? A second effect.
+So why does bad news still feel everywhere?
 Visual: Two identical glasses of water on a table, one lit brightly, one in shadow
 
-Vivid examples come to mind easily, so they feel more common.
+Vivid stories come to mind easily, so they feel common.
 Visual: A wall covered in pinned newspaper clippings, camera slowly pushing in, text unreadable
 Text: EASY TO RECALL ≠ COMMON
 
-A story can be completely true and still tell you nothing about odds.
+A true story can still say nothing about odds.
 Visual: Macro shot of a single die resting on a newspaper, warm desk-lamp light
 Text: TRUE STORY ≠ PROBABILITY
 
-So when a headline scares you, ask one question.
-Visual: Hands holding a phone above a kitchen table at dawn, screen blurred
-Stock: hands holding phone morning
-
-One scary headline. Out of how many ordinary days?
+So next time, ask one thing. Out of how many days?
 Visual: A tally of a hundred small coins in rows with one coin painted red
 Text: OUT OF HOW MANY?

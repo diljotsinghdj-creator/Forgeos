@@ -1,57 +1,41 @@
 The 12 Pound Charge You Forgot
-On-screen hook: £12 OR £720?
-Title: The £12 Charge You Forgot Is Really £720
+On-screen hook: £12 → £720?
+Title: £12 a Month Became £720 a Year: The Charges You Forgot
 Tags: #HiddenEconomics #subscriptions #budgeting #personalfinance #money
 
-How does twelve pounds quietly become seven hundred and twenty?
-Visual: A single coin on a dark table casting a long shadow that stretches across the whole frame, harsh side light
-Text: £12 → £720?
+Twelve pounds a month just cost you seven hundred and twenty this year.
+Visual: A single coin on a dark table casting an enormous shadow shaped like a tall stack of coins, harsh side light
+Text: £12 → £720? · ILLUSTRATION
 
-Picture five services, each twelve pounds a month.
+Picture five services, each twelve pounds. Music, video, storage, fitness, news.
 Visual: Overhead shot of five small paper receipts laid in a row on a dark wooden desk, text unreadable
 Text: 5 × £12 · ILLUSTRATION
 
-Music, video, storage, fitness, news.
-Visual: Close-up of a phone home screen with five generic coloured app tiles, no logos, warm desk lamp
-Text: 5 SERVICES
-
-Each one costs about the same as lunch.
-Visual: A sandwich in paper wrapping next to a single coin on a café table, soft daylight
-Stock: lunch sandwich cafe table
-
-Together, that is sixty pounds every month.
-Visual: The five receipts pushed together into one pile, a hand placing a coin on top
-Text: 5 × £12 = £60 A MONTH
-
-So why do you almost never see that sixty?
+Together, sixty pounds a month. So why do you never see it?
 Visual: Wide shot of a person from behind at a kitchen table, scrolling a phone in dim evening light
-Text: WHERE IS THE £60?
+Text: £60 A MONTH · WHERE IS IT?
 
-Because they land on different days, scattered through your statement.
+Because they land on different days, scattered across your statement.
 Visual: Close-up of a printed bank statement with five small lines highlighted far apart, text unreadable, pen beside it
 Text: 3RD · 9TH · 14TH · 21ST · 28TH
 
-Now multiply that sixty by twelve months.
-Visual: A paper wall calendar with all twelve months fanned out on a desk, lamp light
-Text: £60 × 12 = £720 A YEAR
-Stock: calendar pages flipping
-
-Seven hundred and twenty pounds, decided once and never revisited.
+Sixty times twelve months is seven hundred and twenty pounds.
 Visual: Extreme close-up of a tall stack of coins on a dark table, focus pulling from bottom to top
-Text: £720 · DECIDED ONCE
+Text: £60 × 12 = £720 A YEAR
+Stock: stack of coins
 
-So which of the five would you pay for upfront?
-Visual: Five receipts spread out again, a fingertip hovering between them
+Decided once, never revisited. So which ones would you pay upfront?
+Visual: The five receipts spread out again, a fingertip hovering between them
 Text: WHICH WOULD YOU PAY UPFRONT?
 
-Multiply each charge by twelve.
+Multiply each by twelve. One hundred and forty-four pounds.
 Visual: Close-up of a hand writing a simple sum on a notepad with a pencil, warm desk lamp, numbers blurred
 Text: £12 × 12 = £144
 
-Would you hand over one hundred and forty-four pounds today for it?
+Would you hand that over today, in one go?
 Visual: Hands holding a small fan of banknotes over a desk, pausing mid-gesture
 Text: £144 TODAY?
 
 Keep the yeses, cancel the rest, and twelve pounds stops feeling small.
-Visual: Three receipts kept on the desk, two crumpled and pushed into a bin, morning light
+Visual: Three receipts kept on the desk, two crumpled beside the single coin, its long shadow gone, morning light
 Text: KEEP THE YESES

@@ -1,49 +1,41 @@
 The Subscription Trap
-On-screen hook: STILL PAYING FOR THIS?
-Title: The Subscription Trap: The £72 You Never Noticed
+On-screen hook: STOPPED. STILL PAYING?
+Title: £72 for an App You Stopped Using: The Subscription Trap
 Tags: #HiddenEconomics #subscriptions #personalfinance #money
 
-The most expensive subscription might be one you forgot you had.
-Visual: A phone lying face down on a dark kitchen table, a single notification light glowing
-Text: STILL PAYING FOR THIS?
+You stopped using it in January. It still charged you in June.
+Visual: A phone lying face down on a dark kitchen table at night, a thin trail of coins sliding out from under it and over the table edge
+Text: JAN: STOPPED · JUN: STILL PAYING
 
-Imagine a twelve-pound monthly service you stopped using in January.
-Visual: Close-up of a hand scrolling a banking app on a phone, screen text blurred, soft morning light
-Text: £12 a month
+Picture a twelve-pound monthly service. This is an illustration.
+Visual: Close-up of a hand scrolling a banking app on a phone, screen text blurred, soft lamp light
+Text: £12 A MONTH · ILLUSTRATION
 Stock: scrolling phone app
 
-You meant to cancel. Then February's payment went through.
-Visual: Paper wall calendar with a red circle around the first of February
-Text: FEB: −£12
-
-Then March. Then April.
-Visual: Calendar pages flipping quickly in a draught of air, warm desk lamp
-Text: MAR −£12 · APR −£12
-Stock: calendar pages flipping
-
-By June, a service you never used has taken seventy-two pounds.
-Visual: Six coins stacked in a column on a dark wooden table, harsh side light
+You meant to cancel. By June, it had taken seventy-two pounds.
+Visual: Six coins stacked in a column on a dark wooden table beside a paper calendar, harsh side light
 Text: £12 × 6 = £72
-
-That figure is an illustration, not a claim about any real company.
-Visual: Blurred glowing phone screen with a generic app layout, nothing readable
-Text: ILLUSTRATION ONLY
 
 So why did nobody notice for six months?
 Visual: Extreme close-up of an eye reflected in a dark phone screen
-Text: WHY NOBODY NOTICES
+Text: WHY NOBODY NOTICED
 
 Because a payment that asks for no decision never gets one.
 Visual: A hand reaching past an open wallet on a cluttered desk without looking at it
 Text: NO DECISION = NO NOTICE
 
-Here is the two-minute fix. Open your bank statement today.
-Visual: Hands holding a phone above a kitchen table, morning light through a window
-Stock: woman checking phone kitchen
+So how do you find the one you forgot?
+Visual: Wide shot of a person from behind at a kitchen table, a phone glowing in the dim room
+Text: WHICH ONE DID YOU FORGET?
 
-Find one recurring payment you would not choose again, and cancel it.
-Visual: A thumb hovering over a phone screen, a single highlighted button glowing red, text unreadable
+Open your bank statement and look for repeat payments.
+Visual: Close-up of a printed bank statement with a pen circling one repeated line, text unreadable
+Stock: checking bank statement
+
+Ask of each one, would I buy this today?
+Visual: A thumb hovering over a phone screen, a single button glowing red, text unreadable
 Text: WOULD I BUY THIS TODAY?
 
-Because the most expensive subscription is the one you forgot you had.
-Visual: The same phone face down on the dark kitchen table, its notification light going out
+If not, cancel it before June comes round again.
+Visual: The same phone face down on the dark table, the last coin stopping right at the edge
+Text: CANCEL BEFORE JUNE

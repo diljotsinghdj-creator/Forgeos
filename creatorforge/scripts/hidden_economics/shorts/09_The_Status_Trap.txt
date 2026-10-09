@@ -1,34 +1,29 @@
 The Status Trap
-On-screen hook: NOBODY WILL SEE IT
-Title: The Status Trap: Would You Still Buy It If Nobody Could See It?
+On-screen hook: £800 FOR NOBODY?
+Title: £800 Watch Nobody Sees: Would You Still Buy It? The Status Trap
 Tags: #HiddenEconomics #status #conspicuousconsumption #psychology #money
 Source: Thorstein Veblen, The Theory of the Leisure Class, 1899 (https://www.gutenberg.org/ebooks/833)
 
-Would you still buy it if nobody could see it?
-Visual: A wristwatch on a dark velvet cloth in a pitch-black room, lit by a single narrow beam
-Text: NOBODY WILL SEE IT
+An eight hundred pound watch. Would you buy it if nobody saw it?
+Visual: A wristwatch ticking inside a sealed glass jar in a pitch-black room, one narrow beam of light on it
+Text: £800 · NOBODY SEES IT? · ILLUSTRATION
 
-Picture the watch you are saving for.
-Visual: Close-up of a hand fastening a plain unbranded watch, warm lamp light
-Text: £800 · ILLUSTRATION
-Stock: fastening wrist watch
+Imagine it hidden under your sleeve, forever.
+Visual: A wrist under a long dark coat sleeve, the watch completely covered, warm lamp light
 
-Now imagine it is invisible to everyone but you.
-Visual: The same wrist under a long dark coat sleeve, the watch completely covered
-
-Does it still feel worth eight hundred pounds?
+Still worth eight hundred pounds?
 Visual: Extreme close-up of the watch face, hands ticking, shallow focus
 Text: STILL WORTH £800?
 
-If yes, you are buying the object itself.
+If yes, you want the object itself.
 Visual: Macro shot of fine stitching on a leather strap, slow pan, soft light
 Text: YES → YOU WANT THE OBJECT
 
-If the desire faded, what were you really buying?
+If not, what were you really buying?
 Visual: The watch lying alone on an empty dark table, the room around it in shadow
 Text: THEN WHAT WERE YOU BUYING?
 
-In eighteen ninety-nine, economist Thorstein Veblen gave it a name.
+In eighteen ninety-nine, economist Thorstein Veblen named it.
 Visual: An old leather-bound book lying open under a desk lamp, pages unreadable
 Text: THORSTEIN VEBLEN · 1899
 
@@ -37,21 +32,14 @@ Visual: Silhouettes walking past brightly lit shop windows on a busy evening str
 Text: CONSPICUOUS CONSUMPTION
 Stock: shop windows evening street
 
-Wanting to be seen is human. But it is a different purchase.
+Wanting to be seen is human. But is that worth eight hundred?
 Visual: A person from behind looking at their own reflection in a dark shop window
+Text: WORTH £800?
 
-So which purchase are you making?
-Visual: Close-up of two hands, one holding the watch box, the other resting on a closed wallet
-Text: WHICH PURCHASE IS IT?
-
-Strip off the logo in your head. Same quality, same price.
+Strip the logo off in your head. Still want it? Buy it.
 Visual: A plain unbranded watch box on a dark table, lid slowly lifting, nothing written on it
-Text: NO LOGO · SAME PRICE
+Text: NO LOGO · STILL WANT IT?
 
-Still want it? Buy it with a clear conscience.
-Visual: A hand closing the watch box gently, warm satisfied lamp light
-Text: STILL WANT IT? BUY IT.
-
-If not, ask who you were really buying it for.
-Visual: The empty dark velvet cloth from the opening, the watch gone, a single beam of light
+If not, ask who the watch was really for.
+Visual: The empty glass jar from the opening, the watch gone, a single beam of light
 Text: WHO WAS IT FOR?

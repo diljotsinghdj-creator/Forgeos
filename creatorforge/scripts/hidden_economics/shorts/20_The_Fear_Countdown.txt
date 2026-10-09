@@ -1,21 +1,17 @@
 The Fear Countdown
-On-screen hook: WHY IS THERE A TIMER?
-Title: The Fear Countdown: Why Threat Plus Timer Works So Well
+On-screen hook: VIRUS + TIMER?
+Title: A Virus Warning With a 5-Minute Timer? The Fear Countdown
 Tags: #HiddenEconomics #onlinesafety #scams #psychology #scareware
 
-Why would a warning about your safety need a countdown?
-Visual: A laptop in a dark room, the screen flooded with red light, details unreadable
+A pop-up says your laptop is infected. So why the timer?
+Visual: A laptop alone in a pitch-black room, its screen pouring red light across the floor like spilt paint, details unreadable
 Text: WHY IS THERE A TIMER?
-
-Imagine a fictional pop-up. Your device is infected.
-Visual: Close-up of a laptop screen with a generic red pop-up window, text unreadable
-Text: FICTIONAL POP-UP
 
 Call this number within five minutes or lose your files.
 Visual: Extreme close-up of a digital countdown on a screen, glowing red, digits blurred
-Text: 04:59
+Text: FICTIONAL POP-UP · 04:59
 
-Notice the two separate jobs here.
+That message is doing two separate jobs.
 Visual: Two hands on a dark desk, one holding a stopwatch, one empty
 
 Fear makes the problem feel huge.
@@ -25,7 +21,7 @@ The timer makes the solution feel like it might vanish.
 Visual: An hourglass on a desk with the last grains falling, warm lamp light
 Stock: hourglass sand falling
 
-Together they leave no room for the question that matters.
+Together they leave no room for one question.
 Visual: Wide shot of an empty chair in front of the glowing laptop
 
 Is any of this true?
@@ -40,6 +36,6 @@ Close the window, and never call the number on the pop-up.
 Visual: Hands holding a phone and a printed receipt at a calm kitchen table, daylight
 Stock: person making phone call home
 
-So why did the warning need a countdown? Because checking would end it.
-Visual: The countdown screen dark and switched off, a cup of tea beside it
+So why the timer? Because checking would end the scam.
+Visual: The laptop dark and switched off, a cup of tea beside it
 Text: PAUSE. VERIFY. DECIDE.

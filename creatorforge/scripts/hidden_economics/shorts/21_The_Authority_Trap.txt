@@ -1,25 +1,22 @@
 The Authority Trap
-On-screen hook: IT SAYS IT'S YOUR BANK
-Title: The Authority Trap: Why Caller ID Proves Nothing
+On-screen hook: CALLER ID ≠ PROOF
+Title: Caller ID Says Your Bank. That Proves Nothing
 Tags: #HiddenEconomics #scams #fraud #bankfraud #159
 Source: Stop Scams UK, 159, https://www.stopscamsuk.org.uk/159; Ofcom action on spoofed caller ID (TelecomsTechNews), https://www.telecomstechnews.com/news/ofcom-targets-scam-calls-faking-uk-mobile-numbers/
 
-Your phone says it is your bank. That proves nothing.
-Visual: A phone ringing on a dark kitchen worktop, screen lit, caller name blurred
+Your phone says your bank is calling. That proves nothing.
+Visual: A phone ringing on a dark worktop, its glow throwing the shadow of a stranger's hand across the wall, caller name blurred
 Text: CALLER ID ≠ PROOF
 
 Caller ID can be faked, a trick called number spoofing.
 Visual: Extreme close-up of a phone screen glow reflected in a dark window, text unreadable
 Text: NUMBER SPOOFING
 
-The voice is calm, polite, and full of proper banking language.
+The voice is calm, polite, and may even know your name.
 Visual: Silhouette of a person from behind holding a phone to their ear, lamp light
 Stock: person answering phone call
 
-They might even know your name and your bank.
-Visual: Close-up of a bank card lying face down beside a set of keys
-
-So how do you check a caller who sounds this convincing?
+So how do you check a caller this convincing?
 Visual: An empty, formal reception desk under cool overhead light
 
 Not on the same call. Hang up first.

@@ -1,43 +1,38 @@
 Why You Cannot Stop Scrolling
-On-screen hook: YOU CAME FOR THE WEATHER
-Title: Why You Can't Stop Scrolling (It's Not Willpower)
+On-screen hook: CAME FOR THE WEATHER
+Title: Opened It for the Weather, Lost 20 Minutes: Why You Can't Stop
 Tags: #HiddenEconomics #infinitescroll #attention #screentime #digitalwellbeing
 
 You unlocked your phone to check the weather. That was twenty minutes ago.
-Visual: Phone in a hand on a sofa at night, cold screen glow, nothing readable
+Visual: A phone glowing alone in a pitch-black room, rain streaking the dark window behind it, one hand barely visible
 Text: 20 MINUTES LATER
 
 So where did the time go?
 Visual: Wall clock in a dark room, minute hand blurred in motion
 Stock: clock time lapse
 
-Think about how a book tells you to stop.
+Books have chapters. Pages run out.
 Visual: Close-up of a paperback closing on a bedside table, warm lamp light
 
-Chapters end. Pages run out. A newspaper has a back page.
-Visual: Macro of the last page of a folded newspaper, print unreadable
-Stock: folding newspaper
-
-Those endings are stopping cues, natural moments to decide whether to continue.
+Those are stopping cues, moments to decide whether to continue.
 Visual: Hand placing a bookmark between pages, soft side light
 Text: STOPPING CUES
 
-An endless feed removes them. There is no last page.
+An endless feed removes them. Where's the last page? There isn't one.
 Visual: Thumb flicking up a phone screen of identical blurred cards, motion blur
 Text: NO LAST PAGE
 
-The next post takes one flick. Stopping takes a decision.
+One flick for more. Stopping takes a decision.
 Visual: Extreme close-up of a fingertip on glass, mid-swipe
 
-So it's not weak willpower. It's a missing ending. How do you get one back?
+Not weak willpower. A missing ending. So how do you get one back?
 Visual: Wide shot of a dim living room, a lone silhouette lit only by a phone
+Text: HOW DO YOU GET IT BACK?
 
-Add your own last page before you begin.
+Set a timer before you open the app. Your own last page.
 Visual: Hand setting a kitchen timer to ten minutes, warm light
 Text: SET YOUR OWN ENDING
-
-Open the app with a purpose. When it's done, close it.
-Visual: Phone screen going dark in a hand, room lamp clicking on
+Stock: kitchen timer
 
 Then check the weather. That's what you came for.
 Visual: Window with rain on the glass, grey morning light
