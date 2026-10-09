@@ -611,7 +611,7 @@ def parse_script(raw: str) -> tuple[str, dict]:
             elif k in ("hashtags", "tags"):
                 meta["hashtags"] = re.findall(r"#\w+", v) or v.split()
             elif k in ("source", "sources"):
-                meta["source"] = v[:200]
+                meta["source"] = v[:2000]   # long-form episodes cite many sources
     # A "Visual:" under (or beside) most spoken lines is a shot list: each picture belongs to its own line. One or
     # two visual lines describe the look of the whole video instead.
     if sum(1 for d in per.values() if d.get("visual")) >= 3:

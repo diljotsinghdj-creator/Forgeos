@@ -160,7 +160,9 @@ def make_kit(llm, job: dict) -> dict:
     if w.get("cover"):
         kit["thumbnail_text"] = w["cover"]
     if w.get("source") and w["source"] not in kit["description"]:
-        kit["description"] = (kit["description"] + f"\n\nSource: {w['source']}").strip()
+        cites = [c.strip() for c in w["source"].split(";") if c.strip()]
+        label = "Sources:\n" if len(cites) > 1 else "Source: "
+        kit["description"] = (kit["description"] + "\n\n" + label + "\n".join(cites)).strip()
     # Wikimedia Commons licences require a credit; NASA asks for one. (Pixabay needs none.)
     owed = [c for c in job.get("stock_credits") or []
             if any(x in c for x in ("Wikimedia", "Unsplash", "Internet Archive", "(CC", "Public domain")) or c == "NASA"]

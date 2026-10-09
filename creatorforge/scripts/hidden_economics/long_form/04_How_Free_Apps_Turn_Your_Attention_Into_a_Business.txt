@@ -33,7 +33,7 @@ Visual: A young person seen from behind on a bus, phone glowing, city lights str
 Text: AGED 18–24: 6h 20m
 Stock: person scrolling phone bus
 
-About three quarters of it was on smartphones, mostly in apps that cost nothing.
+About three quarters of it was on smartphones, often in apps that cost nothing to download.
 Visual: Close-up of a phone home screen with a grid of generic app icons, no logos, text unreadable
 Text: SMARTPHONES ≈ 77% OF TIME ONLINE
 
