@@ -140,9 +140,10 @@ def _segment_args(c: Clip, frames: int, width: int, height: int) -> list[str]:
         length = frames / FPS
         stretch = min(1.25, length / c.video_duration) if c.video_duration and c.video_duration < length else 1.0
         boomerang = bool(c.video_duration) and c.video_duration * stretch < length - 0.05
+        # AI clips come out at ~480-720p: upscale with lanczos, then a light unsharp mask so they don't look soft.
         base = (f"setpts={stretch:.4f}*(PTS-STARTPTS),"
                 f"scale={width}:{height}:force_original_aspect_ratio=increase:flags=lanczos,crop={width}:{height},"
-                f"setsar=1,fps={FPS}")
+                f"unsharp=5:5:0.6:5:5:0.0,setsar=1,fps={FPS}")
         if boomerang:
             vf = (f"[0:v]{base},split[f][b];[b]reverse[r];[f][r]concat=n=2:v=1:a=0,fps={FPS},settb=1/{FPS},"
                   f"tpad=stop_mode=clone:stop_duration={length:.3f},trim=end_frame={frames},setpts=PTS-STARTPTS,"

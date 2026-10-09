@@ -339,10 +339,13 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                 Label("REALISTIC AI VIDEO")
                 if (caps?.aiVideo == false) Text("No video model on this worker - scenes use AI images with camera motion.", color = Color.Gray, fontSize = 12.sp)
                 else {
-                    ChipRow(listOf("off" to "Off", "hook" to "Hook only (cheap)", "all" to "Every scene"), videoScope) { videoScope = it }
+                    ChipRow(listOf("off" to "Off", "hook" to "Hook only (cheap)", "all" to "Every line"), videoScope) { videoScope = it }
                     Text(when (videoScope) {
                         "hook" -> "The opening shot is animated with AI video; the rest use AI images + camera motion."
-                        "all" -> "Every scene animated - most realistic, several minutes of GPU per scene."
+                        "all" -> if (fastCuts) "Every spoken line gets its own AI clip, moving exactly while that line is spoken. " +
+                            "Smooth stabilised camera, people framed without faces. Slow: about 1-3 min of GPU per line " +
+                            "(a Short ~30-40 min, a 7-minute episode ~3-4 h)." else
+                            "Every scene animated with one clip (turn on Fast cuts for one clip per line)."
                         else -> "AI images with camera motion - fastest and cheapest."
                     }, color = Color.Gray, fontSize = 12.sp)
                     if (aiVideo) {

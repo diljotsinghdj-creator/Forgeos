@@ -37,8 +37,15 @@ def _clip_words(text: str, n: int) -> str:
     return " ".join(words[:n]) + ("…" if len(words) > n else "")
 
 
-VIDEO_NEGATIVE = ("static, frozen frame, flicker, jitter, morphing, warped face, melting, extra limbs, distorted hands, "
-                  "text, watermark, low quality, blurry, overexposed, cartoonish artifacts")
+VIDEO_NEGATIVE = ("camera shake, shaky handheld footage, wobble, jitter, flicker, frozen frame, morphing, warped face, "
+                  "distorted face, uncanny face, melting, extra limbs, distorted hands, motion blur, out of focus, blurry, "
+                  "low resolution, text, watermark, overexposed, cartoonish artifacts")
+# Every AI clip: one smooth, stabilised move - never handheld shake - and crisp detail.
+VIDEO_STYLE = ("Smooth slow cinematic camera movement on a stabilised gimbal, steady frame, no camera shake, "
+               "natural physics, crisp sharp focus, consistent details")
+# Retention: every frame should make the viewer want to look closer.
+CURIOSITY = "striking cinematic composition, intriguing detail, dramatic lighting"
+HOOK_CURIOSITY = "mysterious, subject partially revealed, the eye drawn to one detail"
 
 
 @dataclass
@@ -463,13 +470,14 @@ def direct(llm, spec: ProductionSpec) -> ProductionPlan:
 
 
 def _image_prompt(visual: str, emotion: str, s: "ShotPlan", spec: ProductionSpec, style: str,
-                  shot_size: str = "") -> tuple[str, str]:
+                  shot_size: str = "", hook: bool = False) -> tuple[str, str]:
     # SDXL reads only ~77 tokens: keep the subject short and put framing, emotion + quality early so they aren't cut.
     parts = [_clip_words(visual.rstrip("."), 30 if spec.visual_direction else 40)]
     if spec.visual_direction:
         parts.append(_clip_words(spec.visual_direction.split(",")[0], 8))   # the look, e.g. "black-and-white 1950s lab footage"
     people = _has_people(f"{visual} {s.shot}")
-    faceless = spec.faces == "faceless" and people
+    # AI video distorts faces in motion, so animated videos always frame people without showing faces.
+    faceless = (spec.faces == "faceless" or spec.motion == "ai_video") and people
     if faceless:
         parts.append(FACELESS)
         if emotion:
@@ -478,7 +486,7 @@ def _image_prompt(visual: str, emotion: str, s: "ShotPlan", spec: ProductionSpec
         parts.append(f"face clearly showing {emotion}, intense expressive eyes, emotional")
     elif emotion:
         parts.append(f"{emotion} atmosphere")
-    parts.append("sharp focus, highly detailed")
+    parts.append(f"sharp focus, {HOOK_CURIOSITY if hook else CURIOSITY}")
     shot = ", ".join(x for x in [f"{shot_size or s.shot} shot" if (shot_size or s.shot) else "", spec.camera or s.camera,
                                  f"{spec.mood or s.mood} mood" if (spec.mood or s.mood) else ""] if x)
     if shot:
@@ -498,20 +506,24 @@ def prompt_forge(plan: ProductionPlan, spec: ProductionSpec, only: int | None = 
     for i, s in enumerate(plan.scenes):
         if only is not None and i != only:
             continue
-        s.prompt, s.negative = _image_prompt(s.visual, s.emotion, s, spec, style)
+        s.prompt, s.negative = _image_prompt(s.visual, s.emotion, s, spec, style, hook=i == 0)
         if not spec.fast_cuts:
             s.beats = []
         for k, b in enumerate(s.beats):
             # Alternate shot sizes so consecutive beats feel like real coverage, not the same frame twice.
             size = ("close-up", "medium", "extreme close-up", "wide")[(i + k) % 4] if k else (s.shot or "medium")
-            b["prompt"], b["negative"] = _image_prompt(b["visual"], b.get("emotion") or s.emotion, s, spec, style, size)
+            b["prompt"], b["negative"] = _image_prompt(b["visual"], b.get("emotion") or s.emotion, s, spec, style, size,
+                                                       hook=i == 0 and k == 0)
+            # Per-line AI video: each beat's still is animated with a move that fits what the line shows.
+            b["video_prompt"] = (f"Subtle natural movement: {b['visual'].rstrip('.')}. Camera: "
+                                 f"{('slow push in', 'slow dolly sideways', 'slow pull back', 'gentle orbit')[(i + k) % 4]}. "
+                                 f"{style}. {VIDEO_STYLE}")
         if s.beats:
             s.prompt, s.negative = s.beats[0]["prompt"], s.beats[0]["negative"]
         # The animation prompt leads with motion: image-to-video models already see the still.
         camera = spec.camera or s.camera or "slow cinematic camera move"
         motion = s.motion or f"subtle natural movement in the scene: {s.visual.rstrip('.')}"
-        s.video_prompt = (f"{motion}. Camera: {camera}. {s.visual.rstrip('.')}. {style}. "
-                          "Smooth realistic motion, natural physics, consistent identity, stable details")
+        s.video_prompt = f"{motion}. Camera: {camera}. {s.visual.rstrip('.')}. {style}. {VIDEO_STYLE}"
         s.video_negative = VIDEO_NEGATIVE
 
 

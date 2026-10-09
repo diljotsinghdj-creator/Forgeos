@@ -17,8 +17,9 @@ def test_ai_video_clips_are_generated_and_used(cfg):
     cfg.video_provider = "mock"
     with TestClient(create_app(cfg)) as c:
         assert "ai_video" in c.get("/v1/capabilities").json()["motion"]
+        # one clip per scene when fast cuts are off (with fast cuts, every line gets its own clip - tested below)
         jid = c.post("/v1/productions", json={"idea": "Volcanoes explained simply", "duration_s": 12,
-                                              "template": "explainer", "motion": "ai_video"}).json()["id"]
+                                              "template": "explainer", "motion": "ai_video", "fast_cuts": False}).json()["id"]
         job = settled(c, jid)
         assert job["status"] == "READY", job
         assert job["stages"]["clips"]["state"] == "READY"
@@ -125,3 +126,23 @@ def test_publish_kit_and_capcut_export(cfg):
         assert srt.startswith("1\n00:00:0") and " --> " in srt
         assert "The truth about" in z.read("publish.txt").decode()
         assert len(z.read("timeline.csv").decode().strip().splitlines()) == n + 1
+
+
+def test_ai_video_for_every_spoken_line(cfg):
+    """AI video + fast cuts: every beat (spoken line) gets its own clip, timed to the line, used in the edit."""
+    cfg.video_provider = "mock"
+    with TestClient(create_app(cfg)) as c:
+        jid = c.post("/v1/productions", json={"idea": "fast cuts test about lying", "duration_s": 15,
+                                              "motion": "ai_video", "faces": "show"}).json()["id"]
+        job = settled(c, jid)
+        assert job["status"] == "READY", job
+        multi = [(sc, shot) for sc, shot in zip(job["scenes"], job["plan"]["scenes"]) if len(shot.get("beats") or []) >= 2]
+        assert multi
+        for sc, shot in multi:
+            assert len(sc["beat_videos"]) == len(shot["beats"]) and all(sc["beat_videos"]), sc
+            assert all("no camera shake" in b["video_prompt"] for b in shot["beats"])
+        assert "line clips" in job["providers"]["clips"]
+        # people are framed faceless in AI video mode (motion distorts faces), even with faces on
+        people = [b for _, shot in multi for b in shot["beats"] if "faceless framing" in b["prompt"]]
+        assert people or not any("person" in b["visual"].lower() for _, shot in multi for b in shot["beats"])
+        assert job["result"]["verification"]["decode_check"] == "passed"

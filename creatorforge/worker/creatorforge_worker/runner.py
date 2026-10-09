@@ -133,7 +133,8 @@ class Runner:
             raise ValueError("pick at least one existing scene")
         for i in picked:
             sc = job["scenes"][i]
-            sc.update(image_state="QUEUED", error=None, reroll=sc.get("reroll", 0) + 1, image_source="generated", beat_images=[])
+            sc.update(image_state="QUEUED", error=None, reroll=sc.get("reroll", 0) + 1, image_source="generated", beat_images=[],
+                      beat_videos=[])
             if sc.get("clip_source") != "asset":
                 sc["clip_state"] = "QUEUED"
             job["plan"]["scenes"][i]["prompt"] += f" (variation {sc['reroll']})"
@@ -231,7 +232,7 @@ class Runner:
         changed = False
         if narration is not None and narration.strip() and narration.strip() != shot["narration"]:
             shot["narration"] = narration.strip()[:1000]
-            shot["beats"], sc["beat_images"] = [], []   # beats quote the old words
+            shot["beats"], sc["beat_images"], sc["beat_videos"] = [], [], []   # beats quote the old words
             sc.update(voice_state="QUEUED", voice_source="generated")
             if sc.get("clip_source") != "asset":
                 sc["clip_state"] = "QUEUED"
@@ -239,7 +240,7 @@ class Runner:
             changed = True
         if visual is not None and visual.strip() and visual.strip() != shot["visual"]:
             shot["visual"] = visual.strip()[:1000]
-            shot["beats"], sc["beat_images"] = [], []   # the creator's visual replaces the AI's beat plan
+            shot["beats"], sc["beat_images"], sc["beat_videos"] = [], [], []   # the creator's visual replaces the AI's beat plan
             plan = director.ProductionPlan.from_dict(job["plan"])
             director.prompt_forge(plan, director.ProductionSpec.from_dict(job["spec"]), only=index)
             job["plan"] = plan.to_dict()

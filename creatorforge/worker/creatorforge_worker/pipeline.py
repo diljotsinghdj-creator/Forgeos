@@ -354,9 +354,14 @@ class Pipeline:
         gen, _ = ASPECTS[spec.aspect]
         jdir = self.store.dir(job["id"])
         scenes, shots = job["scenes"], job["plan"]["scenes"]
+        per_line = [i for i in chosen if spec.fast_cuts and len(shots[i].get("beats") or []) >= 2
+                    and scenes[i].get("clip_source") != "asset"]
+        if per_line:
+            # One clip per spoken line: the picture moves exactly while its line is spoken.
+            self._line_clips(job, video, per_line, gen, cancel)
         for sc, shot, slot in zip(scenes, shots, self._timings(job)):
-            if not sc.get("ai_video"):
-                if sc.get("clip_source") != "asset":
+            if not sc.get("ai_video") or sc["index"] in per_line:
+                if not sc.get("ai_video") and sc.get("clip_source") != "asset":
                     sc["clip_state"] = "SKIPPED"
                 continue
             self._stage(job, "clips", "RUNNING", done=sum(1 for s in scenes if s.get("ai_video") and s.get("clip_state") == "READY"),
@@ -384,6 +389,67 @@ class Pipeline:
                 self.store.save(job)
                 raise StageFailed(f"scene {sc['index'] + 1} video clip failed - {e}") from e
             self.store.save(job)
+
+    def _line_clips(self, job: dict, video, indices: list[int], gen: tuple[int, int], cancel) -> None:
+        """AI video for every spoken line of the chosen scenes. Each beat's still (scene image for the first line,
+        beat images after) is animated for about as long as its line is spoken, so clips never need to loop.
+        Lines with real stock footage keep it. A line whose clip fails keeps its still with a smooth camera move;
+        only if every clip fails does the stage fail (the video model is broken, not one prompt)."""
+        jdir = self.store.dir(job["id"])
+        scenes, shots = job["scenes"], job["plan"]["scenes"]
+        if hasattr(video, "max_frames") and hasattr(video, "_model_limits"):
+            video.max_frames = video._model_limits[1]          # lines can run a little past the preset's clip length
+        todo = [(i, k) for i in indices for k in range(len(shots[i]["beats"]))]
+        done = failed = 0
+        last_error = ""
+        for i in indices:
+            sc, shot = scenes[i], shots[i]
+            beats = shot["beats"]
+            names = (list(sc.get("beat_videos") or []) + [None] * len(beats))[: len(beats)]
+            stock = (list(sc.get("beat_clips") or []) + [None] * len(beats))[: len(beats)]
+            stills = [sc.get("image")] + list(sc.get("beat_images") or [])
+            words = [max(1, len(b["text"].split())) for b in beats]
+            speech = sc.get("narration_s") or sum(words) / 2.6
+            for k, b in enumerate(beats):
+                self._stage(job, "clips", "RUNNING", done=done, total=len(todo))
+                done += 1
+                if (names[k] and (jdir / names[k]).is_file()) or (stock[k] and (jdir / stock[k]).is_file()):
+                    continue
+                still = stills[k] if k < len(stills) else None
+                if not still or not (jdir / still).is_file():
+                    continue                                    # no picture for this line: it holds the previous one
+                if cancel.is_set():
+                    raise Cancelled()
+                seconds = round(min(6.0, max(1.6, speech * words[k] / sum(words) + 0.5)), 2)
+                seed = (int(job["id"][:8], 16) + i * 104729 + (k + 1) * 7919) % 2**31
+                vprompt = b.get("video_prompt") or shot.get("video_prompt") or shot["prompt"]
+                vneg = shot.get("video_negative") or director.VIDEO_NEGATIVE
+                image = jdir / still
+                key = _key(video.id, hashlib.sha256(image.read_bytes()).hexdigest(), vprompt, seconds, gen, seed)
+                try:
+                    src = self._cached("clips", key, ".mp4",
+                                       lambda p: video.generate(image, vprompt, vneg, seconds, gen[0], gen[1], seed, p),
+                                       verify.clip)
+                    dst = jdir / f"scene_{i + 1:02d}_line{k + 1}_{key[:8]}.mp4"
+                    if not dst.is_file():
+                        shutil.copyfile(src, dst)
+                    names[k] = dst.name
+                except (ProviderError, MediaError) as e:
+                    failed += 1
+                    last_error = str(e)
+                    names[k] = None
+                sc["beat_videos"] = names
+                sc.update(clip_state="READY" if any(names) else "GENERATING")
+                self.store.save(job)
+            sc["clip_state"] = "READY"
+        made = sum(1 for i in indices for n in scenes[i].get("beat_videos") or [] if n)
+        if failed and not made:
+            raise StageFailed(f"AI video clips failed - {last_error}")
+        if failed:
+            job.setdefault("warnings", []).append(f"{failed} line clip(s) failed and use a moving still instead")
+        job["providers"]["clips"] = (job["providers"].get("clips", video.id).rstrip(")") +
+                                     f", {made} line clips{f', {failed} failed' if failed else ''})")
+        self.store.save(job)
 
     def _mark_video_scenes(self, job: dict) -> list[int]:
         """Decides once which scenes get AI video (saved per scene, so timeline edits keep the choice)."""
@@ -538,8 +604,15 @@ class Pipeline:
                 return chosen
             return t.transitions[i % len(t.transitions)]
 
+        def line_videos(sc: dict) -> list:
+            if not (use_video and sc.get("ai_video", True) and spec.fast_cuts):
+                return []
+            return [jdir / n if n and (jdir / n).is_file() else None for n in sc.get("beat_videos") or []]
+
         def clip_for(sc: dict) -> Path | None:
             # Imported clips are always used; generated clips only in AI video mode.
+            if sc.get("clip_source") != "asset" and any(line_videos(sc)):
+                return None                                      # per-line clips are cut on the beats below
             if sc.get("clip") and ((use_video and sc.get("ai_video", True)) or sc.get("clip_source") == "asset"):
                 return jdir / sc["clip"]
             return None
@@ -552,6 +625,8 @@ class Pipeline:
             extra = list(sc.get("beat_images") or [])
             stock_clips = [jdir / n if n and (jdir / n).is_file() else None for n in (sc.get("beat_clips") or [])]
             stock_clips += [None] * (len(beats) - len(stock_clips))
+            for k, v in enumerate(line_videos(sc)[: len(beats)]):
+                stock_clips[k] = stock_clips[k] or v          # real footage first, else the line's AI clip
             if len(beats) >= 2 and sc.get("image_source") != "asset" and (
                     any(n and (jdir / n).is_file() for n in extra) or any(stock_clips)):
                 # Cut on the beat: each phrase gets screen time in proportion to its words, so the picture
@@ -566,20 +641,21 @@ class Pipeline:
                         continue
                     cam = shot.get("camera", "") if k == 0 else cams[(i + k) % 4]
                     if spec.auto_edit and (beats[k].get("emotion") or shot.get("emotion", "")).lower() in SHOCK_EMOTIONS:
-                        cam = "shake" if k == 0 and transition(i, shot) in ("flash", "zoom") else "punch"
+                        cam = "punch"   # a smooth zoom that lands - never a shaky camera
                     clips.append(render.Clip(images[k] or images[0], length, cam, transition(i, shot) if k == 0 else "cut",
                                              stock_clips[k]))
             else:
                 cam = shot.get("camera", "")
                 if spec.auto_edit and video is None and shot.get("emotion", "").lower() in SHOCK_EMOTIONS:
-                    cam = "shake" if transition(i, shot) in ("flash", "zoom") else "punch"
+                    cam = "punch"
                 clips.append(render.Clip(jdir / sc["image"], d, cam, transition(i, shot), video))
         for c in clips:
             if c.video is not None:
                 c.video_duration = ff.duration(c.video)
 
         heads = [clips[j] for j in firsts]   # one per scene, for scene-level bookkeeping below
-        if use_video and any(c.video is None and sc.get("ai_video", True) for c, sc in zip(heads, job["scenes"])):
+        if use_video and any(c.video is None and sc.get("ai_video", True) and not sc.get("beat_videos")
+                             for c, sc in zip(heads, job["scenes"])):
             raise StageFailed("AI video mode but a chosen scene has no clip")
 
         plan = job["plan"]

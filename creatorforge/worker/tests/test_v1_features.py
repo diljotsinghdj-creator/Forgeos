@@ -195,7 +195,7 @@ def test_ai_video_on_hook_only(cfg):
         assert [s["ai_video"] for s in job["scenes"]] == [True] + [False] * (len(job["scenes"]) - 1)
         assert job["scenes"][0]["clip_state"] == "READY"
         assert all(s["clip_state"] == "SKIPPED" for s in job["scenes"][1:])
-        assert job["providers"]["clips"].endswith(f"(1/{len(job['scenes'])} scenes)")
+        assert f"(1/{len(job['scenes'])} scenes" in job["providers"]["clips"]   # + ", N line clips" with fast cuts
         # moving the hook scene later keeps its AI clip with it
         n = len(job["scenes"])
         body = {"scenes": [{"index": i} for i in list(range(1, n)) + [0]]}
