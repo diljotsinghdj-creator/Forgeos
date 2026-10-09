@@ -17,7 +17,8 @@ SETTINGS
   Update the pod first (start command) - Text: and Stock: lines need the latest CreatorForge.
 
 EVERY SCRIPT HAS
-  - A first line that poses a concrete contradiction or question (no intro).
+  - A first line that poses a concrete contradiction, number or personal stake (no intro), over a striking first image.
+  - Shorts run 25-35 seconds (84-91 words); titles and on-screen hooks lead with the contradiction.
   - An open question at least every 3-4 lines (Shorts) / every 15-30 seconds (long form), always paid off.
   - Shorts end by looping back to the hook; long form ends by opening the next episode.
   - Numbers spoken in words, exact figures on screen via Text:.
@@ -32,6 +33,7 @@ BEFORE PUBLISHING (YouTube monetisation)
     Short 18   17-country figure (Soroka et al. 2019, PNAS) - check against the paper
     Short 21   Ofcom spoofing source is a news report; swap in an ofcom.org.uk page if you can
     Short 19   14-day cancellation wording ("often", "exceptions apply"); insurance has its own rules
+    Short 07   first CMA drip-pricing fine (AA driving schools, April 2026) - verified by search
     Long 01    "about £14 a month" per unwanted subscription (≈ £1.6bn / 10m / 12)
     Long 02    keyboard bids ($56 vs $16) and estate-agent valuations - from summaries of the papers
     Long 03    Brickman 1978 "less pleasure from ordinary things" line - cut if unsure
