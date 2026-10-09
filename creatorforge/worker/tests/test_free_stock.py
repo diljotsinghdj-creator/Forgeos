@@ -87,7 +87,7 @@ def test_free_sources_follow_config(cfg):
     from creatorforge_worker import providers
     assert providers.stock_sources("nojob", cfg) == []          # tests never touch the network
     cfg.free_stock = True
-    assert providers.stock_sources("nojob", cfg) == [("nasa", ""), ("wikimedia", "")]
+    assert providers.stock_sources("nojob", cfg) == [("nasa", ""), ("wikimedia", ""), ("archive", "")]
 
 
 def test_render_survives_a_clip_that_changes_size_mid_stream(tmp_path):
@@ -116,3 +116,57 @@ def test_render_survives_a_clip_that_changes_size_mid_stream(tmp_path):
     assert abs(ff.duration(out) - total) < 0.2
     again = sorted((tmp_path / "work").glob("seg_*.mp4"))
     assert len(again) == 3                       # a retry reuses these instead of re-rendering
+
+
+def test_archive_finds_matching_prelinger_film(monkeypatch):
+    def get(url, **kw):
+        if "advancedsearch" in url:
+            assert "collection:(prelinger)" in kw["params"]["q"]
+            return R({"response": {"docs": [
+                {"identifier": "CookingTips1950", "title": "Kitchen tips", "description": "how to bake"},
+                {"identifier": "Office1952", "title": "Office meeting etiquette", "subject": ["business", "meeting"]}]}})
+        assert url.endswith("/metadata/Office1952")
+        return R({"files": [{"name": "Office1952_512kb.mp4", "format": "512Kb MPEG4", "size": "9000000"},
+                            {"name": "Office1952.mp4", "format": "h.264", "size": "60000000", "length": "612.4",
+                             "width": "640", "height": "480"},
+                            {"name": "Office1952.mpeg", "format": "MPEG2", "size": "900000000"}]})
+    monkeypatch.setattr(httpx, "get", get)
+    found = stock_video.search("archive", "", "office meeting")
+    assert [f["url"] for f in found] == ["https://archive.org/download/Office1952/Office1952.mp4"]
+    assert found[0]["credit"] == "Prelinger Archives / Internet Archive" and found[0]["trim"]
+
+
+def test_openverse_keeps_relevant_commercial_photos(monkeypatch):
+    from creatorforge_worker.providers import stock_photo
+
+    def photo(title, lic, w=3000, h=2000, tags=()):
+        return {"url": f"https://img/{title}.jpg", "title": title, "license": lic, "license_version": "4.0",
+                "width": w, "height": h, "creator": "Ann", "source": "flickr", "tags": [{"name": t} for t in tags]}
+    monkeypatch.setattr(httpx, "get", lambda url, **kw: R({"results": [
+        photo("chess board", "by-nc"), photo("old chess pieces", "by-sa"), photo("chess", "cc0", 600, 400),
+        photo("sunset", "cc0", tags=["beach"])]}))
+    found = stock_photo.search("openverse", "", "chess pieces")
+    assert [f["url"] for f in found] == ["https://img/old chess pieces.jpg"]
+    assert found[0]["credit"] == "Ann / flickr (CC BY-SA 4.0)"
+
+
+def test_unsplash_uses_client_id_and_credits_photographer(monkeypatch):
+    from creatorforge_worker.providers import stock_photo
+    seen = {}
+
+    def get(url, **kw):
+        seen.update(kw.get("headers") or {})
+        return R({"results": [{"urls": {"raw": "https://images.unsplash.com/p1?ixid=x"}, "width": 3000, "height": 4500,
+                               "user": {"name": "Jo Lee"}, "links": {"download_location": "https://api.unsplash.com/d/1"}}]})
+    monkeypatch.setattr(httpx, "get", get)
+    found = stock_photo.search("unsplash", "KEY", "dark hallway")
+    assert seen["Authorization"] == "Client-ID KEY"
+    assert found[0]["credit"] == "Photo by Jo Lee on Unsplash" and found[0]["url"].endswith("&w=2160&q=85&fm=jpg&fit=max")
+
+
+def test_photo_sources_order(cfg):
+    from creatorforge_worker import providers
+    providers.set_stock_key("job-x", {"provider": "pixabay", "key": "pk", "unsplash": "uk"})
+    cfg.free_stock = True
+    assert providers.photo_sources("job-x", cfg) == [("unsplash", "uk"), ("pixabay", "pk"), ("openverse", "")]
+    assert providers.stock_sources("job-x", cfg) == [("pixabay", "pk"), ("nasa", ""), ("wikimedia", ""), ("archive", "")]

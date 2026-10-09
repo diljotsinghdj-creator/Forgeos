@@ -120,7 +120,9 @@ def test_sound_effects_are_placed_on_transitions_and_overlays(cfg, tmp_path):
         assert job["status"] == "READY", job
         files = [x["file"] for x in job["edit"]["sfx"]]
         # mock Director picks whip/flash/dissolve/zoom: whoosh + impact on edits, impact on hook, pop on callout/CTA
-        assert "whoosh_soft.wav" in files and "impact_deep.wav" in files and "pop_ui.wav" in files
+        # (the user's folder is mixed with the built-in sounds, and the pick depends on the job id, so check roles)
+        assert all(any(f.startswith(role) for f in files) for role in ("whoosh_", "impact_", "pop_")), files
+        assert {"whoosh_soft.wav", "impact_deep.wav", "pop_ui.wav"} & set(files), files   # the folder is used
         assert job["edit"]["sfx"][0]["at"] < 0.2  # hook hit at the very start
         off = c.post("/v1/productions", json={"idea": "Fast facts about sharks", "duration_s": 15, "sfx": False}).json()["id"]
         assert settle(c, off)["providers"]["sfx"] == "off"

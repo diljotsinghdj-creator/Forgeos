@@ -403,6 +403,23 @@ def test_stock_footage_fills_beats_marked_by_the_planner(cfg):
         assert job["stock_credits"] == ["test"] and "key" not in str(job["spec"])
 
 
+def test_stock_photo_fills_a_beat_when_no_footage_fits(cfg, monkeypatch):
+    from fastapi.testclient import TestClient
+    from creatorforge_worker.api import create_app
+    from creatorforge_worker.providers import stock_video
+    from .conftest import wait_for
+
+    monkeypatch.setattr(stock_video, "search_any", lambda *a, **k: [])
+    with TestClient(create_app(cfg)) as c:
+        body = {"idea": "fast cuts test about lying", "duration_s": 15, "stock": {"provider": "mock", "key": "k"}}
+        jid = c.post("/v1/productions", json=body).json()["id"]
+        job = wait_for(lambda: (lambda j: j if j["status"] in ("READY", "FAILED") else None)(c.get(f"/v1/productions/{jid}").json()))
+        assert job["status"] == "READY", job
+        sc = job["scenes"][0]
+        assert sc["beat_images"][0].endswith("_photo.jpg") and (cfg.jobs_dir / jid / sc["beat_images"][0]).is_file()
+        assert job["stock_credits"] == ["test photo"]
+
+
 def test_main_character_face_is_locked_across_people_shots(cfg, tmp_path):
     from creatorforge_worker.pipeline import Pipeline
     from creatorforge_worker.store import JobStore

@@ -232,6 +232,8 @@ class Pipeline:
         fails is skipped - the scene simply holds its previous picture longer."""
         jdir = self.store.dir(job["id"])
         stock = providers.stock_sources(job["id"], self.cfg)
+        photos = providers.photo_sources(job["id"], self.cfg)
+        portrait = self._spec(job).aspect == "9:16"
         for sc, shot in zip(job["scenes"], job["plan"]["scenes"]):
             beats = shot.get("beats") or []
             if len(beats) < 2 or sc.get("image_source") == "asset":
@@ -248,6 +250,12 @@ class Pipeline:
                     continue                 # real footage covers this beat - no AI image needed
                 if cancel.is_set():
                     raise Cancelled()
+                if photos and b.get("stock"):
+                    names[k] = self._stock_photo(job, sc, k + 2, b["stock"], photos, portrait, jdir)
+                    if names[k]:
+                        sc["beat_images"] = names
+                        self.store.save(job)
+                        continue     # a real photo covers this beat - no AI image needed
                 seed = (seed_base + sc["index"] * 7919 + (k + 1) * 104729) % 2**31
                 face = self._face_lock(img, job, jdir, b["visual"])
                 key = _key(img.id, b.get("prompt", ""), b.get("negative", ""), gen, seed, face)
@@ -280,6 +288,23 @@ class Pipeline:
         """The first generated shot showing people becomes the character reference for the rest of the video."""
         if self._spec(job).consistent_character and not job.get("character_ref") and director._has_people(visual):
             job["character_ref"] = image.name
+
+    def _stock_photo(self, job: dict, sc: dict, beat: int, query: str, photos: list, portrait: bool,
+                     jdir: Path) -> str | None:
+        """A real photo for a beat no footage covered (best effort; None -> the beat gets an AI image)."""
+        from .providers import stock_photo
+        for found in stock_photo.search_any(photos, query, portrait)[:3]:
+            try:
+                src = stock_photo.fetch(found, self.cfg.cache_dir / "stock_photos")
+            except (ProviderError, OSError):
+                continue
+            dst = jdir / f"scene_{sc['index'] + 1:02d}_beat{beat}_photo.jpg"
+            shutil.copyfile(src, dst)
+            credits = job.setdefault("stock_credits", [])
+            if found["credit"] not in credits:
+                credits.append(found["credit"])
+            return dst.name
+        return None
 
     def _stock_clips(self, job: dict, sc: dict, beats: list, stock: list[tuple[str, str]], jdir: Path) -> None:
         """Real footage for beats the planner marked with a stock search (best effort, cached)."""

@@ -65,13 +65,19 @@ def director_llm(cfg: Config, job_id: str):
 _stock_keys: dict[str, tuple[str, str]] = {}
 
 
+_photo_keys: dict[str, str] = {}
+
+
 def set_stock_key(job_id: str, d: dict) -> None:
-    """Stock-footage key lent by the app (Pexels or Pixabay), memory only."""
+    """Stock keys lent by the app (Pixabay or an old Pexels key; Unsplash for photos), memory only."""
     from .stock_video import detect
     key = str(d.get("key", "")).strip()
     if key and len(_stock_keys) < 500:
         provider = str(d.get("provider", "") or "").strip().lower()
         _stock_keys[job_id] = (provider if provider in ("pexels", "pixabay", "mock") else detect(key), key)
+    unsplash = str(d.get("unsplash", "") or "").strip()
+    if unsplash and len(_photo_keys) < 500:
+        _photo_keys[job_id] = unsplash
 
 
 def stock_key(job_id: str) -> tuple[str, str] | None:
@@ -85,6 +91,20 @@ def stock_sources(job_id: str, cfg: Config) -> list[tuple[str, str]]:
         return [keyed]
     free = [(name, "") for name in stock_video_free()] if cfg.free_stock else []
     return ([keyed] if keyed else []) + free
+
+
+def photo_sources(job_id: str, cfg: Config) -> list[tuple[str, str]]:
+    """Where this production looks for real photos when no footage fits: Unsplash, Pixabay, then Openverse."""
+    keyed = _stock_keys.get(job_id)
+    if keyed and keyed[0] == "mock":
+        return [("mock", "")]
+    out = [("unsplash", _photo_keys[job_id])] if job_id in _photo_keys else []
+    if keyed and keyed[0] == "pixabay":
+        out.append(keyed)
+    if cfg.free_stock:
+        from .stock_photo import FREE_SOURCES
+        out += [(name, "") for name in FREE_SOURCES]
+    return out
 
 
 def stock_video_free() -> tuple[str, ...]:

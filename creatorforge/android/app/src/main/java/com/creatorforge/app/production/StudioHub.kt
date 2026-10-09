@@ -42,16 +42,34 @@ object StudioHub {
     /** Your Script AI (Gemini, Groq, ...), lent to the pod to plan each video's story and shots - far stronger than the
      *  pod's small local model. Only https services; the pod keeps it in memory for that one video. */
     /** Pixabay key (Settings), lent to the pod for real stock footage in fast cuts. "pexels:KEY" still works for old Pexels keys. */
-    fun stockKey(c: Context): org.json.JSONObject? =
-        SecureTokenStore(c).load("stock")?.trim()?.takeIf { it.isNotBlank() }?.let { k ->
-            if (k.startsWith("pexels:", ignoreCase = true)) org.json.JSONObject().put("provider", "pexels").put("key", k.substringAfter(":").trim())
-            else org.json.JSONObject().put("provider", "pixabay").put("key", k.removePrefix("pixabay:").removePrefix("Pixabay:").trim())
+    fun stockKey(c: Context): org.json.JSONObject? {
+        val store = SecureTokenStore(c)
+        val o = org.json.JSONObject()
+        store.load("stock")?.trim()?.takeIf { it.isNotBlank() }?.let { k ->
+            if (k.startsWith("pexels:", ignoreCase = true)) o.put("provider", "pexels").put("key", k.substringAfter(":").trim())
+            else o.put("provider", "pixabay").put("key", k.removePrefix("pixabay:").removePrefix("Pixabay:").trim())
         }
+        store.load("unsplash")?.trim()?.takeIf { it.isNotBlank() }?.let { o.put("unsplash", it) }
+        return o.takeIf { it.length() > 0 }
+    }
+
+    /** Checks the Unsplash Access Key with one tiny search: null when it works, else the reason. */
+    fun testUnsplashKey(c: Context): String? {
+        val k = SecureTokenStore(c).load("unsplash")?.trim().orEmpty().ifBlank { return "Add a key first" }
+        val (code, body) = com.creatorforge.app.studio.HttpFetcher().get(
+            "https://api.unsplash.com/search/photos?query=city&per_page=1", mapOf("Authorization" to "Client-ID $k"))
+        return when {
+            code == 200 && "\"results\"" in body -> null
+            code == 401 -> "Unsplash rejected this key - copy the Access Key (not the Secret key) again"
+            code == 403 -> "Unsplash says the hourly limit is used up (50/hour in Demo mode) - try again later"
+            else -> "Unsplash answered HTTP $code"
+        }
+    }
 
     /** Checks the saved stock key with Pixabay itself (one tiny search): null when it works, else the reason. */
     fun testStockKey(c: Context): String? {
-        val k = stockKey(c) ?: return "Add a key first"
-        if (k.getString("provider") != "pixabay") return null
+        val k = stockKey(c)?.takeIf { it.has("key") } ?: return "Add a key first"
+        if (k.optString("provider") != "pixabay") return null
         val (code, body) = com.creatorforge.app.studio.HttpFetcher().get(
             "https://pixabay.com/api/videos/?key=${Uri.encode(k.getString("key"))}&q=city&per_page=3")
         return when {
@@ -186,8 +204,9 @@ fun AiSettingsCard(secure: SecureTokenStore) {
         status?.let { Text(it, color = if (it.startsWith("✓")) Gold else Danger, fontSize = 12.sp) }
         HorizontalDivider(Modifier.padding(vertical = 6.dp))
         Text("Real stock footage (free, optional)", color = Gold, fontSize = 13.sp)
-        Text("Your videos already mix in real footage from NASA (space, science, Earth) and Wikimedia Commons (history, " +
-            "real events, animals) - no key needed; their credits go into the post description. " +
+        Text("Your videos already mix in real footage from NASA (space, science, Earth), Wikimedia Commons (history, " +
+            "real events, animals), old public-domain films from the Internet Archive and free photos from Openverse - " +
+            "no key needed; their credits go into the post description. " +
             "Add a free Pixabay key for everyday clips - crowds, cities, hands, nature - free for commercial use. " +
             "Get it: sign up at pixabay.com, then open pixabay.com/api/docs - your key is shown there.", color = Dim, fontSize = 12.sp)
         TextButton({ openUrl(context, "https://pixabay.com/api/docs/") }) { Text("GET A FREE PIXABAY KEY ↗", color = Gold, fontSize = 12.sp) }
@@ -207,6 +226,25 @@ fun AiSettingsCard(secure: SecureTokenStore) {
         }
         stockStatus?.let { Text(it, color = if (it.startsWith("✓")) Gold else if (it.startsWith("✗")) Danger else Dim, fontSize = 12.sp) }
         if (hasStock) TextButton({ secure.clear("stock"); hasStock = false; stockStatus = null }) { Text("REMOVE STOCK KEY", color = Danger) }
+        Text("Unsplash photos (free, optional): beautiful real photos for shots no video fits. Get it: unsplash.com/developers " +
+            "→ New Application → copy the Access Key.", color = Dim, fontSize = 12.sp)
+        TextButton({ openUrl(context, "https://unsplash.com/oauth/applications") }) { Text("GET A FREE UNSPLASH KEY ↗", color = Gold, fontSize = 12.sp) }
+        var unsplash by remember { mutableStateOf("") }
+        var hasUnsplash by remember { mutableStateOf(secure.has("unsplash")) }
+        var unsplashStatus by remember { mutableStateOf<String?>(null) }
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            OutlinedTextField(unsplash, { unsplash = it }, Modifier.weight(1f), singleLine = true, visualTransformation = PasswordVisualTransformation(),
+                label = { Text(if (hasUnsplash) "Saved - paste to replace" else "Unsplash Access Key") })
+            Button({ if (unsplash.isNotBlank()) { secure.save("unsplash", unsplash.trim().trim('"', ' ')); unsplash = ""; hasUnsplash = true }
+                scope.launch {
+                    unsplashStatus = "Testing…"
+                    unsplashStatus = runCatching { studio { StudioHub.testUnsplashKey(context) } }
+                        .fold({ it?.let { e -> "✗ $e" } ?: "✓ Unsplash key works - real photos will be mixed into your videos" }, { "✗ ${it.message}" })
+                }
+            }, enabled = unsplash.isNotBlank() || hasUnsplash) { Text(if (unsplash.isBlank() && hasUnsplash) "TEST" else "SAVE & TEST") }
+        }
+        unsplashStatus?.let { Text(it, color = if (it.startsWith("✓")) Gold else if (it.startsWith("✗")) Danger else Dim, fontSize = 12.sp) }
+        if (hasUnsplash) TextButton({ secure.clear("unsplash"); hasUnsplash = false; unsplashStatus = null }) { Text("REMOVE UNSPLASH KEY", color = Danger) }
         HorizontalDivider(Modifier.padding(vertical = 6.dp))
         Text("YouTube trends (optional)", color = Gold, fontSize = 13.sp)
         Text("A free YouTube Data API key adds YouTube's most-watched videos to Trends.", color = Dim, fontSize = 12.sp)

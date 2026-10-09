@@ -14,7 +14,7 @@ import httpx
 
 from .base import ProviderError
 
-FREE_SOURCES = ("nasa", "wikimedia")
+FREE_SOURCES = ("nasa", "wikimedia", "archive")
 UA = "CreatorForge/1.0 (video worker; https://github.com/diljotsinghdj-creator/Forgeos)"
 _STOP = {"the", "and", "with", "from", "into", "over", "for", "of", "a", "an", "in", "on", "at", "to", "by"}
 # Free licences that allow commercial use and editing (credit goes in the publish kit).
@@ -104,6 +104,41 @@ def _wikimedia(query: str, timeout: float) -> list[dict]:
     return out
 
 
+def _archive(query: str, timeout: float) -> list[dict]:
+    """Prelinger Archives on the Internet Archive: thousands of public-domain 1930s-80s films (ads, educational and
+    science films, newsreels) - the real "old experiment footage" look. The archive asks for a credit."""
+    q = " AND ".join(f"({w})" for w in _words(query)[:4])
+    if not q:
+        return []
+    r = httpx.get("https://archive.org/advancedsearch.php", timeout=timeout, headers={"User-Agent": UA}, params={
+        "q": f"{q} AND collection:(prelinger) AND mediatype:(movies)", "fl[]": ["identifier", "title", "description",
+        "subject"], "rows": 15, "output": "json"})
+    r.raise_for_status()
+    out = []
+    for doc in (r.json().get("response") or {}).get("docs", []):
+        about = " ".join(str(doc.get(k) or "") for k in ("title", "description", "subject"))[:1500]
+        ident = str(doc.get("identifier") or "")
+        if not ident or not relevant(query, about):
+            continue
+        m = httpx.get(f"https://archive.org/metadata/{quote(ident)}", timeout=timeout, headers={"User-Agent": UA})
+        if m.status_code != 200:
+            continue
+        files = [f for f in m.json().get("files") or [] if str(f.get("name", "")).lower().endswith(".mp4")]
+        # The h.264 derivative keeps the film's resolution at a sane size; the 512kb copy is a last resort.
+        files.sort(key=lambda f: (str(f.get("format", "")) not in ("h.264", "MPEG4", "h.264 HD"),
+                                  "512kb" in str(f.get("name", "")).lower(), int(f.get("size") or 0)))
+        files = [f for f in files if 0 < int(f.get("size") or 0) <= 200 * 1024 * 1024]
+        if files:
+            f = files[0]
+            out.append({"url": f"https://archive.org/download/{quote(ident)}/{quote(str(f['name']))}",
+                        "width": int(f.get("width") or 640), "height": int(f.get("height") or 480),
+                        "duration": float(f.get("length") or 0) if str(f.get("length", "")).replace(".", "", 1).isdigit() else 0.0,
+                        "credit": "Prelinger Archives / Internet Archive", "trim": True})
+        if len(out) >= 2:
+            break
+    return out
+
+
 def search_any(sources: list[tuple[str, str]], query: str, portrait: bool = True) -> list[dict]:
     """First source with a matching clip wins (keyed library first, then the keyless ones). A source that is
     down or rate-limited is skipped."""
@@ -136,6 +171,8 @@ def search(provider: str, key: str, query: str, portrait: bool = True, timeout: 
             return _nasa(query, timeout)
         if provider == "wikimedia":
             return _wikimedia(query, timeout)
+        if provider == "archive":
+            return _archive(query, timeout)
         if provider == "pixabay":
             r = httpx.get("https://pixabay.com/api/videos/", params={"key": key, "q": query, "per_page": 10,
                                                                       "safesearch": "true"}, timeout=timeout)
