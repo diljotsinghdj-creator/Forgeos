@@ -29,13 +29,21 @@ That figure is an illustration, not a claim about any real company.
 Visual: Blurred glowing phone screen with a generic app layout, nothing readable
 Text: ILLUSTRATION ONLY
 
-But the mechanism is real: a payment that needs no decision is easy to ignore.
-Visual: A hand reaching past an open wallet on a cluttered desk without looking at it
+So why did nobody notice for six months?
+Visual: Extreme close-up of an eye reflected in a dark phone screen
+Text: WHY NOBODY NOTICES
 
-So here is the fix. Open your bank statement today.
+Because a payment that asks for no decision never gets one.
+Visual: A hand reaching past an open wallet on a cluttered desk without looking at it
+Text: NO DECISION = NO NOTICE
+
+Here is the two-minute fix. Open your bank statement today.
 Visual: Hands holding a phone above a kitchen table, morning light through a window
 Stock: woman checking phone kitchen
 
 Find one recurring payment you would not choose again, and cancel it.
 Visual: A thumb hovering over a phone screen, a single highlighted button glowing red, text unreadable
 Text: WOULD I BUY THIS TODAY?
+
+Because the most expensive subscription is the one you forgot you had.
+Visual: The same phone face down on the dark kitchen table, its notification light going out
