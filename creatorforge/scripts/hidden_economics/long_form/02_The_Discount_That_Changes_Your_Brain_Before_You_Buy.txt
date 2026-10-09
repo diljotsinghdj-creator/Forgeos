@@ -1,0 +1,354 @@
+The Discount That Changes Your Brain Before You Buy
+On-screen hook: THE PRICE YOU NEVER PAY
+Title: The Discount That Changes Your Brain Before You Buy (Was £100, Now £60?)
+Tags: #HiddenEconomics #anchoring #behaviouraleconomics #shopping #consumerrights
+Source: Tversky and Kahneman, Judgment under Uncertainty, Science 185, 1974, https://doi.org/10.1126/science.185.4157.1124; Ariely, Loewenstein and Prelec, Coherent Arbitrariness, Quarterly Journal of Economics 118(1), 2003, https://www.cmu.edu/dietrich/sds/docs/loewenstein/CoherentArbit.pdf; Northcraft and Neale, Experts, amateurs, and real estate, OBHDP 39(1), 1987, https://ideas.repec.org/a/eee/jobhdp/v39y1987i1p84-97.html; EU Price Indication Directive Art. 6a, inserted by Directive 2019/2161, https://eur-lex.europa.eu/eli/dir/1998/6/2022-05-28/eng; Mathur et al., Dark Patterns at Scale, CSCW 2019, https://arxiv.org/abs/1907.07032; CMA, Emma Group consumer protection case, 2026, https://www.gov.uk/cma-cases/emma-group-consumer-protection-case; CMA, consumer protection drive on online pricing, Nov 2025, https://www.gov.uk/government/news/cma-launches-major-consumer-protection-drive-focused-on-online-pricing-practices
+
+The most persuasive number on a price tag is the one you will never pay.
+Visual: Extreme close-up of a paper price tag, one number struck through in red ink, figures blurred
+Text: THE PRICE YOU NEVER PAY
+
+Picture a fictional jacket online. One hundred pounds, crossed out.
+Visual: Laptop screen in a dark room showing a generic shop page with a jacket photo, text unreadable
+Text: WAS £100 (FICTIONAL)
+
+Underneath, in red, sixty pounds.
+Visual: Close-up of a red sale sticker on a dark jacket sleeve, warm lamp light
+Text: NOW £60
+
+It feels as though you have just saved forty pounds.
+Visual: Four ten-pound notes fanned out on a dark wooden desk
+
+But you did not want a jacket until that red label appeared.
+Visual: An open wardrobe in a dim bedroom, several jackets already hanging inside
+
+So did you save forty pounds, or find a reason to spend sixty?
+Visual: A hand hovering between a wallet and a closed laptop under a desk lamp
+Text: SAVED £40 OR SPENT £60?
+
+To answer that, we need a strange experiment with a wheel.
+Visual: Close-up of a small wooden roulette-style wheel spinning on a dark table
+Stock: spinning wheel close up
+
+In nineteen seventy-four, two psychologists rigged a wheel of fortune.
+Visual: Wide shot of a lamp-lit university lecture room, empty rows of seats
+Text: Tversky & Kahneman, Science 1974
+Stock: empty lecture hall
+
+It looked random, but it only ever stopped on ten or sixty-five.
+Visual: Macro of a wheel pointer settling on a painted segment, numbers out of focus
+Text: RIGGED: 10 OR 65
+
+Then they asked a question that had nothing to do with the wheel.
+Visual: A globe on a desk, slowly turning, lit from one side
+
+What share of the United Nations' members are African countries?
+Visual: Close-up of the African continent on the globe, lamp light catching it
+Text: % OF UN MEMBERS THAT ARE AFRICAN?
+
+People who saw ten gave a median guess of twenty-five percent.
+Visual: A small stack of coins under a cool blue light
+Text: SAW 10 → GUESSED 25%
+
+People who saw sixty-five guessed forty-five percent.
+Visual: A much taller stack of coins beside it, warm light
+Text: SAW 65 → GUESSED 45%
+
+A number everyone knew was meaningless had moved their answer by twenty points.
+Visual: The wheel from earlier, now still, a single beam of light across it
+Text: +20 POINTS FROM A RANDOM NUMBER
+
+Psychologists call this anchoring. The first number becomes a starting point.
+Visual: A boat anchor resting on a dark wooden floor, rope coiled beside it
+
+Offering people money for accurate answers did not make the effect go away.
+Visual: A few coins placed beside an answer sheet on a desk, lamp light
+Text: PAYING FOR ACCURACY DIDN'T HELP
+
+But that was trivia. Does it work when real money is involved?
+Visual: Close-up of a hand holding a debit card over a dark table
+Text: DOES IT WORK WITH MONEY?
+
+Around three decades later, researchers tried it with prices.
+Visual: A table laid out with a bottle of wine, a box of chocolates and a cordless keyboard
+Text: Ariely, Loewenstein & Prelec, 2003
+
+They asked students to write down the last two digits of their social security number.
+Visual: A hand writing two digits on a small card with a pencil, digits blurred
+Text: LAST 2 DIGITS OF ID NUMBER
+
+Then, would you pay that many dollars for this keyboard, or this bottle of wine?
+Visual: Overhead shot of a cordless keyboard and a wine bottle side by side under lamp light
+
+Finally, they asked each student for the most they would pay.
+Visual: Close-up of a pen hovering over a blank bid sheet
+
+Students with the highest numbers bid far more than those with the lowest.
+Visual: Two rows of coins on a table, one row much longer than the other
+Text: HIGH NUMBERS → HIGHER BIDS
+
+For the same cordless keyboard, around fifty-six dollars against around sixteen.
+Visual: Close-up of the cordless keyboard, one stack of coins on either side
+Text: TOP 20%: ~$56 · BOTTOM 20%: ~$16
+
+Same keyboard, same room, more than three times the price.
+Visual: Extreme close-up of keyboard keys in shallow focus, warm rim light
+Text: 3× MORE
+
+Stranger still, once that first number was set, their later valuations were perfectly logical.
+Visual: A row of dominoes standing in a neat, evenly spaced line on a dark table
+
+The researchers called it coherent arbitrariness. A random start, then sensible steps from it.
+Visual: A single domino tipping, the rest following in order
+Text: COHERENT ARBITRARINESS
+
+Students are not experts though. Surely professionals see through it?
+Visual: Wide shot of a suburban street of houses at dusk
+Text: ARE EXPERTS IMMUNE?
+Stock: suburban street dusk
+
+In nineteen eighty-seven, researchers asked experienced estate agents to value a real house.
+Visual: Exterior of a detached house at dusk, a for-sale sign by the path, lettering unreadable
+Text: Northcraft & Neale, 1987
+Stock: house for sale sign
+
+Every agent toured the same property and saw the same local sales data.
+Visual: Hands flicking through a folder of property papers on a kitchen counter, text blurred
+
+Only one thing changed. The listing price printed on their pack.
+Visual: Macro of a property leaflet with the price area in sharp focus, digits blurred
+Text: ONLY THE LIST PRICE CHANGED
+
+Agents shown the lowest listing valued the house at about one hundred and fourteen thousand dollars.
+Visual: A small model house on a dark table under cool light
+Text: LOW LIST → ~$114,000
+
+Agents shown the highest valued the same house at nearly one hundred and twenty-nine thousand.
+Visual: The same model house, now under warm golden light
+Text: HIGH LIST → ~$129,000
+
+Yet the agents largely denied the listing price had shaped their judgement.
+Visual: Silhouette of a person in a suit from behind, looking at a house
+Text: "IT DIDN'T INFLUENCE ME"
+
+So if a random number can move an expert, what does a crossed-out price do?
+Visual: Return to the red-struck price tag, now in extreme close-up
+Text: WHAT DOES A CROSSED-OUT PRICE DO?
+
+The crossed-out price is the anchor. The sale price is the adjustment.
+Visual: Two price tags hanging side by side on a rail, one larger, figures blurred
+
+And here is the uncomfortable part. The shop chooses the anchor.
+Visual: A hand pinning a new price tag onto a jacket in a dim shop
+Stock: pricing clothes in shop
+
+Many reductions are genuine, and a real discount is useful.
+Visual: A shop window at night with a sale display, lettering out of focus
+Stock: shop window sale night
+
+But if the higher price barely applied, the saving shrinks to nothing.
+Visual: A balloon slowly deflating on a dark table
+Text: HOW LONG WAS IT £100?
+
+European lawmakers took this seriously enough to write it into law.
+Visual: Wide shot of a modern glass parliament building with flags at dusk
+Stock: European Parliament building
+
+Since May twenty twenty-two, an advertised reduction across the EU must show a specific reference price.
+Visual: Close-up of a printed legal text on a desk, an official seal visible, words blurred
+Text: EU RULES, SINCE 28 MAY 2022
+
+The lowest price the trader charged in at least the previous thirty days.
+Visual: A wall calendar with thirty days crossed off in pencil
+Text: LOWEST PRICE IN PRIOR 30 DAYS
+
+The aim is to stop prices being raised briefly, then cut, to fake a bargain.
+Visual: A hand moving a price tag up a pegboard, then back down
+Text: RAISE · CUT · "SALE"
+
+In twenty twenty-four, the EU's top court confirmed how strict that is.
+Visual: Wide shot of a grand courtroom with high ceilings, empty, soft daylight
+Text: EU COURT OF JUSTICE, SEPT 2024
+Stock: european court building
+
+A percentage discount must be measured from that thirty-day low, not a higher list price.
+Visual: A ruler laid along a row of coin stacks, the lowest one marked with chalk
+Text: 30-DAY LOW = THE STARTING POINT
+
+But an anchor works even better with a partner. A clock.
+Visual: Extreme close-up of a red digital countdown glowing in the dark, digits blurred
+
+Countdown timers, low-stock warnings, and notes that others are looking right now.
+Visual: Phone screen showing a generic shop page with a red banner and a small timer icon, text unreadable
+Text: FICTIONAL INTERFACE
+
+Urgency shrinks the time you have to question the anchor.
+Visual: Sand running through an hourglass on a dark desk, lamp light
+Stock: hourglass sand close up
+
+Some deadlines are real. Sales do end, and stock does run out.
+Visual: An almost empty shop shelf with one box left, harsh overhead light
+
+So how often is the urgency itself the trick?
+Visual: A magnifying glass held over a glowing phone screen, text unreadable
+Text: HOW OFTEN IS IT FAKE?
+
+In twenty nineteen, university researchers crawled around eleven thousand shopping websites.
+Visual: Wide shot of rows of server racks blinking in a dark room
+Text: ~11,000 SITES (Mathur et al., 2019)
+Stock: server room lights
+
+They found one thousand eight hundred and eighteen dark patterns, design tricks that steer you.
+Visual: Overhead shot of a desk covered in printed web pages, each with a red mark, text unreadable
+Text: 1,818 DARK PATTERNS
+
+On one hundred and eighty-three sites, the claims were judged outright deceptive.
+Visual: A small pile of printed pages pulled aside and lit separately
+Text: 183 SITES WITH DECEPTIVE CLAIMS
+
+They included countdown timers that simply reset when the page was reloaded.
+Visual: Close-up of a phone screen refreshing, a timer icon reappearing, digits blurred
+Text: TIMER RESETS ON RELOAD
+
+They also found twenty-two companies selling these tricks to shops as ready-made tools.
+Visual: Boxes stacked on warehouse shelving in low light, labels unreadable
+Text: 22 THIRD-PARTY SUPPLIERS
+
+The authors cautioned that their count was likely an underestimate.
+Visual: The tip of an iceberg in dark water, most of it hidden below
+Stock: iceberg underwater
+
+And in May twenty twenty-six, it reached a British courtroom.
+Visual: Exterior of a stone court building on a grey day, people from behind on the steps
+Stock: court building exterior
+
+An online retailer admitted its countdown timers presented offers as time-limited when none were.
+Visual: A digital clock on a dark shelf, its display frozen
+Text: "TIME-LIMITED" · NONE WERE
+
+It agreed binding undertakings with the competition regulator, approved by the High Court.
+Visual: A signed document and a pen on a polished table, signature blurred
+Text: HIGH COURT CONSENT ORDER, 2026
+
+So a sceptical eye is reasonable. Yet even an honest deal hides a trap.
+Visual: An honest-looking paper receipt on a table, lamp light, figures blurred
+Text: EVEN AN HONEST DEAL…
+
+Go back to the fictional jacket, now at sixty pounds.
+Visual: The dark jacket from earlier, hanging alone on a hook
+
+At checkout, a ten percent voucher takes it to fifty-four.
+Visual: Phone screen showing a generic checkout with a voucher field, text unreadable
+Text: £60 − 10% = £54
+
+You can truthfully say you paid less than the listed price.
+Visual: A hand holding a short paper receipt, figures blurred
+
+But this morning, you planned to spend nothing.
+Visual: A wallet lying closed on a kitchen table in morning light
+Text: PLANNED SPEND: £0
+
+So your account is fifty-four pounds lower than if you had walked away.
+Visual: Close-up of a banking app balance on a phone, the figure blurred, a red minus sign glowing
+
+That is the difference between a discount and a saving.
+Visual: Two jars on a shelf, one labelled with a tag and one empty, labels blank
+Text: DISCOUNT ≠ SAVING
+
+And the price is not even finished yet.
+Visual: A shopping basket icon glowing on a dark screen, text unreadable
+
+Delivery, booking fees and service charges can appear only at the final screen.
+Visual: Phone screen showing a generic checkout summary growing longer, text unreadable
+Text: + DELIVERY + FEES
+
+That has a name, drip pricing. In Britain, it has been banned since April twenty twenty-five.
+Visual: Water dripping from a tap into a glass, one drop at a time, lamp light
+Text: DRIP PRICING · BANNED 6 APR 2025
+Stock: dripping tap close up
+
+Mandatory charges must now be included in the price you see first.
+Visual: A single complete price tag on a jacket, everything else in shadow
+Text: MANDATORY FEES UP FRONT
+
+The regulator can now fine firms directly, up to ten percent of global turnover.
+Visual: A heavy steel padlock on a dark wooden surface, hard side light
+Text: FINES UP TO 10% OF TURNOVER
+
+So did the problem disappear? Not quite.
+Visual: Wide shot of a busy high street at dusk, shoppers seen from behind
+Stock: busy shopping street
+
+In November twenty twenty-five, the regulator reviewed more than four hundred businesses.
+Visual: Overhead shot of many open laptops on a long table, screens glowing, text unreadable
+Text: 400+ BUSINESSES · 19 SECTORS
+
+It found possible problems in fourteen sectors, including drip pricing and misleading countdown timers.
+Visual: A map of sectors drawn as coloured blocks on paper, fourteen marked in red pencil
+Text: CONCERNS IN 14 SECTORS
+
+A government-commissioned report found drip pricing at ninety-three percent of event ticket sellers reviewed.
+Visual: A pair of concert tickets on a dark table, printing out of focus
+Text: EVENT TICKETS: 93%
+Stock: concert tickets
+
+Cinema tickets, sixty-nine percent. Gym memberships, sixty percent.
+Visual: A cinema seat in the dark, a gym bag on the floor beside it
+Text: CINEMA 69% · GYMS 60%
+
+The regulator opened eight investigations and sent a hundred advisory letters.
+Visual: A neat stack of sealed envelopes on a desk under lamp light
+Text: 8 INVESTIGATIONS · 100 LETTERS
+
+So what actually protects you when the anchor and the clock arrive together?
+Visual: A hand closing a laptop halfway, the screen's glow narrowing in a dark room
+Text: WHAT ACTUALLY PROTECTS YOU?
+
+Before you open a sale, write down what you actually need.
+Visual: A hand writing a short list on a notepad under a desk lamp, words unreadable
+Text: 1. WRITE THE LIST FIRST
+Stock: writing shopping list
+
+Then judge the final total, including delivery, not the crossed-out number.
+Visual: Close-up of a finger pointing at the bottom line of a paper receipt, figures blurred
+Text: 2. JUDGE THE FINAL TOTAL
+
+Check price history or another shop in a separate tab.
+Visual: Laptop with two blurred browser windows side by side in a dark room
+Text: 3. COMPARE ELSEWHERE
+
+For anything non-essential, sleep on it.
+Visual: A phone placed face down on a bedside table, a lamp switching off
+Text: 4. WAIT OVERNIGHT
+
+Notice that none of these steps relies on willpower in the moment.
+Visual: Close-up of a calm hand resting flat on a closed laptop lid
+
+Each one puts time and information back between the anchor and your decision.
+Visual: A wide gap between two wooden blocks on a dark table, lamp light falling into it
+
+If a genuine deal disappears, another usually comes along.
+Visual: Morning light through a window onto the same desk, the jacket page closed
+
+And ask one question. Would I pay this, if no other price were shown?
+Visual: Extreme close-up of a single clean price tag with no crossed-out number, figures blurred
+Text: WOULD I PAY THIS WITH NO "WAS"?
+
+Remember the estate agents. They were sure the number had not touched them.
+Visual: The model house from earlier, lights going off one by one
+
+That certainty is exactly what makes an anchor work.
+Visual: The boat anchor on the dark floor, rope tightening
+Text: CERTAINTY IS THE WEAKNESS
+
+The point is not to refuse discounts. It is to stop one deciding for you.
+Visual: A hand calmly placing a wallet back into a coat pocket
+Text: DON'T LET THE DISCOUNT DECIDE
+
+Some prices are not about the number. Why do things feel better when others see them?
+Visual: A wristwatch glinting on a stranger's wrist on a crowded train, seen from behind
+Text: NEXT EPISODE
+
+Next time, the hidden economics of status.
+Visual: A row of identical shopping bags on a pavement, one catching the light
+Text: NEXT: THE STATUS TRAP

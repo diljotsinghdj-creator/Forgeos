@@ -34,7 +34,6 @@ Text: FICTIONAL INTERFACE
 
 Joining takes ten seconds, one tap and a card number.
 Visual: Close-up of a hand tapping a payment card against a phone, warm desk-lamp light
-Text: SIGN-UP: 10 SECONDS
 Stock: contactless card payment phone
 
 They watch something on the first evening, and then life gets busy.
@@ -52,7 +51,6 @@ Visual: Silhouette of a person at a window, phone in hand, city lights behind
 
 Is forgetting an accident, or is it part of the revenue?
 Visual: Calendar on a wall with a single red circle, lamp light falling across it
-Text: ACCIDENT OR REVENUE?
 
 To see why it matters, look at the arithmetic of staying.
 Visual: Overhead shot of a notepad, a pencil and a calculator on a dark desk
@@ -64,7 +62,6 @@ Stock: stadium crowd aerial
 
 Each pays ten pounds a month.
 Visual: Ten pound coins laid in a neat row on black slate
-Text: £10 / MONTH
 
 That is one million pounds every month, before costs.
 Visual: Bundles of banknotes in soft focus on a table, dramatic top light
@@ -72,7 +69,6 @@ Text: 100,000 × £10 = £1,000,000
 
 Now ten thousand of them cancel.
 Visual: A line of small wooden figures on a desk, a tenth of them knocked over
-Text: −10,000
 
 If they would otherwise have renewed, that is one hundred thousand pounds a month gone.
 Visual: A hand sweeping a pile of coins off the edge of a table into darkness
@@ -136,7 +132,6 @@ Stock: calendar pages flipping
 
 The researchers pointed to overconfidence. People expect their future selves to try harder.
 Visual: Running shoes still in their box on a bedroom floor, morning light
-Text: OVERCONFIDENCE
 
 So silence alone keeps people paying. What happens when a business adds friction?
 Visual: Close-up of a phone screen with a tiny, faint button in a corner, text unreadable
@@ -150,7 +145,6 @@ Visual: A phone on a bedside table showing a soft notification glow, text unread
 
 The problem starts when design, not value, becomes the reason people remain.
 Visual: Two doors in a dark corridor, one wide open and bright, one narrow and shadowed
-Text: DESIGN vs VALUE
 
 Picture a fictional app with a huge, bright button to join.
 Visual: Phone screen showing a generic app with one large glowing green button, text unreadable
@@ -245,7 +239,6 @@ Text: 6 DAYS BEFORE IT APPLIED
 
 But the court did not say easy cancelling was a bad idea.
 Visual: A closed law book on a desk, a single ribbon marker
-Text: NOT A RULING ON THE IDEA
 
 It ruled the regulator had skipped a required cost analysis.
 Visual: Macro of a ledger with an empty column, pencil resting across it
@@ -297,7 +290,6 @@ Text: STAY? PAUSE? CONTINUE?
 
 Both companies might offer you a discount to stay. That is fine.
 Visual: Phone screen with a generic offer card, a small gift icon, text unreadable
-Text: OFFERS ARE FINE
 
 Only one lets you understand how to go.
 Visual: A lit exit sign above a doorway in a dark corridor, no lettering legible
@@ -308,11 +300,9 @@ Text: MISSING: HOW TO LEAVE
 
 The difference is not politeness. It is control.
 Visual: A hand firmly closing a laptop lid in a dim room
-Text: IT IS CONTROL
 
 So how do you take that control back today?
 Visual: Close-up of a bank statement under a desk lamp, a pen poised above it
-Text: TAKE CONTROL BACK
 
 Open your statements and list every recurring payment.
 Visual: Hands highlighting lines on a printed bank statement, figures blurred
