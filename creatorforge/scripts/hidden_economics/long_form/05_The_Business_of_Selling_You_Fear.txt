@@ -4,333 +4,314 @@ Title: People Paid MORE for LESS Insurance. The Business of Selling Fear
 Tags: #HiddenEconomics #behaviouraleconomics #psychology #marketing #consumerrights
 Source: Johnson, Hershey, Meszaros & Kunreuther 1993, Framing, probability distortions and insurance decisions, J Risk Uncertainty vol 7 https://link.springer.com/article/10.1007/BF01065313; Lichtenstein et al. 1978, Judged frequency of lethal events https://scholarsbank.uoregon.edu/xmlui/handle/1794/22549; Combs & Slovic 1979, Newspaper coverage of causes of death, Journalism Quarterly 56(4); Sunstein & Zeckhauser, Overreaction to Fearsome Risks https://www.hks.harvard.edu/publications/overreaction-fearsome-risks; Tannenbaum et al. 2015, Appealing to fear, Psychological Bulletin https://pubmed.ncbi.nlm.nih.gov/26501228/; Home Office, Detailed analysis of fires, England 2022 to 2023 https://www.gov.uk/government/statistics/detailed-analysis-of-fires-attended-by-fire-and-rescue-services-england-april-2022-to-march-2023; CAP Code rule 4.2 https://www.asa.org.uk/type/non_broadcast/code_section/04.html; DMCC Act 2024 Schedule 20 para 7 https://www.legislation.gov.uk/ukpga/2024/13/schedule/20; CMA urgency claims guidance https://www.gov.uk/government/news/cma-investigates-online-selling-practices-based-on-urgency-claims
 
-Two insurance policies. One covers far more. People offered more for the other.
-Visual: Two blank insurance documents side by side on a dark desk under a warm lamp, text unreadable
-Text: WHICH POLICY IS WORTH MORE?
+Two groups priced two insurance policies. The one that covered less was valued more.
+Visual: Extreme close-up of a small paper policy floating upward off a dark desk while a larger one sinks, warm lamp light
+Text: LESS COVER, HIGHER VALUE
 
-In a published experiment, people priced flight insurance covering terrorism alone.
-Visual: Close-up of an airline boarding pass beside a pen on a dark desk, printing blurred
+One paid out only if you died in a terrorist attack on a flight.
+Visual: A boarding pass sliding slowly across a dark desk under a sweeping lamp beam, printing blurred
 Text: POLICY A: TERRORISM ONLY
 
-Others priced cover for death from any cause whatsoever.
-Visual: The second document slid forward under the lamp, a hand resting on it
+The other paid out if you died on that flight from any cause at all.
+Visual: A second, thicker document sliding in beside it, a hand smoothing it flat
 Text: POLICY B: ANY CAUSE
 
-Any cause includes terrorism. The second policy is strictly bigger.
-Visual: Two overlapping circles drawn in pencil on paper, one circle sitting inside the other
+Any cause includes terrorism. The second policy was strictly bigger.
+Visual: Pencil drawing one circle, then a larger circle closing around it, overhead macro
 Text: A IS INSIDE B
 
-Yet on average, the narrower, scarier policy was valued more highly.
-Visual: Extreme close-up of a coin balanced on the edge of the smaller document
+On average, people still put a higher price on the smaller one.
+Visual: A coin tipping off the large document and rolling onto the small one, extreme close-up
 Text: Johnson et al., 1993
 
-So what made a smaller promise feel more valuable?
-Visual: A hand hovering between the two documents, lamp light falling across both
-Text: WHY?
+If one word can do that to a price, it can do it to yours.
+Visual: Wide shot of a dark living room, a phone on the sofa lighting up the ceiling
 
-The researchers pointed to one word, and the pictures it brings to mind.
-Visual: Macro shot of a dark window at night, rain streaking the glass
+By the end, you'll know four questions that strip the fear out of any offer.
+Visual: A hand turning a lamp dial, the room slowly warming from blue to gold
+Text: FOUR QUESTIONS
 
-Terrorism is vivid. Any cause is abstract.
-Visual: A storm cloud over a dark airfield, wide shot, no aircraft markings visible
-Stock: storm clouds night sky
+Meet Maya. She is fictional, and it is eleven at night.
+Visual: Silhouette of a woman from behind on a sofa, phone glow on her hair, rain on the window
+Text: MAYA · FICTIONAL
 
-A vivid threat can crowd out the question of how likely it is.
-Visual: A blurred television glowing in a dark living room, seen from behind a sofa
-
-And that blind spot turns out to be very old, and very consistent.
-Visual: A stack of old printed journals on a library shelf, shallow focus
-
-In nineteen seventy-eight, researchers asked people to estimate how often different things kill.
-Visual: Hands holding a pencil over a paper questionnaire, rows of boxes, text unreadable
-Text: Lichtenstein et al., 1978
-
-Judgements leaned towards dramatic, memorable causes and away from quiet, common ones.
-Visual: Two stacks of index cards, one tall and one short, on a dark table
-
-Warned about the bias and asked to correct for it, most still could not.
-Visual: An eraser rubbing at a pencil mark that will not fully disappear, macro
-Text: WARNED, STILL BIASED
-
-A follow-up compared those distorted estimates with newspaper coverage of each cause.
-Visual: A pile of folded newspapers on a dark table, headlines blurred
-Stock: stack of newspapers
-
-The estimates tracked how often each cause made the papers, not how often it killed.
-Visual: Scissors resting on a newspaper clipping, macro, print unreadable
-Text: Combs & Slovic, 1979
-
-A later paper by Cass Sunstein and Richard Zeckhauser tested the same blind spot with money.
-Visual: Hands counting a few banknotes on a kitchen table, faces out of frame
-Text: Sunstein & Zeckhauser
-
-When a cancer risk was described vividly, what people would pay to remove it barely moved.
-Visual: A glass of tap water on a dark windowsill, light catching the surface
-
-Even when the risk itself was ten times larger.
-Visual: Ten identical glasses of water in a row, one lit, the rest in shadow
-Text: 10× THE RISK, SAME PRICE
-
-The same authors describe what fear does next. They call it action bias.
-Visual: A hand gripping a door handle in a dim hallway, close-up
-
-When an outcome frightens us, doing something feels better than doing nothing.
-Visual: Fingers drumming restlessly on a dark wooden table
-Text: ACTION BIAS
-
-And buying something is the easiest something there is.
-Visual: A thumb hovering over a glowing phone screen, button area unreadable
-
-Now think about what that means for anyone with something to sell.
-Visual: A darkened shop window at night, empty display stand lit by a single bulb
-
-If fear makes probability fade, fear becomes a way to set the price.
-Visual: A price tag hanging from a string, swinging slowly in lamp light, text unreadable
-
-In a calm market, sellers compete on what the cover is actually worth.
-Visual: Three blank price cards in a row on a shop counter, even lighting
-
-A frightened buyer compares less and asks fewer questions about price.
-Visual: Two of the price cards slipping into shadow, only one still lit
-
-So the contest shifts away from value, towards whoever frightens best.
-Visual: A single spotlight on one product box in an otherwise dark room
-
-So how would that look in an advert?
-Visual: A phone lying face up on a dark table, screen glowing softly
+She is scrolling when an advert shows a dark house and one question.
+Visual: Phone screen in her hand showing a generic dark advert, image slowly zooming, text unreadable
 Text: FICTIONAL ADVERT
 
-Picture a fictional advert. A dark house. A single question.
-Visual: Wide shot of a suburban house at night, all windows dark, a lone streetlight
-Text: FICTIONAL ILLUSTRATION
-
 Is your family protected?
-Visual: A child's shoe on a doormat inside a dark hallway, viewed from low angle
+Visual: Low angle in a dark hallway, a child's shoe on the doormat, a car's headlights sweeping across it
 Text: IS YOUR FAMILY PROTECTED?
 
-Seconds later, a monthly subscription appears as the answer.
-Visual: Phone screen showing a generic subscription offer with one large button, text unreadable
+Seconds later, a monthly plan appears as the answer.
+Visual: Close-up of her thumb hovering over a single glowing button, text unreadable
 Text: FICTIONAL INTERFACE
 
+Ten minutes ago she felt safe. Now she does not.
+Visual: Close-up of her free hand pulling a blanket tighter, the window behind streaked with rain
+
 The product might be genuinely useful. That is not the issue yet.
-Visual: Close-up of a door lock and keys on a hallway table, warm light
+Visual: Keys turning slowly in a front door lock, warm hallway light, macro
 
-Watch the order instead. First the threat, then the relief, then the price.
-Visual: Three dominoes on a dark table, the first one tipping into the second
-Text: THREAT → RELIEF → PRICE
+Why does that sequence work so well on a sensible adult?
+Visual: Extreme close-up of rain running down the window, the phone glow reflected in the drops
+Text: WHY DOES IT WORK?
 
-Why is that order so effective? A huge body of research has measured it.
-Visual: A wide library aisle with rows of bound journals, soft overhead light
+Researchers in the late seventies asked people how often different things kill.
+Visual: Overhead shot of a pencil ticking boxes on a paper questionnaire, pages lifting in a draught
+Text: Lichtenstein et al., 1978
 
-In twenty fifteen, a meta-analysis pooled over two hundred samples of fear messages.
-Visual: Hands spreading dozens of printed papers across a large table, viewed from above
+Answers leaned towards dramatic, memorable deaths and away from quiet, common ones.
+Visual: A hand stacking index cards into one tall tower beside a short one, lamp light flickering
+
+Memory serves up what is vivid, and we mistake it for what is common.
+Visual: A flash of lightning briefly lighting a dark room, then darkness again
+Stock: lightning night window
+
+Even when warned about this bias, most people could not correct it.
+Visual: Macro of an eraser rubbing at a pencil mark that will not fade
+Text: WARNED, STILL BIASED
+
+A follow-up compared their guesses with newspaper coverage.
+Visual: A stack of newspapers dropping onto a dark table, pages fanning out, print blurred
+Stock: stack of newspapers
+
+The guesses tracked how often each cause made the papers, not how often it killed.
+Visual: Scissors slowly cutting out a newspaper clipping, macro, print unreadable
+Text: Combs & Slovic, 1979
+
+So the news you watch helps set the price of the fear you feel.
+Visual: A television glowing in a dark room, seen from behind a sofa, light flickering on the walls
+
+Then economists tested the same blind spot with money.
+Visual: Hands counting banknotes onto a kitchen table, one note drifting to the floor
+Text: Sunstein & Zeckhauser
+
+A cancer risk was described vividly, and people were asked what they'd pay to remove it.
+Visual: A glass of tap water on a windowsill, a single drop falling and rippling the surface
+
+Make that risk ten times larger, and the price barely moved.
+Visual: Camera pulling back from one glass to reveal a row of ten, only one lit
+Text: 10× THE RISK, SAME PRICE
+
+When fear is vivid, the size of the risk stops counting.
+Visual: A spinning dial on an old scale slowing to a stop on nothing, extreme close-up
+
+The same economists named what fear does next. Action bias.
+Visual: A hand gripping a door handle in a dim hallway, turning it slowly
+Text: ACTION BIAS
+
+When something frightens us, doing anything feels better than doing nothing.
+Visual: Fingers drumming restlessly on a dark wooden table, close-up
+
+And buying something is the easiest something there is.
+Visual: A thumb sliding towards a glowing phone button, extreme close-up, text unreadable
+
+So what does a seller do with a buyer who has stopped counting?
+Visual: Wide shot of a shop window at night, a single bulb swinging over an empty display
+Text: WHAT DOES A SELLER DO?
+
+In a calm market, sellers compete on what the cover is worth.
+Visual: Three blank price cards on a counter, even light sweeping across them
+
+A frightened buyer compares less and asks fewer questions.
+Visual: Two of the price cards slipping into shadow as the light narrows to one
+
+So the contest drifts from value towards whoever frightens best.
+Visual: A spotlight snapping onto one product box in a pitch-dark room, dust floating in the beam
+
+Fear-led sellers have a second advantage, backed by a huge body of research.
+Visual: Slow push down a long library aisle, pages of an open journal turning by themselves
+
+A twenty fifteen meta-analysis pooled hundreds of samples of fear messages.
+Visual: Hands spreading dozens of papers across a large table, viewed from directly above
 Text: 248 samples · 27,372 people
 
-Fear appeals generally did shift attitudes, intentions and behaviour.
-Visual: A hand pausing on a stair rail in a dim home, from behind
+Fear generally did change attitudes, intentions and behaviour.
+Visual: A hand gripping a stair rail in a dim home, from behind, then climbing
 Text: Tannenbaum et al., 2015
 
-And they worked better when the message also offered a clear thing to do.
-Visual: A single lit light switch on a dark wall, a finger about to press it
+It worked best when the message offered one clear thing to do.
+Visual: A finger pressing a lone light switch, a dark wall flooding with light
+Text: FEAR + ONE STEP
 
-That research was mostly about health and safety messages, not adverts.
-Visual: A smoke alarm on a white ceiling, its small indicator light glowing
+And on a phone, one clear thing to do looks exactly like a button.
+Visual: Extreme close-up of a glowing button pulsing softly on a phone screen, text unreadable
 
-But notice the uncomfortable match with the fictional advert.
-Visual: The dark house again, now with one window lit, wide shot
+That research was about health messages. But look at Maya's advert again.
+Visual: Her phone screen again, the dark house image glowing, text unreadable
+Text: FICTIONAL ADVERT
 
-A frightening problem, then one easy step. Here is the step. Here is the price.
-Visual: A credit card resting beside a phone on a dark table, macro
-Stock: credit card payment phone
+Threat, then relief, then a price. One step, one button.
+Visual: Three dominoes toppling in sequence on a dark table, macro, slow motion
+Text: THREAT → RELIEF → PRICE
 
-So ask which came first in an advert, the danger or the product.
-Visual: A chicken egg and a small boxed gadget side by side on a dark table
+Now ask which came first in that advert, the danger or the product.
+Visual: An egg and a small boxed gadget slowly rotating side by side on a dark turntable
+Text: WHICH CAME FIRST?
 
 A safety message starts with a real risk and looks for a remedy.
-Visual: A fire extinguisher mounted on a kitchen wall, soft daylight
+Visual: A fire extinguisher on a kitchen wall, morning light sweeping across it
 
 A fear-led pitch can start with a product, and go looking for a risk.
-Visual: A boxed product under a spotlight, deep shadows creeping around it
-Text: PRODUCT FIRST?
+Visual: A boxed product under a spotlight, shadows creeping in around it
+
+Maya's advert never once says how likely a break-in actually is.
+Visual: Her phone screen scrolling past the advert, image blurred, text unreadable
 
 So is selling with fear simply wrong?
-Visual: A hand holding a phone at arm's length in a dark room, screen glowing
+Visual: Extreme close-up of Maya's thumb freezing above the button, rain shadows moving across it
 Text: IS FEAR ALWAYS WRONG?
 
-No. Sometimes fear is exactly proportionate to the danger.
-Visual: A firefighter's helmet resting on a bench in a station, seen from behind
-
-Home Office analysis of fires in England looked at homes with no working smoke alarm.
-Visual: A smoke alarm with its battery cover hanging open, macro
-Stock: smoke alarm ceiling
-
-Someone in a fire there was about ten times more likely to die.
+Here is the uncomfortable twist. Sometimes fear is exactly what saves you.
 Visual: A wisp of smoke curling under a closed door in a dark corridor
-Text: 10× more likely to die
+Stock: smoke under door
 
-Fear that leads to a cheap alarm and a fresh battery is fear well spent.
-Visual: Fingers clicking a new battery into a smoke alarm, warm light
+Home Office analysis looked at house fires in England with no working smoke alarm.
+Visual: A smoke alarm with its battery cover hanging open, swinging slightly, macro
 Text: Home Office, 2022 to 2023
 
-Even the advertising rules accept this.
-Visual: A thick rulebook lying closed on a desk, lamp light, cover blank
+Someone in those fires was about ten times more likely to die.
+Visual: Wide shot of a dark stairwell slowly filling with grey haze
+Text: 10× MORE LIKELY TO DIE
 
-The UK advertising code says ads must not cause fear without justifiable reason.
-Visual: An open ring binder with coloured tabs on a desk, text unreadable
+Fear that gets a cheap battery into an alarm is fear well spent.
+Visual: Fingers clicking a new battery into a smoke alarm, its light blinking on
+Stock: smoke alarm battery
+
+That is not a reason to fear less. It is a reason to fear accurately.
+Visual: A camera lens slowly pulling a blurred room into sharp focus
+
+Even the advertising rules accept this.
+Visual: A heavy rulebook falling open on a desk, pages riffling in lamp light
 Text: CAP Code rule 4.2
 
-And where fear is justified, it should not be excessive.
-Visual: A dimmer switch on a wall being turned down slightly, close-up
-Text: NOT EXCESSIVE
+UK ads must not cause fear without justifiable reason, and never excessively.
+Visual: A hand turning a dimmer switch down a notch, close-up
+Text: JUSTIFIED, NOT EXCESSIVE
 
-So the line is not fear itself. It is proportion.
-Visual: An old brass balance scale on a dark desk, both pans level
+So the problem was never fear. It is proportion.
+Visual: An old brass balance scale rocking gently until both pans settle level
 
-How do you spot when an advert crosses that line?
-Visual: A magnifying glass resting on a blank printed advert, lamp light
-Text: HOW TO SPOT IT
+Then how do you tell proportionate fear from manufactured fear?
+Visual: A magnifying glass sliding across a blank printed advert, light bending through it
+Text: HOW TO TELL?
 
-Watch for the shift from could happen to will happen to you.
-Visual: Phone screen showing a generic alert banner, text unreadable
+Watch for could happen quietly becoming will happen to you.
+Visual: Phone screen with a generic alert banner dropping down, text unreadable
 Text: COULD → WILL
 
 Watch for a rare event shown as if it were everyday.
-Visual: One red marble among hundreds of white marbles in a glass bowl, macro
+Visual: A hand stirring a bowl of white marbles until one red marble surfaces, macro
 Text: RARE ≠ EVERYDAY
 
-Watch for one vivid story standing in for any figures at all.
-Visual: A single photograph face down on a table, a hand reaching for it
+Watch for one vivid story standing in for any figures.
+Visual: A hand turning over a face-down photograph on a table, image blurred
 Text: STORY ≠ STATISTIC
 
-Watch for a risk that is never given a number, only an adjective.
-Visual: A blank sheet of paper with a single dramatic red ink blot, macro
+And watch for a risk that gets an adjective but never a number.
+Visual: A drop of red ink falling onto blank paper and spreading, extreme close-up
 Text: NO NUMBER = WARNING
 
-Each move uses the blind spot those studies found.
-Visual: Close-up of an eye reflected in a dark phone screen, unrecognisable
-
-And there is one more ingredient that makes the blind spot worse.
-Visual: A kitchen timer on a dark counter, its dial just starting to turn
-
-A ticking clock. Buy protection before midnight.
-Visual: A wall clock approaching midnight, hands close together, low light
+Maya's advert has one more ingredient. Buy before midnight.
+Visual: A wall clock's hands closing on midnight, pendulum swinging, low light
 Text: BEFORE MIDNIGHT
 Stock: clock ticking midnight
 
 Fear narrows attention. A deadline removes the time to compare.
-Visual: A row of three closed folders on a desk, a hand pushing them aside
+Visual: A hand sweeping three folders off a desk into darkness
 
-No time to read the exclusions. No time to ask if it fits your risk.
-Visual: Fine print on a document under a magnifier, completely blurred
-Text: EXCLUSIONS?
+No time to read the exclusions. No time to ask if it fits your life.
+Visual: A magnifier passing over fine print that stays completely blurred
 
-Some deadlines are real. So what happens when one is not?
-Visual: A countdown timer on a phone screen, digits blurred, glowing in the dark
+Some deadlines are genuine. A sale really can end.
+Visual: A shop shutter rolling halfway down at dusk, wide shot
+Stock: shop shutter closing
+
+So what if the deadline is not real?
+Visual: A countdown on a phone screen, digits blurred, glowing in the dark
 Text: REAL OR FALSE?
 
-Since April twenty twenty-five, UK law has a list of practices banned outright.
-Visual: A thick government document on a desk, cover blank, lamp light
+Since April twenty twenty-five, UK law bans certain practices outright.
+Visual: A thick government document thumped down onto a desk, dust rising in lamp light
 Text: DMCC Act 2024, Schedule 20
 
-One is falsely saying something is only available for a limited time.
-Visual: A shop sign hanging in a dark window, blank, swaying slightly
+One is falsely claiming an offer is only available for a limited time.
+Visual: An hourglass tipped on its side, sand sliding to a stop
 Text: FALSE TIME LIMITS: BANNED
 
-When it is done to rush a decision, it is unfair in all circumstances.
-Visual: An hourglass on its side on a dark table, sand frozen mid-flow
+Done to rush a decision, it is unfair in all circumstances. No further test.
+Visual: A red stamp pressing onto a blank document, ink spreading into the paper, macro
 
 The competition regulator has also warned about countdown timers that quietly reset.
-Visual: Phone screen showing a generic countdown that has restarted, text unreadable
-Text: RESETTING TIMERS
+Visual: A kitchen timer spinning back to its starting point, macro
+Text: CMA: RESETTING TIMERS
 
 If the clock starts again, there was never really a deadline.
-Visual: A kitchen timer spinning back to its starting position, macro
+Visual: The same timer dial snapping back once more, extreme close-up
 
-So the law can catch the fake deadline. What protects you from the fear itself?
-Visual: A person seen from behind at a dark window, city lights beyond
+The law can catch a fake clock. Only you can catch the fear.
+Visual: Maya's silhouette standing at the rainy window, city lights blurred beyond
 Text: WHAT PROTECTS YOU?
 
-Here is the reversal. A calm decision can still end in buying.
-Visual: A hand placing a phone face down on a table, lamp light softening
+So Maya puts the phone face down and waits until morning.
+Visual: A hand laying a phone face down, the room slowly brightening to dawn
 
-Take an illustration. A fictional gadget protection plan at eight pounds a month.
-Visual: Phone screen showing a generic insurance offer, one button, text unreadable
-Text: ILLUSTRATION · £8/month
+Tonight's plan costs eight pounds a month. Over two years, a hundred and ninety-two pounds.
+Visual: Coins dropping one by one onto a growing pile, overhead, morning light
+Text: ILLUSTRATION · £8 × 24 = £192
 
-Over two years, that is a hundred and ninety-two pounds.
-Visual: A small pile of coins growing on a dark desk, overhead shot
-Text: £8 × 24 = £192
-
-Now ask the calm questions. What would replacing the gadget actually cost?
-Visual: An older smartphone lying on a desk beside a receipt, text unreadable
-Text: REPLACEMENT COST?
-
-What is the excess? What does the policy exclude?
-Visual: Hands flipping pages of a policy booklet, text blurred
-Text: EXCESS? EXCLUSIONS?
-
-Do you already have cover through your home insurance or bank account?
-Visual: A folder of household documents open on a kitchen table, morning light
-
-If the plan still makes sense after the fear fades, it may be a good decision.
-Visual: A hand calmly signing a blank form, warm daylight replacing the dark lamp
-
-If it only made sense while you were frightened, you have learned something useful.
-Visual: The same phone screen dimming to black on the table
-Text: ILLUSTRATIVE FIGURES ONLY
-
-And fear rarely sells only once.
-Visual: Several envelopes fanned out on a doormat, morning light, no logos
-
-Another illustration. A fictional household adds three kinds of protection.
-Visual: A kitchen table with three blank brochures laid side by side
+She checks her bank statement and finds two other protections already running.
+Visual: A finger sliding down a paper bank statement, three lines catching the light, text unreadable
 Text: ILLUSTRATION
 
-A gadget plan, an identity monitor and boiler cover.
-Visual: A phone, a padlock and a radiator valve arranged on a table, overhead shot
+Identity monitoring and boiler cover, each bought on another worried evening.
+Visual: A padlock and a radiator valve pushed next to a phone on a table, overhead
 Text: £8 + £6 + £12 a month
 
-That is three hundred and twelve pounds a year.
-Visual: A tall stack of coins next to a short one on a dark desk
+With tonight's plan, three hundred and twelve pounds a year. She had never added them up.
+Visual: Camera rising up a tall stack of coins beside a short one
 Text: £26 × 12 = £312
 
-Each was bought on a different worrying evening. Nobody ever added them up.
-Visual: A bank statement on a table with three lines highlighted, text unreadable
+She keeps the one she actually needs, and drops the other two.
+Visual: A hand sliding two of three brochures into a recycling bin, morning light
+Text: KEEP 1, DROP 2
 
-Some of it may even duplicate cover the household already pays for.
-Visual: Two identical keys lying side by side on a hallway table, close-up
-Text: OVERLAP?
+So she asks the four calm questions.
+Visual: A pen writing four short lines on a notepad, macro, warm daylight
 
-So what do you actually do the next time an advert scares you?
-Visual: A phone lighting up on a dark bedside table, notification glow
-Text: NEXT TIME
+How likely is the problem, in numbers?
+Visual: Fingers counting marbles out of a bowl, one red among the white
+Text: 1. HOW LIKELY?
 
-Pause, and separate the claim from the solution.
-Visual: Two halves of a torn blank sheet of paper pulled apart on a desk
-Text: CLAIM ≠ SOLUTION
+What does the product cover, and what does it exclude?
+Visual: Hands flipping pages of a policy booklet, text blurred
+Text: 2. WHAT'S EXCLUDED?
 
-Ask what the evidence is, and how likely the problem really is.
-Visual: A hand writing a question mark on a notepad, macro
-Text: HOW LIKELY?
+Do I already pay for this somewhere else?
+Visual: Two identical keys sliding together on a hallway table, close-up
+Text: 3. ALREADY COVERED?
 
-Ask what the product actually does, and what it does not cover.
-Visual: A product box turned over to its back panel, text unreadable
-Text: WHAT ISN'T COVERED?
+And is the deadline real, or there to rush me?
+Visual: A calendar page lifting in a breeze, no date circled
+Text: 4. IS THE DEADLINE REAL?
 
-Ask whether the deadline is real, or just there to rush you.
-Visual: A wall calendar with no date circled, soft daylight
-Text: IS THE DEADLINE REAL?
+If an offer still makes sense once the fear fades, buy it calmly.
+Visual: A hand signing a blank form in warm daylight, the lamp switched off
+Text: ILLUSTRATIVE FIGURES ONLY
 
-Fear can be a useful alarm. It should start your thinking, not end it.
-Visual: A smoke alarm on a ceiling, its light blinking once in a quiet room
+If it only made sense at eleven at night, the fear was the product.
+Visual: Maya's phone screen dimming to black on the table, sunlight crossing it
+Text: THE FEAR WAS THE PRODUCT
 
-A good product survives a calm decision. A frightened one does not need to.
-Visual: The suburban house again, now in early morning light, wide shot
+Try it tonight. Search your bank statement for every protection you already pay for.
+Visual: A thumb scrolling down a banking app in a warm kitchen, text unreadable
+Text: TONIGHT: LIST EVERY PROTECTION
 
-But some people use this exact formula, fear plus urgency, not to sell.
-Visual: A phone ringing on a dark kitchen table, screen glowing, caller blurred
+But some people use fear plus urgency not to sell, but to steal.
+Visual: A phone vibrating across a dark kitchen table, screen glowing, caller blurred
 Text: FEAR + URGENCY
 
-Next time, the version that adds authority, and uses it to steal.
-Visual: Silhouette of a hand reaching for a ringing phone, cold blue light
+Next time, the version that adds authority, and why clever people fall for it.
+Visual: A hand reaching for the ringing phone in cold blue light, extreme close-up
 Text: NEXT: WHY SMART PEOPLE FALL FOR SCAMS
