@@ -36,7 +36,7 @@ Meet Sam. Sam is fictional, but you probably know a Sam.
 Visual: A cut-out silhouette of a person seen from behind on a bus seat, a phone glowing in their hands
 Text: SAM · FICTIONAL
 
-In January, Sam started a free seven-day streaming trial.
+In January, Sam started a free seven-day streaming trial. What could go wrong?
 Visual: A phone showing a generic streaming sign-up page with one bright button, text unreadable, beside a January calendar page
 Text: FREE 7-DAY TRIAL (FICTIONAL)
 
@@ -146,7 +146,7 @@ Members on monthly plans paid over seventy dollars a month.
 Visual: A gym membership card lying on a bank statement, a dollar bill folded beside it
 Text: $70+ A MONTH
 
-On average, they turned up four point three times.
+How often did they go? On average, just four point three times a month.
 Visual: A gym visit card with only four stamps on it, the rest of the boxes empty
 Text: 4.3 VISITS A MONTH
 
@@ -215,7 +215,7 @@ That was six days before businesses had to comply.
 Visual: A calendar page with six days crossed out in red pen, the seventh circled
 Text: 6 DAYS BEFORE IT APPLIED
 
-The court did not say easy cancelling was a bad idea.
+So why strike it down? The court never said easy cancelling was a bad idea.
 Visual: A heavy law book lying open, its pages turning in a draught
 
 It ruled the regulator had skipped a required cost analysis.

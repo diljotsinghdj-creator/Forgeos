@@ -25,7 +25,7 @@ and how to spot the countdown clock a retailer admitted was misleading.
 Visual: A red alarm clock with its hands spinning backwards, set on a folded court document
 Text: A CLOCK THAT LIED?
 
-Meet Leah. She is fictional, and it is Saturday night.
+Now watch that lever work on Leah. She is fictional, and it's Saturday night.
 Visual: A cut-out silhouette of a woman seen from behind on a sofa, a laptop glowing on her knees
 Text: LEAH · FICTIONAL
 
@@ -199,7 +199,7 @@ On one hundred and eighty-three sites, the claims were judged outright deceptive
 Visual: A small pile of printed pages pulled out of the larger heap, stamped in red
 Text: 183 SITES WITH DECEPTIVE CLAIMS
 
-Some countdown timers simply reset when the page was reloaded.
+The strangest part? Some countdown timers simply reset when the page was reloaded.
 Visual: A paper clock face with its hands snapped back to the top, a looping arrow drawn around it
 Text: TIMER RESETS ON RELOAD
 

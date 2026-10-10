@@ -28,7 +28,7 @@ That is outside work, and ten minutes more than the year before.
 Visual: The same paper clock, a thin extra sliver of colour slid into place beside the wedge
 Text: +10 MINUTES IN A YEAR
 
-By the end, you will know who buys that time, and how it is taken.
+So who buys that time, and how is it taken? By the end, you will know.
 Visual: An old aerial photograph of a city at night, tiny dots of phone light pinned into its windows like stars
 
 And three small changes that win a share of it back.
@@ -98,7 +98,7 @@ Britain's competition regulator found UK digital advertising worth about fourtee
 Visual: Bundles of banknotes stacked on a copy of a thick government report, a desk lamp's pool of light on them
 Text: CMA · £14 BILLION · 2019
 
-Roughly eighty percent went to just two companies, Google and Facebook.
+Roughly eighty percent went to just two companies. Which two? Google and Facebook.
 Visual: A paper pie chart made of coins, a hand pushing the small slices away until two large slices remain
 Chart: 80% | of UK digital ad spend to two firms
 
@@ -238,7 +238,7 @@ It named infinite scroll, autoplay, push notifications and a highly personalised
 Visual: Four objects pinned in a row to a board, a roll of paper, a play-button cut-out, a small bell and a magnet
 Text: SCROLL · AUTOPLAY · ALERTS · RECOMMENDER
 
-The same features that ran Maya's night.
+Sound familiar? They are the same features that ran Maya's night.
 Visual: The graph-paper floor plan of Maya's bedroom again, four small pins now stuck around the bed
 
 It said risks to users, including minors, had not been properly assessed.
@@ -291,7 +291,7 @@ Second, move your most distracting app off the home screen.
 Visual: A finger dragging a generic app icon into a folder on a paper phone, nothing readable
 Text: 2. MOVE THE APP
 
-A few extra taps put back the stopping point the design removed.
+Why hide it? A few extra taps put back the stopping point the design removed.
 Visual: The roll of paper from earlier, neatly torn off and folded into a closed booklet
 
 Third, decide why you are opening it, and set a timer.

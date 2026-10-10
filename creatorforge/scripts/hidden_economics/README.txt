@@ -34,7 +34,8 @@ SETTINGS
 EVERY SCRIPT HAS
   - A first line that poses a concrete contradiction, number or personal stake (no intro), over a striking first image.
   - Shorts run 30-35 seconds (78-90 words); long form runs 6-8 minutes; titles and on-screen hooks lead with the contradiction.
-  - An open question at least every 3-4 lines (Shorts) / every 15-30 seconds (long form), always paid off.
+  - A hook (question, twist, reveal or number) at least every 15 seconds in Shorts and every 30 seconds in long
+    form - measured on every script - always paid off.
   - Shorts end by looping back to the hook; long form ends by opening the next episode.
   - Numbers spoken in words, exact figures on screen via Text:, key numbers as animated Chart: graphics
     (1-2 per Short, 6-8 per long form), and real footage (Stock:) at the 'this really happened' moments.
