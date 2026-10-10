@@ -27,7 +27,21 @@ CreatorForge -> Generate -> Script. CreatorForge reads it like this:
   Icons: ............ a grid of icons pops in and the counted ones fill in, e.g.
                         "Icons: 3 of 4 | sites | used a possible dark pattern"   (people, sites, homes, coins,
                         cards, phones, letters, locks)
-  One full-frame graphic per spoken line: Chart, Map, Globe, Steps, Timeline, Icons, Chapter or Quote.
+  Screen: ........... a recreated (fictional, labelled) app or web page; the camera pushes in on the * row and a
+                        red pen circles it, e.g. "Screen: Your plan | Keep my plan · Get 50% off · *small:Cancel"
+                        ("small:" = tiny grey text)
+  Document: ......... the camera pushes into a document and a highlighter sweeps the quoted line, e.g.
+                        "Document: Move your money to a safe account | Example scam script"
+  Statement: ........ one big line on a dark screen, word by word, the music drops away, e.g.
+                        "Statement: He never *owned* it."   (*word* = highlighted, max 8 words)
+  Split: ............ the line's two Visual: pictures side by side with labels, e.g.
+                        "Split: What you see | What you pay"   (the line needs 2 Visual: lines)
+  Archive: .......... a history line: its pictures look like old photographs with an old-film look, e.g.
+                        "Archive: 1920s"
+  One full-frame graphic per spoken line: Chart, Map, Globe, Steps, Timeline, Icons, Chapter, Quote, Screen,
+  Document or Statement. (Split and Archive can go anywhere.)
+  Sound design is automatic: risers build into chapter cards and statements, hits and pops land on graphics,
+  whooshes carry the globe and screen push-ins, and the music dips under chapters and statements.
   Every photo cut-out also moves with 2.5D depth automatically (no key needed).
   Chart: ............ an animated number graphic for that line, e.g.
                         Chart: £12 → £720 | a year of forgotten subscriptions   (counter rolls up)
