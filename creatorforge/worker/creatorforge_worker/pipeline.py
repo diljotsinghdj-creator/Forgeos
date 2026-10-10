@@ -193,7 +193,7 @@ class Pipeline:
     def _images(self, job: dict, cancel) -> None:
         spec = self._spec(job)
         gen, _ = ASPECTS[spec.aspect]
-        img = providers.build_image(self.cfg)
+        img = providers.build_image(self.cfg, spec.style)
         job["providers"]["image"] = img.id
         jdir = self.store.dir(job["id"])
         seed_base = int(job["id"][:8], 16)

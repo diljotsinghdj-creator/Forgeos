@@ -11,7 +11,7 @@ from dataclasses import asdict, dataclass, field
 
 from .providers.base import ProviderError
 from .media.render import TRANSITIONS
-from .templates import PACING, STYLE_PRESETS, TEMPLATES, WORDS_PER_SECOND, Template
+from .templates import ANIMATED_STYLES, PACING, STYLE_PRESETS, TEMPLATES, WORDS_PER_SECOND, Template
 
 NEGATIVE = ("text, watermark, logo, caption, subtitles, letters, signature, blurry, low quality, "
             "jpeg artifacts, deformed, distorted face, extra fingers, extra limbs")
@@ -476,8 +476,10 @@ def _image_prompt(visual: str, emotion: str, s: "ShotPlan", spec: ProductionSpec
     if spec.visual_direction:
         parts.append(_clip_words(spec.visual_direction.split(",")[0], 8))   # the look, e.g. "black-and-white 1950s lab footage"
     people = _has_people(f"{visual} {s.shot}")
-    # AI video distorts faces in motion, so animated videos always frame people without showing faces.
-    faceless = (spec.faces == "faceless" or spec.motion == "ai_video") and people
+    # AI video distorts realistic faces in motion, so realistic AI videos frame people without faces;
+    # drawn/animated styles keep expressive cartoon faces.
+    animated = spec.style in ANIMATED_STYLES
+    faceless = (spec.faces == "faceless" or (spec.motion == "ai_video" and not animated)) and people
     if faceless:
         parts.append(FACELESS)
         if emotion:

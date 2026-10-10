@@ -115,7 +115,25 @@ def stock_video_free() -> tuple[str, ...]:
 _image_cache: dict[tuple, object] = {}
 
 
-def build_image(cfg: Config):
+def _downloaded(repo: str) -> bool:
+    """True once the model's config and UNet weights (full or fp16) are fully in the local cache."""
+    try:
+        from huggingface_hub import try_to_load_from_cache
+        have = lambda f: isinstance(try_to_load_from_cache(repo, f), str)  # noqa: E731
+        return have("model_index.json") and (have("unet/diffusion_pytorch_model.fp16.safetensors")
+                                             or have("unet/diffusion_pytorch_model.safetensors"))
+    except Exception:  # noqa: BLE001 - no hub library / offline: treat as not available
+        return False
+
+
+def build_image(cfg: Config, style: str = ""):
+    """The image model for a production. Animated/drawn styles use the illustration model when the pod has it
+    (it downloads in the background after setup); until then - and for realistic styles - the main model."""
+    from ..templates import ANIMATED_STYLES
+    if (style in ANIMATED_STYLES and cfg.image_provider == "diffusers" and cfg.image_model_stylized
+            and _downloaded(cfg.image_model_stylized)):
+        from dataclasses import replace
+        cfg = replace(cfg, image_model=cfg.image_model_stylized)
     key = (cfg.image_provider, cfg.image_url, cfg.image_model, cfg.image_steps)
     if key in _image_cache:
         return _image_cache[key]

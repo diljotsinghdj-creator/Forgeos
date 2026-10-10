@@ -37,7 +37,11 @@ class DiffusersImageProvider:
                 raise NotConfigured("diffusers backend not installed: pip install 'creatorforge-worker[diffusers]'") from e
             device = "cuda" if torch.cuda.is_available() else ("mps" if torch.backends.mps.is_available() else "cpu")
             dtype = torch.bfloat16 if device == "cuda" else torch.float32
-            pipe = AutoPipelineForText2Image.from_pretrained(self.model, torch_dtype=dtype)
+            try:
+                pipe = AutoPipelineForText2Image.from_pretrained(self.model, torch_dtype=dtype)
+            except (OSError, ValueError):
+                # Some repos are downloaded as their half-precision variant only (smaller): load that instead.
+                pipe = AutoPipelineForText2Image.from_pretrained(self.model, torch_dtype=dtype, variant="fp16")
             if "xl" in self.model.lower() and "schnell" not in self.model.lower():
                 from diffusers import DPMSolverMultistepScheduler
                 pipe.scheduler = DPMSolverMultistepScheduler.from_config(pipe.scheduler.config, use_karras_sigmas=True)

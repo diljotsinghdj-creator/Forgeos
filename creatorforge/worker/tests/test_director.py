@@ -116,3 +116,21 @@ def test_writer_text_and_stock_lines_belong_to_their_spoken_line():
     assert beats[0]["overlay"] == "£12 × 6 = £72" and beats[0]["stock"] == "calendar pages"
     assert beats[1]["overlay"] == "ILLUSTRATION" and beats[1]["stock"] == ""
     assert beats[2]["overlay"] == "" and beats[2]["visual"]            # no visual given: the scene's picture
+
+
+def test_animated_styles_keep_faces_in_ai_video_and_use_the_illustration_model(cfg, monkeypatch):
+    from creatorforge_worker import director as d, providers
+    from creatorforge_worker.templates import ANIMATED_STYLES, STYLE_PRESETS
+    assert ANIMATED_STYLES <= set(STYLE_PRESETS) and {"explainer_2d", "doodle", "neon"} <= ANIMATED_STYLES
+    raw = "A man counts coins at a kitchen table. He looks worried. Then he smiles at the window."
+    real = d.ProductionSpec.from_dict({"script": raw, "motion": "ai_video", "style": "cinematic", "fast_cuts": False})
+    cartoon = d.ProductionSpec.from_dict({"script": raw, "motion": "ai_video", "style": "animated_3d", "fast_cuts": False})
+    assert "faceless framing" in d.direct_script(None, real).scenes[0].prompt
+    assert "faceless framing" not in d.direct_script(None, cartoon).scenes[0].prompt
+    # illustration model only when configured AND downloaded; otherwise the main model
+    cfg.image_provider, cfg.image_model, cfg.image_model_stylized = "diffusers", "main/model", "toon/model"
+    monkeypatch.setattr(providers, "_downloaded", lambda repo: False)
+    assert providers.build_image(cfg, "anime").model == "main/model"
+    monkeypatch.setattr(providers, "_downloaded", lambda repo: True)
+    assert providers.build_image(cfg, "anime").model == "toon/model"
+    assert providers.build_image(cfg, "cinematic").model == "main/model"

@@ -34,7 +34,11 @@ private val FALLBACK_TEMPLATES = listOf(
 private val FALLBACK_STYLES = listOf(
     Choice("hyperreal", "Hyper-realistic"), Choice("cinematic", "Cinematic film"), Choice("documentary", "Documentary"),
     Choice("animated_3d", "3D animated"), Choice("anime", "Anime"), Choice("claymation", "Claymation"),
-    Choice("watercolor", "Watercolor"), Choice("comic", "Comic book")
+    Choice("watercolor", "Watercolor"), Choice("comic", "Comic book"), Choice("explainer_2d", "2D explainer"),
+    Choice("doodle", "Doodle / whiteboard"), Choice("painterly", "Hand-painted animation"), Choice("noir_graphic", "Noir graphic novel"),
+    Choice("paper_cutout", "Paper cut-out"), Choice("isometric", "Isometric 3D"), Choice("low_poly", "Low-poly 3D"),
+    Choice("retro_cartoon", "Retro cartoon"), Choice("pixel_art", "Pixel art"), Choice("neon", "Neon synthwave"),
+    Choice("collage", "Mixed-media collage")
 )
 private val STAGE_LABELS = mapOf(
     "director" to "AI Director • script & shots", "prompts" to "PromptForge", "images" to "Scene visuals",

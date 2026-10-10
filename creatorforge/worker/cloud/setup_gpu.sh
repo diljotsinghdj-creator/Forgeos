@@ -136,6 +136,7 @@ CF_LLM_URL=http://127.0.0.1:11434/v1
 CF_LLM_MODEL=$LLM_MODEL
 CF_IMAGE_PROVIDER=diffusers
 CF_IMAGE_MODEL=$IMAGE_MODEL
+CF_IMAGE_MODEL_STYLIZED=${CF_IMAGE_MODEL_STYLIZED:-Lykon/dreamshaper-xl-1-0}
 CF_VOICES='[{"id":"warm","name":"Warm (US female)","provider":"kokoro","voice":"af_heart","lang":"a"},{"id":"deep_doc","name":"Deep documentary narrator ★ human-like","provider":"chatterbox","voice":"kokoro:am_onyx","style":"documentary"},{"id":"storyteller_uk","name":"British storyteller ★ human-like","provider":"chatterbox","voice":"kokoro:bm_george","style":"documentary"},{"id":"warm_human","name":"Warm female ★ human-like","provider":"chatterbox","voice":"kokoro:af_heart","style":"natural"},{"id":"calm_human","name":"Calm female ★ human-like","provider":"chatterbox","voice":"kokoro:af_bella","style":"calm"},{"id":"host_human","name":"Energetic host ★ human-like","provider":"chatterbox","voice":"kokoro:am_puck","style":"energetic"},{"id":"natural_human","name":"Natural ★ human-like","provider":"chatterbox","voice":"default","style":"natural"},{"id":"deep","name":"Deep (US male)","provider":"kokoro","voice":"am_michael","lang":"a"},{"id":"onyx","name":"Low & deep (US male)","provider":"kokoro","voice":"am_onyx","lang":"a"},{"id":"fenrir","name":"Bold (US male)","provider":"kokoro","voice":"am_fenrir","lang":"a"},{"id":"puck","name":"Upbeat (US male)","provider":"kokoro","voice":"am_puck","lang":"a"},{"id":"bella","name":"Bright (US female)","provider":"kokoro","voice":"af_bella","lang":"a"},{"id":"nicole","name":"Soft whisper (US female)","provider":"kokoro","voice":"af_nicole","lang":"a"},{"id":"sarah","name":"Clear (US female)","provider":"kokoro","voice":"af_sarah","lang":"a"},{"id":"british_f","name":"British female","provider":"kokoro","voice":"bf_emma","lang":"b"},{"id":"british_isabella","name":"Elegant (British female)","provider":"kokoro","voice":"bf_isabella","lang":"b"},{"id":"british_m","name":"British male","provider":"kokoro","voice":"bm_george","lang":"b"},{"id":"fable","name":"Storyteller (British male)","provider":"kokoro","voice":"bm_fable","lang":"b"},{"id":"es_f","name":"Spanish (female)","provider":"kokoro","voice":"ef_dora","lang":"e"},{"id":"fr_f","name":"French (female)","provider":"kokoro","voice":"ff_siwis","lang":"f"},{"id":"hi_f","name":"Hindi (female)","provider":"kokoro","voice":"hf_alpha","lang":"h"},{"id":"it_f","name":"Italian (female)","provider":"kokoro","voice":"if_sara","lang":"i"},{"id":"pt_f","name":"Portuguese BR (female)","provider":"kokoro","voice":"pf_dora","lang":"p"}]'
 CF_ASR_PROVIDER=whisper
 CF_WHISPER_MODEL=small
@@ -171,6 +172,11 @@ PY
 
 # Face lock (same character in every shot): IP-Adapter plus-face for SDXL and its image encoder (~3.5 GB).
 nohup "$PYBIN" -c "from huggingface_hub import snapshot_download; snapshot_download('h94/IP-Adapter', allow_patterns=['sdxl_models/ip-adapter-plus-face_sdxl_vit-h.safetensors', 'models/image_encoder/*']); print('face lock ready')" > ip_adapter_download.log 2>&1 &
+
+# Animated / drawn looks (3D, anime, 2D explainer, doodle...): an SDXL illustration model (~7 GB, CreativeML
+# OpenRAIL++-M). Used automatically for those styles once downloaded; until then they use the main image model.
+STYLIZED_MODEL="${CF_IMAGE_MODEL_STYLIZED:-Lykon/dreamshaper-xl-1-0}"
+nohup "$PYBIN" -c "from huggingface_hub import snapshot_download; snapshot_download('$STYLIZED_MODEL', allow_patterns=['model_index.json', 'scheduler/*', 'tokenizer/*', 'tokenizer_2/*', 'text_encoder/*.json', 'text_encoder_2/*.json', 'unet/*.json', 'vae/*.json', '*/*.fp16.safetensors']); print('illustration model ready')" > stylized_download.log 2>&1 &
 
 say "Human-like narrator (Chatterbox) installs in the background (log: $HOME_DIR/chatterbox.log)"
 # Chatterbox pins its own torch/diffusers versions, so it lives in a separate Python 3.11 environment and

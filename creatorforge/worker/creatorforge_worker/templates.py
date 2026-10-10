@@ -67,4 +67,28 @@ STYLE_PRESETS: dict[str, tuple[str, str]] = {
                    "set, soft studio lighting"),
     "watercolor": ("Watercolor", "watercolor illustration, soft washes, paper texture, gentle hand-drawn lines"),
     "comic": ("Comic book", "comic book art, bold ink outlines, halftone shading, dynamic composition, saturated colors"),
+    "explainer_2d": ("2D explainer", "flat 2D vector explainer animation style, clean geometric shapes, simple friendly "
+                     "characters, bold flat colors, minimal shading, uncluttered background"),
+    "doodle": ("Doodle / whiteboard", "hand-drawn whiteboard doodle, black marker line art on white, simple sketchy "
+               "characters, one accent color"),
+    "painterly": ("Hand-painted animation", "hand-painted 2D animated film style, lush painterly backgrounds, soft "
+                  "natural light, gentle colors, whimsical detail"),
+    "noir_graphic": ("Noir graphic novel", "black and white graphic novel art, heavy ink shadows, high contrast, a single "
+                     "red accent color, gritty noir mood"),
+    "paper_cutout": ("Paper cut-out", "layered paper cut-out craft style, cardboard and colored paper textures, soft "
+                     "shadows between layers, handmade diorama"),
+    "isometric": ("Isometric 3D", "isometric 3D illustration, miniature diorama, clean soft lighting, tidy detailed "
+                  "objects, pastel palette"),
+    "low_poly": ("Low-poly 3D", "low-poly 3D render, faceted geometric shapes, soft pastel lighting, clean minimal scene"),
+    "retro_cartoon": ("Retro cartoon", "1950s retro cartoon style, rubber-hose animation, warm vintage colors, grainy "
+                      "print texture, playful exaggeration"),
+    "pixel_art": ("Pixel art", "detailed 16-bit pixel art, limited palette, crisp pixels, retro video game scene"),
+    "neon": ("Neon synthwave", "neon synthwave illustration, glowing magenta and cyan lights, dark night scene, "
+             "retro-futuristic, reflective surfaces"),
+    "collage": ("Mixed-media collage", "mixed-media collage, cut-out vintage photographs, torn paper, halftone textures, "
+                "bold graphic shapes"),
 }
+# Drawn / animated looks: characters may show faces even in AI video (cartoon faces don't turn uncanny), and the
+# worker renders them with its illustration model when one is installed (the photoreal model suits the rest).
+ANIMATED_STYLES = {"animated_3d", "anime", "claymation", "watercolor", "comic", "explainer_2d", "doodle", "painterly",
+                   "noir_graphic", "paper_cutout", "isometric", "low_poly", "retro_cartoon", "pixel_art", "neon", "collage"}
