@@ -182,6 +182,13 @@ mkdir -p "$HOME_DIR/data/models"
 [ -s "$HOME_DIR/data/models/isnet-general-use.onnx" ] || nohup bash -c "curl -fsSL -o '$HOME_DIR/data/models/isnet-general-use.onnx.part' \
   https://github.com/danielgatis/rembg/releases/download/v0.0.0/isnet-general-use.onnx && mv '$HOME_DIR/data/models/isnet-general-use.onnx.part' '$HOME_DIR/data/models/isnet-general-use.onnx' && echo 'cut-out model ready'" > cutout_download.log 2>&1 &
 
+# Visual match check: CLIP (ViT-B/32, ONNX, ~600 MB) scores each picture against its line so off-topic pictures are
+# redrawn and off-topic stock is skipped. Until it's downloaded, pictures are used as generated.
+mkdir -p "$HOME_DIR/data/models/clip"
+CLIP_BASE="https://clip-as-service.s3.us-east-2.amazonaws.com/models-436c69702d61732d53657276696365/onnx/ViT-B-32"
+nohup bash -c "cd '$HOME_DIR/data/models/clip' && for f in visual.onnx textual.onnx; do [ -s \$f ] || { curl -fsSL -o \$f.part $CLIP_BASE/\$f && mv \$f.part \$f; }; done && \
+  { [ -s bpe_simple_vocab_16e6.txt.gz ] || curl -fsSL -o bpe_simple_vocab_16e6.txt.gz https://raw.githubusercontent.com/openai/CLIP/main/clip/bpe_simple_vocab_16e6.txt.gz; } && echo 'match check ready'" > clip_download.log 2>&1 &
+
 # Face lock (same character in every shot): IP-Adapter plus-face for SDXL and its image encoder (~3.5 GB).
 nohup "$PYBIN" -c "from huggingface_hub import snapshot_download; snapshot_download('h94/IP-Adapter', allow_patterns=['sdxl_models/ip-adapter-plus-face_sdxl_vit-h.safetensors', 'models/image_encoder/*']); print('face lock ready')" > ip_adapter_download.log 2>&1 &
 

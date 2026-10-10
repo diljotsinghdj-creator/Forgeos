@@ -18,7 +18,7 @@ from . import director, providers
 from .config import Config, VoiceProfile
 from .library import Library
 from .media import captions as cap
-from .media import charts, layout, quality, render, sfx, verify
+from .media import charts, layout, match, quality, render, sfx, verify
 from .media import ff
 from .media.ff import Cancelled, MediaError
 from .providers.base import NotConfigured, ProviderError, Word
@@ -210,11 +210,9 @@ class Pipeline:
             self.store.save(job)
             seed = (seed_base + sc["index"] * 7919) % 2**31
             face = self._face_lock(img, job, jdir, shot["visual"])
-            key = _key(img.id, shot["prompt"], shot["negative"], gen, seed, face)
             try:
-                src = self._cached("images", key, ".png",
-                                   lambda p: img.generate(shot["prompt"], shot["negative"], gen[0], gen[1], seed, p),
-                                   verify.image)
+                src, key = self._matched_image(job, img, shot["prompt"], shot["negative"], gen, seed, face,
+                                               shot["visual"])
                 dst = self._replace_file(jdir, sc.get("image"), f"scene_{sc['index'] + 1:02d}_{key[:8]}.png", src)
                 sc.update(image_state="READY", image=dst.name, image_source="generated")
                 self._remember_face(job, dst, shot["visual"])
@@ -251,18 +249,16 @@ class Pipeline:
                 if cancel.is_set():
                     raise Cancelled()
                 if photos and b.get("stock"):
-                    names[k] = self._stock_photo(job, sc, k + 2, b["stock"], photos, portrait, jdir)
+                    names[k] = self._stock_photo(job, sc, k + 2, b["stock"], photos, portrait, jdir, b.get("visual", ""))
                     if names[k]:
                         sc["beat_images"] = names
                         self.store.save(job)
                         continue     # a real photo covers this beat - no AI image needed
                 seed = (seed_base + sc["index"] * 7919 + (k + 1) * 104729) % 2**31
                 face = self._face_lock(img, job, jdir, b["visual"])
-                key = _key(img.id, b.get("prompt", ""), b.get("negative", ""), gen, seed, face)
                 try:
-                    src = self._cached("images", key, ".png",
-                                       lambda p, b=b, seed=seed: img.generate(b["prompt"], b["negative"], gen[0], gen[1], seed, p),
-                                       verify.image)
+                    src, key = self._matched_image(job, img, b.get("prompt", ""), b.get("negative", ""), gen, seed,
+                                                   face, b.get("visual", ""))
                     dst = jdir / f"scene_{sc['index'] + 1:02d}_beat{k + 2}_{key[:8]}.png"
                     if not dst.is_file():
                         shutil.copyfile(src, dst)
@@ -271,6 +267,59 @@ class Pipeline:
                     names[k] = None
                 sc["beat_images"] = names
                 self.store.save(job)
+
+    def _matcher(self):
+        return match.matcher(self.cfg.data_dir / "models" / "clip")
+
+    def _note_match(self, job: dict, **counts) -> None:
+        m = job.setdefault("match", {"checked": 0, "regenerated": 0, "stock_rejected": 0, "low": 0})
+        for k, v in counts.items():
+            m[k] = m.get(k, 0) + v
+        job["providers"]["match"] = (f"visual match check: {m['checked']} pictures, {m['regenerated']} regenerated, "
+                                     f"{m['stock_rejected']} off-topic stock skipped"
+                                     + (f", {m['low']} still weak" if m["low"] else ""))
+
+    def _matched_image(self, job: dict, img, prompt: str, negative: str, gen, seed: int, face: str,
+                       visual: str) -> tuple[Path, str]:
+        """Generates the picture and checks it shows what the line describes; a picture that drifted (a face where
+        the line asks for a map) is redrawn with new seeds and the closest of up to three is kept."""
+        checker = self._matcher() if visual else None
+        best: tuple[float, Path, str] | None = None
+        for attempt in range(3 if checker else 1):
+            s = (seed + attempt * 15485863) % 2**31
+            key = _key(img.id, prompt, negative, gen, s, face)
+            src = self._cached("images", key, ".png",
+                               lambda p, s=s: img.generate(prompt, negative, gen[0], gen[1], s, p), verify.image)
+            if checker is None:
+                return src, key
+            score = checker.score(src, match.describe(visual))
+            if best is None or score > best[0]:
+                best = (score, src, key)
+            if score >= match.GOOD:
+                break
+        self._note_match(job, checked=1, regenerated=1 if attempt else 0, low=1 if best[0] < match.GOOD else 0)
+        return best[1], best[2]
+
+    def _on_topic(self, job: dict, media: Path, query: str, visual: str) -> bool:
+        """Real footage/photos must show what the line is about; an off-topic result is skipped."""
+        checker = self._matcher()
+        if checker is None:
+            return True
+        frame = media
+        if media.suffix.lower() not in (".jpg", ".jpeg", ".png", ".webp"):
+            frame = self.cfg.cache_dir / "match" / f"{media.stem}_{media.stat().st_size}.jpg"
+            if not frame.is_file():
+                frame.parent.mkdir(parents=True, exist_ok=True)
+                try:
+                    at = min(1.0, max(0.0, ff.duration(media) / 3))
+                    ff.run(["-ss", f"{at:.2f}", "-i", str(media), "-frames:v", "1", "-q:v", "3", str(frame)])
+                except (MediaError, OSError):
+                    return True
+        score = max(checker.score(frame, query), checker.score(frame, match.describe(visual)) if visual else 0.0)
+        if score < match.POOR:
+            self._note_match(job, stock_rejected=1)
+            return False
+        return True
 
     def _face_lock(self, img, job: dict, jdir: Path, visual: str) -> str:
         """Points the image model at the video's character reference for shots with people; returns a cache tag."""
@@ -290,13 +339,15 @@ class Pipeline:
             job["character_ref"] = image.name
 
     def _stock_photo(self, job: dict, sc: dict, beat: int, query: str, photos: list, portrait: bool,
-                     jdir: Path) -> str | None:
+                     jdir: Path, visual: str = "") -> str | None:
         """A real photo for a beat no footage covered (best effort; None -> the beat gets an AI image)."""
         from .providers import stock_photo
         for found in stock_photo.search_any(photos, query, portrait)[:3]:
             try:
                 src = stock_photo.fetch(found, self.cfg.cache_dir / "stock_photos")
             except (ProviderError, OSError):
+                continue
+            if not self._on_topic(job, src, query, visual):
                 continue
             dst = jdir / f"scene_{sc['index'] + 1:02d}_beat{beat}_photo.jpg"
             shutil.copyfile(src, dst)
@@ -320,6 +371,8 @@ class Pipeline:
                     src = stock_video.fetch(found, self.cfg.cache_dir / "stock")
                 except (ProviderError, MediaError, OSError):
                     continue     # try the next candidate; none left -> this beat gets an AI image as usual
+                if not self._on_topic(job, src, b["stock"], b.get("visual", "")):
+                    continue     # footage that doesn't show the line: try the next one
                 dst = jdir / f"scene_{sc['index'] + 1:02d}_stock{k + 1}{src.suffix}"
                 if not dst.is_file():
                     shutil.copyfile(src, dst)

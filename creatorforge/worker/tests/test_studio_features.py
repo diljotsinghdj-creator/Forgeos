@@ -442,6 +442,53 @@ def test_main_character_face_is_locked_across_people_shots(cfg, tmp_path):
     assert pipe._face_lock(img, off, tmp_path, "the student smiles") == ""
 
 
+def test_visual_match_check_redraws_pictures_that_miss_the_line(cfg, tmp_path, monkeypatch):
+    """A picture that doesn't show its line is redrawn with new seeds and the closest kept; off-topic stock is skipped."""
+    from creatorforge_worker.media import match
+    from creatorforge_worker.pipeline import Pipeline
+    from creatorforge_worker.store import JobStore
+
+    pipe = Pipeline(cfg, JobStore(cfg.jobs_dir))
+
+    class Img:
+        id, seeds = "fake", []
+
+        def generate(self, prompt, negative, w, h, seed, out):
+            self.seeds.append(seed)
+            from creatorforge_worker.media import ff
+            ff.run(["-f", "lavfi", "-i", f"color=c=0x{seed % 0xFFFFFF:06x}:s=512x512", "-vf", "noise=alls=60:allf=u",
+                    "-frames:v", "1", str(out)])
+
+    scores = iter([0.18, 0.31, 0.5])        # first draw misses, second shows the line
+
+    class Checker:
+        def score(self, image, text):
+            return next(scores) if "map" in text else 0.1
+
+    monkeypatch.setattr(Pipeline, "_matcher", lambda self: Checker())
+    img, job = Img(), {"providers": {}}
+    src, key = pipe._matched_image(job, img, "p", "n", (64, 64), 7, "", "An old paper map of Britain, close-up")
+    assert len(img.seeds) == 2 and src.is_file()
+    assert job["match"]["regenerated"] == 1 and job["match"]["low"] == 0
+    assert "1 regenerated" in job["providers"]["match"]
+    photo = tmp_path / "x.png"
+    photo.write_bytes((cfg.cache_dir / "images").glob("*.png").__next__().read_bytes())
+    assert pipe._on_topic(job, photo, "eiffel tower 1920s", "The tower at dawn") is False   # 0.1 < POOR
+    assert job["match"]["stock_rejected"] == 1
+    monkeypatch.setattr(Pipeline, "_matcher", lambda self: None)       # no models on the pod yet: no checks, no delay
+    assert pipe._on_topic(job, photo, "anything", "") is True
+
+
+def test_clip_tokenizer_matches_the_reference_ids(tmp_path):
+    from pathlib import Path
+    from creatorforge_worker.media import match
+    vocab = Path("/tmp/clip_vocab/bpe_simple_vocab_16e6.txt.gz")
+    if not vocab.is_file():
+        import pytest
+        pytest.skip("CLIP vocab not downloaded")
+    assert match._Tokenizer(vocab).encode("A photo of a dog") == [49406, 320, 1125, 539, 320, 1929, 49407]
+
+
 def test_writer_on_screen_text_is_burned_in_while_its_line_is_spoken(cfg):
     from fastapi.testclient import TestClient
     from creatorforge_worker.api import create_app
