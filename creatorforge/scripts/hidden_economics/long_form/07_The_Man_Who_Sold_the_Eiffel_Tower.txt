@@ -54,9 +54,11 @@ He was born in Austria-Hungary and spoke several languages.
 Visual: An old map of central Europe with Austria-Hungary circled in red pen
 Visual: A pile of old dictionaries in different languages on a desk, titles unreadable
 Text: BORN c.1890, AUSTRIA-HUNGARY
+Cite: EBSCO Research Starters
 
 He even dressed like money.
 Visual: A silk tie, a gold pocket watch and leather gloves laid on a desk
+Quote: Never be untidy. | Ten Commandments for Con Men, attributed to Lustig
 
 He had learned his trade working wealthy passengers on transatlantic liners.
 Visual: A 1920s ocean liner at sea with smoke rising from its funnels
@@ -71,12 +73,14 @@ Visual: An old photograph of the Eiffel Tower pinned to a cork board with red st
 And it starts with one newspaper.
 Visual: A folded newspaper on a Paris café table beside a coffee cup
 Visual: A hand unfolding an old French newspaper, print blurred
+Chapter: Part 1 | A believable rumour
 
 Most accounts say Lustig read a Paris article about the tower's upkeep.
 Visual: A 1920s Paris street with newspaper kiosks and horse carts
 Visual: A man in a hat reading a newspaper at a café, seen from behind
 Visual: A magnifying glass over a column of old newsprint, print blurred
 Stock: paris 1920s street
+Place: PARIS · 1925
 
 It was costly to maintain. Worse, it needed serious repair.
 Visual: Workers painting the iron girders of the Eiffel Tower in an old photograph
@@ -95,6 +99,7 @@ Stock: paris world fair 1889
 And only on a twenty-year permit.
 Visual: An old permit document with its date circled in red, text unreadable
 Chart: 1889 → 1909 | The original permit: 20 years
+Cite: Wikipedia, Victor Lustig
 
 So a story that Paris might take it down did not sound absurd.
 Visual: Parisians reading newspapers on a 1920s café terrace, seen from behind
@@ -109,6 +114,7 @@ A believable rumour is raw material. What would he build from it?
 Visual: Iron ingots stacked high in an old warehouse
 Visual: A blank sheet of cream paper and a fountain pen on an old desk
 Text: WHAT DID HE BUILD?
+Chapter: Part 2 | Building the con
 
 So first, he needed to look like the government.
 Visual: A grand French government ministry building in 1920s Paris
@@ -124,11 +130,13 @@ Visual: Sealed envelopes with red wax seals fanned out on a desk
 Visual: A 1920s Paris scrapyard with piles of iron and a horse cart
 Visual: A hand pushing a letter through a brass letterbox
 Text: 5 OR 6 DEALERS, BY MOST ACCOUNTS
+Cite: Smithsonian Magazine, 2016
 
 The venue was the Hôtel de Crillon.
 Visual: The grand stone facade of the Hôtel de Crillon in Paris
 Visual: The Place de la Concorde in Paris with old cars, 1920s
 Stock: paris hotel 1920s
+Map: Paris | the Hôtel de Crillon
 
 One of the grandest addresses in Paris.
 Visual: A chandelier-lit hotel salon with gilded chairs and a long table
@@ -149,6 +157,7 @@ Visual: Iron rivets and bolts spilling from an old canvas bag
 Thousands of tonnes of metal.
 Visual: A huge pile of scrap iron in an old black-and-white photograph
 Chart: 0 → 7,300 | Tonnes of iron in the tower
+Cite: ISRI, Selling the Eiffel Tower
 
 And only to men who traded metal for a living.
 Visual: A scrap metal dealer weighing iron on a large scale, seen from behind
@@ -195,6 +204,7 @@ So which of these professionals fell for it, and why him?
 Visual: Five hats resting in a row on a hotel table
 Visual: A red pen hovering over a list of five names, text unreadable
 Text: WHICH ONE?
+Chapter: Part 3 | The perfect mark
 
 His name, according to most accounts, was André Poisson.
 Visual: A 1920s businessman walking alone down a Paris street, seen from behind
@@ -283,6 +293,7 @@ Draw: box
 So a con that leaves no complaint can be run again.
 Visual: A blank police complaint form lying unused on a counter, text unreadable
 Chart: 1 → 2 | Times he tried to sell the tower
+Cite: Smithsonian Magazine, 2016
 
 According to most accounts, Lustig came back to Paris.
 Visual: A steam train arriving at a 1920s Paris station
@@ -301,6 +312,7 @@ So was the Eiffel Tower his first trick, or a rehearsed one?
 Visual: The Eiffel Tower in an old photograph pinned to a cork board
 Visual: A mahogany box with brass fittings on a desk, lid closed
 Text: HIS EARLIER TRICK
+Chapter: Part 4 | The money box
 
 Lustig had already been selling a trick machine that "printed" money.
 Visual: A polished wooden box with a brass crank and two narrow slots
@@ -347,6 +359,7 @@ Visual: A typed complaint letter on a police desk, text unreadable
 A Texas sheriff came looking for him.
 Visual: A sheriff's star badge on an old map of Texas
 Visual: A 1920s Texas town main street with a car and wooden storefronts
+Place: TEXAS
 
 Lustig talked his way out, and repaid him in notes that were fake.
 Visual: Two men talking in a hotel lobby, seen from behind
@@ -365,6 +378,7 @@ Stock: old printing press
 In the United States, Lustig moved into real counterfeiting.
 Visual: A 1930s American city street with old cars and tall buildings
 Visual: Banknotes fanned across a map of the United States
+Map: United States | real counterfeiting
 
 The notes were engraved by a skilled counterfeiter, William Watts.
 Visual: An engraving tool cutting fine lines into a copper plate
@@ -380,10 +394,12 @@ He was arrested in New York in May, nineteen thirty-five.
 Visual: A 1930s New York street corner with traffic and tall buildings
 Visual: A pair of old handcuffs on a police desk
 Stock: new york street 1930s
+Place: NEW YORK · 1935
 
 Then he escaped from a Manhattan detention centre.
 Visual: An old stone detention building in 1930s Manhattan
 Visual: A barred window at night with an empty cell behind it
+Map: New York | a Manhattan detention centre
 
 The rope was made of bedsheets.
 Visual: Knotted white bedsheets tied into a rope, close-up
@@ -393,19 +409,24 @@ Draw: circle
 But he was recaptured in Pittsburgh within a month.
 Visual: A red pin pushed into Pittsburgh on an old map
 Visual: A 1930s Pittsburgh street with steel mill smoke in the distance
+Place: PITTSBURGH
 
 A New York judge sentenced him to twenty years.
 Visual: A judge's gavel on a wooden bench in an old courtroom
 Chart: 0 → 20 | Years for the Eiffel Tower con man
+Cite: Wikipedia, Victor Lustig
 
 He was sent to Alcatraz.
 Visual: Fog rolling over Alcatraz island prison in San Francisco Bay
 Stock: alcatraz island
+Place: ALCATRAZ
 
 He died in federal custody in nineteen forty-seven, in Springfield, Missouri.
 Visual: A plain prison identity card on a steel table, text unreadable
 Visual: A federal prison hospital building with a long brick facade
 Text: SPRINGFIELD, MISSOURI, 1947
+Map: Alcatraz → Springfield | Springfield, Missouri, 1947
+Cite: Wikipedia, Victor Lustig
 
 Yet he left behind something still passed around online: a list.
 Visual: A laptop on a desk showing an article page, text unreadable
@@ -425,6 +446,7 @@ Be a patient listener.
 Visual: Two armchairs facing each other across a small table under a lamp
 Text: RULE 1: BE A PATIENT LISTENER
 Draw: box
+Quote: Be a patient listener | Ten Commandments for Con Men, attributed to Lustig
 
 He did not out-talk Poisson. He listened until he found the weak spot.
 Visual: Two men in suits at a hotel table, one leaning in, seen from behind
@@ -436,6 +458,7 @@ Visual: A hand pushing a calling card and letterhead off a desk
 Visual: A desk seen from above with photographs, envelopes and a wooden box
 Visual: Four blank index cards laid in a row on a desk
 Text: WHAT ACTUALLY WORKED?
+Chapter: Part 5 | What actually worked
 
 Part one is authority. The letterhead and the hotel did the persuading.
 Visual: An embossed crest on cream letterhead, close-up
@@ -526,14 +549,17 @@ Visual: A family dinner table with one empty chair
 How big is this today? The American regulator publishes the numbers.
 Visual: The Federal Trade Commission building in Washington DC
 Visual: A stack of printed government reports on a desk, text unreadable
+Map: Washington | the Federal Trade Commission
 
 In twenty twenty-four, Americans reported fraud losses.
 Visual: A paper map of the United States with red pins scattered across it
 Visual: A person typing on a laptop at a kitchen table, screen text unreadable
+Place: UNITED STATES · 2024
 
 Over twelve and a half billion dollars.
 Visual: Bundles of dollar banknotes stacked on a table
 Chart: $12.5bn vs $2.95bn | All reported fraud, Imposter scams
+Cite: FTC, March 2025
 
 Nearly three billion of that went to impostors pretending to be someone trusted.
 Visual: Stacks of hundred-dollar bills on a desk
@@ -541,6 +567,7 @@ Visual: A smartphone showing an incoming call from a bank, text unreadable
 Visual: A police uniform jacket hanging on a coat hanger
 Text: FTC, US DATA, 2024
 Draw: circle
+Cite: FTC, March 2025
 
 And the share of people reporting who actually lost money?
 Visual: People queuing at a bank counter, seen from behind
@@ -549,6 +576,7 @@ Visual: An empty wallet lying open on a kitchen table
 It jumped in a single year.
 Visual: Two stacks of coins on a desk, the second clearly taller
 Chart: 27% vs 38% | Lost money in 2023, Lost money in 2024
+Cite: FTC, March 2025
 
 So what does Poisson's story teach us to do differently?
 Visual: A 1920s businessman walking alone down a Paris street, seen from behind
@@ -578,6 +606,7 @@ In Britain, one five nine connects you to your bank's real number.
 Visual: A British high street with bank branches
 Visual: Fingers pressing keys on a phone keypad, close-up
 Text: UK: CALL 159
+Map: United Kingdom | UK, call 159
 
 Asked to keep it secret? Treat that as a warning, not an instruction.
 Visual: A smartphone showing a message on a table, text unreadable

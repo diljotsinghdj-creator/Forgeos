@@ -8,6 +8,7 @@ People paid more for less insurance.
 Visual: A thin insurance policy and a thick one side by side on a desk, text unreadable
 Visual: A hand placing banknotes on top of a thin insurance policy
 Text: LESS COVER, HIGHER VALUE
+Cite: Johnson et al., J Risk Uncertainty 1993
 
 The only difference was a single frightening word.
 Visual: Two printed insurance forms side by side on a desk, text unreadable
@@ -42,6 +43,7 @@ Visual: People seen from behind filling in paper forms at rows of desks
 Visual: A small pile of coins on a thin policy, a thick policy bare beside it
 Text: Johnson et al., 1993
 Draw: circle
+Cite: Johnson et al., J Risk Uncertainty 1993
 
 One word did that to a price.
 Visual: A newspaper with one word circled in red pen, text unreadable
@@ -94,12 +96,14 @@ So why does that sequence work so well on a sensible adult?
 Visual: Raindrops on a dark window pane, a phone's light reflected in them
 Visual: A woman seen from behind holding a phone beside a dark window
 Text: WHY DOES IT WORK?
+Chapter: Part 1 | Why fear works
 
 Researchers in the late seventies asked people how often different things kill.
 Visual: A 1970s university office with a typewriter and stacks of paper
 Visual: A pencil ticking boxes on a yellowed paper questionnaire, text unreadable
 Text: Lichtenstein et al., 1978
 Stock: 1970s office paperwork
+Cite: Lichtenstein et al., 1978
 
 But the answers leaned towards dramatic, memorable deaths.
 Visual: A tornado funnel crossing open farmland under dark clouds
@@ -122,6 +126,7 @@ Even when warned about this bias, most people could not correct it.
 Visual: A printed warning note clipped to a questionnaire, text unreadable
 Visual: An eraser rubbing at a dark pencil mark on paper
 Text: WARNED, STILL BIASED
+Cite: Lichtenstein et al., 1978
 
 Then a follow-up compared their guesses with newspaper coverage.
 Visual: A stack of old newspapers dropped onto a desk, print unreadable
@@ -132,6 +137,7 @@ The guesses tracked how often each cause made the papers.
 Visual: Scissors cutting a clipping out of an old newspaper, print unreadable
 Visual: A tall pile of newspaper clippings on a desk
 Text: Combs & Slovic, 1979
+Cite: Combs & Slovic, Journalism Quarterly 1979
 
 Not how often it actually killed.
 Visual: A thin pile of official record cards on a desk
@@ -146,6 +152,7 @@ Then economists tested the same blind spot with money.
 Visual: An economist's desk with a calculator and printed tables, text unreadable
 Visual: Hands counting banknotes onto a kitchen table
 Text: Sunstein & Zeckhauser
+Cite: Sunstein & Zeckhauser, 2011
 
 They described a cancer risk vividly.
 Visual: A glass of tap water on a kitchen table
@@ -159,12 +166,14 @@ Make that risk ten times larger, and the price barely moved.
 Visual: A row of ten glasses of water on a table
 Visual: Two identical price tags tied to the first and last of ten glasses
 Chart: 1 vs 10 | the risk, ten times the risk
+Cite: Sunstein & Zeckhauser, 2011
 
 So when fear is vivid, the size of the risk stops counting.
 Visual: An old shop scale with its needle pointing halfway
 Visual: Brass weights piled high onto an old shop scale
 Text: PRICE BARELY MOVED
 Draw: cross
+Cite: Sunstein & Zeckhauser, 2011
 
 The same economists named fear's next trick. Action bias.
 Visual: A hand gripping a door handle in a dim hallway
@@ -185,6 +194,7 @@ Visual: A shop window at night, a single bulb over an empty display
 Visual: A salesperson's hands arranging product boxes on a counter
 Visual: A shopper seen from behind holding a phone at a shop counter
 Text: WHAT DOES A SELLER DO?
+Chapter: Part 2 | What sellers do
 
 In a calm market, sellers compete on what the cover is worth.
 Visual: A sunny market street lined with shop fronts
@@ -207,11 +217,13 @@ A twenty fifteen meta-analysis pooled hundreds of samples of fear messages.
 Visual: Dozens of research papers spread across a large table, seen from above
 Visual: A pencil circling one paper among dozens on a table, text unreadable
 Chart: 27,372 | people across 248 samples
+Cite: Tannenbaum et al., Psychological Bulletin 2015
 
 Fear generally did change attitudes, intentions and behaviour.
 Visual: An old public-health poster pinned to a board, words unreadable
 Visual: A hand fastening a seatbelt in a car
 Text: Tannenbaum et al., 2015
+Cite: Tannenbaum et al., Psychological Bulletin 2015
 
 When did it work best?
 Visual: A pencil pulling one sheet out of a thick stack of research papers
@@ -222,6 +234,7 @@ Visual: A printed health leaflet with one boxed instruction, text unreadable
 Visual: A finger pressing a lone light switch on a bare wall
 Text: FEAR + ONE STEP
 Draw: tick
+Cite: Tannenbaum et al., Psychological Bulletin 2015
 
 On a phone, one clear step looks exactly like a button.
 Visual: A single round button on a smartphone screen, text unreadable
@@ -268,6 +281,7 @@ So is selling with fear simply wrong?
 Visual: A thumb frozen above a button on a smartphone, text unreadable
 Visual: A woman seen from behind on a sofa, phone in her lap
 Text: IS FEAR ALWAYS WRONG?
+Chapter: Part 3 | When fear saves you
 
 Here is the uncomfortable twist. Sometimes fear is exactly what saves you.
 Visual: Grey smoke curling under a closed door
@@ -279,15 +293,19 @@ Visual: A map of England on a desk with red circles over scattered towns
 Visual: A fire engine parked outside a terraced house
 Text: Home Office, 2022 to 2023
 Stock: firefighters house fire
+Map: England | house fires in England
+Cite: Home Office, 2023
 
 Then it singled out homes with no working smoke alarm.
 Visual: A row of terraced houses on an English street
 Visual: A smoke alarm on a desk, battery cover open, battery missing
+Place: ENGLAND · 2022–23
 
 Someone in those fires was about ten times more likely to die.
 Visual: A smoke-filled stairwell inside a house
 Visual: A burnt-out living room after a house fire
 Chart: 10× | more likely to die, no working alarm
+Cite: Home Office, 2023
 
 So the fear that gets a cheap battery in is well spent.
 Visual: Fingers clicking a new battery into a smoke alarm
@@ -307,12 +325,14 @@ Even the advertising rules accept this.
 Visual: A heavy rulebook falling open on a desk, text unreadable
 Visual: A paper tab marking one paragraph in a rulebook, text unreadable
 Text: CAP Code rule 4.2
+Place: UNITED KINGDOM
 
 UK ads must not cause fear without justifiable reason, and never excessively.
 Visual: A billboard on a British street, its poster text unreadable
 Visual: A hand turning a dimmer switch down a notch
 Text: JUSTIFIED, NOT EXCESSIVE
 Draw: box
+Quote: must not cause fear or distress without justifiable reason | CAP Code, rule 4.2
 
 So the problem was never fear. It is proportion.
 Visual: A smoke alarm and a burglar alarm box side by side on a table
@@ -322,6 +342,7 @@ Then how do you tell proportionate fear from manufactured fear?
 Visual: Two printed adverts side by side on a desk, text unreadable
 Visual: A magnifying glass sliding across a printed advert, text unreadable
 Text: HOW TO TELL?
+Chapter: Part 4 | Spotting manufactured fear
 
 Watch for could happen quietly becoming will happen to you.
 Visual: A smartphone on a table showing an alert banner, text unreadable
@@ -378,12 +399,14 @@ Visual: A thick government Act tied with red ribbon on a desk, text unreadable
 Visual: The Houses of Parliament in London seen across the river
 Text: DMCC Act 2024, Schedule 20
 Stock: houses of parliament london
+Map: London | UK law, April 2025
 
 One is falsely claiming an offer is only available for a limited time.
 Visual: A laptop showing a countdown timer on a shopping page, text unreadable
 Visual: A printed offer flyer with a date circled in red, text unreadable
 Visual: A stopwatch lying on a desk
 Text: FALSE TIME LIMITS: BANNED
+Place: UK · APRIL 2025
 
 Done to rush a decision, it is unfair in all circumstances.
 Visual: A hand hurriedly signing a form on a desk, text unreadable
@@ -397,6 +420,7 @@ The competition regulator has also warned about countdown timers that quietly re
 Visual: A government office building in London with flags outside
 Visual: A hand turning a kitchen timer back to its start
 Text: CMA · RESETTING TIMERS
+Map: United Kingdom | the competition regulator
 
 If the clock starts again, there was never really a deadline.
 Visual: A thumb pressing the reset button on a stopwatch
@@ -408,6 +432,7 @@ Visual: A broken alarm clock sealed in a clear evidence bag
 Visual: A woman seen from behind standing at a rainy window at night
 Visual: A hand placing a phone down on a windowsill
 Text: WHAT PROTECTS YOU?
+Chapter: Part 5 | Adding it up
 
 So Maya puts the phone face down and waits until morning.
 Visual: A hand placing a smartphone face down on a table

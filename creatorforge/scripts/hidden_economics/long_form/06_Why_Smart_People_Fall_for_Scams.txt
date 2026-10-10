@@ -2,7 +2,7 @@ Why Smart People Fall for Scams
 On-screen hook: CLEVER ISN'T SAFE
 Title: Knowing About Money Can Make Scams Work Better on You
 Tags: #HiddenEconomics #scams #fraudprevention #psychology #moneytips
-Source: JTA, Wiesel Foundation statement on $15.2m Madoff loss, 18 Feb 2009 https://www.jta.org/2009/02/18/united-states/despite-being-plundered-by-madoff-wiesel-will-continue-foundations-work; ABA Journal, Elie Wiesel says he lost life savings with Madoff, Feb 2009 https://www.abajournal.com/news/article/elie_wiesel_says_he_lost_life_savings_with_madoff_suggests_punishment; US Attorney SDNY, Madoff sentenced to 150 years, 29 Jun 2009 https://www.justice.gov/archive/usao/nys/pressreleases/June09/madoffbernardsentencingpr.pdf; CNN Money, Madoff sentenced, 29 Jun 2009 https://money.cnn.com/2009/06/29/news/economy/madoff_prison_sentence/; OFT 1070, The psychology of scams, University of Exeter for the Office of Fair Trading 2009 https://ore.exeter.ac.uk/repository/handle/10871/20958; Exeter press release 2009 https://news-archive.exeter.ac.uk/2009/may/title_6401_en.html; FTC Consumer Sentinel Data Book 2024 https://www.ftc.gov/system/files/ftc_gov/pdf/csn-annual-data-book-2024.pdf; FTC Protecting Older Consumers Dec 2025 https://www.ftc.gov/system/files/ftc_gov/pdf/P144400-OlderAdultsReportDec2025.pdf; FTC testimony March 2026 https://www.ftc.gov/news-events/news/press-releases/2026/03/ftc-testifies-joint-economic-committee-agencys-efforts-combat-fraud; UK Finance Annual Fraud Report 2026 https://www.ukfinance.org.uk/news-and-insight/press-release/fraud-report-2026-press-release; Ofcom, number spoofing https://ofcom.org.uk/phones-and-broadband/scam-calls-and-messages/phone-spoof-scam; Stop Scams UK 159 https://www.stopscamsuk.org.uk/159; Take Five to Stop Fraud https://www.takefive-stopfraud.org.uk; Ofcom 7726 https://www.ofcom.org.uk/phones-and-broadband/scam-calls-and-messages/what-to-do-about-a-scam-call-text-or-message; PSR APP reimbursement https://www.psr.org.uk/information-for-consumers/app-fraud-reimbursement-protections/; Report Fraud https://www.gov.uk/government/news/report-fraud-new-service-from-city-of-london-police
+Source: JTA, Wiesel Foundation statement on $15.2m Madoff loss, 18 Feb 2009 https://www.jta.org/2009/02/18/united-states/despite-being-plundered-by-madoff-wiesel-will-continue-foundations-work; ABA Journal, Elie Wiesel says he lost life savings with Madoff, Feb 2009 https://www.abajournal.com/news/article/elie_wiesel_says_he_lost_life_savings_with_madoff_suggests_punishment; US Attorney SDNY, Madoff sentenced to 150 years, 29 Jun 2009 https://www.justice.gov/archive/usao/nys/pressreleases/June09/madoffbernardsentencingpr.pdf; CNN Money, Madoff sentenced, 29 Jun 2009 https://money.cnn.com/2009/06/29/news/economy/madoff_prison_sentence/; OFT 1070, The psychology of scams, University of Exeter for the Office of Fair Trading 2009 https://ore.exeter.ac.uk/repository/handle/10871/20958; Exeter press release 2009 https://news-archive.exeter.ac.uk/2009/may/title_6401_en.html; FTC Consumer Sentinel Data Book 2024 https://www.ftc.gov/system/files/ftc_gov/pdf/csn-annual-data-book-2024.pdf; FTC Protecting Older Consumers Dec 2025 https://www.ftc.gov/system/files/ftc_gov/pdf/P144400-OlderAdultsReportDec2025.pdf; FTC testimony March 2026 https://www.ftc.gov/news-events/news/press-releases/2026/03/ftc-testifies-joint-economic-committee-agencys-efforts-combat-fraud; UK Finance Annual Fraud Report 2026 https://www.ukfinance.org.uk/news-and-insight/press-release/fraud-report-2026-press-release; Ofcom, number spoofing https://ofcom.org.uk/phones-and-broadband/scam-calls-and-messages/phone-spoof-scam; Stop Scams UK 159 https://www.stopscamsuk.org.uk/159; Take Five to Stop Fraud https://www.takefive-stopfraud.org.uk; Ofcom 7726 https://www.ofcom.org.uk/phones-and-broadband/scam-calls-and-messages/what-to-do-about-a-scam-call-text-or-message; PSR APP reimbursement https://www.psr.org.uk/information-for-consumers/app-fraud-reimbursement-protections/; Report Fraud https://www.gov.uk/government/news/report-fraud-new-service-from-city-of-london-police; NBC News, Madoff sentenced to 150 years (Judge Denny Chin), June 2009, https://www.nbcnews.com/id/wbna31604191
 
 A Nobel Peace Prize winner's money vanished.
 Visual: A gold medal lying in an open velvet case on a desk
@@ -13,6 +13,7 @@ December twenty-oh-eight. His foundation lost fifteen point two million dollars,
 Visual: Bundles of dollar banknotes stacked on an open ledger
 Visual: An empty charity office with packed cardboard boxes on bare desks
 Chart: $15.2m | the Wiesel Foundation's loss
+Cite: JTA, Feb 2009
 
 He and his wife lost their personal savings too.
 Visual: An empty leather wallet lying open on a newspaper
@@ -23,6 +24,7 @@ The man who took it was no back-street crook.
 Visual: A busy stock exchange trading floor in 2008
 Visual: A tailored suit jacket on a hanger in a Manhattan office
 Stock: wall street 2008
+Map: New York | Bernard Madoff, New York
 
 He had actually chaired the Nasdaq.
 Visual: A man in a suit seen from behind in a glass office
@@ -35,12 +37,15 @@ Visual: A hand lifting the top statement off a stack, text unreadable
 Visual: A sheet of blank paper beneath a lifted account statement
 Text: ≈$65bn ON PAPER
 Draw: cross
+Cite: US Attorney SDNY, 2009
 
 In June twenty-oh-nine, he was sentenced to a hundred and fifty years.
 Visual: The stone columns and steps of a New York federal courthouse
 Visual: A judge's gavel resting on an old newspaper, headline unreadable
 Text: 150 YEARS · JUNE 2009
 Stock: new york courthouse
+Quote: Mr. Madoff's crimes were extraordinarily evil | Judge Denny Chin, June 2009
+Cite: US Attorney SDNY, 2009
 
 His victims included charities and wealthy families.
 Visual: A charity office counter with a donation box on it
@@ -59,16 +64,20 @@ Psychologists studying scam victims for a UK regulator found something even stra
 Visual: A thick bound report dropped onto a desk, title unreadable
 Visual: Researchers seen from behind sorting interview notes at a long table
 Text: OFT / University of Exeter, 2009
+Map: Exeter | University of Exeter, for a UK regulator
+Cite: OFT / University of Exeter, 2009
 
 Knowing a lot about money can actually make some scams work better.
 Visual: A phone ringing on top of a stack of finance books
 Visual: A man seen from behind reading a financial newspaper while on the phone
 Text: KNOWLEDGE CAN BACKFIRE
+Cite: OFT / University of Exeter, 2009
 
 In twenty twenty-five, Americans reported losing nearly sixteen billion dollars to fraud.
 Visual: Banknotes scattered across a paper map of the United States
 Visual: A stack of fraud report forms on a desk, text unreadable
 Chart: $15.9bn | reported lost to fraud, US 2025
+Cite: FTC, March 2026
 
 Yet the people losing money most often are not who you'd guess.
 Visual: A row of empty chairs in a waiting room
@@ -88,6 +97,7 @@ Meet Sam. He is fictional, thirty-four, and he works in finance.
 Visual: A man seen from behind at a kitchen table at night, laptop open
 Visual: An office desk with spreadsheets on two monitors, text unreadable
 Text: SAM · FICTIONAL
+Chapter: Part 1 | The perfect call
 
 Sam has read every warning.
 Visual: A fraud warning leaflet on a kitchen table, print unreadable
@@ -162,6 +172,7 @@ Phone networks must block many calls from abroad faking UK landline numbers.
 Visual: An old telephone exchange with rows of switchboard cables
 Visual: A mobile phone mast on a hill at dusk
 Stock: telephone switchboard
+Map: United Kingdom | calls faking UK numbers
 
 But Ofcom says some still get through.
 Visual: One plug still connected on a switchboard of empty sockets
@@ -208,10 +219,13 @@ Visual: A shelf of finance books, one pulled half out
 Visual: A man seen from behind on the phone at a kitchen table
 Visual: A framed finance qualification on a wall, text unreadable
 Text: WHY KNOWLEDGE BACKFIRES
+Chapter: Part 2 | Why knowledge backfires
 
 Here's what the Exeter researchers pointed to. Over-confidence.
 Visual: University of Exeter campus buildings on a green hillside
 Visual: A man seen from behind striding confidently along a city pavement
+Place: EXETER · 2009
+Cite: OFT / University of Exeter, 2009
 
 And people who knew a scam's subject, like investments?
 Visual: Investment brochures fanned across a coffee table, logos blank
@@ -222,6 +236,7 @@ Visual: A playground see-saw tipped down to one side
 Visual: A tall stack of investment magazines on a desk beside a phone
 Text: MORE KNOWLEDGE, MORE RISK
 Draw: circle
+Cite: OFT / University of Exeter, 2009
 
 Why? Commentary suggested they engaged with approaches others simply ignored.
 Visual: A hand opening one envelope from a pile of sealed letters
@@ -258,6 +273,7 @@ Draw: cross
 Victims also tended to find it harder to control emotions under pressure.
 Visual: A hand gripping the edge of a kitchen counter
 Visual: A heart-rate trace in red pen spiking across graph paper
+Cite: OFT / University of Exeter, 2009
 
 So the attack is not on what you know.
 Visual: A hand pushing a pile of finance books to one side of a desk
@@ -272,25 +288,31 @@ Visual: An empty park bench under a streetlight at night
 Visual: An elderly person seen from behind sitting on a park bench
 Visual: A young man seen from behind on a busy street, phone in hand
 Text: WHO REALLY LOSES?
+Chapter: Part 3 | Who really loses
 
 Take Americans in their twenties, in twenty twenty-four.
 Visual: Young people seen from behind walking across an American college campus
 Visual: Young hands gripping a phone on a desk, screen text unreadable
 Text: FTC · AGE 20–29
+Place: UNITED STATES · 2024
+Cite: FTC Consumer Sentinel, 2024
 
 They lost money in forty-four percent of reports.
 Visual: A bar chart drawn on graph paper, the first bar much taller
 Chart: 44% vs 24% | in their 20s, in their 70s
+Cite: FTC Consumer Sentinel, 2024
 
 For people in their seventies, just twenty-four percent.
 Visual: Older hands calmly closing a laptop on a kitchen table
 Visual: An older couple seen from behind walking along a seafront
 Text: AGE 70–79
+Cite: FTC Consumer Sentinel, 2024
 
 Yet older victims tend to lose more per case.
 Visual: One tall stack of coins on graph paper
 Visual: Wrinkled hands holding an open chequebook, text unreadable
 Text: FTC Consumer Sentinel, 2024
+Cite: FTC Consumer Sentinel, 2024
 
 Younger ones just lose more often.
 Visual: Many small coin stacks scattered across graph paper
@@ -300,6 +322,7 @@ And the costliest category in twenty twenty-five was investment scams.
 Visual: A rising stock chart on a laptop screen, figures unreadable
 Visual: A glossy investment brochure on a desk, text unreadable
 Text: Investment scams: $7.9bn
+Cite: FTC, March 2026
 
 Notice the subject? The one where people feel most knowledgeable.
 Visual: A financial newspaper folded on a desk, headline circled in red, unreadable
@@ -312,11 +335,13 @@ Visual: A financial newspaper beside an old photograph of a trading floor
 Britain shows the same pattern.
 Visual: A busy British high street lined with shop fronts
 Stock: busy high street
+Place: UNITED KINGDOM · 2025
 
 UK Finance counted about one point two eight billion pounds stolen.
 Visual: A paper map of the United Kingdom with banknotes across its cities
 Visual: A pile of British banknotes on a desk
 Chart: £1.28bn | stolen by fraud in the UK, 2025
+Cite: UK Finance, 2026
 
 Some victims were tricked into sending the money themselves.
 Visual: A finger pressing send on a payment screen, text unreadable
@@ -326,11 +351,13 @@ Those losses rose nineteen percent on the year before.
 Visual: A red pen line climbing across graph paper
 Visual: A small pile of banknotes beside a desk calendar, text unreadable
 Text: Push payment fraud: £576.4m, up 19%
+Cite: UK Finance, 2026
 
 Investment fraud losses jumped forty percent.
 Visual: A red pen line climbing steeply across graph paper
 Visual: An investment brochure crumpled in a waste bin, text unreadable
 Text: Investment fraud: £221.5m, up 40%
+Cite: UK Finance, 2026
 
 The costliest scams target confidence, not ignorance.
 Visual: A man in a suit seen from behind striding into a bank
@@ -359,17 +386,20 @@ Visual: A police officer's peaked cap on a desk beside a phone
 Visual: A high-street bank branch at dusk, sign unreadable
 Visual: A pencil line sloping downwards across graph paper
 Text: Impersonation losses down 12%
+Cite: UK Finance, 2026
 
 UK Finance has linked recent falls partly to public education campaigns.
 Visual: A bus shelter poster at night, the poster text unreadable
 Visual: A fraud awareness leaflet in a bank branch rack, text unreadable
 Text: UK Finance
+Cite: UK Finance, 2026
 
 So a few simple sentences are beating the oldest trick. What are they?
 Visual: A short handwritten list on an index card, text unreadable
 Visual: An old telephone on a desk in a 1950s office
 Visual: A hand uncapping a pen over a blank notepad
 Text: THE RULES
+Chapter: Part 4 | The rules
 
 First, banks and police never ask you to use a safe account.
 Visual: A money transfer form crossed through in red pen, text unreadable
@@ -479,16 +509,20 @@ Visual: A heavy rulebook falling open on a desk, text unreadable
 Visual: A wall calendar turned to October, text unreadable
 Visual: Banknotes being counted back into an open hand
 Text: PSR rules from 7 Oct 2024
+Place: UNITED KINGDOM · OCT 2024
+Cite: PSR, 2024
 
 Covered claims can be repaid up to eighty-five thousand pounds.
 Visual: A neat pile of banknotes slid across a desk to an open hand
 Visual: A claim form on a desk with a pen, text unreadable
 Chart: £85,000 | maximum repaid per claim
+Cite: PSR, 2024
 
 In twenty twenty-five, banks reimbursed about sixty-one percent of push payment fraud losses.
 Visual: Ten coin stacks on graph paper, six of them ringed in pen
 Visual: A bank cashier's window with a hand passing banknotes through
 Chart: 61% | of push payment losses reimbursed, 2025
+Cite: UK Finance, 2026
 
 Then report it.
 Visual: A hand uncapping a red pen over a blank report form
@@ -497,6 +531,7 @@ In England, Wales and Northern Ireland, that's Report Fraud.
 Visual: A paper map of England, Wales and Northern Ireland on a desk
 Visual: An online report form open on a laptop, text unreadable
 Text: Report Fraud · 0300 123 2040
+Map: United Kingdom | England, Wales and Northern Ireland
 
 Live elsewhere? Follow your local police guidance.
 Visual: A blue police lamp outside a station entrance at night
