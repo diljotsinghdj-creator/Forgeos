@@ -221,3 +221,16 @@ def test_a_chart_on_a_long_line_gets_its_own_slot_so_the_picture_still_shows():
     assert beats[1]["overlay"] == "642 SITES"
     assert beats[2]["stock"] == "" and beats[3]["stock"] == "emergency exit door"    # stock goes to the exit door
     assert beats[-1]["chart"] and beats[-1]["visual"] == "Four phones on a desk"     # short line: chart replaces it
+
+
+def test_globe_timeline_and_icons_lines_are_full_frame_graphics():
+    from creatorforge_worker import director as d
+    raw = ("Eiffel Test\nTitle: Eiffel test\n\nIn nineteen twenty-five, a con man arrived in Paris.\nVisual: A Paris street\n"
+           "Globe: France | where it began\n\nHis life ran from Austria to Alcatraz.\nVisual: An old suitcase\n"
+           "Timeline: 1890 Born → 1947 Dies | His life\n\nThree in four sites did it.\nVisual: A laptop\n"
+           "Icons: 3 of 4 | sites\n")
+    spec = d.ProductionSpec.from_dict({"script": raw, "duration_s": 20})
+    assert "Globe" not in spec.script and "1890" not in spec.script
+    beats = [b for s in d.direct_script(None, spec).scenes for b in (s.beats or [])]
+    extras = [b["extra"] for b in beats if b.get("extra")]
+    assert {"globe", "timeline", "icons"} <= {k for e in extras for k in e}

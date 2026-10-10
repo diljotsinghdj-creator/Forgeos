@@ -18,7 +18,7 @@ from . import director, providers
 from .config import Config, VoiceProfile
 from .library import Library
 from .media import captions as cap
-from .media import cards, charts, layout, maps, match, quality, render, sfx, verify
+from .media import cards, charts, globe, layout, maps, match, quality, render, sfx, verify
 from .media import ff
 from .media.ff import Cancelled, MediaError
 from .providers.base import NotConfigured, ProviderError, Word
@@ -37,7 +37,7 @@ SHOCK_EMOTIONS = {"shock", "surprise", "fear", "horror", "disgust", "terror"}
 def _covered(beat: dict) -> bool:
     """True when a full-frame graphic (chart, map, steps, chapter or quote card) replaces the beat's picture."""
     extra = beat.get("extra") or {}
-    return bool(beat.get("chart") or any(extra.get(k) for k in ("map", "steps", "chapter", "quote")))
+    return bool(beat.get("chart") or any(extra.get(k) for k in director.FULL_FRAME))
 
 class StageFailed(Exception):
     pass
@@ -938,6 +938,7 @@ class Pipeline:
                                        under=under if wide and depth else None, slot=slot)
                 if c.camera != "punch":
                     c.camera = "settle"
+                c.layers = layout.layers(frame)      # 2.5D: the cut-out moves over the desk
                 out.append((idx, frame))
                 under, depth = (frame, depth + 1) if depth < 2 else (None, 0)
             return out
@@ -956,16 +957,18 @@ class Pipeline:
         extra = beat.get("extra") or {}
         if not beat.get("chart"):
             # The writer's full-frame graphics: an animated map, a chapter card, a highlighted quote.
-            for kind in ("map", "steps", "chapter", "quote"):
+            for kind in director.FULL_FRAME:
                 if extra.get(kind):
                     out = work / f"{kind}_{hashlib.sha256(f'{extra[kind]}|{theme}|{size}|{seconds}'.encode()).hexdigest()[:16]}.mp4"
                     if out.is_file():
                         return out
                     try:
-                        if kind == "map":
+                        if kind in ("map", "globe"):
                             plan = maps.parse(extra[kind])
                             if plan is None:
                                 continue          # a place the map doesn't know: keep the picture
+                            if kind == "globe":
+                                return globe.render(plan, theme, size[0], size[1], seconds, out, work)
                             return maps.render(plan, theme, size[0], size[1], seconds, out, work)
                         return cards.render(kind, extra[kind], theme, size[0], size[1], seconds, out, work)
                     except MediaError:

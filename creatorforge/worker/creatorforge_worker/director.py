@@ -606,11 +606,13 @@ def _is_heading(line: str) -> bool:
 
 
 # ---- writer's scripts: "0:05 SETUP A student thinks...", "On-screen hook: ...", "Visuals: ...", "Post: ..." ----------
+# Writer keys that fill the whole frame with a graphic instead of the line's picture.
+FULL_FRAME = ("map", "globe", "steps", "timeline", "icons", "chapter", "quote")
 _META_KEYS = ("on-screen hook", "on screen hook", "onscreen hook", "hook text", "visuals", "visual", "visual style",
               "b-roll", "broll", "post title", "video title", "post", "title", "cover", "thumbnail", "caption", "description", "hashtags", "tags",
               "source", "sources", "music", "sfx", "on-screen text", "on screen text", "text on screen", "text",
               "stock footage", "stock", "chart", "graphic", "draw", "pen", "bubble", "thought",
-              "place", "cite", "map", "chapter", "quote", "steps")
+              "place", "cite", "map", "chapter", "quote", "steps", "globe", "timeline", "icons")
 _META = re.compile(r"(?i)(?:^|(?<=[\s.]))(" + "|".join(re.escape(k) for k in sorted(_META_KEYS, key=len, reverse=True)) +
                    r")\s*:\s*")
 _STAMP = re.compile(r"^\s*(?:[-\u2022*]\s*)?\(?(?:\d{0,2}:\d{2})(?:\s*[-\u2013]\s*\d{0,2}:\d{2})?\)?\s*")
@@ -651,7 +653,7 @@ def _line_shots(line: str, d: dict) -> list[list[str]]:
     visuals = [d.get("visual", "")] + list(d.get("more") or [])
     words = line.split()
     extra = dict(d.get("extra") or {})
-    graphic = bool(d.get("chart") or any(extra.get(k) for k in ("map", "steps", "chapter", "quote")))
+    graphic = bool(d.get("chart") or any(extra.get(k) for k in FULL_FRAME))
     # A full-frame graphic (chart, map, card, steps) covers its picture: when the line is long enough, it gets a
     # picture slot of its own first (~2.3 s+), so the writer's visual still shows instead of being hidden.
     lead = graphic and len(words) >= 6 * (len(visuals) + 1)
@@ -754,7 +756,7 @@ def parse_script(raw: str) -> tuple[str, dict]:
             elif k in ("chart", "graphic"):
                 if target >= 0 and v:
                     per.setdefault(target, {})["chart"] = value.strip()[:80]
-            elif k in ("place", "cite", "map", "chapter", "quote", "steps"):
+            elif k in ("place", "cite") + FULL_FRAME:
                 if target >= 0 and v:
                     per.setdefault(target, {}).setdefault("extra", {})[k] = value.strip()[:140]
             elif k in ("draw", "pen"):

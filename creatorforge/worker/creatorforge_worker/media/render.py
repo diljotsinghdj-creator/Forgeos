@@ -33,6 +33,7 @@ class Clip:
     video_duration: float | None = None
     reveal: str = ""  # animated looks: "draw" (white -> line sketch -> picture) or "sketch" (line art -> picture)
     backdrop: Path | None = None  # explainer looks: a clip plays in a bordered frame on this paper/desk image
+    layers: tuple[Path, Path] | None = None  # explainer cut-outs: (desk, sticker) moved at different speeds (2.5D)
 
 
 def _reveal(kind: str) -> str:
@@ -183,6 +184,26 @@ def _segment_args(c: Clip, frames: int, width: int, height: int) -> list[str]:
             vf += (f";[1:v]fps={FPS},trim=end_frame={frames},setpts=PTS-STARTPTS[bgv];"
                    + layout.video_graph(width, height, "vin", "bgv", "v"))
             src += ["-loop", "1", "-i", str(c.backdrop)]
+    elif c.layers is not None and c.camera in ("settle", "punch"):
+        # 2.5D depth: the desk drifts slowly while the cut-out lands and pushes in faster and slides a touch, so a
+        # still photo reads as filmed with depth (the way video essays animate cut-outs). 2x canvases keep it smooth.
+        d = max(frames - 1, 1)
+        sw, sh = width * 2, height * 2
+        side = 1 if int(hashlib.sha256(str(c.layers[1]).encode()).hexdigest(), 16) % 2 else -1
+        if c.camera == "punch":
+            zb, zf = "min(1.05,1+0.008*on)", "min(1.2,1+0.035*on)"
+        else:
+            zb = f"1+0.03*on/{d}"
+            zf = f"if(lt(on,8),1.09-0.09*on/8,1+0.085*(on-8)/{max(d - 8, 1)})"
+        drift = f"{side}*iw*0.012*on/{d}"
+        vf = (f"[0:v]scale={sw}:{sh}:force_original_aspect_ratio=increase:flags=lanczos,crop={sw}:{sh},setsar=1,"
+              f"zoompan=z='{zb}':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d={frames}:s={width}x{height}:fps={FPS},"
+              f"trim=end_frame={frames},setpts=PTS-STARTPTS[bgm];"
+              f"[1:v]format=yuva444p,scale={sw}:{sh}:flags=lanczos,setsar=1,"
+              f"zoompan=z='{zf}':x='iw/2-(iw/zoom/2)+{drift}':y='ih/2-(ih/zoom/2)':d={frames}:s={width}x{height}:fps={FPS},"
+              f"format=yuva444p,trim=end_frame={frames},setpts=PTS-STARTPTS[fgm];"
+              f"[bgm][fgm]overlay=format=auto,format=yuv420p[v]")
+        src = ["-i", str(c.layers[0]), "-i", str(c.layers[1])]
     else:
         # zoompan moves in whole input pixels; on a 4x canvas each step is a quarter output pixel, so slow
         # push-ins and pans glide instead of shaking. (Scaled once per still, so it's cheap.)

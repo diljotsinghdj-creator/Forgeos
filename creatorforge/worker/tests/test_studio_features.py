@@ -554,6 +554,30 @@ def test_maps_cards_place_and_source_graphics(tmp_path):
     assert "SOURCE: FTC, 2025" in text and "\\k" in text and text.count("Dialogue:") == 3
 
 
+def test_globe_timeline_icons_and_depth_layers(tmp_path):
+    from PIL import Image, ImageDraw
+    from creatorforge_worker.media import cards, ff, globe, layout, maps, render
+    video = globe.render(maps.parse("London → New York | the route"), "editorial", 320, 568, 2.0, tmp_path / "g.mp4", tmp_path)
+    assert ff.duration(video) > 1.5
+    for kind, spec in (("timeline", "1890 Born → 1925 Sells the tower → 1947 Dies | His life"),
+                       ("icons", "3 of 4 | sites | used a possible dark pattern"), ("icons", "1 in 20 | people")):
+        assert ff.duration(cards.render(kind, spec, "editorial", 360, 640, 2.0, tmp_path / f"{kind}.mp4", tmp_path)) > 1.5
+    assert cards.timeline_lines("no dates here", "editorial", 360, 640, 2.0) == []
+    assert cards.icons_lines("lots | people", "editorial", 360, 640, 2.0) == []
+    # 2.5D: a cut-out frame also gets its desk and sticker layers, which render as one moving shot
+    cut = tmp_path / "cut.png"
+    im = Image.new("RGBA", (200, 200), (0, 0, 0, 0))
+    ImageDraw.Draw(im).ellipse((40, 40, 160, 160), fill=(200, 60, 40, 255))
+    im.save(cut)
+    Image.new("RGB", (200, 200), (90, 120, 200)).save(tmp_path / "img.png")
+    frame = layout.compose(tmp_path / "img.png", "paper", 0, 360, 640, tmp_path, cut)
+    bg, fg = layout.layers(frame)
+    assert Image.open(fg).mode == "RGBA" and Image.open(fg).getextrema()[3][0] == 0
+    clip = render.Clip(frame, 1.0, "settle", "cut", layers=(bg, fg))
+    ff.run([*render._segment_args(clip, 30, 360, 640), str(tmp_path / "seg.mp4")])
+    assert ff.duration(tmp_path / "seg.mp4") > 0.9
+
+
 def test_clip_tokenizer_matches_the_reference_ids(tmp_path):
     from pathlib import Path
     from creatorforge_worker.media import match

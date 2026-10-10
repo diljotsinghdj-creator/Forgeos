@@ -6,10 +6,17 @@
     Steps: Free trial → Card saved → Auto-renew → Forgotten
                                                  how the trap works: cards appear one by one, arrows draw between them,
                                                  the last step lands in the highlight colour
+    Timeline: 1890 Born → 1925 Sells the tower → 1947 Dies in prison | Lustig's life
+                                                 a line draws across, each date drops in with its label; the last lands
+                                                 in the highlight colour
+    Icons: 3 of 4 | people | used a possible dark pattern
+                                                 a grid of icons pops in one by one, then the counted ones fill in
+                                                 (icons: people, coins, homes, phones, cards, locks, letters)
 """
 from __future__ import annotations
 
 import hashlib
+import re
 from pathlib import Path
 
 from . import ff
@@ -183,10 +190,166 @@ def steps_lines(spec: str, theme: str, width: int, height: int, seconds: float) 
     return out
 
 
+def timeline_lines(spec: str, theme: str, width: int, height: int, seconds: float) -> list[str]:
+    head, _, title = spec.partition("|")
+    items = []
+    for part in [x.strip() for x in re.split(r"→|->|;", head) if x.strip()][:6]:
+        m = re.match(r"^((?:c\.\s*)?\d{3,4}s?|\d{1,2}\s+\w+\s+\d{4}|\w+\s+\d{4})\s*[:,-]?\s*(.*)$", part)
+        items.append((m.group(1), m.group(2)) if m else ("", part))
+    if len(items) < 2:
+        return []
+    end = _ts(seconds)
+    tall = height > width
+    n = len(items)
+    size = int(min(width, height) * (0.05 if tall else 0.056))
+    per = min(0.7, max(0.3, (seconds - 1.0) / n))
+    out = []
+    if title.strip():
+        out.append(f"Dialogue: 6,{_ts(0.1)},{end},T,,0,0,0,,{{\\an8\\pos({width / 2:.0f},{height * (0.08 if tall else 0.1):.0f})"
+                   f"\\fs{int(size * 1.2)}\\bord{int(size * 0.3)}\\3c{MARK[theme]}&\\4c{MARK[theme]}&\\fad(150,0)}}"
+                   f"{_esc(title.strip().upper())}")
+    lw = max(4, size // 7)
+    if tall:   # a vertical line down the left, dates and labels to its right; ends above the captions
+        x = width * 0.2
+        top, bottom = height * 0.17, height * 0.62
+        ys = [top + (bottom - top) * i / max(1, n - 1) for i in range(n)]
+        line = f"m {x - lw / 2:.0f} {top:.0f} l {x + lw / 2:.0f} {top:.0f} l {x + lw / 2:.0f} {bottom:.0f} l {x - lw / 2:.0f} {bottom:.0f}"
+        grow = f"\\clip(0,0,{width},{top:.0f})\\t(150,{int((0.15 + per * n) * 1000)},\\clip(0,0,{width},{bottom + 4:.0f}))"
+    else:      # a horizontal line across the middle, dates above, labels below
+        y = height * 0.5
+        left, right = width * 0.1, width * 0.9
+        xs = [left + (right - left) * (i + 0.5) / n for i in range(n)]
+        line = f"m {left:.0f} {y - lw / 2:.0f} l {right:.0f} {y - lw / 2:.0f} l {right:.0f} {y + lw / 2:.0f} l {left:.0f} {y + lw / 2:.0f}"
+        grow = f"\\clip(0,0,{left:.0f},{height})\\t(150,{int((0.15 + per * n) * 1000)},\\clip(0,0,{right + 4:.0f},{height}))"
+    out.append(f"Dialogue: 1,{_ts(0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0){grow}\\p1\\bord0\\shad0\\1c{INK}&}}{line}")
+    for i, (date, label) in enumerate(items):
+        t0 = 0.25 + i * per
+        last = i == n - 1
+        px, py = (x, ys[i]) if tall else (xs[i], y)
+        r = size * 0.42
+        dot = (f"m {px - r:.0f} {py:.0f} b {px - r:.0f} {py - r * 1.33:.0f} {px + r:.0f} {py - r * 1.33:.0f} {px + r:.0f} {py:.0f} "
+               f"b {px + r:.0f} {py + r * 1.33:.0f} {px - r:.0f} {py + r * 1.33:.0f} {px - r:.0f} {py:.0f}")
+        pop = f"\\org({px:.0f},{py:.0f})\\fscx40\\fscy40\\t(0,140,\\fscx115\\fscy115)\\t(140,220,\\fscx100\\fscy100)"
+        fill = MARK[theme] if last else "&H00FAFCFD&"
+        out.append(f"Dialogue: 3,{_ts(t0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0){pop}\\p1\\bord{max(3, lw - 1)}\\shad0"
+                   f"\\1c{fill.rstrip('&')}&\\3c{INK}&}}{dot}")
+        box = f"\\bord{int(size * 0.28)}\\3c{MARK[theme]}&" if last else "\\bord0"
+        rows = _wrap(label.upper(), 18 if tall else max(8, int((right - left) / n / (size * 0.6))), 2)
+        if tall:
+            out.append(f"Dialogue: 4,{_ts(t0 + 0.05)},{end},T,,0,0,0,,{{\\an4\\pos({px + size * 1.1:.0f},{py - size * 0.55:.0f})"
+                       f"\\fs{int(size * 1.1)}{box}\\fad(100,0)}}{_esc(date)}")
+            if rows:
+                out.append(f"Dialogue: 4,{_ts(t0 + 0.12)},{end},T,,0,0,0,,{{\\an7\\pos({px + size * 1.1:.0f},{py + size * 0.25:.0f})"
+                           f"\\fs{int(size * 0.85)}\\fad(120,0)}}" + "\\N".join(_esc(r_) for r_ in rows))
+        else:
+            out.append(f"Dialogue: 4,{_ts(t0 + 0.05)},{end},T,,0,0,0,,{{\\an2\\pos({px:.0f},{py - size * 0.9:.0f})"
+                       f"\\fs{int(size * 1.1)}{box}\\fad(100,0)}}{_esc(date)}")
+            if rows:
+                out.append(f"Dialogue: 4,{_ts(t0 + 0.12)},{end},T,,0,0,0,,{{\\an8\\pos({px:.0f},{py + size * 0.9:.0f})"
+                           f"\\fs{int(size * 0.72)}\\fad(120,0)}}" + "\\N".join(_esc(r_) for r_ in rows))
+    return out
+
+
+def _icon(kind: str, cx: float, cy: float, s: float) -> str:
+    """One icon as an ASS drawing, about s pixels tall, centred on (cx, cy)."""
+    def circle(x, y, r):
+        k = r * 1.33
+        return (f"m {x - r:.0f} {y:.0f} b {x - r:.0f} {y - k:.0f} {x + r:.0f} {y - k:.0f} {x + r:.0f} {y:.0f} "
+                f"b {x + r:.0f} {y + k:.0f} {x - r:.0f} {y + k:.0f} {x - r:.0f} {y:.0f}")
+
+    def rect(x0, y0, x1, y1):
+        return f"m {x0:.0f} {y0:.0f} l {x1:.0f} {y0:.0f} l {x1:.0f} {y1:.0f} l {x0:.0f} {y1:.0f}"
+    h = s / 2
+    if kind == "coin":
+        return circle(cx, cy, h * 0.9)
+    if kind == "home":
+        return (f"m {cx:.0f} {cy - h:.0f} l {cx + h:.0f} {cy - h * 0.1:.0f} l {cx + h * 0.72:.0f} {cy - h * 0.1:.0f} "
+                f"l {cx + h * 0.72:.0f} {cy + h:.0f} l {cx - h * 0.72:.0f} {cy + h:.0f} l {cx - h * 0.72:.0f} {cy - h * 0.1:.0f} "
+                f"l {cx - h:.0f} {cy - h * 0.1:.0f}")
+    if kind == "phone":
+        return rect(cx - h * 0.5, cy - h, cx + h * 0.5, cy + h)
+    if kind == "card":
+        return rect(cx - h, cy - h * 0.62, cx + h, cy + h * 0.62)
+    if kind == "letter":
+        return (rect(cx - h, cy - h * 0.66, cx + h, cy + h * 0.66))
+    if kind == "lock":
+        return (rect(cx - h * 0.7, cy - h * 0.1, cx + h * 0.7, cy + h) + " " +
+                f"m {cx - h * 0.5:.0f} {cy - h * 0.1:.0f} l {cx - h * 0.5:.0f} {cy - h * 0.55:.0f} "
+                f"b {cx - h * 0.5:.0f} {cy - h * 1.15:.0f} {cx + h * 0.5:.0f} {cy - h * 1.15:.0f} {cx + h * 0.5:.0f} {cy - h * 0.55:.0f} "
+                f"l {cx + h * 0.5:.0f} {cy - h * 0.1:.0f} l {cx + h * 0.28:.0f} {cy - h * 0.1:.0f} l {cx + h * 0.28:.0f} {cy - h * 0.55:.0f} "
+                f"b {cx + h * 0.28:.0f} {cy - h * 0.85:.0f} {cx - h * 0.28:.0f} {cy - h * 0.85:.0f} {cx - h * 0.28:.0f} {cy - h * 0.55:.0f} "
+                f"l {cx - h * 0.28:.0f} {cy - h * 0.1:.0f}")
+    # a person: a head and rounded shoulders
+    return (circle(cx, cy - h * 0.55, h * 0.36) + " " +
+            f"m {cx - h * 0.72:.0f} {cy + h:.0f} l {cx - h * 0.72:.0f} {cy + h * 0.25:.0f} "
+            f"b {cx - h * 0.72:.0f} {cy - h * 0.12:.0f} {cx + h * 0.72:.0f} {cy - h * 0.12:.0f} {cx + h * 0.72:.0f} {cy + h * 0.25:.0f} "
+            f"l {cx + h * 0.72:.0f} {cy + h:.0f}")
+
+
+_ICON_WORDS = {"coin": "coin|money|pound|dollar|cash|penny", "home": "home|house|household|famil",
+               "phone": "phone|app|mobile|screen|site|website", "card": "card|account|payment|subscri",
+               "lock": "lock|secur|password|safe", "letter": "letter|email|mail|message|text"}
+
+
+def icons_lines(spec: str, theme: str, width: int, height: int, seconds: float) -> list[str]:
+    parts = [x.strip() for x in spec.split("|")]
+    m = re.match(r"^(\d+(?:\.\d+)?)\s*(?:of|in|out of|/)\s*(\d+)$", parts[0], re.I) or \
+        re.match(r"^(\d+(?:\.\d+)?)\s*(%)$", parts[0])
+    if not m:
+        return []
+    if m.group(2) == "%":
+        k, n = round(float(m.group(1)) / 10), 10
+    else:
+        k, n = round(float(m.group(1))), int(m.group(2))
+        if n > 100:
+            k, n = round(k * 100 / n), 100
+    if not (1 <= n <= 100 and 0 <= k <= n):
+        return []
+    noun = parts[1] if len(parts) > 1 else "people"
+    label = parts[2] if len(parts) > 2 else ""
+    kind = next((key for key, pat in _ICON_WORDS.items() if re.search(pat, noun, re.I)), "person")
+    end = _ts(seconds)
+    tall = height > width
+    cols = n if n <= 5 else (5 if n <= 10 and tall else 10 if n > 10 else n)
+    if n > 10 and tall:
+        cols = 10 if n > 50 else 5
+    rows = -(-n // cols)
+    area_w = width * (0.84 if tall else 0.86)
+    area_top, area_bottom = (height * 0.2, height * 0.56) if tall else (height * 0.22, height * 0.7)
+    cell = min(area_w / cols, (area_bottom - area_top) / rows)
+    s = cell * 0.78
+    x0 = width / 2 - cell * cols / 2
+    y0 = (area_top + area_bottom) / 2 - cell * rows / 2
+    size = int(min(width, height) * (0.05 if tall else 0.045))
+    appear = min(1.2, max(0.4, seconds * 0.35))
+    out = []
+    big = f"{m.group(1)}{'%' if m.group(2) == '%' else ' IN ' + m.group(2)}"
+    out.append(f"Dialogue: 6,{_ts(0.1)},{end},T,,0,0,0,,{{\\an8\\pos({width / 2:.0f},{height * (0.07 if tall else 0.06):.0f})"
+               f"\\fs{int(size * 1.6)}\\bord{int(size * 0.35)}\\3c{MARK[theme]}&\\4c{MARK[theme]}&\\fad(150,0)}}{_esc(big.upper())}")
+    for i in range(n):
+        r_, c_ = divmod(i, cols)
+        cx, cy = x0 + cell * (c_ + 0.5), y0 + cell * (r_ + 0.5)
+        t0 = 0.2 + appear * i / max(1, n)
+        pop = f"\\org({cx:.0f},{cy:.0f})\\fscx30\\fscy30\\t(0,120,\\fscx110\\fscy110)\\t(120,180,\\fscx100\\fscy100)"
+        lit = i < k
+        fill = (f"\\1c&H00C9C4BC&\\t({int((0.35 + appear + 0.05 * i / max(1, k)) * 1000 - t0 * 1000)},"
+                f"{int((0.55 + appear + 0.05 * i / max(1, k)) * 1000 - t0 * 1000)},\\1c{MARK[theme]}&)") if lit else "\\1c&H00C9C4BC&"
+        out.append(f"Dialogue: 2,{_ts(t0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0){pop}\\p1\\bord{max(2, int(s / 22))}\\shad0"
+                   f"\\3c{INK}&{fill}}}{_icon(kind, cx, cy, s)}")
+    if label:
+        rows_ = _wrap(label.upper(), 20 if tall else 34, 2)
+        out.append(f"Dialogue: 6,{_ts(0.5 + appear)},{end},T,,0,0,0,,{{\\an8\\pos({width / 2:.0f},{y0 + cell * rows + size * 0.6:.0f})"
+                   f"\\fs{size}\\fad(150,0)}}" + "\\N".join(_esc(x) for x in rows_))
+    return out
+
+
 def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: float, out: Path, work: Path) -> Path:
     theme = theme if theme in PAPER else "editorial"
     seconds = max(1.5, seconds)
-    body = {"chapter": chapter_lines, "quote": quote_lines, "steps": steps_lines}[kind](spec, theme, width, height, seconds)
+    body = {"chapter": chapter_lines, "quote": quote_lines, "steps": steps_lines, "timeline": timeline_lines,
+            "icons": icons_lines}[kind](spec, theme, width, height, seconds)
+    if not body:
+        raise ff.MediaError(f"{kind}: nothing to draw from {spec!r}")     # the line keeps its picture instead
     text = "\n".join(_head(width, height, _font()) + body) + "\n"
     work.mkdir(parents=True, exist_ok=True)
     ass = work / f"card_{hashlib.sha256(text.encode()).hexdigest()[:12]}.ass"

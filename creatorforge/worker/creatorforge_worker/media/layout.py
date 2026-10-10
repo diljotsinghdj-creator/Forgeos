@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import hashlib
 import re
+import shutil
 import threading
 from pathlib import Path
 
@@ -137,8 +138,27 @@ def compose(image: Path, kind: str, index: int, w: int, h: int, work: Path, cut:
         args += ["-i", str(p)]
     tmp = out.with_name(f"{out.stem}.{threading.get_ident()}.part.png")
     ff.run([*args, "-filter_complex", graph, "-frames:v", "1", str(tmp)], cancel)
+    if cut is not None:
+        # 2.5D: the same sticker (with its shadow) alone on a transparent layer, plus the desk under it, so the
+        # renderer can move the two at different speeds. Best effort - without them the flat frame is used.
+        try:
+            fg, bgl = out.with_name(f"{out.stem}_fg.png"), out.with_name(f"{out.stem}_bg.png")
+            layer = graph.replace("[0:v]", "[canvas]").replace(",format=rgb24", ",format=rgba")
+            ff.run(["-f", "lavfi", "-i", f"color=c=black@0:s={w}x{h}:d=1,format=rgba", "-i", str(cut),
+                    "-filter_complex", "[0:v]format=rgba[canvas];" + layer,
+                    "-frames:v", "1", str(fg.with_suffix(".part.png"))], cancel)
+            fg.with_suffix(".part.png").replace(fg)
+            shutil.copyfile(bg, bgl)
+        except (ff.MediaError, OSError):
+            pass
     tmp.replace(out)
     return out
+
+
+def layers(frame: Path) -> tuple[Path, Path] | None:
+    """(desk, sticker) layers of a composed cut-out frame, when compose() could make them."""
+    fg, bg = frame.with_name(f"{frame.stem}_fg.png"), frame.with_name(f"{frame.stem}_bg.png")
+    return (bg, fg) if fg.is_file() and bg.is_file() else None
 
 
 def _shadow(src: str, dst: str, short: int, opacity: float = 0.55) -> str:
