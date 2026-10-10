@@ -239,8 +239,14 @@ def render_video(clips: list[Clip], audio: Path, captions: Path | None, width: i
     if grade:
         # One consistent "film" look over every shot: a touch of contrast and colour, soft vignette, fine grain.
         # "bw": the writer asked for a black-and-white look - AI shots and stock footage are matched to it.
-        tone = "hue=s=0,eq=contrast=1.12:gamma=0.97" if grade == "bw" else "eq=contrast=1.06:saturation=1.08:gamma=0.98"
-        graph.append(f"[{last}]{tone},vignette=angle=PI/5,noise=alls={7 if grade == 'bw' else 5}:allf=t+u,format=yuv420p[graded]")
+        if grade == "paper":
+            # Editorial look: warm printed-paper tone, slightly muted colour, fine paper grain, no heavy vignette.
+            graph.append(f"[{last}]eq=contrast=1.05:saturation=0.9,colorbalance=rs=0.04:gs=0.02:bs=-0.05,"
+                         f"noise=alls=8:allf=u,format=yuv420p[graded]")
+        else:
+            tone = "hue=s=0,eq=contrast=1.12:gamma=0.97" if grade == "bw" else "eq=contrast=1.06:saturation=1.08:gamma=0.98"
+            graph.append(f"[{last}]{tone},vignette=angle=PI/5,noise=alls={7 if grade == 'bw' else 5}:allf=t+u,"
+                         f"format=yuv420p[graded]")
         last = "graded"
     if logo is not None:
         # Brand watermark: about 14% of the frame width, in a corner, slightly transparent. Captions go on top.

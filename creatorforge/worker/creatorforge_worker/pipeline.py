@@ -23,7 +23,7 @@ from .media import ff
 from .media.ff import Cancelled, MediaError
 from .providers.base import NotConfigured, ProviderError, Word
 from .store import STAGES, JobStore
-from .templates import ASPECTS, TEMPLATES
+from .templates import ASPECTS, EDITORIAL_STYLES, TEMPLATES
 
 SCENE_GAP_S = 0.12   # breath between scenes - longer gaps lose viewers
 MIN_SCENE_S = 1.5
@@ -600,9 +600,13 @@ class Pipeline:
 
         def transition(i: int, shot: dict) -> str:
             chosen = shot.get("transition", "")
-            if chosen in render.TRANSITIONS and (spec.auto_edit or shot.get("transition_locked")):
-                return chosen
-            return t.transitions[i % len(t.transitions)]
+            if not (chosen in render.TRANSITIONS and (spec.auto_edit or shot.get("transition_locked"))):
+                chosen = t.transitions[i % len(t.transitions)]
+            if spec.style in EDITORIAL_STYLES and not shot.get("transition_locked"):
+                # Paper cut-outs slide and wipe; they don't dissolve.
+                chosen = {"fade": "slide", "dissolve": "wipe", "dip": "cut", "zoom": "wipe", "reveal": "wipe",
+                          "flash": "whip"}.get(chosen, chosen)
+            return chosen
 
         def line_videos(sc: dict) -> list:
             if not (use_video and sc.get("ai_video", True) and spec.fast_cuts):
@@ -718,7 +722,8 @@ class Pipeline:
             ass = work / "captions.ass"
             emphasis = {wd for s in shots for wd in s.get("emphasis", [])} if spec.auto_edit else set()
             cap.write_ass(ass, w, h, t.caption_scale, t.caption_position, cues, overlays, emphasis,
-                          brand.get("caption_color", ""), brand.get("highlight_color", ""))
+                          brand.get("caption_color", ""), brand.get("highlight_color", ""),
+                          "highlighter" if spec.style in EDITORIAL_STYLES else "")
 
         job["edit"] = {"auto_edit": spec.auto_edit, "transitions": [c.transition for c in heads[1:]],
                        "shots": len(clips),
@@ -740,6 +745,8 @@ class Pipeline:
             job["providers"]["brand"] = f"logo {a['name']} ({logo[1]})"
         look = re.sub(r"[^a-z]", "", spec.visual_direction.lower())
         grade = ("bw" if "blackandwhite" in look or "monochrome" in look else "film") if spec.film_grade else ""
+        if spec.film_grade and spec.style in EDITORIAL_STYLES:
+            grade = "paper"
         expected = render.render_video(clips, mixed, ass, w, h, out, work, cancel, logo, grade=grade)
         job["render"] = {"file": "work/render.mp4", "expected_s": round(expected, 3), "width": w, "height": h}
 

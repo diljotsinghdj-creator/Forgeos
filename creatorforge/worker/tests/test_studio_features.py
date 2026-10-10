@@ -459,3 +459,23 @@ def test_writer_on_screen_text_is_burned_in_while_its_line_is_spoken(cfg):
         assert job["status"] == "READY", job
         ass = (cfg.jobs_dir / jid / "work" / "captions.ass").read_text()
         assert "£12 x 6 = £72" in ass and "ILLUSTRATION" in ass and "Would I buy this again?" in ass
+
+
+def test_editorial_look_highlighter_callouts_paper_grade_and_sliding_cuts(cfg):
+    from fastapi.testclient import TestClient
+    from creatorforge_worker.api import create_app
+    from .conftest import wait_for
+
+    script = ("Six months of a forgotten plan becomes seventy-two pounds.\nVisual: Calendar pages flipping\n"
+              "Text: £12 x 6 = £72\nThat is an illustration, not a claim about any real company.\n"
+              "Visual: Blurred phone screen on a dark table\nText: ILLUSTRATION\n"
+              "Open your bank statement today and look closely.\nVisual: Hands holding a phone at a kitchen table\n"
+              "Find one payment you would not choose again.\nVisual: Finger pausing over a phone\n")
+    with TestClient(create_app(cfg)) as c:
+        jid = c.post("/v1/productions", json={"script": script, "duration_s": 20, "style": "editorial"}).json()["id"]
+        job = wait_for(lambda: (lambda j: j if j["status"] in ("READY", "FAILED") else None)(c.get(f"/v1/productions/{jid}").json()))
+        assert job["status"] == "READY", job
+        ass = (cfg.jobs_dir / jid / "work" / "captions.ass").read_text()
+        assert "&H0018C8F5" in ass and "\\fscx15\\t(0,220,\\fscx100)}£12 x 6 = £72" in ass   # yellow marker wipes in
+        assert not set(job["edit"]["transitions"]) & {"fade", "dissolve", "dip"}               # paper slides, never dissolves
+        assert "editorial explainer collage" in job["plan"]["scenes"][0]["prompt"]

@@ -76,7 +76,9 @@ def _highlight(text: str, words: set[str], color: str = "&H0037AFD4") -> str:
 
 def write_ass(path: Path, width: int, height: int, scale: float, position: float,
               cues: list[Word], overlays: list[Overlay], emphasis: set[str] | None = None,
-              caption_color: str = "", highlight_color: str = "") -> None:
+              caption_color: str = "", highlight_color: str = "", callout_look: str = "") -> None:
+    """callout_look "highlighter": on-screen text as bold black words on a yellow marker box that wipes in -
+    the editorial explainer look. Default: white text on a dark box."""
     emphasis = {_norm(w) for w in (emphasis or set()) if _norm(w)}
     cap = ass_color(caption_color, "&H00FFFFFF")
     hi = ass_color(highlight_color, "&H0037AFD4")
@@ -97,8 +99,10 @@ def write_ass(path: Path, width: int, height: int, scale: float, position: float
         f"{max(2, fs // 12)},{max(1, fs // 24)},2,{side},{side},{caption_margin},1",
         f"Style: Hook,DejaVu Sans,{big},{hi},{hi},&H00000000,&HA0000000,-1,0,0,0,100,100,0,0,1,"
         f"{max(3, big // 10)},{max(1, big // 20)},8,{side},{side},{top},1",
-        f"Style: Callout,DejaVu Sans,{small},&H00FFFFFF,&H00FFFFFF,&H00000000,&HA0000000,-1,0,0,0,100,100,0,0,3,"
-        f"{max(4, small // 4)},0,8,{side},{side},{top},1",
+        (f"Style: Callout,DejaVu Sans,{small},&H00111111,&H00111111,&H0018C8F5,&H0018C8F5,-1,0,0,0,100,100,0,0,3,"
+         f"{max(6, small // 3)},0,8,{side},{side},{top},1" if callout_look == "highlighter" else
+         f"Style: Callout,DejaVu Sans,{small},&H00FFFFFF,&H00FFFFFF,&H00000000,&HA0000000,-1,0,0,0,100,100,0,0,3,"
+         f"{max(4, small // 4)},0,8,{side},{side},{top},1"),
         f"Style: CTA,DejaVu Sans,{big},{hi},{hi},&H00000000,&HA0000000,-1,0,0,0,100,100,0,0,1,"
         f"{max(3, big // 10)},{max(1, big // 20)},5,{side},{side},0,1",
         f"Style: Brand,DejaVu Sans,{small},{hi},{hi},&H00000000,&HA0000000,-1,0,0,0,100,100,2,0,1,"
@@ -111,5 +115,8 @@ def write_ass(path: Path, width: int, height: int, scale: float, position: float
         lines.append(f"Dialogue: 0,{_ts(c.start)},{_ts(c.end)},Caption,,0,0,0,,{pop}{_highlight(c.text, emphasis, hi)}")
     for o in overlays:
         if o.text.strip() and o.end > o.start:
-            lines.append(f"Dialogue: 1,{_ts(o.start)},{_ts(o.end)},{o.style},,0,0,0,,{{\\fad(200,200)}}{_esc(o.text)}")
+            # Highlighter: the marker box sweeps open left to right, like someone highlighting the words.
+            fx = ("{\\fad(120,200)\\fscx15\\t(0,220,\\fscx100)}" if callout_look == "highlighter" and o.style == "Callout"
+                  else "{\\fad(200,200)}")
+            lines.append(f"Dialogue: 1,{_ts(o.start)},{_ts(o.end)},{o.style},,0,0,0,,{fx}{_esc(o.text)}")
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")

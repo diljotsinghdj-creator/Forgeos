@@ -85,9 +85,14 @@ STYLE_PRESETS: dict[str, tuple[str, str]] = {
     "pixel_art": ("Pixel art", "detailed 16-bit pixel art, limited palette, crisp pixels, retro video game scene"),
     "neon": ("Neon synthwave", "neon synthwave illustration, glowing magenta and cyan lights, dark night scene, "
              "retro-futuristic, reflective surfaces"),
+    "editorial": ("Editorial collage", "editorial explainer collage, cut-out archival photographs on off-white textured "
+                  "paper, bold flat shapes in mustard yellow and black, halftone dots, torn paper edges, clean graphic "
+                  "layout with lots of negative space"),
     "collage": ("Mixed-media collage", "mixed-media collage, cut-out vintage photographs, torn paper, halftone textures, "
                 "bold graphic shapes"),
 }
+# Editorial explainer look (cut-out photos on paper, highlighter callouts, paper-texture grade, sliding cuts).
+EDITORIAL_STYLES = {"editorial"}
 # Drawn / animated looks: characters may show faces even in AI video (cartoon faces don't turn uncanny), and the
 # worker renders them with its illustration model when one is installed (the photoreal model suits the rest).
 ANIMATED_STYLES = {"animated_3d", "anime", "claymation", "watercolor", "comic", "explainer_2d", "doodle", "painterly",

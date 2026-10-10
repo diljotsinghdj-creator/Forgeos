@@ -32,7 +32,7 @@ private val FALLBACK_TEMPLATES = listOf(
     Choice("youtube_longform", "YouTube Documentary")
 )
 private val FALLBACK_STYLES = listOf(
-    Choice("hyperreal", "Hyper-realistic"), Choice("cinematic", "Cinematic film"), Choice("documentary", "Documentary"),
+    Choice("editorial", "Editorial collage"), Choice("hyperreal", "Hyper-realistic"), Choice("cinematic", "Cinematic film"), Choice("documentary", "Documentary"),
     Choice("animated_3d", "3D animated"), Choice("anime", "Anime"), Choice("claymation", "Claymation"),
     Choice("watercolor", "Watercolor"), Choice("comic", "Comic book"), Choice("explainer_2d", "2D explainer"),
     Choice("doodle", "Doodle / whiteboard"), Choice("painterly", "Hand-painted animation"), Choice("noir_graphic", "Noir graphic novel"),
@@ -381,6 +381,9 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                     style = if (customLook) "" else choice
                 }
                 if (customLook) OutlinedTextField(style, { style = it }, Modifier.fillMaxWidth(), label = { Text("Describe the look") })
+                if (style == "editorial") Text("Editorial explainer look: cut-out photos on paper, yellow highlighter boxes " +
+                    "for your Text: lines, warm paper texture, sliding paper cuts. Add Stock: lines for real archive footage.",
+                    color = Color.Gray, fontSize = 12.sp)
                 if (style in ANIMATED_LOOKS) Text(when (style) {
                     "doodle" -> "Whiteboard look: every shot is drawn on - white paper, line sketch, then the finished drawing."
                     "explainer_2d", "comic", "noir_graphic" -> "Each scene opens as line art that fills in. Characters keep expressive cartoon faces."
