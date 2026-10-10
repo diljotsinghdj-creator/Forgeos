@@ -143,3 +143,15 @@ def describe(visual: str) -> str:
     v = re.sub(r"\b(close[- ]?up|wide shot|medium shot|top[- ]down|overhead|slow(ly)?|camera|push(es)? in|pans?|"
                r"zoom(s|ing)?( in| out)?|text unreadable|unreadable|illustration|fictional)\b", "", visual, flags=re.I)
     return re.sub(r"\s+", " ", v).strip(" ,.")[:300] or visual[:300]
+
+
+_STOP = set("a an the of on in at to with and or its it is are was by for from into onto over under beside next "
+            "single one two some small large big tiny huge very just still slowly slow".split())
+
+
+def subject(visual: str, words: int = 4) -> str:
+    """The searchable core of a Visual: line - its first phrase without filler words ("An old paper map of Britain
+    spread on a desk, coins..." -> "old paper map Britain"). Used as a photo search and as the plain retry prompt."""
+    head = re.split(r"[,;:.]| while | as | with ", describe(visual), maxsplit=1)[0]
+    kept = [w for w in re.findall(r"[A-Za-z][A-Za-z'-]*", head) if w.lower() not in _STOP]
+    return " ".join(kept[:words]) or describe(visual)[:40]

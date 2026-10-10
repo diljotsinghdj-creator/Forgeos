@@ -23,7 +23,7 @@ from .media import ff
 from .media.ff import Cancelled, MediaError
 from .providers.base import NotConfigured, ProviderError, Word
 from .store import STAGES, JobStore
-from .templates import ASPECTS, EDITORIAL_STYLES, TEMPLATES
+from .templates import ASPECTS, EDITORIAL_LEADS, EDITORIAL_STYLES, TEMPLATES
 
 SCENE_GAP_S = 0.12   # breath between scenes - longer gaps lose viewers
 MIN_SCENE_S = 1.5
@@ -211,6 +211,12 @@ class Pipeline:
             seed = (seed_base + sc["index"] * 7919) % 2**31
             face = self._face_lock(img, job, jdir, shot["visual"])
             try:
+                real = self._real_photo(job, shot.get("stock") or "", shot["visual"])
+                if real is not None:
+                    dst = self._replace_file(jdir, sc.get("image"), f"scene_{sc['index'] + 1:02d}_photo{real.suffix}", real)
+                    sc.update(image_state="READY", image=dst.name, image_source="photo")
+                    self.store.save(job)
+                    continue
                 src, key = self._matched_image(job, img, shot["prompt"], shot["negative"], gen, seed, face,
                                                shot["visual"])
                 dst = self._replace_file(jdir, sc.get("image"), f"scene_{sc['index'] + 1:02d}_{key[:8]}.png", src)
@@ -254,6 +260,14 @@ class Pipeline:
                         sc["beat_images"] = names
                         self.store.save(job)
                         continue     # a real photo covers this beat - no AI image needed
+                real = self._real_photo(job, b.get("stock") or "", b.get("visual", ""))
+                if real is not None:
+                    dst = jdir / f"scene_{sc['index'] + 1:02d}_beat{k + 2}_photo{real.suffix}"
+                    shutil.copyfile(real, dst)
+                    names[k] = dst.name
+                    sc["beat_images"] = names
+                    self.store.save(job)
+                    continue
                 seed = (seed_base + sc["index"] * 7919 + (k + 1) * 104729) % 2**31
                 face = self._face_lock(img, job, jdir, b["visual"])
                 try:
@@ -275,8 +289,8 @@ class Pipeline:
         m = job.setdefault("match", {"checked": 0, "regenerated": 0, "stock_rejected": 0, "low": 0})
         for k, v in counts.items():
             m[k] = m.get(k, 0) + v
-        job["providers"]["match"] = (f"visual match check: {m['checked']} pictures, {m['regenerated']} regenerated, "
-                                     f"{m['stock_rejected']} off-topic stock skipped"
+        job["providers"]["match"] = (f"visual match check: {m['checked']} pictures, {m.get('real_photos', 0)} real photos, "
+                                     f"{m['regenerated']} regenerated, {m['stock_rejected']} off-topic stock skipped"
                                      + (f", {m['low']} still weak" if m["low"] else ""))
 
     def _matched_image(self, job: dict, img, prompt: str, negative: str, gen, seed: int, face: str,
@@ -285,11 +299,15 @@ class Pipeline:
         the line asks for a map) is redrawn with new seeds and the closest of up to three is kept."""
         checker = self._matcher() if visual else None
         best: tuple[float, Path, str] | None = None
+        lead = EDITORIAL_LEADS.get(self._spec(job).style, "photograph")
         for attempt in range(3 if checker else 1):
             s = (seed + attempt * 15485863) % 2**31
-            key = _key(img.id, prompt, negative, gen, s, face)
+            # Last try: a plain prompt with just the subject - models get compound or metaphorical scenes wrong,
+            # but rarely miss "old paper map Britain".
+            p_text = prompt if attempt < 2 else f"{lead}, {match.subject(visual, 6)}, sharp focus, centred"
+            key = _key(img.id, p_text, negative, gen, s, face)
             src = self._cached("images", key, ".png",
-                               lambda p, s=s: img.generate(prompt, negative, gen[0], gen[1], s, p), verify.image)
+                               lambda p, s=s, t=p_text: img.generate(t, negative, gen[0], gen[1], s, p), verify.image)
             if checker is None:
                 return src, key
             score = checker.score(src, match.describe(visual))
@@ -299,6 +317,32 @@ class Pipeline:
                 break
         self._note_match(job, checked=1, regenerated=1 if attempt else 0, low=1 if best[0] < match.GOOD else 0)
         return best[1], best[2]
+
+    def _real_photo(self, job: dict, query: str, visual: str) -> Path | None:
+        """Explainer looks: a real photograph of what the line shows (archive/stock), when one clearly matches -
+        the way a video essay is built. Needs the match check to judge it; otherwise the line gets an AI picture."""
+        spec = self._spec(job)
+        checker = self._matcher()
+        photos = providers.photo_sources(job["id"], self.cfg)
+        if spec.style not in EDITORIAL_STYLES or not visual or checker is None or not photos:
+            return None
+        from .providers import stock_photo
+        want = match.describe(visual)
+        tried = 0
+        for q in dict.fromkeys(x for x in (query, match.subject(visual)) if x):
+            for found in stock_photo.search_any(photos, q, spec.aspect == "9:16")[:3]:
+                tried += 1
+                try:
+                    src = stock_photo.fetch(found, self.cfg.cache_dir / "stock_photos")
+                except (ProviderError, OSError):
+                    continue
+                if checker.score(src, want) >= match.GOOD:
+                    credits = job.setdefault("stock_credits", [])
+                    if found["credit"] not in credits:
+                        credits.append(found["credit"])
+                    self._note_match(job, checked=1, real_photos=1)
+                    return src
+        return None
 
     def _on_topic(self, job: dict, media: Path, query: str, visual: str) -> bool:
         """Real footage/photos must show what the line is about; an off-topic result is skipped."""

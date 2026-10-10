@@ -466,7 +466,7 @@ def test_visual_match_check_redraws_pictures_that_miss_the_line(cfg, tmp_path, m
             return next(scores) if "map" in text else 0.1
 
     monkeypatch.setattr(Pipeline, "_matcher", lambda self: Checker())
-    img, job = Img(), {"providers": {}}
+    img, job = Img(), {"providers": {}, "spec": {"idea": "money habits explained", "style": "editorial"}}
     src, key = pipe._matched_image(job, img, "p", "n", (64, 64), 7, "", "An old paper map of Britain, close-up")
     assert len(img.seeds) == 2 and src.is_file()
     assert job["match"]["regenerated"] == 1 and job["match"]["low"] == 0
@@ -477,6 +477,40 @@ def test_visual_match_check_redraws_pictures_that_miss_the_line(cfg, tmp_path, m
     assert job["match"]["stock_rejected"] == 1
     monkeypatch.setattr(Pipeline, "_matcher", lambda self: None)       # no models on the pod yet: no checks, no delay
     assert pipe._on_topic(job, photo, "anything", "") is True
+
+
+def test_explainer_looks_use_a_real_photo_when_one_clearly_matches(cfg, monkeypatch):
+    from creatorforge_worker import providers
+    from creatorforge_worker.media import match
+    from creatorforge_worker.pipeline import Pipeline
+    from creatorforge_worker.providers import stock_photo
+    from creatorforge_worker.store import JobStore
+
+    pipe = Pipeline(cfg, JobStore(cfg.jobs_dir))
+    queries = []
+    photo = cfg.cache_dir / "p.jpg"
+    photo.parent.mkdir(parents=True, exist_ok=True)
+    photo.write_bytes(b"jpg")
+    monkeypatch.setattr(providers, "photo_sources", lambda *a: [("openverse", "")])
+    monkeypatch.setattr(stock_photo, "search_any", lambda src, q, portrait: queries.append(q) or [{"credit": "c1"}])
+    monkeypatch.setattr(stock_photo, "fetch", lambda found, cache: photo)
+
+    class Checker:
+        def __init__(self, value):
+            self.value = value
+
+        def score(self, image, text):
+            return self.value
+
+    job = {"id": "j1", "providers": {}, "spec": {"idea": "money habits explained", "style": "editorial"}}
+    monkeypatch.setattr(Pipeline, "_matcher", lambda self: Checker(0.3))
+    assert pipe._real_photo(job, "", "An old paper map of Britain spread on a desk, coins") == photo
+    assert queries == ["old paper map Britain"] and job["stock_credits"] == ["c1"]
+    monkeypatch.setattr(Pipeline, "_matcher", lambda self: Checker(0.2))        # nothing clearly matches
+    assert pipe._real_photo(job, "", "A thumb over a phone") is None
+    job["spec"]["style"] = "cinematic"                                         # only the explainer looks
+    monkeypatch.setattr(Pipeline, "_matcher", lambda self: Checker(0.3))
+    assert pipe._real_photo(job, "", "An old paper map of Britain") is None
 
 
 def test_clip_tokenizer_matches_the_reference_ids(tmp_path):
