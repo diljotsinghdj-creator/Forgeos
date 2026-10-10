@@ -25,7 +25,7 @@ Cite: Meta Form 10-K, 2024
 That was nearly all of Meta's revenue in twenty twenty-four.
 Visual: One hundred coins on a table, a hand sweeping almost all into one pile
 Visual: A glass office tower at dusk with rows of lit windows
-Chart: 98% | of Meta's 2024 revenue came from ads
+Icons: 98% | coins | of Meta's 2024 revenue came from ads
 Cite: Meta Form 10-K, 2024
 
 So if you never paid, what exactly was being sold?
@@ -41,7 +41,7 @@ British adults spend four and a half hours a day online.
 Visual: A person seen from behind on a sofa, a phone lit in their hands
 Visual: A Wi-Fi router with blinking green lights on a living room shelf
 Text: 4h 30m A DAY · OFCOM 2025
-Map: United Kingdom | Online every day
+Globe: United Kingdom | Online every day
 Cite: Ofcom, 2025
 
 That is outside work, and ten minutes more than the year before.
@@ -364,7 +364,7 @@ Draw: circle
 The researchers estimated self-control problems drive about thirty-one percent of social media use.
 Visual: One hundred matchsticks laid on paper, thirty-one with burnt heads
 Visual: A biscuit jar with its lid off and crumbs scattered around it
-Chart: 31% | of social media use from self-control problems
+Icons: 31% | phones | of social media use from self-control problems
 Cite: Allcott, Gentzkow & Song, NBER 2021
 
 A model estimate, not a law of nature.
@@ -380,6 +380,7 @@ Scrolling that people themselves would rather not do.
 Visual: A hand crossing out one line of a short handwritten list, writing unreadable
 Visual: A person seen from behind in bed at night, holding a lit phone
 Thought: Why am I still scrolling this?
+Timeline: 1971 Attention called scarce → 2016 Alerts study → 2018 Paid to quit → 2021 Self-control estimate | The research
 
 So a feed keeps us past the point we would choose.
 Visual: A bedside alarm clock glowing past midnight in a dark room

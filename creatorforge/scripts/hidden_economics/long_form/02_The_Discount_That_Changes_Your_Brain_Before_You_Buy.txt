@@ -183,7 +183,7 @@ Europe thought this mattered enough to write it into law.
 Visual: The European Parliament building in Brussels with flags outside
 Visual: A printed law book open on a desk, text unreadable
 Stock: european parliament building
-Map: Brussels | Europe writes it into law
+Globe: Brussels | Europe writes it into law
 
 Since May twenty twenty-two, EU sale prices must cite a specific earlier price.
 Visual: A May 2022 calendar page with one date circled in pen
@@ -394,7 +394,7 @@ Text: DRIP PRICING
 A government-commissioned study found it at ninety-three percent of event ticket sellers reviewed.
 Visual: A printed government study on a desk, text unreadable
 Visual: A pair of concert tickets with extra fee receipts beside them, text unreadable
-Chart: 93% | of event ticket sellers reviewed
+Icons: 93% | sites | of event ticket sellers reviewed
 Cite: DBT, 2023
 
 Since April twenty twenty-five, Britain requires mandatory charges in the headline price.
@@ -424,6 +424,7 @@ Visual: A tall pile of company case files on an office desk
 Text: 400+ BUSINESSES · 19 SECTORS
 Place: UNITED KINGDOM · NOV 2025
 Cite: CMA, Nov 2025
+Timeline: 2022 EU 30-day rule → 2024 EU court ruling → 2025 UK fees up front | Price rules catch up
 
 It found possible problems in fourteen sectors.
 Visual: A grid of nineteen squares on paper with fourteen shaded in red

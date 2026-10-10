@@ -70,7 +70,7 @@ Visual: A grand Gilded Age mansion with horse carriages waiting outside
 Visual: An 1890s department store interior with glass cabinets and feathered hats
 Text: THORSTEIN VEBLEN
 Stock: 1890s new york street
-Map: United States | Veblen's wealthy Americans
+Globe: United States | Veblen's wealthy Americans
 
 What were they largely buying? The chance to be seen owning things.
 Visual: Victorian gentlemen in top hats seen from behind on a busy avenue
@@ -360,7 +360,7 @@ Cite: FCA, Oct 2023
 That is twenty-seven percent of adults, in just six months.
 Visual: Commuters seen from behind on a crowded London train platform
 Visual: A six-month wall planner on an office wall, text unreadable
-Chart: 27% | of UK adults in 6 months to Jan 2023
+Icons: 27% | people | of UK adults in 6 months to Jan 2023
 Cite: FCA, Oct 2023
 
 Then the uncomfortable detail. Look at the heaviest users.
@@ -402,6 +402,7 @@ Cite: FCA PS26/1, 2026
 Before that, most of these loans sat outside the consumer credit rules.
 Visual: A thick consumer credit rulebook lying on a desk, text unreadable
 Visual: A phone checkout screen with an instalment button, text unreadable
+Timeline: 2020 Use nearly quadruples → 2023 About 14m users → 2026 Lenders regulated | Buy now, pay later
 
 They must now check you can afford it, even for small amounts.
 Visual: A pencil running down a column of a budget sheet, numbers unreadable

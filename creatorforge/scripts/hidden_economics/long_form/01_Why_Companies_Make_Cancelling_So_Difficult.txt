@@ -44,7 +44,7 @@ Visual: A cash register drawer open and full of banknotes
 why America's fix collapsed six days before it began,
 Visual: The United States Capitol building in Washington on a grey day
 Visual: A desk calendar with six days crossed out in red pen
-Map: United States | six days before it began
+Globe: United States | six days before it began
 
 and a ten-minute check that stops the leak.
 Visual: A kitchen timer set to ten minutes on a stack of bank statements
@@ -105,6 +105,7 @@ If one in ten leaves, a hundred thousand pounds walks out each month.
 Visual: A row of ten people seen from behind, one walking away
 Visual: A hand sweeping coins off the edge of a table
 Text: −£100,000 A MONTH (ILLUSTRATION)
+Icons: 1 in 10 | people | leave each month (hypothetical)
 
 So the business has a reason to care
 Visual: An accountant's ledger open on a desk under a lamp, figures blurred
@@ -149,7 +150,7 @@ Cite: ICPEN sweep, July 2024
 Nearly seventy-six percent showed at least one possible dark pattern.
 Visual: Four printed screenshots in a row, three circled in red pen, text unreadable
 Visual: A magnifying glass over tiny grey small print on a printed page, text unreadable
-Chart: 75.7% | showed at least one possible dark pattern
+Icons: 76% | sites | showed at least one possible dark pattern
 Cite: ICPEN sweep, July 2024
 
 That means design that steers you somewhere you did not choose.
@@ -338,6 +339,7 @@ Visual: A compliance binder open on an office desk, text unreadable
 Visual: Office workers seen from behind at desks with stacks of paperwork
 Text: 6 DAYS BEFORE IT APPLIED
 Cite: US 8th Circuit, July 2025
+Timeline: 2024 Rule finalised → 2025 Struck down | America's click-to-cancel rule
 
 So why strike it down?
 Visual: A judge's gavel lying on a torn typed document
