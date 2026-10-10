@@ -8,19 +8,25 @@ People paid more for less insurance.
 Visual: Two paper insurance policies on a desk, the small one floating upwards on a string while the thick one sinks under a pile of coins
 Text: LESS COVER, HIGHER VALUE
 
-The difference was a single frightening word.
+The only difference was a single frightening word.
 Visual: A single word cut out of an old newspaper with scissors, the letters hidden face down
 Text: ONE WORD
 
-One policy paid out only if you died in a terrorist attack on a flight.
+One policy paid out only if you died on a flight.
 Visual: An old paper boarding pass pinned to a desk next to a small policy document, printing unreadable
+
+And only if a terrorist attack killed you.
+Visual: A red pen drawing a tight circle around one corner of the small policy document
 Text: POLICY A · TERRORISM ONLY
 
-The other paid out if you died on that flight from any cause at all.
+But the other paid out if you died on that flight.
 Visual: A second, thicker document laid beside it, a hand smoothing it flat
+
+From any cause at all, terrorism included.
+Visual: A hand stamping the thick document, the ink spreading across every page edge
 Text: POLICY B · ANY CAUSE
 
-Any cause includes terrorism. The second policy was strictly bigger.
+So the second policy was strictly bigger.
 Visual: A pencil drawing one circle on graph paper, then a larger circle around it
 Text: A IS INSIDE B
 
@@ -28,13 +34,19 @@ On average, people still put a higher price on the smaller one.
 Visual: A coin sliding off the thick document and landing on the small one
 Text: Johnson et al., 1993
 
-If one word can do that to a price, what can it do to yours?
+One word did that to a price.
+Visual: A single newspaper word pinned beneath a price tag, a red string running between them
+
+So what can it do to yours?
 Visual: A phone lying on a sofa cushion, a paper cut-out of a dark house laid across its screen
 Text: WHAT CAN IT DO TO YOURS?
 
-By the end, you'll know four questions that strip the fear out of any offer.
+By the end, you'll know four questions.
 Visual: Four blank index cards pinned in a row on a cork board, a yellow highlighter beside them
 Text: FOUR QUESTIONS
+
+Together they strip the fear out of any offer.
+Visual: A hand peeling a dark paper mask off a glossy advert cut-out, plain paper underneath
 
 Meet Maya. She is fictional, and it is eleven at night.
 Visual: A cut-out silhouette of a woman from behind on a sofa, rain drawn on the window behind her
@@ -67,50 +79,62 @@ Visual: A pencil ticking boxes on a yellowed paper questionnaire, its pages curl
 Text: Lichtenstein et al., 1978
 Stock: 1970s office paperwork
 
-Answers leaned towards dramatic, memorable deaths and away from quiet, common ones.
+But the answers leaned towards dramatic, memorable deaths.
 Visual: Two stacks of index cards on a desk, one tall and dramatic, one short and plain
 
-Memory serves up what is vivid, and we mistake it for what is common.
-Visual: An old photograph of lightning over a town, pinned above a pile of ordinary household photos
+And away from quiet, common ones.
+Visual: The short plain stack of index cards pushed to the edge of the desk, half in shadow
+
+Here's why. Memory serves up what is vivid.
+Visual: An old photograph of lightning over a town, pinned to the centre of a cork board
+
+And we mistake it for what is common.
+Visual: The lightning photograph laid on top of a pile of ordinary household photos, hiding them
 
 Even when warned about this bias, most people could not correct it.
 Visual: An eraser rubbing at a pencil mark on paper that will not fade
 Text: WARNED, STILL BIASED
 
-A follow-up compared their guesses with newspaper coverage.
+Then a follow-up compared their guesses with newspaper coverage.
 Visual: A stack of old newspapers dropped onto a desk, pages fanning out, print unreadable
 Stock: stack of old newspapers
 
-The guesses tracked how often each cause made the papers, not how often it killed.
+The guesses tracked how often each cause made the papers.
 Visual: Scissors cutting a clipping out of an old newspaper, the print unreadable
 Text: Combs & Slovic, 1979
 
-So the news you watch helps set the price of the fear you feel.
+Not how often it actually killed.
+Visual: A thin pile of plain death-record cards beside a tall heap of newspaper clippings, a red question mark between them
+
+So the news you watch helps price the fear you feel.
 Visual: An old television set on a desk, a newspaper clipping and a price tag taped to its screen
 
 Then economists tested the same blind spot with money.
 Visual: Hands counting banknotes onto a kitchen table, one note drifting to the floor
 Text: Sunstein & Zeckhauser
 
-A cancer risk was described vividly, and people were asked what they'd pay to remove it.
+They described a cancer risk vividly.
 Visual: A glass of tap water on a sheet of paper, a single dark drop spreading through it
+
+Then asked people what they'd pay to remove it.
+Visual: A hand pushing a small pile of coins towards the glass of water
 
 Make that risk ten times larger, and the price barely moved.
 Visual: A row of ten water glasses on paper, a price tag tied to the first and the last, both the same size
 Chart: 1 vs 10 | the risk, ten times the risk
 
-When fear is vivid, the size of the risk stops counting.
+So when fear is vivid, the size of the risk stops counting.
 Visual: An old shop scale with its needle stuck at the same point, however many weights are added
 Text: PRICE BARELY MOVED
 
-The same economists named what fear does next. Action bias.
+The same economists named fear's next trick. Action bias.
 Visual: A hand gripping a door handle in a dim hallway
 Text: ACTION BIAS
 
 When something frightens us, doing anything feels better than doing nothing.
 Visual: Fingers drumming on a wooden table beside a phone
 
-And buying something is the easiest something there is.
+And buying something? The easiest something there is.
 Visual: A thumb sliding towards a bright button on a paper phone, nothing readable
 
 So what does a seller do with a buyer who has stopped counting?
@@ -120,13 +144,13 @@ Text: WHAT DOES A SELLER DO?
 In a calm market, sellers compete on what the cover is worth.
 Visual: Three blank price cards lined up evenly on a shop counter
 
-A frightened buyer compares less and asks fewer questions.
+But a frightened buyer compares less and asks fewer questions.
 Visual: Two of the price cards turned face down, only one left showing
 
 So the contest drifts from value towards whoever frightens best.
 Visual: A single product box under a spotlight on a desk, everything around it in shadow
 
-Fear-led sellers have a second advantage, backed by a huge body of research.
+Fear-led sellers have one more advantage, backed by a huge body of research.
 Visual: A pile of academic journals on a desk, one lying open, pages lifting
 
 A twenty fifteen meta-analysis pooled hundreds of samples of fear messages.
@@ -137,11 +161,15 @@ Fear generally did change attitudes, intentions and behaviour.
 Visual: An old public-health poster pinned to a board, its image a hand on a stair rail, words blank
 Text: Tannenbaum et al., 2015
 
-When did it work best? When the message offered one clear thing to do.
+When did it work best?
+Visual: A pencil pulling one sheet halfway out of a thick stack of research papers
+Text: WHEN DID IT WORK BEST?
+
+When the message offered one clear thing to do.
 Visual: A finger pressing a lone light switch on a bare wall
 Text: FEAR + ONE STEP
 
-And on a phone, one clear thing to do looks exactly like a button.
+On a phone, one clear step looks exactly like a button.
 Visual: A single round button on a paper phone, ringed in yellow highlighter, nothing readable
 
 That research was about health messages. But look at Maya's advert again.
@@ -159,8 +187,11 @@ Text: WHICH CAME FIRST?
 A safety message starts with a real risk and looks for a remedy.
 Visual: A fire extinguisher on a kitchen wall cut from an old photograph
 
-A fear-led pitch can start with a product, and go looking for a risk.
-Visual: A boxed product on a desk, a magnifying glass searching the empty paper around it
+A fear-led pitch can start with a product.
+Visual: A boxed product alone on a desk under a lamp
+
+Then go looking for a risk.
+Visual: A magnifying glass searching the empty paper around the boxed product
 
 Maya's advert never once says how likely a break-in actually is.
 Visual: The advert on her phone with a blank space circled where a number should be, nothing readable
@@ -174,20 +205,26 @@ Here is the uncomfortable twist. Sometimes fear is exactly what saves you.
 Visual: Grey smoke curling under a closed door in an old photograph of a corridor
 Text: THE TWIST
 
-Home Office analysis looked at house fires in England with no working smoke alarm.
-Visual: A smoke alarm on a desk with its battery cover hanging open, the battery missing
+Home Office analysis looked at house fires in England.
+Visual: A map of England pinned to a desk, small red circles drawn over scattered towns
 Text: Home Office, 2022 to 2023
 Stock: firefighters house fire
+
+Then it singled out homes with no working smoke alarm.
+Visual: A smoke alarm on a desk with its battery cover hanging open, the battery missing
 
 Someone in those fires was about ten times more likely to die.
 Visual: A stairwell drawn on graph paper, filling with grey pencil shading from the bottom up
 Chart: 10× | more likely to die, no working alarm
 
-Fear that gets a cheap battery into an alarm is fear well spent.
+So the fear that gets a cheap battery in is well spent.
 Visual: Fingers clicking a new battery into a smoke alarm
 Stock: smoke alarm battery
 
-That is not a reason to fear less. It is a reason to fear accurately.
+That is not a reason to fear less.
+Visual: A hand turning a dial on an old radio, the needle staying put
+
+Instead, it is a reason to fear accurately.
 Visual: A magnifying glass over a photograph, the part under the glass sharp, the rest blurred
 
 Even the advertising rules accept this.
@@ -228,10 +265,13 @@ Text: BEFORE MIDNIGHT
 Fear narrows attention. A deadline removes the time to compare.
 Visual: A hand sweeping three folders off a desk
 
-No time to read the exclusions. No time to ask if it fits your life.
+Now there's no time to read the exclusions.
 Visual: A magnifying glass over fine print that stays completely unreadable
 
-Some deadlines are genuine. A sale really can end.
+No time to ask if it fits your life.
+Visual: A paper calendar of her week pushed aside by a hand, unread
+
+Still, some deadlines are genuine. A sale really can end.
 Visual: An old photograph of a shop shutter half rolled down at dusk
 Stock: shop shutter closing
 
@@ -248,8 +288,11 @@ One is falsely claiming an offer is only available for a limited time.
 Visual: An hourglass tipped on its side, its sand stopped
 Text: FALSE TIME LIMITS: BANNED
 
-Done to rush a decision, it is unfair in all circumstances. No further test.
+Done to rush a decision, it is unfair in all circumstances.
 Visual: A rubber stamp pressing onto a blank document, ink spreading into the paper
+
+No further test is even needed.
+Visual: A set of weighing scales pushed off the edge of the desk, unused
 
 The competition regulator has also warned about countdown timers that quietly reset.
 Visual: A kitchen timer turned back to its start, a pencil arrow looping round it
@@ -265,7 +308,11 @@ Text: WHAT PROTECTS YOU?
 So Maya puts the phone face down and waits until morning.
 Visual: A phone face down on a table, morning light spreading over the paper beneath it
 
-Tonight's plan costs eight pounds a month. Over two years, a hundred and ninety-two pounds.
+Tonight's plan costs eight pounds a month.
+Visual: A single stack of eight coins on a sheet of graph paper
+Text: £8 A MONTH · ILLUSTRATION
+
+Over two years, a hundred and ninety-two pounds.
 Visual: Coins laid out in two rows of twelve on a sheet of graph paper
 Chart: £8 × 24 = £192 | illustration, two years of one plan
 
@@ -277,9 +324,12 @@ Identity monitoring and boiler cover, each bought on another worried evening.
 Visual: A small padlock and a radiator valve laid beside the statement
 Chart: £8 + £6 + £12 = £26 | illustration, three plans a month
 
-With tonight's plan, three hundred and twelve pounds a year. She had never added them up.
+With tonight's plan, three hundred and twelve pounds a year.
 Visual: A tall stack of coins beside a short one on a desk, a receipt curling between them
 Chart: £26 × 12 = £312 | illustration, all three plans a year
+
+She had never added them up.
+Visual: A pencil resting beside an empty sum line on a scrap of paper
 
 She keeps the one she actually needs, and drops the other two.
 Visual: A hand sliding two of three brochures into a recycling bin
@@ -304,15 +354,18 @@ And is the deadline real, or there to rush me?
 Visual: A paper calendar page, no date circled
 Text: 4. IS THE DEADLINE REAL?
 
-If an offer still makes sense once the fear fades, buy it calmly.
+So if an offer still makes sense once the fear fades, buy calmly.
 Visual: A hand signing a blank form in daylight, the lamp switched off
 Text: ILLUSTRATIVE FIGURES ONLY
 
-If it only made sense at eleven at night, the fear was the product.
+If it only made sense at eleven at night?
+Visual: An old wall clock reading eleven, cut out and pinned beside Maya's dark phone
+
+Then the fear was the product.
 Visual: Maya's phone dark on the table, sunlight crossing the newspaper beneath it
 Text: THE FEAR WAS THE PRODUCT
 
-Try it tonight. Search your bank statement for every protection you already pay for.
+Tonight, search your bank statement for every protection you already pay for.
 Visual: A highlighter running along lines of a paper bank statement, the text unreadable
 Text: TONIGHT: LIST EVERY PROTECTION
 
@@ -320,6 +373,9 @@ But some people use fear plus urgency not to sell, but to steal.
 Visual: An old telephone ringing on a desk, its receiver jumping in the cradle
 Text: FEAR + URGENCY
 
-Next time, the version that adds authority, and why clever people fall for it.
+Next time, the version that adds authority.
 Visual: A hand reaching for the ringing telephone in cold blue light
+
+And why even clever people fall for it.
+Visual: A row of old diplomas pinned to a cork board, one tied to the telephone with red string
 Text: NEXT: WHY SMART PEOPLE FALL FOR SCAMS
