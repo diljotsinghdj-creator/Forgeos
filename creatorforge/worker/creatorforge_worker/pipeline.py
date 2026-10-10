@@ -363,7 +363,8 @@ class Pipeline:
                 except (MediaError, OSError):
                     return True
         score = max(checker.score(frame, query), checker.score(frame, match.describe(visual)) if visual else 0.0)
-        if score < match.POOR:
+        if score < match.POOR or match.shows_face(checker, frame, visual):
+            # off-topic, or a face close-up the line didn't ask for (the channel is faceless)
             self._note_match(job, stock_rejected=1)
             return False
         return True
