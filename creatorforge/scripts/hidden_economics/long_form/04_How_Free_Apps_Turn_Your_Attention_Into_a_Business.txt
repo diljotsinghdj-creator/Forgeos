@@ -8,9 +8,13 @@ Your apps are free. Or are they?
 Visual: A smartphone lying on an old newspaper, a stream of cut-out gold coins pouring out of its screen into a waiting cupped hand
 Text: £0
 
-Yet one company earned a hundred and sixty billion dollars from ads in a single year.
+Yet one company earned a hundred and sixty billion dollars.
 Visual: A towering stack of paper-cut coins rising off a desk, its shadow falling across a printed annual report, print unreadable
 Chart: $160.6bn | Meta ad revenue, 2024
+
+From ads alone. In just one year.
+Visual: A single torn page from a paper desk calendar pinned beneath the coin stack
+Text: ADS · ONE YEAR
 
 That was nearly all of Meta's revenue in twenty twenty-four.
 Visual: One hundred coins on a sheet of paper, a hand sweeping almost all of them into a single pile
@@ -20,7 +24,10 @@ So if you never paid, what exactly was being sold?
 Visual: An empty shop counter cut from an old photograph, a single blank price tag dangling on a string
 Text: WHAT WAS SOLD?
 
-Your time. And British adults spend four and a half hours a day online.
+Your time.
+Visual: An antique hourglass cut from an old catalogue, a paper price tag tied around its waist
+
+British adults spend four and a half hours a day online.
 Visual: A paper clock face pinned to a desk, a wedge of coloured paper filling four and a half hours of it
 Text: 4h 30m A DAY · OFCOM 2025
 
@@ -28,8 +35,11 @@ That is outside work, and ten minutes more than the year before.
 Visual: The same paper clock, a thin extra sliver of colour slid into place beside the wedge
 Text: +10 MINUTES IN A YEAR
 
-So who buys that time, and how is it taken? By the end, you will know.
+So who buys that time, and how is it taken?
 Visual: An old aerial photograph of a city at night, tiny dots of phone light pinned into its windows like stars
+
+By the end, you will know.
+Visual: A red string running from the city photograph to a blank envelope pinned at the edge of the desk
 
 And three small changes that win a share of it back.
 Visual: A hand turning an antique hourglass over on a sheet of graph paper
@@ -51,7 +61,10 @@ She paid nothing. So who earned from the other nineteen?
 Visual: The phone face up on a duvet, a question mark cut from newsprint laid across its dark screen
 Text: WHO GOT THE 19 MINUTES?
 
-Maya is typical. Ofcom found young adults online for over six hours a day.
+Maya is typical.
+Visual: A row of identical cut-out silhouettes on sofas, each holding a glowing phone, Maya's circled in pen
+
+Ofcom found young adults online for over six hours a day.
 Visual: An old photograph of the top deck of a night bus, the passengers seen from behind, phones glowing
 Text: AGED 18–24: 6h 20m
 Stock: people on phones bus
@@ -60,7 +73,11 @@ And about three quarters of all adult online time is on smartphones.
 Visual: Four paper phones in a row on a desk, three of them lit with yellow highlighter, one left grey
 Text: SMARTPHONES ≈ 3/4 OF TIME ONLINE
 
-How can something free make that much money? The answer is older than smartphones.
+How can something free make that much money?
+Visual: A paper phone on one pan of an old brass scale, a heap of coins on the other, the scale tipping towards the coins
+Text: £0 → BILLIONS?
+
+The answer is older than smartphones.
 Visual: A vintage typewriter on a desk with a sheet of paper half typed, the lettering unreadable
 Text: 1971
 
@@ -69,18 +86,24 @@ Visual: An old black-and-white photograph of a nineteen-seventies lecture hall, 
 Text: HERBERT SIMON, 1971
 Stock: 1970s university lecture
 
-A world rich in rabbits, he said, is a world poor in lettuce.
-Visual: A vintage engraving of a rabbit cut out and pasted beside a single lettuce leaf with bites missing
+Imagine a world rich in rabbits, he said.
+Visual: Dozens of vintage engravings of rabbits cut out and crowded onto a sheet of textured paper
 
-Information eats something too. It eats the attention of whoever receives it.
+Then it is a world poor in lettuce.
+Visual: A single lettuce leaf pasted among the rabbits, almost every edge bitten away
+
+Information eats something too.
 Visual: A letterbox overflowing with letters, leaflets and newspapers spilling across a hallway floor
 Stock: letters through letterbox
 
-A wealth of information creates a poverty of attention.
+It eats the attention of whoever receives it.
+Visual: A cut-out silhouette from behind in a hallway, ankle-deep in letters and newspapers
+
+So a wealth of information creates a poverty of attention.
 Visual: A lone figure from behind at a desk, buried under a heap of newspapers, letters and glowing phones
 Text: WEALTH OF INFO = POVERTY OF ATTENTION
 
-He wrote that decades before the first smartphone existed.
+He wrote that decades before the first smartphone even existed.
 Visual: An old rotary telephone and a modern smartphone side by side on a desk, a strip of paper tape joining them
 
 If attention is the scarce thing, someone will pay for it. Who?
@@ -91,54 +114,74 @@ Mostly, advertisers.
 Visual: An old photograph of a city square at night covered in glowing billboards, their content blank
 Stock: city billboards night
 
-Every minute Maya scrolls is space on her screen they can buy.
+Watch Maya's screen. Every minute she scrolls is space they can buy.
 Visual: A paper phone with a small blank advert card slotted between posts, a coin placed on top of the card
 
-Britain's competition regulator found UK digital advertising worth about fourteen billion pounds in twenty nineteen.
-Visual: Bundles of banknotes stacked on a copy of a thick government report, a desk lamp's pool of light on them
-Text: CMA · £14 BILLION · 2019
+In twenty nineteen, Britain's competition regulator sized up UK digital advertising.
+Visual: A thick government report dropped onto a desk under a lamp, a red paper tab marking one page
+Text: CMA · 2019
+Stock: london government buildings
+
+It was worth about fourteen billion pounds.
+Visual: Bundles of banknotes stacked on the report, a desk lamp's pool of light on them
+Text: £14 BILLION
 
 Roughly eighty percent went to just two companies. Which two? Google and Facebook.
 Visual: A paper pie chart made of coins, a hand pushing the small slices away until two large slices remain
 Chart: 80% | of UK digital ad spend to two firms
 
-It concluded that competition in these markets was not working well.
+Its verdict? Competition in these markets was not working well.
 Visual: A chessboard with only two large pieces left standing, the rest knocked over at the edge of the board
 Text: COMPETITION NOT WORKING WELL
 
-And Meta's own filing credits more ads shown, and a higher price per ad.
+Now look at Meta's own filing.
+Visual: A thick printed filing pinned to a desk, two lines circled in red pen, the print unreadable
+
+It credits two things. More ads shown, and a higher price per ad.
 Visual: A long strip of identical small paper cards feeding through a hand-cranked machine, faster and faster
 Text: MORE AD IMPRESSIONS + HIGHER PRICE
 
-More ads seen, at a higher price. Both depend on time spent looking.
+Both depend on one thing. Time spent looking.
 Visual: A stopwatch resting on a stack of blank advert cards, its hand mid-sweep
 
-Not every app works this way. But where ads pay, more time means more ads.
+Not every app works this way.
+Visual: A paper phone showing a plain calculator layout, no adverts anywhere, nothing readable
+
+But where ads pay, more time means more ads.
 Visual: A phone screen showing a generic feed, a small blank ad box between the posts, nothing readable
 Text: FICTIONAL INTERFACE
 
-So what does an app built around your time actually look like? Look at Maya's night.
+So what does an app built around your time actually look like?
 Visual: A floor plan of a small bedroom drawn on graph paper, a phone circled beside the bed
 Text: WHAT DOES IT LOOK LIKE?
+
+Watch Maya's night.
+Visual: The same floor plan, a pencil tracing a path from the door to the bed and the glowing phone
 
 A newspaper has a last page. An episode has credits.
 Visual: A hand folding a printed newspaper shut on a breakfast table, the back page facing up
 Stock: folding newspaper
 
-Maya's feed has no last page. It refills every time she reaches the bottom.
+But Maya's feed has no last page.
 Visual: A paper phone with an endless roll of paper unspooling from its bottom edge, curling across the desk and onto the floor
 Text: NO LAST PAGE
 
-Autoplay starts the next video before she has decided anything.
+Even at the bottom, it just refills.
+Visual: A hand pulling the paper roll down, fresh paper rolling out behind it from the phone
+
+Then autoplay starts the next video before she has decided anything.
 Visual: A row of small cut-out photographs falling like dominoes, each one tipping the next
 
-Recommendations remove the effort of choosing.
+Recommendations remove even the effort of choosing.
 Visual: A hand dealing blank playing cards face up onto a table, one after another
 
-And notifications pull her back once she has left.
+And even after she leaves, notifications pull her back.
 Visual: A phone on a kitchen counter lit up, a fishing line tied to it running off the edge of the counter
 
-Each feature can be useful. Together, stopping becomes a decision, not the default.
+Each feature can be useful.
+Visual: Four small objects lined up on a desk, a paper roll, a play-button cut-out, a deck of cards and a fishing hook
+
+But together, stopping becomes a decision, not the default.
 Visual: A cut-out silhouette sitting on the edge of a bed, phone in hand, a closed door behind her
 Text: STOPPING = A DECISION
 
@@ -157,16 +200,19 @@ For another, alerts were off and phones put away.
 Visual: A phone placed into a wooden desk drawer, the drawer half shut
 Text: WEEK B · ALERTS OFF
 
-With alerts on, people reported more inattention and hyperactivity.
+Notice the difference. With alerts on, people reported more inattention and hyperactivity.
 Visual: Fingers drumming on a desk beside a lit phone, a pencil rolling off the edge
 Text: ALERTS ON → MORE INATTENTION
 
 And that inattention was linked to lower productivity and wellbeing.
 Visual: A half-finished to-do list beside a cold cup of coffee and a glowing phone, the writing unreadable
 
-One group of students, self-reporting, over two weeks. But the fix was just a setting.
-Visual: A thumb sliding a generic toggle switch to off on a paper phone, nothing readable
+One group of students, self-reporting, over two weeks.
+Visual: A small stack of paper questionnaires clipped together, a pencil resting on top
 Text: ONE STUDY · SELF-REPORTED
+
+But the fix was just a setting.
+Visual: A thumb sliding a generic toggle switch to off on a paper phone, nothing readable
 
 So here is the real question. Does Maya even want those nineteen minutes?
 Visual: A cut-out silhouette at a rain-streaked window at night, a phone glowing in one hand
@@ -176,52 +222,70 @@ In twenty eighteen, economists paid American volunteers to deactivate Facebook f
 Visual: A phone with a dark screen lying on a paper calendar, four weeks circled in pen
 Text: PAID TO QUIT · 4 WEEKS
 
-Those who quit spent more time offline, with friends and family, and even watching television.
+Those who quit spent more time offline, with friends and family.
 Visual: An old family photograph of hands passing a dish across a dinner table, faces out of frame
 Stock: family dinner table
+
+And even watching television.
+Visual: An old photograph of a living room television set glowing, a sofa seen from behind
 
 They reported slightly higher wellbeing.
 Visual: A small paper sun pinned above a tidy kitchen table, a phone left charging in the corner
 Text: WELLBEING ↑
 
-Then the twist. Once the experiment ended and they could go back, their use stayed lower.
+Then the twist.
+Visual: A red-pen arrow on graph paper bending sharply downward
+
+Even after the experiment ended, their use stayed lower.
 Visual: A phone lying unused on a windowsill, a thin layer of dust and a dried leaf resting on it
 Text: USE STAYED LOWER AFTERWARDS
 
 And they now valued the app less than they had before.
 Visual: An old brass balance scale, a paper phone on one pan slowly rising as if it had lost weight
 
-If people truly wanted all that time, why would a break change their minds?
+Strange, if people truly wanted all that time.
 Visual: An hourglass lying on its side on graph paper, the sand stopped
+
+Why would a break change their minds?
+Visual: A paper phone snapped back into a drawer, a red question mark drawn on the drawer front
 Text: WHY WOULD A BREAK CHANGE THEM?
 
-A later study tried to measure that pull directly.
+Now a later study tried to measure that pull directly.
 Visual: A pencil drawing a wavering line across graph paper, the axes unlabelled
 
-It offered people tools to cap their own future screen time. Many used them.
+It offered people tools to cap their own future screen time.
 Visual: A phone showing a generic timer dial, a thumb turning it, nothing readable
 Text: FICTIONAL INTERFACE
+
+Many actually used them.
+Visual: A row of paper phones on a desk, most of them with a small red timer sticker attached
 
 The researchers estimated self-control problems drive about thirty-one percent of social media use.
 Visual: One hundred matchsticks laid out on paper, thirty-one of them with burnt heads
 Chart: 31% | of social media use from self-control problems
 
-A model estimate, not a law of nature. But close to a third of the scrolling.
-Visual: A paper clock face with one third shaded in pencil, a phone lying beside it
+A model estimate, not a law of nature.
+Visual: A pencil-drawn graph on paper with a dotted curve, the axes unlabelled
 Text: MODEL ESTIMATE
+
+But that is close to a third of the scrolling.
+Visual: A paper clock face with one third shaded in pencil, a phone lying beside it
 
 Scrolling that people themselves would rather not do.
 Visual: A hand writing a short list on a notepad and crossing out one line, the words unreadable
 
-If a feed keeps us past the point we would choose, is that even legal?
+So a feed keeps us past the point we would choose.
+Visual: A paper roll unspooling past a red pen line drawn across the desk
+
+Is that even legal?
 Visual: A judge's gavel resting on a phone on a dark desk
 Text: IS IT LEGAL?
 
-In the European Union, the answer is starting to change.
+In the European Union, the answer is actually starting to change.
 Visual: A map of Europe pinned to a desk, a ring of yellow paper stars laid around it
 Stock: european union flags
 
-The Digital Services Act bars platforms from interfaces that deceive or manipulate users.
+Its Digital Services Act bars platforms from deceptive or manipulative interfaces.
 Visual: A thick legal document open on a desk, one paragraph circled, the print unreadable
 Text: DIGITAL SERVICES ACT · ART. 25
 
@@ -234,7 +298,10 @@ It preliminarily found TikTok's addictive design in breach of that law.
 Visual: A generic vertical video feed on a phone pinned to a document, no logos, content blank
 Text: PRELIMINARY FINDINGS
 
-It named infinite scroll, autoplay, push notifications and a highly personalised recommender system.
+It named four features.
+Visual: Four blank index cards pinned to a board, joined by red string
+
+Infinite scroll, autoplay, push notifications and a highly personalised recommender system.
 Visual: Four objects pinned in a row to a board, a roll of paper, a play-button cut-out, a small bell and a magnet
 Text: SCROLL · AUTOPLAY · ALERTS · RECOMMENDER
 
@@ -248,7 +315,10 @@ It suggested phasing out infinite scroll and adding real screen-time breaks.
 Visual: A hand placing a small wooden block across the unspooling roll of paper, stopping it
 Text: SUGGESTED: SCREEN-TIME BREAKS
 
-These are not final findings. TikTok can respond, and has called them meritless.
+Still, these are not final findings.
+Visual: A red question mark drawn in pen at the bottom of a document, a paperclip holding it closed
+
+TikTok can respond, and has called them meritless.
 Visual: An unsigned document on a desk, a pen resting beside the empty signature space
 Text: NOT FINAL · COMPANY DISPUTES THEM
 
@@ -256,8 +326,11 @@ If confirmed, fines can reach six percent of worldwide annual turnover.
 Visual: A tall stack of paper coins with a thin slice cut cleanly away by a ruler
 Chart: 6% | maximum fine, share of global turnover
 
-So a major regulator now treats the endless feed itself as a possible risk.
+So a major regulator now flags a possible risk.
 Visual: A newspaper front page pinned to a desk, a phone laid on top of it, headline unreadable
+
+Not in the content, but in the endless feed itself.
+Visual: The roll of paper from earlier, ringed in red pen where it spills off the phone
 
 But Maya cannot wait for Brussels. What can she do tonight?
 Visual: Maya's hand hovering over her phone on the bedside table, the screen dark
@@ -270,7 +343,10 @@ Text: WHO GOT THE 19 MINUTES?
 Possibly the app, and the advertisers who paid to reach her.
 Visual: A blank billboard cut from an old photograph, pasted above a quiet rainy street
 
-The content may have been worth it. The question is whether she chose it.
+Maybe the content was even worth it.
+Visual: A small paper heart and a cut-out photograph laid gently on the phone's dark screen
+
+The real question is whether she chose it.
 Visual: A hand gently setting a phone down on a bedside table beside a closed book
 
 Here is a one-week experiment, built from that research.
@@ -280,32 +356,41 @@ Text: ONE-WEEK EXPERIMENT
 Seven days, three settings, about ten minutes to set up.
 Visual: A phone, a pencil and a kitchen timer laid neatly on a wooden table in morning light
 
-First, turn off every notification you would not miss.
+First, turn off every notification you would never miss.
 Visual: A thumb sliding a generic notification toggle to off, nothing readable
 Text: 1. NOTIFICATIONS OFF
 
-That is the alerts-off week from the study, done by you.
+That is the alerts-off week from the study, only run by you.
 Visual: The wooden desk drawer from earlier, now fully shut on the phone
 
 Second, move your most distracting app off the home screen.
 Visual: A finger dragging a generic app icon into a folder on a paper phone, nothing readable
 Text: 2. MOVE THE APP
 
-Why hide it? A few extra taps put back the stopping point the design removed.
+Why hide it?
+Visual: A generic app icon cut out of paper, tucked inside a small paper folder
+
+A few extra taps put back the stopping point the design removed.
 Visual: The roll of paper from earlier, neatly torn off and folded into a closed booklet
 
-Third, decide why you are opening it, and set a timer.
+Now the third. Decide why you are opening it, and set a timer.
 Visual: A hand twisting a kitchen timer beside a phone on a desk
 Text: 3. PURPOSE + TIMER
 
-In the research, people who set limits used those apps less.
+In the research, people who set limits actually used those apps less.
 Visual: An hourglass with its last grains falling, the phone beside it dark
 
-Maya tries it for a week. Her phone lights up far less at night.
-Visual: The graph-paper bedroom plan, the circle around the phone now crossed out in pencil
+Maya tries it for one week.
+Visual: A paper wall calendar, seven days crossed off in red pen beside her phone
 Text: MAYA · FICTIONAL
 
-The goal is not to quit what you enjoy. It is time you chose.
+Notice her phone. It lights up far less at night.
+Visual: The graph-paper bedroom plan, the circle around the phone now crossed out in pencil
+
+The goal is never to quit what you enjoy.
+Visual: A hand resting on a phone beside a cup of tea and an open book, lamp light warm
+
+It is time you chose.
 Visual: A phone placed face down on a table as morning light spreads across the paper beneath it
 Text: TIME YOU CHOSE
 
