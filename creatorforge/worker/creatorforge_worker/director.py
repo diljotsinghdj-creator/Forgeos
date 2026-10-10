@@ -15,7 +15,8 @@ from .templates import (ANIMATED_STYLES, EDITORIAL_LEADS, EDITORIAL_NEGATIVE, PA
                         WORDS_PER_SECOND, Template)
 
 NEGATIVE = ("text, watermark, logo, caption, subtitles, letters, signature, blurry, low quality, "
-            "jpeg artifacts, deformed, distorted face, extra fingers, extra limbs")
+            "jpeg artifacts, deformed, distorted face, extra fingers, extra limbs, "
+            "middle finger, rude hand gesture, obscene gesture")
 # Faceless channels: show people without showing faces - also avoids the uncanny, smeared faces image models make.
 FACELESS = ("faceless framing: person seen from behind or in silhouette, face hidden or out of frame, "
             "hands and objects in focus, or a wide shot where people are small")
@@ -528,6 +529,10 @@ def _editorial_prompt(visual: str, spec: ProductionSpec) -> tuple[str, str]:
     parts = [EDITORIAL_LEADS[spec.style], subject]
     if _has_people(visual):
         parts.append("person seen in silhouette or from behind, face not visible")
+    elif re.search(r"\b(hands?|fingers?|fingertips?|thumbs?)\b", visual, re.I):
+        # hands only: the rest of the person stays out of frame, and no raised-finger gestures (an image model can
+        # turn "counting on fingers" into a rude one)
+        parts.append("only the hands in frame, cropped at the wrists, relaxed natural hand pose")
     if re.search(r"\b(card|receipt|letter|statement|contract|document|form|sign|label|poster|newspaper|report|bill|"
                  r"ticket|screen|page|certificate|menu|notice|book|calendar)\b", visual, re.I):
         # image models scribble fake words on paper and screens; keep them plain so nothing reads as gibberish
@@ -645,7 +650,19 @@ def _line_shots(line: str, d: dict) -> list[list[str]]:
     the narration is untouched, only the picture changes mid-line. Text/Stock/Chart belong to the first picture."""
     visuals = [d.get("visual", "")] + list(d.get("more") or [])
     words = line.split()
+    extra = dict(d.get("extra") or {})
+    graphic = bool(d.get("chart") or any(extra.get(k) for k in ("map", "steps", "chapter", "quote")))
+    # A full-frame graphic (chart, map, card, steps) covers its picture: when the line is long enough, it gets a
+    # picture slot of its own first (~2.3 s+), so the writer's visual still shows instead of being hidden.
+    lead = graphic and len(words) >= 6 * (len(visuals) + 1)
+    if lead:
+        visuals = [visuals[0]] + visuals
     n = max(1, min(len(visuals), len(words) // 3))       # every picture gets at least ~3 words of screen time
+    # A stock search belongs to the picture it describes, not always the first one.
+    pool = visuals[1:n] if lead else visuals[:n]
+    hits = [len(set(re.findall(r"[a-z]{3,}", str(d.get("stock", "")).lower())) & set(re.findall(r"[a-z]{3,}", v.lower())))
+            for v in pool]
+    stock_at = (hits.index(max(hits)) + (1 if lead else 0)) if d.get("stock") and hits and max(hits) else (1 if lead and n > 1 else 0)
     if n == 1:
         return [[line, visuals[0], d.get("text", ""), d.get("stock", ""), d.get("chart", ""), d.get("draw", ""),
                  d.get("bubble", ""), dict(d.get("extra") or {})]]
@@ -659,10 +676,13 @@ def _line_shots(line: str, d: dict) -> list[list[str]]:
         start = cut
     bounds = [0] + cuts + [len(words)]
     first = lambda key, k: d.get(key, "") if k == 0 else ""  # noqa: E731
-    # Text/Stock/Chart open the line; a pen mark or bubble lands on the line's last picture (the payoff).
+    # Text and the graphic open the line (the text moves to the first picture when the graphic has its own slot);
+    # a pen mark or bubble lands on the line's last picture (the payoff).
+    text_at = 1 if lead and n > 1 else 0
     last = lambda key, k: d.get(key, "") if k == n - 1 else ""  # noqa: E731
-    return [[" ".join(words[a:b]), visuals[k], first("text", k), first("stock", k), first("chart", k),
-             last("draw", k), last("bubble", k), dict(d.get("extra") or {}) if k == 0 else {}]
+    return [[" ".join(words[a:b]), visuals[k], d.get("text", "") if k == text_at else "",
+             d.get("stock", "") if k == stock_at else "", first("chart", k),
+             last("draw", k), last("bubble", k), extra if k == 0 else {}]
             for k, (a, b) in enumerate(zip(bounds, bounds[1:]))]
 
 

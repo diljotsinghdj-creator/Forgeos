@@ -148,7 +148,8 @@ def render(plan: dict, theme: str, width: int, height: int, seconds: float, out:
         left, right = int(width * 0.14), int(width * 0.86)
         slot = (right - left) // n
         bw = int(slot * 0.62)
-        base, max_h = int(height * (0.72 - up)), int(height * (0.42 - up / 2))
+        # tall frames: bars and their labels end above the captions (~66% of the height)
+        base, max_h = (int(height * 0.54), int(height * 0.27)) if height > width else (int(height * 0.72), int(height * 0.42))
         for i, v in enumerate(vals):
             bh = max(4, int(max_h * v / top))
             x = left + i * slot + (slot - bw) // 2

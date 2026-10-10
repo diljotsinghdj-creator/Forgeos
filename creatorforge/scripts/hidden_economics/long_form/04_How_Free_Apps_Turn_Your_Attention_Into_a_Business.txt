@@ -189,7 +189,7 @@ Visual: A Silicon Valley office campus seen from across a car park
 Visual: Two lines highlighted in yellow on a printed filing, text unreadable
 
 It credits two things. More ads shown, and a higher price per ad.
-Visual: A hand holding up two fingers against a plain white wall
+Visual: Two brass weights standing side by side on a wooden desk
 Visual: A magazine page crowded with blank advert boxes, text unreadable
 Visual: A price tag rewritten with a higher figure in red pen, text unreadable
 Text: MORE AD IMPRESSIONS + HIGHER PRICE

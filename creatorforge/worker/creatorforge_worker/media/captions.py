@@ -144,8 +144,10 @@ def write_ass(path: Path, width: int, height: int, scale: float, position: float
             f"{side},{side},{caption_margin},1",
             f"Style: Hook,{font},{big},{ink},{ink},{mark},{mark},0,0,0,0,100,100,0,0,3,{max(8, big // 4)},0,8,"
             f"{side},{side},{top},1",
-            f"Style: CTA,{font},{big},{ink},{ink},{mark},{mark},0,0,0,0,100,100,0,0,3,{max(8, big // 4)},0,5,"
-            f"{side},{side},0,1",
+            # the closing call to action sits next to the captions (below on Shorts, above on widescreen), not across
+            # the middle of the last picture
+            f"Style: CTA,{font},{big},{ink},{ink},{mark},{mark},0,0,0,0,100,100,0,0,3,{max(8, big // 4)},0,2,"
+            f"{side},{side},{max(int(height * 0.12), caption_margin - int(fs * 2.2)) if height > width else caption_margin + int(fs * 2.4)},1",
         ]
         if callout_look == "highlighter":
             lines = [ln.replace("Style: Callout,DejaVu Sans,", f"Style: Callout,{font},")

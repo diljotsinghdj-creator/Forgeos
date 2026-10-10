@@ -164,7 +164,7 @@ Visual: A scrap metal dealer weighing iron on a large scale, seen from behind
 Visual: A row of iron foundry chimneys in an old photograph
 
 But there was one more instruction, and it mattered most.
-Visual: A gloved hand raising one finger above a meeting table
+Visual: A gloved hand placing one sealed envelope on a meeting table
 Visual: A finger pressed on a closed envelope, holding it shut
 
 The deal had to stay secret, to avoid a public outcry.

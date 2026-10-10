@@ -6,7 +6,7 @@ Source: FTC, ICPEN and GPEN review of 642 subscription websites and apps, July 2
 
 One tap in. Five taps out. Why?
 Visual: A thumb tapping a single large join button on a smartphone, text unreadable
-Visual: A finger counting off five on a raised hand against a plain wall
+Visual: Five blank sticky notes in a row on a desk, the last one bright red
 Text: 1 TAP IN · 5 TAPS OUT? · FICTIONAL APP
 Thought: Why is leaving this hard?
 
@@ -17,13 +17,13 @@ Text: SETTINGS › ACCOUNT › PLAN › 50% OFF?
 Steps: Settings → Account → Manage plan → Discount offer → Cancel | Five taps out
 
 Tap five, in tiny grey letters, finally lets you go.
-Visual: A magnifying glass held over the bottom of a phone screen, text unreadable
-Visual: Tiny faint grey print at the foot of a paper form, text unreadable
+Visual: A thumb hovering over a tiny grey link at the bottom of a phone screen, text unreadable
+Visual: A tiny grey cancel link in the bottom corner of a printed web page, text unreadable
 Text: TAP 5: CANCEL
 Draw: arrow
 
 Clumsy design, or something common?
-Visual: A designer seen from behind sketching app layouts on paper at a desk
+Visual: Hands sketching app screen layouts on paper at a desk, seen from above
 Text: CLUMSY OR COMMON?
 
 In twenty twenty-four, regulators reviewed six hundred and forty-two subscription sites and apps.

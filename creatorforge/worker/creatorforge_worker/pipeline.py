@@ -33,6 +33,12 @@ REVEAL_EMOTIONS = {"shock", "surprise", "awe"}
 SHOCK_EMOTIONS = {"shock", "surprise", "fear", "horror", "disgust", "terror"}
 
 
+
+def _covered(beat: dict) -> bool:
+    """True when a full-frame graphic (chart, map, steps, chapter or quote card) replaces the beat's picture."""
+    extra = beat.get("extra") or {}
+    return bool(beat.get("chart") or any(extra.get(k) for k in ("map", "steps", "chapter", "quote")))
+
 class StageFailed(Exception):
     pass
 
@@ -211,7 +217,10 @@ class Pipeline:
             seed = (seed_base + sc["index"] * 7919) % 2**31
             face = self._face_lock(img, job, jdir, shot["visual"])
             try:
-                real = self._real_photo(job, shot.get("stock") or "", shot["visual"])
+                beats0 = shot.get("beats") or []
+                # a full-frame graphic covers the scene's first picture: keep the real photos for pictures people see
+                real = None if beats0 and _covered(beats0[0]) else self._real_photo(job, shot.get("stock") or "",
+                                                                                   shot["visual"])
                 if real is not None:
                     dst = self._replace_file(jdir, sc.get("image"), f"scene_{sc['index'] + 1:02d}_photo{real.suffix}", real)
                     sc.update(image_state="READY", image=dst.name, image_source="photo")
@@ -252,6 +261,8 @@ class Pipeline:
                     continue
                 if k + 1 < len(clips) and clips[k + 1]:
                     continue                 # real footage covers this beat - no AI image needed
+                if _covered(b):
+                    continue                 # a chart, map or card fills the frame - no picture needed
                 if cancel.is_set():
                     raise Cancelled()
                 if photos and b.get("stock"):

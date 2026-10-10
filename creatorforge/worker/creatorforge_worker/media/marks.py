@@ -142,7 +142,8 @@ def bubble_events(text: str, start: float, end: float, w: int, h: int, think: bo
     th = len(lines) * size * 1.25
     bw, bh = tw + size * 1.6, th + size * 1.2
     cx = min(max((x0 + x1) / 2 + (x1 - x0) * 0.12, bw / 2 + w * 0.04), w - bw / 2 - w * 0.04)
-    cy = max(y0 + bh * 0.2, bh / 2 + h * 0.13)          # high on the picture, below the callout area
+    # high on the picture, but clear of the on-screen text/hook block at the top (~10-20% of the height)
+    cy = max(y0 + bh * 0.2, bh * 0.62 + h * 0.21)
     org = f"\\org({cx:.0f},{cy:.0f})"
     pop = f"\\fscx55\\fscy55\\t(0,140,\\fscx104\\fscy104)\\t(140,200,\\fscx100\\fscy100)"
     if think:

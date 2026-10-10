@@ -134,9 +134,12 @@ def steps_lines(spec: str, theme: str, width: int, height: int, seconds: float) 
     n = len(steps)
     size = int(min(width, height) * (0.05 if tall else 0.052))
     if tall:
-        bw, bh = width * 0.72, size * 2.4
-        gap = min(height * 0.7 / n, bh * 1.9)
-        centres = [(width / 2, height * 0.45 - gap * (n - 1) / 2 + i * gap) for i in range(n)]
+        # Shorts captions sit at ~66-70% of the height: the whole diagram fits between the title and 62%.
+        bw, bh = width * 0.72, size * 2.2
+        top, bottom = height * 0.15 + bh / 2, height * 0.62 - bh / 2
+        gap = min((bottom - top) / max(1, n - 1), bh * 1.9)
+        mid = (top + bottom) / 2
+        centres = [(width / 2, mid - gap * (n - 1) / 2 + i * gap) for i in range(n)]
     else:
         gap = width * 0.86 / n
         bw, bh = gap * 0.78, size * 3.2
@@ -145,7 +148,7 @@ def steps_lines(spec: str, theme: str, width: int, height: int, seconds: float) 
     out = []
     if title.strip():
         out.append(f"Dialogue: 6,{_ts(0.1)},{end},T,,0,0,0,,{{\\an8\\pos({width / 2:.0f},{height * (0.08 if tall else 0.12):.0f})"
-                   f"\\fs{int(size * 0.9)}\\bord{int(size * 0.3)}\\3c{MARK[theme]}&\\4c{MARK[theme]}&\\fad(150,0)}}"
+                   f"\\fs{int(size * (1.15 if tall else 0.9))}\\bord{int(size * 0.3)}\\3c{MARK[theme]}&\\4c{MARK[theme]}&\\fad(150,0)}}"
                    f"{_esc(title.strip().upper())}")
     for i, ((cx, cy), text) in enumerate(zip(centres, steps)):
         t0 = 0.25 + i * per
@@ -159,7 +162,7 @@ def steps_lines(spec: str, theme: str, width: int, height: int, seconds: float) 
         rows = _wrap(text.upper(), 14 if tall else max(8, int(bw / (size * 0.62))), 2)
         out.append(f"Dialogue: 3,{_ts(t0 + 0.08)},{end},T,,0,0,0,,{{\\an5\\pos({cx:.0f},{cy:.0f})\\fs{size}\\fad(100,0)}}"
                    + "\\N".join(_esc(r) for r in rows))
-        out.append(f"Dialogue: 3,{_ts(t0)},{end},T,,0,0,0,,{{\\an7\\pos({L + 8:.0f},{T - size * 0.9:.0f})\\fs{int(size * 0.55)}"
+        out.append(f"Dialogue: 3,{_ts(t0)},{end},T,,0,0,0,,{{\\an7\\pos({L + 8:.0f},{T - size * 0.95:.0f})\\fs{int(size * 0.7)}"
                    f"\\fad(100,0)}}{i + 1}")
         if i < n - 1:
             (nx, ny) = centres[i + 1]

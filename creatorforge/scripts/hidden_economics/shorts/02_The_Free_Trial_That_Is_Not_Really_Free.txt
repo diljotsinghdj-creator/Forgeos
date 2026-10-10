@@ -17,7 +17,7 @@ Stock: typing card details phone
 
 Because the trial is not the product. The renewal is.
 Visual: A paper contract on a desk with its top half covered, text unreadable
-Visual: A magnifying glass over tiny small print at the foot of a page, text unreadable
+Visual: A magnifying glass over tiny small print at the bottom of a page, text unreadable
 Text: THE PRODUCT = THE RENEWAL
 Draw: underline
 Steps: Free trial → Card saved → Auto-renewal → Forgotten | How the trap works

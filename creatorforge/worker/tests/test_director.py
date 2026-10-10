@@ -204,3 +204,20 @@ def test_animated_styles_keep_faces_in_ai_video_and_use_the_illustration_model(c
     monkeypatch.setattr(providers, "_downloaded", lambda repo: True)
     assert providers.build_image(cfg, "anime").model == "toon/model"
     assert providers.build_image(cfg, "cinematic").model == "main/model"
+
+
+def test_a_chart_on_a_long_line_gets_its_own_slot_so_the_picture_still_shows():
+    from creatorforge_worker import director as d
+    raw = ("Cancel Test\nTitle: Cancel test\n\n"
+           "In twenty twenty-four, regulators reviewed six hundred and forty-two subscription sites and apps.\n"
+           "Visual: A government office building with flags outside\nChart: 642 | sites reviewed\nText: 642 SITES\n\n"
+           "Hiding the exit is not fair at all, not even a little.\nVisual: A hand holding a phone\n"
+           "Visual: An emergency exit door blocked by boxes\nStock: emergency exit door\n\n"
+           "Three in four used one.\nVisual: Four phones on a desk\nChart: 76% vs 67% | one, several\n")
+    spec = d.ProductionSpec.from_dict({"script": raw, "duration_s": 20})
+    beats = [b for s in d.direct_script(None, spec).scenes for b in (s.beats or [])]
+    assert beats[0]["chart"] and not beats[0]["overlay"]                       # the chart opens the line ...
+    assert beats[1]["visual"].startswith("A government") and not beats[1]["chart"]   # ... then the picture shows
+    assert beats[1]["overlay"] == "642 SITES"
+    assert beats[2]["stock"] == "" and beats[3]["stock"] == "emergency exit door"    # stock goes to the exit door
+    assert beats[-1]["chart"] and beats[-1]["visual"] == "Four phones on a desk"     # short line: chart replaces it
