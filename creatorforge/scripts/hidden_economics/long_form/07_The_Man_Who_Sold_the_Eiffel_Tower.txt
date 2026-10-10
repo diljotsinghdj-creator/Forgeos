@@ -27,7 +27,7 @@ The con man called himself Count Victor Lustig. The title was fake.
 Visual: A calling card with an ornate crest on a velvet cloth, a fingertip sliding it forward
 Text: "COUNT" VICTOR LUSTIG
 
-Most of the story comes from his later fame, so details vary between accounts.
+Can we trust the details? They come from his later fame, so accounts vary.
 Visual: Three different newspaper clippings overlapping on a desk, edges curling, print blurred
 Text: ACCOUNTS DIFFER
 
@@ -247,7 +247,7 @@ He died in federal custody in nineteen forty-seven, in Springfield, Missouri.
 Visual: A plain prison identity card on a steel table, photograph area blank
 Text: SPRINGFIELD, MISSOURI, 1947
 
-He left behind a list that is still passed around online.
+Yet he left behind something still passed around online: a list.
 Visual: A typed sheet pinned under a paperclip, a red pen hovering, text unreadable
 Text: "TEN COMMANDMENTS FOR CON MEN"
 
@@ -356,7 +356,7 @@ In Britain, one five nine connects you to your bank's real number.
 Visual: Fingers pressing three keys on an old telephone keypad, close-up
 Text: UK: CALL 159
 
-Treat any request for secrecy as a warning, not an instruction.
+Asked to keep it secret? Treat that as a warning, not an instruction.
 Visual: A red stamp coming down on a letter marked confidential, text unreadable
 Text: SECRECY = WARNING SIGN
 
