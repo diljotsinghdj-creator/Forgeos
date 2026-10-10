@@ -1,0 +1,55 @@
+The Stranger Who Texted the Wrong Number
+On-screen hook: WRONG NUMBER. SAVINGS GONE.
+Title: A Wrong-Number Text, Then the Savings Vanish: The $8.6bn Scam
+Tags: #HiddenEconomics #scams #pigbutchering #cryptoscam #fraud
+Source: FBI Internet Crime Complaint Center, 2025 Internet Crime Report (investment fraud losses about $8.6bn), https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf; FBI IC3 public service announcements on cryptocurrency investment fraud, https://www.ic3.gov/
+
+A wrong-number text. Weeks later, savings gone.
+Visual: A smartphone in a dark room showing one text message, text unreadable
+Visual: An empty cracked piggy bank on a kitchen table
+Text: SORRY, WRONG NUMBER? · ILLUSTRATION
+
+The stranger apologises, keeps chatting, and becomes a friend for weeks.
+Visual: A desk calendar with several weeks crossed off in pen
+Visual: A mug of tea and a lamp on a bedside table late at night
+Text: FICTIONAL EXAMPLE
+Stock: person texting on phone
+Bubble: Sorry, wrong number! How are you?
+
+Then a crypto tip. Your small deposit doubles on screen.
+Visual: A hand holding a phone showing a trading app with a rising green line, numbers unreadable
+Visual: A few coins stacked beside a printed green price chart, digits blurred
+Text: FICTIONAL INTERFACE · FAKE PROFITS
+
+So why can't you withdraw a penny?
+Visual: A thumb pressing a greyed-out button on a phone, text unreadable
+Visual: A locked metal cash box on a table, its key missing
+Text: WHY CAN'T YOU CASH OUT?
+
+The profits were never real. The platform belongs to the scammers.
+Visual: A dim call centre with rows of empty desks and headsets
+Visual: A person seen from behind typing at a desk in a dark room
+Text: THE APP IS THE SCAM
+Draw: cross
+Steps: Wrong number → Weeks of chat → Crypto tip → Fake profits → No withdrawal | How the scam unfolds
+
+Every withdrawal needs another fee, until you stop paying.
+Visual: A stack of printed invoices on a desk, each circled in red pen, text unreadable
+Visual: An empty wallet lying open on a kitchen table
+Text: FEE · TAX · ANOTHER FEE
+
+Investment fraud cost Americans about eight point six billion dollars in twenty twenty-five.
+Visual: A large heap of US dollar banknotes on a table
+Visual: A printed government fraud report on a desk, text unreadable
+Chart: $0 → $8.6bn | reported US investment fraud, 2025
+Cite: FBI IC3, 2025
+
+Never invest on advice from someone you've only met online.
+Visual: Two hands placing a phone face down on a kitchen table
+Visual: A hand closing a cheque book on a desk
+Text: NEVER INVEST WITH AN ONLINE-ONLY FRIEND
+
+Especially someone who found you by accident.
+Visual: A letter addressed to the wrong house lying on a doormat, text unreadable
+Text: NO ACCIDENT
+Draw: arrow

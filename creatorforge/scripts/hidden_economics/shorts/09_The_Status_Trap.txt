@@ -1,0 +1,53 @@
+The Status Trap
+On-screen hook: £800 FOR NOBODY?
+Title: £800 Watch Nobody Sees: Would You Still Buy It? The Status Trap
+Tags: #HiddenEconomics #status #conspicuousconsumption #psychology #moneypsychology
+Source: Thorstein Veblen, The Theory of the Leisure Class, 1899 (https://www.gutenberg.org/ebooks/833)
+
+Eight hundred pounds for a watch nobody sees?
+Visual: A jeweller's display window glowing on a dark street, seen from across the road
+Visual: A till receipt for a large amount on a jewellery counter, text unreadable
+Text: £800 · NOBODY SEES IT? · ILLUSTRATION
+Draw: box
+
+Hidden under your sleeve, forever. Still worth it?
+Visual: A wrist under a long dark coat sleeve, the watch covered
+Visual: A man seen from behind walking down a busy street
+Text: STILL WORTH IT?
+
+A twenty-pound watch tells exactly the same time.
+Visual: Two watches side by side, one ornate, one plain, showing the same hour
+Chart: £800 vs £20 | the status watch, the plain one
+
+So what is the other seven hundred and eighty buying?
+Visual: A magnifying glass over a shop price tag, numbers blurred
+Visual: A velvet-lined gift box with a bow on a shop counter
+Text: WHAT IS THE £780 FOR?
+Draw: underline
+
+In eighteen ninety-nine, economist Thorstein Veblen gave it a name.
+Visual: An old leather-bound book open under a desk lamp
+Visual: A Victorian street crowd in top hats seen from far away
+Text: THORSTEIN VEBLEN · 1899
+Stock: victorian street crowd
+Cite: Veblen, Theory of the Leisure Class, 1899
+
+Conspicuous consumption. Spending in order to be seen spending.
+Visual: A row of polished sports cars parked outside a hotel, badges hidden
+Visual: A shopper seen from behind carrying several designer shopping bags
+Text: CONSPICUOUS CONSUMPTION
+Stock: shop windows evening street
+Thought: Everyone will notice these bags
+Cite: Veblen, Theory of the Leisure Class, 1899
+
+Strip the logo off in your head. Still want it? Buy it.
+Visual: A hand peeling a brand label off a jacket
+Visual: A hand passing cash across a shop counter, seen from behind
+Text: NO LOGO · STILL WANT IT?
+Steps: Strip the logo → Still want it? → Yes: buy it → No: who for? | The logo test
+
+If not, ask who the watch was really for.
+Visual: A full-length mirror in a hallway reflecting an empty room
+Visual: A wristwatch left on a bedside table in a quiet room
+Text: WHO WAS IT FOR?
+Draw: circle

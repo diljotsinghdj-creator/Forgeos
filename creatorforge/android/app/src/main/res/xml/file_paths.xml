@@ -1,0 +1,5 @@
+<paths>
+    <external-files-path name="movies" path="Movies/" />
+    <external-files-path name="exports" path="." />
+    <files-path name="files" path="." />
+</paths>

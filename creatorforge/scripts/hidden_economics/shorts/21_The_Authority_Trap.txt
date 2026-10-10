@@ -1,0 +1,61 @@
+The Authority Trap
+On-screen hook: SAME MAN. NEW CLOTHES.
+Title: Same Man, Same Request, New Uniform: Why Strangers Obeyed
+Tags: #HiddenEconomics #scams #psychology #authority #hmrc
+Source: Bickman (1974), The Social Power of a Uniform, Journal of Applied Social Psychology 4(1), https://doi.org/10.1111/j.1559-1816.1974.tb02599.x; HMRC press release, Scams warning as Self Assessment customers targeted (Aug 2025), https://www.gov.uk/government/news/scams-warning-as-self-assessment-customers-targeted
+
+Same man. Add a uniform. Strangers obey.
+Visual: A man in plain clothes seen from behind on a city street
+Visual: A security guard's peaked cap hanging on a hook
+Text: SAME MAN. NEW CLOTHES.
+Draw: circle
+Place: BROOKLYN · 1974
+
+In nineteen seventy-four, a researcher asked Brooklyn strangers for small favours.
+Visual: A 1970s New York subway entrance with commuters seen from far away
+Visual: A 1970s Brooklyn street corner with pedestrians seen from behind
+Chart: 153 | Brooklyn pedestrians · 1974 study
+Stock: 1970s new york street
+Cite: Bickman, 1974
+
+As a guard, he was obeyed more than in plain clothes.
+Visual: A man in a guard's uniform seen from behind on a pavement
+Visual: Pedestrians seen from behind stopping to pick up litter on a pavement
+Text: THE GUARD WAS OBEYED MOST
+Cite: Bickman, 1974
+
+A guard had no power here. So why?
+Visual: A pair of empty hands held open, palms up, against a wall
+Visual: A pedestrian handing a coin to a uniformed man, seen from behind
+Text: SO WHY COMPLY?
+Thought: Better do what he says
+
+Uniforms, titles and crests are shortcuts to trust.
+Visual: A metal badge on a desk beside an embossed letterhead, text unreadable
+Visual: A university crest carved in stone above a doorway
+Text: UNIFORM · TITLE · CREST
+Steps: Uniform or crest → Shortcut to trust → You comply | The authority shortcut
+
+So scammers borrow them, like the tax office's crest.
+Visual: A pile of official-looking envelopes on a doormat, crests blurred
+Visual: A phone showing a text message with an official crest, text unreadable
+Text: FAKE "OFFICIAL" MESSAGES
+Draw: arrow
+
+It logged over a hundred and seventy thousand scam reports in a year.
+Visual: Rows of filing cabinets in a government office
+Visual: An office worker seen from behind sorting a tall pile of reports
+Chart: 170,000 | scam reports to HMRC in one year
+Cite: HMRC, Aug 2025
+
+The real office never texts you about a refund.
+Visual: A phone lying dark on a kitchen table beside a mug
+Visual: A government office building with stone steps on a grey day
+Text: HMRC NEVER TEXTS ABOUT REFUNDS
+Draw: underline
+Cite: HMRC, Aug 2025
+
+Same request, new clothes. Judge the request, not the uniform.
+Visual: A guard's jacket hanging on a coat hook by a door
+Visual: A hand holding a printed request up to a desk lamp, text unreadable
+Text: JUDGE THE REQUEST

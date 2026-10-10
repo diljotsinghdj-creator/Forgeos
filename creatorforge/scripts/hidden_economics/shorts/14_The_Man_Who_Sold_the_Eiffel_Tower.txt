@@ -1,0 +1,57 @@
+The Man Who Sold the Eiffel Tower
+On-screen hook: EIFFEL TOWER, SOLD
+Title: He Sold the Eiffel Tower for Scrap. The Buyer Kept Quiet
+Tags: #HiddenEconomics #conartist #scams #history #paris
+Source: Mental Floss, How Con Man Victor Lustig Sold the Eiffel Tower, https://www.mentalfloss.com/article/12809/smooth-operator-how-victor-lustig-sold-eiffel-tower; Ripley's, The Charlatan Count Who Sold the Eiffel Tower, https://www.ripleys.com/stories/sold-eiffel-tower; Tour Eiffel, Who sold the Eiffel Tower?, https://www.toureiffel.paris/en/news/history-and-culture/who-sold-eiffel-tower
+
+He sold the Eiffel Tower. He never owned it.
+Visual: The Eiffel Tower seen from a 1920s Paris street
+Visual: A 1920s bill of sale lying on a wooden desk, text unreadable
+Text: PARIS, 1925
+Draw: circle
+Map: Paris | 1925
+
+Con man Victor Lustig posed as a fake government official.
+Visual: A man in a 1920s overcoat and hat seen from behind
+Visual: A forged government letter with a red wax seal, text unreadable
+Text: A FAKE OFFICIAL
+Place: PARIS · 1925
+
+He told scrap dealers the city wanted the tower torn down.
+Visual: A 1920s Paris scrapyard piled with old iron girders
+Visual: A 1920s scrap dealer's horse-drawn cart loaded with metal on a street
+Chart: 7,300 tonnes | of iron, offered as scrap
+Stock: eiffel tower 1920s
+Cite: Tour Eiffel
+
+So why would anyone believe him?
+Visual: A magnifying glass over an official rubber stamp on paper, ink unreadable
+Text: WHY BELIEVE HIM?
+
+He even hinted at a bribe. That made him seem like a real official.
+Visual: A gloved hand sliding a thick envelope across a café table
+Visual: A 1920s official's desk with an inkwell and a brass nameplate, text unreadable
+Text: THE BRIBE MADE IT FEEL REAL
+Thought: Only a real official asks for a bribe
+
+One dealer, André Poisson, paid up. Lustig fled with the cash.
+Visual: A hand counting a stack of 1920s French banknotes on a table
+Visual: A 1920s steam train pulling out of a Paris station
+Stock: 1920s paris street
+Steps: Fake official → Tower for scrap → Hinted bribe → Paid up → Fled | How the con worked
+
+So why did the police never hear about it?
+Visual: An old Paris police station door at night, closed
+Visual: A blank report form and a pen untouched on a wooden desk
+Text: NO POLICE REPORT?
+
+Poisson was too embarrassed to report it.
+Visual: A man in a 1920s suit seen from behind, head lowered
+Visual: A crumpled bill of sale pressed face down on a desk
+Text: TOO EMBARRASSED
+
+The tower never moved. The money never came back.
+Visual: The Eiffel Tower standing over Paris rooftops on a grey day
+Visual: An empty leather wallet lying open on a wooden table
+Text: SHAME KEEPS SCAMS QUIET
+Draw: cross

@@ -1,0 +1,58 @@
+The Free Gift That Costs You
+On-screen hook: FREE DRINK. PAID DOUBLE.
+Title: A Free Coke Doubled What They Paid: The Gift That Costs You
+Tags: #HiddenEconomics #reciprocity #psychology #persuasion #money
+Source: Dennis T. Regan, Effects of a favor and liking on compliance, Journal of Experimental Social Psychology 7(6) 1971, 627-639 (https://doi.org/10.1016/0022-1031(71)90025-4); NPR, Give and take, how the rule of reciprocation binds us, 2012, on Robert Cialdini's Influence (https://www.npr.org/sections/health-shots/2012/11/26/165570502/give-and-take-how-the-rule-of-reciprocation-binds-us)
+
+Students got a free Coke. They paid double.
+Visual: An unbranded glass soda bottle standing on a dark desk
+Visual: Two coins dropping into a small metal cash tin on a table
+Text: A FREE DRINK. A DOUBLE PAYBACK.
+Draw: arrow
+Cite: Regan, JESP, 1971
+
+Psychologist Dennis Regan tested it in nineteen seventy-one.
+Visual: A 1970s university corridor with paintings on easels, nobody close
+Visual: A 1970s university campus with students walking far away
+Text: DENNIS REGAN · CORNELL · 1971
+Stock: 1970s university campus
+Place: CORNELL · 1971
+
+Then his helper asked them to buy raffle tickets.
+Visual: A hand holding out a roll of paper raffle tickets across a table
+Thought: Well, he did buy me a drink...
+
+Did one drink really change anything?
+Visual: A 1970s classroom with wooden desks and chairs, nobody inside
+Text: DID IT WORK?
+
+They bought about twice as many tickets. Liking him barely mattered.
+Visual: A handwritten tally sheet with two columns of marks, text unreadable
+Visual: Two people seen from behind chatting on a wooden bench
+Chart: 1x vs 2x | no drink, free drink
+Cite: Regan, JESP, 1971
+
+Cialdini saw airport Hare Krishna members hand out flowers, then ask for money.
+Visual: A busy 1970s airport hall seen from a distance
+Visual: A hand holding out a single flower in an airport hall
+Text: A FLOWER, THEN A REQUEST
+Stock: 1970s airport terminal
+Draw: circle
+Cite: NPR, 2012
+
+Shop samples work the same way. But why?
+Visual: A tray of tiny paper sample cups on a shop counter
+Visual: A shopper seen from behind in a supermarket aisle holding a basket
+Text: WHY DOES A GIFT WORK?
+
+A gift you never asked for still feels like a debt.
+Visual: A small gift box tied with string on a doorstep
+Visual: A handwritten IOU note on a desk beside a pen, text unreadable
+Text: UNASKED GIFT = FELT DEBT
+Draw: underline
+Steps: Unasked gift → Felt debt → The request → Payback | Why a gift works
+
+Judge the request alone, and a free Coke stays free.
+Visual: A hand pushing a roll of raffle tickets away across a table
+Visual: An unbranded soda bottle standing alone on a clean desk
+Text: JUDGE THE REQUEST, NOT THE GIFT

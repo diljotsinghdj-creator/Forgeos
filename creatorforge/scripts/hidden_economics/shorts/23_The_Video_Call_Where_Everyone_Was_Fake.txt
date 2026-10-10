@@ -1,0 +1,58 @@
+The Video Call Where Everyone Was Fake
+On-screen hook: FAKE FACES. REAL $25M.
+Title: Every Face Was Fake, the $25m Was Real: The Deepfake Video Call
+Tags: #HiddenEconomics #deepfake #scams #AI #fraud
+Source: CNN, Arup revealed as victim of $25 million deepfake scam involving Hong Kong employee, 16 May 2024, https://edition.cnn.com/2024/05/16/tech/arup-deepfake-scam-loss-hong-kong-intl-hnk; South China Morning Post, UK multinational Arup confirmed as victim of HK$200 million deepfake scam, 2024, https://www.scmp.com/news/hong-kong/law-and-crime/article/3263151/uk-multinational-arup-confirmed-victim-hk200-million-deepfake-scam-used-digital-version-cfo-dupe
+
+Every face was fake. The money was real.
+Visual: Rows of office ID badges on a desk, faces blurred
+Visual: A bank vault door standing open in a basement
+Text: ILLUSTRATION · HONG KONG, 2024
+Place: HONG KONG · 2024
+
+Hong Kong, twenty twenty-four. An Arup finance worker gets a message.
+Visual: The Hong Kong skyline at night
+Visual: A finance office with rows of desks and filing cabinets, nobody close
+Stock: hong kong skyline night
+Map: Hong Kong | where the call came
+
+It claims to be the finance chief, wanting a secret transaction.
+Visual: A nameplate on a large executive desk, text unreadable
+Visual: A sealed envelope with a red stamp on a desk, text unreadable
+Text: "A SECRET TRANSACTION"
+Draw: circle
+
+Then a video call. The finance chief and colleagues, live.
+Visual: A laptop screen with several blurred video tiles, faces indistinct
+Visual: A pair of headphones resting on an office desk beside a notepad
+Text: AI RECREATION · ILLUSTRATION
+Steps: Message from 'chief' → Secret deal → Video call | How the con was built
+
+So who would doubt faces they recognise?
+Visual: Office colleagues seen from behind walking down a corridor
+Text: WHO WOULD DOUBT THEM?
+Thought: That's my boss. It must be real.
+
+The worker made fifteen transfers, about two hundred million Hong Kong dollars.
+Visual: Fifteen bank transfer slips in a row on a desk, numbers unreadable
+Visual: A thick stack of Hong Kong dollar banknotes on a desk
+Chart: 0 → 200 | HK$ million in 15 transfers (~US$25m)
+Cite: CNN, May 2024
+
+Every other person on that call was a deepfake.
+Visual: Empty office chairs around a table in a dark conference room
+Visual: Rows of servers in a dark data centre
+Text: ARUP CONFIRMED IT, MAY 2024
+Draw: cross
+Cite: CNN, May 2024
+
+The fix? Check any money request on a separate channel.
+Visual: A hand holding a desk phone receiver in an office
+Visual: A hand knocking on an office door, seen from behind
+Text: VERIFY ON A SEPARATE CHANNEL
+
+Now even a face is just a claim.
+Visual: A passport photo page held under a lamp, details blurred
+Visual: An empty office desk at night with the lights off
+Text: A FACE IS NOT PROOF
+Draw: underline

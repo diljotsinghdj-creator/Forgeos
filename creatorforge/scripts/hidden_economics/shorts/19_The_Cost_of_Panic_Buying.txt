@@ -1,0 +1,55 @@
+The Cost of Panic Buying
+On-screen hook: 4 MINUTES. 0 PAGES READ.
+Title: Bought in 4 Minutes, Read in 0: The Cost of Panic Buying
+Tags: #HiddenEconomics #consumerrights #personalfinance #money #ukmoney
+Source: Consumer Contracts (Information, Cancellation and Additional Charges) Regulations 2013, cancellation period, https://www.legislation.gov.uk/uksi/2013/3134/contents; Citizens Advice, Cancelling something you bought online, https://www.citizensadvice.org.uk/consumer/changed-your-mind/
+
+Four minutes to buy it. Zero pages read.
+Visual: A hand holding a phone showing a buy button, text unreadable
+Visual: A thick unopened contract booklet on a kitchen table
+Text: 0 PAGES READ
+Draw: circle
+
+In this fictional advert, your boiler could fail. Offer ends midnight.
+Visual: A printed boiler advert with a red warning banner, text unreadable
+Visual: A kitchen wall clock showing almost midnight
+Text: FICTIONAL ADVERT · ENDS MIDNIGHT
+
+So you picture a freezing house, and you tap buy.
+Visual: Frost on the inside of a window at night
+Visual: A thumb tapping a buy button on a phone, text unreadable
+Stock: frosty window winter
+Thought: I can't risk a freezing house
+
+But what did that deadline actually stop you doing?
+Visual: A pen lying unused beside a closed folder on a desk
+Visual: A pair of reading glasses folded and unused on a table
+Steps: Read exclusions → Check excess → Compare price | What the deadline stopped
+
+Reading the exclusions, checking the excess, comparing the price.
+Visual: A magnifying glass over a list of exclusions in fine print, text unreadable
+Visual: Two printed insurance quotes side by side on a desk, text unreadable
+Text: EXCLUSIONS · EXCESS · PRICE
+Draw: underline
+
+So can you undo a four-minute decision?
+Visual: An egg timer lying on its side on a kitchen table
+Chart: 4 | minutes to decide · illustration
+
+Many UK online purchases can be cancelled within fourteen days.
+Visual: A paper calendar on a desk with fourteen days linked in red pencil
+Visual: A cardboard parcel on a doormat with a returns label, text unreadable
+Chart: 0 → 14 | days to cancel many online buys
+Cite: Consumer Contracts Regulations 2013
+
+There is a catch. Exceptions apply, so read your terms next morning.
+Visual: A printed contract with one clause circled in red pen, text unreadable
+Visual: A cup of coffee on a kitchen table in morning light
+Text: EXCEPTIONS APPLY
+Cite: Citizens Advice
+
+Four minutes to buy. Often fourteen days to rethink. Use them.
+Visual: A phone lying face down on a kitchen table
+Visual: A bed with the duvet turned back under a lamp at night
+Text: SLEEP ON IT
+Draw: tick

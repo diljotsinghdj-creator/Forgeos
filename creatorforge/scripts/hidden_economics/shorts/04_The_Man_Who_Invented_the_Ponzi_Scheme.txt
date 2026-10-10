@@ -1,0 +1,55 @@
+The Man Who Invented the Ponzi Scheme
+On-screen hook: 50% IN 45 DAYS?
+Title: 50% Profit in 45 Days: The Man Who Invented the Ponzi Scheme
+Tags: #HiddenEconomics #ponzischeme #scams #fraud #history
+Source: Smithsonian National Postal Museum, Ponzi Scheme, https://postalmuseum.si.edu/exhibition/behind-the-badge-case-histories-scams-and-schemes/ponzi-scheme; US National Archives, Prologue (Summer 2010), https://www.archives.gov/publications/prologue/2010/summer/ponzi-inmate-case-file; EBSCO Research Starters, Ponzi schemes, https://www.ebsco.com/research-starters/law/ponzi-schemes-are-revealed-investment-frauds
+
+He promised fifty percent in forty-five days.
+Visual: A 1920s Boston street with streetcars and men in hats, seen from afar
+Visual: A small paper postal reply coupon lying on an old ledger
+Text: BOSTON, 1920
+Bubble: Fifty percent in forty-five days!
+Place: BOSTON · 1920
+
+Hand him a hundred dollars, get one fifty back.
+Visual: Old dollar banknotes paper-clipped to a handwritten note on a desk, text unreadable
+Chart: $100 → $150 | promised in 45 days (illustration)
+Cite: Smithsonian National Postal Museum
+
+His secret, he claimed, was postal coupons bought cheaply in Europe.
+Visual: A 1920s ocean liner docked at a busy harbour, seen from afar
+Visual: An old map of the Atlantic with Europe and Boston marked in red
+
+So why had so few coupons ever been cashed?
+Visual: An empty wooden post office drawer under a desk lamp
+Text: WHERE WERE THE COUPONS?
+Draw: circle
+
+Because early investors were paid with newer investors' money.
+Visual: Hands passing sealed envelopes across an old wooden counter
+Visual: A queue of 1920s men in hats seen from behind at an office door
+Text: OLD INVESTORS PAID WITH NEW MONEY
+
+Roughly fifteen million dollars poured in within about eight months.
+Visual: An old cash register drawer crammed full in a 1920s office
+Visual: Sacks of mail piled on the wooden floor of a 1920s office
+Chart: $15,000,000 | taken in over about 8 months
+Cite: Smithsonian National Postal Museum
+
+Then reporters started asking questions, and the payouts stopped.
+Visual: A 1920s newsroom with typewriters on wooden desks, nobody close
+Visual: A paper notice pinned to a wooden board, text unreadable
+Stock: 1920s newspaper printing
+Draw: cross
+
+By August nineteen twenty, Ponzi was under arrest.
+Visual: A 1920s police car parked outside a brick building, seen from afar
+Visual: Old metal handcuffs lying on a wooden desk beside a ledger
+Stock: 1920s boston street
+Map: Boston | Ponzi arrested, August 1920
+
+Fifty percent in forty-five days was never profit. Just someone else's deposit.
+Visual: A single postal coupon alone on an empty wooden desk
+Visual: A hand dropping banknotes into another person's open palm
+Text: NOT PROFIT · SOMEONE ELSE'S MONEY
+Draw: underline

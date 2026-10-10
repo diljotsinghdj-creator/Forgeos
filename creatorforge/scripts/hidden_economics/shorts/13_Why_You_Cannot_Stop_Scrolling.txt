@@ -1,0 +1,54 @@
+Why You Cannot Stop Scrolling
+On-screen hook: CAME FOR THE WEATHER
+Title: Opened It for the Weather, Lost 20 Minutes: Why You Can't Stop
+Tags: #HiddenEconomics #infinitescroll #attention #screentime #digitalwellbeing
+Source: Masters of Scale, He invented infinite scroll and says he regrets it (Aza Raskin), https://mastersofscale.com/video/he-invented-infinite-scroll-and-says-he-regrets-it/; TED podcast, Aza Raskin transcript, https://www.ted.com/podcasts/rethinking-with-adam-grant/aza-raskin-on-why-technology-and-democracy-are-in-an-imagination-crisis-transcript
+
+You checked the weather. Twenty minutes ago.
+Visual: A hand holding a smartphone showing a weather forecast, text unreadable
+Visual: A kitchen wall clock showing twenty minutes past the hour
+Text: 20 MINUTES LATER
+Draw: circle
+
+So where did the time go?
+Visual: An empty mug and a crumpled blanket on a rug at night
+Chart: 0 → 20 | minutes gone · illustration
+
+Now picture a book. Chapters end. Pages run out.
+Visual: An open paperback book resting on a bedside table
+
+Those are stopping cues, moments to decide whether to continue.
+Visual: The empty bottom of a cereal bowl with a spoon resting in it
+Visual: A cinema with the lights coming up over empty seats
+Text: STOPPING CUES
+
+An endless feed removes them. Where's the last page? There isn't one.
+Visual: A thumb scrolling a social media feed on a smartphone, images blurred
+Visual: A dark living room at night with one lamp still on
+Text: NO LAST PAGE
+Draw: cross
+
+Aza Raskin designed infinite scroll in two thousand and six.
+Visual: A 2000s open-plan office with beige desks and swivel chairs, nobody close
+Visual: A hand resting on a 2000s mouse with a scroll wheel
+Text: INFINITE SCROLL · 2006
+Stock: old computer web browsing
+Cite: Masters of Scale, Aza Raskin
+
+He has since said he regrets it. So where's your ending?
+Visual: A newspaper interview page on a desk, one column circled in red, text unreadable
+Visual: A person seen from behind on a sofa, scrolling a phone late at night
+Text: HOW DO YOU GET IT BACK?
+Thought: Just one more video...
+Cite: Masters of Scale, Aza Raskin
+
+Set a timer before you open the app. Your own last page.
+Visual: A hand turning an old kitchen timer on a counter
+Visual: A smartphone lying face down on a kitchen counter
+Text: SET YOUR OWN ENDING
+Steps: Set a timer → Open the app → Timer ends → Stop | Your own last page
+
+Then check the weather. That's what you came for.
+Visual: A window with rain running down it, a wet street beyond
+Visual: A cup of tea on a desk beside a closed umbrella
+Draw: tick

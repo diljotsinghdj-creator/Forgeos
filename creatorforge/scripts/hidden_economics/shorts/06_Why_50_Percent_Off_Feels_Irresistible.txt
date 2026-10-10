@@ -1,0 +1,56 @@
+Why 50 Percent Off Feels Irresistible
+On-screen hook: SAVED £50? LOST £50?
+Title: You Saved £50 and Lost £50: Why 50% Off Feels Irresistible
+Tags: #HiddenEconomics #anchoring #discounts #shopping #moneypsychology
+Source: Tversky and Kahneman, Judgment under Uncertainty, Heuristics and Biases, Science 185 (1974) 1124-1131, wheel-of-fortune anchoring experiment (https://doi.org/10.1126/science.185.4157.1124)
+
+You saved fifty pounds. You're fifty pounds poorer.
+Visual: A paper shopping bag standing on a hallway floor
+Visual: An open wallet with only a few coins left inside
+Text: SAVED £50? SPENT £50?
+Draw: underline
+
+The tag said one hundred, crossed out. Now fifty.
+Visual: A paper price tag on a jacket sleeve, the old price struck through
+Text: ILLUSTRATION
+Chart: £100 → £50 | the jacket tag · illustration
+
+So why does that crossed-out number feel so powerful?
+Visual: A red sale sign with a struck-through price in a shop window, numbers blurred
+Visual: A shopper seen from behind holding a jacket in a clothes shop
+Text: WHY THE FIRST NUMBER?
+Thought: Half price! What a bargain.
+
+Watch. Psychologists spun a wheel, then asked what share of UN nations were African.
+Visual: A hand spinning a wooden wheel of fortune on a table
+Visual: A paper globe on a desk turned to show Africa
+Text: TVERSKY & KAHNEMAN · 1974
+Stock: wheel of fortune spinning
+Cite: Tversky & Kahneman, Science, 1974
+
+Wheel on ten, the typical guess was twenty-five percent. On sixty-five, forty-five.
+Visual: Two piles of paper slips on a desk, one twice as tall
+Visual: A 1970s university lecture hall with rows of empty wooden seats
+Chart: 25% vs 45% | wheel stopped on 10, wheel stopped on 65
+Cite: Tversky & Kahneman, Science, 1974
+
+A meaningless number dragged their judgement. That's anchoring.
+Visual: A crumpled scrap of paper with a number on it, on a desk
+Visual: A small iron boat anchor resting on a wooden desk
+Text: ANCHORING
+Draw: arrow
+Cite: Tversky & Kahneman, Science, 1974
+
+So who chose the jacket's first number? The seller.
+Visual: A clothing rail of jackets in a shop, nobody in frame
+Visual: A shop worker seen from behind pricing jackets with a tag gun
+Text: WHO CHOSE £100?
+Stock: clothing rack shop
+Steps: Seller picks £100 → Crossed out → Now £50 → 'Saved £50' | Who set the anchor?
+
+Weren't shopping for a jacket today? Then you didn't save fifty. You spent it.
+Visual: A person seen from behind walking down a shopping street
+Visual: A jacket folded in a shopping bag on a hallway floor
+Visual: A card payment receipt held between two fingers, text unreadable
+Text: NOT LOOKING FOR IT? STILL SPENT £50
+Draw: cross

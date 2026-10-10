@@ -1,0 +1,60 @@
+The Call That Sounded Like Your Child
+On-screen hook: HER VOICE. NOT HER.
+Title: Your Child's Voice, But Not Your Child: The AI Clone Call
+Tags: #HiddenEconomics #scams #voicecloning #AI #fraud
+Source: FTC Consumer Alert, Scammers use AI to enhance their family emergency schemes, March 2023, https://consumer.ftc.gov/consumer-alerts/2023/03/scammers-use-ai-enhance-their-family-emergency-schemes; McAfee, The Artificial Imposter report, May 2023 (3 seconds of audio gave an 85% voice match), https://www.mcafee.com/blogs/privacy-identity-protection/artificial-imposters-cybercriminals-turn-to-ai-voice-cloning-for-a-new-breed-of-scam/
+
+Your daughter's crying. Except it isn't her.
+Visual: An old telephone receiver lying off the hook on a dark table
+Visual: A child's school backpack hanging on a bedroom door
+Text: FICTIONAL SCENARIO
+Draw: cross
+
+Scammers can clone a voice from only a short online clip.
+Visual: A microphone on a desk beside a pair of headphones
+Visual: A home video camera on a tripod in a living room
+Text: A SHORT CLIP IS ENOUGH
+Stock: person filming phone video
+Cite: FTC, March 2023
+
+How short? McAfee's tests got an eighty-five percent match from three seconds.
+Visual: A stopwatch on a desk, its hand just past three seconds
+Visual: Two paper printouts of matching sound waves side by side on a desk
+Chart: 85% | voice match from 3 seconds of audio
+Cite: McAfee, May 2023
+
+The panic is real. So what can you trust?
+Visual: A hand gripping a phone tightly, screen dark
+Visual: A woman seen from behind in a hallway, one hand on the wall
+Text: WHAT CAN YOU TRUST?
+Thought: She's in trouble. I have to help.
+
+The FTC's advice is blunt. Don't trust the voice.
+Visual: A printed consumer warning on a desk, one line circled in red, text unreadable
+Visual: A government office building in Washington seen from across the street
+Text: DON'T TRUST THE VOICE
+Quote: Don't trust the voice. | FTC consumer alert, 2023
+Cite: FTC, March 2023
+
+Instead, hang up and call her on the number you already know.
+Visual: A thumb pressing the red end-call button on a phone
+Visual: A hand turning the pages of an old paper address book
+Text: HANG UP · CALL BACK
+Stock: person making phone call home
+Draw: tick
+
+But what if she truly can't answer?
+Visual: An empty bed in a dark bedroom, the door ajar
+Text: NO ANSWER?
+
+Agree a family code word today. A clone can't know it.
+Visual: A family seen from behind sitting at a kitchen table
+Visual: A folded paper note in an envelope on a kitchen table
+Text: FAMILY CODE WORD
+Draw: circle
+
+Then any crying voice must pass one question first.
+Visual: A man seen from behind standing still in a kitchen, head tilted, listening
+Visual: An old telephone receiver back on its hook on a table
+Text: ASK THE CODE WORD
+Steps: Crying call → Hang up → Call her number → Ask the code word | Your defence

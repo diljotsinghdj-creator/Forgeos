@@ -1,0 +1,533 @@
+The Discount That Changes Your Brain Before You Buy
+On-screen hook: THE PRICE YOU NEVER PAY
+Title: The Price You Will Never Pay Is Controlling What You Buy
+Tags: #HiddenEconomics #anchoring #behaviouraleconomics #shopping #consumerrights
+Source: Tversky and Kahneman, Judgment under Uncertainty, Science 185, 1974, https://doi.org/10.1126/science.185.4157.1124; Ariely, Loewenstein and Prelec, Coherent Arbitrariness, Quarterly Journal of Economics 118(1), 2003, https://www.cmu.edu/dietrich/sds/docs/loewenstein/CoherentArbit.pdf; Northcraft and Neale, Experts, amateurs, and real estate, OBHDP 39(1), 1987, https://ideas.repec.org/a/eee/jobhdp/v39y1987i1p84-97.html; EU Price Indication Directive Art. 6a, inserted by Directive 2019/2161, https://eur-lex.europa.eu/eli/dir/1998/6/2022-05-28/eng; CJEU Case C-330/23 Aldi Sued, 26 Sept 2024; Mathur et al., Dark Patterns at Scale, CSCW 2019, https://arxiv.org/abs/1907.07032; CMA, Emma Group consumer protection case, 2026, https://www.gov.uk/cma-cases/emma-group-consumer-protection-case; DBT, Estimating the prevalence and impact of online drip pricing, 2023, https://www.gov.uk/government/publications/estimating-the-prevalence-and-impact-of-drip-pricing; CMA, consumer protection drive on online pricing, Nov 2025, https://www.gov.uk/government/news/cma-launches-major-consumer-protection-drive-focused-on-online-pricing-practices
+
+The most persuasive price is never paid.
+Visual: A paper price tag with the old price crossed out in red, figures blurred
+Visual: A shopper's hand putting a wallet back into a coat pocket
+Text: THE PRICE YOU NEVER PAY
+Draw: underline
+
+In one experiment, a meaningless number tripled what people offered for a keyboard.
+Visual: A 2000s university classroom with students seen from behind at desks
+Visual: A cordless computer keyboard on a plain white table
+Text: SAME KEYBOARD · 3× THE BID
+Cite: Ariely, Loewenstein & Prelec, 2003
+
+Every crossed-out price pulls the same hidden lever.
+Visual: A department store floor with sale rails, seen from the escalator
+Visual: A market stall chalkboard with old prices rubbed out, figures blurred
+
+And only the shop gets to choose the number.
+Visual: A shop manager seen from behind writing prices on a clipboard in a stockroom
+Visual: A price labelling gun lying on a shop counter beside blank tags
+
+By the end, you'll know a discount from a real saving,
+Visual: A shop receipt showing a discount line, figures blurred
+Visual: Two glass jars of coins on a kitchen table, one fuller than the other
+
+and the countdown clock a retailer actually admitted was misleading.
+Visual: A phone showing a shopping page with a countdown timer, text unreadable
+Visual: A printed court document on a desk with an official seal, text unreadable
+Text: A CLOCK THAT LIED?
+Draw: circle
+
+Now watch that lever work on Leah.
+Visual: A woman seen from behind standing at a shop's sale rail
+Visual: A woman seen from behind curled up in an armchair, reading lamp on
+Text: LEAH · FICTIONAL
+
+She is fictional, and it's Saturday night.
+Visual: A takeaway box and a glass of wine on a coffee table at night
+Visual: A dark living room window with city lights outside at night
+
+Then, scrolling a shop, she spots a jacket.
+Visual: A hand scrolling a shopping website on a laptop trackpad, text unreadable
+Visual: A green jacket on a mannequin in a shop window
+
+One hundred pounds, crossed out.
+Visual: A price tag on a jacket collar, its price struck through in red
+Text: WAS £100 (FICTIONAL)
+Draw: cross
+
+Underneath, in red, sixty pounds.
+Visual: A red marker pen writing a new price on a white card, figures blurred
+Text: NOW £60
+
+It feels like forty pounds saved.
+Visual: Two twenty-pound notes folded on a coffee table
+Visual: A hand sliding coins back into a small purse
+Thought: Forty pounds off? That's a bargain!
+
+But ten minutes ago, she wanted no jacket.
+Visual: A wall clock in a living room showing late evening
+Visual: An open wardrobe already full of jackets and coats
+
+So did Leah save forty pounds, or find a reason to spend sixty?
+Visual: A hand hovering over a leather wallet on a coffee table
+Visual: A bank card resting on a sofa cushion
+Text: SAVED £40 OR SPENT £60?
+Chapter: Part 1 | The random number
+
+The answer starts with a wheel of fortune in a laboratory.
+Visual: A wooden wheel of fortune with numbered segments on a table
+Visual: A 1970s psychology laboratory with a desk and simple equipment
+
+In nineteen seventy-four, two psychologists rigged a wheel.
+Visual: A 1970s university campus building with students walking in front
+Visual: Two psychologists seen from behind at a 1970s workbench with tools
+Text: Tversky & Kahneman, Science 1974
+Stock: 1970s university campus
+Quote: Judgment under Uncertainty: Heuristics and Biases | Tversky & Kahneman, 1974
+
+It could only stop on ten or sixty-five.
+Visual: Two printed number cards on a laboratory table, digits blurred
+Visual: A hand-drawn wheel diagram on paper with two segments circled in red
+Text: 10 OR 65
+Draw: circle
+Cite: Tversky & Kahneman, Science 1974
+
+Then they asked what share of United Nations members are African countries.
+Visual: A row of national flags outside the United Nations building in New York
+Visual: An old school globe turned to show Africa
+Text: % OF UN MEMBERS THAT ARE AFRICAN?
+
+Shown ten, the median guess was twenty-five percent. Shown sixty-five, forty-five.
+Visual: A student seen from behind writing on an answer sheet
+Visual: Two stacks of coins on a table, one short and one tall
+Chart: 25% vs 45% | saw 10, saw 65
+Cite: Tversky & Kahneman, Science 1974
+
+A number everyone could see was random moved their answers by twenty points.
+Visual: A wooden wheel of fortune standing still on a table
+Visual: A stack of handwritten answer sheets with numbers circled, text unreadable
+Text: +20 POINTS FROM A RANDOM NUMBER
+Draw: underline
+Cite: Tversky & Kahneman, Science 1974
+
+Even paying people for accurate answers did not make it go away.
+Visual: A small cash prize envelope on a desk beside a pencil
+Visual: A hand passing a few banknotes across a desk to a student
+Text: PAYING FOR ACCURACY DIDN'T HELP
+Cite: Tversky & Kahneman, Science 1974
+
+Psychologists call this anchoring. The first number becomes the hidden starting point.
+Visual: A heavy iron ship's anchor resting on a harbour dock
+Visual: A pencil writing a single number at the top of a blank page
+Text: ANCHORING
+
+But that was trivia. Does it work when real money is at stake?
+Visual: A pile of trivia question cards on a table, text unreadable
+Visual: A hand turning a debit card over above a pile of receipts
+Text: DOES IT WORK WITH MONEY?
+Chapter: Part 2 | When money is real
+
+In two thousand and three, researchers tried it with real prices.
+Visual: A 2000s university lecture hall with students seen from behind
+Visual: A bottle of wine and a box of chocolates on a table
+Text: Ariely, Loewenstein & Prelec, 2003
+
+Students wrote down the last two digits of their social security number.
+Visual: A hand writing two digits on a scrap of paper, digits blurred
+Visual: A blank official ID form on a desk, digits blurred
+Text: LAST 2 DIGITS OF AN ID NUMBER
+
+Would they pay that many dollars for a cordless keyboard?
+Visual: A student seen from behind looking at items on a display table
+Visual: A student's wallet open on a classroom desk
+
+Then each student named the most they would pay.
+Visual: A pen tip touching a blank bid sheet on a desk
+Visual: Students seen from behind writing on sheets in a classroom
+
+Students with the lowest numbers bid around sixteen dollars.
+Visual: A short stack of coins beside a pencil on a classroom desk
+Visual: A student's hand sliding a low bid slip across a desk, digits blurred
+Cite: Ariely, Loewenstein & Prelec, 2003
+
+Those with the highest bid around fifty-six.
+Visual: A thick bundle of US dollar bills held with a rubber band
+Chart: $16 vs $56 | lowest ID numbers, highest ID numbers
+Cite: Ariely, Loewenstein & Prelec, 2003
+
+Same keyboard, same room, more than three times the price.
+Visual: Two identical cordless keyboards side by side on a white table
+Visual: An empty university classroom with rows of desks
+Visual: A ruler measuring two paper stacks, one three times taller
+Text: 3× MORE
+Cite: Ariely, Loewenstein & Prelec, 2003
+
+Now look at a sale tag. The crossed-out price is the anchor.
+Visual: A shop sale tag with a crossed-out price, figures blurred
+Visual: A heavy iron anchor on a harbour dock with chain attached
+Text: THE CROSSED-OUT PRICE IS THE ANCHOR
+Draw: circle
+
+The sale price is the adjustment. And the shop sets both.
+Visual: A shop worker's hand holding a price gun over a jacket
+Visual: A rack of jackets being re-priced by a worker seen from behind
+Steps: Crossed-out price → Anchor → Sale price → Feels like saving | How a sale tag works
+
+Many reductions are genuine, and a real discount is useful.
+Visual: A shop window with a big sale display, lettering blurred
+Visual: A shopper seen from behind carrying shopping bags out of a store
+
+But if the higher price barely applied, the saving shrinks to nothing.
+Visual: A new price sticker half covering an older one on a label, figures blurred
+Visual: An empty purse lying open on a shop counter
+Text: HOW LONG WAS IT £100?
+
+Europe thought this mattered enough to write it into law.
+Visual: The European Parliament building in Brussels with flags outside
+Visual: A printed law book open on a desk, text unreadable
+Stock: european parliament building
+Map: Brussels | Europe writes it into law
+
+Since May twenty twenty-two, EU sale prices must cite a specific earlier price.
+Visual: A May 2022 calendar page with one date circled in pen
+Visual: A printed legal text with one paragraph boxed in pen, text unreadable
+Text: EU RULES, SINCE 28 MAY 2022
+Place: EUROPEAN UNION · 2022
+Cite: EU Price Indication Directive
+
+The lowest price that shop charged in at least the previous thirty days.
+Visual: A supermarket shelf label with a small 30-day price note, figures blurred
+Visual: A shop assistant's notebook logging prices by date, figures blurred
+Text: LOWEST PRICE IN PRIOR 30 DAYS
+Cite: EU Price Indication Directive
+
+In twenty twenty-four, the EU's top court confirmed how strict that is.
+Visual: The Court of Justice of the European Union building in Luxembourg
+Visual: A red pin pushed into Luxembourg on a map of Europe
+Text: EU COURT OF JUSTICE, SEPT 2024
+Stock: luxembourg court of justice
+Map: Luxembourg | EU Court of Justice
+Cite: CJEU, Sept 2024
+
+A percentage off must be measured from that thirty-day low.
+Visual: A ruler laid along a row of coin stacks of different heights
+Visual: A red discount sign hanging in a shop window, lettering blurred
+Text: 30-DAY LOW IS THE STARTING POINT
+Cite: CJEU, Sept 2024
+
+So the law can police the anchor.
+Visual: A judge's gavel lying on a stack of legal papers
+Visual: A shop sale tag pinned to a printed legal document, text unreadable
+
+But surely professionals see through it anyway?
+Visual: A man in a suit seen from behind looking at house listings in a shop window
+Visual: A row of house photographs pinned to an estate agent's board
+Text: ARE EXPERTS IMMUNE?
+Chapter: Part 3 | Are experts immune?
+
+In nineteen eighty-seven, experienced estate agents were asked to value a real house.
+Visual: A 1980s suburban street of detached houses with lawns
+Visual: A detached house with a for-sale sign by the path, lettering unreadable
+Text: Northcraft & Neale, 1987
+Stock: 1980s suburban houses
+
+Every agent toured one property and saw the same local sales data.
+Visual: Estate agents seen from behind walking through an empty living room
+Visual: A folder of property papers fanned open, text blurred
+Quote: Experts, amateurs, and real estate | Northcraft & Neale, 1987
+
+Only one thing changed. The listing price in their pack.
+Visual: A property leaflet with its price box circled, digits blurred
+Visual: A row of identical information packs laid out on a table, one opened
+Text: ONLY THE LIST PRICE CHANGED
+Draw: underline
+
+The lowest listing produced valuations of about one hundred and fourteen thousand dollars.
+Visual: A small wooden model house on a table under cool blue light
+Visual: A printed valuation form with a pen beside it, figures blurred
+Text: LOW LISTING
+Cite: Northcraft & Neale, 1987
+
+Shown the highest, nearly one hundred and twenty-nine thousand. Same house.
+Visual: A valuation report with a higher figure circled, figures blurred
+Visual: A front garden gate of a suburban house on a sunny day
+Chart: $114,000 vs $129,000 | low listing, high listing
+Cite: Northcraft & Neale, 1987
+
+Now the twist. The agents largely denied the listing price had swayed them.
+Visual: A man in a suit seen from behind standing at an office window
+Visual: An estate agent's desk with a nameplate and a closed folder, text unreadable
+Text: "IT DIDN'T INFLUENCE ME"
+Bubble: The listing price? It didn't sway me.
+Cite: Northcraft & Neale, 1987
+
+The anchor worked best on the people most sure it had not.
+Visual: A heavy ship's anchor on the seabed with silt rising around it
+Visual: A row of framed award certificates on an estate agency wall, text unreadable
+Text: CERTAINTY IS THE WEAKNESS
+
+If certainty cannot protect us, what happens when the anchor gets a partner?
+Visual: A coil of heavy chain on a harbour dock
+Visual: A red alarm clock placed beside a ship's anchor on a dock
+Text: WHAT IF THE ANCHOR HAS A PARTNER?
+Chapter: Part 4 | The ticking clock
+
+The partner is a clock.
+Visual: An old pocket watch open in a palm
+
+Back on Leah's screen, a timer appears. Offer ends in nine minutes.
+Visual: A woman seen from behind on a sofa, a laptop glowing on her knees
+Visual: A kitchen oven timer counting down, digits blurred
+Text: ENDS IN 09:00 (FICTIONAL)
+Thought: Nine minutes? I'd better decide now.
+
+Urgency shrinks the time she has to question the anchor.
+Visual: A hand gripping a bank card tightly over a coffee table
+Visual: A half-drunk cup of coffee on a coffee table
+Steps: Anchor price → Countdown → Less thinking time → Buy | Anchor plus clock
+
+Some deadlines are real. Sales end and stock runs out.
+Visual: A shop window with a closing-down sale banner, lettering blurred
+Visual: A hand lifting the last box off an almost empty shop shelf
+
+So how often is the urgency itself fake?
+Visual: A magnifying glass held over a phone screen, text unreadable
+Visual: A researcher's notebook with timer claims ticked and crossed, text unreadable
+Text: HOW OFTEN IS IT FAKE?
+
+In twenty nineteen, university researchers crawled around eleven thousand shopping websites.
+Visual: A university computer lab with rows of monitors, screens unreadable
+Visual: A wall of printed website pages pinned edge to edge, text unreadable
+Text: ~11,000 SITES (Mathur et al., 2019)
+Stock: server room lights
+Cite: Mathur et al., 2019
+
+They found one thousand eight hundred and eighteen dark patterns.
+Visual: A spreadsheet printout with hundreds of rows ticked, figures blurred
+Visual: A researcher seen from behind marking pages with a red pen
+Chart: 1,818 | dark patterns found
+Cite: Mathur et al., 2019
+
+Designs that steer you.
+Visual: Painted arrows on a supermarket floor guiding shoppers one way
+
+On one hundred and eighty-three sites, the claims were judged outright deceptive.
+Visual: A thin folder with a red warning tab on a desk, text unreadable
+Visual: A red rubber stamp pressed onto a printed web page
+Text: 183 SITES WITH DECEPTIVE CLAIMS
+Cite: Mathur et al., 2019
+
+The strangest part? Some countdown timers simply reset when the page was reloaded.
+Visual: A laptop showing a shopping page with a countdown timer, text unreadable
+Visual: A finger pressing a refresh key on a keyboard, key label blurred
+Text: TIMER RESETS ON RELOAD
+Draw: arrow
+Cite: Mathur et al., 2019
+
+And twenty-two companies sold these tactics to shops as ready-made tools.
+Visual: A row of cardboard boxes in a warehouse, labels unreadable
+Visual: A software sales brochure on a shop counter, text unreadable
+Text: 22 THIRD-PARTY SUPPLIERS
+Cite: Mathur et al., 2019
+
+In May twenty twenty-six, Britain's High Court approved a consent order.
+Visual: The Royal Courts of Justice in London, stone front wet with rain
+Visual: A typed consent order with a court seal, text unreadable
+Stock: royal courts of justice london
+Map: London | Britain's High Court
+Cite: CMA, 2026
+
+An online retailer's countdown timers and high-demand messages? Confirmed as misleading.
+Visual: A furniture showroom with sofas and tables, seen from the entrance
+Visual: A red alarm clock with cracked glass lying on a court document
+Text: HIGH COURT CONSENT ORDER, MAY 2026
+Draw: cross
+Cite: CMA, 2026
+
+It gave binding undertakings to stop.
+Visual: A pen lifting from a freshly signed document with a seal
+Visual: Two people seen from behind shaking hands across a boardroom table
+Text: BINDING UNDERTAKINGS
+Cite: CMA, 2026
+
+Breaking them could even mean contempt of court.
+Visual: An empty courtroom with a judge's bench and wooden panelling
+Visual: A pair of old iron handcuffs resting on a signed document
+
+So scepticism is reasonable. Yet even an honest deal hides a trap.
+Visual: A shopper seen from behind reading a price label in a shop
+Visual: A paper receipt curling under a desk lamp, figures blurred
+Text: EVEN AN HONEST DEAL…
+
+Say Leah adds the jacket. At checkout, a voucher takes it to fifty-four.
+Visual: A laptop showing a checkout page with a jacket in the basket, text unreadable
+Visual: A paper voucher with a code printed on it, text unreadable
+Chart: £60 − 10% = £54 | Leah's checkout (fictional)
+
+If she buys, she truthfully paid less than the listed price.
+Visual: A price tag showing a lower final price, figures blurred
+Visual: A green jacket folded in a cardboard delivery box
+
+But this evening, she planned to spend nothing.
+Visual: A closed leather wallet resting on a coffee table
+Visual: A blank shopping list notepad with a pencil beside it
+Text: PLANNED SPEND: £0
+Thought: I was only going to browse tonight.
+
+So she'd be fifty-four pounds poorer than if she'd closed the tab.
+Visual: A bank statement with one line circled in red, figures blurred
+Visual: A hand switching off a living room lamp
+
+That is the real difference between a discount and a saving.
+Visual: A jar of coins being emptied onto a shop counter
+Visual: A piggy bank sitting untouched on a kitchen shelf
+Text: DISCOUNT ≠ SAVING
+Draw: underline
+
+And the final price is not finished yet.
+Visual: A long paper receipt still printing from a till
+Visual: A laptop checkout page with extra lines added at the bottom, text unreadable
+Steps: Headline price → Checkout → Fees added → Higher total | Drip pricing
+
+Fees that appear only at the last screen have a name. Drip pricing.
+Visual: A printed booking invoice with extra fee lines at the bottom, figures blurred
+Visual: A kitchen tap dripping slowly into a sink
+Text: DRIP PRICING
+
+A government-commissioned study found it at ninety-three percent of event ticket sellers reviewed.
+Visual: A printed government study on a desk, text unreadable
+Visual: A pair of concert tickets with extra fee receipts beside them, text unreadable
+Chart: 93% | of event ticket sellers reviewed
+Cite: DBT, 2023
+
+Since April twenty twenty-five, Britain requires mandatory charges in the headline price.
+Visual: An April 2025 desk calendar with the sixth circled
+Visual: A single complete price tag on a jacket, figures blurred
+Text: MANDATORY FEES UP FRONT · 6 APR 2025
+Place: UNITED KINGDOM · 2025
+Cite: CMA, Nov 2025
+
+The regulator can now fine firms directly.
+Visual: The Competition and Markets Authority office building in London
+Visual: A heavy steel padlock closing on a stack of company accounts
+
+Up to ten percent of global turnover.
+Visual: A thick printed annual report with one thin section cut out
+Chart: 10% | maximum fine as share of global turnover
+Cite: CMA, Nov 2025
+
+So did the problem disappear? Not quite.
+Visual: A busy British high street with shoppers seen from behind
+Visual: A phone showing an online shop page, text unreadable
+Stock: busy british high street
+
+By November twenty twenty-five, the regulator had reviewed over four hundred businesses.
+Visual: Hundreds of small shop-front photographs pinned in rows on a board
+Visual: A tall pile of company case files on an office desk
+Text: 400+ BUSINESSES · 19 SECTORS
+Place: UNITED KINGDOM · NOV 2025
+Cite: CMA, Nov 2025
+
+It found possible problems in fourteen sectors.
+Visual: A grid of nineteen squares on paper with fourteen shaded in red
+Visual: A shopping centre with many different shop fronts, seen from far away
+Text: CONCERNS IN 14 SECTORS
+Cite: CMA, Nov 2025
+
+Among them? Drip pricing and countdown timers.
+Visual: A concert ticket with extra fee slips sliding out from under it
+Visual: A digital countdown clock in a shop window display, digits blurred
+Draw: circle
+
+It opened eight investigations and wrote to a hundred more businesses.
+Visual: Eight cardboard archive boxes on a shelf, labels unreadable
+Visual: A tall stack of sealed envelopes ready to post
+Text: 8 INVESTIGATIONS · 100 LETTERS
+Cite: CMA, Nov 2025
+
+An investigation is not a finding that anyone broke the law.
+Visual: A case file folder open with its last page blank
+Visual: A judge's gavel resting unused beside a closed file
+Text: NO FINDINGS YET
+
+So when the anchor and the clock arrive together, what actually protects Leah?
+Visual: A phone showing a sale price and a countdown timer, text unreadable
+Visual: A woman seen from behind on a sofa, arms folded, thinking
+Text: WHAT ACTUALLY PROTECTS YOU?
+Chapter: Part 5 | What protects you
+
+Before opening a sale, write down what you actually need.
+Visual: A hand writing a short shopping list on a notepad, text unreadable
+Visual: A laptop with a shop page open beside a written list, text unreadable
+Text: 1. WRITE THE LIST FIRST
+
+Judge the final total, delivery included, not the crossed-out number.
+Visual: A finger running down a paper receipt to the total, figures blurred
+Visual: A delivery van parked outside a front door
+Text: 2. JUDGE THE FINAL TOTAL
+Draw: tick
+
+Then check the price history, or another shop, in a separate tab.
+Visual: Two printed price history charts side by side, figures blurred
+Visual: Two shop catalogues open side by side on a table, text unreadable
+Text: 3. COMPARE ELSEWHERE
+
+For anything non-essential, sleep on it.
+Visual: An alarm clock on a bedside table at night
+Visual: A bed with the lamp switched off and curtains drawn
+Text: 4. WAIT OVERNIGHT
+
+Notice that none of these relies on willpower in the moment.
+Visual: A hand resting flat on a closed wallet on a table
+Visual: A cup of tea steaming on a kitchen table
+
+Each one puts time and information back between the anchor and your decision.
+Visual: A desk with a printed list and a calculator side by side, text unreadable
+Visual: A printed price comparison sheet on a desk, figures blurred
+Steps: Write the list → Judge the total → Compare elsewhere → Wait overnight | What protects you
+
+And ask one question.
+Visual: A pencil hovering over a blank notepad
+
+Would I pay this if no other price were shown?
+Visual: A single clean price tag on a jacket with one price, figures blurred
+Visual: A shopper seen from behind holding a jacket in a shop
+Text: WOULD I PAY THIS WITH NO "WAS"?
+Thought: Would I still want it at this price?
+
+Leah asked it, and closed the laptop.
+Visual: A woman seen from behind on a sofa, a cushion in her lap
+Visual: A hand closing a laptop lid on a sofa
+
+The timer ran out. On Monday, the same jacket was still sixty pounds.
+Visual: A kitchen oven timer showing zero, digits blurred
+Visual: A Monday desk calendar page on a kitchen table
+Visual: The same green jacket on a mannequin in a shop window, sale tag still on
+Text: MONDAY · STILL £60 (FICTIONAL)
+Draw: circle
+
+She still didn't need it. Fifty-four pounds stayed exactly where it was.
+Visual: An empty coat hook in a hallway
+Visual: A wallet slipping back into a coat pocket
+Text: £54 KEPT
+
+Remember the estate agents? They were sure the number had not touched them.
+Visual: A detached house with a for-sale sign by the path
+Visual: A man in a suit seen from behind at an office window
+
+Never refuse a real discount. Just never let one decide for you.
+Visual: A card payment terminal on a shop counter, payment approved, text unreadable
+Visual: A shopper seen from behind walking out of a shop empty-handed
+Text: DON'T LET THE DISCOUNT DECIDE
+Draw: underline
+
+Some prices are not about the number at all.
+Visual: A gold wristwatch lying in an open display box
+Visual: A designer handbag on a lit shelf in a luxury shop window
+Text: NEXT EPISODE
+
+So why do things feel better when other people can see them?
+Visual: A glossy shopping bag carried along a busy street
+Visual: People seen from behind turning to look at a shop window
+
+Next time, the hidden economics of status.
+Visual: A polished sports car parked outside a restaurant
+Visual: A luxury shop front on a city street at dusk
+Text: NEXT: THE STATUS TRAP

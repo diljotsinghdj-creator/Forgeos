@@ -1,0 +1,59 @@
+The Small Yes That Leads to a Big Yes
+On-screen hook: TINY YES → HUGE YES
+Title: 17% Said Yes Cold, 76% After a Tiny Favour: The Small Yes Trick
+Tags: #HiddenEconomics #psychology #persuasion #sales #scams
+Source: Freedman, J. L. and Fraser, S. C. (1966), Compliance without pressure, the foot-in-the-door technique, Journal of Personality and Social Psychology 4(2), https://doi.org/10.1037/h0023552; Foot-in-the-door technique overview, https://en.wikipedia.org/wiki/Foot-in-the-door_technique
+
+A huge, ugly lawn sign? Most said no.
+Visual: A huge crooked wooden sign on a suburban front lawn
+Visual: A homeowner seen from behind standing at a front door
+Text: STANFORD RESEARCHERS, 1966
+Bubble: No thanks. Not on my lawn.
+Place: STANFORD · 1966
+Cite: Freedman & Fraser, 1966
+
+Asked cold, only about seventeen percent agreed.
+Visual: A clipboard tally sheet with a few ticks among many crosses, text unreadable
+Chart: 17% | agreed when asked cold
+Cite: Freedman & Fraser, 1966
+
+Then one tiny favour, weeks earlier, changed the answer.
+Visual: A volunteer seen from behind walking up a suburban garden path
+Visual: A wall calendar with several weeks crossed off in pencil
+Text: WHAT FAVOUR?
+Draw: circle
+
+A small sign in the window, about safe driving.
+Visual: A modest house window with a tiny card in the corner, text unreadable
+Visual: A 1960s car parked on a quiet suburban street
+Text: "BE A SAFE DRIVER"
+Stock: 1960s suburban houses
+
+Weeks later, about seventy-six percent said yes to the giant one.
+Visual: A row of 1960s suburban houses with neat front lawns
+Visual: A hand swinging a mallet onto a wooden post in a front lawn
+Chart: 76% vs 17% | small yes first, asked cold
+Cite: Freedman & Fraser, 1966
+
+Why? Saying yes once changes how you see yourself.
+Visual: A hand signing a short petition sheet on a table, text unreadable
+Visual: A hand placing a donated tin into a food bank box
+Text: "I'M SOMEONE WHO HELPS"
+Draw: underline
+Cite: Freedman & Fraser, 1966
+
+Sales funnels often start the same way, with a free quiz or tiny trial.
+Visual: A phone on a desk showing a quiz screen, text unreadable
+Visual: A free paper sample sachet attached to a magazine page
+Text: FICTIONAL INTERFACE
+
+Scammers start small too.
+Visual: A gloved hand pushing a single coin across a desk
+Text: SMALL ASK → BIG ASK
+Draw: arrow
+Steps: Small ask → Small yes → Big ask → Big yes | Small yes, big yes
+
+So next time a tiny yes arrives, ask what the big one will be.
+Visual: A hand ringing a doorbell, seen from behind on a doorstep
+Visual: A giant crooked wooden sign leaning against a house
+Text: WHAT'S THE BIG ASK?

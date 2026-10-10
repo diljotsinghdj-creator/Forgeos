@@ -1,0 +1,53 @@
+Why Bad News Grabs Attention
+On-screen hook: 100 CALM DAYS VS 1?
+Title: 100 Calm Days vs 1 Scary Headline: Why Bad News Wins
+Tags: #HiddenEconomics #psychology #news #negativitybias #behaviouraleconomics
+Source: Soroka, Fournier & Nir (2019) PNAS, Cross-national evidence of a negativity bias in psychophysiological reactions to news, https://doi.org/10.1073/pnas.1908369116; Tversky & Kahneman (1973) Availability heuristic, Cognitive Psychology, https://doi.org/10.1016/0010-0285(73)90033-9
+
+One scary headline beats a hundred calm days.
+Visual: A newspaper with a dark front-page photo on a table, headlines blurred
+Visual: A quiet sunny suburban street on an ordinary morning
+Text: WHICH ONE STICKS?
+
+Researchers wired up people in seventeen countries and played them news.
+Visual: A world map on a desk with red pins in many countries
+Visual: A fingertip with a small medical sensor clip attached
+Chart: 17 | countries · same news clips
+Cite: Soroka et al., PNAS, 2019
+
+Their bodies told the real story. Bad news hit harder than good.
+Visual: A paper heart-rate printout with tall spikes on a desk
+Visual: A researcher seen from behind at a lab desk covered in wires
+Text: BAD NEWS · STRONGER BODY RESPONSE
+Draw: circle
+Cite: Soroka et al., PNAS, 2019
+
+Yet many people showed no such bias at all.
+Visual: A row of people seen from behind watching a TV screen
+Visual: A person seen from behind sitting calmly on a park bench
+Text: NOT EVERYONE REACTED
+Cite: Soroka et al., PNAS, 2019
+
+So why does bad news still feel everywhere?
+Visual: A street newsstand crowded with papers, headlines blurred
+Visual: A phone screen full of news alerts, text unreadable
+Stock: newspaper stand street
+Thought: The world is falling apart
+
+Vivid stories come to mind easily, so they only feel common.
+Visual: A wall covered in pinned newspaper clippings, text unreadable
+Visual: A house fire at night seen from far down a street
+Text: EASY TO RECALL ≠ COMMON
+Cite: Tversky & Kahneman, 1973
+Steps: Vivid story → Easy to recall → Feels common | Why bad news feels everywhere
+
+A true story can still say nothing about odds.
+Visual: A single die resting on a wooden table under a desk lamp
+Visual: A lottery ticket and a pencil on a kitchen table, numbers unreadable
+Text: TRUE STORY ≠ PROBABILITY
+Draw: underline
+
+So next time, ask one thing. Out of how many days?
+Visual: A hand flipping through the pages of a wall calendar
+Visual: A quiet residential road at dusk with lights on in windows
+Chart: 100 vs 1 | calm days, scary headline
