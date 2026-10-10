@@ -5,451 +5,588 @@ Tags: #HiddenEconomics #scams #history #psychology #fraudprevention
 Source: Wikipedia, Victor Lustig https://en.wikipedia.org/wiki/Victor_Lustig; Jeff Maysh, The Man Who Sold the Eiffel Tower. Twice., Smithsonian Magazine 2016 https://www.smithsonianmag.com/history/man-who-sold-eiffel-tower-twice-180958370/; Mental Floss, Smooth Operator, How Victor Lustig Sold the Eiffel Tower https://www.mentalfloss.com/article/12809/smooth-operator-how-victor-lustig-sold-eiffel-tower; ISRI, Selling the Eiffel Tower https://isri.org/scrap-articles/selling-the-eiffel-tower; The Mob Museum, The long con of Count Victor Lustig https://themobmuseum.org/blog/the-long-con-of-underworld-grifter-count-victor-lustig/; American Numismatic Society, Kings of Counterfeiting https://numismatics.org/kings-of-counterfeiting/; EBSCO Research Starters, Victor Lustig https://www.ebsco.com/research-starters/biography/victor-lustig; Ripley's, The Charlatan Count Who Sold the Eiffel Tower (Ten Commandments as attributed) https://www.ripleys.com/stories/sold-eiffel-tower; FTC, New FTC data show a big jump in reported losses to fraud, March 2025 https://www.ftc.gov/news-events/news/press-releases/2025/03/new-ftc-data-show-big-jump-reported-losses-fraud-125-billion-2024; Take Five to Stop Fraud https://www.takefive-stopfraud.org.uk; Stop Scams UK 159 https://www.stopscamsuk.org.uk/159
 
 He sold the Eiffel Tower. For scrap.
-Visual: An old photograph of the Eiffel Tower cut out and pinned to a desk, a price tag tied to its tip with string
+Visual: An old photograph of the Eiffel Tower with a paper price tag tied to it
+Visual: A heap of rusty scrap iron girders in a 1920s scrapyard
 Text: PARIS, 1925
 
 The buyer paid, lost everything, and never went to the police.
-Visual: A hand closing an empty leather wallet on top of a folded French newspaper
+Visual: A hand passing a thick envelope of old French banknotes across a desk
+Visual: An empty leather wallet lying open on a folded newspaper
+Visual: A 1920s Paris police station doorway with a closed wooden door
 
 That silence was never luck. It was designed into the deal.
-Visual: A red pen circling a handshake drawn on a yellowed contract
+Visual: A closed office door at the end of an empty 1920s hallway
+Visual: A yellowed contract with a fountain pen on a desk, text unreadable
 Text: THE SILENCE WAS THE PLAN
 
 And the same design is in scam messages people receive every day.
-Visual: A modern phone lying on an old map of Paris, a message glowing, text unreadable
+Visual: A smartphone on a kitchen table showing a new message, text unreadable
+Visual: A hand holding a smartphone with a message notification, text unreadable
 Text: SAME STRUCTURE, 2020s
 
 By the end, you'll know its four parts.
-Visual: Four old photographs taped in a row on a desk, red string waiting to connect them
+Visual: Four old photographs taped in a row on a wooden desk
+Visual: Four blank index cards in a row with a red pen beside them
 Text: FOUR PARTS
 
 And the one habit that breaks it.
-Visual: A pair of scissors resting open across a length of red string
+Visual: A hand lifting the receiver of a landline telephone
+Visual: A pair of scissors cutting a length of red string on a desk
 Text: ONE HABIT
 
 The con man called himself Count Victor Lustig. The title was fake.
-Visual: A calling card with an ornate crest on a velvet cloth, a fingertip sliding it forward
+Visual: An ornate calling card with a crest on a velvet cloth, text unreadable
+Visual: A 1920s gentleman in a long coat and top hat seen from behind
+Visual: A fingertip sliding a calling card across a polished table
 Text: "COUNT" VICTOR LUSTIG
 
 Can we trust the details?
-Visual: A magnifying glass lying over an old newspaper clipping, print blurred
+Visual: A magnifying glass over an old newspaper clipping, print blurred
 
 Only partly. They come from his later fame, so accounts vary.
-Visual: Three different newspaper clippings overlapping on a desk, edges curling, print blurred
+Visual: A stack of yellowed 1930s newspapers tied with string
+Visual: Three different newspaper clippings overlapping on a desk, print blurred
 Text: ACCOUNTS DIFFER
 
 He was born in Austria-Hungary and spoke several languages.
-Visual: An old passport lying open on a map of central Europe, a red circle drawn around Austria-Hungary
+Visual: An old map of central Europe with Austria-Hungary circled in red pen
+Visual: A pile of old dictionaries in different languages on a desk, titles unreadable
 Text: BORN c.1890, AUSTRIA-HUNGARY
 
 He even dressed like money.
-Visual: A silk tie, a pocket watch and a pair of gloves laid neatly on a dark desk, a lamp beam crossing them
+Visual: A silk tie, a gold pocket watch and leather gloves laid on a desk
 
 He had learned his trade working wealthy passengers on transatlantic liners.
-Visual: A cut-out of an old ocean liner pinned to a map of the Atlantic, red string from port to port
+Visual: A 1920s ocean liner at sea with smoke rising from its funnels
+Visual: Wealthy 1920s passengers in evening dress on a ship's deck, seen from behind
+Visual: A hand dealing playing cards on a green card table in a ship's lounge
 Stock: ocean liner 1920s
 
 But the shape of the tower story holds.
-Visual: A cut-out of the Eiffel Tower pinned upright on the desk, red string tied to its base
+Visual: The Eiffel Tower in an old black-and-white photograph
+Visual: An old photograph of the Eiffel Tower pinned to a cork board with red string
 
 And it starts with one newspaper.
-Visual: A folded newspaper landing on a café table beside a small coffee cup
+Visual: A folded newspaper on a Paris café table beside a coffee cup
+Visual: A hand unfolding an old French newspaper, print blurred
 
 Most accounts say Lustig read a Paris article about the tower's upkeep.
-Visual: A magnifying glass passing over a column of old newsprint, letters unreadable
+Visual: A 1920s Paris street with newspaper kiosks and horse carts
+Visual: A man in a hat reading a newspaper at a café, seen from behind
+Visual: A magnifying glass over a column of old newsprint, print blurred
 Stock: paris 1920s street
 
 It was costly to maintain. Worse, it needed serious repair.
-Visual: Flakes of rust and old paint gathered in a palm against an iron girder
+Visual: Workers painting the iron girders of the Eiffel Tower in an old photograph
+Visual: Flakes of rust in a palm held against an iron girder
 
 The tower was never meant to be permanent.
-Visual: A wide cut-out of the tower against a blank sky, pinned at four corners
+Visual: The Eiffel Tower against a pale sky in an old photograph
+Visual: An old construction photograph of the Eiffel Tower half built
 Stock: eiffel tower 1920s
 
 It was built for the world's fair of eighteen eighty-nine.
-Visual: An old exhibition poster pinned to a cork board, colours faded, lettering unreadable
+Visual: Crowds at the 1889 Paris world's fair beneath the new Eiffel Tower
+Visual: A faded 1889 exhibition poster on a cork board, lettering unreadable
 Stock: paris world fair 1889
 
 And only on a twenty-year permit.
-Visual: An old permit document with a red circle drawn around its date, text unreadable
+Visual: An old permit document with its date circled in red, text unreadable
 Chart: 1889 → 1909 | The original permit: 20 years
 
 So a story that Paris might take it down did not sound absurd.
-Visual: A pair of hands holding a pencil sketch of the tower with its top half rubbed out
+Visual: Parisians reading newspapers on a 1920s café terrace, seen from behind
+Visual: A pencil sketch of the Eiffel Tower with its top half erased
+Visual: Workmen taking apart an iron structure with a crane in an old photograph
 
 Lustig noticed something most readers missed. The rumour was believable.
+Visual: A man's hand holding a newspaper by a café window, print blurred
 Visual: A red pen underlining one sentence in a newspaper column, print blurred
 
 A believable rumour is raw material. What would he build from it?
-Visual: A blank sheet of cream paper sliding out of an old desk drawer
+Visual: Iron ingots stacked high in an old warehouse
+Visual: A blank sheet of cream paper and a fountain pen on an old desk
 Text: WHAT DID HE BUILD?
 
 So first, he needed to look like the government.
-Visual: An old fountain pen resting on official-looking letterhead, crest embossed, text unreadable
+Visual: A grand French government ministry building in 1920s Paris
+Visual: Official letterhead with an embossed crest on a desk, text unreadable
 
 He had stationery forged to look like a French ministry's.
-Visual: Extreme close-up of an embossed seal being pressed into thick paper
+Visual: A hand pressing an embossing seal into thick cream paper
+Visual: A stack of blank official envelopes with an embossed crest
 
 Then he invited a handful of scrap-metal dealers to a meeting.
-Visual: Several sealed envelopes fanned out on a desk, wax seals catching the light
+Visual: Sealed envelopes with red wax seals fanned out on a desk
+Visual: A 1920s Paris scrapyard with piles of iron and a horse cart
+Visual: A hand pushing a letter through a brass letterbox
 Text: 5 OR 6 DEALERS, BY MOST ACCOUNTS
 
 The venue was the Hôtel de Crillon.
-Visual: An old photograph of a grand stone hotel façade cut out and taped to a map
+Visual: The grand stone facade of the Hôtel de Crillon in Paris
+Visual: The Place de la Concorde in Paris with old cars, 1920s
 Stock: paris hotel 1920s
 
 One of the grandest addresses in Paris.
-Visual: A brass room key and a crystal glass on a velvet cloth, a red circle drawn around the key
+Visual: A chandelier-lit hotel salon with gilded chairs and a long table
+Visual: A brass hotel room key on a velvet cloth
 
 Here's what he told them. The city could no longer afford the tower.
-Visual: A gloved hand drawing a red line across a sketch of the tower's base
+Visual: Men in suits seated around a hotel meeting table, seen from behind
+Visual: A city accounts ledger open on a desk, figures blurred
+Visual: The Eiffel Tower seen from below in an old photograph
 
 It would be dismantled.
-Visual: A sketch of the tower torn into pieces on a desk, a red pen beside it
+Visual: Workers with a crane taking apart an iron tower in an old photograph
 
 And one dealer would win the contract for the iron.
-Visual: Iron rivets and bolts spilling across a desk from an old canvas bag
+Visual: A contract and fountain pen on a polished table, text unreadable
+Visual: Iron rivets and bolts spilling from an old canvas bag
 
 Thousands of tonnes of metal.
-Visual: A pile of scrap iron in an old black-and-white photograph, a red circle around it
+Visual: A huge pile of scrap iron in an old black-and-white photograph
 Chart: 0 → 7,300 | Tonnes of iron in the tower
 
 And only to men who traded metal for a living.
-Visual: Old photographs of scrap yards pinned in a row, red string joining them to the tower cut-out
+Visual: A scrap metal dealer weighing iron on a large scale, seen from behind
+Visual: Old photographs of scrapyards pinned in a row on a cork board
 
 But there was one more instruction, and it mattered most.
-Visual: A finger pressed to a closed envelope, holding it shut
+Visual: A gloved hand raising one finger above a meeting table
+Visual: A finger pressed on a closed envelope, holding it shut
 
 The deal had to stay secret, to avoid a public outcry.
-Visual: A hand drawing a curtain across a tall window, Paris rooftops beyond
+Visual: A hand drawing a heavy curtain across a tall hotel window
+Visual: A crowd of 1920s Parisians gathered in a street, seen from far away
 Text: KEEP THIS CONFIDENTIAL
 
 Notice what that one rule does. Nobody could check with anyone else.
-Visual: Red string between two photographs being snipped with scissors
+Visual: A brass padlock on a bundle of letters
+Visual: Two old telephones on separate desks with their cords cut
+Visual: Scissors snipping red string between two photographs on a cork board
 Text: SECRECY = NO CHECKING
 
 He even took them to inspect the tower, as an official would.
-Visual: Old photograph of men in long coats beneath iron girders, faces turned away
+Visual: Men in long coats beneath the iron girders of the Eiffel Tower, seen from behind
+Visual: A gloved hand touching a riveted iron girder
 Stock: eiffel tower base 1920s
 
 These were not gullible men.
-Visual: Five cut-out silhouettes in hats standing on a map of Paris
+Visual: Five businessmen in hats and coats on a Paris street, seen from behind
 
 Nobody knew the price of iron better than they did.
-Visual: A set of brass weighing scales with iron bolts on one pan, a hand adding one more
+Visual: A brass weighing scale with iron bolts on one pan
+Visual: A hand writing in a merchant's ledger, figures blurred
 
 That expertise made the offer feel real.
-Visual: A dealer's calculation in pencil on a scrap of paper, figures blurred, a red tick beside it
+Visual: A pencil calculation on a scrap of paper, figures blurred
+Visual: A red tick beside a column of figures on a page, figures blurred
 
 It was exactly their kind of deal.
-Visual: Two hands shaking over a pile of iron bolts, seen from above
+Visual: Two hands shaking over a table, seen from above
+Visual: Stacks of iron bars in a warehouse waiting for sale
 
 So which of these professionals fell for it, and why him?
-Visual: Five cut-out silhouettes in hats pinned in a row, a red pen hovering over them
+Visual: Five hats resting in a row on a hotel table
+Visual: A red pen hovering over a list of five names, text unreadable
 Text: WHICH ONE?
 
 His name, according to most accounts, was André Poisson.
-Visual: One silhouette lifted off the board and placed alone in the centre
+Visual: A 1920s businessman walking alone down a Paris street, seen from behind
+Visual: A small brass nameplate on an office door, text unreadable
 Text: ANDRÉ POISSON
 
 His weak spot? Ambition.
-Visual: A ladder cut from paper leaning against the tower cut-out, one rung circled in red
+Visual: A wooden ladder leaning against a tall brick wall
 
 He was keen to be taken seriously by older dealers.
-Visual: A worn business ledger opened under a lamp, columns of figures blurred
+Visual: A worn business ledger open under a desk lamp, figures blurred
+Visual: Older men in suits talking at a club bar, seen from behind
 
 So Lustig aimed straight at that hunger.
-Visual: A red circle drawn slowly around the lone silhouette
+Visual: A red circle drawn around one figure in an old group photograph
+Visual: A gloved hand pouring champagne for a guest at a hotel table
 
 In many retellings, his wife grew suspicious. Why so secret? Why so fast?
-Visual: A woman's hand placing a teacup down hard beside a letter, seen from behind
+Visual: A woman seen from behind at a 1920s kitchen table
+Visual: A teacup set down beside an open letter, text unreadable
+Visual: A mantel clock on a mantelpiece showing late evening
 Text: WHY SO SECRET?
 
 Here comes the twist that made the whole con work.
-Visual: A playing card flipped over on green baize, face blank
+Visual: A playing card being turned over on green baize
+Visual: A man's hands clasped on a hotel table as he leans in
 
 Lustig confessed. Not to the fraud, but to being corrupt.
-Visual: Two hands under a table passing a folded paper, light from above
+Visual: Two men talking quietly in a hotel corner, seen from behind
+Visual: Two hands passing a folded paper under a table
 
 He hinted that a modest official salary never went far.
-Visual: A thin pay envelope lying open beside a stack of bills, a lamp swinging
+Visual: A thin pay envelope lying open with a few coins inside
+Visual: A worn pair of shoes beside a desk, soles patched
 
 Poisson understood. A bribe was expected.
-Visual: An envelope thick with notes slid slowly across a polished table
+Visual: A thick envelope of banknotes on a polished table
+Visual: A hand sliding an envelope slowly across a table
 
 And that bribe convinced him the official was real.
-Visual: A red pen ticking a box on a document, ink bleeding into the paper
+Visual: A hand tucking an envelope into a suit jacket's inside pocket
+Visual: A red tick on an official document, text unreadable
 Text: THE BRIBE WAS THE PROOF
 
 To Poisson, only a real official could sell something under the table.
-Visual: A key being passed palm to palm in shadow
+Visual: An official's desk with a rubber stamp and an inkwell
+Visual: A key passed from one hand to another in shadow
+Visual: Banknotes handed under a table, seen from low down
 
 So he paid the bribe, and the money for the tower.
-Visual: Two bundles of old banknotes tied with string dropped onto a desk
+Visual: Two bundles of old banknotes tied with string dropped on a desk
+Visual: A banker's cheque and a fountain pen on a desk, text unreadable
 Text: SUMS VARY BY ACCOUNT
 
 Lustig reportedly left Paris with the cash soon after.
-Visual: An old train ticket and a suitcase handle, steam drifting across the frame
+Visual: A leather suitcase on a 1920s railway platform with steam drifting
+Visual: An old train ticket resting on a suitcase lid, text unreadable
 Stock: steam train 1920s
 
 So why did nobody come after him?
-Visual: An empty hotel room with an unmade bed and an open window, curtains moving
+Visual: An empty hotel room with an unmade bed and an open window
+Visual: A room key left on a hotel reception desk
 Text: WHY NO POLICE?
 
 Because to report it, Poisson would have to confess two things.
-Visual: Two empty chairs facing a police desk in an old photograph, red circle drawn on one
+Visual: A 1920s police station front desk with a wooden counter
+Visual: Two blank index cards side by side on a desk
 
 One, that he had been fooled.
-Visual: A hand covering a signature on a document, fingers trembling
+Visual: A ministry letter lying on a desk, text unreadable
+Visual: A hand covering a signature on a contract
 
 Two, that he had tried to bribe an official.
-Visual: An envelope of banknotes pinned to the desk, a red circle drawn around it
+Visual: An envelope of banknotes on a desk with a red circle drawn around it
+Visual: A pair of old handcuffs lying beside a stack of banknotes
 
 His embarrassment became the con man's insurance policy.
-Visual: An old insurance document stamped in red, the stamp landing heavily
+Visual: A man sitting alone with his head in his hands, seen from behind
+Visual: An old insurance document with a red stamp, text unreadable
 Text: EMBARRASSMENT = INSURANCE
 
 So a con that leaves no complaint can be run again.
-Visual: The same tower cut-out pinned back on the board, a fresh price tag swinging
+Visual: A blank police complaint form lying unused on a counter, text unreadable
 Chart: 1 → 2 | Times he tried to sell the tower
 
 According to most accounts, Lustig came back to Paris.
-Visual: The tower cut-out pinned back on the map of Paris, a second red pin beside it
+Visual: A steam train arriving at a 1920s Paris station
+Visual: A red pin pushed into Paris on an old map
 
 Then he tried the very same trick.
-Visual: A second set of sealed envelopes laid in a fan, identical to the first
+Visual: A second set of sealed envelopes fanned out on a desk
+Visual: Men in hats gathered at a hotel meeting table, seen from behind
 
 This time a dealer went to the police, and Lustig slipped away.
-Visual: A police whistle and a torn train timetable on a desk
+Visual: A man in a coat climbing the steps of a police station, seen from behind
+Visual: A police whistle on a desk beside a train timetable
+Visual: A figure in a long coat walking away down a foggy street
 
 So was the Eiffel Tower his first trick, or a rehearsed one?
-Visual: A mahogany box with brass fittings on a desk, lid closed, a red question mark drawn beside it
+Visual: The Eiffel Tower in an old photograph pinned to a cork board
+Visual: A mahogany box with brass fittings on a desk, lid closed
 Text: HIS EARLIER TRICK
 
 Lustig had already been selling a trick machine that "printed" money.
-Visual: Extreme close-up of a brass crank turning on a polished wooden box
+Visual: A polished wooden box with a brass crank and two narrow slots
+Visual: A hand turning a brass crank on a wooden box
 
 It became known as the Rumanian money box.
-Visual: The box's lid lifting slowly, empty velvet slots inside
+Visual: A wooden box with its lid open, empty velvet-lined slots inside
+Visual: A wooden money box on a hotel dresser beside a lamp
 Text: THE "RUMANIAN BOX"
 
 A buyer fed in one genuine note and waited hours for a copy.
-Visual: A banknote slid into a narrow slot, a pocket watch ticking beside it
+Visual: A hand sliding a banknote into a narrow slot in a wooden box
+Visual: A pocket watch on a table beside a wooden box
+Visual: A man waiting in an armchair by a lamp at night, seen from behind
 
 Out came two real notes. One had been hidden inside beforehand.
-Visual: Two banknotes emerging side by side from a slot, light glinting on brass
+Visual: Two banknotes emerging side by side from a slot in a wooden box
+Visual: A hidden compartment in the back of a wooden box holding a banknote
 
 After a few notes, the box printed nothing. By then, he was gone.
-Visual: An empty box with its back panel removed, a single strand of dust drifting
+Visual: A blank sheet of paper sliding out of a wooden box
+Visual: An empty wooden box with its back panel removed
+Visual: An empty railway platform with a train pulling away
 
 Yet again the buyer had a problem.
-Visual: A buyer's silhouette from behind, staring at the empty box on a desk
+Visual: A man seen from behind staring at a wooden box on a desk
+Visual: A few banknotes and a blank sheet of paper on a desk
 
 He had tried to buy a counterfeiting machine.
-Visual: A hand hiding the box under a coat on a desk chair
+Visual: A hand hiding a wooden box under a coat on a chair
+Visual: Counterfeit banknotes and an engraved plate on a workbench
 
 Who complains to the police about that? Almost nobody.
-Visual: A telephone receiver lifted halfway, then set back down
+Visual: An old police station door with a brass handle
+Visual: A telephone receiver set back down on its cradle
 Text: WHO WOULD COMPLAIN?
 
 One buyer did, according to most accounts.
-Visual: A telephone receiver lifted fully off its cradle, red string running from it
+Visual: A hand lifting an old telephone receiver off its cradle
+Visual: A typed complaint letter on a police desk, text unreadable
 
 A Texas sheriff came looking for him.
-Visual: A sheriff's star badge on an old map of Texas, a red circle drawn around it
+Visual: A sheriff's star badge on an old map of Texas
+Visual: A 1920s Texas town main street with a car and wooden storefronts
 
 Lustig talked his way out, and repaid him in notes that were fake.
-Visual: A handful of crisp banknotes dropped on a desk, one held up to a lamp, the light showing nothing
+Visual: Two men talking in a hotel lobby, seen from behind
+Visual: A hand counting banknotes onto a desk
+Visual: A banknote held up to a desk lamp, close-up
 
 But the money box taught him about money.
-Visual: The money box beside a fan of banknotes, a lamp beam across both
+Visual: A wooden money box beside a fan of banknotes
+Visual: A magnifying glass over the fine engraving of an old banknote
 
 And that is what caught him.
-Visual: A sheet of uncut banknotes on a printing press, ink rolling across it
+Visual: A sheet of uncut banknotes on an old printing press
+Visual: An ink roller on a metal printing plate
 Stock: old printing press
 
 In the United States, Lustig moved into real counterfeiting.
-Visual: Fake banknotes fanned across a map of the United States, red pins in cities
+Visual: A 1930s American city street with old cars and tall buildings
+Visual: Banknotes fanned across a map of the United States
 
 The notes were engraved by a skilled counterfeiter, William Watts.
-Visual: An engraving tool cutting fine lines into a copper plate, metal curls lifting
+Visual: An engraving tool cutting fine lines into a copper plate
+Visual: A craftsman's hands at a workbench under a lamp with engraving tools
 
 They spread so widely that Secret Service agents made catching him a priority.
-Visual: A wall map covered in red pins and string, more pins being added
+Visual: Banknotes being handed over a shop counter
+Visual: A wall map covered in red pins and string
+Visual: 1930s agents in hats and suits walking down a corridor, seen from behind
 Stock: secret service 1930s
 
 He was arrested in New York in May, nineteen thirty-five.
-Visual: An old photograph of a city street corner, a red circle around a man in a coat seen from behind
+Visual: A 1930s New York street corner with traffic and tall buildings
+Visual: A pair of old handcuffs on a police desk
 Stock: new york street 1930s
 
 Then he escaped from a Manhattan detention centre.
-Visual: An old photograph of a barred window at night, a red circle drawn around it
+Visual: An old stone detention building in 1930s Manhattan
+Visual: A barred window at night with an empty cell behind it
 
 The rope was made of bedsheets.
-Visual: A knotted rope of white sheets hanging from a barred window at night
+Visual: Knotted white bedsheets tied into a rope, close-up
+Visual: A rope of knotted sheets hanging from a barred window at night
 
 But he was recaptured in Pittsburgh within a month.
-Visual: A red pin pushed into Pittsburgh on an old map, string pulled tight
+Visual: A red pin pushed into Pittsburgh on an old map
+Visual: A 1930s Pittsburgh street with steel mill smoke in the distance
 
 A New York judge sentenced him to twenty years.
-Visual: A judge's gavel resting on an old newspaper, headline unreadable
+Visual: A judge's gavel on a wooden bench in an old courtroom
 Chart: 0 → 20 | Years for the Eiffel Tower con man
 
 He was sent to Alcatraz.
-Visual: Fog rolling over a rocky island prison, gulls drifting past
+Visual: Fog rolling over Alcatraz island prison in San Francisco Bay
 Stock: alcatraz island
 
 He died in federal custody in nineteen forty-seven, in Springfield, Missouri.
-Visual: A plain prison identity card on a steel table, photograph area blank
+Visual: A plain prison identity card on a steel table, text unreadable
+Visual: A federal prison hospital building with a long brick facade
 Text: SPRINGFIELD, MISSOURI, 1947
 
 Yet he left behind something still passed around online: a list.
-Visual: A typed sheet pinned under a paperclip, a red pen hovering, text unreadable
+Visual: A laptop on a desk showing an article page, text unreadable
+Visual: A typed list on an old sheet of paper under a paperclip, text unreadable
 Text: "TEN COMMANDMENTS FOR CON MEN"
 
 It's called the Ten Commandments for Con Men, and it's attributed to him.
-Visual: A stamp labelled with a question mark pressed onto the typed sheet
+Visual: A typed sheet with ten numbered lines on a desk, text unreadable
+Visual: A rubber stamp pressing onto a typed sheet, text unreadable
 Text: ATTRIBUTED, NOT PROVEN
 
 No one has proved he wrote it. But the first rule fits.
-Visual: An old phonograph horn turned towards an empty chair
+Visual: An old typewriter on a desk with a blank sheet loaded
+Visual: A finger pointing at the first line of a typed list, text unreadable
 
 Be a patient listener.
-Visual: An ear-shaped shadow on a wall beside a lamp, a pocket watch ticking
+Visual: Two armchairs facing each other across a small table under a lamp
 Text: RULE 1: BE A PATIENT LISTENER
 
 He did not out-talk Poisson. He listened until he found the weak spot.
-Visual: A red circle tightening around a single word on a ledger page
+Visual: Two men in suits at a hotel table, one leaning in, seen from behind
+Visual: A pocket watch open on a hotel table
+Visual: A red circle drawn around one word on a ledger page, text unreadable
 
 So strip away the hotel and the stationery. What actually made it work?
-Visual: The whole desk viewed from above, photos, string, envelopes and the money box
+Visual: A hand pushing a calling card and letterhead off a desk
+Visual: A desk seen from above with photographs, envelopes and a wooden box
+Visual: Four blank index cards laid in a row on a desk
 Text: WHAT ACTUALLY WORKED?
 
 Part one is authority. The letterhead and the hotel did the persuading.
-Visual: A crest embossed on paper, a lamp beam sweeping across it
+Visual: An embossed crest on cream letterhead, close-up
+Visual: The grand facade of a Paris hotel with flags over the entrance
 Text: 1. AUTHORITY
 
 Part two is secrecy. It cut every route to an outside check.
-Visual: A padlock snapping shut on a bundle of letters
+Visual: A brass padlock snapping shut on a bundle of letters
+Visual: An old telephone with its cord cut lying on a desk
 Text: 2. SECRECY
 
 Part three is greed. A deal that felt rare and exclusive.
-Visual: Coins sliding off a scale towards one side, close-up
+Visual: A brass scale tipping under a pile of gold coins
+Visual: A gloved hand holding a single gold coin up to the light
 Text: 3. GREED
 
 Part four is the masterstroke. Embarrassment, which keeps victims quiet afterwards.
 Visual: A hand pressing a newspaper face down on a table
+Visual: A man sitting alone on a park bench, seen from behind
 Text: 4. EMBARRASSMENT
 
 The first three get the money. The fourth keeps it.
-Visual: A locked strongbox on a desk, a key pulled away on a string
+Visual: Banknotes being swept into an open leather briefcase
+Visual: A locked steel strongbox on a desk
 
 Now watch the same four parts arrive by phone a century later.
-Visual: A modern phone ringing on top of the old tower cut-out, screen glowing
+Visual: An old candlestick telephone on a 1920s desk
+Visual: A modern smartphone ringing on a kitchen table, screen lit, text unreadable
 Text: A CENTURY LATER
 
 Imagine a call that seems to be your bank.
-Visual: A phone screen showing a generic incoming call, an official crest icon, text unreadable
+Visual: A smartphone showing an incoming call screen, text unreadable
+Visual: A bank branch front on a busy high street
 Text: ILLUSTRATION
 
 Or the police. Or the tax office.
-Visual: Three old telephones lined up on the desk, each with a blank paper label
+Visual: A police station entrance with a blue lamp above the door
+Visual: A government tax office building with stone steps
 
 That's authority, borrowed exactly like Lustig's fake letterhead.
-Visual: A forged crest and a phone icon taped side by side, red string between them
+Visual: A smartphone call screen with an official crest icon, text unreadable
+Visual: An old letterhead with an embossed crest beside a smartphone on a desk
 
 Then the line that matters most. Don't tell anyone, not even branch staff.
-Visual: A finger pressed to a phone's speaker, a kitchen dark behind it
+Visual: A person seen from behind holding a phone to their ear in a dark kitchen
+Visual: A hand covering the microphone of a smartphone
+Visual: Bank branch staff at their counters, seen from far away
 Text: "DON'T TELL ANYONE"
 
 That is the Hôtel de Crillon instruction, reworded.
-Visual: The old hotel cut-out and the phone pinned together with a single red pin
+Visual: The Hôtel de Crillon facade in an old photograph
+Visual: A smartphone lying on an old hotel letterhead, text unreadable
 
 Then an urgent reason to move money.
-Visual: A thumb hovering over a generic transfer button, text unreadable
+Visual: A thumb hovering over a transfer button in a banking app, text unreadable
+Visual: A wristwatch next to a smartphone on a table
 Text: FICTIONAL INTERFACE
 
 Or a return too good to miss.
-Visual: A glossy investment brochure fanned open on the desk, figures blurred, circled in red
+Visual: A glossy investment brochure open on a desk, figures blurred
+Visual: A laptop showing a rising price chart, text unreadable
 
 Here's Lustig's bribe in modern form.
-Visual: The old envelope of banknotes and the phone pinned side by side, red string between them
+Visual: An old envelope of banknotes beside a smartphone on a desk
+Visual: A smartphone showing a money transfer screen, text unreadable
 
 The victim is made to feel complicit.
-Visual: A hand slowly closing a curtain on a lit window at night
+Visual: A person seen from behind sitting at a table with a phone at night
+Visual: A hand closing a curtain on a lit window at night
 
 They're even asked to lie to their own bank.
-Visual: A bank counter seen from behind a customer's shoulder, a slip of paper hidden in a gloved hand
+Visual: A bank counter seen over a customer's shoulder
+Visual: A withdrawal slip held in a hand at a bank counter, text unreadable
 Text: TOLD TO LIE TO THE BANK
 
 Or to keep a too-good investment secret.
-Visual: An investment brochure slid under a sofa cushion by a hand
+Visual: An investment brochure tucked under a sofa cushion
+Visual: A laptop lid being closed on a dark desk
 
 And afterwards, many victims feel too ashamed to tell anyone.
-Visual: A figure seen from behind on a sofa, phone face down beside them
+Visual: A person seen from behind on a sofa, phone face down beside them
+Visual: A family dinner table with one empty chair
 
 How big is this today? The American regulator publishes the numbers.
-Visual: A stack of printed reports sliding onto the desk, pages riffling
+Visual: The Federal Trade Commission building in Washington DC
+Visual: A stack of printed government reports on a desk, text unreadable
 
 In twenty twenty-four, Americans reported fraud losses.
-Visual: A paper map of the United States on the desk, red pins scattered across it
+Visual: A paper map of the United States with red pins scattered across it
+Visual: A person typing on a laptop at a kitchen table, screen text unreadable
 
 Over twelve and a half billion dollars.
-Visual: Banknotes piling up in a glass jar, close-up
+Visual: Bundles of dollar banknotes stacked on a table
 Chart: $12.5bn vs $2.95bn | All reported fraud, Imposter scams
 
 Nearly three billion of that went to impostors pretending to be someone trusted.
-Visual: A row of empty uniforms on hangers, a lamp sweeping across them
+Visual: Stacks of hundred-dollar bills on a desk
+Visual: A smartphone showing an incoming call from a bank, text unreadable
+Visual: A police uniform jacket hanging on a coat hanger
 Text: FTC, US DATA, 2024
 
 And the share of people reporting who actually lost money?
-Visual: A single coin balanced on its edge on graph paper, a red question mark beside it
+Visual: People queuing at a bank counter, seen from behind
+Visual: An empty wallet lying open on a kitchen table
 
 It jumped in a single year.
-Visual: Two paper towers of coins, the second clearly taller
+Visual: Two stacks of coins on a desk, the second clearly taller
 Chart: 27% vs 38% | Lost money in 2023, Lost money in 2024
 
 So what does Poisson's story teach us to do differently?
-Visual: The lone silhouette of Poisson back on the board, the red circle fading
+Visual: A 1920s businessman walking alone down a Paris street, seen from behind
+Visual: An old notebook open on a desk with a pencil beside it
 Text: WHAT SHOULD HE HAVE DONE?
 
 Every part of the con depended on one thing. No outside check.
-Visual: Red string running in a closed loop around the photographs, no way out
+Visual: Red string looped around photographs pinned on a cork board
+Visual: A door locked with a heavy iron padlock
 
 So the defence is to make the outside check yourself.
-Visual: A hand cutting the red loop with scissors, string falling slack
+Visual: A hand cutting red string with scissors on a cork board
+Visual: A finger dialling a number on a phone keypad
 
 Hang up. Find the real number on your card, or the official website.
-Visual: A bank card turned over on a desk, a fingertip tracing the back, numbers blurred
+Visual: A thumb pressing the red end-call button on a smartphone
+Visual: The back of a bank card on a desk, numbers blurred
+Visual: A laptop showing a bank's website, text unreadable
 Text: HANG UP. CALL BACK.
 
 Call it from a different phone if you can.
-Visual: A landline handset lifted beside a mobile placed face down
+Visual: A landline handset lifted beside a mobile phone placed face down
+Visual: A hand dialling on a home landline phone
 
 In Britain, one five nine connects you to your bank's real number.
-Visual: Fingers pressing three keys on an old telephone keypad, close-up
+Visual: A British high street with bank branches
+Visual: Fingers pressing keys on a phone keypad, close-up
 Text: UK: CALL 159
 
 Asked to keep it secret? Treat that as a warning, not an instruction.
-Visual: A red stamp coming down on a letter marked confidential, text unreadable
+Visual: A smartphone showing a message on a table, text unreadable
+Visual: A red stamp coming down on a letter, text unreadable
 Text: SECRECY = WARNING SIGN
 
 A real bank, a real police officer, will survive you checking.
-Visual: A heavy door opening onto a bright corridor
+Visual: A bank branch interior with a customer at the counter
+Visual: A police officer at a station front desk, seen from behind
 
 And if you are caught, tell someone.
-Visual: Two pairs of hands across a kitchen table, one sliding a phone over to the other
+Visual: Two people at a kitchen table, one sliding a phone across
+Visual: A hand resting on another person's shoulder, seen from behind
 
 Shame is the con man's real insurance.
-Visual: The old insurance document from earlier, its red stamp circled again
+Visual: A person sitting alone on the stairs at home, seen from behind
+Visual: An old insurance document with a red stamp, text unreadable
 
 So cancel the policy, and the next con gets harder to run.
-Visual: The insurance document from earlier torn cleanly in half
+Visual: Hands tearing an insurance document in half
+Visual: Torn paper pieces on a desk beside a pen
 
 Poisson's silence protected Lustig. Yours protects the next scammer.
-Visual: The cut-out tower, its price tag string finally snapped, lying on the map
+Visual: The Eiffel Tower at dusk in an old photograph
+Visual: A smartphone lying face down on a dark table
 Text: SILENCE PROTECTS THE SCAMMER
 
 Next, the trap that takes your money once a month, forever.
-Visual: A single pen resting on an endless paper contract that unrolls off the edge of the desk
+Visual: A subscription contract and a pen on a desk, text unreadable
+Visual: A monthly bank statement with repeated charges circled in red, text unreadable
 Text: NEXT: THE CANCEL TRAP
