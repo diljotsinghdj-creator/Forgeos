@@ -12,7 +12,8 @@ CreatorForge -> Generate -> Script. CreatorForge reads it like this:
 
 MIXED-MEDIA VERSION
   long_form/03_..._MIXED_MEDIA.txt is the same narration with collage-style pictures and 20 Stock: searches for
-  real footage at the research and history moments. Use Visual style "Mixed-media collage", and save a free
+  real footage at the research and history moments. Use Visual style "Editorial collage" (explainer look with
+  yellow highlighter text) or "Mixed-media collage", and save a free
   Pixabay key in Settings so most Stock: lines find real clips (NASA, Wikimedia, Internet Archive are tried too).
   Real clips play as real footage; AI shots look like collage. Lines with no matching clip use the collage picture.
 
