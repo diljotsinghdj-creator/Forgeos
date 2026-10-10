@@ -1,0 +1,41 @@
+The Video Call Where Everyone Was Fake
+On-screen hook: FAKE FACES. REAL $25M.
+Title: Every Face Was Fake, the $25m Was Real: The Deepfake Video Call
+Tags: #HiddenEconomics #deepfake #scams #AI #fraud
+Source: CNN, Arup revealed as victim of $25 million deepfake scam involving Hong Kong employee, 16 May 2024, https://edition.cnn.com/2024/05/16/tech/arup-deepfake-scam-loss-hong-kong-intl-hnk; South China Morning Post, UK multinational Arup confirmed as victim of HK$200 million deepfake scam, 2024, https://www.scmp.com/news/hong-kong/law-and-crime/article/3263151/uk-multinational-arup-confirmed-victim-hk200-million-deepfake-scam-used-digital-version-cfo-dupe
+
+Every face on the call was fake. The money was real.
+Visual: A laptop on a dark desk showing a grid of video-call tiles, every tile an empty paper silhouette, red string linking them to a pile of banknotes, text unreadable
+Text: ILLUSTRATION · HONG KONG, 2024
+
+Hong Kong, twenty twenty-four. An Arup finance worker gets a message.
+Visual: A cut-out photograph of the Hong Kong skyline at night pinned to a desk map, a red circle around one office tower
+Stock: hong kong skyline night
+
+It claims to be the finance chief, wanting a secret transaction.
+Visual: A sealed envelope stamped confidential in red on a desk, a phone beside it, text unreadable
+Text: "A SECRET TRANSACTION"
+
+Then a video call. The finance chief and colleagues, live.
+Visual: Close-up of a laptop screen with several blurred video tiles, faces indistinct, desk lamp glowing
+Text: AI RECREATION · ILLUSTRATION
+
+So who would doubt faces they recognise?
+Visual: Extreme close-up of an eye reflected in a dark laptop screen
+Text: WHO WOULD DOUBT THEM?
+
+The worker made fifteen transfers, about two hundred million Hong Kong dollars.
+Visual: Fifteen bank transfer slips taped in a row on graph paper, each ticked in red pen, numbers unreadable
+Chart: 0 → 200 | HK$ million in 15 transfers (~US$25m)
+
+Every other person on that call was a deepfake.
+Visual: The laptop grid again, each video tile peeling away like paper to reveal blank card underneath
+Text: ARUP CONFIRMED IT, MAY 2024
+
+The fix? Check any money request on a separate channel.
+Visual: A hand holding a desk phone receiver while the laptop beside it is closed
+Text: VERIFY ON A SEPARATE CHANNEL
+
+Now even a face is just a claim.
+Visual: The same laptop on the dark desk, the paper silhouettes cut free from the red string
+Text: A FACE IS NOT PROOF

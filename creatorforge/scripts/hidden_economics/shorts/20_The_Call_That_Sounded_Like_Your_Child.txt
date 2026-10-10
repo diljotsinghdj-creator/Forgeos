@@ -1,0 +1,43 @@
+The Call That Sounded Like Your Child
+On-screen hook: HER VOICE. NOT HER.
+Title: Your Child's Voice, But Not Your Child: The AI Clone Call
+Tags: #HiddenEconomics #scams #voicecloning #AI #fraud
+Source: FTC Consumer Alert, Scammers use AI to enhance their family emergency schemes, March 2023, https://consumer.ftc.gov/consumer-alerts/2023/03/scammers-use-ai-enhance-their-family-emergency-schemes; McAfee, The Artificial Imposter report, May 2023 (3 seconds of audio gave an 85% voice match), https://www.mcafee.com/blogs/privacy-identity-protection/artificial-imposters-cybercriminals-turn-to-ai-voice-cloning-for-a-new-breed-of-scam/
+
+Your daughter is crying on the phone. She's never made this call.
+Visual: An old telephone receiver lying off the hook on a dark table, a paper sound-wave ribbon spilling out of it and curling across the floor
+Text: FICTIONAL SCENARIO
+
+Scammers can clone a voice from a short online clip.
+Visual: Hands holding a phone playing a generic video, a cut-out sound wave lifting off the screen, text unreadable
+Text: A SHORT CLIP IS ENOUGH
+Stock: person filming phone video
+
+How short? McAfee's tests got an eighty-five percent match from three seconds.
+Visual: A stopwatch on graph paper, its hand barely past the start, a strip of sound wave taped beside it
+Chart: 85% | voice match from 3 seconds of audio
+
+The panic is real. So what can you trust?
+Visual: Extreme close-up of a hand gripping a phone so hard the knuckles whiten, screen dark
+Text: WHAT CAN YOU TRUST?
+
+The FTC's advice is blunt. Don't trust the voice.
+Visual: A printed consumer warning pinned to a desk, one line circled in red pen, text unreadable
+Text: DON'T TRUST THE VOICE
+
+Hang up and call her on the number you already know.
+Visual: A hand dialling on an old address book open beside a phone, warm lamp light
+Text: HANG UP · CALL BACK
+Stock: person making phone call home
+
+But what if she truly can't answer?
+Visual: A phone ringing unanswered on an empty bed, room dark
+Text: NO ANSWER?
+
+Agree a family code word today. A clone can't know it.
+Visual: A folded paper note sealed in an envelope on a kitchen table, a red wax-style circle drawn on it
+Text: FAMILY CODE WORD
+
+Then any crying voice must pass one question first.
+Visual: The same telephone receiver back on its hook, the sound-wave ribbon coiled neatly beside it
+Text: ASK THE CODE WORD
