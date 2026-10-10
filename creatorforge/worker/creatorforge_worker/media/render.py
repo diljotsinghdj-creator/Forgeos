@@ -134,6 +134,9 @@ def _motion(camera: str, frames: int) -> str:
     if c == "shake":   # reveal: quick punch-in with a short, decaying camera shake
         return (f"z='min(1.16,1+0.02*on)':x='iw/2-(iw/zoom/2)+if(lt(on,18),(18-on)*2.4*sin(on*2.9),0)'"
                 f":y='ih/2-(ih/zoom/2)+if(lt(on,18),(18-on)*2.0*cos(on*3.7),0)'")
+    if c == "settle":  # explainer cut: the frame lands slightly close, eases back in a quarter second, then drifts in
+        return (f"z='if(lt(on,8),1.07-0.07*on/8,1+0.05*(on-8)/{max(d - 8, 1)})'"
+                f":x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)'")
     if c == "punch":   # shock word: fast zoom-in that lands and holds
         return "z='min(1.18,1+0.03*on)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)'"
     if "pull" in c or "zoom out" in c or "dolly out" in c:

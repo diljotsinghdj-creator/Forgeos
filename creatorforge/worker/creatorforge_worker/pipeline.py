@@ -925,6 +925,8 @@ class Pipeline:
                 slot = slots[depth % 3] if (wide and depth) else ("center" if not n % 2 else ("left", "right")[n // 2 % 2])
                 frame = layout.compose(c.image, kind, idx, w, h, lay, layout.cutout(c.image, lay, model), cancel,
                                        under=under if wide and depth else None, slot=slot)
+                if c.camera != "punch":
+                    c.camera = "settle"
                 out.append((idx, frame))
                 under, depth = (frame, depth + 1) if depth < 2 else (None, 0)
             return out
