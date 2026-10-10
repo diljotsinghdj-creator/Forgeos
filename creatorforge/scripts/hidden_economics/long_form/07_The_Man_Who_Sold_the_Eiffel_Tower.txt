@@ -136,7 +136,7 @@ The venue was the Hôtel de Crillon.
 Visual: The grand stone facade of the Hôtel de Crillon in Paris
 Visual: The Place de la Concorde in Paris with old cars, 1920s
 Stock: paris hotel 1920s
-Map: Paris | the Hôtel de Crillon
+Globe: Paris | the Hôtel de Crillon
 
 One of the grandest addresses in Paris.
 Visual: A chandelier hanging in a grand gilded hotel salon
@@ -439,6 +439,7 @@ It's called the Ten Commandments for Con Men, and it's attributed to him.
 Visual: Ten numbered lines typed on yellowed paper, text unreadable
 Visual: A rubber stamp hovering over an ink pad
 Text: ATTRIBUTED, NOT PROVEN
+Timeline: 1935 Arrested in New York → 1947 Dies in custody | Lustig's last years
 
 No one has proved he wrote it. But the first rule fits.
 Visual: An old typewriter on a desk with a blank sheet loaded

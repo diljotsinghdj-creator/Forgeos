@@ -152,6 +152,7 @@ Then economists tested the same blind spot with money.
 Visual: An economist's desk with a calculator and printed tables, text unreadable
 Visual: Hands counting banknotes onto a kitchen table
 Text: Sunstein & Zeckhauser
+Timeline: 1978 Guessing causes of death → 1979 Guesses track newspapers → 2011 Fear priced in money | Testing the blind spot
 Cite: Sunstein & Zeckhauser, 2011
 
 They described a cancer risk vividly.
@@ -294,7 +295,7 @@ Visual: A map of England on a desk with red circles over scattered towns
 Visual: A fire engine parked on a terraced street
 Text: Home Office, 2022 to 2023
 Stock: firefighters house fire
-Map: England | house fires in England
+Globe: England | house fires in England
 Cite: Home Office, 2023
 
 Then it singled out homes with no working smoke alarm.

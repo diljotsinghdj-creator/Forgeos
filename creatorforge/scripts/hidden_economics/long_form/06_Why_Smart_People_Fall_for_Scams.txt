@@ -24,7 +24,7 @@ The man who took it was no back-street crook.
 Visual: A busy stock exchange trading floor in 2008
 Visual: A tailored suit jacket on a hanger in a Manhattan office
 Stock: wall street 2008
-Map: New York | Bernard Madoff, New York
+Globe: New York | Bernard Madoff, New York
 
 He had actually chaired the Nasdaq.
 Visual: A glass office tower lobby with marble floors
@@ -249,6 +249,7 @@ Visual: A tailored jacket on the back of an office chair, a briefcase below
 
 Think back to Madoff.
 Visual: An old photograph of a stock exchange trading floor in 2008
+Timeline: 2008 Foundation loses $15.2m → 2009 Sentenced to 150 years | Bernard Madoff
 
 Credentials like his can make checking feel unnecessary, even rude.
 Visual: A framed certificate on an office wall, writing unreadable
@@ -524,7 +525,7 @@ Cite: PSR, 2024
 In twenty twenty-five, banks reimbursed about sixty-one percent of push payment fraud losses.
 Visual: Ten coin stacks on graph paper, six of them ringed in pen
 Visual: A bank cashier's window with a hand passing an envelope through
-Chart: 61% | of push payment losses reimbursed, 2025
+Icons: 61% | coins | of push payment losses reimbursed, 2025
 Cite: UK Finance, 2026
 
 Then report it.
