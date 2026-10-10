@@ -939,8 +939,11 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
         if not prompt or aspect not in ASPECTS:
             raise HTTPException(422, "prompt and a valid aspect_ratio are required")
         (w, h), _ = ASPECTS[aspect]
+        style = str(body.get("style", "") or "")
+        if style in STYLE_PRESETS:   # style preview: the same picture in any look, with that look's model
+            prompt = f"{prompt}. {STYLE_PRESETS[style][1]}"
         try:
-            img = providers.build_image(cfg)
+            img = providers.build_image(cfg, style)
             with tempfile.TemporaryDirectory() as d:
                 out = Path(d) / "image.png"
                 img.generate(prompt, "", w, h, int(body.get("seed", 0)) or int(hashlib.sha256(prompt.encode()).hexdigest()[:8], 16), out)
