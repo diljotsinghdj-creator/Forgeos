@@ -27,16 +27,21 @@ Visual: The Houses of Parliament in London seen across the river
 Visual: A thick printed act of parliament on a desk, text unreadable
 Text: UK · DMCC ACT · FROM 6 APRIL 2025
 Stock: houses of parliament london
+Map: United Kingdom | drip pricing rules, April 2025
+Cite: DMCC Act 2024
 
 The first fine, in twenty twenty-six, was over a three-pound booking fee.
 Visual: A single coin under a magnifying glass on a booking form, text unreadable
 Visual: Three one-pound coins on a printed booking confirmation, text unreadable
 Text: FIRST FINE · A £3 FEE SHOWN LATE
 Draw: circle
+Place: UK · 2026
+Cite: CMA, April 2026
 
 Four point two million pounds.
 Visual: Bundles of banknotes stacked on a desk beside a judge's gavel
 Chart: £4.2m | CMA fine · April 2026
+Cite: CMA, April 2026
 
 Untick what you did not choose. Compare totals, not headline prices.
 Visual: A thumb unticking a box on a smartphone, text unreadable

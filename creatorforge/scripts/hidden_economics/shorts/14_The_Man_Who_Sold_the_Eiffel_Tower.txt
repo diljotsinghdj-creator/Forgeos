@@ -9,17 +9,20 @@ Visual: The Eiffel Tower seen from a 1920s Paris street
 Visual: A 1920s bill of sale lying on a wooden desk, text unreadable
 Text: PARIS, 1925
 Draw: circle
+Map: Paris | 1925
 
 Con man Victor Lustig posed as a fake government official.
 Visual: A man in a 1920s overcoat and hat seen from behind
 Visual: A forged government letter with a red wax seal, text unreadable
 Text: A FAKE OFFICIAL
+Place: PARIS · 1925
 
 He told scrap dealers the city wanted the tower torn down.
 Visual: A 1920s Paris scrapyard piled with old iron girders
 Visual: Rusted iron girders and rivets piled on cobblestones
 Chart: 7,300 tonnes | of iron, offered as scrap
 Stock: eiffel tower 1920s
+Cite: Tour Eiffel
 
 So why would anyone believe him?
 Visual: A magnifying glass over an official rubber stamp on paper, ink unreadable

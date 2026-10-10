@@ -9,10 +9,12 @@ Visual: A 1920s Boston street with streetcars and men in hats, seen from afar
 Visual: A small paper postal reply coupon beside a stack of old banknotes
 Text: BOSTON, 1920
 Bubble: Fifty percent in forty-five days!
+Place: BOSTON · 1920
 
 Hand him a hundred dollars, get one fifty back.
 Visual: Old dollar banknotes paper-clipped to a handwritten note on a desk, text unreadable
 Chart: $100 → $150 | promised in 45 days (illustration)
+Cite: Smithsonian National Postal Museum
 
 His secret, he claimed, was postal coupons bought cheaply in Europe.
 Visual: An old postal reply coupon lying on a wooden counter
@@ -32,6 +34,7 @@ Roughly fifteen million dollars poured in within about eight months.
 Visual: Piles of old banknotes and letters overflowing a wooden office desk
 Visual: Sacks of mail piled on the wooden floor of a 1920s office
 Chart: $15,000,000 | taken in over about 8 months
+Cite: Smithsonian National Postal Museum
 
 Then reporters started asking questions, and the payouts stopped.
 Visual: A 1920s newsroom with typewriters on wooden desks, nobody close
@@ -43,6 +46,7 @@ By August nineteen twenty, Ponzi was under arrest.
 Visual: A crowd seen from behind outside a closed office on a 1920s street
 Visual: Old metal handcuffs lying on a wooden desk beside a ledger
 Stock: 1920s boston street
+Map: Boston | Ponzi arrested, August 1920
 
 Fifty percent in forty-five days was never profit. Just someone else's deposit.
 Visual: A single postal coupon alone on an empty wooden desk

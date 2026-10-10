@@ -28,11 +28,13 @@ Text: CLUMSY OR COMMON?
 In twenty twenty-four, regulators reviewed six hundred and forty-two subscription sites and apps.
 Visual: Rows of smartphones and laptops on a long office table, screens unreadable
 Chart: 642 | subscription sites & apps · 2024 review
+Cite: FTC, ICPEN & GPEN, July 2024
 
 Three in four used a possible dark pattern. Two in three, several.
 Visual: Four phones laid on a desk, three of them circled in red pen
 Visual: Printed app screenshots on a desk with parts circled in red, text unreadable
 Chart: 76% vs 67% | at least one, two or more
+Cite: FTC, ICPEN & GPEN, July 2024
 
 Possible, not proven illegal. So where is the line?
 Visual: A judge's wooden gavel resting on a closed law book

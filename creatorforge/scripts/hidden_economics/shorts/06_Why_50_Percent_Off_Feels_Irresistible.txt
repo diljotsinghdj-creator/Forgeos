@@ -26,17 +26,20 @@ Visual: A hand spinning a wooden wheel of fortune on a table
 Visual: A paper globe on a desk turned to show Africa
 Text: TVERSKY & KAHNEMAN · 1974
 Stock: wheel of fortune spinning
+Cite: Tversky & Kahneman, Science, 1974
 
 Wheel on ten, the typical guess was twenty-five percent. On sixty-five, forty-five.
 Visual: Two piles of paper slips on a desk, one twice as tall
 Visual: A wheel of fortune with its pointer stopped near the top
 Chart: 25% vs 45% | wheel stopped on 10, wheel stopped on 65
+Cite: Tversky & Kahneman, Science, 1974
 
 A meaningless number dragged their judgement. That's anchoring.
 Visual: A crumpled scrap of paper with a number on it, on a desk
 Visual: A small iron boat anchor resting on a wooden desk
 Text: ANCHORING
 Draw: arrow
+Cite: Tversky & Kahneman, Science, 1974
 
 So who chose the jacket's first number? The seller.
 Visual: A clothing rail with paper price tags dangling, nobody in frame

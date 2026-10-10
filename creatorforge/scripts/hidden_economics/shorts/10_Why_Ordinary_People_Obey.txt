@@ -9,12 +9,15 @@ Visual: A long row of old switches on a grey wooden panel
 Visual: A fingertip resting on the last switch of an old panel
 Text: YALE UNIVERSITY, 1961–63
 Draw: arrow
+Place: YALE · 1961
+Cite: Milgram, 1963
 
 In the first Yale study, twenty-six of forty men reached the final switch.
 Visual: Yale University's old stone buildings seen across a lawn
 Visual: A 1960s laboratory room with a desk and a metal control panel
 Chart: 65% | 26 of 40 men reached 450 volts
 Stock: 1960s laboratory
+Cite: Milgram, 1963
 
 The man in the next room pounded on the wall, then went silent.
 Visual: A closed wooden door in a bare corridor
@@ -35,6 +38,7 @@ The twist? The learner was an actor. No shock was real.
 Visual: An empty wooden chair with loose wires in a bare room
 Visual: An unplugged cable lying coiled on the floor beside a panel
 Text: AN ACTOR · NO REAL SHOCKS
+Cite: Milgram, 1963
 
 Scammers borrow that authority, posing as banks or police.
 Visual: A smartphone ringing on a dark table, caller screen unreadable

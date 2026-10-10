@@ -30,11 +30,13 @@ Visual: An old paper map of Britain spread across a wooden desk
 Visual: A busy British high street with shoppers seen from far away
 Text: WHAT DOES IT COST THE UK?
 Stock: busy high street
+Place: UNITED KINGDOM
 
 The UK government puts unwanted subscriptions at one point six billion pounds a year.
 Visual: The Houses of Parliament in London seen across the river
 Visual: Bundles of banknotes tied with string stacked high on a desk
 Chart: £1.6bn | unwanted subscriptions a year · UK est.
+Cite: UK government estimate, 2026
 
 Find payments that repeat, month after month.
 Visual: A printed bank statement on a desk beside a red pen, text unreadable

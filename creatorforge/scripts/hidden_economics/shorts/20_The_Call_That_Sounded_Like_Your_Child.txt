@@ -15,11 +15,13 @@ Visual: Hands holding a phone playing a short video, screen blurred
 Visual: A laptop showing an audio editing waveform, text unreadable
 Text: A SHORT CLIP IS ENOUGH
 Stock: person filming phone video
+Cite: FTC, March 2023
 
 How short? McAfee's tests got an eighty-five percent match from three seconds.
 Visual: A stopwatch on a desk, its hand just past three seconds
 Visual: A laptop screen showing two matching sound waves, text unreadable
 Chart: 85% | voice match from 3 seconds of audio
+Cite: McAfee, May 2023
 
 The panic is real. So what can you trust?
 Visual: A hand gripping a phone tightly, screen dark
@@ -31,6 +33,8 @@ The FTC's advice is blunt. Don't trust the voice.
 Visual: A printed consumer warning on a desk, one line circled in red, text unreadable
 Visual: A phone on speaker lying on a kitchen table
 Text: DON'T TRUST THE VOICE
+Quote: Don't trust the voice. | FTC consumer alert, 2023
+Cite: FTC, March 2023
 
 Instead, hang up and call her on the number you already know.
 Visual: A thumb pressing the red end-call button on a phone

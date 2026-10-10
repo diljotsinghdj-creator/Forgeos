@@ -15,11 +15,13 @@ Visual: A test answer sheet covered in red pen crosses, marks unreadable
 Visual: A silent phone lying on the corner of an exam desk
 Text: ALERT ALONE = MORE ERRORS
 Stock: students taking exam
+Cite: Stothart et al., JEP, 2015
 
 Nobody even touched the phone. So what happens when you do?
 Visual: A phone lying face down on a desk beside a pencil
 Visual: A finger tapping a notification on a smartphone screen, text unreadable
 Draw: arrow
+Cite: Stothart et al., JEP, 2015
 
 You tap for one thing. The app shows you ten more.
 Visual: A smartphone showing a social media app on a desk, images blurred

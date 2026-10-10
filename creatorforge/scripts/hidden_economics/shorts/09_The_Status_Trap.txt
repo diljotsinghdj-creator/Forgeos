@@ -30,6 +30,7 @@ Visual: An old leather-bound book open under a desk lamp
 Visual: A Victorian street crowd in top hats seen from far away
 Text: THORSTEIN VEBLEN · 1899
 Stock: victorian street crowd
+Cite: Veblen, Theory of the Leisure Class, 1899
 
 Conspicuous consumption. Spending in order to be seen spending.
 Visual: People seen from behind walking past bright shop windows at evening
@@ -37,6 +38,7 @@ Visual: A shopper seen from behind carrying several designer shopping bags
 Text: CONSPICUOUS CONSUMPTION
 Stock: shop windows evening street
 Thought: Everyone will notice these bags
+Cite: Veblen, Theory of the Leisure Class, 1899
 
 Strip the logo off in your head. Still want it? Buy it.
 Visual: A plain unbranded watch box on a desk with its lid open

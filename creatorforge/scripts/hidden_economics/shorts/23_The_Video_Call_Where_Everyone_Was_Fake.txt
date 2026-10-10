@@ -8,11 +8,13 @@ Every face was fake. The money was real.
 Visual: A laptop on a dark desk showing a grid of video-call tiles, faces blurred
 Visual: A pile of banknotes on a desk beside a laptop
 Text: ILLUSTRATION · HONG KONG, 2024
+Place: HONG KONG · 2024
 
 Hong Kong, twenty twenty-four. An Arup finance worker gets a message.
 Visual: The Hong Kong skyline at night
 Visual: An office worker seen from behind reading an email on a laptop, text unreadable
 Stock: hong kong skyline night
+Map: Hong Kong | where the call came
 
 It claims to be the finance chief, wanting a secret transaction.
 Visual: An email open on a laptop screen, text unreadable
@@ -34,12 +36,14 @@ The worker made fifteen transfers, about two hundred million Hong Kong dollars.
 Visual: Fifteen bank transfer slips in a row on a desk, numbers unreadable
 Visual: A thick stack of Hong Kong dollar banknotes on a desk
 Chart: 0 → 200 | HK$ million in 15 transfers (~US$25m)
+Cite: CNN, May 2024
 
 Every other person on that call was a deepfake.
 Visual: A laptop video call grid with every tile blurred
 Visual: A computer screen showing face-editing software, faces blurred, text unreadable
 Text: ARUP CONFIRMED IT, MAY 2024
 Draw: cross
+Cite: CNN, May 2024
 
 The fix? Check any money request on a separate channel.
 Visual: A hand holding a desk phone receiver beside a closed laptop

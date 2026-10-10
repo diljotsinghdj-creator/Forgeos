@@ -13,17 +13,20 @@ Researchers wired up people in seventeen countries and played them news.
 Visual: A world map on a desk with red pins in many countries
 Visual: A fingertip with a small medical sensor clip attached
 Chart: 17 | countries · same news clips
+Cite: Soroka et al., PNAS, 2019
 
 Their bodies told the real story. Bad news hit harder than good.
 Visual: A finger pulse monitor clipped to a hand resting on a table
 Visual: A paper heart-rate printout with tall spikes on a desk
 Text: BAD NEWS · STRONGER BODY RESPONSE
 Draw: circle
+Cite: Soroka et al., PNAS, 2019
 
 Yet many people showed no such bias at all.
 Visual: A row of people seen from behind watching a TV screen
 Visual: A person seen from behind calmly reading a newspaper on a bench
 Text: NOT EVERYONE REACTED
+Cite: Soroka et al., PNAS, 2019
 
 So why does bad news still feel everywhere?
 Visual: A street newsstand crowded with papers, headlines blurred
@@ -35,6 +38,7 @@ Vivid stories come to mind easily, so they only feel common.
 Visual: A wall covered in pinned newspaper clippings, text unreadable
 Visual: A living-room TV showing a fire on the news, seen from behind a sofa
 Text: EASY TO RECALL ≠ COMMON
+Cite: Tversky & Kahneman, 1973
 
 A true story can still say nothing about odds.
 Visual: A single die resting on a folded newspaper under a desk lamp

@@ -9,10 +9,13 @@ Visual: A huge crooked wooden sign on a suburban front lawn
 Visual: A homeowner seen from behind standing at a front door
 Text: STANFORD RESEARCHERS, 1966
 Bubble: No thanks. Not on my lawn.
+Place: STANFORD · 1966
+Cite: Freedman & Fraser, 1966
 
 Asked cold, only about seventeen percent agreed.
 Visual: A row of 1960s suburban houses with neat front lawns
 Chart: 17% | agreed when asked cold
+Cite: Freedman & Fraser, 1966
 
 Then one tiny favour, weeks earlier, changed the answer.
 Visual: A small square card propped in a house window, text unreadable
@@ -30,12 +33,14 @@ Weeks later, about seventy-six percent said yes to the giant one.
 Visual: A suburban street with large wooden signs on most front lawns
 Visual: A hand hammering a big sign's post into a front lawn
 Chart: 76% vs 17% | small yes first, asked cold
+Cite: Freedman & Fraser, 1966
 
 Why? Saying yes once changes how you see yourself.
 Visual: A hand signing a small card on a kitchen table
 Visual: A hand writing a name on a volunteer sign-up sheet, text unreadable
 Text: "I'M SOMEONE WHO HELPS"
 Draw: underline
+Cite: Freedman & Fraser, 1966
 
 Sales funnels often start the same way, with a free quiz or tiny trial.
 Visual: A phone on a desk showing a quiz screen, text unreadable

@@ -23,11 +23,13 @@ Lloyds Bank says seven words give the whole scam away.
 Visual: A bank branch front on a British high street
 Visual: Seven torn paper strips in a row on a desk, words blurred
 Chart: 7 | words that give it away
+Cite: Lloyds Bank, Aug 2026
 
 Move your money to a safe account.
 Visual: A hand holding a phone showing a payment screen, text unreadable
 Visual: An empty metal cash box with its lid open
 Text: MOVE YOUR MONEY TO A SAFE ACCOUNT
+Cite: Lloyds Bank, Aug 2026
 
 Real banks never ask that. The account is the scammer's.
 Visual: A bank cashier's counter seen from the customer side
@@ -40,6 +42,7 @@ Visual: A bank's stone front steps on a grey street
 Visual: A stack of twenty-pound banknotes on a kitchen table
 Chart: £3,200 → £3,516 | average impersonation loss · Lloyds
 Stock: bank building exterior
+Cite: Lloyds Bank, Aug 2026
 
 Hang up. Call a number you look up yourself.
 Visual: A hand setting a phone face down beside a bank card

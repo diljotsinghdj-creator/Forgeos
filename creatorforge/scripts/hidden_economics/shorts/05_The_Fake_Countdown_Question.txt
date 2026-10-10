@@ -29,16 +29,20 @@ Visual: Princeton University's stone buildings and lawn seen from a distance
 Visual: Rows of printed web pages pinned to a corkboard, text unreadable
 Text: PRINCETON · 2019 · ~11,000 SITES
 Stock: princeton university campus
+Place: PRINCETON · 2019
+Cite: Mathur et al., Princeton, 2019
 
 They found three hundred and ninety-three countdown timers.
 Visual: Dozens of small kitchen timers laid in a grid on a desk
 Chart: 393 | countdown timers · 361 sites
+Cite: Mathur et al., Princeton, 2019
 
 On some, the offer stayed valid after the timer ran out.
 Visual: A phone with its countdown at zero beside an egg timer, text unreadable
 Visual: A thumb pressing a buy button on a smartphone, text unreadable
 Text: TIMER ENDED · OFFER DIDN'T
 Draw: underline
+Cite: Mathur et al., Princeton, 2019
 
 So how do you tell? Let it run out, or return tomorrow.
 Visual: A person seen from behind looking at a phone on a sofa
