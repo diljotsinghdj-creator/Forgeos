@@ -10,6 +10,12 @@ CreatorForge -> Generate -> Script. CreatorForge reads it like this:
   Text: ............. exact words/numbers shown on screen while that line is spoken
   Stock: ............ asks Pixabay/NASA/Wikimedia/Internet Archive/Unsplash for real footage for that line
 
+MIXED-MEDIA VERSION
+  long_form/03_..._MIXED_MEDIA.txt is the same narration with collage-style pictures and 20 Stock: searches for
+  real footage at the research and history moments. Use Visual style "Mixed-media collage", and save a free
+  Pixabay key in Settings so most Stock: lines find real clips (NASA, Wikimedia, Internet Archive are tried too).
+  Real clips play as real footage; AI shots look like collage. Lines with no matching clip use the collage picture.
+
 SETTINGS
   Shorts (24):     9:16 Shorts, template Cinematic Short, Faceless, Fast cuts, voice pace 1.1x
   Long form (6):   16:9 YouTube, template YouTube Documentary, Faceless, Fast cuts, voice pace 1.0x
