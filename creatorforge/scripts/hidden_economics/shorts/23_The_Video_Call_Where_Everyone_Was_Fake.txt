@@ -14,7 +14,7 @@ Hong Kong, twenty twenty-four. An Arup finance worker gets a message.
 Visual: The Hong Kong skyline at night
 Visual: A finance office with rows of desks and filing cabinets, nobody close
 Stock: hong kong skyline night
-Map: Hong Kong | where the call came
+Globe: Hong Kong | where the call came
 
 It claims to be the finance chief, wanting a secret transaction.
 Visual: A nameplate on a large executive desk, text unreadable

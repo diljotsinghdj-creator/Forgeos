@@ -9,7 +9,7 @@ Visual: The Eiffel Tower seen from a 1920s Paris street
 Visual: A 1920s bill of sale lying on a wooden desk, text unreadable
 Text: PARIS, 1925
 Draw: circle
-Map: Paris | 1925
+Globe: Paris | 1925
 
 Con man Victor Lustig posed as a fake government official.
 Visual: A man in a 1920s overcoat and hat seen from behind

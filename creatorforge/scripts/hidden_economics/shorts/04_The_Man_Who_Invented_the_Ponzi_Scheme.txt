@@ -46,7 +46,7 @@ By August nineteen twenty, Ponzi was under arrest.
 Visual: A 1920s police car parked outside a brick building, seen from afar
 Visual: Old metal handcuffs lying on a wooden desk beside a ledger
 Stock: 1920s boston street
-Map: Boston | Ponzi arrested, August 1920
+Globe: Boston | Ponzi arrested, August 1920
 
 Fifty percent in forty-five days was never profit. Just someone else's deposit.
 Visual: A single postal coupon alone on an empty wooden desk

@@ -15,7 +15,7 @@ Cite: Milgram, 1963
 In the first Yale study, twenty-six of forty men reached the final switch.
 Visual: Yale University's old stone buildings seen across a lawn
 Visual: A 1960s laboratory room with a desk and a tape recorder
-Chart: 65% | 26 of 40 men reached 450 volts
+Icons: 26 of 40 | people | reached 450 volts
 Stock: 1960s laboratory
 Cite: Milgram, 1963
 

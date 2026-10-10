@@ -27,7 +27,7 @@ Visual: The Houses of Parliament in London seen across the river
 Visual: A thick printed act of parliament on a desk, text unreadable
 Text: UK · DMCC ACT · FROM 6 APRIL 2025
 Stock: houses of parliament london
-Map: United Kingdom | drip pricing rules, April 2025
+Globe: United Kingdom | drip pricing rules, April 2025
 Cite: DMCC Act 2024
 
 The first fine, in twenty twenty-six, was over a three-pound booking fee.
