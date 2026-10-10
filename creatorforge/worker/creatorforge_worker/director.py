@@ -138,7 +138,7 @@ class ProductionSpec:
         spec.roles = [list(r)[:2] for r in (d.get("roles") or meta.get("roles") or []) if len(r) >= 2][:60]
         shots = [[clean_script(str(x[0]))] + [str(v).strip() for v in (list(x[1:5]) + ["", "", "", ""])[:4]]
                  for x in (d.get("shots") or meta.get("shots") or []) if isinstance(x, (list, tuple)) and x]
-        shots = [x for x in shots if x[0]][:240]
+        shots = [x for x in shots if x[0]][:400]
         if shots and sum(len(x[0].split()) for x in shots) == len(spec.script.split()) + len(shots[0][0].split()):
             shots = shots[1:]       # the first line was a title the script dropped
         spec.shots = shots
@@ -622,8 +622,34 @@ def _join_continuation(per: dict, target: int, key: str, more: str) -> bool:
         return False
     d = per.setdefault(target, {})
     limit = {"visual": 200, "text": 60, "chart": 80, "stock": 60}[k]
-    d[k] = f"{d.get(k, '')} {more}".strip()[:limit]
+    if k == "visual" and d.get("more"):
+        d["more"][-1] = f"{d['more'][-1]} {more}".strip()[:limit]
+    else:
+        d[k] = f"{d.get(k, '')} {more}".strip()[:limit]
     return True
+
+
+def _line_shots(line: str, d: dict) -> list[list[str]]:
+    """One spoken line as shots: [words, visual, text, stock, chart]. Several Visual: lines under one line split it
+    into that many pictures, cut at the most natural word break (after a comma or full stop) near an even share -
+    the narration is untouched, only the picture changes mid-line. Text/Stock/Chart belong to the first picture."""
+    visuals = [d.get("visual", "")] + list(d.get("more") or [])
+    words = line.split()
+    n = max(1, min(len(visuals), len(words) // 3))       # every picture gets at least ~3 words of screen time
+    if n == 1:
+        return [[line, visuals[0], d.get("text", ""), d.get("stock", ""), d.get("chart", "")]]
+    cuts, start = [], 0
+    for k in range(1, n):
+        target = round(len(words) * k / n)
+        lo, hi = max(start + 2, target - 2), min(len(words) - 2 * (n - k), target + 2)
+        options = [c for c in range(lo, hi + 1) if words[c - 1][-1:] in ",.;:?!—-"] or [min(max(target, lo), hi)]
+        cut = min(options, key=lambda c: abs(c - target))
+        cuts.append(cut)
+        start = cut
+    bounds = [0] + cuts + [len(words)]
+    return [[" ".join(words[a:b]), visuals[k],
+             d.get("text", "") if k == 0 else "", d.get("stock", "") if k == 0 else "", d.get("chart", "") if k == 0 else ""]
+            for k, (a, b) in enumerate(zip(bounds, bounds[1:]))]
 
 
 def parse_script(raw: str) -> tuple[str, dict]:
@@ -681,8 +707,12 @@ def parse_script(raw: str) -> tuple[str, dict]:
             if k in ("on-screen hook", "hook text", "cover", "thumbnail"):
                 meta.setdefault("hook_text" if "hook" in k else "cover", re.sub(r"#\w+", "", v).strip(" .")[:80])
             elif k in ("visuals", "visual", "b-roll", "broll"):
-                if target >= 0 and v and "visual" not in per.setdefault(target, {}):
-                    per[target]["visual"] = v[:200]
+                if target >= 0 and v:
+                    d = per.setdefault(target, {})
+                    if "visual" not in d:
+                        d["visual"] = v[:200]
+                    else:                    # a second/third Visual: under the same line - cut to it mid-line
+                        d.setdefault("more", []).append(v[:200])
                 looks.append(v)
             elif k in ("text", "on-screen text", "text on-screen", "on-screen"):
                 if target >= 0 and v:
@@ -704,9 +734,7 @@ def parse_script(raw: str) -> tuple[str, dict]:
     # A "Visual:" under (or beside) most spoken lines is a shot list: each picture belongs to its own line. One or
     # two visual lines describe the look of the whole video instead.
     if sum(1 for d in per.values() if d.get("visual")) >= 3:
-        meta["shots"] = [[line, per.get(i, {}).get("visual", ""), per.get(i, {}).get("text", ""),
-                          per.get(i, {}).get("stock", ""), per.get(i, {}).get("chart", "")]
-                         for i, line in enumerate(spoken)][:240]
+        meta["shots"] = [shot for i, line in enumerate(spoken) for shot in _line_shots(line, per.get(i, {}))][:400]
     elif looks:
         meta["visual_direction"] = " ".join(looks).strip()[:400]
     return "\n".join(spoken), meta

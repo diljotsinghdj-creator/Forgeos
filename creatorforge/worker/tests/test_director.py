@@ -131,6 +131,21 @@ def test_lines_wrapped_by_a_phone_stay_with_their_direction():
     assert shots[3][2] == "CHECK TONIGHT"
 
 
+def test_several_visual_lines_cut_one_spoken_line_into_several_pictures():
+    from creatorforge_worker import director as d
+    raw = ("The Subscription Trap\nTitle: The trap test\n\nYou quit in January. It still charged you.\n"
+           "Visual: A calendar page for January\nVisual: A phone face down on a kitchen table\nText: JAN\n\n"
+           "Twelve pounds a month, every month, for six long months in a row.\nVisual: A one pound coin\n"
+           "Visual: A stack of coins\nVisual: A torn calendar\n\nCheck your statement tonight.\nVisual: A bank statement\n")
+    spec = d.ProductionSpec.from_dict({"script": raw, "duration_s": 20})
+    assert spec.script.split("\n")[0] == "You quit in January. It still charged you."   # narration untouched
+    beats = [b for s in d.direct_script(None, spec).scenes for b in (s.beats or [{"text": s.narration, "visual": s.visual}])]
+    assert [b["text"] for b in beats][:3] == ["You quit in January.", "It still charged you.", "Twelve pounds a month,"]
+    assert [b["visual"] for b in beats][:5] == ["A calendar page for January", "A phone face down on a kitchen table",
+                                               "A one pound coin", "A stack of coins", "A torn calendar"]
+    assert beats[0]["overlay"] == "JAN" and beats[1]["overlay"] == ""          # text stays with the first picture
+
+
 def test_writer_text_and_stock_lines_belong_to_their_spoken_line():
     from creatorforge_worker import director as d
     raw = ("Six months becomes seventy-two pounds.\nVisual: Calendar pages flipping\nText: £12 × 6 = £72\n"
