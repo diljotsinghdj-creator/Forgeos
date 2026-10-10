@@ -5,36 +5,33 @@ Tags: #HiddenEconomics #psychology #news #negativitybias #behaviouraleconomics
 Source: Soroka, Fournier & Nir (2019) PNAS, Cross-national evidence of a negativity bias in psychophysiological reactions to news, https://doi.org/10.1073/pnas.1908369116; Tversky & Kahneman (1973) Availability heuristic, Cognitive Psychology, https://doi.org/10.1016/0010-0285(73)90033-9
 
 A hundred calm days. One scary headline. Which do you remember?
-Visual: A hundred neatly folded newspapers in rows on a dark floor, one smouldering at the corner, headlines blurred
-Text: 100 DAYS VS 1 HEADLINE
+Visual: A hundred folded newspapers laid in neat rows across a desk like gravestones, one smouldering at the corner, headlines blurred
+Text: WHICH ONE STICKS?
 
 Researchers wired up people in seventeen countries and played them news.
-Visual: Close-up of fingertip sensors with thin wires resting beside a laptop, dim blue light
-Text: 17 COUNTRIES
+Visual: A world map taped to a desk, red pins in scattered countries joined by red string to a pair of fingertip sensors
+Chart: 17 | countries · same news clips
 
 Bad stories triggered stronger body responses than good ones.
-Visual: Extreme close-up of a fingertip with a small sensor clip, faint glow on the skin
+Visual: A paper pulse readout taped beside a newspaper clipping, its line spiking in tall red peaks
 Text: NEGATIVE NEWS = STRONGER REACTION
 
-Your body reacts before you have judged the threat.
-Visual: Silhouette of a person leaning towards a glowing laptop in a dark room
-Stock: person reading news laptop night
-
 Yet many people showed no such bias at all.
-Visual: Rows of empty chairs in a dim lecture room, one chair lit
+Visual: A row of identical paper silhouettes pinned to a corkboard, one circled in red pen
 Text: NOT EVERYONE REACTED
 
 So why does bad news still feel everywhere?
-Visual: Two identical glasses of water on a table, one lit brightly, one in shadow
+Visual: A street newsstand crowded with papers, every front page dark, headlines blurred
+Stock: newspaper stand street
 
 Vivid stories come to mind easily, so they feel common.
-Visual: A wall covered in pinned newspaper clippings, camera slowly pushing in, text unreadable
+Visual: A wall covered in pinned newspaper clippings, red string criss-crossing between them, text unreadable
 Text: EASY TO RECALL ≠ COMMON
 
 A true story can still say nothing about odds.
-Visual: Macro shot of a single die resting on a newspaper, warm desk-lamp light
+Visual: A single die resting on a folded newspaper under a desk lamp
 Text: TRUE STORY ≠ PROBABILITY
 
 So next time, ask one thing. Out of how many days?
-Visual: A tally of a hundred small coins in rows with one coin painted red
-Text: OUT OF HOW MANY?
+Visual: A hundred small coins in rows on paper, one coin painted red
+Chart: 100 vs 1 | calm days, scary headline

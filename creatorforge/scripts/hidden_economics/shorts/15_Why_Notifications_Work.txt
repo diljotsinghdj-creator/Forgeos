@@ -2,37 +2,34 @@ Why Notifications Work
 On-screen hook: 1 BUZZ, 20 MINUTES?
 Title: 1 Buzz, 20 Minutes Gone: Why Notifications Work on You
 Tags: #HiddenEconomics #notifications #attention #focus #digitalwellbeing
+Source: Stothart, Mitchum & Yehnert (2015), The attentional cost of receiving a cell phone notification, Journal of Experimental Psychology - Human Perception and Performance 41(4), https://doi.org/10.1037/xhp0000100
 
 One buzz. One tap. Twenty minutes gone. Who decided that?
-Visual: A phone vibrating on a pitch-black table, ripples spreading across a glass of water beside it, screen glow only
+Visual: A phone buzzing on a black table, ripples spreading across a glass of water beside it, a paper clock face sinking slowly into the water
 Text: 1 BUZZ = 20 MIN? · ILLUSTRATION
 
-Each buzz is small. That's exactly why it works.
-Visual: Macro of a phone vibrating against a wooden table, slight blur
-Stock: phone vibrating table
+In one study, people who simply received an alert made more mistakes.
+Visual: A test answer sheet covered in red crosses, a silent phone lying across one corner, marks unreadable
+Text: ALERT ALONE = MORE ERRORS
+Stock: students taking exam
 
-Some alerts matter. Family, the bank.
-Visual: Hand picking up the phone, warm kitchen light, screen blurred
-
-Others just want you back in the app. Why?
-Visual: Close-up of a small red dot on a generic app icon, text unreadable
-Text: COME BACK
+Nobody even touched the phone. So what happens when you do?
+Visual: A phone face down on a desk, red string running from it to a pencil frozen above the page
 
 You tap for one thing. The app shows you ten more.
-Visual: Thumb tapping a notification, then a blurred feed flooding the screen
-Text: 1 TAP → 10 MORE · ILLUSTRATION
+Visual: One cut-out phone on paper with ten small cut-out posts fanning out from its screen, images blurred
+Chart: 1 → 10 | posts from one tap · illustration
 
 Is it the alerts, or is it you? One test tells you.
-Visual: Wide shot of a person from behind on a sofa, lit only by a phone
+Visual: Silhouette cut-out of a person on a sofa, the phone glow drawn around them in yellow highlighter
 
 Silence every alert that isn't from a person, for one week.
-Visual: Phone showing a generic list of toggles, a thumb switching several off, text unreadable
+Visual: A phone showing a generic list of toggles, a thumb switching several off, text unreadable
 Text: FICTIONAL INTERFACE · 7 DAYS
-Stock: phone notification settings
 
 Then count how many silenced apps you actually missed.
-Visual: Paper calendar with seven days crossed off in pencil
+Visual: A paper calendar taped to a desk, seven days crossed off in pencil
 Text: HOW MANY DID YOU MISS?
 
 One buzz shouldn't cost twenty minutes. Now it doesn't have to.
-Visual: Phone face down on a quiet desk in morning light, a still glass of water beside it
+Visual: The phone face down on a quiet desk in morning light, the glass of water beside it perfectly still

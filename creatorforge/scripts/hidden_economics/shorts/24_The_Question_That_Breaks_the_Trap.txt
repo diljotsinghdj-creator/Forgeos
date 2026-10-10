@@ -3,33 +3,33 @@ On-screen hook: 1 QUESTION. 3 TRAPS.
 Title: 1 Question Beats 3 Traps: Who Benefits If I Act Now?
 Tags: #HiddenEconomics #psychology #scams #personalfinance #decisionmaking
 
-A ticking timer, a midnight buzz, a panicked caller. One question beats all three.
-Visual: A single lit match held over a ticking kitchen timer in a pitch-black room, three phones glowing faintly around it
+Three things want you to act before you think. One question stops all three.
+Visual: A single lit match held over a ticking kitchen timer on a dark desk, three phones glowing in a circle around it
 Text: 1 QUESTION. 3 TRAPS.
 
 Who benefits if I act right now?
-Visual: Close-up of a hand pausing above a phone screen, screen details unreadable
+Visual: A hand hovering above a phone on a desk, a red question mark drawn on the paper beneath it
 Text: WHO BENEFITS IF I ACT NOW?
 
-The flash sale with a timer? The seller, because a rush leaves no time to compare.
-Visual: A phone screen showing a generic shop page with a red countdown bar, text unreadable
-Text: FICTIONAL SALE
+The flash sale timer? The seller. A rush leaves no time to compare.
+Visual: A torn shop flyer with a red countdown bar pinned to a corkboard, text unreadable
+Chart: 10 → 0 | minutes left · fictional sale
 
-The midnight buzz? The app, because your attention is what it sells.
-Visual: Silhouette of a person in bed scrolling a glowing phone, room dark
+The midnight buzz? The app. Your attention is what it sells.
+Visual: A phone glowing on a pillow in a dark bedroom, screen blurred
 Stock: person scrolling phone in bed
 
 And the caller saying your account is at risk?
-Visual: Phone held to an ear in silhouette by a dark window
+Visual: A silhouette cut-out holding a phone to its ear, taped beside a dark window
 
-The only person who needs you to skip checking is the scammer.
-Visual: A shadowed figure from behind standing in a dim doorway
+Only a scammer needs you to skip checking.
+Visual: A shadowed figure cut-out standing in a paper doorway, a red circle drawn around it
 Text: WHO NEEDS YOU NOT TO CHECK?
 
 The question proves no one guilty. It reveals the incentive.
-Visual: Macro shot of a magnifying glass over a set of coins, warm lamp light
+Visual: A magnifying glass over a scattering of coins and receipts on a desk, figures unreadable
 Text: IT REVEALS THE INCENTIVE
 
 Who benefits if I act right now? Ask it every time.
-Visual: Hands resting calmly beside a face-down phone on a wooden table, daylight
+Visual: The match blown out, a thin curl of smoke over the stopped timer, the three phones face down
 Text: PAUSE. VERIFY. CHOOSE.

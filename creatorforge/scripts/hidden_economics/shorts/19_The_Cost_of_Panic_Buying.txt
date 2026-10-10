@@ -5,35 +5,36 @@ Tags: #HiddenEconomics #consumerrights #personalfinance #money #ukmoney
 Source: Consumer Contracts (Information, Cancellation and Additional Charges) Regulations 2013, cancellation period, https://www.legislation.gov.uk/uksi/2013/3134/contents; Citizens Advice, Cancelling something you bought online, https://www.citizensadvice.org.uk/consumer/changed-your-mind/
 
 You bought boiler cover in four minutes. You read none of it.
-Visual: A frost-covered boiler in a pitch-black cupboard, a phone glowing alone on top of it, screen blurred
-Text: 4 MINUTES · 0 PAGES READ
+Visual: A frost-covered boiler cut-out taped to dark paper, a phone glowing on top of it, an unopened contract frozen solid in a block of ice beside it
+Text: 0 PAGES READ
 
 In this fictional advert, your boiler could fail. Offer ends midnight.
-Visual: Close-up of a phone screen showing a generic red warning banner, text unreadable
+Visual: A torn paper advert with a red warning banner pinned to a desk, text unreadable
 Text: FICTIONAL ADVERT · ENDS MIDNIGHT
 
 You picture a freezing house, and you tap buy.
-Visual: Extreme close-up of a thumb pressing a glowing button, text unreadable
-Stock: finger tapping phone screen
+Visual: Frost creeping across the inside of a window at night
+Stock: frosty window winter
 
 But what did that deadline actually stop you doing?
-Visual: A wall clock reading just before midnight in a dark kitchen
+Visual: An old wall clock just before midnight, a red circle drawn around its hands
 
 Reading the exclusions, checking the excess, comparing the price.
-Visual: Macro shot of dense fine print on paper under a magnifying glass, words unreadable
+Visual: A magnifying glass over dense fine print on a contract, three lines circled in red, words unreadable
 Text: EXCLUSIONS · EXCESS · PRICE
 
 So can you undo a four-minute decision?
-Visual: Hands opening a laptop on a desk in warm lamp light
+Visual: An egg timer lying on its side on a contract, sand spilled across the page
+Chart: 4 | minutes to decide · illustration
 
 Many UK online purchases can be cancelled within fourteen days.
-Visual: Paper calendar with fourteen days marked by a pencil line
-Text: OFTEN 14 DAYS TO CANCEL
+Visual: A paper calendar taped to a desk, fourteen days linked by a red pencil line
+Chart: 0 → 14 | days to cancel many online buys
 
 Exceptions apply, so read your terms next morning.
 Visual: Morning light falling across a printed contract and a pen
 Text: EXCEPTIONS APPLY
 
 Four minutes to buy. Often fourteen days to rethink. Use them.
-Visual: The same phone, now face down on the boiler, sunrise light through a small window
+Visual: The same phone now face down on the boiler cut-out, the block of ice melted to a puddle
 Text: SLEEP ON IT

@@ -1,40 +1,42 @@
 The Authority Trap
-On-screen hook: CALLER ID ≠ PROOF
-Title: Caller ID Says Your Bank. That Proves Nothing
-Tags: #HiddenEconomics #scams #fraud #bankfraud #159
-Source: Stop Scams UK, 159, https://www.stopscamsuk.org.uk/159; Ofcom action on spoofed caller ID (TelecomsTechNews), https://www.telecomstechnews.com/news/ofcom-targets-scam-calls-faking-uk-mobile-numbers/
+On-screen hook: SAME MAN. NEW CLOTHES.
+Title: Same Man, Same Request, New Uniform: Why Strangers Obeyed
+Tags: #HiddenEconomics #scams #psychology #authority #hmrc
+Source: Bickman (1974), The Social Power of a Uniform, Journal of Applied Social Psychology 4(1), https://doi.org/10.1111/j.1559-1816.1974.tb02599.x; HMRC press release, Scams warning as Self Assessment customers targeted (Aug 2025), https://www.gov.uk/government/news/scams-warning-as-self-assessment-customers-targeted
 
-Your phone says your bank is calling. That proves nothing.
-Visual: A phone ringing on a dark worktop, its glow throwing the shadow of a stranger's hand across the wall, caller name blurred
-Text: CALLER ID ≠ PROOF
+Same man, same request. Add a uniform, and strangers obey.
+Visual: An empty guard's jacket and peaked cap standing upright on a desk with no one inside, one sleeve holding out a coin
+Text: SAME MAN. NEW CLOTHES.
 
-Caller ID can be faked, a trick called number spoofing.
-Visual: Extreme close-up of a phone screen glow reflected in a dark window, text unreadable
-Text: NUMBER SPOOFING
+In nineteen seventy-four, a researcher asked Brooklyn strangers for small favours.
+Visual: An old black-and-white photograph of a busy city pavement taped to a street map, one figure circled in red
+Chart: 153 | Brooklyn pedestrians · 1974 study
+Stock: 1970s new york street
 
-The voice is calm, polite, and may even know your name.
-Visual: Silhouette of a person from behind holding a phone to their ear, lamp light
-Stock: person answering phone call
+As a guard, he was obeyed more than in plain clothes.
+Visual: Three paper outfits pinned side by side, a guard's, a milkman's and plain clothes, the guard's circled in red
+Text: THE GUARD WAS OBEYED MOST
 
-So how do you check a caller this convincing?
-Visual: An empty, formal reception desk under cool overhead light
+A guard had no power here. So why?
+Visual: An empty peaked cap on a desk under a lamp, its shadow far larger than the cap
+Text: SO WHY COMPLY?
 
-Not on the same call. Hang up first.
-Visual: A thumb pressing the red end-call button, screen details unreadable
-Text: HANG UP
+Uniforms, titles and crests are shortcuts to trust.
+Visual: A collage of a badge, an embossed letterhead and a wax seal pinned to a corkboard, all details unreadable
+Text: UNIFORM · TITLE · CREST
 
-In the UK, you can dial one five nine.
-Visual: Macro shot of a fingertip dialling on a phone keypad, keys softly lit
-Text: DIAL 159
+So scammers borrow them, like the tax office's crest.
+Visual: A pile of official-looking envelopes with red stamps spilling across a doormat, crests blurred
+Text: FAKE "OFFICIAL" MESSAGES
 
-It connects you to many banks' genuine fraud lines.
-Visual: Hands holding a phone to an ear at a kitchen table in warm daylight
-Text: STOP SCAMS UK SERVICE
+It logged over a hundred and seventy thousand scam reports in a year.
+Visual: Stacks of reported letters and printed texts bundled with string on a desk, red tags on each bundle, text unreadable
+Chart: 170,000 | scam reports to HMRC in one year
 
-Elsewhere, use the number on the back of your card.
-Visual: Close-up of the back of a generic bank card, numbers blurred
-Text: NUMBER ON YOUR CARD
+The real office never texts you about a refund.
+Visual: A phone on a kitchen table beside a torn envelope, screen dark
+Text: HMRC NEVER TEXTS ABOUT REFUNDS
 
-Your phone said it was your bank. Now you can make sure.
-Visual: The phone placed face up on the table, screen dark, morning light
-Text: THE REAL BANK WON'T MIND
+Same request, new clothes. Judge the request, not the uniform.
+Visual: The empty guard's jacket now hanging on a hook, the coin back on the desk
+Text: JUDGE THE REQUEST

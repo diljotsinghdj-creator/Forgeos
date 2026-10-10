@@ -2,37 +2,39 @@ Why You Cannot Stop Scrolling
 On-screen hook: CAME FOR THE WEATHER
 Title: Opened It for the Weather, Lost 20 Minutes: Why You Can't Stop
 Tags: #HiddenEconomics #infinitescroll #attention #screentime #digitalwellbeing
+Source: Masters of Scale, He invented infinite scroll and says he regrets it (Aza Raskin), https://mastersofscale.com/video/he-invented-infinite-scroll-and-says-he-regrets-it/; TED podcast, Aza Raskin transcript, https://www.ted.com/podcasts/rethinking-with-adam-grant/aza-raskin-on-why-technology-and-democracy-are-in-an-imagination-crisis-transcript
 
 You unlocked your phone to check the weather. That was twenty minutes ago.
-Visual: A phone glowing alone in a pitch-black room, rain streaking the dark window behind it, one hand barely visible
+Visual: A phone glowing alone on a dark desk, a paper raincloud cut-out dangling over it on a string, a wall clock behind it melting like wax
 Text: 20 MINUTES LATER
 
 So where did the time go?
-Visual: Wall clock in a dark room, minute hand blurred in motion
-Stock: clock time lapse
+Visual: Twenty paper clock faces scattered across a desk, every hand pointing a different way
+Chart: 0 → 20 | minutes gone · illustration
 
 Books have chapters. Pages run out.
-Visual: Close-up of a paperback closing on a bedside table, warm lamp light
+Visual: A worn paperback closing on a bedside table, a ribbon bookmark hanging out
 
 Those are stopping cues, moments to decide whether to continue.
-Visual: Hand placing a bookmark between pages, soft side light
+Visual: A hand slipping a paper bookmark between pages, a red circle drawn around it
 Text: STOPPING CUES
 
 An endless feed removes them. Where's the last page? There isn't one.
-Visual: Thumb flicking up a phone screen of identical blurred cards, motion blur
+Visual: A long paper strip of identical cut-out posts spilling off a desk and coiling across the floor, images blurred
 Text: NO LAST PAGE
 
-One flick for more. Stopping takes a decision.
-Visual: Extreme close-up of a fingertip on glass, mid-swipe
+Aza Raskin designed infinite scroll in two thousand and six.
+Visual: An old beige desktop computer on a cluttered desk, a cut-out of a mouse scroll wheel pinned beside it
+Text: INFINITE SCROLL · 2006
+Stock: old computer web browsing
 
-Not weak willpower. A missing ending. So how do you get one back?
-Visual: Wide shot of a dim living room, a lone silhouette lit only by a phone
+He has since said he regrets it. So where's your ending?
+Visual: A torn newspaper clipping pinned to a corkboard, a red circle around a blurred column
 Text: HOW DO YOU GET IT BACK?
 
 Set a timer before you open the app. Your own last page.
-Visual: Hand setting a kitchen timer to ten minutes, warm light
+Visual: A hand turning an old kitchen timer to ten minutes beside a face-up phone
 Text: SET YOUR OWN ENDING
-Stock: kitchen timer
 
 Then check the weather. That's what you came for.
-Visual: Window with rain on the glass, grey morning light
+Visual: The phone now face down, the paper raincloud cut-out resting on top of it

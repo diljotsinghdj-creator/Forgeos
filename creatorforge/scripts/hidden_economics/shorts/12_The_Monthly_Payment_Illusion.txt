@@ -4,36 +4,36 @@ Title: £50 a Month Is Really £600: The Monthly Payment Illusion
 Tags: #HiddenEconomics #buynowpaylater #debt #personalfinance #budgeting
 
 Fifty pounds or six hundred? Trick question. Same price.
-Visual: A single banknote on a dark counter casting a giant shadow shaped like a tall stack of notes on the wall behind, denominations not visible
+Visual: A single banknote cut-out taped to brown paper, its shadow on the wall behind a towering stack of notes, denominations not visible
 Text: £50 = £600?
 
 Fifty pounds a month, for twelve months, is six hundred.
-Visual: Overhead shot of a paper calendar, twelve months laid out in a grid
-Text: £50 × 12 = £600
+Visual: Twelve torn calendar pages pinned in a grid on a desk, one banknote clipped to each, numbers unreadable
+Chart: £50 × 12 = £600 | twelve monthly payments
 
 Before a single fee. How high can it go?
-Visual: Neat stack of banknotes on a desk, harsh side light, denominations not visible
+Visual: A paper price tag tied with string to a stack of coins, a red question mark scrawled beside it in pen
 Text: + FEES?
 
 Picture a plan that adds a twenty-pound arrangement fee.
-Visual: Phone screen showing a generic payment plan, three rows, text unreadable
+Visual: A printed payment-plan letter taped to a desk, three rows circled in red pen, text unreadable
 Text: FICTIONAL PLAN · ILLUSTRATION
 
 The total becomes six hundred and twenty. The advert still says fifty.
-Visual: Close-up of the phone with one large figure glowing, the small print blurred
-Text: £600 + £20 = £620
+Visual: A torn shop advert with one huge figure, its small print cut away and pinned beside it, numbers unreadable
+Chart: £600 → £620 | with a £20 fee · illustration
 
 Splitting costs can genuinely help budgeting. So where's the risk?
-Visual: Hands writing a household budget in a notebook, desk lamp glow, writing unreadable
-Stock: budget planning notebook
+Visual: Hands writing a household budget in a notebook beside a pile of crumpled receipts, writing unreadable
 
 It shrinks the number your brain actually weighs.
-Visual: Extreme close-up of a magnifying glass over fine print on a contract, words unreadable
+Visual: A magnifying glass over a contract, one small monthly figure enlarged, the total shrunk to a speck, words unreadable
 
 Before you sign, multiply. Payment times months, plus every fee.
-Visual: Finger tapping a calculator on top of a contract, crisp morning light
-Text: TOTAL = PAYMENT × MONTHS + FEES
+Visual: A finger on an old desk calculator resting on a contract, a pen beside it
+Text: PAYMENT × MONTHS + FEES
+Stock: signing a contract
 
 Fifty or six hundred? Only one of those is the real price.
-Visual: Two price tags on the dark counter, now side by side and equal in size, numbers unreadable
+Visual: The same banknote cut-out now pinned beside the towering stack, both drawn at equal size
 Text: £600+
