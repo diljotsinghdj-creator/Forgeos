@@ -2,188 +2,222 @@ Why Smart People Fall for Scams
 On-screen hook: CLEVER ISN'T SAFE
 Title: Knowing About Money Can Make Scams Work Better on You
 Tags: #HiddenEconomics #scams #fraudprevention #psychology #moneytips
-Source: OFT 1070, The psychology of scams, University of Exeter for the Office of Fair Trading 2009 https://ore.exeter.ac.uk/repository/handle/10871/20958; Exeter press release 2009 https://news-archive.exeter.ac.uk/2009/may/title_6401_en.html; FTC Consumer Sentinel Data Book 2024 https://www.ftc.gov/system/files/ftc_gov/pdf/csn-annual-data-book-2024.pdf; FTC Protecting Older Consumers Dec 2025 https://www.ftc.gov/system/files/ftc_gov/pdf/P144400-OlderAdultsReportDec2025.pdf; FTC testimony March 2026 https://www.ftc.gov/news-events/news/press-releases/2026/03/ftc-testifies-joint-economic-committee-agencys-efforts-combat-fraud; UK Finance Annual Fraud Report 2026 https://www.ukfinance.org.uk/news-and-insight/press-release/fraud-report-2026-press-release; Ofcom, number spoofing https://ofcom.org.uk/phones-and-broadband/scam-calls-and-messages/phone-spoof-scam; Stop Scams UK 159 https://www.stopscamsuk.org.uk/159; Take Five to Stop Fraud https://www.takefive-stopfraud.org.uk; Ofcom 7726 https://www.ofcom.org.uk/phones-and-broadband/scam-calls-and-messages/what-to-do-about-a-scam-call-text-or-message; PSR APP reimbursement https://www.psr.org.uk/information-for-consumers/app-fraud-reimbursement-protections/; Report Fraud https://www.gov.uk/government/news/report-fraud-new-service-from-city-of-london-police
+Source: JTA, Wiesel Foundation statement on $15.2m Madoff loss, 18 Feb 2009 https://www.jta.org/2009/02/18/united-states/despite-being-plundered-by-madoff-wiesel-will-continue-foundations-work; ABA Journal, Elie Wiesel says he lost life savings with Madoff, Feb 2009 https://www.abajournal.com/news/article/elie_wiesel_says_he_lost_life_savings_with_madoff_suggests_punishment; US Attorney SDNY, Madoff sentenced to 150 years, 29 Jun 2009 https://www.justice.gov/archive/usao/nys/pressreleases/June09/madoffbernardsentencingpr.pdf; CNN Money, Madoff sentenced, 29 Jun 2009 https://money.cnn.com/2009/06/29/news/economy/madoff_prison_sentence/; OFT 1070, The psychology of scams, University of Exeter for the Office of Fair Trading 2009 https://ore.exeter.ac.uk/repository/handle/10871/20958; Exeter press release 2009 https://news-archive.exeter.ac.uk/2009/may/title_6401_en.html; FTC Consumer Sentinel Data Book 2024 https://www.ftc.gov/system/files/ftc_gov/pdf/csn-annual-data-book-2024.pdf; FTC Protecting Older Consumers Dec 2025 https://www.ftc.gov/system/files/ftc_gov/pdf/P144400-OlderAdultsReportDec2025.pdf; FTC testimony March 2026 https://www.ftc.gov/news-events/news/press-releases/2026/03/ftc-testifies-joint-economic-committee-agencys-efforts-combat-fraud; UK Finance Annual Fraud Report 2026 https://www.ukfinance.org.uk/news-and-insight/press-release/fraud-report-2026-press-release; Ofcom, number spoofing https://ofcom.org.uk/phones-and-broadband/scam-calls-and-messages/phone-spoof-scam; Stop Scams UK 159 https://www.stopscamsuk.org.uk/159; Take Five to Stop Fraud https://www.takefive-stopfraud.org.uk; Ofcom 7726 https://www.ofcom.org.uk/phones-and-broadband/scam-calls-and-messages/what-to-do-about-a-scam-call-text-or-message; PSR APP reimbursement https://www.psr.org.uk/information-for-consumers/app-fraud-reimbursement-protections/; Report Fraud https://www.gov.uk/government/news/report-fraud-new-service-from-city-of-london-police
 
-Knowing a lot about money can make some scams work better on you.
-Visual: Extreme close-up of a phone vibrating across a stack of finance books, cold blue night light
-Text: KNOWLEDGE CAN BACKFIRE
+In December twenty-oh-eight, a Nobel Peace Prize winner discovered his foundation's money had vanished.
+Visual: A gold medal cut out of an old photograph lying inside an empty open safe, a torn bank statement beside it
+Text: ELIE WIESEL · NOBEL PEACE PRIZE
 
-That finding came from psychologists studying scam victims for a UK regulator.
-Visual: A thick bound report thudding onto a dark desk, pages riffling, lit only by a phone screen
+Fifteen point two million dollars. Substantially all of its assets.
+Visual: Bundles of banknotes cut from old photographs, peeling away one by one from a ledger page
+Chart: $15.2m | the Wiesel Foundation's loss
+
+He and his wife lost their personal savings too.
+Visual: An old leather wallet lying open and empty on a newspaper, a wedding ring resting beside it
+Text: PERSONAL SAVINGS · GONE
+
+The man who took it was no back-street crook. He had once chaired the Nasdaq.
+Visual: An old photograph of a stock exchange trading floor, a single empty chair circled in pen
+Text: BERNARD MADOFF · FORMER NASDAQ CHAIRMAN
+Stock: wall street 2008
+
+His clients' statements showed nearly sixty-five billion dollars. Much of it never existed.
+Visual: A stack of account statements on a desk, a hand lifting the top sheet to reveal blank paper underneath
+Text: ≈$65bn ON PAPER
+
+In June twenty-oh-nine, he was sentenced to a hundred and fifty years.
+Visual: An old newspaper front page pinned to a desk, a judge's gavel resting on it, headline unreadable
+Text: 150 YEARS · JUNE 2009
+Stock: new york courthouse
+
+His victims included charities, wealthy families and professional investors. People who knew money.
+Visual: A row of old photographs pinned to a board, each a silhouette, a red line joining them to one empty chair
+
+So if knowing money did not protect them, what would?
+Visual: A pile of finance books on a desk, a padlock lying open on top of them
+Text: WHAT WOULD HAVE PROTECTED THEM?
+
+Psychologists studying scam victims for a UK regulator found something stranger still.
+Visual: A thick bound report thumped onto a desk, its pages riffling, title unreadable
 Text: OFT / University of Exeter, 2009
 
+Knowing a lot about money can make some scams work better on you.
+Visual: A phone ringing on top of a stack of finance books, a red circle drawn around it
+Text: KNOWLEDGE CAN BACKFIRE
+
 In twenty twenty-five, Americans reported losing nearly sixteen billion dollars to fraud.
-Visual: Wide overhead shot of banknotes blowing across a dark empty floor
-Text: $15.9bn reported lost, 2025
+Visual: Banknotes cut from old photographs scattered across a large paper map of the United States
+Chart: $15.9bn | reported lost to fraud, US 2025
 
 And the people losing money most often are not who you would guess.
-Visual: A row of empty chairs in a dim waiting room, one slowly spinning
+Visual: A row of empty chairs in an old photograph of a waiting room, one chair circled
 Text: NOT WHO YOU'D GUESS
 
 By the end, you'll know the one move that breaks almost every scam call.
-Visual: A thumb sliding towards the end-call area on a glowing phone, extreme close-up
+Visual: A thumb resting on the end-call button of an old mobile phone, nothing readable
 Text: ONE MOVE
 
 Meet Sam. He is fictional, thirty-four, and he works in finance.
-Visual: A man seen from behind at a kitchen table at night, laptop glow on his shoulders
+Visual: A cut-out silhouette of a man from behind at a kitchen table at night, a laptop glow on his shoulders
 Text: SAM · FICTIONAL
 
 Sam has read every warning. He is sure this could never happen to him.
-Visual: Close-up of his hand flicking past a fraud warning leaflet, print blurred
+Visual: A fraud warning leaflet pushed aside on a desk, its print unreadable
 
 On a Tuesday evening, his phone rings.
-Visual: A phone ringing on a dark table, rain sliding down the window behind it
+Visual: A phone ringing on a kitchen table, rain running down the window behind it
 Text: FICTIONAL SCENARIO
 
 The caller knows his name. She sounds calm and professional.
-Visual: Close-up of a hand lifting the phone, cold blue light washing over the fingers
+Visual: A hand lifting the phone, a strip of paper with a handwritten name taped beside it, unreadable
 
 She says she is from his bank's fraud team.
-Visual: Phone screen showing a generic incoming call, caller name blurred
+Visual: A phone showing a generic incoming call, the caller name blank
 Text: FICTIONAL CALL
 
 And the number on his screen matches the one on the back of his card.
-Visual: A bank card turned slowly beside the glowing phone, card details blurred, macro
+Visual: A bank card turned over beside the phone, a red string joining the two, details blank
 Text: THE NUMBER MATCHES
 
 Surely that proves it is real?
-Visual: Extreme close-up of a thumb trembling above the phone screen
+Visual: A thumb hovering above the phone, a large question mark drawn on the paper beneath it
 Text: PROOF?
 
 It does not. Ofcom warns that criminals can spoof the number you see.
-Visual: Two identical phones lighting up side by side, one fading into shadow
+Visual: Two identical paper phones side by side, one of them torn down the middle
 Text: NUMBERS CAN BE SPOOFED
 
 Caller display is a label anyone can type. It is not an identity check.
-Visual: A marker writing on a blank name badge, ink bleeding, text unreadable
+Visual: A hand writing on a blank sticky name badge, the writing unreadable
 
 A call can seem to come from your bank, the tax office or a courier.
-Visual: Three phones lighting up one after another on a dark table, caller names blurred
+Visual: Three old telephones lined up on a desk, each with a blank paper label
+
+Today even a familiar voice, or a face on a video call, can be faked.
+Visual: An old photograph of a person from behind, cut into strips and pasted back together slightly out of line
+Text: VOICES AND FACES CAN BE FAKED
 
 Phone networks must block many calls from abroad faking UK landline numbers.
-Visual: A telephone exchange cabinet with rows of lights blinking in a dim room
-Stock: server room lights
+Visual: An old photograph of a telephone exchange, rows of switchboard plugs and cables
+Stock: telephone switchboard
 
 But Ofcom says some still get through.
-Visual: A single light blinking among dark ones, extreme close-up
+Visual: One plug still connected on a switchboard of empty sockets, circled in pen
 
 So why does Sam, who knows all this in theory, stay on the line?
-Visual: Silhouette of Sam at the rainy window, phone pressed to his ear
+Visual: Sam's cut-out silhouette at the rainy window, phone pressed to his ear
 Text: WHY STAY ON THE LINE?
 
 Because of what she says next. There is suspicious activity on his account.
-Visual: Phone screen flashing a generic red banking alert, text unreadable
+Visual: A phone with a generic red banking alert, nothing readable
 Text: SUSPICIOUS ACTIVITY
 
 His savings are at risk, and he must act now.
-Visual: A wall clock's second hand sweeping fast in a dark hallway
+Visual: An old wall clock in a dark hallway, its second hand mid-sweep
 Text: ACT NOW
-Stock: clock ticking night
 
 She will help him move the money to a safe account.
-Visual: His hands opening a generic transfer screen, text unreadable
+Visual: Hands opening a generic transfer screen on a phone, nothing readable
 Text: A SAFE ACCOUNT
 
 In under a minute, authority, fear and a deadline have arrived together.
-Visual: Three dominoes toppling in slow motion on a dark table, macro
+Visual: Three dominoes toppling in a line across a sheet of paper
 Text: AUTHORITY + FEAR + DEADLINE
 
 Each one makes checking feel slower, riskier, even disloyal.
 Visual: A hand pulling back from a landline handset on a hallway table
 
 But why would knowing about money make Sam easier to catch, not harder?
-Visual: Slow push along a shelf of finance books in shadow, spines unreadable
+Visual: A shelf of finance books, one pulled half out and circled in red
 Text: WHY KNOWLEDGE BACKFIRES
 
 The Exeter researchers pointed to over-confidence.
-Visual: A lone chess king on a board, a lamp swinging slowly overhead
+Visual: A lone chess king on a board, every other piece swept to the side
 
 People who knew a scam's subject, like investments, were sometimes more at risk.
-Visual: Investment brochures sliding off a coffee table, logos absent
+Visual: Investment brochures fanned across a coffee table, their logos blank
 Text: MORE KNOWLEDGE, MORE RISK?
 
 Commentary on the report suggested they engaged with approaches others simply ignored.
-Visual: A hand opening one envelope while a pile of others stays unopened
+Visual: A hand opening one envelope while a pile of others stays sealed
 
 And many victims were not poor decision-makers. Some had successful careers.
-Visual: A tailored jacket slipping off the back of an office chair in a dark room
+Visual: A tailored jacket hanging on the back of an office chair, a briefcase on the floor
+
+Think back to Madoff. Credentials like his can make checking feel unnecessary, even rude.
+Visual: The old trading-floor photograph again, the empty chair now ringed twice in red
+Text: CREDENTIALS ≠ CHECKS
 
 A scam can feel like a conversation you understand. So you stay in it.
-Visual: A phone call timer counting up on a dark table, digits blurred
+Visual: An old telephone receiver lying off the hook, its coiled cord stretched across the desk
 
-Fluency feels like safety. But the scam does not need you to be foolish.
-Visual: A smooth stone skimming across dark water, slow motion
-Stock: stone skipping water
+The scam does not need you to be foolish.
+Visual: A smooth stone skimming across a photograph of dark water
 
 It only needs you to keep talking instead of checking.
-Visual: Sam's hand gripping the edge of the kitchen counter, knuckles tightening
+Visual: Sam's hand gripping the edge of the kitchen counter
 
 Victims also tended to find it harder to control emotions under pressure.
-Visual: Extreme close-up of a pulse beating in a wrist, cold light
+Visual: A heart-rate line drawn in red pen across graph paper, spiking upward
 
 So the attack is not on what you know. It is on your pulse.
-Visual: A wristwatch second hand stuttering forward, macro
+Visual: A wristwatch lying on graph paper, its second hand frozen
 Text: THE TARGET IS YOUR PULSE
 
 And if that is true, the usual picture of a victim is wrong.
-Visual: An empty park bench under a streetlight at night, leaves blowing past, wide shot
+Visual: An old photograph of an empty park bench under a streetlight, a red question mark drawn above it
 Text: WHO REALLY LOSES?
 
-In twenty twenty-four, Americans in their twenties reported losing money in forty-four percent of reports.
-Visual: Young hands gripping a phone on a night bus, streetlights strobing past
-Text: AGE 20–29: 44% lost money
+In twenty twenty-four, Americans in their twenties lost money in forty-four percent of reports.
+Visual: Young cut-out hands gripping a phone on a desk, a red circle drawn around them
+Chart: 44% vs 24% | in their 20s, in their 70s
 
-For people in their seventies, twenty-four percent.
-Visual: Older hands calmly closing a laptop at a kitchen table
-Text: AGE 70–79: 24% lost money
+For people in their seventies, just twenty-four percent.
+Visual: Older cut-out hands calmly closing a laptop on a kitchen table
+Text: AGE 70–79
 
 Older victims tend to lose more per case. Younger ones lose more often.
-Visual: One tall coin stack and many small stacks, coins still dropping onto them
+Visual: One tall coin stack beside many small stacks on graph paper
 Text: FTC Consumer Sentinel, 2024
 
-About three quarters of older adults' reports involved no money lost at all.
-Visual: Older hands placing a ringing phone face down on a tablecloth, calm daylight
-Text: ~74% of older adults' reports: no loss
-
 And the costliest category in twenty twenty-five was investment scams.
-Visual: A generic trading chart climbing on a laptop in a dark bedroom, figures blurred
+Visual: A generic rising price chart drawn on paper, the line circled in red, figures blank
 Text: Investment scams: $7.9bn
 
-The very subject where people feel most knowledgeable.
-Visual: A hand flicking through a financial newspaper, pages blurring
+The very subject where people feel most knowledgeable. Exactly where Madoff struck.
+Visual: A financial newspaper folded on a desk beside the old trading-floor photograph
 
 Britain shows the same pattern. UK Finance counted about one point two eight billion pounds stolen.
-Visual: Aerial drift over a city at night, traffic flowing in lines of light
-Text: £1.28bn stolen in 2025
-Stock: city at night aerial
+Visual: A paper map of the United Kingdom on a desk, banknotes scattered across its cities
+Chart: £1.28bn | stolen by fraud in the UK, 2025
 
 Victims tricked into sending money themselves lost nineteen percent more than the year before.
-Visual: A finger pressing send on a generic payment screen, text unreadable
+Visual: A finger pressing send on a generic payment screen, nothing readable
 Text: Push payment fraud: £576.4m, up 19%
 
 Investment fraud losses jumped forty percent.
-Visual: A rising line drawn in chalk on a dark wall, the chalk snapping
+Visual: A line drawn in red pen climbing steeply across graph paper, the pen nib snapping
 Text: Investment fraud: £221.5m, up 40%
 
 The costliest scams target confidence, not ignorance.
-Visual: The chess king toppling slowly onto the board
+Visual: The chess king toppling over onto the board
 
 So scams are not really a problem of age, or of intelligence.
-Visual: A walnut and an hourglass on a dark table, sand running, close-up
+Visual: A walnut and an hourglass side by side on a desk
 
 They are a problem of situation. The right pressure, at the right moment.
-Visual: A phone lighting up on an empty kitchen table at night, wide shot
+Visual: A phone lighting up alone on an empty kitchen table at night
 
 But one category moved the other way. The one about to catch Sam.
-Visual: A chalk arrow being drawn downward on a dark surface
+Visual: A red pen arrow drawn downward across graph paper
 Text: ONE CATEGORY FELL
 
 Impersonation scams, posing as a bank or the police, fell again.
-Visual: A peaked cap without insignia on a table beside a phone, lamp dimming
+Visual: A peaked cap with no insignia on a desk beside a phone
 Text: Impersonation losses down 12%
 
 UK Finance has linked recent falls partly to public education campaigns.
-Visual: A glowing poster at a rain-soaked bus shelter at night, poster blank
+Visual: An old photograph of a bus shelter poster at night, the poster blank
 Text: UK Finance
 
 So a few simple sentences are beating the oldest trick. What are they?
@@ -191,7 +225,7 @@ Visual: A hand uncapping a pen over a blank notepad
 Text: THE RULES
 
 First, banks and police never ask you to move money to a safe account.
-Visual: A generic transfer form being swiped closed on a phone, text unreadable
+Visual: A generic transfer form on paper, crossed through in red pen
 Text: NEVER A SAFE ACCOUNT
 
 That sentence is the backbone of the Take Five campaign.
@@ -199,118 +233,119 @@ Visual: A hand placing a single card face down on a table
 Text: Take Five to Stop Fraud
 
 Second, never share a one-time passcode, or approve a payment you did not start.
-Visual: Phone showing a generic text with a six-digit code, digits blurred
+Visual: A phone showing a generic text with a six-digit code, the digits blank
 Text: NEVER SHARE THE CODE
 
 Third, any request to keep a call secret from your bank is a warning sign.
-Visual: A finger rising to closed lips, silhouette against a blue window
+Visual: A cut-out silhouette with a finger raised to closed lips
 Text: SECRECY = RED FLAG
 
 Fourth, only a criminal needs you to hurry.
-Visual: Feet frozen mid-stride on a wet pavement at night, puddle still rippling
+Visual: Footprints cut from paper frozen mid-stride across a wet pavement photograph
 Text: ONLY CRIMINALS RUSH YOU
 
 Sam hears safe account and something clicks. So what does he do?
-Visual: Extreme close-up of Sam's hand lowering the phone, rain light rippling on the wall
+Visual: Sam's hand lowering the phone from his ear
 Text: WHAT DOES SAM DO?
 
 He hangs up. Not rude. He is breaking the script.
-Visual: A thumb pressing the end-call area, the screen going dark, macro
+Visual: A thumb pressing the end-call button, the screen going dark
 Text: HANG UP
 
 Then he calls his bank on a number he found himself.
-Visual: Hands turning the bank card over to its back, details blurred
+Visual: Hands turning the bank card over to its back, details blank
 
 In the UK there is a three-digit shortcut. One five nine.
-Visual: A finger tapping three digits on a phone keypad, numbers out of focus
+Visual: A finger on an old phone keypad, three keys ringed in pen
 Text: CALL 159
 
 Run by Stop Scams UK, it connects you to many major banks.
-Visual: Wide shot of the dark kitchen, one phone screen glowing on the table
+Visual: Red string running from a phone on a desk to several blank bank cards pinned around a map
 
 And one five nine never calls you. Only you call it.
-Visual: An incoming call screen fading to black on a dark table
+Visual: An incoming call screen crossed through in red pen
 Text: 159 NEVER CALLS YOU
 
 One more catch. A fraudster may keep a landline connected after you hang up.
-Visual: A landline handset swinging off its cradle on its coiled cord
+Visual: A landline handset hanging off its cradle on its coiled cord
 
 So use a different phone, or wait a few minutes before calling.
-Visual: A hand choosing the mobile over the landline, picking it up
+Visual: A hand choosing a mobile over the landline and picking it up
 Text: DIFFERENT PHONE OR WAIT
 
 Scam texts can be forwarded free to seven seven two six.
-Visual: A thumb forwarding a message, bubbles sliding away, text unreadable
+Visual: A thumb forwarding a message on a paper phone, nothing readable
 Text: FORWARD TO 7726
 
 Suspicious emails go to the government's phishing report address.
-Visual: A laptop inbox glowing on a dark desk, one message lifting out, text unreadable
+Visual: A printed email pinned to a desk with a red circle around it, the text unreadable
 Text: report@phishing.gov.uk
 
 And never use a link or number the message itself gives you.
-Visual: A finger hovering over a blurred link, then pulling away
+Visual: A finger hovering over a blank link on a paper phone, then pulling away
 
 But what if the money has already gone?
-Visual: An empty wallet lying open on a kitchen table, early morning light
+Visual: An empty wallet lying open on a kitchen table in early morning light
 Text: ALREADY SENT IT?
 
 Call your bank immediately. Speed matters.
-Visual: A hand dialling urgently in a dim kitchen, close-up
+Visual: A hand dialling on a phone in a dim kitchen
 Stock: person making phone call
 
 Since October twenty twenty-four, UK rules require reimbursement for many push payment scams.
-Visual: A heavy rulebook falling open on a desk, pages turning in lamp light
+Visual: A heavy rulebook falling open on a desk, one page tabbed in red
 Text: PSR rules from 7 Oct 2024
 
 Covered claims can be repaid up to eighty-five thousand pounds.
-Visual: A neat pile of banknotes sliding back across a table
-Text: Up to £85,000 per claim
+Visual: A neat pile of banknotes sliding back across a desk towards an open hand
+Chart: £85,000 | maximum repaid per claim
 
 In twenty twenty-five, banks reimbursed about sixty-one percent of push payment fraud losses.
-Visual: Ten coin stacks on a dark table, a light sweeping across and settling on six
-Text: 61% reimbursed in 2025
+Visual: Ten coin stacks on graph paper, six of them ringed in pen
+Chart: 61% | of push payment losses reimbursed, 2025
 
 Then report it. In England, Wales and Northern Ireland, that service is Report Fraud.
-Visual: A laptop opening on a kitchen table, a generic form glowing, text unreadable
+Visual: A generic online form printed and pinned to a desk, the text unreadable
 Text: Report Fraud · 0300 123 2040
 
 Elsewhere, follow your local police guidance.
-Visual: A blue lamp glowing outside a station entrance at night, rain falling, signage unreadable
+Visual: An old photograph of a blue police lamp outside a station entrance at night
 
 This time, Sam reaches his real bank. Did you just call me?
-Visual: Close-up of Sam's hand pressing a phone to his ear, the kitchen light now switched on
+Visual: Sam's hand pressing a phone to his ear, the kitchen light now switched on
 
-As for Sam, his real bank has no record of any call.
-Visual: Sam's silhouette exhaling at the window as dawn light creeps in
+His real bank has no record of any call.
+Visual: A blank call log pinned to the desk, a red tick beside it
 Text: NO RECORD OF ANY CALL
 
 His savings never moved. His expertise nearly moved them for him.
-Visual: A stack of coins standing untouched as morning sun crosses the table
+Visual: A stack of coins standing untouched as morning sun crosses the paper beneath it
 
 And if it had worked, it would not prove he was careless.
-Visual: A figure sitting on the edge of a bed in the dark, seen from behind
+Visual: A cut-out silhouette sitting on the edge of a bed in the dark
 
 It would prove the pressure worked. Scams are built to remove the pause.
-Visual: A gap in a fence being boarded shut, hammer swinging, close-up
+Visual: A gap in a paper fence being boarded shut
 
 So the pause is your most valuable defence.
-Visual: A phone placed face down, its glow fading out on the table
+Visual: A phone placed face down on a desk, its glow fading
 Text: THE PAUSE
 
 A real bank can survive a callback. A scammer usually cannot.
-Visual: A landline handset being placed gently back on its cradle
+Visual: A landline handset placed gently back on its cradle
 
 Today, save one five nine in your phone, and send these rules to someone you love.
-Visual: Two pairs of hands passing a handwritten card across a kitchen table, text unreadable
+Visual: Two pairs of hands passing a handwritten card across a kitchen table, the writing unreadable
 Text: SAVE 159 · SHARE THE RULES
 
 Every trap in this series breaks on one question.
-Visual: Slow dissolve through a cancel screen, a swinging price tag and a ringing phone, all text unreadable
+Visual: A cancel screen, a price tag and a ringing telephone pinned in a row and joined by red string
 
 Who benefits if I act before I think?
-Visual: A silhouette at a window at dawn, phone lowered, city waking below
+Visual: A cut-out silhouette at a window at dawn, phone lowered, a city waking below
 Text: WHO BENEFITS IF I ACT BEFORE I THINK?
 
-Next, why a uniform, a title or a calm voice can switch off our doubts.
-Visual: An empty peaked cap on a dark table, a slow beam of light sweeping across it
-Text: NEXT: THE AUTHORITY TRAP
+Next, how one calm con man with official-looking paper sold the Eiffel Tower.
+Visual: An old photograph of the Eiffel Tower pinned to a desk beside a forged-looking contract and a fountain pen
+Text: NEXT: THE MAN WHO SOLD THE EIFFEL TOWER
+Stock: eiffel tower 1920s
