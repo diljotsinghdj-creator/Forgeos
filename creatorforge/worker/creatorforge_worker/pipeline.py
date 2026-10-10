@@ -18,7 +18,7 @@ from . import director, providers
 from .config import Config, VoiceProfile
 from .library import Library
 from .media import captions as cap
-from .media import charts, layout, match, quality, render, sfx, verify
+from .media import cards, charts, layout, maps, match, quality, render, sfx, verify
 from .media import ff
 from .media.ff import Cancelled, MediaError
 from .providers.base import NotConfigured, ProviderError, Word
@@ -742,8 +742,9 @@ class Pipeline:
             stock_clips += [None] * (len(beats) - len(stock_clips))
             for k, v in enumerate(line_videos(sc)[: len(beats)]):
                 stock_clips[k] = stock_clips[k] or v          # real footage first, else the line's AI clip
-            if len(beats) >= 2 and sc.get("image_source") != "asset" and (
-                    any(n and (jdir / n).is_file() for n in extra) or any(stock_clips)):
+            graphic = any(b.get("chart") or b.get("draw") or b.get("bubble") or b.get("extra") for b in beats)
+            if beats and sc.get("image_source") != "asset" and (graphic or len(beats) >= 2 and (
+                    any(n and (jdir / n).is_file() for n in extra) or any(stock_clips))):
                 # Cut on the beat: each phrase gets screen time in proportion to its words, so the picture
                 # changes exactly when the narration moves on.
                 images = [jdir / sc["image"]] + [jdir / n if n and (jdir / n).is_file() else None for n in extra]
@@ -796,7 +797,7 @@ class Pipeline:
             if shot.get("overlay") and i > 0:
                 overlays.append(cap.Overlay(start + 0.3, start + slot - 0.2, shot["overlay"], "Callout"))
             beats = shot.get("beats") or []
-            if spec.fast_cuts and any(b.get("overlay") or b.get("draw") or b.get("bubble") for b in beats):
+            if spec.fast_cuts and any(b.get("overlay") or b.get("draw") or b.get("bubble") or b.get("extra") for b in beats):
                 # The writer's on-screen text appears exactly while its line is spoken.
                 at = start
                 for k, (b, length) in enumerate(zip(beats, _beat_lengths([b["text"] for b in beats],
@@ -806,6 +807,11 @@ class Pipeline:
                         begin = min(3.0, timings[0])           # after the opening hook text, not on top of it
                     if b.get("overlay") and begin < at + length - 0.4 and (i, k) not in charted:
                         overlays.append(cap.Overlay(begin, at + max(0.6, length - 0.1), b["overlay"], "Callout"))
+                    extras = b.get("extra") or {}
+                    if extras.get("cite") and length > 0.6:
+                        overlays.append(cap.Overlay(at + 0.3, at + length - 0.05, extras["cite"], "Cite"))
+                    if extras.get("place") and (i, k) not in charted and length > 0.8:
+                        overlays.append(cap.Overlay(at + 0.2, at + min(length, 4.0) - 0.05, extras["place"], "Place"))
                     if (i, k) not in charted and length > 0.8:
                         # The writer's pen marks and bubbles: drawn on once the picture has landed.
                         if b.get("draw"):
@@ -909,6 +915,25 @@ class Pipeline:
     def _chart_clip(self, spec, beat: dict, length: float, size: tuple[int, int], work: Path) -> Path | None:
         """An animated number graphic for a beat: the writer's Chart: line, or - in the editorial looks - a Text:
         line that compares figures ("£12 → £720", "48% vs 22%"). None when the beat has no chart."""
+        theme = "investigative" if spec.style == "investigative" else "editorial"
+        seconds = round(length + render.TRANSITION_S + 0.2, 2)
+        extra = beat.get("extra") or {}
+        if not beat.get("chart"):
+            # The writer's full-frame graphics: an animated map, a chapter card, a highlighted quote.
+            for kind in ("map", "chapter", "quote"):
+                if extra.get(kind):
+                    out = work / f"{kind}_{hashlib.sha256(f'{extra[kind]}|{theme}|{size}|{seconds}'.encode()).hexdigest()[:16]}.mp4"
+                    if out.is_file():
+                        return out
+                    try:
+                        if kind == "map":
+                            plan = maps.parse(extra[kind])
+                            if plan is None:
+                                continue          # a place the map doesn't know: keep the picture
+                            return maps.render(plan, theme, size[0], size[1], seconds, out, work)
+                        return cards.render(kind, extra[kind], theme, size[0], size[1], seconds, out, work)
+                    except MediaError:
+                        continue
         src = beat.get("chart") or ""
         auto = beat.get("overlay") or ""
         if not src and spec.style in EDITORIAL_STYLES and re.search(r"→|->|=|\bvs\b", auto, re.I):
@@ -916,8 +941,6 @@ class Pipeline:
         plan = charts.parse(src) if src else None
         if plan is None:
             return None
-        theme = "investigative" if spec.style == "investigative" else "editorial"
-        seconds = round(length + render.TRANSITION_S + 0.2, 2)
         out = work / f"chart_{hashlib.sha256(f'{src}|{theme}|{size}|{seconds}'.encode()).hexdigest()[:16]}.mp4"
         if not out.is_file():
             try:

@@ -171,6 +171,12 @@ def write_ass(path: Path, width: int, height: int, scale: float, position: float
                                                              for c in overlays) else None
             lines += marks.mark_events(o.text, o.start, o.end, width, height, pen, under)
             continue
+        if o.style == "Place" and o.text.strip() and o.end > o.start:
+            lines += marks.place_events(o.text, o.start, o.end, width, height, font_name, pen)
+            continue
+        if o.style == "Cite" and o.text.strip() and o.end > o.start:
+            lines += marks.cite_events(o.text, o.start, o.end, width, height, font_name)
+            continue
         if o.style in ("Bubble", "Think") and o.text.strip() and o.end > o.start:
             lines += marks.bubble_events(o.text, o.start, o.end, width, height, o.style == "Think", font_name)
             continue

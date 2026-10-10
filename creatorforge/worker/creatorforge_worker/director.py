@@ -137,6 +137,7 @@ class ProductionSpec:
         spec.visual_direction = str(d.get("visual_direction") or meta.get("visual_direction") or "").strip()[:400]
         spec.roles = [list(r)[:2] for r in (d.get("roles") or meta.get("roles") or []) if len(r) >= 2][:60]
         shots = [[clean_script(str(x[0]))] + [str(v).strip() for v in (list(x[1:7]) + [""] * 6)[:6]]
+                 + [{str(k): str(v)[:140] for k, v in x[7].items()} if len(x) > 7 and isinstance(x[7], dict) else {}]
                  for x in (d.get("shots") or meta.get("shots") or []) if isinstance(x, (list, tuple)) and x]
         shots = [x for x in shots if x[0]][:400]
         if shots and sum(len(x[0].split()) for x in shots) == len(spec.script.split()) + len(shots[0][0].split()):
@@ -599,7 +600,8 @@ def _is_heading(line: str) -> bool:
 _META_KEYS = ("on-screen hook", "on screen hook", "onscreen hook", "hook text", "visuals", "visual", "visual style",
               "b-roll", "broll", "post title", "video title", "post", "title", "cover", "thumbnail", "caption", "description", "hashtags", "tags",
               "source", "sources", "music", "sfx", "on-screen text", "on screen text", "text on screen", "text",
-              "stock footage", "stock", "chart", "graphic", "draw", "pen", "bubble", "thought")
+              "stock footage", "stock", "chart", "graphic", "draw", "pen", "bubble", "thought",
+              "place", "cite", "map", "chapter", "quote")
 _META = re.compile(r"(?i)(?:^|(?<=[\s.]))(" + "|".join(re.escape(k) for k in sorted(_META_KEYS, key=len, reverse=True)) +
                    r")\s*:\s*")
 _STAMP = re.compile(r"^\s*(?:[-\u2022*]\s*)?\(?(?:\d{0,2}:\d{2})(?:\s*[-\u2013]\s*\d{0,2}:\d{2})?\)?\s*")
@@ -642,7 +644,7 @@ def _line_shots(line: str, d: dict) -> list[list[str]]:
     n = max(1, min(len(visuals), len(words) // 3))       # every picture gets at least ~3 words of screen time
     if n == 1:
         return [[line, visuals[0], d.get("text", ""), d.get("stock", ""), d.get("chart", ""), d.get("draw", ""),
-                 d.get("bubble", "")]]
+                 d.get("bubble", ""), dict(d.get("extra") or {})]]
     cuts, start = [], 0
     for k in range(1, n):
         target = round(len(words) * k / n)
@@ -656,7 +658,7 @@ def _line_shots(line: str, d: dict) -> list[list[str]]:
     # Text/Stock/Chart open the line; a pen mark or bubble lands on the line's last picture (the payoff).
     last = lambda key, k: d.get(key, "") if k == n - 1 else ""  # noqa: E731
     return [[" ".join(words[a:b]), visuals[k], first("text", k), first("stock", k), first("chart", k),
-             last("draw", k), last("bubble", k)]
+             last("draw", k), last("bubble", k), dict(d.get("extra") or {}) if k == 0 else {}]
             for k, (a, b) in enumerate(zip(bounds, bounds[1:]))]
 
 
@@ -728,6 +730,9 @@ def parse_script(raw: str) -> tuple[str, dict]:
             elif k in ("chart", "graphic"):
                 if target >= 0 and v:
                     per.setdefault(target, {})["chart"] = value.strip()[:80]
+            elif k in ("place", "cite", "map", "chapter", "quote"):
+                if target >= 0 and v:
+                    per.setdefault(target, {}).setdefault("extra", {})[k] = value.strip()[:140]
             elif k in ("draw", "pen"):
                 if target >= 0 and v:
                     per.setdefault(target, {})["draw"] = v[:40].lower()
@@ -934,7 +939,8 @@ def apply_shots(plan: "ProductionPlan", shots: list) -> None:
         return
     per_scene: list[list[dict]] = [[] for _ in plan.scenes]
     pos = 0
-    for line, visual, text, stock, chart, draw, bubble in ((list(x) + [""] * 6)[:7] for x in shots):
+    for line, visual, text, stock, chart, draw, bubble, extra in ((list(x) + [""] * 6 + [{}])[:8] for x in shots):
+        extra = extra if isinstance(extra, dict) else {}
         n = len(str(line).split())
         chunk = tokens[pos:pos + n]
         pos += n
@@ -944,12 +950,15 @@ def apply_shots(plan: "ProductionPlan", shots: list) -> None:
             per_scene[i].append({"text": words, "visual": str(visual) or s.visual, "emotion": s.emotion,
                                  "stock": str(stock), "overlay": str(text) if k == 0 else "",
                                  "chart": str(chart) if k == 0 else "", "draw": str(draw) if k == 0 else "",
-                                 "bubble": str(bubble) if k == 0 else "", "writer": True})
+                                 "bubble": str(bubble) if k == 0 else "", "extra": dict(extra) if k == 0 else {},
+                                 "writer": True})
     for s, beats in zip(plan.scenes, per_scene):
         if not beats:
             continue
         s.visual = beats[0]["visual"]
-        s.beats = beats if len(beats) >= 2 else []
+        # one line can still carry a graphic (chart, map, card, pen mark): keep it as a single beat
+        keep = any(b.get("chart") or b.get("draw") or b.get("bubble") or b.get("extra") for b in beats)
+        s.beats = beats if len(beats) >= 2 or keep else []
         s.overlay = "" if s.beats else beats[0]["overlay"]   # the writer decides what text appears, and when
 
 

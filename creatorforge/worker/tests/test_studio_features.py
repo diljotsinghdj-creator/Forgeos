@@ -537,6 +537,22 @@ def test_pen_marks_bubbles_and_line_graphs_render(tmp_path):
     assert marks.subject_box(1080, 1920)[0] > 0
 
 
+def test_maps_cards_place_and_source_graphics(tmp_path):
+    from creatorforge_worker.media import captions as cap, cards, ff, maps
+    plan = maps.parse("London → Paris | the route")
+    assert [t["name"] for t in plan["targets"]] == ["London", "Paris"] and plan["route"]
+    assert maps.parse("France")["targets"][0]["kind"] == "country" and maps.parse("Atlantis") is None
+    video = maps.render(plan, "investigative", 640, 360, 2.0, tmp_path / "m.mp4", tmp_path)
+    assert ff.duration(video) > 1.5
+    for kind, spec in (("chapter", "Part 1 | The trap"), ("quote", "Move your money to a safe account | Lloyds, 2026")):
+        assert ff.duration(cards.render(kind, spec, "editorial", 360, 640, 2.0, tmp_path / f"{kind}.mp4", tmp_path)) > 1.5
+    ass = tmp_path / "c.ass"
+    cap.write_ass(ass, 1920, 1080, 0.04, 0.86, [], [cap.Overlay(0.2, 2.0, "Paris · 1925", "Place"),
+                                                  cap.Overlay(0.2, 2.0, "FTC, 2025", "Cite")], set(), "", "", "redpen")
+    text = ass.read_text()
+    assert "SOURCE: FTC, 2025" in text and "\\k" in text and text.count("Dialogue:") == 3
+
+
 def test_clip_tokenizer_matches_the_reference_ids(tmp_path):
     from pathlib import Path
     from creatorforge_worker.media import match

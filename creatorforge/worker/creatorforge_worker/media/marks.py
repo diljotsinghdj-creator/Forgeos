@@ -178,3 +178,35 @@ def bubble_events(text: str, start: float, end: float, w: int, h: int, think: bo
     out.append(f"Dialogue: 6,{_ts(start + 0.05)},{_ts(end)},BubbleText,,0,0,0,,{{\\an5\\pos({cx:.0f},{cy:.0f})"
                f"\\fn{font}\\fs{size}}}{''.join(typed).strip()}")
     return out
+
+
+def place_events(text: str, start: float, end: float, w: int, h: int, font: str = "DejaVu Sans",
+                 pin: str = PEN) -> list[str]:
+    """A documentary location stamp, lower left: a red map pin drops in, then 'PARIS · 1925' types out on a white
+    label (karaoke timing: the letters appear one by one)."""
+    from .captions import _esc
+    size = int(min(w, h) * 0.04)
+    x, y = w * 0.06, h * (0.62 if h > w else 0.80)
+    r = size * 0.45
+    pin_shape = (f"m {x:.0f} {y + r * 1.9:.0f} l {x - r * 0.9:.0f} {y + r * 0.2:.0f} b {x - r * 1.4:.0f} {y - r * 1.2:.0f} "
+                 f"{x + r * 1.4:.0f} {y - r * 1.2:.0f} {x + r * 0.9:.0f} {y + r * 0.2:.0f} l {x:.0f} {y + r * 1.9:.0f}")
+    letters = list(text.strip().upper())
+    per = max(3, int(min(6.0, 70 / max(1, len(letters)))))
+    typed = "".join(f"{{\\k{per}}}{_esc(ch) if ch != ' ' else ' '}" for ch in letters)
+    return [f"Dialogue: 6,{_ts(start)},{_ts(end)},Mark,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord{max(2, size // 12)}\\shad0"
+            f"\\1c{pin}&\\3c&HFFFFFF&\\fad(80,200)\\org({x:.0f},{y + r * 1.9:.0f})\\fscy30\\t(0,150,\\fscy110)"
+            f"\\t(150,220,\\fscy100)}}{pin_shape}",
+            f"Dialogue: 6,{_ts(start + 0.15)},{_ts(end)},BubbleText,,0,0,0,,{{\\an4\\pos({x + r * 1.8:.0f},{y + r * 0.2:.0f})"
+            f"\\fn{font}\\fs{size}\\bord{max(6, size // 4)}\\3c&HFFFFFF&\\4c&HFFFFFF&\\fad(0,200)}}{typed}"]
+
+
+def cite_events(text: str, start: float, end: float, w: int, h: int, font: str = "DejaVu Sans") -> list[str]:
+    """The small on-screen source credit explainers carry: 'SOURCE: FTC, 2025' in the bottom-left corner."""
+    from .captions import _esc
+    size = max(16, int(min(w, h) * 0.022))
+    label = text.strip()
+    if not label.lower().startswith(("source", "sources", "data")):
+        label = f"Source: {label}"
+    return [f"Dialogue: 6,{_ts(start)},{_ts(end)},Mark,,0,0,0,,{{\\an1\\pos({w * 0.035:.0f},{h * 0.975:.0f})\\fn{font}"
+            f"\\fs{size}\\1c&H00222222&\\1a&H30&\\bord{max(3, size // 5)}\\3c&H00F2ECDF&\\3a&H40&\\fad(200,200)}}"
+            f"{_esc(label.upper())}"]

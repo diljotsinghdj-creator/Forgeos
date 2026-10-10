@@ -25,6 +25,10 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 include = ["creatorforge_worker*"]
+
+[tool.setuptools.package-data]
+"creatorforge_worker.media" = ["world.json"]
+
 [tool.pytest.ini_options]
 markers = ["ffmpeg: needs ffmpeg"]
 filterwarnings = ["ignore::DeprecationWarning"]

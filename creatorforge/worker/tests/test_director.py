@@ -159,6 +159,20 @@ def test_pen_marks_and_bubbles_belong_to_the_last_picture_of_their_line():
     assert beats[2]["bubble"] == "think:I will cancel it later" and beats[3]["draw"] == "arrow"
 
 
+def test_map_chapter_quote_place_and_cite_lines_are_directions_not_narration():
+    from creatorforge_worker import director as d
+    raw = ("The Trap Test Video\nTitle: The trap test\n\nYou quit in January. It still charged you.\nVisual: A calendar\n"
+           "Visual: A phone\nPlace: Paris · 1925\nCite: FTC, 2025\n\nTwelve pounds a month, every single month.\n"
+           "Visual: A coin\nMap: London → Paris\n\nCheck your statement tonight please.\nVisual: A statement\n"
+           "Chapter: Part 1 | The trap\n")
+    spec = d.ProductionSpec.from_dict({"script": raw, "duration_s": 20, "fast_cuts": False})
+    assert "Paris" not in spec.script and "FTC" not in spec.script and "trap" not in spec.script.lower()
+    assert spec.fast_cuts                                     # a shot list always cuts on its lines
+    beats = [b for s in d.direct_script(None, spec).scenes for b in s.beats]
+    assert beats[0]["extra"] == {"place": "Paris · 1925", "cite": "FTC, 2025"} and beats[1]["extra"] == {}
+    assert beats[2]["extra"] == {"map": "London → Paris"} and beats[3]["extra"] == {"chapter": "Part 1 | The trap"}
+
+
 def test_writer_text_and_stock_lines_belong_to_their_spoken_line():
     from creatorforge_worker import director as d
     raw = ("Six months becomes seventy-two pounds.\nVisual: Calendar pages flipping\nText: £12 × 6 = £72\n"
