@@ -30,6 +30,19 @@ class Clip:
     transition: str  # transition INTO this clip (ignored for the first clip)
     video: Path | None = None  # AI-generated or imported clip; when absent the still gets camera motion
     video_duration: float | None = None
+    reveal: str = ""  # animated looks: "draw" (white -> line sketch -> picture) or "sketch" (line art -> picture)
+
+
+def _reveal(kind: str) -> str:
+    """Filter chain that makes a shot look drawn on: its own edges as dark lines on white, blended into the picture
+    over the first second. Applied on the same timeline as the shot, so camera motion continues smoothly."""
+    if kind not in ("draw", "sketch"):
+        return ""
+    ramp = lambda t0, d: f"clip((T-{t0})/{d},0,1)"  # noqa: E731
+    show = ramp(0.45, 0.45) if kind == "draw" else ramp(0.15, 0.45)
+    lines = (f"(255*(1-{ramp(0.0, 0.4)})+A*{ramp(0.0, 0.4)})" if kind == "draw" else "A")
+    return (f",format=gbrp,split[rv_a][rv_b];[rv_a]edgedetect=low=0.08:high=0.25,format=gbrp,negate[rv_s];"
+            f"[rv_s][rv_b]blend=all_expr='{lines}*(1-{show})+B*{show}'")
 
 
 # Retention: TTS engines pad every line with silence and some pause too long between sentences. Cut the lead-in,
@@ -160,6 +173,8 @@ def _segment_args(c: Clip, frames: int, width: int, height: int) -> list[str]:
               f"zoompan={_motion(c.camera, frames)}:d={frames}:s={width}x{height}:fps={FPS},"
               f"trim=end_frame={frames},setpts=PTS-STARTPTS,format=yuv420p[v]")
         src = ["-i", str(c.image)]
+    if c.reveal:
+        vf = vf.replace(",format=yuv420p[v]", _reveal(c.reveal) + ",format=yuv420p[v]")
     return [*src, "-filter_complex", vf, "-map", "[v]", "-an", "-frames:v", str(frames), "-r", str(FPS),
             "-c:v", "libx264", "-preset", "veryfast", "-crf", "14", "-pix_fmt", "yuv420p"]
 

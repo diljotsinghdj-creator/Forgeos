@@ -192,3 +192,26 @@ def test_photo_fetch_reencodes_and_rejects_junk(tmp_path, monkeypatch):
     assert out.suffix == ".jpg" and (w, h) == (2400, 1600)
     with pytest.raises(ProviderError):
         stock_photo.fetch({"url": "https://x/bad.png", "credit": "c"}, tmp_path / "cache")
+
+
+def test_doodle_shots_are_drawn_on(tmp_path):
+    """Whiteboard reveal: the first frame is (almost) white paper, the end of the shot is the full picture."""
+    import threading
+    from creatorforge_worker.media import ff, render
+    img = tmp_path / "p.png"
+    subprocess.run(["ffmpeg", "-y", "-v", "error", "-f", "lavfi", "-i", "color=c=0x2050c0:s=270x480", "-frames:v", "1",
+                    str(img)], check=True)
+    audio = tmp_path / "a.wav"
+    subprocess.run(["ffmpeg", "-y", "-v", "error", "-f", "lavfi", "-i", "anullsrc=r=48000:cl=stereo", "-t", "3", str(audio)],
+                   check=True)
+    out = tmp_path / "o.mp4"
+    render.render_video([render.Clip(img, 2.5, "static", "cut", reveal="draw")], audio, None, 270, 480, out,
+                        tmp_path / "work", threading.Event(), grade="")
+
+    def mean(t):
+        p = tmp_path / f"f{t}.raw"
+        subprocess.run(["ffmpeg", "-y", "-v", "error", "-ss", t, "-i", str(out), "-frames:v", "1", "-f", "rawvideo",
+                        "-pix_fmt", "gray", str(p)], check=True)
+        data = p.read_bytes()
+        return sum(data) / len(data)
+    assert mean("0.03") > 230 and mean("2.0") < 120     # white paper first, the blue picture at the end

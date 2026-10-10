@@ -40,6 +40,11 @@ def _clip_words(text: str, n: int) -> str:
 VIDEO_NEGATIVE = ("camera shake, shaky handheld footage, wobble, jitter, flicker, frozen frame, morphing, warped face, "
                   "distorted face, uncanny face, melting, extra limbs, distorted hands, motion blur, out of focus, blurry, "
                   "low resolution, text, watermark, overexposed, cartoonish artifacts")
+# Animated looks: keep the drawing style rock-steady while things move; reject drift into live action.
+VIDEO_NEGATIVE_ANIMATED = ("camera shake, wobble, jitter, flicker, frozen frame, morphing, melting, extra limbs, "
+                           "style change, photorealistic, live action, blurry, low resolution, text, watermark")
+VIDEO_STYLE_ANIMATED = ("Smooth fluid animation, consistent art style and line work in every frame, steady camera with "
+                        "one gentle move, no camera shake, clean crisp edges")
 # Every AI clip: one smooth, stabilised move - never handheld shake - and crisp detail.
 VIDEO_STYLE = ("Smooth slow cinematic camera movement on a stabilised gimbal, steady frame, no camera shake, "
                "natural physics, crisp sharp focus, consistent details")
@@ -498,13 +503,18 @@ def _image_prompt(visual: str, emotion: str, s: "ShotPlan", spec: ProductionSpec
         if c.name.lower() in text:
             parts.append(f"{c.name}: {c.description}")
     parts.append(style)
-    return ". ".join(parts), NEGATIVE + (FACELESS_NEGATIVE if faceless else ", blank expression, dead eyes")
+    negative = NEGATIVE + (FACELESS_NEGATIVE if faceless else ", blank expression, dead eyes")
+    if animated:
+        negative += ", photorealistic, photograph, live action, 3d render of a real person"
+    return ". ".join(parts), negative
 
 
 def prompt_forge(plan: ProductionPlan, spec: ProductionSpec, only: int | None = None) -> None:
     """Builds each scene's generation prompt from the shot, Director Mode and characters."""
     t = TEMPLATES[spec.template]
     style = STYLE_PRESETS[spec.style][1] if spec.style in STYLE_PRESETS else (spec.style or t.style)
+    animated = spec.style in ANIMATED_STYLES
+    vstyle = VIDEO_STYLE_ANIMATED if animated else VIDEO_STYLE
     for i, s in enumerate(plan.scenes):
         if only is not None and i != only:
             continue
@@ -519,14 +529,14 @@ def prompt_forge(plan: ProductionPlan, spec: ProductionSpec, only: int | None = 
             # Per-line AI video: each beat's still is animated with a move that fits what the line shows.
             b["video_prompt"] = (f"Subtle natural movement: {b['visual'].rstrip('.')}. Camera: "
                                  f"{('slow push in', 'slow dolly sideways', 'slow pull back', 'gentle orbit')[(i + k) % 4]}. "
-                                 f"{style}. {VIDEO_STYLE}")
+                                 f"{style}. {vstyle}")
         if s.beats:
             s.prompt, s.negative = s.beats[0]["prompt"], s.beats[0]["negative"]
         # The animation prompt leads with motion: image-to-video models already see the still.
         camera = spec.camera or s.camera or "slow cinematic camera move"
         motion = s.motion or f"subtle natural movement in the scene: {s.visual.rstrip('.')}"
-        s.video_prompt = f"{motion}. Camera: {camera}. {s.visual.rstrip('.')}. {style}. {VIDEO_STYLE}"
-        s.video_negative = VIDEO_NEGATIVE
+        s.video_prompt = f"{motion}. Camera: {camera}. {s.visual.rstrip('.')}. {style}. {vstyle}"
+        s.video_negative = VIDEO_NEGATIVE_ANIMATED if animated else VIDEO_NEGATIVE
 
 
 # ---- script mode ---------------------------------------------------------------------------

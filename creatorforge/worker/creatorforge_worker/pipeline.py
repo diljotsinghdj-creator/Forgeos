@@ -649,6 +649,13 @@ class Pipeline:
                 if spec.auto_edit and video is None and shot.get("emotion", "").lower() in SHOCK_EMOTIONS:
                     cam = "punch"
                 clips.append(render.Clip(jdir / sc["image"], d, cam, transition(i, shot), video))
+        # Drawn looks: whiteboard shots are drawn on one by one; line-art styles open each scene as a sketch.
+        if spec.style == "doodle":
+            for c in clips:
+                c.reveal = "draw"
+        elif spec.style in ("explainer_2d", "comic", "noir_graphic"):
+            for j in firsts:
+                clips[j].reveal = "sketch"
         for c in clips:
             if c.video is not None:
                 c.video_duration = ff.duration(c.video)

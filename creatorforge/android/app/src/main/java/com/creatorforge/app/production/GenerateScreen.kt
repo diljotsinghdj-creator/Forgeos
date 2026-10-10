@@ -40,6 +40,8 @@ private val FALLBACK_STYLES = listOf(
     Choice("retro_cartoon", "Retro cartoon"), Choice("pixel_art", "Pixel art"), Choice("neon", "Neon synthwave"),
     Choice("collage", "Mixed-media collage")
 )
+private val ANIMATED_LOOKS = setOf("animated_3d", "anime", "claymation", "watercolor", "comic", "explainer_2d", "doodle",
+    "painterly", "noir_graphic", "paper_cutout", "isometric", "low_poly", "retro_cartoon", "pixel_art", "neon", "collage")
 private val STAGE_LABELS = mapOf(
     "director" to "AI Director • script & shots", "prompts" to "PromptForge", "images" to "Scene visuals",
     "review" to "Storyboard review", "narration" to "Narration", "clips" to "AI video clips", "captions" to "Captions", "music" to "Music", "assembly" to "Edit & render",
@@ -371,16 +373,21 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                 }
                 Row { Switch(sfx, { sfx = it }); Text(" Sound effects (whooshes, hits, pops)", Modifier.padding(top = 12.dp)) }
                 Row { Switch(music, { music = it }); Text(" Music", Modifier.padding(top = 12.dp, end = 16.dp)); Switch(captions, { captions = it }); Text(" Captions", Modifier.padding(top = 12.dp)) }
+                val presets = caps?.styles?.takeIf { it.isNotEmpty() } ?: FALLBACK_STYLES
+                Label("VISUAL STYLE (swipe for animated looks)")
+                ChipRow(listOf("" to "Template") + presets.map { it.id to it.name } + listOf("__custom" to "Custom…"),
+                    if (customLook) "__custom" else style) { choice ->
+                    customLook = choice == "__custom"
+                    style = if (customLook) "" else choice
+                }
+                if (customLook) OutlinedTextField(style, { style = it }, Modifier.fillMaxWidth(), label = { Text("Describe the look") })
+                if (style in ANIMATED_LOOKS) Text(when (style) {
+                    "doodle" -> "Whiteboard look: every shot is drawn on - white paper, line sketch, then the finished drawing."
+                    "explainer_2d", "comic", "noir_graphic" -> "Each scene opens as line art that fills in. Characters keep expressive cartoon faces."
+                    else -> "Animated look: characters keep expressive cartoon faces, even with AI video."
+                }, color = Color.Gray, fontSize = 12.sp)
                 TextButton({ director = !director }) { Text(if (director) "▾ Director Mode" else "▸ Director Mode", color = Gold) }
                 if (director) {
-                    val presets = caps?.styles?.takeIf { it.isNotEmpty() } ?: FALLBACK_STYLES
-                    Label("LOOK")
-                    ChipRow(listOf("" to "Template") + presets.map { it.id to it.name } + listOf("__custom" to "Custom…"),
-                        if (customLook) "__custom" else style) { choice ->
-                        customLook = choice == "__custom"
-                        style = if (customLook) "" else choice
-                    }
-                    if (customLook) OutlinedTextField(style, { style = it }, Modifier.fillMaxWidth(), label = { Text("Describe the look") })
                     OutlinedTextField(mood, { mood = it }, Modifier.fillMaxWidth(), label = { Text("Mood") })
                     OutlinedTextField(camera, { camera = it }, Modifier.fillMaxWidth(), label = { Text("Camera direction") })
                     OutlinedTextField(characters, { characters = it }, Modifier.fillMaxWidth(), minLines = 2,
