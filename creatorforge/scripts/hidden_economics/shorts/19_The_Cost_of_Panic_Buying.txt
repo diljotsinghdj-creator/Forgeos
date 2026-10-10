@@ -12,7 +12,7 @@ In this fictional advert, your boiler could fail. Offer ends midnight.
 Visual: A torn paper advert with a red warning banner pinned to a desk, text unreadable
 Text: FICTIONAL ADVERT · ENDS MIDNIGHT
 
-You picture a freezing house, and you tap buy.
+So you picture a freezing house, and you tap buy.
 Visual: Frost creeping across the inside of a window at night
 Stock: frosty window winter
 
@@ -31,7 +31,7 @@ Many UK online purchases can be cancelled within fourteen days.
 Visual: A paper calendar taped to a desk, fourteen days linked by a red pencil line
 Chart: 0 → 14 | days to cancel many online buys
 
-Exceptions apply, so read your terms next morning.
+There is a catch. Exceptions apply, so read your terms next morning.
 Visual: Morning light falling across a printed contract and a pen
 Text: EXCEPTIONS APPLY
 

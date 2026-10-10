@@ -12,9 +12,9 @@ Researchers wired up people in seventeen countries and played them news.
 Visual: A world map taped to a desk, red pins in scattered countries joined by red string to a pair of fingertip sensors
 Chart: 17 | countries · same news clips
 
-Bad stories triggered stronger body responses than good ones.
+Their bodies told the real story. Bad news hit harder than good.
 Visual: A paper pulse readout taped beside a newspaper clipping, its line spiking in tall red peaks
-Text: NEGATIVE NEWS = STRONGER REACTION
+Text: BAD NEWS · STRONGER BODY RESPONSE
 
 Yet many people showed no such bias at all.
 Visual: A row of identical paper silhouettes pinned to a corkboard, one circled in red pen
@@ -24,7 +24,7 @@ So why does bad news still feel everywhere?
 Visual: A street newsstand crowded with papers, every front page dark, headlines blurred
 Stock: newspaper stand street
 
-Vivid stories come to mind easily, so they feel common.
+Vivid stories come to mind easily, so they only feel common.
 Visual: A wall covered in pinned newspaper clippings, red string criss-crossing between them, text unreadable
 Text: EASY TO RECALL ≠ COMMON
 

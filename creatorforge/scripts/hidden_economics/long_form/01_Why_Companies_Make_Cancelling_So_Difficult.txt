@@ -8,7 +8,10 @@ Nearly ten million unwanted subscriptions. Still paid.
 Visual: An old photograph of a bedroom wall with a coin slot cut into it, pound coins dropping through the slot on their own
 Text: ~10 MILLION UNWANTED SUBSCRIPTIONS
 
-That is the government's own estimate, costing around one point six billion pounds a year.
+That is the government's own estimate.
+Visual: A typed government report lying on a desk under a lamp, one figure ringed in red pen, text unreadable
+
+Together they cost around one point six billion pounds a year.
 Visual: A government report with a red wax seal, a trail of real coins spilling out from between its pages
 Chart: £1.6bn | a year on unwanted subscriptions
 
@@ -72,16 +75,19 @@ If one in ten leaves, a hundred thousand pounds walks out each month.
 Visual: A hand sweeping coins off the edge of a ledger page, the coins tumbling into darkness
 Text: −£100,000 A MONTH (ILLUSTRATION)
 
-So the business has a reason to care how easy the door is to find.
+So the business has a reason to care
+Visual: A ledger page with its loss column circled twice in red pen, figures blurred
+
+how easy the door is to find.
 Visual: An old photograph of a long corridor with one small door at the far end, half in shadow
 
-Wanting customers to stay is perfectly legitimate.
+Yet wanting customers to stay is perfectly legitimate.
 Visual: A shopkeeper's hands passing a paper bag across a counter, a coffee cup beside the till
 
 Good products, fair prices and honest reminders all keep people paying.
 Visual: A handwritten reminder note pinned beside a phone, text unreadable
 
-The problem starts when design, not value, is the reason they remain.
+The real problem starts when design, not value, is the reason they remain.
 Visual: Two doors cut from old photographs side by side, one wide and bright, the other narrow and shadowed
 
 How hidden is that door in practice? In twenty twenty-four, regulators went looking.
@@ -110,7 +116,7 @@ Chart: 66.8% | showed more than one
 The most common problem struck at the very moment of signing up.
 Visual: A fingertip touching a glowing purchase button on a phone, text unreadable
 
-Many gave no way to switch off auto-renewal while signing up.
+Many gave no way to even switch off auto-renewal while signing up.
 Visual: A light switch taped over with brown parcel tape, a hand reaching for it and stopping
 Text: NO OPTION TO TURN OFF AUTO-RENEW
 
@@ -126,16 +132,22 @@ Possible tricks are evidence, not a verdict.
 Visual: An old photograph of a judge's gavel resting on its block beside a sealed evidence envelope
 Text: EVIDENCE, NOT A VERDICT
 
-But remember Sam. Sam's trial had no tricks at all, and Sam still paid.
+But remember Sam.
+Visual: The cut-out silhouette of Sam on the bus seat again, the phone still glowing in their hands
+
+Sam's trial had no tricks at all, and Sam still paid.
 Visual: The same photograph of the sofa, the television now off, the mug empty
 
 So do businesses even need tricks?
 Visual: A thumb hovering over a plain, honest-looking button on a phone, text unreadable
 Text: DO THEY EVEN NEED TRICKS?
 
-In two thousand and six, two economists followed the money into three American gyms.
-Visual: An archival photograph of a gym floor with rows of exercise machines and nobody on them
+In two thousand and six, two economists followed the money.
+Visual: Two figures seen from behind at a cluttered desk, ledgers and receipts piled high under a lamp
 Text: DellaVigna & Malmendier, AER 2006
+
+It led into three American gyms.
+Visual: An archival photograph of a gym floor with rows of exercise machines and nobody on them
 Stock: empty gym at night
 
 They tracked seven thousand seven hundred and fifty-two members over three years.
@@ -146,14 +158,20 @@ Members on monthly plans paid over seventy dollars a month.
 Visual: A gym membership card lying on a bank statement, a dollar bill folded beside it
 Text: $70+ A MONTH
 
-How often did they go? On average, just four point three times a month.
+How often did they go?
+Visual: A gym membership card held between two fingers, a red question mark drawn beside it
+
+On average, just four point three times a month.
 Visual: A gym visit card with only four stamps on it, the rest of the boxes empty
 Text: 4.3 VISITS A MONTH
 
 These were people who had signed up precisely to get fit.
 Visual: Running shoes still in their box, tissue paper untouched, on a bedroom floor
 
-That is over seventeen dollars a visit. A ten-visit pass worked out at ten.
+That is over seventeen dollars a visit.
+Visual: A single stamp on a gym visit card beside a small stack of dollar bills, a red circle around the stack
+
+A ten-visit pass worked out at ten.
 Visual: Two stacks of coins on a receipt, a pencil circling the taller one
 Chart: $17 vs $10 | monthly plan per visit, 10-visit pass
 
@@ -167,25 +185,28 @@ Visual: An old photograph of an open door with daylight pouring through, nothing
 Annual members had to sign up again to keep going.
 Visual: A hand signing a renewal form, the pen moving across the line
 
-Monthly members renewed automatically, without lifting a finger.
+But monthly members renewed automatically, without lifting a finger.
 Visual: A circular arrow drawn in chalk on a slate, chalk dust lifting off it
 
-And they were seventeen percent more likely to still be enrolled after a year.
+They were seventeen percent more likely to still be enrolled a year later.
 Visual: A year of calendar pages fanned out, a gym card clipped to the last one
 Chart: 0% → 17% | more likely still enrolled a year on
 
 The researchers pointed to overconfidence. Members expected to go far more often.
 Visual: A handwritten weekly plan with gym ticked on every day, pinned above an empty gym bag
 
-They were paying for the person they planned to become.
+They were actually paying for the person they planned to become.
 Visual: A cut-out silhouette of an athlete pasted over an old photograph of an empty gym bench
 Text: PAYING FOR A FUTURE SELF
 
-So the strongest trap needs no trick at all. Just a default and your optimism.
+So the strongest trap needs no trick at all.
+Visual: A mousetrap cut from an old catalogue, no spring and no bait, resting on a bank statement
+
+Just a default and your optimism.
 Visual: A paper switch already flipped to on, a small smiling sun sticker beside it
 Text: DEFAULT + OPTIMISM
 
-Every extra screen on top of that puts a price on leaving.
+Now add friction. Every extra screen puts a price on leaving.
 Visual: A staircase drawn on paper, each step taller than the last, a coin balanced on every step
 Text: FRICTION IS A PRICE ON LEAVING
 
@@ -193,9 +214,12 @@ Not every step is a trick. A security check can protect your account.
 Visual: A padlock lying on a phone showing a generic security code screen, digits blurred
 Text: NOT EVERY STEP IS A TRICK
 
-So if defaults and friction cost people billions, why not ban them? America tried.
-Visual: A newspaper photograph of a classical government building, a flag above it
+So if defaults and friction cost people billions, why not ban them?
+Visual: A rubber stamp hovering over a pile of contracts, an ink pad open beside it
 Text: WHY NOT JUST BAN IT?
+
+America tried.
+Visual: A newspaper photograph of a classical government building, a flag above it
 Stock: washington dc government building
 
 In late twenty twenty-four, America's consumer regulator finalised a click-to-cancel rule.
@@ -215,14 +239,17 @@ That was six days before businesses had to comply.
 Visual: A calendar page with six days crossed out in red pen, the seventh circled
 Text: 6 DAYS BEFORE IT APPLIED
 
-So why strike it down? The court never said easy cancelling was a bad idea.
+So why strike it down?
+Visual: A gavel cut-out lying across the torn document, a red question mark drawn beside it
+
+The court never said easy cancelling was a bad idea.
 Visual: A heavy law book lying open, its pages turning in a draught
 
-It ruled the regulator had skipped a required cost analysis.
+Instead, it ruled the regulator had skipped a required cost analysis.
 Visual: A ledger page with one completely empty column, a pencil lying across it
 Text: PROCEDURE, NOT PRINCIPLE
 
-Britain chose a different route, and its rules are already law.
+But Britain chose a different route, and its rules are already law.
 Visual: An old postcard of a parliament building beside a river, pinned to a map of London
 Text: DMCC ACT 2024
 Stock: houses of parliament london
@@ -250,7 +277,7 @@ Picture two fictional cancellation journeys.
 Visual: Two phones side by side on a sheet of paper, both screens lit, text unreadable
 Text: FICTIONAL INTERFACES
 
-In the first, you choose cancel and see the date your access ends.
+In the first, you tap cancel and see when your access ends.
 Visual: A phone showing a generic confirmation with a large tick, text unreadable, a calendar date circled beside it
 Text: CANCEL › ACCESS ENDS 30 JUNE · DONE
 
@@ -265,18 +292,24 @@ Text: STAY? PAUSE? CONTINUE?
 That second journey is the one Sam found in March.
 Visual: The cut-out silhouette of Sam on the sofa, a phone in hand, a March calendar page behind
 
-Sam pressed pause instead of cancel, and paid again the next month.
+Sam pressed pause, not cancel, and paid ten pounds again the next month.
 Visual: A bank statement with two identical lines circled in red, a pause symbol drawn beside them
 Text: −£10 AGAIN (ILLUSTRATION)
 
-Both may offer a discount to stay. That is fine. Only one lets you go.
+Both may offer a discount to stay. That is fine.
+Visual: Two paper discount coupons pinned side by side, each ringed in red, text unreadable
+
+Only one lets you go.
 Visual: An old exit sign lying on paper, an arrow drawn from it towards the edge of the page
 
-Remember the sweep. What was often missing was simply how and when to leave.
+Remember those six hundred and forty-two sites.
+Visual: The printed screenshots from the sweep laid edge to edge again, red circles on most of them
+
+What was often missing was simply how and when to leave.
 Visual: A blank paper map with no route drawn, a compass lying on it
 Text: MISSING: HOW TO LEAVE
 
-The difference is not politeness. It is control.
+The real difference is not politeness. It is control.
 Visual: A hand gripping a ship's wheel cut from an old engraving
 
 So how does Sam take back control?
@@ -315,7 +348,10 @@ Text: KEEP THE PROOF
 Ten minutes, once, does what willpower every month cannot.
 Visual: An old brass egg timer on a stack of bank statements, the last grains falling
 
-Two forgotten subscriptions go. At fourteen pounds each, that is over three hundred pounds a year.
+Two forgotten subscriptions go.
+Visual: Two paper subscription cards snipped in half on a bank statement, scissors lying beside them
+
+At fourteen pounds each, that is over three hundred pounds a year.
 Visual: Coins sliding across a bank statement and into a glass jar
 Chart: 2 × £14 × 12 = £336 | two forgotten subs a year (illustration)
 
@@ -325,7 +361,7 @@ Visual: The photograph of the sofa again, a fresh mug steaming, the television g
 Remember the gym members paying seventeen dollars a visit.
 Visual: The archival photograph of the empty gym, a red circle drawn around one unused machine
 
-They were not foolish. They trusted a future version of themselves.
+They were not foolish. They only trusted a future version of themselves.
 Visual: A cut-out silhouette stepping out of a doorway into a sunlit street
 
 A good subscription earns its next payment by staying useful.
@@ -339,6 +375,6 @@ Subscriptions work on your memory over months. A shop needs only seconds.
 Visual: A red paper price tag tied to a jacket sleeve cut from an old catalogue
 Text: NEXT EPISODE
 
-Next time, the crossed-out price that rewrites what you think something is worth.
+Next time, how one crossed-out price rewrites what you think something is worth.
 Visual: A red pen striking through a number on a paper price tag in one stroke, figures blurred
 Text: NEXT: THE DISCOUNT TRAP

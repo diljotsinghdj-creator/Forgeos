@@ -11,17 +11,17 @@ Text: THE NEIGHBOUR EFFECT
 Not the winner. The neighbours, who never won a penny.
 Visual: The dark newsprint house next door, a red-stamped bankruptcy notice pinned to its front door, text blurred
 
-And the bigger the prize, the more bankruptcies followed nearby.
+Even worse, the bigger the prize, the more bankruptcies followed nearby.
 Visual: Coins stacking higher beside the gold house while its long black shadow spreads over the paper houses around it
 Text: BIGGER PRIZE, MORE BANKRUPTCIES
 
-The same pull works on your street, your feed and your checkout.
+That same hidden pull works on your street, your feed and your checkout.
 Visual: A map of a street, a phone and a till receipt laid side by side, joined by one red thread
 
 By the end, you will see exactly how it works.
 Visual: A magnifying glass lying over a cut-out shop counter with a card reader on it
 
-And how to catch it in the second before you pay.
+And how to catch it in that one second before you pay.
 Visual: A hand pulling back from a card reader, a red circle drawn around the gap between finger and screen
 Text: BEFORE YOU TAP PAY
 
@@ -46,16 +46,19 @@ An economist described this pull back in eighteen ninety-nine.
 Visual: A yellowed eighteen-nineties book page beside an engraved pocket watch, dust on the paper
 Text: 1899
 
-Thorstein Veblen watched wealthy Americans buy things largely to be seen owning them.
+Thorstein Veblen watched wealthy Americans spend.
 Visual: An archival photograph of a grand Gilded Age mansion, carriages outside, figures seen only from behind
 Text: THORSTEIN VEBLEN
 Stock: 1890s new york street
+
+What were they largely buying? The chance to be seen owning things.
+Visual: Cut-out silhouettes in top hats parading past a shop window, each holding a purchase up high
 
 He called it conspicuous consumption.
 Visual: A gold pocket watch cut-out snapping open over a torn Victorian newspaper advertisement
 Text: CONSPICUOUS CONSUMPTION
 
-It is not simple vanity. It is how humans signal success and belonging.
+Yet it isn't simple vanity. It's how humans signal success and belonging.
 Visual: A peacock feather cut from a vintage botanical print, laid across a row of cut-out silhouettes
 
 But does it change what ordinary people actually spend?
@@ -77,7 +80,7 @@ Visual: Two front doors cut from photographs, side by side, a garden fence drawn
 Players there win cash, and some win a brand-new car.
 Visual: A red ribbon tied around a new car cut from an advert, parked on a narrow paper street
 
-Here is the first surprise. Most car winners did not keep it.
+Here's the first surprise. Most car winners did not keep it.
 Visual: The car cut-out sliding off the edge of the page, a sold tag tied to its mirror, text unreadable
 Text: MOST WINNERS SOLD THE CAR
 
@@ -88,24 +91,30 @@ Neighbours who had not even played bought more cars than similar households else
 Visual: Car keys cut from a nineteen-sixties advert dropping into an open paper palm
 Text: NON-PLAYERS BOUGHT MORE CARS
 
-Their income had not changed. Their street had.
+Their income had not changed. Only their street had.
 Visual: The same paper street, a second new car cut-out now parked beside the first
 
 Just like Sam. Comparison is local, and it is visible.
 Visual: A hand easing a lace curtain aside, the car across the road framed in the gap
 Text: LOCAL + VISIBLE
 
-But a new car is not bankruptcy. So where does the money come from?
+But a new car is not bankruptcy.
+Visual: A glossy car cut-out beside a red-stamped bankruptcy notice, a wide gap drawn between them, text blurred
+
+So where does the money come from?
 Visual: A nearly empty wallet lying open, a single coin rolling out across the paper
 Text: WHERE DOES THE MONEY COME FROM?
 
-Researchers in Canada matched lottery wins to bankruptcy records, street by street.
+The answer? Canadian researchers matched lottery wins to bankruptcy records, street by street.
 Visual: A snowy Canadian street photograph pinned to a map, red string running to a stack of court records
 Stock: snowy suburb houses evening
 
-Their postcode areas were tiny, often around thirteen households, close enough to see every driveway.
+Their postcode areas were tiny, often only around thirteen households.
 Visual: Thirteen tiny paper houses pinned in a ring on a map, one with a gold coin beside it
 Chart: 13 | households in a typical postcode area
+
+Close enough to see every driveway.
+Visual: A cut-out window with a lace curtain, a row of paper driveways visible through it
 
 This is the study behind that opening fact. And it hides a twist.
 Visual: The gold house from the opening, a red circle drawn around its neighbours
@@ -116,14 +125,14 @@ Visual: Torn financial ledger pages fanned open, halftone numbers unreadable
 More visible assets, like houses and cars.
 Visual: A toy car cut from a vintage catalogue parked on a stack of red-stamped bills
 
-Not more savings. Not more cash in the bank.
+But not more savings. Not more cash in the bank.
 Visual: An empty glass savings jar, a single coin lying at the bottom
 Text: VISIBLE UP · SAVINGS FLAT
 
-You cannot see a neighbour's pension. You can see their driveway.
+You never see a neighbour's pension. You can see their driveway.
 Visual: A sealed pension envelope in shadow beside a bright photograph of a gleaming car on a driveway
 
-They had borrowed to keep up with what they could see.
+So they had borrowed to keep up with what they could see.
 Visual: A pen signing a loan agreement, ink spreading into the paper, text unreadable
 Text: BORROWED TO KEEP UP
 
@@ -166,11 +175,14 @@ But it fits what psychologists call hedonic adaptation.
 Visual: A pressed flower on paper, fresh at one end of a row, brown and wilted at the other
 Text: HEDONIC ADAPTATION
 
-Sam knows the feeling. Last year's new phone thrilled for about a fortnight.
-Visual: A phone in its fresh box beside the same phone two weeks later, its screen cracked
+Sam knows the feeling.
+Visual: The cut-out figure of Sam at the kitchen window, an empty phone box on the sill
 Text: SAM · FICTIONAL
 
-The new thing thrills, then turns normal, then the next upgrade looks reasonable.
+Last year's new phone? It thrilled for about a fortnight.
+Visual: A phone in its fresh box beside the same phone two weeks later, its screen cracked
+
+The new thing thrills, then turns normal, until the next upgrade looks reasonable.
 Visual: A row of three phones cut from adverts, each newer than the last, an arrow pointing past the end
 
 The finish line keeps moving. So how do people keep paying?
@@ -194,7 +206,7 @@ Text: CARD BIDS ROUGHLY 2× CASH
 Same seats, same game. Only the way of paying had changed.
 Visual: Two identical paper tickets side by side, print unreadable
 
-One explanation is that a card pushes the pain of paying into the future.
+One explanation? A card pushes the pain of paying into the future.
 Visual: A bill envelope pushed to the back of a drawer, the drawer sliding shut
 Text: THE PAIN OF PAYING, DELAYED
 
@@ -213,7 +225,7 @@ Fifty feels manageable. Six hundred might not.
 Visual: A single banknote beside a tall stack of twelve
 Text: £50 FEELS SMALL · £600 IS THE COST
 
-But it is still six hundred pounds, and late fees can push it higher.
+But it's still six hundred pounds, and late fees can push it higher.
 Visual: Twelve calendar pages pinned in a row, a red circle on each, one with a late-fee slip attached
 Text: 12 PAYMENTS · STILL £600+
 
@@ -251,9 +263,12 @@ And over four times as likely to keep missing bills or credit payments.
 Visual: Red-stamped envelopes piling up on a doormat, text unreadable
 Chart: 27% vs 6% | heavy users, non-users
 
-That is a link, not proof. People already struggling may simply use it more.
+That's only a link, not proof.
 Visual: A finger pressing calculator keys above a pile of bills
 Text: LINK, NOT PROOF
+
+People already struggling may simply use it more.
+Visual: A worn purse on a kitchen table, bills tucked under it and a phone lit beside it
 
 But since fifteenth July twenty twenty-six, third-party instalment lenders are regulated in Britain.
 Visual: A calendar page torn away to reveal July, the fifteenth circled in red ink, an official seal beside it
@@ -273,7 +288,7 @@ It never asks why you wanted the thing at all.
 Visual: Tissue paper spilling out of a shopping bag, a red question mark drawn above it
 Text: CAN YOU PAY? ≠ WHY BUY?
 
-So how do you tell a purchase for you from a purchase for an audience?
+So how do you tell buying for yourself from buying for an audience?
 Visual: A shop mannequin cut from a vintage photograph, rows of cut-out silhouettes watching it
 Text: OBJECT OR AUDIENCE?
 
@@ -287,9 +302,12 @@ So before you tap pay, ask three questions. It takes ten seconds.
 Visual: Three playing cards dealt face down onto a sheet of paper
 Text: THREE QUESTIONS
 
-First, what will I actually use this for, how often, and instead of what?
+First, what will I actually use this for?
 Visual: The first card flipped, a worn rucksack pinned beside it
 Text: 1. WHAT WILL I USE IT FOR?
+
+How often, and instead of what?
+Visual: The rucksack beside a calendar page and an unopened parcel, a red question mark between them
 
 Second, what is the total cost? Monthly figure, times months, plus any fees.
 Visual: The second card flipped, twelve coins laid in a neat row beside it
@@ -302,7 +320,10 @@ Text: 3. IF NOBODY COULD SEE IT?
 Sam tries it on the watch. Use, rarely. Audience, the drive opposite.
 Visual: The watch cut-out with a red line drawn from it to the car on the driveway across the road
 
-So Sam closes the tab. Fifty pounds a month stays put, every month for a year.
+So Sam closes the tab.
+Visual: A hand turning a phone face down on the windowsill beside the jam jar
+
+Fifty pounds a month stays put, every month for a year.
 Visual: A coin rolling across the paper into a glass savings jar beside a face-down phone
 Text: £50 A MONTH, KEPT
 
@@ -313,7 +334,7 @@ Try the test today, on the last three things you bought.
 Visual: Three shopping bags and their receipts laid out in a row, a pencil beside them
 Text: TEST YOUR LAST 3 BUYS
 
-Next time a new car appears on your street, notice the feeling.
+Notice the feeling, next time a new car appears on your street.
 Visual: The paper street again, a fresh car cut-out arriving, a silhouette watching from a window
 
 It is not need. It is comparison, and comparison has a price.
@@ -323,6 +344,10 @@ Text: COMPARISON HAS A PRICE
 But there is a stranger bargain still to come.
 Visual: A phone lighting up on a dark bedside table, a red circle drawn around it
 
-What if something costs nothing at checkout, yet earns a fortune from your attention?
+What if something costs nothing at checkout?
+Visual: A till receipt curling on the paper, its total ringed in red pen, figures blurred
+Text: £0 AT CHECKOUT
+
+And yet it earns a fortune from your attention.
 Visual: A phone cut-out with dozens of red strings running from its screen out to tiny paper eyes, content blurred
 Text: FREE... FOR WHOM?

@@ -8,7 +8,7 @@ Your daughter's crying. Except it isn't her.
 Visual: An old telephone receiver lying off the hook on a dark table, a paper sound-wave ribbon spilling out of it and curling across the floor
 Text: FICTIONAL SCENARIO
 
-Scammers can clone a voice from a short online clip.
+Scammers can clone a voice from only a short online clip.
 Visual: Hands holding a phone playing a generic video, a cut-out sound wave lifting off the screen, text unreadable
 Text: A SHORT CLIP IS ENOUGH
 Stock: person filming phone video
@@ -25,7 +25,7 @@ The FTC's advice is blunt. Don't trust the voice.
 Visual: A printed consumer warning pinned to a desk, one line circled in red pen, text unreadable
 Text: DON'T TRUST THE VOICE
 
-Hang up and call her on the number you already know.
+Instead, hang up and call her on the number you already know.
 Visual: A hand dialling on an old address book open beside a phone, warm lamp light
 Text: HANG UP · CALL BACK
 Stock: person making phone call home

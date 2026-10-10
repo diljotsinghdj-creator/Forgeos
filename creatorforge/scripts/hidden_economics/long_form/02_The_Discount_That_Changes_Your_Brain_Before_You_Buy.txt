@@ -12,32 +12,41 @@ In one experiment, a meaningless number tripled what people offered for a keyboa
 Visual: An old photograph of a keyboard on a set of brass scales, a pile of coins on one side towering over the other
 Text: SAME KEYBOARD · 3× THE BID
 
-Every crossed-out price pulls the same mental lever.
+Every crossed-out price pulls the same hidden lever.
 Visual: A hand pulling an old brass lever cut from a machinery catalogue, cogs beside it
 
-And the shop gets to choose the number.
+And only the shop gets to choose the number.
 Visual: A hand pinning a fresh paper price tag onto a jacket cut from an old catalogue
 
-By the end, you will know how to tell a discount from a saving,
+By the end, you'll know a discount from a real saving,
 Visual: Two glass jars on a sheet of paper, coins dropping into one while the other stays empty
 
-and how to spot the countdown clock a retailer admitted was misleading.
+and the countdown clock a retailer actually admitted was misleading.
 Visual: A red alarm clock with its hands spinning backwards, set on a folded court document
 Text: A CLOCK THAT LIED?
 
-Now watch that lever work on Leah. She is fictional, and it's Saturday night.
-Visual: A cut-out silhouette of a woman seen from behind on a sofa, a laptop glowing on her knees
+Now watch that lever work on Leah.
+Visual: The brass lever cut-out pinned beside a cut-out silhouette of a woman seen from behind
 Text: LEAH · FICTIONAL
 
-She is scrolling a shop and sees a jacket. One hundred pounds, crossed out.
+She is fictional, and it's Saturday night.
+Visual: The silhouette now on a sofa, a laptop glowing on her knees, a crescent moon cut from paper above
+
+Then, scrolling a shop, she spots a jacket.
 Visual: A laptop showing a generic shop page with a jacket photo, text unreadable
+
+One hundred pounds, crossed out.
+Visual: A paper price tag on the jacket's collar, its number struck through in red pen, figures blurred
 Text: WAS £100 (FICTIONAL)
 
 Underneath, in red, sixty pounds.
 Visual: A red sale sticker stuck on a jacket sleeve, a yellow circle drawn round it
 Text: NOW £60
 
-It feels like forty pounds saved. But ten minutes ago, she wanted no jacket.
+It feels like forty pounds saved.
+Visual: A small pile of coins pushed towards her side of the page, a yellow arrow drawn beside it
+
+But ten minutes ago, she wanted no jacket.
 Visual: An open wardrobe cut from an old photograph, already full of jackets
 
 So did Leah save forty pounds, or find a reason to spend sixty?
@@ -47,10 +56,14 @@ Text: SAVED £40 OR SPENT £60?
 The answer starts with a wheel of fortune in a laboratory.
 Visual: A small wooden wheel of fortune pasted onto graph paper, its pointer mid-spin
 
-In nineteen seventy-four, two psychologists rigged a wheel to stop on ten or sixty-five.
+In nineteen seventy-four, two psychologists rigged a wheel.
 Visual: An archival photograph of a nineteen-seventies university lecture room, a wheel of fortune drawn onto the blackboard
 Text: Tversky & Kahneman, Science 1974
 Stock: 1970s university campus
+
+It could only stop on ten or sixty-five.
+Visual: The wooden wheel close up, two of its segments ringed in red pen, a pin jammed beside the pointer
+Text: 10 OR 65
 
 Then they asked what share of United Nations members are African countries.
 Visual: An old school globe sitting on a map of Africa, a pencil resting against it
@@ -64,11 +77,11 @@ A number everyone could see was random moved their answers by twenty points.
 Visual: The wooden wheel again, now still, a red circle around its pointer
 Text: +20 POINTS FROM A RANDOM NUMBER
 
-Paying people for accurate answers did not make the effect go away.
+Even paying people for accurate answers did not make it go away.
 Visual: Coins scattered across a handwritten answer sheet, a pencil rolling to a stop beside them
 Text: PAYING FOR ACCURACY DIDN'T HELP
 
-Psychologists call this anchoring. The first number becomes the starting point.
+Psychologists call this anchoring. The first number becomes the hidden starting point.
 Visual: An old engraving of a ship's anchor dropping through dark water, its rope uncoiling
 Text: ANCHORING
 
@@ -90,7 +103,10 @@ Visual: The keyboard with an index card propped against it, a dollar sign drawn 
 Then each student named the most they would pay.
 Visual: A pen tip touching a blank bid sheet
 
-Students with the lowest numbers bid around sixteen dollars. The highest bid around fifty-six.
+Students with the lowest numbers bid around sixteen dollars.
+Visual: The keyboard beside a short stack of coins, a pencil mark at its top
+
+Those with the highest bid around fifty-six.
 Visual: The keyboard between a short stack of coins and a tall one
 Chart: $16 vs $56 | lowest ID numbers, highest ID numbers
 
@@ -116,7 +132,7 @@ Europe thought this mattered enough to write it into law.
 Visual: A postcard of a glass parliament building, flags outside, pinned to a map of Europe
 Stock: european parliament building
 
-Since May twenty twenty-two, an EU sale price must cite a specific earlier price.
+Since May twenty twenty-two, EU sale prices must cite a specific earlier price.
 Visual: A printed legal text with an official seal, one paragraph boxed in pen, words blurred
 Text: EU RULES, SINCE 28 MAY 2022
 
@@ -133,7 +149,10 @@ A percentage off must be measured from that thirty-day low.
 Visual: A ruler laid along a row of coin stacks, a line drawn at the lowest one
 Text: 30-DAY LOW IS THE STARTING POINT
 
-So the law can police the anchor. But surely professionals see through it anyway?
+So the law can police the anchor.
+Visual: The engraved anchor pinned flat under a judge's gavel on a sheet of legal text, words blurred
+
+But surely professionals see through it anyway?
 Visual: A row of house photographs pinned along a map of a suburb, a question mark in red
 Text: ARE EXPERTS IMMUNE?
 
@@ -142,7 +161,7 @@ Visual: An old photograph of a detached house with a for-sale sign by the path, 
 Text: Northcraft & Neale, 1987
 Stock: 1980s suburban houses
 
-Every agent toured the same property and saw the same local sales data.
+Every agent toured one property and saw the same local sales data.
 Visual: A folder of property papers fanned open, photographs and floor plans, text blurred
 
 Only one thing changed. The listing price in their pack.
@@ -191,9 +210,12 @@ Visual: Thousands of tiny printed web pages pasted edge to edge into a vast grid
 Text: ~11,000 SITES (Mathur et al., 2019)
 Stock: server room lights
 
-They found one thousand eight hundred and eighteen dark patterns, designs that steer you.
+They found one thousand eight hundred and eighteen dark patterns.
 Visual: A stack of printed web pages, a red pen circling one after another, text unreadable
 Chart: 1,818 | dark patterns found
+
+Designs that steer you.
+Visual: A cut-out shopper on a paper path, red arrows drawn on every side nudging them one way
 
 On one hundred and eighty-three sites, the claims were judged outright deceptive.
 Visual: A small pile of printed pages pulled out of the larger heap, stamped in red
@@ -211,13 +233,16 @@ In May twenty twenty-six, Britain's High Court approved a consent order.
 Visual: A newspaper photograph of a Gothic stone court building in London, steps wet with rain
 Stock: royal courts of justice london
 
-An online retailer's countdown timers and high-demand messages were confirmed as misleading.
+An online retailer's countdown timers and high-demand messages? Confirmed as misleading.
 Visual: A red alarm clock with its glass cracked, lying on a court document
 Text: HIGH COURT CONSENT ORDER, MAY 2026
 
-It gave binding undertakings to stop. Breaking them could mean contempt of court.
+It gave binding undertakings to stop.
 Visual: A pen lifting from a freshly signed document with a seal, signature blurred
 Text: BINDING UNDERTAKINGS
+
+Breaking them could even mean contempt of court.
+Visual: A pair of old iron handcuffs resting on the signed document, a red circle drawn round them
 
 So scepticism is reasonable. Yet even an honest deal hides a trap.
 Visual: A paper receipt curling under a desk lamp, figures blurred
@@ -227,17 +252,17 @@ Say Leah adds the jacket. At checkout, a voucher takes it to fifty-four.
 Visual: A phone showing a generic checkout with a voucher field filling in, text unreadable
 Chart: £60 − 10% = £54 | Leah's checkout (fictional)
 
-If she buys, she can truthfully say she paid less than the listed price.
+If she buys, she truthfully paid less than the listed price.
 Visual: A hand holding up a short paper receipt, figures blurred
 
 But this evening, she planned to spend nothing.
 Visual: A closed wallet resting on a blank shopping list
 Text: PLANNED SPEND: £0
 
-So her account would be fifty-four pounds lower than if she closed the tab.
+So she'd be fifty-four pounds poorer than if she'd closed the tab.
 Visual: A bank statement with one line circled, coins sliding off the edge of the paper
 
-That is the difference between a discount and a saving.
+That is the real difference between a discount and a saving.
 Visual: Two jars, coins tipping out of one, the other untouched and empty
 Text: DISCOUNT ≠ SAVING
 
@@ -252,12 +277,15 @@ A government-commissioned study found it at ninety-three percent of event ticket
 Visual: A pair of concert tickets with a fan of extra receipts sliding out from beneath them
 Chart: 93% | of event ticket sellers reviewed
 
-Since April twenty twenty-five, Britain requires mandatory charges in the first price you see.
+Since April twenty twenty-five, Britain requires mandatory charges in the headline price.
 Visual: A single complete price tag pinned to a jacket, extra fee slips torn away beside it
 Text: MANDATORY FEES UP FRONT · 6 APR 2025
 
-The regulator can now fine firms directly, up to ten percent of global turnover.
+The regulator can now fine firms directly.
 Visual: A heavy steel padlock snapping shut on a stack of company accounts
+
+Up to ten percent of global turnover.
+Visual: A stack of company accounts with one thin slice cut away by scissors
 Chart: 10% | maximum fine as share of global turnover
 
 So did the problem disappear? Not quite.
@@ -268,9 +296,12 @@ By November twenty twenty-five, the regulator had reviewed over four hundred bus
 Visual: Hundreds of small shop-front photographs pinned in rows on a board
 Text: 400+ BUSINESSES · 19 SECTORS
 
-It found possible problems in fourteen sectors, including drip pricing and countdown timers.
+It found possible problems in fourteen sectors.
 Visual: A grid of nineteen squares on paper, fourteen shaded in red pencil
 Text: CONCERNS IN 14 SECTORS
+
+Among them? Drip pricing and countdown timers.
+Visual: The coin-dripping tap and the red alarm clock cut-outs pinned side by side, red string between them
 
 It opened eight investigations and wrote to a hundred more businesses.
 Visual: A stack of sealed envelopes, eight of them tied with red string
@@ -292,7 +323,7 @@ Judge the final total, delivery included, not the crossed-out number.
 Visual: A finger running down a paper receipt to the bottom line, figures blurred
 Text: 2. JUDGE THE FINAL TOTAL
 
-Check the price history, or another shop, in a separate tab.
+Then check the price history, or another shop, in a separate tab.
 Visual: Two printed price charts laid side by side, a pencil comparing them
 Text: 3. COMPARE ELSEWHERE
 
@@ -300,13 +331,16 @@ For anything non-essential, sleep on it.
 Visual: A phone face down on a bedside table beside a crescent moon cut from paper
 Text: 4. WAIT OVERNIGHT
 
-None of these relies on willpower in the moment.
+Notice that none of these relies on willpower in the moment.
 Visual: A hand resting flat on a closed laptop lid, a cup of tea beside it
 
 Each one puts time and information back between the anchor and your decision.
 Visual: Two wooden blocks sliding apart on a sheet of paper, the gap between them widening
 
-And ask one question. Would I pay this if no other price were shown?
+And ask one question.
+Visual: A pencil hovering over a blank notepad, a single question mark drawn on the page
+
+Would I pay this if no other price were shown?
 Visual: A single clean price tag with no crossed-out number, figures blurred
 Text: WOULD I PAY THIS WITH NO "WAS"?
 
@@ -321,7 +355,7 @@ She still didn't need it. Fifty-four pounds stayed exactly where it was.
 Visual: A wallet slipping back into a coat pocket, coins settling inside
 Text: £54 KEPT
 
-Remember the estate agents. They were sure the number had not touched them.
+Remember the estate agents? They were sure the number had not touched them.
 Visual: The paper model house from earlier, its tiny windows going dark one by one
 
 Never refuse a real discount. Just never let one decide for you.
