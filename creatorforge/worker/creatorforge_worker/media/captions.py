@@ -74,6 +74,21 @@ def _highlight(text: str, words: set[str], color: str = "&H0037AFD4") -> str:
     return " ".join(out)
 
 
+EXPLAINER_FONT = "Archivo Black"   # free (SIL OFL) heavy grotesque; the pod installs it, DejaVu Sans otherwise
+
+
+def _have_font(name: str) -> bool:
+    import shutil
+    import subprocess
+    if not shutil.which("fc-list"):
+        return False
+    try:
+        return name.lower() in subprocess.run(["fc-list", ":", "family"], capture_output=True, text=True,
+                                              timeout=10).stdout.lower()
+    except (OSError, subprocess.SubprocessError):
+        return False
+
+
 def write_ass(path: Path, width: int, height: int, scale: float, position: float,
               cues: list[Word], overlays: list[Overlay], emphasis: set[str] | None = None,
               caption_color: str = "", highlight_color: str = "", callout_look: str = "") -> None:
@@ -111,7 +126,34 @@ def write_ass(path: Path, width: int, height: int, scale: float, position: float
         f"{max(2, small // 10)},0,8,{side},{side},{int(height * 0.04)},1",
         "", "[Events]", "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text",
     ]
+    explainer = callout_look in ("highlighter", "redpen")
+    if explainer:
+        # Video-essay type: a heavy grotesque, black on cream paper strips; key words get a highlighter box; the hook
+        # and the call to action sit on a solid highlighter block. Calm - no bouncing.
+        font = EXPLAINER_FONT if _have_font(EXPLAINER_FONT) else "DejaVu Sans"
+        mark = "&H002BD6F7" if callout_look == "highlighter" else "&H002E10C8"     # yellow / red pen
+        ink, paper = "&H00141414", "&H00EEF5F8"
+        pad = max(6, fs // 4)
+        lines = [ln for ln in lines if not ln.startswith(("Style: Caption,", "Style: Hook,", "Style: CTA,"))]
+        lines[-3:-3] = [
+            f"Style: Caption,{font},{int(fs * 0.92)},{ink},{ink},{paper},{paper},0,0,0,0,100,100,0,0,3,{pad},0,2,"
+            f"{side},{side},{caption_margin},1",
+            f"Style: Hook,{font},{big},{ink},{ink},{mark},{mark},0,0,0,0,100,100,0,0,3,{max(8, big // 4)},0,8,"
+            f"{side},{side},{top},1",
+            f"Style: CTA,{font},{big},{ink},{ink},{mark},{mark},0,0,0,0,100,100,0,0,3,{max(8, big // 4)},0,5,"
+            f"{side},{side},0,1",
+        ]
+        if callout_look == "highlighter":
+            lines = [ln.replace("Style: Callout,DejaVu Sans,", f"Style: Callout,{font},")
+                     .replace("&H0018C8F5,&H0018C8F5,-1,", f"{mark},{mark},0,") for ln in lines]
     for c in cues:
+        if explainer:
+            words = []
+            for wd in c.text.split():
+                e = _esc(wd)
+                words.append(f"{{\\3c{mark}&}}{e}{{\\3c{paper}&}}" if emphasis and _norm(wd) in emphasis else e)
+            lines.append(f"Dialogue: 0,{_ts(c.start)},{_ts(c.end)},Caption,,0,0,0,,{{\\fad(60,0)}}{' '.join(words)}")
+            continue
         # Pop-in: each caption lands at 75% size and springs to full size in 0.12 s (the Shorts "bounce").
         pop = "{\\fscx75\\fscy75\\t(0,120,\\fscx104\\fscy104)\\t(120,180,\\fscx100\\fscy100)}"
         lines.append(f"Dialogue: 0,{_ts(c.start)},{_ts(c.end)},Caption,,0,0,0,,{pop}{_highlight(c.text, emphasis, hi)}")

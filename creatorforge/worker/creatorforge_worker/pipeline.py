@@ -18,7 +18,7 @@ from . import director, providers
 from .config import Config, VoiceProfile
 from .library import Library
 from .media import captions as cap
-from .media import charts, quality, render, sfx, verify
+from .media import charts, layout, quality, render, sfx, verify
 from .media import ff
 from .media.ff import Cancelled, MediaError
 from .providers.base import NotConfigured, ProviderError, Word
@@ -628,6 +628,7 @@ class Pipeline:
 
         clips, firsts = [], []   # firsts[i]: index in clips of scene i's opening shot
         charted: set[tuple[int, int]] = set()   # (scene, beat) shown as an animated chart
+        chart_files: set[Path] = set()
         for i, (sc, shot, d) in enumerate(zip(job["scenes"], shots, timings)):
             firsts.append(len(clips))
             video = clip_for(sc)
@@ -649,6 +650,7 @@ class Pipeline:
                     if chart is not None:
                         stock_clips[k] = chart          # the animated graphic shows the number instead of a picture
                         charted.add((i, k))
+                        chart_files.add(chart)
                 cams = ["slow push in", "pull back", "pan left", "pan right"]
                 for k, length in enumerate(lengths):
                     if k and images[k] is None and stock_clips[k] is None:   # nothing for this beat: hold the last shot
@@ -674,6 +676,8 @@ class Pipeline:
         for c in clips:
             if c.video is not None:
                 c.video_duration = ff.duration(c.video)
+        if spec.style in EDITORIAL_STYLES:
+            self._lay_out(clips, chart_files, spec.style, w, h, work, cancel)
 
         heads = [clips[j] for j in firsts]   # one per scene, for scene-level bookkeeping below
         if use_video and any(c.video is None and sc.get("ai_video", True) and not sc.get("beat_videos")
@@ -734,7 +738,7 @@ class Pipeline:
             emphasis = {wd for s in shots for wd in s.get("emphasis", [])} if spec.auto_edit else set()
             cap.write_ass(ass, w, h, t.caption_scale, t.caption_position, cues, overlays, emphasis,
                           brand.get("caption_color", ""), brand.get("highlight_color", ""),
-                          {"editorial": "highlighter", "investigative": "redpen"}.get(spec.style, ""))
+                          {"editorial": "highlighter", "collage": "highlighter", "investigative": "redpen"}.get(spec.style, ""))
 
         job["edit"] = {"auto_edit": spec.auto_edit, "transitions": [c.transition for c in heads[1:]],
                        "shots": len(clips),
@@ -760,6 +764,35 @@ class Pipeline:
             grade = "paper"
         expected = render.render_video(clips, mixed, ass, w, h, out, work, cancel, logo, grade=grade)
         job["render"] = {"file": "work/render.mp4", "expected_s": round(expected, 3), "width": w, "height": h}
+
+    def _lay_out(self, clips: list, chart_files: set, style: str, w: int, h: int, work: Path, cancel) -> None:
+        """Explainer looks: each still becomes a finished frame - its subject cut out with a white sticker edge on
+        paper (or a desk), or a tilted bordered print when it is a whole scene - and footage plays framed on the
+        same backdrop. Charts already are full-frame graphics."""
+        kind = "desk" if style == "investigative" else "paper"
+        lay = work / "layout"
+        backdrop = layout.backdrop(kind, w, h, lay, cancel)
+        model = self.cfg.data_dir / "models" / "isnet-general-use.onnx"   # downloaded in the background by setup
+        jobs: dict[tuple[Path, int], int] = {}     # (picture, tilt) -> the first shot that uses it
+        for idx, c in enumerate(clips):
+            if c.video is not None:
+                if c.video not in chart_files:
+                    c.backdrop = backdrop
+            else:
+                jobs.setdefault((c.image, idx % len(layout.TILTS)), idx)
+
+        def make(item):
+            (src, _), idx = item
+            if cancel.is_set():
+                raise Cancelled()
+            return layout.compose(src, kind, idx, w, h, lay, layout.cutout(src, lay, model), cancel)
+
+        from concurrent.futures import ThreadPoolExecutor
+        with ThreadPoolExecutor(max_workers=4) as pool:
+            made = dict(zip(jobs, pool.map(make, jobs.items())))
+        for idx, c in enumerate(clips):
+            if c.video is None:
+                c.image = made[(c.image, idx % len(layout.TILTS))]
 
     def _chart_clip(self, spec, beat: dict, length: float, size: tuple[int, int], work: Path) -> Path | None:
         """An animated number graphic for a beat: the writer's Chart: line, or - in the editorial looks - a Text:

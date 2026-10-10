@@ -20,7 +20,10 @@ THEMES = {
     "editorial": ("0xF2EBDD", "0x111111", "0xF5C818", "0x111111", False),
     "investigative": ("0xEFE8D8", "0x1A1A1A", "0xC8102E", "0x555555", True),
 }
-_BOLD = Path("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf")
+_BOLD = next((p for p in (Path("/usr/share/fonts/truetype/creatorforge/ArchivoBlack-Regular.ttf"),
+                          Path.home() / ".fonts" / "ArchivoBlack-Regular.ttf",
+                          Path("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf")) if p.is_file()),
+             Path("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"))
 
 
 def _numbers(text: str) -> list[tuple[str, float, str, str]]:
@@ -78,7 +81,7 @@ def _text(txt: str, size: int, color: str, y: str, extra: str = "", x: str = "(w
 
 def _wrap(text: str, size: int, room: int, lines: int = 2) -> list[str]:
     """Splits a label into at most `lines` lines that fit `room` pixels at font `size` (DejaVu Bold ~0.62 em/char)."""
-    per = max(6, int(room / (size * 0.62)))
+    per = max(6, int(room / (size * (0.74 if "Archivo" in _BOLD.name else 0.62))))   # Archivo Black runs wider
     out, cur = [], ""
     for word in text.split():
         if cur and len(cur) + 1 + len(word) > per:
@@ -94,9 +97,10 @@ def _wrap(text: str, size: int, room: int, lines: int = 2) -> list[str]:
     return [o[:per] for o in out]
 
 
-def _label(text: str, size: int, color: str, y: int, room: int, extra: str = "", x: str = "(w-tw)/2") -> list[str]:
+def _label(text: str, size: int, color: str, y: int, room: int, extra: str = "", x: str = "(w-tw)/2",
+           lines: int = 2) -> list[str]:
     return [_text(_esc(line), size, color, f"{y + k * int(size * 1.25)}", extra, x=x)
-            for k, line in enumerate(_wrap(text, size, room))]
+            for k, line in enumerate(_wrap(text, size, room, lines))]
 
 
 def render(plan: dict, theme: str, width: int, height: int, seconds: float, out: Path, work: Path) -> Path:
@@ -126,7 +130,8 @@ def render(plan: dict, theme: str, width: int, height: int, seconds: float, out:
         chain.append(f"drawbox=x={int(width * 0.2)}:y={int(height * 0.545)}:w={int(width * 0.6)}:h={max(6, height // 90)}"
                      f":color={accent}:t=fill:enable='gte(t\\,{anim * 0.8:.2f})'")
         if plan.get("label"):
-            chain += _label(plan["label"], int(height * 0.034), ink, int(height * 0.60), int(width * 0.84), fade)
+            chain += _label(plan["label"], int(height * 0.034), ink, int(height * 0.60), int(width * 0.84), fade,
+                            lines=3 if height > width else 2)
     elif kind == "bars":
         vals = plan["values"]
         n = len(vals)
@@ -163,7 +168,8 @@ def render(plan: dict, theme: str, width: int, height: int, seconds: float, out:
         number = (f"%{{eif\\:{v:.0f}*{ramp}\\:d}}" if float(v).is_integer() else _esc(_fmt(v))) + "\\\\%"
         after.append(_text(number, int(height * 0.11), ink, f"{int(height * 0.33)}"))
         if plan.get("label"):
-            after += _label(plan["label"], int(height * 0.032), ink, int(height * 0.62), int(width * 0.84), fade)
+            after += _label(plan["label"], int(height * 0.032), ink, int(height * 0.62), int(width * 0.84), fade,
+                            lines=3 if height > width else 2)
     if kind == "counter":
         graph = "[0:v]" + ",".join(chain) + ",format=yuv420p[v]"
     else:

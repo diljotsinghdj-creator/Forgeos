@@ -170,6 +170,18 @@ for k, v in h["providers"].items():
 print("  production_ready:", h["production_ready"])
 PY
 
+# Explainer looks (Editorial / Investigative / Mixed-media): the heavy grotesque used for their captions, callouts
+# and charts (Archivo Black, SIL Open Font License), and the ISNet model that cuts each picture's subject out so it
+# can sit on the paper like a sticker (~170 MB; until it's there, pictures are laid out as framed prints).
+mkdir -p /usr/share/fonts/truetype/creatorforge
+curl -fsSL -o /usr/share/fonts/truetype/creatorforge/ArchivoBlack-Regular.ttf \
+  https://raw.githubusercontent.com/google/fonts/main/ofl/archivoblack/ArchivoBlack-Regular.ttf \
+  && fc-cache -f >/dev/null 2>&1 || say "Explainer font download failed - captions use DejaVu Sans"
+"$PYBIN" -c "import onnxruntime" 2>/dev/null || pip install -q --no-cache-dir onnxruntime
+mkdir -p "$HOME_DIR/data/models"
+[ -s "$HOME_DIR/data/models/isnet-general-use.onnx" ] || nohup bash -c "curl -fsSL -o '$HOME_DIR/data/models/isnet-general-use.onnx.part' \
+  https://github.com/danielgatis/rembg/releases/download/v0.0.0/isnet-general-use.onnx && mv '$HOME_DIR/data/models/isnet-general-use.onnx.part' '$HOME_DIR/data/models/isnet-general-use.onnx' && echo 'cut-out model ready'" > cutout_download.log 2>&1 &
+
 # Face lock (same character in every shot): IP-Adapter plus-face for SDXL and its image encoder (~3.5 GB).
 nohup "$PYBIN" -c "from huggingface_hub import snapshot_download; snapshot_download('h94/IP-Adapter', allow_patterns=['sdxl_models/ip-adapter-plus-face_sdxl_vit-h.safetensors', 'models/image_encoder/*']); print('face lock ready')" > ip_adapter_download.log 2>&1 &
 

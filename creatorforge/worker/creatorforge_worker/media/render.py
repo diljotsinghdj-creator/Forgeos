@@ -32,6 +32,7 @@ class Clip:
     video: Path | None = None  # AI-generated or imported clip; when absent the still gets camera motion
     video_duration: float | None = None
     reveal: str = ""  # animated looks: "draw" (white -> line sketch -> picture) or "sketch" (line art -> picture)
+    backdrop: Path | None = None  # explainer looks: a clip plays in a bordered frame on this paper/desk image
 
 
 def _reveal(kind: str) -> str:
@@ -169,6 +170,16 @@ def _segment_args(c: Clip, frames: int, width: int, height: int) -> list[str]:
             vf = (f"[0:v]{base},tpad=stop_mode=clone:stop_duration={length:.3f},"
                   f"trim=end_frame={frames},setpts=PTS-STARTPTS,format=yuv420p[v]")
         src = ["-i", str(c.video)]
+        if c.backdrop is not None:
+            # Explainer looks: the footage plays as a framed print on the paper/desk, not edge to edge.
+            from . import layout
+            bw, bh = layout.video_box(width, height)
+            vf = vf.replace(f"scale={width}:{height}:force_original_aspect_ratio=increase:flags=lanczos,crop={width}:{height}",
+                            f"scale={bw}:{bh}:force_original_aspect_ratio=increase:flags=lanczos,crop={bw}:{bh}")
+            vf = vf.replace(",format=yuv420p[v]", ",format=rgb24[vin]")
+            vf += (f";[1:v]fps={FPS},trim=end_frame={frames},setpts=PTS-STARTPTS[bgv];"
+                   + layout.video_graph(width, height, "vin", "bgv", "v"))
+            src += ["-loop", "1", "-i", str(c.backdrop)]
     else:
         # zoompan moves in whole input pixels; on a 4x canvas each step is a quarter output pixel, so slow
         # push-ins and pans glide instead of shaking. (Scaled once per still, so it's cheap.)

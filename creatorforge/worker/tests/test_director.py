@@ -116,6 +116,21 @@ def test_a_wrapped_source_link_is_never_read_aloud():
     assert spec.publish["source"].endswith("uk-subscription-traps)")
 
 
+def test_lines_wrapped_by_a_phone_stay_with_their_direction():
+    from creatorforge_worker import director as d
+    # Pasted on a phone, long Visual:/Chart: lines broke in two; the second halves must not be narrated.
+    raw = ("Short\nTitle: A Test\n\nYou quit in January.\nVisual: Coins crawling out from under a phone on\n"
+           "a kitchen table\n\nTwelve pounds a month.\nVisual: A calendar\nChart: £1.6bn | unwanted\n"
+           "subscriptions a year · UK est.\n\nFind payments that repeat.\nVisual: A bank statement\n"
+           "Text: CHECK\nTONIGHT\n")
+    spoken, meta = d.parse_script(raw)
+    assert spoken.split("\n")[1:] == ["You quit in January.", "Twelve pounds a month.", "Find payments that repeat."]
+    shots = meta["shots"]
+    assert shots[1][1] == "Coins crawling out from under a phone on a kitchen table"
+    assert shots[2][4] == "£1.6bn | unwanted subscriptions a year · UK est."
+    assert shots[3][2] == "CHECK TONIGHT"
+
+
 def test_writer_text_and_stock_lines_belong_to_their_spoken_line():
     from creatorforge_worker import director as d
     raw = ("Six months becomes seventy-two pounds.\nVisual: Calendar pages flipping\nText: £12 × 6 = £72\n"

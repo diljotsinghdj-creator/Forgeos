@@ -16,11 +16,15 @@ CreatorForge -> Generate -> Script. CreatorForge reads it like this:
                       In Editorial collage / Investigative desk, Text: lines with →, = or "vs" become charts
                       automatically (e.g. "£50 × 12 = £600" counts up to £600).
 
-CHANNEL LOOK (every video is mixed media - pick ONE of these two in Visual style)
-  Editorial collage ..... cut-out photos on paper, yellow highlighter text, yellow/black charts (explainer style)
-  Investigative desk .... photos and documents taped to a desk and map, red string and circles, red-pen text,
-                          graph-paper charts (investigative documentary style)
-  Both add a warm paper grade, sliding cuts and real footage from Stock: lines. Add a Pixabay key in Settings.
+CHANNEL LOOK (video-essay / Vox style - pick ONE in Visual style; "Mixed-media collage" = Editorial collage)
+  Editorial collage ..... each picture's subject is cut out like a sticker (white edge, soft shadow) on cream
+                          paper, or shown as a tilted print with a yellow block; black-on-yellow highlighter
+                          titles, cream caption strips with key words highlighted, yellow/black charts
+  Investigative desk .... the same on a dark wooden desk: prints taped down, red-pen callouts, graph-paper charts
+  Both: one clear subject per picture (faces hidden), real footage from Stock: lines plays as a framed clip,
+  sliding cuts, a warm paper grade. Add a Pixabay key in Settings.
+  For the cleanest look leave "AI video" OFF: cut-out stills with slow camera moves read most like an explainer
+  (AI video animates the whole picture, which is then shown as a framed clip instead of a cut-out).
   Pronunciations: Settings -> Pronunciations, e.g. "Ofcom = Off-com" (captions keep your spelling).
   After rendering, the video screen shows a PRE-POST CHECK: loudness (-14 LUFS), clipping, dead air, first
   frame, and whether the narration matched the script. Fix anything marked ⚠ before posting.
@@ -29,7 +33,7 @@ SETTINGS
   Shorts (24):     9:16 Shorts, Visual style Editorial collage or Investigative desk, template Cinematic Short, Faceless, Fast cuts, voice pace 1.1x
   Long form (7):   16:9 YouTube, Visual style Investigative desk (07 especially) or Editorial collage, template YouTube Documentary, Faceless, Fast cuts, voice pace 1.0x
   Add a calm/tense instrumental track to the Asset Library first (videos have no music otherwise).
-  Update the pod first (start command) - Chart:, Stock: and the two looks need CreatorForge 1.0.0-rc51 or newer.
+  Restart the pod first (it loads the latest worker) - the cut-out layouts, Vox type and charts are worker features.
 
 EVERY SCRIPT HAS
   - A first line that poses a concrete contradiction, number or personal stake (no intro), over a striking first

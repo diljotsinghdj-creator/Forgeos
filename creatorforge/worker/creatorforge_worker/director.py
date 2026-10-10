@@ -11,7 +11,8 @@ from dataclasses import asdict, dataclass, field
 
 from .providers.base import ProviderError
 from .media.render import TRANSITIONS
-from .templates import ANIMATED_STYLES, PACING, STYLE_PRESETS, TEMPLATES, WORDS_PER_SECOND, Template
+from .templates import (ANIMATED_STYLES, EDITORIAL_LEADS, EDITORIAL_NEGATIVE, PACING, STYLE_PRESETS, TEMPLATES,
+                        WORDS_PER_SECOND, Template)
 
 NEGATIVE = ("text, watermark, logo, caption, subtitles, letters, signature, blurry, low quality, "
             "jpeg artifacts, deformed, distorted face, extra fingers, extra limbs")
@@ -24,7 +25,7 @@ FACELESS_NEGATIVE = ", visible face, facial close-up, portrait, looking at camer
 _PEOPLE = re.compile(r"\b(person|people|man|men|woman|women|boy|girl|child|children|kid|kids|teen\w*|student\w*|"
                      r"crowd|worker\w*|scientist\w*|researcher\w*|someone|couple|friend\w*|guy|lady|soldier\w*|"
                      r"king|queen|doctor|nurse|teacher|mother|father|parent\w*|he|she|they|his|her|face\w*|"
-                     r"portrait|character|figure|astronaut|detective|officer|audience|family|baby|old\s+\w+|young\s+\w+)\b",
+                     r"portrait|character|figure|astronaut|detective|officer|audience|family|baby|(?:old|young|elderly)\s+(?:man|men|woman|women|person|people|lady|couple|soldier))\b",
                      re.I)
 
 
@@ -481,6 +482,8 @@ def direct(llm, spec: ProductionSpec) -> ProductionPlan:
 def _image_prompt(visual: str, emotion: str, s: "ShotPlan", spec: ProductionSpec, style: str,
                   shot_size: str = "", hook: bool = False) -> tuple[str, str]:
     # SDXL reads only ~77 tokens: keep the subject short and put framing, emotion + quality early so they aren't cut.
+    if spec.style in EDITORIAL_LEADS:
+        return _editorial_prompt(visual, spec)
     parts = [_clip_words(visual.rstrip("."), 30 if spec.visual_direction else 40)]
     if spec.visual_direction:
         parts.append(_clip_words(spec.visual_direction.split(",")[0], 8))   # the look, e.g. "black-and-white 1950s lab footage"
@@ -511,6 +514,17 @@ def _image_prompt(visual: str, emotion: str, s: "ShotPlan", spec: ProductionSpec
     if animated:
         negative += ", photorealistic, photograph, live action, 3d render of a real person"
     return ". ".join(parts), negative
+
+
+def _editorial_prompt(visual: str, spec: ProductionSpec) -> tuple[str, str]:
+    """Explainer looks: the look first, then exactly what the line shows - one subject the worker can cut out and
+    lay on paper. People appear as silhouettes or hands (archival-photo style), never as AI faces."""
+    subject = _clip_words(visual.rstrip("."), 26)
+    parts = [EDITORIAL_LEADS[spec.style], subject]
+    if _has_people(visual):
+        parts.append("person seen in silhouette or from behind, face not visible")
+    parts.append("sharp focus, high contrast, centred")
+    return ", ".join(parts), NEGATIVE + EDITORIAL_NEGATIVE + FACELESS_NEGATIVE
 
 
 def prompt_forge(plan: ProductionPlan, spec: ProductionSpec, only: int | None = None) -> None:
@@ -597,7 +611,19 @@ ROLE_EDIT = {"HOOK": ("intrigue", "flash"), "STAKES": ("unease", ""), "SETUP": (
 # A web link, or a fragment of one left by a wrapped line (".scmp.com/news/...", "(https://www").
 _URL = re.compile(r"\(?\b(?:https?://|www\.)\S*\)?|\(?\S*\.(?:com|org|net|gov|edu|io|co|uk|eu|int|info)(?![A-Za-z])(?:/\S*)?\)?;?", re.I)
 # How a wrapped line's second half starts: mid-word, mid-link, or with punctuation rather than a new sentence.
-_CONTINUATION = re.compile(r"^(?:[a-z0-9./(\[;,:&?=_%-]|https?:|www\.)|.*(?:https?://|www\.|\.(?:com|org|net|gov|uk)/)")
+_CONTINUATION = re.compile(r"^(?:[a-z0-9./(\[;,:&?=_%·|£$€-]|https?:|www\.)")
+
+
+def _join_continuation(per: dict, target: int, key: str, more: str) -> bool:
+    """Appends a wrapped line's second half to the direction it continues. False when there's nothing to join."""
+    k = {"visuals": "visual", "b-roll": "visual", "broll": "visual", "on-screen text": "text", "on-screen": "text",
+         "text on-screen": "text", "graphic": "chart", "stock footage": "stock"}.get(key, key)
+    if target < 0 or not more or k not in ("visual", "text", "chart", "stock"):
+        return False
+    d = per.setdefault(target, {})
+    limit = {"visual": 200, "text": 60, "chart": 80, "stock": 60}[k]
+    d[k] = f"{d.get(k, '')} {more}".strip()[:limit]
+    return True
 
 
 def parse_script(raw: str) -> tuple[str, dict]:
@@ -608,16 +634,33 @@ def parse_script(raw: str) -> tuple[str, dict]:
     spoken: list[str] = []
     per: dict[int, dict] = {}        # spoken line index -> {"visual", "text", "stock"} from the writer
     looks: list[str] = []            # visual lines not tied to a spoken line: the look of the whole video
-    after_source = False             # the line just above was a Source: line (a long one may be wrapped)
+    after_key = ""                   # the line just above was a direction line (a long one may be wrapped)
+    # Scripts written in blocks (blank line, spoken line, its direction lines) never put a spoken line straight
+    # under a direction line, so there any line right under one is that line wrapped - even if it starts in capitals.
+    directions = len(re.findall(r"(?im)^\s*(?:visual|text|stock|chart|source|title)s?\s*:", raw))
+    blocked = directions >= 3 and len(re.findall(r"\n[ \t]*\n", raw)) >= directions * 0.3
     for line in raw.replace("\r", "").splitlines():
         parts = _META.split(line)
         body, pairs = parts[0], list(zip(parts[1::2], parts[2::2]))
-        if not pairs and after_source and line.strip() and _CONTINUATION.match(line.strip()):
-            # A long Source: line wrapped by a phone or an editor ("...(https://www" / ".scmp.com/news/...)"):
-            # the rest belongs to the source, never to the narration.
-            meta["source"] = (meta.get("source", "") + line.strip())[:2000]
-            continue
-        after_source = bool(pairs) and pairs[-1][0].lower() in ("source", "sources")
+        if not pairs and after_key and line.strip() and not _STAMP.match(line.strip()) and (blocked or _CONTINUATION.match(line.strip()) or
+                                                          (after_key in ("source", "sources") and _URL.search(line))):
+            # A long direction line wrapped by a phone or an editor when pasted ("Visual: ... a paper wall" /
+            # "calendar, the torn-off pages"; "Source: ...(https://www" / ".scmp.com/news/..."): the rest belongs
+            # to that line, never to the narration. Spoken lines start a new sentence; continuations don't.
+            line = f"{after_key}: {line.strip()}"
+            parts = _META.split(line)
+            body, pairs = parts[0], list(zip(parts[1::2], parts[2::2]))
+            if after_key in ("source", "sources"):
+                meta["source"] = (meta.get("source", "") + body + "".join(v for _, v in pairs).strip())[:2000]
+                continue
+            if after_key in ("post", "title", "post title", "video title") and pairs and "title" in meta:
+                meta["title"] = f"{meta['title']} {pairs[-1][1].strip()}"[:100]
+            else:
+                _join_continuation(per, len(spoken) - 1, after_key, pairs[-1][1].strip() if pairs else "")
+            continue                 # a wrapped header/direction line is never narrated
+        after_key = pairs[-1][0].lower() if pairs and not body.strip() else ""
+        if not line.strip():
+            after_key = ""
         if _URL.search(body):        # links are for the description, never read aloud
             body = re.sub(r"\s{2,}", " ", re.sub(r"\(\s*(?:see\s*)?(?:\)|(?=[A-Z]))", " ", _URL.sub("", body)))
         tags = re.findall(r"#\w+", body + " ".join(v for _, v in pairs))

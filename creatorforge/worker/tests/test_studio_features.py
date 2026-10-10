@@ -476,10 +476,14 @@ def test_editorial_look_highlighter_callouts_paper_grade_and_sliding_cuts(cfg):
         job = wait_for(lambda: (lambda j: j if j["status"] in ("READY", "FAILED") else None)(c.get(f"/v1/productions/{jid}").json()))
         assert job["status"] == "READY", job
         ass = (cfg.jobs_dir / jid / "work" / "captions.ass").read_text()
-        assert "&H0018C8F5" in ass and "\\fscx15\\t(0,220,\\fscx100)}ILLUSTRATION" in ass   # yellow marker wipes in
+        assert "&H002BD6F7" in ass and "\\fscx15\\t(0,220,\\fscx100)}ILLUSTRATION" in ass   # yellow marker wipes in
+        assert "\\fscx75" not in ass                                    # calm explainer captions, no bounce
+        assert list((cfg.jobs_dir / jid / "work" / "layout").glob("layout_*.png"))   # pictures laid out on paper
+        assert list((cfg.jobs_dir / jid / "work" / "layout").glob("backdrop_paper_*.png"))
         assert "£12 x 6 = £72" not in ass and list((cfg.jobs_dir / jid / "work").glob("chart_*.mp4"))  # sum -> counter
         assert not set(job["edit"]["transitions"]) & {"fade", "dissolve", "dip"}               # paper slides, never dissolves
-        assert "editorial explainer collage" in job["plan"]["scenes"][0]["prompt"]
+        prompt = job["plan"]["scenes"][0]["prompt"]
+        assert prompt.startswith("vintage halftone press photograph, one clear subject")   # the look leads the prompt
 
 
 def test_charts_from_script_lines_and_investigative_look(cfg):

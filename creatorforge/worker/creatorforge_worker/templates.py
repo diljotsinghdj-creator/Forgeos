@@ -94,9 +94,19 @@ STYLE_PRESETS: dict[str, tuple[str, str]] = {
     "collage": ("Mixed-media collage", "mixed-media collage, cut-out vintage photographs, torn paper, halftone textures, "
                 "bold graphic shapes"),
 }
-# Editorial explainer look (cut-out photos on paper, highlighter callouts, paper-texture grade, sliding cuts).
-EDITORIAL_STYLES = {"editorial", "investigative"}
+# Editorial explainer looks, built like a video essay: every picture is one clear subject that the worker cuts out
+# and lays on paper (or a desk) itself, with highlighter callouts, animated charts and sliding cuts.
+EDITORIAL_STYLES = {"editorial", "investigative", "collage"}
+# What each explainer look asks the image model for. It leads the prompt (SDXL only reads ~77 tokens, so a look
+# placed after a long description is cut off): one subject on a plain background, so it cuts out cleanly.
+EDITORIAL_LEADS = {
+    "editorial": "vintage halftone press photograph, one clear subject, isolated on a plain light grey background",
+    "collage": "vintage halftone press photograph, one clear subject, isolated on a plain light grey background",
+    "investigative": "old sepia archival photograph, one clear subject, isolated on a plain light background",
+}
+EDITORIAL_NEGATIVE = (", collage, multiple images, grid, panels, busy background, torn paper, picture frame, border, "
+                      "painting, drawing, illustration, portrait, close-up of a face")
 # Drawn / animated looks: characters may show faces even in AI video (cartoon faces don't turn uncanny), and the
 # worker renders them with its illustration model when one is installed (the photoreal model suits the rest).
 ANIMATED_STYLES = {"animated_3d", "anime", "claymation", "watercolor", "comic", "explainer_2d", "doodle", "painterly",
-                   "noir_graphic", "paper_cutout", "isometric", "low_poly", "retro_cartoon", "pixel_art", "neon", "collage"}
+                   "noir_graphic", "paper_cutout", "isometric", "low_poly", "retro_cartoon", "pixel_art", "neon"}
