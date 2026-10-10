@@ -20,6 +20,15 @@ CreatorForge -> Generate -> Script. CreatorForge reads it like this:
   Quote: ............ a document card, words typed and highlighted, e.g. "Quote: words | who, year"
   Steps: ............ a flow diagram, boxes drawn one by one with arrows, e.g.
                         "Steps: Free trial → Card saved → Auto-renew | How the trap works"
+  Globe: ............ a 3D globe spins and dives onto a country or major city (route arc for two places), e.g.
+                        "Globe: France | where it began"   or   "Globe: London → New York"
+  Timeline: ......... dates drop onto a line one by one, the last highlighted, e.g.
+                        "Timeline: 1890 Born → 1925 Sells the tower → 1947 Dies | His life"
+  Icons: ............ a grid of icons pops in and the counted ones fill in, e.g.
+                        "Icons: 3 of 4 | sites | used a possible dark pattern"   (people, sites, homes, coins,
+                        cards, phones, letters, locks)
+  One full-frame graphic per spoken line: Chart, Map, Globe, Steps, Timeline, Icons, Chapter or Quote.
+  Every photo cut-out also moves with 2.5D depth automatically (no key needed).
   Chart: ............ an animated number graphic for that line, e.g.
                         Chart: £12 → £720 | a year of forgotten subscriptions   (counter rolls up)
                         Chart: 48% vs 22% | heavy users, everyone else          (bars grow)
