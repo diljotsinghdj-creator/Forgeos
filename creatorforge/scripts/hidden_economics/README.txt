@@ -18,6 +18,8 @@ CreatorForge -> Generate -> Script. CreatorForge reads it like this:
   Cite: ............. the small on-screen source credit, e.g. "Cite: FTC, 2025" -> SOURCE: FTC, 2025
   Chapter: .......... long form: a chapter title card, e.g. "Chapter: Part 1 | The trap"
   Quote: ............ a document card, words typed and highlighted, e.g. "Quote: words | who, year"
+  Steps: ............ a flow diagram, boxes drawn one by one with arrows, e.g.
+                        "Steps: Free trial → Card saved → Auto-renew | How the trap works"
   Chart: ............ an animated number graphic for that line, e.g.
                         Chart: £12 → £720 | a year of forgotten subscriptions   (counter rolls up)
                         Chart: 48% vs 22% | heavy users, everyone else          (bars grow)

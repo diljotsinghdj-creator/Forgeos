@@ -6,41 +6,41 @@ Source: Johnson, Hershey, Meszaros & Kunreuther 1993, Framing, probability disto
 
 People paid more for less insurance.
 Visual: A thin insurance policy and a thick one side by side on a desk, text unreadable
-Visual: A hand placing banknotes on top of a thin insurance policy
+Visual: Hands counting banknotes onto a glass shop counter
 Text: LESS COVER, HIGHER VALUE
 Cite: Johnson et al., J Risk Uncertainty 1993
 
 The only difference was a single frightening word.
-Visual: Two printed insurance forms side by side on a desk, text unreadable
 Visual: A red pen underlining one word on a printed form, text unreadable
+Visual: A dictionary lying open under a desk lamp, text unreadable
 Text: ONE WORD
 
 One policy paid out only if you died on a flight.
-Visual: A thin insurance policy lying on a wooden desk, text unreadable
-Visual: A paper airline boarding pass beside an insurance policy, text unreadable
+Visual: A paper airline boarding pass on a wooden desk, text unreadable
+Visual: A passenger's suitcase rolling across a departure hall floor
 
 And only if a terrorist attack killed you.
-Visual: A red pen circling one clause on a thin policy, text unreadable
 Visual: An airport security checkpoint with an empty queue barrier
+Visual: A single typed page with one clause circled in red, text unreadable
 Text: POLICY A · TERRORISM ONLY
 
 But the other paid out if you died on that flight.
-Visual: A thick insurance policy document on a desk, text unreadable
-Visual: A hand smoothing a thick insurance policy flat on a desk
+Visual: A thick ring-bound document lying on a desk, text unreadable
+Visual: Passengers seen from behind climbing the steps onto a plane
 
 From any cause at all, terrorism included.
-Visual: A hand pressing a rubber stamp onto a thick insurance policy
+Visual: A rubber stamp pressing down on a thick ring binder
 Visual: An airliner cabin with rows of empty seats
 Text: POLICY B · ANY CAUSE
 
 So the second policy was strictly bigger.
 Visual: A pencil drawing a small circle on graph paper
-Visual: A larger pencil circle drawn around a small one on graph paper
+Visual: A small cardboard box sitting inside a larger open box
 Text: A IS INSIDE B
 
 On average, people still put a higher price on the smaller one.
 Visual: People seen from behind filling in paper forms at rows of desks
-Visual: A small pile of coins on a thin policy, a thick policy bare beside it
+Visual: A small pile of coins on a thin booklet, a thick folder bare beside it
 Text: Johnson et al., 1993
 Draw: circle
 Cite: Johnson et al., J Risk Uncertainty 1993
@@ -50,17 +50,17 @@ Visual: A newspaper with one word circled in red pen, text unreadable
 Visual: A blank paper price tag lying on a wooden desk
 
 So what can it do to yours?
-Visual: A smartphone lying on a sofa cushion at night, screen dark
-Visual: A hand holding a wallet beside a smartphone on a sofa
+Visual: A leather wallet lying on a hallway shelf at night
+Visual: A hand holding a bank card under a reading lamp
 Text: WHAT CAN IT DO TO YOURS?
 
 By the end, you'll know four questions.
 Visual: Four blank index cards pinned in a row on a cork board
-Visual: A yellow highlighter lying beside four blank index cards
+Visual: A yellow highlighter resting on a spiral notebook
 Text: FOUR QUESTIONS
 
 Together they strip the fear out of any offer.
-Visual: A hand holding a glossy printed advert, text unreadable
+Visual: A glossy sales leaflet tucked under a car windscreen wiper, text unreadable
 Visual: Hands tearing a glossy printed advert in half over a desk
 
 Meet Maya. She is fictional, and it is eleven at night.
@@ -69,9 +69,9 @@ Visual: A wall clock showing eleven o'clock in a dim room
 Text: MAYA · FICTIONAL
 
 She is scrolling when an advert shows a dark house and one question.
-Visual: A hand scrolling a smartphone in a dark room, text unreadable
-Visual: A smartphone screen showing a photo of a dark house, text unreadable
 Visual: A detached house at night with every window dark
+Visual: A garden gate standing ajar at night
+Visual: A dark empty driveway beside a hedge at night
 Text: FICTIONAL ADVERT
 Thought: Wait... is my family actually safe?
 
@@ -81,20 +81,20 @@ Text: IS YOUR FAMILY PROTECTED?
 
 Seconds later, a monthly plan appears as the answer.
 Visual: A thumb hovering over a bright button on a smartphone, text unreadable
-Visual: A smartphone showing a monthly subscription price screen, text unreadable
+Visual: A printed price list with one monthly figure circled, text unreadable
 Text: FICTIONAL INTERFACE
 
 Ten minutes ago she felt safe. Now she does not.
-Visual: A cosy lamp-lit living room with a blanket on the sofa
-Visual: A hand pulling a blanket tighter on a sofa, rain on the window behind
+Visual: A cup of cocoa and a paperback on a lamp-lit side table
+Visual: Rain streaking down a window at night, a lamp reflected in it
 
 The product might be genuinely useful. That is not the issue yet.
 Visual: A boxed home security camera on a kitchen table
-Visual: A brass key in a front door lock, a warm hallway lamp behind
+Visual: A brass key turning in a front door lock
 
 So why does that sequence work so well on a sensible adult?
-Visual: Raindrops on a dark window pane, a phone's light reflected in them
-Visual: A woman seen from behind holding a phone beside a dark window
+Visual: A woman seen from behind standing in a dark kitchen, arms folded
+Visual: A neat row of household bills on a sideboard, text unreadable
 Text: WHY DOES IT WORK?
 Chapter: Part 1 | Why fear works
 
@@ -107,46 +107,46 @@ Cite: Lichtenstein et al., 1978
 
 But the answers leaned towards dramatic, memorable deaths.
 Visual: A tornado funnel crossing open farmland under dark clouds
-Visual: A house wrecked by a tornado, debris scattered across the lawn
+Visual: A shark fin cutting through grey sea water
 Draw: circle
 
 And away from quiet, common ones.
-Visual: An empty hospital bed beside a window
-Visual: A pill organiser and a glass of water on a bedside table
+Visual: An empty hospital bed in a quiet ward
+Visual: A pill organiser on a bedside table
 
 Here's why. Memory serves up what is vivid.
 Visual: A lightning bolt striking over a small town at night
-Visual: An old photograph of lightning pinned to a cork board
+Visual: A child's crayon drawing of a storm on a fridge door
 
 And we mistake it for what is common.
-Visual: An old lightning photograph lying on top of a pile of family snapshots
 Visual: Ordinary family snapshots spread across a kitchen table
+Visual: A pedestrian crossing in a town centre on a dull afternoon
 
 Even when warned about this bias, most people could not correct it.
-Visual: A printed warning note clipped to a questionnaire, text unreadable
+Visual: A yellow warning sticker on a clipboard, text unreadable
 Visual: An eraser rubbing at a dark pencil mark on paper
 Text: WARNED, STILL BIASED
 Cite: Lichtenstein et al., 1978
 
 Then a follow-up compared their guesses with newspaper coverage.
 Visual: A stack of old newspapers dropped onto a desk, print unreadable
-Visual: A wooden ruler measuring a newspaper column, print unreadable
+Visual: A wooden ruler and a notebook of pencil tallies, text unreadable
 Stock: stack of old newspapers
 
 The guesses tracked how often each cause made the papers.
-Visual: Scissors cutting a clipping out of an old newspaper, print unreadable
-Visual: A tall pile of newspaper clippings on a desk
+Visual: Scissors snipping out a short column of newsprint, print unreadable
+Visual: A tall pile of snipped clippings on a desk
 Text: Combs & Slovic, 1979
 Cite: Combs & Slovic, Journalism Quarterly 1979
 
 Not how often it actually killed.
 Visual: A thin pile of official record cards on a desk
-Visual: A thin pile of record cards beside a tall heap of newspaper clippings
+Visual: A grey filing cabinet drawer half open in a records office
 Draw: cross
 
 So the news you watch helps price the fear you feel.
 Visual: An old television showing a news broadcast in a living room, text unreadable
-Visual: A folded newspaper and a price tag on a coffee table
+Visual: A door alarm kit hanging on a hardware store peg
 
 Then economists tested the same blind spot with money.
 Visual: An economist's desk with a calculator and printed tables, text unreadable
@@ -155,34 +155,34 @@ Text: Sunstein & Zeckhauser
 Cite: Sunstein & Zeckhauser, 2011
 
 They described a cancer risk vividly.
-Visual: A glass of tap water on a kitchen table
+Visual: A kitchen tap running into a steel sink
 Visual: A drop of dark ink spreading through a glass of water
 
 Then asked people what they'd pay to remove it.
 Visual: A hand pushing a small pile of coins across a table
-Visual: A water filter jug beside a small pile of coins
+Visual: A boxed filter cartridge with a receipt taped to it
 
 Make that risk ten times larger, and the price barely moved.
-Visual: A row of ten glasses of water on a table
-Visual: Two identical price tags tied to the first and last of ten glasses
+Visual: Ten identical clear bottles standing in a row on a windowsill
+Visual: Two identical handwritten price tags side by side, text unreadable
 Chart: 1 vs 10 | the risk, ten times the risk
 Cite: Sunstein & Zeckhauser, 2011
 
 So when fear is vivid, the size of the risk stops counting.
-Visual: An old shop scale with its needle pointing halfway
-Visual: Brass weights piled high onto an old shop scale
+Visual: An old greengrocer's scale with its needle pointing halfway
+Visual: A tally counter clicker lying unused on a desk
 Text: PRICE BARELY MOVED
 Draw: cross
 Cite: Sunstein & Zeckhauser, 2011
 
 The same economists named fear's next trick. Action bias.
 Visual: A hand gripping a door handle in a dim hallway
-Visual: A person seen from behind hurrying out of a front door
+Visual: A person seen from behind hurrying down a garden path
 Text: ACTION BIAS
 
 When something frightens us, doing anything feels better than doing nothing.
-Visual: A hand switching on a light in a dark hallway
-Visual: Fingers drumming on a wooden table beside a phone
+Visual: A hand flicking a light switch on a bare wall
+Visual: Fingers drumming on a wooden table
 Thought: Just do something. Anything!
 
 And buying something? The easiest something there is.
@@ -191,31 +191,31 @@ Visual: A credit card held against a card reader on a counter
 
 So what does a seller do with a buyer who has stopped counting?
 Visual: A shop window at night, a single bulb over an empty display
-Visual: A salesperson's hands arranging product boxes on a counter
-Visual: A shopper seen from behind holding a phone at a shop counter
+Visual: A salesperson's hands stacking product boxes on a shelf
+Visual: A shopper seen from behind waiting at a till, wallet already out
 Text: WHAT DOES A SELLER DO?
 Chapter: Part 2 | What sellers do
 
 In a calm market, sellers compete on what the cover is worth.
-Visual: A sunny market street lined with shop fronts
-Visual: Three price cards lined up evenly on a shop counter, text unreadable
+Visual: A sunny town square busy with shoppers
+Visual: Three price cards lined up on a market stall, text unreadable
 
 But a frightened buyer compares less and asks fewer questions.
-Visual: Two of three price cards turned face down on a counter
 Visual: A hand pushing a stack of brochures aside unread
+Visual: An unopened comparison booklet still in its plastic wrapper
 
 So the contest drifts from value towards whoever frightens best.
-Visual: A single product box under a spotlight on a dark desk
 Visual: A billboard showing a stormy sky over a house, text unreadable
+Visual: A single product lit up on an otherwise empty plinth
 
 Fear-led sellers have one more advantage, backed by a huge body of research.
-Visual: A pile of academic journals on a desk, one lying open
-Visual: University library shelves full of bound journals
+Visual: A university library reading room with long empty tables
+Visual: A professor's office with shelves of box files
 Visual: A hand flipping through a research journal, text unreadable
 
 A twenty fifteen meta-analysis pooled hundreds of samples of fear messages.
 Visual: Dozens of research papers spread across a large table, seen from above
-Visual: A pencil circling one paper among dozens on a table, text unreadable
+Visual: A calculator beside a column of handwritten sums, text unreadable
 Chart: 27,372 | people across 248 samples
 Cite: Tannenbaum et al., Psychological Bulletin 2015
 
@@ -226,7 +226,7 @@ Text: Tannenbaum et al., 2015
 Cite: Tannenbaum et al., Psychological Bulletin 2015
 
 When did it work best?
-Visual: A pencil pulling one sheet out of a thick stack of research papers
+Visual: A magnifying glass resting on an open report, text unreadable
 Text: WHEN DID IT WORK BEST?
 
 When the message offered one clear thing to do.
@@ -238,48 +238,49 @@ Cite: Tannenbaum et al., Psychological Bulletin 2015
 
 On a phone, one clear step looks exactly like a button.
 Visual: A single round button on a smartphone screen, text unreadable
-Visual: A thumb pressing a round button on a smartphone screen
+Visual: A large round doorbell beside a front door
 
 That research was about health messages. But look at Maya's advert again.
-Visual: Printed health leaflets in a clinic wall rack, text unreadable
-Visual: A smartphone showing a photo of a dark house, text unreadable
+Visual: A hospital corridor with a row of empty chairs
+Visual: A detached house at night, every window dark
 Text: FICTIONAL ADVERT
 
 Threat, then relief, then a price. One step, one button.
-Visual: A dark house at night with one porch light switched on
+Visual: A porch light switching on above a front step
 Visual: A price tag on a boxed home alarm kit
-Visual: A thumb pressing a single button on a smartphone, text unreadable
+Visual: A hand pressing a key fob, a red light blinking
 Text: THREAT → RELIEF → PRICE
 Draw: arrow
+Steps: Threat → Relief → Price → One button | Maya's advert
 
 Now ask which came first in that advert, the danger or the product.
-Visual: A smartphone showing an advert on a table, text unreadable
-Visual: A dark alleyway beside a house at night
-Visual: A boxed home security gadget on a desk
+Visual: A glossy printed advert lying on a sofa, text unreadable
+Visual: A dark alleyway with an overflowing bin at night
+Visual: A prototype gadget on a workbench in a design studio
 Text: WHICH CAME FIRST?
 
 A safety message starts with a real risk and looks for a remedy.
-Visual: A fire safety leaflet on a kitchen counter, text unreadable
+Visual: A fire safety leaflet lying on a doormat, text unreadable
 Visual: A pan of oil smoking on a kitchen hob
-Visual: A fire extinguisher mounted on a kitchen wall
+Visual: A red fire extinguisher mounted at the foot of a stairwell
 
 A fear-led pitch can start with a product.
-Visual: A boxed product alone on a desk under a lamp
-Visual: A glossy sales brochure beside a boxed product, text unreadable
+Visual: A shiny product sample on a sales rep's table
+Visual: A glossy sales brochure fanned across a meeting table, text unreadable
 
 Then go looking for a risk.
 Visual: A magnifying glass held over an empty desk
-Visual: A magnifying glass over a printed news story, text unreadable
+Visual: A marketing team seen from behind at a whiteboard of sticky notes
 
 Maya's advert never once says how likely a break-in actually is.
-Visual: A smartphone advert with a photo of a dark house, text unreadable
+Visual: A smartphone propped on a kitchen counter showing an advert, text unreadable
 Visual: A printed crime statistics table with nothing circled, text unreadable
 Text: NO NUMBER
 Draw: cross
 
 So is selling with fear simply wrong?
-Visual: A thumb frozen above a button on a smartphone, text unreadable
-Visual: A woman seen from behind on a sofa, phone in her lap
+Visual: A woman seen from behind on a sofa, hands in her lap
+Visual: A judge's gavel resting on its wooden block
 Text: IS FEAR ALWAYS WRONG?
 Chapter: Part 3 | When fear saves you
 
@@ -290,32 +291,32 @@ Text: THE TWIST
 
 Home Office analysis looked at house fires in England.
 Visual: A map of England on a desk with red circles over scattered towns
-Visual: A fire engine parked outside a terraced house
+Visual: A fire engine parked on a terraced street
 Text: Home Office, 2022 to 2023
 Stock: firefighters house fire
 Map: England | house fires in England
 Cite: Home Office, 2023
 
 Then it singled out homes with no working smoke alarm.
-Visual: A row of terraced houses on an English street
-Visual: A smoke alarm on a desk, battery cover open, battery missing
+Visual: A quiet English residential street at dusk
+Visual: A ceiling smoke alarm with its cover hanging open
 Place: ENGLAND · 2022–23
 
 Someone in those fires was about ten times more likely to die.
-Visual: A smoke-filled stairwell inside a house
-Visual: A burnt-out living room after a house fire
+Visual: A smoke-filled stairwell, the banister barely visible
+Visual: A burnt-out living room with blackened walls
 Chart: 10× | more likely to die, no working alarm
 Cite: Home Office, 2023
 
 So the fear that gets a cheap battery in is well spent.
-Visual: Fingers clicking a new battery into a smoke alarm
-Visual: A pack of batteries with a small price tag on a shop shelf
+Visual: Fingers clicking a new nine-volt battery into place
+Visual: A handful of loose change on a hardware shop counter
 Stock: smoke alarm battery
 Draw: tick
 
 That is not a reason to fear less.
 Visual: A hand turning down the volume dial on an old radio
-Visual: A finger pressing the test button on a ceiling smoke alarm
+Visual: A firefighter's helmet hanging on a hook
 
 Instead, it is a reason to fear accurately.
 Visual: A magnifying glass over a photograph, part of it sharp
@@ -323,7 +324,7 @@ Visual: A ruler laid across a printed bar chart, text unreadable
 
 Even the advertising rules accept this.
 Visual: A heavy rulebook falling open on a desk, text unreadable
-Visual: A paper tab marking one paragraph in a rulebook, text unreadable
+Visual: A paper tab marking one paragraph in a thick binder, text unreadable
 Text: CAP Code rule 4.2
 Place: UNITED KINGDOM
 
@@ -340,13 +341,13 @@ Visual: An old brass balance scale with small weights on both pans
 
 Then how do you tell proportionate fear from manufactured fear?
 Visual: Two printed adverts side by side on a desk, text unreadable
-Visual: A magnifying glass sliding across a printed advert, text unreadable
+Visual: A pair of reading glasses on an open magazine
 Text: HOW TO TELL?
 Chapter: Part 4 | Spotting manufactured fear
 
 Watch for could happen quietly becoming will happen to you.
-Visual: A smartphone on a table showing an alert banner, text unreadable
-Visual: A finger pointing at an alert on a smartphone, text unreadable
+Visual: A leaflet with one warning line printed in bold red, text unreadable
+Visual: A copywriter's draft with one line crossed out, text unreadable
 Text: COULD → WILL
 
 Watch for a rare event shown as if it were everyday.
@@ -360,8 +361,8 @@ Visual: A page of printed number tables pushed aside on a desk, text unreadable
 Text: STORY ≠ STATISTIC
 
 And watch for a risk that gets an adjective but never a number.
-Visual: A printed advert headline in large bold letters, text unreadable
-Visual: A red pen underlining a word in an advert, text unreadable
+Visual: A large headline on a poster at a bus stop, text unreadable
+Visual: A red pen underlining one word, text unreadable
 Visual: A blank box on a printed form circled in red pen
 Text: NO NUMBER = WARNING
 Draw: circle
@@ -375,6 +376,7 @@ Bubble: Buy before midnight!
 Fear narrows attention. A deadline removes the time to compare.
 Visual: A desk lamp's narrow beam lighting one spot on a dark desk
 Visual: A hand sweeping three folders off a desk
+Steps: Fear → Narrow attention → Deadline → No comparing | Why the clock matters
 
 Now there's no time to read the exclusions.
 Visual: A thick policy booklet closed on a desk, text unreadable
@@ -382,16 +384,16 @@ Visual: A magnifying glass over a page of fine print, text unreadable
 
 No time to ask if it fits your life.
 Visual: A paper weekly planner stuck to a fridge door, text unreadable
-Visual: A hand pushing a paper calendar aside on a table, text unreadable
+Visual: School bags and coats piled on a hallway bench
 
 Still, some deadlines are genuine. A sale really can end.
-Visual: A shop window with a sale banner, text unreadable
+Visual: A sale banner across a department store entrance, text unreadable
 Visual: A shop shutter half rolled down at dusk
 Stock: shop shutter closing
 
 So what if the deadline is not real?
 Visual: A kitchen timer ticking on a desk
-Visual: A hand winding a kitchen timer back to the start
+Visual: A chalkboard sign outside a shop, writing unreadable
 Text: REAL OR FALSE?
 
 Since April twenty twenty-five, UK law bans certain practices outright.
@@ -417,20 +419,20 @@ Visual: A set of weighing scales pushed to the edge of a desk
 Visual: A closed case file on a desk with a rubber band around it
 
 The competition regulator has also warned about countdown timers that quietly reset.
-Visual: A government office building in London with flags outside
-Visual: A hand turning a kitchen timer back to its start
+Visual: A row of grand government buildings on Whitehall
+Visual: A hand turning back the hands of a wristwatch
 Text: CMA · RESETTING TIMERS
 Map: United Kingdom | the competition regulator
 
 If the clock starts again, there was never really a deadline.
-Visual: A thumb pressing the reset button on a stopwatch
+Visual: An oven clock blinking back to zero in a dark kitchen
 Visual: A paper wall calendar with no date circled
 Draw: cross
 
 The law can catch a fake clock. Only you can catch the fear.
-Visual: A broken alarm clock sealed in a clear evidence bag
+Visual: A sealed evidence bag on a police desk
 Visual: A woman seen from behind standing at a rainy window at night
-Visual: A hand placing a phone down on a windowsill
+Visual: A hand switching off a table lamp
 Text: WHAT PROTECTS YOU?
 Chapter: Part 5 | Adding it up
 
@@ -440,51 +442,52 @@ Visual: Morning light spreading across a kitchen table
 
 Tonight's plan costs eight pounds a month.
 Visual: A stack of eight one-pound coins on graph paper
-Visual: A monthly wall calendar beside a small pile of coins, text unreadable
+Visual: A direct debit form with a pen resting on it, text unreadable
 Text: £8 A MONTH · ILLUSTRATION
 
 Over two years, a hundred and ninety-two pounds.
-Visual: Coins laid out in two rows of twelve on graph paper
+Visual: Twenty-four small envelopes laid out in rows on a table
 Chart: £8 × 24 = £192 | illustration, two years of one plan
 
 She checks her bank statement and finds two other protections already running.
 Visual: A printed bank statement on a kitchen table, text unreadable
-Visual: Two lines circled in red pen on a bank statement, text unreadable
+Visual: A woman seen from behind at a kitchen table, pen in hand
 Text: ILLUSTRATION
 Thought: Wait, I'm already paying for these?
 
 Identity monitoring and boiler cover, each bought on another worried evening.
-Visual: A small padlock and a radiator valve beside a bank statement
+Visual: A small padlock resting on a passport
 Visual: A gas boiler on a kitchen wall at night
 Chart: £8 + £6 + £12 = £26 | illustration, three plans a month
 
 With tonight's plan, three hundred and twelve pounds a year.
-Visual: A tall stack of coins beside a short one on a desk
-Visual: A till receipt curling between two stacks of coins
+Visual: A thick bundle of banknotes held with a rubber band
+Visual: A long till receipt curling off a counter
 Chart: £26 × 12 = £312 | illustration, all three plans a year
 
 She had never added them up.
 Visual: A pencil beside an empty sum line on a scrap of paper
-Visual: A calculator on a kitchen table beside a bank statement
+Visual: A calculator lying beside a mug of tea
 
 She keeps the one she actually needs, and drops the other two.
 Visual: A hand setting one brochure aside on a table
-Visual: A hand dropping two brochures into a recycling bin
+Visual: Two letters dropped into a recycling bin
 Text: KEEP 1, DROP 2
 Draw: tick
 
 So she asks the four calm questions.
 Visual: Four blank index cards laid in a row on a table
-Visual: A pen writing on the first of four index cards, text unreadable
+Visual: A pen and a cup of coffee beside a notepad, text unreadable
+Steps: How likely? → What's excluded? → Already covered? → Deadline real? | The four calm questions
 
 How likely is the problem, in numbers?
 Visual: Fingers counting marbles out of a glass bowl
-Visual: One red marble among white marbles in a bowl
+Visual: A single die on a desk showing a one
 Text: 1. HOW LIKELY?
 
 What does the product cover, and what does it exclude?
 Visual: Hands flipping the pages of a policy booklet, text unreadable
-Visual: A highlighter marking a paragraph in a policy booklet, text unreadable
+Visual: A yellow highlighter marking a line of fine print, text unreadable
 Text: 2. WHAT'S EXCLUDED?
 
 Do I already pay for this somewhere else?
@@ -499,18 +502,18 @@ Text: 4. IS THE DEADLINE REAL?
 
 So if an offer still makes sense once the fear fades, buy calmly.
 Visual: Morning sunlight through a kitchen window
-Visual: A hand holding a cup of tea beside a phone on a table
+Visual: A hand holding a cup of tea at a sunny table
 Visual: A hand signing a form in daylight, text unreadable
 Text: ILLUSTRATIVE FIGURES ONLY
 
 If it only made sense at eleven at night?
 Visual: An old wall clock reading eleven in a dark room
-Visual: A phone lit up on a dark sofa at night
+Visual: A dark living room lit by a single streetlamp outside
 Thought: Do I still want this in the morning?
 
 Then the fear was the product.
-Visual: A switched-off phone on a table in sunlight
 Visual: A boxed home alarm gadget on a shop shelf with a price tag
+Visual: An empty armchair in a bright, quiet living room
 Text: THE FEAR WAS THE PRODUCT
 
 Tonight, search your bank statement for every protection you already pay for.
@@ -520,16 +523,16 @@ Text: TONIGHT: LIST EVERY PROTECTION
 Draw: arrow
 
 But some people use fear plus urgency not to sell, but to steal.
-Visual: An old telephone ringing on a desk
-Visual: A wall clock above a telephone on a hallway table
 Visual: An empty wallet lying open on a table
+Visual: A front door chain hanging unlatched
+Visual: A thick envelope of cash left on a doorstep
 Text: FEAR + URGENCY
 
 Next time, the version that adds authority.
 Visual: A hand reaching for a ringing telephone
-Visual: A police officer's peaked cap on a desk beside a phone
+Visual: A police officer's peaked cap on a desk
 
 And why even clever people fall for it.
 Visual: A row of framed diplomas on an office wall, text unreadable
-Visual: A man seen from behind holding a phone to his ear by a window
+Visual: A man seen from behind walking into a university library
 Text: NEXT: WHY SMART PEOPLE FALL FOR SCAMS

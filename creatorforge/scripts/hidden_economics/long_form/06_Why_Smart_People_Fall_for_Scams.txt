@@ -27,14 +27,14 @@ Stock: wall street 2008
 Map: New York | Bernard Madoff, New York
 
 He had actually chaired the Nasdaq.
-Visual: A man in a suit seen from behind in a glass office
-Visual: An electronic stock ticker on a New York building, text unreadable
+Visual: A glass office tower lobby with marble floors
+Visual: An electronic ticker on a building, text unreadable
 Text: BERNARD MADOFF · FORMER NASDAQ CHAIRMAN
 
 His clients' statements showed nearly sixty-five billion dollars. Much of it never existed.
 Visual: A stack of printed account statements on a desk, text unreadable
-Visual: A hand lifting the top statement off a stack, text unreadable
-Visual: A sheet of blank paper beneath a lifted account statement
+Visual: A filing cabinet drawer stuffed with folders
+Visual: A sheet of blank paper on a bare desk
 Text: ≈$65bn ON PAPER
 Draw: cross
 Cite: US Attorney SDNY, 2009
@@ -49,15 +49,15 @@ Cite: US Attorney SDNY, 2009
 
 His victims included charities and wealthy families.
 Visual: A charity office counter with a donation box on it
-Visual: A grand townhouse on a leafy New York street
+Visual: A grand townhouse on a leafy street
 
 Even professional investors. People who knew money.
-Visual: A leather briefcase beside a folded financial newspaper
-Visual: An investor's desk with two monitors showing charts, text unreadable
+Visual: A leather briefcase on a boardroom table
+Visual: A fund manager seen from behind looking out over a city skyline
 
 So if knowing money did not protect them, what would?
 Visual: A pile of finance books on a wooden desk
-Visual: An open padlock lying on top of a pile of finance books
+Visual: An open padlock hanging from a door hasp
 Text: WHAT WOULD HAVE PROTECTED THEM?
 
 Psychologists studying scam victims for a UK regulator found something even stranger.
@@ -68,8 +68,8 @@ Map: Exeter | University of Exeter, for a UK regulator
 Cite: OFT / University of Exeter, 2009
 
 Knowing a lot about money can actually make some scams work better.
-Visual: A phone ringing on top of a stack of finance books
-Visual: A man seen from behind reading a financial newspaper while on the phone
+Visual: An investment magazine open on a desk, text unreadable
+Visual: A man seen from behind reading a financial newspaper on a train
 Text: KNOWLEDGE CAN BACKFIRE
 Cite: OFT / University of Exeter, 2009
 
@@ -86,105 +86,105 @@ Text: NOT WHO YOU'D GUESS
 
 By the end, you'll know one move.
 Visual: An open notebook with a pen resting across it
-Visual: A thumb resting on the end-call button of a mobile phone, text unreadable
+Visual: A hand raised, palm out, in a stop gesture
 Text: ONE MOVE
 
 It breaks almost every scam call.
-Visual: An old telephone handset lying off its cradle
-Visual: A thumb ending a call on a smartphone, the screen going dark
+Visual: A pair of scissors snipping through a coiled cord
+Visual: A man seen from behind relaxing back into an armchair
 
 Meet Sam. He is fictional, thirty-four, and he works in finance.
-Visual: A man seen from behind at a kitchen table at night, laptop open
-Visual: An office desk with spreadsheets on two monitors, text unreadable
+Visual: A man seen from behind at a kitchen table at night
+Visual: A city finance office with rows of desks
 Text: SAM · FICTIONAL
 Chapter: Part 1 | The perfect call
 
 Sam has read every warning.
-Visual: A fraud warning leaflet on a kitchen table, print unreadable
+Visual: A fraud warning leaflet pinned to a fridge, print unreadable
 
 He's sure it could never happen to him.
 Visual: A man seen from behind leaning back in a chair, arms folded
-Visual: A coffee mug beside a laptop on a tidy kitchen table
+Visual: A coffee mug on a tidy desk beside neat folders
 Thought: That could never happen to me.
 
 On a Tuesday evening, his phone rings.
 Visual: A desk calendar beside a lamp in the evening, text unreadable
-Visual: A phone ringing on a kitchen table, rain on the window behind
+Visual: A dark kitchen window streaked with rain in the evening
 Text: FICTIONAL SCENARIO
 
 The caller even knows his name. She sounds calm, professional.
-Visual: A hand lifting a ringing phone from a kitchen table
+Visual: A handwritten name on an envelope, text unreadable
 Visual: A headset with a microphone on a call-centre desk
 
 She says she is from his bank's fraud team.
-Visual: A phone showing an incoming call, the caller name blank
-Visual: A call-centre office with rows of desks and headsets
+Visual: A bank headquarters tower lit up at night
+Visual: A woman's hand holding a printed script, text unreadable
 Text: FICTIONAL CALL
 
 Watch the number on his screen.
 Visual: A hand holding a smartphone showing an incoming call, text unreadable
-Visual: A phone screen with the caller number ringed in red pen, digits unreadable
+Visual: A pen circling a handwritten number on a notepad, digits unreadable
 
 It matches the one on the back of his card.
 Visual: The back of a bank card on a table, details unreadable
-Visual: A bank card beside a ringing phone on a kitchen table
+Visual: Two strips of paper with matching digits side by side, digits unreadable
 Text: THE NUMBER MATCHES
 Draw: circle
 
 Surely that proves it is real?
-Visual: A thumb hovering above a ringing phone
-Visual: A man seen from behind holding a phone at arm's length
+Visual: A man seen from behind standing still in his kitchen
+Visual: A man's hand rubbing the back of his neck, seen from behind
 Text: PROOF?
 
 It doesn't. Ofcom warns that criminals can fake the number you see.
-Visual: Two identical phones side by side showing an incoming call, text unreadable
-Visual: A laptop running call software in a dark room, text unreadable
+Visual: Ofcom's riverside office building in London
+Visual: Hands typing on a keyboard in a dark room
 Text: NUMBERS CAN BE SPOOFED
 Draw: cross
 
 Caller display is a label anyone can type.
 Visual: A hand writing on a blank sticky name badge, writing unreadable
-Visual: Fingers typing on a laptop keyboard in a dark room
+Visual: A label maker printing a strip of tape
 
 It was never an identity check.
 Visual: A passport and a driving licence on a desk, details unreadable
 Visual: A blank identity card crossed through in red pen
 
 A fake call can seem to come from your bank.
-Visual: An old telephone beside a bank card on a desk
 Visual: A high-street bank branch front, its sign unreadable
+Visual: A cash machine set into a stone wall
 
 Or the tax office. Or a courier.
 Visual: A brown government envelope on a doormat, text unreadable
 Visual: A courier's parcel left on a front doorstep
 
 Even a familiar voice can now be faked.
-Visual: A desk microphone beside a laptop showing a sound wave
+Visual: A studio microphone on a stand in a dark room
 Visual: An old cassette tape with its ribbon pulled out
 Text: VOICES CAN BE FAKED
 
 So can a face on a video call.
 Visual: A laptop on a kitchen table showing a video call, faces blurred
-Visual: A webcam clipped to the top of a laptop screen
+Visual: A ring light and a tripod in a dark spare room
 Text: SO CAN FACES
 
 Phone networks must block many calls from abroad faking UK landline numbers.
-Visual: An old telephone exchange with rows of switchboard cables
-Visual: A mobile phone mast on a hill at dusk
+Visual: An old switchboard with rows of cables and plugs
+Visual: A mobile mast on a hill at dusk
 Stock: telephone switchboard
 Map: United Kingdom | calls faking UK numbers
 
 But Ofcom says some still get through.
-Visual: One plug still connected on a switchboard of empty sockets
-Visual: A phone ringing on a hallway table
+Visual: A single cable still plugged into a junction box
+Visual: A letterbox flap pushed open by a delivered letter
 
 Sam knows all this in theory.
 Visual: A man seen from behind beside a shelf of finance books
-Visual: An open finance textbook with a pen across it, text unreadable
+Visual: A highlighter-marked page of notes, text unreadable
 
 So why does he stay on the line?
-Visual: A man seen from behind at a rainy window, phone to his ear
-Visual: A call timer counting up on a smartphone screen, digits blurred
+Visual: A man seen from behind at a rainy window at night
+Visual: A cooling cup of tea untouched on a kitchen table
 Text: WHY STAY ON THE LINE?
 Thought: Odd... but she knows my name.
 
@@ -199,20 +199,21 @@ Visual: A wall clock in a dark hallway, its second hand sweeping
 Text: ACT NOW
 
 She will even help him move the money to a safe account.
-Visual: Hands opening a money transfer screen on a phone, text unreadable
+Visual: A stack of banknotes being slid into a bank envelope
 Visual: A heavy bank vault door standing open
 Text: A SAFE ACCOUNT
 Bubble: Move the money to a safe account.
 
 In under a minute, authority, fear and a deadline have arrived together.
 Visual: A police officer's peaked cap on a desk
-Visual: A man seen from behind gripping a phone at night
-Visual: A stopwatch running on a kitchen table
+Visual: A man seen from behind pacing a dark kitchen
+Visual: A stopwatch running on a worktop
 Text: AUTHORITY + FEAR + DEADLINE
+Steps: Authority → Fear → Deadline | Under a minute
 
 Each one makes checking feel slower, riskier, even disloyal.
-Visual: A hand pulling back from a landline handset on a hallway table
-Visual: A bank card lying unused beside a phone
+Visual: A hand hovering over a notepad, pen not moving
+Visual: A bank card lying unused beside a set of keys
 
 But why would knowing about money make Sam easier to catch, not harder?
 Visual: A shelf of finance books, one pulled half out
@@ -229,18 +230,18 @@ Cite: OFT / University of Exeter, 2009
 
 And people who knew a scam's subject, like investments?
 Visual: Investment brochures fanned across a coffee table, logos blank
-Visual: A stock price chart on a laptop screen, figures unreadable
+Visual: A financial newspaper's share price pages, print unreadable
 
 They were sometimes more at risk, not less.
 Visual: A playground see-saw tipped down to one side
-Visual: A tall stack of investment magazines on a desk beside a phone
+Visual: A stockbroker's office with tidy shelves of reports
 Text: MORE KNOWLEDGE, MORE RISK
 Draw: circle
 Cite: OFT / University of Exeter, 2009
 
 Why? Commentary suggested they engaged with approaches others simply ignored.
 Visual: A hand opening one envelope from a pile of sealed letters
-Visual: A pile of unopened junk mail in a recycling bin
+Visual: A front door with a no-cold-callers sticker, text unreadable
 
 Were the victims poor decision-makers? Many were not. Some had successful careers.
 Visual: Office workers seen from behind walking into a glass office building
@@ -251,27 +252,27 @@ Visual: An old photograph of a stock exchange trading floor in 2008
 
 Credentials like his can make checking feel unnecessary, even rude.
 Visual: A framed certificate on an office wall, writing unreadable
-Visual: A hand pulling back from a telephone on a desk
+Visual: A hand pulling back from a closed folder
 Text: CREDENTIALS ≠ CHECKS
 
 A scam can feel like a conversation you understand.
 Visual: Two old telephone receivers on a desk, their cords tangled together
-Visual: A man seen from behind nodding while on the phone at a desk
+Visual: A man seen from behind nodding along at a desk, notepad open
 
 So you stay in it.
-Visual: A telephone receiver off the hook, its coiled cord stretched across a desk
+Visual: A man seen from behind still seated at a desk, coat on
 
 The scam does not need you to be foolish.
 Visual: A man seen from behind reading a newspaper in a café
 Visual: A crossword completed in pen beside a coffee cup
 
 It only needs you to keep talking instead of checking.
-Visual: A man seen from behind pacing a kitchen with a phone to his ear
+Visual: A man seen from behind pacing a kitchen, one hand on his head
 Visual: A bank card lying face down and untouched on a kitchen counter
 Draw: cross
 
 Victims also tended to find it harder to control emotions under pressure.
-Visual: A hand gripping the edge of a kitchen counter
+Visual: A hand gripping the back of a chair
 Visual: A heart-rate trace in red pen spiking across graph paper
 Cite: OFT / University of Exeter, 2009
 
@@ -285,38 +286,38 @@ Text: THE TARGET IS YOUR PULSE
 
 And if that is true, the usual picture of a victim is wrong.
 Visual: An empty park bench under a streetlight at night
-Visual: An elderly person seen from behind sitting on a park bench
+Visual: An elderly woman seen from behind at a bus stop
 Visual: A young man seen from behind on a busy street, phone in hand
 Text: WHO REALLY LOSES?
 Chapter: Part 3 | Who really loses
 
 Take Americans in their twenties, in twenty twenty-four.
 Visual: Young people seen from behind walking across an American college campus
-Visual: Young hands gripping a phone on a desk, screen text unreadable
+Visual: A student's dorm desk with textbooks and a mug
 Text: FTC · AGE 20–29
 Place: UNITED STATES · 2024
 Cite: FTC Consumer Sentinel, 2024
 
 They lost money in forty-four percent of reports.
-Visual: A bar chart drawn on graph paper, the first bar much taller
+Visual: Two jars of coins on a shelf, one much fuller
 Chart: 44% vs 24% | in their 20s, in their 70s
 Cite: FTC Consumer Sentinel, 2024
 
 For people in their seventies, just twenty-four percent.
-Visual: Older hands calmly closing a laptop on a kitchen table
+Visual: Older hands calmly folding a letter on a kitchen table
 Visual: An older couple seen from behind walking along a seafront
 Text: AGE 70–79
 Cite: FTC Consumer Sentinel, 2024
 
 Yet older victims tend to lose more per case.
-Visual: One tall stack of coins on graph paper
+Visual: A single fat envelope of cash on a table
 Visual: Wrinkled hands holding an open chequebook, text unreadable
 Text: FTC Consumer Sentinel, 2024
 Cite: FTC Consumer Sentinel, 2024
 
 Younger ones just lose more often.
-Visual: Many small coin stacks scattered across graph paper
-Visual: A young hand tapping a payment app on a phone, text unreadable
+Visual: A row of small paper receipts pinned to a corkboard
+Visual: A contactless card tapped on a café card reader
 
 And the costliest category in twenty twenty-five was investment scams.
 Visual: A rising stock chart on a laptop screen, figures unreadable
@@ -326,11 +327,11 @@ Cite: FTC, March 2026
 
 Notice the subject? The one where people feel most knowledgeable.
 Visual: A financial newspaper folded on a desk, headline circled in red, unreadable
-Visual: A man seen from behind reading stock prices on a laptop
+Visual: A man seen from behind at a desk piled with market reports
 Draw: arrow
 
 Exactly where Madoff struck.
-Visual: A financial newspaper beside an old photograph of a trading floor
+Visual: An old photograph of a trading floor pinned to a wall
 
 Britain shows the same pattern.
 Visual: A busy British high street lined with shop fronts
@@ -339,28 +340,28 @@ Place: UNITED KINGDOM · 2025
 
 UK Finance counted about one point two eight billion pounds stolen.
 Visual: A paper map of the United Kingdom with banknotes across its cities
-Visual: A pile of British banknotes on a desk
+Visual: The Bank of England's stone facade in the City of London
 Chart: £1.28bn | stolen by fraud in the UK, 2025
 Cite: UK Finance, 2026
 
 Some victims were tricked into sending the money themselves.
-Visual: A finger pressing send on a payment screen, text unreadable
-Visual: A hand holding a phone and a bank card at a kitchen table
+Visual: A hand filling in a bank transfer slip, text unreadable
+Visual: A bank card and a sticky note of account digits, digits unreadable
 
 Those losses rose nineteen percent on the year before.
 Visual: A red pen line climbing across graph paper
-Visual: A small pile of banknotes beside a desk calendar, text unreadable
+Visual: A desk calendar with the year's pages flipped, text unreadable
 Text: Push payment fraud: £576.4m, up 19%
 Cite: UK Finance, 2026
 
 Investment fraud losses jumped forty percent.
-Visual: A red pen line climbing steeply across graph paper
+Visual: A tall bar drawn in marker on a whiteboard
 Visual: An investment brochure crumpled in a waste bin, text unreadable
 Text: Investment fraud: £221.5m, up 40%
 Cite: UK Finance, 2026
 
 The costliest scams target confidence, not ignorance.
-Visual: A man in a suit seen from behind striding into a bank
+Visual: A man in a suit seen from behind striding across a plaza
 Visual: A shelf of finance textbooks in a home office
 Draw: box
 
@@ -373,24 +374,24 @@ Visual: An empty kitchen table at night, a single chair pulled out
 Visual: A phone lying on a table under a single lamp
 
 The right pressure, at exactly the wrong moment.
-Visual: A phone lighting up on an empty kitchen table at night
+Visual: A tired man seen from behind rubbing his eyes at midnight
 Visual: A pressure gauge with its needle in the red
 
 But one category moved the other way. The one about to catch Sam.
 Visual: A red pen arrow drawn downward across graph paper
-Visual: A man seen from behind at a kitchen table, a phone ringing beside him
+Visual: A man seen from behind in an armchair, a mug on the arm
 Text: ONE CATEGORY FELL
 
 Impersonation scams, posing as a bank or the police, actually fell again.
-Visual: A police officer's peaked cap on a desk beside a phone
-Visual: A high-street bank branch at dusk, sign unreadable
-Visual: A pencil line sloping downwards across graph paper
+Visual: A police officer's peaked cap on a desk
+Visual: A security guard seen from behind at a building entrance
+Visual: A row of shrinking coin stacks on a desk
 Text: Impersonation losses down 12%
 Cite: UK Finance, 2026
 
 UK Finance has linked recent falls partly to public education campaigns.
 Visual: A bus shelter poster at night, the poster text unreadable
-Visual: A fraud awareness leaflet in a bank branch rack, text unreadable
+Visual: A fraud awareness leaflet on a library noticeboard, text unreadable
 Text: UK Finance
 Cite: UK Finance, 2026
 
@@ -408,98 +409,100 @@ Text: NEVER A SAFE ACCOUNT
 Draw: tick
 
 That sentence is the backbone of the Take Five campaign.
-Visual: A campaign leaflet on a bank counter, text unreadable
-Visual: A hand placing a single card face down on a table
+Visual: A campaign van parked on a high street, text unreadable
+Visual: A wristwatch laid beside a cup of tea
 Text: Take Five to Stop Fraud
 
 Second, never share a one-time passcode.
-Visual: A phone showing a text message with a six-digit code, digits blurred
-Visual: A hand covering a phone screen on a table
+Visual: A hand covering the keys of a cash machine
+Visual: A sealed envelope marked confidential, text unreadable
 Text: NEVER SHARE THE CODE
 Draw: cross
 
 And never approve a payment you didn't start.
-Visual: A banking app approval screen on a phone, text unreadable
-Visual: A thumb pulling away from a phone screen
+Visual: A hand stopping above a signature line on a form
+Visual: A capped pen laid down on a desk
 Text: NEVER APPROVE WHAT YOU DIDN'T START
 
 Third, a caller wants it kept secret from your bank?
-Visual: A person seen from behind whispering into a phone
-Visual: A bank branch door seen from across the street
+Visual: A person seen from behind whispering, a hand cupped to the mouth
+Visual: A finger pressed on a closed bank statement, text unreadable
 
 That is a warning sign.
-Visual: A red warning flag pinned beside a telephone on a desk
+Visual: A red warning flag pinned to a corkboard
 Text: SECRECY = RED FLAG
 
 Fourth, only a criminal needs you to hurry.
-Visual: A running stopwatch beside a phone on a desk
+Visual: A running stopwatch on a desk
 Visual: A person seen from behind hurrying down a wet street
 Text: ONLY CRIMINALS RUSH YOU
+Steps: Safe account → Shared code → Secrecy → Hurry | Four warning signs
 
 Sam hears safe account and something clicks. So what does he do?
-Visual: A man seen from behind with a phone pressed to his ear
-Visual: A hand lowering a phone from an ear in a dim kitchen
+Visual: A man seen from behind standing very still by a window
+Visual: A light switch clicked on in a dim kitchen
 Text: WHAT DOES SAM DO?
 Thought: Safe account? That's the scam.
 
 He hangs up. Not rude. He is breaking the script.
 Visual: A thumb pressing the end-call button, the screen going dark
-Visual: A phone placed face down on a kitchen table
+Visual: A kitchen table, a chair pushed neatly back
 Text: HANG UP
 
 Then he calls his bank on a number he found himself.
 Visual: Hands turning a bank card over to its back, details unreadable
-Visual: A finger dialling a number on a smartphone keypad
+Visual: A handwritten bank number on a notepad, digits unreadable
+Steps: Hang up → Own number → Call bank | Breaking the script
 
 In the UK there is a three-digit shortcut. One five nine.
-Visual: A smartphone keypad with three keys ringed in pen
-Visual: A finger pressing a key on a phone keypad
+Visual: A sticky note stuck to a fridge, digits unreadable
+Visual: A notice of emergency numbers pinned up in a kitchen, text unreadable
 Text: CALL 159
 Draw: circle
 
 Run by Stop Scams UK, it connects you to many major banks.
-Visual: Several bank cards fanned out on a desk, details unreadable
+Visual: A leaflet listing many bank names, text unreadable
 Visual: A row of high-street bank branches on a British street
 
 And one five nine never calls you. Only you call it.
-Visual: An incoming call screen crossed through in red pen, text unreadable
-Visual: A hand dialling out on a smartphone at a kitchen table
+Visual: A diary entry crossed through in red pen, text unreadable
+Visual: A woman seen from behind picking up a pen to write down a number
 Text: 159 NEVER CALLS YOU
 
 One more catch.
-Visual: A coiled telephone cord with a knot in it on a desk
+Visual: A knotted length of cord on a desk
 
 A fraudster may keep a landline connected after you hang up.
-Visual: A landline phone on a hallway table
-Visual: A landline handset hanging off its cradle on its coiled cord
+Visual: A front door seen from inside a dim house
+Visual: A small table lamp left on in an empty hallway
 
 So use a different phone, or wait a few minutes before calling.
-Visual: A hand picking up a mobile phone beside a landline
+Visual: A kitchen timer set for a few minutes
 Visual: A kitchen wall clock showing a few minutes past the hour
 Text: DIFFERENT PHONE OR WAIT
 Draw: tick
 
 Scam texts can be forwarded free to seven seven two six.
 Visual: A smartphone showing a suspicious text message, text unreadable
-Visual: A thumb forwarding a message on a smartphone, text unreadable
+Visual: A sticky note on a fridge with four digits, digits unreadable
 Text: FORWARD TO 7726
 
 Suspicious emails go to the government's phishing report address.
-Visual: A laptop inbox with one email circled in red, text unreadable
-Visual: A printed email pinned to a desk, text unreadable
+Visual: A printed email circled in red pen on a desk, text unreadable
+Visual: A paper report form on a clipboard, text unreadable
 Text: report@phishing.gov.uk
 
 And never use a link or number the message itself gives you.
-Visual: A finger hovering over a link on a smartphone, text unreadable
-Visual: A hand pulling away from a smartphone screen
+Visual: A finger hovering over a link in a printed letter, text unreadable
+Visual: A hand feeding paper into a shredder
 
 But what if the money has already gone?
-Visual: An empty wallet lying open on a kitchen table at dawn
-Visual: A banking app showing a low balance on a phone, text unreadable
+Visual: An empty wallet lying open on a kitchen table
+Visual: A bank passbook showing a final empty line, text unreadable
 Text: ALREADY SENT IT?
 
 Call your bank immediately. Speed matters.
-Visual: A hand dialling on a phone in a dim kitchen
+Visual: A man seen from behind hurrying along a wet street
 Visual: A wall clock's second hand sweeping past the hour
 Stock: person making phone call
 Draw: arrow
@@ -513,19 +516,19 @@ Place: UNITED KINGDOM · OCT 2024
 Cite: PSR, 2024
 
 Covered claims can be repaid up to eighty-five thousand pounds.
-Visual: A neat pile of banknotes slid across a desk to an open hand
+Visual: A cheque being written out at a desk, text unreadable
 Visual: A claim form on a desk with a pen, text unreadable
 Chart: £85,000 | maximum repaid per claim
 Cite: PSR, 2024
 
 In twenty twenty-five, banks reimbursed about sixty-one percent of push payment fraud losses.
 Visual: Ten coin stacks on graph paper, six of them ringed in pen
-Visual: A bank cashier's window with a hand passing banknotes through
+Visual: A bank cashier's window with a hand passing an envelope through
 Chart: 61% | of push payment losses reimbursed, 2025
 Cite: UK Finance, 2026
 
 Then report it.
-Visual: A hand uncapping a red pen over a blank report form
+Visual: A hand uncapping a red pen over a blank notepad
 
 In England, Wales and Northern Ireland, that's Report Fraud.
 Visual: A paper map of England, Wales and Northern Ireland on a desk
@@ -535,16 +538,16 @@ Map: United Kingdom | England, Wales and Northern Ireland
 
 Live elsewhere? Follow your local police guidance.
 Visual: A blue police lamp outside a station entrance at night
-Visual: A police station front desk with an empty counter
+Visual: A police community support officer seen from behind on a street
 
 This time, Sam reaches his real bank. Did you just call me?
-Visual: A man seen from behind in a brightly lit kitchen, phone to his ear
+Visual: A man seen from behind in a brightly lit kitchen, morning light
 Visual: A bank call-centre worker seen from behind wearing a headset
 Bubble: Did you just call me?
 
 His real bank has no record of any call.
 Visual: A printed call log pinned to a desk, text unreadable
-Visual: A bank office computer screen showing an empty list, text unreadable
+Visual: An empty in-tray on an office desk
 Text: NO RECORD OF ANY CALL
 
 His savings never moved. His expertise nearly moved them for him.
@@ -558,38 +561,38 @@ Visual: A neatly organised desk with labelled folders, text unreadable
 
 It would only prove the pressure worked.
 Visual: A pressure gauge with its needle in the red
-Visual: A hand gripping a phone tightly
+Visual: A hand gripping a mug tightly
 
 Scams are built to remove the pause.
 Visual: A gap in a garden fence being boarded shut
 Visual: A finger pressing fast-forward on an old cassette player
 
 So the pause is your most valuable defence.
-Visual: A phone placed face down on a desk, its screen dimming
-Visual: A hand resting flat on a closed laptop
+Visual: A cup of tea cooling on a windowsill
+Visual: A hand resting flat on a closed notebook
 Text: THE PAUSE
 
 A real bank can survive a callback. A scammer usually cannot.
-Visual: A landline handset placed gently back on its cradle
-Visual: A disconnected phone cable lying on a desk
+Visual: A bank branch opening its doors in the morning
+Visual: A disconnected cable lying on a desk
 
 Today, save one five nine in your phone.
 Visual: A thumb adding a new contact on a smartphone, text unreadable
-Visual: A smartphone contacts list on a table, text unreadable
+Visual: A sticky note with three digits on a fridge, digits unreadable
 Text: SAVE 159
 
 Then send these rules to someone you love.
 Visual: Two pairs of hands passing a handwritten card across a kitchen table
-Visual: A thumb sending a message on a smartphone, text unreadable
+Visual: An envelope dropped through a family member's letterbox
 Text: SHARE THE RULES
 
 Every trap in this series breaks on one question.
-Visual: A laptop, a price tag and an old telephone in a row on a desk
-Visual: A pen resting on a blank index card
+Visual: A price tag, a gym pass and a parking ticket in a row on a desk
+Visual: A pen resting on a blank notepad
 
 Who benefits if I act before I think?
-Visual: A person seen from behind at a window at dawn, phone lowered
-Visual: A city street waking up at dawn
+Visual: A person seen from behind at a window at dawn
+Visual: A city street waking up, shop shutters rising
 Text: WHO BENEFITS IF I ACT BEFORE I THINK?
 Draw: circle
 
