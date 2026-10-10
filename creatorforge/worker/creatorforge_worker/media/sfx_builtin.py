@@ -1,6 +1,6 @@
 """Built-in sound design, synthesised with ffmpeg on first use - nothing to download, nothing to license.
 Whooshes for moving cuts, deep hits for hard cuts and reveals, a riser that builds into a twist, a soft pop
-for callouts. Your own SFX folder / Asset Library sounds are used alongside these."""
+for callouts, a pen scratch for drawn marks, a paper slide. Your own SFX folder / Asset Library sounds are used alongside these."""
 from __future__ import annotations
 
 import threading
@@ -21,6 +21,11 @@ SOUNDS = {
     "riser_tension": "aevalsrc='0.35*sin(2*PI*(110+520*t*t/2.4)*t)*(t/1.6)+0.12*(random(0)-0.5)*(t/1.6)':d=1.6:s=48000,"
                      "highpass=f=90,afade=t=out:st=1.5:d=0.1",
     "pop_soft": "aevalsrc='0.6*sin(2*PI*(900-500*t/0.09)*t)*exp(-t*38)':d=0.12:s=48000",
+    # explainer looks: a felt-tip pen scratching on paper (pen marks), and a sheet of paper sliding (cuts)
+    "scribble_pen": "anoisesrc=d=0.5:c=white:a=0.5:r=48000,highpass=f=1800,lowpass=f=6500,tremolo=f=13:d=0.85,"
+                    "afade=t=in:d=0.03,afade=t=out:st=0.38:d=0.12,volume=0.8",
+    "whoosh_paper": "anoisesrc=d=0.45:c=pink:a=0.8:r=48000,highpass=f=700,lowpass=f=3500,tremolo=f=31:d=0.35,"
+                    "afade=t=in:d=0.18:curve=exp,afade=t=out:st=0.25:d=0.2,volume=1.1",
 }
 _lock = threading.Lock()
 

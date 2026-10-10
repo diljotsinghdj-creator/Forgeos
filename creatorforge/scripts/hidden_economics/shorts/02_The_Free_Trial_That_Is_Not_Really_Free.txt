@@ -7,6 +7,7 @@ It said free. Day eight: ten pounds gone.
 Visual: A smartphone showing a free trial sign-up page, text unreadable
 Visual: A paper wall calendar with the eighth day circled in red pen
 Text: FREE… THEN −£10 ON DAY 8 · ILLUSTRATION
+Draw: circle
 
 So why did a free trial need your card?
 Visual: A bank card lying on a paper sign-up form, text unreadable
@@ -18,6 +19,7 @@ Because the trial is not the product. The renewal is.
 Visual: A paper contract on a desk with its top half covered, text unreadable
 Visual: The small print at the bottom of a contract circled in red pen, text unreadable
 Text: THE PRODUCT = THE RENEWAL
+Draw: underline
 
 So when did you actually buy it?
 Visual: A hand holding a pen above a document on a desk
@@ -32,6 +34,7 @@ Text: DAY 1 IS THE PURCHASE
 Day seven passes quietly, because nothing asks you to decide.
 Visual: Seven torn-off calendar pages scattered across a sofa cushion
 Visual: A smartphone lying face down on a sofa cushion
+Thought: It's free. I'll cancel in time.
 
 Forget it for a year, and free costs this.
 Visual: Twelve coins laid in a long row across a wooden desk
@@ -47,3 +50,4 @@ Stock: setting phone reminder
 Then day eight costs only what you chose.
 Visual: A paper wall calendar with the eighth day circled in green pen
 Text: DAY 8: YOUR CHOICE
+Draw: tick

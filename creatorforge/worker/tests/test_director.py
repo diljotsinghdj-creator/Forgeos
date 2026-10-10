@@ -146,6 +146,19 @@ def test_several_visual_lines_cut_one_spoken_line_into_several_pictures():
     assert beats[0]["overlay"] == "JAN" and beats[1]["overlay"] == ""          # text stays with the first picture
 
 
+def test_pen_marks_and_bubbles_belong_to_the_last_picture_of_their_line():
+    from creatorforge_worker import director as d
+    raw = ("The Subscription Trap\nTitle: The trap test\n\nYou quit in January. It still charged you.\n"
+           "Visual: A calendar page for January\nVisual: A phone face down on a kitchen table\nDraw: circle\n"
+           "Bubble: Is this really free?\n\nTwelve pounds a month, every month.\nVisual: A one pound coin\n"
+           "Thought: I will cancel it later\n\nCheck your statement tonight.\nVisual: A bank statement\nPen: arrow\n")
+    spec = d.ProductionSpec.from_dict({"script": raw, "duration_s": 20})
+    assert "circle" not in spec.script and "free?" not in spec.script and "cancel it" not in spec.script
+    beats = [b for s in d.direct_script(None, spec).scenes for b in s.beats]
+    assert beats[0]["draw"] == "" and beats[1]["draw"] == "circle" and beats[1]["bubble"] == "say:Is this really free?"
+    assert beats[2]["bubble"] == "think:I will cancel it later" and beats[3]["draw"] == "arrow"
+
+
 def test_writer_text_and_stock_lines_belong_to_their_spoken_line():
     from creatorforge_worker import director as d
     raw = ("Six months becomes seventy-two pounds.\nVisual: Calendar pages flipping\nText: £12 × 6 = £72\n"

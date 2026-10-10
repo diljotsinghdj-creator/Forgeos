@@ -8,6 +8,7 @@ Same man. Add a uniform. Strangers obey.
 Visual: A man in plain clothes seen from behind on a city street
 Visual: A security guard's jacket and peaked cap on a hanger
 Text: SAME MAN. NEW CLOTHES.
+Draw: circle
 
 In nineteen seventy-four, a researcher asked Brooklyn strangers for small favours.
 Visual: An old black-and-white photograph of a busy Brooklyn pavement
@@ -24,6 +25,7 @@ A guard had no power here. So why?
 Visual: An empty peaked cap on a desk under a lamp
 Visual: A pedestrian handing a coin to a uniformed man, seen from behind
 Text: SO WHY COMPLY?
+Thought: Better do what he says
 
 Uniforms, titles and crests are shortcuts to trust.
 Visual: A metal badge on a desk beside an embossed letterhead, text unreadable
@@ -34,6 +36,7 @@ So scammers borrow them, like the tax office's crest.
 Visual: A pile of official-looking envelopes on a doormat, crests blurred
 Visual: A phone showing a text message with an official crest, text unreadable
 Text: FAKE "OFFICIAL" MESSAGES
+Draw: arrow
 
 It logged over a hundred and seventy thousand scam reports in a year.
 Visual: Bundles of printed scam letters tied with string on a desk, text unreadable
@@ -44,6 +47,7 @@ The real office never texts you about a refund.
 Visual: A phone on a kitchen table beside a torn envelope, screen dark
 Visual: A government office building with stone steps on a grey day
 Text: HMRC NEVER TEXTS ABOUT REFUNDS
+Draw: underline
 
 Same request, new clothes. Judge the request, not the uniform.
 Visual: A guard's jacket hanging on a coat hook by a door

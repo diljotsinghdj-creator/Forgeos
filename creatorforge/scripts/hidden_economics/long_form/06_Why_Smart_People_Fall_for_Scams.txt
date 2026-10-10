@@ -34,6 +34,7 @@ Visual: A stack of printed account statements on a desk, text unreadable
 Visual: A hand lifting the top statement off a stack, text unreadable
 Visual: A sheet of blank paper beneath a lifted account statement
 Text: ≈$65bn ON PAPER
+Draw: cross
 
 In June twenty-oh-nine, he was sentenced to a hundred and fifty years.
 Visual: The stone columns and steps of a New York federal courthouse
@@ -94,6 +95,7 @@ Visual: A fraud warning leaflet on a kitchen table, print unreadable
 He's sure it could never happen to him.
 Visual: A man seen from behind leaning back in a chair, arms folded
 Visual: A coffee mug beside a laptop on a tidy kitchen table
+Thought: That could never happen to me.
 
 On a Tuesday evening, his phone rings.
 Visual: A desk calendar beside a lamp in the evening, text unreadable
@@ -117,6 +119,7 @@ It matches the one on the back of his card.
 Visual: The back of a bank card on a table, details unreadable
 Visual: A bank card beside a ringing phone on a kitchen table
 Text: THE NUMBER MATCHES
+Draw: circle
 
 Surely that proves it is real?
 Visual: A thumb hovering above a ringing phone
@@ -127,6 +130,7 @@ It doesn't. Ofcom warns that criminals can fake the number you see.
 Visual: Two identical phones side by side showing an incoming call, text unreadable
 Visual: A laptop running call software in a dark room, text unreadable
 Text: NUMBERS CAN BE SPOOFED
+Draw: cross
 
 Caller display is a label anyone can type.
 Visual: A hand writing on a blank sticky name badge, writing unreadable
@@ -171,6 +175,7 @@ So why does he stay on the line?
 Visual: A man seen from behind at a rainy window, phone to his ear
 Visual: A call timer counting up on a smartphone screen, digits blurred
 Text: WHY STAY ON THE LINE?
+Thought: Odd... but she knows my name.
 
 Here's what she tells him. Suspicious activity on his account.
 Visual: A smartphone showing a red banking alert, text unreadable
@@ -186,6 +191,7 @@ She will even help him move the money to a safe account.
 Visual: Hands opening a money transfer screen on a phone, text unreadable
 Visual: A heavy bank vault door standing open
 Text: A SAFE ACCOUNT
+Bubble: Move the money to a safe account.
 
 In under a minute, authority, fear and a deadline have arrived together.
 Visual: A police officer's peaked cap on a desk
@@ -215,6 +221,7 @@ They were sometimes more at risk, not less.
 Visual: A playground see-saw tipped down to one side
 Visual: A tall stack of investment magazines on a desk beside a phone
 Text: MORE KNOWLEDGE, MORE RISK
+Draw: circle
 
 Why? Commentary suggested they engaged with approaches others simply ignored.
 Visual: A hand opening one envelope from a pile of sealed letters
@@ -246,6 +253,7 @@ Visual: A crossword completed in pen beside a coffee cup
 It only needs you to keep talking instead of checking.
 Visual: A man seen from behind pacing a kitchen with a phone to his ear
 Visual: A bank card lying face down and untouched on a kitchen counter
+Draw: cross
 
 Victims also tended to find it harder to control emotions under pressure.
 Visual: A hand gripping the edge of a kitchen counter
@@ -296,6 +304,7 @@ Text: Investment scams: $7.9bn
 Notice the subject? The one where people feel most knowledgeable.
 Visual: A financial newspaper folded on a desk, headline circled in red, unreadable
 Visual: A man seen from behind reading stock prices on a laptop
+Draw: arrow
 
 Exactly where Madoff struck.
 Visual: A financial newspaper beside an old photograph of a trading floor
@@ -326,6 +335,7 @@ Text: Investment fraud: £221.5m, up 40%
 The costliest scams target confidence, not ignorance.
 Visual: A man in a suit seen from behind striding into a bank
 Visual: A shelf of finance textbooks in a home office
+Draw: box
 
 So scams are not really a problem of age, or of intelligence.
 Visual: A young woman and an elderly man seen from behind on a bench
@@ -365,6 +375,7 @@ First, banks and police never ask you to use a safe account.
 Visual: A money transfer form crossed through in red pen, text unreadable
 Visual: A bank branch counter with an empty teller window
 Text: NEVER A SAFE ACCOUNT
+Draw: tick
 
 That sentence is the backbone of the Take Five campaign.
 Visual: A campaign leaflet on a bank counter, text unreadable
@@ -375,6 +386,7 @@ Second, never share a one-time passcode.
 Visual: A phone showing a text message with a six-digit code, digits blurred
 Visual: A hand covering a phone screen on a table
 Text: NEVER SHARE THE CODE
+Draw: cross
 
 And never approve a payment you didn't start.
 Visual: A banking app approval screen on a phone, text unreadable
@@ -398,6 +410,7 @@ Sam hears safe account and something clicks. So what does he do?
 Visual: A man seen from behind with a phone pressed to his ear
 Visual: A hand lowering a phone from an ear in a dim kitchen
 Text: WHAT DOES SAM DO?
+Thought: Safe account? That's the scam.
 
 He hangs up. Not rude. He is breaking the script.
 Visual: A thumb pressing the end-call button, the screen going dark
@@ -412,6 +425,7 @@ In the UK there is a three-digit shortcut. One five nine.
 Visual: A smartphone keypad with three keys ringed in pen
 Visual: A finger pressing a key on a phone keypad
 Text: CALL 159
+Draw: circle
 
 Run by Stop Scams UK, it connects you to many major banks.
 Visual: Several bank cards fanned out on a desk, details unreadable
@@ -433,6 +447,7 @@ So use a different phone, or wait a few minutes before calling.
 Visual: A hand picking up a mobile phone beside a landline
 Visual: A kitchen wall clock showing a few minutes past the hour
 Text: DIFFERENT PHONE OR WAIT
+Draw: tick
 
 Scam texts can be forwarded free to seven seven two six.
 Visual: A smartphone showing a suspicious text message, text unreadable
@@ -457,6 +472,7 @@ Call your bank immediately. Speed matters.
 Visual: A hand dialling on a phone in a dim kitchen
 Visual: A wall clock's second hand sweeping past the hour
 Stock: person making phone call
+Draw: arrow
 
 Since October twenty twenty-four, UK rules require reimbursement for many push payment scams.
 Visual: A heavy rulebook falling open on a desk, text unreadable
@@ -489,6 +505,7 @@ Visual: A police station front desk with an empty counter
 This time, Sam reaches his real bank. Did you just call me?
 Visual: A man seen from behind in a brightly lit kitchen, phone to his ear
 Visual: A bank call-centre worker seen from behind wearing a headset
+Bubble: Did you just call me?
 
 His real bank has no record of any call.
 Visual: A printed call log pinned to a desk, text unreadable
@@ -498,6 +515,7 @@ Text: NO RECORD OF ANY CALL
 His savings never moved. His expertise nearly moved them for him.
 Visual: A stack of coins untouched on a table in morning sun
 Visual: A shelf of finance books in a home office
+Draw: tick
 
 And even if it had worked, it would not prove he was careless.
 Visual: A person seen from behind sitting on the edge of a bed in the dark
@@ -538,6 +556,7 @@ Who benefits if I act before I think?
 Visual: A person seen from behind at a window at dawn, phone lowered
 Visual: A city street waking up at dawn
 Text: WHO BENEFITS IF I ACT BEFORE I THINK?
+Draw: circle
 
 Next, how one calm con man with official-looking paper sold the Eiffel Tower.
 Visual: The Eiffel Tower in 1920s Paris with horse carts below

@@ -155,3 +155,17 @@ def subject(visual: str, words: int = 4) -> str:
     head = re.split(r"[,;:.]| while | as | with ", describe(visual), maxsplit=1)[0]
     kept = [w for w in re.findall(r"[A-Za-z][A-Za-z'-]*", head) if w.lower() not in _STOP]
     return " ".join(kept[:words]) or describe(visual)[:40]
+
+
+# Calibrated on a real render: a stock photo of a man's face scored 0.047-0.057 higher for "a face" than for "an
+# object"; objects, hands and scenes scored -0.03 to +0.005.
+FACE_MARGIN = 0.025
+
+
+def shows_face(checker: "Matcher", image: Path, visual: str) -> bool:
+    """True when a real photo is a face close-up the line didn't ask for - faceless channels keep faces out."""
+    if re.search(r"\b(face|portrait|eyes|smil\w*|expression)\b", visual, re.I):
+        return False
+    face = max(checker.score(image, "a close-up photo of a person's face"), checker.score(image, "a photo of a man's face"),
+               checker.score(image, "a photo of a woman's face"))
+    return face >= 0.215 and face - checker.score(image, "a photo of an object on a table") >= FACE_MARGIN

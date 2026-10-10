@@ -513,6 +513,30 @@ def test_explainer_looks_use_a_real_photo_when_one_clearly_matches(cfg, monkeypa
     assert pipe._real_photo(job, "", "An old paper map of Britain") is None
 
 
+def test_pen_marks_bubbles_and_line_graphs_render(tmp_path):
+    from creatorforge_worker.media import captions as cap, charts, ff, marks
+    from creatorforge_worker.media.captions import Word
+    ass = tmp_path / "c.ass"
+    cap.write_ass(ass, 1080, 1920, 0.045, 0.7, cap.group([Word("Hello", 0, 0.4), Word("there", 0.4, 0.8)], 3),
+                  [cap.Overlay(0.2, 2.0, "circle, arrow", "Draw"), cap.Overlay(0.2, 2.0, "Is this free?", "Bubble"),
+                   cap.Overlay(0.2, 2.0, "I will cancel later", "Think")], set(), "", "", "highlighter")
+    text = ass.read_text()
+    assert text.count(",Mark,") >= 8 and "\\p1" in text and "BubbleText" in text and "\\k" in text
+    assert text.index("Style: Mark") < text.index("[Events]")
+    starts = sorted({ln.split(",")[1] for ln in text.splitlines() if ",Mark,,0,0,0,,{\\an7\\pos(0,0)\\p1\\bord" in ln
+                     and "1a&HFF&" in ln})
+    assert len(starts) >= 5                                   # strokes appear one after another (drawn on)
+    out = tmp_path / "f.png"
+    ff.run(["-f", "lavfi", "-i", "color=c=0xF2ECDF:s=1080x1920:d=2", "-vf", f"subtitles=filename={ass}",
+            "-ss", "1.5", "-frames:v", "1", str(out)])
+    assert out.stat().st_size > 1000
+    plan = charts.parse("£3.5bn → £6.9bn → £10.3bn | losses | 2021, 2022, 2023")
+    assert plan["kind"] == "line" and plan["ticks"] == ["2021", "2022", "2023"]
+    video = charts.render(plan, "editorial", 540, 960, 2.0, tmp_path / "l.mp4", tmp_path)
+    assert ff.duration(video) > 1.5
+    assert marks.subject_box(1080, 1920)[0] > 0
+
+
 def test_clip_tokenizer_matches_the_reference_ids(tmp_path):
     from pathlib import Path
     from creatorforge_worker.media import match

@@ -41,6 +41,7 @@ On average, people still put a higher price on the smaller one.
 Visual: People seen from behind filling in paper forms at rows of desks
 Visual: A small pile of coins on a thin policy, a thick policy bare beside it
 Text: Johnson et al., 1993
+Draw: circle
 
 One word did that to a price.
 Visual: A newspaper with one word circled in red pen, text unreadable
@@ -70,6 +71,7 @@ Visual: A hand scrolling a smartphone in a dark room, text unreadable
 Visual: A smartphone screen showing a photo of a dark house, text unreadable
 Visual: A detached house at night with every window dark
 Text: FICTIONAL ADVERT
+Thought: Wait... is my family actually safe?
 
 Is your family protected?
 Visual: A child's shoe on a doormat in a dark hallway
@@ -102,6 +104,7 @@ Stock: 1970s office paperwork
 But the answers leaned towards dramatic, memorable deaths.
 Visual: A tornado funnel crossing open farmland under dark clouds
 Visual: A house wrecked by a tornado, debris scattered across the lawn
+Draw: circle
 
 And away from quiet, common ones.
 Visual: An empty hospital bed beside a window
@@ -133,6 +136,7 @@ Text: Combs & Slovic, 1979
 Not how often it actually killed.
 Visual: A thin pile of official record cards on a desk
 Visual: A thin pile of record cards beside a tall heap of newspaper clippings
+Draw: cross
 
 So the news you watch helps price the fear you feel.
 Visual: An old television showing a news broadcast in a living room, text unreadable
@@ -160,6 +164,7 @@ So when fear is vivid, the size of the risk stops counting.
 Visual: An old shop scale with its needle pointing halfway
 Visual: Brass weights piled high onto an old shop scale
 Text: PRICE BARELY MOVED
+Draw: cross
 
 The same economists named fear's next trick. Action bias.
 Visual: A hand gripping a door handle in a dim hallway
@@ -169,6 +174,7 @@ Text: ACTION BIAS
 When something frightens us, doing anything feels better than doing nothing.
 Visual: A hand switching on a light in a dark hallway
 Visual: Fingers drumming on a wooden table beside a phone
+Thought: Just do something. Anything!
 
 And buying something? The easiest something there is.
 Visual: A thumb tapping a buy button on a smartphone, text unreadable
@@ -215,6 +221,7 @@ When the message offered one clear thing to do.
 Visual: A printed health leaflet with one boxed instruction, text unreadable
 Visual: A finger pressing a lone light switch on a bare wall
 Text: FEAR + ONE STEP
+Draw: tick
 
 On a phone, one clear step looks exactly like a button.
 Visual: A single round button on a smartphone screen, text unreadable
@@ -230,6 +237,7 @@ Visual: A dark house at night with one porch light switched on
 Visual: A price tag on a boxed home alarm kit
 Visual: A thumb pressing a single button on a smartphone, text unreadable
 Text: THREAT → RELIEF → PRICE
+Draw: arrow
 
 Now ask which came first in that advert, the danger or the product.
 Visual: A smartphone showing an advert on a table, text unreadable
@@ -254,6 +262,7 @@ Maya's advert never once says how likely a break-in actually is.
 Visual: A smartphone advert with a photo of a dark house, text unreadable
 Visual: A printed crime statistics table with nothing circled, text unreadable
 Text: NO NUMBER
+Draw: cross
 
 So is selling with fear simply wrong?
 Visual: A thumb frozen above a button on a smartphone, text unreadable
@@ -284,6 +293,7 @@ So the fear that gets a cheap battery in is well spent.
 Visual: Fingers clicking a new battery into a smoke alarm
 Visual: A pack of batteries with a small price tag on a shop shelf
 Stock: smoke alarm battery
+Draw: tick
 
 That is not a reason to fear less.
 Visual: A hand turning down the volume dial on an old radio
@@ -302,6 +312,7 @@ UK ads must not cause fear without justifiable reason, and never excessively.
 Visual: A billboard on a British street, its poster text unreadable
 Visual: A hand turning a dimmer switch down a notch
 Text: JUSTIFIED, NOT EXCESSIVE
+Draw: box
 
 So the problem was never fear. It is proportion.
 Visual: A smoke alarm and a burglar alarm box side by side on a table
@@ -332,11 +343,13 @@ Visual: A printed advert headline in large bold letters, text unreadable
 Visual: A red pen underlining a word in an advert, text unreadable
 Visual: A blank box on a printed form circled in red pen
 Text: NO NUMBER = WARNING
+Draw: circle
 
 Maya's advert has one more ingredient. Buy before midnight.
 Visual: A smartphone advert on a sofa cushion at night, text unreadable
 Visual: An old wall clock with its hands near midnight
 Text: BEFORE MIDNIGHT
+Bubble: Buy before midnight!
 
 Fear narrows attention. A deadline removes the time to compare.
 Visual: A desk lamp's narrow beam lighting one spot on a dark desk
@@ -388,6 +401,7 @@ Text: CMA · RESETTING TIMERS
 If the clock starts again, there was never really a deadline.
 Visual: A thumb pressing the reset button on a stopwatch
 Visual: A paper wall calendar with no date circled
+Draw: cross
 
 The law can catch a fake clock. Only you can catch the fear.
 Visual: A broken alarm clock sealed in a clear evidence bag
@@ -412,6 +426,7 @@ She checks her bank statement and finds two other protections already running.
 Visual: A printed bank statement on a kitchen table, text unreadable
 Visual: Two lines circled in red pen on a bank statement, text unreadable
 Text: ILLUSTRATION
+Thought: Wait, I'm already paying for these?
 
 Identity monitoring and boiler cover, each bought on another worried evening.
 Visual: A small padlock and a radiator valve beside a bank statement
@@ -431,6 +446,7 @@ She keeps the one she actually needs, and drops the other two.
 Visual: A hand setting one brochure aside on a table
 Visual: A hand dropping two brochures into a recycling bin
 Text: KEEP 1, DROP 2
+Draw: tick
 
 So she asks the four calm questions.
 Visual: Four blank index cards laid in a row on a table
@@ -465,6 +481,7 @@ Text: ILLUSTRATIVE FIGURES ONLY
 If it only made sense at eleven at night?
 Visual: An old wall clock reading eleven in a dark room
 Visual: A phone lit up on a dark sofa at night
+Thought: Do I still want this in the morning?
 
 Then the fear was the product.
 Visual: A switched-off phone on a table in sunlight
@@ -475,6 +492,7 @@ Tonight, search your bank statement for every protection you already pay for.
 Visual: A highlighter running along a paper bank statement, text unreadable
 Visual: A handwritten list on a notepad beside a pen, text unreadable
 Text: TONIGHT: LIST EVERY PROTECTION
+Draw: arrow
 
 But some people use fear plus urgency not to sell, but to steal.
 Visual: An old telephone ringing on a desk

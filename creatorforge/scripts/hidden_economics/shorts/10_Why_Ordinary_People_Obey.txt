@@ -8,6 +8,7 @@ Two in three pressed the deadliest switch.
 Visual: A long row of old switches on a grey wooden panel
 Visual: A fingertip resting on the last switch of an old panel
 Text: YALE UNIVERSITY, 1961–63
+Draw: arrow
 
 In the first Yale study, twenty-six of forty men reached the final switch.
 Visual: Yale University's old stone buildings seen across a lawn
@@ -28,6 +29,7 @@ A calm man in a grey lab coat simply told them to continue.
 Visual: A grey lab coat hanging on a hook beside a clipboard
 Visual: A man in a grey lab coat seen from behind at a desk
 Text: NO THREATS · JUST AUTHORITY
+Bubble: Please continue. You must go on.
 
 The twist? The learner was an actor. No shock was real.
 Visual: An empty wooden chair with loose wires in a bare room
@@ -38,6 +40,7 @@ Scammers borrow that authority, posing as banks or police.
 Visual: A smartphone ringing on a dark table, caller screen unreadable
 Visual: A police cap and a bank card lying on a table
 Text: FAKE BANK · FAKE POLICE
+Draw: cross
 
 Two in three obeyed a lab coat. Check before you obey a caller.
 Visual: A lab coat hanging on a hook in an empty room

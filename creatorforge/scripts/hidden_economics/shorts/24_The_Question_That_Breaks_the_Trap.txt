@@ -12,6 +12,7 @@ Who benefits if I act right now?
 Visual: A hand hovering above a phone's buy button, text unreadable
 Visual: A notepad and pen on a desk, one line written, text unreadable
 Text: WHO BENEFITS IF I ACT NOW?
+Draw: underline
 
 The flash sale timer? The seller. A rush leaves no time to compare.
 Visual: A phone showing a flash sale countdown, text unreadable
@@ -26,6 +27,7 @@ Stock: person scrolling phone in bed
 And the caller saying your account is at risk?
 Visual: A man seen from behind holding a phone to his ear by a dark window
 Visual: A bank card on a table next to a ringing phone
+Bubble: Your account is at risk!
 
 Only a scammer needs you to skip checking.
 Visual: A figure standing in a dark doorway, seen from far away
@@ -36,6 +38,7 @@ The question proves no one guilty. It reveals the incentive.
 Visual: A magnifying glass over coins and receipts on a desk, figures unreadable
 Visual: A hand turning over a price tag in a shop, text unreadable
 Text: IT REVEALS THE INCENTIVE
+Draw: circle
 
 Who benefits if I act right now? Ask it every time.
 Visual: A hand pausing over a phone on a desk

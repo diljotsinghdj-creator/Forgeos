@@ -136,7 +136,7 @@ class ProductionSpec:
         spec.hook_text = str(d.get("hook_text") or meta.get("hook_text") or "").strip()[:80]
         spec.visual_direction = str(d.get("visual_direction") or meta.get("visual_direction") or "").strip()[:400]
         spec.roles = [list(r)[:2] for r in (d.get("roles") or meta.get("roles") or []) if len(r) >= 2][:60]
-        shots = [[clean_script(str(x[0]))] + [str(v).strip() for v in (list(x[1:5]) + ["", "", "", ""])[:4]]
+        shots = [[clean_script(str(x[0]))] + [str(v).strip() for v in (list(x[1:7]) + [""] * 6)[:6]]
                  for x in (d.get("shots") or meta.get("shots") or []) if isinstance(x, (list, tuple)) and x]
         shots = [x for x in shots if x[0]][:400]
         if shots and sum(len(x[0].split()) for x in shots) == len(spec.script.split()) + len(shots[0][0].split()):
@@ -595,7 +595,7 @@ def _is_heading(line: str) -> bool:
 _META_KEYS = ("on-screen hook", "on screen hook", "onscreen hook", "hook text", "visuals", "visual", "visual style",
               "b-roll", "broll", "post title", "video title", "post", "title", "cover", "thumbnail", "caption", "description", "hashtags", "tags",
               "source", "sources", "music", "sfx", "on-screen text", "on screen text", "text on screen", "text",
-              "stock footage", "stock", "chart", "graphic")
+              "stock footage", "stock", "chart", "graphic", "draw", "pen", "bubble", "thought")
 _META = re.compile(r"(?i)(?:^|(?<=[\s.]))(" + "|".join(re.escape(k) for k in sorted(_META_KEYS, key=len, reverse=True)) +
                    r")\s*:\s*")
 _STAMP = re.compile(r"^\s*(?:[-\u2022*]\s*)?\(?(?:\d{0,2}:\d{2})(?:\s*[-\u2013]\s*\d{0,2}:\d{2})?\)?\s*")
@@ -637,7 +637,8 @@ def _line_shots(line: str, d: dict) -> list[list[str]]:
     words = line.split()
     n = max(1, min(len(visuals), len(words) // 3))       # every picture gets at least ~3 words of screen time
     if n == 1:
-        return [[line, visuals[0], d.get("text", ""), d.get("stock", ""), d.get("chart", "")]]
+        return [[line, visuals[0], d.get("text", ""), d.get("stock", ""), d.get("chart", ""), d.get("draw", ""),
+                 d.get("bubble", "")]]
     cuts, start = [], 0
     for k in range(1, n):
         target = round(len(words) * k / n)
@@ -647,8 +648,11 @@ def _line_shots(line: str, d: dict) -> list[list[str]]:
         cuts.append(cut)
         start = cut
     bounds = [0] + cuts + [len(words)]
-    return [[" ".join(words[a:b]), visuals[k],
-             d.get("text", "") if k == 0 else "", d.get("stock", "") if k == 0 else "", d.get("chart", "") if k == 0 else ""]
+    first = lambda key, k: d.get(key, "") if k == 0 else ""  # noqa: E731
+    # Text/Stock/Chart open the line; a pen mark or bubble lands on the line's last picture (the payoff).
+    last = lambda key, k: d.get(key, "") if k == n - 1 else ""  # noqa: E731
+    return [[" ".join(words[a:b]), visuals[k], first("text", k), first("stock", k), first("chart", k),
+             last("draw", k), last("bubble", k)]
             for k, (a, b) in enumerate(zip(bounds, bounds[1:]))]
 
 
@@ -720,6 +724,12 @@ def parse_script(raw: str) -> tuple[str, dict]:
             elif k in ("chart", "graphic"):
                 if target >= 0 and v:
                     per.setdefault(target, {})["chart"] = value.strip()[:80]
+            elif k in ("draw", "pen"):
+                if target >= 0 and v:
+                    per.setdefault(target, {})["draw"] = v[:40].lower()
+            elif k in ("bubble", "thought"):
+                if target >= 0 and v:
+                    per.setdefault(target, {})["bubble"] = ("think:" if k == "thought" else "say:") + value.strip()[:80]
             elif k in ("stock", "stock footage"):
                 if target >= 0 and v:
                     per.setdefault(target, {})["stock"] = " ".join(v.split()[:5])[:60]
@@ -920,7 +930,7 @@ def apply_shots(plan: "ProductionPlan", shots: list) -> None:
         return
     per_scene: list[list[dict]] = [[] for _ in plan.scenes]
     pos = 0
-    for line, visual, text, stock, chart in ((list(x) + ["", "", "", ""])[:5] for x in shots):
+    for line, visual, text, stock, chart, draw, bubble in ((list(x) + [""] * 6)[:7] for x in shots):
         n = len(str(line).split())
         chunk = tokens[pos:pos + n]
         pos += n
@@ -929,7 +939,8 @@ def apply_shots(plan: "ProductionPlan", shots: list) -> None:
             s = plan.scenes[i]
             per_scene[i].append({"text": words, "visual": str(visual) or s.visual, "emotion": s.emotion,
                                  "stock": str(stock), "overlay": str(text) if k == 0 else "",
-                                 "chart": str(chart) if k == 0 else "", "writer": True})
+                                 "chart": str(chart) if k == 0 else "", "draw": str(draw) if k == 0 else "",
+                                 "bubble": str(bubble) if k == 0 else "", "writer": True})
     for s, beats in zip(plan.scenes, per_scene):
         if not beats:
             continue

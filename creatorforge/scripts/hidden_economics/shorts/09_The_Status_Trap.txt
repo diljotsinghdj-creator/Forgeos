@@ -8,6 +8,7 @@ Eight hundred pounds for a watch nobody sees?
 Visual: An expensive gold wristwatch on a dark desk under one lamp
 Visual: A closed watch box on a shelf in a dark room
 Text: £800 · NOBODY SEES IT? · ILLUSTRATION
+Draw: box
 
 Hidden under your sleeve, forever. Still worth it?
 Visual: A wrist under a long dark coat sleeve, the watch covered
@@ -22,6 +23,7 @@ So what is the other seven hundred and eighty buying?
 Visual: The ornate watch alone on an empty table, circled in red pen
 Visual: A watch shop display window with rows of expensive watches
 Text: WHAT IS THE £780 FOR?
+Draw: underline
 
 In eighteen ninety-nine, economist Thorstein Veblen gave it a name.
 Visual: An old leather-bound book open under a desk lamp
@@ -34,6 +36,7 @@ Visual: People seen from behind walking past bright shop windows at evening
 Visual: A shopper seen from behind carrying several designer shopping bags
 Text: CONSPICUOUS CONSUMPTION
 Stock: shop windows evening street
+Thought: Everyone will notice these bags
 
 Strip the logo off in your head. Still want it? Buy it.
 Visual: A plain unbranded watch box on a desk with its lid open
@@ -44,3 +47,4 @@ If not, ask who the watch was really for.
 Visual: An empty watch box open on a desk under one lamp
 Visual: A wristwatch left on a bedside table in a quiet room
 Text: WHO WAS IT FOR?
+Draw: circle

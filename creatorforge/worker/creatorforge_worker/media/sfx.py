@@ -14,10 +14,11 @@ ROLES = {
     "hit": ("hit", "impact", "boom", "thud", "punch", "slam"),
     "pop": ("pop", "click", "ding", "blip", "tick", "notification"),
     "riser": ("riser", "rise", "build", "tension", "swell"),
+    "scribble": ("scribble", "pen", "marker", "pencil", "draw", "scratch"),
 }
 TRANSITION_ROLE = {"whip": "whoosh", "slide": "whoosh", "wipe": "whoosh", "zoom": "whoosh", "reveal": "whoosh",
                    "cut": "hit", "flash": "hit"}
-GAIN = {"whoosh": 0.55, "hit": 0.6, "pop": 0.45, "riser": 0.4}
+GAIN = {"whoosh": 0.55, "hit": 0.6, "pop": 0.45, "riser": 0.4, "scribble": 0.5}
 REVEALS = {"flash", "zoom"}   # twists / reveals: a riser builds into the cut, a deep hit lands on it
 
 
@@ -71,7 +72,8 @@ def place(bank: SfxBank, transitions: list[str], timings: list[float], overlays:
                 hits.append((riser, offset - 1.55, GAIN["riser"]))
         offset += d
     for n, (start, style) in enumerate(overlays):
-        role = {"Hook": "hit", "Callout": "pop", "CTA": "pop"}.get(style)
+        role = {"Hook": "hit", "Callout": "pop", "CTA": "pop", "Draw": "scribble", "Bubble": "pop",
+                "Think": "pop"}.get(style)
         sound = bank.pick(role, f"{seed}:o{n}") if role else None
         if sound:
             hits.append((sound, max(0.0, start + (0.05 if style == "Hook" else 0.0)), GAIN[role]))

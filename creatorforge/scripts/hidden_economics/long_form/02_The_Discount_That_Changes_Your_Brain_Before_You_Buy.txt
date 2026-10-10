@@ -8,6 +8,7 @@ The most persuasive price is never paid.
 Visual: A paper price tag with the old price crossed out in red, figures blurred
 Visual: A shopper's hand putting a wallet back into a coat pocket
 Text: THE PRICE YOU NEVER PAY
+Draw: underline
 
 In one experiment, a meaningless number tripled what people offered for a keyboard.
 Visual: A 2000s university classroom with students seen from behind at desks
@@ -30,6 +31,7 @@ and the countdown clock a retailer actually admitted was misleading.
 Visual: A phone showing a shopping page with a countdown timer, text unreadable
 Visual: A printed court document on a desk with an official seal, text unreadable
 Text: A CLOCK THAT LIED?
+Draw: circle
 
 Now watch that lever work on Leah.
 Visual: A red sale tag hanging from a jacket on a shop rail
@@ -47,6 +49,7 @@ Visual: A laptop showing a shop page with a green jacket photo, text unreadable
 One hundred pounds, crossed out.
 Visual: A price tag on a jacket collar, its price struck through in red
 Text: WAS £100 (FICTIONAL)
+Draw: cross
 
 Underneath, in red, sixty pounds.
 Visual: A red sale sticker on a jacket sleeve, figures blurred
@@ -55,6 +58,7 @@ Text: NOW £60
 It feels like forty pounds saved.
 Visual: Two twenty-pound notes lying on a laptop keyboard
 Visual: A small pile of coins pushed across a table towards a laptop
+Thought: Forty pounds off? That's a bargain!
 
 But ten minutes ago, she wanted no jacket.
 Visual: A wall clock in a living room showing late evening
@@ -79,6 +83,7 @@ It could only stop on ten or sixty-five.
 Visual: A wooden wheel of fortune stopped on a numbered segment, numbers blurred
 Visual: Two segments of a wooden wheel circled in red pen
 Text: 10 OR 65
+Draw: circle
 
 Then they asked what share of United Nations members are African countries.
 Visual: A row of national flags outside the United Nations building in New York
@@ -94,6 +99,7 @@ A number everyone could see was random moved their answers by twenty points.
 Visual: A wooden wheel of fortune standing still on a table
 Visual: A stack of handwritten answer sheets with numbers circled, text unreadable
 Text: +20 POINTS FROM A RANDOM NUMBER
+Draw: underline
 
 Even paying people for accurate answers did not make it go away.
 Visual: Coins scattered across a handwritten answer sheet, text unreadable
@@ -146,6 +152,7 @@ Now look at a sale tag. The crossed-out price is the anchor.
 Visual: A shop sale tag with a crossed-out price, figures blurred
 Visual: A heavy iron anchor on a harbour dock with chain attached
 Text: THE CROSSED-OUT PRICE IS THE ANCHOR
+Draw: circle
 
 The sale price is the adjustment. And the shop sets both.
 Visual: Two paper price tags side by side on a clothes rail, figures blurred
@@ -209,6 +216,7 @@ Only one thing changed. The listing price in their pack.
 Visual: A property leaflet with its price box circled, digits blurred
 Visual: A stack of identical property folders on a desk, one opened
 Text: ONLY THE LIST PRICE CHANGED
+Draw: underline
 
 The lowest listing produced valuations of about one hundred and fourteen thousand dollars.
 Visual: A small wooden model house on a table under cool blue light
@@ -224,6 +232,7 @@ Now the twist. The agents largely denied the listing price had swayed them.
 Visual: A man in a suit seen from behind standing at an office window
 Visual: A man in a suit seen from behind shaking his head at a desk
 Text: "IT DIDN'T INFLUENCE ME"
+Bubble: The listing price? It didn't sway me.
 
 The anchor worked best on the people most sure it had not.
 Visual: A heavy ship's anchor on the seabed with silt rising around it
@@ -242,6 +251,7 @@ Back on Leah's screen, a timer appears. Offer ends in nine minutes.
 Visual: A woman seen from behind on a sofa, a laptop glowing on her knees
 Visual: A phone showing a shop page with a red countdown banner, text unreadable
 Text: ENDS IN 09:00 (FICTIONAL)
+Thought: Nine minutes? I'd better decide now.
 
 Urgency shrinks the time she has to question the anchor.
 Visual: A finger hovering over a buy button on a laptop, text unreadable
@@ -279,6 +289,7 @@ The strangest part? Some countdown timers simply reset when the page was reloade
 Visual: A laptop showing a shopping page with a countdown timer, text unreadable
 Visual: A finger clicking the reload button in a web browser, text unreadable
 Text: TIMER RESETS ON RELOAD
+Draw: arrow
 
 And twenty-two companies sold these tactics to shops as ready-made tools.
 Visual: A row of cardboard boxes in a warehouse, labels unreadable
@@ -294,6 +305,7 @@ An online retailer's countdown timers and high-demand messages? Confirmed as mis
 Visual: A laptop showing a furniture shop page with a timer banner, text unreadable
 Visual: A red alarm clock with cracked glass lying on a court document
 Text: HIGH COURT CONSENT ORDER, MAY 2026
+Draw: cross
 
 It gave binding undertakings to stop.
 Visual: A pen lifting from a freshly signed document with a seal
@@ -322,6 +334,7 @@ But this evening, she planned to spend nothing.
 Visual: A closed leather wallet resting on a coffee table
 Visual: A blank shopping list notepad with a pencil beside it
 Text: PLANNED SPEND: £0
+Thought: I was only going to browse tonight.
 
 So she'd be fifty-four pounds poorer than if she'd closed the tab.
 Visual: A bank statement with one line circled in red, figures blurred
@@ -331,6 +344,7 @@ That is the real difference between a discount and a saving.
 Visual: A jar of coins being emptied onto a shop counter
 Visual: A full jar of coins sitting untouched on a kitchen shelf
 Text: DISCOUNT ≠ SAVING
+Draw: underline
 
 And the final price is not finished yet.
 Visual: A long paper receipt still printing from a till
@@ -377,6 +391,7 @@ Text: CONCERNS IN 14 SECTORS
 Among them? Drip pricing and countdown timers.
 Visual: A concert ticket with extra fee slips sliding out from under it
 Visual: A phone showing a red countdown timer on a shop page, text unreadable
+Draw: circle
 
 It opened eight investigations and wrote to a hundred more businesses.
 Visual: Eight case folders tied with red string on a desk
@@ -402,6 +417,7 @@ Judge the final total, delivery included, not the crossed-out number.
 Visual: A finger running down a paper receipt to the total, figures blurred
 Visual: A delivery van parked outside a front door
 Text: 2. JUDGE THE FINAL TOTAL
+Draw: tick
 
 Then check the price history, or another shop, in a separate tab.
 Visual: Two printed price history charts side by side, figures blurred
@@ -428,6 +444,7 @@ Would I pay this if no other price were shown?
 Visual: A single clean price tag on a jacket with one price, figures blurred
 Visual: A shopper seen from behind holding a jacket in a shop
 Text: WOULD I PAY THIS WITH NO "WAS"?
+Thought: Would I still want it at this price?
 
 Leah asked it, and closed the laptop.
 Visual: A woman seen from behind on a sofa, a laptop on her knees
@@ -438,6 +455,7 @@ Visual: A phone showing an expired countdown timer, text unreadable
 Visual: A Monday desk calendar page on a kitchen table
 Visual: A laptop showing the same green jacket with its red sale tag, text unreadable
 Text: MONDAY · STILL £60 (FICTIONAL)
+Draw: circle
 
 She still didn't need it. Fifty-four pounds stayed exactly where it was.
 Visual: A green jacket hanging on a shop rail, untouched
@@ -452,6 +470,7 @@ Never refuse a real discount. Just never let one decide for you.
 Visual: A shopper seen from behind paying at a shop counter with a card
 Visual: A woman seen from behind walking out of a shop empty-handed
 Text: DON'T LET THE DISCOUNT DECIDE
+Draw: underline
 
 Some prices are not about the number at all.
 Visual: A gold wristwatch lying in an open display box

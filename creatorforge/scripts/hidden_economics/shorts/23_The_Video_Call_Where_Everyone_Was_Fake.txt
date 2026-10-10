@@ -18,6 +18,7 @@ It claims to be the finance chief, wanting a secret transaction.
 Visual: An email open on a laptop screen, text unreadable
 Visual: A sealed envelope with a red stamp on a desk, text unreadable
 Text: "A SECRET TRANSACTION"
+Draw: circle
 
 Then a video call. The finance chief and colleagues, live.
 Visual: A laptop screen with several blurred video tiles, faces indistinct
@@ -27,6 +28,7 @@ Text: AI RECREATION · ILLUSTRATION
 So who would doubt faces they recognise?
 Visual: Office colleagues seen from behind sitting around a meeting table
 Text: WHO WOULD DOUBT THEM?
+Thought: That's my boss. It must be real.
 
 The worker made fifteen transfers, about two hundred million Hong Kong dollars.
 Visual: Fifteen bank transfer slips in a row on a desk, numbers unreadable
@@ -37,6 +39,7 @@ Every other person on that call was a deepfake.
 Visual: A laptop video call grid with every tile blurred
 Visual: A computer screen showing face-editing software, faces blurred, text unreadable
 Text: ARUP CONFIRMED IT, MAY 2024
+Draw: cross
 
 The fix? Check any money request on a separate channel.
 Visual: A hand holding a desk phone receiver beside a closed laptop
@@ -47,3 +50,4 @@ Now even a face is just a claim.
 Visual: A laptop screen showing one blurred video tile on a dark desk
 Visual: A closed laptop on a dark desk
 Text: A FACE IS NOT PROOF
+Draw: underline

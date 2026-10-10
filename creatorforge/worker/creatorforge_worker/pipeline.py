@@ -328,20 +328,23 @@ class Pipeline:
             return None
         from .providers import stock_photo
         want = match.describe(visual)
-        tried = 0
+        used = job.setdefault("used_photos", [])        # one photo is shown once per video, never on repeat
         for q in dict.fromkeys(x for x in (query, match.subject(visual)) if x):
-            for found in stock_photo.search_any(photos, q, spec.aspect == "9:16")[:3]:
-                tried += 1
+            for found in stock_photo.search_any(photos, q, spec.aspect == "9:16")[:4]:
+                if found.get("url") in used:
+                    continue
                 try:
                     src = stock_photo.fetch(found, self.cfg.cache_dir / "stock_photos")
                 except (ProviderError, OSError):
                     continue
-                if checker.score(src, want) >= match.GOOD:
-                    credits = job.setdefault("stock_credits", [])
-                    if found["credit"] not in credits:
-                        credits.append(found["credit"])
-                    self._note_match(job, checked=1, real_photos=1)
-                    return src
+                if checker.score(src, want) < match.GOOD or match.shows_face(checker, src, visual):
+                    continue
+                used.append(found.get("url"))
+                credits = job.setdefault("stock_credits", [])
+                if found["credit"] not in credits:
+                    credits.append(found["credit"])
+                self._note_match(job, checked=1, real_photos=1)
+                return src
         return None
 
     def _on_topic(self, job: dict, media: Path, query: str, visual: str) -> bool:
@@ -391,8 +394,12 @@ class Pipeline:
                 src = stock_photo.fetch(found, self.cfg.cache_dir / "stock_photos")
             except (ProviderError, OSError):
                 continue
-            if not self._on_topic(job, src, query, visual):
+            if found.get("url") in job.setdefault("used_photos", []) or not self._on_topic(job, src, query, visual):
                 continue
+            checker = self._matcher()
+            if checker is not None and match.shows_face(checker, src, visual):
+                continue
+            job["used_photos"].append(found.get("url"))
             dst = jdir / f"scene_{sc['index'] + 1:02d}_beat{beat}_photo.jpg"
             shutil.copyfile(src, dst)
             credits = job.setdefault("stock_credits", [])
@@ -789,7 +796,7 @@ class Pipeline:
             if shot.get("overlay") and i > 0:
                 overlays.append(cap.Overlay(start + 0.3, start + slot - 0.2, shot["overlay"], "Callout"))
             beats = shot.get("beats") or []
-            if spec.fast_cuts and any(b.get("overlay") for b in beats):
+            if spec.fast_cuts and any(b.get("overlay") or b.get("draw") or b.get("bubble") for b in beats):
                 # The writer's on-screen text appears exactly while its line is spoken.
                 at = start
                 for k, (b, length) in enumerate(zip(beats, _beat_lengths([b["text"] for b in beats],
@@ -799,6 +806,14 @@ class Pipeline:
                         begin = min(3.0, timings[0])           # after the opening hook text, not on top of it
                     if b.get("overlay") and begin < at + length - 0.4 and (i, k) not in charted:
                         overlays.append(cap.Overlay(begin, at + max(0.6, length - 0.1), b["overlay"], "Callout"))
+                    if (i, k) not in charted and length > 0.8:
+                        # The writer's pen marks and bubbles: drawn on once the picture has landed.
+                        if b.get("draw"):
+                            overlays.append(cap.Overlay(at + 0.25, at + length - 0.05, b["draw"], "Draw"))
+                        if b.get("bubble"):
+                            kind, _, said = b["bubble"].partition(":")
+                            overlays.append(cap.Overlay(at + 0.15, at + length - 0.05, said,
+                                                        "Think" if kind == "think" else "Bubble"))
                     at += length
             start += slot
         brand = spec.brand or {}

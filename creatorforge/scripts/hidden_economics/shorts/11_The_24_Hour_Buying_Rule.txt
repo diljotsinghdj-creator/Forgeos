@@ -8,6 +8,7 @@ Eleven at night. Will you want it tomorrow?
 Visual: A phone lit up on a dark bedside table beside an alarm clock
 Visual: A thumb above a buy button on a smartphone in the dark, text unreadable
 Text: 11 PM · STILL WANT IT AT 8 AM?
+Thought: I need this. Right now.
 
 UK law already lets you cancel most online orders.
 Visual: A brown parcel with a returns slip on a desk, text unreadable
@@ -22,6 +23,7 @@ Give it one. Copy the item onto a list, then close the app.
 Visual: A pen adding a line to a paper notepad under a lamp, writing unreadable
 Visual: A thumb closing an app on a smartphone, text unreadable
 Stock: writing list notepad
+Draw: tick
 
 Sleep on it. Twenty-four hours, no peeking.
 Visual: A dim bedroom at night, the phone dark on the nightstand
@@ -40,6 +42,7 @@ Visual: A breakfast table with a notepad and a phone in morning light
 Visual: Hands holding a paper receipt beside an old calculator, text unreadable
 Text: FULL PRICE vs BUDGET
 Stock: morning kitchen sunlight
+Draw: underline
 
 So at eleven tonight, let the button wait until breakfast.
 Visual: A phone face down beside a notepad on a nightstand

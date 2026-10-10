@@ -14,6 +14,7 @@ Visual: A hand holding a phone with a long chat thread, text unreadable
 Visual: A desk calendar with several weeks crossed off in pen
 Text: FICTIONAL EXAMPLE
 Stock: person texting on phone
+Bubble: Sorry, wrong number! How are you?
 
 Then a crypto tip. Your small deposit doubles on screen.
 Visual: A hand holding a phone showing a trading app with a rising green line, numbers unreadable
@@ -29,6 +30,7 @@ The profits were never real. The platform belongs to the scammers.
 Visual: A phone screen showing a trading chart, numbers unreadable
 Visual: A person seen from behind in a dark room at several computer screens
 Text: THE APP IS THE SCAM
+Draw: cross
 
 Every withdrawal needs another fee, until you stop paying.
 Visual: A stack of printed invoices on a desk, each circled in red pen, text unreadable
@@ -48,3 +50,4 @@ Text: NEVER INVEST WITH AN ONLINE-ONLY FRIEND
 Especially someone who found you by accident.
 Visual: A smartphone glowing alone in a dark room, text unreadable
 Text: NO ACCIDENT
+Draw: arrow

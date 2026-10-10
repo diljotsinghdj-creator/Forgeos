@@ -9,10 +9,14 @@ CreatorForge -> Generate -> Script. CreatorForge reads it like this:
   Visual: ........... the picture for THAT line; it appears exactly when the line starts
   Text: ............. exact words/numbers shown on screen while that line is spoken
   Stock: ............ asks Pixabay/NASA/Wikimedia/Internet Archive/Unsplash for real footage for that line
+  Draw: ............. a red pen mark that draws itself on over the line's last picture: circle, box, underline
+                      (under the Text: callout), arrow, cross or tick - e.g. "Draw: circle" or "Draw: circle, arrow"
+  Bubble: / Thought:  a speech bubble / thought cloud that pops in and types its words (keep under ~45 characters)
   Chart: ............ an animated number graphic for that line, e.g.
                         Chart: £12 → £720 | a year of forgotten subscriptions   (counter rolls up)
                         Chart: 48% vs 22% | heavy users, everyone else          (bars grow)
                         Chart: 76% | of 642 sites                               (percentage bar fills)
+                        Chart: £1bn → £3bn → £8bn | losses | 2015, 2020, 2025  (line graph draws itself)
                       In Editorial collage / Investigative desk, Text: lines with →, = or "vs" become charts
                       automatically (e.g. "£50 × 12 = £600" counts up to £600).
 

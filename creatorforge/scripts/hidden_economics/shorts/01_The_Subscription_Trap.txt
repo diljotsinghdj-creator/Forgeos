@@ -8,6 +8,7 @@ You quit in January. It still charged you.
 Visual: A smartphone lying face down on a kitchen table beside a January calendar page
 Visual: A printed bank statement with one card payment circled in red pen, text unreadable
 Text: JAN: STOPPED · JUN: STILL PAYING
+Draw: circle
 
 Twelve pounds a month. By June, seventy-two gone.
 Visual: Six stacks of one-pound coins in a row on a paper wall calendar
@@ -22,6 +23,7 @@ Because a payment that asks for no decision never gets one.
 Visual: A hand reaching past an open leather wallet on a desk
 Visual: A smartphone on a desk showing an automatic payment notification, text unreadable
 Text: NO DECISION = NO NOTICE
+Thought: Never even noticed that payment
 
 So what does all that forgetting cost the country?
 Visual: An old paper map of Britain spread across a wooden desk
@@ -38,6 +40,7 @@ Find payments that repeat, month after month.
 Visual: A printed bank statement on a desk beside a red pen, text unreadable
 Visual: The same payment line circled in red on three monthly statements, text unreadable
 Stock: checking bank statement
+Draw: circle
 
 Ask of each one, would I buy this today?
 Visual: A hand holding a smartphone showing a list of subscriptions, text unreadable
@@ -48,3 +51,4 @@ If not, cancel it before June comes round again.
 Visual: A thumb pressing a cancel button on a smartphone, text unreadable
 Visual: A June page on a paper wall calendar circled in green pen
 Text: CANCEL BEFORE JUNE
+Draw: tick

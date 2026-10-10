@@ -12,6 +12,7 @@ Text: ~10 MILLION UNWANTED SUBSCRIPTIONS
 That is the government's own estimate.
 Visual: A printed government report on a wooden desk, text unreadable
 Visual: One figure in a printed report circled in red pen, text unreadable
+Draw: circle
 
 Together they cost around one point six billion pounds a year.
 Visual: A thick stack of fifty-pound notes on an office desk
@@ -31,6 +32,7 @@ Joining took one tap. So why does leaving feel like a maze?
 Visual: A fingertip tapping a sign-up button on a phone, text unreadable
 Visual: A long empty hotel corridor lined with identical closed doors
 Text: ONE TAP IN. HOW MANY OUT?
+Draw: underline
 
 By the end, you will know why forgetting is so profitable,
 Visual: A wall calendar with one date circled in red pen
@@ -54,6 +56,7 @@ Visual: A January wall calendar hanging in a kitchen
 Visual: A phone showing a streaming sign-up page with one bright button, text unreadable
 Visual: A person seen from behind on a sofa, holding a phone, shrugging
 Text: FREE 7-DAY TRIAL (FICTIONAL)
+Thought: I'll cancel before the trial ends.
 
 One tap and a card number. Ten seconds.
 Visual: A hand holding a bank card next to a phone
@@ -67,6 +70,7 @@ On day eight, ten pounds quietly left Sam's account.
 Visual: A desk calendar open on day eight, circled in pencil
 Visual: A printed bank statement with one ten-pound line circled in red, figures blurred
 Text: −£10 (ILLUSTRATION)
+Draw: circle
 
 Nothing illegal happened. Sam agreed to it.
 Visual: A paper contract lying on a desk, text unreadable
@@ -103,6 +107,7 @@ Visual: A red pen circling a column in a printed spreadsheet, figures blurred
 how easy the door is to find.
 Visual: A long dim corridor with one small door at the far end
 Visual: A small plain door in a large blank office wall
+Draw: arrow
 
 Yet wanting customers to stay is perfectly legitimate.
 Visual: A shopkeeper's hands handing a paper bag across a counter
@@ -153,6 +158,7 @@ Many gave no way to even switch off auto-renewal while signing up.
 Visual: A light switch on a wall covered with brown parcel tape
 Visual: A phone settings screen with a toggle switch greyed out, text unreadable
 Text: NO OPTION TO TURN OFF AUTO-RENEW
+Draw: cross
 
 Others never said how to cancel, or by when.
 Visual: A phone showing a long page of small print, text unreadable
@@ -207,6 +213,7 @@ On average, just four point three times a month.
 Visual: A wall calendar with only four days ticked in pencil
 Visual: A gym locker room with a single bag on a bench
 Text: 4.3 VISITS A MONTH
+Draw: circle
 
 These were people who had signed up precisely to get fit.
 Visual: New running shoes still in their open box on a bedroom floor
@@ -245,6 +252,7 @@ Chart: 0% → 17% | more likely still enrolled a year on
 The researchers pointed to overconfidence. Members expected to go far more often.
 Visual: A person seen from behind at a desk reading a research paper
 Visual: A handwritten weekly plan with gym ticked on every day, text unreadable
+Thought: This time I'll go far more often.
 
 They were actually paying for the person they planned to become.
 Visual: A person seen from behind jogging along a sunny river path
@@ -259,6 +267,7 @@ Just a default and your optimism.
 Visual: A light switch already flipped on in a bright room
 Visual: A person seen from behind at a sunny window, arms stretched wide
 Text: DEFAULT + OPTIMISM
+Draw: underline
 
 Now add friction. Every extra screen puts a price on leaving.
 Visual: A steep stone staircase with very tall steps
@@ -294,6 +303,7 @@ Visual: A July 2025 desk calendar with the eighth circled in red
 Visual: A stone courthouse with tall columns and wide steps
 Text: VACATED · 8 JULY 2025
 Stock: courthouse exterior
+Draw: cross
 
 That was six days before businesses had to comply.
 Visual: A desk calendar with six days crossed out in red pen
@@ -350,6 +360,7 @@ In the first, you tap cancel and see when your access ends.
 Visual: A finger tapping a cancel button on a phone, text unreadable
 Visual: A phone showing a confirmation tick and an end date, text unreadable
 Text: CANCEL › ACCESS ENDS 30 JUNE · DONE
+Draw: tick
 
 In the second, the same choice hides five menus deep.
 Visual: A phone showing a crowded settings menu, text unreadable
@@ -360,6 +371,7 @@ Then three buttons that all sound like staying.
 Visual: A phone showing three similar grey buttons stacked, text unreadable
 Visual: A thumb hesitating above three buttons on a phone, text unreadable
 Text: STAY? PAUSE? CONTINUE?
+Thought: Wait... which one actually cancels?
 
 That second journey is the one Sam found in March.
 Visual: A March wall calendar in a kitchen
@@ -369,6 +381,7 @@ Sam pressed pause, not cancel, and paid ten pounds again the next month.
 Visual: A thumb pressing a pause button on a phone, text unreadable
 Visual: A bank statement with two identical ten-pound lines circled in red, figures blurred
 Text: −£10 AGAIN (ILLUSTRATION)
+Draw: cross
 
 Both may offer a discount to stay. That is fine.
 Visual: A phone showing a discount offer pop-up, text unreadable
@@ -410,6 +423,7 @@ Text: 1. USED IT THIS MONTH?
 Would I sign up again today?
 Visual: A thumb pulling away from a sign-up button on a phone, text unreadable
 Text: 2. WOULD I JOIN TODAY?
+Thought: Honestly? I'd never join again.
 
 And when does it next renew?
 Visual: A wall calendar with one date circled in red pen
@@ -419,6 +433,7 @@ Before any new trial, Sam finds the cancel steps first.
 Visual: A phone showing a free trial offer, text unreadable
 Visual: A magnifying glass over the small print of a printed terms page, text unreadable
 Text: FIND THE EXIT FIRST
+Draw: tick
 
 Then Sam puts the renewal date in a personal calendar.
 Visual: A hand writing a date in a paper diary
@@ -435,6 +450,7 @@ Visual: A wall calendar with twelve months showing, all pages unmarked
 
 Two forgotten subscriptions go.
 Visual: Scissors cutting an old bank card in half on a table
+Draw: cross
 
 At fourteen pounds each, that is over three hundred pounds a year.
 Visual: Pound coins dropping into a glass jar on a kitchen table
@@ -444,6 +460,7 @@ Chart: 2 × £14 × 12 = £336 | two forgotten subs a year (illustration)
 Sam kept the streaming service, because Sam actually watches it now.
 Visual: A television showing a film in a cosy living room
 Visual: A person seen from behind on a sofa with a mug of tea, watching television
+Thought: This one is actually worth it.
 
 Remember the gym members paying seventeen dollars a visit.
 Visual: A gym floor with rows of treadmills and nobody on them
@@ -461,6 +478,7 @@ It should never depend on you forgetting to leave.
 Visual: A phone lying face down on a bank statement
 Visual: A wall calendar with a renewal date circled in red pen
 Text: IT SHOULD NOT NEED YOU TO FORGET
+Draw: underline
 
 Subscriptions work on your memory over months. A shop needs only seconds.
 Visual: A pile of monthly bank statements on a desk, figures blurred

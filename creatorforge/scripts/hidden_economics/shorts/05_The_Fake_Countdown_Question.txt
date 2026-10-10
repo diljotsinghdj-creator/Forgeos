@@ -8,6 +8,7 @@ The clock hit zero. The deal didn't end.
 Visual: An old kitchen egg timer showing zero on a desk
 Visual: A smartphone showing a sale page with a countdown bar, text unreadable
 Text: 00:00:00 · STILL ON SALE?
+Draw: circle
 
 So what was it counting down to?
 Visual: An old digital alarm clock on a dark bedside table
@@ -17,6 +18,7 @@ This fictional shop gives you ten minutes. Too short to compare.
 Visual: A smartphone showing a product page with a red timer bar, text unreadable
 Visual: Two laptops side by side showing different shops, text unreadable
 Text: FICTIONAL SHOP · 10:00
+Thought: Quick, before it runs out!
 
 But how often are these clocks honest?
 Visual: Dozens of old wall clocks on a wall, each showing a different time
@@ -36,6 +38,7 @@ On some, the offer stayed valid after the timer ran out.
 Visual: A phone with its countdown at zero beside an egg timer, text unreadable
 Visual: A thumb pressing a buy button on a smartphone, text unreadable
 Text: TIMER ENDED · OFFER DIDN'T
+Draw: underline
 
 So how do you tell? Let it run out, or return tomorrow.
 Visual: A person seen from behind looking at a phone on a sofa
@@ -48,3 +51,4 @@ A timer that hits zero and changes nothing was never a deadline.
 Visual: An egg timer's needle resting on zero on a kitchen table
 Visual: A smartphone screen going dark on a desk beside an egg timer
 Text: NOT A DEADLINE
+Draw: cross

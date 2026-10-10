@@ -8,6 +8,7 @@ Your daughter's crying. Except it isn't her.
 Visual: An old telephone receiver lying off the hook on a dark table
 Visual: A smartphone on a table showing an incoming call, text unreadable
 Text: FICTIONAL SCENARIO
+Draw: cross
 
 Scammers can clone a voice from only a short online clip.
 Visual: Hands holding a phone playing a short video, screen blurred
@@ -24,6 +25,7 @@ The panic is real. So what can you trust?
 Visual: A hand gripping a phone tightly, screen dark
 Visual: A woman seen from behind in a hallway, phone to her ear
 Text: WHAT CAN YOU TRUST?
+Thought: She's in trouble. I have to help.
 
 The FTC's advice is blunt. Don't trust the voice.
 Visual: A printed consumer warning on a desk, one line circled in red, text unreadable
@@ -35,6 +37,7 @@ Visual: A thumb pressing the red end-call button on a phone
 Visual: A hand dialling a number from an old address book beside a phone
 Text: HANG UP · CALL BACK
 Stock: person making phone call home
+Draw: tick
 
 But what if she truly can't answer?
 Visual: A phone ringing unanswered on an empty bed in a dark room
@@ -44,6 +47,7 @@ Agree a family code word today. A clone can't know it.
 Visual: A family seen from behind sitting at a kitchen table
 Visual: A folded paper note in an envelope on a kitchen table
 Text: FAMILY CODE WORD
+Draw: circle
 
 Then any crying voice must pass one question first.
 Visual: A hand holding a phone to an ear, seen from behind

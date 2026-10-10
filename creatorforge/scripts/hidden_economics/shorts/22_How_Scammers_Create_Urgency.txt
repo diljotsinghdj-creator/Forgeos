@@ -13,6 +13,7 @@ Criminals are in your account. Move everything now or lose it.
 Visual: A laptop showing an online banking page, text unreadable
 Visual: A thumb hovering over a transfer button on a phone, text unreadable
 Text: MOVE IT NOW OR LOSE IT
+Bubble: Criminals are in your account!
 
 Why the clock? A deadline leaves no time to check.
 Visual: An old alarm clock on a desk beside a phone
@@ -32,6 +33,7 @@ Real banks never ask that. The account is the scammer's.
 Visual: A bank cashier's counter seen from the customer side
 Visual: A man seen from behind walking away carrying a cash box
 Text: IT'S THEIR ACCOUNT
+Draw: cross
 
 At one bank, the average victim lost three and a half thousand pounds.
 Visual: A bank's stone front steps on a grey street
@@ -43,6 +45,7 @@ Hang up. Call a number you look up yourself.
 Visual: A hand setting a phone face down beside a bank card
 Visual: A finger pointing at the phone number on the back of a bank card, numbers blurred
 Text: HANG UP. CALL BACK. VERIFY.
+Draw: tick
 
 Ten minutes? The real bank will still be there tomorrow.
 Visual: An old alarm clock on a bedside table in morning light

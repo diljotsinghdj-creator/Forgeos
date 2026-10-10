@@ -8,6 +8,7 @@ One buzz. Twenty minutes gone. Who decided that?
 Visual: A smartphone lighting up with a notification on a black table
 Visual: A wall clock above a desk showing twenty minutes past the hour
 Text: 1 BUZZ. 20 MIN GONE? · ILLUSTRATION
+Draw: circle
 
 In one study, people who simply received an alert made more mistakes.
 Visual: A test answer sheet covered in red pen crosses, marks unreadable
@@ -18,6 +19,7 @@ Stock: students taking exam
 Nobody even touched the phone. So what happens when you do?
 Visual: A phone lying face down on a desk beside a pencil
 Visual: A finger tapping a notification on a smartphone screen, text unreadable
+Draw: arrow
 
 You tap for one thing. The app shows you ten more.
 Visual: A smartphone showing a social media app on a desk, images blurred
@@ -27,6 +29,7 @@ Chart: 1 → 10 | posts from one tap · illustration
 Is it the alerts, or is it you? One test tells you.
 Visual: A person seen from behind on a sofa, lit by a phone screen
 Visual: A notepad and pencil beside a phone on a coffee table
+Thought: Do I actually need all these alerts?
 
 Silence every alert that isn't from a person, for one week.
 Visual: A thumb switching off notification toggles on a phone, text unreadable
@@ -37,6 +40,7 @@ Then count how many silenced apps you actually missed.
 Visual: A paper calendar on a desk, seven days crossed off in pencil
 Visual: A hand making tally marks on a notepad beside a phone
 Text: HOW MANY DID YOU MISS?
+Draw: circle
 
 One buzz shouldn't cost twenty minutes. Now it doesn't have to.
 Visual: A phone face down on a quiet desk in morning light

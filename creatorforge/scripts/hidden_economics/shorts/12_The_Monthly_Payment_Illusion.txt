@@ -7,6 +7,7 @@ Fifty pounds or six hundred? Same price.
 Visual: A single fifty-pound banknote lying on a wooden table
 Visual: A tall stack of banknotes on a wooden table
 Text: £50 OR £600?
+Draw: underline
 
 Fifty pounds a month, for twelve months, is six hundred.
 Visual: Twelve torn calendar pages in a grid on a desk, one banknote on each
@@ -21,6 +22,7 @@ Text: + FEES?
 Picture a plan that adds a twenty-pound arrangement fee.
 Visual: A printed payment-plan letter on a desk, one line circled, text unreadable
 Text: FICTIONAL PLAN · ILLUSTRATION
+Draw: circle
 
 The total becomes six hundred and twenty. The advert still says fifty.
 Visual: A calculator on a desk beside a stack of banknotes
@@ -30,6 +32,7 @@ Chart: £600 → £620 | with a £20 fee · illustration
 Splitting costs can genuinely help budgeting. So where's the risk?
 Visual: Hands writing a household budget in a notebook, writing unreadable
 Visual: A pile of crumpled receipts beside a notebook on a kitchen table
+Thought: Only fifty a month. Easy.
 
 It shrinks the number your brain actually weighs.
 Visual: A magnifying glass over a small monthly figure on a contract, text unreadable
@@ -44,3 +47,4 @@ Fifty or six hundred? Only one of those is the real price.
 Visual: A single banknote beside a tall stack of banknotes on a table
 Visual: A receipt with its total circled in red pen, text unreadable
 Text: £600+
+Draw: box

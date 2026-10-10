@@ -8,6 +8,7 @@ He promised fifty percent in forty-five days.
 Visual: A 1920s Boston street with streetcars and men in hats, seen from afar
 Visual: A small paper postal reply coupon beside a stack of old banknotes
 Text: BOSTON, 1920
+Bubble: Fifty percent in forty-five days!
 
 Hand him a hundred dollars, get one fifty back.
 Visual: Old dollar banknotes paper-clipped to a handwritten note on a desk, text unreadable
@@ -20,6 +21,7 @@ Visual: An old map of the Atlantic with Europe and Boston marked in red
 So why had so few coupons ever been cashed?
 Visual: An empty wooden post office drawer under a desk lamp
 Text: WHERE WERE THE COUPONS?
+Draw: circle
 
 Because early investors were paid with newer investors' money.
 Visual: Hands passing old banknotes into a row of open envelopes
@@ -35,6 +37,7 @@ Then reporters started asking questions, and the payouts stopped.
 Visual: A 1920s newsroom with typewriters on wooden desks, nobody close
 Visual: A closed office door with a paper notice pinned on it, text unreadable
 Stock: 1920s newspaper printing
+Draw: cross
 
 By August nineteen twenty, Ponzi was under arrest.
 Visual: A crowd seen from behind outside a closed office on a 1920s street
@@ -45,3 +48,4 @@ Fifty percent in forty-five days was never profit. Just someone else's deposit.
 Visual: A single postal coupon alone on an empty wooden desk
 Visual: A hand dropping banknotes into another person's open envelope
 Text: NOT PROFIT · SOMEONE ELSE'S MONEY
+Draw: underline

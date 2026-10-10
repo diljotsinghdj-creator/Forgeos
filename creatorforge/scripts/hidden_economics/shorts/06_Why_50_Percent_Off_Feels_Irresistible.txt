@@ -8,6 +8,7 @@ You saved fifty pounds. You're fifty pounds poorer.
 Visual: A paper shopping bag standing on a hallway floor
 Visual: An open wallet with only a few coins left inside
 Text: SAVED £50? SPENT £50?
+Draw: underline
 
 The tag said one hundred, crossed out. Now fifty.
 Visual: A paper price tag on a jacket sleeve, the old price struck through
@@ -18,6 +19,7 @@ So why does that crossed-out number feel so powerful?
 Visual: A magnifying glass over a crossed-out price tag, numbers blurred
 Visual: A shopper seen from behind holding a jacket in a clothes shop
 Text: WHY THE FIRST NUMBER?
+Thought: Half price! What a bargain.
 
 Watch. Psychologists spun a wheel, then asked what share of UN nations were African.
 Visual: A hand spinning a wooden wheel of fortune on a table
@@ -34,6 +36,7 @@ A meaningless number dragged their judgement. That's anchoring.
 Visual: A crumpled scrap of paper with a number on it, on a desk
 Visual: A small iron boat anchor resting on a wooden desk
 Text: ANCHORING
+Draw: arrow
 
 So who chose the jacket's first number? The seller.
 Visual: A clothing rail with paper price tags dangling, nobody in frame
@@ -46,3 +49,4 @@ Visual: A person seen from behind walking down a shopping street
 Visual: A jacket folded in a shopping bag on a hallway floor
 Visual: A card payment receipt held between two fingers, text unreadable
 Text: NOT LOOKING FOR IT? STILL SPENT £50
+Draw: cross

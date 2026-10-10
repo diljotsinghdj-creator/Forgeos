@@ -12,6 +12,7 @@ Text: THE NEIGHBOUR EFFECT
 Not the winner. The neighbours, who never won a penny.
 Visual: A winning lottery ticket held up in a hand outside a house, numbers unreadable
 Visual: The house next door, an empty doormat and a closed letterbox
+Draw: arrow
 
 Even worse, the bigger the prize, the more bankruptcies followed nearby.
 Visual: A tall stack of banknotes on a doorstep beside a lottery ticket
@@ -48,6 +49,7 @@ Visual: A view through a kitchen window of a new car across the road
 By Sunday night, Sam is scrolling through cars on a phone.
 Visual: A dark living room at night lit only by a phone screen
 Visual: Two hands holding a phone showing a list of used car photos, text unreadable
+Thought: Maybe it's time I upgraded too.
 
 Sam's income has not changed at all. So what has?
 Visual: A payslip on a kitchen table beside a calculator, text unreadable
@@ -72,6 +74,7 @@ Visual: A Victorian shop window displaying silver tableware and fine hats
 He called it conspicuous consumption.
 Visual: A gold pocket watch lying open on a velvet cloth
 Text: CONSPICUOUS CONSUMPTION
+Draw: underline
 
 Yet it isn't simple vanity. It's how humans signal success and belonging.
 Visual: A peacock with its tail feathers fanned out on a lawn
@@ -105,6 +108,7 @@ Here's the first surprise. Most car winners did not keep it.
 Visual: A new car parked on a quiet street, a red ribbon still on its bonnet
 Visual: A car with a for-sale sign in its windscreen, text unreadable
 Text: MOST WINNERS SOLD THE CAR
+Draw: circle
 
 The real effect was next door.
 Visual: A neighbour's house beside the winner's house on a Dutch street
@@ -124,6 +128,7 @@ Just like Sam. Comparison is local, and it is visible.
 Visual: A hand easing a lace curtain aside at a window
 Visual: A new car across the road seen through the gap in a curtain
 Text: LOCAL + VISIBLE
+Draw: circle
 
 But a new car is not bankruptcy.
 Visual: A new car parked on a sunny driveway
@@ -165,6 +170,7 @@ But not more savings. Not more cash in the bank.
 Visual: An empty glass savings jar on a kitchen shelf
 Visual: A bank savings passbook lying open on a blank page
 Text: VISIBLE UP · SAVINGS FLAT
+Draw: cross
 
 You never see a neighbour's pension. You can see their driveway.
 Visual: A sealed pension letter in an envelope on a hallway table
@@ -174,6 +180,7 @@ So they had borrowed to keep up with what they could see.
 Visual: A pen signing a loan agreement on a desk, text unreadable
 Visual: A bank card and a loan letter beside a set of car keys
 Text: BORROWED TO KEEP UP
+Thought: If they can afford it, so can we.
 
 Not to survive. To match the house next door.
 Visual: A half-empty fridge with a few basic groceries inside
@@ -188,6 +195,7 @@ But the mechanism is clear. Someone else's win can become your debt.
 Visual: A winning lottery ticket lying on a table, numbers unreadable
 Visual: A pile of unpaid bills on a neighbour's doormat, text unreadable
 Text: THEIR WIN, YOUR DEBT
+Draw: underline
 
 Surely, though, the new things make people happier?
 Visual: Hands pulling a ribbon off a wrapped gift box
@@ -209,6 +217,7 @@ Compared with people from the same areas, they were not significantly happier.
 Visual: A suburban Illinois street with neat lawns and parked cars
 Visual: Two families seen from behind sitting on matching front porches
 Text: NOT SIGNIFICANTLY HAPPIER
+Draw: underline
 
 They even took less pleasure from ordinary daily moments.
 Visual: A slice of toast left untouched on a breakfast plate
@@ -236,6 +245,7 @@ The new thing thrills, then turns normal, until the next upgrade looks reasonabl
 Visual: A hand peeling the plastic film off a new phone
 Visual: A phone lying among keys and coins on a kitchen counter
 Visual: A shop counter displaying a row of the newest phones
+Thought: Surely an upgrade is reasonable now?
 
 The finish line keeps moving. So how do people keep paying?
 Visual: A running track with a white finish line painted across it
@@ -259,6 +269,7 @@ The card group bid roughly twice as much, for the same tickets.
 Visual: Two stacks of coins, one exactly twice the height of the other
 Visual: A pair of basketball tickets beside a credit card, print unreadable
 Text: CARD BIDS ROUGHLY 2× CASH
+Draw: underline
 
 Same seats, same game. Only the way of paying had changed.
 Visual: Two identical paper tickets side by side, print unreadable
@@ -277,6 +288,7 @@ Text: SPLIT THE COST
 Sam cannot stretch to a car. But the checkout offers something smaller.
 Visual: A car showroom window with a price card on the windscreen, text unreadable
 Visual: A phone showing an online shop page with a wristwatch, text unreadable
+Bubble: Split it into easy monthly payments!
 
 A six-hundred-pound watch, at fifty pounds a month, split across a year.
 Visual: A men's wristwatch lying in an open gift box
@@ -292,6 +304,7 @@ But it's still six hundred pounds, and late fees can push it higher.
 Visual: Twelve calendar pages pinned in a row, one red circle on each
 Visual: A late payment letter with one line circled in red pen, text unreadable
 Text: 12 PAYMENTS · STILL £600+
+Draw: circle
 
 And Sam is far from alone. So how many Britons pay this way?
 Visual: A busy British high street with shoppers carrying bags, seen from behind
@@ -324,6 +337,7 @@ Then the uncomfortable detail. Look at the heaviest users.
 Visual: A magnifying glass held over a printed spreadsheet, numbers unreadable
 Visual: A hallway floor covered in delivery boxes and parcels
 Text: HEAVY USERS · 10+ TIMES A YEAR
+Draw: circle
 
 They were more than twice as likely to hold high-cost credit.
 Visual: Two stacks of credit cards, one twice the height of the other
@@ -339,6 +353,7 @@ That's only a link, not proof.
 Visual: A finger pressing calculator keys above a pile of bills
 Visual: A printed line graph lying on a desk, labels unreadable
 Text: LINK, NOT PROOF
+Draw: underline
 
 People already struggling may simply use it more.
 Visual: A worn purse on a kitchen table with bills tucked under it
@@ -357,6 +372,7 @@ They must now check you can afford it, even for small amounts.
 Visual: A pencil running down a column of a budget sheet, numbers unreadable
 Visual: A small pair of earrings on a counter with a price tag
 Text: AFFORDABILITY CHECKS
+Draw: tick
 
 But a check only asks whether you can repay.
 Visual: A printed form with a single box ticked, text unreadable
@@ -379,6 +395,7 @@ Visual: A well-made leather bag on a shop shelf
 It was that part of the price pays for an audience.
 Visual: An empty theatre with rows of red velvet seats
 Visual: A handbag standing alone on a theatre stage under a spotlight
+Draw: circle
 
 So before you tap pay, ask three questions. It takes ten seconds.
 Visual: A finger hovering over the pay button on a phone, text unreadable
@@ -404,6 +421,7 @@ Third, would I still want it if nobody could ever see it?
 Visual: A third playing card flipped face up on a wooden table
 Visual: A wristwatch shut inside a dark wooden drawer
 Text: 3. IF NOBODY COULD SEE IT?
+Thought: Would I want it if it stayed in a drawer?
 
 Sam tries it on the watch. Use, rarely. Audience, the drive opposite.
 Visual: A phone showing a wristwatch for sale, held in a hand, text unreadable
@@ -411,6 +429,7 @@ Visual: A new car across the road seen from a kitchen window
 
 So Sam closes the tab.
 Visual: A hand turning a phone face down on a windowsill beside a jam jar
+Draw: tick
 
 Fifty pounds a month stays put, every month for a year.
 Visual: A coin dropping into a glass savings jar on a windowsill
@@ -434,6 +453,7 @@ It is not need. It is comparison, and comparison has a price.
 Visual: A lace curtain falling closed over a window
 Visual: A price tag hanging from a car's wing mirror, text unreadable
 Text: COMPARISON HAS A PRICE
+Draw: underline
 
 But there is a stranger bargain still to come.
 Visual: A phone lighting up on a dark bedside table

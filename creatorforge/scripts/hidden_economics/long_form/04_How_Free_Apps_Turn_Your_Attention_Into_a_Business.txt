@@ -8,6 +8,7 @@ Your apps are free. Or are they?
 Visual: A smartphone lying on an old newspaper, its home screen full of app icons
 Visual: A hand holding a phone above a pile of coins on a table
 Text: £0
+Draw: underline
 
 Yet one company earned a hundred and sixty billion dollars.
 Visual: A tall stack of coins on a desk beside a printed annual report, print unreadable
@@ -31,6 +32,7 @@ Text: WHAT WAS SOLD?
 
 Your time.
 Visual: A wristwatch with a paper price tag tied to its strap
+Draw: circle
 
 British adults spend four and a half hours a day online.
 Visual: A wall clock above a sofa where a person sits on a phone, seen from behind
@@ -64,6 +66,7 @@ At eleven at night, she opens an app for one minute.
 Visual: A bedside alarm clock showing eleven at night beside a phone
 Visual: A thumb tapping an app icon on a phone in a dark bedroom, nothing readable
 Text: 11PM · "JUST ONE MINUTE"
+Thought: Just a quick look before bed.
 
 Twenty minutes later, she is still scrolling.
 Visual: A thumb scrolling a phone in bed beside an alarm clock, text unreadable
@@ -73,6 +76,7 @@ She paid nothing. So who earned from the other nineteen?
 Visual: A phone lying face up on a duvet, its screen dark
 Visual: An empty wallet lying open on a bedside table
 Text: WHO GOT THE 19 MINUTES?
+Draw: underline
 
 Maya is typical.
 Visual: Several people seen from behind on a train, each holding a lit phone
@@ -124,6 +128,7 @@ So a wealth of information creates a poverty of attention.
 Visual: A desk buried under newspapers, letters and a lit phone
 Visual: A person seen from behind at a cluttered desk, head in hands
 Text: WEALTH OF INFO = POVERTY OF ATTENTION
+Draw: underline
 
 He wrote that decades before the first smartphone even existed.
 Visual: A typed 1971 paper lying on a desk, text unreadable
@@ -141,6 +146,7 @@ Stock: city billboards night
 Watch Maya's screen. Every minute she scrolls is space they can buy.
 Visual: A phone showing a social feed with a blank advert between posts, text unreadable
 Visual: A coin resting on a phone screen beside a blank advert box
+Draw: arrow
 
 In twenty nineteen, Britain's competition regulator sized up UK digital advertising.
 Visual: Government buildings on Whitehall in London on a grey day
@@ -172,6 +178,7 @@ Visual: Two fingers held up beside a printed report on a desk
 Visual: A phone screen with several blank adverts between posts, nothing readable
 Visual: A price tag rewritten with a higher figure in red pen, text unreadable
 Text: MORE AD IMPRESSIONS + HIGHER PRICE
+Draw: circle
 
 Both depend on one thing. Time spent looking.
 Visual: A stopwatch resting on a desk beside a phone
@@ -203,6 +210,7 @@ But Maya's feed has no last page.
 Visual: A phone screen showing an endless social feed, text unreadable
 Visual: A long roll of receipt paper unspooling off a desk onto the floor
 Text: NO LAST PAGE
+Draw: underline
 
 Even at the bottom, it just refills.
 Visual: A thumb pulling down on a phone screen to refresh, text unreadable
@@ -211,6 +219,7 @@ Visual: A phone feed loading new posts with a spinning wheel, nothing readable
 Then autoplay starts the next video before she has decided anything.
 Visual: A phone playing a video with a countdown to the next one, nothing readable
 Visual: A hand resting still beside a phone as the next video starts
+Thought: Okay... just one more video.
 
 Recommendations remove even the effort of choosing.
 Visual: A phone screen full of video thumbnails, content blurred
@@ -227,6 +236,7 @@ But together, stopping becomes a decision, not the default.
 Visual: A young woman seen from behind on the edge of a bed, phone in hand
 Visual: A closed bedroom door, a lamp still on beside the bed
 Text: STOPPING = A DECISION
+Draw: underline
 
 But does any of this change how we actually feel?
 Visual: A hand pressing a phone face down into a duvet
@@ -264,6 +274,7 @@ Text: ONE STUDY · SELF-REPORTED
 But the fix was just a setting.
 Visual: A thumb sliding a toggle switch to off on a phone, nothing readable
 Visual: A phone lying dark and silent on a desk
+Draw: tick
 
 So here is the real question. Does Maya even want those nineteen minutes?
 Visual: A young woman seen from behind at a rain-streaked window at night
@@ -279,6 +290,7 @@ Those who quit spent more time offline, with friends and family.
 Visual: Hands passing a dish across a family dinner table, faces out of frame
 Visual: Friends seen from behind walking together along a park path
 Stock: family dinner table
+Thought: I'd rather be here than scrolling.
 
 And even watching television.
 Visual: A living room television switched on, a sofa seen from behind
@@ -294,6 +306,7 @@ Even after the experiment ended, their use stayed lower.
 Visual: A phone lying unused on a windowsill beside a dried leaf
 Visual: A phone screen-time chart with short bars, text unreadable
 Text: USE STAYED LOWER AFTERWARDS
+Draw: circle
 
 And they now valued the app less than they had before.
 Visual: An old brass balance scale with a phone on the raised pan
@@ -319,6 +332,7 @@ Text: FICTIONAL INTERFACE
 
 Many actually used them.
 Visual: A row of phones on a desk, most with a small red timer sticker
+Draw: circle
 
 The researchers estimated self-control problems drive about thirty-one percent of social media use.
 Visual: One hundred matchsticks laid on paper, thirty-one with burnt heads
@@ -337,6 +351,7 @@ Visual: A thumb mid-scroll on a phone feed in bed, text unreadable
 Scrolling that people themselves would rather not do.
 Visual: A hand crossing out one line of a short handwritten list, writing unreadable
 Visual: A person seen from behind in bed at night, holding a lit phone
+Thought: Why am I still scrolling this?
 
 So a feed keeps us past the point we would choose.
 Visual: A bedside alarm clock showing past midnight beside a lit phone
@@ -355,6 +370,7 @@ Its Digital Services Act bars platforms from deceptive or manipulative interface
 Visual: A thick legal document open on a desk, one paragraph circled, text unreadable
 Visual: A phone pop-up with a tiny hidden close button, text unreadable
 Text: DIGITAL SERVICES ACT · ART. 25
+Draw: arrow
 
 And on sixth February twenty twenty-six, the European Commission went further.
 Visual: A desk calendar turned to February, the sixth circled in red
@@ -379,6 +395,7 @@ Text: SCROLL · AUTOPLAY · ALERTS · RECOMMENDER
 Sound familiar? They are the same features that ran Maya's night.
 Visual: A bedroom floor plan on graph paper, four pins stuck around the bed
 Visual: A dark bedroom with a phone glowing on the pillow
+Draw: circle
 
 It said risks to users, including minors, had not been properly assessed.
 Visual: A teenager's bedroom door ajar at night, a phone glowing under the duvet
@@ -397,6 +414,7 @@ TikTok can respond, and has called them meritless.
 Visual: An unsigned document on a desk, a pen beside the signature line
 Visual: A hand writing a reply letter with a fountain pen, text unreadable
 Text: NOT FINAL · COMPANY DISPUTES THEM
+Bubble: These findings are meritless.
 
 If confirmed, fines can reach six percent of worldwide annual turnover.
 Visual: A tall stack of coins with a thin slice set apart by a ruler
@@ -446,6 +464,7 @@ First, turn off every notification you would never miss.
 Visual: A thumb sliding a notification toggle to off, nothing readable
 Visual: A phone lock screen with no notifications, nothing readable
 Text: 1. NOTIFICATIONS OFF
+Draw: tick
 
 That is the alerts-off week from the study, only run by you.
 Visual: A wooden desk drawer fully shut with a phone inside
@@ -488,6 +507,7 @@ Visual: Friends seen from behind on a sofa, sharing a phone between them
 It is time you chose.
 Visual: A phone placed face down on a table in morning sunlight
 Text: TIME YOU CHOSE
+Draw: underline
 
 But attention is not only captured by curiosity.
 Visual: A phone lighting up on a desk with a new notification, text unreadable

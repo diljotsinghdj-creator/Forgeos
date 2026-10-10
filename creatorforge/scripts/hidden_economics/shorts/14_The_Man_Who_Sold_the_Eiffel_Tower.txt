@@ -8,6 +8,7 @@ He sold the Eiffel Tower. He never owned it.
 Visual: The Eiffel Tower seen from a 1920s Paris street
 Visual: A 1920s bill of sale lying on a wooden desk, text unreadable
 Text: PARIS, 1925
+Draw: circle
 
 Con man Victor Lustig posed as a fake government official.
 Visual: A man in a 1920s overcoat and hat seen from behind
@@ -28,6 +29,7 @@ He even hinted at a bribe. That made him seem like a real official.
 Visual: A gloved hand sliding a thick envelope across a café table
 Visual: A 1920s official's desk with an inkwell and a brass nameplate, text unreadable
 Text: THE BRIBE MADE IT FEEL REAL
+Thought: Only a real official asks for a bribe
 
 One dealer, André Poisson, paid up. Lustig fled with the cash.
 Visual: A hand counting a stack of 1920s French banknotes on a table
@@ -48,3 +50,4 @@ The tower never moved. The money never came back.
 Visual: The Eiffel Tower standing over Paris rooftops on a grey day
 Visual: An empty leather wallet lying open on a wooden table
 Text: SHAME KEEPS SCAMS QUIET
+Draw: cross

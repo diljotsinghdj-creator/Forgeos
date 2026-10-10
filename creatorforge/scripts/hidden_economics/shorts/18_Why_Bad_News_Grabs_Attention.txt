@@ -18,6 +18,7 @@ Their bodies told the real story. Bad news hit harder than good.
 Visual: A finger pulse monitor clipped to a hand resting on a table
 Visual: A paper heart-rate printout with tall spikes on a desk
 Text: BAD NEWS · STRONGER BODY RESPONSE
+Draw: circle
 
 Yet many people showed no such bias at all.
 Visual: A row of people seen from behind watching a TV screen
@@ -28,6 +29,7 @@ So why does bad news still feel everywhere?
 Visual: A street newsstand crowded with papers, headlines blurred
 Visual: A phone screen full of news alerts, text unreadable
 Stock: newspaper stand street
+Thought: The world is falling apart
 
 Vivid stories come to mind easily, so they only feel common.
 Visual: A wall covered in pinned newspaper clippings, text unreadable
@@ -38,6 +40,7 @@ A true story can still say nothing about odds.
 Visual: A single die resting on a folded newspaper under a desk lamp
 Visual: A hand rolling two dice across a wooden table
 Text: TRUE STORY ≠ PROBABILITY
+Draw: underline
 
 So next time, ask one thing. Out of how many days?
 Visual: A hand holding a folded newspaper beside a wall calendar

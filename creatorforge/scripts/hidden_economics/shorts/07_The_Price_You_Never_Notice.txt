@@ -8,6 +8,7 @@ Thirty pounds on screen. Forty-one at checkout.
 Visual: A smartphone showing a product page on a desk, text unreadable
 Visual: A smartphone showing a checkout page with a longer bill, text unreadable
 Text: £30… NOW £41? · ILLUSTRATION
+Thought: Wait, didn't it say thirty?
 
 Where did eleven go? Delivery, five. Service fee, three. Optional protection, three more.
 Visual: A printed checkout list with extra lines added, text unreadable
@@ -31,6 +32,7 @@ The first fine, in twenty twenty-six, was over a three-pound booking fee.
 Visual: A single coin under a magnifying glass on a booking form, text unreadable
 Visual: Three one-pound coins on a printed booking confirmation, text unreadable
 Text: FIRST FINE · A £3 FEE SHOWN LATE
+Draw: circle
 
 Four point two million pounds.
 Visual: Bundles of banknotes stacked on a desk beside a judge's gavel
@@ -40,6 +42,7 @@ Untick what you did not choose. Compare totals, not headline prices.
 Visual: A thumb unticking a box on a smartphone, text unreadable
 Visual: Two receipts side by side with the totals underlined in red, text unreadable
 Text: UNTICK · COMPARE TOTALS
+Draw: tick
 
 Because thirty pounds was never the price. Forty-one was.
 Visual: Three ten-pound notes lying on a kitchen table

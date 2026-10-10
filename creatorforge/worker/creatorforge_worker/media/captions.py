@@ -157,7 +157,23 @@ def write_ass(path: Path, width: int, height: int, scale: float, position: float
         # Pop-in: each caption lands at 75% size and springs to full size in 0.12 s (the Shorts "bounce").
         pop = "{\\fscx75\\fscy75\\t(0,120,\\fscx104\\fscy104)\\t(120,180,\\fscx100\\fscy100)}"
         lines.append(f"Dialogue: 0,{_ts(c.start)},{_ts(c.end)},Caption,,0,0,0,,{pop}{_highlight(c.text, emphasis, hi)}")
+    from . import marks
+    pen = "&H002E10C8" if callout_look == "redpen" else marks.PEN
+    font_name = EXPLAINER_FONT if explainer and _have_font(EXPLAINER_FONT) else "DejaVu Sans"
+    ev = lines.index("[Events]") - 1
+    lines[ev:ev] = ["Style: Mark,DejaVu Sans,20,&H00FFFFFF,&H00FFFFFF,&H00141414,&H00000000,0,0,0,0,100,100,0,0,1,0,0,7,0,0,0,1",
+                    f"Style: BubbleText,{font_name},{fs},&H00141414,&HFF141414,&H00FFFFFF,&H00000000,0,0,0,0,100,100,0,0,1,"
+                    f"0,0,5,0,0,0,1"]
+    callout_y = top + small * 1.45          # just under a one-line callout at the top
     for o in overlays:
+        if o.style == "Draw" and o.end > o.start:
+            under = callout_y if "underline" in o.text and any(c.style == "Callout" and c.start < o.end and c.end > o.start
+                                                             for c in overlays) else None
+            lines += marks.mark_events(o.text, o.start, o.end, width, height, pen, under)
+            continue
+        if o.style in ("Bubble", "Think") and o.text.strip() and o.end > o.start:
+            lines += marks.bubble_events(o.text, o.start, o.end, width, height, o.style == "Think", font_name)
+            continue
         if o.text.strip() and o.end > o.start:
             # Highlighter: the marker box sweeps open left to right, like someone highlighting the words.
             fx = ("{\\fad(120,200)\\fscx15\\t(0,220,\\fscx100)}" if callout_look in ("highlighter", "redpen") and o.style == "Callout"

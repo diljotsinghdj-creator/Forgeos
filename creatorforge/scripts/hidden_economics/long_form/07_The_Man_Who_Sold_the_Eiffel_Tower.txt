@@ -8,6 +8,7 @@ He sold the Eiffel Tower. For scrap.
 Visual: An old photograph of the Eiffel Tower with a paper price tag tied to it
 Visual: A heap of rusty scrap iron girders in a 1920s scrapyard
 Text: PARIS, 1925
+Draw: circle
 
 The buyer paid, lost everything, and never went to the police.
 Visual: A hand passing a thick envelope of old French banknotes across a desk
@@ -39,6 +40,7 @@ Visual: An ornate calling card with a crest on a velvet cloth, text unreadable
 Visual: A 1920s gentleman in a long coat and top hat seen from behind
 Visual: A fingertip sliding a calling card across a polished table
 Text: "COUNT" VICTOR LUSTIG
+Draw: cross
 
 Can we trust the details?
 Visual: A magnifying glass over an old newspaper clipping, print blurred
@@ -115,6 +117,7 @@ Visual: Official letterhead with an embossed crest on a desk, text unreadable
 He had stationery forged to look like a French ministry's.
 Visual: A hand pressing an embossing seal into thick cream paper
 Visual: A stack of blank official envelopes with an embossed crest
+Draw: box
 
 Then he invited a handful of scrap-metal dealers to a meeting.
 Visual: Sealed envelopes with red wax seals fanned out on a desk
@@ -159,6 +162,7 @@ The deal had to stay secret, to avoid a public outcry.
 Visual: A hand drawing a heavy curtain across a tall hotel window
 Visual: A crowd of 1920s Parisians gathered in a street, seen from far away
 Text: KEEP THIS CONFIDENTIAL
+Bubble: This must stay secret. No outcry.
 
 Notice what that one rule does. Nobody could check with anyone else.
 Visual: A brass padlock on a bundle of letters
@@ -185,6 +189,7 @@ Visual: A red tick beside a column of figures on a page, figures blurred
 It was exactly their kind of deal.
 Visual: Two hands shaking over a table, seen from above
 Visual: Stacks of iron bars in a warehouse waiting for sale
+Thought: This is exactly my kind of deal.
 
 So which of these professionals fell for it, and why him?
 Visual: Five hats resting in a row on a hotel table
@@ -212,6 +217,7 @@ Visual: A woman seen from behind at a 1920s kitchen table
 Visual: A teacup set down beside an open letter, text unreadable
 Visual: A mantel clock on a mantelpiece showing late evening
 Text: WHY SO SECRET?
+Thought: Why so secret? Why so fast?
 
 Here comes the twist that made the whole con work.
 Visual: A playing card being turned over on green baize
@@ -233,6 +239,7 @@ And that bribe convinced him the official was real.
 Visual: A hand tucking an envelope into a suit jacket's inside pocket
 Visual: A red tick on an official document, text unreadable
 Text: THE BRIBE WAS THE PROOF
+Draw: circle
 
 To Poisson, only a real official could sell something under the table.
 Visual: An official's desk with a rubber stamp and an inkwell
@@ -261,6 +268,7 @@ Visual: Two blank index cards side by side on a desk
 One, that he had been fooled.
 Visual: A ministry letter lying on a desk, text unreadable
 Visual: A hand covering a signature on a contract
+Draw: cross
 
 Two, that he had tried to bribe an official.
 Visual: An envelope of banknotes on a desk with a red circle drawn around it
@@ -270,6 +278,7 @@ His embarrassment became the con man's insurance policy.
 Visual: A man sitting alone with his head in his hands, seen from behind
 Visual: An old insurance document with a red stamp, text unreadable
 Text: EMBARRASSMENT = INSURANCE
+Draw: box
 
 So a con that leaves no complaint can be run again.
 Visual: A blank police complaint form lying unused on a counter, text unreadable
@@ -310,6 +319,7 @@ Visual: A man waiting in an armchair by a lamp at night, seen from behind
 Out came two real notes. One had been hidden inside beforehand.
 Visual: Two banknotes emerging side by side from a slot in a wooden box
 Visual: A hidden compartment in the back of a wooden box holding a banknote
+Draw: arrow
 
 After a few notes, the box printed nothing. By then, he was gone.
 Visual: A blank sheet of paper sliding out of a wooden box
@@ -328,6 +338,7 @@ Who complains to the police about that? Almost nobody.
 Visual: An old police station door with a brass handle
 Visual: A telephone receiver set back down on its cradle
 Text: WHO WOULD COMPLAIN?
+Thought: Report it? And admit I bought this?
 
 One buyer did, according to most accounts.
 Visual: A hand lifting an old telephone receiver off its cradle
@@ -377,6 +388,7 @@ Visual: A barred window at night with an empty cell behind it
 The rope was made of bedsheets.
 Visual: Knotted white bedsheets tied into a rope, close-up
 Visual: A rope of knotted sheets hanging from a barred window at night
+Draw: circle
 
 But he was recaptured in Pittsburgh within a month.
 Visual: A red pin pushed into Pittsburgh on an old map
@@ -412,6 +424,7 @@ Visual: A finger pointing at the first line of a typed list, text unreadable
 Be a patient listener.
 Visual: Two armchairs facing each other across a small table under a lamp
 Text: RULE 1: BE A PATIENT LISTENER
+Draw: box
 
 He did not out-talk Poisson. He listened until he found the weak spot.
 Visual: Two men in suits at a hotel table, one leaning in, seen from behind
@@ -433,6 +446,7 @@ Part two is secrecy. It cut every route to an outside check.
 Visual: A brass padlock snapping shut on a bundle of letters
 Visual: An old telephone with its cord cut lying on a desk
 Text: 2. SECRECY
+Draw: circle
 
 Part three is greed. A deal that felt rare and exclusive.
 Visual: A brass scale tipping under a pile of gold coins
@@ -443,6 +457,7 @@ Part four is the masterstroke. Embarrassment, which keeps victims quiet afterwar
 Visual: A hand pressing a newspaper face down on a table
 Visual: A man sitting alone on a park bench, seen from behind
 Text: 4. EMBARRASSMENT
+Draw: arrow
 
 The first three get the money. The fourth keeps it.
 Visual: Banknotes being swept into an open leather briefcase
@@ -471,6 +486,7 @@ Visual: A person seen from behind holding a phone to their ear in a dark kitchen
 Visual: A hand covering the microphone of a smartphone
 Visual: Bank branch staff at their counters, seen from far away
 Text: "DON'T TELL ANYONE"
+Bubble: Don't tell anyone, not even branch staff.
 
 That is the Hôtel de Crillon instruction, reworded.
 Visual: The Hôtel de Crillon facade in an old photograph
@@ -497,6 +513,7 @@ They're even asked to lie to their own bank.
 Visual: A bank counter seen over a customer's shoulder
 Visual: A withdrawal slip held in a hand at a bank counter, text unreadable
 Text: TOLD TO LIE TO THE BANK
+Draw: cross
 
 Or to keep a too-good investment secret.
 Visual: An investment brochure tucked under a sofa cushion
@@ -523,6 +540,7 @@ Visual: Stacks of hundred-dollar bills on a desk
 Visual: A smartphone showing an incoming call from a bank, text unreadable
 Visual: A police uniform jacket hanging on a coat hanger
 Text: FTC, US DATA, 2024
+Draw: circle
 
 And the share of people reporting who actually lost money?
 Visual: People queuing at a bank counter, seen from behind
@@ -550,6 +568,7 @@ Visual: A thumb pressing the red end-call button on a smartphone
 Visual: The back of a bank card on a desk, numbers blurred
 Visual: A laptop showing a bank's website, text unreadable
 Text: HANG UP. CALL BACK.
+Draw: tick
 
 Call it from a different phone if you can.
 Visual: A landline handset lifted beside a mobile phone placed face down
@@ -564,6 +583,7 @@ Asked to keep it secret? Treat that as a warning, not an instruction.
 Visual: A smartphone showing a message on a table, text unreadable
 Visual: A red stamp coming down on a letter, text unreadable
 Text: SECRECY = WARNING SIGN
+Draw: cross
 
 A real bank, a real police officer, will survive you checking.
 Visual: A bank branch interior with a customer at the counter
@@ -576,6 +596,7 @@ Visual: A hand resting on another person's shoulder, seen from behind
 Shame is the con man's real insurance.
 Visual: A person sitting alone on the stairs at home, seen from behind
 Visual: An old insurance document with a red stamp, text unreadable
+Draw: cross
 
 So cancel the policy, and the next con gets harder to run.
 Visual: Hands tearing an insurance document in half

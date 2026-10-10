@@ -8,6 +8,7 @@ Four minutes to buy it. Zero pages read.
 Visual: A hand holding a phone showing a buy button, text unreadable
 Visual: A thick unopened contract booklet on a kitchen table
 Text: 0 PAGES READ
+Draw: circle
 
 In this fictional advert, your boiler could fail. Offer ends midnight.
 Visual: A printed boiler advert with a red warning banner, text unreadable
@@ -18,6 +19,7 @@ So you picture a freezing house, and you tap buy.
 Visual: Frost on the inside of a window at night
 Visual: A thumb tapping a buy button on a phone, text unreadable
 Stock: frosty window winter
+Thought: I can't risk a freezing house
 
 But what did that deadline actually stop you doing?
 Visual: A desk lamp shining on an unread contract and a pen
@@ -27,6 +29,7 @@ Reading the exclusions, checking the excess, comparing the price.
 Visual: A magnifying glass over fine print on a contract, words unreadable
 Visual: A laptop showing two price comparison tables, text unreadable
 Text: EXCLUSIONS · EXCESS · PRICE
+Draw: underline
 
 So can you undo a four-minute decision?
 Visual: An egg timer lying on its side on a printed contract
@@ -46,3 +49,4 @@ Four minutes to buy. Often fourteen days to rethink. Use them.
 Visual: A phone lying face down on a kitchen table
 Visual: A hand writing notes on a printed contract with a pen
 Text: SLEEP ON IT
+Draw: tick

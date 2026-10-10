@@ -8,6 +8,7 @@ Students got a free Coke. They paid double.
 Visual: An unbranded glass soda bottle standing on a dark desk
 Visual: Two piles of raffle tickets on a desk, one twice as tall
 Text: A FREE DRINK. A DOUBLE PAYBACK.
+Draw: arrow
 
 Psychologist Dennis Regan tested it in nineteen seventy-one.
 Visual: A 1970s university corridor with paintings on easels, nobody close
@@ -17,6 +18,7 @@ Stock: 1970s university campus
 
 Then his helper asked them to buy raffle tickets.
 Visual: A hand holding out a roll of paper raffle tickets across a table
+Thought: Well, he did buy me a drink...
 
 Did one drink really change anything?
 Visual: A single raffle ticket pinched between two fingers
@@ -32,6 +34,7 @@ Visual: A busy 1970s airport hall seen from a distance
 Visual: A hand holding out a single flower in an airport hall
 Text: A FLOWER, THEN A REQUEST
 Stock: 1970s airport terminal
+Draw: circle
 
 Shop samples work the same way. But why?
 Visual: A tray of tiny paper sample cups on a shop counter
@@ -42,6 +45,7 @@ A gift you never asked for still feels like a debt.
 Visual: A small gift box tied with string on a doorstep
 Visual: A handwritten IOU note on a desk beside a pen, text unreadable
 Text: UNASKED GIFT = FELT DEBT
+Draw: underline
 
 Judge the request alone, and a free Coke stays free.
 Visual: A hand pushing a roll of raffle tickets away across a table
