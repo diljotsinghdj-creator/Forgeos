@@ -1,39 +1,41 @@
 The 24 Hour Buying Rule
 On-screen hook: 11PM. WANT IT TOMORROW?
 Title: 11pm Impulse Buy? The 24-Hour Rule That Tests It by Breakfast
-Tags: #HiddenEconomics #impulsebuying #budgeting #personalfinance #moneytips
+Tags: #HiddenEconomics #impulsebuying #budgeting #personalfinance #moneypsychology
+Source: Consumer Contracts (Information, Cancellation and Additional Charges) Regulations 2013, 14-day cancellation period for most distance contracts (https://www.legislation.gov.uk/uksi/2013/3134/contents)
 
 Eleven at night, thumb on buy. Will you still want it at breakfast?
-Visual: A phone glowing alone in a pitch-black bedroom, a single thumb frozen above a bright button, text unreadable
-Text: 11:00 PM · STILL WANT IT AT 8?
+Visual: A phone glowing alone on a pitch-black bedside table, a cut-out hand frozen above its bright button, an old alarm clock beside it, text unreadable
+Text: 11 PM · STILL WANT IT AT 8 AM?
 
-Here's a free one-night test.
-Visual: Hand placing the phone face down on a bedside table, lamp switching off
-Text: COST £0
+UK law already lets you cancel most online orders.
+Visual: A brown parcel with a returns slip on a desk, a printed regulation beside it, text unreadable
+Chart: 14 | days to cancel most UK online orders
 
-Copy the item onto a list. Then close the shopping app.
-Visual: Close-up of a pen adding a line to a paper notepad, writing unreadable
+So why does your own brain get no cooling-off at all?
+Visual: An old anatomical drawing of a brain cut out and pinned beside a shopping receipt, red string between them
+Text: WHERE IS YOUR COOLING-OFF?
+
+Give it one. Copy the item onto a list, then close the app.
+Visual: A pen adding a line to a paper notepad under a lamp, writing unreadable
 Stock: writing list notepad
 
 Sleep on it. Twenty-four hours, no peeking.
-Visual: Wide shot of a dim bedroom at night, phone dark on the nightstand
-Text: 24 HOURS
+Visual: A dim bedroom at night, the phone dark on the nightstand
+Chart: 24 | hours · no peeking
 
 Why would one night change anything?
-Visual: Extreme close-up of a sand timer, last grains falling
+Visual: A sand timer on a desk, its last grains falling, half lit night blue, half warm gold
+Text: WHY ONE NIGHT?
 
-It's no law of psychology. A pause turns a mood into a decision.
-Visual: Split light on a desk, half dark blue night, half warm morning
+A pause gives the morning you a vote.
+Visual: A desk split by light, half dark blue night, half warm morning, the notepad in the middle
 
-Still want it in daylight? Check the full price against your budget.
-Visual: Hands holding a paper receipt next to a calculator, crisp morning side light
+Still want it at breakfast? Check the full price against your budget.
+Visual: Hands holding a paper receipt beside an old calculator, crisp morning light
 Text: FULL PRICE vs BUDGET
 Stock: morning kitchen sunlight
 
-Often the thing you craved at eleven barely earns a second look.
-Visual: Finger crossing out a line on the notepad, soft morning glow
-Text: ILLUSTRATION
-
-So at eleven at night, let the button wait until breakfast.
-Visual: The notepad and closed phone side by side in calm daylight, wide shot
+So at eleven tonight, let the button wait until breakfast.
+Visual: The notepad and the closed phone side by side in calm daylight
 Text: WAIT ONE NIGHT

@@ -5,38 +5,38 @@ Tags: #HiddenEconomics #darkpatterns #subscriptions #cancel #consumerrights
 Source: FTC, ICPEN and GPEN review of 642 subscription websites and apps, July 2024 (https://www.ftc.gov/news-events/news/press-releases/2024/07/ftc-icpen-gpen-announce-results-review-use-dark-patterns-affecting-subscription-services-privacy)
 
 One tap to join. Five taps to leave. Why?
-Visual: Two phones on a dark desk, one showing a single huge glowing button, the other tangled in a knot of grey string, text unreadable
+Visual: Two phones on a desk, one showing a single huge glowing button, the other tied up in a tangled knot of red string, text unreadable
 Text: 1 TAP IN · 5 TAPS OUT? · FICTIONAL APP
 
 Settings, account, manage plan, then a discount to stay.
-Visual: Close-up of a thumb moving through a generic phone menu with a bright gift pop-up, text unreadable, cool screen glow
+Visual: Four printed phone screens taped in a row across a desk, joined by red string, the last one bursting with a gift pop-up, text unreadable
 Text: SETTINGS › ACCOUNT › PLAN › 50% OFF?
 
 Tap five, in tiny grey letters, finally lets you go.
-Visual: Extreme close-up of a tiny faint link at the bottom of a phone screen, shallow focus, text unreadable
+Visual: A magnifying glass held over a tiny faint link at the very bottom of a printed phone screen, text unreadable
 Text: TAP 5: CANCEL
 
 Clumsy design, or something common?
-Visual: Wide shot of a person from behind at a dark desk, staring at a glowing phone
+Visual: A figure seen from behind at a dark desk, dozens of printed app screens pinned to the wall in front of them
 Text: CLUMSY OR COMMON?
 
 In twenty twenty-four, regulators reviewed six hundred and forty-two subscription sites and apps.
-Visual: A wall of dozens of glowing phone and laptop screens in a dark room, all blurred, nothing readable
-Text: 642 SITES & APPS · 2024 REVIEW
-Stock: many screens dark room
+Visual: A wall of dozens of glowing phone and laptop screens in a dark room, nothing readable
+Chart: 642 | subscription sites & apps · 2024 review
 
-About three in four used at least one possible dark pattern.
-Visual: Overhead shot of four phones on a dark table, three of them glowing red, one glowing white
-Text: ~76%: AT LEAST ONE DARK PATTERN
+Three in four used a possible dark pattern. Two in three, several.
+Visual: Four phones laid on a desk from above, three circled in red pen, one left clean
+Chart: 76% vs 67% | at least one, two or more
 
 Possible, not proven illegal. So where is the line?
-Visual: Close-up of a hand hovering over two generic buttons on a phone screen, one large, one tiny, text unreadable
+Visual: A hand hovering over two generic buttons on a phone, one large, one tiny, text unreadable
 Text: POSSIBLE ≠ PROVEN ILLEGAL
 
 Checking it is really you is fair. Hiding the exit is not.
-Visual: A phone showing a generic padlock icon, then set face down on the desk, untouched, text unreadable
+Visual: An old brass padlock on a desk beside a door key half-buried under a pile of paperwork
 Text: FAIR: SECURITY · UNFAIR: HIDDEN EXIT
+Stock: emergency exit door
 
 If joining took one tap, leaving should too.
-Visual: A single thumb tapping one clear button on a phone, the grey string falling loose beside it
+Visual: A single thumb tapping one clear button on a phone, the red string falling loose beside it
 Text: 1 TAP IN · 1 TAP OUT

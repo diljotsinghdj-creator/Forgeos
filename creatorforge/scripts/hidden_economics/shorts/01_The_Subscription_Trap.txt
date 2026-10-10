@@ -1,41 +1,43 @@
 The Subscription Trap
 On-screen hook: STOPPED. STILL PAYING?
 Title: £72 for an App You Stopped Using: The Subscription Trap
-Tags: #HiddenEconomics #subscriptions #personalfinance #money
+Tags: #HiddenEconomics #subscriptions #personalfinance #money #moneypsychology
+Source: UK government estimate of £1.6bn a year spent on unwanted subscriptions, reported August 2026 (https://techradar.com/tech/we-spend-gbp1-6bn-a-year-on-subscriptions-we-dont-want-fast-tracked-uk-government-policy-promises-to-make-cancelling-them-easier-and-will-make-phoney-bargains-illegal); (https://www.scmp.com/news/world/europe/article/3363469/uk-pm-burnham-vows-end-subscription-traps-amid-cost-living-crisis)
 
 You stopped using it in January. It still charged you in June.
-Visual: A phone lying face down on a dark kitchen table at night, a thin trail of coins sliding out from under it and over the table edge
+Visual: A phone lying face down on a bare kitchen table, a thin line of old coins crawling out from under it and dropping off the edge one by one
 Text: JAN: STOPPED · JUN: STILL PAYING
 
-Picture a twelve-pound monthly service. This is an illustration.
-Visual: Close-up of a hand scrolling a banking app on a phone, screen text blurred, soft lamp light
-Text: £12 A MONTH · ILLUSTRATION
-Stock: scrolling phone app
+Twelve pounds a month. By June, seventy-two gone.
+Visual: Six coins stacked in a column on a paper wall calendar, the torn-off month pages lying beside it
+Text: ILLUSTRATION
+Chart: £12 × 6 = £72 | six forgotten months · illustration
 
-You meant to cancel. By June, it had taken seventy-two pounds.
-Visual: Six coins stacked in a column on a dark wooden table beside a paper calendar, harsh side light
-Text: £12 × 6 = £72
-
-So why did nobody notice for six months?
-Visual: Extreme close-up of an eye reflected in a dark phone screen
+So why did nobody notice?
+Visual: A cut-out photograph of a single eye pasted onto the black glass of a switched-off phone
 Text: WHY NOBODY NOTICED
 
 Because a payment that asks for no decision never gets one.
-Visual: A hand reaching past an open wallet on a cluttered desk without looking at it
+Visual: A hand reaching past an open leather wallet on a cluttered desk without looking at it
 Text: NO DECISION = NO NOTICE
 
-So how do you find the one you forgot?
-Visual: Wide shot of a person from behind at a kitchen table, a phone glowing in the dim room
-Text: WHICH ONE DID YOU FORGET?
+So what does all that forgetting cost the country?
+Visual: An old paper map of Britain spread on a desk, small piles of coins scattered across its towns
+Text: WHAT DOES IT COST THE UK?
+Stock: busy high street
 
-Open your bank statement and look for repeat payments.
-Visual: Close-up of a printed bank statement with a pen circling one repeated line, text unreadable
+The UK government puts unwanted subscriptions at one point six billion pounds a year.
+Visual: A stack of old newspapers beside bundles of banknotes tied with string on a desk
+Chart: £1.6bn | unwanted subscriptions a year · UK est.
+
+Find payments that repeat, month after month.
+Visual: A printed bank statement taped to a desk, a red pen circling the same line all the way down the page, text unreadable
 Stock: checking bank statement
 
 Ask of each one, would I buy this today?
-Visual: A thumb hovering over a phone screen, a single button glowing red, text unreadable
+Visual: A thumb hovering over a phone, a single red button glowing on its screen, text unreadable
 Text: WOULD I BUY THIS TODAY?
 
 If not, cancel it before June comes round again.
-Visual: The same phone face down on the dark table, the last coin stopping right at the edge
+Visual: The same phone face down on the kitchen table, the last coin stopping right at the edge
 Text: CANCEL BEFORE JUNE

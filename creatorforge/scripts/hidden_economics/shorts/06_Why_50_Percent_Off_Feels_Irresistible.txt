@@ -1,46 +1,40 @@
 Why 50 Percent Off Feels Irresistible
 On-screen hook: SAVED £50? LOST £50?
 Title: You Saved £50 and Lost £50: Why 50% Off Feels Irresistible
-Tags: #HiddenEconomics #anchoring #discounts #shopping #psychology
-Source: Tversky and Kahneman, Judgment under Uncertainty, Heuristics and Biases, Science 185 (1974) 1124-1131 (https://doi.org/10.1126/science.185.4157.1124)
+Tags: #HiddenEconomics #anchoring #discounts #shopping #moneypsychology
+Source: Tversky and Kahneman, Judgment under Uncertainty, Heuristics and Biases, Science 185 (1974) 1124-1131, wheel-of-fortune anchoring experiment (https://doi.org/10.1126/science.185.4157.1124)
 
 You saved fifty pounds. Your bank account is fifty pounds lighter.
-Visual: A shopping bag on a dark hallway floor, coins trickling out through a small tear in its bottom, harsh side light
+Visual: A shopping bag on a dark hallway floor, coins trickling out through a small tear in its bottom
 Text: SAVED £50? SPENT £50?
 
-A jacket tag said one hundred, crossed out. Now fifty.
-Visual: Close-up of a paper price tag hanging from a dark wool jacket sleeve, a red line struck through the old price
-Text: £100 → £50 · ILLUSTRATION
+The tag said one hundred, crossed out. Now fifty.
+Visual: A paper price tag hanging from a wool jacket sleeve, the old price struck through in red pen
+Text: ILLUSTRATION
+Chart: £100 → £50 | the jacket tag · illustration
 
 So why does that crossed-out number feel so powerful?
-Visual: Extreme close-up of the crossed-out number on the tag, shallow focus, number blurred
+Visual: The crossed-out tag pinned to graph paper under a magnifying glass, numbers blurred
 Text: WHY THE FIRST NUMBER?
 
-Tversky and Kahneman called this anchoring.
-Visual: An old academic journal lying open on a desk under lamp light, text unreadable
-Text: ANCHORING · TVERSKY & KAHNEMAN, 1974
+Psychologists once spun a wheel, then asked what share of UN nations were African.
+Visual: An old photograph of a fairground wheel of fortune cut out and pasted onto yellowed journal pages, a paper globe beside it
+Text: TVERSKY & KAHNEMAN · 1974
+Stock: wheel of fortune spinning
 
-The first number you see drags your judgement towards it.
-Visual: A small boat anchor resting on a dark wooden table, a chain trailing out of frame
-Text: FIRST NUMBER = ANCHOR
+Wheel on ten, the typical guess was twenty-five percent. On sixty-five, forty-five.
+Visual: Two piles of paper slips on a desk, one short, one twice as tall
+Chart: 25% vs 45% | wheel stopped on 10, wheel stopped on 65
 
-So who chose that first number? The seller.
-Visual: Wide shot of a clothing rail in a dim shop, rows of tags dangling, nobody in frame
+A meaningless number dragged their judgement. That's anchoring.
+Visual: A small iron boat anchor resting on graph paper, its chain trailing off the edge of the desk
+Text: ANCHORING
+
+So who chose the jacket's first number? The seller.
+Visual: A clothing rail with rows of paper tags dangling, nobody in frame
 Text: WHO CHOSE £100?
 Stock: clothing rack shop
 
-Were you shopping for a jacket this morning?
-Visual: A person from behind standing at a front door in morning light, coat hook empty
-Text: WERE YOU LOOKING FOR IT?
-
-If yes, fifty off is a genuine saving.
-Visual: Close-up of the jacket folded neatly on a bed, warm morning light
-Text: YES → SAVED £50
-
-If no, you did not save fifty. You spent fifty.
-Visual: Close-up of a phone banking screen with one payment highlighted, text blurred
-Text: NO → SPENT £50
-
-That is where your fifty pounds went.
-Visual: The shopping bag from the opening, now on the floor of a dark wardrobe, the last coin settled beside it
-Text: 50% OFF ≠ SAVED
+Weren't shopping for a jacket today? Then you didn't save fifty. You spent it.
+Visual: The shopping bag from the opening, now empty on the hallway floor, the last coin settled beside it
+Text: NOT LOOKING FOR IT? → SPENT £50

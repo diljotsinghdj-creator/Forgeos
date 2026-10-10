@@ -1,45 +1,42 @@
 The Free Trial That Is Not Really Free
-On-screen hook: FREE → £9.99?
-Title: Free for 7 Days, £9.99 on Day 8: The Trial That Isn't Free
-Tags: #HiddenEconomics #freetrial #subscriptions #personalfinance #money
+On-screen hook: FREE → £10?
+Title: Free for 7 Days, £10 on Day 8: The Trial That Isn't Free
+Tags: #HiddenEconomics #freetrial #subscriptions #personalfinance #moneypsychology
 
-It said free. Day eight took nine pounds ninety-nine.
-Visual: A paper wall calendar in a dark room, the eighth square cut open like a tiny door with a single coin glinting inside, lamp light
-Text: FREE → DAY 8: −£9.99 · ILLUSTRATION
+It said free. On day eight, it took ten pounds.
+Visual: A paper wall calendar pinned to a dark wall, the eighth square cut open like a tiny door with a single coin glinting inside
+Text: FREE → DAY 8: −£10 · ILLUSTRATION
 
 So why did a free trial need your card?
-Visual: Extreme close-up of the raised numbers on a plain bank card beside a phone sign-up form, shallow focus, text unreadable
+Visual: A plain bank card pinned to a paper sign-up form with a red drawing pin, form text unreadable
 Text: WHY YOUR CARD?
 Stock: typing card details phone
 
 Because the trial is not the product. The renewal is.
-Visual: A wall calendar with seven days crossed out in pencil and the eighth day circled in red
+Visual: A paper contract on a desk, the top half hidden under a sticky note, the small print at the bottom circled in red pen, text unreadable
 Text: THE PRODUCT = THE RENEWAL
 
-Day seven passes. Nothing feels like a decision.
-Visual: Wide shot of a dim living room, a phone face down on the sofa arm, evening light fading
-
 So when did you actually buy it?
-Visual: Macro shot of a fingertip resting on a dark phone screen, a reflection of a lamp in the glass
+Visual: An old photograph of a hand signing a document, cut out and laid on top of a glowing phone
 Text: WHEN DID YOU BUY IT?
 
-Day one, the moment you accepted the renewal terms.
+Day one. Agreeing to the renewal was the purchase.
 Visual: A thumb pressing a large glowing button on a generic sign-up screen, text unreadable
 Text: DAY 1 = THE PURCHASE
 
-Free described seven days, not what came after.
-Visual: Seven coins lined up on a dark wooden table, an eighth coin set apart in harsh side light
-Text: FREE = 7 DAYS ONLY
+Day seven passes quietly, because nothing asks you to decide.
+Visual: Seven torn-off calendar pages scattered across a sofa cushion, a phone lying face down among them
+
+Forget it for a year, and free costs this.
+Visual: Twelve coins laid in a long row across a desk, each one on a torn-off calendar page
+Text: ILLUSTRATION
+Chart: £10 × 12 = £120 | one forgotten year · illustration
 
 Before tapping start, read the renewal price. Set a day-six reminder.
-Visual: Hands setting an alarm on a phone above a kitchen table, morning light through a window
+Visual: Hands winding an old brass alarm clock beside a phone on a kitchen table, morning light
 Text: CHECK THE PRICE · REMIND: DAY 6
 Stock: setting phone reminder
 
-Keep it, or cancel while it is still free.
-Visual: A phone screen showing two generic buttons, one glowing red, text unreadable, warm desk lamp
-Text: KEEP OR CANCEL?
-
 Then day eight costs only what you chose.
-Visual: The same wall calendar, the eighth square closed and circled in green, soft morning light
+Visual: The same wall calendar, the eighth square closed again and circled in green pen
 Text: DAY 8: YOUR CHOICE
