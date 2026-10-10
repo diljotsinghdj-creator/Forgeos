@@ -43,6 +43,8 @@ EVERY SCRIPT HAS
     re-hook at least every 15 seconds in Shorts and every 30 seconds in long
     form - measured on every script - always paid off.
   - Shorts end by looping back to the hook; long form ends by opening the next episode.
+  - A new picture about every 2 seconds: lines carry 2-3 Visual: lines, shown in turn while the line is spoken
+    (15-18 pictures per Short, ~200 per long form). Every Visual: is one concrete, photographable subject.
   - Numbers spoken in words, exact figures on screen via Text:, key numbers as animated Chart: graphics
     (1-2 per Short, 6-8 per long form), and real footage (Stock:) at the 'this really happened' moments.
   - Invented examples labelled ILLUSTRATION / FICTIONAL on screen; no real company accused.
