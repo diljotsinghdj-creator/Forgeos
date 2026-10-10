@@ -35,7 +35,7 @@ class MainActivity:ComponentActivity(){
 
 @Composable fun CreatorForge(){
  val context=androidx.compose.ui.platform.LocalContext.current
- remember{val app=context.applicationContext;com.creatorforge.app.production.ProductionClient.directorLlm={com.creatorforge.app.production.StudioHub.directorLlm(app)};com.creatorforge.app.production.ProductionClient.stockKey={com.creatorforge.app.production.StudioHub.stockKey(app)};0}; val secure=remember{SecureTokenStore(context).also{WorkerAuth.token=it.load("worker").orEmpty()}}
+ remember{val app=context.applicationContext;com.creatorforge.app.production.ProductionClient.directorLlm={com.creatorforge.app.production.StudioHub.directorLlm(app)};com.creatorforge.app.production.ProductionClient.stockKey={com.creatorforge.app.production.StudioHub.stockKey(app)};com.creatorforge.app.production.ProductionClient.pronounce={com.creatorforge.app.production.StudioHub.pronounce(app)};0}; val secure=remember{SecureTokenStore(context).also{WorkerAuth.token=it.load("worker").orEmpty()}}
  val nav=remember{context.getSharedPreferences("creatorforge_nav",0)}
  var advanced by remember{mutableStateOf(nav.getBoolean("advanced",false))}
  val available=menuFor(advanced)

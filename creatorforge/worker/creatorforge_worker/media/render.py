@@ -19,6 +19,7 @@ TRANSITIONS = {
     "whip": ("smoothleft", 0.3), "zoom": ("circleopen", 0.45), "reveal": ("vertopen", 0.45),
 }
 SAMPLE_RATE = 48000
+TARGET_LUFS = -14
 AUDIO_EXT = (".mp3", ".wav", ".m4a", ".aac", ".ogg", ".flac")
 
 
@@ -114,10 +115,13 @@ def mix_audio(narration: Path, music: Path | None, total: float, out: Path, canc
                      f"adelay={ms}|{ms}[s{k}]")
         mix.append(f"[s{k}]")
         idx += 1
+    # Every video lands at the loudness social platforms normalise to (-14 LUFS, true peak under -1.5 dB), so it is
+    # never quieter than the next video in the feed and never clips.
+    level = f"loudnorm=I={TARGET_LUFS}:TP=-1.5:LRA=11"
     if len(mix) == 1:
-        graph.append("[n]anull[a]")
+        graph.append(f"[n]{level}[a]")
     else:
-        graph.append(f"{''.join(mix)}amix=inputs={len(mix)}:duration=first:normalize=0,alimiter=limit=0.95[a]")
+        graph.append(f"{''.join(mix)}amix=inputs={len(mix)}:duration=first:normalize=0,alimiter=limit=0.95,{level}[a]")
     ff.run([*args, "-filter_complex", ";".join(graph), "-map", "[a]", "-t", f"{total:.3f}",
             "-ar", str(SAMPLE_RATE), "-c:a", "pcm_s16le", str(out)], cancel)
 

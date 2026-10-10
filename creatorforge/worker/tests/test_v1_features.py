@@ -122,7 +122,9 @@ def test_sound_effects_are_placed_on_transitions_and_overlays(cfg, tmp_path):
         # mock Director picks whip/flash/dissolve/zoom: whoosh + impact on edits, impact on hook, pop on callout/CTA
         # (the user's folder is mixed with the built-in sounds, and the pick depends on the job id, so check roles)
         assert all(any(f.startswith(role) for f in files) for role in ("whoosh_", "impact_", "pop_")), files
-        assert {"whoosh_soft.wav", "impact_deep.wav", "pop_ui.wav"} & set(files), files   # the folder is used
+        from creatorforge_worker.media.sfx import SfxBank
+        bank = SfxBank.load(str(folder), [])                    # the folder's sounds join the bank, by role
+        assert {p.name for v in bank.sounds.values() for p in v} == {"whoosh_soft.wav", "impact_deep.wav", "pop_ui.wav"}
         assert job["edit"]["sfx"][0]["at"] < 0.2  # hook hit at the very start
         off = c.post("/v1/productions", json={"idea": "Fast facts about sharks", "duration_s": 15, "sfx": False}).json()["id"]
         assert settle(c, off)["providers"]["sfx"] == "off"

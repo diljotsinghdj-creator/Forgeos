@@ -29,7 +29,8 @@ data class SceneView(
 data class ProductionView(
     val id: String, val status: String, val message: String, val error: String?, val progress: Float,
     val title: String, val hook: String, val cta: String, val stages: List<StageView>, val scenes: List<SceneView>,
-    val providers: Map<String, String>, val verification: String?
+    val providers: Map<String, String>, val verification: String?, val quality: List<String> = emptyList(),
+    val qualityPassed: Boolean? = null
 ) {
     val terminal get() = status in setOf("READY", "FAILED", "CANCELLED")
     val inReview get() = status == "REVIEW"
@@ -79,6 +80,7 @@ class ProductionClient(baseUrl: String) {
         @Volatile var directorLlm: (() -> JSONObject?)? = null
         /** Supplies the Pixabay key so the pod can use real stock footage. */
         @Volatile var stockKey: (() -> JSONObject?)? = null
+        @Volatile var pronounce: (() -> JSONObject?)? = null
     }
 
     private val base = baseUrl.trim().trimEnd('/')
@@ -356,6 +358,7 @@ class ProductionClient(baseUrl: String) {
     private fun withDirector(body: JSONObject): JSONObject {
         directorLlm?.invoke()?.let { if (!body.has("director_llm")) body.put("director_llm", it) }
         stockKey?.invoke()?.let { if (!body.has("stock")) body.put("stock", it) }
+        pronounce?.invoke()?.let { if (!body.has("pronounce") && it.length() > 0) body.put("pronounce", it) }
         return body
     }
 
@@ -391,7 +394,12 @@ class ProductionClient(baseUrl: String) {
                 ?: plan?.optString("title").orEmpty().ifBlank { j.optJSONObject("spec")?.optString("idea").orEmpty().take(60) },
             plan?.optString("hook").orEmpty(), plan?.optString("cta").orEmpty(), stages, scenes,
             prov.keys().asSequence().associateWith { prov.optString(it) },
-            v?.let { "${it.optInt("width")}x${it.optInt("height")} • ${"%.1f".format(it.optDouble("duration_s"))}s • H.264/AAC • decode ${it.optString("decode_check")}" }
+            v?.let { "${it.optInt("width")}x${it.optInt("height")} • ${"%.1f".format(it.optDouble("duration_s"))}s • H.264/AAC • decode ${it.optString("decode_check")}" },
+            j.optJSONObject("result")?.optJSONObject("quality")?.optJSONArray("checks")?.let { a ->
+                (0 until a.length()).map { k -> a.getJSONObject(k) }.map { c ->
+                    (if (c.optBoolean("ok")) "✓ " else "⚠ ") + c.optString("name") + " - " + c.optString("detail") }
+            } ?: emptyList(),
+            j.optJSONObject("result")?.optJSONObject("quality")?.let { q -> if (q.isNull("passed")) null else q.optBoolean("passed") }
         )
     }
 }

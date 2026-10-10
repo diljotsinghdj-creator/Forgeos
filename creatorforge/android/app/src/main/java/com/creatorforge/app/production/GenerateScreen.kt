@@ -32,7 +32,7 @@ private val FALLBACK_TEMPLATES = listOf(
     Choice("youtube_longform", "YouTube Documentary")
 )
 private val FALLBACK_STYLES = listOf(
-    Choice("editorial", "Editorial collage"), Choice("hyperreal", "Hyper-realistic"), Choice("cinematic", "Cinematic film"), Choice("documentary", "Documentary"),
+    Choice("editorial", "Editorial collage"), Choice("investigative", "Investigative desk"), Choice("hyperreal", "Hyper-realistic"), Choice("cinematic", "Cinematic film"), Choice("documentary", "Documentary"),
     Choice("animated_3d", "3D animated"), Choice("anime", "Anime"), Choice("claymation", "Claymation"),
     Choice("watercolor", "Watercolor"), Choice("comic", "Comic book"), Choice("explainer_2d", "2D explainer"),
     Choice("doodle", "Doodle / whiteboard"), Choice("painterly", "Hand-painted animation"), Choice("noir_graphic", "Noir graphic novel"),
@@ -381,6 +381,9 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                     style = if (customLook) "" else choice
                 }
                 if (customLook) OutlinedTextField(style, { style = it }, Modifier.fillMaxWidth(), label = { Text("Describe the look") })
+                if (style == "investigative") Text("Investigative desk look: photos and documents taped to a desk and map, " +
+                    "red string and circles, red-pen text boxes, graph-paper charts for numbers. Add Stock: lines for real footage.",
+                    color = Color.Gray, fontSize = 12.sp)
                 if (style == "editorial") Text("Editorial explainer look: cut-out photos on paper, yellow highlighter boxes " +
                     "for your Text: lines, warm paper texture, sliding paper cuts. Add Stock: lines for real archive footage.",
                     color = Color.Gray, fontSize = 12.sp)
@@ -486,6 +489,12 @@ private fun ProductionCard(
             s.error?.let { Text("   $it", color = Danger, fontSize = 11.sp) }
         }
         p.verification?.let { Spacer(Modifier.height(6.dp)); Text("Verified: $it", color = Gold, fontSize = 12.sp) }
+        if (p.quality.isNotEmpty()) {
+            Spacer(Modifier.height(6.dp))
+            Text(if (p.qualityPassed == true) "PRE-POST CHECK: all clear" else "PRE-POST CHECK: fix before posting",
+                color = if (p.qualityPassed == true) Gold else Color(0xFFFFB74D), fontSize = 12.sp)
+            p.quality.forEach { Text(it, color = if (it.startsWith("⚠")) Color(0xFFFFB74D) else Color.Gray, fontSize = 11.sp) }
+        }
         if (p.providers.isNotEmpty()) Text(p.providers.entries.joinToString(" • ") { "${it.key}: ${it.value}" }, color = Color.Gray, fontSize = 11.sp)
         Spacer(Modifier.height(10.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {

@@ -9,6 +9,12 @@ CreatorForge -> Generate -> Script. CreatorForge reads it like this:
   Visual: ........... the picture for THAT line; it appears exactly when the line starts
   Text: ............. exact words/numbers shown on screen while that line is spoken
   Stock: ............ asks Pixabay/NASA/Wikimedia/Internet Archive/Unsplash for real footage for that line
+  Chart: ............ an animated number graphic for that line, e.g.
+                        Chart: £12 → £720 | a year of forgotten subscriptions   (counter rolls up)
+                        Chart: 48% vs 22% | heavy users, everyone else          (bars grow)
+                        Chart: 76% | of 642 sites                               (percentage bar fills)
+                      In Editorial collage / Investigative desk, Text: lines with →, = or "vs" become charts
+                      automatically (e.g. "£50 × 12 = £600" counts up to £600).
 
 MIXED-MEDIA VERSION
   long_form/03_..._MIXED_MEDIA.txt is the same narration with collage-style pictures and 20 Stock: searches for
@@ -16,6 +22,15 @@ MIXED-MEDIA VERSION
   yellow highlighter text) or "Mixed-media collage", and save a free
   Pixabay key in Settings so most Stock: lines find real clips (NASA, Wikimedia, Internet Archive are tried too).
   Real clips play as real footage; AI shots look like collage. Lines with no matching clip use the collage picture.
+
+CHANNEL LOOK (mixed media)
+  Editorial collage ..... cut-out photos on paper, yellow highlighter text, yellow/black charts (explainer style)
+  Investigative desk .... photos and documents taped to a desk and map, red string and circles, red-pen text,
+                          graph-paper charts (investigative documentary style)
+  Both add a warm paper grade, sliding cuts and real footage from Stock: lines. Add a Pixabay key in Settings.
+  Pronunciations: Settings -> Pronunciations, e.g. "Ofcom = Off-com" (captions keep your spelling).
+  After rendering, the video screen shows a PRE-POST CHECK: loudness (-14 LUFS), clipping, dead air, first
+  frame, and whether the narration matched the script. Fix anything marked ⚠ before posting.
 
 SETTINGS
   Shorts (24):     9:16 Shorts, template Cinematic Short, Faceless, Fast cuts, voice pace 1.1x

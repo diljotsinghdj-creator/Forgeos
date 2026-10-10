@@ -18,7 +18,7 @@ from . import director, providers
 from .config import Config, VoiceProfile
 from .library import Library
 from .media import captions as cap
-from .media import render, sfx, verify
+from .media import charts, quality, render, sfx, verify
 from .media import ff
 from .media.ff import Cancelled, MediaError
 from .providers.base import NotConfigured, ProviderError, Word
@@ -497,9 +497,10 @@ class Pipeline:
             mood = shot.get("emotion", "")
             if hasattr(voice, "mood"):
                 voice.mood = mood          # human-like voice: more intensity on shocks, calmer on set-up
-            key = _key(voice.id, profile.speed, shot["narration"], mood if hasattr(voice, "mood") else "")
+            said = director.spoken_text(shot["narration"], spec.pronounce)   # the creator's pronunciation list
+            key = _key(voice.id, profile.speed, said, mood if hasattr(voice, "mood") else "")
             try:
-                src = self._cached("voice", key, ".wav", lambda p: voice.synthesize(shot["narration"], p), verify.wav)
+                src = self._cached("voice", key, ".wav", lambda p: voice.synthesize(said, p), verify.wav)
                 dst = jdir / f"scene_{sc['index'] + 1:02d}_{_key(key, spec.voice_speed)[:8]}.wav"
                 if sc.get("narration") and sc["narration"] != dst.name:
                     (jdir / sc["narration"]).unlink(missing_ok=True)
@@ -541,6 +542,10 @@ class Pipeline:
                 ws = asr.words(jdir / sc["narration"])
                 if not ws:
                     raise StageFailed(f"Whisper heard no words in scene {sc['index'] + 1}")
+                if sc.get("voice_source") != "asset":
+                    # Captions show the script's own words and spelling (names, respelled words, numbers);
+                    # Whisper only supplies the timing. How closely it heard the script is kept for the final check.
+                    ws, sc["asr_match"] = cap.script_spelling(ws, shot["narration"])
                 words += [Word(w.text, start + w.start, start + w.end) for w in ws]
                 sc["word_starts"] = [round(w.start, 3) for w in ws]   # fast cuts land exactly on these
             else:
@@ -622,6 +627,7 @@ class Pipeline:
             return None
 
         clips, firsts = [], []   # firsts[i]: index in clips of scene i's opening shot
+        charted: set[tuple[int, int]] = set()   # (scene, beat) shown as an animated chart
         for i, (sc, shot, d) in enumerate(zip(job["scenes"], shots, timings)):
             firsts.append(len(clips))
             video = clip_for(sc)
@@ -638,6 +644,11 @@ class Pipeline:
                 images = [jdir / sc["image"]] + [jdir / n if n and (jdir / n).is_file() else None for n in extra]
                 images += [None] * (len(beats) - len(images))
                 lengths = _beat_lengths([b["text"] for b in beats], sc.get("word_starts") or [], d)
+                for k, length in enumerate(lengths):
+                    chart = self._chart_clip(spec, beats[k], length, (w, h), work)
+                    if chart is not None:
+                        stock_clips[k] = chart          # the animated graphic shows the number instead of a picture
+                        charted.add((i, k))
                 cams = ["slow push in", "pull back", "pan left", "pan right"]
                 for k, length in enumerate(lengths):
                     if k and images[k] is None and stock_clips[k] is None:   # nothing for this beat: hold the last shot
@@ -680,12 +691,12 @@ class Pipeline:
             if spec.fast_cuts and any(b.get("overlay") for b in beats):
                 # The writer's on-screen text appears exactly while its line is spoken.
                 at = start
-                for b, length in zip(beats, _beat_lengths([b["text"] for b in beats],
-                                                          job["scenes"][i].get("word_starts") or [], slot)):
+                for k, (b, length) in enumerate(zip(beats, _beat_lengths([b["text"] for b in beats],
+                                                                         job["scenes"][i].get("word_starts") or [], slot))):
                     begin = at + 0.1
                     if plan.get("hook") and begin < min(3.0, timings[0]):
                         begin = min(3.0, timings[0])           # after the opening hook text, not on top of it
-                    if b.get("overlay") and begin < at + length - 0.4:
+                    if b.get("overlay") and begin < at + length - 0.4 and (i, k) not in charted:
                         overlays.append(cap.Overlay(begin, at + max(0.6, length - 0.1), b["overlay"], "Callout"))
                     at += length
             start += slot
@@ -723,7 +734,7 @@ class Pipeline:
             emphasis = {wd for s in shots for wd in s.get("emphasis", [])} if spec.auto_edit else set()
             cap.write_ass(ass, w, h, t.caption_scale, t.caption_position, cues, overlays, emphasis,
                           brand.get("caption_color", ""), brand.get("highlight_color", ""),
-                          "highlighter" if spec.style in EDITORIAL_STYLES else "")
+                          {"editorial": "highlighter", "investigative": "redpen"}.get(spec.style, ""))
 
         job["edit"] = {"auto_edit": spec.auto_edit, "transitions": [c.transition for c in heads[1:]],
                        "shots": len(clips),
@@ -750,6 +761,26 @@ class Pipeline:
         expected = render.render_video(clips, mixed, ass, w, h, out, work, cancel, logo, grade=grade)
         job["render"] = {"file": "work/render.mp4", "expected_s": round(expected, 3), "width": w, "height": h}
 
+    def _chart_clip(self, spec, beat: dict, length: float, size: tuple[int, int], work: Path) -> Path | None:
+        """An animated number graphic for a beat: the writer's Chart: line, or - in the editorial looks - a Text:
+        line that compares figures ("£12 → £720", "48% vs 22%"). None when the beat has no chart."""
+        src = beat.get("chart") or ""
+        auto = beat.get("overlay") or ""
+        if not src and spec.style in EDITORIAL_STYLES and re.search(r"→|->|=|\bvs\b", auto, re.I):
+            src = auto
+        plan = charts.parse(src) if src else None
+        if plan is None:
+            return None
+        theme = "investigative" if spec.style == "investigative" else "editorial"
+        seconds = round(length + render.TRANSITION_S + 0.2, 2)
+        out = work / f"chart_{hashlib.sha256(f'{src}|{theme}|{size}|{seconds}'.encode()).hexdigest()[:16]}.mp4"
+        if not out.is_file():
+            try:
+                charts.render(plan, theme, size[0], size[1], seconds, out, work)
+            except MediaError:
+                return None                      # a chart that can't be drawn falls back to the picture
+        return out
+
     def _verify(self, job: dict, cancel) -> None:
         jdir = self.store.dir(job["id"])
         r = job.get("render") or {}
@@ -758,3 +789,8 @@ class Pipeline:
         final = jdir / "creatorforge.mp4"
         src.replace(final)
         job["result"] = {"file": final.name, "verification": report, "title": job["plan"]["title"]}
+        try:   # what a viewer would notice - reported, never blocking
+            matches = [s["asr_match"] for s in job["scenes"] if isinstance(s.get("asr_match"), (int, float))]
+            job["result"]["quality"] = quality.check(final, r["expected_s"], matches, render.TARGET_LUFS)
+        except Exception as e:  # noqa: BLE001
+            job["result"]["quality"] = {"passed": None, "checks": [], "warnings": [f"quality check skipped: {e}"]}

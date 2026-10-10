@@ -101,6 +101,8 @@ def write_ass(path: Path, width: int, height: int, scale: float, position: float
         f"{max(3, big // 10)},{max(1, big // 20)},8,{side},{side},{top},1",
         (f"Style: Callout,DejaVu Sans,{small},&H00111111,&H00111111,&H0018C8F5,&H0018C8F5,-1,0,0,0,100,100,0,0,3,"
          f"{max(6, small // 3)},0,8,{side},{side},{top},1" if callout_look == "highlighter" else
+         f"Style: Callout,DejaVu Sans,{small},&H002E10C8,&H002E10C8,&H00D8E8EF,&H00D8E8EF,-1,0,0,0,100,100,0,0,3,"
+         f"{max(6, small // 3)},0,8,{side},{side},{top},1" if callout_look == "redpen" else
          f"Style: Callout,DejaVu Sans,{small},&H00FFFFFF,&H00FFFFFF,&H00000000,&HA0000000,-1,0,0,0,100,100,0,0,3,"
          f"{max(4, small // 4)},0,8,{side},{side},{top},1"),
         f"Style: CTA,DejaVu Sans,{big},{hi},{hi},&H00000000,&HA0000000,-1,0,0,0,100,100,0,0,1,"
@@ -116,7 +118,24 @@ def write_ass(path: Path, width: int, height: int, scale: float, position: float
     for o in overlays:
         if o.text.strip() and o.end > o.start:
             # Highlighter: the marker box sweeps open left to right, like someone highlighting the words.
-            fx = ("{\\fad(120,200)\\fscx15\\t(0,220,\\fscx100)}" if callout_look == "highlighter" and o.style == "Callout"
+            fx = ("{\\fad(120,200)\\fscx15\\t(0,220,\\fscx100)}" if callout_look in ("highlighter", "redpen") and o.style == "Callout"
                   else "{\\fad(200,200)}")
             lines.append(f"Dialogue: 1,{_ts(o.start)},{_ts(o.end)},{o.style},,0,0,0,,{fx}{_esc(o.text)}")
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def script_spelling(heard: list[Word], script: str) -> tuple[list[Word], float]:
+    """Puts the script's words on Whisper's timings. Words Whisper heard the same (or a 1:1 substitution, e.g. a
+    respelt name) take the script's spelling; extra/missing words keep Whisper's text. Returns (words, match ratio)."""
+    import difflib
+    said = script.split()
+    a = [_norm(w.text) for w in heard]
+    b = [_norm(w) for w in said]
+    sm = difflib.SequenceMatcher(None, a, b, autojunk=False)
+    out = list(heard)
+    for op, i1, i2, j1, j2 in sm.get_opcodes():
+        if op in ("equal", "replace") and (i2 - i1) == (j2 - j1):
+            for k in range(i2 - i1):
+                w = heard[i1 + k]
+                out[i1 + k] = Word(said[j1 + k], w.start, w.end)
+    return out, round(sm.ratio(), 3)

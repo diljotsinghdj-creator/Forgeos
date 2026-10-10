@@ -82,6 +82,7 @@ class ProductionSpec:
     voice_speed: float = 1.0  # narration tempo (pitch kept); 1.1 is the common Shorts pace
     hook_text: str = ""  # on-screen hook, e.g. from a writer's "On-screen hook:" line
     visual_direction: str = ""  # the look of the whole video, e.g. "black-and-white 1950s lab footage"
+    pronounce: dict = field(default_factory=dict)  # how the voice should say words: {"Ofcom": "Off-com"} (captions keep the spelling)
     shots: list = field(default_factory=list)  # writer's shot list: [[spoken line, picture for it]], in order
     roles: list = field(default_factory=list)  # writer's story roles per line: [["TWIST", "Every single one..."]]
     publish: dict = field(default_factory=dict)  # title / cover / hashtags / source from the writer
@@ -134,12 +135,15 @@ class ProductionSpec:
         spec.hook_text = str(d.get("hook_text") or meta.get("hook_text") or "").strip()[:80]
         spec.visual_direction = str(d.get("visual_direction") or meta.get("visual_direction") or "").strip()[:400]
         spec.roles = [list(r)[:2] for r in (d.get("roles") or meta.get("roles") or []) if len(r) >= 2][:60]
-        shots = [[clean_script(str(x[0]))] + [str(v).strip() for v in (list(x[1:4]) + ["", "", ""])[:3]]
+        shots = [[clean_script(str(x[0]))] + [str(v).strip() for v in (list(x[1:5]) + ["", "", "", ""])[:4]]
                  for x in (d.get("shots") or meta.get("shots") or []) if isinstance(x, (list, tuple)) and x]
         shots = [x for x in shots if x[0]][:240]
         if shots and sum(len(x[0].split()) for x in shots) == len(spec.script.split()) + len(shots[0][0].split()):
             shots = shots[1:]       # the first line was a title the script dropped
         spec.shots = shots
+        raw_p = d.get("pronounce") if isinstance(d.get("pronounce"), dict) else {}
+        spec.pronounce = {str(k).strip()[:40]: str(v).strip()[:60] for k, v in list(raw_p.items())[:200]
+                          if str(k).strip() and str(v).strip()}
         spec.publish = d.get("publish") if isinstance(d.get("publish"), dict) else \
             {k: meta[k] for k in ("title", "cover", "hashtags", "source") if k in meta}
         spec.validate()
@@ -577,7 +581,7 @@ def _is_heading(line: str) -> bool:
 _META_KEYS = ("on-screen hook", "on screen hook", "onscreen hook", "hook text", "visuals", "visual", "visual style",
               "b-roll", "broll", "post title", "video title", "post", "title", "cover", "thumbnail", "caption", "description", "hashtags", "tags",
               "source", "sources", "music", "sfx", "on-screen text", "on screen text", "text on screen", "text",
-              "stock footage", "stock")
+              "stock footage", "stock", "chart", "graphic")
 _META = re.compile(r"(?i)(?:^|(?<=[\s.]))(" + "|".join(re.escape(k) for k in sorted(_META_KEYS, key=len, reverse=True)) +
                    r")\s*:\s*")
 _STAMP = re.compile(r"^\s*(?:[-\u2022*]\s*)?\(?(?:\d{0,2}:\d{2})(?:\s*[-\u2013]\s*\d{0,2}:\d{2})?\)?\s*")
@@ -625,6 +629,9 @@ def parse_script(raw: str) -> tuple[str, dict]:
             elif k in ("text", "on-screen text", "text on-screen", "on-screen"):
                 if target >= 0 and v:
                     per.setdefault(target, {})["text"] = value.strip()[:60]
+            elif k in ("chart", "graphic"):
+                if target >= 0 and v:
+                    per.setdefault(target, {})["chart"] = value.strip()[:80]
             elif k in ("stock", "stock footage"):
                 if target >= 0 and v:
                     per.setdefault(target, {})["stock"] = " ".join(v.split()[:5])[:60]
@@ -640,7 +647,8 @@ def parse_script(raw: str) -> tuple[str, dict]:
     # two visual lines describe the look of the whole video instead.
     if sum(1 for d in per.values() if d.get("visual")) >= 3:
         meta["shots"] = [[line, per.get(i, {}).get("visual", ""), per.get(i, {}).get("text", ""),
-                          per.get(i, {}).get("stock", "")] for i, line in enumerate(spoken)][:240]
+                          per.get(i, {}).get("stock", ""), per.get(i, {}).get("chart", "")]
+                         for i, line in enumerate(spoken)][:240]
     elif looks:
         meta["visual_direction"] = " ".join(looks).strip()[:400]
     return "\n".join(spoken), meta
@@ -808,6 +816,14 @@ def _apply_writer(plan: "ProductionPlan", spec: ProductionSpec) -> None:
         plan.title = spec.publish["title"][:100]
 
 
+def spoken_text(text: str, pronounce: dict) -> str:
+    """The narration as the voice should say it: whole-word, case-insensitive respellings from the creator's
+    pronunciation list (longest first, so "Ofcom UK" wins over "Ofcom")."""
+    for word in sorted(pronounce, key=len, reverse=True):
+        text = re.sub(rf"(?<![\w-]){re.escape(word)}(?![\w-])", pronounce[word], text, flags=re.I)
+    return text
+
+
 def apply_shots(plan: "ProductionPlan", shots: list) -> None:
     """The writer's shot list decides the pictures: each spoken line becomes a beat showing the writer's own
     visual (and on-screen text / stock search, if given), cut exactly when that line starts. Lines are matched to
@@ -818,7 +834,7 @@ def apply_shots(plan: "ProductionPlan", shots: list) -> None:
         return
     per_scene: list[list[dict]] = [[] for _ in plan.scenes]
     pos = 0
-    for line, visual, text, stock in ((list(x) + ["", "", ""])[:4] for x in shots):
+    for line, visual, text, stock, chart in ((list(x) + ["", "", "", ""])[:5] for x in shots):
         n = len(str(line).split())
         chunk = tokens[pos:pos + n]
         pos += n
@@ -826,7 +842,8 @@ def apply_shots(plan: "ProductionPlan", shots: list) -> None:
             words = " ".join(t for j, t in chunk if j == i)
             s = plan.scenes[i]
             per_scene[i].append({"text": words, "visual": str(visual) or s.visual, "emotion": s.emotion,
-                                 "stock": str(stock), "overlay": str(text) if k == 0 else "", "writer": True})
+                                 "stock": str(stock), "overlay": str(text) if k == 0 else "",
+                                 "chart": str(chart) if k == 0 else "", "writer": True})
     for s, beats in zip(plan.scenes, per_scene):
         if not beats:
             continue

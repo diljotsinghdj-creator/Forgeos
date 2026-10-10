@@ -476,6 +476,35 @@ def test_editorial_look_highlighter_callouts_paper_grade_and_sliding_cuts(cfg):
         job = wait_for(lambda: (lambda j: j if j["status"] in ("READY", "FAILED") else None)(c.get(f"/v1/productions/{jid}").json()))
         assert job["status"] == "READY", job
         ass = (cfg.jobs_dir / jid / "work" / "captions.ass").read_text()
-        assert "&H0018C8F5" in ass and "\\fscx15\\t(0,220,\\fscx100)}£12 x 6 = £72" in ass   # yellow marker wipes in
+        assert "&H0018C8F5" in ass and "\\fscx15\\t(0,220,\\fscx100)}ILLUSTRATION" in ass   # yellow marker wipes in
+        assert "£12 x 6 = £72" not in ass and list((cfg.jobs_dir / jid / "work").glob("chart_*.mp4"))  # sum -> counter
         assert not set(job["edit"]["transitions"]) & {"fade", "dissolve", "dip"}               # paper slides, never dissolves
         assert "editorial explainer collage" in job["plan"]["scenes"][0]["prompt"]
+
+
+def test_charts_from_script_lines_and_investigative_look(cfg):
+    """Chart: lines (and comparison Text: lines in the editorial looks) become animated graphics in the edit;
+    the investigative look uses red-pen callouts; the final video carries a quality report and is loudness-levelled."""
+    from fastapi.testclient import TestClient
+    from creatorforge_worker.api import create_app
+    from .conftest import wait_for
+
+    script = ("Five small subscriptions add up faster than you think.\nVisual: Coins on a desk\n"
+              "Chart: £12 → £720 | a year of forgotten subscriptions\n"
+              "Heavy users were far more likely to hold costly credit.\nVisual: Stacks of cards\n"
+              "Text: 48% vs 22%\n"
+              "Open your statement today and look for one you forgot.\nVisual: Hands holding a phone\n"
+              "Text: CHECK TODAY\n"
+              "Then cancel it before the next payment lands.\nVisual: Finger over a phone\n")
+    with TestClient(create_app(cfg)) as c:
+        jid = c.post("/v1/productions", json={"script": script, "duration_s": 20, "style": "investigative"}).json()["id"]
+        job = wait_for(lambda: (lambda j: j if j["status"] in ("READY", "FAILED") else None)(c.get(f"/v1/productions/{jid}").json()))
+        assert job["status"] == "READY", job
+        work = cfg.jobs_dir / jid / "work"
+        assert len(list(work.glob("chart_*.mp4"))) == 2                   # Chart: line + "vs" Text: line
+        ass = (work / "captions.ass").read_text()
+        assert "&H002E10C8" in ass and "CHECK TODAY" in ass and "48% vs 22%" not in ass   # charted text not repeated
+        q = job["result"]["quality"]
+        assert {c["name"] for c in q["checks"]} >= {"loudness", "no dead air", "first frame visible"}
+        lufs = next(c for c in q["checks"] if c["name"] == "loudness")
+        assert lufs["ok"], q

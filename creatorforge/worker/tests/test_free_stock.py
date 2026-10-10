@@ -215,3 +215,41 @@ def test_doodle_shots_are_drawn_on(tmp_path):
         data = p.read_bytes()
         return sum(data) / len(data)
     assert mean("0.03") > 230 and mean("2.0") < 120     # white paper first, the blue picture at the end
+
+
+def test_quality_check_reports_loudness_gaps_and_first_frame(tmp_path):
+    from creatorforge_worker.media import quality
+    good = tmp_path / "good.mp4"
+    # bright frame, steady tone at a sensible level, no gaps
+    subprocess.run(["ffmpeg", "-y", "-v", "error", "-f", "lavfi", "-i", "testsrc2=s=270x480:d=6:r=24",
+                    "-f", "lavfi", "-i", "sine=frequency=220:duration=6", "-af", "volume=0.25",
+                    "-c:v", "libx264", "-pix_fmt", "yuv420p", "-c:a", "aac", "-shortest", str(good)], check=True)
+    bad = tmp_path / "bad.mp4"
+    # black first frame, a 2 s silent hole in the middle
+    subprocess.run(["ffmpeg", "-y", "-v", "error", "-f", "lavfi", "-i", "color=c=black:s=270x480:d=6:r=24",
+                    "-f", "lavfi", "-i", "sine=frequency=220:duration=6",
+                    "-af", "volume=0.25,volume=enable='between(t,2,4)':volume=0",
+                    "-c:v", "libx264", "-pix_fmt", "yuv420p", "-c:a", "aac", "-shortest", str(bad)], check=True)
+    g = quality.check(good, 6.0, [0.97], target_lufs=quality.loudness(good)["lufs"])
+    assert g["passed"], g
+    b = quality.check(bad, 6.0, [0.6])
+    names = {c["name"] for c in b["checks"] if not c["ok"]}
+    assert {"no dead air", "first frame visible", "narration matches script"} <= names, b
+
+
+def test_captions_keep_script_spelling_on_whisper_timings():
+    from creatorforge_worker.media.captions import script_spelling
+    from creatorforge_worker.providers.base import Word
+    heard = [Word("off", 0.0, 0.2), Word("com", 0.2, 0.4), Word("fined", 0.4, 0.7), Word("them", 0.7, 0.9)]
+    words, ratio = script_spelling(heard, "Offcom fined them.")
+    assert [w.text for w in words][-2:] == ["fined", "them."] and ratio < 1
+    exact, r2 = script_spelling([Word("Ofcom", 0, 0.3), Word("fined", 0.3, 0.6), Word("them", 0.6, 0.9)], "Ofcom fined them.")
+    assert [w.text for w in exact] == ["Ofcom", "fined", "them."] and r2 == 1.0
+
+
+def test_pronunciations_change_the_voice_not_the_script():
+    from creatorforge_worker import director as d
+    spec = d.ProductionSpec.from_dict({"script": "Ofcom and the DMCC Act protect you. Ofcom matters.",
+                                       "pronounce": {"Ofcom": "Off-com", "DMCC": "D M C C"}})
+    assert d.spoken_text(spec.script, spec.pronounce) == "Off-com and the D M C C Act protect you. Off-com matters."
+    assert "Ofcom" in spec.script

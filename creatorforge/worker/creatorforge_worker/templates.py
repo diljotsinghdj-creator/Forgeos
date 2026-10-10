@@ -88,11 +88,14 @@ STYLE_PRESETS: dict[str, tuple[str, str]] = {
     "editorial": ("Editorial collage", "editorial explainer collage, cut-out archival photographs on off-white textured "
                   "paper, bold flat shapes in mustard yellow and black, halftone dots, torn paper edges, clean graphic "
                   "layout with lots of negative space"),
+    "investigative": ("Investigative desk", "investigative documentary desk collage, archival photographs and documents "
+                      "taped onto an old desk and a paper map, red string and pins, hand-drawn red circles and arrows, "
+                      "warm desk lamp light, film grain"),
     "collage": ("Mixed-media collage", "mixed-media collage, cut-out vintage photographs, torn paper, halftone textures, "
                 "bold graphic shapes"),
 }
 # Editorial explainer look (cut-out photos on paper, highlighter callouts, paper-texture grade, sliding cuts).
-EDITORIAL_STYLES = {"editorial"}
+EDITORIAL_STYLES = {"editorial", "investigative"}
 # Drawn / animated looks: characters may show faces even in AI video (cartoon faces don't turn uncanny), and the
 # worker renders them with its illustration model when one is installed (the photoreal model suits the rest).
 ANIMATED_STYLES = {"animated_3d", "anime", "claymation", "watercolor", "comic", "explainer_2d", "doodle", "painterly",

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -28,6 +29,7 @@ private val Dim = Color(0xFF9E9E9E)
 /** Everything the writing side of the studio needs, living on the phone. The worker is only for making videos. */
 object StudioHub {
     private fun prefs(c: Context) = c.getSharedPreferences("creatorforge_ai", 0)
+    fun prefsOf(c: Context) = prefs(c)
     private fun dir(c: Context) = File(c.filesDir, "studio").apply { mkdirs() }
 
     fun preset(c: Context) = AiPresets[prefs(c).getString("preset", "gemini").orEmpty()]
@@ -51,6 +53,16 @@ object StudioHub {
         }
         store.load("unsplash")?.trim()?.takeIf { it.isNotBlank() }?.let { o.put("unsplash", it) }
         return o.takeIf { it.length() > 0 }
+    }
+
+    /** "Ofcom = Off-com" lines from Settings -> {"Ofcom": "Off-com"} for the worker's voice (captions keep the spelling). */
+    fun pronounce(c: Context): org.json.JSONObject {
+        val o = org.json.JSONObject()
+        prefs(c).getString("pronounce", "").orEmpty().lines().forEach { line ->
+            val (word, say) = line.split("=", limit = 2).map { it.trim() }.let { it.getOrElse(0) { "" } to it.getOrElse(1) { "" } }
+            if (word.isNotBlank() && say.isNotBlank()) o.put(word, say)
+        }
+        return o
     }
 
     /** Checks the Unsplash Access Key with one tiny search: null when it works, else the reason. */
@@ -245,6 +257,18 @@ fun AiSettingsCard(secure: SecureTokenStore) {
         }
         unsplashStatus?.let { Text(it, color = if (it.startsWith("✓")) Gold else if (it.startsWith("✗")) Danger else Dim, fontSize = 12.sp) }
         if (hasUnsplash) TextButton({ secure.clear("unsplash"); hasUnsplash = false; unsplashStatus = null }) { Text("REMOVE UNSPLASH KEY", color = Danger) }
+        HorizontalDivider(Modifier.padding(vertical = 6.dp))
+        Text("Pronunciations (optional)", color = Gold, fontSize = 13.sp)
+        Text("One per line: word = how to say it. The voice uses the respelling; captions keep your spelling. " +
+            "e.g.  Ofcom = Off-com   |   DMCC = D M C C   |   Veblen = Veb-len", color = Dim, fontSize = 12.sp)
+        var pron by remember { mutableStateOf(StudioHub.prefsOf(context).getString("pronounce", "").orEmpty()) }
+        var pronSaved by remember { mutableStateOf(false) }
+        OutlinedTextField(pron, { pron = it; pronSaved = false }, Modifier.fillMaxWidth().heightIn(min = 96.dp),
+            label = { Text("word = say it like") })
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Button({ StudioHub.prefsOf(context).edit().putString("pronounce", pron.trim()).apply(); pronSaved = true }) { Text("SAVE PRONUNCIATIONS") }
+            if (pronSaved) Text("  ✓ ${StudioHub.pronounce(context).length()} saved", color = Gold, fontSize = 12.sp)
+        }
         HorizontalDivider(Modifier.padding(vertical = 6.dp))
         Text("YouTube trends (optional)", color = Gold, fontSize = 13.sp)
         Text("A free YouTube Data API key adds YouTube's most-watched videos to Trends.", color = Dim, fontSize = 12.sp)
