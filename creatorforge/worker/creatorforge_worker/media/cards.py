@@ -3,6 +3,9 @@
     Chapter: Part 1 | The subscription trap     a chapter title card - a highlighter kicker, a big title, a pen underline
     Quote: Move your money to a safe account | Lloyds Bank, 2026
                                                  a document with the quote typed out and a highlighter sweeping across it
+    Steps: Free trial → Card saved → Auto-renew → Forgotten
+                                                 how the trap works: cards appear one by one, arrows draw between them,
+                                                 the last step lands in the highlight colour
 """
 from __future__ import annotations
 
@@ -121,11 +124,66 @@ def quote_lines(spec: str, theme: str, width: int, height: int, seconds: float) 
     return out
 
 
+def steps_lines(spec: str, theme: str, width: int, height: int, seconds: float) -> list[str]:
+    head, _, title = spec.partition("|")
+    steps = [x.strip() for x in head.replace("->", "→").split("→") if x.strip()][:5]
+    if len(steps) < 2:
+        return []
+    end = _ts(seconds)
+    tall = height > width
+    n = len(steps)
+    size = int(min(width, height) * (0.05 if tall else 0.052))
+    if tall:
+        bw, bh = width * 0.72, size * 2.4
+        gap = min(height * 0.7 / n, bh * 1.9)
+        centres = [(width / 2, height * 0.45 - gap * (n - 1) / 2 + i * gap) for i in range(n)]
+    else:
+        gap = width * 0.86 / n
+        bw, bh = gap * 0.78, size * 3.2
+        centres = [(width * 0.07 + gap * (i + 0.5), height * 0.5) for i in range(n)]
+    per = min(0.6, max(0.3, (seconds - 0.8) / n))
+    out = []
+    if title.strip():
+        out.append(f"Dialogue: 6,{_ts(0.1)},{end},T,,0,0,0,,{{\\an8\\pos({width / 2:.0f},{height * (0.08 if tall else 0.12):.0f})"
+                   f"\\fs{int(size * 0.9)}\\bord{int(size * 0.3)}\\3c{MARK[theme]}&\\4c{MARK[theme]}&\\fad(150,0)}}"
+                   f"{_esc(title.strip().upper())}")
+    for i, ((cx, cy), text) in enumerate(zip(centres, steps)):
+        t0 = 0.25 + i * per
+        last = i == n - 1
+        L, T, R, B = cx - bw / 2, cy - bh / 2, cx + bw / 2, cy + bh / 2
+        box = f"m {L:.0f} {T:.0f} l {R:.0f} {T:.0f} l {R:.0f} {B:.0f} l {L:.0f} {B:.0f}"
+        fill = MARK[theme] if last else "&H00FAFCFD&"
+        pop = f"\\org({cx:.0f},{cy:.0f})\\fscx70\\fscy70\\t(0,140,\\fscx104\\fscy104)\\t(140,200,\\fscx100\\fscy100)"
+        out.append(f"Dialogue: 2,{_ts(t0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0){pop}\\p1\\bord{max(3, size // 12)}\\shad0"
+                   f"\\1c{fill.rstrip('&')}&\\3c{INK}&}}{box}")
+        rows = _wrap(text.upper(), 14 if tall else max(8, int(bw / (size * 0.62))), 2)
+        out.append(f"Dialogue: 3,{_ts(t0 + 0.08)},{end},T,,0,0,0,,{{\\an5\\pos({cx:.0f},{cy:.0f})\\fs{size}\\fad(100,0)}}"
+                   + "\\N".join(_esc(r) for r in rows))
+        out.append(f"Dialogue: 3,{_ts(t0)},{end},T,,0,0,0,,{{\\an7\\pos({L + 8:.0f},{T - size * 0.9:.0f})\\fs{int(size * 0.55)}"
+                   f"\\fad(100,0)}}{i + 1}")
+        if i < n - 1:
+            (nx, ny) = centres[i + 1]
+            if tall:
+                a, b = (cx, B + 6), (nx, ny - bh / 2 - 6)
+            else:
+                a, b = (R + 6, cy), (nx - bw / 2 - 6, ny)
+            shaft = f"m {a[0]:.0f} {a[1]:.0f} l {b[0]:.0f} {b[1]:.0f} l {a[0]:.0f} {a[1]:.0f}"
+            hs = size * 0.45
+            head_ = (f"m {b[0] - hs:.0f} {b[1] - hs:.0f} l {b[0]:.0f} {b[1]:.0f} l {b[0] - hs:.0f} {b[1] + hs:.0f} "
+                     f"l {b[0]:.0f} {b[1]:.0f}") if not tall else \
+                    (f"m {b[0] - hs:.0f} {b[1] - hs:.0f} l {b[0]:.0f} {b[1]:.0f} l {b[0] + hs:.0f} {b[1] - hs:.0f} "
+                     f"l {b[0]:.0f} {b[1]:.0f}")
+            clip = (f"\\clip(0,0,{a[0]:.0f},{height})\\t(0,{int(per * 500)},\\clip(0,0,{b[0] + hs:.0f},{height}))" if not tall
+                    else f"\\clip(0,0,{width},{a[1]:.0f})\\t(0,{int(per * 500)},\\clip(0,0,{width},{b[1] + 4:.0f}))")
+            out.append(f"Dialogue: 1,{_ts(t0 + per * 0.45)},{end},T,,0,0,0,,{{\\an7\\pos(0,0){clip}\\p1\\bord{max(3, size // 10)}"
+                       f"\\1a&HFF&\\3c{PEN[theme]}&}}{shaft} {head_}")
+    return out
+
+
 def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: float, out: Path, work: Path) -> Path:
     theme = theme if theme in PAPER else "editorial"
     seconds = max(1.5, seconds)
-    body = chapter_lines(spec, theme, width, height, seconds) if kind == "chapter" else \
-        quote_lines(spec, theme, width, height, seconds)
+    body = {"chapter": chapter_lines, "quote": quote_lines, "steps": steps_lines}[kind](spec, theme, width, height, seconds)
     text = "\n".join(_head(width, height, _font()) + body) + "\n"
     work.mkdir(parents=True, exist_ok=True)
     ass = work / f"card_{hashlib.sha256(text.encode()).hexdigest()[:12]}.ass"

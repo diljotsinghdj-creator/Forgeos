@@ -528,8 +528,12 @@ def _editorial_prompt(visual: str, spec: ProductionSpec) -> tuple[str, str]:
     parts = [EDITORIAL_LEADS[spec.style], subject]
     if _has_people(visual):
         parts.append("person seen in silhouette or from behind, face not visible")
+    if re.search(r"\b(card|receipt|letter|statement|contract|document|form|sign|label|poster|newspaper|report|bill|"
+                 r"ticket|screen|page|certificate|menu|notice|book|calendar)\b", visual, re.I):
+        # image models scribble fake words on paper and screens; keep them plain so nothing reads as gibberish
+        parts.append("plain surfaces with no legible writing, blurred out-of-focus text")
     parts.append("sharp focus, high contrast, centred")
-    return ", ".join(parts), NEGATIVE + EDITORIAL_NEGATIVE + FACELESS_NEGATIVE
+    return ", ".join(parts), NEGATIVE + EDITORIAL_NEGATIVE + FACELESS_NEGATIVE + ", gibberish text, misspelled words"
 
 
 def prompt_forge(plan: ProductionPlan, spec: ProductionSpec, only: int | None = None) -> None:
@@ -601,7 +605,7 @@ _META_KEYS = ("on-screen hook", "on screen hook", "onscreen hook", "hook text", 
               "b-roll", "broll", "post title", "video title", "post", "title", "cover", "thumbnail", "caption", "description", "hashtags", "tags",
               "source", "sources", "music", "sfx", "on-screen text", "on screen text", "text on screen", "text",
               "stock footage", "stock", "chart", "graphic", "draw", "pen", "bubble", "thought",
-              "place", "cite", "map", "chapter", "quote")
+              "place", "cite", "map", "chapter", "quote", "steps")
 _META = re.compile(r"(?i)(?:^|(?<=[\s.]))(" + "|".join(re.escape(k) for k in sorted(_META_KEYS, key=len, reverse=True)) +
                    r")\s*:\s*")
 _STAMP = re.compile(r"^\s*(?:[-\u2022*]\s*)?\(?(?:\d{0,2}:\d{2})(?:\s*[-\u2013]\s*\d{0,2}:\d{2})?\)?\s*")
@@ -730,7 +734,7 @@ def parse_script(raw: str) -> tuple[str, dict]:
             elif k in ("chart", "graphic"):
                 if target >= 0 and v:
                     per.setdefault(target, {})["chart"] = value.strip()[:80]
-            elif k in ("place", "cite", "map", "chapter", "quote"):
+            elif k in ("place", "cite", "map", "chapter", "quote", "steps"):
                 if target >= 0 and v:
                     per.setdefault(target, {}).setdefault("extra", {})[k] = value.strip()[:140]
             elif k in ("draw", "pen"):

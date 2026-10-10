@@ -100,6 +100,10 @@ def write_ass(path: Path, width: int, height: int, scale: float, position: float
     fs = int(height * scale)
     big = int(fs * 1.35)
     small = int(fs * 0.85)
+    if callout_look in ("highlighter", "redpen") and width > height:
+        # Widescreen explainers are watched on TVs and laptops from a distance: captions, callouts and the hook
+        # card need to read at a glance (the template sizes suit phones).
+        fs, big, small = int(height * 0.05), int(height * 0.085), int(height * 0.056)
     caption_margin = int(height * (1 - position))
     top = int(height * 0.10)
     side = int(width * 0.07)

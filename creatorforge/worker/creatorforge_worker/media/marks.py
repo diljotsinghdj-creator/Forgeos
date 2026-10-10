@@ -185,7 +185,7 @@ def place_events(text: str, start: float, end: float, w: int, h: int, font: str 
     """A documentary location stamp, lower left: a red map pin drops in, then 'PARIS · 1925' types out on a white
     label (karaoke timing: the letters appear one by one)."""
     from .captions import _esc
-    size = int(min(w, h) * 0.04)
+    size = int(min(w, h) * (0.05 if w > h else 0.04))
     x, y = w * 0.06, h * (0.62 if h > w else 0.80)
     r = size * 0.45
     pin_shape = (f"m {x:.0f} {y + r * 1.9:.0f} l {x - r * 0.9:.0f} {y + r * 0.2:.0f} b {x - r * 1.4:.0f} {y - r * 1.2:.0f} "
@@ -203,7 +203,7 @@ def place_events(text: str, start: float, end: float, w: int, h: int, font: str 
 def cite_events(text: str, start: float, end: float, w: int, h: int, font: str = "DejaVu Sans") -> list[str]:
     """The small on-screen source credit explainers carry: 'SOURCE: FTC, 2025' in the bottom-left corner."""
     from .captions import _esc
-    size = max(16, int(min(w, h) * 0.022))
+    size = max(18, int(min(w, h) * (0.028 if w > h else 0.022)))
     label = text.strip()
     if not label.lower().startswith(("source", "sources", "data")):
         label = f"Source: {label}"

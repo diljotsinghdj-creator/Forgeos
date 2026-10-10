@@ -169,3 +169,24 @@ def shows_face(checker: "Matcher", image: Path, visual: str) -> bool:
     face = max(checker.score(image, "a close-up photo of a person's face"), checker.score(image, "a photo of a man's face"),
                checker.score(image, "a photo of a woman's face"))
     return face >= 0.215 and face - checker.score(image, "a photo of an object on a table") >= FACE_MARGIN
+
+
+def fingerprint(image: Path) -> int | None:
+    """A 64-bit difference hash: near-identical pictures (the same stock photo from two libraries, resized or
+    recompressed) get fingerprints a few bits apart."""
+    try:
+        from PIL import Image
+        with Image.open(image) as im:
+            g = im.convert("L").resize((9, 8), Image.BILINEAR)
+            px = list(g.getdata())
+    except Exception:  # noqa: BLE001 - unreadable picture: no fingerprint, no de-duplication
+        return None
+    bits = 0
+    for row in range(8):
+        for col in range(8):
+            bits = (bits << 1) | (px[row * 9 + col] > px[row * 9 + col + 1])
+    return bits
+
+
+def seen_before(fp: int | None, used: list[int], within: int = 8) -> bool:
+    return fp is not None and any(bin(fp ^ u).count("1") <= within for u in used)

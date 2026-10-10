@@ -5,6 +5,7 @@ a bordered frame on the same backdrop. Everything is drawn with FFmpeg; cut-outs
 from __future__ import annotations
 
 import hashlib
+import re
 import threading
 from pathlib import Path
 
@@ -101,19 +102,36 @@ def _cutout_session(model: Path):
 
 
 
+SLOTS = {"center": (0.0, 0.0, 1.0), "left": (-0.17, 0.02, 0.86), "right": (0.17, -0.01, 0.86)}
+
+
 def compose(image: Path, kind: str, index: int, w: int, h: int, work: Path, cut: Path | None = None,
-            cancel: threading.Event | None = None) -> Path:
-    """One finished explainer frame (PNG) for a still: sticker cut-out when `cut` is given, else a tilted print."""
-    out = work / f"layout_{_key(image, cut, kind, index, w, h, image.stat().st_mtime_ns)}.png"
+            cancel: threading.Event | None = None, under: Path | None = None, slot: str = "center") -> Path:
+    """One finished explainer frame (PNG) for a still: sticker cut-out when `cut` is given, else a tilted print.
+    `under` piles it onto the previous frame (photos building up on the desk); `slot` moves it left or right."""
+    out = work / f"layout_{_key(image, cut, kind, index, w, h, image.stat().st_mtime_ns, under, slot)}.png"
     if out.is_file():
         return out
     bg = backdrop(kind, w, h, work, cancel)
+    if under is not None and under.is_file():
+        # the earlier photos stay on the desk, a touch darker, so the new one reads as the top of the pile
+        bg = work / f"under_{_key(under, under.stat().st_mtime_ns)}.png"
+        if not bg.is_file():
+            ff.run(["-i", str(under), "-vf", "eq=brightness=-0.025:saturation=0.92", str(bg)], cancel)
     tilt = TILTS[index % len(TILTS)]
     short = min(w, h)
+    fx, fy, size = SLOTS.get(slot, SLOTS["center"])
+    if h > w:
+        fx, fy = fx * 0.35, fy * 1.5        # tall frames have little room sideways: small shifts only
+    ox, oy = int(w * fx), int(h * fy)
     if cut is not None:
-        graph, inputs = _sticker(w, h, short, tilt * 0.6), [bg, cut]
+        graph, inputs = _sticker(w, h, short, tilt * 0.6, size), [bg, cut]
     else:
-        graph, inputs = _print(kind, index, w, h, short, tilt), [bg, image]
+        graph, inputs = _print(kind, index, w, h, short, tilt, size), [bg, image]
+    # place the layer: every overlay that centres something on the frame shifts by the slot's offset
+    graph = graph.replace("(W-w)/2", f"(W-w)/2+{ox}").replace("(H-h)/2", f"(H-h)/2+{oy}")
+    graph = re.sub(r"\(W([-+])(\d+)\)/2", lambda m: f"(W{m.group(1)}{m.group(2)})/2+{ox}", graph)
+    graph = re.sub(r"\(H([-+])(\d+)\)/2", lambda m: f"(H{m.group(1)}{m.group(2)})/2+{oy}", graph)
     args = []
     for p in inputs:
         args += ["-i", str(p)]
@@ -129,11 +147,11 @@ def _shadow(src: str, dst: str, short: int, opacity: float = 0.55) -> str:
             f"[{dst}a]split[{dst}m][{dst}s];[{dst}s]lut=y=0[{dst}k];[{dst}k][{dst}m]alphamerge[{dst}]")
 
 
-def _sticker(w: int, h: int, short: int, tilt: float) -> str:
+def _sticker(w: int, h: int, short: int, tilt: float, size: float = 1.0) -> str:
     """Cut-out subject with a white outline (its own grown silhouette) and a drop shadow, centred a little high."""
     edge = max(5, int(short * 0.017))
     pad = edge * 3
-    bw, bh = int(w * 0.78), int(h * (0.62 if h > w else 0.74))
+    bw, bh = int(w * 0.78 * size), int(h * (0.62 if h > w else 0.74) * size)
     dx, dy = int(short * 0.012), int(short * 0.018)
     return (f"[1:v]format=rgba,scale={bw}:{bh}:force_original_aspect_ratio=decrease:flags=lanczos,"
             f"pad=iw+{2 * pad}:ih+{2 * pad}:{pad}:{pad}:color=black@0,split[subj][grow];"
@@ -147,13 +165,13 @@ def _sticker(w: int, h: int, short: int, tilt: float) -> str:
             f"[b1][st]overlay=x=(W-w)/2:y=(H-h)/2-H*0.03,format=rgb24")
 
 
-def _print(kind: str, index: int, w: int, h: int, short: int, tilt: float) -> str:
+def _print(kind: str, index: int, w: int, h: int, short: int, tilt: float, size: float = 1.0) -> str:
     """A whole-scene picture as a bordered print: 4:3 on wide frames, 4:5 on tall ones."""
     if h > w:
-        pw = int(w * 0.84) // 2 * 2
+        pw = int(w * 0.84 * size) // 2 * 2
         ph = int(pw * 5 / 4) // 2 * 2
     else:
-        ph = int(h * 0.74) // 2 * 2
+        ph = int(h * 0.74 * size) // 2 * 2
         pw = int(ph * 4 / 3) // 2 * 2
     border = max(6, int(short * 0.018)) // 2 * 2
     dx, dy = int(short * 0.012), int(short * 0.018)

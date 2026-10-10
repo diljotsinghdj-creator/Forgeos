@@ -339,7 +339,12 @@ class Pipeline:
                     continue
                 if checker.score(src, want) < match.GOOD or match.shows_face(checker, src, visual):
                     continue
+                fp = match.fingerprint(src)
+                if match.seen_before(fp, job.setdefault("used_fingerprints", [])):
+                    continue                     # the same photo again (another library, another address)
                 used.append(found.get("url"))
+                if fp is not None:
+                    job["used_fingerprints"].append(fp)
                 credits = job.setdefault("stock_credits", [])
                 if found["credit"] not in credits:
                     credits.append(found["credit"])
@@ -400,7 +405,12 @@ class Pipeline:
             checker = self._matcher()
             if checker is not None and match.shows_face(checker, src, visual):
                 continue
+            fp = match.fingerprint(src)
+            if match.seen_before(fp, job.setdefault("used_fingerprints", [])):
+                continue
             job["used_photos"].append(found.get("url"))
+            if fp is not None:
+                job["used_fingerprints"].append(fp)
             dst = jdir / f"scene_{sc['index'] + 1:02d}_beat{beat}_photo.jpg"
             shutil.copyfile(src, dst)
             credits = job.setdefault("stock_credits", [])
@@ -783,7 +793,7 @@ class Pipeline:
             if c.video is not None:
                 c.video_duration = ff.duration(c.video)
         if spec.style in EDITORIAL_STYLES:
-            self._lay_out(clips, chart_files, spec.style, w, h, work, cancel)
+            self._lay_out(clips, chart_files, spec.style, w, h, work, cancel, firsts)
 
         heads = [clips[j] for j in firsts]   # one per scene, for scene-level bookkeeping below
         if use_video and any(c.video is None and sc.get("ai_video", True) and not sc.get("beat_videos")
@@ -884,7 +894,8 @@ class Pipeline:
         expected = render.render_video(clips, mixed, ass, w, h, out, work, cancel, logo, grade=grade)
         job["render"] = {"file": "work/render.mp4", "expected_s": round(expected, 3), "width": w, "height": h}
 
-    def _lay_out(self, clips: list, chart_files: set, style: str, w: int, h: int, work: Path, cancel) -> None:
+    def _lay_out(self, clips: list, chart_files: set, style: str, w: int, h: int, work: Path, cancel,
+                 firsts: list[int] | None = None) -> None:
         """Explainer looks: each still becomes a finished frame - its subject cut out with a white sticker edge on
         paper (or a desk), or a tilted bordered print when it is a whole scene - and footage plays framed on the
         same backdrop. Charts already are full-frame graphics."""
@@ -892,26 +903,37 @@ class Pipeline:
         lay = work / "layout"
         backdrop = layout.backdrop(kind, w, h, lay, cancel)
         model = self.cfg.data_dir / "models" / "isnet-general-use.onnx"   # downloaded in the background by setup
-        jobs: dict[tuple[Path, int], int] = {}     # (picture, tilt) -> the first shot that uses it
-        for idx, c in enumerate(clips):
-            if c.video is not None:
-                if c.video not in chart_files:
-                    c.backdrop = backdrop
-            else:
-                jobs.setdefault((c.image, idx % len(layout.TILTS)), idx)
+        for c in clips:
+            if c.video is not None and c.video not in chart_files:
+                c.backdrop = backdrop
+        # Scenes are laid out in parallel; inside a scene the stills build up like photos on a desk: each new one
+        # lands left or right of the last and partly covers it (widescreen), then the pile starts again.
+        bounds = sorted(set([0] + list(firsts or []))) + [len(clips)]
+        groups = [list(range(a, b)) for a, b in zip(bounds, bounds[1:]) if b > a]
+        wide = w > h
+        slots = ("center", "left", "right")
 
-        def make(item):
-            (src, _), idx = item
-            if cancel.is_set():
-                raise Cancelled()
-            return layout.compose(src, kind, idx, w, h, lay, layout.cutout(src, lay, model), cancel)
+        def lay_scene(idxs: list[int]) -> list[tuple[int, Path]]:
+            out, under, depth = [], None, 0
+            for n, idx in enumerate(idxs):
+                c = clips[idx]
+                if c.video is not None:
+                    under, depth = None, 0           # footage or a graphic clears the desk
+                    continue
+                if cancel.is_set():
+                    raise Cancelled()
+                slot = slots[depth % 3] if (wide and depth) else ("center" if not n % 2 else ("left", "right")[n // 2 % 2])
+                frame = layout.compose(c.image, kind, idx, w, h, lay, layout.cutout(c.image, lay, model), cancel,
+                                       under=under if wide and depth else None, slot=slot)
+                out.append((idx, frame))
+                under, depth = (frame, depth + 1) if depth < 2 else (None, 0)
+            return out
 
         from concurrent.futures import ThreadPoolExecutor
         with ThreadPoolExecutor(max_workers=4) as pool:
-            made = dict(zip(jobs, pool.map(make, jobs.items())))
-        for idx, c in enumerate(clips):
-            if c.video is None:
-                c.image = made[(c.image, idx % len(layout.TILTS))]
+            for laid in pool.map(lay_scene, groups):
+                for idx, frame in laid:
+                    clips[idx].image = frame
 
     def _chart_clip(self, spec, beat: dict, length: float, size: tuple[int, int], work: Path) -> Path | None:
         """An animated number graphic for a beat: the writer's Chart: line, or - in the editorial looks - a Text:
@@ -921,7 +943,7 @@ class Pipeline:
         extra = beat.get("extra") or {}
         if not beat.get("chart"):
             # The writer's full-frame graphics: an animated map, a chapter card, a highlighted quote.
-            for kind in ("map", "chapter", "quote"):
+            for kind in ("map", "steps", "chapter", "quote"):
                 if extra.get(kind):
                     out = work / f"{kind}_{hashlib.sha256(f'{extra[kind]}|{theme}|{size}|{seconds}'.encode()).hexdigest()[:16]}.mp4"
                     if out.is_file():

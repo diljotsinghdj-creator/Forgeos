@@ -544,7 +544,8 @@ def test_maps_cards_place_and_source_graphics(tmp_path):
     assert maps.parse("France")["targets"][0]["kind"] == "country" and maps.parse("Atlantis") is None
     video = maps.render(plan, "investigative", 640, 360, 2.0, tmp_path / "m.mp4", tmp_path)
     assert ff.duration(video) > 1.5
-    for kind, spec in (("chapter", "Part 1 | The trap"), ("quote", "Move your money to a safe account | Lloyds, 2026")):
+    for kind, spec in (("chapter", "Part 1 | The trap"), ("quote", "Move your money to a safe account | Lloyds, 2026"),
+                       ("steps", "Free trial → Card saved → Auto-renew | How it works")):
         assert ff.duration(cards.render(kind, spec, "editorial", 360, 640, 2.0, tmp_path / f"{kind}.mp4", tmp_path)) > 1.5
     ass = tmp_path / "c.ass"
     cap.write_ass(ass, 1920, 1080, 0.04, 0.86, [], [cap.Overlay(0.2, 2.0, "Paris · 1925", "Place"),
