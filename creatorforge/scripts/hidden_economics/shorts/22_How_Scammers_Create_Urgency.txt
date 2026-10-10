@@ -10,14 +10,15 @@ Visual: An empty glass savings jar on a kitchen shelf
 Text: FICTIONAL SCAM SCRIPT
 
 Criminals are in your account. Move everything now or lose it.
-Visual: A laptop showing an online banking page, text unreadable
+Visual: A bank statement with unfamiliar payments circled in red, text unreadable
 Visual: A thumb hovering over a transfer button on a phone, text unreadable
 Text: MOVE IT NOW OR LOSE IT
 Bubble: Criminals are in your account!
+Steps: Fake alarm → Tight deadline → Move everything → Savings gone | How the scam script works
 
 Why the clock? A deadline leaves no time to check.
-Visual: An old alarm clock on a desk beside a phone
-Visual: A hand holding a phone to an ear, an unread bank statement on the desk
+Visual: An old alarm clock ticking on a desk
+Visual: Car keys and a coat grabbed in a hurry from a hallway hook
 
 Lloyds Bank says seven words give the whole scam away.
 Visual: A bank branch front on a British high street
@@ -32,21 +33,21 @@ Text: MOVE YOUR MONEY TO A SAFE ACCOUNT
 Cite: Lloyds Bank, Aug 2026
 
 Real banks never ask that. The account is the scammer's.
-Visual: A bank cashier's counter seen from the customer side
-Visual: A man seen from behind walking away carrying a cash box
+Visual: A bank's printed fraud warning leaflet on a counter, text unreadable
+Visual: A man seen from behind walking away down a dark street with a bag
 Text: IT'S THEIR ACCOUNT
 Draw: cross
 
 At one bank, the average victim lost three and a half thousand pounds.
-Visual: A bank's stone front steps on a grey street
+Visual: A pensioner seen from behind sitting alone at a kitchen table
 Visual: A stack of twenty-pound banknotes on a kitchen table
 Chart: £3,200 → £3,516 | average impersonation loss · Lloyds
 Stock: bank building exterior
 Cite: Lloyds Bank, Aug 2026
 
 Hang up. Call a number you look up yourself.
-Visual: A hand setting a phone face down beside a bank card
-Visual: A finger pointing at the phone number on the back of a bank card, numbers blurred
+Visual: A hand setting a phone face down on a kitchen table
+Visual: A finger pointing at the helpline number on the back of a bank card, digits blurred
 Text: HANG UP. CALL BACK. VERIFY.
 Draw: tick
 

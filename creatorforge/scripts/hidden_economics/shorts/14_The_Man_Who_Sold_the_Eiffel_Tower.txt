@@ -19,7 +19,7 @@ Place: PARIS · 1925
 
 He told scrap dealers the city wanted the tower torn down.
 Visual: A 1920s Paris scrapyard piled with old iron girders
-Visual: Rusted iron girders and rivets piled on cobblestones
+Visual: A 1920s scrap dealer's horse-drawn cart loaded with metal on a street
 Chart: 7,300 tonnes | of iron, offered as scrap
 Stock: eiffel tower 1920s
 Cite: Tour Eiffel
@@ -36,12 +36,13 @@ Thought: Only a real official asks for a bribe
 
 One dealer, André Poisson, paid up. Lustig fled with the cash.
 Visual: A hand counting a stack of 1920s French banknotes on a table
-Visual: An empty café chair beside a half-finished cup of coffee
+Visual: A 1920s steam train pulling out of a Paris station
 Stock: 1920s paris street
+Steps: Fake official → Tower for scrap → Hinted bribe → Paid up → Fled | How the con worked
 
 So why did the police never hear about it?
 Visual: An old Paris police station door at night, closed
-Visual: A closed 1920s police notebook lying on a wooden desk
+Visual: A blank report form and a pen untouched on a wooden desk
 Text: NO POLICE REPORT?
 
 Poisson was too embarrassed to report it.

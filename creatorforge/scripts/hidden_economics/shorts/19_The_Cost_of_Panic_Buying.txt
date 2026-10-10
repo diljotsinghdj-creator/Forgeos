@@ -22,17 +22,18 @@ Stock: frosty window winter
 Thought: I can't risk a freezing house
 
 But what did that deadline actually stop you doing?
-Visual: A desk lamp shining on an unread contract and a pen
-Visual: A pair of reading glasses resting on an unopened contract
+Visual: A pen lying unused beside a closed folder on a desk
+Visual: A pair of reading glasses folded and unused on a table
+Steps: Read exclusions → Check excess → Compare price | What the deadline stopped
 
 Reading the exclusions, checking the excess, comparing the price.
-Visual: A magnifying glass over fine print on a contract, words unreadable
-Visual: A laptop showing two price comparison tables, text unreadable
+Visual: A magnifying glass over a list of exclusions in fine print, text unreadable
+Visual: Two printed insurance quotes side by side on a desk, text unreadable
 Text: EXCLUSIONS · EXCESS · PRICE
 Draw: underline
 
 So can you undo a four-minute decision?
-Visual: An egg timer lying on its side on a printed contract
+Visual: An egg timer lying on its side on a kitchen table
 Chart: 4 | minutes to decide · illustration
 
 Many UK online purchases can be cancelled within fourteen days.
@@ -43,12 +44,12 @@ Cite: Consumer Contracts Regulations 2013
 
 There is a catch. Exceptions apply, so read your terms next morning.
 Visual: A printed contract with one clause circled in red pen, text unreadable
-Visual: Morning light on a printed contract, a cup of coffee and a pen
+Visual: A cup of coffee on a kitchen table in morning light
 Text: EXCEPTIONS APPLY
 Cite: Citizens Advice
 
 Four minutes to buy. Often fourteen days to rethink. Use them.
 Visual: A phone lying face down on a kitchen table
-Visual: A hand writing notes on a printed contract with a pen
+Visual: A bed with the duvet turned back under a lamp at night
 Text: SLEEP ON IT
 Draw: tick

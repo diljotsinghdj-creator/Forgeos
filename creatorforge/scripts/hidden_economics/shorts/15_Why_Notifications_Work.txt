@@ -12,38 +12,39 @@ Draw: circle
 
 In one study, people who simply received an alert made more mistakes.
 Visual: A test answer sheet covered in red pen crosses, marks unreadable
-Visual: A silent phone lying on the corner of an exam desk
+Visual: Rows of students seen from behind writing at exam desks
 Text: ALERT ALONE = MORE ERRORS
 Stock: students taking exam
 Cite: Stothart et al., JEP, 2015
 
 Nobody even touched the phone. So what happens when you do?
-Visual: A phone lying face down on a desk beside a pencil
-Visual: A finger tapping a notification on a smartphone screen, text unreadable
+Visual: An untouched phone lying face down beside an exam paper
+Visual: A half-finished crossword on a desk with the pen put down
 Draw: arrow
 Cite: Stothart et al., JEP, 2015
 
 You tap for one thing. The app shows you ten more.
-Visual: A smartphone showing a social media app on a desk, images blurred
+Visual: A cup of tea going cold beside a sofa at night
 Visual: A thumb scrolling a feed of blurred posts on a smartphone
 Chart: 1 → 10 | posts from one tap · illustration
 
 Is it the alerts, or is it you? One test tells you.
-Visual: A person seen from behind on a sofa, lit by a phone screen
-Visual: A notepad and pencil beside a phone on a coffee table
+Visual: A stopwatch lying on a wooden table
+Visual: A person seen from behind sitting on a park bench, hands in lap
 Thought: Do I actually need all these alerts?
 
 Silence every alert that isn't from a person, for one week.
 Visual: A thumb switching off notification toggles on a phone, text unreadable
-Visual: A phone lying on a desk with its screen dark
+Visual: Two friends seen from behind talking on a front doorstep
 Text: FICTIONAL INTERFACE · 7 DAYS
 
 Then count how many silenced apps you actually missed.
 Visual: A paper calendar on a desk, seven days crossed off in pencil
-Visual: A hand making tally marks on a notepad beside a phone
+Visual: A hand making tally marks on a notepad
 Text: HOW MANY DID YOU MISS?
 Draw: circle
+Steps: Silence app alerts → Wait one week → Count what's missed | The one-week test
 
 One buzz shouldn't cost twenty minutes. Now it doesn't have to.
-Visual: A phone face down on a quiet desk in morning light
+Visual: A sunny window over a quiet street in the morning
 Visual: An open book and a cup of coffee on a sunny desk

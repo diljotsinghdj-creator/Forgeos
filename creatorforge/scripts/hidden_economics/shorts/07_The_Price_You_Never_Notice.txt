@@ -6,7 +6,7 @@ Source: Digital Markets, Competition and Consumers Act 2024, drip pricing rules 
 
 Thirty pounds on screen. Forty-one at checkout.
 Visual: A smartphone showing a product page on a desk, text unreadable
-Visual: A smartphone showing a checkout page with a longer bill, text unreadable
+Visual: A card being tapped on a payment terminal at a shop counter
 Text: £30… NOW £41? · ILLUSTRATION
 Thought: Wait, didn't it say thirty?
 
@@ -17,7 +17,7 @@ Text: ILLUSTRATION
 Chart: £5 vs £3 vs £3 | delivery, service fee, protection
 
 That's drip pricing. So is it even allowed?
-Visual: A kitchen tap dripping into a basin with coins at the bottom
+Visual: A kitchen tap dripping into a white basin
 Visual: A judge's wooden gavel resting on a desk
 Text: DRIP PRICING · ALLOWED?
 Stock: water dripping tap
@@ -32,24 +32,25 @@ Cite: DMCC Act 2024
 
 The first fine, in twenty twenty-six, was over a three-pound booking fee.
 Visual: A single coin under a magnifying glass on a booking form, text unreadable
-Visual: Three one-pound coins on a printed booking confirmation, text unreadable
+Visual: A printed booking confirmation with a small fee line circled in red, text unreadable
 Text: FIRST FINE · A £3 FEE SHOWN LATE
 Draw: circle
 Place: UK · 2026
 Cite: CMA, April 2026
 
 Four point two million pounds.
-Visual: Bundles of banknotes stacked on a desk beside a judge's gavel
+Visual: Bundles of banknotes stacked on a desk under a lamp
 Chart: £4.2m | CMA fine · April 2026
 Cite: CMA, April 2026
 
 Untick what you did not choose. Compare totals, not headline prices.
 Visual: A thumb unticking a box on a smartphone, text unreadable
-Visual: Two receipts side by side with the totals underlined in red, text unreadable
+Visual: Two printed quotes side by side with the totals underlined in red, text unreadable
 Text: UNTICK · COMPARE TOTALS
 Draw: tick
 
 Because thirty pounds was never the price. Forty-one was.
-Visual: Three ten-pound notes lying on a kitchen table
+Visual: A paper price tag tied with string to a brown parcel
 Visual: A receipt with its total line circled in red pen, text unreadable
 Text: THE REAL PRICE: £41
+Steps: £30 headline → + Delivery → + Fees → £41 total | Drip pricing

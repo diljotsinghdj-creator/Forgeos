@@ -11,12 +11,12 @@ Text: 00:00:00 · STILL ON SALE?
 Draw: circle
 
 So what was it counting down to?
-Visual: An old digital alarm clock on a dark bedside table
+Visual: A shop's metal shutter half pulled down at closing time
 Text: COUNTING TO WHAT?
 
 This fictional shop gives you ten minutes. Too short to compare.
 Visual: A smartphone showing a product page with a red timer bar, text unreadable
-Visual: Two laptops side by side showing different shops, text unreadable
+Visual: Two paper catalogues open side by side on a table, text unreadable
 Text: FICTIONAL SHOP · 10:00
 Thought: Quick, before it runs out!
 
@@ -33,26 +33,27 @@ Place: PRINCETON · 2019
 Cite: Mathur et al., Princeton, 2019
 
 They found three hundred and ninety-three countdown timers.
-Visual: Dozens of small kitchen timers laid in a grid on a desk
+Visual: A researcher seen from behind at a desk covered in printed tally sheets
 Chart: 393 | countdown timers · 361 sites
 Cite: Mathur et al., Princeton, 2019
 
 On some, the offer stayed valid after the timer ran out.
-Visual: A phone with its countdown at zero beside an egg timer, text unreadable
-Visual: A thumb pressing a buy button on a smartphone, text unreadable
+Visual: A phone showing a countdown at zero on a shop counter, text unreadable
+Visual: A card machine on a shop counter showing payment approved, text unreadable
 Text: TIMER ENDED · OFFER DIDN'T
 Draw: underline
 Cite: Mathur et al., Princeton, 2019
 
 So how do you tell? Let it run out, or return tomorrow.
-Visual: A person seen from behind looking at a phone on a sofa
-Visual: A phone placed face down beside a cup of tea on a table
-Visual: A kitchen table in early morning light with a phone and calendar
+Visual: A person seen from behind putting on a coat by the front door
+Visual: A cup of tea cooling on a kitchen table beside a folded newspaper
+Visual: A torn-off calendar page showing the next day's date on a table
 Text: SECOND LOOK TEST
 Stock: phone face down table
+Steps: Let it hit zero → Come back tomorrow → Nothing changed? → Not a deadline | The second-look test
 
 A timer that hits zero and changes nothing was never a deadline.
 Visual: An egg timer's needle resting on zero on a kitchen table
-Visual: A smartphone screen going dark on a desk beside an egg timer
+Visual: A smartphone screen going dark on a desk, text unreadable
 Text: NOT A DEADLINE
 Draw: cross

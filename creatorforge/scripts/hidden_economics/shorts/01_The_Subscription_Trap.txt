@@ -5,18 +5,18 @@ Tags: #HiddenEconomics #subscriptions #personalfinance #money #moneypsychology
 Source: UK government estimate of £1.6bn a year spent on unwanted subscriptions, reported August 2026 (https://techradar.com/tech/we-spend-gbp1-6bn-a-year-on-subscriptions-we-dont-want-fast-tracked-uk-government-policy-promises-to-make-cancelling-them-easier-and-will-make-phoney-bargains-illegal); (https://www.scmp.com/news/world/europe/article/3363469/uk-pm-burnham-vows-end-subscription-traps-amid-cost-living-crisis)
 
 You quit in January. It still charged you.
-Visual: A smartphone lying face down on a kitchen table beside a January calendar page
+Visual: A torn January page from a wall calendar lying on a kitchen table
 Visual: A printed bank statement with one card payment circled in red pen, text unreadable
 Text: JAN: STOPPED · JUN: STILL PAYING
 Draw: circle
 
 Twelve pounds a month. By June, seventy-two gone.
-Visual: Six stacks of one-pound coins in a row on a paper wall calendar
+Visual: Six small stacks of one-pound coins in a row on a table
 Text: ILLUSTRATION
 Chart: £12 × 6 = £72 | six forgotten months · illustration
 
 So why did nobody notice?
-Visual: A switched-off smartphone lying face down on a cluttered desk
+Visual: A stack of unopened post on a hallway shelf
 Text: WHY NOBODY NOTICED
 
 Because a payment that asks for no decision never gets one.
@@ -39,14 +39,14 @@ Chart: £1.6bn | unwanted subscriptions a year · UK est.
 Cite: UK government estimate, 2026
 
 Find payments that repeat, month after month.
-Visual: A printed bank statement on a desk beside a red pen, text unreadable
+Visual: A person seen from behind at a kitchen table at night sorting paperwork
 Visual: The same payment line circled in red on three monthly statements, text unreadable
 Stock: checking bank statement
 Draw: circle
 
 Ask of each one, would I buy this today?
 Visual: A hand holding a smartphone showing a list of subscriptions, text unreadable
-Visual: A person seen from behind at a kitchen table, holding a phone
+Visual: An empty wire shopping basket on a supermarket floor
 Text: WOULD I BUY THIS TODAY?
 
 If not, cancel it before June comes round again.
@@ -54,3 +54,4 @@ Visual: A thumb pressing a cancel button on a smartphone, text unreadable
 Visual: A June page on a paper wall calendar circled in green pen
 Text: CANCEL BEFORE JUNE
 Draw: tick
+Steps: Find repeats → Would I buy it? → Cancel before June | Your subscription check

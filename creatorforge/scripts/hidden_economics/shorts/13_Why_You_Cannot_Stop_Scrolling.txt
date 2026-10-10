@@ -11,26 +11,26 @@ Text: 20 MINUTES LATER
 Draw: circle
 
 So where did the time go?
-Visual: A phone lying face up on a sofa cushion at night, screen blurred
+Visual: An empty mug and a crumpled blanket on a rug at night
 Chart: 0 → 20 | minutes gone · illustration
 
 Now picture a book. Chapters end. Pages run out.
 Visual: An open paperback book resting on a bedside table
 
 Those are stopping cues, moments to decide whether to continue.
-Visual: A hand slipping a paper bookmark between the pages of a book
-Visual: The last page of a paperback with a ribbon bookmark, text unreadable
+Visual: The empty bottom of a cereal bowl with a spoon resting in it
+Visual: A cinema with the lights coming up over empty seats
 Text: STOPPING CUES
 
 An endless feed removes them. Where's the last page? There isn't one.
 Visual: A thumb scrolling a social media feed on a smartphone, images blurred
-Visual: A smartphone screen showing a long column of blurred posts
+Visual: A dark living room at night with one lamp still on
 Text: NO LAST PAGE
 Draw: cross
 
 Aza Raskin designed infinite scroll in two thousand and six.
-Visual: An old beige desktop computer on a cluttered 2000s office desk
-Visual: A hand resting on a computer mouse with a scroll wheel
+Visual: A 2000s open-plan office with beige desks and swivel chairs, nobody close
+Visual: A hand resting on a 2000s mouse with a scroll wheel
 Text: INFINITE SCROLL · 2006
 Stock: old computer web browsing
 Cite: Masters of Scale, Aza Raskin
@@ -43,11 +43,12 @@ Thought: Just one more video...
 Cite: Masters of Scale, Aza Raskin
 
 Set a timer before you open the app. Your own last page.
-Visual: A hand turning an old kitchen timer beside a smartphone
-Visual: A smartphone lying face down next to a kitchen timer
+Visual: A hand turning an old kitchen timer on a counter
+Visual: A smartphone lying face down on a kitchen counter
 Text: SET YOUR OWN ENDING
+Steps: Set a timer → Open the app → Timer ends → Stop | Your own last page
 
 Then check the weather. That's what you came for.
-Visual: A smartphone showing a weather forecast on a desk, text unreadable
-Visual: A smartphone face down on a desk beside a cup of tea
+Visual: A window with rain running down it, a wet street beyond
+Visual: A cup of tea on a desk beside a closed umbrella
 Draw: tick

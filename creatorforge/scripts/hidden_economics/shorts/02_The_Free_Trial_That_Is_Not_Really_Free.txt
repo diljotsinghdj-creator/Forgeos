@@ -10,30 +10,31 @@ Text: FREE… THEN −£10 ON DAY 8 · ILLUSTRATION
 Draw: circle
 
 So why did a free trial need your card?
-Visual: A bank card lying on a paper sign-up form, text unreadable
-Visual: Hands typing card details into a smartphone, text unreadable
+Visual: A bank card held between two fingers above a desk
+Visual: A leather wallet lying open on a desk with one card slot empty
 Text: WHY YOUR CARD?
 Stock: typing card details phone
 
 Because the trial is not the product. The renewal is.
 Visual: A paper contract on a desk with its top half covered, text unreadable
-Visual: The small print at the bottom of a contract circled in red pen, text unreadable
+Visual: A magnifying glass over tiny small print at the foot of a page, text unreadable
 Text: THE PRODUCT = THE RENEWAL
 Draw: underline
+Steps: Free trial → Card saved → Auto-renewal → Forgotten | How the trap works
 
 So when did you actually buy it?
-Visual: A hand holding a pen above a document on a desk
+Visual: A shop till receipt curling out of a card machine, text unreadable
 Visual: A smartphone on a desk showing a payment confirmation screen, text unreadable
 Text: WHEN DID YOU BUY IT?
 
 Day one. Agreeing to the renewal was the purchase.
-Visual: A paper wall calendar with the first day circled in red pen
+Visual: A signed sign-up form with a pen resting on it, text unreadable
 Visual: A thumb pressing a large button on a sign-up screen, text unreadable
 Text: DAY 1 IS THE PURCHASE
 
 Day seven passes quietly, because nothing asks you to decide.
-Visual: Seven torn-off calendar pages scattered across a sofa cushion
-Visual: A smartphone lying face down on a sofa cushion
+Visual: Seven unopened letters piled on a hallway doormat
+Visual: A person seen from behind dozing on a sofa in the evening
 Thought: It's free. I'll cancel in time.
 
 Forget it for a year, and free costs this.
@@ -42,8 +43,8 @@ Text: ILLUSTRATION
 Chart: £10 × 12 = £120 | one forgotten year · illustration
 
 Before tapping start, read the renewal price. Set a day-six reminder.
-Visual: A thumb above a start button on a smartphone, text unreadable
-Visual: Hands setting an old brass alarm clock beside a phone on a table
+Visual: A printed price list with the renewal price underlined in red, text unreadable
+Visual: Hands setting an old brass alarm clock on a kitchen table
 Text: CHECK THE PRICE · REMIND: DAY 6
 Stock: setting phone reminder
 

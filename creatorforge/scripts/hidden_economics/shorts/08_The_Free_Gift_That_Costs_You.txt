@@ -6,7 +6,7 @@ Source: Dennis T. Regan, Effects of a favor and liking on compliance, Journal of
 
 Students got a free Coke. They paid double.
 Visual: An unbranded glass soda bottle standing on a dark desk
-Visual: Two piles of raffle tickets on a desk, one twice as tall
+Visual: Two coins dropping into a small metal cash tin on a table
 Text: A FREE DRINK. A DOUBLE PAYBACK.
 Draw: arrow
 Cite: Regan, JESP, 1971
@@ -23,12 +23,12 @@ Visual: A hand holding out a roll of paper raffle tickets across a table
 Thought: Well, he did buy me a drink...
 
 Did one drink really change anything?
-Visual: A single raffle ticket pinched between two fingers
+Visual: A 1970s classroom with wooden desks and chairs, nobody inside
 Text: DID IT WORK?
 
 They bought about twice as many tickets. Liking him barely mattered.
-Visual: Two piles of raffle tickets on a desk, one twice the height
-Visual: Two people seen from behind talking in a university corridor
+Visual: A handwritten tally sheet with two columns of marks, text unreadable
+Visual: Two people seen from behind chatting on a wooden bench
 Chart: 1x vs 2x | no drink, free drink
 Cite: Regan, JESP, 1971
 
@@ -42,7 +42,7 @@ Cite: NPR, 2012
 
 Shop samples work the same way. But why?
 Visual: A tray of tiny paper sample cups on a shop counter
-Visual: A hand taking a sample cup from a shop counter tray
+Visual: A shopper seen from behind in a supermarket aisle holding a basket
 Text: WHY DOES A GIFT WORK?
 
 A gift you never asked for still feels like a debt.
@@ -50,6 +50,7 @@ Visual: A small gift box tied with string on a doorstep
 Visual: A handwritten IOU note on a desk beside a pen, text unreadable
 Text: UNASKED GIFT = FELT DEBT
 Draw: underline
+Steps: Unasked gift → Felt debt → The request → Payback | Why a gift works
 
 Judge the request alone, and a free Coke stays free.
 Visual: A hand pushing a roll of raffle tickets away across a table
