@@ -5,39 +5,47 @@ Tags: #HiddenEconomics #scams #voicecloning #AI #fraud
 Source: FTC Consumer Alert, Scammers use AI to enhance their family emergency schemes, March 2023, https://consumer.ftc.gov/consumer-alerts/2023/03/scammers-use-ai-enhance-their-family-emergency-schemes; McAfee, The Artificial Imposter report, May 2023 (3 seconds of audio gave an 85% voice match), https://www.mcafee.com/blogs/privacy-identity-protection/artificial-imposters-cybercriminals-turn-to-ai-voice-cloning-for-a-new-breed-of-scam/
 
 Your daughter's crying. Except it isn't her.
-Visual: An old telephone receiver lying off the hook on a dark table, a paper sound-wave ribbon spilling out of it and curling across the floor
+Visual: An old telephone receiver lying off the hook on a dark table
+Visual: A smartphone on a table showing an incoming call, text unreadable
 Text: FICTIONAL SCENARIO
 
 Scammers can clone a voice from only a short online clip.
-Visual: Hands holding a phone playing a generic video, a cut-out sound wave lifting off the screen, text unreadable
+Visual: Hands holding a phone playing a short video, screen blurred
+Visual: A laptop showing an audio editing waveform, text unreadable
 Text: A SHORT CLIP IS ENOUGH
 Stock: person filming phone video
 
 How short? McAfee's tests got an eighty-five percent match from three seconds.
-Visual: A stopwatch on graph paper, its hand barely past the start, a strip of sound wave taped beside it
+Visual: A stopwatch on a desk, its hand just past three seconds
+Visual: A laptop screen showing two matching sound waves, text unreadable
 Chart: 85% | voice match from 3 seconds of audio
 
 The panic is real. So what can you trust?
-Visual: Extreme close-up of a hand gripping a phone so hard the knuckles whiten, screen dark
+Visual: A hand gripping a phone tightly, screen dark
+Visual: A woman seen from behind in a hallway, phone to her ear
 Text: WHAT CAN YOU TRUST?
 
 The FTC's advice is blunt. Don't trust the voice.
-Visual: A printed consumer warning pinned to a desk, one line circled in red pen, text unreadable
+Visual: A printed consumer warning on a desk, one line circled in red, text unreadable
+Visual: A phone on speaker lying on a kitchen table
 Text: DON'T TRUST THE VOICE
 
 Instead, hang up and call her on the number you already know.
-Visual: A hand dialling on an old address book open beside a phone, warm lamp light
+Visual: A thumb pressing the red end-call button on a phone
+Visual: A hand dialling a number from an old address book beside a phone
 Text: HANG UP · CALL BACK
 Stock: person making phone call home
 
 But what if she truly can't answer?
-Visual: A phone ringing unanswered on an empty bed, room dark
+Visual: A phone ringing unanswered on an empty bed in a dark room
 Text: NO ANSWER?
 
 Agree a family code word today. A clone can't know it.
-Visual: A folded paper note sealed in an envelope on a kitchen table, a red wax-style circle drawn on it
+Visual: A family seen from behind sitting at a kitchen table
+Visual: A folded paper note in an envelope on a kitchen table
 Text: FAMILY CODE WORD
 
 Then any crying voice must pass one question first.
-Visual: The same telephone receiver back on its hook, the sound-wave ribbon coiled neatly beside it
+Visual: A hand holding a phone to an ear, seen from behind
+Visual: An old telephone receiver back on its hook on a table
 Text: ASK THE CODE WORD

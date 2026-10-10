@@ -5,35 +5,42 @@ Tags: #HiddenEconomics #status #conspicuousconsumption #psychology #moneypsychol
 Source: Thorstein Veblen, The Theory of the Leisure Class, 1899 (https://www.gutenberg.org/ebooks/833)
 
 Eight hundred pounds for a watch nobody sees?
-Visual: A wristwatch ticking inside a sealed glass jar on a desk, a single beam of light on it, everything else pitch black
+Visual: An expensive gold wristwatch on a dark desk under one lamp
+Visual: A closed watch box on a shelf in a dark room
 Text: £800 · NOBODY SEES IT? · ILLUSTRATION
 
 Hidden under your sleeve, forever. Still worth it?
-Visual: A wrist under a long dark coat sleeve, the watch completely covered, warm lamp light
+Visual: A wrist under a long dark coat sleeve, the watch covered
+Visual: A man seen from behind walking down a street in a long coat
 Text: STILL WORTH IT?
 
 A twenty-pound watch tells exactly the same time.
-Visual: Two watches side by side on graph paper, one ornate, one plain, both hands pointing to the same hour
+Visual: Two watches side by side, one ornate, one plain, showing the same hour
 Chart: £800 vs £20 | the status watch, the plain one
 
 So what is the other seven hundred and eighty buying?
-Visual: The ornate watch alone on an empty table, a red circle drawn around it
+Visual: The ornate watch alone on an empty table, circled in red pen
+Visual: A watch shop display window with rows of expensive watches
 Text: WHAT IS THE £780 FOR?
 
 In eighteen ninety-nine, economist Thorstein Veblen gave it a name.
-Visual: An old leather-bound book open under a desk lamp, a cut-out archival photograph of a top-hatted crowd beside it
+Visual: An old leather-bound book open under a desk lamp
+Visual: A Victorian street crowd in top hats seen from far away
 Text: THORSTEIN VEBLEN · 1899
 Stock: victorian street crowd
 
 Conspicuous consumption. Spending in order to be seen spending.
-Visual: Silhouettes walking past brightly lit shop windows on an evening street, seen from behind
+Visual: People seen from behind walking past bright shop windows at evening
+Visual: A shopper seen from behind carrying several designer shopping bags
 Text: CONSPICUOUS CONSUMPTION
 Stock: shop windows evening street
 
 Strip the logo off in your head. Still want it? Buy it.
-Visual: A plain unbranded watch box on a desk, its lid slowly lifting, nothing written on it
+Visual: A plain unbranded watch box on a desk with its lid open
+Visual: A plain watch with a blank dial resting on a wooden desk
 Text: NO LOGO · STILL WANT IT?
 
 If not, ask who the watch was really for.
-Visual: The empty glass jar from the opening, the watch gone, a single beam of light
+Visual: An empty watch box open on a desk under one lamp
+Visual: A wristwatch left on a bedside table in a quiet room
 Text: WHO WAS IT FOR?

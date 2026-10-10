@@ -5,37 +5,46 @@ Tags: #HiddenEconomics #scams #fraud #safeaccount #takefive
 Source: Lloyds Bank, The seven words that reveal you're talking to a scammer (Aug 2026), https://www.lloydsbank.com/media-centre/2026/seven-words-reveal-youre-talking-to-a-scammer.html; Lloyds impersonation scams data (Aug 2026), https://www.lloydsbank.com/assets/media_centre/pdf/lloyds-impersonation-scams-august-2026.pdf; Take Five to Stop Fraud (UK Finance), https://www.takefive-stopfraud.org.uk/
 
 Ten minutes, or your savings are gone.
-Visual: Coins pouring out of the bottom of a paper hourglass taped to a dark desk, a phone glowing beside it, screen blurred
+Visual: A phone glowing on a dark desk showing an incoming call, text unreadable
+Visual: An empty glass savings jar on a kitchen shelf
 Text: FICTIONAL SCAM SCRIPT
 
 Criminals are in your account. Move everything now or lose it.
-Visual: A thumb hovering over a phone's transfer button, red string tied from the phone to a ticking alarm clock, screen text unreadable
+Visual: A laptop showing an online banking page, text unreadable
+Visual: A thumb hovering over a transfer button on a phone, text unreadable
 Text: MOVE IT NOW OR LOSE IT
 
 Why the clock? A deadline leaves no time to check.
-Visual: An old alarm clock on a desk, a red circle drawn around its hands, a phone face up beside it
+Visual: An old alarm clock on a desk beside a phone
+Visual: A hand holding a phone to an ear, an unread bank statement on the desk
 
 Lloyds Bank says seven words give the whole scam away.
-Visual: Seven torn paper strips laid out in a row on a desk, words blurred, one strip circled in red
+Visual: A bank branch front on a British high street
+Visual: Seven torn paper strips in a row on a desk, words blurred
 Chart: 7 | words that give it away
 
 Move your money to a safe account.
-Visual: An empty padlocked cash box cut-out pinned to a map, red string leading off the edge of the paper
+Visual: A hand holding a phone showing a payment screen, text unreadable
+Visual: An empty metal cash box with its lid open
 Text: MOVE YOUR MONEY TO A SAFE ACCOUNT
 
 Real banks never ask that. The account is the scammer's.
-Visual: A shadowy silhouette cut-out walking away with the cash box under its arm
+Visual: A bank cashier's counter seen from the customer side
+Visual: A man seen from behind walking away carrying a cash box
 Text: IT'S THEIR ACCOUNT
 
 At one bank, the average victim lost three and a half thousand pounds.
 Visual: A bank's stone front steps on a grey street
+Visual: A stack of twenty-pound banknotes on a kitchen table
 Chart: £3,200 → £3,516 | average impersonation loss · Lloyds
 Stock: bank building exterior
 
 Hang up. Call a number you look up yourself.
-Visual: A hand setting a phone face down beside a bank card on a kitchen table, numbers blurred
+Visual: A hand setting a phone face down beside a bank card
+Visual: A finger pointing at the phone number on the back of a bank card, numbers blurred
 Text: HANG UP. CALL BACK. VERIFY.
 
 Ten minutes? The real bank will still be there tomorrow.
-Visual: The paper hourglass now on its side, the coins stacked safely beside it in morning light
+Visual: An old alarm clock on a bedside table in morning light
+Visual: A bank's front door on a quiet morning street
 Text: NO REAL BANK RUSHES YOU

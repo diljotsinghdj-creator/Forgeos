@@ -5,34 +5,41 @@ Tags: #HiddenEconomics #psychology #milgram #scams #authority
 Source: Milgram, S. (1963), Behavioral Study of Obedience, Journal of Abnormal and Social Psychology 67(4), https://doi.org/10.1037/h0040525; Milgram experiment overview, https://en.wikipedia.org/wiki/Milgram_experiment
 
 Two in three pressed the deadliest switch.
-Visual: A long row of old switches on a grey wooden panel, one fingertip resting on the very last switch, harsh desk-lamp light
+Visual: A long row of old switches on a grey wooden panel
+Visual: A fingertip resting on the last switch of an old panel
 Text: YALE UNIVERSITY, 1961–63
 
 In the first Yale study, twenty-six of forty men reached the final switch.
-Visual: Forty small paper silhouettes laid in rows on a desk, most of them circled in red pen
+Visual: Yale University's old stone buildings seen across a lawn
+Visual: A 1960s laboratory room with a desk and a metal control panel
 Chart: 65% | 26 of 40 men reached 450 volts
 Stock: 1960s laboratory
 
 The man in the next room pounded on the wall, then went silent.
-Visual: A closed wooden door in a bare corridor, a hand pressed flat against it from the other side, shadows only
+Visual: A closed wooden door in a bare corridor
+Visual: A hand pressed flat against a plain wall, shadows only
 Text: THEN SILENCE
 
 So why didn't they stop?
-Visual: Extreme close-up of a hand hovering above a switch, knuckles tense
+Visual: A hand hovering above a switch on an old panel
 Text: WHY DIDN'T THEY STOP?
 
 A calm man in a grey lab coat simply told them to continue.
-Visual: A grey lab coat hanging on a hook beside a clipboard, cool overhead light
+Visual: A grey lab coat hanging on a hook beside a clipboard
+Visual: A man in a grey lab coat seen from behind at a desk
 Text: NO THREATS · JUST AUTHORITY
 
 The twist? The learner was an actor. No shock was real.
-Visual: An unplugged cable lying coiled on the floor beside the switch panel
+Visual: An empty wooden chair with loose wires in a bare room
+Visual: An unplugged cable lying coiled on the floor beside a panel
 Text: AN ACTOR · NO REAL SHOCKS
 
 Scammers borrow that authority, posing as banks or police.
-Visual: A phone glowing on a dark table, the shadow of a uniformed silhouette cast across it, screen text unreadable
+Visual: A smartphone ringing on a dark table, caller screen unreadable
+Visual: A police cap and a bank card lying on a table
 Text: FAKE BANK · FAKE POLICE
 
 Two in three obeyed a lab coat. Check before you obey a caller.
-Visual: The same switch panel, the last switch untouched, a phone lying face down beside it
+Visual: A lab coat hanging on a hook in an empty room
+Visual: A hand putting a phone face down beside a bank card
 Text: HANG UP · CHECK YOURSELF

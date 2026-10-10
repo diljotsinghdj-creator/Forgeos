@@ -5,38 +5,45 @@ Tags: #HiddenEconomics #reciprocity #psychology #persuasion #money
 Source: Dennis T. Regan, Effects of a favor and liking on compliance, Journal of Experimental Social Psychology 7(6) 1971, 627-639 (https://doi.org/10.1016/0022-1031(71)90025-4); NPR, Give and take, how the rule of reciprocation binds us, 2012, on Robert Cialdini's Influence (https://www.npr.org/sections/health-shots/2012/11/26/165570502/give-and-take-how-the-rule-of-reciprocation-binds-us)
 
 Students got a free Coke. They paid double.
-Visual: A single unbranded glass soda bottle standing on a dark desk, a long ribbon of raffle tickets pouring out of its neck like smoke
+Visual: An unbranded glass soda bottle standing on a dark desk
+Visual: Two piles of raffle tickets on a desk, one twice as tall
 Text: A FREE DRINK. A DOUBLE PAYBACK.
 
 Psychologist Dennis Regan tested it in nineteen seventy-one.
-Visual: An old black-and-white photograph of a university corridor with framed paintings on easels, pinned to the page
+Visual: A 1970s university corridor with paintings on easels, nobody close
+Visual: A 1970s university campus with students walking far away
 Text: DENNIS REGAN · CORNELL · 1971
 Stock: 1970s university campus
 
 Then his helper asked them to buy raffle tickets.
-Visual: A hand holding out a roll of paper raffle tickets across a table, a half-empty soda bottle beside it
+Visual: A hand holding out a roll of paper raffle tickets across a table
 
 Did one drink really change anything?
-Visual: Extreme close-up of a single raffle ticket pinched between two fingers, edges torn
+Visual: A single raffle ticket pinched between two fingers
 Text: DID IT WORK?
 
 They bought about twice as many tickets. Liking him barely mattered.
-Visual: Two piles of raffle tickets on a desk, one roughly twice the height of the other
+Visual: Two piles of raffle tickets on a desk, one twice the height
+Visual: Two people seen from behind talking in a university corridor
 Chart: 1x vs 2x | no drink, free drink
 
 Cialdini saw airport Hare Krishna members hand out flowers, then ask for money.
-Visual: A cut-out photograph of a busy 1970s airport hall, a single flower laid across a folded newspaper in the foreground
+Visual: A busy 1970s airport hall seen from a distance
+Visual: A hand holding out a single flower in an airport hall
 Text: A FLOWER, THEN A REQUEST
 Stock: 1970s airport terminal
 
 Shop samples work the same way. But why?
-Visual: A tray of tiny paper sample cups on a shop counter, one hand reaching in
+Visual: A tray of tiny paper sample cups on a shop counter
+Visual: A hand taking a sample cup from a shop counter tray
 Text: WHY DOES A GIFT WORK?
 
 A gift you never asked for still feels like a debt.
-Visual: A small gift box tied with string, a handwritten IOU note tucked under the ribbon, text unreadable
+Visual: A small gift box tied with string on a doorstep
+Visual: A handwritten IOU note on a desk beside a pen, text unreadable
 Text: UNASKED GIFT = FELT DEBT
 
 Judge the request alone, and a free Coke stays free.
-Visual: The same soda bottle on the dark desk, the raffle tickets swept aside, the bottle standing alone
+Visual: A hand pushing a roll of raffle tickets away across a table
+Visual: An unbranded soda bottle standing alone on a clean desk
 Text: JUDGE THE REQUEST, NOT THE GIFT

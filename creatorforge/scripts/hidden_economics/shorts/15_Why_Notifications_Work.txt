@@ -5,31 +5,39 @@ Tags: #HiddenEconomics #notifications #attention #focus #digitalwellbeing
 Source: Stothart, Mitchum & Yehnert (2015), The attentional cost of receiving a cell phone notification, Journal of Experimental Psychology - Human Perception and Performance 41(4), https://doi.org/10.1037/xhp0000100
 
 One buzz. Twenty minutes gone. Who decided that?
-Visual: A phone buzzing on a black table, ripples spreading across a glass of water beside it, a paper clock face sinking slowly into the water
+Visual: A smartphone lighting up with a notification on a black table
+Visual: A wall clock above a desk showing twenty minutes past the hour
 Text: 1 BUZZ. 20 MIN GONE? · ILLUSTRATION
 
 In one study, people who simply received an alert made more mistakes.
-Visual: A test answer sheet covered in red crosses, a silent phone lying across one corner, marks unreadable
+Visual: A test answer sheet covered in red pen crosses, marks unreadable
+Visual: A silent phone lying on the corner of an exam desk
 Text: ALERT ALONE = MORE ERRORS
 Stock: students taking exam
 
 Nobody even touched the phone. So what happens when you do?
-Visual: A phone face down on a desk, red string running from it to a pencil frozen above the page
+Visual: A phone lying face down on a desk beside a pencil
+Visual: A finger tapping a notification on a smartphone screen, text unreadable
 
 You tap for one thing. The app shows you ten more.
-Visual: One cut-out phone on paper with ten small cut-out posts fanning out from its screen, images blurred
+Visual: A smartphone showing a social media app on a desk, images blurred
+Visual: A thumb scrolling a feed of blurred posts on a smartphone
 Chart: 1 → 10 | posts from one tap · illustration
 
 Is it the alerts, or is it you? One test tells you.
-Visual: Silhouette cut-out of a person on a sofa, the phone glow drawn around them in yellow highlighter
+Visual: A person seen from behind on a sofa, lit by a phone screen
+Visual: A notepad and pencil beside a phone on a coffee table
 
 Silence every alert that isn't from a person, for one week.
-Visual: A phone showing a generic list of toggles, a thumb switching several off, text unreadable
+Visual: A thumb switching off notification toggles on a phone, text unreadable
+Visual: A phone lying on a desk with its screen dark
 Text: FICTIONAL INTERFACE · 7 DAYS
 
 Then count how many silenced apps you actually missed.
-Visual: A paper calendar taped to a desk, seven days crossed off in pencil
+Visual: A paper calendar on a desk, seven days crossed off in pencil
+Visual: A hand making tally marks on a notepad beside a phone
 Text: HOW MANY DID YOU MISS?
 
 One buzz shouldn't cost twenty minutes. Now it doesn't have to.
-Visual: The phone face down on a quiet desk in morning light, the glass of water beside it perfectly still
+Visual: A phone face down on a quiet desk in morning light
+Visual: An open book and a cup of coffee on a sunny desk

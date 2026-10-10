@@ -5,39 +5,46 @@ Tags: #HiddenEconomics #subscriptions #personalfinance #money #moneypsychology
 Source: UK government estimate of £1.6bn a year spent on unwanted subscriptions, reported August 2026 (https://techradar.com/tech/we-spend-gbp1-6bn-a-year-on-subscriptions-we-dont-want-fast-tracked-uk-government-policy-promises-to-make-cancelling-them-easier-and-will-make-phoney-bargains-illegal); (https://www.scmp.com/news/world/europe/article/3363469/uk-pm-burnham-vows-end-subscription-traps-amid-cost-living-crisis)
 
 You quit in January. It still charged you.
-Visual: A phone lying face down on a bare kitchen table, a thin line of old coins crawling out from under it and dropping off the edge one by one
+Visual: A smartphone lying face down on a kitchen table beside a January calendar page
+Visual: A printed bank statement with one card payment circled in red pen, text unreadable
 Text: JAN: STOPPED · JUN: STILL PAYING
 
 Twelve pounds a month. By June, seventy-two gone.
-Visual: Six coins stacked in a column on a paper wall calendar, the torn-off month pages lying beside it
+Visual: Six stacks of one-pound coins in a row on a paper wall calendar
 Text: ILLUSTRATION
 Chart: £12 × 6 = £72 | six forgotten months · illustration
 
 So why did nobody notice?
-Visual: A cut-out photograph of a single eye pasted onto the black glass of a switched-off phone
+Visual: A switched-off smartphone lying face down on a cluttered desk
 Text: WHY NOBODY NOTICED
 
 Because a payment that asks for no decision never gets one.
-Visual: A hand reaching past an open leather wallet on a cluttered desk without looking at it
+Visual: A hand reaching past an open leather wallet on a desk
+Visual: A smartphone on a desk showing an automatic payment notification, text unreadable
 Text: NO DECISION = NO NOTICE
 
 So what does all that forgetting cost the country?
-Visual: An old paper map of Britain spread on a desk, small piles of coins scattered across its towns
+Visual: An old paper map of Britain spread across a wooden desk
+Visual: A busy British high street with shoppers seen from far away
 Text: WHAT DOES IT COST THE UK?
 Stock: busy high street
 
 The UK government puts unwanted subscriptions at one point six billion pounds a year.
-Visual: A stack of old newspapers beside bundles of banknotes tied with string on a desk
+Visual: The Houses of Parliament in London seen across the river
+Visual: Bundles of banknotes tied with string stacked high on a desk
 Chart: £1.6bn | unwanted subscriptions a year · UK est.
 
 Find payments that repeat, month after month.
-Visual: A printed bank statement taped to a desk, a red pen circling the same line all the way down the page, text unreadable
+Visual: A printed bank statement on a desk beside a red pen, text unreadable
+Visual: The same payment line circled in red on three monthly statements, text unreadable
 Stock: checking bank statement
 
 Ask of each one, would I buy this today?
-Visual: A thumb hovering over a phone, a single red button glowing on its screen, text unreadable
+Visual: A hand holding a smartphone showing a list of subscriptions, text unreadable
+Visual: A person seen from behind at a kitchen table, holding a phone
 Text: WOULD I BUY THIS TODAY?
 
 If not, cancel it before June comes round again.
-Visual: The same phone face down on the kitchen table, the last coin stopping right at the edge
+Visual: A thumb pressing a cancel button on a smartphone, text unreadable
+Visual: A June page on a paper wall calendar circled in green pen
 Text: CANCEL BEFORE JUNE

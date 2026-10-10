@@ -5,38 +5,46 @@ Tags: #HiddenEconomics #conartist #scams #history #paris
 Source: Mental Floss, How Con Man Victor Lustig Sold the Eiffel Tower, https://www.mentalfloss.com/article/12809/smooth-operator-how-victor-lustig-sold-eiffel-tower; Ripley's, The Charlatan Count Who Sold the Eiffel Tower, https://www.ripleys.com/stories/sold-eiffel-tower; Tour Eiffel, Who sold the Eiffel Tower?, https://www.toureiffel.paris/en/news/history-and-culture/who-sold-eiffel-tower
 
 He sold the Eiffel Tower. He never owned it.
-Visual: A cut-out photograph of the Eiffel Tower lying on its side across a desk, a paper price tag tied to its tip with string
+Visual: The Eiffel Tower seen from a 1920s Paris street
+Visual: A 1920s bill of sale lying on a wooden desk, text unreadable
 Text: PARIS, 1925
 
 Con man Victor Lustig posed as a fake government official.
-Visual: Silhouette of a man in a 1920s overcoat and hat seen from behind, beside a forged letter with a wax seal, text unreadable
+Visual: A man in a 1920s overcoat and hat seen from behind
+Visual: A forged government letter with a red wax seal, text unreadable
 Text: A FAKE OFFICIAL
 
 He told scrap dealers the city wanted the tower torn down.
-Visual: An old photograph of the Eiffel Tower taped to a desk map of Paris, red string leading to a pile of scrap iron
+Visual: A 1920s Paris scrapyard piled with old iron girders
+Visual: Rusted iron girders and rivets piled on cobblestones
 Chart: 7,300 tonnes | of iron, offered as scrap
 Stock: eiffel tower 1920s
 
 So why would anyone believe him?
-Visual: Extreme close-up of a magnifying glass over an official-looking stamp, ink unreadable
+Visual: A magnifying glass over an official rubber stamp on paper, ink unreadable
 Text: WHY BELIEVE HIM?
 
 He even hinted at a bribe. That made him seem like a real official.
-Visual: A gloved hand sliding a thick envelope across a café table, shadows only
+Visual: A gloved hand sliding a thick envelope across a café table
+Visual: A 1920s official's desk with an inkwell and a brass nameplate, text unreadable
 Text: THE BRIBE MADE IT FEEL REAL
 
 One dealer, André Poisson, paid up. Lustig fled with the cash.
-Visual: An empty café chair beside a half-finished cup of coffee, a suitcase-shaped gap in the dust
+Visual: A hand counting a stack of 1920s French banknotes on a table
+Visual: An empty café chair beside a half-finished cup of coffee
 Stock: 1920s paris street
 
 So why did the police never hear about it?
-Visual: An old police station door at night, closed and unlit, cut-out photograph style
+Visual: An old Paris police station door at night, closed
+Visual: A closed 1920s police notebook lying on a wooden desk
 Text: NO POLICE REPORT?
 
 Poisson was too embarrassed to report it.
-Visual: A hand pressing a crumpled bill of sale face down on a desk, text unreadable
+Visual: A man in a 1920s suit seen from behind, head lowered
+Visual: A crumpled bill of sale pressed face down on a desk
 Text: TOO EMBARRASSED
 
 The tower never moved. The money never came back.
-Visual: The same cut-out tower now standing upright on the desk, the price tag cut loose beside it
+Visual: The Eiffel Tower standing over Paris rooftops on a grey day
+Visual: An empty leather wallet lying open on a wooden table
 Text: SHAME KEEPS SCAMS QUIET

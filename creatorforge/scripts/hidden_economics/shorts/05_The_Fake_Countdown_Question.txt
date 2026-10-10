@@ -5,39 +5,46 @@ Tags: #HiddenEconomics #countdowntimer #darkpatterns #onlineshopping #consumerri
 Source: Mathur et al., Dark Patterns at Scale, Findings from a Crawl of 11K Shopping Websites, Proc. ACM HCI (CSCW) 2019 (https://arxiv.org/abs/1907.07032); project page (https://webtransparency.cs.princeton.edu/dark-patterns)
 
 The clock hit zero. The deal didn't end.
-Visual: An old kitchen egg timer at zero on a desk, a phone beside it still glowing with a generic sale page, a red circle drawn around both, text unreadable
+Visual: An old kitchen egg timer showing zero on a desk
+Visual: A smartphone showing a sale page with a countdown bar, text unreadable
 Text: 00:00:00 · STILL ON SALE?
 
 So what was it counting down to?
-Visual: Red zero digits cut from an old digital clock and taped to graph paper, red pen arrows around them pointing nowhere
+Visual: An old digital alarm clock on a dark bedside table
 Text: COUNTING TO WHAT?
 
 This fictional shop gives you ten minutes. Too short to compare.
-Visual: A printed phone screen of a generic product page with a glowing red timer bar, a thumb pressing down beside the buy button, text unreadable
+Visual: A smartphone showing a product page with a red timer bar, text unreadable
+Visual: Two laptops side by side showing different shops, text unreadable
 Text: FICTIONAL SHOP · 10:00
 
 But how often are these clocks honest?
-Visual: Dozens of old wall clocks and egg timers spread across a desk, every one showing a different time
+Visual: Dozens of old wall clocks on a wall, each showing a different time
 Text: HONEST CLOCK?
 
 In twenty nineteen, Princeton researchers crawled about eleven thousand shopping websites.
-Visual: An old photograph of a university building cut out and pinned to a corkboard beside rows of printed web pages
+Visual: Princeton University's stone buildings and lawn seen from a distance
+Visual: Rows of printed web pages pinned to a corkboard, text unreadable
 Text: PRINCETON · 2019 · ~11,000 SITES
 Stock: princeton university campus
 
 They found three hundred and ninety-three countdown timers.
-Visual: A grid of dozens of small red timers cut from screenshots and pinned to a corkboard, nothing readable
+Visual: Dozens of small kitchen timers laid in a grid on a desk
 Chart: 393 | countdown timers · 361 sites
 
 On some, the offer stayed valid after the timer ran out.
-Visual: The same phone from the opening, timer at zero, the buy button still glowing, circled twice in red pen
+Visual: A phone with its countdown at zero beside an egg timer, text unreadable
+Visual: A thumb pressing a buy button on a smartphone, text unreadable
 Text: TIMER ENDED · OFFER DIDN'T
 
 So how do you tell? Let it run out, or return tomorrow.
-Visual: A phone placed face down beside a cup of tea on a kitchen table, early morning light
+Visual: A person seen from behind looking at a phone on a sofa
+Visual: A phone placed face down beside a cup of tea on a table
+Visual: A kitchen table in early morning light with a phone and calendar
 Text: SECOND LOOK TEST
 Stock: phone face down table
 
 A timer that hits zero and changes nothing was never a deadline.
-Visual: The egg timer's needle resting on zero as the phone beside it goes dark
+Visual: An egg timer's needle resting on zero on a kitchen table
+Visual: A smartphone screen going dark on a desk beside an egg timer
 Text: NOT A DEADLINE

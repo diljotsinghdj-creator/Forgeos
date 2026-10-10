@@ -4,32 +4,40 @@ Title: 1 Question Beats 3 Traps: Who Benefits If I Act Now?
 Tags: #HiddenEconomics #psychology #scams #personalfinance #decisionmaking
 
 Three traps. One question stops them all.
-Visual: A single lit match held over a ticking kitchen timer on a dark desk, three phones glowing in a circle around it
+Visual: Three phones lying side by side on a dark desk, screens lit, text unreadable
+Visual: A hand placing a phone face down on a desk
 Text: 1 QUESTION. 3 TRAPS.
 
 Who benefits if I act right now?
-Visual: A hand hovering above a phone on a desk, a red question mark drawn on the paper beneath it
+Visual: A hand hovering above a phone's buy button, text unreadable
+Visual: A notepad and pen on a desk, one line written, text unreadable
 Text: WHO BENEFITS IF I ACT NOW?
 
 The flash sale timer? The seller. A rush leaves no time to compare.
-Visual: A torn shop flyer with a red countdown bar pinned to a corkboard, text unreadable
+Visual: A phone showing a flash sale countdown, text unreadable
+Visual: A shop owner seen from behind at a till counting cash
 Chart: 10 → 0 | minutes left · fictional sale
 
 The midnight buzz? The app. Your attention is what it sells.
 Visual: A phone glowing on a pillow in a dark bedroom, screen blurred
+Visual: A tech office with rows of desks and screens, people seen from behind
 Stock: person scrolling phone in bed
 
 And the caller saying your account is at risk?
-Visual: A silhouette cut-out holding a phone to its ear, taped beside a dark window
+Visual: A man seen from behind holding a phone to his ear by a dark window
+Visual: A bank card on a table next to a ringing phone
 
 Only a scammer needs you to skip checking.
-Visual: A shadowed figure cut-out standing in a paper doorway, a red circle drawn around it
+Visual: A figure standing in a dark doorway, seen from far away
+Visual: A dimly lit call-centre desk with a headset and a phone
 Text: WHO NEEDS YOU NOT TO CHECK?
 
 The question proves no one guilty. It reveals the incentive.
-Visual: A magnifying glass over a scattering of coins and receipts on a desk, figures unreadable
+Visual: A magnifying glass over coins and receipts on a desk, figures unreadable
+Visual: A hand turning over a price tag in a shop, text unreadable
 Text: IT REVEALS THE INCENTIVE
 
 Who benefits if I act right now? Ask it every time.
-Visual: The match blown out, a thin curl of smoke over the stopped timer, the three phones face down
+Visual: A hand pausing over a phone on a desk
+Visual: Three phones lying face down on a desk in morning light
 Text: PAUSE. VERIFY. CHOOSE.

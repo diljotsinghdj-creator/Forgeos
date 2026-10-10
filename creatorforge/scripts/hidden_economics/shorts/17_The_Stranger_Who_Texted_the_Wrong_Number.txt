@@ -5,38 +5,46 @@ Tags: #HiddenEconomics #scams #pigbutchering #cryptoscam #fraud
 Source: FBI Internet Crime Complaint Center, 2025 Internet Crime Report (investment fraud losses about $8.6bn), https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf; FBI IC3 public service announcements on cryptocurrency investment fraud, https://www.ic3.gov/
 
 A wrong-number text. Weeks later, savings gone.
-Visual: A phone glowing alone in a pitch-black room, one message bubble on its screen, a red string running from it to an empty, cracked piggy bank, text unreadable
+Visual: A smartphone in a dark room showing one text message, text unreadable
+Visual: An empty cracked piggy bank on a kitchen table
 Text: SORRY, WRONG NUMBER? · ILLUSTRATION
 
 The stranger apologises, keeps chatting, and becomes a friend for weeks.
-Visual: A row of torn calendar pages taped across a desk, each with a small phone-message cut-out pinned to it, text unreadable
+Visual: A hand holding a phone with a long chat thread, text unreadable
+Visual: A desk calendar with several weeks crossed off in pen
 Text: FICTIONAL EXAMPLE
 Stock: person texting on phone
 
 Then a crypto tip. Your small deposit doubles on screen.
-Visual: Close-up of a hand holding a phone showing a generic trading app with a steep green line, numbers blurred and unreadable
+Visual: A hand holding a phone showing a trading app with a rising green line, numbers unreadable
+Visual: A few coins beside a phone showing a green chart, digits blurred
 Text: FICTIONAL INTERFACE · FAKE PROFITS
 
 So why can't you withdraw a penny?
-Visual: Extreme close-up of a thumb pressing a greyed-out button on a phone, a padlock drawn in red pen beside it
+Visual: A thumb pressing a greyed-out button on a phone, text unreadable
+Visual: A single penny coin on a wooden table
 Text: WHY CAN'T YOU CASH OUT?
 
 The profits were never real. The platform belongs to the scammers.
-Visual: The phone taped to a desk map, red string running from it to a silhouette of a figure in a dark doorway
+Visual: A phone screen showing a trading chart, numbers unreadable
+Visual: A person seen from behind in a dark room at several computer screens
 Text: THE APP IS THE SCAM
 
 Every withdrawal needs another fee, until you stop paying.
-Visual: A stack of invoices on a desk, each circled in red pen, coins draining off the edge of the table
+Visual: A stack of printed invoices on a desk, each circled in red pen, text unreadable
+Visual: An empty wallet lying open on a kitchen table
 Text: FEE · TAX · ANOTHER FEE
 
 Investment fraud cost Americans about eight point six billion dollars in twenty twenty-five.
-Visual: A heap of dollar notes and coins on graph paper, a red circle drawn around the whole pile
+Visual: A large heap of US dollar banknotes on a table
+Visual: A printed government fraud report on a desk, text unreadable
 Chart: $0 → $8.6bn | reported US investment fraud, 2025
 
 Never invest on advice from someone you've only met online.
-Visual: Two hands placing a phone face down on a kitchen table in morning light
+Visual: Two hands placing a phone face down on a kitchen table
+Visual: A closed laptop on a desk beside a cup of coffee
 Text: NEVER INVEST WITH AN ONLINE-ONLY FRIEND
 
 Especially someone who found you by accident.
-Visual: The same phone glowing alone in the dark room, the message bubble fading, the red string cut
+Visual: A smartphone glowing alone in a dark room, text unreadable
 Text: NO ACCIDENT
