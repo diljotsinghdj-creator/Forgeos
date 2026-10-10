@@ -4,7 +4,7 @@ Title: You Saved £50 and Lost £50: Why 50% Off Feels Irresistible
 Tags: #HiddenEconomics #anchoring #discounts #shopping #moneypsychology
 Source: Tversky and Kahneman, Judgment under Uncertainty, Heuristics and Biases, Science 185 (1974) 1124-1131, wheel-of-fortune anchoring experiment (https://doi.org/10.1126/science.185.4157.1124)
 
-You saved fifty pounds. Your bank account is fifty pounds lighter.
+You saved fifty pounds. You're fifty pounds poorer.
 Visual: A shopping bag on a dark hallway floor, coins trickling out through a small tear in its bottom
 Text: SAVED £50? SPENT £50?
 

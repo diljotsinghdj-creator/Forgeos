@@ -32,7 +32,8 @@ SETTINGS
   Update the pod first (start command) - Chart:, Stock: and the two looks need CreatorForge 1.0.0-rc51 or newer.
 
 EVERY SCRIPT HAS
-  - A first line that poses a concrete contradiction, number or personal stake (no intro), over a striking first image.
+  - A first line that poses a concrete contradiction, number or personal stake (no intro), over a striking first
+    image, and lands within the first 3 seconds (7-8 words; narration starts at 0:00).
   - Shorts run 30-35 seconds (78-90 words); long form runs 6-8 minutes; titles and on-screen hooks lead with the contradiction.
   - A hook (question, twist, reveal or number) at least every 15 seconds in Shorts and every 30 seconds in long
     form - measured on every script - always paid off.

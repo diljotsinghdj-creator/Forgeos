@@ -4,7 +4,7 @@ Title: You Paid £0 for This App. Who Earned From Your 20 Minutes?
 Tags: #HiddenEconomics #attentioneconomy #screentime #digitalwellbeing #behaviouraleconomics
 Source: Ofcom Online Nation 2025 (May 2025 data) https://www.ofcom.org.uk/media-use-and-attitudes/online-habits/online-nation; Simon, Designing Organizations for an Information-Rich World, 1971 https://www.gwern.net/doc/design/1971-simon.pdf; CMA Online platforms and digital advertising market study, final report July 2020 https://www.gov.uk/cma-cases/online-platforms-and-digital-advertising-market-study; Meta Platforms Form 10-K FY2024 https://www.sec.gov/Archives/edgar/data/1326801/000132680125000017/meta-20241231.htm; Kushlev, Proulx & Dunn, Silence Your Phones, CHI 2016 https://www.interruptions.net/literature/Kushlev-CHI16.pdf; Allcott, Braghieri, Eichmeyer & Gentzkow, The Welfare Effects of Social Media, AER 2020 https://www.aeaweb.org/doi/10.1257/aer.20190658; Allcott, Gentzkow & Song, Digital Addiction, NBER WP 28936 https://www.nber.org/papers/w28936; EU Digital Services Act Art. 25 and Recital 67 https://eur-lex.europa.eu/eli/reg/2022/2065/oj; European Commission IP/26/312, 6 Feb 2026 https://ec.europa.eu/commission/presscorner/detail/en/ip_26_312; TikTok response reported by Euronews, 6 Feb 2026 https://www.euronews.com/next/2026/02/06/tiktoks-addictive-design-breaches-eu-law-commission-says
 
-The apps you open most have never charged you a penny.
+Your apps are free. Or are they?
 Visual: A smartphone lying on an old newspaper, a stream of cut-out gold coins pouring out of its screen into a waiting cupped hand
 Text: £0
 
