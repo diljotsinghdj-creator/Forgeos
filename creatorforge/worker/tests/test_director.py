@@ -103,6 +103,19 @@ def test_header_lines_are_not_read_aloud():
     assert spec.publish["title"] == "The Silent Trick"
 
 
+def test_a_wrapped_source_link_is_never_read_aloud():
+    from creatorforge_worker import director as d
+    # A phone wrapped the long Source: line inside a link; the second half must stay in the source.
+    raw = ("The Subscription Trap\nOn-screen hook: STOPPED. STILL PAYING?\n"
+           "Source: UK estimate (https://techradar.com/tech/a-b); (https://www\n"
+           ".scmp.com/news/world/europe/article/3363469/uk-subscription-traps)\n\n"
+           "You quit in January. It still charged you.\nVisual: A phone face down\n")
+    spec = d.ProductionSpec.from_dict({"script": raw, "duration_s": 20})
+    assert "scmp" not in spec.script and "http" not in spec.script
+    assert spec.script.endswith("You quit in January. It still charged you.")
+    assert spec.publish["source"].endswith("uk-subscription-traps)")
+
+
 def test_writer_text_and_stock_lines_belong_to_their_spoken_line():
     from creatorforge_worker import director as d
     raw = ("Six months becomes seventy-two pounds.\nVisual: Calendar pages flipping\nText: £12 × 6 = £72\n"

@@ -594,6 +594,12 @@ ROLE_EDIT = {"HOOK": ("intrigue", "flash"), "STAKES": ("unease", ""), "SETUP": (
              "LOOP": ("suspense", "dip"), "CTA": ("warm", "")}
 
 
+# A web link, or a fragment of one left by a wrapped line (".scmp.com/news/...", "(https://www").
+_URL = re.compile(r"\(?\b(?:https?://|www\.)\S*\)?|\(?\S*\.(?:com|org|net|gov|edu|io|co|uk|eu|int|info)(?![A-Za-z])(?:/\S*)?\)?;?", re.I)
+# How a wrapped line's second half starts: mid-word, mid-link, or with punctuation rather than a new sentence.
+_CONTINUATION = re.compile(r"^(?:[a-z0-9./(\[;,:&?=_%-]|https?:|www\.)|.*(?:https?://|www\.|\.(?:com|org|net|gov|uk)/)")
+
+
 def parse_script(raw: str) -> tuple[str, dict]:
     """Splits a writer's script into the words to speak and the direction around them: per-line story roles
     (HOOK, TWIST, ...), the on-screen hook, visual direction and posting details. Timestamps are dropped.
@@ -602,9 +608,18 @@ def parse_script(raw: str) -> tuple[str, dict]:
     spoken: list[str] = []
     per: dict[int, dict] = {}        # spoken line index -> {"visual", "text", "stock"} from the writer
     looks: list[str] = []            # visual lines not tied to a spoken line: the look of the whole video
+    after_source = False             # the line just above was a Source: line (a long one may be wrapped)
     for line in raw.replace("\r", "").splitlines():
         parts = _META.split(line)
         body, pairs = parts[0], list(zip(parts[1::2], parts[2::2]))
+        if not pairs and after_source and line.strip() and _CONTINUATION.match(line.strip()):
+            # A long Source: line wrapped by a phone or an editor ("...(https://www" / ".scmp.com/news/...)"):
+            # the rest belongs to the source, never to the narration.
+            meta["source"] = (meta.get("source", "") + line.strip())[:2000]
+            continue
+        after_source = bool(pairs) and pairs[-1][0].lower() in ("source", "sources")
+        if _URL.search(body):        # links are for the description, never read aloud
+            body = re.sub(r"\s{2,}", " ", re.sub(r"\(\s*(?:see\s*)?(?:\)|(?=[A-Z]))", " ", _URL.sub("", body)))
         tags = re.findall(r"#\w+", body + " ".join(v for _, v in pairs))
         if tags:
             meta["hashtags"] = list(dict.fromkeys(meta.get("hashtags", []) + tags))

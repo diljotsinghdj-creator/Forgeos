@@ -44,7 +44,10 @@ class DiffusersImageProvider:
                 pipe = AutoPipelineForText2Image.from_pretrained(self.model, torch_dtype=dtype, variant="fp16")
             if "xl" in self.model.lower() and "schnell" not in self.model.lower():
                 from diffusers import DPMSolverMultistepScheduler
-                pipe.scheduler = DPMSolverMultistepScheduler.from_config(pipe.scheduler.config, use_karras_sigmas=True)
+                # Force DPM++ 2M: some fine-tunes (DreamShaper XL) ship a DEIS scheduler config, and carrying its
+                # algorithm_type="deis" over fails at the first step ("final_sigmas_type zero is not supported").
+                pipe.scheduler = DPMSolverMultistepScheduler.from_config(
+                    pipe.scheduler.config, use_karras_sigmas=True, algorithm_type="dpmsolver++", solver_type="midpoint")
             if dtype == torch.bfloat16 and hasattr(pipe, "vae") and getattr(pipe.vae.config, "force_upcast", False):
                 # SDXL's VAE "upcasts" to float32 to avoid fp16 overflow. bf16 doesn't overflow, and the upcast
                 # (plus the img2img pass's own up/down casting) can leave the VAE float32 while latents are bf16:
