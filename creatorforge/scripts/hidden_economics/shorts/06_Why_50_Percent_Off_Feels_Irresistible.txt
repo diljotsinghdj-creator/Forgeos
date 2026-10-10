@@ -37,4 +37,4 @@ Stock: clothing rack shop
 
 Weren't shopping for a jacket today? Then you didn't save fifty. You spent it.
 Visual: The shopping bag from the opening, now empty on the hallway floor, the last coin settled beside it
-Text: NOT LOOKING FOR IT? → SPENT £50
+Text: NOT LOOKING FOR IT? STILL SPENT £50

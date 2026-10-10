@@ -4,354 +4,341 @@ Title: 10 Million Subscriptions Nobody Wants: Why Cancelling Is So Hard
 Tags: #HiddenEconomics #subscriptions #darkpatterns #consumerrights #behaviouraleconomics
 Source: UK Government, New measures to crack down on subscription traps, Nov 2024, https://www.gov.uk/government/news/new-measures-unveiled-to-crack-down-on-subscription-traps; DBT Subscription traps impact assessment, https://assets.publishing.service.gov.uk/media/64464e6f529eda00123b02c4/annex_2-subscription_traps_impact_assessment.pdf; DellaVigna and Malmendier, Paying Not to Go to the Gym, American Economic Review 96(3), 2006, https://eml.berkeley.edu/~ulrike/Papers/gym.pdf; ICPEN Dark Patterns Sweep public report, July 2024, https://icpen.org/news/1360; FTC, ICPEN, GPEN dark patterns review, July 2024, https://www.ftc.gov/news-events/news/press-releases/2024/07/ftc-icpen-gpen-announce-results-review-use-dark-patterns-affecting-subscription-services-privacy; Custom Communications v FTC, 8th Cir. No. 24-3137, 8 July 2025; DBT Government response on subscription contracts regime, 2026, https://www.gov.uk/government/consultations/consultation-on-the-implementation-of-the-new-subscription-contracts-regime
 
-Britain pays for nearly ten million subscriptions that people do not want.
-Visual: A coin slot set into a bare bedroom wall at night, pound coins dropping into it on their own, a bedside lamp flickering
+Right now, Britain is paying for nearly ten million subscriptions that people do not want.
+Visual: An old photograph of a bedroom wall with a coin slot cut into it, pound coins dropping through the slot on their own
 Text: ~10 MILLION UNWANTED SUBSCRIPTIONS
 
 That is the government's own estimate, costing around one point six billion pounds a year.
-Visual: Wide overhead shot of pound coins sliding slowly down a dark staircase like a stream, lamp light glinting on them
-Text: £1.6bn A YEAR (UK Govt, 2024)
+Visual: A government report with a red wax seal, a trail of real coins spilling out from between its pages
+Chart: £1.6bn | a year on unwanted subscriptions
 
 The average one costs about fourteen pounds a month.
-Visual: Close-up of a hand reaching into a coat pocket, coins slipping through a hole in the lining and falling away
-Text: ~£14 / MONTH EACH
+Visual: A coat pocket cut from an old catalogue, coins slipping through a hole in the lining
+Text: ~£14 A MONTH EACH
 
 One of them could be leaving your account tonight.
-Visual: A phone face down on a kitchen table at night, its edges pulsing with light, rain streaking the window behind
+Visual: A phone lying face down on a bank statement, a thin line of coins trailing away from it to the edge of the paper
 
 Joining took one tap. So why does leaving feel like a maze?
-Visual: Extreme close-up of a finger tapping a bright button, the camera pulling back to reveal a pencil maze on paper beneath the phone
+Visual: A fingertip pressing a bright button on a phone, a hand-drawn pencil maze spreading out from beneath it
 Text: ONE TAP IN. HOW MANY OUT?
 
 By the end, you will know why forgetting is so profitable,
-Visual: A wall calendar in a dark hallway, its pages lifting and falling in a draught
+Visual: A torn wall-calendar page with one date circled, its corner lifting in a draught
 
 why America's fix collapsed six days before it began,
-Visual: A row of dominoes on a dark table, the last one tipping in slow motion
+Visual: A newspaper clipping of a stone government building, a row of paper dominoes toppling across it
 
 and a ten-minute check that stops the leak.
-Visual: A hand turning off a dripping brass tap, the last drop falling into a glass under lamp light
+Visual: A hand closing a brass tap pasted onto a bank statement, the last drop falling onto the paper
 
 Meet Sam. Sam is fictional, but you probably know a Sam.
-Visual: Silhouette from behind of a person on a night bus, rain running down the window, phone glow on their hands
+Visual: A cut-out silhouette of a person seen from behind on a bus seat, a phone glowing in their hands
 Text: SAM · FICTIONAL
 
 In January, Sam started a free seven-day streaming trial.
-Visual: Phone screen showing a generic streaming sign-up page, one bright button gently pulsing, text unreadable
+Visual: A phone showing a generic streaming sign-up page with one bright button, text unreadable, beside a January calendar page
 Text: FREE 7-DAY TRIAL (FICTIONAL)
 
 One tap and a card number. Ten seconds.
-Visual: Close-up of a hand tapping a payment card against a phone, warm desk-lamp light
-Stock: contactless card payment phone
+Visual: A hand holding a bank card against a phone, a small kitchen timer beside it
 
 Sam watched one film, and then life got busy.
-Visual: A sofa in a dim living room, a television flickering, steam curling from a mug of tea going cold
+Visual: An old photograph of a sofa and a television, a mug of tea beside it going cold
 
 On day eight, ten pounds quietly left Sam's account.
-Visual: Close-up of a banking app on a phone, a new line sliding in and glowing red, text blurred
+Visual: A printed bank statement with one new line circled, a single ten-pound note sliding off the page
 Text: −£10 (ILLUSTRATION)
 
 Nothing illegal happened. Sam agreed to it.
-Visual: Macro of a ticked checkbox glowing on a screen, a cursor blinking beside it
+Visual: A paper contract with one ticked box and a signature, everything else blurred
 
 So was Sam's forgetting an accident, or part of the plan?
-Visual: A wall calendar with one red circle, a beam of lamp light sweeping slowly across it
+Visual: A wall calendar page with a red circle around day eight, a question mark scrawled beside it
 Text: ACCIDENT OR PART OF THE PLAN?
 
 Run the numbers for a fictional service with one hundred thousand subscribers.
-Visual: Wide aerial shot of a packed stadium at dusk, floodlights sweeping over the crowd
-Text: 100,000 SUBSCRIBERS (HYPOTHETICAL)
-Stock: stadium crowd aerial
+Visual: A sheet of paper covered in rows of tiny identical cut-out figures, too many to count
+Text: HYPOTHETICAL SERVICE
 
 At ten pounds each, that is a million pounds a month.
-Visual: A hand riffling through a thick bundle of banknotes under a hard top light
-Text: 100,000 × £10 = £1,000,000
+Visual: A thick bundle of banknotes tied with string on a ledger page
+Chart: 100,000 × £10 = £1,000,000 | a month (hypothetical)
 
 Every renewal arrives without an advert, a sale, or a decision.
-Visual: A card terminal alone on a shop counter at night, its green light blinking approved again and again
-Stock: card terminal approved
+Visual: A card terminal on a shop counter, a long receipt curling out of it onto the floor
 
 If one in ten leaves, a hundred thousand pounds walks out each month.
-Visual: A hand sweeping coins off the edge of a table, the coins tumbling into darkness in slow motion
-Text: −£100,000 / MONTH (ILLUSTRATION)
+Visual: A hand sweeping coins off the edge of a ledger page, the coins tumbling into darkness
+Text: −£100,000 A MONTH (ILLUSTRATION)
 
 So the business has a reason to care how easy the door is to find.
-Visual: A door at the end of a dark corridor swinging slowly shut, the strip of light narrowing
+Visual: An old photograph of a long corridor with one small door at the far end, half in shadow
 
 Wanting customers to stay is perfectly legitimate.
-Visual: A shopkeeper's hands passing a paper bag across a counter, steam rising from a coffee cup beside the till
+Visual: A shopkeeper's hands passing a paper bag across a counter, a coffee cup beside the till
 
 Good products, fair prices and honest reminders all keep people paying.
-Visual: A phone on a bedside table, a soft notification glow pulsing in the dark, text unreadable
+Visual: A handwritten reminder note pinned beside a phone, text unreadable
 
 The problem starts when design, not value, is the reason they remain.
-Visual: Two doors in a dark corridor, one swinging wide and bright, the other narrow and sliding into shadow
+Visual: Two doors cut from old photographs side by side, one wide and bright, the other narrow and shadowed
 
 How hidden is that door in practice? In twenty twenty-four, regulators went looking.
-Visual: Wide shot of a darkened office at night, rows of monitors flicking on one by one, no faces
+Visual: A magnifying glass resting on a stack of printed web pages, a red pen beside it
 Text: HOW HIDDEN IS THE EXIT?
 
 Twenty-seven authorities in twenty-six countries ran a joint sweep.
-Visual: A world map on a wall, a hand pushing coloured pins into it across continents, lamp light moving
+Visual: A world map with pins pushed into twenty-six countries, string linking them across the oceans
 Text: 27 AUTHORITIES · 26 COUNTRIES
 
 They examined six hundred and forty-two subscription websites and apps.
-Visual: Overhead shot of a long table covered in phones and laptops, screens waking up one after another
+Visual: Dozens of phones and printed screenshots laid edge to edge across a table, screens unreadable
 Text: 642 SITES & APPS (ICPEN 2024)
 
 Nearly seventy-six percent showed at least one possible dark pattern.
-Visual: Four phones in a row on a dark desk, three flaring red one after another, the fourth staying dark
-Text: 75.7% AT LEAST ONE
+Visual: Four printed screenshots in a row, three of them circled in red, the fourth left clean
+Chart: 75.7% | showed at least one possible dark pattern
 
 That means design that steers you somewhere you did not choose.
-Visual: A pencil maze on paper, a hand-drawn arrow leading away from the only exit, the page lifting in a draught
-Text: DARK PATTERN
+Visual: A pencil maze on paper, a drawn arrow leading away from the only exit
 
 Nearly sixty-seven percent showed more than one.
-Visual: Red ink spreading slowly through two of three sheets of paper lying on a desk
-Text: 66.8% MULTIPLE
+Visual: Red ink spreading through two of three sheets of paper
+Chart: 66.8% | showed more than one
 
 The most common problem struck at the very moment of signing up.
-Visual: Extreme close-up of a finger descending onto a glowing purchase button, text unreadable
+Visual: A fingertip touching a glowing purchase button on a phone, text unreadable
 
 Many gave no way to switch off auto-renewal while signing up.
-Visual: A light switch taped over on a dark wall, a hand reaching for it and stopping
+Visual: A light switch taped over with brown parcel tape, a hand reaching for it and stopping
 Text: NO OPTION TO TURN OFF AUTO-RENEW
 
 Others never said how to cancel, or by when.
-Visual: A paper calendar with one date torn out, the torn edge fluttering under lamp light
+Visual: A paper calendar with one date torn out, the torn edge left ragged
 Text: NO CANCEL STEPS · NO DEADLINE
 
 One caution. The sweep made no legal findings.
-Visual: A magnifying glass sliding across a blurred screen, lamp light catching the lens
+Visual: A blank official form with an empty signature line, a pen lying beside it unused
 Text: NO LEGAL FINDINGS
 
 Possible tricks are evidence, not a verdict.
-Visual: A judge's gavel resting on a block, dust drifting through a shaft of light
-Text: EVIDENCE ≠ VERDICT
-Stock: gavel on wooden desk
+Visual: An old photograph of a judge's gavel resting on its block beside a sealed evidence envelope
+Text: EVIDENCE, NOT A VERDICT
 
 But remember Sam. Sam's trial had no tricks at all, and Sam still paid.
-Visual: The same sofa from earlier, television now off, the mug empty, rain on the window
+Visual: The same photograph of the sofa, the television now off, the mug empty
 
 So do businesses even need tricks?
-Visual: Extreme close-up of a thumb hovering over a plain, honest-looking button, text unreadable
+Visual: A thumb hovering over a plain, honest-looking button on a phone, text unreadable
 Text: DO THEY EVEN NEED TRICKS?
 
 In two thousand and six, two economists followed the money into three American gyms.
-Visual: Wide shot of an empty gym at night, strip lights flickering on row by row
+Visual: An archival photograph of a gym floor with rows of exercise machines and nobody on them
 Text: DellaVigna & Malmendier, AER 2006
 Stock: empty gym at night
 
 They tracked seven thousand seven hundred and fifty-two members over three years.
-Visual: A long row of lockers receding into shadow, one door slowly swinging open
+Visual: A long row of membership cards fanned across a table, each one slightly different
 Text: 7,752 MEMBERS · 3 YEARS
 
 Members on monthly plans paid over seventy dollars a month.
-Visual: A membership card sliding across a bank statement on a desk, figures blurred
+Visual: A gym membership card lying on a bank statement, a dollar bill folded beside it
 Text: $70+ A MONTH
 
 On average, they turned up four point three times.
-Visual: A gym turnstile rotating as one person walks through, seen from behind
-Text: 4.3 VISITS / MONTH
+Visual: A gym visit card with only four stamps on it, the rest of the boxes empty
+Text: 4.3 VISITS A MONTH
 
 These were people who had signed up precisely to get fit.
-Visual: A row of brand-new water bottles on a gym shelf, condensation running down them
+Visual: Running shoes still in their box, tissue paper untouched, on a bedroom floor
 
-That is more than seventeen dollars a visit.
-Visual: Macro of a receipt curling under a lamp, a pencil circling one figure
-Text: $70 ÷ 4.3 = $17+ PER VISIT
-
-A ten-visit pass would have cost them ten dollars a visit.
-Visual: Coins sliding off the taller of two stacks until it matches the shorter one
-Text: PASS: $10 PER VISIT
+That is over seventeen dollars a visit. A ten-visit pass worked out at ten.
+Visual: Two stacks of coins on a receipt, a pencil circling the taller one
+Chart: $17 vs $10 | monthly plan per visit, 10-visit pass
 
 The researchers estimated members forwent about six hundred dollars over their membership.
-Visual: A gym bag sitting unopened by a front door, dust drifting through a sunbeam above it
+Visual: A gym bag unopened by a front door, a fan of dollar bills poking out of a pocket
 Text: ~$600 FORGONE
 
 Now the twist. Nobody hid a cancel button from these people.
-Visual: A plain open door with sunlight pouring through, nothing blocking the way
+Visual: An old photograph of an open door with daylight pouring through, nothing in the way
 
 Annual members had to sign up again to keep going.
-Visual: A hand signing a contract under lamp light, the pen moving across the line
+Visual: A hand signing a renewal form, the pen moving across the line
 
 Monthly members renewed automatically, without lifting a finger.
-Visual: A circular arrow drawn in chalk on slate, chalk dust drifting off it
-Text: AUTO-RENEW vs RE-SIGN
+Visual: A circular arrow drawn in chalk on a slate, chalk dust lifting off it
 
 And they were seventeen percent more likely to still be enrolled after a year.
-Visual: Calendar pages flipping in lamp light, a whole year passing in seconds
-Text: +17% STILL ENROLLED AFTER 1 YEAR
-Stock: calendar pages flipping
+Visual: A year of calendar pages fanned out, a gym card clipped to the last one
+Chart: 0% → 17% | more likely still enrolled a year on
 
 The researchers pointed to overconfidence. Members expected to go far more often.
-Visual: Running shoes still in their box on a bedroom floor, morning light sweeping across them
+Visual: A handwritten weekly plan with gym ticked on every day, pinned above an empty gym bag
 
 They were paying for the person they planned to become.
-Visual: A gym towel folded neatly on an unused bench, a strip light buzzing and flickering above it
+Visual: A cut-out silhouette of an athlete pasted over an old photograph of an empty gym bench
 Text: PAYING FOR A FUTURE SELF
 
 So the strongest trap needs no trick at all. Just a default and your optimism.
-Visual: Rain running down a dark window, a faint silhouette reflected in the glass
+Visual: A paper switch already flipped to on, a small smiling sun sticker beside it
 Text: DEFAULT + OPTIMISM
 
 Every extra screen on top of that puts a price on leaving.
-Visual: A shadowed staircase, each step higher than the last, a beam of light climbing it
-Text: FRICTION = A PRICE ON LEAVING
+Visual: A staircase drawn on paper, each step taller than the last, a coin balanced on every step
+Text: FRICTION IS A PRICE ON LEAVING
 
 Not every step is a trick. A security check can protect your account.
-Visual: A hand tapping digits into a generic security code screen, digits blurred
+Visual: A padlock lying on a phone showing a generic security code screen, digits blurred
 Text: NOT EVERY STEP IS A TRICK
 
 So if defaults and friction cost people billions, why not ban them? America tried.
-Visual: Wide shot of a classical government building at dusk, a flag lifting in the wind
+Visual: A newspaper photograph of a classical government building, a flag above it
 Text: WHY NOT JUST BAN IT?
-Stock: government building dusk
+Stock: washington dc government building
 
 In late twenty twenty-four, America's consumer regulator finalised a click-to-cancel rule.
-Visual: An official stamp coming down hard onto a document, the seal pressing into paper, text blurred
+Visual: An official stamp pressing down onto a typed document, the seal biting into paper, text blurred
 Text: CLICK-TO-CANCEL RULE, 2024
 
 The idea was simple. Leaving should be as easy as joining.
-Visual: Two identical bright buttons glowing side by side on a dark screen, pulsing in sync
-Text: EXIT = ENTRY
+Visual: Two identical paper buttons side by side on a sheet, joined by a hand-drawn line
+Text: LEAVING AS EASY AS JOINING
 
 On the eighth of July twenty twenty-five, an appeals court struck it down.
-Visual: An empty courtroom in low light, dust turning slowly in a shaft of window light
+Visual: The same typed document torn in half, a court seal on one half, dust settling
 Text: VACATED · 8 JULY 2025
-Stock: empty courtroom
+Stock: courthouse exterior
 
 That was six days before businesses had to comply.
-Visual: A red pencil crossing out calendar days one by one
+Visual: A calendar page with six days crossed out in red pen, the seventh circled
 Text: 6 DAYS BEFORE IT APPLIED
 
 The court did not say easy cancelling was a bad idea.
-Visual: The pages of a heavy law book turning on their own in a draught
+Visual: A heavy law book lying open, its pages turning in a draught
 
 It ruled the regulator had skipped a required cost analysis.
-Visual: Macro of a ledger with one empty column, a pencil rolling slowly across it
+Visual: A ledger page with one completely empty column, a pencil lying across it
 Text: PROCEDURE, NOT PRINCIPLE
 
 Britain chose a different route, and its rules are already law.
-Visual: Wide shot of a parliament building across a river at dusk, windows lighting up
+Visual: An old postcard of a parliament building beside a river, pinned to a map of London
 Text: DMCC ACT 2024
-Stock: parliament river dusk
+Stock: houses of parliament london
 
 Subscribers will get reminders before renewals.
-Visual: A phone on a dark desk lighting up with a generic reminder, text unreadable
+Visual: A phone lying on a letter with a generic reminder on its screen, text unreadable
 Text: RENEWAL REMINDERS
 
 They will get fourteen days to cancel after a free trial turns paid.
-Visual: A hand placing the last of fourteen pebbles in a line on a dark table
-Text: 14-DAY COOLING-OFF
+Visual: Fourteen pebbles laid in a line along a calendar strip
+Chart: 14 | days to cancel after a trial turns paid
 
 And leaving must be straightforward. The government expects this in twenty twenty-seven.
-Visual: A door slightly ajar, warm light spilling through and slowly widening
+Visual: An old photograph of a door left ajar, light spilling through the gap
 Text: EXPECTED 2027
 
 Notice the target. Not subscriptions themselves, but forgetting and friction.
-Visual: A magnet sliding beneath a scatter of coins on a dark table, the coins dragging after it
+Visual: A horseshoe magnet dragging a scatter of coins across a sheet of paper
 
 Until then, what does a fair exit actually look like?
-Visual: Close-up of a hand reaching for a door handle in a dim hallway
+Visual: A hand reaching for a brass door handle pasted onto a blank page
 Text: WHAT IS A FAIR EXIT?
 
 Picture two fictional cancellation journeys.
-Visual: Two phones side by side on a dark desk, both screens waking at once, text unreadable
+Visual: Two phones side by side on a sheet of paper, both screens lit, text unreadable
 Text: FICTIONAL INTERFACES
 
 In the first, you choose cancel and see the date your access ends.
-Visual: Phone screen showing a generic confirmation, a tick icon drawing itself, text unreadable
+Visual: A phone showing a generic confirmation with a large tick, text unreadable, a calendar date circled beside it
 Text: CANCEL › ACCESS ENDS 30 JUNE · DONE
 
 In the second, the same choice hides five menus deep.
-Visual: Extreme close-up of a thumb scrolling through nested grey menus that never end, text unreadable
+Visual: Five printed menu screens stacked and taped in a long chain, an arrow drawn down through them
 Text: 5 MENUS
 
 Then three buttons that all sound like staying.
-Visual: Three identical grey buttons glowing on a dark screen, labels blurred
+Visual: Three identical grey buttons cut from paper, labels blurred, laid side by side
 Text: STAY? PAUSE? CONTINUE?
 
 That second journey is the one Sam found in March.
-Visual: Silhouette from behind of a person on a sofa, phone glow on their face hidden, rain on the window
+Visual: The cut-out silhouette of Sam on the sofa, a phone in hand, a March calendar page behind
 
 Sam pressed pause instead of cancel, and paid again the next month.
-Visual: A banking app line sliding in red for a second time, a thumb freezing above it, text blurred
+Visual: A bank statement with two identical lines circled in red, a pause symbol drawn beside them
 Text: −£10 AGAIN (ILLUSTRATION)
 
 Both may offer a discount to stay. That is fine. Only one lets you go.
-Visual: A lit exit sign flickering above a doorway at the end of a dark corridor, no lettering legible
+Visual: An old exit sign lying on paper, an arrow drawn from it towards the edge of the page
 
 Remember the sweep. What was often missing was simply how and when to leave.
-Visual: A blank paper map on a desk, its corner lifting in a draught, no route drawn
+Visual: A blank paper map with no route drawn, a compass lying on it
 Text: MISSING: HOW TO LEAVE
 
 The difference is not politeness. It is control.
-Visual: A hand firmly closing a laptop lid, the glow vanishing from a dim room
+Visual: A hand gripping a ship's wheel cut from an old engraving
 
 So how does Sam take back control?
-Visual: Close-up of a bank statement under a desk lamp, a pen lowering towards it
+Visual: A bank statement under a desk lamp, a pen lowering towards it
 Text: HOW DO YOU TAKE CONTROL BACK?
 
 Sam sets aside ten minutes and opens three months of statements.
-Visual: Hands spreading printed bank statements across a table, a highlighter gliding along lines, figures blurred
-Stock: highlighting bank statement
+Visual: Three printed bank statements spread side by side, a yellow highlighter gliding along repeated lines, figures blurred
 
 Every recurring payment gets one line, and three questions.
-Visual: A pencil writing three numbered lines on a notepad, words unreadable
+Visual: A notepad with three numbered lines written in pencil, words unreadable
 
 Did I use it this month?
-Visual: A remote control on a sofa arm, dust drifting through a beam of light above it
+Visual: A television remote with dust on its buttons, lying on a sofa cushion
 Text: 1. USED IT THIS MONTH?
 
 Would I sign up again today?
-Visual: A thumb hovering over a bright sign-up button, then pulling away, text unreadable
+Visual: A thumb pulling away from a bright sign-up button on a phone, text unreadable
 Text: 2. WOULD I JOIN TODAY?
 
 And when does it next renew?
-Visual: A wall calendar with one date ringed in red, a lamp swinging gently above it
+Visual: A wall calendar with one date ringed in red pen
 Text: 3. WHEN DOES IT RENEW?
 
 Before any new trial, Sam finds the cancel steps first.
-Visual: A finger scrolling small print on a phone, the screen glow moving across the hand, text unreadable
+Visual: A magnifying glass over the small print of a printed terms page, text unreadable
 Text: FIND THE EXIT FIRST
 
 Then Sam puts the renewal date in a personal calendar.
-Visual: A phone calendar with a generic reminder being set, a soft chime ripple of light, text unreadable
+Visual: A hand writing on a paper diary page, a phone reminder glowing beside it, text unreadable
 
 When cancelling, Sam keeps the confirmation.
-Visual: A hand pushing a pin through a printed screenshot on a corkboard, contents blurred
+Visual: A printed confirmation screenshot pinned to a corkboard, contents blurred
 Text: KEEP THE PROOF
 
 Ten minutes, once, does what willpower every month cannot.
-Visual: An hourglass on a desk, the last grains of sand falling under lamp light
-Stock: hourglass sand close up
+Visual: An old brass egg timer on a stack of bank statements, the last grains falling
 
 Two forgotten subscriptions go. At fourteen pounds each, that is over three hundred pounds a year.
-Visual: Coins sliding back across a dark table and dropping one by one into a glass jar
-Text: 2 × £14 × 12 = £336 (ILLUSTRATION)
+Visual: Coins sliding across a bank statement and into a glass jar
+Chart: 2 × £14 × 12 = £336 | two forgotten subs a year (illustration)
 
 Sam kept the streaming service, because Sam actually watches it now.
-Visual: The same sofa, a fresh mug steaming, the television glow warm and steady
+Visual: The photograph of the sofa again, a fresh mug steaming, the television glowing
 
 Remember the gym members paying seventeen dollars a visit.
-Visual: The empty gym from earlier, the lights now switching off row by row
+Visual: The archival photograph of the empty gym, a red circle drawn around one unused machine
 
 They were not foolish. They trusted a future version of themselves.
-Visual: Silhouette of a person in a doorway, stepping out into morning light
+Visual: A cut-out silhouette stepping out of a doorway into a sunlit street
 
 A good subscription earns its next payment by staying useful.
-Visual: A well-worn book on a bedside table, its pages turning in a breeze from an open window
+Visual: A well-worn paperback with a bookmark, its pages soft from use
 
 It should never depend on you forgetting to leave.
-Visual: A phone screen slowly dimming to black on a dark desk
+Visual: A phone lying face down on a cancelled bank statement, a single coin resting on top
 Text: IT SHOULD NOT NEED YOU TO FORGET
 
 Subscriptions work on your memory over months. A shop needs only seconds.
-Visual: Extreme close-up of a red price tag swinging on a jacket sleeve in a dim shop
+Visual: A red paper price tag tied to a jacket sleeve cut from an old catalogue
 Text: NEXT EPISODE
 
 Next time, the crossed-out price that rewrites what you think something is worth.
-Visual: A red pen striking through a number on a price tag in one stroke, figures blurred
+Visual: A red pen striking through a number on a paper price tag in one stroke, figures blurred
 Text: NEXT: THE DISCOUNT TRAP
