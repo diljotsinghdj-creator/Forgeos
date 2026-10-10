@@ -142,6 +142,10 @@ class ProductionSpec:
         if shots and sum(len(x[0].split()) for x in shots) == len(spec.script.split()) + len(shots[0][0].split()):
             shots = shots[1:]       # the first line was a title the script dropped
         spec.shots = shots
+        if shots:
+            # A writer's shot list names a picture for every line: always cut on the lines, whatever the
+            # "Calm" setting says (calm cuts would show one picture per scene and drop the rest, charts included).
+            spec.fast_cuts = True
         raw_p = d.get("pronounce") if isinstance(d.get("pronounce"), dict) else {}
         spec.pronounce = {str(k).strip()[:40]: str(v).strip()[:60] for k, v in list(raw_p.items())[:200]
                           if str(k).strip() and str(v).strip()}
