@@ -14,6 +14,7 @@ In one experiment, a meaningless number tripled what people offered for a keyboa
 Visual: A 2000s university classroom with students seen from behind at desks
 Visual: A cordless computer keyboard on a plain white table
 Text: SAME KEYBOARD · 3× THE BID
+Cite: Ariely, Loewenstein & Prelec, 2003
 
 Every crossed-out price pulls the same hidden lever.
 Visual: A rail of clothes with red sale tags hanging from every sleeve
@@ -68,6 +69,7 @@ So did Leah save forty pounds, or find a reason to spend sixty?
 Visual: A hand hovering between a leather wallet and a laptop
 Visual: Three twenty-pound notes fanned out beside a laptop on a sofa
 Text: SAVED £40 OR SPENT £60?
+Chapter: Part 1 | The random number
 
 The answer starts with a wheel of fortune in a laboratory.
 Visual: A wooden wheel of fortune with numbered segments on a table
@@ -78,12 +80,14 @@ Visual: A 1970s university campus building with students walking in front
 Visual: A hand fixing a small pin behind the pointer of a wooden wheel
 Text: Tversky & Kahneman, Science 1974
 Stock: 1970s university campus
+Quote: Judgment under Uncertainty: Heuristics and Biases | Tversky & Kahneman, 1974
 
 It could only stop on ten or sixty-five.
 Visual: A wooden wheel of fortune stopped on a numbered segment, numbers blurred
 Visual: Two segments of a wooden wheel circled in red pen
 Text: 10 OR 65
 Draw: circle
+Cite: Tversky & Kahneman, Science 1974
 
 Then they asked what share of United Nations members are African countries.
 Visual: A row of national flags outside the United Nations building in New York
@@ -94,17 +98,20 @@ Shown ten, the median guess was twenty-five percent. Shown sixty-five, forty-fiv
 Visual: A student seen from behind writing on an answer sheet
 Visual: Two stacks of coins on a table, one short and one tall
 Chart: 25% vs 45% | saw 10, saw 65
+Cite: Tversky & Kahneman, Science 1974
 
 A number everyone could see was random moved their answers by twenty points.
 Visual: A wooden wheel of fortune standing still on a table
 Visual: A stack of handwritten answer sheets with numbers circled, text unreadable
 Text: +20 POINTS FROM A RANDOM NUMBER
 Draw: underline
+Cite: Tversky & Kahneman, Science 1974
 
 Even paying people for accurate answers did not make it go away.
 Visual: Coins scattered across a handwritten answer sheet, text unreadable
 Visual: A hand passing a few banknotes across a desk to a student
 Text: PAYING FOR ACCURACY DIDN'T HELP
+Cite: Tversky & Kahneman, Science 1974
 
 Psychologists call this anchoring. The first number becomes the hidden starting point.
 Visual: A heavy iron ship's anchor resting on a harbour dock
@@ -115,6 +122,7 @@ But that was trivia. Does it work when real money is at stake?
 Visual: A pile of trivia question cards on a table, text unreadable
 Visual: A hand turning a debit card over above a pile of receipts
 Text: DOES IT WORK WITH MONEY?
+Chapter: Part 2 | When money is real
 
 In two thousand and three, researchers tried it with real prices.
 Visual: A 2000s university lecture hall with students seen from behind
@@ -137,16 +145,19 @@ Visual: Students seen from behind writing on sheets in a classroom
 Students with the lowest numbers bid around sixteen dollars.
 Visual: A cordless keyboard beside a short stack of coins
 Visual: A few small coins on a desk beside a filled-in bid sheet, text unreadable
+Cite: Ariely, Loewenstein & Prelec, 2003
 
 Those with the highest bid around fifty-six.
 Visual: A cordless keyboard between a short stack of coins and a tall one
 Chart: $16 vs $56 | lowest ID numbers, highest ID numbers
+Cite: Ariely, Loewenstein & Prelec, 2003
 
 Same keyboard, same room, more than three times the price.
 Visual: Two identical cordless keyboards side by side on a white table
 Visual: An empty university classroom with rows of desks
 Visual: A tall stack of US dollar bills next to a short one
 Text: 3× MORE
+Cite: Ariely, Loewenstein & Prelec, 2003
 
 Now look at a sale tag. The crossed-out price is the anchor.
 Visual: A shop sale tag with a crossed-out price, figures blurred
@@ -171,27 +182,34 @@ Europe thought this mattered enough to write it into law.
 Visual: The European Parliament building in Brussels with flags outside
 Visual: A printed law book open on a desk, text unreadable
 Stock: european parliament building
+Map: Brussels | Europe writes it into law
 
 Since May twenty twenty-two, EU sale prices must cite a specific earlier price.
 Visual: A May 2022 calendar page with one date circled in pen
 Visual: A printed legal text with one paragraph boxed in pen, text unreadable
 Text: EU RULES, SINCE 28 MAY 2022
+Place: EUROPEAN UNION · 2022
+Cite: EU Price Indication Directive
 
 The lowest price that shop charged in at least the previous thirty days.
 Visual: A desk calendar with thirty days crossed off in pencil
 Visual: A shop shelf price label with two prices, figures blurred
 Text: LOWEST PRICE IN PRIOR 30 DAYS
+Cite: EU Price Indication Directive
 
 In twenty twenty-four, the EU's top court confirmed how strict that is.
 Visual: The Court of Justice of the European Union building in Luxembourg
 Visual: A red pin pushed into Luxembourg on a map of Europe
 Text: EU COURT OF JUSTICE, SEPT 2024
 Stock: luxembourg court of justice
+Map: Luxembourg | EU Court of Justice
+Cite: CJEU, Sept 2024
 
 A percentage off must be measured from that thirty-day low.
 Visual: A ruler laid along a row of coin stacks of different heights
 Visual: A red discount sign hanging in a shop window, lettering blurred
 Text: 30-DAY LOW IS THE STARTING POINT
+Cite: CJEU, Sept 2024
 
 So the law can police the anchor.
 Visual: A judge's gavel lying on a stack of legal papers
@@ -201,6 +219,7 @@ But surely professionals see through it anyway?
 Visual: A man in a suit seen from behind looking at house listings in a shop window
 Visual: A row of house photographs pinned along a map of a suburb
 Text: ARE EXPERTS IMMUNE?
+Chapter: Part 3 | Are experts immune?
 
 In nineteen eighty-seven, experienced estate agents were asked to value a real house.
 Visual: A 1980s suburban street of detached houses with lawns
@@ -211,6 +230,7 @@ Stock: 1980s suburban houses
 Every agent toured one property and saw the same local sales data.
 Visual: Estate agents seen from behind walking through an empty living room
 Visual: A folder of property papers fanned open, text blurred
+Quote: Experts, amateurs, and real estate | Northcraft & Neale, 1987
 
 Only one thing changed. The listing price in their pack.
 Visual: A property leaflet with its price box circled, digits blurred
@@ -222,17 +242,20 @@ The lowest listing produced valuations of about one hundred and fourteen thousan
 Visual: A small wooden model house on a table under cool blue light
 Visual: A printed valuation form with a pen beside it, figures blurred
 Text: LOW LISTING
+Cite: Northcraft & Neale, 1987
 
 Shown the highest, nearly one hundred and twenty-nine thousand. Same house.
 Visual: The same small wooden model house under warm golden light
 Visual: A detached house photographed from the street on a sunny day
 Chart: $114,000 vs $129,000 | low listing, high listing
+Cite: Northcraft & Neale, 1987
 
 Now the twist. The agents largely denied the listing price had swayed them.
 Visual: A man in a suit seen from behind standing at an office window
 Visual: A man in a suit seen from behind shaking his head at a desk
 Text: "IT DIDN'T INFLUENCE ME"
 Bubble: The listing price? It didn't sway me.
+Cite: Northcraft & Neale, 1987
 
 The anchor worked best on the people most sure it had not.
 Visual: A heavy ship's anchor on the seabed with silt rising around it
@@ -243,6 +266,7 @@ If certainty cannot protect us, what happens when the anchor gets a partner?
 Visual: A ship's anchor lying on a wooden dock
 Visual: A red alarm clock placed beside a ship's anchor on a dock
 Text: WHAT IF THE ANCHOR HAS A PARTNER?
+Chapter: Part 4 | The ticking clock
 
 The partner is a clock.
 Visual: An old red alarm clock ticking on a desk
@@ -271,11 +295,13 @@ Visual: A university computer lab with rows of monitors, screens unreadable
 Visual: A wall of printed website pages pinned edge to edge, text unreadable
 Text: ~11,000 SITES (Mathur et al., 2019)
 Stock: server room lights
+Cite: Mathur et al., 2019
 
 They found one thousand eight hundred and eighteen dark patterns.
 Visual: A stack of printed web pages with red pen circles, text unreadable
 Visual: A researcher seen from behind marking pages with a red pen
 Chart: 1,818 | dark patterns found
+Cite: Mathur et al., 2019
 
 Designs that steer you.
 Visual: A phone showing a shopping page with a bright buy button, text unreadable
@@ -284,33 +310,40 @@ On one hundred and eighty-three sites, the claims were judged outright deceptive
 Visual: A small pile of printed pages stamped in red, text unreadable
 Visual: A red rubber stamp pressed onto a printed web page
 Text: 183 SITES WITH DECEPTIVE CLAIMS
+Cite: Mathur et al., 2019
 
 The strangest part? Some countdown timers simply reset when the page was reloaded.
 Visual: A laptop showing a shopping page with a countdown timer, text unreadable
 Visual: A finger clicking the reload button in a web browser, text unreadable
 Text: TIMER RESETS ON RELOAD
 Draw: arrow
+Cite: Mathur et al., 2019
 
 And twenty-two companies sold these tactics to shops as ready-made tools.
 Visual: A row of cardboard boxes in a warehouse, labels unreadable
 Visual: A software sales brochure on a shop counter, text unreadable
 Text: 22 THIRD-PARTY SUPPLIERS
+Cite: Mathur et al., 2019
 
 In May twenty twenty-six, Britain's High Court approved a consent order.
 Visual: The Royal Courts of Justice in London, stone front wet with rain
 Visual: A typed consent order with a court seal, text unreadable
 Stock: royal courts of justice london
+Map: London | Britain's High Court
+Cite: CMA, 2026
 
 An online retailer's countdown timers and high-demand messages? Confirmed as misleading.
 Visual: A laptop showing a furniture shop page with a timer banner, text unreadable
 Visual: A red alarm clock with cracked glass lying on a court document
 Text: HIGH COURT CONSENT ORDER, MAY 2026
 Draw: cross
+Cite: CMA, 2026
 
 It gave binding undertakings to stop.
 Visual: A pen lifting from a freshly signed document with a seal
 Visual: A signed legal agreement on a desk, signature blurred
 Text: BINDING UNDERTAKINGS
+Cite: CMA, 2026
 
 Breaking them could even mean contempt of court.
 Visual: An empty courtroom with a judge's bench and wooden panelling
@@ -359,11 +392,14 @@ A government-commissioned study found it at ninety-three percent of event ticket
 Visual: A printed government study on a desk, text unreadable
 Visual: A pair of concert tickets with extra fee receipts beside them, text unreadable
 Chart: 93% | of event ticket sellers reviewed
+Cite: DBT, 2023
 
 Since April twenty twenty-five, Britain requires mandatory charges in the headline price.
 Visual: An April 2025 desk calendar with the sixth circled
 Visual: A single complete price tag on a jacket, figures blurred
 Text: MANDATORY FEES UP FRONT · 6 APR 2025
+Place: UNITED KINGDOM · 2025
+Cite: CMA, Nov 2025
 
 The regulator can now fine firms directly.
 Visual: The Competition and Markets Authority office building in London
@@ -372,6 +408,7 @@ Visual: A heavy steel padlock closing on a stack of company accounts
 Up to ten percent of global turnover.
 Visual: A stack of company accounts with one thin slice cut away
 Chart: 10% | maximum fine as share of global turnover
+Cite: CMA, Nov 2025
 
 So did the problem disappear? Not quite.
 Visual: A busy British high street with shoppers seen from behind
@@ -382,11 +419,14 @@ By November twenty twenty-five, the regulator had reviewed over four hundred bus
 Visual: Hundreds of small shop-front photographs pinned in rows on a board
 Visual: A tall pile of company case files on an office desk
 Text: 400+ BUSINESSES · 19 SECTORS
+Place: UNITED KINGDOM · NOV 2025
+Cite: CMA, Nov 2025
 
 It found possible problems in fourteen sectors.
 Visual: A grid of nineteen squares on paper with fourteen shaded in red
 Visual: A shopping centre with many different shop fronts, seen from far away
 Text: CONCERNS IN 14 SECTORS
+Cite: CMA, Nov 2025
 
 Among them? Drip pricing and countdown timers.
 Visual: A concert ticket with extra fee slips sliding out from under it
@@ -397,6 +437,7 @@ It opened eight investigations and wrote to a hundred more businesses.
 Visual: Eight case folders tied with red string on a desk
 Visual: A tall stack of sealed envelopes ready to post
 Text: 8 INVESTIGATIONS · 100 LETTERS
+Cite: CMA, Nov 2025
 
 An investigation is not a finding that anyone broke the law.
 Visual: An open case file on a desk with its last page blank
@@ -407,6 +448,7 @@ So when the anchor and the clock arrive together, what actually protects Leah?
 Visual: A phone showing a sale price and a countdown timer, text unreadable
 Visual: A hand closing a laptop halfway on a sofa
 Text: WHAT ACTUALLY PROTECTS YOU?
+Chapter: Part 5 | What protects you
 
 Before opening a sale, write down what you actually need.
 Visual: A hand writing a short shopping list on a notepad, text unreadable

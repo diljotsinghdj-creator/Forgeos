@@ -12,6 +12,12 @@ CreatorForge -> Generate -> Script. CreatorForge reads it like this:
   Draw: ............. a red pen mark that draws itself on over the line's last picture: circle, box, underline
                       (under the Text: callout), arrow, cross or tick - e.g. "Draw: circle" or "Draw: circle, arrow"
   Bubble: / Thought:  a speech bubble / thought cloud that pops in and types its words (keep under ~45 characters)
+  Map: .............. an animated map instead of the picture: "Map: France", "Map: Hong Kong | title",
+                      "Map: London → Paris" (pins + a route drawing itself)
+  Place: ............ a location stamp, e.g. "Place: PARIS · 1925" (pin drops, label types out)
+  Cite: ............. the small on-screen source credit, e.g. "Cite: FTC, 2025" -> SOURCE: FTC, 2025
+  Chapter: .......... long form: a chapter title card, e.g. "Chapter: Part 1 | The trap"
+  Quote: ............ a document card, words typed and highlighted, e.g. "Quote: words | who, year"
   Chart: ............ an animated number graphic for that line, e.g.
                         Chart: £12 → £720 | a year of forgotten subscriptions   (counter rolls up)
                         Chart: 48% vs 22% | heavy users, everyone else          (bars grow)

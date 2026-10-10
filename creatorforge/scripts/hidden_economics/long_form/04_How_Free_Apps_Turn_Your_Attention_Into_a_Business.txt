@@ -14,16 +14,19 @@ Yet one company earned a hundred and sixty billion dollars.
 Visual: A tall stack of coins on a desk beside a printed annual report, print unreadable
 Visual: Bundles of dollar bills stacked high on an office desk
 Chart: $160.6bn | Meta ad revenue, 2024
+Cite: Meta Form 10-K, 2024
 
 From ads alone. In just one year.
 Visual: A billboard above a busy street, its advert content blank
 Visual: A single torn page from a desk calendar lying on a desk
 Text: ADS · ONE YEAR
+Cite: Meta Form 10-K, 2024
 
 That was nearly all of Meta's revenue in twenty twenty-four.
 Visual: One hundred coins on a table, a hand sweeping almost all into one pile
 Visual: A glass office tower at dusk with rows of lit windows
 Chart: 98% | of Meta's 2024 revenue came from ads
+Cite: Meta Form 10-K, 2024
 
 So if you never paid, what exactly was being sold?
 Visual: An empty shop counter with a blank price tag hanging on a string
@@ -38,11 +41,14 @@ British adults spend four and a half hours a day online.
 Visual: A wall clock above a sofa where a person sits on a phone, seen from behind
 Visual: A laptop, a tablet and a phone lying together on a coffee table
 Text: 4h 30m A DAY · OFCOM 2025
+Map: United Kingdom | Online every day
+Cite: Ofcom, 2025
 
 That is outside work, and ten minutes more than the year before.
 Visual: An office desk with a laptop closed for the evening
 Visual: A kitchen timer set to ten minutes beside a phone
 Text: +10 MINUTES IN A YEAR
+Cite: Ofcom, 2025
 
 So who buys that time, and how is it taken?
 Visual: A city at night seen from above, thousands of lit windows
@@ -86,16 +92,19 @@ Visual: The top deck of a night bus, passengers seen from behind on phones
 Visual: Young adults seen from behind sitting on a park wall, each on a phone
 Text: AGED 18–24: 6h 20m
 Stock: people on phones bus
+Cite: Ofcom, 2025
 
 And about three quarters of all adult online time is on smartphones.
 Visual: Four phones in a row on a desk, three switched on and one dark
 Visual: A laptop pushed aside on a table while a hand holds a phone
 Text: SMARTPHONES ≈ 3/4 OF TIME ONLINE
+Cite: Ofcom, 2025
 
 How can something free make that much money?
 Visual: An old brass scale with a phone on one pan and coins on the other
 Visual: A pile of coins on a desk beside a phone with a dark screen
 Text: £0 → BILLIONS?
+Chapter: Part 1 | Why free pays
 
 The answer is older than smartphones.
 Visual: A vintage typewriter on a desk with a half-typed sheet, text unreadable
@@ -129,6 +138,7 @@ Visual: A desk buried under newspapers, letters and a lit phone
 Visual: A person seen from behind at a cluttered desk, head in hands
 Text: WEALTH OF INFO = POVERTY OF ATTENTION
 Draw: underline
+Quote: a wealth of information creates a poverty of attention | Herbert Simon, 1971
 
 He wrote that decades before the first smartphone even existed.
 Visual: A typed 1971 paper lying on a desk, text unreadable
@@ -153,21 +163,26 @@ Visual: Government buildings on Whitehall in London on a grey day
 Visual: A thick government report on a desk under a lamp, text unreadable
 Text: CMA · 2019
 Stock: london government buildings
+Map: London | Britain's competition regulator
+Cite: CMA, 2020
 
 It was worth about fourteen billion pounds.
 Visual: Bundles of banknotes stacked on a printed report under a desk lamp
 Visual: A long row of pound coins laid across a desk
 Text: £14 BILLION
+Cite: CMA, 2020
 
 Roughly eighty percent went to just two companies. Which two? Google and Facebook.
 Visual: Coins on a table split into two big piles and one small pile
 Visual: Two tall office towers side by side against a blue sky
 Chart: 80% | of UK digital ad spend to two firms
+Cite: CMA, 2020
 
 Its verdict? Competition in these markets was not working well.
 Visual: A printed report page with one paragraph circled in red, text unreadable
 Visual: A street market with two crowded stalls and several empty ones
 Text: COMPETITION NOT WORKING WELL
+Cite: CMA, 2020
 
 Now look at Meta's own filing.
 Visual: A thick printed company filing lying on a desk, print unreadable
@@ -179,6 +194,7 @@ Visual: A phone screen with several blank adverts between posts, nothing readabl
 Visual: A price tag rewritten with a higher figure in red pen, text unreadable
 Text: MORE AD IMPRESSIONS + HIGHER PRICE
 Draw: circle
+Cite: Meta Form 10-K, 2024
 
 Both depend on one thing. Time spent looking.
 Visual: A stopwatch resting on a desk beside a phone
@@ -197,6 +213,7 @@ So what does an app built around your time actually look like?
 Visual: A floor plan of a small bedroom drawn on graph paper
 Visual: A phone lying on a bedside table in a dark bedroom
 Text: WHAT DOES IT LOOK LIKE?
+Chapter: Part 2 | Built around your time
 
 Watch Maya's night.
 Visual: A dark bedroom at night, a phone lit up on the pillow
@@ -241,11 +258,14 @@ Draw: underline
 But does any of this change how we actually feel?
 Visual: A hand pressing a phone face down into a duvet
 Visual: A person seen from behind lying in bed in the dark
+Chapter: Part 3 | How it feels
 
 Canadian researchers tested it on two hundred and twenty-one people.
 Visual: A university library with students seen from behind at long wooden desks
 Visual: A Vancouver university campus path lined with autumn trees
 Text: 221 PARTICIPANTS
+Place: CANADA
+Cite: Kushlev, Proulx & Dunn, 2016
 
 For one week, alerts were on and phones kept close.
 Visual: A phone lying beside an open notebook on a desk, its screen lit
@@ -261,6 +281,7 @@ Notice the difference. With alerts on, people reported more inattention and hype
 Visual: Fingers drumming on a desk beside a lit phone
 Visual: A pencil rolling off the edge of a messy desk
 Text: ALERTS ON → MORE INATTENTION
+Cite: Kushlev, Proulx & Dunn, 2016
 
 And that inattention was linked to lower productivity and wellbeing.
 Visual: A half-finished to-do list beside a cold cup of coffee, writing unreadable
@@ -285,6 +306,8 @@ In twenty eighteen, economists paid American volunteers to deactivate Facebook f
 Visual: A phone with a dark screen lying on a paper calendar, four weeks circled
 Visual: A hand holding a few dollar bills beside a switched-off phone
 Text: PAID TO QUIT · 4 WEEKS
+Place: UNITED STATES · 2018
+Cite: Allcott et al., AER 2020
 
 Those who quit spent more time offline, with friends and family.
 Visual: Hands passing a dish across a family dinner table, faces out of frame
@@ -298,6 +321,7 @@ Visual: A living room television switched on, a sofa seen from behind
 They reported slightly higher wellbeing.
 Visual: A sunny kitchen table set for breakfast, a phone charging in the corner
 Text: WELLBEING ↑
+Cite: Allcott et al., AER 2020
 
 Then the twist.
 Visual: A red-pen arrow bending sharply downward on graph paper
@@ -307,6 +331,7 @@ Visual: A phone lying unused on a windowsill beside a dried leaf
 Visual: A phone screen-time chart with short bars, text unreadable
 Text: USE STAYED LOWER AFTERWARDS
 Draw: circle
+Cite: Allcott et al., AER 2020
 
 And they now valued the app less than they had before.
 Visual: An old brass balance scale with a phone on the raised pan
@@ -338,6 +363,7 @@ The researchers estimated self-control problems drive about thirty-one percent o
 Visual: One hundred matchsticks laid on paper, thirty-one with burnt heads
 Visual: A thumb scrolling a social feed late at night, text unreadable
 Chart: 31% | of social media use from self-control problems
+Cite: Allcott, Gentzkow & Song, NBER 2021
 
 A model estimate, not a law of nature.
 Visual: A pencil-drawn graph on paper with a dotted curve, axes unlabelled
@@ -360,28 +386,34 @@ Visual: A roll of receipt paper unspooling past a red pen line on a desk
 Is that even legal?
 Visual: A judge's gavel resting beside a phone on a dark desk
 Text: IS IT LEGAL?
+Chapter: Part 4 | Is it legal?
 
 In the European Union, the answer is actually starting to change.
 Visual: European Union flags flying outside a glass office building
 Visual: A map of Europe pinned flat on a desk
 Stock: european union flags
+Place: EUROPEAN UNION
 
 Its Digital Services Act bars platforms from deceptive or manipulative interfaces.
 Visual: A thick legal document open on a desk, one paragraph circled, text unreadable
 Visual: A phone pop-up with a tiny hidden close button, text unreadable
 Text: DIGITAL SERVICES ACT · ART. 25
 Draw: arrow
+Quote: shall not design, organise or operate their online interfaces in a way that deceives or manipulates | EU Digital Services Act, Art. 25
+Cite: EU Digital Services Act
 
 And on sixth February twenty twenty-six, the European Commission went further.
 Visual: A desk calendar turned to February, the sixth circled in red
 Visual: The European Commission headquarters building in Brussels on a winter day
 Text: 6 FEBRUARY 2026
 Stock: european commission building
+Cite: European Commission, Feb 2026
 
 It preliminarily found TikTok's addictive design in breach of that law.
 Visual: A phone showing a vertical video feed beside an official document, no logos
 Visual: A stamped official letter lying on a desk, text unreadable
 Text: PRELIMINARY FINDINGS
+Cite: European Commission, Feb 2026
 
 It named four features.
 Visual: Four blank index cards pinned to a cork board, joined by red string
@@ -391,6 +423,7 @@ Visual: A thumb scrolling an endless feed on a phone, text unreadable
 Visual: A phone screen lighting up with a push notification, text unreadable
 Visual: A phone showing a grid of recommended videos, content blurred
 Text: SCROLL · AUTOPLAY · ALERTS · RECOMMENDER
+Cite: European Commission, Feb 2026
 
 Sound familiar? They are the same features that ran Maya's night.
 Visual: A bedroom floor plan on graph paper, four pins stuck around the bed
@@ -405,6 +438,7 @@ It suggested phasing out infinite scroll and adding real screen-time breaks.
 Visual: A hand placing a wooden block across an unspooling roll of paper
 Visual: A phone screen showing a take-a-break reminder, text unreadable
 Text: SUGGESTED: SCREEN-TIME BREAKS
+Cite: European Commission, Feb 2026
 
 Still, these are not final findings.
 Visual: A draft document held with a paperclip, marked in red pen, text unreadable
@@ -415,11 +449,13 @@ Visual: An unsigned document on a desk, a pen beside the signature line
 Visual: A hand writing a reply letter with a fountain pen, text unreadable
 Text: NOT FINAL · COMPANY DISPUTES THEM
 Bubble: These findings are meritless.
+Cite: Euronews, Feb 2026
 
 If confirmed, fines can reach six percent of worldwide annual turnover.
 Visual: A tall stack of coins with a thin slice set apart by a ruler
 Visual: A world map on an office wall with coins laid along its edge
 Chart: 6% | maximum fine, share of global turnover
+Cite: EU Digital Services Act
 
 So a major regulator now flags a possible risk.
 Visual: A newspaper front page on a desk, a phone on top, headline unreadable
@@ -433,6 +469,7 @@ But Maya cannot wait for Brussels. What can she do tonight?
 Visual: Brussels rooftops at dusk with the Atomium in the distance
 Visual: A hand hovering over a dark phone on a bedside table
 Text: WHAT CAN YOU DO TONIGHT?
+Map: Brussels | What can she do tonight?
 
 So, who earned from those nineteen minutes?
 Visual: A phone lying on an old newspaper, a few coins around it
@@ -455,6 +492,7 @@ Here is a one-week experiment, built from that research.
 Visual: A paper wall calendar, a pencil ticking off seven days
 Visual: A printed research paper on a desk with a pen, text unreadable
 Text: ONE-WEEK EXPERIMENT
+Chapter: Part 5 | The one-week experiment
 
 Seven days, three settings, about ten minutes to set up.
 Visual: A phone, a pencil and a kitchen timer on a wooden table in morning light

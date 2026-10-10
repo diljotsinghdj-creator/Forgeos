@@ -8,6 +8,7 @@ Nearly ten million unwanted subscriptions. Still paid.
 Visual: A tall pile of opened subscription letters on a doormat, text unreadable
 Visual: A hand holding a bank card over a pile of pound coins
 Text: ~10 MILLION UNWANTED SUBSCRIPTIONS
+Cite: UK Government, Nov 2024
 
 That is the government's own estimate.
 Visual: A printed government report on a wooden desk, text unreadable
@@ -18,11 +19,13 @@ Together they cost around one point six billion pounds a year.
 Visual: A thick stack of fifty-pound notes on an office desk
 Visual: Pound coins spilling out of a cloth money bag onto a table
 Chart: £1.6bn | a year on unwanted subscriptions
+Cite: UK Government, Nov 2024
 
 The average one costs about fourteen pounds a month.
 Visual: A handful of pound coins on a kitchen table beside a phone
 Visual: A printed monthly bank statement with one line highlighted, figures blurred
 Text: ~£14 A MONTH EACH
+Cite: UK Government, Nov 2024
 
 One of them could be leaving your account tonight.
 Visual: A phone lying face down on a bedside table at night
@@ -41,6 +44,7 @@ Visual: A cash register drawer open and full of banknotes
 why America's fix collapsed six days before it began,
 Visual: The United States Capitol building in Washington on a grey day
 Visual: A desk calendar with six days crossed out in red pen
+Map: United States | six days before it began
 
 and a ten-minute check that stops the leak.
 Visual: A kitchen timer set to ten minutes on a stack of bank statements
@@ -80,6 +84,7 @@ So was Sam's forgetting an accident, or part of the plan?
 Visual: A wall calendar with day eight circled, a pen hanging beside it
 Visual: A desk planner covered in crossed-out notes, text unreadable
 Text: ACCIDENT OR PART OF THE PLAN?
+Chapter: Part 1 | Why forgetting pays
 
 Run the numbers for a fictional service with one hundred thousand subscribers.
 Visual: A person seen from behind at a desk with a calculator and notepad
@@ -126,21 +131,25 @@ How hidden is that door in practice? In twenty twenty-four, regulators went look
 Visual: A small door at the end of a dark corridor, half in shadow
 Visual: A person seen from behind at a desk, looking through printed web pages
 Text: HOW HIDDEN IS THE EXIT?
+Chapter: Part 2 | The hidden door
 
 Twenty-seven authorities in twenty-six countries ran a joint sweep.
 Visual: A world map on a wall with many red pins in it
 Visual: A large conference table with laptops and papers, seen from above
 Text: 27 AUTHORITIES · 26 COUNTRIES
+Cite: ICPEN sweep, July 2024
 
 They examined six hundred and forty-two subscription websites and apps.
 Visual: Dozens of phones laid out in rows on a long table, screens unreadable
 Visual: Printed website screenshots spread edge to edge across a table, text unreadable
 Text: 642 SITES & APPS (ICPEN 2024)
+Cite: ICPEN sweep, July 2024
 
 Nearly seventy-six percent showed at least one possible dark pattern.
 Visual: Four printed screenshots in a row, three circled in red pen, text unreadable
 Visual: A phone screen showing a sign-up page with tiny grey small print, text unreadable
 Chart: 75.7% | showed at least one possible dark pattern
+Cite: ICPEN sweep, July 2024
 
 That means design that steers you somewhere you did not choose.
 Visual: A hedge maze seen from above
@@ -149,6 +158,7 @@ Visual: A finger tapping a large bright button on a phone, text unreadable
 Nearly sixty-seven percent showed more than one.
 Visual: Printed web pages covered in red pen circles, text unreadable
 Chart: 66.8% | showed more than one
+Cite: ICPEN sweep, July 2024
 
 The most common problem struck at the very moment of signing up.
 Visual: A fingertip about to tap a purchase button on a phone, text unreadable
@@ -159,6 +169,7 @@ Visual: A light switch on a wall covered with brown parcel tape
 Visual: A phone settings screen with a toggle switch greyed out, text unreadable
 Text: NO OPTION TO TURN OFF AUTO-RENEW
 Draw: cross
+Cite: ICPEN sweep, July 2024
 
 Others never said how to cancel, or by when.
 Visual: A phone showing a long page of small print, text unreadable
@@ -185,26 +196,31 @@ Visual: A printed bank statement with a ten-pound line circled, figures blurred
 So do businesses even need tricks?
 Visual: A thumb hovering over a plain button on a phone, text unreadable
 Text: DO THEY EVEN NEED TRICKS?
+Chapter: Part 3 | The trap without tricks
 
 In two thousand and six, two economists followed the money.
 Visual: A 2000s university office with stacks of papers and a desktop computer
 Visual: Two people seen from behind at a desk covered in receipts and ledgers
 Text: DellaVigna & Malmendier, AER 2006
+Place: UNITED STATES · 2006
 
 It led into three American gyms.
 Visual: A gym floor with rows of treadmills and nobody on them
 Visual: A gym front entrance with glass doors at night
 Stock: empty gym at night
+Map: United States | three American gyms
 
 They tracked seven thousand seven hundred and fifty-two members over three years.
 Visual: Gym membership cards fanned out across a table
 Visual: A filing cabinet drawer full of membership records
 Text: 7,752 MEMBERS · 3 YEARS
+Cite: DellaVigna & Malmendier, AER 2006
 
 Members on monthly plans paid over seventy dollars a month.
 Visual: A gym membership card lying on a bank statement, figures blurred
 Visual: Several US dollar bills folded on a gym reception counter
 Text: $70+ A MONTH
+Cite: DellaVigna & Malmendier, AER 2006
 
 How often did they go?
 Visual: A gym membership card held between two fingers
@@ -214,6 +230,7 @@ Visual: A wall calendar with only four days ticked in pencil
 Visual: A gym locker room with a single bag on a bench
 Text: 4.3 VISITS A MONTH
 Draw: circle
+Cite: DellaVigna & Malmendier, AER 2006
 
 These were people who had signed up precisely to get fit.
 Visual: New running shoes still in their open box on a bedroom floor
@@ -226,11 +243,13 @@ Visual: A small stack of US dollar bills beside a gym card
 A ten-visit pass worked out at ten.
 Visual: Two stacks of coins of different heights on a gym receipt
 Chart: $17 vs $10 | monthly plan per visit, 10-visit pass
+Cite: DellaVigna & Malmendier, AER 2006
 
 The researchers estimated members forwent about six hundred dollars over their membership.
 Visual: A person seen from behind reading a printed research paper, text unreadable
 Visual: A fan of US dollar bills sticking out of a gym bag
 Text: ~$600 FORGONE
+Cite: DellaVigna & Malmendier, AER 2006
 
 Now the twist. Nobody hid a cancel button from these people.
 Visual: An open front door with daylight pouring through
@@ -248,6 +267,7 @@ They were seventeen percent more likely to still be enrolled a year later.
 Visual: A year of calendar pages fanned out on a table
 Visual: A gym membership card clipped to the last page of a calendar
 Chart: 0% → 17% | more likely still enrolled a year on
+Cite: DellaVigna & Malmendier, AER 2006
 
 The researchers pointed to overconfidence. Members expected to go far more often.
 Visual: A person seen from behind at a desk reading a research paper
@@ -258,6 +278,7 @@ They were actually paying for the person they planned to become.
 Visual: A person seen from behind jogging along a sunny river path
 Visual: A gym bag sitting unopened by a front door
 Text: PAYING FOR A FUTURE SELF
+Quote: Paying Not to Go to the Gym | DellaVigna & Malmendier, 2006
 
 So the strongest trap needs no trick at all.
 Visual: A wooden mousetrap with no bait on a kitchen floor
@@ -283,15 +304,18 @@ So if defaults and friction cost people billions, why not ban them?
 Visual: Stacks of banknotes on a boardroom table
 Visual: A rubber stamp beside an open ink pad on a pile of contracts
 Text: WHY NOT JUST BAN IT?
+Chapter: Part 4 | Why not ban it?
 
 America tried.
 Visual: The United States Capitol building with a flag above it
 Stock: washington dc government building
+Place: UNITED STATES · 2024
 
 In late twenty twenty-four, America's consumer regulator finalised a click-to-cancel rule.
 Visual: The Federal Trade Commission building in Washington, seen from the street
 Visual: An official stamp pressing onto a typed document, text unreadable
 Text: CLICK-TO-CANCEL RULE, 2024
+Map: Washington | America's consumer regulator
 
 The idea was simple. Leaving should be as easy as joining.
 Visual: Two identical buttons on a phone screen side by side, text unreadable
@@ -304,11 +328,14 @@ Visual: A stone courthouse with tall columns and wide steps
 Text: VACATED · 8 JULY 2025
 Stock: courthouse exterior
 Draw: cross
+Place: UNITED STATES · JULY 2025
+Cite: US 8th Circuit, July 2025
 
 That was six days before businesses had to comply.
 Visual: A desk calendar with six days crossed out in red pen
 Visual: Office workers seen from behind at desks with stacks of paperwork
 Text: 6 DAYS BEFORE IT APPLIED
+Cite: US 8th Circuit, July 2025
 
 So why strike it down?
 Visual: A judge's gavel lying on a torn typed document
@@ -327,6 +354,7 @@ Visual: The Houses of Parliament beside the River Thames in London
 Visual: A printed act of Parliament on a desk, text unreadable
 Text: DMCC ACT 2024
 Stock: houses of parliament london
+Map: United Kingdom | Britain's route
 
 Subscribers will get reminders before renewals.
 Visual: A phone showing a renewal reminder notification, text unreadable
@@ -337,15 +365,18 @@ They will get fourteen days to cancel after a free trial turns paid.
 Visual: A phone showing a free trial ending notice, text unreadable
 Visual: A paper calendar with fourteen days marked in pencil
 Chart: 14 | days to cancel after a trial turns paid
+Cite: UK Government, Nov 2024
 
 And leaving must be straightforward. The government expects this in twenty twenty-seven.
 Visual: A shop door left wide open onto a sunny street
 Visual: A 2027 desk calendar on an office desk
 Text: EXPECTED 2027
+Cite: DBT, 2026
 
 Notice the target. Not subscriptions themselves, but forgetting and friction.
 Visual: A wall calendar with old dates forgotten and unmarked
 Visual: A tall stack of paper forms on a desk, text unreadable
+Quote: New measures to crack down on subscription traps | UK Government, Nov 2024
 
 Until then, what does a fair exit actually look like?
 Visual: A hand reaching for a brass door handle
@@ -407,6 +438,7 @@ So how does Sam take back control?
 Visual: A bank statement under a desk lamp, figures blurred
 Visual: A hand picking up a pen beside a stack of bills
 Text: HOW DO YOU TAKE CONTROL BACK?
+Chapter: Part 5 | The ten-minute check
 
 Sam sets aside ten minutes and opens three months of statements.
 Visual: A kitchen timer set to ten minutes on a table
