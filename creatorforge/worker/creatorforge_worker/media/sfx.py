@@ -78,3 +78,32 @@ def place(bank: SfxBank, transitions: list[str], timings: list[float], overlays:
         if sound:
             hits.append((sound, max(0.0, start + (0.05 if style == "Hook" else 0.0)), GAIN[role]))
     return sorted(hits, key=lambda h: h[1])
+
+
+# Full-frame graphics get their own sound: the beat before a chapter or a big statement builds, the reveal lands.
+GRAPHIC_CUES = {
+    "chapter": (("riser", 1.5), ("hit", 0.0)), "statement": (("riser", 1.5), ("hit", 0.05)),
+    "globe": (("whoosh", -0.1),), "map": (("whoosh", -0.1),),
+    "chart": (("hit", 0.55),), "icons": (("pop", 0.2),), "timeline": (("pop", 0.25),),
+    "steps": (("pop", 0.25),), "screen": (("whoosh", 0.45),), "document": (("whoosh", 0.25),),
+    "quote": (("scribble", 0.6),), "split": (("whoosh", -0.1),),
+}
+
+
+def graphic_cues(bank: SfxBank, graphics: list[tuple[float, str]], seed: str) -> list[tuple[Path, float, float]]:
+    """(sound, start, gain) for each full-frame graphic: a riser that ends as it appears, a hit or pop as it lands."""
+    hits: list[tuple[Path, float, float]] = []
+    last_riser = -99.0
+    for n, (at, kind) in enumerate(graphics):
+        for role, lead in GRAPHIC_CUES.get(kind, ()):
+            if role == "riser":
+                if at < 1.6 or at - last_riser < 8:
+                    continue                      # risers stay special: never back to back
+                last_riser = at
+                start = at - lead
+            else:
+                start = at + lead
+            sound = bank.pick(role, f"{seed}:g{n}:{role}")
+            if sound:
+                hits.append((sound, max(0.0, start), GAIN[role] * (1.15 if kind in ("chapter", "statement") else 1.0)))
+    return hits

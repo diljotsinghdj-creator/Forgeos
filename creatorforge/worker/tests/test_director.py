@@ -234,3 +234,21 @@ def test_globe_timeline_and_icons_lines_are_full_frame_graphics():
     beats = [b for s in d.direct_script(None, spec).scenes for b in (s.beats or [])]
     extras = [b["extra"] for b in beats if b.get("extra")]
     assert {"globe", "timeline", "icons"} <= {k for e in extras for k in e}
+
+
+def test_screen_document_statement_split_and_archive_keys():
+    from creatorforge_worker import director as d
+    raw = ("Keys Test\nTitle: Keys test\n\nIn nineteen twenty, crowds queued outside his office in Boston.\n"
+           "Visual: A crowd outside an office\nVisual: Banknotes on a desk\nArchive: 1920s\n\n"
+           "The page looks simple until you try to leave it.\nVisual: A laptop\n"
+           "Screen: Your plan | Keep my plan · *small:Cancel\n\nWhat you see and what you pay are different things.\n"
+           "Visual: A price tag\nVisual: A receipt\nSplit: What you see | What you pay\n\nHe never owned it.\n"
+           "Visual: The tower\nStatement: He never *owned* it.\n")
+    spec = d.ProductionSpec.from_dict({"script": raw, "duration_s": 30})
+    assert "Archive" not in spec.script and "Cancel" not in spec.script
+    plan = d.direct_script(None, spec)
+    d.prompt_forge(plan, spec)
+    beats = [b for s in plan.scenes for b in (s.beats or [])]
+    assert all("archival photograph from the 1920s" in b["prompt"] for b in beats[:2])     # both pictures of the line
+    keys = {k for b in beats for k in (b.get("extra") or {})}
+    assert {"archive", "screen", "split", "statement"} <= keys

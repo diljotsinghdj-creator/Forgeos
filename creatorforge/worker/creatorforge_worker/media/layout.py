@@ -250,3 +250,49 @@ def video_graph(w: int, h: int, clip: str, bg: str, out: str) -> str:
             f"[{bg}a][{out}s]overlay=x=(W-w)/2+{dx}:y=(H-h)/2+{dy}[{out}b];"
             f"[{clip}]pad=iw+{2 * border}:ih+{2 * border}:{border}:{border}:color=0xFBF8F1[{out}p];"
             f"[{out}b][{out}p]overlay=x=(W-w)/2:y=(H-h)/2,format=yuv420p[{out}];[{bg}b]nullsink")
+
+
+def split(left: Path, right: Path, labels: tuple[str, str], kind: str, w: int, h: int, work: Path,
+          cancel: threading.Event | None = None) -> Path:
+    """Two pictures side by side (stacked on tall frames) as bordered prints on the backdrop, each with a label on
+    a highlighter strip - "what you see" next to "what you pay"."""
+    out = work / f"split_{_key(left, right, labels, kind, w, h, left.stat().st_mtime_ns, right.stat().st_mtime_ns)}.png"
+    if out.is_file():
+        return out
+    from PIL import Image, ImageDraw, ImageFilter, ImageOps
+    from .globe import _font
+    canvas = Image.open(backdrop(kind, w, h, work, cancel)).convert("RGB")
+    tall = h > w
+    short = min(w, h)
+    border = max(6, int(short * 0.014))
+    if tall:   # stacked, both above the captions
+        bw, bh = int(w * 0.86), int(h * 0.245)
+        boxes = [((w - bw) // 2 - border, int(h * 0.09)), ((w - bw) // 2 - border, int(h * 0.09) + bh + int(h * 0.035))]
+    else:
+        bw, bh = int(w * 0.42), int(h * 0.56)
+        boxes = [(int(w * 0.06), int(h * 0.16)), (int(w * 0.52), int(h * 0.16))]
+    font = _font(int(short * 0.04))
+    for (x, y), src, label, tilt in zip(boxes, (left, right), labels, (-1.2, 1.0)):
+        with Image.open(src) as im:
+            pic = ImageOps.fit(im.convert("RGB"), (bw, bh), Image.LANCZOS)
+        card = Image.new("RGBA", (bw + 2 * border, bh + 2 * border), (251, 248, 241, 255))
+        card.paste(pic, (border, border))
+        card = card.rotate(tilt, expand=True, resample=Image.BICUBIC)
+        shadow = Image.new("RGBA", card.size, (0, 0, 0, 0))
+        shadow.putalpha(card.getchannel("A").point(lambda a: int(a * 0.5)))
+        shadow = shadow.filter(ImageFilter.GaussianBlur(short * 0.012))
+        canvas.paste(shadow, (x + int(short * 0.01), y + int(short * 0.015)), shadow)
+        canvas.paste(card, (x, y), card)
+        if label.strip():
+            d = ImageDraw.Draw(canvas)
+            text = label.strip().upper()
+            l, t, r, b = d.textbbox((0, 0), text, font=font)
+            pad = int(short * 0.012)
+            lx = x + (bw + 2 * border - (r - l)) // 2
+            ly = y + bh + 2 * border - (b - t) - pad * 3 if tall else y + bh + 2 * border + pad * 2
+            d.rectangle((lx - pad, ly - pad, lx + (r - l) + pad, ly + (b - t) + pad), fill=(247, 214, 43))
+            d.text((lx - l, ly - t), text, font=font, fill=(20, 20, 20))
+    tmp = out.with_name(f"{out.stem}.{threading.get_ident()}.part.png")
+    canvas.save(tmp)
+    tmp.replace(out)
+    return out

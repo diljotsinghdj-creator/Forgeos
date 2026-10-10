@@ -34,6 +34,13 @@ class Clip:
     reveal: str = ""  # animated looks: "draw" (white -> line sketch -> picture) or "sketch" (line art -> picture)
     backdrop: Path | None = None  # explainer looks: a clip plays in a bordered frame on this paper/desk image
     layers: tuple[Path, Path] | None = None  # explainer cut-outs: (desk, sticker) moved at different speeds (2.5D)
+    grade: str = ""  # "archive": old-film look (sepia, grain, flicker, soft vignette) for history beats
+
+
+# Old film: sepia, a little extra contrast, flicker, moving grain, a soft dark edge.
+ARCHIVE = (",colorchannelmixer=.393:.769:.189:0:.349:.686:.168:0:.272:.534:.131,"
+           "eq=contrast=1.12:brightness='0.025*sin(t*23)+0.015*sin(t*61)':eval=frame,"
+           "noise=alls=24:allf=t+u,gblur=sigma=0.6,vignette=angle=PI/3.5")
 
 
 def _reveal(kind: str) -> str:
@@ -92,7 +99,7 @@ def pick_music(music_dir: str, mood: str, seed: str) -> Path | None:
 
 
 def mix_audio(narration: Path, music: Path | None, total: float, out: Path, cancel: threading.Event,
-              sfx: list[tuple[Path, float, float]] | None = None) -> None:
+              sfx: list[tuple[Path, float, float]] | None = None, dips: list[tuple[float, float]] | None = None) -> None:
     """Narration + optional music bed (ducked under the voice) + optional timed sound effects."""
     sfx = sfx or []
     args = ["-i", str(narration)]
@@ -104,7 +111,10 @@ def mix_audio(narration: Path, music: Path | None, total: float, out: Path, canc
         fade_out = max(0.0, total - 2.0)
         args += ["-stream_loop", "-1", "-i", str(music)]
         graph.append(f"[{idx}:a]aresample={SAMPLE_RATE},aformat=channel_layouts=stereo,volume=0.35,"
-                     f"afade=t=in:d=1,afade=t=out:st={fade_out:.3f}:d=2,atrim=0:{total:.3f}[m]")
+                     f"afade=t=in:d=1,afade=t=out:st={fade_out:.3f}:d=2,atrim=0:{total:.3f}"
+                     # the music drops away under a chapter card or a big statement, then comes back
+                     + (f",volume='if({'+'.join(f'between(t,{a:.2f},{b:.2f})' for a, b in dips)},0.2,1)':eval=frame"
+                        if dips else "") + "[m]")
         graph.append("[m][key]sidechaincompress=threshold=0.03:ratio=8:attack=20:release=400[duck]")
         mix.append("[duck]")
         idx += 1
@@ -214,6 +224,8 @@ def _segment_args(c: Clip, frames: int, width: int, height: int) -> list[str]:
         src = ["-i", str(c.image)]
     if c.reveal:
         vf = vf.replace(",format=yuv420p[v]", _reveal(c.reveal) + ",format=yuv420p[v]")
+    if c.grade == "archive":
+        vf = vf.replace(",format=yuv420p[v]", ARCHIVE + ",format=yuv420p[v]")
     return [*src, "-filter_complex", vf, "-map", "[v]", "-an", "-frames:v", str(frames), "-r", str(FPS),
             "-c:v", "libx264", "-preset", "veryfast", "-crf", "14", "-pix_fmt", "yuv420p"]
 

@@ -578,6 +578,27 @@ def test_globe_timeline_icons_and_depth_layers(tmp_path):
     assert ff.duration(tmp_path / "seg.mp4") > 0.9
 
 
+def test_screens_documents_statements_splits_archive_and_sound_design(tmp_path):
+    from PIL import Image
+    from creatorforge_worker.media import cards, ff, layout, render, sfx, sfx_builtin
+    for kind, spec in (("screen", "Your plan | Premium £12.99 · Keep my plan · *small:Cancel subscription"),
+                       ("document", "Move your money to a safe account | Example script"),
+                       ("statement", "He never *owned* it.")):
+        for w, h in ((360, 640), (640, 360)):
+            assert ff.duration(cards.render(kind, spec, "editorial", w, h, 2.0, tmp_path / f"{kind}{w}.mp4", tmp_path)) > 1.5
+    Image.new("RGB", (120, 90), (200, 80, 60)).save(tmp_path / "a.png")
+    Image.new("RGB", (120, 90), (60, 90, 160)).save(tmp_path / "b.png")
+    both = layout.split(tmp_path / "a.png", tmp_path / "b.png", ("What you see", "What you pay"), "paper", 640, 360, tmp_path)
+    assert Image.open(both).size == (640, 360)
+    clip = render.Clip(tmp_path / "a.png", 1.0, "slow push in", "cut")
+    clip.grade = "archive"
+    ff.run([*render._segment_args(clip, 30, 360, 640), str(tmp_path / "arch.mp4")])
+    assert ff.duration(tmp_path / "arch.mp4") > 0.9
+    bank = sfx.SfxBank.load("", sfx_builtin.ensure(tmp_path / "sfx"))
+    cues = sfx.graphic_cues(bank, [(5.0, "chapter"), (7.0, "statement"), (9.0, "chart")], "seed")
+    assert [round(at, 2) for _, at, _ in cues] == [3.5, 5.0, 7.05, 9.55]     # one riser only: never back to back
+
+
 def test_clip_tokenizer_matches_the_reference_ids(tmp_path):
     from pathlib import Path
     from creatorforge_worker.media import match

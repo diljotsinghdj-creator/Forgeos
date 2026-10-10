@@ -343,19 +343,230 @@ def icons_lines(spec: str, theme: str, width: int, height: int, seconds: float) 
     return out
 
 
+def _rect(L: float, T: float, R: float, B: float, r: float = 0.0) -> str:
+    if r <= 0:
+        return f"m {L:.0f} {T:.0f} l {R:.0f} {T:.0f} l {R:.0f} {B:.0f} l {L:.0f} {B:.0f}"
+    return (f"m {L + r:.0f} {T:.0f} l {R - r:.0f} {T:.0f} b {R:.0f} {T:.0f} {R:.0f} {T:.0f} {R:.0f} {T + r:.0f} "
+            f"l {R:.0f} {B - r:.0f} b {R:.0f} {B:.0f} {R:.0f} {B:.0f} {R - r:.0f} {B:.0f} "
+            f"l {L + r:.0f} {B:.0f} b {L:.0f} {B:.0f} {L:.0f} {B:.0f} {L:.0f} {B - r:.0f} "
+            f"l {L:.0f} {T + r:.0f} b {L:.0f} {T:.0f} {L:.0f} {T:.0f} {L + r:.0f} {T:.0f}")
+
+
+def _ring(cx: float, cy: float, rx: float, ry: float) -> str:
+    """A hand-drawn pen loop around a point (slightly more than one turn, a little wobbly)."""
+    import math
+    pts = []
+    for k in range(0, 41):
+        a = -math.pi * 0.6 + k / 40 * math.pi * 2.15
+        wob = 1 + 0.04 * math.sin(k * 1.7)
+        pts.append((cx + rx * wob * math.cos(a), cy + ry * wob * math.sin(a)))
+    path = pts + pts[-2::-1]
+    return f"m {path[0][0]:.0f} {path[0][1]:.0f} l " + " ".join(f"{x:.0f} {y:.0f}" for x, y in path[1:])
+
+
+def screen_lines(spec: str, theme: str, width: int, height: int, seconds: float):
+    """A recreated app/web page (always fictional and labelled): rows appear, the camera pushes in on the starred
+    row, and a red pen circles it. "Screen: Your plan | Premium £12.99 · Keep my plan · *small:Cancel" """
+    title, _, body = spec.partition("|")
+    if not body.strip():
+        title, body = "", title
+    rows = [x.strip() for x in re.split(r"·|•|;", body) if x.strip()][:7]
+    if not rows:
+        return []
+    tall = height > width
+    end = _ts(seconds)
+    if tall:   # a phone, ending above the captions
+        fw, fh = width * 0.56, height * 0.5
+        L, T = width / 2 - fw / 2, height * 0.12
+        pad = fw * 0.07
+        size = int(fw * 0.062)
+    else:      # a browser window
+        fw, fh = width * 0.62, height * 0.76
+        L, T = width / 2 - fw / 2, height * 0.12
+        pad = fw * 0.05
+        size = int(fh * 0.05)
+    R, B = L + fw, T + fh
+    out = [f"Dialogue: 1,{_ts(0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c&H000000&\\1a&HB8&\\blur14}}"
+           f"{_rect(L + 14, T + 20, R + 14, B + 20, size * 0.8)}",
+           f"Dialogue: 2,{_ts(0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord{max(6, int(size * 0.35)) if tall else 2}\\shad0"
+           f"\\1c&HFFFFFF&\\3c&H202020&}}{_rect(L, T, R, B, size * (1.2 if tall else 0.4))}"]
+    y = T + pad * (1.6 if tall else 0.5)
+    if not tall:   # browser chrome: three dots and an address bar
+        bar = size * 1.5
+        out.append(f"Dialogue: 3,{_ts(0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c&HEDEAE6&}}"
+                   f"{_rect(L + 2, T + 2, R - 2, T + bar)}")
+        for i, c in enumerate(("&H5F5FEC&", "&H2EBDF5&", "&H5BC95B&")):
+            cx = L + size * (0.9 + i * 0.75)
+            out.append(f"Dialogue: 4,{_ts(0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c{c}}}"
+                       f"{_rect(cx - size * 0.22, T + bar / 2 - size * 0.22, cx + size * 0.22, T + bar / 2 + size * 0.22, size * 0.22)}")
+        out.append(f"Dialogue: 4,{_ts(0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c&HFFFFFF&}}"
+                   f"{_rect(L + size * 3.2, T + bar * 0.2, R - size * 1.5, T + bar * 0.8, bar * 0.3)}")
+        out.append(f"Dialogue: 5,{_ts(0)},{end},T,,0,0,0,,{{\\an4\\pos({L + size * 3.6:.0f},{T + bar / 2:.0f})\\fs{int(size * 0.55)}"
+                   f"\\1c&H808080&}}example-app.com")
+        y = T + bar + pad
+    if title.strip():
+        out.append(f"Dialogue: 5,{_ts(0.1)},{end},T,,0,0,0,,{{\\an7\\pos({L + pad:.0f},{y:.0f})\\fs{int(size * 1.15)}\\fad(120,0)}}"
+                   f"{_esc(title.strip())}")
+        y += size * 2.2
+    target = None
+    room = (B - pad) - y
+    step = min(size * 2.3, room / max(1, len(rows)))
+    per = min(0.35, max(0.12, seconds * 0.3 / len(rows)))
+    primary = True
+    for i, row in enumerate(rows):
+        star = row.startswith("*")
+        text = row.lstrip("*").strip()
+        small = text.lower().startswith("small:")
+        text = text.split(":", 1)[1].strip() if small else text
+        t0 = 0.2 + i * per
+        cy = y + step * 0.5
+        if small:   # the trick: tiny grey words, no button
+            fs = int(size * 0.62)
+            out.append(f"Dialogue: 6,{_ts(t0)},{end},T,,0,0,0,,{{\\an5\\pos({(L + R) / 2:.0f},{cy:.0f})\\fs{fs}\\1c&H9A9A9A&"
+                       f"\\fad(100,0)}}{_esc(text)}")
+            box = (len(text) * fs * 0.56 / 2 + fs * 0.6, fs * 0.9)
+        else:
+            col = MARK[theme] if primary else "&H00EFEFEF&"
+            primary = False
+            bh = min(step * 0.78, size * 1.9)
+            out.append(f"Dialogue: 5,{_ts(t0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c{col}\\fad(100,0)}}"
+                       f"{_rect(L + pad, cy - bh / 2, R - pad, cy + bh / 2, bh * 0.3)}")
+            out.append(f"Dialogue: 6,{_ts(t0)},{end},T,,0,0,0,,{{\\an5\\pos({(L + R) / 2:.0f},{cy:.0f})\\fs{int(size * 0.85)}"
+                       f"\\fad(100,0)}}{_esc(text)}")
+            box = ((R - L) / 2 - pad, bh * 0.5)
+        if star:
+            target = ((L + R) / 2, cy, box)
+        y += step
+    out.append(f"Dialogue: 7,{_ts(0)},{end},T,,0,0,0,,{{\\an9\\pos({R - pad * 0.4:.0f},{B + size * 0.4:.0f})\\fs{int(size * 0.5)}"
+               f"\\1c&H606060&}}ILLUSTRATION")
+    zoom = None
+    if target:
+        cx, cy, (rx, ry) = target
+        t_zoom = min(0.25 + len(rows) * per + 0.25, seconds * 0.45)
+        t_ring = t_zoom + 0.7
+        out.append(f"Dialogue: 8,{_ts(t_ring)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\clip(0,0,{cx - rx * 1.4:.0f},{height})"
+                   f"\\t(0,350,\\clip(0,0,{cx + rx * 1.4:.0f},{height}))\\p1\\bord{max(4, int(size * 0.16))}\\1a&HFF&"
+                   f"\\3c{PEN[theme]}&\\blur0.6}}{_ring(cx, cy, rx * 1.06, ry * 1.5)}")
+        zoom = (cx, cy, 2.2 if tall else 1.45, t_zoom)
+    return out, {"zoom": zoom}
+
+
+def document_lines(spec: str, theme: str, width: int, height: int, seconds: float):
+    """A page of a real document (its other lines blurred to grey bars): the camera pushes in on the quoted
+    sentence, typed in, and a highlighter sweeps across it. "Document: the exact words | source, year" """
+    quote, _, source = spec.partition("|")
+    quote = quote.strip().strip('"“”')
+    if not quote:
+        return []
+    tall = height > width
+    end = _ts(seconds)
+    pw, ph = (width * 0.84, height * 0.5) if tall else (width * 0.5, height * 0.86)
+    L, T = width / 2 - pw / 2, height * (0.12 if tall else 0.07)
+    R, B = L + pw, T + ph
+    size = int(pw * 0.034)
+    out = [f"Dialogue: 1,{_ts(0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c&H000000&\\1a&HB0&\\blur14}}"
+           f"{_rect(L + 12, T + 18, R + 12, B + 18)}",
+           f"Dialogue: 2,{_ts(0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c&HFAFCFD&}}{_rect(L, T, R, B)}"]
+    m = pw * 0.09
+    gap = size * 1.75
+    rows = _wrap(f"“{quote}”", 34, 4)
+    n_lines = int((ph - m * 2) / gap)
+    at = max(3, n_lines // 2 - len(rows) // 2)
+    import random
+    rnd = random.Random(quote)
+    out.append(f"Dialogue: 3,{_ts(0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c&HB9B9B9&}}"
+               f"{_rect(L + m, T + m, L + m + pw * 0.45, T + m + size * 1.2)}")
+    qy = []
+    for k in range(2, n_lines):
+        y = T + m + k * gap
+        if at <= k < at + len(rows):
+            qy.append(y)
+            continue
+        if k == n_lines - 1 and source.strip():
+            continue
+        w = (pw - 2 * m) * (0.55 + 0.45 * rnd.random() if k % 5 else 0.4)
+        out.append(f"Dialogue: 3,{_ts(0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c&HD5D5D5&\\blur1.5}}"
+                   f"{_rect(L + m, y + size * 0.25, L + m + w, y + size * 0.85)}")
+    t_zoom, per_row = 0.35, min(0.8, max(0.3, (seconds - 1.4) / max(1, len(rows)) * 0.7))
+    for i, (row, y) in enumerate(zip(rows, qy)):
+        t0 = t_zoom + 0.5 + i * per_row
+        words = row.split()
+        per = max(4, int(per_row * 70 / max(1, len(words))))
+        out.append(f"Dialogue: 5,{_ts(t0)},{end},Q,,0,0,0,,{{\\an7\\pos({L + m:.0f},{y:.0f})\\fs{size}}}"
+                   + " ".join(f"{{\\k{per}}}{_esc(w)}" for w in words))
+        rw = min(pw - 2 * m, len(row) * size * 0.5)
+        out.append(f"Dialogue: 4,{_ts(t0 + per_row * 0.6)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\clip(0,0,{L + m - 4:.0f},{height})"
+                   f"\\t(0,{int(per_row * 600)},\\clip(0,0,{L + m + rw + 6:.0f},{height}))\\p1\\bord0\\shad0\\1c{MARK[theme]}&"
+                   f"\\1a&H30&}}{_rect(L + m - 4, y + size * 0.05, L + m + rw + 6, y + size * 1.2)}")
+    if source.strip():
+        out.append(f"Dialogue: 5,{_ts(0.2)},{end},T,,0,0,0,,{{\\an1\\pos({L + m:.0f},{B - m * 0.6:.0f})\\fs{int(size * 0.8)}}}"
+                   f"— {_esc(source.strip().upper())}")
+    if not qy:
+        return []
+    cy = (qy[0] + qy[-1]) / 2 + size * 0.6
+    return out, {"zoom": (L + m + min(pw - 2 * m, max(len(r) for r in rows) * size * 0.5) / 2, cy,
+                          min(2.2, (width * 0.8) / min(pw - 2 * m, max(len(r) for r in rows) * size * 0.5 + size)), t_zoom)}
+
+
+def statement_lines(spec: str, theme: str, width: int, height: int, seconds: float):
+    """One big line on a dark screen, word by word - the pause before (or after) the reveal. *Word* = highlighted."""
+    text = spec.strip()
+    if not text:
+        return []
+    tall = height > width
+    end = _ts(seconds)
+    big = int(min(width, height) * (0.105 if tall else 0.09))
+    rows = _wrap(text.upper(), 11 if tall else 20, 4)
+    cy = height * (0.38 if tall else 0.48)
+    out = []
+    words_seen = 0
+    total_words = max(1, len(text.split()))
+    per = min(0.35, max(0.12, (seconds * 0.45) / total_words))
+    for i, row in enumerate(rows):
+        y = cy + (i - (len(rows) - 1) / 2) * big * 1.15
+        parts = []
+        for w in row.split():
+            hi = w.startswith("*") or w.endswith("*")
+            w = w.strip("*")
+            t = int((0.15 + words_seen * per) * 1000)
+            col = MARK[theme] if hi else "&H00F4F4F4&"
+            parts.append(f"{{\\alpha&HFF&\\1c{col}\\t({t},{t + 120},\\alpha&H00&)}}{_esc(w)}")
+            words_seen += 1
+        out.append(f"Dialogue: 3,{_ts(0)},{end},T,,0,0,0,,{{\\an5\\pos({width / 2:.0f},{y:.0f})\\fs{big}\\bord0\\shad0}}"
+                   + " ".join(parts))
+    return out, {"bg": "0x111111", "plain": True}
+
+
 def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: float, out: Path, work: Path) -> Path:
     theme = theme if theme in PAPER else "editorial"
     seconds = max(1.5, seconds)
     body = {"chapter": chapter_lines, "quote": quote_lines, "steps": steps_lines, "timeline": timeline_lines,
-            "icons": icons_lines}[kind](spec, theme, width, height, seconds)
+            "icons": icons_lines, "screen": screen_lines, "document": document_lines,
+            "statement": statement_lines}[kind](spec, theme, width, height, seconds)
+    opts: dict = {}
+    if isinstance(body, tuple):
+        body, opts = body
     if not body:
         raise ff.MediaError(f"{kind}: nothing to draw from {spec!r}")     # the line keeps its picture instead
     text = "\n".join(_head(width, height, _font()) + body) + "\n"
     work.mkdir(parents=True, exist_ok=True)
     ass = work / f"card_{hashlib.sha256(text.encode()).hexdigest()[:12]}.ass"
     ass.write_text(text, encoding="utf-8")
-    grid = ",drawgrid=w={0}:h={0}:t=1:c=0x7FA3C8@0.3".format(max(24, height // 28)) if theme == "investigative" else ""
-    ff.run(["-f", "lavfi", "-i", f"color=c={PAPER[theme]}:s={width}x{height}:d={seconds:.2f}:r=30",
-            "-vf", f"noise=alls=7:allf=t+u{grid},subtitles=filename='{ass}',vignette=angle=PI/7,format=yuv420p",
-            "-c:v", "libx264", "-preset", "veryfast", "-crf", "18", "-pix_fmt", "yuv420p", str(out)])
+    zoom = opts.get("zoom")
+    # a camera push-in (screens, documents) is drawn at twice the size, then cropped in, so it stays sharp
+    k = 2 if zoom else 1
+    grid = ",drawgrid=w={0}:h={0}:t=1:c=0x7FA3C8@0.3".format(max(24, height * k // 28)) if theme == "investigative" and not opts.get("plain") else ""
+    tail = "vignette=angle=PI/7" if not opts.get("plain") else "vignette=angle=PI/5"
+    vf = f"noise=alls=7:allf=t+u{grid},subtitles=filename='{ass}',{tail}"
+    if zoom:
+        zx, zy, z, t0 = zoom
+        zx, zy = zx * k, zy * k
+        ease = f"(1-cos(PI*min(1,max(0,(it-{t0:.2f})/0.7))))/2"
+        zexpr = f"1+({z:.2f}-1)*{ease}"
+        vf += (f",zoompan=z='{zexpr}':x='max(0,min(iw-iw/zoom,{zx:.0f}-iw/zoom/2))'"
+               f":y='max(0,min(ih-ih/zoom,{zy:.0f}-ih/zoom*{0.42 if height > width else 0.5}))':d=1:s={width}x{height}:fps=30")
+    vf += ",format=yuv420p"
+    bg = opts.get("bg") or PAPER[theme]
+    ff.run(["-f", "lavfi", "-i", f"color=c={bg}:s={width * k}x{height * k}:d={seconds:.2f}:r=30",
+            "-vf", vf, "-c:v", "libx264", "-preset", "veryfast", "-crf", "18", "-pix_fmt", "yuv420p", str(out)])
     return out

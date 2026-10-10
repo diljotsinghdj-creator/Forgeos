@@ -558,6 +558,11 @@ def prompt_forge(plan: ProductionPlan, spec: ProductionSpec, only: int | None = 
             size = ("close-up", "medium", "extreme close-up", "wide")[(i + k) % 4] if k else (s.shot or "medium")
             b["prompt"], b["negative"] = _image_prompt(b["visual"], b.get("emotion") or s.emotion, s, spec, style, size,
                                                        hook=i == 0 and k == 0)
+            if (b.get("extra") or {}).get("archive"):
+                # a history line: the picture itself looks like an old photograph (the render adds the film look)
+                era = re.sub(r"[^0-9a-zA-Z ]", "", str(b["extra"]["archive"]))[:20]
+                b["prompt"] = f"vintage black and white archival photograph{' from the ' + era if any(c.isdigit() for c in era) else ''}, film grain, {b['prompt']}"
+                b["negative"] += ", colour, modern, smartphone, plastic"
             # Per-line AI video: each beat's still is animated with a move that fits what the line shows.
             b["video_prompt"] = (f"Subtle natural movement: {b['visual'].rstrip('.')}. Camera: "
                                  f"{('slow push in', 'slow dolly sideways', 'slow pull back', 'gentle orbit')[(i + k) % 4]}. "
@@ -607,12 +612,13 @@ def _is_heading(line: str) -> bool:
 
 # ---- writer's scripts: "0:05 SETUP A student thinks...", "On-screen hook: ...", "Visuals: ...", "Post: ..." ----------
 # Writer keys that fill the whole frame with a graphic instead of the line's picture.
-FULL_FRAME = ("map", "globe", "steps", "timeline", "icons", "chapter", "quote")
+FULL_FRAME = ("map", "globe", "steps", "timeline", "icons", "chapter", "quote", "screen", "document", "statement")
 _META_KEYS = ("on-screen hook", "on screen hook", "onscreen hook", "hook text", "visuals", "visual", "visual style",
               "b-roll", "broll", "post title", "video title", "post", "title", "cover", "thumbnail", "caption", "description", "hashtags", "tags",
               "source", "sources", "music", "sfx", "on-screen text", "on screen text", "text on screen", "text",
               "stock footage", "stock", "chart", "graphic", "draw", "pen", "bubble", "thought",
-              "place", "cite", "map", "chapter", "quote", "steps", "globe", "timeline", "icons")
+              "place", "cite", "map", "chapter", "quote", "steps", "globe", "timeline", "icons", "screen",
+              "document", "statement", "split", "archive")
 _META = re.compile(r"(?i)(?:^|(?<=[\s.]))(" + "|".join(re.escape(k) for k in sorted(_META_KEYS, key=len, reverse=True)) +
                    r")\s*:\s*")
 _STAMP = re.compile(r"^\s*(?:[-\u2022*]\s*)?\(?(?:\d{0,2}:\d{2})(?:\s*[-\u2013]\s*\d{0,2}:\d{2})?\)?\s*")
@@ -684,7 +690,8 @@ def _line_shots(line: str, d: dict) -> list[list[str]]:
     last = lambda key, k: d.get(key, "") if k == n - 1 else ""  # noqa: E731
     return [[" ".join(words[a:b]), visuals[k], d.get("text", "") if k == text_at else "",
              d.get("stock", "") if k == stock_at else "", first("chart", k),
-             last("draw", k), last("bubble", k), extra if k == 0 else {}]
+             last("draw", k), last("bubble", k),
+             extra if k == 0 else ({"archive": extra["archive"]} if extra.get("archive") else {})]
             for k, (a, b) in enumerate(zip(bounds, bounds[1:]))]
 
 
@@ -756,7 +763,7 @@ def parse_script(raw: str) -> tuple[str, dict]:
             elif k in ("chart", "graphic"):
                 if target >= 0 and v:
                     per.setdefault(target, {})["chart"] = value.strip()[:80]
-            elif k in ("place", "cite") + FULL_FRAME:
+            elif k in ("place", "cite", "split", "archive") + FULL_FRAME:
                 if target >= 0 and v:
                     per.setdefault(target, {}).setdefault("extra", {})[k] = value.strip()[:140]
             elif k in ("draw", "pen"):

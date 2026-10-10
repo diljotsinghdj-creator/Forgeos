@@ -779,15 +779,34 @@ class Pipeline:
                         charted.add((i, k))
                         chart_files.add(chart)
                 cams = ["slow push in", "pull back", "pan left", "pan right"]
+                merged = set()
                 for k, length in enumerate(lengths):
+                    if k in merged:
+                        continue
                     if k and images[k] is None and stock_clips[k] is None:   # nothing for this beat: hold the last shot
                         clips[-1].duration += length
                         continue
                     cam = shot.get("camera", "") if k == 0 else cams[(i + k) % 4]
                     if spec.auto_edit and (beats[k].get("emotion") or shot.get("emotion", "")).lower() in SHOCK_EMOTIONS:
                         cam = "punch"   # a smooth zoom that lands - never a shaky camera
-                    clips.append(render.Clip(images[k] or images[0], length, cam, transition(i, shot) if k == 0 else "cut",
-                                             stock_clips[k]))
+                    extra_k = beats[k].get("extra") or {}
+                    still, video_k = images[k] or images[0], stock_clips[k]
+                    if extra_k.get("split") and k + 1 < len(beats) and video_k is None and stock_clips[k + 1] is None \
+                            and images[k + 1] is not None:
+                        # split screen: this picture and the next side by side, held for both phrases
+                        left_l, _, right_l = str(extra_k["split"]).partition("|")
+                        try:
+                            still = layout.split(still, images[k + 1], (left_l, right_l),
+                                                 "desk" if spec.style == "investigative" else "paper", w, h, work / "layout")
+                            length += lengths[k + 1]
+                            merged.add(k + 1)
+                            cam = "static"
+                        except (MediaError, OSError):
+                            pass
+                    clip = render.Clip(still, length, cam, transition(i, shot) if k == 0 else "cut", video_k)
+                    if extra_k.get("archive"):
+                        clip.grade = "archive"          # a history line: old-film look
+                    clips.append(clip)
             else:
                 cam = shot.get("camera", "")
                 if spec.auto_edit and video is None and shot.get("emotion", "").lower() in SHOCK_EMOTIONS:
@@ -813,13 +832,15 @@ class Pipeline:
 
         plan = job["plan"]
         overlays, start = [], 0.0
+        graphics: list[tuple[float, str]] = []   # (start, kind) of each full-frame graphic, for sound design
         if plan.get("hook"):
             overlays.append(cap.Overlay(0.0, min(3.0, timings[0]), plan["hook"], "Hook"))
         for i, (shot, slot) in enumerate(zip(shots, timings)):
             if shot.get("overlay") and i > 0:
                 overlays.append(cap.Overlay(start + 0.3, start + slot - 0.2, shot["overlay"], "Callout"))
             beats = shot.get("beats") or []
-            if spec.fast_cuts and any(b.get("overlay") or b.get("draw") or b.get("bubble") or b.get("extra") for b in beats):
+            if spec.fast_cuts and any(b.get("overlay") or b.get("draw") or b.get("bubble") or b.get("extra") or b.get("chart")
+                                      for b in beats):
                 # The writer's on-screen text appears exactly while its line is spoken.
                 at = start
                 for k, (b, length) in enumerate(zip(beats, _beat_lengths([b["text"] for b in beats],
@@ -830,6 +851,10 @@ class Pipeline:
                     if b.get("overlay") and begin < at + length - 0.4 and (i, k) not in charted:
                         overlays.append(cap.Overlay(begin, at + max(0.6, length - 0.1), b["overlay"], "Callout"))
                     extras = b.get("extra") or {}
+                    if (i, k) in charted:
+                        graphics.append((at, next((g for g in director.FULL_FRAME if extras.get(g)), "chart")))
+                    elif extras.get("split"):
+                        graphics.append((at, "split"))
                     if extras.get("cite") and length > 0.6:
                         overlays.append(cap.Overlay(at + 0.3, at + length - 0.05, extras["cite"], "Cite"))
                     if extras.get("place") and (i, k) not in charted and length > 0.8:
@@ -858,6 +883,7 @@ class Pipeline:
                                     + sfx_builtin.ensure(self.cfg.data_dir / "sfx_builtin"))
             sfx_hits = sfx.place(bank, [c.transition for c in heads], timings,
                                  [(o.start, o.style) for o in overlays if spec.captions], job["id"])
+            sfx_hits = sorted(sfx_hits + sfx.graphic_cues(bank, graphics, job["id"]), key=lambda x: x[1])
             job["providers"]["sfx"] = f"{len(sfx_hits)} cues from {bank.describe()}" if bank.any() else "none (no SFX folder or SFX assets)"
         else:
             job["providers"]["sfx"] = "off"
@@ -868,7 +894,9 @@ class Pipeline:
         if music is not None and not music.is_file():
             raise StageFailed(f"music track disappeared: {music}")
         mixed = work / "audio.wav"
-        render.mix_audio(narr, music, total, mixed, cancel, sfx_hits)
+        # the music steps back under chapter cards and big statements (a beat of near-silence before the next part)
+        dips = [(at - 0.1, at + 1.4) for at, kind in graphics if kind in ("chapter", "statement")]
+        render.mix_audio(narr, music, total, mixed, cancel, sfx_hits, dips)
 
         ass = None
         if spec.captions:
@@ -928,8 +956,8 @@ class Pipeline:
             out, under, depth = [], None, 0
             for n, idx in enumerate(idxs):
                 c = clips[idx]
-                if c.video is not None:
-                    under, depth = None, 0           # footage or a graphic clears the desk
+                if c.video is not None or c.image.name.startswith("split_"):
+                    under, depth = None, 0           # footage, a graphic or a split screen clears the desk
                     continue
                 if cancel.is_set():
                     raise Cancelled()
