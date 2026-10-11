@@ -613,13 +613,14 @@ def _is_heading(line: str) -> bool:
 # ---- writer's scripts: "0:05 SETUP A student thinks...", "On-screen hook: ...", "Visuals: ...", "Post: ..." ----------
 # Writer keys that fill the whole frame with a graphic instead of the line's picture.
 FULL_FRAME = ("map", "globe", "steps", "timeline", "icons", "chapter", "quote", "screen", "document", "statement",
-              "object", "article")
+              "object", "article", "chat", "search", "pie", "squares", "shade", "timer", "receipt")
 _META_KEYS = ("on-screen hook", "on screen hook", "onscreen hook", "hook text", "visuals", "visual", "visual style",
               "b-roll", "broll", "post title", "video title", "post", "title", "cover", "thumbnail", "caption", "description", "hashtags", "tags",
               "source", "sources", "music", "sfx", "on-screen text", "on screen text", "text on screen", "text",
               "stock footage", "stock", "chart", "graphic", "draw", "pen", "bubble", "thought",
               "place", "cite", "map", "chapter", "quote", "steps", "globe", "timeline", "icons", "screen",
-              "document", "statement", "split", "archive", "object", "article", "big", "transition")
+              "document", "statement", "split", "archive", "object", "article", "big", "transition",
+              "chat", "search", "pie", "squares", "shade", "timer", "receipt", "treat")
 _META = re.compile(r"(?i)(?:^|(?<=[\s.]))(" + "|".join(re.escape(k) for k in sorted(_META_KEYS, key=len, reverse=True)) +
                    r")\s*:\s*")
 _STAMP = re.compile(r"^\s*(?:[-\u2022*]\s*)?\(?(?:\d{0,2}:\d{2})(?:\s*[-\u2013]\s*\d{0,2}:\d{2})?\)?\s*")
@@ -764,7 +765,7 @@ def parse_script(raw: str) -> tuple[str, dict]:
             elif k in ("chart", "graphic"):
                 if target >= 0 and v:
                     per.setdefault(target, {})["chart"] = value.strip()[:80]
-            elif k in ("place", "cite", "split", "archive", "big", "transition") + FULL_FRAME:
+            elif k in ("place", "cite", "split", "archive", "big", "transition", "treat") + FULL_FRAME:
                 if target >= 0 and v:
                     per.setdefault(target, {}).setdefault("extra", {})[k] = value.strip()[:140]
             elif k in ("draw", "pen"):

@@ -597,13 +597,345 @@ def article_lines(spec: str, theme: str, width: int, height: int, seconds: float
     return out, {"zoom": (L + m + hw / 2, cy, z, t_zoom)}
 
 
+def _phone(width: int, height: int, size_k: float = 0.062):
+    """A phone frame for Shorts (or a centred phone on widescreen); returns (L, T, R, B, pad, size, lines)."""
+    tall = height > width
+    fh = height * (0.5 if tall else 0.8)
+    fw = fh * 0.52 if not tall else width * 0.6
+    L, T = width / 2 - fw / 2, height * (0.12 if tall else 0.1)
+    R, B = L + fw, T + fh
+    size = int(fw * size_k)
+    lines = [f"Dialogue: 1,{_ts(0)},9:59:59.00,T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c&H000000&\\1a&HB8&\\blur14}}"
+             f"{_rect(L + 14, T + 20, R + 14, B + 20, size * 1.2)}",
+             f"Dialogue: 2,{_ts(0)},9:59:59.00,T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord{max(6, int(size * 0.35))}\\shad0"
+             f"\\1c&HF7F4F2&\\3c&H202020&}}{_rect(L, T, R, B, size * 1.2)}"]
+    return L, T, R, B, fw * 0.07, size, lines
+
+
+def chat_lines(spec: str, theme: str, width: int, height: int, seconds: float):
+    """A recreated (fictional, labelled) text conversation: bubbles pop in one by one, the other side's after a
+    'typing' dots bubble. "Chat: Unknown number | them: Hi, is this Sam? · me: Wrong number · them: Oh, sorry!" """
+    head, _, body = spec.partition("|")
+    if not body.strip():
+        head, body = "", head
+    msgs = []
+    for part in [x.strip() for x in re.split(r"·|•", body) if x.strip()][:7]:
+        who, _, text = part.partition(":")
+        mine = who.strip().lower() in ("me", "you", "sam", "i")
+        msgs.append((mine, text.strip() if text.strip() else part))
+    if not msgs:
+        return []
+    L, T, R, B, pad, size, out = _phone(width, height)
+    end = _ts(seconds)
+    bar = size * 2.4
+    out.append(f"Dialogue: 3,{_ts(0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c&HFFFFFF&}}{_rect(L + 4, T + size, R - 4, T + size + bar)}")
+    if head.strip():
+        out.append(f"Dialogue: 4,{_ts(0)},{end},T,,0,0,0,,{{\\an5\\pos({(L + R) / 2:.0f},{T + size + bar / 2:.0f})\\fs{int(size * 0.85)}}}"
+                   f"{_esc(head.strip())}")
+    y = T + size + bar + pad
+    per = min(0.9, max(0.35, (seconds - 0.6) / len(msgs)))
+    t = 0.25
+    mine_col, their_col = MARK[theme], "&H00E4E1DE&"
+    for mine, text in msgs:
+        rows = _wrap(text, 20, 4)
+        bh = len(rows) * size * 1.25 + size * 0.8
+        bw = min((R - L) * 0.72, max(len(r) for r in rows) * size * 0.56 + size * 1.2)
+        if y + bh > B - pad:
+            break
+        x0 = R - pad - bw if mine else L + pad
+        if not mine:      # the other person is typing...
+            dots = " ".join(_rect(L + pad + size * (0.7 + i * 0.7), y + size * 0.55, L + pad + size * (1.1 + i * 0.7),
+                                  y + size * 0.95, size * 0.2) for i in range(3))
+            out.append(f"Dialogue: 5,{_ts(t)},{_ts(t + per * 0.4)},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0"
+                       f"\\1c&H00E4E1DE&}}{_rect(L + pad, y, L + pad + size * 3.2, y + size * 1.5, size * 0.7)}")
+            out.append(f"Dialogue: 6,{_ts(t)},{_ts(t + per * 0.4)},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0"
+                       f"\\1c&H808080&\\t(0,200,\\1c&HC0C0C0&)\\t(200,400,\\1c&H808080&)}}{dots}")
+            t += per * 0.4
+        pop = f"\\org({x0 + bw / 2:.0f},{y + bh / 2:.0f})\\fscx70\\fscy70\\t(0,120,\\fscx103\\fscy103)\\t(120,180,\\fscx100\\fscy100)"
+        out.append(f"Dialogue: 5,{_ts(t)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c{mine_col if mine else their_col}}}"
+                   f"{_rect(x0, y, x0 + bw, y + bh, size * 0.7)}")
+        out.append(f"Dialogue: 6,{_ts(t)},{end},T,,0,0,0,,{{\\an7\\pos({x0 + size * 0.6:.0f},{y + size * 0.4:.0f})\\fs{size}"
+                   f"\\fad(80,0)}}" + "\\N".join(_esc(r) for r in rows))
+        t += per * 0.6
+        y += bh + size * 0.7
+    out.append(f"Dialogue: 7,{_ts(0)},{end},T,,0,0,0,,{{\\an9\\pos({R:.0f},{B + size * 0.5:.0f})\\fs{int(size * 0.55)}"
+               f"\\1c&H606060&}}ILLUSTRATION")
+    return out, {}
+
+
+def search_lines(spec: str, theme: str, width: int, height: int, seconds: float):
+    """Typing into a plain search bar (no logo), then results appear as blurred lines with readable titles.
+    "Search: how to cancel a subscription | Cancel in 10 steps · Why can't I cancel?" """
+    query, _, body = spec.partition("|")
+    query = query.strip()
+    if not query:
+        return []
+    tall = height > width
+    end = _ts(seconds)
+    size = int(min(width, height) * (0.05 if tall else 0.045))
+    L, R = width * 0.08, width * 0.92
+    y = height * (0.2 if tall else 0.26)
+    bh = size * 2.2
+    out = [f"Dialogue: 2,{_ts(0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord3\\shad0\\1c&HFFFFFF&\\3c&HC8C8C8&}}"
+           f"{_rect(L, y, R, y + bh, bh / 2)}"]
+    # magnifier icon
+    cx, cy, r = L + bh * 0.55, y + bh / 2, size * 0.42
+    out.append(f"Dialogue: 3,{_ts(0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord{max(3, size // 9)}\\1a&HFF&\\3c&H707070&}}"
+               f"m {cx - r:.0f} {cy:.0f} b {cx - r:.0f} {cy - r * 1.33:.0f} {cx + r:.0f} {cy - r * 1.33:.0f} {cx + r:.0f} {cy:.0f} "
+               f"b {cx + r:.0f} {cy + r * 1.33:.0f} {cx - r:.0f} {cy + r * 1.33:.0f} {cx - r:.0f} {cy:.0f}")
+    typing = min(1.6, max(0.6, seconds * 0.4))
+    per = max(2, int(typing * 100 / max(1, len(query))))
+    typed = "".join(f"{{\\alpha&HFF&\\t({int(0.2 * 1000 + i * per * 10)},{int(0.2 * 1000 + i * per * 10) + 1},\\alpha&H00&)}}{_esc(c)}"
+                    for i, c in enumerate(query))
+    out.append(f"Dialogue: 4,{_ts(0)},{end},T,,0,0,0,,{{\\an4\\pos({L + bh * 1.2:.0f},{y + bh / 2:.0f})\\fs{size}\\1c&H202020&}}{typed}")
+    caret_end = 0.2 + typing
+    out.append(f"Dialogue: 5,{_ts(0)},{_ts(caret_end + 0.3)},T,,0,0,0,,{{\\an4\\pos({L + bh * 1.2 + len(query) * size * 0.52:.0f},"
+               f"{y + bh / 2:.0f})\\fs{size}\\1c&H202020&\\t(0,400,\\alpha&HFF&)\\t(400,800,\\alpha&H00&)}}|")
+    titles = [x.strip() for x in re.split(r"·|•", body) if x.strip()][:4]
+    ry = y + bh + size * 1.2
+    import random
+    rnd = random.Random(query)
+    for i in range(4):
+        t0 = caret_end + 0.25 + i * 0.18
+        if i < len(titles):
+            out.append(f"Dialogue: 4,{_ts(t0)},{end},T,,0,0,0,,{{\\an7\\pos({L:.0f},{ry:.0f})\\fs{int(size * 0.85)}\\1c&H8B4A1A&"
+                       f"\\fad(120,0)}}{_esc(titles[i])}")
+        else:
+            out.append(f"Dialogue: 4,{_ts(t0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c&HC9A27A&\\fad(120,0)}}"
+                       f"{_rect(L, ry + size * 0.2, L + (R - L) * (0.4 + 0.3 * rnd.random()), ry + size * 0.75)}")
+        for k in range(2):
+            out.append(f"Dialogue: 3,{_ts(t0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c&HDADADA&\\blur1.5\\fad(120,0)}}"
+                       f"{_rect(L, ry + size * (1.2 + k * 0.7), L + (R - L) * (0.6 + 0.35 * rnd.random()), ry + size * (1.55 + k * 0.7))}")
+        ry += size * 3.0
+        if ry > height * (0.62 if tall else 0.92):
+            break
+    return out, {}
+
+
+def pie_lines(spec: str, theme: str, width: int, height: int, seconds: float):
+    """A donut that fills to the share, the number counting up in the middle. "Pie: 61% | of losses refunded" """
+    head, _, label = spec.partition("|")
+    m = re.search(r"(\d+(?:\.\d+)?)\s*%?", head)
+    if not m:
+        return []
+    v = max(0.0, min(100.0, float(m.group(1))))
+    import math
+    tall = height > width
+    end = _ts(seconds)
+    cx, cy = width / 2, height * (0.36 if tall else 0.45)
+    r = min(width, height) * (0.3 if tall else 0.28)
+    ring = r * 0.34
+    out = []
+
+    def arc(frac: float, r_out: float, r_in: float) -> str:
+        n = max(2, int(80 * frac))
+        a0 = -math.pi / 2
+        pts_o = [(cx + r_out * math.cos(a0 + 2 * math.pi * frac * i / n), cy + r_out * math.sin(a0 + 2 * math.pi * frac * i / n)) for i in range(n + 1)]
+        pts_i = [(cx + r_in * math.cos(a0 + 2 * math.pi * frac * i / n), cy + r_in * math.sin(a0 + 2 * math.pi * frac * i / n)) for i in range(n, -1, -1)]
+        pts = pts_o + pts_i
+        return f"m {pts[0][0]:.0f} {pts[0][1]:.0f} l " + " ".join(f"{x:.0f} {y:.0f}" for x, y in pts[1:])
+    out.append(f"Dialogue: 1,{_ts(0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c&H00D6D2CC&}}{arc(0.9999, r, r - ring)}")
+    anim = min(1.2, seconds * 0.5)
+    steps = 24
+    for i in range(1, steps + 1):      # the filled arc grows in steps (stepped, like hand-made animation)
+        frac = v / 100 * i / steps
+        t0, t1 = 0.2 + anim * (i - 1) / steps, 0.2 + anim * i / steps
+        out.append(f"Dialogue: 2,{_ts(t0)},{_ts(t1 if i < steps else seconds)},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0"
+                   f"\\1c{MARK[theme]}}}{arc(max(frac, 0.005), r, r - ring)}")
+        shown = round(v * i / steps) if float(v).is_integer() else round(v * i / steps, 1)
+        out.append(f"Dialogue: 3,{_ts(t0)},{_ts(t1 if i < steps else seconds)},T,,0,0,0,,{{\\an5\\pos({cx:.0f},{cy:.0f})"
+                   f"\\fs{int(r * 0.42)}}}{shown}%")
+    if label.strip():
+        out.append(f"Dialogue: 4,{_ts(0.4)},{end},T,,0,0,0,,{{\\an8\\pos({cx:.0f},{cy + r + r * 0.18:.0f})\\fs{int(r * 0.17)}"
+                   f"\\fad(200,0)}}" + "\\N".join(_esc(x) for x in _wrap(label.strip().upper(), 22 if tall else 34, 2)))
+    return out, {}
+
+
+def squares_lines(spec: str, theme: str, width: int, height: int, seconds: float):
+    """Proportional squares: each value's area to scale, side by side, so the difference is felt.
+    "Squares: £4.2m vs £85,000 | fines, one claim" """
+    head, _, labels = spec.partition("|")
+    nums = []
+    for m in re.finditer(r"([£$€]?)\s*(\d[\d,]*(?:\.\d+)?)\s*(bn|billion|m|million|k|thousand)?", head, re.I):
+        v = float(m.group(2).replace(",", ""))
+        unit = (m.group(3) or "").lower()
+        v *= {"bn": 1e9, "billion": 1e9, "m": 1e6, "million": 1e6, "k": 1e3, "thousand": 1e3}.get(unit, 1)
+        nums.append((m.group(0).strip(), v))
+    nums = [n for n in nums if n[1] > 0][:3]
+    if len(nums) < 2:
+        return []
+    names = [x.strip() for x in labels.split(",")] if labels.strip() else []
+    tall = height > width
+    end = _ts(seconds)
+    top = max(v for _, v in nums)
+    side_max = min(width * (0.62 if tall else 0.36), height * (0.36 if tall else 0.58))
+    sizes = [max(6.0, side_max * (v / top) ** 0.5) for _, v in nums]
+    out = []
+    size = int(min(width, height) * 0.045)
+    if tall:   # stacked, biggest first, all above the captions
+        y = height * 0.12
+        for i, ((txt, _), s_) in enumerate(zip(nums, sizes)):
+            x0 = width / 2 - s_ / 2
+            t0 = 0.25 + i * 0.45
+            out.append(f"Dialogue: 2,{_ts(t0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c{MARK[theme] if i == 0 else INK}"
+                       f"\\clip(0,{y + s_:.0f},{width},{y + s_:.0f})\\t(0,350,\\clip(0,{y:.0f},{width},{y + s_:.0f}))}}{_rect(x0, y, x0 + s_, y + s_)}")
+            lab = txt + (f"  {names[i]}" if i < len(names) and names[i] else "")
+            out.append(f"Dialogue: 3,{_ts(t0 + 0.3)},{end},T,,0,0,0,,{{\\an4\\pos({x0 + s_ + size * 0.5:.0f},{y + s_ / 2:.0f})"
+                       f"\\fs{size}\\fad(150,0)}}{_esc(lab.upper())}" if s_ < width * 0.4 else
+                       f"Dialogue: 3,{_ts(t0 + 0.3)},{end},T,,0,0,0,,{{\\an5\\pos({width / 2:.0f},{y + s_ / 2:.0f})\\fs{size}"
+                       f"\\fad(150,0)}}{_esc(lab.upper())}")
+            y += s_ + size * 1.4
+    else:      # side by side on a shared baseline
+        base = height * 0.78
+        gap = width * 0.06
+        total_w = sum(sizes) + gap * (len(sizes) - 1)
+        x = width / 2 - total_w / 2
+        for i, ((txt, _), s_) in enumerate(zip(nums, sizes)):
+            t0 = 0.25 + i * 0.45
+            out.append(f"Dialogue: 2,{_ts(t0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c{MARK[theme] if i == 0 else INK}"
+                       f"\\clip(0,{base:.0f},{width},{base:.0f})\\t(0,350,\\clip(0,{base - s_:.0f},{width},{base:.0f}))}}"
+                       f"{_rect(x, base - s_, x + s_, base)}")
+            out.append(f"Dialogue: 3,{_ts(t0 + 0.3)},{end},T,,0,0,0,,{{\\an8\\pos({x + s_ / 2:.0f},{base + size * 0.4:.0f})\\fs{size}"
+                       f"\\fad(150,0)}}{_esc(txt.upper())}" + (f"\\N{_esc(names[i].upper())}" if i < len(names) and names[i] else ""))
+            x += s_ + gap
+    return out, {}
+
+
+def timer_lines(spec: str, theme: str, width: int, height: int, seconds: float):
+    """A countdown that runs out (fast), a ring emptying around it. "Timer: 09:59 → 00:00 | Offer ends" """
+    head, _, label = spec.partition("|")
+    times = re.findall(r"(\d{1,2}):(\d{2})", head)
+    if not times:
+        return []
+    start = int(times[0][0]) * 60 + int(times[0][1])
+    stop = int(times[-1][0]) * 60 + int(times[-1][1]) if len(times) > 1 else 0
+    import math
+    tall = height > width
+    end = _ts(seconds)
+    cx, cy = width / 2, height * (0.36 if tall else 0.45)
+    r = min(width, height) * 0.28
+    run = max(1.0, seconds * 0.7)
+    steps = 30
+    out = []
+    for i in range(steps + 1):
+        frac = i / steps
+        now = round(start + (stop - start) * frac)
+        t0 = 0.15 + run * i / steps
+        t1 = 0.15 + run * (i + 1) / steps if i < steps else seconds
+        left = 1 - frac
+        n = max(2, int(80 * left))
+        a0 = -math.pi / 2
+        pts = [(cx + r * math.cos(a0 + 2 * math.pi * left * k / n), cy + r * math.sin(a0 + 2 * math.pi * left * k / n)) for k in range(n + 1)]
+        if left > 0.005:
+            path = pts + pts[-2::-1]
+            out.append(f"Dialogue: 2,{_ts(t0)},{_ts(t1)},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord{max(6, int(r * 0.09))}\\1a&HFF&"
+                       f"\\3c{MARK[theme] if left > 0.25 else PEN[theme]}}}m {path[0][0]:.0f} {path[0][1]:.0f} l "
+                       + " ".join(f"{x:.0f} {y:.0f}" for x, y in path[1:]))
+        col = INK if left > 0.25 else PEN[theme]
+        out.append(f"Dialogue: 3,{_ts(t0)},{_ts(t1)},T,,0,0,0,,{{\\an5\\pos({cx:.0f},{cy:.0f})\\fs{int(r * 0.5)}\\1c{col}}}"
+                   f"{now // 60:02d}:{now % 60:02d}")
+    if label.strip():
+        out.append(f"Dialogue: 4,{_ts(0.2)},{end},T,,0,0,0,,{{\\an8\\pos({cx:.0f},{cy + r * 1.25:.0f})\\fs{int(r * 0.2)}"
+                   f"\\bord{int(r * 0.05)}\\3c{MARK[theme]}&\\4c{MARK[theme]}&}}{_esc(label.strip().upper())}")
+    return out, {}
+
+
+def receipt_lines(spec: str, theme: str, width: int, height: int, seconds: float):
+    """A printed receipt that rolls out line by line; the * line gets circled, the last line is the total.
+    "Receipt: Basket £24.00 · Delivery £3.99 · *Service fee £2.50 · Total £30.49" """
+    head, _, body = spec.partition("|")
+    if not body.strip():
+        head, body = "", head
+    rows = [x.strip() for x in re.split(r"·|•|;", body) if x.strip()][:8]
+    if not rows:
+        return []
+    tall = height > width
+    end = _ts(seconds)
+    pw = width * (0.62 if tall else 0.3)
+    L, R = width / 2 - pw / 2, width / 2 + pw / 2
+    T = height * (0.1 if tall else 0.08)
+    size = int(pw * 0.075)
+    step = size * 1.7
+    H_ = step * (len(rows) + (2 if head.strip() else 1)) + size * 2
+    B = min(T + H_, height * (0.62 if tall else 0.92))
+    roll = min(1.0, seconds * 0.4)
+    paper = f"m {L:.0f} {T:.0f} l {R:.0f} {T:.0f} l {R:.0f} {B:.0f} " + " ".join(
+        f"l {R - (R - L) * k / 24:.0f} {B + (size * 0.4 if k % 2 else 0):.0f}" for k in range(25))
+    out = [f"Dialogue: 1,{_ts(0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c&H000000&\\1a&HC0&\\blur10"
+           f"\\clip(0,0,{width},{T:.0f})\\t(0,{int(roll * 1000)},\\clip(0,0,{width},{height}))}}{paper}",
+           f"Dialogue: 2,{_ts(0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c&HFDFDFB&"
+           f"\\clip(0,0,{width},{T:.0f})\\t(0,{int(roll * 1000)},\\clip(0,0,{width},{height}))}}{paper}"]
+    y = T + size
+    if head.strip():
+        out.append(f"Dialogue: 3,{_ts(0.1)},{end},Q,,0,0,0,,{{\\an8\\pos({width / 2:.0f},{y:.0f})\\fs{size}\\b1}}{_esc(head.strip().upper())}")
+        y += step
+    target = None
+    per = roll / max(1, len(rows))
+    for i, row in enumerate(rows):
+        star = row.startswith("*")
+        row = row.lstrip("*").strip()
+        m = re.search(r"([£$€]\s?\d[\d,.]*|\d[\d,.]*\s?%)\s*$", row)
+        name, price = (row[:m.start()].strip(), m.group(1)) if m else (row, "")
+        last = i == len(rows) - 1
+        t0 = 0.15 + i * per
+        style = "\\b1" if last else ""
+        if last:
+            out.append(f"Dialogue: 3,{_ts(t0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c&H404040&}}"
+                       f"{_rect(L + size, y - size * 0.35, R - size, y - size * 0.3)}")
+        out.append(f"Dialogue: 4,{_ts(t0)},{end},Q,,0,0,0,,{{\\an7\\pos({L + size:.0f},{y:.0f})\\fs{size}{style}\\fad(80,0)}}{_esc(name.upper())}")
+        if price:
+            out.append(f"Dialogue: 4,{_ts(t0)},{end},Q,,0,0,0,,{{\\an9\\pos({R - size:.0f},{y:.0f})\\fs{size}{style}\\fad(80,0)}}{_esc(price)}")
+        if star:
+            target = (width / 2, y + size * 0.6, (R - L) / 2 - size * 0.4, size * 0.8)
+        if last and len(rows) > 1:
+            out.append(f"Dialogue: 3,{_ts(t0 + 0.2)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c{MARK[theme]}\\1a&H40&}}"
+                       f"{_rect(L + size * 0.6, y - size * 0.1, R - size * 0.6, y + size * 1.3)}")
+        y += step
+    if target:
+        cx, cy, rx, ry = target
+        tr = roll + 0.35
+        out.append(f"Dialogue: 8,{_ts(tr)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\clip(0,0,{cx - rx * 1.2:.0f},{height})"
+                   f"\\t(0,350,\\clip(0,0,{cx + rx * 1.2:.0f},{height}))\\p1\\bord{max(4, int(size * 0.16))}\\1a&HFF&"
+                   f"\\3c{PEN[theme]}&\\blur0.6}}{_ring(cx, cy, rx * 1.06, ry * 1.4)}")
+    return out, {}
+
+
+def endscreen_lines(spec: str, theme: str, width: int, height: int, seconds: float):
+    """The last seconds laid out for YouTube's end-screen elements: two video slots and a round subscribe slot,
+    with the channel name and a line asking what to watch next. (YouTube's own elements sit on top of these.)"""
+    name, _, line = spec.partition("|")
+    end = _ts(seconds)
+    size = int(height * 0.05)
+    out = []
+    if name.strip():
+        out.append(f"Dialogue: 4,{_ts(0.1)},{end},T,,0,0,0,,{{\\an8\\pos({width / 2:.0f},{height * 0.08:.0f})\\fs{int(size * 1.3)}"
+                   f"\\bord{int(size * 0.3)}\\3c{MARK[theme]}&\\4c{MARK[theme]}&\\fscx15\\t(0,250,\\fscx100)}}{_esc(name.strip().upper())}")
+    if line.strip():
+        out.append(f"Dialogue: 4,{_ts(0.4)},{end},T,,0,0,0,,{{\\an8\\pos({width / 2:.0f},{height * 0.2:.0f})\\fs{size}\\fad(200,0)}}"
+                   f"{_esc(line.strip())}")
+    # YouTube end-screen video elements are 16:9; leave two clean framed slots and a subscribe circle
+    vw, vh = width * 0.34, width * 0.34 * 9 / 16
+    y = height * 0.36
+    for i, x in enumerate((width * 0.08, width * 0.58)):
+        out.append(f"Dialogue: 2,{_ts(0.2 + i * 0.15)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord{max(4, size // 6)}\\shad0"
+                   f"\\1c&H00EDE8DF&\\3c{INK}&\\fad(200,0)}}{_rect(x, y, x + vw, y + vh, size * 0.3)}")
+    r = height * 0.09
+    cx, cy = width / 2, y + vh + r * 1.5
+    out.append(f"Dialogue: 2,{_ts(0.5)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord{max(4, size // 6)}\\shad0\\1c&H00EDE8DF&"
+               f"\\3c{INK}&\\fad(200,0)}}m {cx - r:.0f} {cy:.0f} b {cx - r:.0f} {cy - r * 1.33:.0f} {cx + r:.0f} {cy - r * 1.33:.0f} "
+               f"{cx + r:.0f} {cy:.0f} b {cx + r:.0f} {cy + r * 1.33:.0f} {cx - r:.0f} {cy + r * 1.33:.0f} {cx - r:.0f} {cy:.0f}")
+    return out, {}
+
+
 def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: float, out: Path, work: Path,
            brand: str = "") -> Path:
     theme = theme if theme in PAPER else "editorial"
     seconds = max(1.5, seconds)
     body = {"chapter": chapter_lines, "quote": quote_lines, "steps": steps_lines, "timeline": timeline_lines,
             "icons": icons_lines, "screen": screen_lines, "document": document_lines,
-            "statement": statement_lines, "article": article_lines}[kind](spec, theme, width, height, seconds)
+            "statement": statement_lines, "article": article_lines, "chat": chat_lines, "search": search_lines,
+            "pie": pie_lines, "squares": squares_lines, "timer": timer_lines, "receipt": receipt_lines,
+            "endscreen": endscreen_lines}[kind](spec, theme, width, height, seconds)
     opts: dict = {}
     if isinstance(body, tuple):
         body, opts = body

@@ -46,6 +46,7 @@ class Clip:
     track: list | None = None  # footage only: [(seconds, dx, dy)] how the picture content moved (pixels)
     exit_zoom: bool = False   # match cut out of this shot: the camera accelerates into it at the end
     enter_zoom: bool = False  # match cut into this shot: it starts close and settles
+    stepped: bool = False     # a drawn graphic: played at 12 frames a second, the hand-made look of video essays
 
 
 # Old film: sepia, a little extra contrast, flicker, moving grain, a soft dark edge.
@@ -173,6 +174,8 @@ def mix_audio(narration: Path, music: Path | None, total: float, out: Path, canc
 
 def _motion(camera: str, frames: int) -> str:
     c = camera.lower()
+    if c == "slidein":   # a whole-frame still can't slide in (nothing beside it): it lands like "settle"
+        c = "settle"
     d = max(frames - 1, 1)
     # Emotion effects (input is a 4x canvas, so 40 px here = 10 px on screen).
     if c == "shake":   # reveal: quick punch-in with a short, decaying camera shake
@@ -206,7 +209,7 @@ def _segment_args(c: Clip, frames: int, width: int, height: int) -> list[str]:
         stretch = min(1.25, length / c.video_duration) if c.video_duration and c.video_duration < length else 1.0
         boomerang = bool(c.video_duration) and c.video_duration * stretch < length - 0.05
         # AI clips come out at ~480-720p: upscale with lanczos, then a light unsharp mask so they don't look soft.
-        base = (f"setpts={stretch:.4f}*(PTS-STARTPTS),"
+        base = (("fps=12," if c.stepped else "") + f"setpts={stretch:.4f}*(PTS-STARTPTS),"
                 f"scale={width}:{height}:force_original_aspect_ratio=increase:flags=lanczos,crop={width}:{height},"
                 f"unsharp=5:5:0.6:5:5:0.0,setsar=1,fps={FPS}")
         if boomerang:
@@ -227,7 +230,7 @@ def _segment_args(c: Clip, frames: int, width: int, height: int) -> list[str]:
             vf += (f";[1:v]fps={FPS},trim=end_frame={frames},setpts=PTS-STARTPTS[bgv];"
                    + layout.video_graph(width, height, "vin", "bgv", "v"))
             src += ["-loop", "1", "-i", str(c.backdrop)]
-    elif c.marks is not None and c.layers is not None and c.camera in ("settle", "punch"):
+    elif c.marks is not None and c.layers is not None and c.camera in ("settle", "punch", "slidein"):
         # 2.5D with pen marks: the marks are drawn onto the cut-out layer before it moves, so a circle stays on its
         # subject through the push-in (the way a motion designer would parent it).
         length = frames / FPS
@@ -260,6 +263,23 @@ def _segment_args(c: Clip, frames: int, width: int, height: int) -> list[str]:
               f"trim=end_frame={frames},setpts=PTS-STARTPTS,format=yuv420p[v]")
         src = ["-loop", "1", "-t", f"{length + 0.1:.3f}", "-i", str(c.image),
                "-f", "lavfi", "-i", f"color=c=0xFF00FF:s={sw}x{sh}:r={FPS}:d={length + 0.1:.3f}"]
+    elif c.layers is not None and c.camera == "slidein":
+        # Johnny Harris photo entrance: the cut-out slides in from the side with motion blur that clears as it
+        # lands (a projector click is added in the sound design), then drifts like the 2.5D shots.
+        d = max(frames - 1, 1)
+        sw, sh = width * 2, height * 2
+        zf = f"if(lt(on,10),1.04-0.04*on/10,1+0.07*(on-10)/{max(d - 10, 1)})"
+        slide = f"{int(width * 0.22)}*pow(max(0,1-n/10),3)"
+        vf = (f"[0:v]scale={sw}:{sh}:force_original_aspect_ratio=increase:flags=lanczos,crop={sw}:{sh},setsar=1,"
+              f"zoompan=z='1+0.03*on/{d}':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d={frames}:s={width}x{height}:fps={FPS},"
+              f"trim=end_frame={frames},setpts=PTS-STARTPTS[bgm];"
+              f"[1:v]format=yuva444p,scale={sw}:{sh}:flags=lanczos,setsar=1,"
+              f"zoompan=z='{zf}':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d={frames}:s={width}x{height}:fps={FPS},"
+              f"format=yuva444p,trim=end_frame={frames},setpts=PTS-STARTPTS,split[fs][fb];"
+              f"[fb]gblur=sigma={max(4, width // 90)},fade=t=out:st=0:d=0.33:alpha=1[fbb];"
+              f"[fs][fbb]overlay=format=auto[fgm];"
+              f"[bgm][fgm]overlay=x='{slide}':y=0:eval=frame:format=auto,format=yuv420p[v]")
+        src = ["-i", str(c.layers[0]), "-i", str(c.layers[1])]
     elif c.layers is not None and c.camera in ("settle", "punch"):
         # 2.5D depth: the desk drifts slowly while the cut-out lands and pushes in faster and slides a touch, so a
         # still photo reads as filmed with depth (the way video essays animate cut-outs). 2x canvases keep it smooth.

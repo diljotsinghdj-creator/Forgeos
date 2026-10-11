@@ -646,6 +646,38 @@ def test_objects_articles_big_words_marks_transitions_music_and_archive_search(t
     assert [f["url"] for f in found] == ["https://x/1.jpg"] and "Wikimedia Commons (Public domain)" in found[0]["credit"]
 
 
+def test_chats_search_pie_squares_shade_timer_receipt_endscreen_treat_slide_and_stepped(tmp_path):
+    from PIL import Image, ImageDraw
+    from creatorforge_worker.media import cards, ff, layout, maps, render, sfx, sfx_builtin
+    specs = {"chat": "Unknown | them: Hi, is this Sam? · me: Wrong number", "search": "how to cancel | Why can't I cancel?",
+             "pie": "61% | refunded", "squares": "£4.2m vs £85,000 | fines, one claim", "timer": "09:59 → 00:00 | Ends",
+             "receipt": "Basket £24.00 · *Service fee £2.50 · Total £26.50", "endscreen": "Hidden Economics | Next?"}
+    for kind, spec in specs.items():
+        for w, h in ((270, 480), (480, 270)):
+            assert ff.duration(cards.render(kind, spec, "editorial", w, h, 1.8, tmp_path / f"{kind}{w}.mp4", tmp_path)) > 1.5
+    assert cards.squares_lines("just words", "editorial", 270, 480, 2) == [] and cards.pie_lines("none", "editorial", 270, 480, 2) == []
+    plan = maps.parse_shade("United Kingdom 40%, France 25% | share")
+    assert plan["values"] == {"United Kingdom": 40.0, "France": 25.0}
+    assert ff.duration(maps.render(plan, "editorial", 320, 180, 1.6, tmp_path / "shade.mp4", tmp_path)) > 1.4
+    assert maps.parse_shade("Atlantis 4%") is None
+    cut = tmp_path / "cut.png"
+    im = Image.new("RGBA", (160, 160), (0, 0, 0, 0))
+    ImageDraw.Draw(im).ellipse((30, 30, 130, 130), fill=(200, 60, 40, 255))
+    im.save(cut)
+    for look in ("duotone", "halftone"):
+        t = layout.treat(cut, look, "paper", tmp_path)
+        assert Image.open(t).mode == "RGBA" and Image.open(t).getchannel("A").getextrema()[0] == 0
+    Image.new("RGB", (160, 160), (90, 120, 200)).save(tmp_path / "img.png")
+    frame = layout.compose(tmp_path / "img.png", "paper", 0, 270, 480, tmp_path, cut)
+    clip = render.Clip(frame, 1.0, "slidein", "cut", layers=layout.layers(frame))
+    ff.run([*render._segment_args(clip, 30, 270, 480), str(tmp_path / "slide.mp4")])
+    g = render.Clip(frame, 1.0, "cut", "cut", video=tmp_path / "pie270.mp4", video_duration=1.8)
+    g.stepped = True
+    assert "fps=12," in " ".join(render._segment_args(g, 30, 270, 480))
+    bank = sfx.SfxBank.load("", sfx_builtin.ensure(tmp_path / "sfx"))
+    assert any("projector" in p.name for p, _, _ in sfx.graphic_cues(bank, [(2.0, "slide")], "s"))
+
+
 def test_clip_tokenizer_matches_the_reference_ids(tmp_path):
     from pathlib import Path
     from creatorforge_worker.media import match

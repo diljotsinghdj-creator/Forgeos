@@ -797,6 +797,7 @@ class Pipeline:
 
         clips, firsts = [], []   # firsts[i]: index in clips of scene i's opening shot
         charted: set[tuple[int, int]] = set()   # (scene, beat) shown as an animated chart
+        stepped_files: set[Path] = set()         # drawn graphics, played "on twos" (12 fps) like hand-made animation
         chart_files: set[Path] = set()
         for i, (sc, shot, d) in enumerate(zip(job["scenes"], shots, timings)):
             firsts.append(len(clips))
@@ -820,6 +821,7 @@ class Pipeline:
                     if chart is not None:
                         stock_clips[k] = chart          # the animated graphic shows the number instead of a picture
                         charted.add((i, k))
+                        stepped_files.add(chart)
                         chart_files.add(chart)
                 cams = ["slow push in", "pull back", "pan left", "pan right"]
                 merged = set()
@@ -863,6 +865,24 @@ class Pipeline:
                 if spec.auto_edit and video is None and shot.get("emotion", "").lower() in SHOCK_EMOTIONS:
                     cam = "punch"
                 clips.append(render.Clip(jdir / sc["image"], d, cam, transition(i, shot), video))
+        for c in clips:
+            if c.video is not None and c.video in stepped_files and spec.style in EDITORIAL_STYLES:
+                c.stepped = True
+        end_s = 0.0
+        brand_kit = spec.brand or {}
+        if w > h and total > 90 and spec.style in EDITORIAL_STYLES:
+            # YouTube end screen: the last 12 s laid out for its "next video" and subscribe elements
+            end_s = 12.0
+            line = brand_kit.get("outro_text") or "What should we explain next?"
+            try:
+                card = cards.render("endscreen", f"{brand_kit.get('name', '')} | {line}",
+                                    "investigative" if spec.style == "investigative" else "editorial", w, h,
+                                    end_s + render.TRANSITION_S, work / "endscreen.mp4", work)
+                clips.append(render.Clip(clips[-1].image, end_s, "static", "fade", card))
+                timings = list(timings)
+                total += end_s
+            except MediaError:
+                end_s = 0.0
         # Drawn looks: whiteboard shots are drawn on one by one; line-art styles open each scene as a sketch.
         if spec.style == "doodle":
             for c in clips:
@@ -926,12 +946,18 @@ class Pipeline:
         brand = spec.brand or {}
         cta = brand.get("outro_text") or plan.get("cta")
         if cta:
-            overlays.append(cap.Overlay(max(0.0, total - 3.0), total, cta, "CTA"))
+            overlays.append(cap.Overlay(max(0.0, total - end_s - 3.0), total - end_s, cta, "CTA"))
         if brand.get("intro_text"):
             overlays.append(cap.Overlay(0.0, min(2.5, total), brand["intro_text"], "Brand"))
         if brand.get("name") and spec.style in EDITORIAL_STYLES and total > 8:
-            overlays.append(cap.Overlay(max(0.0, total - 3.2), total, brand["name"], "Sting"))   # channel sign-off
+            overlays.append(cap.Overlay(max(0.0, total - end_s - 3.2), total - end_s, brand["name"], "Sting"))   # sign-off
 
+        at_c = 0.0
+        for c in clips:
+            if c.camera == "slidein":
+                graphics.append((at_c, "slide"))
+            at_c += c.duration
+        graphics.sort()
         sfx_hits: list[tuple[Path, float, float]] = []
         if spec.sfx:
             from .media import sfx_builtin
@@ -1035,10 +1061,20 @@ class Pipeline:
                 if cancel.is_set():
                     raise Cancelled()
                 slot = slots[depth % 3] if (wide and depth) else ("center" if not n % 2 else ("left", "right")[n // 2 % 2])
-                frame = layout.compose(c.image, kind, idx, w, h, lay, layout.cutout(c.image, lay, model), cancel,
+                cut = layout.cutout(c.image, lay, model)
+                look = str(((getattr(c, "beat_data", None) or {}).get("extra") or {}).get("treat") or "")
+                src_img = c.image
+                if look:
+                    # the writer's print look: duotone or halftone, applied to the cut-out (or the whole picture)
+                    if cut is not None:
+                        cut = layout.treat(cut, look, kind, lay)
+                    else:
+                        src_img = layout.treat(c.image, look, kind, lay)
+                frame = layout.compose(src_img, kind, idx, w, h, lay, cut, cancel,
                                        under=under if wide and depth else None, slot=slot)
                 if c.camera != "punch":
-                    c.camera = "settle"
+                    # the first photo of a scene slides in Johnny Harris-style; the rest land and drift
+                    c.camera = "slidein" if n == 0 and cut is not None else "settle"
                 c.layers = layout.layers(frame)      # 2.5D: the cut-out moves over the desk
                 out.append((idx, frame))
                 under, depth = (frame, depth + 1) if depth < 2 else (None, 0)
@@ -1094,6 +1130,11 @@ class Pipeline:
                             if plan is None:
                                 continue
                             return objects.render(plan, theme, size[0], size[1], seconds, out, work)
+                        if kind == "shade":
+                            plan = maps.parse_shade(extra[kind])
+                            if plan is None:
+                                continue
+                            return maps.render(plan, theme, size[0], size[1], seconds, out, work)
                         if kind in ("map", "globe"):
                             plan = maps.parse(extra[kind])
                             if plan is None:

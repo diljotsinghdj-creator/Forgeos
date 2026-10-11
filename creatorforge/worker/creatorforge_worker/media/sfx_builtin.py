@@ -26,6 +26,10 @@ SOUNDS = {
                     "afade=t=in:d=0.03,afade=t=out:st=0.38:d=0.12,volume=0.8",
     "whoosh_paper": "anoisesrc=d=0.45:c=pink:a=0.8:r=48000,highpass=f=700,lowpass=f=3500,tremolo=f=31:d=0.35,"
                     "afade=t=in:d=0.18:curve=exp,afade=t=out:st=0.25:d=0.2,volume=1.1",
+    # an old slide projector advancing: a mechanical clack, a thunk, a short motor whirr
+    "click_projector": "aevalsrc='0.7*(random(0)-0.5)*exp(-t*90)+0.5*(random(1)-0.5)*exp(-(t-0.07)*120)*gt(t,0.07)"
+                       "+0.5*sin(2*PI*95*t)*exp(-t*18)+0.06*sin(2*PI*240*t)*(1-exp(-t*20))*exp(-t*6)':d=0.45:s=48000,"
+                       "highpass=f=60,lowpass=f=5000,volume=1.1",
 }
 _lock = threading.Lock()
 

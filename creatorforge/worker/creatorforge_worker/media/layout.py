@@ -296,3 +296,46 @@ def split(left: Path, right: Path, labels: tuple[str, str], kind: str, w: int, h
     canvas.save(tmp)
     tmp.replace(out)
     return out
+
+
+def treat(image: Path, look: str, kind: str, work: Path) -> Path:
+    """Print looks for a picture (keeps any transparency): "duotone" maps shadows to ink and highlights to the
+    paper colour with the accent in between; "halftone" redraws it as printed dots. Makes AI and stock pictures
+    read as one designed set, the way video essays treat their collage photos."""
+    look = look.strip().lower()
+    if look not in ("duotone", "halftone"):
+        return image
+    out = work / f"treat_{look}_{_key(image, image.stat().st_mtime_ns, kind)}.png"
+    if out.is_file():
+        return out
+    from PIL import Image, ImageDraw, ImageOps
+    with Image.open(image) as im:
+        im = im.convert("RGBA")
+    alpha = im.getchannel("A")
+    grey = ImageOps.autocontrast(im.convert("L"), cutoff=1)
+    ink = (28, 30, 46) if kind != "desk" else (30, 22, 18)
+    paper = (242, 236, 223) if kind != "desk" else (236, 226, 204)
+    accent = (247, 214, 43) if kind != "desk" else (200, 60, 50)
+    if look == "duotone":
+        rgb = ImageOps.colorize(grey, black=ink, white=paper, mid=accent, blackpoint=10, whitepoint=245, midpoint=95)
+    else:
+        w, h = grey.size
+        cell = max(6, min(w, h) // 90)
+        rgb = Image.new("RGB", (w, h), paper)
+        d = ImageDraw.Draw(rgb)
+        small = grey.resize((max(1, w // cell), max(1, h // cell)), Image.BILINEAR)
+        px = small.load()
+        for gy in range(small.size[1]):
+            for gx in range(small.size[0]):
+                dark = 1 - px[gx, gy] / 255
+                r = cell * 0.58 * dark ** 0.85
+                if r > 0.4:
+                    cx, cy = gx * cell + cell / 2 + (cell / 2 if gy % 2 else 0), gy * cell + cell / 2
+                    d.ellipse((cx - r, cy - r, cx + r, cy + r), fill=ink)
+    rgb = rgb.convert("RGBA")
+    rgb.putalpha(alpha)
+    work.mkdir(parents=True, exist_ok=True)
+    tmp = out.with_name(f"{out.stem}.{threading.get_ident()}.part.png")
+    rgb.save(tmp)
+    tmp.replace(out)
+    return out

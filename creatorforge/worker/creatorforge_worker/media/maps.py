@@ -67,6 +67,31 @@ def parse(spec: str) -> dict | None:
             "title": title.strip()}
 
 
+def parse_shade(spec: str) -> dict | None:
+    """A shaded map: countries filled darker the bigger their number. "Shade: UK 40%, France 25%, Spain 12% | title" """
+    head, _, title = spec.partition("|")
+    targets, values, shown = [], {}, {}
+    for part in [x.strip() for x in head.split(",") if x.strip()][:12]:
+        m = re.match(r"^(.*?)\s*([£$€]?\s*-?\d[\d.]*\s*%?\s*\w{0,3})$", part)
+        if not m:
+            continue
+        f = _find(m.group(1))
+        num = re.search(r"-?\d+(?:\.\d+)?", m.group(2))
+        if f and f["kind"] == "country" and num:
+            targets.append(f)
+            values[f["name"]] = float(num.group())
+            shown[f["name"]] = m.group(2).strip()
+    if len(targets) < 2:
+        return None
+    return {"targets": targets, "route": False, "title": title.strip(), "values": values, "shown": shown}
+
+
+def _blend(a: str, b: str, k: float) -> str:
+    ca = [int(a[i:i + 2], 16) for i in (2, 4, 6)]
+    cb = [int(b[i:i + 2], 16) for i in (2, 4, 6)]
+    return "0x" + "".join(f"{int(x + (y - x) * k):02X}" for x, y in zip(ca, cb))
+
+
 def _merc(lon: float, lat: float) -> tuple[float, float]:
     lat = max(-80.0, min(80.0, lat))
     return lon, math.degrees(math.log(math.tan(math.pi / 4 + math.radians(lat) / 2)))
@@ -144,6 +169,9 @@ def render(plan: dict, theme: str, width: int, height: int, seconds: float, out:
         if not shapes:
             continue
         fill = hi if c["n"] in hi_names else land
+        if plan.get("values") and c["n"] in plan["values"]:
+            top = max(abs(v) for v in plan["values"].values()) or 1.0
+            fill = _blend(land, hi, 0.25 + 0.75 * abs(plan["values"][c["n"]]) / top)
         # highlighted countries fill in after the camera lands
         fx = f"\\1c{_bgr(land)}&\\t({int(zoom_t * 900)},{int(zoom_t * 1000) + 300},\\1c{_bgr(fill)}&)" if fill != land else ""
         lines.append(f"Dialogue: {2 if fill != land else 1},{_ts(0)},{end},M,,0,0,0,,{{\\an7\\pos(0,0){org}{zoom}"
@@ -184,8 +212,9 @@ def render(plan: dict, theme: str, width: int, height: int, seconds: float, out:
         if t["kind"] == "country" and not cities:
             bx0, by0, bx1, by1 = _bounds([t])
             px, py = proj(*_inv(((bx0 + bx1) / 2, (by0 + by1) / 2)))
+            extra = f"\\N{plan['shown'][t['name']]}" if plan.get("shown") and t["name"] in plan["shown"] else ""
             lines.append(f"Dialogue: 5,{_ts(zoom_t + 0.3)},{end},L,,0,0,0,,{{\\an5\\pos({px:.0f},{py:.0f})\\fad(150,0)}}"
-                         f"{t['name'].upper()}")
+                         f"{t['name'].upper()}{extra}")
     if plan.get("title"):
         lines.append(f"Dialogue: 6,{_ts(0.2)},{end},L,,0,0,0,,{{\\an8\\pos({width / 2:.0f},{height * 0.08:.0f})"
                      f"\\fad(200,0)\\3c&H002BD6F7&\\4c&H002BD6F7&}}{plan['title'].upper()}")

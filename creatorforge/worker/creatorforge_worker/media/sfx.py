@@ -88,6 +88,8 @@ GRAPHIC_CUES = {
     "steps": (("pop", 0.25),), "screen": (("whoosh", 0.45),), "document": (("whoosh", 0.25),),
     "quote": (("scribble", 0.6),), "split": (("whoosh", -0.1),),
     "object": (("whoosh", 0.0), ("pop", 1.2)), "article": (("whoosh", 0.25),),
+    "slide": (("projector", 0.0),), "chat": (("pop", 0.25),), "search": (("pop", 0.15),), "pie": (("pop", 0.2),),
+    "squares": (("pop", 0.25),), "timer": (("riser", -0.2),), "receipt": (("scribble", 0.2),),
 }
 
 
@@ -104,6 +106,12 @@ def graphic_cues(bank: SfxBank, graphics: list[tuple[float, str]], seed: str) ->
                 start = at - lead
             else:
                 start = at + lead
+            if role == "projector":
+                named = [p for v in bank.sounds.values() for p in v if "projector" in p.stem.lower()]
+                sound = named[0] if named else bank.pick("pop", f"{seed}:g{n}:pop")
+                if sound:
+                    hits.append((sound, max(0.0, start), 0.5))
+                continue
             sound = bank.pick(role, f"{seed}:g{n}:{role}")
             if sound:
                 hits.append((sound, max(0.0, start), GAIN[role] * (1.15 if kind in ("chapter", "statement") else 1.0)))
