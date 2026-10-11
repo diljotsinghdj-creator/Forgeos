@@ -537,17 +537,84 @@ def statement_lines(spec: str, theme: str, width: int, height: int, seconds: flo
     return out, {"bg": "0x111111", "plain": True}
 
 
-def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: float, out: Path, work: Path) -> Path:
+def article_lines(spec: str, theme: str, width: int, height: int, seconds: float):
+    """The source on screen, the way Johnny Harris flashes the article he is quoting: a plain page with the
+    publisher's name as text (never its logo), the real headline, blurred body text; the camera pushes in and a
+    highlighter sweeps the headline. "Article: the exact headline | Publisher, date" """
+    headline, _, source = spec.partition("|")
+    headline = headline.strip().strip('"“”')
+    if not headline:
+        return []
+    tall = height > width
+    end = _ts(seconds)
+    pw, ph = (width * 0.86, height * 0.5) if tall else (width * 0.56, height * 0.84)
+    L, T = width / 2 - pw / 2, height * (0.12 if tall else 0.08)
+    R, B = L + pw, T + ph
+    m = pw * 0.07
+    size = int(pw * (0.058 if tall else 0.05))
+    out = [f"Dialogue: 1,{_ts(0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c&H000000&\\1a&HB0&\\blur14}}"
+           f"{_rect(L + 12, T + 18, R + 12, B + 18)}",
+           f"Dialogue: 2,{_ts(0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c&HFFFFFF&}}{_rect(L, T, R, B)}"]
+    pub, _, date = source.partition(",")
+    bar = size * 1.6
+    out.append(f"Dialogue: 3,{_ts(0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c&H202020&}}{_rect(L, T, R, T + bar)}")
+    if pub.strip():
+        out.append(f"Dialogue: 4,{_ts(0)},{end},T,,0,0,0,,{{\\an4\\pos({L + m:.0f},{T + bar / 2:.0f})\\fs{int(size * 0.62)}"
+                   f"\\1c&HFFFFFF&}}{_esc(pub.strip().upper())}")
+    y = T + bar + m * 0.8
+    if date.strip():
+        out.append(f"Dialogue: 4,{_ts(0)},{end},T,,0,0,0,,{{\\an7\\pos({L + m:.0f},{y:.0f})\\fs{int(size * 0.5)}\\1c&H707070&}}"
+                   f"{_esc(date.strip())}")
+        y += size * 1.1
+    rows = _wrap(headline, 22 if tall else 30, 4)
+    t_zoom = 0.3
+    hy = []
+    for i, row in enumerate(rows):
+        out.append(f"Dialogue: 5,{_ts(0)},{end},Q,,0,0,0,,{{\\an7\\pos({L + m:.0f},{y:.0f})\\fs{size}\\b1}}{_esc(row)}")
+        rw = min(pw - 2 * m, len(row) * size * 0.52)
+        t0 = t_zoom + 0.6 + i * 0.35
+        out.append(f"Dialogue: 4,{_ts(t0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\clip(0,0,{L + m - 4:.0f},{height})"
+                   f"\\t(0,330,\\clip(0,0,{L + m + rw + 6:.0f},{height}))\\p1\\bord0\\shad0\\1c{MARK[theme]}&\\1a&H30&}}"
+                   f"{_rect(L + m - 4, y + size * 0.1, L + m + rw + 6, y + size * 1.25)}")
+        hy.append(y)
+        y += size * 1.3
+    y += size * 0.6
+    out.append(f"Dialogue: 3,{_ts(0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c&HC8C8C8&}}"
+               f"{_rect(L + m, y, L + m + pw * 0.3, y + size * 0.4)}")
+    y += size * 1.2
+    import random
+    rnd = random.Random(headline)
+    while y < B - m:
+        w = (pw - 2 * m) * (0.6 + 0.4 * rnd.random())
+        out.append(f"Dialogue: 3,{_ts(0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c&HDCDCDC&\\blur1.5}}"
+                   f"{_rect(L + m, y, L + m + w, y + size * 0.42)}")
+        y += size * 0.85
+    out.append(f"Dialogue: 7,{_ts(0.2)},{end},T,,0,0,0,,{{\\an9\\pos({R - m * 0.3:.0f},{T - size * 0.3:.0f})\\fs{int(size * 0.55)}"
+               f"\\bord{int(size * 0.18)}\\3c{MARK[theme]}&\\4c{MARK[theme]}&}}SOURCE")
+    cy = (hy[0] + hy[-1]) / 2 + size * 0.6
+    hw = min(pw - 2 * m, max(len(r) for r in rows) * size * 0.52)
+    z = min(1.6 if tall else 1.35, width * 0.92 / (hw + size))
+    return out, {"zoom": (L + m + hw / 2, cy, z, t_zoom)}
+
+
+def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: float, out: Path, work: Path,
+           brand: str = "") -> Path:
     theme = theme if theme in PAPER else "editorial"
     seconds = max(1.5, seconds)
     body = {"chapter": chapter_lines, "quote": quote_lines, "steps": steps_lines, "timeline": timeline_lines,
             "icons": icons_lines, "screen": screen_lines, "document": document_lines,
-            "statement": statement_lines}[kind](spec, theme, width, height, seconds)
+            "statement": statement_lines, "article": article_lines}[kind](spec, theme, width, height, seconds)
     opts: dict = {}
     if isinstance(body, tuple):
         body, opts = body
     if not body:
         raise ff.MediaError(f"{kind}: nothing to draw from {spec!r}")     # the line keeps its picture instead
+    if brand and kind in ("chapter", "statement"):
+        # the channel's name as a small recurring signature on chapter cards and statements
+        col = "&H00F4F4F4&" if kind == "statement" else INK
+        body.append(f"Dialogue: 9,{_ts(0.3)},{_ts(seconds)},T,,0,0,0,,{{\\an2\\pos({width / 2:.0f},"
+                    f"{height * (0.64 if height > width else 0.93):.0f})\\fs{int(min(width, height) * 0.026)}\\1c{col}"
+                    f"\\alpha&H40&\\fad(300,0)}}{_esc(brand.strip().upper())}")
     text = "\n".join(_head(width, height, _font()) + body) + "\n"
     work.mkdir(parents=True, exist_ok=True)
     ass = work / f"card_{hashlib.sha256(text.encode()).hexdigest()[:12]}.ass"

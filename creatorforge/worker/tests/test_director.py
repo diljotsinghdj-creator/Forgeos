@@ -252,3 +252,16 @@ def test_screen_document_statement_split_and_archive_keys():
     assert all("archival photograph from the 1920s" in b["prompt"] for b in beats[:2])     # both pictures of the line
     keys = {k for b in beats for k in (b.get("extra") or {})}
     assert {"archive", "screen", "split", "statement"} <= keys
+
+
+def test_big_transition_object_and_article_keys():
+    from creatorforge_worker import director as d
+    raw = ("Keys Two\nTitle: Keys two\n\nIt was free, they said, for the first seven days.\nVisual: A phone\nBig: FREE\n"
+           "Transition: match\n\nTwelve coins later, the trial was not free at all.\nVisual: Coins\nObject: stack | 12 | twelve months\n\n"
+           "Regulators wrote it down in a report that year.\nVisual: A report\n"
+           "Article: A real headline | Publisher, July 2024\n")
+    spec = d.ProductionSpec.from_dict({"script": raw, "duration_s": 20})
+    assert "FREE" not in spec.script and "headline" not in spec.script
+    beats = [b for s in d.direct_script(None, spec).scenes for b in (s.beats or [])]
+    keys = {k for b in beats for k in (b.get("extra") or {})}
+    assert {"big", "transition", "object", "article"} <= keys

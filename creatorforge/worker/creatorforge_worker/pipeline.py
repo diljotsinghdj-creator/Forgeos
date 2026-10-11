@@ -18,7 +18,7 @@ from . import director, providers
 from .config import Config, VoiceProfile
 from .library import Library
 from .media import captions as cap
-from .media import cards, charts, globe, layout, maps, match, quality, render, sfx, verify
+from .media import cards, charts, globe, layout, maps, match, objects, quality, render, sfx, verify
 from .media import ff
 from .media.ff import Cancelled, MediaError
 from .providers.base import NotConfigured, ProviderError, Word
@@ -219,8 +219,9 @@ class Pipeline:
             try:
                 beats0 = shot.get("beats") or []
                 # a full-frame graphic covers the scene's first picture: keep the real photos for pictures people see
-                real = None if beats0 and _covered(beats0[0]) else self._real_photo(job, shot.get("stock") or "",
-                                                                                   shot["visual"])
+                real = None if beats0 and _covered(beats0[0]) else self._real_photo(
+                    job, shot.get("stock") or "", shot["visual"],
+                    str(((beats0[0].get("extra") or {}) if beats0 else {}).get("archive") or ""))
                 if real is not None:
                     dst = self._replace_file(jdir, sc.get("image"), f"scene_{sc['index'] + 1:02d}_photo{real.suffix}", real)
                     sc.update(image_state="READY", image=dst.name, image_source="photo")
@@ -271,7 +272,8 @@ class Pipeline:
                         sc["beat_images"] = names
                         self.store.save(job)
                         continue     # a real photo covers this beat - no AI image needed
-                real = self._real_photo(job, b.get("stock") or "", b.get("visual", ""))
+                real = self._real_photo(job, b.get("stock") or "", b.get("visual", ""),
+                                        str((b.get("extra") or {}).get("archive") or ""))
                 if real is not None:
                     dst = jdir / f"scene_{sc['index'] + 1:02d}_beat{k + 2}_photo{real.suffix}"
                     shutil.copyfile(real, dst)
@@ -329,10 +331,51 @@ class Pipeline:
         self._note_match(job, checked=1, regenerated=1 if attempt else 0, low=1 if best[0] < match.GOOD else 0)
         return best[1], best[2]
 
-    def _real_photo(self, job: dict, query: str, visual: str) -> Path | None:
+    def _archive_photo(self, job: dict, visual: str, era: str) -> Path | None:
+        """A history line: a real period photograph from Wikimedia Commons (public domain / open licence) when one
+        clearly shows what the line describes; credited in the post description."""
+        checker = self._matcher()
+        if checker is None or not visual or not self.cfg.free_stock:
+            return None
+        from .providers import archive_photo, stock_photo
+        want = match.describe(visual)
+        used = job.setdefault("used_photos", [])
+        decade = re.sub(r"[^0-9s]", "", era)[:5]
+        for q in dict.fromkeys(x for x in (f"{match.subject(visual)} {decade}".strip(), match.subject(visual, 3)) if x):
+            try:
+                found_all = archive_photo.search(q)
+            except ProviderError:
+                return None
+            for found in found_all[:5]:
+                if found["url"] in used:
+                    continue
+                try:
+                    src = stock_photo.fetch(found, self.cfg.cache_dir / "archive_photos")
+                except (ProviderError, OSError):
+                    continue
+                if checker.score(src, want) < match.GOOD - 0.02 or match.shows_face(checker, src, visual):
+                    continue
+                fp = match.fingerprint(src)
+                if match.seen_before(fp, job.setdefault("used_fingerprints", [])):
+                    continue
+                used.append(found["url"])
+                if fp is not None:
+                    job["used_fingerprints"].append(fp)
+                credits = job.setdefault("stock_credits", [])
+                if found["credit"] not in credits:
+                    credits.append(found["credit"])
+                self._note_match(job, checked=1, real_photos=1)
+                return src
+        return None
+
+    def _real_photo(self, job: dict, query: str, visual: str, era: str = "") -> Path | None:
         """Explainer looks: a real photograph of what the line shows (archive/stock), when one clearly matches -
         the way a video essay is built. Needs the match check to judge it; otherwise the line gets an AI picture."""
         spec = self._spec(job)
+        if era and spec.style in EDITORIAL_STYLES:
+            found = self._archive_photo(job, visual, era)
+            if found is not None:
+                return found
         checker = self._matcher()
         photos = providers.photo_sources(job["id"], self.cfg)
         if spec.style not in EDITORIAL_STYLES or not visual or checker is None or not photos:
@@ -804,6 +847,14 @@ class Pipeline:
                         except (MediaError, OSError):
                             pass
                     clip = render.Clip(still, length, cam, transition(i, shot) if k == 0 else "cut", video_k)
+                    clip.beat, clip.beat_data, clip.beat_len = (i, k), beats[k], length
+                    chosen_t = str(extra_k.get("transition") or "").strip().lower()
+                    if chosen_t in render.TRANSITIONS:
+                        clip.transition = chosen_t                    # the writer's chosen cut into this line
+                    elif extra_k.get("chapter") and spec.style in EDITORIAL_STYLES:
+                        clip.transition = "tear"                      # a new part tears the page away
+                    elif extra_k.get("statement"):
+                        clip.transition = "dip"                       # cut to dark for the big line
                     if extra_k.get("archive"):
                         clip.grade = "archive"          # a history line: old-film look
                     clips.append(clip)
@@ -824,6 +875,7 @@ class Pipeline:
                 c.video_duration = ff.duration(c.video)
         if spec.style in EDITORIAL_STYLES:
             self._lay_out(clips, chart_files, spec.style, w, h, work, cancel, firsts)
+        tracked = self._attach_marks(clips, spec, t, w, h, work) if spec.fast_cuts else set()
 
         heads = [clips[j] for j in firsts]   # one per scene, for scene-level bookkeeping below
         if use_video and any(c.video is None and sc.get("ai_video", True) and not sc.get("beat_videos")
@@ -855,11 +907,13 @@ class Pipeline:
                         graphics.append((at, next((g for g in director.FULL_FRAME if extras.get(g)), "chart")))
                     elif extras.get("split"):
                         graphics.append((at, "split"))
+                    if extras.get("big") and (i, k) not in charted and length > 0.5:
+                        overlays.append(cap.Overlay(at + 0.08, at + min(length, 1.8) - 0.05, extras["big"], "Big"))
                     if extras.get("cite") and length > 0.6:
                         overlays.append(cap.Overlay(at + 0.3, at + length - 0.05, extras["cite"], "Cite"))
                     if extras.get("place") and (i, k) not in charted and length > 0.8:
                         overlays.append(cap.Overlay(at + 0.2, at + min(length, 4.0) - 0.05, extras["place"], "Place"))
-                    if (i, k) not in charted and length > 0.8:
+                    if (i, k) not in charted and (i, k) not in tracked and length > 0.8:
                         # The writer's pen marks and bubbles: drawn on once the picture has landed.
                         if b.get("draw"):
                             overlays.append(cap.Overlay(at + 0.25, at + length - 0.05, b["draw"], "Draw"))
@@ -875,6 +929,8 @@ class Pipeline:
             overlays.append(cap.Overlay(max(0.0, total - 3.0), total, cta, "CTA"))
         if brand.get("intro_text"):
             overlays.append(cap.Overlay(0.0, min(2.5, total), brand["intro_text"], "Brand"))
+        if brand.get("name") and spec.style in EDITORIAL_STYLES and total > 8:
+            overlays.append(cap.Overlay(max(0.0, total - 3.2), total, brand["name"], "Sting"))   # channel sign-off
 
         sfx_hits: list[tuple[Path, float, float]] = []
         if spec.sfx:
@@ -893,6 +949,23 @@ class Pipeline:
         music = Path(job["music_track"]) if job.get("music_track") else None
         if music is not None and not music.is_file():
             raise StageFailed(f"music track disappeared: {music}")
+        chapters = [at for at, kind in graphics if kind == "chapter"]
+        if music is not None and len(chapters) >= 2 and str(music).startswith(str(self.cfg.music_dir or "\0")):
+            # Long form: each part gets its own track from the library, crossfading at the chapter card, so the
+            # score moves with the story instead of one loop under twenty minutes.
+            mood = job["plan"].get("music_mood") or TEMPLATES[spec.template].music_mood
+            tracks = [music]
+            for n in range(1, len(chapters) + 8):
+                if len(tracks) > len(chapters):
+                    break
+                pick = render.pick_music(self.cfg.music_dir, mood, f"{job['id']}:part{n}")
+                if pick is not None and pick not in tracks:
+                    tracks.append(pick)
+            if len(tracks) >= 2:
+                scored = work / "music_parts.wav"
+                render.chapter_music(tracks, chapters, total, scored, cancel)
+                music = scored
+                job["providers"]["music"] = f"{len(tracks)} tracks, changing at chapters"
         mixed = work / "audio.wav"
         # the music steps back under chapter cards and big statements (a beat of near-silence before the next part)
         dips = [(at - 0.1, at + 1.4) for at, kind in graphics if kind in ("chapter", "statement")]
@@ -977,6 +1050,31 @@ class Pipeline:
                 for idx, frame in laid:
                     clips[idx].image = frame
 
+    def _attach_marks(self, clips: list, spec, t, w: int, h: int, work: Path) -> set:
+        """Pen marks and bubbles are drawn on the shot itself (not over the finished video), so they move with the
+        picture: through a cut-out's push-in, or along with the footage's own motion. Returns the beats handled."""
+        done: set = set()
+        look = {"editorial": "highlighter", "collage": "highlighter", "investigative": "redpen"}.get(spec.style, "")
+        for c in clips:
+            b, length = getattr(c, "beat_data", None), getattr(c, "beat_len", 0.0)
+            if not b or length <= 0.8 or not (b.get("draw") or b.get("bubble")) or _covered(b):
+                continue
+            items = []
+            if b.get("draw"):
+                items.append(cap.Overlay(0.25, length - 0.05, b["draw"], "Draw"))
+            if b.get("bubble"):
+                kind, _, said = b["bubble"].partition(":")
+                items.append(cap.Overlay(0.15, length - 0.05, said, "Think" if kind == "think" else "Bubble"))
+            ass = work / f"marks_{hashlib.sha256(repr([(o.start, o.end, o.text, o.style) for o in items]).encode() + str((w, h, look)).encode()).hexdigest()[:16]}.ass"
+            if not ass.is_file():
+                cap.write_ass(ass, w, h, t.caption_scale, t.caption_position, [], items, set(), "", "", look)
+            if c.video is not None:
+                box = layout.video_box(w, h) if c.backdrop is not None else (w, h)
+                c.track = render.track_motion(c.video, length, box)
+            c.marks = ass
+            done.add(c.beat)
+        return done
+
     def _chart_clip(self, spec, beat: dict, length: float, size: tuple[int, int], work: Path) -> Path | None:
         """An animated number graphic for a beat: the writer's Chart: line, or - in the editorial looks - a Text:
         line that compares figures ("£12 → £720", "48% vs 22%"). None when the beat has no chart."""
@@ -991,6 +1089,11 @@ class Pipeline:
                     if out.is_file():
                         return out
                     try:
+                        if kind == "object":
+                            plan = objects.parse(extra[kind])
+                            if plan is None:
+                                continue
+                            return objects.render(plan, theme, size[0], size[1], seconds, out, work)
                         if kind in ("map", "globe"):
                             plan = maps.parse(extra[kind])
                             if plan is None:
@@ -998,7 +1101,8 @@ class Pipeline:
                             if kind == "globe":
                                 return globe.render(plan, theme, size[0], size[1], seconds, out, work)
                             return maps.render(plan, theme, size[0], size[1], seconds, out, work)
-                        return cards.render(kind, extra[kind], theme, size[0], size[1], seconds, out, work)
+                        return cards.render(kind, extra[kind], theme, size[0], size[1], seconds, out, work,
+                                            brand=(spec.brand or {}).get("name", ""))
                     except MediaError:
                         continue
         src = beat.get("chart") or ""

@@ -73,7 +73,7 @@ def place(bank: SfxBank, transitions: list[str], timings: list[float], overlays:
         offset += d
     for n, (start, style) in enumerate(overlays):
         role = {"Hook": "hit", "Callout": "pop", "CTA": "pop", "Draw": "scribble", "Bubble": "pop",
-                "Think": "pop"}.get(style)
+                "Think": "pop", "Big": "hit"}.get(style)
         sound = bank.pick(role, f"{seed}:o{n}") if role else None
         if sound:
             hits.append((sound, max(0.0, start + (0.05 if style == "Hook" else 0.0)), GAIN[role]))
@@ -87,6 +87,7 @@ GRAPHIC_CUES = {
     "chart": (("hit", 0.55),), "icons": (("pop", 0.2),), "timeline": (("pop", 0.25),),
     "steps": (("pop", 0.25),), "screen": (("whoosh", 0.45),), "document": (("whoosh", 0.25),),
     "quote": (("scribble", 0.6),), "split": (("whoosh", -0.1),),
+    "object": (("whoosh", 0.0), ("pop", 1.2)), "article": (("whoosh", 0.25),),
 }
 
 

@@ -167,6 +167,9 @@ def write_ass(path: Path, width: int, height: int, scale: float, position: float
     pen = "&H002E10C8" if callout_look == "redpen" else marks.PEN
     font_name = EXPLAINER_FONT if explainer and _have_font(EXPLAINER_FONT) else "DejaVu Sans"
     ev = lines.index("[Events]") - 1
+    huge = int(min(width, height) * 0.2)
+    lines[ev:ev] = [f"Style: Big,{font_name},{huge},&H0000D7F7,&H0000D7F7,&H00141414,&H00000000,0,0,0,0,100,100,2,0,1,"
+                    f"{max(6, huge // 9)},{max(3, huge // 18)},5,0,0,0,1"]
     lines[ev:ev] = ["Style: Mark,DejaVu Sans,20,&H00FFFFFF,&H00FFFFFF,&H00141414,&H00000000,0,0,0,0,100,100,0,0,1,0,0,7,0,0,0,1",
                     f"Style: BubbleText,{font_name},{fs},&H00141414,&HFF141414,&H00FFFFFF,&H00000000,0,0,0,0,100,100,0,0,1,"
                     f"0,0,5,0,0,0,1"]
@@ -182,6 +185,28 @@ def write_ass(path: Path, width: int, height: int, scale: float, position: float
             continue
         if o.style == "Cite" and o.text.strip() and o.end > o.start:
             lines += marks.cite_events(o.text, o.start, o.end, width, height, font_name)
+            continue
+        if o.style == "Sting" and o.text.strip() and o.end > o.start:
+            # the channel's sign-off: its name drops onto a highlighter strip that wipes open, a pen line under it
+            name = _esc(o.text.strip().upper())
+            y = height * (0.2 if height > width else 0.16)
+            size = int(min(width, height) * 0.06)
+            lines.append(f"Dialogue: 7,{_ts(o.start)},{_ts(o.end)},Callout,,0,0,0,,{{\\an5\\pos({width / 2:.0f},{y:.0f})"
+                         f"\\fs{size}\\fscx15\\t(0,260,\\fscx100)\\fad(0,200)}}{name}")
+            uw = len(o.text) * size * 0.36
+            lines.append(f"Dialogue: 7,{_ts(o.start + 0.3)},{_ts(o.end)},Mark,,0,0,0,,{{\\an7\\pos(0,0)"
+                         f"\\clip(0,0,{width / 2 - uw:.0f},{height})\\t(0,300,\\clip(0,0,{width / 2 + uw:.0f},{height}))"
+                         f"\\p1\\bord{max(3, size // 12)}\\1a&HFF&\\3c{pen}&\\fad(0,200)}}"
+                         f"m {width / 2 - uw:.0f} {y + size * 0.85:.0f} l {width / 2 + uw:.0f} {y + size * 0.8:.0f} "
+                         f"l {width / 2 - uw:.0f} {y + size * 0.85:.0f}")
+            continue
+        if o.style == "Big" and o.text.strip() and o.end > o.start:
+            # one or two words slam in huge, tilted, then hold - the key word of the line, on screen
+            words = o.text.strip().upper()
+            y = height * (0.42 if height > width else 0.5)
+            lines.append(f"Dialogue: 6,{_ts(o.start)},{_ts(o.end)},Big,,0,0,0,,{{\\an5\\pos({width / 2:.0f},{y:.0f})"
+                         f"\\frz4\\fscx260\\fscy260\\alpha&H60&\\t(0,150,\\fscx96\\fscy96\\alpha&H00&)"
+                         f"\\t(150,230,\\fscx100\\fscy100)\\fad(0,150)}}{_esc(words)}")
             continue
         if o.style in ("Bubble", "Think") and o.text.strip() and o.end > o.start:
             lines += marks.bubble_events(o.text, o.start, o.end, width, height, o.style == "Think", font_name)

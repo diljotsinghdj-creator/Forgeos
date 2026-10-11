@@ -599,6 +599,53 @@ def test_screens_documents_statements_splits_archive_and_sound_design(tmp_path):
     assert [round(at, 2) for _, at, _ in cues] == [3.5, 5.0, 7.05, 9.55]     # one riser only: never back to back
 
 
+def test_objects_articles_big_words_marks_transitions_music_and_archive_search(tmp_path, monkeypatch):
+    import threading
+    import httpx
+    from PIL import Image
+    from creatorforge_worker.media import captions as cap, cards, ff, objects, render
+    from creatorforge_worker.providers import archive_photo
+    for spec in ("coin | £1 | one pound", "card | Subscription card", "bars | 12, 45, 80 | a, b, c | Rise",
+                 "stack | 12 | twelve months"):
+        assert ff.duration(objects.render(objects.parse(spec), "editorial", 270, 480, 1.6, tmp_path / "o.mp4", tmp_path)) > 1.4
+    assert objects.parse("teapot") is None and objects.parse("bars | 5") is None
+    assert ff.duration(cards.render("article", "A real headline | Publisher, July 2024", "editorial", 360, 640, 2.0,
+                                    tmp_path / "art.mp4", tmp_path)) > 1.5
+    ass = tmp_path / "big.ass"
+    cap.write_ass(ass, 360, 640, 0.045, 0.7, [], [cap.Overlay(0.2, 1.4, "free", "Big"),
+                                                  cap.Overlay(3.0, 5.0, "Hidden Economics", "Sting")], set(), "", "", "highlighter")
+    text = ass.read_text()
+    assert "Style: Big," in text and "FREE" in text and "HIDDEN ECONOMICS" in text
+    # pen marks drawn on the shot itself
+    Image.new("RGB", (120, 90), (200, 80, 60)).save(tmp_path / "a.png")
+    marks = tmp_path / "marks.ass"
+    cap.write_ass(marks, 270, 480, 0.045, 0.7, [], [cap.Overlay(0.2, 1.0, "circle", "Draw")], set(), "", "", "highlighter")
+    clip = render.Clip(tmp_path / "a.png", 1.2, "slow push in", "cut")
+    clip.marks = marks
+    ff.run([*render._segment_args(clip, 36, 270, 480), str(tmp_path / "mk.mp4")])
+    assert ff.duration(tmp_path / "mk.mp4") > 1.0
+    # tear and match transitions, and music that changes at chapters
+    ff.run(["-f", "lavfi", "-i", "sine=f=220:d=4", "-ar", "48000", str(tmp_path / "t1.wav")])
+    ff.run(["-f", "lavfi", "-i", "sine=f=330:d=4", "-ar", "48000", str(tmp_path / "t2.wav")])
+    render.chapter_music([tmp_path / "t1.wav", tmp_path / "t2.wav"], [1.5, 3.0], 4.5, tmp_path / "m.wav", threading.Event())
+    assert ff.duration(tmp_path / "m.wav") > 4.0
+    clips = [render.Clip(tmp_path / "a.png", 1.0, "slow push in", "cut"),
+             render.Clip(tmp_path / "a.png", 1.0, "slow push in", "tear"),
+             render.Clip(tmp_path / "a.png", 1.0, "slow push in", "match")]
+    render.render_video(clips, tmp_path / "m.wav", None, 270, 480, tmp_path / "tr.mp4", tmp_path / "w", threading.Event(), grade="")
+    assert ff.duration(tmp_path / "tr.mp4") > 2.5
+    # archive search keeps open licences only
+    payload = {"query": {"pages": {
+        "1": {"index": 1, "title": "File:Old street 1920.jpg", "imageinfo": [{"thumburl": "https://x/1.jpg", "width": 2000,
+              "height": 1400, "mime": "image/jpeg", "extmetadata": {"LicenseShortName": {"value": "Public domain"},
+                                                                      "Artist": {"value": "<a>Unknown</a>"}}}]},
+        "2": {"index": 2, "title": "File:Modern.jpg", "imageinfo": [{"thumburl": "https://x/2.jpg", "width": 2000,
+              "height": 1400, "mime": "image/jpeg", "extmetadata": {"LicenseShortName": {"value": "All rights reserved"}}}]}}}}
+    monkeypatch.setattr(httpx, "get", lambda *a, **k: httpx.Response(200, json=payload, request=httpx.Request("GET", "https://x")))
+    found = archive_photo.search("old street 1920s")
+    assert [f["url"] for f in found] == ["https://x/1.jpg"] and "Wikimedia Commons (Public domain)" in found[0]["credit"]
+
+
 def test_clip_tokenizer_matches_the_reference_ids(tmp_path):
     from pathlib import Path
     from creatorforge_worker.media import match
