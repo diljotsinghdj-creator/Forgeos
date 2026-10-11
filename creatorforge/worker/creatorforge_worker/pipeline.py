@@ -167,19 +167,27 @@ class Pipeline:
 
     def _director(self, job: dict, cancel) -> None:
         spec = self._spec(job)
-        if spec.script:
-            try:
+        # The script model on the pod (Ollama) shares the GPU with the picture/video models. If they are still loaded
+        # from the last video it starts half on the CPU and can take over ten minutes, so make room first and hand
+        # the GPU back as soon as the plan is written.
+        if self.cfg.llm_url and providers.is_local_url(self.cfg.llm_url):
+            providers.release_gpu()
+        try:
+            if spec.script:
+                try:
+                    llm = providers.director_llm(self.cfg, job["id"])
+                except NotConfigured:
+                    llm = None
+                plan, llm = self._with_gpu_room(lambda m: director.direct_script(m, spec), llm, optional=True)
+                job["providers"]["llm"] = f"{llm.id} (script mode)" if llm else "none (script mode: visuals from your words)"
+            else:
                 llm = providers.director_llm(self.cfg, job["id"])
-            except NotConfigured:
-                llm = None
-            plan, llm = self._with_gpu_room(lambda m: director.direct_script(m, spec), llm, optional=True)
-            job["providers"]["llm"] = f"{llm.id} (script mode)" if llm else "none (script mode: visuals from your words)"
-        else:
-            llm = providers.director_llm(self.cfg, job["id"])
-            plan, llm = self._with_gpu_room(lambda m: director.direct(m, spec), llm)
-            job["providers"]["llm"] = llm.id
-        if spec.fast_cuts:
-            self._with_gpu_room(lambda m: director.plan_beats(m, plan, spec), llm, optional=True)
+                plan, llm = self._with_gpu_room(lambda m: director.direct(m, spec), llm)
+                job["providers"]["llm"] = llm.id
+            if spec.fast_cuts:
+                self._with_gpu_room(lambda m: director.plan_beats(m, plan, spec), llm, optional=True)
+        finally:
+            providers.unload_local_llm(self.cfg)
         job["plan"] = plan.to_dict()
         job["scenes"] = [{"index": i, "image_state": "PLANNED", "voice_state": "PLANNED", "clip_state": "PLANNED",
                           "image": None, "narration": None, "narration_s": None, "clip": None, "error": None}
@@ -187,18 +195,26 @@ class Pipeline:
 
     def _with_gpu_room(self, step, llm, optional: bool = False):
         """Runs a script-model step. If the GPU is full (the image/video models from an earlier video are still
-        loaded), frees them and tries again; a script-mode video can then carry on without the script model,
-        because its pictures come from the writer's own Visual lines."""
+        loaded), frees them and tries again. A script-mode video carries on without the script model when it is out
+        of memory, unreachable or too slow, because its pictures come from the writer's own Visual lines."""
+        def gone(e: Exception) -> bool:
+            m = str(e).lower()
+            return "unreachable" in m or "timed out" in m or "timeout" in m
+
         try:
             return step(llm), llm
         except ProviderError as e:
-            if "memory" not in str(e).lower() or llm is None:
+            if llm is None:
+                raise
+            if gone(e) and optional:
+                return step(None), None
+            if "memory" not in str(e).lower():
                 raise
         providers.release_gpu()
         try:
             return step(llm), llm
         except ProviderError as e:
-            if not optional or "memory" not in str(e).lower():
+            if not optional or not ("memory" in str(e).lower() or gone(e)):
                 raise
         return step(None), None
 

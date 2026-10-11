@@ -305,3 +305,19 @@ def test_a_full_gpu_frees_its_own_models_then_script_mode_carries_on(monkeypatch
     import pytest
     with pytest.raises(ProviderError):           # idea mode needs the script model: the error is reported
         pipeline.Pipeline._with_gpu_room(None, step, "llm", optional=False)
+
+
+def test_a_script_model_that_times_out_does_not_stop_a_pasted_script(monkeypatch):
+    from creatorforge_worker import pipeline, providers
+    from creatorforge_worker.providers.base import ProviderError
+    import pytest
+    monkeypatch.setattr(providers, "release_gpu", lambda: None)
+
+    def step(m):
+        if m is not None:
+            raise ProviderError("LLM unreachable at http://127.0.0.1:11434/v1: timed out")
+        return "plan"
+    assert pipeline.Pipeline._with_gpu_room(None, step, "llm", optional=True) == ("plan", None)
+    with pytest.raises(ProviderError):
+        pipeline.Pipeline._with_gpu_room(None, step, "llm", optional=False)
+    assert providers.is_local_url("http://127.0.0.1:11434/v1") and not providers.is_local_url("https://api.example.com/v1")

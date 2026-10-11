@@ -253,6 +253,24 @@ def build_asr(cfg: Config):
     return _asr
 
 
+def is_local_url(url: str) -> bool:
+    from urllib.parse import urlparse
+    return (urlparse(url).hostname or "") in ("127.0.0.1", "localhost", "0.0.0.0", "::1")
+
+
+def unload_local_llm(cfg: Config) -> None:
+    """Asks the pod's Ollama to drop the script model from the GPU now (instead of after its keep-alive), so the
+    picture and video models get the memory. Best effort: other servers simply ignore it."""
+    if not cfg.llm_url or not cfg.llm_model or cfg.llm_url == "mock" or not is_local_url(cfg.llm_url):
+        return
+    import httpx
+    root = cfg.llm_url.rstrip("/").removesuffix("/v1")
+    try:
+        httpx.post(f"{root}/api/generate", json={"model": cfg.llm_model, "keep_alive": 0}, timeout=10)
+    except Exception:  # noqa: BLE001
+        pass
+
+
 def release_gpu() -> None:
     """Frees the GPU memory this worker's own models hold (image and video pipelines, Whisper), so the script
     model's server - a separate process - can load. Models reload by themselves the next time they are used."""
