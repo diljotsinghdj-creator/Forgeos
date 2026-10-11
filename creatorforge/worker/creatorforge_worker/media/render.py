@@ -416,6 +416,23 @@ def _tear_strip(width: int, height: int, work: Path) -> Path:
     return out
 
 
+def _logo_still(path: Path, width: int, opacity: float, work: Path) -> Path:
+    """The brand logo as one ready-made PNG: turned upright (phone photos carry a rotation tag), RGBA, scaled to its
+    final width, transparency baked in. A looping JPEG straight from the phone made the final render fail on some
+    FFmpeg builds ("Error reinitializing filters")."""
+    from PIL import Image, ImageOps
+    with Image.open(path) as src:
+        im = ImageOps.exif_transpose(src).convert("RGBA")
+    h = max(2, round(im.height * width / max(1, im.width)) // 2 * 2)
+    im = im.resize((max(2, width), h), Image.LANCZOS)
+    alpha = im.getchannel("A").point(lambda a: int(a * max(0.0, min(1.0, opacity))))
+    im.putalpha(alpha)
+    work.mkdir(parents=True, exist_ok=True)
+    out = work / "logo_still.png"
+    im.save(out)
+    return out
+
+
 def _segments(jobs: list[tuple[Clip, int]], width: int, height: int, work: Path,
               cancel: threading.Event) -> list[Path]:
     import os
@@ -438,7 +455,8 @@ def _segments(jobs: list[tuple[Clip, int]], width: int, height: int, work: Path,
         tmp.replace(dst)
 
     with ThreadPoolExecutor(max_workers=max(2, min(8, (os.cpu_count() or 2) // 2))) as pool:
-        for _ in pool.map(make, plan):   # re-raises the first failure (or Cancelled)
+        # identical shots share one segment file: make each file once, or two jobs race on the same temp file
+        for _ in pool.map(make, list(dict(plan).items())):   # re-raises the first failure (or Cancelled)
             pass
     return [dst for dst, _ in plan]
 
@@ -465,7 +483,9 @@ def render_video(clips: list[Clip], audio: Path, captions: Path | None, width: i
     args: list[str] = []
     graph: list[str] = []
     for i, seg in enumerate(segments):
-        args += ["-threads", "1", "-i", str(seg.resolve())]   # many inputs: one decoder thread each keeps memory low
+        # many inputs: one decoder thread each keeps memory low; -reinit_filter 0: a frame that differs from the
+        # first one (size, pixel format) is converted in place instead of rebuilding the whole graph mid-render
+        args += ["-threads", "1", "-reinit_filter", "0", "-i", str(seg.resolve())]
         graph.append(f"[{i}:v]settb=1/{FPS},setpts=PTS-STARTPTS,format=yuv420p[v{i}]")
     last = "v0"
     offset = 0.0
@@ -502,25 +522,26 @@ def render_video(clips: list[Clip], audio: Path, captions: Path | None, width: i
         graph.append(f"[{idx}:v]format=rgba,split={len(tears)}" + "".join(f"[tr{k}]" for k in range(len(tears))))
         for k, (o, d) in enumerate(tears):
             graph.append(f"[{last}][tr{k}]overlay=x='{width}*(1-(t-{o:.3f})/{d:.3f})-{sw // 2}':y=0:"
-                         f"enable='between(t,{o:.3f},{o + d:.3f})':eval=frame,format=yuv420p[tear{k}]")
+                         f"enable='between(t,{o:.3f},{o + d:.3f})':eval=frame:eof_action=repeat,format=yuv420p[tear{k}]")
             last = f"tear{k}"
     if logo is not None:
         # Brand watermark: about 14% of the frame width, in a corner, slightly transparent. Captions go on top.
         path, pos, opacity = logo
         m = int(min(width, height) * 0.035)
         x, y = (v.format(m=m) for v in LOGO_XY.get(pos, LOGO_XY["top-right"]))
-        graph.append(f"[{audio_idx + 1}:v]scale={int(width * 0.14) // 2 * 2}:-2,format=rgba,"
-                     f"colorchannelmixer=aa={opacity:.2f}[logo]")
-        graph.append(f"[{last}][logo]overlay=x={x}:y={y}:shortest=1,format=yuv420p[vlogo]")
+        logo_png = _logo_still(path, int(width * 0.14) // 2 * 2, opacity, work)
+        graph.append(f"[{audio_idx + 1}:v]format=rgba[logo]")
+        # one still frame, held for the whole video (eof_action=repeat)
+        graph.append(f"[{last}][logo]overlay=x={x}:y={y}:eof_action=repeat,format=yuv420p[vlogo]")
         last = "vlogo"
     if captions is not None:
         graph.append(f"[{last}]subtitles=filename={captions.name}[vout]")
         last = "vout"
     args += ["-i", str(audio)]
     if logo is not None:
-        args += ["-loop", "1", "-i", str(logo[0])]
+        args += ["-i", str(logo_png)]
     if tear_input is not None:
-        args += ["-loop", "1", "-i", str(tear_input)]
+        args += ["-i", str(tear_input)]
     args += ["-filter_complex", ";".join(graph), "-map", f"[{last}]", "-map", f"{audio_idx}:a",
              "-c:v", "libx264", "-preset", "veryfast", "-crf", "20", "-pix_fmt", "yuv420p", "-r", str(FPS),
              "-c:a", "aac", "-b:a", "192k", "-ar", str(SAMPLE_RATE), "-movflags", "+faststart",
