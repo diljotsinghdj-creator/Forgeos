@@ -27,11 +27,13 @@ Clumsy design, or something common?
 Visual: Hands sketching app screen layouts on paper at a desk, seen from above
 Text: CLUMSY OR COMMON?
 Transition: whip
+Search: is a hidden cancel button normal? | Why is cancelling so hard? · Tricky design, explained
 
 In twenty twenty-four, regulators reviewed six hundred and forty-two subscription sites and apps.
 Visual: A government office building with flags outside, seen across a street
 Text: 642 SITES & APPS REVIEWED
 Cite: FTC, ICPEN & GPEN, July 2024
+Treat: halftone
 
 Three in four used a possible dark pattern. Two in three, several.
 Visual: Four phones laid on a desk, three of them circled in red pen
@@ -45,6 +47,7 @@ Visual: A judge's wooden gavel resting on a closed law book
 Visual: A courthouse's stone front steps on a grey day
 Text: POSSIBLE ≠ PROVEN ILLEGAL
 Big: NOT PROVEN
+Treat: duotone
 
 Checking it is really you is fair. Hiding the exit is not.
 Visual: A hand holding a smartphone showing a security code screen, text unreadable

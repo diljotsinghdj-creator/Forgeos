@@ -33,6 +33,7 @@ Text: PRINCETON · 2019 · ~11,000 SITES
 Stock: princeton university campus
 Place: PRINCETON · 2019
 Cite: Mathur et al., Princeton, 2019
+Treat: halftone
 
 They found three hundred and ninety-three countdown timers.
 Visual: A researcher seen from behind at a desk covered in printed tally sheets
@@ -63,3 +64,4 @@ Visual: A smartphone screen going dark on a desk, text unreadable
 Text: NOT A DEADLINE
 Draw: cross
 Big: NEVER
+Treat: duotone

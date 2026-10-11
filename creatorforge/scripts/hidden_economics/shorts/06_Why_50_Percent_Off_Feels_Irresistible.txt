@@ -14,7 +14,7 @@ Split: Saved £50? | Spent £50
 The tag said one hundred, crossed out. Now fifty.
 Visual: A paper price tag on a jacket sleeve, the old price struck through
 Text: ILLUSTRATION
-Chart: £100 → £50 | the jacket tag · illustration
+Receipt: Illustration | Jacket, was £100.00 · *You saved £50.00 · Total £50.00
 
 So why does that crossed-out number feel so powerful?
 Visual: A red sale sign with a struck-through price in a shop window, numbers blurred
@@ -30,6 +30,7 @@ Text: TVERSKY & KAHNEMAN · 1974
 Stock: wheel of fortune spinning
 Cite: Tversky & Kahneman, Science, 1974
 Archive: 1970s
+Treat: halftone
 
 Wheel on ten, the typical guess was twenty-five percent. On sixty-five, forty-five.
 Visual: Two piles of paper slips on a desk, one twice as tall
@@ -46,6 +47,7 @@ Draw: arrow
 Cite: Tversky & Kahneman, Science, 1974
 Big: ANCHORING
 Transition: flash
+Treat: duotone
 
 So who chose the jacket's first number? The seller.
 Visual: A clothing rail of jackets in a shop, nobody in frame

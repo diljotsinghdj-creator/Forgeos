@@ -14,7 +14,7 @@ Split: You quit | Still charged
 Twelve pounds a month. By June, seventy-two gone.
 Visual: Six small stacks of one-pound coins in a row on a table
 Text: ILLUSTRATION
-Chart: £12 × 6 = £72 | six forgotten months · illustration
+Receipt: Illustration | Jan £12 · Feb £12 · Mar £12 · Apr £12 · May £12 · Jun £12 · *Total £72
 
 So why did nobody notice?
 Visual: A stack of unopened post on a hallway shelf
@@ -35,6 +35,7 @@ Visual: A busy British high street with shoppers seen from far away
 Text: WHAT DOES IT COST THE UK?
 Stock: busy high street
 Place: UNITED KINGDOM
+Treat: duotone
 
 The UK government puts unwanted subscriptions at one point six billion pounds a year.
 Visual: The Houses of Parliament in London seen across the river
@@ -48,6 +49,7 @@ Visual: A person seen from behind at a kitchen table at night sorting paperwork
 Visual: The same payment line circled in red on three monthly statements, text unreadable
 Stock: checking bank statement
 Draw: circle
+Treat: halftone
 
 Ask of each one, would I buy this today?
 Visual: A hand holding a smartphone showing a list of subscriptions, text unreadable

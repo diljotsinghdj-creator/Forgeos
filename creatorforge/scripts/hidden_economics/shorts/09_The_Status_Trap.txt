@@ -18,7 +18,7 @@ Big: WORTH IT?
 
 A twenty-pound watch tells exactly the same time.
 Visual: Two watches side by side, one ornate, one plain, showing the same hour
-Chart: £800 vs £20 | the status watch, the plain one
+Squares: £800 vs £20 | the status watch, the plain one
 Transition: flash
 
 So what is the other seven hundred and eighty buying?
@@ -34,6 +34,7 @@ Text: THORSTEIN VEBLEN · 1899
 Stock: victorian street crowd
 Cite: Veblen, Theory of the Leisure Class, 1899
 Archive: 1890s
+Treat: halftone
 
 Conspicuous consumption. Spending in order to be seen spending.
 Visual: A row of polished sports cars parked outside a hotel, badges hidden
@@ -54,6 +55,7 @@ Visual: A hand passing cash across a shop counter, seen from behind
 Text: NO LOGO · STILL WANT IT?
 Split: No logo | Still want it?
 Big: LOGO OFF
+Treat: duotone
 
 If not, ask who the watch was really for.
 Visual: A full-length mirror in a hallway reflecting an empty room

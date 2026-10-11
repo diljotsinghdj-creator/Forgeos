@@ -19,6 +19,7 @@ Text: DENNIS REGAN · CORNELL · 1971
 Stock: 1970s university campus
 Place: CORNELL · 1971
 Archive: 1970s
+Treat: halftone
 
 Then his helper asked them to buy raffle tickets.
 Visual: A hand holding out a roll of paper raffle tickets across a table
@@ -66,3 +67,4 @@ Visual: A hand pushing a roll of raffle tickets away across a table
 Visual: An unbranded soda bottle standing alone on a clean desk
 Text: JUDGE THE REQUEST, NOT THE GIFT
 Big: STAYS FREE
+Treat: duotone

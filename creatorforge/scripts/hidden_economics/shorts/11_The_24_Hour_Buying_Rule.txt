@@ -14,6 +14,7 @@ UK law already lets you cancel most online orders.
 Visual: A brown parcel with a returns slip on a desk, text unreadable
 Chart: 14 | days to cancel most UK online orders
 Cite: Consumer Contracts Regulations 2013
+Treat: halftone
 
 So why does your own brain get no cooling-off at all?
 Visual: A person seen from behind sitting up in bed at night
@@ -31,10 +32,12 @@ Screen: Your basket | Buy now · Checkout · *Save for later
 Sleep on it. Twenty-four hours, no peeking.
 Visual: A dim bedroom at night, curtains drawn and lights off
 Text: 24 HOURS · NO PEEKING
+Treat: duotone
 
 Why would one night change anything?
 Visual: A sand timer on a desk, its last grains falling
 Text: WHY ONE NIGHT?
+Search: does sleeping on a purchase help? | Should you wait before buying? · The 24-hour rule, explained
 
 A pause gives the morning you a vote.
 Visual: A street of terraced houses in early morning light

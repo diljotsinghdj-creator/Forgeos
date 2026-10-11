@@ -52,6 +52,7 @@ Visual: A paper notice pinned to a wooden board, text unreadable
 Stock: 1920s newspaper printing
 Draw: cross
 Archive: 1920s
+Treat: halftone
 
 By August nineteen twenty, Ponzi was under arrest.
 Visual: A 1920s police car parked outside a brick building, seen from afar
@@ -66,3 +67,4 @@ Visual: A hand dropping banknotes into another person's open palm
 Text: NOT PROFIT · SOMEONE ELSE'S MONEY
 Draw: underline
 Big: NEVER PROFIT
+Treat: duotone

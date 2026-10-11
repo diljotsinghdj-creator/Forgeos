@@ -15,7 +15,7 @@ Where did eleven go? Delivery, five. Service fee, three. Optional protection, th
 Visual: A printed checkout list with extra lines added, text unreadable
 Visual: A ticked checkbox on a phone screen circled in red pen, text unreadable
 Text: ILLUSTRATION
-Screen: Checkout | Item £30 · Delivery £5 · Service fee £3 · *Optional protection £3 · Total £41
+Receipt: Checkout | Item £30.00 · Delivery £5.00 · Service fee £3.00 · *Optional protection £3.00 · Total £41.00
 
 That's drip pricing. So is it even allowed?
 Visual: A kitchen tap dripping into a white basin
@@ -24,6 +24,7 @@ Text: DRIP PRICING · ALLOWED?
 Stock: water dripping tap
 Big: DRIP PRICING
 Transition: whip
+Treat: duotone
 
 Since April twenty twenty-five, UK law puts compulsory fees in the headline price.
 Visual: The Houses of Parliament in London seen across the river
@@ -40,6 +41,7 @@ Text: FIRST FINE · A £3 FEE SHOWN LATE
 Draw: circle
 Place: UK · 2026
 Cite: CMA, April 2026
+Treat: halftone
 
 How big? Four point two million pounds.
 Visual: Bundles of banknotes stacked on a desk under a lamp

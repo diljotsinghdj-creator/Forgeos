@@ -22,6 +22,7 @@ Visual: A magnifying glass over tiny small print at the bottom of a page, text u
 Text: THE PRODUCT = THE RENEWAL
 Draw: underline
 Steps: Free trial → Card saved → Auto-renewal → Forgotten | How the trap works
+Treat: halftone
 
 So when did you actually buy it?
 Visual: A shop till receipt curling out of a card machine, text unreadable
@@ -44,7 +45,7 @@ Thought: It's free. I'll cancel in time.
 Forget it for a year, and what does free cost?
 Visual: Twelve coins laid in a long row across a wooden desk
 Text: ILLUSTRATION
-Chart: £10 × 12 = £120 | one forgotten year · illustration
+Receipt: Illustration | 7-day trial £0.00 · 12 × £10.00 renewals · *Total £120.00
 
 Before tapping start, read the renewal price. Set a day-six reminder.
 Visual: A printed price list with the renewal price underlined in red, text unreadable
@@ -58,3 +59,4 @@ Visual: A paper wall calendar with the eighth day circled in green pen
 Text: DAY 8: YOUR CHOICE
 Draw: tick
 Transition: match
+Treat: duotone
