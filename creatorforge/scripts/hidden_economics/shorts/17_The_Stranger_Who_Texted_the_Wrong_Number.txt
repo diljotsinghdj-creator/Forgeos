@@ -8,6 +8,7 @@ A wrong-number text. Weeks later, savings gone.
 Visual: A smartphone in a dark room showing one text message, text unreadable
 Visual: An empty cracked piggy bank on a kitchen table
 Text: SORRY, WRONG NUMBER? · ILLUSTRATION
+Chat: Unknown number | them: Hi, is this Sam? · me: No, wrong number · them: Oh, sorry! How are you?
 
 The stranger apologises, keeps chatting, and becomes a friend for weeks.
 Visual: A desk calendar with several weeks crossed off in pen
@@ -28,6 +29,7 @@ Visual: A thumb pressing a greyed-out button on a phone, text unreadable
 Visual: A locked metal cash box on a table, its key missing
 Text: WHY CAN'T YOU CASH OUT?
 Transition: whip
+Treat: duotone
 
 The profits were never real. The platform belongs to the scammers.
 Visual: A dim call centre with rows of empty desks and headsets
@@ -41,6 +43,7 @@ Visual: A stack of printed invoices on a desk, each circled in red pen, text unr
 Visual: An empty wallet lying open on a kitchen table
 Text: FEE · TAX · ANOTHER FEE
 Split: Another fee | Nothing back
+Treat: halftone
 
 Investment fraud cost Americans about eight point six billion dollars in twenty twenty-five.
 Visual: A large heap of US dollar banknotes on a table

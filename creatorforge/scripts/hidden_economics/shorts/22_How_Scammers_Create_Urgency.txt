@@ -27,6 +27,7 @@ Visual: A bank branch front on a British high street
 Visual: Seven torn paper strips in a row on a desk, words blurred
 Text: 7 WORDS GIVE IT AWAY
 Cite: Lloyds Bank, Aug 2026
+Treat: halftone
 
 Move your money to a safe account.
 Visual: A hand holding a phone showing a payment screen, text unreadable
@@ -42,6 +43,7 @@ Visual: A man seen from behind walking away down a dark street with a bag
 Text: IT'S THEIR ACCOUNT
 Draw: cross
 Split: Real bank | Scammer
+Treat: duotone
 
 And the cost?
 Visual: An open, empty purse lying on a kitchen table under a lamp
@@ -64,3 +66,4 @@ Ten minutes? The real bank will still be there tomorrow.
 Visual: An old alarm clock on a bedside table in morning light
 Visual: A bank's front door on a quiet morning street
 Text: NO REAL BANK RUSHES YOU
+Timer: 10:00 → 00:00 | The scammer's deadline

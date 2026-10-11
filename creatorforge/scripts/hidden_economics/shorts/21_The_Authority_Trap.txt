@@ -27,6 +27,7 @@ Cite: Bickman, 1974
 Split: In uniform | Plain clothes
 Archive: 1970s
 Transition: match
+Treat: halftone
 
 A guard had no power here. So why?
 Visual: A pair of empty hands held open, palms up, against a wall
@@ -48,6 +49,7 @@ Visual: A phone showing a text message with an official crest, text unreadable
 Text: FAKE "OFFICIAL" MESSAGES
 Draw: arrow
 Transition: whip
+Treat: duotone
 
 It logged over a hundred and seventy thousand scam reports in a year.
 Visual: Rows of filing cabinets in a government office

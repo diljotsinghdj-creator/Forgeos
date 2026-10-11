@@ -22,6 +22,7 @@ Visual: A nameplate on a large executive desk, text unreadable
 Visual: A sealed envelope with a red stamp on a desk, text unreadable
 Text: "A SECRET TRANSACTION"
 Draw: circle
+Treat: halftone
 
 And then a video call. The finance chief and colleagues, live.
 Visual: A laptop screen with several blurred video tiles, faces indistinct
@@ -48,6 +49,7 @@ Draw: cross
 Cite: CNN, May 2024
 Transition: flash
 Big: DEEPFAKE
+Treat: duotone
 
 The fix? Check any money request on a separate channel.
 Visual: A hand holding a desk phone receiver in an office

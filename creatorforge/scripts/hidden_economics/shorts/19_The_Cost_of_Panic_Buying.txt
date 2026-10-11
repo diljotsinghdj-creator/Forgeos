@@ -21,6 +21,7 @@ Visual: Frost on the inside of a window at night
 Visual: A thumb tapping a buy button on a phone, text unreadable
 Stock: frosty window winter
 Thought: I can't risk a freezing house
+Treat: duotone
 
 But what did that deadline actually stop you doing?
 Visual: A pen lying unused beside a closed folder on a desk
@@ -34,6 +35,7 @@ Visual: Two printed insurance quotes side by side on a desk, text unreadable
 Text: EXCLUSIONS · EXCESS · PRICE
 Draw: underline
 Split: Exclusions | Compare prices
+Treat: halftone
 
 So can you undo a four-minute decision?
 Visual: An egg timer lying on its side on a kitchen table

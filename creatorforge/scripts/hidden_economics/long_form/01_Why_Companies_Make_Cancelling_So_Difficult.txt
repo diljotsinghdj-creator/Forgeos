@@ -14,6 +14,7 @@ That is the government's own estimate.
 Visual: A government office building on Whitehall in London, seen from the street
 Visual: One figure in a printed report circled in red pen, text unreadable
 Draw: circle
+Treat: halftone
 
 Together they cost around one point six billion pounds a year.
 Visual: A thick stack of fifty-pound notes on an office desk
@@ -133,6 +134,7 @@ Good products, fair prices and honest reminders all keep people paying.
 Visual: A well-made wooden chair on display in a furniture shop
 Visual: A paper price tag on a loaf of bread, figures blurred
 Visual: A handwritten reminder note stuck to a fridge door, text unreadable
+Chat: Your subscription | them: Reminder: your plan renews soon · them: Manage or cancel anytime in your account · me: Thanks
 
 The real problem starts when design, not value, is the reason they remain.
 Visual: A designer's hands sketching page layouts on paper, text unreadable
@@ -168,7 +170,7 @@ Visual: Painted arrows on a supermarket floor guiding shoppers one way
 
 Nearly sixty-seven percent showed more than one.
 Visual: A thick binder of printouts with red sticky tabs on most pages
-Chart: 66.8% | showed more than one
+Pie: 66.8% | showed more than one
 Cite: ICPEN sweep, July 2024
 
 The most common problem? It struck right at the moment of signing up.
@@ -215,6 +217,7 @@ Visual: A 2000s university office with stacks of papers and a desktop computer
 Visual: Two people seen from behind at a desk covered in receipts and ledgers
 Text: DellaVigna & Malmendier, AER 2006
 Place: UNITED STATES · 2006
+Treat: halftone
 
 It led into three American gyms.
 Visual: A gym floor with rows of treadmills and nobody on them
@@ -236,6 +239,7 @@ Cite: DellaVigna & Malmendier, AER 2006
 
 How often did they go?
 Visual: A gym visitor log book open on a reception desk, text unreadable
+Search: how often do gym members actually go | How often do people really use the gym? · Why we pay for gyms we skip
 
 On average, just four point three times a month.
 Visual: A wall calendar with only four days ticked in pencil
@@ -255,7 +259,7 @@ Visual: Coins and a folded note counted out on a gym bench
 
 A ten-visit pass worked out at ten.
 Visual: Two gym passes side by side on a counter, text unreadable
-Chart: $17 vs $10 | monthly plan per visit, 10-visit pass
+Squares: $17 vs $10 | monthly plan per visit, 10-visit pass
 Cite: DellaVigna & Malmendier, AER 2006
 
 The researchers estimated members forwent about six hundred dollars over their membership.
@@ -298,6 +302,7 @@ Document: Paying Not to Go to the Gym | DellaVigna & Malmendier, AER 2006
 Which is why the strongest trap needs no trick at all.
 Visual: A wooden mousetrap with no bait on a kitchen floor
 Visual: A printed bank statement with a monthly payment line circled, figures blurred
+Treat: duotone
 
 Just a default and your optimism.
 Visual: A light switch already flipped on in a bright room
@@ -348,6 +353,7 @@ Draw: cross
 Place: UNITED STATES · JULY 2025
 Cite: US 8th Circuit, July 2025
 Transition: flash
+Treat: halftone
 
 That was six days before businesses had to comply.
 Visual: A compliance binder open on an office desk, text unreadable
@@ -458,6 +464,7 @@ The real difference is not politeness. It is control.
 Visual: A handwritten thank-you card on a desk, text unreadable
 Visual: A hand gripping the wooden wheel of a ship
 Big: CONTROL
+Treat: duotone
 
 So how does Sam take back control?
 Visual: A desk lamp switched on over a cleared kitchen table at night

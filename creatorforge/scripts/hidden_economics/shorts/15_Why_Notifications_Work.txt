@@ -25,11 +25,12 @@ Draw: arrow
 Cite: Stothart et al., JEP, 2015
 Transition: match
 Big: NOBODY
+Treat: duotone
 
 You tap for one thing. The app shows you ten more.
 Visual: A cup of tea going cold beside a sofa at night
 Visual: A thumb scrolling a feed of blurred posts on a smartphone
-Chart: 1 → 10 | posts from one tap · illustration
+Squares: 1 vs 10 | your tap, posts shown · illustration
 
 Is it the alerts, or is it you? One test tells you.
 Visual: A phone lying face up on a table with a stack of alerts, text unreadable
@@ -50,6 +51,7 @@ Visual: A hand making tally marks on a notepad
 Text: HOW MANY DID YOU MISS?
 Draw: circle
 Big: MISSED?
+Treat: halftone
 
 One buzz shouldn't cost twenty minutes. Now it doesn't have to.
 Visual: A sunny window over a quiet street in the morning

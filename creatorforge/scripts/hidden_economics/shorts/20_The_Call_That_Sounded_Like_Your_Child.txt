@@ -9,6 +9,7 @@ Visual: An old telephone receiver lying off the hook on a dark table
 Visual: A child's school backpack hanging on a bedroom door
 Text: FICTIONAL SCENARIO
 Draw: cross
+Treat: duotone
 
 Scammers can clone a voice from only a short online clip.
 Visual: A microphone on a desk beside a pair of headphones
@@ -21,7 +22,7 @@ Big: CLONE
 How short? McAfee's tests got an eighty-five percent match from three seconds.
 Visual: A stopwatch on a desk, its hand just past three seconds
 Visual: Two paper printouts of matching sound waves side by side on a desk
-Chart: 85% | voice match from 3 seconds of audio
+Pie: 85% | voice match from 3 seconds of audio
 Cite: McAfee, May 2023
 Transition: flash
 
@@ -46,6 +47,7 @@ Text: HANG UP · CALL BACK
 Stock: person making phone call home
 Draw: tick
 Split: Hang up | Call back
+Treat: halftone
 
 But what if she truly can't answer?
 Visual: An empty bed in a dark bedroom, the door ajar

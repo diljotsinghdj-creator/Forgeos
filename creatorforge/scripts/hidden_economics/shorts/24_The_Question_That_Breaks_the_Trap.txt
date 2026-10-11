@@ -13,6 +13,7 @@ Visual: A person seen from behind standing still at a busy shop counter
 Visual: A notepad and pen on a desk, one line written, text unreadable
 Text: WHO BENEFITS IF I ACT NOW?
 Draw: underline
+Search: who benefits if I act right now? | Why am I being rushed? · Who gains when you hurry?
 
 Watch it work on all three.
 Visual: A finger tapping the first of three phones lined up on a desk
@@ -20,7 +21,7 @@ Visual: A finger tapping the first of three phones lined up on a desk
 The flash sale timer? The seller. A rush leaves no time to compare.
 Visual: A shop window with a big flash sale banner, text unreadable
 Visual: A shop owner seen from behind at a till counting cash
-Chart: 10 → 0 | minutes left · fictional sale
+Timer: 10:00 → 00:00 | Fictional sale
 Transition: whip
 
 The midnight buzz? The app. Your attention is what it sells.
@@ -28,6 +29,7 @@ Visual: A phone glowing on a pillow in a dark bedroom, screen blurred
 Visual: A glass tech office tower lit up at night
 Stock: person scrolling phone in bed
 Split: Your phone | The app
+Treat: duotone
 
 And the caller saying your account is at risk? Who benefits?
 Visual: A man seen from behind holding a phone to his ear in a dark room
@@ -48,6 +50,7 @@ Visual: A hand turning over a price tag in a shop, text unreadable
 Text: IT REVEALS THE INCENTIVE
 Draw: circle
 Steps: Urge to act → Who benefits? → See the incentive | One question
+Treat: halftone
 
 Who benefits if I act right now? Ask it every time.
 Visual: A hand pausing on a front door handle before opening it

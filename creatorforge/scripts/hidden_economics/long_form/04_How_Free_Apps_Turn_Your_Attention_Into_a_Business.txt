@@ -54,6 +54,7 @@ Cite: Ofcom, 2025
 So who buys that time, and how is it taken?
 Visual: A city at night seen from above, thousands of lit windows
 Visual: An auctioneer's gavel resting on a wooden lectern in an empty sale room
+Search: how do free apps make money | Who pays for free apps? · Where your screen time goes
 
 By the end, you will know.
 Visual: A magnifying glass resting on an open notebook on a desk
@@ -190,7 +191,7 @@ Cite: CMA, 2020
 Roughly eighty percent went to just two companies. Which two? Google and Facebook.
 Visual: A cake on a plate cut into two big slices and one thin sliver
 Visual: Two tall glasses filled to the brim beside one nearly empty glass
-Chart: 80% | of UK digital ad spend to two firms
+Pie: 80% | of UK digital ad spend to two firms
 Cite: CMA, 2020
 
 Its verdict? Competition in these markets was not working well.
@@ -202,6 +203,7 @@ Cite: CMA, 2020
 Now look at Meta's own filing.
 Visual: A Silicon Valley office campus seen from across a car park
 Visual: Two lines highlighted in yellow on a printed filing, text unreadable
+Treat: halftone
 
 It credits two things. More ads shown, and a higher price per ad.
 Visual: Two brass weights standing side by side on a wooden desk
@@ -288,11 +290,13 @@ Visual: A Vancouver university campus path lined with autumn trees
 Text: 221 PARTICIPANTS
 Place: CANADA
 Cite: Kushlev, Proulx & Dunn, 2016
+Treat: halftone
 
 For one week, alerts were on and phones kept close.
 Visual: A student seen from behind studying at a cluttered desk
 Visual: A phone screen covered in stacked notifications, text unreadable
 Text: WEEK A · ALERTS ON
+Chat: Notifications | them: New message · them: Someone liked your post · them: New videos for you
 
 For another, alerts were off and phones put away.
 Visual: A hand sliding a wooden desk drawer shut
@@ -350,6 +354,7 @@ Cite: Allcott et al., AER 2020
 Then the twist.
 Visual: A red-pen arrow bending sharply downward on graph paper
 Transition: flash
+Treat: duotone
 
 Even after the experiment ended, their use stayed lower.
 Visual: A phone charger coiled unused on a dusty windowsill
@@ -435,6 +440,7 @@ Visual: The European Commission headquarters building in Brussels on a winter da
 Text: 6 FEBRUARY 2026
 Stock: european commission building
 Cite: European Commission, Feb 2026
+Treat: halftone
 
 It preliminarily found TikTok's addictive design in breach of that law.
 Visual: Officials seen from behind walking down a long glass corridor in Brussels
@@ -456,6 +462,7 @@ Sound familiar? They are the same features that ran Maya's night.
 Visual: A bedroom floor plan on graph paper, four pins stuck around the bed
 Visual: A small night light glowing in a dark hallway
 Draw: circle
+Treat: duotone
 
 It said risks to users, including minors, had not been properly assessed.
 Visual: A teenager's bedroom door ajar at night, a school bag on the floor
@@ -482,7 +489,7 @@ Cite: Euronews, Feb 2026
 If confirmed, fines can reach six percent of worldwide annual turnover.
 Visual: A tall stack of coins with a thin slice set apart by a ruler
 Visual: A glass office tower of a global company at dusk
-Chart: 6% | maximum fine, share of global turnover
+Pie: 6% | maximum fine, share of global turnover
 Cite: EU Digital Services Act
 
 So a major regulator now flags a possible risk.

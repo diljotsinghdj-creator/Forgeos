@@ -167,6 +167,7 @@ Visual: Stacks of court record folders on a shelf, labels unreadable
 Visual: A street map of a Canadian town with red pins pushed in
 Stock: snowy suburb houses evening
 Place: CANADA
+Treat: halftone
 
 Their postcode areas were tiny, often only around thirteen households.
 Visual: A small cluster of about a dozen houses seen from above
@@ -203,6 +204,7 @@ You never see a neighbour's pension. You can see their driveway.
 Visual: A sealed pension letter in an envelope on a hallway table
 Visual: A gleaming car parked on a neighbour's driveway
 Split: Hidden | Visible
+Treat: duotone
 
 So they had borrowed to keep up with what they could see.
 Visual: A pen signing a loan agreement on a desk, text unreadable
@@ -227,6 +229,7 @@ Visual: A pile of unpaid bills on a neighbour's doormat, text unreadable
 Text: THEIR WIN, YOUR DEBT
 Draw: underline
 Transition: whip
+Treat: duotone
 
 Surely, though, the new things make people happier?
 Visual: Hands pulling a ribbon off a wrapped gift box
@@ -308,6 +311,7 @@ Two MIT researchers auctioned real tickets to a professional basketball game.
 Visual: A basketball arena with rows of seats around the court
 Visual: An auctioneer's gavel resting on a lectern beside a basketball
 Stock: empty basketball arena
+Treat: halftone
 
 Half the bidders would pay cash. Half would pay by card.
 Visual: A hand holding a fan of dollar bills
@@ -336,6 +340,7 @@ So what happens when that pain is sliced into monthly pieces?
 Visual: Scissors cutting a banknote into thin strips on a table
 Visual: A wall calendar with a small red mark on each month
 Text: SPLIT THE COST
+Search: is paying monthly easier than paying in full | Why monthly payments feel smaller · Pay later or pay now?
 
 Sam cannot stretch to a car. But the checkout offers something smaller.
 Visual: A car showroom window with a price card on the windscreen, text unreadable
@@ -345,7 +350,7 @@ Bubble: Split it into easy monthly payments!
 A six-hundred-pound watch, at fifty pounds a month, split across a year.
 Visual: A men's wristwatch lying in an open gift box
 Visual: Twelve small envelopes lined up in a row on a kitchen table
-Chart: £50 × 12 = £600 | the full cost (illustration)
+Squares: £50 vs £600 | a month, the full cost (illustration)
 
 Fifty feels manageable. Six hundred might not.
 Visual: A single fifty-pound note lying on a table
@@ -427,6 +432,7 @@ Visual: The Houses of Parliament beside the River Thames in London
 Text: REGULATED FROM 15 JULY 2026
 Place: UNITED KINGDOM · JULY 2026
 Cite: FCA PS26/1, 2026
+Treat: halftone
 
 Before that, most of these loans sat outside the consumer credit rules.
 Visual: A thick consumer credit rulebook lying on a desk, text unreadable
@@ -486,6 +492,7 @@ Visual: A pencil adding up figures on the back of an envelope, numbers unreadabl
 Visual: Twelve coins laid in a neat row on a table
 Visual: A calculator beside a till receipt, numbers unreadable
 Text: 2. MONTHLY × MONTHS + FEES
+Receipt: Total cost (illustration) | Monthly figure £50 · Times months × 12 · *Plus any fees · Total before fees £600
 
 Third, would I still want it if nobody could ever see it?
 Visual: An empty bedroom with the curtains drawn, nobody inside

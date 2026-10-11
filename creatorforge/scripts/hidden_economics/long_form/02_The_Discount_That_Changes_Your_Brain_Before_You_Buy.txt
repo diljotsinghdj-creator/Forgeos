@@ -34,6 +34,7 @@ Visual: A phone showing a shopping page with a countdown timer, text unreadable
 Visual: A printed court document on a desk with an official seal, text unreadable
 Text: A CLOCK THAT LIED?
 Draw: circle
+Timer: 09:00 → 00:00 | Offer ends
 
 Now watch that lever work on Leah.
 Visual: A woman seen from behind standing at a shop's sale rail
@@ -140,6 +141,7 @@ How? In two thousand and three, researchers tried it with real prices.
 Visual: A 2000s university lecture hall with students seen from behind
 Visual: A bottle of wine and a box of chocolates on a table
 Text: Ariely, Loewenstein & Prelec, 2003
+Treat: halftone
 
 Students wrote down the last two digits of their social security number.
 Visual: A hand writing two digits on a scrap of paper, digits blurred
@@ -161,7 +163,7 @@ Cite: Ariely, Loewenstein & Prelec, 2003
 
 Those with the highest bid around fifty-six.
 Visual: A thick bundle of US dollar bills held with a rubber band
-Chart: $16 vs $56 | lowest ID numbers, highest ID numbers
+Squares: $16 vs $56 | lowest ID numbers, highest ID numbers
 Cite: Ariely, Loewenstein & Prelec, 2003
 
 Same keyboard, same room, more than three times the price.
@@ -170,6 +172,7 @@ Visual: An empty university classroom with rows of desks
 Visual: A ruler measuring two paper stacks, one three times taller
 Text: 3× MORE
 Cite: Ariely, Loewenstein & Prelec, 2003
+Treat: duotone
 
 Now look at a sale tag. Notice the crossed-out price? That's the anchor.
 Visual: A shop sale tag with a crossed-out price, figures blurred
@@ -240,6 +243,7 @@ Visual: A 1980s suburban street of detached houses with lawns
 Visual: A detached house with a for-sale sign by the path, lettering unreadable
 Text: Northcraft & Neale, 1987
 Stock: 1980s suburban houses
+Treat: halftone
 
 Every agent toured one property and saw the same local sales data.
 Visual: Estate agents seen from behind walking through an empty living room
@@ -275,6 +279,7 @@ The anchor worked best on the people most sure it had not.
 Visual: A heavy ship's anchor on the seabed with silt rising around it
 Visual: A row of framed award certificates on an estate agency wall, text unreadable
 Text: CERTAINTY IS THE WEAKNESS
+Treat: duotone
 
 If certainty cannot protect us, what happens when the anchor gets a partner?
 Visual: A coil of heavy chain on a harbour dock
@@ -307,6 +312,7 @@ So how often is the urgency itself fake?
 Visual: A magnifying glass held over a phone screen, text unreadable
 Visual: A researcher's notebook with timer claims ticked and crossed, text unreadable
 Text: HOW OFTEN IS IT FAKE?
+Search: are countdown timers on shopping sites real | Is that sale timer fake? · How online countdowns work
 
 In twenty nineteen, university researchers crawled around eleven thousand shopping websites.
 Visual: A university computer lab with rows of monitors, screens unreadable
@@ -377,7 +383,7 @@ Text: EVEN AN HONEST DEAL…
 Say Leah adds the jacket. At checkout, a voucher takes it to fifty-four.
 Visual: A laptop showing a checkout page with a jacket in the basket, text unreadable
 Visual: A paper voucher with a code printed on it, text unreadable
-Chart: £60 − 10% = £54 | Leah's checkout (fictional)
+Receipt: Checkout (fictional) | Green jacket £60.00 · *Voucher 10% −£6.00 · Total £54.00
 
 If she buys, she truthfully paid less than the listed price.
 Visual: A price tag showing a lower final price, figures blurred
@@ -425,6 +431,7 @@ Visual: A single complete price tag on a jacket, figures blurred
 Text: MANDATORY FEES UP FRONT · 6 APR 2025
 Place: UNITED KINGDOM · 2025
 Cite: CMA, Nov 2025
+Treat: halftone
 
 And the regulator can now fine firms directly. How hard?
 Visual: The Competition and Markets Authority office building in London

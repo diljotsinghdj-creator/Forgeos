@@ -18,6 +18,7 @@ Visual: A forged government letter with a red wax seal, text unreadable
 Text: A FAKE OFFICIAL
 Place: PARIS · 1925
 Archive: 1920s
+Treat: halftone
 
 He told scrap dealers the city wanted the tower torn down.
 Visual: A 1920s Paris scrapyard piled with old iron girders
@@ -69,3 +70,4 @@ Text: SHAME KEEPS SCAMS QUIET
 Draw: cross
 Split: The tower | The money
 Archive: 1920s
+Treat: duotone

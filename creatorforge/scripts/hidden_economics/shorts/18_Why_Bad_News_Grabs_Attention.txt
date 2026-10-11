@@ -9,6 +9,7 @@ Visual: A newspaper with a dark front-page photo on a table, headlines blurred
 Visual: A quiet sunny suburban street on an ordinary morning
 Text: WHICH ONE STICKS?
 Split: 1 headline | 100 calm days
+Treat: halftone
 
 Researchers wired up people in seventeen countries and played them news.
 Visual: A world map on a desk with red pins in many countries
@@ -55,8 +56,9 @@ Visual: A single die resting on a wooden table under a desk lamp
 Visual: A lottery ticket and a pencil on a kitchen table, numbers unreadable
 Text: TRUE STORY ≠ PROBABILITY
 Draw: underline
+Treat: duotone
 
 So next time, ask one thing. Out of how many days?
 Visual: A hand flipping through the pages of a wall calendar
 Visual: A quiet residential road at dusk with lights on in windows
-Chart: 100 vs 1 | calm days, scary headline
+Squares: 100 vs 1 | calm days, scary headline
