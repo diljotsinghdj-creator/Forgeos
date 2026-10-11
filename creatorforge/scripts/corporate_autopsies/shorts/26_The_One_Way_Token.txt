@@ -1,0 +1,85 @@
+The One-Way Token
+On-screen hook: BUY: YES. SELL: NO?
+Title: You Can Buy This Coin but Never Sell It: The Honeypot Token Trick
+Tags: #CorporateAutopsies #crypto #honeypot #scams #rugpull
+Source: CertiK, Honeypot Scams, https://www.certik.com/blog/honeypot-scams; CoinMarketCap Academy, 'I Lost Everything': How Squid Game Token Collapsed (Nov 2021), https://coinmarketcap.com/academy/article/i-lost-everything-how-squid-game-token-collapsed; Entrepreneur, 'Squid Game' Cryptocurrency Collapses, Scammers Vanish With Millions (Nov 2021), https://www.entrepreneur.com/article/394810; Cointelegraph, 350 scam tokens were created every day this year: Solidus Labs (Dec 18, 2022), https://cointelegraph.com/news/350-scam-tokens-were-created-every-day-this-year-solidus-labs; CoinDesk, Crypto Adds Unsavory Footnote to Dreadful 2022: Year of the Rug Pull (Dec 23, 2022), https://www.coindesk.com/markets/2022/12/23/crypto-adds-unsavory-footnote-to-dreadful-2022-year-of-the-rug-pull/
+
+You can buy this coin. Never sell it.
+Visual: A thumb pressing a green buy button on a phone, text unreadable
+Visual: A padlock snapped shut on a small metal cash box
+Text: BUY: YES · SELL: NO
+Thought: Why can't I sell?
+
+Researchers call it a honeypot token.
+Visual: A laptop on a dark desk showing lines of code, text unreadable
+Visual: A jar of honey on a desk next to a laptop keyboard
+Text: THE HONEYPOT TOKEN
+Cite: CertiK
+
+The code lets anyone buy. Often, only wallets the creator approves can sell.
+Visual: Hands typing code on a laptop in a dark room, screen text unreadable
+Visual: A printed list of wallet addresses with one line highlighted, text unreadable
+Text: ANYONE BUYS · ONLY APPROVED WALLETS SELL
+Cite: CertiK
+Treat: halftone
+
+So why would anyone buy?
+Visual: A person seen from behind staring at a rising price chart on a monitor
+Text: WHY BUY?
+Transition: whip
+
+The price only climbs, because nobody else can sell.
+Visual: A monitor showing a price line that only goes up, numbers unreadable
+Visual: A crowd of hands holding phones up in a dark room, screens unreadable
+Steps: Hype → Price only rises → Buyers can't sell → Creator cashes out | How a honeypot works
+
+Watch November twenty twenty-one.
+Visual: A wall calendar turned to November on an office wall
+Text: NOVEMBER 2021
+
+A token named after Squid Game topped two thousand eight hundred dollars.
+Visual: A trading screen with a near-vertical green price line, numbers unreadable
+Visual: A hand holding a phone showing a price alert, text unreadable
+Text: PEAK: ABOUT $2,861 PER TOKEN
+Cite: CoinMarketCap, Nov 2021
+
+Buyers said they couldn't sell. And then, within minutes, the value was gone.
+Visual: A finger tapping a sell button again and again on a phone, text unreadable
+Visual: A monitor showing a price line dropping straight down, numbers unreadable
+Text: MINUTES LATER: ALMOST $0
+Big: CRASH
+
+The developers vanished with over three million dollars, reports said.
+Visual: An empty office chair in front of a dark computer monitor
+Visual: A closed laptop on an empty desk beside an unplugged phone charger
+Text: OVER $3 MILLION GONE
+Article: 'Squid Game' Cryptocurrency Collapses, Scammers Vanish With Millions | Entrepreneur, Nov 2021
+Cite: Entrepreneur, Nov 2021
+
+How common is it?
+Visual: A wall of server racks with blinking lights in a dark room
+Text: HOW COMMON?
+Transition: flash
+
+In twenty twenty-two, Solidus Labs counted about a hundred seventeen thousand scam tokens.
+Visual: Rows of printed pages piled high on a desk, text unreadable
+Visual: A researcher seen from behind reading data on two monitors, text unreadable
+Text: 117,629 SCAM TOKENS (TO 1 DEC 2022)
+Cite: Solidus Labs via Cointelegraph, Dec 2022
+
+Most common type? The honeypot.
+Visual: A jar of honey on a laptop keyboard under a desk lamp
+Text: MOST COMMON: THE HONEYPOT
+Cite: Solidus Labs, 2022
+
+Before you buy, ask: has anyone else ever sold it?
+Visual: A magnifying glass held over a printed list of transactions, text unreadable
+Visual: A hand pausing above a buy button on a phone, text unreadable
+Screen: Token trades | Buy · Buy · Buy · Buy · *Sells by others: 0
+Draw: circle
+
+If nobody has, there's no exit.
+Visual: A locked metal door at the end of a dim corridor
+Visual: A phone face down on a desk beside a cold cup of coffee
+Text: NO SELLS = NO EXIT
+Treat: duotone

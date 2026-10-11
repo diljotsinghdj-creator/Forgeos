@@ -1,0 +1,75 @@
+The Forfeited Match
+On-screen hook: YOU LEFT. WHERE'S YOUR MATCH?
+Title: You Quit Before Vesting. Where Did Your 401(k) Match Go?
+Tags: #CorporateAutopsies #401k #retirement #ERISA #personalfinance
+Source: IRS proposed regulations on use of forfeitures in qualified plans (Feb 27, 2023), summarised by Barnes & Thornburg, https://btlaw.com/en/insights/alerts/2023/irs-sets-deadline-for-using-401k-plan-forfeitures; Holland & Knight, Northern District of California Dismisses 401(k) Forfeiture Suit with Prejudice (Feb 2025), https://www.hklaw.com/en/insights/publications/2025/02/northern-district-of-california-dismisses-401-forfeiture; Holland & Knight, Department of Labor Weighs In on 401(k) Forfeiture Class Actions (July 2025), https://www.hklaw.com/en/insights/publications/2025/07/department-of-labor-weighs-in-on-401k-forfeiture-class-actions; NAPA, Judge Rejects Motion to Dismiss Fiduciary Forfeiture Suit (May 2024, Perez-Cruet v. Qualcomm), https://www.napa-net.org/news/2024/5/judge-rejects-motion-dismiss-fiduciary-forfeiture-suit/; Bloomberg Law, Judges Reveal Little in 9th Cir. HP 401(k) Forfeiture Arguments, https://news.bloomberglaw.com/tech-and-telecom-law/judges-reveal-little-in-9th-cir-hp-401k-forfeiture-arguments
+
+You quit early. Where did your match go?
+Visual: A person seen from behind carrying a cardboard box out of an office
+Visual: A retirement account statement on a kitchen table, text unreadable
+Text: WHERE DID YOUR MATCH GO?
+Thought: Wasn't that my money?
+
+Quit before vesting, and your employer's 401(k) match can be forfeited.
+Visual: An employee handbook open at a page with a table, text unreadable
+Visual: A hand crossing out a line on a printed pay summary, text unreadable
+Text: NOT VESTED = MATCH FORFEITED
+Treat: halftone
+
+That money stays in the plan. So who gets it?
+Visual: Coins dropping into a large glass jar on an office desk
+Visual: Two hands reaching toward the same jar from opposite sides
+Text: SO WHO GETS IT?
+
+IRS rules let plans pay fees with it, or reduce future employer contributions.
+Visual: A thick government rule book open on a desk beside reading glasses
+Visual: A stack of plan fee invoices on a desk, text unreadable
+Steps: Unvested match → Forfeited → Pay plan fees or cut employer contributions | Where it can go
+Cite: IRS proposed rule, 2023
+
+Here's the problem, according to dozens of lawsuits since twenty twenty-three.
+Visual: Stacks of legal filings tied with red ribbon on a desk, text unreadable
+Visual: A federal courthouse's stone front on a sunny morning
+Text: DOZENS OF LAWSUITS SINCE 2023
+Transition: whip
+
+Workers allege employers used it to cover their own matching costs instead.
+Visual: A hand moving coins from one pile to another on a desk
+Visual: A printed payroll ledger with one column highlighted, text unreadable
+Text: ALLEGED: USED TO CUT THE COMPANY'S COST
+Cite: Plaintiffs' complaints
+
+Wrong, they say, under ERISA's duty of loyalty.
+Visual: A lawyer's hand underlining a paragraph in a law book
+Text: THE CLAIM: A BREACH OF LOYALTY
+Big: LOYALTY?
+
+So what have judges said?
+Visual: A judge's wooden gavel resting on a stack of case files
+Text: WHAT HAVE JUDGES SAID?
+
+HP won: in twenty twenty-five, a California court dismissed the case.
+Visual: A courthouse in San Francisco seen across a street on a clear day
+Visual: A court order stamped and clipped to a folder, text unreadable
+Article: Northern District of California Dismisses 401(k) Forfeiture Suit with Prejudice | Holland & Knight, Feb 2025
+Cite: N.D. Cal., Feb 2025
+
+The Labor Department sided with HP on appeal.
+Visual: A government office building with columns in Washington on a grey day
+Visual: A bound legal brief on a desk beside a pen, text unreadable
+Text: DOL BACKED HP ON APPEAL
+Cite: DOL amicus brief, July 2025
+
+But a suit against Qualcomm survived. Courts are split.
+Visual: Two stacks of court files of different heights on a desk, labels unreadable
+Visual: A courthouse corridor splitting left and right, seen from the middle
+Text: QUALCOMM SUIT SURVIVED · COURTS SPLIT
+Cite: S.D. Cal., May 2024
+Transition: flash
+
+So where did your match go? Your plan document says. Read it.
+Visual: A hand flipping through a printed plan summary booklet, text unreadable
+Visual: A finger tracing a line in a booklet under a desk lamp, text unreadable
+Screen: Plan summary | Vesting: 3 years · Employer match: 4% · *Forfeitures: reduce employer contributions
+Draw: circle
+Treat: duotone

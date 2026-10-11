@@ -1,0 +1,84 @@
+The Printed Ledger
+On-screen hook: THE TRADES WERE PRINTED
+Title: Madoff's Trades Were Printed, Not Made. The SEC Was Warned Six Times
+Tags: #CorporateAutopsies #Madoff #ponzischeme #fraud #SEC
+Source: SEC Office of Inspector General, Investigation of Failure of the SEC to Uncover Bernard Madoff's Ponzi Scheme, Report No. OIG-509 (Aug 31, 2009), executive summary https://www.sec.gov/files/oig-509-exec-summary.pdf and full report https://www.sec.gov/files/oig-5090.pdf; SEC press release 2009-182, SEC charges Frank DiPascali, https://www.sec.gov/news/press/2009/2009-182.htm; ProPublica, The World's Largest Hedge Fund is a Fraud (Markopolos memo, 2005), https://www.propublica.org/article/the-worlds-largest-hedge-fund-is-a-fraud-1219; Financial Advisor, Madoff's ex-finance chief testifies fake trading was obvious, https://www.fa-mag.com/news/madoff-s-ex-finance-chief-testifies-fake-trading-was-obvious-16189.html; U.S. DOJ SDNY, Bernard L. Madoff sentenced to 150 years (June 29, 2009), https://www.justice.gov/archive/usao/nys/madoff.html; Madoff Recovery Initiative (SIPA Trustee), https://www.madofftrustee.com/
+
+His trades never happened. They were printed.
+Visual: An old office printer pushing out a stack of statements, text unreadable
+Visual: A thick pile of printed account statements on a desk, text unreadable
+Text: NO TRADES · JUST PAPER
+Thought: Where did the money go?
+
+His fraud ran from the seventeenth floor.
+Visual: A tall oval office tower in Midtown Manhattan seen from the street
+Visual: A lift button panel with one floor button lit, numbers unreadable
+Text: THE 17TH FLOOR
+Place: NEW YORK · 2008
+Treat: halftone
+
+Prosecutors said staff there printed fake trade confirmations and statements.
+Visual: Hands feeding paper into a desktop printer in a dim office
+Visual: Sealed white envelopes stacked in a tray by a mailing machine
+Text: FAKE CONFIRMATIONS · FAKE STATEMENTS
+Cite: SEC / U.S. DOJ
+
+The catch? Regulators were warned.
+Visual: A government office building with flags outside on a grey day
+Text: THEY WERE WARNED
+Big: WARNED
+Transition: whip
+
+Harry Markopolos warned the SEC in a two thousand five memo.
+Visual: A man seen from behind at a desk covered in printed spreadsheets
+Visual: A thick stapled memo on a desk under a lamp, text unreadable
+Text: MARKOPOLOS MEMO · 2005
+Cite: Markopolos memo to the SEC, 2005
+
+Its title? The World's Largest Hedge Fund is a Fraud.
+Visual: Hands sliding a stapled memo into a large envelope, text unreadable
+Visual: A government mail room with sorted envelopes in wooden pigeonholes
+Document: The World's Largest Hedge Fund is a Fraud | Harry Markopolos memo to the SEC, 2005
+Cite: Markopolos, 2005
+
+So why didn't the SEC catch him?
+Visual: A closed filing cabinet drawer in a government office
+Visual: A stack of case folders tied with string on a desk, text unreadable
+Text: WHY NO CATCH?
+
+An internal watchdog counted six substantive complaints, three exams, two investigations.
+Visual: Six letters fanned out on a desk, text unreadable
+Visual: A row of thick case binders on an office shelf, labels unreadable
+Text: 6 COMPLAINTS · 3 EXAMS · 2 INVESTIGATIONS
+Cite: SEC Inspector General, 2009
+
+Yet staff never verified his trades with an outside depository, the report found.
+Visual: A desk phone sitting untouched beside an open notebook
+Visual: Rows of filing boxes in a records storeroom, labels unreadable
+Article: Investigation of Failure of the SEC to Uncover Bernard Madoff's Ponzi Scheme | SEC Office of Inspector General, Aug 2009
+Cite: SEC Inspector General, 2009
+
+What happened next? In December two thousand eight, Madoff confessed.
+Visual: A Manhattan street at night with snow falling under streetlights
+Visual: A federal courthouse's stone steps on a cold winter morning
+Text: DECEMBER 2008
+Transition: flash
+
+Statements showed sixty-five billion. Lost principal: about seventeen and a half billion.
+Visual: A calculator beside a pile of printed account statements, text unreadable
+Visual: An empty open leather wallet on a wooden table
+Squares: $65bn vs $17.5bn | on paper, money actually lost
+Cite: SIPA Trustee / U.S. DOJ
+
+The sentence? A hundred and fifty years, after a guilty plea.
+Visual: A judge's wooden gavel resting on a closed law book
+Visual: A courthouse corridor with tall wooden doors, seen from the far end
+Text: GUILTY PLEA · 150 YEARS
+Cite: U.S. DOJ, June 2009
+Treat: duotone
+
+The trades were printed. The SEC never checked them.
+Visual: A stack of printed statements bound with a rubber band, text unreadable
+Visual: A paper shredder beside an overflowing bin in an empty office
+Text: PRINTED TRADES · NEVER CHECKED
+Draw: cross
