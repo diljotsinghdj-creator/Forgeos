@@ -46,8 +46,22 @@ CreatorForge -> Generate -> Script. CreatorForge reads it like this:
   Big: .............. one or two words slam in huge over the picture, e.g. "Big: FREE"
   Transition: ....... the cut into this line: tear (paper rips away), match (zoom-through), whip, iris, flash, dip,
                         slide or wipe. Chapter cards tear and statements dip to dark automatically.
+  Chat: ............. a recreated (fictional, labelled) text conversation, bubbles pop in with typing dots, e.g.
+                        "Chat: Unknown number | them: Hi, is this Sam? · me: Wrong number · them: Oh sorry!"
+  Search: ........... a question types itself into a plain search bar, results appear, e.g.
+                        "Search: how to cancel a subscription | Why can't I cancel? · Cancel in 10 steps"
+  Pie: .............. a donut fills to the share, e.g. "Pie: 61% | of losses refunded"
+  Squares: .......... areas drawn to scale side by side, e.g. "Squares: £4.2m vs £85,000 | fines, one claim"
+  Shade: ............ a map with countries shaded by their number, e.g. "Shade: United Kingdom 40%, France 25% | title"
+  Timer: ............ a countdown that runs out, e.g. "Timer: 09:59 → 00:00 | Offer ends"
+  Receipt: .......... a printed receipt rolls out, the * line circled, the last line the total, e.g.
+                        "Receipt: Basket £24.00 · *Service fee £2.50 · Total £26.50"
+  Treat: ............ a print look for the line's pictures: duotone or halftone (not full-frame)
   One full-frame graphic per spoken line: Chart, Map, Globe, Steps, Timeline, Icons, Chapter, Quote, Screen,
-  Document, Statement, Object or Article. (Split, Archive, Big and Transition can go anywhere.)
+  Document, Statement, Object, Article, Chat, Search, Pie, Squares, Shade, Timer or Receipt.
+  (Split, Archive, Big, Transition and Treat can go anywhere.)
+  Also automatic: graphics play at 12 frames a second (the hand-made look), the first photo of each scene slides in
+  with motion blur and a projector click, and long widescreen videos end on a 12 s YouTube end screen.
   Automatic: Archive lines use real public-domain archive photos (Wikimedia Commons) when one matches; pen marks
   and bubbles move with the picture they sit on; long videos change music track at each chapter; the channel's
   name signs off the video and sits small on chapter cards and statements (set the name in the Brand kit).
