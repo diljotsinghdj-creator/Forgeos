@@ -30,6 +30,7 @@ Cite: UK Government, Nov 2024
 One of them could be leaving your account tonight.
 Visual: A dark bedroom at night, a bedside clock glowing beside the bed
 Visual: A wallet lying open on a bedside table, a bank card sticking out
+Big: TONIGHT
 
 Joining took one tap. So why does leaving feel like a maze?
 Visual: A fingertip tapping a sign-up button on a phone, text unreadable
@@ -55,6 +56,7 @@ Meet Sam. Sam is fictional, but you probably know a Sam.
 Visual: A person seen from behind on a city bus, earphones in
 Visual: A city bus pulling away from a stop on a rainy morning
 Text: SAM · FICTIONAL
+Transition: iris
 
 In January, Sam started a free seven-day streaming trial. What could go wrong?
 Visual: A frosty January morning on a street of terraced houses
@@ -67,6 +69,7 @@ Screen: Free trial | 7 days free · Enter card number · *small:Then £10 a mont
 One tap and a card number. Ten seconds.
 Visual: A hand pulling a bank card out of a leather wallet
 Visual: A hand pressing the button on a stopwatch
+Big: TEN SECONDS
 
 Sam watched one film, and then life got busy.
 Visual: A sofa facing a television showing a film, room lit only by the television
@@ -196,6 +199,7 @@ Text: EVIDENCE, NOT A VERDICT
 
 But remember Sam.
 Visual: A person seen from behind on a city bus, earphones in
+Transition: whip
 
 Sam's trial had no tricks at all, and Sam still paid.
 Visual: A short, plain one-page contract on a desk, text unreadable
@@ -239,6 +243,7 @@ Visual: A gym locker room with a single bag on a bench
 Text: 4.3 VISITS A MONTH
 Draw: circle
 Cite: DellaVigna & Malmendier, AER 2006
+Big: 4.3
 
 These were people who had signed up precisely to get fit.
 Visual: New running shoes still in their open box on a bedroom floor
@@ -271,6 +276,7 @@ Visual: A desk diary open at the last page of the year, text unreadable
 But monthly members renewed automatically, without lifting a finger.
 Visual: A card payment terminal showing an approved payment, text unreadable
 Visual: A hand resting still on a closed laptop
+Transition: whip
 
 They were seventeen percent more likely to still be enrolled a year later.
 Visual: A year of calendar pages fanned out on a table
@@ -304,6 +310,7 @@ Now add friction. Every extra screen puts a price on leaving.
 Visual: A steep stone staircase with very tall steps
 Visual: A phone showing a long chain of menu screens, text unreadable
 Text: FRICTION IS A PRICE ON LEAVING
+Big: FRICTION
 
 Not every step is a trick. A security check can protect your account.
 Visual: A padlock hanging on a steel locker door
@@ -340,6 +347,7 @@ Stock: courthouse exterior
 Draw: cross
 Place: UNITED STATES · JULY 2025
 Cite: US 8th Circuit, July 2025
+Transition: flash
 
 That was six days before businesses had to comply.
 Visual: A compliance binder open on an office desk, text unreadable
@@ -354,6 +362,7 @@ Visual: A judge's gavel lying on a torn typed document
 The court never said easy cancelling was a bad idea.
 Visual: An empty wood-panelled courtroom with a judge's bench
 Visual: A heavy law book lying open on a desk
+Transition: match
 
 Instead, it ruled the regulator had skipped a required cost analysis.
 Visual: A printed spreadsheet with one column left completely empty, figures blurred
@@ -448,6 +457,7 @@ Text: MISSING: HOW TO LEAVE
 The real difference is not politeness. It is control.
 Visual: A handwritten thank-you card on a desk, text unreadable
 Visual: A hand gripping the wooden wheel of a ship
+Big: CONTROL
 
 So how does Sam take back control?
 Visual: A desk lamp switched on over a cleared kitchen table at night
@@ -481,6 +491,7 @@ Visual: A printed free trial leaflet on a doormat, text unreadable
 Visual: A magnifying glass over the small print of a printed terms page, text unreadable
 Text: FIND THE EXIT FIRST
 Draw: tick
+Object: card | Subscription card
 
 Then Sam puts the renewal date in a personal calendar.
 Visual: A hand writing a date in a paper diary
@@ -513,10 +524,12 @@ Thought: This one is actually worth it.
 Remember the gym members paying seventeen dollars a visit.
 Visual: A gym floor with rows of treadmills and nobody on them
 Visual: A gym membership card beside a few US dollar bills
+Object: coin | $17 | seventeen dollars a visit
 
 They were not foolish. They only trusted a future version of themselves.
 Visual: A person seen from behind walking into a gym with a sports bag
 Visual: A person seen from behind stepping out of a doorway into a sunlit street
+Big: NOT FOOLISH
 
 A good subscription earns its next payment by staying useful.
 Visual: A well-worn paperback book with a bookmark, pages soft from use
@@ -537,3 +550,4 @@ Next time, how one crossed-out price rewrites what you think something is worth.
 Visual: A shop price tag with the old price crossed out in red, figures blurred
 Visual: A shopper seen from behind looking at jackets on a clothes rail
 Text: NEXT: THE DISCOUNT TRAP
+Transition: match

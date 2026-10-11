@@ -15,6 +15,7 @@ Visual: A 2000s university classroom with students seen from behind at desks
 Visual: A cordless computer keyboard on a plain white table
 Text: SAME KEYBOARD · 3× THE BID
 Cite: Ariely, Loewenstein & Prelec, 2003
+Article: Coherent Arbitrariness | Quarterly Journal of Economics, 2003
 
 Why? Every crossed-out price pulls the same hidden lever.
 Visual: A department store floor with sale rails, seen from the escalator
@@ -65,6 +66,8 @@ Thought: Forty pounds off? That's a bargain!
 But ten minutes ago, she wanted no jacket.
 Visual: A wall clock in a living room showing late evening
 Visual: An open wardrobe already full of jackets and coats
+Big: NO JACKET
+Transition: whip
 
 So did Leah save forty pounds, or find a reason to spend sixty?
 Visual: A hand hovering over a leather wallet on a coffee table
@@ -125,6 +128,7 @@ Psychologists call this anchoring. The first number becomes the hidden starting 
 Visual: A heavy iron ship's anchor resting on a harbour dock
 Visual: A pencil writing a single number at the top of a blank page
 Text: ANCHORING
+Big: ANCHORING
 
 But that was trivia. Does it work when real money is at stake?
 Visual: A pile of trivia question cards on a table, text unreadable
@@ -186,6 +190,7 @@ But what if the higher price barely applied? The saving shrinks to nothing.
 Visual: A new price sticker half covering an older one on a label, figures blurred
 Visual: An empty purse lying open on a shop counter
 Text: HOW LONG WAS IT £100?
+Transition: whip
 
 Europe thought this mattered enough to write it into law.
 Visual: The European Parliament building in Brussels with flags outside
@@ -279,6 +284,8 @@ Chapter: Part 4 | The ticking clock
 
 The partner? A clock.
 Visual: An old pocket watch open in a palm
+Big: A CLOCK
+Transition: match
 
 Back on Leah's screen, a timer appears. Offer ends in nine minutes.
 Visual: A woman seen from behind on a sofa, a laptop glowing on her knees
@@ -349,6 +356,7 @@ Visual: A red alarm clock with cracked glass lying on a court document
 Text: HIGH COURT CONSENT ORDER, MAY 2026
 Draw: cross
 Cite: CMA, 2026
+Transition: flash
 
 It gave binding undertakings to stop.
 Visual: A pen lifting from a freshly signed document with a seal
@@ -359,6 +367,7 @@ Cite: CMA, 2026
 Breaking them could even mean contempt of court.
 Visual: An empty courtroom with a judge's bench and wooden panelling
 Visual: A pair of old iron handcuffs resting on a signed document
+Big: CONTEMPT
 
 Scepticism is reasonable. But here's the catch: even honest deals hide a trap.
 Visual: A shopper seen from behind reading a price label in a shop
@@ -379,6 +388,8 @@ Visual: A closed leather wallet resting on a coffee table
 Visual: A blank shopping list notepad with a pencil beside it
 Text: PLANNED SPEND: £0
 Thought: I was only going to browse tonight.
+Big: NOTHING
+Transition: whip
 
 So she'd be fifty-four pounds poorer than if she'd closed the tab.
 Visual: A bank statement with one line circled in red, figures blurred
@@ -428,6 +439,7 @@ So did the problem disappear? Not quite.
 Visual: A busy British high street with shoppers seen from behind
 Visual: A phone showing an online shop page, text unreadable
 Stock: busy british high street
+Big: NOT QUITE
 
 By November twenty twenty-five, the regulator had reviewed over four hundred businesses.
 Visual: Hundreds of small shop-front photographs pinned in rows on a board
@@ -453,6 +465,7 @@ Visual: Eight cardboard archive boxes on a shelf, labels unreadable
 Visual: A tall stack of sealed envelopes ready to post
 Text: 8 INVESTIGATIONS · 100 LETTERS
 Cite: CMA, Nov 2025
+Object: bars | 8, 100 | Investigations, Letters | CMA, Nov 2025
 
 An investigation is not a finding that anyone broke the law.
 Visual: A case file folder open with its last page blank
@@ -486,6 +499,7 @@ For anything non-essential, sleep on it.
 Visual: An alarm clock on a bedside table at night
 Visual: A bed with the lamp switched off and curtains drawn
 Text: 4. WAIT OVERNIGHT
+Big: SLEEP
 
 Notice that none of these relies on willpower in the moment.
 Visual: A hand resting flat on a closed wallet on a table
@@ -520,6 +534,7 @@ She still didn't need it. Fifty-four pounds stayed exactly where it was.
 Visual: An empty coat hook in a hallway
 Visual: A wallet slipping back into a coat pocket
 Text: £54 KEPT
+Object: coin | £54 | fifty-four pounds kept
 
 Remember the estate agents? They were sure the number had not touched them.
 Visual: A detached house with a for-sale sign by the path
@@ -538,6 +553,7 @@ Text: NEXT EPISODE
 So why do things feel better when other people can see them?
 Visual: A glossy shopping bag carried along a busy street
 Visual: People seen from behind turning to look at a shop window
+Transition: match
 
 Next time, the hidden economics of status.
 Visual: A polished sports car parked outside a restaurant

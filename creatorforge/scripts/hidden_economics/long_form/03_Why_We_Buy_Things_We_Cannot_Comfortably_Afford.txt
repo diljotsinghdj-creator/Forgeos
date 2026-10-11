@@ -14,6 +14,7 @@ Not the winner. The neighbours, who never won a penny.
 Visual: A winning lottery ticket held up in a hand outside a house, numbers unreadable
 Visual: The house next door, an empty doormat and a closed letterbox
 Draw: arrow
+Big: NEIGHBOURS
 
 Even worse, the bigger the prize, the more bankruptcies followed nearby.
 Visual: A tall stack of banknotes on a doorstep
@@ -47,6 +48,7 @@ Visual: A packed lunch and a bus pass on a hallway shelf
 One Saturday, a gleaming new car appears on the drive opposite.
 Visual: A shiny new car parked on a driveway across a suburban road
 Visual: A view through a kitchen window of a new car across the road
+Big: NEW CAR
 
 By Sunday night, Sam is scrolling through cars on a phone.
 Visual: A living room at night, one lamp on, curtains drawn
@@ -94,6 +96,7 @@ But does it change what ordinary people actually spend?
 Visual: A hand hovering above a card reader on a shop counter
 Visual: A household budget sheet on a kitchen table with a pencil, numbers unreadable
 Text: DOES IT CHANGE SPENDING?
+Transition: whip
 
 The Netherlands ran an accidental experiment.
 Visual: Dutch terraced houses along an Amsterdam canal with bicycles parked outside
@@ -121,10 +124,13 @@ Visual: A car with a for-sale sign in its windscreen, text unreadable
 Text: MOST WINNERS SOLD THE CAR
 Draw: circle
 Cite: Kuhn et al., AER 2011
+Transition: flash
 
 The real effect was next door.
 Visual: A neighbour's house beside the winner's house on a Dutch street
 Visual: A person seen from behind looking over a garden hedge
+Big: NEXT DOOR
+Transition: match
 
 Neighbours who had not even played bought more cars than similar households elsewhere.
 Visual: A salesperson seen from behind walking a buyer across a showroom
@@ -147,6 +153,7 @@ Draw: circle
 But a new car is not bankruptcy.
 Visual: A new car parked on a sunny driveway
 Visual: A bankruptcy notice lying on a hallway floor, text unreadable
+Transition: match
 
 So where does the money come from?
 Visual: A nearly empty wallet lying open on a table
@@ -183,6 +190,7 @@ Visual: A house key and a car key lying on an open ledger
 More visible assets, like houses and cars.
 Visual: A large detached house with a fresh extension, scaffolding still up
 Visual: A toy car parked on a stack of red-stamped bills
+Big: VISIBLE
 
 But not more savings. Not more cash in the bank.
 Visual: An empty glass savings jar on a kitchen shelf
@@ -218,6 +226,7 @@ Visual: Celebration balloons tied to a neighbour's garden gate
 Visual: A pile of unpaid bills on a neighbour's doormat, text unreadable
 Text: THEIR WIN, YOUR DEBT
 Draw: underline
+Transition: whip
 
 Surely, though, the new things make people happier?
 Visual: Hands pulling a ribbon off a wrapped gift box
@@ -237,6 +246,7 @@ Stock: 1970s lottery tickets
 Place: ILLINOIS · 1978
 Cite: Brickman et al., 1978
 Archive: 1970s
+Article: Lottery winners and accident victims | Journal of Personality and Social Psychology, 1978
 
 Each had won at least fifty thousand dollars.
 Visual: Bundles of dollar bills stacked on a wooden table
@@ -310,6 +320,7 @@ Visual: Two bidding paddles raised in an auction room, numbers hidden
 Text: CARD BIDS ROUGHLY 2× CASH
 Draw: underline
 Cite: Prelec & Simester, 2001
+Big: TWICE
 
 Same seats, same game. Only the way of paying had changed.
 Visual: Two identical paper tickets side by side, print unreadable
@@ -404,6 +415,7 @@ Visual: Two chain links lying apart on a wooden table
 Visual: A printed line graph lying on a desk, labels unreadable
 Text: LINK, NOT PROOF
 Draw: underline
+Big: NOT PROOF
 
 The catch? People already struggling may simply use it more.
 Visual: A worn purse on a kitchen table with bills tucked under it
@@ -447,6 +459,7 @@ Chapter: Part 5 | Object or audience?
 So was Veblen saying nice things are wrong? Never.
 Visual: An old 1890s book closing on a wooden desk
 Visual: A well-made leather bag on a shop shelf
+Big: NEVER
 
 It was that part of the price pays for an audience.
 Visual: An empty theatre with rows of red velvet seats
@@ -493,6 +506,7 @@ Fifty pounds a month stays put, every month for a year.
 Visual: A coin dropping into a glass savings jar on a windowsill
 Visual: A full piggy bank sitting on a bookshelf
 Text: £50 A MONTH, KEPT
+Object: stack | 12 | twelve months of £50
 
 If something passes all three, buy it deliberately, and enjoy it.
 Visual: Hands resting on the back of a well-made wooden chair
@@ -517,11 +531,13 @@ Statement: Comparison has a *price*.
 But there is a stranger bargain still to come.
 Visual: A phone lighting up on a dark bedside table
 Visual: A sealed envelope lying on a dark doormat
+Transition: whip
 
 What if something costs nothing at checkout?
 Visual: An empty shopping basket on a checkout belt
 Visual: A phone screen showing a free app download button, text unreadable
 Text: £0 AT CHECKOUT
+Object: coin | £0 | nothing at checkout
 
 And yet it earns a fortune from your attention.
 Visual: A dark living room at night, a sofa seen from behind

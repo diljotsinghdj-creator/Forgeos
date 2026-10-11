@@ -36,6 +36,7 @@ Text: WHAT WAS SOLD?
 Your time.
 Visual: A wristwatch with a paper price tag tied to its strap
 Draw: circle
+Big: YOUR TIME
 
 British adults spend four and a half hours a day online.
 Visual: A person seen from behind on a sofa, a phone lit in their hands
@@ -67,6 +68,7 @@ Meet Maya. She is fictional, but her evening may sound familiar.
 Visual: A young woman seen from behind curled up on a sofa under a blanket
 Visual: A living room at night lit by a single lamp, curtains drawn
 Text: MAYA · A FICTIONAL CASE
+Transition: iris
 
 At eleven at night, she opens an app for one minute.
 Visual: A bedside alarm clock showing eleven at night in a dark bedroom
@@ -87,6 +89,7 @@ Split: Time given | Money paid
 
 Maya is typical.
 Visual: Several people seen from behind on a train, each holding a lit phone
+Big: TYPICAL
 
 Ofcom found young adults online for over six hours a day.
 Visual: The top deck of a night bus, young passengers seen from behind
@@ -94,6 +97,7 @@ Visual: Students seen from behind sitting on a university lawn at dusk
 Text: AGED 18–24: 6h 20m
 Stock: people on phones bus
 Cite: Ofcom, 2025
+Object: bars | 4.5, 6 | All adults, Aged 18-24 | Hours online a day
 
 And about three quarters of all adult online time is on smartphones.
 Visual: Four phones in a row on a desk, three switched on and one dark
@@ -129,6 +133,7 @@ Then it is a world poor in lettuce.
 Visual: A vegetable garden with lettuces nibbled down to their stalks
 Visual: An empty vegetable crate on bare soil beside a garden fork
 Archive: 1971
+Transition: match
 
 Now guess what information eats.
 Visual: A letterbox overflowing with letters and newspapers onto a hallway floor
@@ -161,6 +166,7 @@ Text: WHO BUYS ATTENTION?
 Mostly, advertisers.
 Visual: A city square at night covered in lit billboards, content blank
 Stock: city billboards night
+Big: ADVERTISERS
 
 Watch Maya's screen. Every minute she scrolls is space they can buy.
 Visual: A phone showing a social feed with a blank advert between posts, text unreadable
@@ -218,6 +224,7 @@ But where ads pay, more time means more ads.
 Visual: A phone screen showing a feed with a blank ad box between posts
 Visual: A long row of advert posters lining an underground escalator
 Text: FICTIONAL INTERFACE
+Transition: whip
 
 So what does an app built around your time actually look like?
 Visual: A floor plan of a small bedroom drawn on graph paper
@@ -244,6 +251,7 @@ Statement: But Maya's feed has no *last* page.
 Even at the bottom, it just refills.
 Visual: A thumb pulling down on a phone screen to refresh, text unreadable
 Visual: Plates of food moving past on a sushi bar conveyor belt
+Big: REFILLS
 
 Then autoplay starts the next video before she has decided anything.
 Visual: A phone playing a video with a countdown to the next one, nothing readable
@@ -310,6 +318,7 @@ But the fix was just a setting.
 Visual: A thumb sliding a toggle switch to off on a phone, nothing readable
 Visual: A light switch being flicked off on a white wall
 Draw: tick
+Big: A SETTING
 
 So here is the real question. Does Maya even want those nineteen minutes?
 Visual: A young woman seen from behind at a rain-streaked window at night
@@ -322,6 +331,7 @@ Visual: A hand holding out a few dollar bills across a table
 Text: PAID TO QUIT · 4 WEEKS
 Place: UNITED STATES · 2018
 Cite: Allcott et al., AER 2020
+Article: The Welfare Effects of Social Media | American Economic Review, 2020
 
 Those who quit spent more time offline, with friends and family.
 Visual: Hands passing a dish across a family dinner table, faces out of frame
@@ -339,6 +349,7 @@ Cite: Allcott et al., AER 2020
 
 Then the twist.
 Visual: A red-pen arrow bending sharply downward on graph paper
+Transition: flash
 
 Even after the experiment ended, their use stayed lower.
 Visual: A phone charger coiled unused on a dusty windowsill
@@ -459,6 +470,7 @@ Cite: European Commission, Feb 2026
 But here's the catch. These are not final findings.
 Visual: A draft document held with a paperclip, marked in red pen, text unreadable
 Visual: A rubber stamp lying unused beside an unsigned document
+Transition: whip
 
 TikTok can respond, and has called them meritless.
 Visual: A lawyer seen from behind carrying files up stone court steps
@@ -569,10 +581,12 @@ Statement: It is *time* you chose.
 But attention is not only captured by curiosity.
 Visual: A phone lighting up on a desk with a new notification, text unreadable
 Visual: A hand reaching for a wrapped parcel on a desk
+Transition: whip
 
 It can also be captured by fear.
 Visual: A smoke alarm on a ceiling, its small light glowing red
 Visual: A phone showing a red warning pop-up, text unreadable
+Big: FEAR
 
 So what happens when a warning becomes a sales pitch?
 Visual: A shop shelf of padlocks and alarms with price tags
