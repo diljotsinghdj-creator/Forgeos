@@ -265,3 +265,24 @@ def test_big_transition_object_and_article_keys():
     beats = [b for s in d.direct_script(None, spec).scenes for b in (s.beats or [])]
     keys = {k for b in beats for k in (b.get("extra") or {})}
     assert {"big", "transition", "object", "article"} <= keys
+
+
+def test_whisper_falls_back_to_cpu_when_the_gpu_is_full(monkeypatch):
+    import sys
+    import types
+    from pathlib import Path
+    from creatorforge_worker.providers import asr_whisper as a
+    devices = []
+
+    class FakeModel:
+        def __init__(self, name, device="auto", compute_type="default"):
+            devices.append(device)
+            self.device = device
+
+        def transcribe(self, audio, **kw):
+            if self.device != "cpu":
+                raise RuntimeError("CUDA failed with error out of memory")
+            return [types.SimpleNamespace(words=[types.SimpleNamespace(word=" hi", start=0.0, end=0.4)])], None
+    monkeypatch.setitem(sys.modules, "faster_whisper", types.SimpleNamespace(WhisperModel=FakeModel))
+    monkeypatch.setattr(a, "_load_audio", lambda p: "audio")
+    assert [w.text for w in a.WhisperASR().words(Path("x.wav"))] == ["hi"] and devices == ["auto", "cpu"]
