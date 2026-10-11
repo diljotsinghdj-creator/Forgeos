@@ -16,7 +16,7 @@ Visual: A cordless computer keyboard on a plain white table
 Text: SAME KEYBOARD · 3× THE BID
 Cite: Ariely, Loewenstein & Prelec, 2003
 
-Every crossed-out price pulls the same hidden lever.
+Why? Every crossed-out price pulls the same hidden lever.
 Visual: A department store floor with sale rails, seen from the escalator
 Visual: A market stall chalkboard with old prices rubbed out, figures blurred
 
@@ -55,6 +55,7 @@ Draw: cross
 Underneath, in red, sixty pounds.
 Visual: A red marker pen writing a new price on a white card, figures blurred
 Text: NOW £60
+Screen: Green jacket | Was £100 · *Now £60 · Add to basket
 
 It feels like forty pounds saved.
 Visual: Two twenty-pound notes folded on a coffee table
@@ -71,9 +72,10 @@ Visual: A bank card resting on a sofa cushion
 Text: SAVED £40 OR SPENT £60?
 Chapter: Part 1 | The random number
 
-The answer starts with a wheel of fortune in a laboratory.
+Here's where the answer starts: a wheel of fortune in a laboratory.
 Visual: A wooden wheel of fortune with numbered segments on a table
 Visual: A 1970s psychology laboratory with a desk and simple equipment
+Archive: 1970s
 
 In nineteen seventy-four, two psychologists rigged a wheel.
 Visual: A 1970s university campus building with students walking in front
@@ -81,6 +83,7 @@ Visual: Two psychologists seen from behind at a 1970s workbench with tools
 Text: Tversky & Kahneman, Science 1974
 Stock: 1970s university campus
 Quote: Judgment under Uncertainty: Heuristics and Biases | Tversky & Kahneman, 1974
+Archive: 1970s
 
 It could only stop on ten or sixty-five.
 Visual: Two printed number cards on a laboratory table, digits blurred
@@ -88,17 +91,20 @@ Visual: A hand-drawn wheel diagram on paper with two segments circled in red
 Text: 10 OR 65
 Draw: circle
 Cite: Tversky & Kahneman, Science 1974
+Archive: 1970s
 
 Then they asked what share of United Nations members are African countries.
 Visual: A row of national flags outside the United Nations building in New York
 Visual: An old school globe turned to show Africa
 Text: % OF UN MEMBERS THAT ARE AFRICAN?
+Archive: 1970s
 
 Shown ten, the median guess was twenty-five percent. Shown sixty-five, forty-five.
 Visual: A student seen from behind writing on an answer sheet
 Visual: Two stacks of coins on a table, one short and one tall
 Chart: 25% vs 45% | saw 10, saw 65
 Cite: Tversky & Kahneman, Science 1974
+Archive: 1970s
 
 A number everyone could see was random moved their answers by twenty points.
 Visual: A wooden wheel of fortune standing still on a table
@@ -106,12 +112,14 @@ Visual: A stack of handwritten answer sheets with numbers circled, text unreadab
 Text: +20 POINTS FROM A RANDOM NUMBER
 Draw: underline
 Cite: Tversky & Kahneman, Science 1974
+Archive: 1970s
 
 Even paying people for accurate answers did not make it go away.
 Visual: A small cash prize envelope on a desk beside a pencil
 Visual: A hand passing a few banknotes across a desk to a student
 Text: PAYING FOR ACCURACY DIDN'T HELP
 Cite: Tversky & Kahneman, Science 1974
+Archive: 1970s
 
 Psychologists call this anchoring. The first number becomes the hidden starting point.
 Visual: A heavy iron ship's anchor resting on a harbour dock
@@ -124,7 +132,7 @@ Visual: A hand turning a debit card over above a pile of receipts
 Text: DOES IT WORK WITH MONEY?
 Chapter: Part 2 | When money is real
 
-In two thousand and three, researchers tried it with real prices.
+How? In two thousand and three, researchers tried it with real prices.
 Visual: A 2000s university lecture hall with students seen from behind
 Visual: A bottle of wine and a box of chocolates on a table
 Text: Ariely, Loewenstein & Prelec, 2003
@@ -159,7 +167,7 @@ Visual: A ruler measuring two paper stacks, one three times taller
 Text: 3× MORE
 Cite: Ariely, Loewenstein & Prelec, 2003
 
-Now look at a sale tag. The crossed-out price is the anchor.
+Now look at a sale tag. Notice the crossed-out price? That's the anchor.
 Visual: A shop sale tag with a crossed-out price, figures blurred
 Visual: A heavy iron anchor on a harbour dock with chain attached
 Text: THE CROSSED-OUT PRICE IS THE ANCHOR
@@ -174,7 +182,7 @@ Many reductions are genuine, and a real discount is useful.
 Visual: A shop window with a big sale display, lettering blurred
 Visual: A shopper seen from behind carrying shopping bags out of a store
 
-But if the higher price barely applied, the saving shrinks to nothing.
+But what if the higher price barely applied? The saving shrinks to nothing.
 Visual: A new price sticker half covering an older one on a label, figures blurred
 Visual: An empty purse lying open on a shop counter
 Text: HOW LONG WAS IT £100?
@@ -222,7 +230,7 @@ Visual: A row of house photographs pinned to an estate agent's board
 Text: ARE EXPERTS IMMUNE?
 Chapter: Part 3 | Are experts immune?
 
-In nineteen eighty-seven, experienced estate agents were asked to value a real house.
+The test? In nineteen eighty-seven, experienced estate agents valued a real house.
 Visual: A 1980s suburban street of detached houses with lawns
 Visual: A detached house with a for-sale sign by the path, lettering unreadable
 Text: Northcraft & Neale, 1987
@@ -231,7 +239,7 @@ Stock: 1980s suburban houses
 Every agent toured one property and saw the same local sales data.
 Visual: Estate agents seen from behind walking through an empty living room
 Visual: A folder of property papers fanned open, text blurred
-Quote: Experts, amateurs, and real estate | Northcraft & Neale, 1987
+Document: Experts, amateurs, and real estate | Northcraft & Neale, OBHDP 1987
 
 Only one thing changed. The listing price in their pack.
 Visual: A property leaflet with its price box circled, digits blurred
@@ -269,7 +277,7 @@ Visual: A red alarm clock placed beside a ship's anchor on a dock
 Text: WHAT IF THE ANCHOR HAS A PARTNER?
 Chapter: Part 4 | The ticking clock
 
-The partner is a clock.
+The partner? A clock.
 Visual: An old pocket watch open in a palm
 
 Back on Leah's screen, a timer appears. Offer ends in nine minutes.
@@ -286,6 +294,7 @@ Steps: Anchor price → Countdown → Less thinking time → Buy | Anchor plus c
 Some deadlines are real. Sales end and stock runs out.
 Visual: A shop window with a closing-down sale banner, lettering blurred
 Visual: A hand lifting the last box off an almost empty shop shelf
+Split: Sales end | Stock runs out
 
 So how often is the urgency itself fake?
 Visual: A magnifying glass held over a phone screen, text unreadable
@@ -318,7 +327,7 @@ The strangest part? Some countdown timers simply reset when the page was reloade
 Visual: A laptop showing a shopping page with a countdown timer, text unreadable
 Visual: A finger pressing a refresh key on a keyboard, key label blurred
 Text: TIMER RESETS ON RELOAD
-Draw: arrow
+Screen: Today only | Green jacket · *Offer ends in 09:00 · Add to basket
 Cite: Mathur et al., 2019
 
 And twenty-two companies sold these tactics to shops as ready-made tools.
@@ -351,7 +360,7 @@ Breaking them could even mean contempt of court.
 Visual: An empty courtroom with a judge's bench and wooden panelling
 Visual: A pair of old iron handcuffs resting on a signed document
 
-So scepticism is reasonable. Yet even an honest deal hides a trap.
+Scepticism is reasonable. But here's the catch: even honest deals hide a trap.
 Visual: A shopper seen from behind reading a price label in a shop
 Visual: A paper receipt curling under a desk lamp, figures blurred
 Text: EVEN AN HONEST DEAL…
@@ -374,14 +383,16 @@ Thought: I was only going to browse tonight.
 So she'd be fifty-four pounds poorer than if she'd closed the tab.
 Visual: A bank statement with one line circled in red, figures blurred
 Visual: A hand switching off a living room lamp
+Statement: Fifty-four pounds *poorer*.
 
 That is the real difference between a discount and a saving.
 Visual: A jar of coins being emptied onto a shop counter
 Visual: A piggy bank sitting untouched on a kitchen shelf
 Text: DISCOUNT ≠ SAVING
 Draw: underline
+Split: Discount | Saving
 
-And the final price is not finished yet.
+And wait - the final price is not finished yet.
 Visual: A long paper receipt still printing from a till
 Visual: A laptop checkout page with extra lines added at the bottom, text unreadable
 Steps: Headline price → Checkout → Fees added → Higher total | Drip pricing
@@ -404,7 +415,7 @@ Text: MANDATORY FEES UP FRONT · 6 APR 2025
 Place: UNITED KINGDOM · 2025
 Cite: CMA, Nov 2025
 
-The regulator can now fine firms directly.
+And the regulator can now fine firms directly. How hard?
 Visual: The Competition and Markets Authority office building in London
 Visual: A heavy steel padlock closing on a stack of company accounts
 
@@ -454,7 +465,7 @@ Visual: A woman seen from behind on a sofa, arms folded, thinking
 Text: WHAT ACTUALLY PROTECTS YOU?
 Chapter: Part 5 | What protects you
 
-Before opening a sale, write down what you actually need.
+So what works? Before opening a sale, write down what you actually need.
 Visual: A hand writing a short shopping list on a notepad, text unreadable
 Visual: A laptop with a shop page open beside a written list, text unreadable
 Text: 1. WRITE THE LIST FIRST
@@ -463,12 +474,13 @@ Judge the final total, delivery included, not the crossed-out number.
 Visual: A finger running down a paper receipt to the total, figures blurred
 Visual: A delivery van parked outside a front door
 Text: 2. JUDGE THE FINAL TOTAL
-Draw: tick
+Screen: Checkout | Item price · Delivery · *Total to pay
 
 Then check the price history, or another shop, in a separate tab.
 Visual: Two printed price history charts side by side, figures blurred
 Visual: Two shop catalogues open side by side on a table, text unreadable
 Text: 3. COMPARE ELSEWHERE
+Split: Price history | Another shop
 
 For anything non-essential, sleep on it.
 Visual: An alarm clock on a bedside table at night
@@ -516,8 +528,7 @@ Visual: A man in a suit seen from behind at an office window
 Never refuse a real discount. Just never let one decide for you.
 Visual: A card payment terminal on a shop counter, payment approved, text unreadable
 Visual: A shopper seen from behind walking out of a shop empty-handed
-Text: DON'T LET THE DISCOUNT DECIDE
-Draw: underline
+Statement: Never let one *decide* for you.
 
 Some prices are not about the number at all.
 Visual: A gold wristwatch lying in an open display box

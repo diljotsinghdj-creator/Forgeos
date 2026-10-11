@@ -36,6 +36,7 @@ Visual: A fingertip tapping a sign-up button on a phone, text unreadable
 Visual: A long empty hotel corridor lined with identical closed doors
 Text: ONE TAP IN. HOW MANY OUT?
 Draw: underline
+Split: Joining | Leaving
 
 By the end, you will know why forgetting is so profitable,
 Visual: A stack of unopened post on a hallway floor
@@ -61,6 +62,7 @@ Visual: A phone showing a streaming sign-up page with one bright button, text un
 Visual: A person seen from behind in a kitchen, shrugging, mug in hand
 Text: FREE 7-DAY TRIAL (FICTIONAL)
 Thought: I'll cancel before the trial ends.
+Screen: Free trial | 7 days free · Enter card number · *small:Then £10 a month
 
 One tap and a card number. Ten seconds.
 Visual: A hand pulling a bank card out of a leather wallet
@@ -87,6 +89,10 @@ Visual: A business plan document open on a boardroom table, text unreadable
 Text: ACCIDENT OR PART OF THE PLAN?
 Chapter: Part 1 | Why forgetting pays
 
+So how much is forgetting actually worth?
+Visual: A calculator beside a pile of pound coins on a kitchen table
+Visual: A hand flipping open an accounts ledger on a desk, figures blurred
+
 Run the numbers for a fictional service with one hundred thousand subscribers.
 Visual: A person seen from behind at a desk with a calculator and notepad
 Visual: A large crowd of people seen from far away in a city square
@@ -97,7 +103,7 @@ Visual: A single ten-pound note lying on a wooden table
 Visual: A canvas bank bag stuffed full and zipped shut on a desk
 Chart: 100,000 × £10 = £1,000,000 | a month (hypothetical)
 
-Every renewal arrives without an advert, a sale, or a decision.
+The catch? Every renewal arrives without an advert, sale or decision.
 Visual: A card payment terminal on a shop counter printing a receipt
 Visual: A shop counter with no customers and no staff, lights on
 
@@ -135,7 +141,7 @@ Visual: A person seen from behind at a desk, looking through printed web pages
 Text: HOW HIDDEN IS THE EXIT?
 Chapter: Part 2 | The hidden door
 
-Twenty-seven authorities in twenty-six countries ran a joint sweep.
+Who went looking? Twenty-seven authorities in twenty-six countries ran a joint sweep.
 Visual: A world map on a wall with many red pins in it
 Visual: A large conference table with papers and coffee cups, seen from above
 Text: 27 AUTHORITIES · 26 COUNTRIES
@@ -162,7 +168,7 @@ Visual: A thick binder of printouts with red sticky tabs on most pages
 Chart: 66.8% | showed more than one
 Cite: ICPEN sweep, July 2024
 
-The most common problem struck at the very moment of signing up.
+The most common problem? It struck right at the moment of signing up.
 Visual: A credit card resting on a laptop keyboard during checkout
 Visual: A hand slotting a bank card into a card reader on a desk
 
@@ -170,7 +176,7 @@ Many gave no way to even switch off auto-renewal while signing up.
 Visual: A light switch on a wall covered with brown parcel tape
 Visual: A phone settings screen with a toggle switch greyed out, text unreadable
 Text: NO OPTION TO TURN OFF AUTO-RENEW
-Draw: cross
+Screen: Checkout | Monthly plan · Card details · *small:Auto-renews every month · Pay now
 Cite: ICPEN sweep, July 2024
 
 Others never said how to cancel, or by when.
@@ -200,7 +206,7 @@ Visual: A thumb hovering over a plain button on a phone, text unreadable
 Text: DO THEY EVEN NEED TRICKS?
 Chapter: Part 3 | The trap without tricks
 
-In two thousand and six, two economists followed the money.
+Want proof? In two thousand and six, two economists followed the money.
 Visual: A 2000s university office with stacks of papers and a desktop computer
 Visual: Two people seen from behind at a desk covered in receipts and ledgers
 Text: DellaVigna & Malmendier, AER 2006
@@ -256,6 +262,7 @@ Cite: DellaVigna & Malmendier, AER 2006
 Now the twist. Nobody hid a cancel button from these people.
 Visual: An open front door with daylight pouring through
 Visual: A gym reception desk with no queue, a staff member seen from behind
+Statement: Nobody hid a *cancel* button.
 
 Annual members had to sign up again to keep going.
 Visual: A hand signing a paper renewal form with a pen, text unreadable
@@ -280,9 +287,9 @@ They were actually paying for the person they planned to become.
 Visual: A person seen from behind jogging along a sunny river path
 Visual: A gym bag sitting unopened by a front door
 Text: PAYING FOR A FUTURE SELF
-Quote: Paying Not to Go to the Gym | DellaVigna & Malmendier, 2006
+Document: Paying Not to Go to the Gym | DellaVigna & Malmendier, AER 2006
 
-So the strongest trap needs no trick at all.
+Which is why the strongest trap needs no trick at all.
 Visual: A wooden mousetrap with no bait on a kitchen floor
 Visual: A printed bank statement with a monthly payment line circled, figures blurred
 
@@ -309,7 +316,7 @@ Visual: A rubber stamp beside an open ink pad on a pile of contracts
 Text: WHY NOT JUST BAN IT?
 Chapter: Part 4 | Why not ban it?
 
-America tried.
+America tried. So what happened?
 Visual: The United States Capitol building with a flag above it
 Stock: washington dc government building
 Place: UNITED STATES · 2024
@@ -360,7 +367,7 @@ Text: DMCC ACT 2024
 Stock: houses of parliament london
 Map: United Kingdom | Britain's route
 
-Subscribers will get reminders before renewals.
+What changes? Subscribers will get reminders before renewals.
 Visual: A phone showing a renewal reminder notification, text unreadable
 Visual: A letter in an envelope on a doormat, text unreadable
 Text: RENEWAL REMINDERS
@@ -396,6 +403,7 @@ Visual: A finger tapping a cancel button on a phone, text unreadable
 Visual: A printed confirmation slip with an end date ticked in pen, text unreadable
 Text: CANCEL › ACCESS ENDS 30 JUNE · DONE
 Draw: tick
+Split: Tap cancel | Access ends
 
 In the second, the same choice hides five menus deep.
 Visual: A laptop showing a crowded settings menu, text unreadable
@@ -407,6 +415,7 @@ Visual: Three similar grey buttons printed on a paper mock-up, text unreadable
 Visual: A person seen from behind at a desk, chin in hand, hesitating
 Text: STAY? PAUSE? CONTINUE?
 Thought: Wait... which one actually cancels?
+Screen: Cancel your plan | Stay and save · Pause my plan · Continue watching · *small:Cancel subscription
 
 That second journey is the one Sam found in March.
 Visual: A March wall calendar in a kitchen
@@ -425,6 +434,7 @@ Visual: A paper discount coupon on a table, text unreadable
 
 Only one lets you go.
 Visual: A front gate standing open onto a quiet lane
+Statement: Only one lets you *go*.
 
 Remember those six hundred and forty-two sites.
 Visual: Printed website screenshots laid edge to edge on a table, text unreadable
@@ -445,7 +455,7 @@ Visual: A hand picking up a pen beside a stack of bills
 Text: HOW DO YOU TAKE CONTROL BACK?
 Chapter: Part 5 | The ten-minute check
 
-Sam sets aside ten minutes and opens three months of statements.
+How? Sam sets aside ten minutes and opens three months of statements.
 Visual: A kitchen timer set to ten minutes on a table
 Visual: Three printed bank statements side by side, a highlighter on repeated lines, figures blurred
 
@@ -486,7 +496,7 @@ Visual: A kitchen timer on a stack of bank statements
 Visual: A person seen from behind putting a pen down at a tidy kitchen table
 Steps: Used it? → Join again? → Renewal date? → Keep proof | The ten-minute check
 
-Two forgotten subscriptions go.
+The result? Two forgotten subscriptions go.
 Visual: Scissors cutting an old bank card in half on a table
 Draw: cross
 
@@ -515,13 +525,13 @@ Visual: A delivery box of fresh vegetables on a doorstep
 It should never depend on you forgetting to leave.
 Visual: A phone lying face down on a bank statement
 Visual: A wall calendar with a renewal date circled in red pen
-Text: IT SHOULD NOT NEED YOU TO FORGET
-Draw: underline
+Statement: It should never depend on you *forgetting*.
 
 Subscriptions work on your memory over months. A shop needs only seconds.
 Visual: A pile of monthly bank statements on a desk, figures blurred
 Visual: A busy shop floor seen from the entrance on a Saturday
 Text: NEXT EPISODE
+Split: Months | Seconds
 
 Next time, how one crossed-out price rewrites what you think something is worth.
 Visual: A shop price tag with the old price crossed out in red, figures blurred
