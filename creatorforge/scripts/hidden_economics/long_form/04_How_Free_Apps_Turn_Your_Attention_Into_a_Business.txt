@@ -83,6 +83,7 @@ Visual: Nineteen matchsticks laid in a neat row on a bedside table
 Visual: An empty wallet lying open on a bedside table
 Text: WHO GOT THE 19 MINUTES?
 Draw: underline
+Split: Time given | Money paid
 
 Maya is typical.
 Visual: Several people seen from behind on a train, each holding a lit phone
@@ -106,32 +107,38 @@ Visual: A free sample stand in a supermarket aisle, small paper cups on a tray
 Text: £0 → BILLIONS?
 Chapter: Part 1 | Why free pays
 
-The answer is older than smartphones.
+The answer? It is older than smartphones.
 Visual: A vintage typewriter on a desk with a half-typed sheet, text unreadable
 Visual: An old rotary telephone on a wooden desk
 Text: 1971
+Archive: 1971
 
 In nineteen seventy-one, the economist Herbert Simon made a simple observation.
 Visual: A 1970s lecture hall, a figure at a lectern seen from behind
 Visual: A 1970s university office with stacked books and a desk lamp
 Text: HERBERT SIMON, 1971
 Stock: 1970s university lecture
+Archive: 1971
 
 Imagine a world rich in rabbits, he said.
 Visual: Dozens of wild rabbits on a grassy field at dusk
 Visual: A meadow grazed short, small patches of bare earth showing
+Archive: 1971
 
 Then it is a world poor in lettuce.
 Visual: A vegetable garden with lettuces nibbled down to their stalks
 Visual: An empty vegetable crate on bare soil beside a garden fork
+Archive: 1971
 
-Information eats something too.
+Now guess what information eats.
 Visual: A letterbox overflowing with letters and newspapers onto a hallway floor
 Stock: letters through letterbox
+Archive: 1971
 
 It eats the attention of whoever receives it.
 Visual: A person seen from behind in a hallway, coat still on, head bowed
 Visual: Reading glasses set down on a pile of unread magazines
+Archive: 1971
 
 So a wealth of information creates a poverty of attention.
 Visual: A desk buried under magazines and bulging folders
@@ -139,10 +146,12 @@ Visual: A person seen from behind at a cluttered desk, head in hands
 Text: WEALTH OF INFO = POVERTY OF ATTENTION
 Draw: underline
 Quote: a wealth of information creates a poverty of attention | Herbert Simon, 1971
+Archive: 1971
 
 He wrote that decades before the first smartphone even existed.
 Visual: A typed 1971 paper lying on a desk, text unreadable
-Visual: An old rotary telephone and a modern smartphone side by side on a desk
+Visual: A modern smartphone lying on its own on a desk
+Split: 1971 | Today
 
 If attention is the scarce thing, someone will pay for it. Who?
 Visual: An empty shop window with a blank to-let sign, writing unreadable
@@ -223,12 +232,14 @@ A newspaper has a last page. An episode has credits.
 Visual: A hand folding a newspaper shut on a breakfast table
 Visual: A television showing end credits in a dark living room, text unreadable
 Stock: folding newspaper
+Split: Newspaper | TV episode
 
 But Maya's feed has no last page.
 Visual: A phone screen showing an endless social feed, text unreadable
 Visual: A long roll of receipt paper unspooling off a desk onto the floor
 Text: NO LAST PAGE
 Draw: underline
+Statement: But Maya's feed has no *last* page.
 
 Even at the bottom, it just refills.
 Visual: A thumb pulling down on a phone screen to refresh, text unreadable
@@ -238,6 +249,7 @@ Then autoplay starts the next video before she has decided anything.
 Visual: A phone playing a video with a countdown to the next one, nothing readable
 Visual: A hand resting still on a duvet, not reaching for anything
 Thought: Okay... just one more video.
+Screen: Up next | Playing next video · *small:Cancel
 
 Recommendations remove even the effort of choosing.
 Visual: A phone screen full of video thumbnails, content blurred
@@ -262,7 +274,7 @@ Visual: A hand pressing a phone face down into a duvet
 Visual: A person seen from behind sitting alone on a park bench at dusk
 Chapter: Part 3 | How it feels
 
-Canadian researchers tested it on two hundred and twenty-one people.
+Here's how. Canadian researchers tested it on two hundred and twenty-one people.
 Visual: A university library with students seen from behind at long wooden desks
 Visual: A Vancouver university campus path lined with autumn trees
 Text: 221 PARTICIPANTS
@@ -356,8 +368,9 @@ It offered people tools to cap their own future screen time.
 Visual: A hand turning the dial of a white kitchen timer
 Visual: A phone settings screen with a daily limit slider, text unreadable
 Text: FICTIONAL INTERFACE
+Screen: Screen time | Daily limit · Remind me to stop · *Set a limit
 
-Many actually used them.
+And guess what? Many actually used them.
 Visual: A row of school lockers, most fitted with a small padlock
 Draw: circle
 
@@ -391,7 +404,7 @@ Visual: A judge's gavel resting on a dark wooden desk
 Text: IS IT LEGAL?
 Chapter: Part 4 | Is it legal?
 
-In the European Union, the answer is actually starting to change.
+Here's the turn. In the European Union, the answer is starting to change.
 Visual: European Union flags flying outside a glass office building
 Visual: A map of Europe pinned flat on a desk
 Stock: european union flags
@@ -418,7 +431,7 @@ Visual: A stamped official letter lying on a desk, text unreadable
 Text: PRELIMINARY FINDINGS
 Cite: European Commission, Feb 2026
 
-It named four features.
+Which ones? It named four features.
 Visual: Four blank index cards pinned to a cork board, joined by red string
 
 Infinite scroll, autoplay, push notifications and a highly personalised recommender system.
@@ -443,7 +456,7 @@ Visual: A phone screen showing a take-a-break reminder, text unreadable
 Text: SUGGESTED: SCREEN-TIME BREAKS
 Cite: European Commission, Feb 2026
 
-Still, these are not final findings.
+But here's the catch. These are not final findings.
 Visual: A draft document held with a paperclip, marked in red pen, text unreadable
 Visual: A rubber stamp lying unused beside an unsigned document
 
@@ -497,7 +510,7 @@ Visual: A printed research paper on a desk with a pen, text unreadable
 Text: ONE-WEEK EXPERIMENT
 Chapter: Part 5 | The one-week experiment
 
-Seven days, three settings, about ten minutes to set up.
+How? Seven days, three settings, about ten minutes to set up.
 Visual: A pencil and a paper checklist on a wooden table in morning light
 Visual: A hand holding a phone open to its settings menu, text unreadable
 
@@ -506,6 +519,7 @@ Visual: A do-not-disturb sign hanging on a bedroom door handle
 Visual: A thumb sliding a notification toggle to off, nothing readable
 Text: 1. NOTIFICATIONS OFF
 Draw: tick
+Screen: Notifications | Sounds · Badges · *Allow notifications: Off
 
 That is the alerts-off week from the study, only run by you.
 Visual: A wooden desk drawer pushed fully shut
@@ -550,6 +564,7 @@ It is time you chose.
 Visual: A breakfast table in morning sunlight, a chair pulled out
 Text: TIME YOU CHOSE
 Draw: underline
+Statement: It is *time* you chose.
 
 But attention is not only captured by curiosity.
 Visual: A phone lighting up on a desk with a new notification, text unreadable

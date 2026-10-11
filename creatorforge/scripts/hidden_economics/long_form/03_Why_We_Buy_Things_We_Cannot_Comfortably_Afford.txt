@@ -59,11 +59,12 @@ Visual: A glossy car brochure lying open on a sofa cushion, text unreadable
 Text: WHAT CHANGED?
 Chapter: Part 1 | Keeping up
 
-An economist described this pull back in eighteen ninety-nine.
+So who first spotted this pull? An economist, in eighteen ninety-nine.
 Visual: A yellowed 1890s book lying open on a wooden desk
 Visual: A quill pen and an inkwell on old paper on a desk
 Text: 1899
 Place: UNITED STATES · 1899
+Archive: 1890s
 
 Thorstein Veblen watched wealthy Americans spend.
 Visual: A grand Gilded Age mansion with horse carriages waiting outside
@@ -71,16 +72,19 @@ Visual: An 1890s department store interior with glass cabinets and feathered hat
 Text: THORSTEIN VEBLEN
 Stock: 1890s new york street
 Globe: United States | Veblen's wealthy Americans
+Archive: 1890s
 
 What were they largely buying? The chance to be seen owning things.
 Visual: Victorian gentlemen in top hats seen from behind on a busy avenue
 Visual: A Victorian shop window displaying silver tableware and fine hats
+Archive: 1890s
 
 He called it conspicuous consumption.
 Visual: A gold pocket watch lying open on a velvet cloth
 Text: CONSPICUOUS CONSUMPTION
 Draw: underline
 Quote: Conspicuous consumption of valuable goods is a means of reputability to the gentleman of leisure. | Thorstein Veblen, 1899
+Archive: 1890s
 
 Yet it isn't simple vanity. It's how humans signal success and belonging.
 Visual: A peacock with its tail feathers fanned out on a lawn
@@ -132,6 +136,7 @@ Cite: Kuhn et al., AER 2011
 Their income had not changed. Only their street had.
 Visual: A payslip on a table beside a cup of coffee, text unreadable
 Visual: A narrow residential street of terraced houses at dusk
+Statement: Only their *street* had.
 
 Just like Sam. Comparison is local, and it is visible.
 Visual: A hand easing a lace curtain aside at a window
@@ -166,9 +171,10 @@ Close enough to see every driveway.
 Visual: A window with a lace curtain looking onto a quiet street
 Visual: A row of driveways with a car parked on each one
 
-This is the study behind that opening fact. And it hides a twist.
+This is the study behind that opening fact. But here's the twist.
 Visual: A printed academic journal lying open on a desk, text unreadable
 Visual: A finger pointing at one paragraph of a printed study, text unreadable
+Document: Peers' Income and Financial Distress | Agarwal, Mikhed & Scholnick, 2020
 
 Look at what the bankrupt neighbours actually owned.
 Visual: Financial ledger pages fanned open on a desk, numbers unreadable
@@ -188,6 +194,7 @@ Cite: Agarwal, Mikhed & Scholnick, 2020
 You never see a neighbour's pension. You can see their driveway.
 Visual: A sealed pension letter in an envelope on a hallway table
 Visual: A gleaming car parked on a neighbour's driveway
+Split: Hidden | Visible
 
 So they had borrowed to keep up with what they could see.
 Visual: A pen signing a loan agreement on a desk, text unreadable
@@ -218,6 +225,10 @@ Visual: A new pair of trainers being lifted out of a shoebox
 Text: WORTH IT?
 Chapter: Part 3 | Does it make us happier?
 
+So what happened to real lottery winners?
+Visual: A paper lottery ticket and a coin on a kitchen table, numbers unreadable
+Visual: A sealed envelope with a gold seal lying on a doormat
+
 In nineteen seventy-eight, psychologists interviewed twenty-two major lottery winners in Illinois.
 Visual: 1970s lottery tickets scattered across an old newspaper, print unreadable
 Visual: A 1970s Chicago street with old cars and shop fronts
@@ -225,24 +236,28 @@ Text: ILLINOIS, 1978 · 22 WINNERS
 Stock: 1970s lottery tickets
 Place: ILLINOIS · 1978
 Cite: Brickman et al., 1978
+Archive: 1970s
 
 Each had won at least fifty thousand dollars.
 Visual: Bundles of dollar bills stacked on a wooden table
 Visual: An oversized cheque held up in two hands, figures unreadable
 Text: $50,000+
 Cite: Brickman et al., 1978
+Archive: 1970s
 
 Compared with people from the same areas, they were not significantly happier.
-Visual: A suburban Illinois street with neat lawns and parked cars
+Visual: A suburban Illinois street with neat lawns and parked 1970s cars
 Visual: Two families seen from behind sitting on matching front porches
 Text: NOT SIGNIFICANTLY HAPPIER
 Draw: underline
 Cite: Brickman et al., 1978
+Archive: 1970s
 
-They even took less pleasure from ordinary daily moments.
+The strange part? They even took less pleasure from ordinary daily moments.
 Visual: A slice of toast left untouched on a breakfast plate
 Visual: A morning cup of coffee on a sunny windowsill
 Quote: Lottery winners and accident victims: Is happiness relative? | Brickman, Coates & Janoff-Bulman, 1978
+Archive: 1970s
 
 It is a small study, with no measurement before the wins.
 Visual: A magnifying glass over a thin stapled report, text unreadable
@@ -287,6 +302,7 @@ Stock: empty basketball arena
 Half the bidders would pay cash. Half would pay by card.
 Visual: A hand holding a fan of dollar bills
 Visual: A hand holding out a plain credit card
+Split: Cash | Card
 
 The card group bid roughly twice as much, for the same tickets.
 Visual: Two stacks of coins, one exactly twice the height of the other
@@ -324,6 +340,7 @@ Fifty feels manageable. Six hundred might not.
 Visual: A single fifty-pound note lying on a table
 Visual: A long shopping receipt unrolled to its full length, figures blurred
 Text: £50 FEELS SMALL · £600 IS THE COST
+Split: Monthly | Total
 
 But it's still six hundred pounds, and late fees can push it higher.
 Visual: Twelve paper bill stubs pinned in a row on a corkboard, text unreadable
@@ -363,7 +380,7 @@ Visual: A six-month wall planner on an office wall, text unreadable
 Icons: 27% | people | of UK adults in 6 months to Jan 2023
 Cite: FCA, Oct 2023
 
-Then the uncomfortable detail. Look at the heaviest users.
+Then the uncomfortable detail. Watch the heaviest users.
 Visual: A magnifying glass held over a printed spreadsheet, numbers unreadable
 Visual: A recycling bin overflowing with flattened cardboard boxes
 Text: HEAVY USERS · 10+ TIMES A YEAR
@@ -379,7 +396,7 @@ Cite: FCA, Oct 2023
 And over four times as likely to keep missing bills or credit payments.
 Visual: Red-stamped envelopes piling up on a doormat, text unreadable
 Visual: A kitchen table at night with a calculator under a single lamp
-Chart: 27% vs 6% | heavy users, non-users
+Text: HEAVY USERS 27% · NON-USERS 6%
 Cite: FCA, Oct 2023
 
 That's only a link, not proof.
@@ -388,7 +405,7 @@ Visual: A printed line graph lying on a desk, labels unreadable
 Text: LINK, NOT PROOF
 Draw: underline
 
-People already struggling may simply use it more.
+The catch? People already struggling may simply use it more.
 Visual: A worn purse on a kitchen table with bills tucked under it
 Visual: A food bank shelf stocked with tins and cereal boxes
 
@@ -414,6 +431,7 @@ Cite: FCA PS26/1, 2026
 But a check only asks whether you can repay.
 Visual: A printed form with a single box ticked, text unreadable
 Visual: A bank statement on a desk with a pen resting on it, text unreadable
+Screen: Affordability check | Can you repay? Yes · *Approved
 
 It never asks why you wanted the thing at all.
 Visual: Tissue paper spilling out of a shopping bag on a bed
@@ -426,7 +444,7 @@ Visual: Shoppers seen from behind looking into a lit shop window
 Text: OBJECT OR AUDIENCE?
 Chapter: Part 5 | Object or audience?
 
-Veblen's point was never that nice things are wrong.
+So was Veblen saying nice things are wrong? Never.
 Visual: An old 1890s book closing on a wooden desk
 Visual: A well-made leather bag on a shop shelf
 
@@ -465,6 +483,7 @@ Thought: Would I want it if it stayed in a drawer?
 Sam tries it on the watch. Use, rarely. Audience, the drive opposite.
 Visual: A phone held in a hand showing a shop page, text unreadable
 Visual: A new car across the road seen from a kitchen window
+Screen: Your basket | Wristwatch · £50 a month × 12 · *Pay now
 
 So Sam closes the tab.
 Visual: A hand turning a phone face down on a windowsill
@@ -493,6 +512,7 @@ Visual: A lace curtain falling closed over a window
 Visual: A price tag hanging from a car's wing mirror, text unreadable
 Text: COMPARISON HAS A PRICE
 Draw: underline
+Statement: Comparison has a *price*.
 
 But there is a stranger bargain still to come.
 Visual: A phone lighting up on a dark bedside table
