@@ -1,0 +1,82 @@
+The Synthetic Students
+On-screen hook: 4 MILLION STUDENTS?
+Title: JPMorgan Paid $175 Million for 4 Million Customers. Were They Real?
+Tags: #CorporateAutopsies #frank #jpmorgan #fraud #startups
+Source: US Attorney's Office SDNY, Startup CEO Charlie Javice Sentenced To 85 Months In Prison For $175 Million Fraud (Sep 2025), https://www.justice.gov/usao-sdny/pr/startup-ceo-charlie-javice-sentenced-85-months-prison-175-million-fraud; NPR, Startup founder convicted of defrauding JPMorgan Chase of $175M by faking firm's success (Mar 2025), https://www.npr.org/2025/03/29/nx-s1-5344434/charlie-javice-convicted-defrauding-jpmorgan; ABC7 / AP, Charlie Javice sentenced to 7 years for fraudulent $175M sale of financial aid startup Frank (Sep 2025), https://abc7news.com/post/charlie-javice-sentenced-7-years-prison-fraudulent-175m-sale-financial-aid-startup-frank/17906192/; Fortune (Sep 2025), https://fortune.com/2025/09/30/charlie-javice-sentenced-7-years-prison-jpmorgan-frank-fraud
+
+Four million student customers. How many were real?
+Visual: Rows of empty lecture hall seats seen from the back
+Visual: A laptop screen filled with a long spreadsheet, text unreadable
+Text: 4,000,000+ CUSTOMERS?
+
+Charlie Javice founded Frank, a student financial aid start-up.
+Visual: A college financial aid form on a desk beside a pen, text unreadable
+Visual: A student seen from behind typing on a laptop in a library
+Text: FRANK · STUDENT AID START-UP
+
+In twenty twenty-one, JPMorgan Chase paid one hundred seventy-five million for it.
+Visual: A glass bank tower seen from street level on a grey day
+Visual: Hands signing a thick contract at a boardroom table, text unreadable
+Chart: $175m | paid for Frank, 2021
+Cite: US DOJ, SDNY, 2025
+
+The pitch: over four million users. The real number?
+Visual: A slide projected in a dark meeting room, numbers blurred
+Visual: A courtroom's empty jury box with wooden chairs
+Text: CLAIMED: 4.25 MILLION USERS
+Cite: NPR, March 2025
+
+Fewer than three hundred thousand, prosecutors said.
+Visual: A thin stack of paper beside a towering stack on a desk
+Visual: A finger running down a short printed list, text unreadable
+Squares: 4.25m vs 300,000 | claimed users, actual users
+Cite: NPR, March 2025
+
+So how do you fake four million people?
+Visual: A blank spreadsheet glowing on a monitor in a dark office, text unreadable
+Text: HOW DO YOU FAKE 4 MILLION?
+Big: HOW?
+Transition: whip
+
+Witnesses said she asked a data scientist to build synthetic customers.
+Visual: Hands typing code on a laptop keyboard at night
+Visual: A printout of rows of names and emails, text unreadable
+Text: "SYNTHETIC DATA"
+Cite: NPR, March 2025
+Treat: halftone
+
+Even her own engineering chief testified he had refused.
+Visual: An empty office chair turned away from a desk with a laptop
+Visual: A witness stand microphone in an empty courtroom
+Text: HIS ANSWER: NO
+
+Then the bank emailed those customers. Watch what happened.
+Visual: A finger pressing send on a laptop email screen, text unreadable
+Visual: An empty inbox glowing on a monitor, text unreadable
+Text: TEST EMAIL SENT
+
+Delivery and open rates were extremely low, AP reported.
+Visual: A printed chart with a flat line along the bottom, text unreadable
+Visual: A stack of returned envelopes on a desk
+Text: DELIVERY RATE: VERY LOW
+Cite: AP, Sept 2025
+Draw: underline
+
+The verdict? In March twenty twenty-five, a jury convicted her and Olivier Amar.
+Visual: A federal courthouse's stone columns on a clear day
+Visual: A judge's gavel resting on a wooden bench
+Timeline: 2021 Bank buys Frank → 2025 Convicted → 2025 Sentenced | The case
+Cite: US DOJ, SDNY, 2025
+
+She got eighty-five months, and is appealing.
+Visual: A courthouse hallway with a long wooden bench, empty
+Visual: A thick legal brief tied with string on a desk, text unreadable
+Text: 85 MONTHS · APPEAL PENDING
+Big: 85 MONTHS
+Treat: duotone
+
+Four million students on paper. So who checked?
+Visual: A magnifying glass resting on a printed spreadsheet, text unreadable
+Visual: Rows of empty lecture hall seats in dim light
+Text: 4 MILLION ON PAPER
+Draw: circle

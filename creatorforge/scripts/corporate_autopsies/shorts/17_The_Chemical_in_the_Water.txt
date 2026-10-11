@@ -1,0 +1,76 @@
+The Chemical in the Water
+On-screen hook: WHAT WAS IN THE WATER?
+Title: The Chemical in the Water: DuPont, C-8 and Parkersburg
+Tags: #CorporateAutopsies #PFAS #PFOA #DuPont #environment
+Source: Frisbee SJ et al., The C8 Health Project: Design, Methods, and Participants, Environ Health Perspect 2009, https://pubmed.ncbi.nlm.nih.gov/20049206/; DuPont Form 10-K FY2007 (Leach v. DuPont class action and settlement), https://www.sec.gov/Archives/edgar/data/0000030554/000089322008000422/w48305e10vk.htm; EPA, E.I. DuPont de Nemours and Company PFOA Settlements, https://19january2021snapshot.epa.gov/enforcement/ei-dupont-de-nemours-and-company-pfoa-settlements_.html; NPR, DuPont Settles EPA Case On Teflon Chemical (Dec 2005), https://www.npr.org/2005/12/15/5054614/dupont-settles-epa-case-on-teflon-chemical; Bakery and Snacks, Six 'probable links' conclude C8 Science Panel (Dec 2012), https://www.bakeryandsnacks.com/Article/2012/12/03/C8-science-panel-reports-final-probable-links-in-Du-Pont-case; Reuters via Fox Business, DuPont, Chemours to pay $671M in chemical leak case (Feb 2017), https://www.foxbusiness.com/markets/dupont-chemours-to-pay-671m-in-chemical-leak-case
+
+What was in the water near Parkersburg?
+Visual: A kitchen tap running into a clear glass in a small-town home
+Visual: A wide river at dawn with an industrial plant on the far bank
+Text: PARKERSBURG, WEST VIRGINIA
+
+A DuPont plant there used a chemical called C-8, or PFOA.
+Visual: Smokestacks of a riverside chemical plant under a grey sky
+Visual: A row of sealed steel drums in a fenced industrial yard
+Text: C-8 = PFOA
+Place: PARKERSBURG · WV
+
+It reached drinking water in six local water districts.
+Visual: A white water tower above small-town rooftops
+Visual: A glass of tap water on a kitchen windowsill
+Text: 6 WATER DISTRICTS
+Cite: C8 Health Project, 2009
+
+So how did it come out? A lawsuit.
+Visual: A thick legal complaint bound with a clip on a desk, text unreadable
+Text: HOW DID IT COME OUT?
+Big: LAWSUIT
+Transition: whip
+
+In two thousand one, residents sued: Leach versus DuPont.
+Visual: A county courthouse with a clock tower on a quiet street
+Visual: Hands filing papers into a courthouse tray, text unreadable
+Text: LEACH v. DUPONT · 2001
+Cite: DuPont 10-K
+
+DuPont paid seventy million dollars for a health project.
+Visual: A signed settlement document on a wooden table, text unreadable
+Visual: A community hall with rows of folding chairs set out
+Chart: $70m | for a community health project
+Cite: DuPont 10-K
+
+Here's the twist: sixty-nine thousand residents gave blood samples.
+Visual: A gloved hand holding a labelled blood sample tube, label unreadable
+Visual: A rack of sample tubes on a laboratory bench
+Text: 69,030 PARTICIPANTS
+Cite: C8 Health Project, 2009
+Treat: halftone
+
+In two thousand five, DuPont settled EPA reporting charges with a then-record penalty.
+Visual: A government office building with flags outside, seen across a street
+Visual: A stack of unfiled reports in a cardboard box, text unreadable
+Text: EPA PENALTY: $10.25M
+Cite: EPA, 2005
+
+Then the panel's verdict? A probable link to six diseases.
+Visual: Scientists seen from behind reviewing printed charts at a long table
+Visual: A bound research report on a desk under a lamp, text unreadable
+Document: Probable Link | C8 Science Panel, 2011-2012
+Cite: C8 Science Panel
+
+Including kidney and testicular cancer, thyroid disease and high cholesterol.
+Visual: A hospital waiting room with empty chairs in soft light
+Visual: A clipboard with a medical form on a clinic counter, text unreadable
+Text: 6 PROBABLE LINKS
+
+In twenty seventeen, about thirty-five hundred lawsuits settled for six hundred seventy million dollars.
+Visual: A courtroom with empty wooden benches under soft light
+Visual: Boxes of legal files stacked against a wall, labels unreadable
+Timeline: 2001 Lawsuit → 2005 EPA penalty → 2012 Panel → 2017 $671m deal | The C-8 case
+Cite: Reuters, Feb 2017
+Treat: duotone
+
+The companies denied wrongdoing. So what was in the water? C-8.
+Visual: A kitchen tap dripping into a glass in evening light
+Visual: A wide river flowing past an industrial plant at dusk
+Text: C-8 · PFOA
