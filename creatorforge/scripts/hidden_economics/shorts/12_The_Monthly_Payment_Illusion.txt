@@ -29,14 +29,17 @@ The total becomes six hundred and twenty. The advert still says fifty.
 Visual: A calculator on a desk showing a long sum, digits blurred
 Visual: A shop window advert with one large price, text unreadable
 Screen: Payment plan | £50 a month · 12 months · Arrangement fee £20 · *Total £620
+Transition: flash
 
 Splitting costs can genuinely help budgeting. So where's the risk?
 Visual: Hands writing a household budget in a notebook, writing unreadable
 Visual: A family seen from behind around a kitchen table at night
 Thought: Only fifty a month. Easy.
+Transition: whip
 
 It shrinks the number your brain actually weighs.
 Visual: A magnifying glass over a small monthly figure on a contract, text unreadable
+Big: SHRINKS
 
 Before you sign, multiply. Payment times months, plus every fee.
 Visual: A furniture showroom sales desk with a pen and an open folder
@@ -50,3 +53,4 @@ Visual: A single banknote beside a tall stack of banknotes on a table
 Visual: A receipt with its total circled in red pen, text unreadable
 Text: £600+
 Draw: box
+Big: REAL PRICE

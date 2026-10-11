@@ -28,6 +28,7 @@ Visual: An empty wooden post office drawer under a desk lamp
 Text: WHERE WERE THE COUPONS?
 Draw: circle
 Archive: 1920s
+Transition: whip
 
 Because early investors were paid with newer investors' money.
 Visual: Hands passing sealed envelopes across an old wooden counter
@@ -35,6 +36,8 @@ Visual: A queue of 1920s men in hats seen from behind at an office door
 Text: OLD INVESTORS PAID WITH NEW MONEY
 Split: Old investors | New money
 Archive: 1920s
+Big: NEW MONEY
+Transition: flash
 
 Roughly fifteen million dollars poured in within about eight months.
 Visual: An old cash register drawer crammed full in a 1920s office
@@ -62,3 +65,4 @@ Visual: A single postal coupon alone on an empty wooden desk
 Visual: A hand dropping banknotes into another person's open palm
 Text: NOT PROFIT · SOMEONE ELSE'S MONEY
 Draw: underline
+Big: NEVER PROFIT

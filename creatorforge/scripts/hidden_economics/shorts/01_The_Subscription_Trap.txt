@@ -19,6 +19,8 @@ Chart: £12 × 6 = £72 | six forgotten months · illustration
 So why did nobody notice?
 Visual: A stack of unopened post on a hallway shelf
 Text: WHY NOBODY NOTICED
+Big: NOBODY
+Transition: whip
 
 Because a payment that asks for no decision never gets one.
 Visual: A hand reaching past an open leather wallet on a desk
@@ -39,6 +41,7 @@ Visual: The Houses of Parliament in London seen across the river
 Visual: Bundles of banknotes tied with string stacked high on a desk
 Chart: £1.6bn | unwanted subscriptions a year · UK est.
 Cite: UK government estimate, 2026
+Transition: flash
 
 Find payments that repeat, month after month.
 Visual: A person seen from behind at a kitchen table at night sorting paperwork
@@ -50,6 +53,7 @@ Ask of each one, would I buy this today?
 Visual: A hand holding a smartphone showing a list of subscriptions, text unreadable
 Visual: An empty wire shopping basket on a supermarket floor
 Text: WOULD I BUY THIS TODAY?
+Big: TODAY?
 
 If not, cancel it before June comes round again.
 Visual: A thumb pressing a cancel button on a smartphone, text unreadable

@@ -24,6 +24,7 @@ Screen: Fictional shop | Sale price · Add to basket · *Offer ends in 10:00
 But how often are these clocks honest?
 Visual: Dozens of old wall clocks on a wall, each showing a different time
 Text: HONEST CLOCK?
+Transition: whip
 
 In twenty nineteen, Princeton researchers crawled about eleven thousand shopping websites.
 Visual: Princeton University's stone buildings and lawn seen from a distance
@@ -45,6 +46,8 @@ Text: TIMER ENDED · OFFER DIDN'T
 Draw: underline
 Split: Timer ended | Offer didn't
 Cite: Mathur et al., Princeton, 2019
+Big: STAYED VALID
+Transition: flash
 
 So how do you tell? Let it run out, or return tomorrow.
 Visual: A person seen from behind putting on a coat by the front door
@@ -59,3 +62,4 @@ Visual: An egg timer's needle resting on zero on a kitchen table
 Visual: A smartphone screen going dark on a desk, text unreadable
 Text: NOT A DEADLINE
 Draw: cross
+Big: NEVER

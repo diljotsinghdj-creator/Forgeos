@@ -21,14 +21,16 @@ Visual: A thumb hovering over a tiny grey link at the bottom of a phone screen, 
 Visual: A tiny grey cancel link in the bottom corner of a printed web page, text unreadable
 Text: TAP 5: CANCEL
 Draw: arrow
+Big: TAP FIVE
 
 Clumsy design, or something common?
 Visual: Hands sketching app screen layouts on paper at a desk, seen from above
 Text: CLUMSY OR COMMON?
+Transition: whip
 
 In twenty twenty-four, regulators reviewed six hundred and forty-two subscription sites and apps.
 Visual: A government office building with flags outside, seen across a street
-Chart: 642 | subscription sites & apps · 2024 review
+Text: 642 SITES & APPS REVIEWED
 Cite: FTC, ICPEN & GPEN, July 2024
 
 Three in four used a possible dark pattern. Two in three, several.
@@ -36,11 +38,13 @@ Visual: Four phones laid on a desk, three of them circled in red pen
 Visual: Printed app pages on a desk with parts circled in red, text unreadable
 Chart: 76% vs 67% | at least one, two or more
 Cite: FTC, ICPEN & GPEN, July 2024
+Transition: flash
 
 Possible, not proven illegal. So where is the line?
 Visual: A judge's wooden gavel resting on a closed law book
 Visual: A courthouse's stone front steps on a grey day
 Text: POSSIBLE ≠ PROVEN ILLEGAL
+Big: NOT PROVEN
 
 Checking it is really you is fair. Hiding the exit is not.
 Visual: A hand holding a smartphone showing a security code screen, text unreadable

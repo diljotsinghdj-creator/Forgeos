@@ -14,10 +14,12 @@ Hidden under your sleeve, forever. Still worth it?
 Visual: A wrist under a long dark coat sleeve, the watch covered
 Visual: A man seen from behind walking down a busy street
 Text: STILL WORTH IT?
+Big: WORTH IT?
 
 A twenty-pound watch tells exactly the same time.
 Visual: Two watches side by side, one ornate, one plain, showing the same hour
 Chart: £800 vs £20 | the status watch, the plain one
+Transition: flash
 
 So what is the other seven hundred and eighty buying?
 Visual: A magnifying glass over a shop price tag, numbers blurred
@@ -44,12 +46,14 @@ Statement: Spending in order to be *seen* spending.
 
 So how do you catch yourself? Try this.
 Visual: A hand holding a glossy shopping bag above a hallway table, logo hidden
+Transition: whip
 
 Strip the logo off in your head. Still want it? Buy it.
 Visual: A hand peeling a brand label off a jacket
 Visual: A hand passing cash across a shop counter, seen from behind
 Text: NO LOGO · STILL WANT IT?
 Split: No logo | Still want it?
+Big: LOGO OFF
 
 If not, ask who the watch was really for.
 Visual: A full-length mirror in a hallway reflecting an empty room

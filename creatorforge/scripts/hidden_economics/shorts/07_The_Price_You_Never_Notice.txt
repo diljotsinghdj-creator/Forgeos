@@ -22,6 +22,8 @@ Visual: A kitchen tap dripping into a white basin
 Visual: A judge's wooden gavel resting on a desk
 Text: DRIP PRICING · ALLOWED?
 Stock: water dripping tap
+Big: DRIP PRICING
+Transition: whip
 
 Since April twenty twenty-five, UK law puts compulsory fees in the headline price.
 Visual: The Houses of Parliament in London seen across the river
@@ -43,12 +45,14 @@ How big? Four point two million pounds.
 Visual: Bundles of banknotes stacked on a desk under a lamp
 Chart: £4.2m | CMA fine · April 2026
 Cite: CMA, April 2026
+Transition: flash
 
 Untick what you did not choose. Compare totals, not headline prices.
 Visual: A thumb unticking a box on a smartphone, text unreadable
 Visual: Two printed quotes side by side with the totals underlined in red, text unreadable
 Text: UNTICK · COMPARE TOTALS
 Draw: tick
+Big: UNTICK
 
 Because thirty pounds was never the price. Forty-one was.
 Visual: A paper price tag tied with string to a brown parcel

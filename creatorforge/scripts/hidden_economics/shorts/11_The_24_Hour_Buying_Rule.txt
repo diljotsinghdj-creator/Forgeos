@@ -19,6 +19,8 @@ So why does your own brain get no cooling-off at all?
 Visual: A person seen from behind sitting up in bed at night
 Visual: A shopping receipt lying on a bedside table at night, text unreadable
 Text: WHERE IS YOUR COOLING-OFF?
+Big: COOLING-OFF?
+Transition: whip
 
 Give it one. Copy the item onto a list, then close the app.
 Visual: A pen adding a line to a paper notepad under a lamp, writing unreadable
@@ -37,6 +39,8 @@ Text: WHY ONE NIGHT?
 A pause gives the morning you a vote.
 Visual: A street of terraced houses in early morning light
 Visual: A cup of coffee steaming on a sunny kitchen table
+Big: A VOTE
+Transition: flash
 
 Still want it at breakfast? Check the full price against your budget.
 Visual: A household budget sheet on a table, columns of figures, text unreadable

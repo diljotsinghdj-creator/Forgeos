@@ -14,6 +14,7 @@ Visual: A bank card held between two fingers above a desk
 Visual: A leather wallet lying open on a desk with one card slot empty
 Text: WHY YOUR CARD?
 Stock: typing card details phone
+Big: YOUR CARD?
 
 Because the trial is not the product. The renewal is.
 Visual: A paper contract on a desk with its top half covered, text unreadable
@@ -26,6 +27,8 @@ So when did you actually buy it?
 Visual: A shop till receipt curling out of a card machine, text unreadable
 Visual: A smartphone on a desk showing a payment confirmation screen, text unreadable
 Text: WHEN DID YOU BUY IT?
+Big: WHEN?
+Transition: whip
 
 Day one. Agreeing to the renewal was the purchase.
 Visual: A signed sign-up form with a pen resting on it, text unreadable
@@ -54,3 +57,4 @@ Then day eight costs only what you chose.
 Visual: A paper wall calendar with the eighth day circled in green pen
 Text: DAY 8: YOUR CHOICE
 Draw: tick
+Transition: match

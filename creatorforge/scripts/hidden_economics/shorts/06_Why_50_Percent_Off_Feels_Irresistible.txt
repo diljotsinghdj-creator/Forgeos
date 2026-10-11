@@ -21,6 +21,7 @@ Visual: A red sale sign with a struck-through price in a shop window, numbers bl
 Visual: A shopper seen from behind holding a jacket in a clothes shop
 Text: WHY THE FIRST NUMBER?
 Thought: Half price! What a bargain.
+Transition: whip
 
 Watch. Psychologists spun a wheel, then asked what share of UN nations were African.
 Visual: A hand spinning a wooden wheel of fortune on a table
@@ -43,6 +44,8 @@ Visual: A small iron boat anchor resting on a wooden desk
 Text: ANCHORING
 Draw: arrow
 Cite: Tversky & Kahneman, Science, 1974
+Big: ANCHORING
+Transition: flash
 
 So who chose the jacket's first number? The seller.
 Visual: A clothing rail of jackets in a shop, nobody in frame
@@ -57,3 +60,4 @@ Visual: A jacket folded in a shopping bag on a hallway floor
 Visual: A card payment receipt held between two fingers, text unreadable
 Text: NOT LOOKING FOR IT? STILL SPENT £50
 Draw: cross
+Big: SPENT IT

@@ -26,11 +26,13 @@ Visual: A closed wooden door in a bare corridor
 Visual: A hand pressed flat against a plain wall, shadows only
 Text: THEN SILENCE
 Archive: 1960s
+Big: SILENT
 
 So why didn't they stop?
 Visual: A hand frozen in mid-air above a wooden desk, shadows only
 Text: WHY DIDN'T THEY STOP?
 Archive: 1960s
+Transition: whip
 
 A calm man in a grey lab coat simply told them to continue.
 Visual: A grey lab coat hanging on a hook in a bare room
@@ -38,6 +40,7 @@ Visual: A clipboard and pen resting on a laboratory desk, text unreadable
 Text: NO THREATS · JUST AUTHORITY
 Bubble: Please continue. You must go on.
 Archive: 1960s
+Big: CONTINUE
 
 The twist? The learner was an actor. No shock was real.
 Visual: An empty wooden chair with loose wires in a bare room
@@ -52,6 +55,7 @@ Visual: A smartphone ringing on a dark table, caller screen unreadable
 Visual: A police cap and a bank card lying on a table
 Text: FAKE BANK · FAKE POLICE
 Draw: cross
+Transition: whip
 
 Two in three obeyed a lab coat. Check before you obey a caller.
 Visual: An old black-and-white photograph of a 1960s laboratory building
