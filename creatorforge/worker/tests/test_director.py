@@ -286,3 +286,22 @@ def test_whisper_falls_back_to_cpu_when_the_gpu_is_full(monkeypatch):
     monkeypatch.setitem(sys.modules, "faster_whisper", types.SimpleNamespace(WhisperModel=FakeModel))
     monkeypatch.setattr(a, "_load_audio", lambda p: "audio")
     assert [w.text for w in a.WhisperASR().words(Path("x.wav"))] == ["hi"] and devices == ["auto", "cpu"]
+
+
+def test_a_full_gpu_frees_its_own_models_then_script_mode_carries_on(monkeypatch):
+    from creatorforge_worker import pipeline, providers
+    from creatorforge_worker.providers.base import ProviderError
+    freed = []
+    monkeypatch.setattr(providers, "release_gpu", lambda: freed.append(1))
+    calls = []
+
+    def step(m):
+        calls.append(m)
+        if m is not None:
+            raise ProviderError("LLM HTTP 500: llama-server reported out-of-memory during startup")
+        return "plan"
+    result, used = pipeline.Pipeline._with_gpu_room(None, step, "llm", optional=True)
+    assert result == "plan" and used is None and freed == [1] and calls == ["llm", "llm", None]
+    import pytest
+    with pytest.raises(ProviderError):           # idea mode needs the script model: the error is reported
+        pipeline.Pipeline._with_gpu_room(None, step, "llm", optional=False)

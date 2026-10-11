@@ -172,18 +172,35 @@ class Pipeline:
                 llm = providers.director_llm(self.cfg, job["id"])
             except NotConfigured:
                 llm = None
-            plan = director.direct_script(llm, spec)
+            plan, llm = self._with_gpu_room(lambda m: director.direct_script(m, spec), llm, optional=True)
             job["providers"]["llm"] = f"{llm.id} (script mode)" if llm else "none (script mode: visuals from your words)"
         else:
             llm = providers.director_llm(self.cfg, job["id"])
-            plan = director.direct(llm, spec)
+            plan, llm = self._with_gpu_room(lambda m: director.direct(m, spec), llm)
             job["providers"]["llm"] = llm.id
         if spec.fast_cuts:
-            director.plan_beats(llm, plan, spec)
+            self._with_gpu_room(lambda m: director.plan_beats(m, plan, spec), llm, optional=True)
         job["plan"] = plan.to_dict()
         job["scenes"] = [{"index": i, "image_state": "PLANNED", "voice_state": "PLANNED", "clip_state": "PLANNED",
                           "image": None, "narration": None, "narration_s": None, "clip": None, "error": None}
                          for i in range(len(plan.scenes))]
+
+    def _with_gpu_room(self, step, llm, optional: bool = False):
+        """Runs a script-model step. If the GPU is full (the image/video models from an earlier video are still
+        loaded), frees them and tries again; a script-mode video can then carry on without the script model,
+        because its pictures come from the writer's own Visual lines."""
+        try:
+            return step(llm), llm
+        except ProviderError as e:
+            if "memory" not in str(e).lower() or llm is None:
+                raise
+        providers.release_gpu()
+        try:
+            return step(llm), llm
+        except ProviderError as e:
+            if not optional or "memory" not in str(e).lower():
+                raise
+        return step(None), None
 
     def _prompts(self, job: dict, cancel) -> None:
         spec = self._spec(job)

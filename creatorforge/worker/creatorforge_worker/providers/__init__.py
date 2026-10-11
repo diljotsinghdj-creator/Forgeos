@@ -251,3 +251,22 @@ def build_asr(cfg: Config):
         from .asr_whisper import WhisperASR
         _asr = WhisperASR(cfg.whisper_model, cfg.whisper_device)
     return _asr
+
+
+def release_gpu() -> None:
+    """Frees the GPU memory this worker's own models hold (image and video pipelines, Whisper), so the script
+    model's server - a separate process - can load. Models reload by themselves the next time they are used."""
+    for cache in (_image_cache, _video_cache):
+        for prov in cache.values():
+            if getattr(prov, "_pipe", None) is not None:
+                prov._pipe = None
+    if _asr is not None:
+        _asr._model = None
+    import gc
+    gc.collect()
+    try:
+        import torch
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+    except Exception:  # noqa: BLE001 - no torch on this machine
+        pass
