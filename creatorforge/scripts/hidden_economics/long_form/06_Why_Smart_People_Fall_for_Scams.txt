@@ -4,7 +4,7 @@ Title: Knowing About Money Can Make Scams Work Better on You
 Tags: #HiddenEconomics #scams #fraudprevention #psychology #moneytips
 Source: JTA, Wiesel Foundation statement on $15.2m Madoff loss, 18 Feb 2009 https://www.jta.org/2009/02/18/united-states/despite-being-plundered-by-madoff-wiesel-will-continue-foundations-work; ABA Journal, Elie Wiesel says he lost life savings with Madoff, Feb 2009 https://www.abajournal.com/news/article/elie_wiesel_says_he_lost_life_savings_with_madoff_suggests_punishment; US Attorney SDNY, Madoff sentenced to 150 years, 29 Jun 2009 https://www.justice.gov/archive/usao/nys/pressreleases/June09/madoffbernardsentencingpr.pdf; CNN Money, Madoff sentenced, 29 Jun 2009 https://money.cnn.com/2009/06/29/news/economy/madoff_prison_sentence/; OFT 1070, The psychology of scams, University of Exeter for the Office of Fair Trading 2009 https://ore.exeter.ac.uk/repository/handle/10871/20958; Exeter press release 2009 https://news-archive.exeter.ac.uk/2009/may/title_6401_en.html; FTC Consumer Sentinel Data Book 2024 https://www.ftc.gov/system/files/ftc_gov/pdf/csn-annual-data-book-2024.pdf; FTC Protecting Older Consumers Dec 2025 https://www.ftc.gov/system/files/ftc_gov/pdf/P144400-OlderAdultsReportDec2025.pdf; FTC testimony March 2026 https://www.ftc.gov/news-events/news/press-releases/2026/03/ftc-testifies-joint-economic-committee-agencys-efforts-combat-fraud; UK Finance Annual Fraud Report 2026 https://www.ukfinance.org.uk/news-and-insight/press-release/fraud-report-2026-press-release; Ofcom, number spoofing https://ofcom.org.uk/phones-and-broadband/scam-calls-and-messages/phone-spoof-scam; Stop Scams UK 159 https://www.stopscamsuk.org.uk/159; Take Five to Stop Fraud https://www.takefive-stopfraud.org.uk; Ofcom 7726 https://www.ofcom.org.uk/phones-and-broadband/scam-calls-and-messages/what-to-do-about-a-scam-call-text-or-message; PSR APP reimbursement https://www.psr.org.uk/information-for-consumers/app-fraud-reimbursement-protections/; Report Fraud https://www.gov.uk/government/news/report-fraud-new-service-from-city-of-london-police; NBC News, Madoff sentenced to 150 years (Judge Denny Chin), June 2009, https://www.nbcnews.com/id/wbna31604191
 
-A Nobel Peace Prize winner's money vanished.
+A Nobel Peace Prize winner's money vanished. How?
 Visual: A gold medal lying in an open velvet case on a desk
 Visual: An empty open safe in a dim office
 Text: ELIE WIESEL · NOBEL PEACE PRIZE
@@ -20,7 +20,7 @@ Visual: An empty leather wallet lying open on a newspaper
 Visual: Two wedding rings resting beside an empty savings passbook
 Text: PERSONAL SAVINGS · GONE
 
-The man who took it was no back-street crook.
+And the man who took it? No back-street crook.
 Visual: A busy stock exchange trading floor in 2008
 Visual: A tailored suit jacket on a hanger in a Manhattan office
 Stock: wall street 2008
@@ -99,7 +99,7 @@ Visual: A city finance office with rows of desks
 Text: SAM · FICTIONAL
 Chapter: Part 1 | The perfect call
 
-Sam has read every warning.
+Sam has read every warning. So what could go wrong?
 Visual: A fraud warning leaflet pinned to a fridge, print unreadable
 
 He's sure it could never happen to him.
@@ -124,10 +124,12 @@ Text: FICTIONAL CALL
 Watch the number on his screen.
 Visual: A hand holding a smartphone showing an incoming call, text unreadable
 Visual: A pen circling a handwritten number on a notepad, digits unreadable
+Screen: Incoming call | *Your Bank · Fraud team · Decline · Accept
 
 It matches the one on the back of his card.
+Visual: A smartphone showing an incoming call on a table, digits unreadable
 Visual: The back of a bank card on a table, details unreadable
-Visual: Two strips of paper with matching digits side by side, digits unreadable
+Split: On his screen | On his card
 Text: THE NUMBER MATCHES
 Draw: circle
 
@@ -142,7 +144,7 @@ Visual: Hands typing on a keyboard in a dark room
 Text: NUMBERS CAN BE SPOOFED
 Draw: cross
 
-Caller display is a label anyone can type.
+Here's the problem. Caller display is a label anyone can type.
 Visual: A hand writing on a blank sticky name badge, writing unreadable
 Visual: A label maker printing a strip of tape
 
@@ -158,7 +160,7 @@ Or the tax office. Or a courier.
 Visual: A brown government envelope on a doormat, text unreadable
 Visual: A courier's parcel left on a front doorstep
 
-Even a familiar voice can now be faked.
+And it gets worse. Even a familiar voice can now be faked.
 Visual: A studio microphone on a stand in a dark room
 Visual: An old cassette tape with its ribbon pulled out
 Text: VOICES CAN BE FAKED
@@ -192,6 +194,7 @@ Here's what she tells him. Suspicious activity on his account.
 Visual: A smartphone showing a red banking alert, text unreadable
 Visual: A printed account statement with lines circled in red, text unreadable
 Text: SUSPICIOUS ACTIVITY
+Document: Suspicious activity on your account | Example scam script
 
 His savings are at risk, and he must act now.
 Visual: A savings passbook lying open on a table, text unreadable
@@ -247,7 +250,7 @@ Were the victims poor decision-makers? Many were not. Some had successful career
 Visual: Office workers seen from behind walking into a glass office building
 Visual: A tailored jacket on the back of an office chair, a briefcase below
 
-Think back to Madoff.
+Remember Madoff?
 Visual: An old photograph of a stock exchange trading floor in 2008
 Timeline: 2008 Foundation loses $15.2m → 2009 Sentenced to 150 years | Bernard Madoff
 
@@ -263,7 +266,7 @@ Visual: A man seen from behind nodding along at a desk, notepad open
 So you stay in it.
 Visual: A man seen from behind still seated at a desk, coat on
 
-The scam does not need you to be foolish.
+Here's the strange part: the scam doesn't need you to be foolish.
 Visual: A man seen from behind reading a newspaper in a café
 Visual: A crossword completed in pen beside a coffee cup
 
@@ -271,6 +274,7 @@ It only needs you to keep talking instead of checking.
 Visual: A man seen from behind pacing a kitchen, one hand on his head
 Visual: A bank card lying face down and untouched on a kitchen counter
 Draw: cross
+Statement: Keep *talking* instead of checking.
 
 Victims also tended to find it harder to control emotions under pressure.
 Visual: A hand gripping the back of a chair
@@ -291,6 +295,10 @@ Visual: An elderly woman seen from behind at a bus stop
 Visual: A young man seen from behind on a busy street, phone in hand
 Text: WHO REALLY LOSES?
 Chapter: Part 3 | Who really loses
+
+So who loses money most often?
+Visual: A queue of people seen from behind outside a bank branch
+Visual: A row of empty wallets laid out on a kitchen table
 
 Take Americans in their twenties, in twenty twenty-four.
 Visual: Young people seen from behind walking across an American college campus
@@ -334,7 +342,7 @@ Draw: arrow
 Exactly where Madoff struck.
 Visual: An old photograph of a trading floor pinned to a wall
 
-Britain shows the same pattern.
+And Britain? The same pattern.
 Visual: A busy British high street lined with shop fronts
 Stock: busy high street
 Place: UNITED KINGDOM · 2025
@@ -361,7 +369,7 @@ Visual: An investment brochure crumpled in a waste bin, text unreadable
 Text: Investment fraud: £221.5m, up 40%
 Cite: UK Finance, 2026
 
-The costliest scams target confidence, not ignorance.
+Notice the pattern? The costliest scams target confidence, not ignorance.
 Visual: A man in a suit seen from behind striding across a plaza
 Visual: A shelf of finance textbooks in a home office
 Draw: box
@@ -369,6 +377,7 @@ Draw: box
 So scams are not really a problem of age, or of intelligence.
 Visual: A young woman and an elderly man seen from behind on a bench
 Visual: A row of university diplomas on an office wall, text unreadable
+Split: Age | Intelligence
 
 They are a problem of situation.
 Visual: An empty kitchen table at night, a single chair pulled out
@@ -378,7 +387,7 @@ The right pressure, at exactly the wrong moment.
 Visual: A tired man seen from behind rubbing his eyes at midnight
 Visual: A pressure gauge with its needle in the red
 
-But one category moved the other way. The one about to catch Sam.
+But here's the twist: one category fell. The one about to catch Sam.
 Visual: A red pen arrow drawn downward across graph paper
 Visual: A man seen from behind in an armchair, a mug on the arm
 Text: ONE CATEGORY FELL
@@ -403,7 +412,7 @@ Visual: A hand uncapping a pen over a blank notepad
 Text: THE RULES
 Chapter: Part 4 | The rules
 
-First, banks and police never ask you to use a safe account.
+First rule? Banks and police never ask you to use a safe account.
 Visual: A money transfer form crossed through in red pen, text unreadable
 Visual: A bank branch counter with an empty teller window
 Text: NEVER A SAFE ACCOUNT
@@ -455,7 +464,7 @@ Visual: Hands turning a bank card over to its back, details unreadable
 Visual: A handwritten bank number on a notepad, digits unreadable
 Steps: Hang up → Own number → Call bank | Breaking the script
 
-In the UK there is a three-digit shortcut. One five nine.
+Here's the shortcut in the UK. Three digits. One five nine.
 Visual: A sticky note stuck to a fridge, digits unreadable
 Visual: A notice of emergency numbers pinned up in a kitchen, text unreadable
 Text: CALL 159
@@ -487,6 +496,7 @@ Scam texts can be forwarded free to seven seven two six.
 Visual: A smartphone showing a suspicious text message, text unreadable
 Visual: A sticky note on a fridge with four digits, digits unreadable
 Text: FORWARD TO 7726
+Screen: New message | Unknown sender · Suspicious link · *Forward to 7726
 
 Suspicious emails go to the government's phishing report address.
 Visual: A printed email circled in red pen on a desk, text unreadable
@@ -519,7 +529,7 @@ Cite: PSR, 2024
 Covered claims can be repaid up to eighty-five thousand pounds.
 Visual: A cheque being written out at a desk, text unreadable
 Visual: A claim form on a desk with a pen, text unreadable
-Chart: £85,000 | maximum repaid per claim
+Text: UP TO £85,000 PER CLAIM
 Cite: PSR, 2024
 
 In twenty twenty-five, banks reimbursed about sixty-one percent of push payment fraud losses.
@@ -528,7 +538,7 @@ Visual: A bank cashier's window with a hand passing an envelope through
 Icons: 61% | coins | of push payment losses reimbursed, 2025
 Cite: UK Finance, 2026
 
-Then report it.
+And then? Report it.
 Visual: A hand uncapping a red pen over a blank notepad
 
 In England, Wales and Northern Ireland, that's Report Fraud.
@@ -555,6 +565,7 @@ His savings never moved. His expertise nearly moved them for him.
 Visual: A stack of coins untouched on a table in morning sun
 Visual: A shelf of finance books in a home office
 Draw: tick
+Statement: His *expertise* nearly moved them for him.
 
 And even if it had worked, it would not prove he was careless.
 Visual: A person seen from behind sitting on the edge of a bed in the dark
@@ -564,7 +575,7 @@ It would only prove the pressure worked.
 Visual: A pressure gauge with its needle in the red
 Visual: A hand gripping a mug tightly
 
-Scams are built to remove the pause.
+Notice what scams are built to remove? The pause.
 Visual: A gap in a garden fence being boarded shut
 Visual: A finger pressing fast-forward on an old cassette player
 
@@ -576,11 +587,13 @@ Text: THE PAUSE
 A real bank can survive a callback. A scammer usually cannot.
 Visual: A bank branch opening its doors in the morning
 Visual: A disconnected cable lying on a desk
+Split: Real bank | Scammer
 
 Today, save one five nine in your phone.
 Visual: A thumb adding a new contact on a smartphone, text unreadable
 Visual: A sticky note with three digits on a fridge, digits unreadable
 Text: SAVE 159
+Screen: New contact | Name: Bank helpline · *Number: 159 · Save
 
 Then send these rules to someone you love.
 Visual: Two pairs of hands passing a handwritten card across a kitchen table

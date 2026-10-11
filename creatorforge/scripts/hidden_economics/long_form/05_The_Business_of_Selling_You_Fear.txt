@@ -4,9 +4,10 @@ Title: People Paid MORE for LESS Insurance. The Business of Selling Fear
 Tags: #HiddenEconomics #behaviouraleconomics #psychology #marketing #consumerrights
 Source: Johnson, Hershey, Meszaros & Kunreuther 1993, Framing, probability distortions and insurance decisions, J Risk Uncertainty vol 7 https://link.springer.com/article/10.1007/BF01065313; Lichtenstein et al. 1978, Judged frequency of lethal events https://scholarsbank.uoregon.edu/xmlui/handle/1794/22549; Combs & Slovic 1979, Newspaper coverage of causes of death, Journalism Quarterly 56(4); Sunstein & Zeckhauser, Overreaction to Fearsome Risks, Environmental and Resource Economics 48(3) 2011 https://www.hks.harvard.edu/publications/overreaction-fearsome-risks; Tannenbaum et al. 2015, Appealing to fear, Psychological Bulletin https://pubmed.ncbi.nlm.nih.gov/26501228/; Home Office, Detailed analysis of fires, England 2022 to 2023 https://www.gov.uk/government/statistics/detailed-analysis-of-fires-attended-by-fire-and-rescue-services-england-april-2022-to-march-2023; CAP Code rule 4.2 https://www.asa.org.uk/type/non_broadcast/code_section/04.html; DMCC Act 2024 Schedule 20 para 7 https://www.legislation.gov.uk/ukpga/2024/13/schedule/20; CMA urgency claims guidance https://www.gov.uk/government/news/cma-investigates-online-selling-practices-based-on-urgency-claims
 
-People paid more for less insurance.
-Visual: A thin insurance policy and a thick one side by side on a desk, text unreadable
+People paid more for less insurance. Why?
+Visual: A thin insurance policy lying alone on a desk, text unreadable
 Visual: Hands counting banknotes onto a glass shop counter
+Split: Less cover | Higher price
 Text: LESS COVER, HIGHER VALUE
 Cite: Johnson et al., J Risk Uncertainty 1993
 
@@ -24,7 +25,7 @@ Visual: An airport security checkpoint with an empty queue barrier
 Visual: A single typed page with one clause circled in red, text unreadable
 Text: POLICY A · TERRORISM ONLY
 
-But the other paid out if you died on that flight.
+Here's the catch. The other paid out if you died on that flight.
 Visual: A thick ring-bound document lying on a desk, text unreadable
 Visual: Passengers seen from behind climbing the steps onto a plane
 
@@ -48,6 +49,7 @@ Cite: Johnson et al., J Risk Uncertainty 1993
 One word did that to a price.
 Visual: A newspaper with one word circled in red pen, text unreadable
 Visual: A blank paper price tag lying on a wooden desk
+Statement: One *word* did that to a price.
 
 So what can it do to yours?
 Visual: A leather wallet lying on a hallway shelf at night
@@ -78,6 +80,7 @@ Thought: Wait... is my family actually safe?
 Is your family protected?
 Visual: A child's shoe on a doormat in a dark hallway
 Text: IS YOUR FAMILY PROTECTED?
+Document: Is your family protected? | Fictional advert
 
 Seconds later, a monthly plan appears as the answer.
 Visual: A thumb hovering over a bright button on a smartphone, text unreadable
@@ -87,6 +90,7 @@ Text: FICTIONAL INTERFACE
 Ten minutes ago she felt safe. Now she does not.
 Visual: A cup of cocoa and a paperback on a lamp-lit side table
 Visual: Rain streaking down a window at night, a lamp reflected in it
+Split: Ten minutes ago | Now
 
 The product might be genuinely useful. That is not the issue yet.
 Visual: A boxed home security camera on a kitchen table
@@ -147,6 +151,7 @@ Draw: cross
 So the news you watch helps price the fear you feel.
 Visual: An old television showing a news broadcast in a living room, text unreadable
 Visual: A door alarm kit hanging on a hardware store peg
+Split: The news | The price
 
 Then economists tested the same blind spot with money.
 Visual: An economist's desk with a calculator and printed tables, text unreadable
@@ -197,9 +202,13 @@ Visual: A shopper seen from behind waiting at a till, wallet already out
 Text: WHAT DOES A SELLER DO?
 Chapter: Part 2 | What sellers do
 
+So how does a frightened buyer change the market?
+Visual: A shopper seen from behind hesitating in a supermarket aisle
+Visual: A row of price cards on a market stall, text unreadable
+
 In a calm market, sellers compete on what the cover is worth.
 Visual: A sunny town square busy with shoppers
-Visual: Three price cards lined up on a market stall, text unreadable
+Visual: Three brochures laid out side by side on a cafe table, text unreadable
 
 But a frightened buyer compares less and asks fewer questions.
 Visual: A hand pushing a stack of brochures aside unread
@@ -209,7 +218,7 @@ So the contest drifts from value towards whoever frightens best.
 Visual: A billboard showing a stormy sky over a house, text unreadable
 Visual: A single product lit up on an otherwise empty plinth
 
-Fear-led sellers have one more advantage, backed by a huge body of research.
+But there's one more advantage, backed by a huge body of research.
 Visual: A university library reading room with long empty tables
 Visual: A professor's office with shelves of box files
 Visual: A hand flipping through a research journal, text unreadable
@@ -240,6 +249,7 @@ Cite: Tannenbaum et al., Psychological Bulletin 2015
 On a phone, one clear step looks exactly like a button.
 Visual: A single round button on a smartphone screen, text unreadable
 Visual: A large round doorbell beside a front door
+Screen: Is your family protected? | Monthly plan · £8 a month · *Protect them now
 
 That research was about health messages. But look at Maya's advert again.
 Visual: A hospital corridor with a row of empty chairs
@@ -254,7 +264,7 @@ Text: THREAT → RELIEF → PRICE
 Draw: arrow
 Steps: Threat → Relief → Price → One button | Maya's advert
 
-Now ask which came first in that advert, the danger or the product.
+Now ask: which came first in that advert, the danger or the product?
 Visual: A glossy printed advert lying on a sofa, text unreadable
 Visual: A dark alleyway with an overflowing bin at night
 Visual: A prototype gadget on a workbench in a design studio
@@ -315,7 +325,7 @@ Visual: A handful of loose change on a hardware shop counter
 Stock: smoke alarm battery
 Draw: tick
 
-That is not a reason to fear less.
+So is that a reason to fear less? No.
 Visual: A hand turning down the volume dial on an old radio
 Visual: A firefighter's helmet hanging on a hook
 
@@ -414,8 +424,9 @@ Place: UK · APRIL 2025
 Done to rush a decision, it is unfair in all circumstances.
 Visual: A hand hurriedly signing a form on a desk, text unreadable
 Visual: A rubber stamp pressing onto a document, text unreadable
+Screen: Checkout | Your basket · Offer ends in 09:59 · *Only available today
 
-No further test is even needed.
+Why does that matter? No further test is even needed.
 Visual: A set of weighing scales pushed to the edge of a desk
 Visual: A closed case file on a desk with a rubber band around it
 
@@ -464,9 +475,9 @@ Chart: £8 + £6 + £12 = £26 | illustration, three plans a month
 With tonight's plan, three hundred and twelve pounds a year.
 Visual: A thick bundle of banknotes held with a rubber band
 Visual: A long till receipt curling off a counter
-Chart: £26 × 12 = £312 | illustration, all three plans a year
+Text: £312 A YEAR · ILLUSTRATION
 
-She had never added them up.
+She had never added them up. Have you?
 Visual: A pencil beside an empty sum line on a scrap of paper
 Visual: A calculator lying beside a mug of tea
 
@@ -516,6 +527,7 @@ Then the fear was the product.
 Visual: A boxed home alarm gadget on a shop shelf with a price tag
 Visual: An empty armchair in a bright, quiet living room
 Text: THE FEAR WAS THE PRODUCT
+Statement: Then the fear was the *product*.
 
 Tonight, search your bank statement for every protection you already pay for.
 Visual: A highlighter running along a paper bank statement, text unreadable
