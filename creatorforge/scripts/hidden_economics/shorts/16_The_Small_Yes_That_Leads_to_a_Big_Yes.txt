@@ -11,29 +11,34 @@ Text: STANFORD RESEARCHERS, 1966
 Bubble: No thanks. Not on my lawn.
 Place: STANFORD · 1966
 Cite: Freedman & Fraser, 1966
+Archive: 1960s
 
 Asked cold, only about seventeen percent agreed.
 Visual: A clipboard tally sheet with a few ticks among many crosses, text unreadable
 Icons: 17% | homes | agreed when asked cold
 Cite: Freedman & Fraser, 1966
+Archive: 1960s
 
 Then one tiny favour, weeks earlier, changed the answer.
 Visual: A volunteer seen from behind walking up a suburban garden path
 Visual: A wall calendar with several weeks crossed off in pencil
 Text: WHAT FAVOUR?
 Draw: circle
+Archive: 1960s
 
 A small sign in the window, about safe driving.
 Visual: A modest house window with a tiny card in the corner, text unreadable
 Visual: A 1960s car parked on a quiet suburban street
 Text: "BE A SAFE DRIVER"
 Stock: 1960s suburban houses
+Archive: 1960s
 
 Weeks later, about seventy-six percent said yes to the giant one.
 Visual: A row of 1960s suburban houses with neat front lawns
 Visual: A hand swinging a mallet onto a wooden post in a front lawn
 Chart: 76% vs 17% | small yes first, asked cold
 Cite: Freedman & Fraser, 1966
+Archive: 1960s
 
 Why? Saying yes once changes how you see yourself.
 Visual: A hand signing a short petition sheet on a table, text unreadable
@@ -46,6 +51,7 @@ Sales funnels often start the same way, with a free quiz or tiny trial.
 Visual: A phone on a desk showing a quiz screen, text unreadable
 Visual: A free paper sample sachet attached to a magazine page
 Text: FICTIONAL INTERFACE
+Split: Free quiz | Tiny trial
 
 Scammers start small too.
 Visual: A gloved hand pushing a single coin across a desk

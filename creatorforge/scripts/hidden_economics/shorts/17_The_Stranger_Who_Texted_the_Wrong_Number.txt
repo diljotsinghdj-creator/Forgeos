@@ -20,6 +20,7 @@ Then a crypto tip. Your small deposit doubles on screen.
 Visual: A hand holding a phone showing a trading app with a rising green line, numbers unreadable
 Visual: A few coins stacked beside a printed green price chart, digits blurred
 Text: FICTIONAL INTERFACE · FAKE PROFITS
+Screen: Your portfolio | Your balance doubled · Deposit more · *small:Withdraw
 
 So why can't you withdraw a penny?
 Visual: A thumb pressing a greyed-out button on a phone, text unreadable
@@ -31,12 +32,13 @@ Visual: A dim call centre with rows of empty desks and headsets
 Visual: A person seen from behind typing at a desk in a dark room
 Text: THE APP IS THE SCAM
 Draw: cross
-Steps: Wrong number → Weeks of chat → Crypto tip → Fake profits → No withdrawal | How the scam unfolds
+Statement: The profits were never *real*.
 
 Every withdrawal needs another fee, until you stop paying.
 Visual: A stack of printed invoices on a desk, each circled in red pen, text unreadable
 Visual: An empty wallet lying open on a kitchen table
 Text: FEE · TAX · ANOTHER FEE
+Split: Another fee | Nothing back
 
 Investment fraud cost Americans about eight point six billion dollars in twenty twenty-five.
 Visual: A large heap of US dollar banknotes on a table
@@ -53,3 +55,4 @@ Especially someone who found you by accident.
 Visual: A letter addressed to the wrong house lying on a doormat, text unreadable
 Text: NO ACCIDENT
 Draw: arrow
+Steps: Wrong number → Weeks of chat → Crypto tip → Fake profits → No withdrawal | How the scam unfolds

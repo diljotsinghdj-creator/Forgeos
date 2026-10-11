@@ -4,7 +4,7 @@ Title: Your Child's Voice, But Not Your Child: The AI Clone Call
 Tags: #HiddenEconomics #scams #voicecloning #AI #fraud
 Source: FTC Consumer Alert, Scammers use AI to enhance their family emergency schemes, March 2023, https://consumer.ftc.gov/consumer-alerts/2023/03/scammers-use-ai-enhance-their-family-emergency-schemes; McAfee, The Artificial Imposter report, May 2023 (3 seconds of audio gave an 85% voice match), https://www.mcafee.com/blogs/privacy-identity-protection/artificial-imposters-cybercriminals-turn-to-ai-voice-cloning-for-a-new-breed-of-scam/
 
-Your daughter's crying. Except it isn't her.
+Your daughter's voice, crying. But it isn't her.
 Visual: An old telephone receiver lying off the hook on a dark table
 Visual: A child's school backpack hanging on a bedroom door
 Text: FICTIONAL SCENARIO
@@ -42,10 +42,12 @@ Visual: A hand turning the pages of an old paper address book
 Text: HANG UP · CALL BACK
 Stock: person making phone call home
 Draw: tick
+Split: Hang up | Call back
 
 But what if she truly can't answer?
 Visual: An empty bed in a dark bedroom, the door ajar
 Text: NO ANSWER?
+Screen: Calling | Saved number · Ringing · *No answer
 
 Agree a family code word today. A clone can't know it.
 Visual: A family seen from behind sitting at a kitchen table

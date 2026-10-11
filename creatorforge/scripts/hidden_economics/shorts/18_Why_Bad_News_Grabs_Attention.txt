@@ -8,6 +8,7 @@ One scary headline beats a hundred calm days.
 Visual: A newspaper with a dark front-page photo on a table, headlines blurred
 Visual: A quiet sunny suburban street on an ordinary morning
 Text: WHICH ONE STICKS?
+Split: 1 headline | 100 calm days
 
 Researchers wired up people in seventeen countries and played them news.
 Visual: A world map on a desk with red pins in many countries
@@ -26,6 +27,7 @@ Yet many people showed no such bias at all.
 Visual: A row of people seen from behind watching a TV screen
 Visual: A person seen from behind sitting calmly on a park bench
 Text: NOT EVERYONE REACTED
+Statement: *No* such bias at all.
 Cite: Soroka et al., PNAS, 2019
 
 So why does bad news still feel everywhere?
@@ -40,6 +42,9 @@ Visual: A house fire at night seen from far down a street
 Text: EASY TO RECALL ≠ COMMON
 Cite: Tversky & Kahneman, 1973
 Steps: Vivid story → Easy to recall → Feels common | Why bad news feels everywhere
+
+But here's the catch.
+Visual: A hand holding a single newspaper clipping up to a window, text unreadable
 
 A true story can still say nothing about odds.
 Visual: A single die resting on a wooden table under a desk lamp

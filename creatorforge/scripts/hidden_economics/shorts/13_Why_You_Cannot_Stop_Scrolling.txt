@@ -21,12 +21,17 @@ Those are stopping cues, moments to decide whether to continue.
 Visual: The empty bottom of a cereal bowl with a spoon resting in it
 Visual: A cinema with the lights coming up over empty seats
 Text: STOPPING CUES
+Split: Bowl ends | Film ends
 
-An endless feed removes them. Where's the last page? There isn't one.
+An endless feed removes them. Where's the last page?
 Visual: A thumb scrolling a social media feed on a smartphone, images blurred
-Visual: A dark living room at night with one lamp still on
+Visual: A phone glowing on a sofa cushion in a dark room, feed blurred
 Text: NO LAST PAGE
 Draw: cross
+
+There isn't one.
+Visual: A dark living room at night with one lamp still on
+Statement: There *isn't* one.
 
 Aza Raskin designed infinite scroll in two thousand and six.
 Visual: A 2000s open-plan office with beige desks and swivel chairs, nobody close

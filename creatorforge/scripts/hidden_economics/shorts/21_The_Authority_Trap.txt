@@ -4,7 +4,7 @@ Title: Same Man, Same Request, New Uniform: Why Strangers Obeyed
 Tags: #HiddenEconomics #scams #psychology #authority #hmrc
 Source: Bickman (1974), The Social Power of a Uniform, Journal of Applied Social Psychology 4(1), https://doi.org/10.1111/j.1559-1816.1974.tb02599.x; HMRC press release, Scams warning as Self Assessment customers targeted (Aug 2025), https://www.gov.uk/government/news/scams-warning-as-self-assessment-customers-targeted
 
-Same man. Add a uniform. Strangers obey.
+Same man, new clothes. Why do strangers obey?
 Visual: A man in plain clothes seen from behind on a city street
 Visual: A security guard's peaked cap hanging on a hook
 Text: SAME MAN. NEW CLOTHES.
@@ -17,18 +17,22 @@ Visual: A 1970s Brooklyn street corner with pedestrians seen from behind
 Chart: 153 | Brooklyn pedestrians · 1974 study
 Stock: 1970s new york street
 Cite: Bickman, 1974
+Archive: 1970s
 
 As a guard, he was obeyed more than in plain clothes.
-Visual: A man in a guard's uniform seen from behind on a pavement
-Visual: Pedestrians seen from behind stopping to pick up litter on a pavement
+Visual: A man in a guard's uniform seen from behind on a 1970s pavement
+Visual: The same man in plain clothes seen from behind on a 1970s pavement
 Text: THE GUARD WAS OBEYED MOST
 Cite: Bickman, 1974
+Split: In uniform | Plain clothes
+Archive: 1970s
 
 A guard had no power here. So why?
 Visual: A pair of empty hands held open, palms up, against a wall
 Visual: A pedestrian handing a coin to a uniformed man, seen from behind
 Text: SO WHY COMPLY?
 Thought: Better do what he says
+Archive: 1970s
 
 Uniforms, titles and crests are shortcuts to trust.
 Visual: A metal badge on a desk beside an embossed letterhead, text unreadable

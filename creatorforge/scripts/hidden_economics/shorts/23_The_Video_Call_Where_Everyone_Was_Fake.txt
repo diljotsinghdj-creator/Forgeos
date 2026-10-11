@@ -8,6 +8,7 @@ Every face was fake. The money was real.
 Visual: Rows of office ID badges on a desk, faces blurred
 Visual: A bank vault door standing open in a basement
 Text: ILLUSTRATION · HONG KONG, 2024
+Split: Fake faces | Real money
 Place: HONG KONG · 2024
 
 Hong Kong, twenty twenty-four. An Arup finance worker gets a message.
@@ -22,7 +23,7 @@ Visual: A sealed envelope with a red stamp on a desk, text unreadable
 Text: "A SECRET TRANSACTION"
 Draw: circle
 
-Then a video call. The finance chief and colleagues, live.
+And then a video call. The finance chief and colleagues, live.
 Visual: A laptop screen with several blurred video tiles, faces indistinct
 Visual: A pair of headphones resting on an office desk beside a notepad
 Text: AI RECREATION · ILLUSTRATION
@@ -53,6 +54,5 @@ Text: VERIFY ON A SEPARATE CHANNEL
 
 Now even a face is just a claim.
 Visual: A passport photo page held under a lamp, details blurred
-Visual: An empty office desk at night with the lights off
 Text: A FACE IS NOT PROOF
-Draw: underline
+Statement: Even a face is just a *claim*.

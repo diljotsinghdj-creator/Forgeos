@@ -29,22 +29,24 @@ Visual: A thumb scrolling a feed of blurred posts on a smartphone
 Chart: 1 → 10 | posts from one tap · illustration
 
 Is it the alerts, or is it you? One test tells you.
-Visual: A stopwatch lying on a wooden table
+Visual: A phone lying face up on a table with a stack of alerts, text unreadable
 Visual: A person seen from behind sitting on a park bench, hands in lap
 Thought: Do I actually need all these alerts?
+Split: The alerts | Or you
 
 Silence every alert that isn't from a person, for one week.
 Visual: A thumb switching off notification toggles on a phone, text unreadable
 Visual: Two friends seen from behind talking on a front doorstep
 Text: FICTIONAL INTERFACE · 7 DAYS
+Screen: Notifications | Calls · Messages · Shop offers · Game rewards · *Silence app alerts
 
 Then count how many silenced apps you actually missed.
 Visual: A paper calendar on a desk, seven days crossed off in pencil
 Visual: A hand making tally marks on a notepad
 Text: HOW MANY DID YOU MISS?
 Draw: circle
-Steps: Silence app alerts → Wait one week → Count what's missed | The one-week test
 
 One buzz shouldn't cost twenty minutes. Now it doesn't have to.
 Visual: A sunny window over a quiet street in the morning
 Visual: An open book and a cup of coffee on a sunny desk
+Steps: Silence app alerts → Wait one week → Count what's missed | The one-week test
