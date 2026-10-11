@@ -624,6 +624,14 @@ def test_objects_articles_big_words_marks_transitions_music_and_archive_search(t
     clip.marks = marks
     ff.run([*render._segment_args(clip, 36, 270, 480), str(tmp_path / "mk.mp4")])
     assert ff.duration(tmp_path / "mk.mp4") > 1.0
+    # footage framed on the paper backdrop, with marks that follow its motion (the marks layer is a later input)
+    from creatorforge_worker.media import layout
+    ff.run(["-f", "lavfi", "-i", "testsrc2=s=320x240:d=2", "-pix_fmt", "yuv420p", str(tmp_path / "pan.mp4")])
+    framed = render.Clip(tmp_path / "a.png", 1.2, "cut", "cut", video=tmp_path / "pan.mp4", video_duration=2.0,
+                         backdrop=layout.backdrop("paper", 270, 480, tmp_path))
+    framed.marks, framed.track = marks, [(0.5, 4.0, 0.0), (1.0, 8.0, 2.0)]
+    ff.run([*render._segment_args(framed, 36, 270, 480), str(tmp_path / "framed.mp4")])
+    assert ff.duration(tmp_path / "framed.mp4") > 1.0
     # tear and match transitions, and music that changes at chapters
     ff.run(["-f", "lavfi", "-i", "sine=f=220:d=4", "-ar", "48000", str(tmp_path / "t1.wav")])
     ff.run(["-f", "lavfi", "-i", "sine=f=330:d=4", "-ar", "48000", str(tmp_path / "t2.wav")])

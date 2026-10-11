@@ -311,7 +311,7 @@ def _segment_args(c: Clip, frames: int, width: int, height: int) -> list[str]:
     if c.marks is not None and c.video is not None:
         # footage: the marks ride on the picture's own motion (measured beforehand), so a circle follows its subject
         length = frames / FPS
-        k = len(src) // 2
+        k = src.count("-i")             # the marks layer is the next input
         xs, ys = _track_expr(c.track or [], length)
         vf = vf.replace("format=yuv420p[v]", "format=yuv420p[vm]", 1)
         vf += (";" + _marks_layer(c.marks, k, width, height, length, label="mkf") +
