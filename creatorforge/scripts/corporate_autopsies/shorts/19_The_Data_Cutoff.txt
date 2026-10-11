@@ -1,0 +1,74 @@
+The Data Cutoff
+On-screen hook: 3 HEART ATTACKS. MISSING.
+Title: Three Heart Attacks Missing From a Famous Drug Study: The Vioxx Data Cutoff
+Tags: #CorporateAutopsies #Vioxx #Merck #clinicaltrials #pharma
+Source: NEJM Expression of Concern (Curfman, Morrissey, Drazen), Dec 2005, reported by CMAJ, https://www.cmaj.ca/content/174/4/444.2; CMAJ, Dispute over Vioxx study plays out in New England journal, https://www.cmaj.ca/content/174/10/1397; NPR, Medical journal: Vioxx paper flawed (Dec 2005), https://www.npr.org/2005/12/08/5045087/medical-journal-vioxx-paper-flawed; NPR, Timeline: The rise and fall of Vioxx, https://www.npr.org/2007/11/10/5470430/timeline-the-rise-and-fall-of-vioxx; US DOJ, Merck Sharp & Dohme to pay nearly one billion dollars over promotion of Vioxx (Nov 2011), https://www.justice.gov/archives/opa/pr/us-pharmaceutical-company-merck-sharp-dohme-pay-nearly-one-billion-dollars-over-promotion
+
+Three heart attacks, missing from the published study.
+Visual: A thick medical journal lying open on a desk, text unreadable
+Visual: Three empty hospital chairs in a row along a quiet corridor
+Text: 3 HEART ATTACKS. MISSING?
+Draw: circle
+
+In two thousand, a top journal published Merck's Vioxx trial, VIGOR.
+Visual: A hand holding a blister pack of white pills over a desk
+Visual: A stack of printed medical journals on a library table, text unreadable
+Text: VIGOR TRIAL · NEJM · NOV 2000
+Cite: NEJM, Nov 2000
+Treat: halftone
+
+It reported seventeen heart attacks on Vioxx. But here's the catch.
+Visual: A clipboard with a patient tally sheet, numbers blurred
+Visual: A red pen resting on a column of printed figures, text unreadable
+Text: 17 HEART ATTACKS REPORTED
+Transition: whip
+
+A Merck memo counted twenty, and at least two authors knew, the journal said.
+Visual: An office memo lying face up on a wooden desk, text unreadable
+Visual: A filing cabinet drawer pulled open, folder labels unreadable
+Visual: Two people seen from behind at a conference table covered in papers
+Chart: 17 → 20 | heart attacks on Vioxx: paper vs memo
+Cite: NEJM Expression of Concern, Dec 2005
+
+So why leave three out?
+Visual: Three paper patient files set apart from a large stack on a desk
+Big: WHY?
+
+Merck and the authors said they fell after a pre-set cutoff date.
+Visual: A wall calendar with one date circled in red ink
+Visual: A ruler laid across a printed table of dates, text unreadable
+Text: "AFTER THE PRE-SPECIFIED CUTOFF"
+Cite: Merck and authors, via CMAJ
+Draw: circle
+Treat: duotone
+
+The editors disagreed. The real question: did three change anything?
+Visual: A journal page under a desk lamp with a yellow highlighter beside it, text unreadable
+Visual: Hands turning pages of a bound journal at an office desk
+Article: Expression of Concern | New England Journal of Medicine, Dec 2005
+Cite: NEJM, Dec 2005
+
+Adding them raised the heart attack risk ratio from about four to five.
+Visual: A calculator and a printed statistics table on a desk, numbers blurred
+Visual: A pencil tick added to a handwritten column of numbers, text unreadable
+Text: RISK RATIO 4.25 → 5.0
+Cite: NEJM Expression of Concern, Dec 2005
+Draw: underline
+
+And then? Merck withdrew Vioxx in September two thousand four.
+Visual: An empty pharmacy shelf with bare white price strips
+Visual: Sealed cardboard boxes stacked on a warehouse pallet, labels unreadable
+Timeline: 1999 Approved → 2000 VIGOR published → 2004 Withdrawn | The Vioxx years
+Transition: flash
+
+In twenty eleven, it pleaded guilty to a misdemeanor over Vioxx marketing.
+Visual: A courthouse's stone front steps on a grey morning
+Visual: A judge's wooden gavel resting on a closed law book
+Text: GUILTY PLEA · $950M TOTAL RESOLUTION
+Cite: US DOJ, Nov 2011
+
+So why were three missing? A cutoff date the editors never accepted.
+Visual: A wall calendar page torn off and lying on a desk
+Visual: A closed medical journal on an empty desk in evening light
+Text: ONE DATE. 3 HEART ATTACKS.
+Draw: cross

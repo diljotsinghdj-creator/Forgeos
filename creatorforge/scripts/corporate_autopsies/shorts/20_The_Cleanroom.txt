@@ -1,0 +1,83 @@
+The Cleanroom
+On-screen hook: MOLD IN THE CLEANROOM?
+Title: Mold in a Pharmacy Cleanroom: The 2012 Fungal Meningitis Outbreak
+Tags: #CorporateAutopsies #NECC #meningitis #pharmacy #FDA
+Source: US DOJ, Owner of New England Compounding Center sentenced for racketeering (2017), https://www.justice.gov/opa/pr/owner-new-england-compounding-center-sentenced-racketeering-leading-nationwide-fungal; US DOJ, Former owner of defunct NECC resentenced to 14 years in prison (2021), https://www.justice.gov/usao-ma/pr/former-owner-defunct-new-england-compounding-center-resentenced-14-years-prison; NPR, Pharmacy owner acquitted of murder in meningitis outbreak that caused 64 deaths (Mar 2017), https://www.npr.org/sections/thetwo-way/2017/03/22/521088765/pharmacy-owner-acquitted-of-murder-in-meningitis-outbreak-that-caused-64-deaths; WGBH, FDA says Massachusetts pharmacy knew of sterility problems for months (Oct 2012), https://wgbh.org/news/2012-10-26/fda-says-massachusetts-pharmacy-knew-of-sterility-problems-for-months; Pharmacy Times, Initial reports detail lapses at compounding pharmacy, https://pharmacytimes.com/view/initial-reports-detail-lapses-at-compounding-pharmacy-behind-meningitis-outbreak; WBUR, Framingham meningitis outbreak arrests (Dec 2014), https://www.wbur.org/2014/12/17/framingham-meningitis-outbreak-arrests
+
+Why was there mold in the cleanroom?
+Visual: A sealed laboratory cleanroom door with a small window, seen from outside
+Visual: A gloved hand holding a small glass vial up to the light
+Text: MOLD IN THE CLEANROOM?
+
+In twenty twelve, a Massachusetts pharmacy shipped steroid injections across America.
+Visual: Cardboard shipping boxes stacked on a loading dock, labels unreadable
+Visual: A delivery van parked outside a low brick industrial building
+Visual: Small glass medicine vials lined up in a plastic tray
+Map: Boston | NECC, Framingham, Massachusetts
+Cite: US DOJ
+
+Then patients started getting fungal meningitis.
+Visual: An empty hospital bed in a dim ward, seen from the doorway
+Visual: A hospital corridor at night with one light on
+Text: FUNGAL MENINGITIS
+Treat: duotone
+
+The CDC counted seven hundred fifty-three patients in twenty states.
+Visual: Hands sorting a tall stack of medical case files on a desk, text unreadable
+Visual: A paper map of the United States pinned to a corkboard, pins in many states
+Chart: 753 | patients sickened in 20 states
+Cite: CDC, via US DOJ
+
+Sixty-four of them died. So what went wrong inside?
+Visual: Rows of empty plastic chairs in a hospital waiting room
+Visual: A locked industrial building's back door at dusk
+Text: 64 DEATHS · CDC
+Transition: whip
+
+Inspectors found visible foreign matter in sealed vials.
+Visual: A gloved hand tilting a sealed vial with dark specks inside against a lamp
+Visual: A plastic bin of small glass vials on a steel inspection table
+Text: FOREIGN MATTER IN SEALED VIALS
+Cite: FDA inspection, Oct 2012
+Draw: circle
+
+FDA testing found microbial growth in all fifty vials it tested.
+Visual: Laboratory petri dishes in a row on a white bench
+Visual: A lab technician seen from behind at a microscope
+Text: 50 OF 50 VIALS: MICROBIAL GROWTH
+Cite: FDA, via WGBH, Oct 2012
+Treat: halftone
+
+The question: who knew? Prosecutors said owner Barry Cadden was warned of mold.
+Visual: An office desk with a stack of unopened reports, text unreadable
+Visual: A dark patch of mold on a white wall corner beside a vent
+Text: WARNED OF MOLD · PROSECUTORS
+Cite: US DOJ
+
+An FDA agent testified staff were told to falsify cleaning logs.
+Visual: A clipboard cleaning log with ticked boxes, text unreadable
+Visual: A gloved hand holding a pen over a checklist, text unreadable
+Text: FALSIFIED CLEANING LOGS · TESTIMONY
+Draw: underline
+
+So was it murder?
+Visual: A courthouse's stone columns on a grey morning
+Big: MURDER?
+
+A federal jury said no, but convicted him of racketeering and fraud.
+Visual: Empty wooden jury box chairs in a courtroom
+Visual: A judge's wooden gavel resting on a closed law book
+Text: ACQUITTED: MURDER · CONVICTED: RACKETEERING
+Cite: Federal jury, Boston, March 2017
+
+Now he's serving fourteen and a half years.
+Visual: A prison corridor with closed steel doors, seen from one end
+Visual: A barbed wire fence against a pale sky
+Timeline: 2012 Outbreak → 2014 Charged → 2017 Convicted → 2021 Resentenced | The NECC case
+Cite: US DOJ, 2021
+
+So why mold in a cleanroom? Prosecutors said: no one stopped.
+Visual: A cleanroom door left ajar with a dark empty room behind it
+Visual: A sealed glass vial standing alone on a steel table
+Text: NOBODY STOPPED PRODUCTION
+Draw: cross

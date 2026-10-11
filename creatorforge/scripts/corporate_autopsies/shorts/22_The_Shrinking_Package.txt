@@ -1,0 +1,71 @@
+The Shrinking Package
+On-screen hook: SAME PRICE. LESS INSIDE.
+Title: Same Price, Less Inside: What Official Data Says About Shrinkflation
+Tags: #CorporateAutopsies #shrinkflation #inflation #groceries #prices
+Source: ONS, The impact of shrinkflation on CPIH, UK (2017), https://www.ons.gov.uk/economy/inflationandpriceindices/articles/theimpactofshrinkflationoncpihuk/howmanyofourproductsaregettingsmaller; BBC, More than 2,500 products subject to shrinkflation, says ONS (Jul 2017), https://www.bbc.co.uk/news/business-40703866; US GAO, Consumer Prices: Trends and Policy Options Related to Shrinking Product Sizes, GAO-25-107451 (Jul 2025), https://www.gao.gov/products/gao-25-107451; Bird & Bird, Shrinkflation in France: new obligation to inform consumers (2024), https://www.twobirds.com/en/insights/2024/france/shrinkflation-nouvelle-obligation-d-informer-les-consommateurs; ABC News (AP), France asks retailers to alert customers to cases of shrinkflation, https://abcnews.go.com/Business/wireStory/france-asks-retailers-alert-customers-cases-shrinkflation-109423913
+
+Same price, less inside. Did you notice?
+Visual: A hand holding a chocolate bar wrapper on a supermarket shelf, text unreadable
+Visual: Two cereal boxes side by side, one slightly shorter, no logos
+Text: SAME PRICE. LESS INSIDE?
+
+It's called shrinkflation. A smaller pack, at the same price.
+Visual: A kitchen scale weighing a small snack bag, digits blurred
+Visual: A supermarket shelf price label beside a row of packets, text unreadable
+Text: SHRINKFLATION
+Draw: circle
+
+Britain's statistics office tracked it from twenty twelve to twenty seventeen.
+Visual: A government office building in London seen across a street
+Visual: A price collector's clipboard beside a supermarket shelf, text unreadable
+Text: ONS · 2012-2017
+Cite: ONS, 2017
+Treat: halftone
+
+Its collectors logged two thousand five hundred twenty-nine shrinking price quotes.
+Visual: A hand ticking items on a printed price survey sheet, text unreadable
+Visual: Rows of grocery packets on a shelf seen at eye level
+Chart: 2,529 vs 614 | price quotes: shrank, grew
+Cite: ONS, 2017
+
+Here's the twist. Six hundred fourteen got bigger.
+Visual: A larger family-size snack bag beside a small one on a counter, no logos
+Visual: A tape measure stretched along the side of a cereal box
+Big: BIGGER
+Transition: whip
+
+In America, a government report checked twenty nineteen to twenty twenty-four.
+Visual: The US Capitol dome seen across a lawn on a clear day
+Visual: A printed government report lying on a desk, text unreadable
+Article: Consumer Prices: Trends and Policy Options Related to Shrinking Product Sizes | GAO, July 2025
+
+Here's what it found: shrinking packs added under a tenth of a point overall.
+Visual: A grocery receipt curled on a kitchen counter, text unreadable
+Visual: A pencil resting on a printed line chart, numbers blurred
+Text: < 0.1 POINT OF 34.5% PRICE RISE
+Cite: GAO, Jul 2025
+
+But in household paper, like toilet rolls, it added three points.
+Visual: A stack of toilet paper rolls on a supermarket shelf, no logos
+Visual: A roll of paper towels on a kitchen counter
+Text: HOUSEHOLD PAPER: +3.0 POINTS
+Cite: GAO, Jul 2025
+Big: 3 POINTS
+
+Now France makes large food stores flag shrunken packs.
+Visual: A French supermarket aisle with shoppers seen from behind
+Visual: A small paper shelf notice taped below a product, text unreadable
+Map: France | Shrinkflation notices, July 2024
+Cite: French government order, 2024
+
+Why? The sign shows the old size, the new size, and the price change.
+Visual: A shelf label with two weights printed side by side, text unreadable
+Visual: A finger pointing at a price per kilo on a shelf label, digits blurred
+Text: OLD SIZE → NEW SIZE · UNIT PRICE UP
+Treat: duotone
+
+So did you notice? Check the price per kilo, not the sticker.
+Visual: A shopper seen from behind reading a shelf label in a supermarket
+Visual: Two packets on a kitchen scale, the smaller one tipping lighter
+Text: CHECK THE PRICE PER KILO
+Draw: tick

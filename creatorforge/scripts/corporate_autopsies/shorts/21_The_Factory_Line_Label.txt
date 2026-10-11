@@ -1,0 +1,75 @@
+The Factory-Line Label
+On-screen hook: MADE FOR THE OUTLET?
+Title: Made for the Outlet: Was That Outlet Bargain Ever in the Main Store?
+Tags: #CorporateAutopsies #outletstores #shopping #pricing #consumerrights
+Source: FTC, FTC Advice: How to Shop Wisely at Outlet Malls (Mar 2014), https://www.ftc.gov/news-events/news/press-releases/2014/03/ftc-advice-how-shop-wisely-outlet-malls; Sen. Whitehouse, Sens. and Rep. to FTC: Outlet stores may be misleading consumers (Jan 30, 2014), https://www.whitehouse.senate.gov/news/release/sens-and-rep-to-ftc-outlet-stores-may-be-misleading-consumers; Sen. Markey, same letter, https://www.markey.senate.gov/news/press-releases/sens-and-rep-to-ftc-outlet-stores-may-be-misleading-consumers; Business of Fashion (Reuters), Michael Kors settles US lawsuit alleging deceptive price tags (Jun 2015), https://www.businessoffashion.com/news/news-analysis/michael-kors-settles-us-lawsuit-alleging-deceptive-price-tags/; Bloomberg Law, Michael Kors settles class action for $4.9M, https://news.bloomberglaw.com/product-liability-and-toxics-law/michael-kors-settles-class-action-for-49m-retailer-to-change-outlet-pricing-practices
+
+Was that outlet bargain ever in the store?
+Visual: A clothing rack in an outlet store with bright sale signs, text unreadable
+Visual: A hand flipping a price tag on a folded sweater, text unreadable
+Text: MADE FOR THE OUTLET?
+
+The FTC warns many outlet goods are made only for outlets.
+Visual: A government office building with flags outside, seen across a street
+Visual: Stacks of folded shirts on an outlet store table
+Text: MADE ONLY FOR OUTLETS
+Cite: FTC, Mar 2014
+Treat: halftone
+
+It may differ in quality, the agency says.
+Visual: Two jackets laid side by side on a table, one with no inner lining
+Visual: A hand pinching the thin fabric of a shirt sleeve
+Article: FTC Advice: How to Shop Wisely at Outlet Malls | FTC, March 2014
+
+How much of the stock?
+Visual: An outlet store aisle packed with full clothing racks
+Big: HOW MUCH?
+
+In twenty fourteen, four lawmakers cited an analyst estimate.
+Visual: A signed letter on official paper lying on a desk, text unreadable
+Visual: The US Capitol dome seen across a lawn on a clear day
+Text: 3 SENATORS + 1 REPRESENTATIVE · JAN 2014
+Cite: Letter to FTC, Jan 2014
+Transition: whip
+
+Upwards of eighty-five percent, made exclusively for outlets.
+Visual: Boxes of new clothing stacked in a stockroom, labels unreadable
+Visual: A sewing factory floor with rows of machines, no people visible
+Pie: 85% | made only for outlets (analysts' estimate)
+Cite: Letter to FTC, Jan 2014
+
+But only some brands put a different label on outlet lines.
+Visual: A close-up of a sewn clothing label inside a collar, text unreadable
+Visual: Two garment tags side by side on a table, text unreadable
+Text: DIFFERENT LABEL? NOT ALWAYS
+Draw: circle
+Treat: duotone
+
+And then there's the price tag.
+Visual: A hand holding a paper price tag with two prices, text unreadable
+Visual: A red sale sticker pressed onto a white tag
+Big: PRICE TAG
+
+The lawmakers flagged "compare at" prices on items never sold in regular stores.
+Visual: A price tag with a crossed-out higher price, digits blurred
+Visual: A regular department store window with empty mannequins, no logos
+Receipt: Compare at $98 · *Outlet price $39 · You save $59
+Cite: Letter to FTC, Jan 2014
+
+One brand, Michael Kors, settled a lawsuit for about four point nine million dollars.
+Visual: A courthouse's stone front steps on a grey morning
+Visual: A stack of legal papers bound with a clip on a desk, text unreadable
+Text: $4.88M SETTLEMENT · 2015
+Cite: Reuters, Jun 2015
+
+It admitted no wrongdoing, but agreed to change how its outlet tags read.
+Visual: A hand attaching a new paper tag to a handbag strap, text unreadable
+Visual: A label printer feeding out blank price tags
+Text: NO ADMISSION · TAGS CHANGED
+Draw: underline
+
+So, was it ever in the store? Ask: is this made for outlet?
+Visual: A shopper seen from behind holding a sweater up at a store counter
+Visual: A folded sweater on a counter with its tag turned over, text unreadable
+Text: ASK: MADE FOR OUTLET?
+Draw: tick
