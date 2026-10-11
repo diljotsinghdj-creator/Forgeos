@@ -264,7 +264,7 @@ pkill -f "cloudflared tunnel" 2>/dev/null || true
 nohup "$HOME_DIR/cloudflared" tunnel --no-autoupdate --url "http://127.0.0.1:$PORT" > tunnel.log 2>&1 &
 URL=""
 for _ in $(seq 1 45); do
-  URL=$(grep -oE 'https://[a-z0-9-]+\.trycloudflare\.com' tunnel.log | head -1 || true)
+  URL=$(grep -aoE 'https://[a-z0-9-]+\.trycloudflare\.com' tunnel.log | head -1 || true)
   [ -n "$URL" ] && break
   sleep 1
 done
