@@ -130,6 +130,7 @@ Lustig noticed something most readers missed. The rumour was believable.
 Visual: A man's gloved hand folding a newspaper
 Visual: A red pen underlining one sentence in a newspaper column, print blurred
 Archive: 1920s
+Big: BELIEVABLE
 
 A believable rumour is raw material. What would he build from it?
 Visual: Iron ingots stacked high in an old warehouse
@@ -178,6 +179,8 @@ Archive: 1920s
 It would be dismantled.
 Visual: Workers with a crane taking apart an iron tower in an old photograph
 Archive: 1920s
+Big: DISMANTLED
+Transition: match
 
 And one dealer would win the contract for the iron.
 Visual: A contract and fountain pen on a polished table, text unreadable
@@ -199,6 +202,7 @@ But there was one more instruction, and it mattered most.
 Visual: A gloved hand placing one sealed envelope on a meeting table
 Visual: A finger pressed on a closed envelope, holding it shut
 Archive: 1920s
+Transition: whip
 
 The deal had to stay secret, to avoid a public outcry.
 Visual: A hand drawing a heavy curtain across a tall hotel window
@@ -206,6 +210,7 @@ Visual: A crowd of 1920s Parisians gathered in a street, seen from far away
 Text: KEEP THIS CONFIDENTIAL
 Bubble: This must stay secret. No outcry.
 Archive: 1920s
+Big: SECRET
 
 Notice what that one rule does. Nobody could check with anyone else.
 Visual: A brass padlock on a bundle of letters
@@ -233,6 +238,7 @@ That expertise made the offer feel real.
 Visual: A pencil calculation on a scrap of paper, figures blurred
 Visual: A red tick beside a column of figures on a page, figures blurred
 Archive: 1920s
+Transition: match
 
 It was exactly their kind of deal.
 Visual: Two hands shaking over a table, seen from above
@@ -256,6 +262,7 @@ Archive: 1920s
 His weak spot? Ambition.
 Visual: A wooden ladder leaning against a tall brick wall
 Archive: 1920s
+Big: AMBITION
 
 He was keen to be taken seriously by older dealers.
 Visual: A worn business ledger open under a desk lamp, figures blurred
@@ -284,6 +291,7 @@ Lustig confessed. Not to the fraud, but to being corrupt.
 Visual: Two men talking quietly in a hotel corner, seen from behind
 Visual: Two hands passing a folded paper under a table
 Archive: 1920s
+Transition: flash
 
 He hinted that a modest official salary never went far.
 Visual: A few coins in an open palm
@@ -294,6 +302,7 @@ And then? Poisson understood. A bribe was expected.
 Visual: A brandy glass set down on a side table
 Visual: A hand sliding an envelope slowly across a table
 Archive: 1920s
+Big: BRIBE
 
 And that bribe convinced him the official was real.
 Visual: A hand patting a suit jacket's inside pocket
@@ -366,6 +375,7 @@ Then he tried the very same trick.
 Visual: A second set of sealed envelopes fanned out on a desk
 Visual: Men in hats gathered at a hotel meeting table, seen from behind
 Archive: 1920s
+Article: The Man Who Sold the Eiffel Tower. Twice. | Smithsonian Magazine, 2016
 
 This time a dealer went to the police, and Lustig slipped away.
 Visual: A man in a coat climbing the steps of a police station, seen from behind
@@ -403,6 +413,7 @@ Visual: A hidden compartment behind a sliding wooden panel
 Draw: arrow
 Split: What came out | What was hidden
 Archive: 1920s
+Transition: flash
 
 After a few notes, the box printed nothing. By then, he was gone.
 Visual: A blank sheet of paper sliding out of a slot
@@ -455,6 +466,7 @@ Visual: A sheet of uncut banknotes on an old printing press
 Visual: An ink roller on a metal printing plate
 Stock: old printing press
 Archive: 1920s
+Transition: match
 
 In the United States, Lustig moved into real counterfeiting.
 Visual: A 1930s American city street with old cars and tall buildings
@@ -492,12 +504,14 @@ Visual: Knotted white bedsheets tied into a rope, close-up
 Visual: A bare iron bunk stripped of its sheets
 Draw: circle
 Archive: 1930s
+Big: BEDSHEETS
 
 But he was recaptured in Pittsburgh within a month.
 Visual: A red pin pushed into Pittsburgh on an old map
 Visual: A 1930s Pittsburgh street with steel mill smoke in the distance
 Place: PITTSBURGH
 Archive: 1930s
+Transition: whip
 
 A New York judge sentenced him to twenty years.
 Visual: A judge's gavel on a wooden bench in an old courtroom
@@ -510,6 +524,7 @@ Visual: Fog rolling over Alcatraz island prison in San Francisco Bay
 Stock: alcatraz island
 Place: ALCATRAZ
 Archive: 1930s
+Big: ALCATRAZ
 
 He died in federal custody in nineteen forty-seven, in Springfield, Missouri.
 Visual: A plain identity card on a steel table, text unreadable

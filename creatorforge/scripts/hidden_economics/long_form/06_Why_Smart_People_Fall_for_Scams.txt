@@ -30,6 +30,7 @@ He had actually chaired the Nasdaq.
 Visual: A glass office tower lobby with marble floors
 Visual: An electronic ticker on a building, text unreadable
 Text: BERNARD MADOFF · FORMER NASDAQ CHAIRMAN
+Big: NASDAQ
 
 His clients' statements showed nearly sixty-five billion dollars. Much of it never existed.
 Visual: A stack of printed account statements on a desk, text unreadable
@@ -143,6 +144,7 @@ Visual: Ofcom's riverside office building in London
 Visual: Hands typing on a keyboard in a dark room
 Text: NUMBERS CAN BE SPOOFED
 Draw: cross
+Transition: flash
 
 Here's the problem. Caller display is a label anyone can type.
 Visual: A hand writing on a blank sticky name badge, writing unreadable
@@ -151,6 +153,7 @@ Visual: A label maker printing a strip of tape
 It was never an identity check.
 Visual: A passport and a driving licence on a desk, details unreadable
 Visual: A blank identity card crossed through in red pen
+Big: NEVER
 
 A fake call can seem to come from your bank.
 Visual: A high-street bank branch front, its sign unreadable
@@ -179,6 +182,7 @@ Map: United Kingdom | calls faking UK numbers
 But Ofcom says some still get through.
 Visual: A single cable still plugged into a junction box
 Visual: A letterbox flap pushed open by a delivered letter
+Transition: match
 
 Sam knows all this in theory.
 Visual: A man seen from behind beside a shelf of finance books
@@ -230,6 +234,7 @@ Visual: University of Exeter campus buildings on a green hillside
 Visual: A man seen from behind striding confidently along a city pavement
 Place: EXETER · 2009
 Cite: OFT / University of Exeter, 2009
+Big: OVER-CONFIDENCE
 
 And people who knew a scam's subject, like investments?
 Visual: Investment brochures fanned across a coffee table, logos blank
@@ -241,6 +246,7 @@ Visual: A stockbroker's office with tidy shelves of reports
 Text: MORE KNOWLEDGE, MORE RISK
 Draw: circle
 Cite: OFT / University of Exeter, 2009
+Article: The psychology of scams | Office of Fair Trading, 2009
 
 Why? Commentary suggested they engaged with approaches others simply ignored.
 Visual: A hand opening one envelope from a pile of sealed letters
@@ -288,6 +294,7 @@ Visual: An empty library reading desk under a lamp
 It's on your pulse.
 Visual: Two fingers pressed against a wrist, checking a pulse
 Text: THE TARGET IS YOUR PULSE
+Big: PULSE
 
 And if that is true, the usual picture of a victim is wrong.
 Visual: An empty park bench under a streetlight at night
@@ -341,6 +348,7 @@ Draw: arrow
 
 Exactly where Madoff struck.
 Visual: An old photograph of a trading floor pinned to a wall
+Transition: match
 
 And Britain? The same pattern.
 Visual: A busy British high street lined with shop fronts
@@ -382,6 +390,7 @@ Split: Age | Intelligence
 They are a problem of situation.
 Visual: An empty kitchen table at night, a single chair pulled out
 Visual: A phone lying on a table under a single lamp
+Big: SITUATION
 
 The right pressure, at exactly the wrong moment.
 Visual: A tired man seen from behind rubbing his eyes at midnight
@@ -391,6 +400,7 @@ But here's the twist: one category fell. The one about to catch Sam.
 Visual: A red pen arrow drawn downward across graph paper
 Visual: A man seen from behind in an armchair, a mug on the arm
 Text: ONE CATEGORY FELL
+Transition: whip
 
 Impersonation scams, posing as a bank or the police, actually fell again.
 Visual: A police officer's peaked cap on a desk
@@ -433,6 +443,7 @@ And never approve a payment you didn't start.
 Visual: A hand stopping above a signature line on a form
 Visual: A capped pen laid down on a desk
 Text: NEVER APPROVE WHAT YOU DIDN'T START
+Object: card | Bank card
 
 Third, a caller wants it kept secret from your bank?
 Visual: A person seen from behind whispering, a hand cupped to the mouth
@@ -458,6 +469,7 @@ He hangs up. Not rude. He is breaking the script.
 Visual: A thumb pressing the end-call button, the screen going dark
 Visual: A kitchen table, a chair pushed neatly back
 Text: HANG UP
+Big: HANGS UP
 
 Then he calls his bank on a number he found himself.
 Visual: Hands turning a bank card over to its back, details unreadable
@@ -511,6 +523,7 @@ But what if the money has already gone?
 Visual: An empty wallet lying open on a kitchen table
 Visual: A bank passbook showing a final empty line, text unreadable
 Text: ALREADY SENT IT?
+Transition: whip
 
 Call your bank immediately. Speed matters.
 Visual: A man seen from behind hurrying along a wet street
@@ -560,6 +573,7 @@ His real bank has no record of any call.
 Visual: A printed call log pinned to a desk, text unreadable
 Visual: An empty in-tray on an office desk
 Text: NO RECORD OF ANY CALL
+Transition: flash
 
 His savings never moved. His expertise nearly moved them for him.
 Visual: A stack of coins untouched on a table in morning sun
@@ -578,6 +592,7 @@ Visual: A hand gripping a mug tightly
 Notice what scams are built to remove? The pause.
 Visual: A gap in a garden fence being boarded shut
 Visual: A finger pressing fast-forward on an old cassette player
+Big: PAUSE
 
 So the pause is your most valuable defence.
 Visual: A cup of tea cooling on a windowsill

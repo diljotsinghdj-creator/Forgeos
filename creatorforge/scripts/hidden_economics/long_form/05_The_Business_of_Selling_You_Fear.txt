@@ -24,6 +24,7 @@ And only if a terrorist attack killed you.
 Visual: An airport security checkpoint with an empty queue barrier
 Visual: A single typed page with one clause circled in red, text unreadable
 Text: POLICY A · TERRORISM ONLY
+Transition: match
 
 Here's the catch. The other paid out if you died on that flight.
 Visual: A thick ring-bound document lying on a desk, text unreadable
@@ -45,6 +46,7 @@ Visual: A small pile of coins on a thin booklet, a thick folder bare beside it
 Text: Johnson et al., 1993
 Draw: circle
 Cite: Johnson et al., J Risk Uncertainty 1993
+Transition: flash
 
 One word did that to a price.
 Visual: A newspaper with one word circled in red pen, text unreadable
@@ -113,6 +115,8 @@ But the answers leaned towards dramatic, memorable deaths.
 Visual: A tornado funnel crossing open farmland under dark clouds
 Visual: A shark fin cutting through grey sea water
 Draw: circle
+Big: DRAMATIC
+Transition: whip
 
 And away from quiet, common ones.
 Visual: An empty hospital bed in a quiet ward
@@ -142,6 +146,7 @@ Visual: Scissors snipping out a short column of newsprint, print unreadable
 Visual: A tall pile of snipped clippings on a desk
 Text: Combs & Slovic, 1979
 Cite: Combs & Slovic, Journalism Quarterly 1979
+Article: Newspaper coverage of causes of death | Journalism Quarterly, 1979
 
 Not how often it actually killed.
 Visual: A thin pile of official record cards on a desk
@@ -185,6 +190,7 @@ The same economists named fear's next trick. Action bias.
 Visual: A hand gripping a door handle in a dim hallway
 Visual: A person seen from behind hurrying down a garden path
 Text: ACTION BIAS
+Big: ACTION BIAS
 
 When something frightens us, doing anything feels better than doing nothing.
 Visual: A hand flicking a light switch on a bare wall
@@ -213,6 +219,7 @@ Visual: Three brochures laid out side by side on a cafe table, text unreadable
 But a frightened buyer compares less and asks fewer questions.
 Visual: A hand pushing a stack of brochures aside unread
 Visual: An unopened comparison booklet still in its plastic wrapper
+Transition: whip
 
 So the contest drifts from value towards whoever frightens best.
 Visual: A billboard showing a stormy sky over a house, text unreadable
@@ -299,6 +306,7 @@ Here is the uncomfortable twist. Sometimes fear is exactly what saves you.
 Visual: Grey smoke curling under a closed door
 Visual: A family seen from behind standing outside their house at night
 Text: THE TWIST
+Big: TWIST
 
 Home Office analysis looked at house fires in England.
 Visual: A map of England on a desk with red circles over scattered towns
@@ -332,6 +340,7 @@ Visual: A firefighter's helmet hanging on a hook
 Instead, it is a reason to fear accurately.
 Visual: A magnifying glass over a photograph, part of it sharp
 Visual: A ruler laid across a printed bar chart, text unreadable
+Big: ACCURATELY
 
 Even the advertising rules accept this.
 Visual: A heavy rulebook falling open on a desk, text unreadable
@@ -349,6 +358,7 @@ Quote: must not cause fear or distress without justifiable reason | CAP Code, ru
 So the problem was never fear. It is proportion.
 Visual: A smoke alarm and a burglar alarm box side by side on a table
 Visual: An old brass balance scale with small weights on both pans
+Big: PROPORTION
 
 Then how do you tell proportionate fear from manufactured fear?
 Visual: Two printed adverts side by side on a desk, text unreadable
@@ -440,6 +450,8 @@ If the clock starts again, there was never really a deadline.
 Visual: An oven clock blinking back to zero in a dark kitchen
 Visual: A paper wall calendar with no date circled
 Draw: cross
+Big: NEVER
+Transition: match
 
 The law can catch a fake clock. Only you can catch the fear.
 Visual: A sealed evidence bag on a police desk
@@ -480,6 +492,7 @@ Text: £312 A YEAR · ILLUSTRATION
 She had never added them up. Have you?
 Visual: A pencil beside an empty sum line on a scrap of paper
 Visual: A calculator lying beside a mug of tea
+Object: stack | 26 | £26 a month · illustration
 
 She keeps the one she actually needs, and drops the other two.
 Visual: A hand setting one brochure aside on a table
@@ -540,6 +553,8 @@ Visual: An empty wallet lying open on a table
 Visual: A front door chain hanging unlatched
 Visual: A thick envelope of cash left on a doorstep
 Text: FEAR + URGENCY
+Big: STEAL
+Transition: whip
 
 Next time, the version that adds authority.
 Visual: A hand reaching for a ringing telephone
