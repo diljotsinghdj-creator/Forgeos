@@ -19,6 +19,7 @@ He and his wife lost their personal savings too.
 Visual: An empty leather wallet lying open on a newspaper
 Visual: Two wedding rings resting beside an empty savings passbook
 Text: PERSONAL SAVINGS · GONE
+Treat: halftone
 
 And the man who took it? No back-street crook.
 Visual: A busy stock exchange trading floor in 2008
@@ -39,6 +40,7 @@ Visual: A sheet of blank paper on a bare desk
 Text: ≈$65bn ON PAPER
 Draw: cross
 Cite: US Attorney SDNY, 2009
+Treat: halftone
 
 In June twenty-oh-nine, he was sentenced to a hundred and fifty years.
 Visual: The stone columns and steps of a New York federal courthouse
@@ -138,6 +140,7 @@ Surely that proves it is real?
 Visual: A man seen from behind standing still in his kitchen
 Visual: A man's hand rubbing the back of his neck, seen from behind
 Text: PROOF?
+Search: can a caller fake their phone number | Can caller display be faked? · Is a matching number proof?
 
 It doesn't. Ofcom warns that criminals can fake the number you see.
 Visual: Ofcom's riverside office building in London
@@ -247,6 +250,7 @@ Text: MORE KNOWLEDGE, MORE RISK
 Draw: circle
 Cite: OFT / University of Exeter, 2009
 Article: The psychology of scams | Office of Fair Trading, 2009
+Treat: duotone
 
 Why? Commentary suggested they engaged with approaches others simply ignored.
 Visual: A hand opening one envelope from a pile of sealed letters
@@ -340,6 +344,7 @@ Visual: A rising stock chart on a laptop screen, figures unreadable
 Visual: A glossy investment brochure on a desk, text unreadable
 Text: Investment scams: $7.9bn
 Cite: FTC, March 2026
+Squares: $7.9bn vs $15.9bn | investment scams, all reported fraud
 
 Notice the subject? The one where people feel most knowledgeable.
 Visual: A financial newspaper folded on a desk, headline circled in red, unreadable
@@ -518,6 +523,7 @@ Text: report@phishing.gov.uk
 And never use a link or number the message itself gives you.
 Visual: A finger hovering over a link in a printed letter, text unreadable
 Visual: A hand feeding paper into a shredder
+Chat: Unknown number | them: Unusual payment on your account · them: Call us now on the number below · them: Or tap this link to secure it
 
 But what if the money has already gone?
 Visual: An empty wallet lying open on a kitchen table
@@ -574,6 +580,7 @@ Visual: A printed call log pinned to a desk, text unreadable
 Visual: An empty in-tray on an office desk
 Text: NO RECORD OF ANY CALL
 Transition: flash
+Treat: duotone
 
 His savings never moved. His expertise nearly moved them for him.
 Visual: A stack of coins untouched on a table in morning sun

@@ -27,7 +27,7 @@ And the same design is in scam messages people receive every day.
 Visual: A smartphone on a kitchen table showing a new message, text unreadable
 Visual: A pile of post on a doormat, text unreadable
 Text: SAME STRUCTURE, 2020s
-Screen: New message | Unknown sender · *Don't tell anyone · Reply
+Chat: Unknown number | them: Urgent: action needed on your account · them: Don't tell anyone
 
 By the end, you'll know its four parts.
 Visual: Four old photographs taped in a row on a wooden desk
@@ -49,6 +49,7 @@ Archive: 1920s
 
 Can we trust the details?
 Visual: A magnifying glass over a faded document, print blurred
+Search: did a con man really sell the Eiffel Tower | The man who sold the Eiffel Tower · How true is the tower story?
 
 Only partly. They come from his later fame, so accounts vary.
 Visual: A dusty archive shelf of bound volumes
@@ -96,6 +97,7 @@ Visual: A finger tracing a column of old newsprint, print blurred
 Stock: paris 1920s street
 Place: PARIS · 1925
 Archive: 1920s
+Treat: halftone
 
 It was costly to maintain. Worse, it needed serious repair.
 Visual: Workers painting the iron girders of the Eiffel Tower in an old photograph
@@ -149,6 +151,7 @@ Visual: A hand pressing an embossing seal into thick paper
 Visual: A printer's workshop with an old letterpress
 Draw: box
 Archive: 1920s
+Treat: halftone
 
 Then he invited a handful of scrap-metal dealers to a meeting.
 Visual: Sealed envelopes with red wax seals fanned out on a desk
@@ -292,6 +295,7 @@ Visual: Two men talking quietly in a hotel corner, seen from behind
 Visual: Two hands passing a folded paper under a table
 Archive: 1920s
 Transition: flash
+Treat: duotone
 
 He hinted that a modest official salary never went far.
 Visual: A few coins in an open palm
@@ -485,6 +489,7 @@ Visual: A wall covered in red pins and string
 Visual: 1930s agents in hats and suits walking down a corridor, seen from behind
 Stock: secret service 1930s
 Archive: 1930s
+Treat: halftone
 
 He was arrested in New York in May, nineteen thirty-five.
 Visual: A 1930s New York skyline seen from the river
@@ -656,6 +661,7 @@ Draw: cross
 Or to keep a too-good investment secret.
 Visual: A folder of share certificates tucked under a sofa cushion
 Visual: A laptop lid being closed on a dark desk
+Chat: Unknown number | them: This return is only for a few people · them: Keep it between us
 
 And afterwards, many victims feel too ashamed to tell anyone.
 Visual: A person seen from behind sitting on the stairs
@@ -673,7 +679,7 @@ Place: UNITED STATES · 2024
 
 Over twelve and a half billion dollars.
 Visual: Bundles of dollar banknotes stacked on a table
-Chart: $12.5bn vs $2.95bn | All reported fraud, Imposter scams
+Squares: $12.5bn vs $2.95bn | All reported fraud, Imposter scams
 Cite: FTC, March 2025
 
 Nearly three billion of that went to impostors pretending to be someone trusted.
@@ -752,6 +758,7 @@ Poisson's silence protected Lustig. Yours protects the next scammer.
 Visual: The Eiffel Tower at dusk in an old photograph
 Visual: A dark café table with an empty chair
 Text: SILENCE PROTECTS THE SCAMMER
+Treat: duotone
 
 Next, the trap that takes your money once a month, forever.
 Visual: A subscription contract and a pen on a desk, text unreadable

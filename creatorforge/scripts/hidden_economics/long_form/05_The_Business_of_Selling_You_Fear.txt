@@ -47,6 +47,7 @@ Text: Johnson et al., 1993
 Draw: circle
 Cite: Johnson et al., J Risk Uncertainty 1993
 Transition: flash
+Treat: duotone
 
 One word did that to a price.
 Visual: A newspaper with one word circled in red pen, text unreadable
@@ -110,6 +111,7 @@ Visual: A pencil ticking boxes on a yellowed paper questionnaire, text unreadabl
 Text: Lichtenstein et al., 1978
 Stock: 1970s office paperwork
 Cite: Lichtenstein et al., 1978
+Treat: halftone
 
 But the answers leaned towards dramatic, memorable deaths.
 Visual: A tornado funnel crossing open farmland under dark clouds
@@ -140,6 +142,7 @@ Then a follow-up compared their guesses with newspaper coverage.
 Visual: A stack of old newspapers dropped onto a desk, print unreadable
 Visual: A wooden ruler and a notebook of pencil tallies, text unreadable
 Stock: stack of old newspapers
+Treat: halftone
 
 The guesses tracked how often each cause made the papers.
 Visual: Scissors snipping out a short column of newsprint, print unreadable
@@ -152,6 +155,7 @@ Not how often it actually killed.
 Visual: A thin pile of official record cards on a desk
 Visual: A grey filing cabinet drawer half open in a records office
 Draw: cross
+Treat: halftone
 
 So the news you watch helps price the fear you feel.
 Visual: An old television showing a news broadcast in a living room, text unreadable
@@ -245,6 +249,7 @@ Cite: Tannenbaum et al., Psychological Bulletin 2015
 When did it work best?
 Visual: A magnifying glass resting on an open report, text unreadable
 Text: WHEN DID IT WORK BEST?
+Search: when does a fear message work best | Do fear messages work? · When fear changes behaviour · Fear appeals: what the research says
 
 When the message offered one clear thing to do.
 Visual: A printed health leaflet with one boxed instruction, text unreadable
@@ -307,6 +312,7 @@ Visual: Grey smoke curling under a closed door
 Visual: A family seen from behind standing outside their house at night
 Text: THE TWIST
 Big: TWIST
+Treat: duotone
 
 Home Office analysis looked at house fires in England.
 Visual: A map of England on a desk with red circles over scattered towns
@@ -411,6 +417,7 @@ Still, some deadlines are genuine. A sale really can end.
 Visual: A sale banner across a department store entrance, text unreadable
 Visual: A shop shutter half rolled down at dusk
 Stock: shop shutter closing
+Timer: 09:59 → 00:00 | Sale ends
 
 So what if the deadline is not real?
 Visual: A kitchen timer ticking on a desk
@@ -482,7 +489,7 @@ Thought: Wait, I'm already paying for these?
 Identity monitoring and boiler cover, each bought on another worried evening.
 Visual: A small padlock resting on a passport
 Visual: A gas boiler on a kitchen wall at night
-Chart: £8 + £6 + £12 = £26 | illustration, three plans a month
+Receipt: Every month · ILLUSTRATION | Tonight's plan £8 · *Identity monitoring £6 · Boiler cover £12 · Total £26
 
 With tonight's plan, three hundred and twelve pounds a year.
 Visual: A thick bundle of banknotes held with a rubber band
@@ -559,6 +566,7 @@ Transition: whip
 Next time, the version that adds authority.
 Visual: A hand reaching for a ringing telephone
 Visual: A police officer's peaked cap on a desk
+Chat: Unknown number | them: This is the fraud team · them: Your account is at risk · them: Act before midnight
 
 And why even clever people fall for it.
 Visual: A row of framed diplomas on an office wall, text unreadable
