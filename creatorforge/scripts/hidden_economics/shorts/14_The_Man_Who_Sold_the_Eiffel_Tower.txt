@@ -31,6 +31,7 @@ So why would anyone believe him?
 Visual: A magnifying glass over an official rubber stamp on paper, ink unreadable
 Text: WHY BELIEVE HIM?
 Archive: 1920s
+Transition: whip
 
 He even hinted at a bribe. That made him seem like a real official.
 Visual: A gloved hand sliding a thick envelope across a café table
@@ -38,6 +39,7 @@ Visual: A 1920s official's desk with an inkwell and a brass nameplate, text unre
 Text: THE BRIBE MADE IT FEEL REAL
 Thought: Only a real official asks for a bribe
 Archive: 1920s
+Big: BRIBE
 
 One dealer, André Poisson, paid up. Lustig fled with the cash.
 Visual: A hand counting a stack of 1920s French banknotes on a table
@@ -45,6 +47,7 @@ Visual: A 1920s steam train pulling out of a Paris station
 Stock: 1920s paris street
 Steps: Fake official → Tower for scrap → Hinted bribe → Paid up → Fled | How the con worked
 Archive: 1920s
+Transition: flash
 
 So why did the police never hear about it?
 Visual: An old Paris police station door at night, closed

@@ -26,6 +26,7 @@ Text: THE GUARD WAS OBEYED MOST
 Cite: Bickman, 1974
 Split: In uniform | Plain clothes
 Archive: 1970s
+Transition: match
 
 A guard had no power here. So why?
 Visual: A pair of empty hands held open, palms up, against a wall
@@ -33,6 +34,7 @@ Visual: A pedestrian handing a coin to a uniformed man, seen from behind
 Text: SO WHY COMPLY?
 Thought: Better do what he says
 Archive: 1970s
+Big: NO POWER
 
 Uniforms, titles and crests are shortcuts to trust.
 Visual: A metal badge on a desk beside an embossed letterhead, text unreadable
@@ -45,6 +47,7 @@ Visual: A pile of official-looking envelopes on a doormat, crests blurred
 Visual: A phone showing a text message with an official crest, text unreadable
 Text: FAKE "OFFICIAL" MESSAGES
 Draw: arrow
+Transition: whip
 
 It logged over a hundred and seventy thousand scam reports in a year.
 Visual: Rows of filing cabinets in a government office
@@ -58,6 +61,7 @@ Visual: A government office building with stone steps on a grey day
 Text: HMRC NEVER TEXTS ABOUT REFUNDS
 Draw: underline
 Cite: HMRC, Aug 2025
+Big: NEVER
 
 Same request, new clothes. Judge the request, not the uniform.
 Visual: A guard's jacket hanging on a coat hook by a door

@@ -19,6 +19,8 @@ Steps: Fake alarm → Tight deadline → Move everything → Savings gone | How 
 Why the clock? A deadline leaves no time to check.
 Visual: An old alarm clock ticking on a desk
 Visual: Car keys and a coat grabbed in a hurry from a hallway hook
+Transition: whip
+Big: NO TIME
 
 Lloyds Bank says seven words give the whole scam away. Which seven?
 Visual: A bank branch front on a British high street
@@ -32,6 +34,7 @@ Visual: An empty metal cash box with its lid open
 Text: MOVE YOUR MONEY TO A SAFE ACCOUNT
 Document: Move your money to a safe account | Lloyds Bank, Aug 2026
 Cite: Lloyds Bank, Aug 2026
+Transition: flash
 
 Real banks never ask that. The account is the scammer's.
 Visual: A bank's printed fraud warning leaflet on a counter, text unreadable
@@ -42,6 +45,7 @@ Split: Real bank | Scammer
 
 And the cost?
 Visual: An open, empty purse lying on a kitchen table under a lamp
+Big: COST?
 
 At one bank, the average victim lost three and a half thousand pounds.
 Visual: A pensioner seen from behind sitting alone at a kitchen table

@@ -39,6 +39,7 @@ Visual: A hand swinging a mallet onto a wooden post in a front lawn
 Chart: 76% vs 17% | small yes first, asked cold
 Cite: Freedman & Fraser, 1966
 Archive: 1960s
+Transition: flash
 
 Why? Saying yes once changes how you see yourself.
 Visual: A hand signing a short petition sheet on a table, text unreadable
@@ -46,12 +47,14 @@ Visual: A hand placing a donated tin into a food bank box
 Text: "I'M SOMEONE WHO HELPS"
 Draw: underline
 Cite: Freedman & Fraser, 1966
+Big: YES
 
 Sales funnels often start the same way, with a free quiz or tiny trial.
 Visual: A phone on a desk showing a quiz screen, text unreadable
 Visual: A free paper sample sachet attached to a magazine page
 Text: FICTIONAL INTERFACE
 Split: Free quiz | Tiny trial
+Transition: whip
 
 Scammers start small too.
 Visual: A gloved hand pushing a single coin across a desk

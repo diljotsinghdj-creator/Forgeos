@@ -16,12 +16,15 @@ Visual: Rows of students seen from behind writing at exam desks
 Text: ALERT ALONE = MORE ERRORS
 Stock: students taking exam
 Cite: Stothart et al., JEP, 2015
+Article: The attentional cost of receiving a cell phone notification | Journal of Experimental Psychology, 2015
 
 Nobody even touched the phone. So what happens when you do?
 Visual: An untouched phone lying face down beside an exam paper
 Visual: A half-finished crossword on a desk with the pen put down
 Draw: arrow
 Cite: Stothart et al., JEP, 2015
+Transition: match
+Big: NOBODY
 
 You tap for one thing. The app shows you ten more.
 Visual: A cup of tea going cold beside a sofa at night
@@ -33,6 +36,7 @@ Visual: A phone lying face up on a table with a stack of alerts, text unreadable
 Visual: A person seen from behind sitting on a park bench, hands in lap
 Thought: Do I actually need all these alerts?
 Split: The alerts | Or you
+Transition: whip
 
 Silence every alert that isn't from a person, for one week.
 Visual: A thumb switching off notification toggles on a phone, text unreadable
@@ -45,6 +49,7 @@ Visual: A paper calendar on a desk, seven days crossed off in pencil
 Visual: A hand making tally marks on a notepad
 Text: HOW MANY DID YOU MISS?
 Draw: circle
+Big: MISSED?
 
 One buzz shouldn't cost twenty minutes. Now it doesn't have to.
 Visual: A sunny window over a quiet street in the morning

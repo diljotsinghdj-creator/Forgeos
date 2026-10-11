@@ -16,18 +16,21 @@ Visual: A home video camera on a tripod in a living room
 Text: A SHORT CLIP IS ENOUGH
 Stock: person filming phone video
 Cite: FTC, March 2023
+Big: CLONE
 
 How short? McAfee's tests got an eighty-five percent match from three seconds.
 Visual: A stopwatch on a desk, its hand just past three seconds
 Visual: Two paper printouts of matching sound waves side by side on a desk
 Chart: 85% | voice match from 3 seconds of audio
 Cite: McAfee, May 2023
+Transition: flash
 
 The panic is real. So what can you trust?
 Visual: A hand gripping a phone tightly, screen dark
 Visual: A woman seen from behind in a hallway, one hand on the wall
 Text: WHAT CAN YOU TRUST?
 Thought: She's in trouble. I have to help.
+Big: PANIC
 
 The FTC's advice is blunt. Don't trust the voice.
 Visual: A printed consumer warning on a desk, one line circled in red, text unreadable
@@ -48,6 +51,7 @@ But what if she truly can't answer?
 Visual: An empty bed in a dark bedroom, the door ajar
 Text: NO ANSWER?
 Screen: Calling | Saved number · Ringing · *No answer
+Transition: whip
 
 Agree a family code word today. A clone can't know it.
 Visual: A family seen from behind sitting at a kitchen table

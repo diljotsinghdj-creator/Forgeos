@@ -22,6 +22,8 @@ Visual: A researcher seen from behind at a lab desk covered in wires
 Text: BAD NEWS · STRONGER BODY RESPONSE
 Draw: circle
 Cite: Soroka et al., PNAS, 2019
+Transition: flash
+Big: HARDER
 
 Yet many people showed no such bias at all.
 Visual: A row of people seen from behind watching a TV screen
@@ -45,6 +47,8 @@ Steps: Vivid story → Easy to recall → Feels common | Why bad news feels ever
 
 But here's the catch.
 Visual: A hand holding a single newspaper clipping up to a window, text unreadable
+Transition: whip
+Big: CATCH
 
 A true story can still say nothing about odds.
 Visual: A single die resting on a wooden table under a desk lamp

@@ -46,11 +46,14 @@ Visual: Rows of servers in a dark data centre
 Text: ARUP CONFIRMED IT, MAY 2024
 Draw: cross
 Cite: CNN, May 2024
+Transition: flash
+Big: DEEPFAKE
 
 The fix? Check any money request on a separate channel.
 Visual: A hand holding a desk phone receiver in an office
 Visual: A hand knocking on an office door, seen from behind
 Text: VERIFY ON A SEPARATE CHANNEL
+Transition: whip
 
 Now even a face is just a claim.
 Visual: A passport photo page held under a lamp, details blurred

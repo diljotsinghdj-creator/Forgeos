@@ -26,6 +26,7 @@ But what did that deadline actually stop you doing?
 Visual: A pen lying unused beside a closed folder on a desk
 Visual: A pair of reading glasses folded and unused on a table
 Steps: Read exclusions → Check excess → Compare price | What the deadline stopped
+Transition: whip
 
 Reading the exclusions, checking the excess, comparing the price.
 Visual: A magnifying glass over a list of exclusions in fine print, text unreadable
@@ -37,18 +38,21 @@ Split: Exclusions | Compare prices
 So can you undo a four-minute decision?
 Visual: An egg timer lying on its side on a kitchen table
 Text: 4 MINUTES TO DECIDE · ILLUSTRATION
+Big: UNDO?
 
 Many UK online purchases can be cancelled within fourteen days.
 Visual: A paper calendar on a desk with fourteen days linked in red pencil
 Visual: A cardboard parcel on a doormat with a returns label, text unreadable
 Chart: 0 → 14 | days to cancel many online buys
 Cite: Consumer Contracts Regulations 2013
+Transition: flash
 
 There is a catch. Exceptions apply, so read your terms next morning.
 Visual: A printed contract with one clause circled in red pen, text unreadable
 Visual: A cup of coffee on a kitchen table in morning light
 Text: EXCEPTIONS APPLY
 Cite: Citizens Advice
+Big: CATCH
 
 Four minutes to buy. Often fourteen days to rethink. Use them.
 Visual: A phone lying face down on a kitchen table

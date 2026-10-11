@@ -21,6 +21,7 @@ The flash sale timer? The seller. A rush leaves no time to compare.
 Visual: A shop window with a big flash sale banner, text unreadable
 Visual: A shop owner seen from behind at a till counting cash
 Chart: 10 → 0 | minutes left · fictional sale
+Transition: whip
 
 The midnight buzz? The app. Your attention is what it sells.
 Visual: A phone glowing on a pillow in a dark bedroom, screen blurred
@@ -38,6 +39,8 @@ Only a scammer needs you to skip checking.
 Visual: A figure standing in a dark doorway, seen from far away
 Visual: A dimly lit call-centre desk with an abandoned headset
 Text: WHO NEEDS YOU NOT TO CHECK?
+Transition: flash
+Big: SCAMMER
 
 The question proves no one guilty. It reveals the incentive.
 Visual: A magnifying glass over coins and receipts on a desk, figures unreadable
@@ -50,3 +53,4 @@ Who benefits if I act right now? Ask it every time.
 Visual: A hand pausing on a front door handle before opening it
 Visual: Three phones lying face down on a desk in morning light
 Text: PAUSE. VERIFY. CHOOSE.
+Big: EVERY TIME
