@@ -38,8 +38,19 @@ CreatorForge -> Generate -> Script. CreatorForge reads it like this:
                         "Split: What you see | What you pay"   (the line needs 2 Visual: lines)
   Archive: .......... a history line: its pictures look like old photographs with an old-film look, e.g.
                         "Archive: 1920s"
+  Object: ........... a simple 3D object, e.g. "Object: coin | £1 | one pound coin" (spins, lands face-on),
+                        "Object: card | Subscription card" (flips), "Object: bars | 12, 45, 80 | 2019, 2021, 2023 | Title"
+                        (3D bars rise), "Object: stack | 12 | twelve months of £10" (coins pile up)
+  Article: .......... the source on screen: a plain page with the publisher's name and the REAL headline, the camera
+                        pushes in and it gets highlighted, e.g. "Article: <exact headline> | FTC, July 2024"
+  Big: .............. one or two words slam in huge over the picture, e.g. "Big: FREE"
+  Transition: ....... the cut into this line: tear (paper rips away), match (zoom-through), whip, iris, flash, dip,
+                        slide or wipe. Chapter cards tear and statements dip to dark automatically.
   One full-frame graphic per spoken line: Chart, Map, Globe, Steps, Timeline, Icons, Chapter, Quote, Screen,
-  Document or Statement. (Split and Archive can go anywhere.)
+  Document, Statement, Object or Article. (Split, Archive, Big and Transition can go anywhere.)
+  Automatic: Archive lines use real public-domain archive photos (Wikimedia Commons) when one matches; pen marks
+  and bubbles move with the picture they sit on; long videos change music track at each chapter; the channel's
+  name signs off the video and sits small on chapter cards and statements (set the name in the Brand kit).
   Sound design is automatic: risers build into chapter cards and statements, hits and pops land on graphics,
   whooshes carry the globe and screen push-ins, and the music dips under chapters and statements.
   Every photo cut-out also moves with 2.5D depth automatically (no key needed).
