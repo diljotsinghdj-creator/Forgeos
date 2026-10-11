@@ -24,11 +24,11 @@ Give it one. Copy the item onto a list, then close the app.
 Visual: A pen adding a line to a paper notepad under a lamp, writing unreadable
 Visual: A thumb closing an app on a smartphone, text unreadable
 Stock: writing list notepad
-Draw: tick
+Screen: Your basket | Buy now · Checkout · *Save for later
 
 Sleep on it. Twenty-four hours, no peeking.
 Visual: A dim bedroom at night, curtains drawn and lights off
-Chart: 24 | hours · no peeking
+Text: 24 HOURS · NO PEEKING
 
 Why would one night change anything?
 Visual: A sand timer on a desk, its last grains falling
@@ -50,3 +50,4 @@ So at eleven tonight, let the button wait until breakfast.
 Visual: A phone face down on a nightstand beside a glass of water
 Visual: A plate of toast and a boiled egg on a breakfast table
 Text: WAIT ONE NIGHT
+Split: Tonight | Breakfast

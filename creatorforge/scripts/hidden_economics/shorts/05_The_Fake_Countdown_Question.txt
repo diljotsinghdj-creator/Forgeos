@@ -4,7 +4,7 @@ Title: The Timer Hit Zero, the Sale Didn't End: Fake Countdown Clocks
 Tags: #HiddenEconomics #countdowntimer #darkpatterns #onlineshopping #consumerrights
 Source: Mathur et al., Dark Patterns at Scale, Findings from a Crawl of 11K Shopping Websites, Proc. ACM HCI (CSCW) 2019 (https://arxiv.org/abs/1907.07032); project page (https://webtransparency.cs.princeton.edu/dark-patterns)
 
-The clock hit zero. The deal didn't end.
+Timer hit zero. The sale didn't end. Why?
 Visual: An old kitchen egg timer showing zero on a desk
 Visual: A smartphone showing a sale page with a countdown bar, text unreadable
 Text: 00:00:00 · STILL ON SALE?
@@ -19,6 +19,7 @@ Visual: A smartphone showing a product page with a red timer bar, text unreadabl
 Visual: Two paper catalogues open side by side on a table, text unreadable
 Text: FICTIONAL SHOP · 10:00
 Thought: Quick, before it runs out!
+Screen: Fictional shop | Sale price · Add to basket · *Offer ends in 10:00
 
 But how often are these clocks honest?
 Visual: Dozens of old wall clocks on a wall, each showing a different time
@@ -42,6 +43,7 @@ Visual: A phone showing a countdown at zero on a shop counter, text unreadable
 Visual: A card machine on a shop counter showing payment approved, text unreadable
 Text: TIMER ENDED · OFFER DIDN'T
 Draw: underline
+Split: Timer ended | Offer didn't
 Cite: Mathur et al., Princeton, 2019
 
 So how do you tell? Let it run out, or return tomorrow.

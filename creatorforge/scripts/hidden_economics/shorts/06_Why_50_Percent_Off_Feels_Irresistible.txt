@@ -9,6 +9,7 @@ Visual: A paper shopping bag standing on a hallway floor
 Visual: An open wallet with only a few coins left inside
 Text: SAVED £50? SPENT £50?
 Draw: underline
+Split: Saved £50? | Spent £50
 
 The tag said one hundred, crossed out. Now fifty.
 Visual: A paper price tag on a jacket sleeve, the old price struck through
@@ -27,12 +28,14 @@ Visual: A paper globe on a desk turned to show Africa
 Text: TVERSKY & KAHNEMAN · 1974
 Stock: wheel of fortune spinning
 Cite: Tversky & Kahneman, Science, 1974
+Archive: 1970s
 
 Wheel on ten, the typical guess was twenty-five percent. On sixty-five, forty-five.
 Visual: Two piles of paper slips on a desk, one twice as tall
 Visual: A 1970s university lecture hall with rows of empty wooden seats
 Chart: 25% vs 45% | wheel stopped on 10, wheel stopped on 65
 Cite: Tversky & Kahneman, Science, 1974
+Archive: 1970s
 
 A meaningless number dragged their judgement. That's anchoring.
 Visual: A crumpled scrap of paper with a number on it, on a desk

@@ -31,6 +31,7 @@ Visual: A Victorian street crowd in top hats seen from far away
 Text: THORSTEIN VEBLEN · 1899
 Stock: victorian street crowd
 Cite: Veblen, Theory of the Leisure Class, 1899
+Archive: 1890s
 
 Conspicuous consumption. Spending in order to be seen spending.
 Visual: A row of polished sports cars parked outside a hotel, badges hidden
@@ -39,15 +40,20 @@ Text: CONSPICUOUS CONSUMPTION
 Stock: shop windows evening street
 Thought: Everyone will notice these bags
 Cite: Veblen, Theory of the Leisure Class, 1899
+Statement: Spending in order to be *seen* spending.
+
+So how do you catch yourself? Try this.
+Visual: A hand holding a glossy shopping bag above a hallway table, logo hidden
 
 Strip the logo off in your head. Still want it? Buy it.
 Visual: A hand peeling a brand label off a jacket
 Visual: A hand passing cash across a shop counter, seen from behind
 Text: NO LOGO · STILL WANT IT?
-Steps: Strip the logo → Still want it? → Yes: buy it → No: who for? | The logo test
+Split: No logo | Still want it?
 
 If not, ask who the watch was really for.
 Visual: A full-length mirror in a hallway reflecting an empty room
 Visual: A wristwatch left on a bedside table in a quiet room
 Text: WHO WAS IT FOR?
 Draw: circle
+Steps: Strip the logo → Still want it? → Yes: buy it → No: who for? | The logo test

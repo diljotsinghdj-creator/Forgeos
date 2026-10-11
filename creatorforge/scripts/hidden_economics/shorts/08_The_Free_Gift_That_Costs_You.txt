@@ -10,6 +10,7 @@ Visual: Two coins dropping into a small metal cash tin on a table
 Text: A FREE DRINK. A DOUBLE PAYBACK.
 Draw: arrow
 Cite: Regan, JESP, 1971
+Split: Free drink | Paid double
 
 Psychologist Dennis Regan tested it in nineteen seventy-one.
 Visual: A 1970s university corridor with paintings on easels, nobody close
@@ -17,20 +18,24 @@ Visual: A 1970s university campus with students walking far away
 Text: DENNIS REGAN · CORNELL · 1971
 Stock: 1970s university campus
 Place: CORNELL · 1971
+Archive: 1970s
 
 Then his helper asked them to buy raffle tickets.
 Visual: A hand holding out a roll of paper raffle tickets across a table
 Thought: Well, he did buy me a drink...
+Archive: 1970s
 
 Did one drink really change anything?
 Visual: A 1970s classroom with wooden desks and chairs, nobody inside
 Text: DID IT WORK?
+Archive: 1970s
 
 They bought about twice as many tickets. Liking him barely mattered.
 Visual: A handwritten tally sheet with two columns of marks, text unreadable
 Visual: Two people seen from behind chatting on a wooden bench
 Chart: 1x vs 2x | no drink, free drink
 Cite: Regan, JESP, 1971
+Archive: 1970s
 
 Cialdini saw airport Hare Krishna members hand out flowers, then ask for money.
 Visual: A busy 1970s airport hall seen from a distance
@@ -39,6 +44,7 @@ Text: A FLOWER, THEN A REQUEST
 Stock: 1970s airport terminal
 Draw: circle
 Cite: NPR, 2012
+Archive: 1970s
 
 Shop samples work the same way. But why?
 Visual: A tray of tiny paper sample cups on a shop counter

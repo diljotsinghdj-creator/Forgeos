@@ -9,6 +9,7 @@ Visual: A torn January page from a wall calendar lying on a kitchen table
 Visual: A printed bank statement with one card payment circled in red pen, text unreadable
 Text: JAN: STOPPED · JUN: STILL PAYING
 Draw: circle
+Split: You quit | Still charged
 
 Twelve pounds a month. By June, seventy-two gone.
 Visual: Six small stacks of one-pound coins in a row on a table
@@ -24,6 +25,7 @@ Visual: A hand reaching past an open leather wallet on a desk
 Visual: A smartphone on a desk showing an automatic payment notification, text unreadable
 Text: NO DECISION = NO NOTICE
 Thought: Never even noticed that payment
+Screen: Payment taken | App subscription · £12.00 · *Renews automatically each month
 
 So what does all that forgetting cost the country?
 Visual: An old paper map of Britain spread across a wooden desk

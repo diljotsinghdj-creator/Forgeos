@@ -8,8 +8,9 @@ Visual: A single fifty-pound banknote lying on a wooden table
 Visual: A brand-new sofa wrapped in plastic in a furniture showroom
 Text: £50 OR £600?
 Draw: underline
+Split: What you see | What you pay
 
-Fifty pounds a month, for twelve months, is six hundred.
+Fifty a month, twelve months: six hundred.
 Visual: Twelve torn calendar pages laid in a grid on a desk
 Visual: A row of twelve paper envelopes on a desk, one for each month
 Chart: £50 × 12 = £600 | twelve monthly payments
@@ -27,7 +28,7 @@ Draw: circle
 The total becomes six hundred and twenty. The advert still says fifty.
 Visual: A calculator on a desk showing a long sum, digits blurred
 Visual: A shop window advert with one large price, text unreadable
-Chart: £600 → £620 | with a £20 fee · illustration
+Screen: Payment plan | £50 a month · 12 months · Arrangement fee £20 · *Total £620
 
 Splitting costs can genuinely help budgeting. So where's the risk?
 Visual: Hands writing a household budget in a notebook, writing unreadable

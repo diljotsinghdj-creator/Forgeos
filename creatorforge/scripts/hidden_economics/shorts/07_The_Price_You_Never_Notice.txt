@@ -9,12 +9,13 @@ Visual: A smartphone showing a product page on a desk, text unreadable
 Visual: A card being tapped on a payment terminal at a shop counter
 Text: £30… NOW £41? · ILLUSTRATION
 Thought: Wait, didn't it say thirty?
+Split: On screen | At checkout
 
 Where did eleven go? Delivery, five. Service fee, three. Optional protection, three more.
 Visual: A printed checkout list with extra lines added, text unreadable
 Visual: A ticked checkbox on a phone screen circled in red pen, text unreadable
 Text: ILLUSTRATION
-Chart: £5 vs £3 vs £3 | delivery, service fee, protection
+Screen: Checkout | Item £30 · Delivery £5 · Service fee £3 · *Optional protection £3 · Total £41
 
 That's drip pricing. So is it even allowed?
 Visual: A kitchen tap dripping into a white basin
@@ -38,7 +39,7 @@ Draw: circle
 Place: UK · 2026
 Cite: CMA, April 2026
 
-Four point two million pounds.
+How big? Four point two million pounds.
 Visual: Bundles of banknotes stacked on a desk under a lamp
 Chart: £4.2m | CMA fine · April 2026
 Cite: CMA, April 2026

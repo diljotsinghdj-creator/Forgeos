@@ -10,43 +10,52 @@ Visual: A small paper postal reply coupon lying on an old ledger
 Text: BOSTON, 1920
 Bubble: Fifty percent in forty-five days!
 Place: BOSTON · 1920
+Archive: 1920s
 
 Hand him a hundred dollars, get one fifty back.
 Visual: Old dollar banknotes paper-clipped to a handwritten note on a desk, text unreadable
 Chart: $100 → $150 | promised in 45 days (illustration)
 Cite: Smithsonian National Postal Museum
+Archive: 1920s
 
 His secret, he claimed, was postal coupons bought cheaply in Europe.
 Visual: A 1920s ocean liner docked at a busy harbour, seen from afar
 Visual: An old map of the Atlantic with Europe and Boston marked in red
+Archive: 1920s
 
 So why had so few coupons ever been cashed?
 Visual: An empty wooden post office drawer under a desk lamp
 Text: WHERE WERE THE COUPONS?
 Draw: circle
+Archive: 1920s
 
 Because early investors were paid with newer investors' money.
 Visual: Hands passing sealed envelopes across an old wooden counter
 Visual: A queue of 1920s men in hats seen from behind at an office door
 Text: OLD INVESTORS PAID WITH NEW MONEY
+Split: Old investors | New money
+Archive: 1920s
 
 Roughly fifteen million dollars poured in within about eight months.
 Visual: An old cash register drawer crammed full in a 1920s office
 Visual: Sacks of mail piled on the wooden floor of a 1920s office
 Chart: $15,000,000 | taken in over about 8 months
 Cite: Smithsonian National Postal Museum
+Archive: 1920s
 
-Then reporters started asking questions, and the payouts stopped.
+And then reporters started asking questions, and the payouts stopped.
 Visual: A 1920s newsroom with typewriters on wooden desks, nobody close
 Visual: A paper notice pinned to a wooden board, text unreadable
 Stock: 1920s newspaper printing
 Draw: cross
+Archive: 1920s
 
 By August nineteen twenty, Ponzi was under arrest.
 Visual: A 1920s police car parked outside a brick building, seen from afar
 Visual: Old metal handcuffs lying on a wooden desk beside a ledger
 Stock: 1920s boston street
 Globe: Boston | Ponzi arrested, August 1920
+Archive: 1920s
 
 Fifty percent in forty-five days was never profit. Just someone else's deposit.
 Visual: A single postal coupon alone on an empty wooden desk
