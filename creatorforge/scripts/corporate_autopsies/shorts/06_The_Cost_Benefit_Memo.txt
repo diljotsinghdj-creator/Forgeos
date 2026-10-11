@@ -1,0 +1,85 @@
+The Cost-Benefit Memo
+On-screen hook: $11 A CAR. WORTH IT?
+Title: Ford's $11 Safety Memo: What It Really Said, and the Pinto Story
+Tags: #CorporateAutopsies #FordPinto #carsafety #history #business
+Source: Mother Jones, Pinto Madness by Mark Dowie (Sept/Oct 1977), and The First 25 Years (2001), https://www.motherjones.com/politics/2001/05/first-25-years/; Gary T. Schwartz, The Myth of the Ford Pinto Case, 43 Rutgers Law Review 1013 (1991), summarised at https://en.wikipedia.org/wiki/Grimshaw_v._Ford_Motor_Co.; Ethics, an Alternative Account of the Ford Pinto Case (course text quoting the 1973 Ford submission to NHTSA), https://www.cedengineering.com/userfiles/Ethics,%20an%20Alternative%20Account%20of%20the%20Ford%20Pinto%20Case%20R1.pdf; Pulaski County Historical Society, Ford Pinto Trial 45 Years Later, https://pulaskihistory.net/ford-pinto-trial-45-years-later/; Wikipedia, Grimshaw v. Ford Motor Co. (1981), https://en.wikipedia.org/wiki/Grimshaw_v._Ford_Motor_Co.
+
+Eleven dollars a car. Was it worth it?
+Visual: A 1970s compact hatchback parked on a quiet suburban street
+Visual: A typed office memo on a 1970s desk beside a pencil, text unreadable
+Text: 1973 · THE MEMO
+Big: $11
+Archive: 1970s
+
+In nineteen seventy-three, Ford sent regulators a cost study on crash fuel leaks.
+Visual: A government office building in Washington seen across a wide street
+Visual: A thick typed submission in a manila envelope on a desk, text unreadable
+Text: FORD → NHTSA · FUEL LEAKAGE STANDARD
+Cite: Ford submission to NHTSA, 1973
+Archive: 1970s
+Treat: halftone
+
+The fix: eleven dollars a vehicle. Total: one hundred thirty-seven million.
+Visual: A mechanic's hands holding a small metal car part in a 1970s workshop
+Visual: An adding machine with a long paper tape curling onto a desk
+Text: $11 × 12.5M VEHICLES = $137M
+Cite: Ford submission to NHTSA, 1973
+Archive: 1970s
+
+The benefit? About forty-nine and a half million.
+Visual: A typed table of figures on a yellowed page, text unreadable
+Visual: A hand underlining a total on a typed page with a pencil, text unreadable
+Text: 180 DEATHS · 180 INJURIES · 2,100 CARS
+Squares: $137m vs $49.5m | cost, benefit (Ford, 1973)
+Archive: 1970s
+
+How? Each death was valued at two hundred thousand dollars, a regulator's figure.
+Visual: A 1970s government report lying open on a desk, text unreadable
+Visual: A pencil resting on a column of typed numbers, text unreadable
+Text: $200,000 PER DEATH · NHTSA'S FIGURE
+Cite: Schwartz, Rutgers Law Review, 1991
+Draw: circle
+Archive: 1970s
+
+Then Mother Jones tied the memo to the Pinto's fuel tank.
+Visual: A 1970s magazine lying open on a coffee table, text unreadable
+Visual: The rear of a 1970s compact hatchback, seen low from behind
+Article: Pinto Madness | Mother Jones, Sept/Oct 1977
+Cite: Mother Jones, 1977
+Archive: 1970s
+
+But here's the catch: a law scholar found it covered rollovers in all cars.
+Visual: A law library's long wooden table stacked with bound journals
+Visual: A toy model car tipped on its side on a desk
+Text: ROLLOVERS · ALL U.S. CARS · NOT JUST PINTOS
+Cite: Schwartz, Rutgers Law Review, 1991
+Transition: whip
+
+Ford still recalled one and a half million Pintos in nineteen seventy-eight.
+Visual: A row of 1970s compact cars lined up outside a dealership service bay
+Visual: A mechanic seen from behind working under a raised car
+Text: 1978 RECALL · ABOUT 1.5 MILLION CARS
+Cite: Mother Jones, 2001
+Big: RECALL
+Archive: 1970s
+
+A jury awarded a hundred twenty-five million in punitive damages, later cut.
+Visual: A 1970s California courthouse's stone steps in bright sun
+Visual: A jury box of empty wooden chairs in a courtroom
+Text: GRIMSHAW: $125M → $3.5M
+Cite: Grimshaw v. Ford, 1981
+Archive: 1970s
+Transition: flash
+
+An Indiana criminal jury later acquitted Ford.
+Visual: A small-town Indiana courthouse with a clock tower
+Timeline: 1973 Memo → 1977 Article → 1978 Recall → 1980 Acquitted | The Pinto story
+Cite: Pulaski County Historical Society
+Archive: 1980s
+
+So, eleven dollars a car? A real memo, about a different crash.
+Visual: The same 1970s hatchback parked at dusk on the empty street
+Visual: The typed memo face down on the desk under a lamp, text unreadable
+Text: REAL MEMO · DIFFERENT CRASH
+Treat: duotone
+Archive: 1970s

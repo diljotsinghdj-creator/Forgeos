@@ -1,0 +1,72 @@
+The Ghost Payroll
+On-screen hook: $1 BILLION THAT NEVER EXISTED
+Title: Satyam's Founder Confessed: About $1 Billion in Cash That Never Existed
+Tags: #CorporateAutopsies #Satyam #accountingfraud #India #business
+Source: B. Ramalinga Raju resignation letter, filed by Satyam with the SEC as Exhibit 99.2 (Jan 7, 2009), https://www.sec.gov/Archives/edgar/data/1106056/000114554909000025/u00107exv99w2.htm; The News Minute, The confession letter Ramalinga Raju wrote in 2009, and later denied, https://www.thenewsminute.com/news/confession-letter-ramalinga-raju-wrote-2009-and-later-denied-23332; Computerworld (IDG News), Satyam allegedly paid 13,000 non-existent employees (Jan 2009), https://www.computerworld.com/?p=1479382; Business Today, Satyam: Raju bail, sentences suspended by court (May 11, 2015), https://www.businesstoday.in/latest/corporate/story/satyam-ramalinga-raju-bail-sentences-suspended-by-court-49631-2015-05-11; SEC press release 2011-81, Satyam to pay $10 million penalty (April 2011), https://www.sec.gov/news/press/2011/2011-81.htm
+
+A billion dollars in cash that never existed.
+Visual: An empty steel bank vault with its round door swung open
+Visual: A bank statement on a desk with the balance blurred, text unreadable
+Text: SATYAM · HYDERABAD
+Big: NEVER EXISTED
+
+In January two thousand nine, Satyam's founder, Ramalinga Raju, confessed by letter.
+Visual: A glass office tower in an Indian tech park at dusk
+Visual: A typed letter on company paper beside a fountain pen, text unreadable
+Text: JAN 7, 2009 · THE LETTER
+Globe: India | Hyderabad, 2009
+Cite: Raju letter, SEC filing
+
+About a billion dollars of the cash, he wrote, was not real.
+Visual: A ledger page with one large figure circled in red, text unreadable
+Visual: A hand flicking through an empty cash box at a desk
+Text: RS 5,040 CRORE (~$1BN) "NON-EXISTENT"
+Cite: Raju letter, Jan 2009
+Draw: circle
+
+Why keep lying? His answer became famous.
+Visual: A man in a suit seen from behind at a window high above a city
+Text: WHY KEEP GOING?
+Transition: whip
+
+"It was like riding a tiger," he wrote.
+Visual: A man's hand resting on a closed letter on a polished desk, text unreadable
+Visual: A dark office corridor at night with one door lit
+Document: It was like riding a tiger, not knowing how to get off without being eaten | B. Ramalinga Raju, Jan 2009
+Cite: Raju letter, Jan 2009
+Treat: halftone
+
+But here's the strange part: investigators alleged a second hole, in payroll.
+Visual: A stack of printed payslips on an office desk, names unreadable
+Visual: Rows of empty office desks with chairs pushed in
+Text: THE PAYROLL
+Transition: flash
+
+Police told a court Satyam had about forty thousand staff, not fifty-three thousand.
+Visual: A courthouse's stone front steps in an Indian city on a hot day
+Visual: Employee ID badges spread across a table, names unreadable
+Text: CLAIMED 53,000 · ALLEGED 40,000
+Cite: Andhra Pradesh CID, via Computerworld, 2009
+
+Thirteen thousand ghost employees, investigators alleged, with salaries siphoned out every month.
+Visual: A row of empty office chairs in a long, dim open-plan office
+Visual: A hand stacking banknotes into an envelope on a desk
+Icons: 13 of 53 | people | thousand staff: alleged ghosts
+Cite: Andhra Pradesh CID, 2009
+
+The catch? Raju later denied writing that letter.
+Visual: Lawyers seen from behind walking up courthouse steps with files
+Text: LATER DENIED WRITING IT
+Big: DENIED
+
+In twenty fifteen, a court gave him seven years; it was suspended pending appeal.
+Visual: A wooden gavel resting on a judge's bench beside case files
+Visual: A courtroom door closing at the end of a corridor
+Text: APRIL 2015 · 7 YEARS · SUSPENDED ON APPEAL
+Cite: Business Today, May 2015
+
+Where did the billion go? It was never there.
+Visual: The empty steel vault again, its lights switching off
+Visual: A blank bank balance sheet lying on a bare desk, text unreadable
+Text: THE CASH WAS NEVER THERE
+Treat: duotone

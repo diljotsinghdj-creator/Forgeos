@@ -1,0 +1,74 @@
+Repo 105
+On-screen hook: $50 BILLION GONE AT QUARTER-END
+Title: Repo 105: How Lehman Made $50 Billion Vanish at Quarter-End
+Tags: #CorporateAutopsies #Lehman #Repo105 #financialcrisis #accounting
+Source: Report of Anton R. Valukas, Examiner, In re Lehman Brothers Holdings Inc. (March 2010), via NBC News, Report details how Lehman hid its woes, https://www.nbcnews.com/id/wbna35828326; ABA Journal, Lehman Used Linklaters Opinion to Justify Aggressive Accounting, Report Says (March 2010), https://www.abajournal.com/news/article/jenner_block_report_chronicles_accounting_manipulation_at_lehman/; The D&O Diary, Lehman bankruptcy examiner cites company's balance sheet manipulation (March 2010), https://www.dandodiary.com/2010/03/articles/subprime-litigation/lehman-bankruptcy-examiner-cites-companys-balance-sheet-manipulation/; The Economist, via University of Arkansas course links (March 12, 2010), https://amalakho.hosted.uark.edu/teaching/finn5333/links/Economist_Lehman_Mar12_2010.pdf; New York Attorney General, settlement with Ernst & Young (April 15, 2015), via Mondo Visione, https://mondovisione.com/media-and-resources/news/new-york-attorney-general-eric-t-schneiderman-announces-settlement-with-ernst-and-2015415/; HISTORY.com, Lehman Brothers collapses (Sept 15, 2008), https://www.history.com/this-day-in-history/september-15/lehman-brothers-collapses
+
+How did fifty billion dollars vanish, then return?
+Visual: A trading floor at night with rows of empty desks and glowing screens, text unreadable
+Visual: A balance sheet printout on a desk with one total circled in red, text unreadable
+Text: LEHMAN BROTHERS · 2008
+Big: $50 BILLION
+
+Lehman's Repo one-oh-five swapped bonds for cash, with a promise to buy them back.
+Visual: Two hands exchanging a thick bond folder for a sealed envelope across a desk
+Visual: A calendar page with a date a few days ahead circled, text unreadable
+Text: BONDS OUT · CASH IN · BUY BACK LATER
+Cite: Valukas examiner report, 2010
+Treat: halftone
+
+Here's the trick: that's a loan, but Lehman counted it as a sale.
+Visual: A loan agreement and a bill of sale side by side on a desk, text unreadable
+Visual: A hand crossing out one heading on a printed form, text unreadable
+Steps: Bonds out → Cash in → Booked as a sale → Debt looks smaller → Bought back | Repo 105
+Cite: Valukas examiner report, 2010
+
+On paper, its debt shrank right at quarter-end.
+Visual: A printed quarterly report lying on a boardroom table, text unreadable
+Visual: A wall clock above an empty office reading late evening
+Text: DEBT LOOKS SMALLER · QUARTER-END
+Transition: whip
+
+How much? About fifty billion dollars a quarter in two thousand eight, an examiner found.
+Visual: A thick bound examiner's report on a courtroom table, text unreadable
+Visual: A hand turning pages of financial tables under a desk lamp, text unreadable
+Chart: $39bn → $49bn → $50bn | moved off the balance sheet | Q4 2007, Q1 2008, Q2 2008
+Cite: Valukas examiner report, 2010
+
+The strange part? Lehman relied on a London law firm's opinion instead.
+Visual: A row of London office buildings along the river on a grey day
+Visual: A signed legal opinion letter in a leather folder, text unreadable
+Text: NO U.S. LAW FIRM WOULD SIGN OFF
+Cite: ABA Journal, 2010
+
+One executive emailed: another drug we're on.
+Visual: A laptop screen glowing in a dark office with an email open, text unreadable
+Visual: A man in a suit seen from behind reading his phone in a corridor
+Document: It is another drug we r on | Lehman email, April 2008 (examiner report)
+Cite: Valukas examiner report, 2010
+
+And then? In September two thousand eight, Lehman collapsed.
+Visual: A person seen from behind carrying a cardboard box out of an office tower
+Visual: A city street at dawn outside a tall glass headquarters building
+Text: SEPT 15, 2008 · LARGEST U.S. BANKRUPTCY
+Big: COLLAPSED
+Transition: flash
+
+The examiner saw possible claims against executives and the auditor. Both denied wrongdoing.
+Visual: A federal courthouse's stone columns on an overcast morning
+Visual: Two closed legal files side by side on a long wooden table, text unreadable
+Text: "COLORABLE CLAIMS" · DENIED WRONGDOING
+Cite: Valukas examiner report, 2010
+
+The auditor later settled New York's lawsuit for ten million dollars, admitting nothing.
+Visual: A wooden gavel resting on a closed law book
+Visual: A hand signing the last page of a settlement document, text unreadable
+Text: ERNST & YOUNG · $10M · NO ADMISSION
+Cite: New York Attorney General, 2015
+
+So how did fifty billion vanish? A loan, called a sale.
+Visual: The empty trading floor again, screens switching off one by one
+Visual: The balance sheet printout folded closed on the desk, text unreadable
+Text: A LOAN, CALLED A SALE
+Draw: underline
+Treat: duotone
