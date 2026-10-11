@@ -1,0 +1,76 @@
+The Skipped Test
+On-screen hook: THE TEST THEY SKIPPED
+Title: The Skipped Test: What Happened Before Deepwater Horizon Exploded
+Tags: #CorporateAutopsies #DeepwaterHorizon #BP #oilspill #safety
+Source: Colorado Independent, DeGette questions BP's Hayward on the cancelled cement bond log ($128,000, 9-12 hours), June 2010 (https://coloradoindependent.com/2010/06/17/video-degette-grills-bps-hayward-on-deepwater-cementing-shortcuts); CBS News, Halliburton and the Gulf oil spill (National Commission findings on the cement evaluation crew and the negative pressure test) (https://www.cbsnews.com/news/halliburton-and-the-gulf-oil-spill-maybe-faulty-cement-is-the-smoking-gun); OilPrice.com, findings of the Deepwater Horizon Commission report (https://oilprice.com/The-Environment/Oil-Spills/Private-Investigators-Findings-On-The-Deepwater-Horizon-Commission-Report.amp.html); National Academies, Macondo Well Deepwater Horizon Blowout, 2012 (https://www.nationalacademies.org/read/13273/chapter/3); US DOJ, BP Exploration and Production Inc. Pleads Guilty, Sentenced to Pay Record $4 Billion for Crimes Surrounding Deepwater Horizon, Jan 2013 (https://www.justice.gov/opa/pr/bp-exploration-and-production-inc-pleads-guilty-sentencedto-pay-record-4-billion-crimes)
+
+One safety test was skipped. What happened next?
+Visual: An offshore drilling rig on a calm sea at dusk
+Visual: A clipboard checklist with one box left empty, text unreadable
+Text: ONE SKIPPED TEST?
+
+April twenty ten, Gulf of Mexico.
+Visual: Open blue ocean seen from a helicopter window
+Visual: A drilling derrick lit up at night far offshore
+Text: APRIL 2010 · GULF OF MEXICO
+Treat: halftone
+
+A crew was on board to check the new cement.
+Visual: Steel equipment cases stacked on an offshore helideck
+Visual: A coil of logging cable wound on a drum on a rig deck
+Text: CEMENT CHECK CREW ON BOARD
+
+But here's the catch. BP sent them home without running it.
+Visual: A helicopter lifting off from an offshore helideck
+Visual: Unopened steel equipment cases left on a rig deck
+Text: SENT HOME · TEST NOT RUN
+Cite: National Commission, 2011
+Big: SENT HOME
+Transition: whip
+
+At a hearing, BP's chief agreed it cost about one hundred twenty-eight thousand dollars.
+Visual: A congressional hearing room with a witness table, seen from behind
+Visual: A microphone on a witness table beside a glass of water
+Text: ~$128,000 · 9–12 HOURS
+Chart: $128,000 | cost of the skipped test
+Cite: House Energy & Commerce hearing, June 2010
+
+Then the real warning. A pressure test was misread.
+Visual: A pressure gauge on a rig drill floor, needle unsteady
+Visual: A hand writing numbers on a paper log sheet, text unreadable
+Text: CONFUSING RESULTS → "SUCCESS"
+Cite: National Academies, 2012
+
+The presidential commission? It called that a major contributing factor.
+Visual: A thick government report on a desk under a lamp, text unreadable
+Visual: A highlighter resting on an open report page, text unreadable
+Document: The failure to properly conduct and interpret the negative-pressure test was a major contributing factor to the blowout | National Commission, 2011
+Cite: National Commission, 2011
+
+That night, gas surged up the well and the rig exploded.
+Visual: Emergency lights glowing on an offshore rig deck at night
+Visual: A rescue boat on dark water with its searchlight on
+Text: APRIL 20, 2010 · BLOWOUT
+Treat: duotone
+
+Eleven workers died. Millions of barrels spilled into the Gulf.
+Visual: Eleven white hard hats lined up on a dock railing
+Visual: A dark oil sheen spreading on the sea surface from above
+Text: 11 LIVES · MILLIONS OF BARRELS
+
+How did it end? BP pleaded guilty, including to eleven manslaughter counts.
+Visual: A federal courthouse in New Orleans seen across a street
+Visual: A wooden gavel on a stack of case files
+Text: GUILTY PLEA · 14 COUNTS
+Cite: US DOJ, Jan 2013
+
+And a record four billion dollars in criminal penalties.
+Visual: A signed plea agreement page with a pen, text unreadable
+Visual: Stacks of bound legal documents on a long court table, text unreadable
+Text: $4BN · RECORD CRIMINAL PENALTY
+Cite: US DOJ, Jan 2013
+
+One test skipped. One test misread. Eleven lives lost.
+Visual: An empty helideck at dawn on a calm sea
+Visual: A clipboard checklist with one empty box circled in red, text unreadable
+Statement: One skipped. One misread. *Eleven* lives.

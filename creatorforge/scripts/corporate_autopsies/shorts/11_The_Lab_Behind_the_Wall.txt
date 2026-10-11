@@ -1,0 +1,79 @@
+The Lab Behind the Wall
+On-screen hook: TINY DEVICE. BORROWED MACHINES?
+Title: The Lab Behind the Wall: What Was Really Running Theranos' Blood Tests
+Tags: #CorporateAutopsies #Theranos #fraud #startups #SEC
+Source: SEC charges via MIT Technology Review, SEC charges Theranos founder Elizabeth Holmes with massive fraud, March 2018 (https://www.technologyreview.com/2018/03/14/241044/sec-charges-theranos-founder-elizabeth-holmes-with-massive-fraud); Axios, SEC charges Theranos CEO Elizabeth Holmes with "massive fraud" (https://www.axios.com/2018/03/14/theranos-fraud); Time, on the WSJ report "Hot Startup Theranos Has Struggled With Its Blood-Test Technology", Oct 2015 (https://time.com/4075198/theranos-blood-tests-wsj/); MDDI, CMS: Theranos Could Have Jeopardized Patients, 2016 (https://www.mddionline.com/business/cms-theranos-could-have-jeopardized-patients); TechCrunch, Theranos reportedly voids two years of results from its Edison devices, May 2016 (https://techcrunch.com/2016/05/18/theranos-voids-tests/); ABC7, Elizabeth Holmes sentenced to just over 11 years (https://abc7news.com/theranos-founder-elizabeth-holmes-sentenced-to-just-over-11-years-i/12468948/); TechCrunch, Balwani sentenced (https://techcrunch.com/?p=2454477)
+
+What was really behind the Theranos lab wall?
+Visual: A frosted glass lab partition with blurred shapes of machines behind it
+Visual: A locked laboratory door with a keycard reader
+Text: BEHIND THE LAB WALL?
+
+It promised many tests from a few drops of blood.
+Visual: A fingertip with a single drop of blood above a tiny tube
+Visual: A small white benchtop device on a lab counter, no markings
+Text: A FEW DROPS · MANY TESTS
+
+Investors put in over seven hundred million, the SEC said.
+Visual: A glass office tower lobby in Silicon Valley, empty
+Visual: A hand signing an investment agreement, text unreadable
+Text: $700M+ RAISED
+Cite: SEC, March 2018
+
+But here's the catch. In twenty fifteen, a newspaper reported problems.
+Visual: A folded newspaper on a café table, headline unreadable
+Visual: A reporter's notebook and pen beside a laptop, text unreadable
+Article: Hot Startup Theranos Has Struggled With Its Blood-Test Technology | The Wall Street Journal, Oct 2015
+Cite: WSJ, Oct 2015
+
+Its Edison device ran just a fraction of tests, the Journal reported.
+Visual: A small white testing device on a bench with its tray open
+Visual: Racks of blood sample tubes waiting on a lab counter
+Text: EDISON: A SMALL FRACTION OF TESTS
+Cite: WSJ, Oct 2015
+Treat: halftone
+
+So what ran the rest?
+Visual: Rows of sample tubes moving along a lab conveyor
+Text: SO WHAT RAN THE REST?
+Big: THE REST?
+Transition: whip
+
+Mostly modified commercial analyzers made by others, the SEC later alleged.
+Visual: A row of large commercial lab analyzers in a clinical lab, no logos
+Visual: A technician's gloved hands loading tubes into a big analyzer
+Text: OTHER COMPANIES' MACHINES — SEC
+Cite: SEC, March 2018
+
+Then federal inspectors found immediate jeopardy to patient health and safety.
+Visual: An inspector seen from behind holding a clipboard in a lab
+Visual: A government letter on a desk with a highlighted line, text unreadable
+Document: pose immediate jeopardy to patient health and safety | CMS, Jan 2016
+Cite: CMS, Jan 2016
+
+Theranos voided two years of Edison results.
+Visual: A stack of printed lab reports with a red line through them, text unreadable
+Visual: A paper shredder beside a filing cabinet in an office
+Text: 2 YEARS OF RESULTS VOIDED
+Cite: TechCrunch, May 2016
+Draw: cross
+
+How did it end? Elizabeth Holmes was convicted of fraud and conspiracy.
+Visual: A federal courthouse in San Jose seen across a plaza
+Visual: A wooden gavel on a closed case file
+Text: HOLMES: GUILTY ON 4 COUNTS
+Cite: ABC7, 2022
+Treat: duotone
+
+She got over eleven years. Sunny Balwani was convicted on all twelve counts.
+Visual: Courtroom benches seen from the back, empty
+Visual: A prison corridor with closed steel doors
+Text: 11+ YEARS · BALWANI: 12 OF 12
+Timeline: 2015 WSJ report → 2018 SEC charges → 2022 Both convicted | Theranos
+Cite: TechCrunch, 2022
+
+Behind the wall? Other companies' machines, the SEC alleged.
+Visual: The frosted lab partition slid open, commercial analyzers in a row
+Visual: A small white device left alone on an empty counter
+Text: OTHER COMPANIES' MACHINES
+Draw: circle

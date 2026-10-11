@@ -1,0 +1,80 @@
+The Defeat Device
+On-screen hook: LAB CLEAN. ROAD 40X?
+Title: The Defeat Device: How Volkswagen's Diesels Passed Every Lab Test
+Tags: #CorporateAutopsies #Dieselgate #Volkswagen #emissions #EPA
+Source: EPA and California Air Resources Board, EPA, California Notify Volkswagen of Clean Air Act Violations, Sept 18 2015 (https://ww2.arb.ca.gov/news/epa-california-notify-volkswagen-clean-air-act-violations); EPA testimony to House Energy and Commerce oversight hearing, Oct 8 2015 (https://www.epa.gov/sites/production/files/2015-10/documents/epa-grundler-brooks-testimony-_oct_8_hec_oversight_hearing_-vw.pdf); ICCT press statement on the EPA notice of violation, Sept 2015 (https://theicct.org/epas-notice-of-violation-of-the-clean-air-act-to-volkswagen-press-statement); West Virginia Public Broadcasting, WVU researchers help bust Volkswagen (https://wvpublic.org/wvu-researchers-help-bust-volkswagen-for-pollution-violations); AP via 6ABC, Volkswagen pleads guilty in US diesel emissions scandal, March 2017 (https://6abc.com/post/volkswagen-pleads-guilty-in-us-diesel-emissions-scandal/1794442/)
+
+Clean diesels passed the lab. Then what?
+Visual: A diesel car sitting on steel test rollers in an emissions lab
+Visual: Exhaust from a car tailpipe on a cold city street
+Text: LAB vs ROAD?
+
+In twenty fourteen, West Virginia University researchers road-tested diesels.
+Visual: A car on a highway with test equipment strapped to its rear
+Visual: A laptop on a passenger seat showing data graphs, text unreadable
+Text: WVU ROAD TESTS · 2014
+Cite: ICCT & WVU, 2014
+Treat: halftone
+
+They found two Volkswagens far over the limit, one up to thirty-five times.
+Visual: Two diesel cars parked side by side in a test bay, badges hidden
+Visual: A gauge needle pushed deep into the red zone
+Text: JETTA: 15–35× THE NOx LIMIT
+Chart: 1 → 35 | times the US NOx limit, on the road
+Cite: ICCT, Sept 2015
+
+But in the lab, the same cars passed. Why?
+Visual: A technician's gloved hands fitting a hose to a tailpipe in a lab
+Visual: A clipboard with a printed pass sheet, text unreadable
+Text: SAME CARS. LAB PASS.
+Big: PASSED
+Transition: whip
+
+In twenty fifteen, the EPA issued a notice of violation.
+Visual: A government building with stone columns on a sunny day
+Visual: A formal letter half out of an envelope on a desk, text unreadable
+Article: EPA, California Notify Volkswagen of Clean Air Act Violations | EPA, Sept 2015
+Cite: EPA, Sept 18, 2015
+
+Here's the trick, the EPA said. Software detected an official test.
+Visual: A car engine control unit opened on a workbench, circuit board exposed
+Visual: A steering wheel held still while the car sits on test rollers
+Text: SOFTWARE SPOTTED THE TEST
+Cite: EPA, Sept 18, 2015
+
+During testing, full emissions controls switched on.
+Visual: A diesel engine bay with its hood propped open in a lab
+Visual: A technician seen from behind reading a monitor, text unreadable
+Steps: Test detected → Full controls on → Lab pass → Real road | The EPA's allegation
+
+On real roads? Nitrogen oxides up to forty times the standard.
+Visual: A busy city road at rush hour with diesel cars in traffic
+Visual: Grey haze over city rooftops on a still afternoon
+Text: UP TO 40× THE NOx STANDARD
+Draw: circle
+Cite: EPA, Sept 18, 2015
+Treat: duotone
+
+Across about four hundred eighty-two thousand US cars, the EPA alleged.
+Visual: Rows of new cars parked at a port lot, badges hidden
+Visual: A car dealership lot under strings of flags, no logos
+Text: ~482,000 US DIESEL CARS
+Cite: EPA, Sept 18, 2015
+
+How did it end? In twenty seventeen, Volkswagen pleaded guilty.
+Visual: A federal courthouse's stone steps on a grey morning
+Visual: A wooden judge's gavel resting on a closed law book
+Text: GUILTY PLEA · 2017
+Cite: AP, March 2017
+
+Penalties totalled about four point three billion dollars.
+Visual: A stack of legal settlement papers bound with a clip, text unreadable
+Visual: A hand signing the last page of a contract, text unreadable
+Text: $4.3BN CRIMINAL & CIVIL PENALTIES
+Cite: AP, March 2017
+
+So why did they pass? The cars knew when they were being tested.
+Visual: A diesel car on lab rollers with a test hose attached
+Visual: The same kind of car driving away down an open road at dusk
+Text: THEY KNEW WHEN IT WAS A TEST
+Draw: tick
