@@ -58,7 +58,7 @@ object ProductionBodies {
         val b = JSONObject(base.toString()).put("style", ch.style).put("motion", if (ch.aiVideo == "off") "stills" else "ai_video")
             .put("ai_video_scenes", if (ch.aiVideo == "all") "all" else "hook")
         if (ch.voice.isNotBlank()) b.put("voice", ch.voice)
-        b.put("brand", ch.brand.forWorker())
+        b.put("brand", ch.brand.forWorker(ch.name))
         b.remove("template"); b.remove("duration_s")
         return fromIdea(slot.trend, slot.idea, slot.script, b)
     }

@@ -58,6 +58,8 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
     var reload by remember { mutableIntStateOf(0) }
     val client = remember(reload) { ProductionClient(worker.getString("base_url", "").orEmpty()) }
 
+    // Your channel's Brand kit (name, colours, logo, intro/outro) goes with every video made here
+    val brandChannel = remember { runCatching { StudioHub.channels(context).list().firstOrNull() }.getOrNull() }
     var caps by remember { mutableStateOf<Capabilities?>(null) }
     var capsError by remember { mutableStateOf<String?>(null) }
     var idea by remember { mutableStateOf(prefs.getString("idea", "").orEmpty()) }
@@ -415,7 +417,8 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                     fun request(text: String) = ProductionRequest(if (scriptMode) "" else text, duration, aspect, template, voice, pacing,
                         style.trim(), mood.trim(), camera.trim(), chars, music, captions, aiVideo, review, autoEdit, picked.toList(),
                         script = if (scriptMode) text else "", musicAssetId = if (music) musicAsset else "", sfx = sfx,
-                        aiVideoScenes = if (videoScope == "hook") "hook" else "all", videoQuality = videoQuality, faces = faces, fastCuts = fastCuts, voiceSpeed = voicePace.toDoubleOrNull() ?: 1.1)
+                        aiVideoScenes = if (videoScope == "hook") "hook" else "all", videoQuality = videoQuality, faces = faces, fastCuts = fastCuts, voiceSpeed = voicePace.toDoubleOrNull() ?: 1.1,
+                        brand = brandChannel?.let { it.brand.forWorker(it.name) })
                     val pieces = batchPieces(idea)
                     if (pieces.size <= 1) act { client.create(request(idea.trim())) }
                     else {

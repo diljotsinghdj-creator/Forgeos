@@ -14,8 +14,9 @@ data class Brand(
         .put("caption_color", captionColor).put("highlight_color", highlightColor).put("intro_text", introText).put("outro_text", outroText)
 
     /** What the worker's /v1/productions accepts as `brand`. */
-    fun forWorker(): JSONObject = JSONObject().apply {
+    fun forWorker(channelName: String = ""): JSONObject = JSONObject().apply {
         put("caption_color", captionColor); put("highlight_color", highlightColor)
+        if (channelName.isNotBlank()) put("name", channelName)      // signs off videos, chapter cards, end screen
         if (logoAssetId.isNotBlank()) { put("logo_asset_id", logoAssetId); put("logo_position", logoPosition) }
         if (introText.isNotBlank()) put("intro_text", introText)
         if (outroText.isNotBlank()) put("outro_text", outroText)
