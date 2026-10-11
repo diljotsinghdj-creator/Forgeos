@@ -456,7 +456,8 @@ def test_visual_match_check_redraws_pictures_that_miss_the_line(cfg, tmp_path, m
         def generate(self, prompt, negative, w, h, seed, out):
             self.seeds.append(seed)
             from creatorforge_worker.media import ff
-            ff.run(["-f", "lavfi", "-i", f"color=c=0x{seed % 0xFFFFFF:06x}:s=512x512", "-vf", "noise=alls=60:allf=u",
+            # a detailed test pattern: a plain dark colour would count as a blank picture and be redrawn
+            ff.run(["-f", "lavfi", "-i", "testsrc2=s=512x512", "-vf", f"hue=h={seed % 360}",
                     "-frames:v", "1", str(out)])
 
     scores = iter([0.18, 0.31, 0.5])        # first draw misses, second shows the line

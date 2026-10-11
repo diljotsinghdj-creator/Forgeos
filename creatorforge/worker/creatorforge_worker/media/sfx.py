@@ -10,6 +10,7 @@ from pathlib import Path
 from .render import AUDIO_EXT
 
 ROLES = {
+    "projector": ("projector",),          # its own role, checked first: "click_projector" is not a callout pop
     "whoosh": ("whoosh", "swoosh", "swish", "woosh", "swipe", "transition"),
     "hit": ("hit", "impact", "boom", "thud", "punch", "slam"),
     "pop": ("pop", "click", "ding", "blip", "tick", "notification"),
@@ -18,7 +19,7 @@ ROLES = {
 }
 TRANSITION_ROLE = {"whip": "whoosh", "slide": "whoosh", "wipe": "whoosh", "zoom": "whoosh", "reveal": "whoosh",
                    "cut": "hit", "flash": "hit"}
-GAIN = {"whoosh": 0.55, "hit": 0.6, "pop": 0.45, "riser": 0.4, "scribble": 0.5}
+GAIN = {"projector": 0.5, "whoosh": 0.55, "hit": 0.6, "pop": 0.45, "riser": 0.4, "scribble": 0.5}
 REVEALS = {"flash", "zoom"}   # twists / reveals: a riser builds into the cut, a deep hit lands on it
 
 
@@ -107,7 +108,7 @@ def graphic_cues(bank: SfxBank, graphics: list[tuple[float, str]], seed: str) ->
             else:
                 start = at + lead
             if role == "projector":
-                named = [p for v in bank.sounds.values() for p in v if "projector" in p.stem.lower()]
+                named = bank.sounds.get("projector") or []
                 sound = named[0] if named else bank.pick("pop", f"{seed}:g{n}:pop")
                 if sound:
                     hits.append((sound, max(0.0, start), 0.5))

@@ -130,6 +130,14 @@ def test_sound_effects_are_placed_on_transitions_and_overlays(cfg, tmp_path):
         assert settle(c, off)["providers"]["sfx"] == "off"
 
 
+
+def test_projector_click_is_never_used_as_a_callout_pop(tmp_path):
+    from creatorforge_worker.media import sfx_builtin
+    from creatorforge_worker.media.sfx import SfxBank
+    bank = SfxBank.load("", sfx_builtin.ensure(tmp_path / "builtin"))
+    assert [p.stem for p in bank.sounds["projector"]] == ["click_projector"]
+    assert all("projector" not in p.stem for p in bank.sounds["pop"]) and bank.sounds["pop"]
+
 # 5. Timeline editor -------------------------------------------------------------------------------
 def test_timeline_reorder_delete_retime_and_overlays(cfg):
     with TestClient(create_app(cfg)) as c:
