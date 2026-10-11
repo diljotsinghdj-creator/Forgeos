@@ -686,6 +686,21 @@ def test_chats_search_pie_squares_shade_timer_receipt_endscreen_treat_slide_and_
     assert any("projector" in p.name for p, _, _ in sfx.graphic_cues(bank, [(2.0, "slide")], "s"))
 
 
+def test_blank_pictures_and_dark_frames_count_as_flat(tmp_path):
+    from PIL import Image, ImageDraw
+    from creatorforge_worker.media import match
+    Image.new("RGB", (400, 300), (8, 8, 8)).save(tmp_path / "black.png")
+    grad = Image.linear_gradient("L").resize((400, 300)).convert("RGB")
+    grad.save(tmp_path / "grad.png")
+    busy = Image.new("RGB", (400, 300), (200, 190, 170))
+    d = ImageDraw.Draw(busy)
+    for i in range(12):
+        d.rectangle((20 + i * 30, 30 + (i % 3) * 20, 40 + i * 30, 160 + (i % 4) * 30), fill=(30 + i * 15, 60, 90))
+    busy.save(tmp_path / "busy.png")
+    assert match.is_flat(tmp_path / "black.png") and match.is_flat(tmp_path / "grad.png")
+    assert not match.is_flat(tmp_path / "busy.png")
+
+
 def test_clip_tokenizer_matches_the_reference_ids(tmp_path):
     from pathlib import Path
     from creatorforge_worker.media import match

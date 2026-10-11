@@ -190,3 +190,21 @@ def fingerprint(image: Path) -> int | None:
 
 def seen_before(fp: int | None, used: list[int], within: int = 8) -> bool:
     return fp is not None and any(bin(fp ^ u).count("1") <= within for u in used)
+
+
+def is_flat(image: Path) -> bool:
+    """True when a picture shows (almost) nothing: near-black, near-white, or no detail beyond a smooth gradient - a
+    blank screen or page the image model drew, or a stock clip caught on a dark frame. Calibrated on a real render:
+    blank tablet, grey gradient and black frame scored 3.6-4.7 on the mid-detail measure; real subjects 6.8 and up."""
+    try:
+        from PIL import Image, ImageChops, ImageFilter, ImageStat
+        with Image.open(image) as im:
+            g = im.convert("L")
+        w, h = g.size
+        g = g.crop((int(w * 0.08), int(h * 0.08), int(w * 0.92), int(h * 0.92))).resize((160, 160))
+        mean = ImageStat.Stat(g).mean[0]
+        detail = ImageStat.Stat(ImageChops.difference(g.filter(ImageFilter.GaussianBlur(1.5)),
+                                                      g.filter(ImageFilter.GaussianBlur(8)))).mean[0]
+    except Exception:  # noqa: BLE001 - unreadable: let the other checks decide
+        return False
+    return mean < 28 or mean > 238 or detail < 5.5

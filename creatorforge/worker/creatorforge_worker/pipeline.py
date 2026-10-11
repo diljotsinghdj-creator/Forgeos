@@ -324,6 +324,8 @@ class Pipeline:
             if checker is None:
                 return src, key
             score = checker.score(src, match.describe(visual))
+            if match.is_flat(src):
+                score -= 0.2                  # a blank screen or page shows nothing: draw it again
             if best is None or score > best[0]:
                 best = (score, src, key)
             if score >= match.GOOD:
@@ -391,7 +393,7 @@ class Pipeline:
                     src = stock_photo.fetch(found, self.cfg.cache_dir / "stock_photos")
                 except (ProviderError, OSError):
                     continue
-                if checker.score(src, want) < match.GOOD or match.shows_face(checker, src, visual):
+                if checker.score(src, want) < match.GOOD or match.shows_face(checker, src, visual) or match.is_flat(src):
                     continue
                 fp = match.fingerprint(src)
                 if match.seen_before(fp, job.setdefault("used_fingerprints", [])):
@@ -422,7 +424,8 @@ class Pipeline:
                 except (MediaError, OSError):
                     return True
         score = max(checker.score(frame, query), checker.score(frame, match.describe(visual)) if visual else 0.0)
-        if score < match.POOR or match.shows_face(checker, frame, visual):
+        if score < match.POOR or match.shows_face(checker, frame, visual) or match.is_flat(frame):
+            # off-topic, a face, or a clip that shows nothing (a dark or blank frame)
             # off-topic, or a face close-up the line didn't ask for (the channel is faceless)
             self._note_match(job, stock_rejected=1)
             return False
@@ -945,6 +948,10 @@ class Pipeline:
             start += slot
         brand = spec.brand or {}
         cta = brand.get("outro_text") or plan.get("cta")
+        if not brand.get("outro_text") and re.fullmatch(r"\W*(stay informed|learn more|subscribe( now)?|like and subscribe|"
+                                                       r"follow( for more)?|watch more|find out more)\W*", cta or "", re.I):
+            # a generic call to action adds nothing: name the channel, or leave the last picture clean
+            cta = f"Follow {brand['name']}" if brand.get("name") else ""
         if cta:
             overlays.append(cap.Overlay(max(0.0, total - end_s - 3.0), total - end_s, cta, "CTA"))
         if brand.get("intro_text"):

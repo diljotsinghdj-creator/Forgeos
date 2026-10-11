@@ -381,10 +381,10 @@ def screen_lines(spec: str, theme: str, width: int, height: int, seconds: float)
         pad = fw * 0.07
         size = int(fw * 0.062)
     else:      # a browser window
-        fw, fh = width * 0.62, height * 0.76
-        L, T = width / 2 - fw / 2, height * 0.12
+        fw, fh = width * 0.58, height * 0.8
+        L, T = width / 2 - fw / 2, height * 0.08
         pad = fw * 0.05
-        size = int(fh * 0.05)
+        size = int(fh * 0.068)              # readable on a TV: widescreen screens use bigger type
     R, B = L + fw, T + fh
     out = [f"Dialogue: 1,{_ts(0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c&H000000&\\1a&HB8&\\blur14}}"
            f"{_rect(L + 14, T + 20, R + 14, B + 20, size * 0.8)}",

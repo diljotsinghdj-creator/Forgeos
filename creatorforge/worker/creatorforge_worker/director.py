@@ -536,7 +536,8 @@ def _editorial_prompt(visual: str, spec: ProductionSpec) -> tuple[str, str]:
     if re.search(r"\b(card|receipt|letter|statement|contract|document|form|sign|label|poster|newspaper|report|bill|"
                  r"ticket|screen|page|certificate|menu|notice|book|calendar)\b", visual, re.I):
         # image models scribble fake words on paper and screens; keep them plain so nothing reads as gibberish
-        parts.append("plain surfaces with no legible writing, blurred out-of-focus text")
+        parts.append("the page or screen shown as a simple layout of grey bars, boxes, icons and buttons, "
+                     "no readable words, clearly visible content")
     parts.append("sharp focus, high contrast, centred")
     return ", ".join(parts), NEGATIVE + EDITORIAL_NEGATIVE + FACELESS_NEGATIVE + ", gibberish text, misspelled words"
 
