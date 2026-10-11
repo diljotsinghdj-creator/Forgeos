@@ -542,7 +542,11 @@ def render_video(clips: list[Clip], audio: Path, captions: Path | None, width: i
         args += ["-i", str(logo_png)]
     if tear_input is not None:
         args += ["-i", str(tear_input)]
-    args += ["-filter_complex", ";".join(graph), "-map", f"[{last}]", "-map", f"{audio_idx}:a",
+    # -filter_complex_threads: every filter in a graph otherwise gets a thread per CPU core. With ~200 shots that
+    # was over a thousand threads on 4 cores, and tens of thousands on a GPU server that shows 64+ cores, which
+    # ran into the thread limit ("Failed to configure output pad ... Resource temporarily unavailable").
+    args += ["-filter_complex_threads", "2",
+             "-filter_complex", ";".join(graph), "-map", f"[{last}]", "-map", f"{audio_idx}:a",
              "-c:v", "libx264", "-preset", "veryfast", "-crf", "20", "-pix_fmt", "yuv420p", "-r", str(FPS),
              "-c:a", "aac", "-b:a", "192k", "-ar", str(SAMPLE_RATE), "-movflags", "+faststart",
              "-t", f"{total:.3f}", str(out)]
