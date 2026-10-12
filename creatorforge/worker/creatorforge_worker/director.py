@@ -249,6 +249,8 @@ class ShotPlan:
     # Fast cuts: the narration split into 2-4 phrases, each with its own picture, so the visual changes every
     # 1-2 seconds and always shows what is being said right then. [{"text","visual","emotion","prompt","negative"}]
     beats: list = field(default_factory=list)
+    # A person, party or place named in the words: shown with a real picture of it ({"name", "context"})
+    named: dict = field(default_factory=dict)
 
 
 @dataclass
@@ -544,6 +546,10 @@ def _editorial_prompt(visual: str, spec: ProductionSpec) -> tuple[str, str]:
 
 def prompt_forge(plan: ProductionPlan, spec: ProductionSpec, only: int | None = None) -> None:
     """Builds each scene's generation prompt from the shot, Director Mode and characters."""
+    if only is None:
+        from .media import literal
+        # Show what the words say: named people/parties/places get real pictures, everyday things a literal one
+        literal.enrich(plan, spec.script or " ".join(s.narration for s in plan.scenes))
     t = TEMPLATES[spec.template]
     style = STYLE_PRESETS[spec.style][1] if spec.style in STYLE_PRESETS else (spec.style or t.style)
     animated = spec.style in ANIMATED_STYLES
@@ -975,7 +981,8 @@ def apply_shots(plan: "ProductionPlan", shots: list) -> None:
         return
     per_scene: list[list[dict]] = [[] for _ in plan.scenes]
     pos = 0
-    for line, visual, text, stock, chart, draw, bubble, extra in ((list(x) + [""] * 6 + [{}])[:8] for x in shots):
+    for li, (line, visual, text, stock, chart, draw, bubble, extra) in enumerate((list(x) + [""] * 6 + [{}])[:8]
+                                                                                for x in shots):
         extra = extra if isinstance(extra, dict) else {}
         n = len(str(line).split())
         chunk = tokens[pos:pos + n]
@@ -987,7 +994,7 @@ def apply_shots(plan: "ProductionPlan", shots: list) -> None:
                                  "stock": str(stock), "overlay": str(text) if k == 0 else "",
                                  "chart": str(chart) if k == 0 else "", "draw": str(draw) if k == 0 else "",
                                  "bubble": str(bubble) if k == 0 else "", "extra": dict(extra) if k == 0 else {},
-                                 "writer": True})
+                                 "writer": True, "line": li})
     for s, beats in zip(plan.scenes, per_scene):
         if not beats:
             continue

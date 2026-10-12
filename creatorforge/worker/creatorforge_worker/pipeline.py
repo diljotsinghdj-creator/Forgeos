@@ -251,10 +251,15 @@ class Pipeline:
             face = self._face_lock(img, job, jdir, shot["visual"])
             try:
                 beats0 = shot.get("beats") or []
+                named = (beats0[0].get("named") if beats0 else shot.get("named")) or {}
+                real = None
+                if named and not (beats0 and _covered(beats0[0])):
+                    real = self._named_photo(job, named, gen)     # the person/party/place the words name
                 # a full-frame graphic covers the scene's first picture: keep the real photos for pictures people see
-                real = None if beats0 and _covered(beats0[0]) else self._real_photo(
-                    job, shot.get("stock") or "", shot["visual"],
-                    str(((beats0[0].get("extra") or {}) if beats0 else {}).get("archive") or ""))
+                if real is None and not (beats0 and _covered(beats0[0])):
+                    real = self._real_photo(
+                        job, shot.get("stock") or "", shot["visual"],
+                        str(((beats0[0].get("extra") or {}) if beats0 else {}).get("archive") or ""))
                 if real is not None:
                     dst = self._replace_file(jdir, sc.get("image"), f"scene_{sc['index'] + 1:02d}_photo{real.suffix}", real)
                     sc.update(image_state="READY", image=dst.name, image_source="photo")
@@ -305,8 +310,9 @@ class Pipeline:
                         sc["beat_images"] = names
                         self.store.save(job)
                         continue     # a real photo covers this beat - no AI image needed
-                real = self._real_photo(job, b.get("stock") or "", b.get("visual", ""),
-                                        str((b.get("extra") or {}).get("archive") or ""))
+                real = self._named_photo(job, b["named"], self._gen(job)) if b.get("named") else None
+                real = real or self._real_photo(job, b.get("stock") or "", b.get("visual", ""),
+                                                str((b.get("extra") or {}).get("archive") or ""))
                 if real is not None:
                     dst = jdir / f"scene_{sc['index'] + 1:02d}_beat{k + 2}_photo{real.suffix}"
                     shutil.copyfile(real, dst)
@@ -336,6 +342,7 @@ class Pipeline:
         for k, v in counts.items():
             m[k] = m.get(k, 0) + v
         job["providers"]["match"] = (f"visual match check: {m['checked']} pictures, {m.get('real_photos', 0)} real photos, "
+                                     f"{m.get('named', 0)} named people/places, "
                                      f"{m['regenerated']} regenerated, {m['stock_rejected']} off-topic stock skipped"
                                      + (f", {m['low']} still weak" if m["low"] else ""))
 
@@ -365,6 +372,46 @@ class Pipeline:
                 break
         self._note_match(job, checked=1, regenerated=1 if attempt else 0, low=1 if best[0] < match.GOOD else 0)
         return best[1], best[2]
+
+    def _gen(self, job: dict) -> tuple[int, int]:
+        return ASPECTS[self._spec(job).aspect][0]
+
+    def _named_photo(self, job: dict, named: dict, gen) -> Path | None:
+        """A real picture of the person, party, institution or place the words name: the party symbol when the
+        line says "the BJP", the politician when it says "Rahul Gandhi", the building when it says "Parliament".
+        Found by name on Wikipedia/Commons; a repeat mention gets a different photo where one exists. Faces are
+        allowed here - they are the public figures the line is about. Nothing found: the line keeps its picture."""
+        name = str(named.get("name") or "").strip()
+        if not name or not self.cfg.free_stock:
+            return None
+        from .providers import wiki_image
+        cache = job.setdefault("named_cache", {})
+        if name not in cache and len(cache) >= 40:
+            return None                   # a cap on lookups per video
+        try:
+            if name not in cache:
+                page = wiki_image.resolve(name, named.get("context", ""), named.get("topic") or [])
+                cache[name] = {"title": page["title"], "pics": wiki_image.pictures(page)} if page else {}
+            entry = cache[name]
+        except ProviderError:
+            return None
+        used = job.setdefault("used_photos", [])
+        pics = entry.get("pics") or []
+        # the first unused picture; when all were shown, the subject's lead picture again (a symbol can repeat)
+        for pic in [p for p in pics if p["url"] not in used] + pics[:1]:
+            try:
+                src = wiki_image.fetch_framed(pic, self.cfg.cache_dir / "named_photos", gen)
+            except (ProviderError, OSError):
+                continue
+            if not pic.get("logo") and match.is_flat(src):
+                continue
+            used.append(pic["url"])
+            credits = job.setdefault("stock_credits", [])
+            if pic["credit"] not in credits:
+                credits.append(pic["credit"])
+            self._note_match(job, checked=1, real_photos=1, named=1)
+            return src
+        return None
 
     def _archive_photo(self, job: dict, visual: str, era: str) -> Path | None:
         """A history line: a real period photograph from Wikimedia Commons (public domain / open licence) when one

@@ -176,3 +176,16 @@ INDEX (title - on-screen hook)
   Week 4  scams & cons       Shorts 04, 14, 23  + re-cut best 4     Long 06 (day 25), Long 07 (day 27)
   Days 29-30                 Long 03 and Long 05; then repeat the formats that won (Analytics tab)
   Pin the best Short of each week under the matching long form.
+
+AUTOMATIC PICTURES THAT FOLLOW THE WORDS (new)
+  Named subjects: when a line names a person, party, institution, company or landmark ("Modi", "the BJP",
+    "Congress", "Rahul Gandhi", "Parliament", "the SEC", "Enron"), CreatorForge shows a real picture of it, found
+    by name on Wikipedia/Wikimedia Commons: a party's symbol, a politician's photo, a company logo, a building.
+    Shown on the first mention and again at most every few lines, with a different photo where one exists.
+    Names the script marks as made up ("Text: LEAH · FICTIONAL", "Sam is fictional") are never looked up.
+  Everyday things: when the words mention something concrete ("discount", "vote", "ballot", "subscription",
+    "credit card", "police", "protest", "newspaper") and the line's Visual shows something else, the picture is
+    swapped for one of exactly that thing.
+  Left alone: lines with a full-frame graphic (Chart, Map, Statement...), Split screens, Archive lines and any line
+    with your own Stock: search. To keep your own picture on a line, give it a Stock: line.
+  Check these real pictures in the storyboard review before rendering.
