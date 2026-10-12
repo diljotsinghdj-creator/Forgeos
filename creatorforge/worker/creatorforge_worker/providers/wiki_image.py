@@ -53,11 +53,32 @@ def names_match(name: str, title: str) -> bool:
     return bool(words) and all(re.search(rf"\b{re.escape(w)}", t) for w in words)
 
 
+_NATIONS = {"india": ("india", "indian"), "united states": ("united states", "u.s.", "american", "america"),
+            "united kingdom": ("united kingdom", "british", "britain", "england", "english", "uk"),
+            "pakistan": ("pakistan",), "bangladesh": ("bangladesh",), "china": ("china", "chinese"),
+            "canada": ("canada", "canadian"), "australia": ("australia", "australian"), "france": ("france", "french"),
+            "germany": ("germany", "german"), "japan": ("japan", "japanese"), "russia": ("russia", "russian"),
+            "ireland": ("ireland", "irish"), "nigeria": ("nigeria",), "south africa": ("south africa",),
+            "brazil": ("brazil",), "israel": ("israel",), "turkey": ("turkey", "turkish"), "hungary": ("hungary",)}
+_ALIAS = {"britain": "united kingdom", "england": "united kingdom", "scotland": "united kingdom", "wales": "united kingdom",
+          "america": "united states"}
+
+
+def other_country(text: str, context: str) -> bool:
+    """True when the text is about a different country than the story's ("of the United States" vs India)."""
+    t = f" {text.lower()} "
+    home = _ALIAS.get(context.lower(), context.lower())
+    if any(re.search(rf"\b{re.escape(w)}\b", t) for w in _NATIONS.get(home, (home,))):
+        return False
+    return any(re.search(rf"\b{re.escape(w)}\b", t) for k, ws in _NATIONS.items() if k != home for w in ws)
+
+
 def resolve(name: str, context: str = "", topic: list[str] | None = None) -> dict | None:
     """The one Wikipedia page the name refers to here, or None when unsure."""
     topic = [w.lower() for w in (topic or []) if w]
     single = len(name.split()) == 1
-    queries = ([f"{name} {context}"] if context and single else []) + [name]
+    # "Supreme Court" in a story about India is the Supreme Court of India: search with the country first
+    queries = ([f"{name} {context}"] if context else []) + [name]
     for q in queries:
         hits = (_get({"action": "query", "list": "search", "srsearch": q, "srlimit": 5, "srnamespace": 0})
                 .get("query") or {}).get("search") or []
@@ -72,6 +93,8 @@ def resolve(name: str, context: str = "", topic: list[str] | None = None) -> dic
                 continue
             desc = str(page.get("description") or "")
             about = f"{title} {desc} {_plain(h.get('snippet', ''))}".lower()
+            if context and other_country(f"{title} {desc}", context):
+                continue                          # the US Supreme Court, in a story about India
             if single and not re.fullmatch(r"[A-Z0-9-]{2,7}", name):
                 # a lone first/last name must be the one this script is about ("Modi" - Prime Minister of India),
                 # not someone else who shares it

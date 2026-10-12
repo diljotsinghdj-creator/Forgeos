@@ -45,7 +45,7 @@ Visual: A polling station sign beside a school gate, text unreadable
 Visual: A row of steel ballot boxes sealed with wax, no markings
 
 And quietly, one by one, you weaken the referees.
-Visual: A referee's whistle lying in the dirt beside a white chalk line
+Visual: Election officials in an Indian counting hall sealing voting machines, faces out of frame
 Visual: A hand tearing a page out of a thick rule book
 
 That is the warning researchers are raising about India under Narendra Modi.
@@ -184,7 +184,7 @@ Both claims matter. But look at what's really happening here.
 Visual: A close-up of a crack running across a marble floor
 
 People no longer trust the real referee of their votes.
-Visual: A referee's striped shirt hanging alone in an empty locker room
+Visual: The guarded gates of the Election Commission of India building in New Delhi
 Big: NO TRUST
 
 And here's the catch: protesting that distrust became a fight of its own.
@@ -224,7 +224,7 @@ Visual: Two raised hands on one side of a table, one on the other, faces out of 
 Text: 2 GOVERNMENT · 1 OPPOSITION
 
 The government can now outvote the opposition on who runs India's elections.
-Visual: A referee's whistle on a table beside a government file, text unreadable
+Visual: An Indian government file stamped with an Election Commission seal, text unreadable
 Statement: The *government* now picks the referee.
 Draw: underline
 
@@ -236,7 +236,7 @@ Visual: The empty chamber of a parliament seen from the gallery
 Text: GOVERNMENT: A LAWFUL DECISION BY PARLIAMENT
 
 Critics say it hands the referee's whistle to one of the teams.
-Visual: A hand closing around a referee's whistle
+Visual: A government minister's hand signing an appointment order, face out of frame
 Text: CRITICS: THE REFEREE NOW ANSWERS TO ONE SIDE
 
 And when 130 million names are in dispute, that is not a detail.
@@ -258,7 +258,7 @@ Visual: Cardboard evidence boxes stacked in a hallway, labels blank
 Visual: A hand in a glove lifting a file from a drawer
 
 In 2024, Reuters tracked who it had targeted since Modi took power.
-Visual: A wall calendar flipping from 2014 to 2024
+Visual: Stacks of Enforcement Directorate case files in an Indian government office, text unreadable
 Cite: Reuters, March 2024
 
 Nearly 150 opposition politicians summoned, questioned or raided.
@@ -397,7 +397,7 @@ Visual: The constitution again, a highlighter hovering over a line, text unreada
 Text: CRITICS: A RELIGIOUS TEST FOR CITIZENSHIP
 
 Now watch what happens when researchers put a number on it.
-Visual: A scoreboard with blank number tiles, one tile turning
+Visual: A thick democracy index report open on a desk beside a small Indian flag
 Transition: flash
 
 Chapter: Part 7 | The verdicts
@@ -423,7 +423,7 @@ Text: V-DEM: "ELECTORAL AUTOCRACY"
 Cite: V-Dem Democracy Report 2026
 
 It has used that label for India since 2017.
-Visual: A 2017 desk calendar lying on top of a pile of reports
+Visual: A printed democracy report with India shaded on a world map, text unreadable
 Timeline: 2014 Modi takes office → 2017 V-Dem label → 2026 Still there | V-Dem on India
 
 Elections still happen. But the real checks, V-Dem says, are wearing down.
@@ -437,7 +437,7 @@ But they measure real things. Elections. Courts. Speech. Limits on power.
 Visual: A row of four empty measuring jugs on a table, the last almost empty
 
 V-Dem's warning is that there was no single moment of collapse.
-Visual: A sandcastle slowly crumbling as a wave pulls back
+Visual: Cracks running across the stone steps of an old Indian government building
 
 Just a slow, steady erosion. One safeguard at a time.
 Visual: A cliff edge crumbling into the sea, rocks falling one by one
@@ -523,11 +523,11 @@ Chapter: Part 9 | The real test
 Visual: A single lit candle in a dark room
 
 So what is the real test of a democracy?
-Visual: A tightrope stretched between two buildings at dusk
+Visual: Voters queueing outside an Indian polling station at dawn, seen from behind
 Visual: The empty polling station at dawn, door open
 
 130 million names deleted. A referee chosen by the government. 150 against four.
-Visual: The thick voter register, the referee's whistle and a case file side by side
+Visual: The thick voter register, a voting machine and a case file side by side
 Text: 130M · 2 vs 1 · 150 vs 4
 Transition: flash
 
@@ -558,7 +558,7 @@ Visual: An empty runner-up podium step under a dim light
 Statement: Democracy is the rights of *everyone else*.
 
 The real test isn't whether a powerful leader can keep winning.
-Visual: A trophy on a pedestal under a spotlight
+Visual: Party workers with marigold garlands at an Indian election count, seen from behind
 
 It's whether the system can still make him lose.
 Visual: A ballot box under a single beam of light in a dark hall

@@ -27,6 +27,8 @@ class DiffusersImageProvider:
         self.reference: Path | None = None
         self.ref_strength = 0.0
         self._ip_ready: bool | None = None
+        # Long videos (many pictures): one pass at fewer steps, no hi-res redraw - about half the time per picture
+        self.fast = False
 
     def _load(self):
         if self._pipe is None:
@@ -65,7 +67,8 @@ class DiffusersImageProvider:
 
         with self._lock:
             pipe = self._load()
-            kwargs = dict(prompt=prompt, width=width, height=height, num_inference_steps=self.steps,
+            steps = min(self.steps, 20) if getattr(self, "fast", False) else self.steps
+            kwargs = dict(prompt=prompt, width=width, height=height, num_inference_steps=steps,
                           generator=torch.Generator("cpu").manual_seed(seed))
             if "schnell" in self.model.lower():
                 kwargs["guidance_scale"] = 0.0
@@ -97,7 +100,7 @@ class DiffusersImageProvider:
             if cancelled():
                 from ..media.ff import Cancelled
                 raise Cancelled()
-            if self.hires:
+            if self.hires and not getattr(self, "fast", False):
                 image = self._refine(pipe, image, prompt, negative, width, height, seed, ip)
             image.save(out, format="PNG")
 

@@ -140,3 +140,23 @@ def test_the_named_subject_gets_its_real_picture_and_a_credit(cfg, tmp_path, mon
     assert "2 named people/places" in job["providers"]["match"]
     cfg.free_stock = False
     assert pipe._named_photo(job, named, (1920, 1080)) is None               # no internet pictures: nothing
+
+
+def test_the_story_country_decides_courts_police_and_streets(monkeypatch):
+    assert wiki_image.other_country("Supreme Court of the United States", "India")
+    assert not wiki_image.other_country("Supreme Court of India", "India")
+    assert literal.setting_for("A man climbing the steps of a high court", "India").startswith("in India, Indian people")
+    assert literal.setting_for("A pair of handcuffs on a table", "India") == ""            # an object: no setting
+    assert literal.setting_for("A crowd outside Parliament in Delhi", "India") == ""        # already says where
+    hits = {"Supreme Court India": [{"title": "Supreme Court of the United States", "snippet": ""},
+                                    {"title": "Supreme Court of India", "snippet": ""}]}
+    pages = {"Supreme Court of the United States": "Highest court of the United States",
+             "Supreme Court of India": "Highest court of India"}
+
+    def fake_get(params, timeout=20):
+        if params.get("list") == "search":
+            return {"query": {"search": hits.get(params["srsearch"], [])}}
+        t = params["titles"]
+        return {"query": {"pages": {"1": {"title": t, "description": pages[t], "pageimage": t + ".jpg"}}}}
+    monkeypatch.setattr(wiki_image, "_get", fake_get)
+    assert wiki_image.resolve("Supreme Court", "India", ["India"])["title"] == "Supreme Court of India"

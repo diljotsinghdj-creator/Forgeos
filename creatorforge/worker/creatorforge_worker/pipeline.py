@@ -29,6 +29,7 @@ SCENE_GAP_S = 0.12   # breath between scenes - longer gaps lose viewers
 MIN_SCENE_S = 1.5
 MAX_HOLD_S = 0.5     # cap on the Director's dramatic pauses
 REVEAL_PAUSE_S = 0.3
+FAST_PICTURES = 60           # more pictures than this: the image model's fast pass (long videos)
 ENDING_HOLD_S = (1.5, 2.5)   # seconds the last picture holds after the final word: Shorts, long videos
 REVEAL_EMOTIONS = {"shock", "surprise", "awe"}
 SHOCK_EMOTIONS = {"shock", "surprise", "fear", "horror", "disgust", "terror"}
@@ -234,10 +235,14 @@ class Pipeline:
         spec = self._spec(job)
         gen, _ = ASPECTS[spec.aspect]
         img = providers.build_image(self.cfg, spec.style)
-        job["providers"]["image"] = img.id
+        scenes, shots = job["scenes"], job["plan"]["scenes"]
+        # A long video has well over a hundred pictures: draw them in one faster pass so it doesn't take hours
+        pictures = sum(max(1, len(s.get("beats") or [])) for s in shots)
+        if hasattr(img, "fast"):
+            img.fast = pictures > FAST_PICTURES
+        job["providers"]["image"] = img.id + (" (fast pass: long video)" if getattr(img, "fast", False) else "")
         jdir = self.store.dir(job["id"])
         seed_base = int(job["id"][:8], 16)
-        scenes, shots = job["scenes"], job["plan"]["scenes"]
         failures = []
         for sc, shot in zip(scenes, shots):
             done = sum(1 for s in scenes if s["image_state"] == "READY")
@@ -260,7 +265,8 @@ class Pipeline:
                 if real is None and not (beats0 and _covered(beats0[0])):
                     real = self._real_photo(
                         job, shot.get("stock") or "", shot["visual"],
-                        str(((beats0[0].get("extra") or {}) if beats0 else {}).get("archive") or ""))
+                        str(((beats0[0].get("extra") or {}) if beats0 else {}).get("archive") or ""),
+                        where=str((beats0[0].get("country") if beats0 else "") or ""))
                 if real is not None:
                     dst = self._replace_file(jdir, sc.get("image"), f"scene_{sc['index'] + 1:02d}_photo{real.suffix}", real)
                     sc.update(image_state="READY", image=dst.name, image_source="photo")
@@ -313,7 +319,8 @@ class Pipeline:
                         continue     # a real photo covers this beat - no AI image needed
                 real = self._named_photo(job, b["named"], self._gen(job)) if b.get("named") else None
                 real = real or self._real_photo(job, b.get("stock") or "", b.get("visual", ""),
-                                                str((b.get("extra") or {}).get("archive") or ""))
+                                                str((b.get("extra") or {}).get("archive") or ""),
+                                                where=str(b.get("country") or ""))
                 if real is not None:
                     dst = jdir / f"scene_{sc['index'] + 1:02d}_beat{k + 2}_photo{real.suffix}"
                     shutil.copyfile(real, dst)
@@ -354,11 +361,12 @@ class Pipeline:
         checker = self._matcher() if visual else None
         best: tuple[float, Path, str] | None = None
         lead = EDITORIAL_LEADS.get(self._spec(job).style, "photograph")
-        for attempt in range(3 if checker else 1):
+        tries = (2 if getattr(img, "fast", False) else 3) if checker else 1
+        for attempt in range(tries):
             s = (seed + attempt * 15485863) % 2**31
             # Last try: a plain prompt with just the subject - models get compound or metaphorical scenes wrong,
             # but rarely miss "old paper map Britain".
-            p_text = prompt if attempt < 2 else f"{lead}, {match.subject(visual, 6)}, sharp focus, centred"
+            p_text = prompt if attempt == 0 or attempt < tries - 1 else f"{lead}, {match.subject(visual, 6)}, sharp focus, centred"
             key = _key(img.id, p_text, negative, gen, s, face)
             src = self._cached("images", key, ".png",
                                lambda p, s=s, t=p_text: img.generate(t, negative, gen[0], gen[1], s, p), verify.image)
@@ -451,7 +459,7 @@ class Pipeline:
                 return src
         return None
 
-    def _real_photo(self, job: dict, query: str, visual: str, era: str = "") -> Path | None:
+    def _real_photo(self, job: dict, query: str, visual: str, era: str = "", where: str = "") -> Path | None:
         """Explainer looks: a real photograph of what the line shows (archive/stock), when one clearly matches -
         the way a video essay is built. Needs the match check to judge it; otherwise the line gets an AI picture."""
         spec = self._spec(job)
@@ -466,7 +474,10 @@ class Pipeline:
         from .providers import stock_photo
         want = match.describe(visual)
         used = job.setdefault("used_photos", [])        # one photo is shown once per video, never on repeat
-        for q in dict.fromkeys(x for x in (query, match.subject(visual)) if x):
+        base = [x for x in (query, match.subject(visual)) if x]
+        # a story set in India looks for Indian courts and streets first, not whatever comes up
+        tries = ([f"{x} {where}" for x in base if where.lower() not in x.lower()] if where else []) + base
+        for q in dict.fromkeys(tries):
             for found in stock_photo.search_any(photos, q, spec.aspect == "9:16")[:4]:
                 if found.get("url") in used:
                     continue

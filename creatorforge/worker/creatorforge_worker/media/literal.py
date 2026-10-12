@@ -377,3 +377,31 @@ def enrich(plan, script: str) -> None:
         elif beats[0].get("visual") != s.visual or beats[0].get("named"):
             s.visual = beats[0]["visual"]
             s.named = dict(beats[0].get("named") or {})
+
+
+# ---- the story's country, for AI pictures ---------------------------------------------------------------------
+_DEMONYM = {"India": "Indian", "Pakistan": "Pakistani", "Bangladesh": "Bangladeshi", "China": "Chinese",
+            "Britain": "British", "United Kingdom": "British", "England": "English", "Scotland": "Scottish",
+            "France": "French", "Germany": "German", "Italy": "Italian", "Spain": "Spanish", "Japan": "Japanese",
+            "Russia": "Russian", "Australia": "Australian", "Canada": "Canadian", "America": "American",
+            "United States": "American", "Brazil": "Brazilian", "Nigeria": "Nigerian", "Kenya": "Kenyan",
+            "South Africa": "South African", "Ireland": "Irish", "Turkey": "Turkish", "Hungary": "Hungarian",
+            "Israel": "Israeli"}
+_PLACE = re.compile(r"\b(street|road|avenue|lane|city|town|village|market|shop|office|building|court\w*|judge|police|"
+                    r"officer|crowd|protest\w*|march\w*|rally|voter\w*|polling|ballot|parliament|chamber|campus|"
+                    r"universit\w*|student\w*|school|hospital|newsroom|reporter|journalist|station|metro|train|bus|"
+                    r"prison|jail|cell|clerk|government|minister|politician|people|person|man|woman|family|worker\w*|"
+                    r"farmer\w*|crowd|shoppers?|queue|line of|neighbourhood|home|house|flag\w*|billboard|poster\w*)\b",
+                    re.I)
+_HAS_PLACE = re.compile(r"\b(" + "|".join(sorted({*COUNTRIES, *_DEMONYM.values(), "Delhi", "Mumbai", "London",
+                                                   "Washington", "Tokyo", "Paris", "Hong Kong", "Brooklyn"},
+                                                  key=len, reverse=True)) + r")\b", re.I)
+
+
+def setting_for(visual: str, country: str) -> str:
+    """A short prompt addition that puts a people/place/institution picture in the story's country ("in India,
+    Indian people and Indian buildings"); empty when the picture already names a place or shows only objects."""
+    if not country or not _PLACE.search(visual or "") or _HAS_PLACE.search(visual or ""):
+        return ""
+    who = _DEMONYM.get(country, "")
+    return f"in {country}" + (f", {who} people, {who} buildings and streets" if who else "")

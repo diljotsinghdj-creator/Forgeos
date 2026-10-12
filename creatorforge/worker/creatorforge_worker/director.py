@@ -546,10 +546,13 @@ def _editorial_prompt(visual: str, spec: ProductionSpec) -> tuple[str, str]:
 
 def prompt_forge(plan: ProductionPlan, spec: ProductionSpec, only: int | None = None) -> None:
     """Builds each scene's generation prompt from the shot, Director Mode and characters."""
+    from .media import literal
+    script_text = spec.script or " ".join(s.narration for s in plan.scenes)
     if only is None:
-        from .media import literal
         # Show what the words say: named people/parties/places get real pictures, everyday things a literal one
-        literal.enrich(plan, spec.script or " ".join(s.narration for s in plan.scenes))
+        literal.enrich(plan, script_text)
+    # pictures of people, places and institutions are set in the story's country (an Indian court, not a US one)
+    country = literal.context_country(script_text)
     t = TEMPLATES[spec.template]
     style = STYLE_PRESETS[spec.style][1] if spec.style in STYLE_PRESETS else (spec.style or t.style)
     animated = spec.style in ANIMATED_STYLES
@@ -558,6 +561,8 @@ def prompt_forge(plan: ProductionPlan, spec: ProductionSpec, only: int | None = 
         if only is not None and i != only:
             continue
         s.prompt, s.negative = _image_prompt(s.visual, s.emotion, s, spec, style, hook=i == 0)
+        if literal.setting_for(s.visual, country):
+            s.prompt = f"{s.prompt}, {literal.setting_for(s.visual, country)}"
         if not spec.fast_cuts:
             s.beats = []
         for k, b in enumerate(s.beats):
@@ -565,6 +570,9 @@ def prompt_forge(plan: ProductionPlan, spec: ProductionSpec, only: int | None = 
             size = ("close-up", "medium", "extreme close-up", "wide")[(i + k) % 4] if k else (s.shot or "medium")
             b["prompt"], b["negative"] = _image_prompt(b["visual"], b.get("emotion") or s.emotion, s, spec, style, size,
                                                        hook=i == 0 and k == 0)
+            if literal.setting_for(b["visual"], country):
+                b["prompt"] = f"{b['prompt']}, {literal.setting_for(b['visual'], country)}"
+                b["country"] = country           # real-photo searches look in the same country
             if (b.get("extra") or {}).get("archive"):
                 # a history line: the picture itself looks like an old photograph (the render adds the film look)
                 era = re.sub(r"[^0-9a-zA-Z ]", "", str(b["extra"]["archive"]))[:20]

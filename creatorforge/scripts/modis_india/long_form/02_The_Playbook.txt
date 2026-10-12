@@ -68,7 +68,7 @@ Visual: A long line of voters seen from behind outside a village school
 Visual: An empty polling booth, its curtain hanging open
 
 You don't ban the opposition. You just make winning impossible.
-Visual: A football pitch where one goal is bricked up
+Visual: An opposition party office in India with its shutters padlocked
 Big: IMPOSSIBLE
 
 Tonight: the playbook. Seven moves. Watch how many you recognise.
@@ -165,7 +165,7 @@ Visual: A heavy prison door with a small barred window
 Text: ANTI-TERROR LAW · OCT 2023
 
 225 days later, the Supreme Court ruled the arrest itself was invalid.
-Visual: A wall calendar with dozens of days crossed out in red pen
+Visual: The high outer wall and watchtower of Tihar Jail in Delhi
 Chart: 225 days | in jail before the arrest was ruled invalid
 Cite: The Tribune, May 2024
 
@@ -185,10 +185,10 @@ Text: INDIA 157 · PAKISTAN 153
 Transition: dip
 
 But silencing reporters is only useful if you also control the scoreboard.
-Visual: A stadium scoreboard with its number tiles turned to blank
+Visual: An Indian election results board with blank number tiles
 
 Chapter: Move 3 | Pick the referee
-Visual: A referee's whistle lying in the dirt beside a white chalk line
+Visual: The guarded gates of the Election Commission of India building in New Delhi
 
 Who chooses the people who run India's elections?
 Visual: Three empty high-backed chairs behind a long committee table
@@ -208,7 +208,7 @@ Squares: 2 vs 1 | government, opposition
 Cite: Election Commissioners Act 2023
 
 That's one team picking the referee. Then acting shocked by the whistle.
-Visual: A hand closing tightly around a referee's whistle
+Visual: A government minister's hand signing an appointment order, face out of frame
 Big: RIGGED REFEREE?
 
 And this year, about 130 million names were cut from draft voter rolls.
@@ -257,7 +257,7 @@ Visual: Nine name cards on a table, eight of them turned face down
 Icons: 8 of 9 | people | candidates who withdrew
 
 Congress called it match-fixing. The BJP called it a win.
-Visual: A football resting on an empty pitch at dusk
+Visual: Congress and BJP party flags on poles outside a Surat election office
 Text: CONGRESS: "MATCH-FIXING"
 
 So you've picked the referee. Now, how do you beat the other team?
@@ -577,7 +577,7 @@ Visual: A grain sack and an empty podium side by side in a warehouse
 Text: EVERY RICE BAG · ZERO PRESS CONFERENCES
 
 A referee the government picks. 150 raids against four.
-Visual: A referee's whistle lying on top of a case file
+Visual: An Election Commission seal stamped on a case file, text unreadable
 Text: 2 vs 1 · 150 vs 4
 
 Students beaten in a library. A masked mob with zero arrests.
@@ -589,11 +589,11 @@ Visual: The thick voter register, closed and tied with red tape
 Text: 130,000,000
 
 Nobody has to cancel an election.
-Visual: A race track where one lane is blocked by barriers
+Visual: An Indian polling station door half blocked by police barricades
 Statement: Nobody cancels the *election*.
 
 Why bother, when you can just make losing harder?
-Visual: A hurdle on a running track raised far above the others
+Visual: A long queue of voters outside an Indian polling booth in the heat, seen from behind
 
 Because democracy isn't only the winner's right to rule.
 Visual: Confetti falling on an empty victory stage
