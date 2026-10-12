@@ -78,6 +78,13 @@ class DiffusersImageProvider:
             try:
                 try:
                     image = pipe(**kwargs).images[0]
+                except AttributeError as e:
+                    if "image_projection_layers" not in str(e) or "ip_adapter_image" not in kwargs:
+                        raise
+                    # The face adapter isn't attached to this pipe: keep the video going without the face lock.
+                    kwargs.pop("ip_adapter_image", None)
+                    ip, self._ip_ready = {}, False
+                    image = pipe(**kwargs).images[0]
                 except Exception as e:  # noqa: BLE001
                     if not (is_oom(e) and getattr(self, "placement", "") == "gpu"):
                         raise
@@ -106,6 +113,9 @@ class DiffusersImageProvider:
         if self.reference is None and not self._ip_ready:
             return {}
         if "xl" not in self.model.lower() or not self._load_ip(pipe):
+            return {}
+        if getattr(getattr(pipe, "unet", None), "encoder_hid_proj", None) is None:
+            self._ip_ready = False      # the adapter didn't attach: draw without the face lock rather than crash
             return {}
         from PIL import Image
         pipe.set_ip_adapter_scale(self.ref_strength if self.reference is not None else 0.0)

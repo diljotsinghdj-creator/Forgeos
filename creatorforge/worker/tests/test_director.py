@@ -339,3 +339,35 @@ def test_freeing_the_gpu_also_forgets_the_face_adapter(monkeypatch):
     pipe = SimpleNamespace(unet=SimpleNamespace(encoder_hid_proj=None), load_ip_adapter=lambda *a, **k: loads.append(1))
     prov._ip_ready = True
     assert prov._load_ip(pipe) is True and loads == [1]
+
+
+def test_a_picture_is_drawn_without_the_face_lock_if_the_adapter_is_missing(tmp_path, monkeypatch):
+    from types import SimpleNamespace
+    from PIL import Image
+    from creatorforge_worker.providers import image_diffusers as d
+    prov = d.DiffusersImageProvider.__new__(d.DiffusersImageProvider)
+    import threading
+    prov.model, prov.steps, prov.hires, prov._lock = "realvisxl", 4, False, threading.Lock()
+    prov.reference, prov.ref_strength, prov._ip_ready, prov._img2img = tmp_path / "ref.png", 0.6, True, None
+    Image.new("RGB", (8, 8)).save(prov.reference)
+    calls = []
+
+    class Pipe:
+        unet = SimpleNamespace(encoder_hid_proj=None, dtype=None)
+        def __call__(self, **kw):
+            calls.append(sorted(kw))
+            if "ip_adapter_image" in kw:
+                raise AttributeError("'NoneType' object has no attribute 'image_projection_layers'")
+            return SimpleNamespace(images=[Image.new("RGB", (8, 8))])
+        def load_ip_adapter(self, *a, **k):
+            pass                      # "loads" but never attaches - the case seen on the pod
+        def set_ip_adapter_scale(self, s):
+            pass
+    import sys, types
+    fake = types.ModuleType("torch")
+    fake.Generator = lambda device: SimpleNamespace(manual_seed=lambda seed: None)
+    monkeypatch.setitem(sys.modules, "torch", fake)
+    monkeypatch.setattr(prov, "_load", lambda: Pipe())
+    monkeypatch.setattr(d, "step_callback", lambda pipe: {})
+    prov.generate("a shop window", "", 64, 64, 1, tmp_path / "out.png")
+    assert (tmp_path / "out.png").is_file() and all("ip_adapter_image" not in c for c in calls)
