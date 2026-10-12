@@ -10,6 +10,17 @@ Visual: A thick pile of printed account statements on a desk, text unreadable
 Text: NO TRADES · JUST PAPER
 Thought: Where did the money go?
 
+The catch? Regulators were warned.
+Visual: A government office building with flags outside on a grey day
+Text: THEY WERE WARNED
+Big: WARNED
+Transition: whip
+
+So why didn't the SEC catch him?
+Visual: A closed filing cabinet drawer in a government office
+Visual: A stack of case folders tied with string on a desk, text unreadable
+Text: WHY NO CATCH?
+
 His fraud ran from the seventeenth floor.
 Visual: A tall oval office tower in Midtown Manhattan seen from the street
 Visual: A lift button panel with one floor button lit, numbers unreadable
@@ -23,12 +34,6 @@ Visual: Sealed white envelopes stacked in a tray by a mailing machine
 Text: FAKE CONFIRMATIONS · FAKE STATEMENTS
 Cite: SEC / U.S. DOJ
 
-The catch? Regulators were warned.
-Visual: A government office building with flags outside on a grey day
-Text: THEY WERE WARNED
-Big: WARNED
-Transition: whip
-
 Harry Markopolos warned the SEC in a two thousand five memo.
 Visual: A man seen from behind at a desk covered in printed spreadsheets
 Visual: A thick stapled memo on a desk under a lamp, text unreadable
@@ -40,11 +45,6 @@ Visual: Hands sliding a stapled memo into a large envelope, text unreadable
 Visual: A government mail room with sorted envelopes in wooden pigeonholes
 Document: The World's Largest Hedge Fund is a Fraud | Harry Markopolos memo to the SEC, 2005
 Cite: Markopolos, 2005
-
-So why didn't the SEC catch him?
-Visual: A closed filing cabinet drawer in a government office
-Visual: A stack of case folders tied with string on a desk, text unreadable
-Text: WHY NO CATCH?
 
 An internal watchdog counted six substantive complaints, three exams, two investigations.
 Visual: Six letters fanned out on a desk, text unreadable

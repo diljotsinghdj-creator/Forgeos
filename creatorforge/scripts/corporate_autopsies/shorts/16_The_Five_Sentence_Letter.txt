@@ -4,11 +4,23 @@ Title: How a Five-Sentence Letter From 1980 Became an OxyContin Talking Point
 Tags: #CorporateAutopsies #opioids #purdue #oxycontin #medicalhistory
 Source: Porter J, Jick H, Addiction rare in patients treated with narcotics, NEJM 1980;302:123 (Jan 10, 1980), https://www.nejm.org/doi/full/10.1056/NEJM198001103020221; Leung PTM et al., A 1980 Letter on the Risk of Opioid Addiction, NEJM 2017, https://www.nejm.org/doi/full/10.1056/NEJMc1700150; NPR, Doctor Who Wrote 1980 Letter On Painkillers Regrets That It Fed The Opioid Crisis (Jun 2017), https://www.npr.org/sections/health-shots/2017/06/16/533060031/doctor-who-wrote-1980-letter-on-painkillers-regrets-that-it-fed-the-opioid-crisi; Van Zee A, The Promotion and Marketing of OxyContin, Am J Public Health 2009, https://pmc.ncbi.nlm.nih.gov/articles/PMC2622774/; KFF Health News, Purdue Pharma's Sales Pitch Downplayed Risks Of Opioid Addiction, https://kffhealthnews.org/news/purdue-pharma-sales-pitch-downplayed-risks-of-opioid-addiction/; US DOJ, Purdue Frederick 2007 plea (FDA OCI), https://www.judiciary.senate.gov/imo/media/doc/Brownlee%20Testimony%20073107.pdf; US DOJ, Opioid Manufacturer Purdue Pharma Pleads Guilty to Fraud and Kickback Conspiracies (Nov 2020), https://www.justice.gov/archives/opa/pr/opioid-manufacturer-purdue-pharma-pleads-guilty-fraud-and-kickback-conspiracies
 
-Five sentences. How did they become sales pitches?
+Five sentences, cited six hundred and eight times.
 Visual: A short typed letter lying on an old wooden desk, text unreadable
-Visual: A medical journal lying open on a library table, text unreadable
-Text: 5 SENTENCES · 1980
+Visual: Stacks of bound medical journals on library shelves
+Chart: 608 | citations of the 1980 letter, to 2017
+Cite: NEJM, 2017
 Archive: 1980s
+
+Most used it to say addiction was rare.
+Visual: A highlighted footnote on a printed page, text unreadable
+Visual: A pen circling a reference number on a journal page
+Text: "ADDICTION IS RARE"
+
+So how did five sentences become a pitch?
+Visual: A medical journal lying open on a library table, text unreadable
+Visual: A sales rep's sample case on a clinic counter, labels unreadable
+Text: 5 SENTENCES. 1 SALES PITCH?
+Transition: whip
 
 In nineteen eighty, two Boston researchers wrote a journal letter.
 Visual: A typewriter with a sheet of paper on a 1980 office desk, text unreadable
@@ -44,19 +56,7 @@ Text: "LESS THAN ONE PERCENT"
 Cite: Van Zee, AJPH 2009
 Big: UNDER 1%
 
-And by twenty seventeen? Six hundred and eight citations.
-Visual: Stacks of bound medical journals on library shelves
-Visual: A finger tracing a reference list in a journal, text unreadable
-Chart: 608 | citations of the 1980 letter, to 2017
-Cite: NEJM, 2017
-Treat: halftone
-
-Most used it to say addiction was rare.
-Visual: A highlighted footnote on a printed page, text unreadable
-Visual: A pen circling a reference number on a journal page
-Text: "ADDICTION IS RARE"
-
-Eight in ten never said the patients were hospitalised.
+Eight in ten citing papers never said the patients were hospitalised.
 Visual: A hospital bed with a folded blanket in an empty room
 Visual: A journal page with a paragraph crossed out in pen, text unreadable
 Pie: 81% | never said the patients were in hospital

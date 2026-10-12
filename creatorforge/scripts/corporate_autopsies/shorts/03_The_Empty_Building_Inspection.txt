@@ -11,15 +11,7 @@ Text: CALIFORNIA · 1980s
 Big: NEVER EXISTED
 Archive: 1980s
 
-At only sixteen, Barry Minkow started a carpet cleaner, ZZZZ Best. It went public.
-Visual: A suburban garage with its door open, a carpet cleaning machine inside
-Visual: A 1980s stock certificate lying on a desk, text unreadable
-Text: STARTED AT 16 · PUBLIC BY 1986
-Cite: MoneyWeek
-Archive: 1980s
-Treat: halftone
-
-The secret? Most revenue came from insurance repair jobs Minkow later admitted never existed.
+Most of the company's revenue came from repair jobs Minkow later admitted never existed.
 Visual: A stack of 1980s insurance repair contracts on a desk, text unreadable
 Visual: A hand signing a typed invoice with a fountain pen, text unreadable
 Text: RESTORATION JOBS: REPORTED 86% OF REVENUE
@@ -27,12 +19,20 @@ Pie: 86% | of revenue, from fake restoration jobs
 Cite: Minkow, Senate testimony, 2006
 Archive: 1980s
 
-So what happens when the auditors ask to see one?
+So how do you show auditors a job that isn't there?
 Visual: An auditor's open briefcase with blank checklists inside, text unreadable
 Visual: A 1980s desk telephone with its receiver lifted off the cradle
 Text: AUDITORS ASK FOR A SITE VISIT
 Archive: 1980s
 Transition: whip
+
+At only sixteen, Barry Minkow started a carpet cleaner, ZZZZ Best. It went public.
+Visual: A suburban garage with its door open, a carpet cleaning machine inside
+Visual: A 1980s stock certificate lying on a desk, text unreadable
+Text: STARTED AT 16 · PUBLIC BY 1986
+Cite: MoneyWeek
+Archive: 1980s
+Treat: halftone
 
 Minkow later told 60 Minutes they used a new building in Sacramento.
 Visual: A new mid-rise office building in a California city on a sunny day

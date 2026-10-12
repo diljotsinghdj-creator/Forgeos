@@ -4,11 +4,24 @@ Title: How WorldCom Turned Everyday Expenses Into Profit, and Who Caught It
 Tags: #CorporateAutopsies #WorldCom #accountingfraud #whistleblower #business
 Source: SEC Litigation Release No. 17588, SEC v. WorldCom (June 2002), https://www.sec.gov/litigation/litreleases/2002/lr17588.htm; WorldCom statement to the SEC on Cynthia Cooper's memorandum (2002), https://www.sec.gov/news/extra/wcresponserev.htm; Congressional Research Service, WorldCom: The Accounting Scandal (2002), https://www.everycrsreport.com/reports/RS21253.html; CNN Money, WorldCom files largest bankruptcy ever (July 2002), https://money.cnn.com/2002/07/19/news/worldcom_bankruptcy/; NBC News, Ebbers sentenced to 25 years in prison (July 2005), https://www.nbcnews.com/id/wbna8474930; CNN, Time names whistleblowers Persons of the Year (Dec 2002), https://edition.cnn.com/2002/US/12/23/time.persons.of.year/index.html
 
-How do everyday expenses turn into profit?
+WorldCom turned everyday expenses into profit. How?
 Visual: A stack of telephone company invoices on an office desk, text unreadable
 Visual: A hand flipping through a thick binder of bills, text unreadable
 Text: WORLDCOM · 2001-2002
 Big: EXPENSES?
+
+About three point eight billion dollars of costs vanished, the SEC said.
+Visual: A printed income statement with the costs line circled in red, text unreadable
+Visual: A calculator showing a long row of zeros on a desk
+Text: $3.8 BILLION MOVED · 2001 TO Q1 2002
+Cite: SEC, June 2002
+Treat: halftone
+
+And who caught it? Someone told to wait.
+Visual: An office wall clock above a desk piled with audit files, text unreadable
+Visual: A closed office door at the end of a quiet corridor
+Text: WHO CAUGHT IT?
+Transition: slide
 
 WorldCom paid other carriers billions to carry its calls. A running cost.
 Visual: Bundles of telephone cables running along a utility pole on a grey day
@@ -22,14 +35,7 @@ Visual: A pencil drawing an arrow between two columns on a balance sheet, text u
 Steps: Line costs → Relabel as assets → Spread over years → Profit up | The trick
 Cite: SEC complaint, 2002
 
-About three point eight billion dollars of costs vanished from profit, the SEC said.
-Visual: A printed income statement with the costs line circled in red, text unreadable
-Visual: A calculator showing a long row of zeros on a desk
-Text: $3.8 BILLION MOVED · 2001 TO Q1 2002
-Cite: SEC, June 2002
-Treat: halftone
-
-So who noticed? WorldCom's own internal audit chief, Cynthia Cooper.
+Here's who: WorldCom's own internal audit chief, Cynthia Cooper.
 Visual: A woman seen from behind at an office desk, reading printouts
 Visual: A desk lamp lighting a laptop and a pile of audit files, text unreadable
 Text: CYNTHIA COOPER · INTERNAL AUDIT

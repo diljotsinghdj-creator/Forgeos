@@ -4,12 +4,25 @@ Title: The Omitted System: How MCAS Was Left Out of 737 MAX Pilot Manuals
 Tags: #CorporateAutopsies #Boeing #737MAX #aviation #safety
 Source: House Committee on Transportation and Infrastructure, Final Committee Report on the Design, Development and Certification of the Boeing 737 MAX, Sept 2020 (https://democrats-transportation.house.gov/imo/media/doc/final_boeing_737_max_report.pdf); US DOJ, Boeing Charged with 737 Max Fraud Conspiracy and Agrees to Pay over $2.5 Billion, Jan 7 2021 (https://www.justice.gov/archives/opa/pr/boeing-charged-737-max-fraud-conspiracy-and-agrees-pay-over-25-billion); The Daily Star / Reuters, US House report blasts failures of Boeing, FAA (https://www.thedailystar.net/business/news/us-house-report-blasts-failures-boeing-faa-737-max-certification-1962633); NBC News, Judge dismisses case against Boeing over deadly 737 Max plane crashes, Nov 2025 (https://www.nbcnews.com/news/us-news/criminal-case-boeing-deadly-737-max-plane-crashes-dismissed-us-judge-rcna242365); ch-aviation, US court blocks families' challenge of Boeing MAX deal, 2026 (https://www.ch-aviation.com/news/165476-us-court-blocks-families-challenge-of-boeing-max-deal)
 
-A system pilots weren't told about. Why?
+A hidden system, missing from pilot manuals.
 Visual: An empty airliner cockpit seen from the jump seat, instruments unreadable
 Visual: A thick pilot manual lying open on a cockpit seat, text unreadable
 Text: NOT IN THE MANUAL?
 
-Called MCAS, it could push a seven thirty-seven MAX's nose down.
+Two crashes, in twenty eighteen and twenty nineteen, killed three hundred forty-six people.
+Visual: A row of empty airport gate seats at dusk
+Visual: Flowers laid along an airport terminal window ledge
+Text: 2 CRASHES · 346 LIVES
+Timeline: 2018 Lion Air 610 → 2019 Ethiopian 302 | Two crashes, 346 lives
+Cite: US DOJ, Jan 2021
+Treat: duotone
+
+So why weren't pilots told?
+Visual: A pilot's cap resting on an empty cockpit seat
+Text: WHY WEREN'T PILOTS TOLD?
+Transition: whip
+
+The system, MCAS, could push a seven thirty-seven MAX's nose down.
 Visual: A narrow-body jet parked at an airport gate, markings hidden
 Visual: A pilot's hand on a control column, seen from behind
 Text: MCAS · AUTOMATIC NOSE-DOWN
@@ -20,19 +33,6 @@ Visual: A technician's gloved finger pointing at the vane on the fuselage
 Text: ONE SENSOR
 Cite: House T&I Committee, Sept 2020
 Big: ONE SENSOR
-
-Two crashes, in twenty eighteen and twenty nineteen, killed three hundred forty-six people.
-Visual: A row of empty airport gate seats at dusk
-Visual: Flowers laid along an airport terminal window ledge
-Text: 2 CRASHES · 346 LIVES
-Timeline: 2018 Lion Air 610 → 2019 Ethiopian 302 | Two crashes, 346 lives
-Cite: US DOJ, Jan 2021
-Treat: duotone
-
-Why didn't pilots know?
-Visual: A pilot's cap resting on an empty cockpit seat
-Text: WHY DIDN'T PILOTS KNOW?
-Transition: whip
 
 The DOJ said Boeing employees misled the FAA about MCAS.
 Visual: A federal office building exterior on a clear day

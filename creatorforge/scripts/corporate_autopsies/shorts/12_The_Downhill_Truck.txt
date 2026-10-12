@@ -4,17 +4,28 @@ Title: The Downhill Truck: Nikola's Video, a Fraud Conviction and a Pardon
 Tags: #CorporateAutopsies #Nikola #TrevorMilton #fraud #EV
 Source: Hindenburg Research, Nikola: How to Parlay An Ocean of Lies Into a Partnership With the Largest Auto OEM in America, Sept 10 2020 (https://hindenburgresearch.com/nikola/); Teslarati, Nikola admits One wasn't self-propelled in response to Hindenburg (https://www.teslarati.com/nikola-one-response-self-propelled-hill-hindenburg-report/); Automotive Fleet, Nikola hits back at Hindenburg report (https://www.automotive-fleet.com/10125699/nikola-hits-back-at-hindenburg-report); TipRanks, Nikola founder Trevor Milton convicted of securities fraud, Oct 2022 (https://www.tipranks.com/news/nikola-nasdaqnkla-founder-trevor-milton-convicted-of-securities-fraud); TechCrunch, Nikola founder Trevor Milton sentenced to 4 years, Dec 2023 (https://techcrunch.com/2023/12/18/nikola-founder-trevor-milton-sentenced-to-4-years-for-securities-fraud); AP via KRDO, Nikola files for Chapter 11 bankruptcy protection, Feb 19 2025 (https://krdo.com/news/2025/02/19/electric-truck-maker-nikola-files-for-chapter-11-bankruptcy-protection/); AP via Fox 9, Trevor Milton pardoned by President Trump, March 2025 (https://fox9.com/news/trevor-milton-nikola-founder-pardoned-president-trump)
 
-A truck video. But was it driving?
+The truck in the video? It wasn't driving.
 Visual: A semi-truck cab on an empty desert highway, no markings
 Visual: A video camera on a tripod beside a desert road
 Text: DRIVING... OR ROLLING?
+
+It ended in a fraud conviction, then a pardon.
+Visual: A federal courthouse in Manhattan seen across a street
+Visual: A signed official document with a red wax seal, text unreadable
+Text: CONVICTED. THEN PARDONED.
+
+So what was really moving that truck?
+Visual: A truck cab parked at the top of a desert hill road
+Visual: A truck's front wheel on a sloping road, close up
+Text: WHAT MOVED IT?
+Transition: slide
 
 Founder Trevor Milton promised hydrogen-electric trucks.
 Visual: A hydrogen fuel nozzle hanging at a roadside pump
 Visual: A row of truck cabs inside a factory hall, no logos
 Text: HYDROGEN-ELECTRIC TRUCKS
 
-Then a company video showed its Nikola One prototype seemingly driving.
+A company video showed the Nikola One prototype seemingly driving.
 Visual: A large truck cab on a two-lane road filmed from a chase car
 Visual: A laptop playing a video of a truck on a highway, screen blurred
 Text: THE NIKOLA ONE VIDEO
@@ -40,17 +51,7 @@ Text: NOT UNDER ITS OWN POWER
 Draw: circle
 Cite: Nikola statement, Sept 2020
 
-Then prosecutors charged Milton with fraud.
-Visual: A federal courthouse in Manhattan seen across a street
-Visual: A thick indictment document on a table, text unreadable
-Text: CHARGED WITH FRAUD
-Treat: halftone
-
-What did the jury decide?
-Visual: An empty jury box in a wood-panelled courtroom
-Text: THE VERDICT?
-
-In twenty twenty-two, a jury convicted him of securities fraud and wire fraud.
+In twenty twenty-two, a jury convicted Milton of securities fraud and wire fraud.
 Visual: A courtroom seen from the back benches, people seen from behind
 Visual: A gavel resting on a verdict form, text unreadable
 Text: GUILTY · SECURITIES & WIRE FRAUD

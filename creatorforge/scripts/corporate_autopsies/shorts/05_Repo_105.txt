@@ -4,11 +4,23 @@ Title: Repo 105: How Lehman Made $50 Billion Vanish at Quarter-End
 Tags: #CorporateAutopsies #Lehman #Repo105 #financialcrisis #accounting
 Source: Report of Anton R. Valukas, Examiner, In re Lehman Brothers Holdings Inc. (March 2010), via NBC News, Report details how Lehman hid its woes, https://www.nbcnews.com/id/wbna35828326; ABA Journal, Lehman Used Linklaters Opinion to Justify Aggressive Accounting, Report Says (March 2010), https://www.abajournal.com/news/article/jenner_block_report_chronicles_accounting_manipulation_at_lehman/; The D&O Diary, Lehman bankruptcy examiner cites company's balance sheet manipulation (March 2010), https://www.dandodiary.com/2010/03/articles/subprime-litigation/lehman-bankruptcy-examiner-cites-companys-balance-sheet-manipulation/; The Economist, via University of Arkansas course links (March 12, 2010), https://amalakho.hosted.uark.edu/teaching/finn5333/links/Economist_Lehman_Mar12_2010.pdf; New York Attorney General, settlement with Ernst & Young (April 15, 2015), via Mondo Visione, https://mondovisione.com/media-and-resources/news/new-york-attorney-general-eric-t-schneiderman-announces-settlement-with-ernst-and-2015415/; HISTORY.com, Lehman Brothers collapses (Sept 15, 2008), https://www.history.com/this-day-in-history/september-15/lehman-brothers-collapses
 
-How did fifty billion dollars vanish, then return?
+On paper, fifty billion dollars gone at quarter-end.
 Visual: A trading floor at night with rows of empty desks and glowing screens, text unreadable
 Visual: A balance sheet printout on a desk with one total circled in red, text unreadable
 Text: LEHMAN BROTHERS · 2008
 Big: $50 BILLION
+
+About that much, every quarter in two thousand eight, an examiner found.
+Visual: A thick bound examiner's report on a courtroom table, text unreadable
+Visual: A hand turning pages of financial tables under a desk lamp, text unreadable
+Chart: $39bn → $49bn → $50bn | moved off the balance sheet | Q4 2007, Q1 2008, Q2 2008
+Cite: Valukas examiner report, 2010
+
+Then the debt came back. So how did Lehman do it?
+Visual: A hand sliding a thick bond folder back across a desk, text unreadable
+Visual: A wall clock above an empty office reading late evening
+Text: GONE. THEN BACK.
+Transition: whip
 
 Lehman's Repo one-oh-five swapped bonds for cash, with a promise to buy them back.
 Visual: Two hands exchanging a thick bond folder for a sealed envelope across a desk
@@ -21,18 +33,6 @@ Here's the trick: that's a loan, but Lehman counted it as a sale.
 Visual: A loan agreement and a bill of sale side by side on a desk, text unreadable
 Visual: A hand crossing out one heading on a printed form, text unreadable
 Steps: Bonds out → Cash in → Booked as a sale → Debt looks smaller → Bought back | Repo 105
-Cite: Valukas examiner report, 2010
-
-On paper, its debt shrank right at quarter-end.
-Visual: A printed quarterly report lying on a boardroom table, text unreadable
-Visual: A wall clock above an empty office reading late evening
-Text: DEBT LOOKS SMALLER · QUARTER-END
-Transition: whip
-
-How much? About fifty billion dollars a quarter in two thousand eight, an examiner found.
-Visual: A thick bound examiner's report on a courtroom table, text unreadable
-Visual: A hand turning pages of financial tables under a desk lamp, text unreadable
-Chart: $39bn → $49bn → $50bn | moved off the balance sheet | Q4 2007, Q1 2008, Q2 2008
 Cite: Valukas examiner report, 2010
 
 The strange part? Lehman relied on a London law firm's opinion instead.

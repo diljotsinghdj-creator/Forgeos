@@ -1,13 +1,24 @@
 The Factory-Line Label
-On-screen hook: MADE FOR THE OUTLET?
+On-screen hook: NEVER IN THE STORE?
 Title: Made for the Outlet: Was That Outlet Bargain Ever in the Main Store?
 Tags: #CorporateAutopsies #outletstores #shopping #pricing #consumerrights
 Source: FTC, FTC Advice: How to Shop Wisely at Outlet Malls (Mar 2014), https://www.ftc.gov/news-events/news/press-releases/2014/03/ftc-advice-how-shop-wisely-outlet-malls; Sen. Whitehouse, Sens. and Rep. to FTC: Outlet stores may be misleading consumers (Jan 30, 2014), https://www.whitehouse.senate.gov/news/release/sens-and-rep-to-ftc-outlet-stores-may-be-misleading-consumers; Sen. Markey, same letter, https://www.markey.senate.gov/news/press-releases/sens-and-rep-to-ftc-outlet-stores-may-be-misleading-consumers; Business of Fashion (Reuters), Michael Kors settles US lawsuit alleging deceptive price tags (Jun 2015), https://www.businessoffashion.com/news/news-analysis/michael-kors-settles-us-lawsuit-alleging-deceptive-price-tags/; Bloomberg Law, Michael Kors settles class action for $4.9M, https://news.bloomberglaw.com/product-liability-and-toxics-law/michael-kors-settles-class-action-for-49m-retailer-to-change-outlet-pricing-practices
 
-Was that outlet bargain ever in the store?
+Your outlet bargain may never have been in-store.
 Visual: A clothing rack in an outlet store with bright sale signs, text unreadable
 Visual: A hand flipping a price tag on a folded sweater, text unreadable
 Text: MADE FOR THE OUTLET?
+
+One analyst estimate: upwards of eighty-five percent made only for outlets.
+Visual: Boxes of new clothing stacked in a stockroom, labels unreadable
+Visual: A sewing factory floor with rows of machines, no people visible
+Pie: 85% | made only for outlets (analysts' estimate)
+Cite: Letter to FTC, Jan 2014
+
+So how can you tell, before you pay?
+Visual: An outlet store aisle packed with full clothing racks
+Visual: A hand turning over a garment label inside a shirt collar, text unreadable
+Text: HOW CAN YOU TELL?
 
 The FTC warns many outlet goods are made only for outlets.
 Visual: A government office building with flags outside, seen across a street
@@ -21,24 +32,14 @@ Visual: Two jackets laid side by side on a table, one with no inner lining
 Visual: A hand pinching the thin fabric of a shirt sleeve
 Article: FTC Advice: How to Shop Wisely at Outlet Malls | FTC, March 2014
 
-How much of the stock?
-Visual: An outlet store aisle packed with full clothing racks
-Big: HOW MUCH?
-
-In twenty fourteen, four lawmakers cited an analyst estimate.
+In twenty fourteen, four lawmakers cited that estimate.
 Visual: A signed letter on official paper lying on a desk, text unreadable
 Visual: The US Capitol dome seen across a lawn on a clear day
 Text: 3 SENATORS + 1 REPRESENTATIVE · JAN 2014
 Cite: Letter to FTC, Jan 2014
 Transition: whip
 
-Upwards of eighty-five percent, made exclusively for outlets.
-Visual: Boxes of new clothing stacked in a stockroom, labels unreadable
-Visual: A sewing factory floor with rows of machines, no people visible
-Pie: 85% | made only for outlets (analysts' estimate)
-Cite: Letter to FTC, Jan 2014
-
-But only some brands put a different label on outlet lines.
+But here's the problem: only some brands label outlet lines differently.
 Visual: A close-up of a sewn clothing label inside a collar, text unreadable
 Visual: Two garment tags side by side on a table, text unreadable
 Text: DIFFERENT LABEL? NOT ALWAYS

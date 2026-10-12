@@ -4,10 +4,23 @@ Title: The Defeat Device: How Volkswagen's Diesels Passed Every Lab Test
 Tags: #CorporateAutopsies #Dieselgate #Volkswagen #emissions #EPA
 Source: EPA and California Air Resources Board, EPA, California Notify Volkswagen of Clean Air Act Violations, Sept 18 2015 (https://ww2.arb.ca.gov/news/epa-california-notify-volkswagen-clean-air-act-violations); EPA testimony to House Energy and Commerce oversight hearing, Oct 8 2015 (https://www.epa.gov/sites/production/files/2015-10/documents/epa-grundler-brooks-testimony-_oct_8_hec_oversight_hearing_-vw.pdf); ICCT press statement on the EPA notice of violation, Sept 2015 (https://theicct.org/epas-notice-of-violation-of-the-clean-air-act-to-volkswagen-press-statement); West Virginia Public Broadcasting, WVU researchers help bust Volkswagen (https://wvpublic.org/wvu-researchers-help-bust-volkswagen-for-pollution-violations); AP via 6ABC, Volkswagen pleads guilty in US diesel emissions scandal, March 2017 (https://6abc.com/post/volkswagen-pleads-guilty-in-us-diesel-emissions-scandal/1794442/)
 
-Clean diesels passed the lab. Then what?
+Lab: clean. Real roads: up to forty times.
 Visual: A diesel car sitting on steel test rollers in an emissions lab
 Visual: Exhaust from a car tailpipe on a cold city street
-Text: LAB vs ROAD?
+Text: LAB: CLEAN · ROAD: UP TO 40×
+
+The EPA alleged it across about four hundred eighty-two thousand US cars.
+Visual: Rows of new cars parked at a port lot, badges hidden
+Visual: A car dealership lot under strings of flags, no logos
+Text: ~482,000 US DIESEL CARS
+Cite: EPA, Sept 18, 2015
+
+So how did the same Volkswagens pass every lab test?
+Visual: A technician's gloved hands fitting a hose to a tailpipe in a lab
+Visual: A clipboard with a printed pass sheet, text unreadable
+Text: SAME CARS. LAB PASS.
+Big: PASSED
+Transition: whip
 
 In twenty fourteen, West Virginia University researchers road-tested diesels.
 Visual: A car on a highway with test equipment strapped to its rear
@@ -20,15 +33,7 @@ They found two Volkswagens far over the limit, one up to thirty-five times.
 Visual: Two diesel cars parked side by side in a test bay, badges hidden
 Visual: A gauge needle pushed deep into the red zone
 Text: JETTA: 15–35× THE NOx LIMIT
-Chart: 1 → 35 | times the US NOx limit, on the road
 Cite: ICCT, Sept 2015
-
-But in the lab, the same cars passed. Why?
-Visual: A technician's gloved hands fitting a hose to a tailpipe in a lab
-Visual: A clipboard with a printed pass sheet, text unreadable
-Text: SAME CARS. LAB PASS.
-Big: PASSED
-Transition: whip
 
 In twenty fifteen, the EPA issued a notice of violation.
 Visual: A government building with stone columns on a sunny day
@@ -54,12 +59,6 @@ Text: UP TO 40× THE NOx STANDARD
 Draw: circle
 Cite: EPA, Sept 18, 2015
 Treat: duotone
-
-Across about four hundred eighty-two thousand US cars, the EPA alleged.
-Visual: Rows of new cars parked at a port lot, badges hidden
-Visual: A car dealership lot under strings of flags, no logos
-Text: ~482,000 US DIESEL CARS
-Cite: EPA, Sept 18, 2015
 
 How did it end? In twenty seventeen, Volkswagen pleaded guilty.
 Visual: A federal courthouse's stone steps on a grey morning

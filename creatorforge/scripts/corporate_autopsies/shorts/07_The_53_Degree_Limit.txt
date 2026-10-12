@@ -4,15 +4,27 @@ Title: The 53-Degree Limit: The Night Engineers Said Don't Launch Challenger
 Tags: #CorporateAutopsies #Challenger #RogersCommission #engineering #history
 Source: Report of the Presidential Commission on the Space Shuttle Challenger Accident, Vol. 1, Ch. 5 (https://www.nasa.gov/history/rogersrep/v1ch5.htm); Rogers Commission, Appendix D, launch weather (https://www.nasa.gov/history/rogersrep/v1appd.htm); Rogers Commission, Vol. 1, Ch. 4, cause of the accident (https://www.nasa.gov/history/rogersrep/v1ch4.htm); History.com, How the Challenger Disaster Changed NASA (https://www.history.com/articles/how-the-challenger-disaster-changed-nasa); News4Jax, Weather and the Space Shuttle Challenger Disaster (https://www.news4jax.com/weather/2013/01/29/weather-and-the-space-shuttle-challenger-disaster/)
 
-Fifty-three degrees was the limit. Why launch colder?
+The limit: fifty-three degrees. Launch morning: thirty-six.
 Visual: An empty launch pad gantry against a pale winter morning sky
 Visual: A thermometer on a frosted metal railing reading near freezing
 Text: 53°F LIMIT · 36°F LAUNCH?
 Archive: 1980s
 
-That night, engineers including Roger Boisjoly warned against launching.
-Visual: A 1980s conference table with a speakerphone and scattered papers, text unreadable
+Engineers had warned. All seven aboard were lost.
 Visual: Hands spreading engineering charts across a desk under a lamp, text unreadable
+Visual: A crowd seen from behind looking up at a pale empty sky
+Text: ENGINEERS WARNED · 7 LOST
+Archive: 1980s
+
+So why launch colder?
+Visual: A frozen puddle at the foot of a steel launch tower
+Text: WHY LAUNCH COLDER?
+Archive: 1980s
+Transition: whip
+
+One of them was Roger Boisjoly.
+Visual: A 1980s conference table with a speakerphone and scattered papers, text unreadable
+Visual: An engineer seen from behind holding a sheaf of charts, text unreadable
 Text: JAN 27, 1986 · THE NIGHT BEFORE
 Archive: 1980s
 Treat: halftone
@@ -31,7 +43,7 @@ Timeline: 1985 Coldest launch, 53°F → 1986 Forecast below freezing | Launch t
 Cite: Rogers Commission, 1986
 Archive: 1980s
 
-So Thiokol said wait for fifty-three degrees.
+So Thiokol said: wait for fifty-three.
 Visual: A typed recommendation memo on a wooden desk, text unreadable
 Visual: An engineer seen from behind pointing at a temperature chart
 Text: DON'T FLY BELOW 53°F
@@ -73,8 +85,8 @@ Text: 36°F AT LAUNCH
 Cite: Rogers Commission, Appendix D
 Archive: 1980s
 
-Seventy-three seconds in, Challenger broke apart. All seven were lost.
-Visual: A crowd seen from behind looking up at a pale empty sky
+Seventy-three seconds in, Challenger broke apart.
+Visual: A pale winter sky above an empty launch tower
 Visual: An empty spectator stand under a grey sky
 Text: 73 SECONDS · 7 LIVES LOST
 Archive: 1980s

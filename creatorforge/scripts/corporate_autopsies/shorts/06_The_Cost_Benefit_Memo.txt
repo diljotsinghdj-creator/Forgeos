@@ -11,7 +11,22 @@ Text: 1973 · THE MEMO
 Big: $11
 Archive: 1970s
 
-In nineteen seventy-three, Ford sent regulators a cost study on crash fuel leaks.
+Each death was valued at two hundred thousand dollars, a regulator's figure.
+Visual: A 1970s government report lying open on a desk, text unreadable
+Visual: A pencil resting on a column of typed numbers, text unreadable
+Text: $200,000 PER DEATH · NHTSA'S FIGURE
+Cite: Schwartz, Rutgers Law Review, 1991
+Draw: circle
+Archive: 1970s
+
+Was that memo even about the Pinto?
+Visual: A 1970s compact hatchback's fuel filler cap, seen close up
+Visual: A typed memo in a manila folder on a desk, text unreadable
+Text: ABOUT THE PINTO?
+Archive: 1970s
+Transition: whip
+
+In nineteen seventy-three, Ford sent regulators a fuel-leak cost study.
 Visual: A government office building in Washington seen across a wide street
 Visual: A thick typed submission in a manila envelope on a desk, text unreadable
 Text: FORD → NHTSA · FUEL LEAKAGE STANDARD
@@ -23,6 +38,7 @@ The fix: eleven dollars a vehicle. Total: one hundred thirty-seven million.
 Visual: A mechanic's hands holding a small metal car part in a 1970s workshop
 Visual: An adding machine with a long paper tape curling onto a desk
 Text: $11 × 12.5M VEHICLES = $137M
+Squares: $137m vs $49.5m | cost, benefit (Ford, 1973)
 Cite: Ford submission to NHTSA, 1973
 Archive: 1970s
 
@@ -30,15 +46,6 @@ The benefit? About forty-nine and a half million.
 Visual: A typed table of figures on a yellowed page, text unreadable
 Visual: A hand underlining a total on a typed page with a pencil, text unreadable
 Text: 180 DEATHS · 180 INJURIES · 2,100 CARS
-Squares: $137m vs $49.5m | cost, benefit (Ford, 1973)
-Archive: 1970s
-
-How? Each death was valued at two hundred thousand dollars, a regulator's figure.
-Visual: A 1970s government report lying open on a desk, text unreadable
-Visual: A pencil resting on a column of typed numbers, text unreadable
-Text: $200,000 PER DEATH · NHTSA'S FIGURE
-Cite: Schwartz, Rutgers Law Review, 1991
-Draw: circle
 Archive: 1970s
 
 Then Mother Jones tied the memo to the Pinto's fuel tank.

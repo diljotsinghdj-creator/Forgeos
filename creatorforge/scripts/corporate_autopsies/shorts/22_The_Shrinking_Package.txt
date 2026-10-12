@@ -9,6 +9,18 @@ Visual: A hand holding a chocolate bar wrapper on a supermarket shelf, text unre
 Visual: Two cereal boxes side by side, one slightly shorter, no logos
 Text: SAME PRICE. LESS INSIDE?
 
+In household paper, like toilet rolls, it added three points, a US report found.
+Visual: A stack of toilet paper rolls on a supermarket shelf, no logos
+Visual: A roll of paper towels on a kitchen counter
+Text: HOUSEHOLD PAPER: +3.0 POINTS OF PRICE RISE
+Cite: GAO, Jul 2025
+Big: 3 POINTS
+
+So how do you catch it?
+Visual: A hand turning a snack packet to read the small print, text unreadable
+Text: HOW DO YOU CATCH IT?
+Transition: slide
+
 It's called shrinkflation. A smaller pack, at the same price.
 Visual: A kitchen scale weighing a small snack bag, digits blurred
 Visual: A supermarket shelf price label beside a row of packets, text unreadable
@@ -44,13 +56,6 @@ Visual: A grocery receipt curled on a kitchen counter, text unreadable
 Visual: A pencil resting on a printed line chart, numbers blurred
 Text: < 0.1 POINT OF 34.5% PRICE RISE
 Cite: GAO, Jul 2025
-
-But in household paper, like toilet rolls, it added three points.
-Visual: A stack of toilet paper rolls on a supermarket shelf, no logos
-Visual: A roll of paper towels on a kitchen counter
-Text: HOUSEHOLD PAPER: +3.0 POINTS
-Cite: GAO, Jul 2025
-Big: 3 POINTS
 
 Now France makes large food stores flag shrunken packs.
 Visual: A French supermarket aisle with shoppers seen from behind

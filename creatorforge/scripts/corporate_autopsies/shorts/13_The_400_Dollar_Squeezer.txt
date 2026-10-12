@@ -4,10 +4,22 @@ Title: The $400 Juicer vs Bare Hands: What Happened to Juicero
 Tags: #CorporateAutopsies #juicero #startups #siliconvalley #business
 Source: Bloomberg, Silicon Valley's $400 Juicer May Be Feeling the Squeeze (Apr 2017), https://www.bloomberg.com/news/features/2017-04-19/silicon-valley-s-400-juicer-may-be-feeling-the-squeeze; NPR, Juicero CEO Says Luxury Juicer Is 'Much More' Than Juice; Internet Is Unimpressed (Apr 2017), https://www.npr.org/sections/thetwo-way/2017/04/21/525055713/juicero-ceo-says-luxury-juicer-is-much-more-than-juice-internet-is-unimpressed; Fortune, Juicero layoffs and lower prices (Jul 2017), https://fortune.com/2017/07/14/juicero-layoffs-lower-prices; The Register, Crushed Juicero now officially a fruitless endeavor (Sep 2017), https://www.theregister.co.uk/2017/09/01/juicero_now_a_fruitless_endeavor/; Bloomberg, Inside Juicero's Demise, From Prized Startup to Fire Sale (Sep 2017), https://www.bloomberg.com/news/features/2017-09-08/inside-juicero-s-demise-from-prized-startup-to-fire-sale
 
-A four-hundred-dollar juicer versus two bare hands?
+Bare hands nearly matched a four-hundred-dollar juicer.
 Visual: A sleek white kitchen appliance standing alone on a marble counter
 Visual: Two bare hands held open over a kitchen counter, palms up
 Text: $400 VS BARE HANDS?
+
+And owners paid five to seven dollars for every pack.
+Visual: A hand dropping coins beside a single juice pouch on a counter
+Visual: A row of unopened juice pouches in a fridge door
+Text: PACKS: $5 TO $7 EACH
+Cite: Fortune, July 2017
+Transition: whip
+
+So did anyone need the machine?
+Visual: A countertop press beside an empty glass jug on a marble counter
+Visual: Two hands resting beside a sealed juice pouch on a counter
+Text: NEED THE MACHINE?
 
 Juicero sold a Wi-Fi press that squeezed sealed packs of chopped produce.
 Visual: A sealed plastic pouch of chopped fruit and vegetables on a counter
@@ -15,18 +27,11 @@ Visual: A countertop press with its door open and an empty slot inside
 Visual: A smartphone beside a kitchen appliance, screen text unreadable
 Text: WI-FI PRESS + SEALED PACKS
 
-The press launched at about seven hundred dollars. The packs cost extra.
+The press launched at about seven hundred dollars.
 Visual: A price tag hanging from a boxed kitchen appliance, numbers blurred
 Visual: A fridge shelf stacked with sealed juice pouches
-Chart: $699 → $399 | the press price, 2016 to 2017
+Text: LAUNCH PRICE $699 · LATER $399
 Cite: Bloomberg, April 2017
-
-Five to seven dollars each. So what went wrong?
-Visual: A hand dropping coins beside a single juice pouch on a counter
-Visual: A row of unopened juice pouches in a fridge door
-Text: PACKS: $5 TO $7 EACH
-Cite: Fortune, July 2017
-Transition: whip
 
 Bloomberg reporters skipped the machine and squeezed the packs by hand.
 Visual: Two hands squeezing a plastic juice pouch over a glass jug

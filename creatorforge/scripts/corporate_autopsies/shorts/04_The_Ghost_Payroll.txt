@@ -10,19 +10,25 @@ Visual: A bank statement on a desk with the balance blurred, text unreadable
 Text: SATYAM · HYDERABAD
 Big: NEVER EXISTED
 
-In January two thousand nine, Satyam's founder, Ramalinga Raju, confessed by letter.
+Satyam's founder confessed it himself, in a letter.
 Visual: A glass office tower in an Indian tech park at dusk
 Visual: A typed letter on company paper beside a fountain pen, text unreadable
-Text: JAN 7, 2009 · THE LETTER
+Text: THE FOUNDER'S LETTER
 Globe: India | Hyderabad, 2009
 Cite: Raju letter, SEC filing
 
-About a billion dollars of the cash, he wrote, was not real.
+So where did the billion go?
 Visual: A ledger page with one large figure circled in red, text unreadable
 Visual: A hand flicking through an empty cash box at a desk
 Text: RS 5,040 CRORE (~$1BN) "NON-EXISTENT"
 Cite: Raju letter, Jan 2009
 Draw: circle
+
+That was January two thousand nine. The founder: Ramalinga Raju.
+Visual: A wall calendar turned to January on an office wall, text unreadable
+Visual: A man in a suit seen from behind signing a letter at a desk
+Text: JAN 7, 2009 · B. RAMALINGA RAJU
+Cite: Raju letter, SEC filing
 
 Why keep lying? His answer became famous.
 Visual: A man in a suit seen from behind at a window high above a city

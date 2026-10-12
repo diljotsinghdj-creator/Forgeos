@@ -9,6 +9,18 @@ Visual: A hand dropping a taped parcel into a return drop box
 Visual: A full skip of cardboard boxes behind a warehouse
 Text: RETURNED. THEN THROWN AWAY?
 
+A leaked document showed over one hundred twenty-four thousand items marked destroy in a week.
+Visual: A cardboard box marked with a red cross, filled with sealed electronics
+Visual: A printed spreadsheet on a desk with rows of numbers, text unreadable
+Text: 124,000+ ITEMS MARKED "DESTROY"
+Cite: ITV News, Jun 2021
+
+So what happens to the one you sent back?
+Visual: A forklift carrying a pallet of boxes down a warehouse aisle
+Visual: Two delivery lorries parked at a loading bay at dusk
+Text: WHAT HAPPENS TO YOURS?
+Transition: whip
+
 US retail returns hit an estimated eight hundred ninety billion dollars in twenty twenty-four.
 Visual: Stacks of returned parcels on a warehouse floor, labels unreadable
 Visual: A conveyor belt carrying brown boxes through a sorting centre
@@ -16,24 +28,12 @@ Visual: A return label being peeled off a parcel, text unreadable
 Chart: $890bn | US retail returns, 2024 (estimate)
 Cite: NRF & Happy Returns, Dec 2024
 
-So where does it all go?
-Visual: A forklift carrying a pallet of boxes down a warehouse aisle
-Visual: Two delivery lorries parked at a loading bay at dusk
-Text: WHERE DOES IT GO?
-Transition: whip
-
 ITV News went undercover in an Amazon warehouse in Scotland.
 Visual: A huge grey warehouse building beside a motorway in Scotland
 Visual: A worker seen from behind pushing a cart of boxes between shelves
 Text: ITV NEWS · JUNE 2021
 Place: DUNFERMLINE · 2021
 Treat: halftone
-
-A leaked document showed over one hundred twenty-four thousand items marked destroy in a week.
-Visual: A cardboard box marked with a red cross, filled with sealed electronics
-Visual: A printed spreadsheet on a desk with rows of numbers, text unreadable
-Text: 124,000+ ITEMS MARKED "DESTROY"
-Cite: ITV News, Jun 2021
 
 Here's the comparison: just twenty-eight thousand were marked donate.
 Visual: A single donation box half filled with new items on a table

@@ -1,35 +1,40 @@
 The Mark-to-Market Delusion
-On-screen hook: PROFIT FROM A DEAD DEAL?
+On-screen hook: MILLIONS FROM A DEAD DEAL
 Title: How Enron Booked Millions From a Deal That Earned Almost Nothing
 Tags: #CorporateAutopsies #Enron #accountingfraud #marktomarket #business
 Source: U.S. Department of Justice, former Enron Broadband executive and Project Braveheart (May 2006), https://www.justice.gov/archive/opa/pr/2006/May/06_crm_338.html; U.S. Department of Justice, Federal Jury Convicts Former Enron Chief Executives (May 25, 2006), https://www.justice.gov/archive/opa/pr/2006/May/06_crm_328.html; SEC, Andrew S. Fastow pleads guilty (Jan 14, 2004), https://www.sec.gov/news/press/2004-6.htm; Cato Institute, Regulation (2003), on the SEC's 1992 mark-to-market letter, https://www.cato.org/sites/cato.org/files/serials/files/regulation/2003/10/v26n3-14.pdf; Powers Report excerpt (Special Investigative Committee of Enron's board, Feb 2002), https://utm.utoronto.ca/pac/media/337/download; Seattle Times, Timeline: Enron's collapse and the fallout (2006), https://archive.seattletimes.com/archive/20060129/enronchron29/timeline--enrons-collapse-and-the-fallout
 
-How do you profit from a dead deal?
+Enron booked millions, even on a dead deal.
 Visual: A blank accounting ledger open on an office desk under a lamp, text unreadable
-Visual: A hand stamping a sheet of paper with red ink, text unreadable
+Visual: A hand writing a large figure at the top of a ledger page, text unreadable
 Text: ENRON · 2000
 Big: DEAD DEAL?
 
-Enron's accounting let it book a deal's future profits on day one.
+Prosecutors said that deal earned virtually nothing.
+Visual: An empty cash register drawer pulled open on a shop counter
+Visual: A thin deal contract dropped into an office wastepaper bin, text unreadable
+Text: VIRTUALLY NO REVENUE
+Cite: U.S. DOJ
+Draw: cross
+
+So how do you profit from a dead deal?
+Visual: A hand stamping a deal contract with red ink, text unreadable
+Visual: A calculator showing a profit figure beside a closed contract folder
+Text: PROFIT FROM A DEAD DEAL?
+Transition: whip
+
+Its accounting let it book future profits on day one.
 Visual: A calculator beside a stack of printed spreadsheets on an office desk, text unreadable
-Visual: A hand writing a large figure at the top of a ledger page, text unreadable
+Visual: A hand writing future dates across a ledger page, text unreadable
 Text: MARK-TO-MARKET: FUTURE PROFIT, BOOKED NOW
 Cite: Cato Institute, 2003
 Treat: halftone
 
-In two thousand, it signed a twenty-year video deal with Blockbuster.
+Which deal? A twenty-year video deal with Blockbuster, in two thousand.
 Visual: Rows of video rental cassettes on shelves in a dim rental shop
 Visual: A television showing a blurry film menu in a dark living room, text unreadable
 Text: 20-YEAR VIDEO-ON-DEMAND DEAL
 Cite: U.S. DOJ
-Transition: whip
-
-But here's the catch: prosecutors said it earned virtually nothing.
-Visual: An empty cash register drawer pulled open on a shop counter
-Visual: A thin contract folder dropped into an office wastepaper bin, text unreadable
-Text: VIRTUALLY NO REVENUE
-Cite: U.S. DOJ
-Draw: cross
 
 So Enron sold a stake to a bank and booked about one hundred eleven million.
 Visual: A thick folder of deal papers on a boardroom table, text unreadable

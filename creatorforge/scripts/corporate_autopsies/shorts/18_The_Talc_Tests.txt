@@ -1,10 +1,24 @@
 The Talc Tests
-On-screen hook: WHAT DID THE TESTS SHOW?
+On-screen hook: ASBESTOS IN ONE LOT?
 Title: The Talc Tests: What Reuters Reported and What J&J Says
 Tags: #CorporateAutopsies #talc #litigation #investigation #business
 Source: Insurance Journal / AP, J&J Launches Defense Against Reuters Report on Baby Powder Asbestos (Dec 2018), https://amp.insurancejournal.com/news/national/2018/12/18/512369.htm; Becker's, J&J defends product after report that it knew asbestos lurked in baby powder for years (Dec 2018), https://www.beckershospitalreview.com/supply-chain/j-j-defends-product-after-report-that-it-knew-asbestos-lurked-in-baby-powder-for-years/; CBS News, CVS, Walmart and Rite Aid pull some J&J baby powder from shelves (Oct 2019), https://www.cbsnews.com/news/cvs-pulls-johnson-johnson-baby-powder-from-its-stores-and-online; City A.M., Johnson & Johnson to discontinue talc-based baby powder (Aug 2022), https://www.cityam.com/johnson-johnson-to-discontinue-talc-based-baby-powder/; pharmaphorum, Third time not so lucky in J&J's bid to end talc liability (Mar 2025), https://pharmaphorum.com/news/third-time-not-so-lucky-jjs-bid-end-talc-liability; NJBIZ, Judge rejects J&J's 3rd attempt to resolve talc suits via bankruptcy (Mar 2025), https://njbiz.com/judge-rejects-jjs-3rd-attempt-to-resolve-talc-suits-via-bankruptcy
 
-What did decades of talc tests show?
+FDA tests found asbestos in one powder lot.
+Visual: A lab technician seen from behind weighing white powder on a scale
+Visual: A sealed evidence bag holding a plain powder bottle, label unreadable
+Text: FDA, 2019: ASBESTOS IN 1 LOT
+Cite: FDA via CBS News, 2019
+
+J&J recalled thirty-three thousand bottles, calling it a precaution.
+Visual: Cardboard boxes stacked on a warehouse pallet, labels unreadable
+Visual: Empty store shelf spaces in a pharmacy aisle
+Text: 33,000 BOTTLES RECALLED
+Big: RECALL
+Cite: CBS News, 2019
+Draw: circle
+
+So what did decades of talc tests show?
 Visual: A white powder spilled on a dark laboratory bench
 Visual: A row of old glass sample jars on a lab shelf, labels unreadable
 Text: DECADES OF TESTS?
@@ -32,20 +46,6 @@ Its position? The talc is safe, asbestos-free and doesn't cause cancer.
 Visual: A gloved hand holding a test tube of white powder up to light
 Visual: A clean laboratory bench with sealed sample bags in a row
 Text: J&J: SAFE, ASBESTOS-FREE
-
-In twenty nineteen, the FDA found asbestos in samples from one lot.
-Visual: A lab technician seen from behind weighing white powder on a scale
-Visual: A sealed evidence bag holding a plain powder bottle, label unreadable
-Text: FDA: ASBESTOS IN 1 LOT
-Cite: FDA via CBS News, 2019
-
-J&J recalled thirty-three thousand bottles, calling it a precaution.
-Visual: Cardboard boxes stacked on a warehouse pallet, labels unreadable
-Visual: Empty store shelf spaces in a pharmacy aisle
-Text: 33,000 BOTTLES RECALLED
-Big: RECALL
-Cite: CBS News, 2019
-Draw: circle
 
 So what happened to the powder?
 Visual: A pharmacy aisle with a gap on the baby-care shelf

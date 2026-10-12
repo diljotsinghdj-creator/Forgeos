@@ -4,10 +4,21 @@ Title: The Countdown That Lies: What Regulators Found About Fake Sale Timers
 Tags: #CorporateAutopsies #darkpatterns #onlineshopping #FTC #consumerrights
 Source: Mathur et al., Dark Patterns at Scale: Findings from a Crawl of 11K Shopping Websites (Princeton/UChicago, 2019), https://arxiv.org/pdf/1907.07032; UChicago News, The dirty tricks of online shopping, https://news.uchicago.edu/story/dirty-tricks-online-shopping-designed-make-you-spend-more; European Commission CPC sweep of 399 online shops (Jan 2023), summary at https://www.cde.ual.es/en/european-commission-detects-manipulation-practices-in-148-of-the-399-online-stores-examined; Malwarebytes, 40% of online shops tricking users with dark patterns (Jan 2023), https://www.malwarebytes.com/blog/news/2023/01/european-commission-goes-after-dark-patterns-in-web-shops; FTC staff report, Bringing Dark Patterns to Light (Sep 2022), https://www.ftc.gov/reports/bringing-dark-patterns-light; Venable, The FTC brings more light to dark patterns in new staff report, https://www.venable.com/insights/blogs/2022/09/the-ftc-brings-more-light-to-dark-patterns-in-new
 
-Is that countdown timer actually counting down?
+One in ten shops used fake countdown timers.
 Visual: A laptop on a kitchen table showing a shop page with a red timer, text unreadable
 Visual: A thumb hovering over a buy button on a phone, text unreadable
-Text: IS THAT COUNTDOWN REAL?
+Text: 1 IN 10 SHOPS: FAKE TIMERS
+
+European regulators found that in twenty twenty-three, checking three hundred ninety-nine shops.
+Visual: Flags outside a European government building seen across a square
+Visual: Hands typing on a laptop beside a printed checklist, text unreadable
+Pie: 11% | of shops checked used fake timers (42 of 399)
+Cite: European Commission CPC sweep, Jan 2023
+
+So is the one you're watching real?
+Visual: A phone lying face up on a sofa cushion, screen text unreadable
+Text: IS YOURS REAL?
+Transition: whip
 
 In twenty nineteen, Princeton researchers crawled eleven thousand shopping websites.
 Visual: Rows of server racks with blinking lights in a data centre
@@ -21,23 +32,6 @@ Visual: A finger pressing the refresh key on a laptop keyboard
 Visual: A laptop screen showing a shop page with a timer, text unreadable
 Timer: 09:59 → 00:00 | Sale ends (illustration)
 Cite: Mathur et al., 2019
-
-So is that rare?
-Visual: A phone lying face up on a sofa cushion, screen text unreadable
-Big: RARE?
-
-In twenty twenty-three, European regulators checked three hundred ninety-nine online shops.
-Visual: Flags outside a European government building seen across a square
-Visual: Hands typing on a laptop beside a printed checklist, text unreadable
-Text: 399 ONLINE SHOPS CHECKED · EU, 2023
-Cite: European Commission CPC sweep, Jan 2023
-Transition: whip
-
-Forty-two, about one in ten, used fake countdown timers.
-Visual: A wall of small screens showing shop pages with timers, text unreadable
-Visual: A red pen circling a printed screenshot on a desk, text unreadable
-Pie: 11% | of shops checked used fake timers (42 of 399)
-Cite: European Commission CPC sweep, Jan 2023
 
 And the "only two left" warning?
 Visual: A phone showing a product page with a small red stock warning, text unreadable

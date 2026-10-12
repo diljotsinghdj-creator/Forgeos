@@ -10,6 +10,16 @@ Visual: Three empty hospital chairs in a row along a quiet corridor
 Text: 3 HEART ATTACKS. MISSING?
 Draw: circle
 
+At least two authors knew, the journal later said.
+Visual: Two people seen from behind at a conference table covered in papers
+Visual: A medical journal's printed correction notice on a desk, text unreadable
+Text: "AT LEAST TWO AUTHORS KNEW"
+Cite: NEJM Expression of Concern, Dec 2005
+
+So why leave three out?
+Visual: Three paper patient files set apart from a large stack on a desk
+Big: WHY?
+
 In two thousand, a top journal published Merck's Vioxx trial, VIGOR.
 Visual: A hand holding a blister pack of white pills over a desk
 Visual: A stack of printed medical journals on a library table, text unreadable
@@ -23,16 +33,11 @@ Visual: A red pen resting on a column of printed figures, text unreadable
 Text: 17 HEART ATTACKS REPORTED
 Transition: whip
 
-A Merck memo counted twenty, and at least two authors knew, the journal said.
+Yet a Merck memo counted twenty.
 Visual: An office memo lying face up on a wooden desk, text unreadable
 Visual: A filing cabinet drawer pulled open, folder labels unreadable
-Visual: Two people seen from behind at a conference table covered in papers
 Chart: 17 → 20 | heart attacks on Vioxx: paper vs memo
 Cite: NEJM Expression of Concern, Dec 2005
-
-So why leave three out?
-Visual: Three paper patient files set apart from a large stack on a desk
-Big: WHY?
 
 Merck and the authors said they fell after a pre-set cutoff date.
 Visual: A wall calendar with one date circled in red ink

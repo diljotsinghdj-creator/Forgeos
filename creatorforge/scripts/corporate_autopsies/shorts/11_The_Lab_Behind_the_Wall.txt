@@ -1,10 +1,23 @@
 The Lab Behind the Wall
-On-screen hook: TINY DEVICE. BORROWED MACHINES?
+On-screen hook: BEHIND THE LAB WALL?
 Title: The Lab Behind the Wall: What Was Really Running Theranos' Blood Tests
 Tags: #CorporateAutopsies #Theranos #fraud #startups #SEC
 Source: SEC charges via MIT Technology Review, SEC charges Theranos founder Elizabeth Holmes with massive fraud, March 2018 (https://www.technologyreview.com/2018/03/14/241044/sec-charges-theranos-founder-elizabeth-holmes-with-massive-fraud); Axios, SEC charges Theranos CEO Elizabeth Holmes with "massive fraud" (https://www.axios.com/2018/03/14/theranos-fraud); Time, on the WSJ report "Hot Startup Theranos Has Struggled With Its Blood-Test Technology", Oct 2015 (https://time.com/4075198/theranos-blood-tests-wsj/); MDDI, CMS: Theranos Could Have Jeopardized Patients, 2016 (https://www.mddionline.com/business/cms-theranos-could-have-jeopardized-patients); TechCrunch, Theranos reportedly voids two years of results from its Edison devices, May 2016 (https://techcrunch.com/2016/05/18/theranos-voids-tests/); ABC7, Elizabeth Holmes sentenced to just over 11 years (https://abc7news.com/theranos-founder-elizabeth-holmes-sentenced-to-just-over-11-years-i/12468948/); TechCrunch, Balwani sentenced (https://techcrunch.com/?p=2454477)
 
-What was really behind the Theranos lab wall?
+Behind the lab wall? Immediate jeopardy, inspectors found.
+Visual: An inspector seen from behind holding a clipboard in a lab
+Visual: A government letter on a desk with a highlighted line, text unreadable
+Document: pose immediate jeopardy to patient health and safety | CMS, Jan 2016
+Cite: CMS, Jan 2016
+
+Then Theranos voided two years of its Edison test results.
+Visual: A stack of printed lab reports with a red line through them, text unreadable
+Visual: A paper shredder beside a filing cabinet in an office
+Text: 2 YEARS OF RESULTS VOIDED
+Cite: TechCrunch, May 2016
+Draw: cross
+
+So what was really running its blood tests?
 Visual: A frosted glass lab partition with blurred shapes of machines behind it
 Visual: A locked laboratory door with a keycard reader
 Text: BEHIND THE LAB WALL?
@@ -44,19 +57,6 @@ Visual: A row of large commercial lab analyzers in a clinical lab, no logos
 Visual: A technician's gloved hands loading tubes into a big analyzer
 Text: OTHER COMPANIES' MACHINES — SEC
 Cite: SEC, March 2018
-
-Then federal inspectors found immediate jeopardy to patient health and safety.
-Visual: An inspector seen from behind holding a clipboard in a lab
-Visual: A government letter on a desk with a highlighted line, text unreadable
-Document: pose immediate jeopardy to patient health and safety | CMS, Jan 2016
-Cite: CMS, Jan 2016
-
-Theranos voided two years of Edison results.
-Visual: A stack of printed lab reports with a red line through them, text unreadable
-Visual: A paper shredder beside a filing cabinet in an office
-Text: 2 YEARS OF RESULTS VOIDED
-Cite: TechCrunch, May 2016
-Draw: cross
 
 How did it end? Elizabeth Holmes was convicted of fraud and conspiracy.
 Visual: A federal courthouse in San Jose seen across a plaza
