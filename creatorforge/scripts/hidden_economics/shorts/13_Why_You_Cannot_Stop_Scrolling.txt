@@ -62,3 +62,8 @@ Then check the weather. That's what you came for.
 Visual: A window with rain running down it, a wet street beyond
 Visual: A cup of tea on a desk beside a closed umbrella
 Draw: tick
+
+So what did you really open your phone for today?
+Visual: A smartphone lying face down on a bedside table in morning light
+Visual: A person seen from behind at a window holding a closed phone
+Text: WHAT DID YOU COME FOR?

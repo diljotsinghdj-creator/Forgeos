@@ -11,33 +11,33 @@ Text: SAME MAN. NEW CLOTHES.
 Draw: circle
 Place: BROOKLYN · 1974
 
-In nineteen seventy-four, a researcher asked Brooklyn strangers for small favours.
-Visual: A 1970s New York subway entrance with commuters seen from far away
-Visual: A 1970s Brooklyn street corner with pedestrians seen from behind
-Chart: 153 | Brooklyn pedestrians · 1974 study
-Stock: 1970s new york street
-Cite: Bickman, 1974
-Archive: 1970s
-
-As a guard, he was obeyed more than in plain clothes.
+In a guard's uniform, strangers obeyed him more. Even with no power.
 Visual: A man in a guard's uniform seen from behind on a 1970s pavement
 Visual: The same man in plain clothes seen from behind on a 1970s pavement
-Text: THE GUARD WAS OBEYED MOST
+Text: THE GUARD WAS OBEYED MORE
 Cite: Bickman, 1974
 Split: In uniform | Plain clothes
 Archive: 1970s
 Transition: match
 Treat: halftone
 
-A guard had no power here. So why?
+So why? And who borrows that trick to reach you?
 Visual: A pair of empty hands held open, palms up, against a wall
 Visual: A pedestrian handing a coin to a uniformed man, seen from behind
 Text: SO WHY COMPLY?
 Thought: Better do what he says
-Archive: 1970s
 Big: NO POWER
+Transition: whip
 
-Uniforms, titles and crests are shortcuts to trust.
+Brooklyn, nineteen seventy-four: a researcher asked strangers for small favours.
+Visual: A 1970s New York subway entrance with commuters seen from far away
+Visual: A 1970s Brooklyn street corner with pedestrians seen from behind
+Text: 153 PEDESTRIANS · BICKMAN, 1974
+Stock: 1970s new york street
+Cite: Bickman, 1974
+Archive: 1970s
+
+The trick: uniforms, titles and crests are shortcuts to trust.
 Visual: A metal badge on a desk beside an embossed letterhead, text unreadable
 Visual: A university crest carved in stone above a doorway
 Text: UNIFORM · TITLE · CREST
@@ -69,3 +69,8 @@ Same request, new clothes. Judge the request, not the uniform.
 Visual: A guard's jacket hanging on a coat hook by a door
 Visual: A hand holding a printed request up to a desk lamp, text unreadable
 Text: JUDGE THE REQUEST
+
+Which uniform or crest would make you stop checking?
+Visual: A crested letter lying on a doormat, crest blurred, text unreadable
+Visual: A security guard's cap resting on a wooden desk
+Text: WHICH UNIFORM WORKS ON YOU?

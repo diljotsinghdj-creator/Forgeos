@@ -65,3 +65,8 @@ Text: NOT A DEADLINE
 Draw: cross
 Big: NEVER
 Treat: duotone
+
+Which countdown last rushed you into buying something?
+Visual: A person seen from behind holding a phone in a shop aisle
+Visual: A paper receipt crumpled on a kitchen table, text unreadable
+Text: WHICH TIMER RUSHED YOU?

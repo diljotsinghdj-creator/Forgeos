@@ -3,19 +3,19 @@ On-screen hook: £50 = £600?
 Title: £50 a Month Is Really £600: The Monthly Payment Illusion
 Tags: #HiddenEconomics #buynowpaylater #debt #personalfinance #budgeting
 
-Fifty pounds or six hundred? Same price.
+Fifty pounds a month. Really six hundred.
 Visual: A single fifty-pound banknote lying on a wooden table
 Visual: A brand-new sofa wrapped in plastic in a furniture showroom
-Text: £50 OR £600?
+Text: £50 A MONTH = £600
 Draw: underline
 Split: What you see | What you pay
 
-Fifty a month, twelve months: six hundred.
+Twelve payments of fifty. And that's before a single fee.
 Visual: Twelve torn calendar pages laid in a grid on a desk
 Visual: A row of twelve paper envelopes on a desk, one for each month
 Chart: £50 × 12 = £600 | twelve monthly payments
 
-Before a single fee. How high can it go?
+So how high can the real price go?
 Visual: A paper price tag tied with string to a stack of coins
 Visual: A printed fees table with one row circled in red, text unreadable
 Text: + FEES?
@@ -56,3 +56,8 @@ Visual: A receipt with its total circled in red pen, text unreadable
 Text: £600+
 Draw: box
 Big: REAL PRICE
+
+Which of your monthly payments looks different once you multiply it?
+Visual: A pile of monthly payment letters on a kitchen table, text unreadable
+Visual: A hand tapping an old calculator beside a pen, figures unreadable
+Text: MULTIPLY YOURS

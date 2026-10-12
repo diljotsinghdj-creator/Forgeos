@@ -57,3 +57,8 @@ One buzz shouldn't cost twenty minutes. Now it doesn't have to.
 Visual: A sunny window over a quiet street in the morning
 Visual: An open book and a cup of coffee on a sunny desk
 Steps: Silence app alerts → Wait one week → Count what's missed | The one-week test
+
+Which app on your phone would you silence first?
+Visual: A hand holding a smartphone over a sofa cushion, screen unreadable
+Visual: A smartphone lying on a desk with its screen lit, text unreadable
+Text: WHICH APP GOES QUIET FIRST?

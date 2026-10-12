@@ -63,3 +63,13 @@ Visual: A card payment receipt held between two fingers, text unreadable
 Text: NOT LOOKING FOR IT? STILL SPENT £50
 Draw: cross
 Big: SPENT IT
+
+So ignore the crossed-out number. Judge the price you actually pay.
+Visual: A thumb covering the crossed-out price on a paper price tag
+Visual: A hand holding a card payment receipt up to a shop window, text unreadable
+Text: IGNORE THE FIRST NUMBER
+
+What did your last bargain really cost you?
+Visual: A shopping bag of clothes with the tags still attached on a bed
+Visual: A person seen from behind looking into an open wardrobe
+Text: WHAT DID YOUR BARGAIN COST?

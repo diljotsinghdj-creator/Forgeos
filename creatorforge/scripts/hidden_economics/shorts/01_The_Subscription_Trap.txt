@@ -63,3 +63,9 @@ Visual: A June page on a paper wall calendar circled in green pen
 Text: CANCEL BEFORE JUNE
 Draw: tick
 Steps: Find repeats → Would I buy it? → Cancel before June | Your subscription check
+
+Which payment on your statement would you cancel tonight?
+Visual: A hand holding a red pen over a printed bank statement at night, text unreadable
+Visual: A smartphone lying face down on a dark kitchen table beside a mug
+Text: WHICH ONE GOES TONIGHT?
+Draw: circle

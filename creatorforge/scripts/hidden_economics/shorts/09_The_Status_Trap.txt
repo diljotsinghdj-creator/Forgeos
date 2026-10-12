@@ -63,3 +63,8 @@ Visual: A wristwatch left on a bedside table in a quiet room
 Text: WHO WAS IT FOR?
 Draw: circle
 Steps: Strip the logo → Still want it? → Yes: buy it → No: who for? | The logo test
+
+So what's on your wish list right now, and who is it for?
+Visual: A handwritten wish list stuck to a fridge door, text unreadable
+Visual: A shop window display of handbags seen across a street at dusk
+Text: WHO IS IT REALLY FOR?

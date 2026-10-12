@@ -4,13 +4,27 @@ Title: 50% Profit in 45 Days: The Man Who Invented the Ponzi Scheme
 Tags: #HiddenEconomics #ponzischeme #scams #fraud #history
 Source: Smithsonian National Postal Museum, Ponzi Scheme, https://postalmuseum.si.edu/exhibition/behind-the-badge-case-histories-scams-and-schemes/ponzi-scheme; US National Archives, Prologue (Summer 2010), https://www.archives.gov/publications/prologue/2010/summer/ponzi-inmate-case-file; EBSCO Research Starters, Ponzi schemes, https://www.ebsco.com/research-starters/law/ponzi-schemes-are-revealed-investment-frauds
 
-He promised fifty percent in forty-five days.
+Fifty percent profit in forty-five days. All fake.
 Visual: A 1920s Boston street with streetcars and men in hats, seen from afar
 Visual: A small paper postal reply coupon lying on an old ledger
-Text: BOSTON, 1920
+Text: 50% IN 45 DAYS · BOSTON, 1920
 Bubble: Fifty percent in forty-five days!
 Place: BOSTON · 1920
 Archive: 1920s
+
+Still, roughly fifteen million dollars poured in within about eight months.
+Visual: An old cash register drawer crammed full in a 1920s office
+Visual: Sacks of mail piled on the wooden floor of a 1920s office
+Chart: $15,000,000 | taken in over about 8 months
+Cite: Smithsonian National Postal Museum
+Archive: 1920s
+
+So where were the payouts really coming from?
+Visual: A 1920s man seen from behind counting banknotes at a wooden counter
+Visual: A stack of sealed envelopes on an old desk under a lamp
+Text: WHO WAS REALLY PAYING?
+Archive: 1920s
+Transition: whip
 
 Hand him a hundred dollars, get one fifty back.
 Visual: Old dollar banknotes paper-clipped to a handwritten note on a desk, text unreadable
@@ -30,7 +44,7 @@ Draw: circle
 Archive: 1920s
 Transition: whip
 
-Because early investors were paid with newer investors' money.
+The trick: early investors were paid with newer investors' money.
 Visual: Hands passing sealed envelopes across an old wooden counter
 Visual: A queue of 1920s men in hats seen from behind at an office door
 Text: OLD INVESTORS PAID WITH NEW MONEY
@@ -38,13 +52,6 @@ Split: Old investors | New money
 Archive: 1920s
 Big: NEW MONEY
 Transition: flash
-
-Roughly fifteen million dollars poured in within about eight months.
-Visual: An old cash register drawer crammed full in a 1920s office
-Visual: Sacks of mail piled on the wooden floor of a 1920s office
-Chart: $15,000,000 | taken in over about 8 months
-Cite: Smithsonian National Postal Museum
-Archive: 1920s
 
 And then reporters started asking questions, and the payouts stopped.
 Visual: A 1920s newsroom with typewriters on wooden desks, nobody close
@@ -68,3 +75,13 @@ Text: NOT PROFIT · SOMEONE ELSE'S MONEY
 Draw: underline
 Big: NEVER PROFIT
 Treat: duotone
+
+So ask where the returns really come from. Who is paying?
+Visual: A hand holding a magnifying glass over an investment leaflet, text unreadable
+Visual: A row of envelopes stuffed with banknotes on a wooden desk
+Text: WHO IS REALLY PAYING?
+
+If someone promised you fifty percent, what would you ask first?
+Visual: A person seen from behind at a kitchen table reading a letter, text unreadable
+Visual: A pen resting on a blank notepad beside a cup of tea
+Text: 50% PROMISED · YOUR FIRST QUESTION?

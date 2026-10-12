@@ -74,3 +74,11 @@ The companies denied wrongdoing. So what was in the water? C-8.
 Visual: A kitchen tap dripping into a glass in evening light
 Visual: A wide river flowing past an industrial plant at dusk
 Text: C-8 · PFOA
+
+It surfaced only because residents sued.
+Visual: Residents seen from behind filing into a small-town meeting hall
+Visual: A blood sample tube labelled with a blank sticker in a rack
+Text: RESIDENTS SUED
+
+What's in your water?
+Visual: A glass being filled at a kitchen tap in morning light

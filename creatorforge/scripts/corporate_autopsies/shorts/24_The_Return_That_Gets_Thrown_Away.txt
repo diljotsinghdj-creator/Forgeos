@@ -64,9 +64,17 @@ Visual: A pair of new shoes in an open box on a shelf
 Article: EU ends practice of destroying unsold clothes and shoes in July 2026 | Just Style, 2026
 Cite: EU ESPR rules, Jul 2026
 
-So was yours thrown away? For returned clothes in Europe, it shouldn't be.
+Was yours thrown away? For returned clothes in Europe, it shouldn't be.
 Visual: A returned shirt being folded and placed back on a shop rail
 Visual: A parcel resting on a doorstep in morning light
 Text: RESELL · REPAIR · DONATE
 Draw: tick
 Treat: duotone
+
+So buy as if any return could be destroyed.
+Visual: A hand hovering over a pile of folded clothes on a bed
+Visual: A torn bin bag of new clothes in a warehouse corner
+Text: BUY TO KEEP
+
+Still ordering three sizes?
+Visual: Three folded shirts of different sizes stacked on a bed

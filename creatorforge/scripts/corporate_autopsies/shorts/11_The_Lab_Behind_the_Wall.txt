@@ -77,3 +77,11 @@ Visual: The frosted lab partition slid open, commercial analyzers in a row
 Visual: A small white device left alone on an empty counter
 Text: OTHER COMPANIES' MACHINES
 Draw: circle
+
+So look behind big claims.
+Visual: A hand pulling back a frosted glass partition in a lab
+Text: LOOK BEHIND THE WALL
+
+Who checks the tests you trust?
+Visual: A gloved hand holding up a blood sample tube to the light
+Text: WHO CHECKS?

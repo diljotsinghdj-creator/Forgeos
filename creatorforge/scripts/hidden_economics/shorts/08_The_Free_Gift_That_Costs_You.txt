@@ -12,6 +12,19 @@ Draw: arrow
 Cite: Regan, JESP, 1971
 Split: Free drink | Paid double
 
+And it works on you, even when you don't like the giver.
+Visual: A hand passing a wrapped sweet across a shop counter
+Visual: A person seen from behind holding a small gift bag on a pavement
+Text: LIKING BARELY MATTERS
+Draw: underline
+Cite: Regan, JESP, 1971
+
+So how does one drink buy a yes?
+Visual: A single soda bottle beside a pen on a signed paper form, text unreadable
+Text: HOW DOES A GIFT BUY A YES?
+Big: ONE DRINK?
+Transition: whip
+
 Psychologist Dennis Regan tested it in nineteen seventy-one.
 Visual: A 1970s university corridor with paintings on easels, nobody close
 Visual: A 1970s university campus with students walking far away
@@ -21,18 +34,12 @@ Place: CORNELL · 1971
 Archive: 1970s
 Treat: halftone
 
-Then his helper asked them to buy raffle tickets.
+Then his helper asked them to buy raffle tickets. Would they?
 Visual: A hand holding out a roll of paper raffle tickets across a table
 Thought: Well, he did buy me a drink...
 Archive: 1970s
 
-Did one drink really change anything?
-Visual: A 1970s classroom with wooden desks and chairs, nobody inside
-Text: DID IT WORK?
-Archive: 1970s
-Big: ONE DRINK?
-
-They bought about twice as many tickets. Liking him barely mattered.
+They bought about twice as many tickets as those given nothing.
 Visual: A handwritten tally sheet with two columns of marks, text unreadable
 Visual: Two people seen from behind chatting on a wooden bench
 Chart: 1x vs 2x | no drink, free drink
@@ -68,3 +75,8 @@ Visual: An unbranded soda bottle standing alone on a clean desk
 Text: JUDGE THE REQUEST, NOT THE GIFT
 Big: STAYS FREE
 Treat: duotone
+
+Who gave you something free this week, and what did they ask next?
+Visual: A free paper sample cup on a shop counter beside a card machine
+Visual: A person seen from behind walking out of a shop with an empty basket
+Text: WHAT DID THEY ASK NEXT?

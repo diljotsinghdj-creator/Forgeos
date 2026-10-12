@@ -9,29 +9,23 @@ Visual: A gold medal lying in an open velvet case on a desk
 Visual: An empty open safe in a dim office
 Text: ELIE WIESEL · NOBEL PEACE PRIZE
 
-December twenty-oh-eight. His foundation lost fifteen point two million dollars, almost everything.
+His foundation lost fifteen point two million dollars. His own savings too.
 Visual: Bundles of dollar banknotes stacked on an open ledger
-Visual: An empty charity office with packed cardboard boxes on bare desks
+Visual: Two wedding rings resting beside an empty savings passbook
 Chart: $15.2m | the Wiesel Foundation's loss
 Cite: JTA, Feb 2009
 
-He and his wife lost their personal savings too.
-Visual: An empty leather wallet lying open on a newspaper
-Visual: Two wedding rings resting beside an empty savings passbook
-Text: PERSONAL SAVINGS · GONE
-Treat: halftone
-
-And the man who took it? No back-street crook.
+The man who took it? A former Nasdaq chairman.
 Visual: A busy stock exchange trading floor in 2008
-Visual: A tailored suit jacket on a hanger in a Manhattan office
-Stock: wall street 2008
-Globe: New York | Bernard Madoff, New York
-
-He had actually chaired the Nasdaq.
 Visual: A glass office tower lobby with marble floors
-Visual: An electronic ticker on a building, text unreadable
 Text: BERNARD MADOFF · FORMER NASDAQ CHAIRMAN
+Stock: wall street 2008
 Big: NASDAQ
+
+So how do clever people fall for it?
+Visual: A pair of reading glasses resting on a folded financial newspaper, text unreadable
+Visual: A calculator beside a stack of account statements, figures blurred
+Text: CLEVER ISN'T SAFE
 
 His clients' statements showed nearly sixty-five billion dollars. Much of it never existed.
 Visual: A stack of printed account statements on a desk, text unreadable

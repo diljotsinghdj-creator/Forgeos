@@ -13,6 +13,19 @@ Place: YALE · 1961
 Cite: Milgram, 1963
 Archive: 1960s
 
+Even after the man in the next room pounded the wall, then went silent.
+Visual: A closed wooden door in a bare corridor
+Visual: A hand pressed flat against a plain wall, shadows only
+Text: THEN SILENCE
+Archive: 1960s
+Big: SILENT
+
+So why didn't ordinary people just stop?
+Visual: A hand frozen in mid-air above a wooden desk, shadows only
+Text: WHY DIDN'T THEY STOP?
+Archive: 1960s
+Transition: whip
+
 In the first Yale study, twenty-six of forty men reached the final switch.
 Visual: Yale University's old stone buildings seen across a lawn
 Visual: A 1960s laboratory room with a desk and a tape recorder
@@ -20,20 +33,6 @@ Icons: 26 of 40 | people | reached 450 volts
 Stock: 1960s laboratory
 Cite: Milgram, 1963
 Archive: 1960s
-
-The man in the next room pounded on the wall, then went silent.
-Visual: A closed wooden door in a bare corridor
-Visual: A hand pressed flat against a plain wall, shadows only
-Text: THEN SILENCE
-Archive: 1960s
-Big: SILENT
-
-So why didn't they stop?
-Visual: A hand frozen in mid-air above a wooden desk, shadows only
-Text: WHY DIDN'T THEY STOP?
-Archive: 1960s
-Transition: whip
-Search: why didn't they stop? | Why ordinary people obey · The obedience experiment, explained
 
 A calm man in a grey lab coat simply told them to continue.
 Visual: A grey lab coat hanging on a hook in a bare room
@@ -65,3 +64,8 @@ Visual: A hand putting a phone face down on a table
 Text: HANG UP · CHECK YOURSELF
 Split: A lab coat | A caller
 Treat: halftone
+
+So when a voice sounds official, will you obey or check?
+Visual: A smartphone ringing on a kitchen table beside a set of keys, screen unreadable
+Visual: A hand writing a bank's phone number on a notepad, digits blurred
+Text: OBEY OR CHECK?

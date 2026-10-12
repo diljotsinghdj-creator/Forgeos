@@ -68,8 +68,13 @@ Text: LAY'S CONVICTION VACATED AFTER HIS DEATH
 Article: Federal Jury Convicts Former Enron Chief Executives | U.S. Department of Justice, May 2006
 Cite: U.S. DOJ, 2006
 
-How do you profit from a dead deal? Book it before it dies.
+Profit from a dead deal? Book it before it dies.
 Visual: The same ledger closed on the desk, the lamp switched off
 Visual: A hand pushing a cardboard archive box onto a high shelf
 Text: BOOKED BEFORE IT DIED
 Treat: duotone
+
+Booked isn't banked. Who checks the difference where you work?
+Visual: A person seen from behind comparing a ledger with a printed report at a desk, text unreadable
+Visual: Two printed reports laid side by side under a desk lamp, text unreadable
+Text: BOOKED ≠ BANKED

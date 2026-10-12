@@ -61,3 +61,8 @@ Visual: A phone lying face down on a kitchen table
 Visual: A bed with the duvet turned back under a lamp at night
 Text: SLEEP ON IT
 Draw: tick
+
+What's the last thing you bought in four minutes flat?
+Visual: A cardboard parcel lying unopened on a hallway floor
+Visual: A hand holding a smartphone showing an order confirmation, text unreadable
+Text: BOUGHT IN 4 MINUTES?

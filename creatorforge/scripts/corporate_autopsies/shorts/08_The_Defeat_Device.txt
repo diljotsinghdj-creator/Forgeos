@@ -73,8 +73,17 @@ Visual: A hand signing the last page of a contract, text unreadable
 Text: $4.3BN CRIMINAL & CIVIL PENALTIES
 Cite: AP, March 2017
 
-So why did they pass? The cars knew when they were being tested.
+Why did they pass? The cars knew they were being tested.
 Visual: A diesel car on lab rollers with a test hose attached
 Visual: The same kind of car driving away down an open road at dusk
 Text: THEY KNEW WHEN IT WAS A TEST
 Draw: tick
+
+So trust road results over lab results.
+Visual: A diesel car driving along a wet country road with a test box on its roof
+Visual: An empty emissions lab with rollers and hoses under bright lights
+Text: ROAD > LAB
+
+Would your work pass when nobody's watching?
+Visual: An empty office at night with one monitor still on, text unreadable
+Text: WHEN NOBODY'S WATCHING?

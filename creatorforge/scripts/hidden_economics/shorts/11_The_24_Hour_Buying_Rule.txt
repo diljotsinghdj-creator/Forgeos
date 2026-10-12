@@ -58,3 +58,8 @@ Visual: A phone face down on a nightstand beside a glass of water
 Visual: A plate of toast and a boiled egg on a breakfast table
 Text: WAIT ONE NIGHT
 Split: Tonight | Breakfast
+
+What's in your basket tonight that can wait until morning?
+Visual: A smartphone on a bedside table showing a shopping basket, text unreadable
+Visual: Morning sunlight across a tidy kitchen table with a mug
+Text: WHAT CAN WAIT TILL MORNING?

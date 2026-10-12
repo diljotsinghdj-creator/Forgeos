@@ -69,3 +69,8 @@ Visual: A shopper seen from behind reading a shelf label in a supermarket
 Visual: Two packets on a kitchen scale, the smaller one tipping lighter
 Text: CHECK THE PRICE PER KILO
 Draw: tick
+
+Which pack in your cupboard got smaller?
+Visual: An open kitchen cupboard stacked with packets and boxes
+Visual: A hand pulling a half-empty cereal box from a shelf
+Text: CHECK YOUR CUPBOARD

@@ -60,3 +60,8 @@ Text: DAY 8: YOUR CHOICE
 Draw: tick
 Transition: match
 Treat: duotone
+
+Which free trial is quietly counting down on your card right now?
+Visual: A bank card lying beside a smartphone on a kitchen table at night, text unreadable
+Visual: A paper wall calendar with one day circled in red pen
+Text: WHICH TRIAL IS COUNTING DOWN?

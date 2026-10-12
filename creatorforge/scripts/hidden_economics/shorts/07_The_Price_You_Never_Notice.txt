@@ -61,3 +61,8 @@ Visual: A paper price tag tied with string to a brown parcel
 Visual: A receipt with its total line circled in red pen, text unreadable
 Text: THE REAL PRICE: £41
 Steps: £30 headline → + Delivery → + Fees → £41 total | Drip pricing
+
+What's the last total that surprised you at checkout?
+Visual: A hand hovering over a laptop keyboard at night, screen text unreadable
+Visual: A parcel on a doorstep beside a folded delivery note, text unreadable
+Text: WHICH TOTAL SURPRISED YOU?

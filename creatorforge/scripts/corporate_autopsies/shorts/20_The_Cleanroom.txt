@@ -76,8 +76,15 @@ Visual: A barbed wire fence against a pale sky
 Timeline: 2012 Outbreak → 2014 Charged → 2017 Convicted → 2021 Resentenced | The NECC case
 Cite: US DOJ, 2021
 
-So why mold in a cleanroom? Prosecutors said: no one stopped.
+Why mold in a cleanroom? Prosecutors said: no one stopped.
 Visual: A cleanroom door left ajar with a dark empty room behind it
 Visual: A sealed glass vial standing alone on a steel table
 Text: NOBODY STOPPED PRODUCTION
 Draw: cross
+
+A log only proves paperwork.
+Visual: A cleaning log clipboard hanging on a steel wall, text unreadable
+Text: LOG ≠ CLEAN
+
+Would you speak up at work?
+Visual: A staff member seen from behind standing at a closed office door

@@ -7,32 +7,37 @@ Source: Mental Floss, How Con Man Victor Lustig Sold the Eiffel Tower, https://w
 He sold the Eiffel Tower he never owned.
 Visual: The Eiffel Tower seen from a 1920s Paris street
 Visual: A 1920s bill of sale lying on a wooden desk, text unreadable
-Text: PARIS, 1925
+Text: SOLD · NEVER OWNED
 Draw: circle
-Globe: Paris | 1925
 Archive: 1920s
+
+Seven thousand three hundred tonnes of iron. The buyer paid cash.
+Visual: A 1920s Paris scrapyard piled with old iron girders
+Visual: A hand counting a stack of 1920s French banknotes on a table
+Chart: 7,300 tonnes | of iron, sold as scrap
+Cite: Tour Eiffel
+Archive: 1920s
+
+So how do you sell a landmark nobody can own?
+Visual: A magnifying glass over an official rubber stamp on paper, ink unreadable
+Text: HOW DO YOU SELL IT?
+Archive: 1920s
+Transition: whip
 
 Con man Victor Lustig posed as a fake government official.
 Visual: A man in a 1920s overcoat and hat seen from behind
 Visual: A forged government letter with a red wax seal, text unreadable
 Text: A FAKE OFFICIAL
-Place: PARIS · 1925
+Globe: Paris | 1925
 Archive: 1920s
 Treat: halftone
 
-He told scrap dealers the city wanted the tower torn down.
-Visual: A 1920s Paris scrapyard piled with old iron girders
+Why scrap? He told dealers the city wanted it torn down.
 Visual: A 1920s scrap dealer's horse-drawn cart loaded with metal on a street
-Chart: 7,300 tonnes | of iron, offered as scrap
+Visual: A 1920s Paris street with the Eiffel Tower in the distance
+Text: "THE CITY WANTS IT GONE"
 Stock: eiffel tower 1920s
-Cite: Tour Eiffel
 Archive: 1920s
-
-So why would anyone believe him?
-Visual: A magnifying glass over an official rubber stamp on paper, ink unreadable
-Text: WHY BELIEVE HIM?
-Archive: 1920s
-Transition: whip
 
 He even hinted at a bribe. That made him seem like a real official.
 Visual: A gloved hand sliding a thick envelope across a café table
@@ -71,3 +76,13 @@ Draw: cross
 Split: The tower | The money
 Archive: 1920s
 Treat: duotone
+
+Shame keeps scams quiet. So if you're conned, report it anyway.
+Visual: A person seen from behind holding a phone to an ear in a quiet hallway
+Visual: A blank report form and a pen on a police station counter
+Text: REPORT IT ANYWAY
+
+Would you report a scam, even if it embarrassed you?
+Visual: The Eiffel Tower at dawn seen across empty Paris rooftops
+Visual: A person seen from behind standing at a police station front desk
+Text: WOULD YOU REPORT IT?

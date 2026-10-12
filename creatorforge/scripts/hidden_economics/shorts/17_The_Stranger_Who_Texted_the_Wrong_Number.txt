@@ -63,3 +63,8 @@ Visual: A letter addressed to the wrong house lying on a doormat, text unreadabl
 Text: NO ACCIDENT
 Draw: arrow
 Steps: Wrong number → Weeks of chat → Crypto tip → Fake profits → No withdrawal | How the scam unfolds
+
+Who have you only ever met online, and have they mentioned money?
+Visual: A smartphone on a sofa cushion showing a chat list, text unreadable
+Visual: A hand resting on a closed laptop on a kitchen table at night
+Text: ONLINE-ONLY FRIEND? TALKING MONEY?

@@ -74,7 +74,12 @@ Visual: An empty courtroom bench under soft light
 Text: NO ADMISSION · NO FINE
 Treat: duotone
 
-So who's really taking your order?
+Who takes your order? Humans often helped, its filings said.
 Visual: A drive-thru speaker post glowing at night
 Visual: A headset hanging on a hook beside a monitor
 Text: AI ORDER? HUMAN HELP.
+
+AI labels can hide humans. Would you ask?
+Visual: A headset resting on a desk in a dim call centre, screens unreadable
+Visual: A drive-thru menu board glowing at night, text unreadable
+Text: AI LABEL · HUMAN HANDS?

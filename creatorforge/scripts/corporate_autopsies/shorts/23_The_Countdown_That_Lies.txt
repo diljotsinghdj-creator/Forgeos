@@ -74,3 +74,8 @@ Visual: An old alarm clock with no hands on a bedside table
 Visual: A laptop closed on a kitchen table in morning light
 Text: THE DEADLINE WAS FAKE
 Draw: cross
+
+Fake urgency is their tool. Taking your time is yours.
+Visual: A person seen from behind closing a laptop and standing up from a table
+Visual: A cup of tea steaming beside a closed laptop in afternoon light
+Text: TAKE YOUR TIME

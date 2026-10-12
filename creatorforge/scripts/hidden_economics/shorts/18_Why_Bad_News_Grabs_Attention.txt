@@ -11,13 +11,7 @@ Text: WHICH ONE STICKS?
 Split: 1 headline | 100 calm days
 Treat: halftone
 
-Researchers wired up people in seventeen countries and played them news.
-Visual: A world map on a desk with red pins in many countries
-Visual: A fingertip with a small medical sensor clip attached
-Chart: 17 | countries · same news clips
-Cite: Soroka et al., PNAS, 2019
-
-Their bodies told the real story. Bad news hit harder than good.
+On average, even your body reacts harder to bad news.
 Visual: A paper heart-rate printout with tall spikes on a desk
 Visual: A researcher seen from behind at a lab desk covered in wires
 Text: BAD NEWS · STRONGER BODY RESPONSE
@@ -26,11 +20,21 @@ Cite: Soroka et al., PNAS, 2019
 Transition: flash
 Big: HARDER
 
+But one question shrinks any scary headline. It's coming up.
+Visual: A hand folding a newspaper in half on a kitchen table, headlines blurred
+Visual: A pencil resting on a blank notepad beside a cup of tea
+Text: ONE QUESTION SHRINKS IT
+
+Researchers wired up people in seventeen countries and played them news.
+Visual: A world map on a desk with red pins in many countries
+Visual: A fingertip with a small medical sensor clip attached
+Chart: 17 | countries · same news clips
+Cite: Soroka et al., PNAS, 2019
+
 Yet many people showed no such bias at all.
 Visual: A row of people seen from behind watching a TV screen
 Visual: A person seen from behind sitting calmly on a park bench
 Text: NOT EVERYONE REACTED
-Statement: *No* such bias at all.
 Cite: Soroka et al., PNAS, 2019
 
 So why does bad news still feel everywhere?
@@ -62,3 +66,8 @@ So next time, ask one thing. Out of how many days?
 Visual: A hand flipping through the pages of a wall calendar
 Visual: A quiet residential road at dusk with lights on in windows
 Squares: 100 vs 1 | calm days, scary headline
+
+Which headline scared you this week, and how rare was it really?
+Visual: A folded newspaper on a kitchen table beside a cup of tea, text unreadable
+Visual: A quiet sunny street with a dog walker seen from behind
+Text: HOW RARE WAS IT?

@@ -79,8 +79,16 @@ Text: GUILTY PLEAS · 2007 & 2020
 Cite: US DOJ
 Treat: duotone
 
-How did five sentences become a pitch? By dropping the hospital part.
+How did five sentences become a pitch? Drop the hospital part.
 Visual: A short typed letter on a desk under a lamp, text unreadable
-Visual: A pharmacy counter at closing time with the lights dimmed
+Visual: A hospital ward corridor at night with the lights dimmed
 Text: 5 SENTENCES · HOSPITAL ONLY
 Draw: circle
+
+Ask of any quoted study, who was studied?
+Visual: A finger pointing at a footnote in a printed journal, text unreadable
+Visual: A stack of medical journals on a library table
+Text: WHO WAS STUDIED?
+
+Would you ask about your pills?
+Visual: A pill bottle and a printed leaflet on a kitchen table, text unreadable

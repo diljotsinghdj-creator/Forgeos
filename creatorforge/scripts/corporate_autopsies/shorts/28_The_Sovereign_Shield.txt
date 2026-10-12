@@ -75,3 +75,10 @@ Visual: A jury box of empty wooden chairs lit by a window
 Text: NO SHIELD FROM A FEDERAL JURY
 Draw: cross
 Treat: duotone
+
+Before borrowing, ask: who's really lending?
+Visual: A hand holding a printed loan offer up to a window, text unreadable
+
+Would you read the rate?
+Visual: A finger on the small print of a loan agreement, text unreadable
+Text: READ THE RATE

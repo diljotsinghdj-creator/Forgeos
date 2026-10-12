@@ -1,17 +1,30 @@
 The Small Yes That Leads to a Big Yes
-On-screen hook: TINY YES → HUGE YES
+On-screen hook: TINY FAVOUR. 17% → 76%
 Title: 17% Said Yes Cold, 76% After a Tiny Favour: The Small Yes Trick
 Tags: #HiddenEconomics #psychology #persuasion #sales #scams
 Source: Freedman, J. L. and Fraser, S. C. (1966), Compliance without pressure, the foot-in-the-door technique, Journal of Personality and Social Psychology 4(2), https://doi.org/10.1037/h0023552; Foot-in-the-door technique overview, https://en.wikipedia.org/wiki/Foot-in-the-door_technique
 
-A huge, ugly lawn sign? Most said no.
-Visual: A huge crooked wooden sign on a suburban front lawn
+A tiny favour turned seventeen percent into seventy-six.
 Visual: A homeowner seen from behind standing at a front door
+Visual: A small card propped in the corner of a house window, text unreadable
+Text: TINY FAVOUR: 17% → 76%
+Draw: circle
+
+Imagine the big ask: a huge, ugly sign on your own lawn.
+Visual: A huge crooked wooden sign on a suburban front lawn
+Visual: A 1960s suburban street of neat houses seen from the pavement
 Text: STANFORD RESEARCHERS, 1966
 Bubble: No thanks. Not on my lawn.
 Place: STANFORD · 1966
 Cite: Freedman & Fraser, 1966
 Archive: 1960s
+
+So what tiny favour could make you say yes to that?
+Visual: A volunteer seen from behind walking up a suburban garden path
+Visual: A wall calendar with several weeks crossed off in pencil
+Text: WHAT FAVOUR?
+Archive: 1960s
+Transition: whip
 
 Asked cold, only about seventeen percent agreed.
 Visual: A clipboard tally sheet with a few ticks among many crosses, text unreadable
@@ -19,14 +32,7 @@ Icons: 17% | homes | agreed when asked cold
 Cite: Freedman & Fraser, 1966
 Archive: 1960s
 
-Then one tiny favour, weeks earlier, changed the answer.
-Visual: A volunteer seen from behind walking up a suburban garden path
-Visual: A wall calendar with several weeks crossed off in pencil
-Text: WHAT FAVOUR?
-Draw: circle
-Archive: 1960s
-
-A small sign in the window, about safe driving.
+Others first got a tiny ask: a small window sign about safe driving.
 Visual: A modest house window with a tiny card in the corner, text unreadable
 Visual: A 1960s car parked on a quiet suburban street
 Text: "BE A SAFE DRIVER"
@@ -68,3 +74,8 @@ Visual: A hand ringing a doorbell, seen from behind on a doorstep
 Visual: A giant crooked wooden sign leaning against a house
 Text: WHAT'S THE BIG ASK?
 Treat: duotone
+
+Which tiny yes have you said this week, and what came next?
+Visual: A hand ticking a small checkbox on a paper form, text unreadable
+Visual: A stack of follow-up letters lying on a doormat, text unreadable
+Text: WHAT CAME NEXT?

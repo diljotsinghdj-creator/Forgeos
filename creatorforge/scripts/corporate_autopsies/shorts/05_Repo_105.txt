@@ -66,9 +66,14 @@ Visual: A hand signing the last page of a settlement document, text unreadable
 Text: ERNST & YOUNG · $10M · NO ADMISSION
 Cite: New York Attorney General, 2015
 
-So how did fifty billion vanish? A loan, called a sale.
+How did fifty billion vanish? A loan, called a sale.
 Visual: The empty trading floor again, screens switching off one by one
-Visual: The balance sheet printout folded closed on the desk, text unreadable
+Visual: The balance sheet printout folded closed beside a calculator, text unreadable
 Text: A LOAN, CALLED A SALE
 Draw: underline
 Treat: duotone
+
+Labels change. Debts don't. Would you sign off?
+Visual: A calculator resting on a printed loan statement, text unreadable
+Visual: A pen lying beside an empty signature line on a form, text unreadable
+Text: LABELS CHANGE. DEBTS DON'T.

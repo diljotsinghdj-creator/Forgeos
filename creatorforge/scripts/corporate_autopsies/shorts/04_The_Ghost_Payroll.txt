@@ -66,7 +66,16 @@ Text: APRIL 2015 · 7 YEARS · SUSPENDED ON APPEAL
 Cite: Business Today, May 2015
 
 Where did the billion go? It was never there.
-Visual: The empty steel vault again, its lights switching off
+Visual: The empty steel cash vault again, its lights switching off
 Visual: A blank bank balance sheet lying on a bare desk, text unreadable
 Text: THE CASH WAS NEVER THERE
 Treat: duotone
+
+Cash only counts if someone counts it.
+Visual: A bank teller's hands counting banknotes behind a glass screen
+Visual: A cash counting machine fanning a stack of notes on a counter
+Text: COUNT THE CASH
+
+Who counts the real numbers where you work?
+Visual: An office worker seen from behind checking a printed ledger at a desk, text unreadable
+Visual: A calculator beside an open payroll binder, text unreadable

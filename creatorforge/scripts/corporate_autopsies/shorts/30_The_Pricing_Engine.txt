@@ -70,3 +70,12 @@ Visual: A rent increase letter on a kitchen table beside a mug, text unreadable
 Visual: Apartment windows lit at night in a tall residential block
 Text: ALLEGED · SETTLED · NOT PROVEN AT TRIAL
 Treat: duotone
+
+So before renewing, ask how the rent was calculated.
+Visual: A tenant seen from behind reading a lease renewal letter at a kitchen table, text unreadable
+Visual: A set of flat keys on top of a folded rent letter
+Text: ASK HOW IT WAS SET
+
+Would you know who set your number?
+Visual: A pen resting on a lease renewal form beside house keys, text unreadable
+Visual: Apartment windows lit at dusk in a tall block

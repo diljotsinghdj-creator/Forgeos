@@ -62,3 +62,14 @@ Visual: A finger pressing a single large round button on a lift panel
 Visual: A person seen from behind walking out onto a sunny street
 Text: 1 TAP IN · 1 TAP OUT
 Screen: Your plan | Premium · Change plan · *Cancel subscription
+
+So look past the discount offer for the tiny grey link.
+Visual: A thumb scrolling past a discount banner on a smartphone, text unreadable
+Visual: A fingertip on a small grey link at the bottom of a phone screen, text unreadable
+Text: SKIP THE OFFER · FIND THE GREY LINK
+Draw: underline
+
+Which subscription have you kept only because leaving felt hard?
+Visual: A person seen from behind at a desk at night holding a smartphone
+Visual: A printed bank statement with monthly payments underlined in pencil, text unreadable
+Text: KEPT IT BECAUSE LEAVING WAS HARD?

@@ -71,8 +71,17 @@ Visual: Aircraft assembly line in a vast hangar, markings hidden
 Text: ~$1.1BN · FINES, FAMILIES, SAFETY
 Cite: NBC News, Nov 2025
 
-Not told about it then? Today it checks two sensors.
+Not told then? Today it checks two sensors.
 Visual: Two angle-of-attack vanes on either side of an aircraft nose
 Visual: A narrow-body jet taking off into a clear sky, markings hidden
 Text: NOW: TWO SENSORS, NOT ONE
 Draw: tick
+
+Safety only works when people are told.
+Visual: A pilot's hands resting on cockpit controls, seen from behind the seat
+Visual: A thick flight manual open on a cockpit seat, text unreadable
+Text: SAFETY = KNOWING
+
+What at your work did nobody explain?
+Visual: A row of humming server cabinets in a dim room
+Visual: A control panel with unlabelled switches on a factory wall

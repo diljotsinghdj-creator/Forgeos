@@ -67,3 +67,8 @@ Visual: An old alarm clock on a bedside table in morning light
 Visual: A bank's front door on a quiet morning street
 Text: NO REAL BANK RUSHES YOU
 Timer: 10:00 → 00:00 | The scammer's deadline
+
+If that call came tonight, which number would you dial?
+Visual: A bank card turned over on a kitchen table, digits blurred
+Visual: A landline phone on a hallway table at night
+Text: WHOSE NUMBER WOULD YOU DIAL?

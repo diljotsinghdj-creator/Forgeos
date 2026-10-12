@@ -82,3 +82,8 @@ Visual: A stack of printed statements bound with a rubber band, text unreadable
 Visual: A paper shredder beside an overflowing bin in an empty office
 Text: PRINTED TRADES · NEVER CHECKED
 Draw: cross
+
+Unchecked paper proves nothing. Who checks yours?
+Visual: A hand flicking through a stack of printed account statements, text unreadable
+Visual: A magnifying glass resting on a printed statement beside a phone, text unreadable
+Text: VERIFY OUTSIDE THE PAPER

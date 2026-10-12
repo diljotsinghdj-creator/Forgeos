@@ -66,3 +66,8 @@ Visual: A man seen from behind standing still in a kitchen, head tilted, listeni
 Visual: An old telephone receiver back on its hook on a table
 Text: ASK THE CODE WORD
 Steps: Crying call → Hang up → Call her number → Ask the code word | Your defence
+
+So what will your family's code word be?
+Visual: A folded paper note tucked under a fridge magnet, text unreadable
+Visual: A family seen from behind sitting together on a sofa in the evening
+Text: WHAT'S YOUR CODE WORD?

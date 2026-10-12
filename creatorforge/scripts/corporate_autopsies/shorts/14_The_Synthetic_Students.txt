@@ -75,8 +75,14 @@ Text: 85 MONTHS · APPEAL PENDING
 Big: 85 MONTHS
 Treat: duotone
 
-Four million students on paper. So who checked?
-Visual: A magnifying glass resting on a printed spreadsheet, text unreadable
+Four million? Under three hundred thousand, prosecutors said.
+Visual: A magnifying glass on a printed spreadsheet beside a wallet, text unreadable
 Visual: Rows of empty lecture hall seats in dim light
 Text: 4 MILLION ON PAPER
 Draw: circle
+
+So test first. Who checks the numbers at work?
+Visual: A hand ticking rows on a printed customer list, text unreadable
+Visual: An office worker seen from behind reviewing a spreadsheet on a monitor, text unreadable
+Visual: A highlighter resting on a printed report, text unreadable
+Text: TEST THE NUMBERS

@@ -61,3 +61,8 @@ Now even a face is just a claim.
 Visual: A passport photo page held under a lamp, details blurred
 Text: A FACE IS NOT PROOF
 Statement: Even a face is just a *claim*.
+
+If your boss called asking for money, how would you check?
+Visual: An office desk phone beside a laptop showing a video call, faces blurred
+Visual: A hand writing a phone number on a sticky note, digits blurred
+Text: HOW WOULD YOU CHECK?

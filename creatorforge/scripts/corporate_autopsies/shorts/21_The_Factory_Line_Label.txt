@@ -68,8 +68,13 @@ Visual: A label printer feeding out blank price tags
 Text: NO ADMISSION · TAGS CHANGED
 Draw: underline
 
-So, was it ever in the store? Ask: is this made for outlet?
+Was it ever in the store? Ask if it's made for outlet.
 Visual: A shopper seen from behind holding a sweater up at a store counter
 Visual: A folded sweater on a counter with its tag turned over, text unreadable
 Text: ASK: MADE FOR OUTLET?
 Draw: tick
+
+What did your last bargain really save you?
+Visual: A shopping bag with a folded sweater on a bedroom chair
+Visual: A paper price tag lying on a dresser, text unreadable
+Text: WHAT DID YOU SAVE?

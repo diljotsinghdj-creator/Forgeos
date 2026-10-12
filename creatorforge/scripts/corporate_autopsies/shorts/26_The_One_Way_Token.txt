@@ -83,3 +83,8 @@ Visual: A locked metal door at the end of a dim corridor
 Visual: A phone face down on a desk beside a cold cup of coffee
 Text: NO SELLS = NO EXIT
 Treat: duotone
+
+Would you know your exit before you buy?
+Visual: A glowing green exit sign above a door in a dark corridor
+Visual: A hand hovering over a phone screen, text unreadable
+Text: FIND THE EXIT FIRST

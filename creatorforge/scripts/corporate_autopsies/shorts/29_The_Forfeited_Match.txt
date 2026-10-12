@@ -73,3 +73,6 @@ Visual: A finger tracing a line in a booklet under a desk lamp, text unreadable
 Screen: Plan summary | Vesting: 3 years · Employer match: 4% · *Forfeitures: reduce employer contributions
 Draw: circle
 Treat: duotone
+
+Do you know your vesting date?
+Visual: A wall calendar in an office with a date circled in red

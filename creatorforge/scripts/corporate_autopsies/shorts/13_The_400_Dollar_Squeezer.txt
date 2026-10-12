@@ -67,7 +67,16 @@ Text: SHUT DOWN · SEPT 2017
 Cite: The Register / Bloomberg, Sept 2017
 Draw: cross
 
-So did you need the four-hundred-dollar machine? Bloomberg's hands said barely.
+Need the four-hundred-dollar machine? Bloomberg's hands said barely.
 Visual: An unplugged kitchen press pushed to the back of a counter
 Visual: Two hands holding a squeezed juice pouch over a full glass
 Text: $400 MACHINE · 30 SECONDS SLOWER
+
+So try the simple way first.
+Visual: Two hands squeezing a sealed pouch over a glass on a kitchen counter
+Visual: An unopened gadget box pushed to the back of a cupboard
+Text: TRY THE SIMPLE WAY FIRST
+
+What gadget could your own hands replace?
+Visual: A kitchen drawer full of unused gadgets in their wrappers
+Visual: Two empty hands resting palms up on a wooden table

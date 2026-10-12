@@ -100,3 +100,13 @@ Visual: A thermometer on a frosted railing at dawn
 Text: THE ENGINEERS SAID 53°F
 Draw: circle
 Archive: 1980s
+
+Listen to those nearest the risk.
+Visual: An engineer seen from behind studying a rubber seal ring on a workbench
+Visual: A frosted metal railing on a launch tower at dawn
+Text: LISTEN TO WHO KNOWS
+Archive: 1980s
+
+At work, who gets the last word?
+Visual: An empty conference table with one chair pulled out at the head
+Text: WHO GETS THE LAST WORD?

@@ -372,7 +372,8 @@ def enrich(plan, script: str) -> None:
                 used.append(n)
                 break
         if s.beats:
-            s.visual = s.beats[0]["visual"]
+            if s.beats[0].get("literal") and s.visual == s.beats[0].get("writer_visual"):
+                s.visual = s.beats[0]["visual"]        # the scene's own picture is beat 1's: keep them in step
         elif beats[0].get("visual") != s.visual or beats[0].get("named"):
             s.visual = beats[0]["visual"]
             s.named = dict(beats[0].get("named") or {})

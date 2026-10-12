@@ -76,7 +76,16 @@ Visual: Unfinished truck cabs lined up in an empty yard
 Text: CHAPTER 11 · FEB 2025
 Cite: AP, Feb 2025
 
-So was it driving? No. It was rolling downhill.
+Was it driving? No. It was rolling downhill.
 Visual: A truck cab coasting down a desert slope at sunset
 Visual: The empty desert highway after the truck has gone
 Statement: It wasn't *driving*. It was *rolling*.
+
+So ask what powers any demo.
+Visual: A truck parked on a hill with its hood open, engine bay empty
+Visual: A hand lifting an engine cover in a workshop
+Text: WHAT'S POWERING IT?
+
+Would you ask before investing?
+Visual: A person seen from behind reading a glossy brochure at a desk, text unreadable
+Text: ASK FIRST

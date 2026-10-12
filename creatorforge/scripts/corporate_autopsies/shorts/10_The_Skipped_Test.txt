@@ -74,3 +74,11 @@ One test skipped. One test misread. Eleven lives lost.
 Visual: An empty helideck at dawn on a calm sea
 Visual: A clipboard checklist with one empty box circled in red, text unreadable
 Statement: One skipped. One misread. *Eleven* lives.
+
+Skipped tests are never savings.
+Visual: A cement test kit left unopened on a steel deck
+Text: NEVER A SAVING
+
+Which check gets skipped at work?
+Visual: A worker seen from behind walking past a safety notice board, text unreadable
+Text: WHICH CHECK?

@@ -60,8 +60,18 @@ Text: TOTAL FRAUD LATER PUT AT ABOUT $11BN
 Article: Ebbers sentenced to 25 years in prison | NBC News, July 2005
 Cite: NBC News, 2005
 
-How do expenses become profit? Call them assets, until someone checks.
+Expenses into profit? Call them assets, until someone checks.
 Visual: A hand with a red pen ticking the last page of an audit report, text unreadable
 Visual: A closed binder labelled with a blank sticker on an empty desk
 Text: ONE AUDITOR CHECKED
 Treat: duotone
+
+The real safeguard was one auditor who kept going.
+Visual: A woman seen from behind carrying a thick binder down an office corridor
+Visual: A desk lamp still on in an empty office late at night
+Text: ONE AUDITOR KEPT GOING
+
+If someone senior asked you to wait, would you?
+Visual: An office chair facing a closed boardroom door
+Visual: A hand resting on a closed binder on a meeting table, text unreadable
+Text: WOULD YOU WAIT?

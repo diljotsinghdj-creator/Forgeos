@@ -10,27 +10,17 @@ Visual: A hand holding a bank card over a pile of pound coins
 Text: ~10 MILLION UNWANTED SUBSCRIPTIONS
 Cite: UK Government, Nov 2024
 
-That is the government's own estimate.
-Visual: A government office building on Whitehall in London, seen from the street
-Visual: One figure in a printed report circled in red pen, text unreadable
-Draw: circle
-Treat: halftone
-
-Together they cost around one point six billion pounds a year.
+The government says they cost one point six billion pounds a year.
 Visual: A thick stack of fifty-pound notes on an office desk
 Visual: An armoured cash van parked outside a bank
 Chart: £1.6bn | a year on unwanted subscriptions
 Cite: UK Government, Nov 2024
 
-The average one costs about fourteen pounds a month.
+About fourteen pounds a month each. One could leave your account tonight.
 Visual: Fourteen pound coins counted out in a row on a kitchen table
-Visual: A printed monthly bank statement with one line highlighted, figures blurred
+Visual: A wallet lying open on a bedside table, a bank card sticking out
 Text: ~£14 A MONTH EACH
 Cite: UK Government, Nov 2024
-
-One of them could be leaving your account tonight.
-Visual: A dark bedroom at night, a bedside clock glowing beside the bed
-Visual: A wallet lying open on a bedside table, a bank card sticking out
 Big: TONIGHT
 
 Joining took one tap. So why does leaving feel like a maze?

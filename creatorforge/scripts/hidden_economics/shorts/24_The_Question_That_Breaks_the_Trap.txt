@@ -57,3 +57,8 @@ Visual: A hand pausing on a front door handle before opening it
 Visual: Three phones lying face down on a desk in morning light
 Text: PAUSE. VERIFY. CHOOSE.
 Big: EVERY TIME
+
+What's rushing you right now, and who benefits?
+Visual: A smartphone buzzing on a kitchen table beside an open wallet, screen unreadable
+Visual: A hand resting calmly on a closed laptop by a window
+Text: WHO BENEFITS?

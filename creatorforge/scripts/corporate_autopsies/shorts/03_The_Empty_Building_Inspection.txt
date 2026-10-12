@@ -71,9 +71,14 @@ Text: 1988 · 57 COUNTS · 25 YEARS
 Cite: CNBC
 Archive: 1980s
 
-So what did the auditors inspect? A building. Never the job.
+What did the auditors inspect? A building. Never the job.
 Visual: The half-finished building at dusk, its lights off
 Visual: An auditor's checklist lying blank on a bare concrete floor, text unreadable
 Text: THEY CHECKED THE BUILDING, NOT THE JOB
 Archive: 1980s
 Treat: duotone
+
+Seeing isn't checking. What gets checked at your work?
+Visual: A visitor badge lying on an empty reception desk
+Visual: A clipboard checklist resting on a workbench beside a pen, text unreadable
+Text: SEEING ≠ CHECKING

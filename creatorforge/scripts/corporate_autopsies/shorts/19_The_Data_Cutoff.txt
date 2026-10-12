@@ -67,8 +67,17 @@ Visual: A judge's wooden gavel resting on a closed law book
 Text: GUILTY PLEA · $950M TOTAL RESOLUTION
 Cite: US DOJ, Nov 2011
 
-So why were three missing? A cutoff date the editors never accepted.
+Why were three missing? A cutoff date the editors never accepted.
 Visual: A wall calendar page torn off and lying on a desk
 Visual: A closed medical journal on an empty desk in evening light
 Text: ONE DATE. 3 HEART ATTACKS.
 Draw: cross
+
+Even one date can change a study.
+Visual: A red pen circling a date on a printed table, text unreadable
+Visual: A ruler laid across a printed chart on a desk, text unreadable
+Text: ONE DATE · DIFFERENT RISK
+
+Do you know your medicine's data?
+Visual: A pill bottle beside a folded leaflet on a kitchen table, text unreadable
+Visual: A hand holding a single white pill above a glass of water

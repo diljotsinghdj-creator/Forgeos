@@ -70,7 +70,14 @@ Visual: An empty jury box with wooden chairs under soft light
 Visual: Two stacks of case files side by side on a court table
 Text: VERDICTS BOTH WAYS · ONGOING
 
-So what did the tests show? That's still being argued.
+What did the tests show? That's still being argued.
 Visual: White powder on a microscope slide under a lamp
 Visual: A courthouse's stone steps on a grey morning
 Text: STILL IN COURT
+
+Disputed? Read findings, not headlines.
+Visual: A person seen from behind reading a printed lab report at a desk, text unreadable
+Text: FINDINGS, NOT HEADLINES
+
+What's in your bathroom cabinet?
+Visual: An open bathroom cabinet with bottles and a powder tin, labels unreadable

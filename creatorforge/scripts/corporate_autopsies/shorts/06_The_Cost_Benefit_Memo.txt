@@ -77,9 +77,14 @@ Timeline: 1973 Memo → 1977 Article → 1978 Recall → 1980 Acquitted | The Pi
 Cite: Pulaski County Historical Society
 Archive: 1980s
 
-So, eleven dollars a car? A real memo, about a different crash.
+Eleven dollars a car? A real memo, about a different crash.
 Visual: The same 1970s hatchback parked at dusk on the empty street
 Visual: The typed memo face down on the desk under a lamp, text unreadable
 Text: REAL MEMO · DIFFERENT CRASH
 Treat: duotone
 Archive: 1970s
+
+Shocking memos need context. Would you check what it covered?
+Visual: A hand turning over a typed memo on a desk, text unreadable
+Visual: A reader seen from behind holding a magazine page under a lamp, text unreadable
+Text: CHECK WHAT IT COVERS
