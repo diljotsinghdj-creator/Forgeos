@@ -568,3 +568,7 @@ Transition: dip
 So watch what India's institutions do next. That is where the answer is.
 Visual: The court dome at dusk as the lights come on
 Text: WATCH WHAT THE INSTITUTIONS DO NEXT
+
+If the system could no longer make him lose, how would you know?
+Visual: An empty polling hall at night, a single lamp over one table
+Text: HOW WOULD YOU KNOW?

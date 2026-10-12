@@ -610,3 +610,7 @@ Transition: dip
 India's voters answer next. Watch what the institutions let them do.
 Visual: The court dome at dusk as the lights come on
 Text: WATCH WHAT HAPPENS NEXT
+
+If your vote were the one made harder, would you notice?
+Visual: A single blank ballot paper on a table under a lamp
+Text: WOULD YOU NOTICE?

@@ -760,7 +760,7 @@ Visual: A dark café table with an empty chair
 Text: SILENCE PROTECTS THE SCAMMER
 Treat: duotone
 
-Next, the trap that takes your money once a month, forever.
-Visual: A subscription contract and a pen on a desk, text unreadable
-Visual: A monthly bank statement with repeated charges circled in red, text unreadable
-Text: NEXT: THE CANCEL TRAP
+Who would you call first, if a stranger asked for secrecy?
+Visual: A hand holding a phone with a contact list open, names unreadable
+Visual: Two people seen from behind talking at a kitchen table
+Statement: Tell someone. *Always*.

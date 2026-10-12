@@ -535,18 +535,7 @@ Text: COMPARISON HAS A PRICE
 Draw: underline
 Statement: Comparison has a *price*.
 
-But there is a stranger bargain still to come.
-Visual: A phone lighting up on a dark bedside table
-Visual: A sealed envelope lying on a dark doormat
-Transition: whip
-
-What if something costs nothing at checkout?
-Visual: An empty shopping basket on a checkout belt
-Visual: A phone screen showing a free app download button, text unreadable
-Text: £0 AT CHECKOUT
-Object: coin | £0 | nothing at checkout
-
-And yet it earns a fortune from your attention.
-Visual: A dark living room at night, a sofa seen from behind
-Visual: Stacks of coins beside a smartphone on an office desk
-Text: FREE... FOR WHOM?
+Which of your last three buys was really for an audience?
+Visual: A shopping bag standing on a hallway floor beside a front door
+Visual: A person seen from behind looking out of a window at a quiet street
+Big: FOR WHOM?

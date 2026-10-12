@@ -585,17 +585,11 @@ Text: TIME YOU CHOSE
 Draw: underline
 Statement: It is *time* you chose.
 
-But attention is not only captured by curiosity.
-Visual: A phone lighting up on a desk with a new notification, text unreadable
-Visual: A hand reaching for a wrapped parcel on a desk
-Transition: whip
+So tonight, switch off one notification and move one app.
+Visual: A thumb toggling a switch on a phone settings screen, text unreadable
+Visual: A phone home screen with one empty app space, text unreadable
+Text: 1 NOTIFICATION OFF · 1 APP MOVED
 
-It can also be captured by fear.
-Visual: A smoke alarm on a ceiling, its small light glowing red
-Visual: A phone showing a red warning pop-up, text unreadable
-Big: FEAR
-
-So what happens when a warning becomes a sales pitch?
-Visual: A shop shelf of padlocks and alarms with price tags
-Visual: A hand passing a bank card across a shop counter
-Text: NEXT: WHEN A WARNING BECOMES A PITCH
+Which app gets your first minute every morning, and did you choose it?
+Visual: A phone lying on a bedside table in early morning light
+Big: YOUR CHOICE?

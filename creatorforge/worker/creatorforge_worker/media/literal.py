@@ -366,6 +366,7 @@ def enrich(plan, script: str) -> None:
                 used = seen_concept.setdefault(ci, [])
                 if len(used) >= MAX_PER_CONCEPT or (used and n - used[-1] < CONCEPT_GAP):
                     continue
+                b["writer_visual"] = visual           # kept: the storyboard can show what the writer asked for
                 b["visual"] = pics[len(used) % len(pics)]
                 b["literal"] = say.pattern
                 used.append(n)

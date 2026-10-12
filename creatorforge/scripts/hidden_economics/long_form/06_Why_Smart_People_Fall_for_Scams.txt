@@ -632,9 +632,7 @@ Visual: A city street waking up, shop shutters rising
 Text: WHO BENEFITS IF I ACT BEFORE I THINK?
 Draw: circle
 
-Next, how one calm con man with official-looking paper sold the Eiffel Tower.
-Visual: The Eiffel Tower in 1920s Paris with horse carts below
-Visual: An old typed contract beside a fountain pen on a desk, text unreadable
-Visual: A 1920s Paris hotel lobby with a wooden reception desk
-Text: NEXT: THE MAN WHO SOLD THE EIFFEL TOWER
-Stock: eiffel tower 1920s
+Who in your life most needs to hear that question today?
+Visual: Hands typing a message on a phone at a kitchen table, text unreadable
+Visual: An older person seen from behind reading a handwritten card by a window
+Statement: Ask it *before* you act.

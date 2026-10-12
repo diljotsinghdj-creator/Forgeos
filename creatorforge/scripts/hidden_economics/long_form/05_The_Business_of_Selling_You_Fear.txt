@@ -555,20 +555,7 @@ Visual: A handwritten list on a notepad beside a pen, text unreadable
 Text: TONIGHT: LIST EVERY PROTECTION
 Draw: arrow
 
-But some people use fear plus urgency not to sell, but to steal.
-Visual: An empty wallet lying open on a table
-Visual: A front door chain hanging unlatched
-Visual: A thick envelope of cash left on a doorstep
-Text: FEAR + URGENCY
-Big: STEAL
-Transition: whip
-
-Next time, the version that adds authority.
-Visual: A hand reaching for a ringing telephone
-Visual: A police officer's peaked cap on a desk
-Chat: Unknown number | them: This is the fraud team · them: Your account is at risk · them: Act before midnight
-
-And why even clever people fall for it.
-Visual: A row of framed diplomas on an office wall, text unreadable
-Visual: A man seen from behind walking into a university library
-Text: NEXT: WHY SMART PEOPLE FALL FOR SCAMS
+Which fear are you still paying for every month?
+Visual: A paper bank statement with one line highlighted in yellow, text unreadable
+Visual: A person seen from behind at a desk under a lamp, a pen in hand
+Big: WHICH FEAR?

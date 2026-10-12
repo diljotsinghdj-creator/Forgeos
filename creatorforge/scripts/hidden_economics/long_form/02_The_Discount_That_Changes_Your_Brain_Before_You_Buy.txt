@@ -552,17 +552,11 @@ Visual: A card payment terminal on a shop counter, payment approved, text unread
 Visual: A shopper seen from behind walking out of a shop empty-handed
 Statement: Never let one *decide* for you.
 
-Some prices are not about the number at all.
-Visual: A gold wristwatch lying in an open display box
-Visual: A designer handbag on a lit shelf in a luxury shop window
-Text: NEXT EPISODE
+So when a crossed-out price appears, ask Leah's question first.
+Visual: A price tag with the old price struck through in red, figures blurred
+Visual: A shopper seen from behind pausing beside a clothes rail
+Text: NO "WAS" PRICE. STILL WORTH IT?
 
-So why do things feel better when other people can see them?
-Visual: A glossy shopping bag carried along a busy street
-Visual: People seen from behind turning to look at a shop window
-Transition: match
-
-Next time, the hidden economics of status.
-Visual: A polished sports car parked outside a restaurant
-Visual: A luxury shop front on a city street at dusk
-Text: NEXT: THE STATUS TRAP
+What would you still buy if the old price vanished?
+Visual: A single jacket on a wooden hanger with one plain price tag, figures blurred
+Big: WORTH IT?

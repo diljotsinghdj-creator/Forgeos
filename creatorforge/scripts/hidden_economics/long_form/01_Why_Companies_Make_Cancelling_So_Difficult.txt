@@ -547,14 +547,11 @@ Visual: A phone lying face down on a bank statement
 Visual: A wall calendar with a renewal date circled in red pen
 Statement: It should never depend on you *forgetting*.
 
-Subscriptions work on your memory over months. A shop needs only seconds.
-Visual: A pile of monthly bank statements on a desk, figures blurred
-Visual: A busy shop floor seen from the entrance on a Saturday
-Text: NEXT EPISODE
-Split: Months | Seconds
+So tonight, ask each one: would I join again today?
+Visual: A hand holding a pen over a printed bank statement, text unreadable
+Visual: A phone lying beside a cup of tea on a kitchen table at night
+Text: WOULD I JOIN AGAIN TODAY?
 
-Next time, how one crossed-out price rewrites what you think something is worth.
-Visual: A shop price tag with the old price crossed out in red, figures blurred
-Visual: A shopper seen from behind looking at jackets on a clothes rail
-Text: NEXT: THE DISCOUNT TRAP
-Transition: match
+Which one would you never sign up for again?
+Visual: A person seen from behind at a kitchen table, an evening lamp on
+Big: WHICH ONE?
