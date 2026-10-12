@@ -58,8 +58,10 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
     var reload by remember { mutableIntStateOf(0) }
     val client = remember(reload) { ProductionClient(worker.getString("base_url", "").orEmpty()) }
 
-    // Your channel's Brand kit (name, colours, logo, intro/outro) goes with every video made here
-    val brandChannel = remember { runCatching { StudioHub.channels(context).list().firstOrNull() }.getOrNull() }
+    // The chosen channel's Brand kit (name, colours, logo, intro/outro) goes with videos made here; "No brand" sends none
+    val brandChannels = remember { runCatching { StudioHub.channels(context).list() }.getOrDefault(emptyList()) }
+    var brandId by remember { mutableStateOf(prefs.getString("brand_channel", null) ?: brandChannels.firstOrNull()?.id.orEmpty()) }
+    val brandChannel = brandChannels.firstOrNull { it.id == brandId }
     var caps by remember { mutableStateOf<Capabilities?>(null) }
     var capsError by remember { mutableStateOf<String?>(null) }
     var idea by remember { mutableStateOf(prefs.getString("idea", "").orEmpty()) }
@@ -336,6 +338,10 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                         }
                     }
                 }
+                if (brandChannels.isNotEmpty()) {
+                    Label("BRAND (LOGO, COLOURS, SIGN-OFF)")
+                    ChipRow(brandChannels.map { it.id to it.name } + listOf("" to "No brand"), brandId) { brandId = it }
+                }
                 Label("PEOPLE IN SHOTS")
                 ChipRow(listOf("show" to "Expressive faces", "faceless" to "Faceless"), faces) { faces = it }
                 Text(if (faces == "faceless") "People from behind, in silhouette or as hands - emotion shown through body language."
@@ -410,7 +416,7 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                         .putString("mood", mood).putString("camera", camera).putString("characters", characters)
                         .putString("video_scope", videoScope).putString("video_quality", videoQuality).putString("faces2", faces).putBoolean("fast_cuts", fastCuts).putString("voice_pace", voicePace).putBoolean("review", review)
                         .putBoolean("auto_edit", autoEdit).putStringSet("character_ids", picked)
-                        .putBoolean("script_mode", scriptMode).putBoolean("sfx", sfx).putString("music_asset", musicAsset).apply()
+                        .putBoolean("script_mode", scriptMode).putBoolean("sfx", sfx).putString("music_asset", musicAsset).putString("brand_channel", brandId).apply()
                     val chars = characters.lines().mapNotNull { l ->
                         val i = l.indexOf(':'); if (i > 0) l.substring(0, i).trim() to l.substring(i + 1).trim() else null
                     }.filter { it.first.isNotBlank() && it.second.isNotBlank() }
