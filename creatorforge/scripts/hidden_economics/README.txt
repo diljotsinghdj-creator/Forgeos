@@ -151,7 +151,7 @@ INDEX (title - on-screen hook)
     13  Why You Cannot Stop Scrolling - CAME FOR THE WEATHER
     14  The Man Who Sold the Eiffel Tower - EIFFEL TOWER, SOLD
     15  Why Notifications Work - 1 BUZZ, 20 MINUTES?
-    16  The Small Yes That Leads to a Big Yes - TINY YES → HUGE YES
+    16  The Small Yes That Leads to a Big Yes - TINY FAVOUR. 17% → 76%
     17  The Stranger Who Texted the Wrong Number - WRONG NUMBER. SAVINGS GONE.
     18  Why Bad News Grabs Attention - 100 CALM DAYS VS 1?
     19  The Cost of Panic Buying - 4 MINUTES. 0 PAGES READ.
