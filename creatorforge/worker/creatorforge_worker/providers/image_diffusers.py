@@ -113,6 +113,10 @@ class DiffusersImageProvider:
         return {"ip_adapter_image": ref}
 
     def _load_ip(self, pipe) -> bool:
+        if self._ip_ready and getattr(getattr(pipe, "unet", None), "encoder_hid_proj", None) is None:
+            # The pipe was reloaded (e.g. freed to make room for the script model) and lost its adapter:
+            # passing ip_adapter_image now fails with "'NoneType' object has no attribute 'image_projection_layers'".
+            self._ip_ready = None
         if self._ip_ready is None:
             try:
                 pipe.load_ip_adapter("h94/IP-Adapter", subfolder="sdxl_models",

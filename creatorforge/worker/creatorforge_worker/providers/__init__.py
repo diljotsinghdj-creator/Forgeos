@@ -278,6 +278,10 @@ def release_gpu() -> None:
         for prov in cache.values():
             if getattr(prov, "_pipe", None) is not None:
                 prov._pipe = None
+                if hasattr(prov, "_ip_ready"):
+                    prov._ip_ready = None      # the face adapter lived on the old pipe: load it again with the new one
+                if hasattr(prov, "_img2img"):
+                    prov._img2img = None
     if _asr is not None:
         _asr._model = None
     import gc

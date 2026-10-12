@@ -321,3 +321,21 @@ def test_a_script_model_that_times_out_does_not_stop_a_pasted_script(monkeypatch
     with pytest.raises(ProviderError):
         pipeline.Pipeline._with_gpu_room(None, step, "llm", optional=False)
     assert providers.is_local_url("http://127.0.0.1:11434/v1") and not providers.is_local_url("https://api.example.com/v1")
+
+
+def test_freeing_the_gpu_also_forgets_the_face_adapter(monkeypatch):
+    """A reloaded picture model has no IP-Adapter; sending it a face reference crashed with
+    "'NoneType' object has no attribute 'image_projection_layers'"."""
+    from types import SimpleNamespace
+    from creatorforge_worker import providers
+    from creatorforge_worker.providers.image_diffusers import DiffusersImageProvider as DiffusersImage
+    prov = DiffusersImage.__new__(DiffusersImage)
+    prov.model, prov._pipe, prov._ip_ready, prov._img2img = "realvisxl", object(), True, object()
+    monkeypatch.setattr(providers, "_image_cache", {"k": prov})
+    providers.release_gpu()
+    assert prov._pipe is None and prov._ip_ready is None and prov._img2img is None
+    # and if a pipe ever comes back without its adapter, the provider notices and loads it again
+    loads = []
+    pipe = SimpleNamespace(unet=SimpleNamespace(encoder_hid_proj=None), load_ip_adapter=lambda *a, **k: loads.append(1))
+    prov._ip_ready = True
+    assert prov._load_ip(pipe) is True and loads == [1]
