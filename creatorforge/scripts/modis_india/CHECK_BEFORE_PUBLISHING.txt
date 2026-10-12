@@ -1,0 +1,70 @@
+CHECK BEFORE PUBLISHING - 130 Million Names Deleted
+
+This is a political story about events that are still moving (October 2026). Re-check these the day you
+publish. If a number has changed, change the script line, its Text:/Chart: line and its Cite: line together.
+
+FACTS VERIFIED (11-12 Oct 2026) AND WHERE THEY COME FROM
+[ ] ~130 million (13.3 crore) names cut from DRAFT rolls in the Special Intensive Revision
+    - Election Commission data reported by Deccan Herald, Oct 2026. No official EC press release was found.
+      Check that the figure hasn't been revised.
+[ ] Breakdown: ~95 million absent/shifted/"other" (71.5%), ~27 million deaths, ~10 million duplicates
+    - Deccan Herald / Organiser, Oct 2026. Sources split the categories slightly differently; the totals match.
+[ ] EC: denies favouring any party; says wrongly deleted voters can re-enrol; ordered a special enrolment
+    drive - Al Jazeera / Reuters, Oct 2026.
+[ ] The Supreme Court case (ADR v Election Commission) is still pending. If it has been decided, update
+    the line "And the case is still before the Supreme Court."
+[ ] 6 Oct 2026: opposition leaders marched from Parliament to the Election Commission demanding Chief
+    Election Commissioner Gyanesh Kumar resign; some protesters detained, some leaders briefly arrested
+    - Al Jazeera, ABC News (AP), 6 Oct 2026.
+[ ] 12 Oct 2026: Delhi shut six metro stations and restricted traffic, citing security - Reuters
+    (via Geo News / Aaj), Al Jazeera, 12 Oct 2026.
+    NOT USED, because I couldn't confirm it: "thousands detained" (one less detailed report only).
+[ ] March 2023 Supreme Court panel: PM, Leader of Opposition, Chief Justice (Anoop Baranwal judgment).
+[ ] 2023 Act: PM, Leader of Opposition, a Union Cabinet Minister nominated by the PM.
+[ ] Reuters, March 2024: nearly 150 opposition politicians summoned, questioned or raided by the ED since
+    2014; four from the BJP; at least a dozen later switched to the BJP or its allies.
+    Open the original Reuters article if you can: the "four" figure was confirmed in a reprint.
+[ ] Modi has said the ED works without government interference (Scroll, 2024).
+[ ] RSF 2026: India 157th of 180 (151st in 2025), "very serious"; Pakistan 153rd.
+[ ] Freedom House 2026: 62/100, Partly Free.
+[ ] V-Dem 2026: India classed as an electoral autocracy, a label it has held since 2017.
+[ ] CAA Rules notified March 2024: Hindus, Sikhs, Buddhists, Jains, Parsis, Christians from Pakistan,
+    Bangladesh and Afghanistan who entered on or before 31 Dec 2014. Muslims are not included.
+[ ] 2024 election: BJP 240 seats; 272 needed for a majority.
+[ ] 15 Feb 2024: Supreme Court struck down electoral bonds as unconstitutional.
+[ ] BJP received about half of electoral-bond money: Rs 8,252 crore of Rs 16,492 crore (EC disclosures,
+    March 2024, as analysed by Scroll / Newslaundry).
+[ ] Japan population about 123 million (for the "more than Japan" comparison).
+
+WHAT I CHANGED FROM YOUR ORIGINAL PACKAGE, AND WHY
+- Rebuilt as a CreatorForge script: title hook first, a re-hook every few seconds, 9 chapter cards,
+  176 pictures (one about every 3 s), and charts, statements, scale squares, pie charts, a countdown
+  timer, timelines, a map and an on-screen Al Jazeera headline.
+- Made it harder-hitting: short punch lines ("150. Against four."), big statements on dark screens
+  ("The government now picks the referee."), and more numbers on screen.
+- KEPT the attributions and the other side's response on every claim. They protect the channel: YouTube's
+  election-misinformation rules and advertisers treat "rigged" claims stated as fact very differently from
+  claims attributed to opposition parties and answered by the government.
+- "Opposition parties allege Muslims and other vulnerable groups were affected" is now "Muslims and poor
+  migrants", which is how the opposition's allegation was reported. It stays labelled ALLEGATION.
+- Added the Oct 6 march and the Oct 12 metro closures, both confirmed by Al Jazeera and Reuters.
+- Added the breakdown of the 130 million (deaths, duplicates, absent/shifted/other). It's the strongest
+  evidence in the story, and it's the Commission's own data.
+- Added that Reuters found at least a dozen opposition figures later switched to the BJP or its allies.
+- Added the BJP's roughly half share of electoral-bond money (EC disclosures).
+- Dropped "thousands detained" (couldn't confirm it) and any protest-movement names.
+
+PICTURES - IMPORTANT
+- The AI pictures in this script are symbolic (registers, barricades, empty chairs, whistles). They never
+  show a recognisable person or a specific real protest.
+- Stock: lines (Parliament, Supreme Court, Modi) fetch real archive photos. Check each one in the
+  storyboard review: it must be the right building or person, and a photo you're allowed to use.
+- Do not add AI-generated images of Modi, Gyanesh Kumar or any real person.
+- If you add real protest footage, license it and label it with its date and source.
+
+BEFORE YOU UPLOAD
+[ ] Watch it once on mute: does any picture imply something the narration doesn't say?
+[ ] Watch it once with sound: is every number attributed?
+[ ] Check the chapter times in UPLOAD_COPY.txt against the finished video.
+[ ] Expect YouTube to show an information panel on election content, and some advertisers to skip it.
+    That's normal for political news; the attributions keep it eligible for monetisation.
