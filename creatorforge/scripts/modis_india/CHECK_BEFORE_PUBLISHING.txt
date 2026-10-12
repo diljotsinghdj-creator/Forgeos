@@ -68,3 +68,64 @@ BEFORE YOU UPLOAD
 [ ] Check the chapter times in UPLOAD_COPY.txt against the finished video.
 [ ] Expect YouTube to show an information panel on election content, and some advertisers to skip it.
     That's normal for political news; the attributions keep it eligible for monetisation.
+
+
+==========================================================================================
+VERSION 2 - THE PLAYBOOK: FACTS AND SOURCES (checked 12 Oct 2026)
+==========================================================================================
+[ ] No solo press conference in India since 2014 (Free Press Journal, June 2026; BJP MP Tejasvi Surya
+    called press conferences "redundant").
+[ ] Modi's photo on Covid vaccine certificates; Kerala man who asked to remove it was fined Rs 1 lakh by
+    the Kerala High Court (Al Jazeera, Dec 2021).
+[ ] Ration bags with Modi's photo: Rs 13.29 crore in Rajasthan alone (RTI, The News Minute, 2024).
+[ ] Motera stadium renamed Narendra Modi Stadium in Feb 2021 (widely reported).
+[ ] Central government adverts Rs 5,245.73 crore, 2014-15 to 7 Dec 2018 (Lok Sabha reply, Dec 2018).
+[ ] BJP spent ~Rs 1,494 crore in 2024, 44.56% of all parties' spending (ADR, June 2025).
+[ ] BJP received Rs 8,252 crore of Rs 16,492 crore in electoral bonds (EC disclosures, March 2024).
+[ ] BBC documentary "India: The Modi Question" blocked under emergency IT powers; tax "survey" of BBC
+    offices Feb 2023; Amnesty: "an affront to free speech".
+[ ] NewsClick founder arrested under UAPA Oct 2023; Supreme Court ruled the arrest invalid May 2024 after
+    225 days (The Tribune).
+[ ] John Oliver's 2024 India episode not available on JioCinema/YouTube in India (Yahoo News, 2024).
+[ ] Chandigarh mayor election, Jan 2024: returning officer Anil Masih (BJP) defaced 8 ballots; CJI said the
+    court won't allow democracy to be "murdered"; result overturned 20 Feb 2024; prosecution ordered.
+    The spoken line paraphrases the CJI ("we won't let democracy be murdered like this"), which is the
+    wording reported. Keep it as a paraphrase, not a verbatim quote.
+[ ] Surat, April 2024: Congress nominations rejected (proposers' signatures), all 8 others withdrew, BJP's
+    Mukesh Dalal elected unopposed (The Wire).
+[ ] Congress accounts frozen Feb 2024 over a Rs 210 crore Income Tax demand for 2018-19 (late return);
+    treasurer said it couldn't pay electricity bills or salaries (The Week).
+[ ] Hemant Soren resigned and was arrested 31 Jan 2024; Arvind Kejriwal arrested 21 Mar 2024 (ED).
+[ ] Reuters, March 2024: ~150 opposition politicians vs 4 BJP targeted by the ED; at least a dozen switched.
+    "Washing machine" is an opposition term. It's presented as "critics call it".
+[ ] Supreme Court called the CBI a "caged parrot" in May 2013 (Coalgate, under the previous government);
+    Justice Ujjal Bhuyan told the CBI to dispel the "caged parrot" notion, Sept 2024.
+[ ] Justice S. Muralidhar: criticised Delhi Police over hate-speech FIRs on 26 Feb 2020; transfer notified
+    that night. The government says the collegium recommended it on 12 Feb (routine). Both are in the video.
+[ ] Ranjan Gogoi retired 17 Nov 2019; nominated to Rajya Sabha 16 Mar 2020.
+[ ] Rahul Gandhi: maximum 2-year sentence, disqualified 24 Mar 2023; SC stayed it 4 Aug 2023, noting no
+    reason was given for the maximum.
+[ ] Umar Khalid: jailed since Sept 2020, no trial, SC denied bail Jan 2026 ("~6 years" is right as of Oct 2026).
+[ ] JNU, 5 Jan 2020: masked mob; Home Ministry told Parliament no arrests (The Wire). Check whether anyone
+    has been arrested since. If so, change "ZERO ARRESTS".
+[ ] Jamia, 15 Dec 2019: CCTV "appears to show" police beating students in the library (Scroll could not
+    independently verify it, so the script says "appears to show"); police said rioters were among students.
+[ ] Delhi riots Feb 2020: at least 53 killed; Amnesty (Aug 2020): police "complicit".
+[ ] Anurag Thakur "goli maaro" chant, Jan 2020; Election Commission banned him from campaigning for 72 hours.
+    He is not named in the narration.
+[ ] HRW, Feb 2019: at least 44 killed by cow vigilantes May 2015-Dec 2018, 36 of them Muslims.
+[ ] Supreme Court, 13 Nov 2024: "bulldozer justice" ruling, the executive cannot act as judge.
+[ ] Pegasus: SC panel found malware on 5 of 29 phones, couldn't link it to Pegasus, said the government
+    didn't cooperate (Aug 2022).
+[ ] Access Now: 920 of 2,102 shutdowns worldwide since 2016 were in India; 65 in 2025 (2nd after Myanmar).
+    The script says "more than anywhere" about the total since 2016, which is correct.
+[ ] Freedom House 62/100; V-Dem electoral autocracy since 2017; RSF 157/180; BJP 240 seats in 2024.
+
+WHAT I DID NOT SAY AS FACT, AND WHY
+- "BJP goons": the script uses what's documented instead (the masked JNU mob, which students blamed on
+  the BJP's student wing and which denied it; the minister's chant; HRW's vigilante findings).
+- "Controlling the judiciary" / "hijacking elections": the script shows the evidence (the Muralidhar timing,
+  Gogoi's seat, the Rahul sentence, the referee law, Chandigarh, Surat) and lets it land. A claim stated as
+  proven, with no source behind it, is what gets a video removed or sued. Evidence in a row does not.
+- Tone: inspired by John Oliver's style (sarcasm, "totally normal timing, right?", "the parrot is still
+  talking"), but none of his jokes or wording are copied.
