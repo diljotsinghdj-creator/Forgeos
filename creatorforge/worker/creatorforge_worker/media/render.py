@@ -537,6 +537,10 @@ def render_video(clips: list[Clip], audio: Path, captions: Path | None, width: i
     if captions is not None:
         graph.append(f"[{last}]subtitles=filename={captions.name}[vout]")
         last = "vout"
+    if total > 3:
+        # the ending fades to black over the last second instead of stopping dead
+        graph.append(f"[{last}]fade=t=out:st={total - 1.0:.3f}:d=1[vend]")
+        last = "vend"
     args += ["-i", str(audio)]
     if logo is not None:
         args += ["-i", str(logo_png)]

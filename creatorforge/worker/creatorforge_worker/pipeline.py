@@ -29,6 +29,7 @@ SCENE_GAP_S = 0.12   # breath between scenes - longer gaps lose viewers
 MIN_SCENE_S = 1.5
 MAX_HOLD_S = 0.5     # cap on the Director's dramatic pauses
 REVEAL_PAUSE_S = 0.3
+ENDING_HOLD_S = (1.5, 2.5)   # seconds the last picture holds after the final word: Shorts, long videos
 REVEAL_EMOTIONS = {"shock", "surprise", "awe"}
 SHOCK_EMOTIONS = {"shock", "surprise", "fear", "horror", "disgust", "terror"}
 
@@ -772,6 +773,9 @@ class Pipeline:
             natural = max(MIN_SCENE_S, sc["narration_s"] + SCENE_GAP_S + (min(MAX_HOLD_S, shot.get("hold", 0.0)) if auto else 0.0))
             if auto and i + 1 < len(shots) and shots[i + 1].get("emotion") in REVEAL_EMOTIONS:
                 natural += REVEAL_PAUSE_S   # a beat of silence before the twist lands
+            if i == len(shots) - 1:
+                # let the last line land: the closing picture holds after the final word, then the video fades out
+                natural += ENDING_HOLD_S[0] if self._spec(job).aspect == "9:16" else ENDING_HOLD_S[1]
             override = sc.get("duration_override")
             # A timeline-edited length wins, but can never cut the narration short.
             out.append(max(float(override), sc["narration_s"] + 0.1) if override else natural)
