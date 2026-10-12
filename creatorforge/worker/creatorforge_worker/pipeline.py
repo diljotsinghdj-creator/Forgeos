@@ -1060,11 +1060,13 @@ class Pipeline:
             try:
                 a = self.library.assets.get(brand["logo_asset_id"])
             except KeyError:
-                raise StageFailed("the brand logo was deleted from the Asset Library") from None
-            if a["kind"] != "image":
+                a = None   # e.g. a new pod: the logo lived on the old one. Render without it rather than fail.
+                job["providers"]["brand"] = "no logo (not on this pod - upload it again and pick it in Brand kit)"
+            if a is not None and a["kind"] != "image":
                 raise StageFailed("the brand logo must be an image asset")
-            logo = (self.library.assets.path(a), brand.get("logo_position", "top-right"), brand.get("logo_opacity", 0.85))
-            job["providers"]["brand"] = f"logo {a['name']} ({logo[1]})"
+            if a is not None:
+                logo = (self.library.assets.path(a), brand.get("logo_position", "top-right"), brand.get("logo_opacity", 0.85))
+                job["providers"]["brand"] = f"logo {a['name']} ({logo[1]})"
         look = re.sub(r"[^a-z]", "", spec.visual_direction.lower())
         grade = ("bw" if "blackandwhite" in look or "monochrome" in look else "film") if spec.film_grade else ""
         if spec.film_grade and spec.style in EDITORIAL_STYLES:
