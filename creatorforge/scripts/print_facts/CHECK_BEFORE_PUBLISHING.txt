@@ -1,0 +1,43 @@
+PRINT FACTS - CHECK BEFORE PUBLISHING (facts checked 13 Oct 2026)
+
+Every number below is in the script's Source: line with a link. Re-check anything time-sensitive on publish day.
+
+01 THE MUSEUM HEIST
+[ ] British Museum: ~6.5 million visitors in 2024, UK's most-visited attraction (ALVA / The Art Newspaper).
+[ ] Benin, Feb 1897: British punitive expedition after the Phillips party was ambushed; city burned, palace looted;
+    Oba Ovonramwen deposed and exiled to Calabar; 3,000-5,000+ objects taken; many auctioned by the Admiralty to help
+    cover the expedition's costs (National Museums Scotland, Royal Museums Greenwich).
+[ ] Germany agreed (July 2022) to return 1,130 Benin objects; the Horniman transferred ownership of 72 (2022).
+[ ] British Museum Act 1963 limits giving objects away; UK government (2022): no plans to change the law. A long-term
+    Parthenon loan is under discussion; Greece wants ownership.
+[ ] 2002 "universal museums" declaration, 18 directors; the British Museum's director supported its intent.
+[ ] Acropolis Museum opened 2009 with a gallery designed for the Parthenon sculptures.
+[ ] "Crime scene" / "receivers of stolen goods" are presented as critics' views ("an argument, not a legal ruling").
+    "Curated by the thieves" is the narrator's opinion, introduced as such. Keep it that way.
+
+02 THE BAD SCIENCE EPIDEMIC
+[ ] Wine = gym: 2012 University of Alberta resveratrol study in rodents (no wine, no humans); the university corrected
+    the coverage; matching the dose = 100-1,000 bottles a day.
+[ ] Chocolate hoax (2015, John Bohannon): 15 paid participants, 3 groups, 18 measurements, 10% faster weight loss,
+    a journal that skipped peer review for a fee; picked up by Bild and Huffington Post sites.
+[ ] Schoenfeld & Ioannidis: 40 of 50 random cookbook ingredients had studies linking them to cancer; most weak.
+[ ] Ioannidis (2005), "Why Most Published Research Findings Are False": presented as his argument.
+[ ] Illustrations (50 foods x 50 conditions, "tested on 6 mice") are labelled ILLUSTRATION / EXAMPLE on screen.
+
+03 THE CULT OF THE PYRAMID
+[ ] AARP Foundation 2018 (601 people): ~47% lost money, 27% broke even, ~25% profited, over half of those < $5,000.
+[ ] US direct selling (MLMs included): ~$36.7bn retail sales, ~6.1m sellers in 2023 (Direct Selling Association).
+[ ] FTC warned 12 MLM companies over COVID-era income claims (2020).
+[ ] MLMs are legal. The script says "cult-like tactics critics and former members describe", never calls MLMs cults,
+    frauds or pyramid schemes as fact, and names no company. Keep any edits that way.
+
+SHORT 01 THE BEAUTY PAGEANT MATH ILLUSION
+[ ] Miss America's website: $45m in scholarships "made available" a year.
+[ ] John Oliver's team (Sept 2014): IRS 990s for 33 states, generous assumptions -> under $4m.
+[ ] AP, about a year later: Miss America and state organisations gave just over $5.9m in cash/tuition waivers.
+[ ] "About an eighth" (6 of 45). The $10,000 x 4 example is labelled as an illustration of how offers were counted.
+
+PICTURES
+- Stock: lines (British Museum, Rosetta Stone, Parthenon, Acropolis Museum) fetch real photos. Check them in the
+  storyboard review. No real logos (no Miss America or MLM brand logos), no AI faces of real people.
+- Endings are questions to the viewer. Add your "subscribe" end screen in YouTube, not in the narration.
