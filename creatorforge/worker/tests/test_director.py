@@ -323,6 +323,21 @@ def test_a_script_model_that_times_out_does_not_stop_a_pasted_script(monkeypatch
     assert providers.is_local_url("http://127.0.0.1:11434/v1") and not providers.is_local_url("https://api.example.com/v1")
 
 
+def test_a_script_model_that_loops_does_not_stop_a_pasted_script(monkeypatch):
+    from creatorforge_worker import pipeline, providers
+    from creatorforge_worker.providers.base import ProviderError
+    import pytest
+    monkeypatch.setattr(providers, "release_gpu", lambda: None)
+
+    def step(m):
+        if m is not None:
+            raise ProviderError('LLM HTTP 500: {"error":{"message":"prediction aborted, token repeat limit reached"}}')
+        return "plan"
+    assert pipeline.Pipeline._with_gpu_room(None, step, "llm", optional=True) == ("plan", None)
+    with pytest.raises(ProviderError):
+        pipeline.Pipeline._with_gpu_room(None, step, "llm", optional=False)
+
+
 def test_freeing_the_gpu_also_forgets_the_face_adapter(monkeypatch):
     """A reloaded picture model has no IP-Adapter; sending it a face reference crashed with
     "'NoneType' object has no attribute 'image_projection_layers'"."""

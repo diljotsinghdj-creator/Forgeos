@@ -197,26 +197,23 @@ class Pipeline:
 
     def _with_gpu_room(self, step, llm, optional: bool = False):
         """Runs a script-model step. If the GPU is full (the image/video models from an earlier video are still
-        loaded), frees them and tries again. A script-mode video carries on without the script model when it is out
-        of memory, unreachable or too slow, because its pictures come from the writer's own Visual lines."""
-        def gone(e: Exception) -> bool:
-            m = str(e).lower()
-            return "unreachable" in m or "timed out" in m or "timeout" in m
-
+        loaded), frees them and tries again. A script-mode video carries on without the script model whenever it
+        fails (out of memory, unreachable, too slow, or a server error such as Ollama's "token repeat limit
+        reached"), because its pictures come from the writer's own Visual lines."""
         try:
             return step(llm), llm
         except ProviderError as e:
             if llm is None:
                 raise
-            if gone(e) and optional:
-                return step(None), None
             if "memory" not in str(e).lower():
+                if optional:
+                    return step(None), None
                 raise
         providers.release_gpu()
         try:
             return step(llm), llm
-        except ProviderError as e:
-            if not optional or not ("memory" in str(e).lower() or gone(e)):
+        except ProviderError:
+            if not optional:
                 raise
         return step(None), None
 
