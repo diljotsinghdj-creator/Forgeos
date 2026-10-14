@@ -1,0 +1,208 @@
+INDIA 2026 - CHECK BEFORE PUBLISHING
+Source of everything below: the India 2026 Audit Pack (14 Oct 2026): 02_LONG_SCRIPT_corrected.md (HOLD release
+conditions), 03_SOURCE_LEDGER.md, 05_LEGAL_DEFAMATION_EDITORIAL_RISK_LIST.md, 07_PUBLISHING_CHECKLIST.md.
+Applies to long_form/01_Delivery_Dissent_and_the_Voter_List_Fight.txt (and the Shorts built from the same pack).
+The pack says: not legal advice - have an Indian media lawyer review before publication.
+
+======================================================================================================================
+1. HOLD ROWS LEFT OUT OF THE LONG SCRIPT (11)
+   None of these is in the script. Add one back only after its release condition is met. The English lines below
+   are ready to paste. Put each in the act shown, keep it at or under 13 words a line, and give each line a Visual:.
+   Then run the three checks again (validate_script.py, hook5.py -v, retention.py -v).
+======================================================================================================================
+
+L003  Act 1 (cold open)  |  claim C16 (ledger: HOLD)  |  The Wire, 25 Sep 2026 (only the headline was read)
+  Narration:  And questions about the Election Commission, including from an NDA ally.
+  Screen:     Headline card, Chirag Paswan, 25 Sep 2026.
+  RELEASE:    Read the full Wire article and confirm Paswan's wording.
+              URL: https://thewire.in/politics/cec-must-present-stance-clearly-problematic-if-people-begin-to-doubt-electoral-process-chirag-paswan
+
+L025  Act 3 (credit where it's due), after the Coimbatore line  |  claim C41
+  Narration:  This is one state's audit. It doesn't prove the whole country looks the same.
+              The Tamil Nadu government's reply: [on-record reply needed].
+  Screen:     Caveat card, amber border.
+  RELEASE:    Get the Tamil Nadu government's on-record reply to the CAG report. If none comes, say plainly that
+              none was received by a dated deadline.
+  NOTE:       The "ONE STATE'S AUDIT · NOT NATIONAL" caption is already on screen. It comes from the pack's G08
+              graphic caption, so the caveat is shown even while this row is out.
+
+L045  Act 5 (the agencies), after the 193 cases / 2 convictions line  |  claim C64 (ledger: REMOVE the invented reply)
+  Narration:  The government's side: [ED / Finance Ministry on-record reply needed].
+              We won't invent a reply nobody gave.
+  Screen:     Empty response card with the date the request was sent.
+  RELEASE:    Get a reply from the ED or the Finance Ministry, or publish with a dated "declined / no response" note.
+              Never restore the draft's invented reply ("political position gives no immunity from prosecution").
+              The ledger marks it REMOVE.
+
+L064  Act 6 (the voter list), after the Quint fact-check line  |  claim C72
+  Narration:  On 27 May 2026, the Supreme Court held the revision within the Commission's powers.
+              That ruling was about power, not about whether each deleted name was valid.
+  Screen:     Supreme Court card (The Week summary until the judgment text is read).
+  RELEASE:    Read the 27 May 2026 judgment text (sci.gov.in) and replace the summary with the exact holdings.
+              The ledger notes that Wikipedia's further directions (Aadhaar as ID, publishing deleted names,
+              referral of suspected non-citizens) are UNVERIFIED.
+              URL: https://www.theweek.in/news/india/2026/05/27/supreme-court-upholds-special-intensive-revision-backs-powers-of-election-commission.html
+
+L074  Act 7 (Delhi, October 2026), after the internet-cut line  |  claim C24
+  Narration:  The Solicitor General told the court entry was restricted at 45 of 303 Metro stations.
+              The court's interim directions: Metro and rail run normally, internet undisturbed,
+              and detention only under the law.
+  Screen:     Supreme Court interim directions as a bullet card (until the official order is read).
+  RELEASE:    Read the official 11 Oct order and replace the live-blog paraphrase.
+              URL (live blog): https://www.barandbench.com/news/cjp-protest-crackdown-detentions-live-updates-from-supreme-courts-sunday-hearing
+
+L085  Act 8 (the journalists), after the "detentions happened even after that" line  |  claim C33
+  Narration:  On 13 October, the Supreme Court asked senior Delhi Police officers to appear on 14 October,
+              over alleged mistreatment of women journalists. [Add the outcome of the hearing before publishing.]
+  Screen:     Court card with an "UPDATE BEFORE PUBLISH" flag (remove the flag in the final cut).
+  RELEASE:    Update with the outcome of the 14 Oct hearing. All the Delhi protest matters were listed for 15 Oct.
+              Check that hearing too.
+              URL: https://www.thedailyjagran.com/india/news/sir-protest-suprem-court-asks-delhi-cops-to-remain-present-during-harassment-plea-hearing-all-delhi-protests-cases-on-thursday-10332532
+
+L087  Act 8 (the journalists), after the Maktoob Media / Connaught Place lines  |  claim C34
+  Narration:  We aren't showing any footage of this allegation, because we haven't verified any.
+              The police response: [needed].
+  Screen:     Plain card, "No verified footage".
+  RELEASE:    Keep this row only if no verified footage exists when the cut is locked. Otherwise replace it with
+              a verified clip (grade A or B under 09_VIDEO_VERIFICATION_PROTOCOL.md). A police response is also
+              needed. The script already labels those lines "ALLEGED: PER CPJ · NO VERIFIED FOOTAGE" and shows
+              no footage of the incident.
+
+L092  Act 9 (rights and limits), after the MKSS / Jantar Mantar line  |  claim C81 (Anuradha Bhasin part)
+  Narration:  Internet restrictions are tested against the Anuradha Bhasin standard.
+              And this week, the Home Ministry removed Jantar Mantar from the list of protest sites.
+  Screen:     Two cards.
+  RELEASE:    Confirm the Jantar Mantar de-notification from an MHA or Delhi Police notice. Also confirm the
+              Anuradha Bhasin citation.
+
+L094  Act 9 (rights and limits), after "We'll only show what's on record"  |  claim C27 (ledger: HOLD)
+  Narration:  The Home Ministry controls Delhi Police. We found no public statement on this by Home Minister
+              Amit Shah. [Comment requested.]
+  Screen:     Text card with the date the request for comment was sent.
+  RELEASE:    Send MHA / Amit Shah's office a request for comment and record the date. Publish the response, or
+              say that none came. Do not attribute personal responsibility without a source.
+
+L114  Act 11 (Rahul Gandhi), after the Bharat Jodo / Nyay Yatra lines  |  claim C09 (ledger: HOLD)
+  Narration:  In 2023, after a Surat court conviction, Rahul Gandhi lost his Lok Sabha seat.
+              On 5 August 2023, the Supreme Court stayed that conviction.
+  Screen:     Timeline strip.
+  RELEASE:    Verify the Supreme Court stay order of 5 Aug 2023. Ledger detail: convicted 23 Mar 2023,
+              membership restored 7 Aug 2023.
+
+L115  Act 11 (Rahul Gandhi), before "three open questions"  |  claim C94 (ledger: HOLD)
+  Narration:  In the 2026 state elections, Congress won 63 seats in Kerala, but only 2 in West Bengal.
+              Congress's national strength and its state results are separate questions.
+  Screen:     State result tiles.
+  RELEASE:    Replace the India TV tally with ECI 2026 results and check who formed each government. The ledger
+              found the India TV tally internally inconsistent (West Bengal BJP 207 vs 206).
+
+Also kept out (ledger REMOVE / HOLD, never in the script):
+  C64  The draft's invented government reply to Freedom House. REMOVE.
+  C73  SIR Phase II/III state figures (50.99 to 45.81 crore, etc.). HOLD because the sources conflict.
+       State shrinkage percentages (IANS: Delhi 32.8%, Maharashtra 21.1%) are HOLD per 04_GRAPHICS_DATA.
+  X01  Loaded framing, "Pappu" line, dynasty swipes. REMOVE.
+  X02  The EIU rating. REMOVE. V-Dem ("electoral autocracy", LDI 105/179) is optional only, attributed, and
+       needs v-dem.net fetched. Not used in this script.
+  X03  An allegation against a named police officer (ACP). REMOVE. Never name officers without a court record
+       or on-record complaint and legal sign-off.
+
+======================================================================================================================
+2. VERIFY BEFORE PUBLISHING (07_PUBLISHING_CHECKLIST.md + 05 risk list + ledger "To do" for claims the script uses)
+======================================================================================================================
+FACTS - pull these primaries (the audit could not retrieve most of them):
+  [ ] ECI results 2014 / 2019 / 2024 (party-wise tables). On screen now: "ECI results", cross-checked via Wikipedia.
+      Also the NDA 293 / INDIA 234 totals. The script's Cite says "(verify NDA/INDIA totals)".
+  [ ] ECI Bihar press note, 30 Sep 2025 (7.89 -> 7.24 -> 7.42 crore; +21.53 lakh, -3.66 lakh).
+  [ ] ECI SIR state tables. Then re-check the 13 crore / 13.3 crore figure against an ECI source. If only
+      Reuters / Deccan Herald are available, keep the wording "Election Commission data, according to Reuters"
+      (that is how the script says it now).
+  [ ] Lok Sabha Secretariat LoP bulletin (sansad.in). Confirm the notice date of 26 Jun 2024 and the 9 Jun
+      effective date. The effective date is secondary-sourced.
+  [ ] Supreme Court electoral bonds judgment (WP(C) 880/2017, 2024 INSC 113). Confirm the Companies Act s.182
+      subsection, the "manifestly arbitrary" wording, and the unanimity wording. Check for any later orders
+      (review, FIRs) after the 2 Aug 2024 SIT dismissal.
+  [ ] SBI-uploaded ECI electoral bond PDFs. Recompute 22,217 / 22,030. Keep the ADR base (Mar 2018 - Jan 2024)
+      and the SBI base (Apr 2019 - Feb 2024) apart. Never mix them.
+  [ ] Supreme Court 11 Oct 2026 order (the SG's assurance that lawyers and journalists would not be impeded is
+      in the script).
+  [ ] Supreme Court 27 May 2026 SIR judgment (needed for L064).
+  [ ] CAG Tamil Nadu Jal Jeevan Mission report itself, not only PTI. Also the Tamil Nadu government's reply.
+  [ ] Parliament reply on the 193 ED cases / 2 convictions. Freedom House dates this "May 2025", but the
+      reported government reply is 19 Mar 2025, which the script uses. Resolve the discrepancy from sansad.in.
+  [ ] Indian Express originals: (a) the yatra-route analysis (+41 seats; routes 71 + 82, overlap unknown);
+      (b) the 23 Sep 2026 report on two Election Commissioners objecting at least 14 times in 10 months.
+  [ ] Freedom House 2026: the 121 / 115 figure traces to a 2024 Indian Express investigation. Fetch it, and
+      any ED reply.
+  [ ] Statutes on indiacode.nic.in: PMLA 2002, FEMA 1999, DSPE Act 1946, NIA Act 2008. Constitution Art 19.
+  [ ] Primary judgments: Ramlila Maidan (2012), MKSS (2018), Union of India v Arup Bhuyan (24 Mar 2023 UAPA
+      membership ruling), NEET-UG 2024 (Vanshika Yadav v UoI, 23 Jul 2024; full reasoned judgment).
+  [ ] PM GatiShakti: fetch the PIB launch release. The script claims no outcomes. Keep it that way unless an
+      independent evaluation is found.
+  [ ] NEET-UG 2026: the details of the leak itself were not verified (ledger C90). The script only says
+      students protested a leak.
+  [ ] Pawan Khera quote: check his X post directly (sourced via IANS / Hans India, 27 Sep 2026).
+  [ ] The Hindu piece where a senior Delhi Police officer said some journalists were very close to
+      protesters (second-hand via CPJ).
+  [ ] Get a police statement on the 6 / 7 Oct detentions and confirm how many times Rahul Gandhi was detained.
+      Outlets differ ("second day" vs "third detention in two days").
+  [ ] Confirm the CPJ security figures (23,000 paramilitary, 15,000 Delhi Police, ~4 km internet cut) against
+      a government statement.
+  [ ] Run the arithmetic: 272-240=32; 7.89-7.42=0.47 crore; 7.24+0.2153-0.0366=7.42 crore;
+      15.79/19.36=81.6%; 41 = (8+4)+(11+18).
+  [ ] Re-run the news check at T-24h and again at upload: the 14 and 15 Oct Supreme Court hearings, any ECI or
+      Delhi Police statements, and new detentions. Events in the pack run only to 14 Oct 2026 12:30 BST.
+
+FAIRNESS / RIGHT OF REPLY:
+  [ ] Send dated right-of-reply requests to the ECI, Delhi Police, MHA (Amit Shah's office), ED / Finance
+      Ministry, BJP, Congress, the Tamil Nadu government, and the journalists / outlets CPJ named. Record each
+      response, or "no response by [date]".
+  [ ] Each allegation card is paired with its response card at equal size and equal duration. The script does
+      this with Split: lines (minority-voter allegation vs ECI/BJP denial; dissent report vs ECI reply;
+      journalists' accounts vs police; police figures vs protesters; supporters vs critics). Check the timing
+      in the render.
+  [ ] Government achievements (Act 3) and opposition limits (Act 11) get comparable airtime.
+  [ ] The tags are burned in. Every ALLEGED line carries a Text: label starting "ALLEGED:". OPINION lines are
+      labelled "OPINION".
+  [ ] No narration sentence asserts the intent, motive or guilt of a named person or institution. Risk list:
+      no "rigging", "vote theft" or "targeting" as fact. Rahul Gandhi's resignation demand is labelled as
+      rhetoric, not a finding.
+  [ ] Do not describe the Maktoob incident as "police helping goons". It is CPJ's attributed account only, with
+      no footage. Describe the slurs; do not reproduce them.
+  [ ] Present 13 crore only as cumulative since 2025, mostly from draft rolls, reversible via Form-6, with no
+      independent audit of who was affected. Never as "October removals" or "disenfranchised".
+  [ ] The 41 yatra seats are a tally, not a cause. The 115/121 and 193/2 figures show who was investigated
+      and that cases are pending. They are not proof of motive or innocence. All of these captions are in
+      the script. Keep them.
+  [ ] Freedom House: keep the line that Indian officials contest the methodology of such indices.
+  [ ] Describe the Cockroach Janta Party as a youth-led movement. It is not an ECI-registered party. Do not use
+      its self-reported numbers.
+  [ ] Sub judice: several Supreme Court matters are pending. Report the record only, with no prediction of
+      outcome and no comment on the merits.
+
+VIDEO, PICTURES AND RIGHTS:
+  [ ] ILLUSTRATIVE: all generic footage must carry the on-screen label ILLUSTRATIVE (the pack's "Illustrative
+      footage"). Never present a generic crowd, police or protest picture as a specific event.
+      The script puts "Text: ILLUSTRATIVE FOOTAGE" on its police-bus / barricade / deployment lines and
+      "ILLUSTRATIVE · NOT A SPECIFIC PROJECT" on the opening infrastructure line. Elsewhere it uses date cards.
+      In the storyboard review, check every picture CreatorForge picks or swaps in automatically. The README
+      says words like "police", "protest" and "vote" trigger automatic swaps. Any generic protest or police
+      image that ends up on a line without the label must get one, or be replaced with an object shot.
+  [ ] Real places use Stock: lines (Parliament House New Delhi, Supreme Court of India, Election Commission of
+      India / Nirvachan Sadan, Rashtrapati Bhavan, Jantar Mantar). Check that the footage shows the right
+      building and carries no event crowd.
+  [ ] Automatic named-subject photos (Modi, Rahul Gandhi, BJP, Congress, etc.) come from Wikimedia Commons.
+      Check licence and caption in the storyboard review.
+  [ ] Every event clip must pass protocol 09 at grade A or B, with the log saved. Fake or recycled clips
+      (NewsMeter, PIB) appear only as debunk examples.
+  [ ] No AI imagery of arrests, police force or real politicians. Leave "AI video" OFF. Turn on YouTube's
+      altered/synthetic label if any realistic AI scene is used.
+  [ ] Licences (file 06): agency clips and stills (Reuters / AP / AFP / PTI / ANI) need an editorial licence
+      that permits documentary use and monetisation. Get written permission for journalists' own footage.
+      Fair dealing (Copyright Act 1957 s.52(1)(a)(iii)) is not a safe harbour for long clips.
+  [ ] Blur the faces of non-public persons. No minors.
+  [ ] Platform policy: avoid graphic injury imagery. Keep sources visible. Prepare an appeal pack for
+      YouTube / Meta election-integrity policies and IT Act s.69A takedown exposure.
+  [ ] Pinned comment / description: source list (the Source: line) plus a corrections policy.
+  [ ] Captions: check that the numbers match the graphics. Do a frame-by-frame check of the final export for
+      stale dates.
+  [ ] Legal review by an Indian media lawyer. Upload only after every box above is ticked.
