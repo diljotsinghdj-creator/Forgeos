@@ -287,6 +287,7 @@ class Pipeline:
         """Fast cuts: one extra picture per beat after the first (beat 1 uses the scene image). A beat image that
         fails is skipped - the scene simply holds its previous picture longer."""
         jdir = self.store.dir(job["id"])
+        self._asset_clips(job, jdir)
         stock = providers.stock_sources(job["id"], self.cfg)
         photos = providers.photo_sources(job["id"], self.cfg)
         portrait = self._spec(job).aspect == "9:16"
@@ -564,6 +565,44 @@ class Pipeline:
                 credits.append(found["credit"])
             return dst.name
         return None
+
+    def _asset_clips(self, job: dict, jdir: Path) -> None:
+        """The writer's "Clip:" lines: their own Asset Library clips, each played on its line (sound removed).
+        "Clip: delhi march" finds the video asset by name; "Clip: delhi march @ 0:12" starts 12 s in. A name that
+        isn't in the library is reported and the line keeps its normal picture."""
+        missing = []
+        for sc, shot in zip(job["scenes"], job["plan"]["scenes"]):
+            beats = shot.get("beats") or []
+            want = [str((b.get("extra") or {}).get("clip") or "").strip() for b in beats]
+            if not any(want):
+                continue
+            clips = (list(sc.get("beat_clips") or []) + [None] * len(beats))[: len(beats)]
+            for k, ref in enumerate(want):
+                if not ref or (clips[k] and (jdir / clips[k]).is_file()):
+                    continue
+                name, start = clip_ref(ref)
+                asset = find_asset(self.library.assets.list("video"), name)
+                if asset is None:
+                    missing.append(name)
+                    continue
+                src = self.library.assets.path(asset)
+                dst = jdir / f"scene_{sc['index'] + 1:02d}_clip{k + 1}_{asset['id']}_{int(start)}.mp4"
+                if not dst.is_file():
+                    try:
+                        ff.run(["-ss", f"{start:.2f}", "-i", str(src), "-t", "30", "-an", "-c:v", "libx264",
+                                "-preset", "veryfast", "-pix_fmt", "yuv420p", str(dst)])
+                    except (MediaError, OSError) as e:
+                        missing.append(f"{name} ({e})")
+                        continue
+                clips[k] = dst.name
+            sc["beat_clips"] = clips
+        if missing:
+            job.setdefault("warnings", []).append(
+                "Clip not found in your Asset Library (line keeps its picture): " + ", ".join(dict.fromkeys(missing)))
+        used = sum(1 for sc in job["scenes"] for n in (sc.get("beat_clips") or []) if n and "_clip" in n)
+        if used:
+            job["providers"]["clips_own"] = f"{used} of your own clip{'s' if used != 1 else ''}"
+        self.store.save(job)
 
     def _stock_clips(self, job: dict, sc: dict, beats: list, stock: list[tuple[str, str]], jdir: Path) -> None:
         """Real footage for beats the planner marked with a stock search (best effort, cached)."""
@@ -1275,3 +1314,29 @@ class Pipeline:
             job["result"]["quality"] = quality.check(final, r["expected_s"], matches, render.TARGET_LUFS)
         except Exception as e:  # noqa: BLE001
             job["result"]["quality"] = {"passed": None, "checks": [], "warnings": [f"quality check skipped: {e}"]}
+
+
+def clip_ref(ref: str) -> tuple[str, float]:
+    """"delhi march @ 1:05" -> ("delhi march", 65.0). No time -> start at 0."""
+    name, _, at = ref.partition("@")
+    start = 0.0
+    m = re.fullmatch(r"\s*(?:(\d+):)?(\d+(?:\.\d+)?)\s*s?\s*", at) if at else None
+    if m:
+        start = int(m.group(1) or 0) * 60 + float(m.group(2))
+    return name.strip(), start
+
+
+def find_asset(assets: list[dict], name: str) -> dict | None:
+    """The video asset the writer named: exact name first (with or without its extension, any case), then one whose
+    name contains every word they wrote."""
+    def norm(t: str) -> str:
+        return re.sub(r"[^a-z0-9]+", " ", re.sub(r"\.(mp4|mov|webm|mkv|m4v|avi)$", "", t.strip().lower())).strip()
+    want = norm(name)
+    if not want:
+        return None
+    for a in assets:
+        if norm(a.get("name", "")) == want:
+            return a
+    words = want.split()
+    hits = [a for a in assets if all(w in norm(a.get("name", "")).split() for w in words)]
+    return hits[0] if len(hits) == 1 else None

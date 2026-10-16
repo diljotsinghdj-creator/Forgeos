@@ -298,7 +298,7 @@ def _clean(name: str) -> str:
 
 def _protected(b: dict) -> bool:
     extra = b.get("extra") or {}
-    return bool(b.get("chart") or b.get("stock") or extra.get("split") or extra.get("archive")
+    return bool(b.get("chart") or b.get("stock") or extra.get("split") or extra.get("archive") or extra.get("clip")
                 or any(extra.get(k) for k in ("map", "globe", "steps", "timeline", "icons", "chapter", "quote", "screen",
                                                "document", "statement", "object", "article", "chat", "search", "pie",
                                                "squares", "shade", "timer", "receipt")))

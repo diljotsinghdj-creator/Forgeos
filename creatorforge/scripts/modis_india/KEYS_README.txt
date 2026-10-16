@@ -9,6 +9,10 @@ CreatorForge -> Generate -> Script. CreatorForge reads it like this:
   Visual: ........... the picture for THAT line; it appears exactly when the line starts
   Text: ............. exact words/numbers shown on screen while that line is spoken
   Stock: ............ asks Pixabay/NASA/Wikimedia/Internet Archive/Unsplash for real footage for that line
+  Clip: ............. one of YOUR clips plays on that line: upload it first (Library -> ASSET LIBRARY ->
+                      + VIDEO), then write its name, e.g. "Clip: delhi march". Add a start time to skip
+                      ahead: "Clip: delhi march @ 0:12". Its own sound is removed; only the part that fits
+                      the line plays. A name not in your library is reported and the line keeps its picture.
   Draw: ............. a red pen mark that draws itself on over the line's last picture: circle, box, underline
                       (under the Text: callout), arrow, cross or tick - e.g. "Draw: circle" or "Draw: circle, arrow"
   Bubble: / Thought:  a speech bubble / thought cloud that pops in and types its words (keep under ~45 characters)
