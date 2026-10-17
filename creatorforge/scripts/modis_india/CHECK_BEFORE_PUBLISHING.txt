@@ -1,0 +1,131 @@
+CHECK BEFORE PUBLISHING - 130 Million Names Deleted
+
+This is a political story about events that are still moving (October 2026). Re-check these the day you
+publish. If a number has changed, change the script line, its Text:/Chart: line and its Cite: line together.
+
+FACTS VERIFIED (11-12 Oct 2026) AND WHERE THEY COME FROM
+[ ] ~130 million (13.3 crore) names cut from DRAFT rolls in the Special Intensive Revision
+    - Election Commission data reported by Deccan Herald, Oct 2026. No official EC press release was found.
+      Check that the figure hasn't been revised.
+[ ] Breakdown: ~95 million absent/shifted/"other" (71.5%), ~27 million deaths, ~10 million duplicates
+    - Deccan Herald / Organiser, Oct 2026. Sources split the categories slightly differently; the totals match.
+[ ] EC: denies favouring any party; says wrongly deleted voters can re-enrol; ordered a special enrolment
+    drive - Al Jazeera / Reuters, Oct 2026.
+[ ] The Supreme Court case (ADR v Election Commission) is still pending. If it has been decided, update
+    the line "And the case is still before the Supreme Court."
+[ ] 6 Oct 2026: opposition leaders marched from Parliament to the Election Commission demanding Chief
+    Election Commissioner Gyanesh Kumar resign; some protesters detained, some leaders briefly arrested
+    - Al Jazeera, ABC News (AP), 6 Oct 2026.
+[ ] 12 Oct 2026: Delhi shut six metro stations and restricted traffic, citing security - Reuters
+    (via Geo News / Aaj), Al Jazeera, 12 Oct 2026.
+    NOT USED, because I couldn't confirm it: "thousands detained" (one less detailed report only).
+[ ] March 2023 Supreme Court panel: PM, Leader of Opposition, Chief Justice (Anoop Baranwal judgment).
+[ ] 2023 Act: PM, Leader of Opposition, a Union Cabinet Minister nominated by the PM.
+[ ] Reuters, March 2024: nearly 150 opposition politicians summoned, questioned or raided by the ED since
+    2014; four from the BJP; at least a dozen later switched to the BJP or its allies.
+    Open the original Reuters article if you can: the "four" figure was confirmed in a reprint.
+[ ] Modi has said the ED works without government interference (Scroll, 2024).
+[ ] RSF 2026: India 157th of 180 (151st in 2025), "very serious"; Pakistan 153rd.
+[ ] Freedom House 2026: 62/100, Partly Free.
+[ ] V-Dem 2026: India classed as an electoral autocracy, a label it has held since 2017.
+[ ] CAA Rules notified March 2024: Hindus, Sikhs, Buddhists, Jains, Parsis, Christians from Pakistan,
+    Bangladesh and Afghanistan who entered on or before 31 Dec 2014. Muslims are not included.
+[ ] 2024 election: BJP 240 seats; 272 needed for a majority.
+[ ] 15 Feb 2024: Supreme Court struck down electoral bonds as unconstitutional.
+[ ] BJP received about half of electoral-bond money: Rs 8,252 crore of Rs 16,492 crore (EC disclosures,
+    March 2024, as analysed by Scroll / Newslaundry).
+[ ] Japan population about 123 million (for the "more than Japan" comparison).
+
+WHAT I CHANGED FROM YOUR ORIGINAL PACKAGE, AND WHY
+- Rebuilt as a CreatorForge script: title hook first, a re-hook every few seconds, 9 chapter cards,
+  176 pictures (one about every 3 s), and charts, statements, scale squares, pie charts, a countdown
+  timer, timelines, a map and an on-screen Al Jazeera headline.
+- Made it harder-hitting: short punch lines ("150. Against four."), big statements on dark screens
+  ("The government now picks the referee."), and more numbers on screen.
+- KEPT the attributions and the other side's response on every claim. They protect the channel: YouTube's
+  election-misinformation rules and advertisers treat "rigged" claims stated as fact very differently from
+  claims attributed to opposition parties and answered by the government.
+- "Opposition parties allege Muslims and other vulnerable groups were affected" is now "Muslims and poor
+  migrants", which is how the opposition's allegation was reported. It stays labelled ALLEGATION.
+- Added the Oct 6 march and the Oct 12 metro closures, both confirmed by Al Jazeera and Reuters.
+- Added the breakdown of the 130 million (deaths, duplicates, absent/shifted/other). It's the strongest
+  evidence in the story, and it's the Commission's own data.
+- Added that Reuters found at least a dozen opposition figures later switched to the BJP or its allies.
+- Added the BJP's roughly half share of electoral-bond money (EC disclosures).
+- Dropped "thousands detained" (couldn't confirm it) and any protest-movement names.
+
+PICTURES - IMPORTANT
+- The AI pictures in this script are symbolic (registers, barricades, empty chairs, whistles). They never
+  show a recognisable person or a specific real protest.
+- Stock: lines (Parliament, Supreme Court, Modi) fetch real archive photos. Check each one in the
+  storyboard review: it must be the right building or person, and a photo you're allowed to use.
+- Do not add AI-generated images of Modi, Gyanesh Kumar or any real person.
+- If you add real protest footage, license it and label it with its date and source.
+
+BEFORE YOU UPLOAD
+[ ] Watch it once on mute: does any picture imply something the narration doesn't say?
+[ ] Watch it once with sound: is every number attributed?
+[ ] Check the chapter times in UPLOAD_COPY.txt against the finished video.
+[ ] Expect YouTube to show an information panel on election content, and some advertisers to skip it.
+    That's normal for political news; the attributions keep it eligible for monetisation.
+
+
+==========================================================================================
+VERSION 2 - THE PLAYBOOK: FACTS AND SOURCES (checked 12 Oct 2026)
+==========================================================================================
+[ ] No solo press conference in India since 2014 (Free Press Journal, June 2026; BJP MP Tejasvi Surya
+    called press conferences "redundant").
+[ ] Modi's photo on Covid vaccine certificates; Kerala man who asked to remove it was fined Rs 1 lakh by
+    the Kerala High Court (Al Jazeera, Dec 2021).
+[ ] Ration bags with Modi's photo: Rs 13.29 crore in Rajasthan alone (RTI, The News Minute, 2024).
+[ ] Motera stadium renamed Narendra Modi Stadium in Feb 2021 (widely reported).
+[ ] Central government adverts Rs 5,245.73 crore, 2014-15 to 7 Dec 2018 (Lok Sabha reply, Dec 2018).
+[ ] BJP spent ~Rs 1,494 crore in 2024, 44.56% of all parties' spending (ADR, June 2025).
+[ ] BJP received Rs 8,252 crore of Rs 16,492 crore in electoral bonds (EC disclosures, March 2024).
+[ ] BBC documentary "India: The Modi Question" blocked under emergency IT powers; tax "survey" of BBC
+    offices Feb 2023; Amnesty: "an affront to free speech".
+[ ] NewsClick founder arrested under UAPA Oct 2023; Supreme Court ruled the arrest invalid May 2024 after
+    225 days (The Tribune).
+[ ] John Oliver's 2024 India episode not available on JioCinema/YouTube in India (Yahoo News, 2024).
+[ ] Chandigarh mayor election, Jan 2024: returning officer Anil Masih (BJP) defaced 8 ballots; CJI said the
+    court won't allow democracy to be "murdered"; result overturned 20 Feb 2024; prosecution ordered.
+    The spoken line paraphrases the CJI ("we won't let democracy be murdered like this"), which is the
+    wording reported. Keep it as a paraphrase, not a verbatim quote.
+[ ] Surat, April 2024: Congress nominations rejected (proposers' signatures), all 8 others withdrew, BJP's
+    Mukesh Dalal elected unopposed (The Wire).
+[ ] Congress accounts frozen Feb 2024 over a Rs 210 crore Income Tax demand for 2018-19 (late return);
+    treasurer said it couldn't pay electricity bills or salaries (The Week).
+[ ] Hemant Soren resigned and was arrested 31 Jan 2024; Arvind Kejriwal arrested 21 Mar 2024 (ED).
+[ ] Reuters, March 2024: ~150 opposition politicians vs 4 BJP targeted by the ED; at least a dozen switched.
+    "Washing machine" is an opposition term. It's presented as "critics call it".
+[ ] Supreme Court called the CBI a "caged parrot" in May 2013 (Coalgate, under the previous government);
+    Justice Ujjal Bhuyan told the CBI to dispel the "caged parrot" notion, Sept 2024.
+[ ] Justice S. Muralidhar: criticised Delhi Police over hate-speech FIRs on 26 Feb 2020; transfer notified
+    that night. The government says the collegium recommended it on 12 Feb (routine). Both are in the video.
+[ ] Ranjan Gogoi retired 17 Nov 2019; nominated to Rajya Sabha 16 Mar 2020.
+[ ] Rahul Gandhi: maximum 2-year sentence, disqualified 24 Mar 2023; SC stayed it 4 Aug 2023, noting no
+    reason was given for the maximum.
+[ ] Umar Khalid: jailed since Sept 2020, no trial, SC denied bail Jan 2026 ("~6 years" is right as of Oct 2026).
+[ ] JNU, 5 Jan 2020: masked mob; Home Ministry told Parliament no arrests (The Wire). Check whether anyone
+    has been arrested since. If so, change "ZERO ARRESTS".
+[ ] Jamia, 15 Dec 2019: CCTV "appears to show" police beating students in the library (Scroll could not
+    independently verify it, so the script says "appears to show"); police said rioters were among students.
+[ ] Delhi riots Feb 2020: at least 53 killed; Amnesty (Aug 2020): police "complicit".
+[ ] Anurag Thakur "goli maaro" chant, Jan 2020; Election Commission banned him from campaigning for 72 hours.
+    He is not named in the narration.
+[ ] HRW, Feb 2019: at least 44 killed by cow vigilantes May 2015-Dec 2018, 36 of them Muslims.
+[ ] Supreme Court, 13 Nov 2024: "bulldozer justice" ruling, the executive cannot act as judge.
+[ ] Pegasus: SC panel found malware on 5 of 29 phones, couldn't link it to Pegasus, said the government
+    didn't cooperate (Aug 2022).
+[ ] Access Now: 920 of 2,102 shutdowns worldwide since 2016 were in India; 65 in 2025 (2nd after Myanmar).
+    The script says "more than anywhere" about the total since 2016, which is correct.
+[ ] Freedom House 62/100; V-Dem electoral autocracy since 2017; RSF 157/180; BJP 240 seats in 2024.
+
+WHAT I DID NOT SAY AS FACT, AND WHY
+- "BJP goons": the script uses what's documented instead (the masked JNU mob, which students blamed on
+  the BJP's student wing and which denied it; the minister's chant; HRW's vigilante findings).
+- "Controlling the judiciary" / "hijacking elections": the script shows the evidence (the Muralidhar timing,
+  Gogoi's seat, the Rahul sentence, the referee law, Chandigarh, Surat) and lets it land. A claim stated as
+  proven, with no source behind it, is what gets a video removed or sued. Evidence in a row does not.
+- Tone: inspired by John Oliver's style (sarcasm, "totally normal timing, right?", "the parrot is still
+  talking"), but none of his jokes or wording are copied.

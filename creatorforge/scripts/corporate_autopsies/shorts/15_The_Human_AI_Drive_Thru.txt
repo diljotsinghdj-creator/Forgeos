@@ -1,0 +1,85 @@
+The Human AI Drive-Thru
+On-screen hook: AI ORDER? HUMAN HELP.
+Title: The "AI" Drive-Thru That Needed Humans: The SEC's Presto Case
+Tags: #CorporateAutopsies #AI #aiwashing #SEC #drivethru
+Source: SEC, Presto Automation Inc. administrative proceeding, Release No. 33-11352 (Jan 14, 2025), https://www.sec.gov/enforcement-litigation/administrative-proceedings/33-11352-s; SEC order (PDF), https://www.sec.gov/files/litigation/admin/2025/33-11352.pdf; Cooley PubCo, SEC charges AI washing (Jan 2025), https://cooleypubco.com/2025/01/30/sec-charges-ai-washing/; Gizmodo, citing Bloomberg and Presto's SEC filings (Dec 2023), https://gizmodo.com/secret-behind-ai-drive-thrus-fast-food-humans--1851085269; Presto Automation Form 424B3 (Oct 2023), https://www.sec.gov/Archives/edgar/data/1822145/000155837023016363/tmb-20231011x424b3.htm
+
+AI drive-thru? Humans helped in over seventy percent.
+Visual: A drive-thru speaker post beside an empty lane at dusk
+Visual: A headset resting on a desk in a dim office
+Text: AI DRIVE-THRU? HUMANS: 70%+
+
+Of customer interactions, its own filings said.
+Visual: A row of empty headset stations in an office at night
+Visual: A car idling at a drive-thru speaker post at night
+Pie: 70% | of interactions had human help
+Cite: Presto SEC filings, 2023
+
+So who was really taking your order?
+Visual: A paper order slip on a fast-food counter, text unreadable
+Visual: A worker seen from behind wearing a headset at a night desk
+Text: WHO TOOK YOUR ORDER?
+Transition: whip
+
+Presto Automation sold voice ordering for fast-food drive-thrus.
+Visual: A car window rolled down beside a drive-thru menu board, text unreadable
+Visual: A hand holding a paper bag out of a drive-thru window
+Text: PRESTO VOICE
+
+It once claimed ninety-five percent of orders needed no human, Bloomberg reported.
+Visual: A slide deck printout on a table with a big number circled, text unreadable
+Visual: A microphone grille on a drive-thru speaker, close up
+Chart: 95% | orders claimed with no human help
+Cite: Bloomberg via Gizmodo, Dec 2023
+
+Its filings said off-site agents, some in the Philippines, helped.
+Visual: A call-centre desk with headsets and monitors, people seen from behind
+Visual: A city skyline at night seen across a harbour
+Text: OFF-SITE AGENTS
+Treat: halftone
+
+Did regulators notice?
+Visual: A government office building with flags outside, seen across a street
+Text: DID REGULATORS NOTICE?
+Big: SEC
+
+In January twenty twenty-five, the SEC settled charges over its AI claims.
+Visual: A stack of legal papers held by a binder clip, text unreadable
+Visual: A hand stamping a document on a wooden desk, ink unreadable
+Text: SEC SETTLED CHARGES · JAN 2025
+Cite: SEC, January 2025
+
+The problem? Its investor pitch touted automated order completion, the SEC said.
+Visual: An investor presentation projected in a dark room, text unreadable
+Visual: A laser pointer dot on a projected slide, text unreadable
+Document: automated order completion | Presto investor materials, per SEC order
+Cite: SEC order, 2025
+
+But the SEC found humans in the Philippines and India processed orders.
+Visual: Hands on a keyboard beside a headset at a night-shift desk
+Visual: A wall clock above rows of office desks at night
+Text: HUMANS PROCESSED ORDERS
+Cite: SEC order, 2025
+Draw: underline
+
+It also found Presto didn't disclose relying on another company's speech technology.
+Visual: A server rack with blinking lights in a dim room
+Visual: A sealed contract envelope on a desk, text unreadable
+Text: THIRD-PARTY TECH NOT DISCLOSED
+Cite: SEC order, 2025
+
+The outcome? No fine, and no admission or denial.
+Visual: A pen resting on a signed settlement page, text unreadable
+Visual: An empty courtroom bench under soft light
+Text: NO ADMISSION · NO FINE
+Treat: duotone
+
+Who takes your order? Humans often helped, its filings said.
+Visual: A drive-thru speaker post glowing at night
+Visual: A headset hanging on a hook beside a monitor
+Text: AI ORDER? HUMAN HELP.
+
+AI labels can hide humans. Would you ask?
+Visual: A headset resting on a desk in a dim call centre, screens unreadable
+Visual: A drive-thru menu board glowing at night, text unreadable
+Text: AI LABEL · HUMAN HANDS?

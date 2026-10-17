@@ -1,6 +1,9 @@
 name: Build ForgeOS APK
 on:
   push:
+    branches: [ "**" ]
+    paths-ignore: [ "build-requests/**", "repair-sources/**", "creatorforge/**" ]
+  pull_request:
     branches: [ "main" ]
   workflow_dispatch:
 permissions:
@@ -10,6 +13,8 @@ concurrency:
   cancel-in-progress: true
 jobs:
   build:
+    # build-requests only holds uploaded project ZIPs; remote-project-build.yml builds those.
+    if: github.ref != 'refs/heads/build-requests'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -24,12 +29,40 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: "8.10.2"
-      - name: Build debug APK
-        run: gradle --no-daemon --stacktrace assembleDebug
+      - name: Secret guard
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -RInE --exclude-dir=build --exclude-dir=.git '(ghp_|github_pat_)[A-Za-z0-9_]{20,}' .
+      - name: Lint, test and build debug APKs
+        run: gradle --no-daemon --stacktrace lintDebug testDebugUnitTest assembleDebug
+      - name: Verify APKs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p apk-output
+          for m in app apex; do
+            mapfile -t APKS < <(find "$m/build/outputs/apk/debug" -type f -name '*.apk')
+            test "${#APKS[@]}" -eq 1
+            test -s "${APKS[0]}"
+            cp "${APKS[0]}" "apk-output/$m-debug.apk"
+          done
+          (cd apk-output && sha256sum *.apk | tee SHA256SUMS.txt)
       - name: Upload ForgeOS APK
         uses: actions/upload-artifact@v4
         with:
           name: ForgeOS-debug-apk
-          path: app/build/outputs/apk/debug/*.apk
+          path: |
+            apk-output/app-debug.apk
+            apk-output/SHA256SUMS.txt
+          if-no-files-found: error
+          retention-days: 14
+      - name: Upload APEX APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: APEX-debug-apk
+          path: |
+            apk-output/apex-debug.apk
+            apk-output/SHA256SUMS.txt
           if-no-files-found: error
           retention-days: 14

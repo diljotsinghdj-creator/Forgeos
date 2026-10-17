@@ -1,0 +1,67 @@
+The Free Trial That Is Not Really Free
+On-screen hook: FREE → £10?
+Title: Free for 7 Days, £10 on Day 8: The Trial That Isn't Free
+Tags: #HiddenEconomics #freetrial #subscriptions #personalfinance #moneypsychology
+
+It said free. Day eight: ten pounds gone.
+Visual: A smartphone showing a free trial sign-up page, text unreadable
+Visual: A paper wall calendar with the eighth day circled in red pen
+Text: FREE… THEN −£10 ON DAY 8 · ILLUSTRATION
+Draw: circle
+
+Why did a free trial need your card?
+Visual: A bank card held between two fingers above a desk
+Visual: A leather wallet lying open on a desk with one card slot empty
+Text: WHY YOUR CARD?
+Stock: typing card details phone
+Big: YOUR CARD?
+
+Because the trial is not the product. The renewal is.
+Visual: A paper contract on a desk with its top half covered, text unreadable
+Visual: A magnifying glass over tiny small print at the bottom of a page, text unreadable
+Text: THE PRODUCT = THE RENEWAL
+Draw: underline
+Steps: Free trial → Card saved → Auto-renewal → Forgotten | How the trap works
+Treat: halftone
+
+So when did you actually buy it?
+Visual: A shop till receipt curling out of a card machine, text unreadable
+Visual: A smartphone on a desk showing a payment confirmation screen, text unreadable
+Text: WHEN DID YOU BUY IT?
+Big: WHEN?
+Transition: whip
+
+Day one. Agreeing to the renewal was the purchase.
+Visual: A signed sign-up form with a pen resting on it, text unreadable
+Visual: A thumb pressing a large button on a sign-up screen, text unreadable
+Text: DAY 1 IS THE PURCHASE
+Screen: Start your free trial | 7 days free · Card details saved · *small:Then £10 a month, renews automatically
+
+Day seven passes quietly, because nothing asks you to decide.
+Visual: Seven unopened letters piled on a hallway doormat
+Visual: A person seen from behind dozing on a sofa in the evening
+Thought: It's free. I'll cancel in time.
+
+Forget it for a year, and what does free cost?
+Visual: Twelve coins laid in a long row across a wooden desk
+Text: ILLUSTRATION
+Receipt: Illustration | 7-day trial £0.00 · 12 × £10.00 renewals · *Total £120.00
+
+Before tapping start, read the renewal price. Set a day-six reminder.
+Visual: A printed price list with the renewal price underlined in red, text unreadable
+Visual: Hands setting an old brass alarm clock on a kitchen table
+Text: CHECK THE PRICE · REMIND: DAY 6
+Stock: setting phone reminder
+Split: Read the price | Set a reminder
+
+Then day eight costs only what you chose.
+Visual: A paper wall calendar with the eighth day circled in green pen
+Text: DAY 8: YOUR CHOICE
+Draw: tick
+Transition: match
+Treat: duotone
+
+Which free trial is quietly counting down on your card right now?
+Visual: A bank card lying beside a smartphone on a kitchen table at night, text unreadable
+Visual: A paper wall calendar with one day circled in red pen
+Text: WHICH TRIAL IS COUNTING DOWN?
