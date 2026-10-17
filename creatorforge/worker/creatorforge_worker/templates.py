@@ -54,6 +54,8 @@ WORDS_PER_SECOND = 2.5
 
 # Director Mode looks. Applied to every scene image and carried into the animation prompt.
 STYLE_PRESETS: dict[str, tuple[str, str]] = {
+    "studio_mix": ("Studio mix (all six)", "documentary photography mixed with cinematic film stills, hyper-realistic "
+                   "detail, cut-out archival photographs on paper and an investigative desk, film grain"),
     "hyperreal": ("Hyper-realistic", "hyper-realistic photograph, 8k detail, natural skin texture, real-world lighting, "
                   "shot on a full-frame camera, 50mm lens, true-to-life colors"),
     "cinematic": ("Cinematic film", "cinematic film still, anamorphic lens, dramatic volumetric lighting, film grain, "
@@ -96,7 +98,15 @@ STYLE_PRESETS: dict[str, tuple[str, str]] = {
 }
 # Editorial explainer looks, built like a video essay: every picture is one clear subject that the worker cuts out
 # and lays on paper (or a desk) itself, with highlighter callouts, animated charts and sliding cuts.
-EDITORIAL_STYLES = {"editorial", "investigative", "collage"}
+EDITORIAL_STYLES = {"editorial", "investigative", "collage", "studio_mix"}
+# "Studio mix" combines six looks in one video: each line gets the look that suits what it shows (see
+# director.mix_look). Cut-out looks are laid on paper or a desk; the photo looks fill the frame.
+MIX_STYLE = "studio_mix"
+CUTOUT_LOOKS = ("editorial", "investigative", "collage")
+PHOTO_LOOKS = ("cinematic", "hyperreal", "documentary")
+# Looks whose graphics, split screens and end cards use the desk theme (graph paper, red pen).
+DESK_STYLES = {"investigative", "studio_mix"}
+CALLOUT_LOOKS = {"editorial": "highlighter", "collage": "highlighter", "investigative": "redpen", "studio_mix": "redpen"}
 # What each explainer look asks the image model for. It leads the prompt (SDXL only reads ~77 tokens, so a look
 # placed after a long description is cut off): one subject on a plain background, so it cuts out cleanly.
 EDITORIAL_LEADS = {

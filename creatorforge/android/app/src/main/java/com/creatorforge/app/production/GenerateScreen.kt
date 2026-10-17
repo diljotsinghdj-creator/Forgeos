@@ -32,7 +32,7 @@ private val FALLBACK_TEMPLATES = listOf(
     Choice("youtube_longform", "YouTube Documentary")
 )
 private val FALLBACK_STYLES = listOf(
-    Choice("editorial", "Editorial collage"), Choice("investigative", "Investigative desk"), Choice("hyperreal", "Hyper-realistic"), Choice("cinematic", "Cinematic film"), Choice("documentary", "Documentary"),
+    Choice("studio_mix", "Studio mix (all six)"), Choice("editorial", "Editorial collage"), Choice("investigative", "Investigative desk"), Choice("hyperreal", "Hyper-realistic"), Choice("cinematic", "Cinematic film"), Choice("documentary", "Documentary"),
     Choice("animated_3d", "3D animated"), Choice("anime", "Anime"), Choice("claymation", "Claymation"),
     Choice("watercolor", "Watercolor"), Choice("comic", "Comic book"), Choice("explainer_2d", "2D explainer"),
     Choice("doodle", "Doodle / whiteboard"), Choice("painterly", "Hand-painted animation"), Choice("noir_graphic", "Noir graphic novel"),
@@ -41,7 +41,7 @@ private val FALLBACK_STYLES = listOf(
     Choice("collage", "Mixed-media collage")
 )
 private val ANIMATED_LOOKS = setOf("animated_3d", "anime", "claymation", "watercolor", "comic", "explainer_2d", "doodle",
-    "painterly", "noir_graphic", "paper_cutout", "isometric", "low_poly", "retro_cartoon", "pixel_art", "neon", "collage")
+    "painterly", "noir_graphic", "paper_cutout", "isometric", "low_poly", "retro_cartoon", "pixel_art", "neon")
 private val STAGE_LABELS = mapOf(
     "director" to "AI Director • script & shots", "prompts" to "PromptForge", "images" to "Scene visuals",
     "review" to "Storyboard review", "narration" to "Narration", "clips" to "AI video clips", "captions" to "Captions", "music" to "Music", "assembly" to "Edit & render",
@@ -389,6 +389,11 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                     style = if (customLook) "" else choice
                 }
                 if (customLook) OutlinedTextField(style, { style = it }, Modifier.fillMaxWidth(), label = { Text("Describe the look") })
+                if (style == "studio_mix") Text("Studio mix: six looks in one video, chosen line by line - cinematic film for " +
+                    "the opening and big moments, hyper-realistic for buildings and places, documentary for everyday life, " +
+                    "editorial collage for named people and real photos, investigative desk for files, papers and maps, " +
+                    "mixed-media collage for history (Archive:) lines. Red-pen text boxes and desk charts throughout.",
+                    color = Color.Gray, fontSize = 12.sp)
                 if (style == "investigative") Text("Investigative desk look: photos and documents taped to a desk and map, " +
                     "red string and circles, red-pen text boxes, graph-paper charts for numbers. Add Stock: lines for real footage.",
                     color = Color.Gray, fontSize = 12.sp)

@@ -23,7 +23,8 @@ from .media import ff
 from .media.ff import Cancelled, MediaError
 from .providers.base import NotConfigured, ProviderError, Word
 from .store import STAGES, JobStore
-from .templates import ASPECTS, EDITORIAL_LEADS, EDITORIAL_STYLES, TEMPLATES
+from .templates import (ASPECTS, CALLOUT_LOOKS, CUTOUT_LOOKS, DESK_STYLES, EDITORIAL_LEADS, EDITORIAL_STYLES,
+                        MIX_STYLE, TEMPLATES)
 
 SCENE_GAP_S = 0.12   # breath between scenes - longer gaps lose viewers
 MIN_SCENE_S = 1.5
@@ -976,7 +977,7 @@ class Pipeline:
                         left_l, _, right_l = str(extra_k["split"]).partition("|")
                         try:
                             still = layout.split(still, images[k + 1], (left_l, right_l),
-                                                 "desk" if spec.style == "investigative" else "paper", w, h, work / "layout")
+                                                 "desk" if spec.style in DESK_STYLES else "paper", w, h, work / "layout")
                             length += lengths[k + 1]
                             merged.add(k + 1)
                             cam = "static"
@@ -1010,7 +1011,7 @@ class Pipeline:
             line = brand_kit.get("outro_text") or "What should we explain next?"
             try:
                 card = cards.render("endscreen", f"{brand_kit.get('name', '')} | {line}",
-                                    "investigative" if spec.style == "investigative" else "editorial", w, h,
+                                    "investigative" if spec.style in DESK_STYLES else "editorial", w, h,
                                     end_s + render.TRANSITION_S, work / "endscreen.mp4", work)
                 clips.append(render.Clip(clips[-1].image, end_s, "static", "fade", card))
                 timings = list(timings)
@@ -1143,7 +1144,7 @@ class Pipeline:
             emphasis = {wd for s in shots for wd in s.get("emphasis", [])} if spec.auto_edit else set()
             cap.write_ass(ass, w, h, t.caption_scale, t.caption_position, cues, overlays, emphasis,
                           brand.get("caption_color", ""), brand.get("highlight_color", ""),
-                          {"editorial": "highlighter", "collage": "highlighter", "investigative": "redpen"}.get(spec.style, ""))
+                          CALLOUT_LOOKS.get(spec.style, ""))
 
         job["edit"] = {"auto_edit": spec.auto_edit, "transitions": [c.transition for c in heads[1:]],
                        "shots": len(clips),
@@ -1167,8 +1168,8 @@ class Pipeline:
                 job["providers"]["brand"] = f"logo {a['name']} ({logo[1]})"
         look = re.sub(r"[^a-z]", "", spec.visual_direction.lower())
         grade = ("bw" if "blackandwhite" in look or "monochrome" in look else "film") if spec.film_grade else ""
-        if spec.film_grade and spec.style in EDITORIAL_STYLES:
-            grade = "paper"
+        if spec.film_grade and spec.style in EDITORIAL_STYLES and spec.style != MIX_STYLE:
+            grade = "paper"     # Studio mix keeps the film grade: most of its pictures fill the frame
         expected = render.render_video(clips, mixed, ass, w, h, out, work, cancel, logo, grade=grade)
         job["render"] = {"file": "work/render.mp4", "expected_s": round(expected, 3), "width": w, "height": h}
 
@@ -1177,12 +1178,13 @@ class Pipeline:
         """Explainer looks: each still becomes a finished frame - its subject cut out with a white sticker edge on
         paper (or a desk), or a tilted bordered print when it is a whole scene - and footage plays framed on the
         same backdrop. Charts already are full-frame graphics."""
-        kind = "desk" if style == "investigative" else "paper"
+        kind = "desk" if style in DESK_STYLES else "paper"
+        mix = style == MIX_STYLE        # Studio mix: only the lines given a cut-out look are laid out; footage fills the frame
         lay = work / "layout"
         backdrop = layout.backdrop(kind, w, h, lay, cancel)
         model = self.cfg.data_dir / "models" / "isnet-general-use.onnx"   # downloaded in the background by setup
         for c in clips:
-            if c.video is not None and c.video not in chart_files:
+            if c.video is not None and c.video not in chart_files and not mix:
                 c.backdrop = backdrop
         # Scenes are laid out in parallel; inside a scene the stills build up like photos on a desk: each new one
         # lands left or right of the last and partly covers it (widescreen), then the pile starts again.
@@ -1198,6 +1200,13 @@ class Pipeline:
                 if c.video is not None or c.image.name.startswith("split_"):
                     under, depth = None, 0           # footage, a graphic or a split screen clears the desk
                     continue
+                c_kind = kind
+                if mix:
+                    beat_look = str((getattr(c, "beat_data", None) or {}).get("look") or "")
+                    if beat_look not in CUTOUT_LOOKS:
+                        under, depth = None, 0       # a full-frame photo look: the picture stays as it is
+                        continue
+                    c_kind = "desk" if beat_look == "investigative" else "paper"
                 if cancel.is_set():
                     raise Cancelled()
                 slot = slots[depth % 3] if (wide and depth) else ("center" if not n % 2 else ("left", "right")[n // 2 % 2])
@@ -1207,10 +1216,10 @@ class Pipeline:
                 if look:
                     # the writer's print look: duotone or halftone, applied to the cut-out (or the whole picture)
                     if cut is not None:
-                        cut = layout.treat(cut, look, kind, lay)
+                        cut = layout.treat(cut, look, c_kind, lay)
                     else:
-                        src_img = layout.treat(c.image, look, kind, lay)
-                frame = layout.compose(src_img, kind, idx, w, h, lay, cut, cancel,
+                        src_img = layout.treat(c.image, look, c_kind, lay)
+                frame = layout.compose(src_img, c_kind, idx, w, h, lay, cut, cancel,
                                        under=under if wide and depth else None, slot=slot)
                 if c.camera != "punch":
                     # the first photo of a scene slides in Johnny Harris-style; the rest land and drift
@@ -1230,7 +1239,7 @@ class Pipeline:
         """Pen marks and bubbles are drawn on the shot itself (not over the finished video), so they move with the
         picture: through a cut-out's push-in, or along with the footage's own motion. Returns the beats handled."""
         done: set = set()
-        look = {"editorial": "highlighter", "collage": "highlighter", "investigative": "redpen"}.get(spec.style, "")
+        look = CALLOUT_LOOKS.get(spec.style, "")
         for c in clips:
             b, length = getattr(c, "beat_data", None), getattr(c, "beat_len", 0.0)
             if not b or length <= 0.8 or not (b.get("draw") or b.get("bubble")) or _covered(b):
@@ -1254,7 +1263,7 @@ class Pipeline:
     def _chart_clip(self, spec, beat: dict, length: float, size: tuple[int, int], work: Path) -> Path | None:
         """An animated number graphic for a beat: the writer's Chart: line, or - in the editorial looks - a Text:
         line that compares figures ("£12 → £720", "48% vs 22%"). None when the beat has no chart."""
-        theme = "investigative" if spec.style == "investigative" else "editorial"
+        theme = "investigative" if spec.style in DESK_STYLES else "editorial"
         seconds = round(length + render.TRANSITION_S + 0.2, 2)
         extra = beat.get("extra") or {}
         if not beat.get("chart"):

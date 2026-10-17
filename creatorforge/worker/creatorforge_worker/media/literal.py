@@ -274,11 +274,22 @@ def _keep(names: list[str], words: list[str], sent: str, at: int, known: set[str
     names.append(span)
 
 
+# Everyday words that often open a sentence ("Thousands marched.", "People want answers."): never a name just because
+# the script happens not to write them in lower case somewhere else.
+_COMMON_STARTS = set("""people thousands millions hundreds billions dozens lakhs crores everyone everybody nobody someone
+somebody anyone today tonight yesterday tomorrow now then later soon once meanwhile still critics officials experts
+researchers scientists analysts voters citizens protesters students women men children kids families parents workers
+farmers police lawyers judges journalists reporters leaders ministers politicians companies businesses banks shoppers
+customers investors buyers sellers prices profits taxes nothing everything something anything most many some few
+several others both all each every neither none ordinary rich poor young old""".split())
+
+
 def mid_sentence_names(script: str) -> set[str]:
     """Real proper nouns: capitalised words that appear somewhere other than the start of a sentence, or that the
     script never writes in lower case ("Congress called it..." - there is no "congress" anywhere)."""
     lower = set(re.findall(r"\b[a-z][\w'’-]*", script))
-    found = {w for w in re.findall(r"\b[A-Z][a-z][\w'’-]+", script) if w.lower() not in lower and w not in _STOP}
+    found = {w for w in re.findall(r"\b[A-Z][a-z][\w'’-]+", script)
+             if w.lower() not in lower and w not in _STOP and w.lower() not in _COMMON_STARTS}
     for _, sent in _sentences(script):
         body = sent.strip()
         for m in re.finditer(r"(?<=[\w,;:’'\"]\s)([A-Z][\w'’.-]+)", body):

@@ -11,7 +11,7 @@ from dataclasses import asdict, dataclass, field
 
 from .providers.base import ProviderError
 from .media.render import TRANSITIONS
-from .templates import (ANIMATED_STYLES, EDITORIAL_LEADS, EDITORIAL_NEGATIVE, PACING, STYLE_PRESETS, TEMPLATES,
+from .templates import (ANIMATED_STYLES, CUTOUT_LOOKS, EDITORIAL_LEADS, MIX_STYLE, EDITORIAL_NEGATIVE, PACING, STYLE_PRESETS, TEMPLATES,
                         WORDS_PER_SECOND, Template)
 
 NEGATIVE = ("text, watermark, logo, caption, subtitles, letters, signature, blurry, low quality, "
@@ -487,11 +487,51 @@ def direct(llm, spec: ProductionSpec) -> ProductionPlan:
     return plan
 
 
+_MIX_DESK = re.compile(r"\b(documents?|files?|folders?|dossiers?|reports?|evidence|ledgers?|registers?|notebooks?|"
+                       r"letters?|orders?|contracts?|receipts?|forms?|newspapers?|clippings?|maps?|lists?|stamps?|"
+                       r"desk|papers?|cards?|records?|notes?|signatures?|photographs?)\b", re.I)
+_MIX_PLACE = re.compile(r"\b(buildings?|parliament|court(house)?|palace|skyline|city|streets?|avenues?|roads?|"
+                        r"stations?|temples?|monuments?|bridges?|rivers?|mountains?|villages?|aerial|landscapes?|domes?|"
+                        r"gates?|block|campus|airports?|ports?|factor(y|ies)|towers?|headquarters|exterior|facade)\b", re.I)
+_MIX_SHOCK = {"shock", "fear", "anger", "outrage", "tension", "suspense", "dread", "awe", "intrigue", "alarm"}
+
+
+def mix_look(b: dict, hook: bool = False, cutout: bool = True) -> str:
+    """Studio mix: the look that suits what this line shows. History -> mixed-media collage; a named person, party
+    or real place photo -> editorial collage (cut out on paper); papers, files and maps -> investigative desk; the
+    opening and the dramatic peaks -> cinematic film; buildings and places -> hyper-realistic; everyday life ->
+    documentary. `cutout=False` (a scene with no per-line beats) chooses among the full-frame photo looks only."""
+    extra = b.get("extra") or {}
+    visual = str(b.get("visual") or "")
+    emotion = str(b.get("emotion") or "").lower()
+    if cutout:
+        if extra.get("archive"):
+            return "collage"
+        if b.get("named") or b.get("stock"):
+            return "editorial"
+        if _MIX_DESK.search(visual):
+            return "investigative"
+    if hook or emotion in _MIX_SHOCK or extra.get("statement") or extra.get("big"):
+        return "cinematic"
+    if _MIX_PLACE.search(visual):
+        return "hyperreal"
+    return "documentary"
+
+
+def _look_prompt(visual: str, emotion: str, s: "ShotPlan", spec: ProductionSpec, look: str, shot_size: str = "",
+                 hook: bool = False) -> tuple[str, str]:
+    """One picture's prompt in a given look (Studio mix): cut-out looks lead with their print style, photo looks
+    end with their preset."""
+    if look in CUTOUT_LOOKS:
+        return _editorial_prompt(visual, spec, EDITORIAL_LEADS[look])
+    return _image_prompt(visual, emotion, s, spec, STYLE_PRESETS[look][1], shot_size, hook)
+
+
 def _image_prompt(visual: str, emotion: str, s: "ShotPlan", spec: ProductionSpec, style: str,
                   shot_size: str = "", hook: bool = False) -> tuple[str, str]:
     # SDXL reads only ~77 tokens: keep the subject short and put framing, emotion + quality early so they aren't cut.
     if spec.style in EDITORIAL_LEADS:
-        return _editorial_prompt(visual, spec)
+        return _editorial_prompt(visual, spec, EDITORIAL_LEADS[spec.style])
     parts = [_clip_words(visual.rstrip("."), 30 if spec.visual_direction else 40)]
     if spec.visual_direction:
         parts.append(_clip_words(spec.visual_direction.split(",")[0], 8))   # the look, e.g. "black-and-white 1950s lab footage"
@@ -524,11 +564,11 @@ def _image_prompt(visual: str, emotion: str, s: "ShotPlan", spec: ProductionSpec
     return ". ".join(parts), negative
 
 
-def _editorial_prompt(visual: str, spec: ProductionSpec) -> tuple[str, str]:
+def _editorial_prompt(visual: str, spec: ProductionSpec, lead: str) -> tuple[str, str]:
     """Explainer looks: the look first, then exactly what the line shows - one subject the worker can cut out and
     lay on paper. People appear as silhouettes or hands (archival-photo style), never as AI faces."""
     subject = _clip_words(visual.rstrip("."), 26)
-    parts = [EDITORIAL_LEADS[spec.style], subject]
+    parts = [lead, subject]
     if _has_people(visual):
         parts.append("person seen in silhouette or from behind, face not visible")
     elif re.search(r"\b(hands?|fingers?|fingertips?|thumbs?)\b", visual, re.I):
@@ -560,7 +600,12 @@ def prompt_forge(plan: ProductionPlan, spec: ProductionSpec, only: int | None = 
     for i, s in enumerate(plan.scenes):
         if only is not None and i != only:
             continue
-        s.prompt, s.negative = _image_prompt(s.visual, s.emotion, s, spec, style, hook=i == 0)
+        mix = spec.style == MIX_STYLE
+        if mix:
+            s_look = mix_look({"visual": s.visual, "emotion": s.emotion}, hook=i == 0, cutout=False)
+            s.prompt, s.negative = _look_prompt(s.visual, s.emotion, s, spec, s_look, hook=i == 0)
+        else:
+            s.prompt, s.negative = _image_prompt(s.visual, s.emotion, s, spec, style, hook=i == 0)
         if literal.setting_for(s.visual, country):
             s.prompt = f"{s.prompt}, {literal.setting_for(s.visual, country)}"
         if not spec.fast_cuts:
@@ -568,8 +613,13 @@ def prompt_forge(plan: ProductionPlan, spec: ProductionSpec, only: int | None = 
         for k, b in enumerate(s.beats):
             # Alternate shot sizes so consecutive beats feel like real coverage, not the same frame twice.
             size = ("close-up", "medium", "extreme close-up", "wide")[(i + k) % 4] if k else (s.shot or "medium")
-            b["prompt"], b["negative"] = _image_prompt(b["visual"], b.get("emotion") or s.emotion, s, spec, style, size,
-                                                       hook=i == 0 and k == 0)
+            if mix:
+                b["look"] = mix_look({**b, "emotion": b.get("emotion") or s.emotion}, hook=i == 0 and k == 0)
+                b["prompt"], b["negative"] = _look_prompt(b["visual"], b.get("emotion") or s.emotion, s, spec, b["look"],
+                                                          size, hook=i == 0 and k == 0)
+            else:
+                b["prompt"], b["negative"] = _image_prompt(b["visual"], b.get("emotion") or s.emotion, s, spec, style,
+                                                           size, hook=i == 0 and k == 0)
             if literal.setting_for(b["visual"], country):
                 b["prompt"] = f"{b['prompt']}, {literal.setting_for(b['visual'], country)}"
                 b["country"] = country           # real-photo searches look in the same country
@@ -581,7 +631,7 @@ def prompt_forge(plan: ProductionPlan, spec: ProductionSpec, only: int | None = 
             # Per-line AI video: each beat's still is animated with a move that fits what the line shows.
             b["video_prompt"] = (f"Subtle natural movement: {b['visual'].rstrip('.')}. Camera: "
                                  f"{('slow push in', 'slow dolly sideways', 'slow pull back', 'gentle orbit')[(i + k) % 4]}. "
-                                 f"{style}. {vstyle}")
+                                 f"{STYLE_PRESETS[b['look']][1] if mix else style}. {vstyle}")
         if s.beats:
             s.prompt, s.negative = s.beats[0]["prompt"], s.beats[0]["negative"]
         # The animation prompt leads with motion: image-to-video models already see the still.

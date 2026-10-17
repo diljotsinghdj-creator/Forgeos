@@ -51,6 +51,7 @@ object Regions {
 /** Director Mode looks, identical to the worker's, so prompts made on the phone match what the studio renders. */
 object Styles {
     val presets: List<Triple<String, String, String>> = listOf(
+        Triple("studio_mix", "Studio mix (all six)", "documentary photography mixed with cinematic film stills, hyper-realistic detail, cut-out archival photographs on paper and an investigative desk, film grain"),
         Triple("cinematic", "Cinematic film", "cinematic film still, anamorphic lens, dramatic volumetric lighting, film grain, teal and orange grade, shallow depth of field"),
         Triple("hyperreal", "Hyper-realistic", "hyper-realistic photograph, 8k detail, natural skin texture, real-world lighting, shot on a full-frame camera, 50mm lens, true-to-life colors"),
         Triple("documentary", "Documentary", "documentary photography, natural available light, candid, realistic textures, handheld feel, muted natural colors"),

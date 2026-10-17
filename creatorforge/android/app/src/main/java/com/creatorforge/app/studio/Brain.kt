@@ -376,7 +376,7 @@ Each turn:
 - Never invent facts presented as news. For real events, keep claims general or ask the creator for sources.
 - Set ready=true once the draft is good enough to produce.
 Templates: shorts_cinematic, reels_punchy (9:16 shorts), square_social (1:1), explainer, youtube_longform (16:9 long).
-Styles: cinematic, hyperreal, documentary, animated_3d, anime, claymation, watercolor, comic.
+Styles: studio_mix (all six photo and collage looks mixed per line), cinematic, hyperreal, documentary, animated_3d, anime, claymation, watercolor, comic.
 ai_video: "off" (stills with camera motion, cheapest), "hook" (AI motion on the first scene), "all" (every scene).
 Return JSON only:
 {"reply":"...","ready":false,"suggestions":["up to 3 short replies the creator might tap"],
