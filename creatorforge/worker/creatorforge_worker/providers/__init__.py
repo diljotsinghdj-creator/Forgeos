@@ -156,15 +156,24 @@ def build_image(cfg: Config, style: str = ""):
     return prov
 
 
+# The plain (robotic-sounding) Kokoro narrators were retired: a video, channel or saved setting that still names one
+# gets its human-like version with the same timbre.
+RETIRED_VOICES = {"warm": "warm_human", "deep": "news_human", "onyx": "deep_doc", "fenrir": "bold_human",
+                  "puck": "host_human", "bella": "calm_human", "nicole": "soft_human", "sarah": "clear_human",
+                  "british_f": "uk_female_human", "british_isabella": "uk_elegant_human", "british_m": "storyteller_uk",
+                  "fable": "fable_human"}
+
+
 def voice_profile(cfg: Config, voice_id: str | None, extra: list[VoiceProfile] | None = None) -> VoiceProfile:
     voices = list(cfg.voices) + list(extra or [])
     if not voices:
         raise NotConfigured("No narration voice configured (set CF_PIPER_MODEL, CF_KOKORO_VOICE, CF_VOICES or add one in the app)")
     if not voice_id:
         return voices[0]
-    for v in voices:
-        if v.id == voice_id:
-            return v
+    for want in (voice_id, RETIRED_VOICES.get(voice_id, "")):
+        for v in voices:
+            if want and v.id == want:
+                return v
     raise NotConfigured(f"Unknown voice profile '{voice_id}'")
 
 

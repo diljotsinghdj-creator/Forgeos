@@ -780,6 +780,10 @@ class Pipeline:
                     problem = f"failed ({str(e)[:160]})"
             if problem:
                 fallback = profile.voice.split(":", 1)[1] if profile.voice.startswith("kokoro:") else "af_heart"
+                if fallback[:1] not in ("a", "b"):
+                    # a timbre borrowed from another language (Indian English from a Hindi voice): the standard voice
+                    # must still speak English
+                    fallback = "am_onyx" if fallback[1:2] == "m" else "af_heart"
                 voice = providers.build_voice(self.cfg, VoiceProfile(profile.id, profile.name, "kokoro", fallback, 1.0,
                                                                      fallback[0] if fallback[:1] in tuple("abefhijpz") else "a"))
                 note = f" - human-like engine {problem}; used its standard voice instead"

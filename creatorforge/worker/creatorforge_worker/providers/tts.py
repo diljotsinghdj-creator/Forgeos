@@ -63,6 +63,11 @@ class KokoroVoice:
 REF_TEXT = ("Long before the first cities rose, people gathered around fires and told stories. "
             "Some were warnings, some were dreams, and a few were simply too strange to forget. "
             "Tonight, we follow one of them, from the very beginning.")
+# A Kokoro voice reads the reference in its own language (a Hindi voice can't read the English passage): Chatterbox
+# then speaks English with that voice's timbre and accent - e.g. an Indian English narrator from a Hindi voice.
+REF_TEXTS = {"h": "बहुत समय पहले, जब पहले शहर बसे भी नहीं थे, लोग आग के पास बैठकर कहानियाँ सुनाते थे। "
+                  "कुछ कहानियाँ चेतावनी थीं, कुछ सपने, और कुछ इतनी अजीब कि कोई उन्हें भूल नहीं पाया। "
+                  "आज हम उन्हीं में से एक कहानी की शुरुआत से चलते हैं।"}
 
 
 class ChatterboxVoice:
@@ -94,7 +99,8 @@ class ChatterboxVoice:
                 if not ref.is_file():
                     ref.parent.mkdir(parents=True, exist_ok=True)
                     tmp = ref.with_suffix(".tmp.wav")
-                    KokoroVoice(vid, 0.95, vid[0] if vid[:1] in tuple("abefhijpz") else "a").synthesize(REF_TEXT, tmp)
+                    lang = vid[0] if vid[:1] in tuple("abefhijpz") else "a"
+                    KokoroVoice(vid, 0.95, lang).synthesize(REF_TEXTS.get(lang, REF_TEXT), tmp)
                     tmp.replace(ref)
             return str(ref)
         if v.startswith("asset:"):

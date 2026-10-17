@@ -157,7 +157,7 @@ fun LibraryScreen() {
         item {
             Row { Section("VOICE PROFILES"); TextButton({ voiceAdding = true }) { Text("+ ADD VOICE") } }
         }
-        if (voices.isEmpty()) item { Text("No voices yet. Add a Piper or Kokoro voice installed on your worker.", color = Color.Gray, fontSize = 12.sp) }
+        if (voices.isEmpty()) item { Text("No voices yet. Tap + ADD VOICE and pick ★ Human-like.", color = Color.Gray, fontSize = 12.sp) }
         items(voices, key = { "voice" + it.id }) { v ->
             Card(Modifier.fillMaxWidth()) {
                 Column(Modifier.padding(12.dp)) {
@@ -285,8 +285,12 @@ private fun RenameDialog(current: String, onDismiss: () -> Unit, onSave: (String
 }
 
 private val HUMAN_BASES = listOf(
-    "kokoro:am_onyx" to "Deep male", "kokoro:bm_george" to "British male", "kokoro:am_puck" to "Upbeat male",
-    "kokoro:af_heart" to "Warm female", "kokoro:af_bella" to "Calm female", "default" to "Natural", "mine" to "🎙 My recording"
+    "kokoro:am_onyx" to "Deep male", "kokoro:am_michael" to "News anchor male", "kokoro:am_fenrir" to "Bold male",
+    "kokoro:hm_omega" to "Indian English male", "kokoro:hf_alpha" to "Indian English female",
+    "kokoro:bm_george" to "British male", "kokoro:bm_fable" to "British narrator", "kokoro:am_puck" to "Upbeat male",
+    "kokoro:af_heart" to "Warm female", "kokoro:af_sarah" to "Clear female", "kokoro:af_bella" to "Calm female",
+    "kokoro:af_nicole" to "Soft female", "kokoro:bf_emma" to "British female", "kokoro:bf_isabella" to "Elegant British female",
+    "default" to "Natural", "mine" to "🎙 My recording"
 )
 private val HUMAN_STYLES = listOf("documentary" to "Documentary", "natural" to "Natural", "calm" to "Calm", "energetic" to "Energetic")
 
