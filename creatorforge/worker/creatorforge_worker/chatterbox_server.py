@@ -5,7 +5,8 @@ Runs in its own Python environment (its pinned torch/diffusers versions clash wi
 cloud/setup_gpu.sh and called by providers.tts.ChatterboxVoice over 127.0.0.1. Standard library only, apart
 from Chatterbox itself.
 
-    POST /tts  {"text", "out", "ref" (optional wav path), "exaggeration", "cfg_weight"} -> writes a WAV to "out"
+    POST /tts  {"text", "out", "ref" (optional wav path), "exaggeration", "cfg_weight", "lang"} -> writes a WAV
+               to "out". "lang" other than "en" (e.g. "hi" for Hindi) uses Chatterbox Multilingual (23 languages).
     GET  /health
 """
 from __future__ import annotations
@@ -33,6 +34,7 @@ except ImportError:
 from chatterbox.tts import ChatterboxTTS  # noqa: E402
 
 _model = None
+_mtl = None
 _lock = threading.Lock()
 _load_lock = threading.Lock()
 
@@ -45,10 +47,20 @@ def model():
     return _model
 
 
+def multilingual():
+    """Chatterbox Multilingual, loaded the first time a non-English line is asked for (Hindi, Spanish, ...)."""
+    global _mtl
+    with _load_lock:
+        if _mtl is None:
+            from chatterbox.mtl_tts import ChatterboxMultilingualTTS
+            _mtl = ChatterboxMultilingualTTS.from_pretrained(device=torch.device("cuda" if torch.cuda.is_available() else "cpu"))
+    return _mtl
+
+
 def chunks(text: str, limit: int = 280) -> list[str]:
     """Chatterbox is best on short passages: sentence groups of up to ~280 characters."""
     out, cur = [], ""
-    for s in re.split(r"(?<=[.!?…])\s+", " ".join(text.split())):
+    for s in re.split(r"(?<=[.!?…।॥])\s+", " ".join(text.split())):
         if cur and len(cur) + len(s) + 1 > limit:
             out.append(cur)
             cur = s
@@ -84,12 +96,16 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(422, {"error": "text and out are required"})
             ref = body.get("ref") or None
             ex, cw = float(body.get("exaggeration", 0.5)), float(body.get("cfg_weight", 0.5))
+            lang = str(body.get("lang") or "en").lower()
             with _lock:
-                m = model()
+                m = model() if lang == "en" else multilingual()
                 pause = np.zeros(int(m.sr * 0.08), dtype=np.float32)
                 parts = []
                 for c in chunks(text):
-                    wav = m.generate(c, audio_prompt_path=ref, exaggeration=ex, cfg_weight=cw)
+                    if lang == "en":
+                        wav = m.generate(c, audio_prompt_path=ref, exaggeration=ex, cfg_weight=cw)
+                    else:
+                        wav = m.generate(c, language_id=lang, audio_prompt_path=ref, exaggeration=ex, cfg_weight=cw)
                     parts += [wav.squeeze(0).detach().cpu().numpy().astype(np.float32), pause]
             if not parts:
                 return self._send(422, {"error": "nothing to say"})

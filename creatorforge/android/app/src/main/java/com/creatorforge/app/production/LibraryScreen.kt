@@ -256,7 +256,7 @@ fun LibraryScreen() {
                     }
                     "asset:" + client.uploadAsset("audio", "Voice sample - ${d.name}$ext") { context.contentResolver.openInputStream(uri)!! }
                 } ?: d.voice
-                client.saveVoice(v?.id, d.name, d.provider, voice, d.speed, d.style)
+                client.saveVoice(v?.id, d.name, d.provider, voice, d.speed, d.style, d.lang)
             }
         }
     }
@@ -286,7 +286,8 @@ private fun RenameDialog(current: String, onDismiss: () -> Unit, onSave: (String
 
 private val HUMAN_BASES = listOf(
     "kokoro:am_onyx" to "Deep male", "kokoro:am_michael" to "News anchor male", "kokoro:am_fenrir" to "Bold male",
-    "kokoro:hm_omega" to "Indian English male", "kokoro:hf_alpha" to "Indian English female",
+    "kokoro:hm_omega" to "Indian male", "kokoro:hf_alpha" to "Indian female", "kokoro:hm_psi" to "Indian male 2",
+    "kokoro:hf_beta" to "Indian female 2",
     "kokoro:bm_george" to "British male", "kokoro:bm_fable" to "British narrator", "kokoro:am_puck" to "Upbeat male",
     "kokoro:af_heart" to "Warm female", "kokoro:af_sarah" to "Clear female", "kokoro:af_bella" to "Calm female",
     "kokoro:af_nicole" to "Soft female", "kokoro:bf_emma" to "British female", "kokoro:bf_isabella" to "Elegant British female",
@@ -295,7 +296,8 @@ private val HUMAN_BASES = listOf(
 private val HUMAN_STYLES = listOf("documentary" to "Documentary", "natural" to "Natural", "calm" to "Calm", "energetic" to "Energetic")
 
 /** Result of the voice editor. [sample] is a recording to upload first (its asset id becomes the voice). */
-data class VoiceDraft(val name: String, val provider: String, val voice: String, val speed: Double, val style: String, val sample: android.net.Uri?)
+data class VoiceDraft(val name: String, val provider: String, val voice: String, val speed: Double, val style: String, val sample: android.net.Uri?,
+                      val lang: String = "a")
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -305,6 +307,7 @@ private fun VoiceEditor(v: LibraryVoice?, onDismiss: () -> Unit, onSave: (VoiceD
     var voice by remember(v) { mutableStateOf(v?.voice ?: "kokoro:am_onyx") }
     var speed by remember(v) { mutableFloatStateOf((v?.speed ?: 1.0).toFloat()) }
     var style by remember(v) { mutableStateOf(v?.style?.ifBlank { null } ?: "documentary") }
+    var lang by remember(v) { mutableStateOf(if (v?.lang == "hi") "hi" else "a") }
     var base by remember(v) { mutableStateOf(if (v?.voice?.startsWith("asset:") == true) "mine" else v?.voice?.takeIf { it.startsWith("kokoro:") || it == "default" } ?: "kokoro:am_onyx") }
     var sample by remember { mutableStateOf<android.net.Uri?>(null) }
     var consent by remember(v) { mutableStateOf(v?.voice?.startsWith("asset:") == true) }
@@ -328,6 +331,13 @@ private fun VoiceEditor(v: LibraryVoice?, onDismiss: () -> Unit, onSave: (VoiceD
                 }
                 if (provider == "chatterbox") {
                     Text("Natural pauses, breathing and emotion. Runs on your pod.", color = Color.LightGray, fontSize = 12.sp)
+                    Text("SPEAKS", color = Gold, fontSize = 11.sp)
+                    Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                        listOf("a" to "English", "hi" to "हिन्दी Hindi").forEach { (id, label) ->
+                            FilterChip(selected = lang == id, onClick = { lang = id }, label = { Text(label, fontSize = 12.sp) })
+                        }
+                    }
+                    if (lang == "hi") Text("Write Hindi scripts in Devanagari (हिन्दी), not Hinglish in English letters.", color = Color.LightGray, fontSize = 12.sp)
                     Text("VOICE", color = Gold, fontSize = 11.sp)
                     Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                         HUMAN_BASES.forEach { (id, label) -> FilterChip(selected = base == id, onClick = { base = id }, label = { Text(label, fontSize = 12.sp) }) }
@@ -357,7 +367,7 @@ private fun VoiceEditor(v: LibraryVoice?, onDismiss: () -> Unit, onSave: (VoiceD
             Button({
                 onSave(if (provider == "chatterbox")
                     VoiceDraft(name.trim(), provider, if (base == "mine") (v?.voice?.takeIf { sample == null && it.startsWith("asset:") } ?: "") else base,
-                        1.0, style, if (base == "mine") sample else null)
+                        1.0, style, if (base == "mine") sample else null, lang)
                 else VoiceDraft(name.trim(), provider, voice.trim(), speed.toDouble(), "", null))
             }, enabled = ready) { Text("SAVE") }
         },

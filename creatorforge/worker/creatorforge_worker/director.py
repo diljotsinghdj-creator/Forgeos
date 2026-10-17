@@ -406,7 +406,7 @@ def _phrases(text: str, limit: int = BEAT_WORDS) -> list[str]:
     out, cur = [], []
     for tok in text.split():
         cur.append(tok)
-        if len(cur) >= limit or (len(cur) >= 3 and re.search(r"[.!?,;:\u2014\u2026]$", tok)):
+        if len(cur) >= limit or (len(cur) >= 3 and re.search(r"[.!?,;:\u2014\u2026\u0964\u0965]$", tok)):
             out.append(" ".join(cur))
             cur = []
     if cur:
@@ -651,7 +651,7 @@ def split_sentences(text: str) -> list[str]:
     text = _SYMBOLS.sub(" ", text)
     out: list[str] = []
     for block in re.split(r"\n+", text):
-        pieces = re.split(r"(?<=[.!?\u2026])\s+", block.strip())
+        pieces = re.split(r"(?<=[.!?\u2026\u0964\u0965])\s+", block.strip())
         buf = ""
         for p in pieces:
             buf = f"{buf} {p}".strip() if buf else p.strip()
@@ -672,7 +672,7 @@ _DIRECTION = re.compile(r"^\s*(?:\*\*|__)?(?:visuals?|on[- ]screen(?: text)?|tex
 def _is_heading(line: str) -> bool:
     """A short line with no sentence punctuation, e.g. "Nobody Noticed (Brain Glitch)" or "# Episode 3"."""
     t = line.strip().strip("#*_ ").strip()
-    return bool(t) and len(t.split()) <= 10 and not re.search(r"[.!?…]", t)
+    return bool(t) and len(t.split()) <= 10 and not re.search(r"[.!?…।]", t)
 
 
 # ---- writer's scripts: "0:05 SETUP A student thinks...", "On-screen hook: ...", "Visuals: ...", "Post: ..." ----------

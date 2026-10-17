@@ -780,7 +780,11 @@ class Pipeline:
                     problem = f"failed ({str(e)[:160]})"
             if problem:
                 fallback = profile.voice.split(":", 1)[1] if profile.voice.startswith("kokoro:") else "af_heart"
-                if fallback[:1] not in ("a", "b"):
+                speaks = getattr(voice, "lang", "en")
+                if speaks != "en":
+                    # a Hindi (or other language) narrator: the standard voice of that language
+                    fallback = {"hi": "hm_omega" if fallback[1:2] == "m" else "hf_alpha"}.get(speaks, fallback)
+                elif fallback[:1] not in ("a", "b"):
                     # a timbre borrowed from another language (Indian English from a Hindi voice): the standard voice
                     # must still speak English
                     fallback = "am_onyx" if fallback[1:2] == "m" else "af_heart"

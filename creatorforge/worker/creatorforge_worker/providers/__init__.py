@@ -197,7 +197,7 @@ def build_voice(cfg: Config, profile: VoiceProfile):
     if profile.provider == "kokoro":
         return KokoroVoice(profile.voice, profile.speed, profile.lang)
     if profile.provider == "chatterbox":
-        return ChatterboxVoice(profile.voice, profile.style or "natural", cfg.data_dir, cfg.chatterbox_url)
+        return ChatterboxVoice(profile.voice, profile.style or "natural", cfg.data_dir, cfg.chatterbox_url, profile.lang)
     raise NotConfigured(f"Unknown voice provider '{profile.provider}'")
 
 

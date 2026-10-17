@@ -370,7 +370,7 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
     @app.get("/v1/library/voices", dependencies=[Depends(auth)])
     def list_voices() -> list[dict]:
         builtin = [{"id": v.id, "name": v.name, "provider": v.provider, "voice": v.voice, "speed": v.speed,
-                    "style": v.style, "builtin": True} for v in cfg.voices]
+                    "style": v.style, "lang": v.lang, "builtin": True} for v in cfg.voices]
         return builtin + [{**v, "builtin": False} for v in library.voices.list()]
 
     @app.post("/v1/library/voices", status_code=201, dependencies=[Depends(auth)])
@@ -403,9 +403,11 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
             body = await request.json()
         except ValueError:
             body = {}
-        text = str(body.get("text") or "This is how I sound narrating your CreatorForge video.")[:300]
         try:
             voice = providers.build_voice(cfg, providers.voice_profile(cfg, vid, pipeline.library_voices()))
+            sample = ("नमस्ते, मैं आपके क्रिएटरफ़ोर्ज वीडियो की कहानी ऐसे सुनाऊँगा।" if getattr(voice, "lang", "") == "hi"
+                      else "This is how I sound narrating your CreatorForge video.")
+            text = str(body.get("text") or sample)[:300]
             with tempfile.TemporaryDirectory() as d:
                 out = Path(d) / "preview.wav"
                 voice.synthesize(text, out)

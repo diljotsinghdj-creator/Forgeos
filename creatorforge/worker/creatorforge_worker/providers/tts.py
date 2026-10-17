@@ -80,13 +80,19 @@ class ChatterboxVoice:
     STYLES = {"documentary": (0.35, 0.25), "natural": (0.5, 0.5), "calm": (0.3, 0.4), "energetic": (0.8, 0.45)}
     _ref_lock = threading.Lock()
 
-    def __init__(self, voice: str, style: str = "natural", data_dir: Path | None = None, url: str = "http://127.0.0.1:8770"):
+    # Kokoro's one-letter language codes -> the language Chatterbox speaks ("a"/"b" = US/UK English)
+    LANGS = {"a": "en", "b": "en", "e": "es", "f": "fr", "h": "hi", "i": "it", "p": "pt"}
+
+    def __init__(self, voice: str, style: str = "natural", data_dir: Path | None = None, url: str = "http://127.0.0.1:8770",
+                 lang: str = "en"):
+        lang = (lang or "en").lower()
+        self.lang = self.LANGS.get(lang, lang if len(lang) == 2 else "en")   # what the voice speaks: "en", "hi", ...
         self.voice = voice or "default"
         self.style = style if style in self.STYLES else "natural"
         self.data_dir = Path(data_dir or ".")
         self.url = url.rstrip("/")
         self.mood = ""   # set per scene by the pipeline: the emotion of the line being spoken
-        self.id = f"chatterbox:{self.voice}:{self.style}"
+        self.id = f"chatterbox:{self.voice}:{self.style}" + (f":{self.lang}" if self.lang != "en" else "")
 
     def reference(self) -> str:
         v = self.voice
@@ -133,7 +139,8 @@ class ChatterboxVoice:
             ex, cw = min(1.0, ex + 0.25), max(0.2, cw - 0.1)     # sharper, more urgent delivery
         elif any(w in m for w in ("calm", "resolve", "relief", "warm", "curiosity")):
             ex = max(0.25, ex - 0.1)                              # settle the voice for set-up and takeaways
-        body = {"text": text, "out": str(Path(out_wav).resolve()), "ref": self.reference(), "exaggeration": ex, "cfg_weight": cw}
+        body = {"text": text, "out": str(Path(out_wav).resolve()), "ref": self.reference(), "exaggeration": ex, "cfg_weight": cw,
+                "lang": self.lang}
         try:
             r = httpx.post(f"{self.url}/tts", json=body, timeout=1800)
         except httpx.HTTPError as e:
