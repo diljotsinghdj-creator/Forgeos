@@ -48,7 +48,14 @@ def names_match(name: str, title: str) -> bool:
     single words also need the topic check in resolve()."""
     t = title.lower()
     if re.fullmatch(r"[A-Z0-9-]{2,7}", name):
-        return name.replace("-", "") in _initials(title) or name.lower() in t.split()
+        # an acronym is the page whose initials it is ("ED" = Enforcement Directorate), or a page titled with that
+        # exact acronym - never a person who merely has the same letters as a name ("ED" is not Ed Sheeran)
+        if name in re.findall(r"\b[A-Z0-9-]{2,7}\b", title):
+            return True
+        if title.split()[0].strip(".,").lower() == name.lower():
+            return False                      # "Ed Davey", "Sir Elton...": a word that only looks like the acronym
+        ini, n = _initials(title), name.replace("-", "")
+        return ini == n or (len(n) >= 3 and ini.endswith(n))   # "U.S. Securities and Exchange Commission" = SEC
     words = [w for w in re.findall(r"[a-z0-9']+", name.lower()) if w not in _SMALL]
     return bool(words) and all(re.search(rf"\b{re.escape(w)}", t) for w in words)
 
@@ -73,8 +80,24 @@ def other_country(text: str, context: str) -> bool:
     return any(re.search(rf"\b{re.escape(w)}\b", t) for k, ws in _NATIONS.items() if k != home for w in ws)
 
 
+# Acronyms in Indian news: the institution they stand for, or None for words that are not a picturable subject.
+ACRONYMS = {"ED": "Enforcement Directorate", "CBI": "Central Bureau of Investigation", "NIA": "National Investigation Agency",
+            "ECI": "Election Commission of India", "EC": "Election Commission of India", "SC": "Supreme Court of India",
+            "RBI": "Reserve Bank of India", "CAG": "Comptroller and Auditor General of India",
+            "EVM": "Electronic voting machine", "UN": "United Nations", "RSS": "Rashtriya Swayamsevak Sangh",
+            "NEET": "National Eligibility cum Entrance Test (Undergraduate)", "PMLA": "Prevention of Money Laundering Act, 2002",
+            "SIR": None, "PM": None, "CM": None, "MP": None, "MPS": None, "MLA": None, "MLAS": None, "GDP": None,
+            "CEO": None, "IT": None, "OK": None, "TV": None, "US": None, "UK": None, "CCTV": None, "FIR": None,
+            "SG": None, "CJI": None, "HC": None}
+
+
 def resolve(name: str, context: str = "", topic: list[str] | None = None) -> dict | None:
     """The one Wikipedia page the name refers to here, or None when unsure."""
+    key = name.strip().upper()
+    if re.fullmatch(r"[A-Z0-9-]{2,7}", name.strip()) and key in ACRONYMS:
+        if ACRONYMS[key] is None:
+            return None                       # "SIR", "PM", "MP": not a subject to look up
+        name = ACRONYMS[key]                  # search the institution's full name
     topic = [w.lower() for w in (topic or []) if w]
     single = len(name.split()) == 1
     # "Supreme Court" in a story about India is the Supreme Court of India: search with the country first

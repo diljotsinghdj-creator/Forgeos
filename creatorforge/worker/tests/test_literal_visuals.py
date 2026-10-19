@@ -160,3 +160,24 @@ def test_the_story_country_decides_courts_police_and_streets(monkeypatch):
         return {"query": {"pages": {"1": {"title": t, "description": pages[t], "pageimage": t + ".jpg"}}}}
     monkeypatch.setattr(wiki_image, "_get", fake_get)
     assert wiki_image.resolve("Supreme Court", "India", ["India"])["title"] == "Supreme Court of India"
+
+
+def test_an_acronym_is_never_a_person_with_the_same_letters(monkeypatch):
+    # "ED" in Indian news is the Enforcement Directorate, not Ed Sheeran
+    assert not wiki_image.names_match("ED", "Ed Sheeran")
+    assert wiki_image.names_match("ED", "Enforcement Directorate")
+    assert wiki_image.names_match("BJP", "Bharatiya Janata Party")
+    asked = []
+
+    def fake_get(params):
+        if params.get("list") == "search":
+            asked.append(params["srsearch"])
+            return {"query": {"search": [{"title": "Ed Sheeran", "snippet": "English singer"},
+                                         {"title": "Enforcement Directorate", "snippet": "Indian agency"}]}}
+        t = params["titles"]
+        return {"query": {"pages": {"1": {"title": t, "description": "Indian law enforcement agency"
+                                          if t.startswith("Enforcement") else "English singer-songwriter"}}}}
+    monkeypatch.setattr(wiki_image, "_get", fake_get)
+    assert wiki_image.resolve("ED", "India", ["India"])["title"] == "Enforcement Directorate"
+    assert asked[0].startswith("Enforcement Directorate")
+    assert wiki_image.resolve("SIR", "India") is None and wiki_image.resolve("PM", "India") is None
