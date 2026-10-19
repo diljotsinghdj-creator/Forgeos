@@ -398,7 +398,8 @@ BEAT_WORDS = 5   # ~2 seconds of speech at 2.5 words/second: the longest a pictu
 
 
 def _words(text: str) -> list[str]:
-    return re.findall(r"[a-z0-9']+", text.lower())
+    # Latin letters and digits, plus the whole Devanagari block (its vowel signs aren't "alphanumeric" to Python)
+    return [w for w in re.findall(r"[a-z0-9'\u0900-\u0963\u0966-\u097F]+", text.lower()) if w.strip("'")]
 
 
 def _phrases(text: str, limit: int = BEAT_WORDS) -> list[str]:
@@ -809,7 +810,7 @@ def parse_script(raw: str) -> tuple[str, dict]:
         if m and (stamped or m.group(1).replace(" ", "-") in ROLE_EDIT):
             body = body[m.end():]
             meta["roles"].append((m.group(1).replace(" ", "-"), body.strip()))
-        if body.strip() and re.search(r"[A-Za-z]", body):
+        if body.strip() and re.search(r"[^\W\d_]", body):   # any letters: English, Hindi (Devanagari), ...
             spoken.append(body.strip())
         target = len(spoken) - 1     # this line's own words, or the spoken line just above a direction line
         for key, value in pairs:

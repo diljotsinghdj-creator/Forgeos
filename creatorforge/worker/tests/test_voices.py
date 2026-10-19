@@ -82,3 +82,14 @@ def test_hindi_voices_speak_hindi_and_fall_back_to_a_hindi_voice(cfg, monkeypatc
 def test_hindi_sentences_split_on_the_danda():
     from creatorforge_worker import director
     assert director.split_sentences("यह पहला वाक्य है। यह दूसरा है।") == ["यह पहला वाक्य है।", "यह दूसरा है।"]
+
+
+def test_a_hindi_script_in_devanagari_is_read_as_narration():
+    from creatorforge_worker import director
+    raw = ("वोटर लिस्ट से नाम गायब\nOn-screen hook: आपका नाम गायब?\n\nसोचिए, वोटर लिस्ट से आपका नाम गायब?\n"
+           "Visual: A voter ID card\n\nये है क्या? एस आई आर।\nVisual: A voter register\n\n"
+           "आपने अपना नाम कब जाँचा था?\nVisual: The Election Commission building\n")
+    spec = director.ProductionSpec.from_dict({"script": raw})
+    assert spec.script.startswith("सोचिए") and "Visual" not in spec.script
+    assert len(spec.shots) == 3 and spec.shots[0][1] == "A voter ID card"
+    assert director._words("ये है क्या?") == ["ये", "है", "क्या"]
