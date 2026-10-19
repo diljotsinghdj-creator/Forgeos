@@ -1,93 +1,93 @@
-वोटर लिस्ट से नाम गायब
-On-screen hook: आपका नाम गायब?
-Title: वोटर लिस्ट से आपका नाम गायब? SIR की पूरी सच्चाई | Print Facts
-Tags: #SIR #VoterList #India #Delhi #PrintFacts #Shorts #हिंदी
-Source: The Hindu via Legacy IAS, News analysis 19 October 2026 (Okhla public hearing), https://legacyias.com/the-hindu-upsc-news-analysis-for-19-october-2026; NewsBytes, Audit finds 100 voters wrongly marked on Okhla voter list, Oct 2026, https://www.newsbytesapp.com/news/india/audit-finds-100-voters-wrongly-marked-on-okhla-voter-list/tldr; Reuters via Kathmandu Post, Why India's tens of millions of voter deletions have led to widespread protests, 9 Oct 2026, https://kathmandupost.com/world/2026/10/09/why-india-s-tens-of-millions-of-voter-deletions-have-led-to-widespread-protests; Deccan Herald, Can't allow dead, those who have permanently migrated to be on voters list: CEC Kumar, https://www.deccanherald.com/amp/story/india%2Fcant-allow-dead-those-who-have-permanently-migrated-to-be-on-voters-list-cec-kumar-3646082; Business Today, Smriti Irani on SIR, 19 Oct 2026, https://www.businesstoday.in/bt-tv/whats-hot/video/should-dead-people-be-on-voter-rolls-smriti-irani-challenges-opposition-on-sir-562358-2026-10-19; Election Commission of India, Voter search, https://electoralsearch.eci.gov.in/
+13 करोड़ नाम गायब
+On-screen hook: 13 करोड़ नाम गायब?
+Title: 13 करोड़ नाम वोटर लिस्ट से कटे! क्या आपका भी? | Print Facts
+Tags: #SIR #VoterList #India #Delhi #PrintFacts #Shorts #हिंदी #वोटरलिस्ट
+Source: The Hindu via Legacy IAS, News analysis 19 October 2026 (Okhla public hearing), https://legacyias.com/the-hindu-upsc-news-analysis-for-19-october-2026; NewsBytes, Audit finds 100 voters wrongly marked on Okhla voter list, Oct 2026, https://www.newsbytesapp.com/news/india/audit-finds-100-voters-wrongly-marked-on-okhla-voter-list/tldr; Reuters via Kathmandu Post, Why India's tens of millions of voter deletions have led to widespread protests, 9 Oct 2026, https://kathmandupost.com/world/2026/10/09/why-india-s-tens-of-millions-of-voter-deletions-have-led-to-widespread-protests; Deccan Herald, Can't allow dead, those who have permanently migrated to be on voters list: CEC Kumar, https://www.deccanherald.com/amp/story/india%2Fcant-allow-dead-those-who-have-permanently-migrated-to-be-on-voters-list-cec-kumar-3646082; Business Today, Smriti Irani on SIR, 19 Oct 2026, https://www.businesstoday.in/bt-tv/whats-hot/video/should-dead-people-be-on-voter-rolls-smriti-irani-challenges-opposition-on-sir-562358-2026-10-19; Election Commission of India, Voter search, https://electoralsearch.eci.gov.in/; Deccan Herald, SIR: 13.3 crore names wiped out of draft voter lists so far, 30 Sep 2026, https://www.deccanherald.com/india/sir-133-crore-names-wiped-out-of-draft-voter-lists-so-far-triggering-opposition-backlash-4164836; AP via Express & Star, 'Cockroach' protesters demand Indian polling chief resign over vote list changes, Oct 2026, https://www.expressandstar.com/world-news/cockroach-protesters-demand-indian-polling-chief-resign-over-vote-list-changes-9253783
 
-सोचिए, वोटर लिस्ट से आपका नाम गायब?
-Visual: An elderly man's trembling hands holding a voter ID card under a single bulb, details unreadable
-Visual: A finger stopping on an empty gap in a printed voter list, extreme close-up, names unreadable
+तेरह करोड़ नाम कटे। क्या आपका भी?
+Visual: Thousands of paper voter slips raining down onto an empty street at night, red light
+Visual: A red pen slashing through a name on a printed voter list, extreme close-up, text unreadable
 Transition: flash
-Text: आपका नाम गायब?
-Draw: circle
+Text: 13.3 करोड़ नाम · ड्राफ़्ट वोटर लिस्ट
+Cite: Deccan Herald, 30 Sep 2026
 
-सालों से वोट दिया, फिर अचानक नाम गायब। आख़िर हो क्या रहा है?
+कितना बड़ा? जापान की पूरी आबादी से भी ज़्यादा।
+Visual: A packed Tokyo pedestrian crossing seen from high above at night
+Squares: 13.3 vs 12.3 | करोड़ नाम कटे, जापान की आबादी (करोड़)
+
+और अगला कटा हुआ नाम... आपका भी हो सकता है।
+Visual: A finger stopping on an empty gap in a printed voter list, harsh light, names unreadable
+Visual: A man's face-down silhouette in a dark doorway, a single bulb behind him
+Big: आपका?
+
+सालों से वोट देते आए हैं? ये भी कोई गारंटी नहीं।
 Visual: A long queue of voters outside a village polling station at sunrise, long shadows, from behind
-Visual: An empty polling booth lit by one shaft of light, the ballot unit waiting
-Big: क्यों?
+Visual: An old voter ID card cracking in half, slow motion, details unreadable
+Text: गारंटी नहीं
 
-ये है क्या? एस आई आर, यानी स्पेशल इंटेंसिव रिवीज़न।
+यक़ीन नहीं? मिलिए दिल्ली के चौहत्तर साल के एक रिटायर्ड प्रोफ़ेसर से।
+Visual: An elderly man's hands folded on a walking stick by a window, books behind, face out of frame
+Visual: A framed university degree on a wall above shelves of old books, text unreadable
+Place: ओखला, दिल्ली · जन सुनवाई
+
+वोटर लिस्ट में उन्हें लिखा गया: लापता।
+Visual: A rubber stamp slamming down in red ink on a printed form, ink spray, text unreadable
+Big: लापता
+Cite: The Hindu, 19 Oct 2026
+
+जबकि बेटे ने फ़ॉर्म जमा किया था। और पत्नी? स्थायी रूप से शिफ़्टेड।
+Visual: A stamped acknowledgement receipt held up to the light, text unreadable
+Visual: An empty chair beside a made bed in a quiet Delhi flat, morning light
+Split: प्रोफ़ेसर: लापता | पत्नी: शिफ़्टेड
+Cite: The Hindu, 19 Oct 2026
+
+तो ये हो क्यों रहा है? इसे कहते हैं एस आई आर।
 Stock: Election Commission of India Nirvachan Sadan New Delhi
 Visual: Towering stacks of voter registers in a dim government record room, names unreadable
+Transition: whip
 Text: SIR · स्पेशल इंटेंसिव रिवीज़न
 
-चुनाव आयोग के मुताबिक़, इसका मक़सद वोटर लिस्ट अपडेट करना है।
+आयोग का तर्क? मृत, डुप्लीकेट और शिफ़्टेड नाम हटाना ज़रूरी है।
 Visual: A clerk's hands flipping through voter forms at speed under a desk lamp, face out of frame
-Visual: A heavy government stamp slamming onto a printed form, ink spray, text unreadable
-Cite: Election Commission of India
-
-किसके नाम? मृत, डुप्लीकेट और अयोग्य, पहचानकर हटाने के लिए।
-Visual: A red pen slashing through lines of a printed list in extreme close-up, text unreadable
-Steps: मृत | डुप्लीकेट | अयोग्य | हटाए गए नाम
+Steps: मृत | डुप्लीकेट | शिफ़्टेड | हटाओ
 Cite: ECI via Deccan Herald
 
-लेकिन आलोचक क्या कहते हैं? असली वोटर भी बाहर हो सकते हैं।
-Visual: A woman clutching faded documents in a plastic folder at a crowded counter, face out of frame
+और आलोचक? कहते हैं असली वोटर भी कट रहे हैं, ख़ासकर बिना पुराने काग़ज़ वाले।
+Visual: A woman clutching faded documents at a crowded counter, face out of frame
 Visual: Dusk over a dense old-city lane in Delhi seen from a rooftop, lights flickering on
-Text: आरोप: असली वोटर भी बाहर?
-
-ख़ासकर वे लोग, जिनके पास पुराने दस्तावेज़ नहीं हैं।
 Visual: An empty tin trunk with a few torn yellowed papers inside, lit by window light
-Visual: Hands searching through a cluttered steel cupboard full of old files, text unreadable
-Treat: duotone
+Text: आरोप: असली वोटर भी बाहर
 Draw: circle
 
-तो क्या सच में ऐसा हो रहा है? दिल्ली से कुछ मामले सामने आए हैं।
-Visual: Aerial view over the rooftops of Okhla, New Delhi, morning haze
-Map: New Delhi | ओखला, दिल्ली
-Transition: whip
+तो क्या ये साज़िश है? रुकिए।
+Visual: A judge's gavel suspended mid-air above a law book, dramatic side light in a dark courtroom
+Big: रुकिए
 
-कहाँ? उन्नीस अक्टूबर को रिपोर्ट हुई, ओखला की एक जन सुनवाई में।
-Visual: A packed community hall with rows of plastic chairs, people seen from behind, warm light
-Visual: A single microphone on a small table, a queue of people waiting behind it, out of focus
-Text: जन सुनवाई · ओखला
-Cite: The Hindu, 19 Oct 2026
-
-लोगों ने क्या बताया? उन्हें ग़लत तरीक़े से शिफ़्टेड, लापता या मृत दिखाया गया।
-Visual: Three rows of a printed voter list highlighted in red under a magnifying glass, text unreadable
-Steps: शिफ़्टेड | लापता | मृत
-Cite: The Hindu, 19 Oct 2026
-
-एक मिसाल? रिटायर्ड प्रोफ़ेसर को लापता लिखा गया, जबकि बेटे ने फ़ॉर्म जमा किया था।
-Visual: An elderly man's hands folded on a walking stick by a window, books behind, face out of frame
-Visual: A stamped acknowledgement receipt for a submitted form, held up to the light, text unreadable
-Text: लापता? फ़ॉर्म जमा था
-Cite: The Hindu, 19 Oct 2026
-
-लेकिन क्या ये सब साज़िश है? एक बात साफ़ समझिए।
-Visual: A judge's gavel on a closed law book, dramatic side light in a dark Indian courtroom
-Big: ध्यान दें
-
-वोटर लिस्ट की ग़लतियाँ और जानबूझकर राजनीतिक हेरफेर, एक बात नहीं हैं।
-Visual: Two stacks of files on a desk, one tagged red, under a hard desk lamp, text unreadable
-Visual: A chessboard with one piece tipped over, low light
-Split: लिस्ट की ग़लती | जानबूझकर हेरफेर
-
-तो धोखाधड़ी का दावा? उसके लिए स्वतंत्र सबूत चाहिए।
+फ़र्क क्या है? ग़लती और जानबूझकर हेरफेर अलग हैं। साज़िश के दावे को सबूत चाहिए।
 Visual: A magnifying glass over printed court papers, dust in a beam of light, text unreadable
-Visual: Sealed evidence envelopes stacked on a desk, labels unreadable
+Split: लिस्ट की ग़लती | जानबूझकर हेरफेर
 Text: दावा ≠ सबूत
 
-तो आप क्या करें? आधिकारिक वोटर लिस्ट में अपना नाम ज़रूर जाँचिए।
+लेकिन एक बात पक्की है। नाम कटा, तो वोट गया।
+Visual: A ballot box alone in an empty school classroom, golden light through the window
+Visual: A polling booth curtain swinging shut on an empty booth
+Text: नाम कटा = वोट गया
+
+अच्छी ख़बर? आयोग के मुताबिक़, ग़लती से कटे नाम दोबारा जुड़ सकते हैं।
+Visual: Hands filling in a printed form with a blue pen, text unreadable
+Text: नाम दोबारा जुड़ सकता है
+Cite: Election Commission via AP, Oct 2026
+
+तो क्या करें? आज ही नाम चेक कीजिए, और ये वीडियो परिवार को भेजिए।
 Visual: A phone glowing in someone's hands at night, a search form on screen, text unreadable
+Visual: Three generations' hands holding phones around a kitchen table, faces out of frame
 Text: electoralsearch.eci.gov.in
 
-लोकतंत्र में हर योग्य वोट मायने रखता है। प्रिंट फ़ैक्ट्स को फ़ॉलो कीजिए।
+प्रिंट फ़ैक्ट्स को फ़ॉलो कीजिए। सच, बिना शोर के।
 Visual: Extreme close-up of an ink-marked fingertip raised against a bright morning sky
-Visual: A ballot box alone in an empty school classroom, golden light through the window
 Text: FOLLOW PRINT FACTS
 
-आपने अपना नाम आख़िरी बार कब जाँचा था?
+आपका नाम लिस्ट में है, या कट गया?
 Stock: Election Commission of India Nirvachan Sadan New Delhi
 Visual: The Election Commission of India building at dusk as the lights come on
-Text: आज ही नाम जाँचिए
+Text: आपका नाम है या नहीं?
