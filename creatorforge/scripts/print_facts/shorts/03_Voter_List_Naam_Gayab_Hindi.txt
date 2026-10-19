@@ -5,85 +5,89 @@ Tags: #SIR #VoterList #India #Delhi #PrintFacts #Shorts #हिंदी
 Source: The Hindu via Legacy IAS, News analysis 19 October 2026 (Okhla public hearing), https://legacyias.com/the-hindu-upsc-news-analysis-for-19-october-2026; NewsBytes, Audit finds 100 voters wrongly marked on Okhla voter list, Oct 2026, https://www.newsbytesapp.com/news/india/audit-finds-100-voters-wrongly-marked-on-okhla-voter-list/tldr; Reuters via Kathmandu Post, Why India's tens of millions of voter deletions have led to widespread protests, 9 Oct 2026, https://kathmandupost.com/world/2026/10/09/why-india-s-tens-of-millions-of-voter-deletions-have-led-to-widespread-protests; Deccan Herald, Can't allow dead, those who have permanently migrated to be on voters list: CEC Kumar, https://www.deccanherald.com/amp/story/india%2Fcant-allow-dead-those-who-have-permanently-migrated-to-be-on-voters-list-cec-kumar-3646082; Business Today, Smriti Irani on SIR, 19 Oct 2026, https://www.businesstoday.in/bt-tv/whats-hot/video/should-dead-people-be-on-voter-rolls-smriti-irani-challenges-opposition-on-sir-562358-2026-10-19; Election Commission of India, Voter search, https://electoralsearch.eci.gov.in/
 
 सोचिए, वोटर लिस्ट से आपका नाम गायब?
-Visual: An elderly man's hands holding an Indian voter ID card, details unreadable
-Visual: A finger running down a printed voter list, names unreadable
+Visual: An elderly man's trembling hands holding a voter ID card under a single bulb, details unreadable
+Visual: A finger stopping on an empty gap in a printed voter list, extreme close-up, names unreadable
+Transition: flash
 Text: आपका नाम गायब?
+Draw: circle
 
 सालों से वोट दिया, फिर अचानक नाम गायब। आख़िर हो क्या रहा है?
-Visual: Voters queueing outside an Indian polling station at dawn, seen from behind
-Visual: An empty polling booth with a ballot unit on a table
-Text: ?
+Visual: A long queue of voters outside a village polling station at sunrise, long shadows, from behind
+Visual: An empty polling booth lit by one shaft of light, the ballot unit waiting
+Big: क्यों?
 
 ये है क्या? एस आई आर, यानी स्पेशल इंटेंसिव रिवीज़न।
 Stock: Election Commission of India Nirvachan Sadan New Delhi
-Visual: A thick Indian voter register on a government office desk, names unreadable
+Visual: Towering stacks of voter registers in a dim government record room, names unreadable
 Text: SIR · स्पेशल इंटेंसिव रिवीज़न
 
 चुनाव आयोग के मुताबिक़, इसका मक़सद वोटर लिस्ट अपडेट करना है।
-Visual: A clerk's hands sorting voter forms into stacks, face out of frame
-Visual: A government stamp pressing onto a printed form, text unreadable
+Visual: A clerk's hands flipping through voter forms at speed under a desk lamp, face out of frame
+Visual: A heavy government stamp slamming onto a printed form, ink spray, text unreadable
 Cite: Election Commission of India
 
 किसके नाम? मृत, डुप्लीकेट और अयोग्य, पहचानकर हटाने के लिए।
-Visual: A red pen striking through lines on a printed list, text unreadable
+Visual: A red pen slashing through lines of a printed list in extreme close-up, text unreadable
 Steps: मृत | डुप्लीकेट | अयोग्य | हटाए गए नाम
 Cite: ECI via Deccan Herald
 
 लेकिन आलोचक क्या कहते हैं? असली वोटर भी बाहर हो सकते हैं।
-Visual: A woman holding old faded documents in a plastic folder, face out of frame
-Visual: A crowded old-city lane in Delhi seen from a rooftop
+Visual: A woman clutching faded documents in a plastic folder at a crowded counter, face out of frame
+Visual: Dusk over a dense old-city lane in Delhi seen from a rooftop, lights flickering on
 Text: आरोप: असली वोटर भी बाहर?
 
 ख़ासकर वे लोग, जिनके पास पुराने दस्तावेज़ नहीं हैं।
-Visual: An empty plastic document folder on a wooden table
-Visual: Torn and yellowed old papers in a tin box, text unreadable
+Visual: An empty tin trunk with a few torn yellowed papers inside, lit by window light
+Visual: Hands searching through a cluttered steel cupboard full of old files, text unreadable
+Treat: duotone
 Draw: circle
 
 तो क्या सच में ऐसा हो रहा है? दिल्ली से कुछ मामले सामने आए हैं।
-Visual: A narrow street in Okhla, New Delhi, in morning light
-Visual: Rooftops of a crowded Delhi neighbourhood seen from above
-Place: ओखला, दिल्ली
+Visual: Aerial view over the rooftops of Okhla, New Delhi, morning haze
+Map: New Delhi | ओखला, दिल्ली
+Transition: whip
 
 कहाँ? उन्नीस अक्टूबर को रिपोर्ट हुई, ओखला की एक जन सुनवाई में।
-Visual: Rows of plastic chairs in a community hall, people seen from behind
-Visual: A microphone on a small table in a community hall
+Visual: A packed community hall with rows of plastic chairs, people seen from behind, warm light
+Visual: A single microphone on a small table, a queue of people waiting behind it, out of focus
 Text: जन सुनवाई · ओखला
 Cite: The Hindu, 19 Oct 2026
 
 लोगों ने क्या बताया? उन्हें ग़लत तरीक़े से शिफ़्टेड, लापता या मृत दिखाया गया।
-Visual: A printed voter list with three rows highlighted in yellow, text unreadable
+Visual: Three rows of a printed voter list highlighted in red under a magnifying glass, text unreadable
 Steps: शिफ़्टेड | लापता | मृत
 Cite: The Hindu, 19 Oct 2026
 
 एक मिसाल? रिटायर्ड प्रोफ़ेसर को लापता लिखा गया, जबकि बेटे ने फ़ॉर्म जमा किया था।
-Visual: An elderly man's hands resting on a walking stick, face out of frame
-Visual: A filled government form in a plastic sleeve, text unreadable
+Visual: An elderly man's hands folded on a walking stick by a window, books behind, face out of frame
+Visual: A stamped acknowledgement receipt for a submitted form, held up to the light, text unreadable
 Text: लापता? फ़ॉर्म जमा था
 Cite: The Hindu, 19 Oct 2026
 
 लेकिन क्या ये सब साज़िश है? एक बात साफ़ समझिए।
-Visual: A judge's gavel on a closed law book in an Indian courtroom
+Visual: A judge's gavel on a closed law book, dramatic side light in a dark Indian courtroom
 Big: ध्यान दें
 
 वोटर लिस्ट की ग़लतियाँ और जानबूझकर राजनीतिक हेरफेर, एक बात नहीं हैं।
-Visual: Two stacks of files on a desk, one marked with a red tag, text unreadable
+Visual: Two stacks of files on a desk, one tagged red, under a hard desk lamp, text unreadable
+Visual: A chessboard with one piece tipped over, low light
 Split: लिस्ट की ग़लती | जानबूझकर हेरफेर
 
 तो धोखाधड़ी का दावा? उसके लिए स्वतंत्र सबूत चाहिए।
-Visual: A magnifying glass resting on printed court papers, text unreadable
+Visual: A magnifying glass over printed court papers, dust in a beam of light, text unreadable
 Visual: Sealed evidence envelopes stacked on a desk, labels unreadable
 Text: दावा ≠ सबूत
 
 तो आप क्या करें? आधिकारिक वोटर लिस्ट में अपना नाम ज़रूर जाँचिए।
-Visual: A person's hands typing on a phone showing a search form, screen text unreadable
+Visual: A phone glowing in someone's hands at night, a search form on screen, text unreadable
 Text: electoralsearch.eci.gov.in
 
 लोकतंत्र में हर योग्य वोट मायने रखता है। प्रिंट फ़ैक्ट्स को फ़ॉलो कीजिए।
-Visual: An ink-marked finger held up outside an Indian polling station
-Visual: A ballot box standing in an empty Indian school classroom
+Visual: Extreme close-up of an ink-marked fingertip raised against a bright morning sky
+Visual: A ballot box alone in an empty school classroom, golden light through the window
 Text: FOLLOW PRINT FACTS
 
 आपने अपना नाम आख़िरी बार कब जाँचा था?
 Stock: Election Commission of India Nirvachan Sadan New Delhi
-Visual: The Election Commission of India building in New Delhi at dusk
+Visual: The Election Commission of India building at dusk as the lights come on
 Text: आज ही नाम जाँचिए
