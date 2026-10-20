@@ -114,7 +114,7 @@ def test_the_named_subject_gets_its_real_picture_and_a_credit(cfg, tmp_path, mon
     pipe = Pipeline(cfg, JobStore(cfg.jobs_dir))
     calls = []
 
-    def fake_resolve(name, context="", topic=None):
+    def fake_resolve(name, context="", topic=None, city=""):
         calls.append(name)
         return {"title": "Bharatiya Janata Party", "description": "Political party in India", "image": "BJP.svg"}
 
@@ -181,3 +181,52 @@ def test_an_acronym_is_never_a_person_with_the_same_letters(monkeypatch):
     assert wiki_image.resolve("ED", "India", ["India"])["title"] == "Enforcement Directorate"
     assert asked[0].startswith("Enforcement Directorate")
     assert wiki_image.resolve("SIR", "India") is None and wiki_image.resolve("PM", "India") is None
+
+
+def test_a_lone_name_is_the_full_name_this_story_uses():
+    script = ("Amit Shah spoke in Amethi. Rahul Gandhi replied the same day. Then Shah repeated it. "
+              "Rahul laughed. Sonia Gandhi stayed silent while Priyanka Gandhi campaigned. Gandhi family again.")
+    known = literal.mid_sentence_names(script)
+    names = literal.full_names(script, known)
+    assert literal.expand_name("Shah", names) == "Amit Shah"
+    assert literal.expand_name("Rahul", names) == "Rahul Gandhi"
+    assert literal.expand_name("Gandhi", names) is None             # three Gandhis: no guessing
+    assert literal.expand_name("BJP", names) == "BJP"
+
+
+def test_a_lone_name_needs_the_story_not_just_the_country(monkeypatch):
+    def fake_get(params, timeout=20):
+        if params.get("list") == "search":
+            return {"query": {"search": [{"title": "KL Rahul", "snippet": "Indian international cricketer"}]}}
+        return {"query": {"pages": {"1": {"title": "KL Rahul", "description": "Indian cricketer (born 1992)"}}}}
+    monkeypatch.setattr(wiki_image, "_get", fake_get)
+    assert wiki_image.resolve("Rahul", "India", ["India", "BJP", "Congress", "Modi"]) is None
+
+
+def test_a_delhi_story_gets_delhis_landmark_not_jaipurs(monkeypatch):
+    asked = []
+
+    def fake_get(params, timeout=20):
+        if params.get("list") == "search":
+            asked.append(params["srsearch"])
+            return {"query": {"search": [{"title": "Jantar Mantar, Jaipur", "snippet": "observatory in Jaipur"},
+                                         {"title": "Jantar Mantar, New Delhi", "snippet": "observatory in New Delhi"}]}}
+        t = params["titles"]
+        desc = "Astronomical observatory in Jaipur, Rajasthan" if "Jaipur" in t else "Astronomical observatory in New Delhi"
+        return {"query": {"pages": {"1": {"title": t, "description": desc}}}}
+    monkeypatch.setattr(wiki_image, "_get", fake_get)
+    got = wiki_image.resolve("Jantar Mantar", "India", ["India", "BJP"], "New Delhi")
+    assert got["title"] == "Jantar Mantar, New Delhi" and asked[0] == "Jantar Mantar New Delhi"
+    assert literal.context_city("Protest at Jantar Mantar. Delhi Police detained them in New Delhi.") == "New Delhi"
+    assert "New Delhi" in literal.setting_for("A crowded street at dusk", "India", "New Delhi")
+
+
+def test_repeat_photos_never_include_an_artwork_that_shares_a_name(monkeypatch):
+    from creatorforge_worker.providers import archive_photo
+    monkeypatch.setattr(wiki_image, "file_info", lambda f, width=1600: {"url": "lead", "credit": "c", "logo": False})
+    monkeypatch.setattr(archive_photo, "search", lambda q, limit=8: [
+        {"title": "Mughal painting of Shah Jahan with Amit Shah collection", "url": "a", "credit": "x"},
+        {"title": "Amit Shah addressing a rally in 2019", "url": "b", "credit": "y"},
+        {"title": "Shah Abbas portrait 17th century", "url": "c", "credit": "z"}])
+    pics = wiki_image.pictures({"title": "Amit Shah", "image": "Amit_Shah.jpg"})
+    assert [p["url"] for p in pics] == ["lead", "b"]

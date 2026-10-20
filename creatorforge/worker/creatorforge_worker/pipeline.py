@@ -398,7 +398,8 @@ class Pipeline:
             return None                   # a cap on lookups per video
         try:
             if name not in cache:
-                page = wiki_image.resolve(name, named.get("context", ""), named.get("topic") or [])
+                page = wiki_image.resolve(name, named.get("context", ""), named.get("topic") or [],
+                                          named.get("city", ""))
                 cache[name] = {"title": page["title"], "pics": wiki_image.pictures(page)} if page else {}
             entry = cache[name]
         except ProviderError:

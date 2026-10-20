@@ -297,6 +297,51 @@ def mid_sentence_names(script: str) -> set[str]:
     return found
 
 
+# Cities a story can be set in, with the names that place a line there ("Jantar Mantar" is Delhi's, not Jaipur's).
+CITIES = {"New Delhi": ("Delhi", "New Delhi", "Jantar Mantar", "India Gate", "Connaught Place", "Kartavya Path",
+                        "Janpath", "Ramlila Maidan", "Okhla", "Tihar", "Rouse Avenue", "Raisina"),
+          "Mumbai": ("Mumbai", "Bombay"), "Kolkata": ("Kolkata", "Calcutta"), "Chennai": ("Chennai", "Madras"),
+          "Bengaluru": ("Bengaluru", "Bangalore"), "Hyderabad": ("Hyderabad",), "Ahmedabad": ("Ahmedabad",),
+          "Lucknow": ("Lucknow",), "Patna": ("Patna",), "Jaipur": ("Jaipur",), "Srinagar": ("Srinagar",),
+          "Pune": ("Pune",), "Varanasi": ("Varanasi",)}
+
+
+def context_city(script: str) -> str:
+    """The city the story mostly happens in ("New Delhi" for a script about protests at Jantar Mantar), or ""."""
+    counts = {c: sum(len(re.findall(rf"\b{re.escape(n)}\b", script)) for n in names) for c, names in CITIES.items()}
+    best = max(counts, key=counts.get)
+    return best if counts[best] >= 2 else ""
+
+
+def full_names(script: str, known: set[str]) -> dict[str, list[str]]:
+    """Each first or last name -> the full names in this script it belongs to: "Rahul" -> ["Rahul Gandhi"],
+    "Shah" -> ["Amit Shah"], "Gandhi" -> ["Rahul Gandhi", "Sonia Gandhi", ...] (most mentioned first)."""
+    counts: dict[str, int] = {}
+    for _, sent in _sentences(script):
+        for name in proper_nouns(sent, known):
+            name = _clean(name)
+            if len(name.split()) >= 2 and not name.isupper():
+                counts[name] = counts.get(name, 0) + 1
+    out: dict[str, list[str]] = {}
+    for name in sorted(counts, key=lambda n: -counts[n]):
+        words = name.split()
+        for w in {words[0], words[-1]}:
+            out.setdefault(w.lower(), []).append(name)
+    return out
+
+
+def expand_name(name: str, names: dict[str, list[str]]) -> str | None:
+    """A lone first or last name as the full name this script uses ("Shah" -> "Amit Shah"). None when it could
+    be several people here ("Gandhi" in a script about Rahul, Sonia and Priyanka Gandhi): better no picture than
+    the wrong face."""
+    if len(name.split()) != 1 or name.isupper():
+        return name
+    hits = names.get(name.lower(), [])
+    if not hits:
+        return name
+    return hits[0] if len(hits) == 1 else None
+
+
 def context_country(script: str) -> str:
     counts = {c: len(re.findall(rf"\b{re.escape(c)}\b", script)) for c in COUNTRIES}
     best = max(counts, key=counts.get) if counts else ""
@@ -331,7 +376,9 @@ def enrich(plan, script: str) -> None:
     # what this script is about, to tell "Modi - Prime Minister of India" from another Modi
     counts = {w: len(re.findall(rf"\b{re.escape(w)}\b", script)) for w in known if len(w) > 3}
     country = context_country(script)
+    city = context_city(script)
     topic = [country] + [w for w, _ in sorted(counts.items(), key=lambda x: -x[1])[:8]]
+    names = full_names(script, known)
     made_up = {n.lower() for n in fictional_names(script)}
     for s in plan.scenes:       # the writer's on-screen labels: "Text: LEAH · FICTIONAL"
         for label in [s.overlay] + [str(b.get("overlay") or "") for b in s.beats]:
@@ -359,6 +406,9 @@ def enrich(plan, script: str) -> None:
             visual = str(b.get("visual") or "")
             # 1. a named subject the picture doesn't already show by name
             for name in proper_nouns(text, known):
+                name = expand_name(_clean(name), names)
+                if not name:
+                    continue                  # "Gandhi" alone, with three Gandhis in the story: no guessing
                 key = _clean(name).lower()
                 if not key or key in visual.lower() or any(w in made_up for w in key.split()):
                     continue
@@ -366,7 +416,7 @@ def enrich(plan, script: str) -> None:
                 if len(shown) >= MAX_PER_SUBJECT or (shown and n - shown[-1] < GAP_BEATS):
                     continue
                 shown.append(n)
-                b["named"] = {"name": _clean(name), "context": country, "topic": [t for t in topic if t]}
+                b["named"] = {"name": _clean(name), "context": country, "city": city, "topic": [t for t in topic if t]}
                 break
             if b.get("named"):
                 continue
@@ -409,10 +459,17 @@ _HAS_PLACE = re.compile(r"\b(" + "|".join(sorted({*COUNTRIES, *_DEMONYM.values()
                                                   key=len, reverse=True)) + r")\b", re.I)
 
 
-def setting_for(visual: str, country: str) -> str:
-    """A short prompt addition that puts a people/place/institution picture in the story's country ("in India,
-    Indian people and Indian buildings"); empty when the picture already names a place or shows only objects."""
+def setting_for(visual: str, country: str, city: str = "") -> str:
+    """A short prompt addition that puts a people/place/institution picture in the story's country and city ("in
+    New Delhi, India, Indian people and Indian buildings"); empty when the picture already names a place or shows
+    only objects."""
     if not country or not _PLACE.search(visual or "") or _HAS_PLACE.search(visual or ""):
         return ""
     who = _DEMONYM.get(country, "")
-    return f"in {country}" + (f", {who} people, {who} buildings and streets" if who else "")
+    where = f"{city}, {country}" if city else country
+    extra = ", modern capital-city streets and government buildings" if city == "New Delhi" else ""
+    return f"in {where}" + (f", {who} people, {who} buildings and streets" if who else "") + extra
+
+
+# What a Delhi picture must not drift into: the desert forts and painted palaces image models reach for when told "India"
+CITY_NEGATIVE = {"New Delhi": ", Rajasthan, desert, sand dunes, fort on a hill, Jaipur pink city, palace courtyard, camels"}

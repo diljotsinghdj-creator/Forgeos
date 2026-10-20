@@ -91,17 +91,45 @@ ACRONYMS = {"ED": "Enforcement Directorate", "CBI": "Central Bureau of Investiga
             "SG": None, "CJI": None, "HC": None}
 
 
-def resolve(name: str, context: str = "", topic: list[str] | None = None) -> dict | None:
+# Indian cities and states: a place page about another of these is the wrong place for this story ("Jantar Mantar,
+# Jaipur" in a story about Delhi)
+_IN_PLACES = ("delhi", "jaipur", "rajasthan", "mumbai", "maharashtra", "kolkata", "west bengal", "chennai", "tamil nadu",
+              "bengaluru", "bangalore", "karnataka", "hyderabad", "telangana", "ahmedabad", "gujarat", "lucknow",
+              "uttar pradesh", "patna", "bihar", "srinagar", "kashmir", "pune", "varanasi", "agra", "ujjain",
+              "madhya pradesh", "punjab", "kerala", "udaipur", "jodhpur")
+_PLACE_PAGE = re.compile(r"\b(monument|observatory|building|site|city|town|neighbourhood|neighborhood|locality|area|"
+                         r"market|temple|fort|palace|park|square|street|road|ground|maidan|museum|gate|memorial|"
+                         r"district|suburb|village|landmark|structure|complex|station)\b", re.I)
+
+
+_PERSON = re.compile(r"\(born\b|\bborn \d|\(\d{4}[–-]|\b(cricketer|actor|actress|singer|footballer|player|athlete|"
+                     r"businessman|businesswoman|model|rapper|musician|film director|youtuber|wrestler|boxer)\b", re.I)
+
+
+def _wrong_city(text: str, city: str) -> bool:
+    t = text.lower()
+    want = {"new delhi": ("delhi",)}.get(city.lower(), (city.lower(),))
+    if any(w in t for w in want):
+        return False
+    return any(re.search(rf"\b{re.escape(p)}\b", t) for p in _IN_PLACES)
+
+
+def resolve(name: str, context: str = "", topic: list[str] | None = None, city: str = "") -> dict | None:
     """The one Wikipedia page the name refers to here, or None when unsure."""
     key = name.strip().upper()
     if re.fullmatch(r"[A-Z0-9-]{2,7}", name.strip()) and key in ACRONYMS:
         if ACRONYMS[key] is None:
             return None                       # "SIR", "PM", "MP": not a subject to look up
         name = ACRONYMS[key]                  # search the institution's full name
-    topic = [w.lower() for w in (topic or []) if w]
+    # a lone name must match what this story is about - its people and parties - not merely the country
+    # ("Rahul" in a story about Indian politics is not KL Rahul the cricketer just because both are Indian)
+    nation = {context.lower(), *(w.lower() for w in _NATIONS.get(_ALIAS.get(context.lower(), context.lower()), ()))}
+    topic = [w.lower() for w in (topic or []) if w and w.lower() not in nation]
     single = len(name.split()) == 1
-    # "Supreme Court" in a story about India is the Supreme Court of India: search with the country first
-    queries = ([f"{name} {context}"] if context else []) + [name]
+    # "Supreme Court" in a story about India is the Supreme Court of India; "Jantar Mantar" in a story about Delhi is
+    # Delhi's: search with the city, then the country, first
+    queries = ([f"{name} {city}"] if city and city.lower() not in name.lower() else []) + \
+              ([f"{name} {context}"] if context else []) + [name]
     for q in queries:
         hits = (_get({"action": "query", "list": "search", "srsearch": q, "srlimit": 5, "srnamespace": 0})
                 .get("query") or {}).get("search") or []
@@ -118,11 +146,15 @@ def resolve(name: str, context: str = "", topic: list[str] | None = None) -> dic
             about = f"{title} {desc} {_plain(h.get('snippet', ''))}".lower()
             if context and other_country(f"{title} {desc}", context):
                 continue                          # the US Supreme Court, in a story about India
+            if city and _PLACE_PAGE.search(desc) and _wrong_city(f"{title} {desc}", city):
+                continue                          # Jaipur's Jantar Mantar, in a story about Delhi
             if single and not re.fullmatch(r"[A-Z0-9-]{2,7}", name):
                 # a lone first/last name must be the one this script is about ("Modi" - Prime Minister of India),
                 # not someone else who shares it
-                if not any(w in about for w in topic + ([context.lower()] if context else [])):
-                    continue
+                story = any(re.search(rf"\b{re.escape(w)}\b", about) for w in topic)
+                person = bool(_PERSON.search(desc))
+                if not story and (person or not any(re.search(rf"\b{re.escape(w)}\b", about) for w in nation if w)):
+                    continue          # a person needs the story's own words; a party or place, at least the country
             return {"title": page.get("title") or title, "description": desc, "image": page.get("pageimage") or ""}
     return None
 
@@ -146,6 +178,10 @@ def file_info(filename: str, width: int = 1600) -> dict | None:
             "width": int(info.get("thumbwidth") or info.get("width") or 0)}
 
 
+_ARTWORK = re.compile(r"\b(painting|miniature|manuscript|folio|engraving|lithograph|illustration|portrait of|"
+                      r"mughal|century|circa|c\.\s?1\d{3}|1[0-8]\d\d|museum|statue|sculpture|coin|stamp)\b", re.I)
+
+
 def pictures(page: dict, more: bool = True) -> list[dict]:
     """The page's lead image first (a party's symbol, a politician's portrait, a building), then a few more openly
     licensed photos of the same subject from Commons, so repeated mentions don't repeat one picture."""
@@ -157,8 +193,12 @@ def pictures(page: dict, more: bool = True) -> list[dict]:
     if more:
         from . import archive_photo
         try:
+            want = page["title"].split(" (")[0].lower()
             for p in archive_photo.search(page["title"], limit=8)[:5]:
-                if names_match(page["title"].split(" (")[0], p.get("title", "")) or page["title"].lower() in p.get("title", "").lower():
+                t = str(p.get("title", "")).lower()
+                # only photos whose file names the subject in full ("Amit Shah at ...", not "Shah Jahan ... Amit"),
+                # and never an artwork or old print that happens to share a name
+                if want in t and not _ARTWORK.search(t):
                     out.append({"url": p["url"], "credit": p["credit"], "logo": False, "width": p.get("width", 0)})
         except ProviderError:
             pass

@@ -594,6 +594,8 @@ def prompt_forge(plan: ProductionPlan, spec: ProductionSpec, only: int | None = 
         literal.enrich(plan, script_text)
     # pictures of people, places and institutions are set in the story's country (an Indian court, not a US one)
     country = literal.context_country(script_text)
+    city = literal.context_city(script_text)            # "New Delhi": Delhi streets, not a Rajasthan fort
+    city_negative = literal.CITY_NEGATIVE.get(city, "")
     t = TEMPLATES[spec.template]
     style = STYLE_PRESETS[spec.style][1] if spec.style in STYLE_PRESETS else (spec.style or t.style)
     animated = spec.style in ANIMATED_STYLES
@@ -607,8 +609,9 @@ def prompt_forge(plan: ProductionPlan, spec: ProductionSpec, only: int | None = 
             s.prompt, s.negative = _look_prompt(s.visual, s.emotion, s, spec, s_look, hook=i == 0)
         else:
             s.prompt, s.negative = _image_prompt(s.visual, s.emotion, s, spec, style, hook=i == 0)
-        if literal.setting_for(s.visual, country):
-            s.prompt = f"{s.prompt}, {literal.setting_for(s.visual, country)}"
+        if literal.setting_for(s.visual, country, city):
+            s.prompt = f"{s.prompt}, {literal.setting_for(s.visual, country, city)}"
+            s.negative += city_negative
         if not spec.fast_cuts:
             s.beats = []
         for k, b in enumerate(s.beats):
@@ -621,9 +624,10 @@ def prompt_forge(plan: ProductionPlan, spec: ProductionSpec, only: int | None = 
             else:
                 b["prompt"], b["negative"] = _image_prompt(b["visual"], b.get("emotion") or s.emotion, s, spec, style,
                                                            size, hook=i == 0 and k == 0)
-            if literal.setting_for(b["visual"], country):
+            if literal.setting_for(b["visual"], country, city):
                 b["prompt"] = f"{b['prompt']}, {literal.setting_for(b['visual'], country)}"
-                b["country"] = country           # real-photo searches look in the same country
+                b["country"] = city or country   # real-photo searches look in the same city
+                b["negative"] += city_negative           # real-photo searches look in the same country
             if (b.get("extra") or {}).get("archive"):
                 # a history line: the picture itself looks like an old photograph (the render adds the film look)
                 era = re.sub(r"[^0-9a-zA-Z ]", "", str(b["extra"]["archive"]))[:20]
