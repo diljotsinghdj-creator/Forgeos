@@ -230,3 +230,32 @@ def test_repeat_photos_never_include_an_artwork_that_shares_a_name(monkeypatch):
         {"title": "Shah Abbas portrait 17th century", "url": "c", "credit": "z"}])
     pics = wiki_image.pictures({"title": "Amit Shah", "image": "Amit_Shah.jpg"})
     assert [p["url"] for p in pics] == ["lead", "b"]
+
+
+def test_protest_and_arrest_lines_show_the_movement_itself():
+    script = ("The Cockroach Janta Party marched on Delhi. The CJP wants the election chief out. "
+              "Police detained its founder. Thousands joined the protest at Jantar Mantar.")
+    known = literal.mid_sentence_names(script)
+    assert literal.movement(script, known) == "Cockroach Janta Party"
+    plan = _plan([("Police detained its founder at the airport.", "A dark airport gate at night", {}, ""),
+                  ("Prices went up again this year.", "A market stall", {}, ""),
+                  ("Then the protesters kept marching.", "A wide avenue", {}, "")])
+    literal.enrich(plan, script)
+    beats = plan.scenes[0].beats
+    assert beats[0]["named"]["name"] == "Cockroach Janta Party"
+    assert not beats[1].get("named")
+    assert wiki_image.ACRONYMS["CJP"] == "Cockroach Janta Party"
+
+
+def test_india_is_shown_modern_and_in_colour():
+    spec = director.ProductionSpec.from_dict({"idea": "india protests story", "style": "investigative"})
+    beats = [{"text": "India votes today.", "visual": "Voters queueing outside a polling station"},
+             {"text": "In 1975 India changed.", "visual": "A crowd outside a court", "extra": {"archive": "1975"}}]
+    plan = director.ProductionPlan("t", "", "", "", [director.ShotPlan(" ".join(b["text"] for b in beats),
+                                                                       beats[0]["visual"], beats=beats)])
+    plan.scenes[0].narration = "India votes today in India. India changed in 1975. India."
+    director.prompt_forge(plan, spec)
+    now, then = plan.scenes[0].beats
+    assert "modern full-colour" in now["prompt"] and "sepia" not in now["prompt"].split("negative")[0]
+    assert "black and white" in now["negative"] and "slum" in now["negative"]
+    assert "black and white archival" in then["prompt"]            # a history line keeps its old-photo look

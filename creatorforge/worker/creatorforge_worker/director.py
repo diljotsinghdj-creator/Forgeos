@@ -519,6 +519,28 @@ def mix_look(b: dict, hook: bool = False, cutout: bool = True) -> str:
     return "documentary"
 
 
+MODERN_INDIA = "contemporary India today, vivid true-to-life colours, bright, clean and modern"
+MODERN_NEGATIVE = (", black and white, monochrome, sepia, faded vintage photo, old film still, slum, garbage, rubble, "
+                   "decay, dirty street, squalor")
+_GRIM = re.compile(r"\b(slum|poverty|poor|garbage|rubble|ruins?|squalor|flood\w*|riot|burnt|burning|black and white|"
+                   r"sepia|vintage|archival|old photograph|19\d\d|18\d\d)\b", re.I)
+
+
+def _modernise(prompt: str, negative: str, visual: str) -> tuple[str, str]:
+    """A picture set in India shows today's India, in colour: old-print looks become modern colour photographs and
+    the negative keeps out sepia and the poverty clichés image models reach for. A line that asks for them (a slum,
+    a flood, a 1975 photo) keeps what it asked for."""
+    if _GRIM.search(visual or ""):
+        return prompt, negative
+    prompt = (prompt.replace("old sepia archival photograph", "modern full-colour news photograph")
+                    .replace("vintage halftone press photograph", "modern full-colour press photograph"))
+    if MODERN_INDIA not in prompt:
+        prompt = f"{prompt}, {MODERN_INDIA}"
+    if MODERN_NEGATIVE not in negative:
+        negative += MODERN_NEGATIVE
+    return prompt, negative
+
+
 def _look_prompt(visual: str, emotion: str, s: "ShotPlan", spec: ProductionSpec, look: str, shot_size: str = "",
                  hook: bool = False) -> tuple[str, str]:
     """One picture's prompt in a given look (Studio mix): cut-out looks lead with their print style, photo looks
@@ -596,6 +618,8 @@ def prompt_forge(plan: ProductionPlan, spec: ProductionSpec, only: int | None = 
     country = literal.context_country(script_text)
     city = literal.context_city(script_text)            # "New Delhi": Delhi streets, not a Rajasthan fort
     city_negative = literal.CITY_NEGATIVE.get(city, "")
+    # India is shown as it is today: modern, in full colour - no sepia, no poverty clichés the script didn't ask for
+    modern = country == "India"
     t = TEMPLATES[spec.template]
     style = STYLE_PRESETS[spec.style][1] if spec.style in STYLE_PRESETS else (spec.style or t.style)
     animated = spec.style in ANIMATED_STYLES
@@ -612,6 +636,8 @@ def prompt_forge(plan: ProductionPlan, spec: ProductionSpec, only: int | None = 
         if literal.setting_for(s.visual, country, city):
             s.prompt = f"{s.prompt}, {literal.setting_for(s.visual, country, city)}"
             s.negative += city_negative
+        if modern:
+            s.prompt, s.negative = _modernise(s.prompt, s.negative, s.visual)
         if not spec.fast_cuts:
             s.beats = []
         for k, b in enumerate(s.beats):
@@ -625,9 +651,11 @@ def prompt_forge(plan: ProductionPlan, spec: ProductionSpec, only: int | None = 
                 b["prompt"], b["negative"] = _image_prompt(b["visual"], b.get("emotion") or s.emotion, s, spec, style,
                                                            size, hook=i == 0 and k == 0)
             if literal.setting_for(b["visual"], country, city):
-                b["prompt"] = f"{b['prompt']}, {literal.setting_for(b['visual'], country)}"
+                b["prompt"] = f"{b['prompt']}, {literal.setting_for(b['visual'], country, city)}"
                 b["country"] = city or country   # real-photo searches look in the same city
-                b["negative"] += city_negative           # real-photo searches look in the same country
+                b["negative"] += city_negative
+            if modern and not (b.get("extra") or {}).get("archive"):
+                b["prompt"], b["negative"] = _modernise(b["prompt"], b["negative"], b["visual"])
             if (b.get("extra") or {}).get("archive"):
                 # a history line: the picture itself looks like an old photograph (the render adds the film look)
                 era = re.sub(r"[^0-9a-zA-Z ]", "", str(b["extra"]["archive"]))[:20]

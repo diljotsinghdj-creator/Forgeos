@@ -81,7 +81,7 @@ def other_country(text: str, context: str) -> bool:
 
 
 # Acronyms in Indian news: the institution they stand for, or None for words that are not a picturable subject.
-ACRONYMS = {"ED": "Enforcement Directorate", "CBI": "Central Bureau of Investigation", "NIA": "National Investigation Agency",
+ACRONYMS = {"CJP": "Cockroach Janta Party", "ED": "Enforcement Directorate", "CBI": "Central Bureau of Investigation", "NIA": "National Investigation Agency",
             "ECI": "Election Commission of India", "EC": "Election Commission of India", "SC": "Supreme Court of India",
             "RBI": "Reserve Bank of India", "CAG": "Comptroller and Auditor General of India",
             "EVM": "Electronic voting machine", "UN": "United Nations", "RSS": "Rashtriya Swayamsevak Sangh",
@@ -182,6 +182,20 @@ _ARTWORK = re.compile(r"\b(painting|miniature|manuscript|folio|engraving|lithogr
                       r"mughal|century|circa|c\.\s?1\d{3}|1[0-8]\d\d|museum|statue|sculpture|coin|stamp)\b", re.I)
 
 
+def search_by_name(name: str) -> list[dict]:
+    """Photos of a person or movement with no Wikipedia page of their own (a protest founder): Commons files that
+    name them in full, recent first, never artworks."""
+    from . import archive_photo
+    want = name.lower()
+    out = []
+    for p in archive_photo.search(name, limit=10)[:8]:
+        t = str(p.get("title", "")).lower()
+        years = [int(y) for y in re.findall(r"\b(19\d\d|20\d\d)\b", t)]
+        if want in t and not _ARTWORK.search(t) and not (years and max(years) < 2000):
+            out.append({"url": p["url"], "credit": p["credit"], "logo": False, "width": p.get("width", 0)})
+    return out
+
+
 def pictures(page: dict, more: bool = True) -> list[dict]:
     """The page's lead image first (a party's symbol, a politician's portrait, a building), then a few more openly
     licensed photos of the same subject from Commons, so repeated mentions don't repeat one picture."""
@@ -198,6 +212,9 @@ def pictures(page: dict, more: bool = True) -> list[dict]:
                 t = str(p.get("title", "")).lower()
                 # only photos whose file names the subject in full ("Amit Shah at ...", not "Shah Jahan ... Amit"),
                 # and never an artwork or old print that happens to share a name
+                years = [int(y) for y in re.findall(r"\b(19\d\d|20\d\d)\b", t)]
+                if years and max(years) < 2000:
+                    continue                  # an old photo: today's India is shown as it is today
                 if want in t and not _ARTWORK.search(t):
                     out.append({"url": p["url"], "credit": p["credit"], "logo": False, "width": p.get("width", 0)})
         except ProviderError:

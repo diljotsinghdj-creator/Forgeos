@@ -342,6 +342,28 @@ def expand_name(name: str, names: dict[str, list[str]]) -> str | None:
     return hits[0] if len(hits) == 1 else None
 
 
+_MOVEMENT = re.compile(r"\b(Party|Movement|Andolan|Morcha|Union|Sangathan|Front|Sena|Collective)\b")
+_MAINSTREAM = {"bharatiya janata party", "indian national congress", "aam aadmi party", "samajwadi party",
+               "communist party of india", "nationalist congress party", "bahujan samaj party", "janata dal"}
+_ACTION = re.compile(r"\b(protest\w*|march\w*|rall(?:y|ies)|demonstrat\w*|detain\w*|detention\w*|arrest\w*|"
+                     r"crackdown|agitation|dharna|sit-in|marchers|protesters|activists|founder|leaders?)\b", re.I)
+
+
+def movement(script: str, known: set[str]) -> str:
+    """The protest movement this story is about ("Cockroach Janta Party"), so a line about "the protest" or "the
+    arrests" shows that movement - its people, its marches - and not a generic crowd. "" when there isn't one."""
+    counts: dict[str, int] = {}
+    for _, sent in _sentences(script):
+        for name in proper_nouns(sent, known):
+            name = _clean(name)
+            if len(name.split()) >= 2 and _MOVEMENT.search(name) and name.lower() not in _MAINSTREAM:
+                counts[name] = counts.get(name, 0) + 1
+    if re.search(r"\bCJP\b|cockroach", script, re.I):
+        counts["Cockroach Janta Party"] = counts.get("Cockroach Janta Party", 0) + 2
+    best = max(counts, key=counts.get) if counts else ""
+    return best if best and counts[best] >= 2 else ""
+
+
 def context_country(script: str) -> str:
     counts = {c: len(re.findall(rf"\b{re.escape(c)}\b", script)) for c in COUNTRIES}
     best = max(counts, key=counts.get) if counts else ""
@@ -379,6 +401,7 @@ def enrich(plan, script: str) -> None:
     city = context_city(script)
     topic = [country] + [w for w, _ in sorted(counts.items(), key=lambda x: -x[1])[:8]]
     names = full_names(script, known)
+    cause = movement(script, known)
     made_up = {n.lower() for n in fictional_names(script)}
     for s in plan.scenes:       # the writer's on-screen labels: "Text: LEAH · FICTIONAL"
         for label in [s.overlay] + [str(b.get("overlay") or "") for b in s.beats]:
@@ -418,6 +441,13 @@ def enrich(plan, script: str) -> None:
                 shown.append(n)
                 b["named"] = {"name": _clean(name), "context": country, "city": city, "topic": [t for t in topic if t]}
                 break
+            # 1b. a line about the protests or arrests shows the movement itself (its leaders, its marches)
+            key = cause.lower()
+            if not b.get("named") and cause and _ACTION.search(text) and key not in visual.lower():
+                shown = seen_subject.setdefault(key, [])
+                if len(shown) < MAX_PER_SUBJECT * 2 and not (shown and n - shown[-1] < 3):
+                    shown.append(n)
+                    b["named"] = {"name": cause, "context": country, "city": city, "topic": [t for t in topic if t]}
             if b.get("named"):
                 continue
             # 2. an everyday thing the words mention and the picture doesn't show

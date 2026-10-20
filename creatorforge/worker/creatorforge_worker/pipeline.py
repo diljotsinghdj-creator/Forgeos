@@ -400,7 +400,13 @@ class Pipeline:
             if name not in cache:
                 page = wiki_image.resolve(name, named.get("context", ""), named.get("topic") or [],
                                           named.get("city", ""))
-                cache[name] = {"title": page["title"], "pics": wiki_image.pictures(page)} if page else {}
+                if page:
+                    cache[name] = {"title": page["title"], "pics": wiki_image.pictures(page)}
+                elif len(name.split()) >= 2:
+                    # no Wikipedia page (a new movement's founder): Commons photos that name them in full
+                    cache[name] = {"title": name, "pics": wiki_image.search_by_name(name)}
+                else:
+                    cache[name] = {}
             entry = cache[name]
         except ProviderError:
             return None
@@ -414,6 +420,8 @@ class Pipeline:
                 continue
             if not pic.get("logo") and match.is_flat(src):
                 continue
+            if not pic.get("logo") and _greyscale(src) and any(p["url"] not in used and p is not pic for p in pics):
+                continue                      # a black-and-white photo only when there's no colour one left
             used.append(pic["url"])
             credits = job.setdefault("stock_credits", [])
             if pic["credit"] not in credits:
@@ -1358,3 +1366,15 @@ def find_asset(assets: list[dict], name: str) -> dict | None:
     words = want.split()
     hits = [a for a in assets if all(w in norm(a.get("name", "")).split() for w in words)]
     return hits[0] if len(hits) == 1 else None
+
+
+def _greyscale(path: Path) -> bool:
+    """A black-and-white (or sepia) photo: almost no colour saturation."""
+    try:
+        from PIL import Image
+        with Image.open(path) as im:
+            hsv = im.convert("RGB").resize((64, 64)).convert("HSV")
+            sat = [px[1] for px in hsv.getdata()]
+        return sum(sat) / len(sat) < 22
+    except (OSError, ValueError):
+        return False
