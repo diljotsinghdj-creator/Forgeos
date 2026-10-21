@@ -222,6 +222,10 @@ def pictures(page: dict, more: bool = True) -> list[dict]:
     return out
 
 
+MIN_PHOTO_SIDE = 400      # a smaller photo turns into visible pixels on a 1080p frame
+MAX_UPSCALE = 1.5
+
+
 def fetch_framed(pic: dict, cache, size: tuple[int, int], timeout: float = 60):
     """Downloads the picture and frames it for the video: a logo or symbol centred on a plain paper card, a photo
     whole over a blurred, darkened copy of itself (so a portrait photo in a 16:9 frame isn't cropped to a chin)."""
@@ -245,6 +249,8 @@ def fetch_framed(pic: dict, cache, size: tuple[int, int], timeout: float = 60):
         src.load()
     except (httpx.HTTPError, OSError) as e:
         raise ProviderError(f"picture download failed: {e}") from e
+    if not pic.get("logo") and min(src.size) < MIN_PHOTO_SIDE:
+        raise ProviderError(f"picture too small to show full screen ({src.width}x{src.height})")
     if pic.get("logo") or src.mode in ("RGBA", "LA", "P"):
         rgba = src.convert("RGBA")
         card = Image.new("RGB", (w, h), (242, 236, 223))
@@ -258,7 +264,7 @@ def fetch_framed(pic: dict, cache, size: tuple[int, int], timeout: float = 60):
         bg = photo.resize((int(photo.width * cover) + 1, int(photo.height * cover) + 1), Image.LANCZOS)
         bg = bg.crop(((bg.width - w) // 2, (bg.height - h) // 2, (bg.width - w) // 2 + w, (bg.height - h) // 2 + h))
         bg = ImageEnhance.Brightness(bg.filter(ImageFilter.GaussianBlur(max(8, w // 60)))).enhance(0.45)
-        fit = min(w * 0.94 / photo.width, h * 0.94 / photo.height)
+        fit = min(w * 0.94 / photo.width, h * 0.94 / photo.height, MAX_UPSCALE)   # never blown up into blur
         fg = photo.resize((max(1, int(photo.width * fit)), max(1, int(photo.height * fit))), Image.LANCZOS)
         if fg.width >= w * 0.9 and fg.height >= h * 0.9:
             out = photo.resize((int(photo.width * cover) + 1, int(photo.height * cover) + 1), Image.LANCZOS)

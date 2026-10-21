@@ -214,6 +214,11 @@ nohup bash -c "
   exec '$HOME_DIR/chatterbox_venv/bin/python' '$HOME_DIR/Forgeos/creatorforge/worker/creatorforge_worker/chatterbox_server.py' 8770
 " > chatterbox.log 2>&1 &
 
+say "News screenshots: headless browser installs in the background (log: $HOME_DIR/browser.log)"
+# Article: lines show a screenshot of the real web page; until the browser is ready they use the drawn headline card.
+nohup bash -c "'$PYBIN' -m pip install -q playwright && '$PYBIN' -m playwright install --with-deps chromium && echo 'browser ready'" \
+  > browser.log 2>&1 &
+
 if [ -n "$VIDEO_MODEL" ]; then
   # Videos with AI images work right away; the big AI-video model finishes downloading in the background
   # (the worker would also fetch it on first use, this just gets it ready sooner).

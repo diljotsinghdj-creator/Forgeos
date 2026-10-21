@@ -14,7 +14,8 @@ from .media.render import TRANSITIONS
 from .templates import (ANIMATED_STYLES, CUTOUT_LOOKS, EDITORIAL_LEADS, MIX_STYLE, EDITORIAL_NEGATIVE, PACING, STYLE_PRESETS, TEMPLATES,
                         WORDS_PER_SECOND, Template)
 
-NEGATIVE = ("text, watermark, logo, caption, subtitles, letters, signature, blurry, low quality, "
+NEGATIVE = ("text, watermark, logo, caption, subtitles, letters, signature, gibberish text, garbled letters, "
+            "random characters, misspelled words, fake writing, numbers, blurry, low quality, "
             "jpeg artifacts, deformed, distorted face, extra fingers, extra limbs, "
             "middle finger, rude hand gesture, obscene gesture")
 # Faceless channels: show people without showing faces - also avoids the uncanny, smeared faces image models make.
@@ -550,12 +551,34 @@ def _look_prompt(visual: str, emotion: str, s: "ShotPlan", spec: ProductionSpec,
     return _image_prompt(visual, emotion, s, spec, STYLE_PRESETS[look][1], shot_size, hook)
 
 
+# Things image models cover in fake, garbled writing: these are drawn blank (real words come from on-screen text,
+# headline cards and real screenshots, never from the image model)
+_WRITING = re.compile(r"\b(placards?|posters?|banners?|signs?|signboards?|billboards?|newspapers?|headlines?|documents?|"
+                      r"letters?|forms?|files?|reports?|papers?|screens?|phones?|laptops?|monitors?|tv|television|cards?|"
+                      r"receipts?|labels?|nameplates?|tickets?|books?|pages?|ledgers?|registers?|lists?|notices?|"
+                      r"charts?|whiteboards?|blackboards?|graffiti|slogans?|petitions?|manifestos?|booklets?|envelopes?)\b",
+                      re.I)
+_SAY_TEXT = re.compile(r",?\s*\b(text|words|names|details|labels?|mastheads?|headlines?)\s+(unreadable|blurred|"
+                       r"illegible|hidden|not readable)\b|,?\s*\breading [A-Z ]{2,}\b|\breading [\"'][^\"']+[\"']", re.I)
+NO_WRITING = "every surface left blank with no writing, no letters, no numbers"
+
+
+def _no_text(visual: str) -> tuple[str, bool]:
+    """The visual without the words that make an image model write fake text ("text unreadable", "a sign reading
+    SECURITY"), and whether it shows something that normally carries writing."""
+    clean = re.sub(r"\s{2,}", " ", _SAY_TEXT.sub("", visual)).strip(" ,.")
+    return clean or visual, bool(_WRITING.search(visual))
+
+
 def _image_prompt(visual: str, emotion: str, s: "ShotPlan", spec: ProductionSpec, style: str,
                   shot_size: str = "", hook: bool = False) -> tuple[str, str]:
     # SDXL reads only ~77 tokens: keep the subject short and put framing, emotion + quality early so they aren't cut.
     if spec.style in EDITORIAL_LEADS:
         return _editorial_prompt(visual, spec, EDITORIAL_LEADS[spec.style])
+    visual, writing = _no_text(visual)
     parts = [_clip_words(visual.rstrip("."), 30 if spec.visual_direction else 40)]
+    if writing:
+        parts.append(NO_WRITING)
     if spec.visual_direction:
         parts.append(_clip_words(spec.visual_direction.split(",")[0], 8))   # the look, e.g. "black-and-white 1950s lab footage"
     people = _has_people(f"{visual} {s.shot}")
@@ -582,6 +605,8 @@ def _image_prompt(visual: str, emotion: str, s: "ShotPlan", spec: ProductionSpec
             parts.append(f"{c.name}: {c.description}")
     parts.append(style)
     negative = NEGATIVE + (FACELESS_NEGATIVE if faceless else ", blank expression, dead eyes")
+    if writing:
+        negative += ", typography, handwriting, printed words, newspaper text, poster text, sign text"
     if animated:
         negative += ", photorealistic, photograph, live action, 3d render of a real person"
     return ". ".join(parts), negative
@@ -590,6 +615,7 @@ def _image_prompt(visual: str, emotion: str, s: "ShotPlan", spec: ProductionSpec
 def _editorial_prompt(visual: str, spec: ProductionSpec, lead: str) -> tuple[str, str]:
     """Explainer looks: the look first, then exactly what the line shows - one subject the worker can cut out and
     lay on paper. People appear as silhouettes or hands (archival-photo style), never as AI faces."""
+    visual, writing = _no_text(visual)
     subject = _clip_words(visual.rstrip("."), 26)
     parts = [lead, subject]
     if _has_people(visual):
@@ -603,6 +629,8 @@ def _editorial_prompt(visual: str, spec: ProductionSpec, lead: str) -> tuple[str
         # image models scribble fake words on paper and screens; keep them plain so nothing reads as gibberish
         parts.append("the page or screen shown as a simple layout of grey bars, boxes, icons and buttons, "
                      "no readable words, clearly visible content")
+    elif writing:
+        parts.append(NO_WRITING)
     parts.append("sharp focus, high contrast, centred")
     return ", ".join(parts), NEGATIVE + EDITORIAL_NEGATIVE + FACELESS_NEGATIVE + ", gibberish text, misspelled words"
 
@@ -820,7 +848,7 @@ def parse_script(raw: str) -> tuple[str, dict]:
             parts = _META.split(line)
             body, pairs = parts[0], list(zip(parts[1::2], parts[2::2]))
             if after_key in ("source", "sources"):
-                meta["source"] = (meta.get("source", "") + body + "".join(v for _, v in pairs).strip())[:2000]
+                meta["source"] = (meta.get("source", "") + body + "".join(v for _, v in pairs).strip())[:12000]
                 continue
             if after_key in ("post", "title", "post title", "video title") and pairs and "title" in meta:
                 meta["title"] = f"{meta['title']} {pairs[-1][1].strip()}"[:100]
@@ -885,7 +913,7 @@ def parse_script(raw: str) -> tuple[str, dict]:
             elif k in ("hashtags", "tags"):
                 meta["hashtags"] = re.findall(r"#\w+", v) or v.split()
             elif k in ("source", "sources"):
-                meta["source"] = v[:2000]   # long-form episodes cite many sources
+                meta["source"] = v[:12000]   # long-form episodes cite many sources (40+ links)
     # A "Visual:" under (or beside) most spoken lines is a shot list: each picture belongs to its own line. One or
     # two visual lines describe the look of the whole video instead.
     if sum(bool(d.get("visual")) + len(d.get("more") or []) for d in per.values()) >= 3:

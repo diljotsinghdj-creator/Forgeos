@@ -447,7 +447,8 @@ def enrich(plan, script: str) -> None:
                 shown = seen_subject.setdefault(key, [])
                 if len(shown) < MAX_PER_SUBJECT * 2 and not (shown and n - shown[-1] < 3):
                     shown.append(n)
-                    b["named"] = {"name": cause, "context": country, "city": city, "topic": [t for t in topic if t]}
+                    b["named"] = {"name": cause, "context": country, "city": city, "topic": [t for t in topic if t],
+                                  "movement": True}
             if b.get("named"):
                 continue
             # 2. an everyday thing the words mention and the picture doesn't show

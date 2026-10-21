@@ -257,7 +257,10 @@ class Pipeline:
                 beats0 = shot.get("beats") or []
                 named = (beats0[0].get("named") if beats0 else shot.get("named")) or {}
                 real = None
-                if named and not (beats0 and _covered(beats0[0])):
+                first = beats0[0] if beats0 else {"text": shot.get("narration", ""), "visual": shot["visual"], "extra": {}}
+                if not (beats0 and _covered(beats0[0])) and (not named or named.get("movement")):
+                    real = self._news_photo(job, first, gen)      # the cited article's own photo of the event
+                if real is None and named and not (beats0 and _covered(beats0[0])):
                     real = self._named_photo(job, named, gen)     # the person/party/place the words name
                 # a full-frame graphic covers the scene's first picture: keep the real photos for pictures people see
                 if real is None and not (beats0 and _covered(beats0[0])):
@@ -316,7 +319,11 @@ class Pipeline:
                         sc["beat_images"] = names
                         self.store.save(job)
                         continue     # a real photo covers this beat - no AI image needed
-                real = self._named_photo(job, b["named"], self._gen(job)) if b.get("named") else None
+                real = None
+                if not b.get("named") or b["named"].get("movement"):
+                    real = self._news_photo(job, b, self._gen(job))
+                if real is None and b.get("named"):
+                    real = self._named_photo(job, b["named"], self._gen(job))
                 real = real or self._real_photo(job, b.get("stock") or "", b.get("visual", ""),
                                                 str((b.get("extra") or {}).get("archive") or ""),
                                                 where=str(b.get("country") or ""))
@@ -383,6 +390,48 @@ class Pipeline:
 
     def _gen(self, job: dict) -> tuple[int, int]:
         return ASPECTS[self._spec(job).aspect][0]
+
+    def _news_links(self, job: dict) -> list[dict]:
+        from .providers import news_media
+        return news_media.source_links(str((self._spec(job).publish or {}).get("source") or ""))
+
+    def _news_photo(self, job: dict, beat: dict, gen) -> Path | None:
+        """The cited article's own lead photo, for a line about the events it reports (a protest, an arrest, a
+        court hearing): the real picture from the news, credited "Photo via <publisher>". Each article's photo is
+        used at most twice and never on two lines in a row."""
+        if not self.cfg.free_stock:
+            return None
+        text = str(beat.get("text") or "")
+        cite = str((beat.get("extra") or {}).get("cite") or "")
+        if not cite and not _EVENT.search(f"{text} {beat.get('visual') or ''}"):
+            return None
+        links = self._news_links(job)
+        if not links:
+            return None
+        from .providers import news_media
+        publisher = cite.split(",")[0].split("/")[0].strip()
+        link = news_media.find_link(f"{text} {cite}", links, publisher)
+        if link is None:
+            return None
+        uses = job.setdefault("news_used", {})
+        if uses.get(link["url"], 0) >= 2 or job.get("news_last") == link["url"]:
+            return None
+        cache = self.cfg.cache_dir / "news"
+        try:
+            src = news_media.lead_photo(link["url"], cache)
+        except Exception:  # noqa: BLE001 - a news site that blocks us: the line keeps its other pictures
+            src = None
+        if src is None or (match.is_flat(src)):
+            return None
+        out = news_media.frame_photo(src, cache / f"framed_{src.stem}_{gen[0]}x{gen[1]}.jpg", gen[0], gen[1])
+        uses[link["url"]] = uses.get(link["url"], 0) + 1
+        job["news_last"] = link["url"]
+        credit = f"Photo via {news_media.host_label(link)} ({link['url']})"
+        credits = job.setdefault("stock_credits", [])
+        if credit not in credits:
+            credits.append(credit)
+        self._note_match(job, checked=1, real_photos=1, named=1)
+        return out
 
     def _named_photo(self, job: dict, named: dict, gen) -> Path | None:
         """A real picture of the person, party, institution or place the words name: the party symbol when the
@@ -969,7 +1018,7 @@ class Pipeline:
                 images += [None] * (len(beats) - len(images))
                 lengths = _beat_lengths([b["text"] for b in beats], sc.get("word_starts") or [], d)
                 for k, length in enumerate(lengths):
-                    chart = self._chart_clip(spec, beats[k], length, (w, h), work)
+                    chart = self._chart_clip(spec, beats[k], length, (w, h), work, job)
                     if chart is not None:
                         stock_clips[k] = chart          # the animated graphic shows the number instead of a picture
                         charted.add((i, k))
@@ -1277,7 +1326,36 @@ class Pipeline:
             done.add(c.beat)
         return done
 
-    def _chart_clip(self, spec, beat: dict, length: float, size: tuple[int, int], work: Path) -> Path | None:
+    def _article_shot(self, spec, beat: dict, size: tuple[int, int], seconds: float, work: Path, job: dict | None):
+        """An Article: line as the real web page: a screenshot of the cited article (matched to the headline in
+        the script's Source: links), held up with a SOURCE tag and a slow push-in. None: draw the headline card."""
+        if not self.cfg.free_stock:
+            return None
+        from .providers import news_media
+        headline, _, source = str((beat.get("extra") or {}).get("article") or "").partition("|")
+        publisher = source.split(",")[0].strip()
+        links = news_media.source_links(str((spec.publish or {}).get("source") or ""))
+        link = news_media.find_link(headline, links, publisher) if headline.strip() else None
+        if link is None:
+            return None
+        shot = news_media.screenshot(link["url"], self.cfg.cache_dir / "news")
+        if shot is None:
+            return None
+        key = hashlib.sha256(f"{link['url']}|{size}|{seconds}".encode()).hexdigest()[:16]
+        try:
+            frame = news_media.framed(shot, work / f"article_{key}.png", size[0], size[1], publisher or news_media.host_label(link))
+            clip = news_media.still_clip(frame, work / f"article_{key}.mp4", size[0], size[1], seconds)
+        except (MediaError, OSError):
+            return None
+        if job is not None:
+            credit = f"Screenshot: {publisher or news_media.host_label(link)} ({link['url']})"
+            credits = job.setdefault("stock_credits", [])
+            if credit not in credits:
+                credits.append(credit)
+        return clip
+
+    def _chart_clip(self, spec, beat: dict, length: float, size: tuple[int, int], work: Path,
+                    job: dict | None = None) -> Path | None:
         """An animated number graphic for a beat: the writer's Chart: line, or - in the editorial looks - a Text:
         line that compares figures ("£12 → £720", "48% vs 22%"). None when the beat has no chart."""
         theme = "investigative" if spec.style in DESK_STYLES else "editorial"
@@ -1285,6 +1363,10 @@ class Pipeline:
         extra = beat.get("extra") or {}
         if not beat.get("chart"):
             # The writer's full-frame graphics: an animated map, a chapter card, a highlighted quote.
+            if extra.get("article"):
+                real = self._article_shot(spec, beat, size, seconds, work, job)
+                if real is not None:
+                    return real                     # the real web page; otherwise the drawn headline card below
             for kind in director.FULL_FRAME:
                 if extra.get(kind):
                     out = work / f"{kind}_{hashlib.sha256(f'{extra[kind]}|{theme}|{size}|{seconds}'.encode()).hexdigest()[:16]}.mp4"
@@ -1378,3 +1460,10 @@ def _greyscale(path: Path) -> bool:
         return sum(sat) / len(sat) < 22
     except (OSError, ValueError):
         return False
+
+
+# Lines about news events: these get the cited article's own photo when one matches
+_EVENT = re.compile(r"\b(protest\w*|march\w*|rall(?:y|ies)|demonstrat\w*|detain\w*|detention\w*|arrest\w*|crackdown|"
+                    r"police|barricade\w*|court|hearing|verdict|bail|jail|custody|raid\w*|election|vote\w*|voter\w*|"
+                    r"campaign\w*|speech|addressed|press conference|parliament|minister|leader\w*|founder|activist\w*|"
+                    r"journalist\w*|reporter\w*|shutdown|internet)\b", re.I)
