@@ -84,6 +84,12 @@ def stock_key(job_id: str) -> tuple[str, str] | None:
     return _stock_keys.get(job_id)
 
 
+def archive_sources(cfg: Config) -> list[tuple[str, str]]:
+    """Old-film footage (Prelinger), only for history lines marked Archive:."""
+    from .stock_video import ARCHIVE_SOURCES
+    return [(name, "") for name in ARCHIVE_SOURCES] if cfg.free_stock else []
+
+
 def stock_sources(job_id: str, cfg: Config) -> list[tuple[str, str]]:
     """Where this production looks for real footage: the app's keyed library first, then the keyless ones."""
     keyed = _stock_keys.get(job_id)

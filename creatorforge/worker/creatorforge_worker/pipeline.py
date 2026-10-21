@@ -259,9 +259,9 @@ class Pipeline:
                 real = None
                 first = beats0[0] if beats0 else {"text": shot.get("narration", ""), "visual": shot["visual"], "extra": {}}
                 if not (beats0 and _covered(beats0[0])) and (not named or named.get("movement")):
-                    real = self._news_photo(job, first, gen)      # the cited article's own photo of the event
+                    real = self._news_photo(job, first, self._out_size(job))   # the cited article's own photo
                 if real is None and named and not (beats0 and _covered(beats0[0])):
-                    real = self._named_photo(job, named, gen)     # the person/party/place the words name
+                    real = self._named_photo(job, named, self._out_size(job))  # the person/party/place named
                 # a full-frame graphic covers the scene's first picture: keep the real photos for pictures people see
                 if real is None and not (beats0 and _covered(beats0[0])):
                     real = self._real_photo(
@@ -321,9 +321,9 @@ class Pipeline:
                         continue     # a real photo covers this beat - no AI image needed
                 real = None
                 if not b.get("named") or b["named"].get("movement"):
-                    real = self._news_photo(job, b, self._gen(job))
+                    real = self._news_photo(job, b, self._out_size(job))
                 if real is None and b.get("named"):
-                    real = self._named_photo(job, b["named"], self._gen(job))
+                    real = self._named_photo(job, b["named"], self._out_size(job))
                 real = real or self._real_photo(job, b.get("stock") or "", b.get("visual", ""),
                                                 str((b.get("extra") or {}).get("archive") or ""),
                                                 where=str(b.get("country") or ""))
@@ -372,7 +372,8 @@ class Pipeline:
             s = (seed + attempt * 15485863) % 2**31
             # Last try: a plain prompt with just the subject - models get compound or metaphorical scenes wrong,
             # but rarely miss "old paper map Britain".
-            p_text = prompt if attempt == 0 or attempt < tries - 1 else f"{lead}, {match.subject(visual, 6)}, sharp focus, centred"
+            # the subject put first, keeping the forged prompt's look, setting and colour (never the old-print lead)
+            p_text = prompt if attempt == 0 or attempt < tries - 1 else f"{match.subject(visual, 6)}, {prompt}"
             key = _key(img.id, p_text, negative, gen, s, face)
             src = self._cached("images", key, ".png",
                                lambda p, s=s, t=p_text: img.generate(t, negative, gen[0], gen[1], s, p), verify.image)
@@ -380,13 +381,18 @@ class Pipeline:
                 return src, key
             score = checker.score(src, match.describe(visual))
             if match.is_flat(src):
-                score -= 0.2                  # a blank screen or page shows nothing: draw it again
+                score -= 0.5                  # a blank screen or page shows nothing: never kept over a real picture
+            score -= match.text_penalty(checker, src, visual)   # garbled fake writing: draw it again
             if best is None or score > best[0]:
                 best = (score, src, key)
             if score >= match.GOOD:
                 break
         self._note_match(job, checked=1, regenerated=1 if attempt else 0, low=1 if best[0] < match.GOOD else 0)
         return best[1], best[2]
+
+    def _out_size(self, job: dict) -> tuple[int, int]:
+        """The finished video's frame size: real photos are framed at this size, not the smaller drawing size."""
+        return ASPECTS[self._spec(job).aspect][1]
 
     def _gen(self, job: dict) -> tuple[int, int]:
         return ASPECTS[self._spec(job).aspect][0]
@@ -462,7 +468,9 @@ class Pipeline:
         used = job.setdefault("used_photos", [])
         pics = entry.get("pics") or []
         # the first unused picture; when all were shown, the subject's lead picture again (a symbol can repeat)
-        for pic in [p for p in pics if p["url"] not in used] + pics[:1]:
+        # each photo once; only a party symbol or logo may come back (a person's photo on repeat looks broken)
+        again = [p for p in pics[:1] if p.get("logo")]
+        for pic in [p for p in pics if p["url"] not in used] + again:
             try:
                 src = wiki_image.fetch_framed(pic, self.cfg.cache_dir / "named_photos", gen)
             except (ProviderError, OSError):
@@ -471,6 +479,13 @@ class Pipeline:
                 continue
             if not pic.get("logo") and _greyscale(src) and any(p["url"] not in used and p is not pic for p in pics):
                 continue                      # a black-and-white photo only when there's no colour one left
+            if not pic.get("logo"):
+                fp = match.fingerprint(src)
+                if match.seen_before(fp, job.setdefault("used_fingerprints", [])):
+                    used.append(pic["url"])
+                    continue                  # the same photo under another address
+                if fp is not None:
+                    job["used_fingerprints"].append(fp)
             used.append(pic["url"])
             credits = job.setdefault("stock_credits", [])
             if pic["credit"] not in credits:
@@ -488,7 +503,8 @@ class Pipeline:
         from .providers import archive_photo, stock_photo
         want = match.describe(visual)
         used = job.setdefault("used_photos", [])
-        decade = re.sub(r"[^0-9s]", "", era)[:5]
+        m = re.search(r"\b(1[5-9]\d\d|20\d\d)s?\b", era)
+        decade = m.group(0) if m else ""
         for q in dict.fromkeys(x for x in (f"{match.subject(visual)} {decade}".strip(), match.subject(visual, 3)) if x):
             try:
                 found_all = archive_photo.search(q)
@@ -561,7 +577,7 @@ class Pipeline:
         """Real footage/photos must show what the line is about; an off-topic result is skipped."""
         checker = self._matcher()
         if checker is None:
-            return True
+            return True       # callers only pass keyed-library media when there is no checker
         frame = media
         if media.suffix.lower() not in (".jpg", ".jpeg", ".png", ".webp"):
             frame = self.cfg.cache_dir / "match" / f"{media.stem}_{media.stat().st_size}.jpg"
@@ -572,8 +588,11 @@ class Pipeline:
                     ff.run(["-ss", f"{at:.2f}", "-i", str(media), "-frames:v", "1", "-q:v", "3", str(frame)])
                 except (MediaError, OSError):
                     return True
-        score = max(checker.score(frame, query), checker.score(frame, match.describe(visual)) if visual else 0.0)
-        if score < match.POOR or match.shows_face(checker, frame, visual) or match.is_flat(frame):
+        line = checker.score(frame, match.describe(visual)) if visual else checker.score(frame, query)
+        score = max(checker.score(frame, query), line)
+        # it must show this line, not merely the 2-word search ("crowd" footage on any line about people)
+        if score < match.POOR or (visual and line < match.POOR) or match.shows_face(checker, frame, visual) \
+                or match.is_flat(frame):
             # off-topic, a face, or a clip that shows nothing (a dark or blank frame)
             # off-topic, or a face close-up the line didn't ask for (the channel is faceless)
             self._note_match(job, stock_rejected=1)
@@ -601,6 +620,8 @@ class Pipeline:
                      jdir: Path, visual: str = "") -> str | None:
         """A real photo for a beat no footage covered (best effort; None -> the beat gets an AI image)."""
         from .providers import stock_photo
+        if self._matcher() is None:
+            photos = [p for p in photos if p[1]]          # keyless libraries only with the picture check
         for found in stock_photo.search_any(photos, query, portrait)[:3]:
             try:
                 src = stock_photo.fetch(found, self.cfg.cache_dir / "stock_photos")
@@ -669,16 +690,33 @@ class Pipeline:
         clips = list(sc.get("beat_clips") or [])[: len(beats)]
         clips += [None] * (len(beats) - len(clips))
         portrait = self._spec(job).aspect == "9:16"
+        used = job.setdefault("used_clips", [])
+        keyed = [x for x in stock if x[1]]
+        checked = self._matcher() is not None
         for k, b in enumerate(beats):
             if clips[k] and (jdir / clips[k]).is_file() or not b.get("stock"):
                 continue
-            for found in stock_video.search_any(stock, b["stock"], portrait)[:3]:
+            history = bool((b.get("extra") or {}).get("archive"))
+            # keyless libraries rank loosely: without the picture check they are not trusted at all
+            sources = list(stock if checked else keyed) + (providers.archive_sources(self.cfg) if history else [])
+            for found in stock_video.search_any(sources, b["stock"], portrait)[:4]:
+                if found["url"] in used:
+                    continue     # never the same footage on two lines
                 try:
                     src = stock_video.fetch(found, self.cfg.cache_dir / "stock")
                 except (ProviderError, MediaError, OSError):
                     continue     # try the next candidate; none left -> this beat gets an AI image as usual
                 if not self._on_topic(job, src, b["stock"], b.get("visual", "")):
                     continue     # footage that doesn't show the line: try the next one
+                frame = self.cfg.cache_dir / "match" / f"{src.stem}_{src.stat().st_size}.jpg"
+                if not history and frame.is_file() and _greyscale(frame):
+                    continue     # black-and-white film on a line about today
+                fp = match.fingerprint(frame) if frame.is_file() else None
+                if match.seen_before(fp, job.setdefault("used_fingerprints", [])):
+                    continue
+                used.append(found["url"])
+                if fp is not None:
+                    job["used_fingerprints"].append(fp)
                 dst = jdir / f"scene_{sc['index'] + 1:02d}_stock{k + 1}{src.suffix}"
                 if not dst.is_file():
                     shutil.copyfile(src, dst)

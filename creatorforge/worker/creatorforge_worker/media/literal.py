@@ -346,7 +346,7 @@ _MOVEMENT = re.compile(r"\b(Party|Movement|Andolan|Morcha|Union|Sangathan|Front|
 _MAINSTREAM = {"bharatiya janata party", "indian national congress", "aam aadmi party", "samajwadi party",
                "communist party of india", "nationalist congress party", "bahujan samaj party", "janata dal"}
 _ACTION = re.compile(r"\b(protest\w*|march\w*|rall(?:y|ies)|demonstrat\w*|detain\w*|detention\w*|arrest\w*|"
-                     r"crackdown|agitation|dharna|sit-in|marchers|protesters|activists|founder|leaders?)\b", re.I)
+                     r"crackdown|agitation|dharna|sit-in|marchers|protesters|activists|founder)\b", re.I)
 
 
 def movement(script: str, known: set[str]) -> str:

@@ -208,3 +208,19 @@ def is_flat(image: Path) -> bool:
     except Exception:  # noqa: BLE001 - unreadable: let the other checks decide
         return False
     return mean < 28 or mean > 238 or detail < 5.5
+
+
+_ASKS_TEXT = re.compile(r"\b(headline|newspaper|article|screenshot|document|text|words?|letters?|written|reads?|sign)\b", re.I)
+
+
+def text_penalty(checker: "Matcher", image: Path, visual: str) -> float:
+    """How much to mark down a generated picture that is covered in (fake, garbled) writing. CLIP rewards pictures
+    with words in them, so without this the redraw loop keeps the worst ones."""
+    if _ASKS_TEXT.search(visual or ""):
+        return 0.0
+    try:
+        writing = checker.score(image, "a picture covered in printed text, letters and words")
+        clean = checker.score(image, "a photograph with no text or writing")
+    except Exception:  # noqa: BLE001
+        return 0.0
+    return 0.08 if writing - clean > 0.015 else 0.0

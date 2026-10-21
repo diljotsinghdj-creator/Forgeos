@@ -14,7 +14,10 @@ import httpx
 
 from .base import ProviderError
 
-FREE_SOURCES = ("nasa", "wikimedia", "archive")
+FREE_SOURCES = ("nasa", "wikimedia")
+# Prelinger (1930s-80s films, mostly black and white, often 480p): only for history lines (Archive:)
+ARCHIVE_SOURCES = ("archive",)
+MIN_CLIP_SIDE = 720       # a smaller clip is blown up into visible pixels on a 1080p frame
 UA = "CreatorForge/1.0 (video worker; https://github.com/diljotsinghdj-creator/Forgeos)"
 _STOP = {"the", "and", "with", "from", "into", "over", "for", "of", "a", "an", "in", "on", "at", "to", "by"}
 # Free licences that allow commercial use and editing (credit goes in the publish kit).
@@ -85,7 +88,7 @@ def _wikimedia(query: str, timeout: float) -> list[dict]:
         title = p.get("title", "").removeprefix("File:").rsplit(".", 1)[0]
         if not relevant(query, f"{title} {val('ImageDescription')[:400]} {val('Categories')}"):
             continue
-        if int(info.get("height") or 0) < 480 or float(info.get("duration") or 0) < 2:
+        if min(int(info.get("height") or 0), int(info.get("width") or 0)) < MIN_CLIP_SIDE or float(info.get("duration") or 0) < 2:
             continue
         # A transcoded copy near 1080p downloads far faster than the original master.
         ders = [d for d in info.get("derivatives") or [] if d.get("src") and 480 <= int(d.get("height") or 0) <= 1080]
@@ -198,6 +201,9 @@ def search(provider: str, key: str, query: str, portrait: bool = True, timeout: 
                                 "duration": float(v.get("duration") or 0), "credit": f"{(v.get('user') or {}).get('name', '')} / Pexels"})
     except (httpx.HTTPError, ValueError, KeyError) as e:
         raise ProviderError(f"stock video search failed: {e}") from e
+    # Big enough for a sharp 1080p frame (a 480p film blown up 4x is the "pixelated old picture")
+    out = [c for c in out if min(int(c.get("width") or 0), int(c.get("height") or 0)) >= MIN_CLIP_SIDE
+           or provider in ("mock", "archive")]
     # Prefer clips in the right orientation that are long enough to cover a beat.
     out.sort(key=lambda c: ((c["height"] > c["width"]) != portrait, c["duration"] < 2.5))
     return out

@@ -87,7 +87,8 @@ def test_free_sources_follow_config(cfg):
     from creatorforge_worker import providers
     assert providers.stock_sources("nojob", cfg) == []          # tests never touch the network
     cfg.free_stock = True
-    assert providers.stock_sources("nojob", cfg) == [("nasa", ""), ("wikimedia", ""), ("archive", "")]
+    assert providers.stock_sources("nojob", cfg) == [("nasa", ""), ("wikimedia", "")]
+    assert providers.archive_sources(cfg) == [("archive", "")]      # old film only for history lines
 
 
 def test_render_survives_a_clip_that_changes_size_mid_stream(tmp_path):
@@ -169,7 +170,7 @@ def test_photo_sources_order(cfg):
     providers.set_stock_key("job-x", {"provider": "pixabay", "key": "pk", "unsplash": "uk"})
     cfg.free_stock = True
     assert providers.photo_sources("job-x", cfg) == [("unsplash", "uk"), ("pixabay", "pk"), ("openverse", "")]
-    assert providers.stock_sources("job-x", cfg) == [("pixabay", "pk"), ("nasa", ""), ("wikimedia", ""), ("archive", "")]
+    assert providers.stock_sources("job-x", cfg) == [("pixabay", "pk"), ("nasa", ""), ("wikimedia", "")]
 
 
 def test_photo_fetch_reencodes_and_rejects_junk(tmp_path, monkeypatch):

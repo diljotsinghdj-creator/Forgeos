@@ -542,6 +542,14 @@ def _modernise(prompt: str, negative: str, visual: str) -> tuple[str, str]:
     return prompt, negative
 
 
+def _video_look(look: str, style: str) -> str:
+    """The look an AI video clip is asked for. The collage and desk presets describe paper, documents and halftone
+    dots - a video model paints those as fake writing - so their clips are plain modern footage instead."""
+    if look in CUTOUT_LOOKS or look in ("editorial", "investigative", "collage", "studio_mix"):
+        return "clean modern documentary footage, natural true-to-life colours, sharp detail"
+    return STYLE_PRESETS[look][1] if look in STYLE_PRESETS else style
+
+
 def _look_prompt(visual: str, emotion: str, s: "ShotPlan", spec: ProductionSpec, look: str, shot_size: str = "",
                  hook: bool = False) -> tuple[str, str]:
     """One picture's prompt in a given look (Studio mix): cut-out looks lead with their print style, photo looks
@@ -692,13 +700,13 @@ def prompt_forge(plan: ProductionPlan, spec: ProductionSpec, only: int | None = 
             # Per-line AI video: each beat's still is animated with a move that fits what the line shows.
             b["video_prompt"] = (f"Subtle natural movement: {b['visual'].rstrip('.')}. Camera: "
                                  f"{('slow push in', 'slow dolly sideways', 'slow pull back', 'gentle orbit')[(i + k) % 4]}. "
-                                 f"{STYLE_PRESETS[b['look']][1] if mix else style}. {vstyle}")
+                                 f"{_video_look(b['look'] if mix else spec.style, style)}. {vstyle}")
         if s.beats:
             s.prompt, s.negative = s.beats[0]["prompt"], s.beats[0]["negative"]
         # The animation prompt leads with motion: image-to-video models already see the still.
         camera = spec.camera or s.camera or "slow cinematic camera move"
         motion = s.motion or f"subtle natural movement in the scene: {s.visual.rstrip('.')}"
-        s.video_prompt = f"{motion}. Camera: {camera}. {s.visual.rstrip('.')}. {style}. {vstyle}"
+        s.video_prompt = f"{motion}. Camera: {camera}. {s.visual.rstrip('.')}. {_video_look(spec.style, style)}. {vstyle}"
         s.video_negative = VIDEO_NEGATIVE_ANIMATED if animated else VIDEO_NEGATIVE
 
 

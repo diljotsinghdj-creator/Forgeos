@@ -20,7 +20,9 @@ from .stock_video import UA
 WP = "https://en.wikipedia.org/w/api.php"
 _FREE = re.compile(r"^(public domain|pd\b|pd-|cc0|cc by(-sa)?( \d\.\d)?|cc-by(-sa)?(-\d\.\d)?|no restrictions|gfdl|"
                    r"attribution|gódl|godl)", re.I)
-_LOGO = re.compile(r"logo|symbol|flag|emblem|seal|wordmark|insignia|coat of arms|election[_ ]symbol", re.I)
+# A file that is a party symbol, logo, emblem or national flag (not a photo of a "flag march" or a "sealed" box)
+_LOGO = re.compile(r"logo|symbol|emblem|(?<![a-z])seal(?![a-z])|wordmark|insignia|coat[_ ]of[_ ]arms|"
+                   r"election[_ ]symbol|flag[_ ]of[_ ]", re.I)
 _SMALL = {"of", "the", "and", "for", "in", "on", "at", "a", "an", "to", "de", "&"}
 
 
@@ -237,7 +239,7 @@ def fetch_framed(pic: dict, cache, size: tuple[int, int], timeout: float = 60):
     cache = Path(cache)
     cache.mkdir(parents=True, exist_ok=True)
     w, h = size
-    dst = cache / f"{hashlib.sha256((pic['url'] + f'{w}x{h}').encode()).hexdigest()[:24]}.jpg"
+    dst = cache / f"{hashlib.sha256((pic['url'] + f'{w}x{h}v2').encode()).hexdigest()[:24]}.jpg"   # v2: size rules
     if dst.is_file() and dst.stat().st_size > 5_000:
         return dst
     try:
@@ -251,10 +253,12 @@ def fetch_framed(pic: dict, cache, size: tuple[int, int], timeout: float = 60):
         raise ProviderError(f"picture download failed: {e}") from e
     if not pic.get("logo") and min(src.size) < MIN_PHOTO_SIDE:
         raise ProviderError(f"picture too small to show full screen ({src.width}x{src.height})")
-    if pic.get("logo") or src.mode in ("RGBA", "LA", "P"):
+    if pic.get("logo") and min(src.size) < 160 and not str(pic["url"]).lower().endswith(".svg.png"):
+        raise ProviderError("symbol too small to show sharply")
+    if pic.get("logo") or (src.mode in ("RGBA", "LA") and src.getextrema()[-1][0] < 250):
         rgba = src.convert("RGBA")
         card = Image.new("RGB", (w, h), (242, 236, 223))
-        scale = min(w * 0.6 / rgba.width, h * 0.6 / rgba.height)
+        scale = min(w * 0.6 / rgba.width, h * 0.6 / rgba.height, 2.5)   # a small symbol stays sharp
         mark = rgba.resize((max(1, int(rgba.width * scale)), max(1, int(rgba.height * scale))), Image.LANCZOS)
         card.paste(mark, ((w - mark.width) // 2, (h - mark.height) // 2), mark)
         out = card

@@ -83,3 +83,14 @@ def test_a_screenshot_is_framed_with_its_source(tmp_path):
     out = news_media.framed(shot, tmp_path / "f.png", 1080, 1920, "Al Jazeera")
     clip = news_media.still_clip(out, tmp_path / "f.mp4", 1080, 1920, 2.0)
     assert Path(clip).is_file() and Path(clip).stat().st_size > 1000
+
+
+def test_a_flag_march_photo_is_not_a_logo_and_symbols_are_logos():
+    assert not wiki_image._LOGO.search("Flag_march_in_Delhi_2026.jpg")
+    assert not wiki_image._LOGO.search("Sealed_ballot_box.jpg")
+    assert wiki_image._LOGO.search("BJP_election_symbol.png") and wiki_image._LOGO.search("Flag_of_India.svg")
+
+
+def test_video_clips_of_collage_looks_ask_for_plain_footage_not_documents():
+    assert "documentary footage" in director._video_look("investigative", "x")
+    assert director._video_look("cinematic", "x").startswith("cinematic film still")
