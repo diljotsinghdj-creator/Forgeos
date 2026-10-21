@@ -15,6 +15,7 @@ import threading
 from pathlib import Path
 
 from . import director, providers
+from .providers import speech
 from .config import Config, VoiceProfile
 from .library import Library
 from .media import captions as cap
@@ -54,22 +55,31 @@ def _key(*parts) -> str:
     return hashlib.sha256(json.dumps(parts, sort_keys=True).encode()).hexdigest()[:32]
 
 
-def _beat_lengths(texts: list[str], word_starts: list[float], total: float) -> list[float]:
+def _beat_lengths(texts: list[str], word_starts: list[float], total: float, spoken: float | None = None,
+                  shortest: float = 0.3) -> list[float]:
     """Screen time per beat. With Whisper's word timings each cut lands on the first word of its phrase;
-    without them, time is shared in proportion to the words."""
+    without them, the spoken part (not the pause or ending hold after it) is shared in proportion to the words,
+    and the last beat keeps the picture through the pause."""
     counts = [max(1, len(t.split())) for t in texts]
     n = sum(counts)
-    proportional = [total * c / n for c in counts]
-    if len(word_starts) < 2:
-        return proportional
+    talk = min(total, spoken) if spoken else total
     cuts, seen = [0.0], 0
     for c in counts[:-1]:
         seen += c
-        cuts.append(word_starts[min(len(word_starts) - 1, round(seen * len(word_starts) / n))])
+        if len(word_starts) >= 2:
+            cuts.append(word_starts[min(len(word_starts) - 1, round(seen * len(word_starts) / n))])
+        else:
+            cuts.append(talk * seen / n)
     cuts.append(total)
-    lengths = [b - a for a, b in zip(cuts, cuts[1:])]
-    # Whisper can merge or drop words; if the timings don't give every beat a visible moment, share evenly.
-    return lengths if all(x >= 0.3 for x in lengths) else proportional
+    if len(texts) * shortest > total:
+        return [total * c / n for c in counts]
+    # Whisper can merge or drop words: a beat squeezed under a visible moment borrows from its neighbours
+    # instead of throwing every cut away.
+    for i in range(1, len(cuts) - 1):
+        cuts[i] = max(cuts[i], cuts[i - 1] + shortest)
+    for i in range(len(cuts) - 2, 0, -1):
+        cuts[i] = min(cuts[i], cuts[i + 1] - shortest)
+    return [b - a for a, b in zip(cuts, cuts[1:])]
 
 
 class Pipeline:
@@ -464,6 +474,7 @@ class Pipeline:
                     cache[name] = {}
             entry = cache[name]
         except ProviderError:
+            cache[name] = {}          # Wikipedia unreachable: don't retry this name (20 s each) on every line
             return None
         used = job.setdefault("used_photos", [])
         pics = entry.get("pics") or []
@@ -666,12 +677,22 @@ class Pipeline:
                     missing.append(name)
                     continue
                 src = self.library.assets.path(asset)
+                try:
+                    length = ff.duration(src)
+                except (MediaError, OSError, KeyError, ValueError):
+                    missing.append(f"{name} (not a readable video)")
+                    continue
+                if start >= length - 0.5:
+                    start = max(0.0, length - 1.0)    # a start time past the clip's end: play its last second
                 dst = jdir / f"scene_{sc['index'] + 1:02d}_clip{k + 1}_{asset['id']}_{int(start)}.mp4"
                 if not dst.is_file():
                     try:
                         ff.run(["-ss", f"{start:.2f}", "-i", str(src), "-t", "30", "-an", "-c:v", "libx264",
                                 "-preset", "veryfast", "-pix_fmt", "yuv420p", str(dst)])
-                    except (MediaError, OSError) as e:
+                        if ff.duration(dst) <= 0:
+                            raise MediaError("no video in the cut")
+                    except (MediaError, OSError, KeyError, ValueError) as e:
+                        dst.unlink(missing_ok=True)       # never keep a broken cut: the next try starts clean
                         missing.append(f"{name} ({e})")
                         continue
                 clips[k] = dst.name
@@ -903,6 +924,8 @@ class Pipeline:
             if hasattr(voice, "mood"):
                 voice.mood = mood          # human-like voice: more intensity on shocks, calmer on set-up
             said = director.spoken_text(shot["narration"], spec.pronounce)   # the creator's pronunciation list
+            if profile.provider == "chatterbox":
+                said = speech.speakable(said, getattr(voice, "lang", "en"))   # ₹13 crore, 40%, ED said in full
             key = _key(voice.id, profile.speed, said, mood if hasattr(voice, "mood") else "")
             try:
                 src = self._cached("voice", key, ".wav", lambda p: voice.synthesize(said, p), verify.wav)
@@ -916,6 +939,8 @@ class Pipeline:
                 self.store.save(job)
                 raise StageFailed(f"scene {sc['index'] + 1} narration failed - {e}") from e
             self.store.save(job)
+        if profile.provider == "chatterbox":
+            providers.unload_voice(self.cfg.chatterbox_url)   # its GPU memory goes back to the picture models
 
     def _timings(self, job: dict) -> list[float]:
         auto = self._spec(job).auto_edit
@@ -1054,7 +1079,7 @@ class Pipeline:
                 # changes exactly when the narration moves on.
                 images = [jdir / sc["image"]] + [jdir / n if n and (jdir / n).is_file() else None for n in extra]
                 images += [None] * (len(beats) - len(images))
-                lengths = _beat_lengths([b["text"] for b in beats], sc.get("word_starts") or [], d)
+                lengths = _beat_lengths([b["text"] for b in beats], sc.get("word_starts") or [], d, sc.get("narration_s"))
                 for k, length in enumerate(lengths):
                     chart = self._chart_clip(spec, beats[k], length, (w, h), work, job)
                     if chart is not None:
@@ -1155,7 +1180,8 @@ class Pipeline:
                 # The writer's on-screen text appears exactly while its line is spoken.
                 at = start
                 for k, (b, length) in enumerate(zip(beats, _beat_lengths([b["text"] for b in beats],
-                                                                         job["scenes"][i].get("word_starts") or [], slot))):
+                                                                         job["scenes"][i].get("word_starts") or [], slot,
+                                                                         job["scenes"][i].get("narration_s")))):
                     begin = at + 0.1
                     if plan.get("hook") and begin < min(3.0, timings[0]):
                         begin = min(3.0, timings[0])           # after the opening hook text, not on top of it

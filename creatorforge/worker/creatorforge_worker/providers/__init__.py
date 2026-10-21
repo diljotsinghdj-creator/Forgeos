@@ -286,6 +286,15 @@ def unload_local_llm(cfg: Config) -> None:
         pass
 
 
+def unload_voice(url: str = "http://127.0.0.1:8770") -> None:
+    """Asks the voice server (a separate process) to free its models' GPU memory; they reload on the next line."""
+    try:
+        import httpx
+        httpx.post(f"{url}/unload", timeout=10)
+    except Exception:  # noqa: BLE001 - no voice server running
+        pass
+
+
 def release_gpu() -> None:
     """Frees the GPU memory this worker's own models hold (image and video pipelines, Whisper), so the script
     model's server - a separate process - can load. Models reload by themselves the next time they are used."""
@@ -299,6 +308,7 @@ def release_gpu() -> None:
                     prov._img2img = None
     if _asr is not None:
         _asr._model = None
+    unload_voice()
     import gc
     gc.collect()
     try:

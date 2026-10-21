@@ -57,18 +57,49 @@ def multilingual():
     return _mtl
 
 
-def chunks(text: str, limit: int = 280) -> list[str]:
-    """Chatterbox is best on short passages: sentence groups of up to ~280 characters."""
+def _pieces(s: str, limit: int) -> list[str]:
+    """One sentence cut to fit: at commas/semicolons first, then at word boundaries (Chatterbox stops generating
+    after ~40 s, so an over-long sentence would otherwise be cut off mid-word)."""
+    if len(s) <= limit:
+        return [s]
     out, cur = [], ""
-    for s in re.split(r"(?<=[.!?…।॥])\s+", " ".join(text.split())):
-        if cur and len(cur) + len(s) + 1 > limit:
-            out.append(cur)
-            cur = s
-        else:
-            cur = f"{cur} {s}".strip()
+    for part in re.split(r"(?<=[,;:])\s*", s):
+        words = part.split() if len(part) > limit else [part]
+        for w in words:
+            if cur and len(cur) + len(w) + 1 > limit:
+                out.append(cur)
+                cur = w
+            else:
+                cur = f"{cur} {w}".strip()
+    if cur:
+        out.append(cur)
+    return out
+
+
+def chunks(text: str, limit: int = 220) -> list[str]:
+    """Chatterbox is best on short passages: sentence groups of up to ~220 characters, no sentence longer."""
+    out, cur = [], ""
+    for sent in re.split(r"(?<=[.!?…।॥])\s*", " ".join(text.split())):
+        for s in _pieces(sent, limit):
+            if cur and len(cur) + len(s) + 1 > limit:
+                out.append(cur)
+                cur = s
+            else:
+                cur = f"{cur} {s}".strip()
     if cur:
         out.append(cur)
     return [c for c in out if re.search(r"\w", c)]
+
+
+def unload() -> None:
+    """Free the voice models' GPU memory so the image/video models get it (they reload on the next line)."""
+    global _model, _mtl
+    with _lock, _load_lock:
+        _model = _mtl = None
+        import gc
+        gc.collect()
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -87,6 +118,9 @@ class Handler(BaseHTTPRequestHandler):
             self._send(404, {"error": "not found"})
 
     def do_POST(self):  # noqa: N802
+        if self.path == "/unload":
+            unload()
+            return self._send(200, {"ok": True})
         if self.path != "/tts":
             return self._send(404, {"error": "not found"})
         try:

@@ -53,6 +53,8 @@ fi
 
 say "Installing system packages (ffmpeg, espeak-ng, fonts)"
 export DEBIAN_FRONTEND=noninteractive
+# Wait for the package lock instead of failing (a re-run can meet the browser install from the last run).
+echo 'DPkg::Lock::Timeout "600";' > /etc/apt/apt.conf.d/99creatorforge-lock 2>/dev/null || true
 apt-get update -qq
 apt-get install -y -qq ffmpeg espeak-ng git curl fonts-dejavu-core python3-venv >/dev/null
 # Devanagari glyphs for Hindi captions (libass falls back to it when the caption font has no Hindi letters)
@@ -181,6 +183,10 @@ curl -fsSL -o /usr/share/fonts/truetype/creatorforge/ArchivoBlack-Regular.ttf \
   && fc-cache -f >/dev/null 2>&1 || say "Explainer font download failed - captions use DejaVu Sans"
 "$PYBIN" -c "import onnxruntime" 2>/dev/null || pip install -q --no-cache-dir onnxruntime
 mkdir -p "$HOME_DIR/data/models"
+# A re-run restarts the background downloads (they resume): stop the previous run's copies first.
+pkill -f "snapshot_download" 2>/dev/null || true
+pkill -f "isnet-general-use.onnx.part" 2>/dev/null || true
+pkill -f "models/clip" 2>/dev/null || true
 [ -s "$HOME_DIR/data/models/isnet-general-use.onnx" ] || nohup bash -c "curl -fsSL -o '$HOME_DIR/data/models/isnet-general-use.onnx.part' \
   https://github.com/danielgatis/rembg/releases/download/v0.0.0/isnet-general-use.onnx && mv '$HOME_DIR/data/models/isnet-general-use.onnx.part' '$HOME_DIR/data/models/isnet-general-use.onnx' && echo 'cut-out model ready'" > cutout_download.log 2>&1 &
 
@@ -216,14 +222,17 @@ nohup bash -c "
 
 say "News screenshots: headless browser installs in the background (log: $HOME_DIR/browser.log)"
 # Article: lines show a screenshot of the real web page; until the browser is ready they use the drawn headline card.
-nohup bash -c "'$PYBIN' -m pip install -q playwright && '$PYBIN' -m playwright install --with-deps chromium && echo 'browser ready'" \
-  > browser.log 2>&1 &
+# Never interrupted (it runs apt-get): a re-run leaves a running install alone and skips a finished one.
+if ! pgrep -f "playwright install" >/dev/null && ! { "$PYBIN" -c "import playwright" 2>/dev/null && \
+     ls "${PLAYWRIGHT_BROWSERS_PATH:-$HOME/.cache/ms-playwright}"/chromium-*/ >/dev/null 2>&1; }; then
+  nohup bash -c "'$PYBIN' -m pip install -q playwright && '$PYBIN' -m playwright install --with-deps chromium && echo 'browser ready'" \
+    > browser.log 2>&1 &
+fi
 
 if [ -n "$VIDEO_MODEL" ]; then
   # Videos with AI images work right away; the big AI-video model finishes downloading in the background
   # (the worker would also fetch it on first use, this just gets it ready sooner).
   say "AI video model $VIDEO_MODEL is downloading in the background (log: $HOME_DIR/video_download.log)"
-  pkill -f "snapshot_download('$VIDEO_MODEL'" 2>/dev/null || true
   nohup "$PYBIN" -c "from huggingface_hub import snapshot_download; snapshot_download('$VIDEO_MODEL', ignore_patterns=['*.md', 'assets/*', 'examples/*']); print('AI video model ready')" > video_download.log 2>&1 &
 fi
 
