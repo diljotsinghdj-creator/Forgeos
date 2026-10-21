@@ -100,13 +100,13 @@ def stock_sources(job_id: str, cfg: Config) -> list[tuple[str, str]]:
 
 
 def photo_sources(job_id: str, cfg: Config) -> list[tuple[str, str]]:
-    """Where this production looks for real photos when no footage fits: Unsplash, Pixabay, then Openverse."""
+    """Where this production looks for real photos when no footage fits: Unsplash, Pixabay/Pexels, then Openverse."""
     keyed = _stock_keys.get(job_id)
     if keyed and keyed[0] == "mock":
         return [("mock", "")]
     out = [("unsplash", _photo_keys[job_id])] if job_id in _photo_keys else []
-    if keyed and keyed[0] == "pixabay":
-        out.append(keyed)
+    if keyed and keyed[0] in ("pixabay", "pexels"):
+        out.append(keyed)                     # the same key finds photos as well as footage
     if cfg.free_stock:
         from .stock_photo import FREE_SOURCES
         out += [(name, "") for name in FREE_SOURCES]

@@ -82,6 +82,48 @@ def _beat_lengths(texts: list[str], word_starts: list[float], total: float, spok
     return [b - a for a, b in zip(cuts, cuts[1:])]
 
 
+# Stock searches about people and places in the story's country: a "protest" or "police" clip must be from there
+# (Pexels/Pixabay/Unsplash would otherwise return a protest in Paris for a line about Delhi).
+_LOCAL = re.compile(r"\b(protest|demonstrat|rally|march|crowd|police|street|market|city|village|farmer|student|voter|"
+                    r"queue|parliament|court|office|slum|traffic|train|station|hospital|school|people|worker|women|men\b|"
+                    r"youth|famil|shop|road|election|polling|booth|politic|minister|leader|journalist|press)", re.I)
+_PLACE_WORDS = {"India": ("india", "indian", "delhi", "mumbai", "kolkata", "bengaluru", "bangalore", "chennai",
+                          "hyderabad", "punjab", "kerala", "rajasthan", "bihar", "gujarat", "varanasi", "jaipur",
+                          "lucknow", "kashmir", "assam", "maharashtra", "uttar pradesh", "bengal", "hindu", "sikh",
+                          "sari", "saree", "rickshaw")}
+
+
+def _place_words(country: str, city: str = "") -> tuple[str, ...]:
+    if not country:
+        return ()
+    return tuple(dict.fromkeys([*(w.lower() for w in (city,) if w), *_PLACE_WORDS.get(country, (country.lower(),))]))
+
+
+def stock_queries(query: str, country: str, city: str = "") -> tuple[list[str], tuple[str, ...]]:
+    """The searches for a stock line, and the place words a result must mention: "protest march" in a story
+    about Delhi searches "protest march Delhi" / "protest march India" and needs a Delhi/India result."""
+    words = _place_words(country, city)
+    if not words or not _LOCAL.search(query) or any(w in query.lower() for w in words):
+        return [query], ()
+    return list(dict.fromkeys(q for q in (f"{query} {city}" if city else "", f"{query} {country}") if q)), words
+
+
+def stock_fits(found: dict, query: str, place: tuple[str, ...], checked: bool) -> bool:
+    """A library result is only used when its own description says it shows the line (and, for local scenes,
+    the story's country). Without the picture check, a result with no description is never trusted."""
+    if str(found.get("url", "")).startswith("mock://"):
+        return True
+    about = str(found.get("about") or "").lower()
+    if place and about and not any(re.search(rf"\b{re.escape(w)}", about) for w in place):
+        return False                # a protest somewhere else
+    if checked:
+        return True                 # the picture check looks at the frame itself
+    from .providers.stock_video import relevant
+    bare = " ".join(w for w in query.split() if w.lower() not in place)
+    return bool(about) and relevant(bare or query, about) and (not place or any(re.search(rf"\b{re.escape(w)}", about)
+                                                                                 for w in place))
+
+
 class Pipeline:
     def __init__(self, cfg: Config, store: JobStore, library: Library | None = None):
         self.cfg = cfg
@@ -323,7 +365,7 @@ class Pipeline:
                     continue                 # a chart, map or card fills the frame - no picture needed
                 if cancel.is_set():
                     raise Cancelled()
-                if photos and b.get("stock"):
+                if photos and b.get("stock") and not b.get("named"):
                     names[k] = self._stock_photo(job, sc, k + 2, b["stock"], photos, portrait, jdir, b.get("visual", ""))
                     if names[k]:
                         sc["beat_images"] = names
@@ -627,13 +669,28 @@ class Pipeline:
         if self._spec(job).consistent_character and not job.get("character_ref") and director._has_people(visual):
             job["character_ref"] = image.name
 
+    def _story_place(self, job: dict) -> tuple[str, str]:
+        """The story's country and city (from the whole script), worked out once per video."""
+        if "story_place" not in job:
+            from .media import literal
+            text = " ".join(str(sh.get("narration", "")) for sh in (job.get("plan") or {}).get("scenes", []))
+            job["story_place"] = [literal.context_country(text), literal.context_city(text)]
+        return tuple(job["story_place"])
+
     def _stock_photo(self, job: dict, sc: dict, beat: int, query: str, photos: list, portrait: bool,
                      jdir: Path, visual: str = "") -> str | None:
         """A real photo for a beat no footage covered (best effort; None -> the beat gets an AI image)."""
         from .providers import stock_photo
         if self._matcher() is None:
             photos = [p for p in photos if p[1] or p[0] == "mock"]   # keyless libraries only with the picture check
-        for found in stock_photo.search_any(photos, query, portrait)[:3]:
+        queries, place = stock_queries(query, *self._story_place(job))
+        checked = self._matcher() is not None
+        found_all = []
+        for q in queries:
+            found_all = [f for f in stock_photo.search_any(photos, q, portrait) if stock_fits(f, query, place, checked)]
+            if found_all:
+                break
+        for found in found_all[:3]:
             try:
                 src = stock_photo.fetch(found, self.cfg.cache_dir / "stock_photos")
             except (ProviderError, OSError):
@@ -717,10 +774,19 @@ class Pipeline:
         for k, b in enumerate(beats):
             if clips[k] and (jdir / clips[k]).is_file() or not b.get("stock"):
                 continue
+            if b.get("named") and not b["named"].get("movement"):
+                continue     # a line about a named person or party shows them, never a stock look-alike
             history = bool((b.get("extra") or {}).get("archive"))
             # keyless libraries rank loosely: without the picture check they are not trusted at all
             sources = list(stock if checked else keyed) + (providers.archive_sources(self.cfg) if history else [])
-            for found in stock_video.search_any(sources, b["stock"], portrait)[:4]:
+            queries, place = stock_queries(b["stock"], *self._story_place(job)) if not history else ([b["stock"]], ())
+            candidates = []
+            for q in queries:
+                candidates = [f for f in stock_video.search_any(sources, q, portrait)
+                              if stock_fits(f, b["stock"], place, checked)]
+                if candidates:
+                    break
+            for found in candidates[:4]:
                 if found["url"] in used:
                     continue     # never the same footage on two lines
                 try:
