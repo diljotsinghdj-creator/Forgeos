@@ -47,10 +47,16 @@ def _line(a, b, n: int = 8):
     return [(a[0] + (b[0] - a[0]) * i / n, a[1] + (b[1] - a[1]) * i / n) for i in range(n + 1)]
 
 
-def _paths(kind: str, w: int, h: int, rng: random.Random, under_y: float | None) -> list[list[tuple[float, float]]]:
-    """The pen strokes for one mark, in drawing order (each a list of points)."""
-    x0, y0, x1, y1 = subject_box(w, h)
+def _paths(kind: str, w: int, h: int, rng: random.Random, under_y: float | None,
+           target: tuple[float, float, float, float] | None = None) -> list[list[tuple[float, float]]]:
+    """The pen strokes for one mark, in drawing order (each a list of points). `target` is what the mark is about
+    (the line's Text: box); without it, the picture's subject area."""
+    x0, y0, x1, y1 = target or subject_box(w, h)
     cx, cy, bw, bh = (x0 + x1) / 2, (y0 + y1) / 2, x1 - x0, y1 - y0
+    if target is not None and kind == "circle":
+        bw, bh = bw * 1.3, bh * 1.9          # a loop drawn around the words, not through them
+    if target is not None and kind == "underline":
+        under_y = y1 + h * 0.012
     wob = min(w, h) * 0.004
     if kind == "circle":
         rx, ry = bw * 0.40, bh * 0.36
@@ -68,6 +74,14 @@ def _paths(kind: str, w: int, h: int, rng: random.Random, under_y: float | None)
         y = under_y if under_y is not None else y1 - bh * 0.06
         pts = _wobble(_line((cx - bw * 0.32, y), (cx + bw * 0.34, y + h * 0.004), 12), rng, wob)
         return [pts[i:i + 4] for i in range(0, 12, 3)]
+    if kind == "arrow" and target is not None:
+        tip = (x0 - w * 0.01, cy)
+        tail = (max(w * 0.03, x0 - w * 0.16), cy + h * 0.07)
+        shaft = _wobble(_line(tail, tip, 10), rng, wob)
+        ang = math.atan2(tip[1] - tail[1], tip[0] - tail[0])
+        size = min(w, h) * 0.05
+        heads = [[tip, (tip[0] - size * math.cos(ang - s), tip[1] - size * math.sin(ang - s))] for s in (0.5, -0.5)]
+        return [shaft[i:i + 4] for i in range(0, 10, 3)] + [_wobble(_line(a, b, 3), rng, wob) for a, b in heads]
     if kind == "arrow":
         tip = (cx - bw * 0.18, cy + bh * 0.12)
         tail = (max(w * 0.04, x0 - bw * 0.02), min(h * 0.9, y1 + bh * 0.1)) if h > w else (x0 - bw * 0.25, y1)
@@ -87,8 +101,11 @@ def _paths(kind: str, w: int, h: int, rng: random.Random, under_y: float | None)
     return []
 
 
+TARGETED = ("circle", "box", "underline", "arrow")      # need something specific to point at
+
+
 def mark_events(spec: str, start: float, end: float, w: int, h: int, color: str = PEN,
-                under_y: float | None = None) -> list[str]:
+                under_y: float | None = None, target: tuple[float, float, float, float] | None = None) -> list[str]:
     """ASS Dialogue lines for 'circle', 'arrow', 'box, arrow' ...: each stroke appears in turn (~0.4 s per mark,
     stepped like hand animation) and stays until `end`."""
     out = []
@@ -96,7 +113,7 @@ def mark_events(spec: str, start: float, end: float, w: int, h: int, color: str 
     width = max(4, int(min(w, h) * 0.0065))
     t = start
     for kind in [k.strip().lower() for k in spec.replace("+", ",").split(",") if k.strip().lower() in KINDS][:3]:
-        strokes = _paths(kind, w, h, rng, under_y)
+        strokes = _paths(kind, w, h, rng, under_y, target)
         per = max(STEP, round(0.42 / max(1, len(strokes)) / STEP) * STEP)
         for path in strokes:
             if t >= end - 0.1:

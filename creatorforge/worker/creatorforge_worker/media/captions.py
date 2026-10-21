@@ -176,9 +176,20 @@ def write_ass(path: Path, width: int, height: int, scale: float, position: float
     callout_y = top + small * 1.45          # just under a one-line callout at the top
     for o in overlays:
         if o.style == "Draw" and o.end > o.start:
-            under = callout_y if "underline" in o.text and any(c.style == "Callout" and c.start < o.end and c.end > o.start
-                                                             for c in overlays) else None
-            lines += marks.mark_events(o.text, o.start, o.end, width, height, pen, under)
+            box = next((c for c in overlays if c.style == "Callout" and c.start < o.end and c.end > o.start), None)
+            target = None
+            if box is not None:
+                # the pen goes on what the script highlights: the line's Text: box at the top of the frame
+                tw = min(width - 2 * side, len(box.text) * small * 0.6 + small)
+                target = (width / 2 - tw / 2, top - small * 0.2, width / 2 + tw / 2, top + small * 1.25)
+            kinds = [k.strip() for k in o.text.replace("+", ",").split(",") if k.strip()]
+            if target is None and not o.text.startswith("subject:"):
+                # nothing specific to point at: a circle or arrow over a random spot is noise - keep only verdicts
+                kinds = [k for k in kinds if k not in marks.TARGETED]
+            if not kinds:
+                continue
+            lines += marks.mark_events(", ".join(kinds).replace("subject:", ""), o.start, o.end, width, height, pen,
+                                       None, target)
             continue
         if o.style == "Place" and o.text.strip() and o.end > o.start:
             lines += marks.place_events(o.text, o.start, o.end, width, height, font_name, pen)

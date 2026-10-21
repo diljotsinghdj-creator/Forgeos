@@ -1348,9 +1348,21 @@ class Pipeline:
             b, length = getattr(c, "beat_data", None), getattr(c, "beat_len", 0.0)
             if not b or length <= 0.8 or not (b.get("draw") or b.get("bubble")) or _covered(b):
                 continue
+            if b.get("draw") and b.get("overlay"):
+                continue             # the pen circles the line's Text: box - drawn with the captions, which know where
             items = []
             if b.get("draw"):
-                items.append(cap.Overlay(0.25, length - 0.05, b["draw"], "Draw"))
+                # a circle or arrow needs a subject in a known place: a cut-out on paper, or a real photo of the named
+                # person, framed centrally. On anything else it would circle a random spot - keep only verdict marks
+                subject = bool(getattr(c, "layers", None)) or "_photo" in str(getattr(c, "image", "") or "")
+                kinds = [k.strip() for k in b["draw"].replace("+", ",").split(",") if k.strip()]
+                if not subject:
+                    kinds = [k for k in kinds if k not in ("circle", "box", "underline", "arrow")]
+                if kinds:
+                    items.append(cap.Overlay(0.25, length - 0.05, "subject:" + ", ".join(kinds), "Draw"))
+                elif not b.get("bubble"):
+                    done.add(c.beat)
+                    continue
             if b.get("bubble"):
                 kind, _, said = b["bubble"].partition(":")
                 items.append(cap.Overlay(0.15, length - 0.05, said, "Think" if kind == "think" else "Bubble"))

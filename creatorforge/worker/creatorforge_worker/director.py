@@ -571,9 +571,37 @@ _SAY_TEXT = re.compile(r",?\s*\b(text|words|names|details|labels?|mastheads?|hea
 NO_WRITING = "every surface left blank with no writing, no letters, no numbers"
 
 
+# Political idioms an image model reads literally ("clean chit" -> a clean white shirt): what they look like
+_IDIOMS = [
+    (r"\bclean[- ]?chits?\b", "an official investigation file closed with a green clearance stamp on a desk"),
+    (r"\bwhite[- ]?wash(ed|ing)?\b", "a case file being quietly closed and locked away in a steel cabinet"),
+    (r"\bclean (image|record|reputation)\b", "a politician at a podium under bright stage lights, seen from behind"),
+    (r"\bclean sweep\b", "an election counting centre with officials tallying votes"),
+    (r"\bwitch[- ]?hunt\b", "investigators carrying sealed boxes out of an office at night"),
+    (r"\bmud[- ]?sling\w*\b", "two empty podiums facing each other across a stage"),
+    (r"\bdirty politics\b", "a crowded political rally at night with stage lights"),
+    (r"\bwashing machine\b(?! drum)", "a washing machine drum spinning white kurtas under harsh light"),
+    (r"\b(skeletons? in the cupboard|dirty laundry)\b", "old case files spilling out of a cupboard"),
+    (r"\b(kursi|the chair)\b(?= of power)", "an empty high-backed leather chair in a grand office"),
+    (r"\bfree pass\b", "a barrier gate lifted open on an empty road"),
+    (r"\bgreen signal\b", "a traffic light turning green over a city road at night"),
+    (r"\bred flags?\b(?! (march|rally))", "warning lights flashing red on a dark road"),
+]
+_IDIOMS_RX = [(re.compile(a, re.I), b) for a, b in _IDIOMS]
+
+
+def literal_idioms(visual: str) -> str:
+    """A visual (or narration used as one) with political idioms turned into the scene they stand for."""
+    for rx, scene in _IDIOMS_RX:
+        if rx.search(visual or ""):
+            return scene[0].upper() + scene[1:]      # the idiom is the subject: show the scene it stands for
+    return visual
+
+
 def _no_text(visual: str) -> tuple[str, bool]:
     """The visual without the words that make an image model write fake text ("text unreadable", "a sign reading
     SECURITY"), and whether it shows something that normally carries writing."""
+    visual = literal_idioms(visual)
     clean = re.sub(r"\s{2,}", " ", _SAY_TEXT.sub("", visual)).strip(" ,.")
     return clean or visual, bool(_WRITING.search(visual))
 
@@ -826,7 +854,8 @@ def _line_shots(line: str, d: dict) -> list[list[str]]:
     last = lambda key, k: d.get(key, "") if k == n - 1 else ""  # noqa: E731
     return [[" ".join(words[a:b]), visuals[k], d.get("text", "") if k == text_at else "",
              d.get("stock", "") if k == stock_at else "", first("chart", k),
-             last("draw", k), last("bubble", k),
+             # the pen mark goes on the picture that carries the line's Text: box (it circles that), else the last
+             (d.get("draw", "") if k == (text_at if d.get("text") else n - 1) else ""), last("bubble", k),
              extra if k == 0 else ({"archive": extra["archive"]} if extra.get("archive") else {})]
             for k, (a, b) in enumerate(zip(bounds, bounds[1:]))]
 
