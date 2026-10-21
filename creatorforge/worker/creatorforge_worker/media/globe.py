@@ -11,6 +11,7 @@ the flat maps use) and encoded with FFmpeg - no map tiles, no GPU, works offline
 from __future__ import annotations
 
 import math
+import re
 import subprocess
 from functools import lru_cache
 from pathlib import Path
@@ -27,17 +28,65 @@ THEMES = {
 }
 
 
-@lru_cache(maxsize=4)
-def _font(size: int):
-    from PIL import ImageFont
-    for name in ("Archivo Black", "DejaVu Sans:bold"):
+_DEVANAGARI = re.compile(r"[\u0900-\u097F\uA8E0-\uA8FF]")
+
+
+def script_of(text: str) -> str:
+    """Which font family a label needs: "deva" for Hindi, "symbol" for ₹ and other signs the display font lacks."""
+    if _DEVANAGARI.search(text or ""):
+        return "deva"
+    if any(ord(c) > 0x24F for c in text or ""):
+        return "symbol"
+    return "latin"
+
+
+def font_file(kind: str = "latin") -> str:
+    """The bold font file for a script: Archivo Black (Latin), DejaVu Sans Bold (₹ and signs), a Devanagari font
+    (Lohit/Noto, installed on the pod) for Hindi. PIL has no font fallback, so the wrong one draws boxes."""
+    names = {"latin": ("Archivo Black", "DejaVu Sans:bold"), "symbol": ("DejaVu Sans:bold",),
+             "deva": (":lang=hi:weight=bold", ":lang=hi", "DejaVu Sans:bold")}[kind]
+    for name in names:
         try:
             path = subprocess.run(["fc-match", "-f", "%{file}", name], capture_output=True, text=True, timeout=10).stdout
-            if path and (name != "Archivo Black" or "Archivo" in path):
-                return ImageFont.truetype(path, size)
         except (OSError, subprocess.SubprocessError):
             continue
+        if not path:
+            continue
+        if name == "Archivo Black" and "Archivo" not in path:
+            continue
+        if name.startswith(":lang=hi") and not _covers(path, "\u0915"):
+            continue
+        return path
+    return ""
+
+
+@lru_cache(maxsize=16)
+def _covers(path: str, ch: str) -> bool:
+    try:
+        from fontTools.ttLib import TTFont
+        with TTFont(path, fontNumber=0, lazy=True) as f:
+            return ord(ch) in (f.getBestCmap() or {})
+    except ImportError:
+        return True               # can't check: trust fontconfig's language match
+    except Exception:  # noqa: BLE001 - unreadable font
+        return False
+
+
+@lru_cache(maxsize=24)
+def _font_kind(size: int, kind: str):
+    from PIL import ImageFont
+    path = font_file(kind)
+    if path:
+        try:
+            return ImageFont.truetype(path, size)
+        except OSError:
+            pass
     return ImageFont.load_default()
+
+
+def _font(size: int, text: str = ""):
+    """The label font at `size`, chosen for the text it will draw (Hindi gets a Devanagari font)."""
+    return _font_kind(size, script_of(text))
 
 
 def _ease(t: float) -> float:
@@ -105,7 +154,8 @@ def render(plan: dict, theme: str, width: int, height: int, seconds: float, out:
     grat = [(np.full(181, float(lo)), np.linspace(-90, 90, 181)) for lo in range(-180, 180, 30)]
     grat += [(np.linspace(-180, 180, 361), np.full(361, float(la))) for la in range(-60, 90, 30)]
     cities = [t for t in plan["targets"] if t["kind"] == "city"]
-    label_font, title_font = _font(int(min(width, height) * 0.045)), _font(int(min(width, height) * 0.05))
+    every = str(plan)   # one font for all the labels, chosen for their script (Hindi, ₹ ...)
+    label_font, title_font = _font(int(min(width, height) * 0.045), every), _font(int(min(width, height) * 0.05), every)
     work.mkdir(parents=True, exist_ok=True)
     proc = subprocess.Popen(["ffmpeg", "-y", "-hide_banner", "-nostdin", "-v", "error", "-f", "rawvideo",
                              "-pix_fmt", "rgb24", "-s", f"{width}x{height}", "-r", str(FPS), "-i", "-",

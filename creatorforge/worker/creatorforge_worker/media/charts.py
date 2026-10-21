@@ -15,7 +15,28 @@ from pathlib import Path
 
 from . import ff
 
-_NUM = re.compile(r"([£$€]?)\s?(\d[\d,]*(?:\.\d+)?)\s?(%|bn|m|k|billion|million)?", re.I)
+# A number with its currency and unit: "₹6,060 crore", "Rs 500", "£4.2m", "48%", "13 करोड़". Longer units first, and
+# a unit must end there ("3 men" is not 3 million).
+_NUM = re.compile(r"([£$€₹]|Rs\.?\s?)?\s?(\d[\d,]*(?:\.\d+)?)\s?"
+                  r"(%|billion|million|thousand|crores?|lakhs?|करोड़|करोड़|लाख|bn|cr|m|k)?(?![A-Za-z])", re.I)
+UNIT_SCALE = {"bn": 1e9, "billion": 1e9, "m": 1e6, "million": 1e6, "k": 1e3, "thousand": 1e3, "cr": 1e7,
+              "crore": 1e7, "crores": 1e7, "करोड़": 1e7, "करोड़": 1e7, "lakh": 1e5, "lakhs": 1e5, "लाख": 1e5}
+_SHOWN = {"cr": " crore", "crores": " crore", "crore": " crore", "lakhs": " lakh", "lakh": " lakh",
+          "million": " million", "billion": " billion", "thousand": " thousand", "करोड़": " करोड़", "करोड़": " करोड़",
+          "लाख": " लाख"}
+
+
+def amounts(text: str) -> list[tuple[str, float, str, str]]:
+    """Every amount in the text as (shown text, value in units, unit key, raw match), e.g. ("₹13 crore", 1.3e8, ...)."""
+    out = []
+    for m in _NUM.finditer(text):
+        try:
+            v = float(m.group(2).replace(",", ""))
+        except ValueError:
+            continue
+        unit = (m.group(3) or "").lower()
+        out.append((m.group(0).strip(), v * UNIT_SCALE.get(unit, 1), unit, m.group(0)))
+    return out
 THEMES = {
     # paper, ink, accent, second bar colour, graph-paper grid
     "editorial": ("0xF2EBDD", "0x111111", "0xF5C818", "0x111111", False),
@@ -31,8 +52,11 @@ def _numbers(text: str) -> list[tuple[str, float, str, str]]:
     out = []
     for m in _NUM.finditer(text):
         raw = m.group(2).replace(",", "")
+        pre = (m.group(1) or "").strip()
+        pre = "₹" if pre.lower().startswith("rs") else pre
+        unit = m.group(3) or ""
         try:
-            out.append((m.group(1) or "", float(raw), (m.group(3) or ""), m.group(0)))
+            out.append((pre, float(raw), _SHOWN.get(unit.lower(), unit), m.group(0)))
         except ValueError:
             pass
     return out
@@ -63,6 +87,11 @@ def parse(spec: str) -> dict | None:
                 "label": (labels[0] if labels else (formula or title))}
     if re.search(r"\bvs\.?\b", head, re.I) and len(nums) >= 2:
         nums = nums[:4]
+        if len({n[2] for n in nums}) > 1:     # "13 crore vs 9.4 lakh": bars in one unit, the first number's
+            scale = {u.strip().lower(): k for k, u in _SHOWN.items()}
+            base = UNIT_SCALE.get(scale.get(nums[0][2].strip().lower(), nums[0][2].lower()), 1)
+            nums = [(p, v * UNIT_SCALE.get(scale.get(s_.strip().lower(), s_.lower()), 1) / base, nums[0][2], r)
+                    for p, v, s_, r in nums]
         return {"kind": "bars", "values": [n[1] for n in nums], "prefix": nums[0][0], "suffix": nums[0][2],
                 "labels": (labels + [""] * len(nums))[:len(nums)], "title": title}
     p, v, s, _ = nums[0]
@@ -81,8 +110,19 @@ def _fmt(v: float) -> str:
     return f"{v:,.0f}" if float(v).is_integer() else f"{v:,.1f}"
 
 
+def _fontfile(txt: str) -> str:
+    """drawtext's font for this label: Archivo Black for Latin, but a font that has the glyphs for Hindi or ₹
+    (drawtext has no fallback - a missing glyph is drawn as a box)."""
+    from .globe import font_file, script_of
+    kind = script_of(txt)
+    path = Path(font_file(kind)) if kind != "latin" else _BOLD
+    if path.is_file():
+        return f"fontfile={ff.filter_path(path)}"
+    return "font='DejaVu Sans'"
+
+
 def _text(txt: str, size: int, color: str, y: str, extra: str = "", x: str = "(w-tw)/2") -> str:
-    font = f"fontfile='{_BOLD}'" if _BOLD.is_file() else "font='DejaVu Sans'"
+    font = _fontfile(txt)
     return f"drawtext={font}:fontsize={size}:fontcolor={color}:x={x}:y={y}:text='{txt}'{extra}"
 
 
@@ -181,7 +221,7 @@ def render(plan: dict, theme: str, width: int, height: int, seconds: float, out:
             after += _label(plan["label"], int(height * 0.032), ink, int(height * (0.62 - up)), int(width * 0.84), fade,
                             lines=3 if height > width else 2)
     if kind == "line":
-        chain.append(f"subtitles=filename='{_line_ass(plan, theme, width, height, anim, seconds, work)}'")
+        chain.append(ff.ass_filter(_line_ass(plan, theme, width, height, anim, seconds, work)))
         if plan.get("label"):
             chain += _label(plan["label"], int(height * 0.034), ink, int(height * (0.555 if height > width else 0.80)),
                             int(width * 0.84), fade, lines=2)

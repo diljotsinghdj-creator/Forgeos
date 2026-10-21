@@ -222,7 +222,7 @@ def render(plan: dict, theme: str, width: int, height: int, seconds: float, out:
     text = "\n".join(lines) + "\n"
     ass = work / f"map_{hashlib.sha256(text.encode()).hexdigest()[:12]}.ass"
     ass.write_text(text, encoding="utf-8")
-    vf = (f"subtitles=filename='{ass}',noise=alls=7:allf=t+u,vignette=angle=PI/6,format=yuv420p")
+    vf = (f"{ff.ass_filter(ass)},noise=alls=7:allf=t+u,vignette=angle=PI/6,format=yuv420p")
     ff.run(["-f", "lavfi", "-i", f"color=c={sea}:s={width}x{height}:d={seconds:.2f}:r=30", "-vf", vf,
             "-c:v", "libx264", "-preset", "veryfast", "-crf", "18", "-pix_fmt", "yuv420p", str(out)])
     return out

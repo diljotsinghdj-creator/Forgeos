@@ -133,6 +133,8 @@ def quote_lines(spec: str, theme: str, width: int, height: int, seconds: float) 
 
 def steps_lines(spec: str, theme: str, width: int, height: int, seconds: float) -> list[str]:
     head, _, title = spec.partition("|")
+    if "→" not in head and "->" not in head and spec.count("|") >= 2:
+        head, title = spec.replace("|", "→"), ""     # "Steps: one | two | three" - every part is a step
     steps = [x.strip() for x in head.replace("->", "→").split("→") if x.strip()][:5]
     if len(steps) < 2:
         return []
@@ -684,9 +686,11 @@ def search_lines(spec: str, theme: str, width: int, height: int, seconds: float)
                f"m {cx - r:.0f} {cy:.0f} b {cx - r:.0f} {cy - r * 1.33:.0f} {cx + r:.0f} {cy - r * 1.33:.0f} {cx + r:.0f} {cy:.0f} "
                f"b {cx + r:.0f} {cy + r * 1.33:.0f} {cx - r:.0f} {cy + r * 1.33:.0f} {cx - r:.0f} {cy:.0f}")
     typing = min(1.6, max(0.6, seconds * 0.4))
-    per = max(2, int(typing * 100 / max(1, len(query))))
+    from .captions import graphemes
+    letters = graphemes(query)
+    per = max(2, int(typing * 100 / max(1, len(letters))))
     typed = "".join(f"{{\\alpha&HFF&\\t({int(0.2 * 1000 + i * per * 10)},{int(0.2 * 1000 + i * per * 10) + 1},\\alpha&H00&)}}{_esc(c)}"
-                    for i, c in enumerate(query))
+                    for i, c in enumerate(letters))
     out.append(f"Dialogue: 4,{_ts(0)},{end},T,,0,0,0,,{{\\an4\\pos({L + bh * 1.2:.0f},{y + bh / 2:.0f})\\fs{size}\\1c&H202020&}}{typed}")
     caret_end = 0.2 + typing
     out.append(f"Dialogue: 5,{_ts(0)},{_ts(caret_end + 0.3)},T,,0,0,0,,{{\\an4\\pos({L + bh * 1.2 + len(query) * size * 0.52:.0f},"
@@ -755,12 +759,8 @@ def squares_lines(spec: str, theme: str, width: int, height: int, seconds: float
     """Proportional squares: each value's area to scale, side by side, so the difference is felt.
     "Squares: £4.2m vs £85,000 | fines, one claim" """
     head, _, labels = spec.partition("|")
-    nums = []
-    for m in re.finditer(r"([£$€]?)\s*(\d[\d,]*(?:\.\d+)?)\s*(bn|billion|m|million|k|thousand)?", head, re.I):
-        v = float(m.group(2).replace(",", ""))
-        unit = (m.group(3) or "").lower()
-        v *= {"bn": 1e9, "billion": 1e9, "m": 1e6, "million": 1e6, "k": 1e3, "thousand": 1e3}.get(unit, 1)
-        nums.append((m.group(0).strip(), v))
+    from .charts import amounts
+    nums = [(shown, v) for shown, v, _, _ in amounts(head)]     # "₹13 crore vs 9.4 lakh" drawn to scale
     nums = [n for n in nums if n[1] > 0][:3]
     if len(nums) < 2:
         return []
@@ -772,6 +772,10 @@ def squares_lines(spec: str, theme: str, width: int, height: int, seconds: float
     sizes = [max(6.0, side_max * (v / top) ** 0.5) for _, v in nums]
     out = []
     size = int(min(width, height) * 0.045)
+    if tall:   # the whole stack stays between 12% and 60% of the height - Shorts captions sit just below
+        room = height * 0.48 - size * 1.4 * (len(sizes) - 1)
+        if sum(sizes) > room:
+            sizes = [max(6.0, s_ * room / sum(sizes)) for s_ in sizes]
     if tall:   # stacked, biggest first, all above the captions
         y = height * 0.12
         for i, ((txt, _), s_) in enumerate(zip(nums, sizes)):
@@ -780,9 +784,11 @@ def squares_lines(spec: str, theme: str, width: int, height: int, seconds: float
             out.append(f"Dialogue: 2,{_ts(t0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c{MARK[theme] if i == 0 else INK}"
                        f"\\clip(0,{y + s_:.0f},{width},{y + s_:.0f})\\t(0,350,\\clip(0,{y:.0f},{width},{y + s_:.0f}))}}{_rect(x0, y, x0 + s_, y + s_)}")
             lab = txt + (f"  {names[i]}" if i < len(names) and names[i] else "")
+            light = "" if i == 0 else "\\1c&HFFFFFF&\\3c&H000000&"
             out.append(f"Dialogue: 3,{_ts(t0 + 0.3)},{end},T,,0,0,0,,{{\\an4\\pos({x0 + s_ + size * 0.5:.0f},{y + s_ / 2:.0f})"
                        f"\\fs{size}\\fad(150,0)}}{_esc(lab.upper())}" if s_ < width * 0.4 else
                        f"Dialogue: 3,{_ts(t0 + 0.3)},{end},T,,0,0,0,,{{\\an5\\pos({width / 2:.0f},{y + s_ / 2:.0f})\\fs{size}"
+                       f"{light}"   # light text on the dark square
                        f"\\fad(150,0)}}{_esc(lab.upper())}")
             y += s_ + size * 1.4
     else:      # side by side on a shared baseline
@@ -956,7 +962,7 @@ def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: f
     k = 2 if zoom else 1
     grid = ",drawgrid=w={0}:h={0}:t=1:c=0x7FA3C8@0.3".format(max(24, height * k // 28)) if theme == "investigative" and not opts.get("plain") else ""
     tail = "vignette=angle=PI/7" if not opts.get("plain") else "vignette=angle=PI/5"
-    vf = f"noise=alls=7:allf=t+u{grid},subtitles=filename='{ass}',{tail}"
+    vf = f"noise=alls=7:allf=t+u{grid},{ff.ass_filter(ass)},{tail}"
     if zoom:
         zx, zy, z, t0 = zoom
         zx, zy = zx * k, zy * k

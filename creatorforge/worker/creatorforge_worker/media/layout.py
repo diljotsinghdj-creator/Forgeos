@@ -271,7 +271,7 @@ def split(left: Path, right: Path, labels: tuple[str, str], kind: str, w: int, h
     else:
         bw, bh = int(w * 0.42), int(h * 0.56)
         boxes = [(int(w * 0.06), int(h * 0.16)), (int(w * 0.52), int(h * 0.16))]
-    font = _font(int(short * 0.04))
+    font = _font(int(short * 0.04), " ".join(labels))
     for (x, y), src, label, tilt in zip(boxes, (left, right), labels, (-1.2, 1.0)):
         with Image.open(src) as im:
             pic = ImageOps.fit(im.convert("RGB"), (bw, bh), Image.LANCZOS)

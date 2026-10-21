@@ -520,7 +520,7 @@ def test_pen_marks_bubbles_and_line_graphs_render(tmp_path):
     from creatorforge_worker.media.captions import Word
     ass = tmp_path / "c.ass"
     cap.write_ass(ass, 1080, 1920, 0.045, 0.7, cap.group([Word("Hello", 0, 0.4), Word("there", 0.4, 0.8)], 3),
-                  [cap.Overlay(0.2, 2.0, "circle, arrow", "Draw"), cap.Overlay(0.2, 2.0, "Is this free?", "Bubble"),
+                  [cap.Overlay(0.2, 2.0, "subject:circle, arrow", "Draw"), cap.Overlay(0.2, 2.0, "Is this free?", "Bubble"),
                    cap.Overlay(0.2, 2.0, "I will cancel later", "Think")], set(), "", "", "highlighter")
     text = ass.read_text()
     assert text.count(",Mark,") >= 8 and "\\p1" in text and "BubbleText" in text and "\\k" in text

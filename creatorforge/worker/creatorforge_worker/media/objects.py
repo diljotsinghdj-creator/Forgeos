@@ -59,7 +59,8 @@ def render(plan: dict, theme: str, width: int, height: int, seconds: float, out:
     tall = height > width
     page = PAPER.get(theme, PAPER["editorial"])
     accent = ACCENT.get(theme, ACCENT["editorial"])
-    big, small = _font(int(min(W, H) * 0.11)), _font(int(min(W, H) * 0.045))
+    every = str(plan)
+    big, small = _font(int(min(W, H) * 0.11), every), _font(int(min(W, H) * 0.045), every)
     work.mkdir(parents=True, exist_ok=True)
     proc = subprocess.Popen(["ffmpeg", "-y", "-hide_banner", "-nostdin", "-v", "error", "-f", "rawvideo",
                              "-pix_fmt", "rgb24", "-s", f"{width}x{height}", "-r", str(FPS), "-i", "-",

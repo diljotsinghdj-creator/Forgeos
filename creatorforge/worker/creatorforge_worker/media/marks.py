@@ -202,13 +202,13 @@ def place_events(text: str, start: float, end: float, w: int, h: int, font: str 
                  pin: str = PEN) -> list[str]:
     """A documentary location stamp, lower left: a red map pin drops in, then 'PARIS · 1925' types out on a white
     label (karaoke timing: the letters appear one by one)."""
-    from .captions import _esc
+    from .captions import _esc, graphemes
     size = int(min(w, h) * (0.05 if w > h else 0.04))
     x, y = w * 0.06, h * (0.62 if h > w else 0.80)
     r = size * 0.45
     pin_shape = (f"m {x:.0f} {y + r * 1.9:.0f} l {x - r * 0.9:.0f} {y + r * 0.2:.0f} b {x - r * 1.4:.0f} {y - r * 1.2:.0f} "
                  f"{x + r * 1.4:.0f} {y - r * 1.2:.0f} {x + r * 0.9:.0f} {y + r * 0.2:.0f} l {x:.0f} {y + r * 1.9:.0f}")
-    letters = list(text.strip().upper())
+    letters = graphemes(text.strip().upper())
     per = max(3, int(min(6.0, 70 / max(1, len(letters)))))
     typed = "".join(f"{{\\k{per}}}{_esc(ch) if ch != ' ' else ' '}" for ch in letters)
     return [f"Dialogue: 6,{_ts(start)},{_ts(end)},Mark,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord{max(2, size // 12)}\\shad0"

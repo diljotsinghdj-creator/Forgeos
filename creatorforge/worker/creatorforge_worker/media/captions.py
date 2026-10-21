@@ -1,6 +1,7 @@
 """Synchronized captions and text overlays as an ASS subtitle file (burned in by FFmpeg)."""
 from __future__ import annotations
 
+import unicodedata
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -54,7 +55,24 @@ def _esc(t: str) -> str:
 
 
 def _norm(w: str) -> str:
-    return "".join(ch for ch in w.lower() if ch.isalnum())
+    """A word for matching: letters, digits and vowel signs only (Hindi matras are marks, not alnum - dropping them
+    would make करोड़ match करड and कटा match कटे)."""
+    return "".join(ch for ch in w.lower() if ch.isalnum() or unicodedata.category(ch).startswith("M"))
+
+
+VIRAMA = "\u094D"
+
+
+def graphemes(text: str) -> list[str]:
+    """Text split into what a reader sees as one letter: a consonant keeps its vowel signs, and a Hindi conjunct
+    (consonant + virama + consonant, as in ल्ल) stays whole - typing "दिल्ली" mark by mark would break the shaping."""
+    out: list[str] = []
+    for ch in text:
+        if out and (unicodedata.category(ch).startswith("M") or ch in "\u200C\u200D" or out[-1].endswith(VIRAMA)):
+            out[-1] += ch
+        else:
+            out.append(ch)
+    return out
 
 
 def ass_color(hex_rgb: str, default: str) -> str:

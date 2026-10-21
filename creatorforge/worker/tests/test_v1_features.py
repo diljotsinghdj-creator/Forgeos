@@ -45,7 +45,9 @@ def test_script_mode_works_without_llm(cfg):
         job = settle(c, jid)
         assert job["status"] == "READY", job
         assert job["providers"]["llm"].startswith("none (script mode")
-        assert job["plan"]["scenes"][0]["visual"] == job["plan"]["scenes"][0]["narration"]
+        first = job["plan"]["scenes"][0]
+        # the line is its own picture - or, for a line about an amount of money, a literal picture of money
+        assert first["visual"] == first["narration"] or "banknotes" in first["visual"]
 
 
 # 2. Voice profiles, rename, delete -------------------------------------------------------------

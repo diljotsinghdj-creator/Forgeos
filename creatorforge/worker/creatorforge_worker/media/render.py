@@ -336,7 +336,7 @@ def _segment_args(c: Clip, frames: int, width: int, height: int) -> list[str]:
 def _marks_layer(ass: Path, idx: int, w: int, h: int, length: float, label: str = "mk") -> str:
     """[label]: the shot's pen marks on a transparent layer. libass draws onto a key colour, which is then keyed out
     (it can't write transparency itself)."""
-    return (f"[{idx}:v]subtitles=filename='{ass}',colorkey=0xFF00FF:0.28:0.12,format=rgba,"
+    return (f"[{idx}:v]{ff.ass_filter(ass)},colorkey=0xFF00FF:0.28:0.12,format=rgba,"
             f"trim=duration={length + 0.05:.3f},setpts=PTS-STARTPTS[{label}];")
 
 
@@ -535,7 +535,7 @@ def render_video(clips: list[Clip], audio: Path, captions: Path | None, width: i
         graph.append(f"[{last}][logo]overlay=x={x}:y={y}:eof_action=repeat,format=yuv420p[vlogo]")
         last = "vlogo"
     if captions is not None:
-        graph.append(f"[{last}]subtitles=filename={captions.name}[vout]")
+        graph.append(f"[{last}]{ff.ass_filter(captions.name)}[vout]")
         last = "vout"
     if total > 3:
         # the ending fades to black over the last second instead of stopping dead

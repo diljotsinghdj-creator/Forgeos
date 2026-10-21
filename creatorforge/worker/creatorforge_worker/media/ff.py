@@ -44,4 +44,27 @@ def probe(path: Path) -> dict:
 
 
 def duration(path: Path) -> float:
-    return float(probe(path)["format"]["duration"])
+    try:
+        d = float(probe(path)["format"]["duration"])
+    except (KeyError, TypeError, ValueError):
+        d = 0.0
+    if not d > 0:
+        raise MediaError(f"{Path(path).name} has no playable length (empty or broken file)")
+    return d
+
+
+def filter_path(path: Path | str) -> str:
+    """A file path written as a filter option value (unquoted), escaped for both ffmpeg parsing levels - so a
+    folder with an apostrophe, colon, comma or bracket in its name still works."""
+    s = str(path)
+    for a, b in (("\\", "\\\\"), (":", "\\:"), ("'", "\\'")):            # option-value level
+        s = s.replace(a, b)
+    for a, b in (("\\", "\\\\"), ("'", "\\'"), ("[", "\\["), ("]", "\\]"), (",", "\\,"), (";", "\\;")):
+        s = s.replace(a, b)                                                # filtergraph level
+    return s
+
+
+def ass_filter(path: Path | str) -> str:
+    """The ASS-subtitle filter with complex text shaping, so Hindi (Devanagari) conjuncts and vowel signs join up
+    correctly (the default simple shaping breaks "दिल्ली" into "दलि्ली")."""
+    return f"ass=filename={filter_path(path)}:shaping=complex"
