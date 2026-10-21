@@ -42,7 +42,9 @@ def search(query: str, timeout: float = 20, limit: int = 8) -> list[dict]:
             continue
         artist = _plain((meta.get("Artist") or {}).get("value", "")) or "unknown photographer"
         title = re.sub(r"^File:|\.\w+$", "", p.get("title", ""))
+        taken = _plain((meta.get("DateTimeOriginal") or meta.get("DateTime") or {}).get("value", ""))
+        year = next((int(y) for y in re.findall(r"\b(1[89]\d\d|20\d\d)\b", taken)), 0)   # when it was taken
         out.append({"url": info.get("thumburl") or info.get("url"), "width": int(info.get("width") or 0),
-                    "height": int(info.get("height") or 0), "title": title,
+                    "height": int(info.get("height") or 0), "title": title, "year": year,
                     "credit": f"{artist[:60]} / Wikimedia Commons ({licence})"})
     return out

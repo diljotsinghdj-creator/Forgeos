@@ -11,7 +11,7 @@ import io
 import json
 import re
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import urljoin, urlparse
 
 import httpx
 
@@ -23,6 +23,9 @@ _URL = re.compile(r"https?://[^\s;,)]+")
 _STOP = set("the a an of in on at to for and or with from by as is are was were be its it this that after over "
             "into amid says said new news india indian www com html amp story article".split())
 MIN_SIDE = 480
+# A page that isn't the article: a block, a bot check or a paywall - never framed and credited as the story
+_BLOCKED = re.compile(r"access denied|^\s*(403|404)\b|^\s*forbidden\s*$|just a moment|attention required|are you a robot|"
+                      r"captcha|verify you are human|page not found|subscribe to (continue|read)|sign in to continue", re.I)
 
 
 def source_links(source: str) -> list[dict]:
@@ -94,8 +97,8 @@ def page_meta(url: str, cache: Path, timeout: float = 20) -> dict:
         return ""
     meta = {"image": tag("og:image:secure_url", "og:image", "twitter:image", "twitter:image:src"),
             "title": tag("og:title", "twitter:title"), "site": tag("og:site_name")}
-    if meta["image"].startswith("//"):
-        meta["image"] = "https:" + meta["image"]
+    if meta["image"]:
+        meta["image"] = urljoin(str(getattr(r, "url", "") or url), meta["image"])   # "//cdn...", "/images/lead.jpg" -> a full address
     meta_file.write_text(json.dumps(meta))
     return meta
 
@@ -141,8 +144,12 @@ def screenshot(url: str, cache: Path, width: int = 1280, height: int = 1500, tim
             try:
                 page = browser.new_page(viewport={"width": width, "height": height}, user_agent=UA,
                                         device_scale_factor=1.5, locale="en-IN")
-                page.goto(url, wait_until="domcontentloaded", timeout=timeout_ms)
+                resp = page.goto(url, wait_until="domcontentloaded", timeout=timeout_ms)
+                if resp is not None and resp.status >= 400:
+                    return None
                 page.wait_for_timeout(2500)
+                if _BLOCKED.search(page.title() or ""):
+                    return None
                 for label in ("Accept", "Accept all", "I agree", "Agree", "Got it", "OK", "Allow", "Continue",
                               "Close", "No thanks", "Not now", "Maybe later"):
                     try:

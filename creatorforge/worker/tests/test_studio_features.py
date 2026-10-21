@@ -400,7 +400,8 @@ def test_stock_footage_fills_beats_marked_by_the_planner(cfg):
         assert sc["beat_clips"][1] and not sc["beat_clips"][0]      # beat 2 asked for "city street" footage
         assert (cfg.jobs_dir / jid / sc["beat_clips"][1]).is_file()
         assert sc["beat_images"][0] is None                          # ...so no AI image was generated for it
-        assert job["stock_credits"] == ["test"] and "key" not in str(job["spec"])
+        # the same footage is never shown twice: a later line asking for it gets a stock photo instead
+        assert job["stock_credits"][0] == "test" and "key" not in str(job["spec"])
 
 
 def test_stock_photo_fills_a_beat_when_no_footage_fits(cfg, monkeypatch):

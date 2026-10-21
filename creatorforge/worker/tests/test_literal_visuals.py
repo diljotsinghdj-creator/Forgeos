@@ -259,3 +259,94 @@ def test_india_is_shown_modern_and_in_colour():
     assert "modern full-colour" in now["prompt"] and "sepia" not in now["prompt"].split("negative")[0]
     assert "black and white" in now["negative"] and "slum" in now["negative"]
     assert "black and white archival" in then["prompt"]            # a history line keeps its old-photo look
+
+
+def test_offices_before_a_name_initials_and_brands_are_handled():
+    clean = lambda t: [literal._clean(n) for n in literal.proper_nouns(t, set())]  # noqa: E731
+    assert clean("Union Home Minister Amit Shah spoke.") == ["Amit Shah"]
+    assert clean("Delhi CM Atishi wept.") == ["Atishi"]
+    assert clean("BJP president J.P. Nadda arrived.") == ["BJP", "J.P. Nadda"]
+    assert clean("Dr. B.R. Ambedkar wrote it.") == ["B.R. Ambedkar"]
+    assert clean("That Chief Election Commissioner Gyanesh Kumar resign.") == ["Gyanesh Kumar"]
+    assert clean("Follow Print Facts for more.") == []                 # the channel's own name
+    assert clean("Under the SC/ST Act, it is bail-free.") == []        # not the Supreme Court
+    assert literal._clean("General Motors") == "General Motors"
+
+
+def test_one_off_sentence_start_words_are_not_names():
+    script = ("Dragged into BJP speeches, again and again. Officially, nothing. Cut. The Centre and Delhi Police "
+              "agree. Joblessness rose. Indian voters noticed. Congress called it a lie.")
+    known = literal.mid_sentence_names(script)
+    assert not known & {"Dragged", "Officially", "Cut", "Joblessness", "Indian"}
+    assert "Congress" in known
+    assert literal.proper_nouns("Dragged into BJP speeches, again and again.", known) == ["BJP"]
+    assert literal.proper_nouns("The Centre and Delhi Police agree.", known) == ["Delhi Police"]
+
+
+def test_hindi_lines_name_their_subjects_and_set_the_country():
+    hi = "पच्चीस आरोपी बीजेपी में आए। राहुल गांधी ने सुप्रीम कोर्ट में कहा, ईडी झूठ बोल रही है।"
+    assert literal.proper_nouns(hi, set()) == ["BJP", "Rahul Gandhi", "Supreme Court of India", "ED"]
+    assert literal.context_country(hi) == "India"
+    assert literal.context_country("Indian voters in Delhi and Mumbai. The Indian courts.") == "India"
+    assert literal.context_city("दिल्ली में प्रदर्शन। दिल्ली पुलिस।") == "New Delhi"
+    assert [s for _, s in literal._sentences("पहला वाक्य। दूसरा वाक्य।")] == ["पहला वाक्य। ", "दूसरा वाक्य।"]
+
+
+def test_a_count_of_names_is_not_a_pile_of_banknotes():
+    plan = _plan([("Over 130 million names removed.", "A long queue outside a polling office", {}, ""),
+                  ("Worth ₹6,000 crore in bonds.", "A man walking into an office", {}, "")])
+    literal.enrich(plan, "Over 130 million names removed. Worth ₹6,000 crore in bonds.")
+    b = plan.scenes[0].beats
+    assert "banknote" not in b[0]["visual"].lower()
+    assert "envelope" in b[1]["visual"].lower() or "banknote" in b[1]["visual"].lower()
+
+
+def test_a_writers_literal_visual_is_not_replaced_by_an_idiom():
+    for v in ("Macro shot of a cockroach on a cracked whitewashed wall", "Soap foam spilling out of a washing machine door",
+              "Red flags waving over a Left rally"):
+        assert director.literal_idioms(v) == v
+    assert "clearance stamp" in director.literal_idioms("Amit Shah's clean chit")
+    assert "steel cabinet" in director.literal_idioms("The report whitewashed the scandal")
+
+
+def test_hindi_lines_cut_at_the_danda_not_mid_sentence():
+    shots = director._line_shots("बेटा घर पर था। जबकि बेटे ने फ़ॉर्म जमा किया था।",
+                                 {"visual": "A house", "more": ["A form on a desk"]})
+    assert [s[0] for s in shots] == ["बेटा घर पर था।", "जबकि बेटे ने फ़ॉर्म जमा किया था।"]
+
+
+def _wiki(monkeypatch, results: dict, pages: dict):
+    from creatorforge_worker.providers import wiki_image
+
+    def fake_get(params, timeout=20):
+        if params.get("list") == "search":
+            return {"query": {"search": [{"title": t, "snippet": ""} for t in results.get(params["srsearch"], [])]}}
+        return {"query": {"pages": {"1": pages.get(params["titles"], {})}}}
+    monkeypatch.setattr(wiki_image, "_get", fake_get)
+    return wiki_image
+
+
+def test_a_politics_story_never_shows_the_celebrity_with_the_same_name(monkeypatch):
+    pages = {"Sanjay Singh (singer)": {"title": "Sanjay Singh (singer)", "description": "Indian playback singer"},
+             "Sanjay Singh (politician)": {"title": "Sanjay Singh (politician)",
+                                           "description": "Indian politician, AAP Rajya Sabha member", "pageimage": "SS.jpg"},
+             "Gautam Gambhir": {"title": "Gautam Gambhir", "description": "Indian cricketer and politician"}}
+    wiki = _wiki(monkeypatch, {"Sanjay Singh India": ["Sanjay Singh (singer)", "Sanjay Singh (politician)"],
+                               "Gautam Gambhir India": ["Gautam Gambhir"]}, pages)
+    got = wiki.resolve("Sanjay Singh", "India", ["India", "AAP", "arrest"])
+    assert got["title"] == "Sanjay Singh (politician)"
+    # only the singer exists: nothing, rather than the wrong man
+    wiki = _wiki(monkeypatch, {"Sanjay Singh India": ["Sanjay Singh (singer)"]}, pages)
+    assert wiki.resolve("Sanjay Singh", "India", ["India", "AAP", "arrest"]) is None
+    # a cricketer who is also a politician is fine; and a cricket story may show the singer-free cricketer
+    wiki = _wiki(monkeypatch, {"Gautam Gambhir India": ["Gautam Gambhir"]}, pages)
+    assert wiki.resolve("Gautam Gambhir", "India", ["India", "BJP"])["title"] == "Gautam Gambhir"
+    wiki = _wiki(monkeypatch, {"Sanjay Singh India": ["Sanjay Singh (singer)"]}, pages)
+    assert wiki.resolve("Sanjay Singh", "India", ["India", "song", "film"])["title"] == "Sanjay Singh (singer)"
+
+
+def test_commons_photos_are_recent_newest_first():
+    from creatorforge_worker.providers.wiki_image import _recent_first
+    found = [{"title": "Amit Shah 2009 rally"}, {"title": "Amit Shah undated"}, {"title": "Amit Shah", "year": 2023},
+             {"title": "Amit Shah in 2016"}]
+    assert [p["title"] for p in _recent_first(found)] == ["Amit Shah", "Amit Shah in 2016", "Amit Shah undated"]

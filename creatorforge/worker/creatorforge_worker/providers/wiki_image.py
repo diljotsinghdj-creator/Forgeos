@@ -88,6 +88,10 @@ ACRONYMS = {"CJP": "Cockroach Janta Party", "ED": "Enforcement Directorate", "CB
             "RBI": "Reserve Bank of India", "CAG": "Comptroller and Auditor General of India",
             "EVM": "Electronic voting machine", "UN": "United Nations", "RSS": "Rashtriya Swayamsevak Sangh",
             "NEET": "National Eligibility cum Entrance Test (Undergraduate)", "PMLA": "Prevention of Money Laundering Act, 2002",
+            "TMC": "All India Trinamool Congress", "AITC": "All India Trinamool Congress",
+            "INC": "Indian National Congress", "AAP": "Aam Aadmi Party", "SEBI": "Securities and Exchange Board of India",
+            "UAPA": "Unlawful Activities (Prevention) Act", "CAA": "Citizenship (Amendment) Act, 2019",
+            "NRC": "National Register of Citizens", "SP": None, "ST": None, "SC/ST": None,
             "SIR": None, "PM": None, "CM": None, "MP": None, "MPS": None, "MLA": None, "MLAS": None, "GDP": None,
             "CEO": None, "IT": None, "OK": None, "TV": None, "US": None, "UK": None, "CCTV": None, "FIR": None,
             "SG": None, "CJI": None, "HC": None}
@@ -106,6 +110,22 @@ _PLACE_PAGE = re.compile(r"\b(monument|observatory|building|site|city|town|neigh
 
 _PERSON = re.compile(r"\(born\b|\bborn \d|\(\d{4}[–-]|\b(cricketer|actor|actress|singer|footballer|player|athlete|"
                      r"businessman|businesswoman|model|rapper|musician|film director|youtuber|wrestler|boxer)\b", re.I)
+
+
+# People famous for entertainment or sport, and the words that show a story is about that world. A politics story
+# never shows the cricketer, actor or singer who shares a politician's name.
+_CELEB = re.compile(r"\b(cricketer|actor|actress|singer|playback|footballer|athlete|sportsperson|model|rapper|musician|"
+                    r"composer|film director|filmmaker|film producer|youtuber|influencer|wrestler|boxer|comedian|"
+                    r"dancer|television presenter|tv presenter|tennis|badminton|hockey|chess|golfer|"
+                    r"racing driver|shooter|archer|kabaddi|bodybuilder)\b", re.I)
+_CELEB_STORY = {"cricket", "ipl", "bcci", "film", "films", "movie", "movies", "bollywood", "actor", "actress",
+                "cinema", "song", "songs", "singer", "music", "album", "olympics", "medal", "sport",
+                "sports", "football", "tennis", "wrestling", "wrestler", "wrestlers", "celebrity"}
+# Who a news explainer about power and public life means: politicians, officials, institutions.
+_PUBLIC = re.compile(r"\b(politician|minister|party|activist|journalist|lawyer|advocate|judge|justice|official|"
+                     r"leader|member of parliament|legislat|civil servant|bureaucrat|economist|commission|agency|"
+                     r"court|government|police|officer|governor|president|spokesperson|founder|movement|union|"
+                     r"organisation|organization|institution|bank|regulator|ministry|department)\b", re.I)
 
 
 def _wrong_city(text: str, city: str) -> bool:
@@ -132,9 +152,11 @@ def resolve(name: str, context: str = "", topic: list[str] | None = None, city: 
     # Delhi's: search with the city, then the country, first
     queries = ([f"{name} {city}"] if city and city.lower() not in name.lower() else []) + \
               ([f"{name} {context}"] if context else []) + [name]
+    celeb_story = any(w in _CELEB_STORY for w in topic) or any(w.lower() in _CELEB_STORY for w in context.split())
     for q in queries:
         hits = (_get({"action": "query", "list": "search", "srsearch": q, "srlimit": 5, "srnamespace": 0})
                 .get("query") or {}).get("search") or []
+        best, best_score = None, -1
         for h in hits:
             title = h.get("title", "")
             if not names_match(name, title):
@@ -157,7 +179,18 @@ def resolve(name: str, context: str = "", topic: list[str] | None = None, city: 
                 person = bool(_PERSON.search(desc))
                 if not story and (person or not any(re.search(rf"\b{re.escape(w)}\b", about) for w in nation if w)):
                     continue          # a person needs the story's own words; a party or place, at least the country
-            return {"title": page.get("title") or title, "description": desc, "image": page.get("pageimage") or ""}
+            public = bool(_PUBLIC.search(desc))
+            if _CELEB.search(desc) and not public and not celeb_story:
+                continue              # KL Rahul the cricketer, a singer called Amit Shah: not in a politics story
+            # the politician, official or institution beats anyone else of that name; then search order
+            score = (2 if public else 0) + (1 if any(re.search(rf"\b{re.escape(w)}\b", about) for w in topic) else 0)
+            if score > best_score:
+                best_score = score
+                best = {"title": page.get("title") or title, "description": desc, "image": page.get("pageimage") or ""}
+            if score >= 3:
+                break                 # a public figure the story itself describes: no need to look further
+        if best:
+            return best
     return None
 
 
@@ -184,16 +217,30 @@ _ARTWORK = re.compile(r"\b(painting|miniature|manuscript|folio|engraving|lithogr
                       r"mughal|century|circa|c\.\s?1\d{3}|1[0-8]\d\d|museum|statue|sculpture|coin|stamp)\b", re.I)
 
 
+RECENT = 2012     # people and protests are shown as they are now: no photo older than this
+
+
+def photo_year(p: dict) -> int:
+    """When a Commons photo was taken: its date, else the newest year its file name mentions (0 = unknown)."""
+    years = [int(y) for y in re.findall(r"\b(19\d\d|20\d\d)\b", str(p.get("title", "")))]
+    return int(p.get("year") or 0) or (max(years) if years else 0)
+
+
+def _recent_first(found: list[dict]) -> list[dict]:
+    """Too-old photos dropped; the newest first (an undated photo after the dated recent ones)."""
+    keep = [p for p in found if not (0 < photo_year(p) < RECENT)]
+    return sorted(keep, key=lambda p: -(photo_year(p) or RECENT))
+
+
 def search_by_name(name: str) -> list[dict]:
     """Photos of a person or movement with no Wikipedia page of their own (a protest founder): Commons files that
     name them in full, recent first, never artworks."""
     from . import archive_photo
     want = name.lower()
     out = []
-    for p in archive_photo.search(name, limit=10)[:8]:
+    for p in _recent_first(archive_photo.search(name, limit=12))[:8]:
         t = str(p.get("title", "")).lower()
-        years = [int(y) for y in re.findall(r"\b(19\d\d|20\d\d)\b", t)]
-        if want in t and not _ARTWORK.search(t) and not (years and max(years) < 2000):
+        if want in t and not _ARTWORK.search(t):
             out.append({"url": p["url"], "credit": p["credit"], "logo": False, "width": p.get("width", 0)})
     return out
 
@@ -210,13 +257,11 @@ def pictures(page: dict, more: bool = True) -> list[dict]:
         from . import archive_photo
         try:
             want = page["title"].split(" (")[0].lower()
-            for p in archive_photo.search(page["title"], limit=8)[:5]:
+            # newest first, nothing older than RECENT: today's India is shown as it is today
+            for p in _recent_first(archive_photo.search(page["title"], limit=12))[:5]:
                 t = str(p.get("title", "")).lower()
                 # only photos whose file names the subject in full ("Amit Shah at ...", not "Shah Jahan ... Amit"),
                 # and never an artwork or old print that happens to share a name
-                years = [int(y) for y in re.findall(r"\b(19\d\d|20\d\d)\b", t)]
-                if years and max(years) < 2000:
-                    continue                  # an old photo: today's India is shown as it is today
                 if want in t and not _ARTWORK.search(t):
                     out.append({"url": p["url"], "credit": p["credit"], "logo": False, "width": p.get("width", 0)})
         except ProviderError:

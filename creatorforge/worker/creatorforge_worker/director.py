@@ -571,29 +571,38 @@ _SAY_TEXT = re.compile(r",?\s*\b(text|words|names|details|labels?|mastheads?|hea
 NO_WRITING = "every surface left blank with no writing, no letters, no numbers"
 
 
-# Political idioms an image model reads literally ("clean chit" -> a clean white shirt): what they look like
+# Political idioms an image model reads literally ("clean chit" -> a clean white shirt): what they look like.
+# (idiom, the scene it stands for, words that mean the visual already describes the literal thing - a writer's
+# "whitewashed wall" or "washing machine door slowly closing" is kept as written)
 _IDIOMS = [
-    (r"\bclean[- ]?chits?\b", "an official investigation file closed with a green clearance stamp on a desk"),
-    (r"\bwhite[- ]?wash(ed|ing)?\b", "a case file being quietly closed and locked away in a steel cabinet"),
-    (r"\bclean (image|record|reputation)\b", "a politician at a podium under bright stage lights, seen from behind"),
-    (r"\bclean sweep\b", "an election counting centre with officials tallying votes"),
-    (r"\bwitch[- ]?hunt\b", "investigators carrying sealed boxes out of an office at night"),
-    (r"\bmud[- ]?sling\w*\b", "two empty podiums facing each other across a stage"),
-    (r"\bdirty politics\b", "a crowded political rally at night with stage lights"),
-    (r"\bwashing machine\b(?! drum)", "a washing machine drum spinning white kurtas under harsh light"),
-    (r"\b(skeletons? in the cupboard|dirty laundry)\b", "old case files spilling out of a cupboard"),
-    (r"\b(kursi|the chair)\b(?= of power)", "an empty high-backed leather chair in a grand office"),
-    (r"\bfree pass\b", "a barrier gate lifted open on an empty road"),
-    (r"\bgreen signal\b", "a traffic light turning green over a city road at night"),
-    (r"\bred flags?\b(?! (march|rally))", "warning lights flashing red on a dark road"),
+    (r"\bclean[- ]?chits?\b", "an official investigation file closed with a green clearance stamp on a desk", ""),
+    (r"\bwhite[- ]?wash(ed|ing)?\b", "a case file being quietly closed and locked away in a steel cabinet",
+     r"\b(walls?|buildings?|house|houses|facade|brick\w*|paint\w*|lime|plaster\w*|room|corridor|village)\b"),
+    (r"\bclean (image|record|reputation)\b", "a politician at a podium under bright stage lights, seen from behind", ""),
+    (r"\bclean sweep\b", "an election counting centre with officials tallying votes",
+     r"\b(broom|floor|street|sweeper|dust)\b"),
+    (r"\bwitch[- ]?hunt\b", "investigators carrying sealed boxes out of an office at night", ""),
+    (r"\bmud[- ]?sling\w*\b", "two empty podiums facing each other across a stage", ""),
+    (r"\bdirty politics\b", "a crowded political rally at night with stage lights", ""),
+    (r"\bwashing machine\b", "a washing machine drum spinning white kurtas under harsh light",
+     r"\b(door|drum|soap|foam|suds|lid|detergent|clothes|kurtas?|shirts?|spin\w*|laundr\w*|water|bubbles?)\b"),
+    (r"\b(skeletons? in the cupboard|dirty laundry)\b", "old case files spilling out of a cupboard",
+     r"\b(basket|hamper|clothes ?line|washing line)\b"),
+    (r"\b(kursi|the chair)\b(?= of power)", "an empty high-backed leather chair in a grand office", ""),
+    (r"\bfree pass\b", "a barrier gate lifted open on an empty road", ""),
+    (r"\bgreen signal\b", "a traffic light turning green over a city road at night", ""),
+    (r"\bred flags?\b", "warning lights flashing red on a dark road",
+     r"\b(wav\w*|rall(y|ies)|march\w*|protest\w*|communist|left|cpi|crowd|party|banners?|poles?|hammer|sickle|"
+     r"flutter\w*|hoisted)\b"),
 ]
-_IDIOMS_RX = [(re.compile(a, re.I), b) for a, b in _IDIOMS]
+_IDIOMS_RX = [(re.compile(a, re.I), b, re.compile(c, re.I) if c else None) for a, b, c in _IDIOMS]
 
 
 def literal_idioms(visual: str) -> str:
-    """A visual (or narration used as one) with political idioms turned into the scene they stand for."""
-    for rx, scene in _IDIOMS_RX:
-        if rx.search(visual or ""):
+    """A visual (or narration used as one) with political idioms turned into the scene they stand for. A visual
+    that already describes the literal thing ("soap foam spilling out of a washing machine door") is kept."""
+    for rx, scene, literal in _IDIOMS_RX:
+        if rx.search(visual or "") and not (literal and literal.search(visual)):
             return scene[0].upper() + scene[1:]      # the idiom is the subject: show the scene it stands for
     return visual
 
@@ -842,7 +851,7 @@ def _line_shots(line: str, d: dict) -> list[list[str]]:
     for k in range(1, n):
         target = round(len(words) * k / n)
         lo, hi = max(start + 2, target - 2), min(len(words) - 2 * (n - k), target + 2)
-        options = [c for c in range(lo, hi + 1) if words[c - 1][-1:] in ",.;:?!—-"] or [min(max(target, lo), hi)]
+        options = [c for c in range(lo, hi + 1) if words[c - 1][-1:] in ",.;:?!—-।॥…"] or [min(max(target, lo), hi)]
         cut = min(options, key=lambda c: abs(c - target))
         cuts.append(cut)
         start = cut

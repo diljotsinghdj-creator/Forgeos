@@ -17,7 +17,7 @@ import re
 # ---- 2. everyday things --------------------------------------------------------------------------------------
 # (what the words say, what the picture must already show to count as a match, pictures to use instead)
 CONCEPTS: list[tuple[str, str, list[str]]] = [
-    (r"electoral bonds?",
+    (r"electoral bonds?|चुनावी बॉन्ड|इलेक्टोरल बॉन्ड",
      r"bond|envelope|cash|donat",
      ["A sealed brown envelope full of cash slid across a desk", "Printed bond certificates in a stack, text blurred"]),
     (r"press conferences?",
@@ -28,34 +28,34 @@ CONCEPTS: list[tuple[str, str, list[str]]] = [
      ["A bright red SALE 50% OFF sign hanging in a shop window",
       "A row of red discount price tags on clothes hanging on a rail",
       "A yellow clearance sticker slapped over an old price on a product box"]),
-    (r"\bvot(e|es|er|ers|ing)\b|\bballot\w*|\bpolls?\b|polling",
+    (r"\bvot(e|es|er|ers|ing)\b|\bballot\w*|\bpolls?\b|polling|वोट|मतदा|मतपत्र",
      r"ballot|vote|voter|polling|election",
      ["A hand dropping a folded paper ballot into a ballot box",
       "A paper ballot paper with a pen resting on it inside a polling booth",
       "A voter's finger marked with indelible ink held up after voting"]),
-    (r"\belections?\b|electoral",
+    (r"\belections?\b|electoral|चुनाव|निर्वाचन",
      r"ballot|vote|polling|election|campaign",
      ["Rows of steel ballot boxes lined up in a counting hall",
       "Election campaign posters pasted along a city wall, faces blurred"]),
-    (r"\bparliament\b|lok sabha|rajya sabha|lawmakers?|\bmps\b",
+    (r"\bparliament\b|lok sabha|rajya sabha|lawmakers?|\bmps\b|संसद|लोकसभा|लोक सभा|राज्यसभा",
      r"parliament|chamber|assembly|legislat",
      ["The circular chamber of a national parliament with rows of green benches"]),
-    (r"supreme court|high court|\bcourts?\b|\bjudges?\b|judiciary|verdict|ruling",
+    (r"supreme court|high court|\bcourts?\b|\bjudges?\b|judiciary|verdict|ruling|अदालत|न्यायालय|कोर्ट|जज",
      r"court|judge|gavel|bench|robe|law",
      ["A wooden judge's gavel resting on a sound block in a courtroom",
       "The empty bench of a high court under bright lights"]),
-    (r"\bpolice\b(?! the| it| them| their)|\bcops?\b|police officers?",
+    (r"\bpolice\b(?! the| it| them| their)|\bcops?\b|police officers?|पुलिस",
      r"police|officer|baton|barricade|riot|uniform",
      ["Police officers in riot gear standing in a line, seen from behind",
       "Metal police barricades across a city road"]),
-    (r"\barrest\w*|\bjail\w*|\bprison\w*|\bdetain\w*|custody",
+    (r"\barrest\w*|\bjail\w*|\bprison\w*|\bdetain\w*|custody|गिरफ़?्तार|जेल|हिरासत",
      r"handcuff|cell|prison|jail|bars|arrest|police van",
      ["A pair of steel handcuffs on a table", "The barred door of a prison cell"]),
-    (r"protest\w*|demonstrat\w*|\bmarch(ed|es|ing)?\b|rally|rallies",
+    (r"protest\w*|demonstrat\w*|\bmarch(ed|es|ing)?\b|rally|rallies|प्रदर्शन|आंदोलन|विरोध|धरना|रैली",
      r"protest|placard|crowd|march|banner|rally",
      ["A crowd holding blank protest placards seen from behind",
       "Protesters marching down a wide avenue holding banners, faces too small to see"]),
-    (r"journalist\w*|reporter\w*|\bpress\b|newspaper\w*|\bmedia\b|news\b",
+    (r"journalist\w*|reporter\w*|\bpress\b|newspaper\w*|\bmedia\b|news\b|पत्रकार|मीडिया|अख़?बार",
      r"newspaper|journalist|reporter|press|microphone|camera|news",
      ["A stack of folded newspapers on a news-stand, headlines blurred",
       "A press photographer's camera and a reporter's notebook on a desk"]),
@@ -104,7 +104,8 @@ CONCEPTS: list[tuple[str, str, list[str]]] = [
     (r"receipts?|\bbill\b|invoice\w*",
      r"receipt|bill|invoice",
      ["A long paper till receipt curling on a counter, figures blurred"]),
-    (r"\bmoney\b|\bcash\b|\bpounds\b|\bdollars\b|\brupees\b|\bcrore\b|\blakh\b|\bbillion\b|\bmillion\b",
+    (r"\bmoney\b|\bcash\b|\bpounds\b|\bdollars\b|\brupees\b|[₹$£€]\s?\d|\b(?:rs\.?|inr|usd)\s?\d|"
+     r"\bworth\s+(?:[₹$£€]\s?)?\d|रुपये|रुपए|नकद|पैसा|पैसे",
      r"money|cash|note|coin|wallet|crore|rupee|pound|dollar|bank",
      ["A thick stack of banknotes held together with a paper band",
       "Coins and banknotes spilling out of an open wallet"]),
@@ -169,7 +170,7 @@ CONCEPTS: list[tuple[str, str, list[str]]] = [
     (r"\bstadium\b|cricket",
      r"stadium|cricket|pitch",
      ["A packed cricket stadium under floodlights, seen from high above"]),
-    (r"bulldozers?|demoli\w+",
+    (r"bulldozers?|demoli\w+|बुलडोज़?र",
      r"bulldozer|demoli|rubble",
      ["A yellow bulldozer beside a pile of rubble from a demolished house"]),
     (r"internet shutdowns?|shut down the internet|cut the internet",
@@ -189,7 +190,8 @@ CONCEPTS: list[tuple[str, str, list[str]]] = [
      r"documentar|film|camera|screen|tv",
      ["A film camera on a tripod pointed at an empty room"]),
 ]
-_COMPILED = [(re.compile(rf"\b(?:{say})", re.I), re.compile(show, re.I), pics) for say, show, pics in CONCEPTS]
+_COMPILED = [(re.compile(rf"(?:\b|(?=[₹$£€]))(?:{say})", re.I), re.compile(show, re.I), pics)
+             for say, show, pics in CONCEPTS]
 
 # ---- 1. named subjects -----------------------------------------------------------------------------------------
 _STOP = set("""I A An The And But So Or Nor For Yet Then Now Here There This That These Those It Its He She They We You
@@ -206,11 +208,36 @@ Do Does Did Can Could Will Would Shall Should May Might Must Do Don't Doesn't Di
 That's There's Here's What's Who's He's She's They're We're You're I'm Let's Can't Won't""".split())
 _SKIP_ACRONYMS = {"OK", "TV", "AI", "PM", "CEO", "GDP", "USD", "GBP", "INR", "PDF", "SMS", "UPI", "ATM", "VAT", "ID",
                   "MP", "MPS", "UK", "US", "USA", "EU", "UN", "AM", "FM", "AD", "BC", "DNA", "IQ", "HR", "PR", "CCTV",
-                  "MAX", "AP", "LLC", "INC", "PLC", "LTD", "NHS"}
+                  "MAX", "AP", "LLC", "PLC", "LTD", "NHS"}
 _ROLE_WORDS = {"leader", "leaders", "minister", "ministers", "government", "MP", "MPs", "chief", "spokesperson",
                "candidate", "official", "officials", "member", "members", "wing", "workers", "supporters"}
-_TITLES = re.compile(r"^(?:PM|Prime Minister|President|Justice|Chief Justice|Mr|Mrs|Ms|Dr|Sir|Lord|Lady|Judge|Senator|"
-                     r"Minister|Chief Minister|CM|General|King|Queen|Prince|Princess)\s+")
+_ROLE_LOWER = {"minister", "ministers", "article", "section", "act", "chief", "president", "leader", "court", "party",
+               "secretary", "spokesperson", "commissioner", "governor", "speaker", "judge", "justice"}
+_TITLES = re.compile(r"^(?:(?:Union|Home|Finance|Defence|Defense|External Affairs|Foreign|Deputy|Former|Ex|Then|"
+                     r"Railway|Education|Health|Law|Interior|Cabinet|State|Party|National|Congress|BJP|AAP|TMC|Chief|Election|"
+                     r"Opposition|Delhi|Kerala|Punjab|Bengal|Bihar|Gujarat|Assam|Karnataka|Maharashtra|UP|"
+                     r"Uttar Pradesh|Tamil Nadu|Telangana|Rajasthan|Haryana|Odisha|Jharkhand|Goa|"
+                     r"[A-Z][a-z]+ Pradesh)\s+)*"
+                     r"(?:PM|Prime Minister|President|Justice|Chief Justice|Mr|Mrs|Ms|Dr|Sir|Lord|Lady|Judge|Senator|"
+                     r"Minister|Chief Minister|CM|Deputy CM|General(?= [A-Z][a-z]+ [A-Z])|King|Queen|Prince|Princess|Leader of(?: the)? Opposition|"
+                     r"LoP|Governor|Speaker|Secretary|Spokesperson|Commissioner|Chief|Chairman|Chairperson|Shri|Smt|Prof|"
+                     r"(?:party )?[Pp]resident|[Cc]hief)\.?\s+(?=\S)")
+# The channels' own names, said in a call to action ("Follow Print Facts"): never a subject to look up
+BRANDS = ("Print Facts", "Hidden Economics", "Corporate Autopsies", "Modi's India", "Modi’s India", "India 2026",
+          "CreatorForge")
+_BRAND_RX = re.compile("|".join(re.escape(b) for b in BRANDS), re.I)
+# Names in Hindi lines, as the English name Wikipedia knows them (longest first when matching)
+HINDI_NAMES = {"नरेंद्र मोदी": "Narendra Modi", "मोदी": "Narendra Modi", "बीजेपी": "BJP", "भाजपा": "BJP",
+               "राहुल गांधी": "Rahul Gandhi", "सोनिया गांधी": "Sonia Gandhi", "प्रियंका गांधी": "Priyanka Gandhi",
+               "अमित शाह": "Amit Shah", "अरविंद केजरीवाल": "Arvind Kejriwal", "केजरीवाल": "Arvind Kejriwal",
+               "ममता बनर्जी": "Mamata Banerjee", "योगी आदित्यनाथ": "Yogi Adityanath", "निर्मला सीतारमण": "Nirmala Sitharaman",
+               "सुप्रीम कोर्ट": "Supreme Court of India", "सर्वोच्च न्यायालय": "Supreme Court of India",
+               "चुनाव आयोग": "Election Commission of India", "निर्वाचन आयोग": "Election Commission of India",
+               "ईडी": "ED", "प्रवर्तन निदेशालय": "ED", "सीबीआई": "CBI", "एनआईए": "NIA", "आरबीआई": "RBI",
+               "आरएसएस": "RSS", "कांग्रेस": "Indian National Congress", "आम आदमी पार्टी": "Aam Aadmi Party",
+               "संसद": "Parliament of India", "कॉकरोच जनता पार्टी": "Cockroach Janta Party",
+               "जंतर मंतर": "Jantar Mantar", "इंडिया गेट": "India Gate", "लाल किला": "Red Fort"}
+_HINDI_RX = re.compile("|".join(re.escape(k) for k in sorted(HINDI_NAMES, key=len, reverse=True)))
 _SPAN = re.compile(r"\b(?:[A-Z][\w'’.-]*|[A-Z]{2,6})(?:\s+(?:of|the|and|for|de|von|van|al)?\s*(?:[A-Z][\w'’.-]*|[A-Z]{2,6}))*")
 COUNTRIES = ("India", "Pakistan", "Bangladesh", "China", "Britain", "United Kingdom", "England", "France", "Germany",
              "Italy", "Spain", "Japan", "Russia", "Australia", "Canada", "America", "United States", "Brazil", "Nigeria",
@@ -223,9 +250,14 @@ CONCEPT_GAP = 5            # an everyday thing is shown again only after this ma
 MAX_PER_CONCEPT = 4
 
 
+_NOT_END = re.compile(r"(?:^|[\s.(])[A-Z]$|\b(?:Dr|Mr|Mrs|Ms|St|Jr|Sr|vs|No|Prof|Gen|Lt|Col|Smt|Shri|Rs)$")
+
+
 def _sentences(text: str) -> list[tuple[int, str]]:
     out, start = [], 0
-    for m in re.finditer(r"[.!?]+[\"'”’)]*\s+", text):
+    for m in re.finditer(r"[.!?।॥]+[\"'”’)]*\s+", text):
+        if text[m.start()] == "." and _NOT_END.search(text[start:m.start()]):
+            continue                      # an initial or a title: "J.P. Nadda", "Dr. Ambedkar", "the U.S. Senate"
         out.append((start, text[start:m.end()]))
         start = m.end()
     if start < len(text):
@@ -238,6 +270,8 @@ def proper_nouns(text: str, known: set[str]) -> list[str]:
     capitalised word at the start of a sentence only counts if the script also uses it mid-sentence (so "Modi has
     said..." counts, "Researchers say..." does not)."""
     names: list[str] = []
+    text = _BRAND_RX.sub(lambda m: " " * len(m.group(0)), text or "")
+    text = re.sub(r"\bSC\s*/\s*STs?\b", lambda m: m.group(0).lower(), text)   # the SC/ST Act, not the Supreme Court
     for _, sent in _sentences(text):
         for m in _SPAN.finditer(sent):
             raw = m.group(0).strip(" .,'’-")
@@ -251,10 +285,12 @@ def proper_nouns(text: str, known: set[str]) -> list[str]:
                 while words and (words[-1].islower() or words[-1] in _SKIP_ACRONYMS or words[-1] in _ROLE_WORDS):
                     words = words[:-1]
                 lead = m.start() == len(sent) - len(sent.lstrip()) and piece is not None and raw.startswith(piece)
-                if lead and not stripped and len(words) > 1 and words[0] not in known and not words[0].isupper():
+                if (lead and not stripped and len(words) > 1 and words[0] not in known and not words[0].isupper()
+                        and _ordinary(words[0])):
                     words = words[1:]            # "Founder Trevor Milton", "Called MCAS": a sentence-start word
                 if words:
                     _keep(names, words, sent, m.start(), known)
+    names += [HINDI_NAMES[m.group(0)] for m in _HINDI_RX.finditer(text)]
     return list(dict.fromkeys(names))
 
 
@@ -265,7 +301,7 @@ def _keep(names: list[str], words: list[str], sent: str, at: int, known: set[str
         if w.isupper() and len(w) >= 2:
             if w in _SKIP_ACRONYMS:
                 return
-        elif w in _STOP or len(w) < 3:
+        elif len(w) < 3 or _ordinary(w):
             return
         elif at == len(sent) - len(sent.lstrip()) and w not in known:
             return                        # sentence start: needs mid-sentence evidence
@@ -281,15 +317,45 @@ somebody anyone today tonight yesterday tomorrow now then later soon once meanwh
 researchers scientists analysts voters citizens protesters students women men children kids families parents workers
 farmers police lawyers judges journalists reporters leaders ministers politicians companies businesses banks shoppers
 customers investors buyers sellers prices profits taxes nothing everything something anything most many some few
-several others both all each every neither none ordinary rich poor young old""".split())
+several others both all each every neither none ordinary rich poor young old state centre center opposition count
+fine otherwise slogans democracy courts press authorities reputation anarchists government governments agencies
+ministry nation country citizens youth power truth justice freedom silence question questions answer answers
+examine follow watch look see read ask check consider think listen share subscribe comment tell remember picture
+founder phones different fair cut defend turns freed top ye
+take give make keep show bring put get go come try call pay hold turn leave find run start ban jail silence arrest
+""".split())
+
+
+# Words shaped like ordinary English ("Dragged", "Officially", "Joblessness", "Accountability", "Saying")
+_ORDINARY = re.compile(r"(?:(?<![emv])ed|ing|ly|ness|ity|ities|lty|tion|tions|sion|ment|ments|ance|ence|ise|ize|ate|ism|ists?|"
+                       r"ful|less|ous|ive|able|ible)$")
+_NUMBER_WORD = re.compile(r"(?:twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|one|two|three|four|five|six|"
+                          r"seven|eight|nine|ten|hundred|thousand)\b[-\w]*$", re.I)
+
+
+_FAMOUS = {"Congress", "Parliament", "Senate", "Pentagon", "Kremlin", "Vatican", "Brexit", "Modi", "Gandhi", "Trump",
+           "Putin", "Biden", "Amazon", "Google", "Apple", "Facebook", "Meta", "Twitter", "Netflix", "Tesla", "Boeing"}
+_CONTRACTION = re.compile(r"['’](ll|d|re|ve|m|s)$|n['’]t$", re.I)
+
+
+def _ordinary(w: str) -> bool:
+    """An everyday English word, a nationality or a number, however it is capitalised."""
+    low = w.lower()
+    return (w in _STOP or low in _COMMON_STARTS or bool(_ORDINARY.search(low)) or w in _DEMONYM.values()
+            or bool(_NUMBER_WORD.match(w)) or bool(_CONTRACTION.search(w)) or low in _ROLE_LOWER)
 
 
 def mid_sentence_names(script: str) -> set[str]:
     """Real proper nouns: capitalised words that appear somewhere other than the start of a sentence, or that the
-    script never writes in lower case ("Congress called it..." - there is no "congress" anywhere)."""
+    script never writes in lower case ("Congress called it..." - there is no "congress" anywhere) and that isn't
+    shaped like an ordinary word ("Dragged into...", "Officially,", "Accountability." are not names)."""
     lower = set(re.findall(r"\b[a-z][\w'’-]*", script))
-    found = {w for w in re.findall(r"\b[A-Z][a-z][\w'’-]+", script)
-             if w.lower() not in lower and w not in _STOP and w.lower() not in _COMMON_STARTS}
+    caps = re.findall(r"\b[A-Z][a-z][\w'’-]+", script)
+    # only at sentence starts: a name if it recurs ("Vadra got bail... Vadra said") or is a well-known one-word
+    # institution - a one-off "Cut." / "Defend it." / "Turns out" is an ordinary word
+    found = {w for w in caps
+             if w.lower() not in lower and w not in _STOP and not _ordinary(w)
+             and (caps.count(w) >= 2 or w in _FAMOUS)}
     for _, sent in _sentences(script):
         body = sent.strip()
         for m in re.finditer(r"(?<=[\w,;:’'\"]\s)([A-Z][\w'’.-]+)", body):
@@ -306,9 +372,16 @@ CITIES = {"New Delhi": ("Delhi", "New Delhi", "Jantar Mantar", "India Gate", "Co
           "Pune": ("Pune",), "Varanasi": ("Varanasi",)}
 
 
+CITIES_HINDI = {"New Delhi": ("दिल्ली", "जंतर मंतर", "इंडिया गेट", "रामलीला मैदान", "तिहाड़"), "Mumbai": ("मुंबई",),
+                "Kolkata": ("कोलकाता",), "Chennai": ("चेन्नई",), "Bengaluru": ("बेंगलुरु",), "Hyderabad": ("हैदराबाद",),
+                "Lucknow": ("लखनऊ",), "Patna": ("पटना",), "Jaipur": ("जयपुर",), "Varanasi": ("वाराणसी",)}
+
+
 def context_city(script: str) -> str:
     """The city the story mostly happens in ("New Delhi" for a script about protests at Jantar Mantar), or ""."""
     counts = {c: sum(len(re.findall(rf"\b{re.escape(n)}\b", script)) for n in names) for c, names in CITIES.items()}
+    for c, names in CITIES_HINDI.items():
+        counts[c] += sum(script.count(n) for n in names)     # Devanagari: no \b (vowel signs aren't word characters)
     best = max(counts, key=counts.get)
     return best if counts[best] >= 2 else ""
 
@@ -364,9 +437,24 @@ def movement(script: str, known: set[str]) -> str:
     return best if best and counts[best] >= 2 else ""
 
 
+_COUNTRY_CUES = {"India": ("Indian", "Indians", "Delhi", "Mumbai", "Kolkata", "Chennai", "Bengaluru", "Lok Sabha",
+                            "Rajya Sabha", "BJP", "Modi", "Uttar Pradesh", "Bihar", "Kerala", "Gujarat", "Punjab",
+                            "Maharashtra", "Karnataka", "West Bengal", "Tamil Nadu", "Assam", "Kashmir", "crore", "lakh")}
+_COUNTRY_HINDI = {"India": ("भारत", "हिंदुस्तान", "हिन्दुस्तान", "इंडिया", "दिल्ली", "मोदी", "बीजेपी", "भाजपा")}
+
+
 def context_country(script: str) -> str:
-    counts = {c: len(re.findall(rf"\b{re.escape(c)}\b", script)) for c in COUNTRIES}
+    """The country the story is about: its own name, its people ("Indian"), its cities, states and parties, and its
+    Hindi names all count. A Hindi (Devanagari) script is about India unless it names somewhere else."""
+    script = script or ""
+    counts = {}
+    for c in COUNTRIES:
+        cues = (c,) + ((_DEMONYM[c],) if c in _DEMONYM else ()) + _COUNTRY_CUES.get(c, ())
+        counts[c] = sum(len(re.findall(rf"\b{re.escape(w)}\b", script)) for w in cues)
+        counts[c] += sum(script.count(w) for w in _COUNTRY_HINDI.get(c, ()))
     best = max(counts, key=counts.get) if counts else ""
+    if counts.get(best, 0) < 3 and re.search(r"[\u0900-\u097F]{3}", script) and counts.get(best, 0) <= counts["India"]:
+        return "India"
     return best if counts.get(best, 0) >= 3 else ""
 
 
@@ -430,7 +518,7 @@ def enrich(plan, script: str) -> None:
             # 1. a named subject the picture doesn't already show by name
             for name in proper_nouns(text, known):
                 name = expand_name(_clean(name), names)
-                if not name:
+                if not name or (len(name.split()) == 1 and not name.isupper() and _ordinary(name)):
                     continue                  # "Gandhi" alone, with three Gandhis in the story: no guessing
                 key = _clean(name).lower()
                 if not key or key in visual.lower() or any(w in made_up for w in key.split()):

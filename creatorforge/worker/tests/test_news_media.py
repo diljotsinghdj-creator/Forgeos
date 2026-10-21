@@ -127,3 +127,22 @@ def test_the_pen_mark_sits_on_the_picture_with_the_text_box():
                                  {"visual": "A file", "more": ["A desk"], "text": "CLEAN CHIT", "draw": "circle"})
     with_text = [s for s in shots if s[2]]
     assert with_text and with_text[0][5] == "circle"
+
+
+def test_a_relative_og_image_is_resolved_against_the_article(tmp_path, monkeypatch):
+    import httpx
+
+    class R:
+        text, url = '<meta property="og:image" content="/img/lead.jpg">', "https://news.example/story/1"
+
+        def raise_for_status(self):
+            pass
+    monkeypatch.setattr(httpx, "get", lambda url, **kw: R())
+    assert news_media.page_meta("https://news.example/story/1", tmp_path)["image"] == "https://news.example/img/lead.jpg"
+
+
+def test_a_blocked_page_is_never_framed_as_the_article():
+    assert news_media._BLOCKED.search("Access Denied")
+    assert news_media._BLOCKED.search("Just a moment...")
+    assert news_media._BLOCKED.search("403 Forbidden")
+    assert not news_media._BLOCKED.search("Forbidden City visit: what the minister said")
