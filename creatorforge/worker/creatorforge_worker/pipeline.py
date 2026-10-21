@@ -621,7 +621,7 @@ class Pipeline:
         """A real photo for a beat no footage covered (best effort; None -> the beat gets an AI image)."""
         from .providers import stock_photo
         if self._matcher() is None:
-            photos = [p for p in photos if p[1]]          # keyless libraries only with the picture check
+            photos = [p for p in photos if p[1] or p[0] == "mock"]   # keyless libraries only with the picture check
         for found in stock_photo.search_any(photos, query, portrait)[:3]:
             try:
                 src = stock_photo.fetch(found, self.cfg.cache_dir / "stock_photos")
