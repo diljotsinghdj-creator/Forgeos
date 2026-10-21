@@ -146,3 +146,31 @@ def test_a_blocked_page_is_never_framed_as_the_article():
     assert news_media._BLOCKED.search("Just a moment...")
     assert news_media._BLOCKED.search("403 Forbidden")
     assert not news_media._BLOCKED.search("Forbidden City visit: what the minister said")
+
+
+def test_things_that_carry_writing_are_drawn_with_none_showing():
+    t = director.textless
+    assert t("A record book with a line struck through in red ink") == "A closed hardback register with a plain dark cloth cover"
+    assert "edge-on" in t("A stack of Indian newspapers on a pavement at dawn, mastheads blurred")
+    assert "on a pavement at dawn" in t("A stack of Indian newspapers on a pavement at dawn, mastheads blurred")
+    assert t("A wall calendar with three days, then four, circled in red").startswith("An hourglass")
+    assert t("A bank's shutter half down with a NO CASH notice taped to it") == "A bank's shutter half down"
+    assert t("A file stamped CABINET DECISION on a desk in a government office").endswith(
+        "on a desk in a government office")
+    assert "flags" in t("A crowd holding protest placards on a Delhi road, seen from behind")
+    plain = "Rajghat memorial in Delhi at dawn, the eternal flame burning"
+    assert t(plain) == plain
+    prompt, writing = director._no_text("A parliamentary nameplate on an empty desk in the chamber")
+    assert writing and "nameplate" not in prompt
+
+
+def test_an_article_page_is_shown_once_and_only_for_its_own_headline():
+    from creatorforge_worker.providers import news_media as nm
+    links = nm.source_links("Tribune, EC notice https://www.tribuneindia.com/news/india/ec-notice-to-bjp-on-pms-rajasthan-rally-rahul-puts-congress-in-trouble-too-614609 ; "
+                            "Tribune, Bidhuri https://www.tribuneindia.com/news/india/bjp-issues-show-cause-notice-to-ramesh-bidhuri-for-his-objectionable-remarks-against-danish-ali-in-lok-sabha-546776")
+    head = "Congress distances itself from Sam Pitroda's inheritance tax comments, says his views not always aligned with party"
+    assert nm.find_link(head, links, "The Tribune", min_share=0.4) is None      # a different Tribune article: no
+    ec = "EC notice to BJP on PM's Rajasthan rally; Rahul puts Congress in trouble too"
+    assert "ec-notice" in nm.find_link(ec, links, "The Tribune", min_share=0.4)["url"]
+    used = {links[0]["url"]}
+    assert nm.find_link(ec, links, "The Tribune", min_share=0.4, skip=used) is None   # already shown once

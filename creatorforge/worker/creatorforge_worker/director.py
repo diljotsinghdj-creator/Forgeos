@@ -575,7 +575,7 @@ NO_WRITING = "every surface left blank with no writing, no letters, no numbers"
 # (idiom, the scene it stands for, words that mean the visual already describes the literal thing - a writer's
 # "whitewashed wall" or "washing machine door slowly closing" is kept as written)
 _IDIOMS = [
-    (r"\bclean[- ]?chits?\b", "an official investigation file closed with a green clearance stamp on a desk", ""),
+    (r"\bclean[- ]?chits?\b", "a closed cardboard case folder tied with red tape, a green clearance stamp pressed beside it on a desk", ""),
     (r"\bwhite[- ]?wash(ed|ing)?\b", "a case file being quietly closed and locked away in a steel cabinet",
      r"\b(walls?|buildings?|house|houses|facade|brick\w*|paint\w*|lime|plaster\w*|room|corridor|village)\b"),
     (r"\bclean (image|record|reputation)\b", "a politician at a podium under bright stage lights, seen from behind", ""),
@@ -607,12 +607,86 @@ def literal_idioms(visual: str) -> str:
     return visual
 
 
+# Image models cannot write: any page, sign or screen they draw comes out as garbled fake letters ("RECORD BOOK"
+# -> "ORD BOOK NWS", a calendar of nonsense dates, a nameplate reading "NATNIAMABES"). So things that carry writing
+# are drawn the way they look with no writing showing: closed, folded, seen edge-on, turned away or out of focus.
+_TEXTLESS = [   # (things that carry writing, the same subject drawn with no writing showing)
+    (r"front[- ]pages?|newspapers?|news ?papers?|mastheads?|headlines?|tabloids?|magazines?|news-?stands?",
+     "a bundle of folded newspapers tied with twine, seen edge-on so only the paper edges show"),
+    (r"record books?|ledgers?|registers?|notebooks?|diar(?:y|ies)|exercise books?|law books?|books?",
+     "a closed hardback register with a plain dark cloth cover"),
+    (r"case files?|chargesheets?|charge ?sheets?|dossiers?|files?|folders?|documents?|reports?|binders?|transcripts?|"
+     r"memos?|forms?|papers?|paperwork|pages?|letters?|petitions?|manifestos?|booklets?|certificates?|affidavits?|"
+     r"clippings?|printouts?|spreadsheets?|scorecards?|clipboards?|envelopes?|fact-?checks?",
+     "closed buff cardboard file folders tied with red cloth tape"),
+    (r"(?:wall )?calendars?", "an hourglass with the sand running out"),
+    (r"nameplates?|name ?boards?|plaques?", "an empty polished wooden desk with a gooseneck microphone"),
+    (r"signs?|signboards?|notices?|posters?|billboards?|hoardings?|notice ?boards?|whiteboards?|blackboards?|"
+     r"stickers?|labels?|price tags?|graffiti|logos?|emblems?|slogans?",
+     "a weathered wall of peeling plain paint"),
+    (r"screens?|monitors?|displays?|scoreboards?|televisions?|tvs?|laptops?|tablets?|computers?|timers?",
+     "a softly glowing screen seen from the side, completely out of focus"),
+    (r"receipts?|tickets?|cards?|passbooks?|passports?|ballot papers?", "a small closed leather wallet"),
+]
+_TEXTLESS_RX = [(re.compile(rf"\b(?:{p})\b", re.I), r) for p, r in _TEXTLESS]
+# placards and banners in people's hands become flags: a protest stays a protest
+_HELD = re.compile(r"\b(placards?|banners?|posters?|signs?|slogans?)\b", re.I)
+_HOLDERS = re.compile(r"\b(crowds?|protesters?|marchers?|people|students?|demonstrators?|supporters?|activists?|"
+                     r"workers?|farmers?|women|men|hands?)\b", re.I)
+# where and when a picture is: kept when the subject itself is swapped
+_PREP = r"(?:in|on|at|under|beside|inside|outside|along|across|by|near|against|over|through)"
+_PHRASE = re.compile(rf"\b{_PREP}\b[^,;]*?(?=\s+\b{_PREP}\b|[,;]|$)", re.I)
+_PLACE_WORD = re.compile(r"\b(?:desk|table|office|room|street|lane|road|doorstep|court\w*|parliament|chamber|bin|shelf|"
+                         r"shelves|wall|floor|bench|counter|window|dawn|dusk|night|morning|evening|light|lamp|rain|sun|"
+                         r"Delhi|India|Mumbai|Assam|city|town|village|station|jail|prison|pavement|corridor|hall|"
+                         r"gallery|house|home|bank|stall|market|ministry|police)\b", re.I)
+# a writing-bearing thing that is only a detail ("a shutter with a NO CASH notice taped to it"): dropped, not swapped
+_DETAIL = re.compile(rf"\s*(?:,\s*)?\b(?:with|beside|next to|holding|and)\b[^,;]*$", re.I)
+
+
+def textless(visual: str) -> str:
+    """The visual with the writing-bearing thing swapped for the same thing with no writing showing; its setting
+    ("on a desk in a government office", "at dawn") is kept. A detail that carries writing is dropped. Visuals with
+    nothing to write on are unchanged."""
+    v = re.sub(r",?\s*\b(?:text|words|names|figures|numbers|details|letters|mastheads?|headlines?) "
+               r"(?:unreadable|blurred|illegible|hidden|out of focus)\b", "", visual, flags=re.I)
+    v = re.sub(r"\s*\b(?:stamped|labell?ed|marked|titled|reading|saying|that says)\s+(?:[\"'“‘][^\"'”’]*[\"'”’]|"
+               r"(?:[A-Z0-9%₹$'’&-]{2,}\s*)+)", " ", v)
+    v = re.sub(r"\b[A-Z]{2,}(?:\s+[A-Z]{2,})*\s+(?=(?:stamp|sign|logo|notice|word)s?\b)", "", v)
+    if _HOLDERS.search(v) and _HELD.search(v):
+        v = _HELD.sub("flags", v)                         # protesters holding flags: nothing to misspell
+    def settings(text: str, scene: str = "") -> list[str]:
+        return [p.group(0).strip() for p in _PHRASE.finditer(text)
+                if _PLACE_WORD.search(p.group(0)) and not any(r.search(p.group(0)) for r, _ in _TEXTLESS_RX)
+                and not (re.search(r"\bdesk\b", scene) and re.search(r"\bdesk\b", p.group(0)))]
+
+    for rx, scene in _TEXTLESS_RX:
+        m = rx.search(v)
+        if not m:
+            continue
+        head = v[:m.start()]
+        cut = _DETAIL.search(head)
+        if cut and len(head[:cut.start()].split()) >= 2 and not rx.search(head[:cut.start()]):
+            # only a detail of the picture: drop that clause, keep the subject, the setting and the rest
+            dropped, _, rest = v[cut.start():].partition(",")
+            keep = [w for w in settings(dropped) if w not in head]
+            head = re.sub(r"\s+\b(?:painted|covered|plastered|decorated|stuck|taped|pinned|hung|printed)$", "",
+                          head[:cut.start()].rstrip())
+            v = head + (" " + " ".join(keep) if keep else "") + ("," + rest if rest else "")
+            continue
+        out = scene[0].upper() + scene[1:]
+        where = settings(v, scene)
+        return out + (" " + " ".join(dict.fromkeys(where)) if where else "")
+    return re.sub(r"\s{2,}", " ", re.sub(r"\s+([,.;])", r"\1", v)).strip(" ,.;")
+
+
 def _no_text(visual: str) -> tuple[str, bool]:
     """The visual without the words that make an image model write fake text ("text unreadable", "a sign reading
     SECURITY"), and whether it shows something that normally carries writing."""
-    visual = literal_idioms(visual)
+    writing = bool(_WRITING.search(visual))
+    visual = literal_idioms(textless(visual))         # idiom scenes are written to carry no writing
     clean = re.sub(r"\s{2,}", " ", _SAY_TEXT.sub("", visual)).strip(" ,.")
-    return clean or visual, bool(_WRITING.search(visual))
+    return clean or visual, writing
 
 
 def _image_prompt(visual: str, emotion: str, s: "ShotPlan", spec: ProductionSpec, style: str,

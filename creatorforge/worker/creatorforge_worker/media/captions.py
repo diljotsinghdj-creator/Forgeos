@@ -249,17 +249,37 @@ def write_ass(path: Path, width: int, height: int, scale: float, position: float
 
 
 def script_spelling(heard: list[Word], script: str) -> tuple[list[Word], float]:
-    """Puts the script's words on Whisper's timings. Words Whisper heard the same (or a 1:1 substitution, e.g. a
-    respelt name) take the script's spelling; extra/missing words keep Whisper's text. Returns (words, match ratio)."""
+    """Puts the script's words on Whisper's timings, so captions always show the script exactly - every word, in
+    its own spelling ("₹13 crore", not what the voice said, "thirteen crore rupees"). Words Whisper heard the same
+    take their own timing; a stretch heard differently, or a word Whisper missed, shares the time around it.
+    Returns (words, match ratio)."""
     import difflib
     said = script.split()
+    if not heard or not said:
+        return list(heard), 0.0
     a = [_norm(w.text) for w in heard]
     b = [_norm(w) for w in said]
     sm = difflib.SequenceMatcher(None, a, b, autojunk=False)
-    out = list(heard)
+    out: list[Word] = []
+
+    def spread(words: list[str], start: float, end: float) -> None:
+        end = max(end, start + 0.12 * len(words))
+        weights = [max(1, len(w)) for w in words]
+        t, total = start, sum(weights)
+        for w, wt in zip(words, weights):
+            d = (end - start) * wt / total
+            out.append(Word(w, round(t, 3), round(t + d, 3)))
+            t += d
+
     for op, i1, i2, j1, j2 in sm.get_opcodes():
-        if op in ("equal", "replace") and (i2 - i1) == (j2 - j1):
-            for k in range(i2 - i1):
-                w = heard[i1 + k]
-                out[i1 + k] = Word(said[j1 + k], w.start, w.end)
+        if op == "equal" or (op == "replace" and i2 - i1 == j2 - j1):
+            out += [Word(said[j1 + k], heard[i1 + k].start, heard[i1 + k].end) for k in range(i2 - i1)]
+        elif op == "replace":
+            spread(said[j1:j2], heard[i1].start, heard[i2 - 1].end)
+        elif op == "insert":
+            # a word Whisper didn't hear: squeezed into the gap where it was said
+            start = out[-1].end if out else heard[0].start
+            nxt = heard[i1].start if i1 < len(heard) else start + 0.25 * (j2 - j1)
+            spread(said[j1:j2], start, max(nxt, start + 0.1))
+        # "delete": a word Whisper heard that isn't in the script (a filler, a mis-hearing) - not captioned
     return out, round(sm.ratio(), 3)

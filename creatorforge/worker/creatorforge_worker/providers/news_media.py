@@ -23,6 +23,26 @@ _URL = re.compile(r"https?://[^\s;,)]+")
 _STOP = set("the a an of in on at to for and or with from by as is are was were be its it this that after over "
             "into amid says said new news india indian www com html amp story article".split())
 MIN_SIDE = 480
+# Consent banners, paywalls and newsletter boxes, by the names the common consent tools give them
+_HIDE_CSS = ("[class*='cookie'],[id*='cookie'],[class*='consent'],[id*='consent'],[class*='paywall'],[class*='modal'],"
+             "[class*='popup'],[class*='newsletter'],[id^='sp_message'],[class*='sp_message'],.fc-consent-root,"
+             ".fc-dialog-overlay,#onetrust-banner-sdk,#onetrust-consent-sdk,.qc-cmp2-container,.tp-modal,.tp-backdrop,"
+             "[class*='overlay'],[id*='overlay'],[class*='backdrop'],iframe[src*='consent']{display:none!important}"
+             "html,body{overflow:auto!important;filter:none!important}")
+# Anything still floating over the article (a fixed box covering a big part of the screen, or a dimming layer) is
+# removed, so the headline is never hidden behind a pop-up.
+_CLEAR_OVERLAYS = """() => {
+  const vw = innerWidth, vh = innerHeight;
+  for (const el of document.querySelectorAll('body *')) {
+    const st = getComputedStyle(el);
+    if (st.position !== 'fixed' && st.position !== 'sticky') continue;
+    const r = el.getBoundingClientRect();
+    if (r.width * r.height > vw * vh * 0.15 || (st.position === 'fixed' && r.top > vh * 0.2 && r.height > 80))
+      el.remove();
+  }
+  document.documentElement.style.overflow = 'auto';
+  document.body.style.overflow = 'auto';
+}"""
 # A page that isn't the article: a block, a bot check or a paywall - never framed and credited as the story
 _BLOCKED = re.compile(r"access denied|^\s*(403|404)\b|^\s*forbidden\s*$|just a moment|attention required|are you a robot|"
                       r"captcha|verify you are human|page not found|subscribe to (continue|read)|sign in to continue", re.I)
@@ -57,14 +77,21 @@ def _publisher_hit(publisher: str, link: dict) -> bool:
     return bool(pub) and (pub[:6] in host or host[:6] in pub or pub[:8] in lab or lab[:8] in pub)
 
 
-def find_link(text: str, links: list[dict], publisher: str = "", min_overlap: int = 2) -> dict | None:
+def find_link(text: str, links: list[dict], publisher: str = "", min_overlap: int = 2,
+              min_share: float = 0.0, skip: set | list = ()) -> dict | None:
     """The cited article a headline or line is about: most words shared with the link's slug and label, the named
-    publisher first. None when nothing clearly matches - a wrong article is worse than none."""
+    publisher first. None when nothing clearly matches - a wrong article is worse than none. min_share: the share
+    of the text's words the link must contain (a headline must really be that article's headline); skip: links
+    already used."""
     want = _words(text)
     best, best_score = None, 0.0
     for link in links:
+        if link["url"] in skip:
+            continue
         have = _words(_slug(link["url"])) | _words(link["label"])
         overlap = len(want & have)
+        if want and overlap < min_share * len(want):
+            continue
         pub = publisher and _publisher_hit(publisher, link)
         score = overlap + (1.5 if pub else 0)
         if (overlap >= min_overlap or (pub and overlap >= 1)) and score > best_score:
@@ -131,7 +158,7 @@ def screenshot(url: str, cache: Path, width: int = 1280, height: int = 1500, tim
     """A screenshot of the real article page (top of the page: masthead, headline, lead photo), with cookie and
     subscription pop-ups dismissed where possible. None when no browser is installed or the page won't load."""
     cache.mkdir(parents=True, exist_ok=True)
-    dst = cache / f"shot_{hashlib.sha256(f'{url}{width}x{height}'.encode()).hexdigest()[:20]}.png"
+    dst = cache / f"shot2_{hashlib.sha256(f'{url}{width}x{height}'.encode()).hexdigest()[:20]}.png"
     if dst.is_file() and dst.stat().st_size > 20_000:
         return dst
     try:
@@ -150,16 +177,17 @@ def screenshot(url: str, cache: Path, width: int = 1280, height: int = 1500, tim
                 page.wait_for_timeout(2500)
                 if _BLOCKED.search(page.title() or ""):
                     return None
-                for label in ("Accept", "Accept all", "I agree", "Agree", "Got it", "OK", "Allow", "Continue",
-                              "Close", "No thanks", "Not now", "Maybe later"):
+                labels = re.compile(r"^\s*(accept( all| cookies| & continue| and continue)?|i accept|i agree|agree"
+                                    r"( and close| & close)?|consent|got it|ok|okay|allow( all)?|continue|close|"
+                                    r"no,? thanks|not now|maybe later|dismiss|x|×)\s*$", re.I)
+                for frame in [page.main_frame, *page.frames]:     # consent dialogs often live in an iframe
                     try:
-                        page.get_by_role("button", name=re.compile(rf"^\s*{label}\s*$", re.I)).first.click(timeout=600)
-                    except Exception:  # noqa: BLE001 - no such pop-up
+                        frame.get_by_role("button", name=labels).first.click(timeout=700)
+                    except Exception:  # noqa: BLE001 - no such pop-up in this frame
                         pass
-                page.add_style_tag(content="[class*='cookie'],[id*='cookie'],[class*='consent'],[id*='consent'],"
-                                           "[class*='paywall'],[class*='modal'],[class*='popup'],[class*='newsletter']"
-                                           "{display:none!important} body{overflow:auto!important}")
-                page.wait_for_timeout(500)
+                page.add_style_tag(content=_HIDE_CSS)
+                page.evaluate(_CLEAR_OVERLAYS)
+                page.wait_for_timeout(600)
                 page.screenshot(path=str(dst), full_page=False)
             finally:
                 browser.close()

@@ -89,3 +89,15 @@ def test_duration_of_an_empty_file_is_a_media_error(tmp_path):
         empty.write_bytes(b"")
     with pytest.raises(ff.MediaError):
         ff.duration(empty)
+
+
+def test_captions_show_every_script_word_even_when_whisper_misses_one():
+    from creatorforge_worker.media.captions import script_spelling
+    from creatorforge_worker.providers.base import Word
+    heard = [Word("Parliament?", 0, .5), Word("counted", .7, 1.0), Word("who", 1.0, 1.2)]
+    words, _ = script_spelling(heard, "Parliament? It counted who")
+    assert [w.text for w in words] == ["Parliament?", "It", "counted", "who"]
+    assert words[1].start >= words[0].end and words[1].end <= words[2].start + 1e-6
+    heard = [Word("found", 0, .3), Word("thirteen", .3, .7), Word("crore", .7, 1), Word("rupees", 1, 1.4)]
+    words, _ = script_spelling(heard, "found ₹13 crore")
+    assert [w.text for w in words] == ["found", "₹13", "crore"]          # the script's spelling, not the voice's

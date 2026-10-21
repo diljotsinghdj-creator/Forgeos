@@ -180,3 +180,15 @@ INDEX (title - on-screen hook)
   Week 4  scams & cons       Shorts 04, 14, 23  + re-cut best 4     Long 06 (day 25), Long 07 (day 27)
   Days 29-30                 Long 03 and Long 05; then repeat the formats that won (Analytics tab)
   Pin the best Short of each week under the matching long form.
+
+NO FAKE WRITING IN PICTURES (new)
+  AI pictures cannot write: a newspaper, file, calendar, nameplate, notice, poster or screen comes out as garbled
+  fake letters. So CreatorForge now draws those things with no writing showing (newspapers folded and edge-on, files
+  closed and tied, a calendar becomes an hourglass, protest placards become flags) and keeps the setting you wrote.
+  Real writing comes from real sources instead:
+    - A line whose Visual: is a newspaper, report, document or headline shows the REAL page of the matching
+      Source: link (a screenshot, cookie pop-ups removed, credited). Each article page is shown once per video.
+    - Article: lines show the real page only when the headline really is that article's headline.
+    - Exact words and numbers go in Text: / Chart: / Article: / Quote: - drawn by CreatorForge, always spelled right.
+  When writing a script: put every article you want on screen in Source:, and describe pictures without asking
+  for words on them ("closed case files on a desk", not "a file stamped CABINET DECISION").

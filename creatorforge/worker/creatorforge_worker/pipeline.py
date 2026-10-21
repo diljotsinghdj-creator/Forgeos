@@ -124,6 +124,12 @@ def stock_fits(found: dict, query: str, place: tuple[str, ...], checked: bool) -
                                                                                  for w in place))
 
 
+# Pictures of paperwork: a cited article's real page shows these better than any drawing
+_PAPERWORK = re.compile(r"\b(newspapers?|front[- ]pages?|headlines?|mastheads?|articles?|reports?|documents?|"
+                        r"files?|clippings?|chargesheets?|orders?|judg(e)?ments?|notices?|press releases?|"
+                        r"manifestos?|transcripts?|records?|registers?)\b", re.I)
+
+
 class Pipeline:
     def __init__(self, cfg: Config, store: JobStore, library: Library | None = None):
         self.cfg = cfg
@@ -310,7 +316,9 @@ class Pipeline:
                 named = (beats0[0].get("named") if beats0 else shot.get("named")) or {}
                 real = None
                 first = beats0[0] if beats0 else {"text": shot.get("narration", ""), "visual": shot["visual"], "extra": {}}
-                if not (beats0 and _covered(beats0[0])) and (not named or named.get("movement")):
+                if not (beats0 and _covered(beats0[0])):
+                    real = self._source_shot(job, first, self._out_size(job))  # a newspaper line: the real page
+                if real is None and not (beats0 and _covered(beats0[0])) and (not named or named.get("movement")):
                     real = self._news_photo(job, first, self._out_size(job))   # the cited article's own photo
                 if real is None and named and not (beats0 and _covered(beats0[0])):
                     real = self._named_photo(job, named, self._out_size(job))  # the person/party/place named
@@ -371,8 +379,8 @@ class Pipeline:
                         sc["beat_images"] = names
                         self.store.save(job)
                         continue     # a real photo covers this beat - no AI image needed
-                real = None
-                if not b.get("named") or b["named"].get("movement"):
+                real = self._source_shot(job, b, self._out_size(job))
+                if real is None and (not b.get("named") or b["named"].get("movement")):
                     real = self._news_photo(job, b, self._out_size(job))
                 if real is None and b.get("named"):
                     real = self._named_photo(job, b["named"], self._out_size(job))
@@ -453,6 +461,50 @@ class Pipeline:
         from .providers import news_media
         return news_media.source_links(str((self._spec(job).publish or {}).get("source") or ""))
 
+    def _fresh_print(self, job: dict | None, image: Path, owner: str, within: int = 8) -> bool:
+        """False when this picture looks like one already used in the video by something else (two article pages
+        rendering the same consent wall, a site's generic share image on every article)."""
+        if job is None:
+            return True
+        fp = match.fingerprint(image)
+        if fp is None:
+            return True
+        prints = job.setdefault("print_owner", {})
+        for other, who in prints.items():
+            if who != owner and match.seen_before(fp, [json.loads(other)], within):
+                return False
+        prints[json.dumps(fp)] = owner
+        return True
+
+    def _source_shot(self, job: dict, beat: dict, gen) -> Path | None:
+        """A line whose picture is a newspaper, report or document gets the real thing when the script cites it:
+        a screenshot of the matching Source: article (each article once per video). None: the line keeps its
+        other pictures."""
+        if not self.cfg.free_stock or not _PAPERWORK.search(str(beat.get("visual") or "")):
+            return None
+        links = self._news_links(job)
+        if not links:
+            return None
+        from .providers import news_media
+        cite = str((beat.get("extra") or {}).get("cite") or "")
+        used = set((job.get("shot_for") or {}).values())
+        link = news_media.find_link(f"{beat.get('text') or ''} {cite}", links, cite.split(",")[0].strip(),
+                                    min_overlap=2, skip=used)
+        if link is None:
+            return None
+        shot = news_media.screenshot(link["url"], self.cfg.cache_dir / "news")
+        if shot is None or not self._fresh_print(job, shot, link["url"], within=2):
+            return None
+        job.setdefault("shot_for", {})[f"line:{beat.get('text')}"] = link["url"]
+        label = news_media.host_label(link)
+        out = news_media.framed(shot, self.cfg.cache_dir / "news" / f"page_{shot.stem}_{gen[0]}x{gen[1]}.png",
+                                gen[0], gen[1], label)
+        credit = f"Screenshot: {label} ({link['url']})"
+        credits = job.setdefault("stock_credits", [])
+        if credit not in credits:
+            credits.append(credit)
+        return out
+
     def _news_photo(self, job: dict, beat: dict, gen) -> Path | None:
         """The cited article's own lead photo, for a line about the events it reports (a protest, an arrest, a
         court hearing): the real picture from the news, credited "Photo via <publisher>". Each article's photo is
@@ -479,7 +531,7 @@ class Pipeline:
             src = news_media.lead_photo(link["url"], cache)
         except Exception:  # noqa: BLE001 - a news site that blocks us: the line keeps its other pictures
             src = None
-        if src is None or (match.is_flat(src)):
+        if src is None or match.is_flat(src) or not self._fresh_print(job, src, link["url"]):
             return None
         out = news_media.frame_photo(src, cache / f"framed_{src.stem}_{gen[0]}x{gen[1]}.jpg", gen[0], gen[1])
         uses[link["url"]] = uses.get(link["url"], 0) + 1
@@ -1477,12 +1529,17 @@ class Pipeline:
         headline, _, source = str((beat.get("extra") or {}).get("article") or "").partition("|")
         publisher = source.split(",")[0].strip()
         links = news_media.source_links(str((spec.publish or {}).get("source") or ""))
-        link = news_media.find_link(headline, links, publisher) if headline.strip() else None
+        mine = (job or {}).setdefault("shot_for", {}) if job is not None else {}
+        others = {u for h, u in mine.items() if h != headline.strip()}
+        # the headline must really be that article's (most of its words in the link), and each page is shown once
+        link = news_media.find_link(headline, links, publisher, min_share=0.4, skip=others) if headline.strip() else None
         if link is None:
             return None
         shot = news_media.screenshot(link["url"], self.cfg.cache_dir / "news")
-        if shot is None:
+        if shot is None or not self._fresh_print(job, shot, link["url"], within=2):
             return None
+        if job is not None:
+            mine[headline.strip()] = link["url"]
         key = hashlib.sha256(f"{link['url']}|{size}|{seconds}".encode()).hexdigest()[:16]
         try:
             frame = news_media.framed(shot, work / f"article_{key}.png", size[0], size[1], publisher or news_media.host_label(link))
