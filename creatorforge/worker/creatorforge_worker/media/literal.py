@@ -209,19 +209,24 @@ That's There's Here's What's Who's He's She's They're We're You're I'm Let's Can
 _SKIP_ACRONYMS = {"OK", "TV", "AI", "PM", "CEO", "GDP", "USD", "GBP", "INR", "PDF", "SMS", "UPI", "ATM", "VAT", "ID",
                   "MP", "MPS", "UK", "US", "USA", "EU", "UN", "AM", "FM", "AD", "BC", "DNA", "IQ", "HR", "PR", "CCTV",
                   "MAX", "AP", "LLC", "PLC", "LTD", "NHS"}
+_GROUPS = {"muslim", "muslims", "hindu", "hindus", "christian", "christians", "sikh", "sikhs", "jain", "jains",
+           "buddhist", "buddhists", "dalit", "dalits", "adivasi", "adivasis", "tribal", "tribals", "vokkaliga",
+           "vokkaligas", "lingayat", "lingayats", "brahmin", "brahmins", "obc", "obcs", "jat", "jats", "maratha",
+           "marathas", "yadav", "yadavs", "rohingya", "bangladeshis"}
 _ROLE_WORDS = {"leader", "leaders", "minister", "ministers", "government", "MP", "MPs", "chief", "spokesperson",
                "candidate", "official", "officials", "member", "members", "wing", "workers", "supporters"}
 _ROLE_LOWER = {"minister", "ministers", "article", "section", "act", "chief", "president", "leader", "court", "party",
                "secretary", "spokesperson", "commissioner", "governor", "speaker", "judge", "justice"}
 _TITLES = re.compile(r"^(?:(?:Union|Home|Finance|Defence|Defense|External Affairs|Foreign|Deputy|Former|Ex|Then|"
-                     r"Railway|Education|Health|Law|Interior|Cabinet|State|Party|National|Congress|BJP|AAP|TMC|Chief|Election|"
+                     r"Railway|Education|Health|Law|Interior|Cabinet|State|Party|National|Congress|BJP|AAP|TMC|BSP|SP|JDU|RJD|NCP|"
+                     r"CPI|CPM|DMK|INC|Shiv Sena|Chief|Election|Lok Sabha|Rajya Sabha|"
                      r"Opposition|Delhi|Kerala|Punjab|Bengal|Bihar|Gujarat|Assam|Karnataka|Maharashtra|UP|"
                      r"Uttar Pradesh|Tamil Nadu|Telangana|Rajasthan|Haryana|Odisha|Jharkhand|Goa|"
                      r"[A-Z][a-z]+ Pradesh)\s+)*"
                      r"(?:PM|Prime Minister|President|Justice|Chief Justice|Mr|Mrs|Ms|Dr|Sir|Lord|Lady|Judge|Senator|"
                      r"Minister|Chief Minister|CM|Deputy CM|General(?= [A-Z][a-z]+ [A-Z])|King|Queen|Prince|Princess|Leader of(?: the)? Opposition|"
                      r"LoP|Governor|Speaker|Secretary|Spokesperson|Commissioner|Chief|Chairman|Chairperson|Shri|Smt|Prof|"
-                     r"(?:party )?[Pp]resident|[Cc]hief)\.?\s+(?=\S)")
+                     r"(?:party )?[Pp]resident|[Cc]hief|MP|MLA|MLC|[Cc]andidate|[Ll]eader|[Ss]pokesperson|[Aa]dviser|[Mm]inister)\.?\s+(?=\S)")
 # The channels' own names, said in a call to action ("Follow Print Facts"): never a subject to look up
 BRANDS = ("Print Facts", "Hidden Economics", "Corporate Autopsies", "Modi's India", "Modi’s India", "India 2026",
           "CreatorForge")
@@ -288,6 +293,10 @@ def proper_nouns(text: str, known: set[str]) -> list[str]:
                 if (lead and not stripped and len(words) > 1 and words[0] not in known and not words[0].isupper()
                         and _ordinary(words[0])):
                     words = words[1:]            # "Founder Trevor Milton", "Called MCAS": a sentence-start word
+                    while words and (words[0] in _STOP or words[0].islower()):
+                        words = words[1:]        # "Housing for All" -> "All", not "for All"
+                if any(w.lower().strip("'’") in _GROUPS for w in words):
+                    continue                     # "Muslims", "Indian Muslim", "Vokkaligas": a community, not a subject
                 if words:
                     _keep(names, words, sent, m.start(), known)
     names += [HINDI_NAMES[m.group(0)] for m in _HINDI_RX.finditer(text)]
@@ -321,7 +330,8 @@ several others both all each every neither none ordinary rich poor young old sta
 fine otherwise slogans democracy courts press authorities reputation anarchists government governments agencies
 ministry nation country citizens youth power truth justice freedom silence question questions answer answers
 examine follow watch look see read ask check consider think listen share subscribe comment tell remember picture
-founder phones different fair cut defend turns freed top ye
+founder phones different fair cut defend turns freed top ye within inside promises promise rural urban home
+housing termites x-ray infiltrators traitors patriot patriots
 take give make keep show bring put get go come try call pay hold turn leave find run start ban jail silence arrest
 """.split())
 
@@ -409,6 +419,8 @@ def expand_name(name: str, names: dict[str, list[str]]) -> str | None:
     the wrong face."""
     if len(name.split()) != 1 or name.isupper():
         return name
+    if name in COUNTRIES or any(name in v for v in CITIES.values()):
+        return name                       # "Delhi" is the city, not "Delhi Police"
     hits = names.get(name.lower(), [])
     if not hits:
         return name
@@ -518,6 +530,8 @@ def enrich(plan, script: str) -> None:
             # 1. a named subject the picture doesn't already show by name
             for name in proper_nouns(text, known):
                 name = expand_name(_clean(name), names)
+                if name and not _TITLES.sub("", f"{name} X").strip(" X"):
+                    continue                  # "Home Minister", "Chief Justice" alone: whose photo? none
                 if not name or (len(name.split()) == 1 and not name.isupper() and _ordinary(name)):
                     continue                  # "Gandhi" alone, with three Gandhis in the story: no guessing
                 key = _clean(name).lower()

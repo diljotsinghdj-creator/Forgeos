@@ -129,3 +129,38 @@ WHAT I DID NOT SAY AS FACT, AND WHY
   proven, with no source behind it, is what gets a video removed or sued. Evidence in a row does not.
 - Tone: inspired by John Oliver's style (sarcasm, "totally normal timing, right?", "the parrot is still
   talking"), but none of his jokes or wording are copied.
+
+
+CHECK BEFORE PUBLISHING - The Public Record (long form 04)
+
+Checked 21 Oct 2026 through search results (no primary page opened from the build machine).
+Open each Source: link once. The ones marked * were rebuilt from the page address, so match the
+Article: headline to the real page before rendering.
+
+CHANGED FROM THE DRAFT (and why)
+[ ] "40+ claims" -> "30 claims": the draft covers about thirty, so the count on screen now matches.
+[ ] Karnataka quota: the draft said the BJP claimed the Muslim quota went to Dalits/Adivasis - no source
+    found. Replaced with the documented story: in 2023 Karnataka's BJP government scrapped the 4% Muslim
+    quota and split it between Vokkaligas and Lingayats; the Supreme Court said it looked "highly shaky".
+[ ] "30 November 2017" highway/rail claims - no source found for that date, the 11 km/day figure or the
+    1,100 vs 1,677 km rail figures. Replaced with Nitin Gadkari's "2 km a day under UPA" claim, rated false
+    (UPA-2 averaged ~12 km/day, ~16 in 2012-13 - IndiaSpend/FactChecker, the ministry's own data).
+[ ] Namami Gange: original period was five years to March 2021 (the draft implied 2020), extended to 2026.
+[ ] Ease of Doing Business: added that the World Bank discontinued the report in 2021 (data irregularities
+    in other countries' scores) instead of "methodology changes".
+[ ] Kapil Mishra: added his Jan 2020 "India vs Pakistan" tweet and 48-hour EC ban (#19), and the NewsClick
+    arrest the Supreme Court held invalid (#30), so chapter 7 has a documented case.
+
+HAND-CHECK
+[ ] #03 "your second house": Modi's April 2024 wording - confirm one rally quote.
+[ ] #01 "Over 2,200 citizens wrote to the EC" (The Wire). Other petitions had 20,000 signatures.
+[ ] *Article: "EC notice to BJP on PM's Rajasthan rally; Rahul puts Congress in trouble too" (Tribune)
+[ ] *Article: "Congress distances itself from Sam Pitroda's inheritance tax comments, says his views not
+    always aligned with party" (Tribune)
+[ ] *Article: "Karnataka decision to scrap 4 pc Muslim quota prima facie on highly shaky ground, flawed: SC"
+[ ] Assam detention figures: 6 centres, 988 held, 28 deaths (Rajya Sabha reply, 2019, as reported).
+[ ] Farm income: Rs 10,218/month (NSSO 77th round, 2018-19) vs the committee's Rs 22,610 path for 2022-23.
+[ ] PMAY-Urban: 62 lakh finished of 123 lakh sanctioned, deadline to Dec 2024 (Cabinet, Aug 2022).
+[ ] NSO 2018: ~71% of rural households had toilet access (some reports give other figures).
+[ ] Kapil Mishra: "not named in police chargesheets" - check whether any court order since has changed this.
+[ ] Bidhuri "expressed regret" for the January 2025 cheeks remark.
