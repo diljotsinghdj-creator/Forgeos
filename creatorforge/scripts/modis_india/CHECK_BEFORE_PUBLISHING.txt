@@ -164,3 +164,33 @@ HAND-CHECK
 [ ] NSO 2018: ~71% of rural households had toilet access (some reports give other figures).
 [ ] Kapil Mishra: "not named in police chargesheets" - check whether any court order since has changed this.
 [ ] Bidhuri "expressed regret" for the January 2025 cheeks remark.
+
+
+CHECK BEFORE PUBLISHING - Part 2: The Promises, The Power, The Questions (long form 05)
+
+Checked 22 Oct 2026 through search results. Open each Source: link once. * = headline rebuilt from the page
+address: match the Article: line to the real headline before rendering.
+
+CHANGED FROM THE DRAFT (and why)
+[ ] Amit Shah's "religious allowances, population trends" claims were too vague to show. Replaced with one
+    documented case: Santhal Pargana's tribal share fell 44% -> 28% (1951-2011, census, in the Centre's affidavit);
+    Shah blamed infiltration, but the affidavit listed out-migration, lower birth rates and conversion, and said
+    infiltration was only "assessed to have taken place". The High Court has not ruled on it.
+[ ] "Gangster directing operations from prison" had no named case. Replaced with the documented Lawrence Bishnoi
+    interview: an SIT found it was recorded in Punjab Police custody (CIA Kharar); 7 policemen incl. 2 DSPs
+    suspended, Oct 2024. Punjab is not BJP-ruled - the script says so.
+[ ] Electoral bonds: added the documented numbers (BJP Rs 6,566 cr, 2017-18 to 2022-23, from the SC order data;
+    Future Gaming the top buyer at Rs 1,368 cr; ED attachment 2 Apr 2022, ~Rs 100 cr of bonds 7 Apr 2022).
+[ ] Party-switchers: Indian Express (Apr 2024) - 25 leaders facing probes joined the BJP since 2014, 23 got relief.
+[ ] Length: the draft's 27 minutes is condensed to ~7 minutes (the channel's long-form length).
+
+HAND-CHECK
+[ ] Future Gaming's bonds went mostly to Trinamool and the DMK (widely reported; confirm the party split).
+[ ] Bhagwat's June 2024 "a true sevak has no arrogance" remark - confirm date and wording.
+[ ] ADR: 251 of 543 (46%) with declared cases, 170 serious - ADR's own release also gives 233 (43%); use one.
+[ ] ILO/IHD 2024: youth ~83% of the unemployed (2022); educated share 65.7%. PLFS 2023-24: 3.2% overall,
+    14.7% urban youth (Rajya Sabha reply).
+[ ] Shah's "chunavi jumla" interview: ABP News, 2015 (exact month not confirmed).
+[ ] *Article: "Did Modi Promise To Deposit Rs 15 Lakh In Every Account? A FactCheck" (BOOM)
+[ ] *Article: "BJP drops Advani, Murli Manohar" (Deccan Herald)
+[ ] *Article: "Needed RSS help earlier, BJP now self-sufficient: JP Nadda" (The News Minute)

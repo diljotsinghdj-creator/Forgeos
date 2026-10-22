@@ -256,13 +256,15 @@ MAX_PER_CONCEPT = 4
 
 
 _NOT_END = re.compile(r"(?:^|[\s.(])[A-Z]$|\b(?:Dr|Mr|Mrs|Ms|St|Jr|Sr|vs|No|Prof|Gen|Lt|Col|Smt|Shri|Rs)$")
+_NUMBER_ABBR = re.compile(r"\b(?:No|Rs)$")
 
 
 def _sentences(text: str) -> list[tuple[int, str]]:
     out, start = [], 0
     for m in re.finditer(r"[.!?।॥]+[\"'”’)]*\s+", text):
-        if text[m.start()] == "." and _NOT_END.search(text[start:m.start()]):
-            continue                      # an initial or a title: "J.P. Nadda", "Dr. Ambedkar", "the U.S. Senate"
+        if text[m.start()] == "." and _NOT_END.search(text[start:m.start()]) and not (
+                _NUMBER_ABBR.search(text[start:m.start()]) and not text[m.end():m.end() + 1].isdigit()):
+            continue                      # ("No. 5" and "Rs. 50" go on; "Is it? No. That needs..." ends)                      # an initial or a title: "J.P. Nadda", "Dr. Ambedkar", "the U.S. Senate"
         out.append((start, text[start:m.end()]))
         start = m.end()
     if start < len(text):
@@ -330,7 +332,7 @@ several others both all each every neither none ordinary rich poor young old sta
 fine otherwise slogans democracy courts press authorities reputation anarchists government governments agencies
 ministry nation country citizens youth power truth justice freedom silence question questions answer answers
 examine follow watch look see read ask check consider think listen share subscribe comment tell remember picture
-founder phones different fair cut defend turns freed top ye within inside promises promise rural urban home
+founder phones different fair cut defend turns freed top ye papa mummy beta bhai didi within inside promises promise rural urban home
 housing termites x-ray infiltrators traitors patriot patriots
 take give make keep show bring put get go come try call pay hold turn leave find run start ban jail silence arrest
 """.split())
@@ -528,7 +530,10 @@ def enrich(plan, script: str) -> None:
             text = str(b.get("text") or "")
             visual = str(b.get("visual") or "")
             # 1. a named subject the picture doesn't already show by name
-            for name in proper_nouns(text, known):
+            found = proper_nouns(text, known)
+            found.sort(key=lambda nm: (bool(seen_subject.get(_clean(nm).lower())),     # not shown yet first
+                                       len(nm.split()) < 2 or nm.isupper()))          # then full names
+            for name in found:
                 name = expand_name(_clean(name), names)
                 if name and not _TITLES.sub("", f"{name} X").strip(" X"):
                     continue                  # "Home Minister", "Chief Justice" alone: whose photo? none
