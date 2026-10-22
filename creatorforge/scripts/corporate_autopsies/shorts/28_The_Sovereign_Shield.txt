@@ -1,0 +1,84 @@
+The Sovereign Shield
+On-screen hook: 700% LOANS. WHOSE SHIELD?
+Title: 700% Payday Loans Behind a Tribal Shield: The Scott Tucker Case
+Tags: #CorporateAutopsies #paydayloans #fraud #ScottTucker #consumerprotection
+Source: U.S. Attorney's Office SDNY, Scott Tucker And Timothy Muir Convicted At Trial (Oct 13, 2017), https://www.justice.gov/usao-sdny/pr/scott-tucker-and-timothy-muir-convicted-trial-35-billion-unlawful-internet-payday; U.S. Attorney's Office SDNY, Scott Tucker Sentenced To More Than 16 Years In Prison For Running $3.5 Billion Unlawful Internet Payday Lending Enterprise (Jan 2018), https://www.justice.gov/usao-sdny/pr/scott-tucker-sentenced-more-16-years-prison-running-35-billion-unlawful-internet-payday; Native American Finance Officers Association, Scott Tucker Found Guilty in Rent-a-Tribe Payday Loan Scheme, https://nativefinance.org/news/scott-tucker-found-guilty-in-rent-a-tribe-payday-loan-scheme/; KCUR, Payday lender Scott Tucker sentenced to more than 16 years in prison, https://www.kcur.org/post/payday-lender-scott-tucker-sentenced-more-16-years-prison
+
+Seven hundred percent loans. Whose shield?
+Visual: A hand holding a phone showing a loan approval screen, text unreadable
+Visual: A stack of overdue bills on a kitchen table under a lamp, text unreadable
+Text: 700% LOANS · WHOSE SHIELD?
+Thought: How is this even legal?
+
+Scott Tucker's payday lenders reached over four and a half million people, prosecutors said.
+Visual: Rows of empty call-centre desks with headsets in an office at night
+Visual: A worker seen from behind reading a loan email on a laptop, text unreadable
+Text: 4.5 MILLION+ BORROWERS
+Cite: U.S. Attorney SDNY, 2017
+
+Interest often ran six to seven hundred percent, sometimes over a thousand.
+Visual: A printed loan agreement with the interest line circled in red, text unreadable
+Visual: A calculator showing a long number beside a pen, digits unreadable
+Chart: 600% vs 1,000% | typical yearly rate, sometimes
+Cite: U.S. Attorney SDNY, 2017
+
+So how did he dodge state interest caps?
+Visual: A state capitol building with a dome on a clear day
+Visual: A thick law book open on a desk beside a highlighter
+Text: HOW DID HE DODGE STATE CAPS?
+Transition: whip
+
+Prosecutors said his tribal partnerships were a sham.
+Visual: A signed contract on a boardroom table, text unreadable
+Visual: Two hands exchanging a folder across a desk, faces out of frame
+Text: PROSECUTORS: SHAM PARTNERSHIPS
+Cite: U.S. Attorney SDNY
+
+Tribal businesses can claim immunity from state enforcement. That was the real shield.
+Visual: A closed courthouse door with a brass handle
+Visual: A stamped legal letter lying on a desk, text unreadable
+Text: TRIBAL IMMUNITY = THE SHIELD
+Treat: halftone
+
+But here's the twist: the tribes typically got about one percent.
+Visual: A single coin on a table beside a tall stack of banknotes
+Visual: A hand sliding a small envelope across a desk, text unreadable
+Pie: 1% | of revenue to the tribes, prosecutors said
+Cite: U.S. Attorney SDNY
+
+The business made about three and a half billion dollars, prosecutors said.
+Visual: A row of luxury racing cars parked in a garage, badges hidden
+Visual: Bundles of banknotes in a bank vault drawer
+Text: ABOUT $3.5 BILLION
+Big: BILLIONS
+
+And then the trial.
+Visual: A federal courthouse's stone front in lower Manhattan
+Text: THE TRIAL
+Transition: flash
+
+In October twenty seventeen, a jury convicted him on all fourteen counts.
+Visual: Empty wooden jury chairs in a courtroom seen from the back
+Visual: A court clerk's hand stacking verdict forms on a desk, text unreadable
+Text: GUILTY ON ALL 14 COUNTS · OCT 2017
+Cite: U.S. Attorney SDNY, Oct 2017
+
+His sentence: sixteen years and eight months in federal prison.
+Visual: A judge's gavel on a wooden bench in an empty courtroom
+Visual: A prison fence with coiled wire under a grey sky
+Article: Scott Tucker Sentenced To More Than 16 Years In Prison For Running $3.5 Billion Unlawful Internet Payday Lending Enterprise | U.S. Attorney SDNY, Jan 2018
+Cite: U.S. Attorney SDNY, Jan 2018
+
+The shield fended off states. It couldn't stop a federal jury.
+Visual: A broken padlock lying open on a stone courthouse step
+Visual: A jury box of empty wooden chairs lit by a window
+Text: NO SHIELD FROM A FEDERAL JURY
+Draw: cross
+Treat: duotone
+
+Before borrowing, ask: who's really lending?
+Visual: A hand holding a printed loan offer up to a window, text unreadable
+
+Would you read the rate?
+Visual: A finger on the small print of a loan agreement, text unreadable
+Text: READ THE RATE

@@ -1,0 +1,87 @@
+The Beauty Pageant Maths Illusion
+On-screen hook: $45 MILLION? REALLY $6M
+Title: Miss America's $45 Million Scholarship Claim: The Maths Behind the Number
+Tags: #PrintFacts #statistics #MissAmerica #scholarships #maths
+Source: Refinery29, John Oliver on the Miss America pageant's scholarship claims, Sept 2014 (https://refinery29.com/en-us/2014/09/74865/john-oliver-miss-america-pageant); The Billfold, Miss America and the pageantry of giving, Sept 2014 (https://www.thebillfold.com/2014/09/we-fun-scholars-miss-america-and-the-pageantry-of-giving/); Gulf News/AP, Miss America organisers revise scholarship amount paid, 2015 (https://gulfnews.com/lifestyle/fashion/miss-america-organisers-revise-scholarship-amount-paid-1.1578582)
+
+Forty-five million in scholarships a year? Really?
+Visual: A sparkling pageant tiara resting on a red velvet cushion
+Visual: A stack of college acceptance letters on a desk, text unreadable
+Text: $45 MILLION A YEAR?
+Draw: underline
+
+Trust big numbers? This trick works on you.
+Visual: A giant cardboard cheque on an empty stage, figures blurred
+Visual: A person seen from behind watching a TV in a dark living room
+
+Here's how one pageant turned six million into forty-five.
+Visual: A pageant stage with a runway and bright spotlights, nobody on it
+Visual: A calculator on a desk beside a spread of banknotes
+Text: $6M → $45M?
+Transition: whip
+
+Miss America's website said it made forty-five million available.
+Visual: A laptop showing a charity web page, text unreadable
+Visual: Contestants seen from behind lined up on a stage in gowns
+Quote: $45 million in scholarship assistance made available | Miss America website, 2014
+
+Notice the phrase. Made available. Not given.
+Visual: A highlighter pen resting on a printed page, text unreadable
+Visual: An empty graduation cap on a wooden table
+Big: AVAILABLE
+
+In twenty fourteen, John Oliver's team checked thirty-three states' tax filings.
+Visual: A tall stack of tax forms on an office desk, text unreadable
+Visual: A person seen from behind reading documents under a desk lamp
+Text: IRS 990s · 33 STATES
+Cite: Last Week Tonight, Sept 2014
+
+Even being generous, they found under four million.
+Visual: A small pile of banknotes on a desk, figures blurred
+Visual: A red pen circling a number on a printed sheet, figures blurred
+Chart: $45M vs $4M | claimed, found in filings
+Cite: Last Week Tonight, Sept 2014
+
+So where's the rest?
+Visual: An empty open safe with its door swung wide
+
+Imagine one college offer, worth ten thousand dollars.
+Visual: A college campus building with stone steps on a sunny day
+Visual: Four contestants seen from behind standing in a row on stage
+Text: ILLUSTRATION · ONE $10,000 OFFER
+
+One offer, counted again for every contestant who could take it.
+Visual: A hand writing the same figure four times on a notepad, figures blurred
+Visual: Four identical paper certificates fanned out on a table, text unreadable
+Chart: $10,000 → $40,000 | one offer, counted four times (illustration)
+
+The catch? The pageant said it counted every offer, even unused.
+Visual: A pile of unopened envelopes on a doormat, text unreadable
+Visual: An empty lecture hall seat with a folded note on it
+Text: EVERY OFFER, EVEN UNUSED
+
+A year later, the AP reported the real number.
+Visual: A newspaper printing press running at speed
+Visual: A rolled newspaper on a doorstep in the morning, text unreadable
+
+Just over five point nine million, in cash and tuition waivers.
+Visual: A tuition bill on a desk stamped paid, text unreadable
+Visual: A modest stack of banknotes beside a graduation cap
+Squares: $45M vs $5.9M | made available, actually given
+Cite: AP, 2015
+
+That's only about an eighth of the headline.
+Visual: A pie cut into eight slices with one slice pulled out
+Visual: A crumpled headline printout in a wastepaper bin, text unreadable
+Text: ABOUT 1/8 OF THE CLAIM
+Draw: circle
+
+So never trust a statistic until you see the maths.
+Visual: A hand pressing a calculator beside a printed chart, figures blurred
+Visual: A magnifying glass held over a column of numbers, figures blurred
+Text: SEE THE MATHS
+
+What big number have you believed without checking?
+Visual: A person seen from behind scrolling news headlines on a phone
+Visual: A notepad with a large question mark drawn in pen
+Text: WHAT NUMBER FOOLED YOU?
