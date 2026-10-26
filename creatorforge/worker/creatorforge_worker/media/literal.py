@@ -241,7 +241,14 @@ HINDI_NAMES = {"नरेंद्र मोदी": "Narendra Modi", "मोद
                "ईडी": "ED", "प्रवर्तन निदेशालय": "ED", "सीबीआई": "CBI", "एनआईए": "NIA", "आरबीआई": "RBI",
                "आरएसएस": "RSS", "कांग्रेस": "Indian National Congress", "आम आदमी पार्टी": "Aam Aadmi Party",
                "संसद": "Parliament of India", "कॉकरोच जनता पार्टी": "Cockroach Janta Party",
-               "जंतर मंतर": "Jantar Mantar", "इंडिया गेट": "India Gate", "लाल किला": "Red Fort"}
+               "जंतर मंतर": "Jantar Mantar", "इंडिया गेट": "India Gate", "लाल किला": "Red Fort",
+               "जेफ़्री एपस्टीन": "Jeffrey Epstein", "जेफ्री एपस्टीन": "Jeffrey Epstein", "एपस्टीन": "Jeffrey Epstein",
+               "घिसलेन मैक्सवेल": "Ghislaine Maxwell", "मैक्सवेल": "Ghislaine Maxwell",
+               "वर्जीनिया जिउफ्रे": "Virginia Giuffre", "जिउफ्रे": "Virginia Giuffre",
+               "अलेक्स अकोस्टा": "Alexander Acosta", "एलेक्स अकोस्टा": "Alexander Acosta", "अकोस्टा": "Alexander Acosta",
+               "जेपी मॉर्गन": "JPMorgan Chase", "डॉयचे बैंक": "Deutsche Bank", "एफ़बीआई": "FBI", "एफबीआई": "FBI",
+               "अमेरिकी न्याय विभाग": "United States Department of Justice",
+               "पाम बीच": "Palm Beach, Florida", "मियामी हेराल्ड": "Miami Herald"}
 _HINDI_RX = re.compile("|".join(re.escape(k) for k in sorted(HINDI_NAMES, key=len, reverse=True)))
 _SPAN = re.compile(r"\b(?:[A-Z][\w'’.-]*|[A-Z]{2,6})(?:\s+(?:of|the|and|for|de|von|van|al)?\s*(?:[A-Z][\w'’.-]*|[A-Z]{2,6}))*")
 COUNTRIES = ("India", "Pakistan", "Bangladesh", "China", "Britain", "United Kingdom", "England", "France", "Germany",
@@ -453,8 +460,12 @@ def movement(script: str, known: set[str]) -> str:
 
 _COUNTRY_CUES = {"India": ("Indian", "Indians", "Delhi", "Mumbai", "Kolkata", "Chennai", "Bengaluru", "Lok Sabha",
                             "Rajya Sabha", "BJP", "Modi", "Uttar Pradesh", "Bihar", "Kerala", "Gujarat", "Punjab",
-                            "Maharashtra", "Karnataka", "West Bengal", "Tamil Nadu", "Assam", "Kashmir", "crore", "lakh")}
-_COUNTRY_HINDI = {"India": ("भारत", "हिंदुस्तान", "हिन्दुस्तान", "इंडिया", "दिल्ली", "मोदी", "बीजेपी", "भाजपा")}
+                            "Maharashtra", "Karnataka", "West Bengal", "Tamil Nadu", "Assam", "Kashmir", "crore", "lakh"),
+                 "United States": ("American", "Americans", "America", "US", "U.S.", "Florida", "California", "Texas",
+                                   "FBI", "Congress of the United States")}
+_COUNTRY_HINDI = {"India": ("भारत", "हिंदुस्तान", "हिन्दुस्तान", "इंडिया", "दिल्ली", "मोदी", "बीजेपी", "भाजपा"),
+                  "United States": ("अमेरिका", "अमेरिकी", "अमरीका", "न्यूयॉर्क", "न्यूयार्क", "फ़्लोरिडा", "फ्लोरिडा",
+                                    "वॉशिंगटन", "एफ़बीआई", "एफबीआई", "व्हाइट हाउस")}
 
 
 def context_country(script: str) -> str:
@@ -531,6 +542,13 @@ def enrich(plan, script: str) -> None:
             visual = str(b.get("visual") or "")
             # 1. a named subject the picture doesn't already show by name
             found = proper_nouns(text, known)
+            if country and country != "India":
+                # Hindi words for institutions mean the story's own country's ("संसद" in a US story is Congress)
+                found = [{"Parliament of India": {"United States": "United States Congress",
+                                                  "United Kingdom": "Parliament of the United Kingdom"}.get(country, ""),
+                          "Supreme Court of India": f"Supreme Court of the {country}" if country == "United States"
+                          else "", "Election Commission of India": ""}.get(n, n) for n in found]
+                found = [n for n in found if n]
             found.sort(key=lambda nm: (bool(seen_subject.get(_clean(nm).lower())),     # not shown yet first
                                        len(nm.split()) < 2 or nm.isupper()))          # then full names
             for name in found:

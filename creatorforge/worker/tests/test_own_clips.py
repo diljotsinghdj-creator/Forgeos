@@ -78,3 +78,21 @@ def test_a_script_with_a_clip_line_renders_end_to_end(cfg, tmp_path):
         assert len(own) == 1 and (cfg.jobs_dir / jid / own[0]).is_file()
         assert job["providers"]["clips_own"] == "1 of your own clip"
         assert not job.get("warnings")
+
+
+def test_an_own_image_plays_on_its_clip_line(cfg, tmp_path):
+    from PIL import Image
+    pipe = Pipeline(cfg, JobStore(cfg.jobs_dir))
+    src = tmp_path / "04_mansion.png"
+    Image.new("RGB", (1100, 736), (90, 120, 160)).save(src)
+    pipe.library.assets.add("image", "04_mansion.png", src, ".png", lambda p: {})
+    job = {"id": "own2", "status": "RUNNING", "stages": {k: {"state": "PENDING"} for k in STAGES}, "providers": {},
+           "spec": {"idea": "a mansion story", "aspect": "16:9"}, "scenes": [{"index": 0}],
+           "plan": {"scenes": [{"beats": [{"text": "A mansion.", "extra": {"clip": "04 mansion"}}]}]}}
+    pipe.store.dir(job["id"]).mkdir(parents=True, exist_ok=True)
+    pipe._asset_clips(job, pipe.store.dir(job["id"]))
+    clip = job["scenes"][0]["beat_clips"][0]
+    assert clip and clip.endswith("_img.mp4") and not job.get("warnings")
+    dur = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0",
+                                str(pipe.store.dir(job["id"]) / clip)], capture_output=True, text=True, check=True).stdout)
+    assert dur > 10

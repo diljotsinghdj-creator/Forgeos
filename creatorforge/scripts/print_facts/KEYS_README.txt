@@ -205,3 +205,8 @@ NO FAKE WRITING IN PICTURES (new)
     - Exact words and numbers go in Text: / Chart: / Article: / Quote: - drawn by CreatorForge, always spelled right.
   When writing a script: put every article you want on screen in Source:, and describe pictures without asking
   for words on them ("closed case files on a desk", not "a file stamped CABINET DECISION").
+
+YOUR OWN PICTURES ON A LINE (new)
+  Clip: now works with IMAGES too. Upload a picture (Library -> ASSET LIBRARY -> image -> import) and write its name
+  under a line, e.g. "Clip: ef12". It is shown whole over a blurred copy of itself with a slow push-in - never
+  cropped to a strip. Use pictures you own or made; label AI illustrations on screen ("Text: प्रतीकात्मक चित्र").

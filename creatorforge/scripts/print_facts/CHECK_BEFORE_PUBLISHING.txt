@@ -41,3 +41,36 @@ PICTURES
 - Stock: lines (British Museum, Rosetta Stone, Parthenon, Acropolis Museum) fetch real photos. Check them in the
   storyboard review. No real logos (no Miss America or MLM brand logos), no AI faces of real people.
 - Endings are questions to the viewer. Add your "subscribe" end screen in YouTube, not in the narration.
+
+
+CHECK BEFORE PUBLISHING - The Epstein Files (long form 04, Hindi)
+
+Checked 26 Oct 2026 through search results. Open each Source: link once. The story is still moving: re-check the
+last chapter (the court fight over the files) on the day you publish.
+
+FIRST: upload the 14 pictures (epstein_images/, or Epstein_Files_Images_for_CreatorForge.zip) to the Asset Library
+as images, keeping their names ef02 ... ef27. 15 of the kit's 29 pictures were left out - see HOW_TO_USE.txt.
+
+FACTS VERIFIED
+[ ] Mar 2005 Palm Beach police probe after a 14-year-old's family complained (PBS/AP timeline).
+[ ] 2007 non-prosecution agreement (US Attorney Alex Acosta's office); June 2008 guilty plea to two state charges;
+    18-month sentence, about 13 months served, mostly on work release.
+[ ] Feb 2019: Judge Kenneth Marra - prosecutors violated the Crime Victims' Rights Act by not telling victims.
+[ ] Miami Herald "Perversion of Justice" (Julie K. Brown), Nov 2018. Acosta resigned as Labor Secretary, July 2019.
+[ ] Arrested 6 Jul 2019 (Teterboro, NJ), federal sex-trafficking charges; died 10 Aug 2019, MCC New York; ME: suicide.
+[ ] DOJ Inspector General, June 2023: negligence, broken cameras, missed counts, falsified records; no evidence of
+    homicide.
+[ ] Maxwell: convicted Dec 2021 on 5 of 6 counts; 20 years, 28 Jun 2022; Supreme Court declined appeal 6 Oct 2025.
+[ ] Virginia Giuffre died April 2025 aged 41; memoir "Nobody's Girl", Oct 2025.
+[ ] DOJ/FBI memo, July 2025: no "client list", no credible evidence of blackmail, suicide; 1,000+ victims.
+[ ] Epstein Files Transparency Act, Nov 2025; first release 19 Dec 2025 (heavily redacted); 30 Jan 2026: 3 million+
+    pages, 2,000+ videos, 180,000 images.
+[ ] 25 Jun 2026: Judge Emmet Sullivan - DOJ likely violated the Act; 2 Jul 2026: DOJ declined further release,
+    citing victims' identities and investigations. CHECK whether he has ruled since.
+[ ] Banks (no admission of liability): JPMorgan ~$290M to victims (2023), $75M to the US Virgin Islands (2023);
+    Deutsche Bank $75M to victims (2023).
+
+HAND-CHECK
+[ ] "Nearly unanimous" vote for the Transparency Act (reported 427-1 in the House) - confirm the final vote.
+[ ] No other names are put to the files on screen. Keep it that way: a name in a log or contact book is not a crime.
+[ ] YouTube: turn on "altered or synthetic content" (the 14 pictures are AI illustrations).

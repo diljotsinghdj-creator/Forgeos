@@ -768,8 +768,9 @@ class Pipeline:
 
     def _asset_clips(self, job: dict, jdir: Path) -> None:
         """The writer's "Clip:" lines: their own Asset Library clips, each played on its line (sound removed).
-        "Clip: delhi march" finds the video asset by name; "Clip: delhi march @ 0:12" starts 12 s in. A name that
-        isn't in the library is reported and the line keeps its normal picture."""
+        "Clip: delhi march" finds the video asset by name; "Clip: delhi march @ 0:12" starts 12 s in. An IMAGE asset
+        works too ("Clip: 04 mansion"): shown whole with a slow push-in. A name that isn't in the library is
+        reported and the line keeps its normal picture."""
         missing = []
         for sc, shot in zip(job["scenes"], job["plan"]["scenes"]):
             beats = shot.get("beats") or []
@@ -782,6 +783,15 @@ class Pipeline:
                     continue
                 name, start = clip_ref(ref)
                 asset = find_asset(self.library.assets.list("video"), name)
+                if asset is None:
+                    image = find_asset(self.library.assets.list("image"), name)
+                    if image is not None:
+                        still = self._image_clip(job, sc, k, image, jdir)
+                        if still is not None:
+                            clips[k] = still
+                            continue
+                        missing.append(f"{name} (not a readable image)")
+                        continue
                 if asset is None:
                     missing.append(name)
                     continue
@@ -813,6 +823,24 @@ class Pipeline:
         if used:
             job["providers"]["clips_own"] = f"{used} of your own clip{'s' if used != 1 else ''}"
         self.store.save(job)
+
+    def _image_clip(self, job: dict, sc: dict, k: int, asset: dict, jdir: Path) -> str | None:
+        """One of the writer's own pictures as a clip: the whole picture over a blurred copy of itself (never
+        cropped to a strip, never stretched past 1.5x) with a slow push-in."""
+        from .providers import news_media
+        w, h = self._out_size(job)
+        dst = jdir / f"scene_{sc['index'] + 1:02d}_clip{k + 1}_{asset['id']}_img.mp4"
+        if dst.is_file():
+            return dst.name
+        try:
+            frame = news_media.frame_photo(self.library.assets.path(asset), jdir / f"_frame_{asset['id']}.jpg", w, h)
+            news_media.still_clip(frame, dst, w, h, 20.0)
+            if ff.duration(dst) <= 0:
+                raise MediaError("empty clip")
+        except (MediaError, OSError, KeyError, ValueError):
+            dst.unlink(missing_ok=True)
+            return None
+        return dst.name
 
     def _stock_clips(self, job: dict, sc: dict, beats: list, stock: list[tuple[str, str]], jdir: Path) -> None:
         """Real footage for beats the planner marked with a stock search (best effort, cached)."""
@@ -1637,7 +1665,7 @@ def find_asset(assets: list[dict], name: str) -> dict | None:
     """The video asset the writer named: exact name first (with or without its extension, any case), then one whose
     name contains every word they wrote."""
     def norm(t: str) -> str:
-        return re.sub(r"[^a-z0-9]+", " ", re.sub(r"\.(mp4|mov|webm|mkv|m4v|avi)$", "", t.strip().lower())).strip()
+        return re.sub(r"[^a-z0-9]+", " ", re.sub(r"\.(mp4|mov|webm|mkv|m4v|avi|png|jpe?g|webp)$", "", t.strip().lower())).strip()
     want = norm(name)
     if not want:
         return None
