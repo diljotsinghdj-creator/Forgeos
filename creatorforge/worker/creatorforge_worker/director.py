@@ -865,7 +865,7 @@ _META_KEYS = ("on-screen hook", "on screen hook", "onscreen hook", "hook text", 
               "stock footage", "stock", "chart", "graphic", "draw", "pen", "bubble", "thought",
               "place", "cite", "map", "chapter", "quote", "steps", "globe", "timeline", "icons", "screen",
               "document", "statement", "split", "archive", "object", "article", "big", "transition",
-              "chat", "search", "pie", "squares", "shade", "timer", "receipt", "treat", "clip")
+              "chat", "search", "pie", "squares", "shade", "timer", "receipt", "treat", "clip", "tone", "mood")
 _META = re.compile(r"(?i)(?:^|(?<=[\s.]))(" + "|".join(re.escape(k) for k in sorted(_META_KEYS, key=len, reverse=True)) +
                    r")\s*:\s*")
 _STAMP = re.compile(r"^\s*(?:[-\u2022*]\s*)?\(?(?:\d{0,2}:\d{2})(?:\s*[-\u2013]\s*\d{0,2}:\d{2})?\)?\s*")
@@ -1011,6 +1011,9 @@ def parse_script(raw: str) -> tuple[str, dict]:
             elif k in ("chart", "graphic"):
                 if target >= 0 and v:
                     per.setdefault(target, {})["chart"] = value.strip()[:80]
+            elif k in ("tone", "mood"):      # how the narrator says this line: calm, dramatic, sad, question...
+                if target >= 0 and v:
+                    per.setdefault(target, {}).setdefault("extra", {})["tone"] = value.strip().lower()[:20]
             elif k == "clip":                # one of your own Asset Library clips plays on this line
                 if target >= 0 and v:
                     per.setdefault(target, {}).setdefault("extra", {})["clip"] = value.strip()[:140]

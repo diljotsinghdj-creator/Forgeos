@@ -205,3 +205,12 @@ NO FAKE WRITING IN PICTURES (new)
     - Exact words and numbers go in Text: / Chart: / Article: / Quote: - drawn by CreatorForge, always spelled right.
   When writing a script: put every article you want on screen in Source:, and describe pictures without asking
   for words on them ("closed case files on a desk", not "a file stamped CABINET DECISION").
+
+TONE: HOW EACH LINE IS SAID (new - human-like voices)
+  Tone: ............. under a line, how the narrator says it: calm, warm, question, dramatic, strong, urgent or sad
+                      (Hindi words work too: शांत, नाटकीय, सवाल, दुखी, भावुक, ज़ोरदार, तेज़). Each line of a scene is now
+                      spoken in its own tone, with its own pause after it.
+  No Tone: line? It is read from the line: a question rises, a short punch line or a Statement:/Big: lands hard,
+  a line about death or victims is said slowly, a shock moment is dramatic, the rest calm.
+  Pauses follow the punctuation: "..." holds (0.6 s), a question waits (0.4 s), a full stop or danda breathes,
+  and there is an extra beat of silence before a chapter card or a big statement.

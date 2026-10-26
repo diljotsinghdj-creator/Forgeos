@@ -210,3 +210,12 @@ YOUR OWN PICTURES ON A LINE (new)
   Clip: now works with IMAGES too. Upload a picture (Library -> ASSET LIBRARY -> image -> import) and write its name
   under a line, e.g. "Clip: ef12". It is shown whole over a blurred copy of itself with a slow push-in - never
   cropped to a strip. Use pictures you own or made; label AI illustrations on screen ("Text: प्रतीकात्मक चित्र").
+
+TONE: HOW EACH LINE IS SAID (new - human-like voices)
+  Tone: ............. under a line, how the narrator says it: calm, warm, question, dramatic, strong, urgent or sad
+                      (Hindi words work too: शांत, नाटकीय, सवाल, दुखी, भावुक, ज़ोरदार, तेज़). Each line of a scene is now
+                      spoken in its own tone, with its own pause after it.
+  No Tone: line? It is read from the line: a question rises, a short punch line or a Statement:/Big: lands hard,
+  a line about death or victims is said slowly, a shock moment is dramatic, the rest calm.
+  Pauses follow the punctuation: "..." holds (0.6 s), a question waits (0.4 s), a full stop or danda breathes,
+  and there is an extra beat of silence before a chapter card or a big statement.

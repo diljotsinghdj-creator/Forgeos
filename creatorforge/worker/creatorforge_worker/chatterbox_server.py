@@ -77,18 +77,29 @@ def _pieces(s: str, limit: int) -> list[str]:
 
 
 def chunks(text: str, limit: int = 220) -> list[str]:
-    """Chatterbox is best on short passages: sentence groups of up to ~220 characters, no sentence longer."""
-    out, cur = [], ""
-    for sent in re.split(r"(?<=[.!?…।॥])\s*", " ".join(text.split())):
-        for s in _pieces(sent, limit):
-            if cur and len(cur) + len(s) + 1 > limit:
-                out.append(cur)
-                cur = s
-            else:
-                cur = f"{cur} {s}".strip()
-    if cur:
-        out.append(cur)
+    """One piece per sentence (so each gets its own breath after it - longer after a question or a "..."), and an
+    over-long sentence cut at commas or words: Chatterbox stops generating after ~40 s."""
+    out = []
+    # after ! ? … and a danda, even with no space; after a full stop only at a word gap and never inside "..."
+    # or a number ("13.3", "U.S.")
+    for sent in re.split(r"(?<=[!?…।॥])\s*|(?<=\.)(?!\.)\s+", " ".join(text.split())):
+        out += _pieces(sent, limit)
     return [c for c in out if re.search(r"\w", c)]
+
+
+def breath(chunk: str) -> float:
+    """The pause after a piece, the way a narrator breathes: longer after a question or a trailing "...", a full
+    stop (or danda) a natural beat, a comma-cut piece only a short one."""
+    end = chunk.rstrip(" \"'”’)")
+    if end.endswith(("...", "…")):
+        return 0.6
+    if end.endswith("?"):
+        return 0.4
+    if end.endswith("!"):
+        return 0.32
+    if end.endswith((".", "।", "॥")):
+        return 0.26
+    return 0.12
 
 
 def unload() -> None:
@@ -131,16 +142,23 @@ class Handler(BaseHTTPRequestHandler):
             ref = body.get("ref") or None
             ex, cw = float(body.get("exaggeration", 0.5)), float(body.get("cfg_weight", 0.5))
             lang = str(body.get("lang") or "en").lower()
+            segs = body.get("segments") or [{"text": text, "exaggeration": ex, "cfg_weight": cw, "pause": 0.0}]
             with _lock:
                 m = model() if lang == "en" else multilingual()
-                pause = np.zeros(int(m.sr * 0.08), dtype=np.float32)
                 parts = []
-                for c in chunks(text):
-                    if lang == "en":
-                        wav = m.generate(c, audio_prompt_path=ref, exaggeration=ex, cfg_weight=cw)
-                    else:
-                        wav = m.generate(c, language_id=lang, audio_prompt_path=ref, exaggeration=ex, cfg_weight=cw)
-                    parts += [wav.squeeze(0).detach().cpu().numpy().astype(np.float32), pause]
+                for seg in segs:
+                    sex = float(seg.get("exaggeration", ex))
+                    scw = float(seg.get("cfg_weight", cw))
+                    for c in chunks(str(seg.get("text", ""))):
+                        if lang == "en":
+                            wav = m.generate(c, audio_prompt_path=ref, exaggeration=sex, cfg_weight=scw)
+                        else:
+                            wav = m.generate(c, language_id=lang, audio_prompt_path=ref, exaggeration=sex, cfg_weight=scw)
+                        parts += [wav.squeeze(0).detach().cpu().numpy().astype(np.float32),
+                                  np.zeros(int(m.sr * breath(c)), dtype=np.float32)]
+                    extra = min(1.5, max(0.0, float(seg.get("pause", 0.0))))
+                    if extra:
+                        parts.append(np.zeros(int(m.sr * extra), dtype=np.float32))
             if not parts:
                 return self._send(422, {"error": "nothing to say"})
             pcm = (np.clip(np.concatenate(parts), -1, 1) * 32767).astype("<i2").tobytes()

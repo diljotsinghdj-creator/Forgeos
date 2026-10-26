@@ -37,7 +37,8 @@ def test_long_sentences_are_split_for_the_voice():
     parts = chunks(long_hi)
     assert len(parts) > 2 and all(len(p) <= 220 for p in parts)
     assert " ".join(parts).split() == long_hi.split()            # nothing lost
-    assert chunks("पहला वाक्य।दूसरा वाक्य।", limit=12) == ["पहला वाक्य।", "दूसरा वाक्य।"]
+    assert chunks("पहला वाक्य।दूसरा वाक्य।") == ["पहला वाक्य।", "दूसरा वाक्य।"]
+    assert chunks("नाम था... जेफ़्री। क्यों? 13.3 करोड़.") == ["नाम था...", "जेफ़्री।", "क्यों?", "13.3 करोड़."]
 
 
 def test_cuts_follow_the_words_not_the_ending_hold():
@@ -51,3 +52,23 @@ def test_cuts_follow_the_words_not_the_ending_hold():
     lengths = _beat_lengths(texts, starts, 7.32, spoken=4.4)
     assert all(x >= 0.3 for x in lengths) and abs(sum(lengths) - 7.32) < 1e-6
     assert abs(lengths[0] - 0.85) < 1e-6
+
+
+def test_each_line_is_said_in_its_own_tone():
+    from creatorforge_worker import director
+    from creatorforge_worker.providers import delivery
+    spoken, meta = director.parse_script("T\n\nजेल में वो मृत मिला।\nVisual: A prison corridor\nTone: नाटकीय\n\n"
+                                         "पर क्यों?\nVisual: A courtroom\n\nजवाब आज तक नहीं मिला।\nVisual: A closed door\nTone: sad\n")
+    assert "Tone" not in spoken and "नाटकीय" not in spoken
+    beats = [{"text": s[0], "extra": s[7] if len(s) > 7 else {}} for s in meta["shots"]]
+    segs = delivery.segments(beats, spoken.strip())
+    assert [s["tone"] for s in segs] == ["dramatic", "question", "sad"]
+    # a sentence split across two cuts is said in one breath; a hard short line lands; a death is said slowly
+    segs = delivery.segments([{"text": "किसी के साथ फ़ोटो होना,"}, {"text": "अपराध का सबूत नहीं।"},
+                              {"text": "सिर्फ़ 13 महीने।"}, {"text": "वो इस दुनिया से चली गईं, अप्रैल में उनकी मौत हुई।"}],
+                             "किसी के साथ फ़ोटो होना, अपराध का सबूत नहीं। सिर्फ़ 13 महीने। "
+                             "वो इस दुनिया से चली गईं, अप्रैल में उनकी मौत हुई।")
+    assert len(segs) == 3 and segs[1]["tone"] == "strong" and segs[2]["tone"] == "sad"
+    ex_strong, _ = delivery.engine_params("strong", (0.35, 0.25))
+    ex_sad, _ = delivery.engine_params("sad", (0.35, 0.25))
+    assert ex_strong > ex_sad

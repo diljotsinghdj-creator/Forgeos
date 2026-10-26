@@ -15,7 +15,7 @@ import threading
 from pathlib import Path
 
 from . import director, providers
-from .providers import speech
+from .providers import delivery, speech
 from .config import Config, VoiceProfile
 from .library import Library
 from .media import captions as cap
@@ -1070,11 +1070,19 @@ class Pipeline:
             if hasattr(voice, "mood"):
                 voice.mood = mood          # human-like voice: more intensity on shocks, calmer on set-up
             said = director.spoken_text(shot["narration"], spec.pronounce)   # the creator's pronunciation list
+            segs = None
             if profile.provider == "chatterbox":
-                said = speech.speakable(said, getattr(voice, "lang", "en"))   # ₹13 crore, 40%, ED said in full
-            key = _key(voice.id, profile.speed, said, mood if hasattr(voice, "mood") else "")
+                lang = getattr(voice, "lang", "en")
+                said = speech.speakable(said, lang)   # ₹13 crore, 40%, ED said in full
+                # each line in its own tone: a question rises, a hard fact lands, a death is said slowly
+                segs = delivery.segments(shot.get("beats") or [], shot["narration"], mood)
+                for sg in segs:
+                    sg["text"] = speech.speakable(director.spoken_text(sg["text"], spec.pronounce), lang)
+            key = _key(voice.id, profile.speed, said, mood if hasattr(voice, "mood") else "", segs)
             try:
-                src = self._cached("voice", key, ".wav", lambda p: voice.synthesize(said, p), verify.wav)
+                speak = (lambda p: voice.synthesize(said, p, segments=segs)) if segs and len(segs) > 1 else \
+                    (lambda p: voice.synthesize(said, p))
+                src = self._cached("voice", key, ".wav", speak, verify.wav)
                 dst = jdir / f"scene_{sc['index'] + 1:02d}_{_key(key, spec.voice_speed)[:8]}.wav"
                 if sc.get("narration") and sc["narration"] != dst.name:
                     (jdir / sc["narration"]).unlink(missing_ok=True)

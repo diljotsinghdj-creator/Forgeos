@@ -130,9 +130,11 @@ class ChatterboxVoice:
             return v
         raise NotConfigured(f"Chatterbox voice not found: {v}")
 
-    def synthesize(self, text: str, out_wav: Path) -> None:
+    def synthesize(self, text: str, out_wav: Path, segments: list[dict] | None = None) -> None:
+        """segments: the lines of the scene with their tones (providers.delivery), each said its own way."""
         import httpx
 
+        from .delivery import engine_params
         ex, cw = self.STYLES[self.style]
         m = (self.mood or "").lower()
         if any(w in m for w in ("shock", "fear", "terror", "horror", "tension", "suspense", "intrigue", "anger", "disgust")):
@@ -141,6 +143,11 @@ class ChatterboxVoice:
             ex = max(0.25, ex - 0.1)                              # settle the voice for set-up and takeaways
         body = {"text": text, "out": str(Path(out_wav).resolve()), "ref": self.reference(), "exaggeration": ex, "cfg_weight": cw,
                 "lang": self.lang}
+        if segments and len(segments) > 1:
+            body["segments"] = [{"text": sg["text"], "pause": sg.get("pause", 0.0),
+                                 **dict(zip(("exaggeration", "cfg_weight"),
+                                            engine_params(sg.get("tone", "calm"), self.STYLES[self.style])))}
+                                for sg in segments if str(sg.get("text") or "").strip()]
         try:
             r = httpx.post(f"{self.url}/tts", json=body, timeout=1800)
         except httpx.HTTPError as e:
