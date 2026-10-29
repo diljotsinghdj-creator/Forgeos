@@ -15,11 +15,11 @@ def _env(name: str, default: str = "") -> str:
 class VoiceProfile:
     id: str
     name: str
-    provider: str  # "piper" | "kokoro" | "chatterbox" | "mock"
+    provider: str  # "piper" | "kokoro" | "chatterbox" | "gemini" | "mock"
     voice: str  # piper: .onnx path; kokoro: voice id (af_heart); chatterbox: default | kokoro:<id> | asset:<id>
     speed: float = 1.0
     lang: str = "a"  # kokoro language code
-    style: str = ""  # chatterbox delivery: documentary | natural | calm | energetic
+    style: str = ""  # chatterbox delivery: documentary | natural | calm | energetic; gemini: news | documentary | bold | storyteller
 
 
 @dataclass
@@ -51,6 +51,8 @@ class Config:
     music_model: str = ""
     voices: list[VoiceProfile] = field(default_factory=list)
     youtube_api_key: str = ""  # optional, free: adds YouTube to the Trend Radar
+    gemini_api_key: str = ""  # optional: Google's Gemini voices (best Hindi); else the app's Gemini Script AI key
+    gemini_tts_models: tuple = ()  # Gemini speech models to try in order ("" = the built-in list)
     free_stock: bool = False  # keyless footage (NASA, Wikimedia Commons) for beats the planner marks; on for real pods
     allow_mock: bool = False
 
@@ -100,6 +102,8 @@ class Config:
             music_model=_env("CF_MUSIC_MODEL"),
             voices=voices,
             youtube_api_key=_env("CF_YOUTUBE_API_KEY"),
+            gemini_api_key=_env("CF_GEMINI_API_KEY") or _env("GEMINI_API_KEY"),
+            gemini_tts_models=tuple(m.strip() for m in _env("CF_GEMINI_TTS_MODEL").split(",") if m.strip()),
             allow_mock=_env("CF_ALLOW_MOCK") == "1",
             free_stock=_env("CF_FREE_STOCK", "1") != "0",
         )

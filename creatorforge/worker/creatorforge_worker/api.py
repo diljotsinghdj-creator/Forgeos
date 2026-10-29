@@ -404,7 +404,9 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
         except ValueError:
             body = {}
         try:
-            voice = providers.build_voice(cfg, providers.voice_profile(cfg, vid, pipeline.library_voices()))
+            lent = body.get("director_llm") if isinstance(body, dict) else None
+            voice = providers.build_voice(cfg, providers.voice_profile(cfg, vid, pipeline.library_voices()),
+                                          key=providers.gemini_key(cfg, lent=lent))
             sample = ("नमस्ते, मैं आपके क्रिएटरफ़ोर्ज वीडियो की कहानी ऐसे सुनाऊँगा।" if getattr(voice, "lang", "") == "hi"
                       else "This is how I sound narrating your CreatorForge video.")
             text = str(body.get("text") or sample)[:300]

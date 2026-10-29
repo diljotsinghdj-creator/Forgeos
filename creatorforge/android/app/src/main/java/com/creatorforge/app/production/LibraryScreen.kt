@@ -162,7 +162,8 @@ fun LibraryScreen() {
             Card(Modifier.fillMaxWidth()) {
                 Column(Modifier.padding(12.dp)) {
                     Text(v.name + if (v.builtin) "  • built-in" else "", color = Gold)
-                    Text(if (v.provider == "chatterbox") "★ human-like • ${v.style.ifBlank { "natural" }}" + if (v.voice.startsWith("asset:")) " • your recording" else ""
+                    Text(if (v.provider == "gemini") "★★ Google voice • ${v.voice} • uses your Gemini key (Settings → Script AI)"
+                         else if (v.provider == "chatterbox") "★ human-like • ${v.style.ifBlank { "natural" }}" + if (v.voice.startsWith("asset:")) " • your recording" else ""
                          else "${v.provider} • ${v.voice.substringAfterLast('/').ifBlank { "default" }} • speed ${v.speed}", color = Color.LightGray, fontSize = 12.sp)
                     Row {
                         TextButton({

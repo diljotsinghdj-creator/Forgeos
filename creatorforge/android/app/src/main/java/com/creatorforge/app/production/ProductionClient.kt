@@ -216,7 +216,8 @@ class ProductionClient(baseUrl: String) {
     /** Downloads a short spoken sample of a voice profile as WAV. */
     suspend fun previewVoice(id: String, dest: File): File = withContext(Dispatchers.IO) {
         val req = Request.Builder().workerAuth().url("$base/v1/library/voices/$id/preview")
-            .post(JSONObject().toString().toRequestBody(json)).build()
+            // the Gemini Script AI key (if that is the AI in use) lets Google's voices speak the sample
+            .post(JSONObject().also { b -> directorLlm?.invoke()?.let { b.put("director_llm", it) } }.toString().toRequestBody(json)).build()
         download.newCall(req).execute().use { r ->
             if (!r.isSuccessful) throw WorkerException("Preview failed (HTTP ${r.code}): ${r.body?.string()?.take(200).orEmpty()}")
             dest.outputStream().use { out -> r.body!!.byteStream().copyTo(out) }

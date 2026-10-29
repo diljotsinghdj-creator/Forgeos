@@ -15,7 +15,7 @@ import threading
 from pathlib import Path
 
 from . import director, providers
-from .providers import delivery, speech
+from .providers import delivery, gemini_tts, speech
 from .config import Config, VoiceProfile
 from .library import Library
 from .media import captions as cap
@@ -1029,8 +1029,28 @@ class Pipeline:
     def _narration(self, job: dict, cancel) -> None:
         spec = self._spec(job)
         profile = providers.voice_profile(self.cfg, spec.voice, self.library_voices())
-        voice = providers.build_voice(self.cfg, profile)
         note = ""
+        if profile.provider == "gemini":
+            # Google's voice needs the creator's Gemini key and quota: check with one short line first, and if it
+            # can't speak use the human-like Hindi (or English) voice so the video still finishes.
+            problem = ""
+            try:
+                voice = providers.build_voice(self.cfg, profile, job["id"])
+                if not any(s.get("voice_state") == "READY" for s in job["scenes"]):
+                    with tempfile.TemporaryDirectory() as d:
+                        voice.synthesize("नमस्ते।" if voice.lang == "hi" else "Hello.", Path(d) / "probe.wav")
+            except (NotConfigured, ProviderError) as e:
+                problem = str(e)[:200]
+            if problem:
+                male = profile.voice in gemini_tts.MALE
+                if (profile.lang or "hi")[:1] == "h":
+                    ref, lang = ("kokoro:hm_psi" if male else "kokoro:hf_alpha"), "hi"
+                else:
+                    ref, lang = ("kokoro:am_onyx" if male else "kokoro:af_heart"), "en"
+                profile = VoiceProfile(profile.id, profile.name, "chatterbox", ref, 1.0, lang, "documentary")
+                note = f" - Google voice unavailable ({problem}); used the human-like voice instead"
+        if profile.provider != "gemini":
+            voice = providers.build_voice(self.cfg, profile)
         if profile.provider == "chatterbox":
             # The human-like engine installs in the background after a pod start and is the newest part of the
             # pod; if it isn't up or can't speak, use the matching Kokoro voice so the video still finishes.
@@ -1053,7 +1073,7 @@ class Pipeline:
                     fallback = "am_onyx" if fallback[1:2] == "m" else "af_heart"
                 voice = providers.build_voice(self.cfg, VoiceProfile(profile.id, profile.name, "kokoro", fallback, 1.0,
                                                                      fallback[0] if fallback[:1] in tuple("abefhijpz") else "a"))
-                note = f" - human-like engine {problem}; used its standard voice instead"
+                note += f" - human-like engine {problem}; used its standard voice instead"
         job["providers"]["voice"] = f"{profile.id} ({voice.id}){note}"
         jdir = self.store.dir(job["id"])
         scenes, shots = job["scenes"], job["plan"]["scenes"]
@@ -1071,7 +1091,7 @@ class Pipeline:
                 voice.mood = mood          # human-like voice: more intensity on shocks, calmer on set-up
             said = director.spoken_text(shot["narration"], spec.pronounce)   # the creator's pronunciation list
             segs = None
-            if profile.provider == "chatterbox":
+            if profile.provider in ("chatterbox", "gemini"):
                 lang = getattr(voice, "lang", "en")
                 said = speech.speakable(said, lang)   # ₹13 crore, 40%, ED said in full
                 # each line in its own tone: a question rises, a hard fact lands, a death is said slowly

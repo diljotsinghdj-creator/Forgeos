@@ -192,7 +192,20 @@ def chatterbox_ready(cfg: Config) -> bool:
         return False
 
 
-def build_voice(cfg: Config, profile: VoiceProfile):
+_GOOGLE = "generativelanguage.googleapis.com"
+
+
+def gemini_key(cfg: Config, job_id: str = "", lent: dict | None = None) -> str:
+    """The Gemini key for Google's voices: the pod's own, else the app's Script AI key when that is Gemini."""
+    if cfg.gemini_api_key:
+        return cfg.gemini_api_key
+    if isinstance(lent, dict) and _GOOGLE in str(lent.get("url", "")):
+        return str(lent.get("key", "")).strip()
+    d = _director_llms.get(job_id)
+    return d[2] if d and _GOOGLE in d[0] else ""
+
+
+def build_voice(cfg: Config, profile: VoiceProfile, job_id: str = "", key: str = ""):
     if profile.provider == "mock":
         _mock_allowed(cfg, f"voice profile {profile.id}")
         from .mock import MockVoice
@@ -204,6 +217,10 @@ def build_voice(cfg: Config, profile: VoiceProfile):
         return KokoroVoice(profile.voice, profile.speed, profile.lang)
     if profile.provider == "chatterbox":
         return ChatterboxVoice(profile.voice, profile.style or "natural", cfg.data_dir, cfg.chatterbox_url, profile.lang)
+    if profile.provider == "gemini":
+        from .gemini_tts import MODELS, GeminiVoice
+        return GeminiVoice(profile.voice, profile.style or "news", profile.lang or "hi",
+                           key or gemini_key(cfg, job_id), cfg.gemini_tts_models or MODELS)
     raise NotConfigured(f"Unknown voice provider '{profile.provider}'")
 
 

@@ -24,7 +24,9 @@ def test_every_english_narrator_is_human_like():
     assert {v["id"] for v in plain} == {"es_f", "fr_f", "it_f", "pt_f"}       # kept only for dubbing
     hindi = {v["id"]: v for v in voices if v.get("lang") == "hi"}
     assert {"hindi_m_human", "hindi_f_human", "hi_f"} <= set(hindi)          # Hindi, human-like, male and female
-    assert all(v["provider"] == "chatterbox" for v in hindi.values())
+    assert all(v["provider"] in ("chatterbox", "gemini") for v in hindi.values())
+    google = [v for v in hindi.values() if v["provider"] == "gemini"]
+    assert {"Charon", "Kore"} <= {v["voice"] for v in google}                # Google's Hindi anchors, male and female
     assert {"indian_m_human", "indian_f_human"} <= {v["id"] for v in voices}
     ids = {v["id"] for v in voices}
     assert set(providers.RETIRED_VOICES.values()) <= ids                      # every retired id has a home
