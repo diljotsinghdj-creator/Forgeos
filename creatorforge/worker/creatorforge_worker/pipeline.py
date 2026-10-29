@@ -1041,6 +1041,10 @@ class Pipeline:
                         voice.synthesize("नमस्ते।" if voice.lang == "hi" else "Hello.", Path(d) / "probe.wav")
             except (NotConfigured, ProviderError) as e:
                 problem = str(e)[:200]
+            if problem and (profile.lang or "hi")[:1] == "h":
+                # the fallback Hindi engines sound robotic and slip out of Hindi: stop and say why instead
+                raise StageFailed(f"The Google Hindi voice couldn't speak: {problem}. Fix the Gemini key or billing "
+                                  f"(or pick another voice) and tap Retry")
             if problem:
                 male = profile.voice in gemini_tts.MALE
                 if (profile.lang or "hi")[:1] == "h":
@@ -1061,6 +1065,9 @@ class Pipeline:
                         voice.synthesize("Testing.", Path(d) / "probe.wav")
                 except Exception as e:  # noqa: BLE001
                     problem = f"failed ({str(e)[:160]})"
+            if problem and getattr(voice, "lang", "en") == "hi":
+                raise StageFailed(f"The Hindi voice engine is {problem} - try again in a few minutes (the robotic "
+                                  f"standard Hindi voice is not used in its place)")
             if problem:
                 fallback = profile.voice.split(":", 1)[1] if profile.voice.startswith("kokoro:") else "af_heart"
                 speaks = getattr(voice, "lang", "en")
@@ -1100,9 +1107,13 @@ class Pipeline:
                     sg["text"] = speech.speakable(director.spoken_text(sg["text"], spec.pronounce), lang)
             key = _key(voice.id, profile.speed, said, mood if hasattr(voice, "mood") else "", segs)
             try:
-                speak = (lambda p: voice.synthesize(said, p, segments=segs)) if segs and len(segs) > 1 else \
+                # every scene gets its tone, a one-line scene too (most scenes are one line)
+                speak = (lambda p: voice.synthesize(said, p, segments=segs)) if segs else \
                     (lambda p: voice.synthesize(said, p))
                 src = self._cached("voice", key, ".wav", speak, verify.wav)
+                src, heard = self._listened(src, key, said, getattr(voice, "lang", "en"), speak)
+                if heard:
+                    sc["voice_check"] = heard
                 dst = jdir / f"scene_{sc['index'] + 1:02d}_{_key(key, spec.voice_speed)[:8]}.wav"
                 if sc.get("narration") and sc["narration"] != dst.name:
                     (jdir / sc["narration"]).unlink(missing_ok=True)
@@ -1113,8 +1124,39 @@ class Pipeline:
                 self.store.save(job)
                 raise StageFailed(f"scene {sc['index'] + 1} narration failed - {e}") from e
             self.store.save(job)
+        doubtful = [str(s["index"] + 1) for s in scenes if str(s.get("voice_check", "")).startswith("doubtful")]
+        if doubtful:
+            job["providers"]["voice"] += f" - check scene {', '.join(doubtful)}: the voice may not say the script"
         if profile.provider == "chatterbox":
             providers.unload_voice(self.cfg.chatterbox_url)   # its GPU memory goes back to the picture models
+
+    TAKES = 3
+
+    def _listened(self, src: Path, key: str, said: str, lang: str, speak) -> tuple[Path, str]:
+        """A Hindi narration is heard back (Whisper) before it is used: a take that isn't Hindi, reads out something
+        else, or skips the script's words is recorded again (up to TAKES) and the best take kept.
+        Returns (take, "" | "ok" | "re-recorded" | "doubtful: why")."""
+        if lang != "hi" or self.cfg.asr_provider != "whisper":
+            return src, ""
+        try:
+            asr = providers.build_asr(self.cfg)
+            judge = lambda p: delivery.judge(said, asr.listen(p), lang)   # noqa: E731
+            best = (*judge(src), src)
+        except Exception:  # noqa: BLE001 - no Whisper on this machine: the take is used unheard
+            return src, ""
+        take = 1
+        while best[1] and take < self.TAKES:
+            try:
+                again = self._cached("voice", _key(key, "take", take), ".wav", speak, verify.wav)
+                score, problem = judge(again)
+            except (ProviderError, MediaError):
+                break
+            if (not problem, score) > (not best[1], best[0]):
+                best = (score, problem, again)
+            take += 1
+        if not best[1]:
+            return best[2], "ok" if take == 1 else "re-recorded"
+        return best[2], f"doubtful: {best[1]}"
 
     def _timings(self, job: dict) -> list[float]:
         auto = self._spec(job).auto_edit

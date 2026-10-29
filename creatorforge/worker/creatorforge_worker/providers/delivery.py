@@ -63,7 +63,9 @@ def segments(beats: list[dict], narration: str, emotion: str = "") -> list[dict]
         else:
             lines.append(b)
     if not lines or " ".join(" ".join(b["text"] for b in lines).split()) != " ".join(narration.split()):
-        return [{"text": narration, "tone": tone_of({"text": narration}, emotion), "pause": 0.0}]
+        # still said in the writer's Tone: when one of the lines has one
+        told = next(((b.get("extra") or {}) for b in beats if (b.get("extra") or {}).get("tone")), {})
+        return [{"text": narration, "tone": tone_of({"text": narration, "extra": told}, emotion), "pause": 0.0}]
     out = []
     for k, b in enumerate(lines):
         tone = tone_of(b, b.get("emotion") or emotion)
@@ -80,3 +82,33 @@ def engine_params(tone: str, base: tuple[float, float]) -> tuple[float, float]:
     ex, cw, _ = TONES.get(tone, TONES["calm"])
     bex, bcw = base
     return round(min(1.0, max(0.2, (ex * 2 + bex) / 3)), 3), round(min(0.8, max(0.2, (cw * 2 + bcw) / 3)), 3)
+
+
+def _hi_norm(w: str) -> str:
+    """A Hindi word as Whisper may spell it: nukta, chandrabindu and the final halant don't count."""
+    return w.replace("\u093c", "").replace("\u0901", "\u0902").rstrip("\u094d")
+
+
+def judge(script: str, heard: dict, lang: str) -> tuple[float, str]:
+    """How well a take says the script, from Whisper's transcript {text, lang, prob}: (share of the script's words
+    heard, "" or what is wrong). Catches a voice that slips out of Hindi, reads something else, or skips words."""
+    if lang != "hi":
+        return 1.0, ""
+    import difflib
+    text = str(heard.get("text") or "")
+    want = [_hi_norm(w) for w in re.findall(r"[\u0900-\u097F]+", script)]
+    got = [_hi_norm(w) for w in re.findall(r"[\u0900-\u097F]+", text)]
+    if not want:
+        return 1.0, ""
+    pool = set(got)
+    hit = sum(1 for w in want if w in pool or difflib.get_close_matches(w, pool, 1, 0.75))
+    share = hit / len(want)
+    allowed = {w.lower() for w in re.findall(r"[A-Za-z]{2,}", script)}
+    foreign = [w for w in re.findall(r"[A-Za-z]{3,}", text) if w.lower() not in allowed]
+    if heard.get("lang") not in (None, "", "hi", "ur") and float(heard.get("prob") or 0) > 0.6:
+        return share - 0.5, f"heard {heard.get('lang')}, not Hindi"
+    if len(foreign) > max(2, len(want) // 4):
+        return share - 0.1 * len(foreign), f"English that isn't in the script ({' '.join(foreign[:4])})"
+    if share < 0.45:
+        return share, f"only {round(share * 100)}% of the script's words heard"
+    return share, ""

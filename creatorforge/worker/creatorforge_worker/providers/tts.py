@@ -137,7 +137,9 @@ class ChatterboxVoice:
         from .delivery import engine_params
         ex, cw = self.STYLES[self.style]
         m = (self.mood or "").lower()
-        if any(w in m for w in ("shock", "fear", "terror", "horror", "tension", "suspense", "intrigue", "anger", "disgust")):
+        if segments and len(segments) == 1:
+            ex, cw = engine_params(segments[0].get("tone", "calm"), self.STYLES[self.style])   # the line's own tone
+        elif any(w in m for w in ("shock", "fear", "terror", "horror", "tension", "suspense", "intrigue", "anger", "disgust")):
             ex, cw = min(1.0, ex + 0.25), max(0.2, cw - 0.1)     # sharper, more urgent delivery
         elif any(w in m for w in ("calm", "resolve", "relief", "warm", "curiosity")):
             ex = max(0.25, ex - 0.1)                              # settle the voice for set-up and takeaways

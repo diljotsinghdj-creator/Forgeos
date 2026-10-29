@@ -43,6 +43,29 @@ class WhisperASR:
                     raise ProviderError(f"whisper transcription failed: {e2}") from e2
         return [w for w in out if w.text]
 
+    def listen(self, wav: Path, lang: str = "hi") -> dict:
+        """What the take says: {text, lang, prob} - the language Whisper hears, and the words in `lang`'s script
+        (forcing the language keeps Hindi in Devanagari rather than Urdu letters; English still comes out as English)."""
+        try:
+            from faster_whisper import WhisperModel
+        except ImportError as e:
+            raise NotConfigured("faster-whisper not installed") from e
+        audio = _load_audio(wav)
+        with self._lock:
+            try:
+                if self._model is None:
+                    self._model = WhisperModel(self.model_name, device=self.device)
+                heard_lang, prob = "", 0.0
+                try:
+                    heard_lang, prob, _ = self._model.detect_language(audio)
+                except Exception:  # noqa: BLE001 - older faster-whisper: the transcript alone decides
+                    pass
+                segments, _ = self._model.transcribe(audio, language=lang, beam_size=1, vad_filter=False)
+                text = " ".join(s.text.strip() for s in segments)
+            except Exception as e:  # noqa: BLE001
+                raise ProviderError(f"whisper listen failed: {e}") from e
+        return {"text": text, "lang": heard_lang, "prob": float(prob)}
+
     def _run(self, audio) -> list[Word]:
         segments, _ = self._model.transcribe(audio, word_timestamps=True, vad_filter=False)
         return [Word(w.word.strip(), float(w.start), float(w.end)) for s in segments for w in (s.words or [])]

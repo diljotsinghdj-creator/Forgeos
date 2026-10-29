@@ -37,13 +37,13 @@ LANGUAGES = {
     "en": "natural spoken English",
 }
 TONES = {
-    "calm": "steady and clear, setting the scene",
-    "warm": "warm and close, like talking to one person",
-    "question": "a real question - the voice rises and leaves it hanging for a beat",
-    "dramatic": "slower and weighty, building suspense, a breath before the key words",
-    "strong": "punchy and firm - every word lands, then a short pause",
-    "urgent": "faster and pressing, with energy",
-    "sad": "quiet and slower, with respect for the people it is about",
+    "calm": "clear, steady and conversational, like explaining to a friend",
+    "warm": "warm and close, talking straight to the viewer",
+    "question": "genuinely asking - curious, the pitch rises at the end and hangs for a moment",
+    "dramatic": "slow, low and suspenseful, as if revealing a secret - pause before the key word and lean on it",
+    "strong": "hard-hitting like a prime-time headline - firm, loud enough, every word lands, then a pause",
+    "urgent": "breaking-news urgency - faster, energy up, pressing forward",
+    "sad": "soft, slow and grave, with real feeling for the people involved",
 }
 
 
@@ -68,28 +68,20 @@ class GeminiVoice:
         self.id = f"gemini:{self.voice}:{self.style}:{self.lang}"
 
     def prompt(self, text: str, segments: list[dict] | None = None) -> str:
-        lines = [str(s.get("text") or "").strip() for s in segments or []]
-        lines = [ln for ln in lines if ln]
+        """Director's notes, then the words. Kept short: the longer the notes, the likelier a model reads them out."""
+        segs = [sg for sg in segments or [] if str(sg.get("text") or "").strip()]
         language = LANGUAGES.get(self.lang, "natural spoken " + self.lang)
-        notes = [f"Read the TRANSCRIPT aloud exactly as written, word for word - do not translate, add, skip or "
-                 f"repeat words, and never read these notes or the headings.",
-                 f"VOICE: {PERSONAS[self.style]}.",
-                 f"LANGUAGE: {language}.",
-                 "DELIVERY: like a real person, not a machine - natural rhythm, short pauses at commas, a clear pause "
-                 "at each full stop or ।, emphasis on numbers, names and the key word of each line."]
-        if segments and len(lines) > 1:
-            notes.append("LINE NOTES (one per transcript line, in order):")
-            notes += [f"Line {i}: {TONES.get(s.get('tone', 'calm'), TONES['calm'])}."
-                      for i, s in enumerate((s for s in segments if str(s.get('text') or '').strip()), 1)]
-            transcript = "\n".join(lines)
-        else:
+        head = (f"You are {PERSONAS[self.style]}. Speak {language}. Say only the words after TRANSCRIPT, exactly as "
+                f"written - nothing before or after them, no translation, never these notes.")
+        if len(segs) > 1:
+            notes = " ".join(f"Line {i}: {TONES.get(sg.get('tone', 'calm'), TONES['calm'])}."
+                             for i, sg in enumerate(segs, 1))
+            return f"{head}\nHow to say each line: {notes}\n\nTRANSCRIPT:\n" + "\n".join(sg["text"].strip() for sg in segs)
+        tone = segs[0].get("tone", "calm") if segs else ""
+        if not tone:
             mood = (self.mood or "").lower()
-            if any(w in mood for w in ("shock", "fear", "tension", "suspense", "anger", "intrigue")):
-                notes.append(f"MOOD: {TONES['dramatic']}.")
-            elif segments:
-                notes.append(f"MOOD: {TONES.get(segments[0].get('tone', 'calm'), TONES['calm'])}.")
-            transcript = text.strip()
-        return "\n".join(notes) + "\n\nTRANSCRIPT:\n" + transcript
+            tone = "dramatic" if any(w in mood for w in ("shock", "fear", "tension", "suspense", "anger")) else "calm"
+        return f"{head}\nHow to say it: {TONES.get(tone, TONES['calm'])}.\n\nTRANSCRIPT:\n{text.strip()}"
 
     def _post(self, model: str, body: dict):
         if self.client is not None:

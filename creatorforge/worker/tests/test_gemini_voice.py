@@ -53,7 +53,7 @@ def test_each_line_is_directed_and_the_transcript_is_exact(tmp_path):
     assert url.endswith("/models/gemini-2.5-pro-preview-tts:generateContent") and headers["x-goog-api-key"] == "k-123456"
     prompt = body["contents"][0]["parts"][0]["text"]
     assert prompt.endswith("TRANSCRIPT:\nचुनाव आयोग ने क्या किया?\nतेरह करोड़ नाम।")
-    assert "Line 1: a real question" in prompt and "Line 2: punchy" in prompt and "Hindi" in prompt
+    assert "Line 1: genuinely asking" in prompt and "Line 2: hard-hitting" in prompt and "Hindi" in prompt
     cfg = body["generationConfig"]
     assert cfg["responseModalities"] == ["AUDIO"]
     assert cfg["speechConfig"]["voiceConfig"]["prebuiltVoiceConfig"]["voiceName"] == "Charon"
@@ -132,3 +132,11 @@ def test_a_hindi_video_is_narrated_by_the_google_voice(cfg, monkeypatch):
     assert "gemini:Charon" in job["providers"]["voice"] and "unavailable" not in job["providers"]["voice"]
     said = "\n".join(p.rsplit("TRANSCRIPT:", 1)[1] for p in prompts)
     assert "तेरह करोड़ रुपये" in said and "ई डी" in said          # numbers and acronyms said in full
+
+
+def test_a_one_line_scene_is_said_in_its_tone():
+    v = gemini_tts.GeminiVoice("Charon", key="k")
+    p = v.prompt("जवाब आज तक नहीं मिला।", [{"text": "जवाब आज तक नहीं मिला।", "tone": "sad"}])
+    assert "soft, slow and grave" in p and p.endswith("TRANSCRIPT:\nजवाब आज तक नहीं मिला।")
+    p = v.prompt("और आज?", [{"text": "और आज?", "tone": "dramatic"}])
+    assert "suspenseful" in p
