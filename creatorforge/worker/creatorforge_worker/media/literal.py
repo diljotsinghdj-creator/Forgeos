@@ -208,7 +208,8 @@ Do Does Did Can Could Will Would Shall Should May Might Must Do Don't Doesn't Di
 That's There's Here's What's Who's He's She's They're We're You're I'm Let's Can't Won't""".split())
 _SKIP_ACRONYMS = {"OK", "TV", "AI", "PM", "CEO", "GDP", "USD", "GBP", "INR", "PDF", "SMS", "UPI", "ATM", "VAT", "ID",
                   "MP", "MPS", "UK", "US", "USA", "EU", "UN", "AM", "FM", "AD", "BC", "DNA", "IQ", "HR", "PR", "CCTV",
-                  "MAX", "AP", "LLC", "PLC", "LTD", "NHS"}
+                  "MAX", "AP", "LLC", "PLC", "LTD", "NHS", "SIR", "RTI", "IAS", "IPS", "CEC", "CJI", "LOP", "FIR",
+                  "BLO", "NOC", "GDP", "MLA", "MLAS"}
 _GROUPS = {"muslim", "muslims", "hindu", "hindus", "christian", "christians", "sikh", "sikhs", "jain", "jains",
            "buddhist", "buddhists", "dalit", "dalits", "adivasi", "adivasis", "tribal", "tribals", "vokkaliga",
            "vokkaligas", "lingayat", "lingayats", "brahmin", "brahmins", "obc", "obcs", "jat", "jats", "maratha",
@@ -248,7 +249,15 @@ HINDI_NAMES = {"नरेंद्र मोदी": "Narendra Modi", "मोद
                "अलेक्स अकोस्टा": "Alexander Acosta", "एलेक्स अकोस्टा": "Alexander Acosta", "अकोस्टा": "Alexander Acosta",
                "जेपी मॉर्गन": "JPMorgan Chase", "डॉयचे बैंक": "Deutsche Bank", "एफ़बीआई": "FBI", "एफबीआई": "FBI",
                "अमेरिकी न्याय विभाग": "United States Department of Justice",
-               "पाम बीच": "Palm Beach, Florida", "मियामी हेराल्ड": "Miami Herald"}
+               "पाम बीच": "Palm Beach, Florida", "मियामी हेराल्ड": "Miami Herald",
+               "ज्ञानेश कुमार": "Gyanesh Kumar", "ज्ञानेश": "Gyanesh Kumar", "राजीव कुमार": "Rajiv Kumar (civil servant)",
+               "सुखबीर सिंह संधू": "Sukhbir Singh Sandhu", "विवेक जोशी": "Vivek Joshi", "अखिलेश यादव": "Akhilesh Yadav",
+               "अभिषेक बनर्जी": "Abhishek Banerjee", "डेरेक ओ'ब्रायन": "Derek O'Brien", "डेरेक ओब्रायन": "Derek O'Brien",
+               "मल्लिकार्जुन खड़गे": "Mallikarjun Kharge", "खड़गे": "Mallikarjun Kharge", "ओम बिरला": "Om Birla",
+               "सी पी राधाकृष्णन": "C. P. Radhakrishnan", "सूर्यकांत": "Surya Kant", "जस्टिस सूर्यकांत": "Surya Kant",
+               "कॉकरोच जनता पार्टी": "Cockroach Janta Party", "रवि शंकर प्रसाद": "Ravi Shankar Prasad",
+               "नीतीश कुमार": "Nitish Kumar", "तेजस्वी यादव": "Tejashwi Yadav", "महादेवपुरा": "Mahadevapura",
+               "आलंद": "Aland, Karnataka", "रामलीला मैदान": "Ramlila Maidan", "प्रियंका गांधी": "Priyanka Gandhi"}
 _HINDI_RX = re.compile("|".join(re.escape(k) for k in sorted(HINDI_NAMES, key=len, reverse=True)))
 _SPAN = re.compile(r"\b(?:[A-Z][\w'’.-]*|[A-Z]{2,6})(?:\s+(?:of|the|and|for|de|von|van|al)?\s*(?:[A-Z][\w'’.-]*|[A-Z]{2,6}))*")
 COUNTRIES = ("India", "Pakistan", "Bangladesh", "China", "Britain", "United Kingdom", "England", "France", "Germany",
