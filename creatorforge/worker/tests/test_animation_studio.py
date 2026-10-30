@@ -127,3 +127,23 @@ def test_visual_reasoning_picks_honest_representations():
     assert V.reason("In 1947, India became independent.").label.startswith("Reconstruction")
     assert V.reason("Imagine if every pothole got its own minister.").label == "Satire"
     assert any("unsourced" in x for x in V.audit([V.reason("Inflation rose to 7% last year.")]))
+
+
+def test_performance_director_coordinates_a_conversation():
+    from creatorforge_worker.animation import performance as P
+    from creatorforge_worker.animation.behaviour import PERSONALITIES as PE
+    assert P.read_line("Ha ha, you are hopeless.")[0] == "laugh"
+    assert P.read_line("Why would you do that?")[2] == "shrug"
+    mia = Actor(Look(name="Mia"), x=-0.9, faceless=False)
+    leo = Actor(Look(name="Leo"), x=0.9, facing=-1, faceless=False)
+    lines = [{"who": "Mia", "text": "Leo! Where were you?"}, {"who": "Leo", "text": "I only went out for milk..."},
+             {"who": "Mia", "text": "That was THREE DAYS ago!!", "emotion": "angry"},
+             {"who": "Leo", "text": "Sorry. The queue was very long."}, {"who": "Mia", "text": "Ha ha, you are hopeless."}]
+    end, log = P.perform(lines, {"Mia": mia, "Leo": leo}, {"Mia": PE["bold"], "Leo": PE["timid"]}, 0.5, "comedy")
+    acts = [(d.who, d.what) for d in log]
+    assert ("Leo", "reacts scared") in acts                       # the timid one flinches at the anger
+    assert any(w == "Leo" and x == "nods" for w, x in acts)       # listening
+    g = [x for w, x in acts if w == "Mia" and x.startswith("gesture")]
+    assert all(a != b for a, b in zip(g, g[1:]))                  # never the same gesture twice running
+    assert len(mia.bubbles) == 3 and len(leo.bubbles) == 2 and mia.loco.lines   # spoken, mouth moving
+    assert qc.inspect(qc.record(_scene([mia, leo]), end + 1)).clean

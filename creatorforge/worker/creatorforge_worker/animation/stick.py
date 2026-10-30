@@ -167,6 +167,7 @@ class Actor:
         self.holds: list[tuple] = []          # (t0, t1, prop, hand)
         self.symbols: list[tuple] = []        # (t0, t1, "?" | "!" | "..." | "♥" | "#")
         self.bubbles: list[tuple] = []        # (t0, t1, text) speech bubbles
+        self.nods: list[tuple] = []           # (t0, t1, "yes" | "no")
         self.postures: list[tuple] = []       # (t0, t1, lean, crouch)
         self.reaches: list[tuple] = []        # (t0, t1, (near, far)) hand targets while walking
         self._end_x = x
@@ -565,6 +566,18 @@ class Actor:
                 p.y = lerp(e.y, p.y, k)
                 p.x = lerp(e.x, p.x, k)
         p = self._gaze(t, p)
+        for t0, t1, kind in self.nods:
+            if t0 <= t <= t1:
+                u = (t - t0) / (t1 - t0)
+                env = math.sin(math.pi * u)
+                if kind == "breath":                      # anticipation: chin and chest come up a little
+                    p.head -= 0.12 * env
+                    p.lean -= 0.04 * env
+                elif kind == "yes":
+                    p.head += 0.32 * env * max(0.0, math.sin(2 * math.pi * 2 * u))
+                else:
+                    p.head += 0.08 * env * math.sin(2 * math.pi * 3 * u)
+                    p.lean -= 0.05 * env
         prev = getattr(self, "_last_pose", None)
         if prev is not None and dt > 0:              # no limb whips round faster than a human can swing it
             cap = 25.0 * dt                            # measured against the torso: a roll turns limbs with it
@@ -593,6 +606,11 @@ class Actor:
             if t0 <= t <= t1:
                 z += dz * min(smooth((t - t0) / 0.4), smooth((t1 - t) / 0.4))
         return z
+
+    def nod(self, t: float, dur: float = 0.7, kind: str = "yes") -> float:
+        """Yes: the head dips twice. No: (in profile) a small tight back-and-forth with a slight lean back."""
+        self.nods.append((t, t + dur, kind))
+        return t + dur
 
     def look_at(self, t0: float, t1: float, target) -> float:
         """Attention: from t0 to t1 the head turns to `target` (another actor, a prop, or an (x, y) point)."""
