@@ -193,3 +193,25 @@ def test_critic_flags_staging_and_dead_air_and_fixes_what_it_can():
     assert all(not n.auto for n in rv.notes if n.category == "dead_air")   # judgement calls are left to a person
     done = critic.revise(sc, R, rv)
     assert any("turns to face" in d for d in done)
+
+
+def test_comedy_structures_stage_cleanly_and_point_the_camera_at_the_reaction():
+    from creatorforge_worker.animation import comedy as C
+    from creatorforge_worker.animation import motions as M
+    from creatorforge_worker.animation.timing import PROFILES
+    sc = SimpleNamespace(actors=[], fps=30)
+    a = Actor(Look(name="Raj"), x=-1.0, faceless=False)
+    b = Actor(Look(name="Ivy"), x=1.2, facing=-1, faceless=False)
+    for x in (a, b):
+        x.timing = PROFILES["comedy"]
+    t = C.double_take(a, 0.5, b, sc)
+    t = C.slow_burn(b, t + 0.3, a, 2.4, sc)
+    t = C.rule_of_three(a, t + 0.4, lambda x, tt: M.jump(x, tt, 0.4, 0.3), lambda x, tt: C.pratfall(x, tt, sc))
+    t = C.button(b, t + 0.3, sc)
+    sc.actors += [a, b]
+    assert [x.name for x in a.acts].count("jump") == 2 and "trip_roll" in [x.name for x in a.acts]
+    assert {n for _, _, ns in sc.focus for n in ns} == {"Raj", "Ivy"}
+    rep = qc.inspect(qc.record(sc, t + 0.5))
+    roll = [x for x in a.acts if x.name == "trip_roll"][0]
+    # the only tolerated defect is the documented arm snap as the hands leave the floor mid-roll
+    assert all(d.kind == "snap" and roll.t0 <= d.t0 <= roll.t1 for d in rep.defects)
