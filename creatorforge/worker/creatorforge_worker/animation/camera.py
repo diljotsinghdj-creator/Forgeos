@@ -53,6 +53,12 @@ def direct(R, sc, style: str = "explainer", margin: float = 1.0, every: int = 2)
         if not acts:
             targets.append((0.0, 0.0, 1.0))
             continue
+        talking = [i for _, i in acts if any(b0 - 0.6 <= t <= b1 + 0.3 for b0, b1, _ in
+                                             getattr(R.actors[i], "bubbles", []))]
+        if talking:                                       # a conversation: the speaker and whoever they talk to
+            sx = [R.joints[i][n]["hip"][0] for i in talking]
+            acts = [((s_[0] + (2.5 if i in talking else 2.0 if min(abs(R.joints[i][n]["hip"][0] - x) for x in sx)
+                                < 4.0 else 0.0),) + s_[1:], i) for s_, i in acts]
         named = next((names for h0, h1, names in hints if h0 <= t <= h1), None)
         if named:                                         # the narration's subject leads the frame...
             lead = [i for _, i in acts if any(R.actors[i].look.name.startswith(nm) for nm in named)]
@@ -66,6 +72,9 @@ def direct(R, sc, style: str = "explainer", margin: float = 1.0, every: int = 2)
             acts = [((s[0] + boost(i),) + s[1:], i) for s, i in acts]
         top = max(s[0] for s, _ in acts)
         focus = [(s, i) for s, i in acts if s[0] >= max(0.5, 0.45 * top)] or [max(acts)]
+        fx_ = [R.joints[i][n]["hip"][0] for _, i in focus]
+        focus += [(s, i) for s, i in acts if (s, i) not in focus and                 # someone right beside the
+                  min(abs(R.joints[i][n]["hip"][0] - x) for x in fx_) < 2.6]    # subject is in the shot, not half cut
         xs, ys, lead = [], [], 0.0
         any_big = any(s[2] for s, _ in focus)
         moving = [s[1] for s, _ in focus]
