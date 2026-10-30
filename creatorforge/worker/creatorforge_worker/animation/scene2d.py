@@ -151,11 +151,14 @@ class Scene:
         for e in self.extras:
             e.draw(d, S1, scale1, t)
         for a in sorted(self.actors, key=lambda q: -getattr(q, "z", 1.0)):
+            if getattr(a, "no_shadow", False):
+                continue
             S, scale = to_screen_z(getattr(a, "z", 1.0))
             ax = _actor_x(a, t)
-            lift = getattr(a, "hip", (0, 0))[1] - (a.l_thigh + a.l_shin) if hasattr(a, "l_thigh") else 0.0
-            w = (0.32 if hasattr(a, "l_thigh") else 1.35) * scale * max(0.45, 1 - lift * 0.8)
-            sx, sy = S(ax + self.shadow_dir * 0.2, 0)
+            gnd = a.world.ground(ax) if getattr(a, "world", None) is not None else 0.0
+            lift = getattr(a, "hip", (0, 0))[1] - gnd - (a.l_thigh + a.l_shin) if hasattr(a, "l_thigh") else 0.0
+            w = (0.32 if hasattr(a, "l_thigh") else 1.35) * scale * max(0.45, 1 - max(0.0, lift) * 0.8)
+            sx, sy = S(ax + self.shadow_dir * 0.2, gnd)
             d.ellipse([sx - w, sy - w * 0.12, sx + w, sy + w * 0.12], fill=(0, 0, 0, 55))
         for a in sorted(self.actors, key=lambda q: -getattr(q, "z", 1.0)):
             S, scale = to_screen_z(getattr(a, "z", 1.0))

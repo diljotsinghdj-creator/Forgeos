@@ -428,6 +428,76 @@ class Char3D:
             place(f"hand_ik.{s}", p)
         self.set_face(fc, frame)
 
+    def pose_actor(self, a, t: float, frame: int, dt: float):
+        """Drives the rig from the keyframe stick engine (stick.Actor) instead: hips, spine, head, both feet and both
+        hands go exactly where the engine solved them - jumps on real gravity, rolls, falls, body language - and the
+        knee and elbow pole targets follow the solved knees and elbows, so a joint never flips through a roll."""
+        a.step(t, dt)
+        p = a.pose_now
+        J = a.joints(p)
+        f = 1.0 if p.f >= 0 else -1.0
+        yaw = 0.0 if f > 0 else -math.pi
+        still = 0.0 if a._act is not None else max(0.0, 1.0 - a.speed / 0.4)
+        yaw += -0.55 * f * still * self.cheat
+        for t0, t1 in self.front:
+            w = min(rig2d.smooth((t - t0) / 0.45), rig2d.smooth((t1 - t) / 0.45)) if t0 <= t <= t1 else 0.0
+            yaw += (-math.pi / 2 - yaw) * w
+        hx, hy = J["hip"]
+        arm = self.arm
+        arm.location = (hx, 0, 0)
+        arm.rotation_euler = (0, 0, yaw)
+        arm.keyframe_insert("location", frame=frame)
+        arm.keyframe_insert("rotation_euler", frame=frame)
+        pb = arm.pose.bones
+        Rinv = Matrix.Rotation(-yaw, 4, "Z")
+
+        def local(wx, wz):
+            return (Rinv @ Vector((wx - hx, 0.0, wz)).to_4d()).to_3d()
+
+        def place(name, v):
+            b = pb[name]
+            rest = arm.data.bones[name].matrix_local
+            b.matrix = Matrix.Translation(v) @ rest.to_3x3().to_4x4()
+            b.keyframe_insert("location", frame=frame)
+
+        def pole(joint, a_end, b_end, lateral, name):
+            mid = ((a_end[0] + b_end[0]) / 2, (a_end[1] + b_end[1]) / 2)
+            d = (joint[0] - mid[0], joint[1] - mid[1])
+            n = math.hypot(*d)
+            d = (d[0] / n, d[1] / n) if n > 1e-4 else (f, 0.0)
+            v = local(joint[0] + d[0] * 0.6, joint[1] + d[1] * 0.6)
+            place(name, Vector((v.x, lateral, v.z)))
+        pb["pelvis"].location = (0, hy - self.hip_h, 0)
+        pb["pelvis"].keyframe_insert("location", frame=frame)
+        pb["spine"].rotation_mode = "QUATERNION"
+        pb["spine"].rotation_quaternion = _bone_rot(arm, "spine", Vector((0, 1, 0)), p.lean)
+        pb["spine"].keyframe_insert("rotation_quaternion", frame=frame)
+        fc = a.loco._face(t)
+        pb["head"].rotation_mode = "QUATERNION"
+        pb["head"].rotation_quaternion = (_bone_rot(arm, "head", Vector((0, 1, 0)), p.head * 0.8)
+                                          @ _bone_rot(arm, "head", Vector((1, 0, 0)), -math.radians(fc.head_tilt) * 0.6))
+        pb["head"].keyframe_insert("rotation_quaternion", frame=frame)
+        side = {0: "R", 1: "L"}                               # leg/arm 0 is the near one = the right side
+        for i, (hip, kn, ank, _) in enumerate(J["legs"]):
+            s_ = side[i] if f > 0 else side[1 - i]
+            sd = 1 if s_ == "L" else -1
+            v = local(*ank)
+            b = pb[f"foot_ik.{s_}"]
+            rest = arm.data.bones[f"foot_ik.{s_}"].matrix_local
+            b.matrix = Matrix.Translation(Vector((v.x, sd * self.lat, v.z))) @ rest.to_3x3().to_4x4()
+            b.keyframe_insert("location", frame=frame)
+            b.rotation_mode = "QUATERNION"
+            b.keyframe_insert("rotation_quaternion", frame=frame)
+            pole(kn, hip, ank, sd * self.lat, f"knee_pole.{s_}")
+        for i, (sh, el, wr) in enumerate(J["arms"]):
+            s_ = side[i] if f > 0 else side[1 - i]
+            sd = 1 if s_ == "L" else -1
+            v = local(*wr)
+            up = max(0.0, (wr[1] - sh[1]) / (a.l_up + a.l_fore))     # a raised hand clears the head
+            place(f"hand_ik.{s_}", Vector((v.x * (1 - 0.4 * up), sd * self.sh_lat * (1.15 + 2.4 * up), v.z)))
+            pole(el, sh, wr, sd * self.sh_lat * 2.2, f"elbow_pole.{s_}")
+        self.set_face(fc, frame)
+
 
 def _bone_rot(arm, name, axis_world, angle):
     """A pose rotation (bone space) that turns the bone by `angle` around an armature-space axis."""
@@ -733,8 +803,93 @@ def demo_e(out_dir: Path) -> Path:
     return render(out_dir, "Demo_E_3D_cartoon_story", frames, samples=12, audio=audio)
 
 
+def demo_5(out_dir: Path) -> Path:
+    """Cinematic 3D stickman: a dejected walk, a spark of an idea, a sprint, a jump over a crate, a trip and a roll,
+    embarrassment, a laugh, then standing tall - one continuous camera that tracks low, pushes in for the face,
+    goes wide for the action and drops to the ground for the fall. 2.35:1 with shallow depth of field."""
+    from . import motions as MO
+    from .stick import Actor
+    reset()
+    environment()
+    s = Char3D("Stick", 1.75, "stick")
+    a = Actor(rig2d.Look(height=1.75), x=-6.0, seed=4)
+    L = a.loco
+    crate_x = 0.0
+    bpy.ops.mesh.primitive_cube_add(location=(crate_x, 0.0, 0.22))
+    crate = bpy.context.object
+    crate.scale = (0.25, 0.3, 0.22)
+    crate.data.materials.append(material("crate", srgb(196, 140, 72), 0.7))
+    bpy.ops.object.shade_smooth()
+    # the performance
+    L.express(0, "sad", 0.3)
+    t = a.walk(0.3, -2.6, 0.9)
+    a.posture(0.3, t + 0.2, lean=0.22, crouch=0.02)          # shoulders down, head down: a bad day
+    a.feel(t, t + 1.7, "sad")
+    t1 = t + 1.7
+    L.express(t1, "surprised", 0.12)
+    a.feel(t1, t1 + 0.9, "surprised")
+    s.front.append((t1 - 0.15, t1 + 2.5))
+    L.express(t1 + 0.9, "excited", 0.2)
+    a.feel(t1 + 0.9, t1 + 2.4, "excited")
+    t_run = t1 + 2.7
+    t = a.run(t_run, crate_x - 0.95, 4.0)
+    L.express(t_run, "determined", 0.2)
+    t = MO.jump(a, t - 0.05, dist=1.9, height=0.55)
+    L.express(t - 0.7, "joyful", 0.2)
+    t = a.run(t, 4.4, 4.0)
+    t_roll = t - 0.12
+    L.express(t_roll + 0.05, "surprised", 0.1)
+    t = MO.trip_roll(a, t_roll)
+    L.express(t - 0.3, "embarrassed", 0.25)
+    a.feel(t, t + 1.1, "embarrassed")
+    L.express(t + 1.1, "laughing", 0.2)
+    a.feel(t + 1.1, t + 2.5, "laugh")
+    s.front.append((t + 0.5, t + 6.0))
+    L.express(t + 2.5, "proud", 0.3)
+    a.feel(t + 2.5, t + 3.9, "confident")
+    t_end_roll = t
+    total = t + 4.1
+    frames = int(total * FPS)
+    hips = []
+    for fr in range(1, frames + 1):
+        s.pose_actor(a, (fr - 1) / FPS, fr, 1 / FPS)
+        hips.append(a.hip)
+    # one continuous camera: shot "looks" blended in time, following a smoothed hip track
+    shots = [(0.0, (2.0, -3.4, 0.42), (0.35, 1.2), 30),              # low tracking: the walk
+             (t1 - 0.8, (0.35, -2.25, 1.5), (0.0, 1.48), 58),       # push in: the face
+             (t_run + 0.2, (1.6, -6.2, 1.05), (1.1, 0.95), 28),     # wide, leading: sprint and jump
+             (t_roll - 0.5, (1.0, -2.9, 0.32), (0.7, 0.55), 26),    # down on the ground: the fall
+             (t_end_roll + 0.5, (-0.5, -2.7, 1.3), (0.0, 1.3), 48),  # medium: embarrassed, laughing
+             (total - 1.2, (-0.15, -2.05, 1.45), (0.0, 1.42), 62)]  # slow push-in: standing tall
+
+    def blend(tt):                                             # each shot eases in over the 1.2 s before it starts
+        _, pos, look, ln = shots[0]
+        for tb, pb_, lb, fb in shots[1:]:
+            k = rig2d.smooth(min(1.0, max(0.0, (tt - (tb - 1.2)) / 1.2)))
+            pos = tuple(x + (y - x) * k for x, y in zip(pos, pb_))
+            look = tuple(x + (y - x) * k for x, y in zip(look, lb))
+            ln = ln + (fb - ln) * k
+        return pos, look, ln
+    xs = [h[0] for h in hips]
+    sm = []
+    for i in range(len(xs)):                                   # a camera operator's lag, not a lock-on
+        w = xs[max(0, i - 8): i + 9]
+        sm.append(sum(w) / len(w))
+    keys, lens = [], []
+    for fr in range(1, frames + 1, 3):
+        pos, look, ln = blend((fr - 1) / FPS)
+        mx = sm[fr - 1]
+        keys.append((fr, (mx + pos[0], pos[1], pos[2]), (mx + look[0], 0.0, look[1])))
+        lens.append((fr, ln))
+    cam, _ = camera(keys, lens=lens[0][1], fstop=2.2)
+    for fr, ln in lens:
+        cam.data.lens = ln
+        cam.data.keyframe_insert("lens", frame=fr)
+    return render(out_dir, "Demo5_cinematic_3D_stickman", frames, res=(1280, 544), samples=12)
+
+
 if __name__ == "__main__":
     which = (sys.argv[1] if len(sys.argv) > 1 else "D").upper()
     out = Path(sys.argv[2] if len(sys.argv) > 2 else ".").resolve()
     out.mkdir(parents=True, exist_ok=True)
-    print({"D": demo_d, "E": demo_e}[which](out))
+    print({"D": demo_d, "E": demo_e, "5": demo_5}[which](out))

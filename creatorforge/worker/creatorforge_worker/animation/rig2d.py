@@ -109,13 +109,15 @@ def _g(name: str, t: float):
         return (0.95, 2.35), (0.9, 2.3), 0.12
     if name == "hands_up":
         return (2.75, 0.3), (2.7, 0.3), 0.0
+    if name == "carry":
+        return (0.95, 1.2), (0.85, 1.15), 0.04
     if name == "beckon":
         return (1.3, 1.2 + 0.5 * s(t * 9)), None, 0.0
     return None, None, 0.0
 
 
 GESTURES = ("wave", "point", "talk", "explain", "clap", "laugh", "angry", "shake_fist", "shrug", "facepalm", "think",
-            "phone", "cheer", "surprise", "cross_arms", "scratch_head", "cover_face", "hands_up", "beckon")
+            "phone", "cheer", "surprise", "cross_arms", "scratch_head", "cover_face", "hands_up", "beckon", "carry")
 
 
 @dataclass
@@ -143,6 +145,7 @@ class Character:
         self.nods: list[tuple] = []         # (t0, t1, kind)
         self.props: list[tuple] = []        # (t0, t1, kind)
         self._end_x = self.x
+        self.ground = lambda x: 0.0               # ground height under x (platforms: a box, a photo, a stage)
         self._feet = [_Foot(self.x + 0.09 * H), _Foot(self.x - 0.09 * H)]
         self._still = 0.0
         self._hip_y = self.l_thigh + self.l_shin + self.ankle
@@ -228,7 +231,7 @@ class Character:
 
     def _facing_at(self, t: float, v: float) -> float:
         for t0, t1, x0, x1, m in self.moves:            # moving: face the way the move goes, from its first instant
-            if t0 <= t <= t1 and x1 != x0 and m != "jump":
+            if t0 <= t <= t1 and x1 != x0 and m not in ("jump", "handoff"):
                 return 1.0 if x1 > x0 else -1.0
         if abs(v) > 0.08:
             return 1.0 if v > 0 else -1.0
@@ -236,8 +239,8 @@ class Character:
         for tt, ff in self.turns:
             if tt <= t:
                 f = ff
-        for t0, t1, x0, x1, _ in self.moves:
-            if t1 <= t and x1 != x0:
+        for t0, t1, x0, x1, m in self.moves:
+            if t1 <= t and x1 != x0 and m != "handoff":       # an action's hand-off is not a walk direction
                 last_move_dir = 1.0 if x1 > x0 else -1.0
                 if not any(t1 < tt <= t for tt, _ in self.turns):
                     f = last_move_dir
@@ -265,7 +268,7 @@ class Character:
             self._carry = False
             self._feet[0].x, self._feet[1].x = hx + f * 0.1 * H, hx - f * 0.08 * H
             for ft in self._feet:
-                ft.y, ft.swing = 0.0, None
+                ft.y, ft.swing = self.ground(ft.x), None
         # step length grows with speed (about 0.39 x height at a brisk 1.4 m/s); one step takes S / speed
         # plan steps from the move's cruise speed, not this instant's (the first step of a start is then a proper step,
         # not a shuffle the accelerating body outruns)
@@ -282,12 +285,12 @@ class Character:
                 t0, dur, xa, xb, lift = ft.swing
                 k = (t - t0) / dur
                 if k >= 1:
-                    ft.x, ft.y, ft.swing, ft.pitch = xb, 0.0, None, 0.0
+                    ft.x, ft.y, ft.swing, ft.pitch = xb, self.ground(xb), None, 0.0
                     ft.landed = t
                 else:
                     e = smooth(k)
                     ft.x = xa + (xb - xa) * e
-                    ft.y = lift * math.sin(math.pi * k)
+                    ft.y = self.ground(xa) + (self.ground(xb) - self.ground(xa)) * e + lift * math.sin(math.pi * k)
                     ft.pitch = 0.5 * math.sin(math.pi * k) * (1 if k < 0.5 else -0.4)
         if not air and speed > 0.05 and mode in ("walk", "run"):
             self._still = 0.0
@@ -328,16 +331,17 @@ class Character:
                     far.swing = (t, 0.34, far.x, hx + side * 0.085 * H, 0.05 * H)
         # hips: as high as the planted legs reach (bending at double support), lowered by crouch, raised in a jump
         leg = self.l_thigh + self.l_shin
-        target = leg * 0.985 + self.ankle
+        base = max([ft.y for ft in self._feet if ft.swing is None] or [self.ground(hx)])
+        target = base + leg * 0.985 + self.ankle
         if not air:
             for ft in self._feet:
                 if ft.swing is None:
                     dx = hx - ft.x
-                    target = min(target, self.ankle + math.sqrt(max(0.0, (leg * 0.995) ** 2 - dx * dx)))
+                    target = min(target, ft.y + self.ankle + math.sqrt(max(0.0, (leg * 0.995) ** 2 - dx * dx)))
         target -= crouch + (0.04 * H if run else 0.0)
         if self.look.hunch:
             target -= 0.03 * H * self.look.hunch
-        target = max(target, 0.72 * leg)          # a safety floor: hips never sink below a deep crouch
+        target = max(target, base + 0.72 * leg)          # a safety floor: hips never sink below a deep crouch
         if target < self._hip_y:
             self._hip_y = target
         else:
