@@ -215,3 +215,77 @@ def test_comedy_structures_stage_cleanly_and_point_the_camera_at_the_reaction():
     roll = [x for x in a.acts if x.name == "trip_roll"][0]
     # the only tolerated defect is the documented arm snap as the hands leave the floor mid-roll
     assert all(d.kind == "snap" and roll.t0 <= d.t0 <= roll.t1 for d in rep.defects)
+
+
+def test_asset_library_generates_validates_and_refuses_broken_assets(tmp_path):
+    from creatorforge_worker.animation import asset_lib as A
+    lib = A.Library(tmp_path / "lib")
+    car = A.generate("a small red car")
+    assert car["kind"] == "car" and not A.errors(A.validate(car))
+    assert A.compatible(car, "ride")[0] and not A.compatible(car, "carry")[0]
+    assert A.compatible(A.generate("a dog"), "walk")[0] and A.compatible(A.generate("a chair"), "sit")[0]
+    aid = lib.register(car)
+    assert A.Library(tmp_path / "lib").get(aid)["name"] == "a small red car"      # persisted and reloaded
+    mesh = A.to_mesh(car)
+    assert mesh["open_edges"] == 0 and len(mesh["faces"]) > 20
+    bad = A._asset("car", "bad", [A.poly("bow", [(0, 0), (1, 1), (1, 0), (0, 1)], (200, 0, 0)),
+                                  A.circle("w", 0.8, 0.3, 0.3, (0, 0, 0), rig={"type": "spin", "pivot": [0.9, 0.3]})], 2, 1)
+    found = {i.check for i in A.validate(bad)}
+    assert {"self_intersection", "wobble"} <= found
+    try:
+        lib.register(bad)
+        raise AssertionError("a broken asset was registered")
+    except ValueError:
+        pass
+    assert lib.obtain("a flying saucer")[1] == "placeholder"                        # never invents a shape
+
+
+def test_wheels_roll_without_skidding_and_legs_stop_when_the_animal_stops():
+    from creatorforge_worker.animation import asset_lib as A
+    car = A.generate("car")
+    wheel = next(p for p in car["parts"] if p["id"] == "wheel_f")
+    ang, _ = A.rig_angle(wheel, 0.0, 1.0, 2.0)
+    assert abs(abs(ang) * wheel["r"] - 1.0) < 1e-6                                 # arc length == distance
+    leg = next(p for p in A.generate("dog")["parts"] if p.get("rig", {}).get("gait"))
+    assert abs(A.rig_angle(leg, 1.0, 0.37, 0.0)[0]) < 1e-9                          # standing still: legs at rest
+    assert abs(A.rig_angle(leg, 1.0, 0.37, 1.0)[0]) > 0.05
+
+
+def test_editor_undo_redo_and_versions(tmp_path):
+    from creatorforge_worker.animation.production import Editor
+    doc = {"title": "t", "scenes": [{"id": "a", "cast": [{"name": "Raj"}], "props": [{"name": "box", "kind": "crate"}],
+                                     "steps": [{"t": 0.2, "who": "Raj", "do": "walk", "to": 1.0}]}]}
+    ed = Editor(doc, tmp_path / "hist")
+    ed.update_step("a", 0, to=2.0).set_expression("a", "Raj", 1.0, "happy").replace_asset("a", "box", "chair")
+    v1 = ed.save_version("first pass")
+    ed.add_scene({"id": "b", "cast": [], "props": [], "steps": []}).move_scene("b", 0)
+    assert [s["id"] for s in ed.doc["scenes"]] == ["b", "a"]
+    assert ed.undo().startswith("move scene") and ed.undo().startswith("add scene")
+    assert [s["id"] for s in ed.doc["scenes"]] == ["a"]
+    assert ed.redo().startswith("add scene") and len(ed.doc["scenes"]) == 2
+    ed.restore(v1)
+    assert len(ed.doc["scenes"]) == 1 and ed.doc["scenes"][0]["steps"][0]["to"] == 2.0
+    assert ed.doc["scenes"][0]["props"][0]["asset"] == "chair"
+    assert ed.versions()[0]["message"] == "first pass"
+    assert ed.undo().startswith("restore") and len(ed.doc["scenes"]) == 2
+
+
+def test_scenes_carry_world_state_and_unchanged_scenes_are_not_rendered_twice(tmp_path):
+    from creatorforge_worker.animation import production as P
+    doc = {"title": "t", "scenes": [
+        {"id": "s1", "cast": [{"name": "Asha", "x": 0.0}], "props": [{"name": "parcel", "kind": "crate", "x": 1.0}],
+         "steps": [{"t": 0.2, "who": "Asha", "do": "walk", "to": 0.6}, {"t": "+0.1", "who": "Asha", "do": "pick_up",
+                                                                         "what": "parcel"}]},
+        {"id": "s2", "cut": False, "cast": [{"name": "Asha"}], "props": [{"name": "car", "asset": "a blue car", "x": -3}],
+         "steps": [{"t": 0.2, "do": "move", "what": "car", "to": 3.0, "speed": 4.0},
+                   {"t": "+0.1", "who": "Asha", "do": "put_down", "what": "parcel"}]}]}
+    states = P.plan_states(doc)
+    end1, (start2, end2) = states[0][1], states[1][:2]
+    assert end1.entities["parcel"].held_by == "Asha" and start2.entities["parcel"].held_by == "Asha"
+    assert abs(start2.entities["Asha"].x - end1.entities["Asha"].x) < 0.05          # she starts where she stopped
+    assert not states[1][4]                                                          # no continuity issues
+    assert end2.entities["parcel"].held_by == "" and end2.entities["car"].x == 3.0
+    r = P.render(doc, tmp_path / "t.mp4", "preview")
+    assert r["video"]["missing"] == 0 and not any(s["cached"] for s in r["scenes"])
+    r = P.render(doc, tmp_path / "t.mp4", "preview")
+    assert all(s["cached"] for s in r["scenes"]) and r["render_seconds"] < 1.0

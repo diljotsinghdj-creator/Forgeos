@@ -103,7 +103,7 @@ def seed(state: WorldState, cast: list[dict], props: list[dict], world=None) -> 
         actors[c["name"]] = a
     for p in props:
         live[p["name"]] = Prop(p.get("kind", "crate"), p.get("x", 0.0), p.get("y", 0.0), p.get("w", 0.4),
-                               p.get("h", 0.3), label=p["name"], data=dict(p.get("data", {})))
+                               p.get("h", 0.3), z=p.get("z", 1.0), label=p["name"], data=dict(p.get("data", {})))
     for name, e in state.entities.items():             # things still in someone's hands come with them
         if e.kind != "prop" or not e.held_by or e.held_by not in actors:
             continue

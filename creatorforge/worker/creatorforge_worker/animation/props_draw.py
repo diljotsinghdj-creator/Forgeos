@@ -339,5 +339,21 @@ def draw(p, d, S, scale, t):
                            (cx0 - cw * 0.1, (y0 + y1) / 2 + lw * 4)], fill=INK)
         if p.label:
             _text(d, ((x0 + x1) / 2, y0 - (y1 - y0) * 0.12), p.label, (y1 - y0) * 0.09, (170, 40, 40))
+    elif k == "shape":                                # a library asset: rigged parts (wheels roll, legs walk)
+        from . import asset_lib
+        x_0 = p.pos(0.0)[0]
+        speed = (p.pos(t + 0.04)[0] - p.pos(max(0.0, t - 0.04))[0]) / 0.08
+        flip = p.data.get("flip", 1.0)
+        parts = asset_lib.posed({"parts": p.data["parts"]}, t, x - x_0, speed, flip)
+        asset_lib.draw_parts(d, parts, S, scale, x, y)
+        if p.data.get("text"):
+            board = next((q for q in parts if q["id"] == "board"), None)
+            if board:
+                bx0, by0, bx1, by1 = asset_lib.bbox(board)
+                (sx0, sy0), (sx1, sy1) = S(x + bx0, y + by1), S(x + bx1, y + by0)
+                _text(d, ((sx0 + sx1) / 2, (sy0 + sy1) / 2), p.data["text"], (sy1 - sy0) * 0.45, INK,
+                      maxw=(sx1 - sx0) * 0.9)
+        if p.label and p.data.get("show_label"):
+            _text(d, ((x0 + x1) / 2, y0 - lw * 8), p.label, scale * 0.12, INK)
     elif k == "label":
         _text(d, ((x0 + x1) / 2, (y0 + y1) / 2), p.label, (y1 - y0) * 0.8, p.color, maxw=(x1 - x0))
