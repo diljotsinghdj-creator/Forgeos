@@ -44,9 +44,10 @@ def jump(a: Actor, t: float, dist: float = 1.2, height: float = 0.5, land: float
          "linear"),                                                                     # apex, knees tucked
         (t3, dict(dx=dist - absorb_dx, y=touch, lean=0.22, au=1.2, al=1.5, bu=1.0, bl=1.3, squash=1.0,
                   feet=((dist + 0.1 * H, land), (dist - 0.08 * H, land)), ballistic=True), "linear"),  # touch-down
-        (t4, dict(dx=dist, y=land + y0 - 0.16 * H, lean=0.38, au=0.8, al=1.1, bu=0.6, bl=0.9, squash=0.9), "out"),
-        # the knees take the landing
-        (t4 + 0.38, dict(y=land + y0, lean=0.04, head=0.0, au=0.1, al=0.25, bu=0.06, bl=0.2, squash=1.0), "settle"),
+        (t4, dict(dx=dist, y=land + y0 - 0.16 * H, lean=0.38, au=0.8, al=1.1, bu=0.6, bl=0.9, squash=0.9,
+                  feet=("prev", "prev")), "out"),                                    # the knees take the landing
+        (t4 + 0.38, dict(y=land + y0, lean=0.04, head=0.0, au=0.1, al=0.25, bu=0.06, bl=0.2, squash=1.0,
+                         feet=("prev", "prev")), "settle"),                          # feet stay where they landed
     ]
     return a.act(t, keys, "jump", dx=dist)
 
@@ -93,8 +94,8 @@ def climb(a: Actor, t: float, wall: float, top: float) -> float:
                          ml=-0.9, feet=((wall + 0.09 * H, top), None)), "inout"),          # knee up, foot on the edge
         (t_ + 0.63, dict(dx=wall + 0.02 * H, y=top + y0 * 0.72, lean=0.55, head=0.25, hands=(None, None), au=0.6,
                          al=0.9, bu=0.4, bl=0.7, feet=("prev", (wall + 0.02 * H, top))), "inout"),  # feet on top
-        (t_ + 0.98, dict(dx=wall + 0.06 * H, y=top + y0, lean=0.04, head=0.0, au=0.1, al=0.25, bu=0.06, bl=0.2),
-         "settle"),
+        (t_ + 0.98, dict(dx=wall + 0.06 * H, y=top + y0, lean=0.04, head=0.0, au=0.1, al=0.25, bu=0.06, bl=0.2,
+                         feet=("prev", "prev")), "settle"),                          # stand up on planted feet
     ]
     return a.act(t, keys, "climb", dx=wall + 0.06 * H)
 

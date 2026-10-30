@@ -360,3 +360,20 @@ def test_illustrations_stay_in_their_scene_but_objects_persist():
     st = P.plan_states(doc)
     _, _, _, live = P.stage_scene(doc["scenes"][1], st[1][6])
     assert "cup" in live and "plan" in live and "worry" not in live
+
+
+def test_a_failed_scene_does_not_sink_the_film_and_a_rerun_redoes_only_it(tmp_path):
+    import pytest
+    from creatorforge_worker.animation import production as P
+    from creatorforge_worker.animation.benchmarks import REAL
+    good = {"id": "a", "cast": [{"name": "A", "x": 0}], "props": [], "steps": [{"t": 0.2, "who": "A", "do": "nod"}],
+            "seconds": 2.0}
+    doc = {"title": "t", "scenes": [good, {"id": "b", "footage": str(tmp_path / "missing.mp4"), "dur": 2.0}]}
+    with pytest.raises(P.RenderFailed) as e:
+        P.render(doc, tmp_path / "f.mp4", "preview", cache_dir=tmp_path / "c")
+    assert [f["scene"] for f in e.value.report["failures"]] == ["b"]
+    assert not list((tmp_path / "c").glob("*.partial.mp4"))                  # no half file left as a cache hit
+    doc["scenes"][1]["footage"] = str(REAL / "footage_portrait.mp4")
+    r = P.render(doc, tmp_path / "f.mp4", "preview", cache_dir=tmp_path / "c")
+    assert [s["cached"] for s in r["scenes"]] == [True, False] and r["video"]["missing"] == 0
+    assert r["provenance"][0]["file"] == "footage_portrait.mp4" and r["provenance_issues"]     # rights not verified

@@ -551,7 +551,10 @@ def plan_states(doc: dict, quality: str = "preview"):
             T = float(scene.get("dur") or _probe_seconds(scene["footage"]) - scene.get("start", 0.0))
             out.append((state, state, T, _Footage(T), [], [], state))
             continue
-        sc, T, actors, live = stage_scene(scene, state, QUALITY[quality]["fps"], quality)
+        try:
+            sc, T, actors, live = stage_scene(scene, state, QUALITY[quality]["fps"], quality)
+        except Exception as e:
+            raise ValueError(f"scene {scene.get('id')} does not stage: {type(e).__name__}: {e}") from e
         R = qc.record(sc, T)
         rep = qc.inspect(R)
         fixes = qc.corrections(R, rep)
@@ -626,10 +629,64 @@ def _push_into(sc, name: str, T: float, dur: float):
         CamKey(T, x, yc - ground_y, zoom * 1.04, ease="linear")]     # full before the dissolve starts
 
 
+def _registry() -> dict:
+    p = Path(__file__).parent / "assets" / "PROVENANCE.json"
+    return json.loads(p.read_text()) if p.exists() else {}
+
+
+def provenance(doc: dict) -> tuple[list, list]:
+    """Every real photo, document, backdrop and clip in the film, with its credit, source and licence (from the
+    document, else from assets/PROVENANCE.json). Anything without a licence, or with rights not verified, is an
+    issue: it must be cleared before the film is published."""
+    reg = _registry()
+    items = []
+
+    def add(scene, kind, path, meta):
+        name = Path(path).name
+        m = {**reg.get(name, {}), **{k: v for k, v in (meta or {}).items() if k in ("credit", "source", "licence", "url")}}
+        items.append({"scene": scene, "kind": kind, "file": name, "credit": m.get("credit", ""),
+                      "source": m.get("source", ""), "licence": m.get("licence", ""), "url": m.get("url", "")})
+    for sc in doc["scenes"]:
+        if sc.get("footage"):
+            add(sc["id"], "footage", sc["footage"], sc)
+        for p in sc.get("props", []):
+            if p.get("kind") == "photo":
+                add(sc["id"], "photo", p["data"]["image"], p.get("data"))
+        bd = (sc.get("layers") or {}).get("backdrop")
+        if bd:
+            add(sc["id"], "backdrop", bd["image"], bd)
+    issues = [f"{i['scene']}: {i['file']} - " + ("no licence recorded" if not i["licence"] else i["licence"])
+              for i in items if not i["licence"] or "not verified" in i["licence"] or "verify" in i["licence"]]
+    if any(not i["credit"] for i in items):
+        issues += [f"{i['scene']}: {i['file']} - no on-screen credit" for i in items if not i["credit"]]
+    return items, issues
+
+
+class RenderFailed(RuntimeError):
+    """Some scenes failed; the rest are rendered and cached. .report lists the failures (scene, error, trace)."""
+
+    def __init__(self, report: dict):
+        self.report = report
+        super().__init__("; ".join(f"scene {f['scene']}: {f['error']}" for f in report["failures"]))
+
+
+def _render_safe(args):
+    import traceback
+    try:
+        _render_one(args)
+        return None
+    except Exception as e:                            # reported per scene, never swallowed
+        return {"scene": args[0]["id"], "error": f"{type(e).__name__}: {e}", "trace": traceback.format_exc()[-1500:]}
+
+
 def _render_one(args):
     doc_scene, state_json, quality, out, fixes = args
-    if doc_scene.get("footage"):
-        return _render_footage(doc_scene, quality, out)
+    final = Path(out)
+    out = str(final.with_name(final.stem + ".partial.mp4"))   # written aside, renamed when complete: a crash never
+    if doc_scene.get("footage"):                                # leaves a half file that looks like a cached scene
+        _render_footage(doc_scene, quality, out)
+        os.replace(out, final)
+        return str(final)
     from . import sound
     state = worldstate.WorldState(**{**state_json, "entities": {k: worldstate.Entity(**v)
                                                                 for k, v in state_json["entities"].items()}})
@@ -648,9 +705,10 @@ def _render_one(args):
     if getattr(sc, "narration", None):
         wav = _mix_narration(wav, sc.narration, Path(out).with_suffix(".voice.wav"))
     sc.render(Path(out), T, audio_wav=wav)            # area widens the shot and directs again
-    Path(out).with_suffix(".camera.json").write_text(json.dumps({"passes": passes, "framing": [
+    final.with_suffix(".camera.json").write_text(json.dumps({"passes": passes, "framing": [
         [d.kind, d.who, d.t0, d.t1] for d in framing]}))
-    return out
+    os.replace(out, final)
+    return str(final)
 
 
 def render(doc: dict, out: Path, quality: str = "preview", workers: int = 1, cache_dir: Path | None = None) -> dict:
@@ -671,13 +729,16 @@ def render(doc: dict, out: Path, quality: str = "preview", workers: int = 1, cac
         if not hit:
             jobs.append((scene, asdict(incoming), quality, str(f), fixes))
     t0 = time.time()
-    if workers > 1 and len(jobs) > 1:
+    if workers > 1 and len(jobs) > 1:                 # each scene on its own: one failure does not stop the others
         with ProcessPoolExecutor(workers) as ex:
-            list(ex.map(_render_one, jobs))
+            failures = [f for f in ex.map(_render_safe, jobs) if f]
     else:
-        for j in jobs:
-            _render_one(j)
+        failures = [f for f in map(_render_safe, jobs) if f]
     report["render_seconds"] = round(time.time() - t0, 1)
+    if failures:                                      # the finished scenes are cached: fix and render again, and
+        report["failures"] = failures                 # only the failed ones are redone
+        out.with_suffix(".failed.json").write_text(json.dumps(report, indent=1, default=str))
+        raise RenderFailed(report)
     for s_, f in zip(report["scenes"], files):         # camera passes and any framing left after them
         cj = f.with_suffix(".camera.json")
         if cj.exists():
@@ -700,6 +761,7 @@ def render(doc: dict, out: Path, quality: str = "preview", workers: int = 1, cac
                     "4.0", "-crf", "21", "-pix_fmt", "yuv420p", "-c:a", "aac", "-ar", "48000", "-movflags", "+faststart",
                     str(android)], check=True)
     report["video"] = qc.check_video(out, frames / fps, fps)
+    report["provenance"], report["provenance_issues"] = provenance(doc)
     report["delivery"] = qc.check_delivery(out, QUALITY[quality]["width"], QUALITY[quality]["height"], fps)
     subs, t_off = [], 0.0
     for scene, st in zip(doc["scenes"], states):     # subtitles: readable speed, on screen while spoken
