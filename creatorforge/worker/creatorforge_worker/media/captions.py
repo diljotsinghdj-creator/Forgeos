@@ -31,11 +31,29 @@ def estimate_words(text: str, start: float, spoken_s: float) -> list[Word]:
     return out
 
 
+_SENTENCE_END = ("।", "॥", "?", "!", ".", "…", "?\"", "!\"", ".\"", "”")
+
+
 def group(words: list[Word], per: int) -> list[Word]:
+    """Caption cues of up to `per` words that never run across a sentence end: "लोग चुनेंगे। फिर" would show the
+    end of one thought with the start of the next."""
+    sentences, cur = [], []
+    for w in words:
+        cur.append(w)
+        if w.text.rstrip().endswith(_SENTENCE_END):
+            sentences.append(cur)
+            cur = []
+    if cur:
+        sentences.append(cur)
     cues = []
-    for i in range(0, len(words), per):
-        chunk = words[i:i + per]
-        cues.append(Word(" ".join(w.text for w in chunk), chunk[0].start, chunk[-1].end))
+    for sent in sentences:
+        n = -(-len(sent) // max(1, per))                 # as few cues as fit, evenly filled (no lone last word)
+        size, extra = divmod(len(sent), n)
+        i = 0
+        for k in range(n):
+            chunk = sent[i:i + size + (1 if k < extra else 0)]
+            i += len(chunk)
+            cues.append(Word(" ".join(x.text for x in chunk), chunk[0].start, chunk[-1].end))
     for a, b in zip(cues, cues[1:]):
         a.end = max(a.end, min(b.start, a.end + 0.3))
     return cues
@@ -122,6 +140,9 @@ def write_ass(path: Path, width: int, height: int, scale: float, position: float
         # Widescreen explainers are watched on TVs and laptops from a distance: captions, callouts and the hook
         # card need to read at a glance (the template sizes suit phones).
         fs, big, small = int(height * 0.05), int(height * 0.085), int(height * 0.056)
+    if height > width:
+        # Shorts are read on a phone at arm's length: captions under ~4% of the height are hard to read in a feed
+        fs, big, small = max(fs, int(height * 0.04)), max(big, int(height * 0.054)), max(small, int(height * 0.034))
     caption_margin = int(height * (1 - position))
     top = int(height * 0.10)
     side = int(width * 0.07)

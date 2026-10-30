@@ -23,6 +23,11 @@ _FREE = re.compile(r"^(public domain|pd\b|pd-|cc0|cc by(-sa)?( \d\.\d)?|cc-by(-s
 # A file that is a party symbol, logo, emblem or national flag (not a photo of a "flag march" or a "sealed" box)
 _LOGO = re.compile(r"logo|symbol|emblem|(?<![a-z])seal(?![a-z])|wordmark|insignia|coat[_ ]of[_ ]arms|"
                    r"election[_ ]symbol|flag[_ ]of[_ ]", re.I)
+# Data graphics on Wikipedia pages (the "245" Rajya Sabha seat chart on the Parliament page): never shown as the
+# picture of a subject - a chart the narration doesn't explain misleads
+_DIAGRAM = re.compile(r"composition|seats?(?![a-z])|seat[_ ]?(map|chart)|hemicycle|structure[_ ]of|diagram|chart|"
+                      r"results?(?![a-z])|constituenc|locator|location[_ ]map|map[_ ]of|_map(?![a-z])|graph|"
+                      r"infographic|organi[sz]ation[_ ]chart|flowchart|timeline|statistics", re.I)
 _SMALL = {"of", "the", "and", "for", "in", "on", "at", "a", "an", "to", "de", "&"}
 
 
@@ -204,7 +209,11 @@ def file_info(filename: str, width: int = 1600) -> dict | None:
     meta = info.get("extmetadata") or {}
     licence = _plain((meta.get("LicenseShortName") or {}).get("value", "")) or "unknown licence"
     nonfree = str((meta.get("NonFree") or {}).get("value", "")).lower() in ("true", "1")
-    logo = bool(_LOGO.search(filename)) or info.get("mime") == "image/svg+xml"
+    if _DIAGRAM.search(filename):
+        return None       # a seat chart, result map or diagram puts numbers on screen the script never said
+    logo = bool(_LOGO.search(filename))
+    if info.get("mime") == "image/svg+xml" and not logo:
+        return None       # drawings that aren't a symbol or emblem are charts and maps, not pictures of the subject
     if (nonfree or not _FREE.match(licence)) and not logo:
         return None
     artist = _plain((meta.get("Artist") or {}).get("value", ""))[:60] or "Wikimedia"
