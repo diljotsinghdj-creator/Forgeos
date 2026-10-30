@@ -12,9 +12,11 @@ The document (plain JSON) is the whole film:
         "steps": [ {"t": seconds | "+gap" (after the previous step), "who", "do", ...args} ]}]}
 
 Steps ("do"): walk, run, turn, jump, climb, sit, crawl, trip, pick_up, put_down, throw (to), catch, push, point,
-gesture (name), feel (emotion, dur), express (face, blend), look (at), say (text, offset, pace), line (dialogue
-through performance.perform), pose (keyed pose: {"keys": [[dt, {field: value}, ease]]}), and comedy beats
-(double_take, slow_burn, deadpan, pratfall, take, button).
+comfort (to), step_back, nod, posture, symbol, move (a prop: a car drives, a dog trots), gesture (name), feel
+(emotion, dur), express (face, blend), look (at), say (text, offset, pace), line (dialogue through
+performance.perform), pose (keyed pose: {"keys": [[dt, {field: value}, ease]]}), visual (a narration line staged
+by visual_reasoning, with its sources), caption, and comedy beats (double_take, slow_burn, deadpan, pratfall,
+take, button). A scene with "footage" (path, start, dur, credit) is real footage, framed and credited.
 
 Editing (`Editor`): every change is an operation - add/move/delete scenes, insert/update/delete steps, set a key
 pose, shift lip sync, set an expression, set camera keys or style, set a layer, replace an asset, change cast -
@@ -213,7 +215,12 @@ def stage_scene(scene: dict, state: worldstate.WorldState, fps: int = 30, qualit
             if "z" not in p and ("background" in uses or "stand_near" in uses) and "carry" not in uses:
                 p["z"] = 1.5                              # scenery stands in a lane behind the characters
         props.append(p)
-    actors, live = worldstate.seed(state, cast, props, world=w)
+    actors, live = worldstate.seed(state, cast, props, world=w, carry=not scene.get("cut", True))
+    sc.show = []
+    for p in props:                                   # documents and charts the camera must keep in the shot
+        if p.get("frame") and p["name"] in live:
+            pr = live[p["name"]]
+            sc.show.append((p["frame"][0], p["frame"][1], pr.x - pr.w / 2, pr.x + pr.w / 2, pr.y, pr.y + pr.h))
     profile = scene.get("timing", "explainer")
     for a in actors.values():
         a.timing = PROFILES.get(profile)
@@ -224,7 +231,7 @@ def stage_scene(scene: dict, state: worldstate.WorldState, fps: int = 30, qualit
     for st in scene.get("steps", []):
         st = dict(st)
         when = st.get("t", "+0.2")
-        t0 = t + float(when[1:]) if isinstance(when, str) and when.startswith("+") else float(when)
+        t0 = t + float(when) if isinstance(when, str) and when[:1] in "+-" else float(when)   # "+0.2" / "-1": relative
         a = actors.get(st.get("who", ""))
         do = st["do"]
         end = t0
@@ -261,6 +268,18 @@ def stage_scene(scene: dict, state: worldstate.WorldState, fps: int = 30, qualit
             dur = st.get("dur") or abs(st["to"] - x_now) / st.get("speed", 1.5)
             pr.move(t0, t0 + dur, st["to"], st.get("y", pr.pos(t0)[1]), 0.0, st.get("ease", "inout"))
             end = t0 + dur
+        elif do == "comfort":
+            end = M.comfort(a, t0, actors[st["to"]], st.get("dur", 2.0))
+        elif do == "step_back":
+            end = M.step_back(a, t0, st.get("dist", 0.35))
+        elif do == "nod":
+            end = a.nod(t0, st.get("dur", 0.7), st.get("kind", "yes"))
+        elif do == "posture":
+            a.posture(t0, t0 + st.get("dur", 2.0), st.get("lean", 0.0), st.get("crouch", 0.0))
+            end = t0 + st.get("dur", 2.0)
+        elif do == "symbol":
+            a.say_symbol(t0, t0 + st.get("dur", 1.0), st["text"])
+            end = t0 + st.get("dur", 1.0)
         elif do == "point":
             end = M.point_at(a, t0, tuple(st["at"]), st.get("dur", 1.6))
         elif do == "gesture":
@@ -282,13 +301,27 @@ def stage_scene(scene: dict, state: worldstate.WorldState, fps: int = 30, qualit
             end = a.act(t0, [(k[0], k[1], k[2] if len(k) > 2 else "inout") for k in st["keys"]], st.get("name", "pose"))
         elif do in ("double_take", "slow_burn"):
             fn = getattr(C, do)
-            target = actors.get(st.get("at")) or (0.0, 1.4)
+            target = actors.get(st.get("at")) or live.get(st.get("at")) or (0.0, 1.4)
             end = fn(a, t0, target, sc=sc) if do == "double_take" else fn(a, t0, target, st.get("dur", 3.0), sc=sc)
         elif do in ("deadpan", "pratfall", "take", "button"):
             end = getattr(C, do)(a, t0, sc=sc) if do != "take" else C.take(a, t0)
-        elif do == "caption":
-            notes.append((t0, t0 + st.get("dur", 4.0), st["text"]))
-            end = t0
+        elif do == "visual":                           # visual reasoning: how to show this line, honestly
+            from . import visual_reasoning as VR
+            plan = VR.reason(st["text"], st.get("sources"))
+            dur = st.get("dur", 6.0)
+            VR.stage(sc, plan, t0, t0 + dur, x=st.get("x", 3.2))
+            sc.visual_plans = getattr(sc, "visual_plans", []) + [plan]
+            if st.get("caption", True):
+                notes.append((t0, t0 + dur, st["text"]))
+            end = t0 + dur
+        elif do == "caption":                          # narration on screen; hold=True waits for it to be read
+            dur = st.get("dur") or max(2.6, 0.062 * len(st["text"]) + 1.0)
+            notes.append((t0, t0 + dur, st["text"]))
+            from . import visual_reasoning as VR      # narration is audited too: facts need sources
+            sc.visual_plans = getattr(sc, "visual_plans", []) + [VR.reason(st["text"], st.get("sources"))]
+            end = t0 + dur if st.get("hold") else t0
+        elif do == "wait":
+            end = t0 + st.get("dur", 1.0)
         if st.get("wait", True):
             t = max(t, end)
     seconds = scene.get("seconds") or t + 0.8
@@ -312,13 +345,27 @@ def _hash(*parts) -> str:
     return h.hexdigest()[:16]
 
 
+class _Footage:
+    """Stands in for a QC report on a real-footage scene (nothing animated to check)."""
+    defects: list = []
+
+    def __init__(self, seconds):
+        self.seconds = seconds
+
+    def summary(self) -> str:
+        return f"real footage ({self.seconds:.1f} s, not animated)"
+
+
 def plan_states(doc: dict, quality: str = "preview"):
     """Stages every scene in order and returns per scene: (start state, end state, seconds, qc report,
-    continuity issues with the previous scene, corrections)."""
-    from . import camera  # noqa: F401 - (keeps the import graph obvious)
+    continuity issues with the previous scene, corrections, incoming state)."""
     state = worldstate.WorldState()
     out = []
     for i, scene in enumerate(doc["scenes"]):
+        if scene.get("footage"):                       # a cut to real footage: the world state passes through
+            T = float(scene.get("dur") or _probe_seconds(scene["footage"]) - scene.get("start", 0.0))
+            out.append((state, state, T, _Footage(T), [], [], state))
+            continue
         sc, T, actors, live = stage_scene(scene, state, QUALITY[quality]["fps"], quality)
         R = qc.record(sc, T)
         rep = qc.inspect(R)
@@ -335,8 +382,46 @@ def plan_states(doc: dict, quality: str = "preview"):
     return out
 
 
+def _probe_seconds(path) -> float:
+    r = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(path)],
+                       capture_output=True, text=True, check=True)
+    return float(r.stdout.strip())
+
+
+def _esc(text: str) -> str:
+    return text.replace("\\", "\\\\").replace("'", "\u2019").replace(":", "\\:").replace("%", "\\%")
+
+
+def _render_footage(scene: dict, quality: str, out: str) -> str:
+    """Real footage framed for 16:9 (a blurred fill behind portrait material), credited on screen for its whole
+    length, at the production's size and frame rate, with its own sound or silence."""
+    from .props_draw import BOLD
+    Q = QUALITY[quality]
+    W, H = Q["width"], Q["height"]
+    start, dur = scene.get("start", 0.0), float(scene.get("dur") or _probe_seconds(scene["footage"]) - scene.get("start", 0.0))
+    fs = max(12, H // 36)
+    label, credit = _esc(scene.get("label", "REAL FOOTAGE")), _esc(scene.get("credit", ""))
+    vf = (f"[0:v]scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},boxblur=20:2,eq=brightness=-0.12[bg];"
+          f"[0:v]scale=-2:{H}[fg];[bg][fg]overlay=(W-w)/2:0,"
+          f"drawbox=x={W // 32}:y={H - H // 6}:w={W // 2}:h={H // 9}:color=black@0.62:t=fill,"
+          f"drawtext=fontfile={BOLD}:text='{label}':x={W // 32 + fs}:y={H - H // 6 + fs // 2}:fontsize={fs}:fontcolor=white,"
+          f"drawtext=fontfile={BOLD}:text='{credit}':x={W // 32 + fs}:y={H - H // 6 + int(fs * 1.9)}:fontsize={int(fs * 0.8)}:"
+          f"fontcolor=0xdddddd,fps={Q['fps']},format=yuv420p[v]")
+    has_audio = "audio" in subprocess.run(["ffprobe", "-v", "error", "-show_entries", "stream=codec_type", "-of", "csv=p=0",
+                                           scene["footage"]], capture_output=True, text=True).stdout
+    cmd = ["ffmpeg", "-v", "error", "-y", "-ss", str(start), "-t", f"{dur:.3f}", "-i", scene["footage"]]
+    if not has_audio:
+        cmd += ["-f", "lavfi", "-t", f"{dur:.3f}", "-i", "anullsrc=r=48000:cl=stereo"]
+    cmd += ["-filter_complex", vf, "-map", "[v]", "-map", "0:a" if has_audio else "1:a", "-c:v", "libx264", "-crf", "16",
+            "-preset", "medium", "-c:a", "aac", "-ar", "48000", "-ac", "2", "-shortest", out]
+    subprocess.run(cmd, check=True)
+    return out
+
+
 def _render_one(args):
     doc_scene, state_json, quality, out, fixes = args
+    if doc_scene.get("footage"):
+        return _render_footage(doc_scene, quality, out)
     from . import camera, sound
     state = worldstate.WorldState(**{**state_json, "entities": {k: worldstate.Entity(**v)
                                                                 for k, v in state_json["entities"].items()}})

@@ -24,6 +24,17 @@ def _paper(sc, tone=(246, 244, 238)):
     scene2d.studio(sc, paper=tone)
 
 
+def _wrap(d, text: str, font, width: float) -> list[str]:
+    words, lines = text.split(), [""]
+    for w in words:
+        trial = (lines[-1] + " " + w).strip()
+        if d.textlength(trial, font=font) <= width or not lines[-1]:
+            lines[-1] = trial
+        else:
+            lines.append(w)
+    return lines
+
+
 def _caption(label: str, notes: list[tuple] = ()):
     def draw(d, W, H, t):
         f = ImageFont.truetype(BOLD, int(H * 0.026))
@@ -34,11 +45,15 @@ def _caption(label: str, notes: list[tuple] = ()):
         for t0, t1, text in notes:
             if t0 <= t <= t1:
                 g = ImageFont.truetype(BOLD, int(H * 0.04))
-                w = d.textlength(text, font=g)
-                y = H * 0.87
-                d.rounded_rectangle([W / 2 - w / 2 - H * 0.02, y - H * 0.012, W / 2 + w / 2 + H * 0.02, y + H * 0.056],
-                                    radius=H * 0.012, fill=(10, 10, 14, 175))
-                d.text((W / 2 - w / 2, y), text, font=g, fill=(255, 255, 255))
+                lines = _wrap(d, text, g, W * 0.86)
+                lh = H * 0.052
+                y = H * 0.93 - lh * len(lines)
+                for k, ln in enumerate(lines):          # subtitle lines, at most two, centred
+                    w = d.textlength(ln, font=g)
+                    yy = y + k * lh
+                    d.rounded_rectangle([W / 2 - w / 2 - H * 0.02, yy - H * 0.008, W / 2 + w / 2 + H * 0.02,
+                                         yy + lh - H * 0.002], radius=H * 0.01, fill=(10, 10, 14, 175))
+                    d.text((W / 2 - w / 2, yy), ln, font=g, fill=(255, 255, 255))
     return draw
 
 

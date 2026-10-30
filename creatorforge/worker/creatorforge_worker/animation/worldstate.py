@@ -60,6 +60,18 @@ def _look(a: Actor) -> dict:
     return {"body": list(L.body) if L.body else None, "height": round(L.height, 3), "faceless": a.faceless}
 
 
+def _plain(data: dict) -> dict:
+    """The JSON-safe part of a prop's data (what it looks like), so it can be rebuilt in the next scene."""
+    out = {}
+    for k, v in data.items():
+        try:
+            json.dumps(v)
+        except (TypeError, ValueError):
+            continue
+        out[k] = v
+    return out
+
+
 def capture(actors: list, props: list, t: float, scene: str = "") -> WorldState:
     """The state of everything at time t (after the scene has been played up to t)."""
     ws = WorldState(scene, t)
@@ -76,13 +88,13 @@ def capture(actors: list, props: list, t: float, scene: str = "") -> WorldState:
         holder = next((c[2].look.name for c in p.carriers if c[0] <= t <= c[1] and hasattr(c[2], "look")), "")
         name = p.label or f"{p.kind}@{p.x:.1f}"
         ws.entities[name] = Entity(name, "prop", round(x, 3), round(y, 3), getattr(p, "z", 1.0), 1.0, "", [], holder,
-                                   "", {"kind": p.kind, "w": p.w, "h": p.h})
+                                   "", {"kind": p.kind, "w": p.w, "h": p.h, "color": list(p.color), "data": _plain(p.data)})
         if holder and holder in ws.entities:
             ws.entities[holder].holding.append(name)
     return ws
 
 
-def seed(state: WorldState, cast: list[dict], props: list[dict], world=None) -> tuple[dict, dict]:
+def seed(state: WorldState, cast: list[dict], props: list[dict], world=None, carry: bool = False) -> tuple[dict, dict]:
     """Characters and props for a new scene, continuing from `state`. cast: [{name, look, x?, facing?}];
     props: [{name, kind, x, y, w, h}]. A character who ended the last scene somewhere starts there (unless the
     spec moves them, which then counts as a cut), keeps facing that way, keeps holding what they held and starts
@@ -104,12 +116,19 @@ def seed(state: WorldState, cast: list[dict], props: list[dict], world=None) -> 
     for p in props:
         live[p["name"]] = Prop(p.get("kind", "crate"), p.get("x", 0.0), p.get("y", 0.0), p.get("w", 0.4),
                                p.get("h", 0.3), z=p.get("z", 1.0), label=p["name"], data=dict(p.get("data", {})))
+    if carry:                                          # a continuing shot: everything stays where it was left
+        for name, e in state.entities.items():
+            if e.kind == "prop" and name not in live and not (e.held_by and e.held_by in actors):
+                live[name] = Prop(e.look.get("kind", "crate"), e.x, e.y, e.look.get("w", 0.4), e.look.get("h", 0.3),
+                                  z=e.z, label=name, color=tuple(e.look.get("color", (240, 200, 80))),
+                                  data={k: v for k, v in e.look.get("data", {}).items() if k != "grip_dy"})
     for name, e in state.entities.items():             # things still in someone's hands come with them
         if e.kind != "prop" or not e.held_by or e.held_by not in actors:
             continue
         pr = live.get(name)
         if pr is None:
-            pr = Prop(e.look.get("kind", "crate"), e.x, e.y, e.look.get("w", 0.4), e.look.get("h", 0.3), label=name)
+            pr = Prop(e.look.get("kind", "crate"), e.x, e.y, e.look.get("w", 0.4), e.look.get("h", 0.3), z=e.z,
+                      label=name, color=tuple(e.look.get("color", (240, 200, 80))), data=dict(e.look.get("data", {})))
             live[name] = pr
         pr.carriers.append((0.0, 1e9, actors[e.held_by], "near"))
         pr.data.setdefault("grip_dy", -pr.h * 0.55)

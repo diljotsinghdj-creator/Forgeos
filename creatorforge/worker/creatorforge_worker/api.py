@@ -976,6 +976,90 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
         except (ProviderError, MediaError) as e:
             raise HTTPException(502, str(e)) from None
 
+    # ---- stickman animation studio: production documents, editor operations, renders, asset library ----
+    studio = None
+
+    def anim():
+        nonlocal studio
+        if studio is None:
+            from .animation.studio_service import AnimationStore
+            studio = AnimationStore(cfg.data_dir / "animation")
+        return studio
+
+    owner = [Depends(auth), Depends(admin_only)]
+
+    def anim_call(fn, *args):
+        try:
+            return fn(*args)
+        except KeyError:
+            raise HTTPException(404, "not found") from None
+        except ValueError as e:
+            raise HTTPException(422, str(e)) from None
+
+    @app.get("/v1/animation/docs", dependencies=owner)
+    def anim_list() -> list:
+        return anim().list()
+
+    @app.post("/v1/animation/docs", status_code=201, dependencies=owner)
+    async def anim_create(request: Request) -> dict:
+        return anim_call(anim().create, await request.json())
+
+    @app.get("/v1/animation/docs/{doc_id}", dependencies=owner)
+    def anim_get(doc_id: str) -> dict:
+        return anim_call(anim().get, doc_id)
+
+    @app.post("/v1/animation/docs/{doc_id}/ops", dependencies=owner)
+    async def anim_op(doc_id: str, request: Request) -> dict:
+        body = await request.json()
+        return anim_call(anim().apply, doc_id, str(body.get("op", "")), dict(body.get("args") or {}))
+
+    @app.post("/v1/animation/docs/{doc_id}/undo", dependencies=owner)
+    def anim_undo(doc_id: str) -> dict:
+        return anim_call(anim().undo, doc_id)
+
+    @app.post("/v1/animation/docs/{doc_id}/redo", dependencies=owner)
+    def anim_redo(doc_id: str) -> dict:
+        return anim_call(anim().redo, doc_id)
+
+    @app.get("/v1/animation/docs/{doc_id}/versions", dependencies=owner)
+    def anim_versions(doc_id: str) -> list:
+        return anim_call(anim().versions, doc_id)
+
+    @app.post("/v1/animation/docs/{doc_id}/versions", dependencies=owner)
+    async def anim_save_version(doc_id: str, request: Request) -> dict:
+        return anim_call(anim().save_version, doc_id, str((await request.json()).get("message", "")))
+
+    @app.post("/v1/animation/docs/{doc_id}/versions/{vid}/restore", dependencies=owner)
+    def anim_restore(doc_id: str, vid: str) -> dict:
+        return anim_call(anim().restore, doc_id, vid)
+
+    @app.post("/v1/animation/docs/{doc_id}/render", status_code=202, dependencies=owner)
+    def anim_render(doc_id: str, quality: str = "preview") -> dict:
+        return anim_call(anim().render, doc_id, quality)
+
+    @app.get("/v1/animation/docs/{doc_id}/render", dependencies=owner)
+    def anim_status(doc_id: str) -> dict:
+        return anim_call(anim().status, doc_id)
+
+    @app.get("/v1/animation/docs/{doc_id}/files/{name}", dependencies=owner)
+    def anim_file(doc_id: str, name: str):
+        return FileResponse(anim_call(anim().file, doc_id, name), media_type="video/mp4")
+
+    @app.get("/v1/animation/assets", dependencies=owner)
+    def anim_assets(kind: str | None = None, use: str | None = None) -> list:
+        return anim().asset_list(kind, use)
+
+    @app.post("/v1/animation/assets", status_code=201, dependencies=owner)
+    async def anim_asset_generate(request: Request) -> dict:
+        desc = str((await request.json()).get("description", "")).strip()
+        if not desc:
+            raise HTTPException(422, "describe the asset")
+        return anim_call(anim().asset_generate, desc)
+
+    @app.get("/v1/animation/assets/{aid}/thumbnail", dependencies=owner)
+    def anim_asset_thumb(aid: str):
+        return FileResponse(anim_call(anim().asset_thumbnail, aid), media_type="image/png")
+
     @app.api_route("/v1/video/jobs{rest:path}", methods=["GET", "POST", "DELETE"], dependencies=[Depends(auth)])
     def video_jobs(rest: str):
         return JSONResponse({"error": "AI video clip generation is not enabled on this worker yet"}, status_code=501)

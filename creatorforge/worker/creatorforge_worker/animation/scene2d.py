@@ -180,7 +180,11 @@ class Scene:
         if zoom != 1.0 or self.shake:
             amt = sum(a * (1 - (t - t0) / (t1 - t0)) for t0, t1, a in self.shake if t0 <= t <= t1) * ss
             jx, jy = (math.sin(t * 61) * amt, math.cos(t * 47) * amt) if amt else (0, 0)
+            if amt:                                   # shaking needs a margin: punch in just enough
+                zoom = max(zoom, 1.0 + 2.2 * amt / min(W, H))
             zw, zh = W / zoom, H / zoom
+            mx, my = (W - zw) / 2, (H - zh) / 2
+            jx, jy = max(-mx, min(mx, jx)), max(-my, min(my, jy))
             box = (W / 2 - zw / 2 + jx, H / 2 - zh / 2 + jy, W / 2 + zw / 2 + jx, H / 2 + zh / 2 + jy)
             img = img.resize((W, H), Image.LANCZOS, box=box)
         out = img.resize((self.width, self.height), Image.LANCZOS)

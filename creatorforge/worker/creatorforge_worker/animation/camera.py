@@ -40,7 +40,8 @@ def _activity(R, i, n, win):
 
 def direct(R, sc, style: str = "explainer", margin: float = 1.0, every: int = 2) -> list:
     """sc.focus (optional): [(t0, t1, [names])] - who the narration is about at each moment; they are always
-    framed (with whoever they are dealing with), however busy anyone else is."""
+    framed (with whoever they are dealing with), however busy anyone else is. sc.show (optional):
+    [(t0, t1, x0, x1, y0, y1)] - world boxes (a diagram, a document) that must be in the shot while shown."""
     S = STYLE.get(style, STYLE["explainer"])
     hints = getattr(sc, "focus", None) or []
     W_m, H_m = sc.width / sc.ppm, sc.height / sc.ppm
@@ -84,6 +85,11 @@ def direct(R, sc, style: str = "explainer", margin: float = 1.0, every: int = 2)
             if near and math.dist((x, y), prev[:2]) > 0.02:
                 xs.append(x)
                 ys.append(y + getattr(p, "h", 0.2))
+        for r0, r1, bx0, bx1, by0, by1 in getattr(sc, "show", []):   # a visual on screen: frame it with the cast
+            if r0 <= t <= r1:
+                xs += [bx0, bx1]
+                ys += [by0, by1]
+                feeling = False
         x0, x1 = min(xs), max(xs)
         y0, y1 = min(ys), max(ys)
         if feeling and len(focus) <= 2:                   # medium shot: hips up

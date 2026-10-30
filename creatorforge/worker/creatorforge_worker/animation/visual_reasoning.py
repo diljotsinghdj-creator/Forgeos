@@ -185,6 +185,8 @@ def stage(sc, plan: VisualPlan, t0: float, t1: float, x: float = 3.2, actors: di
             sc.tags = getattr(sc, "tags", []) + [(t0, t1, plan.label)]
     for p in added:
         sc.actors.insert(0, p)
+        if p.kind != "cloud":                          # the camera keeps the visual in the shot while it shows
+            sc.show = getattr(sc, "show", []) + [(t0 + 0.3, t1 - 0.3, p.x - p.w / 2, p.x + p.w / 2, p.y, p.y + p.h)]
     if plan.label and plan.mode in LABELS:
         sc.tags = getattr(sc, "tags", []) + [(t0, t1, plan.label)]
     return added
