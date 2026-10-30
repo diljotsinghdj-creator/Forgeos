@@ -422,21 +422,22 @@ def _render_one(args):
     doc_scene, state_json, quality, out, fixes = args
     if doc_scene.get("footage"):
         return _render_footage(doc_scene, quality, out)
-    from . import camera, sound
+    from . import sound
     state = worldstate.WorldState(**{**state_json, "entities": {k: worldstate.Entity(**v)
                                                                 for k, v in state_json["entities"].items()}})
-    sc, T, _, _ = stage_scene(doc_scene, state, QUALITY[quality]["fps"], quality)
-    qc.apply(sc, fixes)
-    if not sc.cams:
-        probe, _, _, _ = stage_scene(doc_scene, state, QUALITY[quality]["fps"], quality)
-        qc.apply(probe, fixes)
-        sc.cams = camera.direct(qc.record(probe, T), sc, style=sc.style)
-
     def build():
         s, T_, _, _ = stage_scene(doc_scene, state, QUALITY[quality]["fps"], quality)
         return s, T_
+    sc, T = build()
+    framing, passes = [], 0
+    if sc.cams:                                       # the editor set the camera by hand: keep it
+        qc.apply(sc, fixes)
+    else:                                             # directed, then checked: anyone's head (or a speaker's
+        sc, T, _, framing, passes, fixes = qc.refine(build, style=sc.style, tries=3)   # bubble) out of the safe
     wav = sound.soundtrack(build, fixes, sc, T, doc_scene.get("place", "studio"), Path(out).with_suffix(".wav"))
-    sc.render(Path(out), T, audio_wav=wav)
+    sc.render(Path(out), T, audio_wav=wav)            # area widens the shot and directs again
+    Path(out).with_suffix(".camera.json").write_text(json.dumps({"passes": passes, "framing": [
+        [d.kind, d.who, d.t0, d.t1] for d in framing]}))
     return out
 
 
@@ -465,6 +466,10 @@ def render(doc: dict, out: Path, quality: str = "preview", workers: int = 1, cac
         for j in jobs:
             _render_one(j)
     report["render_seconds"] = round(time.time() - t0, 1)
+    for s_, f in zip(report["scenes"], files):         # camera passes and any framing left after them
+        cj = f.with_suffix(".camera.json")
+        if cj.exists():
+            s_["camera"] = json.loads(cj.read_text())
     fps = QUALITY[quality]["fps"]
     frames = sum(int(round(st[2] * fps)) for st in states)        # what each scene render writes
     lst = cache / f"{out.stem}_list.txt"

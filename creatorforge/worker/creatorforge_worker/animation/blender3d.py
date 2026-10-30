@@ -1015,7 +1015,7 @@ def demo_g(out_dir: Path) -> Path:
         look = tuple(sum(k[2][j] for k in win) / len(win) for j in range(3))
         sm.append((keys[i][0], pos, look))
     camera(sm, lens=30, fstop=5.6)
-    return render(out_dir, "Benchmark_3D_multi_character", frames, res=(1280, 544), samples=8)
+    return render(out_dir, "Benchmark_3D_multi_character", frames, res=(960, 408), samples=4)
 
 
 if __name__ == "__main__":

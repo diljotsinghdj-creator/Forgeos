@@ -289,3 +289,28 @@ def test_scenes_carry_world_state_and_unchanged_scenes_are_not_rendered_twice(tm
     assert r["video"]["missing"] == 0 and not any(s["cached"] for s in r["scenes"])
     r = P.render(doc, tmp_path / "t.mp4", "preview")
     assert all(s["cached"] for s in r["scenes"]) and r["render_seconds"] < 1.0
+
+
+def test_a_ball_thrown_back_and_forth_never_snaps_back_into_an_old_hold():
+    from creatorforge_worker.animation import bench3d
+    actors, props, w, total, before, after, fixes = bench3d.checked(24)
+    assert before.clean, before.summary()            # three throws by one person, a bounce, a pick-up: no prop jumps
+    ball = props[0]
+    ash = [c for c in ball.carriers if c[2].look.name == "Ash"]
+    assert all(c1 - c0 < 6.0 for c0, c1, _, _ in ash)
+
+
+def test_an_unfamiliar_script_gets_its_cast_objects_and_places():
+    from creatorforge_worker.animation import benchmarks as B, storyboard
+    board = storyboard.plan(B.UNFAMILIAR, "The Pelican")
+    roles = {n: c.role for n, c in board.cast.items()}
+    assert roles == {"Tomas": "fisherman", "Pelican": "animal", "Girl": "girl"}
+    assert board.domain == "story" and all(b.environment == "outdoors" for b in board.beats)
+    verbs = [(a["who"], a["verb"], a["target"]) for b in board.beats for a in b.actions]
+    assert ("Pelican", "steal", "Tomas") in verbs and ("Tomas", "chase", "Pelican") in verbs
+    assert ("Pelican", "drop", "Girl") in verbs and ("Tomas", "give", "Girl") in verbs
+    sc, T = storyboard.stage(board)
+    how = {a["for"]: (a["kind"], a["how"]) for a in sc.asset_log}
+    assert how["cheeky pelican"][0] == "bird" and how["boat"][0] == "boat"
+    assert how["lighthouse"][1] == "placeholder"               # nothing in the library: labelled, not invented
+    assert qc.inspect(qc.record(sc, T)).clean

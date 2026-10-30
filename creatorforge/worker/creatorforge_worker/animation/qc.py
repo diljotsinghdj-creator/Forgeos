@@ -236,8 +236,11 @@ def framing(sc, R: Recording, focus: list | None = None, safe=(0.06, 0.1, 0.04))
             px, py = to_screen(sc, x, y + a.r_head, getattr(a, "z", 1.0), R.times[n])
             fx, fy = to_screen(sc, J["hip"][0], J["hip"][1], getattr(a, "z", 1.0), R.times[n])
             visible = -0.2 * sc.width < fx < 1.2 * sc.width
-            if visible and (py < top * sc.height or py > (1 - bottom) * sc.height or px < side * sc.width
-                            or px > (1 - side) * sc.width):
+            sd = side
+            if any(b0 <= R.times[n] <= b1 for b0, b1, _ in getattr(a, "bubbles", [])):
+                sd = max(side, 0.13)                   # a speaker's bubble needs room beside the head
+            if visible and (py < top * sc.height or py > (1 - bottom) * sc.height or px < sd * sc.width
+                            or px > (1 - sd) * sc.width):
                 out.append(("framing", a.look.name, R.times[n], 1.0))
     return _spans(out, 1 / R.fps)
 
