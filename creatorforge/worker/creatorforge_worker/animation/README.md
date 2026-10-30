@@ -13,6 +13,14 @@ Original characters, procedural motion and rendering, all free and offline.
 | Stick engine | `stick.py` | Keyframed acting on fixed-length bones (bones never stretch: tested). Per-foot and per-hand targets with IK; every keyed foot travels an explicit path that arcs over the floor, so feet never skate (planted-foot skid measured 0–1 mm per frame across all four demos). Flights are real gravity (−9.8 m/s²) with the push-off ending at exactly the take-off speed. Follow-through, spring-damped head and forearms, a floor that hands, head and feet can't pass through, faceless body language (sad, excited, angry, confused, embarrassed, laugh, confident…), walking with hands on an object, props carried, pushed, dragged and keyed, platforms to stand on. |
 | Moves | `motions.py` | jump (and onto/off ledges), climb (chest-high mantle, or jump-catch-hang-pull-up when the ledge is out of reach), trip + forward roll (curled, limbs turn with the body), knockback and get-up, pick up, put down, point, push, drag, kick, pain hop, tap. |
 | Props + sets | `props_draw.py`, `stick_demos.py` | Crates, folders, charts, flow diagrams, real photos (credited, highlightable), signs, statistic cards with sources; a parliament chamber and a documents wall. |
+| Terrain | `stick.World` | Platforms, ramps and staircases. Walking is paced by the ground (about 0.55 m/s on stairs, slower on steep slopes, with human braking and acceleration), one stair per step, footholds keep the whole foot on one tread with room for the toe, the swing rises before it moves over a riser, and the hips sink in time for a lower landing. |
+| Behaviour | `behaviour.py` | Personalities (timid, bold, cheerful, grumpy, calm, kind) and an Ensemble that turns every emotional beat into animated reactions by the others after their own delay: backing away, squaring up, walking over to comfort, laughing along, an eye-roll, turning to look. Idle characters look at whoever is active. Reactions never overwrite directed action. |
+| Timing | `timing.py` | Comedy, explainer, satire, drama and action profiles: tempo, anticipation, overshoot, exaggeration, end holds and reaction delay. Flights and push-offs keep their physical timing. |
+| Physics | `stick.Prop.launch` | Gravity flights from wherever the object really is (a hand at release, a shelf), bounces that lose energy, friction, rolling to rest; throw/catch aimed at another character's hands; put-down settles onto the surface. |
+| QC | `qc.py` | Records a staged scene and measures bone stretch, foot skid, floor penetration, teleports, limb snaps, jerk, frozen poses, bodies passing through each other, prop jumps and framing; checks the rendered file (frame count, freezes, black frames, flicker). `refine` = record -> inspect -> automatic corrections (depth dodge) -> re-inspect -> camera -> framing check. |
+| Camera | `camera.py` | Shot size from what's happening (wide with lead room for action, full figure, medium for emotional beats), heads in the safe area, a critically damped follow with dead zone and pan limit, cuts instead of whip pans. |
+| Script -> animation | `storyboard.py` | Any short script becomes structured beat plans (cast with roles and personalities, props, visual metaphors, ordered actions, emotion, camera, timing, narration window, transition) that can be read and edited as JSON, then staged and sent through the QC loop. |
+| Rendering | `scene2d.py` | Any frame rate, `resize()` for 4K, motion blur (sub-frame shutter), chunked renders that resume after an interruption with identical output. |
 | 3D | `blender3d.py` | Real 3D in Blender (`bpy`): one skinned mesh per character on an armature; IK legs and arms with pole targets; a face of 19 blend shapes (shape keys); stickman and cartoon styles; park environment; sun and fill lights with shadows; tracking camera with depth of field; EEVEE (default) or Cycles. Motion comes from the same planted-foot controller, and turns are real body rotations. |
 
 ## Demos
@@ -21,6 +29,9 @@ Original characters, procedural motion and rendering, all free and offline.
 python -m creatorforge_worker.animation.demos A|B|C out_dir      # 2D, 2.5D
 python -m creatorforge_worker.animation.script "A girl gets great news and dances." out.mp4 [--portrait]
 python -m creatorforge_worker.animation.stick_demos 1|2|3|4 out_dir   # stick engine demos
+python -m creatorforge_worker.animation.stress A|B|C|D|E out_dir      # stress tests: QC loop, camera, render, check
+python -m creatorforge_worker.animation.blender3d F out_dir           # stress test F: rigged 3D stickmen
+python -m creatorforge_worker.animation.storyboard "Any short script."  # print the structured plan
 python -m creatorforge_worker.animation.blender3d D|E|5 out_dir  # needs: pip install bpy (Blender as a module)
 ```
 
@@ -32,6 +43,17 @@ For 3D without a display, Blender needs EGL (`apt-get install libegl1 libgl1 lib
 `EGL_PLATFORM=surfaceless`. `CF_3D_ENGINE=cycles` switches to path tracing. `CF_PREVIEW=1` renders 5 low-res stills.
 
 ## Not done yet (honest list)
+
+- The QC numbers are measured on the staged motion; how good a scene *looks* (acting, staging, appeal) is a
+  judgement from watching the frames, and the QC cannot score it.
+- When a 2D character turns round, the drawing mirrors instantly, so an object held in the hand swaps sides in one
+  frame. Scenes turn before picking things up.
+- A depth dodge (one character stepping toward the camera to pass another) draws them about 7% larger for that
+  moment; a hand reaching an object at the back depth can look a little off.
+- One fast limb snap remains in the forward roll (the hands leaving the floor), about 1.4 rad in a frame.
+- The script director is rule-based: it understands common verbs, roles, emotions and a handful of concepts (prices,
+  equal fall, marches, votes). Abstract ideas without a physical action become a gesture and a caption.
+- Faces exist for 2D characters with `faceless=False`; real people are always drawn faceless and labelled.
 
 - 3D characters are built from primitives (capsules and spheres), not sculpted models. They are clean and
   consistent, but not feature-film detailed. Hands have no fingers.
