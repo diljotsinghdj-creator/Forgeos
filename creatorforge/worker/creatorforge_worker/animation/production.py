@@ -202,7 +202,24 @@ def stage_scene(scene: dict, state: worldstate.WorldState, fps: int = 30, qualit
     if anchor is None:
         anchor = next((state.entities[c["name"]].x for c in scene.get("cast", []) if c["name"] in state.entities
                        and state.entities[c["name"]].kind == "actor"), 0.0)
-    for c in scene.get("cast", []):
+    crowds = {}
+    expanded = []
+    for c in scene.get("cast", []):                   # a crowd: several varied people who act together
+        if c.get("crowd"):
+            names = []
+            for k in range(int(c["crowd"])):
+                nm = f"{c['name']}{k + 1}"
+                names.append(nm)
+                body = c.get("body") or [[90, 110, 150], [150, 90, 90], [90, 140, 100], [140, 120, 80], [110, 90, 150]][k % 5]
+                expanded.append({"name": nm, "body": [max(0, min(255, v + (k * 23) % 40 - 20)) for v in body],
+                                 "height": 1.6 + ((k * 37) % 25) / 100, "faceless": True,
+                                 "x": c.get("x", 0.0) + (k - (c["crowd"] - 1) / 2) * c.get("spacing", 0.75),
+                                 "facing": c.get("facing", 1), "personality": "cheerful",
+                                 "z": 1.0 + 0.25 * (k % 3)})
+            crowds[c["name"]] = names
+        else:
+            expanded.append(c)
+    for c in expanded:
         if c.get("x") == "offstage":                  # someone who walks in later: waits out of shot
             c = {**c, "x": anchor + 6.5, "facing": -1}
         look = rig2d.Look(name=c["name"], body=tuple(c["body"]) if c.get("body") else None, line=1.0,
@@ -225,6 +242,16 @@ def stage_scene(scene: dict, state: worldstate.WorldState, fps: int = 30, qualit
                 p["z"] = 1.5                              # scenery stands in a lane behind the characters
         props.append(p)
     actors, live = worldstate.seed(state, cast, props, world=w, carry=not scene.get("cut", True))
+    for c in expanded:                                # crowd members stand in depth lanes
+        if c.get("z", 1.0) != 1.0 and c["name"] in actors:
+            actors[c["name"]].z = c["z"]
+    if layers.get("backdrop"):                        # stepping into a real photograph (documents and places -
+                                                      # never walk a cartoon over real people's faces)
+        sc.layers = []
+        sc.backdrop = dict(layers["backdrop"])
+    for k in ("light", "lights", "weather", "wind"):  # time of day, lamps, weather
+        if layers.get(k) is not None:
+            setattr(sc, k, [tuple(x) for x in layers[k]] if isinstance(layers[k], list) else layers[k])
     sc.show = []
     for p in props:                                   # documents and charts the camera must keep in the shot
         if p.get("frame") and p["name"] in live:
@@ -264,7 +291,18 @@ def stage_scene(scene: dict, state: worldstate.WorldState, fps: int = 30, qualit
     t = 0.0
     notes = []
     sc.voiced = {}                                    # caption start -> spoken seconds (for the subtitle check)
-    for st in scene.get("steps", []):
+    steps = []
+    for st in scene.get("steps", []):                 # a step for a crowd: each member, slightly staggered
+        if st.get("who") in crowds:
+            for k, nm in enumerate(crowds[st["who"]]):
+                extra = {"t": st.get("t", "+0.2")} if k == 0 else {"t": f"+{0.07 + 0.05 * (k % 3):.2f}", "wait": False}
+                if k == 0:
+                    extra["wait"] = False
+                steps.append({**st, **extra, "who": nm})
+            steps.append({"t": "+0.0", "do": "wait", "dur": 0.0})
+        else:
+            steps.append(st)
+    for st in steps:
         st = dict(st)
         when = st.get("t", "+0.2")
         t0 = t + float(when) if isinstance(when, str) and when[:1] in "+-" else float(when)   # "+0.2" / "-1": relative
@@ -546,6 +584,25 @@ def _render_footage(scene: dict, quality: str, out: str) -> str:
     return out
 
 
+def _push_into(sc, name: str, T: float, dur: float):
+    """Ends the shot by pushing the camera into a prop until it fills the frame - the next scene (that document's
+    world, that photo, the footage) dissolves in from there."""
+    from .scene2d import CamKey
+    p = next((a for a in sc.actors if getattr(a, "name", None) == name or getattr(a, "label", None) == name), None)
+    if p is None:
+        return
+    W_m, H_m = sc.width / sc.ppm, sc.height / sc.ppm
+    x, y, _ = p.pos(T - dur)
+    yc = y + p.h / 2
+    zoom = 0.96 * min(W_m / p.w, H_m / p.h)
+    ground_y = (sc.ground - 0.5) * H_m
+    t0 = T - dur
+    cx, cy, z = sc.camera(t0)
+    sc.cams = [k for k in sorted(sc.cams, key=lambda k: k.t) if k.t < t0] + [
+        CamKey(t0, cx, cy, z, ease="linear"), CamKey(T - 0.6, x, yc - ground_y, zoom, ease="smooth"),
+        CamKey(T, x, yc - ground_y, zoom * 1.04, ease="linear")]     # full before the dissolve starts
+
+
 def _render_one(args):
     doc_scene, state_json, quality, out, fixes = args
     if doc_scene.get("footage"):
@@ -562,6 +619,8 @@ def _render_one(args):
         qc.apply(sc, fixes)
     else:                                             # directed, then checked: anyone's head (or a speaker's
         sc, T, _, framing, passes, fixes = qc.refine(build, style=sc.style, tries=3)   # bubble) out of the safe
+    if doc_scene.get("outro", {}).get("push_into"):   # the camera dives into a document / photo / screen
+        _push_into(sc, doc_scene["outro"]["push_into"], T, doc_scene["outro"].get("dur", 1.4))
     wav = sound.soundtrack(build, fixes, sc, T, doc_scene.get("place", "studio"), Path(out).with_suffix(".wav"))
     if getattr(sc, "narration", None):
         wav = _mix_narration(wav, sc.narration, Path(out).with_suffix(".voice.wav"))
@@ -604,10 +663,14 @@ def render(doc: dict, out: Path, quality: str = "preview", workers: int = 1, cac
     frames = sum(int(round(st[2] * fps)) for st in states)        # what each scene render writes
     lst = cache / f"{out.stem}_list.txt"
     lst.write_text("".join(f"file '{f.resolve()}'\n" for f in files))
-    subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(lst), "-c:v", "libx264",
-                    "-preset", "medium", "-crf", "16" if quality == "final" else "22", "-pix_fmt", "yuv420p",
-                    "-c:a", "aac", "-b:a", "192k", "-t", f"{(frames - 0.5) / fps:.6f}", "-movflags", "+faststart",
-                    str(out)], check=True)
+    trans = [s_.get("transition") for s_ in doc["scenes"]]
+    if any(trans[1:]):                                # dissolves / fades between chosen scenes
+        frames = _join_with_transitions(files, [st[2] for st in states], trans, out, quality, fps)
+    else:
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(lst), "-c:v",
+                        "libx264", "-preset", "medium", "-crf", "16" if quality == "final" else "22", "-pix_fmt",
+                        "yuv420p", "-c:a", "aac", "-b:a", "192k", "-t", f"{(frames - 0.5) / fps:.6f}", "-movflags",
+                        "+faststart", str(out)], check=True)
     android = out.with_name(out.stem + "_android.mp4")
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(out), "-c:v", "libx264", "-profile:v", "main", "-level",
                     "4.0", "-crf", "21", "-pix_fmt", "yuv420p", "-c:a", "aac", "-ar", "48000", "-movflags", "+faststart",
@@ -629,6 +692,35 @@ def render(doc: dict, out: Path, quality: str = "preview", workers: int = 1, cac
                            "max_cps": max([x["cps"] for x in subs] or [0])}
     report["files"] = {"master": str(out), "android": str(android)}
     return report
+
+
+XFADE = {"dissolve": "fade", "fade": "fadeblack", "wipe": "wipeleft", "zoom": "zoomin", "circle": "circleopen"}
+
+
+def _join_with_transitions(files, seconds, trans, out: Path, quality: str, fps: int) -> int:
+    """Joins scene files with the transitions the document asks for (xfade/acrossfade); a scene without one cuts.
+    Each transition overlaps the two scenes by its length. Returns the frame count written."""
+    ins, fc, prev_v, prev_a, total = [], [], "0:v", "0:a", seconds[0]
+    for f in files:
+        ins += ["-i", str(f)]
+    for k in range(1, len(files)):
+        tr = trans[k] or {}
+        d = float(tr.get("dur", 0.6)) if tr else 1.0 / fps
+        kind = XFADE.get(tr.get("kind", "dissolve"), "fade") if tr else "fade"
+        off = total - d
+        fc.append(f"[{prev_v}][{k}:v]xfade=transition={kind}:duration={d:.4f}:offset={off:.4f}[v{k}]")
+        fc.append(f"[{prev_a}][{k}:a]acrossfade=d={d:.4f}[a{k}]")
+        prev_v, prev_a = f"v{k}", f"a{k}"
+        total = total + seconds[k] - d
+    n = len(files) - 1
+    frames = int(round(total * fps))
+    fc.append(f"[v{n}]tpad=stop_mode=clone:stop=3[vo]")          # exact length: hold the last frame / pad the
+    fc.append(f"[a{n}]apad[ao]")                                  # audio, then trim both to the frame count
+    subprocess.run(["ffmpeg", "-v", "error", "-y", *ins, "-filter_complex", ";".join(fc), "-map", "[vo]", "-map",
+                    "[ao]", "-t", f"{(frames - 0.5) / fps:.6f}", "-c:v", "libx264", "-preset", "medium", "-crf", "16" if quality == "final" else "22",
+                    "-pix_fmt", "yuv420p", "-r", str(fps), "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart",
+                    str(out)], check=True)
+    return frames
 
 
 def _code_version() -> str:

@@ -314,3 +314,27 @@ def test_an_unfamiliar_script_gets_its_cast_objects_and_places():
     assert how["cheeky pelican"][0] == "bird" and how["boat"][0] == "boat"
     assert how["lighthouse"][1] == "placeholder"               # nothing in the library: labelled, not invented
     assert qc.inspect(qc.record(sc, T)).clean
+
+
+def test_world_effects_crowds_and_transitions_render_to_exact_length(tmp_path):
+    from creatorforge_worker.animation import production as P
+    from creatorforge_worker.animation.benchmarks import REAL
+    doc = {"title": "t", "scenes": [
+        {"id": "a", "cast": [{"name": "Ana", "x": -2.0}, {"name": "Crowd", "crowd": 3, "x": 2.0, "facing": -1}],
+         "props": [{"name": "lamp", "asset": "lamp", "x": 0.5}, {"name": "doc", "kind": "photo", "x": 1.0, "y": 0.4,
+                                                                "w": 2.0, "h": 1.4,
+                                                                "data": {"image": str(REAL / "voters_lists.png")}}],
+         "layers": {"light": [[0, "dusk"], [1.5, "night"]], "weather": [[0.5, 4.0, "rain", 1.0]], "wind": 0.4},
+         "outro": {"push_into": "doc", "dur": 1.2},
+         "steps": [{"t": 0.2, "who": "Crowd", "do": "gesture", "name": "cover_face", "dur": 1.0},
+                   {"t": "+0.1", "do": "caption", "text": "Rain at night.", "hold": True,
+                    "voice": {"say": "Rain at night.", "lang": "en"}}]},
+        {"id": "b", "transition": {"kind": "dissolve", "dur": 0.5}, "cast": [{"name": "Ana", "x": -1.0}],
+         "layers": {"backdrop": {"image": str(REAL / "voters_lists.png"), "credit": "Real photo"}},
+         "steps": [{"t": 0.2, "who": "Ana", "do": "walk", "to": 0.5}], "seconds": 3.0}]}
+    st = P.plan_states(doc)
+    sc, T, actors, live = P.stage_scene(doc["scenes"][0], st[0][6])
+    assert sum(1 for n in actors if n.startswith("Crowd")) == 3 and sc.narration and sc.weather
+    r = P.render(doc, tmp_path / "w.mp4", "preview")
+    assert r["video"]["missing"] == 0 and r["delivery"]["sync_ok"] and r["delivery"]["aspect_ok"]
+    assert r["subtitles"]["count"] == 1 and not r["subtitles"]["issues"]

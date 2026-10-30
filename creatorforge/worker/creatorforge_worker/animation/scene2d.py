@@ -133,6 +133,8 @@ class Scene:
         W, H, ss = self.width * self.ss, self.height * self.ss, self.ss
         cx, cy, zoom = self.camera(t)
         img = self._sky()
+        if getattr(self, "backdrop", None):           # a real photograph as the world the characters walk in
+            img = _backdrop(img, self.backdrop, t)
         for L in sorted(self.layers, key=lambda q: -q.z):
             strip = self._strip(L)
             scale = self.ppm * ss / L.z
@@ -177,6 +179,8 @@ class Scene:
             off = int((cx - L.span[0]) * scale - W / 2)
             part = strip.crop((off, 0, off + W, H))
             img.paste(part, (0, int(cy * scale)), part)
+        if getattr(self, "light", None) or getattr(self, "weather", None):
+            img = _world_fx(img, self, t, to_screen_z, W, H)
         if zoom != 1.0 or self.shake:
             amt = sum(a * (1 - (t - t0) / (t1 - t0)) for t0, t1, a in self.shake if t0 <= t <= t1) * ss
             jx, jy = (math.sin(t * 61) * amt, math.cos(t * 47) * amt) if amt else (0, 0)
@@ -189,6 +193,8 @@ class Scene:
             img = img.resize((W, H), Image.LANCZOS, box=box)
         out = img.resize((self.width, self.height), Image.LANCZOS)
         out = _atmosphere(out, getattr(self, "moods", []), t)
+        if getattr(self, "backdrop", None) and self.backdrop.get("credit"):
+            _credit(out, self.backdrop["credit"])
         if getattr(self, "tags", None):
             _tags(out, self.tags, t)
         if self.overlay:
@@ -269,6 +275,123 @@ class Scene:
                             "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "160k", "-ar", "48000",
                             "-movflags", "+faststart", str(android)], check=True)
         return out
+
+
+def _backdrop(img, bd, t):
+    """The photo fills the frame (cover), drifting in slowly (zoom from bd['zoom'][0] to [1] over bd['dur'])."""
+    from .props_draw import _image
+    W, H = img.size
+    pic = _image(bd["image"])
+    z0, z1 = bd.get("zoom", (1.0, 1.08))
+    z = z0 + (z1 - z0) * min(1.0, t / max(0.1, bd.get("dur", 10.0)))
+    s_ = max(W / pic.width, H / pic.height) * z
+    w, h = int(pic.width * s_), int(pic.height * s_)
+    fx, fy = bd.get("focus", (0.5, 0.4))
+    x0 = int(min(max(0, w * fx - W / 2), w - W))
+    y0 = int(min(max(0, h * fy - H / 2), h - H))
+    big = pic.resize((w, h), Image.LANCZOS)
+    img.paste(big.crop((x0, y0, x0 + W, y0 + H)), (0, 0))
+    if bd.get("dim"):
+        img = Image.blend(img, Image.new("RGB", img.size, (20, 20, 26)), bd["dim"])
+    return img
+
+
+def _credit(img, text):
+    from PIL import ImageFont
+    d = ImageDraw.Draw(img, "RGBA")
+    W, H = img.size
+    f = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", int(H * 0.024))
+    w = d.textlength(text, font=f)
+    d.rounded_rectangle([W * 0.02, H * 0.12, W * 0.02 + w + H * 0.03, H * 0.12 + H * 0.045], radius=H * 0.008,
+                        fill=(10, 10, 14, 170))
+    d.text((W * 0.02 + H * 0.015, H * 0.127), text, font=f, fill=(255, 255, 255))
+
+
+GRADES = {"day": (1.0, 1.0, 1.0), "dawn": (1.04, 0.9, 0.8), "dusk": (1.0, 0.76, 0.6), "night": (0.34, 0.42, 0.68),
+          "storm": (0.62, 0.66, 0.74)}
+
+
+def _grade(keys, t):
+    """Time-of-day colour at t from [(t, kind)], blended over 1.5 s; returns (rgb multipliers, darkness 0..1)."""
+    keys = sorted(keys)
+    cur = GRADES[keys[0][1]]
+    for k, (tk, kind) in enumerate(keys):
+        if t >= tk:
+            prev = GRADES[keys[k - 1][1]] if k else GRADES[kind]
+            u = min(1.0, (t - tk) / 1.5)
+            cur = tuple(p + (c - p) * u for p, c in zip(prev, GRADES[kind]))
+    dark = max(0.0, 1.0 - sum(cur) / 3)
+    return cur, dark
+
+
+def _world_fx(img, sc, t, to_screen_z, W, H):
+    """Light and weather over the world (under the captions): the time of day grades the picture, lamps (any
+    library asset with a 'light' part, or sc.lights) glow as it gets dark, rain/snow fall at the wind's slant,
+    a storm flashes lightning. Particles are seeded per index, so a frame always looks the same (resumable)."""
+    a = np.asarray(img.convert("RGB"), dtype=np.float32)
+    dark = 0.0
+    if getattr(sc, "light", None):
+        g, dark = _grade(sc.light, t)
+        a *= np.array(g, dtype=np.float32)
+    if dark > 0.12:                                   # light sources
+        lights = list(getattr(sc, "lights", []))
+        for p in sc.actors:
+            if getattr(p, "kind", "") == "shape":
+                for part in p.data.get("parts", []):
+                    if part.get("id") == "light" and part.get("shape") == "circle":
+                        x, y, _ = p.pos(t)
+                        lights.append((x + part["c"][0], y + part["c"][1], 2.6, (255, 214, 140), getattr(p, "z", 1.0)))
+        if lights:
+            yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
+            add = np.zeros_like(a)
+            for x, y, r, col, z in lights:
+                S, scale = to_screen_z(z)
+                sx, sy = S(x, y)
+                rad = r * scale
+                if sx < -rad or sx > W + rad:
+                    continue
+                f = np.clip(1.0 - np.sqrt((xx - sx) ** 2 + (yy - sy) ** 2) / rad, 0, 1) ** 2
+                add += f[..., None] * np.array(col, dtype=np.float32) * 0.55 * min(1.0, dark * 1.6)
+            a = a + add * (1.2 - a / 255.0)
+    img = Image.fromarray(np.clip(a, 0, 255).astype(np.uint8))
+    d = ImageDraw.Draw(img, "RGBA")
+    for t0, t1, kind, k in getattr(sc, "weather", []):
+        if not t0 <= t <= t1:
+            continue
+        w = min(1.0, (t - t0) / 1.0, (t1 - t) / 1.0) * k
+        wind = getattr(sc, "wind", 0.0)
+        if kind in ("rain", "storm"):
+            n = int(260 * w * (W / 1920))
+            for i in range(n):
+                h = (i * 2654435761) % 4294967296 / 4294967296.0
+                h2 = (i * 40503 + 17) % 9973 / 9973.0
+                x0 = h * W * 1.2 - W * 0.1
+                y0 = (h2 * H + t * H * 1.6) % (H * 1.1) - H * 0.05
+                L = H * 0.035
+                d.line([(x0, y0), (x0 + (wind + 0.12) * L, y0 + L)], fill=(205, 215, 235, int(150 * w)),
+                       width=max(1, W // 960))
+            if kind == "storm":                       # lightning: two quick flashes now and then
+                ph = (t * 0.23) % 1.0
+                if ph < 0.012 or 0.03 < ph < 0.04:
+                    img = Image.blend(img, Image.new("RGB", img.size, (245, 248, 255)), 0.55 * w)
+                    d = ImageDraw.Draw(img, "RGBA")
+        elif kind == "snow":
+            for i in range(int(160 * w * (W / 1920))):
+                h = (i * 2654435761) % 4294967296 / 4294967296.0
+                h2 = (i * 40503 + 17) % 9973 / 9973.0
+                x0 = (h * W + math.sin(t * 0.8 + i) * W * 0.01 + wind * t * W * 0.05) % W
+                y0 = (h2 * H + t * H * 0.12) % H
+                r = max(1.5, W / 640) * (0.6 + h2)
+                d.ellipse([x0 - r, y0 - r, x0 + r, y0 + r], fill=(255, 255, 255, int(220 * w)))
+        elif kind == "wind":                          # blown dust and leaves
+            for i in range(int(40 * w * (W / 1920))):
+                h = (i * 2654435761) % 4294967296 / 4294967296.0
+                h2 = (i * 40503 + 17) % 9973 / 9973.0
+                x0 = (h * W + t * W * 0.5 * (0.6 + h2)) % (W * 1.1) - W * 0.05
+                y0 = H * (0.25 + 0.6 * h2) + math.sin(t * 3 + i) * H * 0.02
+                d.line([(x0, y0), (x0 + W * 0.02, y0 + H * 0.004)], fill=(150, 130, 90, int(140 * w)),
+                       width=max(1, W // 640))
+    return img
 
 
 def _atmosphere(img, moods, t):
