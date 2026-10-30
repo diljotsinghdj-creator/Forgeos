@@ -472,6 +472,11 @@ class _Stuff:
         a = self._asset(phrase, head, small, big)
         furniture = bool(set(a.get("uses", [])) & {"sit", "stand_on", "put_on"})
         z = 1.0 if small or kind in VEHICLES or furniture else 1.6      # furniture stands where people can use it
+        if small and y == 0.0:                         # small things sit on nearby furniture, not on the floor
+            top = [t_ for t_ in self.things.values() if t_.z <= 1.05 and abs(t_.pos(0.0)[0] - x) < 1.6 and
+                   t_.name in ("table", "desk", "counter", "bench", "shelf")]
+            if top:
+                x, y = top[0].pos(0.0)[0] + top[0].w * 0.25, top[0].h
         p = self._prop(a, x, y, z, head)
         p.data["kind"] = kind or ""
         self.things[head] = p
