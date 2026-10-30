@@ -465,17 +465,19 @@ def render(doc: dict, out: Path, quality: str = "preview", workers: int = 1, cac
         for j in jobs:
             _render_one(j)
     report["render_seconds"] = round(time.time() - t0, 1)
+    fps = QUALITY[quality]["fps"]
+    frames = sum(int(round(st[2] * fps)) for st in states)        # what each scene render writes
     lst = cache / f"{out.stem}_list.txt"
     lst.write_text("".join(f"file '{f.resolve()}'\n" for f in files))
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(lst), "-c:v", "libx264",
                     "-preset", "medium", "-crf", "16" if quality == "final" else "22", "-pix_fmt", "yuv420p",
-                    "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", str(out)], check=True)
+                    "-c:a", "aac", "-b:a", "192k", "-t", f"{(frames - 0.5) / fps:.6f}", "-movflags", "+faststart",
+                    str(out)], check=True)
     android = out.with_name(out.stem + "_android.mp4")
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(out), "-c:v", "libx264", "-profile:v", "main", "-level",
                     "4.0", "-crf", "21", "-pix_fmt", "yuv420p", "-c:a", "aac", "-ar", "48000", "-movflags", "+faststart",
                     str(android)], check=True)
-    total = sum(s["seconds"] for s in report["scenes"])
-    report["video"] = qc.check_video(out, total, QUALITY[quality]["fps"])
+    report["video"] = qc.check_video(out, frames / fps, fps)
     report["files"] = {"master": str(out), "android": str(android)}
     return report
 

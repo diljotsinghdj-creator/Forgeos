@@ -344,10 +344,13 @@ def draw(p, d, S, scale, t):
         x_0 = p.pos(0.0)[0]
         speed = (p.pos(t + 0.04)[0] - p.pos(max(0.0, t - 0.04))[0]) / 0.08
         flip = p.data.get("flip", 1.0)
+        for ft, fv in p.data.get("flips", []):        # an animal turns to face where it goes
+            if ft <= t:
+                flip = fv
         parts = asset_lib.posed({"parts": p.data["parts"]}, t, x - x_0, speed, flip)
         asset_lib.draw_parts(d, parts, S, scale, x, y)
         if p.data.get("text"):
-            board = next((q for q in parts if q["id"] == "board"), None)
+            board = next((q for q in parts if q["id"] in ("board", "box")), None)
             if board:
                 bx0, by0, bx1, by1 = asset_lib.bbox(board)
                 (sx0, sy0), (sx1, sy1) = S(x + bx0, y + by1), S(x + bx1, y + by0)

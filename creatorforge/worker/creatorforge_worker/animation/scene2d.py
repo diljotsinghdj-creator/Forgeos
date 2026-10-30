@@ -258,8 +258,9 @@ class Scene:
         lst = parts / "list.txt"
         lst.write_text("".join(f"file '{f.name}'\n" for f in files))
         cmd = ["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(lst)]
-        if audio_wav:
-            cmd += ["-i", str(audio_wav), "-c:a", "aac", "-b:a", "256k", "-shortest"]
+        if audio_wav:                                 # exact length: -shortest drops the last frames with -c:v copy
+            cmd += ["-i", str(audio_wav), "-map", "0:v", "-map", "1:a", "-af", "apad", "-c:a", "aac", "-b:a", "256k",
+                    "-t", f"{(n - 0.5) / self.fps:.6f}"]
         subprocess.run(cmd + ["-c:v", "copy", "-movflags", "+faststart", str(out)], check=True)
         if android:
             subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(out), "-c:v", "libx264", "-profile:v", "main",

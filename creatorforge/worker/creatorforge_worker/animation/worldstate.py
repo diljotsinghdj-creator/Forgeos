@@ -60,6 +60,17 @@ def _look(a: Actor) -> dict:
     return {"body": list(L.body) if L.body else None, "height": round(L.height, 3), "faceless": a.faceless}
 
 
+def _colours(v):
+    """JSON gives colours as lists; drawing needs tuples. [r, g, b] (and [r, g, b, a]) of ints become tuples."""
+    if isinstance(v, list):
+        if 3 <= len(v) <= 4 and all(isinstance(c, int) and not isinstance(c, bool) and 0 <= c <= 255 for c in v):
+            return tuple(v)
+        return [_colours(x) for x in v]
+    if isinstance(v, dict):
+        return {k: _colours(x) for k, x in v.items()}
+    return v
+
+
 def _plain(data: dict) -> dict:
     """The JSON-safe part of a prop's data (what it looks like), so it can be rebuilt in the next scene."""
     out = {}
@@ -86,9 +97,10 @@ def capture(actors: list, props: list, t: float, scene: str = "") -> WorldState:
     for p in props:
         x, y, ang = p.pos(t)
         holder = next((c[2].look.name for c in p.carriers if c[0] <= t <= c[1] and hasattr(c[2], "look")), "")
-        name = p.label or f"{p.kind}@{p.x:.1f}"
+        name = getattr(p, "name", None) or p.label or f"{p.kind}@{p.x:.1f}"
         ws.entities[name] = Entity(name, "prop", round(x, 3), round(y, 3), getattr(p, "z", 1.0), 1.0, "", [], holder,
-                                   "", {"kind": p.kind, "w": p.w, "h": p.h, "color": list(p.color), "data": _plain(p.data)})
+                                   "", {"kind": p.kind, "w": p.w, "h": p.h, "color": list(p.color), "label": p.label,
+                                    "data": _plain(p.data)})
         if holder and holder in ws.entities:
             ws.entities[holder].holding.append(name)
     return ws
@@ -115,20 +127,25 @@ def seed(state: WorldState, cast: list[dict], props: list[dict], world=None, car
         actors[c["name"]] = a
     for p in props:
         live[p["name"]] = Prop(p.get("kind", "crate"), p.get("x", 0.0), p.get("y", 0.0), p.get("w", 0.4),
-                               p.get("h", 0.3), z=p.get("z", 1.0), label=p["name"], data=dict(p.get("data", {})))
+                               p.get("h", 0.3), z=p.get("z", 1.0), label=p.get("label", p["name"]),
+                               color=tuple(p.get("color", (240, 200, 80))), data=_colours(dict(p.get("data", {}))))
+        live[p["name"]].name = p["name"]                # identity across scenes (the label is what is drawn)
     if carry:                                          # a continuing shot: everything stays where it was left
         for name, e in state.entities.items():
             if e.kind == "prop" and name not in live and not (e.held_by and e.held_by in actors):
                 live[name] = Prop(e.look.get("kind", "crate"), e.x, e.y, e.look.get("w", 0.4), e.look.get("h", 0.3),
-                                  z=e.z, label=name, color=tuple(e.look.get("color", (240, 200, 80))),
-                                  data={k: v for k, v in e.look.get("data", {}).items() if k != "grip_dy"})
+                                  z=e.z, label=e.look.get("label", name), color=tuple(e.look.get("color", (240, 200, 80))),
+                                  data=_colours({k: v for k, v in e.look.get("data", {}).items() if k != "grip_dy"}))
+                live[name].name = name
     for name, e in state.entities.items():             # things still in someone's hands come with them
         if e.kind != "prop" or not e.held_by or e.held_by not in actors:
             continue
         pr = live.get(name)
         if pr is None:
             pr = Prop(e.look.get("kind", "crate"), e.x, e.y, e.look.get("w", 0.4), e.look.get("h", 0.3), z=e.z,
-                      label=name, color=tuple(e.look.get("color", (240, 200, 80))), data=dict(e.look.get("data", {})))
+                      label=e.look.get("label", name), color=tuple(e.look.get("color", (240, 200, 80))),
+                      data=_colours(dict(e.look.get("data", {}))))
+            pr.name = name
             live[name] = pr
         pr.carriers.append((0.0, 1e9, actors[e.held_by], "near"))
         pr.data.setdefault("grip_dy", -pr.h * 0.55)

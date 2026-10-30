@@ -155,6 +155,11 @@ SRC = {
     "nolaw": {"claim": "For decades Parliament made no law on the appointment; commissioners were appointed by the "
                        "President on the advice of the government",
               "source": "Anoop Baranwal v. Union of India, Supreme Court, 2 March 2023"},
+    "mcc": {"claim": "The Model Code of Conduct sets out what parties, candidates and governments may and may not do "
+                     "during the campaign, from the announcement of elections",
+            "source": "Election Commission of India, Model Code of Conduct"},
+    "ink": {"claim": "A voter's name is checked against the electoral roll and a finger is marked with indelible ink "
+                     "before voting", "source": "Conduct of Election Rules, 1961, r.49K"},
     "mar2024": {"claim": "Gyanesh Kumar and Sukhbir Singh Sandhu were appointed election commissioners in March 2024, "
                          "the first appointments under the new law", "source": "Notification of 14 March 2024 (as reported)"},
 }
@@ -185,8 +190,7 @@ def comedy() -> dict:
         step("line", t=0.3, lines=[
             {"who": "Raj", "text": "You have it.", "to": "Ivy"},
             {"who": "Ivy", "text": "No, no. You have it.", "to": "Raj"},
-            {"who": "Raj", "text": "I insist!", "to": "Ivy"},
-            {"who": "Ivy", "text": "I insist more.", "to": "Raj"}]),
+            {"who": "Raj", "text": "I insist!", "to": "Ivy"}]),
         step("deadpan", "Ivy", dur=1.4),
     ], place="outdoors", cut=False, timing="comedy")
     reach = [[0.32, {"lean": 0.35, "au": 1.35, "al": 1.45}, "out"], [0.5, {"lean": 0.0, "au": 0.3, "al": 0.6}, "inout"]]
@@ -274,8 +278,7 @@ def political() -> dict:
                                    cast("Dev", PURPLE, 1.4, -1, faceless=False, personality="calm")], [], [
         step("line", t=0.4, lines=[
             {"who": "Mira", "text": "Critics: can one side pick the referee?", "to": "Dev"},
-            {"who": "Dev", "text": "Supporters: the Court's panel was only until Parliament made a law.", "to": "Mira"},
-            {"who": "Mira", "text": "And that law is now challenged in court.", "to": "Dev"}]),
+            {"who": "Dev", "text": "Supporters: the Court's panel was only until Parliament made a law.", "to": "Mira"}]),
         cap("Both positions paraphrased from the public debate", t="+0.2", dur=2.4),
     ], layers={"tag": "Positions paraphrased"})
     p6 = scene("p6", "February 2025", [G(-2.4)],
@@ -299,7 +302,7 @@ def political() -> dict:
         narrate("As reported in February 2025, challenges to the law were pending before the Supreme Court.", "Guide",
                 "explain", t=0.4, sources=[SRC["scroll_defer"]]),
         narrate("Sources: Constitution Art. 324; Anoop Baranwal v. Union of India (2023); the 2023 Act; Scroll.in.",
-                "Guide", "wave"),
+                "Guide", "wave", dur=4.0),
     ])
     return {"title": "Who Picks the Referee?", "fps": 24, "scenes": [p1, p2, p3, p4, p5, p6, p7, p8]}
 
@@ -389,7 +392,33 @@ def psychology() -> dict:
         step("point", "Noor", t="+0.1", at=[3.2, 1.2], dur=1.2),
         step("gesture", "Sam", t="+0.0", name="clap", dur=1.2),
     ], place="indoors", cut=False, layers={"tag": "Illustration"}))
-    S.append(scene("w12", "Quieter", [noor(2.2, -1), sam(1.1)], room, [
+    S.append(scene("w12a", "Worry or problem?", [noor(2.2, -1), sam(1.1)], room + [
+        sign("plan", -1.6, 1.1, 2.2, 0.6, "Next step: draft the reply", [60, 120, 90], frame=[0.3, 12])], [
+        narrate("If a worry is a real problem, turn it into a plan with one next step.", "Noor", "explain", t=0.3),
+        step("point", "Noor", t="+0.0", at=[-1.6, 1.4], dur=1.2),
+        narrate("If it isn't something you can act on, practise noticing it - and letting it pass.", t="+0.2"),
+    ], place="indoors", cut=False))
+    S.append(scene("w12b", "Back to the room", [noor(2.2, -1), sam(1.1)], room, [
+        narrate("When thoughts race, come back to the room: five things you can see, four you can hear, three you "
+                "can touch.", t=0.3, dur=7.5),
+        step("look", "Noor", t="-7.0", at="lamp", dur=1.6),
+        step("look", "Noor", t="+0.2", at="desk", dur=1.6),
+        step("look", "Noor", t="+0.2", at="Sam", dur=1.6),
+        step("express", "Noor", t="+0.0", face="neutral", blend=0.8),
+    ], place="indoors", cut=False, layers={"mood": "calm"}))
+    S.append(scene("w12c", "At night", [noor(2.2, -1), sam(1.1)], room, [
+        narrate("Worries often feel louder at night, when we're tired and nothing else holds our attention.", "Noor",
+                "think", t=0.3),
+        narrate("A regular wind-down - screens away, the same bedtime - helps many people.", t="+0.2"),
+        step("gesture", "Sam", t="-2.5", name="wave", dur=1.4, wait=False),
+        step("walk", "Sam", t="+0.0", to=5.5, speed=1.2),
+    ], place="indoors", cut=False, layers={"paper": [214, 216, 232]}))
+    S.append(scene("w12d", "Be kind", [noor(2.2, -1)], room, [
+        narrate("And talk to yourself the way you would talk to a friend. Worrying is not a weakness - it is a brain "
+                "trying to protect you.", "Noor", "shrug", t=0.3),
+        step("nod", "Noor", t="+0.0", dur=0.9),
+    ], place="indoors", cut=False, layers={"mood": "calm"}))
+    S.append(scene("w12", "Quieter", [noor(2.2, -1)], room, [
         narrate("Worry doesn't vanish for good - but it gets quieter when we stop running from it.", "Noor", "think",
                 t=0.3),
         cap("If worry is taking over your days, talk to a doctor or a mental-health professional.", t="+0.2",
@@ -401,7 +430,7 @@ def psychology() -> dict:
 # ---- 4. hybrid documentary ------------------------------------------------------------------------------------------------
 def documentary() -> dict:
     G = lambda x, f=1: cast("Guide", ORANGE, x, f)   # noqa: E731
-    T = "documentary"
+    T = "explainer"
     D = []
     D.append(scene("d1", "The Referee", [G(-4.0)],
                    [photo("ec", 1.4, 0.5, 3.0, 2.0, "ec_photo.png", "Real photo: Election Commission of India",
@@ -455,7 +484,8 @@ def documentary() -> dict:
                           "Leader of Opp.", "Chief Justice"], [1, 1, 1], [GOV, OPP, JUD], SRC["baranwal"]["source"],
                           0.6, frame=[0.4, 14])], [
         step("point", "Guide", t=0.5, at=[1.4, 1.2], dur=1.6, wait=False),
-        narrate("On 2 March 2023 the Supreme Court ordered just that panel - until Parliament made a law.", t="+0.3", sources=[SRC["baranwal"]]),
+        narrate("On 2 March 2023 the Supreme Court ordered that, until Parliament makes a law, a panel of the Prime Minister, "
+                "the Leader of the Opposition and the Chief Justice of India appoints the commissioners.", t="+0.3", sources=[SRC["baranwal"]]),
     ], timing=T))
     D.append(scene("d8", "The 2023 Act", [G(-2.6)],
                    [chart("act", 0.4, "Panel under the 2023 Act", ["Prime Minister", "Minister picked by PM",
@@ -523,6 +553,58 @@ def documentary() -> dict:
         narrate("Sources: Constitution Art. 324; Law Commission Report 255 (2015); Anoop Baranwal v. Union of India "
                 "(2023); the 2023 Act; Scroll.in (2025).", "Guide", "wave", dur=6.0),
     ], timing=T))
+    D.append(scene("dA", "The rules of the game", [G(-2.6)],
+                   [sign("mcc", 1.2, 1.0, 2.8, 0.7, "Model Code of Conduct", [60, 90, 140], frame=[0.3, 14])], [
+        step("point", "Guide", t=0.4, at=[1.0, 1.35], dur=1.4, wait=False),
+        narrate("When elections are announced, a Model Code of Conduct sets out what parties, candidates and "
+                "governments may and may not do during the campaign.", t="+0.2", sources=[SRC["mcc"]]),
+    ], timing=T))
+    D.append(scene("dB", "Polling day", [G(-3.4), cast("Voter 1", GREEN, 5.0, -1), cast("Voter 2", PURPLE, 5.8, -1),
+                                        cast("Voter 3", TEAL, 6.6, -1, height=1.62)],
+                   [{"name": "box", "kind": "crate", "x": 0.6, "y": 0.0, "w": 0.6, "h": 0.6, "label": "VOTES"}], [
+        step("walk", "Voter 1", t=0.3, to=1.2, speed=0.9, wait=False),
+        step("walk", "Voter 2", t="+0.0", to=2.0, speed=0.9, wait=False),
+        step("walk", "Voter 3", t="+0.0", to=2.8, speed=0.9, wait=False),
+        narrate("On polling day each voter's name is checked against the roll, and a finger is marked with "
+                "indelible ink so no one votes twice.", "Guide", "explain", t="+0.4", sources=[SRC["ink"]]),
+        step("point", "Voter 1", t="+0.0", at=[0.6, 0.5], dur=1.2),
+    ], timing=T))
+    D.append(scene("dC", "Three members", [G(-2.2)],
+                   [{"name": "card", "kind": "stat", "x": 1.4, "y": 0.9, "w": 2.6, "h": 1.1, "label": "1 + 2",
+                     "data": {"sub": "Chief Election Commissioner + two Election Commissioners",
+                              "source": "ECI, About ECI", "pop": [[0.6, 0.0, "linear"], [1.1, 1.0, "back"]]},
+                     "frame": [0.4, 12]}], [
+        narrate("Today the Commission has three members: a Chief Election Commissioner and two Election "
+                "Commissioners.", "Guide", "explain", t=0.4, sources=[SRC["eci_history"]]),
+        narrate("So how they are chosen matters.", "Guide", "think", t="+0.2"),
+    ], timing=T))
+    D.append(scene("dD", "Side by side", [G(-4.2)],
+                   [chart("court2", -1.4, "Court's panel (2023)", ["PM", "Leader of Opp.", "Chief Justice"], [1, 1, 1],
+                          [GOV, OPP, JUD], SRC["baranwal"]["source"], 0.5, frame=[0.3, 14], w=2.4, h=1.8),
+                    chart("act2", 1.6, "2023 Act", ["PM", "Minister", "Leader of Opp."], [1, 1, 1], [GOV, GOV, OPP],
+                          SRC["act_s7"]["source"], 1.6, frame=[0.3, 14], w=2.4, h=1.8)], [
+        narrate("Side by side: the Court's panel had one member from the government, one from the opposition and "
+                "one judge; the Act's panel has two from the government and one from the opposition.", "Guide",
+                "explain", t=0.4, dur=7.5, sources=[SRC["baranwal"], SRC["act_s7"]]),
+    ], timing=T))
+    D.append(scene("dE", "Common ground", [cast("Mira", GREEN, -1.4, 1, faceless=False, personality="energetic"),
+                                          cast("Dev", PURPLE, 1.4, -1, faceless=False, personality="calm")], [], [
+        narrate("Both sides say the Commission must be independent. They disagree about how to choose the people "
+                "who run it.", t=0.4),
+        step("nod", "Mira", t="-2.0", dur=0.8, wait=False),
+        step("nod", "Dev", t="+0.0", dur=0.8),
+    ], timing=T, layers={"tag": "Summary of the debate"}))
+    D.append(scene("dF", "Your part", [G(-2.6), cast("Voter 1", GREEN, -0.4, 1)],
+                   [photo("rolls2", 2.2, 0.2, 3.0, 1.55, "voters_lists.png", "Real photo: voters checking draft lists",
+                          frame=[0.3, 12])], [
+        narrate("Whoever runs it, the roll is yours to check: any eligible citizen can look up their name and apply "
+                "to add or correct it.", "Guide", "explain", t=0.4, sources=[SRC["rolls"]]),
+        step("point", "Voter 1", t="+0.0", at=[2.0, 1.0], dur=1.2),
+    ], timing=T))
+    order = ["d1", "d2", "dC", "d3", "dA", "d4", "dB", "d5", "d6", "d7", "d8", "d9", "dD", "d10", "d11", "d12", "d13",
+             "d14", "dE", "d15", "dF", "d16"]
+    by = {s_["id"]: s_ for s_ in D}
+    D = [by[k] for k in order]
     return {"title": "The Referee", "fps": 24, "scenes": D}
 
 

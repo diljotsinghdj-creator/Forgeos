@@ -120,8 +120,15 @@ def direct(R, sc, style: str = "explainer", margin: float = 1.0, every: int = 2)
     vx = vy = vz = 0.0
     dt = 1 / R.fps
     w = S["omega"]
+    still = 0.0
     for n, (tx, ty, tz) in enumerate(targets):
         half = W_m / (2 * z)
+        if n and math.dist(targets[n][:2], targets[n - 1][:2]) < 0.01 and abs(vx) < 0.05:
+            still += dt                                   # a held shot: creep in slowly so the picture lives
+        else:
+            still = 0.0
+        if still > 1.2:
+            tz = min(1.9, tz * (1.0 + min(0.09, 0.018 * (still - 1.2))))
         if abs(tx - x) > 1.6 * half:                     # the subject is somewhere else entirely: cut
             x, y, z, vx, vy, vz = tx, ty, tz, 0.0, 0.0, 0.0
             keys.append(CamKey(max(0.0, R.times[n] - 1e-3), keys[-1].x if keys else x,

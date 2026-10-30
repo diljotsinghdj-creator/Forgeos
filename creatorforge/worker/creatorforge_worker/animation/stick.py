@@ -1060,9 +1060,16 @@ class Prop:
         return t0 + (flight_time or 1.0)
 
     def _fly(self, f, t):
-        if f["samples"] is None:
+        S = f["samples"]
+        if S is None:
             start = self._resting_before(f["t0"])      # wherever it is at that moment: a hand, or another flight
             x0, y0, a0 = start
+            unposed = [c for c in self.carriers if c[0] <= f["t0"] - 1e-4 <= c[1]
+                       and not (hasattr(c[2], "_joints") or hasattr(c[2], "pose_now"))]
+            if unposed:                                # asked while still being staged (the thrower isn't simulated
+                actor = unposed[-1][2]                 # yet): estimate from where the hand will be, don't keep it
+                fa = actor._facing_at_build(f["t0"]) if hasattr(actor, "_facing_at_build") else 1.0
+                x0, y0, a0 = actor.hips_x(f["t0"]) + 0.3 * fa, 0.75 * getattr(actor, "H", 1.75), 0.0
             if f["velocity"] is not None:
                 vx, vy = f["velocity"]
             else:
@@ -1073,9 +1080,10 @@ class Prop:
             base = f["world"].ground if f["world"] else (lambda x: 0.0)
             top = f.get("surface", 0.0)                   # a table or shelf right under where it was let go
             ground = (lambda x: max(base(x), top if abs(x - x0) < 0.6 else 0.0)) if top else base
-            f["samples"] = _simulate(x0, y0, a0, vx, vy, f["spin"], f["bounce"], self.w, self.h, ground,
-                                     friction=self.data.get("friction", 6.0))
-        S = f["samples"]
+            S = _simulate(x0, y0, a0, vx, vy, f["spin"], f["bounce"], self.w, self.h, ground,
+                          friction=self.data.get("friction", 6.0))
+            if not unposed:
+                f["samples"] = S
         u = (t - f["t0"]) * 120
         i = int(u)
         if i >= len(S) - 1:

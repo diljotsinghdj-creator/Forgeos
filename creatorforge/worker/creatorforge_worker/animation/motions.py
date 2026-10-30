@@ -368,11 +368,12 @@ def throw(a: Actor, t: float, prop, target, flight: float = 0.8, hand: str = "ne
         rel = 0.43
     a.act(t, keys, "throw")
     release = t + rel
-    held = False
-    for i, (c0, c1, who, hd) in enumerate(prop.carriers):      # the hand lets go at the release
-        if who is a and c0 <= release <= c1 + 10:
-            prop.carriers[i] = (c0, release, who, hd)
-            held = True
+    mine = [i for i, (c0, c1, who, hd) in enumerate(prop.carriers) if who is a and c0 <= release <= c1 + 10]
+    held = bool(mine)
+    if held:                                       # the hand lets go at the release (only the hold it is in now -
+        i = max(mine, key=lambda k: prop.carriers[k][0])           # earlier, finished holds stay as they were)
+        c0, c1, who, hd = prop.carriers[i]
+        prop.carriers[i] = (c0, release, who, hd)
     if not held:
         prop.carriers.append((t, release, a, hand))
     prop.launch(release, None, target=target, flight_time=flight, spin=spin, world=a.world)

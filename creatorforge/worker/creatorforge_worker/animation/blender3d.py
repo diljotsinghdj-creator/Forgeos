@@ -943,8 +943,83 @@ def demo_f(out_dir: Path) -> Path:
     return render(out_dir, "TestF_3D_environment", frames, res=(1280, 544), samples=12)
 
 
+def asset_mesh(asset: dict, x: float, y: float, depth: float | None = None, name: str = ""):
+    """A library asset as Blender objects: every part extruded into a closed prism (checked by asset_lib.to_mesh:
+    no open edges) with its own colour, standing at (x, y) in the scene."""
+    from . import asset_lib
+    objs = []
+    for k, part in enumerate(sorted(asset["parts"], key=lambda p: p.get("z", 0))):
+        m = asset_lib.to_mesh({**asset, "parts": [part]}, depth)
+        if m["open_edges"]:
+            raise ValueError(f"{name or asset['name']}: part {part['id']} is not a closed mesh")
+        me = bpy.data.meshes.new(f"{name}_{part['id']}")
+        me.from_pydata([(vx, vy - 0.002 * k, vz) for vx, vy, vz in m["verts"]], [], m["faces"])
+        me.update()
+        ob = bpy.data.objects.new(me.name, me)
+        bpy.context.collection.objects.link(ob)
+        ob.location = (x, y, 0.0)
+        ob.data.materials.append(material(me.name, srgb(*part["fill"]), 0.6))
+        objs.append(ob)
+    return objs
+
+
+def demo_g(out_dir: Path) -> Path:
+    """Acceptance benchmark: four characters in a 3D park (bench3d): a game of catch with a real projectile, a
+    long throw that bounces away, a passer-by who returns it, a spectator on a bench - with generated library assets
+    (a car and lamp posts) extruded into closed meshes for the set."""
+    from . import asset_lib, bench3d
+    reset()
+    environment()
+    actors, props, w, total, before, after, fixes = bench3d.checked(FPS)
+    print("benchmark 3D QC before:", before.summary(), "| corrections:", fixes, "| after:", after.summary())
+    lib = asset_lib.Library.default()
+    for desc, x, y in (("a red car", 1.5, 4.2), ("lamp", -3.8, 2.2), ("lamp", 6.0, 2.2)):
+        aid, how = lib.obtain(desc)
+        asset_mesh(lib.get(aid), x, y, name=f"{desc.replace(' ', '_')}_{x}")
+        print("set dressing:", desc, "->", aid, f"({how})")
+    wood = material("bench3", srgb(150, 98, 60), 0.7)
+    for z, sx, sz, dx in ((0.43, 0.55, 0.03, 0.0), (0.2, 0.03, 0.2, -0.45), (0.2, 0.03, 0.2, 0.45)):
+        bpy.ops.mesh.primitive_cube_add(location=(bench3d.BENCH_X + dx, 0.0, z))
+        o = bpy.context.object
+        o.scale = (sx, 0.22, sz)
+        o.data.materials.append(wood)
+    ball = props[0]
+    bpy.ops.mesh.primitive_uv_sphere_add(radius=ball.w / 2, location=(ball.x, 0.0, ball.h / 2))
+    bobj = bpy.context.object
+    bobj.data.materials.append(material("ball", srgb(*ball.color), 0.4))
+    inks = {"Ash": (40, 90, 200), "Ivy": (200, 60, 70), "Kit": (40, 150, 80), "Mo": (230, 140, 30)}
+    chars = [Char3D(a.look.name, a.look.height, "stick", ink=inks[a.look.name]) for a in actors]
+    frames = int(total * FPS)
+    hips = []
+    for fr in range(1, frames + 1):
+        tt = (fr - 1) / FPS
+        for c, a in zip(chars, actors):
+            c.pose_actor(a, tt, fr, 1 / FPS)
+        bx, by, ang = ball.pos(tt)
+        bobj.location = (bx, 0.0, by + ball.h / 2)
+        bobj.rotation_euler = (0.0, -ang, 0.0)
+        bobj.keyframe_insert("location", frame=fr)
+        bobj.keyframe_insert("rotation_euler", frame=fr)
+        hips.append([a.hip[0] for a in actors] + [bx])
+    keys = []
+    for fr in range(1, frames + 1, 3):                 # a wide shot that keeps the game and the ball in frame
+        xs = hips[fr - 1]
+        lo, hi = min(xs[0], xs[1], xs[4]), max(xs[0], xs[1], xs[4])
+        mx = (lo + hi) / 2
+        dist = max(7.0, (hi - lo) * 0.9 + 4.5)
+        keys.append((fr, (mx + 1.2, -dist, 1.9 + 0.08 * dist), (mx, 0.0, 0.95)))
+    sm = []                                            # ease the camera: a running average of the keys
+    for i in range(len(keys)):
+        win = keys[max(0, i - 4):i + 5]
+        pos = tuple(sum(k[1][j] for k in win) / len(win) for j in range(3))
+        look = tuple(sum(k[2][j] for k in win) / len(win) for j in range(3))
+        sm.append((keys[i][0], pos, look))
+    camera(sm, lens=30, fstop=5.6)
+    return render(out_dir, "Benchmark_3D_multi_character", frames, res=(1280, 544), samples=8)
+
+
 if __name__ == "__main__":
     which = (sys.argv[1] if len(sys.argv) > 1 else "D").upper()
     out = Path(sys.argv[2] if len(sys.argv) > 2 else ".").resolve()
     out.mkdir(parents=True, exist_ok=True)
-    print({"D": demo_d, "E": demo_e, "5": demo_5, "F": demo_f}[which](out))
+    print({"D": demo_d, "E": demo_e, "5": demo_5, "F": demo_f, "G": demo_g}[which](out))

@@ -72,6 +72,8 @@ def reason(sentence: str, sources: list[dict] | None = None) -> VisualPlan:
     "path": optional image}]"""
     sources = sources or []
     s = sentence
+    if re.match(r"\s*(sources?|credits?)\s*:", s, re.I):   # a citation line names sources; it makes no claim
+        return VisualPlan(s, LITERAL, "citation")
     claims = [m.group(0).strip(" ,.") for m in NUMBER.finditer(s)
               if m.group(1) and not re.fullmatch(r"(1[0-9]|20)\d\d", m.group(1).rstrip(",."))]
     supporting = [src for src in sources if src.get("claim") and _overlap(src["claim"], s) > 0.3]

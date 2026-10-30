@@ -53,7 +53,8 @@ SYNONYMS = {"home": "house", "hut": "house", "cottage": "house", "store": "shop"
             "building": "tower", "skyscraper": "tower", "taxi": "car", "jeep": "car", "van": "car", "auto": "car",
             "lorry": "bus", "truck": "bus", "coach": "bus", "bike": "bicycle", "cycle": "bicycle", "puppy": "dog",
             "kitten": "cat", "buffalo": "cow", "ox": "cow", "pony": "horse", "donkey": "horse", "crow": "bird",
-            "pigeon": "bird", "sparrow": "bird", "parrot": "bird", "ship": "boat", "canoe": "boat",
+            "pigeon": "bird", "sparrow": "bird", "parrot": "bird", "pelican": "bird", "gull": "bird", "seagull": "bird",
+            "eagle": "bird", "duck": "bird", "hen": "bird", "chicken": "bird", "owl": "bird", "heron": "bird", "ship": "boat", "canoe": "boat",
             "streetlight": "lamp", "lamppost": "lamp", "lantern": "lamp", "stool": "chair", "desk": "table",
             "boulder": "rock", "stone": "rock", "shrub": "bush", "plant": "bush", "signpost": "sign",
             "billboard": "sign", "palm": "tree", "oak": "tree", "banyan": "tree"}
@@ -495,7 +496,11 @@ def validate(asset: dict, paper=PAPER, render_test: bool = True) -> list[Issue]:
     if contrast(big["fill"], paper) < 1.25 and contrast(big.get("line", big["fill"]), paper) < 1.8:
         out.append(Issue("low_contrast", big["id"], "the main shape barely shows against the background", "warn"))
     if render_test:
-        ink = render_png(asset, None, 160)
+        try:
+            ink = render_png(asset, None, 160)
+        except ImportError:                            # e.g. inside Blender's Python: no imaging library
+            out.append(Issue("render_test_skipped", "", "no imaging library here; geometry checks only", "info"))
+            ink = 1.0
         if ink < 0.01:
             out.append(Issue("render_empty", "", f"test render covers {ink:.1%} of the canvas"))
     return out
