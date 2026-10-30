@@ -673,6 +673,11 @@ def render(out_dir: Path, name: str, frames: int, res=(960, 540), samples=20, au
             bpy.ops.render.render(write_still=True)
         return out_dir
     sc.render.filepath = str(frames_dir / "f_")
+    sc.render.use_overwrite = False                   # resumable: frames already on disk are skipped, and a frame
+    sc.render.use_placeholder = True                  # being rendered is marked, so a crash or timeout costs nothing
+    for f in frames_dir.glob("f_*.png"):              # a zero-byte placeholder is an unfinished frame: redo it
+        if f.stat().st_size == 0:
+            f.unlink()
     bpy.ops.render.render(animation=True)
     master = out_dir / f"{name}.mp4"
     cmd = ["ffmpeg", "-v", "error", "-y", "-framerate", str(FPS), "-i", str(frames_dir / "f_%04d.png")]
@@ -1131,10 +1136,7 @@ def demo_c(out_dir: Path) -> Path:
         p_ = tuple(sum(q[1][j] for q in win) / len(win) for j in range(3))
         l_ = tuple(sum(q[2][j] for q in win) / len(win) for j in range(3))
         sm.append((k[0], p_, l_))
-    cam, _ = camera(sm, lens=32, fstop=5.6)
-    for fc in (cam.animation_data.action.fcurves if cam.animation_data and cam.animation_data.action else []):
-        for kp in fc.keyframe_points:
-            kp.interpolation = "LINEAR"
+    camera(sm, lens=32, fstop=5.6)                    # keyed on every frame: cuts are cuts
     _dusk(frames, [(1.5, 1.95, 3.45), (9.5, 1.95, 3.45), (bench3d.LAMP_X, 0.12, 3.45)])
     return render(out_dir, "FilmC_ball_on_the_wall", frames, res=(960, 408), samples=4)
 

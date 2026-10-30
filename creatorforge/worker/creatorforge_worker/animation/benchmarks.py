@@ -730,7 +730,7 @@ UNFAMILIAR = ("Old Tomas the fisherman rows his boat to the harbour at dawn. A c
               "the fish into a little girl's basket. Tomas laughs and gives her the fish.")
 
 DOCS = {"comedy": comedy, "political": political, "psychology": psychology, "documentary": documentary,
-        "test1_political_hinglish": political_hinglish, "film_b": lambda: film_b(),
+        "test1_political_hinglish": political_hinglish, "film_b": lambda: film_b(), "film_a": lambda: film_a(),
         "test3_psychology_narrated": lambda: voice_all(psychology(), "en")}
 
 
@@ -1044,3 +1044,103 @@ def film_b() -> dict:
         cap("THE END", t="+0.4", dur=3.0),
     ], place="outdoors", cut=False, timing="comedy", layers={"light": [[0, "dusk"], [6.0, "night"]]}))
     return {"title": "Bus Stop", "fps": 24, "scenes": S}
+
+
+# ---- Film A: "Referee kaun chunta hai?" (3 minutes, Hinglish) --------------------------------------------------------
+HINGLISH.update({
+    "It was set up on 25 January 1950 - the day before India became a republic.":
+        ("Iski sthapna 25 January 1950 ko hui - India ke republic banne se ek din pehle.",
+         "इसकी स्थापना पच्चीस January उन्नीस सौ पचास को हुई, India के republic बनने से एक दिन पहले।"),
+    "For its first 39 years it had a single commissioner. Two more were added in 1989, removed in 1990, and added "
+    "again in 1993.":
+        ("Pehle 39 saal tak isme ek hi commissioner the. 1989 mein do aur jode gaye, 1990 mein hata diye gaye, aur "
+         "1993 mein phir se jode gaye.",
+         "पहले उनतालीस साल तक इसमें एक ही commissioner थे। उन्नीस सौ नवासी में दो और जोड़े गए, उन्नीस सौ नब्बे में हटा दिए "
+         "गए, और उन्नीस सौ तिरानवे में फिर से जोड़े गए।"),
+    "Today the Commission has three members: a Chief Election Commissioner and two Election Commissioners.":
+        ("Aaj Commission ke teen sadasya hain: ek Chief Election Commissioner aur do Election Commissioners.",
+         "आज Commission के तीन सदस्य हैं: एक Chief Election Commissioner और दो Election Commissioners।"),
+    "So how they are chosen matters.":
+        ("Isliye unhe kaise chuna jaata hai, yeh maayne rakhta hai.", "इसलिए उन्हें कैसे चुना जाता है, यह मायने रखता है।"),
+    "On polling day each voter's name is checked against the roll, and a finger is marked with indelible ink so no "
+    "one votes twice.":
+        ("Matdaan ke din har voter ka naam list se milaaya jaata hai, aur ungli par syahi lagaayi jaati hai taaki koi "
+         "do baar vote na de.",
+         "मतदान के दिन हर voter का नाम list से मिलाया जाता है, और उंगली पर स्याही लगाई जाती है ताकि कोई दो बार vote न दे।"),
+    "A search committee headed by the Law Minister shortlists five names; the selection committee then chooses.":
+        ("Law Minister ki adhyakshata mein ek search committee paanch naam shortlist karti hai; phir selection "
+         "committee chunti hai.",
+         "Law Minister की अध्यक्षता में एक search committee पाँच नाम shortlist करती है; फिर selection committee चुनती है।"),
+    "Side by side: the Court's panel had one member from the government, one from the opposition and one judge; the "
+    "Act's panel has two from the government and one from the opposition.":
+        ("Saath rakh kar dekhiye: Court ke panel mein ek sarkar se, ek opposition se aur ek judge tha; Act ke panel "
+         "mein do sarkar se aur ek opposition se hain.",
+         "साथ रख कर देखिए: Court के panel में एक सरकार से, एक opposition से और एक judge था; Act के panel में दो सरकार से "
+         "और एक opposition से हैं।"),
+    "In March 2024 two election commissioners, Gyanesh Kumar and Sukhbir Singh Sandhu, were the first appointed "
+    "under the new law.":
+        ("March 2024 mein do election commissioners, Gyanesh Kumar aur Sukhbir Singh Sandhu, naye kanoon ke tahat "
+         "pehli baar appoint hue.",
+         "March दो हज़ार चौबीस में दो election commissioners, Gyanesh Kumar और Sukhbir Singh Sandhu, नए क़ानून के तहत "
+         "पहली बार appoint हुए।"),
+    "Petitioners alleged that the new selection panel could compromise the independence of the Election Commission; "
+    "the Supreme Court declined to stay the appointments.":
+        ("Yachikakartaon ne aarop lagaaya ki naya selection panel Election Commission ki swatantrata par asar daal "
+         "sakta hai; Supreme Court ne appointments par rok lagaane se inkaar kiya.",
+         "याचिकाकर्ताओं ने आरोप लगाया कि नया selection panel Election Commission की स्वतंत्रता पर असर डाल सकता है; Supreme "
+         "Court ने appointments पर रोक लगाने से इनकार किया।"),
+    "A referee is only useful if both teams trust the whistle.":
+        ("Referee tabhi kaam ka hai jab dono teams uski seeti par bharosa karein.",
+         "Referee तभी काम का है जब दोनों teams उसकी सीटी पर भरोसा करें।"),
+    "That trust - more than any one appointment - is what the debate is about.":
+        ("Yahi bharosa - kisi ek appointment se zyada - is behas ka asli mudda hai.",
+         "यही भरोसा, किसी एक appointment से ज़्यादा, इस बहस का असली मुद्दा है।"),
+    "Every Indian election - for Parliament and the states - is run by one body: the Election Commission of India.":
+        ("Bharat ka har chunav - Parliament ho ya rajya - ek hi sanstha karaati hai: Election Commission of India.",
+         "भारत का हर चुनाव, Parliament हो या राज्य, एक ही संस्था कराती है: Election Commission of India।"),
+})
+
+
+def _hinglish(doc: dict) -> dict:
+    """Narration in Hinglish: the Hindi voice reads Devanagari with English terms; subtitles in Roman script; the
+    reasoning (diagrams, source matching) stays on the English line; sources are cited per line."""
+    for sc in doc["scenes"]:
+        for st in sc.get("steps", []):
+            if st.get("do") in ("caption", "visual"):
+                hi = HINGLISH.get(st.get("reason_text", st["text"])) or HINGLISH.get(st["text"])
+                if not hi:
+                    raise ValueError(f"no Hinglish for: {st['text']}")
+                if not st["text"].startswith("Sources:"):
+                    st["voice"] = {"lang": "hi", "say": hi[1], "rate": 168}
+                if st["do"] == "visual":
+                    st["subtitle"] = hi[0]
+                elif "reason_text" not in st:
+                    st["reason_text"], st["text"] = st["text"], hi[0]
+                if st.get("sources"):
+                    st["cite"] = True
+            elif st.get("do") == "say":
+                st["text"] = HINGLISH_BUBBLES.get(st["text"], st["text"])
+            elif st.get("do") == "line":
+                for ln in st["lines"]:
+                    ln["text"] = HINGLISH_BUBBLES.get(ln["text"], ln["text"])
+    return doc
+
+
+def film_a() -> dict:
+    """Film A: the documentary and the explainer as one 3-minute Hinglish film, in story order."""
+    import copy as _copy
+    pol = {s_["id"]: s_ for s_ in political_hinglish()["scenes"]}
+    doc = {s_["id"]: s_ for s_ in documentary()["scenes"]}
+    order = [pol["p1"], doc["d2"], doc["dC"], doc["dB"], pol["p2"], pol["p3"], pol["p4"], doc["d9"],
+             doc["d10"], doc["d11"], pol["p6"], pol["p6f"], pol["p5"], doc["d15"], pol["p8"]]
+    scenes = [_copy.deepcopy(s_) for s_ in order]
+    for s_ in scenes:
+        s_.pop("transition", None)
+    nxt = {"p6f": {"kind": "dissolve", "dur": 0.6}, "p5": {"kind": "dissolve", "dur": 0.5},
+           "d2": {"kind": "fade", "dur": 0.4}, "p2": {"kind": "fade", "dur": 0.4}, "d10": {"kind": "fade", "dur": 0.4},
+           "d15": {"kind": "fade", "dur": 0.5}}
+    for s_ in scenes:
+        if s_["id"] in nxt:
+            s_["transition"] = nxt[s_["id"]]
+    film = {"title": "Referee kaun chunta hai? (Film A)", "fps": 24, "scenes": scenes}
+    return _hinglish(_presenters(film))
