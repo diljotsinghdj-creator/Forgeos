@@ -186,5 +186,69 @@ def draw(p, d, S, scale, t):
         d.rectangle([x0 + (x1 - x0) * 0.05, y0 + top, x0 + (x1 - x0) * 0.95, y1], fill=(98, 60, 36))
         d.rectangle([x0 + (x1 - x0) * 0.08, y0 + top * 2, x0 + (x1 - x0) * 0.92, y1 - top], outline=(140, 92, 56),
                     width=lw)
+    elif k == "steps":                                # stairs / ledges from the World this prop stands for
+        w = p.data["world"]
+        lo, hi = x - p.w / 2, x + p.w / 2
+        stone, edge = p.data.get("color", (176, 172, 164)), (120, 116, 110)
+        for a0, a1, top in sorted(w.platforms, key=lambda q: q[2]):
+            if a0 >= lo - 1e-6 and a1 <= hi + 1e-6:
+                (u0, v0), (u1, v1) = S(a0, top), S(a1, 0.0)
+                d.rectangle([u0, v0, u1, v1], fill=stone)
+                d.line([(u0, v0), (u1, v0)], fill=(214, 210, 202), width=lw * 2)       # lit tread
+                d.line([(u0, v0), (u0, v1)], fill=edge, width=lw)                     # riser
+                d.line([(u1, v0), (u1, v1)], fill=edge, width=lw)
+        for a0, a1, y0_, y1_ in w.ramps:
+            if a0 >= lo - 1e-6 and a1 <= hi + 1e-6:
+                d.polygon([S(a0, 0), S(a0, y0_), S(a1, y1_), S(a1, 0)], fill=stone, outline=edge)
+    elif k == "bench":
+        seat = p.data.get("seat", 0.45)
+        sx0, sy = S(x - p.w / 2, y + seat)
+        sx1, _ = S(x + p.w / 2, y + seat)
+        wood, dark = (150, 98, 60), (96, 60, 34)
+        for lx in (x - p.w * 0.4, x + p.w * 0.4):
+            d.line([S(lx, y), S(lx, y + seat)], fill=(60, 62, 70), width=lw * 2)
+        d.rounded_rectangle([sx0, sy - lw * 3, sx1, sy + lw * 2], radius=lw, fill=wood, outline=dark, width=lw)
+        bx = x + p.w / 2 * p.data.get("back", 1.0)
+        d.line([S(bx, y + seat), S(bx, y + seat + 0.42)], fill=dark, width=lw * 2)
+        d.rounded_rectangle([S(bx - 0.04, y + seat + 0.42)[0] - lw, S(bx, y + seat + 0.42)[1],
+                             S(bx + 0.04, y + seat + 0.2)[0] + lw, S(bx, y + seat + 0.2)[1]], radius=lw, fill=wood,
+                            outline=dark, width=lw)
+    elif k == "ball":
+        r = (x1 - x0) / 2
+        cx, cy = (x0 + x1) / 2, (y0 + y1) / 2
+        d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=p.color, outline=(60, 40, 30), width=lw)
+        for off in (0.0, math.pi / 2):                    # seams show it spinning
+            ca, sa = math.cos(ang + off), math.sin(ang + off)
+            d.line([(cx - ca * r * 0.9, cy - sa * r * 0.9), (cx + ca * r * 0.9, cy + sa * r * 0.9)],
+                   fill=(255, 255, 255), width=max(1, lw // 2))
+    elif k == "scale":                                 # a balance: a visual metaphor (labelled as an illustration)
+        tilt = p.value("tilt", t, 0.0)
+        top = y + p.h
+        post0, post1 = S(x, y), S(x, top)
+        d.line([post0, post1], fill=(80, 70, 60), width=lw * 2)
+        d.polygon([S(x - 0.25, y), S(x + 0.25, y), S(x, y + 0.12)], fill=(80, 70, 60))
+        half = p.w / 2
+        ends = []
+        for sgn in (-1, 1):
+            ex, ey = x + sgn * half * math.cos(tilt), top - sgn * half * math.sin(tilt)
+            ends.append((ex, ey))
+        d.line([S(*ends[0]), S(*ends[1])], fill=(80, 70, 60), width=lw * 2)
+        for (ex, ey), side in zip(ends, ("left", "right")):
+            pan_y = ey - 0.55
+            d.line([S(ex, ey), S(ex - 0.28, pan_y)], fill=(120, 110, 100), width=lw)
+            d.line([S(ex, ey), S(ex + 0.28, pan_y)], fill=(120, 110, 100), width=lw)
+            d.chord([S(ex - 0.32, pan_y + 0.12)[0], S(ex, pan_y + 0.12)[1], S(ex + 0.32, pan_y - 0.12)[0],
+                     S(ex, pan_y - 0.12)[1]], 0, 180, fill=(200, 160, 70), outline=(120, 90, 40))
+            n = p.data.get(side + "_n", 0)
+            col = p.data.get(side + "_color", (90, 90, 90))
+            for i in range(n):
+                bx_, by_ = ex - 0.12 * (n - 1) / 2 + 0.12 * i, pan_y + 0.07
+                c0, c1 = S(bx_ - 0.05, by_ + 0.1), S(bx_ + 0.05, by_)
+                d.rectangle([c0[0], c0[1], c1[0], c1[1]], fill=col, outline=(40, 40, 40))
+            lab = p.data.get(side + "_label", "")
+            if lab:
+                _text(d, S(ex, pan_y - 0.28), lab, scale * 0.11, INK)
+        if p.label:
+            _text(d, S(x, y - 0.18), p.label, scale * 0.08, (110, 110, 110), bold=False)
     elif k == "label":
         _text(d, ((x0 + x1) / 2, (y0 + y1) / 2), p.label, (y1 - y0) * 0.8, p.color, maxw=(x1 - x0))

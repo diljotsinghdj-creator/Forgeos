@@ -11,7 +11,7 @@ frame by frame. `inspect` measures the defects an animator looks for:
     jerk         the hips' acceleration                           > 120 m/s^2 (a landing is ~30)
     frozen       a visible character not moving at all           >= 3 s
     overlap      two characters' bodies passing through each other (torsos closer than 12 cm)
-    prop_jump    a prop teleporting                               > 0.5 m in a frame
+    prop_jump    a prop teleporting                               > 0.8 m in a frame (a hard throw is ~0.6)
     framing      a focal character's head outside the safe area (after the camera is set)
 
 `check_video` inspects the rendered file: frame count, frozen stretches, black frames and flicker.
@@ -29,7 +29,7 @@ from pathlib import Path
 from .stick import Actor
 
 LIMITS = dict(stretch=1e-3, skid=0.006, floor=0.01, teleport=9.0, snap=1.1, jerk=120.0, frozen=3.0, overlap=0.12,
-              prop_jump=0.5)
+              prop_jump=0.8)
 
 
 @dataclass
@@ -99,9 +99,11 @@ def record(sc, seconds: float, fps: int | None = None) -> Recording:
 
 
 def _rel(J, i, arm=False):
+    """A limb's angle to the torso, in the character's own frame (so turning around is not a flick)."""
+    f = J.get("f", 1.0)
     a, b = (J["arms"][i][0], J["arms"][i][1]) if arm else (J["legs"][i][0], J["legs"][i][1])
-    th = math.atan2(b[0] - a[0], b[1] - a[1])
-    tor = math.atan2(J["neck"][0] - J["hip"][0], J["neck"][1] - J["hip"][1])
+    th = math.atan2(f * (b[0] - a[0]), b[1] - a[1])
+    tor = math.atan2(f * (J["neck"][0] - J["hip"][0]), J["neck"][1] - J["hip"][1])
     return (th - tor + math.pi) % (2 * math.pi) - math.pi
 
 
@@ -128,7 +130,6 @@ def inspect(R: Recording, limits: dict | None = None) -> Report:
         who = a.look.name or f"actor{i}"
         F = R.joints[i]
         floor = a._floor
-        still_since, last = 0.0, None
         vel_prev = None
         for n, J in enumerate(F):
             t = R.times[n]
@@ -158,7 +159,7 @@ def inspect(R: Recording, limits: dict | None = None) -> Report:
                     if s > L["skid"]:
                         flag("skid", who, t, s)
                 for arm in (False, True):
-                    d = abs((_rel(J, k, arm) - _rel(P, k, arm) + math.pi) % (2 * math.pi) - math.pi) * (30 * dt)
+                    d = abs((_rel(J, k, arm) - _rel(P, k, arm) + math.pi) % (2 * math.pi) - math.pi) / (30 * dt)
                     if d > L["snap"]:
                         flag("snap", who, t, d)
             v = (J["hip"][0] - P["hip"][0]) / dt, (J["hip"][1] - P["hip"][1]) / dt
@@ -170,14 +171,14 @@ def inspect(R: Recording, limits: dict | None = None) -> Report:
                 if acc > L["jerk"]:
                     flag("jerk", who, t, acc)
             vel_prev = v
-            moved = max(math.dist(J["head"], P["head"]), math.dist(J["hip"], P["hip"]),
-                        *(math.dist(J["arms"][k][2], P["arms"][k][2]) for k in range(2)))
-            if moved < 0.0005:
-                still_since += dt
-                if still_since >= L["frozen"]:
-                    flag("frozen", who, t, still_since)
-            else:
-                still_since = 0.0
+            w = int(L["frozen"] / dt)                  # frozen: nothing moved more than 3 mm over the last 3 s
+            if n >= w:
+                span = F[n - w:n + 1]
+                pts = [[J_["head"] for J_ in span], [J_["hip"] for J_ in span]] + \
+                      [[J_["arms"][k][2] for J_ in span] for k in range(2)]
+                rng = max(max(math.dist(p, q) for q in pts_[::6]) for pts_ in pts for p in pts_[::6])
+                if rng < 0.003:
+                    flag("frozen", who, t, L["frozen"])
     # characters passing through each other
     for i in range(len(R.actors)):
         for j in range(i + 1, len(R.actors)):

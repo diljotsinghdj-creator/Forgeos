@@ -19,7 +19,7 @@ import math
 from dataclasses import dataclass, field, fields, replace
 
 from . import face as F
-from . import rig2d
+from . import rig2d, speech
 from .rig2d import Look, smooth
 
 TAU = 2 * math.pi
@@ -166,6 +166,7 @@ class Actor:
         self.feels: list[tuple] = []          # (t0, t1, emotion)
         self.holds: list[tuple] = []          # (t0, t1, prop, hand)
         self.symbols: list[tuple] = []        # (t0, t1, "?" | "!" | "..." | "♥" | "#")
+        self.bubbles: list[tuple] = []        # (t0, t1, text) speech bubbles
         self.postures: list[tuple] = []       # (t0, t1, lean, crouch)
         self.reaches: list[tuple] = []        # (t0, t1, (near, far)) hand targets while walking
         self._end_x = x
@@ -221,6 +222,16 @@ class Actor:
 
     def feel(self, t0: float, t1: float, emotion: str) -> float:
         self.feels.append((t0, t1, emotion))
+        return t1
+
+    def say_line(self, t0: float, t1: float, text: str, expr: str | None = None) -> float:
+        """A speech bubble from t0 to t1; with a face, the mouth moves through the words and the expression is set."""
+        self.bubbles.append((t0, t1, text))
+        if not self.faceless:
+            talk = min(t1 - t0 - 0.2, 0.065 * len(text) + 0.3)
+            self.loco.lines.append((t0, t0 + talk, speech.estimate_visemes(text, talk, t0)))
+            if expr:
+                self.loco.express(t0, expr, 0.25)
         return t1
 
     def say_symbol(self, t0, t1, sym):
@@ -508,6 +519,9 @@ class Actor:
             pa = self._eval(a, max(a.t0, t - 0.06))
             turn = pa.lean - p.lean                       # the arms lag the body's pose, not its rotation
             p.au, p.al, p.bu, p.bl = pa.au + turn, pa.al + turn, pa.bu + turn, pa.bl + turn
+            br = math.sin((t + self.seed) * 2 * math.pi / 3.4)      # held poses still breathe
+            p.lean += 0.012 * br
+            p.head += 0.02 * math.sin((t + self.seed) * 2 * math.pi / 5.1)
             if a.upper_free:                          # seated: feelings move the arms, head and lean only
                 q = self._feelings(t, replace(p))
                 p.au, p.al, p.bu, p.bl, p.head = q.au, q.al, q.bu, q.bl, q.head
@@ -521,6 +535,13 @@ class Actor:
                 self._act = None
             self.loco.step(t, dt)
             p = self._loco_pose(t)
+            if self.loco.speed < 0.15:                  # standing: never a frozen pose - breath, weight, head, arms
+                ph = t + self.seed * 1.7
+                p.squash *= 1.0 + 0.012 * math.sin(ph * 2 * math.pi / 3.6)
+                p.lean += 0.018 * math.sin(ph * 2 * math.pi / 7.3)
+                p.head += 0.05 * math.sin(ph * 2 * math.pi / 5.9) + 0.03 * math.sin(ph * 2 * math.pi / 2.3)
+                p.au += 0.04 * math.sin(ph * 2 * math.pi / 4.1)
+                p.bu += 0.04 * math.sin(ph * 2 * math.pi / 4.7 + 1.0)
             p = self._feelings(t, p)
             for t0, t1, lean, crouch in self.postures:            # lean into a push, crouch to sneak
                 if t0 <= t <= t1:
@@ -794,7 +815,7 @@ class Actor:
                 ank = seg(kn, l, self.l_shin)
             toe = (ank[0] + f * 0.075 * H, ank[1] - self.ankle * 0.6)
             legs.append((hip, kn, ank, toe))
-        return {"hip": hip, "neck": neck, "head": head, "arms": arms, "legs": legs}
+        return {"hip": hip, "neck": neck, "head": head, "arms": arms, "legs": legs, "f": f}
 
     def draw(self, d, S, scale, t):
         p = self.pose_now
@@ -831,7 +852,38 @@ class Actor:
                 from PIL import ImageFont
                 fnt = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", max(8, int(r * 1.6 * pop)))
                 d.text((sx, sy), sym, font=fnt, fill=col, anchor="mm")
+        for t0, t1, text in self.bubbles:
+            if t0 <= t <= t1:
+                self._bubble(d, cx, cy, r, p.f, text, min(1.0, (t - t0) / 0.18, (t1 - t) / 0.18))
         self._joints = J
+
+    def _bubble(self, d, cx, cy, r, f, text, k):
+        from PIL import ImageFont
+        size = max(10, int(r * 0.62))
+        fnt = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", size)
+        words, lines, cur = text.split(), [], ""
+        for w_ in words:                               # wrap to ~16 characters a line
+            if len(cur) + len(w_) + 1 > 18 and cur:
+                lines.append(cur)
+                cur = w_
+            else:
+                cur = (cur + " " + w_).strip()
+        lines.append(cur)
+        tw = max(d.textlength(l_, font=fnt) for l_ in lines)
+        th = size * 1.25 * len(lines)
+        pad = size * 0.6
+        bx = cx + f * r * 0.6 - (0 if f > 0 else tw + 2 * pad)
+        by = cy - r * 1.4 - th - 2 * pad
+        a = int(255 * max(0.0, k))
+        box = [bx, by, bx + tw + 2 * pad, by + th + 2 * pad]
+        tip = (cx + f * r * 0.35, cy - r * 1.05)
+        base = (bx + (tw + 2 * pad) * (0.18 if f > 0 else 0.82), by + th + 2 * pad - 2)
+        d.polygon([tip, (base[0] - size * 0.4, base[1]), (base[0] + size * 0.4, base[1])], fill=(255, 255, 255, a),
+                  outline=(30, 30, 30, a))
+        d.rounded_rectangle(box, radius=size * 0.7, fill=(255, 255, 255, a), outline=(30, 30, 30, a),
+                            width=max(2, size // 9))
+        for i, l_ in enumerate(lines):
+            d.text((bx + pad, by + pad + i * size * 1.25), l_, font=fnt, fill=(20, 20, 24, a))
 
     def hand_pos(self, which="near"):
         J = getattr(self, "_joints", None) or self.joints(self.pose_now)
@@ -958,8 +1010,7 @@ class Prop:
                 not any(fl["t0"] < k[0] <= t for k in self.keys):
             return self._fly(fl, t)
         x, y, ang = self.x, self.y, self.angle
-        held = getattr(self, "_last_held", None) or (self.x, self.y, self.angle)
-        keys = [(k[0], held[0], held[1], held[2], k[4]) if k[1] is None else k for k in self.keys]
+        keys = [(k[0], *self._key_start(i)[:3], k[4]) if k[1] is None else k for i, k in enumerate(self.keys)]
         for (ta, xa, ya, aa, _), (tb, xb, yb, ab, ek) in zip(keys, keys[1:]):
             if t >= tb:
                 x, y, ang = xb, yb, ab
@@ -974,17 +1025,17 @@ class Prop:
 
     # ---- physics -------------------------------------------------------------------------------------------
     def launch(self, t0: float, velocity, target=None, flight_time: float | None = None, bounce: float = 0.45,
-               spin: float = 0.0, world=None):
+               spin: float = 0.0, world=None, surface: float = 0.0):
         """From time t0 the object flies on gravity from wherever it is then (a hand at release, a shelf), bounces
         (losing energy each time), slides or rolls to rest. velocity: (vx, vy) m/s, or None with `target` (an (x, y)
         point or a callable t -> (x, y)) and `flight_time`, to aim it."""
         self.flights.append(dict(t0=t0, velocity=velocity, target=target, T=flight_time, bounce=bounce, spin=spin,
-                                 world=world, samples=None))
+                                 world=world, surface=surface, samples=None))
         return t0 + (flight_time or 1.0)
 
     def _fly(self, f, t):
         if f["samples"] is None:
-            start = getattr(self, "_last_held", None) or self._resting_before(f["t0"])
+            start = self._resting_before(f["t0"])      # wherever it is at that moment: a hand, or another flight
             x0, y0, a0 = start
             if f["velocity"] is not None:
                 vx, vy = f["velocity"]
@@ -993,8 +1044,10 @@ class Prop:
                 T = f["T"]
                 vx = (tgt[0] - x0) / T
                 vy = (tgt[1] - y0 + 0.5 * G * T * T) / T
-            f["samples"] = _simulate(x0, y0, a0, vx, vy, f["spin"], f["bounce"], self.w, self.h,
-                                     (f["world"].ground if f["world"] else (lambda x: 0.0)),
+            base = f["world"].ground if f["world"] else (lambda x: 0.0)
+            top = f.get("surface", 0.0)                   # a table or shelf right under where it was let go
+            ground = (lambda x: max(base(x), top if abs(x - x0) < 0.6 else 0.0)) if top else base
+            f["samples"] = _simulate(x0, y0, a0, vx, vy, f["spin"], f["bounce"], self.w, self.h, ground,
                                      friction=self.data.get("friction", 6.0))
         S = f["samples"]
         u = (t - f["t0"]) * 120
@@ -1004,6 +1057,18 @@ class Prop:
         k = u - i
         a, b = S[i], S[i + 1]
         return lerp(a[0], b[0], k), lerp(a[1], b[1], k), lerp(a[2], b[2], k)
+
+    def _key_start(self, i):
+        """Where a move that starts 'from wherever it is' begins: the object's position just before that key."""
+        cache = self.__dict__.setdefault("_key_cache", {})
+        if i not in cache:
+            saved = self.keys
+            self.keys = saved[:i]
+            try:
+                cache[i] = self._resting_before(saved[i][0])
+            finally:
+                self.keys = saved
+        return cache[i]
 
     def _resting_before(self, t):
         saved, self.flights = self.flights, [f for f in self.flights if f["t0"] < t]

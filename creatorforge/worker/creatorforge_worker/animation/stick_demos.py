@@ -216,7 +216,8 @@ def demo3(out: Path) -> Path:
     folder.data.update(grip_dx=0.18, grip_dy=-0.45)
     blue.loco.gesture(0.0, "carry", 6.0)
     t = blue.walk(0.3, -1.25, 1.2)
-    end, release = M.put_down(blue, t, folder)
+    end = M.put_down(blue, t, folder)
+    release = t + 0.45
     folder.move(release, release + 0.25, -0.35, 0.85)
     notes.append((0.6, 4.6, "A new bill on election reform arrives in Parliament."))
     # the MP opens it - out springs the process, in the wrong order

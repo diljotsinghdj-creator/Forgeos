@@ -134,7 +134,8 @@ class Char3D:
     """style: "stick" (thin black limbs, big white head) or "cartoon" (clothes, skin, hair)."""
 
     def __init__(self, name, height=1.75, style="stick", skin=(255, 255, 255), shirt=(40, 40, 46), pants=(40, 40, 46),
-                 shoes=(30, 30, 34), hair=None, hair_color=(40, 28, 20), dress=None, head_scale=1.0, lw=1.0):
+                 shoes=(30, 30, 34), hair=None, hair_color=(40, 28, 20), dress=None, head_scale=1.0, lw=1.0,
+                 ink=(25, 25, 30)):
         self.name, self.H, self.style = name, height, style
         H = height
         self.motion = rig2d.Character(rig2d.Look(height=H, head=head_scale), x=0.0)
@@ -194,7 +195,7 @@ class Char3D:
             c3.chain_count, c3.pole_angle = 2, math.radians(-90)
         # body mesh
         mats = {"skin": material(name + "_skin", srgb(*skin), 0.5, sss=0.05 if style == "cartoon" else 0.0),
-                "ink": material(name + "_ink", srgb(25, 25, 30), 0.4), "white": material(name + "_white", (0.9, 0.9, 0.9), 0.25),
+                "ink": material(name + "_ink", srgb(*ink), 0.4), "white": material(name + "_white", (0.9, 0.9, 0.9), 0.25),
                 "mouth": material(name + "_mouth", srgb(80, 18, 30), 0.6),
                 "blush": material(name + "_blush", srgb(255, 120, 140), 0.6),
                 "shirt": material(name + "_shirt", srgb(*shirt), 0.75), "pants": material(name + "_pants", srgb(*pants), 0.8),
@@ -444,7 +445,7 @@ class Char3D:
             yaw += (-math.pi / 2 - yaw) * w
         hx, hy = J["hip"]
         arm = self.arm
-        arm.location = (hx, 0, 0)
+        arm.location = (hx, (a.z_at(t) - a.z) * 8.0, 0)     # a depth step (passing someone) is a real step aside
         arm.rotation_euler = (0, 0, yaw)
         arm.keyframe_insert("location", frame=frame)
         arm.keyframe_insert("rotation_euler", frame=frame)
@@ -653,7 +654,7 @@ def render(out_dir: Path, name: str, frames: int, res=(960, 540), samples=20, au
         sc.render.use_persistent_data = True
     else:                                                                 # real-time engine: soft shadows, AO, fast
         sc.render.engine = "BLENDER_EEVEE"
-        sc.eevee.taa_render_samples = 12
+        sc.eevee.taa_render_samples = int(os.environ.get("CF_3D_TAA", "12"))
         for attr, val in (("use_shadows", True), ("use_gtao", True)):
             if hasattr(sc.eevee, attr):
                 setattr(sc.eevee, attr, val)
@@ -888,8 +889,62 @@ def demo_5(out_dir: Path) -> Path:
     return render(out_dir, "Demo5_cinematic_3D_stickman", frames, res=(1280, 544), samples=12)
 
 
+def _blocks(world, depth=(-0.9, 0.9), color=(150, 150, 158), name="stairs"):
+    """Solid 3D geometry for a stick-engine World's platforms (stairs, ledges), so feet land on real steps."""
+    mat = material(name, srgb(*color), 0.8)
+    for x0, x1, top in world.platforms:
+        bpy.ops.mesh.primitive_cube_add(location=((x0 + x1) / 2, (depth[0] + depth[1]) / 2, top / 2))
+        o = bpy.context.object
+        o.scale = ((x1 - x0) / 2, (depth[1] - depth[0]) / 2, top / 2)
+        o.data.materials.append(mat)
+
+
+def demo_f(out_dir: Path) -> Path:
+    """Stress test F: three rigged 3D stickmen moving through a 3D park - stairs up and down, a sprint and a vault over
+    a crate, sitting on a bench, reacting to each other - driven by the stick engine, filmed by a continuous camera."""
+    reset()
+    environment()
+    from .stress import testf_checked
+    actors, w, total, before, after, fixes = testf_checked(FPS)
+    print("Test F QC before:", before.summary(), "| corrections:", fixes, "| after:", after.summary())
+    _blocks(w)
+    from .stress import BENCH_X, CRATE_X
+    bpy.ops.mesh.primitive_cube_add(location=(CRATE_X, 0.0, 0.22))   # the crate
+    crate = bpy.context.object
+    crate.scale = (0.24, 0.3, 0.22)
+    crate.data.materials.append(material("crate", srgb(196, 140, 72), 0.7))
+    wood = material("bench2", srgb(150, 98, 60), 0.7)
+    for z, sx, sz, dx in ((0.43, 0.55, 0.03, 0.0), (0.2, 0.03, 0.2, -0.45), (0.2, 0.03, 0.2, 0.45)):
+        bpy.ops.mesh.primitive_cube_add(location=(BENCH_X + dx, 0.0, z))
+        o = bpy.context.object
+        o.scale = (sx, 0.22, sz)
+        o.data.materials.append(wood)
+    inks = {"Ash": (40, 90, 200), "Ivy": (200, 60, 70), "Kit": (40, 150, 80)}
+    chars = [Char3D(a.look.name, 1.75, "stick", ink=inks[a.look.name]) for a in actors]
+    t_k = max(x.t1 for x in actors[2].acts)
+    t = actors[0].loco.moves[0][1]
+    frames = int(total * FPS)
+    hips = []
+    for fr in range(1, frames + 1):
+        tt = (fr - 1) / FPS
+        for c, a in zip(chars, actors):
+            c.pose_actor(a, tt, fr, 1 / FPS)
+        hips.append([a.hip for a in actors])
+    # camera: crane down over the stairs following Ash, swing round as Kit sprints and vaults, settle on the group
+    keys = []
+    for fr in range(1, frames + 1, 3):
+        tt = (fr - 1) / FPS
+        hx = [h[0] for h in hips[fr - 1]]
+        k = rig2d.smooth((tt - (t - 3.4)) / 2.0)                       # from Ash to the action at the crate
+        mx = hx[0] * (1 - k) + (hx[2] * 0.6 + 6.5 * 0.4) * k
+        height = 3.2 - 1.6 * rig2d.smooth(tt / 4.0) + 0.3 * k
+        keys.append((fr, (mx + 1.6 - 1.0 * k, -5.4 + 0.6 * k, height), (mx + 0.4, 0.0, 1.0 + 0.2 * (1 - k))))
+    camera(keys, lens=32, fstop=4.5)
+    return render(out_dir, "TestF_3D_environment", frames, res=(1280, 544), samples=12)
+
+
 if __name__ == "__main__":
     which = (sys.argv[1] if len(sys.argv) > 1 else "D").upper()
     out = Path(sys.argv[2] if len(sys.argv) > 2 else ".").resolve()
     out.mkdir(parents=True, exist_ok=True)
-    print({"D": demo_d, "E": demo_e, "5": demo_5}[which](out))
+    print({"D": demo_d, "E": demo_e, "5": demo_5, "F": demo_f}[which](out))

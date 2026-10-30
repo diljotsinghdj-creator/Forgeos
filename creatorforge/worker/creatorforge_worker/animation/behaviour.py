@@ -66,7 +66,7 @@ class Ensemble:
         return self.timing.reaction_delay * self.pers[b].delay
 
     def apply(self) -> list[Reaction]:
-        events = sorted((t0, t1, emo, a) for a in self.actors for t0, t1, emo in a.feels)
+        events = sorted(((t0, t1, emo, a) for a in self.actors for t0, t1, emo in a.feels), key=lambda e: (e[0], e[1]))
         for t0, t1, emo, a in events:
             for b in self.actors:
                 if b is a or abs(self._x(b, t0) - self._x(a, t0)) > self.reach:

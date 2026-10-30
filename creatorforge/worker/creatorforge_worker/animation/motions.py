@@ -178,7 +178,8 @@ def put_down(a: Actor, t: float, prop, at_dx: float = 0.35, on: float = 0.0) -> 
         if c[0] <= t + 0.45 <= c[1] and c[2] is a:
             prop.carriers[i] = (c[0], t + 0.45, a, c[3])
     a.loco.gestures = [(g0, min(g1, t), n) if n == "carry" else (g0, g1, n) for g0, g1, n in a.loco.gestures]
-    return end, (t + 0.45)
+    prop.launch(t + 0.45, (0.0, 0.0), bounce=0.15, world=a.world, surface=on)     # settles onto the surface
+    return end
 
 
 def point_at(a: Actor, t: float, target, dur: float = 1.6, hand: str = "near") -> float:
