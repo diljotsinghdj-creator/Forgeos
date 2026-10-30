@@ -414,9 +414,11 @@ def stage_scene(scene: dict, state: worldstate.WorldState, fps: int = 30, qualit
                 sc.voiced[round(t0, 3)] = secs
             VR.stage(sc, plan, t0, t0 + dur, x=a.hips_x(t0) + st.get("x", 3.2) if a is not None and st.get("near")
                      else st.get("x", 3.2))
+            if st.get("cite") and not plan.sourced and st.get("sources"):
+                plan.sourced, plan.note = True, "cited by the editor: " + "; ".join(x["source"] for x in st["sources"])
             sc.visual_plans = getattr(sc, "visual_plans", []) + [plan]
-            if st.get("caption", True):
-                notes.append((t0, t0 + dur, st["text"]))
+            if st.get("caption", True):                # the subtitle may be another language than the reasoning
+                notes.append((t0, t0 + dur, st.get("subtitle", st["text"])))
             end = t0 + dur
         elif do == "caption":                          # narration on screen; hold=True waits for it to be read
             dur = st.get("dur") or max(2.6, 0.062 * len(st["text"]) + 1.0)
@@ -427,7 +429,11 @@ def stage_scene(scene: dict, state: worldstate.WorldState, fps: int = 30, qualit
                 sc.voiced[round(t0, 3)] = secs
             notes.append((t0, t0 + dur, st["text"]))
             from . import visual_reasoning as VR      # narration is audited too: facts need sources
-            sc.visual_plans = getattr(sc, "visual_plans", []) + [VR.reason(st["text"], st.get("sources"))]
+            plan = VR.reason(st.get("reason_text", st["text"]), st.get("sources"))
+            if st.get("cite") and not plan.sourced and st.get("sources"):     # linked by hand (e.g. a Hinglish
+                plan.sourced = True                                            # line citing an English document)
+                plan.note = "cited by the editor: " + "; ".join(x["source"] for x in st["sources"])
+            sc.visual_plans = getattr(sc, "visual_plans", []) + [plan]
             end = t0 + dur if st.get("hold") else t0
         elif do == "wait":
             end = t0 + st.get("dur", 1.0)

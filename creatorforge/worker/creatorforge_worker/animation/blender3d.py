@@ -963,7 +963,38 @@ def asset_mesh(asset: dict, x: float, y: float, depth: float | None = None, name
     return objs
 
 
-def demo_g(out_dir: Path) -> Path:
+def _dusk(frames: int, lamps: list):
+    """Dynamic lighting over the shot: the sun sinks and warms toward sunset, the sky dims, and the lamp posts
+    switch on and glow brighter as the light goes (keyframed: sun angle, energy and colour, sky colour and
+    strength, lamp light energy)."""
+    sun = next(o for o in bpy.data.objects if o.type == "LIGHT" and o.data.type == "SUN")
+    bg = bpy.context.scene.world.node_tree.nodes["Background"]
+    pts = []
+    for x, y, z in lamps:
+        bpy.ops.object.light_add(type="POINT", location=(x, y, z))
+        p = bpy.context.object
+        p.data.color = (1.0, 0.78, 0.45)
+        p.data.shadow_soft_size = 0.25
+        pts.append(p)
+    for fr, k in ((1, 0.0), (int(frames * 0.45), 0.45), (frames, 1.0)):
+        sun.rotation_euler = Euler((math.radians(52 + 28 * k), math.radians(-18), math.radians(-35 - 30 * k)))
+        sun.data.energy = 3.2 * (1 - 0.72 * k)
+        sun.data.color = (1.0, 1.0 - 0.32 * k, 1.0 - 0.6 * k)
+        sun.keyframe_insert("rotation_euler", frame=fr)
+        sun.data.keyframe_insert("energy", frame=fr)
+        sun.data.keyframe_insert("color", frame=fr)
+        top = srgb(170, 205, 240)
+        dusk = srgb(240, 150, 110)
+        bg.inputs["Color"].default_value = (*(a + (b - a) * k for a, b in zip(top, dusk)), 1)
+        bg.inputs["Strength"].default_value = 0.9 - 0.55 * k
+        bg.inputs["Color"].keyframe_insert("default_value", frame=fr)
+        bg.inputs["Strength"].keyframe_insert("default_value", frame=fr)
+        for p in pts:
+            p.data.energy = 0.0 if k < 0.3 else 140.0 * (k - 0.3) / 0.7
+            p.data.keyframe_insert("energy", frame=fr)
+
+
+def demo_g(out_dir: Path, dusk: bool = False, name: str = "Benchmark_3D_multi_character") -> Path:
     """Acceptance benchmark: four characters in a 3D park (bench3d): a game of catch with a real projectile, a
     long throw that bounces away, a passer-by who returns it, a spectator on a bench - with generated library assets
     (a car and lamp posts) extruded into closed meshes for the set."""
@@ -1015,11 +1046,14 @@ def demo_g(out_dir: Path) -> Path:
         look = tuple(sum(k[2][j] for k in win) / len(win) for j in range(3))
         sm.append((keys[i][0], pos, look))
     camera(sm, lens=30, fstop=5.6)
-    return render(out_dir, "Benchmark_3D_multi_character", frames, res=(960, 408), samples=4)
+    if dusk:
+        _dusk(frames, [(-3.8, 1.95, 3.45), (6.0, 1.95, 3.45)])   # just under the lamp heads
+    return render(out_dir, name, frames, res=(960, 408), samples=4)
 
 
 if __name__ == "__main__":
     which = (sys.argv[1] if len(sys.argv) > 1 else "D").upper()
     out = Path(sys.argv[2] if len(sys.argv) > 2 else ".").resolve()
     out.mkdir(parents=True, exist_ok=True)
-    print({"D": demo_d, "E": demo_e, "5": demo_5, "F": demo_f, "G": demo_g}[which](out))
+    test4 = lambda o: demo_g(o, dusk=True, name="Test4_cinematic_3D")   # noqa: E731
+    print({"D": demo_d, "E": demo_e, "5": demo_5, "F": demo_f, "G": demo_g, "H": test4}[which](out))

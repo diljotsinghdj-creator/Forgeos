@@ -21,6 +21,7 @@ How it reads a sentence (rule-based on purpose: free, offline, predictable, and 
 from __future__ import annotations
 
 import json
+import math
 import re
 from dataclasses import asdict, dataclass, field
 
@@ -79,6 +80,10 @@ VERBS = [
     (r"\blands?\b(?! at the same)|\blanded\b|\bswoops?\b|\bflies (?:in|down)", "land"),
     (r"\brows?\b|\browed\b|\bpaddles?\b|\bsails?\b|\bdrives?\b|\brides?\b|\bcycles?\b", "ride"),
     (r"\blaugh(?:s|ed)?\b|\bgiggl\w*", "laugh"),
+    (r"\b(?:cooks?|bakes?|stirs?|chops?|kneads?|washes|wash|cleans?|fix(?:es)?|repairs?|types?|paints?|sews?)\b",
+     "handwork"),
+    (r"\b(?:sneez\w*|cough\w*|yawn\w*|hiccup\w*)\b", "reflex"),
+    (r"\bknocks? (?:over|down|off)\b|\bknocked\b|\bspills?\b|\btips? over\b", "knock"),
 ]
 ROLE_NOUNS = r"baker|student|teacher|friend|friends|customer|customers|king|queen|scientist|astronaut|soldier|worker|" \
              r"workers|people|crowd|farmer|doctor|child|children|man|woman|boy|girl|officer|leader|voters?|everyone|" \
@@ -422,7 +427,7 @@ def stage(board: Storyboard, beat_index: int | None = None):
 
 
 SMALL = r"fish|basket|bag|cup|phone|book|key|hat|coin|flower|letter|bottle|ball|box|plate|apple|umbrella|parcel|gift|" \
-        r"bread|cake|toy|stick|net"
+        r"bread|cake|toy|stick|net|flour|sugar|salt|milk|jar|pot|pan|vase|glass|bowl|cup|plate|slice|bottle|book|pen"
 VEHICLES = ("boat", "car", "bus", "bicycle")
 
 
@@ -465,7 +470,8 @@ class _Stuff:
         kind = self.A.parse(phrase)["kind"]
         big = not small and kind not in VEHICLES
         a = self._asset(phrase, head, small, big)
-        z = 1.0 if small or kind in VEHICLES else 1.6
+        furniture = bool(set(a.get("uses", [])) & {"sit", "stand_on", "put_on"})
+        z = 1.0 if small or kind in VEHICLES or furniture else 1.6      # furniture stands where people can use it
         p = self._prop(a, x, y, z, head)
         p.data["kind"] = kind or ""
         self.things[head] = p
@@ -516,6 +522,8 @@ class _Stuff:
 
     def animal_do(self, act, t, actors, b):
         p = self.animals[act["who"]]
+        if p.keys:                                     # finish the move it is making before the next one
+            t = max(t, max(k[0] for k in p.keys))
         v = act["verb"]
         tgt = actors.get(act["target"]) if act["target"] else None
         x, y, _ = p.pos(t)
@@ -563,12 +571,42 @@ class _Stuff:
                 tgt.look_at(t, t + 3.0, p)
                 tgt.loco.express(t + 1.8, "happy", 0.3)
             return t + 2.4
+        if v in ("jump", "climb") and b.things:          # onto the first thing the line names that has a top
+            for phrase in b.things:
+                th = self.things.get(re.sub(r"'s$", "", phrase.split()[-1].lower()))
+                if th is None and not re.fullmatch(SMALL, phrase.split()[-1].lower()):
+                    th = self.thing(phrase, x + 1.2)
+                if th is not None and th.z <= 1.05:
+                    top = th.h
+                    self.move(p, t, t + 0.25, x, y + 0.05, "out")          # crouch... and spring
+                    self.move(p, t + 0.25, t + 0.85, th.pos(t)[0] - 0.1, top, "out")
+                    self.log.append(f"{p.name} jumps onto the {th.name}")
+                    return t + 1.0
+        if v == "knock":                               # whatever small thing is named goes over the edge
+            obj = self._small(b, x + 0.5)
+            if obj is not None:
+                ox, oy, _ = obj.pos(t)
+                self.move(p, t, t + 0.5, ox - 0.25, y)
+                obj.launch(t + 0.5, (0.9, 0.6), bounce=0.25, world=self.w)
+                self.log.append(f"{p.name} knocks the {obj.name} over")
+                return t + 1.4
+        if v == "hide":                                # to the far side of the named thing, out of the way
+            th = next((self.things[k] for k in (re.sub(r"'s$", "", ph.split()[-1].lower()) for ph in b.things)
+                       if k in self.things), None)
+            if th is not None:
+                self.move(p, t, t + 0.9, th.pos(t)[0] + th.w * 0.2, 0.0)
+                self.log.append(f"{p.name} hides by the {th.name} (not behind it: depth hiding is not modelled)")
+                return t + 1.1
         if v in ("walk", "run", "chase"):
             self.move(p, t, t + 1.6, x + 2.5, y)
             return t + 1.7
         return t + 0.8
 
     def handles(self, act, who, actors, b) -> bool:
+        if act["verb"] in ("handwork", "reflex"):
+            return True
+        if act["verb"] == "pick" and act["target"] in self.animals:
+            return True
         if act["verb"] == "chase":
             return act["target"] in self.animals
         if act["verb"] == "ride":
@@ -581,6 +619,39 @@ class _Stuff:
         v = act["verb"]
         x = a.hips_x(t)
         f = a._facing_at_build(t)
+        if v == "handwork":                            # busy hands at a surface: a table if the line names one
+            surf = next((self.things[k] for k in self.things if k in ("table", "desk", "counter", "bench")), None)
+            if surf is None:
+                surf = self.thing("table", x + 0.75 * f)
+            d = 1.0 if surf.pos(t)[0] > x else -1.0
+            if abs(surf.pos(t)[0] - x) > 0.9:
+                t = a.walk(t, surf.pos(t)[0] - d * 0.75, 1.0)
+            hy = surf.h + 0.12
+            work = lambda k: (lambda tt, k=k: (surf.pos(tt)[0] - d * 0.15 + 0.08 * math.sin(tt * 7 + k), hy +   # noqa: E731
+                                                0.04 * math.sin(tt * 9 + k)))
+            a.reach(t, t + 2.4, work(0.0), work(1.6))
+            a.posture(t, t + 2.4, lean=0.3, crouch=0.0)
+            a.look_at(t, t + 2.4, (surf.pos(t)[0], surf.h))
+            self.log.append(f"{a.look.name} works with both hands at the {surf.name}")
+            return t + 2.5
+        if v == "reflex":                              # a sneeze/cough: the build-up, the burst, the recovery
+            from . import comedy
+            line = act.get("line", "")
+            a.say_symbol(t + 0.45, t + 1.4, "Achoo!" if re.search(r"sneez", line, re.I) else
+                         "*yawn*" if re.search(r"yawn", line, re.I) else "*hic*" if re.search(r"hiccup", line, re.I)
+                         else "*cough*")
+            end = comedy.take(a, t)
+            self.log.append(f"{a.look.name}: {line.split(',')[0][:40]} (a take with a sound word)")
+            return end + 0.2
+        if v == "pick" and act["target"] in self.animals:      # picking up an animal: it rides in the arms
+            p = self.animals[act["target"]]
+            px = p.pos(t)[0]
+            d = 1.0 if px > x else -1.0
+            end = a.walk(t, px - d * 0.45, 1.0) if abs(px - x) > 0.7 else t
+            from . import motions as MM
+            end = MM.pick_up(a, end + 0.05, p)
+            self.log.append(f"{a.look.name} picks up the {p.name}")
+            return end + 0.1
         if v == "laugh":
             a.gesture(t, "laugh", 1.6)
             a.feel(t, t + 1.8, "laugh")

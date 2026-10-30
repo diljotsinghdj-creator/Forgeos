@@ -307,6 +307,110 @@ def political() -> dict:
     return {"title": "Who Picks the Referee?", "fps": 24, "scenes": [p1, p2, p3, p4, p5, p6, p7, p8]}
 
 
+# ---- 2b. the political explainer in Hinglish (Stickman Universe 2.0, Test 1) ----------------------------------------
+HINGLISH = {   # English line -> (Roman Hinglish subtitle, Devanagari + English words for the Hindi voice)
+    "India's Election Commission runs elections to Parliament and the state legislatures.":
+        ("India ka Election Commission Parliament aur rajyon ki vidhan sabhaon ke chunav karata hai.",
+         "India का Election Commission Parliament और राज्यों की विधानसभाओं के चुनाव कराता है।"),
+    "Like a referee, it is meant to be neutral. So who chooses the referee?":
+        ("Ek referee ki tarah, ise nishpaksh rehna hai. To referee chunta kaun hai?",
+         "एक referee की तरह, इसे निष्पक्ष रहना है। तो referee चुनता कौन है?"),
+    "Under Article 324(2), the President appoints the election commissioners, subject to any law made by Parliament.":
+        ("Article 324(2) ke tahat President election commissioners ko appoint karte hain - Parliament ke kisi bhi "
+         "kanoon ke adheen.",
+         "Article 324(2) के तहत President election commissioners को appoint करते हैं, Parliament के किसी भी क़ानून के "
+         "अधीन।"),
+    "For 73 years Parliament made no such law, so in practice the government of the day decided.":
+        ("73 saal tak Parliament ne aisa koi kanoon nahin banaya, isliye asal mein us waqt ki sarkar faisla karti thi.",
+         "तिहत्तर साल तक Parliament ने ऐसा कोई क़ानून नहीं बनाया, इसलिए असल में उस वक़्त की सरकार फ़ैसला करती थी।"),
+    "In March 2023 the Supreme Court said: until Parliament makes a law, a panel of the Prime Minister, the Leader of "
+    "the Opposition and the Chief Justice will choose.":
+        ("March 2023 mein Supreme Court ne kaha: jab tak Parliament kanoon nahin banati, Prime Minister, Leader of "
+         "Opposition aur Chief Justice ka panel chunega.",
+         "March दो हज़ार तेईस में Supreme Court ने कहा: जब तक Parliament क़ानून नहीं बनाती, Prime Minister, Leader of "
+         "Opposition और Chief Justice का panel चुनेगा।"),
+    "In December 2023 Parliament passed that law - and replaced the Chief Justice with a Union Cabinet Minister chosen "
+    "by the Prime Minister.":
+        ("December 2023 mein Parliament ne woh kanoon paas kiya - aur Chief Justice ki jagah Prime Minister ka chuna "
+         "hua ek Union Cabinet Minister rakh diya.",
+         "December दो हज़ार तेईस में Parliament ने वो क़ानून पास किया, और Chief Justice की जगह Prime Minister का चुना "
+         "हुआ एक Union Cabinet Minister रख दिया।"),
+    "So the government side now holds two of the three seats.":
+        ("Yaani ab teen mein se do seats sarkar ki taraf hain.", "यानी अब तीन में से दो seats सरकार की तरफ़ हैं।"),
+    "Both positions paraphrased from the public debate":
+        ("Dono paksh public debate se paraphrase kiye gaye hain", "दोनों पक्ष public debate से लिए गए हैं।"),
+    "17 February 2025: Gyanesh Kumar was named Chief Election Commissioner.":
+        ("17 February 2025: Gyanesh Kumar ko Chief Election Commissioner banaya gaya.",
+         "सत्रह February दो हज़ार पच्चीस: Gyanesh Kumar को Chief Election Commissioner बनाया गया।"),
+    "Leader of Opposition Rahul Gandhi had submitted a dissent note; the Congress had asked for a delay until the "
+    "Supreme Court ruled.":
+        ("Leader of Opposition Rahul Gandhi ne dissent note diya tha; Congress ne Supreme Court ke faisle tak rukne ko "
+         "kaha tha.",
+         "Leader of Opposition Rahul Gandhi ने dissent note दिया था; Congress ने Supreme Court के फ़ैसले तक रुकने को "
+         "कहा था।"),
+    "As reported in February 2025, challenges to the law were pending before the Supreme Court.":
+        ("February 2025 ki report ke mutabik, is kanoon ke khilaaf yachikayein Supreme Court mein lambit thin.",
+         "February दो हज़ार पच्चीस की report के मुताबिक़, इस क़ानून के ख़िलाफ़ याचिकाएँ Supreme Court में लंबित थीं।"),
+    "Sources: Constitution Art. 324; Anoop Baranwal v. Union of India (2023); the 2023 Act; Scroll.in.":
+        ("Sources: Constitution Art. 324; Anoop Baranwal v. Union of India (2023); 2023 ka Act; Scroll.in.",
+         "स्रोत: Constitution का Article 324, Anoop Baranwal case, 2023 का Act, और Scroll."),
+}
+HINGLISH_BUBBLES = {"Critics: can one side pick the referee?": "Critics: kya ek team referee chun sakti hai?",
+                    "Supporters: the Court's panel was only until Parliament made a law.":
+                        "Supporters: Court ka panel sirf tab tak tha jab tak Parliament kanoon na banaye.",
+                    "We picked the ref!": "Ref humne chuna!", "Parliament said you could?": "Parliament ne ijaazat di?",
+                    "Exactly!": "Bilkul!"}
+
+
+def political_hinglish() -> dict:
+    """Test 1: the political explainer narrated in Hinglish (Hindi voice reading Devanagari with English terms;
+    Roman-script subtitles), sources cited per line, the headline pushed into and dissolved into real footage."""
+    import copy as _copy
+    doc = _copy.deepcopy(political())
+    doc["title"] = "Referee kaun chunta hai?"
+    missing = []
+    for sc in doc["scenes"]:
+        for st in sc["steps"]:
+            if st["do"] in ("caption", "visual"):
+                hi = HINGLISH.get(st["text"])
+                if not hi:
+                    missing.append(st["text"])
+                    continue
+                if not st["text"].startswith("Sources:"):     # the source list is read on screen, not aloud
+                    st["voice"] = {"lang": "hi", "say": hi[1], "rate": 168}
+                if st["do"] == "visual":
+                    st["subtitle"] = hi[0]                     # reasoning stays on the English line
+                else:
+                    st["reason_text"], st["text"] = st["text"], hi[0]
+                if st.get("sources"):
+                    st["cite"] = True
+            elif st["do"] == "say":
+                st["text"] = HINGLISH_BUBBLES.get(st["text"], st["text"])
+            elif st["do"] == "line":
+                for ln in st["lines"]:
+                    ln["text"] = HINGLISH_BUBBLES.get(ln["text"], ln["text"])
+    if missing:
+        raise ValueError(f"no Hinglish for: {missing}")
+    doc["scenes"] = [s_ for s_ in doc["scenes"] if s_["id"] != "p7"]      # Test 1 asks for no satire beat
+    p6 = next(s_ for s_ in doc["scenes"] if s_["id"] == "p6")
+    p6["outro"] = {"push_into": "scroll", "dur": 1.4}
+    i = doc["scenes"].index(p6)
+    doc["scenes"].insert(i + 1, {"id": "p6f", "name": "Real footage", "footage": str(REAL / "footage_portrait.mp4"),
+                                 "start": 0.0, "dur": 5.5, "credit": "from the Print Facts report on the CEC appointment",
+                                 "transition": {"kind": "dissolve", "dur": 0.6}})
+    doc["scenes"][i + 2]["transition"] = {"kind": "dissolve", "dur": 0.5}
+    return doc
+
+
+def voice_all(doc: dict, lang: str = "en", rate: int = 150) -> dict:
+    """Narrates every caption that has no voice yet (the same words as the subtitle)."""
+    for sc in doc["scenes"]:
+        for st in sc.get("steps", []):
+            if st.get("do") in ("caption", "visual") and not st.get("voice") and st.get("caption", True) is not False:
+                st["voice"] = {"lang": lang, "say": st.get("subtitle", st["text"]), "rate": rate}
+    return doc
+
+
 # ---- 3. psychology explainer ----------------------------------------------------------------------------------------------
 def psychology() -> dict:
     noor = lambda x, f=1: cast("Noor", TEAL, x, f, faceless=False, personality="timid", height=1.65)   # noqa: E731
@@ -613,7 +717,9 @@ UNFAMILIAR = ("Old Tomas the fisherman rows his boat to the harbour at dawn. A c
               "steals a fish. Tomas chases the pelican past the lighthouse and the market stalls. The pelican drops "
               "the fish into a little girl's basket. Tomas laughs and gives her the fish.")
 
-DOCS = {"comedy": comedy, "political": political, "psychology": psychology, "documentary": documentary}
+DOCS = {"comedy": comedy, "political": political, "psychology": psychology, "documentary": documentary,
+        "test1_political_hinglish": political_hinglish,
+        "test3_psychology_narrated": lambda: voice_all(psychology(), "en")}
 
 
 # ---- running and reporting --------------------------------------------------------------------------------------------------
@@ -673,6 +779,8 @@ def run(name: str, out_dir: Path, quality: str = "preview", workers: int = 2) ->
     out.mkdir(parents=True, exist_ok=True)
     if name == "unfamiliar":
         return run_unfamiliar(out)
+    if name == "test5_universal":
+        return run_universal(out)
     doc = DOCS[name]()
     (out / "doc.json").write_text(json.dumps(doc, indent=1))
     t0 = time.time()
@@ -698,13 +806,36 @@ def run(name: str, out_dir: Path, quality: str = "preview", workers: int = 2) ->
         "scenes": rep["scenes"], "critic": reviews,
         "sourcing": {"plans": [{"sentence": p.sentence, "mode": p.mode, "label": p.label, "sourced": p.sourced,
                                 "note": p.note} for p in plans], "audit": VR.audit(plans)},
-        "video": rep["video"], "files": rep["files"],
+        "video": rep["video"], "delivery": rep.get("delivery"), "subtitles": rep.get("subtitles"), "files": rep["files"],
         "timing": {"staging_and_review_s": round(stage_s, 1), "render_s": rep["render_seconds"]},
         "qc_clean_scenes": sum(1 for s in rep["scenes"] if s["qc"].startswith(("clean", "real footage"))),
         "continuity_issues": sum(len(s["continuity"]) for s in rep["scenes"]),
     }
     (out / "report.json").write_text(json.dumps(report, indent=1, default=str))
     return report
+
+
+FLOUR = ("Grandma Rosa bakes bread in her tiny kitchen. Her cat jumps onto the table and knocks over the flour. Rosa "
+         "sneezes, and white flour covers everything. The cat hides under a chair. Rosa laughs, picks up the cat, and "
+         "they share a warm slice by the window.")
+
+
+def run_universal(out: Path) -> dict:
+    """Test 5: two scripts the studio was not written for, straight through the director, narrated."""
+    from . import studio
+    res = {}
+    for name, script, title in (("flour", FLOUR, "Flour"), ("pelican", UNFAMILIAR, "The Pelican")):
+        t0 = time.time()
+        rep = studio.film(script, out / f"{name}.mp4", title, voice={"lang": "en", "rate": 150}, quality="preview")
+        doc = json.loads((out / f"{name}.doc.json").read_text())
+        _storyboard(out / f"{name}.mp4", doc, [s["seconds"] for s in rep["scenes"]], out / f"{name}_storyboard.png")
+        res[name] = {"script": script, "seconds": round(sum(s["seconds"] for s in rep["scenes"]), 1),
+                     "qc": [s["qc"] for s in rep["scenes"]], "continuity": sum(len(s["continuity"]) for s in rep["scenes"]),
+                     "framing": [s.get("camera", {}).get("framing") for s in rep["scenes"]],
+                     "notes": rep["notes"], "assets": rep["assets"], "video": rep["video"], "delivery": rep["delivery"],
+                     "subtitles": rep["subtitles"], "render_s": round(time.time() - t0, 1)}
+    (out / "report.json").write_text(json.dumps(res, indent=1, default=str))
+    return res
 
 
 def run_unfamiliar(out: Path) -> dict:

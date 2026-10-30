@@ -27,7 +27,7 @@ from . import visual_reasoning as VR
 
 WEATHER = [(r"\b(stops? raining|rain stops|sun comes out|clears? up)\b", "clear"),
            (r"\b(thunder\w*|lightning|storm\w*)\b", "storm"), (r"\b(rain\w*|downpour|drizzl\w*|monsoon)\b", "rain"),
-           (r"\b(snow\w*|blizzard)\b", "snow"), (r"\b(wind\w*|gale|breez\w*)\b", "wind")]
+           (r"\b(snow\w*|blizzard)\b", "snow"), (r"\b(wind|winds|windy|gale|breez\w*|gust\w*)\b", "wind")]
 TIME_OF_DAY = [(r"\b(dawn|sunrise|early morning)\b", "dawn"), (r"\b(sunset|dusk|evening)\b", "dusk"),
                (r"\b(night\w*|midnight|dark)\b", "night"), (r"\b(morning|noon|afternoon|daylight)\b", "day")]
 BODY = [[40, 110, 200], [200, 70, 110], [60, 150, 90], [230, 140, 30], [120, 80, 170], [60, 60, 60]]
@@ -117,6 +117,13 @@ def make(script: str, title: str = "", sources: list | None = None, voice: dict 
         if v:
             line_step["voice"] = v
         steps.append(line_step)
+        subj_rx = "|".join(re.escape(n) for n in list(cast) + ["he", "she", "it", "they", "He", "She", "It", "They"])
+        for m in re.finditer(rf"\b(?:(?:{subj_rx})\b(?:\s+\w+ly)?\s+([a-z]+(?:es|s|ed))|(?:they|we|and they)\s+([a-z]{{3,}}))\b",
+                             b.narration, re.I):
+            w = (m.group(1) or m.group(2)).lower()
+            if not any(re.search(rx, w, re.I) for rx, _ in SB.VERBS) and w not in ("is", "was", "has", "does", "goes", "are",
+                                                                                         "were", "have", "the", "all"):
+                notes["limitations"].append(f"line {i + 1}: '{w}' is not an action the studio can animate yet")
         acts = b.actions
         if wx and wx != "clear" and all(a["verb"] in ("think", "explain") for a in acts):
             acts = []                                  # nobody does anything - the weather happens to them
@@ -133,7 +140,7 @@ def make(script: str, title: str = "", sources: list | None = None, voice: dict 
                 steps.append({"t": "+0.2", "do": "say", "who": a["who"], "text": a["line"]})
                 continue
             steps.append({"t": "+0.2", "do": "act", "who": a["who"], "verb": a["verb"], "target": a["target"],
-                          "things": b.things})
+                          "things": b.things, "line": b.narration})
             if a["verb"] in ("explain", "think") and len(b.actions) == 1 and not b.metaphors:
                 notes["decisions"].append(f"line {i + 1}: no physical action named - "
                                           f"{a['who']} {'explains' if a['verb'] == 'explain' else 'thinks'} it")
