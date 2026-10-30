@@ -136,7 +136,11 @@ def review(R, sc, plan=None, video: dict | None = None) -> Review:
                 break
     # dead air: nobody moves more than 2 cm and nobody speaks for 2.5 s
     win = int(2.5 * R.fps)
-    speaking = [any(t0 <= t <= t1 for a in R.actors for t0, t1, _ in a.bubbles) for t in R.times]
+    voice = [(t0, t0 + 3.0) for t0, _ in getattr(sc, "narration", [])]     # voice-over counts as sound
+    voice = [(a_, a_ + d) for a_, d in ((t0, getattr(sc, "voiced", {}).get(round(t0 - 0.15, 3), 3.0))
+                                        for t0, _ in getattr(sc, "narration", []))] or voice
+    speaking = [any(t0 <= t <= t1 for a in R.actors for t0, t1, _ in a.bubbles) or
+                any(v0 <= t <= v1 for v0, v1 in voice) for t in R.times]
     n = win
     while n < len(R.times):
         quiet = not any(speaking[n - win:n + 1])

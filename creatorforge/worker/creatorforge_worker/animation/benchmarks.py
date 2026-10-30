@@ -89,7 +89,7 @@ def bars(t0, values, gap=0.5):
 
 
 def chart(name, x, title, labels, values, colors, source, t0, frame=None, w=2.8, h=2.0):
-    p = {"name": name, "kind": "chart", "x": x, "y": 0.0, "w": w, "h": h,
+    p = {"name": name, "kind": "chart", "x": x, "y": 0.45, "w": w, "h": h,       # above the subtitle band
          "data": {"title": title, "bars": [[l_, c] for l_, c in zip(labels, colors)], "max": max(values) * 1.4,
                   "source": source, **bars(t0, values)}}
     if frame:
@@ -163,6 +163,14 @@ SRC = {
     "mar2024": {"claim": "Gyanesh Kumar and Sukhbir Singh Sandhu were appointed election commissioners in March 2024, "
                          "the first appointments under the new law", "source": "Notification of 14 March 2024 (as reported)"},
 }
+
+
+def _presenters(doc: dict) -> dict:
+    """The Guide presents: gestures along with the narration when not doing anything else."""
+    for sc in doc["scenes"]:
+        if any(c.get("name") == "Guide" for c in sc.get("cast", [])):
+            sc["presenter"] = "Guide"
+    return doc
 
 
 # ---- 1. comedy ------------------------------------------------------------------------------------------------------------
@@ -252,8 +260,8 @@ def political() -> dict:
         step("visual", t=0.3, text="Under Article 324(2), the President appoints the election commissioners, subject "
              "to any law made by Parliament.", sources=[SRC["art324_2"]], dur=6.5, x=1.2),
         step("point", "Guide", t="-5.6", at=[1.0, 1.6], dur=1.6, wait=False),
-        narrate("For 73 years Parliament made no such law, so in practice the government of the day decided.",
-                "Guide", "explain", sources=[SRC["nolaw"]]),
+        step("visual", t="+0.2", text="For 73 years Parliament made no such law, so in practice the government of the "
+             "day decided.", sources=[SRC["nolaw"]], dur=6.0, x=1.6),
     ])
     p3 = scene("p3", "The Court steps in", [G(-2.2)],
                [chart("court", 1.4, "Panel ordered by the Supreme Court (2023)", ["Prime Minister", "Leader of Opp.",
@@ -302,9 +310,10 @@ def political() -> dict:
         narrate("As reported in February 2025, challenges to the law were pending before the Supreme Court.", "Guide",
                 "explain", t=0.4, sources=[SRC["scroll_defer"]]),
         narrate("Sources: Constitution Art. 324; Anoop Baranwal v. Union of India (2023); the 2023 Act; Scroll.in.",
-                "Guide", "wave", dur=4.0),
+                "Guide", "wave", dur=7.0),
     ])
-    return {"title": "Who Picks the Referee?", "fps": 24, "scenes": [p1, p2, p3, p4, p5, p6, p7, p8]}
+    doc = {"title": "Who Picks the Referee?", "fps": 24, "scenes": [p1, p2, p3, p4, p5, p6, p7, p8]}
+    return _presenters(doc)
 
 
 # ---- 2b. the political explainer in Hinglish (Stickman Universe 2.0, Test 1) ----------------------------------------
@@ -709,7 +718,7 @@ def documentary() -> dict:
              "d14", "dE", "d15", "dF", "d16"]
     by = {s_["id"]: s_ for s_ in D}
     D = [by[k] for k in order]
-    return {"title": "The Referee", "fps": 24, "scenes": D}
+    return _presenters({"title": "The Referee", "fps": 24, "scenes": D})
 
 
 # ---- 6. unfamiliar script ---------------------------------------------------------------------------------------------------

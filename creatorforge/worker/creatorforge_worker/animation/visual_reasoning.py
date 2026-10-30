@@ -45,7 +45,8 @@ ALLEGATION = re.compile(r"\b(corrupt\w*|brib\w*|scam|fraud|launder\w*|kickback|e
                         r"kickbacks?|siphon\w*)\b", re.I)
 SATIRE_CUE = re.compile(r"\b(satire|imagine if|as if|apparently|of course,|supposedly|mock)\b", re.I)
 PAST_EVENT = re.compile(r"\b(in|on|by)\s+(1[0-9]{3}|20[0-2][0-9])\b|\bcentury\b", re.I)
-NUMBER = re.compile(r"(\d[\d,.]*)\s*(%|per cent|percent|crore|lakh|rupees|dollars|million|billion)?", re.I)
+NUMBER = re.compile(r"(\d[\d,.]*)\s*(%|per cent|percent|crore|lakh|rupees|dollars|million|billion|years?|months?|"
+                    r"days?|seats?|members?)?", re.I)
 
 CONCEPTS = [
     # (pattern, concept, mode, elements)
@@ -125,7 +126,7 @@ def _relations(s: str) -> dict:
     m = VERB_REL.search(s)
     if not m:
         return {}
-    a = m.group("a").replace("The ", "").strip()
+    a = re.sub(r"^(?:the|The)\s+", "", m.group("a")).strip()
     b = re.sub(r"^(two of the three members of )?(the )?", "", m.group("b").strip(), flags=re.I)
     b = b[:1].upper() + b[1:]
     return {"nodes": [[a, 0.2, 0.75], [b, 0.8, 0.25]], "edges": [[0, 1, m.group("v")]]}

@@ -1033,19 +1033,24 @@ def demo_g(out_dir: Path, dusk: bool = False, name: str = "Benchmark_3D_multi_ch
         bobj.keyframe_insert("rotation_euler", frame=fr)
         hips.append([a.hip[0] for a in actors] + [bx])
     keys = []
-    for fr in range(1, frames + 1, 3):                 # a wide shot that keeps the game and the ball in frame
-        xs = hips[fr - 1]
-        lo, hi = min(xs[0], xs[1], xs[4]), max(xs[0], xs[1], xs[4])
+    for fr in range(1, frames + 1, 3):                 # eye level, following the play: the two players and the ball,
+        ash_x, ivy_x, kit_x, mo_x, bx = hips[fr - 1]   # and Mo once the ball reaches him; never a far-off wide shot
+        core = [ash_x, ivy_x, bx]
+        if abs(mo_x - bx) < 4.5:
+            core.append(mo_x)
+        if max(core) - min(core) > 9.0:                # too wide for the lens: follow where the ball is going
+            core = [x for x in core if abs(x - bx) < 7.5] or [bx]
+        lo, hi = min(core), max(core)
         mx = (lo + hi) / 2
-        dist = max(7.0, (hi - lo) * 0.9 + 4.5)
-        keys.append((fr, (mx + 1.2, -dist, 1.9 + 0.08 * dist), (mx, 0.0, 0.95)))
-    sm = []                                            # ease the camera: a running average of the keys
+        dist = max(6.0, min(10.0, 4.8 + 0.62 * (hi - lo)))
+        keys.append((fr, (mx + 0.9, -dist, 1.4), (mx, 0.0, 1.15)))
+    sm = []                                            # ease the camera: a running average of the keys (~2 s)
     for i in range(len(keys)):
-        win = keys[max(0, i - 4):i + 5]
+        win = keys[max(0, i - 5):i + 6]
         pos = tuple(sum(k[1][j] for k in win) / len(win) for j in range(3))
         look = tuple(sum(k[2][j] for k in win) / len(win) for j in range(3))
         sm.append((keys[i][0], pos, look))
-    camera(sm, lens=30, fstop=5.6)
+    camera(sm, lens=32, fstop=5.6)
     if dusk:
         _dusk(frames, [(-3.8, 1.95, 3.45), (6.0, 1.95, 3.45)])   # just under the lamp heads
     return render(out_dir, name, frames, res=(960, 408), samples=4)
