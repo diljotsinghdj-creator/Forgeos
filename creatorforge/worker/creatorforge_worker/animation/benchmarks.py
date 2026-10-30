@@ -733,7 +733,8 @@ def _storyboard(video: Path, doc: dict, seconds: list[float], out: Path) -> Path
         f = tmp / f"{k:02d}.png"
         subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", f"{t + T * 0.6:.2f}", "-i", str(video), "-frames:v", "1",
                         "-vf", "scale=400:-2", str(f)], check=True)
-        tiles.append((Image.open(f).convert("RGB"), f"{k + 1}. {sc.get('name', sc['id'])}  ({T:.1f} s)"))
+        im = Image.open(f).convert("RGB") if f.exists() else Image.new("RGB", (400, 225), (60, 20, 20))
+        tiles.append((im, f"{k + 1}. {sc.get('name', sc['id'])}  ({T:.1f} s)" + ("" if f.exists() else " NO FRAME")))
         t += T
     cols = 4
     w, h = tiles[0][0].size
@@ -744,7 +745,7 @@ def _storyboard(video: Path, doc: dict, seconds: list[float], out: Path) -> Path
         sheet.paste(im, (x, y + 28))
         d.text((x + 6, y + 6), label, font=font(15), fill=(20, 20, 24))
     sheet.save(out)
-    for f in tmp.iterdir():
+    for f in list(tmp.iterdir()):
         f.unlink()
     tmp.rmdir()
     return out

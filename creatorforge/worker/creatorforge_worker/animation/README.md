@@ -69,3 +69,39 @@ For 3D without a display, Blender needs EGL (`apt-get install libegl1 libgl1 lib
 - 2D keyframed moves are hand-tuned poses; there is no physics solver for falls or collisions between characters.
 - The 3D stickman's feet don't pitch through a roll, and Demo 5 is rendered with EEVEE at 1280×544, not a film
   renderer at 4K.
+
+## Stickman Universe 2.0 - one production engine
+
+Everything goes through one pipeline; there is no second path.
+
+```
+script ──> studio.make ──> production document (JSON) ──> production.render ──> MP4 + Android copy + report
+            │  storyboard.plan   (analysis: cast, verbs, objects, places, emotions, weather, time of day)
+            │  visual_reasoning  (literal / diagram / metaphor / satire / reconstruction / evidence; sources)
+            │  asset_lib         (people, animals, objects, scenery - generated or labelled placeholders)
+            └─ notes: decisions + limitations (nothing is substituted silently)
+editor (editor.html, /v1/animation/*) ──> Editor ops (undo/redo, versions) ──> same document
+```
+
+`production.render` stages every scene from the world state the last one ended in (who stands where, holds what,
+feels what; props and animals persist through continuing shots), runs the QC loop (motion defects, automatic
+depth-dodge for overlaps), directs the camera and re-directs it until nobody's head or speech bubble is cut, lays
+down synthesised sound and spoken narration (espeak-ng: English, Hindi, Hinglish), renders scenes in parallel with
+a content-hash cache (an unchanged scene is never rendered twice; editing one scene re-renders only that one), joins
+them with the chosen transitions, and checks the result: frame count, frozen/black/flicker, size/aspect/fps,
+audio-video length and offset, subtitle reading speed and on-screen time against the voice.
+
+| Area | Module | What it does |
+|---|---|---|
+| Director | `studio.py` | Script -> editable document; weather/time of day from the text; characters react; limitations listed |
+| Performance | `performance.py`, `behaviour.py`, `comedy.py` | Lines become performances; personalities; comic structures |
+| World | `worldstate.py`, `scene2d.py` | Continuity; time-of-day grading, lamps that glow at night, rain/snow/wind/storm, crowds |
+| Creative | `production.py` | Photo backdrops (step into a document/place), push into a prop, dissolves into real footage |
+| Styles | `stick.py`, `rig2d.py`, `blender3d.py` | Minimal and expressive 2D stickmen, motion graphics props, 2.5D depth lanes, genuine 3D in Blender |
+| Editor | `editor.html`, `studio_service.py` | Timeline, steps, poses, expressions, camera, subtitles, light/weather, assets, history, renders |
+| QA | `qc.py`, `critic.py` | Technical checks plus a critic that flags (does not score) acting, staging and pacing |
+| Tests | `benchmarks.py`, `bench3d.py`, `perf.py` | The stress tests, the 3D scene, performance numbers |
+
+Rules the engine keeps: allegations are never acted out; facts need a source (or are flagged); illustrations,
+satire and reconstructions are labelled on screen; real people are drawn faceless and labelled; cartoon figures are
+never composited over real people's faces; what cannot be shown is reported, not replaced with something irrelevant.

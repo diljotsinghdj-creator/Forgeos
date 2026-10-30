@@ -677,7 +677,8 @@ def render(doc: dict, out: Path, quality: str = "preview", workers: int = 1, cac
     lst.write_text("".join(f"file '{f.resolve()}'\n" for f in files))
     trans = [s_.get("transition") for s_ in doc["scenes"]]
     if any(trans[1:]):                                # dissolves / fades between chosen scenes
-        frames = _join_with_transitions(files, [st[2] for st in states], trans, out, quality, fps)
+        exact = [_count_frames(f) / fps for f in files]   # real lengths: nominal ones drift and xfade then
+        frames = _join_with_transitions(files, exact, trans, out, quality, fps)  # silently drops the rest
     else:
         subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(lst), "-c:v",
                         "libx264", "-preset", "medium", "-crf", "16" if quality == "final" else "22", "-pix_fmt",
@@ -704,6 +705,12 @@ def render(doc: dict, out: Path, quality: str = "preview", workers: int = 1, cac
                            "max_cps": max([x["cps"] for x in subs] or [0])}
     report["files"] = {"master": str(out), "android": str(android)}
     return report
+
+
+def _count_frames(path) -> int:
+    r = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-count_packets", "-show_entries",
+                        "stream=nb_read_packets", "-of", "csv=p=0", str(path)], capture_output=True, text=True)
+    return int((r.stdout.strip() or "0").split(",")[0])
 
 
 XFADE = {"dissolve": "fade", "fade": "fadeblack", "wipe": "wipeleft", "zoom": "zoomin", "circle": "circleopen"}
