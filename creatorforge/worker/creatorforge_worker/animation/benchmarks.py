@@ -708,24 +708,22 @@ def run(name: str, out_dir: Path, quality: str = "preview", workers: int = 2) ->
 
 
 def run_unfamiliar(out: Path) -> dict:
-    from . import storyboard
-    board = storyboard.plan(UNFAMILIAR, "The Pelican")
-    (out / "plan.json").write_text(json.dumps(asdict(board), indent=1, default=str))
+    """The unfamiliar script through the director (studio.film), narrated."""
+    from . import studio
     t0 = time.time()
-    sc, T = storyboard.stage(board)
-    R = qc.record(sc, T)
-    rep = qc.inspect(R)
-    rv = critic.review(R, sc, board)
-    video = storyboard.render_script(UNFAMILIAR, out / "unfamiliar.mp4", "The Pelican", 854, 480)
-    report = {"benchmark": "unfamiliar", "script": UNFAMILIAR, "seconds": round(T, 1),
-              "cast": list(getattr(board, "cast", {}).keys()),
-              "beats": [{"narration": b.narration, "characters": b.characters, "actions": b.actions,
-                         "environment": b.environment, "props": b.props} for b in board.beats],
-              "assets": getattr(sc, "asset_log", []), "qc": rep.summary(), "critic": rv.to_dict(),
-              "video": video if isinstance(video, dict) else str(video), "render_s": round(time.time() - t0, 1)}
+    rep = studio.film(UNFAMILIAR, out / "unfamiliar.mp4", "The Pelican", voice={"lang": "en", "rate": 150},
+                      quality="preview")
+    doc = json.loads((out / "unfamiliar.doc.json").read_text())
+    _storyboard(out / "unfamiliar.mp4", doc, [s["seconds"] for s in rep["scenes"]], out / "storyboard.png")
+    report = {"benchmark": "unfamiliar", "script": UNFAMILIAR, "seconds": round(sum(s["seconds"] for s in
+                                                                                  rep["scenes"]), 1),
+              "scenes": rep["scenes"], "notes": rep["notes"], "assets": rep["assets"], "critic": rep["critic"],
+              "video": rep["video"], "timing": {"total_s": round(time.time() - t0, 1),
+                                                "render_s": rep["render_seconds"]},
+              "qc_clean_scenes": sum(1 for s in rep["scenes"] if s["qc"].startswith("clean")),
+              "continuity_issues": sum(len(s["continuity"]) for s in rep["scenes"])}
     (out / "report.json").write_text(json.dumps(report, indent=1, default=str))
     return report
-
 
 if __name__ == "__main__":
     which = sys.argv[1] if len(sys.argv) > 1 else "all"

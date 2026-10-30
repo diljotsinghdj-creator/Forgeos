@@ -246,6 +246,29 @@ def framing(sc, R: Recording, focus: list | None = None, safe=(0.06, 0.1, 0.04))
 
 
 # ---- the rendered file ----------------------------------------------------------------------------------------------
+def check_delivery(path: Path, width: int, height: int, fps: int) -> dict:
+    """Frame size and aspect, frame rate, codec/profile for phones, and audio against video (sync and length)."""
+    import json as _json
+    r = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "stream=codec_type,codec_name,width,height,"
+                        "r_frame_rate,duration,pix_fmt,sample_rate,start_time", "-of", "json", str(path)],
+                       capture_output=True, text=True)
+    st = _json.loads(r.stdout or "{}").get("streams", [])
+    v = next((s for s in st if s.get("codec_type") == "video"), {})
+    a = next((s for s in st if s.get("codec_type") == "audio"), {})
+    num, den = (v.get("r_frame_rate", "0/1").split("/") + ["1"])[:2]
+    out = {"size": [v.get("width"), v.get("height")], "aspect_ok": v.get("width") == width and v.get("height") == height
+           and abs(width / height - 16 / 9) < 0.01, "fps": round(int(num) / max(1, int(den)), 3),
+           "pix_fmt": v.get("pix_fmt"), "codec": v.get("codec_name"), "has_audio": bool(a)}
+    out["fps_ok"] = abs(out["fps"] - fps) < 0.01
+    if a:
+        dv, da = float(v.get("duration", 0)), float(a.get("duration", 0))
+        out["audio_minus_video_s"] = round(da - dv, 3)
+        out["audio_start_offset_s"] = round(float(a.get("start_time", 0)) - float(v.get("start_time", 0)), 3)
+        out["sync_ok"] = abs(da - dv) <= 1.5 / fps and abs(out["audio_start_offset_s"]) <= 1 / fps
+    return out
+
+
+
 def check_video(path: Path, expected_seconds: float, fps: int) -> dict:
     """Frame count, frozen stretches, black frames and flicker of the rendered file."""
     from ..media.quality import blacks, freezes

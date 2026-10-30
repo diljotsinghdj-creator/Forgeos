@@ -33,10 +33,13 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import os
 import subprocess
+import tempfile
 import time
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
+from types import SimpleNamespace
 
 from . import comedy as C
 from . import motions as M
@@ -195,7 +198,13 @@ def stage_scene(scene: dict, state: worldstate.WorldState, fps: int = 30, qualit
                                        .get(scene.get("place"), (240, 242, 246)))))
     w = _world(scene.get("world", {}))
     cast = []
+    anchor = next((c["x"] for c in scene.get("cast", []) if isinstance(c.get("x"), (int, float))), None)
+    if anchor is None:
+        anchor = next((state.entities[c["name"]].x for c in scene.get("cast", []) if c["name"] in state.entities
+                       and state.entities[c["name"]].kind == "actor"), 0.0)
     for c in scene.get("cast", []):
+        if c.get("x") == "offstage":                  # someone who walks in later: waits out of shot
+            c = {**c, "x": anchor + 6.5, "facing": -1}
         look = rig2d.Look(name=c["name"], body=tuple(c["body"]) if c.get("body") else None, line=1.0,
                           height=c.get("height", 1.75), skin=tuple(c["skin"]) if c.get("skin") else (255, 255, 255))
         spec = {"name": c["name"], "look": look, "faceless": c.get("faceless", True), "seed": len(cast)}
@@ -226,8 +235,35 @@ def stage_scene(scene: dict, state: worldstate.WorldState, fps: int = 30, qualit
         a.timing = PROFILES.get(profile)
     pers = {c["name"]: PERSONALITIES.get(c.get("personality", "kind")) for c in scene.get("cast", [])}
     sc.actors += list(live.values()) + list(actors.values())
+    sc.narration = []
+    stuff = None                                      # animals, objects and scenery the script named
+
+    def things():
+        nonlocal stuff
+        if stuff is None:
+            from .storyboard import _Stuff
+            stuff = _Stuff(sc, w)
+            for n, p in live.items():
+                if p.kind == "shape" and n not in {a["name"] for a in scene.get("animals", [])}:
+                    stuff.things[n] = p
+        return stuff
+    here = next((a.hips_x(0.0) for a in actors.values()), anchor)
+    for an in scene.get("animals", []):
+        if an["name"] in live:                        # still here from the last shot (and still holding...)
+            things().animals[an["name"]] = live[an["name"]]
+            for p in live.values():
+                if p.data.get("held_by_animal") == an["name"]:
+                    things().held[an["name"]] = p
+        else:
+            things().animal(an["name"], an.get("desc", an["name"]), here, 0.0, an.get("landing", False))
+    if scene.get("things"):
+        things().place(SimpleNamespace(things=scene["things"]), here, 0.0, actors)
+    aux: dict = {}                                    # the script director's own props (balls, crates, signs)
+    if scene.get("focus"):
+        sc.focus = [(0.0, 1e9, list(scene["focus"]))]
     t = 0.0
     notes = []
+    sc.voiced = {}                                    # caption start -> spoken seconds (for the subtitle check)
     for st in scene.get("steps", []):
         st = dict(st)
         when = st.get("t", "+0.2")
@@ -262,6 +298,28 @@ def stage_scene(scene: dict, state: worldstate.WorldState, fps: int = 30, qualit
             M.catch(to, end, live[st["what"]], st.get("hold", 1.5))
         elif do == "push":
             end = M.push(a, t0, live[st["what"]], st["dist"], st.get("speed", 0.75))
+        elif do == "act":                              # a verb the script director understands, with its target
+            from . import storyboard as SB
+            act = {"who": st["who"], "verb": st["verb"], "target": st.get("target", ""), "emotion": "",
+                   "line": st.get("line", "")}
+            beat = SimpleNamespace(things=st.get("things", scene.get("things", [])))
+            if st["who"] in things().animals:
+                end = things().animal_do(act, t0, actors, beat)
+            elif a is not None and things().handles(act, a, actors, beat):
+                end = things().actor_do(act, a, t0, actors, beat)
+            elif a is not None:
+                end = SB._do(sc, w, a, actors.get(act["target"]), act, t0, actors, aux)
+        elif do == "enter":                            # walks in from out of shot to stand by someone
+            near = actors.get(st.get("near", "")) or next((x for n, x in actors.items() if n != st["who"]), None)
+            dest = (near.hips_x(t0) + 1.6) if near is not None else a.hips_x(t0) - 5.0
+            end = a.walk(t0, dest, st.get("speed", 1.3))
+            if near is not None:
+                a.look_at(end - 0.6, end + 1.5, near)
+        elif do == "metaphor":
+            from . import storyboard as SB
+            aux["_subject_x"] = a.hips_x(t0) if a is not None else here
+            SB._metaphor(sc, w, st["kind"], t0, t0 + st.get("dur", 5.0), aux)
+            end = t0
         elif do == "move":                             # a prop (a car drives, a dog trots): wheels and legs follow
             pr = live[st["what"]]
             x_now = pr.pos(t0)[0]
@@ -309,19 +367,32 @@ def stage_scene(scene: dict, state: worldstate.WorldState, fps: int = 30, qualit
             from . import visual_reasoning as VR
             plan = VR.reason(st["text"], st.get("sources"))
             dur = st.get("dur", 6.0)
-            VR.stage(sc, plan, t0, t0 + dur, x=st.get("x", 3.2))
+            if st.get("voice"):
+                wav, secs = narrate(st["voice"])
+                sc.narration.append((t0 + 0.15, str(wav)))
+                dur = max(dur, secs + 0.55)
+                sc.voiced[round(t0, 3)] = secs
+            VR.stage(sc, plan, t0, t0 + dur, x=a.hips_x(t0) + st.get("x", 3.2) if a is not None and st.get("near")
+                     else st.get("x", 3.2))
             sc.visual_plans = getattr(sc, "visual_plans", []) + [plan]
             if st.get("caption", True):
                 notes.append((t0, t0 + dur, st["text"]))
             end = t0 + dur
         elif do == "caption":                          # narration on screen; hold=True waits for it to be read
             dur = st.get("dur") or max(2.6, 0.062 * len(st["text"]) + 1.0)
+            if st.get("voice"):                       # ... and spoken: the line lasts as long as the voice
+                wav, secs = narrate(st["voice"])
+                sc.narration.append((t0 + 0.15, str(wav)))
+                dur = max(st.get("dur") or 0.0, secs + 0.55)
+                sc.voiced[round(t0, 3)] = secs
             notes.append((t0, t0 + dur, st["text"]))
             from . import visual_reasoning as VR      # narration is audited too: facts need sources
             sc.visual_plans = getattr(sc, "visual_plans", []) + [VR.reason(st["text"], st.get("sources"))]
             end = t0 + dur if st.get("hold") else t0
         elif do == "wait":
             end = t0 + st.get("dur", 1.0)
+        elif do == "wait_notes":                       # until the narration on screen has been read / spoken
+            end = max([n[1] for n in notes] + [t0])
         if st.get("wait", True):
             t = max(t, end)
     seconds = scene.get("seconds") or t + 0.8
@@ -330,12 +401,69 @@ def stage_scene(scene: dict, state: worldstate.WorldState, fps: int = 30, qualit
     if layers.get("tag"):
         sc.tags = [(0.0, seconds, layers["tag"])]
     sc.overlay = _caption(layers.get("caption", scene.get("name", "")), notes)
+    sc.subtitles = [(a_, b_, text, sc.voiced.get(round(a_, 3))) for a_, b_, text in notes]
     cam = scene.get("camera", {})
     if cam.get("keys"):
         from .scene2d import CamKey
         sc.cams = [CamKey(k[0], k[1], k[2], k[3]) for k in cam["keys"]]
     sc.style = cam.get("style", "explainer")
+    sc.asset_log = stuff.assets if stuff is not None else []
+    sc.decisions = stuff.log if stuff is not None else []
+    if stuff is not None:                             # the animals and objects the script named are part of the
+        for p in list(stuff.animals.values()) + list(stuff.things.values()):      # world from now on
+            live.setdefault(p.name, p)
     return sc, seconds, actors, live
+
+
+NARRATION_CACHE = Path(os.environ.get("CF_NARRATION_CACHE", Path(tempfile.gettempdir()) / "cf_narration"))
+
+
+def narrate(voice: dict) -> tuple[Path, float]:
+    """A narration line as speech (espeak-ng: offline, English and Hindi - Hinglish is Devanagari Hindi with English
+    words, which the Hindi voice reads in English). voice: {"say": text, "lang": "en|hi", "rate", "pitch"}.
+    Cached by content; returns (wav, seconds)."""
+    from . import speech
+    NARRATION_CACHE.mkdir(parents=True, exist_ok=True)
+    key = _hash(voice)
+    wav = NARRATION_CACHE / f"{key}.wav"
+    if not wav.exists():
+        speech.say(voice["say"], wav, lang=voice.get("lang", "en"), voice=voice.get("voice", ""),
+                   rate=voice.get("rate", 150), pitch=voice.get("pitch", 48))
+    return wav, speech.wav_seconds(wav)
+
+
+def _mix_narration(track: Path, clips: list, out: Path) -> Path:
+    """Lays the narration over the scene's soundtrack, ducking the effects and ambience under the voice."""
+    import wave
+
+    import numpy as np
+    with wave.open(str(track)) as w:
+        sr, ch, n = w.getframerate(), w.getnchannels(), w.getnframes()
+        bed = np.frombuffer(w.readframes(n), dtype="<i2").astype(np.float32).reshape(-1, ch) / 32768.0
+    gain = np.ones(len(bed), dtype=np.float32)
+    voice = np.zeros(len(bed), dtype=np.float32)
+    for start, path in clips:
+        with wave.open(str(path)) as w:
+            vr, vn = w.getframerate(), w.getnframes()
+            v = np.frombuffer(w.readframes(vn), dtype="<i2").astype(np.float32) / 32768.0
+        v = np.interp(np.arange(0, len(v), vr / sr), np.arange(len(v)), v)        # to the track's rate
+        i0 = int(start * sr)
+        i1 = min(len(bed), i0 + len(v))
+        if i1 <= i0:
+            continue
+        voice[i0:i1] += v[:i1 - i0] * 0.95
+        fade = int(0.15 * sr)
+        lo, hi = max(0, i0 - fade), min(len(bed), i1 + fade)
+        gain[lo:hi] = np.minimum(gain[lo:hi], 0.45)
+    mixed = bed * gain[:, None] + voice[:, None]
+    peak = max(1e-6, float(np.abs(mixed).max()))
+    mixed = mixed * min(1.0, 0.95 / peak)
+    with wave.open(str(out), "wb") as w:
+        w.setnchannels(ch)
+        w.setsampwidth(2)
+        w.setframerate(sr)
+        w.writeframes((mixed * 32767).astype("<i2").tobytes())
+    return out
 
 
 def _hash(*parts) -> str:
@@ -435,6 +563,8 @@ def _render_one(args):
     else:                                             # directed, then checked: anyone's head (or a speaker's
         sc, T, _, framing, passes, fixes = qc.refine(build, style=sc.style, tries=3)   # bubble) out of the safe
     wav = sound.soundtrack(build, fixes, sc, T, doc_scene.get("place", "studio"), Path(out).with_suffix(".wav"))
+    if getattr(sc, "narration", None):
+        wav = _mix_narration(wav, sc.narration, Path(out).with_suffix(".voice.wav"))
     sc.render(Path(out), T, audio_wav=wav)            # area widens the shot and directs again
     Path(out).with_suffix(".camera.json").write_text(json.dumps({"passes": passes, "framing": [
         [d.kind, d.who, d.t0, d.t1] for d in framing]}))
@@ -483,6 +613,20 @@ def render(doc: dict, out: Path, quality: str = "preview", workers: int = 1, cac
                     "4.0", "-crf", "21", "-pix_fmt", "yuv420p", "-c:a", "aac", "-ar", "48000", "-movflags", "+faststart",
                     str(android)], check=True)
     report["video"] = qc.check_video(out, frames / fps, fps)
+    report["delivery"] = qc.check_delivery(out, QUALITY[quality]["width"], QUALITY[quality]["height"], fps)
+    subs, t_off = [], 0.0
+    for scene, st in zip(doc["scenes"], states):     # subtitles: readable speed, on screen while spoken
+        if not scene.get("footage"):
+            sc_, _, _, _ = stage_scene(scene, st[6], fps, quality)
+            for a_, b_, text, spoken in getattr(sc_, "subtitles", []):
+                cps = len(text) / max(0.1, b_ - a_)
+                issue = "too fast to read" if cps > 20 else ("shorter than its voice" if spoken and spoken > b_ - a_
+                                                              else "")
+                subs.append({"scene": scene["id"], "t": round(t_off + a_, 2), "seconds": round(b_ - a_, 2),
+                             "cps": round(cps, 1), "spoken": round(spoken, 2) if spoken else None, "issue": issue})
+        t_off += st[2]
+    report["subtitles"] = {"count": len(subs), "issues": [x for x in subs if x["issue"]],
+                           "max_cps": max([x["cps"] for x in subs] or [0])}
     report["files"] = {"master": str(out), "android": str(android)}
     return report
 

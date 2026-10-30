@@ -532,6 +532,7 @@ class _Stuff:
             ox = obj.pos(t)[0]
             self.move(p, t, t + 0.5, ox - 0.1, 0.0)
             self.held[p.name] = obj
+            obj.data["held_by_animal"] = p.name          # remembered into the next shot (world state)
             self.log.append(f"{p.name} grabs the {obj.name} at {t + 0.5:.1f} s")
             self.move(p, t + 0.6, t + 1.5, ox + 1.6, 1.1, "out")
             if tgt is not None:
@@ -540,6 +541,8 @@ class _Stuff:
             return t + 1.6
         if v == "drop":
             obj = self.held.pop(p.name, None)
+            if obj is not None:
+                obj.data.pop("held_by_animal", None)
             tx = (tgt.hips_x(t) + 0.45) if tgt is not None else x + 1.0
             basket = None
             if tgt is not None:
@@ -771,26 +774,14 @@ if __name__ == "__main__":
     print(board.to_json())
 
 
-def render_script(script: str, out, title: str = "", width: int = 1280, height: int = 720):
-    """Plan -> stage -> QC loop (corrections, camera) -> render -> check. Writes the plan and QC report next to it."""
-    import json as _json
+def render_script(script: str, out, title: str = "", width: int = 1280, height: int = 720, voice: dict | None = None):
+    """Script -> film through the one production pipeline (studio.film: editable document, world state, QC and
+    camera loop, sound, narration, scene cache). Kept for callers of the old name; returns the master file."""
     from pathlib import Path
 
-    from . import qc
+    from . import studio
     out = Path(out)
     out.parent.mkdir(parents=True, exist_ok=True)
-    board = plan(script, title)
-    out.with_suffix(".plan.json").write_text(board.to_json())
-
-    def build():
-        sc, T = stage(board)
-        return sc.resize(width, height), T
-    sc, T, report, framing, passes, fixes = qc.refine(build, style=board.beats[0].camera)
-    from . import sound
-    wav = sound.soundtrack(build, fixes, sc, T, board.beats[0].environment, out.with_suffix(".wav"))
-    sc.render(out, T, android=out.with_name(out.stem + "_android.mp4"), audio_wav=wav)
-    video = qc.check_video(out, T, sc.fps)
-    out.with_suffix(".qc.json").write_text(_json.dumps(dict(motion=_json.loads(report.to_json()), corrections=fixes,
-                                                            framing=[vars(d) for d in framing], video=video),
-                                                       indent=1, default=str))
+    out.with_suffix(".plan.json").write_text(plan(script, title).to_json())
+    studio.film(script, out, title, voice=voice, quality="final" if height >= 1080 else "preview")
     return out
