@@ -228,7 +228,7 @@ def mix(evts: list[Event], seconds: float, sc=None, place: str = "studio", out: 
     n = int(seconds * SR) + SR
     L = np.zeros(n)
     Rch = np.zeros(n)
-    bed = ambience(place, seconds + 1.0, rng, getattr(sc, "moods", []) if sc else [])
+    bed = ambience(place, seconds + 1.0, rng, getattr(sc, "moods", []) if sc else [])[:n]   # rounding can add 1
     L[:len(bed)] += bed
     Rch[:len(bed)] += bed
     half = (sc.width / sc.ppm / 2) if sc else 4.0

@@ -21,6 +21,8 @@ from dataclasses import asdict, dataclass, field
 
 from .stick import Actor, Prop
 
+OVERLAYS = {"sign", "scale", "chart", "diagram", "stat", "photo", "label", "cloud", "basket", "relations", "evidence",
+            "folder"}
 CALM = {"neutral", "happy", "confident", "curious", ""}
 HOT = {"angry", "furious", "scared", "sad", "crying"}
 
@@ -130,8 +132,10 @@ def seed(state: WorldState, cast: list[dict], props: list[dict], world=None, car
                                p.get("h", 0.3), z=p.get("z", 1.0), label=p.get("label", p["name"]),
                                color=tuple(p.get("color", (240, 200, 80))), data=_colours(dict(p.get("data", {}))))
         live[p["name"]].name = p["name"]                # identity across scenes (the label is what is drawn)
-    if carry:                                          # a continuing shot: everything stays where it was left
-        for name, e in state.entities.items():
+    if carry:                                          # a continuing shot: physical things stay where they were left
+        for name, e in state.entities.items():         # (illustrations shown for one line do not follow you around)
+            if e.kind == "prop" and e.look.get("kind") in OVERLAYS and not e.look.get("data", {}).get("persist"):
+                continue
             if e.kind == "prop" and name not in live and not (e.held_by and e.held_by in actors):
                 live[name] = Prop(e.look.get("kind", "crate"), e.x, e.y, e.look.get("w", 0.4), e.look.get("h", 0.3),
                                   z=e.z, label=e.look.get("label", name), color=tuple(e.look.get("color", (240, 200, 80))),

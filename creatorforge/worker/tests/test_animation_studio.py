@@ -338,3 +338,25 @@ def test_world_effects_crowds_and_transitions_render_to_exact_length(tmp_path):
     r = P.render(doc, tmp_path / "w.mp4", "preview")
     assert r["video"]["missing"] == 0 and r["delivery"]["sync_ok"] and r["delivery"]["aspect_ok"]
     assert r["subtitles"]["count"] == 1 and not r["subtitles"]["issues"]
+
+
+def test_the_sound_mix_never_trips_on_rounding(tmp_path):
+    from creatorforge_worker.animation import sound
+    for k, secs in enumerate([5.4, 6.4, 6.399999, 12.7, 13.85, 17.04, 3.6]):   # lengths whose bed rounds up
+        out = sound.mix([], secs, None, "outdoors", tmp_path / f"m{k}.wav")
+        assert out.exists()
+
+
+def test_illustrations_stay_in_their_scene_but_objects_persist():
+    from creatorforge_worker.animation import production as P
+    doc = {"title": "t", "scenes": [
+        {"id": "a", "cast": [{"name": "Noor", "x": 0}], "props": [
+            {"name": "worry", "kind": "sign", "x": 2, "y": 1, "w": 1.5, "h": 0.5, "label": "What if?"},
+            {"name": "cup", "kind": "crate", "x": 1, "w": 0.2, "h": 0.2},
+            {"name": "plan", "kind": "sign", "x": -2, "y": 1, "w": 1.5, "h": 0.5, "label": "Plan", "data": {"persist": True}}],
+         "steps": [{"t": 0.2, "who": "Noor", "do": "gesture", "name": "think", "dur": 1}]},
+        {"id": "b", "cut": False, "cast": [{"name": "Noor"}], "props": [],
+         "steps": [{"t": 0.2, "who": "Noor", "do": "nod"}]}]}
+    st = P.plan_states(doc)
+    _, _, _, live = P.stage_scene(doc["scenes"][1], st[1][6])
+    assert "cup" in live and "plan" in live and "worry" not in live
