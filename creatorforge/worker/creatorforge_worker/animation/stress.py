@@ -92,7 +92,7 @@ def test_a():
     sc = _studio()
     steps = Prop("steps", 2.1, 0.0, 4.4, 0.85, data={"world": w})
     crate = Prop("crate", 7.2, 0.0, 0.5, 0.45)
-    bench = Prop("bench", 11.0, 0.0, 1.3, 0.9, data={"seat": 0.45, "back": 1.0})
+    bench = Prop("bench", 11.0, 0.0, 0.5, 0.9, data={"seat": 0.45, "back": 1.0})   # side-on: its depth, not length
     sam = Actor(rig2d.Look(name="Sam", body=(40, 110, 200), line=1.0), x=-6.5, world=w, seed=3)
     sc.actors += [steps, crate, bench, sam]
     t = sam.walk(0.3, -3.0, 1.2)

@@ -383,7 +383,7 @@ def _do(sc, w, a: Actor, b: Actor | None, act: dict, t: float, actors: dict, liv
         sc.actors.insert(0, Prop("crate", x + f * 1.1, 0.0, 1.0, 0.9))
         return M.climb(a, t, wall=0.6, top=0.9) + 0.2
     if v == "sit":
-        sc.actors.insert(0, Prop("bench", x - f * 0.38, 0.0, 1.2, 0.9, data={"seat": 0.45, "back": -f}))
+        sc.actors.insert(0, Prop("bench", x - f * 0.38, 0.0, 0.5, 0.9, data={"seat": 0.45, "back": -f}))
         return M.sit(a, t, 0.45, 2.0) + 0.1
     if v == "bow":
         return a.act(t, [(0.4, dict(lean=0.9, head=0.4, feet="keep"), "inout"), (0.9, dict(lean=0.9), "linear"),

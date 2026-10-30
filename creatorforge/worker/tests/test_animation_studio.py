@@ -177,3 +177,19 @@ def test_sounds_land_on_the_frames_where_things_happen(tmp_path):
     wav = sound.mix(ev, t_arr + 3.0, out=tmp_path / "m.wav")
     with _wave.open(str(wav)) as w:
         assert w.getnchannels() == 2 and w.getframerate() == 48000
+
+
+def test_critic_flags_staging_and_dead_air_and_fixes_what_it_can():
+    from creatorforge_worker.animation import critic
+    a = Actor(Look(name="A"), x=-1.0, facing=-1)            # facing away from B
+    b = Actor(Look(name="B"), x=1.0, facing=-1)
+    a.say_line(0.5, 2.5, "Listen to me!")
+    R = qc.record(_scene([a, b]), 6.0)
+    sc = SimpleNamespace(cams=[], width=1920, ppm=230)
+    rv = critic.review(R, sc)
+    cats = {n.category for n in rv.notes}
+    assert "staging" in cats and "dead_air" in cats
+    assert any(n.auto for n in rv.notes if n.category == "staging")
+    assert all(not n.auto for n in rv.notes if n.category == "dead_air")   # judgement calls are left to a person
+    done = critic.revise(sc, R, rv)
+    assert any("turns to face" in d for d in done)
