@@ -184,6 +184,9 @@ class Scene:
             box = (W / 2 - zw / 2 + jx, H / 2 - zh / 2 + jy, W / 2 + zw / 2 + jx, H / 2 + zh / 2 + jy)
             img = img.resize((W, H), Image.LANCZOS, box=box)
         out = img.resize((self.width, self.height), Image.LANCZOS)
+        out = _atmosphere(out, getattr(self, "moods", []), t)
+        if getattr(self, "tags", None):
+            _tags(out, self.tags, t)
         if self.overlay:
             self.overlay(ImageDraw.Draw(out, "RGBA"), self.width, self.height, t)
         return out
@@ -261,6 +264,43 @@ class Scene:
                             "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "160k", "-ar", "48000",
                             "-movflags", "+faststart", str(android)], check=True)
         return out
+
+
+def _atmosphere(img, moods, t):
+    """Scene-wide mood: 'anxious' drains colour, darkens the edges and pulses like a heartbeat; 'calm' warms and
+    softens. Eased in and out over half a second."""
+    for t0, t1, mood in moods:
+        if not (t0 <= t <= t1):
+            continue
+        w = min(1.0, (t - t0) / 0.5, (t1 - t) / 0.5)
+        a = np.asarray(img, dtype=np.float32)
+        H, W = a.shape[:2]
+        if mood == "anxious":
+            grey = a.mean(axis=2, keepdims=True)
+            a = a + (grey - a) * 0.55 * w
+            yy, xx = np.mgrid[0:H, 0:W]
+            r = np.sqrt(((xx - W / 2) / (W / 2)) ** 2 + ((yy - H / 2) / (H / 2)) ** 2)
+            beat = 0.5 + 0.5 * max(0.0, math.sin(t * 2 * math.pi * 1.6)) ** 6
+            v = np.clip((r - 0.55) / 0.6, 0, 1) * (0.55 + 0.2 * beat) * w
+            a = a * (1 - v[..., None])
+        elif mood == "calm":
+            a = a * (1 - 0.12 * w) + np.array([255, 236, 200], dtype=np.float32) * 0.12 * w
+        img = Image.fromarray(np.clip(a, 0, 255).astype(np.uint8))
+    return img
+
+
+def _tags(img, tags, t):
+    """A persistent badge (Illustration / Satire / Reconstruction) top-right while that visual is on screen."""
+    from PIL import ImageFont
+    d = ImageDraw.Draw(img, "RGBA")
+    W, H = img.size
+    shown = [lab for t0, t1, lab in tags if t0 <= t <= t1 and lab]
+    for i, lab in enumerate(dict.fromkeys(shown)):
+        f = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", int(H * 0.026))
+        w = d.textlength(lab.upper(), font=f)
+        x1, y0 = W * 0.98, H * 0.035 + i * H * 0.06
+        d.rounded_rectangle([x1 - w - H * 0.03, y0, x1, y0 + H * 0.048], radius=H * 0.01, fill=(180, 40, 40, 210))
+        d.text((x1 - w - H * 0.015, y0 + H * 0.008), lab.upper(), font=f, fill=(255, 255, 255))
 
 
 def _frames(path: Path) -> int:

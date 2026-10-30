@@ -83,3 +83,47 @@ def test_an_interrupted_render_resumes_to_the_same_video(tmp_path):
     build().render(tmp_path / "v.mp4", 2.0, chunk=0.5)
     assert _frames(tmp_path / "v.mp4") == 48
     assert (tmp_path / "v.mp4").read_bytes() == first
+
+
+# ---- world state and visual reasoning --------------------------------------------------------------------------------
+def test_world_state_carries_what_is_held_and_catches_continuity_breaks():
+    from creatorforge_worker.animation import motions as M
+    from creatorforge_worker.animation import worldstate as W
+    from creatorforge_worker.animation.stick import Prop
+    ana = Actor(Look(name="Ana", body=(200, 60, 60)), x=-2.0)
+    folder = Prop("folder", -1.4, 0.0, 0.3, 0.06, label="EVIDENCE")
+    t = M.pick_up(ana, 0.2, folder)
+    t = ana.walk(t + 0.1, 1.0, 1.1)
+    ana.feel(t - 1, t + 1, "angry")
+    for i in range(int((t + 0.5) * 30)):
+        ana.step(i / 30, 1 / 30)
+    end = W.capture([ana], [folder], t + 0.5, "shot1")
+    assert end.entities["Ana"].holding == ["EVIDENCE"] and end.entities["EVIDENCE"].held_by == "Ana"
+    actors, props = W.seed(end, [{"name": "Ana", "look": Look(name="Ana")}], [])
+    a2, p2 = actors["Ana"], props["EVIDENCE"]
+    for i in range(10):
+        a2.step(i / 30, 1 / 30)
+    start = W.capture([a2], [p2], 0.0, "shot2")
+    assert W.check(end, start) == []                       # same place, same costume, still holding it, still angry
+    assert start.entities["Ana"].feeling == "angry"
+    b = Actor(Look(name="Ana", body=(40, 90, 200)), x=4.0, facing=-1)
+    b.step(0.0, 1 / 30)
+    kinds = {i.kind for i in W.check(end, W.capture([b], [], 0.0, "careless"))}
+    assert {"look_changed", "position_jump", "held_object_lost"} <= kinds
+
+
+def test_visual_reasoning_picks_honest_representations():
+    from creatorforge_worker.animation import visual_reasoning as V
+    assert V.reason("Prices of rice and milk went up sharply this year.").concept == "inflation"
+    p = V.reason("The Prime Minister appoints two of the three members of the selection committee.")
+    assert p.mode == V.DIAGRAM and p.elements[0]["nodes"][0][0] == "Prime Minister"
+    assert V.reason("Riya feels anxious before the interview.").label == "Illustration"
+    assert V.reason("Gravity pulls a ball and a feather down at the same rate in a vacuum.").mode == V.DEMO
+    bare = V.reason("The minister is accused of taking bribes, according to the opposition.")
+    assert bare.mode == V.EVIDENCE and not bare.sourced and bare.elements[0]["kind"] == "allegation_card"
+    src = [{"claim": "The contract was awarded without a tender", "source": "CAG report 2024"}]
+    doc = V.reason("The contract was awarded without a tender, critics allege.", src)
+    assert doc.elements[0]["kind"] == "evidence_chain" and doc.elements[0]["steps"][0]["source"] == "CAG report 2024"
+    assert V.reason("In 1947, India became independent.").label.startswith("Reconstruction")
+    assert V.reason("Imagine if every pothole got its own minister.").label == "Satire"
+    assert any("unsourced" in x for x in V.audit([V.reason("Inflation rose to 7% last year.")]))

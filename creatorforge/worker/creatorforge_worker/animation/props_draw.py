@@ -265,5 +265,79 @@ def draw(p, d, S, scale, t):
                 d.line([(rx, ry), (rx - rw * 0.05, ry + rh * 0.35)], fill=(90, 120, 200, int(200 * a_)), width=lw)
             if p.label:
                 _text(d, (cx, cy - rh * 1.6), p.label, rh * 0.45, (110, 110, 120), bold=False)
+    elif k == "basket":                               # metaphor: a basket of essentials whose price tags climb
+        a_ = p.value("show", t, 1.0)
+        if a_ > 0.02:
+            cx = (x0 + x1) / 2
+            bw, bh = (x1 - x0), (y1 - y0) * 0.45
+            by = y1 - bh
+            d.polygon([(cx - bw * 0.45, by), (cx + bw * 0.45, by), (cx + bw * 0.36, y1), (cx - bw * 0.36, y1)],
+                      fill=(196, 150, 90, int(255 * a_)), outline=(120, 80, 40, int(255 * a_)))
+            d.arc([cx - bw * 0.3, by - bh * 0.9, cx + bw * 0.3, by + bh * 0.6], 180, 360, fill=(120, 80, 40), width=lw * 2)
+            items = p.data.get("items", [])
+            for i, name in enumerate(items):
+                ix = cx + (i - (len(items) - 1) / 2) * bw * 0.32
+                tag_y = by - bh * (0.55 + 0.25 * (i % 2))
+                v = p.value(f"p{i}", t, 0.0)
+                d.rounded_rectangle([ix - bw * 0.15, tag_y - bh * 0.22, ix + bw * 0.15, tag_y + bh * 0.22],
+                                    radius=lw * 2, fill=(255, 255, 240, int(255 * a_)), outline=INK, width=lw)
+                _text(d, (ix, tag_y - bh * 0.07), name, bh * 0.14, INK, bold=False)
+                _text(d, (ix, tag_y + bh * 0.1), "Rs " + format(v, ".0f"), bh * 0.17, (190, 40, 40))
+            if p.label:
+                _text(d, (cx, y1 + bh * 0.25), p.label, bh * 0.15, (110, 110, 120), bold=False)
+    elif k == "relations":                            # diagram: who appoints / oversees whom
+        a_ = p.value("show", t, 1.0)
+        nodes = p.data.get("nodes") or [["Government", 0.15, 0.8], ["Parliament", 0.85, 0.8], ["Commission", 0.5, 0.15]]
+        edges = p.data.get("edges") or [[0, 2, "appoints"], [1, 0, "holds to account"]]
+        if a_ > 0.02:
+            pts = {}
+            for i, (name, fx, fy) in enumerate(nodes):
+                nx, ny = x0 + (x1 - x0) * fx, y0 + (y1 - y0) * (1 - fy)
+                pts[i] = (nx, ny)
+            for a0, b0, lab in edges:
+                (ax, ay), (bx, by) = pts[a0], pts[b0]
+                d.line([(ax, ay), (bx, by)], fill=(60, 60, 70, int(255 * a_)), width=lw * 2)
+                ang_ = math.atan2(by - ay, bx - ax)
+                tx, ty = bx - math.cos(ang_) * (x1 - x0) * 0.1, by - math.sin(ang_) * (x1 - x0) * 0.1
+                d.polygon([(tx, ty), (tx - math.cos(ang_ - 0.4) * lw * 7, ty - math.sin(ang_ - 0.4) * lw * 7),
+                           (tx - math.cos(ang_ + 0.4) * lw * 7, ty - math.sin(ang_ + 0.4) * lw * 7)], fill=(60, 60, 70))
+                _text(d, ((ax + bx) / 2, (ay + by) / 2 - lw * 6), lab, (y1 - y0) * 0.07, (80, 80, 90), bold=False)
+            for i, (name, _, _) in enumerate(nodes):
+                nx, ny = pts[i]
+                r = (x1 - x0) * 0.13
+                d.rounded_rectangle([nx - r * 1.3, ny - r * 0.5, nx + r * 1.3, ny + r * 0.5], radius=lw * 3,
+                                    fill=(70, 120, 190, int(255 * a_)), outline=INK, width=lw)
+                _text(d, (nx, ny), name, r * 0.3, (255, 255, 255), maxw=r * 2.45)
+    elif k == "evidence":                             # documented sequence: each step with its source
+        steps = p.data.get("steps", [])
+        rev = p.value("reveal", t, 1.0)
+        n = max(1, len(steps))
+        cw = (x1 - x0) / n
+        for i, st in enumerate(steps):
+            k_ = max(0.0, min(1.0, rev * n - i))
+            if k_ <= 0:
+                continue
+            cx0 = x0 + i * cw + cw * 0.06
+            cx1 = x0 + (i + 1) * cw - cw * 0.06
+            d.rounded_rectangle([cx0, y0, cx1, y1], radius=lw * 3, fill=(250, 248, 240, int(255 * k_)),
+                                outline=INK, width=lw)
+            words, lines_, cur = st["text"].split(), [], ""
+            for w_ in words:                              # wrap, don't shrink
+                if len(cur) + len(w_) > 20 and cur:
+                    lines_.append(cur)
+                    cur = w_
+                else:
+                    cur = (cur + " " + w_).strip()
+            lines_.append(cur)
+            fs = (y1 - y0) * 0.1
+            for j, ln in enumerate(lines_[:5]):
+                _text(d, ((cx0 + cx1) / 2, y0 + (y1 - y0) * 0.16 + j * fs * 1.25), ln, fs, INK)
+            _text(d, ((cx0 + cx1) / 2, y1 - (y1 - y0) * 0.12), "Source: " + st["source"], (y1 - y0) * 0.065,
+                  (90, 90, 110), bold=False, maxw=(cx1 - cx0) * 0.92)
+            if i:
+                d.polygon([(cx0 - cw * 0.1, (y0 + y1) / 2 - lw * 4), (cx0 - lw, (y0 + y1) / 2),
+                           (cx0 - cw * 0.1, (y0 + y1) / 2 + lw * 4)], fill=INK)
+        if p.label:
+            _text(d, ((x0 + x1) / 2, y0 - (y1 - y0) * 0.12), p.label, (y1 - y0) * 0.09, (170, 40, 40))
     elif k == "label":
         _text(d, ((x0 + x1) / 2, (y0 + y1) / 2), p.label, (y1 - y0) * 0.8, p.color, maxw=(x1 - x0))
