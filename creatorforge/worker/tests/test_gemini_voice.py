@@ -91,16 +91,21 @@ def test_a_cut_off_take_is_redone(tmp_path):
 
 
 def test_the_key_comes_from_the_pod_or_the_apps_gemini_script_ai(cfg):
-    assert providers.gemini_key(cfg, "job1") == ""
-    providers.set_director_llm("job1", {"url": "https://generativelanguage.googleapis.com/v1beta/openai",
-                                        "model": "gemini-flash-latest", "key": "app-key"})
-    providers.set_director_llm("job2", {"url": "https://api.groq.com/openai/v1", "model": "llama", "key": "groq"})
-    assert providers.gemini_key(cfg, "job1") == "app-key" and providers.gemini_key(cfg, "job2") == ""
-    assert providers.gemini_key(cfg, lent={"url": "https://generativelanguage.googleapis.com/x", "key": "p"}) == "p"
-    cfg.gemini_api_key = "pod-key"
-    assert providers.gemini_key(cfg, "job2") == "pod-key"
-    v = providers.build_voice(cfg, VoiceProfile("g", "Google", "gemini", "Charon", 1.0, "hi", "news"), "job2")
-    assert v.key == "pod-key" and v.lang == "hi" and v.id == "gemini:Charon:news:hi"
+    a, b = "gemini-key-job-a", "gemini-key-job-b"           # own job ids: the lent-AI registry is process-wide
+    try:
+        assert providers.gemini_key(cfg, a) == ""
+        providers.set_director_llm(a, {"url": "https://generativelanguage.googleapis.com/v1beta/openai",
+                                       "model": "gemini-flash-latest", "key": "app-key"})
+        providers.set_director_llm(b, {"url": "https://api.groq.com/openai/v1", "model": "llama", "key": "groq"})
+        assert providers.gemini_key(cfg, a) == "app-key" and providers.gemini_key(cfg, b) == ""
+        assert providers.gemini_key(cfg, lent={"url": "https://generativelanguage.googleapis.com/x", "key": "p"}) == "p"
+        cfg.gemini_api_key = "pod-key"
+        assert providers.gemini_key(cfg, b) == "pod-key"
+        v = providers.build_voice(cfg, VoiceProfile("g", "Google", "gemini", "Charon", 1.0, "hi", "news"), b)
+        assert v.key == "pod-key" and v.lang == "hi" and v.id == "gemini:Charon:news:hi"
+    finally:
+        providers._director_llms.pop(a, None)
+        providers._director_llms.pop(b, None)
 
 
 @pytest.mark.ffmpeg
