@@ -46,7 +46,7 @@ def jump(a: Actor, t: float, dist: float = 1.2, height: float = 0.5, land: float
                   feet=((dist + 0.1 * H, land), (dist - 0.08 * H, land)), ballistic=True), "linear"),  # touch-down
         (t4, dict(dx=dist, y=land + y0 - 0.16 * H, lean=0.38, au=0.8, al=1.1, bu=0.6, bl=0.9, squash=0.9), "out"),
         # the knees take the landing
-        (t4 + 0.38, dict(y=land + y0, lean=0.04, head=0.0, au=0.1, al=0.25, bu=0.06, bl=0.2, squash=1.0), "back"),
+        (t4 + 0.38, dict(y=land + y0, lean=0.04, head=0.0, au=0.1, al=0.25, bu=0.06, bl=0.2, squash=1.0), "settle"),
     ]
     return a.act(t, keys, "jump", dx=dist)
 
@@ -87,12 +87,14 @@ def climb(a: Actor, t: float, wall: float, top: float) -> float:
         keys += [(t_, dict(dx=wall - 0.17 * H, y=support, lean=0.25, head=-0.1, hands=(edge_n, edge_f), lu=-0.15,
                            ll=-0.55, mu=-0.35, ml=-0.8, feet=None, squash=1.0), "out")]   # arms locked on the edge
     keys += [
-        (t_ + 0.25, dict(dx=wall - 0.12 * H, y=support + 0.02 * H, lean=0.45, head=0.1, lu=1.9, ll=0.9, mu=-0.4,
+        (t_ + 0.13, dict(dx=wall - 0.15 * H, y=support + 0.01 * H, lean=0.35, feet=((wall - 0.04 * H, top - 0.42), None)),
+         "inout"),                                                                       # foot finds the wall
+        (t_ + 0.33, dict(dx=wall - 0.12 * H, y=support + 0.02 * H, lean=0.45, head=0.1, lu=1.9, ll=0.9, mu=-0.4,
                          ml=-0.9, feet=((wall + 0.09 * H, top), None)), "inout"),          # knee up, foot on the edge
-        (t_ + 0.55, dict(dx=wall + 0.02 * H, y=top + y0 * 0.72, lean=0.55, head=0.25, hands=(None, None), au=0.6,
+        (t_ + 0.63, dict(dx=wall + 0.02 * H, y=top + y0 * 0.72, lean=0.55, head=0.25, hands=(None, None), au=0.6,
                          al=0.9, bu=0.4, bl=0.7, feet=("prev", (wall + 0.02 * H, top))), "inout"),  # feet on top
-        (t_ + 0.9, dict(dx=wall + 0.06 * H, y=top + y0, lean=0.04, head=0.0, au=0.1, al=0.25, bu=0.06, bl=0.2),
-         "back"),
+        (t_ + 0.98, dict(dx=wall + 0.06 * H, y=top + y0, lean=0.04, head=0.0, au=0.1, al=0.25, bu=0.06, bl=0.2),
+         "settle"),
     ]
     return a.act(t, keys, "climb", dx=wall + 0.06 * H)
 
@@ -112,7 +114,7 @@ def trip_roll(a: Actor, t: float, speed: float = 3.6) -> float:
         # the catch: the toe is stuck, the arms fly forward
         (0.38, dict(dx=1.0, y=0.4 * H, head=0.2, feet=None, squash=0.9,
                     hands=((1.0 + 0.42 * H, 0.03), (1.0 + 0.36 * H, 0.03)), **body(1.45, 1.6, 1.6, 0.0, 0.1, 0.4, 0.5)),
-         "in"),                                                                         # dive, palms on the floor
+         "linear"),                                                                         # dive, palms on the floor
         (0.52, dict(dx=1.25, y=0.33 * H, head=1.1, squash=0.74,
                     **body(1.45 + 0.25 * TAU, 1.7, 1.5, 0.6, 2.2, 1.9, 2.5)), "linear"),  # over the shoulders, tucking
         (0.66, dict(dx=1.5, y=0.26 * H, head=1.1, squash=0.7, hands=(None, None),
@@ -122,7 +124,7 @@ def trip_roll(a: Actor, t: float, speed: float = 3.6) -> float:
         (1.12, dict(dx=2.1, y=0.42 * H, head=0.1, squash=1.0, feet=((2.1 + 0.2 * H, 0), (2.1 - 0.12 * H, 0)),
                     **body(0.4 + TAU, 0.9, 1.6, 0.4, 1.4, 0.2, 1.4)), "out"),             # up on one knee
         (1.5, dict(dx=2.2, y=y0 - 0.05 * H, head=-0.2, au=0.9 - TAU, al=1.0 - TAU, bu=-0.4 - TAU, bl=0.1 - TAU, lean=0.05 + TAU),
-         "back"),                                                                # up, arms out for balance
+         "settle"),                                                                # up, arms out for balance
         (1.85, dict(head=0.25, au=0.1 - TAU, al=0.25 - TAU, bu=0.06 - TAU, bl=0.2 - TAU), "inout"),  # shake it off
         (2.05, dict(head=-0.2), "inout"),
         (2.2, dict(head=0.0), "inout"),
@@ -142,7 +144,7 @@ def knockback(a: Actor, t: float, push: float = 1.0) -> float:
         (1.4, dict(lean=-0.3, head=0.45, squash=1.0), "inout"),                            # dazed
         (1.75, dict(dx=-1.0 * push, y=0.4 * H, lean=0.6, head=0.1, au=0.6, al=0.4, bu=0.2, bl=0.2,
                     feet=((-1.0 * push + 0.24 * H, 0), (-1.0 * push + 0.08 * H, 0))), "inout"),   # feet tucked in
-        (2.1, dict(dx=-1.0 * push + 0.15 * H, y=y0, lean=0.03, head=0.0, au=0.1, al=0.25, bu=0.06, bl=0.2), "back"),
+        (2.1, dict(dx=-1.0 * push + 0.15 * H, y=y0, lean=0.03, head=0.0, au=0.1, al=0.25, bu=0.06, bl=0.2), "settle"),
     ]
     return a.act(t, keys, "knockback", dx=-1.0 * push + 0.15 * a.H)
 
@@ -169,7 +171,7 @@ def put_down(a: Actor, t: float, prop, at_dx: float = 0.35, on: float = 0.0) -> 
     keys = [
         (0.45, dict(y=y0 - 0.16 * H + on * 0.5, lean=0.8, head=0.3, au=1.0, al=1.1, bu=0.9, bl=1.0, feet="keep"),
          "inout"),
-        (0.85, dict(y=y0, lean=0.04, head=0.0, au=0.1, al=0.25, bu=0.06, bl=0.2), "back"),
+        (0.85, dict(y=y0, lean=0.04, head=0.0, au=0.1, al=0.25, bu=0.06, bl=0.2), "settle"),
     ]
     end = a.act(t, keys, "put_down")
     for i, c in enumerate(prop.carriers):
@@ -184,9 +186,9 @@ def point_at(a: Actor, t: float, target, dur: float = 1.6, hand: str = "near") -
     hs = (target, None) if hand == "near" else (None, target)
     keys = [
         (0.12, dict(lean=-0.05, au=0.3, al=0.9, feet="keep"), "inout"),          # a little wind-up
-        (0.3, dict(lean=0.08, head=0.1, hands=hs), "snap"),
-        (0.3 + dur, dict(hands=hs), "linear"),
-        (0.6 + dur, dict(lean=0.03, head=0.0, hands=(None, None), au=0.1, al=0.25, bu=0.06, bl=0.2), "inout"),
+        (0.38, dict(lean=0.08, head=0.1, hands=hs), "out"),                     # quick, but it reads
+        (0.38 + dur, dict(hands=hs), "linear"),
+        (0.68 + dur, dict(lean=0.03, head=0.0, hands=(None, None), au=0.1, al=0.25, bu=0.06, bl=0.2), "inout"),
     ]
     return a.act(t, keys, "point")
 
@@ -233,21 +235,28 @@ def kick(a: Actor, t: float, power: float = 1.0) -> float:
 
 
 def pain_hop(a: Actor, t: float, hops: int = 4, travel: float = -0.5) -> float:
-    """Clutching a hurt foot: hop on the other leg, small bounces drifting backwards."""
+    """Clutching a hurt foot: small hops on the other leg, drifting backwards. Each hop is a real one: a push off the
+    bent knee that ends at take-off speed, a gravity flight, and a landing the knee absorbs."""
     H, y0 = a.H, _stand(a)
-    keys = []
-    tt = 0.0
+    rise, give = 0.045 * H, 0.035 * H
+    v = math.sqrt(2 * G * rise)
+    t_push, t_fly, t_absorb = 2 * give / v, math.sqrt(2 * rise / G), 3 * give / v
+    pose = dict(lean=0.35, head=0.35, mu=0.9, ml=-1.3, au=0.8, al=1.4, bu=0.5, bl=1.6)
+    keys, tt, x = [(0.15, dict(y=y0 - give, feet=("keep", None), **pose), "inout")], 0.15, 0.0
     for i in range(hops):
-        dx = travel * (i + 1) / hops
-        up = 0.11 * H
-        keys.append((tt + 0.14, dict(dx=dx - travel / hops * 0.5, y=y0 + up, lean=0.35, head=0.35, lu=0.0, ll=0.1,
-                                     mu=0.9, ml=-1.3, au=0.8, al=1.4, bu=0.5, bl=1.6, feet=None), "out"))
-        keys.append((tt + 0.3, dict(dx=dx, y=y0 - 0.04 * H, feet=((dx + 0.02 * H, 0), (dx - 0.18 * H, 0.32 * H)),
-                                    squash=0.95), "in"))
-        tt += 0.3
-    keys.append((tt + 0.4, dict(y=y0, lean=0.05, head=0.1, squash=1.0, au=0.1, al=0.25, bu=0.06, bl=0.2,
-                                feet=((travel + 0.09 * H, 0), (travel - 0.08 * H, 0))), "back"))
-    return a.act(t, keys, "pain_hop", dx=travel)
+        step = travel / hops
+        tt += t_push
+        keys.append((tt, dict(dx=x + 0.15 * step, y=y0, feet=("keep", None)), "accel"))           # push off
+        tt += t_fly
+        keys.append((tt, dict(dx=x + 0.6 * step, y=y0 + rise, feet=None, ballistic=True), "linear"))   # up
+        tt += t_fly
+        x += step
+        keys.append((tt, dict(dx=x - 0.15 * step, y=y0, feet=((x + 0.02 * H, 0), None), ballistic=True), "linear"))
+        tt += t_absorb
+        keys.append((tt, dict(dx=x, y=y0 - give, feet=("prev", None), squash=0.96), "out"))       # land, knee gives
+    keys.append((tt + 0.45, dict(y=y0, lean=0.05, head=0.1, squash=1.0, au=0.1, al=0.25, bu=0.06, bl=0.2,
+                                 feet=("prev", (x - 0.12 * H, 0))), "settle"))                    # puts the foot down
+    return a.act(t, keys, "pain_hop", dx=x)
 
 
 def tap(a: Actor, t: float, target) -> float:

@@ -39,7 +39,9 @@ def ease(kind: str, u: float, overshoot: float = 1.0) -> float:
         return 1 - (1 - u) ** 3
     if kind == "snap":                       # a fast accent that slightly overshoots and settles
         return 1 - (1 - u) ** 4 * math.cos(u * 3.2)
-    if kind == "back":                       # overshoot past the pose and come back
+    if kind == "settle":                     # from rest, past the pose a little, back to rest (recoveries)
+        return u * u * (3 - 2 * u) + 0.3 * overshoot * math.sin(math.pi * u) ** 2 * u
+    if kind == "back":                       # overshoot past the pose and come back (starts fast: pops)
         s = 1.9 * overshoot
         u -= 1
         return u * u * ((s + 1) * u + s) + 1
@@ -168,6 +170,7 @@ class Actor:
         self.reaches: list[tuple] = []        # (t0, t1, (near, far)) hand targets while walking
         self._end_x = x
         self.timing = None                    # a timing.Timing profile (comedy, drama...) for keyframed actions
+        self.depth: list[tuple] = []          # (t0, t1, dz): stepping toward (dz < 0) or away from the camera
         self.looks: list[tuple] = []          # (t0, t1, target): where the head turns (an actor or an (x, y) point)
         self._spring = {}
         self._act = None
@@ -314,16 +317,67 @@ class Actor:
                 if a.exaggerate != 1.0 and k in ("au", "al", "bu", "bl", "lean", "head"):
                     v = getattr(start, k) + (v - getattr(start, k)) * a.exaggerate   # pushed further for comedy
                 setattr(p, k, v)
+            if not ball:                                # each key pose clears the floor (the in-betweens then do too)
+                self._t = getattr(self, "_t", 0.0)
+                p.y -= min(0.0, self._below_floor(p))
             out.append((a.t0 + dt, p, ek, ball))
             cur = p
         a.resolved = out
         a.foot_paths = [self._foot_path(pa, pb) for (_, pa, _, _), (_, pb, _, _) in zip(out, out[1:])]
+        a.hand_paths = [self._hand_path(pa, pb) for (_, pa, _, _), (_, pb, _, _) in zip(out, out[1:])]
+        # in-betweens that would dip into the floor (a body rotating through a roll): a smooth lift - the upper envelope
+        # of what is needed, with bounded curvature, so the hips arc over instead of being shoved up and dropped
+        a.lift_grid = None
+        hz, T = 120, out[-1][0] - out[0][0]
+        n = int(T * hz) + 1
+        need = []
+        for k in range(n):
+            tt = a.t0 + k / hz
+            q, qa = self._eval(a, tt), self._eval(a, max(a.t0, tt - 0.06))     # as step() will pose it
+            turn = qa.lean - q.lean
+            q.au, q.al, q.bu, q.bl = qa.au + turn, qa.al + turn, qa.bu + turn, qa.bl + turn
+            need.append(max(0.0, -self._below_floor(q)))
+        if max(need or [0.0]) > 0.002:
+            c, w = 30.0, int(0.35 * hz)                 # |lift''| <= 60 m/s^2
+            env = []
+            for k in range(n):
+                best = 0.0
+                for m in range(max(0, k - w), min(n, k + w + 1)):
+                    if need[m] > best:
+                        best = max(best, need[m] - c * ((k - m) / hz) ** 2)
+                env.append(best)
+            a.lift_grid = (a.t0, hz, env)
 
     def _free_ankles(self, p: Pose):
         """Where the ankles hang in this pose with no foot targets (the floor still stops them)."""
         q = replace(p, feet=None, hands=None)
         self._t = getattr(self, "_t", 0.0)
         return [leg[2] for leg in self.joints(q)["legs"]]
+
+    def _hand_path(self, pa: Pose, pb: Pose):
+        """Like _foot_path for hands placed at fixed points: a hand let go of (or put down on) a spot travels between
+        the spot and where the free arm will be, instead of blending joint angles (which can flip the long way round).
+        Hands following moving targets (callables) keep the weight blend."""
+        ha = pa.hands or (None, None)
+        hb = pb.hands or (None, None)
+        if any(callable(x) for x in ha + hb) or all(x is None for x in ha + hb):
+            return None
+        if all((x is None) == (y is None) for x, y in zip(ha, hb)):
+            return None                                 # placed both ends (or free both ends): nothing to route
+        def free(p):
+            q = replace(p, feet=None, hands=None)
+            self._t = getattr(self, "_t", 0.0)
+            return [arm[2] for arm in self.joints(q)["arms"]]
+        fa = free(pa) if any(x is None for x in ha) else None
+        fb = free(pb) if any(x is None for x in hb) else None
+        ends = []
+        for i in range(2):
+            x, y = ha[i], hb[i]
+            if x is None and y is None:
+                ends.append(None)
+            else:
+                ends.append((x if x is not None else fa[i], y if y is not None else fb[i]))
+        return ends
 
     def _foot_path(self, pa: Pose, pb: Pose):
         """Both ends of each foot's path through a segment. A foot that is placed at one end and free at the
@@ -364,7 +418,14 @@ class Actor:
                     p.y = pa.y + vy * s - 0.5 * G * s * s
                 else:
                     p.x, p.y = lerp(pa.x, pb.x, k), lerp(pa.y, pb.y, k)
+
                 p.f = pb.f if u > 0.5 else pa.f
+                G_ = getattr(a, "lift_grid", None)
+                if G_:
+                    g0_, hz_, env_ = G_
+                    x_ = (t - g0_) * hz_
+                    j_ = max(0, min(len(env_) - 2, int(x_)))
+                    p.y += lerp(env_[j_], env_[j_ + 1], max(0.0, min(1.0, x_ - j_)))
                 pts, ws = [], []
                 for end in (a.foot_paths[si] or (None, None)):
                     if end is None:
@@ -385,6 +446,27 @@ class Actor:
                     pts.append(q); ws.append(1.0)
                 p.feet = tuple(pts) if any(q is not None for q in pts) else None
                 p.feet_w = tuple(ws)
+                hp = a.hand_paths[si] if getattr(a, "hand_paths", None) else None
+                if hp:                                    # routed: an arc around the shoulder, through the front
+                    kh = ease("inout", u)
+                    sh = (p.x + p.f * math.sin(p.lean) * self.l_torso * 0.86 * p.squash,
+                          p.y + math.cos(p.lean) * self.l_torso * 0.86 * p.squash)
+                    pts = []
+                    for e in hp:
+                        if e is None:
+                            pts.append(None)
+                            continue
+                        (ax, ay), (bx, by) = e
+                        ov = getattr(a, "hand_from", {}).get(si)
+                        if ov is not None and ov[len(pts)] is not None:   # from where the hand really was
+                            ax, ay = ov[len(pts)]
+                        ta = math.atan2(ay - sh[1], p.f * (ax - sh[0]))
+                        tb = math.atan2(by - sh[1], p.f * (bx - sh[0]))
+                        da, db = math.hypot(ax - sh[0], ay - sh[1]), math.hypot(bx - sh[0], by - sh[1])
+                        th, dd = lerp(ta, tb, kh), lerp(da, db, kh)
+                        pts.append((sh[0] + p.f * math.cos(th) * dd, sh[1] + math.sin(th) * dd))
+                    p.hands, p.hands_w = tuple(pts), tuple(0.0 if q is None else 1.0 for q in pts)
+                    return p
                 ha = pa.hands or (None, None)
                 hb = pb.hands or (None, None)
                 pts, ws = [], []
@@ -415,9 +497,17 @@ class Actor:
                 start = self._last_pose if hasattr(self, "_last_pose") else self._loco_pose(t)
                 self._resolve(a, start)
             # follow-through: arms trail the body a little, the head a little less
+            si = next((k for k, ((ta, *_), (tb, *_)) in enumerate(zip(a.resolved, a.resolved[1:])) if ta <= t <= tb), None)
+            if si is not None and getattr(a, "hand_paths", None) and a.hand_paths[si]:
+                a.hand_from = getattr(a, "hand_from", {})
+                if si not in a.hand_from:              # a routed hand starts from where it is now (lag included)
+                    pj = getattr(self, "_prev_J", None)
+                    a.hand_from[si] = [None if (e is None or pj is None) else pj["arms"][k][2]
+                                       for k, e in enumerate(a.hand_paths[si])]
             p = self._eval(a, t)
             pa = self._eval(a, max(a.t0, t - 0.06))
-            p.au, p.al, p.bu, p.bl = pa.au, pa.al, pa.bu, pa.bl
+            turn = pa.lean - p.lean                       # the arms lag the body's pose, not its rotation
+            p.au, p.al, p.bu, p.bl = pa.au + turn, pa.al + turn, pa.bu + turn, pa.bl + turn
             if a.upper_free:                          # seated: feelings move the arms, head and lean only
                 q = self._feelings(t, replace(p))
                 p.au, p.al, p.bu, p.bl, p.head = q.au, q.al, q.bu, q.bl, q.head
@@ -454,13 +544,34 @@ class Actor:
                 p.y = lerp(e.y, p.y, k)
                 p.x = lerp(e.x, p.x, k)
         p = self._gaze(t, p)
+        prev = getattr(self, "_last_pose", None)
+        if prev is not None and dt > 0:              # no limb whips round faster than a human can swing it
+            cap = 25.0 * dt                            # measured against the torso: a roll turns limbs with it
+            for n in ("au", "al", "bu", "bl", "lu", "ll", "mu", "ml"):
+                v, pv = getattr(p, n) + p.lean, getattr(prev, n) + prev.lean
+                d = (v - pv + math.pi) % TAU - math.pi
+                if abs(d) > cap:
+                    setattr(p, n, pv + math.copysign(cap, d) - p.lean)
         p = self._springs(p, dt)
-        p.y -= min(0.0, self._below_floor(p))         # a roll or a fall never pushes the head or hands through the floor
+        need = -min(0.0, self._below_floor(p))        # a roll or a fall never pushes the head or hands through the floor
+        lift = max(need, getattr(self, "_lift", 0.0) - 1.2 * dt)   # ...and lets go gently, not with a drop
+        self._lift = lift
+        p.y += lift
         self._last_pose = p
         self.pose_now = p
+        self._prev_J = None
+        self._prev_J = self.joints(p)                 # where the knees and elbows were (IK keeps continuity)
         self.hip = (p.x, p.y)
         self.speed = self.loco.speed if a is None else 0.0
         self._t = t
+
+    def z_at(self, t: float) -> float:
+        """Depth at time t: the actor's lane plus any step toward or away from the camera (eased in and out)."""
+        z = self.z
+        for t0, t1, dz in self.depth:
+            if t0 <= t <= t1:
+                z += dz * min(smooth((t - t0) / 0.4), smooth((t1 - t) / 0.4))
+        return z
 
     def look_at(self, t0: float, t1: float, target) -> float:
         """Attention: from t0 to t1 the head turns to `target` (another actor, a prop, or an (x, y) point)."""
@@ -640,12 +751,16 @@ class Actor:
         def ang(a, b):
             return math.atan2(f * (b[0] - a[0]), -(b[1] - a[1]))
 
-        def reach(root, target, l1, l2, bend):
+        def reach(root, target, l1, l2, bend, near=None):
             d = math.hypot(target[0] - root[0], target[1] - root[1])
             if d > (l1 + l2) * 0.999:              # out of reach: the limb straightens toward it
                 target = (root[0] + (target[0] - root[0]) / d * (l1 + l2) * 0.999,
                           root[1] + (target[1] - root[1]) / d * (l1 + l2) * 0.999)
             mid = rig2d._ik(root, target, l1, l2, bend)
+            if near is not None:                   # of the two ways to bend, the one closest to the pose: no flips
+                alt = rig2d._ik(root, target, l1, l2, -bend)
+                if math.dist(alt, near) < math.dist(mid, near) - 1e-6:
+                    mid = alt
             return ang(root, mid), ang(mid, target)
 
         def blend(a1, a2, w):                      # shortest way round
@@ -658,7 +773,8 @@ class Actor:
                 target = target(self._t)
             w = p.hands_w[i] if p.hands else 0.0
             if target is not None and w > 0:
-                iu, il = reach(sh, target, self.l_up, self.l_fore, -f)
+                prevJ = getattr(self, "_prev_J", None)
+                iu, il = reach(sh, target, self.l_up, self.l_fore, -f, prevJ["arms"][i][1] if prevJ else None)
                 u, l = blend(u, iu, w), blend(l, il, w)
             el = seg(sh, u, self.l_up)
             arms.append((sh, el, seg(el, l, self.l_fore)))
@@ -666,7 +782,8 @@ class Actor:
         for i, (u, l) in enumerate(((p.lu, p.ll), (p.mu, p.ml))):
             fw = p.feet_w[i] if isinstance(p.feet_w, tuple) else p.feet_w
             if p.feet and p.feet[i] is not None and fw > 0:
-                iu, il = reach(hip, p.feet[i], self.l_thigh, self.l_shin, f)
+                prevJ = getattr(self, "_prev_J", None)
+                iu, il = reach(hip, p.feet[i], self.l_thigh, self.l_shin, f, prevJ["legs"][i][1] if prevJ else None)
                 u, l = blend(u, iu, fw), blend(l, il, fw)
             kn = seg(hip, u, self.l_thigh)
             ank = seg(kn, l, self.l_shin)
@@ -841,16 +958,18 @@ class Prop:
                 not any(fl["t0"] < k[0] <= t for k in self.keys):
             return self._fly(fl, t)
         x, y, ang = self.x, self.y, self.angle
-        for (ta, xa, ya, aa, _), (tb, xb, yb, ab, ek) in zip(self.keys, self.keys[1:]):
+        held = getattr(self, "_last_held", None) or (self.x, self.y, self.angle)
+        keys = [(k[0], held[0], held[1], held[2], k[4]) if k[1] is None else k for k in self.keys]
+        for (ta, xa, ya, aa, _), (tb, xb, yb, ab, ek) in zip(keys, keys[1:]):
             if t >= tb:
                 x, y, ang = xb, yb, ab
             elif ta <= t < tb:
                 k = ease(ek, (t - ta) / max(1e-6, tb - ta))
                 return lerp(xa, xb, k), lerp(ya, yb, k), lerp(aa, ab, k)
-        if self.keys and t >= self.keys[-1][0]:
-            return self.keys[-1][1], self.keys[-1][2], self.keys[-1][3]
-        if self.keys and t < self.keys[0][0]:
-            return self.keys[0][1], self.keys[0][2], self.keys[0][3]
+        if keys and t >= keys[-1][0]:
+            return keys[-1][1], keys[-1][2], keys[-1][3]
+        if keys and t < keys[0][0] and keys[0][1] is not None and self.keys[0][1] is not None:
+            return keys[0][1], keys[0][2], keys[0][3]
         return x, y, ang
 
     # ---- physics -------------------------------------------------------------------------------------------
@@ -894,7 +1013,10 @@ class Prop:
             self.flights = saved
 
     def move(self, t0, t1, x, y, angle=0.0, how="inout"):
-        if not self.keys:
+        if any(c1 <= t0 + 1e-6 for _, c1, _, _ in self.carriers) and not any(k[0] > max(c1 for _, c1, _, _ in
+                                                                                    self.carriers) for k in self.keys):
+            self.keys.append((t0, None, None, None, "linear"))        # from wherever the hand let go of it
+        elif not self.keys:
             self.keys.append((t0, self.x, self.y, self.angle, "linear"))
         else:
             last = self.keys[-1]

@@ -33,6 +33,7 @@ class CamKey:
     y: float = 0.0
     zoom: float = 1.0
     follow: object = None      # a character/animal to track (x offset = x)
+    ease: str = "smooth"       # how the camera arrives at this key: "smooth" (eased) or "linear" (dense director keys)
 
 
 @dataclass
@@ -80,7 +81,8 @@ class Scene:
             return pos(k), k.y, k.zoom
         for a, b in zip(keys, keys[1:]):
             if a.t <= t <= b.t:
-                u = smooth((t - a.t) / max(1e-3, b.t - a.t))
+                u = (t - a.t) / max(1e-3, b.t - a.t)
+                u = u if b.ease == "linear" else smooth(u)
                 return lerp(pos(a), pos(b), u), lerp(a.y, b.y, u), lerp(a.zoom, b.zoom, u)
         k = keys[-1]
         return pos(k), k.y, k.zoom
@@ -150,18 +152,19 @@ class Scene:
         S1, scale1 = to_screen_z(1.0)
         for e in self.extras:
             e.draw(d, S1, scale1, t)
-        for a in sorted(self.actors, key=lambda q: -getattr(q, "z", 1.0)):
+        zs = {id(a): (a.z_at(t) if hasattr(a, "z_at") else getattr(a, "z", 1.0)) for a in self.actors}
+        for a in sorted(self.actors, key=lambda q: -zs[id(q)]):
             if getattr(a, "no_shadow", False):
                 continue
-            S, scale = to_screen_z(getattr(a, "z", 1.0))
+            S, scale = to_screen_z(zs[id(a)])
             ax = _actor_x(a, t)
             gnd = a.world.ground(ax) if getattr(a, "world", None) is not None else 0.0
             lift = getattr(a, "hip", (0, 0))[1] - gnd - (a.l_thigh + a.l_shin) if hasattr(a, "l_thigh") else 0.0
             w = (0.32 if hasattr(a, "l_thigh") else 1.35) * scale * max(0.45, 1 - max(0.0, lift) * 0.8)
             sx, sy = S(ax + self.shadow_dir * 0.2, gnd)
             d.ellipse([sx - w, sy - w * 0.12, sx + w, sy + w * 0.12], fill=(0, 0, 0, 55))
-        for a in sorted(self.actors, key=lambda q: -getattr(q, "z", 1.0)):
-            S, scale = to_screen_z(getattr(a, "z", 1.0))
+        for a in sorted(self.actors, key=lambda q: -zs[id(q)]):
+            S, scale = to_screen_z(zs[id(a)])
             if isinstance(a, rig2d.Character):
                 rig2d.draw(d, a, a.pose(t), S, scale, t)
             else:

@@ -361,7 +361,8 @@ class Character:
         if not air and speed > 0.05 and mode in ("walk", "run"):
             self._still = 0.0
             order = sorted(range(2), key=lambda k: f * self._feet[k].x)     # the foot furthest behind steps first
-            for i in order[:1]:                     # ...and only that one: a front foot never steps off early
+            together = abs(self._feet[0].x - self._feet[1].x) < 0.12 * H
+            for i in (order if together else order[:1]):   # only the rear one, unless the feet are side by side
                 ft = self._feet[i]
                 other = self._feet[1 - i]
                 if ft.swing:
@@ -375,9 +376,10 @@ class Character:
                 else:
                     # walking: the back foot lifts once the front foot has carried weight for ~20% of a step
                     # (double support), swings for 80% of a step and lands half a step ahead of the hips
-                    ready = other.swing is None and behind > 0.12 * S and (
+                    ready = (other.swing is None and behind > 0.12 * S and (
                         t - other.landed >= 0.2 * P
                         or behind > 0.8 * S)          # catch-up: never let the body leave both feet behind
+                        or behind > 1.0 * S and (other.swing is None or (t - other.swing[0]) / other.swing[1] > 0.6))
                     dur = max(0.24, min(0.55, 0.8 * P))
                     ahead = 0.45 * S
                 if ready:
