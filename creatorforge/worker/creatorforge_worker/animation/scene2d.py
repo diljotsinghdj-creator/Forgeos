@@ -12,6 +12,7 @@ import subprocess
 from dataclasses import dataclass, field
 from pathlib import Path
 
+import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
 
 from . import rig2d
@@ -65,6 +66,7 @@ class Scene:
     sun: tuple | None = None                         # (screen x frac, screen y frac, radius frac, colour)
     shake: list = field(default_factory=list)        # (t0, t1, amount px)
     shadow_dir: float = 0.25
+    motion_blur: int = 0                             # sub-frames averaged per frame (180-degree shutter); 0 = off
 
     # ---- camera -------------------------------------------------------------------------------------------------
     def camera(self, t: float):
@@ -186,33 +188,88 @@ class Scene:
             self.overlay(ImageDraw.Draw(out, "RGBA"), self.width, self.height, t)
         return out
 
-    def render(self, out: Path, seconds: float, android: Path | None = None, audio_wav: Path | None = None) -> Path:
+    def resize(self, width: int, height: int):
+        """Change the output size (e.g. 3840x2160 for 4K) keeping the same framing."""
+        self.ppm *= height / self.height
+        self.width, self.height = width, height
+        self.__dict__.pop("_sky_img", None)
+        for L in self.layers + self.front:
+            L._img = None
+        return self
+
+    def _shot(self, t: float, dt: float, draw: bool = True):
+        """One output frame at t: with motion blur, the average of sub-frames across half the frame interval."""
+        n = max(1, self.motion_blur)
+        if n == 1:
+            return self.frame(t, dt) if draw else self._advance(t, dt)
+        acc = None
+        sub = 0.5 * dt / n
+        for k in range(n):
+            ts = t - 0.25 * dt + (k + 0.5) * sub
+            if not draw:
+                self._advance(ts, sub if k else dt - (n - 1) * sub)
+                continue
+            img = np.asarray(self.frame(ts, sub if k else dt - (n - 1) * sub), dtype=np.uint16)
+            acc = img if acc is None else acc + img
+        return None if not draw else Image.fromarray((acc // n).astype(np.uint8))
+
+    def _advance(self, t: float, dt: float):
+        for a in self.actors:
+            a.step(t, dt)
+
+    def render(self, out: Path, seconds: float, android: Path | None = None, audio_wav: Path | None = None,
+               chunk: float = 8.0, resume: bool = True) -> Path:
         """Renders to `out` (high-quality master, H.264 High CRF 12) and optionally an Android copy (H.264 Main 4.0,
-        1080p, AAC, fast start)."""
+        AAC, fast start). Frames are written in chunks of `chunk` seconds; if a render is interrupted, running it again
+        re-uses the chunks already finished (the characters are simulated through them, not redrawn)."""
         out = Path(out)
+        parts = out.parent / (out.stem + "_parts")
+        parts.mkdir(parents=True, exist_ok=True)
         n = int(round(seconds * self.fps))
-        cmd = ["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s",
-               f"{self.width}x{self.height}", "-r", str(self.fps), "-i", "-"]
-        if audio_wav:
-            cmd += ["-i", str(audio_wav)]
-        cmd += ["-c:v", "libx264", "-preset", "slow", "-crf", "12", "-profile:v", "high", "-pix_fmt", "yuv420p",
-                "-tune", "animation"]
-        if audio_wav:
-            cmd += ["-c:a", "aac", "-b:a", "256k", "-shortest"]
-        cmd += ["-movflags", "+faststart", str(out)]
-        p = subprocess.Popen(cmd, stdin=subprocess.PIPE)
+        per = max(1, int(round(chunk * self.fps)))
         dt = 1.0 / self.fps
-        for i in range(n):
-            p.stdin.write(self.frame(i * dt, dt).tobytes())
-        p.stdin.close()
-        if p.wait() != 0:
-            raise RuntimeError("ffmpeg failed")
+        files = []
+        for c0 in range(0, n, per):
+            c1 = min(n, c0 + per)
+            part = parts / f"part_{c0:06d}_{c1:06d}.mp4"
+            files.append(part)
+            if resume and part.exists() and _frames(part) == c1 - c0:
+                for i in range(c0, c1):
+                    self._shot(i * dt, dt, draw=False)
+                continue
+            cmd = ["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s",
+                   f"{self.width}x{self.height}", "-r", str(self.fps), "-i", "-",
+                   "-c:v", "libx264", "-preset", "slow", "-crf", "12", "-profile:v", "high", "-pix_fmt", "yuv420p",
+                   "-tune", "animation", str(part)]
+            p = subprocess.Popen(cmd, stdin=subprocess.PIPE)
+            for i in range(c0, c1):
+                p.stdin.write(self._shot(i * dt, dt).tobytes())
+            p.stdin.close()
+            if p.wait() != 0:
+                part.unlink(missing_ok=True)
+                raise RuntimeError("ffmpeg failed")
+        lst = parts / "list.txt"
+        lst.write_text("".join(f"file '{f.name}'\n" for f in files))
+        cmd = ["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(lst)]
+        if audio_wav:
+            cmd += ["-i", str(audio_wav), "-c:a", "aac", "-b:a", "256k", "-shortest"]
+        subprocess.run(cmd + ["-c:v", "copy", "-movflags", "+faststart", str(out)], check=True)
         if android:
             subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(out), "-c:v", "libx264", "-profile:v", "main",
-                            "-level", "4.0", "-preset", "medium", "-crf", "20", "-maxrate", "8M", "-bufsize", "16M",
+                            "-level", "4.0" if self.height <= 1080 else "5.1", "-preset", "medium", "-crf", "20",
+                            "-maxrate", "8M" if self.height <= 1080 else "30M", "-bufsize", "16M",
                             "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "160k", "-ar", "48000",
                             "-movflags", "+faststart", str(android)], check=True)
         return out
+
+
+def _frames(path: Path) -> int:
+    r = subprocess.run(["ffprobe", "-v", "error", "-count_frames", "-select_streams", "v:0", "-show_entries",
+                        "stream=nb_read_frames", "-of", "csv=p=0", str(path)], capture_output=True, text=True)
+    try:
+        return int(r.stdout.strip().split(",")[0])
+    except ValueError:
+        return -1
 
 
 def _actor_x(a, t):
