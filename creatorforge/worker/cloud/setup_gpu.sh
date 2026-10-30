@@ -74,7 +74,7 @@ say "Installing the worker (Python packages; first run takes a few minutes)"
 # shellcheck disable=SC1091
 . venv/bin/activate
 pip install -q --upgrade pip
-pip install -q --no-cache-dir -e "Forgeos/creatorforge/worker[whisper,kokoro,diffusers]" huggingface_hub hf_transfer qrcode
+pip install -q --no-cache-dir -e "Forgeos/creatorforge/worker[whisper,kokoro,diffusers,animation]" huggingface_hub hf_transfer qrcode
 PYBIN="$(command -v python)"
 "$PYBIN" -c "import creatorforge_worker, torch; assert torch.cuda.is_available(), 'PyTorch cannot see the GPU'; print('PyTorch', torch.__version__, 'CUDA OK')"
 python -m spacy download en_core_web_sm -q >/dev/null 2>&1 || true   # used by Kokoro's English text front-end

@@ -775,9 +775,13 @@ class Pipeline:
         for sc, shot in zip(job["scenes"], job["plan"]["scenes"]):
             beats = shot.get("beats") or []
             want = [str((b.get("extra") or {}).get("clip") or "").strip() for b in beats]
-            if not any(want):
+            acts = [str((b.get("extra") or {}).get("animate") or "").strip() for b in beats]
+            if not any(want) and not any(acts):
                 continue
             clips = (list(sc.get("beat_clips") or []) + [None] * len(beats))[: len(beats)]
+            for k, act in enumerate(acts):
+                if act and not (clips[k] and (jdir / clips[k]).is_file()):
+                    clips[k] = self._animated_clip(job, sc, k, act, jdir) or clips[k]
             for k, ref in enumerate(want):
                 if not ref or (clips[k] and (jdir / clips[k]).is_file()):
                     continue
@@ -823,6 +827,26 @@ class Pipeline:
         if used:
             job["providers"]["clips_own"] = f"{used} of your own clip{'s' if used != 1 else ''}"
         self.store.save(job)
+
+    def _animated_clip(self, job: dict, sc: dict, k: int, action: str, jdir: Path) -> str | None:
+        """The writer's "Animate:" line ("a stickman receives shocking news on his phone") acted out by the animation
+        engine at the video's own shape, with no sound (the narration carries the line)."""
+        from .animation import script as anim
+        w, h = self._out_size(job)
+        w, h = (w * 2 // 3) // 2 * 2, (h * 2 // 3) // 2 * 2         # drawn at 2/3 size and scaled up in the edit
+        dst = jdir / f"scene_{sc['index'] + 1:02d}_anim{k + 1}_{_key(action, w, h)[:8]}.mp4"
+        if dst.is_file():
+            return dst.name
+        try:
+            sc_, total, _ = anim.build(anim.plan(action), w, h, jdir / "work")
+            tmp = dst.with_suffix(".part.mp4")
+            sc_.render(tmp, total)
+            tmp.replace(dst)
+        except Exception as e:  # noqa: BLE001 - a failed animation never stops the video: the line keeps its picture
+            job.setdefault("warnings", []).append(f"Animation for '{action[:40]}' failed ({str(e)[:80]}) - line kept its picture")
+            return None
+        job["providers"]["animation"] = "CreatorForge 2D animation"
+        return dst.name
 
     def _image_clip(self, job: dict, sc: dict, k: int, asset: dict, jdir: Path) -> str | None:
         """One of the writer's own pictures as a clip: the whole picture over a blurred copy of itself (never

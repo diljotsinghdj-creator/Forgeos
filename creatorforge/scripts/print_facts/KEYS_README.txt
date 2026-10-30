@@ -219,3 +219,16 @@ TONE: HOW EACH LINE IS SAID (new - human-like voices)
   a line about death or victims is said slowly, a shock moment is dramatic, the rest calm.
   Pauses follow the punctuation: "..." holds (0.6 s), a question waits (0.4 s), a full stop or danda breathes,
   and there is an extra beat of silence before a chapter card or a big statement.
+
+ANIMATED SCENES (new)
+  Animate: ........... an animated scene acted out on that line, drawn by CreatorForge (no AI, free, offline).
+                      Describe the moment in a sentence:
+                        Animate: a stickman receives shocking news on his phone
+                        Animate: two friends argue in the park
+                        Animate: an old man walks through the desert with his camel
+                        Animate: a girl gets great news and dances
+                      It understands who (man / woman / child / old person / two people), where (studio, park,
+                      desert), what they do (walks, runs, jumps, waves, laughs, thinks, points, claps, argues,
+                      dances, looks at a phone, sleeps) and how they feel (shocked, happy, sad, angry, confused,
+                      scared, embarrassed). Words in "quotes" are spoken with a moving mouth.
+                      The scene is made at the video's shape (9:16 or 16:9) and plays silently under your narration.
