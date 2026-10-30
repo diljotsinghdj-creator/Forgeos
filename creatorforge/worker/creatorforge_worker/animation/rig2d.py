@@ -7,6 +7,7 @@ without any foot sliding. Arms counter-swing with the opposite leg. Starts and s
 small settling step so the character stands on both feet."""
 from __future__ import annotations
 
+import bisect
 import math
 from dataclasses import dataclass, field
 
@@ -50,6 +51,17 @@ class _Foot:
 def smooth(k: float) -> float:
     k = max(0.0, min(1.0, k))
     return k * k * (3 - 2 * k)
+
+
+def _warped(t: float, warp) -> float:
+    ts, xs, _ = warp
+    if t <= ts[0]:
+        return xs[0]
+    if t >= ts[-1]:
+        return xs[-1]
+    i = bisect.bisect_right(ts, t) - 1
+    u = (t - ts[i]) / max(1e-9, ts[i + 1] - ts[i])
+    return xs[i] + (xs[i + 1] - xs[i]) * u
 
 
 def _trapezoid(t: float, t0: float, t1: float, x0: float, x1: float) -> float:
@@ -137,6 +149,8 @@ class Character:
         self.l_thigh, self.l_shin = 0.255 * H, 0.25 * H
         self.ankle = 0.022 * H
         self.moves: list[tuple] = []        # (t0, t1, x0, x1, mode)
+        self.warps: dict = {}               # move index -> (times, xs, speed caps) for terrain-paced moves
+        self.pace = None                    # x, mode -> top speed there (set by a world with stairs/slopes)
         self.faces: list[tuple] = [(0.0, "neutral", 0.01)]
         self.lines: list[tuple] = []        # (t0, t1, visemes)
         self.gestures: list[tuple] = []     # (t0, t1, name)
@@ -146,6 +160,8 @@ class Character:
         self.props: list[tuple] = []        # (t0, t1, kind)
         self._end_x = self.x
         self.ground = lambda x: 0.0               # ground height under x (platforms: a box, a photo, a stage)
+        self.highest = lambda xa, xb: max(self.ground(xa), self.ground(xb))   # highest ground between two x
+        self.foothold = lambda x, f, toe, heel, frm=None: x   # where a foot can land flat (stairs: off an edge)
         self._feet = [_Foot(self.x + 0.09 * H), _Foot(self.x - 0.09 * H)]
         self._still = 0.0
         self._hip_y = self.l_thigh + self.l_shin + self.ankle
@@ -155,10 +171,41 @@ class Character:
 
     # ---- directing -------------------------------------------------------------------------------------------
     def walk(self, t: float, to_x: float, speed: float = 1.25, mode: str = "walk") -> float:
-        dur = abs(to_x - self._end_x) / speed + 0.45
-        self.moves.append((t, t + dur, self._end_x, to_x, mode))
+        x0 = self._end_x
+        if self.pace is not None and abs(to_x - x0) > 0.05:
+            caps = [self.pace(x0 + (to_x - x0) * k / 40, mode) for k in range(41)]
+            if min(caps) < speed:                 # stairs or a slope on the way: slow down for them
+                dur = self._paced(t, x0, to_x, speed, mode)
+                self._end_x = to_x
+                return t + dur
+        dur = abs(to_x - x0) / speed + 0.45
+        self.moves.append((t, t + dur, x0, to_x, mode))
         self._end_x = to_x
         return t + dur
+
+    def _paced(self, t: float, x0: float, x1: float, speed: float, mode: str) -> float:
+        """A move whose speed follows the terrain (slower on stairs and steep slopes), braking and accelerating
+        at a human rate. Stores a time -> position table for hips_x."""
+        d = abs(x1 - x0)
+        n = max(2, int(d / 0.02))
+        s = 1.0 if x1 >= x0 else -1.0
+        xs = [x0 + s * d * i / n for i in range(n + 1)]
+        cap = [min(speed, self.pace(x, mode)) for x in xs]
+        acc = 3.5 if mode == "run" else 1.4
+        h = d / n
+        v = list(cap)
+        v[0] = v[-1] = 0.0
+        for i in range(n - 1, -1, -1):
+            v[i] = min(v[i], math.sqrt(v[i + 1] ** 2 + 2 * acc * h))
+        for i in range(1, n + 1):
+            v[i] = min(v[i], math.sqrt(v[i - 1] ** 2 + 2 * acc * h))
+        ts = [0.0]
+        for i in range(n):
+            ts.append(ts[-1] + h / max(0.04, (v[i] + v[i + 1]) / 2))
+        T = ts[-1]
+        self.warps[len(self.moves)] = ([t + q for q in ts], xs, cap)
+        self.moves.append((t, t + T, x0, x1, mode))
+        return T
 
     def run(self, t: float, to_x: float, speed: float = 3.6) -> float:
         return self.walk(t, to_x, speed, "run")
@@ -205,9 +252,9 @@ class Character:
     # ---- evaluation --------------------------------------------------------------------------------------------
     def hips_x(self, t: float) -> float:
         x = self.x
-        for t0, t1, x0, x1, _ in self.moves:
+        for i, (t0, t1, x0, x1, _) in enumerate(self.moves):
             if t >= t0:
-                x = _trapezoid(t, t0, t1, x0, x1)
+                x = _warped(t, self.warps[i]) if i in self.warps else _trapezoid(t, t0, t1, x0, x1)
         return x
 
     def mode(self, t: float) -> str:
@@ -273,8 +320,13 @@ class Character:
         # plan steps from the move's cruise speed, not this instant's (the first step of a start is then a proper step,
         # not a shuffle the accelerating body outruns)
         plan = speed
-        for t0, t1, x0, x1, _m in self.moves:
+        for i, (t0, t1, x0, x1, _m) in enumerate(self.moves):
             if t0 <= t <= t1:
+                if i in self.warps:                     # paced over terrain: the local cruise speed
+                    ts_, xs_, cap_ = self.warps[i]
+                    k = min(len(xs_) - 1, max(0, int(abs(hx - xs_[0]) / max(1e-6, abs(xs_[-1] - xs_[0])) * (len(xs_) - 1))))
+                    plan = max(speed, 0.75 * cap_[k])
+                    continue
                 T = max(1e-3, t1 - t0)
                 plan = max(speed, 0.75 * abs(x1 - x0) / max(1e-3, T - min(0.45, T / 3)))
         S = H * ((0.5 + 0.18 * min(1, plan / 4)) if run else (0.2 + 0.14 * min(1.0, plan / 1.4)))
@@ -290,12 +342,26 @@ class Character:
                 else:
                     e = smooth(k)
                     ft.x = xa + (xb - xa) * e
-                    ft.y = self.ground(xa) + (self.ground(xb) - self.ground(xa)) * e + lift * math.sin(math.pi * k)
+                    ga, gb = self.ground(xa), self.ground(xb)
+                    toe = 0.08 * H * (1 if xb >= xa else -1)
+                    top = self.highest(xa, xb + toe)                   # the toe reaches the next step first
+                    if top > max(ga, gb) + 0.005 or gb > ga + 0.02:    # a step up (or over something): rise first
+                        ey = 1 - (1 - k) ** 4
+                        clear = max(0.0, top - max(ga, gb))
+                        ft.y = ga + (gb - ga) * ey + (lift + clear) * math.sin(math.pi * k) ** 0.7
+                    elif gb < ga - 0.02:                       # a step down: travel out over the edge, then drop
+                        ey = k ** 2.2
+                        ft.y = ga + (gb - ga) * ey + lift * math.sin(math.pi * k)
+                    else:
+                        ft.y = ga + (gb - ga) * e + lift * math.sin(math.pi * k)
+                    if k < 0.9:                                # the whole foot, heel to toe, stays over the steps
+                        under = self.highest(ft.x - 0.03 * H * (1 if xb >= xa else -1), ft.x + toe)
+                        ft.y = max(ft.y, under + 0.015 * math.sin(math.pi * k))
                     ft.pitch = 0.5 * math.sin(math.pi * k) * (1 if k < 0.5 else -0.4)
         if not air and speed > 0.05 and mode in ("walk", "run"):
             self._still = 0.0
             order = sorted(range(2), key=lambda k: f * self._feet[k].x)     # the foot furthest behind steps first
-            for i in order:
+            for i in order[:1]:                     # ...and only that one: a front foot never steps off early
                 ft = self._feet[i]
                 other = self._feet[1 - i]
                 if ft.swing:
@@ -316,6 +382,7 @@ class Character:
                     ahead = 0.45 * S
                 if ready:
                     land = self.hips_x(t + dur) + f * ahead
+                    land = self.foothold(land, f, 0.075 * H, 0.03 * H, other.x)   # one stair past the planted foot
                     ft.swing = (t, dur, ft.x, land, (0.16 if run else 0.07) * H)
                     break
         elif not air:
@@ -332,20 +399,35 @@ class Character:
         # hips: as high as the planted legs reach (bending at double support), lowered by crouch, raised in a jump
         leg = self.l_thigh + self.l_shin
         base = max([ft.y for ft in self._feet if ft.swing is None] or [self.ground(hx)])
-        target = base + leg * 0.985 + self.ankle
+        # the hips follow the terrain under and just ahead of the body (stairs, slopes) - smoothly - and never
+        # higher than the planted legs can reach
+        span = 0.22 * H
+        terrain = sum(self.ground(hx + f * span * (k / 4 - 0.1)) for k in range(5)) / 5
+        target = terrain + leg * 0.985 + self.ankle
+        cap = 1e9
         if not air:
             for ft in self._feet:
                 if ft.swing is None:
                     dx = hx - ft.x
-                    target = min(target, ft.y + self.ankle + math.sqrt(max(0.0, (leg * 0.995) ** 2 - dx * dx)))
+                    cap = min(cap, ft.y + self.ankle + math.sqrt(max(0.0, (leg * 0.995) ** 2 - dx * dx)))
+        if not air:                                       # a foot about to land lower: sink in time to meet it
+            for ft in self._feet:
+                if ft.swing:
+                    t0s, durs, _, xb, _ = ft.swing
+                    left = max(0.0, t0s + durs - t)
+                    dxl = self.hips_x(t0s + durs) - xb
+                    meet = self.ground(xb) + self.ankle + math.sqrt(max(0.0, (leg * 0.995) ** 2 - dxl * dxl))
+                    target = min(target, meet + 0.9 * left)
+        target = min(target, cap)
         target -= crouch + (0.04 * H if run else 0.0)
         if self.look.hunch:
             target -= 0.03 * H * self.look.hunch
         target = max(target, base + 0.72 * leg)          # a safety floor: hips never sink below a deep crouch
-        if target < self._hip_y:
-            self._hip_y = target
-        else:
-            self._hip_y += (target - self._hip_y) * min(1.0, dt * 14)
+        if target > self._hip_y:                          # rising (a step up, standing up): the stance leg pushes
+            self._hip_y += min((target - self._hip_y) * min(1.0, dt * 12), 1.1 * dt)
+        else:                                             # sinking: eased, unless the legs can't reach
+            self._hip_y = max(target, self._hip_y - min((self._hip_y - target) * min(1.0, dt * 14), 1.3 * dt))
+        self._hip_y = min(self._hip_y, cap - crouch)
         self.hip = (hx, self._hip_y + joff)
         if air:
             for k, ft in enumerate(self._feet):

@@ -106,6 +106,9 @@ class Actor:
         self.z, self.faceless, self.seed, self.world = z, faceless, seed, world
         if world is not None:
             self.loco.ground = world.ground
+            self.loco.highest = world.highest
+            self.loco.foothold = world.foothold
+            self.loco.pace = world.pace
         L = self.loco
         self.H = L.H
         self.l_thigh, self.l_shin, self.l_up, self.l_fore = L.l_thigh, L.l_shin, L.l_up, L.l_fore
@@ -607,11 +610,67 @@ class Actor:
 
 # ---- world, platforms, props ---------------------------------------------------------------------------------
 class World:
+    """The ground: flat floor at 0, boxes to stand on (platforms), slopes (ramps) and staircases."""
+
     def __init__(self):
         self.platforms: list[tuple] = []        # (x0, x1, top)
+        self.ramps: list[tuple] = []            # (x0, x1, y0, y1): a straight slope
 
     def ground(self, x: float) -> float:
-        return max([top for x0, x1, top in self.platforms if x0 <= x <= x1] or [0.0])
+        h = [top for x0, x1, top in self.platforms if x0 <= x <= x1]
+        h += [y0 + (y1 - y0) * (x - x0) / (x1 - x0) for x0, x1, y0, y1 in self.ramps if x0 <= x <= x1]
+        return max(h or [0.0])
+
+    def stairs(self, x0: float, steps: int, rise: float = 0.17, run: float = 0.3, direction: float = 1.0,
+               landing: float = 1.2) -> float:
+        """A staircase going up from x0 in `direction`, with a landing at the top. Returns the far end's x."""
+        for i in range(steps):
+            a, b = x0 + direction * i * run, x0 + direction * (i + 1) * run
+            far = b + direction * (landing if i == steps - 1 else 0.0)
+            self.platforms.append((min(a, far) if direction > 0 else min(b, far), max(a, far), rise * (i + 1)))
+        return x0 + direction * (steps * run + landing)
+
+    def pace(self, x: float, mode: str = "walk") -> float:
+        """Top speed over the ground at x: stairs one step at a time (~0.55 m/s walking, 1.6 running), slopes slower
+        the steeper they are, flat ground unlimited."""
+        g = [self.ground(x + 0.05 * k) for k in range(-6, 7)]
+        jumps = sum(1 for a, b in zip(g, g[1:]) if abs(b - a) > 0.05)
+        if jumps:
+            return 1.6 if mode == "run" else 0.55
+        slope = abs(g[-1] - g[0]) / 0.6
+        if slope > 0.02:
+            return (3.0 if mode == "run" else 1.25) / (1 + 2.5 * slope)
+        return 99.0
+
+    def highest(self, xa: float, xb: float) -> float:
+        """The highest ground between two points (what a swinging foot has to clear)."""
+        lo, hi = min(xa, xb), max(xa, xb)
+        pts = [lo, hi] + [q for x0, x1, _ in self.platforms for q in (x0, x1) if lo <= q <= hi]
+        pts += [q for x0, x1, _, _ in self.ramps for q in (x0, x1) if lo <= q <= hi]
+        return max(self.ground(q) for q in pts)
+
+    def foothold(self, x: float, f: float, toe: float, heel: float, frm: float | None = None) -> float:
+        """Moves a landing spot so the whole foot is on one level (no toe stubbed into a riser, no heel hanging over
+        an edge) and, on stairs, so a step goes up or down one stair at a time. Prefers stepping a little short."""
+        if frm is not None:                        # one stair per step: shorten the stride until it is
+            g0 = self.ground(frm)
+            while abs(self.ground(x) - g0) > 0.22 and f * (x - frm) > 0.12:
+                x -= f * 0.02
+
+        def flat(c):                               # level under heel and toe (a slope may tilt the foot a little)
+            g = self.ground(c)
+            on_ramp = any(x0 <= c <= x1 for x0, x1, _, _ in self.ramps)
+            tol = 0.25 if on_ramp else 0.0
+            toe_, heel_ = toe + 0.05, heel + 0.03         # room to lift the toe without catching the riser
+            return (abs(self.ground(c + f * toe_) - g) < 0.004 + tol * toe_
+                    and abs(self.ground(c - f * heel_) - g) < 0.004 + tol * heel_)
+        if not self.platforms or flat(x):
+            return x
+        for k in range(1, 12):
+            for cand in (x - f * 0.03 * k, x + f * 0.03 * k):
+                if flat(cand) and (frm is None or abs(self.ground(cand) - self.ground(frm)) <= 0.22):
+                    return cand
+        return x
 
 
 @dataclass
