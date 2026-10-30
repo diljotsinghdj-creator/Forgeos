@@ -250,5 +250,20 @@ def draw(p, d, S, scale, t):
                 _text(d, S(ex, pan_y - 0.28), lab, scale * 0.11, INK)
         if p.label:
             _text(d, S(x, y - 0.18), p.label, scale * 0.08, (110, 110, 110), bold=False)
+    elif k == "cloud":                                # a worry / gloom cloud (an illustration)
+        cx, cy = (x0 + x1) / 2, (y0 + y1) / 2
+        rw, rh = (x1 - x0) / 2, (y1 - y0) / 2
+        a_ = p.value("show", t, 1.0)
+        if a_ > 0.02:
+            col = (110, 112, 126, int(220 * a_))
+            for ox, oy, rr in ((-0.45, 0.1, 0.5), (0.0, -0.15, 0.62), (0.45, 0.1, 0.5), (0.0, 0.25, 0.55)):
+                d.ellipse([cx + ox * rw - rr * rw, cy + oy * rh - rr * rh * 1.4, cx + ox * rw + rr * rw,
+                           cy + oy * rh + rr * rh * 1.4], fill=col)
+            for i in range(5):                            # a little rain
+                rx = cx - rw * 0.6 + i * rw * 0.3
+                ry = cy + rh * 1.1 + ((t * 2.2 + i * 0.37) % 1.0) * rh * 1.2
+                d.line([(rx, ry), (rx - rw * 0.05, ry + rh * 0.35)], fill=(90, 120, 200, int(200 * a_)), width=lw)
+            if p.label:
+                _text(d, (cx, cy - rh * 1.6), p.label, rh * 0.45, (110, 110, 120), bold=False)
     elif k == "label":
         _text(d, ((x0 + x1) / 2, (y0 + y1) / 2), p.label, (y1 - y0) * 0.8, p.color, maxw=(x1 - x0))

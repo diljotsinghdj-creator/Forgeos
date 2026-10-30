@@ -288,7 +288,8 @@ def stage(board: Storyboard, beat_index: int | None = None):
             actors[nm] = a
     sc.actors += list(actors.values())
     notes = []
-    props_live: dict[str, Prop] = {}
+    focus = []
+    props_live: dict = {}
     t = 0.3
     for b in beats:
         t0, t1 = b.narration_window[0] - t_shift, b.narration_window[1] - t_shift
@@ -298,6 +299,10 @@ def stage(board: Storyboard, beat_index: int | None = None):
             card = Prop("stat", 3.6, 1.35, 1.9, 0.9, data={"value": fig, "label": "figure from the script",
                                                           "pop": [(t0 + 0.6, 0.0, "linear"), (t0 + 1.1, 1.0, "back")]})
             sc.actors.insert(0, card)
+        subj = actors.get(b.characters[0])
+        if subj is not None:
+            props_live["_subject_x"] = subj.hips_x(t0)
+        focus.append((t0, t1, b.characters[:2]))
         for mph in b.metaphors:
             _metaphor(sc, w, mph, t0, t1, props_live)
         for a in b.actions:
@@ -313,6 +318,7 @@ def stage(board: Storyboard, beat_index: int | None = None):
     Ensemble(list(actors.values()), {n: PERSONALITIES.get(cast[n].personality, PERSONALITIES["kind"])
                                      for n in cast if cast[n].personality in PERSONALITIES and n in actors},
              beats[0].timing).apply()
+    sc.focus = focus                                  # the camera frames whoever each line is about
     sc.overlay = _caption(f"{board.title} - script-to-animation ({board.domain}; illustrations labelled)", notes)
     return sc, t + 0.6
 
@@ -327,8 +333,10 @@ def _metaphor(sc, w, kind, t0, t1, live):
         live["ballot"] = p
         sc.actors.insert(0, p)
     elif kind == "storm cloud of worry":
-        p = Prop("label", -1.6, 2.15, 1.6, 0.35, label="worry (illustration)", color=(90, 90, 110))
-        p.keys = [(t0, -1.6, 2.15, 0.0, "linear"), (t1, -1.6, 2.15, 0.0, "linear")]
+        x = live.get("_subject_x", -1.6)
+        p = Prop("cloud", x, 2.05, 0.9, 0.38, label="illustration",
+                 data={"show": [(t0, 0.0, "linear"), (t0 + 0.6, 1.0, "inout"), (t1 - 0.6, 1.0, "linear"),
+                                (t1, 0.0, "inout")]})
         sc.actors.insert(0, p)
     elif kind == "marching group":
         pass                                          # done by the actors themselves (march)

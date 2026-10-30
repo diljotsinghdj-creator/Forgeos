@@ -39,7 +39,10 @@ def _activity(R, i, n, win):
 
 
 def direct(R, sc, style: str = "explainer", margin: float = 1.0, every: int = 2) -> list:
+    """sc.focus (optional): [(t0, t1, [names])] - who the narration is about at each moment; they are always
+    framed (with whoever they are dealing with), however busy anyone else is."""
     S = STYLE.get(style, STYLE["explainer"])
+    hints = getattr(sc, "focus", None) or []
     W_m, H_m = sc.width / sc.ppm, sc.height / sc.ppm
     ground_y = (sc.ground - 0.5) * H_m           # world y of the screen centre at cy=0, zoom 1 (relative)
     win = int(0.6 * R.fps)
@@ -49,6 +52,17 @@ def direct(R, sc, style: str = "explainer", margin: float = 1.0, every: int = 2)
         if not acts:
             targets.append((0.0, 0.0, 1.0))
             continue
+        named = next((names for h0, h1, names in hints if h0 <= t <= h1), None)
+        if named:                                         # the narration's subject leads the frame...
+            lead = [i for _, i in acts if any(R.actors[i].look.name.startswith(nm) for nm in named)]
+            lx = [R.joints[i][n]["hip"][0] for i in lead]
+
+            def boost(i):
+                if i in lead:
+                    return 6.0
+                near = lx and min(abs(R.joints[i][n]["hip"][0] - x) for x in lx) < 4.0
+                return 6.0 if near else 0.0               # ...with whoever they are dealing with (a two-shot)
+            acts = [((s[0] + boost(i),) + s[1:], i) for s, i in acts]
         top = max(s[0] for s, _ in acts)
         focus = [(s, i) for s, i in acts if s[0] >= max(0.5, 0.45 * top)] or [max(acts)]
         xs, ys, lead = [], [], 0.0
@@ -81,7 +95,7 @@ def direct(R, sc, style: str = "explainer", margin: float = 1.0, every: int = 2)
             pad_x, pad_top, pad_bot = 0.9 * margin, 0.45 * margin, 0.2
         bw = (x1 - x0) + 2 * pad_x + abs(lead)
         bh = (y1 - y0) + pad_top + pad_bot
-        zoom = max(1.0, min(2.2, min(W_m / bw, H_m / bh)))
+        zoom = max(1.0, min(1.65 if feeling else 1.9, min(W_m / bw, H_m / bh)))
         cx = (x0 + x1) / 2 + lead / 2
         hh = H_m / (2 * zoom)
         lo, hi = y0 - pad_bot, y1 + pad_top
@@ -119,7 +133,7 @@ def direct(R, sc, style: str = "explainer", margin: float = 1.0, every: int = 2)
             elif name == "y":
                 vy, y = vel, val + vel * dt
             else:
-                vz, z = vel, max(1.0, min(2.2, val + vel * dt))
+                vz, z = vel, max(1.0, min(1.9, val + vel * dt))
         if n % every == 0:
             keys.append(CamKey(R.times[n], x, y, z, ease="linear"))
     return keys
