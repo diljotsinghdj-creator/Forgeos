@@ -147,3 +147,33 @@ def test_performance_director_coordinates_a_conversation():
     assert all(a != b for a, b in zip(g, g[1:]))                  # never the same gesture twice running
     assert len(mia.bubbles) == 3 and len(leo.bubbles) == 2 and mia.loco.lines   # spoken, mouth moving
     assert qc.inspect(qc.record(_scene([mia, leo]), end + 1)).clean
+
+
+def test_sounds_land_on_the_frames_where_things_happen(tmp_path):
+    import wave as _wave
+
+    from creatorforge_worker.animation import motions as M
+    from creatorforge_worker.animation import sound
+    from creatorforge_worker.animation.stick import Prop
+    a, b = Actor(Look(name="A"), x=0.0), Actor(Look(name="B"), x=4.0, facing=-1)
+    ball = Prop("ball", 0.5, 0.0, 0.22, 0.22)
+    t = a.walk(0.2, 0.3, 0.8)
+    t = M.pick_up(a, t + 0.1, ball)
+    t_arr = M.throw(a, t + 0.4, ball, lambda tt: M.chest(b, tt), flight=0.9)
+    M.catch(b, t_arr, ball, hold=3.0)                                # held through the jump: no drop
+    M.jump(b, t_arr + 1.0, dist=0.6, height=0.4)
+    R = qc.record(_scene([a, b, ball]), t_arr + 3.0)
+    ev = sound.events(R)
+    kinds = [e.kind for e in ev]
+    assert kinds.count("whoosh") == 1 and kinds.count("catch") == 1 and kinds.count("land") == 1
+    assert "clap" not in kinds and "bounce" not in kinds              # no false hits from carrying or hanging arms
+    catch = next(e for e in ev if e.kind == "catch")
+    assert abs(catch.t - t_arr) < 1 / 30 + 1e-6
+    fs = [e for e in ev if e.kind == "footstep"]
+    for e in fs:                                                      # every footstep: a foot really touched down
+        i = [x.look.name for x in R.actors].index(e.who)
+        n = round(e.t * R.fps)
+        assert any(abs(R.joints[i][n]["legs"][k][2][1] - R.actors[i].ankle) < 0.004 for k in range(2))
+    wav = sound.mix(ev, t_arr + 3.0, out=tmp_path / "m.wav")
+    with _wave.open(str(wav)) as w:
+        assert w.getnchannels() == 2 and w.getframerate() == 48000

@@ -487,7 +487,9 @@ def render_script(script: str, out, title: str = "", width: int = 1280, height: 
         sc, T = stage(board)
         return sc.resize(width, height), T
     sc, T, report, framing, passes, fixes = qc.refine(build, style=board.beats[0].camera)
-    sc.render(out, T, android=out.with_name(out.stem + "_android.mp4"))
+    from . import sound
+    wav = sound.soundtrack(build, fixes, sc, T, board.beats[0].environment, out.with_suffix(".wav"))
+    sc.render(out, T, android=out.with_name(out.stem + "_android.mp4"), audio_wav=wav)
     video = qc.check_video(out, T, sc.fps)
     out.with_suffix(".qc.json").write_text(_json.dumps(dict(motion=_json.loads(report.to_json()), corrections=fixes,
                                                             framing=[vars(d) for d in framing], video=video),

@@ -316,7 +316,9 @@ def run(which: str, out_dir, android: bool = True):
     sc, seconds, after, framing, passes, fixes = qc.refine(build, style=style)
     name = f"Test{which}"
     out = out_dir / f"{name}.mp4"
-    sc.render(out, seconds, android=out_dir / f"{name}_android.mp4" if android else None)
+    from . import sound
+    wav = sound.soundtrack(build, fixes, sc, seconds, "studio", out_dir / f"{name}.wav")
+    sc.render(out, seconds, android=out_dir / f"{name}_android.mp4" if android else None, audio_wav=wav)
     video = qc.check_video(out, seconds, sc.fps)
     report = dict(test=which, seconds=round(seconds, 2), style=style, motion_before=json.loads(before.to_json()),
                   corrections=fixes, motion_after=json.loads(after.to_json()),

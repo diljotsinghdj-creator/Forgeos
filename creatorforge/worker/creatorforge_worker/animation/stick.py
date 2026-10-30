@@ -1020,6 +1020,14 @@ class Prop:
                      self.data.get("carry_angle", 0.0) * actor.pose_now.f)
                 self._last_held = p
                 return p
+        ended = [c for c in self.carriers if c[1] < t and c[1] < 1e8]
+        if ended:                                      # let go of with nothing planned: it falls from the hand
+            c1 = max(c[1] for c in ended)
+            planned = any(abs(f["t0"] - c1) < 0.05 or f["t0"] > c1 for f in self.flights) or \
+                any(k[0] >= c1 - 0.05 for k in self.keys) or any(c[0] >= c1 for c in self.carriers if c[1] >= t)
+            if not planned:
+                self.flights.append(dict(t0=c1, velocity=(0.0, 0.0), target=None, T=None, bounce=0.3, spin=0.0,
+                                         world=None, surface=0.0, samples=None))
         fl = None
         for f in self.flights:                         # the latest flight that has begun
             if t >= f["t0"]:
