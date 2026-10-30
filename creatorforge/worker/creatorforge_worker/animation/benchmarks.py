@@ -73,13 +73,16 @@ def narrate(text, who=None, gesture=None, t="+0.15", dur=None, sources=None):
     return out
 
 
-def scene(sid, name, cast_, props, steps, place="studio", cut=True, timing="explainer", layers=None, camera=None):
+def scene(sid, name, cast_, props, steps, place="studio", cut=True, timing="explainer", layers=None, camera=None,
+          world=None):
     s = {"id": sid, "name": name, "place": place, "cut": cut, "timing": timing, "cast": cast_, "props": props,
          "steps": [x for st in steps for x in (st if isinstance(st, list) else [st])]}
     if layers:
         s["layers"] = layers
     if camera:
         s["camera"] = camera
+    if world:
+        s["world"] = world
     return s
 
 
@@ -727,7 +730,7 @@ UNFAMILIAR = ("Old Tomas the fisherman rows his boat to the harbour at dawn. A c
               "the fish into a little girl's basket. Tomas laughs and gives her the fish.")
 
 DOCS = {"comedy": comedy, "political": political, "psychology": psychology, "documentary": documentary,
-        "test1_political_hinglish": political_hinglish,
+        "test1_political_hinglish": political_hinglish, "film_b": lambda: film_b(),
         "test3_psychology_narrated": lambda: voice_all(psychology(), "en")}
 
 
@@ -874,3 +877,170 @@ if __name__ == "__main__":
         r = run(n, dest, q)
         print(n, json.dumps({k: r.get(k) for k in ("seconds", "qc_clean_scenes", "continuity_issues", "video",
                                                     "timing", "qc")}, default=str), flush=True)
+
+
+# ---- Film B: "Bus Stop" (3 minutes) ----------------------------------------------------------------------------------
+def _bus_in(what, stop, t="+0.0"):
+    """A bus cruises in and brakes to a stop (two moves: steady, then easing out)."""
+    return [step("move", t=t, what=what, to=stop - 4.0, speed=7.0, ease="linear"),
+            step("move", t="+0.0", what=what, to=stop, dur=1.2, ease="out")]
+
+
+def film_b() -> dict:
+    """An original stickman story: a bus stop, a dog, two missed buses, rain, a crowded awning, a pratfall and a
+    friendship. One continuous world: the bench, the shop, the lamp and the dog persist from scene to scene."""
+    raj = lambda x, f=1: cast("Raj", BLUE, x, f, faceless=False, personality="energetic")      # noqa: E731
+    ivy = lambda x, f=-1: cast("Ivy", PURPLE, x, f, faceless=False, personality="calm", height=1.68)  # noqa: E731
+    BX = 0.0                                                    # the bus stop bench
+    street = [{"name": "shop", "asset": "shop", "x": -6.2}, {"name": "lamp", "asset": "lamp", "x": 3.2, "z": 1.3},
+              {"name": "tree", "asset": "tree", "x": 8.5}, {"name": "house", "asset": "house", "x": -15.0},
+              {"name": "stop", "kind": "label", "x": BX - 1.0, "y": 1.6, "w": 0.7, "h": 0.32, "label": "BUS",
+               "color": [40, 90, 170], "data": {"persist": True}},
+              {"name": "seat", "kind": "bench", "x": BX, "y": 0.0, "w": 1.3, "h": 0.9, "data": {"seat": 0.45, "back": 1}}]
+    on_bench = {"platforms": [[BX - 0.6, BX + 0.6, 0.45]]}    # only while someone stands on the bench
+    S = []
+    S.append(scene("b0", "Morning", [raj(-24.0), {"name": "Walkers", "crowd": 2, "x": -10.0, "facing": 1,
+                                                 "spacing": 1.4}], street, [
+        step("walk", "Walkers", t=0.3, to=12.0, speed=1.2, spacing=1.6, wait=False),
+        step("run", "Raj", t="+2.5", to=-12.0, speed=3.0),
+        step("gesture", "Raj", t="+0.0", name="phone", dur=1.2),
+        step("symbol", "Raj", t="+0.0", text="7:59!", dur=1.2),
+    ], place="outdoors", timing="comedy", layers={"light": [[0, "dawn"], [8, "day"]]}))
+    S.append(scene("b1", "Late again", [raj(-12.0)], [], [
+        step("run", "Raj", t=0.2, to=BX - 1.0, speed=3.2),
+        step("express", "Raj", t="+0.0", face="nervous"),
+        step("say", "Raj", t="+0.1", text="Made it! ...right?"),
+        step("look", "Raj", t="+0.1", at=[9.0, 1.2], dur=1.6),
+        step("sit", "Raj", t="+0.2", seat=0.45, hold=3.0),
+        step("gesture", "Raj", t="-2.6", name="phone", dur=2.2, wait=False),
+    ], place="outdoors", cut=False, timing="comedy", layers={"light": [[0, "day"]]}))
+    S.append(scene("b2", "A dog", [raj(BX - 1.0), ivy(10.0)], [{"name": "dog", "asset": "a small brown dog", "x": 11.2}],
+                   [
+        step("walk", "Ivy", t=0.3, to=2.2, speed=1.2, wait=False),
+        step("move", t="+0.0", what="dog", to=0.9, speed=1.4),
+        step("look", "Raj", t="-1.2", at="dog", dur=1.6),
+        step("double_take", "Raj", t="+0.0", at="dog"),
+        step("express", "Raj", t="+0.0", face="scared"),
+        step("step_back", "Raj", t="+0.1", dist=0.4),
+        step("jump", "Raj", t="+0.1", dist=0.6, height=0.35, land=0.45),
+        step("symbol", "Raj", t="+0.0", text="!!", dur=1.0),
+        step("move", t="-0.4", what="dog", to=0.2, dur=0.8),
+        step("say", "Ivy", t="+0.2", text="He's friendly!"),
+        step("gesture", "Ivy", t="+0.0", name="laugh", dur=1.6, wait=False),
+        step("say", "Raj", t="+0.1", text="That's what they all say!"),
+    ], place="outdoors", cut=False, timing="comedy", world=on_bench))
+    S.append(scene("b3", "Friends", [raj(BX + 0.05), ivy(2.2)], [], [
+        step("say", "Ivy", t=0.3, text="Sit, Biscuit."),
+        step("move", t="+0.0", what="dog", to=1.5, dur=1.0),
+        step("turn", "Raj", t="+0.3", facing=-1),
+        step("jump", "Raj", t="+0.15", dist=0.75, height=0.2, land=-0.45),
+        step("turn", "Raj", t="+0.1", facing=1),
+        step("express", "Raj", t="+0.0", face="embarrassed"),
+        step("gesture", "Raj", t="+0.0", name="scratch_head", dur=1.4),
+        step("line", t="+0.2", lines=[
+            {"who": "Raj", "text": "I'm Raj. I'm usually braver.", "to": "Ivy"},
+            {"who": "Ivy", "text": "Ivy. And this is Biscuit.", "to": "Raj"},
+            {"who": "Raj", "text": "Hello, Biscuit... sir.", "to": "Ivy"}]),
+        step("nod", "Ivy", t="+0.1"),
+    ], place="outdoors", cut=False, timing="comedy", world=on_bench))
+    S.append(scene("b3b", "Waiting", [raj(BX - 0.7), ivy(2.2)],
+                   [{"name": "ball", "kind": "ball", "x": 2.6, "y": 0.0, "w": 0.18, "h": 0.18, "color": [230, 80, 60],
+                     "data": {"friction": 12.0}}], [
+        step("gesture", "Raj", t=0.3, name="phone", dur=1.2),
+        step("look", "Raj", t="+0.1", at=[9.0, 1.2], dur=1.0),
+        step("gesture", "Raj", t="+0.3", name="phone", dur=1.2),
+        step("look", "Raj", t="+0.1", at=[9.0, 1.2], dur=1.0),
+        step("gesture", "Raj", t="+0.3", name="phone", dur=1.0),
+        step("slow_burn", "Raj", t="+0.1", at=[9.0, 1.2], dur=2.0),
+        step("turn", "Ivy", t="-1.4", facing=1),
+        step("pick_up", "Ivy", t="+0.1", what="ball"),
+        step("throw", "Ivy", t="+0.2", what="ball", at=[6.4, 0.09], flight=0.9, bounce=0.2),
+        step("move", t="+0.0", what="dog", to=6.1, speed=3.2),
+        step("move", t="+0.3", what="dog", to=2.9, speed=2.4, wait=False),
+        step("move", t="+0.0", what="ball", to=3.3, y=0.25, speed=2.4),
+        step("say", "Ivy", t="+0.1", text="Good boy!"),
+        step("gesture", "Raj", t="+0.0", name="clap", dur=1.2),
+        step("express", "Raj", t="+0.0", face="happy"),
+    ], place="outdoors", cut=False, timing="comedy"))
+    S.append(scene("b4", "The first bus", [raj(BX - 0.7), ivy(2.2)], [{"name": "bus", "asset": "a blue bus", "x": -14.0}],
+                   [*_bus_in("bus", 9.5, t=0.3),
+        step("say", "Raj", t="-2.2", text="Bus!"),
+        step("run", "Raj", t="+0.1", to=7.6, speed=3.4, wait=False),
+        step("run", "Ivy", t="+0.15", to=6.8, speed=3.0, wait=False),
+        step("move", t="+0.2", what="dog", to=6.2, speed=2.8),
+        step("move", t="+1.4", what="bus", to=40.0, speed=6.0, ease="in"),
+        step("double_take", "Raj", t="-3.0", at="bus"),
+        step("slow_burn", "Raj", t="+0.1", at="bus", dur=2.4),
+    ], place="outdoors", cut=False, timing="comedy"))
+    S.append(scene("b5", "Rain", [raj(7.6, -1), ivy(6.8, -1)], [], [
+        step("look", "Ivy", t=0.2, at=[6.8, 4.0], dur=1.2),
+        step("say", "Ivy", t="+0.1", text="Uh-oh."),
+        step("run", "Raj", t="+0.2", to=-5.2, speed=3.4, wait=False),
+        step("run", "Ivy", t="+0.15", to=-6.0, speed=3.2, wait=False),
+        step("move", t="+0.1", what="dog", to=-6.9, speed=3.0),
+        step("gesture", "Raj", t="+0.2", name="cover_face", dur=1.2),
+        step("say", "Raj", t="+0.1", text="Of course it's raining."),
+    ], place="outdoors", cut=False, timing="comedy",
+        layers={"light": [[0, "day"], [1.0, "storm"]], "weather": [[0.8, 999, "rain", 1.0]], "wind": 0.3}))
+    S.append(scene("b6", "Under the awning", [raj(-5.2, -1), ivy(-6.0, 1),
+                                              {"name": "Crowd", "crowd": 3, "x": 6.0, "facing": -1}], [], [
+        step("run", "Crowd", t=0.3, to=-3.6, speed=3.0, spacing=0.55),
+        step("step_back", "Raj", t="+0.1", dist=0.3),
+        step("symbol", "Raj", t="+0.0", text="squeeze", dur=1.2),
+        step("gesture", "Ivy", t="+0.1", name="laugh", dur=1.4),
+        step("move", t="+0.3", what="dog", to=-6.6, dur=0.15, wait=False),
+        step("move", t="+0.15", what="dog", to=-7.0, dur=0.15, wait=False),
+        step("move", t="+0.15", what="dog", to=-6.6, dur=0.15, wait=False),
+        step("move", t="+0.15", what="dog", to=-6.9, dur=0.15),
+        step("symbol", "Ivy", t="-0.4", text="*shake shake*", dur=1.4),
+        step("gesture", "Crowd", t="+0.1", name="cover_face", dur=1.4),
+        step("gesture", "Raj", t="+0.0", name="cover_face", dur=1.4),
+        step("say", "Raj", t="+0.3", text="Thanks, Biscuit."),
+    ], place="outdoors", cut=False, timing="comedy",
+        layers={"light": [[0, "storm"]], "weather": [[0, 999, "rain", 1.0]], "wind": 0.3}))
+    S.append(scene("b6b", "Rain talk", [raj(-5.5, -1), ivy(-6.0, 1),
+                                        {"name": "Crowd", "crowd": 3, "x": -3.6, "facing": -1, "spacing": 0.55}], [], [
+        step("line", t=0.4, lines=[
+            {"who": "Ivy", "text": "Where were you going, anyway?", "to": "Raj"},
+            {"who": "Raj", "text": "A job interview. At nine.", "to": "Ivy", "emotion": "sad"},
+            {"who": "Ivy", "text": "It's 9:15.", "to": "Raj"},
+            {"who": "Raj", "text": "...I know.", "to": "Ivy"}]),
+        step("comfort", "Ivy", t="+0.2", to="Raj", dur=1.6),
+        step("say", "Ivy", t="+0.1", text="They'll wait. Interviewers always run late."),
+        step("nod", "Raj", t="+0.1"),
+        step("express", "Raj", t="+0.0", face="happy", blend=0.8),
+    ], place="outdoors", cut=False, timing="drama",
+        layers={"light": [[0, "storm"]], "weather": [[0, 999, "rain", 0.7]], "wind": 0.2}))
+    S.append(scene("b7", "The second bus", [raj(-5.5, 1), ivy(-6.0, 1), {"name": "Crowd", "crowd": 3, "x": -3.6,
+                                                                        "facing": 1, "spacing": 0.55}],
+                   [{"name": "bus2", "asset": "a blue bus", "x": -16.0}], [
+        step("look", "Ivy", t=0.3, at=[0.0, 4.0], dur=1.0),
+        step("say", "Ivy", t="+0.1", text="It stopped!"),
+        *_bus_in("bus2", 4.5, t="+0.3"),
+        step("run", "Crowd", t="+0.1", to=3.6, speed=3.2, spacing=0.6),
+        step("run", "Raj", t="-1.6", to=-0.9, speed=3.4, wait=False),
+        step("trip", "Raj", t="+0.5"),
+        step("express", "Raj", t="+0.0", face="embarrassed"),
+        step("walk", "Ivy", t="-0.6", to=-0.2, speed=1.6),
+        step("comfort", "Ivy", t="+0.1", to="Raj", dur=1.6),
+        step("move", t="+0.2", what="bus2", to=40.0, speed=6.0, ease="in", wait=False),
+        step("walk", "Crowd", t="+0.0", to=12.0, speed=1.4, spacing=0.6),
+    ], place="outdoors", cut=False, timing="comedy",
+        layers={"light": [[0, "storm"], [1.0, "dusk"]], "weather": [[0, 1.2, "rain", 1.0]]}))
+    S.append(scene("b8", "Missed it again", [raj(1.0, 1), ivy(-0.2, 1)], [], [
+        step("look", "Raj", t=0.3, at=[30.0, 1.2], dur=1.6, wait=False),
+        step("look", "Ivy", t="+0.0", at=[30.0, 1.2], dur=1.6),
+        step("turn", "Raj", t="+0.1", facing=-1),
+        step("deadpan", "Raj", t="+0.1", dur=1.6),
+        step("line", t="+0.2", lines=[
+            {"who": "Ivy", "text": "Walk?", "to": "Raj"},
+            {"who": "Raj", "text": "...Walk.", "to": "Ivy"}]),
+        step("gesture", "Raj", t="+0.1", name="laugh", dur=1.6, wait=False),
+        step("gesture", "Ivy", t="+0.1", name="laugh", dur=1.6),
+        step("symbol", "Ivy", t="+0.0", text="Woof!", dur=1.0),
+        step("walk", "Raj", t="+0.3", to=-12.0, speed=1.0, wait=False),
+        step("walk", "Ivy", t="+0.25", to=-11.2, speed=1.0, wait=False),
+        step("move", t="+0.1", what="dog", to=-10.4, speed=1.0),
+        cap("THE END", t="+0.4", dur=3.0),
+    ], place="outdoors", cut=False, timing="comedy", layers={"light": [[0, "dusk"], [6.0, "night"]]}))
+    return {"title": "Bus Stop", "fps": 24, "scenes": S}

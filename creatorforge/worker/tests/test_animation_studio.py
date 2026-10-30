@@ -377,3 +377,17 @@ def test_a_failed_scene_does_not_sink_the_film_and_a_rerun_redoes_only_it(tmp_pa
     r = P.render(doc, tmp_path / "f.mp4", "preview", cache_dir=tmp_path / "c")
     assert [s["cached"] for s in r["scenes"]] == [True, False] and r["video"]["missing"] == 0
     assert r["provenance"][0]["file"] == "footage_portrait.mp4" and r["provenance_issues"]     # rights not verified
+
+
+def test_the_whole_story_is_planned_and_checked_before_rendering(tmp_path):
+    import pytest
+    from creatorforge_worker.animation import studio
+    doc, notes = studio.make("Two friends, Amir and Bea, carry a heavy box up the stairs. Amir slips and drops it. "
+                             "Bea laughs, then helps him pick it up. They sit on the bench, tired.")
+    story = notes["story"]
+    assert story["roles"][0] == "setup" and story["roles"][-1] == "resolution"
+    assert story["roles"][story["intensity"].index(max(story["intensity"]))] == "climax"
+    assert [s["arc"] for s in doc["scenes"]] == story["roles"]
+    assert any(st["do"] == "wait" for st in doc["scenes"][-1]["steps"])           # the ending breathes
+    with pytest.raises(ValueError, match="allegation"):                         # never acted out, never unsourced
+        studio.film("The minister took bribes from a builder.", tmp_path / "x.mp4")

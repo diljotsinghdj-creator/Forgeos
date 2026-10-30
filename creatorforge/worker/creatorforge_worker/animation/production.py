@@ -303,8 +303,11 @@ def stage_scene(scene: dict, state: worldstate.WorldState, fps: int = 30, qualit
     steps = []
     for st in scene.get("steps", []):                 # a step for a crowd: each member, slightly staggered
         if st.get("who") in crowds:
+            n_ = len(crowds[st["who"]])
             for k, nm in enumerate(crowds[st["who"]]):
                 extra = {"t": st.get("t", "+0.2")} if k == 0 else {"t": f"+{0.07 + 0.05 * (k % 3):.2f}", "wait": False}
+                if isinstance(st.get("to"), (int, float)):   # a crowd walks to a spot, not to one point
+                    extra["to"] = st["to"] + (k - (n_ - 1) / 2) * st.get("spacing", 0.7)
                 if k == 0:
                     extra["wait"] = False
                 steps.append({**st, **extra, "who": nm})
@@ -340,9 +343,13 @@ def stage_scene(scene: dict, state: worldstate.WorldState, fps: int = 30, qualit
         elif do == "put_down":
             end = M.put_down(a, t0, live[st["what"]], on=st.get("on", 0.0))
         elif do == "throw":
-            to = actors[st["to"]]
-            end = M.throw(a, t0, live[st["what"]], lambda tt, to=to: M.chest(to, tt), st.get("flight", 0.9))
-            M.catch(to, end, live[st["what"]], st.get("hold", 1.5))
+            if st.get("to") in actors:                    # to someone, who catches it
+                to = actors[st["to"]]
+                end = M.throw(a, t0, live[st["what"]], lambda tt, to=to: M.chest(to, tt), st.get("flight", 0.9))
+                M.catch(to, end, live[st["what"]], st.get("hold", 1.5))
+            else:                                         # to a spot: it flies, lands, bounces and rolls (physics)
+                end = M.throw(a, t0, live[st["what"]], tuple(st["at"]), st.get("flight", 0.9),
+                              bounce=st.get("bounce", 0.45))
         elif do == "push":
             end = M.push(a, t0, live[st["what"]], st["dist"], st.get("speed", 0.75))
         elif do == "act":                              # a verb the script director understands, with its target

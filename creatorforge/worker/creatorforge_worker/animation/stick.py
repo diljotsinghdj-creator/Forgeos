@@ -1019,6 +1019,8 @@ class Prop:
                 p = (hx + self.data.get("grip_dx", 0.0) * actor.pose_now.f, hy + self.data.get("grip_dy", -self.h * 0.5),
                      self.data.get("carry_angle", 0.0) * actor.pose_now.f)
                 self._last_held = p
+                if getattr(self, "_t", None) is not None and abs(self._t - t) < 1e-3:
+                    self.__dict__.setdefault("_held_log", {})[round(t, 4)] = p  # where the hand was, frame by frame
                 return p
         ended = [c for c in self.carriers if c[1] < t and c[1] < 1e8]
         if ended:                                      # let go of with nothing planned: it falls from the hand
@@ -1064,8 +1066,9 @@ class Prop:
         if S is None:
             start = self._resting_before(f["t0"])      # wherever it is at that moment: a hand, or another flight
             x0, y0, a0 = start
-            unposed = [c for c in self.carriers if c[0] <= f["t0"] - 1e-4 <= c[1]
-                       and not (hasattr(c[2], "_joints") or hasattr(c[2], "pose_now"))]
+            ahead = getattr(self, "_t", None) is None or self._t < f["t0"] - 1e-6   # asked before the playback
+            unposed = [c for c in self.carriers if c[0] <= f["t0"] - 1e-4 <= c[1] and   # reached the release
+                       (ahead or not (hasattr(c[2], "_joints") or hasattr(c[2], "pose_now")))]
             if unposed:                                # asked while still being staged (the thrower isn't simulated
                 actor = unposed[-1][2]                 # yet): estimate from where the hand will be, don't keep it
                 fa = actor._facing_at_build(f["t0"]) if hasattr(actor, "_facing_at_build") else 1.0
@@ -1105,6 +1108,11 @@ class Prop:
         return cache[i]
 
     def _resting_before(self, t):
+        log = getattr(self, "_held_log", None)        # let go of mid-swing: the hand at the release, not the hand now
+        if log and any(c[0] <= t - 1e-4 <= c[1] + 1e-4 for c in self.carriers):
+            near = [k for k in log if t - 0.1 <= k <= t + 1e-6]
+            if near:
+                return log[max(near)]
         saved, self.flights = self.flights, [f for f in self.flights if f["t0"] < t]
         try:
             return self._unfollowed(t - 1e-4) if self.flights or self.carriers or self.keys else (self.x, self.y, self.angle)

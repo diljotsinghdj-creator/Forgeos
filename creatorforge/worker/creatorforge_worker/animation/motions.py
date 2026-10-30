@@ -352,7 +352,8 @@ def comfort(a: Actor, t: float, other: Actor, dur: float = 2.0, hand: str = "nea
     return t + dur
 
 
-def throw(a: Actor, t: float, prop, target, flight: float = 0.8, hand: str = "near", spin: float = -8.0) -> float:
+def throw(a: Actor, t: float, prop, target, flight: float = 0.8, hand: str = "near", spin: float = -8.0,
+          bounce: float = 0.45) -> float:
     """Wind up (arm back, weight back), throw (weight forward, arm whips through), follow through. The object
     leaves the hand at the release and flies on gravity to `target` - an (x, y) point or a callable t -> (x, y) such
     as another actor's hands - arriving `flight` seconds later. Returns the arrival time."""
@@ -377,7 +378,7 @@ def throw(a: Actor, t: float, prop, target, flight: float = 0.8, hand: str = "ne
         prop.carriers[i] = (c0, release, who, hd)
     if not held:
         prop.carriers.append((t, release, a, hand))
-    prop.launch(release, None, target=target, flight_time=flight, spin=spin, world=a.world)
+    prop.launch(release, None, target=target, flight_time=flight, spin=spin, world=a.world, bounce=bounce)
     return release + flight
 
 

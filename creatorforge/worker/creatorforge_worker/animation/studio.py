@@ -35,12 +35,14 @@ KNOWN_VERBS = {v for _, v in SB.VERBS}
 
 
 def make(script: str, title: str = "", sources: list | None = None, voice: dict | None = None,
-         spoken: list | None = None) -> tuple[dict, dict]:
+         spoken: list | None = None, target_seconds: float | None = None) -> tuple[dict, dict]:
     """voice: {"lang": "en"|"hi", "rate": ..} to narrate (None: subtitles only). spoken: optional per-sentence text to
     speak when it differs from the subtitle (Hinglish: the subtitle in Roman letters, the voice from Devanagari)."""
+    from . import story as ST
     board = SB.plan(script, title)
     cast = getattr(board, "cast", {})
-    notes = {"domain": board.domain, "decisions": [], "limitations": [], "sources": []}
+    arc = ST.analyze(board, target_seconds, sources)          # the whole story first: arc, feelings, pacing
+    notes = {"domain": board.domain, "decisions": [], "limitations": [], "sources": [], "story": arc.to_dict()}
     people = [n for n, c in cast.items() if c.role != "animal" and c.role != "crowd"]
     colour = {n: BODY[k % len(BODY)] for k, n in enumerate(people)}
     present: list[str] = []
@@ -153,23 +155,40 @@ def make(script: str, title: str = "", sources: list | None = None, voice: dict 
                 steps.append({"t": "+0.0", "do": "metaphor", "who": subject if subject in people else None,
                               "kind": m, "dur": 5.0})
                 notes["decisions"].append(f"line {i + 1}: '{m}' (labelled illustration)")
+        for n in lineup:                               # feelings carry from earlier beats (fading), and a big
+            felt = arc.emotions.get(n, [""] * len(board.beats))[i]          # swing passes through neutral
+            if any(tr[0] == i and tr[1] == n for tr in arc.transitions):
+                steps.insert(0, {"t": 0.0, "do": "express", "who": n, "face": "neutral", "blend": 0.5,
+                                 "wait": False})
+                notes["decisions"].append(f"line {i + 1}: {n} passes through a neutral beat before the change")
+            elif felt and felt != b.emotion and cast.get(n) and cast[n].face is not None:
+                steps.insert(0, {"t": 0.0, "do": "feel", "who": n, "emotion": felt, "dur": 1.8, "wait": False})
         steps.append({"t": "+0.0", "do": "wait_notes"})
+        extra = arc.holds[i] + max(0.0, arc.pace[i] - 1.0) * (b.narration_window[1] - b.narration_window[0])
+        if extra > 0.05:                               # the climax gets room, the ending breathes, a turn waits
+            steps.append({"t": "+0.0", "do": "wait", "dur": round(extra, 2)})
         layers = {k: v for k, v in sky.items()}
         scenes.append({"layers": layers, "id": f"s{i + 1:02d}", "name": b.narration[:38] + ("..." if len(b.narration) > 38 else ""),
                        "place": b.environment, "cut": cut, "timing": b.timing, "cast": cast_specs,
                        "animals": list(animals_seen.values()), "things": b.things, "props": [],
-                       "focus": [n for n in b.characters[:2]], "camera": {"style": b.camera}, "steps": steps})
+                       "focus": [n for n in b.characters[:2]], "camera": {"style": arc.camera[i]},
+                       "arc": arc.roles[i], "steps": steps})
         present = lineup
     doc = {"title": board.title, "fps": 24, "source_script": script, "scenes": scenes}
     return doc, notes
 
 
 def film(script: str, out: Path, title: str = "", sources: list | None = None, voice: dict | None = None,
-         spoken: list | None = None, quality: str = "preview", workers: int = 2) -> dict:
-    """make -> render -> review. Writes <out>.doc.json (the editable source) and <out>.report.json."""
+         spoken: list | None = None, quality: str = "preview", workers: int = 2, target_seconds: float | None = None,
+         force: bool = False) -> dict:
+    """make -> validate the plan -> render -> review. Writes <out>.doc.json (the editable source),
+    <out>.plan.json (the story plan) and <out>.report.json. A plan with errors is not rendered unless forced."""
     from . import critic, production, qc
     out = Path(out)
-    doc, notes = make(script, title, sources, voice, spoken)
+    doc, notes = make(script, title, sources, voice, spoken, target_seconds)
+    out.with_suffix(".plan.json").write_text(json.dumps(notes["story"], indent=1, ensure_ascii=False))
+    if notes["story"]["errors"] and not force:
+        raise ValueError("the story plan has errors: " + "; ".join(notes["story"]["errors"]))
     out.with_suffix(".doc.json").write_text(json.dumps(doc, indent=1, ensure_ascii=False))
     rep = production.render(doc, out, quality, workers=workers)
     states = production.plan_states(doc, quality)

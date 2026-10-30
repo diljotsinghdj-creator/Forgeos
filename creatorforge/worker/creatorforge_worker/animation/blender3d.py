@@ -1056,9 +1056,92 @@ def demo_g(out_dir: Path, dusk: bool = False, name: str = "Benchmark_3D_multi_ch
     return render(out_dir, name, frames, res=(960, 408), samples=4)
 
 
+SHOT = {   # kind -> (distance, camera height, look height, lens)
+    "establish": (12.0, 3.0, 1.0, 30), "two": (6.5, 1.55, 1.1, 34), "follow": (8.0, 1.6, 1.2, 32),
+    "medium": (4.6, 1.45, 1.15, 40), "action": (7.0, 1.25, 1.2, 32), "low": (6.2, 0.55, 2.0, 30),
+    "group": (7.5, 1.7, 1.0, 34), "wide": (13.0, 3.2, 1.2, 28)}
+
+
+def demo_c(out_dir: Path) -> Path:
+    """Film C, "The Ball on the Wall": a 90-second 3D story staged on the stick engine (bench3d.film_c, QC-checked)
+    and filmed from a shot list - hard cuts between shots, eased framing within a shot - at dusk."""
+    from . import asset_lib, bench3d
+    reset()
+    environment()
+    actors, props, w, total, before, after, fixes, marks = bench3d.film_c_checked(FPS)
+    print("Film C QC before:", before.summary(), "| corrections:", fixes, "| after:", after.summary())
+    lib = asset_lib.Library.default()
+    for desc, x, y in (("a red car", -1.0, 5.0), ("lamp", 1.5, 2.2), ("lamp", 9.5, 2.2), ("lamp", bench3d.LAMP_X, 0.32),
+                       ("tree", 12.0, 4.5)):
+        aid, how = lib.obtain(desc)
+        asset_mesh(lib.get(aid), x, y, name=f"{desc.replace(' ', '_')}_{x}")
+    x0, x1, top = bench3d.WALL                       # the garden wall
+    bpy.ops.mesh.primitive_cube_add(location=((x0 + x1) / 2, 0.0, top / 2))
+    wall = bpy.context.object
+    wall.scale = ((x1 - x0) / 2, 0.55, top / 2)
+    wall.data.materials.append(material("wall", srgb(176, 120, 96), 0.85))
+    wood = material("bench_c", srgb(150, 98, 60), 0.7)
+    for z, sx, sz, dx in ((0.43, 0.55, 0.03, 0.0), (0.2, 0.03, 0.2, -0.45), (0.2, 0.03, 0.2, 0.45)):
+        bpy.ops.mesh.primitive_cube_add(location=(bench3d.BENCH_X + dx, 0.0, z))
+        o = bpy.context.object
+        o.scale = (sx, 0.22, sz)
+        o.data.materials.append(wood)
+    ball, crate = props
+    bpy.ops.mesh.primitive_uv_sphere_add(radius=ball.w / 2, location=(ball.x, 0.0, ball.h / 2))
+    bobj = bpy.context.object
+    bobj.data.materials.append(material("ball_c", srgb(*ball.color), 0.4))
+    bpy.ops.mesh.primitive_cube_add(location=(crate.x, 0.0, crate.h / 2))
+    cobj = bpy.context.object
+    cobj.scale = (crate.w / 2, 0.3, crate.h / 2)
+    cobj.data.materials.append(material("crate_c", srgb(*crate.color), 0.75))
+    inks = {"Ash": (40, 90, 200), "Ivy": (200, 60, 70), "Kit": (40, 150, 80), "Mo": (230, 140, 30)}
+    chars = [Char3D(a.look.name, a.look.height, "stick", ink=inks[a.look.name]) for a in actors]
+    frames = int(total * FPS)
+    pos = []
+    for fr in range(1, frames + 1):
+        tt = (fr - 1) / FPS
+        for c, a in zip(chars, actors):
+            c.pose_actor(a, tt, fr, 1 / FPS)
+        bx, by, ang = ball.pos(tt)
+        bobj.location = (bx, 0.0, by + ball.h / 2)
+        bobj.rotation_euler = (0.0, -ang, 0.0)
+        bobj.keyframe_insert("location", frame=fr)
+        bobj.keyframe_insert("rotation_euler", frame=fr)
+        cx, cy, _ = crate.pos(tt)
+        cobj.location = (cx, 0.0, cy + crate.h / 2)
+        cobj.keyframe_insert("location", frame=fr)
+        pos.append({a.look.name: (a.hip[0], a.hip[1]) for a in actors} | {"ball": (bx, by)})
+    # the shot list: each shot frames its subjects; within a shot the camera eases, between shots it cuts
+    keys = []
+    shots = sorted(marks["shots"])
+    for fr in range(1, frames + 1):
+        tt = (fr - 1) / FPS
+        shot = next((s for s in shots if s[0] <= tt < s[1]), shots[-1])
+        dist, h, look_z, _lens = SHOT[shot[2]]
+        xs = [pos[fr - 1][n][0] for n in shot[3] if n in pos[fr - 1]]
+        span = max(xs) - min(xs)
+        mx = (max(xs) + min(xs)) / 2
+        if shot[2] == "low":
+            look_z = bench3d.WALL[2] + 0.8
+        d = max(dist, 2.4 + 0.75 * span)
+        keys.append([fr, (mx + 0.9, -d, h), (mx, 0.0, look_z), shots.index(shot)])
+    sm = []
+    for i, k in enumerate(keys):                      # ease within a shot only - never across a cut
+        win = [q for q in keys[max(0, i - 10):i + 11] if q[3] == k[3]]
+        p_ = tuple(sum(q[1][j] for q in win) / len(win) for j in range(3))
+        l_ = tuple(sum(q[2][j] for q in win) / len(win) for j in range(3))
+        sm.append((k[0], p_, l_))
+    cam, _ = camera(sm, lens=32, fstop=5.6)
+    for fc in (cam.animation_data.action.fcurves if cam.animation_data and cam.animation_data.action else []):
+        for kp in fc.keyframe_points:
+            kp.interpolation = "LINEAR"
+    _dusk(frames, [(1.5, 1.95, 3.45), (9.5, 1.95, 3.45), (bench3d.LAMP_X, 0.12, 3.45)])
+    return render(out_dir, "FilmC_ball_on_the_wall", frames, res=(960, 408), samples=4)
+
+
 if __name__ == "__main__":
     which = (sys.argv[1] if len(sys.argv) > 1 else "D").upper()
     out = Path(sys.argv[2] if len(sys.argv) > 2 else ".").resolve()
     out.mkdir(parents=True, exist_ok=True)
     test4 = lambda o: demo_g(o, dusk=True, name="Test4_cinematic_3D")   # noqa: E731
-    print({"D": demo_d, "E": demo_e, "5": demo_5, "F": demo_f, "G": demo_g, "H": test4}[which](out))
+    print({"D": demo_d, "E": demo_e, "5": demo_5, "F": demo_f, "G": demo_g, "H": test4, "C": demo_c}[which](out))
