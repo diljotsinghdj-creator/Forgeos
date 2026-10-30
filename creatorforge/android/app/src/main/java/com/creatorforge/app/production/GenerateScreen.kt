@@ -520,6 +520,10 @@ private fun ProductionCard(
         if ((p.terminal || p.inReview) && p.scenes.isNotEmpty() && p.scenes.all { it.narrationS != null }) {
             OutlinedButton(onEditTimeline, enabled = !busy) { Text("EDIT TIMELINE") }
         }
+        if ((p.status == "FAILED" || p.status == "CANCELLED") && p.scenes.isNotEmpty() && p.scenes.all { it.imageState == "READY" }) {
+            // stopped after the pictures (e.g. at narration): finish the voice-over in CapCut
+            OutlinedButton(onCapCut, enabled = !busy) { Text("SEND PICTURES TO CAPCUT") }
+        }
         if (p.status == "READY") {
             if (video == null) OutlinedButton(onDownload) { Text("DOWNLOAD MP4") }
             else Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {

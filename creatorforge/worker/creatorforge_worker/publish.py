@@ -100,13 +100,28 @@ creatorforge.mp4 is the finished video CreatorForge rendered, if you just want t
 """
 
 
+def _said_for(text: str) -> float:
+    """How long a line takes to say when there is no recording yet (about 2.6 words a second, plus a breath)."""
+    return round(max(2.0, len(text.split()) / 2.6 + 0.4), 2)
+
+
+VOICE_README = """No voice-over in this pack yet: the video stopped before narration. Make it in CapCut:
+- Text-to-speech: paste each line of script.txt as text, then Text -> Text to speech -> pick a Hindi voice.
+- Or record yourself: Audio -> Voiceover, reading script.txt (one scene per line, in order).
+timeline.csv's durations are estimates - stretch or trim each picture to its line of voice.
+"""
+
+
 def export_zip(job: dict, jdir: Path, out: Path, kit: dict | None) -> Path:
     plan = job.get("plan") or {}
     shots = plan.get("scenes", [])
-    durations = (job.get("edit") or {}).get("durations") or [s.get("narration_s") or 0 for s in job["scenes"]]
+    durations = (job.get("edit") or {}).get("durations") or \
+        [s.get("narration_s") or _said_for(shots[i].get("narration", "") if i < len(shots) else "")
+         for i, s in enumerate(job["scenes"])]
     transitions = [""] + list((job.get("edit") or {}).get("transitions") or [])
     title = job.get("title") or plan.get("title") or job["id"]
     tmp = out.with_suffix(".part")
+    tmp.parent.mkdir(parents=True, exist_ok=True)     # a video stopped early may have no work folder yet
     with zipfile.ZipFile(tmp, "w", zipfile.ZIP_DEFLATED) as z:
         rows = io.StringIO()
         w = csv.writer(rows)
@@ -130,6 +145,9 @@ def export_zip(job: dict, jdir: Path, out: Path, kit: dict | None) -> Path:
                         shot.get("narration", ""), shot.get("visual", "")])
             start += d
         z.writestr("timeline.csv", rows.getvalue())
+        z.writestr("script.txt", "\n".join(f"{i + 1:02d}. {s.get('narration', '')}" for i, s in enumerate(shots)) + "\n")
+        if not (jdir / "work" / "narration.wav").is_file():
+            z.writestr("NO_VOICE_YET.txt", VOICE_README)
         voice = jdir / "work" / "narration.wav"
         if voice.is_file():
             z.write(voice, "audio/voiceover.wav")

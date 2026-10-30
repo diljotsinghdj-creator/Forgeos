@@ -310,9 +310,13 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
     def export_production(job_id: str):
         """CapCut / editor export: media in order, voice-over, music, SRT, timeline, MP4 and publish kit."""
         job = job_or_404(job_id)
-        if job["status"] != "READY":
+        pictures = job["status"] in ("FAILED", "CANCELLED") and job.get("scenes") and \
+            all(s.get("image_state") == "READY" for s in job["scenes"])
+        if job["status"] != "READY" and not pictures:
             raise HTTPException(409, "the video isn't finished yet")
         jdir = store.dir(job_id)
+        # a video stopped after its pictures (e.g. at narration) still exports: pictures, timings and the script,
+        # for a voice-over made in CapCut
         out = publish.export_zip(job, jdir, jdir / "work" / "export.zip", job.get("publish_kit"))
         safe = re.sub(r"[^A-Za-z0-9]+", "_", job.get("title") or (job.get("plan") or {}).get("title") or job_id).strip("_")[:50]
         return FileResponse(out, media_type="application/zip", filename=f"CreatorForge_{safe or job_id}.zip")

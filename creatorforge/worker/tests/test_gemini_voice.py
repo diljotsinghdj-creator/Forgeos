@@ -140,3 +140,30 @@ def test_a_one_line_scene_is_said_in_its_tone():
     assert "soft, slow and grave" in p and p.endswith("TRANSCRIPT:\nजवाब आज तक नहीं मिला।")
     p = v.prompt("और आज?", [{"text": "और आज?", "tone": "dramatic"}])
     assert "suspenseful" in p
+
+
+@pytest.mark.ffmpeg
+def test_without_a_key_it_stops_clearly_and_the_pictures_still_go_to_capcut(cfg):
+    import io
+    import zipfile
+
+    from fastapi.testclient import TestClient
+
+    from creatorforge_worker.api import create_app
+
+    from .conftest import wait_for
+    cfg.voices.append(VoiceProfile("hindi_anchor_m_google", "Hindi anchor (Google)", "gemini", "Charon", 1.0, "hi", "news"))
+    script = ("Chunav Ayog Ka Sach\n\nचुनाव आयोग पर सवाल क्यों उठ रहे हैं?\nVisual: A queue of voters outside a polling booth\n\n"
+              "जवाब आज तक नहीं मिला।\nVisual: A closed office door\nTone: sad\n")
+    with TestClient(create_app(cfg)) as c:
+        jid = c.post("/v1/productions", json={"script": script, "duration_s": 20,
+                                              "voice": "hindi_anchor_m_google"}).json()["id"]
+        job = wait_for(lambda: (lambda j: j if j["status"] in ("READY", "FAILED") else None)(
+            c.get(f"/v1/productions/{jid}").json()))
+        assert job["status"] == "FAILED" and "Gemini key" in job["stages"]["narration"]["error"]
+        r = c.get(f"/v1/productions/{jid}/export")
+        assert r.status_code == 200
+        z = zipfile.ZipFile(io.BytesIO(r.content))
+        names = set(z.namelist())
+        assert {"media/01_scene.png", "script.txt", "NO_VOICE_YET.txt", "timeline.csv"} <= names
+        assert "जवाब आज तक नहीं मिला।" in z.read("script.txt").decode()
