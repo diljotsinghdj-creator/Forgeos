@@ -19,11 +19,17 @@ object with no generator, a claim with no source) is listed in notes["limitation
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 from . import storyboard as SB
 from . import visual_reasoning as VR
 
+WEATHER = [(r"\b(stops? raining|rain stops|sun comes out|clears? up)\b", "clear"),
+           (r"\b(thunder\w*|lightning|storm\w*)\b", "storm"), (r"\b(rain\w*|downpour|drizzl\w*|monsoon)\b", "rain"),
+           (r"\b(snow\w*|blizzard)\b", "snow"), (r"\b(wind\w*|gale|breez\w*)\b", "wind")]
+TIME_OF_DAY = [(r"\b(dawn|sunrise|early morning)\b", "dawn"), (r"\b(sunset|dusk|evening)\b", "dusk"),
+               (r"\b(night\w*|midnight|dark)\b", "night"), (r"\b(morning|noon|afternoon|daylight)\b", "day")]
 BODY = [[40, 110, 200], [200, 70, 110], [60, 150, 90], [230, 140, 30], [120, 80, 170], [60, 60, 60]]
 KNOWN_VERBS = {v for _, v in SB.VERBS}
 
@@ -41,7 +47,24 @@ def make(script: str, title: str = "", sources: list | None = None, voice: dict 
     animals_seen: dict = {}
     scenes = []
     prev_env = None
+    sky: dict = {}                                      # weather and time of day persist until the script changes them
     for i, b in enumerate(board.beats):
+        low = b.narration.lower()
+        wx = next((k for rx, k in WEATHER if re.search(rx, low)), None)
+        tod = next((k for rx, k in TIME_OF_DAY if re.search(rx, low)), None)
+        if wx == "clear":
+            sky.pop("weather", None)
+        elif wx:
+            sky["weather"] = [[0.0, 9999.0, wx, 1.0]]
+            sky["wind"] = 0.6 if wx in ("storm", "wind") else 0.2
+            notes["decisions"].append(f"line {i + 1}: {wx} from here on")
+            if wx == "storm":
+                tod = tod or "storm"
+        if tod:
+            sky["light"] = [[0.0, sky["light"][-1][1]], [0.8, tod]] if sky.get("light") else [[0.0, tod]]
+            notes["decisions"].append(f"line {i + 1}: light becomes {tod}")
+        elif sky.get("light"):
+            sky["light"] = [[0.0, sky["light"][-1][1]]]
         cut = i == 0 or b.environment != prev_env
         prev_env = b.environment
         if cut:
@@ -94,7 +117,16 @@ def make(script: str, title: str = "", sources: list | None = None, voice: dict 
         if v:
             line_step["voice"] = v
         steps.append(line_step)
-        for a in b.actions:
+        acts = b.actions
+        if wx and wx != "clear" and all(a["verb"] in ("think", "explain") for a in acts):
+            acts = []                                  # nobody does anything - the weather happens to them
+            for k, n in enumerate(lineup):
+                steps.append({"t": "+0.1" if k == 0 else "+0.05", "do": "look", "who": n, "at": [0.0, 4.0],
+                              "dur": 1.0, "wait": False})
+                steps.append({"t": "+0.5", "do": "gesture", "who": n, "name": "cover_face" if wx != "wind"
+                              else "hands_up", "dur": 1.6, "wait": k == len(lineup) - 1})
+            notes["decisions"].append(f"line {i + 1}: everyone looks up and shelters from the {wx}")
+        for a in acts:
             if a["verb"] not in KNOWN_VERBS and a["verb"] not in ("say", "explain", "think"):
                 notes["limitations"].append(f"line {i + 1}: '{a['verb']}' has no animation - shown as a gesture")
             if a["verb"] == "say":
@@ -115,7 +147,8 @@ def make(script: str, title: str = "", sources: list | None = None, voice: dict 
                               "kind": m, "dur": 5.0})
                 notes["decisions"].append(f"line {i + 1}: '{m}' (labelled illustration)")
         steps.append({"t": "+0.0", "do": "wait_notes"})
-        scenes.append({"id": f"s{i + 1:02d}", "name": b.narration[:38] + ("..." if len(b.narration) > 38 else ""),
+        layers = {k: v for k, v in sky.items()}
+        scenes.append({"layers": layers, "id": f"s{i + 1:02d}", "name": b.narration[:38] + ("..." if len(b.narration) > 38 else ""),
                        "place": b.environment, "cut": cut, "timing": b.timing, "cast": cast_specs,
                        "animals": list(animals_seen.values()), "things": b.things, "props": [],
                        "focus": [n for n in b.characters[:2]], "camera": {"style": b.camera}, "steps": steps})

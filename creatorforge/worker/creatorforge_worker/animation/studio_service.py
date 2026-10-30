@@ -78,6 +78,38 @@ class AnimationStore:
         self._save(doc_id, Editor(doc))
         return {"id": doc_id, "doc": doc, "check": report}
 
+    def from_script(self, script: str, title: str = "", voice: dict | None = None, sources: list | None = None) -> dict:
+        """The director writes the first draft; the person edits it from there."""
+        from .studio import make
+        if not script.strip():
+            raise ValueError("the script is empty")
+        doc, notes = make(script[:20000], title[:120], sources, voice)
+        out = self.create(doc)
+        from .production import plan_states, stage_scene
+        for sd, st in zip(doc["scenes"], plan_states(doc)):          # what the asset library could not build
+            for a in getattr(stage_scene(sd, st[6], 24, "preview")[0], "asset_log", []):
+                msg = f"'{a['for']}': no generator in the asset library - shown as a labelled placeholder"
+                if a["how"] == "placeholder" and msg not in notes["limitations"]:
+                    notes["limitations"].append(msg)
+        (self.root / out["id"] / "notes.json").write_text(json.dumps(notes, indent=1, ensure_ascii=False))
+        return {**out, "notes": notes}
+
+    @staticmethod
+    def vocab() -> dict:
+        """What the editor can offer in its menus."""
+        from . import production
+        from .face import EXPRESSIONS
+        from .rig2d import GESTURES
+        from .scene2d import GRADES
+        return {"ops": sorted(OPS), "expressions": sorted(EXPRESSIONS), "gestures": list(GESTURES),
+                "steps": ["walk", "run", "turn", "jump", "climb", "sit", "crawl", "trip", "pick_up", "put_down", "throw",
+                          "push", "point", "comfort", "step_back", "nod", "posture", "symbol", "move", "gesture",
+                          "feel", "express", "look", "say", "line", "pose", "visual", "caption", "wait", "act",
+                          "enter", "metaphor", "double_take", "slow_burn", "deadpan", "pratfall", "take", "button"],
+                "camera_styles": ["explainer", "comedy", "drama", "action", "satire"],
+                "light": sorted(GRADES), "weather": ["rain", "storm", "snow", "wind"],
+                "transitions": sorted(production.XFADE), "quality": sorted(production.QUALITY)}
+
     def list(self) -> list[dict]:
         out = []
         for d in sorted(self.root.iterdir()):
@@ -88,8 +120,9 @@ class AnimationStore:
 
     def get(self, doc_id: str) -> dict:
         ed = self._editor(doc_id)
+        notes = self.root / doc_id / "notes.json"
         return {"id": doc_id, "doc": ed.doc, "history": ed.history(), "can_redo": bool(ed._redo),
-                "render": self._jobs.get(doc_id, {})}
+                "render": self._jobs.get(doc_id, {}), "notes": json.loads(notes.read_text()) if notes.exists() else None}
 
     def apply(self, doc_id: str, op: str, args: dict) -> dict:
         if op not in OPS:

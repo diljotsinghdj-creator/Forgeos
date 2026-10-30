@@ -46,3 +46,20 @@ def test_animation_editor_api(cfg):
         assert c.get(f"/v1/animation/assets/{g['id']}/thumbnail").headers["content-type"] == "image/png"
         assert any(a["kind"] == "dog" for a in c.get("/v1/animation/assets?use=walk").json())
         assert c.get("/v1/animation/docs/zzz").status_code == 404
+
+
+def test_editor_page_and_director_endpoints(cfg):
+    with TestClient(create_app(cfg)) as c:
+        page = c.get("/v1/animation/editor")
+        assert page.status_code == 200 and "Stickman Editor" in page.text
+        v = c.get("/v1/animation/vocab").json()
+        assert "set_pose" in v["ops"] and "cheer" in v["gestures"] and "rain" in v["weather"]
+        r = c.post("/v1/animation/docs/from-script", json={
+            "script": "Maya walks to the bus stop. Suddenly it starts to rain. Maya laughs and waves at her friend Leo.",
+            "title": "Rain", "voice": {"lang": "en"}})
+        assert r.status_code == 201, r.text
+        doc = r.json()["doc"]
+        assert [x["name"] for x in doc["scenes"][-1]["cast"]] == ["Maya", "Leo"]          # "Suddenly" is not a person
+        assert doc["scenes"][1]["layers"]["weather"][0][2] == "rain"
+        assert any(s["do"] == "caption" and s.get("voice") for s in doc["scenes"][0]["steps"])
+        assert c.get(f"/v1/animation/docs/{r.json()['id']}").json()["notes"]["domain"] == "story"

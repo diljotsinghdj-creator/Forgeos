@@ -169,7 +169,9 @@ def _names(sentence: str, known: list[str]) -> list[str]:
     skip = {"In", "On", "At", "The", "A", "An", "He", "She", "They", "It", "His", "Her", "When", "Some", "With",
             "Without", "Both", "Everyone", "Then", "After", "Before", "But", "And", "Thousands", "Moon", "British",
             "Salt", "March", "Salt March", "This", "That", "One", "Two", "Three", "Dandi", "Apollo"}
-    out = [TITLES.sub("", w) for w in words if w not in skip]
+    out = [TITLES.sub("", w) for w in words if w not in skip and not re.fullmatch(           # "Suddenly", "Later",
+        r"[A-Z][a-z]+ly|Then|Later|Soon|Now|Meanwhile|Today|Tonight|Yesterday|Tomorrow|Once|Every\w*|Next|Later on|"
+        r"Afterwards|Still|Even|Only|Here|There|Outside|Inside|Everything|Nothing|Someone|Somebody", w)]  # "Then"...
     return [w for w in dict.fromkeys(out) if w not in ("I",)] or [k for k in known if k.lower() in sentence.lower()]
 
 

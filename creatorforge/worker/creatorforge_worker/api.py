@@ -996,6 +996,21 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
         except ValueError as e:
             raise HTTPException(422, str(e)) from None
 
+    @app.get("/v1/animation/editor", response_class=HTMLResponse)
+    def anim_editor() -> HTMLResponse:
+        """The animation editor page (it asks for the worker token and calls the owner-only API below)."""
+        return HTMLResponse((Path(__file__).parent / "animation" / "editor.html").read_text())
+
+    @app.get("/v1/animation/vocab", dependencies=owner)
+    def anim_vocab() -> dict:
+        return anim().vocab()
+
+    @app.post("/v1/animation/docs/from-script", status_code=201, dependencies=owner)
+    async def anim_from_script(request: Request) -> dict:
+        body = await request.json()
+        return anim_call(anim().from_script, str(body.get("script", "")), str(body.get("title", "")),
+                         body.get("voice") or None, body.get("sources") or None)
+
     @app.get("/v1/animation/docs", dependencies=owner)
     def anim_list() -> list:
         return anim().list()

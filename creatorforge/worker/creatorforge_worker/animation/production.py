@@ -385,7 +385,8 @@ def stage_scene(scene: dict, state: worldstate.WorldState, fps: int = 30, qualit
         elif do == "express":
             a.loco.express(t0, st["face"], st.get("blend", 0.25))
         elif do == "look":
-            target = actors.get(st["at"]) or live.get(st["at"]) or tuple(st["at"])
+            at = st["at"]
+            target = tuple(at) if isinstance(at, list) else (actors.get(at) or live.get(at))
             end = a.look_at(t0, t0 + st.get("dur", 1.5), target)
         elif do == "say":
             off = st.get("offset", 0.0)
@@ -397,7 +398,8 @@ def stage_scene(scene: dict, state: worldstate.WorldState, fps: int = 30, qualit
             end = a.act(t0, [(k[0], k[1], k[2] if len(k) > 2 else "inout") for k in st["keys"]], st.get("name", "pose"))
         elif do in ("double_take", "slow_burn"):
             fn = getattr(C, do)
-            target = actors.get(st.get("at")) or live.get(st.get("at")) or (0.0, 1.4)
+            at = st.get("at")
+            target = tuple(at) if isinstance(at, list) else (actors.get(at) or live.get(at) or (0.0, 1.4))
             end = fn(a, t0, target, sc=sc) if do == "double_take" else fn(a, t0, target, st.get("dur", 3.0), sc=sc)
         elif do in ("deadpan", "pratfall", "take", "button"):
             end = getattr(C, do)(a, t0, sc=sc) if do != "take" else C.take(a, t0)
@@ -536,6 +538,10 @@ def plan_states(doc: dict, quality: str = "preview"):
         R = qc.record(sc, T)
         rep = qc.inspect(R)
         fixes = qc.corrections(R, rep)
+        if fixes:                                      # report the scene as it will be rendered: after the fixes
+            sc_f, T_f, _, _ = stage_scene(scene, state, QUALITY[quality]["fps"], quality)
+            qc.apply(sc_f, fixes)
+            rep = qc.inspect(qc.record(sc_f, T_f))
         acts, props = list(actors.values()), list(live.values())
         sc0, _, a0, l0 = stage_scene(scene, state, QUALITY[quality]["fps"], quality)
         for a in a0.values():
