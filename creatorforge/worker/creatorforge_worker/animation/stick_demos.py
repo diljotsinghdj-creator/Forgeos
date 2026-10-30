@@ -336,8 +336,8 @@ def demo4(out: Path) -> Path:
     t_hl = scroll.data["hl"][0][0]
     sc.cams += [scene2d.CamKey(0.0, -3.0, 0.0, 1.0), scene2d.CamKey(t_hl - 1.4, -1.0, 0.25, 1.0),
                 scene2d.CamKey(t_hl - 0.2, -0.55, 0.55, 1.5), scene2d.CamKey(t_hl + 2.2, -0.55, 0.55, 1.5),
-                scene2d.CamKey(t_hl + 3.6, -0.2, 0.95, 1.0), scene2d.CamKey(t_hl + 7.0, 1.0, 0.95, 1.0),
-                scene2d.CamKey(t_hl + 9.6, 4.2, 0.95, 1.0), scene2d.CamKey(t_hl + 13.5, 5.0, 0.7, 1.0),   # room above the leap
+                scene2d.CamKey(t_hl + 3.6, -0.2, 0.95, 1.0), scene2d.CamKey(t_hl + 7.0, 1.0, 1.2, 1.0),
+                scene2d.CamKey(t_hl + 9.6, 4.2, 1.2, 1.0), scene2d.CamKey(t_hl + 13.5, 5.0, 0.7, 1.0),  # room above the leap
                 scene2d.CamKey(push_in - 1.6, 7.6, 0.0, 1.0), scene2d.CamKey(push_in, 8.4, 0.0, 1.0),
                 scene2d.CamKey(total, 9.2, cy_full, 2.15)]
     sc.overlay = _caption("Demo 4 - animation on real material (real items labelled)", notes)
