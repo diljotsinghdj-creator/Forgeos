@@ -27,7 +27,7 @@ G = 9.8
 ANGLES = ("lean", "head", "au", "al", "bu", "bl", "lu", "ll", "mu", "ml")
 
 
-def ease(kind: str, u: float) -> float:
+def ease(kind: str, u: float, overshoot: float = 1.0) -> float:
     u = max(0.0, min(1.0, u))
     if kind == "linear":
         return u
@@ -40,7 +40,7 @@ def ease(kind: str, u: float) -> float:
     if kind == "snap":                       # a fast accent that slightly overshoots and settles
         return 1 - (1 - u) ** 4 * math.cos(u * 3.2)
     if kind == "back":                       # overshoot past the pose and come back
-        s = 1.9
+        s = 1.9 * overshoot
         u -= 1
         return u * u * ((s + 1) * u + s) + 1
     return u * u * (3 - 2 * u)               # inout
@@ -88,10 +88,57 @@ class Act:
     resolved: list | None = None  # absolute (t, Pose, ease, ballistic)
     dx: float = 0.0
     end_f: float | None = None
+    upper_free: bool = False      # the arms, head and lean may still show feelings (sitting, kneeling)
+    overshoot: float = 1.0
+    exaggerate: float = 1.0
 
     @property
     def t1(self) -> float:
         return self.t0 + max(k[0] for k in self.keys)
+
+
+def _simulate(x, y, ang, vx, vy, spin, bounce, w, h, ground, seconds=6.0, friction=6.0):
+    """Gravity, bounces that lose energy, friction on the ground, then rest. 120 samples a second."""
+    out, dt = [(x, y, ang)], 1 / 120
+    on_ground = 0
+    roll = min(w, h) * 0.5
+    for _ in range(int(seconds * 120)):
+        vy -= G * dt
+        x += vx * dt
+        y += vy * dt
+        ang += spin * dt
+        g = ground(x)
+        if y <= g:
+            y = g
+            if abs(vy) > 0.6:
+                vy = -vy * bounce
+                vx *= 0.8
+                spin = -vx / max(0.05, roll) * 0.5
+            else:
+                vy = 0.0
+                on_ground += 1
+                vx -= math.copysign(min(abs(vx), friction * dt), vx)  # sliding / rolling friction
+                spin = -vx / max(0.05, roll) * 0.3
+                ang += spin * dt
+        out.append((x, y, ang))
+        if on_ground > 10 and abs(vx) < 1e-3:
+            break
+    return out
+
+
+def _retime(keys: list, tm) -> list:
+    """Applies a timing profile to an action's keys (flights and push-offs keep their physical timing)."""
+    out, prev, prev_new = [], 0.0, 0.0
+    for i, (dt, kv, ek) in enumerate(keys):
+        d = dt - prev
+        if not (kv.get("ballistic") or ek == "accel"):
+            d = d / tm.tempo * (tm.anticipation if i == 0 else 1.0)
+        prev_new += d
+        out.append((prev_new, kv, ek))
+        prev = dt
+    if tm.hold > 0:
+        out.append((prev_new + tm.hold, {}, "linear"))
+    return out
 
 
 class Actor:
@@ -120,6 +167,8 @@ class Actor:
         self.postures: list[tuple] = []       # (t0, t1, lean, crouch)
         self.reaches: list[tuple] = []        # (t0, t1, (near, far)) hand targets while walking
         self._end_x = x
+        self.timing = None                    # a timing.Timing profile (comedy, drama...) for keyframed actions
+        self.looks: list[tuple] = []          # (t0, t1, target): where the head turns (an actor or an (x, y) point)
         self._spring = {}
         self._act = None
         self.hip = (x, L._hip_y)
@@ -136,9 +185,14 @@ class Actor:
         self._end_x = to_x
         return end
 
-    def act(self, t: float, keys: list, name: str = "", dx: float = 0.0, end_f: float | None = None) -> float:
+    def act(self, t: float, keys: list, name: str = "", dx: float = 0.0, end_f: float | None = None,
+            upper_free: bool = False) -> float:
         """A keyframed action from time t. keys: [(dt, {...}, ease)]; dx = where the hips end up, relative."""
-        a = Act(t, keys, name, dx=dx, end_f=end_f)
+        tm = self.timing
+        if tm is not None and keys:
+            keys = _retime(keys, tm)
+        a = Act(t, keys, name, dx=dx, end_f=end_f, upper_free=upper_free,
+                overshoot=tm.overshoot if tm else 1.0, exaggerate=tm.exaggerate if tm else 1.0)
         self.acts.append(a)
         if dx:
             self.loco.moves.append((a.t1, a.t1 + 1e-3, self._end_x, self._end_x + dx * self._facing_at_build(t), "handoff"))
@@ -257,6 +311,8 @@ class Actor:
                 p.hands = None if hs is None else tuple(
                     None if h is None else (h if callable(h) else (start.x + start.f * h[0], g0 + h[1])) for h in hs)
             for k, v in kv.items():
+                if a.exaggerate != 1.0 and k in ("au", "al", "bu", "bl", "lean", "head"):
+                    v = getattr(start, k) + (v - getattr(start, k)) * a.exaggerate   # pushed further for comedy
                 setattr(p, k, v)
             out.append((a.t0 + dt, p, ek, ball))
             cur = p
@@ -296,7 +352,7 @@ class Actor:
         for si, ((ta, pa, _, _), (tb, pb, ek, ball)) in enumerate(zip(R, R[1:])):
             if ta <= t <= tb:
                 u = (t - ta) / max(1e-6, tb - ta)
-                k = ease(ek, u)
+                k = ease(ek, u, a.overshoot)
                 p = Pose(**{fl.name: getattr(pa, fl.name) for fl in fields(Pose)})
                 for n in ANGLES + ("squash",):
                     setattr(p, n, lerp(getattr(pa, n), getattr(pb, n), k))
@@ -336,7 +392,12 @@ class Actor:
                     x = x(t) if callable(x) else x
                     y = y(t) if callable(y) else y
                     if x is not None and y is not None:
-                        pts.append(lerp_pt(x, y, k)); ws.append(1.0)
+                        q = lerp_pt(x, y, k)
+                        g = self._floor(q[0])
+                        if x[1] < g + 0.12 and y[1] < g + 0.12 and abs(y[0] - x[0]) > 0.03:
+                            q = (q[0], q[1] + min(0.1, 0.4 * abs(y[0] - x[0])) * math.sin(math.pi * k))  # a hand
+                            # moved from one spot on the floor to another is lifted, not slid
+                        pts.append(q); ws.append(1.0)
                     elif y is not None:
                         pts.append(y); ws.append(k)
                     elif x is not None:
@@ -357,11 +418,16 @@ class Actor:
             p = self._eval(a, t)
             pa = self._eval(a, max(a.t0, t - 0.06))
             p.au, p.al, p.bu, p.bl = pa.au, pa.al, pa.bu, pa.bl
+            if a.upper_free:                          # seated: feelings move the arms, head and lean only
+                q = self._feelings(t, replace(p))
+                p.au, p.al, p.bu, p.bl, p.head = q.au, q.al, q.bu, q.bl, q.head
+                p.lean += max(-0.25, min(0.25, q.lean - p.lean))
             self._act = a
         else:
             if self._act is not None:                   # hand control back exactly where the action ended
                 end = self._eval(self._act, self._act.t1)
                 self._handback(end, t)
+                self._blend_from = (end, t)               # and blend from that pose for a moment
                 self._act = None
             self.loco.step(t, dt)
             p = self._loco_pose(t)
@@ -376,6 +442,18 @@ class Actor:
                     w = min(smooth((t - t0) / 0.25), smooth((t1 - t) / 0.25))
                     p.hands = tuple(h(t) if callable(h) else h for h in hs)
                     p.hands_w = tuple(w if h is not None else 0.0 for h in hs)
+            bf = getattr(self, "_blend_from", None)
+            if bf is not None and t - bf[1] < 0.3:                 # motion blending out of an action
+                k = smooth((t - bf[1]) / 0.3)
+                e = bf[0]
+                for n in ("au", "al", "bu", "bl", "lean", "head", "squash"):
+                    ev, pv = getattr(e, n), getattr(p, n)
+                    if n != "squash":                       # a full turn ago is the same angle: no extra spin
+                        ev += round((pv - ev) / TAU) * TAU
+                    setattr(p, n, lerp(ev, pv, k))
+                p.y = lerp(e.y, p.y, k)
+                p.x = lerp(e.x, p.x, k)
+        p = self._gaze(t, p)
         p = self._springs(p, dt)
         p.y -= min(0.0, self._below_floor(p))         # a roll or a fall never pushes the head or hands through the floor
         self._last_pose = p
@@ -383,6 +461,41 @@ class Actor:
         self.hip = (p.x, p.y)
         self.speed = self.loco.speed if a is None else 0.0
         self._t = t
+
+    def look_at(self, t0: float, t1: float, target) -> float:
+        """Attention: from t0 to t1 the head turns to `target` (another actor, a prop, or an (x, y) point)."""
+        self.looks.append((t0, t1, target))
+        return t1
+
+    def _gaze(self, t: float, p: Pose) -> Pose:
+        """Tilts the head toward whatever the actor is looking at (eased in and out over a quarter second)."""
+        for t0, t1, target in self.looks:
+            if not (t0 <= t <= t1):
+                continue
+            if isinstance(target, tuple):
+                tx, ty = target
+            elif hasattr(target, "pose_now") and hasattr(target, "joints"):
+                tx, ty = target.joints(target.pose_now)["head"]
+            elif hasattr(target, "pos"):
+                tx, ty = target.pos(t)[:2]
+                ty += getattr(target, "h", 0.0) * 0.5
+            else:
+                continue
+            w = min(smooth((t - t0) / 0.25), smooth((t1 - t) / 0.25))
+            ny = p.y + math.cos(p.lean) * self.l_torso
+            ahead = p.f * (tx - p.x)
+            elev = math.atan2(ty - ny, max(0.15, abs(ahead)))
+            want = max(-0.65, min(0.7, -0.75 * elev - 0.6 * p.lean))      # chin up to look up, down to look down
+            p.head = lerp(p.head, want, w)
+        return p
+
+    def busy(self, t0: float, t1: float, moving_only: bool = False) -> bool:
+        """Is anything already directed for this actor between t0 and t1?"""
+        if any(a.t0 < t1 and a.t1 > t0 for a in self.acts):
+            return True
+        if any(m0 < t1 and m1 > t0 and m != "handoff" for m0, m1, _, _, m in self.loco.moves):
+            return True
+        return False if moving_only else any(f0 < t1 and f1 > t0 for f0, f1, _ in self.feels)
 
     def _handback(self, end: Pose, t: float):
         L = self.loco
@@ -432,7 +545,7 @@ class Actor:
                 tr = 0.05 * s(u * 45)
                 q.au, q.al = 1.2 + tr, 2.7
                 q.bu, q.bl = 1.1 - tr, 2.6
-                q.x = p.x - p.f * 0.03 * self.H * s(u * 30)
+                q.x = p.x - p.f * 0.008 * self.H * s(u * 22)        # a tremble, not a shake
             elif emo == "confused":
                 q.head = -0.4 + 0.12 * s(u * 1.7)
                 q.lean = 0.0
@@ -688,6 +801,7 @@ class Prop:
     carriers: list = field(default_factory=list)      # (t0, t1, actor, hand)
     follows: list = field(default_factory=list)       # (t0, t1, actor, offset) - pushed or dragged along
     data: dict = field(default_factory=dict)          # chart values, folder open amount, image...
+    flights: list = field(default_factory=list)       # thrown / dropped: dicts with t0, launch, samples
     no_shadow: bool = True
 
     def body_x(self, t):
@@ -713,10 +827,19 @@ class Prop:
 
     def _unfollowed(self, t):
         for t0, t1, actor, hand in self.carriers:
-            if t0 <= t <= t1 and hasattr(actor, "_joints"):
+            if t0 <= t <= t1 and (hasattr(actor, "_joints") or hasattr(actor, "pose_now")):
                 hx, hy = actor.hand_pos(hand)
-                return hx + self.data.get("grip_dx", 0.0) * actor.pose_now.f, hy + self.data.get("grip_dy", -self.h * 0.5), \
-                    self.data.get("carry_angle", 0.0) * actor.pose_now.f
+                p = (hx + self.data.get("grip_dx", 0.0) * actor.pose_now.f, hy + self.data.get("grip_dy", -self.h * 0.5),
+                     self.data.get("carry_angle", 0.0) * actor.pose_now.f)
+                self._last_held = p
+                return p
+        fl = None
+        for f in self.flights:                         # the latest flight that has begun
+            if t >= f["t0"]:
+                fl = f
+        if fl is not None and not any(fl["t0"] < c[0] <= t for c in self.carriers) and \
+                not any(fl["t0"] < k[0] <= t for k in self.keys):
+            return self._fly(fl, t)
         x, y, ang = self.x, self.y, self.angle
         for (ta, xa, ya, aa, _), (tb, xb, yb, ab, ek) in zip(self.keys, self.keys[1:]):
             if t >= tb:
@@ -729,6 +852,46 @@ class Prop:
         if self.keys and t < self.keys[0][0]:
             return self.keys[0][1], self.keys[0][2], self.keys[0][3]
         return x, y, ang
+
+    # ---- physics -------------------------------------------------------------------------------------------
+    def launch(self, t0: float, velocity, target=None, flight_time: float | None = None, bounce: float = 0.45,
+               spin: float = 0.0, world=None):
+        """From time t0 the object flies on gravity from wherever it is then (a hand at release, a shelf), bounces
+        (losing energy each time), slides or rolls to rest. velocity: (vx, vy) m/s, or None with `target` (an (x, y)
+        point or a callable t -> (x, y)) and `flight_time`, to aim it."""
+        self.flights.append(dict(t0=t0, velocity=velocity, target=target, T=flight_time, bounce=bounce, spin=spin,
+                                 world=world, samples=None))
+        return t0 + (flight_time or 1.0)
+
+    def _fly(self, f, t):
+        if f["samples"] is None:
+            start = getattr(self, "_last_held", None) or self._resting_before(f["t0"])
+            x0, y0, a0 = start
+            if f["velocity"] is not None:
+                vx, vy = f["velocity"]
+            else:
+                tgt = f["target"](f["t0"] + f["T"]) if callable(f["target"]) else f["target"]
+                T = f["T"]
+                vx = (tgt[0] - x0) / T
+                vy = (tgt[1] - y0 + 0.5 * G * T * T) / T
+            f["samples"] = _simulate(x0, y0, a0, vx, vy, f["spin"], f["bounce"], self.w, self.h,
+                                     (f["world"].ground if f["world"] else (lambda x: 0.0)),
+                                     friction=self.data.get("friction", 6.0))
+        S = f["samples"]
+        u = (t - f["t0"]) * 120
+        i = int(u)
+        if i >= len(S) - 1:
+            return S[-1]
+        k = u - i
+        a, b = S[i], S[i + 1]
+        return lerp(a[0], b[0], k), lerp(a[1], b[1], k), lerp(a[2], b[2], k)
+
+    def _resting_before(self, t):
+        saved, self.flights = self.flights, [f for f in self.flights if f["t0"] < t]
+        try:
+            return self._unfollowed(t - 1e-4) if self.flights or self.carriers or self.keys else (self.x, self.y, self.angle)
+        finally:
+            self.flights = saved
 
     def move(self, t0, t1, x, y, angle=0.0, how="inout"):
         if not self.keys:

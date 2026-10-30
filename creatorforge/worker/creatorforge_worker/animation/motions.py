@@ -256,3 +256,134 @@ def tap(a: Actor, t: float, target) -> float:
             (0.32, dict(lean=0.25), "snap"),
             (0.6, dict(lean=0.03, hands=(None, None), au=0.1, al=0.25), "inout")]
     return a.act(t, keys, "tap")
+
+
+def sit(a: Actor, t: float, seat: float, hold: float, back: float | None = None) -> float:
+    """Sits down on a seat `seat` metres high just behind the feet, stays `hold` seconds (arms, head and lean still
+    free to show feelings), then stands up the way people do: lean forward over the feet, then push up."""
+    H, y0 = a.H, _stand(a)
+    back = 0.8 * a.l_thigh if back is None else back
+    seat_hip = seat + 0.06 * H
+    keys = [
+        (0.35, dict(y=y0 - 0.08 * H, lean=0.35, head=-0.15, au=0.4, al=0.7, bu=0.3, bl=0.6, feet="keep"), "inout"),
+        (0.95, dict(dx=-back, y=seat_hip, lean=0.15, head=0.0, au=0.9, al=1.5, bu=0.8, bl=1.4), "out"),  # down
+        (1.25, dict(lean=-0.05, au=0.75, al=1.55, bu=0.65, bl=1.45), "inout"),            # settles back
+        (1.25 + hold, dict(lean=-0.05), "linear"),                                        # seated
+        (1.65 + hold, dict(lean=0.6, head=-0.2, au=0.5, al=0.9, bu=0.4, bl=0.8), "inout"),  # weight over the feet
+        (2.25 + hold, dict(dx=-0.05 * H, y=y0, lean=0.05, head=0.0, au=0.1, al=0.25, bu=0.06, bl=0.2), "out"),  # up
+    ]
+    return a.act(t, keys, "sit", dx=-0.05 * H, upper_free=True)
+
+
+def crawl(a: Actor, t: float, dist: float, cycles: int | None = None) -> float:
+    """Down on hands and knees, crawls `dist` metres (right hand with left knee, then the other pair; each hand
+    and knee lifts and is set down, nothing slides), then gets back up."""
+    H, y0 = a.H, _stand(a)
+    hip = 0.5 * a.l_thigh + 0.06 * H             # knees on the floor under the hips
+    sh = a.l_up + a.l_fore - 0.03                 # shoulders over the hands
+    reach = a.l_torso * 0.86
+    n = cycles or max(2, round(dist / (0.22 * H)))
+    s = dist / (2 * n)                            # each half-cycle moves the body s metres
+    knee_back = 0.02 * H
+    ank_back = a.l_shin * 0.97
+    lean = math.atan2(reach, sh - hip) if sh > hip else 1.3
+    keys = [
+        (0.35, dict(y=y0 - 0.15 * H, lean=0.45, head=-0.1, feet="keep"), "inout"),
+        (0.9, dict(dx=0.2 * H, y=hip, lean=lean, head=-0.6,
+                   feet=((0.2 * H - knee_back - ank_back, 0), (0.2 * H - knee_back - ank_back + 0.03, 0)),
+                   hands=((0.2 * H + reach * math.sin(lean), 0.02), (0.2 * H + reach * math.sin(lean) - 0.04, 0.02))),
+         "inout"),                                                                        # on all fours
+    ]
+    x = 0.2 * H
+    tt = 0.9
+    feet = [x - knee_back - ank_back, x - knee_back - ank_back + 0.03]
+    hands = [x + reach * math.sin(lean), x + reach * math.sin(lean) - 0.04]
+    for c in range(2 * n):
+        i = c % 2                                 # which hand moves; the opposite knee goes with it
+        x += s
+        hands[i] += 2 * s
+        feet[1 - i] += 2 * s
+        tt += 0.42
+        keys.append((tt, dict(dx=x, y=hip + 0.01 * H * (c % 2), lean=lean, head=-0.6 + 0.05 * (c % 2),
+                              feet=((feet[0], 0), (feet[1], 0)), hands=((hands[0], 0.02), (hands[1], 0.02))),
+                     "inout"))
+    keys += [
+        (tt + 0.5, dict(dx=x + 0.05 * H, y=y0 - 0.2 * H, lean=0.5, head=-0.1, hands=(None, None),
+                        feet=((x + 0.12 * H, 0), (x - 0.02 * H, 0)), au=0.3, al=0.5, bu=0.2, bl=0.4), "inout"),
+        (tt + 1.0, dict(dx=x + 0.06 * H, y=y0, lean=0.04, head=0.0, au=0.1, al=0.25, bu=0.06, bl=0.2), "out"),
+    ]
+    return a.act(t, keys, "crawl", dx=x + 0.06 * H)
+
+
+def step_back(a: Actor, t: float, dist: float = 0.35) -> float:
+    """Backs away while still facing forward: weight back, the back foot steps back, the hips follow, the front
+    foot comes back under them. Feet arc over the floor; nothing slides."""
+    H, y0 = a.H, _stand(a)
+    keys = [
+        (0.18, dict(lean=-0.15, head=-0.1, au=0.3, al=0.6, bu=0.35, bl=0.7, y=y0 - 0.02 * H, feet="keep"), "inout"),
+        (0.5, dict(dx=-0.45 * dist, feet=("keep", (-dist - 0.05 * H, 0)), lean=-0.12), "inout"),   # back foot back
+        (0.85, dict(dx=-dist, y=y0, lean=-0.05, feet=((-dist + 0.07 * H, 0), "prev"), au=0.15, al=0.35, bu=0.2,
+                    bl=0.4), "inout"),                                                       # front foot follows
+    ]
+    return a.act(t, keys, "step_back", dx=-dist)
+
+
+def comfort(a: Actor, t: float, other: Actor, dur: float = 2.0, hand: str = "near") -> float:
+    """A hand on the other's shoulder for `dur` seconds (stand close first), with a sympathetic lean and head tilt."""
+    def shoulder(tt):
+        J = other.joints(other.pose_now)
+        sh = J["arms"][0][0]
+        return (sh[0], sh[1] - 0.02)
+    hs = (shoulder, None) if hand == "near" else (None, shoulder)
+    a.reach(t, t + dur, *hs)
+    a.posture(t, t + dur, lean=0.15)
+    a.look_at(t, t + dur, other)
+    return t + dur
+
+
+def throw(a: Actor, t: float, prop, target, flight: float = 0.8, hand: str = "near", spin: float = -8.0) -> float:
+    """Wind up (arm back, weight back), throw (weight forward, arm whips through), follow through. The object
+    leaves the hand at the release and flies on gravity to `target` - an (x, y) point or a callable t -> (x, y) such
+    as another actor's hands - arriving `flight` seconds later. Returns the arrival time."""
+    keys = [
+        (0.32, dict(lean=-0.25, head=-0.15, au=-2.3, al=-1.6, bu=0.6, bl=0.9, feet="keep"), "inout"),   # wind up
+        (0.46, dict(lean=0.3, head=0.05, au=1.5, al=1.4, bu=-0.4, bl=-0.2), "snap"),                     # throw
+        (0.8, dict(lean=0.18, au=0.7, al=0.6, bu=-0.1, bl=0.1), "out"),                                 # follow through
+        (1.05, dict(lean=0.03, head=0.0, au=0.1, al=0.25, bu=0.06, bl=0.2), "inout"),
+    ]
+    if a.timing is not None:                       # the release must match the retimed throw
+        from .stick import _retime
+        rel = _retime(keys, a.timing)[1][0] - 0.03
+    else:
+        rel = 0.43
+    a.act(t, keys, "throw")
+    release = t + rel
+    held = False
+    for i, (c0, c1, who, hd) in enumerate(prop.carriers):      # the hand lets go at the release
+        if who is a and c0 <= release <= c1 + 10:
+            prop.carriers[i] = (c0, release, who, hd)
+            held = True
+    if not held:
+        prop.carriers.append((t, release, a, hand))
+    prop.launch(release, None, target=target, flight_time=flight, spin=spin, world=a.world)
+    return release + flight
+
+
+def catch(b: Actor, t_arrive: float, prop, hold: float = 1.5) -> float:
+    """Both hands go to meet the object as it arrives, close on it, give with the impact (a small sink and lean
+    back), and hold it."""
+    def at(tt):
+        x, y, _ = prop.pos(tt)
+        return (x, y + prop.h * 0.5)
+    b.reach(t_arrive - 0.45, t_arrive + hold, at, at)
+    b.posture(t_arrive - 0.05, t_arrive + 0.45, lean=-0.12, crouch=0.035)
+    b.look_at(t_arrive - 1.0, t_arrive + 0.4, prop)
+    prop.carriers.append((t_arrive, t_arrive + hold, b, "near"))
+    return t_arrive + hold
+
+
+def chest(b: Actor, t: float):
+    """Where a catcher's hands will be at time t (a target for throw())."""
+    f = b._facing_at_build(t)
+    g = b.world.ground(b.hips_x(t)) if b.world else 0.0
+    return (b.hips_x(t) + f * 0.3, g + 0.68 * b.H)
