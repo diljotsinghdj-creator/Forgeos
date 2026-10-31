@@ -1,6 +1,7 @@
 """Put your own voice-over (ElevenLabs or a recording) on a finished production, line for line.
 
     python -m creatorforge_worker.voiceover_sync <job id> <voice-over.mp3> [--out final.mp4] [--name "in the app"]
+    python -m creatorforge_worker.voiceover_sync <downloaded.mp4> <voice-over.mp3> --script <script.txt>
 
 The production's pictures were timed to CreatorForge's own narration. This finds where each script line starts in
 your voice-over (from its pauses: lines end on the longest pauses, and speech runs at a steady rate in between) and
@@ -36,7 +37,10 @@ def _pauses(audio: Path, noise_db: float = -38.0, min_s: float = 0.3) -> tuple[l
 def line_starts_in_audio(audio: Path, lines: list[str]) -> tuple[list[float], float]:
     """Where each line starts in a recording: the line breaks are chosen among the pauses so each lands near its
     share of the speaking time (by letters), long pauses preferred (a line ends on a breath)."""
-    gaps, dur = _pauses(audio)
+    for noise, min_s in ((-38.0, 0.3), (-34.0, 0.25), (-30.0, 0.2), (-28.0, 0.15)):   # shorter breaths if needed
+        gaps, dur = _pauses(audio, noise, min_s)
+        if len(gaps) >= len(lines) + 1:
+            break
     if len(lines) <= 1 or len(gaps) < len(lines) - 1:
         raise ValueError(f"found {len(gaps)} pauses for {len(lines)} lines - is this the right voice-over?")
     segs, t = [], 0.0
@@ -115,12 +119,46 @@ def _loudnorm(audio: Path, out: Path) -> None:
                     "linear=true", "-ar", "48000", str(out)], check=True)
 
 
-def sync(video: Path, words: list[dict], lines: list[str], voice: Path, out: Path, report: Path | None = None) -> dict:
+def speech_end(audio: Path) -> float:
+    """When the talking stops: the start of the silence that runs to the end (an end card), else the end."""
+    r = subprocess.run(["ffmpeg", "-v", "info", "-i", str(audio), "-af", "silencedetect=noise=-38dB:d=0.3", "-f",
+                        "null", "-"], capture_output=True, text=True).stderr
+    st = [float(x) for x in re.findall(r"silence_start: ([0-9.]+)", r)]
+    en = [float(x) for x in re.findall(r"silence_end: ([0-9.]+)", r)]
+    dur = _duration(audio)
+    if st and (len(st) > len(en) or en[-1] >= dur - 0.25):   # the last silence runs to (almost) the end
+        return st[-1]
+    return dur
+
+
+def _duration(p: Path) -> float:
+    return float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0",
+                                 str(p)], capture_output=True, text=True).stdout)
+
+
+def starts_from_video(video: Path, lines: list[str], work: Path) -> tuple[list[float], float]:
+    """A downloaded production (no words.json): its own narration's pauses give the line starts."""
+    wav = work / (video.stem + ".narration.wav")
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(video), "-vn", "-ac", "1", "-ar", "44100", str(wav)],
+                   check=True)
+    try:
+        starts, _ = line_starts_in_audio(wav, lines)
+        return starts, speech_end(wav)
+    finally:
+        wav.unlink(missing_ok=True)
+
+
+def sync(video: Path, words: list[dict], lines: list[str], voice: Path, out: Path, report: Path | None = None,
+         cf_starts: list[float] | None = None, cf_speech_end: float | None = None) -> dict:
+    """Stretch each line's video onto the voice-over. What follows the narration (an end card) plays as it was,
+    after the voice-over."""
     vo_starts, vo_end = line_starts_in_audio(voice, lines)
-    cf_starts = line_starts_in_words(words, lines)
-    vdur = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0",
-                                 str(video)], capture_output=True, text=True).stdout)
-    tail = min(vdur, float(words[-1]["end"]) + 0.5) if words else vdur   # after the last word: silence, not speech
+    vdur = _duration(video)
+    if cf_starts is None:
+        cf_starts = line_starts_in_words(words, lines)
+        tail = min(vdur, float(words[-1]["end"]) + 0.5) if words else vdur   # after the last word: silence
+    else:
+        tail = min(vdur, (cf_speech_end or vdur) + 0.15)
     cf_bounds = cf_starts + [max(tail, cf_starts[-1] + 0.3)]
     vo_bounds = vo_starts + [vo_end]
     parts, labels = [], []
@@ -131,40 +169,61 @@ def sync(video: Path, words: list[dict], lines: list[str], voice: Path, out: Pat
         f = (vo_bounds[k + 1] - vo_bounds[k]) / (b - a)
         parts.append(f"[0:v]trim=start={a:.4f}:end={b:.4f},setpts=(PTS-STARTPTS)*{f:.6f}[v{k}]")
         labels.append(f"[v{k}]")
+    end_card = vdur - cf_bounds[-1]
+    if end_card > 0.3:                                # the end card, unchanged
+        parts.append(f"[0:v]trim=start={cf_bounds[-1]:.4f},setpts=PTS-STARTPTS[v{len(lines)}]")
+        labels.append(f"[v{len(lines)}]")
+    else:
+        end_card = 0.0
     fps = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=r_frame_rate",
                           "-of", "csv=p=0", str(video)], capture_output=True, text=True).stdout.strip() or "30"
     graph = ";".join(parts) + f";{''.join(labels)}concat=n={len(labels)}:v=1:a=0,fps={fps}[v]"
     norm = out.with_name(out.stem + ".voice.wav")
     _loudnorm(voice, norm)
     cmd = ["ffmpeg", "-v", "error", "-y", "-i", str(video), "-i", str(norm), "-filter_complex"]
-    cmd += [graph, "-map", "[v]", "-map", "1:a", "-c:v", "libx264", "-preset", "medium", "-crf", "18",
-            "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "192k", "-t", f"{vo_end:.3f}", "-movflags", "+faststart",
-            str(out)]
+    graph += ";[1:a]apad[a]"                           # silence under the end card
+    cmd += [graph, "-map", "[v]", "-map", "[a]", "-c:v", "libx264", "-preset", "medium", "-crf", "18",
+            "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "192k", "-t", f"{vo_end + end_card:.3f}",
+            "-movflags", "+faststart", str(out)]
     subprocess.run(cmd, check=True)
     norm.unlink(missing_ok=True)
     info = {"lines": [{"line": l, "creatorforge_start": round(c, 2), "voiceover_start": round(v, 2),
                        "stretch": round((vo_bounds[k + 1] - vo_bounds[k]) / (cf_bounds[k + 1] - cf_bounds[k]), 3)}
                       for k, (l, c, v) in enumerate(zip(lines, cf_starts, vo_starts))],
-            "voiceover_seconds": round(vo_end, 2), "video_seconds_before": round(vdur, 2), "out": str(out)}
+            "voiceover_seconds": round(vo_end, 2), "end_card_seconds": round(end_card, 2),
+            "video_seconds_before": round(vdur, 2), "seconds_after": round(vo_end + end_card, 2), "out": str(out)}
     if report:
         report.write_text(json.dumps(info, indent=1, ensure_ascii=False))
     return info
 
 
 def main(argv: list[str] | None = None) -> None:
-    from .config import Config
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
-    ap.add_argument("job")
+    ap.add_argument("source", help="a production id on this pod, or a downloaded CreatorForge .mp4 (with --script)")
     ap.add_argument("voiceover")
+    ap.add_argument("--script", default="", help="with an .mp4: the script file the video was made from")
     ap.add_argument("--out", default="")
     ap.add_argument("--name", default="", help="name in the Asset Library")
     ap.add_argument("--no-library", action="store_true", help="don't add the result to the Asset Library")
     a = ap.parse_args(argv)
+    src = Path(a.source)
+    if src.suffix.lower() in (".mp4", ".mov", ".mkv") and src.is_file():   # a downloaded video
+        from .director import ProductionSpec
+        if not a.script:
+            raise SystemExit("with a video file, give the script it was made from: --script script.txt")
+        lines = [l for l in ProductionSpec.from_dict({"script": Path(a.script).read_text(encoding="utf-8")})
+                 .script.splitlines() if l.strip()]
+        out = Path(a.out) if a.out else src.with_name(src.stem + "_voiceover.mp4")
+        starts, end = starts_from_video(src, lines, out.parent)
+        info = sync(src, [], lines, Path(a.voiceover), out, out.with_suffix(".sync.json"), starts, end)
+        _print(info, out)
+        return
+    from .config import Config
     cfg = Config.from_env()
-    jdir = cfg.jobs_dir / a.job
+    jdir = cfg.jobs_dir / a.source
     job = json.loads((jdir / "job.json").read_text())
     if job.get("status") != "READY" or not job.get("result"):
-        raise SystemExit(f"production {a.job} is not finished yet (status {job.get('status')})")
+        raise SystemExit(f"production {a.source} is not finished yet (status {job.get('status')})")
     lines = [l.strip() for l in (job["spec"].get("script") or "").splitlines() if l.strip()]
     if not lines:
         raise SystemExit("this production was not made from a script (Generate -> Script)")
@@ -172,10 +231,7 @@ def main(argv: list[str] | None = None) -> None:
     out = Path(a.out) if a.out else jdir / "work" / "voiceover_final.mp4"
     out.parent.mkdir(parents=True, exist_ok=True)
     info = sync(jdir / job["result"]["file"], words, lines, Path(a.voiceover), out, jdir / "work" / "voiceover_sync.json")
-    for k, r in enumerate(info["lines"], 1):
-        print(f"{k:2d}  CF {r['creatorforge_start']:6.2f}s -> VO {r['voiceover_start']:6.2f}s  x{r['stretch']:.2f}  "
-              f"{r['line'][:50]}")
-    print(f"\nDone: {out}  ({info['voiceover_seconds']} s)")
+    _print(info, out)
     if not a.no_library:                               # into the Asset Library, so the app can play and save it
         import shutil
 
@@ -183,10 +239,17 @@ def main(argv: list[str] | None = None) -> None:
         from .library import Library
         tmp = out.with_name(out.stem + ".upload.mp4")
         shutil.copyfile(out, tmp)
-        name = a.name or f"{job.get('title') or job['spec'].get('idea') or a.job} (own voice-over)"[:80]
+        name = a.name or f"{job.get('title') or job['spec'].get('idea') or a.source} (own voice-over)"[:80]
         asset = Library(cfg.data_dir / "library", cfg.allow_mock).assets.add("video", name, tmp, ".mp4",
                                                                   lambda p: _check_asset("video", p))
         print(f"In the app: Library -> Assets -> video -> '{name}' (asset {asset['id']})")
+
+
+def _print(info: dict, out: Path) -> None:
+    for k, r in enumerate(info["lines"], 1):
+        print(f"{k:2d}  CF {r['creatorforge_start']:6.2f}s -> VO {r['voiceover_start']:6.2f}s  x{r['stretch']:.2f}  "
+              f"{r['line'][:50]}")
+    print(f"\nDone: {out}  ({info['seconds_after']} s; end card {info['end_card_seconds']} s)")
 
 
 if __name__ == "__main__":
