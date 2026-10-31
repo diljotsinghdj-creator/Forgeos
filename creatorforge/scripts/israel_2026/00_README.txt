@@ -1,6 +1,13 @@
 ISRAEL 2026: THE ELECTION THAT SETTLED NOTHING - CreatorForge production package
 Long-form investigative satire documentary, English, ~44 min at voice speed 1.0 / ~48 min at 0.9. Research cut-off 31 Oct 2026.
 
+ONE PASTE (new): FULL_SCRIPT_Hinglish_Paste_In_CreatorForge.txt / FULL_SCRIPT_English_Paste_In_CreatorForge.txt
+  The whole film in one script. Update the pod first (container start command / start.sh) - the worker now takes
+  scripts up to 150,000 characters and 60 minutes, and assembles long films in batches of 60 shots.
+  Tested end to end (mock voice/images): the full Hinglish script rendered as one verified 1920x1080 MP4, 46.7 min,
+  -14 LUFS, decode check passed. Expect a long render on the pod (allow 1-2 hours).
+  The six render parts (render/R1-R6) still work as a fallback.
+
 FILES
   A_Script_Israel_2026_The_Election_That_Settled_Nothing.txt   full word-for-word script in CreatorForge format
                                                                (8 chapters, 334 pictures, graphics, citations, tone per line)
