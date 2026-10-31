@@ -221,3 +221,44 @@ def film_c_checked(fps: int = 24):
     actors, props, w, total, marks = film_c(fixes, rest)
     marks["ball_rest_x"] = round(rest, 3)
     return actors, props, w, total, before, after, fixes, marks
+
+
+def film_c_sound(out_wav, fps: int = 24):
+    """Film C's soundtrack from the same staging the 3D film is posed from: footsteps, the ball (throws, catches,
+    bounces), the jump and climb, Mo's BONK, outdoor ambience. No camera panning (the 3D camera is not modelled)."""
+    from types import SimpleNamespace
+
+    from . import qc, sound
+    actors, props, w, total, before, after, fixes, marks = film_c_checked(fps)
+    probe = SimpleNamespace(actors=actors + props, fps=fps)
+    R = qc.record(probe, total)
+    ev = sound.events(R, probe)                        # includes the knockback's bonk
+    return sound.mix(ev, total, None, "outdoors", out_wav), total
+
+
+def film_c_finish(video, out, fps: int = 24):
+    """Adds Film C's soundtrack and its comic text (BONK, "Got it!", "Ha!") as captions at the right moments - the
+    3D renderer does not draw text - then writes the master and an Android copy."""
+    import subprocess
+    from pathlib import Path
+    out = Path(out)
+    wav, total = film_c_sound(out.with_suffix(".wav"), fps)
+    actors, *_ = film_c_checked(fps)
+    font = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
+    texts = []
+    for a in actors:
+        for t0, t1, sym in a.symbols:
+            label = f"{a.look.name}: {sym}" if sym not in ("BONK",) else "BONK!"
+            safe = label.replace("'", "’").replace(":", "\\\\:").replace("!", "\\\\!")
+            texts.append(f"drawtext=fontfile={font}:text='{safe}':fontsize=h/14:fontcolor=white:borderw=4:"
+                         f"bordercolor=black@0.85:x=(w-text_w)/2:y=h*0.08:enable='between(t,{t0:.2f},{t1:.2f})'")
+    vf = ",".join(texts) or "null"
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(video), "-i", str(wav), "-filter_complex",
+                    f"[0:v]{vf},format=yuv420p[v]", "-map", "[v]", "-map", "1:a", "-c:v", "libx264", "-crf", "16",
+                    "-preset", "medium", "-c:a", "aac", "-b:a", "192k", "-af", "apad", "-shortest", "-movflags",
+                    "+faststart", str(out)], check=True)
+    android = out.with_name(out.stem + "_android.mp4")
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(out), "-c:v", "libx264", "-profile:v", "main", "-level",
+                    "4.0", "-crf", "21", "-pix_fmt", "yuv420p", "-c:a", "aac", "-ar", "48000", "-movflags", "+faststart",
+                    str(android)], check=True)
+    return out, android, len(texts)
