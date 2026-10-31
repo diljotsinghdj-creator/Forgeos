@@ -45,3 +45,41 @@ A scene's own `style` wins over the document's, so styles can change from scene 
 painterly to selective-colour noir and back.
 
 DEMOS
+
+## Supported, experimental and unsupported
+
+Each "supported" item runs in the engine, passes the tests named, and appears in a rendered film.
+
+| Capability (from the brief) | Status | Evidence / limits |
+|---|---|---|
+| Genres: comedy, history, science, drama, wildlife, fantasy | supported | The five demo films; `cinematic.choose` picks a style from genre cues; worlds for each setting |
+| Genres: horror, thriller, mystery | supported (style and worlds) | `noir` preset, night worlds, rain; no horror-specific creatures beyond the monster variant |
+| Music videos | experimental | `dance` on a bpm grid; no beat detection from an audio track yet |
+| Advertising and product explainers | experimental | `explainer` and `cartoon` styles; products need imported images or library assets |
+| Graphic novel / motion comic / 2.5D parallax | supported | `graphic_novel`, `motion_comic`; parallax worlds; Film 1 |
+| Selective colour | supported | `key_hue`; test `test_selective_colour_keeps_only_the_key_hue`; Film 4 |
+| Realistic to stylised slider | supported | `stylization` 0..1; test `test_every_production_style_renders_and_looks_different` |
+| "Semi-realistic illustrated characters" | partial | Illustrated bodies are flat-shaded cartoon figures on a stick skeleton, not painted semi-realistic people. Producing those needs an image model or an artist-made character kit. |
+| Anime-inspired / western cartoon | partial | Colour, line and speed-line looks; the characters are not drawn in a specific anime or cartoon anatomy |
+| Realistic cinematic animation | unsupported in 2D | `painterly` is the softest look; realistic rendering needs the 3D path (Blender) or an image/video model |
+| Hybrid live action and animation | supported (from 2.0) | Footage scenes, photo backdrops (Film A) |
+| Humans of all ages | supported | height, head, girth, hunch, cane, hair, clothes; Film 4 (child, adult, elderly) |
+| Robots, aliens, monsters | supported | `species` on the human skeleton; Film 2 (robot) |
+| Animals: domestic, wildlife, birds, reptiles, marine | supported | 32 species on anatomy rigs; test `test_creature_rigs_plant_their_feet_and_change_gait_with_speed`; Films 1, 2 and 5 |
+| Fantasy creatures | supported | dragon (wings, fire), unicorn, sea serpent; Film 5 |
+| Mythical humanoids (centaur, mermaid...) | unsupported | No rig yet |
+| Walking, running, jumping, dancing | supported | stick engine plus `dance` |
+| Facial animation and lip sync | supported (2D) | 38 expressions and visemes (from 2.0) on illustrated heads |
+| Character interaction, object manipulation | supported | pick up, give, throw, catch, comfort (from 2.0/3.0) |
+| Crowds | supported | Crowd lanes (from 2.0); Film 1 |
+| Environmental reactions, weather, time of day | supported | Rain, snow, wind, storms, dawn to night on every world |
+| Physics | supported | Ballistic jumps, thrown props with bounce and roll; anatomy gaits by Froude number |
+| Script -> analysis -> storyboard -> characters -> world -> animation -> voice -> edit -> video | supported | Film 3 is made from a plain script with no hand edits; test `test_a_science_script_gets_one_presenter_and_its_entities_act_it_out` |
+| English, Hindi, Hinglish | supported | espeak-ng voices (robotic); Hinglish from 2.0 |
+| Other languages | experimental | Any espeak-ng language for the voice; subtitles need the font to cover the script |
+| 24/30/60 fps, 16:9, 9:16, 1:1, 1080p, 4K | supported | `format`; measured in the format test (see below) |
+| Style changes inside one production | supported | Per-scene `style`; Film 4, Film 5 |
+| Editable timelines, reusable characters and worlds | supported | Production documents and the editor (from 2.0); worlds and species are named presets |
+| Automated quality inspection | supported | QC motion checks, delivery checks, subtitles, critic (from 2.0/3.0) |
+| Character consistency across scenes | supported | World state carries position, costume, held objects and feelings; looks are declared per character |
+
