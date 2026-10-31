@@ -1,0 +1,232 @@
+Israel 2026 The Election That Settled Nothing - part 2 of 6
+On-screen hook: 120 seats. 61 to govern. Nobody got there.
+Title: Israel 2026: The Election That Settled Nothing (part 2 of 6)
+Tags: #Israel #IsraelElection #Netanyahu #Eisenkot #Knesset
+
+Chapter: Part 2 | The Survivor
+
+Benjamin Netanyahu has been prime minister of Israel for longer than anyone else, including the country's founder, David Ben-Gurion. He first took office in 1996, when the hottest piece of technology in most homes was a fax machine.
+Tone: calm
+Visual: An old fax machine on an office desk printing a page
+Visual: The Knesset building in Jerusalem in 1990s-era photograph style
+Archive: 1990s
+Text: PM SINCE 1996 (WITH BREAKS) · LONGEST-SERVING
+Cite: Knesset; Prime Minister's Office
+
+He has lost power and come back. He has been written off and come back. At this point, writing his political obituary is less journalism than a seasonal tradition, like pumpkin spice.
+Tone: strong
+Visual: A typewriter with a blank sheet of paper in it
+Visual: A row of old newspaper front pages pinned to a wall, text unreadable
+Animate: a man writes on a paper, crumples it, throws it away and starts again
+
+And he has done all of this while on trial. In 2019 he was indicted in three cases, known as one thousand, two thousand, and four thousand.
+Tone: strong
+Visual: The Jerusalem District Court building
+Visual: Three thick case files stacked on a courtroom table
+Text: CASES 1000 · 2000 · 4000
+Cite: Attorney General's indictment, 2019-2020
+
+Case one thousand alleges he received expensive gifts from wealthy friends in return for favours. Case two thousand alleges he discussed better newspaper coverage with a publisher. Case four thousand, the most serious, alleges regulatory benefits for a telecoms tycoon in return for favourable coverage on a news site.
+Tone: calm
+Visual: Boxes of cigars and bottles of champagne on a shelf, no labels visible
+Visual: A newspaper printing press running
+Visual: A telephone switchboard with cables
+Steps: 1000: gifts → 2000: newspaper talks → 4000: telecoms and coverage | The allegations
+Cite: Indictment as reported by Times of Israel and Haaretz
+
+The charges are bribery, fraud and breach of trust. He denies all of them. He calls the case a fabrication. There has been no verdict. So: he is a defendant, not a convict, and we'll treat him exactly that way.
+Tone: calm
+Visual: The scales of justice statue in a courthouse lobby
+Visual: An empty witness stand in a courtroom
+Text: DENIES ALL CHARGES · NO VERDICT
+Cite: Times of Israel; Reuters, 2026
+
+The trial started in 2020. His own testimony began in December 2024. And it is still going. Israeli justice moves slowly, which may be the one thing the prime minister and his critics fully agree is convenient for somebody.
+Tone: question
+Visual: A snail crawling across a stack of legal documents
+Visual: A calendar with years of pages torn off on the floor
+Timeline: 2019 indictment | 2020 trial opens | Dec 2024 Netanyahu testifies | Oct 2026 still no verdict
+Cite: Times of Israel; Reuters
+
+In November 2025, Netanyahu asked President Herzog for a pardon, in the middle of the trial, which has no precedent in Israel. President Donald Trump publicly called for him to be pardoned too.
+Tone: strong
+Visual: A formal letter in an envelope with a wax seal
+Visual: The White House at dusk seen from a distance
+Text: PARDON REQUEST · NOV 2025
+Cite: Al-Monitor/AP, Apr 2026; American Israelite
+
+In April 2026, Herzog put the decision off. He said he wanted to try to reach a plea deal first, and invited both sides to talks. Legal experts in Israel have argued that any plea deal should require Netanyahu to leave public life. As of our cut-off, there is no deal and no pardon.
+Tone: calm
+Visual: Two empty chairs on either side of a table with a single document between them
+Visual: A pen lying on an unsigned agreement
+Text: NO DEAL · NO PARDON (AS OF 31 OCT)
+Cite: Algemeiner; Israel Hayom; Ynet, Apr-May 2026
+
+But the trial is not the heaviest thing he carries into this election. That is October the seventh, 2023.
+Tone: dramatic
+Visual: A memorial wall of candles at night in Israel
+Visual: An empty kibbutz path lined with trees in early morning
+Statement: October 7, 2023.
+
+That morning, Hamas-led gunmen broke through the Gaza border fence and attacked Israeli towns, army posts and a music festival. Around twelve hundred people were killed, most of them civilians. Two hundred and fifty-one people were taken into Gaza as hostages.
+Tone: dramatic
+Visual: A broken section of border fence in a field
+Visual: Rows of memorial candles and photographs, faces blurred, at a festival site memorial
+Text: ~1,200 KILLED · 251 TAKEN HOSTAGE
+Cite: Israeli government figures; AP
+
+It was the deadliest day for Jewish people since the Holocaust. It happened on Netanyahu's watch. And three years later, Israel still has not held a state commission of inquiry into how it happened.
+Tone: strong
+Visual: A long table set for a meeting with no one seated
+Visual: Blank sheets of paper in a file marked with a tab, text unreadable
+Text: STATE COMMISSION OF INQUIRY: NONE
+Cite: JusticeInfo; Ynet, 2026
+
+A state commission is the tool Israel normally uses for disasters. It's led by a judge appointed by the Supreme Court's president. Its findings have ended careers before. Which may explain why some careers are in no hurry to start one.
+Tone: strong
+Visual: A judge's gavel on a bench
+Visual: A row of framed portraits in a government corridor, faces not visible
+Cite: Commissions of Inquiry Law, 1968
+
+Instead, in July 2026, the coalition passed the first reading of a different bill. It would create a commission whose six members are chosen by the Knesset, by politicians. It passed fifty-nine to nothing, because the opposition walked out.
+Tone: calm
+Visual: The Knesset plenum seen from the gallery with many empty seats
+Visual: A voting board showing numbers
+Text: FIRST READING · 59-0 · OPPOSITION BOYCOTT
+Cite: JusticeInfo; Arab News, Jul 2026
+
+The October Council, a group representing bereaved families, called the bill an attempt to whitewash the government's failures. Opposition leaders promised a real state commission in the first month of a new government. The bill can carry over into the new Knesset. So can the argument.
+Tone: strong
+Visual: Hands holding a framed photograph at a vigil, face out of frame
+Visual: Protesters' placards held up at night in Tel Aviv, text unreadable
+Quote: Whitewash | October Council, bereaved families, Jul 2026
+Cite: JusticeInfo; Times of Israel, 2026
+
+Netanyahu's defenders have their own case. They argue that the security establishment, not the prime minister alone, failed that day, that the war that followed broke Hamas's military power and pushed back Hezbollah and Iran, and that the voters, not commissions, should judge him.
+Tone: calm
+Visual: An army command room with screens, no people visible
+Visual: A map of the Middle East spread on a table
+Split: Critics: he failed to prevent it | Supporters: he won the war that followed
+Cite: Likud statements; Netanyahu interviews, 2024-2026
+
+And in fairness, a lot of voters agreed with them. Fifty-three seats is not a collapse. It's the largest bloc in the Knesset. It's just not a majority, and in Israel, the largest bloc that isn't a majority is called the opposition with better furniture.
+Tone: strong
+Visual: A large leather office chair in an empty office
+Visual: A folding plastic chair next to it
+Animate: a man sits proudly in a big chair, then the chair slowly sinks lower
+
+It helps to remember how often this has happened. Netanyahu lost power in 1999. He came back in 2009. He was pushed out in 2021 by an unlikely coalition of right, centre, left and an Arab party, led first by Naftali Bennett, then Yair Lapid. That government lasted about a year and a half.
+Tone: calm
+Visual: Old campaign posters peeling off a concrete wall
+Visual: A revolving door in a government building lobby
+Timeline: 1996 first term | 1999 loses | 2009 returns | 2021 ousted | 2022 returns
+Cite: Knesset; Times of Israel
+
+In late 2022 he returned, at the head of the most right-wing government in Israel's history, with Itamar Ben-Gvir and Bezalel Smotrich in senior cabinet roles. Within weeks, that government launched a plan to curb the power of the Supreme Court.
+Tone: strong
+Visual: The Supreme Court building in Jerusalem in afternoon light
+Visual: A judge's chair behind a bench, empty
+Text: 2023 · JUDICIAL OVERHAUL PLAN
+Cite: Times of Israel; Reuters, 2023
+
+Hundreds of thousands of Israelis protested, week after week, for most of 2023. Reservists, including air force pilots, said they would stop volunteering. Supporters said they were restoring the power of elected officials over unelected judges. Opponents said they were removing the only real check on a government in a country with no written constitution.
+Tone: strong
+Visual: A huge crowd with blue and white flags on a Tel Aviv avenue at night, seen from far above
+Visual: Israeli flags waving over a highway at night
+Stock: Tel Aviv protest night
+Split: Supporters: power to elected officials | Opponents: removing the only check
+Cite: Reuters; Times of Israel, 2023
+
+Then came October the seventh, and the country that had been arguing in the streets went to war together. Many of the same reservists who had protested were the first to report for duty. That detail matters, because the arguments of 2023 never went away. They were paused.
+Tone: dramatic
+Visual: A row of military boots by the door of a family home
+Visual: A protest placard leaning against a wall, faded by sun, text unreadable
+Statement: The arguments weren't settled. They were *paused*.
+
+Survival, for Netanyahu, has always meant two things: keeping his partners, and keeping the other side from finding enough partners of their own. To understand why that works, you need to understand the machine.
+Tone: calm
+Visual: Interlocking metal gears turning inside a machine
+Visual: A chessboard mid-game with several pieces removed
+
+Chapter: Part 3 | The Machine
+
+Israel's parliament, the Knesset, has a hundred and twenty seats. And the entire country is one single constituency.
+Tone: calm
+Visual: The Knesset menorah sculpture outside the parliament in Jerusalem
+Visual: A map of Israel printed on paper, no internal lines
+Map: Israel | One country · One constituency · 120 seats
+Cite: Basic Law: The Knesset
+
+You don't vote for a local candidate. You vote for a party list. If a party gets ten percent of the vote, it gets roughly ten percent of the seats, twelve members, taken from the top of its list.
+Tone: calm
+Visual: A ballot slip with Hebrew letters being folded by a hand
+Visual: A printed party list on a clipboard, names unreadable
+Icons: 🗳️ Vote for a list | 📊 Share of votes | 💺 Share of seats
+
+There's one hurdle. A party needs three point two five percent of the vote to get in at all. Below that, its votes disappear, as our friends the reservists have just learned.
+Tone: strong
+Visual: A high-jump bar set on a stand in an empty stadium
+Visual: A pile of ballot slips swept into a bin
+Text: THRESHOLD 3.25% ≈ 4 SEATS
+Cite: Knesset Elections Law
+
+The result is a parliament of many medium-sized parties and no giants. No party has ever won sixty-one seats on its own. Not once. Not Ben-Gurion. Not anybody. Every Israeli government is a coalition, a negotiated deal.
+Tone: strong
+Visual: A jigsaw puzzle with pieces of different colours scattered on a table
+Visual: Hands shaking across a table, cropped at the wrists
+Text: SINGLE-PARTY MAJORITIES SINCE 1949: ZERO
+
+And deals have prices. Small parties ask for ministries, budgets, and laws. The party that gets you from sixty to sixty-one can ask for almost anything, because without it there's no government.
+Tone: strong
+Visual: A price tag hanging from a wooden chair
+Visual: A shopping receipt curling on a table, numbers unreadable
+Receipt: Ministry | Budget for schools | A law of your choice | Total: 1 seat
+
+Now look at the blocs again through that lens. Netanyahu's camp: Likud, plus two Haredi parties, Shas and United Torah Judaism, plus the far-right Otzma Yehudit of Itamar Ben-Gvir and Religious Zionism of Bezalel Smotrich.
+Tone: calm
+Visual: Black hats hanging on a coat rack in a hallway
+Visual: Hilltop houses with red roofs in the West Bank seen from a distance
+Icons: Likud 27 | Haredi parties 13 | Far right 13
+
+That camp is ideologically tight on security and religion. Its problem is not unity. Its problem is it has fifty-three, and every other party has refused to make it sixty-one.
+Tone: calm
+Visual: A locked padlock on a gate
+Visual: A measuring tape stretched short of a mark
+Text: 53 · 8 SHORT
+
+Eisenkot's camp is the opposite. It has four Jewish parties: Yashar, Beyachad, the Democrats, and Yisrael Beytenu. They agree that Netanyahu should go. On almost everything else, from religion to Palestinians to who should sit in the room, they disagree.
+Tone: calm
+Visual: Four different-coloured umbrellas leaning together
+Visual: A group photograph with people standing far apart, seen from behind
+Text: 48 · 13 SHORT
+
+So for Eisenkot, the maths goes through the nineteen Arab-led seats, or through somebody from the other camp switching sides. And both of those roads have people standing on them with signs that say no.
+Tone: question
+Visual: A fork in a dusty road with two directions
+Visual: A no-entry road sign at a junction
+Steps: 48 + Arab-led parties? → 48 + defectors? → Unity government? | Eisenkot's three roads
+
+There's a detail in the rules that matters a lot this time. A new government doesn't technically need sixty-one votes in favour. It needs more votes for than against. So a minority government can survive if enough members abstain, or simply don't show up.
+Tone: question
+Visual: A parliament voting board with green, red and blank lights
+Visual: An empty seat in a row of occupied parliament seats, people not visible
+Text: CONFIDENCE VOTE: MORE FOR THAN AGAINST
+Cite: Basic Law: The Government, section 13
+
+Which is why Avigdor Lieberman's red line is so specific. He hasn't only ruled out sitting with Arab parties. He's ruled out a government that survives because Arab members abstain. He has closed not just the door, but the window, and the cat flap.
+Tone: strong
+Visual: A cat flap in a wooden door, taped shut
+Visual: A window with its shutters closed and bolted
+Animate: a man closes a door, then closes a window, then kneels and blocks a small hatch, then dusts off his hands
+
+Meanwhile the old government keeps running the country as a caretaker. Caretakers are expected not to make big new policy, but in practice Israel's caretakers have fought wars and run budgets for months. Israel's most stable institution may be the temporary government.
+Tone: strong
+Visual: A sign reading temporary on a construction fence
+Visual: A building with scaffolding that has clearly been there for years
+Text: CARETAKER GOVERNMENT · PM NETANYAHU
+Cite: Israel Democracy Institute
+
+Before we get to who could break this deadlock, there's something the campaign mostly avoided talking about. It's the subject at the centre of the last three years, and it's not a seat count.
+Tone: dramatic
+Visual: A view across the Gaza border at dusk with smoke on the horizon
+Visual: An empty road leading toward a checkpoint

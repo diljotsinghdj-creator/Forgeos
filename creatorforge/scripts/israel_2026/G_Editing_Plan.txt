@@ -1,0 +1,52 @@
+G - EDITING PLAN
+Israel 2026: The Election That Settled Nothing
+
+STRUCTURE (times at CreatorForge pace, voice speed 1.0; at 0.9 / ElevenLabs add ~10%)
+  0:00  Cold open - 120 seats, no government            render R1
+  1:43  Part 1 - What actually happened                render R1
+  6:52  Part 2 - The survivor                           render R2
+ 12:33  Part 3 - The machine                            render R2
+ 15:38  Part 4 - Gaza, West Bank, people not on ballot  render R3
+ 24:58  Part 5 - The kingmakers                         render R4
+ 32:24  Part 6 - Money, missiles, Washington            render R5
+ 38:24  Part 7 - Five ways this ends                    render R6
+ 42:01  Part 8 - What it settled                       render R6
+ ~43.5 min of narration at 1.0; ~48 min at 0.9 or a documentary ElevenLabs pace. Add 5-8 s end screen.
+
+WORKFLOW
+  1. Render R1-R6 on the pod (pod_israel_longform.sh does all six, 16:9, YouTube Documentary, Investigative desk).
+  2. In the app's storyboard review for each part: check every auto-matched real photo (right person? real photo,
+     not AI or a caricature? licence shown?). Replace anything doubtful with a generic picture.
+  3. Optional ElevenLabs: one MP3 per part; run voiceover_sync per part (the script does this if you pass the MP3s).
+  4. Join the six parts in order (ffmpeg concat, or your editor). The pod script writes a concat file and a joined MP4.
+  5. Music, colour and final mix in your editor (CapCut / Resolve / Premiere). CreatorForge exports CapCut projects.
+
+PACING
+  Satire chapters: new picture every ~2 s (fast cuts on). Punchline lines: hold the last picture 0.5 s past the line.
+  Part 4: set fast cuts OFF for R3 if you render it separately (3-4 s per picture). The pod script does this.
+  Chapter cards: 3 s, title only, a soft whoosh, no music hit.
+  Recaps (the halftime and Part 5 openers): reuse the same calculator and pie graphic for recognition.
+
+SOUND
+  Music bed at -24 LUFS under VO (VO -14 LUFS integrated, loudnorm two-pass already in voiceover_sync).
+  Part 4: drop the music to a single sustained pad or silence; no SFX stings; room tone only.
+  Light SFX in satire chapters only: page flip, calculator click, a stamp. Never a laugh track, never a rimshot.
+
+GRAPHICS CHECKS (do before export)
+  - Seat numbers on every Chart/Pie match F rows 3-4 (re-check certified results first).
+  - Every number on screen has a Cite: line under it in the script; the source shows small at the bottom.
+  - "ALLEGATION · NOT PROVEN" card stays on screen for the full Likud-claim line.
+  - ILLUSTRATION corner label on all stick-figure scenes and any generated image.
+  - Content advisory card at the top of Part 4 ("This chapter contains descriptions of war").
+
+CAPTIONS
+  English burnt-in captions ON (CreatorForge captions). Also upload the SRT so YouTube auto-translation works.
+  Check spelling of names in captions against E's pronunciation list.
+
+EXPORT
+  1920x1080, 30 fps, H.264 high, 16-20 Mbps, AAC 320 kbps. Keep the project and each part's job folder until 30 days
+  after upload, in case a correction is needed.
+
+CORRECTIONS POLICY
+  Corrections go in the pinned comment and the description with a timestamp. A material error (wrong number, wrong
+  attribution) gets an on-screen correction card via YouTube's editor (blur/trim) or a re-upload if needed.
