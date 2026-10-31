@@ -752,9 +752,19 @@ def render(doc: dict, out: Path, quality: str = "preview", workers: int = 1, cac
             s_["camera"] = json.loads(cj.read_text())
     fps = QUALITY[quality]["fps"]
     frames = sum(int(round(st[2] * fps)) for st in states)        # what each scene render writes
+    android = out.with_name(out.stem + "_android.mp4")
+    trans = [s_.get("transition") for s_ in doc["scenes"]]
+    join_key = _hash([f.name for f in files], trans, quality)
+    marker = out.with_suffix(".join.json")
+    if out.exists() and android.exists() and marker.exists() and \
+            json.loads(marker.read_text()).get("key") == join_key:
+        saved = json.loads(marker.read_text())          # nothing changed: the joined film and its checks stand
+        report.update({k: saved[k] for k in ("video", "provenance", "provenance_issues", "delivery", "subtitles")})
+        report["join_cached"] = True
+        report["files"] = {"master": str(out), "android": str(android)}
+        return report
     lst = cache / f"{out.stem}_list.txt"
     lst.write_text("".join(f"file '{f.resolve()}'\n" for f in files))
-    trans = [s_.get("transition") for s_ in doc["scenes"]]
     if any(trans[1:]):                                # dissolves / fades between chosen scenes
         exact = [_count_frames(f) / fps for f in files]   # real lengths: nominal ones drift and xfade then
         frames = _join_with_transitions(files, exact, trans, out, quality, fps)  # silently drops the rest
@@ -763,7 +773,6 @@ def render(doc: dict, out: Path, quality: str = "preview", workers: int = 1, cac
                         "libx264", "-preset", "medium", "-crf", "16" if quality == "final" else "22", "-pix_fmt",
                         "yuv420p", "-c:a", "aac", "-b:a", "192k", "-t", f"{(frames - 0.5) / fps:.6f}", "-movflags",
                         "+faststart", str(out)], check=True)
-    android = out.with_name(out.stem + "_android.mp4")
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(out), "-c:v", "libx264", "-profile:v", "main", "-level",
                     "4.0", "-crf", "21", "-pix_fmt", "yuv420p", "-c:a", "aac", "-ar", "48000", "-movflags", "+faststart",
                     str(android)], check=True)
@@ -783,6 +792,9 @@ def render(doc: dict, out: Path, quality: str = "preview", workers: int = 1, cac
         t_off += st[2]
     report["subtitles"] = {"count": len(subs), "issues": [x for x in subs if x["issue"]],
                            "max_cps": max([x["cps"] for x in subs] or [0])}
+    marker.write_text(json.dumps({"key": join_key, **{k: report[k] for k in ("video", "provenance",
+                                                                               "provenance_issues", "delivery",
+                                                                               "subtitles")}}, default=str))
     report["files"] = {"master": str(out), "android": str(android)}
     return report
 
