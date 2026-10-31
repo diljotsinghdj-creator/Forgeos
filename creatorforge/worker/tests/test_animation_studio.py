@@ -502,6 +502,7 @@ def test_styled_production_with_creatures_renders_in_portrait(tmp_path):
     assert rep["video"]["missing"] == 0 and rep["delivery"]["sync_ok"]
     w, h = rep["delivery"]["size"]
     assert h > w and abs(w / h - 9 / 16) < 0.01 and rep["delivery"]["fps"] == 30.0
+    assert rep["delivery"]["aspect_ok"]                   # a portrait delivery is the right shape, not a failure
 
 
 def test_director_chooses_style_and_world_and_the_user_can_override():

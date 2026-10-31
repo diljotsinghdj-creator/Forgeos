@@ -256,8 +256,8 @@ def check_delivery(path: Path, width: int, height: int, fps: int) -> dict:
     v = next((s for s in st if s.get("codec_type") == "video"), {})
     a = next((s for s in st if s.get("codec_type") == "audio"), {})
     num, den = (v.get("r_frame_rate", "0/1").split("/") + ["1"])[:2]
-    out = {"size": [v.get("width"), v.get("height")], "aspect_ok": v.get("width") == width and v.get("height") == height
-           and abs(width / height - 16 / 9) < 0.01, "fps": round(int(num) / max(1, int(den)), 3),
+    out = {"size": [v.get("width"), v.get("height")], "aspect_ok": v.get("width") == width and v.get("height") == height,
+           "fps": round(int(num) / max(1, int(den)), 3),          # the requested shape: 16:9, 9:16, 1:1 or 4K
            "pix_fmt": v.get("pix_fmt"), "codec": v.get("codec_name"), "has_audio": bool(a)}
     out["fps_ok"] = abs(out["fps"] - fps) < 0.01
     if a:
