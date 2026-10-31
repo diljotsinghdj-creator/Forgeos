@@ -6,99 +6,115 @@ Source: The Week, Ramlila Maidan rally: INDIA bloc to go ahead with Nov 1 protes
 
 (0:00-0:05) कल दिल्ली के रामलीला मैदान में विपक्ष का सबसे बड़ा शक्ति प्रदर्शन।
 Tone: dramatic
-Visual: The wide open Ramlila Maidan ground in Delhi seen from a distance, empty in morning light
+Visual: Wide shot of the open Ramlila Maidan ground in Old Delhi with its boundary wall and trees, morning light
+Visual: A large rally stage under construction with steel scaffolding and loudspeaker towers, workers seen from behind
 Stock: Ramlila Maidan Delhi
 Text: 1 NOV · सुबह 10 – शाम 5
 Cite: The Week, 25 Oct 2026
 
 (0:05-0:07) दावा: दस लाख लोग।
 Tone: dramatic
-Visual: Rows of empty plastic chairs facing a large stage under a white tent
+Visual: A huge Indian political rally crowd seen from behind and above, a sea of heads and waving flags
+Stock: India political rally crowd
 Big: 10 लाख?
 
 (0:07-0:11) पर पुलिस तैयारी कर रही है करीब पचास हज़ार की।
 Tone: question
-Visual: Metal police barricades stacked beside a Delhi road at dawn
-Chart: 10 लाख vs 50,000 | आयोजकों का दावा, पुलिस का अनुमान
+Visual: Delhi Police personnel in khaki lined up beside steel barricades on a central Delhi road, seen from behind
+Visual: Rows of steel police barricades stacked on a pavement near Delhi Gate
+Stock: Delhi Police barricades
+Text: पुलिस का अनुमान: ~50,000
 Cite: The Week, 31 Oct 2026
 
 (0:11-0:12) और मैदान में जगह?
 Tone: question
-Visual: An aerial view of a large dusty city ground surrounded by roads and trees
+Visual: Aerial view of Ramlila Maidan, the dusty open ground ringed by roads and old Delhi buildings
 
 (0:12-0:14) लगभग उतनी ही।
 Tone: strong
-Visual: A crowd-control rope line strung across an empty field
-Text: मैदान की क्षमता ~50,000
+Visual: Long rows of empty plastic chairs filling an open ground in front of a rally stage
+Text: क्षमता ~50,000
 Cite: Business Today, 13 Oct 2026
 
 (0:14-0:20) मुद्दा: वोटर लिस्ट की SIR जाँच, जिसमें तेरह करोड़ से ज़्यादा नाम कटे।
 Tone: strong
-Visual: A thick Indian voter register open on a desk, names unreadable
-Visual: A red pen striking line after line through a printed voter list, text unreadable
+Visual: A booth-level officer with a clipboard knocking on a blue door in a narrow Indian lane, seen from behind
+Visual: A printed Indian electoral roll page with names struck through in red pen, names unreadable
+Stock: Indian voter list verification
 Text: SIR · 13 करोड़+ नाम कटे
 Cite: Wikipedia (SIR); Deccan Herald, 30 Sep 2026
 
 (0:20-0:22) विपक्ष का आरोप: वोट चोरी।
 Tone: strong
-Visual: Hands holding blank white placards at a protest, faces out of frame
+Visual: Opposition protesters holding blank placards and tricolour flags on a Delhi street, seen from behind
 Text: आरोप · अदालत में तय नहीं
 
 (0:22-0:27) माँग: मुख्य चुनाव आयुक्त ज्ञानेश कुमार इस्तीफ़ा दें।
 Tone: strong
-Visual: The Election Commission of India building in New Delhi at dusk, windows lit
+Visual: Nirvachan Sadan, the Election Commission of India building on Ashoka Road, New Delhi, at dusk
+Visual: Police guarding the gate of the Election Commission building in New Delhi, seen from across the road
+Stock: Election Commission of India building
 Text: माँग: CEC का इस्तीफ़ा
 Cite: The Week, 31 Oct 2026
 
 (0:27-0:31) आयोग का कहना: मृत, डुप्लीकेट, शिफ़्ट हुए नाम हटे।
 Tone: calm
-Visual: A clerk's hands sorting voter forms into stacks, face out of frame
+Visual: Election officials sorting stacks of voter forms at a long table in an Indian government office, faces out of frame
+Visual: A padlocked door of an empty rented room in an Indian apartment block
 Text: आयोग: मृत · डुप्लीकेट · शिफ़्ट
 Cite: Wikipedia (SIR)
 
 (0:31-0:34) और बीजेपी जवाबी पदयात्राएँ निकाल रही है।
 Tone: calm
-Visual: Saffron flags on bamboo poles lined along an empty street, seen from behind
+Visual: A long column of marchers carrying saffron flags along an Indian city road, seen from behind
 Text: बीजेपी: जवाबी पदयात्राएँ
 Cite: Gujarat Samachar
 
 (0:34-0:41) पुलिस की शर्तें: शाम पाँच बजे तक ख़त्म, रात में रुकना नहीं, मैदान से बाहर मार्च नहीं।
 Tone: urgent
-Visual: A wall clock showing five o'clock in a dim government office
-Visual: A closed iron gate at the edge of a large ground, padlocked
-Steps: 5 बजे तक ख़त्म → रात में रुकना मना → बाहर मार्च मना | पुलिस की शर्तें
+Visual: The arched entrance gate of Ramlila Maidan with police standing guard, seen from the road
+Visual: An empty Delhi road outside a rally ground at dusk, closed with police barricades
+Visual: A police officer checking a wristwatch beside a barricade, face out of frame
+Text: 5 बजे तक · रात में रुकना मना · बाहर मार्च मना
 Cite: ThePrint; Delhi Police NOC as reported
 
 (0:41-0:44) साढ़े तीन हज़ार जवान, ढाई सौ कैमरे।
 Tone: urgent
-Visual: A CCTV camera mounted on a pole above a busy Delhi intersection
+Visual: CCTV cameras mounted on a pole above a busy central Delhi intersection
+Visual: A Delhi Police control room with rows of screens, operators seen from behind
 Text: 3,500 जवान · 250 CCTV
 Cite: The Week, 31 Oct 2026
 
 (0:44-0:48) आईटीओ से अजमेरी गेट तक ट्रैफ़िक बदला रहेगा।
 Tone: urgent
-Visual: Slow traffic at a Delhi roundabout with a traffic policeman's raised hand, from behind
-Map: New Delhi | ITO · Delhi Gate · Ajmeri Gate · Minto Road
+Visual: Heavy traffic at the ITO intersection in Delhi with a traffic policeman directing cars
+Visual: The Ajmeri Gate side of New Delhi Railway Station with buses and auto-rickshaws in traffic
+Stock: Delhi traffic ITO
+Text: ITO → अजमेरी गेट · 10–5 बजे
 Cite: Delhi Traffic Police via PTI
 
 (0:48-0:52) पिछले महीने इन्हीं प्रदर्शनों में हज़ारों हिरासत में लिए गए।
 Tone: strong
-Visual: A row of empty police buses lined up along a wide Delhi avenue
+Visual: Protesters being led onto a white Delhi Police bus, seen from behind
+Visual: A line of Delhi Police buses parked along a wide avenue near India Gate
 Text: 10 OCT · ~2,000 हिरासत · गिनती आधिकारिक नहीं
 Cite: Al Jazeera, 10 Oct 2026
 
 (0:52-0:57) सुप्रीम कोर्ट ने कहा: शांति से जुटने वालों की ग़ैरक़ानूनी हिरासत नहीं।
 Tone: strong
-Visual: The Supreme Court of India building in New Delhi in morning light
-Quote: No illegal detention of those gathering peacefully | Supreme Court, as reported, 11 Oct 2026
+Visual: The Supreme Court of India building in New Delhi with its dome and lawns, morning light
+Visual: The statue of Lady Justice and a gavel on a wooden bench in an Indian courtroom
+Stock: Supreme Court of India
+Text: SC: शांतिपूर्ण सभा पर ग़ैरक़ानूनी हिरासत नहीं
 Cite: Business Today, 11 Oct 2026
 
 (0:57-1:01) तो कल कितने आएँगे, दस लाख या पचास हज़ार?
 Tone: question
-Visual: The wide open Ramlila Maidan ground in Delhi seen from a distance, empty in morning light
-Chart: 10 लाख vs 50,000 | कल का सवाल
+Visual: Ramlila Maidan at sunrise with flags tied along the stage and the ground still empty
+Visual: People walking toward a rally ground in Delhi carrying flags, seen from behind
+Text: 10 लाख या 50,000?
 
 (1:01-1:02) आप क्या सोचते हैं?
 Tone: question
-Visual: A single microphone on an empty stage at sunset
+Visual: A lone microphone on a rally stage at sunset with flags behind it
 Text: कमेंट में बताइए
