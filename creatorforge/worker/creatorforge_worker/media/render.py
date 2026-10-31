@@ -13,6 +13,7 @@ from . import ff
 
 FPS = 30
 TRANSITION_S = 0.5  # longest transition; also the tail after the last scene
+CHUNK_SHOTS = 60   # longer films are assembled this many shots at a time (memory and time stay bounded)
 # Editorial transition vocabulary used by templates and Auto Edit -> (FFmpeg xfade, seconds).
 TRANSITIONS = {
     "cut": ("fade", 0.08), "fade": ("fade", 0.5), "dissolve": ("dissolve", 0.5), "dip": ("fadeblack", 0.5),
@@ -480,6 +481,39 @@ def render_video(clips: list[Clip], audio: Path, captions: Path | None, width: i
         overlap = trans[i + 1][1] if i + 1 < len(clips) else tail
         jobs.append((c, max(2, round((c.duration + overlap) * FPS))))
     segments = _segments(jobs, width, height, work, cancel)
+    total = sum(c.duration for c in clips) + tail
+    if len(clips) <= CHUNK_SHOTS:
+        _compose(clips, trans, segments, audio, captions, width, height, out, work, cancel, logo, grade,
+                 t0=0.0, length=total, fade_out=True)
+        return total
+    # Long films (a 45-60 min documentary has 400+ shots): one graph holding every shot needs over 14 GB of memory
+    # and runs past the time limit. Assemble ~CHUNK_SHOTS shots at a time instead (video only, each with its own
+    # transitions, grade, logo and captions at the right film time), join the pieces without re-encoding, and add
+    # the full soundtrack once. The seam between two pieces is a straight cut.
+    parts, t0 = [], 0.0
+    groups = [list(range(i, min(i + CHUNK_SHOTS, len(clips)))) for i in range(0, len(clips), CHUNK_SHOTS)]
+    for g, idx in enumerate(groups):
+        last_group = g == len(groups) - 1
+        length = sum(clips[i].duration for i in idx) + (tail if last_group else 0.0)
+        part = work / f"part_{g:03d}.mp4"
+        sub_trans = [trans[i] for i in idx]
+        _compose([clips[i] for i in idx], sub_trans, [segments[i] for i in idx], None, captions, width, height,
+                 part, work, cancel, logo, grade, t0=t0, length=length, fade_out=last_group)
+        parts.append(part)
+        t0 += length
+    listing = work / "parts.txt"
+    listing.write_text("".join(f"file '{p.resolve()}'\n" for p in parts))
+    ff.run(["-f", "concat", "-safe", "0", "-i", str(listing.resolve()), "-i", str(Path(audio).resolve()),
+            "-map", "0:v", "-map", "1:a", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-ar", str(SAMPLE_RATE),
+            "-movflags", "+faststart", "-t", f"{total:.3f}", str(Path(out).resolve())], cancel, cwd=work)
+    return total
+
+
+def _compose(clips: list[Clip], trans: list, segments: list[Path], audio: Path | None, captions: Path | None,
+             width: int, height: int, out: Path, work: Path, cancel: threading.Event,
+             logo: tuple[Path, str, float] | None, grade: str, t0: float, length: float, fade_out: bool) -> None:
+    """One FFmpeg graph: the shots joined with their transitions, the grade, logo, captions and (when audio is
+    given) the soundtrack. t0 is where these shots sit in the whole film, so captions line up; length is the cut."""
     args: list[str] = []
     graph: list[str] = []
     for i, seg in enumerate(segments):
@@ -494,8 +528,9 @@ def render_video(clips: list[Clip], audio: Path, captions: Path | None, width: i
         name, dur = trans[i]
         graph.append(f"[{last}][v{i}]xfade=transition={name}:duration={dur}:offset={offset:.3f}[x{i}]")
         last = f"x{i}"
-    total = sum(c.duration for c in clips) + tail
+    total = length
     audio_idx = len(clips)
+    nxt = len(clips) + (1 if audio is not None else 0)   # index of the next extra input
     if grade:
         # One consistent "film" look over every shot: a touch of contrast and colour, soft vignette, fine grain.
         # "bw": the writer asked for a black-and-white look - AI shots and stock footage are matched to it.
@@ -517,7 +552,7 @@ def render_video(clips: list[Clip], audio: Path, captions: Path | None, width: i
     if tears:
         # one torn-paper strip rides the wipe's seam each time
         tear_input = _tear_strip(width, height, work)
-        idx = audio_idx + 1 + (1 if logo is not None else 0)
+        idx = nxt + (1 if logo is not None else 0)
         sw = int(width * 0.07)
         graph.append(f"[{idx}:v]format=rgba,split={len(tears)}" + "".join(f"[tr{k}]" for k in range(len(tears))))
         for k, (o, d) in enumerate(tears):
@@ -530,18 +565,21 @@ def render_video(clips: list[Clip], audio: Path, captions: Path | None, width: i
         m = int(min(width, height) * 0.035)
         x, y = (v.format(m=m) for v in LOGO_XY.get(pos, LOGO_XY["top-right"]))
         logo_png = _logo_still(path, int(width * 0.14) // 2 * 2, opacity, work)
-        graph.append(f"[{audio_idx + 1}:v]format=rgba[logo]")
+        graph.append(f"[{nxt}:v]format=rgba[logo]")
         # one still frame, held for the whole video (eof_action=repeat)
         graph.append(f"[{last}][logo]overlay=x={x}:y={y}:eof_action=repeat,format=yuv420p[vlogo]")
         last = "vlogo"
     if captions is not None:
-        graph.append(f"[{last}]{ff.ass_filter(captions.name)}[vout]")
+        # captions are timed for the whole film: a later piece of a long film shifts its clock to film time first
+        shift = (f"setpts=PTS+{t0:.3f}/TB,", ",setpts=PTS-STARTPTS") if t0 else ("", "")
+        graph.append(f"[{last}]{shift[0]}{ff.ass_filter(captions.name)}{shift[1]}[vout]")
         last = "vout"
-    if total > 3:
+    if fade_out and total > 3:
         # the ending fades to black over the last second instead of stopping dead
         graph.append(f"[{last}]fade=t=out:st={total - 1.0:.3f}:d=1[vend]")
         last = "vend"
-    args += ["-i", str(audio)]
+    if audio is not None:
+        args += ["-i", str(audio)]
     if logo is not None:
         args += ["-i", str(logo_png)]
     if tear_input is not None:
@@ -550,9 +588,10 @@ def render_video(clips: list[Clip], audio: Path, captions: Path | None, width: i
     # was over a thousand threads on 4 cores, and tens of thousands on a GPU server that shows 64+ cores, which
     # ran into the thread limit ("Failed to configure output pad ... Resource temporarily unavailable").
     args += ["-filter_complex_threads", "2",
-             "-filter_complex", ";".join(graph), "-map", f"[{last}]", "-map", f"{audio_idx}:a",
-             "-c:v", "libx264", "-preset", "veryfast", "-crf", "20", "-pix_fmt", "yuv420p", "-r", str(FPS),
-             "-c:a", "aac", "-b:a", "192k", "-ar", str(SAMPLE_RATE), "-movflags", "+faststart",
-             "-t", f"{total:.3f}", str(out)]
+             "-filter_complex", ";".join(graph), "-map", f"[{last}]"]
+    if audio is not None:
+        args += ["-map", f"{audio_idx}:a"]
+    args += ["-c:v", "libx264", "-preset", "veryfast", "-crf", "20", "-pix_fmt", "yuv420p", "-r", str(FPS)]
+    args += ["-c:a", "aac", "-b:a", "192k", "-ar", str(SAMPLE_RATE)] if audio is not None else ["-an"]
+    args += ["-movflags", "+faststart", "-t", f"{total:.3f}", str(out)]
     ff.run(args, cancel, cwd=work)
-    return total
