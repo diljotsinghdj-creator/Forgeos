@@ -21,7 +21,11 @@ Everything below was run, rendered and inspected; numbers come from the tools th
 | Rendering and export | functional | Scene cache, incremental re-render, failure isolation, atomic scene files, resumable 3D, exact transitions, Android copy. |
 
 ## 2. The three films
-FILMS_TABLE
+| Film | Length | Frames (video) | A/V | Mode | Inspected |
+|---|---|---|---|---|---|
+| A - Referee kaun chunta hai? | 191.5 s | 4519/4519 | in sync (-0.021 s) | 2D/2.5D, Hinglish narration, real media | contact sheets of every scene |
+| B - Bus Stop | 183.5 s | 4407/4407 | in sync | 2D/2.5D story, weather and time of day | contact sheets of every scene |
+| C - The Ball on the Wall | 88.75 s | 2130/2130 | 88.75 s video, 88.75 s audio | Blender 3D, EEVEE, 960x408 | contact sheet plus frames at every text moment |
 
 ### Film A - "Referee kaun chunta hai?" (Hinglish political documentary)
 **191.5 s**, 16 scenes (15 animated plus real footage).
@@ -75,7 +79,30 @@ FILMS_TABLE
   - The dog is a rigid generated asset.
 
 ### Film C - "The Ball on the Wall" (90-second 3D)
-FILM_C_NOTES
+**88.75 s**, 2130 frames at 24 fps; the shot list covers wide, medium, over-the-wall and push-in shots, with hard cuts.
+- **Story:**
+  - **Setup:** Kit sits on the bench to read; Ash and Ivy play catch.
+  - **Rising:** a throw lands on top of the garden wall. Ivy jumps twice, can't reach, and pushes a crate over.
+  - **Climax:** Ash runs, jumps, hangs, pulls himself up and gets the ball ("Got it!"), just as Ivy's crate arrives
+    ("...").
+  - **Comic turn:** Mo walks in reading his phone, straight into the lamp post ("BONK!", Kit: "Ha!").
+  - **Resolution:** the ball goes round the group, and they gather at the bench as the lamps come on.
+- **Engine:** the stick engine choreographs; every 3D character is posed from it frame by frame. The ball's rest
+  point on the wall is measured from the physics simulation, then the pick-up is staged there.
+  - Sound comes from the same recording: steps, the ball's bounces and the bonk. The comic text is added as
+    timed captions, because the 3D renderer cannot draw text.
+- **Review fixes:**
+  - the ball rolled off the wall;
+  - people walked through the wall;
+  - a jump down landed on the wall top;
+  - the camera pulled back to tiny figures;
+  - two lines of text drawn over each other at 50 s (now stacked);
+  - the text was cut off at the colon ("Ivy\\"; it is now read from a file, with no escaping).
+- **Still weak:**
+  - Stick rigs with simple faces.
+  - The touchdown skid on Ash's hop down.
+  - Software rendering takes about 5 s a frame, so a re-render costs about 3 hours.
+  - The dusk lamps are dim at 960x408.
 
 ## 3. Adversarial review: what a demanding reviewer found, and what happened
 Each item was found by watching the rendered film (dense contact sheets), confirmed, fixed in the engine or the
@@ -99,7 +126,19 @@ document, and re-rendered; most engine fixes have a regression test.
 | Unchanged film "re-render" took 23 s | perf | re-joined and re-encoded everything | the join is cached |
 
 ## 4. Performance (measured; marked where the machine was busy)
-PERF_TABLE
+Measured with `perf.py` on "The Last Samosa" (6 scenes, 72.2 s), while 3D renders shared the CPU, so these are
+upper bounds.
+
+| Measure | Result |
+|---|---|
+| Staging and QC of the whole film | 0.78 s |
+| Cold preview render, 1 / 2 workers | 59.3 s / 55.7 s (0.77x real time) |
+| Unchanged re-render | 23.0 s before the join cache; now a cache hit |
+| Re-render after editing one scene | 26.3 s (only scene c2 re-rendered) |
+| Final 1080p30 | 358.5 s for the film, 25.9 s per film second |
+| Peak memory | 390 MB main + 734 MB scene renderers |
+| Delivery check | 1920x1080, 30 fps, H.264, yuv420p, A/V -0.009 s |
+| 3D (Film C) | about 5 s per 960x408 frame, EEVEE software, 4 TAA samples |
 
 ## 5. Commercial readiness - an honest assessment
 **Verdict: not yet ready to publish unattended. Ready for supervised production of short explainers.**
@@ -127,8 +166,8 @@ TESTS_LINE
 - **Camera:** framing edges in multi-character and crowd scenes even after three director passes.
 - **Environments:** paper tones, scenery assets, lighting and weather. No painted backgrounds, water, interiors
   with walls, or depth occlusion (a cat "hides" beside a chair, not behind it).
-- **3D:** stick rigs with simple faces; text symbols (BONK, "Got it!") are not drawn in 3D; no audio track on
-  Film C; software rendering only.
+- **3D:** stick rigs with simple faces; text symbols (BONK, "Got it!") are not drawn in 3D; Film C's sound and text are
+  added after rendering, from the stick recording; software rendering only.
 - **Editor:** no drag posing, no curve editor, no Android screen.
 - **Rights:** the user-supplied photos and footage have unverified rights.
 

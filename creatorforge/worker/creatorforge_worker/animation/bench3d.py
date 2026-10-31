@@ -245,13 +245,17 @@ def film_c_finish(video, out, fps: int = 24):
     wav, total = film_c_sound(out.with_suffix(".wav"), fps)
     actors, *_ = film_c_checked(fps)
     font = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
-    texts = []
+    texts, rows = [], []                                    # rows: (t0, t1, row) already placed
     for a in actors:
         for t0, t1, sym in a.symbols:
+            row = min(r for r in range(len(rows) + 1)
+                      if not any(r == q and s0 < t1 and t0 < s1 for s0, s1, q in rows))
+            rows.append((t0, t1, row))
             label = f"{a.look.name}: {sym}" if sym not in ("BONK",) else "BONK!"
-            safe = label.replace("'", "’").replace(":", "\\\\:").replace("!", "\\\\!")
-            texts.append(f"drawtext=fontfile={font}:text='{safe}':fontsize=h/14:fontcolor=white:borderw=4:"
-                         f"bordercolor=black@0.85:x=(w-text_w)/2:y=h*0.08:enable='between(t,{t0:.2f},{t1:.2f})'")
+            tf = out.with_name(f"{out.stem}_text{len(texts)}.txt")
+            tf.write_text(label)                       # a text file needs no filter escaping
+            texts.append(f"drawtext=fontfile={font}:textfile='{tf}':fontsize=h/14:fontcolor=white:borderw=4:"
+                         f"bordercolor=black@0.85:x=(w-text_w)/2:y=h*(0.08+0.09*{row}):enable='between(t,{t0:.2f},{t1:.2f})'")
     vf = ",".join(texts) or "null"
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(video), "-i", str(wav), "-filter_complex",
                     f"[0:v]{vf},format=yuv420p[v]", "-map", "[v]", "-map", "1:a", "-c:v", "libx264", "-crf", "16",
