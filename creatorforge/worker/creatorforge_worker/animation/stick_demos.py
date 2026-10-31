@@ -39,9 +39,10 @@ def _caption(label: str, notes: list[tuple] = ()):
     def draw(d, W, H, t):
         f = ImageFont.truetype(BOLD, int(H * 0.026))
         a = int(255 * min(1.0, t / 0.5))
-        d.rounded_rectangle([W * 0.02, H * 0.035, W * 0.02 + d.textlength(label, font=f) + H * 0.04, H * 0.035 + H * 0.055],
-                            radius=H * 0.01, fill=(20, 20, 24, int(a * 0.75)))
-        d.text((W * 0.02 + H * 0.02, H * 0.046), label, font=f, fill=(255, 255, 255, a))
+        if label:                                     # no title: no empty box in the corner
+            d.rounded_rectangle([W * 0.02, H * 0.035, W * 0.02 + d.textlength(label, font=f) + H * 0.04,
+                                 H * 0.035 + H * 0.055], radius=H * 0.01, fill=(20, 20, 24, int(a * 0.75)))
+            d.text((W * 0.02 + H * 0.02, H * 0.046), label, font=f, fill=(255, 255, 255, a))
         for t0, t1, text in notes:
             if t0 <= t <= t1:
                 g = ImageFont.truetype(BOLD, int(H * 0.04))
