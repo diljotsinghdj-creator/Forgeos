@@ -153,8 +153,16 @@ class Storyboard:
         return json.dumps(asdict(self), indent=1, ensure_ascii=False)
 
 
+ABSTRACT = re.compile(r"(?:body|system|bloodstream|class|lesson|idea|time|life|world|way|day|week|year|night|fact|"
+                      r"problem|question|answer|reason|story|truth|news|plan|future|past|history|science|nature|"
+                      r"defence|defense|memory|mind|heart|feeling|chance|end|beginning|rest|kind|sort|type|part|"
+                      r"place|side|edge|top|bottom|middle|front|back|inside|outside|air|sky|ground|space|"
+                      r"economy|society|government|law|rule|rules|process|energy|heat|light|sound|water)")
+
+
 def _sentences(script: str) -> list[str]:
-    parts = re.split(r"(?<=[.!?])\s+(?=[A-Z\"“])", script.strip())
+    parts = re.split(r"(?<!\bDr\.)(?<!\bMr\.)(?<!\bMs\.)(?<!\bMrs\.)(?<!\bProf\.)(?<!\bSt\.)(?<=[.!?])\s+(?=[A-Z\"“])",
+                     script.strip())                  # "Dr. Lena" does not end a sentence
     return [p.strip() for p in parts if p.strip()]
 
 
@@ -167,8 +175,21 @@ def _domain(text: str) -> str:
     return best if scores[best] else "psychology"
 
 
-def _names(sentence: str, known: list[str]) -> list[str]:
+COMMON_NOUNS = re.compile(r"(?:Antibod(?:y|ies)|Cells?|Virus(?:es)?|Bacteri(?:a|um)|Germs?|Atoms?|Molecules?|Electrons?|"
+                          r"Protons?|Neurons?|Planets?|Stars?|Plants?|Leaves|Roots?|Seeds?|Animals?|People|Wolves|"
+                          r"Birds?|Fish|Trees?|Waves?|Clouds?|Rain|Scientists?|Doctors?|Students?|Children|Kids|"
+                          r"Soldiers?|Villagers?|Farmers?|Workers?|Prices?|Markets?|Companies|Banks?|Water|Energy|"
+                          r"Light|Heat|Sound|Blood|Oxygen|Sugar|Food|Money|Time)")
+
+
+def _names(sentence: str, known: list[str], script: str = "") -> list[str]:
     words = [m.group(0) for m in re.finditer(r"\b[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*\b", sentence)]
+    first = re.match(r"\s*[\"“]?([A-Z][a-z]+)", sentence)
+    if first:                                          # a capital only because it starts the sentence: a common
+        w0 = first.group(1)                            # noun ("Antibodies stick...") or a word written in lower
+        if COMMON_NOUNS.fullmatch(w0) or re.search(rf"(?<![.!?]\s)\b{w0.lower()}\b", script):   # case elsewhere
+            words = [w for w in words if w != w0 and not w.startswith(w0 + " ")]
+    words = [w for w in words if not re.fullmatch(r"(?:Dr|Mr|Mrs|Ms|Prof|St|Sir)", w)]          # a title alone
     words = [w for w in words if not re.fullmatch(r"(In|On|At|The|A|An|He|She|They|It|When|Some|With|Without|Both|"
                                                   r"Then|After|Before|But|And|This|That|Everyone|Thousands)\s+.*", w)]
     skip = {"In", "On", "At", "The", "A", "An", "He", "She", "They", "It", "His", "Her", "When", "Some", "With",
@@ -190,7 +211,7 @@ def plan(script: str, title: str = "") -> Storyboard:
     beats = []
     clock = 0.0
     for i, s in enumerate(sents):
-        names = _names(s, list(cast))
+        names = _names(s, list(cast), script)
         pos = {n: s.find(n) for n in names}
         roles = []
         for m in re.finditer(rf"\b(?:a|an|the|her|his|their)\s+{ADJ}({ROLE_NOUNS})(?:'s)?\b", s, re.I):
@@ -263,17 +284,19 @@ def plan(script: str, title: str = "") -> Storyboard:
         taken = {c.label.split()[-1].lower() for c in cast.values() if c.role == "animal"} | \
             {c.role for c in cast.values()} | {n.lower() for n in cast}
         stop = r"(?:a|an|the|his|her|their|its|and|or|but|with|to|of|at|in|on|into|onto|past|next|from|by|for|" \
-               r"is|are|was|were|then|him|them|it)"
+               r"is|are|was|were|then|him|them|it|about|so|that|which|who|because|while|as|after|before|through|" \
+               r"around|over|under|up|down|out|off|until|than|cannot|can|will|would|could|should|may|might|" \
+               r"must|does|do|did|has|have|had|not|very|too|also|again|now|when|where|how|why)"
         verbs_rx = "|".join(rx for rx, _ in VERBS)
         for m in re.finditer(rf"\b(?:a|an|the|his|her|their|its)\s+((?:(?!{stop}\b)[a-z']+\s*){{1,3}})", s):
             words_ = m.group(1).split()
             while len(words_) > 1 and re.match(rf"(?:{verbs_rx})$", words_[-1], re.I):
                 words_.pop()                              # "the pelican lands" - stop before the verb
-            head = words_[-1].lower().rstrip("'s")
+            head = re.sub(r"'s$", "", words_[-1].lower())
             phrase = " ".join(words_)
             if head in taken or re.fullmatch(rf"(?:{ROLE_NOUNS}|{ANIMALS})", head) or re.match(rf"(?:{verbs_rx})$", head, re.I):
                 continue
-            if re.fullmatch(rf"(?:{PLACES})", head):
+            if re.fullmatch(rf"(?:{PLACES})", head) or ABSTRACT.fullmatch(head):
                 continue
             things.append(phrase)
         figures = re.findall(r"\b(\d[\d,.]*\s*(?:%|per cent|rupees|dollars|days|km|years)?)", s)
@@ -477,6 +500,8 @@ class _Stuff:
                    t_.name in ("table", "desk", "counter", "bench", "shelf")]
             if top:
                 x, y = top[0].pos(0.0)[0] + top[0].w * 0.25, top[0].h
+        if not a.get("grounded", True) and y == 0.0:   # cells, viruses, atoms float at mid height
+            y, z = 1.1, 1.0
         p = self._prop(a, x, y, z, head)
         p.data["kind"] = kind or ""
         self.things[head] = p

@@ -35,6 +35,7 @@ KNOWN_VERBS = {v for _, v in SB.VERBS}
 
 
 WORLD_WORDS = [
+    (r"\b(classroom|school|class|teaches|lesson)\b", "interior:school"),
     (r"\b(outer space|space station|spaceship|rocket|planet|the moon|on mars|orbit|galaxy|asteroid|astronaut)s?\b", "space"),
     (r"\b(underwater|coral reef|reef|seabed|ocean floor|under the sea|deep sea)\b", "underwater"),
     (r"\b(beach|shore|ocean|coast|harbou?r|waves)\b", "ocean"),
@@ -46,12 +47,88 @@ WORLD_WORDS = [
     (r"\b(pyramids?|ancient|temple|pharaoh|roman|empire|centurion)\b", "ancient"),
     (r"\b(cells?|bloodstream|blood vessel|virus(es)?|bacteria|immune system|neurons?|inside the body)\b", "microscopic"),
     (r"\b(his mind|her mind|their mind|the mind|dreams?|imagination|memories)\b", "mind"),
-    (r"\b(classroom|school)\b", "interior:school"),
     (r"\b(office|meeting room)\b", "interior:office"),
     (r"\b(kitchen|bedroom|living room|at home|the house)\b", "interior:home"),
     (r"\b(village|farm|fields?)\b", "village"),
     (r"\b(city|street|town|market|downtown)\b", "city"),
 ]
+
+
+SCIENCE = [(r"\bvirus(es)?\b", "virus"), (r"\b(white (blood )?cells?|blood cells?|cells?)\b", "cell"),
+           (r"\bantibod(y|ies)\b", "antibody"), (r"\b(bacteria|bacterium|germs?|microbes?)\b", "bacteria"),
+           (r"\batoms?\b", "atom"), (r"\bmolecules?\b", "molecule")]
+SCIENCE_RX = [(kind, rx) for rx, kind in SCIENCE]
+# what a science entity does when it is the subject of a line
+SCI_MOVES = [(r"\benter|arriv|invad|get(s)? in", "enter"), (r"\bpatrol|wander|drift|flow", "patrol"),
+             (r"\bcop(y|ies)|multipl|divid|replicat", "copy"), (r"\bfind|surround|attack|chase|hunt", "approach"),
+             (r"\bstick|bind|attach|grab|latch", "stick"), (r"\bspread|escap|flee|leav", "spread")]
+
+
+def _science_steps(low: str, here: dict, notes: list, i: int, props: list) -> list:
+    """Science entities named in a line become props that act out the line: a virus enters, copies itself, the
+    white cells surround it, antibodies stick to it. Illustrative, not to scale - and labelled so."""
+    named = []
+    for rx, kind in SCIENCE:
+        m = re.search(rx, low)
+        if m:
+            named.append((m.start(), kind))
+    named = [k for _, k in sorted(named)]
+    steps = []
+    for k, kind in enumerate(named):
+        if kind not in here:
+            x = 2.2 + 1.3 * len(here)
+            here[kind] = {"name": kind, "asset": kind, "x": x, "y": 1.1 if kind != "virus" else 0.9, "z": 1.0}
+            props.append(dict(here[kind]))
+            notes.append(f"line {i + 1}: {kind} drawn as an illustration (not to scale)")
+    if not named:
+        return steps
+    subj = named[0]
+    clause = low.split(",", 1)[1] if "," in low[:40] else low      # "Inside the body, white cells patrol..."
+    first = re.search(dict(SCIENCE_RX)[subj], clause)
+    if not first or len(clause[:first.start()].split()) > 3:
+        return steps                                  # the entity is not the subject: nothing moves by itself
+    moves = [mv for _, rx, mv in sorted((m.start(), rx, mv) for rx, mv in SCI_MOVES for m in [re.search(rx, clause)]
+                                        if m and not re.search(r"(cannot|can't|not|no longer|never)\s+$",
+                                                               clause[:m.start()]))]   # "so it cannot spread"
+    target = named[1] if len(named) > 1 else None
+    for k, move in enumerate(dict.fromkeys(moves)):
+        if k:
+            steps.append({"t": "+1.7", "do": "wait", "dur": 0.0, "wait": True})
+        steps += _sci_move(move, subj, target, here, props)
+    return steps
+
+
+def _sci_move(move, subj, target, here, props) -> list:
+    steps = []
+    x0 = here[subj]["x"]
+    if move == "enter":                               # it comes in from the side
+        for pr in props:
+            if pr["name"] == subj:
+                pr["x"] = x0 + 7.0
+        steps.append({"t": "+0.0", "do": "move", "what": subj, "to": x0, "y": here[subj]["y"], "dur": 1.6,
+                      "wait": False})
+    elif move == "patrol":
+        steps += [{"t": "+0.0", "do": "move", "what": subj, "to": x0 + 1.2, "dur": 2.0, "wait": False},
+                  {"t": "+2.0", "do": "move", "what": subj, "to": x0, "dur": 2.0, "wait": False}]
+    elif move == "copy":
+        for j in (2, 3):
+            nm = f"{subj}{j}"
+            if nm not in here:                        # the copies come out of it, wherever it starts
+                start = next((pr["x"] for pr in props if pr["name"] == subj), here[subj]["x"])
+                here[nm] = {**here[subj], "name": nm, "x": here[subj]["x"]}
+                props.append({**here[nm], "x": start})
+            steps.append({"t": "+0.0" if j == 2 else "+0.3", "do": "move", "what": nm,
+                          "to": here[subj]["x"] + (0.9 if j == 2 else -0.9), "y": here[subj]["y"] + (0.5 if j == 2 else -0.2),
+                          "dur": 1.2, "wait": False})
+            here[nm]["x"] = here[subj]["x"] + (0.9 if j == 2 else -0.9)
+    elif move in ("approach", "stick") and target and target in here:
+        tx = here[target]["x"] + (-0.75 if move == "approach" else -0.45)
+        steps.append({"t": "+0.0", "do": "move", "what": subj, "to": tx, "y": here[target]["y"], "dur": 1.8,
+                      "wait": False})
+        here[subj]["x"] = tx
+    elif move == "spread":
+        steps.append({"t": "+0.0", "do": "move", "what": subj, "to": x0 + 6.0, "dur": 2.0, "wait": False})
+    return steps
 
 
 def make(script: str, title: str = "", sources: list | None = None, voice: dict | None = None,
@@ -72,6 +149,7 @@ def make(script: str, title: str = "", sources: list | None = None, voice: dict 
     notes = {"domain": board.domain, "decisions": [f"style: {style_name} ({why})"], "limitations": [], "sources": [],
              "story": arc.to_dict()}
     place = world
+    sci_here: dict = {}
     people = [n for n, c in cast.items() if c.role != "animal" and c.role != "crowd"]
     colour = {n: BODY[k % len(BODY)] for k, n in enumerate(people)}
     present: list[str] = []
@@ -196,6 +274,15 @@ def make(script: str, title: str = "", sources: list | None = None, voice: dict 
         extra = arc.holds[i] + max(0.0, arc.pace[i] - 1.0) * (b.narration_window[1] - b.narration_window[0])
         if extra > 0.05:                               # the climax gets room, the ending breathes, a turn waits
             steps.append({"t": "+0.0", "do": "wait", "dur": round(extra, 2)})
+        if next((w_ for rx, w_ in WORLD_WORDS if re.search(rx, low)), "microscopic") != "microscopic" and \
+                not world:
+            sci_here.clear()                           # back out of the body: the cells stay there
+        before = {k: dict(v) for k, v in sci_here.items()}   # science entities: where they start this line
+        new_props: list = []
+        steps[-1:-1] = _science_steps(low, sci_here, notes["decisions"], i, new_props)
+        scene_props = list(before.values()) + new_props
+        sci_words = "|".join(rx for rx, _ in SCIENCE)
+        things = [th for th in b.things if not re.search(sci_words, th.lower())]
         layers = {k: v for k, v in sky.items()}
         if illustrated or world:                       # a painted world for the place the line names
             named = next((w_ for rx, w_ in WORLD_WORDS if re.search(rx, low)), None)
@@ -209,7 +296,7 @@ def make(script: str, title: str = "", sources: list | None = None, voice: dict 
             layers["world"] = place + (":night" if night and place in ("city", "forest") else "")
         scenes.append({"layers": layers, "id": f"s{i + 1:02d}", "name": b.narration[:38] + ("..." if len(b.narration) > 38 else ""),
                        "place": b.environment, "cut": cut, "timing": b.timing, "cast": cast_specs,
-                       "animals": list(animals_seen.values()), "things": b.things, "props": [],
+                       "animals": list(animals_seen.values()), "things": things, "props": scene_props,
                        "focus": [n for n in b.characters[:2]], "camera": {"style": arc.camera[i]},
                        "arc": arc.roles[i], "steps": steps})
         present = lineup

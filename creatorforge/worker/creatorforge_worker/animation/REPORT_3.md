@@ -156,7 +156,9 @@ upper bounds.
 | Installation | Python + ffmpeg + espeak-ng; Blender in a separate venv for 3D | Moderate; the 3D environment is the hard part. |
 
 ## 6. Regression tests
-TESTS_LINE
+Full worker suite: **243 passed** in 34 min (`python -m pytest tests`), run after the 3.0 work. The animation suites
+(`tests/test_animation_studio.py`, `tests/test_animation_api.py`) cover the engine fixes in section 3. The universal
+engine added later has its own tests in the same files (see UNIVERSAL.md).
 
 ## 7. Known limitations
 - **Voice:** espeak-ng only here. The pod's TTS (better voices) is not reachable from this sandbox.

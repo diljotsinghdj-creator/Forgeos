@@ -491,9 +491,10 @@ def _paper(w, h):
     return _VIG[key]
 
 
-def grade(img: Image.Image, style: Style, t: float, frame_no: int = 0) -> Image.Image:
+def grade(img: Image.Image, style: Style, t: float, frame_no: int = 0, protect=None) -> Image.Image:
     """The whole picture: ink edges, tone, colour, selective colour, posterising, grain, vignette, paper,
-    letterbox and panel border."""
+    letterbox and panel border. protect: an L mask of the characters (they have their own outlines; inking the
+    edges inside them would trace every eye and button)."""
     W, H = img.size
     a = np.asarray(img.convert("RGB"), dtype=np.float32)
     if style.ink_edges > 0:
@@ -501,6 +502,8 @@ def grade(img: Image.Image, style: Style, t: float, frame_no: int = 0) -> Image.
         e = np.asarray(lum.filter(ImageFilter.FIND_EDGES), dtype=np.float32)
         thr = 26 - 10 * style.stylization
         ink = np.clip((e - thr) / 30, 0, 1) * style.ink_edges
+        if protect is not None:
+            ink = ink * (1 - np.asarray(protect.filter(ImageFilter.MinFilter(5)), dtype=np.float32) / 255)
         a = a * (1 - ink[..., None] * 0.85)
     if style.contrast != 1.0:
         a = (a - 128) * np.float32(style.contrast) + 128

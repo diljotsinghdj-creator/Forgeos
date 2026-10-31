@@ -48,7 +48,9 @@ COLOURS = {"red": (204, 64, 58), "blue": (60, 110, 200), "green": (70, 150, 80),
 SIZES = {"house": (3.0, 9.0), "shop": (3.0, 7.0), "tower": (8.0, 60.0), "car": (1.2, 2.0), "bus": (2.6, 4.2),
          "bicycle": (0.8, 1.2), "tree": (2.5, 15.0), "bush": (0.4, 1.6), "dog": (0.3, 1.0), "cat": (0.2, 0.45),
          "cow": (1.2, 1.8), "horse": (1.3, 2.0), "bird": (0.08, 0.6), "boat": (0.3, 3.0), "lamp": (2.5, 6.0),
-         "chair": (0.7, 1.1), "table": (0.6, 0.9), "rock": (0.1, 2.0), "sign": (0.8, 3.0)}
+         "chair": (0.7, 1.1), "table": (0.6, 0.9), "rock": (0.1, 2.0), "sign": (0.8, 3.0),
+         "virus": (0.3, 3.0), "cell": (0.3, 3.0), "antibody": (0.2, 2.0), "bacteria": (0.3, 3.0), "atom": (0.3, 3.0),
+         "molecule": (0.2, 2.0)}
 SYNONYMS = {"home": "house", "hut": "house", "cottage": "house", "store": "shop", "stall": "shop", "office": "tower",
             "building": "tower", "skyscraper": "tower", "taxi": "car", "jeep": "car", "van": "car", "auto": "car",
             "lorry": "bus", "truck": "bus", "coach": "bus", "bike": "bicycle", "cycle": "bicycle", "puppy": "dog",
@@ -57,7 +59,9 @@ SYNONYMS = {"home": "house", "hut": "house", "cottage": "house", "store": "shop"
             "eagle": "bird", "duck": "bird", "hen": "bird", "chicken": "bird", "owl": "bird", "heron": "bird", "ship": "boat", "canoe": "boat",
             "streetlight": "lamp", "lamppost": "lamp", "lantern": "lamp", "stool": "chair", "desk": "table",
             "boulder": "rock", "stone": "rock", "shrub": "bush", "plant": "bush", "signpost": "sign",
-            "billboard": "sign", "palm": "tree", "oak": "tree", "banyan": "tree"}
+            "billboard": "sign", "palm": "tree", "oak": "tree", "banyan": "tree", "viruses": "virus",
+            "germ": "bacteria", "germs": "bacteria", "bacterium": "bacteria", "microbe": "bacteria",
+            "antibodies": "antibody", "cells": "cell", "atoms": "atom", "molecules": "molecule", "electron": "atom"}
 
 
 # ---- parts -------------------------------------------------------------------------------------------------------------
@@ -280,6 +284,87 @@ def g_sign(c, s, text="", **_):
     p = [rect("post", -0.04 * s, 0, 0.04 * s, h * 0.7, (110, 80, 50)),
          rect("board", -0.6 * s, h * 0.62, 0.6 * s, h, c or (236, 230, 210), 1)]
     return _asset("sign", "sign", p, 1.2 * s, h, uses=["background"], text=text)
+
+
+# ---- science: shapes for explainers (illustrative, not to scale) ----------------------------------------------------
+def g_virus(c, s, **_):
+    r = 0.35 * s
+    col = c or (120, 190, 90)
+    turn = {"type": "bob", "amp": 0.04 * s, "rate": 0.45}
+    p = [circle("capsid", 0, r * 1.6, r, col, 1, turn)]
+    for k in range(10):                                # spike proteins
+        a = 2 * math.pi * k / 10
+        x0, y0 = math.cos(a) * r * 0.95, r * 1.6 + math.sin(a) * r * 0.95
+        x1, y1 = math.cos(a) * r * 1.35, r * 1.6 + math.sin(a) * r * 1.35
+        p.append(line(f"spike{k}", [(x0, y0), (x1, y1)], darker(col, 0.7), 0.04 * s, 0, turn))
+        p.append(circle(f"tip{k}", x1, y1, 0.06 * s, (230, 90, 80), 2, turn))
+    return _asset("virus", "virus", p, 3.3 * r, 3.2 * r, grounded=False, uses=["background"])
+
+
+def g_cell(c, s, **_):
+    r = 0.5 * s
+    col = c or (236, 236, 250)
+    bob = {"type": "bob", "amp": 0.03 * s, "rate": 0.5}
+    pts = [(math.cos(2 * math.pi * k / 16) * r * (1 + 0.07 * math.sin(k * 2.3)),
+            r * 1.05 + math.sin(2 * math.pi * k / 16) * r * (1 + 0.07 * math.sin(k * 2.3))) for k in range(16)]
+    p = [poly("membrane", pts, col, 0, bob),
+         circle("nucleus_a", -r * 0.25, r * 1.1, r * 0.28, (150, 110, 190), 1, bob),
+         circle("nucleus_b", r * 0.18, r * 0.95, r * 0.25, (150, 110, 190), 1, bob),
+         circle("nucleus_c", r * 0.05, r * 1.32, r * 0.2, (150, 110, 190), 1, bob)]
+    return _asset("cell", "cell", p, 2.3 * r, 2.3 * r, grounded=False, uses=["background"])
+
+
+def g_antibody(c, s, **_):
+    h = 0.6 * s
+    col = c or (250, 200, 60)
+    turn = {"type": "sway", "pivot": [0, h * 0.5], "amp": 0.25, "rate": 0.4}
+    w = 0.05 * s
+    p = [line("stem", [(0, 0.05 * s), (0, h * 0.5)], col, w, 1, turn),
+         line("arm_l", [(0, h * 0.5), (-h * 0.35, h * 0.95)], col, w, 1, turn),
+         line("arm_r", [(0, h * 0.5), (h * 0.35, h * 0.95)], col, w, 1, turn)]
+    return _asset("antibody", "antibody", p, h * 0.85, h, grounded=False, uses=["background"])
+
+
+def g_bacteria(c, s, **_):
+    L, r = 0.7 * s, 0.17 * s
+    col = c or (110, 170, 200)
+    wig = {"type": "flap", "pivot": [-L / 2, r * 1.6], "amp": 0.4, "rate": 2.0}
+    pts = [(-L / 2 + r + math.cos(math.pi / 2 + math.pi * k / 8) * r, r * 1.6 + math.sin(math.pi / 2 + math.pi * k / 8) * r)
+           for k in range(9)] + [(L / 2 - r + math.cos(-math.pi / 2 + math.pi * k / 8) * r,
+                                  r * 1.6 + math.sin(-math.pi / 2 + math.pi * k / 8) * r) for k in range(9)]
+    p = [poly("body", pts, col, 1),
+         line("flagellum", [(-L / 2, r * 1.6), (-L / 2 - 0.15 * s, r * 1.9), (-L / 2 - 0.3 * s, r * 1.4)], darker(col), 0.02 * s,
+              0, wig)]
+    return _asset("bacteria", "bacteria", p, L + 0.7 * s, r * 3.4, grounded=False, uses=["background"])
+
+
+def g_atom(c, s, **_):
+    r = 0.4 * s
+    col = c or (90, 140, 230)
+    cy = r * 1.1
+    p = [circle("nucleus", 0, cy, r * 0.22, (230, 90, 70), 2)]
+    for k, ang in enumerate((0.0, 1.05, 2.1)):          # three orbits
+        pts = []
+        for j in range(24):
+            a = 2 * math.pi * j / 24
+            x, y = math.cos(a) * r, math.sin(a) * r * 0.35
+            pts.append((x * math.cos(ang) - y * math.sin(ang), cy + x * math.sin(ang) + y * math.cos(ang)))
+        p.append(line(f"orbit{k}", pts + [pts[0]], col, 0.018 * s, 0))
+        ex, ey = pts[(k * 8) % 24]
+        p.append(circle(f"electron{k}", ex, ey, r * 0.08, (250, 250, 120), 3,
+                        {"type": "sway", "pivot": [0, cy], "amp": 3.0, "rate": 0.15 * (k + 1)}))
+    return _asset("atom", "atom", p, 2.3 * r, 2.3 * r, grounded=False, uses=["background"])
+
+
+def g_molecule(c, s, **_):
+    r = 0.12 * s
+    col = c or (230, 80, 80)
+    p = [line("bond_a", [(-0.25 * s, 0.4 * s), (0, 0.55 * s)], (200, 200, 210), 0.04 * s, 0),
+         line("bond_b", [(0, 0.55 * s), (0.25 * s, 0.4 * s)], (200, 200, 210), 0.04 * s, 0),
+         circle("centre", 0, 0.55 * s, r * 1.3, col, 1),
+         circle("left", -0.25 * s, 0.4 * s, r, (240, 240, 245), 1),
+         circle("right", 0.25 * s, 0.4 * s, r, (240, 240, 245), 1)]
+    return _asset("molecule", "molecule", p, 0.75 * s, 0.75 * s, grounded=False, uses=["background"])
 
 
 GENERATORS = {k[2:]: v for k, v in globals().items() if k.startswith("g_")}

@@ -171,6 +171,7 @@ class Scene:
             fn(d, W, H, to_screen_z, t, cx)
         style = getattr(self, "look_style", None)
         figures = []
+        figmask = None                                 # where the characters are: the picture's ink edges skip them
         for a in sorted(self.actors, key=lambda q: -zs[id(q)]):
             S, scale = to_screen_z(zs[id(a)])
             try:
@@ -190,6 +191,10 @@ class Scene:
                 a.draw(ImageDraw.Draw(lay, "RGBA"), S, scale, t, overlays=False)
                 shaded = cinematic.shade(lay, style, scale * a.H)
                 img.paste(shaded, (0, 0), shaded)
+                if style.ink_edges > 0:
+                    if figmask is None:
+                        figmask = Image.new("L", (W, H), 0)
+                    figmask.paste(255, (0, 0), lay.getchannel("A"))
                 d = ImageDraw.Draw(img, "RGBA")
                 figures.append((a, S, scale))
             elif hasattr(a, "pose_now"):
@@ -230,20 +235,23 @@ class Scene:
             img = img.resize((W, H), Image.LANCZOS, box=box)
             if ui is not None:
                 ui = ui.resize((W, H), Image.LANCZOS, box=box)
+            if figmask is not None:
+                figmask = figmask.resize((W, H), Image.BILINEAR, box=box)
             view = box
         out = img.resize((self.width, self.height), Image.LANCZOS)
         out = _atmosphere(out, getattr(self, "moods", []), t)
         if getattr(self, "_raw", False):              # motion blur: sub-frames are averaged, then finished once
-            self._ctx = (ui, view, to_screen_z, ss, style)
+            self._ctx = (ui, view, to_screen_z, ss, style, figmask)
             return out
-        return self._finish(out, t, ui, view, to_screen_z, ss, style)
+        return self._finish(out, t, ui, view, to_screen_z, ss, style, figmask)
 
-    def _finish(self, out, t, ui, view, to_screen_z, ss, style):
+    def _finish(self, out, t, ui, view, to_screen_z, ss, style, figmask=None):
         """Grade, speech bubbles, comic effects, credits, tags and the caption overlay, on the finished picture."""
         W, H = self.width * ss, self.height * ss
         if style is not None:
             from . import cinematic
-            out = cinematic.grade(out, style, t, int(round(t * self.fps)))
+            protect = figmask.resize((self.width, self.height), Image.BILINEAR) if figmask is not None else None
+            out = cinematic.grade(out, style, t, int(round(t * self.fps)), protect)
         if ui is not None:
             small = ui.resize((self.width, self.height), Image.LANCZOS)
             out.paste(small, (0, 0), small)

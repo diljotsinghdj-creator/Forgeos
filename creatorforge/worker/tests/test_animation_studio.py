@@ -512,3 +512,16 @@ def test_director_chooses_style_and_world_and_the_user_can_override():
     assert any(d.startswith("style:") for d in notes["decisions"])
     doc2, _ = studio.make(script, "Knight", style="noir", world="forest")
     assert doc2["style"] == "noir" and {s["layers"]["world"] for s in doc2["scenes"]} == {"forest"}
+
+
+def test_a_science_script_gets_one_presenter_and_its_entities_act_it_out():
+    from creatorforge_worker.animation import storyboard, studio, universal
+    board = storyboard.plan(universal.SCIENCE_SCRIPT, "x")
+    assert list(board.cast) == ["Lena"]                # "Dr. Lena" is one person; "Antibodies" is not a person
+    doc, notes = studio.make(universal.SCIENCE_SCRIPT, "x")
+    worlds_ = [s["layers"]["world"] for s in doc["scenes"]]
+    assert worlds_[0] == "interior:school" and "microscopic" in worlds_ and worlds_[-1] == "interior:school"
+    moves = {(st["what"]) for s in doc["scenes"] for st in s["steps"] if st["do"] == "move"}
+    assert {"virus", "virus2", "cell", "antibody"} <= moves     # enters, copies itself, is surrounded, gets stuck to
+    assert not any("placeholder" in str(a) for s in doc["scenes"] for a in s.get("things", []))
+    assert any("not to scale" in d for d in notes["decisions"])

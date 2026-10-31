@@ -115,10 +115,11 @@ def direct(R, sc, style: str = "explainer", margin: float = 1.0, every: int = 2)
             if near and math.dist((x, y), prev[:2]) > 0.02:
                 xs.append(x)
                 ys.append(y + getattr(p, "h", 0.2))
-        for x, y, p in beasts:                            # a creature in the action joins the shot
-            if min(abs(x - v) for v in xs) < W_m * 0.9:
-                xs += [x - p.w / 2, x + p.w / 2]
-                ys += [y, y + p.h]
+        for x, y, p in beasts:                            # a creature in the action joins the shot - if the
+            nx = xs + [x - p.w / 2, x + p.w / 2]          # shot can hold it without losing the people
+            ny = ys + [y, y + p.h]
+            if max(nx) - min(nx) + 1.8 * margin <= W_m * 0.98 and max(ny) - min(ny) + 0.9 * margin <= H_m * 0.98:
+                xs, ys = nx, ny
                 feeling = False
         for r0, r1, bx0, bx1, by0, by1 in getattr(sc, "show", []):   # a visual on screen: frame it with the cast
             if r0 <= t <= r1:

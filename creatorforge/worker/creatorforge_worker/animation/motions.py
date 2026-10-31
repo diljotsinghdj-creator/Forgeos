@@ -111,12 +111,15 @@ def trip_roll(a: Actor, t: float, speed: float = 3.6) -> float:
         return dict(lean=lean, au=arm_n - lean, al=arm_n + elbow - lean, bu=arm_f - lean, bl=arm_f + elbow - lean,
                     lu=thigh_n - lean, ll=thigh_n - knee - lean, mu=thigh_f - lean, ml=thigh_f - knee - lean)
     keys = [
-        (0.1, dict(dx=0.3, head=-0.3, feet="keep", **body(0.7, 2.0, 1.8, -0.1, 0.0, 1.2, 0.4)), "linear"),
-        # the catch: the toe is stuck, the arms fly forward
+        (0.1, dict(dx=0.3, head=-0.3, feet="keep", **body(0.7, 2.0, 1.8, 0.35, 0.0, 1.2, 0.4)), "linear"),
+        # the catch: the toe is stuck, the arms fly forward - out in front first, then down to the floor
+        (0.24, dict(dx=0.65, y=0.5 * H, head=0.0, feet=None, hands=((0.65 + 0.55 * H, 0.42 * H),
+                                                                    (0.65 + 0.5 * H, 0.42 * H)),
+                    **body(1.1, 1.8, 1.7, 0.2, 0.05, 0.8, 0.45)), "linear"),
         (0.38, dict(dx=1.0, y=0.4 * H, head=0.2, feet=None, squash=0.9,
                     hands=((1.0 + 0.42 * H, 0.03), (1.0 + 0.36 * H, 0.03)), **body(1.45, 1.6, 1.6, 0.0, 0.1, 0.4, 0.5)),
          "linear"),                                                                         # dive, palms on the floor
-        (0.52, dict(dx=1.25, y=0.33 * H, head=1.1, squash=0.74,
+        (0.52, dict(dx=1.25, y=0.33 * H, head=1.1, squash=0.74, hands=(None, None),
                     **body(1.45 + 0.25 * TAU, 1.7, 1.5, 0.6, 2.2, 1.9, 2.5)), "linear"),  # over the shoulders, tucking
         (0.66, dict(dx=1.5, y=0.26 * H, head=1.1, squash=0.7, hands=(None, None),
                     **body(1.45 + 0.5 * TAU, 1.7, 1.5, 0.9, 2.4, 2.2, 2.6)), "linear"),  # a ball: chin in, knees hugged
