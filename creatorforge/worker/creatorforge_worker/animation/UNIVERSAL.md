@@ -44,7 +44,57 @@ document. The automatic director fills these fields in, and the user can overrid
 A scene's own `style` wins over the document's, so styles can change from scene to scene: Film 4 cuts from
 painterly to selective-colour noir and back.
 
-DEMOS
+## Demonstration films (rendered, inspected, fixed, re-rendered)
+`python -m creatorforge_worker.animation.universal <dir>` renders all five; each writes `<name>.doc.json` (the
+editable project), `<name>.mp4`, `<name>_android.mp4` and `<name>.report.json`. All five are rendered at 1280x720,
+24 fps, final quality, on 4 CPU cores.
+
+FILMS_TABLE
+
+What each film shows:
+1. **The Courier** (historical adventure, graphic novel). Ancient Egypt, an invented courier and story (it says so on
+   screen). Dialogue bubbles; a scroll picked up from a table; a desert run with a jump over a rock; a jackal (wolf rig)
+   that growls ("GRRR!"); a falcon overhead; dusk at a temple with a cheering crowd; motion-comic caption boxes.
+2. **Walkies** (cartoon comedy). Bolt the robot, Mia the child and Biscuit the dog in a city. Biscuit chases a cat at
+   a gallop, and Bolt runs after them with speed lines, then a pratfall ("CLANK!"). The dog and cat sit together, Mia
+   does a double take and a facepalm, Bolt dances on the beat ("TA-DA!").
+3. **The Body's Defenders** (science explainer, made automatically from a seven-sentence script). The director chose
+   the explainer style (6 science cues), the classroom and the microscopic worlds, and one presenter (Dr. Lena).
+   - The virus enters and copies itself, a white cell surrounds it, and antibodies stick to it. Every one is labelled
+     "illustration, not to scale" in the notes.
+   - The voice-over is espeak-ng, with subtitles.
+4. **The Letter** (drama). Painterly present at dusk; a remembered argument in selective-colour noir (only the red
+   jacket keeps its colour); a rainy night reconciliation with a comforting touch and changing feelings. Style changes
+   between scenes with dissolves.
+5. **Wild Worlds** (wildlife and fantasy, voiced). An elephant and calf walk on the savanna (a lion rests and roars);
+   a whale, a dolphin and fish swim; wolves trot in and gallop after a deer in a forest (gait chosen by speed); a dragon flies to a
+   castle, hovers, breathes fire ("FWOOSH!") and lands while a unicorn rears and runs.
+
+### Delivery formats (measured from the files)
+FORMATS_TABLE
+
+### What review found and fixed
+| Found by watching | Fix |
+|---|---|
+| The whole-picture ink pass traced eyes and buttons, which looked like goggles | Characters are masked out of the picture ink; they keep their own outlines |
+| Speech-bubble text was inked and posterised | Bubbles and symbols are drawn on their own layer after the grade |
+| Posterising per channel striped the skies | Posterising acts on brightness only |
+| A falcon dragged the camera into the sky; a dragon was never framed | Creatures are subjects only when the shot can hold them with the people; creature-only shots frame the movers first |
+| Elephant and deer cropped in creature-only shots | Movers first, then whoever fits; ground near the bottom |
+| "Dr. Lena" became two people; "Antibodies" became a person; "class about" and "virus so" became objects; abstract nouns became placeholder boards | Sentence split respects titles; common nouns at sentence start are not names; noun phrases stop at prepositions and conjunctions; abstract nouns and places are not props; science assets (virus, cell, antibody, bacteria, atom, molecule) act out the line |
+| Science props followed the presenter back to the classroom | A new world is a new shot |
+| The forward roll snapped both arms (a known 3.0 defect) | The hands release at the tuck and reach the floor through a point in front; QC clean at 24 and 30 fps |
+| Deer and wolves accelerated to 22 m/s (QC prop jump) | Linear moves at a believable speed |
+| An empty title box sat in every frame's corner | No title, no box |
+| A letter's text ran off the top of the frame | Shown as a caption box |
+
+### Known limits of these films
+- Portrait 9:16 re-frames a scene staged for 16:9. A wide line-up can lose a character at the edge, so portrait
+  scenes should be staged closer (or per format).
+- The science props (virus, cells) are not camera subjects, so the virus group can sit at the frame edge.
+- The temple crowd scene in Film 1 is a wide shot, so its speech bubbles are small.
+- Voices are espeak-ng (robotic).
+- Illustrated people are flat cartoon figures, not semi-realistic painting.
 
 ## Supported, experimental and unsupported
 
