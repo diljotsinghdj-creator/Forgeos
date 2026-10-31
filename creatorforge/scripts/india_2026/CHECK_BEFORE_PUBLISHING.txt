@@ -206,3 +206,41 @@ VIDEO, PICTURES AND RIGHTS:
   [ ] Captions: check that the numbers match the graphics. Do a frame-by-frame check of the final export for
       stale dates.
   [ ] Legal review by an Indian media lawyer. Upload only after every box above is ticked.
+
+
+RAMLILA MAIDAN, 1 NOV 2026 - SHORT 03 "Ramlila Kal Kya Hoga" + LONG 02 "Ramlila Maidan 1 November" (Hindi)
+Researched 31 Oct 2026 through search results. Both are PREVIEWS of the rally: publish on 31 Oct or before 10 am on
+1 Nov. After the rally, the "kal" (tomorrow) framing is wrong - update or replace with a results video.
+
+FACTS (each in a Cite: line)
+[ ] Rally: INDIA bloc, Ramlila Maidan, Sun 1 Nov, 10 am - 5 pm; end point of "Delhi Chalo"; demands: answers on SIR,
+    CEC Gyanesh Kumar's resignation (The Week 25 & 31 Oct; The Federal).
+[ ] Crowd: Congress expects "at least 10 lakh" (The Federal / The Week). Police prepare for ~50,000 (The Week 31 Oct).
+[ ] Ground: ~12 acres, capacity ~50,000 (Business Today 13 Oct 2026); older estimates 1-1.25 lakh. Wikipedia says 10
+    acres. "Our math" (12 acres = ~48,500 sq m; 2/sq m = ~1 lakh; 4/sq m = ~2 lakh) is labelled हमारा हिसाब /
+    ILLUSTRATION - an estimate, not a measurement.
+[ ] Police NOC: end by 5 pm, no overnight stay, no march outside, no inflammatory speeches; can be revoked
+    (ThePrint, Open, The Statesman). The full NOC text was not seen - conditions as reported.
+[ ] Security: ~3,500 personnel, ~250 HD CCTV, AI face-scanning cameras, control rooms (The Week 31 Oct).
+[ ] Traffic (PTI): roads and diversion points as listed; plan ahead for New Delhi Railway Station.
+[ ] SIR: pan-India announced Oct 2025 (NewsOnAIR). 13 crore+ deleted by Oct 2026 (Wikipedia; Deccan Herald draft-roll
+    figure 13.3 crore). Breakdown 6.30 crore shifted / 1.02 crore duplicate / 13.39 crore total is from ORGANISER
+    (RSS-linked) - it is labelled as such. Verify against an ECI release if one is available.
+[ ] Trilokpuri audit 416 of 1,236 (Sabrang India): activist audit, small sample - said so on screen.
+[ ] Indian Express (Sep 2026) report of disagreement inside the commission: taken from Wikipedia's SIR page. Open the
+    Express article itself before publishing, or cut that line.
+[ ] Public impeachment: symbolic, 31 Oct at Kharge's residence (The Week). Formal removal notice rejected Apr 2026
+    (NewsOnAIR). Confirm the 31 Oct event actually took place before publishing.
+[ ] 6-7 Oct Rahul Gandhi detained; 10 Oct ~2,000 detained (not an official count); CPJ 37+ journalists (Al Jazeera, CPJ).
+[ ] Supreme Court: 11 Oct Sunday hearing - no illegal detention of peaceful gatherings (Business Today); 46 petitions,
+    adjourned awaiting affidavits (Bar & Bench, LiveLaw). Check for any newer order before publishing.
+[ ] BJP: "Save Democracy, Remove Anarchy" counter-campaign with foot marches (Gujarat Samachar, LatestLY).
+[ ] Traders asked to postpone until after Bhai Dooj, 10 Nov (The Week 25 Oct).
+[ ] Ground booking ~Rs 1.21 lakh/day; designated protest site after Jantar Mantar's de-notification (Business Today,
+    Outlook).
+
+RULES KEPT
+- Allegations are said as allegations ("आरोप"), with the Commission's and BJP's side in the same video.
+- No crowd number is stated as fact; the claim, the police estimate and the capacity are shown side by side.
+- No prediction of violence. "What to watch" lists questions, not outcomes.
+- Faceless visuals only; no real people's faces, no party logos.
