@@ -400,3 +400,33 @@ def chest(b: Actor, t: float):
     f = b._facing_at_build(t)
     g = b.world.ground(b.hips_x(t)) if b.world else 0.0
     return (b.hips_x(t) + f * 0.3, g + 0.68 * b.H)
+
+
+def dance(a: Actor, t: float, beats: int = 8, bpm: float = 112.0, style: str = "groove") -> float:
+    """Dancing on the beat with both feet planted: knees bounce on every beat, the body sways, and the arms
+    alternate between moves ("groove": pumps and waves; "cheer": arms up on the downbeat; "sway": slow and soft)."""
+    H, y0 = a.H, _stand(a)
+    b = 60.0 / bpm
+    keys, tt = [], 0.0
+    for k in range(beats):
+        side = 1 if k % 2 == 0 else -1
+        if style == "sway":
+            arms = dict(au=0.5 + 0.3 * side, al=0.9, bu=0.5 - 0.3 * side, bl=0.9)
+            dip, lean = 0.04, 0.08 * side
+        elif style == "cheer":
+            arms = dict(au=2.9, al=3.0, bu=2.7, bl=2.9) if k % 4 == 0 else dict(au=1.2, al=2.2, bu=1.0, bl=2.0)
+            dip, lean = 0.08, 0.05 * side
+        else:
+            move = k % 4
+            arms = [dict(au=1.6, al=2.6, bu=-0.4, bl=0.3), dict(au=-0.4, al=0.3, bu=1.6, bl=2.6),
+                    dict(au=2.8, al=2.9, bu=0.6, bl=1.6), dict(au=0.6, al=1.6, bu=2.8, bl=2.9)][move]
+            dip, lean = 0.07, 0.1 * side
+        tt += b * 0.5
+        keys.append((tt, dict(y=y0 - dip * H, lean=0.12 + lean * 0.5, head=0.12, squash=0.97, feet="keep",
+                               **arms), "out"))          # down on the beat
+        tt += b * 0.5
+        keys.append((tt, dict(y=y0 - 0.01 * H, lean=lean, head=-0.05 * side, squash=1.02, feet="keep", **arms),
+                     "inout"))                              # up between beats
+    keys.append((tt + 0.35, dict(y=y0, lean=0.0, head=0.0, au=0.08, al=0.25, bu=0.05, bl=0.2, squash=1.0,
+                                 feet="keep"), "settle"))
+    return a.act(t, keys, "dance")

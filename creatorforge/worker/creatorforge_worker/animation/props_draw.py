@@ -369,4 +369,4 @@ def _creature(p, d, S, scale, t) -> bool:
     kind = p.data.get("kind") or ""
     if kind not in anatomy.SPECIES and not p.data.get("creature"):
         return False
-    return anatomy.draw(p, d, S, scale, t, getattr(p, "style", None))
+    return anatomy.draw(p, d, S, scale, t, getattr(p, "look_style", None))

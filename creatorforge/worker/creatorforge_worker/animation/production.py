@@ -48,6 +48,55 @@ from .stick import World
 
 QUALITY = {"preview": dict(width=854, height=480, ss=1, blur=0, fps=24),
            "final": dict(width=1920, height=1080, ss=2, blur=2, fps=30)}
+FORMATS = {"16:9": (1920, 1080), "9:16": (1080, 1920), "1:1": (1080, 1080), "4k": (3840, 2160), "4:5": (1080, 1350)}
+
+
+LOOK_FIELDS = ("species", "girth", "shoulders", "shirt", "pants", "shoes", "skirt", "tie", "cap", "crown", "helmet",
+               "cape", "holds", "hair", "hair_color", "glasses", "beard", "mustache", "cane", "hunch", "bow", "head")
+
+
+class _Quality(dict):
+    """QUALITY[...] that also understands a format: "final:1080x1920@60" (size and frame rate)."""
+
+    def __missing__(self, key):
+        base, _, fmt = str(key).partition(":")
+        if base not in self or not fmt:
+            raise KeyError(key)
+        wh, _, fps = fmt.partition("@")
+        w, h = (int(v) for v in wh.lower().split("x"))
+        q = dict(self[base])
+        q.update(width=w, height=h, fps=int(fps) if fps else q["fps"])
+        if max(w, h) > 2000:                          # 4K: the frame is already big; no extra supersampling
+            q["ss"] = 1
+        return q
+
+
+QUALITY = _Quality(QUALITY)
+
+
+def quality_for(doc: dict, quality: str) -> str:
+    """The quality key for a document's "format": {"aspect": "9:16" | "1:1" | "16:9" | "4k", "fps": 24|30|60,
+    "width"/"height" for an exact size}; preview keeps the aspect at a smaller size."""
+    fmt = doc.get("format")
+    if not fmt or ":" in quality:
+        return quality
+    w, h = FORMATS.get(str(fmt.get("aspect", "16:9")).lower(), (1920, 1080))
+    w, h = fmt.get("width", w), fmt.get("height", h)
+    base = QUALITY[quality]
+    if quality == "preview":                          # same shape, preview size
+        k = 480 / min(w, h)
+        w, h = int(round(w * k / 2)) * 2, int(round(h * k / 2)) * 2
+    return f"{quality}:{w}x{h}@{fmt.get('fps', base['fps'])}"
+
+
+def scenes_of(doc: dict) -> list:
+    """The scenes with the document's defaults (production style) filled in; a scene's own setting wins."""
+    out = []
+    for s_ in doc["scenes"]:
+        if doc.get("style") and "style" not in s_ and not s_.get("footage"):
+            s_ = {**s_, "style": doc["style"]}
+        out.append(s_)
+    return out
 
 
 # ---- the editor ---------------------------------------------------------------------------------------------------------
@@ -191,11 +240,20 @@ def stage_scene(scene: dict, state: worldstate.WorldState, fps: int = 30, qualit
     from .timing import PROFILES
     Q = QUALITY[quality]
     layers = scene.get("layers", {})
+    portrait = Q["height"] > Q["width"]
     sc = scene2d.Scene(width=Q["width"], height=Q["height"], fps=Q["fps"], ss=Q["ss"],
-                       ppm=230 * Q["height"] / 1080, ground=0.8, horizon=0.6)
+                       ppm=230 * min(Q["height"], Q["width"] * (1.25 if portrait else 1e9)) / 1080,
+                       ground=0.74 if portrait else 0.8, horizon=0.55 if portrait else 0.6)
     sc.motion_blur = Q["blur"]
-    scene2d.studio(sc, paper=tuple(layers.get("paper", {"outdoors": (232, 238, 226), "indoors": (246, 242, 234)}
-                                       .get(scene.get("place"), (240, 242, 246)))))
+    from . import cinematic
+    sc.look_style = cinematic.from_doc(scene.get("style"))
+    sc.comic = []
+    if layers.get("world"):                           # a painted world (worlds.py): city, forest, space, mind...
+        from . import worlds
+        sc.world_note = worlds.build(sc, layers["world"], seed=int(layers.get("seed", 3)))
+    else:
+        scene2d.studio(sc, paper=tuple(layers.get("paper", {"outdoors": (232, 238, 226), "indoors": (246, 242, 234)}
+                                           .get(scene.get("place"), (240, 242, 246)))))
     w = _world(scene.get("world", {}))
     cast = []
     anchor = next((c["x"] for c in scene.get("cast", []) if isinstance(c.get("x"), (int, float))), None)
@@ -224,12 +282,30 @@ def stage_scene(scene: dict, state: worldstate.WorldState, fps: int = 30, qualit
             c = {**c, "x": anchor + 6.5, "facing": -1}
         look = rig2d.Look(name=c["name"], body=tuple(c["body"]) if c.get("body") else None, line=1.0,
                           height=c.get("height", 1.75), skin=tuple(c["skin"]) if c.get("skin") else (255, 255, 255))
-        spec = {"name": c["name"], "look": look, "faceless": c.get("faceless", True), "seed": len(cast)}
+        for k_ in LOOK_FIELDS:                        # costume and anatomy (illustrated styles draw all of it)
+            if c.get(k_) is not None:
+                v_ = c[k_]
+                setattr(look, k_, tuple(v_) if isinstance(v_, list) else v_)
+        illustrated = sc.look_style is not None and sc.look_style.body != "stick"
+        spec = {"name": c["name"], "look": look, "faceless": c.get("faceless", not illustrated), "seed": len(cast)}
         if scene.get("cut", True) or c["name"] not in state.entities:
             spec.update({k: c[k] for k in ("x", "facing") if k in c})
         cast.append(spec)
     lib = Library.default()
     props = []
+    from . import anatomy
+    for cr in scene.get("creatures", []):            # animals and beasts with skeletons for their anatomy
+        species = cr.get("species") or anatomy.species_of(cr["name"])
+        if species not in anatomy.SPECIES:
+            raise ValueError(f"no creature rig for {cr.get('species') or cr['name']!r}; "
+                             f"known: {sorted(anatomy.SPECIES)}")
+        k_ = cr.get("scale", 1.0)
+        w_, h_ = anatomy.size(species, k_)
+        props.append({"name": cr["name"], "kind": "shape", "x": cr.get("x", 0.0), "y": cr.get("y", 0.0),
+                      "z": cr.get("z", 1.0), "w": w_, "h": h_, "label": cr.get("label", cr["name"]),
+                      "data": {"kind": species, "creature": True, "scale": k_, "parts": [],
+                               "flip": cr.get("facing", 1.0), **({"colour": cr["colour"]} if cr.get("colour") else {}),
+                               **({"acts": cr["acts"]} if cr.get("acts") else {})}})
     for p in scene.get("props", []):
         p = dict(p)
         if p.get("asset"):                              # a library id, or a description to generate
@@ -334,6 +410,8 @@ def stage_scene(scene: dict, state: worldstate.WorldState, fps: int = 30, qualit
             end = M.climb(a, t0, st["wall"], st["top"])
         elif do == "sit":
             end = M.sit(a, t0, st.get("seat", 0.45), st.get("hold", 2.0))
+        elif do == "dance":
+            end = M.dance(a, t0, st.get("beats", 8), st.get("bpm", 112.0), st.get("style", "groove"))
         elif do == "crawl":
             end = M.crawl(a, t0, st.get("dist", 1.5))
         elif do == "trip":
@@ -380,6 +458,18 @@ def stage_scene(scene: dict, state: worldstate.WorldState, fps: int = 30, qualit
             dur = st.get("dur") or abs(st["to"] - x_now) / st.get("speed", 1.5)
             pr.move(t0, t0 + dur, st["to"], st.get("y", pr.pos(t0)[1]), 0.0, st.get("ease", "inout"))
             end = t0 + dur
+        elif do == "animal":                           # a creature acts: sit, lie, eat, roar, wag, rear, fly...
+            from . import anatomy
+            dur = st.get("dur", 2.0)
+            anatomy.act(live[st["what"]], t0, t0 + dur, st["act"])
+            end = t0 + dur
+        elif do == "fx":                               # comic effects: impact, sfx, speedlines, caption box
+            dur = st.get("dur", 1.2)
+            at = st.get("at")
+            at = actors.get(at) or live.get(at) if isinstance(at, str) else at
+            sc.comic.append({k_: v_ for k_, v_ in st.items() if k_ not in ("do", "t", "dur", "at", "wait")}
+                            | {"t0": t0, "t1": t0 + dur, "at": at})
+            end = t0 + (dur if st.get("wait") else 0.0)
         elif do == "comfort":
             end = M.comfort(a, t0, actors[st["to"]], st.get("dur", 2.0))
         elif do == "step_back":
@@ -553,7 +643,8 @@ def plan_states(doc: dict, quality: str = "preview"):
     continuity issues with the previous scene, corrections, incoming state)."""
     state = worldstate.WorldState()
     out = []
-    for i, scene in enumerate(doc["scenes"]):
+    quality = quality_for(doc, quality)
+    for i, scene in enumerate(scenes_of(doc)):
         if scene.get("footage"):                       # a cut to real footage: the world state passes through
             T = float(scene.get("dur") or _probe_seconds(scene["footage"]) - scene.get("start", 0.0))
             out.append((state, state, T, _Footage(T), [], [], state))
@@ -724,9 +815,11 @@ def render(doc: dict, out: Path, quality: str = "preview", workers: int = 1, cac
     out = Path(out)
     cache = Path(cache_dir or out.parent / "scene_cache")
     cache.mkdir(parents=True, exist_ok=True)
+    quality = quality_for(doc, quality)
     states = plan_states(doc, quality)
+    scenes = scenes_of(doc)
     jobs, files, report = [], [], {"scenes": []}
-    for scene, (start, end, T, rep, issues, fixes, incoming) in zip(doc["scenes"], states):
+    for scene, (start, end, T, rep, issues, fixes, incoming) in zip(scenes, states):
         key = _hash(scene, asdict(incoming), quality, fixes, _code_version())
         f = cache / f"{scene['id']}-{key}.mp4"
         files.append(f)
@@ -770,7 +863,7 @@ def render(doc: dict, out: Path, quality: str = "preview", workers: int = 1, cac
         frames = _join_with_transitions(files, exact, trans, out, quality, fps)  # silently drops the rest
     else:
         subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(lst), "-c:v",
-                        "libx264", "-preset", "medium", "-crf", "16" if quality == "final" else "22", "-pix_fmt",
+                        "libx264", "-preset", "medium", "-crf", "16" if quality.startswith("final") else "22", "-pix_fmt",
                         "yuv420p", "-c:a", "aac", "-b:a", "192k", "-t", f"{(frames - 0.5) / fps:.6f}", "-movflags",
                         "+faststart", str(out)], check=True)
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(out), "-c:v", "libx264", "-profile:v", "main", "-level",
@@ -780,7 +873,7 @@ def render(doc: dict, out: Path, quality: str = "preview", workers: int = 1, cac
     report["provenance"], report["provenance_issues"] = provenance(doc)
     report["delivery"] = qc.check_delivery(out, QUALITY[quality]["width"], QUALITY[quality]["height"], fps)
     subs, t_off = [], 0.0
-    for scene, st in zip(doc["scenes"], states):     # subtitles: readable speed, on screen while spoken
+    for scene, st in zip(scenes, states):     # subtitles: readable speed, on screen while spoken
         if not scene.get("footage"):
             sc_, _, _, _ = stage_scene(scene, st[6], fps, quality)
             for a_, b_, text, spoken in getattr(sc_, "subtitles", []):
@@ -828,7 +921,7 @@ def _join_with_transitions(files, seconds, trans, out: Path, quality: str, fps: 
     fc.append(f"[v{n}]tpad=stop_mode=clone:stop=3[vo]")          # exact length: hold the last frame / pad the
     fc.append(f"[a{n}]apad[ao]")                                  # audio, then trim both to the frame count
     subprocess.run(["ffmpeg", "-v", "error", "-y", *ins, "-filter_complex", ";".join(fc), "-map", "[vo]", "-map",
-                    "[ao]", "-t", f"{(frames - 0.5) / fps:.6f}", "-c:v", "libx264", "-preset", "medium", "-crf", "16" if quality == "final" else "22",
+                    "[ao]", "-t", f"{(frames - 0.5) / fps:.6f}", "-c:v", "libx264", "-preset", "medium", "-crf", "16" if quality.startswith("final") else "22",
                     "-pix_fmt", "yuv420p", "-r", str(fps), "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart",
                     str(out)], check=True)
     return frames

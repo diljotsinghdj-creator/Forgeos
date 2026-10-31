@@ -838,7 +838,7 @@ class Actor:
     def draw(self, d, S, scale, t, overlays: bool = True, body: bool = True):
         """The figure, then its symbols and speech bubbles. A scene with an illustrated style draws bodies and
         overlays in two passes (bodies get shaded; bubbles must not)."""
-        st = getattr(self, "style", None)
+        st = getattr(self, "look_style", None)
         if st is not None and st.body != "stick":
             from . import cinematic
             if body:

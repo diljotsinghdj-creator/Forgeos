@@ -169,12 +169,12 @@ class Scene:
             d.ellipse([sx - w, sy - w * 0.12, sx + w, sy + w * 0.12], fill=(0, 0, 0, 55))
         for fn in getattr(self, "animated", []):     # living environments behind the cast (water, stars, cells)
             fn(d, W, H, to_screen_z, t, cx)
-        style = getattr(self, "style", None)
+        style = getattr(self, "look_style", None)
         figures = []
         for a in sorted(self.actors, key=lambda q: -zs[id(q)]):
             S, scale = to_screen_z(zs[id(a)])
             try:
-                a.style = style
+                a.look_style = style
             except AttributeError:
                 pass
             if hasattr(a, "pose_now"):
@@ -233,6 +233,14 @@ class Scene:
             view = box
         out = img.resize((self.width, self.height), Image.LANCZOS)
         out = _atmosphere(out, getattr(self, "moods", []), t)
+        if getattr(self, "_raw", False):              # motion blur: sub-frames are averaged, then finished once
+            self._ctx = (ui, view, to_screen_z, ss, style)
+            return out
+        return self._finish(out, t, ui, view, to_screen_z, ss, style)
+
+    def _finish(self, out, t, ui, view, to_screen_z, ss, style):
+        """Grade, speech bubbles, comic effects, credits, tags and the caption overlay, on the finished picture."""
+        W, H = self.width * ss, self.height * ss
         if style is not None:
             from . import cinematic
             out = cinematic.grade(out, style, t, int(round(t * self.fps)))
@@ -254,6 +262,10 @@ class Scene:
                     S_, _ = to_screen_z(getattr(at, "z", 1.0))
                     x_, y_ = onscreen(*S_(*J["head"]))
                     return x_, y_ - 0.12 * self.height
+                if hasattr(at, "pos"):                 # a prop or creature: above it
+                    S_, _ = to_screen_z(getattr(at, "z", 1.0))
+                    px, py, _ = at.pos(t)
+                    return onscreen(*S_(px, py + getattr(at, "h", 0.5)))
                 return None
             out = out.convert("RGBA")
             cinematic.comic_fx(out, self.comic, t, where, style)
@@ -282,14 +294,23 @@ class Scene:
             return self.frame(t, dt) if draw else self._advance(t, dt)
         acc = None
         sub = 0.5 * dt / n
+        ctx = None
         for k in range(n):
             ts = t - 0.25 * dt + (k + 0.5) * sub
             if not draw:
                 self._advance(ts, sub if k else dt - (n - 1) * sub)
                 continue
-            img = np.asarray(self.frame(ts, sub if k else dt - (n - 1) * sub), dtype=np.uint16)
+            self._raw = True
+            try:
+                img = np.asarray(self.frame(ts, sub if k else dt - (n - 1) * sub), dtype=np.uint16)
+            finally:
+                self._raw = False
+            if k == n // 2 or ctx is None:
+                ctx = self._ctx
             acc = img if acc is None else acc + img
-        return None if not draw else Image.fromarray((acc // n).astype(np.uint8))
+        if not draw:
+            return None
+        return self._finish(Image.fromarray((acc // n).astype(np.uint8)), t, *ctx)
 
     def _advance(self, t: float, dt: float):
         for a in self.actors:

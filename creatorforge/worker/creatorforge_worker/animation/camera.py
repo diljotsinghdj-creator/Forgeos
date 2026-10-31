@@ -50,8 +50,29 @@ def direct(R, sc, style: str = "explainer", margin: float = 1.0, every: int = 2)
     targets = []
     for n, t in enumerate(R.times):
         acts = [(_activity(R, i, n, win), i) for i, a in enumerate(R.actors) if getattr(a, "z", 1.0) == 1.0]
+        named_now = next((names for h0, h1, names in hints if h0 <= t <= h1), None) or []
+        beasts = []                                       # creatures that move, act or are named: subjects too
+        for k, p in enumerate(R.prop_objs):
+            if not (getattr(p, "data", {}) or {}).get("creature") or getattr(p, "z", 1.0) != 1.0:
+                continue
+            x, y, _ = R.props[k][n]
+            px_, py_, _ = R.props[k][max(0, n - win)]
+            nx_, ny_, _ = R.props[k][min(len(R.times) - 1, n + win)]
+            moving = math.dist((px_, py_), (nx_, ny_)) > 0.15
+            acting = any(a0 <= t <= a1 for a0, a1, _ in p.data.get("acts", []))
+            if moving or acting or any(getattr(p, "name", "").startswith(nm) for nm in named_now):
+                beasts.append((x, y, p))
         if not acts:
-            targets.append((0.0, 0.0, 1.0))
+            if beasts:                                    # a creature-only shot: frame the creatures
+                xs = [b[0] - b[2].w / 2 for b in beasts] + [b[0] + b[2].w / 2 for b in beasts]
+                ys = [b[1] for b in beasts] + [b[1] + b[2].h for b in beasts]
+                bw, bh = max(xs) - min(xs) + 2.0 * margin, max(ys) - min(ys) + 1.0 * margin
+                zoom = max(1.0, min(1.9, W_m / bw, H_m / bh))
+                hh = H_m / (2 * zoom)
+                yc = max(max(ys) + 0.4 * margin - hh, min(min(ys) - 0.25 + hh, 0.0 - 0.3 + hh))
+                targets.append(((min(xs) + max(xs)) / 2, yc - ground_y, zoom))
+            else:
+                targets.append((0.0, 0.0, 1.0))
             continue
         talking = [i for _, i in acts if any(b0 - 0.6 <= t <= b1 + 0.3 for b0, b1, _ in
                                              getattr(R.actors[i], "bubbles", []))]
@@ -94,6 +115,11 @@ def direct(R, sc, style: str = "explainer", margin: float = 1.0, every: int = 2)
             if near and math.dist((x, y), prev[:2]) > 0.02:
                 xs.append(x)
                 ys.append(y + getattr(p, "h", 0.2))
+        for x, y, p in beasts:                            # a creature in the action joins the shot
+            if min(abs(x - v) for v in xs) < W_m * 0.9:
+                xs += [x - p.w / 2, x + p.w / 2]
+                ys += [y, y + p.h]
+                feeling = False
         for r0, r1, bx0, bx1, by0, by1 in getattr(sc, "show", []):   # a visual on screen: frame it with the cast
             if r0 <= t <= r1:
                 xs += [bx0, bx1]

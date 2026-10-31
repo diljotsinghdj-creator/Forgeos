@@ -34,15 +34,44 @@ BODY = [[40, 110, 200], [200, 70, 110], [60, 150, 90], [230, 140, 30], [120, 80,
 KNOWN_VERBS = {v for _, v in SB.VERBS}
 
 
+WORLD_WORDS = [
+    (r"\b(outer space|space station|spaceship|rocket|planet|the moon|on mars|orbit|galaxy|asteroid|astronaut)s?\b", "space"),
+    (r"\b(underwater|coral reef|reef|seabed|ocean floor|under the sea|deep sea)\b", "underwater"),
+    (r"\b(beach|shore|ocean|coast|harbou?r|waves)\b", "ocean"),
+    (r"\b(forest|woods|jungle)\b", "forest"),
+    (r"\b(mountains?|peak|summit|himalayas?|alps)\b", "mountains"),
+    (r"\b(desert|dunes?|sahara)\b", "desert"),
+    (r"\b(savanna|grassland|safari|plains)\b", "savanna"),
+    (r"\b(castle|kingdom|palace|dragon'?s? lair)\b", "castle"),
+    (r"\b(pyramids?|ancient|temple|pharaoh|roman|empire|centurion)\b", "ancient"),
+    (r"\b(cells?|bloodstream|blood vessel|virus(es)?|bacteria|immune system|neurons?|inside the body)\b", "microscopic"),
+    (r"\b(his mind|her mind|their mind|the mind|dreams?|imagination|memories)\b", "mind"),
+    (r"\b(classroom|school)\b", "interior:school"),
+    (r"\b(office|meeting room)\b", "interior:office"),
+    (r"\b(kitchen|bedroom|living room|at home|the house)\b", "interior:home"),
+    (r"\b(village|farm|fields?)\b", "village"),
+    (r"\b(city|street|town|market|downtown)\b", "city"),
+]
+
+
 def make(script: str, title: str = "", sources: list | None = None, voice: dict | None = None,
-         spoken: list | None = None, target_seconds: float | None = None) -> tuple[dict, dict]:
+         spoken: list | None = None, target_seconds: float | None = None, style="auto", world=None,
+         format: dict | None = None) -> tuple[dict, dict]:
     """voice: {"lang": "en"|"hi", "rate": ..} to narrate (None: subtitles only). spoken: optional per-sentence text to
-    speak when it differs from the subtitle (Hinglish: the subtitle in Roman letters, the voice from Devanagari)."""
+    speak when it differs from the subtitle (Hinglish: the subtitle in Roman letters, the voice from Devanagari).
+    style: "auto" (chosen from the script's genre), a preset name or {"name", "stylization", ...}; world: a world
+    name for every scene (None: chosen per line from the places named); format: {"aspect", "fps"}. Every choice is
+    written into the document, where it can be changed."""
+    from . import cinematic
     from . import story as ST
     board = SB.plan(script, title)
+    style_name, why = cinematic.choose(script, board.domain, None if style == "auto" else style)
+    illustrated = style_name not in ("stick", None)
     cast = getattr(board, "cast", {})
     arc = ST.analyze(board, target_seconds, sources)          # the whole story first: arc, feelings, pacing
-    notes = {"domain": board.domain, "decisions": [], "limitations": [], "sources": [], "story": arc.to_dict()}
+    notes = {"domain": board.domain, "decisions": [f"style: {style_name} ({why})"], "limitations": [], "sources": [],
+             "story": arc.to_dict()}
+    place = world
     people = [n for n, c in cast.items() if c.role != "animal" and c.role != "crowd"]
     colour = {n: BODY[k % len(BODY)] for k, n in enumerate(people)}
     present: list[str] = []
@@ -77,7 +106,7 @@ def make(script: str, title: str = "", sources: list | None = None, voice: dict 
         cast_specs = []
         for k, n in enumerate(lineup):
             c = cast[n]
-            spec = {"name": n, "body": colour[n], "faceless": not c.face,
+            spec = {"name": n, "body": colour[n], "faceless": not c.face and not (illustrated and not c.label),
                     "personality": c.personality if c.personality in ("kind", "timid", "energetic", "calm",
                                                                       "grumpy", "cheerful") else "kind",
                     "height": 1.5 if c.role in ("girl", "boy", "child", "children") else 1.72}
@@ -168,6 +197,16 @@ def make(script: str, title: str = "", sources: list | None = None, voice: dict 
         if extra > 0.05:                               # the climax gets room, the ending breathes, a turn waits
             steps.append({"t": "+0.0", "do": "wait", "dur": round(extra, 2)})
         layers = {k: v for k, v in sky.items()}
+        if illustrated or world:                       # a painted world for the place the line names
+            named = next((w_ for rx, w_ in WORLD_WORDS if re.search(rx, low)), None)
+            if not world and named and named != place:
+                notes["decisions"].append(f"line {i + 1}: world becomes {named}")
+                place = named
+            if place is None:
+                place = {"indoors": "interior:home", "outdoors": "village"}.get(b.environment, "city")
+                notes["decisions"].append(f"line {i + 1}: no place named - {place} (change the scene's world)")
+            night = any(k_[1] == "night" for k_ in sky.get("light", []))
+            layers["world"] = place + (":night" if night and place in ("city", "forest") else "")
         scenes.append({"layers": layers, "id": f"s{i + 1:02d}", "name": b.narration[:38] + ("..." if len(b.narration) > 38 else ""),
                        "place": b.environment, "cut": cut, "timing": b.timing, "cast": cast_specs,
                        "animals": list(animals_seen.values()), "things": b.things, "props": [],
@@ -175,25 +214,30 @@ def make(script: str, title: str = "", sources: list | None = None, voice: dict 
                        "arc": arc.roles[i], "steps": steps})
         present = lineup
     doc = {"title": board.title, "fps": 24, "source_script": script, "scenes": scenes}
+    if illustrated:
+        doc["style"] = style if isinstance(style, dict) else style_name
+    if format:
+        doc["format"] = dict(format)
     return doc, notes
 
 
 def film(script: str, out: Path, title: str = "", sources: list | None = None, voice: dict | None = None,
          spoken: list | None = None, quality: str = "preview", workers: int = 2, target_seconds: float | None = None,
-         force: bool = False) -> dict:
+         force: bool = False, style="auto", world=None, format: dict | None = None) -> dict:
     """make -> validate the plan -> render -> review. Writes <out>.doc.json (the editable source),
     <out>.plan.json (the story plan) and <out>.report.json. A plan with errors is not rendered unless forced."""
     from . import critic, production, qc
     out = Path(out)
-    doc, notes = make(script, title, sources, voice, spoken, target_seconds)
+    doc, notes = make(script, title, sources, voice, spoken, target_seconds, style, world, format)
     out.with_suffix(".plan.json").write_text(json.dumps(notes["story"], indent=1, ensure_ascii=False))
     if notes["story"]["errors"] and not force:
         raise ValueError("the story plan has errors: " + "; ".join(notes["story"]["errors"]))
     out.with_suffix(".doc.json").write_text(json.dumps(doc, indent=1, ensure_ascii=False))
     rep = production.render(doc, out, quality, workers=workers)
+    quality = production.quality_for(doc, quality)
     states = production.plan_states(doc, quality)
     reviews, assets = [], []
-    for sd, st in zip(doc["scenes"], states):
+    for sd, st in zip(production.scenes_of(doc), states):
         sc, T, _, _ = production.stage_scene(sd, st[6], production.QUALITY[quality]["fps"], quality)
         reviews.append({"scene": sd["id"], **critic.review(qc.record(sc, T), sc).to_dict()})
         for a in getattr(sc, "asset_log", []):

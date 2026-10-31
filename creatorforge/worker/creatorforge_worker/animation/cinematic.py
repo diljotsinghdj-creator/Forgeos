@@ -234,6 +234,14 @@ def draw_figure(actor, d, S, scale, t, style: Style):
                            (h_[0] + math.cos(a - 0.2) * r_ * 0.8, h_[1] + math.sin(a - 0.2) * r_ * 0.8)],
                           fill=(240, 236, 220))
 
+    cape = getattr(L, "cape", None)
+    if cape:                                          # a cape hangs from the shoulders behind everything and swings
+        nk_, hp_ = pt(J["neck"]), pt(J["hip"])
+        sway = math.sin(t * 2.2) * 0.03 * u - f * min(0.14 * u, abs(getattr(actor, "_vx", 0.0)) * 0.04 * u)
+        cw = 0.09 * u * girth
+        cp = [(nk_[0] - f * cw * 0.2, nk_[1] + 0.01 * u), (nk_[0] + f * cw * 0.6, nk_[1] + 0.01 * u),
+              (hp_[0] - f * 0.02 * u + sway, hp_[1] + 0.2 * u), (hp_[0] - f * 0.2 * u + sway, hp_[1] + 0.17 * u)]
+        d.polygon(cp, fill=tuple(cape), outline=ink)
     # far side first
     leg(1, True)
     arm(1, True)
@@ -380,12 +388,6 @@ def draw_figure(actor, d, S, scale, t, style: Style):
     # near side on top
     leg(0, False)
     arm(0, False)
-    cape = getattr(L, "cape", None)
-    if cape:                                          # a cape hangs from the shoulders behind the body and swings
-        sway = math.sin(t * 2.2) * 0.04 * u - f * min(0.12 * u, abs(getattr(actor, "_speed", 0.0)) * 0.03 * u)
-        cp = [(top[0] - f * ws * 0.3, top[1]), (top[0] + f * ws * 0.1, top[1]),
-              (hip[0] - f * 0.12 * u + sway, hip[1] + 0.28 * u), (hip[0] - f * 0.3 * u + sway, hip[1] + 0.25 * u)]
-        d.polygon(cp, fill=tuple(cape), outline=ink)
     hold = getattr(L, "holds", None)
     if hold == "staff":
         h_ = pt(J["arms"][0][2])
@@ -501,7 +503,7 @@ def grade(img: Image.Image, style: Style, t: float, frame_no: int = 0) -> Image.
         ink = np.clip((e - thr) / 30, 0, 1) * style.ink_edges
         a = a * (1 - ink[..., None] * 0.85)
     if style.contrast != 1.0:
-        a = (a - 128) * style.contrast + 128
+        a = (a - 128) * np.float32(style.contrast) + 128
     lum = (a[..., 0] * 0.299 + a[..., 1] * 0.587 + a[..., 2] * 0.114)[..., None]
     if style.key_hue is not None:                    # selective colour: one hue survives
         hsv = np.asarray(Image.fromarray(np.clip(a, 0, 255).astype(np.uint8)).convert("HSV"), dtype=np.float32)
@@ -514,7 +516,7 @@ def grade(img: Image.Image, style: Style, t: float, frame_no: int = 0) -> Image.
     if style.split > 0:
         lo = np.clip(1 - lum / 128, 0, 1)
         hi = np.clip((lum - 128) / 128, 0, 1)
-        a = a + style.split * (lo * np.array([-10, 4, 18]) + hi * np.array([18, 6, -14]))
+        a = a + style.split * (lo * np.array([-10, 4, 18], np.float32) + hi * np.array([18, 6, -14], np.float32))
     if style.posterize:                              # tonal steps on brightness only: hues stay, no colour bands
         a = np.clip(a, 0, 255)
         lm = (a[..., 0] * 0.299 + a[..., 1] * 0.587 + a[..., 2] * 0.114)[..., None]
@@ -526,7 +528,7 @@ def grade(img: Image.Image, style: Style, t: float, frame_no: int = 0) -> Image.
         a = a * (1 + _paper(W, H) * 0.08 * style.paper)
     if style.grain > 0:
         rng = np.random.default_rng(frame_no + 1)
-        a = a + rng.normal(0, 255 * style.grain, (H, W, 1)).astype(np.float32)
+        a = a + rng.standard_normal((H, W, 1), dtype=np.float32) * np.float32(255 * style.grain)
     if style.vignette > 0:
         a = a * _vignette(W, H, style.vignette)
     out = Image.fromarray(np.clip(a, 0, 255).astype(np.uint8))

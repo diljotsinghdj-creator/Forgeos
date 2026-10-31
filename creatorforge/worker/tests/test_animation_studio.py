@@ -2,6 +2,7 @@
 storyboard turns unfamiliar scripts into structured plans, and an interrupted render resumes identically."""
 import json
 from types import SimpleNamespace
+import numpy as np
 
 from creatorforge_worker.animation import camera, qc, storyboard
 from creatorforge_worker.animation.rig2d import Look
@@ -311,7 +312,7 @@ def test_an_unfamiliar_script_gets_its_cast_objects_and_places():
     assert ("Pelican", "drop", "Girl") in verbs and ("Tomas", "give", "Girl") in verbs
     sc, T = storyboard.stage(board)
     how = {a["for"]: (a["kind"], a["how"]) for a in sc.asset_log}
-    assert how["cheeky pelican"][0] == "bird" and how["boat"][0] == "boat"
+    assert how["cheeky pelican"] == ("pelican", "rigged creature") and how["boat"][0] == "boat"   # its own anatomy
     assert how["lighthouse"][1] == "placeholder"               # nothing in the library: labelled, not invented
     assert qc.inspect(qc.record(sc, T)).clean
 
@@ -401,3 +402,113 @@ def test_a_sourced_figure_becomes_a_card_that_shows_the_number():
     sc = SimpleNamespace(actors=[])
     card = VR.stage(sc, plan, 0.0, 4.0)[0]
     assert card.kind == "stat" and card.label == "73 years" and card.data["source"] == "Court, 2023"
+
+
+# ---- universal studio: styles, worlds, anatomy, formats ------------------------------------------------------------
+def _frame_of(style=None, world="park", species=None, t=1.0, size=(320, 180)):
+    from creatorforge_worker.animation import anatomy, cinematic, scene2d, worlds
+    from creatorforge_worker.animation.rig2d import Look
+    from creatorforge_worker.animation.stick import Actor, World
+    sc = scene2d.Scene(width=size[0], height=size[1], fps=24, ss=1, ppm=60 * size[1] / 180, ground=0.8, horizon=0.6)
+    if world == "park":
+        scene2d.park(sc)
+    else:
+        worlds.build(sc, world)
+    a = Actor(Look(name="Ana", hair="long"), x=-1.0, facing=1, world=World(), seed=1)
+    a.faceless = False
+    sc.actors = [a]
+    if species:
+        p = anatomy.prop(species, species, -3.0)
+        p.move(0.0, 3.0, 3.0, 0.0, 0.0, "linear")
+        sc.actors.append(p)
+    sc.look_style = cinematic.get(style) if style else None
+    for i in range(int(t * 24)):
+        sc._advance(i / 24, 1 / 24)
+    return np.asarray(sc.frame(t, 1 / 24), dtype=np.int16)
+
+
+def test_every_production_style_renders_and_looks_different():
+    from creatorforge_worker.animation import cinematic
+    base = _frame_of(None)
+    for name in cinematic.PRESETS:
+        if name == "stick":
+            continue
+        img = _frame_of(name)
+        assert img.shape == base.shape and np.abs(img - base).mean() > 2.0, name     # a different look, same shot
+    st = cinematic.from_doc({"name": "graphic_novel", "stylization": 0.2, "key_hue": 0})
+    hi = cinematic.from_doc({"name": "graphic_novel", "stylization": 1.0})
+    assert st.halftone < hi.halftone and st.outline < hi.outline and st.key_hue == 0
+    assert cinematic.choose("The pharaoh's empire and an ancient temple", "story")[0] == "graphic_novel"
+    assert cinematic.choose("anything", "political")[0] == "stick"                    # documentaries stay plain
+    assert cinematic.choose("anything", "story", "noir")[0] == "noir"                 # the user's choice wins
+
+
+def test_selective_colour_keeps_only_the_key_hue():
+    from PIL import Image
+    from creatorforge_worker.animation import cinematic
+    img = Image.new("RGB", (40, 20), (40, 90, 220))
+    img.paste((220, 30, 30), (0, 0, 20, 20))
+    out = np.asarray(cinematic.grade(img, cinematic.get("stick", overrides={"key_hue": 0.0}), 0.0), dtype=int)
+    red, blue = out[10, 5], out[10, 30]
+    assert red[0] - red[2] > 100                      # the red stays red
+    assert max(blue) - min(blue) < 8                  # the blue turns grey
+
+
+def test_every_world_builds_and_its_living_parts_move():
+    from creatorforge_worker.animation import worlds
+    seen = []
+    for name in worlds.WORLDS:
+        a = _frame_of(None, name, t=0.5)
+        b = _frame_of(None, name, t=1.5)
+        seen.append(a.mean(axis=(0, 1)))
+        if name in ("ocean", "underwater", "space", "microscopic", "mind", "castle"):
+            assert np.abs(a - b).mean() > 0.05, name  # water, stars, cells, shapes and banners move
+    assert len({tuple(np.round(m / 8)) for m in seen}) >= len(seen) - 3   # they are different places
+
+
+def test_creature_rigs_plant_their_feet_and_change_gait_with_speed():
+    from creatorforge_worker.animation import anatomy
+    C, duty = 1.0, 0.65
+    body = [0.0]
+    feet = []
+    for k in range(10):                               # through a stance: body moves, foot stays put
+        u = k / 10 * duty * 0.99
+        dist = u * C
+        rel, lift = anatomy.foot_offset(u, duty, C, 0.1)
+        feet.append(dist + rel)
+        assert lift == 0.0
+    assert max(feet) - min(feet) < 1e-9
+    assert anatomy._gait(0.8, 0.9)[0] == "walk" and anatomy._gait(3.0, 0.9)[0] == "trot"
+    assert anatomy._gait(9.0, 0.9)[0] == "gallop"
+    for sp in anatomy.SPECIES:                        # every anatomy draws, and moves between frames
+        a = _frame_of(None, "park", sp, t=1.0)
+        b = _frame_of(None, "park", sp, t=1.2)
+        assert np.abs(a - b).mean() > 0.02, sp
+    assert anatomy.species_of("a cheeky seagull") == "pelican" and anatomy.species_of("two wolves") == "wolf"
+
+
+def test_styled_production_with_creatures_renders_in_portrait(tmp_path):
+    from creatorforge_worker.animation import production as P
+    doc = {"title": "u", "style": "cartoon", "format": {"aspect": "9:16", "fps": 30}, "scenes": [
+        {"id": "a", "layers": {"world": "forest"},
+         "cast": [{"name": "Bolt", "species": "robot", "x": -1.0}, {"name": "Mia", "hair": "ponytail", "x": 1.0,
+                                                                   "facing": -1, "height": 1.2}],
+         "creatures": [{"name": "Rex", "species": "dog", "x": 3.0, "facing": -1}],
+         "steps": [{"t": 0.1, "do": "move", "what": "Rex", "to": 1.8, "dur": 0.8, "wait": False},
+                   {"t": 0.1, "who": "Bolt", "do": "dance", "beats": 2, "bpm": 140, "wait": False},
+                   {"t": 0.3, "do": "animal", "what": "Rex", "act": "roar", "dur": 0.5, "wait": False},
+                   {"t": 0.3, "do": "fx", "kind": "impact", "text": "WOOF!", "at": "Rex", "dur": 0.6, "wait": True}]}]}
+    rep = P.render(doc, tmp_path / "u.mp4", "preview")
+    assert rep["video"]["missing"] == 0 and rep["delivery"]["sync_ok"]
+    w, h = rep["delivery"]["size"]
+    assert h > w and abs(w / h - 9 / 16) < 0.01 and rep["delivery"]["fps"] == 30.0
+
+
+def test_director_chooses_style_and_world_and_the_user_can_override():
+    from creatorforge_worker.animation import studio
+    script = "The knight rides to the castle. In the kingdom, a dragon wakes. The wizard casts a spell."
+    doc, notes = studio.make(script, "Knight")
+    assert doc["style"] in ("painterly", "graphic_novel") and doc["scenes"][0]["layers"]["world"] == "castle"
+    assert any(d.startswith("style:") for d in notes["decisions"])
+    doc2, _ = studio.make(script, "Knight", style="noir", world="forest")
+    assert doc2["style"] == "noir" and {s["layers"]["world"] for s in doc2["scenes"]} == {"forest"}

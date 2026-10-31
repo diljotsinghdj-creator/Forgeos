@@ -250,11 +250,11 @@ GAITS = {  # footfall offsets (LH, LF, RH, RF), duty factor
 
 def _gait(speed, leg):
     fr = speed * speed / (9.8 * max(0.05, leg))     # Froude number: how animals choose their gait
-    if fr < 0.3:
+    if fr < 0.4:                                     # walk-trot near 0.5, trot-gallop near 2.5 (Alexander)
         return "walk", 0.0
-    if fr < 1.0:
-        return "trot", min(1.0, (fr - 0.3) / 0.25)
-    return "gallop", min(1.0, (fr - 1.0) / 0.5)
+    if fr < 2.2:
+        return "trot", min(1.0, (fr - 0.4) / 0.3)
+    return "gallop", min(1.0, (fr - 2.2) / 0.6)
 
 
 def _offsets(speed, leg):
@@ -269,6 +269,15 @@ def _offsets(speed, leg):
         offs.append((x0 + dd * k) % 1)
     duty = a[1] + (b[1] - a[1]) * k
     return offs, duty, g
+
+
+def foot_offset(u: float, duty: float, C: float, lift_h: float) -> tuple:
+    """A foot's (offset ahead of its hip/shoulder, height) at gait phase u. In stance (u < duty) the offset falls by
+    exactly the distance the body travels, so the foot stays planted on the ground; in swing it arcs forward."""
+    if u < duty:
+        return C * duty * (0.5 - u / duty), 0.0
+    s_ = (u - duty) / (1 - duty)
+    return C * duty * (-0.5 + s_), lift_h * math.sin(math.pi * s_)
 
 
 def _quad(d, S, scale, sp, x, y, f, dist, speed, vy, t, acts, ink, o, colour, seed, wings=False, flying=False):
@@ -303,12 +312,7 @@ def _quad(d, S, scale, sp, x, y, f, dist, speed, vy, t, acts, ink, o, colour, se
         leg_w = [Hb * 0.36 * scale, Hb * 0.32 * scale, Hb * 0.33 * scale]
 
     def foot_target(i, root_w, front):
-        u = (ph + offs[i]) % 1
-        if u < duty:
-            rel, lift = C * duty * (0.5 - u / duty), 0.0
-        else:
-            s_ = (u - duty) / (1 - duty)
-            rel, lift = C * duty * (-0.5 + s_), leg * (0.22 if front else 0.18) * math.sin(math.pi * s_)
+        rel, lift = foot_offset((ph + offs[i]) % 1, duty, C, leg * (0.22 if front else 0.18))
         rest = 0.04 * L if front else -0.02 * L
         rel = rest * (1 - mv) + rel * mv
         lift *= mv
@@ -583,8 +587,9 @@ def _dragon_wing(d, S, scale, sp, sh_w, f, t, flying, ink, o, col, far):
     span = sp.wingspan * scale * (0.85 if far else 1.0)
     if flying:
         th = math.sin(TAU * sp.flap_hz * t) * 0.9 + 0.25
-    else:
-        th = 1.25 + 0.05 * math.sin(t * 1.2)          # half folded, held up
+    else:                                             # folded along the back, breathing a little
+        span *= 0.55
+        th = 0.55 + 0.05 * math.sin(t * 1.2)
     root = S(sh_w[0] - f * sp.Hb * 0.2, sh_w[1] + sp.Hb * 0.35)
     elbow = (root[0] - f * math.cos(th) * span * 0.35, root[1] - math.sin(th) * span * 0.35)
     lag = th * 1.25 - 0.2 if flying else th + 0.4
@@ -612,7 +617,8 @@ def _fire(d, S, scale, sp, hw, f, t, k):
         spread = (rng.random() - 0.5) * u * 1.2 * scale
         x, y = mouth[0] + f * dist, mouth[1] + spread + u * u * 0.6 * scale
         r = (0.08 + u * 0.4) * scale
-        col = (255, int(230 - 160 * u), int(120 - 110 * u), int(230 * (1 - u)))
+        core = 1 - u
+        col = (255, int(60 + 190 * core * core), int(10 + 120 * core ** 3), int(255 * (1 - 0.65 * u)))
         d.ellipse([x - r, y - r, x + r, y + r], fill=col)
 
 
@@ -857,7 +863,8 @@ def draw(p, d, S, scale, t, style=None) -> bool:
     seed = (sum(map(ord, p.name if hasattr(p, "name") else species)) % 97) / 10.0
     colour = p.data.get("colour")
     flying = acts.get("fly", 0.0) > 0.5 or (sp.rig in ("bird", "dragon", "butterfly") and
-                                            (abs(vy) > 0.05 or (y > 0.25 and abs(speed) > 0.2)))
+                                            (abs(vy) > 0.05 or (y > 0.25 and abs(speed) > 0.2) or
+                                             (sp.rig in ("dragon", "butterfly") and y > 0.3)))   # hovers
     if sp.rig in ("quad", "dragon"):
         gy = y
         _shadow(d, S, scale, x, 0.0 if flying else gy, sp.L * 0.55, flying, y)
