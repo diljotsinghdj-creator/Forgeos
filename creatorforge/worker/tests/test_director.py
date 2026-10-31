@@ -386,3 +386,14 @@ def test_a_picture_is_drawn_without_the_face_lock_if_the_adapter_is_missing(tmp_
     monkeypatch.setattr(d, "step_callback", lambda pipe: {})
     prov.generate("a shop window", "", 64, 64, 1, tmp_path / "out.png")
     assert (tmp_path / "out.png").is_file() and all("ip_adapter_image" not in c for c in calls)
+
+
+def test_whole_long_form_script_fits_in_one_production():
+    """A 45-60 min documentary is pasted as one script: ~7,000 words is accepted, over an hour is refused."""
+    import pytest
+    from creatorforge_worker.director import MAX_DURATION_S, ProductionSpec
+    line = "This sentence is part of a long documentary narration about an election and its results. "
+    spec = ProductionSpec.from_dict({"script": line * 470, "template": "youtube_longform", "aspect": "16:9"})
+    assert 2400 <= spec.duration_s <= MAX_DURATION_S          # ~7,000 words, ~47 min
+    with pytest.raises(ValueError):
+        ProductionSpec.from_dict({"script": line * 700, "template": "youtube_longform"}).validate()

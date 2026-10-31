@@ -172,7 +172,10 @@ class ProductionSpec:
                 raise ValueError("script has no speakable sentences")
             if not self.idea:
                 self.idea = script_title(self.script)
-            self.duration_s = max(10, min(MAX_DURATION_S, round(len(self.script.split()) / WORDS_PER_SECOND)))
+            spoken_s = round(len(self.script.split()) / WORDS_PER_SECOND)
+            if spoken_s > MAX_DURATION_S:
+                raise ValueError(f"script is too long: about {spoken_s // 60} minutes of narration (max {MAX_DURATION_S // 60})")
+            self.duration_s = max(10, spoken_s)
         if len(self.idea) < 5:
             raise ValueError("idea must be at least 5 characters")
         if len(self.idea) > 4000:
