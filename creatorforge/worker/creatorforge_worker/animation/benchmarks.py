@@ -894,8 +894,7 @@ def film_b() -> dict:
     BX = 0.0                                                    # the bus stop bench
     street = [{"name": "shop", "asset": "shop", "x": -6.2}, {"name": "lamp", "asset": "lamp", "x": 3.2, "z": 1.3},
               {"name": "tree", "asset": "tree", "x": 8.5}, {"name": "house", "asset": "house", "x": -15.0},
-              {"name": "stop", "kind": "label", "x": BX - 1.0, "y": 1.6, "w": 0.7, "h": 0.32, "label": "BUS",
-               "color": [40, 90, 170], "data": {"persist": True}},
+              {"name": "stop", "asset": "sign", "x": BX - 1.25, "z": 1.12, "data": {"text": "BUS STOP"}},
               {"name": "seat", "kind": "bench", "x": BX, "y": 0.0, "w": 1.3, "h": 0.9, "data": {"seat": 0.45, "back": 1}}]
     on_bench = {"platforms": [[BX - 0.6, BX + 0.6, 0.45]]}    # only while someone stands on the bench
     S = []
@@ -907,22 +906,22 @@ def film_b() -> dict:
         step("symbol", "Raj", t="+0.0", text="7:59!", dur=1.2),
     ], place="outdoors", timing="comedy", layers={"light": [[0, "dawn"], [8, "day"]]}))
     S.append(scene("b1", "Late again", [raj(-12.0)], [], [
-        step("run", "Raj", t=0.2, to=BX - 1.0, speed=3.2),
+        step("run", "Raj", t=0.2, to=BX + 0.35, speed=3.2),       # sits back onto the bench
         step("express", "Raj", t="+0.0", face="nervous"),
         step("say", "Raj", t="+0.1", text="Made it! ...right?"),
         step("look", "Raj", t="+0.1", at=[9.0, 1.2], dur=1.6),
         step("sit", "Raj", t="+0.2", seat=0.45, hold=3.0),
         step("gesture", "Raj", t="-2.6", name="phone", dur=2.2, wait=False),
+        step("walk", "Raj", t="+0.2", to=BX - 0.9, speed=0.8),   # up, a restless step away from the bench
     ], place="outdoors", cut=False, timing="comedy", layers={"light": [[0, "day"]]}))
-    S.append(scene("b2", "A dog", [raj(BX - 1.0), ivy(10.0)], [{"name": "dog", "asset": "a small brown dog", "x": 11.2}],
+    S.append(scene("b2", "A dog", [raj(BX - 0.9), ivy(10.0)], [{"name": "dog", "asset": "a small brown dog", "x": 11.2}],
                    [
         step("walk", "Ivy", t=0.3, to=2.2, speed=1.2, wait=False),
         step("move", t="+0.0", what="dog", to=0.9, speed=1.4),
         step("look", "Raj", t="-1.2", at="dog", dur=1.6),
         step("double_take", "Raj", t="+0.0", at="dog"),
         step("express", "Raj", t="+0.0", face="scared"),
-        step("step_back", "Raj", t="+0.1", dist=0.4),
-        step("jump", "Raj", t="+0.1", dist=0.6, height=0.35, land=0.45),
+        step("jump", "Raj", t="+0.1", dist=0.9, height=0.35, land=0.45),     # up onto the seat
         step("symbol", "Raj", t="+0.0", text="!!", dur=1.0),
         step("move", t="-0.4", what="dog", to=0.2, dur=0.8),
         step("say", "Ivy", t="+0.2", text="He's friendly!"),
@@ -1023,8 +1022,8 @@ def film_b() -> dict:
         step("express", "Raj", t="+0.0", face="embarrassed"),
         step("walk", "Ivy", t="-0.6", to=-0.2, speed=1.6),
         step("comfort", "Ivy", t="+0.1", to="Raj", dur=1.6),
-        step("move", t="+0.2", what="bus2", to=40.0, speed=6.0, ease="in", wait=False),
-        step("walk", "Crowd", t="+0.0", to=12.0, speed=1.4, spacing=0.6),
+        step("walk", "Crowd", t="+0.2", to=12.0, speed=1.4, spacing=0.6, wait=False),
+        step("move", t="+0.0", what="bus2", to=40.0, speed=6.0, ease="in"),     # gone before the scene ends
     ], place="outdoors", cut=False, timing="comedy",
         layers={"light": [[0, "storm"], [1.0, "dusk"]], "weather": [[0, 1.2, "rain", 1.0]]}))
     S.append(scene("b8", "Missed it again", [raj(1.0, 1), ivy(-0.2, 1)], [], [

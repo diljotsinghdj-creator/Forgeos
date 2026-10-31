@@ -179,9 +179,9 @@ def stage(sc, plan: VisualPlan, t0: float, t1: float, x: float = 3.2, actors: di
             text = "Allegation - unverified" + (f" (made by {e['by']})" if e.get("by") else "")
             added.append(Prop("sign", x, 1.2, 2.6, 0.7, label=text, data={"show": show}))
         elif k == "stat":
-            added.append(Prop("stat", x, 1.3, 1.9, 0.9, data={
-                "value": e["value"], "label": e["source"] or "figure from the script",
-                "pop": [(t0 + 0.4, 0.0, "linear"), (t0 + 0.9, 1.0, "back")]}))
+            added.append(Prop("stat", x, 1.3, 2.2, 1.0, label=e["value"], data={      # the card draws its label
+                "value": e["value"], "sub": "" if e["source"] else "figure from the script",
+                "source": e["source"], "pop": [(t0 + 0.4, 0.0, "linear"), (t0 + 0.9, 1.0, "back")]}))
         elif k == "ballot_box":
             added.append(Prop("crate", x, 0.0, 0.6, 0.6, label="VOTES"))
         elif k == "reconstruction" or k == "exaggerate":

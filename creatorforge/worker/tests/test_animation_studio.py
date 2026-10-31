@@ -391,3 +391,13 @@ def test_the_whole_story_is_planned_and_checked_before_rendering(tmp_path):
     assert any(st["do"] == "wait" for st in doc["scenes"][-1]["steps"])           # the ending breathes
     with pytest.raises(ValueError, match="allegation"):                         # never acted out, never unsourced
         studio.film("The minister took bribes from a builder.", tmp_path / "x.mp4")
+
+
+def test_a_sourced_figure_becomes_a_card_that_shows_the_number():
+    from types import SimpleNamespace
+    from creatorforge_worker.animation import visual_reasoning as VR
+    plan = VR.reason("For 73 years Parliament made no such law.", [{"claim": "for decades Parliament made no law",
+                                                                     "source": "Court, 2023"}])
+    sc = SimpleNamespace(actors=[])
+    card = VR.stage(sc, plan, 0.0, 4.0)[0]
+    assert card.kind == "stat" and card.label == "73 years" and card.data["source"] == "Court, 2023"
