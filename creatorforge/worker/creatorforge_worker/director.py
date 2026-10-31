@@ -62,6 +62,11 @@ class Character:
     description: str
 
 
+# A whole long-form documentary (e.g. 50-60 min) fits in one script; long scripts render in one job.
+MAX_SCRIPT_CHARS = 150_000
+MAX_DURATION_S = 3600
+
+
 @dataclass
 class ProductionSpec:
     idea: str
@@ -161,19 +166,19 @@ class ProductionSpec:
         if self.script:
             if len(self.script) < 10:
                 raise ValueError("script must be at least 10 characters")
-            if len(self.script) > 20000:
-                raise ValueError("script is too long (max 20000 characters)")
+            if len(self.script) > MAX_SCRIPT_CHARS:
+                raise ValueError(f"script is too long (max {MAX_SCRIPT_CHARS} characters)")
             if not split_sentences(self.script):
                 raise ValueError("script has no speakable sentences")
             if not self.idea:
                 self.idea = script_title(self.script)
-            self.duration_s = max(10, min(900, round(len(self.script.split()) / WORDS_PER_SECOND)))
+            self.duration_s = max(10, min(MAX_DURATION_S, round(len(self.script.split()) / WORDS_PER_SECOND)))
         if len(self.idea) < 5:
             raise ValueError("idea must be at least 5 characters")
         if len(self.idea) > 4000:
             raise ValueError("idea is too long (max 4000 characters)")
-        if not 10 <= self.duration_s <= 900:
-            raise ValueError("duration_s must be between 10 and 900")
+        if not 10 <= self.duration_s <= MAX_DURATION_S:
+            raise ValueError(f"duration_s must be between 10 and {MAX_DURATION_S}")
         if self.template not in TEMPLATES:
             raise ValueError(f"unknown template '{self.template}'")
         if not self.aspect:

@@ -25,7 +25,7 @@ from .config import Config
 from . import accounts as acct
 from . import autopilot, clipper, publish
 from . import chat as director_chat
-from .director import Character, ProductionSpec
+from .director import MAX_SCRIPT_CHARS, Character, ProductionSpec
 from .library import ASSET_KINDS, Library
 from .media import ff
 from .media import verify
@@ -844,7 +844,7 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
             if str(body.get(k, "")).strip():
                 item["idea"][k] = str(body[k]).strip()[:400]
         if str(body.get("script", "")).strip():
-            item["idea"]["script"] = str(body["script"]).strip()[:20000]
+            item["idea"]["script"] = str(body["script"]).strip()[:MAX_SCRIPT_CHARS]
         if body.get("day"):
             item["day"] = str(body["day"])[:10]
         return channels.save(ch)

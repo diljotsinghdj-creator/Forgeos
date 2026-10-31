@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import re
 
+from .director import MAX_DURATION_S, MAX_SCRIPT_CHARS
 from .providers.base import ProviderError
 from .templates import STYLE_PRESETS, TEMPLATES
 
@@ -37,9 +38,9 @@ def _clean_draft(d: dict, previous: dict) -> dict:
     out["title"] = str(out["title"]).strip()[:100]
     out["idea"] = str(out["idea"]).strip()[:3000]
     out["hook"] = str(out["hook"]).strip()[:160]
-    out["script"] = str(out["script"]).strip()[:20000]
+    out["script"] = str(out["script"]).strip()[:MAX_SCRIPT_CHARS]
     try:
-        out["duration_s"] = max(10, min(900, int(out["duration_s"])))
+        out["duration_s"] = max(10, min(MAX_DURATION_S, int(out["duration_s"])))
     except (TypeError, ValueError):
         out["duration_s"] = 45
     if out["template"] not in TEMPLATES:
