@@ -29,5 +29,7 @@ def test_an_outside_voice_over_is_matched_line_for_line(tmp_path):
     info = V.sync(tmp_path / "cf.mp4", words, lines, tmp_path / "vo.wav", tmp_path / "out.mp4", tmp_path / "r.json")
     dur = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0",
                                 str(tmp_path / "out.mp4")], capture_output=True, text=True).stdout)
-    assert abs(dur - 9.0) < 0.1 and len(json.loads((tmp_path / "r.json").read_text())["lines"]) == 3
+    assert abs(info["voiceover_seconds"] - 9.0) < 0.1                     # the voice-over sets the length...
+    assert abs(dur - info["seconds_after"]) < 0.1 and info["end_card_seconds"] > 0.3   # ...then the end card plays
+    assert len(json.loads((tmp_path / "r.json").read_text())["lines"]) == 3
     assert abs(info["lines"][1]["voiceover_start"] - 3.6) < 0.05
