@@ -1,0 +1,74 @@
+# English R3 - English narration for ElevenLabs (32 lines, 4 chunks)
+# Generate each chunk separately (paste the text between the CHUNK lines, not these # lines),
+# then join the chunk MP3s into R3.mp3 - see README_ELEVENLABS.txt.
+
+===== CHUNK 1 of 4 (2628 characters) =====
+This chapter has no jokes. Some of it is hard to hear. We'll give you the numbers, say where they come from, and tell you what each side says about them.
+<break time="0.6s" />
+There are more than two million Palestinians in Gaza. Not one of them could vote in this election. Neither could the roughly three million Palestinians in the West Bank. Their lives were shaped by the last government, and will be shaped by the next one.
+<break time="0.8s" />
+After the October seventh attack, Israel went to war in Gaza with the stated aims of destroying Hamas and bringing the hostages home. The war lasted two years before a ceasefire.
+<break time="0.6s" />
+Gaza's Health Ministry, which is part of the Hamas-run administration, counts more than seventy-four thousand Palestinians killed since October 2023. The United Nations has generally considered its figures reliable. Israel disputes them and says many of the dead were fighters. The ministry does not separate civilians from combatants.
+<break time="0.6s" />
+What isn't disputed is the scale of what happened to the place. Most of Gaza's buildings were damaged or destroyed. Most of its people were displaced, many of them several times. UN-backed experts declared famine in parts of Gaza in 2025. Israel rejected that finding.
+<break time="0.8s" />
+In October 2025, a ceasefire built on President Trump's plan took effect. All twenty living hostages came home that month. The remains of the last deceased hostage, Ran Gvili, were returned in January 2026. For the first time since October 2023, no hostages are held in Gaza.
+<break time="0.6s" />
+The plan was endorsed by the UN Security Council in Resolution 2803 and set up a so-called Board of Peace, chaired by Trump. It promised Hamas would disarm, an international force would deploy, and Israeli troops would pull back in stages.
+<break time="0.6s" />
+A year later, that is not what Gaza looks like. Israel controls a growing share of the Strip, reported at around sixty-five percent. Hamas has not disarmed. And the strikes never fully stopped.
+<break time="0.8s" />
+UNICEF says that more than three hundred and forty children have been killed in Gaza since the ceasefire was announced. Gaza's Health Ministry says around fifteen hundred people in total. Israel says it is responding to violations and threats from Hamas. Five Israeli soldiers have been killed in Gaza in the same period.
+<break time="1.0s" />
+More than a hundred aid groups say the ceasefire exists, in their words, in name only. Physicians for Human Rights Israel reports that no hospital in Gaza is working at full capacity.
+<break time="0.8s" />
+
+===== CHUNK 2 of 4 (2705 characters) =====
+We want to be clear about what those numbers are. They're not a debating point. Each of them is somebody's child, somebody's parent, somebody's neighbour, killed in a place too dangerous for most foreign journalists to enter freely, even now.
+<break time="0.6s" />
+And there is a second grief in this story. In Israel, the families of the hostages spent two years campaigning, every week, in a Tel Aviv square that became known as Hostages Square. Many of them felt their government put politics ahead of bringing their loved ones home. The government said military pressure was what brought them back.
+<break time="0.6s" />
+Both of those griefs are real. A country can contain both. A film can too. What it can't do, honestly, is pretend that one of them cancels the other.
+<break time="0.6s" />
+For people in Gaza today, daily life after the war still means tents for hundreds of thousands, water that has to be trucked or carried, schools that are mostly rubble or shelters, and no clear date for reconstruction. Aid agencies say crossings open and close unpredictably. Israel says it lets in large volumes of aid and blames Hamas for diverting it. Aid agencies dispute the scale of diversion.
+<break time="0.8s" />
+So what did the candidates promise Gaza? Netanyahu says Hamas will never rule it again and that Israel will keep security control. He has opposed a role for the Palestinian Authority.
+<break time="0.6s" />
+And Eisenkot? He pledged to end Hamas rule within eighteen months of taking office. Reports say he would rule out annexing Gaza or building settlements there, and would accept a reformed Palestinian Authority over Hamas. He also says Hamas must be disarmed before Israel withdraws.
+<break time="0.6s" />
+And on a Palestinian state, the two men who want to run Israel say the same thing. Eisenkot wrote: there is no Palestinian state, and under a government we form, no Palestinian state will be established. Netanyahu has said the same for years.
+<break time="0.8s" />
+That is the quiet consensus of this election. The main contest was about who should run the war, who should be blamed for October seventh, and whether Haredi men should serve. The question of what happens to five million Palestinians next was mostly not on the menu.
+<break time="0.8s" />
+Now the West Bank. Here the change of the last two years has been less visible from abroad, and possibly more permanent.
+<break time="0.6s" />
+The United Nations humanitarian office, OCHA, recorded more than thirteen hundred settler attacks that caused casualties or property damage in the first seven months of 2026, in about two hundred and fifty Palestinian communities. That's roughly six a day.
+<break time="0.8s" />
+
+===== CHUNK 3 of 4 (2515 characters) =====
+By late July, OCHA said eighteen Palestinians had been killed in incidents linked to settler violence in 2026, already more than in the whole of 2025, and more than twenty-three hundred people had been displaced. Human Rights Watch documented the pattern in an August report.
+<break time="0.8s" />
+Israel's government says it enforces the law against violent settlers and points to Palestinian attacks on Israelis in the West Bank. Critics, including Israeli human rights groups, say arrests and convictions of settlers are rare.
+<break time="0.6s" />
+Meanwhile, policy moved. In February 2026 the cabinet took decisions extending Israeli authority in the West Bank, which the UN human rights office warned amounted to steps toward annexation. Israel's defence minister, Israel Katz, has spoken of a hundred and four new settlements approved.
+<break time="0.8s" />
+And in August 2026, building tenders were reported for E1, the strip of land east of Jerusalem that has been frozen for decades under international pressure, because building there would cut the northern West Bank from the southern West Bank. Britain called it a red line.
+<break time="0.8s" />
+Eisenkot criticised the E1 tenders. Smotrich, the finance minister, attacked him for it. Which tells you that even between the camps, the argument about the West Bank is real. It's just not an argument about a Palestinian state.
+<break time="0.6s" />
+The war has also left Israeli civilians carrying real fear and loss. Tens of thousands of Israelis were evacuated from towns near Gaza and the Lebanese border, some for well over a year. Iranian missiles hit Israeli cities in 2025 and again in 2026. Ordinary people spent nights in shelters. That fear shapes how Israelis vote, and it's part of why so few candidates talk about Palestinian statehood.
+<break time="0.6s" />
+Inside Israel, Arab citizens face their own emergency, one that got little airtime in this campaign. Murders in Arab communities have hit record levels in recent years, according to the Abraham Initiatives, which tracks them. Arab leaders say the police fail them. That's one reason Ra'am talks about budgets and policing before anything else.
+<break time="0.8s" />
+Then there are the courts. In November 2024, the International Criminal Court issued arrest warrants for Netanyahu and his former defence minister, Yoav Gallant, for alleged war crimes and crimes against humanity in Gaza. Israel rejects the court's jurisdiction and calls the warrants absurd.
+<break time="0.8s" />
+
+===== CHUNK 4 of 4 (1250 characters) =====
+The court also issued a warrant for Hamas military commander Mohammed Deif, whom Israel says it killed. Israel has asked the court to withdraw the warrants. As of our cut-off, they stand. That limits where Netanyahu can travel, mostly to countries that don't enforce them.
+<break time="0.6s" />
+Separately, at the International Court of Justice, South Africa's case accusing Israel of genocide continues. Israel denies it and filed its formal response in March 2026. The next written rounds run to 2027 and 2029. A ruling on the merits is years away.
+<break time="0.6s" />
+Let's take stock, because we're halfway through and it's a lot. An election produced fifty-three, forty-eight and nineteen. The prime minister is on trial and still in office. There's no inquiry into the worst day in Israel's history. Gaza has a ceasefire on paper and deaths on the ground. The West Bank is changing fast. And two international courts are watching.
+<break time="0.6s" />
+We can't tell you what those courts will decide. Nobody can. What we can tell you is that the next Israeli government, whoever leads it, will inherit Gaza, the West Bank, two international cases, and five million people with no vote and very little hope that this election was about them.

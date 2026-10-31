@@ -1,0 +1,78 @@
+# English R2 - English narration for ElevenLabs (34 lines, 4 chunks)
+# Generate each chunk separately (paste the text between the CHUNK lines, not these # lines),
+# then join the chunk MP3s into R2.mp3 - see README_ELEVENLABS.txt.
+
+===== CHUNK 1 of 4 (2596 characters) =====
+Benjamin Netanyahu has been prime minister of Israel for longer than anyone else, including the country's founder, David Ben-Gurion. He first took office in 1996, when the hottest piece of technology in most homes was a fax machine.
+<break time="0.6s" />
+He has lost power and come back. He has been written off and come back. At this point, writing his political obituary is less journalism than a seasonal tradition, like pumpkin spice.
+<break time="0.8s" />
+And he has done all of this while on trial. In 2019 he was indicted in three cases, known as one thousand, two thousand, and four thousand.
+<break time="0.8s" />
+Case one thousand alleges he received expensive gifts from wealthy friends in return for favours. Case two thousand alleges he discussed better newspaper coverage with a publisher. Case four thousand, the most serious, alleges regulatory benefits for a telecoms tycoon in return for favourable coverage on a news site.
+<break time="0.6s" />
+The charges are bribery, fraud and breach of trust. He denies all of them. He calls the case a fabrication. There has been no verdict. So: he is a defendant, not a convict, and we'll treat him exactly that way.
+<break time="0.6s" />
+The trial started in 2020. His own testimony began in December 2024. And it is still going. Israeli justice moves slowly, which may be the one thing the prime minister and his critics fully agree is convenient for somebody.
+<break time="0.7s" />
+In November 2025, Netanyahu asked President Herzog for a pardon, in the middle of the trial, which has no precedent in Israel. President Donald Trump publicly called for him to be pardoned too.
+<break time="0.8s" />
+In April 2026, Herzog put the decision off. He said he wanted to try to reach a plea deal first, and invited both sides to talks. Legal experts in Israel have argued that any plea deal should require Netanyahu to leave public life. As of our cut-off, there is no deal and no pardon.
+<break time="0.6s" />
+But the trial is not the heaviest thing he carries into this election. That is October the seventh, 2023.
+<break time="1.0s" />
+That morning, Hamas-led gunmen broke through the Gaza border fence and attacked Israeli towns, army posts and a music festival. Around twelve hundred people were killed, most of them civilians. Two hundred and fifty-one people were taken into Gaza as hostages.
+<break time="1.0s" />
+It was the deadliest day for Jewish people since the Holocaust. It happened on Netanyahu's watch. And three years later, Israel still has not held a state commission of inquiry into how it happened.
+<break time="0.8s" />
+
+===== CHUNK 2 of 4 (2665 characters) =====
+A state commission is the tool Israel normally uses for disasters. It's led by a judge appointed by the Supreme Court's president. Its findings have ended careers before. Which may explain why some careers are in no hurry to start one.
+<break time="0.8s" />
+Instead, in July 2026, the coalition passed the first reading of a different bill. It would create a commission whose six members are chosen by the Knesset, by politicians. It passed fifty-nine to nothing, because the opposition walked out.
+<break time="0.6s" />
+The October Council, a group representing bereaved families, called the bill an attempt to whitewash the government's failures. Opposition leaders promised a real state commission in the first month of a new government. The bill can carry over into the new Knesset. So can the argument.
+<break time="0.8s" />
+Netanyahu's defenders have their own case. They argue that the security establishment, not the prime minister alone, failed that day, that the war that followed broke Hamas's military power and pushed back Hezbollah and Iran, and that the voters, not commissions, should judge him.
+<break time="0.6s" />
+And in fairness, a lot of voters agreed with them. Fifty-three seats is not a collapse. It's the largest bloc in the Knesset. It's just not a majority, and in Israel, the largest bloc that isn't a majority is called the opposition with better furniture.
+<break time="0.8s" />
+It helps to remember how often this has happened. Netanyahu lost power in 1999. He came back in 2009. He was pushed out in 2021 by an unlikely coalition of right, centre, left and an Arab party, led first by Naftali Bennett, then Yair Lapid. That government lasted about a year and a half.
+<break time="0.6s" />
+In late 2022 he returned, at the head of the most right-wing government in Israel's history, with Itamar Ben-Gvir and Bezalel Smotrich in senior cabinet roles. Within weeks, that government launched a plan to curb the power of the Supreme Court.
+<break time="0.8s" />
+Hundreds of thousands of Israelis protested, week after week, for most of 2023. Reservists, including air force pilots, said they would stop volunteering. Supporters said they were restoring the power of elected officials over unelected judges. Opponents said they were removing the only real check on a government in a country with no written constitution.
+<break time="0.8s" />
+Then came October the seventh, and the country that had been arguing in the streets went to war together. Many of the same reservists who had protested were the first to report for duty. That detail matters, because the arguments of 2023 never went away. They were paused.
+<break time="1.0s" />
+
+===== CHUNK 3 of 4 (2741 characters) =====
+Survival, for Netanyahu, has always meant two things: keeping his partners, and keeping the other side from finding enough partners of their own. To understand why that works, you need to understand the machine.
+<break time="1.5s" />
+Israel's parliament, the Knesset, has a hundred and twenty seats. And the entire country is one single constituency.
+<break time="0.6s" />
+You don't vote for a local candidate. You vote for a party list. If a party gets ten percent of the vote, it gets roughly ten percent of the seats, twelve members, taken from the top of its list.
+<break time="0.6s" />
+There's one hurdle. A party needs three point two five percent of the vote to get in at all. Below that, its votes disappear, as our friends the reservists have just learned.
+<break time="0.8s" />
+The result is a parliament of many medium-sized parties and no giants. No party has ever won sixty-one seats on its own. Not once. Not Ben-Gurion. Not anybody. Every Israeli government is a coalition, a negotiated deal.
+<break time="0.8s" />
+And deals have prices. Small parties ask for ministries, budgets, and laws. The party that gets you from sixty to sixty-one can ask for almost anything, because without it there's no government.
+<break time="0.8s" />
+Now look at the blocs again through that lens. Netanyahu's camp: Likud, plus two Haredi parties, Shas and United Torah Judaism, plus the far-right Otzma Yehudit of Itamar Ben-Gvir and Religious Zionism of Bezalel Smotrich.
+<break time="0.6s" />
+That camp is ideologically tight on security and religion. Its problem is not unity. Its problem is it has fifty-three, and every other party has refused to make it sixty-one.
+<break time="0.6s" />
+Eisenkot's camp is the opposite. It has four Jewish parties: Yashar, Beyachad, the Democrats, and Yisrael Beytenu. They agree that Netanyahu should go. On almost everything else, from religion to Palestinians to who should sit in the room, they disagree.
+<break time="0.6s" />
+So for Eisenkot, the maths goes through the nineteen Arab-led seats, or through somebody from the other camp switching sides. And both of those roads have people standing on them with signs that say no.
+<break time="0.7s" />
+There's a detail in the rules that matters a lot this time. A new government doesn't technically need sixty-one votes in favour. It needs more votes for than against. So a minority government can survive if enough members abstain, or simply don't show up.
+<break time="0.7s" />
+Which is why Avigdor Lieberman's red line is so specific. He hasn't only ruled out sitting with Arab parties. He's ruled out a government that survives because Arab members abstain. He has closed not just the door, but the window, and the cat flap.
+<break time="0.8s" />
+
+===== CHUNK 4 of 4 (484 characters) =====
+Meanwhile the old government keeps running the country as a caretaker. Caretakers are expected not to make big new policy, but in practice Israel's caretakers have fought wars and run budgets for months. Israel's most stable institution may be the temporary government.
+<break time="0.8s" />
+Before we get to who could break this deadlock, there's something the campaign mostly avoided talking about. It's the subject at the centre of the last three years, and it's not a seat count.

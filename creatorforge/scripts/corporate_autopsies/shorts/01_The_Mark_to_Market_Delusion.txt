@@ -1,0 +1,85 @@
+The Mark-to-Market Delusion
+On-screen hook: MILLIONS FROM A DEAD DEAL
+Title: How Enron Booked Millions From a Deal That Earned Almost Nothing
+Tags: #CorporateAutopsies #Enron #accountingfraud #marktomarket #business
+Source: U.S. Department of Justice, former Enron Broadband executive and Project Braveheart (May 2006), https://www.justice.gov/archive/opa/pr/2006/May/06_crm_338.html; U.S. Department of Justice, Federal Jury Convicts Former Enron Chief Executives (May 25, 2006), https://www.justice.gov/archive/opa/pr/2006/May/06_crm_328.html; SEC, Andrew S. Fastow pleads guilty (Jan 14, 2004), https://www.sec.gov/news/press/2004-6.htm; Cato Institute, Regulation (2003), on the SEC's 1992 mark-to-market letter, https://www.cato.org/sites/cato.org/files/serials/files/regulation/2003/10/v26n3-14.pdf; Powers Report excerpt (Special Investigative Committee of Enron's board, Feb 2002), https://utm.utoronto.ca/pac/media/337/download; Seattle Times, Timeline: Enron's collapse and the fallout (2006), https://archive.seattletimes.com/archive/20060129/enronchron29/timeline--enrons-collapse-and-the-fallout
+
+Enron booked millions, even on a dead deal.
+Visual: A blank accounting ledger open on an office desk under a lamp, text unreadable
+Visual: A hand writing a large figure at the top of a ledger page, text unreadable
+Text: ENRON · 2000
+Big: DEAD DEAL?
+
+Prosecutors said that deal earned virtually nothing.
+Visual: An empty cash register drawer pulled open on a shop counter
+Visual: A thin deal contract dropped into an office wastepaper bin, text unreadable
+Text: VIRTUALLY NO REVENUE
+Cite: U.S. DOJ
+Draw: cross
+
+So how do you profit from a dead deal?
+Visual: A hand stamping a deal contract with red ink, text unreadable
+Visual: A calculator showing a profit figure beside a closed contract folder
+Text: PROFIT FROM A DEAD DEAL?
+Transition: whip
+
+Its accounting let it book future profits on day one.
+Visual: A calculator beside a stack of printed spreadsheets on an office desk, text unreadable
+Visual: A hand writing future dates across a ledger page, text unreadable
+Text: MARK-TO-MARKET: FUTURE PROFIT, BOOKED NOW
+Cite: Cato Institute, 2003
+Treat: halftone
+
+Which deal? A twenty-year video deal with Blockbuster, in two thousand.
+Visual: Rows of video rental cassettes on shelves in a dim rental shop
+Visual: A television showing a blurry film menu in a dark living room, text unreadable
+Text: 20-YEAR VIDEO-ON-DEMAND DEAL
+Cite: U.S. DOJ
+
+So Enron sold a stake to a bank and booked about one hundred eleven million.
+Visual: A thick folder of deal papers on a boardroom table, text unreadable
+Visual: A hand pressing the total key on an adding machine
+Text: PROJECT BRAVEHEART · ABOUT $111M REVENUE
+Chart: $53m vs $58m | revenue booked, Q4 2000, Q1 2001
+Cite: U.S. DOJ, 2006
+
+The strange part? Losses hid in partnerships tied to finance chief Andrew Fastow.
+Visual: A row of identical grey filing cabinets in a dim back office
+Visual: A man in a dark suit seen from behind walking down an office corridor
+Text: CHEWCO · LJM
+Transition: flash
+
+Enron's own investigation found it was, in effect, dealing with itself.
+Visual: A bound board report lying closed on a long meeting table, text unreadable
+Visual: Two identical signatures on facing pages of a contract, text unreadable
+Statement: Enron was *dealing* with itself.
+Cite: Powers Report, 2002
+
+Then Enron erased five hundred eighty-six million dollars of past profits.
+Visual: A stack of restated financial filings on a desk, text unreadable
+Visual: A red pen striking through a column of numbers on paper
+Text: -$586M RESTATED · NOV 2001
+Cite: Enron restatement, Nov 2001
+
+And then? Weeks later, bankruptcy.
+Visual: A person seen from behind carrying a cardboard box out of an office tower
+Text: BANKRUPT · DEC 2, 2001
+Big: BANKRUPT
+
+Fastow pleaded guilty. A jury convicted Skilling and Lay; Lay died before sentencing.
+Visual: A federal courthouse's stone steps on a grey morning
+Visual: A wooden gavel resting on a closed law book
+Text: LAY'S CONVICTION VACATED AFTER HIS DEATH
+Article: Federal Jury Convicts Former Enron Chief Executives | U.S. Department of Justice, May 2006
+Cite: U.S. DOJ, 2006
+
+Profit from a dead deal? Book it before it dies.
+Visual: The same ledger closed on the desk, the lamp switched off
+Visual: A hand pushing a cardboard archive box onto a high shelf
+Text: BOOKED BEFORE IT DIED
+Treat: duotone
+
+Booked isn't banked. Who checks the difference where you work?
+Visual: A person seen from behind comparing a ledger with a printed report at a desk, text unreadable
+Visual: Two printed reports laid side by side under a desk lamp, text unreadable
+Text: BOOKED ≠ BANKED

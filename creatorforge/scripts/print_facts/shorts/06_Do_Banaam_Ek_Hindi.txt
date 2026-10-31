@@ -1,0 +1,78 @@
+Do Banaam Ek
+On-screen hook: आपका वोट गिनने वाले को कौन चुनता है?
+Title: 🔥 CJI Bahar! Chunav Ayukt Kaun Chunta Hai? 2 vs 1 Ka Khel
+Tags: #PrintFacts #GyaneshKumar #ElectionCommission #CJI #Modi #RahulGandhi #Shorts #हिंदी
+Source: Open, Why is the CJI missing from the Election Commissioner selection panel https://openthemagazine.com/india/why-is-the-cji-missing-from-the-election-commissioner-selection-panel ; LiveLaw, Supreme Court refuses to stay Election Commissioners' Act dropping CJI from selection panel https://www.livelaw.in/amp/top-stories/supreme-court-refuses-to-stay-election-commissioners-act-dropping-cji-from-selection-panel-252982 ; Scroll, Gyanesh Kumar named chief poll commissioner overruling Rahul Gandhi's dissent https://scroll.in/latest/1079285/gyanesh-kumar-named-chief-poll-commissioner-overruling-rahul-gandhis-dissent ; Deccan Herald, SIR: 13.3 crore names wiped out of draft voter lists https://www.deccanherald.com/india/sir-133-crore-names-wiped-out-of-draft-voter-lists-so-far-triggering-opposition-backlash-4164836 ; Newslaundry, Gyanesh Kumar must go: opposition MPs march to EC https://www.newslaundry.com/2026/10/06/gyanesh-kumar-must-go-opposition-mps-march-to-election-commission-meet-barricades-instead
+
+आपका वोट गिनने वाले को चुनता कौन है?
+Tone: dramatic
+Visual: A long queue of Indian voters outside a polling booth at sunrise, seen from behind
+Visual: A voter's finger marked with indelible ink held up after voting
+Stock: voters queue India
+Text: 2 बनाम 1
+
+2023 में सुप्रीम कोर्ट ने कहा, तीन लोग चुनेंगे।
+Tone: calm
+Visual: The Supreme Court of India building in New Delhi in morning light
+Visual: Three empty high-backed chairs side by side in a wood-panelled room
+Steps: प्रधानमंत्री → विपक्ष के नेता → मुख्य न्यायाधीश | 2023 का फ़ैसला
+
+फिर कुछ ही महीनों में क्या हुआ? नया क़ानून।
+Tone: question
+Visual: The Parliament of India building at dusk, lights coming on
+Visual: The dome of the old Parliament House in New Delhi at dawn
+Stock: Parliament House New Delhi
+
+मुख्य न्यायाधीश बाहर। उनकी जगह एक मंत्री।
+Tone: strong
+Visual: An empty judge's chair being moved away from a long table
+Visual: A third chair added beside two others at a government table
+Text: CJI बाहर · मंत्री अंदर
+Cite: Open Magazine
+
+मतलब? कमेटी में सरकार के दो वोट, विपक्ष का एक।
+Tone: dramatic
+Visual: Two raised hands against one, in silhouette
+Pie: 67% | कमेटी में सरकार के वोट (3 में से 2)
+
+फ़रवरी 2025। इसी कमेटी ने किसे चुना? ज्ञानेश कुमार।
+Tone: urgent
+Visual: The Election Commission of India building at night, windows lit
+Visual: A dark Delhi avenue at night lined with government buildings
+Text: 17 FEB 2025 · CEC
+
+राहुल गांधी ने लिखित असहमति दी।
+Tone: strong
+Visual: A fountain pen resting on a closed leather folder
+Visual: A wall clock above a government office door, hands near midnight
+Article: Gyanesh Kumar named chief poll commissioner overruling Rahul Gandhi's dissent | Scroll, February 2025
+
+और आज? वोटर लिस्ट से 13.3 करोड़ नाम कटे।
+Tone: dramatic
+Visual: A long line of women voters in colourful saris outside a polling station, seen from behind
+Visual: A booth-level officer walking down a village lane, seen from behind
+Text: 13.3 करोड़ नाम कटे
+Cite: Deccan Herald, Sep 2026
+
+विपक्ष सड़कों पर है। इस्तीफ़ा माँग रहा है।
+Tone: urgent
+Visual: Steel police barricades across Parliament Street in New Delhi, seen from behind the crowd
+Visual: Opposition MPs walking in a group through Parliament gates, seen from behind
+Cite: Newslaundry, Oct 2026
+
+और सरकार? क़ानून बनाना संसद का हक़। आयोग? लिस्ट की सफ़ाई हुई।
+Tone: calm
+Visual: A balance scale on a dark desk, one pan lower
+Visual: The Election Commission of India building in clear daylight
+Text: सरकार: संसद का हक़ · आयोग: सफ़ाई
+
+और सुप्रीम कोर्ट का फ़ैसला? अब तक बाक़ी।
+Tone: question
+Visual: A gavel on a closed law book under a single beam of light
+Visual: The Supreme Court of India's dome at dusk
+Text: फ़ैसला बाक़ी
+
+आपको क्या लगता है, कमेटी में मुख्य न्यायाधीश होने चाहिए? पूरी कहानी लंबे वीडियो में।
+Tone: question
+Visual: A phone in hands on a Delhi metro train, screen out of focus, face out of frame
+Text: कमेंट करें: CJI - हाँ या ना?

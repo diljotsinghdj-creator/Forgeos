@@ -1,0 +1,12 @@
+{
+ "ec_photo.png": {"credit": "Election Commission of India", "source": "Election Commission of India (official photo), supplied by the project owner",
+                  "licence": "rights not verified - confirm before publishing", "kind": "photo"},
+ "scroll_headline.png": {"credit": "Scroll.in, 18 Feb 2025", "source": "Screenshot of 'Gyanesh Kumar named chief poll commissioner overruling Rahul Gandhi's dissent', Scroll.in, 18 Feb 2025",
+                         "licence": "news screenshot used for commentary/reporting (fair dealing) - verify before publishing", "kind": "document"},
+ "voters_lists.png": {"credit": "voters checking draft lists", "source": "supplied by the project owner",
+                      "licence": "rights not verified - confirm before publishing", "kind": "photo"},
+ "footage_first.png": {"credit": "Print Facts report on the CEC appointment", "source": "still from footage supplied by the project owner",
+                       "licence": "rights not verified - confirm before publishing", "kind": "photo"},
+ "footage_portrait.mp4": {"credit": "Print Facts report on the CEC appointment", "source": "clip supplied by the project owner",
+                          "licence": "rights not verified - confirm before publishing", "kind": "footage"}
+}
