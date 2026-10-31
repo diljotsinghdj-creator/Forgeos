@@ -61,15 +61,23 @@ def direct(R, sc, style: str = "explainer", margin: float = 1.0, every: int = 2)
             moving = math.dist((px_, py_), (nx_, ny_)) > 0.15
             acting = any(a0 <= t <= a1 for a0, a1, _ in p.data.get("acts", []))
             if moving or acting or any(getattr(p, "name", "").startswith(nm) for nm in named_now):
-                beasts.append((x, y, p))
+                beasts.append((0 if moving else 1, -p.w * p.h, x, y, p))
+        beasts = [b[2:] for b in sorted(beasts, key=lambda b: b[:2])]   # moving first, bigger first
         if not acts:
-            if beasts:                                    # a creature-only shot: frame the creatures
-                xs = [b[0] - b[2].w / 2 for b in beasts] + [b[0] + b[2].w / 2 for b in beasts]
-                ys = [b[1] for b in beasts] + [b[1] + b[2].h for b in beasts]
+            if beasts:                                    # a creature-only shot: the movers, then whoever fits
+                keep = [beasts[0]]
+                for b in beasts[1:]:
+                    xs_ = [q[0] - q[2].w / 2 for q in keep + [b]] + [q[0] + q[2].w / 2 for q in keep + [b]]
+                    ys_ = [q[1] for q in keep + [b]] + [q[1] + q[2].h for q in keep + [b]]
+                    if max(xs_) - min(xs_) + 2.0 * margin <= W_m and max(ys_) - min(ys_) + 1.0 * margin <= H_m:
+                        keep.append(b)
+                xs = [b[0] - b[2].w / 2 for b in keep] + [b[0] + b[2].w / 2 for b in keep]
+                ys = [b[1] for b in keep] + [b[1] + b[2].h for b in keep]
                 bw, bh = max(xs) - min(xs) + 2.0 * margin, max(ys) - min(ys) + 1.0 * margin
                 zoom = max(1.0, min(1.9, W_m / bw, H_m / bh))
                 hh = H_m / (2 * zoom)
-                yc = max(max(ys) + 0.4 * margin - hh, min(min(ys) - 0.25 + hh, 0.0 - 0.3 + hh))
+                floor = min(min(ys), 0.0)                 # the ground near the bottom, like a shot of people
+                yc = max(max(ys) + 0.4 * margin - hh, min(floor - 0.35 + hh, min(ys) - 0.25 + hh))
                 targets.append(((min(xs) + max(xs)) / 2, yc - ground_y, zoom))
             else:
                 targets.append((0.0, 0.0, 1.0))
