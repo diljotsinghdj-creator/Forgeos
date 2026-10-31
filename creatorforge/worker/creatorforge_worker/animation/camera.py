@@ -109,6 +109,8 @@ def direct(R, sc, style: str = "explainer", margin: float = 1.0, every: int = 2)
                 nxt = R.joints[i][min(len(R.times) - 1, n + win)]["hip"][0]
                 lead += math.copysign(min(1.2, 0.5 * s[1]), nxt - J["hip"][0]) / len(focus)
         for k, p in enumerate(R.prop_objs):              # a thrown or carried prop is part of the action
+            if (getattr(p, "data", {}) or {}).get("creature"):
+                continue                                  # creatures: only if the shot can hold them (below)
             x, y, _ = R.props[k][n]
             near = any(abs(x - R.joints[i][n]["hip"][0]) < 3.0 for _, i in focus)
             prev = R.props[k][max(0, n - 3)]

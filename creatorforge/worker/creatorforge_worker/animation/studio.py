@@ -294,6 +294,8 @@ def make(script: str, title: str = "", sources: list | None = None, voice: dict 
                 notes["decisions"].append(f"line {i + 1}: no place named - {place} (change the scene's world)")
             night = any(k_[1] == "night" for k_ in sky.get("light", []))
             layers["world"] = place + (":night" if night and place in ("city", "forest") else "")
+            if scenes and scenes[-1]["layers"].get("world", "").split(":")[0] != place.split(":")[0]:
+                cut = True                             # a new place is a new shot: nothing carries over
         scenes.append({"layers": layers, "id": f"s{i + 1:02d}", "name": b.narration[:38] + ("..." if len(b.narration) > 38 else ""),
                        "place": b.environment, "cut": cut, "timing": b.timing, "cast": cast_specs,
                        "animals": list(animals_seen.values()), "things": things, "props": scene_props,
