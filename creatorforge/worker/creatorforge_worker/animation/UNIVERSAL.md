@@ -49,7 +49,16 @@ painterly to selective-colour noir and back.
 editable project), `<name>.mp4`, `<name>_android.mp4` and `<name>.report.json`. All five are rendered at 1280x720,
 24 fps, final quality, on 4 CPU cores.
 
-FILMS_TABLE
+| Film | Genre / style | Length | Frames (all present) | A/V offset | Render (3 workers) |
+|---|---|---|---|---|---|
+| 1 The Courier | historical adventure / graphic novel | 46.5 s | 1116 | -0.006 s | 738 s |
+| 2 Walkies | cartoon comedy / cartoon | 41.3 s | 991 | -0.004 s | 359 s |
+| 3 The Body's Defenders | science explainer / explainer (automatic) | 38.3 s | 920 | 0.000 s | 304 s |
+| 4 The Letter | drama / painterly + selective-colour noir | 54.0 s | 1297 | -0.021 s | 803 s |
+| 5 Wild Worlds | wildlife and fantasy / painterly + anime | 33.5 s | 804 | -0.021 s | 321 s |
+
+All five: 1280x720, 24 fps, H.264, no frozen, black or flickering frames (`qc.check_video`), delivery check
+passed (`qc.check_delivery`), subtitles of the voiced films at most 13.5 characters a second with no issues.
 
 What each film shows:
 1. **The Courier** (historical adventure, graphic novel). Ancient Egypt, an invented courier and story (it says so on
@@ -71,7 +80,22 @@ What each film shows:
    castle, hovers, breathes fire ("FWOOSH!") and lands while a unicorn rears and runs.
 
 ### Delivery formats (measured from the files)
-FORMATS_TABLE
+The same styled scene (cartoon, city, four characters and two animals), rendered at final quality:
+
+| Format | Size | fps | Frames missing | A/V offset | Render time |
+|---|---|---|---|---|---|
+| 16:9 1080p30 | 1920x1080 | 30 | 0 | 0.000 s | 421 s |
+| 9:16 Shorts | 1080x1920 | 30 | 0 | 0.000 s | 451 s |
+| 1:1 | 1080x1080 | 24 | 0 | -0.005 s | 183 s |
+| 16:9 1080p60 | 1920x1080 | 60 | 0 | 0.000 s | 790 s |
+| 4K | 3840x2160 | 24 | 0 | -0.005 s | 352 s |
+
+`python -m creatorforge_worker.animation.universal <dir> formats` reproduces this table.
+
+### Tests
+Full worker suite: **250 passed** (35 min), including the new universal-studio tests (styles, selective colour,
+worlds, anatomy rigs and gaits, a styled portrait production with creatures, the director's style and world choice,
+and the science script).
 
 ### What review found and fixed
 | Found by watching | Fix |
