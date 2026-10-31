@@ -339,6 +339,8 @@ def draw(p, d, S, scale, t):
                            (cx0 - cw * 0.1, (y0 + y1) / 2 + lw * 4)], fill=INK)
         if p.label:
             _text(d, ((x0 + x1) / 2, y0 - (y1 - y0) * 0.12), p.label, (y1 - y0) * 0.09, (170, 40, 40))
+    elif k == "shape" and p.data.get("rig") != "parts" and _creature(p, d, S, scale, t):
+        pass                                          # an animal with a skeleton for its anatomy (anatomy.py)
     elif k == "shape":                                # a library asset: rigged parts (wheels roll, legs walk)
         from . import asset_lib
         x_0 = p.pos(0.0)[0]
@@ -360,3 +362,11 @@ def draw(p, d, S, scale, t):
             _text(d, ((x0 + x1) / 2, y0 - lw * 8), p.label, scale * 0.12, INK)
     elif k == "label":
         _text(d, ((x0 + x1) / 2, (y0 + y1) / 2), p.label, (y1 - y0) * 0.8, p.color, maxw=(x1 - x0))
+
+
+def _creature(p, d, S, scale, t) -> bool:
+    from . import anatomy
+    kind = p.data.get("kind") or ""
+    if kind not in anatomy.SPECIES and not p.data.get("creature"):
+        return False
+    return anatomy.draw(p, d, S, scale, t, getattr(p, "style", None))

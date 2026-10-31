@@ -502,9 +502,16 @@ class _Stuff:
                 ahead += 2.6
 
     def animal(self, name, desc, here, t, landing):
-        a = self._asset(desc, name.lower(), False, False)
+        from . import anatomy
         x, y = (here + 7.0, 3.2) if landing else (here + 6.0, 0.0)
-        p = self._prop(a, x, y, 1.0, name, flip=-1.0)
+        sp = anatomy.species_of(desc) or anatomy.species_of(name)
+        if sp:                                         # a skeleton for its anatomy: legs, wings, fins or coils
+            p = anatomy.prop(name, sp, x, y, 1.0, facing=-1.0)
+            self.assets.append({"for": desc, "asset": f"anatomy:{sp}", "how": "rigged creature", "kind": sp})
+        else:
+            a = self._asset(desc, name.lower(), False, False)
+            p = self._prop(a, x, y, 1.0, name, flip=-1.0)
+            p.data["kind"] = a.get("kind", "")
         p.data["flips"] = [[0.0, -1.0]]
         self.animals[name] = p
         self.sc.actors.append(p)

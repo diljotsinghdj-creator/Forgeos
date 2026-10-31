@@ -37,6 +37,16 @@ class Look:
     cane: bool = False             # walking stick (elderly)
     hunch: float = 0.0             # forward stoop 0..1 (elderly)
     bow: tuple = None              # hair bow colour
+    # illustrated styles (cinematic.py) - ignored by the stick drawing
+    species: str = "human"         # human | robot | alien | monster
+    girth: float = 1.0             # body width (children ~0.9, strong ~1.3)
+    shoulders: float = 1.0
+    pants: tuple = None
+    shoes: tuple = None
+    crown: tuple = None
+    helmet: tuple = None
+    cape: tuple = None
+    holds: str = ""                # staff | sword (drawn in the near hand)
 
 
 @dataclass

@@ -835,7 +835,21 @@ class Actor:
             legs.append((hip, kn, ank, toe))
         return {"hip": hip, "neck": neck, "head": head, "arms": arms, "legs": legs, "f": f}
 
-    def draw(self, d, S, scale, t):
+    def draw(self, d, S, scale, t, overlays: bool = True, body: bool = True):
+        """The figure, then its symbols and speech bubbles. A scene with an illustrated style draws bodies and
+        overlays in two passes (bodies get shaded; bubbles must not)."""
+        st = getattr(self, "style", None)
+        if st is not None and st.body != "stick":
+            from . import cinematic
+            if body:
+                self._head = cinematic.draw_figure(self, d, S, scale, t, st)
+            if overlays and getattr(self, "_head", None):
+                cx, cy, r, col = self._head
+                self._draw_overlays(d, cx, cy, r, col, t)
+            return
+        self._draw_stick(d, S, scale, t)
+
+    def _draw_stick(self, d, S, scale, t):
         p = self.pose_now
         J = self.joints(p)
         L = self.look
@@ -863,6 +877,11 @@ class Actor:
         h, k, a, toe = J["legs"][0]
         line([h, k, a, toe], col)
         line(J["arms"][0], col)
+        self._joints = J
+        self._draw_overlays(d, cx, cy, r, col, t)
+
+    def _draw_overlays(self, d, cx, cy, r, col, t):
+        p = self.pose_now
         for t0, t1, sym in self.symbols:
             if t0 <= t <= t1:
                 pop = ease("back", min(1.0, (t - t0) / 0.3))
@@ -873,7 +892,6 @@ class Actor:
         for t0, t1, text in self.bubbles:
             if t0 <= t <= t1:
                 self._bubble(d, cx, cy, r, p.f, text, min(1.0, (t - t0) / 0.18, (t1 - t) / 0.18))
-        self._joints = J
 
     def _bubble(self, d, cx, cy, r, f, text, k):
         from PIL import ImageFont

@@ -167,12 +167,48 @@ class Scene:
             w = (0.32 if hasattr(a, "l_thigh") else 1.35) * scale * max(0.45, 1 - max(0.0, lift) * 0.8)
             sx, sy = S(ax + self.shadow_dir * 0.2, gnd)
             d.ellipse([sx - w, sy - w * 0.12, sx + w, sy + w * 0.12], fill=(0, 0, 0, 55))
+        for fn in getattr(self, "animated", []):     # living environments behind the cast (water, stars, cells)
+            fn(d, W, H, to_screen_z, t, cx)
+        style = getattr(self, "style", None)
+        figures = []
         for a in sorted(self.actors, key=lambda q: -zs[id(q)]):
             S, scale = to_screen_z(zs[id(a)])
+            try:
+                a.style = style
+            except AttributeError:
+                pass
+            if hasattr(a, "pose_now"):
+                x_ = _actor_x(a, t)
+                last = getattr(a, "_last_x", None)
+                a._vx = (x_ - last[0]) / (t - last[1]) if last and t > last[1] else 0.0
+                a._last_x = (x_, t)
             if isinstance(a, rig2d.Character):
                 rig2d.draw(d, a, a.pose(t), S, scale, t)
+            elif style is not None and style.shade > 0 and hasattr(a, "pose_now") and style.body != "stick":
+                from . import cinematic                 # each figure on its own layer: shaded by its own silhouette
+                lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                a.draw(ImageDraw.Draw(lay, "RGBA"), S, scale, t, overlays=False)
+                shaded = cinematic.shade(lay, style, scale * a.H)
+                img.paste(shaded, (0, 0), shaded)
+                d = ImageDraw.Draw(img, "RGBA")
+                figures.append((a, S, scale))
+            elif hasattr(a, "pose_now"):
+                a.draw(d, S, scale, t, overlays=style is None or style.body == "stick")
+                if style is not None and style.body != "stick":
+                    figures.append((a, S, scale))
             else:
                 a.draw(d, S, scale, t)
+        for fn in getattr(self, "animated_front", []):
+            fn(d, W, H, to_screen_z, t, cx)
+        if style is not None and style.speedlines:
+            from . import cinematic
+            cinematic.auto_speedlines(d, [a for a, *_ in figures], t, to_screen_z, 1.0)
+        ui = None
+        if figures:                                    # speech bubbles and symbols: on their own layer, ungraded
+            ui = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+            du = ImageDraw.Draw(ui, "RGBA")
+            for a, S, scale in figures:
+                a.draw(du, S, scale, t, body=False)
         for L in sorted(self.front, key=lambda q: -q.z):
             strip = self._strip(L)
             scale = self.ppm * ss / L.z
@@ -181,6 +217,7 @@ class Scene:
             img.paste(part, (0, int(cy * scale)), part)
         if getattr(self, "light", None) or getattr(self, "weather", None):
             img = _world_fx(img, self, t, to_screen_z, W, H)
+        view = (0, 0, W, H)
         if zoom != 1.0 or self.shake:
             amt = sum(a * (1 - (t - t0) / (t1 - t0)) for t0, t1, a in self.shake if t0 <= t <= t1) * ss
             jx, jy = (math.sin(t * 61) * amt, math.cos(t * 47) * amt) if amt else (0, 0)
@@ -191,8 +228,36 @@ class Scene:
             jx, jy = max(-mx, min(mx, jx)), max(-my, min(my, jy))
             box = (W / 2 - zw / 2 + jx, H / 2 - zh / 2 + jy, W / 2 + zw / 2 + jx, H / 2 + zh / 2 + jy)
             img = img.resize((W, H), Image.LANCZOS, box=box)
+            if ui is not None:
+                ui = ui.resize((W, H), Image.LANCZOS, box=box)
+            view = box
         out = img.resize((self.width, self.height), Image.LANCZOS)
         out = _atmosphere(out, getattr(self, "moods", []), t)
+        if style is not None:
+            from . import cinematic
+            out = cinematic.grade(out, style, t, int(round(t * self.fps)))
+        if ui is not None:
+            small = ui.resize((self.width, self.height), Image.LANCZOS)
+            out.paste(small, (0, 0), small)
+        if getattr(self, "comic", None):
+            from . import cinematic
+
+            def onscreen(x_, y_):                     # through the zoom/shake crop to output pixels
+                return ((x_ - view[0]) * W / (view[2] - view[0]) / ss, (y_ - view[1]) * H / (view[3] - view[1]) / ss)
+
+            def where(at):
+                if isinstance(at, (list, tuple)):
+                    S_, _ = to_screen_z(1.0)
+                    return onscreen(*S_(*at))
+                J = getattr(at, "_joints", None)
+                if J:
+                    S_, _ = to_screen_z(getattr(at, "z", 1.0))
+                    x_, y_ = onscreen(*S_(*J["head"]))
+                    return x_, y_ - 0.12 * self.height
+                return None
+            out = out.convert("RGBA")
+            cinematic.comic_fx(out, self.comic, t, where, style)
+            out = out.convert("RGB")
         if getattr(self, "backdrop", None) and self.backdrop.get("credit"):
             _credit(out, self.backdrop["credit"])
         if getattr(self, "tags", None):
