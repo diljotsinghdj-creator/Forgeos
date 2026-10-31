@@ -820,6 +820,7 @@ def run(name: str, out_dir: Path, quality: str = "preview", workers: int = 2) ->
         "sourcing": {"plans": [{"sentence": p.sentence, "mode": p.mode, "label": p.label, "sourced": p.sourced,
                                 "note": p.note} for p in plans], "audit": VR.audit(plans)},
         "video": rep["video"], "delivery": rep.get("delivery"), "subtitles": rep.get("subtitles"), "files": rep["files"],
+        "provenance": rep.get("provenance"), "provenance_issues": rep.get("provenance_issues"),
         "timing": {"staging_and_review_s": round(stage_s, 1), "render_s": rep["render_seconds"]},
         "qc_clean_scenes": sum(1 for s in rep["scenes"] if s["qc"].startswith(("clean", "real footage"))),
         "continuity_issues": sum(len(s["continuity"]) for s in rep["scenes"]),
