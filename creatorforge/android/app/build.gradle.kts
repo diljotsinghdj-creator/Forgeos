@@ -11,9 +11,20 @@ android {
         applicationId = "com.creatorforge.app"
         minSdk = 26
         targetSdk = 35
-        versionCode = 65
-        versionName = "1.0.0-rc56"
+        versionCode = 66
+        versionName = "1.0.0-rc57"
     }
+    // One fixed debug key for every build (CI runners otherwise make a new random one each time,
+    // and Android refuses to update an app signed with a different key).
+    signingConfigs {
+        getByName("debug") {
+            storeFile = file("creatorforge-debug.keystore")
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+        }
+    }
+    buildTypes { getByName("debug") { signingConfig = signingConfigs.getByName("debug") } }
     buildFeatures { compose = true; buildConfig = true }
     compileOptions { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
     kotlinOptions { jvmTarget = "17" }
