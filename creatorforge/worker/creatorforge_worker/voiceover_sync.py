@@ -16,6 +16,7 @@ import argparse
 import json
 import re
 import subprocess
+from fractions import Fraction
 from pathlib import Path
 
 
@@ -161,31 +162,47 @@ def sync(video: Path, words: list[dict], lines: list[str], voice: Path, out: Pat
         tail = min(vdur, (cf_speech_end or vdur) + 0.15)
     cf_bounds = cf_starts + [max(tail, cf_starts[-1] + 0.3)]
     vo_bounds = vo_starts + [vo_end]
-    parts, labels = [], []
+    end_card = vdur - cf_bounds[-1]
+    end_card = end_card if end_card > 0.3 else 0.0
+    rate = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=r_frame_rate",
+                           "-of", "csv=p=0", str(video)], capture_output=True, text=True).stdout.strip() or "30"
+    fps = float(Fraction(rate))
+    # One small encode per line, then a join without re-encoding: a single graph that trims a long 1080p film into
+    # 100+ pieces holds them all in memory and gets killed (17 min film = SIGKILL). Frame counts come from the
+    # running total, so rounding never drifts the picture away from the voice.
+    pieces: list[tuple[float, float, float]] = []      # (video start, video end or 0 for "to the end", out seconds)
     for k in range(len(lines)):
         a, b = cf_bounds[k], cf_bounds[k + 1]
         if b - a < 0.05:
             raise ValueError(f"line {k + 1} has no video time - the narration and the script don't match")
-        f = (vo_bounds[k + 1] - vo_bounds[k]) / (b - a)
-        parts.append(f"[0:v]trim=start={a:.4f}:end={b:.4f},setpts=(PTS-STARTPTS)*{f:.6f}[v{k}]")
-        labels.append(f"[v{k}]")
-    end_card = vdur - cf_bounds[-1]
-    if end_card > 0.3:                                # the end card, unchanged
-        parts.append(f"[0:v]trim=start={cf_bounds[-1]:.4f},setpts=PTS-STARTPTS[v{len(lines)}]")
-        labels.append(f"[v{len(lines)}]")
-    else:
-        end_card = 0.0
-    fps = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=r_frame_rate",
-                          "-of", "csv=p=0", str(video)], capture_output=True, text=True).stdout.strip() or "30"
-    graph = ";".join(parts) + f";{''.join(labels)}concat=n={len(labels)}:v=1:a=0,fps={fps}[v]"
+        pieces.append((a, b, vo_bounds[k + 1] - vo_bounds[k]))
+    if end_card:
+        pieces.append((cf_bounds[-1], 0.0, end_card))    # the end card, unchanged
+    work = out.with_name(out.stem + "_sync_parts")
+    work.mkdir(parents=True, exist_ok=True)
+    files, t_out = [], 0.0
+    for k, (a, b, secs) in enumerate(pieces):
+        frames = round((t_out + secs) * fps) - round(t_out * fps)
+        t_out += secs
+        if frames < 1:
+            continue
+        span = (b - a) if b else (vdur - a)
+        f = secs / span
+        dst = work / f"p{k:04d}.mp4"
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", f"{a:.4f}", "-t", f"{span + 0.2:.4f}", "-i", str(video),
+                        "-vf", f"setpts=(PTS-STARTPTS)*{f:.6f},fps={rate},tpad=stop_mode=clone:stop_duration=2",
+                        "-frames:v", str(frames), "-an", "-c:v", "libx264", "-preset", "fast", "-crf", "18",
+                        "-pix_fmt", "yuv420p", "-r", rate, str(dst)], check=True)
+        files.append(dst)
+    listing = work / "list.txt"
+    listing.write_text("".join(f"file '{x.resolve()}'\n" for x in files))
     norm = out.with_name(out.stem + ".voice.wav")
     _loudnorm(voice, norm)
-    cmd = ["ffmpeg", "-v", "error", "-y", "-i", str(video), "-i", str(norm), "-filter_complex"]
-    graph += ";[1:a]apad[a]"                           # silence under the end card
-    cmd += [graph, "-map", "[v]", "-map", "[a]", "-c:v", "libx264", "-preset", "medium", "-crf", "18",
-            "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "192k", "-t", f"{vo_end + end_card:.3f}",
-            "-movflags", "+faststart", str(out)]
-    subprocess.run(cmd, check=True)
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(listing), "-i", str(norm),
+                    "-map", "0:v", "-map", "1:a", "-af", "apad", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k",
+                    "-t", f"{vo_end + end_card:.3f}", "-movflags", "+faststart", str(out)], check=True)
+    import shutil
+    shutil.rmtree(work, ignore_errors=True)
     norm.unlink(missing_ok=True)
     info = {"lines": [{"line": l, "creatorforge_start": round(c, 2), "voiceover_start": round(v, 2),
                        "stretch": round((vo_bounds[k + 1] - vo_bounds[k]) / (cf_bounds[k + 1] - cf_bounds[k]), 3)}
