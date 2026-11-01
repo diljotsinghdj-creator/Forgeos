@@ -435,7 +435,7 @@ def _logo_still(path: Path, width: int, opacity: float, work: Path) -> Path:
 
 
 def _segments(jobs: list[tuple[Clip, int]], width: int, height: int, work: Path,
-              cancel: threading.Event) -> list[Path]:
+              cancel: threading.Event, progress=None) -> list[Path]:
     import os
     from concurrent.futures import ThreadPoolExecutor
     work.mkdir(parents=True, exist_ok=True)
@@ -447,25 +447,33 @@ def _segments(jobs: list[tuple[Clip, int]], width: int, height: int, work: Path,
         key = hashlib.sha256(("|".join(args) + stamp).encode()).hexdigest()[:20]
         plan.append((work / f"seg_{key}.mp4", args))
 
+    todo = list(dict(plan).items())
+    done = [0]
+    lock = threading.Lock()
+
     def make(item):
         dst, args = item
-        if dst.is_file() and dst.stat().st_size > 1000:
-            return
-        tmp = dst.with_name(dst.stem + ".part.mp4")
-        ff.run([*args, str(tmp)], cancel)
-        tmp.replace(dst)
+        if not (dst.is_file() and dst.stat().st_size > 1000):
+            tmp = dst.with_name(dst.stem + ".part.mp4")
+            ff.run([*args, str(tmp)], cancel)
+            tmp.replace(dst)
+        with lock:
+            done[0] += 1
+            if progress and (done[0] % 10 == 0 or done[0] == len(todo)):
+                progress(f"Rendering shots {done[0]}/{len(todo)}")
 
     with ThreadPoolExecutor(max_workers=max(2, min(8, (os.cpu_count() or 2) // 2))) as pool:
         # identical shots share one segment file: make each file once, or two jobs race on the same temp file
-        for _ in pool.map(make, list(dict(plan).items())):   # re-raises the first failure (or Cancelled)
+        for _ in pool.map(make, todo):   # re-raises the first failure (or Cancelled)
             pass
     return [dst for dst, _ in plan]
 
 
 def render_video(clips: list[Clip], audio: Path, captions: Path | None, width: int, height: int,
                  out: Path, work: Path, cancel: threading.Event,
-                 logo: tuple[Path, str, float] | None = None, grade: str = "film") -> float:
-    """Returns the expected duration of the rendered file."""
+                 logo: tuple[Path, str, float] | None = None, grade: str = "film", progress=None) -> float:
+    """Returns the expected duration of the rendered file. progress(message) is told what step it is on (a long
+    film spends many minutes here, so the app shows "Joining part 3 of 8" instead of a frozen bar)."""
     tail = TRANSITION_S if len(clips) > 1 else 0.0
     trans = [TRANSITIONS.get(c.transition, TRANSITIONS["fade"]) for c in clips]
     for i in range(1, len(clips)):
@@ -480,7 +488,7 @@ def render_video(clips: list[Clip], audio: Path, captions: Path | None, width: i
         # Each clip overlaps the next by the incoming transition's length (the last one by the tail).
         overlap = trans[i + 1][1] if i + 1 < len(clips) else tail
         jobs.append((c, max(2, round((c.duration + overlap) * FPS))))
-    segments = _segments(jobs, width, height, work, cancel)
+    segments = _segments(jobs, width, height, work, cancel, progress)
     total = sum(c.duration for c in clips) + tail
     if len(clips) <= CHUNK_SHOTS:
         _compose(clips, trans, segments, audio, captions, width, height, out, work, cancel, logo, grade,
@@ -493,6 +501,8 @@ def render_video(clips: list[Clip], audio: Path, captions: Path | None, width: i
     parts, t0 = [], 0.0
     groups = [list(range(i, min(i + CHUNK_SHOTS, len(clips)))) for i in range(0, len(clips), CHUNK_SHOTS)]
     for g, idx in enumerate(groups):
+        if progress:
+            progress(f"Joining part {g + 1} of {len(groups)} (long film)")
         last_group = g == len(groups) - 1
         length = sum(clips[i].duration for i in idx) + (tail if last_group else 0.0)
         part = work / f"part_{g:03d}.mp4"
@@ -501,6 +511,8 @@ def render_video(clips: list[Clip], audio: Path, captions: Path | None, width: i
                  part, work, cancel, logo, grade, t0=t0, length=length, fade_out=last_group)
         parts.append(part)
         t0 += length
+    if progress:
+        progress("Adding the soundtrack to the full film")
     listing = work / "parts.txt"
     listing.write_text("".join(f"file '{p.resolve()}'\n" for p in parts))
     ff.run(["-f", "concat", "-safe", "0", "-i", str(listing.resolve()), "-i", str(Path(audio).resolve()),

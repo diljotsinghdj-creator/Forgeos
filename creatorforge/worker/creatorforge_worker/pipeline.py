@@ -1540,7 +1540,11 @@ class Pipeline:
         grade = ("bw" if "blackandwhite" in look or "monochrome" in look else "film") if spec.film_grade else ""
         if spec.film_grade and spec.style in EDITORIAL_STYLES and spec.style != MIX_STYLE:
             grade = "paper"     # Studio mix keeps the film grade: most of its pictures fill the frame
-        expected = render.render_video(clips, mixed, ass, w, h, out, work, cancel, logo, grade=grade)
+        def told(msg: str) -> None:
+            job["message"] = f"Assembling: {msg}"
+            self.store.save(job)
+
+        expected = render.render_video(clips, mixed, ass, w, h, out, work, cancel, logo, grade=grade, progress=told)
         job["render"] = {"file": "work/render.mp4", "expected_s": round(expected, 3), "width": w, "height": h}
 
     def _lay_out(self, clips: list, chart_files: set, style: str, w: int, h: int, work: Path, cancel,

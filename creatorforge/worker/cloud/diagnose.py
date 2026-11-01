@@ -43,3 +43,18 @@ try:
     print("wikipedia reachable:", r.status)
 except Exception as e:  # noqa: BLE001
     print("wikipedia: FAILED", e)
+
+# ---- live: what the newest job is doing right now -----------------------------------------------------------------
+if jobs:
+    jd = os.path.dirname(jobs[-1])
+    j = json.load(open(jobs[-1]))
+    work = os.path.join(jd, "work")
+    segs = glob.glob(os.path.join(work, "seg_*.mp4"))
+    parts = glob.glob(os.path.join(work, "part_*.mp4"))
+    print("\nLIVE:", j.get("status"), f"{100 * (j.get('progress') or 0):.0f}%", "-", j.get("message"))
+    print("shots rendered:", len(segs), "| long-film parts joined:", len(parts))
+    ff = subprocess.run(["pgrep", "-c", "ffmpeg"], capture_output=True, text=True).stdout.strip() or "0"
+    print("ffmpeg processes working now:", ff, "(0 while RUNNING at 81% for many minutes = stuck; send this output)")
+    newest = max((os.path.getmtime(f) for f in glob.glob(os.path.join(work, "*"))), default=0)
+    import time
+    print("last file written:", int(time.time() - newest), "seconds ago" if newest else "never")
