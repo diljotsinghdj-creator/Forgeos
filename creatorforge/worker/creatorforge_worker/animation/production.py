@@ -864,7 +864,7 @@ def render(doc: dict, out: Path, quality: str = "preview", workers: int = 1, cac
     else:
         subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(lst), "-c:v",
                         "libx264", "-preset", "medium", "-crf", "16" if quality.startswith("final") else "22", "-pix_fmt",
-                        "yuv420p", "-c:a", "aac", "-b:a", "192k", "-t", f"{(frames - 0.5) / fps:.6f}", "-movflags",
+                        "yuv420p", "-c:a", "aac", "-b:a", "192k", "-frames:v", str(frames), "-t", f"{frames / fps:.6f}", "-movflags",
                         "+faststart", str(out)], check=True)
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(out), "-c:v", "libx264", "-profile:v", "main", "-level",
                     "4.0", "-crf", "21", "-pix_fmt", "yuv420p", "-c:a", "aac", "-ar", "48000", "-movflags", "+faststart",
@@ -918,10 +918,11 @@ def _join_with_transitions(files, seconds, trans, out: Path, quality: str, fps: 
         total = total + seconds[k] - d
     n = len(files) - 1
     frames = int(round(total * fps))
+    # Exact length on every FFmpeg: -frames:v sets the frame count (FFmpeg 8 trims "-t (n-0.5)/fps" one frame short)
     fc.append(f"[v{n}]tpad=stop_mode=clone:stop=3[vo]")          # exact length: hold the last frame / pad the
     fc.append(f"[a{n}]apad[ao]")                                  # audio, then trim both to the frame count
     subprocess.run(["ffmpeg", "-v", "error", "-y", *ins, "-filter_complex", ";".join(fc), "-map", "[vo]", "-map",
-                    "[ao]", "-t", f"{(frames - 0.5) / fps:.6f}", "-c:v", "libx264", "-preset", "medium", "-crf", "16" if quality.startswith("final") else "22",
+                    "[ao]", "-frames:v", str(frames), "-t", f"{frames / fps:.6f}", "-c:v", "libx264", "-preset", "medium", "-crf", "16" if quality.startswith("final") else "22",
                     "-pix_fmt", "yuv420p", "-r", str(fps), "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart",
                     str(out)], check=True)
     return frames
