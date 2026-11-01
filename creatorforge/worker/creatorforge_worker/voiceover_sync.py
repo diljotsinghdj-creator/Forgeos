@@ -220,6 +220,21 @@ def main(argv: list[str] | None = None) -> None:
         return
     from .config import Config
     cfg = Config.from_env()
+    vo = Path(a.voiceover)
+    if not vo.is_file():
+        # not a file path: an audio file uploaded from the app (Library -> Asset Library -> Audio), found by name;
+        # "latest" = the newest uploaded audio
+        from .library import Library
+        found = [x for x in Library(cfg.data_dir / "library", cfg.allow_mock).assets.list()
+                 if x["kind"] in ("audio", "music") and (a.voiceover.lower() == "latest"
+                                                         or a.voiceover.lower() in str(x.get("name", "")).lower())]
+        if not found:
+            raise SystemExit(f"no file '{a.voiceover}' and no uploaded audio named like it - upload it in the app: "
+                             "Library -> Asset Library -> Audio")
+        pick = found[-1]
+        vo = Library(cfg.data_dir / "library", cfg.allow_mock).assets.path(pick)
+        print(f"using uploaded audio: {pick.get('name')} ({vo.name})")
+    a.voiceover = str(vo)
     jdir = cfg.jobs_dir / a.source
     job = json.loads((jdir / "job.json").read_text())
     if job.get("status") != "READY" or not job.get("result"):
