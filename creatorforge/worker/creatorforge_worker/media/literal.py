@@ -649,3 +649,28 @@ def setting_for(visual: str, country: str, city: str = "") -> str:
 
 # What a Delhi picture must not drift into: the desert forts and painted palaces image models reach for when told "India"
 CITY_NEGATIVE = {"New Delhi": ", Rajasthan, desert, sand dunes, fort on a hill, Jaipur pink city, palace courtyard, camels"}
+
+
+# ---- real people are never drawn by the image generator ----------------------------------------------------------
+_NOT_A_PERSON = re.compile(r"\b(court|commission|parliament|party|congress|bjp|sabha|ministry|house|building|bhavan|"
+                           r"sadan|maidan|block|headquarters|office|government|council|bank|university|college|india|"
+                           r"delhi|mumbai|road|marg|street|police|army|temple|mandir|masjid|gate|fort|express|times|"
+                           r"post|news|channel|square|station|airport|river|lake|hill|state|district|village|city|"
+                           r"nation|union|board|department|committee|tribunal|assembly|school|hospital|forum|initiative|"
+                           r"janta|samaj|sena|dal|morcha|league|front|alliance|kerala|bihar|karnataka|bengal|"
+                           r"pradesh|ayodhya|kashmir|srinagar|bengaluru|kanpur|pathanamthitta|aland|mahadevapura)\b", re.I)
+PEOPLE_FREE = "a government building exterior in New Delhi, wide documentary shot, no people"
+
+
+def people_named(text: str) -> list[str]:
+    """Real people a picture description names ("Rahul Gandhi", "Gyanesh Kumar at a podium"): an image generator must
+    never be asked to draw them - real faces come only from real, credited photos."""
+    if not text:
+        return []
+    found = proper_nouns(text, mid_sentence_names(text))
+    return [n for n in found if len(n.split()) >= 2 and not _NOT_A_PERSON.search(n) and not n.isupper()]
+
+
+def without_people(visual: str) -> tuple[str, bool]:
+    """(the description to generate from, whether a real person had to be taken out)."""
+    return (PEOPLE_FREE, True) if people_named(visual) else (visual, False)

@@ -362,3 +362,24 @@ def test_form_and_section_numbers_are_not_people_and_new_hindi_names_resolve():
 def test_generic_department_acronyms_get_no_photo():
     from creatorforge_worker.media import literal
     assert literal.proper_nouns("केरल में PWD सचिव, कर्नाटक CID की चिट्ठियाँ, EVM और VVPAT", set()) == []
+
+
+def test_a_real_person_is_never_sent_to_the_image_generator():
+    """A planner that asks for "Rahul Gandhi" must not get an AI portrait of him: the prompt becomes a people-free
+    scene with faces blocked (his real, credited photo is used when one is found)."""
+    import json
+    from creatorforge_worker import director as D
+
+    class Planner:
+        def complete_json(self, system, user):
+            return json.dumps({"title": "t", "hook": "h", "cta": "c", "music_mood": "m", "scenes": [
+                {"visual": "Rahul Gandhi", "shot": "medium", "camera": "static", "mood": "tense", "overlay": "",
+                 "transition": "fade", "emphasis": [], "hold": 0, "motion": "", "emotion": "tense",
+                 "beats": [{"text": "x", "visual": "Gyanesh Kumar at a press conference"}]}]})
+
+    spec = D.ProductionSpec.from_dict({"script": "राहुल गांधी ने आयोग पर सवाल उठाए और जवाब माँगा।",
+                                       "template": "youtube_longform", "aspect": "16:9"})
+    plan = D.direct_script(Planner(), spec)
+    prompts = [plan.scenes[0].prompt] + [b["prompt"] for b in plan.scenes[0].beats]
+    assert prompts and not any("Rahul" in p or "Gyanesh" in p for p in prompts)
+    assert "human face" in plan.scenes[0].negative

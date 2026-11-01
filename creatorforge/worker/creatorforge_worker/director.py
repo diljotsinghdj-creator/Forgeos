@@ -782,6 +782,13 @@ def prompt_forge(plan: ProductionPlan, spec: ProductionSpec, only: int | None = 
     for i, s in enumerate(plan.scenes):
         if only is not None and i != only:
             continue
+        # A real person is never drawn: a picture that names one (a planner's "Rahul Gandhi") is generated as a
+        # people-free scene instead; the person's real photo, when found, replaces it at render time.
+        s.visual, s_person = literal.without_people(s.visual)
+        for b in s.beats:
+            b["visual"], b_person = literal.without_people(str(b.get("visual") or ""))
+            if b_person:
+                b["no_people"] = True
         mix = spec.style == MIX_STYLE
         if mix:
             s_look = mix_look({"visual": s.visual, "emotion": s.emotion}, hook=i == 0, cutout=False)
@@ -820,6 +827,11 @@ def prompt_forge(plan: ProductionPlan, spec: ProductionSpec, only: int | None = 
             b["video_prompt"] = (f"Subtle natural movement: {b['visual'].rstrip('.')}. Camera: "
                                  f"{('slow push in', 'slow dolly sideways', 'slow pull back', 'gentle orbit')[(i + k) % 4]}. "
                                  f"{_video_look(b['look'] if mix else spec.style, style)}. {vstyle}")
+        for b in s.beats:
+            if b.get("no_people"):
+                b["negative"] += ", person, people, human face, portrait, crowd, politician"
+        if s_person:
+            s.negative += ", person, people, human face, portrait, crowd, politician"
         if s.beats:
             s.prompt, s.negative = s.beats[0]["prompt"], s.beats[0]["negative"]
         # The animation prompt leads with motion: image-to-video models already see the still.
