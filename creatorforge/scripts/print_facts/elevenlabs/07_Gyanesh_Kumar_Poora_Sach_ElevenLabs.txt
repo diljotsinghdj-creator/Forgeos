@@ -1,13 +1,11 @@
 # Gyanesh Kumar Ka Poora Sach - Hinglish narration for ElevenLabs
-# 113 lines, 6 chunks (each under 2800 characters). Numbers are written as Hindi words.
+# 112 lines, 6 chunks (each under 2800 characters). Numbers are written as Hindi words.
 # ElevenLabs Studio: paste everything EXCEPT the # and ===== lines, export one MP3 (gyanesh_full.mp3).
 # Text to Speech: generate each chunk, name them g_1.mp3, g_2.mp3 ... and join them on the pod (see bottom).
 # Model: Eleven Multilingual v2 · Stability 55-60 · Similarity 75 · Style 10-15 · Speaker boost ON · Speed 1.0
 # Voice: a Hindi news/documentary voice you own or have a commercial licence for. No clone of a real person or anchor.
 
-===== CHUNK 1 of 6 (2740 characters) =====
-Gyanesh Kumar Ka Poora Sach
-<break time="0.6s" />
+===== CHUNK 1 of 6 (2686 characters) =====
 तेरह दशमलव तीन करोड़ वोटरों के नाम कटे। ज़िम्मेदार कौन?
 <break time="1.0s" />
 ये संख्या पूरे जापान की आबादी से भी ज़्यादा है।
