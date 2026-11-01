@@ -20,7 +20,7 @@ Squares: 13.3 vs 12.3 | करोड़ नाम कटे, जापान क
 और जिसके दफ़्तर से ये हुआ, उसे चुना किसने?
 Tone: question
 Visual: The Election Commission of India building, Nirvachan Sadan, in New Delhi
-Visual: A long empty conference table with three chairs at its head
+Visual: Nirvachan Sadan, the Election Commission of India headquarters on Ashoka Road, New Delhi, at dusk with lights on
 
 6 अक्टूबर। सांसद संसद से चुनाव आयोग की ओर निकले... और बैरिकेड पर रोक दिए गए।
 Tone: urgent
@@ -47,8 +47,8 @@ Text: 1 NOV · रामलीला मैदान
 
 चलिए, शुरू से। तारीख़ वार। सबूत के साथ।
 Tone: warm
-Visual: A red pen lying across closed case folders tied with red tape
-Visual: A desk lamp lighting a stack of closed folders at night
+Visual: The Supreme Court of India building in New Delhi, front view with the dome
+Visual: The new Parliament House of India in New Delhi, exterior
 Text: तारीख़ · सबूत · दोनों पक्ष
 Transition: dip
 
@@ -57,13 +57,13 @@ Visual: The Supreme Court of India building in New Delhi in morning light
 
 ये लड़ाई शुरू कहाँ से हुई? मार्च 2023, सुप्रीम कोर्ट।
 Tone: calm
-Visual: The Supreme Court of India's corridor with tall arches, empty
-Visual: A judge's gavel on a sound block in a wood-panelled courtroom
+Visual: The Supreme Court of India building in New Delhi, front view with the dome
+Visual: Lawyers in black coats walking outside the Supreme Court of India, faces not identifiable
 Place: SUPREME COURT · MAR 2023
 
 चुनाव आयुक्त चुनेगी एक कमेटी। प्रधानमंत्री, विपक्ष के नेता, और देश के मुख्य न्यायाधीश।
 Tone: calm
-Visual: Three empty high-backed chairs side by side in a wood-panelled room
+Visual: The Supreme Court of India building in New Delhi, front view with the dome
 Steps: प्रधानमंत्री → विपक्ष के नेता → मुख्य न्यायाधीश | 2023 का फ़ैसला
 
 लेकिन कुछ ही महीनों में संसद ने नया क़ानून बना दिया। और फिर?
@@ -74,49 +74,49 @@ Stock: Parliament House New Delhi
 
 मुख्य न्यायाधीश बाहर। उनकी जगह, प्रधानमंत्री का चुना एक मंत्री।
 Tone: strong
-Visual: An empty judge's chair being moved away from a long table
+Visual: The new Parliament House of India in New Delhi, exterior
 Split: पहले: PM · विपक्ष · CJI | अब: PM · मंत्री · विपक्ष
-Visual: A third chair added beside two others at a government table
+Visual: The Lok Sabha chamber in the new Parliament House of India, wide view
 
 यानी कमेटी में सरकार के दो वोट, विपक्ष का एक। हर बार 2 बनाम 1।
 Tone: dramatic
-Visual: Two raised hands against one, in silhouette
+Visual: The new Parliament House of India in New Delhi, exterior
 Pie: 67% | कमेटी में सरकार के वोट (3 में से 2)
 
 विपक्ष बोला, आयोग की आज़ादी पर हमला। सरकार बोली, ये संसद का हक़ है।
 Tone: calm
-Visual: A balance scale on a dark desk, one pan lower
+Visual: The new Parliament House of India in New Delhi, exterior
 Text: विपक्ष: हमला · सरकार: संसद का हक़
 
 क्या सुप्रीम कोर्ट ने रोका? मार्च 2024 में, रोक से मना कर दिया।
 Tone: calm
-Visual: A gavel on a closed law book under a single beam of light
+Visual: The Supreme Court of India building in New Delhi, front view with the dome
 Article: Supreme Court Refuses To Stay Election Commissioners' Act Dropping CJI From Selection Panel | LiveLaw, March 2024
 
 पर पहले समझिए कि सुप्रीम कोर्ट ने 2023 में ऐसा कहा क्यों था। 1950 से अब तक चुनाव आयुक्तों को सिर्फ़ सरकार चुनती आई थी। पाँच जजों की बेंच ने कहा, जब तक संसद क़ानून नहीं बनाती, चयन में मुख्य न्यायाधीश भी होंगे, ताकि रेफ़री पर किसी एक टीम का असर न दिखे।
 Tone: calm
 Visual: The Supreme Court of India building in New Delhi in morning light
-Visual: A referee's whistle lying on a white ballot paper, text unreadable
+Visual: Indian voters queueing outside a polling station, seen from behind
 Text: ANOOP BARANWAL v. UNION OF INDIA · 2 MAR 2023
 Cite: Supreme Court of India, Anoop Baranwal judgment, 2 Mar 2023
 
 और नए क़ानून में एक और बात थी, जिसकी चर्चा कम हुई। धारा 16। मुख्य चुनाव आयुक्त और चुनाव आयुक्तों पर, उनके आधिकारिक काम के लिए, कोई दीवानी या आपराधिक मुक़दमा नहीं चलाया जा सकता।
 Tone: strong
-Visual: A thick law book open on a desk with a ribbon bookmark, text unreadable
-Visual: A brass padlock on a wooden cabinet
+Visual: The Constitution of India, a printed copy on a desk, cover only
+Visual: The Supreme Court of India building in New Delhi, front view with the dome
 Quote: No court shall entertain any civil or criminal proceedings ... for any act done in official capacity | CEC and Other ECs Act, 2023, Section 16
 Cite: Chief Election Commissioner and Other Election Commissioners Act, 2023
 
 आज वही धारा फिर चर्चा में है। सितंबर 2026 में सुप्रीम कोर्ट में एक याचिका दायर हुई, जो ज्ञानेश कुमार पर मुक़दमा चलाने की इजाज़त माँगती है। ये याचिका है, फ़ैसला नहीं।
 Tone: calm
-Visual: A petition document with a court stamp on a lawyer's desk, text unreadable
-Visual: Lawyers' black robes hanging on hooks in a court corridor
+Visual: The Supreme Court of India building in New Delhi, front view with the dome
+Visual: Lawyers in black coats walking outside the Supreme Court of India, faces not identifiable
 Text: याचिका · फ़ैसला नहीं
 Cite: Republic World, 25 Sep 2026
 
 और ये केस? फ़ैसला अब तक नहीं। सितंबर 2026 में मामला मुख्य न्यायाधीश को भेजा गया।
 Tone: question
-Visual: A stack of closed court files on a bench, untied
+Visual: The Supreme Court of India building in New Delhi at dusk, lights on
 Text: क़ानून की वैधता: फ़ैसला बाक़ी
 Transition: dip
 
@@ -130,21 +130,22 @@ Visual: A dark Delhi avenue at night lined with government buildings
 Text: 17 FEB 2025 · 26वें CEC
 Cite: Scroll, Feb 2025
 
-नए क़ानून से चुने गए पहले CEC। कमेटी में मोदी, अमित शाह और राहुल।
+नए क़ानून से चुने गए पहले CEC। कमेटी में मोदी, अमित शाह और राहुल गांधी।
 Tone: calm
-Visual: Three chairs at a polished table under a chandelier, seen from far
-Visual: Three nameless chairs lit by a single overhead lamp
+Visual: The new Parliament House of India in New Delhi, exterior
+Visual: North Block, the Ministry of Home Affairs building on Raisina Hill, New Delhi
+Visual: The Lok Sabha chamber in the new Parliament House of India, wide view
 Text: कमेटी: मोदी · शाह · राहुल
 
 राहुल गांधी ने लिखित असहमति दी। कहा, सुप्रीम कोर्ट के फ़ैसले तक रुकिए।
 Tone: strong
-Visual: A fountain pen resting on a closed leather folder
+Visual: The Lok Sabha chamber in the new Parliament House of India, wide view
 Article: Gyanesh Kumar named chief poll commissioner overruling Rahul Gandhi's dissent | Scroll, February 2025
 
 और फिर? कुछ ही घंटों में नियुक्ति। राहुल बोले, "आधी रात का फ़ैसला।"
 Tone: dramatic
-Visual: A wall clock above a government office door, hands near midnight
-Visual: An empty corridor of a government building at night
+Visual: North Block, the Ministry of Home Affairs building on Raisina Hill, New Delhi, at night
+Visual: Nirvachan Sadan, the Election Commission of India headquarters on Ashoka Road, New Delhi, at dusk with lights on
 Text: "आधी रात का फ़ैसला" - राहुल गांधी
 
 अब ज्ञानेश कुमार का करियर। 1988 बैच के IAS अफ़सर, केरल कैडर।
@@ -175,7 +176,7 @@ Cite: Wikipedia; Outlook Business; Daily Pioneer, Feb 2025
 
 2016 में गृह मंत्रालय। और 5 अगस्त 2019, जिस दिन धारा 370 हटाने की प्रक्रिया शुरू हुई। एक प्रोफ़ाइल के मुताबिक़, संविधान आदेश 272 पर राष्ट्रपति के दस्तख़त करवाने का काम उन्हीं के पास था।
 Tone: strong
-Visual: A sealed government envelope on a polished table in Rashtrapati Bhavan style setting, text unreadable
+Visual: Rashtrapati Bhavan, the President's House in New Delhi, front view
 Visual: Dal Lake in Srinagar at dawn with shikaras
 Text: 5 AUG 2019 · CONSTITUTION ORDER 272
 Cite: The News Minute profile, citing a book by a BJP-linked foundation
@@ -183,13 +184,13 @@ Cite: The News Minute profile, citing a book by a BJP-linked foundation
 जनवरी 2020 में गृह मंत्रालय का अयोध्या डेस्क भी उन्हें मिला, जब सुप्रीम कोर्ट के फ़ैसले के बाद राम मंदिर ट्रस्ट बन रहा था। कुछ रिपोर्टें कहती हैं उन्होंने इसकी अगुवाई की, कुछ कहती हैं वो इसमें शामिल थे।
 Tone: calm
 Visual: The Saryu river ghats in Ayodhya at sunrise, seen from a distance
-Visual: A stack of government files tied with red tape on a desk
+Visual: North Block, the Ministry of Home Affairs building on Raisina Hill, New Delhi
 Text: JAN 2020 · अयोध्या डेस्क
 Cite: Maktoob Media; Wikipedia
 
 फिर संसदीय कार्य मंत्रालय में सचिव, और फिर सहकारिता मंत्रालय में सचिव, जिसके मंत्री अमित शाह हैं। 31 जनवरी 2024 को रिटायर। और सिर्फ़ छह हफ़्ते बाद, मार्च 2024 में, सुखबीर सिंह संधू के साथ चुनाव आयुक्त।
 Tone: strong
-Visual: A wall calendar with dates crossed out over six weeks
+Visual: North Block, the Ministry of Home Affairs building on Raisina Hill, New Delhi
 Visual: The North Block government building in New Delhi at dusk
 Timeline: 31 JAN 2024 रिटायर | MAR 2024 चुनाव आयुक्त | 19 FEB 2025 CEC
 Cite: Indian Cooperative; NewsOnAIR; Tribune
@@ -203,9 +204,9 @@ Cite: Wikipedia; Outlook
 
 आलोचक पूछते हैं, सरकार के इतने क़रीबी अफ़सर निष्पक्ष रहेंगे? सरकार कहती है, ये अनुभव है।
 Tone: question
-Visual: A lone official's chair facing a large window over Delhi
+Visual: North Block, the Ministry of Home Affairs building on Raisina Hill, New Delhi
 Split: आलोचक: बहुत क़रीबी | सरकार: अनुभव
-Visual: A row of government files tied with red tape on a shelf
+Visual: Nirvachan Sadan, the Election Commission of India headquarters on Ashoka Road, New Delhi, front facade
 Transition: dip
 
 Chapter: 3 | "वोट चोरी" का आरोप
@@ -213,7 +214,7 @@ Visual: A ballot box sealed with wax on a school desk
 
 7 अगस्त 2025। राहुल गांधी ने क्या आरोप लगाया?
 Tone: urgent
-Visual: A press conference hall with rows of empty chairs and bright stage lights
+Visual: The Indian National Congress headquarters building in New Delhi, exterior
 Visual: Rows of TV camera tripods facing an empty stage
 Place: NEW DELHI · 7 AUG 2025
 
@@ -230,19 +231,19 @@ Steps: डुप्लीकेट वोटर → ग़लत पते → �
 
 दस दिन बाद क्या हुआ? ज्ञानेश कुमार ख़ुद मीडिया के सामने आए।
 Tone: calm
-Visual: A podium with microphones in a formal press room, no one at it
-Visual: Reporters' microphones bunched on a table, no people
+Visual: Nirvachan Sadan, the Election Commission of India headquarters on Ashoka Road, New Delhi, front facade
+Visual: Television camera crews outside a government building in New Delhi, seen from behind
 Text: CEC · 17 AUG 2025
 
 उनका जवाब... सात दिन में हलफ़नामा दो, या माफ़ी माँगो।
 Tone: strong
-Visual: A sealed brown envelope lying on a polished wooden desk
+Visual: Nirvachan Sadan, the Election Commission of India headquarters on Ashoka Road, New Delhi, front facade
 Quote: हलफ़नामा दें या देश से माफ़ी माँगें, तीसरा कोई विकल्प नहीं | CEC ज्ञानेश कुमार, 17 Aug 2025
 
 राहुल गांधी ने न हलफ़नामा दिया, न माफ़ी माँगी।
 Tone: dramatic
-Visual: An empty chair facing a closed door in a dim corridor
-Visual: A clock on a wall ticking past a deadline
+Visual: The Indian National Congress headquarters building in New Delhi, exterior
+Visual: Nirvachan Sadan, the Election Commission of India headquarters on Ashoka Road, New Delhi, front facade
 Big: ना-ना
 
 फिर सितंबर में दूसरा वार। कर्नाटक का आलंद।
@@ -259,21 +260,21 @@ Article: '6,018 voter names deleted in Karnataka's Aland': Rahul Gandhi drops 'h
 
 और उनका आरोप? ज्ञानेश कुमार "वोट चोरों" को बचा रहे हैं।
 Tone: strong
-Visual: A gavel and a key lying on a dark desk
-Visual: A lock and chain on a steel cabinet door
+Visual: The Indian National Congress headquarters building in New Delhi, exterior
+Visual: Nirvachan Sadan, the Election Commission of India headquarters on Ashoka Road, New Delhi, front facade
 Text: राहुल: "CEC वोट चोरों को बचा रहे हैं"
 
 17 अगस्त की वो प्रेस कॉन्फ़्रेंस क़रीब 85 मिनट चली। ज्ञानेश कुमार ने कहा, आयोग के लिए कोई पक्ष या विपक्ष नहीं, सब बराबर हैं। और ये भी, कि जो उस सीट का वोटर नहीं, वो शिकायत सिर्फ़ शपथ लेकर गवाह के तौर पर कर सकता है।
 Tone: calm
-Visual: Rows of empty press chairs facing a podium with microphones
-Visual: A wall clock in a press room showing a long time passed
+Visual: Nirvachan Sadan, the Election Commission of India headquarters on Ashoka Road, New Delhi, front facade
+Visual: Nirvachan Sadan, the Election Commission of India headquarters on Ashoka Road, New Delhi, at dusk with lights on
 Quote: Either submit an affidavit or apologise to the nation. There is no third option. | CEC Gyanesh Kumar, 17 Aug 2025
 Cite: The Week (PTI); Deccan Herald, 17 Aug 2025
 
 कांग्रेस का कहना था कि राहुल गांधी के सवालों का कोई ठोस जवाब नहीं मिला। तो एक तरफ़ "हलफ़नामा दो", दूसरी तरफ़ "पहले जवाब दो"। और ये टकराव वहीं से और तीखा होता गया।
 Tone: strong
-Visual: Two empty chairs facing each other across a long table
-Visual: A torn sheet of paper lying between two pens
+Visual: Nirvachan Sadan, the Election Commission of India headquarters on Ashoka Road, New Delhi, front facade
+Visual: The Indian National Congress headquarters building in New Delhi, exterior
 Split: CEC: हलफ़नामा दो | कांग्रेस: पहले जवाब दो
 Cite: The News Minute; Outlook, Aug 2025
 
@@ -281,7 +282,7 @@ Cite: The News Minute; Outlook, Aug 2025
 Tone: calm
 Visual: The Election Commission building in daylight, flags still
 Split: चुनाव आयोग: बेबुनियाद | बीजेपी: होमवर्क नहीं
-Visual: A closed party office door with a lotus-coloured curtain
+Visual: The BJP national headquarters building on Deen Dayal Upadhyay Marg, New Delhi, exterior
 Transition: dip
 
 Chapter: 4 | SIR: वोटर लिस्ट की सफ़ाई या कटाई?
@@ -350,7 +351,7 @@ Cite: EC data, via Deccan Herald
 
 ज्ञानेश कुमार का तर्क? मरे हुए और हमेशा के लिए गए, लिस्ट में नहीं रहेंगे।
 Tone: calm
-Visual: A garland on a framed photograph on a wall, the face hidden by flowers
+Visual: Nirvachan Sadan, the Election Commission of India headquarters on Ashoka Road, New Delhi, front facade
 Article: Can't allow dead, those who have permanently migrated to be on voters list: CEC Kumar | Deccan Herald
 
 और जिनका नाम ग़लती से कटा? वो फ़ॉर्म 6 भरकर फिर जुड़ सकते हैं।
@@ -361,8 +362,9 @@ Text: नाम कटा? FORM 6 भरें
 
 पर सवाल ये। साढ़े नौ करोड़ लोग ग़ायब कैसे हो गए?
 Tone: question
-Visual: A row of empty chairs at a village meeting under a tree
+Visual: Booth-level officers checking printed voter lists door to door in an Indian neighbourhood, seen from behind
 Big: कहाँ गए?
+
 दिल्ली का उदाहरण लीजिए। अगस्त 2026 की ड्राफ़्ट लिस्ट से 47.7 लाख नाम बाहर, यानी क़रीब हर तीसरा वोटर। इनमें 43 लाख से ज़्यादा "स्थायी रूप से शिफ़्ट"।
 Tone: strong
 Visual: A crowded Delhi residential lane with balconies, seen from above
@@ -373,21 +375,21 @@ Cite: ETV Bharat, 31 Aug 2026; ThePrint, 2026
 और फिर Form 6 का झगड़ा। Form 6 नए वोटर का फ़ॉर्म है। तो जिनका नाम कटा, क्या उन्हें फिर से "नया वोटर" बनना होगा? सुप्रीम कोर्ट में जस्टिस बागची ने भी यही पूछा: फ़ाइनल लिस्ट आने तक Form 6 क्यों?
 Tone: question
 Visual: A blank government form on a clipboard with a pen, text unreadable
-Visual: A courtroom bench with an empty judge's chair and a nameplate turned away
+Visual: The Supreme Court of India building in New Delhi, front view with the dome
 Quote: Till your final roll is there, why Form 6? | Justice Joymalya Bagchi, Supreme Court, as reported
 Cite: LiveLaw; SC Observer, 2026
 
 सितंबर में आयोग ने कई बदलाव घोषित किए, सुनवाई और Form 6 के नियमों में। अक्टूबर में ख़ास नामांकन अभियान भी शुरू हुआ। कांग्रेस बोली, बहुत कम, बहुत देर से।
 Tone: calm
 Visual: A voter registration camp under a tent with tables, people seen from behind
-Visual: A government circular pinned on a notice board, text unreadable
+Visual: Nirvachan Sadan, the Election Commission of India headquarters on Ashoka Road, New Delhi, front facade
 Split: आयोग: बदलाव + नामांकन अभियान | कांग्रेस: "too little, too late"
 Cite: The Wire, Sep 2026; Deccan Chronicle; Asianet Newsable, Oct 2026
 
 Transition: dip
 
 Chapter: 5 | आयोग के अंदर दरार?
-Visual: Two closed doors side by side in a government corridor
+Visual: Nirvachan Sadan, the Election Commission of India headquarters on Ashoka Road, New Delhi, front facade
 
 तो विपक्ष ने क्या किया? वो, जो पहले कभी नहीं हुआ।
 Tone: dramatic
@@ -403,22 +405,22 @@ Text: CEC हटाने का नोटिस · दोनों सदनो
 
 6 अप्रैल 2026। स्पीकर ओम बिरला और सभापति सी पी राधाकृष्णन ने नोटिस ख़ारिज कर दिया।
 Tone: calm
-Visual: A presiding officer's high chair in an empty parliament chamber
-Visual: A heavy wooden door of a parliament office closing
+Visual: The Rajya Sabha chamber in the new Parliament House of India, empty
+Visual: The new Parliament House of India in New Delhi, exterior
 Text: 6 APR 2026: नोटिस ख़ारिज
 Cite: AIR News, Apr 2026
 
 पर विपक्ष रुका नहीं। 24 अप्रैल को राज्यसभा के 73 सांसदों ने "साबित दुर्व्यवहार" के आधार पर नया नोटिस दिया, जो रिपोर्टों के मुताबिक़ अब भी लंबित है।
 Tone: strong
 Visual: Rows of empty benches in the Rajya Sabha chamber
-Visual: A fountain pen signing the last line of a long petition, names unreadable
+Visual: The new Parliament House of India in New Delhi, exterior
 Text: 24 APR 2026 · 73 सांसद · नोटिस लंबित
 Cite: The Wire; Scroll, Apr 2026; The Week, 24 Sep 2026
 
 और सितंबर में ख़बर आई कि तीसरे नोटिस की तैयारी है, जिसे AAP और DMK का भी साथ है। CEC को हटाना आसान नहीं: सुप्रीम कोर्ट के जज की तरह, दोनों सदनों में विशेष बहुमत चाहिए।
 Tone: calm
 Visual: The Parliament of India building in New Delhi at dusk
-Visual: A balance scale on a judge's desk, out of focus
+Visual: The Supreme Court of India building in New Delhi, front view with the dome
 Steps: नोटिस → जाँच → दोनों सदनों में विशेष बहुमत → राष्ट्रपति | CEC को हटाने का रास्ता
 Cite: Deccan Chronicle; The Week, Sep 2026; Constitution, Article 324(5)
 
@@ -430,20 +432,20 @@ Text: INDIAN EXPRESS · SEP 2026
 
 रिपोर्ट के मुताबिक़, दो चुनाव आयुक्तों ने दस महीनों में चौदह बार आपत्ति दर्ज की।
 Tone: strong
-Visual: Two fountain pens lying on a closed folder under a lamp
-Visual: Two empty chairs on either side of a long conference table
+Visual: Nirvachan Sadan, the Election Commission of India headquarters on Ashoka Road, New Delhi, front facade
+Visual: Nirvachan Sadan, the Election Commission of India headquarters on Ashoka Road, New Delhi, at dusk with lights on
 Chart: 14 | आपत्तियाँ, 10 महीनों में (रिपोर्ट के मुताबिक़)
 
 26 अक्टूबर को आयोग ने सुप्रीम कोर्ट में कहा, सारे फ़ैसले एकमत थे।
 Tone: calm
 Visual: The Supreme Court of India at dusk, lights coming on
-Visual: Lawyers' black gowns hanging on hooks in a court corridor
+Visual: The Supreme Court of India building in New Delhi, front view with the dome
 Text: EC: फ़ैसले एकमत थे
 
 तो सच क्या है? RTI से आपत्तियाँ माँगी गईं। तीस दिन बाद भी जवाब नहीं।
 Tone: question
-Visual: An empty government reception counter with a bell and no one behind it
-Visual: A post office counter with a single envelope waiting
+Visual: Nirvachan Sadan, the Election Commission of India headquarters on Ashoka Road, New Delhi, front facade
+Visual: Nirvachan Sadan, the Election Commission of India headquarters on Ashoka Road, New Delhi, at dusk with lights on
 Text: RTI · 30 दिन · जवाब नहीं
 Cite: The Wire, Oct 2026
 Transition: dip
@@ -491,7 +493,7 @@ Article: Delhi Protests: Supreme Court issues notice to Centre on pleas against 
 Tone: calm
 Visual: A police line seen from behind facing an empty street
 Split: पुलिस: सुरक्षा | प्रदर्शनकारी: आवाज़ दबाई
-Visual: A megaphone lying on a pavement
+Visual: Protesters walking with Indian flags on a Delhi road, seen from behind
 Transition: dip
 
 Chapter: 7 | अब आगे क्या?
@@ -511,8 +513,8 @@ Text: व्यापारी: रैली टालो
 
 और रैली से पहले एक प्रतीकात्मक "पब्लिक इम्पीचमेंट"। विपक्ष का आरोप है कि होटल और मैदान की इजाज़त नहीं मिली, इसलिए कार्यक्रम कांग्रेस अध्यक्ष मल्लिकार्जुन खड़गे के घर पर रखा गया।
 Tone: strong
-Visual: A row of empty chairs facing a small stage in a garden, seen from the back
-Visual: A wooden gavel resting on a stack of papers
+Visual: The Indian National Congress headquarters building in New Delhi, exterior
+Visual: The new Parliament House of India in New Delhi, exterior
 Text: "पब्लिक इम्पीचमेंट" · प्रतीकात्मक, क़ानूनी नहीं
 Cite: Siasat; Asianet Newsable, Oct 2026
 
@@ -529,7 +531,7 @@ Text: 3,500 पुलिसकर्मी
 
 और ज्ञानेश कुमार का कार्यकाल? जनवरी 2029 तक। यानी 2029 के लोकसभा चुनाव से ठीक पहले तक, अगर इससे पहले कुछ नहीं बदलता।
 Tone: strong
-Visual: A desk calendar flipped to January with a pen beside it
+Visual: Nirvachan Sadan, the Election Commission of India headquarters on Ashoka Road, New Delhi, at dusk with lights on
 Visual: The Election Commission of India building at night, windows lit
 Text: कार्यकाल: जनवरी 2029 तक
 Cite: Tribune, Feb 2025
@@ -542,7 +544,7 @@ Text: आयोग: लिस्ट की सफ़ाई
 
 दूसरी तरफ़ विपक्ष। उसका आरोप? वोट चोरी।
 Tone: strong
-Visual: A crowd's raised fists in silhouette against floodlights
+Visual: An opposition rally crowd with Indian flags in New Delhi, seen from behind
 Text: विपक्ष: वोट चोरी
 
 और बीच में सुप्रीम कोर्ट के तीन फ़ैसले बाक़ी हैं। कौन से?
@@ -552,7 +554,7 @@ Steps: 2023 का क़ानून → SIR केस → विरोध क�
 
 याद रखिए, आरोप सबूत नहीं। और बिना जाँच, सफ़ाई का दावा भी सच नहीं।
 Tone: calm
-Visual: A magnifying glass resting on a closed folder under a lamp
+Visual: The Supreme Court of India building in New Delhi, front view with the dome
 Statement: आरोप ≠ सबूत · दावा ≠ सच
 
 सवाल सिर्फ़ ज्ञानेश कुमार का नहीं है। सवाल आपके वोट का है।

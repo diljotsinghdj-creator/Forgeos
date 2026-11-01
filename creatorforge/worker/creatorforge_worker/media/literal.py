@@ -210,7 +210,7 @@ That's There's Here's What's Who's He's She's They're We're You're I'm Let's Can
 _SKIP_ACRONYMS = {"OK", "TV", "AI", "PM", "CEO", "GDP", "USD", "GBP", "INR", "PDF", "SMS", "UPI", "ATM", "VAT", "ID",
                   "MP", "MPS", "UK", "US", "USA", "EU", "UN", "AM", "FM", "AD", "BC", "DNA", "IQ", "HR", "PR", "CCTV",
                   "MAX", "AP", "LLC", "PLC", "LTD", "NHS", "SIR", "RTI", "IAS", "IPS", "CEC", "CJI", "LOP", "FIR",
-                  "BLO", "NOC", "GDP", "MLA", "MLAS"}
+                  "BLO", "NOC", "GDP", "MLA", "MLAS", "PWD", "CID", "EVM", "EVMS", "EPIC", "VVPAT", "IIT", "DM"}
 _GROUPS = {"muslim", "muslims", "hindu", "hindus", "christian", "christians", "sikh", "sikhs", "jain", "jains",
            "buddhist", "buddhists", "dalit", "dalits", "adivasi", "adivasis", "tribal", "tribals", "vokkaliga",
            "vokkaligas", "lingayat", "lingayats", "brahmin", "brahmins", "obc", "obcs", "jat", "jats", "maratha",
