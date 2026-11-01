@@ -15,7 +15,7 @@ whisper = ["faster-whisper>=1.0"]
 kokoro = ["kokoro>=0.9", "soundfile>=0.12", "numpy"]
 diffusers = ["diffusers>=0.35", "transformers", "accelerate", "torch", "sentencepiece", "protobuf", "ftfy", "imageio", "imageio-ffmpeg"]
 animation = ["espeakng-loader>=0.2", "Pillow>=10", "numpy"]   # 2D/2.5D characters + lip-sync speech
-test = ["pytest>=8"]
+test = ["pytest>=8", "Pillow>=10", "numpy"]   # the animation, thumbnail and assembly tests draw with Pillow
 
 [project.scripts]
 creatorforge-worker = "creatorforge_worker.__main__:main"
