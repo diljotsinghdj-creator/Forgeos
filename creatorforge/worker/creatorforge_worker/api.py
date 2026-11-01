@@ -468,8 +468,8 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
             with tmp.open("wb") as f:
                 async for chunk in request.stream():
                     size += len(chunk)
-                    if size > 300 * 1024 * 1024:
-                        raise HTTPException(413, "asset larger than 300 MB")
+                    if size > 2048 * 1024 * 1024:     # a 45-60 min 1080p documentary is well over 300 MB
+                        raise HTTPException(413, "asset larger than 2 GB")
                     f.write(chunk)
             return library.assets.add(kind, name, tmp, ext, lambda p: _check_asset(kind, p))
         except (MediaError, ValueError) as e:
