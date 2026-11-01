@@ -8,7 +8,7 @@ android {
     namespace = "com.creatorforge.app"
     compileSdk = 35
     defaultConfig {
-        applicationId = "com.creatorforge.app"
+        applicationId = "com.creatorforge.studio" // new id: installs beside the old randomly-signed app, so nothing has to be uninstalled
         minSdk = 26
         targetSdk = 35
         versionCode = 66
