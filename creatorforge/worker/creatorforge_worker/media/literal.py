@@ -201,6 +201,7 @@ One Two Three Four Five Six Seven Eight Nine Ten Eleven Twelve Twenty Hundred Th
 Third Last Next Most More Less Many Much Few Watch Notice Imagine Remember Look Guess Meet Let Tonight Today Yesterday
 Tomorrow Monday Tuesday Wednesday Thursday Friday Saturday Sunday January February March April May June July August
 September October November December Mr Mrs Ms Dr Part Move Chapter Fun Fact Fake Real Arrests Elections Researchers
+Form Forms Section Article Annexure Schedule Rule Clause
 Critics Supporters Students Police Officials Their Everywhere Nowhere Nobody Somebody Everyone Anyone Okay Ok Well
 Right Wrong True False Yes Hi Hello Thanks Sorry Please Wait Stop Same Other Another Such Like Unlike Again Once
 Twice Ever Never Always Sometimes Often Maybe Perhaps Almost Nearly About Around Is Are Was Were Be Been Has Have Had
@@ -257,7 +258,11 @@ HINDI_NAMES = {"नरेंद्र मोदी": "Narendra Modi", "मोद
                "सी पी राधाकृष्णन": "C. P. Radhakrishnan", "सूर्यकांत": "Surya Kant", "जस्टिस सूर्यकांत": "Surya Kant",
                "कॉकरोच जनता पार्टी": "Cockroach Janta Party", "रवि शंकर प्रसाद": "Ravi Shankar Prasad",
                "नीतीश कुमार": "Nitish Kumar", "तेजस्वी यादव": "Tejashwi Yadav", "महादेवपुरा": "Mahadevapura",
-               "आलंद": "Aland, Karnataka", "रामलीला मैदान": "Ramlila Maidan", "प्रियंका गांधी": "Priyanka Gandhi"}
+               "आलंद": "Aland, Karnataka", "रामलीला मैदान": "Ramlila Maidan", "प्रियंका गांधी": "Priyanka Gandhi",
+               "रामदास आठवले": "Ramdas Athawale", "आठवले": "Ramdas Athawale", "संबित पात्रा": "Sambit Patra",
+               "जीजी थॉमसन": "Jiji Thomson", "राज्यसभा": "Rajya Sabha", "लोकसभा": "Lok Sabha",
+               "इंडियन एक्सप्रेस": "The Indian Express", "पत्तनमतिट्टा": "Pathanamthitta",
+               "निर्वाचन सदन": "Nirvachan Sadan", "रामनाथ कोविंद": "Ram Nath Kovind"}
 _HINDI_RX = re.compile("|".join(re.escape(k) for k in sorted(HINDI_NAMES, key=len, reverse=True)))
 _SPAN = re.compile(r"\b(?:[A-Z][\w'’.-]*|[A-Z]{2,6})(?:\s+(?:of|the|and|for|de|von|van|al)?\s*(?:[A-Z][\w'’.-]*|[A-Z]{2,6}))*")
 COUNTRIES = ("India", "Pakistan", "Bangladesh", "China", "Britain", "United Kingdom", "England", "France", "Germany",

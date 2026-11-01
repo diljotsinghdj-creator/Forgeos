@@ -350,3 +350,10 @@ def test_commons_photos_are_recent_newest_first():
     found = [{"title": "Amit Shah 2009 rally"}, {"title": "Amit Shah undated"}, {"title": "Amit Shah", "year": 2023},
              {"title": "Amit Shah in 2016"}]
     assert [p["title"] for p in _recent_first(found)] == ["Amit Shah", "Amit Shah in 2016", "Amit Shah undated"]
+
+
+def test_form_and_section_numbers_are_not_people_and_new_hindi_names_resolve():
+    from creatorforge_worker.media import literal
+    assert literal.proper_nouns("कोई भी Form 6 से दोबारा जुड़ सकता है, Section 16 के तहत", set()) == []
+    found = literal.proper_nouns("केंद्रीय मंत्री रामदास आठवले, संबित पात्रा और जीजी थॉमसन, राज्यसभा में", set())
+    assert {"Ramdas Athawale", "Sambit Patra", "Jiji Thomson", "Rajya Sabha"} <= set(found)
