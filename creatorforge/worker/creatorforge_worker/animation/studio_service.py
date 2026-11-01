@@ -221,7 +221,8 @@ class AnimationStore:
         a = self.assets.get(aid)
         thumbs = self.root / "assets" / "thumbs"
         thumbs.mkdir(parents=True, exist_ok=True)
-        p = thumbs / f"{re.sub(r'[^\w-]', '_', aid)}.png"
+        safe = re.sub(r"[^\w-]", "_", aid)          # (no backslash inside an f-string: Python 3.10/3.11)
+        p = thumbs / f"{safe}.png"
         if not p.exists():
             asset_lib.render_png(a, p, 256)
         return p
