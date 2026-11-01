@@ -102,6 +102,20 @@ fun LibraryScreen() {
         }
     }
 
+    /** Downloads an Asset Library file once (kept in the app's Movies folder) and then runs [action] on it. */
+    fun withAsset(a: LibraryAsset, action: (File) -> Unit) {
+        val ext = if (a.kind == "video") ".mp4" else a.name.substringAfterLast('.', "").let { if (it.length in 2..4) ".$it" else ".m4a" }
+        val dest = File(context.getExternalFilesDir("Movies") ?: context.filesDir, "CreatorForge_asset_${a.id.replace(Regex("[^A-Za-z0-9_-]"), "_")}$ext")
+        if (dest.isFile && dest.length() > 0) return action(dest)
+        busy = a.id
+        message = "Downloading '${a.name}' from the worker - long videos take a few minutes…"
+        scope.launch {
+            runCatching { client.fetch(a.fileUrl, dest) { it.length() > 0 } }
+                .onSuccess { message = null; action(it) }.onFailure { message = it.message }
+            busy = null
+        }
+    }
+
     LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp), contentPadding = PaddingValues(bottom = 32.dp)) {
         item {
             Column {
@@ -208,7 +222,20 @@ fun LibraryScreen() {
                 Column(Modifier.padding(12.dp)) {
                     Text(a.name, color = Color.White)
                     Text(a.kind + (a.durationS?.let { " • %.1fs".format(it) } ?: ""), color = Color.Gray, fontSize = 12.sp)
-                    Row {
+                    Row(Modifier.horizontalScroll(rememberScrollState())) {
+                        if (a.kind == "video") {
+                            TextButton({ withAsset(a) { openFile(context, it, Intent.ACTION_VIEW, "video/mp4") } }, enabled = busy == null) {
+                                Text(if (busy == a.id) "LOADING…" else "PLAY")
+                            }
+                            TextButton({ withAsset(a) { message = saveToGallery(context, it) } }, enabled = busy == null) { Text("SAVE") }
+                            TextButton({ withAsset(a) { openFile(context, it, Intent.ACTION_SEND, "video/mp4") } }, enabled = busy == null) { Text("SHARE") }
+                        } else if (a.kind in listOf("audio", "music", "sfx")) {
+                            TextButton({ withAsset(a) { runCatching { play(it) }.onFailure { e -> message = "Can't play: ${e.message}" } } }, enabled = busy == null) {
+                                Text(if (busy == a.id) "LOADING…" else "PLAY")
+                            }
+                            TextButton({ player?.release(); player = null }) { Text("STOP") }
+                            TextButton({ withAsset(a) { openFile(context, it, Intent.ACTION_SEND, "audio/*") } }, enabled = busy == null) { Text("SHARE") }
+                        }
                         TextButton({ renaming = "asset:${a.id}" to a.name }) { Text("RENAME") }
                         TextButton({ launchOp("delete") { client.deleteAsset(a.id) } }) { Text("DELETE", color = Danger) }
                     }
@@ -268,6 +295,14 @@ fun LibraryScreen() {
             launchOp("rename") { if (kind == "video") client.renameProduction(id, name) else client.renameAsset(id, name) }
         }
     }
+}
+
+/** Opens or shares a downloaded file with another app (player, Files, WhatsApp, Drive…). */
+private fun openFile(context: android.content.Context, file: File, action: String, mime: String) {
+    val uri = androidx.core.content.FileProvider.getUriForFile(context, "${context.packageName}.files", file)
+    val intent = Intent(action).addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+    if (action == Intent.ACTION_SEND) intent.setType(mime).putExtra(Intent.EXTRA_STREAM, uri) else intent.setDataAndType(uri, mime)
+    context.startActivity(Intent.createChooser(intent, null).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
 }
 
 @Composable
