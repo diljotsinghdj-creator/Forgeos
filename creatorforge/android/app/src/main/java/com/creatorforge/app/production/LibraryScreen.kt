@@ -176,7 +176,8 @@ fun LibraryScreen() {
             Card(Modifier.fillMaxWidth()) {
                 Column(Modifier.padding(12.dp)) {
                     Text(v.name + if (v.builtin) "  • built-in" else "", color = Gold)
-                    Text(if (v.provider == "gemini") "★★ Google voice • ${v.voice} • uses your Gemini key (Settings → Script AI)"
+                    Text(if (v.provider == "elevenlabs") "★★ ElevenLabs • ${if (v.style == "multilingual") "Multilingual v2" else if (v.style == "flash") "Flash" else "v3"} • ${if (v.lang == "hi") "Hindi" else "English"} • your ElevenLabs key"
+                         else if (v.provider == "gemini") "★★ Google voice • ${v.voice} • uses your Gemini key (Settings → Script AI)"
                          else if (v.provider == "chatterbox") "★ human-like • ${v.style.ifBlank { "natural" }}" + if (v.voice.startsWith("asset:")) " • your recording" else ""
                          else "${v.provider} • ${v.voice.substringAfterLast('/').ifBlank { "default" }} • speed ${v.speed}", color = Color.LightGray, fontSize = 12.sp)
                     Row {
@@ -280,7 +281,7 @@ fun LibraryScreen() {
     }
     if (voiceAdding || voiceEditing != null) {
         val v = voiceEditing
-        VoiceEditor(v, onDismiss = { voiceAdding = false; voiceEditing = null }) { d ->
+        VoiceEditor(v, loadEleven = { client.elevenLabsVoices() }, onDismiss = { voiceAdding = false; voiceEditing = null }) { d ->
             voiceAdding = false; voiceEditing = null
             launchOp("save") {
                 val voice = d.sample?.let { uri ->
@@ -370,7 +371,7 @@ data class VoiceDraft(val name: String, val provider: String, val voice: String,
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun VoiceEditor(v: LibraryVoice?, onDismiss: () -> Unit, onSave: (VoiceDraft) -> Unit) {
+private fun VoiceEditor(v: LibraryVoice?, loadEleven: suspend () -> List<ElevenVoice>, onDismiss: () -> Unit, onSave: (VoiceDraft) -> Unit) {
     var name by remember(v) { mutableStateOf(v?.name.orEmpty()) }
     var provider by remember(v) { mutableStateOf(v?.provider ?: "chatterbox") }
     var voice by remember(v) { mutableStateOf(v?.voice ?: "kokoro:am_onyx") }
@@ -380,10 +381,17 @@ private fun VoiceEditor(v: LibraryVoice?, onDismiss: () -> Unit, onSave: (VoiceD
     var base by remember(v) { mutableStateOf(if (v?.voice?.startsWith("asset:") == true) "mine" else v?.voice?.takeIf { it.startsWith("kokoro:") || it == "default" } ?: "kokoro:am_onyx") }
     var sample by remember { mutableStateOf<android.net.Uri?>(null) }
     var consent by remember(v) { mutableStateOf(v?.voice?.startsWith("asset:") == true) }
+    val scope = rememberCoroutineScope()
+    var elevenVoices by remember { mutableStateOf<List<ElevenVoice>>(emptyList()) }
+    var elevenStatus by remember { mutableStateOf<String?>(null) }
+    var elevenVoice by remember(v) { mutableStateOf(if (v?.provider == "elevenlabs") v.voice else "") }
+    var elevenName by remember(v) { mutableStateOf(if (v?.provider == "elevenlabs") v.name else "") }
+    var elevenModel by remember(v) { mutableStateOf(if (v?.provider == "elevenlabs") v.style.ifBlank { "v3" } else "v3") }
     val pick = androidx.activity.compose.rememberLauncherForActivityResult(androidx.activity.result.contract.ActivityResultContracts.GetContent()) { u ->
         if (u != null) sample = u
     }
     val ready = name.isNotBlank() && when (provider) {
+        "elevenlabs" -> elevenVoice.isNotBlank()
         "chatterbox" -> base != "mine" || (consent && (sample != null || v?.voice?.startsWith("asset:") == true))
         else -> voice.isNotBlank()
     }
@@ -393,12 +401,43 @@ private fun VoiceEditor(v: LibraryVoice?, onDismiss: () -> Unit, onSave: (VoiceD
         text = {
             Column(Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 OutlinedTextField(name, { name = it }, Modifier.fillMaxWidth(), singleLine = true, label = { Text("Name (e.g. Deep documentary)") })
-                Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                    listOf("chatterbox" to "★ Human-like", "kokoro" to "Kokoro", "piper" to "Piper").forEach { (id, label) ->
+                Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                    listOf("elevenlabs" to "ElevenLabs", "chatterbox" to "★ Human-like", "kokoro" to "Kokoro", "piper" to "Piper").forEach { (id, label) ->
                         FilterChip(selected = provider == id, onClick = { provider = id }, label = { Text(label) })
                     }
                 }
-                if (provider == "chatterbox") {
+                if (provider == "elevenlabs") {
+                    Text("Your ElevenLabs voice narrates the whole script on the pod - every line in its Tone:. " +
+                        "Needs your key in Settings → ElevenLabs (or ELEVENLABS_API_KEY on the pod).", color = Color.LightGray, fontSize = 12.sp)
+                    OutlinedButton({
+                        elevenStatus = "Loading your voices…"
+                        scope.launch {
+                            runCatching { loadEleven() }.onSuccess { elevenVoices = it; elevenStatus = if (it.isEmpty()) "No voices in your ElevenLabs account" else null }
+                                .onFailure { elevenStatus = "✗ ${it.message}" }
+                        }
+                    }) { Text(if (elevenVoices.isEmpty()) "LOAD MY VOICES" else "RELOAD") }
+                    elevenStatus?.let { Text(it, color = if (it.startsWith("✗")) Color(0xFFE57373) else Color.LightGray, fontSize = 12.sp) }
+                    elevenVoices.forEach { ev ->
+                        FilterChip(selected = elevenVoice == ev.id, onClick = {
+                            elevenVoice = ev.id; elevenName = ev.name
+                            if (name.isBlank()) name = "${ev.name} (ElevenLabs)"
+                        }, label = { Text(ev.name + if (ev.labels.isNotBlank()) " • ${ev.labels}" else "", fontSize = 12.sp) })
+                    }
+                    if (elevenVoice.isNotBlank() && elevenVoices.none { it.id == elevenVoice })
+                        Text("Voice: ${elevenName.ifBlank { elevenVoice }}", color = Gold, fontSize = 12.sp)
+                    Text("MODEL", color = Gold, fontSize = 11.sp)
+                    Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                        listOf("v3" to "v3 • most expressive", "multilingual" to "Multilingual v2 • steadiest", "flash" to "Flash • cheapest").forEach { (id, label) ->
+                            FilterChip(selected = elevenModel == id, onClick = { elevenModel = id }, label = { Text(label, fontSize = 12.sp) })
+                        }
+                    }
+                    Text("SPEAKS", color = Gold, fontSize = 11.sp)
+                    Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                        listOf("hi" to "हिन्दी Hindi", "a" to "English").forEach { (id, label) ->
+                            FilterChip(selected = lang == id, onClick = { lang = id }, label = { Text(label, fontSize = 12.sp) })
+                        }
+                    }
+                } else if (provider == "chatterbox") {
                     Text("Natural pauses, breathing and emotion. Runs on your pod.", color = Color.LightGray, fontSize = 12.sp)
                     Text("SPEAKS", color = Gold, fontSize = 11.sp)
                     Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -434,7 +473,9 @@ private fun VoiceEditor(v: LibraryVoice?, onDismiss: () -> Unit, onSave: (VoiceD
         },
         confirmButton = {
             Button({
-                onSave(if (provider == "chatterbox")
+                onSave(if (provider == "elevenlabs")
+                    VoiceDraft(name.trim(), provider, elevenVoice, 1.0, elevenModel, null, if (lang == "hi") "hi" else "en")
+                else if (provider == "chatterbox")
                     VoiceDraft(name.trim(), provider, if (base == "mine") (v?.voice?.takeIf { sample == null && it.startsWith("asset:") } ?: "") else base,
                         1.0, style, if (base == "mine") sample else null, lang)
                 else VoiceDraft(name.trim(), provider, voice.trim(), speed.toDouble(), "", null))

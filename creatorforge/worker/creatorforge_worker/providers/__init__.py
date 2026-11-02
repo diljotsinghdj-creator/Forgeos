@@ -205,6 +205,23 @@ def gemini_key(cfg: Config, job_id: str = "", lent: dict | None = None) -> str:
     return d[2] if d and _GOOGLE in d[0] else ""
 
 
+_eleven_keys: dict[str, str] = {}
+
+
+def set_elevenlabs_key(job_id: str, d) -> None:
+    """The app's ElevenLabs key, lent for one video: memory only, never written to disk."""
+    key = str((d or {}).get("key", "") if isinstance(d, dict) else "").strip()
+    if key and len(_eleven_keys) < 500:
+        _eleven_keys[job_id] = key
+
+
+def elevenlabs_key(cfg: Config, job_id: str = "", lent=None) -> str:
+    """The key for ElevenLabs voices: one lent with this request or video, else the pod's ELEVENLABS_API_KEY."""
+    if isinstance(lent, dict) and str(lent.get("key", "")).strip():
+        return str(lent["key"]).strip()
+    return _eleven_keys.get(job_id) or cfg.elevenlabs_api_key
+
+
 def build_voice(cfg: Config, profile: VoiceProfile, job_id: str = "", key: str = ""):
     if profile.provider == "mock":
         _mock_allowed(cfg, f"voice profile {profile.id}")
@@ -221,6 +238,10 @@ def build_voice(cfg: Config, profile: VoiceProfile, job_id: str = "", key: str =
         from .gemini_tts import MODELS, GeminiVoice
         return GeminiVoice(profile.voice, profile.style or "news", profile.lang or "hi",
                            key or gemini_key(cfg, job_id), cfg.gemini_tts_models or MODELS)
+    if profile.provider == "elevenlabs":
+        from .elevenlabs_tts import ElevenLabsVoice
+        return ElevenLabsVoice(profile.voice, profile.style or "v3", profile.lang or "hi",
+                               key or elevenlabs_key(cfg, job_id))
     raise NotConfigured(f"Unknown voice provider '{profile.provider}'")
 
 

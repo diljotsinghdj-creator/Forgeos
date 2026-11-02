@@ -3,6 +3,7 @@ they appear in, keeping visual identity consistent across scenes and productions
 from __future__ import annotations
 
 import json
+import re
 import os
 import threading
 import time
@@ -79,7 +80,7 @@ class CharacterStore:
 
 class VoiceStore:
     """Voice Profiles saved from the app (in addition to read-only ones from CF_VOICES)."""
-    PROVIDERS = ("piper", "kokoro", "chatterbox")
+    PROVIDERS = ("piper", "kokoro", "chatterbox", "elevenlabs")
 
     def __init__(self, path: Path, allow_mock: bool = False):
         self.path = path
@@ -114,8 +115,13 @@ class VoiceStore:
             raise ValueError(f"Piper model not found on the worker: {voice}")
         if provider == "chatterbox" and not (voice == "default" or voice.startswith(("kokoro:", "asset:"))):
             raise ValueError("Chatterbox voice must be 'default', 'kokoro:<voice id>' or 'asset:<voice sample id>'")
+        if provider == "elevenlabs" and not re.fullmatch(r"[A-Za-z0-9]{6,40}", voice):
+            raise ValueError("ElevenLabs voice must be a voice id from your ElevenLabs account")
         style = str(d.get("style", "") or "")
-        if style not in ("", "documentary", "natural", "calm", "energetic"):
+        if provider == "elevenlabs":
+            if style not in ("", "v3", "multilingual", "flash"):
+                raise ValueError("ElevenLabs model must be v3, multilingual or flash")
+        elif style not in ("", "documentary", "natural", "calm", "energetic"):
             raise ValueError("style must be documentary, natural, calm or energetic")
         if not 0.5 <= speed <= 2.0:
             raise ValueError("speed must be between 0.5 and 2.0")

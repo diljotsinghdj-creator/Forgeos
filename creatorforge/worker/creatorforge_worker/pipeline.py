@@ -1077,7 +1077,18 @@ class Pipeline:
                     ref, lang = ("kokoro:am_onyx" if male else "kokoro:af_heart"), "en"
                 profile = VoiceProfile(profile.id, profile.name, "chatterbox", ref, 1.0, lang, "documentary")
                 note = f" - Google voice unavailable ({problem}); used the human-like voice instead"
-        if profile.provider != "gemini":
+        if profile.provider == "elevenlabs":
+            # the creator's own ElevenLabs voice: check the key, voice and credits with one short line first, and
+            # stop with the reason rather than switch to a voice they didn't pick
+            try:
+                voice = providers.build_voice(self.cfg, profile, job["id"])
+                if not any(s.get("voice_state") == "READY" for s in job["scenes"]):
+                    with tempfile.TemporaryDirectory() as d:
+                        voice.synthesize("नमस्ते।" if voice.lang == "hi" else "Hello.", Path(d) / "probe.wav")
+                voice.previous_text = ""
+            except (NotConfigured, ProviderError) as e:
+                raise StageFailed(f"ElevenLabs couldn't speak: {str(e)[:220]}. Fix it and tap Retry") from e
+        elif profile.provider != "gemini":
             voice = providers.build_voice(self.cfg, profile)
         if profile.provider == "chatterbox":
             # The human-like engine installs in the background after a pod start and is the newest part of the
@@ -1122,7 +1133,7 @@ class Pipeline:
                 voice.mood = mood          # human-like voice: more intensity on shocks, calmer on set-up
             said = director.spoken_text(shot["narration"], spec.pronounce)   # the creator's pronunciation list
             segs = None
-            if profile.provider in ("chatterbox", "gemini"):
+            if profile.provider in ("chatterbox", "gemini", "elevenlabs"):
                 lang = getattr(voice, "lang", "en")
                 said = speech.speakable(said, lang)   # ₹13 crore, 40%, ED said in full
                 # each line in its own tone: a question rises, a hard fact lands, a death is said slowly
@@ -1135,7 +1146,9 @@ class Pipeline:
                 speak = (lambda p: voice.synthesize(said, p, segments=segs)) if segs else \
                     (lambda p: voice.synthesize(said, p))
                 src = self._cached("voice", key, ".wav", speak, verify.wav)
-                src, heard = self._listened(src, key, said, getattr(voice, "lang", "en"), speak)
+                # ElevenLabs takes cost the creator's credits: they are not re-recorded on a doubtful hearing
+                src, heard = self._listened(src, key, said, "" if profile.provider == "elevenlabs"
+                                            else getattr(voice, "lang", "en"), speak)
                 if heard:
                     sc["voice_check"] = heard
                 dst = jdir / f"scene_{sc['index'] + 1:02d}_{_key(key, spec.voice_speed)[:8]}.wav"

@@ -178,7 +178,8 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
             raise HTTPException(402, str(e)) from None
         return a["id"]
 
-    def submit(spec: ProductionSpec, title: str = "", director_llm: dict | None = None, stock: dict | None = None) -> dict:
+    def submit(spec: ProductionSpec, title: str = "", director_llm: dict | None = None, stock: dict | None = None,
+               elevenlabs: dict | None = None) -> dict:
         d = spec.to_dict()
         owner = charge(d)
         job = store.create(d, title)
@@ -189,6 +190,8 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
             providers.set_director_llm(job["id"], director_llm)   # memory only - the key is never written to disk
         if stock:
             providers.set_stock_key(job["id"], stock)
+        if elevenlabs:
+            providers.set_elevenlabs_key(job["id"], elevenlabs)   # memory only, like the keys above
         runner.submit(job["id"])
         return public(job)
 
@@ -197,8 +200,10 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
         body = await request.json()
         director_llm = body.pop("director_llm", None) if isinstance(body, dict) else None
         stock = body.pop("stock", None) if isinstance(body, dict) else None
+        eleven = body.pop("elevenlabs", None) if isinstance(body, dict) else None
         return submit(build_spec(body), director_llm=director_llm if isinstance(director_llm, dict) else None,
-                      stock=stock if isinstance(stock, dict) else None)
+                      stock=stock if isinstance(stock, dict) else None,
+                      elevenlabs=eleven if isinstance(eleven, dict) else None)
 
     @app.get("/v1/productions", dependencies=[Depends(auth)])
     def list_productions() -> list[dict]:
@@ -224,8 +229,14 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
         return public(runner.cancel(job_id))
 
     @app.post("/v1/productions/{job_id}/retry", dependencies=[Depends(auth)])
-    def retry_production(job_id: str, from_stage: str | None = None) -> dict:
+    async def retry_production(job_id: str, request: Request, from_stage: str | None = None) -> dict:
         job_or_404(job_id)
+        try:
+            body = await request.json()
+        except ValueError:
+            body = {}
+        if isinstance(body, dict) and isinstance(body.get("elevenlabs"), dict):
+            providers.set_elevenlabs_key(job_id, body["elevenlabs"])   # lent again after a pod restart
         return public(runner.retry(job_id, from_stage))
 
     @app.post("/v1/productions/{job_id}/scenes/{index}/regenerate", dependencies=[Depends(auth)])
@@ -401,6 +412,21 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
             raise HTTPException(404, "voice not found (built-in voices are set on the worker)") from None
         return Response(status_code=204)
 
+    @app.post("/v1/voice/elevenlabs/voices", dependencies=[Depends(auth)])
+    async def elevenlabs_voices(request: Request) -> list[dict]:
+        """The voices in the creator's ElevenLabs account, for the app's voice picker (key lent or on the pod)."""
+        try:
+            body = await request.json()
+        except ValueError:
+            body = {}
+        from .providers.elevenlabs_tts import list_voices
+        try:
+            return list_voices(providers.elevenlabs_key(cfg, lent=body if isinstance(body, dict) else None))
+        except NotConfigured as e:
+            raise HTTPException(400, str(e)) from None
+        except ProviderError as e:
+            raise HTTPException(502, str(e)) from None
+
     @app.post("/v1/library/voices/{vid}/preview", dependencies=[Depends(auth)])
     async def preview_voice(vid: str, request: Request):
         try:
@@ -409,8 +435,10 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
             body = {}
         try:
             lent = body.get("director_llm") if isinstance(body, dict) else None
-            voice = providers.build_voice(cfg, providers.voice_profile(cfg, vid, pipeline.library_voices()),
-                                          key=providers.gemini_key(cfg, lent=lent))
+            profile = providers.voice_profile(cfg, vid, pipeline.library_voices())
+            key = (providers.elevenlabs_key(cfg, lent=body.get("elevenlabs") if isinstance(body, dict) else None)
+                   if profile.provider == "elevenlabs" else providers.gemini_key(cfg, lent=lent))
+            voice = providers.build_voice(cfg, profile, key=key)
             sample = ("नमस्ते, मैं आपके क्रिएटरफ़ोर्ज वीडियो की कहानी ऐसे सुनाऊँगा।" if getattr(voice, "lang", "") == "hi"
                       else "This is how I sound narrating your CreatorForge video.")
             text = str(body.get("text") or sample)[:300]

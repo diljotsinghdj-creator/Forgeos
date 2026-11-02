@@ -58,6 +58,7 @@ data class ProductionRequest(
 data class LibraryVoice(val id: String, val name: String, val provider: String, val voice: String, val speed: Double, val builtin: Boolean,
                         val style: String = "", val lang: String = "a")
 
+data class ElevenVoice(val id: String, val name: String, val labels: String, val category: String)
 data class LibraryAsset(val id: String, val kind: String, val name: String, val source: String, val fileUrl: String, val durationS: Double?)
 
 data class LibraryCharacter(val id: String, val name: String, val description: String)
@@ -81,6 +82,8 @@ class ProductionClient(baseUrl: String) {
         /** Supplies the Pixabay key so the pod can use real stock footage. */
         @Volatile var stockKey: (() -> JSONObject?)? = null
         @Volatile var pronounce: (() -> JSONObject?)? = null
+        /** Supplies the ElevenLabs key saved in Settings (lent per video / preview, kept in the pod's memory only). */
+        @Volatile var elevenLabs: (() -> JSONObject?)? = null
     }
 
     private val base = baseUrl.trim().trimEnd('/')
@@ -158,7 +161,15 @@ class ProductionClient(baseUrl: String) {
 
     suspend fun get(id: String) = withContext(Dispatchers.IO) { parse(call("GET", "/v1/productions/$id")) }
     suspend fun cancel(id: String) = withContext(Dispatchers.IO) { parse(call("DELETE", "/v1/productions/$id")) }
-    suspend fun retry(id: String) = withContext(Dispatchers.IO) { parse(call("POST", "/v1/productions/$id/retry")) }
+    suspend fun retry(id: String) = withContext(Dispatchers.IO) {
+        parse(call("POST", "/v1/productions/$id/retry", JSONObject().also { b -> elevenLabs?.invoke()?.let { b.put("elevenlabs", it) } }))
+    }
+
+    /** The voices in your ElevenLabs account (the key saved in Settings, or the one on the pod). */
+    suspend fun elevenLabsVoices(): List<ElevenVoice> = withContext(Dispatchers.IO) {
+        val a = JSONArray(call("POST", "/v1/voice/elevenlabs/voices", elevenLabs?.invoke() ?: JSONObject()))
+        (0 until a.length()).map { a.getJSONObject(it).let { v -> ElevenVoice(v.getString("id"), v.optString("name"), v.optString("labels"), v.optString("category")) } }
+    }
     suspend fun regenerateScene(id: String, index: Int) =
         withContext(Dispatchers.IO) { parse(call("POST", "/v1/productions/$id/scenes/$index/regenerate")) }
     suspend fun editScene(id: String, index: Int, narration: String, visual: String) = withContext(Dispatchers.IO) {
@@ -217,7 +228,8 @@ class ProductionClient(baseUrl: String) {
     suspend fun previewVoice(id: String, dest: File): File = withContext(Dispatchers.IO) {
         val req = Request.Builder().workerAuth().url("$base/v1/library/voices/$id/preview")
             // the Gemini Script AI key (if that is the AI in use) lets Google's voices speak the sample
-            .post(JSONObject().also { b -> directorLlm?.invoke()?.let { b.put("director_llm", it) } }.toString().toRequestBody(json)).build()
+            .post(JSONObject().also { b -> directorLlm?.invoke()?.let { b.put("director_llm", it) }
+                elevenLabs?.invoke()?.let { b.put("elevenlabs", it) } }.toString().toRequestBody(json)).build()
         download.newCall(req).execute().use { r ->
             if (!r.isSuccessful) throw WorkerException("Preview failed (HTTP ${r.code}): ${r.body?.string()?.take(200).orEmpty()}")
             dest.outputStream().use { out -> r.body!!.byteStream().copyTo(out) }
@@ -363,6 +375,7 @@ class ProductionClient(baseUrl: String) {
         directorLlm?.invoke()?.let { if (!body.has("director_llm")) body.put("director_llm", it) }
         stockKey?.invoke()?.let { if (!body.has("stock")) body.put("stock", it) }
         pronounce?.invoke()?.let { if (!body.has("pronounce") && it.length() > 0) body.put("pronounce", it) }
+        elevenLabs?.invoke()?.let { if (!body.has("elevenlabs")) body.put("elevenlabs", it) }
         return body
     }
 

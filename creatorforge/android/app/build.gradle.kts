@@ -11,8 +11,8 @@ android {
         applicationId = "com.creatorforge.studio" // new id: installs beside the old randomly-signed app, so nothing has to be uninstalled
         minSdk = 26
         targetSdk = 35
-        versionCode = 67
-        versionName = "1.0.0-rc58"
+        versionCode = 68
+        versionName = "1.0.0-rc59"
     }
     // One fixed debug key for every build (CI runners otherwise make a new random one each time,
     // and Android refuses to update an app signed with a different key).

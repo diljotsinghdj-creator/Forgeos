@@ -55,6 +55,10 @@ object StudioHub {
         return o.takeIf { it.length() > 0 }
     }
 
+    /** The ElevenLabs key from Settings as {"key": ...}, or null. */
+    fun elevenLabs(c: Context): org.json.JSONObject? =
+        SecureTokenStore(c).load("elevenlabs")?.trim()?.takeIf { it.isNotBlank() }?.let { org.json.JSONObject().put("key", it) }
+
     /** "Ofcom = Off-com" lines from Settings -> {"Ofcom": "Off-com"} for the worker's voice (captions keep the spelling). */
     fun pronounce(c: Context): org.json.JSONObject {
         val o = org.json.JSONObject()
@@ -257,6 +261,24 @@ fun AiSettingsCard(secure: SecureTokenStore) {
         }
         unsplashStatus?.let { Text(it, color = if (it.startsWith("✓")) Gold else if (it.startsWith("✗")) Danger else Dim, fontSize = 12.sp) }
         if (hasUnsplash) TextButton({ secure.clear("unsplash"); hasUnsplash = false; unsplashStatus = null }) { Text("REMOVE UNSPLASH KEY", color = Danger) }
+        HorizontalDivider(Modifier.padding(vertical = 6.dp))
+        Text("ElevenLabs narration (optional)", color = Gold, fontSize = 13.sp)
+        Text("Your own ElevenLabs voice reads the whole script inside CreatorForge - no exporting chunks, merging MP3s or " +
+            "syncing. Each line's Tone: becomes a direction ([serious], [curious], [firmly]…). Get the key: elevenlabs.io " +
+            "→ Developers → API Keys → Create (allow Text to Speech and Voices: read). Uses your ElevenLabs credits.",
+            color = Dim, fontSize = 12.sp)
+        TextButton({ openUrl(context, "https://elevenlabs.io/app/developers/api-keys") }) { Text("GET YOUR ELEVENLABS KEY ↗", color = Gold, fontSize = 12.sp) }
+        var eleven by remember { mutableStateOf("") }
+        var hasEleven by remember { mutableStateOf(secure.has("elevenlabs")) }
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            OutlinedTextField(eleven, { eleven = it }, Modifier.weight(1f), singleLine = true, visualTransformation = PasswordVisualTransformation(),
+                label = { Text(if (hasEleven) "Saved - paste to replace" else "ElevenLabs API key") })
+            Button({ secure.save("elevenlabs", cleanSecret(eleven).trim('"')); eleven = ""; hasEleven = true },
+                enabled = eleven.isNotBlank()) { Text("SAVE") }
+        }
+        Text(if (hasEleven) "✓ Saved. Now: Library → Voice Profiles → + ADD VOICE → ElevenLabs → LOAD MY VOICES."
+             else "Then pick your voice in Library → Voice Profiles.", color = if (hasEleven) Gold else Dim, fontSize = 12.sp)
+        if (hasEleven) TextButton({ secure.clear("elevenlabs"); hasEleven = false }) { Text("REMOVE ELEVENLABS KEY", color = Danger) }
         HorizontalDivider(Modifier.padding(vertical = 6.dp))
         Text("Pronunciations (optional)", color = Gold, fontSize = 13.sp)
         Text("One per line: word = how to say it. The voice uses the respelling; captions keep your spelling. " +
