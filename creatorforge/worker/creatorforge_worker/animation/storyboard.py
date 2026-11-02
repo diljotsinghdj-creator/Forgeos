@@ -160,7 +160,9 @@ class Storyboard:
         return json.dumps(asdict(self), indent=1, ensure_ascii=False)
 
 
-ABSTRACT = re.compile(r"(?:body|system|bloodstream|class|lesson|idea|time|life|world|way|day|week|year|night|fact|"
+ABSTRACT = re.compile(r"(?:same|other|others|whole|last|first|next|most|least|best|worst|lot|lots|number|amount|"
+                      r"level|rate|price|prices|wages?|salary|cost|value|percent|percentage|rest|ones?|"
+                      r"body|system|bloodstream|class|lesson|idea|time|life|world|way|day|week|year|night|fact|"
                       r"problem|question|answer|reason|story|truth|news|plan|future|past|history|science|nature|"
                       r"defence|defense|memory|mind|heart|feeling|chance|end|beginning|rest|kind|sort|type|part|"
                       r"place|side|edge|top|bottom|middle|front|back|inside|outside|air|sky|ground|space|"
