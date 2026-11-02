@@ -619,6 +619,9 @@ class Actor:
         self.pose_now = p
         self._prev_J = None
         self._prev_J = self.joints(p)                 # where the knees and elbows were (IK keeps continuity)
+        # the last simulated moment, for smears: kept by the simulation, not the drawing, so a resumed render
+        # (which simulates finished chunks without drawing them) draws exactly the same frames
+        self._smear_prev, self._step_J = getattr(self, "_step_J", None), (t, self._prev_J)
         self.hip = (p.x, p.y)
         self.speed = self.loco.speed if a is None else 0.0
         self._t = t
@@ -880,7 +883,6 @@ class Actor:
         translucent tapered sweep, so a swing reads as motion instead of a strobe. Measured from the real joint
         speed (world metres), so motion-blur sub-frames and frame rates give the same smear."""
         prev = getattr(self, "_smear_prev", None)
-        self._smear_prev = (t, J)
         if prev is None or not 0 < t - prev[0] <= 0.1:
             return
         dt = t - prev[0]
