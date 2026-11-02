@@ -100,3 +100,21 @@ def test_abstract_ideas_become_labelled_moving_pictures_and_allegations_never_do
         for phrase, motion, _, _ in items:
             assert objects.exact(phrase) or objects.find(phrase), (concept, phrase)
     assert len(metaphors.LIB) >= 30
+
+
+def test_timing_follows_the_narrations_rhythm_with_beats_and_reaction_shots():
+    from creatorforge_worker.animation.rhythm import rhythm
+    lines = ["Raj explained to Asha that prices had gone up by forty percent while wages stayed exactly the same.",
+             "Asha laughed.", "But the minister said everything was fine.", "Why did nobody complain?",
+             "Nobody answered.", "The bridge collapsed."]
+    r = rhythm(lines)
+    assert r[1]["punch"] and r[1]["pause"] > 0.5 and r[1]["react"] == "laugh"      # set-up, beat, hit
+    assert r[2]["pause"] >= 0.45 and r[4]["pause"] >= 0.5                          # a turn waits; a question hangs
+    assert r[5]["react"] == "slump" and r[0]["pause"] < 0.2                        # bad news lands; no fuss first
+    doc, notes = studio.make(" ".join(lines[:3]), style="signature")
+    steps = doc["scenes"][1]["steps"]
+    assert any(st.get("do") == "react" and st.get("kind") == "laugh" for st in steps)
+    assert any(st.get("do") == "wait" and st.get("dur") == 0.65 for st in steps)
+    states = production.plan_states(doc, "preview")
+    sc, T, _, _ = production.stage_scene(production.scenes_of(doc)[1], states[1][6], 24, "preview")
+    assert getattr(sc, "punch", [])                                              # the camera punches in on it

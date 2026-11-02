@@ -492,6 +492,24 @@ def stage_scene(scene: dict, state: worldstate.WorldState, fps: int = 30, qualit
             end = t0 + st.get("dur", 1.0)
         elif do == "point":
             end = M.point_at(a, t0, tuple(st["at"]), st.get("dur", 1.6))
+        elif do == "react":                            # a reaction shot (rhythm.py): the camera punches in on it
+            from . import comedy as C
+            kind = st.get("kind", "take")
+            if kind == "take":
+                a.say_symbol(t0 + 0.05, t0 + 1.0, "!")
+                end = C.take(a, t0)
+            elif kind == "laugh":
+                a.feel(t0, t0 + 1.6, "laugh")
+                end = a.gesture(t0, "laugh", 1.6)
+            elif kind == "scowl":
+                a.feel(t0, t0 + 1.6, "angry")
+                end = a.gesture(t0, "cross_arms", 1.6)
+            else:
+                a.feel(t0, t0 + 1.8, "sad")
+                end = a.gesture(t0, "cover_face", 1.6)
+            if not a.faceless:
+                a.loco.express(t0, {"take": "shocked", "laugh": "laughing", "scowl": "angry"}.get(kind, "sad"), 0.1)
+            sc.punch = getattr(sc, "punch", []) + [(t0, a.look.name)]
         elif do == "gesture":
             end = a.gesture(t0, st["name"], st.get("dur", 1.5))
         elif do == "feel":

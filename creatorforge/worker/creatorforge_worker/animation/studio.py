@@ -161,6 +161,8 @@ def make(script: str, title: str = "", sources: list | None = None, voice: dict 
     prev_structs: list = []
     prev_reg = "modern"
     sky: dict = {}                                      # weather and time of day persist until the script changes them
+    from .rhythm import rhythm                       # set-up, beat, hit, reaction: timing from the narration
+    rh = rhythm([b_.narration for b_ in board.beats], [b_.emotion for b_ in board.beats])
     for i, b in enumerate(board.beats):
         low = b.narration.lower()
         wx = next((k for rx, k in WEATHER if re.search(rx, low)), None)
@@ -250,6 +252,8 @@ def make(script: str, title: str = "", sources: list | None = None, voice: dict 
             line_step.update(hold=False)
         if v:
             line_step["voice"] = v
+        if rh[i]["pause"] > 0.2 and i:                 # a held beat before a turn or a punchline
+            steps.append({"t": "+0.0", "do": "wait", "dur": rh[i]["pause"]})
         steps.append(line_step)
         subj_rx = "|".join(re.escape(n) for n in list(cast) + ["he", "she", "it", "they", "He", "She", "It", "They"])
         for m in re.finditer(rf"\b(?:(?:{subj_rx})\b(?:\s+\w+ly)?\s+([a-z]+(?:es|s|ed))|(?:they|we|and they)\s+([a-z]{{3,}}))\b",
@@ -296,6 +300,16 @@ def make(script: str, title: str = "", sources: list | None = None, voice: dict 
             elif felt and felt != b.emotion and cast.get(n) and cast[n].face is not None:
                 steps.insert(0, {"t": 0.0, "do": "feel", "who": n, "emotion": felt, "dur": 1.8, "wait": False})
         steps.append({"t": "+0.0", "do": "wait_notes"})
+        if rh[i]["react"]:                              # a reaction shot: someone else in the scene reacts
+            subj = b.characters[0] if b.characters else None
+            tgt = next((a_["target"] for a_ in b.actions if a_.get("target") in lineup), "")
+            reactor = tgt if tgt and tgt != subj else next((n for n in lineup if n != subj), None)
+            if reactor:
+                steps.append({"t": "+0.1", "do": "react", "who": reactor, "kind": rh[i]["react"]})
+                steps.append({"t": "+0.0", "do": "wait", "dur": rh[i]["button"]})
+                notes["decisions"].append(f"line {i + 1}: {reactor} reacts ({rh[i]['react']}) - {rh[i]['why']}")
+        if rh[i]["pause"] > 0.2 and i:
+            notes["decisions"].append(f"line {i + 1}: held beat of {rh[i]['pause']} s - {rh[i]['why']}")
         extra = arc.holds[i] + max(0.0, arc.pace[i] - 1.0) * (b.narration_window[1] - b.narration_window[0])
         if extra > 0.05:                               # the climax gets room, the ending breathes, a turn waits
             steps.append({"t": "+0.0", "do": "wait", "dur": round(extra, 2)})
