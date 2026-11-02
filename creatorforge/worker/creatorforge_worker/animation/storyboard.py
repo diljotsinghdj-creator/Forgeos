@@ -452,6 +452,10 @@ def stage(board: Storyboard, beat_index: int | None = None):
 SMALL = r"fish|basket|bag|cup|phone|book|key|hat|coin|flower|letter|bottle|ball|box|plate|apple|umbrella|parcel|gift|" \
         r"bread|cake|toy|stick|net|flour|sugar|salt|milk|jar|pot|pan|vase|glass|bowl|cup|plate|slice|bottle|book|pen"
 VEHICLES = ("boat", "car", "bus", "bicycle")
+# places named after a vehicle are not the vehicle: "the bus stop" is a sign at the kerb, not a bus on the stage
+PLACE_SIGN = re.compile(r"\b(?:bus|tram|train|metro|taxi|rickshaw|auto|railway|ferry)\s+(?:stop|station|stand|depot|"
+                        r"terminal|halt)\b|\bcar\s*park\b|\bparking(?:\s+lot)?\b|\b(?:petrol|gas)\s+(?:pump|station)\b",
+                        re.I)
 
 
 class _Stuff:
@@ -486,7 +490,12 @@ class _Stuff:
         return p
 
     def thing(self, phrase, x, y=0.0):
-        head = re.sub(r"'s$", "", phrase.split()[-1].lower())
+        place = PLACE_SIGN.search(phrase)
+        if place:                                      # a named place: its sign, with the name written on it
+            phrase = f'a sign "{place.group(0).upper()}"'
+            head = place.group(0).lower()
+        else:
+            head = re.sub(r"'s$", "", phrase.split()[-1].lower())
         if head in self.things:
             return self.things[head]
         small = bool(re.fullmatch(SMALL, head))
@@ -504,8 +513,12 @@ class _Stuff:
             y, z = 1.1, 1.0
         p = self._prop(a, x, y, z, head)
         p.data["kind"] = kind or ""
+        if place:                                      # the library's sign is shared: the name goes on this one
+            p.data["text"] = place.group(0).upper()
         self.things[head] = p
-        if z > 1.0:
+        if z > 1.0 or not small:
+            # scenery, furniture and vehicles are drawn behind the people on the same line (a rider stands in front
+            # of the vehicle's body); only small things in hands are drawn with them
             self.sc.actors.insert(0, p)
         else:
             self.sc.actors.append(p)
@@ -515,12 +528,14 @@ class _Stuff:
         """Scenery named in a line is put ahead of the action; a vehicle under its rider; small things wait for
         the action that uses them."""
         ahead = 2.2
+        rides = re.search(r"\b(?:rides?|riding|drives?|driving|boards?|cycles?|rows?|sails?|gets? (?:on|in|into))\b",
+                          str(getattr(b, "line", "") or getattr(b, "narration", "") or ""), re.I)
         for phrase in b.things:
             head = re.sub(r"'s$", "", phrase.split()[-1].lower())
             if head in self.things or re.fullmatch(SMALL, head):
                 continue
-            kind = self.A.parse(phrase)["kind"]
-            if kind in VEHICLES:
+            kind = None if PLACE_SIGN.search(phrase) else self.A.parse(phrase)["kind"]
+            if kind in VEHICLES and rides:             # a vehicle someone rides: under its rider
                 self.thing(phrase, here)
             else:
                 self.thing(phrase, here + ahead)
@@ -800,6 +815,23 @@ def _do(sc, w, a: Actor, b: Actor | None, act: dict, t: float, actors: dict, liv
     if v == "bow":
         return a.act(t, [(0.4, dict(lean=0.9, head=0.4, feet="keep"), "inout"), (0.9, dict(lean=0.9), "linear"),
                          (1.4, dict(lean=0.03, head=0.0), "settle")], "bow")
+    if v in ("explain", "think") and a.look.name != "Crowd":
+        # a line with no physical action: the character reacts or shows what the words mean
+        line = act.get("line", "") or ""
+        if re.search(r"shock|stunn|surpris|astonish|can't believe|cannot believe|gasp|jaw drops", line, re.I):
+            from . import comedy
+            a.say_symbol(t + 0.05, t + 1.0, "!")            # a take - the camera punches in on it
+            if not a.faceless:
+                a.loco.express(t, "shocked", 0.08)
+            return comedy.take(a, t) + 0.4
+        from .performance import gestures_for
+        moves = gestures_for(line, 2.4, getattr(a, "_last_gesture", ""))
+        for at, g_, length in moves:
+            a.gesture(t + at, g_, length)
+            a._last_gesture = g_
+        if v == "think" and "?" in line:
+            a.say_symbol(t + 0.2, t + 1.8, "?")
+        return t + max(2.0, max(at + length for at, _, length in moves))
     if v in ("clap", "cheer", "wave", "point", "explain", "argue", "think", "read"):
         g = {"clap": "clap", "cheer": "cheer", "wave": "wave", "point": "point", "explain": "explain",
              "argue": "shake_fist", "think": "think", "read": "phone"}[v]

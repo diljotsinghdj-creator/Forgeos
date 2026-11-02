@@ -144,6 +144,7 @@ def make(script: str, title: str = "", sources: list | None = None, voice: dict 
     board = SB.plan(script, title)
     style_name, why = cinematic.choose(script, board.domain, None if style == "auto" else style)
     illustrated = style_name not in ("stick", "signature", None)
+    signature = not illustrated and (style in ("auto", "signature", None))   # CreatorForge's own stick look
     cast = getattr(board, "cast", {})
     arc = ST.analyze(board, target_seconds, sources)          # the whole story first: arc, feelings, pacing
     notes = {"domain": board.domain, "decisions": [f"style: {style_name} ({why})"], "limitations": [], "sources": [],
@@ -184,7 +185,9 @@ def make(script: str, title: str = "", sources: list | None = None, voice: dict 
         cast_specs = []
         for k, n in enumerate(lineup):
             c = cast[n]
-            spec = {"name": n, "body": colour[n], "faceless": not c.face and not (illustrated and not c.label),
+            spec = {"name": n, "body": colour[n],
+                    "faceless": signature or (not c.face and not (illustrated and not c.label)),   # signature: the
+                    # body acts, no face (its colour becomes an accent on the head)
                     "personality": c.personality if c.personality in ("kind", "timid", "energetic", "calm",
                                                                       "grumpy", "cheerful") else "kind",
                     "height": 1.5 if c.role in ("girl", "boy", "child", "children") else 1.72}
@@ -305,7 +308,7 @@ def make(script: str, title: str = "", sources: list | None = None, voice: dict 
     doc = {"title": board.title, "fps": 24, "source_script": script, "scenes": scenes}
     if illustrated:
         doc["style"] = style if isinstance(style, dict) else style_name
-    elif style in ("auto", "signature", None):
+    elif signature:
         doc["style"] = "signature"                    # CreatorForge's own stick look (style="stick": the plain one)
     if format:
         doc["format"] = dict(format)

@@ -104,3 +104,24 @@ def test_the_signature_look_boils_on_twos_and_keeps_planted_feet_still():
     assert doc.get("style") == "signature"
     doc, _ = studio.make("Raj walks to the bus stop. Raj waves.", style="stick")
     assert doc.get("style") in (None, "stick")
+
+
+def test_a_bus_stop_is_a_sign_and_scenery_never_covers_the_cast():
+    from types import SimpleNamespace
+
+    from creatorforge_worker.animation.stick import World
+    from creatorforge_worker.animation.storyboard import _Stuff
+    sc = Scene(width=640, height=360, fps=24)
+    raj = Actor(Look(name="Raj"))
+    sc.actors.append(raj)
+    st = _Stuff(sc, World())
+    st.place(SimpleNamespace(things=["bus stop"], narration="Raj runs to the bus stop."), 0.0, 0.0, {"Raj": raj})
+    sign = st.things["bus stop"]
+    assert sign.data["text"] == "BUS STOP" and "bus" not in st.things     # a sign with its name, not a bus
+    assert sc.actors.index(sign) < sc.actors.index(raj)                 # drawn behind him
+    st.place(SimpleNamespace(things=["the bus"], narration="The bus leaves without him."), 0.0, 0.0, {"Raj": raj})
+    bus = st.things["bus"]
+    assert abs(bus.pos(0.0)[0]) > 1.5 and sc.actors.index(bus) < sc.actors.index(raj)   # not parked on him
+    doc, _ = __import__("creatorforge_worker.animation.studio", fromlist=["make"]).make(
+        "Raj runs to the bus stop. Raj is shocked.", style="signature")
+    assert all(c["faceless"] for sc_ in doc["scenes"] for c in sc_["cast"])  # signature stickmen act with the body

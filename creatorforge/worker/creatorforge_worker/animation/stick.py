@@ -947,9 +947,13 @@ class Actor:
         boil = getattr(st, "boil", 0.0) if st is not None else 0.0
         taper = getattr(st, "taper", 0.0) if st is not None else 0.0
         ink = getattr(st, "ink", None) if st is not None else None
-        col = L.body or ink or L.ink
+        accent = None
+        if ink is not None:                       # signature: every body in ink, the character's colour on the head
+            accent, col = L.body, ink
+        else:
+            col = L.body or L.ink
         far = tuple(int(c + (235 - c) * 0.32) for c in col)
-        w = max(3, int(scale * 0.034 * self.H * L.line))
+        w = max(3, int(scale * 0.034 * self.H * L.line * (1 + 0.3 * taper)))
         self._smears(d, S, J, t, col, w)
         D = self._boil(J, t, 0.0035 * boil)
 
@@ -982,8 +986,13 @@ class Actor:
                         cy + ry * (1 + 0.025 * boil * math.sin(frame * 2.3 + i * 2.7)) * math.sin(i * TAU / 28))
                        for i in range(28)]
                 d.polygon(pts, fill=col)
+                if accent:                         # the accent: the head filled with the character's colour
+                    inner = [(cx + (x_ - cx) * 0.78, cy + (y_ - cy) * 0.78) for x_, y_ in pts]
+                    d.polygon(inner, fill=tuple(accent[:3]))
             else:
                 d.ellipse([cx - rx, cy - ry, cx + rx, cy + ry], fill=col)
+                if accent:
+                    d.ellipse([cx - rx * 0.78, cy - ry * 0.78, cx + rx * 0.78, cy + ry * 0.78], fill=tuple(accent[:3]))
         else:
             d.ellipse([cx - rx, cy - ry, cx + rx, cy + ry], fill=L.skin, outline=col, width=int(w * 0.8))
             F.draw(d, cx, cy, r, self.loco._face(t), p.f, t, ink=L.ink, lw=w * 0.6)

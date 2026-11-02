@@ -38,12 +38,12 @@ def _activity(R, i, n, win):
     return (3.0 if big else 2.0 if act else 0.0) + min(2.0, move) + (1.2 if feel else 0.0), move, big, feel
 
 
-PUNCH = {"!": 0.32, "#@!": 0.32, "?": 0.2, "...": 0.16}      # how far a reaction pushes in (x the zoom)
+PUNCH = {"!": 0.32, "#@!": 0.32}      # how far a reaction pushes in (x the zoom); "?" and "..." are quiet beats
 MAX_WIDEN = 0.6                                               # the stage may be drawn up to this much smaller
 
 
 def punches(R, sc) -> list:
-    """Accent moments the camera punches in on: a take or double take, a "!" / "?" / "#@!" / "..." over a head,
+    """Accent moments the camera punches in on: a take or double take, a "!" or "#@!" over a head,
     and any the document asks for (sc.punch: [(t, name)]). -> [(t, actor index, strength)]"""
     out = []
     for i, a in enumerate(R.actors):
