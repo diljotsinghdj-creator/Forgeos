@@ -238,7 +238,7 @@ def test_asset_library_generates_validates_and_refuses_broken_assets(tmp_path):
         raise AssertionError("a broken asset was registered")
     except ValueError:
         pass
-    assert lib.obtain("a flying saucer")[1] == "placeholder"                        # never invents a shape
+    assert lib.obtain("a zorbulating flux capacitor")[1] == "placeholder"           # never invents a shape
 
 
 def test_wheels_roll_without_skidding_and_legs_stop_when_the_animal_stops():

@@ -41,3 +41,18 @@ def test_crowds_march_places_are_not_people_and_vehicles_leave_on_screen():
     sc, T, _, _ = production.stage_scene(production.scenes_of(doc)[0], states[0][6], 24, "preview")
     crowd = [a for a in sc.actors if getattr(a, "look", None) and a.look.name.startswith("Crowd")]
     assert len(crowd) == 12 and all(a.hips_x(T) - a.hips_x(0.0) > 4 for a in crowd)   # they all march in
+
+
+def test_any_everyday_object_is_drawn_not_boxed():
+    from creatorforge_worker.animation import objects as O
+    for phrase, picture in {"a laptop": "personal computer", "ballot papers": "ballot box with ballot",
+                            "a sword": "crossed swords", "the vaccine": "syringe", "a tractor tyre": "wheel",
+                            "a court order": "scroll", "handcuffs": "chains", "तलवार": "crossed swords",
+                            "वोट": "ballot box with ballot", "a flag": "waving white flag"}.items():
+        a = A.generate(phrase)
+        assert a["kind"] == "object" and a["picture"] == picture, phrase
+        assert not A.errors(A.validate(a)), phrase                     # it renders, stands, plausible size
+    assert A.generate("a laptop")["w"] < 1.0 and A.generate("a tractor")["kind"] == "car"   # sizes, generators win
+    assert O.find("a man") is None and O.find("his face") is None      # people are characters, never pictures
+    assert all(not O._never(n) for _, n, _ in O._index()) and not any("REGIONAL" in n for _, n, _ in O._index())
+    assert A.Library(None).obtain("a zorbulating flux capacitor")[1] == "placeholder"   # never invents

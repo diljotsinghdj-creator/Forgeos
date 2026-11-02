@@ -128,7 +128,7 @@ KINDS = [  # (archetype, keywords) - first match wins, so specific before genera
     ("pyramid", r"pyramid"),
     ("monument", r"monument|memorial|statue|gate\b|gateway|arch\b|triumphal|obelisk|minar\b|pillar|tomb|"
                  r"mausoleum|cenotaph|smarak|स्मारक"),
-    ("police", r"police|thana|jail|prison|penitentiary|lock-?up|पुलिस|जेल"),
+    ("police", r"police station|police chowki|police|thana|jail|prison|penitentiary|lock-?up|पुलिस|जेल"),
     ("power", r"power plant|power station|nuclear|reactor|thermal plant|coal plant"),
     ("dam", r"\bdam\b|barrage|reservoir"),
     ("bridge", r"bridge|flyover|overpass|पुल"),
@@ -154,10 +154,26 @@ KINDS = [  # (archetype, keywords) - first match wins, so specific before genera
 _KIND_RX = [(k, _words(rx)) for k, rx in KINDS]
 
 
+def _core(phrase: str) -> str:
+    """The noun phrase that names the thing: before 'in/of/at...' or a bracket, without trailing place names
+    ("the parliament in Delhi" -> "the parliament", "IIT Delhi" -> "IIT", "Supreme Court" stays)."""
+    core = re.split(r"\s+(?:in|at|of|near|from|on|outside|inside)\s+|\s*[(,]", phrase.strip(), maxsplit=1)[0].strip()
+    words = core.split()
+    while len(words) > 1 and any(rx.fullmatch(words[-1]) for rx in _REGION_RX.values()) and \
+            not any(rx.fullmatch(words[-1]) for _, rx in _KIND_RX):   # "US Capitol" keeps its Capitol
+        words.pop()
+    return " ".join(words)
+
+
 def kind_of(phrase: str) -> str | None:
+    """The structure the phrase names - its last word decides ("court order" is a document, "Supreme Court" a
+    court); Devanagari phrases match anywhere."""
+    core = _core(phrase)
+    deva = bool(re.search(r"[\u0900-\u097F]", core))
     for k, rx in _KIND_RX:
-        if rx.search(phrase):
-            return k
+        for m in rx.finditer(core):
+            if deva or m.end() >= len(core.rstrip(" .!?'\"")):
+                return k
     return None
 
 

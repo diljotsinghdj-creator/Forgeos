@@ -553,6 +553,8 @@ class _Stuff:
         z = 1.0 if small or kind in VEHICLES or furniture else 1.6      # furniture stands where people can use it
         if a.get("kind") == "structure":
             z = 2.5                                    # a building stands back, whole, behind the action
+        elif a.get("kind") == "object" and not small:
+            z = 1.0                                    # a pictured object stands with the people (a sword, a placard)
         if small and y == 0.0:                         # small things sit on nearby furniture, not on the floor
             top = [t_ for t_ in self.things.values() if t_.z <= 1.05 and abs(t_.pos(0.0)[0] - x) < 1.6 and
                    t_.name in ("table", "desk", "counter", "bench", "shelf")]

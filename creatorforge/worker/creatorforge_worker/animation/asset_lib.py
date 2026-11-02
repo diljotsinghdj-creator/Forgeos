@@ -50,7 +50,8 @@ SIZES = {"house": (3.0, 9.0), "shop": (3.0, 7.0), "tower": (8.0, 60.0), "car": (
          "cow": (1.2, 1.8), "horse": (1.3, 2.0), "bird": (0.08, 0.6), "boat": (0.3, 3.0), "lamp": (2.5, 6.0),
          "chair": (0.7, 1.1), "table": (0.6, 0.9), "rock": (0.1, 2.0), "sign": (0.8, 3.0),
          "virus": (0.3, 3.0), "cell": (0.3, 3.0), "antibody": (0.2, 2.0), "bacteria": (0.3, 3.0), "atom": (0.3, 3.0),
-         "molecule": (0.2, 2.0), "structure": (2.0, 30.0), "train": (2.8, 4.6), "plane": (2.5, 6.0)}
+         "molecule": (0.2, 2.0), "structure": (2.0, 30.0), "train": (2.8, 4.6), "plane": (2.5, 6.0),
+         "object": (0.05, 5.0)}
 SYNONYMS = {"home": "house", "hut": "house", "cottage": "house", "store": "shop", "stall": "shop", "office": "tower",
             "building": "tower", "skyscraper": "tower", "taxi": "car", "jeep": "car", "van": "car", "auto": "car",
             "lorry": "bus", "truck": "bus", "locomotive": "train", "tram": "train", "metro": "train",
@@ -415,10 +416,16 @@ def parse(description: str) -> dict:
     """'a small red car', 'two tall trees', 'a puppy' -> {kind, colour, scale, text}."""
     low = description.lower()
     words = re.findall(r"[a-z]+", low)
-    kind = next((w for w in words if w in GENERATORS), None) or \
-        next((SYNONYMS[w] for w in words if w in SYNONYMS), None) or \
-        next((SYNONYMS.get(w[:-1], w[:-1]) for w in words if w.endswith("s") and
+    head = words[-1:] if words else []                 # the head noun decides ("a tractor tyre" is a tyre)
+    kind = next((w for w in head if w in GENERATORS), None) or \
+        next((SYNONYMS[w] for w in head if w in SYNONYMS), None) or \
+        next((SYNONYMS.get(w[:-1], w[:-1]) for w in head if w.endswith("s") and
               (w[:-1] in GENERATORS or w[:-1] in SYNONYMS)), None)
+    if kind is None and not re.search(r"\b(?:tyre|tire|wheel|order|ticket|key|part|seat|light|horn)s?$", low):
+        kind = next((w for w in words if w in GENERATORS), None) or \
+            next((SYNONYMS[w] for w in words if w in SYNONYMS), None) or \
+            next((SYNONYMS.get(w[:-1], w[:-1]) for w in words if w.endswith("s") and
+                  (w[:-1] in GENERATORS or w[:-1] in SYNONYMS)), None)
     colour = next((COLOURS[w] for w in words if w in COLOURS), None)
     scale = 1.0
     for w, k in (("tiny", 0.5), ("small", 0.75), ("little", 0.75), ("big", 1.3), ("large", 1.3), ("tall", 1.4),
@@ -446,6 +453,11 @@ def generate(description: str, region: str | None = None) -> dict:
                     p["fill"], p["line"] = list(q["colour"]), list(darker(q["colour"]))
         return a
     if not q["kind"]:
+        from . import objects                          # any other object: a flattened picture of it, if one fits
+        try:
+            return objects.compose(description)
+        except ValueError:
+            pass
         raise ValueError(f"no generator for {description!r} (known: {', '.join(sorted(GENERATORS))})")
     a = GENERATORS[q["kind"]](q["colour"], q["scale"], text=q["text"])
     a["name"] = description.strip()
@@ -775,6 +787,17 @@ def draw_parts(d, parts, S, scale, ox, oy):
         elif p["shape"] == "line":
             d.line([S(ox + x, oy + y) for x, y in p["pts"]], fill=fill, width=max(1, int(p["width"] * scale)),
                    joint="curve")
+        elif p["shape"] == "bitmap":                  # a flattened picture (objects.py): pasted, mirrored with flips
+            from PIL import Image
+            from . import objects
+            q = [S(ox + x, oy + y) for x, y in p["pts"]]
+            xs, ys = [a for a, _ in q], [b for _, b in q]
+            w_, h_ = int(max(xs) - min(xs)), int(max(ys) - min(ys))
+            if w_ > 1 and h_ > 1 and hasattr(d, "_image"):
+                pic = objects.decode(p["png"]).resize((w_, h_), Image.LANCZOS)
+                if p["pts"][0][0] > p["pts"][1][0]:
+                    pic = pic.transpose(Image.FLIP_LEFT_RIGHT)
+                d._image.paste(pic, (int(min(xs)), int(min(ys))), pic)
         else:
             d.polygon([S(ox + x, oy + y) for x, y in p["pts"]], fill=fill, outline=ln, width=lw)
 
