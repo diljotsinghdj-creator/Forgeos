@@ -71,3 +71,16 @@ def test_a_new_place_opens_wide_on_its_building_then_pushes_in():
         x1, cy1, z1 = sc.camera(min(T - 0.1, 3.5))
         assert z0 == 1.0 and cy0 > 0.5                   # wide and raised: the whole building and its plaque
         assert z1 > 1.3 and not framing                  # then in on the character, nobody cut off
+
+
+def test_characters_hold_carry_and_hand_over_what_the_line_names():
+    doc, _ = studio.make("Asha holds a ballot paper and a laptop. Raj gives Asha a book.", style="signature")
+    states = production.plan_states(doc, "preview")
+    held = {}
+    for i, sd in enumerate(production.scenes_of(doc)):
+        sc, T, _, _ = production.stage_scene(sd, states[i][6], 24, "preview")
+        for p in sc.actors:
+            if getattr(p, "carriers", None):
+                held[p.name] = [(c[2].look.name, c[3]) for c in p.carriers]
+    assert held["paper"] == [("Asha", "near")] and held["laptop"] == [("Asha", "far")]   # one in each hand
+    assert [w for w, _ in held["book"]] == ["Raj", "Asha"]                                # handed over

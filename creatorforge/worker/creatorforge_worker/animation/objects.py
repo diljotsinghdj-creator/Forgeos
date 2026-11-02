@@ -100,7 +100,7 @@ SYN = {
     "hammer": "hammer", "tool": "hammer and wrench", "tools": "hammer and wrench", "wrench": "wrench", "axe": "axe",
     "saw": "carpentry saw", "brick": "brick", "bricks": "brick", "rock": "rock", "stone": "rock", "wood": "wood",
     "ladder": "ladder", "rope": "knot", "bucket": "bucket", "broom": "broom", "chair": "chair", "bed": "bed",
-    "door": "door", "window": "window", "toilet": "toilet", "mirror": "mirror", "candle": "candle", "lamp": "candle",
+    "door": "door", "window": "window", "toilet": "toilet", "mirror": "mirror", "candle": "candle", "lantern": "izakaya lantern", "diya": "diya lamp", "दीया": "diya lamp",
     "magnifier": "left-pointing magnifying glass", "investigation": "left-pointing magnifying glass",
     "search": "left-pointing magnifying glass", "evidence": "left-pointing magnifying glass", "ball": "soccer ball",
     "football": "soccer ball", "cricket": "cricket bat and ball", "bat": "cricket bat and ball", "guitar": "guitar",

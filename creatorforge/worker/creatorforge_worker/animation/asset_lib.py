@@ -61,7 +61,7 @@ SYNONYMS = {"home": "house", "hut": "house", "cottage": "house", "store": "shop"
             "kitten": "cat", "buffalo": "cow", "ox": "cow", "pony": "horse", "donkey": "horse", "crow": "bird",
             "pigeon": "bird", "sparrow": "bird", "parrot": "bird", "pelican": "bird", "gull": "bird", "seagull": "bird",
             "eagle": "bird", "duck": "bird", "hen": "bird", "chicken": "bird", "owl": "bird", "heron": "bird", "ship": "boat", "canoe": "boat",
-            "streetlight": "lamp", "lamppost": "lamp", "lantern": "lamp", "stool": "chair", "desk": "table",
+            "streetlight": "lamp", "lamppost": "lamp", "stool": "chair", "desk": "table",
             "boulder": "rock", "stone": "rock", "shrub": "bush", "plant": "bush", "signpost": "sign",
             "billboard": "sign", "palm": "tree", "oak": "tree", "banyan": "tree", "viruses": "virus",
             "germ": "bacteria", "germs": "bacteria", "bacterium": "bacteria", "microbe": "bacteria",

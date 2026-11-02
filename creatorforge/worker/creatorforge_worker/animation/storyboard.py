@@ -63,7 +63,7 @@ EMOTIONS = [
 VERBS = [
     (r"\bjuggl\w*", "juggle"), (r"\bdrops?|dropped|lets? (?:it )?fall", "drop"), (r"\bslip(?:s|ped)?|trip(?:s|ped)?|(?<!both )falls?\b(?! at the same)|tumbl", "trip"),
     (r"\brolls?\b", "roll"), (r"\bthrows?|tosses?|passes\b", "throw"), (r"\bcatch(?:es)?\b", "catch"),
-    (r"\bpick(?:s|ed)? up|lift(?:s|ed)?|grab(?:s|bed)?", "pick"), (r"\bcarr(?:y|ies)|brings?\b", "carry"), (r"\bgives?|hands? (?:over|him|her)", "give"),
+    (r"\bpick(?:s|ed)? up|lift(?:s|ed)?|grab(?:s|bed)?|\bholds?\b|\bholding\b|\braises?\b|\btakes?\b(?! off)", "pick"), (r"\bcarr(?:y|ies)|brings?\b", "carry"), (r"\bgives?|hands? (?:over|him|her)", "give"),
     (r"\bpush(?:es)?|shoves?", "push"), (r"\bclimbs?", "climb"), (r"\bjumps?|leaps?|hops?", "jump"),
     (r"\bruns?|rushes|races?|sprints?|hurr(?:y|ies)", "run"), (r"\bmarch(?:es|ed)?\b|led\b|leads\b", "march"),
     (r"\bwalks?|walked|enters?|arrives?|goes? (?:in|into|to)|steps? into", "walk"),
@@ -464,7 +464,7 @@ def stage(board: Storyboard, beat_index: int | None = None):
                 t = world.animal_do(a, t, actors, b)
                 continue
             who = actors.get(a["who"]) or next(iter(actors.values()))
-            if a["verb"] in ("chase", "ride", "laugh", "give") and world.handles(a, who, actors, b):
+            if a["verb"] in ("chase", "ride", "laugh", "give", "pick", "carry", "trade", "depart") and world.handles(a, who, actors, b):
                 t = world.actor_do(a, who, t, actors, b)
                 continue
             tgt = actors.get(a["target"]) if a["target"] else None
@@ -716,14 +716,63 @@ class _Stuff:
             return act["target"] in self.animals
         if act["verb"] in ("ride", "depart"):
             return any(self.A.parse(ph)["kind"] in VEHICLES for ph in b.things)
+        if act["verb"] in ("pick", "carry", "give", "trade") and self._handheld(b):
+            return True                                # the thing the line names, in their hands
         if act["verb"] == "give":
             return any(re.fullmatch(SMALL, ph.split()[-1]) and ph.split()[-1] in self.things for ph in b.things)
         return act["verb"] == "laugh"
+
+    def _handheld(self, b) -> list:
+        """The things a line names that a person can hold: not buildings, vehicles, places or animals."""
+        from . import places
+        out = []
+        for ph in getattr(b, "things", []) or []:
+            if places.is_structure(ph) or PLACE_SIGN.search(ph) or self_kind(ph) in VEHICLES:
+                continue
+            if self_kind(ph) in ("house", "shop", "tower", "tree", "lamp", "rock", "sign") and \
+                    not re.fullmatch(SMALL, ph.split()[-1].lower()):
+                continue
+            head = re.sub(r"'s$", "", ph.split()[-1].lower())
+            had = self.things.get(head)
+            if had is not None and (had.carriers or had.keys or had.flights or had in self.held.values()):
+                continue                               # it already has a story (stolen, thrown, held): leave it
+            out.append(ph)
+        return out[:2]
 
     def actor_do(self, act, a, t, actors, b):
         v = act["verb"]
         x = a.hips_x(t)
         f = a._facing_at_build(t)
+        held = self._handheld(b) if v in ("pick", "carry", "give", "trade") else []
+        if held:                                       # "holds a ballot paper and a laptop": those, in their hands
+            end = t
+            objs = []
+            for k, ph in enumerate(held):
+                obj = self.thing(ph, x + f * (0.45 + 0.25 * k))
+                if obj.carriers:                       # already in someone's hands: take it over
+                    continue
+                end = M.pick_up(a, end, obj, hand="near" if k == 0 else "far")
+                objs.append(obj)
+                self.log.append(f"{a.look.name} picks up the {obj.name} the line names")
+            tgt = actors.get(act.get("target", "")) if act.get("target") else None
+            if v in ("give", "trade") and tgt is not None and objs:
+                d = 1.0 if tgt.hips_x(end) > a.hips_x(end) else -1.0
+                end = a.walk(end + 0.1, tgt.hips_x(end) - d * 0.75, 1.0)
+                for obj in objs:                       # handed over: from one hand into the other's
+                    for i, c in enumerate(obj.carriers):
+                        if c[2] is a:
+                            obj.carriers[i] = (c[0], end + 0.4, a, c[3])
+                    obj.carriers.append((end + 0.4, 1e9, tgt, "near"))
+                tgt.loco.gesture(end + 0.4, "carry", 60.0)
+                a.loco.gestures = [(g0, min(g1, end + 0.4), n) if n == "carry" else (g0, g1, n)
+                                   for g0, g1, n in a.loco.gestures]
+                tgt.nod(end + 0.6)
+                return end + 1.2
+            if v == "carry":
+                end = a.walk(end + 0.1, x + f * 1.6, 1.0)
+            else:                                      # holds it up to show it
+                a.gesture(end + 0.1, "point", 1.2)
+            return end + 0.2
         if v == "handwork":                            # busy hands at a surface: a table if the line names one
             surf = next((self.things[k] for k in self.things if k in ("table", "desk", "counter", "bench")), None)
             if surf is None:
