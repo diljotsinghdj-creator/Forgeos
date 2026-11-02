@@ -81,6 +81,6 @@ def test_characters_hold_carry_and_hand_over_what_the_line_names():
         sc, T, _, _ = production.stage_scene(sd, states[i][6], 24, "preview")
         for p in sc.actors:
             if getattr(p, "carriers", None):
-                held[p.name] = [(c[2].look.name, c[3]) for c in p.carriers]
+                held.setdefault(p.name, [(c[2].look.name, c[3]) for c in p.carriers])   # where it first happens
     assert held["paper"] == [("Asha", "near")] and held["laptop"] == [("Asha", "far")]   # one in each hand
     assert [w for w, _ in held["book"]] == ["Raj", "Asha"]                                # handed over
