@@ -38,6 +38,68 @@ READ = [  # (pattern on the words, emotion, face, gesture)
     (r"\b(because|so|that means|here's|first|then)\b", "", "focused", "explain"),
     (r"!$", "surprised", "surprised", "point"),
 ]
+# What a narrated word means, as a gesture (English, Hinglish and Hindi). Latin words match whole words; Devanagari
+# stems match inside words (vowel signs are not word characters).
+MEANING = [
+    ("rise", r"up|rise[sn]?|rising|rose|increas\w*|grew|grow\w*|more|higher|soar\w*|jump(?:ed)?|badh\w*|upar",
+     "बढ़ ऊपर उछ"),
+    ("fall", r"down|fall\w*|fell|drop\w*|declin\w*|less|lower|cut|crash\w*|shrank|ghat\w*|gir\w*|neeche|kat\w*",
+     "घट गिर नीचे कटे कट"),
+    ("wide", r"huge|massive|all|every\w*|whole|entire|crore|lakh|million|billion|thousands|enormous|poor[ae]|sab|saar[ee]",
+     "पूरे पूरा सारे सब करोड़ लाख हज़ारों विशाल"),
+    ("small", r"small|tiny|little|only|just|few|sirf|bas|kewal|chhot\w*", "छोटा छोटी सिर्फ़ सिर्फ केवल थोड़"),
+    ("weigh", r"but|however|although|whereas|versus|vs|lekin|magar|par", "लेकिन मगर बल्कि वहीं"),
+    ("stop", r"no|not|never|stop\w*|refus\w*|den(?:y|ied|ies)|nahi\w*|inkaar|mat", "नहीं इनकार कभी मना"),
+    ("chest", r"i|we|us|our|me|my|main|hum|hamar\w*|mera|meri", "मैं हम हमारे हमारी मेरा मेरी"),
+    ("you", r"you|your|aap|tum|aapk\w*", "आप तुम आपके आपकी"),
+    ("count", r"first|second|third|firstly|one|two|three|pehl\w*|doosr\w*|teesr\w*", "पहला पहली दूसरा दूसरी तीसरा"),
+    ("shrug", r"why|how|what|who|kyun|kaise|kya|kaun", "क्यों कैसे क्या कौन"),
+    ("think", r"maybe|perhaps|think|imagine|wonder|shayad|soch\w*", "शायद सोच कल्पना"),
+    ("point", r"this|that|here|look|see|yeh|ye|wo|dekh\w*", "यह ये वो देखिए देखो यहाँ"),
+]
+_LATIN = [(g, re.compile(r"(?<![\w])(?:" + rx + r")(?![\w])", re.I), deva.split()) for g, rx, deva in MEANING]
+# when the gesture a line wants was just used, the closest different one
+VARY = {"explain": "talk", "talk": "explain", "point": "you", "you": "point", "shrug": "think", "think": "shrug",
+        "rise": "wide", "fall": "stop", "wide": "rise", "small": "count", "weigh": "shrug", "stop": "weigh",
+        "chest": "explain", "count": "explain"}
+# a weak word (I, this, up) only leads a line when nothing stronger is in it
+WEAK = {"chest", "point", "you"}
+
+
+def gestures_for(text: str, dur: float, last: str = "") -> list[tuple[float, str, float]]:
+    """The presenter's gestures for one narrated line: [(offset s, gesture, length s)] - timed to land on the word
+    that carries the meaning ("13 crore" -> arms wide on "crore"), a second beat on a long line, and never the same
+    gesture twice in a row (`last` is the one before this line)."""
+    words = text.split()
+    n = max(1, len(words))
+    hits = []                                            # (word index, gesture)
+    for g, rx, deva in _LATIN:
+        for m in rx.finditer(text):
+            hits.append((len(text[:m.start()].split()), g))
+        for stem in deva:
+            k = text.find(stem)
+            if k >= 0:
+                hits.append((len(text[:k].split()), g))
+    if "?" in text and not any(g == "shrug" for _, g in hits):
+        hits.append((n - 1, "shrug"))
+    strong = sorted({h for h in hits if h[1] not in WEAK})
+    picks = strong or sorted(set(hits))
+    out, prev = [], last
+    used_at = -10.0
+    for idx, g in picks:
+        at = max(0.15, min(dur - 1.0, dur * idx / n - 0.25))   # the stroke lands just before the word
+        if at - used_at < 1.6 or len(out) >= (2 if dur > 4.0 else 1):
+            continue
+        if g == prev:
+            g = VARY.get(g, "explain")
+        out.append((at, g, min(2.2, max(1.1, dur * 0.4))))
+        prev, used_at = g, at
+    if not out:                                          # nothing in the words: talk with the hands, varied
+        g = "explain" if last != "explain" else "talk"
+        out.append((0.2, g, min(2.2, max(1.2, dur * 0.45))))
+    return out
+
+
 HOT, COOL = {"angry", "furious", "scared", "sad", "frustrated"}, {"happy", "laugh", "joyful", "excited"}
 
 
@@ -112,6 +174,8 @@ def perform(lines: list[dict], actors: dict, personalities: dict | None = None, 
         if emo:
             a.feel(t, t + dur, emo)
             last_feel[who] = emo
+        if gesture in ("talk", "explain"):              # nothing emotional: show what the words mean
+            gesture = gestures_for(text, dur, last_gesture.get(who, ""))[0][1]
         # gesture, never the same twice in a row, scaled by personality
         if gesture == last_gesture.get(who):
             gesture = {"explain": "talk", "talk": "explain", "point": "talk", "shrug": "think"}.get(gesture, "talk")

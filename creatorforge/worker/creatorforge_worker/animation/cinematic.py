@@ -57,6 +57,9 @@ class Style:
     panel: bool = False            # motion-comic panel border and gutter
     speedlines: bool = False       # automatic speed lines behind fast movers
     paper: float = 0.0             # paper texture strength
+    boil: float = 0.0              # stick bodies: hand-drawn line that "boils" (re-drawn 12 times a second)
+    taper: float = 0.0             # stick bodies: brush strokes, thick at the body and thin at hands and feet
+    ink: tuple | None = None       # stick bodies: the ink colour (None: each character's own)
     font: str = FONT
     extra: dict = field(default_factory=dict)
 
@@ -68,6 +71,10 @@ class Style:
 
 PRESETS: dict[str, dict] = {
     "stick": {},
+    # CreatorForge's own look: a warm brush-ink stick figure whose line lives (boils on twos), tapered strokes,
+    # on textured paper with a soft vignette - one accent colour per character at most
+    "signature": dict(boil=1.0, taper=1.0, ink=(34, 30, 28), paper=0.9, grain=0.007, vignette=0.22, saturation=0.94,
+                      split=0.12, contrast=1.04),
     "cartoon": dict(body="volume", outline=1.25, shade=0.35, rim=0.0, saturation=1.2, contrast=1.05),
     "western": dict(body="volume", outline=1.4, shade=0.3, saturation=1.25, contrast=1.08, speedlines=True),
     "graphic_novel": dict(body="volume", outline=1.3, shade=0.8, rim=0.5, halftone=0.7, ink_edges=0.75, posterize=9,
@@ -115,7 +122,7 @@ def from_doc(spec) -> Style | None:
     if not spec:
         return None
     if isinstance(spec, str):
-        return None if spec == "stick" else get(spec)
+        return None if spec == "stick" else get(spec)   # "signature" is a stick look with its own drawing
     spec = dict(spec)
     name = spec.pop("name", "graphic_novel")
     if name == "stick" and not spec:

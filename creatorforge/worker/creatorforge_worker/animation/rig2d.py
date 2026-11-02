@@ -133,13 +133,36 @@ def _g(name: str, t: float):
         return (2.75, 0.3), (2.7, 0.3), 0.0
     if name == "carry":
         return (0.95, 1.2), (0.85, 1.15), 0.04
+    # gestures that show what the words mean (chosen by performance.gestures_for)
+    if name == "wide":                                   # huge, all, crores: arms open
+        k = smooth(min(1.0, t / 0.35))
+        return (0.4 + 1.0 * k, 0.15), (0.3 - 1.25 * k, 0.1), -0.05 * k
+    if name == "small":                                  # tiny, only, just: hands close together, a pinch
+        return (0.95, 1.15 + 0.08 * s(t * 7)), (0.9, 1.3 - 0.08 * s(t * 7)), 0.04
+    if name == "rise":                                   # up, increase: the hand climbs
+        k = smooth(min(1.0, t / 0.9))
+        return (0.5 + 1.85 * k, 0.55 - 0.35 * k), None, -0.04 * k
+    if name == "fall":                                   # down, cut, fell: the hand drops
+        k = smooth(min(1.0, t / 0.8))
+        return (2.3 - 1.75 * k, 0.25 + 0.5 * k), None, 0.05 * k
+    if name == "chest":                                  # I, we, our: a hand to the chest
+        return (0.25, 2.25), None, -0.03
+    if name == "stop":                                   # no, never, refuse: palm out
+        return (1.35, 1.05), (0.25, 0.4), -0.06
+    if name == "weigh":                                  # but, on the other hand: two hands like scales
+        return (0.8, 1.2 + 0.3 * s(t * 3.2)), (0.75, 1.2 - 0.3 * s(t * 3.2)), 0.0
+    if name == "count":                                  # first, second: a raised hand that taps the beat
+        return (0.75, 1.95 + 0.12 * max(0.0, s(t * 6))), (0.55, 1.45), 0.0
+    if name == "you":                                    # you, your: a point toward the viewer
+        return (1.15, 0.05), None, 0.06
     if name == "beckon":
         return (1.3, 1.2 + 0.5 * s(t * 9)), None, 0.0
     return None, None, 0.0
 
 
 GESTURES = ("wave", "point", "talk", "explain", "clap", "laugh", "angry", "shake_fist", "shrug", "facepalm", "think",
-            "phone", "cheer", "surprise", "cross_arms", "scratch_head", "cover_face", "hands_up", "beckon", "carry")
+            "phone", "cheer", "surprise", "cross_arms", "scratch_head", "cover_face", "hands_up", "beckon", "carry",
+            "wide", "small", "rise", "fall", "chest", "stop", "weigh", "count", "you")
 
 
 @dataclass

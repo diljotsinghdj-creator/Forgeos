@@ -38,11 +38,61 @@ def _activity(R, i, n, win):
     return (3.0 if big else 2.0 if act else 0.0) + min(2.0, move) + (1.2 if feel else 0.0), move, big, feel
 
 
+PUNCH = {"!": 0.32, "#@!": 0.32, "?": 0.2, "...": 0.16}      # how far a reaction pushes in (x the zoom)
+MAX_WIDEN = 0.6                                               # the stage may be drawn up to this much smaller
+
+
+def punches(R, sc) -> list:
+    """Accent moments the camera punches in on: a take or double take, a "!" / "?" / "#@!" / "..." over a head,
+    and any the document asks for (sc.punch: [(t, name)]). -> [(t, actor index, strength)]"""
+    out = []
+    for i, a in enumerate(R.actors):
+        if getattr(a, "z", 1.0) != 1.0:
+            continue
+        for t0, _, sym in getattr(a, "symbols", []):
+            if sym in PUNCH:
+                out.append((t0 - 0.05, i, PUNCH[sym]))
+        prev = ""
+        for n, name in enumerate(R.acting[i]):
+            if name in ("take",) and prev != name:
+                out.append((R.times[n], i, 0.28))
+            prev = name
+    names = {a.look.name: i for i, a in enumerate(R.actors)}
+    for t, who in getattr(sc, "punch", []) or []:
+        if who in names:
+            out.append((t, names[who], 0.3))
+    out.sort()
+    merged = []
+    for p in out:                                    # one punch per beat (a take's "!" and the take itself)
+        if merged and p[0] - merged[-1][0] < 0.9:
+            if p[2] > merged[-1][2]:
+                merged[-1] = (merged[-1][0], p[1], p[2])
+            continue
+        merged.append(p)
+    return merged
+
+
+def _punch_env(dt: float) -> float:
+    """A crash zoom: snaps in over 0.1 s, holds the reaction, eases back out."""
+    if dt < 0 or dt > 1.55:
+        return 0.0
+    if dt < 0.1:
+        u = dt / 0.1
+        return 1 - (1 - u) ** 3
+    if dt < 0.95:
+        return 1.0
+    u = (dt - 0.95) / 0.6
+    return 1 - u * u * (3 - 2 * u)
+
+
 def direct(R, sc, style: str = "explainer", margin: float = 1.0, every: int = 2) -> list:
     """sc.focus (optional): [(t0, t1, [names])] - who the narration is about at each moment; they are always
     framed (with whoever they are dealing with), however busy anyone else is. sc.show (optional):
     [(t0, t1, x0, x1, y0, y1)] - world boxes (a diagram, a document) that must be in the shot while shown."""
     S = STYLE.get(style, STYLE["explainer"])
+    zf = getattr(sc, "_zoom_base", 1.0)               # > 1 once the stage is drawn smaller to fit a group
+    ZMAX, ZFEEL = 1.9 * zf, 1.65 * zf
+    needs = []                                        # the zoom each moment needs to hold everyone (< 1: can't)
     hints = getattr(sc, "focus", None) or []
     W_m, H_m = sc.width / sc.ppm, sc.height / sc.ppm
     ground_y = (sc.ground - 0.5) * H_m           # world y of the screen centre at cy=0, zoom 1 (relative)
@@ -74,7 +124,7 @@ def direct(R, sc, style: str = "explainer", margin: float = 1.0, every: int = 2)
                 xs = [b[0] - b[2].w / 2 for b in keep] + [b[0] + b[2].w / 2 for b in keep]
                 ys = [b[1] for b in keep] + [b[1] + b[2].h for b in keep]
                 bw, bh = max(xs) - min(xs) + 2.0 * margin, max(ys) - min(ys) + 1.0 * margin
-                zoom = max(1.0, min(1.9, W_m / bw, H_m / bh))
+                zoom = max(1.0, min(ZMAX, W_m / bw, H_m / bh))
                 hh = H_m / (2 * zoom)
                 floor = min(min(ys), 0.0)                 # the ground near the bottom, like a shot of people
                 yc = max(max(ys) + 0.4 * margin - hh, min(floor - 0.35 + hh, min(ys) - 0.25 + hh))
@@ -104,6 +154,14 @@ def direct(R, sc, style: str = "explainer", margin: float = 1.0, every: int = 2)
         fx_ = [R.joints[i][n]["hip"][0] for _, i in focus]
         focus += [(s, i) for s, i in acts if (s, i) not in focus and                 # someone right beside the
                   min(abs(R.joints[i][n]["hip"][0] - x) for x in fx_) < 2.6]    # subject is in the shot, not half cut
+        grown = True
+        while grown:                                      # a group doing something together is one subject:
+            grown = False                                 # whoever is busy next to anyone in the shot joins it
+            fx_ = [R.joints[i][n]["hip"][0] for _, i in focus]
+            for s_, i in acts:
+                if (s_, i) not in focus and s_[0] > 0.3 and min(abs(R.joints[i][n]["hip"][0] - x) for x in fx_) < 2.6:
+                    focus.append((s_, i))
+                    grown = True
         xs, ys, lead = [], [], 0.0
         any_big = any(s[2] for s, _ in focus)
         moving = [s[1] for s, _ in focus]
@@ -147,7 +205,8 @@ def direct(R, sc, style: str = "explainer", margin: float = 1.0, every: int = 2)
             pad_x, pad_top, pad_bot = 0.9 * margin, 0.45 * margin, 0.2
         bw = (x1 - x0) + 2 * pad_x + abs(lead)
         bh = (y1 - y0) + pad_top + pad_bot
-        zoom = max(1.0, min(1.65 if feeling else 1.9, min(W_m / bw, H_m / bh)))
+        needs.append(min(W_m / bw, H_m / bh) if not feeling else 1.0)
+        zoom = max(1.0, min(ZFEEL if feeling else ZMAX, min(W_m / bw, H_m / bh)))
         cx = (x0 + x1) / 2 + lead / 2
         hh = H_m / (2 * zoom)
         lo, hi = y0 - pad_bot, y1 + pad_top
@@ -160,6 +219,15 @@ def direct(R, sc, style: str = "explainer", margin: float = 1.0, every: int = 2)
             yc = max(hi - hh, min(lo + hh, floor - 0.3 + hh))
         cy = yc - ground_y                                # Scene.cy: metres the view is raised
         targets.append((cx, cy, zoom))
+    if needs and min(needs) < 0.97 and zf == 1.0:
+        # a group or a big move doesn't fit even the widest shot: draw the whole stage smaller (scene-wide, so the
+        # characters' size never pops) and direct again, the closer shots zooming in that much more
+        f = max(MAX_WIDEN, min(needs) * 0.97)
+        sc.ppm *= f
+        sc._zoom_base = 1.0 / f
+        for L in list(getattr(sc, "layers", [])) + list(getattr(sc, "front", [])):
+            L._img = None
+        return direct(R, sc, style, margin, every)
     # follow: dead zone, critically damped spring, pan limit, cuts for big jumps
     keys = []
     x, y, z = targets[0]
@@ -167,6 +235,7 @@ def direct(R, sc, style: str = "explainer", margin: float = 1.0, every: int = 2)
     dt = 1 / R.fps
     w = S["omega"]
     still = 0.0
+    hits = punches(R, sc) if style != "drama" or getattr(sc, "punch", None) else []
     for n, (tx, ty, tz) in enumerate(targets):
         half = W_m / (2 * z)
         if n and math.dist(targets[n][:2], targets[n - 1][:2]) < 0.01 and abs(vx) < 0.05:
@@ -174,7 +243,7 @@ def direct(R, sc, style: str = "explainer", margin: float = 1.0, every: int = 2)
         else:
             still = 0.0
         if still > 1.2:
-            tz = min(1.9, tz * (1.0 + min(0.09, 0.018 * (still - 1.2))))
+            tz = min(ZMAX, tz * (1.0 + min(0.09, 0.018 * (still - 1.2))))
         if abs(tx - x) > 1.6 * half:                     # the subject is somewhere else entirely: cut
             x, y, z, vx, vy, vz = tx, ty, tz, 0.0, 0.0, 0.0
             keys.append(CamKey(max(0.0, R.times[n] - 1e-3), keys[-1].x if keys else x,
@@ -192,7 +261,17 @@ def direct(R, sc, style: str = "explainer", margin: float = 1.0, every: int = 2)
             elif name == "y":
                 vy, y = vel, val + vel * dt
             else:
-                vz, z = vel, max(1.0, min(1.9, val + vel * dt))
-        if n % every == 0:
-            keys.append(CamKey(R.times[n], x, y, z, ease="linear"))
+                vz, z = vel, max(1.0, min(ZMAX, val + vel * dt))
+        px, py, pz = x, y, z
+        for t0, i, amt in hits:                          # a crash zoom on the reaction: punch in on the face
+            k = _punch_env(R.times[n] - t0)
+            if k > 0:
+                J = R.joints[i][n]
+                hx, hy = J["head"]
+                px = x + (hx - x) * 0.6 * k
+                py = y + ((hy - 0.3 - ground_y) - y) * 0.6 * k
+                pz = min(ZMAX * 1.3, z * (1 + amt * k))
+                break
+        if n % every == 0 or any(0 <= R.times[n] - t0 < 0.12 for t0, _, _ in hits):
+            keys.append(CamKey(R.times[n], px, py, pz, ease="linear"))
     return keys

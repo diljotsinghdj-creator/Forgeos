@@ -143,7 +143,7 @@ def make(script: str, title: str = "", sources: list | None = None, voice: dict 
     from . import story as ST
     board = SB.plan(script, title)
     style_name, why = cinematic.choose(script, board.domain, None if style == "auto" else style)
-    illustrated = style_name not in ("stick", None)
+    illustrated = style_name not in ("stick", "signature", None)
     cast = getattr(board, "cast", {})
     arc = ST.analyze(board, target_seconds, sources)          # the whole story first: arc, feelings, pacing
     notes = {"domain": board.domain, "decisions": [f"style: {style_name} ({why})"], "limitations": [], "sources": [],
@@ -305,6 +305,8 @@ def make(script: str, title: str = "", sources: list | None = None, voice: dict 
     doc = {"title": board.title, "fps": 24, "source_script": script, "scenes": scenes}
     if illustrated:
         doc["style"] = style if isinstance(style, dict) else style_name
+    elif style in ("auto", "signature", None):
+        doc["style"] = "signature"                    # CreatorForge's own stick look (style="stick": the plain one)
     if format:
         doc["format"] = dict(format)
     return doc, notes

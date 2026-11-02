@@ -367,12 +367,17 @@ def stage_scene(scene: dict, state: worldstate.WorldState, fps: int = 30, qualit
     presenter = actors.get(scene.get("presenter", ""))
     talk_k = [0]
 
-    def present(t0, dur):                             # the presenter talks with their body while the voice speaks
+    last_g = [""]
+
+    def present(t0, dur, text=""):                    # the presenter acts out what the voice says
         if presenter is None or presenter.busy(t0, t0 + min(dur, 2.0)):
             return
-        g = ("talk", "explain", "point", "talk", "shrug")[talk_k[0] % 5]
-        talk_k[0] += 1
-        presenter.gesture(t0 + 0.2, g, min(2.2, max(1.2, dur * 0.45)))
+        from .performance import gestures_for
+        for at, g, length in gestures_for(text, dur, last_g[0]):
+            if not presenter.busy(t0 + at, t0 + at + min(length, 1.5)):
+                presenter.gesture(t0 + at, g, length)
+                last_g[0] = g
+                talk_k[0] += 1
     t = 0.0
     notes = []
     sc.voiced = {}                                    # caption start -> spoken seconds (for the subtitle check)
@@ -518,7 +523,7 @@ def stage_scene(scene: dict, state: worldstate.WorldState, fps: int = 30, qualit
                 sc.narration.append((t0 + 0.15, str(wav)))
                 dur = max(dur, secs + 0.55)
                 sc.voiced[round(t0, 3)] = secs
-                present(t0, secs)
+                present(t0, secs, st.get("subtitle", st["text"]))
             VR.stage(sc, plan, t0, t0 + dur, x=a.hips_x(t0) + st.get("x", 3.2) if a is not None and st.get("near")
                      else st.get("x", 3.2))
             if st.get("cite") and not plan.sourced and st.get("sources"):
@@ -534,7 +539,7 @@ def stage_scene(scene: dict, state: worldstate.WorldState, fps: int = 30, qualit
                 sc.narration.append((t0 + 0.15, str(wav)))
                 dur = max(st.get("dur") or 0.0, secs + 0.55)
                 sc.voiced[round(t0, 3)] = secs
-                present(t0, secs)
+                present(t0, secs, st["text"])
             notes.append((t0, t0 + dur, st["text"]))
             from . import visual_reasoning as VR      # narration is audited too: facts need sources
             plan = VR.reason(st.get("reason_text", st["text"]), st.get("sources"))

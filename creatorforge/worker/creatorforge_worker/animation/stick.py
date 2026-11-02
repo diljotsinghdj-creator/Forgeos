@@ -291,6 +291,16 @@ class Actor:
         out = [(a.t0, start, "linear", False)]
         cur = start
         g0 = self.world.ground(start.x) if self.world else 0.0
+        planted = start.feet
+        if not planted:
+            # coming out of a walk or a stand the feet were not targets: "keep" pins them where they really stand
+            # (on the floor under each ankle), so a crouch or a push-off can't slide them
+            self._t = getattr(self, "_t", 0.0)
+            ank = self._free_ankles(start)
+            planted = tuple((x_, self._floor(x_) + self.ankle) if y_ - self._floor(x_) - self.ankle < 0.03 else None
+                            for x_, y_ in ank)
+            if all(q is None for q in planted):
+                planted = None
         for dt, kv, ek in a.keys:
             kv = dict(kv)
             p = replace(cur)
@@ -304,7 +314,7 @@ class Actor:
             if "feet" in kv:
                 fx = kv.pop("feet")
                 if fx == "keep":
-                    p.feet = start.feet
+                    p.feet = planted
                 elif fx is None:
                     p.feet = None
                 else:
@@ -313,7 +323,7 @@ class Actor:
                         if d is None:
                             pts.append(None)
                         elif d == "keep":
-                            pts.append(start.feet[i] if start.feet else None)
+                            pts.append(planted[i] if planted else None)
                         elif d == "prev":          # stays where the previous key put it
                             pts.append(cur.feet[i] if cur.feet else None)
                         else:
@@ -428,6 +438,8 @@ class Actor:
                     vy = (pb.y - pa.y) / T + 0.5 * G * T
                     p.x = lerp(pa.x, pb.x, u)
                     p.y = pa.y + vy * s - 0.5 * G * s * s
+                    # stretch with speed (fast rise and fall), round at the apex: squash-and-stretch in flight
+                    p.squash *= min(1.12, 1.0 + 0.028 * abs(vy - G * s))
                 else:
                     p.x, p.y = lerp(pa.x, pb.x, k), lerp(pa.y, pb.y, k)
 
@@ -451,6 +463,18 @@ class Actor:
                     if not ball and placed_a != placed_b:       # lifting off / setting down: start and end gently
                         kk = ease("inout", u)
                     q = lerp_pt(x, y, kk)
+                    if ball and placed_a != placed_b:
+                        # in the air: a landing foot travels over first and comes straight down onto its spot, a
+                        # take-off foot rises straight up first - so it never meets the floor while moving sideways
+                        # (the touchdown skid), and it clears a ledge it leaves or lands beside
+                        if placed_b:
+                            kx, ky = ease("out", min(1.0, u / 0.8)), u * u
+                        else:
+                            kx, ky = ease("in", min(1.0, max(0.0, (u - 0.2) / 0.8))), 1 - (1 - u) ** 2
+                        q = (lerp(x[0], y[0], kx), lerp(x[1], y[1], ky))
+                        edge = (1 - u) if placed_b else u
+                        if edge > 0.02:
+                            q = (q[0], max(q[1], self._floor(q[0]) + self.ankle + 0.03 * edge))
                     if not ball and y[1] > x[1] + 0.05:         # stepping up onto something: up first, then over
                         q = (lerp(x[0], y[0], ease("in", kk)), lerp(x[1], y[1], ease("out", kk)))
                     if not ball:                                # a step arcs over the floor
@@ -849,34 +873,121 @@ class Actor:
             return
         self._draw_stick(d, S, scale, t)
 
+    SMEAR_V = 3.2          # m/s: a hand or foot faster than this leaves a smear (an in-between drawn as a blur)
+
+    def _smears(self, d, S, J, t, col, w):
+        """Alan-Becker-style smear frames: a fast forearm or shin is drawn stretched back along its path as a
+        translucent tapered sweep, so a swing reads as motion instead of a strobe. Measured from the real joint
+        speed (world metres), so motion-blur sub-frames and frame rates give the same smear."""
+        prev = getattr(self, "_smear_prev", None)
+        self._smear_prev = (t, J)
+        if prev is None or not 0 < t - prev[0] <= 0.1:
+            return
+        dt = t - prev[0]
+        P = prev[1]
+        span = 1 / 24 * 1.6                       # how far back the smear reaches: about one and a half frames
+        for kind, idx in (("arms", 0), ("arms", 1), ("legs", 0), ("legs", 1)):
+            root_i, tip_i = (1, 2)
+            a1, b1 = J[kind][idx][root_i], J[kind][idx][tip_i]
+            a0, b0 = P[kind][idx][root_i], P[kind][idx][tip_i]
+            v = math.dist(b0, b1) / dt
+            if v < self.SMEAR_V:
+                continue
+            if kind == "legs" and min(b0[1], b1[1]) < self._floor(b1[0]) + self.ankle + 0.02:
+                continue                          # a planted foot doesn't smear
+            k = min(1.0, (v - self.SMEAR_V) / 4.0)
+            back = min(span / dt, 0.4 / max(1e-6, math.dist(b0, b1)))   # never more than 40 cm of trail
+            # "multiples": faded copies of the limb back along its path, thinner and lighter the older they are,
+            # and a tapered streak behind the hand or foot
+            for j, f_ in enumerate((0.33, 0.66, 1.0)):
+                ga = (a1[0] + (a0[0] - a1[0]) * back * f_, a1[1] + (a0[1] - a1[1]) * back * f_)
+                gb = (b1[0] + (b0[0] - b1[0]) * back * f_, b1[1] + (b0[1] - b1[1]) * back * f_)
+                alpha = int(120 * k * (1 - 0.28 * j) * (0.6 if idx == 1 else 1.0))
+                d.line([S(*ga), S(*gb)], fill=(col[0], col[1], col[2], alpha), width=max(1, int(w * (0.85 - 0.2 * j))))
+            tb = (b1[0] + (b0[0] - b1[0]) * back, b1[1] + (b0[1] - b1[1]) * back)
+            px, py = S(*b1)
+            qx, qy = S(*tb)
+            L_ = math.hypot(qx - px, qy - py) or 1.0
+            nx, ny = -(qy - py) / L_ * w * 0.5, (qx - px) / L_ * w * 0.5
+            d.polygon([(px + nx, py + ny), (px - nx, py - ny), (qx, qy)],
+                      fill=(col[0], col[1], col[2], int(110 * k * (0.6 if idx == 1 else 1.0))))
+
+    def _boil(self, J, t, amp):
+        """The hand-drawn line: every joint shifts by a small amount that is re-drawn 12 times a second (animating
+        "on twos"), the same for the same moment on every render. A planted foot stays exactly where it stands. The shoulder stays where the body puts it."""
+        if amp <= 0:
+            return J
+        frame = int(t * 12 + 1e-6)
+        seed = (sum(map(ord, self.look.name)) % 97) * 1.37
+
+        def jit(pt, i):
+            x, y = pt
+            a = amp * self.H
+            return (x + a * math.sin(frame * 12.9898 + i * 78.233 + seed),
+                    y + a * math.sin(frame * 4.1414 + i * 39.425 + seed * 1.7))
+        out = dict(J)
+        out["hip"], out["neck"], out["head"] = jit(J["hip"], 1), jit(J["neck"], 2), jit(J["head"], 3)
+        out["arms"] = [(arm[0],) + tuple(jit(q, 10 + 3 * i + j) for j, q in enumerate(arm[1:], 1))
+                       for i, arm in enumerate(J["arms"])]
+        legs = []
+        for i, (h, k, a, toe) in enumerate(J["legs"]):
+            kx = jit(k, 30 + 4 * i)
+            ax = (jit(a, 31 + 4 * i)[0], a[1]) if a[1] > self._floor(a[0]) + self.ankle + 0.01 else a
+            legs.append((out["hip"], kx, ax, (toe[0] + ax[0] - a[0], toe[1] + ax[1] - a[1])))
+        out["legs"] = legs
+        return out
+
     def _draw_stick(self, d, S, scale, t):
         p = self.pose_now
         J = self.joints(p)
         L = self.look
-        col = L.body or L.ink
+        st = getattr(self, "look_style", None)
+        boil = getattr(st, "boil", 0.0) if st is not None else 0.0
+        taper = getattr(st, "taper", 0.0) if st is not None else 0.0
+        ink = getattr(st, "ink", None) if st is not None else None
+        col = L.body or ink or L.ink
         far = tuple(int(c + (235 - c) * 0.32) for c in col)
         w = max(3, int(scale * 0.034 * self.H * L.line))
+        self._smears(d, S, J, t, col, w)
+        D = self._boil(J, t, 0.0035 * boil)
 
-        def line(pts, c, ww=w):
+        def line(pts, c, ww=w, root=1.0, tip=1.0):
             q = [S(*x) for x in pts]
+            if taper > 0 and len(q) >= 2:          # a brush stroke: heavier at the body, lighter at the ends
+                n = len(q) - 1
+                ws = [ww * (root + (tip - root) * i / n) for i in range(n + 1)]
+                from .cinematic import _capsule
+                for i in range(n):
+                    _capsule(d, q[i], q[i + 1], ws[i], ws[i + 1], c)
+                return
             d.line(q, fill=c, width=ww, joint="curve")
             for x, y in q:
                 d.ellipse([x - ww / 2, y - ww / 2, x + ww / 2, y + ww / 2], fill=c)
-        h, k, a, toe = J["legs"][1]
-        line([h, k, a, toe], far)
-        line(J["arms"][1], far)
-        line([J["hip"], J["neck"]], col, int(w * 1.05))
-        line([J["neck"], J["head"]], col)
-        cx, cy = S(*J["head"])
+        limb = dict(root=1.0 + 0.25 * taper, tip=1.0 - 0.38 * taper)
+        h, k, a, toe = D["legs"][1]
+        line([h, k, a, toe], far, **limb)
+        line(D["arms"][1], far, **limb)
+        line([D["hip"], D["neck"]], col, int(w * (1.05 + 0.25 * taper)), root=1.0, tip=1.0 + 0.1 * taper)
+        line([D["neck"], D["head"]], col)
+        cx, cy = S(*D["head"])
         r = self.r_head * scale
+        sq = max(0.8, min(1.2, p.squash))          # the head squashes and stretches with the body
+        rx, ry = r * (1 + (1 - sq) * 0.9), r * (1 - (1 - sq) * 0.9)
         if self.faceless:
-            d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=col)
+            if boil > 0:                           # a hand-drawn round: slightly irregular, re-drawn on twos
+                frame = int(t * 12 + 1e-6)
+                pts = [(cx + rx * (1 + 0.025 * boil * math.sin(frame * 3.1 + i * 1.9)) * math.cos(i * TAU / 28),
+                        cy + ry * (1 + 0.025 * boil * math.sin(frame * 2.3 + i * 2.7)) * math.sin(i * TAU / 28))
+                       for i in range(28)]
+                d.polygon(pts, fill=col)
+            else:
+                d.ellipse([cx - rx, cy - ry, cx + rx, cy + ry], fill=col)
         else:
-            d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=L.skin, outline=col, width=int(w * 0.8))
+            d.ellipse([cx - rx, cy - ry, cx + rx, cy + ry], fill=L.skin, outline=col, width=int(w * 0.8))
             F.draw(d, cx, cy, r, self.loco._face(t), p.f, t, ink=L.ink, lw=w * 0.6)
-        h, k, a, toe = J["legs"][0]
-        line([h, k, a, toe], col)
-        line(J["arms"][0], col)
+        h, k, a, toe = D["legs"][0]
+        line([h, k, a, toe], col, **limb)
+        line(D["arms"][0], col, **limb)
         self._joints = J
         self._draw_overlays(d, cx, cy, r, col, t)
 
