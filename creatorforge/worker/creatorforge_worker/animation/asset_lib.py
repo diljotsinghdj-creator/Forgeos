@@ -50,10 +50,13 @@ SIZES = {"house": (3.0, 9.0), "shop": (3.0, 7.0), "tower": (8.0, 60.0), "car": (
          "cow": (1.2, 1.8), "horse": (1.3, 2.0), "bird": (0.08, 0.6), "boat": (0.3, 3.0), "lamp": (2.5, 6.0),
          "chair": (0.7, 1.1), "table": (0.6, 0.9), "rock": (0.1, 2.0), "sign": (0.8, 3.0),
          "virus": (0.3, 3.0), "cell": (0.3, 3.0), "antibody": (0.2, 2.0), "bacteria": (0.3, 3.0), "atom": (0.3, 3.0),
-         "molecule": (0.2, 2.0)}
+         "molecule": (0.2, 2.0), "structure": (2.0, 30.0), "train": (2.8, 4.6), "plane": (2.5, 6.0)}
 SYNONYMS = {"home": "house", "hut": "house", "cottage": "house", "store": "shop", "stall": "shop", "office": "tower",
             "building": "tower", "skyscraper": "tower", "taxi": "car", "jeep": "car", "van": "car", "auto": "car",
-            "lorry": "bus", "truck": "bus", "coach": "bus", "bike": "bicycle", "cycle": "bicycle", "puppy": "dog",
+            "lorry": "bus", "truck": "bus", "locomotive": "train", "tram": "train", "metro": "train",
+            "aeroplane": "plane", "airplane": "plane", "jet": "plane", "aircraft": "plane", "flight": "plane",
+            "tractor": "car", "rickshaw": "car", "ambulance": "car", "scooter": "bicycle", "motorbike": "bicycle",
+            "motorcycle": "bicycle", "coach": "bus", "bike": "bicycle", "cycle": "bicycle", "puppy": "dog",
             "kitten": "cat", "buffalo": "cow", "ox": "cow", "pony": "horse", "donkey": "horse", "crow": "bird",
             "pigeon": "bird", "sparrow": "bird", "parrot": "bird", "pelican": "bird", "gull": "bird", "seagull": "bird",
             "eagle": "bird", "duck": "bird", "hen": "bird", "chicken": "bird", "owl": "bird", "heron": "bird", "ship": "boat", "canoe": "boat",
@@ -159,6 +162,44 @@ def g_bus(c, s, **_):
     p.append(rect("door", L * 0.38, r * 1.0, L * 0.47, r * 5.6, (120, 160, 190), 2))
     p += _wheel("wheel_f", L * 0.32, r) + _wheel("wheel_r", -L * 0.3, r)
     return _asset("bus", "bus", p, L, r * 6.4, uses=["ride", "background"], mass=11000)
+
+
+def g_train(c, s, **_):
+    """An engine and two carriages (a metro or a tram is the same shape, shorter)."""
+    L, r = 14.0 * s, 0.42 * s
+    body = c or (70, 110, 170)
+    car_l = L / 3
+    p = []
+    for k in range(3):
+        x0 = -L / 2 + k * car_l
+        p.append(rect(f"car{k}", x0 + 0.08 * s, r * 1.6, x0 + car_l - 0.08 * s, r * 8.2, body, 1))
+        p.append(rect(f"stripe{k}", x0 + 0.08 * s, r * 3.0, x0 + car_l - 0.08 * s, r * 3.5, (236, 236, 230), 2))
+        for w_ in range(3):
+            wx = x0 + car_l * (0.12 + 0.28 * w_)
+            p.append(rect(f"win{k}_{w_}", wx, r * 4.4, wx + car_l * 0.18, r * 6.8, (176, 214, 236), 2))
+        p += _wheel(f"wheel{k}a", x0 + car_l * 0.25, r * 0.8) + _wheel(f"wheel{k}b", x0 + car_l * 0.75, r * 0.8)
+    p.append(poly("nose", [(L / 2 - 0.1 * s, r * 1.6), (L / 2, r * 1.6), (L / 2, r * 6.0), (L / 2 - 0.1 * s, r * 8.2)],
+                  darker(body), 3))
+    return _asset("train", "train", p, L, r * 8.2, uses=["ride", "background"], mass=60000)
+
+
+def g_plane(c, s, **_):
+    """A passenger plane on its wheels (it can take off: move it up and away)."""
+    L, r = 14.0 * s, 0.35 * s
+    body = c or (236, 238, 242)
+    p = [poly("fuselage", [(-L / 2, r * 3.0), (L * 0.42, r * 3.0), (L / 2, r * 4.2), (L * 0.42, r * 6.0),
+                           (-L * 0.42, r * 6.0), (-L / 2, r * 5.0)], body, 1),
+         poly("tail", [(-L * 0.42, r * 6.0), (-L * 0.3, r * 6.0), (-L * 0.44, r * 10.5), (-L / 2, r * 10.5)],
+              (60, 110, 180), 2),
+         poly("wing", [(-L * 0.05, r * 4.2), (L * 0.12, r * 4.2), (-L * 0.12, r * 2.2), (-L * 0.22, r * 2.2)],
+              (186, 190, 198), 3),
+         line("gear", [(L * 0.1, r * 3.0), (L * 0.1, r * 0.9)], (90, 90, 96), r * 0.2, 0),
+         line("gear_r", [(-L * 0.2, r * 3.0), (-L * 0.2, r * 0.9)], (90, 90, 96), r * 0.2, 0)]
+    for k in range(7):
+        wx = -L * 0.3 + k * L * 0.09
+        p.append(circle(f"win{k}", wx, r * 4.9, r * 0.32, (120, 160, 200), 2))
+    p += _wheel("wheel_f", L * 0.1, r * 0.9) + _wheel("wheel_r", -L * 0.2, r * 0.9)
+    return _asset("plane", "plane", p, L, r * 10.5, uses=["ride", "background"], mass=40000)
 
 
 def g_bicycle(c, s, **_):
@@ -390,10 +431,20 @@ def parse(description: str) -> dict:
     return {"kind": kind, "colour": colour, "scale": scale, "text": text.group(1) if text else ""}
 
 
-def generate(description: str) -> dict:
+def generate(description: str, region: str | None = None) -> dict:
     """A new asset from a short description. Raises ValueError for something no generator can build (the caller
-    then falls back to a labelled placeholder rather than inventing a shape)."""
+    then falls back to a labelled placeholder rather than inventing a shape). Any building or place - a parliament,
+    a mosque, a dam, a stadium, anywhere in the world - is composed by places.compose in the architecture of its
+    region (from the words, else `region`, the script's)."""
     q = parse(description)
+    from . import places
+    if places.is_structure(description) and q["kind"] != "sign":   # "power plant" is not a bush, "opera house"
+        a = places.compose(description, region)              # not a cottage
+        if q["colour"]:
+            for p in a["parts"]:
+                if p["id"].startswith(("wall", "hall", "body")):
+                    p["fill"], p["line"] = list(q["colour"]), list(darker(q["colour"]))
+        return a
     if not q["kind"]:
         raise ValueError(f"no generator for {description!r} (known: {', '.join(sorted(GENERATORS))})")
     a = GENERATORS[q["kind"]](q["colour"], q["scale"], text=q["text"])
@@ -809,14 +860,16 @@ class Library:
         return [a for a in self.items.values() if (kind is None or a["kind"] == kind) and
                 (use is None or compatible(a, use)[0])]
 
-    def obtain(self, description: str) -> tuple[str, str]:
+    def obtain(self, description: str, region: str | None = None) -> tuple[str, str]:
         """An asset for a description: an exact stock kind, else a newly generated (and registered) one, else a
         labelled placeholder. Returns (id, how)."""
         q = parse(description)
-        if q["kind"] and q["colour"] is None and q["scale"] == 1.0 and q["kind"] in self.items:
+        from . import places
+        if q["kind"] and q["colour"] is None and q["scale"] == 1.0 and q["kind"] in self.items and \
+                not places.is_structure(description):
             return q["kind"], "library"
         try:
-            return self.register(generate(description)), "generated"
+            return self.register(generate(description, region)), "generated"
         except ValueError:
             return self.register(placeholder(description), render_test=False), "placeholder"
 

@@ -95,6 +95,8 @@ def scenes_of(doc: dict) -> list:
     for s_ in doc["scenes"]:
         if doc.get("style") and "style" not in s_ and not s_.get("footage"):
             s_ = {**s_, "style": doc["style"]}
+        if doc.get("region") and "region" not in s_:
+            s_ = {**s_, "region": doc["region"]}         # the architecture of where the story happens
         out.append(s_)
     return out
 
@@ -346,6 +348,7 @@ def stage_scene(scene: dict, state: worldstate.WorldState, fps: int = 30, qualit
         if stuff is None:
             from .storyboard import _Stuff
             stuff = _Stuff(sc, w)
+            stuff.region = scene.get("region", "")
             for n, p in live.items():
                 if p.kind == "shape" and n not in {a["name"] for a in scene.get("animals", [])}:
                     stuff.things[n] = p

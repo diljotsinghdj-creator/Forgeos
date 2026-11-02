@@ -145,6 +145,7 @@ def make(script: str, title: str = "", sources: list | None = None, voice: dict 
     style_name, why = cinematic.choose(script, board.domain, None if style == "auto" else style)
     illustrated = style_name not in ("stick", "signature", None)
     signature = not illustrated and (style in ("auto", "signature", None))   # CreatorForge's own stick look
+    from . import places
     cast = getattr(board, "cast", {})
     arc = ST.analyze(board, target_seconds, sources)          # the whole story first: arc, feelings, pacing
     notes = {"domain": board.domain, "decisions": [f"style: {style_name} ({why})"], "limitations": [], "sources": [],
@@ -201,6 +202,17 @@ def make(script: str, title: str = "", sources: list | None = None, voice: dict 
             cast_specs.append(spec)
             if c.label:
                 notes["decisions"].append(f"{n}: drawn faceless and labelled '{c.label}' (a real person)")
+        for n in b.characters:                        # a crowd the line names: a real group, sized by the words
+            if cast.get(n) and cast[n].role == "crowd":
+                big = re.search(r"thousands|millions|lakhs?|crores?|hundreds|huge|massive|everyone|nation|हज़ारों|लाखों",
+                                low)
+                small = re.search(r"\b(?:friends|children|family|few|couple|team)\b", low)
+                size = 12 if big else 5 if small else 9
+                marching = any(a["verb"] == "march" and a["who"] == n for a in b.actions)
+                cast_specs.append({"name": n, "crowd": size, "spacing": 0.62,
+                                   "x": (-7.5 if marching else 3.2), "facing": 1 if marching else -1})
+                notes["decisions"].append(f"line {i + 1}: '{n}' shown as a group of {size}"
+                                          + (" marching in from the left" if marching else ""))
         for n in b.characters:
             if cast.get(n) and cast[n].role == "animal":
                 animals_seen[n] = {"name": n, "desc": cast[n].label or n, "landing":
@@ -303,9 +315,11 @@ def make(script: str, title: str = "", sources: list | None = None, voice: dict 
                        "place": b.environment, "cut": cut, "timing": b.timing, "cast": cast_specs,
                        "animals": list(animals_seen.values()), "things": things, "props": scene_props,
                        "focus": [n for n in b.characters[:2]], "camera": {"style": arc.camera[i]},
-                       "arc": arc.roles[i], "steps": steps})
+                       "arc": arc.roles[i], "steps": steps,
+                       **({"region": _reg} if (_reg := places.region_of(b.narration)) != "modern" else {})})
         present = lineup
-    doc = {"title": board.title, "fps": 24, "source_script": script, "scenes": scenes}
+    doc = {"title": board.title, "fps": 24, "source_script": script, "scenes": scenes,
+           "region": places.region_of(script)}
     if illustrated:
         doc["style"] = style if isinstance(style, dict) else style_name
     elif signature:

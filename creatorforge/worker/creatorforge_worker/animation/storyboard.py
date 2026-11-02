@@ -78,7 +78,10 @@ VERBS = [
     (r"\bfall at the same|land at the same|hit the bottom together|same rate|same speed", "equal_fall"),
     (r"\bchas(?:es|ed|e)\b|\bfollows?\b", "chase"), (r"\bsteals?\b|\bstole\b|\bsnatch\w*", "steal"),
     (r"\blands?\b(?! at the same)|\blanded\b|\bswoops?\b|\bflies (?:in|down)", "land"),
-    (r"\brows?\b|\browed\b|\bpaddles?\b|\bsails?\b|\bdrives?\b|\brides?\b|\bcycles?\b", "ride"),
+    (r"\bleaves\b|\bleft without\b|\bdeparts?\b|\bdrives? (?:off|away)|\bpulls? (?:away|out)|\bspeeds? (?:off|away)|"
+     r"\btakes? off\b|\bsails? away", "depart"),
+    (r"\brows?\b|\browed\b|\bpaddles?\b|\bsails?\b(?! away)|\bdrives?\b(?! (?:off|away))|\brides?\b|\bcycles?\b",
+     "ride"),
     (r"\blaugh(?:s|ed)?\b|\bgiggl\w*", "laugh"),
     (r"\b(?:cooks?|bakes?|stirs?|chops?|kneads?|washes|wash|cleans?|fix(?:es)?|repairs?|types?|paints?|sews?)\b",
      "handwork"),
@@ -98,7 +101,11 @@ PLACES = r"harbou?r|port|dock|beach|shore|sea|river|lake|village|town|city|stree
          r"forest|garden|hill|mountain|desert|dawn|sunrise|sunset|night|morning|evening|room|kitchen|office|school|" \
          r"classroom|home"
 ADJ = r"(?:(?!(?:and|or|but|with|to|of|at|in|on|past|into|next)\b)[a-z]+(?:'s)?\s+){0,2}?"
-PLURAL = re.compile(r"\b(friends|customers|workers|people|crowd|children|voters|everyone|thousands)\b", re.I)
+PLURAL = re.compile(r"\b(friends|customers|workers|people|crowds?|children|voters|everyone|thousands|lakhs|millions|"
+                    r"protesters|protestors|demonstrators|farmers|students|citizens|supporters|residents|soldiers|"
+                    r"troops|fans|villagers|traders|employees|passengers|refugees|migrants|teachers|nurses|doctors|"
+                    r"families|women|men|youths?|labourers|laborers|miners|fishermen|pilgrims|devotees|tourists|"
+                    r"shoppers|commuters|activists|mps|ministers|lawmakers|delegates|athletes|players)\b", re.I)
 REAL_PEOPLE_HINT = re.compile(r"\b(Gandhi|Nehru|Modi|Shah|Ambedkar|Bose|Newton|Einstein|Scott|Armstrong|"
                               r"Churchill|Lincoln|Kumar|Rahul)\b")
 OBJECTS = [(r"orange|apple|ball|fruit", "ball"), (r"salt|handful", "ball"), (r"feather", "feather"),
@@ -190,11 +197,22 @@ def _names(sentence: str, known: list[str], script: str = "") -> list[str]:
         if COMMON_NOUNS.fullmatch(w0) or re.search(rf"(?<![.!?]\s)\b{w0.lower()}\b", script):   # case elsewhere
             words = [w for w in words if w != w0 and not w.startswith(w0 + " ")]
     words = [w for w in words if not re.fullmatch(r"(?:Dr|Mr|Mrs|Ms|Prof|St|Sir)", w)]          # a title alone
+    from . import places                               # a place is not a person: "in Delhi", "to the Parliament"
+
+    def _place(w):
+        esc = re.escape(w)
+        after_where = re.search(rf"\b(?:in|at|from|near|across|outside|inside|into|through|around|of)\s+(?:the\s+)?{esc}\b",
+                                sentence)
+        after_to = re.search(rf"\b(?:to|towards?)\s+(?:the\s+)?{esc}\b", sentence)
+        known = places.region_of(w) != "modern" or places.is_structure(w)
+        return bool(after_where) or (bool(after_to) and known) or (known and not re.match(rf"\s*{esc}\b", sentence))
+    words = [w for w in words if not _place(w)]
     words = [w for w in words if not re.fullmatch(r"(In|On|At|The|A|An|He|She|They|It|When|Some|With|Without|Both|"
                                                   r"Then|After|Before|But|And|This|That|Everyone|Thousands)\s+.*", w)]
     skip = {"In", "On", "At", "The", "A", "An", "He", "She", "They", "It", "His", "Her", "When", "Some", "With",
             "Without", "Both", "Everyone", "Then", "After", "Before", "But", "And", "Thousands", "Moon", "British",
-            "Salt", "March", "Salt March", "This", "That", "One", "Two", "Three", "Dandi", "Apollo"}
+            "Salt", "March", "Salt March", "This", "That", "One", "Two", "Three", "Dandi", "Apollo", "Lakhs", "Crores",
+            "Millions", "Hundreds", "Dozens", "Many", "Most", "All", "Several", "Thousands Of", "Lakhs Of"}
     out = [TITLES.sub("", w) for w in words if w not in skip and not re.fullmatch(           # "Suddenly", "Later",
         r"[A-Z][a-z]+ly|Then|Later|Soon|Now|Meanwhile|Today|Tonight|Yesterday|Tomorrow|Once|Every\w*|Next|Later on|"
         r"Afterwards|Still|Even|Only|Here|There|Outside|Inside|Everything|Nothing|Someone|Somebody", w)]  # "Then"...
@@ -255,6 +273,10 @@ def plan(script: str, title: str = "") -> Storyboard:
         crowd = bool(PLURAL.search(s))
         if crowd and not any(c.role in ("crowd",) for c in cast.values()):
             cast.setdefault("Crowd", Character("Crowd", "crowd", face=False, personality="cheerful"))
+        if crowd and re.match(rf"\s*(?:the\s+|many\s+|some\s+|(?:thousands|hundreds|millions|lakhs|dozens)\s+of\s+)?"
+                              rf"(?:\w+\s+){{0,2}}?{PLURAL.pattern}", s, re.I) and not names:
+            subject = "Crowd"                          # "Thousands of workers march...": the crowd does it
+            last_subject = subject
         emo = next(((face, feel) for rx, face, feel in EMOTIONS if re.search(rx, s, re.I)), ("", ""))
         verbs = sorted((m.start(), v) for rx, v in VERBS for m in [re.search(rx, s, re.I)] if m)
         others = [n for n in names[1:]] + (["Crowd"] if crowd and subject != "Crowd" else [])
@@ -286,9 +308,10 @@ def plan(script: str, title: str = "") -> Storyboard:
         stop = r"(?:a|an|the|his|her|their|its|and|or|but|with|to|of|at|in|on|into|onto|past|next|from|by|for|" \
                r"is|are|was|were|then|him|them|it|about|so|that|which|who|because|while|as|after|before|through|" \
                r"around|over|under|up|down|out|off|until|than|cannot|can|will|would|could|should|may|might|" \
-               r"must|does|do|did|has|have|had|not|very|too|also|again|now|when|where|how|why)"
+               r"must|does|do|did|has|have|had|not|very|too|also|again|now|when|where|how|why|without|within|" \
+               r"beside|behind|across|toward|towards|against|along|near|outside|inside)"
         verbs_rx = "|".join(rx for rx, _ in VERBS)
-        for m in re.finditer(rf"\b(?:a|an|the|his|her|their|its)\s+((?:(?!{stop}\b)[a-z']+\s*){{1,3}})", s):
+        for m in re.finditer(rf"\b(?:[Aa]n?|[Tt]he|[Hh]is|[Hh]er|[Tt]heir|[Ii]ts)\s+((?:(?!{stop}\b)[a-z']+\s*){{1,3}})", s):
             words_ = m.group(1).split()
             while len(words_) > 1 and re.match(rf"(?:{verbs_rx})$", words_[-1], re.I):
                 words_.pop()                              # "the pelican lands" - stop before the verb
@@ -296,9 +319,17 @@ def plan(script: str, title: str = "") -> Storyboard:
             phrase = " ".join(words_)
             if head in taken or re.fullmatch(rf"(?:{ROLE_NOUNS}|{ANIMALS})", head) or re.match(rf"(?:{verbs_rx})$", head, re.I):
                 continue
-            if re.fullmatch(rf"(?:{PLACES})", head) or ABSTRACT.fullmatch(head):
+            from . import places
+            if (re.fullmatch(rf"(?:{PLACES})", head) or ABSTRACT.fullmatch(head)) and not places.is_structure(phrase) \
+                    and self_kind(phrase) not in VEHICLES:
                 continue
             things.append(phrase)
+        from . import places                          # named buildings anywhere: "the Supreme Court", "Red Fort",
+        for m in re.finditer(r"\b(?:[A-Z][\w'\-]*\s+){0,3}[A-Z][\w'\-]*\b|[\u0900-\u097F]+(?:\s+[\u0900-\u097F]+){0,2}",
+                             s):                       # "Lok Sabha", "संसद भवन"
+            ph = m.group(0).strip()
+            if places.is_structure(ph) and not any(ph.lower() in t_.lower() or t_.lower() in ph.lower() for t_ in things):
+                things.append(ph)
         figures = re.findall(r"\b(\d[\d,.]*\s*(?:%|per cent|rupees|dollars|days|km|years)?)", s)
         metaphors = []
         if any(a.verb == "price_up" for a in acts) or re.search(r"price|cost", s, re.I):
@@ -370,6 +401,8 @@ def stage(board: Storyboard, beat_index: int | None = None):
     actors: dict[str, Actor] = {}
     spots = {n: (-1.6 + 3.2 * k / max(1, len(names) - 1)) if len(names) > 1 else 0.0 for k, n in enumerate(names)}
     world = _Stuff(sc, w)
+    from . import places
+    world.region = places.region_of(" ".join(b.narration for b in board.beats))
     for k, n in enumerate(names):
         c = cast.get(n, Character(n))
         crowd = c.role == "crowd"
@@ -451,7 +484,12 @@ def stage(board: Storyboard, beat_index: int | None = None):
 
 SMALL = r"fish|basket|bag|cup|phone|book|key|hat|coin|flower|letter|bottle|ball|box|plate|apple|umbrella|parcel|gift|" \
         r"bread|cake|toy|stick|net|flour|sugar|salt|milk|jar|pot|pan|vase|glass|bowl|cup|plate|slice|bottle|book|pen"
-VEHICLES = ("boat", "car", "bus", "bicycle")
+VEHICLES = ("boat", "car", "bus", "bicycle", "train", "plane")
+
+
+def self_kind(phrase: str):
+    from . import asset_lib
+    return asset_lib.parse(phrase)["kind"]
 # places named after a vehicle are not the vehicle: "the bus stop" is a sign at the kerb, not a bus on the stage
 PLACE_SIGN = re.compile(r"\b(?:bus|tram|train|metro|taxi|rickshaw|auto|railway|ferry)\s+(?:stop|station|stand|depot|"
                         r"terminal|halt)\b|\bcar\s*park\b|\bparking(?:\s+lot)?\b|\b(?:petrol|gas)\s+(?:pump|station)\b",
@@ -472,9 +510,15 @@ class _Stuff:
         self.assets: list = []
         self.log: list = []
 
+    region = ""                                        # the script's architecture region (places.region_of)
+
     def _asset(self, phrase, head, small, big):
+        from . import places
         q = self.A.parse(phrase)
-        aid, how = self.lib.obtain(phrase if q["kind"] else head)
+        if places.is_structure(phrase):                # any building or place, in its region's architecture
+            aid, how = self.lib.obtain(phrase, self.region or None)
+        else:
+            aid, how = self.lib.obtain(phrase if q["kind"] else head)
         a = self.lib.get(aid)
         if how == "placeholder":
             w_, h_ = (0.34, 0.2) if small else (1.4, 3.2) if big else (1.0, 1.2)
@@ -504,6 +548,8 @@ class _Stuff:
         a = self._asset(phrase, head, small, big)
         furniture = bool(set(a.get("uses", [])) & {"sit", "stand_on", "put_on"})
         z = 1.0 if small or kind in VEHICLES or furniture else 1.6      # furniture stands where people can use it
+        if a.get("kind") == "structure":
+            z = 2.5                                    # a building stands back, whole, behind the action
         if small and y == 0.0:                         # small things sit on nearby furniture, not on the floor
             top = [t_ for t_ in self.things.values() if t_.z <= 1.05 and abs(t_.pos(0.0)[0] - x) < 1.6 and
                    t_.name in ("table", "desk", "counter", "bench", "shelf")]
@@ -661,7 +707,7 @@ class _Stuff:
             return True
         if act["verb"] == "chase":
             return act["target"] in self.animals
-        if act["verb"] == "ride":
+        if act["verb"] in ("ride", "depart"):
             return any(self.A.parse(ph)["kind"] in VEHICLES for ph in b.things)
         if act["verb"] == "give":
             return any(re.fullmatch(SMALL, ph.split()[-1]) and ph.split()[-1] in self.things for ph in b.things)
@@ -710,7 +756,17 @@ class _Stuff:
             if not a.faceless:
                 a.loco.express(t, "laughing", 0.2)
             return t + 1.2
-        if v == "ride":                                # the rider stands in the vehicle and moves with it
+        if v == "depart":                              # the vehicle drives (sails, takes off) away; they watch it go
+            ph = next(ph for ph in b.things if self.A.parse(ph)["kind"] in VEHICLES)
+            veh = self.thing(ph, x + f * 2.6)
+            vx = veh.pos(t)[0]
+            away = 1.0 if vx >= x else -1.0
+            kind = self.A.parse(ph)["kind"]
+            lift = 7.0 if kind == "plane" else 0.0
+            veh.move(t + 0.4, t + 3.6, vx + away * 18.0, lift, 0.0, "in")     # pulls away, gathering speed
+            a.look_at(t, t + 3.8, veh)
+            self.log.append(f"the {veh.name} leaves; {a.look.name} watches it go")
+            return t + 3.0
             veh = next(self.things[re.sub(r"'s$", "", ph.split()[-1].lower())] for ph in b.things
                        if self.A.parse(ph)["kind"] in VEHICLES)
             dist, dur = 3.2 * f, 3.4
@@ -791,10 +847,13 @@ def _do(sc, w, a: Actor, b: Actor | None, act: dict, t: float, actors: dict, liv
         a.look_at(t, t + 2.5, b)
     if v in ("walk", "march"):
         dest = (b.hips_x(t) - f * 0.9) if b is not None else x + f * 1.4
+        if v == "march" and a.look.name.rstrip("0123456789") != a.look.name and b is None:
+            dest = x + f * 8.0                         # a crowd member: the group marches across the scene
         end = a.walk(t, dest, 0.9 if v == "march" else 1.1)
-        if v == "march":
+        if v == "march":                               # the rest of the same group marches with them
+            group = a.look.name.rstrip("0123456789")
             for nm, o in actors.items():
-                if o is not a and not o.busy(t, end):
+                if o is not a and not o.busy(t, end) and (nm.rstrip("0123456789") == group or a.look.name == "Crowd"):
                     o.walk(t + 0.2, o.hips_x(t) + (dest - x), 0.9)
         return end + 0.2
     if v == "run":
