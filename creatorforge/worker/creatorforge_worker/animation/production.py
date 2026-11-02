@@ -569,6 +569,7 @@ def stage_scene(scene: dict, state: worldstate.WorldState, fps: int = 30, qualit
         from .scene2d import CamKey
         sc.cams = [CamKey(k[0], k[1], k[2], k[3]) for k in cam["keys"]]
     sc.style = cam.get("style", "explainer")
+    sc.establish = 1.8 if scene.get("cut") else 0.0     # a new place opens on its building (camera.direct)
     sc.asset_log = stuff.assets if stuff is not None else []
     sc.decisions = stuff.log if stuff is not None else []
     if stuff is not None:                             # the animals and objects the script named are part of the

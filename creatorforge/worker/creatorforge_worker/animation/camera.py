@@ -85,6 +85,27 @@ def _punch_env(dt: float) -> float:
     return 1 - u * u * (3 - 2 * u)
 
 
+def establishing(R, sc):
+    """(until, (cx, cy, zoom)) for a scene that opens on a building: the whole structure and its name plaque in
+    frame (as much as the stage allows), or None."""
+    hold = getattr(sc, "establish", 0.0)
+    if not hold:
+        return None
+    builds = [(k, p) for k, p in enumerate(R.prop_objs) if (getattr(p, "data", {}) or {}).get("structure")]
+    if not builds:
+        return None
+    k, p = max(builds, key=lambda kp: kp[1].w * kp[1].h)
+    x, y, _ = R.props[k][0]
+    z = getattr(p, "z", 1.0)
+    H = sc.height
+    sz = sc.ppm / z                                   # output pixels per metre on the building's layer
+    base = sc.horizon * H + (sc.ground - sc.horizon) * H / z
+    need = (0.07 * H - base) / sz + p.h               # raise the view until the roof is in frame
+    room = (0.93 * H - base) / sz                     # ...but keep its foot on screen
+    cy = max(0.0, min(need, room))
+    return hold, (x, cy, 1.0)
+
+
 def direct(R, sc, style: str = "explainer", margin: float = 1.0, every: int = 2) -> list:
     """sc.focus (optional): [(t0, t1, [names])] - who the narration is about at each moment; they are always
     framed (with whoever they are dealing with), however busy anyone else is. sc.show (optional):
@@ -228,6 +249,13 @@ def direct(R, sc, style: str = "explainer", margin: float = 1.0, every: int = 2)
         for L in list(getattr(sc, "layers", [])) + list(getattr(sc, "front", [])):
             L._img = None
         return direct(R, sc, style, margin, every)
+    est = establishing(R, sc)
+    if est:                                           # a new place: open wide on its building, then push in
+        until, shot = est
+        for n, t in enumerate(R.times):
+            if t <= until:
+                targets[n] = shot
+        sc.establish_until = until + 1.0              # the framing check leaves the opening alone
     # follow: dead zone, critically damped spring, pan limit, cuts for big jumps
     keys = []
     x, y, z = targets[0]

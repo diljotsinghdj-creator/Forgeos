@@ -564,6 +564,8 @@ class _Stuff:
             y, z = 1.1, 1.0
         p = self._prop(a, x, y, z, head)
         p.data["kind"] = kind or ""
+        if a.get("kind") == "structure":
+            p.data["structure"] = True                 # the camera opens on it when the place is new
         if place:                                      # the library's sign is shared: the name goes on this one
             p.data["text"] = place.group(0).upper()
         self.things[head] = p

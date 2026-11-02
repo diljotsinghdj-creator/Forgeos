@@ -56,3 +56,18 @@ def test_any_everyday_object_is_drawn_not_boxed():
     assert O.find("a man") is None and O.find("his face") is None      # people are characters, never pictures
     assert all(not O._never(n) for _, n, _ in O._index()) and not any("REGIONAL" in n for _, n, _ in O._index())
     assert A.Library(None).obtain("a zorbulating flux capacitor")[1] == "placeholder"   # never invents
+
+
+def test_a_new_place_opens_wide_on_its_building_then_pushes_in():
+    from creatorforge_worker.animation import qc
+    doc, _ = studio.make("Mei walks to a temple in Kyoto. Omar walks to the mosque in Cairo.", style="signature")
+    states = production.plan_states(doc, "preview")
+    for i, sd in enumerate(production.scenes_of(doc)):
+        def build():
+            s, T_, _, _ = production.stage_scene(sd, states[i][6], 24, "preview")
+            return s, T_
+        sc, T, _, framing, _, _ = qc.refine(build, tries=3)
+        x0, cy0, z0 = sc.camera(0.6)
+        x1, cy1, z1 = sc.camera(min(T - 0.1, 3.5))
+        assert z0 == 1.0 and cy0 > 0.5                   # wide and raised: the whole building and its plaque
+        assert z1 > 1.3 and not framing                  # then in on the character, nobody cut off

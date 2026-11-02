@@ -232,6 +232,8 @@ def framing(sc, R: Recording, focus: list | None = None, safe=(0.06, 0.1, 0.04))
         if names is not None and a.look.name not in names:
             continue
         for n, J in enumerate(R.joints[i]):
+            if R.times[n] < getattr(sc, "establish_until", 0.0):
+                continue                               # the opening shot is of the place, not the people
             x, y = J["head"]
             px, py = to_screen(sc, x, y + a.r_head, getattr(a, "z", 1.0), R.times[n])
             fx, fy = to_screen(sc, J["hip"][0], J["hip"][1], getattr(a, "z", 1.0), R.times[n])
