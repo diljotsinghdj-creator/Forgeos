@@ -170,6 +170,8 @@ class Scene:
         for fn in getattr(self, "animated", []):     # living environments behind the cast (water, stars, cells)
             fn(d, W, H, to_screen_z, t, cx)
         style = getattr(self, "look_style", None)
+        from . import asset_lib                       # scenery and props hand-drawn in the signature look
+        asset_lib.SKETCH = bool(style is not None and getattr(style, "boil", 0.0) > 0)
         figures = []
         figmask = None                                 # where the characters are: the picture's ink edges skip them
         for a in sorted(self.actors, key=lambda q: -zs[id(q)]):
@@ -674,3 +676,132 @@ def studio(scene: Scene, paper=(248, 245, 236)):
         d.rectangle([0, gy, w, h], fill=mixc(paper, (205, 198, 182), 0.5))
         d.line([(0, gy), (w, gy)], fill=(60, 60, 64), width=max(2, int(scale * 0.012)))
     scene.layers.append(Layer(1.0, floor, span))
+
+
+# ---- the sketchbook: CreatorForge's hand-drawn set for the signature look ---------------------------------------------
+def _wobble(rng, pts, amp):
+    """A pencil line: each point nudged a little, so it never looks ruled."""
+    return [(x + rng.uniform(-amp, amp), y + rng.uniform(-amp, amp)) for x, y in pts]
+
+
+def _pencil(d, rng, pts, col, width, amp=1.2, passes=2):
+    for _ in range(passes):                            # two light passes, like a quick pencil sketch
+        d.line(_wobble(rng, pts, amp), fill=col, width=width, joint="curve")
+
+
+SKYLINES = {                                           # what the horizon is made of, by region
+    "south_asia": ("dome", "minaret", "flat", "flat", "temple", "flat"),
+    "middle_east": ("dome", "minaret", "flat", "flat", "dome", "flat"),
+    "east_asia": ("pagoda", "flat", "tower", "pagoda", "flat"),
+    "southeast_asia": ("stupa", "flat", "pagoda", "flat"),
+    "europe": ("spire", "pitched", "pitched", "flat", "pitched"),
+    "russia": ("onion", "pitched", "flat", "pitched"),
+    "north_america": ("tower", "tower", "flat", "tower", "dome"),
+    "latin_america": ("pitched", "flat", "spire", "flat"),
+    "africa": ("flat", "hut", "flat", "tower", "hut"),
+    "modern": ("tower", "flat", "tower", "flat", "pitched"),
+}
+
+
+def sketchbook(scene: Scene, paper=(244, 239, 226), place: str = "outdoors", region: str = "modern", seed: int = 5):
+    """A hand-drawn set: textured paper, a faint pencil skyline of the region on the horizon (or a room's wall and
+    window indoors), a few scribbled trees and posts in the middle distance, and a pencil-hatched ground under a
+    wobbly ink line. Painted once per strip, so it costs nothing per frame."""
+    import random
+    scene.sky = (paper, mixc(paper, (226, 216, 196), 0.55))
+    span = (-40.0, 40.0)
+    lead = (150, 140, 128)                             # pencil grey
+    ink = (52, 46, 42)
+
+    def far(d, w, h, left, scale, gy):
+        rng = random.Random(seed)
+        if place == "indoors":
+            y_top = gy - 2.6 * scale
+            _pencil(d, rng, [(0, y_top), (w, y_top)], lead, max(1, int(scale * 0.006)))
+            for k in range(int(w / (6.0 * scale)) + 1):           # windows and a frame along the wall
+                x0 = (k * 6.0 + 1.5) * scale
+                _pencil(d, rng, [(x0, gy - 1.9 * scale), (x0 + 1.4 * scale, gy - 1.9 * scale),
+                                 (x0 + 1.4 * scale, gy - 0.9 * scale), (x0, gy - 0.9 * scale), (x0, gy - 1.9 * scale)],
+                        lead, max(1, int(scale * 0.008)))
+                _pencil(d, rng, [(x0 + 0.7 * scale, gy - 1.9 * scale), (x0 + 0.7 * scale, gy - 0.9 * scale)], lead, 1)
+            return
+        kinds = SKYLINES.get(region, SKYLINES["modern"])
+        x = 0.0
+        lw = max(1, int(scale * 0.01))
+        while x < w:
+            k = rng.choice(kinds)
+            bw = rng.uniform(1.6, 3.6) * scale
+            bh = rng.uniform(1.2, 3.4) * scale
+            base = gy
+            pts = [(x, base), (x, base - bh)]
+            cx = x + bw / 2
+            if k in ("tower",):
+                bh *= 1.7
+                pts = [(x, base), (x, base - bh), (x + bw * 0.7, base - bh), (x + bw * 0.7, base)]
+                for r in range(int(bh / (0.5 * scale))):            # a few window ticks
+                    yy = base - (r + 0.5) * 0.5 * scale
+                    _pencil(d, rng, [(x + bw * 0.15, yy), (x + bw * 0.55, yy)], lead, 1, 0.6, 1)
+            elif k in ("pitched", "hut"):
+                pts += [(cx, base - bh - bw * 0.35), (x + bw, base - bh), (x + bw, base)]
+            elif k in ("dome", "onion", "stupa"):
+                pts = [(x, base), (x, base - bh)]
+                r = bw * 0.35
+                for i in range(11):
+                    a = math.pi * i / 10
+                    pts.append((cx - math.cos(a) * r, base - bh - math.sin(a) * r * (1.4 if k != "dome" else 1.0)))
+                pts += [(x + bw, base - bh), (x + bw, base)]
+                _pencil(d, rng, [(cx, base - bh - r * 1.4), (cx, base - bh - r * 1.9)], lead, lw)
+            elif k == "minaret":
+                pts = [(cx - 0.12 * scale, base), (cx - 0.12 * scale, base - bh * 1.6), (cx, base - bh * 1.75),
+                       (cx + 0.12 * scale, base - bh * 1.6), (cx + 0.12 * scale, base)]
+                bw = 0.9 * scale
+            elif k == "spire":
+                pts += [(cx - bw * 0.15, base - bh), (cx, base - bh - 1.6 * scale), (cx + bw * 0.15, base - bh),
+                        (x + bw, base - bh), (x + bw, base)]
+            elif k in ("pagoda", "temple"):
+                yy = base - bh
+                pts = [(x, base), (x, yy)]
+                for t_ in range(3):
+                    ww = bw * (1.0 - 0.22 * t_)
+                    l_, r_ = cx - ww / 2, cx + ww / 2
+                    pts += [(l_ - 0.2 * scale, yy), (l_, yy - 0.5 * scale)]
+                    yy -= 0.6 * scale
+                pts += [(cx, yy - 0.4 * scale), (x + bw, base - bh), (x + bw, base)]
+            else:
+                pts += [(x + bw, base - bh), (x + bw, base)]
+            _pencil(d, rng, pts, lead, lw)
+            x += bw + rng.uniform(0.2, 1.4) * scale
+        for _ in range(3):                                           # a few pencil birds
+            bx, by = rng.uniform(0, w), gy - rng.uniform(4.0, 5.5) * scale
+            s_ = 0.14 * scale
+            _pencil(d, rng, [(bx - s_, by), (bx, by + s_ * 0.5), (bx + s_, by)], lead, 1, 0.5, 1)
+
+    def mid(d, w, h, left, scale, gy):
+        if place == "indoors":
+            return
+        rng = random.Random(seed + 11)
+        x = rng.uniform(0, 4) * scale
+        while x < w:
+            if rng.random() < 0.6:                                   # a scribbled tree
+                th = rng.uniform(1.6, 2.6) * scale
+                _pencil(d, rng, [(x, gy), (x, gy - th)], (120, 104, 90), max(1, int(scale * 0.02)))
+                r = rng.uniform(0.5, 0.9) * scale
+                for _ in range(3):
+                    pts = [(x + math.cos(a) * r * rng.uniform(0.8, 1.15), gy - th - r * 0.6 + math.sin(a) * r * 0.85)
+                           for a in [i * math.pi / 7 for i in range(15)]]
+                    d.line(pts, fill=(128, 150, 112), width=max(1, int(scale * 0.012)), joint="curve")
+            else:                                                    # a post with a lamp
+                _pencil(d, rng, [(x, gy), (x, gy - 2.4 * scale), (x + 0.35 * scale, gy - 2.4 * scale)],
+                        (110, 106, 100), max(1, int(scale * 0.014)))
+            x += rng.uniform(5.0, 9.0) * scale
+
+    def floor(d, w, h, left, scale, gy):
+        rng = random.Random(seed + 23)
+        d.rectangle([0, gy, w, h], fill=mixc(paper, (214, 202, 178), 0.55))
+        for _ in range(int(w / max(4, scale * 0.12))):              # pencil hatching on the ground
+            x0 = rng.uniform(0, w)
+            y0 = rng.uniform(gy + 4, min(h, gy + (h - gy) * 0.9))
+            ln = rng.uniform(0.15, 0.4) * scale
+            d.line([(x0, y0), (x0 + ln, y0 - ln * 0.25)], fill=mixc(paper, (150, 136, 112), 0.35), width=1)
+        _pencil(d, rng, [(x_, gy) for x_ in range(0, int(w) + 40, 40)], ink, max(2, int(scale * 0.012)), 1.0, 1)
+    scene.layers += [Layer(6.0, far, span), Layer(2.2, mid, span), Layer(1.0, floor, span)]

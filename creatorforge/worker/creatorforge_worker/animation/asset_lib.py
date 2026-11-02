@@ -775,10 +775,50 @@ def import_image(path: str | Path, kind: str = "image", height: float = 1.0) -> 
 
 
 # ---- drawing -------------------------------------------------------------------------------------------------------------
+SKETCH = False                                        # set per frame by the scene: the signature hand-drawn look
+
+
+def _sketch_poly(d, pts, fill, part_id, scale):
+    """A hand-drawn shape: a slightly paler wash, pencil hatching on the shadow side of big shapes, and an ink
+    outline that wobbles (the same wobble every frame, so a building never shimmers)."""
+    import random
+    rng = random.Random(sum(map(ord, part_id)) * 7 + len(pts))
+    wash = tuple(int(c + (246 - c) * 0.1) for c in fill)
+    d.polygon(pts, fill=wash)
+    xs, ys = [p[0] for p in pts], [p[1] for p in pts]
+    x0, x1, y0, y1 = min(xs), max(xs), min(ys), max(ys)
+    if (x1 - x0) * (y1 - y0) > 9000 and hasattr(d, "_image"):     # hatch the right third of a big shape
+        from PIL import Image, ImageDraw
+        w_, h_ = int(x1 - x0) + 2, int(y1 - y0) + 2
+        mask = Image.new("L", (w_, h_), 0)
+        ImageDraw.Draw(mask).polygon([(x - x0, y - y0) for x, y in pts], fill=255)
+        hatch = Image.new("RGBA", (w_, h_), (0, 0, 0, 0))
+        hd = ImageDraw.Draw(hatch)
+        dark = tuple(int(c * 0.55) for c in fill) + (90,)
+        step = max(5, int(scale * 0.09))
+        for k in range(int(w_ * 0.62), w_ + h_, step):
+            hd.line([(k, 0), (k - h_, h_)], fill=dark, width=1)
+        hatch.putalpha(Image.composite(hatch.getchannel("A"), Image.new("L", (w_, h_), 0), mask))
+        d._image.paste(hatch, (int(x0), int(y0)), hatch)
+    amp = max(0.6, min(2.2, scale * 0.012))
+    ring = list(pts) + [pts[0]]
+    out = []
+    for (ax, ay), (bx, by) in zip(ring, ring[1:]):
+        n = max(1, int(math.hypot(bx - ax, by - ay) / 14))
+        for i in range(n):
+            u = i / n
+            out.append((ax + (bx - ax) * u + rng.uniform(-amp, amp), ay + (by - ay) * u + rng.uniform(-amp, amp)))
+    out.append(out[0])
+    d.line(out, fill=(46, 40, 36), width=max(1, int(scale * 0.022)), joint="curve")
+
+
 def draw_parts(d, parts, S, scale, ox, oy):
     """Draws posed parts onto a PIL ImageDraw; S maps world metres to pixels; (ox, oy) is the asset's bottom centre."""
     lw = max(1, int(scale * 0.018))
     for p in parts:
+        if SKETCH and p["shape"] == "poly":
+            _sketch_poly(d, [S(ox + x, oy + y) for x, y in p["pts"]], tuple(p["fill"]), p["id"], scale)
+            continue
         fill, ln = tuple(p["fill"]), tuple(p.get("line", p["fill"]))
         if p["shape"] == "circle":
             cx, cy = S(ox + p["c"][0], oy + p["c"][1])

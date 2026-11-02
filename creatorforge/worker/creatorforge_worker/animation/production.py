@@ -253,6 +253,9 @@ def stage_scene(scene: dict, state: worldstate.WorldState, fps: int = 30, qualit
     if layers.get("world"):                           # a painted world (worlds.py): city, forest, space, mind...
         from . import worlds
         sc.world_note = worlds.build(sc, layers["world"], seed=int(layers.get("seed", 3)))
+    elif sc.look_style is not None and sc.look_style.name == "signature":   # CreatorForge's hand-drawn set
+        scene2d.sketchbook(sc, place=scene.get("place", "outdoors"), region=scene.get("region", "modern"),
+                           seed=int(layers.get("seed", 5)))
     else:
         scene2d.studio(sc, paper=tuple(layers.get("paper", {"outdoors": (232, 238, 226), "indoors": (246, 242, 234)}
                                            .get(scene.get("place"), (240, 242, 246)))))

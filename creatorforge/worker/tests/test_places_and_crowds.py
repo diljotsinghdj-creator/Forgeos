@@ -118,3 +118,20 @@ def test_timing_follows_the_narrations_rhythm_with_beats_and_reaction_shots():
     states = production.plan_states(doc, "preview")
     sc, T, _, _ = production.stage_scene(production.scenes_of(doc)[1], states[1][6], 24, "preview")
     assert getattr(sc, "punch", [])                                              # the camera punches in on it
+
+
+def test_the_signature_look_has_a_hand_drawn_set_and_sketched_scenery():
+    from creatorforge_worker.animation import asset_lib
+    doc, _ = studio.make("Mei walks to a temple in Kyoto.", style="signature")
+    states = production.plan_states(doc, "preview")
+    sc, T, _, _ = production.stage_scene(production.scenes_of(doc)[0], states[0][6], 24, "preview")
+    assert [L.z for L in sc.layers][-3:] == [6.0, 2.2, 1.0]          # pencil skyline, scribbled trees, hatched ground
+    for k in range(int(1.0 * 24)):
+        sc._advance(k / 24, 1 / 24)
+    sc.frame(1.0, 1 / 24)
+    assert asset_lib.SKETCH                                           # buildings drawn with wobbly ink and hatching
+    doc, _ = studio.make("Mei walks to a temple in Kyoto.", style="stick")
+    sc, T, _, _ = production.stage_scene(production.scenes_of(doc)[0], production.plan_states(doc, "preview")[0][6],
+                                         24, "preview")
+    sc.frame(0.5, 1 / 24)
+    assert not asset_lib.SKETCH                                       # the plain look stays plain
