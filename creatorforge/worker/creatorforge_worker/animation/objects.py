@@ -261,3 +261,21 @@ def compose(phrase: str) -> dict:
 def decode(png_b64: str):
     from PIL import Image
     return Image.open(io.BytesIO(base64.b64decode(png_b64))).convert("RGBA")
+
+
+@lru_cache(maxsize=1)
+def _by_name() -> dict:
+    return {n.lower(): c for c, n, _ in _index()}
+
+
+def exact(name: str) -> tuple[str, str] | None:
+    """The picture with exactly this Unicode name (lower case), if the font draws it."""
+    c = _by_name().get(name.lower())
+    return (c, name.upper()) if c and _drawable(c) else None
+
+
+@lru_cache(maxsize=512)
+def flat(ch: str):
+    """The flattened picture for a character (cached: metaphors redraw every frame)."""
+    return flatten(_raster(ch))
+

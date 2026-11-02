@@ -84,3 +84,19 @@ def test_characters_hold_carry_and_hand_over_what_the_line_names():
                 held.setdefault(p.name, [(c[2].look.name, c[3]) for c in p.carriers])   # where it first happens
     assert held["paper"] == [("Asha", "near")] and held["laptop"] == [("Asha", "far")]   # one in each hand
     assert [w for w, _ in held["book"]] == ["Raj", "Asha"]                                # handed over
+
+
+def test_abstract_ideas_become_labelled_moving_pictures_and_allegations_never_do():
+    from creatorforge_worker.animation import metaphors, objects, visual_reasoning as VR
+    for line, concept in {"Unemployment has doubled in two years.": "unemployment",
+                          "Cases are pending for years.": "delay", "Farmers are drowning in debt.": "debt",
+                          "Delhi is choking on smog.": "pollution", "Time is running out.": "deadline",
+                          "बेरोज़गारी बढ़ रही है।": "unemployment", "Journalists are being silenced.": "censorship"}.items():
+        plan = VR.reason(line)
+        assert (plan.mode, plan.concept, plan.label) == ("metaphor", concept, "Illustration"), line
+    assert VR.reason("The minister was accused of taking bribes.").mode == "evidence"     # never a metaphor
+    assert VR.reason("Raj walks home.").mode == "literal"
+    for concept, _, items in metaphors.LIB:                       # every picture a metaphor needs exists
+        for phrase, motion, _, _ in items:
+            assert objects.exact(phrase) or objects.find(phrase), (concept, phrase)
+    assert len(metaphors.LIB) >= 30

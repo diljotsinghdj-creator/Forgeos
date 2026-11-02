@@ -360,6 +360,9 @@ def draw(p, d, S, scale, t):
                       maxw=(sx1 - sx0) * 0.9)
         if p.label and p.data.get("show_label"):
             _text(d, ((x0 + x1) / 2, y0 - lw * 8), p.label, scale * 0.12, INK)
+    elif k == "metaphor":                             # an idea as moving pictures (metaphors.py), labelled
+        from . import metaphors
+        metaphors.draw(p, d, S, scale, t)
     elif k == "label":
         _text(d, ((x0 + x1) / 2, (y0 + y1) / 2), p.label, (y1 - y0) * 0.8, p.color, maxw=(x1 - x0))
 

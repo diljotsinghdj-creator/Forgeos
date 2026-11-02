@@ -104,6 +104,16 @@ def reason(sentence: str, sources: list[dict] | None = None) -> VisualPlan:
                 if not supporting:
                     plan.note = "numbers shown as 'figure from the script' (no source supplied)"
             return plan
+    from . import metaphors                            # an abstract idea: a labelled picture that moves
+    concept = metaphors.match(s)
+    if concept:
+        plan = VisualPlan(s, METAPHOR, concept, [{"kind": "metaphor", "concept": concept}], LABELS[METAPHOR], claims,
+                          True)
+        if claims:
+            plan.sourced = bool(supporting)
+            if not supporting:
+                plan.note = "numbers shown as 'figure from the script' (no source supplied)"
+        return plan
     if PAST_EVENT.search(s) and re.search(r"\b[A-Z][a-z]+\b", s[1:]):
         return VisualPlan(s, REENACT, "history", [{"kind": "reconstruction"}], LABELS[REENACT], claims,
                           bool(supporting) or not claims)
@@ -182,6 +192,9 @@ def stage(sc, plan: VisualPlan, t0: float, t1: float, x: float = 3.2, actors: di
             added.append(Prop("stat", x, 1.3, 2.2, 1.0, label=e["value"], data={      # the card draws its label
                 "value": e["value"], "sub": "" if e["source"] else "figure from the script",
                 "source": e["source"], "pop": [(t0 + 0.4, 0.0, "linear"), (t0 + 0.9, 1.0, "back")]}))
+        elif k == "metaphor":
+            added.append(Prop("metaphor", x, 0.15, 2.6, 2.2, label=plan.label,
+                              data={"concept": e["concept"], "t0": t0, "t1": t1, "show": show}))
         elif k == "ballot_box":
             added.append(Prop("crate", x, 0.0, 0.6, 0.6, label="VOTES"))
         elif k == "reconstruction" or k == "exaggerate":
