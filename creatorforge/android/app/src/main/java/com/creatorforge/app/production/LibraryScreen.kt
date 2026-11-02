@@ -104,7 +104,7 @@ fun LibraryScreen() {
 
     /** Downloads an Asset Library file once (kept in the app's Movies folder) and then runs [action] on it. */
     fun withAsset(a: LibraryAsset, action: (File) -> Unit) {
-        val ext = if (a.kind == "video") ".mp4" else a.name.substringAfterLast('.', "").let { if (it.length in 2..4) ".$it" else ".m4a" }
+        val ext = if (a.kind == "video") ".mp4" else if (a.kind == "image") ".jpg" else a.name.substringAfterLast('.', "").let { if (it.length in 2..4) ".$it" else ".m4a" }
         val dest = File(context.getExternalFilesDir("Movies") ?: context.filesDir, "CreatorForge_asset_${a.id.replace(Regex("[^A-Za-z0-9_-]"), "_")}$ext")
         if (dest.isFile && dest.length() > 0) return action(dest)
         busy = a.id
@@ -229,6 +229,12 @@ fun LibraryScreen() {
                             }
                             TextButton({ withAsset(a) { message = saveToGallery(context, it) } }, enabled = busy == null) { Text("SAVE") }
                             TextButton({ withAsset(a) { openFile(context, it, Intent.ACTION_SEND, "video/mp4") } }, enabled = busy == null) { Text("SHARE") }
+                        } else if (a.kind == "image") {
+                            TextButton({ withAsset(a) { openFile(context, it, Intent.ACTION_VIEW, "image/*") } }, enabled = busy == null) {
+                                Text(if (busy == a.id) "LOADING…" else "VIEW")
+                            }
+                            TextButton({ withAsset(a) { message = saveImageToGallery(context, it, a.name) } }, enabled = busy == null) { Text("SAVE") }
+                            TextButton({ withAsset(a) { openFile(context, it, Intent.ACTION_SEND, "image/*") } }, enabled = busy == null) { Text("SHARE") }
                         } else if (a.kind in listOf("audio", "music", "sfx")) {
                             TextButton({ withAsset(a) { runCatching { play(it) }.onFailure { e -> message = "Can't play: ${e.message}" } } }, enabled = busy == null) {
                                 Text(if (busy == a.id) "LOADING…" else "PLAY")
@@ -295,6 +301,33 @@ fun LibraryScreen() {
             launchOp("rename") { if (kind == "video") client.renameProduction(id, name) else client.renameAsset(id, name) }
         }
     }
+}
+
+/** Copies a downloaded image (e.g. a YouTube thumbnail) into Pictures/CreatorForge, where the gallery and YouTube Studio find it. */
+private fun saveImageToGallery(context: android.content.Context, file: File, title: String): String {
+    val name = title.replace(Regex("[^A-Za-z0-9 _-]"), "").trim().ifBlank { "CreatorForge" } + "_" + System.currentTimeMillis() / 1000 + ".jpg"
+    val msg = runCatching {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+            val values = android.content.ContentValues().apply {
+                put(android.provider.MediaStore.Images.Media.DISPLAY_NAME, name)
+                put(android.provider.MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+                put(android.provider.MediaStore.Images.Media.RELATIVE_PATH, "Pictures/CreatorForge")
+            }
+            val resolver = context.contentResolver
+            val uri = resolver.insert(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values) ?: error("the gallery refused the file")
+            resolver.openOutputStream(uri)?.use { out -> file.inputStream().use { it.copyTo(out) } } ?: error("couldn't open the gallery file")
+            "✓ Saved to your gallery (Pictures/CreatorForge)"
+        } else {
+            @Suppress("DEPRECATION")
+            val dir = File(android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_PICTURES), "CreatorForge").apply { mkdirs() }
+            val dest = File(dir, name)
+            file.copyTo(dest, overwrite = true)
+            android.media.MediaScannerConnection.scanFile(context, arrayOf(dest.absolutePath), arrayOf("image/jpeg"), null)
+            "✓ Saved to Pictures/CreatorForge"
+        }
+    }.getOrElse { "Save failed: ${it.message}" }
+    toast(context, msg)
+    return msg
 }
 
 /** Opens or shares a downloaded file with another app (player, Files, WhatsApp, Drive…). */
