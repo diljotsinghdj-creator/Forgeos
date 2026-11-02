@@ -280,7 +280,10 @@ def plan(script: str, title: str = "") -> Storyboard:
         emo = next(((face, feel) for rx, face, feel in EMOTIONS if re.search(rx, s, re.I)), ("", ""))
         verbs = sorted((m.start(), v) for rx, v in VERBS for m in [re.search(rx, s, re.I)] if m)
         others = [n for n in names[1:]] + (["Crowd"] if crowd and subject != "Crowd" else [])
-        if not others and re.search(r"\b(him|her)\b", s, re.I):                # "lands next to him"
+        if not others and re.search(r"\b(him|her)\b", s, re.I) and not names and \
+                any(v == "depart" for _, v in verbs):
+            pass                                       # "the train leaves without him": him is the one watching
+        elif not others and re.search(r"\b(him|her)\b", s, re.I):                # "lands next to him"
             people = [n for n in reversed(mentioned) if n != subject and cast.get(n) and cast[n].role != "animal"]
             if people:
                 others = [people[0]]
@@ -852,8 +855,10 @@ def _do(sc, w, a: Actor, b: Actor | None, act: dict, t: float, actors: dict, liv
         end = a.walk(t, dest, 0.9 if v == "march" else 1.1)
         if v == "march":                               # the rest of the same group marches with them
             group = a.look.name.rstrip("0123456789")
+            members = group != a.look.name               # an expanded crowd: every member has its own march
             for nm, o in actors.items():
-                if o is not a and not o.busy(t, end) and (nm.rstrip("0123456789") == group or a.look.name == "Crowd"):
+                if not members and o is not a and not o.busy(t, end) and \
+                        (nm.rstrip("0123456789") == group or a.look.name == "Crowd"):
                     o.walk(t + 0.2, o.hips_x(t) + (dest - x), 0.9)
         return end + 0.2
     if v == "run":

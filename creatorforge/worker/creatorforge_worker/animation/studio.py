@@ -158,6 +158,8 @@ def make(script: str, title: str = "", sources: list | None = None, voice: dict 
     animals_seen: dict = {}
     scenes = []
     prev_env = None
+    prev_structs: list = []
+    prev_reg = "modern"
     sky: dict = {}                                      # weather and time of day persist until the script changes them
     for i, b in enumerate(board.beats):
         low = b.narration.lower()
@@ -176,8 +178,16 @@ def make(script: str, title: str = "", sources: list | None = None, voice: dict 
             notes["decisions"].append(f"line {i + 1}: light becomes {tod}")
         elif sky.get("light"):
             sky["light"] = [[0.0, sky["light"][-1][1]]]
-        cut = i == 0 or b.environment != prev_env
+        # a new place is a new shot: another environment, a building not in the last shot, or another country
+        struct = [t_ for t_ in getattr(b, "things", []) if places.is_structure(t_)]
+        reg = places.region_of(b.narration)
+        new_place = bool(struct) and not set(map(str.lower, struct)) & set(map(str.lower, prev_structs))
+        cut = i == 0 or b.environment != prev_env or new_place or (reg != "modern" and prev_reg not in ("modern", reg))
         prev_env = b.environment
+        if struct:
+            prev_structs = struct
+        if reg != "modern":
+            prev_reg = reg
         if cut:
             present = []
         here = [n for n in b.characters if n in people]
