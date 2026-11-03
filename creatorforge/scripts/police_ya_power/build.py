@@ -227,30 +227,33 @@ def sources_md(cs, sources):
 def elevenlabs(cs, chapters, out: Path):
     d = out / "06_ELEVENLABS"
     d.mkdir(parents=True, exist_ok=True)
-    parts, cur, n = [], [], 0
-    for c in chapters:
-        rows = [x for x in cs if x["ch"] == c["n"]]
-        block = []
-        for x in rows:
-            say = for_voice(x["D"])
-            pause = float(x.get("P") or 0)
-            tail = " ..." if pause >= 1.0 else ""
-            block.append(f"{V3[x['T']]} {say}{tail}")
-        text = "\n\n".join(block)
-        if cur and n + len(text) > 2900:
-            parts.append(cur)
-            cur, n = [], 0
-        cur.append((c, text))
-        n += len(text)
-    if cur:
-        parts.append(cur)
-    for i, p in enumerate(parts, 1):
-        write(d / f"v3_PART_{i}.txt", "\n\n".join(t for _, t in p) + "\n")
-    v2 = []
+    def pack(items, limit, sep):
+        parts, cur, n = [], [], 0
+        for it in items:
+            if cur and n + len(sep) + len(it) > limit:
+                parts.append(cur)
+                cur, n = [], 0
+            cur.append(it)
+            n += len(it) + len(sep)
+        return parts + ([cur] if cur else [])
+
+    v3 = []
     for x in cs:
-        v2.append(for_voice(x["D"]))
-        v2.append(f'<break time="{min(3.0, GAP + float(x.get("P") or 0) + 0.3):.1f}s" />')
-    write(d / "multilingual_v2_ONE_PASTE.txt", "\n".join(v2) + "\n")
+        tail = " ..." if float(x.get("P") or 0) >= 1.0 else ""
+        v3.append(f"{V3[x['T']]} {for_voice(x['D'])}{tail}")
+    for f in d.glob("*PART_*.txt"):
+        f.unlink()
+    parts = pack(v3, 2800, "\n\n")
+    for i, p in enumerate(parts, 1):
+        write(d / f"v3_PART_{i:02d}.txt", "\n\n".join(p) + "\n")
+    v2 = [for_voice(x["D"]) + "\n" + f'<break time="{min(3.0, GAP + float(x.get("P") or 0) + 0.3):.1f}s" />'
+          for x in cs]
+    v2p = pack(v2, 9000, "\n")
+    (d / "multilingual_v2_ONE_PASTE.txt").unlink(missing_ok=True)
+    for i, p in enumerate(v2p, 1):
+        write(d / f"multilingual_v2_PART_{i}.txt", "\n".join(p) + "\n")
+    for f in list(d.glob("*.txt")):
+        assert len(f.read_text(encoding="utf-8")) <= (3000 if "v3" in f.name else 10000), f
     write(d / "README_ELEVENLABS.md", f"""# ElevenLabs narration - POLICE YA POWER?
 
 **Voice:** a deep, authoritative male or female Hindi documentary voice from the Voice Library (search
@@ -258,12 +261,12 @@ def elevenlabs(cs, chapters, out: Path):
 no celebrity voices.
 
 ## Option A - Eleven v3 (most expressive) - {len(parts)} parts
-Paste `v3_PART_1.txt`, `v3_PART_2.txt` ... in order (each under ~3,000 characters, v3's limit per generation).
+Paste `v3_PART_01.txt`, `v3_PART_02.txt` ... in order (each under 2,800 characters; v3 takes 3,000 per generation).
 Audio tags in [brackets] come from each line's tone. Settings: Stability **Natural**, language **Hindi**.
 Generate 2-3 takes of each part, keep the best, export MP3 44.1 kHz / 192 kbps, join in order.
 
-## Option B - Multilingual v2 (steadiest) - one paste
-`multilingual_v2_ONE_PASTE.txt` uses `<break>` tags for pauses. Stability 0.55, Similarity 0.80, Style 0.25,
+## Option B - Multilingual v2 (steadiest) - {len(v2p)} parts
+`multilingual_v2_PART_1.txt` ... (each under 9,000 characters) use `<break>` tags for pauses. Stability 0.55, Similarity 0.80, Style 0.25,
 Speaker boost on.
 
 ## Numbers and acronyms
@@ -862,7 +865,7 @@ def qc(cs, out: Path, vid: Path | None, n_parts: int):
     dates = sorted({m for x in cs for m in re.findall(r"\b(?:19|20)\d\d\b", x["D"])})
     rows.append(("Dates checked against sources", True, "years used: " + ", ".join(dates) +
                  " (each tied to a source in the evidence report)"))
-    rows.append(("ElevenLabs parts within v3 limit", n_parts > 0, f"{n_parts} parts ≤ ~2,900 chars"))
+    rows.append(("ElevenLabs parts within limits", n_parts > 0, f"{n_parts} v3 parts ≤ 2,800 chars; v2 parts ≤ 9,000"))
     if vid and vid.exists():
         p = probe(vid)
         v = next(s for s in p["streams"] if s.get("width"))
@@ -904,7 +907,7 @@ sentences). The suggested 19:00 was not padded to: every chapter ends when its e
 | 3 | Sentence-by-sentence visual matching | 03_VISUAL_MATCHING.md |
 | 4 | Verified source links + archive shot list to license | 04_SOURCES_AND_FOOTAGE.md |
 | 5 | Animation assets (10 PNG) + instructions | 05_ANIMATION_ASSETS/ |
-| 6 | ElevenLabs narration (v3 parts, v2 one-paste, pronunciation) | 06_ELEVENLABS/ |
+| 6 | ElevenLabs narration (v3 parts, v2 parts, pronunciation) | 06_ELEVENLABS/ |
 | 7 | Music & sound-design plan + mastering chain | 07_MUSIC_AND_SOUND_PLAN.md |
 | 8 | Subtitles: Hinglish, English, Hindi (Devanagari) | 08_SUBTITLES/*.srt |
 | 9 | YouTube title, description, tags, pinned comment | 09_YOUTUBE_METADATA.md |

@@ -7,10 +7,7 @@
 | Every factual line sourced | PASS | 67/67 factual lines carry a source |
 | Hinglish subtitles track Devanagari narration | PASS | word-count mismatches: none |
 | Dates checked against sources | PASS | years used: 1996, 2006, 2014, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026 (each tied to a source in the evidence report) |
-| ElevenLabs parts within v3 limit | PASS | 4 parts ≤ ~2,900 chars |
-| Animatic renders, H.264 yuv420p (Android-safe) | PASS | h264 High 1920x1080 yuv420p, 761.7s |
-| No black frames ≥0.5 s | PASS | none detected |
-| Animatic length matches script timing | PASS | 761.7s vs 761.4s |
+| ElevenLabs parts within limits | PASS | 4 v3 parts ≤ 2,800 chars; v2 parts ≤ 9,000 |
 
 ## Not checkable here (do on the pod / before upload)
 

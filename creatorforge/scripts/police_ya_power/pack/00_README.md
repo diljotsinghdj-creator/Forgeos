@@ -22,7 +22,7 @@ sentences). The suggested 19:00 was not padded to: every chapter ends when its e
 | 3 | Sentence-by-sentence visual matching | 03_VISUAL_MATCHING.md |
 | 4 | Verified source links + archive shot list to license | 04_SOURCES_AND_FOOTAGE.md |
 | 5 | Animation assets (10 PNG) + instructions | 05_ANIMATION_ASSETS/ |
-| 6 | ElevenLabs narration (v3 parts, v2 one-paste, pronunciation) | 06_ELEVENLABS/ |
+| 6 | ElevenLabs narration (v3 parts, v2 parts, pronunciation) | 06_ELEVENLABS/ |
 | 7 | Music & sound-design plan + mastering chain | 07_MUSIC_AND_SOUND_PLAN.md |
 | 8 | Subtitles: Hinglish, English, Hindi (Devanagari) | 08_SUBTITLES/*.srt |
 | 9 | YouTube title, description, tags, pinned comment | 09_YOUTUBE_METADATA.md |
@@ -32,7 +32,7 @@ sentences). The suggested 19:00 was not padded to: every chapter ends when its e
 | QC | Automated checks | QC_REPORT.md |
 
 ## Honest limits - read before publishing
-- **No finished film is in this ZIP.** The MP4 in 12_ANIMATIC is a silent animatic: editorial text cards with the real graphics, burned Hinglish subtitles and scratch timing. It has no voice, no music and no archive footage.
+- **No finished film is in this ZIP.** No MP4 was rendered.
 - **No archive footage or news photos were downloaded or licensed** (this workspace cannot reach news sites, and agency
   material needs a licence). 04_SOURCES_AND_FOOTAGE.md lists every shot to license; until then, the storyboard's
   original graphic for that line is the fallback.

@@ -5,12 +5,12 @@
 no celebrity voices.
 
 ## Option A - Eleven v3 (most expressive) - 4 parts
-Paste `v3_PART_1.txt`, `v3_PART_2.txt` ... in order (each under ~3,000 characters, v3's limit per generation).
+Paste `v3_PART_01.txt`, `v3_PART_02.txt` ... in order (each under 2,800 characters; v3 takes 3,000 per generation).
 Audio tags in [brackets] come from each line's tone. Settings: Stability **Natural**, language **Hindi**.
 Generate 2-3 takes of each part, keep the best, export MP3 44.1 kHz / 192 kbps, join in order.
 
-## Option B - Multilingual v2 (steadiest) - one paste
-`multilingual_v2_ONE_PASTE.txt` uses `<break>` tags for pauses. Stability 0.55, Similarity 0.80, Style 0.25,
+## Option B - Multilingual v2 (steadiest) - 2 parts
+`multilingual_v2_PART_1.txt` ... (each under 9,000 characters) use `<break>` tags for pauses. Stability 0.55, Similarity 0.80, Style 0.25,
 Speaker boost on.
 
 ## Numbers and acronyms
