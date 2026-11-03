@@ -47,3 +47,16 @@ def test_a_short_renders_every_line_as_a_card(cfg):
     ass = "\n".join(p.read_text() for p in work.glob("kin_*.ass"))
     assert "&H00301EB2" in ass or "&H0048C4F0" in ass                 # crimson (paper) or yellow (navy) accent
     assert "NEW DELHI" in ass                                         # the dated kicker
+
+
+def test_an_editorial_short_without_visual_lines_keeps_its_per_line_directions():
+    from creatorforge_worker.director import parse_script
+    from creatorforge_worker.pipeline import _EVENT
+    raw = ("Ek Maidan\nTitle: x\nSource: The Quint https://www.thequint.com/a\n\n"
+           "1 नवंबर। दिल्ली का रामलीला मैदान।\nPlace: RAMLILA MAIDAN · 1 NOV 2026\nCite: The Quint, Nov 2026\n\n"
+           "विपक्ष की एक माँग।\nBig: एक *माँग*\n\n"
+           "रिपोर्टों के मुताबिक़, दस हज़ार सुरक्षाकर्मी तैनात।\nBig: 10,000\nCite: The Quint, Nov 2026\n")
+    _, meta = parse_script(raw)
+    shots = meta.get("shots") or []
+    assert any(s[-1].get("place") == "RAMLILA MAIDAN · 1 NOV 2026" for s in shots)   # Place:/Big:/Cite: kept
+    assert _EVENT.search("रामलीला मैदान में विपक्ष की रैली")        # a Hindi rally line pulls the news photo

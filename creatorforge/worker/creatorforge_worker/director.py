@@ -1063,7 +1063,10 @@ def parse_script(raw: str) -> tuple[str, dict]:
                 meta["source"] = v[:12000]   # long-form episodes cite many sources (40+ links)
     # A "Visual:" under (or beside) most spoken lines is a shot list: each picture belongs to its own line. One or
     # two visual lines describe the look of the whole video instead.
-    if sum(bool(d.get("visual")) + len(d.get("more") or []) for d in per.values()) >= 3:
+    # Scripts written like an editorial Short direct most lines with Place:/Big:/Article:/Cite: instead of a
+    # picture - those are per-line directions too.
+    if sum(bool(d.get("visual")) + len(d.get("more") or []) for d in per.values()) >= 3 or \
+            sum(1 for d in per.values() if any(v for k, v in d.items() if k not in ("visual", "more"))) >= 3:
         meta["shots"] = [shot for i, line in enumerate(spoken) for shot in _line_shots(line, per.get(i, {}))][:400]
     elif looks:
         meta["visual_direction"] = " ".join(looks).strip()[:400]

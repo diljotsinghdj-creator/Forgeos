@@ -1821,4 +1821,7 @@ def _greyscale(path: Path) -> bool:
 _EVENT = re.compile(r"\b(protest\w*|march\w*|rall(?:y|ies)|demonstrat\w*|detain\w*|detention\w*|arrest\w*|crackdown|"
                     r"police|barricade\w*|court|hearing|verdict|bail|jail|custody|raid\w*|election|vote\w*|voter\w*|"
                     r"campaign\w*|speech|addressed|press conference|parliament|minister|leader\w*|founder|activist\w*|"
-                    r"journalist\w*|reporter\w*|shutdown|internet)\b", re.I)
+                    r"journalist\w*|reporter\w*|shutdown|internet)\b"
+                    # the same events in Hindi (Devanagari has no word boundaries for \b)
+                    r"|रैली|प्रदर्शन|मार्च|हिरासत|गिरफ़्तार|गिरफ्तार|पुलिस|अदालत|सुनवाई|फ़ैसला|फैसला|चुनाव|वोट|मतदाता|संसद|"
+                    r"मंत्री|नेता|भाषण|आंदोलन|बैरिकेड|धरना|चक्रवात|तूफ़ान|परीक्षा|पेपर लीक", re.I)
