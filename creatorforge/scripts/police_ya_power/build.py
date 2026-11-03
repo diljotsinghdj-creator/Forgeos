@@ -301,15 +301,20 @@ def srt(cs, field: str, path: Path, maxc: int = 42):
         sents = [s.strip() for s in re.split(r"(?<=[.?!।])\s+", txt) if s.strip()]
         chunks = []
         for s in sents:
-            words, line = s.split(), ""
-            for w in words:                                    # two rows of ~maxc characters per cue
-                if line and len(line) + 1 + len(w) > maxc * 2:
+            words = s.split()                                  # balanced cues of up to two rows of ~maxc chars
+            n = -(-len(s) // (maxc * 2))
+            target, line = len(s) / n, ""
+            for w in words:
+                if line and len(line) + 1 + len(w) > target + 4:
                     chunks.append(line)
                     line = w
                 else:
                     line = (line + " " + w).strip()
             if line:
-                chunks.append(line)
+                if chunks and len(line) < 12 and n > 1:        # never leave one orphan word as its own cue
+                    chunks[-1] += " " + line
+                else:
+                    chunks.append(line)
         speak = x["dur"] - GAP - float(x.get("P") or 0)
         total = sum(len(c) for c in chunks) or 1
         t = x["start"]
