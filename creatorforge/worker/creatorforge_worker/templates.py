@@ -93,12 +93,17 @@ STYLE_PRESETS: dict[str, tuple[str, str]] = {
     "investigative": ("Investigative desk", "investigative documentary desk collage, archival photographs and documents "
                       "taped onto an old desk and a paper map, red string and pins, hand-drawn red circles and arrows, "
                       "warm desk lamp light, film grain"),
+    "kinetic": ("Editorial type (Shorts)", "black and white press photograph, one clear subject, plain light background, "
+                "documentary realism"),
     "collage": ("Mixed-media collage", "mixed-media collage, cut-out vintage photographs, torn paper, halftone textures, "
                 "bold graphic shapes"),
 }
 # Editorial explainer looks, built like a video essay: every picture is one clear subject that the worker cuts out
 # and lays on paper (or a desk) itself, with highlighter callouts, animated charts and sliding cuts.
-EDITORIAL_STYLES = {"editorial", "investigative", "collage", "studio_mix"}
+EDITORIAL_STYLES = {"editorial", "investigative", "collage", "studio_mix", "kinetic"}
+# "Editorial type": every line is a typographic card (media/kinetic.py) - a dated red kicker, a bold headline with a
+# crimson serif-italic accent, the named person in black and white on a red circle, a calendar for a date.
+KINETIC_STYLE = "kinetic"
 # "Studio mix" combines six looks in one video: each line gets the look that suits what it shows (see
 # director.mix_look). Cut-out looks are laid on paper or a desk; the photo looks fill the frame.
 MIX_STYLE = "studio_mix"
@@ -113,6 +118,7 @@ EDITORIAL_LEADS = {
     "editorial": "vintage halftone press photograph, one clear subject, isolated on a plain light grey background",
     "collage": "vintage halftone press photograph, one clear subject, isolated on a plain light grey background",
     "investigative": "old sepia archival photograph, one clear subject, isolated on a plain light background",
+    "kinetic": "black and white press photograph, one clear subject, isolated on a plain light grey background",
 }
 EDITORIAL_NEGATIVE = (", collage, multiple images, grid, panels, busy background, torn paper, picture frame, border, "
                       "painting, drawing, illustration, portrait, close-up of a face")

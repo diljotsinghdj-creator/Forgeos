@@ -1325,7 +1325,8 @@ class Pipeline:
             stock_clips += [None] * (len(beats) - len(stock_clips))
             for k, v in enumerate(line_videos(sc)[: len(beats)]):
                 stock_clips[k] = stock_clips[k] or v          # real footage first, else the line's AI clip
-            graphic = any(b.get("chart") or b.get("draw") or b.get("bubble") or b.get("extra") for b in beats)
+            graphic = any(b.get("chart") or b.get("draw") or b.get("bubble") or b.get("extra") for b in beats) or \
+                spec.style == "kinetic"                  # Editorial type: every line is a card
             if beats and sc.get("image_source") != "asset" and (graphic or len(beats) >= 2 and (
                     any(n and (jdir / n).is_file() for n in extra) or any(stock_clips))):
                 # Cut on the beat: each phrase gets screen time in proportion to its words, so the picture
@@ -1334,7 +1335,8 @@ class Pipeline:
                 images += [None] * (len(beats) - len(images))
                 lengths = _beat_lengths([b["text"] for b in beats], sc.get("word_starts") or [], d, sc.get("narration_s"))
                 for k, length in enumerate(lengths):
-                    chart = self._chart_clip(spec, beats[k], length, (w, h), work, job)
+                    chart = self._chart_clip(spec, beats[k], length, (w, h), work, job,
+                                             picture=images[k] if k < len(images) else None)
                     if chart is not None:
                         stock_clips[k] = chart          # the animated graphic shows the number instead of a picture
                         charted.add((i, k))
@@ -1693,7 +1695,7 @@ class Pipeline:
         return clip
 
     def _chart_clip(self, spec, beat: dict, length: float, size: tuple[int, int], work: Path,
-                    job: dict | None = None) -> Path | None:
+                    job: dict | None = None, picture: Path | None = None) -> Path | None:
         """An animated number graphic for a beat: the writer's Chart: line, or - in the editorial looks - a Text:
         line that compares figures ("£12 → £720", "48% vs 22%"). None when the beat has no chart."""
         theme = "investigative" if spec.style in DESK_STYLES else "editorial"
@@ -1706,6 +1708,8 @@ class Pipeline:
                 if real is not None:
                     return real                     # the real web page; otherwise the drawn headline card below
             for kind in director.FULL_FRAME:
+                if kind == "statement" and spec.style == "kinetic":
+                    continue                          # Editorial type sets the statement as its own headline
                 if extra.get(kind):
                     out = work / f"{kind}_{hashlib.sha256(f'{extra[kind]}|{theme}|{size}|{seconds}'.encode()).hexdigest()[:16]}.mp4"
                     if out.is_file():
@@ -1732,6 +1736,19 @@ class Pipeline:
                                             brand=(spec.brand or {}).get("name", ""))
                     except MediaError:
                         continue
+        if spec.style == "kinetic" and not beat.get("chart") and not extra.get("clip"):
+            # Editorial type: the line as a typographic card over its picture (a portrait, a calendar, a print)
+            from .media import kinetic
+            pic = picture if picture is not None and Path(picture).is_file() else None
+            key = f"{beat.get('text')}|{extra.get('big')}|{extra.get('place')}|{extra.get('tone')}|{pic}|{size}|{seconds}"
+            out = work / f"kinetic_{hashlib.sha256(key.encode()).hexdigest()[:16]}.mp4"
+            if out.is_file():
+                return out
+            try:
+                return kinetic.render(beat, pic, size, seconds, out, work,
+                                      cut_model=self.cfg.data_dir / "models" / "isnet-general-use.onnx")
+            except (MediaError, OSError):
+                pass                                 # the line keeps its picture
         src = beat.get("chart") or ""
         auto = beat.get("overlay") or ""
         if not src and spec.style in EDITORIAL_STYLES and re.search(r"→|->|=|\bvs\b", auto, re.I):
