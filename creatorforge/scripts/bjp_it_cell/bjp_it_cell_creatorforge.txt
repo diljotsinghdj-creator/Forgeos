@@ -7,12 +7,11 @@ Source: The Quint, Real or Fake, We Can Make Any Message Go Viral: Amit Shah to 
 सुबह के आठ बजे। लाखों फ़ोन एक साथ बजते हैं।
 Tone: dramatic
 Place: 8:00 AM
-Visual: Dozens of smartphones on a glass table in a modern apartment lighting up at once with chat notifications, morning sun
-Stock: smartphone notifications
+Visual: Close-up of dozens of smartphones lying face-up on a dark glass table, all lighting up at the same instant with chat notifications, cinematic blue glow, shallow depth of field
 
 एक ही मैसेज। एक ही वक़्त। लाखों ग्रुप्स में।
 Tone: urgent
-Visual: A sleek dark dashboard on a large monitor showing one message fanning out to thousands of chat groups as glowing network lines
+Visual: One glowing message bubble splitting into thousands of light trails that race across a dark digital map of India like a network, navy and crimson, cinematic
 Text: ILLUSTRATION
 
 ये बात बीजेपी के तब के अध्यक्ष अमित शाह ने, अपने ही कार्यकर्ताओं के सामने, मंच से कही थी।
@@ -21,7 +20,7 @@ Article: Real or Fake, We Can Make Any Message Go Viral: Amit Shah to BJP Social
 
 और जो कहा, वो सुनकर आप चौंक जाएँगे।
 Tone: question
-Visual: A modern conference hall with a giant LED stage screen and rows of young volunteers with laptops, seen from behind
+Visual: A huge modern conference hall with a giant LED stage screen and rows of young volunteers on laptops seen from behind, blue stage-light haze, cinematic wide shot
 
 उन्होंने कहा, हम कोई भी मैसेज वायरल कर सकते हैं। खट्टा हो या मीठा। सच्चा हो या झूठा।
 Tone: strong
@@ -33,7 +32,7 @@ Big: सच्चा हो या *झूठा*
 
 आज हम उसी मशीन के अंदर चलेंगे। व्हाट्सऐप ग्रुप्स। ट्रोल्स। करोड़ों के ऐड। और डिलीट का बटन।
 Tone: dramatic
-Icons: व्हाट्सऐप ग्रुप | ट्रोल्स | करोड़ों के ऐड | डिलीट बटन
+Steps: व्हाट्सऐप ग्रुप्स → ट्रोल्स → करोड़ों के ऐड → डिलीट का बटन | आज की कहानी
 
 पर एक वादा। जो साबित है, उसे साबित कहेंगे। जो आरोप है, उसे आरोप। और बीजेपी का पक्ष भी सुनाएँगे।
 Tone: strong
@@ -47,28 +46,29 @@ Statement: झूठ से जंग, *झूठ से नहीं।*
 Tone: calm
 Chapter: Part 1 | मंच से क़बूलनामा
 Place: KOTA, RAJASTHAN · SEP 2018
-Visual: Modern Kota city skyline at dusk with new high-rise buildings, aerial view
+Visual: Aerial night view of Kota city lights with modern high-rise towers, cinematic drone shot
 
 अमित शाह ने बताया, उत्तर प्रदेश चुनाव में पार्टी के दो बड़े व्हाट्सऐप नेटवर्क थे। एक में पंद्रह लाख लोग। दूसरे में सत्रह लाख।
 Tone: strong
-Squares: 15 vs 17 | लाख · पहला नेटवर्क, लाख · दूसरा नेटवर्क
+Chart: 15 लाख vs 17 लाख | पहला नेटवर्क, दूसरा नेटवर्क
 
 यानी क़रीब बत्तीस लाख लोग। एक इशारे पर।
 Tone: dramatic
-Big: 32 लाख
+Chart: 0 → 32 लाख | व्हाट्सऐप पर लोग · एक इशारे पर
 
 हर सुबह आठ बजे, उन तक एक मैसेज जाता था। अख़बारों की ख़बरों पर, पार्टी वाला जवाब।
 Tone: calm
-Visual: A modern smartphone at 8:00 AM receiving a forwarded message titled Know the Truth, text blurred, on a cafe table
+Place: हर सुबह · 8:00 AM
+Visual: Extreme close-up of a smartphone lock screen at 8:00 AM with a stack of forwarded-message notifications, coffee cup blurred behind, cool morning light
 
 और फिर शाह ने एक उदाहरण दिया। जो इस पूरी कहानी की चाबी है।
 Tone: question
-Text: एक उदाहरण
+Visual: A single smartphone glowing on a dark desk under a hard spotlight as a forwarded message arrives, tense cinematic mood
 
 एक मैसेज वायरल हुआ था, कि अखिलेश यादव ने अपने पिता मुलायम सिंह को थप्पड़ मारा।
 Tone: urgent
 Text: वायरल मैसेज · 2017
-Visual: A phone screen with a viral forward spreading across chat windows, contents blurred
+Visual: A smartphone screen flooded with the same forwarded message repeated across dozens of chat windows, red warning glow, text unreadable
 
 शाह ने ख़ुद माना, उस मैसेज में कोई सच्चाई नहीं थी। पर वो वायरल हो गया।
 Tone: dramatic
@@ -86,7 +86,7 @@ Text: दूसरा पक्ष
 2018 से अब तक, ये नेटवर्क कितना बड़ा हुआ?
 Tone: question
 Chapter: Part 2 | व्हाट्सऐप फ़ैक्टरी
-Visual: A futuristic data center corridor with blue server lights in India
+Visual: Endless corridor of a modern data centre with blue server lights and neat cables, symmetrical cinematic shot
 
 डेक्कन हेराल्ड की एक रिपोर्ट के मुताबिक़, 2024 के चुनाव के लिए पार्टी पचास लाख व्हाट्सऐप ग्रुप्स पर भरोसा कर रही थी।
 Tone: strong
@@ -96,7 +96,7 @@ Cite: Deccan Herald, 2024
 
 ये आँकड़ा किसी ने स्वतंत्र रूप से नहीं गिना।
 Tone: calm
-Visual: A glowing padlock over a chat bubble on a phone screen, dark modern background
+Visual: A glowing padlock over an encrypted chat bubble on a phone screen, faint streams of code behind, dark cinematic
 
 पर 2024 में, प्रिंसटन की डिजिटल विटनेस लैब और रेस्ट ऑफ़ वर्ल्ड ने कोशिश की।
 Tone: strong
@@ -131,11 +131,12 @@ Steps: भरोसे का ग्रुप → फ़ॉरवर्ड → �
 Tone: strong
 Chapter: Part 3 | आईटी सेल का चेहरा
 Text: बीजेपी आईटी सेल प्रमुख · अगस्त 2026 तक
+Visual: A dark empty room with a wall of monitors showing social media dashboards and rising trend graphs, cinematic blue light
 
 नवंबर 2020. किसान आंदोलन। राहुल गांधी ने एक बुज़ुर्ग किसान पर लाठी उठाते पुलिसवाले की तस्वीर पोस्ट की।
 Tone: calm
 Place: NEW DELHI · NOV 2020
-Visual: A laptop on a modern desk showing a social media feed with a viral political photo post, image blurred
+Visual: A laptop on a dark desk showing a viral political photo post on a social feed with the likes counter climbing, image blurred, cinematic
 
 मालवीय ने जवाब में एक वीडियो डाला, जिसमें लाठी किसान को छूती नहीं दिखती।
 Tone: calm
@@ -153,10 +154,12 @@ Article: 'Manipulated media' - Twitter flags BJP IT cell head Amit Malviya's far
 वो किसान, सुखदेव सिंह, बाद में बोले, उन्हें पूरे बदन पर चोटें आई थीं।
 Tone: sad
 Cite: The Quint, Dec 2020
+Visual: A laptop in a dark newsroom showing a fact-check report with a bold red MISLEADING stamp graphic, text unreadable
 
 ये पहली बार नहीं था। 2020 में ही, मालवीय ने एक वीडियो डालकर दावा किया, शाहीन बाग़ के प्रदर्शनकारी पैसे लेकर बैठे हैं।
 Tone: strong
 Place: SHAHEEN BAGH · FEB 2020
+Visual: A smartphone playing a viral video inside a social media post, a large red question mark reflected on the glass, dark background
 
 ऑल्ट न्यूज़ और न्यूज़लॉन्ड्री की पड़ताल में, वो दावा बेबुनियाद निकला।
 Tone: strong
@@ -178,6 +181,7 @@ Article: Deepak Mhaskey replaces Amit Malviya as BJP IT cell chief | Newslaundry
 मालवीय, फ़ेक न्यूज़ के आरोपों को, विपक्ष का फ़ेक न्यूज़ कैंपेन बताते रहे हैं।
 Tone: calm
 Text: दूसरा पक्ष
+Visual: A single microphone on a press podium under a spotlight in an empty dark hall
 
 अब बात उनकी, जो इस मशीन के अंदर थे। और बाहर आकर बोले।
 Tone: dramatic
@@ -204,6 +208,7 @@ Article: Was asked to push Snapdeal to drop Aamir Khan, claims ex-BJP social med
 खोसला का दावा था, ये मैसेज तब के आईटी सेल प्रमुख अरविंद गुप्ता की तरफ़ से आते थे।
 Tone: calm
 Text: आरोप
+Visual: A smartphone chat screen with a list of names beside a red crosshair icon, names blurred, dark cinematic
 
 अरविंद गुप्ता ने कहा, खोसला कभी आईटी सेल का हिस्सा नहीं थीं। खोसला ने जवाब में, अपने पुराने ट्वीट्स दिखाए।
 Tone: calm
@@ -234,16 +239,15 @@ Timeline: 29 JAN 2024 | 28 FEB 2024
 
 बीजेपी ने गूगल पर ख़र्च किए, क़रीब तीस करोड़ रुपये।
 Tone: dramatic
-Big: ₹29.7 करोड़ · 30 दिन
-Article: BJP spent Rs 30 cr in 30 days on Google ads, targeted mostly north Indian states | The News Minute, March 2024
+Chart: ₹29.7 करोड़ | 30 दिन में गूगल ऐड · 29 जनवरी–28 फ़रवरी 2024
 
 साढ़े बारह हज़ार से ज़्यादा ऐड। तीन चौथाई वीडियो। और ज़्यादातर निशाने पर, उत्तर भारत के राज्य।
 Tone: strong
-Icons: 12,600+ ऐड | 75% वीडियो | उत्तर भारत
+Article: BJP spent Rs 30 cr in 30 days on Google ads, targeted mostly north Indian states | The News Minute, March 2024
 
 डेक्कन हेराल्ड के मुताबिक़, गूगल पर राजनीतिक ऐड में सौ करोड़ रुपये पार करने वाली, बीजेपी पहली पार्टी बनी।
 Tone: strong
-Big: ₹100 करोड़+
+Chart: ₹100 करोड़ | गूगल पर राजनीतिक ऐड · पहली पार्टी
 Cite: Deccan Herald, 2024
 
 पर असली खेल वहाँ है, जहाँ ऐड पर पार्टी का नाम ही नहीं होता।
@@ -256,17 +260,17 @@ Visual: Screen recording of the Meta Ad Library website on a laptop in a modern 
 
 उन्हें मिले तेईस ऐसे विज्ञापनदाता, जिन्होंने चौंतीस हज़ार से ज़्यादा ऐड चलाए। ज़्यादातर बीजेपी के पक्ष में, या विपक्ष के ख़िलाफ़।
 Tone: strong
-Big: 23 घोस्ट विज्ञापनदाता · 34,884 ऐड
+Chart: 34,884 | ऐड · 23 घोस्ट विज्ञापनदाताओं के · ज़्यादातर बीजेपी के पक्ष में
 Cite: Al Jazeera & The Reporters' Collective, Mar 2022
 
 और रिपोर्ट का दावा, दस में से नौ चुनावों में, फ़ेसबुक ने बीजेपी से, कांग्रेस के मुक़ाबले सस्ते रेट लिए।
 Tone: dramatic
-Squares: 9 vs 10 | चुनाव जिनमें बीजेपी को सस्ते ऐड, कुल चुनाव
-Article: Facebook ad policy gave BJP 'unfair advantage' in Indian elections, shows series of reports | Scroll, March 2022
+Pie: 90% | चुनाव जिनमें बीजेपी को सस्ते ऐड मिले (10 में से 9) · रिपोर्ट का दावा
 
 मेटा ने कहा, उसकी नीतियाँ सब पर एक जैसी लागू होती हैं, चाहे पार्टी कोई भी हो।
 Tone: calm
-Text: दूसरा पक्ष
+Article: Facebook ad policy gave BJP 'unfair advantage' in Indian elections, shows series of reports | Scroll, March 2022
+Text: दूसरा पक्ष · मेटा: नीतियाँ सब पर एक जैसी
 
 और ये पार्टी का पैसा है। अब सरकार का देखिए।
 Tone: question
@@ -274,7 +278,7 @@ Visual: Giant digital billboards over a modern Mumbai expressway at night
 
 लोकसभा में दिए एक जवाब के हवाले से, मोदी सरकार ने 2014 से, आठ साल आठ महीने में, सिर्फ़ प्रिंट और टीवी के विज्ञापनों पर, 6,491 करोड़ रुपये ख़र्च किए।
 Tone: strong
-Big: ₹6,491 करोड़
+Chart: ₹6,491 करोड़ | प्रिंट और टीवी विज्ञापन · 2014 से 8 साल 8 महीने
 Cite: Newslaundry, Lok Sabha reply, Dec 2022
 
 ये जनता का पैसा है। आलोचक कहते हैं, प्रचार योजनाओं का होता है, पर चेहरा अक्सर एक ही होता है।
@@ -290,6 +294,7 @@ Visual: Glass headquarters of a big tech company in Gurugram at night, logo not 
 अगस्त 2020 में वॉल स्ट्रीट जर्नल की एक रिपोर्ट आई।
 Tone: calm
 Place: WALL STREET JOURNAL · AUG 2020
+Visual: A stack of printed broadsheet newspapers on a dark desk with one headline highlighted in red marker, logos not visible, cinematic
 
 रिपोर्ट का दावा, फ़ेसबुक इंडिया की पॉलिसी प्रमुख अंखी दास ने, बीजेपी विधायक टी राजा सिंह पर, हेट स्पीच के नियम लागू करने का विरोध किया।
 Tone: strong
@@ -298,6 +303,7 @@ Article: Facebook ignored hate speech by India's BJP politicians: Report | Al Ja
 वजह, रिपोर्ट के मुताबिक़, सत्ताधारी पार्टी से रिश्ते बिगड़ने और कारोबार पर असर का डर।
 Tone: dramatic
 Text: आरोप · WSJ रिपोर्ट
+Visual: A glass meeting room at night with a laptop open on a policy review document, city lights behind, text unreadable
 
 फ़ेसबुक ने कहा, वो नियम सब पर बराबर लागू करता है। बीजेपी ने भी, किसी ख़ास बर्ताव से इनकार किया।
 Tone: calm
@@ -312,6 +318,7 @@ Quote: a shadowy parallel campaign | The Washington Post, citing BJP staffers an
 Tone: dramatic
 Cite: Ekō report, 2024
 Text: एडवोकेसी ग्रुप का दावा
+Visual: A phone feed scrolling through sponsored political ads with red warning overlays, faces blurred, dark
 
 अब सवाल। जो आवाज़ें ट्रोल्स से नहीं थकतीं, उनका क्या होता है?
 Tone: question
@@ -334,7 +341,7 @@ Article: Govt blocks YouTube videos, tweets sharing BBC documentary on PM Modi |
 
 पचास से ज़्यादा ट्वीट्स हटे। एक विपक्षी सांसद का ट्वीट भी।
 Tone: dramatic
-Big: 50+ ट्वीट्स हटे
+Chart: 50 | ट्वीट्स हटे · बीबीसी डॉक्यूमेंट्री के लिंक
 
 सरकार के सलाहकार कंचन गुप्ता ने लिखा, ट्विटर और यूट्यूब, दोनों ने आदेश माना।
 Tone: calm
@@ -343,6 +350,7 @@ Quote: Both Twitter and YouTube have complied with the directions | Kanchan Gupt
 अंतरराष्ट्रीय प्रेस संस्थान ने कहा, सरकार आलोचना रोकने के लिए इमरजेंसी पावर्स का दुरुपयोग कर रही है।
 Tone: strong
 Cite: International Press Institute, Jan 2023
+Visual: A laptop in a dark newsroom showing a video thumbnail with a bold red BLOCKED stamp across it
 
 तीन हफ़्ते बाद, 14 फ़रवरी 2023. आयकर विभाग की टीमें बीबीसी के दिल्ली और मुंबई दफ़्तर पहुँचीं। तीन दिन चला सर्वे।
 Tone: dramatic
@@ -356,7 +364,7 @@ Text: दूसरा पक्ष
 
 सरकार के संसद में दिए आँकड़ों के मुताबिक़, 2018 से मार्च 2023 तक, तीस हज़ार से ज़्यादा ऑनलाइन लिंक ब्लॉक करने के आदेश दिए गए।
 Tone: strong
-Big: 30,310 लिंक
+Chart: 30,310 | ऑनलाइन लिंक ब्लॉक करने के आदेश · 2018 से मार्च 2023
 Cite: Parliament reply, Mar 2023
 
 फ़रवरी 2024, किसान आंदोलन से एक रात पहले, किसान नेताओं और पत्रकारों के एक्स अकाउंट भारत में रोक दिए गए।
@@ -388,6 +396,7 @@ Split: जैक डोर्सी · धमकी का दावा | रा
 और ब्लॉकिंग के साथ, ट्रोलिंग भी चलती है। 2018 में पत्रकार राणा अय्यूब के नाम से झूठा ट्वीट फैलाया गया, और यूएन विशेषज्ञों ने उनकी सुरक्षा माँगी।
 Tone: strong
 Cite: The Quint, May 2018
+Visual: A smartphone showing a fake viral tweet screenshot with a bold red FAKE stamp across it, dark background
 
 2022 में यूएन के विशेष दूतों ने उन पर हमलों को हिंदू राष्ट्रवादी समूहों से जोड़ा। भारत ने आरोपों को बेबुनियाद कहा।
 Tone: calm
@@ -404,6 +413,7 @@ Statement: अपना अफ़सर नहीं बचा, *तो आप?*
 ब्लॉकिंग के आदेश सरकार देती है, आईटी सेल नहीं। दोनों को जोड़ने वाला कोई दस्तावेज़ हमें नहीं मिला।
 Tone: calm
 Text: जो साबित नहीं
+Visual: Two separate glowing control panels in a dark room with an empty gap between them and no cable connecting, symbolic, cinematic
 
 पर निशाना अक्सर एक होता है। वो आवाज़ें, जो सत्ता से सवाल पूछती हैं। एक तरफ़ आदेश, जो पोस्ट हटवाते हैं। दूसरी तरफ़ भीड़, जो आवाज़ थकाती है। और नतीजा? डर।
 Tone: dramatic
@@ -413,14 +423,16 @@ Statement: निशाना एक। नतीजा *डर।*
 अब ईमानदारी से, तस्वीर का दूसरा हिस्सा।
 Tone: calm
 Chapter: Part 8 | पूरी तस्वीर
+Visual: A brass balance scale on a dark desk lit by a single spotlight, cinematic
 
 ऑक्सफ़ोर्ड इंटरनेट इंस्टिट्यूट ने 2019 के चुनाव में पाया, बीजेपी समर्थक फ़ेसबुक पेजों पर शेयर हुई ख़बरों में, 28 प्रतिशत जंक न्यूज़ थी। कांग्रेस समर्थक पेजों पर, 21 प्रतिशत।
 Tone: calm
-Chart: 28% vs 21% | बीजेपी समर्थक पेज, कांग्रेस समर्थक पेज · जंक न्यूज़
+Chart: 28% vs 21% | बीजेपी समर्थक पेज, कांग्रेस समर्थक पेज
 
 यानी कांग्रेस भी दूध की धुली नहीं। ये जंग हर बड़ी पार्टी लड़ रही है।
 Tone: calm
 Text: दूसरा पक्ष
+Visual: Two phones side by side showing rival political social media feeds both flooded with notifications, logos not visible, dark
 
 फ़र्क़ है पैमाने का। पैसे का। और इस बात का, कि किस पार्टी के अध्यक्ष ने मंच से कहा, सच्चा हो या झूठा, वायरल कर देंगे।
 Tone: dramatic
@@ -429,6 +441,7 @@ Statement: फ़र्क़ है *पैमाने* का।
 और एक दावा जो हम नहीं करेंगे। 2022 की टेक फ़ॉग ऐप वाली कहानी।
 Tone: calm
 Text: विवादित दावा
+Visual: A news article on a laptop with a large grey UNDER REVIEW stamp across it, dim light
 
 वो रिपोर्ट बाद में समीक्षा के लिए हटा ली गई। इसलिए हम उसे सबूत नहीं मानते।
 Tone: strong
@@ -458,3 +471,4 @@ Statement: मशीन हारती है उससे, *जो फ़ॉ�
 आपके फ़ैमिली ग्रुप में सबसे ज़्यादा कौन सा फ़ेक मैसेज आता है? कमेंट में लिखिए, और चैनल से जुड़िए।
 Tone: warm
 Text: कमेंट करें · सब्सक्राइब करें
+Visual: A family chat group on a phone where a forward arrow is crossed out in red, warm living-room light
