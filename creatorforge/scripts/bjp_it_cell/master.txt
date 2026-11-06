@@ -14,7 +14,7 @@ T: urgent
 ST: N
 CF: Visual: A sleek dark dashboard on a large monitor showing one message fanning out to thousands of chat groups as glowing network lines || Text: ILLUSTRATION
 
-D: ये कोई कहानी नहीं है। ये बात बीजेपी के तब के अध्यक्ष अमित शाह ने, अपने ही कार्यकर्ताओं के सामने, मंच से कही थी।
+D: ये बात बीजेपी के तब के अध्यक्ष अमित शाह ने, अपने ही कार्यकर्ताओं के सामने, मंच से कही थी।
 T: strong
 S: SHAH_QUINT
 ST: F
@@ -38,10 +38,10 @@ S: SHAH_QUINT
 ST: F
 CF: Big: सच्चा हो या *झूठा*
 
-D: आज हम उसी मशीन के अंदर चलेंगे। व्हाट्सऐप के बंद ग्रुप्स। ट्रोल्स की हिट लिस्ट। करोड़ों के ऐड। और वो प्लेटफ़ॉर्म, जिन पर आँखें मूँदने के आरोप लगे।
+D: आज हम उसी मशीन के अंदर चलेंगे। व्हाट्सऐप ग्रुप्स। ट्रोल्स। करोड़ों के ऐड। और डिलीट का बटन।
 T: dramatic
 ST: N
-CF: Icons: व्हाट्सऐप ग्रुप | हिट लिस्ट | करोड़ों के ऐड | प्लेटफ़ॉर्म
+CF: Icons: व्हाट्सऐप ग्रुप | ट्रोल्स | करोड़ों के ऐड | डिलीट बटन
 
 D: पर एक वादा। जो साबित है, उसे साबित कहेंगे। जो आरोप है, उसे आरोप। और बीजेपी का पक्ष भी सुनाएँगे।
 T: strong
@@ -97,7 +97,7 @@ S: SHAH_QUINT
 ST: F
 CF: Quote: There was no truth to this message, but it went viral | Amit Shah, Kota, September 2018, as reported
 
-D: सोचिए। एक बाप और बेटे के बारे में झूठ। और मंच से उसकी कहानी, एक कामयाबी की तरह सुनाई गई।
+D: एक बाप-बेटे के बारे में झूठ। और मंच से, कामयाबी की तरह सुनाया गया।
 T: sad
 P: 0.8
 ST: N
@@ -122,12 +122,12 @@ S: DH_INFL
 ST: A
 CF: Big: 50 लाख ग्रुप || Text: रिपोर्ट का दावा · स्वतंत्र पुष्टि नहीं || Cite: Deccan Herald, 2024
 
-D: ये आँकड़ा किसी ने स्वतंत्र रूप से नहीं गिना। क्योंकि व्हाट्सऐप के अंदर झाँकना, लगभग नामुमकिन है।
+D: ये आँकड़ा किसी ने स्वतंत्र रूप से नहीं गिना।
 T: calm
 ST: N
 CF: Visual: A glowing padlock over a chat bubble on a phone screen, dark modern background
 
-D: पर 2024 में, प्रिंसटन यूनिवर्सिटी की डिजिटल विटनेस लैब और रेस्ट ऑफ़ वर्ल्ड ने, यही करने की कोशिश की।
+D: पर 2024 में, प्रिंसटन की डिजिटल विटनेस लैब और रेस्ट ऑफ़ वर्ल्ड ने कोशिश की।
 T: strong
 S: ROW,ROW_METH
 ST: F
@@ -151,13 +151,13 @@ S: ROW
 ST: F
 CF: Quote: Distribution matters more than narrative | a former BJP consultant, to Rest of World, 2024
 
-D: यही इस मशीन का असली हथियार है। सच कितना भी मज़बूत हो, अगर झूठ पहले पहुँच गया, तो बाज़ी झूठ की।
+D: यही असली हथियार है। झूठ पहले पहुँच गया, तो बाज़ी झूठ की।
 T: dramatic
 P: 0.8
 ST: N
 CF: Statement: सच पीछे। *झूठ पहले।*
 
-D: और बंद ग्रुप में आया मैसेज, किसी अजनबी की बात नहीं लगता। वो चाचा का फ़ॉरवर्ड होता है। दोस्त का। सोसाइटी के ग्रुप का।
+D: बंद ग्रुप का मैसेज अजनबी का नहीं लगता। वो चाचा का फ़ॉरवर्ड होता है, दोस्त का।
 T: calm
 ST: N
 CF: Visual: A family chat group on a modern smartphone receiving a forwarded message, in a stylish city apartment living room
@@ -229,17 +229,11 @@ S: SWAMY
 ST: A
 CF: Article: Subramanian Swamy gives ultimatum to BJP to remove IT cell head Amit Malviya | Tribune, September 2020
 
-D: पार्टी ने उन्हें नहीं हटाया। मालवीय क़रीब छह साल और, उसी कुर्सी पर रहे।
+D: पार्टी ने उन्हें नहीं हटाया। वो अगस्त 2026 तक इसी कुर्सी पर रहे, जब दीपक म्हस्के नए प्रमुख बने।
 T: calm
 S: MHASKEY
 ST: F
-CF: Timeline: SEP 2020 स्वामी का अल्टीमेटम | AUG 2026 मालवीय की जगह नया प्रमुख
-
-D: अगस्त 2026 में, उनकी जगह दीपक म्हस्के आईटी सेल के प्रमुख बने।
-T: calm
-S: MHASKEY
-ST: F
-CF: Article: Deepak Mhaskey replaces Amit Malviya as BJP IT cell chief | Newslaundry, August 2026
+CF: Timeline: SEP 2020 स्वामी का अल्टीमेटम | AUG 2026 मालवीय की जगह नया प्रमुख || Article: Deepak Mhaskey replaces Amit Malviya as BJP IT cell chief | Newslaundry, August 2026
 
 D: मालवीय, फ़ेक न्यूज़ के आरोपों को, विपक्ष का फ़ेक न्यूज़ कैंपेन बताते रहे हैं।
 T: calm
@@ -310,7 +304,7 @@ CF: Statement: बहस नहीं। *आवाज़ थकाना।*
 
 # 5 | THE MONEY
 
-D: पर ये मशीन सिर्फ़ वॉलंटियर्स से नहीं चलती। इसमें पैसा लगता है। बहुत सारा पैसा।
+D: पर इस मशीन में पैसा भी लगता है। बहुत सारा पैसा।
 T: strong
 ST: N
 CF: Chapter: Part 5 | करोड़ों का खेल || Visual: A trading-floor style wall of screens in a glass office showing rising digital ad spend charts
@@ -387,7 +381,7 @@ CF: Statement: पैसा जनता का। *चेहरा एक।* |
 
 # 6 | THE PLATFORMS
 
-D: और जिन प्लेटफ़ॉर्म्स पर ये सब चलता है, उन पर भी सवाल उठे।
+D: और प्लेटफ़ॉर्म्स पर भी सवाल उठे।
 T: question
 ST: N
 CF: Chapter: Part 6 | प्लेटफ़ॉर्म की चुप्पी || Visual: Glass headquarters of a big tech company in Gurugram at night, logo not visible
@@ -422,18 +416,149 @@ S: WAPO
 ST: A
 CF: Quote: a shadowy parallel campaign | The Washington Post, citing BJP staffers and campaign consultants, September 2023
 
-D: और 2024 में, एडवोकेसी ग्रुप एको की रिपोर्ट ने दावा किया, दक्षिणपंथी नेटवर्क्स ने मेटा पर ऐसे ऐड चलाए, जिनमें मुसलमानों के ख़िलाफ़ नफ़रत भरी बातें थीं।
+D: 2024 में एडवोकेसी ग्रुप एको ने दावा किया, दक्षिणपंथी नेटवर्क्स ने मेटा पर मुसलमानों के ख़िलाफ़ नफ़रत भरे ऐड चलाए।
 T: dramatic
 S: EKO
 ST: A
 CF: Cite: Ekō report, 2024 || Text: एडवोकेसी ग्रुप का दावा
 
-# 7 | THE FULL PICTURE
+# 7 | THE DELETE BUTTON
+
+D: अब सवाल। जो आवाज़ें ट्रोल्स से नहीं थकतीं, उनका क्या होता है?
+T: question
+ST: N
+CF: Chapter: Part 7 | डिलीट का बटन || Visual: A finger hovering over a glowing red delete button on a sleek tablet in a modern glass office
+
+D: जनवरी 2023. बीबीसी की दो हिस्सों वाली डॉक्यूमेंट्री आई। इंडिया: द मोदी क्वेश्चन। गुजरात दंगों पर।
+T: calm
+S: BBC_TW
+ST: F
+CF: Place: LONDON · JAN 2023 || Visual: A large flat TV in a modern living room showing a documentary title card, text blurred
+
+D: विदेश मंत्रालय ने उसे प्रोपेगेंडा कहा, जिसमें औपनिवेशिक सोच साफ़ दिखती है।
+T: calm
+S: MEA
+ST: O
+CF: Article: 'Colonial mindset blatantly visible': MEA on BBC documentary about Gujarat riots | Scroll, January 2023 || Text: सरकार का पक्ष
+
+D: फिर सरकार ने आईटी रूल्स की इमरजेंसी पावर्स से, यूट्यूब और ट्विटर को उसके लिंक हटाने का आदेश दिया।
+T: strong
+S: BBC_PRINT,BBC_TW
+ST: F
+CF: Article: Govt blocks YouTube videos, tweets sharing BBC documentary on PM Modi | ThePrint, January 2023
+
+D: पचास से ज़्यादा ट्वीट्स हटे। एक विपक्षी सांसद का ट्वीट भी।
+T: dramatic
+S: BBC_TW
+ST: F
+CF: Big: 50+ ट्वीट्स हटे
+
+D: सरकार के सलाहकार कंचन गुप्ता ने लिखा, ट्विटर और यूट्यूब, दोनों ने आदेश माना।
+T: calm
+S: BBC_PRINT
+ST: F
+CF: Quote: Both Twitter and YouTube have complied with the directions | Kanchan Gupta, adviser to the I&B Ministry, January 2023, as reported
+
+D: अंतरराष्ट्रीय प्रेस संस्थान ने कहा, सरकार आलोचना रोकने के लिए इमरजेंसी पावर्स का दुरुपयोग कर रही है।
+T: strong
+S: IPI
+ST: A
+CF: Cite: International Press Institute, Jan 2023
+
+D: तीन हफ़्ते बाद, 14 फ़रवरी 2023. आयकर विभाग की टीमें बीबीसी के दिल्ली और मुंबई दफ़्तर पहुँचीं। तीन दिन चला सर्वे।
+T: dramatic
+S: BBC_IT
+ST: F
+CF: Place: DELHI & MUMBAI · 14 FEB 2023 || Visual: A modern glass office tower in central Delhi at night with traffic light trails below
+
+D: सरकार ने कहा, कोई क़ानून से ऊपर नहीं। बीबीसी ने कहा, वो पूरा सहयोग कर रहा है।
+T: calm
+S: BBC_IT
+ST: O
+CF: Split: सरकार · कोई क़ानून से ऊपर नहीं | बीबीसी · पूरा सहयोग || Text: दूसरा पक्ष
+
+D: सरकार के संसद में दिए आँकड़ों के मुताबिक़, 2018 से मार्च 2023 तक, तीस हज़ार से ज़्यादा ऑनलाइन लिंक ब्लॉक करने के आदेश दिए गए।
+T: strong
+S: BLOCK_SIASAT
+ST: F
+CF: Big: 30,310 लिंक || Cite: Parliament reply, Mar 2023
+
+D: फ़रवरी 2024, किसान आंदोलन से एक रात पहले, किसान नेताओं और पत्रकारों के एक्स अकाउंट भारत में रोक दिए गए।
+T: urgent
+S: X_FARM
+ST: F
+CF: Visual: A smartphone screen showing an account withheld in India notice, modern desk
+
+D: एक्स ने ख़ुद लिखा, सरकार के आदेश पर हम ये अकाउंट रोक रहे हैं। पर हम इससे असहमत हैं।
+T: strong
+S: X_FARM
+ST: F
+CF: Quote: We disagree with these actions | X Global Government Affairs, February 2024
+
+D: मई 2025, ऑपरेशन सिंदूर के बीच, एक्स को आठ हज़ार अकाउंट रोकने का आदेश मिला। एक्स ने कहा, आदेश वो सार्वजनिक भी नहीं कर सकता।
+T: dramatic
+S: X_8000
+ST: F
+CF: Big: 8,000 अकाउंट || Article: 'We disagree': X suspends over 8,000 accounts in India in the aftermath of Operation Sindoor | The Week, May 2025
+
+D: सरकार कहती है, ये आदेश सुरक्षा, क़ानून व्यवस्था और फ़ेक न्यूज़ रोकने के लिए हैं। और अदालतों ने कई बार सरकार का साथ दिया।
+T: calm
+S: KHC_TW,KHC_X
+ST: O
+CF: Timeline: JUN 2023 ट्विटर की याचिका ख़ारिज · ₹50 लाख | SEP 2025 एक्स की याचिका ख़ारिज || Text: दूसरा पक्ष
+
+D: पर एक कोशिश अदालत ने रोकी। सरकार की अपनी फ़ैक्ट चेक यूनिट, जो तय करती कि सरकार के बारे में क्या झूठ है। सितंबर 2024 में बॉम्बे हाई कोर्ट ने उसे रद्द कर दिया।
+T: strong
+S: FCU
+ST: J
+CF: Article: Bombay High Court strikes down IT Rules Amendment 2023 on fact check units | Bar & Bench, September 2024
+
+D: ट्विटर के पूर्व सीईओ जैक डोर्सी ने 2023 में दावा किया, किसान आंदोलन के वक़्त सरकार ने ट्विटर बंद करने और कर्मचारियों के घर छापे की धमकी दी। मंत्री राजीव चंद्रशेखर ने इसे सफ़ेद झूठ कहा।
+T: dramatic
+S: DORSEY
+ST: D
+CF: Split: जैक डोर्सी · धमकी का दावा | राजीव चंद्रशेखर · सफ़ेद झूठ
+
+D: और ब्लॉकिंग के साथ, ट्रोलिंग भी चलती है। 2018 में पत्रकार राणा अय्यूब के नाम से झूठा ट्वीट फैलाया गया, और यूएन विशेषज्ञों ने उनकी सुरक्षा माँगी।
+T: strong
+S: UN_AYYUB18
+ST: F
+CF: Cite: The Quint, May 2018
+
+D: 2022 में यूएन के विशेष दूतों ने उन पर हमलों को हिंदू राष्ट्रवादी समूहों से जोड़ा। भारत ने आरोपों को बेबुनियाद कहा।
+T: calm
+S: UN_AYYUB
+ST: A
+CF: Split: यूएन विशेष दूत · हमले रुकें | भारत सरकार · आरोप बेबुनियाद
+
+D: मई 2025 में, सीज़फ़ायर का ऐलान करने वाले विदेश सचिव विक्रम मिस्री, और उनकी बेटी तक, ऑनलाइन गालियों का निशाना बने। उन्हें अकाउंट लॉक करना पड़ा।
+T: sad
+S: MISRI
+ST: F
+CF: Article: IAS, IPS associations condemn online harassment of Foreign Secretary Vikram Misri | The News Minute, May 2025
+
+D: सोचिए। जब सरकार का अपना अफ़सर नहीं बचा, तो आम आलोचक का क्या?
+T: question
+ST: N
+CF: Statement: अपना अफ़सर नहीं बचा, *तो आप?*
+
+D: ब्लॉकिंग के आदेश सरकार देती है, आईटी सेल नहीं। दोनों को जोड़ने वाला कोई दस्तावेज़ हमें नहीं मिला।
+T: calm
+ST: N
+CF: Text: जो साबित नहीं
+
+D: पर निशाना अक्सर एक होता है। वो आवाज़ें, जो सत्ता से सवाल पूछती हैं। एक तरफ़ आदेश, जो पोस्ट हटवाते हैं। दूसरी तरफ़ भीड़, जो आवाज़ थकाती है। और नतीजा? डर।
+T: dramatic
+P: 1.0
+ST: N
+CF: Split: सरकारी आदेश · पोस्ट हटते हैं | ऑनलाइन भीड़ · आवाज़ थकती है || Statement: निशाना एक। नतीजा *डर।*
+
+# 8 | THE FULL PICTURE
 
 D: अब ईमानदारी से, तस्वीर का दूसरा हिस्सा।
 T: calm
 ST: N
-CF: Chapter: Part 7 | पूरी तस्वीर
+CF: Chapter: Part 8 | पूरी तस्वीर
 
 D: ऑक्सफ़ोर्ड इंटरनेट इंस्टिट्यूट ने 2019 के चुनाव में पाया, बीजेपी समर्थक फ़ेसबुक पेजों पर शेयर हुई ख़बरों में, 28 प्रतिशत जंक न्यूज़ थी। कांग्रेस समर्थक पेजों पर, 21 प्रतिशत।
 T: calm
@@ -441,7 +566,7 @@ S: OII
 ST: F
 CF: Chart: 28% vs 21% | बीजेपी समर्थक पेज, कांग्रेस समर्थक पेज · जंक न्यूज़
 
-D: यानी कांग्रेस भी दूध की धुली नहीं। उसका भी आईटी सेल है। सोशल मीडिया की ये जंग, हर बड़ी पार्टी लड़ रही है।
+D: यानी कांग्रेस भी दूध की धुली नहीं। ये जंग हर बड़ी पार्टी लड़ रही है।
 T: calm
 S: OII
 ST: N
@@ -453,13 +578,13 @@ S: SHAH_QUINT
 ST: N
 CF: Statement: फ़र्क़ है *पैमाने* का।
 
-D: और एक दावा, जो हम नहीं करेंगे। 2022 में एक वेबसाइट ने, टेक फ़ॉग नाम के ऐप की कहानी छापी, जो कथित तौर पर ट्रेंड्स में हेरफेर करता था।
+D: और एक दावा जो हम नहीं करेंगे। 2022 की टेक फ़ॉग ऐप वाली कहानी।
 T: calm
 S: TEKFOG
 ST: D
 CF: Text: विवादित दावा
 
-D: बाद में वो रिपोर्ट, समीक्षा के लिए हटा ली गई। इसलिए हम उसे सबूत की तरह नहीं दिखाएँगे।
+D: वो रिपोर्ट बाद में समीक्षा के लिए हटा ली गई। इसलिए हम उसे सबूत नहीं मानते।
 T: strong
 S: TEKFOG
 ST: F
@@ -471,12 +596,12 @@ P: 0.8
 ST: N
 CF: Statement: मशीन को हराने का तरीक़ा: *बेहतर सच।*
 
-# 8 | YOUR SHIELD
+# 9 | YOUR SHIELD
 
 D: तो अगली बार, सुबह आठ बजे, जब कोई मैसेज आपका ख़ून खौला दे, तो रुकिए।
 T: strong
 ST: N
-CF: Chapter: Part 8 | आपकी ढाल || Visual: A young professional in a modern Bengaluru cafe pausing before forwarding a message on her phone
+CF: Chapter: Part 9 | आपकी ढाल || Visual: A young professional in a modern Bengaluru cafe pausing before forwarding a message on her phone
 
 D: तीन सवाल पूछिए। ये आया कहाँ से? इसका पूरा वीडियो कहाँ है? और किसका फ़ायदा है, कि मैं इसे बिना सोचे आगे भेजूँ?
 T: question
@@ -494,7 +619,7 @@ P: 1.2
 ST: N
 CF: Statement: मशीन हारती है उससे, *जो फ़ॉरवर्ड नहीं करता।*
 
-D: आपके फ़ैमिली ग्रुप में सबसे ज़्यादा कौन सा फ़ेक मैसेज आता है? कमेंट में लिखिए। और सबूत के साथ सच चाहिए, तो चैनल से जुड़िए।
+D: आपके फ़ैमिली ग्रुप में सबसे ज़्यादा कौन सा फ़ेक मैसेज आता है? कमेंट में लिखिए, और चैनल से जुड़िए।
 T: warm
 ST: N
 CF: Text: कमेंट करें · सब्सक्राइब करें

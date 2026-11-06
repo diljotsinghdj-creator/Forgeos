@@ -13,7 +13,7 @@ HERE = Path(__file__).resolve().parent
 _spec = importlib.util.spec_from_file_location("pyp_build", HERE.parent / "police_ya_power" / "build.py")
 pyp = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(pyp)                      # reuse the number-to-Hindi-words voice converter and timecodes
-STATUS = {"F": "Established fact (sourced)", "A": "Allegation / reported claim (attributed)", "D": "Disputed",
+STATUS = {"F": "Established fact (sourced)", "A": "Allegation / reported claim (attributed)", "D": "Disputed", "J": "Court / judicial finding",
           "O": "Official position / denial", "N": "Narration or analysis"}
 TITLE = "BJP IT Cell Ka Sach: 'Sach Ho Ya Jhooth, Viral Kar Denge' | WhatsApp, Trolls Aur Crore Ke Ads"
 
@@ -45,7 +45,7 @@ def load():
         b["i"] = i
         assert b.get("D") and b.get("T") in pyp.V3 and b.get("ST") in STATUS, b
         b["src"] = [src[k] for k in (b.get("S") or "").split(",") if k.strip()]
-        if b["ST"] in "FAOD":
+        if b["ST"] in "FAODJ":
             assert b["src"], f"line {i} makes a claim without a source"
     return src, blocks
 
@@ -94,7 +94,7 @@ def main():
             m, s = divmod(int(b["start"]), 60)
             chapters.append(f"{m}:{s:02d} {b['chapter'].title()}")
     keys = ["SHAH_QUINT", "ROW", "TW_PRINT", "SB_NL", "SWAMY", "MHASKEY", "TROLL_BF", "GUPTA", "TNM_GOOGLE",
-            "RC_SCROLL", "NL_ADS", "WSJ_AJ", "BJP_AJ", "OII", "TEKFOG"]
+            "RC_SCROLL", "NL_ADS", "WSJ_AJ", "BJP_AJ", "BBC_PRINT", "BBC_IT", "X_8000", "FCU", "DORSEY", "OII", "TEKFOG"]
     meta = f"""# YouTube metadata (SEO)
 
 ## Title options (A recommended; keyword first, under 100 characters)
@@ -105,7 +105,7 @@ C. BJP IT Cell Kaise Kaam Karta Hai? 32 Lakh WhatsApp Members, Trolls Aur ₹100
 ## Description
 "Sach ho ya jhooth, viral kar denge." BJP IT Cell kaise kaam karta hai? Amit Shah ka 2018 ka Kota bayan,
 WhatsApp groups ka network, Amit Malviya ka 'manipulated media' tweet, 'I Am a Troll' ke aarop, Google aur
-Facebook par crore ke ads, ghost advertisers, aur platforms par uthe sawaal. Har claim source ke saath, har
+Facebook par crore ke ads, ghost advertisers, BBC documentary ka block, 30,000+ links ke blocking orders,\nX ke 8,000 accounts, trolling, aur platforms par uthe sawaal. Har claim source ke saath, har
 aarop aarop ki tarah, aur BJP, Meta aur Facebook ka paksh bhi.
 
 Chapters
@@ -118,7 +118,7 @@ Illustrations are labelled. Fake message ko forward karne se pehle check karein:
 
 ## Tags
 bjp it cell, bjp it cell exposed, amit shah true or fake viral, amit malviya manipulated media, whatsapp propaganda india,
-fake news india, i am a troll swati chaturvedi, bjp google ads spending, facebook ghost advertisers bjp,
+bbc documentary blocked india, india: the modi question, x accounts withheld india, twitter blocking orders,\nfake news india, i am a troll swati chaturvedi, bjp google ads spending, facebook ghost advertisers bjp,
 ankhi das facebook bjp, political ads india 2024, how to spot fake news whatsapp, hinglish documentary, deepak mhaskey
 
 ## Hashtags

@@ -8,19 +8,21 @@ C. BJP IT Cell Kaise Kaam Karta Hai? 32 Lakh WhatsApp Members, Trolls Aur ₹100
 ## Description
 "Sach ho ya jhooth, viral kar denge." BJP IT Cell kaise kaam karta hai? Amit Shah ka 2018 ka Kota bayan,
 WhatsApp groups ka network, Amit Malviya ka 'manipulated media' tweet, 'I Am a Troll' ke aarop, Google aur
-Facebook par crore ke ads, ghost advertisers, aur platforms par uthe sawaal. Har claim source ke saath, har
+Facebook par crore ke ads, ghost advertisers, BBC documentary ka block, 30,000+ links ke blocking orders,
+X ke 8,000 accounts, trolling, aur platforms par uthe sawaal. Har claim source ke saath, har
 aarop aarop ki tarah, aur BJP, Meta aur Facebook ka paksh bhi.
 
 Chapters
 0:00 Cold Open
-1:08 The Confession
-2:21 The Factory
-3:49 The Face
-5:33 The Insiders
-7:02 The Money
-8:56 The Platforms
-10:03 The Full Picture
-11:14 Your Shield
+1:01 The Confession
+2:11 The Factory
+3:25 The Face
+5:06 The Insiders
+6:35 The Money
+8:26 The Platforms
+9:26 The Delete Button
+13:10 The Full Picture
+14:09 Your Shield
 
 Key sources
 - The Quint (Sep 2018): https://www.thequint.com/news/politics/amit-shah-real-fake-can-make-messages-viral
@@ -36,6 +38,11 @@ Key sources
 - Newslaundry (Dec 2022): https://www.newslaundry.com/2022/12/14/modi-government-spent-rs-6491-crore-on-advertising-since-2014
 - Al Jazeera (15 Aug 2020): https://www.aljazeera.com/news/2020/08/15/facebook-ignored-hate-speech-by-indias-bjp-politicians-report/
 - Al Jazeera (17 Aug 2020): https://www.aljazeera.com/economy/2020/8/17/modis-bjp-rejects-claims-of-preferential-treatment-by-facebook
+- ThePrint (Jan 2023): https://theprint.in/world/govt-blocks-youtube-videos-tweets-sharing-bbc-documentary-on-pm-modi/1327590/
+- Scroll (14 Feb 2023): https://scroll.in/latest/1043853/scroll_in
+- The Week (9 May 2025): https://www.theweek.in/news/india/2025/05/09/we-disagree-but-x-suspends-over-8-000-accounts-in-india-in-the-aftermath-of-operation-sindoor.html
+- Bar & Bench (Sep 2024): https://www.barandbench.com/news/bombay-high-court-strikes-down-it-rules-amendment-2023-fact-check-units
+- Business Standard (13 Jun 2023): https://www.business-standard.com/india-news/we-ll-shut-you-down-raid-homes-ex-twitter-ceo-dorsey-on-indian-pressure-123061300158_1.html
 - Oxford Internet Institute (2019): https://www.oii.ox.ac.uk/junk-news-and-misinformation-prevalent-in-indian-election-campaign/
 - The News Minute (Oct 2022): https://www.thenewsminute.com/news/wire-retracts-meta-stories-tek-fog-investigation-be-reviewed-too-169165
 
@@ -43,6 +50,7 @@ Illustrations are labelled. Fake message ko forward karne se pehle check karein:
 
 ## Tags
 bjp it cell, bjp it cell exposed, amit shah true or fake viral, amit malviya manipulated media, whatsapp propaganda india,
+bbc documentary blocked india, india: the modi question, x accounts withheld india, twitter blocking orders,
 fake news india, i am a troll swati chaturvedi, bjp google ads spending, facebook ghost advertisers bjp,
 ankhi das facebook bjp, political ads india 2024, how to spot fake news whatsapp, hinglish documentary, deepak mhaskey
 
@@ -55,4 +63,4 @@ official paksh. Koi galti dikhe to source ke saath comment kijiye, hum check kar
 family group mein sabse zyada kaunsa fake message aata hai?
 
 ## Estimated runtime
-12:06 (with the ElevenLabs voice the real length will differ slightly)
+14:58 (with the ElevenLabs voice the real length will differ slightly)
