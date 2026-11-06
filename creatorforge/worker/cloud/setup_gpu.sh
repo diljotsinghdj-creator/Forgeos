@@ -233,6 +233,14 @@ if ! pgrep -f "playwright install" >/dev/null && ! { "$PYBIN" -c "import playwri
     > browser.log 2>&1 &
 fi
 
+say "3D intros: Blender (free, GPL) installs in the background (log: $HOME_DIR/blender.log)"
+# Blender's own Python module (bpy) needs Python 3.11; it lives in its own venv so the worker's packages stay untouched.
+if ! pgrep -f "pip install -q bpy" >/dev/null && ! [ -x /workspace/bpy/bin/python ] ; then
+  nohup bash -c "(command -v python3.11 >/dev/null || (apt-get install -y -q python3.11 python3.11-venv || \
+      (add-apt-repository -y ppa:deadsnakes/ppa && apt-get update -q && apt-get install -y -q python3.11 python3.11-venv))) \
+    && python3.11 -m venv /workspace/bpy && /workspace/bpy/bin/pip install -q bpy && echo 'blender ready'" > blender.log 2>&1 &
+fi
+
 if [ -n "$VIDEO_MODEL" ]; then
   # Videos with AI images work right away; the big AI-video model finishes downloading in the background
   # (the worker would also fetch it on first use, this just gets it ready sooner).

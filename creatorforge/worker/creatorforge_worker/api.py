@@ -505,6 +505,24 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
         finally:
             shutil.rmtree(tmpdir, ignore_errors=True)
 
+    @app.post("/v1/library/intro3d", status_code=201, dependencies=[Depends(auth)])
+    def make_intro3d(body: dict) -> dict:
+        """A 3D channel intro made in Blender, saved to the asset library as a video:
+        {"title": "PRINT FACTS", "tagline": "...", "aspect": "16:9" | "9:16", "seconds": 3}"""
+        from .media import intro3d
+        portrait = str(body.get("aspect", "16:9")) == "9:16"
+        tmpdir = Path(tempfile.mkdtemp(dir=library.assets.root))
+        try:
+            out = intro3d.render(str(body.get("title", "")), tmpdir / "intro.mp4", str(body.get("tagline", "")),
+                                 width=1080 if portrait else 1920, height=1920 if portrait else 1080,
+                                 seconds=max(2.0, min(6.0, float(body.get("seconds", 3)))))
+            return library.assets.add("video", f"3D intro - {str(body.get('title', ''))[:40]}", out, ".mp4",
+                                      lambda p: _check_asset("video", p))
+        except MediaError as e:
+            raise HTTPException(422, str(e)) from None
+        finally:
+            shutil.rmtree(tmpdir, ignore_errors=True)
+
     @app.patch("/v1/library/assets/{aid}", dependencies=[Depends(auth)])
     async def rename_asset(aid: str, request: Request) -> dict:
         try:
