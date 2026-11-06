@@ -216,9 +216,10 @@ TONE: HOW EACH LINE IS SAID (new - human-like voices)
   and there is an extra beat of silence before a chapter card or a big statement.
 
 ANIMATED SCENES (new)
-  Animate: ........... an animated scene acted out on that line, drawn by CreatorForge (no AI, free, offline).
+  Animate: ........... the moment you describe becomes that line's picture (drawn by the AI image model).
+                      (The old stickman animation is switched off; a Visual: line on the same line wins.)
                       Describe the moment in a sentence:
-                        Animate: a stickman receives shocking news on his phone
+                        Animate: a man receives shocking news on his phone
                         Animate: two friends argue in the park
                         Animate: an old man walks through the desert with his camel
                         Animate: a girl gets great news and dances

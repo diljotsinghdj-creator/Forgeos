@@ -86,8 +86,11 @@ def test_sentences_become_scenes():
 
 
 @pytest.mark.ffmpeg
-def test_an_animate_line_plays_an_animated_scene(cfg):
+def test_an_animate_line_plays_an_animated_scene(cfg, monkeypatch):
     from fastapi.testclient import TestClient
+
+    from creatorforge_worker import pipeline
+    monkeypatch.setattr(pipeline, "STICKMAN", True)       # the stickman is off by default; this checks it still works
 
     from creatorforge_worker.api import create_app
 
@@ -105,3 +108,15 @@ def test_an_animate_line_plays_an_animated_scene(cfg):
     assert job["providers"].get("animation") == "CreatorForge 2D animation"
     clips = [n for s in job["scenes"] for n in (s.get("beat_clips") or []) if n and "_anim" in n]
     assert clips and (cfg.jobs_dir / jid / clips[0]).stat().st_size > 10_000
+
+
+def test_with_the_stickman_off_an_animate_line_becomes_the_lines_picture():
+    from creatorforge_worker import director, pipeline
+    assert pipeline.STICKMAN is False or __import__("os").environ.get("CF_STICKMAN") == "1"
+    text = ("T\n\nHe opened the message and froze.\nAnimate: a man drops his phone in shock\n\n"
+            "Line two.\nVisual: a street\n\nLine three.\nAnimate: a crowd gasps\nVisual: a packed hall\n\n"
+            "Line four.\nVisual: sunrise\n")
+    _, meta = director.parse_script(text)
+    vis = [str(s[1]) for s in meta["shots"]]
+    assert any("drops his phone" in v for v in vis)            # no Visual: - the action is the picture
+    assert any("packed hall" in v for v in vis) and not any("crowd gasps" in v for v in vis)   # Visual: wins

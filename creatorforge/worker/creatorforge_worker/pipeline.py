@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import re
 import shutil
 import tempfile
@@ -22,6 +23,10 @@ from .media import captions as cap
 from .media import cards, charts, globe, layout, maps, match, motion, objects, quality, render, sfx, verify
 from .media import ff
 from .media.ff import Cancelled, MediaError
+
+# The stickman animation engine is off by default (CF_STICKMAN=1 turns it back on): an "Animate:" line becomes
+# the line's picture, drawn by the image model, instead of a stickman scene.
+STICKMAN = os.environ.get("CF_STICKMAN", "0") == "1"
 from .providers.base import NotConfigured, ProviderError, Word
 from .store import STAGES, JobStore
 from .templates import (ASPECTS, CALLOUT_LOOKS, CUTOUT_LOOKS, DESK_STYLES, EDITORIAL_LEADS, EDITORIAL_STYLES,
@@ -780,6 +785,8 @@ class Pipeline:
                 continue
             clips = (list(sc.get("beat_clips") or []) + [None] * len(beats))[: len(beats)]
             for k, act in enumerate(acts):
+                if not STICKMAN:
+                    break                         # the line shows its picture of the action instead
                 if act and not (clips[k] and (jdir / clips[k]).is_file()):
                     clips[k] = self._animated_clip(job, sc, k, act, jdir) or clips[k]
             for k, ref in enumerate(want):

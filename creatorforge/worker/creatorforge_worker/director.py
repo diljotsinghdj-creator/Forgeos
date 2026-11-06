@@ -1021,8 +1021,8 @@ def parse_script(raw: str) -> tuple[str, dict]:
             elif k in ("visuals", "visual", "b-roll", "broll"):
                 if target >= 0 and v:
                     d = per.setdefault(target, {})
-                    if "visual" not in d:
-                        d["visual"] = v[:200]
+                    if "visual" not in d or d.pop("_from_animate", False):
+                        d["visual"] = v[:200]     # a writer's Visual: always beats one taken from an Animate: line
                     else:                    # a second/third Visual: under the same line - cut to it mid-line
                         d.setdefault("more", []).append(v[:200])
                 looks.append(v)
@@ -1037,7 +1037,10 @@ def parse_script(raw: str) -> tuple[str, dict]:
                     per.setdefault(target, {}).setdefault("extra", {})["tone"] = value.strip().lower()[:20]
             elif k in ("animate", "animation", "cartoon"):   # an animated scene acted out on this line
                 if target >= 0 and v:
-                    per.setdefault(target, {}).setdefault("extra", {})["animate"] = value.strip()[:200]
+                    d = per.setdefault(target, {})
+                    d.setdefault("extra", {})["animate"] = value.strip()[:200]
+                    if "visual" not in d:     # the stickman is off by default: the action becomes the line's picture
+                        d["visual"], d["_from_animate"] = v[:200], True
             elif k == "clip":                # one of your own Asset Library clips plays on this line
                 if target >= 0 and v:
                     per.setdefault(target, {}).setdefault("extra", {})["clip"] = value.strip()[:140]
@@ -1065,6 +1068,8 @@ def parse_script(raw: str) -> tuple[str, dict]:
     # two visual lines describe the look of the whole video instead.
     # Scripts written like an editorial Short direct most lines with Place:/Big:/Article:/Cite: instead of a
     # picture - those are per-line directions too.
+    for d in per.values():
+        d.pop("_from_animate", None)
     if sum(bool(d.get("visual")) + len(d.get("more") or []) for d in per.values()) >= 3 or \
             sum(1 for d in per.values() if any(v for k, v in d.items() if k not in ("visual", "more"))) >= 3:
         meta["shots"] = [shot for i, line in enumerate(spoken) for shot in _line_shots(line, per.get(i, {}))][:400]
