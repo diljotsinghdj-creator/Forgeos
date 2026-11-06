@@ -53,6 +53,12 @@ def plan_for(kind: str, spec: str) -> dict | None:
         return None
     if kind == "chart":
         from .charts import parse
+        head, _, rest = spec.partition("|")
+        pairs = [re.match(r"^\s*(\d{4}(?:[-–]\d{2,4})?|[A-Za-z]{3,9}\s+\d{4})\s+(.+?)\s*$", x)
+                 for x in re.split(r"→|->", head)]
+        if len(pairs) >= 3 and all(pairs):          # "2021-22 176 → 2022-23 163 → ..." : years are the ticks
+            ticks = ", ".join(m.group(1) for m in pairs)
+            spec = " → ".join(m.group(2) for m in pairs) + f" | {rest.strip()} | {ticks}"
         p = parse(spec)
         return {"type": p["kind"], **p} if p else None
     head, _, tail = spec.partition("|")
@@ -112,7 +118,7 @@ function decOf(v){return Number.isInteger(v)?0:1}
 if(GRID){const g=draw.group().opacity(.35);const step=Math.round(H/26);
   for(let x=0;x<W;x+=step)g.line(x,0,x,H).stroke({color:'#7FA3C8',width:1});
   for(let y=0;y<H;y+=step)g.line(0,y,W,y).stroke({color:'#7FA3C8',width:1});}
-const grad=draw.gradient('radial',a=>{a.stop(0.55,'#000',0);a.stop(1,'#000',.22)});
+const grad=draw.gradient('radial',a=>{a.stop(0.62,'#000',0);a.stop(1,'#000',.1)});
 const stage=draw.group();
 function txt(g,s,size,x,y,opt){opt=opt||{};const t=g.text(String(s)).font({size:size,anchor:opt.anchor||'middle',weight:opt.weight||'bold'})
   .fill(opt.fill||INK).attr({x:x,y:y,'dominant-baseline':'middle'});if(opt.cls)t.addClass(opt.cls);return t}
@@ -137,7 +143,7 @@ if(T==='counter'||T==='progress'){
   const cy=TALL?H*.36:H*.44;const big=U*(TALL?.15:.17);
   const val=T==='progress'?P.value:P.to, from=T==='progress'?0:(P.from||0);const dec=decOf(val);
   const pre=T==='progress'?'':(P.prefix||''), suf=T==='progress'?'%':(P.suffix||'');
-  const n=txt(stage,pre+fmt(from,dec)+suf,big,W/2,cy,{fill:INK});
+  const n=txt(stage,pre+fmt(val,dec)+suf,big,W/2,cy,{fill:INK});{const w=n.length();if(w>W*.86)n.font({size:big*W*.86/w})}
   at(.2,Math.min(1.6,DUR*.45),p=>n.text(pre+fmt(from+(val-from)*p,dec)+suf),ease.expo);
   pop(n,W/2,cy,.15,.5);
   if(T==='progress'){const bw=W*(TALL?.78:.6),bh=U*.05,x=W/2-bw/2,y=cy+big*.75;
@@ -159,7 +165,7 @@ if(T==='bars'){
   stage.line(W/2-area/2,base,W/2+area/2,base).stroke({color:INK,width:U*.005});
 }
 if(T==='line'){
-  const vals=P.values;const n=vals.length;const mx=Math.max(...vals),mn=Math.min(0,...vals);
+  const vals=P.values;const n=vals.length;const mx=Math.max(...vals);const lo=Math.min(...vals);const mn=Math.max(0,lo-(mx-lo)*1.2);
   const L=W*(TALL?.12:.16),R=W*(TALL?.88:.84),Tp=TALL?H*.22:H*.2,B=TALL?H*.58:H*.76;
   if(P.label)title(P.label);
   stage.line(L,B,R,B).stroke({color:INK,width:U*.005});
@@ -217,7 +223,7 @@ if(T==='pie'){
 if(T==='squares'){
   const vals=P.values;const top=Math.max(...vals.map(v=>v[1]));const n=vals.length;
   const side=Math.min(W*(TALL?.6:.34),H*(TALL?.34:.56));const sizes=vals.map(v=>Math.max(6,side*Math.sqrt(v[1]/top)));
-  const total=sizes.reduce((a,b)=>a+b,0)+U*.08*(n-1);let x=W/2-total/2;const base=TALL?H*.55:H*.74;
+  let total=sizes.reduce((a,b)=>a+b,0)+U*.08*(n-1);if(total>W*.9){const k=(W*.9-U*.08*(n-1))/(total-U*.08*(n-1));for(let i=0;i<n;i++)sizes[i]*=k;total=W*.9}let x=W/2-total/2;const base=TALL?H*.55:H*.74;
   vals.forEach((v,i)=>{const s=sizes[i];const big=v[1]===top;const r=stage.rect(s,s).move(x,base-s).fill(big?ACC:SEC).opacity(.92);
     const x0=x;r.attr({transform:`translate(${x0},${base}) scale(0) translate(${-x0},${-base})`});
     at(.3+i*.45,.8,p=>r.attr({transform:`translate(${x0},${base}) scale(${p}) translate(${-x0},${-base})`}),ease.back);

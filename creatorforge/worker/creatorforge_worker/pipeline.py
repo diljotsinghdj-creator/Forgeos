@@ -19,7 +19,7 @@ from .providers import delivery, gemini_tts, speech
 from .config import Config, VoiceProfile
 from .library import Library
 from .media import captions as cap
-from .media import cards, charts, globe, layout, maps, match, objects, quality, render, sfx, verify
+from .media import cards, charts, globe, layout, maps, match, motion, objects, quality, render, sfx, verify
 from .media import ff
 from .media.ff import Cancelled, MediaError
 from .providers.base import NotConfigured, ProviderError, Word
@@ -1732,6 +1732,14 @@ class Pipeline:
                             if kind == "globe":
                                 return globe.render(plan, theme, size[0], size[1], seconds, out, work)
                             return maps.render(plan, theme, size[0], size[1], seconds, out, work)
+                        if kind in motion.KINDS and motion.enabled():
+                            mout = work / f"motion_{out.stem}.mp4"
+                            if mout.is_file():
+                                return mout
+                            try:       # smooth SVG animation; the FFmpeg card below if the browser can't
+                                return motion.render(kind, extra[kind], theme, size[0], size[1], seconds, mout, work)
+                            except MediaError:
+                                pass
                         return cards.render(kind, extra[kind], theme, size[0], size[1], seconds, out, work,
                                             brand=(spec.brand or {}).get("name", ""))
                     except MediaError:
@@ -1757,6 +1765,14 @@ class Pipeline:
         if plan is None:
             return None
         out = work / f"chart_{hashlib.sha256(f'{src}|{theme}|{size}|{seconds}'.encode()).hexdigest()[:16]}.mp4"
+        if motion.enabled():
+            mout = work / f"motion_{out.stem}.mp4"
+            if mout.is_file():
+                return mout
+            try:
+                return motion.render("chart", src, theme, size[0], size[1], seconds, mout, work)
+            except MediaError:
+                pass                             # the FFmpeg chart below
         if not out.is_file():
             try:
                 charts.render(plan, theme, size[0], size[1], seconds, out, work)
