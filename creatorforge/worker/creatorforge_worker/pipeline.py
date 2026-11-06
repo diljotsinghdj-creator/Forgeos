@@ -1733,7 +1733,7 @@ class Pipeline:
                                 return globe.render(plan, theme, size[0], size[1], seconds, out, work)
                             return maps.render(plan, theme, size[0], size[1], seconds, out, work)
                         if kind in motion.KINDS and motion.enabled():
-                            mout = work / f"motion_{out.stem}.mp4"
+                            mout = work / f"{out.stem}_m.mp4"
                             if mout.is_file():
                                 return mout
                             try:       # smooth SVG animation; the FFmpeg card below if the browser can't
@@ -1766,7 +1766,7 @@ class Pipeline:
             return None
         out = work / f"chart_{hashlib.sha256(f'{src}|{theme}|{size}|{seconds}'.encode()).hexdigest()[:16]}.mp4"
         if motion.enabled():
-            mout = work / f"motion_{out.stem}.mp4"
+            mout = work / f"{out.stem}_m.mp4"
             if mout.is_file():
                 return mout
             try:
