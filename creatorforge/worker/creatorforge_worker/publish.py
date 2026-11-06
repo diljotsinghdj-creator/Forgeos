@@ -97,6 +97,12 @@ Folder order = timeline order. To finish in CapCut (phone or desktop):
 4. Captions: Text -> Auto captions, or import captions.srt (CapCut desktop: Text -> Local captions -> Import).
 5. publish.txt has titles, description, hashtags and a pinned comment ready to paste.
 creatorforge.mp4 is the finished video CreatorForge rendered, if you just want to post it.
+
+Free desktop editors (unzip the whole folder first, keep the files where they are):
+- Shotcut (free, shotcut.org): File -> Open File -> shotcut_project.mlt. Scenes are on V1 in order at their timeline
+  lengths, the voice-over on A1, music on A2 already lowered. Kdenlive opens the same file.
+- OpenShot (free, openshot.org): File -> Import -> EDL... -> openshot_import.edl. DaVinci Resolve and Premiere
+  import the same EDL (point them at this folder if they ask for the media).
 """
 
 
@@ -127,6 +133,7 @@ def export_zip(job: dict, jdir: Path, out: Path, kit: dict | None) -> Path:
         w = csv.writer(rows)
         w.writerow(["scene", "file", "start_s", "duration_s", "transition_in", "narration", "visual"])
         start = 0.0
+        cut = []                                          # for the Shotcut / OpenShot projects
         for i, sc in enumerate(job["scenes"]):
             shot = shots[i] if i < len(shots) else {}
             src = None
@@ -141,6 +148,7 @@ def export_zip(job: dict, jdir: Path, out: Path, kit: dict | None) -> Path:
             if sc.get("narration") and (jdir / sc["narration"]).is_file():
                 z.write(jdir / sc["narration"], f"audio/scenes/{i + 1:02d}_voice.wav")
             d = float(durations[i]) if i < len(durations) else 0.0
+            cut.append({"file": name, "seconds": d, "image": bool(name) and src.suffix.lower() in (".png", ".jpg", ".jpeg", ".webp")})
             w.writerow([i + 1, name, round(start, 2), round(d, 2), transitions[i] if i < len(transitions) else "",
                         shot.get("narration", ""), shot.get("visual", "")])
             start += d
@@ -152,8 +160,18 @@ def export_zip(job: dict, jdir: Path, out: Path, kit: dict | None) -> Path:
         if voice.is_file():
             z.write(voice, "audio/voiceover.wav")
         music = Path(job["music_track"]) if job.get("music_track") else None
+        music_name = None
         if music and music.is_file():
-            z.write(music, f"audio/music{music.suffix}", compress_type=zipfile.ZIP_STORED)
+            music_name = f"audio/music{music.suffix}"
+            z.write(music, music_name, compress_type=zipfile.ZIP_STORED)
+        from . import editors
+        rw, rh = (job.get("render") or {}).get("width"), (job.get("render") or {}).get("height")
+        if not (rw and rh):
+            portrait = (job.get("spec") or {}).get("aspect", "9:16") in ("9:16", "4:5")
+            rw, rh = (1080, 1920) if portrait else (1920, 1080)
+        vo = "audio/voiceover.wav" if voice.is_file() else None
+        z.writestr("shotcut_project.mlt", editors.mlt(title, cut, vo, music_name, int(rw), int(rh)))
+        z.writestr("openshot_import.edl", editors.edl(title, cut, vo))
         words_file = jdir / "words.json"
         if words_file.is_file():
             per = TEMPLATES.get(job["spec"].get("template"), TEMPLATES["shorts_cinematic"]).words_per_caption
