@@ -37,6 +37,11 @@ _SENTENCE_END = ("।", "॥", "?", "!", ".", "…", "?\"", "!\"", ".\"", "”")
 def group(words: list[Word], per: int) -> list[Word]:
     """Caption cues of up to `per` words that never run across a sentence end: "लोग चुनेंगे। फिर" would show the
     end of one thought with the start of the next."""
+    return group_parts(words, per)[0]
+
+
+def group_parts(words: list[Word], per: int) -> tuple[list[Word], list[list[Word]]]:
+    """group() plus each cue's own words with their timings, for captions that light up word by word."""
     sentences, cur = [], []
     for w in words:
         cur.append(w)
@@ -45,7 +50,7 @@ def group(words: list[Word], per: int) -> list[Word]:
             cur = []
     if cur:
         sentences.append(cur)
-    cues = []
+    cues, parts = [], []
     for sent in sentences:
         n = -(-len(sent) // max(1, per))                 # as few cues as fit, evenly filled (no lone last word)
         size, extra = divmod(len(sent), n)
@@ -54,9 +59,35 @@ def group(words: list[Word], per: int) -> list[Word]:
             chunk = sent[i:i + size + (1 if k < extra else 0)]
             i += len(chunk)
             cues.append(Word(" ".join(x.text for x in chunk), chunk[0].start, chunk[-1].end))
+            parts.append(list(chunk))
     for a, b in zip(cues, cues[1:]):
         a.end = max(a.end, min(b.start, a.end + 0.3))
-    return cues
+    return cues, parts
+
+
+def karaoke_lines(cue: Word, part: list[Word], style: str, base: str, lit: str, extra: str = "",
+                  explainer_mark: str = "", paper: str = "") -> list[str]:
+    """One caption cue as a run of events, one per spoken word: the whole cue stays on screen and the word being
+    said lights up (a highlight colour, a touch bigger; on paper captions, a marker box behind it)."""
+    out = []
+    if len(part) <= 1 or not all(w.end >= w.start for w in part):
+        return out
+    times = [cue.start] + [w.start for w in part[1:]] + [cue.end]
+    for i, w in enumerate(part):
+        a, b = max(cue.start, times[i]), max(times[i] + 0.04, times[i + 1])
+        words = []
+        for j, x in enumerate(part):
+            e = _esc(x.text)
+            if j == i:
+                if explainer_mark:
+                    words.append(f"{{\\3c{explainer_mark}&}}{e}{{\\3c{paper}&}}")
+                else:
+                    words.append(f"{{\\1c{lit}&\\fscx108\\fscy108}}{e}{{\\1c{base}&\\fscx100\\fscy100}}")
+            else:
+                words.append(e)
+        fx = extra if i == 0 else ""
+        out.append(f"Dialogue: 0,{_ts(a)},{_ts(b)},{style},,0,0,0,,{fx}{' '.join(words)}")
+    return out
 
 
 def _ts(s: float) -> str:
@@ -127,7 +158,8 @@ def _have_font(name: str) -> bool:
 
 def write_ass(path: Path, width: int, height: int, scale: float, position: float,
               cues: list[Word], overlays: list[Overlay], emphasis: set[str] | None = None,
-              caption_color: str = "", highlight_color: str = "", callout_look: str = "") -> None:
+              caption_color: str = "", highlight_color: str = "", callout_look: str = "",
+              parts: list[list[Word]] | None = None) -> None:
     """callout_look "highlighter": on-screen text as bold black words on a yellow marker box that wipes in -
     the editorial explainer look. Default: white text on a dark box."""
     emphasis = {_norm(w) for w in (emphasis or set()) if _norm(w)}
@@ -191,7 +223,15 @@ def write_ass(path: Path, width: int, height: int, scale: float, position: float
         if callout_look == "highlighter":
             lines = [ln.replace("Style: Callout,DejaVu Sans,", f"Style: Callout,{font},")
                      .replace("&H0018C8F5,&H0018C8F5,-1,", f"{mark},{mark},0,") for ln in lines]
-    for c in cues:
+    for k, c in enumerate(cues):
+        part = parts[k] if parts and k < len(parts) else None
+        if part:      # word by word: the word being said lights up
+            pop = "" if explainer else "{\\fscx75\\fscy75\\t(0,120,\\fscx104\\fscy104)\\t(120,180,\\fscx100\\fscy100)}"
+            run = karaoke_lines(c, part, "Caption", cap, hi, ("{\\fad(60,0)}" if explainer else pop),
+                                mark if explainer else "", paper if explainer else "")
+            if run:
+                lines += run
+                continue
         if explainer:
             words = []
             for wd in c.text.split():

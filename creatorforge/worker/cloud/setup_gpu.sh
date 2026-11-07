@@ -233,6 +233,14 @@ if ! pgrep -f "playwright install" >/dev/null && ! { "$PYBIN" -c "import playwri
     > browser.log 2>&1 &
 fi
 
+say "Exact word timings: WhisperX (free, BSD) installs in the background (log: $HOME_DIR/whisperx.log)"
+# Its own venv: WhisperX pins torch versions that must never replace the worker's. Captions use Whisper's own word
+# times until it is ready (and whenever it fails).
+if ! pgrep -f "pip install -q whisperx" >/dev/null && ! [ -x /workspace/whisperx/bin/python ] ; then
+  nohup bash -c "python3 -m venv /workspace/whisperx.part && /workspace/whisperx.part/bin/pip install -q whisperx \
+    && mv /workspace/whisperx.part /workspace/whisperx && echo 'whisperx ready'" > whisperx.log 2>&1 &
+fi
+
 say "3D intros: Blender (free, GPL) installs in the background (log: $HOME_DIR/blender.log)"
 # Blender's own Python module (bpy) needs Python 3.11; it lives in its own venv so the worker's packages stay untouched.
 if ! pgrep -f "pip install -q bpy" >/dev/null && ! [ -x /workspace/bpy/bin/python ] ; then

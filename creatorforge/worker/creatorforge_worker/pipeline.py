@@ -1228,13 +1228,24 @@ class Pipeline:
         jdir = self.store.dir(job["id"])
         words: list[Word] = []
         start = 0.0
-        for sc, shot, slot in zip(job["scenes"], job["plan"]["scenes"], self._timings(job)):
-            if cancel.is_set():
-                raise Cancelled()
-            if asr is not None:
+        heard: list[list[Word]] = []
+        align_note = ""
+        if asr is not None:
+            for sc in job["scenes"]:
+                if cancel.is_set():
+                    raise Cancelled()
                 ws = asr.words(jdir / sc["narration"])
                 if not ws:
                     raise StageFailed(f"Whisper heard no words in scene {sc['index'] + 1}")
+                heard.append(ws)
+            from .providers import align
+            if align.available():       # WhisperX pins each word to the syllable it is spoken on
+                heard, align_note = align.refine([(jdir / sc["narration"], ws) for sc, ws in zip(job["scenes"], heard)])
+        for k, (sc, shot, slot) in enumerate(zip(job["scenes"], job["plan"]["scenes"], self._timings(job))):
+            if cancel.is_set():
+                raise Cancelled()
+            if asr is not None:
+                ws = heard[k]
                 if sc.get("voice_source") != "asset":
                     # Captions show the script's own words and spelling (names, respelled words, numbers);
                     # Whisper only supplies the timing. How closely it heard the script is kept for the final check.
@@ -1246,7 +1257,8 @@ class Pipeline:
                 words += est
                 sc["word_starts"] = [round(w.start - start, 3) for w in est]
             start += slot
-        job["providers"]["captions"] = asr.id if asr else "estimated (Whisper not configured)"
+        job["providers"]["captions"] = (f"{asr.id}, {align_note}" if align_note else asr.id) if asr \
+            else "estimated (Whisper not configured)"
         (jdir / "words.json").write_text(json.dumps([w.__dict__ for w in words]))
 
     def _music(self, job: dict, cancel) -> None:
@@ -1531,12 +1543,14 @@ class Pipeline:
         ass = None
         if spec.captions:
             words = [Word(**d) for d in json.loads((jdir / "words.json").read_text())]
-            cues = cap.group(words, min(3, t.words_per_caption))   # 1-3 words at a time: easy to read at a glance
+            cues, parts = cap.group_parts(words, min(3, t.words_per_caption))   # 1-3 words at a time
+            if os.environ.get("CF_KARAOKE", "1") == "0":
+                parts = None                              # plain captions: the cue appears whole
             ass = work / "captions.ass"
             emphasis = {wd for s in shots for wd in s.get("emphasis", [])} if spec.auto_edit else set()
             cap.write_ass(ass, w, h, t.caption_scale, t.caption_position, cues, overlays, emphasis,
                           brand.get("caption_color", ""), brand.get("highlight_color", ""),
-                          CALLOUT_LOOKS.get(spec.style, ""))
+                          CALLOUT_LOOKS.get(spec.style, ""), parts)
 
         job["edit"] = {"auto_edit": spec.auto_edit, "transitions": [c.transition for c in heads[1:]],
                        "shots": len(clips),
