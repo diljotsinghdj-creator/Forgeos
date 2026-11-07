@@ -397,3 +397,15 @@ def test_whole_long_form_script_fits_in_one_production():
     assert 2400 <= spec.duration_s <= MAX_DURATION_S          # ~7,000 words, ~47 min
     with pytest.raises(ValueError):
         ProductionSpec.from_dict({"script": line * 700, "template": "youtube_longform"}).validate()
+
+
+def test_storybook_stickman_style_draws_dressed_stickmen_and_keeps_out_realistic_faces():
+    from creatorforge_worker import director as d
+    from creatorforge_worker.templates import ANIMATED_STYLES, STYLE_PRESETS
+    assert "storybook_stickman" in STYLE_PRESETS and "storybook_stickman" in ANIMATED_STYLES
+    raw = ("Garum\n\nA Roman merchant checks his jars of fish sauce.\n"
+           "Visual: a Roman merchant leaning over clay jars of fermenting fish in a sunny courtyard by the sea\n")
+    spec = d.ProductionSpec.from_dict({"script": raw, "style": "storybook_stickman", "fast_cuts": False})
+    sc = d.direct_script(None, spec).scenes[0]
+    assert "stickman character" in sc.prompt and "period-accurate clothes" in sc.prompt
+    assert "realistic human face" in sc.negative and "faceless framing" not in sc.prompt

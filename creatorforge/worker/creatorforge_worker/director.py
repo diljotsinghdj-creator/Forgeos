@@ -11,7 +11,7 @@ from dataclasses import asdict, dataclass, field
 
 from .providers.base import ProviderError
 from .media.render import TRANSITIONS
-from .templates import (ANIMATED_STYLES, CUTOUT_LOOKS, EDITORIAL_LEADS, MIX_STYLE, EDITORIAL_NEGATIVE, PACING, STYLE_PRESETS, TEMPLATES,
+from .templates import (ANIMATED_STYLES, STYLE_NEGATIVE, CUTOUT_LOOKS, EDITORIAL_LEADS, MIX_STYLE, EDITORIAL_NEGATIVE, PACING, STYLE_PRESETS, TEMPLATES,
                         WORDS_PER_SECOND, Template)
 
 NEGATIVE = ("text, watermark, logo, caption, subtitles, letters, signature, gibberish text, garbled letters, "
@@ -736,6 +736,7 @@ def _image_prompt(visual: str, emotion: str, s: "ShotPlan", spec: ProductionSpec
         negative += ", typography, handwriting, printed words, newspaper text, poster text, sign text"
     if animated:
         negative += ", photorealistic, photograph, live action, 3d render of a real person"
+    negative += STYLE_NEGATIVE.get(spec.style, "")
     return ". ".join(parts), negative
 
 

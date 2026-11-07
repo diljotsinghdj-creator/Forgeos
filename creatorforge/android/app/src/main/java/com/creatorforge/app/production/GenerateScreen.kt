@@ -38,9 +38,9 @@ private val FALLBACK_STYLES = listOf(
     Choice("doodle", "Doodle / whiteboard"), Choice("painterly", "Hand-painted animation"), Choice("noir_graphic", "Noir graphic novel"),
     Choice("paper_cutout", "Paper cut-out"), Choice("isometric", "Isometric 3D"), Choice("low_poly", "Low-poly 3D"),
     Choice("retro_cartoon", "Retro cartoon"), Choice("pixel_art", "Pixel art"), Choice("neon", "Neon synthwave"),
-    Choice("collage", "Mixed-media collage")
+    Choice("collage", "Mixed-media collage"), Choice("storybook_stickman", "Storybook stickman")
 )
-private val ANIMATED_LOOKS = setOf("animated_3d", "anime", "claymation", "watercolor", "comic", "explainer_2d", "doodle",
+private val ANIMATED_LOOKS = setOf("storybook_stickman", "animated_3d", "anime", "claymation", "watercolor", "comic", "explainer_2d", "doodle",
     "painterly", "noir_graphic", "paper_cutout", "isometric", "low_poly", "retro_cartoon", "pixel_art", "neon")
 private val STAGE_LABELS = mapOf(
     "director" to "AI Director • script & shots", "prompts" to "PromptForge", "images" to "Scene visuals",

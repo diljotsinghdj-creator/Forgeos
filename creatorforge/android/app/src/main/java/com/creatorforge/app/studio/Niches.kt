@@ -60,6 +60,7 @@ object Styles {
         Triple("claymation", "Claymation", "stop-motion claymation style, handmade clay figures, visible fingerprints, miniature set, soft studio lighting"),
         Triple("watercolor", "Watercolor", "watercolor illustration, soft washes, paper texture, gentle hand-drawn lines"),
         Triple("comic", "Comic book", "comic book art, bold ink outlines, halftone shading, dynamic composition, saturated colors"),
+        Triple("storybook_stickman", "Storybook stickman", "storybook history illustration, every person drawn as a stickman character: a plain white round head with simple dot eyes, expressive eyebrows and a small mouth, thin black stick arms and legs, wearing real period-accurate clothes, sandals or shoes; clean black ink outlines, warm watercolor and gouache backgrounds full of authentic detail, soft natural light, consistent character design"),
     )
     fun prompt(id: String): String = presets.firstOrNull { it.first == id }?.third ?: id.ifBlank { presets[0].third }
     fun name(id: String): String = presets.firstOrNull { it.first == id }?.second ?: id

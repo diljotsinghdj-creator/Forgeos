@@ -95,6 +95,11 @@ STYLE_PRESETS: dict[str, tuple[str, str]] = {
                       "warm desk lamp light, film grain"),
     "kinetic": ("Editorial type (Shorts)", "black and white press photograph, one clear subject, plain light background, "
                 "documentary realism"),
+    "storybook_stickman": ("Storybook stickman", "storybook history illustration, every person drawn as a stickman "
+                           "character: a plain white round head with simple dot eyes, expressive eyebrows and a small "
+                           "mouth, thin black stick arms and legs, wearing real period-accurate clothes, sandals or "
+                           "shoes; clean black ink outlines, warm watercolor and gouache backgrounds full of authentic "
+                           "detail, soft natural light, consistent character design"),
     "collage": ("Mixed-media collage", "mixed-media collage, cut-out vintage photographs, torn paper, halftone textures, "
                 "bold graphic shapes"),
 }
@@ -124,5 +129,10 @@ EDITORIAL_NEGATIVE = (", collage, multiple images, grid, panels, busy background
                       "painting, drawing, illustration, portrait, close-up of a face")
 # Drawn / animated looks: characters may show faces even in AI video (cartoon faces don't turn uncanny), and the
 # worker renders them with its illustration model when one is installed (the photoreal model suits the rest).
-ANIMATED_STYLES = {"animated_3d", "anime", "claymation", "watercolor", "comic", "explainer_2d", "doodle", "painterly",
+# Things a look must never drift into, added to every image's negative prompt.
+STYLE_NEGATIVE = {
+    "storybook_stickman": ", realistic human face, nose, lips, skin texture, detailed anatomy, muscular arms, "
+                          "realistic hands, anime eyes, 3d render, photograph",
+}
+ANIMATED_STYLES = {"storybook_stickman", "animated_3d", "anime", "claymation", "watercolor", "comic", "explainer_2d", "doodle", "painterly",
                    "noir_graphic", "paper_cutout", "isometric", "low_poly", "retro_cartoon", "pixel_art", "neon"}
