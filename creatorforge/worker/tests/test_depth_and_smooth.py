@@ -37,3 +37,15 @@ def test_slow_clips_are_interpolated_only_at_60fps(tmp_path: Path):
     assert interp.smooth(clip, 30, tmp_path) == clip
     out = interp.smooth(clip, 60, tmp_path)
     assert out != clip and abs(interp.fps_of(out) - 60) < 0.5
+
+
+def test_fly_line_parses_places_and_flies_offline(tmp_path, monkeypatch):
+    from creatorforge_worker.media import flyover, motion
+    monkeypatch.setenv("CF_GEOCODE", "0")
+    monkeypatch.setenv("CF_MAP_OFFLINE", "1")
+    p = flyover.parse("Delhi=दिल्ली → Kota | रास्ता")
+    assert [x["name"] for x in p["places"]] == ["दिल्ली", "Kota"] and p["route"] and p["title"] == "रास्ता"
+    assert flyover.parse("Nowhere-Village-XYZ") is None             # unknown place: the line keeps its picture
+    if motion.enabled():
+        out = flyover.render(p, "investigative", 320, 180, 1.0, tmp_path / "f.mp4", tmp_path / "w", fps=6)
+        assert _probe(out, "stream=width,height") == "320,180"

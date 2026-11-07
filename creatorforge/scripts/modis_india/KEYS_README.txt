@@ -16,6 +16,11 @@ CreatorForge -> Generate -> Script. CreatorForge reads it like this:
   Draw: ............. a red pen mark that draws itself on over the line's last picture: circle, box, underline
                       (under the Text: callout), arrow, cross or tick - e.g. "Draw: circle" or "Draw: circle, arrow"
   Bubble: / Thought:  a speech bubble / thought cloud that pops in and types its words (keep under ~45 characters)
+  Fly: .............. a real-map fly-in (OpenStreetMap on the pod): the camera swoops from all of India down to
+                      the place, tilts in, pins drop and a route draws itself. "Fly: Kota | title",
+                      "Fly: Delhi → Khanauri | किसानों का रास्ता", "Fly: Delhi=दिल्ली → Mandi=मंडी" (name=Hindi label).
+                      A place it cannot find keeps the line on its picture; with no internet it flies over
+                      CreatorForge's own map.
   Map: .............. an animated map instead of the picture: "Map: France", "Map: Hong Kong | title",
                       "Map: London → Paris" (pins + a route drawing itself)
   Place: ............ a location stamp, e.g. "Place: PARIS · 1925" (pin drops, label types out)

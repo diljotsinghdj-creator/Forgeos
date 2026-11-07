@@ -878,13 +878,13 @@ def _is_heading(line: str) -> bool:
 
 # ---- writer's scripts: "0:05 SETUP A student thinks...", "On-screen hook: ...", "Visuals: ...", "Post: ..." ----------
 # Writer keys that fill the whole frame with a graphic instead of the line's picture.
-FULL_FRAME = ("map", "globe", "steps", "timeline", "icons", "chapter", "quote", "screen", "document", "statement",
+FULL_FRAME = ("fly", "map", "globe", "steps", "timeline", "icons", "chapter", "quote", "screen", "document", "statement",
               "object", "article", "chat", "search", "pie", "squares", "shade", "timer", "receipt")
 _META_KEYS = ("on-screen hook", "on screen hook", "onscreen hook", "hook text", "visuals", "visual", "visual style",
               "b-roll", "broll", "post title", "video title", "post", "title", "cover", "thumbnail", "caption", "description", "hashtags", "tags",
               "source", "sources", "music", "sfx", "on-screen text", "on screen text", "text on screen", "text",
               "stock footage", "stock", "chart", "graphic", "draw", "pen", "bubble", "thought",
-              "place", "cite", "map", "chapter", "quote", "steps", "globe", "timeline", "icons", "screen",
+              "place", "cite", "fly", "map", "chapter", "quote", "steps", "globe", "timeline", "icons", "screen",
               "document", "statement", "split", "archive", "object", "article", "big", "transition",
               "chat", "search", "pie", "squares", "shade", "timer", "receipt", "treat", "clip", "tone", "mood",
               "animate", "animation", "cartoon")

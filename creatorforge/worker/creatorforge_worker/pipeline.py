@@ -1761,6 +1761,18 @@ class Pipeline:
                             if plan is None:
                                 continue
                             return maps.render(plan, theme, size[0], size[1], seconds, out, work)
+                        if kind == "fly":            # a real-map fly-in; the flat animated map if it can't fly
+                            from .media import flyover
+                            fplan = flyover.parse(extra[kind])
+                            if fplan is not None:
+                                try:
+                                    return flyover.render(fplan, theme, size[0], size[1], seconds, out, work)
+                                except MediaError:
+                                    pass
+                            plan = maps.parse(re.sub(r"=[^→|]*", "", extra[kind]))
+                            if plan is None:
+                                continue
+                            return maps.render(plan, theme, size[0], size[1], seconds, out, work)
                         if kind in ("map", "globe"):
                             plan = maps.parse(extra[kind])
                             if plan is None:
