@@ -241,6 +241,14 @@ if ! pgrep -f "pip install -q whisperx" >/dev/null && ! [ -x /workspace/whisperx
     && mv /workspace/whisperx.part /workspace/whisperx && echo 'whisperx ready'" > whisperx.log 2>&1 &
 fi
 
+say "60 fps: RIFE frame interpolation (free, MIT) installs in the background (log: $HOME_DIR/rife.log)"
+# Used only when CF_FPS=60 (worker.env). Without it, FFmpeg's own motion interpolation is the fallback.
+if ! [ -x /workspace/rife/rife-ncnn-vulkan ]; then
+  nohup bash -c "cd /workspace && curl -fsSL -o rife.zip https://github.com/nihui/rife-ncnn-vulkan/releases/download/20221029/rife-ncnn-vulkan-20221029-ubuntu.zip \
+    && unzip -q -o rife.zip && rm -rf rife && mv rife-ncnn-vulkan-20221029-ubuntu rife && chmod +x rife/rife-ncnn-vulkan \
+    && rm -f rife.zip && echo 'rife ready'" > rife.log 2>&1 &
+fi
+
 say "3D intros: Blender (free, GPL) installs in the background (log: $HOME_DIR/blender.log)"
 # Blender's own Python module (bpy) needs Python 3.11; it lives in its own venv so the worker's packages stay untouched.
 if ! pgrep -f "pip install -q bpy" >/dev/null && ! [ -x /workspace/bpy/bin/python ] ; then

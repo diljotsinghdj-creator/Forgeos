@@ -3,6 +3,7 @@ and overlays into the final H.264/AAC MP4 with FFmpeg."""
 from __future__ import annotations
 
 import hashlib
+import os
 import re
 import threading
 import wave
@@ -11,7 +12,9 @@ from pathlib import Path
 
 from . import ff
 
-FPS = 30
+# 30, or 60 for smoother motion (CF_FPS=60 on the pod): stills, camera moves and graphics render natively at it,
+# AI clips are interpolated up to it (media/interp.py).
+FPS = 60 if os.environ.get("CF_FPS", "30") == "60" else 30
 TRANSITION_S = 0.5  # longest transition; also the tail after the last scene
 CHUNK_SHOTS = 60   # longer films are assembled this many shots at a time (memory and time stay bounded)
 # Editorial transition vocabulary used by templates and Auto Edit -> (FFmpeg xfade, seconds).

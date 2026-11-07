@@ -1434,6 +1434,21 @@ class Pipeline:
         if spec.style in EDITORIAL_STYLES:
             self._lay_out(clips, chart_files, spec.style, w, h, work, cancel, firsts)
         tracked = self._attach_marks(clips, spec, t, w, h, work) if spec.fast_cuts else set()
+        self._depth_moves(job, clips, w, h, work, cancel)
+        if render.FPS >= 50:                 # 60 fps: AI clips (16-24 fps) get their in-between frames invented
+            from .media import interp
+            smoothed = 0
+            for c in clips:
+                if c.video is not None and not c.stepped:
+                    try:
+                        new = interp.smooth(c.video, render.FPS, work)
+                    except MediaError:
+                        continue
+                    if new != c.video:
+                        c.video, c.video_duration = new, ff.duration(new)
+                        smoothed += 1
+            if smoothed:
+                job["providers"]["smooth_60fps"] = f"{smoothed} clip{'s' if smoothed != 1 else ''} interpolated"
 
         heads = [clips[j] for j in firsts]   # one per scene, for scene-level bookkeeping below
         if use_video and any(c.video is None and sc.get("ai_video", True) and not sc.get("beat_videos")
@@ -1800,6 +1815,42 @@ class Pipeline:
             except MediaError:
                 return None                      # a chart that can't be drawn falls back to the picture
         return out
+
+    def _depth_moves(self, job: dict, clips: list, w: int, h: int, work: Path, cancel) -> None:
+        """Plain pictures get a 3D camera move (Depth Anything V2 Small): the camera dollies into the scene and near
+        things pass faster than far ones. Only on a GPU (CF_DEPTH3D=1 forces it on a CPU); any failure keeps the
+        flat move for that shot."""
+        from .media import depth3d
+        if not depth3d.enabled():
+            return
+        try:
+            import torch
+            gpu = torch.cuda.is_available()
+        except ImportError:
+            gpu = False
+        if not gpu and os.environ.get("CF_DEPTH3D") != "1":
+            return
+        done, failed = 0, 0
+        for i, c in enumerate(clips):
+            if cancel.is_set():
+                raise Cancelled()
+            if (c.video is not None or c.layers is not None or c.backdrop is not None or c.marks is not None
+                    or c.reveal or c.stepped or c.grade or c.camera in ("static", "locked")
+                    or not Path(c.image).is_file()):
+                continue
+            move = "left" if "left" in c.camera else "right" if "right" in c.camera else "push"
+            secs = round(c.duration + render.TRANSITION_S + 0.1, 2)
+            out = work / f"depth3d_{_key(str(c.image), move, w, h, secs, render.FPS)[:16]}.mp4"
+            try:
+                if not out.is_file():
+                    depth3d.render(Path(c.image), depth3d.estimate(Path(c.image)), secs, out, w, h, render.FPS, move)
+                c.video, c.video_duration = out, ff.duration(out)
+                done += 1
+            except Exception:  # noqa: BLE001 - this shot keeps its flat move
+                failed += 1
+        if done:
+            job["providers"]["camera_3d"] = f"Depth Anything V2 Small: {done} shot{'s' if done != 1 else ''}" + \
+                (f" ({failed} kept the flat move)" if failed else "")
 
     def _verify(self, job: dict, cancel) -> None:
         jdir = self.store.dir(job["id"])

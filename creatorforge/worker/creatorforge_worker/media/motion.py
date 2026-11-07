@@ -266,7 +266,7 @@ def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: f
     plan = plan_for(kind, spec)
     if plan is None:
         raise MediaError(f"motion: nothing to draw from {spec!r}")
-    fps = int(fps or os.environ.get("CF_MOTION_FPS", "30"))
+    fps = int(fps or os.environ.get("CF_MOTION_FPS") or (60 if os.environ.get("CF_FPS") == "60" else 30))
     seconds = max(1.5, float(seconds))
     th = THEMES.get(theme, THEMES["editorial"])
     page = (_PAGE.replace("%SVGJS%", VENDOR.read_text(encoding="utf-8")).replace("%FONTFACE%", _font_face())
