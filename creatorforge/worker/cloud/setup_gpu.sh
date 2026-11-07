@@ -249,6 +249,16 @@ if ! [ -x /workspace/rife/rife-ncnn-vulkan ]; then
     && rm -f rife.zip && echo 'rife ready'" > rife.log 2>&1 &
 fi
 
+# Talking mascot (LatentSync, Apache-2.0 code): opt-in - a ~6 GB model. Put CF_LIPSYNC=1 in worker.env, re-run setup.
+if { [ "${CF_LIPSYNC:-0}" = "1" ] || grep -qs '^CF_LIPSYNC=1' worker.env; } && ! [ -f /workspace/latentsync/checkpoints/latentsync_unet.pt ] \
+   && ! pgrep -f "LatentSync" >/dev/null; then
+  say "Talking mascot: LatentSync installs in the background (log: $HOME_DIR/latentsync.log)"
+  nohup bash -c "set -e; [ -d /workspace/latentsync/.git ] || git clone --depth 1 https://github.com/bytedance/LatentSync /workspace/latentsync; \
+    cd /workspace/latentsync && python3 -m venv venv && venv/bin/pip install -q -r requirements.txt huggingface_hub \
+    && venv/bin/python -c \"from huggingface_hub import snapshot_download; snapshot_download('ByteDance/LatentSync-1.5', local_dir='checkpoints')\" \
+    && echo 'latentsync ready'" > latentsync.log 2>&1 &
+fi
+
 say "3D intros: Blender (free, GPL) installs in the background (log: $HOME_DIR/blender.log)"
 # Blender's own Python module (bpy) needs Python 3.11; it lives in its own venv so the worker's packages stay untouched.
 if ! pgrep -f "pip install -q bpy" >/dev/null && ! [ -x /workspace/bpy/bin/python ] ; then

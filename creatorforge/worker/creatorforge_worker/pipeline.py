@@ -11,6 +11,7 @@ import json
 import os
 import re
 import shutil
+import subprocess
 import tempfile
 import threading
 from pathlib import Path
@@ -54,6 +55,14 @@ class StageFailed(Exception):
 
 class ReviewPause(Exception):
     pass
+
+
+def _talk_of(shot: dict) -> str:
+    """The character a "Talk:" line asks to speak this line (on the line itself or on its first beat)."""
+    for extra in [shot.get("extra") or {}] + [b.get("extra") or {} for b in (shot.get("beats") or [])[:1]]:
+        if str(extra.get("talk") or "").strip():
+            return str(extra["talk"]).strip()
+    return ""
 
 
 def _key(*parts) -> str:
@@ -1434,6 +1443,7 @@ class Pipeline:
         if spec.style in EDITORIAL_STYLES:
             self._lay_out(clips, chart_files, spec.style, w, h, work, cancel, firsts)
         tracked = self._attach_marks(clips, spec, t, w, h, work) if spec.fast_cuts else set()
+        self._talking(job, clips, firsts, w, h, work, cancel)
         self._depth_moves(job, clips, w, h, work, cancel)
         if render.FPS >= 50:                 # 60 fps: AI clips (16-24 fps) get their in-between frames invented
             from .media import interp
@@ -1827,6 +1837,42 @@ class Pipeline:
             except MediaError:
                 return None                      # a chart that can't be drawn falls back to the picture
         return out
+
+    def _talking(self, job: dict, clips: list, firsts: list[int], w: int, h: int, work: Path, cancel) -> None:
+        """The writer's "Talk: Dastango" lines: that line's picture of the mascot speaks the narration (LatentSync).
+        Only when lip-sync is installed (CF_LIPSYNC=1); a face it can't find keeps the line's picture."""
+        from .media import lipsync
+        shots = job["plan"]["scenes"]
+        wanted = [i for i, shot in enumerate(shots) if _talk_of(shot)]
+        if not wanted:
+            return
+        if not lipsync.available():
+            job.setdefault("warnings", []).append(
+                "Talk: lines need lip-sync on the pod (CF_LIPSYNC=1 in worker.env, then run the setup) - "
+                "those lines kept their pictures")
+            return
+        jdir = self.store.dir(job["id"])
+        done = 0
+        for i in wanted:
+            if cancel.is_set():
+                raise Cancelled()
+            if i >= len(firsts) or i >= len(job["scenes"]):
+                continue
+            c, sc = clips[firsts[i]], job["scenes"][i]
+            audio = jdir / sc.get("narration", "")
+            if not sc.get("narration") or not audio.is_file():
+                continue
+            src = c.video if c.video is not None else Path(c.image)
+            out = work / f"talk_{_key(str(src), str(audio), w, h)[:16]}.mp4"
+            try:
+                if not out.is_file():
+                    lipsync.talk(Path(src), audio, out, w, h, float(sc.get("narration_s") or c.duration))
+                c.video, c.video_duration = out, ff.duration(out)
+                done += 1
+            except (MediaError, OSError, subprocess.SubprocessError) as e:
+                job.setdefault("warnings", []).append(f"Talk on line {i + 1} kept its picture ({str(e)[:80]})")
+        if done:
+            job["providers"]["lipsync"] = f"LatentSync: {done} talking shot{'s' if done != 1 else ''}"
 
     def _depth_moves(self, job: dict, clips: list, w: int, h: int, work: Path, cancel) -> None:
         """Plain pictures get a 3D camera move (Depth Anything V2 Small): the camera dollies into the scene and near
