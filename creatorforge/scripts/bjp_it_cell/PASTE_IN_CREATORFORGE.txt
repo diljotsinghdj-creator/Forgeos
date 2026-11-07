@@ -7,10 +7,12 @@ Tags: #BJPITCell #FakeNews #WhatsApp #AmitMalviya #Propaganda #PoliticalAds #Hin
 Tone: dramatic
 Place: 8:00 AM
 Visual: Close-up of dozens of smartphones lying face-up on a dark glass table, all lighting up at the same instant with chat notifications, cinematic blue glow, shallow depth of field
+Stock: smartphone notifications
 
 एक ही मैसेज। एक ही वक़्त। लाखों ग्रुप्स में।
 Tone: urgent
 Visual: One glowing message bubble splitting into thousands of light trails that race across a dark digital map of India like a network, navy and crimson, cinematic
+Stock: network connections digital
 Text: ILLUSTRATION
 
 ये बात बीजेपी के तब के अध्यक्ष अमित शाह ने, अपने ही कार्यकर्ताओं के सामने, मंच से कही थी।
@@ -20,6 +22,7 @@ Article: Real or Fake, We Can Make Any Message Go Viral: Amit Shah to BJP Social
 और जो कहा, वो सुनकर आप चौंक जाएँगे।
 Tone: question
 Visual: A huge modern conference hall with a giant LED stage screen and rows of young volunteers on laptops seen from behind, blue stage-light haze, cinematic wide shot
+Stock: conference hall audience
 
 उन्होंने कहा, हम कोई भी मैसेज वायरल कर सकते हैं। खट्टा हो या मीठा। सच्चा हो या झूठा।
 Tone: strong
@@ -46,6 +49,7 @@ Tone: calm
 Chapter: Part 1 | मंच से क़बूलनामा
 Place: KOTA, RAJASTHAN · SEP 2018
 Visual: Aerial night view of Kota city lights with modern high-rise towers, cinematic drone shot
+Stock: india city night aerial
 
 अमित शाह ने बताया, उत्तर प्रदेश चुनाव में पार्टी के दो बड़े व्हाट्सऐप नेटवर्क थे। एक में पंद्रह लाख लोग। दूसरे में सत्रह लाख।
 Tone: strong
@@ -59,6 +63,7 @@ Chart: 0 → 32 लाख | व्हाट्सऐप पर लोग · ए�
 Tone: calm
 Place: हर सुबह · 8:00 AM
 Visual: Extreme close-up of a smartphone lock screen at 8:00 AM with a stack of forwarded-message notifications, coffee cup blurred behind, cool morning light
+Stock: smartphone notification morning
 
 और फिर शाह ने एक उदाहरण दिया। जो इस पूरी कहानी की चाबी है।
 Tone: question
@@ -86,6 +91,7 @@ Text: दूसरा पक्ष
 Tone: question
 Chapter: Part 2 | व्हाट्सऐप फ़ैक्टरी
 Visual: Endless corridor of a modern data centre with blue server lights and neat cables, symmetrical cinematic shot
+Stock: data center servers
 
 डेक्कन हेराल्ड की एक रिपोर्ट के मुताबिक़, 2024 के चुनाव के लिए पार्टी पचास लाख व्हाट्सऐप ग्रुप्स पर भरोसा कर रही थी।
 Tone: strong
@@ -105,6 +111,7 @@ Article: Inside the BJP's WhatsApp machine | Rest of World, May 2024
 Tone: calm
 Place: MANDI, HIMACHAL PRADESH · 2024
 Visual: Aerial view of Mandi town in Himachal with modern buildings along the Beas river and green mountains
+Stock: himachal mountains town
 
 उनमें मोदी की तारीफ़ थी, सरकारी योजनाओं का प्रचार था। पर साथ में, फ़ेक न्यूज़, साज़िश की कहानियाँ, और नफ़रत भरी बातें भी।
 Tone: strong
@@ -121,6 +128,7 @@ Statement: सच पीछे। *झूठ पहले।*
 बंद ग्रुप का मैसेज अजनबी का नहीं लगता। वो चाचा का फ़ॉरवर्ड होता है, दोस्त का।
 Tone: calm
 Visual: A family chat group on a modern smartphone receiving a forwarded message, in a stylish city apartment living room
+Stock: family smartphone living room
 
 भरोसा पहले से होता है। मशीन बस उस भरोसे का इस्तेमाल करती है।
 Tone: strong
@@ -131,11 +139,13 @@ Tone: strong
 Chapter: Part 3 | आईटी सेल का चेहरा
 Text: बीजेपी आईटी सेल प्रमुख · अगस्त 2026 तक
 Visual: A dark empty room with a wall of monitors showing social media dashboards and rising trend graphs, cinematic blue light
+Stock: social media monitors
 
 नवंबर 2020. किसान आंदोलन। राहुल गांधी ने एक बुज़ुर्ग किसान पर लाठी उठाते पुलिसवाले की तस्वीर पोस्ट की।
 Tone: calm
 Place: NEW DELHI · NOV 2020
 Visual: A laptop on a dark desk showing a viral political photo post on a social feed with the likes counter climbing, image blurred, cinematic
+Stock: laptop typing dark
 
 मालवीय ने जवाब में एक वीडियो डाला, जिसमें लाठी किसान को छूती नहीं दिखती।
 Tone: calm
@@ -181,11 +191,13 @@ Article: Deepak Mhaskey replaces Amit Malviya as BJP IT cell chief | Newslaundry
 Tone: calm
 Text: दूसरा पक्ष
 Visual: A single microphone on a press podium under a spotlight in an empty dark hall
+Stock: microphone press conference
 
 अब बात उनकी, जो इस मशीन के अंदर थे। और बाहर आकर बोले।
 Tone: dramatic
 Chapter: Part 4 | अंदर के लोग
 Visual: A dim modern co-working space at night with rows of empty desks and glowing monitors
+Stock: office night computers
 
 2016. पत्रकार स्वाति चतुर्वेदी की किताब आई। आई एम अ ट्रोल।
 Tone: calm
@@ -230,6 +242,7 @@ Statement: बहस नहीं। *आवाज़ थकाना।*
 Tone: strong
 Chapter: Part 5 | करोड़ों का खेल
 Visual: A trading-floor style wall of screens in a glass office showing rising digital ad spend charts
+Stock: stock market screens
 
 गूगल का अपना ऐड डेटा देखिए। 29 जनवरी से 28 फ़रवरी 2024. सिर्फ़ तीस दिन।
 Tone: calm
@@ -274,6 +287,7 @@ Text: दूसरा पक्ष · मेटा: नीतियाँ सब
 और ये पार्टी का पैसा है। अब सरकार का देखिए।
 Tone: question
 Visual: Giant digital billboards over a modern Mumbai expressway at night
+Stock: mumbai night traffic
 
 लोकसभा में दिए एक जवाब के हवाले से, मोदी सरकार ने 2014 से, आठ साल आठ महीने में, सिर्फ़ प्रिंट और टीवी के विज्ञापनों पर, 6,491 करोड़ रुपये ख़र्च किए।
 Tone: strong
@@ -289,11 +303,13 @@ Text: आलोचकों का तर्क
 Tone: question
 Chapter: Part 6 | प्लेटफ़ॉर्म की चुप्पी
 Visual: Glass headquarters of a big tech company in Gurugram at night, logo not visible
+Stock: glass office building night
 
 अगस्त 2020 में वॉल स्ट्रीट जर्नल की एक रिपोर्ट आई।
 Tone: calm
 Place: WALL STREET JOURNAL · AUG 2020
 Visual: A stack of printed broadsheet newspapers on a dark desk with one headline highlighted in red marker, logos not visible, cinematic
+Stock: newspapers printing press
 
 रिपोर्ट का दावा, फ़ेसबुक इंडिया की पॉलिसी प्रमुख अंखी दास ने, बीजेपी विधायक टी राजा सिंह पर, हेट स्पीच के नियम लागू करने का विरोध किया।
 Tone: strong
@@ -323,6 +339,7 @@ Visual: A phone feed scrolling through sponsored political ads with red warning 
 Tone: question
 Chapter: Part 7 | डिलीट का बटन
 Visual: A finger hovering over a glowing red delete button on a sleek tablet in a modern glass office
+Stock: touchscreen tablet office
 
 जनवरी 2023. बीबीसी की दो हिस्सों वाली डॉक्यूमेंट्री आई। इंडिया: द मोदी क्वेश्चन। गुजरात दंगों पर।
 Tone: calm
@@ -355,6 +372,7 @@ Visual: A laptop in a dark newsroom showing a video thumbnail with a bold red BL
 Tone: dramatic
 Place: DELHI & MUMBAI · 14 FEB 2023
 Visual: A modern glass office tower in central Delhi at night with traffic light trails below
+Stock: delhi night traffic
 
 सरकार ने कहा, कोई क़ानून से ऊपर नहीं। बीबीसी ने कहा, वो पूरा सहयोग कर रहा है।
 Tone: calm
@@ -454,6 +472,7 @@ Statement: मशीन को हराने का तरीक़ा: *ब�
 Tone: strong
 Chapter: Part 9 | आपकी ढाल
 Visual: A young professional in a modern Bengaluru cafe pausing before forwarding a message on her phone
+Stock: woman cafe smartphone
 
 तीन सवाल पूछिए। ये आया कहाँ से? इसका पूरा वीडियो कहाँ है? और किसका फ़ायदा है, कि मैं इसे बिना सोचे आगे भेजूँ?
 Tone: question
@@ -462,6 +481,7 @@ Steps: कहाँ से आया? → पूरा वीडियो कह
 फ़ोटो को गूगल लेंस में डालिए। ऑल्ट न्यूज़, बूम या फ़ैक्टली पर खोजिए। दो मिनट लगते हैं।
 Tone: calm
 Visual: Screen recording of a reverse image search with Google Lens on a modern smartphone, then a fact-check website search page
+Stock: smartphone scrolling
 
 क्योंकि बत्तीस लाख लोगों तक मैसेज पहुँचाने वाली मशीन भी, एक चीज़ से हारती है। उस एक इंसान से, जो फ़ॉरवर्ड नहीं करता।
 Tone: dramatic
