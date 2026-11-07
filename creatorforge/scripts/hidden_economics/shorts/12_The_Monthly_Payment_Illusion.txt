@@ -1,0 +1,63 @@
+The Monthly Payment Illusion
+On-screen hook: £50 = £600?
+Title: £50 a Month Is Really £600: The Monthly Payment Illusion
+Tags: #HiddenEconomics #buynowpaylater #debt #personalfinance #budgeting
+
+Fifty pounds a month. Really six hundred.
+Visual: A single fifty-pound banknote lying on a wooden table
+Visual: A brand-new sofa wrapped in plastic in a furniture showroom
+Text: £50 A MONTH = £600
+Draw: underline
+Split: What you see | What you pay
+
+Twelve payments of fifty. And that's before a single fee.
+Visual: Twelve torn calendar pages laid in a grid on a desk
+Visual: A row of twelve paper envelopes on a desk, one for each month
+Chart: £50 × 12 = £600 | twelve monthly payments
+
+So how high can the real price go?
+Visual: A paper price tag tied with string to a stack of coins
+Visual: A printed fees table with one row circled in red, text unreadable
+Text: + FEES?
+
+Picture a plan that adds a twenty-pound arrangement fee.
+Visual: A printed payment-plan letter on a desk, one line circled, text unreadable
+Text: FICTIONAL PLAN · ILLUSTRATION
+Draw: circle
+Treat: halftone
+
+The total becomes six hundred and twenty. The advert still says fifty.
+Visual: A calculator on a desk showing a long sum, digits blurred
+Visual: A shop window advert with one large price, text unreadable
+Receipt: Payment plan | 12 × £50.00 · *Arrangement fee £20.00 · Total £620.00
+Transition: flash
+
+Splitting costs can genuinely help budgeting. So where's the risk?
+Visual: Hands writing a household budget in a notebook, writing unreadable
+Visual: A family seen from behind around a kitchen table at night
+Thought: Only fifty a month. Easy.
+Transition: whip
+
+It shrinks the number your brain actually weighs.
+Visual: A magnifying glass over a small monthly figure on a contract, text unreadable
+Big: SHRINKS
+Treat: duotone
+
+Before you sign, multiply. Payment times months, plus every fee.
+Visual: A furniture showroom sales desk with a pen and an open folder
+Visual: A pencil writing a sum on the back of an envelope, figures unreadable
+Text: PAYMENT × MONTHS + FEES
+Stock: signing a contract
+Steps: Payment → × Months → + Every fee → Real price | Before you sign
+
+Fifty or six hundred? Only one of those is the real price.
+Visual: A single banknote beside a tall stack of banknotes on a table
+Visual: A receipt with its total circled in red pen, text unreadable
+Text: £600+
+Draw: box
+Big: REAL PRICE
+
+Which of your monthly payments looks different once you multiply it?
+Visual: A pile of monthly payment letters on a kitchen table, text unreadable
+Visual: A hand tapping an old calculator beside a pen, figures unreadable
+Text: MULTIPLY YOURS

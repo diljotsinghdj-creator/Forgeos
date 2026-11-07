@@ -1,0 +1,75 @@
+The Countdown That Lies
+On-screen hook: IS THAT COUNTDOWN REAL?
+Title: The Countdown That Lies: What Regulators Found About Fake Sale Timers
+Tags: #CorporateAutopsies #darkpatterns #onlineshopping #FTC #consumerrights
+Source: Mathur et al., Dark Patterns at Scale: Findings from a Crawl of 11K Shopping Websites (Princeton/UChicago, 2019), https://arxiv.org/pdf/1907.07032; UChicago News, The dirty tricks of online shopping, https://news.uchicago.edu/story/dirty-tricks-online-shopping-designed-make-you-spend-more; European Commission CPC sweep of 399 online shops (Jan 2023), summary at https://www.cde.ual.es/en/european-commission-detects-manipulation-practices-in-148-of-the-399-online-stores-examined; Malwarebytes, 40% of online shops tricking users with dark patterns (Jan 2023), https://www.malwarebytes.com/blog/news/2023/01/european-commission-goes-after-dark-patterns-in-web-shops; FTC staff report, Bringing Dark Patterns to Light (Sep 2022), https://www.ftc.gov/reports/bringing-dark-patterns-light; Venable, The FTC brings more light to dark patterns in new staff report, https://www.venable.com/insights/blogs/2022/09/the-ftc-brings-more-light-to-dark-patterns-in-new
+
+One in ten shops used fake countdown timers.
+Visual: A laptop on a kitchen table showing a shop page with a red timer, text unreadable
+Visual: A thumb hovering over a buy button on a phone, text unreadable
+Text: 1 IN 10 SHOPS: FAKE TIMERS
+
+European regulators found that in twenty twenty-three, checking three hundred ninety-nine shops.
+Visual: Flags outside a European government building seen across a square
+Visual: Hands typing on a laptop beside a printed checklist, text unreadable
+Pie: 11% | of shops checked used fake timers (42 of 399)
+Cite: European Commission CPC sweep, Jan 2023
+
+So is the one you're watching real?
+Visual: A phone lying face up on a sofa cushion, screen text unreadable
+Text: IS YOURS REAL?
+Transition: whip
+
+In twenty nineteen, Princeton researchers crawled eleven thousand shopping websites.
+Visual: Rows of server racks with blinking lights in a data centre
+Visual: A university library reading room with long wooden tables
+Text: 11,000 SHOPPING SITES CRAWLED
+Cite: Mathur et al., 2019
+Treat: halftone
+
+They found sale timers that simply reset when the page reloaded.
+Visual: A finger pressing the refresh key on a laptop keyboard
+Visual: A laptop screen showing a shop page with a timer, text unreadable
+Timer: 09:59 → 00:00 | Sale ends (illustration)
+Cite: Mathur et al., 2019
+
+And the "only two left" warning?
+Visual: A phone showing a product page with a small red stock warning, text unreadable
+Visual: A warehouse shelf fully stacked with identical boxes, labels unreadable
+Text: "ONLY 2 LEFT"?
+Draw: circle
+
+The FTC lists false low-stock claims as a dark pattern.
+Visual: A government office building with flags outside, seen across a street
+Visual: A thick printed report on a desk with sticky tabs, text unreadable
+Article: Bringing Dark Patterns to Light | FTC Staff Report, September 2022
+
+Its twenty twenty-two report names fake countdown timers too.
+Visual: A hand flipping pages of a printed report, text unreadable
+Visual: An old kitchen timer ticking on a white desk
+Text: FAKE TIMERS · FALSE LOW STOCK
+Cite: FTC, Sep 2022
+Treat: duotone
+
+Why use them? The FTC says urgency pushes shoppers to decide fast.
+Visual: A shopper seen from behind tapping quickly on a phone in a café
+Visual: A wristwatch on a wrist beside a laptop keyboard
+Text: URGENCY → FAST DECISIONS
+Cite: FTC, Sep 2022
+
+Here's the test: reload the page. Does the clock start over?
+Visual: A finger tapping the reload arrow on a laptop trackpad
+Visual: A laptop screen with a timer at the top, text unreadable
+Big: RELOAD
+Draw: arrow
+
+If it does, the countdown was never counting down to anything.
+Visual: An old alarm clock with no hands on a bedside table
+Visual: A laptop closed on a kitchen table in morning light
+Text: THE DEADLINE WAS FAKE
+Draw: cross
+
+Fake urgency is their tool. Taking your time is yours.
+Visual: A person seen from behind closing a laptop and standing up from a table
+Visual: A cup of tea steaming beside a closed laptop in afternoon light
+Text: TAKE YOUR TIME

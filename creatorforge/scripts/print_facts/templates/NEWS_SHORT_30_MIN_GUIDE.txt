@@ -1,0 +1,33 @@
+NEWS SHORT IN 30 MINUTES - Print Facts (Hindi)
+
+Your two best Shorts (1.2k and 1.3k views) reacted to that day's political news. This turns a fresh story into a
+40-second Hindi Short fast. Post within a few hours of the news, 6-9 pm IST.
+
+MINUTE 0-10: PICK AND CHECK
+  1. Pick ONE story trending today (Rahul Gandhi, Election Commission, Modi/Shah, Delhi protests did best).
+  2. Open 2 news reports on it. Copy their links. Note 1 number or 1 exact quote.
+  3. Write down the other side's response (the EC, the BJP, the government). One line is enough.
+
+MINUTE 10-20: FILL THE TEMPLATE (TEMPLATE_News_Short_Hindi.txt)
+  Replace every [BRACKET]. Keep each spoken line under 12 words. 7 lines total, about 80 words.
+    Line 1  HOOK      the most shocking fact or quote, said first. Under 8 words. Tone: dramatic
+    Line 2  WHO       who said/did it, and where. Real name (CreatorForge shows their real photo).
+    Line 3  WHAT      the exact quote or number - on screen as Quote:/Chart:, cited
+    Line 4  WHY NOW   one line of context: what led to this
+    Line 5  OTHER SIDE the response (keeps you fair and safe)  Tone: calm
+    Line 6  STAKES    why it matters to the viewer  Tone: strong
+    Line 7  QUESTION  ask the viewer + point to the long video  Tone: question
+  Put both news links in Source: - the Article: line and any newspaper picture use the REAL page.
+
+MINUTE 20-30: MAKE AND POST
+  CreatorForge -> Generate -> Script -> paste. 9:16 Shorts, Fast cuts, voice "Hindi news anchor male ★", pace 1.1x.
+  Title formula (Hinglish, under 60 characters):   🔥 [Name] Ka [Shock Word]! [Short question]?
+     e.g.  🔥 Rahul Gandhi Ka Gyanesh Kumar Par Hamla! 30 Second Mein Khatam?
+  Description: the two source links. Related video: link your long video on the same story.
+  Pinned comment: "पूरी कहानी: [long video link]"
+
+RULES THAT KEEP THE CHANNEL SAFE
+  - A claim is said as a claim ("राहुल का आरोप", "आयोग का कहना"), never as a proven fact.
+  - Always one line of the other side.
+  - Never another channel's video clip (copyright strikes made some of your Shorts private). Use real photos,
+    article screenshots and Quote: cards of posts - CreatorForge makes those automatically.

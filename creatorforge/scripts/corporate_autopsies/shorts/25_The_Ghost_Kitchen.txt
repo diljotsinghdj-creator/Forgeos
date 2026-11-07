@@ -1,0 +1,77 @@
+The Ghost Kitchen
+On-screen hook: 12 RESTAURANTS. 1 KITCHEN?
+Title: 12 Restaurants, One Sports Bar: Inside the Ghost Kitchen Boom
+Tags: #CorporateAutopsies #ghostkitchen #fooddelivery #virtualbrands #restaurants
+Source: Nation's Restaurant News, Brinker banks on virtual brand It's Just Wings growing into $150 million annual business (Aug 2020), https://www.nrn.com/restaurant-finance/brinker-banks-on-virtual-brand-it-s-just-wings-growing-into-150-million-annual-business; Fortune, Uber Eats removes thousands of virtual brands (Mar 27, 2023, citing The Wall Street Journal), https://fortune.com/2023/03/27/uber-eats-removews-thousands-virtual-brands/; Fox Business, Uber Eats to take down thousands of virtual brands to declutter the app (Mar 2023), https://foxbusiness.com/technology/uber-eats-take-down-thousands-virtual-brands-declutter-app; Benzinga, Uber Eats Cleanup: Company To Pull Off 5K Virtual Brands To Prevent Menu Duplication (Mar 2023), https://www.benzinga.com/news/23/03/31512354/uber-eats-cleanup-company-to-pull-off-5k-virtual-brands-to-prevent-menu-duplication
+
+Twelve restaurants on your app. One kitchen?
+Visual: A thumb scrolling a long list of restaurant tiles on a phone, text unreadable
+Visual: A single steel restaurant kitchen at night with one cook seen from behind
+Text: 12 RESTAURANTS · 1 KITCHEN?
+Thought: Who is actually cooking this?
+
+One Colorado sports bar ran twelve brands, the Wall Street Journal reported.
+Visual: An empty sports bar with screens and bar stools in the afternoon
+Visual: A row of twelve paper order tickets clipped above a kitchen grill, text unreadable
+Text: 1 SPORTS BAR · 12 BRANDS
+Cite: Wall Street Journal via Fortune, March 2023
+
+All selling the same breakfast burritos. Could yours be one?
+Visual: Gloved hands rolling a breakfast burrito in foil on a steel counter
+Visual: Rows of identical foil-wrapped burritos under a heat lamp
+Text: SAME BURRITO, 12 NAMES
+Big: SAME FOOD
+
+They're virtual brands: delivery-only names cooked inside another restaurant.
+Visual: Paper delivery bags lined up on a steel pass, labels unreadable
+Visual: A courier seen from behind collecting a sealed bag at a restaurant counter
+Text: VIRTUAL BRAND = DELIVERY-ONLY NAME
+Treat: halftone
+
+In twenty twenty, Chili's owner switched one on in over a thousand kitchens.
+Visual: A row of casual-dining restaurants along a suburban road at dusk
+Visual: Gloved hands tossing chicken wings in a steel bowl in a restaurant kitchen
+Chart: 1,050 | kitchens, one new wing brand, 2020
+Cite: Nation's Restaurant News, 2020
+
+But here's the catch: some kitchens kept copying themselves.
+Visual: A printer pushing out identical paper menus one after another, text unreadable
+Visual: Several identical takeaway boxes stacked on a steel counter
+Text: SAME KITCHEN · NEW NAME · AGAIN
+Transition: whip
+
+So what did Uber Eats do next?
+Visual: A phone lying face up on a kitchen table showing a food app, text unreadable
+Visual: A delivery cyclist seen from behind waiting at a city traffic light
+Text: WHAT HAPPENED NEXT?
+Transition: flash
+
+In twenty twenty-three, it said it would remove about five thousand virtual brands.
+Visual: A hand pressing a delete key on a laptop keyboard
+Visual: A long printed list with many rows crossed out in red pen, text unreadable
+Text: ABOUT 5,000 VIRTUAL BRANDS REMOVED
+Article: Uber Eats to take down thousands of virtual brands to declutter the app | Fox Business, March 2023
+Cite: Fortune / Fox Business, March 2023
+
+Now a virtual brand needed a menu mostly its own.
+Visual: A printed restaurant menu with red pen marks beside several dishes, text unreadable
+Visual: Five different plated dishes lined up on a steel pass
+Text: NEW RULE: A MENU MOSTLY ITS OWN
+Cite: Uber Eats rules, via Fortune, 2023
+
+So how do you spot one? Check the listing's address.
+Visual: A finger zooming in on a map pin on a phone screen, text unreadable
+Visual: A restaurant's street number plate on a brick wall beside a door
+Screen: Restaurant listing | Morning Wrap Co. · Rated 4.4 · *Address: same as the sports bar
+Draw: circle
+
+Twelve restaurants might share one kitchen door.
+Visual: A restaurant's back kitchen door in an alley with delivery bags stacked outside
+Visual: A courier seen from behind walking out of the same back door
+Text: 12 NAMES · 1 DOOR
+Treat: duotone
+
+Which of your go-to delivery spots shares a kitchen?
+Visual: A courier seen from behind carrying insulated delivery bags down a street
+Visual: Three paper takeaway bags lined up on a counter, labels blank
+Text: SAME KITCHEN?

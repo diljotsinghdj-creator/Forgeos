@@ -1,0 +1,80 @@
+The Return That Gets Thrown Away
+On-screen hook: RETURNED. THEN THROWN AWAY?
+Title: You Sent It Back. Was It Thrown Away? What Investigations Found
+Tags: #CorporateAutopsies #returns #ecommerce #waste #shopping
+Source: NRF and Happy Returns, 2024 retail returns to total $890 billion (Dec 2024), https://nrf.com/media-center/press-releases/nrf-and-happy-returns-report-2024-retail-returns-total-890-billion; Circular Online, ITV investigation claims Amazon destroys millions of items of unsold stock each year (Jun 2021), https://www.circularonline.co.uk/news/itv-investigation-claims-amazon-destroys-millions-of-items-of-unsold-stock-each-year/; STV News, Fife Amazon centre destroying millions of unsold items, https://news.stv.tv/?p=200318; Optoro, returns landfill estimate (2020 data), reported by Scripps News, https://www.scrippsnews.com/us-news/how-returned-items-impact-the-environment; Just Style, EU ends practice of destroying unsold clothes and shoes in July 2026, https://www.just-style.com/news/eu-ends-practice-of-destroying-unsold-clothes-and-shoes-in-july-2026/
+
+You sent it back. Was it thrown away?
+Visual: A hand dropping a taped parcel into a return drop box
+Visual: A full skip of cardboard boxes behind a warehouse
+Text: RETURNED. THEN THROWN AWAY?
+
+A leaked document showed over one hundred twenty-four thousand items marked destroy in a week.
+Visual: A cardboard box marked with a red cross, filled with sealed electronics
+Visual: A printed spreadsheet on a desk with rows of numbers, text unreadable
+Text: 124,000+ ITEMS MARKED "DESTROY"
+Cite: ITV News, Jun 2021
+
+So what happens to the one you sent back?
+Visual: A forklift carrying a pallet of boxes down a warehouse aisle
+Visual: Two delivery lorries parked at a loading bay at dusk
+Text: WHAT HAPPENS TO YOURS?
+Transition: whip
+
+US retail returns hit an estimated eight hundred ninety billion dollars in twenty twenty-four.
+Visual: Stacks of returned parcels on a warehouse floor, labels unreadable
+Visual: A conveyor belt carrying brown boxes through a sorting centre
+Visual: A return label being peeled off a parcel, text unreadable
+Chart: $890bn | US retail returns, 2024 (estimate)
+Cite: NRF & Happy Returns, Dec 2024
+
+ITV News went undercover in an Amazon warehouse in Scotland.
+Visual: A huge grey warehouse building beside a motorway in Scotland
+Visual: A worker seen from behind pushing a cart of boxes between shelves
+Text: ITV NEWS · JUNE 2021
+Place: DUNFERMLINE · 2021
+Treat: halftone
+
+Here's the comparison: just twenty-eight thousand were marked donate.
+Visual: A single donation box half filled with new items on a table
+Visual: A large bin of boxed electronics next to a small donation crate
+Squares: 124,000 vs 28,000 | marked destroy, marked donate (one week)
+Cite: ITV News, Jun 2021
+
+Amazon said it aims for zero disposal, and sends nothing to UK landfill.
+Visual: A modern office building's glass front at dusk, no signs
+Visual: A recycling bale of flattened cardboard in a yard
+Text: AMAZON: NO UK ITEMS TO LANDFILL
+Cite: Amazon statement, Jun 2021
+
+So how big is the problem?
+Visual: A landfill site with bulldozers in the distance under a grey sky
+Big: HOW BIG?
+
+Returns company Optoro estimated five point eight billion pounds of landfill from returns.
+Visual: A bulldozer pushing a pile of cardboard and plastic at a landfill
+Visual: Plastic-wrapped clothing spilling from a torn bin bag
+Text: 5.8BN LB (WEIGHT) · 2020 · OPTORO
+Cite: Optoro, 2020 data
+Draw: circle
+
+Now Europe bans large firms from destroying unsold clothes and shoes.
+Visual: Racks of unsold clothes in a stockroom under bright lights
+Visual: A pair of new shoes in an open box on a shelf
+Article: EU ends practice of destroying unsold clothes and shoes in July 2026 | Just Style, 2026
+Cite: EU ESPR rules, Jul 2026
+
+Was yours thrown away? For returned clothes in Europe, it shouldn't be.
+Visual: A returned shirt being folded and placed back on a shop rail
+Visual: A parcel resting on a doorstep in morning light
+Text: RESELL · REPAIR · DONATE
+Draw: tick
+Treat: duotone
+
+So buy as if any return could be destroyed.
+Visual: A hand hovering over a pile of folded clothes on a bed
+Visual: A torn bin bag of new clothes in a warehouse corner
+Text: BUY TO KEEP
+
+Still ordering three sizes?
+Visual: Three folded shirts of different sizes stacked on a bed

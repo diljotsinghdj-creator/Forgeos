@@ -1,0 +1,31 @@
+RAMLILA KAL KYA HOGA - TIMING SHEET FOR THE ELEVENLABS VOICE-OVER
+Voice-over: ElevenLabs 'Jessica' (eleven_v4), 62.5 s. Measured from the audio's pauses (31 Oct 2026).
+
+HOW TO USE
+1. Paste 03_Ramlila_Kal_Kya_Hoga_ElevenLabs_Timed.txt into CreatorForge -> Generate -> Script
+   (9:16 Shorts, Investigative desk, Cinematic Short, Faceless). The (0:00-0:05) stamps are not read aloud.
+2. Generate. CreatorForge times each scene by ITS OWN voice, so the scene lengths will not match yet.
+3. Open the editable timeline and set each scene to the length below (scene = one spoken line).
+   Lengths include the pause before the next line, so the scenes add up to exactly 62.54 s.
+4. Mute CreatorForge's narration, export, then lay the ElevenLabs MP3 (Ramlila_Kal_Kya_Hoga_VO_-14LUFS.mp3)
+   from 0:00. Captions: use Ramlila_Kal_Kya_Hoga_captions.srt (same 17 lines, same timing).
+
+ #  start    length   line
+ 1  0:00.00   5.26 s  कल दिल्ली के रामलीला मैदान में विपक्ष का सबसे बड़ा शक्ति प्रदर्शन।
+ 2  0:05.26   2.48 s  दावा: दस लाख लोग।
+ 3  0:07.74   3.44 s  पर पुलिस तैयारी कर रही है करीब पचास हज़ार की।
+ 4  0:11.18   1.38 s  और मैदान में जगह?
+ 5  0:12.57   1.74 s  लगभग उतनी ही।
+ 6  0:14.31   6.02 s  मुद्दा: वोटर लिस्ट की SIR जाँच, जिसमें तेरह करोड़ से ज़्यादा नाम कटे।
+ 7  0:20.32   2.53 s  विपक्ष का आरोप: वोट चोरी।
+ 8  0:22.85   4.17 s  माँग: मुख्य चुनाव आयुक्त ज्ञानेश कुमार इस्तीफ़ा दें।
+ 9  0:27.02   4.42 s  आयोग का कहना: मृत, डुप्लीकेट, शिफ़्ट हुए नाम हटे।
+10  0:31.44   3.35 s  और बीजेपी जवाबी पदयात्राएँ निकाल रही है।
+11  0:34.79   6.90 s  पुलिस की शर्तें: शाम पाँच बजे तक ख़त्म, रात में रुकना नहीं, मैदान से बाहर मार्च नहीं।
+12  0:41.69   3.25 s  साढ़े तीन हज़ार जवान, ढाई सौ कैमरे।
+13  0:44.94   3.39 s  आईटीओ से अजमेरी गेट तक ट्रैफ़िक बदला रहेगा।
+14  0:48.33   4.02 s  पिछले महीने इन्हीं प्रदर्शनों में हज़ारों हिरासत में लिए गए।
+15  0:52.35   5.22 s  सुप्रीम कोर्ट ने कहा: शांति से जुटने वालों की ग़ैरक़ानूनी हिरासत नहीं।
+16  0:57.57   3.80 s  तो कल कितने आएँगे, दस लाख या पचास हज़ार?
+17  1:01.37   1.17 s  आप क्या सोचते हैं?
+    total    62.54 s
