@@ -590,7 +590,10 @@ def enrich(plan, script: str) -> None:
                                   "movement": True}
             if b.get("named"):
                 continue
-            # 2. an everyday thing the words mention and the picture doesn't show
+            # 2. an everyday thing the words mention and the picture doesn't show (never over the writer's own
+            #    Visual: - they chose that picture for the line)
+            if b.get("writer") and visual and not re.search(r"[\u0900-\u097F]", visual) and visual != s.narration:
+                continue
             for ci, (say, show, pics) in enumerate(_COMPILED):
                 if not say.search(text) or show.search(visual):
                     continue

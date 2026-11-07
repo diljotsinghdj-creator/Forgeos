@@ -66,9 +66,10 @@ def group_parts(words: list[Word], per: int) -> tuple[list[Word], list[list[Word
 
 
 def karaoke_lines(cue: Word, part: list[Word], style: str, base: str, lit: str, extra: str = "",
-                  explainer_mark: str = "", paper: str = "") -> list[str]:
+                  explainer_mark: str = "", paper: str = "", emphasis: set[str] | None = None) -> list[str]:
     """One caption cue as a run of events, one per spoken word: the whole cue stays on screen and the word being
-    said lights up (a highlight colour, a touch bigger; on paper captions, a marker box behind it)."""
+    said lights up (a highlight colour, a touch bigger; on paper captions, a marker box behind it). Auto Edit's
+    emphasis words keep their highlight colour (or marker box) the whole time."""
     out = []
     if len(part) <= 1 or not all(w.end >= w.start for w in part):
         return out
@@ -83,6 +84,9 @@ def karaoke_lines(cue: Word, part: list[Word], style: str, base: str, lit: str, 
                     words.append(f"{{\\3c{explainer_mark}&}}{e}{{\\3c{paper}&}}")
                 else:
                     words.append(f"{{\\1c{lit}&\\fscx108\\fscy108}}{e}{{\\1c{base}&\\fscx100\\fscy100}}")
+            elif emphasis and _norm(x.text) in emphasis:
+                words.append(f"{{\\3c{explainer_mark}&}}{e}{{\\3c{paper}&}}" if explainer_mark
+                             else f"{{\\c{lit}&}}{e}{{\\c{base}&}}")
             else:
                 words.append(e)
         fx = extra if i == 0 else ""
@@ -228,7 +232,7 @@ def write_ass(path: Path, width: int, height: int, scale: float, position: float
         if part:      # word by word: the word being said lights up
             pop = "" if explainer else "{\\fscx75\\fscy75\\t(0,120,\\fscx104\\fscy104)\\t(120,180,\\fscx100\\fscy100)}"
             run = karaoke_lines(c, part, "Caption", cap, hi, ("{\\fad(60,0)}" if explainer else pop),
-                                mark if explainer else "", paper if explainer else "")
+                                mark if explainer else "", paper if explainer else "", emphasis)
             if run:
                 lines += run
                 continue

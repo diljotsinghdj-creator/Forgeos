@@ -297,7 +297,9 @@ VISUAL_RULES = """VISUAL RULES (the picture must match the words):
 - Each visual shows exactly what that scene's narration is saying - its key subject and action, literally.
 - Keep the same main character, place, era and look across scenes (repeat the same descriptors every time).
 - Vary the shot size scene to scene (wide, medium, close-up) so the edit feels alive.
-- No text, captions, logos or signs in images."""
+- No text, captions, logos or signs in images.
+- Variety: never the same object twice in a row. A phone, chat screen or app screen appears at most once in every six
+  pictures, even when the words talk about messages or apps - show the people, rooms, offices, cities and events instead."""
 
 SYSTEM = """You are CreatorForge's AI Director and ScriptForge. You turn one idea into a complete,
 production-ready short video plan: a scroll-stopping hook, a tight narrated script split into
@@ -436,6 +438,7 @@ BEATS_SYSTEM = """You are the picture editor of a viral faceless video. You get 
 beats of 3-5 consecutive words (copy the words exactly, in order, covering every word). For each beat describe ONE
 concrete image that literally shows what THOSE words say - the subject and action the viewer hears at that moment -
 in the scene's setting with the same characters. Add the emotion on screen (facial expression or atmosphere).
+Never two beats showing the same object; a phone or chat screen at most once per scene - show people, places and actions.
 STOCK: when a beat can be shown with generic REAL footage (a city street, a crowd, hands typing, waves, a clock, a rocket launch, a famous real place or event), put a 2-4 word search in "stock"; leave it empty when the beat needs the story's own characters, a specific era or the video's visual direction.
 Respond with JSON only: {"beats": [{"text": "...", "visual": "...", "emotion": "...", "stock": ""}]}"""
 
@@ -528,25 +531,40 @@ def mix_look(b: dict, hook: bool = False, cutout: bool = True) -> str:
     return "documentary"
 
 
-MODERN_INDIA = "contemporary India today, vivid true-to-life colours, bright, clean and modern"
-MODERN_NEGATIVE = (", black and white, monochrome, sepia, faded vintage photo, old film still, slum, garbage, rubble, "
-                   "decay, dirty street, squalor")
+MODERN_INDIA = "modern India today, clean polished contemporary setting, vivid true-to-life colours"
+MODERN_PEOPLE = "well-dressed urban Indians in smart contemporary clothes"
+MODERN_PLACE = "modern glass-and-steel architecture, well-kept clean surfaces"
+# Leads the negative: SDXL reads only the first ~75 tokens of it, so the poverty clichés are refused first.
+MODERN_NEGATIVE = ("rust, rusty metal, peeling paint, stained walls, crumbling plaster, dilapidated, run-down, shabby, "
+                   "slum, poverty, garbage, rubble, decay, dirty street, squalor, tin roof, tangled wires, torn clothes, "
+                   "black and white, monochrome, sepia, faded vintage photo, ")
 _GRIM = re.compile(r"\b(slum|poverty|poor|garbage|rubble|ruins?|squalor|flood\w*|riot|burnt|burning|black and white|"
                    r"sepia|vintage|archival|old photograph|19\d\d|18\d\d)\b", re.I)
+_OLD_LOOK = [("old sepia archival photograph", "modern full-colour news photograph"),
+             ("vintage halftone press photograph", "modern full-colour press photograph"),
+             ("cut-out archival photographs", "cut-out modern colour photographs"),
+             ("archival photographs and documents", "modern colour photographs and printed documents"),
+             ("an old desk", "a sleek dark modern desk"), (", film grain", "")]
 
 
 def _modernise(prompt: str, negative: str, visual: str) -> tuple[str, str]:
-    """A picture set in India shows today's India, in colour: old-print looks become modern colour photographs and
-    the negative keeps out sepia and the poverty clichés image models reach for. A line that asks for them (a slum,
-    a flood, a 1975 photo) keeps what it asked for."""
+    """A picture set in India shows today's India, in colour: old-print looks become modern colour photographs, and
+    "modern India" leads the prompt (image models read the start; FLUX has no negative and SDXL cuts long prompts),
+    while the negative refuses rust, peeling walls and the poverty clichés models reach for. A line that asks for
+    them (a slum, a flood, a 1975 photo) keeps what it asked for."""
     if _GRIM.search(visual or ""):
         return prompt, negative
-    prompt = (prompt.replace("old sepia archival photograph", "modern full-colour news photograph")
-                    .replace("vintage halftone press photograph", "modern full-colour press photograph"))
-    if MODERN_INDIA not in prompt:
-        prompt = f"{prompt}, {MODERN_INDIA}"
-    if MODERN_NEGATIVE not in negative:
-        negative += MODERN_NEGATIVE
+    for a, b in _OLD_LOOK:
+        prompt = prompt.replace(a, b)
+    if not prompt.startswith(MODERN_INDIA):
+        lead = [MODERN_INDIA]
+        if _has_people(visual or ""):
+            lead.append(MODERN_PEOPLE)
+        if _MIX_PLACE.search(visual or ""):
+            lead.append(MODERN_PLACE)
+        prompt = f"{', '.join(lead)}, {prompt}"
+    if not negative.startswith(MODERN_NEGATIVE):
+        negative = MODERN_NEGATIVE + negative.lstrip(", ")
     return prompt, negative
 
 
@@ -763,6 +781,61 @@ def _editorial_prompt(visual: str, spec: ProductionSpec, lead: str) -> tuple[str
     return ", ".join(parts), NEGATIVE + EDITORIAL_NEGATIVE + FACELESS_NEGATIVE + ", gibberish text, misspelled words"
 
 
+# When nobody described a picture in English (the planner failed on a Hindi script), the Hindi words must never
+# go to the image model: it can't read them and draws the same generic portrait every time. The line's topic
+# picks a modern scene instead, rotating through each topic's pictures so nothing repeats back to back.
+_DEVANAGARI = re.compile(r"[\u0900-\u097F]")
+_TOPIC_PICTURES = [
+    (r"व्हाट्स|whatsapp|फ़ॉरवर्ड|फॉरवर्ड|forward|मैसेज|संदेश|ग्रुप|group",
+     ["A young professional in a bright modern Mumbai café reading a forwarded message on a smartphone, face turned away",
+      "A family living room in a modern high-rise apartment at night, three phones glowing on a glass coffee table",
+      "Thousands of glowing message bubbles flowing as light trails over a night skyline of modern Indian towers"]),
+    (r"आईटी सेल|it cell|वॉर रूम|war room|सोशल मीडिया|social media|ट्रेंड|trend|हैशटैग|hashtag",
+     ["A sleek modern digital war room with a wall of monitors showing social media dashboards, people seen from behind",
+      "Rows of young volunteers on laptops in a glass-walled modern office at night, seen from behind, blue screen glow"]),
+    (r"ट्रोल|troll|गाली|abuse|नफ़रत|नफरत|hate|धमकी|threat",
+     ["A woman journalist in a modern newsroom looking at a laptop flooded with notifications, face turned away",
+      "A smartphone on a dark marble desk buzzing with an endless stream of notifications, red glow"]),
+    (r"पत्रकार|journalist|मीडिया|media|न्यूज़|news|रिपोर्ट|report|अख़बार|अखबार",
+     ["A modern open-plan newsroom with large screens and journalists at work, seen from behind",
+      "A reporter's desk in a glass-walled media office with a laptop and printed reports, city lights outside"]),
+    (r"विज्ञापन|ऐड|ad\b|ads\b|पैसा|पैसे|करोड़|crore|money|फ़ंड|funding",
+     ["Giant digital billboards over a modern Mumbai expressway at night",
+      "A laptop on a sleek desk showing an advertising dashboard with rising bar charts, modern office"]),
+    (r"चुनाव|election|मतदाता|voter|वोट|vote|प्रचार|campaign",
+     ["A modern Indian polling station with an electronic voting machine and voters queuing in bright clothes, faces turned away",
+      "A huge modern rally stage with LED screens and a sea of phone lights at night, seen from the back"]),
+    (r"अदालत|कोर्ट|court|जज|judge|कानून|क़ानून|law|आदेश|order",
+     ["The modern facade of an Indian high court building in bright daylight",
+      "A polished courtroom with wooden benches and bright lights, empty"]),
+    (r"सरकार|government|मंत्री|minister|संसद|parliament",
+     ["The new Parliament building in New Delhi under a clear blue sky",
+      "A modern government office corridor with glass doors and bright lights"]),
+    (r"ट्विटर|twitter|एक्स\b|यूट्यूब|youtube|फ़ेसबुक|facebook|गूगल|google|ब्लॉक|block|हटा",
+     ["A laptop screen showing a blurred social media page greyed out as withheld, in a dim modern apartment",
+      "Servers in a modern data centre with blue lights, long aisle"]),
+    (r"दिमाग़|दिमाग|brain|भरोसा|trust|डर|fear|सच|झूठ|truth|lie",
+     ["A young man on a Delhi metro train scrolling a phone, face reflected softly in the window",
+      "Close-up of a thumb hovering over a share button on a glowing smartphone screen, dark background"]),
+]
+_TOPIC_RX = [(re.compile(a, re.I), pics) for a, pics in _TOPIC_PICTURES]
+_DEFAULT_PICTURES = ["Aerial night view of a modern Indian city skyline with glass towers and a lit flyover",
+                     "A modern Delhi metro station with commuters in smart clothes, seen from behind, bright and clean",
+                     "A young woman in a modern Bengaluru office looking out of a glass window at the city, face turned away"]
+
+
+def english_visual(text: str, used: dict) -> str:
+    """A modern English picture for a line that only has Hindi to go on (see _TOPIC_PICTURES)."""
+    for i, (rx, pics) in enumerate(_TOPIC_RX):
+        if rx.search(text):
+            n = used.get(i, 0)
+            used[i] = n + 1
+            return pics[n % len(pics)]
+    n = used.get(-1, 0)
+    used[-1] = n + 1
+    return _DEFAULT_PICTURES[n % len(_DEFAULT_PICTURES)]
+
+
 def prompt_forge(plan: ProductionPlan, spec: ProductionSpec, only: int | None = None) -> None:
     """Builds each scene's generation prompt from the shot, Director Mode and characters."""
     from .media import literal
@@ -780,6 +853,7 @@ def prompt_forge(plan: ProductionPlan, spec: ProductionSpec, only: int | None = 
     style = STYLE_PRESETS[spec.style][1] if spec.style in STYLE_PRESETS else (spec.style or t.style)
     animated = spec.style in ANIMATED_STYLES
     vstyle = VIDEO_STYLE_ANIMATED if animated else VIDEO_STYLE
+    topic_used: dict = {}
     for i, s in enumerate(plan.scenes):
         if only is not None and i != only:
             continue
@@ -790,6 +864,12 @@ def prompt_forge(plan: ProductionPlan, spec: ProductionSpec, only: int | None = 
             b["visual"], b_person = literal.without_people(str(b.get("visual") or ""))
             if b_person:
                 b["no_people"] = True
+        # (after the real-person check, which also reads Hindi names)
+        if _DEVANAGARI.search(s.visual or ""):
+            s.visual = english_visual(s.visual, topic_used)
+        for b in s.beats:
+            if _DEVANAGARI.search(str(b.get("visual") or "")):
+                b["visual"] = english_visual(str(b.get("visual")), topic_used)
         mix = spec.style == MIX_STYLE
         if mix:
             s_look = mix_look({"visual": s.visual, "emotion": s.emotion}, hook=i == 0, cutout=False)
@@ -931,7 +1011,8 @@ def _line_shots(line: str, d: dict) -> list[list[str]]:
     graphic = bool(d.get("chart") or any(extra.get(k) for k in FULL_FRAME))
     # A full-frame graphic (chart, map, card, steps) covers its picture: when the line is long enough, it gets a
     # picture slot of its own first (~2.3 s+), so the writer's visual still shows instead of being hidden.
-    lead = graphic and len(words) >= 6 * (len(visuals) + 1)
+    # With no Visual: given, the card covers the whole line: an extra picture slot would be one nobody described.
+    lead = graphic and bool(visuals[0]) and len(words) >= 6 * (len(visuals) + 1)
     if lead:
         visuals = [visuals[0]] + visuals
     n = max(1, min(len(visuals), len(words) // 3))       # every picture gets at least ~3 words of screen time
@@ -1252,17 +1333,20 @@ def spoken_text(text: str, pronounce: dict) -> str:
 def apply_shots(plan: "ProductionPlan", shots: list) -> None:
     """The writer's shot list decides the pictures: each spoken line becomes a beat showing the writer's own
     visual (and on-screen text / stock search, if given), cut exactly when that line starts. Lines are matched to
-    scenes word by word, so a line that spans two scenes is shared between them. A line without a visual keeps
-    the Director's picture for its scene. If the words don't line up (edited script), nothing changes."""
+    scenes word by word, so a line that spans two scenes is shared between them. A line without a visual shows
+    the writer's latest picture (the Director's picture for its scene only before the first one). If the words don't line up (edited script), nothing changes."""
     tokens = [(i, t) for i, s in enumerate(plan.scenes) for t in s.narration.split()]
     if sum(len(str(x[0]).split()) for x in shots) != len(tokens):
         return
     per_scene: list[list[dict]] = [[] for _ in plan.scenes]
     pos = 0
+    last_visual = ""        # a shot the writer left without a picture reuses their latest one, never an invented one
     for li, (line, visual, text, stock, chart, draw, bubble, extra) in enumerate((list(x) + [""] * 6 + [{}])[:8]
                                                                                 for x in shots):
         extra = extra if isinstance(extra, dict) else {}
         n = len(str(line).split())
+        visual = str(visual) or last_visual
+        last_visual = visual
         chunk = tokens[pos:pos + n]
         pos += n
         for k, i in enumerate(dict.fromkeys(i for i, _ in chunk)):
