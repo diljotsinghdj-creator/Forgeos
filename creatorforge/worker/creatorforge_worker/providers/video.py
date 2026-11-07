@@ -112,7 +112,11 @@ class DiffusersVideoProvider:
         from diffusers.utils import export_to_video, load_image
 
         with self._lock:
-            pipe = self._load()
+            try:
+                pipe = self._load()
+            except Exception as e:  # noqa: BLE001 - a model still downloading or missing files: say so plainly
+                raise ProviderError(f"AI video model could not load (still downloading after a restart?): "
+                                    f"{str(e)[:200]}") from e
             w, h = self._size(width, height)
             frames = int(min(seconds * self.fps, self.max_frames - 1)) // self.step * self.step + 1
             frames = max(self.step + 1, frames)

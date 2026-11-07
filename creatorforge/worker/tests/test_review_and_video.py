@@ -146,3 +146,21 @@ def test_ai_video_for_every_spoken_line(cfg):
         people = [b for _, shot in multi for b in shot["beats"] if "faceless framing" in b["prompt"]]
         assert people or not any("person" in b["visual"].lower() for _, shot in multi for b in shot["beats"])
         assert job["result"]["verification"]["decode_check"] == "passed"
+
+
+def test_failing_ai_clips_never_stop_the_video(cfg, monkeypatch):
+    from creatorforge_worker.providers import mock
+    from creatorforge_worker.providers.base import ProviderError
+
+    def broken(self, *a, **k):
+        raise ProviderError("CUDA out of memory")
+    cfg.video_provider = "mock"
+    cls = next(getattr(mock, n) for n in dir(mock) if getattr(getattr(mock, n), "id", "") == "mock-video")
+    monkeypatch.setattr(cls, "generate", broken)
+    with TestClient(create_app(cfg)) as c:
+        jid = c.post("/v1/productions", json={"idea": "Volcanoes explained simply", "duration_s": 12,
+                                              "template": "explainer", "motion": "ai_video", "fast_cuts": False}).json()["id"]
+        job = settled(c, jid)
+        assert job["status"] == "READY", (job.get("error"), job.get("stages"))
+        assert any("AI video clips failed" in w for w in job.get("warnings", []))
+        assert job["result"]["verification"]["decode_check"] == "passed"

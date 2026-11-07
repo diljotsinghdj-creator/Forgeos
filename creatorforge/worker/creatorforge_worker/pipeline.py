@@ -963,6 +963,7 @@ class Pipeline:
         if per_line:
             # One clip per spoken line: the picture moves exactly while its line is spoken.
             self._line_clips(job, video, per_line, gen, cancel)
+        clip_failed: list[str] = []
         for sc, shot, slot in zip(scenes, shots, self._timings(job)):
             if not sc.get("ai_video") or sc["index"] in per_line:
                 if not sc.get("ai_video") and sc.get("clip_source") != "asset":
@@ -989,10 +990,17 @@ class Pipeline:
                 dst = self._replace_file(jdir, sc.get("clip"), f"scene_{sc['index'] + 1:02d}_{key[:8]}.mp4", src)
                 sc.update(clip_state="READY", clip=dst.name, clip_source="generated")
             except (ProviderError, MediaError) as e:
+                # An AI clip is an extra: the scene keeps its picture with a camera move and the video carries on.
                 sc.update(clip_state="FAILED", error=f"clip: {e}")
-                self.store.save(job)
-                raise StageFailed(f"scene {sc['index'] + 1} video clip failed - {e}") from e
+                if sc.get("clip") and not (jdir / sc["clip"]).is_file():
+                    sc.pop("clip", None)
+                clip_failed.append(f"scene {sc['index'] + 1}: {str(e)[:160]}")
             self.store.save(job)
+        if clip_failed:
+            job.setdefault("warnings", []).append(
+                f"AI video clips failed for {len(clip_failed)} scene(s) - they use moving pictures instead "
+                f"({clip_failed[-1]})")
+            job["providers"]["clips"] = job["providers"]["clips"].rstrip(")") + f", {len(clip_failed)} failed)"
 
     def _line_clips(self, job: dict, video, indices: list[int], gen: tuple[int, int], cancel) -> None:
         """AI video for every spoken line of the chosen scenes. Each beat's still (scene image for the first line,
@@ -1047,10 +1055,12 @@ class Pipeline:
                 self.store.save(job)
             sc["clip_state"] = "READY"
         made = sum(1 for i in indices for n in scenes[i].get("beat_videos") or [] if n)
-        if failed and not made:
-            raise StageFailed(f"AI video clips failed - {last_error}")
         if failed:
-            job.setdefault("warnings", []).append(f"{failed} line clip(s) failed and use a moving still instead")
+            # Even when every clip fails (the video model is missing or out of memory) the video is still made:
+            # those lines keep their pictures with camera moves, and the warning says why.
+            job.setdefault("warnings", []).append(
+                f"{failed} line clip(s) failed and use a moving still instead"
+                + (f" - the AI video model did not work: {last_error[:160]}" if not made else ""))
         job["providers"]["clips"] = (job["providers"].get("clips", video.id).rstrip(")") +
                                      f", {made} line clips{f', {failed} failed' if failed else ''})")
         self.store.save(job)
@@ -1462,7 +1472,8 @@ class Pipeline:
 
         heads = [clips[j] for j in firsts]   # one per scene, for scene-level bookkeeping below
         if use_video and any(c.video is None and sc.get("ai_video", True) and not sc.get("beat_videos")
-                             for c, sc in zip(heads, job["scenes"])):
+                             and sc.get("clip_state") != "FAILED" for c, sc in zip(heads, job["scenes"])):
+            # (a scene whose clip failed is fine: it was warned about and keeps its moving picture)
             raise StageFailed("AI video mode but a chosen scene has no clip")
 
         plan = job["plan"]
