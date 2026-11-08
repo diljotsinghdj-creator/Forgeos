@@ -342,14 +342,21 @@ fi
 
 say "Opening a secure public link (no port settings needed)"
 # A free Cloudflare quick tunnel gives an https:// address that reaches this worker from anywhere.
+# A failed download (GitHub has the odd 504) never stops setup: RunPod's own link for port $PORT works without it.
 if [ ! -x "$HOME_DIR/cloudflared" ]; then
-  curl -fsSL -o "$HOME_DIR/cloudflared" https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64
-  chmod +x "$HOME_DIR/cloudflared"
+  if curl -fsSL --retry 3 --retry-delay 5 -o "$HOME_DIR/cloudflared.part" \
+       https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64; then
+    mv "$HOME_DIR/cloudflared.part" "$HOME_DIR/cloudflared" && chmod +x "$HOME_DIR/cloudflared"
+  else
+    rm -f "$HOME_DIR/cloudflared.part"; echo "  (Cloudflare link tool unavailable right now - using RunPod's link)"
+  fi
 fi
 pkill -f "cloudflared tunnel" 2>/dev/null || true
-nohup "$HOME_DIR/cloudflared" tunnel --no-autoupdate --url "http://127.0.0.1:$PORT" > tunnel.log 2>&1 &
+: > tunnel.log
+[ -x "$HOME_DIR/cloudflared" ] && nohup "$HOME_DIR/cloudflared" tunnel --no-autoupdate --url "http://127.0.0.1:$PORT" > tunnel.log 2>&1 &
 URL=""
 for _ in $(seq 1 45); do
+  [ -x "$HOME_DIR/cloudflared" ] || break
   URL=$(grep -aoE 'https://[a-z0-9-]+\.trycloudflare\.com' tunnel.log | head -1 || true)
   [ -n "$URL" ] && break
   sleep 1
