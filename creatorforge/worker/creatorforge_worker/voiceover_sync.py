@@ -105,8 +105,27 @@ def line_starts_in_words(words: list[dict], lines: list[str]) -> list[float]:
         while i < len(words) - 1 and acc + letters[i] <= share:
             acc += letters[i]
             i += 1
-        starts.append(float(words[i]["start"]) if k else 0.0)
-    return starts
+        if not k:
+            starts.append(0.0)
+            continue
+        # a line can start part-way through a timed word (numbers read as words, two short lines in one breath)
+        a, b = float(words[i]["start"]), float(words[i].get("end", words[i]["start"]))
+        part = min(1.0, max(0.0, (share - acc) / letters[i])) if letters[i] else 0.0
+        starts.append(a + part * max(0.0, b - a))
+    return spread(starts, float(words[-1].get("end", words[-1]["start"])) if words else starts[-1] + 1)
+
+
+def spread(starts: list[float], end: float, gap: float = 0.3) -> list[float]:
+    """Line starts made strictly increasing, at least `gap` apart and before `end`, moving as little as possible:
+    a line the timings squeezed to nothing gets a short slice of picture instead of stopping the sync."""
+    out = list(starts)
+    for k in range(1, len(out)):
+        out[k] = max(out[k], out[k - 1] + gap)
+    limit = end - gap
+    for k in range(len(out) - 1, 0, -1):
+        out[k] = min(out[k], limit)
+        limit = out[k] - gap
+    return [max(0.0, x) for x in out]
 
 
 def _loudnorm(audio: Path, out: Path) -> None:
@@ -160,6 +179,7 @@ def sync(video: Path, words: list[dict], lines: list[str], voice: Path, out: Pat
         tail = min(vdur, float(words[-1]["end"]) + 0.5) if words else vdur   # after the last word: silence
     else:
         tail = min(vdur, (cf_speech_end or vdur) + 0.15)
+    cf_starts = spread(cf_starts, max(tail, cf_starts[-1] + 0.3))
     cf_bounds = cf_starts + [max(tail, cf_starts[-1] + 0.3)]
     vo_bounds = vo_starts + [vo_end]
     end_card = vdur - cf_bounds[-1]

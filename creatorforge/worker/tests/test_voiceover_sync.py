@@ -33,3 +33,13 @@ def test_an_outside_voice_over_is_matched_line_for_line(tmp_path):
     assert abs(dur - info["seconds_after"]) < 0.1 and info["end_card_seconds"] > 0.3   # ...then the end card plays
     assert len(json.loads((tmp_path / "r.json").read_text())["lines"]) == 3
     assert abs(info["lines"][1]["voiceover_start"] - 3.6) < 0.05
+
+
+def test_a_line_squeezed_to_nothing_still_gets_picture_time():
+    from creatorforge_worker.voiceover_sync import line_starts_in_words, spread
+    # Whisper's words don't match the script word for word (numbers read out), and two tiny lines share a word
+    words = [{"text": "aaaa", "start": 0, "end": 1}, {"text": "bb", "start": 1, "end": 2},
+             {"text": "cccccccc", "start": 2, "end": 4}]
+    starts = line_starts_in_words(words, ["aaaa", "b", "b", "cccc", "cccc"])
+    assert all(b - a >= 0.29 for a, b in zip(starts, starts[1:])), starts
+    assert spread([0, 1, 1, 1, 5], 6) == [0.0, 1, 1.3, 1.6, 5]
