@@ -2,11 +2,12 @@
 # BJP IT CELL KA SACH - render the documentary on the pod (16:9), then a 4K master.
 #   bash pod_bjp_it_cell.sh                                   # CreatorForge voice (scratch)
 #   bash pod_bjp_it_cell.sh /workspace/vo_hi/bjp_it_cell.mp3   # + your ElevenLabs voice-over, synced line by line
+#   bash pod_bjp_it_cell.sh latest                              # ... the newest audio uploaded in the app's Library
 # Real HD footage on the script's Stock: lines needs the free Pixabay key as a pod environment variable PIXABAY_KEY.
 # Keys live in worker.env / the app's encrypted settings - never paste them into chat.
 set -euo pipefail
 VO="${1:-}"
-if [ -n "$VO" ] && [ ! -f "$VO" ]; then echo "No file at $VO - upload the MP3 to the pod first"; exit 1; fi
+# VO can be a file on the pod, or "latest" / part of a name: an MP3 uploaded in the app (Library -> Asset Library)
 cd /workspace/creatorforge
 . venv/bin/activate
 set -a; . ./worker.env; set +a
