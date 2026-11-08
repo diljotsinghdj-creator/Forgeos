@@ -2,6 +2,7 @@
 # BJP IT CELL KA SACH - render the documentary on the pod (16:9), then a 4K master.
 #   bash pod_bjp_it_cell.sh                                   # CreatorForge voice (scratch)
 #   bash pod_bjp_it_cell.sh /workspace/vo_hi/bjp_it_cell.mp3   # + your ElevenLabs voice-over, synced line by line
+# Real HD footage on the script's Stock: lines needs the free Pixabay key as a pod environment variable PIXABAY_KEY.
 # Keys live in worker.env / the app's encrypted settings - never paste them into chat.
 set -euo pipefail
 VO="${1:-}"
@@ -10,15 +11,22 @@ cd /workspace/creatorforge
 . venv/bin/activate
 set -a; . ./worker.env; set +a
 export API="http://127.0.0.1:${CF_PORT:-8765}"
-RAW="https://raw.githubusercontent.com/diljotsinghdj-creator/Forgeos/claude/forgeos-visibility-47vgwp/creatorforge/scripts/bjp_it_cell/bjp_it_cell_creatorforge.txt"
+RAW="https://raw.githubusercontent.com/diljotsinghdj-creator/Forgeos/claude/forgeos-visibility-47vgwp/creatorforge/scripts/bjp_it_cell/PASTE_IN_CREATORFORGE.txt"
 curl -fsSL "$RAW?nocache=$(date +%s)" -o bjp_it_cell.txt
 curl -fsS "$API/health" > /dev/null || { echo "The worker is not running - run the update command first"; exit 1; }
 JOB=$(python - <<'PY'
 import json, os, urllib.request
+# Cinematic film: full modern scenes (the desk/collage looks put cut-outs on plain paper). The pod's own Hindi
+# voice is only a guide track for timing when your ElevenLabs MP3 is given - it is replaced line by line.
 body = {"script": open("bjp_it_cell.txt", encoding="utf-8").read(), "aspect": "16:9",
-        "template": "youtube_longform", "style": "investigative", "faces": "faceless", "fast_cuts": True,
-        "voice_speed": 1.0, "captions": True, "music": False, "voice": os.environ.get("CF_VOICE", "")}
-if os.environ.get("PIXABAY_KEY"):
+        "template": "youtube_longform", "style": "cinematic", "faces": "faceless", "fast_cuts": True,
+        "auto_edit": True, "sfx": True, "voice_speed": 1.0, "captions": True, "music": False,
+        "voice": os.environ.get("CF_VOICE", "hindi_m_human")}
+if not os.environ.get("PIXABAY_KEY"):
+    import sys
+    print("No PIXABAY_KEY: the 20 real-footage lines use AI pictures instead (add the free key as a pod variable)",
+          file=sys.stderr)
+else:
     body["stock"] = {"key": os.environ["PIXABAY_KEY"], "provider": "pixabay"}
 req = urllib.request.Request(os.environ["API"] + "/v1/productions", data=json.dumps(body).encode(),
                              headers={"Content-Type": "application/json",
