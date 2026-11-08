@@ -13,16 +13,16 @@ X ke 8,000 accounts, trolling, aur platforms par uthe sawaal. Har claim source k
 aarop aarop ki tarah, aur BJP, Meta aur Facebook ka paksh bhi.
 
 Chapters
-0:00 Cold Open
-1:01 The Confession
-2:11 The Factory
-3:25 The Face
-5:06 The Insiders
-6:35 The Money
-8:26 The Platforms
-9:26 The Delete Button
-13:10 The Full Picture
-14:09 Your Shield
+0:00 सुबह 8 बजे का मैसेज
+0:51 मंच से क़बूलनामा
+1:44 व्हाट्सऐप फ़ैक्टरी
+2:47 आईटी सेल का चेहरा
+4:15 अंदर के लोग
+5:27 करोड़ों का खेल
+6:59 प्लेटफ़ॉर्म की चुप्पी
+7:50 डिलीट का बटन
+10:57 पूरी तस्वीर
+11:47 आपकी ढाल
 
 Key sources
 - The Quint (Sep 2018): https://www.thequint.com/news/politics/amit-shah-real-fake-can-make-messages-viral
@@ -46,7 +46,8 @@ Key sources
 - Oxford Internet Institute (2019): https://www.oii.ox.ac.uk/junk-news-and-misinformation-prevalent-in-indian-election-campaign/
 - The News Minute (Oct 2022): https://www.thenewsminute.com/news/wire-retracts-meta-stories-tek-fog-investigation-be-reviewed-too-169165
 
-Illustrations are labelled. Fake message ko forward karne se pehle check karein: Google Lens, Alt News, BOOM, Factly.
+Illustrations are labelled. Kuch drishya AI se banaye gaye illustration hain (asli tasveer nahi); real logon ke
+chehre AI se nahi banaye gaye. Narration: ElevenLabs. Real footage: Pixabay. Fake message ko forward karne se pehle check karein: Google Lens, Alt News, BOOM, Factly.
 
 ## Tags
 bjp it cell, bjp it cell exposed, amit shah true or fake viral, amit malviya manipulated media, whatsapp propaganda india,
@@ -62,5 +63,16 @@ Is video mein har claim ka source description mein hai, aur har line par likha h
 official paksh. Koi galti dikhe to source ke saath comment kijiye, hum check karke correction lagayenge. Aapke
 family group mein sabse zyada kaunsa fake message aata hai?
 
-## Estimated runtime
-14:58 (with the ElevenLabs voice the real length will differ slightly)
+## Thumbnail
+- Text (2 lines, huge, yellow + white on black): "सच हो या झूठ…" / "वायरल कर देंगे!"
+- Picture: a dark glass table with dozens of phones lighting up at once, red glow; one phone in front with a big red
+  "FAKE?" stamp. Small tag top-left: "BJP IT CELL". No real faces, no app logos.
+- Make it in the app: Library -> the video -> Thumbnail (or pick a frame from the 0:00-0:10 opening).
+
+## YouTube Studio checklist
+- Altered or synthetic content: YES (AI-generated illustrations of realistic scenes).
+- Category: News & Politics. Language: Hindi. Captions: upload the .srt from the export ZIP.
+- Chapters work only if the first one is 0:00 (it is).
+
+## Runtime
+12:26 (from your ElevenLabs narration; chapter times above are measured from it)
