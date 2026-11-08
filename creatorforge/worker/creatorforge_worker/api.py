@@ -523,6 +523,18 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
         finally:
             shutil.rmtree(tmpdir, ignore_errors=True)
 
+    @app.post("/v1/library/stickman-prompts", dependencies=[Depends(auth)])
+    def stickman_prompts(body: dict) -> dict:
+        """A script as ready-to-paste stickman video prompts (Gemini / Veo / any video model), one per ~8 s shot:
+        {"script": "...", "look": "stick_cozy", "aspect": "16:9", "character": "", "shot_seconds": 8}"""
+        from . import stickman_prompts as sp
+        try:
+            return sp.build(str(body.get("script", ""))[:150_000], str(body.get("look", sp.DEFAULT_LOOK)),
+                            str(body.get("aspect", "16:9")), str(body.get("character", ""))[:600],
+                            float(body.get("shot_seconds", 8) or 8))
+        except (ValueError, TypeError) as e:
+            raise HTTPException(422, str(e)) from None
+
     @app.patch("/v1/library/assets/{aid}", dependencies=[Depends(auth)])
     async def rename_asset(aid: str, request: Request) -> dict:
         try:

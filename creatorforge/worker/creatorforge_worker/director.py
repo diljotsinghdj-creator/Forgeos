@@ -11,7 +11,7 @@ from dataclasses import asdict, dataclass, field
 
 from .providers.base import ProviderError
 from .media.render import TRANSITIONS
-from .templates import (ANIMATED_STYLES, STYLE_NEGATIVE, CUTOUT_LOOKS, EDITORIAL_LEADS, MIX_STYLE, EDITORIAL_NEGATIVE, PACING, STYLE_PRESETS, TEMPLATES,
+from .templates import (ANIMATED_STYLES, STICKMAN_LOOKS, STYLE_NEGATIVE, CUTOUT_LOOKS, EDITORIAL_LEADS, MIX_STYLE, EDITORIAL_NEGATIVE, PACING, STYLE_PRESETS, TEMPLATES,
                         WORDS_PER_SECOND, Template)
 
 NEGATIVE = ("text, watermark, logo, caption, subtitles, letters, signature, gibberish text, garbled letters, "
@@ -730,7 +730,9 @@ def _image_prompt(visual: str, emotion: str, s: "ShotPlan", spec: ProductionSpec
     # AI video distorts realistic faces in motion, so realistic AI videos frame people without faces;
     # drawn/animated styles keep expressive cartoon faces.
     animated = spec.style in ANIMATED_STYLES
-    faceless = (spec.faces == "faceless" or (spec.motion == "ai_video" and not animated)) and people
+    stick = spec.style in STICKMAN_LOOKS
+    # a stickman's face is two dots: never hidden, and every person in the picture is the stickman
+    faceless = (spec.faces == "faceless" or (spec.motion == "ai_video" and not animated)) and people and not stick
     if faceless:
         parts.append(FACELESS)
         if emotion:
@@ -748,7 +750,11 @@ def _image_prompt(visual: str, emotion: str, s: "ShotPlan", spec: ProductionSpec
     for c in spec.characters:
         if c.name.lower() in text:
             parts.append(f"{c.name}: {c.description}")
-    parts.append(style)
+    if stick:
+        # the look leads: SDXL reads only the first ~75 tokens, and the stickman is the whole point of the picture
+        parts.insert(0, f"{style}, every person in the scene drawn as this stickman")
+    else:
+        parts.append(style)
     negative = NEGATIVE + (FACELESS_NEGATIVE if faceless else ", blank expression, dead eyes")
     if writing:
         negative += ", typography, handwriting, printed words, newspaper text, poster text, sign text"
@@ -848,7 +854,7 @@ def prompt_forge(plan: ProductionPlan, spec: ProductionSpec, only: int | None = 
     city = literal.context_city(script_text)            # "New Delhi": Delhi streets, not a Rajasthan fort
     city_negative = literal.CITY_NEGATIVE.get(city, "")
     # India is shown as it is today: modern, in full colour - no sepia, no poverty clichés the script didn't ask for
-    modern = country == "India"
+    modern = country == "India" and spec.style not in STICKMAN_LOOKS   # a cave or retro-TV stickman stays in its world
     t = TEMPLATES[spec.template]
     style = STYLE_PRESETS[spec.style][1] if spec.style in STYLE_PRESETS else (spec.style or t.style)
     animated = spec.style in ANIMATED_STYLES

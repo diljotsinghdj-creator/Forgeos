@@ -267,6 +267,12 @@ class ProductionClient(baseUrl: String) {
     }
 
     suspend fun deleteAsset(id: String): Unit = withContext(Dispatchers.IO) { call("DELETE", "/v1/library/assets/$id") }
+
+    /** The script as ready-to-paste stickman video prompts (one per ~8 s shot), as one text. */
+    suspend fun stickmanPrompts(script: String, look: String, aspect: String, character: String): String = withContext(Dispatchers.IO) {
+        JSONObject(call("POST", "/v1/library/stickman-prompts", JSONObject().put("script", script).put("look", look)
+            .put("aspect", aspect).put("character", character))).optString("text")
+    }
     suspend fun renameAsset(id: String, name: String): Unit = withContext(Dispatchers.IO) {
         call("PATCH", "/v1/library/assets/$id", JSONObject().put("name", name))
     }

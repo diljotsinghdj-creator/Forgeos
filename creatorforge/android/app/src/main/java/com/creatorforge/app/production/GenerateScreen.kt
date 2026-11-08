@@ -10,6 +10,7 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -38,9 +39,32 @@ private val FALLBACK_STYLES = listOf(
     Choice("doodle", "Doodle / whiteboard"), Choice("painterly", "Hand-painted animation"), Choice("noir_graphic", "Noir graphic novel"),
     Choice("paper_cutout", "Paper cut-out"), Choice("isometric", "Isometric 3D"), Choice("low_poly", "Low-poly 3D"),
     Choice("retro_cartoon", "Retro cartoon"), Choice("pixel_art", "Pixel art"), Choice("neon", "Neon synthwave"),
-    Choice("collage", "Mixed-media collage"), Choice("storybook_stickman", "Storybook stickman")
+    Choice("collage", "Mixed-media collage"), Choice("storybook_stickman", "Storybook stickman"),
+    Choice("stick_classic_bw", "Stickman · Classic black & white"),
+    Choice("stick_modern_pop", "Stickman · Modern pop"),
+    Choice("stick_cave", "Stickman · Prehistoric cave"),
+    Choice("stick_cozy", "Stickman · Cozy storytelling"),
+    Choice("stick_historical", "Stickman · Historical cartoon"),
+    Choice("stick_line_art", "Stickman · Minimal line art"),
+    Choice("stick_amber_noir", "Stickman · Amber noir"),
+    Choice("stick_hand_drawn", "Stickman · Colourful hand-drawn"),
+    Choice("stick_retro_tv", "Stickman · Retro TV"),
+    Choice("stick_thriller", "Stickman · Survival thriller")
 )
-private val ANIMATED_LOOKS = setOf("storybook_stickman", "animated_3d", "anime", "claymation", "watercolor", "comic", "explainer_2d", "doodle",
+// The ten stickman looks (pictures on the pod, and the Gemini / Veo prompt pack)
+private val STICK_LOOKS = listOf(
+    "stick_classic_bw" to "Classic black & white",
+    "stick_modern_pop" to "Modern pop",
+    "stick_cave" to "Prehistoric cave",
+    "stick_cozy" to "Cozy storytelling",
+    "stick_historical" to "Historical cartoon",
+    "stick_line_art" to "Minimal line art",
+    "stick_amber_noir" to "Amber noir",
+    "stick_hand_drawn" to "Colourful hand-drawn",
+    "stick_retro_tv" to "Retro TV",
+    "stick_thriller" to "Survival thriller"
+)
+private val ANIMATED_LOOKS = STICK_LOOKS.map { it.first }.toSet() + setOf("storybook_stickman", "animated_3d", "anime", "claymation", "watercolor", "comic", "explainer_2d", "doodle",
     "painterly", "noir_graphic", "paper_cutout", "isometric", "low_poly", "retro_cartoon", "pixel_art", "neon")
 private val STAGE_LABELS = mapOf(
     "director" to "AI Director • script & shots", "prompts" to "PromptForge", "images" to "Scene visuals",
@@ -104,6 +128,7 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
     var notice by remember { mutableStateOf<String?>(null) }
     var pollKey by remember { mutableIntStateOf(0) }
     var busy by remember { mutableStateOf(false) }
+    var stickmanOpen by remember { mutableStateOf(false) }
     var recent by remember { mutableStateOf<List<ProductionSummary>>(emptyList()) }
     var videoFile by remember { mutableStateOf<File?>(null) }
     var storyboardVersion by remember { mutableIntStateOf(0) }
@@ -311,6 +336,10 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                         label = { Text(if (scriptMode) "Your script - timestamps, HOOK/TWIST labels, On-screen hook, Visuals, Post lines all understood" else "Your idea") },
                         placeholder = { Text(if (scriptMode) "Paste the exact narration. CreatorForge splits it into scenes and builds visuals, captions and the edit around your words."
                             else "A 45-second cinematic short explaining how humanoid robots could change warehouses") })
+                    if (scriptMode) TextButton({ stickmanOpen = true }, enabled = idea.isNotBlank()) {
+                        Text("🎬 STICKMAN VIDEO PROMPTS (Gemini / Veo)", color = Gold, fontSize = 12.sp)
+                    }
+                    if (stickmanOpen) StickmanPackDialog(client, idea, aspect) { stickmanOpen = false }
                 }
             }
             item { Column {
@@ -580,6 +609,56 @@ private fun SceneEditor(scene: SceneView, onDismiss: () -> Unit, onSave: (String
         },
         confirmButton = { Button({ onSave(narration.trim(), visual.trim()) }, enabled = narration.isNotBlank() && visual.isNotBlank()) { Text("SAVE") } },
         dismissButton = { TextButton(onDismiss) { Text("CANCEL") } }
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun StickmanPackDialog(client: ProductionClient, script: String, aspect: String, onDismiss: () -> Unit) {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    var look by remember { mutableStateOf("stick_cozy") }
+    var character by remember { mutableStateOf("") }
+    var pack by remember { mutableStateOf<String?>(null) }
+    var making by remember { mutableStateOf(false) }
+    var problem by remember { mutableStateOf<String?>(null) }
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Stickman video prompts") },
+        text = {
+            Column(Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text("Your script becomes one prompt per ~8 s shot for Gemini / Veo or any AI video tool, with the same " +
+                    "stickman in every shot. The voiceover stays in your script's words.", fontSize = 12.sp, color = Color.Gray)
+                Text("LOOK", color = Gold, fontSize = 11.sp)
+                Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                    STICK_LOOKS.forEach { (id, label) ->
+                        FilterChip(selected = look == id, onClick = { look = id; pack = null }, label = { Text(label, fontSize = 12.sp) })
+                    }
+                }
+                OutlinedTextField(character, { character = it; pack = null }, Modifier.fillMaxWidth(),
+                    label = { Text("Your character (optional)") },
+                    placeholder = { Text("e.g. a small green dragon with big curious eyes and a red scarf") })
+                problem?.let { Text(it, color = Danger, fontSize = 12.sp) }
+                pack?.let { p ->
+                    Text("${p.lines().count { it.startsWith("===== SHOT") }} shots ready - tap COPY ALL, then paste one " +
+                        "shot at a time into your video tool.", color = Gold, fontSize = 12.sp)
+                    Text(p.take(1500) + if (p.length > 1500) "…" else "", fontSize = 11.sp)
+                }
+            }
+        },
+        confirmButton = {
+            val p = pack
+            if (p == null) Button({
+                making = true; problem = null
+                scope.launch {
+                    runCatching { client.stickmanPrompts(script, look, aspect, character) }
+                        .onSuccess { pack = it }.onFailure { problem = it.message ?: "Could not make the prompts" }
+                    making = false
+                }
+            }, enabled = !making) { Text(if (making) "MAKING…" else "MAKE PROMPTS") }
+            else Button({ copyText(context, p) }) { Text("COPY ALL") }
+        },
+        dismissButton = { TextButton(onDismiss) { Text("CLOSE") } }
     )
 }
 

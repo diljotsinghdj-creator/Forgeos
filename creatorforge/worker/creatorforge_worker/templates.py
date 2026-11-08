@@ -111,6 +111,45 @@ EDITORIAL_STYLES = {"editorial", "investigative", "collage", "studio_mix", "kine
 KINETIC_STYLE = "kinetic"
 # "Studio mix" combines six looks in one video: each line gets the look that suits what it shows (see
 # director.mix_look). Cut-out looks are laid on paper or a desk; the photo looks fill the frame.
+# Ten stickman looks (inspired by the looks popular in stickman explainers; descriptions are our own). The character
+# is the same everywhere: a round white head, dot eyes and expressive brows, thin black stick limbs - only the world,
+# clothes, palette and drawing technique change.
+STICK_CHAR = ("a stickman character with a plain round white head, simple dot eyes, expressive eyebrows and a small "
+              "mouth, thin black stick arms and legs")
+STICKMAN_LOOKS = {
+    "stick_classic_bw": ("Stickman · Classic black & white",
+                         f"stark black background, {STICK_CHAR} drawn in bold white ink, one saturated red object as the "
+                         "only colour, high-contrast graphic poster look, clean flat shapes"),
+    "stick_modern_pop": ("Stickman · Modern pop",
+                         f"bright clean minimal studio scene in soft white and pastel blue, {STICK_CHAR} wearing a red cap "
+                         "and a yellow t-shirt, crisp soft 3D shading, glossy floor, cheerful pop colours"),
+    "stick_cave": ("Stickman · Prehistoric cave",
+                   f"warm ochre cave interior lit by firelight, rough stone textures, {STICK_CHAR} with tired funny eyes "
+                   "wearing a leopard-print caveman tunic, storybook cartoon painting"),
+    "stick_cozy": ("Stickman · Cozy storytelling",
+                   f"soft muted watercolor street café with leafy plants and gentle daylight, {STICK_CHAR} sitting calmly, "
+                   "warm cozy mood, light pastel palette, delicate linework"),
+    "stick_historical": ("Stickman · Historical cartoon",
+                         f"a period-accurate setting and clothes for the story's era, {STICK_CHAR} dressed for that era, "
+                         "clean cartoon outlines, muted earthy colours, detailed wooden interiors"),
+    "stick_line_art": ("Stickman · Minimal line art",
+                       f"pure white background, loose black pen line drawing of {STICK_CHAR}, one tiny yellow accent, "
+                       "lots of empty space, sketchbook simplicity"),
+    "stick_amber_noir": ("Stickman · Amber noir",
+                         "night city street lit by warm amber shop windows, deep teal shadows, a black silhouette stickman "
+                         "with big round white eyes wearing a red hoodie, cinematic flat-colour illustration"),
+    "stick_hand_drawn": ("Stickman · Colourful hand-drawn",
+                         f"cream paper background, coloured pencil and marker doodles, {STICK_CHAR}, simple icons joined by "
+                         "hand-drawn arrows, warm orange and teal accents, friendly explainer sketch"),
+    "stick_retro_tv": ("Stickman · Retro TV",
+                       f"an old black CRT television screen with scanlines, static noise and a faint glow, {STICK_CHAR} "
+                       "drawn in white inside the screen, VHS lo-fi look, eerie quiet mood"),
+    "stick_thriller": ("Stickman · Survival thriller",
+                       f"a dim desk lit by one lamp, scribbled marker notes and torn paper, {STICK_CHAR} drawn in black "
+                       "marker, dark blue-green palette, suspenseful found-footage mood"),
+}
+STYLE_PRESETS.update(STICKMAN_LOOKS)
+
 MIX_STYLE = "studio_mix"
 CUTOUT_LOOKS = ("editorial", "investigative", "collage")
 PHOTO_LOOKS = ("cinematic", "hyperreal", "documentary")
@@ -134,5 +173,8 @@ STYLE_NEGATIVE = {
     "storybook_stickman": ", realistic human face, nose, lips, skin texture, detailed anatomy, muscular arms, "
                           "realistic hands, anime eyes, 3d render, photograph",
 }
-ANIMATED_STYLES = {"storybook_stickman", "animated_3d", "anime", "claymation", "watercolor", "comic", "explainer_2d", "doodle", "painterly",
+STICK_NEGATIVE = (", realistic human face, nose, lips, skin texture, detailed anatomy, muscular body, realistic hands, "
+                  "anime eyes, photograph, photorealistic")
+STYLE_NEGATIVE.update({k: STICK_NEGATIVE for k in STICKMAN_LOOKS})
+ANIMATED_STYLES = {*STICKMAN_LOOKS, "storybook_stickman", "animated_3d", "anime", "claymation", "watercolor", "comic", "explainer_2d", "doodle", "painterly",
                    "noir_graphic", "paper_cutout", "isometric", "low_poly", "retro_cartoon", "pixel_art", "neon"}
