@@ -169,3 +169,17 @@ def test_the_voice_picker_lists_the_accounts_voices(cfg, monkeypatch):
         assert r.status_code == 200 and r.json()[0] == {"id": VID, "name": "George", "category": "premade",
                                                         "labels": "male, british, middle aged"}
         assert c.post("/v1/voice/elevenlabs/voices", json={}).status_code == 400
+
+
+def test_long_silences_in_elevenlabs_audio_are_shortened(tmp_path):
+    import subprocess
+    from creatorforge_worker.providers.elevenlabs_tts import tighten, MAX_PAUSE_S
+    wav = tmp_path / "n.wav"
+    subprocess.run(["ffmpeg", "-nostdin", "-y", "-loglevel", "error", "-f", "lavfi", "-i", "anullsrc=r=44100:cl=mono:d=2",
+                    "-f", "lavfi", "-i", "sine=f=300:d=1", "-f", "lavfi", "-i", "anullsrc=r=44100:cl=mono:d=5",
+                    "-f", "lavfi", "-i", "sine=f=300:d=1", "-filter_complex",
+                    "[0][1][2][3]concat=n=4:v=0:a=1", "-c:a", "pcm_s16le", str(wav)], check=True)
+    tighten(wav)
+    d = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(wav)],
+                             capture_output=True, text=True).stdout)
+    assert 2.0 < d < 2.0 + 2 * MAX_PAUSE_S + 0.3, d     # 2 s of speech; the 2 s lead-in and 5 s gap are gone

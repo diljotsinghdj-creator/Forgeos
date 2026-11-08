@@ -164,6 +164,27 @@ class ElevenLabsVoice:
                 for p in parts:
                     with wave.open(str(p), "rb") as rd:
                         w.writeframes(rd.readframes(rd.getnframes()))
+        tighten(out_wav)
+
+
+# Pauses longer than this are shortened: ElevenLabs sometimes leaves long dead air (a voice set to the wrong language,
+# v3 tags read as pauses), which made a 15-minute script into a 26-minute video.
+MAX_PAUSE_S = 0.7
+
+
+def tighten(wav: Path) -> None:
+    """Trims silence at the start and shortens every long pause to about MAX_PAUSE_S; speech is untouched. Any
+    ffmpeg trouble leaves the file as it was."""
+    tmp = wav.with_suffix(".tight.wav")
+    r = subprocess.run(["ffmpeg", "-nostdin", "-y", "-loglevel", "error", "-i", str(wav), "-af",
+                        f"silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.05:stop_periods=-1:"
+                        f"stop_duration={MAX_PAUSE_S + 0.1}:stop_threshold=-45dB:stop_silence={MAX_PAUSE_S - 0.2}",
+                        "-c:a", "pcm_s16le", str(tmp)], capture_output=True, text=True)
+    try:
+        if r.returncode == 0 and tmp.is_file() and tmp.stat().st_size > 1000:
+            tmp.replace(wav)
+    finally:
+        tmp.unlink(missing_ok=True)
 
 
 def list_voices(key: str, client=None) -> list[dict]:
