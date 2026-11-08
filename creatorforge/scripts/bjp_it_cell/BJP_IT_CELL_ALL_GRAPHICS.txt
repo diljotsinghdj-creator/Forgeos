@@ -3,14 +3,24 @@ On-screen hook: सच्चा हो या झूठा, वायरल क�
 Title: BJP IT Cell Ka Sach: 'Sach Ho Ya Jhooth, Viral Kar Denge' | WhatsApp, Trolls Aur Crore Ke Ads
 Tags: #BJPITCell #FakeNews #WhatsApp #AmitMalviya #Propaganda #PoliticalAds #Hinglish #FactCheck
 
-सुबह के आठ बजे। लाखों फ़ोन एक साथ बजते हैं।
+सुबह के आठ बजे।
 Tone: dramatic
-Chat: फ़ैमिली ग्रुप · 8:00 AM | them: 🔴 ज़रूर देखें! सबको भेजो · them: ये सच छुपाया जा रहा है 👇
+Timer: 00:05 → 00:00 | सुबह 8:00 बजे
+Transition: flash
 
-एक ही मैसेज। एक ही वक़्त। लाखों ग्रुप्स में।
+लाखों फ़ोन एक साथ बजते हैं।
+Tone: dramatic
+Icons: 12 of 12 | phones | लाखों फ़ोन, एक साथ
+
+एक ही मैसेज। एक ही वक़्त।
 Tone: urgent
+Chat: फ़ैमिली ग्रुप · 8:00 AM | them: 🔴 ज़रूर देखें! सबको भेजो · them: ये सच छुपाया जा रहा है 👇
 Text: ILLUSTRATION
+
+लाखों ग्रुप्स में।
+Tone: urgent
 Steps: एक मैसेज → हज़ारों ग्रुप → लाखों फ़ोन | एक ही वक़्त
+Transition: whip
 
 ये बात बीजेपी के तब के अध्यक्ष अमित शाह ने, अपने ही कार्यकर्ताओं के सामने, मंच से कही थी।
 Tone: strong
@@ -20,42 +30,69 @@ Article: Real or Fake, We Can Make Any Message Go Viral: Amit Shah to BJP Social
 Tone: question
 Statement: जो कहा, वो *चौंका देगा।*
 
-उन्होंने कहा, हम कोई भी मैसेज वायरल कर सकते हैं। खट्टा हो या मीठा। सच्चा हो या झूठा।
+उन्होंने कहा, हम कोई भी मैसेज वायरल कर सकते हैं।
 Tone: strong
-Quote: Whether sweet or sour, true or fake, we can make any message viral | Amit Shah to BJP social media volunteers, Kota, September 2018, as reported
+Quote: We can make any message viral | Amit Shah to BJP social media volunteers, Kota, September 2018, as reported
+
+खट्टा हो या मीठा। सच्चा हो या झूठा।
+Tone: strong
+Statement: खट्टा या मीठा। *सच्चा या झूठा।*
+Transition: flash
 
 सच्चा हो... या झूठा।
 Tone: dramatic
-Statement: सच्चा हो... या *झूठा।*
+Screen: मैसेज आगे भेजें? | रद्द करें · *सबको भेजें*
 
-आज हम उसी मशीन के अंदर चलेंगे। व्हाट्सऐप ग्रुप्स। ट्रोल्स। करोड़ों के ऐड। और डिलीट का बटन।
+आज हम उसी मशीन के अंदर चलेंगे।
+Tone: dramatic
+Object: card | मशीन के अंदर
+
+व्हाट्सऐप ग्रुप्स। ट्रोल्स। करोड़ों के ऐड। और डिलीट का बटन।
 Tone: dramatic
 Steps: व्हाट्सऐप ग्रुप्स → ट्रोल्स → करोड़ों के ऐड → डिलीट का बटन | आज की कहानी
+Transition: whip
 
-पर एक वादा। जो साबित है, उसे साबित कहेंगे। जो आरोप है, उसे आरोप। और बीजेपी का पक्ष भी सुनाएँगे।
+पर एक वादा। जो साबित है, उसे साबित कहेंगे।
 Tone: strong
-Statement: साबित = *साबित।* आरोप = *आरोप।*
+Document: जो साबित है, उसे साबित कहेंगे | हमारा वादा
+
+जो आरोप है, उसे आरोप। और बीजेपी का पक्ष भी सुनाएँगे।
+Tone: strong
+Steps: ✔ साबित → ⚠ आरोप → दूसरा पक्ष | हर दावे पर नियम
 
 क्योंकि झूठ के ख़िलाफ़ जंग, झूठ से नहीं जीती जाती।
 Tone: dramatic
 Statement: झूठ से जंग, *झूठ से नहीं।*
+Transition: dip
 
-सितंबर 2018. राजस्थान का कोटा। बीजेपी के सोशल मीडिया वॉलंटियर्स का सम्मेलन।
+सितंबर 2018. राजस्थान का कोटा।
 Tone: calm
 Chapter: Part 1 | मंच से क़बूलनामा
-Place: KOTA, RAJASTHAN · SEP 2018
 
-अमित शाह ने बताया, उत्तर प्रदेश चुनाव में पार्टी के दो बड़े व्हाट्सऐप नेटवर्क थे। एक में पंद्रह लाख लोग। दूसरे में सत्रह लाख।
+बीजेपी के सोशल मीडिया वॉलंटियर्स का सम्मेलन।
+Tone: calm
+Map: Kota, Rajasthan | सितंबर 2018 · सोशल मीडिया वॉलंटियर्स का सम्मेलन
+
+अमित शाह ने बताया, उत्तर प्रदेश चुनाव में पार्टी के दो बड़े व्हाट्सऐप नेटवर्क थे।
 Tone: strong
-Chart: 15 लाख vs 17 लाख | पहला नेटवर्क, दूसरा नेटवर्क
+Map: Uttar Pradesh | दो बड़े व्हाट्सऐप नेटवर्क
+
+एक में पंद्रह लाख लोग। दूसरे में सत्रह लाख।
+Tone: strong
+Squares: 1,500,000 vs 1,700,000 | पहला नेटवर्क (15 लाख), दूसरा नेटवर्क (17 लाख)
 
 यानी क़रीब बत्तीस लाख लोग। एक इशारे पर।
 Tone: dramatic
 Chart: 0 → 32 लाख | व्हाट्सऐप पर लोग · एक इशारे पर
+Transition: flash
 
-हर सुबह आठ बजे, उन तक एक मैसेज जाता था। अख़बारों की ख़बरों पर, पार्टी वाला जवाब।
+हर सुबह आठ बजे, उन तक एक मैसेज जाता था।
 Tone: calm
-Steps: अख़बार की ख़बर → पार्टी का जवाब → सुबह 8 बजे, 32 लाख फ़ोन | हर सुबह का मैसेज
+Icons: 20 of 20 | letters | हर सुबह 8 बजे · एक मैसेज
+
+अख़बारों की ख़बरों पर, पार्टी वाला जवाब।
+Tone: calm
+Steps: अख़बार की ख़बर → पार्टी का जवाब → 32 लाख फ़ोन | हर सुबह
 
 और फिर शाह ने एक उदाहरण दिया। जो इस पूरी कहानी की चाबी है।
 Tone: question
@@ -65,19 +102,32 @@ Statement: इस पूरी कहानी की *चाबी।*
 Tone: urgent
 Chat: वायरल मैसेज · 2017 | them: अखिलेश ने अपने पिता को थप्पड़ मारा! · them: आगे भेजो
 Text: झूठा मैसेज · शाह ने ख़ुद माना
+Transition: flash
 
-शाह ने ख़ुद माना, उस मैसेज में कोई सच्चाई नहीं थी। पर वो वायरल हो गया।
+शाह ने ख़ुद माना, उस मैसेज में कोई सच्चाई नहीं थी।
 Tone: dramatic
-Quote: There was no truth to this message, but it went viral | Amit Shah, Kota, September 2018, as reported
+Quote: There was no truth to this message | Amit Shah, Kota, September 2018, as reported
 
-एक बाप-बेटे के बारे में झूठ। और मंच से, कामयाबी की तरह सुनाया गया।
+पर वो वायरल हो गया।
+Tone: dramatic
+Icons: 12 of 12 | phones | फिर भी वायरल
+
+एक बाप-बेटे के बारे में झूठ।
 Tone: sad
-Statement: झूठ, *कामयाबी* की तरह सुनाया गया।
+Statement: बाप-बेटे के बारे में *झूठ।*
 
-आलोचकों ने कहा, ये झूठ फैलाने की खुली छूट थी। शाह का ज़ोर, कार्यकर्ताओं की ताक़त पर था।
+और मंच से, कामयाबी की तरह सुनाया गया।
+Tone: sad
+Steps: झूठ बना → वायरल हुआ → मंच से कामयाबी | कोटा, 2018
+
+आलोचकों ने कहा, ये झूठ फैलाने की खुली छूट थी।
 Tone: calm
+Quote: झूठ फैलाने की खुली छूट | आलोचकों का कहना
+
+शाह का ज़ोर, कार्यकर्ताओं की ताक़त पर था।
+Tone: calm
+Icons: 20 of 20 | people | शाह का ज़ोर: कार्यकर्ताओं की ताक़त
 Text: दूसरा पक्ष
-Statement: आलोचक: *खुली छूट।* शाह: *कार्यकर्ताओं की ताक़त।*
 
 2018 से अब तक, ये नेटवर्क कितना बड़ा हुआ?
 Tone: question
@@ -85,68 +135,110 @@ Chapter: Part 2 | व्हाट्सऐप फ़ैक्टरी
 
 डेक्कन हेराल्ड की एक रिपोर्ट के मुताबिक़, 2024 के चुनाव के लिए पार्टी पचास लाख व्हाट्सऐप ग्रुप्स पर भरोसा कर रही थी।
 Tone: strong
+Chart: 50 लाख | व्हाट्सऐप ग्रुप्स · 2024 चुनाव · रिपोर्ट का दावा
 Text: रिपोर्ट का दावा · स्वतंत्र पुष्टि नहीं
 Cite: Deccan Herald, 2024
-Chart: 50 लाख | व्हाट्सऐप ग्रुप्स · 2024 चुनाव · रिपोर्ट का दावा
 
 ये आँकड़ा किसी ने स्वतंत्र रूप से नहीं गिना।
 Tone: calm
-Statement: ये आँकड़ा किसी ने *नहीं गिना।*
+Search: 50 लाख व्हाट्सऐप ग्रुप्स, स्वतंत्र गिनती | कोई गिनती नहीं मिली
 
 पर 2024 में, प्रिंसटन की डिजिटल विटनेस लैब और रेस्ट ऑफ़ वर्ल्ड ने कोशिश की।
 Tone: strong
 Article: Inside the BJP's WhatsApp machine | Rest of World, May 2024
+Transition: whip
 
 उन्होंने हिमाचल के मंडी में, बीजेपी से जुड़े व्हाट्सऐप ग्रुप्स के हज़ारों मैसेज पढ़े।
 Tone: calm
 Map: Mandi, Himachal Pradesh | 2024 · हज़ारों मैसेज पढ़े गए
 
-उनमें मोदी की तारीफ़ थी, सरकारी योजनाओं का प्रचार था। पर साथ में, फ़ेक न्यूज़, साज़िश की कहानियाँ, और नफ़रत भरी बातें भी।
+उनमें मोदी की तारीफ़ थी, सरकारी योजनाओं का प्रचार था।
 Tone: strong
-Icons: तारीफ़ | योजनाएँ | फ़ेक न्यूज़ | साज़िश | नफ़रत
+Chat: समर्थक ग्रुप | them: 🙏 मोदी जी का धन्यवाद · them: नई योजना, अभी आवेदन करें
+Text: ILLUSTRATION
+
+पर साथ में, फ़ेक न्यूज़, साज़िश की कहानियाँ, और नफ़रत भरी बातें भी।
+Tone: strong
+Receipt: तारीफ़ · योजनाओं का प्रचार · *फ़ेक न्यूज़* · साज़िश की कहानियाँ · नफ़रत भरी बातें
 
 एक पूर्व बीजेपी कंसल्टेंट ने उनसे कहा, कहानी से ज़्यादा ज़रूरी है, उसे लोगों तक पहुँचाना।
 Tone: dramatic
 Quote: Distribution matters more than narrative | a former BJP consultant, to Rest of World, 2024
 
-यही असली हथियार है। झूठ पहले पहुँच गया, तो बाज़ी झूठ की।
+यही असली हथियार है।
+Tone: dramatic
+Object: card | असली हथियार
+
+झूठ पहले पहुँच गया, तो बाज़ी झूठ की।
 Tone: dramatic
 Statement: सच पीछे। *झूठ पहले।*
+Transition: flash
 
-बंद ग्रुप का मैसेज अजनबी का नहीं लगता। वो चाचा का फ़ॉरवर्ड होता है, दोस्त का।
+बंद ग्रुप का मैसेज अजनबी का नहीं लगता।
+Tone: calm
+Icons: 8 of 8 | people | बंद ग्रुप · सब अपने
+
+वो चाचा का फ़ॉरवर्ड होता है, दोस्त का।
 Tone: calm
 Chat: फ़ैमिली ग्रुप | them: चाचा: ये ज़रूर देखो 👇 · them: दोस्त: पक्की ख़बर है भाई
+Text: ILLUSTRATION
 
-भरोसा पहले से होता है। मशीन बस उस भरोसे का इस्तेमाल करती है।
+भरोसा पहले से होता है।
+Tone: strong
+Statement: भरोसा *पहले से।*
+
+मशीन बस उस भरोसे का इस्तेमाल करती है।
 Tone: strong
 Steps: भरोसे का ग्रुप → फ़ॉरवर्ड → बिना जाँच यक़ीन → अगला फ़ॉरवर्ड | फ़ॉरवर्ड का चक्र
 
-इस मशीन का चेहरा सालों तक एक ही आदमी रहा। बीजेपी आईटी सेल के प्रमुख, अमित मालवीय।
+इस मशीन का चेहरा सालों तक एक ही आदमी रहा।
 Tone: strong
 Chapter: Part 3 | आईटी सेल का चेहरा
-Text: बीजेपी आईटी सेल प्रमुख · अगस्त 2026 तक
 
-नवंबर 2020. किसान आंदोलन। राहुल गांधी ने एक बुज़ुर्ग किसान पर लाठी उठाते पुलिसवाले की तस्वीर पोस्ट की।
+बीजेपी आईटी सेल के प्रमुख, अमित मालवीय।
+Tone: strong
+Object: card | अमित मालवीय · बीजेपी आईटी सेल प्रमुख (अगस्त 2026 तक)
+
+नवंबर 2020. किसान आंदोलन।
 Tone: calm
 Map: New Delhi | किसान आंदोलन · नवंबर 2020
+
+राहुल गांधी ने एक बुज़ुर्ग किसान पर लाठी उठाते पुलिसवाले की तस्वीर पोस्ट की।
+Tone: calm
+Steps: राहुल गांधी की तस्वीर → मालवीय का वीडियो → फ़ैक्ट चेक | नवंबर 2020
 
 मालवीय ने जवाब में एक वीडियो डाला, जिसमें लाठी किसान को छूती नहीं दिखती।
 Tone: calm
 Statement: मालवीय का वीडियो: लाठी *छूती नहीं दिखती।*
+Transition: whip
 
-पर फ़ैक्ट चेकर्स को उसी घटना का लंबा वीडियो मिला। उसमें, पुलिस की लाठी किसान पर पड़ती दिखती है।
+पर फ़ैक्ट चेकर्स को उसी घटना का लंबा वीडियो मिला।
+Tone: strong
+Search: किसान पर लाठी, पूरा वीडियो | फ़ैक्ट चेक · लंबा वीडियो मिला
+
+उसमें, पुलिस की लाठी किसान पर पड़ती दिखती है।
 Tone: strong
 Statement: पूरा वीडियो: लाठी *पड़ती दिखती है।*
+Transition: flash
 
-और ट्विटर ने भारत में पहली बार, किसी ट्वीट पर ठप्पा लगाया। मैनिपुलेटेड मीडिया।
+और ट्विटर ने भारत में पहली बार, किसी ट्वीट पर ठप्पा लगाया।
 Tone: dramatic
 Article: 'Manipulated media' - Twitter flags BJP IT cell head Amit Malviya's farmer protest tweet | ThePrint, December 2020
+
+मैनिपुलेटेड मीडिया।
+Tone: dramatic
+Object: card | MANIPULATED MEDIA
+Transition: flash
 
 वो किसान, सुखदेव सिंह, बाद में बोले, उन्हें पूरे बदन पर चोटें आई थीं।
 Tone: sad
 Quote: पूरे बदन पर चोटें आई थीं | सुखदेव सिंह, किसान · The Quint, December 2020, as reported
 
-ये पहली बार नहीं था। 2020 में ही, मालवीय ने एक वीडियो डालकर दावा किया, शाहीन बाग़ के प्रदर्शनकारी पैसे लेकर बैठे हैं।
+ये पहली बार नहीं था।
+Tone: strong
+Statement: पहली बार *नहीं।*
+
+2020 में ही, मालवीय ने एक वीडियो डालकर दावा किया, शाहीन बाग़ के प्रदर्शनकारी पैसे लेकर बैठे हैं।
 Tone: strong
 Map: Shaheen Bagh, New Delhi | फ़रवरी 2020 · मालवीय का दावा
 
@@ -157,77 +249,128 @@ Article: The truth about Amit Malviya's Shaheen Bagh exposé: An Alt News and Ne
 पर सबसे बड़ा झटका, विपक्ष से नहीं आया। बीजेपी के अंदर से आया।
 Tone: dramatic
 Statement: झटका विपक्ष से नहीं, *अंदर से।*
+Transition: flash
 
-बीजेपी सांसद सुब्रमण्यम स्वामी ने 2020 में आरोप लगाया, आईटी सेल फ़र्ज़ी आईडी से उन पर हमले करवा रहा है। और मालवीय को हटाने की माँग की।
+बीजेपी सांसद सुब्रमण्यम स्वामी ने 2020 में आरोप लगाया, आईटी सेल फ़र्ज़ी आईडी से उन पर हमले करवा रहा है।
 Tone: strong
 Article: Subramanian Swamy gives ultimatum to BJP to remove IT cell head Amit Malviya | Tribune, September 2020
 
-पार्टी ने उन्हें नहीं हटाया। वो अगस्त 2026 तक इसी कुर्सी पर रहे, जब दीपक म्हस्के नए प्रमुख बने।
+और मालवीय को हटाने की माँग की।
+Tone: strong
+Document: मालवीय को हटाने की माँग | सुब्रमण्यम स्वामी, सितंबर 2020, as reported
+
+पार्टी ने उन्हें नहीं हटाया।
 Tone: calm
-Timeline: SEP 2020 स्वामी का अल्टीमेटम | AUG 2026 मालवीय की जगह नया प्रमुख
-Article: Deepak Mhaskey replaces Amit Malviya as BJP IT cell chief | Newslaundry, August 2026
+Statement: पार्टी ने *नहीं हटाया।*
+
+वो अगस्त 2026 तक इसी कुर्सी पर रहे, जब दीपक म्हस्के नए प्रमुख बने।
+Tone: calm
+Timeline: SEP 2020 स्वामी का अल्टीमेटम → AUG 2026 दीपक म्हस्के नए प्रमुख | मालवीय कुर्सी पर रहे
 
 मालवीय, फ़ेक न्यूज़ के आरोपों को, विपक्ष का फ़ेक न्यूज़ कैंपेन बताते रहे हैं।
 Tone: calm
-Text: दूसरा पक्ष
 Quote: Opposition is running a fake news campaign | Amit Malviya, BJP IT cell chief, as reported by Scroll
+Text: दूसरा पक्ष
 
 अब बात उनकी, जो इस मशीन के अंदर थे। और बाहर आकर बोले।
 Tone: dramatic
 Chapter: Part 4 | अंदर के लोग
 
-2016. पत्रकार स्वाति चतुर्वेदी की किताब आई। आई एम अ ट्रोल।
+2016. पत्रकार स्वाति चतुर्वेदी की किताब आई।
+Tone: calm
+Object: card | स्वाति चतुर्वेदी · पत्रकार · 2016
+
+आई एम अ ट्रोल।
 Tone: calm
 Document: I Am a Troll: Inside the Secret World of the BJP's Digital Army | Swati Chaturvedi, 2016
 
-दो साल की रिसर्च। तीस से ज़्यादा ट्रोल्स से बातचीत।
+दो साल की रिसर्च।
 Tone: strong
-Icons: 30 of 30 | people | ट्रोल्स से बातचीत · 2 साल की रिसर्च
+Chart: 0 → 2 साल | रिसर्च
+
+तीस से ज़्यादा ट्रोल्स से बातचीत।
+Tone: strong
+Icons: 30 of 30 | people | ट्रोल्स से बातचीत (30 से ज़्यादा)
 
 उसमें एक पूर्व वॉलंटियर, साध्वी खोसला, ने स्क्रीनशॉट्स के साथ दावा किया, उन्हें निशाना बनाने वाले लोगों की लिस्ट भेजी जाती थी।
 Tone: strong
-Text: आरोप · साध्वी खोसला
 Steps: निशानों की लिस्ट → ग्रुप में मैसेज → एक साथ हमला | साध्वी खोसला का आरोप
+Text: आरोप · साध्वी खोसला
 
-उनके मुताबिक़, निशाने पर बड़े पत्रकार थे। और एक मैसेज में कहा गया, स्नैपडील पर दबाव बनाओ, कि आमिर ख़ान को ब्रांड एंबेसडर से हटाया जाए।
+उनके मुताबिक़, निशाने पर बड़े पत्रकार थे।
+Tone: urgent
+Icons: 6 of 6 | people | निशाने पर बड़े पत्रकार · आरोप
+
+और एक मैसेज में कहा गया, स्नैपडील पर दबाव बनाओ, कि आमिर ख़ान को ब्रांड एंबेसडर से हटाया जाए।
 Tone: urgent
 Article: Was asked to push Snapdeal to drop Aamir Khan, claims ex-BJP social media volunteer in upcoming book | Scroll, December 2016
 
 खोसला का दावा था, ये मैसेज तब के आईटी सेल प्रमुख अरविंद गुप्ता की तरफ़ से आते थे।
 Tone: calm
-Text: आरोप
 Statement: आरोप: मैसेज *आईटी सेल प्रमुख* से
+Text: आरोप
 
-अरविंद गुप्ता ने कहा, खोसला कभी आईटी सेल का हिस्सा नहीं थीं। खोसला ने जवाब में, अपने पुराने ट्वीट्स दिखाए।
+अरविंद गुप्ता ने कहा, खोसला कभी आईटी सेल का हिस्सा नहीं थीं।
 Tone: calm
+Quote: खोसला कभी आईटी सेल का हिस्सा नहीं थीं | अरविंद गुप्ता, The Asian Age, December 2016, as reported
 Text: दूसरा पक्ष
-Statement: गुप्ता: *कभी सदस्य नहीं।* खोसला: *पुराने ट्वीट्स।*
 
-2017 में, वॉल स्ट्रीट जर्नल के कॉलमिस्ट सदानंद धूमे ने, ऑल्ट न्यूज़ पर अपनी आपबीती लिखी। आईटी सेल की स्मियर मशीन कैसे काम करती है।
+खोसला ने जवाब में, अपने पुराने ट्वीट्स दिखाए।
+Tone: calm
+Statement: खोसला का जवाब: *पुराने ट्वीट्स।*
+
+2017 में, वॉल स्ट्रीट जर्नल के कॉलमिस्ट सदानंद धूमे ने, ऑल्ट न्यूज़ पर अपनी आपबीती लिखी।
+Tone: strong
+Object: card | सदानंद धूमे · कॉलमिस्ट, वॉल स्ट्रीट जर्नल · 2017
+
+आईटी सेल की स्मियर मशीन कैसे काम करती है।
 Tone: strong
 Article: How BJP IT Cell's smear machine works: A personal story | Alt News, July 2017
 
-इन आरोपों में पैटर्न एक जैसा है। पहले निशाना तय होता है। फिर एक साथ सैकड़ों अकाउंट टूट पड़ते हैं।
+इन आरोपों में पैटर्न एक जैसा है।
+Tone: dramatic
+Statement: पैटर्न *एक जैसा।*
+
+पहले निशाना तय होता है। फिर एक साथ सैकड़ों अकाउंट टूट पड़ते हैं।
 Tone: dramatic
 Steps: निशाना तय → हैशटैग → सैकड़ों अकाउंट → गाली और धमकी | आरोपों में बताया गया पैटर्न
+Transition: whip
 
-मक़सद बहस जीतना नहीं। आवाज़ को इतना थका देना, कि वो बोलना छोड़ दे।
+मक़सद बहस जीतना नहीं।
 Tone: dramatic
-Statement: बहस नहीं। *आवाज़ थकाना।*
+Object: card | बहस जीतना नहीं
+
+आवाज़ को इतना थका देना, कि वो बोलना छोड़ दे।
+Tone: dramatic
+Chat: आपकी पोस्ट | them: 🤬 · them: 🤬🤬 · them: देशद्रोही! · them: 🤬🤬🤬 · them: चुप रहो!
+Text: ILLUSTRATION
 
 पर इस मशीन में पैसा भी लगता है। बहुत सारा पैसा।
 Tone: strong
 Chapter: Part 5 | करोड़ों का खेल
 
-गूगल का अपना ऐड डेटा देखिए। 29 जनवरी से 28 फ़रवरी 2024. सिर्फ़ तीस दिन।
+गूगल का अपना ऐड डेटा देखिए।
 Tone: calm
-Timeline: 29 JAN 2024 | 28 FEB 2024
+Search: Google Ads Transparency Center | राजनीतिक विज्ञापन · भारत · 2024
+
+29 जनवरी से 28 फ़रवरी 2024. सिर्फ़ तीस दिन।
+Tone: calm
+Timeline: 29 JAN 2024 शुरू → 28 FEB 2024 ख़त्म | सिर्फ़ 30 दिन
 
 बीजेपी ने गूगल पर ख़र्च किए, क़रीब तीस करोड़ रुपये।
 Tone: dramatic
-Chart: ₹29.7 करोड़ | 30 दिन में गूगल ऐड · 29 जनवरी–28 फ़रवरी 2024
+Object: stack | 30 | ₹29.7 करोड़ · 30 दिन में गूगल ऐड
+Transition: flash
 
-साढ़े बारह हज़ार से ज़्यादा ऐड। तीन चौथाई वीडियो। और ज़्यादातर निशाने पर, उत्तर भारत के राज्य।
+साढ़े बारह हज़ार से ज़्यादा ऐड।
+Tone: strong
+Chart: 0 → 12,500 | गूगल ऐड · 30 दिन (साढ़े बारह हज़ार से ज़्यादा)
+
+तीन चौथाई वीडियो।
+Tone: strong
+Pie: 75% | वीडियो ऐड
+
+और ज़्यादातर निशाने पर, उत्तर भारत के राज्य।
 Tone: strong
 Article: BJP spent Rs 30 cr in 30 days on Google ads, targeted mostly north Indian states | The News Minute, March 2024
 
@@ -235,18 +378,23 @@ Article: BJP spent Rs 30 cr in 30 days on Google ads, targeted mostly north Indi
 Tone: strong
 Chart: ₹100 करोड़ | गूगल पर राजनीतिक ऐड · पहली पार्टी
 Cite: Deccan Herald, 2024
+Transition: flash
 
 पर असली खेल वहाँ है, जहाँ ऐड पर पार्टी का नाम ही नहीं होता।
 Tone: dramatic
-Statement: असली खेल: ऐड पर *नाम ही नहीं।*
+Object: card | ऐड पर पार्टी का नाम नहीं
 
 2022 में अल जज़ीरा और द रिपोर्टर्स कलेक्टिव ने, फ़ेसबुक की अपनी ऐड लाइब्रेरी से, पाँच लाख से ज़्यादा राजनीतिक ऐड खंगाले।
 Tone: calm
-Chart: 5 लाख | फ़ेसबुक के राजनीतिक ऐड खंगाले (5 लाख से ज़्यादा) · 2022
+Search: Meta Ad Library | राजनीतिक ऐड · भारत · 5 लाख से ज़्यादा जाँचे · Al Jazeera & The Reporters' Collective, 2022
 
-उन्हें मिले तेईस ऐसे विज्ञापनदाता, जिन्होंने चौंतीस हज़ार से ज़्यादा ऐड चलाए। ज़्यादातर बीजेपी के पक्ष में, या विपक्ष के ख़िलाफ़।
+उन्हें मिले तेईस ऐसे विज्ञापनदाता, जिन्होंने चौंतीस हज़ार से ज़्यादा ऐड चलाए।
 Tone: strong
-Chart: 34,884 | ऐड · 23 घोस्ट विज्ञापनदाताओं के · ज़्यादातर बीजेपी के पक्ष में
+Icons: 23 of 23 | people | घोस्ट विज्ञापनदाता
+
+ज़्यादातर बीजेपी के पक्ष में, या विपक्ष के ख़िलाफ़।
+Tone: strong
+Chart: 34,884 | ऐड · ज़्यादातर बीजेपी के पक्ष में या विपक्ष के ख़िलाफ़
 Cite: Al Jazeera & The Reporters' Collective, Mar 2022
 
 और रिपोर्ट का दावा, दस में से नौ चुनावों में, फ़ेसबुक ने बीजेपी से, कांग्रेस के मुक़ाबले सस्ते रेट लिए।
@@ -255,19 +403,28 @@ Pie: 90% | चुनाव जिनमें बीजेपी को सस�
 
 मेटा ने कहा, उसकी नीतियाँ सब पर एक जैसी लागू होती हैं, चाहे पार्टी कोई भी हो।
 Tone: calm
-Article: Facebook ad policy gave BJP 'unfair advantage' in Indian elections, shows series of reports | Scroll, March 2022
-Text: दूसरा पक्ष · मेटा: नीतियाँ सब पर एक जैसी
+Statement: मेटा: नीतियाँ *सब पर एक जैसी।*
+Text: दूसरा पक्ष
 
-और ये पार्टी का पैसा है। अब सरकार का देखिए।
+और ये पार्टी का पैसा है।
 Tone: question
-Statement: पार्टी का पैसा। अब *सरकार का।*
+Object: coin | ₹ | पार्टी का पैसा
+
+अब सरकार का देखिए।
+Tone: question
+Statement: अब *सरकार* का पैसा।
+Transition: whip
 
 लोकसभा में दिए एक जवाब के हवाले से, मोदी सरकार ने 2014 से, आठ साल आठ महीने में, सिर्फ़ प्रिंट और टीवी के विज्ञापनों पर, 6,491 करोड़ रुपये ख़र्च किए।
 Tone: strong
 Chart: ₹6,491 करोड़ | प्रिंट और टीवी विज्ञापन · 2014 से 8 साल 8 महीने
 Cite: Newslaundry, Lok Sabha reply, Dec 2022
 
-ये जनता का पैसा है। आलोचक कहते हैं, प्रचार योजनाओं का होता है, पर चेहरा अक्सर एक ही होता है।
+ये जनता का पैसा है।
+Tone: dramatic
+Icons: 20 of 20 | coins | जनता का पैसा
+
+आलोचक कहते हैं, प्रचार योजनाओं का होता है, पर चेहरा अक्सर एक ही होता है।
 Tone: dramatic
 Statement: पैसा जनता का। *चेहरा एक।*
 Text: आलोचकों का तर्क
@@ -278,7 +435,7 @@ Chapter: Part 6 | प्लेटफ़ॉर्म की चुप्पी
 
 अगस्त 2020 में वॉल स्ट्रीट जर्नल की एक रिपोर्ट आई।
 Tone: calm
-Statement: अगस्त 2020: *वॉल स्ट्रीट जर्नल* की रिपोर्ट
+Globe: New York → New Delhi | वॉल स्ट्रीट जर्नल की रिपोर्ट · अगस्त 2020
 
 रिपोर्ट का दावा, फ़ेसबुक इंडिया की पॉलिसी प्रमुख अंखी दास ने, बीजेपी विधायक टी राजा सिंह पर, हेट स्पीच के नियम लागू करने का विरोध किया।
 Tone: strong
@@ -286,13 +443,17 @@ Article: Facebook ignored hate speech by India's BJP politicians: Report | Al Ja
 
 वजह, रिपोर्ट के मुताबिक़, सत्ताधारी पार्टी से रिश्ते बिगड़ने और कारोबार पर असर का डर।
 Tone: dramatic
-Text: आरोप · WSJ रिपोर्ट
 Steps: सत्ताधारी पार्टी से रिश्ते → कारोबार पर असर का डर | रिपोर्ट के मुताबिक़ वजह
+Text: आरोप · WSJ रिपोर्ट
 
-फ़ेसबुक ने कहा, वो नियम सब पर बराबर लागू करता है। बीजेपी ने भी, किसी ख़ास बर्ताव से इनकार किया।
+फ़ेसबुक ने कहा, वो नियम सब पर बराबर लागू करता है।
+Tone: calm
+Statement: फ़ेसबुक: नियम *सब पर बराबर।*
+Text: दूसरा पक्ष
+
+बीजेपी ने भी, किसी ख़ास बर्ताव से इनकार किया।
 Tone: calm
 Article: Modi's BJP rejects claims of preferential treatment by Facebook | Al Jazeera, August 2020
-Text: दूसरा पक्ष
 
 सितंबर 2023 में, वॉशिंगटन पोस्ट ने बीजेपी स्टाफ़ और कंसल्टेंट्स के हवाले से लिखा, आधिकारिक आईटी सेल के अलावा, एक छुपा हुआ समानांतर अभियान भी चलता है।
 Tone: strong
@@ -300,14 +461,18 @@ Quote: a shadowy parallel campaign | The Washington Post, citing BJP staffers an
 
 2024 में एडवोकेसी ग्रुप एको ने दावा किया, दक्षिणपंथी नेटवर्क्स ने मेटा पर मुसलमानों के ख़िलाफ़ नफ़रत भरे ऐड चलाए।
 Tone: dramatic
-Text: एडवोकेसी ग्रुप का दावा
 Article: New report: Meta helping far-right networks reach millions of Indian voters with Islamophobic hate ads | Ekō, 2024
+Text: एडवोकेसी ग्रुप का दावा
 
 अब सवाल। जो आवाज़ें ट्रोल्स से नहीं थकतीं, उनका क्या होता है?
 Tone: question
 Chapter: Part 7 | डिलीट का बटन
 
-जनवरी 2023. बीबीसी की दो हिस्सों वाली डॉक्यूमेंट्री आई। इंडिया: द मोदी क्वेश्चन। गुजरात दंगों पर।
+जनवरी 2023. बीबीसी की दो हिस्सों वाली डॉक्यूमेंट्री आई।
+Tone: calm
+Globe: London → New Delhi | बीबीसी डॉक्यूमेंट्री · जनवरी 2023
+
+इंडिया: द मोदी क्वेश्चन। गुजरात दंगों पर।
 Tone: calm
 Document: India: The Modi Question | BBC documentary in two parts, January 2023
 
@@ -318,11 +483,16 @@ Text: सरकार का पक्ष
 
 फिर सरकार ने आईटी रूल्स की इमरजेंसी पावर्स से, यूट्यूब और ट्विटर को उसके लिंक हटाने का आदेश दिया।
 Tone: strong
-Article: Govt blocks YouTube videos, tweets sharing BBC documentary on PM Modi | ThePrint, January 2023
+Steps: सरकारी आदेश → यूट्यूब → ट्विटर → लिंक हटाओ | आईटी रूल्स की इमरजेंसी पावर्स
 
-पचास से ज़्यादा ट्वीट्स हटे। एक विपक्षी सांसद का ट्वीट भी।
+पचास से ज़्यादा ट्वीट्स हटे।
 Tone: dramatic
-Chart: 50 | ट्वीट्स हटे · बीबीसी डॉक्यूमेंट्री के लिंक
+Chart: 0 → 50 | ट्वीट्स हटे · बीबीसी डॉक्यूमेंट्री के लिंक
+
+एक विपक्षी सांसद का ट्वीट भी।
+Tone: dramatic
+Screen: पोस्ट | *यह पोस्ट भारत में रोकी गई है* · क़ानूनी माँग पर
+Transition: flash
 
 सरकार के सलाहकार कंचन गुप्ता ने लिखा, ट्विटर और यूट्यूब, दोनों ने आदेश माना।
 Tone: calm
@@ -332,120 +502,235 @@ Quote: Both Twitter and YouTube have complied with the directions | Kanchan Gupt
 Tone: strong
 Article: India: Government uses emergency powers to block BBC documentary critical of Modi | International Press Institute, January 2023
 
-तीन हफ़्ते बाद, 14 फ़रवरी 2023. आयकर विभाग की टीमें बीबीसी के दिल्ली और मुंबई दफ़्तर पहुँचीं। तीन दिन चला सर्वे।
+तीन हफ़्ते बाद, 14 फ़रवरी 2023.
+Tone: dramatic
+Timeline: JAN 2023 डॉक्यूमेंट्री → 14 FEB 2023 आयकर सर्वे | तीन हफ़्ते बाद
+
+आयकर विभाग की टीमें बीबीसी के दिल्ली और मुंबई दफ़्तर पहुँचीं।
+Tone: dramatic
+Map: New Delhi → Mumbai | बीबीसी के दफ़्तर · आयकर सर्वे
+
+तीन दिन चला सर्वे।
 Tone: dramatic
 Article: Income Tax officials conduct survey at BBC offices after release of Gujarat riots documentary | Scroll, February 2023
 
-सरकार ने कहा, कोई क़ानून से ऊपर नहीं। बीबीसी ने कहा, वो पूरा सहयोग कर रहा है।
+सरकार ने कहा, कोई क़ानून से ऊपर नहीं।
 Tone: calm
+Quote: कोई क़ानून से ऊपर नहीं | सरकार का पक्ष, February 2023, as reported
 Text: दूसरा पक्ष
-Statement: सरकार: *क़ानून से ऊपर कोई नहीं।* बीबीसी: *पूरा सहयोग।*
+
+बीबीसी ने कहा, वो पूरा सहयोग कर रहा है।
+Tone: calm
+Statement: बीबीसी: *पूरा सहयोग।*
 
 सरकार के संसद में दिए आँकड़ों के मुताबिक़, 2018 से मार्च 2023 तक, तीस हज़ार से ज़्यादा ऑनलाइन लिंक ब्लॉक करने के आदेश दिए गए।
 Tone: strong
 Chart: 30,310 | ऑनलाइन लिंक ब्लॉक करने के आदेश · 2018 से मार्च 2023
 Cite: Parliament reply, Mar 2023
+Transition: flash
 
 फ़रवरी 2024, किसान आंदोलन से एक रात पहले, किसान नेताओं और पत्रकारों के एक्स अकाउंट भारत में रोक दिए गए।
 Tone: urgent
+Timer: 00:10 → 00:00 | किसान आंदोलन से एक रात पहले · फ़रवरी 2024
+Text: किसान नेताओं और पत्रकारों के एक्स अकाउंट रोके गए
+
+एक्स ने ख़ुद लिखा, सरकार के आदेश पर हम ये अकाउंट रोक रहे हैं।
+Tone: strong
 Article: X says India's demand to block accounts curtails freedom of expression | Dawn (Reuters), February 2024
 
-एक्स ने ख़ुद लिखा, सरकार के आदेश पर हम ये अकाउंट रोक रहे हैं। पर हम इससे असहमत हैं।
+पर हम इससे असहमत हैं।
 Tone: strong
 Quote: We disagree with these actions | X Global Government Affairs, February 2024
 
-मई 2025, ऑपरेशन सिंदूर के बीच, एक्स को आठ हज़ार अकाउंट रोकने का आदेश मिला। एक्स ने कहा, आदेश वो सार्वजनिक भी नहीं कर सकता।
+मई 2025, ऑपरेशन सिंदूर के बीच, एक्स को आठ हज़ार अकाउंट रोकने का आदेश मिला।
+Tone: dramatic
+Chart: 0 → 8,000 | अकाउंट रोकने का आदेश · मई 2025
+Transition: flash
+
+एक्स ने कहा, आदेश वो सार्वजनिक भी नहीं कर सकता।
 Tone: dramatic
 Article: 'We disagree': X suspends over 8,000 accounts in India in the aftermath of Operation Sindoor | The Week, May 2025
 
-सरकार कहती है, ये आदेश सुरक्षा, क़ानून व्यवस्था और फ़ेक न्यूज़ रोकने के लिए हैं। और अदालतों ने कई बार सरकार का साथ दिया।
+सरकार कहती है, ये आदेश सुरक्षा, क़ानून व्यवस्था और फ़ेक न्यूज़ रोकने के लिए हैं।
 Tone: calm
-Timeline: JUN 2023 ट्विटर की याचिका ख़ारिज · ₹50 लाख | SEP 2025 एक्स की याचिका ख़ारिज
+Statement: सरकार: *सुरक्षा।* क़ानून व्यवस्था। फ़ेक न्यूज़।
 Text: दूसरा पक्ष
 
-पर एक कोशिश अदालत ने रोकी। सरकार की अपनी फ़ैक्ट चेक यूनिट, जो तय करती कि सरकार के बारे में क्या झूठ है। सितंबर 2024 में बॉम्बे हाई कोर्ट ने उसे रद्द कर दिया।
+और अदालतों ने कई बार सरकार का साथ दिया।
+Tone: calm
+Timeline: JUN 2023 ट्विटर की याचिका ख़ारिज, ₹50 लाख जुर्माना → SEP 2025 एक्स की याचिका ख़ारिज | अदालत में सरकार की जीत
+
+पर एक कोशिश अदालत ने रोकी।
+Tone: strong
+Object: card | अदालत ने रोका
+
+सरकार की अपनी फ़ैक्ट चेक यूनिट, जो तय करती कि सरकार के बारे में क्या झूठ है।
+Tone: strong
+Steps: आपकी पोस्ट → सरकारी फ़ैक्ट चेक यूनिट → 'झूठ' का ठप्पा → पोस्ट हटे | प्रस्तावित नियम, 2023
+
+सितंबर 2024 में बॉम्बे हाई कोर्ट ने उसे रद्द कर दिया।
 Tone: strong
 Article: Bombay High Court strikes down IT Rules Amendment 2023 on fact check units | Bar & Bench, September 2024
 
-ट्विटर के पूर्व सीईओ जैक डोर्सी ने 2023 में दावा किया, किसान आंदोलन के वक़्त सरकार ने ट्विटर बंद करने और कर्मचारियों के घर छापे की धमकी दी। मंत्री राजीव चंद्रशेखर ने इसे सफ़ेद झूठ कहा।
+ट्विटर के पूर्व सीईओ जैक डोर्सी ने 2023 में दावा किया, किसान आंदोलन के वक़्त सरकार ने ट्विटर बंद करने और कर्मचारियों के घर छापे की धमकी दी।
 Tone: dramatic
-Article: Ex-Twitter CEO Dorsey alleges pressure from India, Centre denies claims | Business Standard, June 2023
+Object: card | जैक डोर्सी · ट्विटर के पूर्व सीईओ · 2023 का दावा
+Cite: Business Standard, June 2023
 
-और ब्लॉकिंग के साथ, ट्रोलिंग भी चलती है। 2018 में पत्रकार राणा अय्यूब के नाम से झूठा ट्वीट फैलाया गया, और यूएन विशेषज्ञों ने उनकी सुरक्षा माँगी।
+मंत्री राजीव चंद्रशेखर ने इसे सफ़ेद झूठ कहा।
+Tone: dramatic
+Quote: an outright lie | Rajeev Chandrasekhar, Minister of State for IT, June 2023, as reported
+Text: दूसरा पक्ष
+
+और ब्लॉकिंग के साथ, ट्रोलिंग भी चलती है।
+Tone: strong
+Statement: ब्लॉकिंग के साथ, *ट्रोलिंग।*
+
+2018 में पत्रकार राणा अय्यूब के नाम से झूठा ट्वीट फैलाया गया, और यूएन विशेषज्ञों ने उनकी सुरक्षा माँगी।
 Tone: strong
 Article: Protect journo Rana Ayyub urgently, United Nations to Indian govt | The Quint, May 2018
 
-2022 में यूएन के विशेष दूतों ने उन पर हमलों को हिंदू राष्ट्रवादी समूहों से जोड़ा। भारत ने आरोपों को बेबुनियाद कहा।
+2022 में यूएन के विशेष दूतों ने उन पर हमलों को हिंदू राष्ट्रवादी समूहों से जोड़ा।
 Tone: calm
-Article: Halt all retaliation attacks against Indian journalist Rana Ayyub - UN experts | UN News, February 2022
-Text: भारत सरकार: आरोप बेबुनियाद
+Globe: Geneva → New Delhi | यूएन के विशेष दूत · 2022
 
-मई 2025 में, सीज़फ़ायर का ऐलान करने वाले विदेश सचिव विक्रम मिस्री, और उनकी बेटी तक, ऑनलाइन गालियों का निशाना बने। उन्हें अकाउंट लॉक करना पड़ा।
+भारत ने आरोपों को बेबुनियाद कहा।
+Tone: calm
+Statement: भारत: आरोप *बेबुनियाद।*
+Text: दूसरा पक्ष
+
+मई 2025 में, सीज़फ़ायर का ऐलान करने वाले विदेश सचिव विक्रम मिस्री, और उनकी बेटी तक, ऑनलाइन गालियों का निशाना बने।
 Tone: sad
 Article: IAS, IPS associations condemn online harassment of Foreign Secretary Vikram Misri | The News Minute, May 2025
+
+उन्हें अकाउंट लॉक करना पड़ा।
+Tone: sad
+Screen: अकाउंट | पब्लिक · *🔒 लॉक किया गया*
 
 सोचिए। जब सरकार का अपना अफ़सर नहीं बचा, तो आम आलोचक का क्या?
 Tone: question
 Statement: अपना अफ़सर नहीं बचा, *तो आप?*
+Transition: flash
 
-ब्लॉकिंग के आदेश सरकार देती है, आईटी सेल नहीं। दोनों को जोड़ने वाला कोई दस्तावेज़ हमें नहीं मिला।
+ब्लॉकिंग के आदेश सरकार देती है, आईटी सेल नहीं।
 Tone: calm
-Text: जो साबित नहीं
-Statement: आईटी सेल से जोड़ने वाला *दस्तावेज़ नहीं मिला।*
+Steps: सरकार → ब्लॉकिंग आदेश → प्लेटफ़ॉर्म | आईटी सेल नहीं
 
-पर निशाना अक्सर एक होता है। वो आवाज़ें, जो सत्ता से सवाल पूछती हैं। एक तरफ़ आदेश, जो पोस्ट हटवाते हैं। दूसरी तरफ़ भीड़, जो आवाज़ थकाती है। और नतीजा? डर।
+दोनों को जोड़ने वाला कोई दस्तावेज़ हमें नहीं मिला।
+Tone: calm
+Search: आईटी सेल और ब्लॉकिंग आदेश का संबंध | कोई दस्तावेज़ नहीं मिला
+Text: जो साबित नहीं
+
+पर निशाना अक्सर एक होता है। वो आवाज़ें, जो सत्ता से सवाल पूछती हैं।
 Tone: dramatic
-Statement: निशाना एक। नतीजा *डर।*
+Icons: 10 of 10 | people | सवाल पूछने वाली आवाज़ें
+
+एक तरफ़ आदेश, जो पोस्ट हटवाते हैं। दूसरी तरफ़ भीड़, जो आवाज़ थकाती है।
+Tone: dramatic
+Steps: सरकारी आदेश → पोस्ट हटे → ऑनलाइन भीड़ → आवाज़ थके | दोनों तरफ़ से
+
+और नतीजा? डर।
+Tone: dramatic
+Statement: नतीजा? *डर।*
+Transition: dip
 
 अब ईमानदारी से, तस्वीर का दूसरा हिस्सा।
 Tone: calm
 Chapter: Part 8 | पूरी तस्वीर
 
-ऑक्सफ़ोर्ड इंटरनेट इंस्टिट्यूट ने 2019 के चुनाव में पाया, बीजेपी समर्थक फ़ेसबुक पेजों पर शेयर हुई ख़बरों में, 28 प्रतिशत जंक न्यूज़ थी। कांग्रेस समर्थक पेजों पर, 21 प्रतिशत।
+ऑक्सफ़ोर्ड इंटरनेट इंस्टिट्यूट ने 2019 के चुनाव में पाया, बीजेपी समर्थक फ़ेसबुक पेजों पर शेयर हुई ख़बरों में, 28 प्रतिशत जंक न्यूज़ थी।
+Tone: calm
+Pie: 28% | बीजेपी समर्थक पेज: जंक न्यूज़ · 2019
+
+कांग्रेस समर्थक पेजों पर, 21 प्रतिशत।
 Tone: calm
 Chart: 28% vs 21% | बीजेपी समर्थक पेज, कांग्रेस समर्थक पेज
+Cite: Oxford Internet Institute, 2019
 
-यानी कांग्रेस भी दूध की धुली नहीं। ये जंग हर बड़ी पार्टी लड़ रही है।
+यानी कांग्रेस भी दूध की धुली नहीं।
 Tone: calm
-Text: दूसरा पक्ष
 Statement: कांग्रेस भी *दूध की धुली नहीं।*
+Text: दूसरा पक्ष
 
-फ़र्क़ है पैमाने का। पैसे का। और इस बात का, कि किस पार्टी के अध्यक्ष ने मंच से कहा, सच्चा हो या झूठा, वायरल कर देंगे।
-Tone: dramatic
-Statement: फ़र्क़ है *पैमाने* का।
-
-और एक दावा जो हम नहीं करेंगे। 2022 की टेक फ़ॉग ऐप वाली कहानी।
+ये जंग हर बड़ी पार्टी लड़ रही है।
 Tone: calm
-Text: विवादित दावा
-Statement: टेक फ़ॉग: एक दावा जो *हम नहीं करेंगे।*
+Icons: 6 of 6 | phones | हर बड़ी पार्टी की डिजिटल जंग
 
-वो रिपोर्ट बाद में समीक्षा के लिए हटा ली गई। इसलिए हम उसे सबूत नहीं मानते।
+फ़र्क़ है पैमाने का। पैसे का।
+Tone: dramatic
+Object: bars | 30, 100 | 30 दिन, कुल | गूगल ऐड, ₹ करोड़
+
+और इस बात का, कि किस पार्टी के अध्यक्ष ने मंच से कहा, सच्चा हो या झूठा, वायरल कर देंगे।
+Tone: dramatic
+Quote: We can make any message viral | Amit Shah to BJP social media volunteers, Kota, September 2018, as reported
+Transition: flash
+
+और एक दावा जो हम नहीं करेंगे।
+Tone: calm
+Statement: एक दावा जो *हम नहीं करेंगे।*
+
+2022 की टेक फ़ॉग ऐप वाली कहानी।
+Tone: calm
+Document: Tek Fog | The Wire, January 2022 · बाद में समीक्षा के लिए हटाई गई
+Text: विवादित दावा
+
+वो रिपोर्ट बाद में समीक्षा के लिए हटा ली गई।
 Tone: strong
 Article: The Wire retracts Meta stories, Tek Fog investigation to be reviewed too | The News Minute, October 2022
+
+इसलिए हम उसे सबूत नहीं मानते।
+Tone: strong
+Object: card | सबूत नहीं
 
 क्योंकि इस मशीन को हराने का एक ही तरीक़ा है। उससे बेहतर सच।
 Tone: dramatic
 Statement: मशीन को हराने का तरीक़ा: *बेहतर सच।*
+Transition: flash
 
 तो अगली बार, सुबह आठ बजे, जब कोई मैसेज आपका ख़ून खौला दे, तो रुकिए।
 Tone: strong
 Chapter: Part 9 | आपकी ढाल
 
-तीन सवाल पूछिए। ये आया कहाँ से? इसका पूरा वीडियो कहाँ है? और किसका फ़ायदा है, कि मैं इसे बिना सोचे आगे भेजूँ?
+तीन सवाल पूछिए।
 Tone: question
 Steps: कहाँ से आया? → पूरा वीडियो कहाँ? → किसका फ़ायदा? | फ़ॉरवर्ड से पहले
 
-फ़ोटो को गूगल लेंस में डालिए। ऑल्ट न्यूज़, बूम या फ़ैक्टली पर खोजिए। दो मिनट लगते हैं।
-Tone: calm
-Search: क्या ये फ़ोटो असली है? | Google Lens · Alt News · BOOM · Factly
+ये आया कहाँ से? इसका पूरा वीडियो कहाँ है?
+Tone: question
+Search: ये मैसेज आया कहाँ से? | सबसे पहली पोस्ट · पूरा वीडियो · असली स्रोत
 
-क्योंकि बत्तीस लाख लोगों तक मैसेज पहुँचाने वाली मशीन भी, एक चीज़ से हारती है। उस एक इंसान से, जो फ़ॉरवर्ड नहीं करता।
+और किसका फ़ायदा है, कि मैं इसे बिना सोचे आगे भेजूँ?
+Tone: question
+Screen: मैसेज आगे भेजें? | *रुकिए* · किसका फ़ायदा?
+
+फ़ोटो को गूगल लेंस में डालिए।
+Tone: calm
+Search: Google Lens | ये फ़ोटो पहली बार कहाँ आई?
+
+ऑल्ट न्यूज़, बूम या फ़ैक्टली पर खोजिए।
+Tone: calm
+Steps: Alt News → BOOM → Factly | फ़ैक्ट चेक
+
+दो मिनट लगते हैं।
+Tone: calm
+Timer: 02:00 → 00:00 | बस दो मिनट
+
+क्योंकि बत्तीस लाख लोगों तक मैसेज पहुँचाने वाली मशीन भी, एक चीज़ से हारती है।
+Tone: dramatic
+Squares: 3,200,000 vs 1 | मशीन (32 लाख), एक इंसान
+
+उस एक इंसान से, जो फ़ॉरवर्ड नहीं करता।
 Tone: dramatic
 Statement: मशीन हारती है उससे, *जो फ़ॉरवर्ड नहीं करता।*
+Transition: flash
 
-आपके फ़ैमिली ग्रुप में सबसे ज़्यादा कौन सा फ़ेक मैसेज आता है? कमेंट में लिखिए, और चैनल से जुड़िए।
+आपके फ़ैमिली ग्रुप में सबसे ज़्यादा कौन सा फ़ेक मैसेज आता है?
 Tone: warm
-Text: कमेंट करें · सब्सक्राइब करें
-Statement: आपके ग्रुप का *सबसे बड़ा* फ़ेक मैसेज?
+Chat: फ़ैमिली ग्रुप · 8:00 AM | them: 🔴 ज़रूर देखें! सबको भेजो · me: स्रोत क्या है? 🤔
+Text: ILLUSTRATION
+
+कमेंट में लिखिए, और चैनल से जुड़िए।
+Tone: warm
+Statement: कमेंट करें · *सब्सक्राइब करें*
 
 Source: The Quint, Real or Fake, We Can Make Any Message Go Viral: Amit Shah to BJP Social Media Volunteers https://www.thequint.com/news/politics/amit-shah-real-fake-can-make-messages-viral ; The Logical Indian, 'BJP Workers Have The Power To Make Even Fake Messages Go Viral,' Says Amit Shah https://thelogicalindian.com/amit-shah-speech/ ; The Wire, Watch: Why is BJP President Amit Shah inciting party workers to spread lies? https://m.thewire.in/article/politics/watch-why-is-bjp-president-amit-shah-inciting-party-workers-to-spread-lies ; Deccan Herald, BJP taps influencers ahead of LS polls https://www.deccanherald.com/elections/india/bjp-taps-influencers-ahead-of-ls-polls-2950182 ; Rest of World (with Princeton Digital Witness Lab, Pulitzer Center), Inside the BJP's WhatsApp machine https://restofworld.org/2024/bjp-whatsapp-modi/ ; Rest of World, How Digital Witness Lab analyzed data from BJP WhatsApp groups ahead of the Indian elections https://restofworld.org/2024/how-digital-witness-lab-analyzed-data-from-bjp-whatsapp-groups-ahead-of-the-indian-elections/ ; Newslaundry, Deepak Mhaskey replaces Amit Malviya as BJP IT cell chief https://www.newslaundry.com/2026/08/17/deepak-mhaskey-replaces-amit-malviya-as-bjp-it-cell-chief ; ThePrint, 'Manipulated media' - Twitter flags BJP IT cell head Amit Malviya's farmer protest tweet https://theprint.in/politics/manipulated-media-twitter-flags-bjp-it-cell-head-amit-malviyas-farmer-protest-tweet/555888 ; The Quint, Farmer in Malviya's video says cops hit him 'all over his body' https://www.thequint.com/amp/story/news/india/elderly-farmer-in-viral-image-amit-malviya-rahul-gandhi-says-police-hit-him-multiple-times ; Newslaundry, The truth about Amit Malviya's Shaheen Bagh expose: An Alt News and Newslaundry investigation https://www.newslaundry.com/2020/02/04/the-truth-about-amit-malviyas-shaheen-bagh-expos-an-alt-news-and-newslaundry-investigation ; Tribune, Subramanian Swamy gives ultimatum to BJP to remove IT cell head Amit Malviya https://www.tribuneindia.com/news/nation/subramanian-swamy-gives-ultimatum-to-bjp-to-remove-it-cell-head-amit-malviya-138689 ; Scroll, Opposition is running a fake news campaign against senior party leaders, alleges BJP IT cell chief https://scroll.in/latest/907741/scroll_in ; BuzzFeed News, Modi's political party creates abusive social media campaigns and breeds internet trolls, claims new book https://www.buzzfeednews.com/article/pranavdixit/bjp-trolled-indians ; The Caravan, Sadhavi Khosla on BJP social media trolls https://caravanmagazine.in/vantage/sadhavi-khosla-bjp-social-media-trolls ; Scroll, Was asked to push Snapdeal to drop Aamir Khan, claims ex-BJP social media volunteer in upcoming book https://scroll.in/a/825228 ; The Asian Age, BJP IT man denies troll army charges https://www.asianage.com/india/all-india/281216/bjp-it-man-denies-troll-army-charges.html ; Alt News (Sadanand Dhume), How BJP IT Cell's smear machine works: A personal story https://www.altnews.in/bjp-cells-smear-machine-works-personal-story/ ; The News Minute, BJP spent Rs 30 cr in 30 days on Google ads, targeted mostly north Indian states https://www.thenewsminute.com/news/bjp-spent-rs-30-cr-in-30-days-on-google-ads-targeted-mostly-north-indian-states ; Deccan Herald, Lok Sabha elections 2024: BJP spent Rs 41 crore on Google ads since poll code kicked in https://deccanherald.com/elections/india/lok-sabha-elections-2024-bjp-spent-rs-41-crore-on-google-ads-since-poll-code-kicked-in-heres-how-much-other-parties-have-splurge-3012463 ; Scroll, Facebook ad policy gave BJP 'unfair advantage' in Indian elections, shows series of reports https://scroll.in/latest/1019747/facebook-ad-policy-gave-bjp-unfair-advantage-in-indian-elections-shows-series-of-reports ; The Reporters' Collective, #EyeballPolitics: Facebook investigation https://reporters-collective.in/projects/eyeballpolitics-facebook-investigation ; Newslaundry, Modi government spent Rs 6,491 crore on advertising since 2014 https://www.newslaundry.com/2022/12/14/modi-government-spent-rs-6491-crore-on-advertising-since-2014 ; Al Jazeera, Facebook ignored hate speech by India's BJP politicians: Report https://www.aljazeera.com/news/2020/08/15/facebook-ignored-hate-speech-by-indias-bjp-politicians-report/ ; Al Jazeera, Modi's BJP rejects claims of preferential treatment by Facebook https://www.aljazeera.com/economy/2020/8/17/modis-bjp-rejects-claims-of-preferential-treatment-by-facebook ; The Washington Post (reprint, Press Herald), Inside the vast digital campaign by Hindu nationalists to inflame India https://www.pressherald.com/2023/09/30/inside-the-vast-digital-campaign-by-hindu-nationalists-to-inflame-india/ ; Eko (advocacy group), New report: Meta helping far-right networks reach millions of Indian voters with Islamophobic hate ads https://eko.org/media/new-report-meta-helping-far-right-networks-reach-millions-of-indian-voters-with-islamophobic-hate-ads ; The Week, Govt asks Twitter, YouTube to block access to BBC documentary on Gujarat riots https://www.theweek.in/news/india/2023/01/21/govt-asks-twitter-youtube-to-block-access-to-bbc-documentary-on-gujarat-riots.html ; Scroll, 'Colonial mindset blatantly visible': MEA on BBC documentary about Gujarat riots https://scroll.in/latest/1042186/scroll_in ; ThePrint, Govt blocks YouTube videos, tweets sharing BBC documentary on PM Modi https://theprint.in/world/govt-blocks-youtube-videos-tweets-sharing-bbc-documentary-on-pm-modi/1327590/ ; International Press Institute, India: Government uses emergency powers to block BBC documentary critical of Modi https://ipi.media/india-government-uses-emergency-powers-to-block-bbc-documentary-critical-of-modi/ ; Scroll, Income Tax officials conduct survey at BBC offices after release of Gujarat riots documentary https://scroll.in/latest/1043853/scroll_in ; Siasat (PTI), Blocking directions given for 30,310 URLs since 2018 till March 15 https://www.siasat.com/blocking-directions-given-for-30310-urls-since-2018-till-march-15-2557345 ; Dawn (Reuters), X says India's demand to block accounts curtails freedom of expression https://dawn.com/news/1816261/x-says-indias-demand-to-block-accounts-curtails-freedom-of-expression ; The Week, 'We disagree': X suspends over 8,000 accounts in India in the aftermath of Operation Sindoor https://www.theweek.in/news/india/2025/05/09/we-disagree-but-x-suspends-over-8-000-accounts-in-india-in-the-aftermath-of-operation-sindoor.html ; Bar & Bench, Karnataka High Court dismisses Twitter plea challenging Central government orders to block tweets, accounts; imposes 50 lakh costs https://barandbench.com/news/karnataka-high-court-dismisses-twitter-plea-challenging-central-government-orders-to-block-tweets-accounts-imposes-50-lakh-costs ; Bar & Bench, Social media can't be left in a state of anarchic freedom: Karnataka HC dismisses X Corp's challenge to Sahyog portal https://www.barandbench.com/news/social-media-cant-be-left-in-a-state-of-anarchic-freedom-karnataka-hc-dismisses-x-corps-challenge-to-sahyog-portal ; Bar & Bench, Bombay High Court strikes down IT Rules Amendment 2023 on fact check units https://www.barandbench.com/news/bombay-high-court-strikes-down-it-rules-amendment-2023-fact-check-units ; Business Standard, Ex-Twitter CEO Dorsey alleges pressure from India, Centre denies claims https://www.business-standard.com/india-news/we-ll-shut-you-down-raid-homes-ex-twitter-ceo-dorsey-on-indian-pressure-123061300158_1.html ; The Quint, Protect journo Rana Ayyub urgently, United Nations to Indian govt https://www.thequint.com/news/india/united-nations-on-rana-ayyub-death-threats ; UN News, Halt all retaliation attacks against Indian journalist Rana Ayyub - UN experts https://news.un.org/en/node/1112362 ; The News Minute, IAS, IPS associations condemn online harassment of Foreign Secretary Vikram Misri https://www.thenewsminute.com/news/ias-ips-associations-condemn-online-harassment-of-foreign-secretary-vikram-misri ; Oxford Internet Institute, Junk news and misinformation prevalent in Indian election campaign https://www.oii.ox.ac.uk/junk-news-and-misinformation-prevalent-in-indian-election-campaign/ ; The News Minute, The Wire retracts Meta stories, Tek Fog investigation to be reviewed too https://www.thenewsminute.com/news/wire-retracts-meta-stories-tek-fog-investigation-be-reviewed-too-169165
