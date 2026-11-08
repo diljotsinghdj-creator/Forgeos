@@ -13,7 +13,9 @@ class DiffusersImageProvider:
 
     def __init__(self, model: str = "", steps: int = 0, hires: bool = True):
         self.model = model or "black-forest-labs/FLUX.1-schnell"
-        m = self.model.lower()
+        # A single checkpoint file (a Civitai model, downloaded by the pod setup) is an SDXL model
+        self.single_file = self.model.lower().endswith(".safetensors")
+        m = self.model.lower() + (" xl" if self.single_file else "")
         # SDXL with the DPM++ 2M Karras sampler looks as good at 25 steps as the default sampler at 30+.
         self.steps = steps or (4 if "schnell" in m else 25 if "xl" in m else 30)
         # Hi-res pass (SDXL family): re-render the image at 1.5x with light img2img. Fixes soft, smeared faces and
@@ -30,6 +32,11 @@ class DiffusersImageProvider:
         # Long videos (many pictures): one pass at fewer steps, no hi-res redraw - about half the time per picture
         self.fast = False
 
+    @property
+    def sdxl(self) -> bool:
+        m = self.model.lower()
+        return ("xl" in m or self.single_file) and "schnell" not in m
+
     def _load(self):
         if self._pipe is None:
             try:
@@ -40,11 +47,17 @@ class DiffusersImageProvider:
             device = "cuda" if torch.cuda.is_available() else ("mps" if torch.backends.mps.is_available() else "cpu")
             dtype = torch.bfloat16 if device == "cuda" else torch.float32
             try:
-                pipe = AutoPipelineForText2Image.from_pretrained(self.model, torch_dtype=dtype)
+                if self.single_file:
+                    from diffusers import StableDiffusionXLPipeline
+                    pipe = StableDiffusionXLPipeline.from_single_file(self.model, torch_dtype=dtype)
+                else:
+                    pipe = AutoPipelineForText2Image.from_pretrained(self.model, torch_dtype=dtype)
             except (OSError, ValueError):
+                if self.single_file:
+                    raise
                 # Some repos are downloaded as their half-precision variant only (smaller): load that instead.
                 pipe = AutoPipelineForText2Image.from_pretrained(self.model, torch_dtype=dtype, variant="fp16")
-            if "xl" in self.model.lower() and "schnell" not in self.model.lower():
+            if self.sdxl:
                 from diffusers import DPMSolverMultistepScheduler
                 # Force DPM++ 2M: some fine-tunes (DreamShaper XL) ship a DEIS scheduler config, and carrying its
                 # algorithm_type="deis" over fails at the first step ("final_sigmas_type zero is not supported").
@@ -115,7 +128,7 @@ class DiffusersImageProvider:
         """IP-Adapter arguments for this image (empty when the feature is off or unavailable)."""
         if self.reference is None and not self._ip_ready:
             return {}
-        if "xl" not in self.model.lower() or not self._load_ip(pipe):
+        if not self.sdxl or not self._load_ip(pipe):
             return {}
         if getattr(getattr(pipe, "unet", None), "encoder_hid_proj", None) is None:
             self._ip_ready = False      # the adapter didn't attach: draw without the face lock rather than crash

@@ -118,6 +118,37 @@ else:
 open(out, "w").write(candidate)
 PY
 IMAGE_MODEL="$(cat "$HOME_DIR/image_model.txt")"
+
+# Optional: a free image model from Civitai (civitai.com) instead - an SDXL checkpoint, one .safetensors file.
+# Pod variables: CF_CIVITAI_MODEL (photo looks) and/or CF_CIVITAI_ILLUSTRATION (animated looks) = the model page link
+# with ?modelVersionId=..., or just the version number. CIVITAI_TOKEN = your free Civitai API key (some models need it).
+# Pick models whose licence allows commercial use (monetised YouTube). Anything that fails keeps the model above.
+civitai_file() {
+  local spec="$1" id=""
+  id=$(printf '%s' "$spec" | grep -oE '(modelVersionId=|download/models/)[0-9]+' | grep -oE '[0-9]+$' || true)
+  [ -n "$id" ] || id=$(printf '%s' "$spec" | grep -oE '^[0-9]+$' || true)
+  if [ -z "$id" ]; then echo "  Civitai: '$spec' has no version number (use the link with ?modelVersionId=...)" >&2; return 1; fi
+  local dir="$HOME_DIR/models/civitai" f="$HOME_DIR/models/civitai/$id.safetensors"
+  mkdir -p "$dir"
+  if [ ! -s "$f" ]; then
+    echo "  Civitai: downloading model version $id (~7 GB)..." >&2
+    local url="https://civitai.com/api/download/models/$id?type=Model&format=SafeTensor"
+    [ -n "${CIVITAI_TOKEN:-}" ] && url="$url&token=$CIVITAI_TOKEN"
+    curl -fL --retry 3 -C - -o "$f.part" "$url" >&2 || { echo "  Civitai download failed (a token may be needed)" >&2; return 1; }
+    # a real checkpoint is several GB and starts with a safetensors header, not an HTML page
+    if [ "$(stat -c %s "$f.part")" -lt 1000000000 ] || [ "$(head -c 9 "$f.part" | tail -c 1)" != "{" ]; then
+      echo "  Civitai: that is not a model file (login page or a small LoRA?) - skipped" >&2; rm -f "$f.part"; return 1
+    fi
+    mv "$f.part" "$f"
+  fi
+  printf '%s' "$f"
+}
+if [ -n "${CF_CIVITAI_MODEL:-}" ]; then
+  CIV=$(civitai_file "$CF_CIVITAI_MODEL") && IMAGE_MODEL="$CIV"
+fi
+if [ -n "${CF_CIVITAI_ILLUSTRATION:-}" ]; then
+  CIV=$(civitai_file "$CF_CIVITAI_ILLUSTRATION") && export CF_IMAGE_MODEL_STYLIZED="$CIV"
+fi
 echo "  image model: $IMAGE_MODEL"
 
 say "Waiting for the script model"
@@ -207,7 +238,8 @@ nohup "$PYBIN" -c "from huggingface_hub import snapshot_download; snapshot_downl
 # Animated / drawn looks (3D, anime, 2D explainer, doodle...): an SDXL illustration model (~7 GB, CreativeML
 # OpenRAIL++-M). Used automatically for those styles once downloaded; until then they use the main image model.
 STYLIZED_MODEL="${CF_IMAGE_MODEL_STYLIZED:-Lykon/dreamshaper-xl-1-0}"
-nohup "$PYBIN" -c "from huggingface_hub import snapshot_download; snapshot_download('$STYLIZED_MODEL', allow_patterns=['model_index.json', 'scheduler/*', 'tokenizer/*', 'tokenizer_2/*', 'text_encoder/*.json', 'text_encoder_2/*.json', 'unet/*.json', 'vae/*.json', '*/*.fp16.safetensors']); print('illustration model ready')" > stylized_download.log 2>&1 &
+case "$STYLIZED_MODEL" in *.safetensors) true ;; *) \
+nohup "$PYBIN" -c "from huggingface_hub import snapshot_download; snapshot_download('$STYLIZED_MODEL', allow_patterns=['model_index.json', 'scheduler/*', 'tokenizer/*', 'tokenizer_2/*', 'text_encoder/*.json', 'text_encoder_2/*.json', 'unet/*.json', 'vae/*.json', '*/*.fp16.safetensors']); print('illustration model ready')" > stylized_download.log 2>&1 & ;; esac
 
 say "Human-like narrator (Chatterbox) installs in the background (log: $HOME_DIR/chatterbox.log)"
 # Chatterbox pins its own torch/diffusers versions, so it lives in a separate Python 3.11 environment and

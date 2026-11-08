@@ -122,7 +122,11 @@ _image_cache: dict[tuple, object] = {}
 
 
 def _downloaded(repo: str) -> bool:
-    """True once the model's config and UNet weights (full or fp16) are fully in the local cache."""
+    """True once the model's config and UNet weights (full or fp16) are fully in the local cache (or, for a single
+    checkpoint file such as a Civitai model, once the file is there)."""
+    if repo.lower().endswith(".safetensors"):
+        import os
+        return os.path.isfile(repo) and os.path.getsize(repo) > 100_000_000
     try:
         from huggingface_hub import try_to_load_from_cache
         have = lambda f: isinstance(try_to_load_from_cache(repo, f), str)  # noqa: E731
