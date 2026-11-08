@@ -103,7 +103,13 @@ def quote_lines(spec: str, theme: str, width: int, height: int, seconds: float) 
     size = int(min(width, height) * (0.058 if tall else 0.068))
     rows = _wrap(f"“{quote}”", 22 if tall else 30, 5)
     cw = min(width * 0.86, max(len(r) for r in rows) * size * 0.56 + size * 2.4)
-    ch = len(rows) * size * 1.45 + size * (3.2 if source.strip() else 2.2)
+    # the source line widens the card, and wraps to a second line rather than running off the edge
+    src_fs = int(size * 0.55)
+    src_rows = _wrap(f"— {source.strip().upper()}", max(12, int((width * 0.86 - size * 2.4) / (src_fs * 0.62))), 2) \
+        if source.strip() else []
+    if src_rows:
+        cw = max(cw, min(width * 0.86, max(len(r) for r in src_rows) * src_fs * 0.62 + size * 2.4))
+    ch = len(rows) * size * 1.45 + size * (2.2 + len(src_rows) * 0.9 + (0.1 if src_rows else 0))
     cx, cy = width / 2, height * (0.44 if tall else 0.48)
     L, T = cx - cw / 2, cy - ch / 2
     card = f"m {L:.0f} {T:.0f} l {L + cw:.0f} {T:.0f} l {L + cw:.0f} {T + ch:.0f} l {L:.0f} {T + ch:.0f}"
@@ -125,9 +131,10 @@ def quote_lines(spec: str, theme: str, width: int, height: int, seconds: float) 
         out.append(f"Dialogue: 3,{_ts(t0 + per_row * 0.6)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\clip(0,0,{x - 6:.0f},{height})"
                    f"\\t(0,{int(per_row * 600)},\\clip(0,0,{x + rw + 8:.0f},{height}))\\p1\\bord0\\shad0\\1c{MARK[theme]}&"
                    f"\\1a&H30&}}{hl}")
-    if source.strip():
-        out.append(f"Dialogue: 4,{_ts(0.4)},{end},T,,0,0,0,,{{\\an1\\pos({x:.0f},{T + ch - size * 0.7:.0f})\\fs{int(size * 0.55)}"
-                   f"\\fad(200,0)}}— {_esc(source.strip().upper())}")
+    for j, srow in enumerate(src_rows):
+        y = T + ch - size * 0.7 - (len(src_rows) - 1 - j) * size * 0.9
+        out.append(f"Dialogue: 4,{_ts(0.4)},{end},T,,0,0,0,,{{\\an1\\pos({x:.0f},{y:.0f})\\fs{src_fs}"
+                   f"\\fad(200,0)}}{_esc(srow)}")
     return out
 
 
@@ -818,8 +825,9 @@ def timer_lines(spec: str, theme: str, width: int, height: int, seconds: float):
     import math
     tall = height > width
     end = _ts(seconds)
-    cx, cy = width / 2, height * (0.36 if tall else 0.45)
-    r = min(width, height) * 0.28
+    # ring and label sit above the caption line (captions live in the bottom fifth)
+    cx, cy = width / 2, height * (0.34 if tall else 0.40)
+    r = min(width, height) * 0.24
     run = max(1.0, seconds * 0.7)
     steps = 30
     out = []
