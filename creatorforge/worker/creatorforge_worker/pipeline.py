@@ -327,6 +327,15 @@ class Pipeline:
             face = self._face_lock(img, job, jdir, shot["visual"])
             try:
                 beats0 = shot.get("beats") or []
+                if beats0 and all(_covered(b) for b in beats0):
+                    # every line of this scene is a drawn graphic: nothing AI-made is needed (or ever shown)
+                    dst = jdir / f"scene_{sc['index'] + 1:02d}_paper.png"
+                    if not dst.is_file():
+                        from PIL import Image
+                        Image.new("RGB", self._out_size(job), (242, 236, 223)).save(dst)
+                    sc.update(image_state="READY", image=dst.name, image_source="graphic")
+                    self.store.save(job)
+                    continue
                 named = (beats0[0].get("named") if beats0 else shot.get("named")) or {}
                 real = None
                 first = beats0[0] if beats0 else {"text": shot.get("narration", ""), "visual": shot["visual"], "extra": {}}
