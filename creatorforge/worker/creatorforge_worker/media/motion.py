@@ -172,7 +172,7 @@ text{font-family:'Archivo','CFBold','DejaVu Sans','FreeSans','Noto Sans Devanaga
 .lbl{font-family:'Inter','DejaVu Sans','FreeSans','Noto Sans Devanagari',sans-serif;font-weight:800;letter-spacing:.04em}
 body{background-image:url('%PAPERIMG%');background-size:100% 100%}
 #grain{position:fixed;left:0;top:0;width:100%;height:100%;mix-blend-mode:multiply;opacity:.5;z-index:10;pointer-events:none}
-</style><script>%SVGJS%</script></head><body><img id="grain" src="%GRAINIMG%"><script>
+</style><script>%SVGJS%</script><script>%ILLU%</script></head><body><img id="grain" src="%GRAINIMG%"><script>
 (async()=>{try{await Promise.all(Array.from(document.fonts).map(f=>f.load()))}catch(e){}   // measure text in the real fonts
 const P=%PLAN%, W=%W%, H=%H%, DUR=%DUR%, TH=%THEME%;
 const [BG,INK,ACC,SEC,GRID]=TH; const TALL=H>W; const U=Math.min(W,H);
@@ -306,7 +306,10 @@ if(T==='scene'){
   const TOP=TALL?H*.2:H*.22, BOT=TALL?H*.56:H*.72, MY=(TOP+BOT)/2, SZ=U*(TALL?.21:.18);
   const A=P.actors, act=P.action, n=A.length, END=Math.max(1.2,DUR-.3);
   function ico(nodes,size,opt){opt=opt||{};const g=stage.group();
-    const photo=!!(nodes&&nodes[0]&&nodes[0][0]==='image');      // a real cut-out photo instead of the line icon
+    const photo=!!(nodes&&nodes[0]&&(nodes[0][0]==='image'||nodes[0][0]==='illu'));   // a photo or drawing, not the line icon
+    if(nodes&&nodes[0]&&nodes[0][0]==='illu'&&window.ILLU&&ILLU[nodes[0][1]]){
+      const [bw,bh,fn]=ILLU[nodes[0][1]];const k=size*1.5/Math.max(bw,bh);const ig2=g.group();fn(ig2,ACC);
+      ig2.attr({transform:`translate(${-bw*k/2},${-bh*k/2}) scale(${k})`,style:'filter:drop-shadow(0 2px 3px rgba(0,0,0,.3))'});return g}
     if(opt.sticker!==false&&!photo){g.circle(size*1.22).center(0,0).fill(opt.bg||'#FFFFFF').stroke({color:INK,width:Math.max(2,size*.04)})}
     const ig=g.group();for(const nd of (nodes||[])){try{ig.element(nd[0]).attr(nd[1])}catch(e){}}
     const k=size*.66/24;ig.attr({fill:'none',stroke:opt.ink||INK,'stroke-width':opt.sw||1.7,'stroke-linecap':'round',
@@ -564,6 +567,7 @@ def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: f
     page = (_PAGE.replace("%SVGJS%", VENDOR.read_text(encoding="utf-8"))
             .replace("%FONTFACE%", _font_face() + "\n" + vox._font_css())
             .replace("%PAPERIMG%", paper_img.as_uri()).replace("%GRAINIMG%", grain_img.as_uri())
+            .replace("%ILLU%", (VENDOR.parent / "illustrations.js").read_text(encoding="utf-8"))
             .replace("%BG%", th[0]).replace("%PLAN%", json.dumps(plan, ensure_ascii=False))
             .replace("%W%", str(width)).replace("%H%", str(height)).replace("%DUR%", f"{seconds:.3f}")
             .replace("%THEME%", json.dumps(list(th))))
@@ -584,6 +588,10 @@ def _photos(plan: dict) -> None:
         except Exception:  # noqa: BLE001 - no photo: the icon stays
             c = None
         if c is None:
+            from .vox import illustration
+            drawn = illustration(str(a.get("name", "")))
+            if drawn:
+                a["o"] = [["illu", drawn]]     # no photo: the drawn illustration, not the thin line icon
             continue
         from PIL import Image
         with Image.open(c.path) as im:

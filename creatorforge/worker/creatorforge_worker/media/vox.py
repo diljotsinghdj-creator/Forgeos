@@ -502,7 +502,20 @@ ILLUS = {"ship": "ship", "container ship": "ship", "cargo ship": "ship", "vessel
          "queue": "crowd", "megaphone": "megaphone", "gavel": "gavel", "scales of justice": "gavel",
          "ballot box": "ballot box", "evm": "ballot box", "light bulb": "light bulb", "padlock": "padlock",
          "book": "book", "books": "book", "briefcase": "briefcase", "pill": "pill", "power tower": "tower",
-         "tower": "tower", "chart": "chart", "stock chart": "chart", "port": "port", "harbour": "port"}
+         "tower": "tower", "chart": "chart", "stock chart": "chart", "port": "port", "harbour": "port",
+         "auto rickshaw": "auto rickshaw", "auto": "auto rickshaw", "rickshaw": "auto rickshaw", "scooter": "scooter",
+         "bike": "scooter", "motorcycle": "scooter", "bus": "bus", "india gate": "arch", "gateway of india": "arch",
+         "monument": "arch", "arch": "arch", "round parliament": "round parliament", "temple": "temple",
+         "mandir": "temple", "hut": "hut", "farm": "hut", "chai": "chai", "tea": "chai", "cup": "chai",
+         "cricket": "cricket bat", "cricket bat": "cricket bat", "scales": "scales", "justice": "scales",
+         "law": "scales", "handcuffs": "handcuffs", "arrest": "handcuffs", "microphone": "microphone",
+         "speech": "microphone", "camera": "camera", "photo": "camera", "rocket": "rocket", "isro": "rocket",
+         "satellite": "satellite", "space": "rocket", "solar panel": "solar panel", "solar": "solar panel",
+         "wind turbine": "wind turbine", "wind": "wind turbine", "hospital": "hospital", "school": "school",
+         "education": "school", "bridge": "bridge", "dam": "dam", "hourglass": "hourglass", "deadline": "hourglass",
+         "time": "hourglass", "key": "key", "freedom": "key", "calendar": "calendar", "date": "calendar",
+         "man": "man", "man standing": "man", "worker": "man", "farmer standing": "man", "voter": "man",
+         "woman": "woman", "woman standing": "woman", "women": "woman"}
 
 
 def illustration(name: str) -> str | None:
