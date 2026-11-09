@@ -318,10 +318,13 @@ STYLE_RANK = {"pinmap": 0, "route": 0, "newscard": 1, "clipping": 1, "hero": 2, 
               "slice": 5, "calendar": 5, "stamp": 6, "clock": 6, "opener": 7, "tornsplit": 7, "statement": 9}
 
 
-def _ranked(cands: list[str], n: int, total: int) -> list[str]:
+def _ranked(cands: list[str], n: int, total: int, f: dict | None = None) -> list[str]:
     if n == 1 or n == total:
         return cands                     # the hook and the payoff keep their own order
-    return sorted(cands, key=lambda g: STYLE_RANK.get(g.split(":", 1)[0].strip().lower(), 5))
+    rank = dict(STYLE_RANK)
+    if f and f.get("false"):
+        rank["stamp"] = -1               # a debunk line: the FALSE stamp is the point of the shot
+    return sorted(cands, key=lambda g: rank.get(g.split(":", 1)[0].strip().lower(), 5))
 
 
 def _marked(g: str, f: dict, prev: list[str]) -> str:
@@ -348,7 +351,7 @@ def pick(line: str, f: dict, n: int, total: int, prev: list[str], props: bool = 
     pictured object is varied so the same thing isn't on screen shot after shot."""
     recent = [p.split(":", 1)[0].strip().lower() for p in prev[-2:]]
     used = [_subject(p) for p in prev if _subject(p)]
-    for g in _ranked(candidates(line, f, n, total, ahead), n, total):
+    for g in _ranked(candidates(line, f, n, total, ahead), n, total, f):
         if n < total:                      # the closing line keeps its own object: it's the payoff
             g = _vary(g, used)
         kind = g.split(":", 1)[0].strip().lower()

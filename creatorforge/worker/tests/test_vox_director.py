@@ -175,7 +175,8 @@ def test_narration_alone_gets_a_sensible_infographic_per_line():
     kinds = [v.graphic_kind(b) for b in bl]
     assert kinds[0] == "hero" and "person:Amit Shah" in bl[0]["dirs"][0]   # the speaker's real photo with the quote
     assert kinds[-1] == "opener"
-    assert "pinmap" in kinds and "stack" in kinds and "stamp" in kinds and "bignumber" in kinds
+    assert "pinmap" in kinds and "stack" in kinds and "stamp" in kinds
+    assert "newscard" in kinds or "bignumber" in kinds        # the reported figure, as the report itself
     assert "Kota" in out and "15 lakh" in out and "50 lakh" in out and "Deccan Herald" in out
     assert "forward it?" in out.lower()
     assert not [i for i in v.check(out) if i["level"] == "error"]
