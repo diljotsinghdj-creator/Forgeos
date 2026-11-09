@@ -994,7 +994,7 @@ _META_KEYS = ("on-screen hook", "on screen hook", "onscreen hook", "hook text", 
               "stock footage", "stock", "chart", "graphic", "draw", "pen", "bubble", "thought",
               "place", "cite", "fly", "map", "chapter", "quote", "steps", "globe", "timeline", "icons", "screen",
               "document", "statement", "split", "archive", "object", "article", "big", "transition",
-              "chat", "search", "pie", "squares", "shade", "timer", "receipt", "treat", "clip", "tone", "mood",
+              "chat", "search", "pie", "squares", "shade", "timer", "receipt", "treat", "clip", "tone", "mood", "playback",
               "animate", "animation", "cartoon", "talk", "clock", "calendar", "sign", "social", "comments",
               "trending", "stamp", "board", "hero", "desk", "pinboard", "opener", "reveal", "clipping", "pinmap", "bignumber", "seats", "stack", "stand", "fan", "trend", "slice", "route", "compare", "photoline", "tv", "clockmap", "tornsplit", "newscard", "blueprint", "pyramid", "flowchart", "linkmap", "orgchart", "heatmap", "courtdoc", "table", "interview", "endcard", "polltrack", "area", "candles", "arrows", "railmap", "sizemap", "borders", "bars3d", "prism", "explode", "title3d")
 _META = re.compile(r"(?i)(?:^|(?<=[\s.]))(" + "|".join(re.escape(k) for k in sorted(_META_KEYS, key=len, reverse=True)) +
@@ -1154,7 +1154,7 @@ def parse_script(raw: str) -> tuple[str, dict]:
             elif k == "clip":                # one of your own Asset Library clips plays on this line
                 if target >= 0 and v:
                     per.setdefault(target, {}).setdefault("extra", {})["clip"] = value.strip()[:140]
-            elif k in ("place", "cite", "split", "archive", "big", "transition", "treat", "talk") + FULL_FRAME:
+            elif k in ("place", "cite", "split", "archive", "big", "transition", "treat", "talk", "playback") + FULL_FRAME:
                 if target >= 0 and v:
                     per.setdefault(target, {}).setdefault("extra", {})[k] = value.strip()[:140]
             elif k in ("draw", "pen"):

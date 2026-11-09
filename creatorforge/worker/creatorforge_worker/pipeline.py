@@ -1498,8 +1498,10 @@ class Pipeline:
                     clip = render.Clip(still, length, cam, transition(i, shot) if k == 0 else "cut", video_k)
                     clip.beat, clip.beat_data, clip.beat_len = (i, k), beats[k], length
                     chosen_t = str(extra_k.get("transition") or "").strip().lower()
+                    clip.playback = str(extra_k.get("playback") or "").strip().lower()   # freeze / ramp / slow (footage)
                     if chosen_t in render.TRANSITIONS:
                         clip.transition = chosen_t                    # the writer's chosen cut into this line
+                        clip.cut_locked = True
                     elif extra_k.get("chapter") and spec.style in EDITORIAL_STYLES:
                         clip.transition = "tear"                      # a new part tears the page away
                     elif extra_k.get("statement"):
@@ -1512,6 +1514,15 @@ class Pipeline:
                 if spec.auto_edit and video is None and shot.get("emotion", "").lower() in SHOCK_EMOTIONS:
                     cam = "punch"
                 clips.append(render.Clip(jdir / sc["image"], d, cam, transition(i, shot), video))
+        if spec.style in EDITORIAL_STYLES:
+            # motivated cuts: the transition comes from what the two shots are (a map dives into the next shot, a
+            # document is pushed off the desk...), unless the writer chose one
+            for a, b in zip(clips, clips[1:]):
+                if getattr(b, "cut_locked", False) or b.transition in ("tear", "dip") or not hasattr(b, "beat_data"):
+                    continue
+                m = motivated_transition(beat_kind(getattr(a, "beat_data", None)), beat_kind(b.beat_data))
+                if m:
+                    b.transition = m
         for c in clips:
             if c.video is not None and c.video in stepped_files and spec.style in EDITORIAL_STYLES:
                 c.stepped = True
@@ -1635,6 +1646,17 @@ class Pipeline:
             sfx_hits = sfx.place(bank, [c.transition for c in heads], timings,
                                  [(o.start, o.style) for o in overlays if spec.captions], job["id"])
             sfx_hits = sorted(sfx_hits + sfx.graphic_cues(bank, graphics, job["id"]), key=lambda x: x[1])
+            # ambient beds: the quiet sound of where each graphic is (sea under a ship's route, a room under a document)
+            from .media import ambience
+            at_a, shots_a = 0.0, []
+            for c in clips:
+                bd = getattr(c, "beat_data", None)
+                kind_a = beat_kind(bd)
+                shots_a.append((at_a, c.duration, kind_a, str(((bd or {}).get("extra") or {}).get(kind_a) or ""), c.grade == "archive"))
+                at_a += c.duration
+            beds = ambience.place(self.cfg.data_dir / "ambience", shots_a)
+            sfx_hits = sorted(sfx_hits + beds, key=lambda x: x[1])
+            job["providers"]["ambience"] = f"{len(beds)} beds" if beds else "none"
             job["providers"]["sfx"] = f"{len(sfx_hits)} cues from {bank.describe()}" if bank.any() else "none (no SFX folder or SFX assets)"
         else:
             job["providers"]["sfx"] = "off"
@@ -2091,6 +2113,46 @@ class Pipeline:
                     variety.remember(self.cfg.data_dir, dict(mine, file=str(final)))
             except Exception as e:  # noqa: BLE001
                 job["result"]["variety"] = dict(job["variety"], error=str(e)[:120])
+
+
+MAP_KINDS = {"fly", "map", "globe", "pinmap", "route", "heatmap", "arrows", "railmap", "borders", "prism", "clockmap",
+             "shade", "sizemap"}
+PAPER_KINDS = {"document", "article", "clipping", "newscard", "courtdoc", "receipt", "reveal"}
+CARD_KINDS = {"pinboard", "desk", "table", "interview", "social", "comments", "chat"}
+CHART_KINDS = {"chart", "stack", "stand", "trend", "slice", "pie", "squares", "seats", "pyramid", "polltrack", "area",
+               "candles", "bars3d", "fan", "bignumber"}
+
+
+def beat_kind(beat: dict | None) -> str:
+    """The graphic a beat shows ('' for a picture or footage)."""
+    if not beat:
+        return ""
+    if beat.get("chart"):
+        return "chart"
+    extra = beat.get("extra") or {}
+    return next((k for k in director.FULL_FRAME if extra.get(k)), "")
+
+
+def motivated_transition(prev: str, cur: str) -> str:
+    """The cut between two shots, from what they are. '' keeps the style's own cut.
+    map -> anything else: the camera dives into the place; map -> map: a blur pan across; into a document: the
+    page is pushed up; into an evidence card: it drops on the desk; chart -> chart: the next pushes in beside it;
+    out of a comparison: it closes onto the answer; picture or footage -> graphic: a blur whip."""
+    if not cur and not prev:
+        return ""
+    if prev in MAP_KINDS:
+        return "blur" if cur in MAP_KINDS else "dive"
+    if cur in PAPER_KINDS:
+        return "page"
+    if cur in CARD_KINDS:
+        return "drop"
+    if prev in CHART_KINDS and cur in CHART_KINDS:
+        return "push"
+    if prev in ("compare", "tornsplit", "split"):
+        return "squeeze"
+    if cur in MAP_KINDS or (cur and not prev) or (prev and not cur):
+        return "blur"
+    return ""
 
 
 def clip_ref(ref: str) -> tuple[str, float]:

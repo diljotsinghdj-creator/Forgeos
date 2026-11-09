@@ -28,6 +28,12 @@ TRANSITIONS = {
     "tear": ("wipeleft", 0.45),
     # match cut / zoom-through: the old shot flies in, a quick blend, the new one lands from close (see _segment_args)
     "match": ("fade", 0.22),
+    # motivated cuts between graphics (pipeline.motivated_transition picks them from what the two shots are)
+    "dive": ("zoomin", 0.45),         # out of a map: the camera dives into the place and lands in the next shot
+    "page": ("slideup", 0.4),         # a document or clipping is pushed up off the desk
+    "push": ("slideleft", 0.35),      # the same kind of chart again: the next one pushes in beside it
+    "drop": ("slidedown", 0.4),       # an evidence card drops over the last
+    "squeeze": ("squeezeh", 0.4),     # a comparison closes like a book onto its answer
 }
 SAMPLE_RATE = 48000
 TARGET_LUFS = -14
@@ -52,6 +58,7 @@ class Clip:
     exit_zoom: bool = False   # match cut out of this shot: the camera accelerates into it at the end
     enter_zoom: bool = False  # match cut into this shot: it starts close and settles
     stepped: bool = False     # a drawn graphic: played at 12 frames a second, the hand-made look of video essays
+    playback: str = ""        # footage only: "freeze" (plays, then holds a frame), "ramp" (fast, then slow), "slow"
 
 
 # Old film: sepia, a little extra contrast, flicker, moving grain, a soft dark edge.
@@ -279,9 +286,28 @@ def _segment_args(c: Clip, frames: int, width: int, height: int) -> list[str]:
         stretch = min(1.25, length / c.video_duration) if c.video_duration and c.video_duration < length else 1.0
         boomerang = bool(c.video_duration) and c.video_duration * stretch < length - 0.05
         # AI clips come out at ~480-720p: upscale with lanczos, then a light unsharp mask so they don't look soft.
-        base = (("fps=12," if c.stepped else "") + f"setpts={stretch:.4f}*(PTS-STARTPTS),"
+        timing, after = f"setpts={stretch:.4f}*(PTS-STARTPTS)", ""
+        vd = c.video_duration or 0.0
+        if c.playback == "freeze" and not c.stepped:
+            # freeze frame: the shot plays, stops dead on a frame with a camera-flash blink and drains to near
+            # black-and-white while the narration makes its point
+            hold = round(min(length * 0.55, max(0.4, vd - 0.1)) if vd else length * 0.55, 3)
+            timing = f"setpts=PTS-STARTPTS,trim=duration={hold},setpts=PTS-STARTPTS"
+            after = (f",tpad=stop_mode=clone:stop_duration={length:.3f},"
+                     f"eq=brightness='if(between(t,{hold},{hold + 0.1:.3f}),0.22,0)':saturation='if(gte(t,{hold}),0.25,1)':eval=frame")
+            boomerang = False
+        elif c.playback == "ramp" and not c.stepped and vd >= 1.0:
+            # speed ramp: the first stretch races by at 2.5x, then time stretches out to 0.6x for the moment itself
+            a = round(min(vd * 0.45, length * 1.2), 3)
+            if a + (length - a / 2.5) * 0.6 <= vd + 0.05:
+                timing = f"setpts='if(lt(T,{a}),T/2.5,{a / 2.5:.4f}+(T-{a})/0.6)/TB',minterpolate=fps={FPS}:mi_mode=blend"
+                boomerang = False
+        elif c.playback == "slow" and not c.stepped and vd >= length * 0.5 - 0.05:
+            timing = f"setpts=2.0*(PTS-STARTPTS),minterpolate=fps={FPS}:mi_mode=blend"     # half speed, frames blended
+            boomerang = False
+        base = (("fps=12," if c.stepped else "") + f"{timing},"
                 f"scale={width}:{height}:force_original_aspect_ratio=increase:flags=lanczos,crop={width}:{height},"
-                f"unsharp=5:5:0.6:5:5:0.0,setsar=1,fps={FPS}")
+                f"unsharp=5:5:0.6:5:5:0.0,setsar=1,fps={FPS}{after}")
         if boomerang:
             vf = (f"[0:v]{base},split[f][b];[b]reverse[r];[f][r]concat=n=2:v=1:a=0,fps={FPS},settb=1/{FPS},"
                   f"tpad=stop_mode=clone:stop_duration={length:.3f},trim=end_frame={frames},setpts=PTS-STARTPTS,"
