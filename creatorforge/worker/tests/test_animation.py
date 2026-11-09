@@ -110,13 +110,12 @@ def test_an_animate_line_plays_an_animated_scene(cfg, monkeypatch):
     assert clips and (cfg.jobs_dir / jid / clips[0]).stat().st_size > 10_000
 
 
-def test_with_the_stickman_off_an_animate_line_becomes_the_lines_picture():
-    from creatorforge_worker import director, pipeline
-    assert pipeline.STICKMAN is False or __import__("os").environ.get("CF_STICKMAN") == "1"
+def test_an_animate_line_is_a_drawn_animation_not_a_picture():
+    """Animate: is drawn by the animation engine (icons + motion), never turned into an AI picture."""
+    from creatorforge_worker import director
     text = ("T\n\nHe opened the message and froze.\nAnimate: a man drops his phone in shock\n\n"
-            "Line two.\nVisual: a street\n\nLine three.\nAnimate: a crowd gasps\nVisual: a packed hall\n\n"
-            "Line four.\nVisual: sunrise\n")
+            "Line two.\nAnimate: a street fills with people\n\nLine three.\nAnimate: a crowd gasps\n\nLine four.\nVisual: sunrise\n")
     _, meta = director.parse_script(text)
-    vis = [str(s[1]) for s in meta["shots"]]
-    assert any("drops his phone" in v for v in vis)            # no Visual: - the action is the picture
-    assert any("packed hall" in v for v in vis) and not any("crowd gasps" in v for v in vis)   # Visual: wins
+    shots = [s for s in meta["shots"] if (s[7] or {}).get("animate")]
+    assert len(shots) == 3 and all(not s[1] for s in shots)       # no picture asked for
+    assert "animate" in director.FULL_FRAME

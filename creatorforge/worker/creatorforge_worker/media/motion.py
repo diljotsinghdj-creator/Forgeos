@@ -25,7 +25,7 @@ from pathlib import Path
 
 from .ff import MediaError
 
-KINDS = ("chart", "timeline", "steps", "pie", "squares")
+KINDS = ("chart", "timeline", "steps", "pie", "squares", "animate")
 VENDOR = Path(__file__).parent / "vendor" / "svg.min.js"
 THEMES = {   # background, ink, accent, second, grid
     "investigative": ("#EFE8D8", "#1A1A1A", "#C8102E", "#5A5A5A", True),
@@ -51,6 +51,9 @@ def plan_for(kind: str, spec: str) -> dict | None:
     spec = (spec or "").strip()
     if not spec:
         return None
+    if kind == "animate":
+        from .scene_anim import parse as scene_parse
+        return scene_parse(spec)
     if kind == "chart":
         from .charts import parse
         head, _, rest = spec.partition("|")
@@ -230,6 +233,111 @@ if(T==='squares'){
     const t=txt(stage,v[0],U*.05,x0+s/2,base-s-U*.045,{});t.opacity(0);at(.6+i*.45,.4,p=>t.opacity(p));
     if(P.labels[i]){const l=wrap(stage,P.labels[i],U*.034,x0+s/2,base+U*.06,Math.max(s,U*.3),{cls:'lbl',fill:SEC,most:2});l.opacity(0);at(.6+i*.45,.4,p=>l.opacity(p))}
     x+=s+U*.08});
+}
+
+if(T==='scene'){
+  title(P.title);
+  const TOP=TALL?H*.2:H*.22, BOT=TALL?H*.56:H*.72, MY=(TOP+BOT)/2, SZ=U*(TALL?.21:.18);
+  const A=P.actors, act=P.action, n=A.length, END=Math.max(1.2,DUR-.3);
+  function ico(nodes,size,opt){opt=opt||{};const g=stage.group();
+    if(opt.sticker!==false){g.circle(size*1.22).center(0,0).fill(opt.bg||'#FFFFFF').stroke({color:INK,width:Math.max(2,size*.04)})}
+    const ig=g.group();for(const nd of (nodes||[])){try{ig.element(nd[0]).attr(nd[1])}catch(e){}}
+    const k=size*.66/24;ig.attr({fill:'none',stroke:opt.ink||INK,'stroke-width':opt.sw||1.7,'stroke-linecap':'round',
+      'stroke-linejoin':'round',transform:`translate(${-12*k},${-12*k}) scale(${k})`});return g}
+  function put(g,x,y,s,r){g.attr({transform:`translate(${x},${y}) rotate(${r||0}) scale(${s===undefined?1:s})`})}
+  function appear(g,x,y,start,s){s=s||1;put(g,x,y,s*.5);g.opacity(0);
+    at(start,.45,p=>{g.opacity(Math.min(1,p*1.8));put(g,x,y,s*(.5+.5*p))},ease.back)}
+  function label(s,x,y,start,size,maxw){if(!s)return null;const t=wrap(stage,String(s).toUpperCase(),size||U*.032,x,y,maxw||W*.26,{cls:'lbl',most:2});
+    t.opacity(0);at(start||.4,.35,p=>t.opacity(p));return t}
+  function arrow(x1,y1,x2,y2,start,dur){const a=stage.line(x1,y1,x1,y1).stroke({color:ACC==='#E8B400'?INK:ACC,width:U*.008,linecap:'round'});
+    const ang=Math.atan2(y2-y1,x2-x1),hs=U*.022;const h=stage.polygon([[0,0],[-hs,-hs*.6],[-hs,hs*.6]].map(q=>q.join(',')).join(' ')).fill(ACC==='#E8B400'?INK:ACC).opacity(0);
+    at(start,dur||.4,p=>{a.plot(x1,y1,x1+(x2-x1)*p,y1+(y2-y1)*p);h.opacity(p>.9?1:0).attr({transform:`translate(${x1+(x2-x1)*p},${y1+(y2-y1)*p}) rotate(${ang*180/Math.PI})`})},ease.inout)}
+  function row(items,start,gapArrows){ // icons in a row (widescreen) or a column (Shorts), labels under/beside
+    const m=items.length;const pos=[];
+    for(let i=0;i<m;i++){if(TALL&&m>2){pos.push([W*.3,TOP+(BOT-TOP)*(m===1?.5:i/(m-1))])}else{pos.push([W*.5+(i-(m-1)/2)*Math.min(W*.24,W*.76/m),MY])}}
+    items.forEach((a,i)=>{const [x,y]=pos[i];const g=ico(a.o,m===1?SZ*1.25:SZ,{bg:i===m-1&&m>1?ACC:'#FFFFFF'});appear(g,x,y,start+i*.45);
+      if(TALL&&m>2)label(a.label,x+SZ*1.35,y,start+i*.45+.2,U*.034,W*.4);else label(a.label,x,y+SZ*(m===1?1.05:.95),start+i*.45+.2,U*.032,Math.min(W*.24,W*.76/m)*.95);
+      if(gapArrows&&i>0){const [px,py]=pos[i-1];const r=SZ*.72;const d=Math.hypot(x-px,y-py)||1;
+        arrow(px+(x-px)/d*r,py+(y-py)/d*r,x-(x-px)/d*r,y-(y-py)/d*r,start+i*.45-.25,.3)}});return pos}
+  if(act==='move'){
+    const x0=W*.2,x1=W*.8,y=MY+U*.03,pins=!!(P.from||P.to);
+    if(pins){[[x0,P.from],[x1,P.to]].forEach(([x,l],i)=>{const pin=ico(P.pin,SZ*.6,{bg:i?ACC:'#FFFFFF'});appear(pin,x,y+SZ*.35,.15+i*.15);label(l,x,y+SZ*.95,.3+i*.15)})}
+    else if(n>=2){const tg=ico(A[n-1].o,SZ,{bg:'#FFFFFF'});appear(tg,x1,y,.2);label(A[n-1].label,x1,y+SZ*.95,.35);label(A[0].label,x0,y+SZ*.95,.35)}
+    const cyc=y-U*(TALL?.12:.17);const endX=pins?x1:x1-SZ*.9;
+    const path=stage.path(`M ${x0} ${y} Q ${W/2} ${cyc} ${endX} ${y}`).fill('none').stroke({color:SEC,width:U*.005});
+    const len=path.node.getTotalLength();path.attr({'stroke-dasharray':`${U*.018},${U*.014}`});
+    const trail=stage.path(`M ${x0} ${y} Q ${W/2} ${cyc} ${endX} ${y}`).fill('none').stroke({color:'#00000000',width:0});
+    const mask=stage.rect(0,H).move(0,0).fill('#fff');const clipped=stage.clip().add(mask);path.clipWith(clipped);
+    const mover=ico(A[0].o,SZ*(pins?1:.8),{bg:ACC});let cargo=P.cargo?ico(P.cargo.o,SZ*.42):null;
+    const t0=.55,t1=Math.min(END,t0+Math.max(1.4,DUR*.62));const turn=/plane|rocket|helicopter|send|paper/.test(A[0].icon);
+    const at0=path.node.getPointAtLength(0);put(mover,at0.x,at0.y-SZ*.12,1);mover.opacity(0);at(.35,.25,p=>mover.opacity(p));
+    if(cargo){put(cargo,at0.x+SZ*.48,at0.y+SZ*.25,1);cargo.opacity(0);at(.4,.25,p=>cargo.opacity(p))}
+    tracks.push({start:t0,dur:t1-t0,e:ease.inout,fn:p=>{const L=len*p;const pt=path.node.getPointAtLength(L),q=path.node.getPointAtLength(Math.min(len,L+2));
+      const ang=Math.atan2(q.y-pt.y,q.x-pt.x)*180/Math.PI;put(mover,pt.x,pt.y-SZ*.12,1,turn?ang:Math.sin(p*40)*2);
+      if(cargo)put(cargo,pt.x+SZ*.48,pt.y+SZ*.25,1);mask.width(pt.x)}});
+  }
+  else if(act==='grow'||act==='shrink'){
+    const x=W/2,y=MY,up=act==='grow',s0=up?.55:1.3,s1=up?1.3:.55;const g=ico(A[0].o,SZ,{bg:ACC});put(g,x,y,s0);g.opacity(0);
+    at(.15,.3,p=>g.opacity(p));at(.5,Math.min(1.8,END-.6),p=>put(g,x,y,s0+(s1-s0)*p),ease.back);
+    const col=up?'#2E7D32':'#C62828',ax=x+SZ*1.45,tip=y+(up?-1:1)*SZ*.75,tail=y-(up?-1:1)*SZ*.75;
+    const ln=stage.line(ax,tail,ax,tail).stroke({color:col,width:U*.014,linecap:'round'});const hd=stage.polygon(`${ax-U*.03},${tip-(up?-1:1)*U*.035} ${ax+U*.03},${tip-(up?-1:1)*U*.035} ${ax},${tip+(up?-1:1)*U*.005}`).fill(col).opacity(0);
+    at(.6,.6,p=>{ln.plot(ax,tail,ax,tail+(tip-tail)*p);hd.opacity(p>.9?1:0)},ease.inout);
+    if(n>1){const g2=ico(A[1].o,SZ*.6);appear(g2,x-SZ*1.5,y,.3)}
+    label(A[0].label,x,BOT-U*.01,.6);
+  }
+  else if(act==='multiply'){
+    const cx=W/2,cy=MY,rx=TALL?W*.34:W*.3,ry=(BOT-TOP)*.42;const src=ico(A[0].o,SZ*.9,{bg:ACC});
+    const kids=(n>1?A[1]:A[0]).o;const N=TALL?10:14;
+    for(let i=0;i<N;i++){const a=2*Math.PI*i/N-Math.PI/2;const x=cx+Math.cos(a)*rx,y=cy+Math.sin(a)*ry;const st=.7+i*.07;
+      const ln=stage.line(cx,cy,cx,cy).stroke({color:SEC,width:U*.0035}).opacity(.6);const c=ico(kids,SZ*.4);put(c,cx,cy,.3);c.opacity(0);
+      at(st,.55,p=>{c.opacity(Math.min(1,p*2));put(c,cx+(x-cx)*p,cy+(y-cy)*p,.35+.65*p);ln.plot(cx,cy,cx+(x-cx)*p,cy+(y-cy)*p)})}
+    src.front();appear(src,cx,cy,.15);
+    if(n>1)label(A[1].label,cx,BOT+U*.005,1.6,U*.03,W*.5);
+  }
+  else if(act==='converge'){
+    const tg=A[n-1],att=n>1?A[0].o:P.mob;const cx=W/2,cy=MY,rx=TALL?W*.4:W*.36,ry=(BOT-TOP)*.5;
+    const t=ico(tg.o,SZ,{bg:'#FFFFFF'});appear(t,cx,cy,.15);label(tg.label,cx,BOT+U*.02,.45);
+    const N=TALL?8:12;for(let i=0;i<N;i++){const a=2*Math.PI*i/N;const sx=cx+Math.cos(a)*rx*1.6,sy=cy+Math.sin(a)*ry*1.6,
+      ex=cx+Math.cos(a)*rx*.6,ey=cy+Math.sin(a)*ry*.7;const c=ico(att,SZ*.42,{bg:'#F3D7D3'});put(c,sx,sy,1);c.opacity(0);
+      at(.6+i*.08,.6,p=>{c.opacity(Math.min(1,p*2));put(c,sx+(ex-sx)*p,sy+(ey-sy)*p,1)},ease.out)}
+    t.front();tracks.push({start:1.5,dur:Math.max(.6,END-1.5),e:x=>x,fn:p=>put(t,cx+Math.sin(p*80)*U*.006,cy,1)});
+  }
+  else if(act==='stack'){
+    const x=W/2,N=6,base=BOT-SZ*.35;for(let i=0;i<N;i++){const c=ico(A[0].o,SZ*.7,{bg:i%2?'#FFFFFF':ACC});const y=base-i*SZ*.52;
+      put(c,x,TOP-SZ,1);c.opacity(0);at(.3+i*.22,.4,p=>{c.opacity(Math.min(1,p*3));put(c,x,(TOP-SZ)+(y-(TOP-SZ))*p,1)},ease.back)}
+    label(A[0].label,x+SZ*1.5,MY,.8,U*.034,W*.3);
+  }
+  else if(act==='split'){
+    const cx=W/2,cy=MY;const g1=ico(A[0].o,SZ,{bg:ACC}),g2=ico(A[0].o,SZ,{bg:'#FFFFFF'});[g1,g2].forEach(g=>{put(g,cx,cy,1);g.opacity(0);at(.15,.3,p=>g.opacity(p))});
+    at(.7,.8,p=>{put(g1,cx-W*.2*p,cy,1-.15*p);put(g2,cx+W*.2*p,cy,1-.15*p)},ease.inout);
+    if(n>2){label(A[1].label,cx-W*.2,cy+SZ*.95,1.3);label(A[2].label,cx+W*.2,cy+SZ*.95,1.3)}else label(A[0].label,cx,BOT,1.3);
+  }
+  else if(act==='shake'){
+    const cx=W/2,cy=MY;const g=ico(A[0].o,SZ*1.2,{bg:ACC});appear(g,cx,cy,.15);
+    for(let k=0;k<3;k++){const c=stage.circle(SZ*1.2).center(cx,cy).fill('none').stroke({color:INK,width:U*.006}).opacity(0);
+      at(.6+k*.4,.9,p=>{c.radius(SZ*.62*(1+1.2*p)).center(cx,cy);c.opacity(.8*(1-p))})}
+    g.front();tracks.push({start:.6,dur:Math.max(.8,END-.6),e:x=>x,fn:p=>put(g,cx+Math.sin(p*120)*U*.007,cy,1,Math.sin(p*90)*5)});
+    label(A[0].label,cx,BOT,.5);
+  }
+  else if(act==='block'){
+    const pos=row(A,.15,n>1);const [bx,by]=pos[pos.length-1];const b=ico(P.ban,SZ*(n===1?1.9:1.5),{sticker:false,ink:'#C62828',sw:2.6});
+    put(b,bx,by,2.2);b.opacity(0);at(1.1,.35,p=>{b.opacity(Math.min(1,p*2));put(b,bx,by,2.2-1.2*p)},ease.back);
+  }
+  else if(act==='compare'){
+    const a=A[0],b=A[1]||A[0];const xs=[W*.3,W*.7];[a,b].forEach((it,i)=>{const g=ico(it.o,SZ*1.1,{bg:i?ACC:'#FFFFFF'});appear(g,xs[i],MY,.2+i*.3);label(it.label,xs[i],MY+SZ*1.0,.4+i*.3)});
+    const v=txt(stage,'VS',U*.08,W/2,MY,{fill:INK});v.opacity(0);at(.7,.3,p=>v.opacity(p));
+  }
+  else if(act==='cycle'){
+    const items=n>=2?A:[A[0],A[0],A[0]];const m=items.length;const cx=W/2,cy=MY,rx=TALL?W*.3:W*.2,ry=(BOT-TOP)*.38;const pts=[];
+    items.forEach((it,i)=>{const a=-Math.PI/2+2*Math.PI*i/m;const x=cx+Math.cos(a)*rx,y=cy+Math.sin(a)*ry;pts.push([x,y]);
+      const g=ico(it.o,SZ*.8,{bg:i===0?ACC:'#FFFFFF'});appear(g,x,y,.2+i*.35);label(it.label,x,y+SZ*.78,.35+i*.35,U*.028,W*.2)});
+    pts.forEach((p0,i)=>{const p1=pts[(i+1)%m];const d=Math.hypot(p1[0]-p0[0],p1[1]-p0[1])||1,r=SZ*.6;
+      arrow(p0[0]+(p1[0]-p0[0])/d*r,p0[1]+(p1[1]-p0[1])/d*r,p1[0]-(p1[0]-p0[0])/d*r,p1[1]-(p1[1]-p0[1])/d*r,.5+i*.35+.3,.35)});
+  }
+  else{ // connect / show
+    const pos=row(A,.15,act==='connect');
+    if(n===1){const g=stage.find('g').last();}
+  }
 }
 draw.rect(W,H).fill(grad).attr({'pointer-events':'none'});
 window.frame=function(t){

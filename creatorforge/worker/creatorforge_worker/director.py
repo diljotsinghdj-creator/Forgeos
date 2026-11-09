@@ -967,7 +967,7 @@ def _is_heading(line: str) -> bool:
 # ---- writer's scripts: "0:05 SETUP A student thinks...", "On-screen hook: ...", "Visuals: ...", "Post: ..." ----------
 # Writer keys that fill the whole frame with a graphic instead of the line's picture.
 FULL_FRAME = ("fly", "map", "globe", "steps", "timeline", "icons", "chapter", "quote", "screen", "document", "statement",
-              "object", "article", "chat", "search", "pie", "squares", "shade", "timer", "receipt")
+              "object", "article", "chat", "search", "pie", "squares", "shade", "timer", "receipt", "animate")
 _META_KEYS = ("on-screen hook", "on screen hook", "onscreen hook", "hook text", "visuals", "visual", "visual style",
               "b-roll", "broll", "post title", "video title", "post", "title", "cover", "thumbnail", "caption", "description", "hashtags", "tags",
               "source", "sources", "music", "sfx", "on-screen text", "on screen text", "text on screen", "text",
@@ -1129,8 +1129,7 @@ def parse_script(raw: str) -> tuple[str, dict]:
                 if target >= 0 and v:
                     d = per.setdefault(target, {})
                     d.setdefault("extra", {})["animate"] = value.strip()[:200]
-                    if "visual" not in d:     # the stickman is off by default: the action becomes the line's picture
-                        d["visual"], d["_from_animate"] = v[:200], True
+                    # drawn by the animation engine (any object, any action): no AI picture is made for it
             elif k == "clip":                # one of your own Asset Library clips plays on this line
                 if target >= 0 and v:
                     per.setdefault(target, {}).setdefault("extra", {})["clip"] = value.strip()[:140]
