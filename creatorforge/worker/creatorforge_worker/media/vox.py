@@ -170,8 +170,17 @@ def parse_pinmap(spec: str) -> dict | None:
         country, pin = f, None
     else:
         pin = (f["lon"], f["lat"])
-        # the country around the place: India for Indian places, else the nearest country containing it
-        country = maps._find("India") if 6 <= f["lat"] <= 37 and 68 <= f["lon"] <= 98 else None
+        # the country around the place: the one whose borders contain it (India first, the most common case)
+        country = None
+        if 6 <= f["lat"] <= 37 and 68 <= f["lon"] <= 98:
+            ind = maps._find("India")
+            if ind and _inside(f["lon"], f["lat"], ind["rings"]):
+                country = ind
+        if country is None:
+            for c in maps._world()["countries"]:
+                if _inside(f["lon"], f["lat"], c["r"]):
+                    country = {"kind": "country", "name": c["n"], "rings": c["r"]}
+                    break
         if country is None:
             return None
     rings = [r for r in country["rings"] if len(r) > 3]
@@ -921,7 +930,9 @@ function hero(){
     g.attr({transform:`translate(${spot.x-bb.x},${spot.y-bb.y})`});slide(g,1.0+i*.22,(spot.x<cx?-1:1)*W*.05,0)});
   // note with a leader line from the subject
   if(P.note){const right=cx<W*.55;const x1=cx+(right?MW*.12:-MW*.12),y1=BOT-HH*.6;
-    const x2=right?Math.min(W*.72,heroBox.x+MW+U*.08):Math.max(W*.28,heroBox.x-U*.08),y2=TALL?H*.68:H*.62;
+    let x2=right?Math.min(W*.72,heroBox.x+MW+U*.08):Math.max(W*.28,heroBox.x-U*.08),y2=TALL?H*.68:H*.62;
+    const roomBeside=right?W-(heroBox.x+MW):heroBox.x;
+    if(roomBeside<W*.22){x2=Math.min(W*.66,cx+MW*.2);y2=Math.max(H*.2,heroBox.y-U*.07)}   // a wide subject: the note goes above it
     callout(L.front,x1,y1,x2,y2,P.note,1.3)}
   // the small print: crosshairs, the mono date/place line, side text, the photo credit
   const c=U*.016;[[U*.05,U*.05],[W-U*.05,U*.05]].forEach(([x,y])=>cross(L.front,x,y,c));
@@ -1073,7 +1084,7 @@ function pinmap(){ // the country outline; the place highlighted; the headline c
   if(who){const h=TALL?H*.2:H*.34,x=TALL?Math.min(W*.78,px+W*.22):Math.max(W*.14,px-W*.2),y=TALL?Math.max(H*.2,py-H*.1):Math.max(H*.26,py-H*.05);
     const card=printCard(L.hero,who,x,y,h,-4,{caption:(who.name||'').replace(/^person:/i,'')});drop(card,.7,H*.2,-6);
     pinAt(L.front,x,y-h*.5+U*.012);const ln=L.mid.line(x,y,px,py).stroke({color:'#C0262D',width:U*.003});wipe(ln,1.0)}
-  if(P.headline){const cw=TALL?W*.8:W*.38,ch=TALL?H*.16:H*.26;const cx=TALL?W*.1:Math.min(W*.58,px+U*.12),cy=TALL?H*.58:Math.max(H*.14,py-ch*.4);
+  if(P.headline){const cw=TALL?W*.8:W*.38,ch=TALL?H*.16:H*.26;const cx=TALL?W*.1:Math.min(W-cw-U*.04,px+U*.24),cy=TALL?H*.58:Math.max(H*.14,py-ch*.4);
     const card=L.hero.group();torn(card,cx,cy,cw,ch,'#F3EFE4');const size=Math.min(ch*.24,U*.05);
     lines(P.headline,size,cw*.86,'Playfair',700,3).forEach((l,i)=>T(card,l,size,cx+cw*.07,cy+ch*.22+i*size*1.12,{family:'Playfair',weight:700,anchor:'start',fill:'#1A1A1A'}));
     if(P.source)T(card,P.source.toUpperCase(),U*.017,cx+cw*.07,cy+ch*.88,{family:'Mono',weight:700,anchor:'start',fill:'#555'});
