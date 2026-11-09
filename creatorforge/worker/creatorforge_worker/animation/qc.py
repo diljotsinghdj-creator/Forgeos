@@ -283,7 +283,9 @@ def check_video(path: Path, expected_seconds: float, fps: int) -> dict:
     ys = [float(line.split("=")[1]) for line in luma.splitlines() if "YAVG" in line]
     flicker = sum(1 for a, b, c in zip(ys, ys[1:], ys[2:]) if abs(b - a) > 12 and abs(c - b) > 12 and (b - a) * (c - b) < 0)
     expected = int(round(expected_seconds * fps))
-    return dict(frames=frames, expected=expected, missing=max(0, expected - frames), frozen=freezes(path),
+    # encoders round the last frame differently (one FFmpeg build ends a frame short of another): a single frame
+    # of rounding at the end is not a missing frame; anything more is
+    return dict(frames=frames, expected=expected, missing=max(0, expected - frames - 1), frozen=freezes(path),
                 black=blacks(path, expected_seconds), flicker_frames=flicker)
 
 
