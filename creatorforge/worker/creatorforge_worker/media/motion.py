@@ -25,7 +25,8 @@ from pathlib import Path
 
 from .ff import MediaError
 
-KINDS = ("chart", "timeline", "steps", "pie", "squares", "animate")
+KINDS = ("chart", "timeline", "steps", "pie", "squares", "animate", "clock", "calendar", "sign", "social", "comments",
+         "trending", "stamp")
 VENDOR = Path(__file__).parent / "vendor" / "svg.min.js"
 THEMES = {   # background, ink, accent, second, grid
     "investigative": ("#EFE8D8", "#1A1A1A", "#C8102E", "#5A5A5A", True),
@@ -54,6 +55,39 @@ def plan_for(kind: str, spec: str) -> dict | None:
     if kind == "animate":
         from .scene_anim import parse as scene_parse
         return scene_parse(spec)
+    head, _, tail = spec.partition("|")
+    head, tail = head.strip(), tail.strip()
+    parts = lambda s: [x.strip() for x in re.split(r"·|•|;", s) if x.strip()]      # noqa: E731
+    if kind == "clock":
+        m = re.search(r"(\d{1,2})(?::(\d{2}))?\s*(am|pm)?", head, re.I)
+        if not m:
+            return None
+        h, mi = int(m.group(1)) % 12, int(m.group(2) or 0)
+        if (m.group(3) or "").lower() == "pm":
+            h += 12
+        return {"type": "clock", "h": h, "m": mi, "show": head.upper(), "label": tail}
+    if kind == "calendar":
+        m = re.search(r"(\d{1,2})\s+([A-Za-z]{3,9})(?:\s+(\d{4}))?", head) or \
+            re.search(r"([A-Za-z]{3,9})\s+(\d{1,2})(?:,?\s+(\d{4}))?", head)
+        if not m:
+            return None
+        a, b, y = m.group(1), m.group(2), m.group(3) or ""
+        day, mon = (a, b) if a.isdigit() else (b, a)
+        return {"type": "calendar", "day": int(day), "month": mon[:3].upper(), "year": y, "label": tail}
+    if kind == "sign":
+        style = next((w for w in ("banner", "billboard", "board", "placard", "signpost") if w in tail.lower()), "placard")
+        return {"type": "sign", "text": head, "style": style, "label": re.sub(r"(?i)\b(banner|billboard|board|placard|signpost)\b", "", tail).strip(" ,·")}
+    if kind == "social":
+        bits = [x.strip() for x in spec.split("|")]
+        stats = parts(bits[2]) if len(bits) > 2 else []
+        return {"type": "social", "who": bits[0], "text": bits[1] if len(bits) > 1 else "", "stats": stats[:3]}
+    if kind == "comments":
+        return {"type": "comments", "who": head if tail else "", "items": parts(tail or head)[:8]}
+    if kind == "trending":
+        others = parts(tail)[:4]
+        return {"type": "trending", "tag": head, "others": others}
+    if kind == "stamp":
+        return {"type": "stamp", "text": head.upper(), "on": tail}
     if kind == "chart":
         from .charts import parse
         head, _, rest = spec.partition("|")
@@ -337,6 +371,74 @@ if(T==='scene'){
   else{ // connect / show
     const pos=row(A,.15,act==='connect');
     if(n===1){const g=stage.find('g').last();}
+  }
+}
+
+if(['clock','calendar','sign','social','comments','trending','stamp'].includes(T)){
+  const TOP=TALL?H*.18:H*.16, BOT=TALL?H*.57:H*.73, MY=(TOP+BOT)/2;
+  const card=(x,y,w,h,r,fill)=>{const g=stage.group();g.rect(w,h).move(x+U*.012,y+U*.016).radius(r).fill('#000').opacity(.18);
+    g.rect(w,h).move(x,y).radius(r).fill(fill||'#FFFFFF').stroke({color:INK,width:U*.004});return g};
+  const lbl=(s,y,st)=>{if(!s)return;const t=wrap(stage,String(s).toUpperCase(),U*.036,W/2,y,W*.8,{cls:'lbl',most:2});t.opacity(0);at(st||.6,.4,p=>t.opacity(p))};
+  if(T==='clock'){
+    const R=(BOT-TOP)*.36,cx=W/2,cy=MY-R*.12;const f=stage.group();f.circle(R*2).center(cx,cy).fill('#FFFFFF').stroke({color:INK,width:U*.012});
+    for(let i=0;i<12;i++){const a=i*Math.PI/6;f.line(cx+Math.sin(a)*R*.82,cy-Math.cos(a)*R*.82,cx+Math.sin(a)*R*(i%3?0.9:0.76),cy-Math.cos(a)*R*(i%3?0.9:0.76)).stroke({color:INK,width:U*(i%3?.005:.01),linecap:'round'})}
+    const hh=stage.line(cx,cy,cx,cy-R*.5).stroke({color:INK,width:U*.016,linecap:'round'}),mm=stage.line(cx,cy,cx,cy-R*.75).stroke({color:ACC==='#E8B400'?'#C8102E':ACC,width:U*.01,linecap:'round'});
+    stage.circle(U*.03).center(cx,cy).fill(INK);pop(f,cx,cy,.05,.4);
+    const tm=P.h*60+P.m,startM=tm-180;
+    at(.4,Math.min(2,DUR*.55),p=>{const cur=startM+180*p;const ha=(cur/60%12)*Math.PI/6,ma=(cur%60)*Math.PI/30;
+      hh.plot(cx,cy,cx+Math.sin(ha)*R*.5,cy-Math.cos(ha)*R*.5);mm.plot(cx,cy,cx+Math.sin(ma)*R*.75,cy-Math.cos(ma)*R*.75)},ease.inout);
+    const d=txt(stage,P.show,U*.06,cx,cy+R*1.22,{});d.opacity(0);at(1.6,.4,p=>d.opacity(p));lbl(P.label,cy+R*1.22+U*.08,1.8);
+  }
+  if(T==='calendar'){
+    const w=Math.min(W*.3,(BOT-TOP)*.75),h=w*1.05,x=W/2-w/2,y=MY-h/2-U*.02;
+    const pages=4;for(let i=pages;i>=0;i--){const g=card(x,y,w,h,U*.014);g.rect(w,h*.26).move(x,y).radius(U*.014).fill(ACC==='#E8B400'?'#C8102E':ACC);
+      txt(g,P.month+(P.year?' '+P.year:''),h*.11,W/2,y+h*.13,{fill:'#FFFFFF'});const day=i===0?P.day:Math.max(1,P.day-i);
+      txt(g,String(day),h*.45,W/2,y+h*.62,{});
+      if(i>0){const st=.3+(pages-i)*.32;at(st,.3,p=>g.attr({transform:`translate(0,${-h*1.4*p}) rotate(${-25*p},${x},${y})`}).opacity(1-p),ease.inout)}}
+    for(let k=0;k<5;k++)stage.circle(U*.018).center(x+w*(.15+k*.175),y).fill(INK);
+    lbl(P.label,y+h+U*.06,1.7);
+  }
+  if(T==='sign'){
+    const tall=P.style==='placard'||P.style==='signpost';const w=P.style==='banner'?W*.7:P.style==='billboard'?W*.6:W*.42,h=P.style==='banner'?U*.18:U*.26;
+    const x=W/2-w/2,y=MY-h/2-(tall?U*.08:0);const g=stage.group();
+    if(tall)g.rect(U*.02,(BOT-y)*.9).move(W/2-U*.01,y+h-U*.01).fill('#8B5E3C');
+    if(P.style==='billboard'){g.rect(U*.02,BOT-y-h).move(x+w*.2,y+h).fill('#555');g.rect(U*.02,BOT-y-h).move(x+w*.8-U*.02,y+h).fill('#555')}
+    g.rect(w,h).move(x+U*.01,y+U*.014).fill('#000').opacity(.18);g.rect(w,h).move(x,y).fill(P.style==='banner'?ACC:'#FFFFFF').stroke({color:INK,width:U*.008});
+    const t=wrap(g,P.text.toUpperCase(),Math.min(h*.36,U*.075),W/2,y+h/2,w*.9,{most:2});
+    g.attr({transform:`translate(0,${H})`});at(.1,.55,p=>g.attr({transform:`translate(0,${H*(1-p)})`}),ease.back);
+    tracks.push({start:.8,dur:Math.max(1,DUR-.8),e:q=>q,fn:p=>g.attr({transform:`rotate(${Math.sin(p*10)*1.6},${W/2},${BOT})`})});
+    lbl(P.label,BOT+U*.02,1.0);
+  }
+  if(T==='social'||T==='stamp'){
+    const w=Math.min(W*.6,U*1.05),h=(BOT-TOP)*.8,x=W/2-w/2,y=MY-h/2;const g=card(x,y,w,h,U*.02);
+    g.circle(U*.07).center(x+U*.07,y+U*.07).fill('#D9D0BE');
+    const who=T==='social'?P.who:'Account';txt(g,who,U*.032,x+U*.12,y+U*.07,{anchor:'start'});
+    const body=T==='social'?P.text:(P.on||'Viral post');wrap(g,body,U*.04,W/2,y+h*(T==='social'?.45:.32),w*.86,{most:3,cls:'lbl'});
+    pop(g,W/2,MY,.1,.45);
+    if(T==='social'){const st=P.stats.length?P.stats:['12K likes','3K shares'];st.forEach((s,i)=>{const m=String(s).match(/([\d.,]+)\s*([KkMmLl]?)\s*(.*)/);
+      const x0=x+w*(i+.5)/st.length,y0=y+h*.84;const t=txt(stage,'0',U*.03,x0,y0,{});
+      if(m){const v=parseFloat(m[1].replace(/,/g,''));at(.7+i*.2,1.2,p=>t.text((v*p).toFixed(v<10&&m[2]?1:0)+m[2].toUpperCase()+' '+m[3]),ease.expo)}else t.text(s)})}
+    else{const s=stage.group();const sw=w*.8,sh=U*.12,sy=y+h*.66;s.rect(sw,sh).move(W/2-sw/2,sy-sh/2).fill('#FFFFFF').opacity(.92).stroke({color:'#C8102E',width:U*.012});
+      wrap(s,P.text,Math.min(sh*.5,U*.06),W/2,sy,sw*.92,{fill:'#C8102E',most:1});
+      s.opacity(0);at(.9,.3,p=>{s.opacity(Math.min(1,p*2));s.attr({transform:`translate(${W/2},${sy}) rotate(-8) scale(${2.2-1.2*p}) translate(${-W/2},${-sy})`})},ease.back)}
+  }
+  if(T==='comments'){
+    const w=Math.min(W*.62,U*1.1),x=W/2-w/2;if(P.who){const t=txt(stage,P.who,U*.036,W/2,TOP,{});}
+    const rowH=Math.min(U*.1,(BOT-TOP-U*.05)/Math.max(4,P.items.length));
+    P.items.forEach((c,i)=>{const y=TOP+U*.05+i*rowH;const g=card(x,y,w,rowH*.86,U*.012);g.circle(rowH*.5).center(x+rowH*.45,y+rowH*.43).fill('#F3D7D3');
+      txt(g,c,Math.min(rowH*.42,U*.04),x+rowH*.85,y+rowH*.43,{anchor:'start',cls:'lbl'});g.opacity(0);
+      at(.2+i*.28,.3,p=>{g.opacity(p);g.attr({transform:`translate(${(1-p)*W*.05},0)`})},ease.out)});
+  }
+  if(T==='trending'){
+    const list=[...P.others];const n=list.length+1;const rowH=Math.min(U*.11,(BOT-TOP)/n);const w=Math.min(W*.6,U*1.0),x=W/2-w/2;
+    txt(stage,'TRENDING',U*.036,W/2,TOP-U*.02,{fill:SEC});
+    const rows=[];list.concat([P.tag]).forEach((t,i)=>{const g=stage.group();const me=i===n-1;g.rect(w,rowH*.84).move(x,0).radius(U*.01).fill(me?ACC:'#FFFFFF').stroke({color:INK,width:U*.004});
+      const num=txt(g,String(i+1),rowH*.4,x+rowH*.45,rowH*.42,{});txt(g,t,rowH*.4,x+rowH*.9,rowH*.42,{anchor:'start'});rows.push([g,num])});
+    const place=(order)=>order.forEach((ri,k)=>{});
+    rows.forEach(([g,num],i)=>{const y0=TOP+U*.03+i*rowH;g.attr({transform:`translate(0,${y0})`});
+      if(i===n-1){at(1.0,1.0,p=>{const y=y0+(TOP+U*.03-y0)*p;g.attr({transform:`translate(0,${y})`});num.text(String(Math.max(1,Math.round(n-(n-1)*p))))},ease.inout)}
+      else{at(1.0,1.0,p=>{g.attr({transform:`translate(0,${y0+rowH*p})`});num.text(String(i+1+(p>.5?1:0)))},ease.inout)}});
+    rows[n-1][0].front();
   }
 }
 draw.rect(W,H).fill(grad).attr({'pointer-events':'none'});
