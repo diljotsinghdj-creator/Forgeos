@@ -1,0 +1,33 @@
+BJP IT Cell: "सच्चा हो या झूठा, वायरल कर देंगे"
+On-screen hook: True or false, we'll make it viral.
+Title: "सच्चा हो या झूठा, वायरल कर देंगे" - BJP IT Cell का सच | #Shorts
+Tags: #BJPITCell #FakeNews #WhatsApp #PrintFacts #Shorts
+
+"हम कोई भी मैसेज वायरल कर सकते हैं। सच्चा हो या झूठा।"
+Opener: megaphone | We can make *any message* viral | Amit Shah · Kota · Sep 2018 (translated)
+
+ये बात बीजेपी के तब के अध्यक्ष अमित शाह ने, कोटा में, पार्टी के सोशल मीडिया वॉलंटियर्स से कही थी।
+Pinmap: Kota | Real or fake, we can make any message viral | The Quint, Sep 2018 | atlas
+
+उन्होंने बताया, उत्तर प्रदेश चुनाव में पार्टी के दो व्हाट्सऐप नेटवर्क थे। पंद्रह लाख और सत्रह लाख लोग।
+Stack: bars | Network 1 15 lakh, Network 2 17 lakh | BJP's WhatsApp networks, UP
+
+यानी बत्तीस लाख लोग। और हर सुबह आठ बजे, एक ही मैसेज।
+Hero: smartphone + crowd | 32 lakh people | every day · 8 AM | marker: one message to all
+
+फिर शाह ने एक उदाहरण दिया। एक मैसेज, कि अखिलेश यादव ने अपने पिता को थप्पड़ मारा।
+Chat: Forwarded many times | them: Akhilesh slapped his father Mulayam · them: Forward to all groups
+
+शाह ने ख़ुद माना, उसमें कोई सच्चाई नहीं थी। फिर भी वो वायरल हुआ।
+Stamp: NOT TRUE | the viral message
+
+और दो हज़ार चौबीस तक? डेक्कन हेराल्ड के मुताबिक़, पचास लाख व्हाट्सऐप ग्रुप्स।
+BigNumber: 50 lakh | smartphone | WhatsApp groups, 2024 (reported, not independently counted) | Deccan Herald
+
+बीजेपी आईटी सेल के प्रमुख अमित मालवीय, फ़ेक न्यूज़ के आरोपों को, विपक्ष का कैंपेन बताते रहे हैं।
+Hero: megaphone | The BJP's side | Amit Malviya · IT cell head | calls it an opposition campaign | style: box
+
+तो सवाल ये नहीं कि मैसेज किसका है। सवाल ये है, आप उसे आगे भेजेंगे या नहीं?
+Opener: smartphone | Before you *forward*, check | Print Facts
+
+Sources: The Quint, Sep 2018 (Amit Shah, Kota speech); The Logical Indian, Sep 2018 (15 lakh + 17 lakh, 8 AM message); Deccan Herald, 2024 (50 lakh WhatsApp groups, reported); Scroll, 2019 (Amit Malviya's response).

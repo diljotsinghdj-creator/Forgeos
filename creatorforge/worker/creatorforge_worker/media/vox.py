@@ -981,7 +981,7 @@ function number(){ // a huge number; the subject breaks out of it
   const pic=(((P.pics||[])[0]||{}).img||((P.pics||[])[0]||{}).draw)?(P.pics||[])[0]:null;const big=T(L.back,P.number,TALL?W*.42:H*(pic?.5:.56),W/2,pic?(TALL?H*.22:H*.3):(TALL?H*.34:H*.4),{family:'Anton',weight:400,fill:ACC});fit(big,W*.92);
   slide(big,.05,0,H*.06);
   if(pic){const h=TALL?H*.36:H*.56;const g=picture(L.hero,pic,W/2,TALL?H*.64:H*.86,h);drop(g,.35,H*.25,-2)}
-  if(P.caption){const c=pic?T(L.front,P.caption,U*.04,W/2,TALL?H*.7:H*.92,{family:'Inter',weight:800,fill:'#C0262D'})
+  if(P.caption){const c=pic?fit(T(L.front,P.caption,U*.04,W/2,TALL?H*.7:H*.92,{family:'Inter',weight:800,fill:'#C0262D'}),W*.9)
       :boxText(L.front,P.caption,U*.055,W/2,TALL?H*.5:H*.7,{anchor:'middle',maxw:W*.86,most:2});wipe(c,.9)}
   if(P.kicker){const k=T(L.front,P.kicker.toUpperCase(),U*.024,W/2,TALL?H*.08:H*.08,{family:'Inter',weight:800,fill:'#C0262D',ls:'0.45em'});wipe(k,.2)}}
 
