@@ -71,14 +71,15 @@ Checked on rendered frames and by tests (`tests/test_vox_look.py`, `test_vox_dir
 | Globe to country zoom | works | `Globe` |
 | Country to city, tilt and rotate | pod-only | `Fly` (MapLibre + tiles: needs network) |
 | Street level, satellite, terrain | pod-only | `Fly ... | satellite` / `| terrain` |
-| State / regional boundaries | partial | nine large countries (India, USA, China, Brazil, Russia, Canada, Australia, Indonesia, South Africa); others have no state shapes |
+| State / regional boundaries | works | every country (Natural Earth admin-1), by English or local name |
 | Shipping routes | works | `Route ... | ship` follows the sea lanes through canals and straits (`searoute.py`) |
 | Flight, road, rail routes | works | `Route` (arcs), `Railmap` (networks through stations) |
 | Migration, military, trade movement | works | `Arrows` (broad curved arrows, each named) |
 | Country and state heat maps with a scale | works | `Heatmap`; in 3D: `Prism` |
 | Geographic comparison | works | `Sizemap` (same scale, one shape morphs into the other, area ratio) |
 | Historical borders and border change | pod-only | `Borders` needs the dated maps downloaded by setup (`history.py`, GPL data, credited on screen); proven here with the 1914 file |
-| District-level density | missing | no district shapes |
+| District-level heat maps | pod-only | `districts.py` downloads geoBoundaries per country at setup (credited on screen); proven here with a fixture |
+| Real terrain in 3D | works | `Terrain3d` (open elevation tiles, cached; needs the network once per place) |
 | Labels by zoom level | pod-only | MapLibre does this in `Fly` |
 | Map to footage / map to infographic transition | works | the `dive` cut (motivated transitions) |
 
@@ -93,7 +94,7 @@ Checked on rendered frames and by tests (`tests/test_vox_look.py`, `test_vox_dir
 | Wipes, reveals, blur-whip, dive, page, push, drop, squeeze | works |
 | Motion blur on travelling elements | works (`slide`, `drop`) |
 | Particles | works (`| fx:` dust, embers, snow, rain, confetti, sparks) |
-| Shape morphing | works in `Sizemap` (outline to outline); not a general tool |
+| Shape morphing | works (`Morph`: countries, states and plain shapes in a chain; `Sizemap` at true scale) |
 | Picture-in-picture | works (`| inset:` a framed picture; `| with:` a person beside the graphic) |
 | 3D camera movement | works in the 3D scenes (orbiting perspective camera) |
 | 3D camera into a still photo | pod-only (`depth3d.py`, needs the depth model) |
@@ -104,9 +105,12 @@ Checked on rendered frames and by tests (`tests/test_vox_look.py`, `test_vox_dir
 Works: for every line the director extracts facts, proposes candidates, ranks real material first, rejects a graphic
 that fails the mute test, varies objects, adds the named person and platform logos, and picks camera, layout and
 exit. The cut into the next shot now comes from what the two shots are (`pipeline.motivated_transition`).
-Partial: the rule-based director does not yet choose the new kinds on its own (Pyramid, Flowchart, Linkmap,
-Orgchart, Courtdoc, Table, Polltrack, Area, Candles, Arrows, Railmap, Sizemap, Borders, the 3D scenes); the script
-AI can (they are in its catalogue) and a writer can.
+The rule-based director picks from narration alone: Sizemap, Heatmap / Prism (three or more places each with its
+number), Bars3d, Arrows (a movement between places), Linkmap (three or more names and a word about ties), Interview
+(a named person speaking in the line), Borders (an old year, a place, a word about borders) and Terrain3d (a named
+peak or pass). Kinds that need structured data a sentence does not carry (Pyramid, Orgchart, Table, Polltrack, Area,
+Candles, Flowchart, Railmap, Towers3d, Explode) and Courtdoc (it must quote the court's own words, which Hindi
+narration does not give in English) are chosen by the script AI or written by hand, never guessed.
 
 ### 2.5 Archival and investigative
 
@@ -125,13 +129,16 @@ Pod-only: real archive photographs and footage (need the photo sources).
 | Genuine 3D: `Bars3d`, `Prism` map, `Explode`, `Title3d` | works (three.js in headless Chromium: meshes, sun, soft shadows, orbiting camera; no Blender, no GPU needed) |
 | 3D globe | works |
 | Blender characters and intro | pod-only (Blender is not in this sandbox) |
-| Architecture, 3D terrain | missing (terrain needs elevation data) |
+| 3D terrain | works (`Terrain3d`: real elevation, lit, the summit named) |
+| Buildings to scale | works (`Towers3d`: stepped massing with floors and a person for scale; not a model of the building) |
+| Detailed architectural models | missing (needs real building models) |
 
 ### 2.7 Editing
 
 Works: beat-level cuts on word timestamps, music-beat alignment, punch-in, settle, shake, jump cuts, montage,
 zoom-through match cut, multi-layer compositing, 12 fps stepped graphics, freeze frame, speed ramp and slow motion
-on footage (`Playback:`), motivated transitions. Missing: audio-reactive graphics.
+on footage (`Playback:`), motivated transitions, graphics that move with the voice (`| voice`, and the bars on
+`Interview`, driven by the narration's measured loudness).
 
 ### 2.8 Typography
 
@@ -144,7 +151,8 @@ face is Latin only (a Hindi title is refused there and belongs in the 2D type sc
 
 Works: narration, word alignment, music with beat offset, ducking, loudness normalisation, whoosh / hit / pop /
 riser / scribble by transition and role, ambient beds per shot (`ambience.py`: sea, wind, city, room, paper,
-projector, hum). Missing: spatial audio.
+projector, hum), stereo placement (a whoosh travels across with the cut; cues can sit left or right).
+Missing: surround / object audio (the output is stereo).
 
 ### 2.10 Quality control
 
@@ -152,7 +160,8 @@ Works: fail-closed export verification; loudness, clipping, dead air, frozen or 
 drift; text fit and safe areas; picture-matches-line (CLIP); script preflight (facts, attribution, valid graphics,
 places found on the map); flat-contrast frames; colour-grade jumps; frame size; audio cut off at the end; the accent
 made readable as type on its paper; video-against-video similarity (`variety`).
-Missing: a per-asset resolution check before the render (soft pictures are only caught as a symptom).
+A picture shown much larger than its own size is flagged before the render (`*.qa.json`, collected into the
+quality report).
 
 ### 2.11 Output
 
@@ -176,17 +185,15 @@ Works: 16:9, 9:16, 1:1 with layouts composed per aspect, 1080p and 4K (`resoluti
 
 ## 4. What is still open
 
-1. The rule-based director choosing the new kinds on its own (2.4).
-2. District-level shapes; state shapes beyond the nine large countries.
-3. 3D terrain and architecture.
-4. Audio-reactive graphics; spatial audio.
-5. A general shape-morph tool; a per-asset resolution check.
-6. On the pod: prove `Fly`, satellite, depth dolly, Blender, dated borders and real photographs in one render.
+1. Detailed architectural models and surround audio (out of reach without model assets / a surround pipeline).
+2. On the pod: prove `Fly`, satellite, depth dolly, Blender, dated borders, districts and real photographs in one
+   render (the acceptance storyboard, through the real voice and word alignment).
 
 ## 5. Acceptance test
 
-A 60-90 s documentary on a non-political world topic, rendered on the pod (real photos, tiles, Blender), that
-contains: a globe-to-city map move, a route, a heat map, three different infographics, kinetic type, an archival
-photo sequence, a highlighted document, a 2.5D depth shot, one Blender 3D shot, motivated transitions, full sound
-design, word-accurate cuts and source lines. Each discipline is scored on its own; the video is not called done
-while any row above that it uses is short of **works**.
+`python -m creatorforge_worker.acceptance <out_dir>` builds a 14-scene documentary (the 2021 Suez blockage, checked
+figures) with the engine's own modules and spoken narration, then scores every discipline on its own. In this
+sandbox it passes all eleven that can run here (maps, infographics, kinetic type, document evidence, 2.5D, genuine
+3D, source citations, motivated transitions, sound design, narration sync, finished-film quality) and lists as
+**pod-only**, never as passed: archive footage, the depth-map camera move, street-level and satellite maps, real
+cut-out photographs and word-level alignment. The system is done when the same storyboard passes those on the pod.
