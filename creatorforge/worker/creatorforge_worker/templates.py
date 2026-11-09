@@ -11,6 +11,16 @@ ASPECTS = {
 }
 
 
+RESOLUTIONS = ("1080p", "4k")
+
+
+def output_size(aspect: str, resolution: str = "1080p") -> tuple[int, int]:
+    """The finished frame: 1080p, or 4K (2160p: every graphic is drawn at that size, nothing is upscaled except
+    footage and AI pictures that are smaller than it)."""
+    w, h = ASPECTS[aspect][1]
+    return (w * 2, h * 2) if str(resolution).lower() in ("4k", "2160p", "uhd") else (w, h)
+
+
 @dataclass(frozen=True)
 class Template:
     id: str

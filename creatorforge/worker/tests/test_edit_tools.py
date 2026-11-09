@@ -56,3 +56,29 @@ def test_ambient_beds_follow_the_shot(tmp_path):
     assert len(beds) == 2                                   # the two sea shots share one bed; the chart has none
     assert beds[0][0].name.startswith("sea_") and abs(ff.duration(beds[0][0]) - 5.0) < 0.3 and beds[0][2] < 0.2
     assert beds[1][0].name.startswith("paper_") and 7.3 < beds[1][1] < 7.6
+
+
+def test_4k_output_and_picture_quality_checks(tmp_path):
+    from creatorforge_worker import director
+    from creatorforge_worker.media import motion, quality, vox
+    from creatorforge_worker.templates import output_size
+    assert output_size("16:9", "4k") == (3840, 2160) and output_size("9:16", "4K") == (2160, 3840)
+    assert output_size("1:1") == (1080, 1080)
+    spec = director.ProductionSpec.from_dict({"script": "One line of narration here.", "resolution": "4K"})
+    assert spec.resolution == "4k" and director.ProductionSpec.from_dict({"script": "One line of narration here."}).resolution == "1080p"
+    # the accent as type: yellow on cream is too faint, so the figure is set in a darker mustard; red stays red
+    assert vox.contrast("#F2C200", "#EFE8DA") < 2 < 2.6 <= vox.contrast(vox.readable("#F2C200", "#EFE8DA"), "#EFE8DA")
+    assert vox.readable("#D7262B", "#EFE8DA") == "#D7262B"
+    # a flat grey film has no readable contrast; a test card does
+    flat, card = tmp_path / "flat.mp4", tmp_path / "card.mp4"
+    for out, src in ((flat, "color=c=0x777777:s=320x180:r=10"), (card, "testsrc2=s=320x180:r=10")):
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "lavfi", "-i", src, "-f", "lavfi", "-i", "sine=f=300", "-t", "3",
+                        "-af", "afade=t=out:st=2.5:d=0.5", "-pix_fmt", "yuv420p", "-shortest", str(out)], check=True)
+    assert quality.picture_checks(flat, 3.0)["flat"] and not quality.picture_checks(card, 3.0)["flat"]
+    assert quality.frame_size(card) == (320, 180) and quality.audio_ends_cleanly(card, 3.0)
+    rep = quality.check(card, 3.0, [], expected_size=(1920, 1080))
+    assert any(c["name"] == "frame size" and not c["ok"] for c in rep["checks"])
+    if motion.enabled():
+        out = vox.render("bignumber", "38% | smartphone | of voters | Survey", "e~0@yellow/archive/", 3840, 2160, 1.5,
+                         tmp_path / "uhd.mp4", tmp_path, fetch=False, fps=4)
+        assert quality.frame_size(out) == (3840, 2160)

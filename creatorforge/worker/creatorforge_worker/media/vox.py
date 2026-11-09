@@ -109,6 +109,30 @@ def plan_layouts(kinds: list[str], seed: int) -> list[str]:
     return out
 
 
+def _lum(hex_: str) -> float:
+    c = [int(hex_[i:i + 2], 16) / 255 for i in (1, 3, 5)]
+    c = [x / 12.92 if x <= 0.03928 else ((x + 0.055) / 1.055) ** 2.4 for x in c]
+    return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]
+
+
+def contrast(a: str, b: str) -> float:
+    """WCAG contrast ratio of two colours (1 = the same, 21 = black on white)."""
+    la, lb = sorted((_lum(a), _lum(b)), reverse=True)
+    return (la + 0.05) / (lb + 0.05)
+
+
+def readable(colour: str, paper: str, least: float = 2.6) -> str:
+    """The colour, darkened just enough to be read as large type on this paper (yellow on cream becomes mustard).
+    Blocks, discs and bars keep the true accent; only type set straight on the paper uses this."""
+    c = colour
+    for _ in range(24):
+        if contrast(c, paper) >= least:
+            break
+        r, g, b = (int(c[i:i + 2], 16) for i in (1, 3, 5))
+        c = "#%02X%02X%02X" % (int(r * 0.93), int(g * 0.93), int(b * 0.93))
+    return c
+
+
 def look_of(theme: str) -> dict:
     """'editorial~2@red/kraft' -> the kraft look (default: archive, the original look)."""
     name = ((theme or "").split("/") + ["", ""])[1]
@@ -1344,6 +1368,7 @@ svg{display:block}
 </style><script>%SVGJS%</script><script>%ILLU%</script></head><body><script>
 const P=%PLAN%, W=%W%, H=%H%, DUR=%DUR%, K=%KIT%;
 const TALL=H>W, U=Math.min(W,H), ACC=K.acc, INK=K.ink, PAPER=K.paper, DARK=K.dark;
+const ACT=K.dark?K.acc:(K.accText||K.acc);   // the accent as type on the paper: dark enough to read
 const FG=DARK?'#F3EFE6':INK;
 const draw=SVG().addTo('body').size(W,H);
 const tracks=[], cam=[];
@@ -1697,7 +1722,7 @@ function pinmap(){ // the country outline; the place highlighted; the headline c
 
 function number(){ // a huge number; the subject breaks out of it
   const pic=(((P.pics||[])[0]||{}).img||((P.pics||[])[0]||{}).draw)?(P.pics||[])[0]:null;
-  if(pic&&!TALL&&K.lay==='side')return numberSide(pic);const big=T(L.back,P.number,TALL?W*.42:H*(pic?.5:.56),W/2,pic?(TALL?H*.22:H*.3):(TALL?H*.34:H*.4),{family:'Anton',weight:400,fill:ACC});fit(big,W*.92);
+  if(pic&&!TALL&&K.lay==='side')return numberSide(pic);const big=T(L.back,P.number,TALL?W*.42:H*(pic?.5:.56),W/2,pic?(TALL?H*.22:H*.3):(TALL?H*.34:H*.4),{family:'Anton',weight:400,fill:ACT});fit(big,W*.92);
   slide(big,.05,0,H*.06);
   if(pic){const h=TALL?H*.36:H*.56;const g=picture(L.hero,pic,W/2,TALL?H*.64:H*.86,h);drop(g,.35,H*.25,-2);
     FOCUS=FOCUS||{x:W/2,y:(TALL?H*.64:H*.86)-h*.45,rx:Math.min(U*.3,(g.data('w')||h)*.6),ry:h*.42}}   // marker and logos go by the subject, off the figure
@@ -1707,7 +1732,7 @@ function number(){ // a huge number; the subject breaks out of it
 
 function numberSide(pic){ // second layout: the number and its words on the left, the subject standing on the right
   // the number across the top, the subject lower right, the words lower left: nothing overlaps the figure
-  const big=T(L.back,P.number,H*.34,W*.05,H*.24,{family:'Anton',weight:400,fill:ACC,anchor:'start'});fit(big,W*.9);slide(big,.05,-W*.05,0);
+  const big=T(L.back,P.number,H*.34,W*.05,H*.24,{family:'Anton',weight:400,fill:ACT,anchor:'start'});fit(big,W*.9);slide(big,.05,-W*.05,0);
   const d=pic.draw&&window.ILLU[pic.draw],ar=pic.img?pic.w/pic.h:d?d[0]/d[1]:1;   // tall subjects stand taller
   const ph=Math.min(H*.74,W*.5/ar),g=picture(L.hero,pic,ar<1?W*.72:W*.66,H*.95,ph);drop(g,.35,H*.25,2);FOCUS=FOCUS||{x:W*.32,y:H*.4,rx:W*.26,ry:H*.2};
   if(P.caption){const c=boxText(L.front,P.caption,U*.05,W*.05,H*.66,{anchor:'start',maxw:W*.36,most:3});wipe(c,.9)}
@@ -2269,7 +2294,7 @@ function candles(){ // open / high / low / close, one candle at a time
     g.line(x,Y(c.h),x,Y(c.l)).stroke({color:INK,width:U*.003});const top=Y(Math.max(c.o,c.c)),hh=Math.max(U*.004,Math.abs(Y(c.o)-Y(c.c)));
     g.rect(bw,hh).move(x-bw/2,top).fill(col).stroke({color:INK,width:U*.002});popIn(g,x,Y((c.h+c.l)/2),st,.25);
     if(c.label&&(n<=10||i%2===0)){const t=T(L.front,c.label.toUpperCase(),U*.018,x,B0+U*.035,{family:'Mono',weight:700});fit(t,gap*1.6);wipe(t,st)}});
-  const a=cs[0].o,b=cs[n-1].c,ch=(b-a)/a*100;const big=T(L.front,(ch>=0?'+':'')+ch.toFixed(1)+'%',U*.075,R0,T0-U*.02,{family:'Anton',weight:400,anchor:'end',fill:ch>=0?ACC:(K.mark||'#C0262D')});slide(big,2.3,U*.04,0);
+  const a=cs[0].o,b=cs[n-1].c,ch=(b-a)/a*100;const big=T(L.front,(ch>=0?'+':'')+ch.toFixed(1)+'%',U*.075,R0,T0-U*.02,{family:'Anton',weight:400,anchor:'end',fill:ch>=0?ACT:(K.mark||'#C0262D')});slide(big,2.3,U*.04,0);
   const sub=T(L.front,(P.unit||'')+a+' → '+(P.unit||'')+b,U*.022,R0,T0+U*.035,{family:'Mono',weight:700,anchor:'end'});wipe(sub,2.5);
   FOCUS={x:L0+gap*(n-.5),y:Y((cs[n-1].h+cs[n-1].l)/2),rx:Math.max(bw,U*.05),ry:Math.max(U*.07,(Y(cs[n-1].l)-Y(cs[n-1].h))*.7)}}
 // ---- more maps ----
@@ -2373,7 +2398,7 @@ def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: f
     tone = plan.get("tone") or ("grid" if plan["type"] in ("desk", "reveal", "newscard") else tone)
     paper_hex = look["paper"] if tone == "cream" else PAPERS.get(tone, PAPERS["cream"])
     bg, grain = paper(paper_hex, width, height, work)
-    kit = {"acc": accent_of(theme), "acc2": "#E0442C" if accent_of(theme) != ACCENTS["red"] else "#F2C200", "ink": INK, "paper": paper_hex, "dark": tone == "dark", "tone": tone, "props": props,
+    kit = {"acc": accent_of(theme), "accText": readable(accent_of(theme), paper_hex), "acc2": "#E0442C" if accent_of(theme) != ACCENTS["red"] else "#F2C200", "ink": INK, "paper": paper_hex, "dark": tone == "dark", "tone": tone, "props": props,
            "bg": bg.as_uri(), "grain": grain.as_uri(),
            "mark": look["mark"], "cam": _seed("cam", spec, theme) % 4, "exit": plan.get("exit") or EXITS[_seed("exit", spec, theme) % len(EXITS)], "lay": layout if layout in LAYOUT_SETS.get(kind, ()) else
            layout_for(kind, 0, _seed("layout", spec, theme)), "desk": DESKS[_seed("desk", theme) % len(DESKS)], "dir": 1 if _seed("dir", spec) % 2 else -1, "fam": {"Playfair": look["head"], "Anton": look["big"], "Caveat": look["hand"]}}

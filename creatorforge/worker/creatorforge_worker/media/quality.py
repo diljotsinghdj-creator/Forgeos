@@ -63,7 +63,58 @@ def first_frame(path: Path) -> dict:
     return {"brightness": float(bright.group(1)) if bright else None, "blur": float(blur.group(1)) if blur else None}
 
 
-def check(path: Path, total: float, asr_matches: list[float], target_lufs: float = -14.0) -> dict:
+def _samples(path: Path, total: float, n: int = 12, size: int = 96):
+    """n small RGB frames spread over the film: [(seconds, array[h, w, 3])]."""
+    import subprocess
+    import numpy as np
+    out = []
+    for i in range(n):
+        t = max(0.0, total * (i + 0.5) / n)
+        raw = subprocess.run(["ffmpeg", "-v", "error", "-ss", f"{t:.2f}", "-i", str(path), "-frames:v", "1", "-vf",
+                              f"scale={size}:{size}", "-f", "rawvideo", "-pix_fmt", "rgb24", "-"],
+                             capture_output=True, timeout=60).stdout
+        if len(raw) == size * size * 3:
+            out.append((round(t, 1), np.frombuffer(raw, np.uint8).reshape(size, size, 3).astype("float32")))
+    return out
+
+
+def picture_checks(path: Path, total: float) -> dict:
+    """What the eye would catch across the film, from sampled frames:
+    flat  - frames with almost no contrast (text and picture can't be told apart)
+    grade - frames whose colour balance is far from the film's own (a clip that wasn't graded like the rest)"""
+    import numpy as np
+    fr = _samples(path, total)
+    if len(fr) < 3:
+        return {"flat": [], "grade": []}
+    flat, warmth = [], []
+    for t, a in fr:
+        y = 0.2126 * a[..., 0] + 0.7152 * a[..., 1] + 0.0722 * a[..., 2]
+        lo, hi = np.percentile(y, [3, 97])
+        if hi - lo < 38:
+            flat.append(t)
+        warmth.append(float(a[..., 0].mean() - a[..., 2].mean()))
+    med = float(np.median(warmth))
+    grade = [t for (t, _), w in zip(fr, warmth) if abs(w - med) > 42]
+    return {"flat": flat, "grade": grade if len(grade) <= len(fr) // 3 else []}   # many "outliers" = a varied film
+
+
+def frame_size(path: Path) -> tuple[int, int] | None:
+    import subprocess
+    r = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=width,height",
+                        "-of", "csv=p=0", str(path)], capture_output=True, text=True, timeout=60).stdout.strip()
+    m = re.match(r"(\d+),(\d+)", r)
+    return (int(m.group(1)), int(m.group(2))) if m else None
+
+
+def audio_ends_cleanly(path: Path, total: float) -> bool:
+    """False when the sound is still loud in the last 60 ms (a cut-off word or a music bed chopped mid-note)."""
+    out = _stderr(["-ss", f"{max(0.0, total - 0.06):.3f}", "-i", str(path), "-vn", "-af", "astats=metadata=0", "-f", "null", "-"])
+    m = re.findall(r"RMS level dB: (-?[\d.]+|-inf)", out)
+    return not m or m[-1] == "-inf" or float(m[-1]) < -32.0
+
+
+def check(path: Path, total: float, asr_matches: list[float], target_lufs: float = -14.0,
+          expected_size: tuple[int, int] | None = None) -> dict:
     checks: list[dict] = []
 
     def add(name: str, ok: bool, detail: str) -> None:
@@ -88,6 +139,21 @@ def check(path: Path, total: float, asr_matches: list[float], target_lufs: float
         add("first frame visible", ff["brightness"] >= 22, f"brightness {ff['brightness']:.0f}/255")
     if ff["blur"] is not None:
         add("first frame sharp", ff["blur"] <= 8.0, f"blur score {ff['blur']:.1f}")
+    try:
+        pc = picture_checks(path, total)
+        add("readable contrast", not pc["flat"], "none flat" if not pc["flat"] else
+            "almost no contrast at " + ", ".join(f"{t:.0f}s" for t in pc["flat"][:5]))
+        add("consistent colour grade", not pc["grade"], "even" if not pc["grade"] else
+            "colour balance jumps at " + ", ".join(f"{t:.0f}s" for t in pc["grade"][:5]))
+    except Exception:  # noqa: BLE001 - a check that can't run is not a failed video
+        pass
+    if expected_size:
+        got = frame_size(path)
+        if got:
+            add("frame size", got == tuple(expected_size), f"{got[0]}x{got[1]}" + ("" if got == tuple(expected_size)
+                                                                                 else f" (expected {expected_size[0]}x{expected_size[1]})"))
+    add("audio ends cleanly", audio_ends_cleanly(path, total), "fades out" if audio_ends_cleanly(path, total)
+        else "the sound is cut off at the very end")
     if asr_matches:
         worst = min(asr_matches)
         add("narration matches script", worst >= 0.8,

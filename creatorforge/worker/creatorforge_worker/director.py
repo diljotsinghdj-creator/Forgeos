@@ -101,6 +101,7 @@ class ProductionSpec:
     music_asset_id: str = ""  # use a track from the Asset Library as the score
     vox_graphics: bool = False  # Vox: every script line gets a drawn graphic (no AI picture), checked first
     editorial_props: bool = False  # opt-in: symbolic props (blindfold, strings...) over real photos, tagged ILLUSTRATION
+    resolution: str = "1080p"      # "4k": the film is assembled at 2160p and every drawn graphic is drawn at that size
     narration_asset_id: str = ""  # the creator's own recorded narration (an MP3 in the Asset Library) is the voice
     sfx: bool = True  # auto-place sound effects when an SFX folder or SFX assets exist
     script: str = ""  # script mode: the user's exact narration; the Director only plans visuals and the edit
@@ -140,6 +141,7 @@ class ProductionSpec:
             narration_asset_id=str(d.get("narration_asset_id", "") or ""),
             vox_graphics=bool(d.get("vox_graphics", False)),
             editorial_props=bool(d.get("editorial_props", False)),
+            resolution="4k" if str(d.get("resolution", "")).lower() in ("4k", "2160p", "uhd") else "1080p",
             sfx=bool(d.get("sfx", True)),
             brand=clean_brand(d.get("brand")),
         )

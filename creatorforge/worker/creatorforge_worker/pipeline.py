@@ -30,7 +30,7 @@ from .media.ff import Cancelled, MediaError
 STICKMAN = os.environ.get("CF_STICKMAN", "0") == "1"
 from .providers.base import NotConfigured, ProviderError, Word
 from .store import STAGES, JobStore
-from .templates import (ASPECTS, CALLOUT_LOOKS, CUTOUT_LOOKS, DESK_STYLES, EDITORIAL_LEADS, EDITORIAL_STYLES,
+from .templates import (ASPECTS, output_size, CALLOUT_LOOKS, CUTOUT_LOOKS, DESK_STYLES, EDITORIAL_LEADS, EDITORIAL_STYLES,
                         MIX_STYLE, TEMPLATES)
 
 SCENE_GAP_S = 0.12   # breath between scenes - longer gaps lose viewers
@@ -501,7 +501,8 @@ class Pipeline:
 
     def _out_size(self, job: dict) -> tuple[int, int]:
         """The finished video's frame size: real photos are framed at this size, not the smaller drawing size."""
-        return ASPECTS[self._spec(job).aspect][1]
+        spec = self._spec(job)
+        return output_size(spec.aspect, spec.resolution)
 
     def _gen(self, job: dict) -> tuple[int, int]:
         return ASPECTS[self._spec(job).aspect][0]
@@ -1400,7 +1401,7 @@ class Pipeline:
     def _assembly(self, job: dict, cancel) -> None:
         spec = self._spec(job)
         t = TEMPLATES[spec.template]
-        _, (w, h) = ASPECTS[spec.aspect]
+        w, h = output_size(spec.aspect, spec.resolution)
         jdir = self.store.dir(job["id"])
         work = jdir / "work"
         work.mkdir(exist_ok=True)
@@ -2094,7 +2095,8 @@ class Pipeline:
         job["result"] = {"file": final.name, "verification": report, "title": job["plan"]["title"]}
         try:   # what a viewer would notice - reported, never blocking
             matches = [s["asr_match"] for s in job["scenes"] if isinstance(s.get("asr_match"), (int, float))]
-            job["result"]["quality"] = quality.check(final, r["expected_s"], matches, render.TARGET_LUFS)
+            job["result"]["quality"] = quality.check(final, r["expected_s"], matches, render.TARGET_LUFS,
+                                                     expected_size=self._out_size(job))
         except Exception as e:  # noqa: BLE001
             job["result"]["quality"] = {"passed": None, "checks": [], "warnings": [f"quality check skipped: {e}"]}
         if job.get("variety"):
