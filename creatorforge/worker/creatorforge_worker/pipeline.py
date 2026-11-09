@@ -1843,7 +1843,20 @@ class Pipeline:
         """The video's one accent colour: the brand kit's, else yellow (the Vox explainer yellow)."""
         b = spec.brand or {}
         acc = str(b.get("accent") or b.get("accent_color") or "").strip()
-        return acc if re.fullmatch(r"#[0-9A-Fa-f]{6}", acc) or acc.lower() in vox.ACCENTS else "yellow"
+        if re.fullmatch(r"#[0-9A-Fa-f]{6}", acc) or acc.lower() in vox.ACCENTS:
+            return acc
+        return vox.LOOKS[Pipeline._look(spec)]["accent"]     # no brand colour: the video's own look picks one
+
+    @staticmethod
+    def _look(spec) -> str:
+        """The video's look (paper, type, map colours, marker pen): the brand kit's if it names one, else chosen from
+        the script and the era it is set in, so two videos don't share one face."""
+        b = spec.brand or {}
+        name = str(b.get("look") or "").strip().lower()
+        if name in vox.LOOKS:
+            return name
+        text = spec.script or ""
+        return vox.choose_look(text, vox.era_of(text))
 
     def _chart_clip(self, spec, beat: dict, length: float, size: tuple[int, int], work: Path,
                     job: dict | None = None, picture: Path | None = None) -> Path | None:
@@ -1869,7 +1882,7 @@ class Pipeline:
                         return out
                     try:
                         if kind in vox.KINDS:          # the Vox collage scenes (real cut-outs, big type)
-                            return vox.render(kind, extra[kind], f"{vtheme}@{self._accent(spec)}", size[0], size[1],
+                            return vox.render(kind, extra[kind], f"{vtheme}@{self._accent(spec)}/{self._look(spec)}/{vox.era_of(spec.script or '') or ''}", size[0], size[1],
                                               seconds, out, work, lib=self.cfg.data_dir / "cutouts",
                                               model=self.cfg.data_dir / "models" / "isnet-general-use.onnx",
                                               sources=(providers.photo_sources(job["id"], self.cfg) if job else None),

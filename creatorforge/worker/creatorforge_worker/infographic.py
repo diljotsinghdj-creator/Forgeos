@@ -12,6 +12,7 @@ is ever invented; when the script AI is available it writes richer labels and th
 from __future__ import annotations
 
 import re
+import zlib
 
 from . import vox_director as vd
 
@@ -323,13 +324,28 @@ STYLE_RANK = {"pinmap": 0, "route": 0, "newscard": 1, "clipping": 1, "hero": 2, 
               "slice": 5, "calendar": 5, "stamp": 6, "clock": 6, "opener": 7, "tornsplit": 7, "statement": 9}
 
 
-def _ranked(cands: list[str], n: int, total: int, f: dict | None = None) -> list[str]:
-    if n == 1 or n == total:
-        return cands                     # the hook and the payoff keep their own order
+def _jitter(seed: int, kind: str) -> float:
+    """A per-video nudge to a kind's rank (0 to 2.5), so videos with the same kinds of lines don't come out in one
+    fixed order: one leads with maps, another with numbers or papers. The same script always gets the same order."""
+    return (zlib.crc32(f"{seed}:{kind}".encode()) % 1000) / 400 if seed else 0.0
+
+
+def _ranked(cands: list[str], n: int, total: int, f: dict | None = None, seed: int = 0) -> list[str]:
+    kind = lambda g: g.split(":", 1)[0].strip().lower()     # noqa: E731
+    if n == total:
+        return cands                     # the payoff keeps its own order
+    if n == 1:
+        if not seed or len(cands) < 2:
+            return cands
+        # the hook: a number, a place or a title card; which one leads differs per video (a quote stays first)
+        lead = [g for g in cands if kind(g) == "hero"]
+        rest = [g for g in cands if kind(g) != "hero"]
+        k = seed % len(rest)
+        return lead + rest[k:] + rest[:k]
     rank = dict(STYLE_RANK)
     if f and f.get("false"):
         rank["stamp"] = -1               # a debunk line: the FALSE stamp is the point of the shot
-    return sorted(cands, key=lambda g: rank.get(g.split(":", 1)[0].strip().lower(), 5))
+    return sorted(cands, key=lambda g: (-9 if rank.get(kind(g), 5) < 0 else rank.get(kind(g), 5) + _jitter(seed, kind(g))))
 
 
 PRONOUNS = ("उन्होंने", "उनके", "उनका", "उनकी", "उन्हें", "वे", "उनसे")
@@ -387,8 +403,8 @@ def _marked(g: str, f: dict, prev: list[str]) -> str:
     kind = g.split(":", 1)[0].strip().lower()
     if "marker:" in g or kind not in ("pinmap", "route", "hero", "bignumber", "newscard", "stack"):
         return g
-    if any("marker:" in p for p in prev[-1:]):
-        return g
+    if any("marker:" in p for p in prev[-3:]):
+        return g                                       # a budget: about one shot in four, or it stops meaning "look"
     note = ""
     nums = f["numbers"]
     if kind == "stack" and len(nums) >= 2:
@@ -401,12 +417,13 @@ def _marked(g: str, f: dict, prev: list[str]) -> str:
     return f"{g} | marker: {note}" if note else g      # never a note that only repeats what is on screen
 
 
-def pick(line: str, f: dict, n: int, total: int, prev: list[str], props: bool = False, ahead: dict | None = None) -> str:
+def pick(line: str, f: dict, n: int, total: int, prev: list[str], props: bool = False, ahead: dict | None = None,
+         seed: int = 0) -> str:
     """The first candidate that draws, passes the mute test and doesn't repeat the last two graphics' kind; its
     pictured object is varied so the same thing isn't on screen shot after shot."""
     recent = [p.split(":", 1)[0].strip().lower() for p in prev[-2:]]
     used = [_subject(p) for p in prev if _subject(p)]
-    for g in _ranked(candidates(line, f, n, total, ahead), n, total, f):
+    for g in _ranked(candidates(line, f, n, total, ahead), n, total, f, seed):
         if n < total:                      # the closing line keeps its own object: it's the payoff
             g = _vary(g, used)
         kind = g.split(":", 1)[0].strip().lower()

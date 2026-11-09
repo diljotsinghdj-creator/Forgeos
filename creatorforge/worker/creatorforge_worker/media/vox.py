@@ -41,10 +41,50 @@ KINDS = ("hero", "desk", "pinboard", "opener", "reveal", "clipping", "pinmap", "
          "clockmap", "tornsplit", "newscard", "blueprint")
 
 
+# A look per video, so no two films share one face: paper, type, map colours and marker pen differ, the method doesn't.
+# head = headline serif, big = condensed number face, hand = marker handwriting.
+LOOKS = {
+    "archive":   {"paper": "#EFE8DA", "head": "Playfair", "big": "Anton", "hand": "Caveat", "mark": "#D7262B",
+                  "sea": "#B8CDD1", "land": "#EFE3C2", "edge": "#8E7E5C", "accent": "yellow"},
+    "newsprint": {"paper": "#E5E3DE", "head": "DMSerif", "big": "Bebas", "hand": "Kalam", "mark": "#1F4FB8",
+                  "sea": "#C3CFD3", "land": "#F3EFE4", "edge": "#6F6F6A", "accent": "red"},
+    "kraft":     {"paper": "#D8C39C", "head": "Archivo", "big": "Oswald", "hand": "Marker", "mark": "#111111",
+                  "sea": "#9FB4B0", "land": "#E9DCBC", "edge": "#5E4E33", "accent": "orange"},
+    "chart":     {"paper": "#F4F2EE", "head": "Inter", "big": "Archivo", "hand": "Caveat", "mark": "#E0442C",
+                  "sea": "#A9C6E0", "land": "#F7F4EC", "edge": "#7C8A99", "accent": "blue"},
+    "sepia":     {"paper": "#E8DCC0", "head": "Playfair", "big": "Bebas", "hand": "Kalam", "mark": "#8B1E1E",
+                  "sea": "#C7C1A6", "land": "#EDE3C8", "edge": "#7A6A48", "accent": "#A8652A"},
+    "field":     {"paper": "#E9EDE4", "head": "DMSerif", "big": "Anton", "hand": "Marker", "mark": "#C2410C",
+                  "sea": "#B5D0C8", "land": "#EEE9D6", "edge": "#6E7B66", "accent": "teal"},
+}
+
+
+def look_of(theme: str) -> dict:
+    """'editorial~2@red/kraft' -> the kraft look (default: archive, the original look)."""
+    name = ((theme or "").split("/") + ["", ""])[1]
+    return LOOKS.get(name.strip().lower(), LOOKS["archive"])
+
+
+def choose_look(text: str, era: int | None = None) -> str:
+    """The look for a video: an old story (before 1950) gets sepia; otherwise one picked from the script itself, so
+    the same script always gets the same look and two scripts rarely share one."""
+    if era is not None and era < 1950:
+        return "sepia"
+    names = [k for k in LOOKS if k != "sepia"]
+    return names[_seed("look", text) % len(names)]
+
+
+def era_of(text: str) -> int | None:
+    """The year the story is set in: the middle of the years the script names (1500-2099), so one look back at 1914
+    in a story about 2018 doesn't turn the whole video sepia. None when it names no year."""
+    ys = sorted(int(y) for y in re.findall(r"(?<!\d)(1[5-9]\d\d|20\d\d)(?!\d)", text or ""))
+    return ys[(len(ys) - 1) // 2] if ys else None
+
+
 def accent_of(theme: str) -> str:
     """'editorial~2@red' -> the red accent; a hex colour is used as given; default yellow."""
     _, _, acc = (theme or "").partition("@")
-    acc = acc.strip()
+    acc = acc.partition("/")[0].strip()
     if re.fullmatch(r"#[0-9A-Fa-f]{6}", acc):
         return acc
     return ACCENTS.get(acc.lower(), ACCENTS["yellow"])
@@ -531,10 +571,31 @@ ILLUS = {"ship": "ship", "container ship": "ship", "cargo ship": "ship", "vessel
          "woman": "woman", "woman standing": "woman", "women": "woman"}
 
 
-def illustration(name: str) -> str | None:
+# Objects that looked different in another era: (before this year, the period drawing, the photo to search for).
+# A 1914 story gets a steamship, not a container ship.
+ERA_ILLUS = {"ship": (1950, "steamer", "steamship"), "train": (1960, "steamtrain", "steam locomotive"),
+             "plane": (1940, "biplane", "biplane"), "smartphone": (1995, "rotaryphone", "rotary telephone"),
+             "car": (1940, "oldcar", "vintage car"), "television": (1940, "newspaper", "old newspaper")}
+
+
+def illustration(name: str, era: int | None = None) -> str | None:
     from .cutouts import resolve
     n = (name or "").strip().lower()
-    return ILLUS.get(n) or ILLUS.get(resolve(n) or "") or ILLUS.get(n.rstrip("s"))
+    key = ILLUS.get(n) or ILLUS.get(resolve(n) or "") or ILLUS.get(n.rstrip("s"))
+    return period(key, era)[0] if key else None
+
+
+def period(key: str | None, era: int | None) -> tuple[str | None, str | None]:
+    """(drawing, photo search) for an object in the story's era; the modern ones when the era is unknown or recent."""
+    if key and era and key in ERA_ILLUS and era < ERA_ILLUS[key][0]:
+        return ERA_ILLUS[key][1], ERA_ILLUS[key][2]
+    return key, None
+
+
+def era_in(theme: str) -> int | None:
+    """'editorial~1@red/sepia/1914' -> 1914."""
+    bits = (theme or "").split("/")
+    return int(bits[2]) if len(bits) > 2 and bits[2].strip().isdigit() else None
 
 
 PARSERS = {"hero": parse_hero, "desk": parse_desk, "pinboard": parse_evidence, "opener": parse_opener,
@@ -616,7 +677,7 @@ def plan_for(kind: str, spec: str) -> dict | None:
 
 # ---- pictures -------------------------------------------------------------------------------------------------------
 def _pictures(plan: dict, lib: Path | None, model: Path | None, fetch: bool,
-              sources: list[tuple[str, str]] | None = None) -> None:
+              sources: list[tuple[str, str]] | None = None, era: int | None = None) -> None:
     """Each subject: a cut-out photo {img, w, h, credit} or the vector icon {o} when there's no photo."""
     from . import cutouts
     from .scene_anim import find_icon, icon_nodes
@@ -628,7 +689,15 @@ def _pictures(plan: dict, lib: Path | None, model: Path | None, fetch: bool,
             if k:
                 out.append({"name": s, "logo": dict(logos()[k], key=k)})
                 continue
-        c = cutouts.get(name, lib, model=model, fetch=fetch, sources=sources)
+        old_draw, old_photo = period(illustration(name), era) if not name.startswith("person:") else (None, None)
+        if old_photo:
+            # a period object: a photo of the old one, else its period drawing; never today's version in 1914
+            c = cutouts.get(old_photo, lib, model=model, fetch=fetch, sources=sources)
+            if c is None:
+                out.append({"name": s, "draw": old_draw})
+                continue
+        else:
+            c = cutouts.get(name, lib, model=model, fetch=fetch, sources=sources)
         if c is not None:
             from PIL import Image
             with Image.open(c.path) as im:
@@ -641,7 +710,7 @@ def _pictures(plan: dict, lib: Path | None, model: Path | None, fetch: bool,
             # no photo of this person (yet): a plain drawn figure, never a made-up face; the name stays in the tags
             out.append({"name": s, "draw": "person"})
         else:
-            drawn = illustration(name)
+            drawn = illustration(name, era)
             if drawn:
                 out.append({"name": s, "draw": drawn})           # a drawn illustration, never a placeholder
             else:
@@ -777,15 +846,20 @@ draw.defs().svg(`<filter id="shadow" x="-20%" y="-20%" width="140%" height="150%
 L.paper.image(K.bg).size(W,H);
 L.grain.image(K.grain).size(W,H).attr({style:'mix-blend-mode:multiply'}).opacity(DARK?.25:.55);
 const DEPTH={paper:.012,back:.03,mid:.045,hero:.07,front:.055,side:.08};
-function camera(t){const p=E.inout(Math.min(1,t/Math.max(DUR,.1)));
-  for(const k in DEPTH){const z=1+DEPTH[k]*p;L[k].attr({transform:`translate(${W/2*(1-z)},${H*.46*(1-z)}) scale(${z})`})}}
+// camera moves (one per shot, rotated through a video): 0 push in, 1 pull back, 2 slow lateral drift, 3 push in on the
+// focus (the circled thing), so cut after cut the eye doesn't get the same move
+function camera(t){const p=E.inout(Math.min(1,t/Math.max(DUR,.1)));const m=K.cam||0;
+  const fx=(m===3&&FOCUS)?Math.max(W*.3,Math.min(W*.7,FOCUS.x)):W/2,fy=(m===3&&FOCUS)?Math.max(H*.3,Math.min(H*.65,FOCUS.y)):H*.46;
+  for(const k in DEPTH){const d=DEPTH[k]*(m===3?1.3:1);const q=m===1?1-p:p;const z=1+d*q;
+    const dx=m===2?(p-.5)*d*W*1.6*(K.dir||1):0;
+    L[k].attr({transform:`translate(${fx*(1-z)+dx},${fy*(1-z)}) scale(${m===2?1+d*.4:z})`})}}
 // ---- the style kit ----
-function T(g,s,size,x,y,o){o=o||{};const t=g.text(String(s)).font({family:o.family||'Inter',size:size,weight:o.weight||600,
+function T(g,s,size,x,y,o){o=o||{};const t=g.text(String(s)).font({family:(K.fam||{})[o.family]||o.family||'Inter',size:size,weight:o.weight||600,
   anchor:o.anchor||'middle',style:o.italic?'italic':'normal'}).fill(o.fill||FG).attr({x:x,y:y,'dominant-baseline':'central'});
   if(o.ls)t.attr({'letter-spacing':o.ls});return t}
 function fit(t,maxw){const w=t.bbox().width;if(w>maxw)t.font({size:t.font('size')*maxw/w});return t}
 function lines(s,size,maxw,family,weight,most){const words=String(s).split(/\s+/).filter(Boolean),out=[];let cur='';
-  const pr=draw.text('').font({family:family,size:size,weight:weight});
+  const pr=draw.text('').font({family:(K.fam||{})[family]||family,size:size,weight:weight});
   for(const w of words){const tr=cur?cur+' '+w:w;pr.text(tr);if(cur&&pr.bbox().width>maxw){out.push(cur);cur=w}else cur=tr}
   if(cur)out.push(cur);pr.remove();return out.slice(0,most||3)}
 function boxText(g,s,size,x,y,o){ // black box(es), white serif type - one box per line, like a cut label
@@ -1091,12 +1165,21 @@ function pinmap(){ // the country outline; the place highlighted; the headline c
     card.attr({filter:'url(#shadow)'});drop(card,1.0,H*.2,-3);const pn=pinAt(L.front,cx+cw/2,cy+U*.015);popIn(pn,cx+cw/2,cy+U*.015,1.4,.3)}}
 
 function number(){ // a huge number; the subject breaks out of it
-  const pic=(((P.pics||[])[0]||{}).img||((P.pics||[])[0]||{}).draw)?(P.pics||[])[0]:null;const big=T(L.back,P.number,TALL?W*.42:H*(pic?.5:.56),W/2,pic?(TALL?H*.22:H*.3):(TALL?H*.34:H*.4),{family:'Anton',weight:400,fill:ACC});fit(big,W*.92);
+  const pic=(((P.pics||[])[0]||{}).img||((P.pics||[])[0]||{}).draw)?(P.pics||[])[0]:null;
+  if(pic&&!TALL&&(K.v||0)%2===1)return numberSide(pic);const big=T(L.back,P.number,TALL?W*.42:H*(pic?.5:.56),W/2,pic?(TALL?H*.22:H*.3):(TALL?H*.34:H*.4),{family:'Anton',weight:400,fill:ACC});fit(big,W*.92);
   slide(big,.05,0,H*.06);
   if(pic){const h=TALL?H*.36:H*.56;const g=picture(L.hero,pic,W/2,TALL?H*.64:H*.86,h);drop(g,.35,H*.25,-2)}
   if(P.caption){const c=pic?fit(T(L.front,P.caption,U*.04,W/2,TALL?H*.7:H*.92,{family:'Inter',weight:800,fill:'#C0262D'}),W*.9)
       :boxText(L.front,P.caption,U*.055,W/2,TALL?H*.5:H*.7,{anchor:'middle',maxw:W*.86,most:2});wipe(c,.9)}
   if(P.kicker){const k=T(L.front,P.kicker.toUpperCase(),U*.024,W/2,TALL?H*.08:H*.08,{family:'Inter',weight:800,fill:'#C0262D',ls:'0.45em'});wipe(k,.2)}}
+
+function numberSide(pic){ // second layout: the number and its words on the left, the subject standing on the right
+  // the number across the top, the subject lower right, the words lower left: nothing overlaps the figure
+  const big=T(L.back,P.number,H*.34,W*.05,H*.24,{family:'Anton',weight:400,fill:ACC,anchor:'start'});fit(big,W*.9);slide(big,.05,-W*.05,0);
+  const d=pic.draw&&window.ILLU[pic.draw],ar=pic.img?pic.w/pic.h:d?d[0]/d[1]:1;   // tall subjects stand taller
+  const ph=Math.min(H*.74,W*.5/ar),g=picture(L.hero,pic,ar<1?W*.72:W*.66,H*.95,ph);drop(g,.35,H*.25,2);FOCUS=FOCUS||{x:W*.32,y:H*.4,rx:W*.26,ry:H*.2};
+  if(P.caption){const c=boxText(L.front,P.caption,U*.05,W*.05,H*.66,{anchor:'start',maxw:W*.36,most:3});wipe(c,.9)}
+  if(P.kicker){const k=T(L.front,P.kicker.toUpperCase(),U*.024,W*.05,H*.06,{family:'Inter',weight:800,fill:'#C0262D',ls:'0.45em',anchor:'start'});wipe(k,.2)}}
 
 // ---- round 3: charts made of objects ----
 function chartTitle(s){if(!s)return;const g=boxText(L.front,s,U*.05,W/2,TALL?H*.07:H*.075,{anchor:'middle',maxw:W*.84,most:2});
@@ -1219,14 +1302,14 @@ function penLine(g,pts,start,dur,color,width){ // pts: [[x,y],...] - a wobbly ma
   const out=[];for(let i=0;i<pts.length-1;i++){const [a,b]=[pts[i],pts[i+1]];const n=Math.max(4,Math.round(Math.hypot(b[0]-a[0],b[1]-a[1])/(U*.02)));
     for(let k=0;k<n;k++){const t=k/n;out.push([a[0]+(b[0]-a[0])*t+(rnd()-.5)*U*.004,a[1]+(b[1]-a[1])*t+(rnd()-.5)*U*.004])}}
   out.push(pts[pts.length-1]);
-  const pl=g.path('M'+out.map(q=>q.join(' ')).join(' L')).fill('none').stroke({color:color||'#D7262B',width:width||U*.008,linecap:'round',linejoin:'round'}).opacity(.92);
+  const pl=g.path('M'+out.map(q=>q.join(' ')).join(' L')).fill('none').stroke({color:color||K.mark||'#D7262B',width:width||U*.008,linecap:'round',linejoin:'round'}).opacity(.92);
   const len=pl.node.getTotalLength();pl.attr({'stroke-dasharray':len,'stroke-dashoffset':len});at(start,dur,p=>pl.attr({'stroke-dashoffset':len*(1-p)}),E.inout);return pl}
 function penCircle(g,x,y,r,start){const pts=[];for(let i=0;i<=26;i++){const a=-1.9+i/26*Math.PI*2.2;const j=1+(rnd()-.5)*.12;pts.push([x+Math.cos(a)*r*j,y+Math.sin(a)*r*j*.85])}
   return penLine(g,pts,start,.45)}
 function penHatch(g,poly,start){ // marker hatching inside a shape (a country, a region)
   const xs=poly.map(q=>q[0]),ys=poly.map(q=>q[1]);const x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);
   const cl=draw.clip().add(draw.polygon(poly.map(q=>q.join(',')).join(' ')));const h=g.group().clipWith(cl);const st=U*.018;let i=0;
-  for(let d=-(y1-y0);d<x1-x0;d+=st,i++){h.line(x0+d,y1,x0+d+(y1-y0),y0).stroke({color:'#D7262B',width:U*.004,linecap:'round'}).opacity(0)
+  for(let d=-(y1-y0);d<x1-x0;d+=st,i++){h.line(x0+d,y1,x0+d+(y1-y0),y0).stroke({color:K.mark||'#D7262B',width:U*.004,linecap:'round'}).opacity(0)
     .attr({'data-i':i})}
   const ls=h.children();at(start,.9,p=>ls.forEach((l,k)=>l.opacity(k/ls.length<p?.55:0)),E.lin);return h}
 
@@ -1406,7 +1489,7 @@ function companion(){const c=P.comp;if(!c)return;
 
 // ---- the Johnny Harris layer: a red marker circle scribbled round the subject, an arrow, a handwritten note ----
 let FOCUS=null;   // {x,y,rx,ry} set by a scene: what the marker circles
-function markerLayer(){if(!P.marker)return;const f=FOCUS||{x:W/2,y:H*.45,rx:U*.2,ry:U*.16};const red='#D7262B',g=L.front.group();
+function markerLayer(){if(!P.marker)return;const f=FOCUS||{x:W/2,y:H*.45,rx:U*.2,ry:U*.16};const red=K.mark||'#D7262B',g=L.front.group();
   const n=48,pts=[];const turns=1.12,a0=-Math.PI*.6;
   for(let i=0;i<=n;i++){const a=a0+i/n*Math.PI*2*turns;const j=1+(rnd()-.5)*.06+(i/n)*.06;pts.push([f.x+Math.cos(a)*f.rx*j,f.y+Math.sin(a)*f.ry*j])}
   const ring=g.path('M'+pts.map(q=>q.join(' ')).join(' L')).fill('none').stroke({color:red,width:U*.008,linecap:'round',linejoin:'round'}).opacity(.9);
@@ -1464,17 +1547,22 @@ def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: f
     plan = plan_for(kind, spec)
     if plan is None:
         raise MediaError(f"vox: nothing to draw from {spec!r}")
-    _pictures(plan, lib, model, fetch, sources)
+    _pictures(plan, lib, model, fetch, sources, era_in(theme))
     if plan["type"] == "hero" and not plan["pics"]:
         raise MediaError("vox: no picture or icon for the subject")
     fps = int(fps or os.environ.get("CF_MOTION_FPS") or (60 if os.environ.get("CF_FPS") == "60" else 30))
     seconds = max(1.5, float(seconds))
+    look = look_of(theme)
     tone = plan.get("tone") or ("grid" if plan["type"] in ("desk", "reveal", "newscard") else tone)
-    paper_hex = PAPERS.get(tone, PAPERS["cream"])
+    paper_hex = look["paper"] if tone == "cream" else PAPERS.get(tone, PAPERS["cream"])
     bg, grain = paper(paper_hex, width, height, work)
     kit = {"acc": accent_of(theme), "acc2": "#E0442C" if accent_of(theme) != ACCENTS["red"] else "#F2C200", "ink": INK, "paper": paper_hex, "dark": tone == "dark", "tone": tone, "props": props,
-           "bg": bg.as_uri(), "grain": grain.as_uri()}
-    page = (_PAGE.replace("%SVGJS%", motion.VENDOR.read_text(encoding="utf-8")).replace("%FONTS%", _font_css())
+           "bg": bg.as_uri(), "grain": grain.as_uri(),
+           "mark": look["mark"], "cam": _seed("cam", spec, theme) % 4, "v": _seed("layout", spec, theme) % 2, "dir": 1 if _seed("dir", spec) % 2 else -1, "fam": {"Playfair": look["head"], "Anton": look["big"], "Caveat": look["hand"]}}
+    js = _PAGE
+    for old, new in (("#B8CDD1", look["sea"]), ("#EFE3C2", look["land"]), ("#8E7E5C", look["edge"])):
+        js = js.replace(old, new)
+    page = (js.replace("%SVGJS%", motion.VENDOR.read_text(encoding="utf-8")).replace("%FONTS%", _font_css())
             .replace("%ILLU%", (Path(__file__).parent / "vendor" / "illustrations.js").read_text(encoding="utf-8"))
             .replace("%PAPER%", paper_hex).replace("%PLAN%", json.dumps(plan, ensure_ascii=False))
             .replace("%W%", str(width)).replace("%H%", str(height)).replace("%DUR%", f"{seconds:.3f}")

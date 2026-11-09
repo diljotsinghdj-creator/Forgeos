@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import json
 import re
+import zlib
 import unicodedata
 
 from . import director, infographic
@@ -542,6 +543,7 @@ def ensure(script: str, llm=None, english: bool = True, props: bool = False) -> 
     prev, prev_g = "", ""
     chosen: list[str] = []
     last_person = ""
+    seed = zlib.crc32("\n".join(b["line"] for b in bl).encode()) or 1   # this script's own shot order
     for n, b in enumerate(bl, 1):
         named = infographic.facts(b["line"])["people"]
         if n in need:
@@ -549,7 +551,7 @@ def ensure(script: str, llm=None, english: bool = True, props: bool = False) -> 
             if not g:
                 ahead = infographic.facts(bl[n]["line"]) if n < len(bl) else None
                 fb = infographic.carry_person(b["line"], infographic.facts(b["line"]), last_person)
-                g, how = infographic.pick(b["line"], fb, n, len(bl), chosen, props, ahead), "infographic"
+                g, how = infographic.pick(b["line"], fb, n, len(bl), chosen, props, ahead, seed), "infographic"
             if not g or valid(g, english, props):
                 g, how = rule_graphic(b["line"], prev), "rule"
                 if not g or valid(g, english):

@@ -158,5 +158,39 @@ I.man=[70,190,(g,acc)=>{g.circle(34).center(35,20).fill('#C68E64');g.path('M18 1
   g.path('M10 46 Q35 36 60 46 L64 118 L6 118 Z').fill('#1E5C78');g.rect(20,70).move(12,118).fill('#2A2A2A');g.rect(20,70).move(38,118).fill('#2A2A2A')}];
 I.woman=[70,190,(g,acc)=>{g.path('M14 26 Q14 0 35 0 Q56 0 56 26 L58 58 L12 58 Z').fill('#2A2A2A');g.circle(30).center(35,22).fill('#C68E64');
   g.path('M12 50 Q35 40 58 50 L70 186 L0 186 Z').fill('#C8402C');g.path('M12 50 Q50 80 70 186 L58 186 Q40 100 12 60 Z').fill('#E0A030').opacity(.9)}];
+// ---- period versions: the director picks these when the story is set before the modern object existed ----
+I.steamer=[300,170,(g,acc)=>{ // ocean liner / steamship, about 1900-1930: black hull, red boot line, tall funnels, smoke
+  g.path('M6 104 L294 104 L276 150 L30 150 Z').fill('#1C1C1C').stroke(o(2));g.rect(262,9).move(22,138).fill(RED);
+  for(let k=0;k<16;k++)g.circle(5).center(36+k*15,118).fill('#E8DFC6');
+  g.rect(230,22).move(36,82).fill('#F1ECDE').stroke(o(1.6));g.rect(170,16).move(66,66).fill('#F1ECDE').stroke(o(1.4));
+  for(let k=0;k<14;k++)g.rect(8,8).move(44+k*15,89).fill('#4C6A7A');
+  [[96,'#E0A030'],[140,'#E0A030'],[184,'#E0A030']].forEach(([x,c])=>{g.rect(20,48).move(x,18).fill(c).stroke(o(1.6));g.rect(20,9).move(x,18).fill(INK)});
+  [[106,12],[150,6],[194,10]].forEach(([x,y],i)=>{g.circle(22-i*2).center(x-10-i*6,y).fill('#8A8A84').opacity(.55);g.circle(16).center(x-26-i*8,y-8).fill('#8A8A84').opacity(.35)});
+  g.line(40,104,40,30).stroke(o(2));g.line(262,104,262,34).stroke(o(2));g.line(40,30,262,34).stroke(o(1));shade(g,g.rect(250,8).move(32,96))}];
+I.steamtrain=[300,130,(g,acc)=>{ // steam locomotive: boiler, chimney, cab, big driving wheels
+  g.rect(150,46).move(70,40).radius(20).fill('#2A2A2A').stroke(o(2));g.rect(16,12).move(204,46).fill('#B08A3A');
+  g.rect(18,30).move(190,12).fill(INK).stroke(o(1.6));g.rect(26,8).move(186,8).fill(INK);
+  g.circle(26).center(176,10).fill('#B9B5AC').opacity(.6);g.circle(34).center(150,0).fill('#B9B5AC').opacity(.4);
+  g.rect(70,74).move(10,12).fill(RED).stroke(o(2));g.rect(26,24).move(28,24).fill('#E8DFC6').stroke(o(1.2));g.rect(84,8).move(4,8).fill(INK);
+  g.rect(240,10).move(10,86).fill(INK);poly(g,[[236,86],[270,86],[290,112],[226,112]],'#3A3A3A',1.6);
+  [[60,104,34],[120,104,34],[172,108,26]].forEach(([x,y,r])=>{g.circle(r).center(x,y).fill(INK);g.circle(r*.6).center(x,y).fill(RED).stroke(o(1))});
+  g.line(60,104,172,108).stroke({color:'#B9B5AC',width:3});shade(g,g.rect(150,10).move(70,74))}];
+I.biplane=[300,130,(g,acc)=>{ // early aircraft: two wings, struts, a wooden propeller
+  g.rect(240,12).move(30,20).radius(6).fill('#D9C9A3').stroke(o(1.8));g.rect(220,12).move(40,78).radius(6).fill('#D9C9A3').stroke(o(1.8));
+  [[70,32,78],[110,32,78],[190,32,78],[230,32,78]].forEach(([x,a,b])=>g.line(x,a,x,b).stroke(o(1.6)));
+  g.path('M60 66 Q60 54 90 54 L250 58 Q276 62 276 70 Q276 78 250 80 L90 82 Q60 82 60 66 Z').fill(RED).stroke(o(2));
+  poly(g,[[60,60],[30,40],[22,40],[30,72],[64,74]],RED,1.6);g.circle(14).center(276,70).fill(INK);
+  g.rect(6,50).move(279,45).radius(3).fill('#8A5A2B').stroke(o(1.2));g.circle(20).center(160,62).fill('#3A3A3A');
+  [[130,98],[200,98]].forEach(([x,y])=>{g.line(x,82,x,y).stroke(o(1.6));g.circle(18).center(x,y+6).fill(INK)});shade(g,g.rect(200,6).move(70,74))}];
+I.rotaryphone=[180,140,(g,acc)=>{ // the desk telephone before mobiles
+  g.path('M20 130 Q16 70 60 62 L120 62 Q164 70 160 130 Z').fill('#1C1C1C').stroke(o(2));
+  g.circle(62).center(90,100).fill('#E8DFC6').stroke(o(1.6));for(let k=0;k<10;k++){const a=-2.4+k*.5;g.circle(9).center(90+Math.cos(a)*21,100+Math.sin(a)*21).fill('#1C1C1C')}
+  g.circle(18).center(90,100).fill(RED).stroke(o(1));
+  g.path('M14 44 Q10 22 34 18 L146 18 Q170 22 166 44 L150 50 Q148 34 134 34 L46 34 Q32 34 30 50 Z').fill('#2A2A2A').stroke(o(2));shade(g,g.rect(130,8).move(25,118))}];
+I.oldcar=[220,120,(g,acc)=>{ // an early motor car, boxy with spoked wheels
+  g.rect(110,40).move(70,22).fill('#1C1C1C').stroke(o(2));g.rect(36,26).move(110,30).fill('#CFE3EA').stroke(o(1.2));
+  g.rect(186,26).move(14,60).radius(4).fill(NAVY).stroke(o(2));g.rect(50,26).move(14,44).fill(NAVY).stroke(o(1.8));g.rect(10,30).move(8,44).fill('#B08A3A');
+  [52,170].forEach(x=>{g.circle(44).center(x,94).fill(INK);g.circle(30).center(x,94).fill('#E8DFC6');for(let k=0;k<8;k++){const a=k*Math.PI/4;g.line(x,94,x+Math.cos(a)*14,94+Math.sin(a)*14).stroke(o(1.4))}});
+  g.path('M24 66 Q52 50 80 66').fill('none').stroke(o(2));g.path('M142 66 Q170 50 198 66').fill('none').stroke(o(2));shade(g,g.rect(180,6).move(18,80))}];
 window.ILLU=I;
 })();

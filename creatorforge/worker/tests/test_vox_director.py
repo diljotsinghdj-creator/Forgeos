@@ -187,3 +187,35 @@ def test_the_mute_test_rejects_graphics_that_miss_the_key_fact():
     f = ig.facts("बीजेपी ने गूगल पर उनतीस करोड़ सत्तर लाख रुपये खर्च किए।")
     assert ig.mute_test(f, "BigNumber: ₹29.7 crore | banknote | Google ads")
     assert not ig.mute_test(f, "Hero: megaphone | Ads")
+
+
+def test_every_video_gets_its_own_look_and_old_stories_get_old_objects():
+    from creatorforge_worker.media import vox
+    looks = {vox.choose_look(f"script number {i}") for i in range(30)}
+    assert len(looks) >= 4                                         # not one face for every video
+    assert vox.choose_look("x", vox.era_of("In 1914 the canal opened.")) == "sepia"
+    assert vox.era_of("1914 ... 2018 ... 2020") == 2018            # one look back doesn't turn a modern story sepia
+    assert vox.illustration("ship", 1914) == "steamer" and vox.illustration("ship", 2020) == "ship"
+    assert vox.illustration("phone", 1960) == "rotaryphone" and vox.illustration("plane", 1925) == "biplane"
+    assert vox.look_of("editorial~1@red/kraft/1914")["head"] == "Archivo"
+    assert vox.accent_of("editorial~1@red/kraft/1914") == vox.ACCENTS["red"] and vox.era_in("e@red/kraft/1914") == 1914
+
+
+def test_the_marker_is_rationed_and_two_videos_dont_share_one_shot_order():
+    from creatorforge_worker import infographic as ig
+    script = "\n".join(["बीजेपी ने गूगल पर उनतीस करोड़ सत्तर लाख रुपये खर्च किए।",
+                        "राजस्थान के कोटा में पंद्रह लाख लोग।",
+                        "डेक्कन हेराल्ड के मुताबिक़, पचास लाख व्हाट्सऐप ग्रुप्स।",
+                        "उत्तर प्रदेश में सत्रह लाख लोग।",
+                        "दिल्ली में अड़तीस फ़ीसदी लोग।",
+                        "तो सवाल ये है, आप उसे आगे भेजेंगे या नहीं?"])
+    out, _ = v.ensure(script)
+    marks = [i for i, b in enumerate(v.blocks(out)[1]) if any("marker:" in d for d in b["dirs"])]
+    assert all(b - a >= 4 for a, b in zip(marks, marks[1:]))       # about one shot in four
+    cands = ["Pinmap: Kota | x | atlas", "BigNumber: 15 lakh | crowd | x", "Newscard: 2018 | x | y | newspaper | DH",
+             "Stack: 15 lakh, 17 lakh | x", "Trend: 1, 2 | x"]
+    orders = {tuple(g.split(":")[0] for g in ig._ranked(cands, 3, 9, None, seed)) for seed in range(1, 40)}
+    assert len(orders) >= 3
+    hooks = {ig._ranked(["BigNumber: 1 | a | b", "Pinmap: Kota | a", "Opener: a | b | c"], 1, 9, None, s)[0]
+             for s in range(1, 20)}
+    assert len(hooks) == 3                                          # the opening differs from video to video
