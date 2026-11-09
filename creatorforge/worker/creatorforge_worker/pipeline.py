@@ -1087,6 +1087,9 @@ class Pipeline:
 
     def _narration(self, job: dict, cancel) -> None:
         spec = self._spec(job)
+        if spec.narration_asset_id:
+            self._narration_from_recording(job, spec, cancel)
+            return
         profile = providers.voice_profile(self.cfg, spec.voice, self.library_voices())
         note = ""
         if profile.provider == "gemini":
@@ -1201,6 +1204,52 @@ class Pipeline:
             job["providers"]["voice"] += f" - check scene {', '.join(doubtful)}: the voice may not say the script"
         if profile.provider == "chatterbox":
             providers.unload_voice(self.cfg.chatterbox_url)   # its GPU memory goes back to the picture models
+
+    def _narration_from_recording(self, job: dict, spec, cancel) -> None:
+        """The creator's own narration (an ElevenLabs MP3 from the Asset Library) is the voice: it is cut at the
+        pauses between scenes - each cut lands where that scene's words end, by their share of the speaking time -
+        and every picture is timed to it. Nothing is re-spoken and nothing is stretched."""
+        from .voiceover_sync import line_starts_in_audio
+        try:
+            asset = self.library.assets.get(spec.narration_asset_id)
+            src = self.library.assets.path(asset)
+        except (KeyError, OSError) as e:
+            raise StageFailed("The narration MP3 is not in the Asset Library any more - upload it again "
+                              "(Library -> Asset Library -> Import) and tap Retry") from e
+        jdir = self.store.dir(job["id"])
+        scenes, shots = job["scenes"], job["plan"]["scenes"]
+        texts = [str(s.get("narration") or "") for s in shots]
+        from .voiceover_sync import _duration, speech_end
+        try:
+            total = _duration(src)
+        except Exception as e:  # noqa: BLE001 - unreadable audio
+            raise StageFailed(f"The narration MP3 could not be read: {str(e)[:160]}") from e
+        try:
+            starts, end = line_starts_in_audio(src, texts) if len(texts) > 1 else ([0.0], speech_end(src))
+        except Exception:  # noqa: BLE001 - too few pauses to place every cut: share the time by the words' length
+            letters = [max(1, len(re.sub(r"\s", "", t))) for t in texts]
+            end = total
+            starts = [end * sum(letters[:k]) / sum(letters) for k in range(len(texts))]
+        end = min(total, max(end, starts[-1] + 0.3))
+        bounds = list(starts) + [end]
+        job["providers"]["voice"] = f"your recording ({asset.get('name', 'narration')}, {end:.0f} s)"
+        for k, sc in enumerate(scenes):
+            if cancel.is_set():
+                raise Cancelled()
+            a, b = bounds[k], max(bounds[k + 1], bounds[k] + 0.3)
+            tag = hashlib.sha256(f"{asset.get('id')}|{a:.3f}|{b:.3f}".encode()).hexdigest()[:8]
+            dst = jdir / f"scene_{k + 1:02d}_rec_{tag}.wav"
+            if not dst.is_file():
+                r = subprocess.run(["ffmpeg", "-nostdin", "-v", "error", "-y", "-ss", f"{a:.3f}", "-to", f"{b:.3f}",
+                                    "-i", str(src), "-ac", "1", "-ar", "44100", "-c:a", "pcm_s16le", str(dst)],
+                                   capture_output=True, text=True)
+                if r.returncode != 0 or not dst.is_file():
+                    raise StageFailed(f"scene {k + 1}: the narration could not be cut - {r.stderr[-160:]}")
+            if sc.get("narration") and sc["narration"] != dst.name:
+                (jdir / sc["narration"]).unlink(missing_ok=True)
+            sc.update(voice_state="READY", narration=dst.name, narration_s=round(verify.wav(dst), 3))
+            self._stage(job, "narration", "RUNNING", done=k + 1, total=len(scenes))
+            self.store.save(job)
 
     TAKES = 3
 

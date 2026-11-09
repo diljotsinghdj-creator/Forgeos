@@ -129,6 +129,8 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
     var pollKey by remember { mutableIntStateOf(0) }
     var busy by remember { mutableStateOf(false) }
     var elevenVoices by remember { mutableStateOf<List<LibraryVoice>>(emptyList()) }
+    // "" = ElevenLabs reads the script on the pod; an asset id = your own ElevenLabs MP3 is the narration
+    var narrationAsset by remember { mutableStateOf(prefs.getString("narration_asset", "").orEmpty()) }
     var recent by remember { mutableStateOf<List<ProductionSummary>>(emptyList()) }
     var videoFile by remember { mutableStateOf<File?>(null) }
     var storyboardVersion by remember { mutableIntStateOf(0) }
@@ -337,10 +339,19 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                 }
                 Label("FORMAT")
                 ChipRow(listOf("16:9" to "16:9 YouTube", "9:16" to "9:16 Shorts"), if (aspect == "9:16") "9:16" else "16:9") { aspect = it }
-                Label("VOICE (ELEVENLABS)")
-                if (elevenVoices.isEmpty()) Text("No ElevenLabs voice yet: Settings → ElevenLabs key, then Library → Voice Profiles → " +
-                    "+ ADD VOICE → ElevenLabs (SPEAKS: हिन्दी Hindi).", color = Danger, fontSize = 12.sp)
-                else ChipRow(elevenVoices.map { it.id to it.name }, voice) { voice = it }
+                val recordings = assets.filter { it.kind == "audio" }
+                Label("NARRATION")
+                ChipRow(listOf("" to "ElevenLabs reads my script") + recordings.map { it.id to "🎙 ${it.name}" }, narrationAsset) { narrationAsset = it }
+                Text(if (narrationAsset.isBlank()) "Your ElevenLabs voice reads the script on the pod (uses ElevenLabs credits). " +
+                        "Have the MP3 already? Upload it: Library → Asset Library → Import → Audio, then pick it here."
+                     else "Your MP3 is the narration: the video is timed to it, nothing re-spoken or stretched. " +
+                        "The script must be the same words, in the same order.", color = Color.Gray, fontSize = 12.sp)
+                if (narrationAsset.isBlank()) {
+                    Label("VOICE (ELEVENLABS)")
+                    if (elevenVoices.isEmpty()) Text("No ElevenLabs voice yet: Settings → ElevenLabs key, then Library → Voice Profiles → " +
+                        "+ ADD VOICE → ElevenLabs (SPEAKS: हिन्दी Hindi).", color = Danger, fontSize = 12.sp)
+                    else ChipRow(elevenVoices.map { it.id to it.name }, voice) { voice = it }
+                }
                 if (brandChannels.isNotEmpty()) {
                     Label("BRAND (NAME, COLOURS, SIGN-OFF)")
                     ChipRow(brandChannels.map { it.id to it.name } + listOf("" to "No brand"), brandId) { brandId = it }
@@ -364,7 +375,7 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                         .putString("mood", mood).putString("camera", camera).putString("characters", characters)
                         .putString("video_scope", videoScope).putString("video_quality", videoQuality).putString("faces2", faces).putBoolean("fast_cuts", fastCuts).putString("voice_pace", voicePace).putBoolean("review", review)
                         .putBoolean("auto_edit", autoEdit).putStringSet("character_ids", picked)
-                        .putBoolean("script_mode", scriptMode).putBoolean("sfx", sfx).putString("music_asset", musicAsset).putString("brand_channel", brandId).apply()
+                        .putBoolean("script_mode", scriptMode).putBoolean("sfx", sfx).putString("music_asset", musicAsset).putString("brand_channel", brandId).putString("narration_asset", narrationAsset).apply()
                     // Vox-style explainer: the look, edit and pacing are fixed; only the words, format and voice change
                     val fmt = if (aspect == "9:16") "9:16" else "16:9"
                     fun request(text: String) = ProductionRequest(if (scriptMode) "" else text, duration, fmt,
@@ -372,7 +383,8 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                         "editorial", "", "", emptyList(), music, captions, false, review, true, emptyList(),
                         script = if (scriptMode) text else "", musicAssetId = if (music) musicAsset else "", sfx = sfx,
                         aiVideoScenes = "all", videoQuality = "fast", faces = "faceless", fastCuts = true, voiceSpeed = 1.0,
-                        brand = brandChannel?.let { it.brand.forWorker(it.name) })
+                        brand = brandChannel?.let { it.brand.forWorker(it.name) },
+                        narrationAssetId = if (scriptMode) narrationAsset else "")
                     val pieces = batchPieces(idea)
                     if (pieces.size <= 1) act { client.create(request(idea.trim())) }
                     else {

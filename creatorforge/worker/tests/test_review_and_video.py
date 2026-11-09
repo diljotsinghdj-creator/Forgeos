@@ -164,3 +164,24 @@ def test_failing_ai_clips_never_stop_the_video(cfg, monkeypatch):
         assert job["status"] == "READY", (job.get("error"), job.get("stages"))
         assert any("AI video clips failed" in w for w in job.get("warnings", []))
         assert job["result"]["verification"]["decode_check"] == "passed"
+
+
+def test_your_recording_is_the_narration(cfg, tmp_path):
+    """An uploaded MP3 is cut at the scene boundaries and used as is: no voice is generated, nothing stretched."""
+    import subprocess
+    vo = tmp_path / "vo.mp3"
+    # two "sentences" of tone with a clear pause between them
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "lavfi", "-i", "sine=f=220:d=3", "-f", "lavfi", "-i",
+                    "anullsrc=r=44100:cl=mono:d=0.8", "-f", "lavfi", "-i", "sine=f=330:d=3", "-filter_complex",
+                    "[0][1][2]concat=n=3:v=0:a=1", str(vo)], check=True)
+    script = ("Line one is here and it is long enough.\nStatement: One\n\n"
+              "Line two follows after a pause.\nStatement: Two\n\nLine three ends it now.\nStatement: Three\n")
+    with TestClient(create_app(cfg)) as c:
+        a = c.post("/v1/library/assets?kind=audio&name=vo.mp3", content=vo.read_bytes()).json()
+        jid = c.post("/v1/productions", json={"script": script, "fast_cuts": False, "narration_asset_id": a["id"],
+                                              "aspect": "16:9", "template": "youtube_longform"}).json()["id"]
+        job = settled(c, jid)
+        assert job["status"] == "READY", (job.get("error"), job.get("stages"))
+        assert job["providers"]["voice"].startswith("your recording")
+        total = sum(s["narration_s"] for s in job["scenes"])
+        assert 6.3 < total < 7.2, total          # the whole recording, nothing re-spoken

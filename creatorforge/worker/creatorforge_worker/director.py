@@ -99,6 +99,7 @@ class ProductionSpec:
     auto_edit: bool = True  # let the Director choose transitions, caption emphasis and dramatic holds
     character_ids: list[str] = field(default_factory=list)  # resolved from the Character Library at submit
     music_asset_id: str = ""  # use a track from the Asset Library as the score
+    narration_asset_id: str = ""  # the creator's own recorded narration (an MP3 in the Asset Library) is the voice
     sfx: bool = True  # auto-place sound effects when an SFX folder or SFX assets exist
     script: str = ""  # script mode: the user's exact narration; the Director only plans visuals and the edit
     brand: dict = field(default_factory=dict)  # brand kit: logo, caption colours, intro/outro text
@@ -134,6 +135,7 @@ class ProductionSpec:
             character_ids=[str(x) for x in d.get("character_ids") or []][:10],
             script=clean_script(parse_script(str(d.get("script", "") or ""))[0]),
             music_asset_id=str(d.get("music_asset_id", "") or ""),
+            narration_asset_id=str(d.get("narration_asset_id", "") or ""),
             sfx=bool(d.get("sfx", True)),
             brand=clean_brand(d.get("brand")),
         )
