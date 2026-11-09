@@ -184,3 +184,26 @@ def test_props_only_when_the_video_allows_them():
     from creatorforge_worker import director as d
     assert d.ProductionSpec.from_dict({"idea": "a test idea here", "editorial_props": True}).editorial_props
     assert not d.ProductionSpec.from_dict({"idea": "a test idea here"}).editorial_props
+
+
+def test_round_five_scenes_parse():
+    r = vox.plan_for("route", "New Delhi → Dubai → London | The route | plane")
+    assert [s["name"] for s in r["stops"]] == ["New Delhi", "Dubai", "London"] and r["shapes"] and r["vehicle"] == "plane"
+    assert vox.plan_for("route", "Atlantis → Dubai") is None
+    assert vox.plan_for("compare", "rupee note | 1991 | 2024")["left"] == "1991"
+    p = vox.plan_for("photoline", "1935 Laws (documents) → 1939 War (soldier) | WWII")
+    assert [i["when"] for i in p["items"]] == ["1935", "1939"] and p["subjects"] == ["documents", "soldier"]
+    assert vox.plan_for("tv", "television | 1975")["subjects"] == ["television"]
+    assert vox.plan_for("hero", "gavel | x | style: grid")["layout"] == "grid"
+
+
+@pytest.mark.skipif(not motion.enabled(), reason="needs Chromium + Playwright")
+@pytest.mark.parametrize("kind,spec", [
+    ("route", "New Delhi → Dubai → London | Route | plane"), ("compare", "rupee note | 1991 | 2024 | Then and now"),
+    ("photoline", "1935 Laws (documents) → 1939 War (soldier) | WWII"), ("tv", "television | 1975 | Broadcast"),
+    ("hero", "gavel | Verdict | 2019 · Court | style: grid")])
+def test_every_round_five_scene_renders(kind, spec, tmp_path, monkeypatch):
+    monkeypatch.setenv("CF_CUTOUT_FETCH", "0")
+    out = tmp_path / f"{kind}.mp4"
+    vox.render(kind, spec, "editorial", 640, 360, 2.0, out, tmp_path / "w", lib=tmp_path / "lib", fetch=False, fps=12)
+    assert out.stat().st_size > 2000

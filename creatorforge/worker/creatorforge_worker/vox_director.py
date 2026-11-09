@@ -41,6 +41,11 @@ Stand: <who> <value> vs <who> <value> | <title> | <note>  - people standing on t
 Fan: <label> <value>, <label> <value>, ... | <title> | <object or person:Name>  - shares around a photo
 Trend: <year> <value>, <year> <value>, ... | <title> | <object>  - a line chart with the object's photo under the line
 Slice: <n>% | <object> | <what the share is>  - a share cut out of a real object
+Route: <place> → <place> → <place> | <title> | plane|ship|car|train  - a journey on a paper map
+Compare: <object or person:Name> [+ <second>] | <before label> | <after label> | <title>  - then vs now
+Photoline: <year> <event> (<object>) → <year> <event> (<object>) | <title>  - a timeline of photo cards
+Tv: <object or person:Name> | <label e.g. 1975 broadcast> | <caption>  - something seen on old television
+Hero styles: add "| style: word|disc|box|bars|grid" to choose the look (grid = cut-out with a colour offset on grid paper)
 Chart: <number> | <what it counts>              - one number counting up (e.g. Chart: ₹29.7 crore | Google ads in 30 days)
 Chart: <a> vs <b> | <label a>, <label b>        - two numbers as bars
 Pie: <n>% | <what>                               - a share

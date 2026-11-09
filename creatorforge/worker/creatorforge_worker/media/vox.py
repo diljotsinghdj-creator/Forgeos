@@ -29,15 +29,15 @@ from .ff import MediaError
 FONTS = Path(__file__).parent / "vendor" / "fonts"
 ACCENTS = {"yellow": "#F2C200", "red": "#D7262B", "blue": "#2D6BDB", "orange": "#F07A1A", "teal": "#14968A",
            "green": "#2E9B4F"}
-PAPERS = {"cream": "#EFE8DA", "grey": "#E5E3DE", "white": "#F4F2EE", "dark": "#1B1B1D", "kraft": "#C9A777",
+PAPERS = {"cream": "#EFE8DA", "grey": "#E5E3DE", "white": "#F4F2EE", "dark": "#1B1B1D", "kraft": "#C9A777", "crumple": "#EADFC9",
           "grid": "#F1F0EC"}
 INK = "#141414"
-LAYOUTS = ("word", "disc", "box", "bars")
+LAYOUTS = ("word", "disc", "box", "bars", "grid")
 # symbolic props laid over a real photo (opt-in editorial cartoons; the face itself is never changed)
 PROPS = ("blindfold", "mask", "zip", "crown", "strings", "chains", "megaphone")
 FACE_PROPS = ("blindfold", "mask", "zip", "crown")
 KINDS = ("hero", "desk", "pinboard", "opener", "reveal", "clipping", "pinmap", "bignumber",
-         "seats", "stack", "stand", "fan", "trend", "slice")
+         "seats", "stack", "stand", "fan", "trend", "slice", "route", "compare", "photoline", "tv")
 
 
 def accent_of(theme: str) -> str:
@@ -306,10 +306,88 @@ def parse_slice(spec: str) -> dict | None:
             "label": parts[2] if len(parts) > 2 else "", "seed": _seed(spec) % 10000}
 
 
+def _geo(names: list[str]) -> list[dict]:
+    from . import maps
+    out = []
+    for n in names:
+        f = maps._find(n)
+        if not f:
+            return []
+        if f["kind"] == "city":
+            out.append({"name": f["name"], "lon": f["lon"], "lat": f["lat"]})
+        else:
+            xs = [x for r in f["rings"] for x, _ in r]
+            ys = [y for r in f["rings"] for _, y in r]
+            out.append({"name": f["name"], "lon": (min(xs) + max(xs)) / 2, "lat": (min(ys) + max(ys)) / 2})
+    return out
+
+
+def parse_route(spec: str) -> dict | None:
+    """'Route: New Delhi → Dubai → London | The escape route | plane' - a paper map, dashed routes drawn on, the
+    plane (or ship/car/train) travelling them, pins at every stop."""
+    from . import maps
+    parts = [p.strip() for p in (spec or "").split("|")]
+    stops = _geo([x.strip() for x in re.split(r"→|->|\bto\b", parts[0]) if x.strip()][:6])
+    if len(stops) < 2:
+        return None
+    vehicle = (parts[2].lower() if len(parts) > 2 and parts[2] else "plane")
+    vehicle = next((v for v in ("plane", "ship", "car", "train", "truck", "bus") if v in vehicle), "plane")
+    lons = [s["lon"] for s in stops]
+    lats = [s["lat"] for s in stops]
+    pad_x = max(8.0, (max(lons) - min(lons)) * 0.35)
+    pad_y = max(6.0, (max(lats) - min(lats)) * 0.45)
+    box = [min(lons) - pad_x, min(lats) - pad_y, max(lons) + pad_x, max(lats) + pad_y]
+    # the visible box keeps the frame's shape; countries that touch it are drawn
+    w = maps._world()
+    shapes = []
+    for c in w["countries"]:
+        for r in c["r"]:
+            if any(box[0] - 60 <= x <= box[2] + 60 and box[1] - 40 <= y <= box[3] + 40 for x, y in r[:: max(1, len(r) // 30)]):
+                shapes.append([[round(x, 2), round(y, 2)] for x, y in r[:: max(1, len(r) // 160)]])
+    from .scene_anim import icon_nodes, find_icon
+    return {"type": "route", "stops": stops, "box": box, "shapes": shapes[:400], "title": parts[1] if len(parts) > 1 else "",
+            "vehicle": vehicle, "icon": icon_nodes(find_icon(vehicle) or "plane"), "pin": icon_nodes("map-pin"),
+            "tone": "crumple", "seed": _seed(spec) % 10000}
+
+
+def parse_compare(spec: str) -> dict | None:
+    """'Compare: rupee note | 1991 | 2024' (one picture, before/after) or 'Compare: a + b | before | after'."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if len(parts) < 3 or not parts[0]:
+        return None
+    subs = _split_list(parts[0])[:2]
+    return {"type": "compare", "subjects": subs, "left": parts[1], "right": parts[2],
+            "title": parts[3] if len(parts) > 3 else "", "seed": _seed(spec) % 10000}
+
+
+def parse_photoline(spec: str) -> dict | None:
+    """'Photoline: 1935 Laws enacted (documents) → 1939 War begins (soldier) → 1941 Pearl Harbor (ship) | title'."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    items = []
+    for x in re.split(r"→|->", parts[0]):
+        m = re.match(r"\s*(\d{3,4}|[A-Za-z]{3}\s+\d{4})\s+([^()]+?)\s*(?:\(([^)]+)\))?\s*$", x)
+        if m:
+            items.append({"when": m.group(1), "what": m.group(2).strip()[:40], "pic": (m.group(3) or "").strip()})
+    if len(items) < 2:
+        return None
+    return {"type": "photoline", "items": items[:5], "subjects": [i["pic"] for i in items[:5] if i["pic"]],
+            "title": parts[1] if len(parts) > 1 else "", "tone": "grid", "seed": _seed(spec) % 10000}
+
+
+def parse_tv(spec: str) -> dict | None:
+    """'Tv: person:Name | 1975 broadcast | the Emergency is declared' - a picture inside an old TV set."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if not parts or not parts[0]:
+        return None
+    return {"type": "tv", "subjects": [parts[0]], "label": parts[1] if len(parts) > 1 else "",
+            "caption": parts[2] if len(parts) > 2 else "", "seed": _seed(spec) % 10000}
+
+
 PARSERS = {"hero": parse_hero, "desk": parse_desk, "pinboard": parse_evidence, "opener": parse_opener,
            "reveal": parse_reveal, "clipping": parse_headline, "pinmap": parse_pinmap, "bignumber": parse_number,
            "seats": parse_seats, "stack": parse_stack, "stand": parse_stand, "fan": parse_fan, "trend": parse_trend,
-           "slice": parse_slice}
+           "slice": parse_slice, "route": parse_route, "compare": parse_compare, "photoline": parse_photoline,
+           "tv": parse_tv}
 
 
 def plan_for(kind: str, spec: str) -> dict | None:
@@ -379,6 +457,21 @@ def paper(tone: str, w: int, h: int, work: Path) -> tuple[Path, Path]:
         vig = ((xx / w - 0.5) ** 2 + (yy / h - 0.5) ** 2)
         dark = base.mean() < 90
         img = base[None, None, :] + (mottle * 10)[..., None] + (fine * 3.2)[..., None] - (vig * (18 if not dark else 10))[..., None]
+        if tone.upper() == PAPERS["crumple"].upper():
+            # crumpled paper: a web of soft creases, each a light ridge beside a dark fold
+            from PIL import ImageDraw
+            crease = Image.new("L", (w, h), 128)
+            d = ImageDraw.Draw(crease)
+            for _ in range(70):
+                x, y = rng.random() * w, rng.random() * h
+                for _ in range(int(rng.integers(3, 8))):
+                    nx, ny = x + rng.normal(0, w * .09), y + rng.normal(0, h * .09)
+                    d.line([(x, y), (nx, ny)], fill=int(rng.choice([70, 190])), width=max(1, w // 900))
+                    x, y = nx, ny
+            c = np.asarray(crease.filter(ImageFilter.GaussianBlur(max(1.0, w / 700))), np.float32) - 128
+            facets = np.asarray(Image.fromarray((rng.random((max(2, h // 120), max(2, w // 120))) * 255).astype("uint8"), "L")
+                                .resize((w, h), Image.NEAREST).filter(ImageFilter.GaussianBlur(w / 400)), np.float32) / 255 - .5
+            img = img + (c * 0.35 + facets * 14)[..., None]
         Image.fromarray(np.clip(img, 0, 255).astype("uint8"), "RGB").save(bg)
     if not gr.is_file():
         rng = np.random.default_rng(11)
@@ -429,7 +522,10 @@ let seed=P.seed||1;function rnd(){seed=(seed*16807)%2147483647;return (seed-1)/2
 const L={};['paper','back','mid','hero','front','grain'].forEach(k=>L[k]=draw.group());
 draw.defs().svg(`<filter id="shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="${U*.004}" dy="${U*.012}" stdDeviation="${U*.011}" flood-color="#000" flood-opacity=".32"/></filter>
 <filter id="softshadow" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="${U*.006}" stdDeviation="${U*.006}" flood-color="#000" flood-opacity=".22"/></filter>
-<filter id="blur" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="${U*.035}"/></filter>`);
+<filter id="blur" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="${U*.035}"/></filter>
+<filter id="tint"><feFlood flood-color="${K.acc2||'#E0442C'}"/><feComposite in2="SourceAlpha" operator="in"/></filter>
+<filter id="redch"><feColorMatrix type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .55 0"/></filter>
+<filter id="cyanch"><feColorMatrix type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 .55 0"/></filter>`);
 L.paper.image(K.bg).size(W,H);
 L.grain.image(K.grain).size(W,H).attr({style:'mix-blend-mode:multiply'}).opacity(DARK?.25:.55);
 const DEPTH={paper:.012,back:.03,mid:.045,hero:.07,front:.055};
@@ -483,7 +579,9 @@ function callout(g,x1,y1,x2,y2,s,start){ // dot on the subject, an elbow line, a
     ln.plot(seg);tg.opacity(p>.8?(p-.8)*5:0)},E.inout)}
 function picture(g,pic,x,y,h,o){ // a cut-out photo (or its icon) with its height h, centred at x, bottom at y
   o=o||{};const grp=g.group();
-  if(pic&&pic.img){const w=h*pic.w/pic.h;grp.image(pic.img).size(w,h).move(x-w/2,y-h).attr({filter:'url(#shadow)'});grp.data('w',w)}
+  if(pic&&pic.img){const w=h*pic.w/pic.h;
+    if(o.offset){grp.image(pic.img).size(w,h).move(x-w/2+U*.014,y-h+U*.01).attr({filter:'url(#tint)'})}   // a printed colour offset
+    grp.image(pic.img).size(w,h).move(x-w/2,y-h).attr({filter:o.offset?'none':'url(#shadow)'});grp.data('w',w)}
   else{const r=h*.42;grp.circle(r*2).center(x,y-h/2).fill(o.iconBg||'#FFFFFF').stroke({color:INK,width:U*.005}).attr({filter:'url(#softshadow)'});
     const ig=grp.group();for(const nd of ((pic&&pic.o)||[])){try{ig.element(nd[0]).attr(nd[1])}catch(e){}}
     const k=r*1.15/24;ig.attr({fill:'none',stroke:INK,'stroke-width':1.6,'stroke-linecap':'round','stroke-linejoin':'round',
@@ -539,6 +637,9 @@ function hero(){
       const b=L.back.rect(bw,bh).move(x-bw/2,BOT-bh).fill(c).opacity(i?0.92:1).attr({transform:`rotate(${i?4:-5},${x},${BOT})`});
       slide(b,.05+i*.12,0,H*.4)})}
   if(lay==='box'&&!TALL){const b=brush(L.back,cx-MW*.62,BOT-HH*.45,MW*1.24,HH*.22,ACC,-8);wipe(b,.1)}
+  if(lay==='grid'){const gw=MW*1.5,gh=HH*1.02,gx=cx-gw/2,gy=BOT-gh;const gg=L.back.group();const st=U*.045;
+    for(let x=gx;x<=gx+gw+1;x+=st)gg.line(x,gy,x,gy+gh).stroke({color:FG,width:Math.max(1,U*.0012)}).opacity(.45);
+    for(let y=gy;y<=gy+gh+1;y+=st)gg.line(gx,y,gx+gw,y).stroke({color:FG,width:Math.max(1,U*.0012)}).opacity(.45);wipe(gg,.05)}
   if(lay==='word'){
     const word=P.word||(P.headline||'').toUpperCase();
     // widescreen: behind the subject's upper half (the subject cuts through it); Shorts: across the top, the
@@ -550,7 +651,7 @@ function hero(){
   // the subject(s): main one big, the others smaller at its sides
   pics.forEach((pic,i)=>{const isMain=i===0;const h=isMain?HH:HH*.46;
     const side=i===1?1:-1;const x=isMain?cx:Math.max(U*.12,Math.min(W-U*.12,cx+side*(MW*.5+HH*.22)));const y=isMain?BOT:BOT-HH*.02;
-    const g=picture(isMain?L.hero:L.mid,pic,x,y,h);
+    const g=picture(isMain?L.hero:L.mid,pic,x,y,h,{offset:lay==='grid'});
     if(!isMain)taken.push({x:x-h*.4,y:y-h,w:h*.8,h:h});
     if(isMain&&P.prop&&K.props){const pg=propOver(g,pic,x,y,h);if(pg)drop(pg,.35,H*.3,-3)}
     drop(g,isMain?.35:.6+i*.15,H*.3,isMain?-3:4)});
@@ -567,7 +668,7 @@ function hero(){
   // tags: around the subject's edges, never on the headline, the subject's middle or each other
   const cand=[];const ys=[.18,.42,.66,.3,.54,.06];
   for(const fy of ys){cand.push([heroBox.x-U*.02,BOT-HH*(1-fy),'end']);cand.push([heroBox.x+MW+U*.02,BOT-HH*(1-fy),'start'])}
-  (P.tags||[]).forEach((s,i)=>{const g=tag(L.front,s,0,0);const bb=g.bbox();const tw=bb.width,th=bb.height;
+  (P.tags||[]).forEach((s,i)=>{const g=tag(L.front,s,0,0,lay==='grid'?{bg:ACC,size:U*.026}:{});const bb=g.bbox();const tw=bb.width,th=bb.height;
     let spot=null;for(let k=0;k<cand.length&&!spot;k++){const [x,y,an]=cand[(k+i)%cand.length];
       const r={x:an==='end'?x-tw:x,y:y-th/2,w:tw,h:th};if(free(r,taken))spot=r}
     if(!spot){g.remove();return}
@@ -686,7 +787,16 @@ function reveal(){ // a document; a magnifier sweeps it and the beam shows the t
     const x=path[i][0]+(path[i+1][0]-path[i][0])*f,y=path[i][1]+(path[i+1][1]-path[i][1])*f;
     lens.attr({transform:`translate(${x},${y})`});const z=1.8;inner.attr({transform:`translate(${-x*z},${-y*z}) scale(${z})`})},E.inout)}
 
+function newsprint(){ // a pile of newspaper scraps behind: columns of grey type lines, no readable words
+  const g=L.paper.group().opacity(DARK?.25:.5);
+  for(let k=0;k<16;k++){const w=U*(.35+rnd()*.4),h=U*(.25+rnd()*.35),x=rnd()*W-w*.2,y=rnd()*H-h*.2,a=(rnd()-.5)*14;
+    const sc=g.group();torn(sc,x,y,w,h,['#E9E4D8','#DCD6C8','#F1EDE3'][k%3]);const cols=2+Math.floor(rnd()*2);
+    for(let c=0;c<cols;c++)for(let r=0;r<Math.floor(h/(U*.022));r++){const lw=(w/cols-U*.03)*(.6+rnd()*.4);
+      sc.rect(lw,U*.008).move(x+U*.02+c*w/cols,y+U*.03+r*U*.022).fill('#9A958A').opacity(.7)}
+    if(rnd()<.6)sc.rect(w*.8,U*.035).move(x+U*.02,y+U*.012).fill('#555').opacity(.8);
+    sc.attr({transform:`rotate(${a},${x+w/2},${y+h/2})`})}}
 function headline(){ // a torn newspaper headline with cut-outs around it, a big chapter number
+  newsprint();
   const cw=TALL?W*.82:W*.44,ch=TALL?H*.2:H*.36,cx=W/2-cw/2+(TALL?0:W*.04),cy=TALL?H*.34:H*.42;
   if(P.number){const n=T(L.back,P.number,TALL?W*.38:H*.42,TALL?W/2:W*.2,TALL?H*.16:H*.36,{family:'Inter',weight:800,fill:DARK?'#F3EFE6':'#FFFFFF'});
     n.attr({style:'paint-order:stroke',stroke:DARK?'none':'#00000010'});slide(n,.05,-W*.05,0)}
@@ -827,7 +937,79 @@ function slice(){ // the real object with a wedge in the accent colour and a cal
   const big=T(L.front,P.shown,U*.07,x2,y2-U*.06,{family:'Anton',weight:400,anchor:'end',fill:ACC==='#F2C200'?FG:ACC});wipe(big,1.7);
   if(P.label){const t=T(L.front,P.label.toUpperCase(),U*.028,x2,y2+U*.005,{family:'Inter',weight:800,anchor:'end',ls:'.08em'});wipe(t,1.8)}}
 
-const SCENES={hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice};
+// ---- round 5 ----
+function route(){ // a paper map; dashed routes draw themselves; the vehicle travels them; pins at each stop
+  const [x0,y0,x1,y1]=P.box;const kx=Math.cos((y0+y1)/2*Math.PI/180);
+  const ls=P.stops.map(q=>q.lon),as=P.stops.map(q=>q.lat);const sx=Math.max(4,(Math.max(...ls)-Math.min(...ls))*kx),sy=Math.max(3,Math.max(...as)-Math.min(...as));
+  const s=Math.min(W*(TALL?.7:.72)/sx,H*(TALL?.4:.56)/sy);const cxl=(Math.max(...ls)+Math.min(...ls))/2,cyl=(Math.max(...as)+Math.min(...as))/2;
+  const ox=W/2-cxl*kx*s,oy=H*(TALL?.4:.5)+cyl*s;
+  const pr=(lon,lat)=>[ox+lon*kx*s,oy-lat*s];
+  const land=L.back.group();P.shapes.forEach(r=>land.polygon(r.map(q=>pr(q[0],q[1]).join(',')).join(' ')).fill('#9C5B2E').opacity(.88));
+  land.attr({style:'mix-blend-mode:multiply'});wipe(land,0);
+  if(P.title){const g=boxText(L.front,P.title,U*.05,W/2,TALL?H*.07:H*.075,{anchor:'middle',maxw:W*.84,most:1});g.children().forEach(r=>slide(r,.1,0,-H*.04))}
+  const pts=P.stops.map(st=>pr(st.lon,st.lat));
+  // compass rose
+  const cr=L.mid.group(),cx=U*.13,cy=TALL?H*.62:H*.68,R=U*.07;cr.circle(R*2).center(cx,cy).fill('none').stroke({color:'#3A2A1A',width:U*.002});
+  [[0,-1],[1,0],[0,1],[-1,0]].forEach(([a,b],i)=>cr.polygon([[cx+a*R,cy+b*R],[cx+b*R*.18,cy-a*R*.18],[cx-b*R*.18,cy+a*R*.18]].map(p=>p.join(',')).join(' ')).fill(i%2?'#7A5230':'#3A2A1A'));
+  T(cr,'N',U*.022,cx,cy-R-U*.02,{family:'Playfair',weight:700,fill:'#3A2A1A'});wipe(cr,.2);
+  const legs=[];for(let i=0;i<pts.length-1;i++){const [ax,ay]=pts[i],[bx,by]=pts[i+1];const mx=(ax+bx)/2,my=Math.min(ay,by)-Math.hypot(bx-ax,by-ay)*.22;legs.push([ax,ay,mx,my,bx,by])}
+  const per=Math.max(.6,(DUR-1.2)/Math.max(1,legs.length));
+  pts.forEach((p,i)=>{const pin=L.front.group();const k=U*.05/24;const ig=pin.group();for(const nd of P.pin){try{ig.element(nd[0]).attr(nd[1])}catch(e){}}
+    ig.attr({fill:'#2A1A10',stroke:'#F3E9D4','stroke-width':1.2,transform:`translate(${p[0]-12*k},${p[1]-22*k}) scale(${k})`});popIn(pin,p[0],p[1],.3+i*per,.35);
+    const lb=tag(L.front,P.stops[i].name,0,0,{size:U*.02});const bb=lb.bbox();const left=p[0]+U*.02+bb.width>W-U*.03;
+    lb.attr({transform:`translate(${left?p[0]-U*.02-bb.width-bb.x:p[0]+U*.02-bb.x},${p[1]+U*.02})`});slide(lb,.4+i*per,(left?-1:1)*W*.02,0)});
+  legs.forEach((l,i)=>{const path=L.mid.path(`M${l[0]} ${l[1]} Q${l[2]} ${l[3]} ${l[4]} ${l[5]}`).fill('none').stroke({color:'#2A1A10',width:U*.004,dasharray:`${U*.012} ${U*.01}`});
+    const len=path.node.getTotalLength();const mask=draw.mask().add(draw.path(`M${l[0]} ${l[1]} Q${l[2]} ${l[3]} ${l[4]} ${l[5]}`).fill('none').stroke({color:'#fff',width:U*.02}));
+    const mp=mask.children()[0];mp.attr({'stroke-dasharray':len,'stroke-dashoffset':len});path.maskWith(mask);
+    const v=L.front.group();const vk=U*.1/24;v.circle(U*.085).center(0,0).fill('#F3E9D4').stroke({color:'#2A1A10',width:U*.003});
+    const vg=v.group();for(const nd of P.icon){try{vg.element(nd[0]).attr(nd[1])}catch(e){}}
+    vg.attr({fill:'none',stroke:'#2A1A10','stroke-width':1.8,'stroke-linecap':'round','stroke-linejoin':'round',transform:`translate(${-12*vk*.62},${-12*vk*.62}) scale(${vk*.62})`});v.opacity(0);
+    const st=.5+i*per;
+    at(st,per*.9,p=>{mp.attr({'stroke-dashoffset':len*(1-p)});const q=path.node.getPointAtLength(len*p),q2=path.node.getPointAtLength(Math.min(len,len*p+2));
+      const ang=Math.atan2(q2.y-q.y,q2.x-q.x)*180/Math.PI;v.opacity(p>0&&p<1?1:(i===legs.length-1&&p>=1?1:0));
+      v.attr({transform:`translate(${q.x},${q.y}) rotate(${ang+45})`})},E.inout)})}
+function compare(){ // one picture split by a yellow line: the left half faded "before", the right half "after"
+  const pics=P.pics||[];const a=pics[0],b=pics[1]||pics[0];const h=TALL?H*.6:H*.86;const cx=W/2,by=TALL?H*.72:H*.95;
+  if(a){const ga=picture(L.mid,a,cx,by,h);ga.attr({style:'filter:grayscale(1) contrast(.8) brightness(1.15)'})}
+  const clip=draw.clip().add(draw.rect(W,H).move(W/2,0));const crect=clip.children()[0];
+  if(b){const gb=picture(L.hero,b,cx,by,h);gb.clipWith(clip)}
+  const line=L.front.rect(U*.012,H).move(W/2-U*.006,0).fill(ACC);
+  at(.3,1.2,p=>{const x=W*(1-p*.5);crect.x(x);line.x(x-U*.006)},E.inout);
+  const l=T(L.front,P.left,U*.075,W*.27,TALL?H*.5:H*.62,{family:'Playfair',weight:700,italic:true,fill:'#FFFFFF'});l.attr({style:'paint-order:stroke',stroke:'#111','stroke-width':U*.006});
+  const r=T(L.front,P.right,U*.09,W*.72,TALL?H*.5:H*.62,{family:'Playfair',weight:700,italic:true,fill:'#FFFFFF'});r.attr({style:'paint-order:stroke',stroke:'#111','stroke-width':U*.006});
+  wipe(l,.4);wipe(r,1.3);if(P.title){const g=boxText(L.front,P.title,U*.05,W/2,TALL?H*.07:H*.075,{anchor:'middle',maxw:W*.84,most:1});g.children().forEach(q=>slide(q,.1,0,-H*.04))}}
+function photoline(){ // a timeline of photo cards with yellow tags and a highlighter rule
+  const it=P.items,n=it.length;if(P.title){const g=boxText(L.front,P.title,U*.06,W/2,TALL?H*.07:H*.09,{anchor:'middle',maxw:W*.84,most:1});g.children().forEach(q=>slide(q,.1,0,-H*.04))}
+  const ly=TALL?H*.6:H*.72;const rule=L.back.rect(0,U*.022).move(W*.05,ly).fill(ACC).opacity(.85);at(.2,.8,p=>rule.width(W*.9*p),E.inout);
+  const gap=(TALL?W*.92:W*.86)/n;
+  it.forEach((x,i)=>{const cx=W/2+(i-(n-1)/2)*gap,cw=Math.min(gap*.82,U*.42),ch=cw*.72,cy=ly-U*.08-ch;const st=.35+i*.35;const card=L.hero.group();
+    card.rect(cw+U*.02,ch+U*.02).move(cx-cw/2-U*.01,cy-U*.01).fill(ACC);
+    const pic=x.pic?picOf(x.pic):null;if(pic&&pic.img){const r=Math.min(cw/pic.w,ch/pic.h);card.rect(cw,ch).move(cx-cw/2,cy).fill('#E9E4D8');card.image(pic.img).size(pic.w*r,pic.h*r).move(cx-pic.w*r/2,cy+ch-pic.h*r)}
+    else if(pic){card.rect(cw,ch).move(cx-cw/2,cy).fill('#F3EFE6');picture(card,pic,cx,cy+ch*.95,ch*.8)}else card.rect(cw,ch).move(cx-cw/2,cy).fill('#F3EFE6');
+    const lab=tag(card,x.what,0,0,{bg:ACC,size:U*(TALL?.02:.022)});const lb=lab.bbox();lab.attr({transform:`translate(${cx-lb.width/2},${cy+ch-lb.height*.2})`});
+    card.attr({filter:'url(#shadow)'});drop(card,st,H*.2,0);
+    card.polygon([[cx-U*.015,ly-U*.03],[cx+U*.015,ly-U*.03],[cx,ly-U*.005]].map(p=>p.join(',')).join(' ')).fill(INK);
+    const yr=T(L.front,x.when,U*.07,cx,ly+U*.09,{family:'Playfair',weight:900});wipe(yr,st+.2)})}
+function tv(){ // an old TV set: the picture inside with scan lines and a colour fringe
+  const tw=TALL?W*.86:Math.min(W*.56,H*.62/.78),th=tw*.78,tx=W/2-tw/2,ty=TALL?H*.18:H*.1;const set=L.hero.group();
+  set.rect(tw,th).move(tx,ty).radius(U*.03).fill('#3B2E25').stroke({color:'#1C1410',width:U*.006});
+  const sw=tw*.74,sh=th*.78,sx=tx+tw*.05,sy=ty+th*.11;set.rect(sw,sh).move(sx,sy).radius(U*.05).fill('#0E0E0E');
+  for(let k=0;k<3;k++)set.circle(U*.045).center(tx+tw*.9,ty+th*(.25+k*.2)).fill('#8C7A62').stroke({color:'#222',width:U*.003});
+  for(let k=0;k<8;k++)set.line(tx+tw*.84,ty+th*(.75+k*.025),tx+tw*.96,ty+th*(.75+k*.025)).stroke({color:'#222',width:U*.003});
+  set.rect(tw*.06,U*.06).move(tx+tw*.12,ty+th).fill('#1C1410');set.rect(tw*.06,U*.06).move(tx+tw*.82,ty+th).fill('#1C1410');
+  const scr=draw.clip().add(draw.rect(sw,sh).move(sx,sy).radius(U*.05));const inner=L.hero.group().clipWith(scr);
+  inner.rect(sw,sh).move(sx,sy).fill('#CFC8B8');const pic=(P.pics||[])[0];
+  if(pic&&pic.img){const r=Math.max(sw/pic.w,sh/pic.h)*.95;const iw=pic.w*r,ih=pic.h*r,ix=sx+sw/2-iw/2,iy=sy+sh-ih;
+    inner.image(pic.img).size(iw,ih).move(ix-U*.006,iy).attr({filter:'url(#redch)'});inner.image(pic.img).size(iw,ih).move(ix+U*.006,iy).attr({filter:'url(#cyanch)'});
+    inner.image(pic.img).size(iw,ih).move(ix,iy).opacity(.6)}
+  else if(pic)picture(inner,pic,sx+sw/2,sy+sh*.95,sh*.8);
+  for(let y=sy;y<sy+sh;y+=U*.006)inner.rect(sw,U*.0025).move(sx,y).fill('#000').opacity(.18);
+  const glare=inner.rect(sw,sh).move(sx,sy).fill('#FFFFFF').opacity(.06);
+  set.opacity(0);at(0,.3,p=>set.opacity(p));inner.opacity(0);at(.35,.25,p=>inner.opacity(p>.5?1:p*2*(p*10%1>.5?1:.3)),E.lin);
+  if(P.label){const t=tag(L.front,P.label,tx,ty-U*.05,{bg:ACC,size:U*.026});slide(t,.6,-W*.04,0)}
+  if(P.caption){const c=boxText(L.front,P.caption,U*.045,W/2,ty+th+U*.12,{anchor:'middle',maxw:W*.86,most:2});c.children().forEach((q,i)=>slide(q,.9+i*.12,0,H*.04))}}
+
+const SCENES={hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv};
 async function boot(){
   try{await Promise.all(Array.from(document.fonts).map(f=>f.load()))}catch(e){}
   const imgs=[];(P.pics||[]).forEach(p=>{if(p.img)imgs.push(new Promise(r=>{const i=new Image();i.onload=i.onerror=r;i.src=p.img}))});
@@ -858,7 +1040,7 @@ def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: f
     tone = plan.get("tone") or ("grid" if plan["type"] in ("desk", "reveal") else tone)
     paper_hex = PAPERS.get(tone, PAPERS["cream"])
     bg, grain = paper(paper_hex, width, height, work)
-    kit = {"acc": accent_of(theme), "ink": INK, "paper": paper_hex, "dark": tone == "dark", "tone": tone, "props": props,
+    kit = {"acc": accent_of(theme), "acc2": "#E0442C" if accent_of(theme) != ACCENTS["red"] else "#F2C200", "ink": INK, "paper": paper_hex, "dark": tone == "dark", "tone": tone, "props": props,
            "bg": bg.as_uri(), "grain": grain.as_uri()}
     page = (_PAGE.replace("%SVGJS%", motion.VENDOR.read_text(encoding="utf-8")).replace("%FONTS%", _font_css())
             .replace("%PAPER%", paper_hex).replace("%PLAN%", json.dumps(plan, ensure_ascii=False))
