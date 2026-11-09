@@ -94,6 +94,15 @@ def _cuts(video: Path) -> list[float]:
     return [float(x) for x in re.findall(r"pts_time:([\d.]+)", r.stderr)]
 
 
+def _frame_diff(video: Path, t1: float, t2: float) -> float:
+    """Mean absolute difference (0-255) between the pictures at two times."""
+    def grab(t):
+        return subprocess.run(["ffmpeg", "-nostdin", "-v", "error", "-ss", f"{max(0.0, t):.2f}", "-i", str(video), "-frames:v", "1",
+                               "-vf", "scale=64:36", "-f", "rawvideo", "-pix_fmt", "gray", "-"], capture_output=True, timeout=60).stdout
+    a, b = grab(t1), grab(t2)
+    return sum(abs(x - y) for x, y in zip(a, b)) / max(1, min(len(a), len(b))) if a and b else 0.0
+
+
 def build(out_dir: Path, size: tuple[int, int] = (1280, 720), fps: int = 24) -> dict:
     out_dir.mkdir(parents=True, exist_ok=True)
     work = out_dir / "work"
@@ -145,7 +154,12 @@ def build(out_dir: Path, size: tuple[int, int] = (1280, 720), fps: int = 24) -> 
     # ---- the checks, one discipline at a time ----
     starts = [round(sum(slots[:i]), 3) for i in range(len(slots))]
     found = _cuts(final)
-    drift = [min((abs(c - s) for c in found), default=9.9) for s in starts[1:]]
+    # every line must bring its own picture: the frames either side of the line's start differ. Where FFmpeg's
+    # scene detector also sees the cut (hard cuts; a soft blur between two paper frames can escape it), the cut
+    # must be within a third of a second of the spoken line.
+    changed = [_frame_diff(final, s - 0.45, s + 0.75) for s in starts[1:]]
+    drift = [d for d in (min((abs(c - s) for c in found), default=9.9) for s in starts[1:]) if d < 1.0]
+    unseen = len(starts) - 1 - len(drift)
     q = quality.check(final, expected, [], expected_size=(w, h))
     by: dict[str, list] = {}
     for s in scenes:
@@ -165,8 +179,12 @@ def build(out_dir: Path, size: tuple[int, int] = (1280, 720), fps: int = 24) -> 
     disciplines.append({"name": "sound design (cues + ambient beds)", "status": "pass" if hits and beds else "FAIL",
                         "detail": f"{len(hits)} cues, {len(beds)} beds"})
     worst = max(drift) if drift else 0.0
-    disciplines.append({"name": "narration sync (cut vs. spoken line)", "status": "pass" if worst <= 0.35 else "FAIL",
-                        "detail": f"worst cut {worst:.2f}s from its line, mean {sum(drift) / max(1, len(drift)):.2f}s"})
+    same = [i + 2 for i, c in enumerate(changed) if c < 6.0]
+    disciplines.append({"name": "narration sync (cut vs. spoken line)",
+                        "status": "pass" if worst <= 0.35 and not same and drift else "FAIL",
+                        "detail": f"{len(drift)} of {len(starts) - 1} cuts measured: worst {worst:.2f}s from its line, mean "
+                                  f"{sum(drift) / max(1, len(drift)):.2f}s; {unseen} soft cut(s) confirmed by frame change"
+                                  + (f"; NO new picture at line(s) {same}" if same else "")})
     disciplines.append({"name": "finished film quality", "status": "pass" if q["passed"] else "FAIL",
                         "detail": "; ".join(q["warnings"]) or f"{len(q['checks'])} checks clean"})
     disciplines += [{"name": k, "status": "pod-only", "detail": v} for k, v in POD_ONLY.items()]

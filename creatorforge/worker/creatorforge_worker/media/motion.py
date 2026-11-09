@@ -115,7 +115,8 @@ def plan_for(kind: str, spec: str) -> dict | None:
             return icon_nodes(name) if name else []
         return {"type": "board", "items": [{"t": t, "o": ic(t)} for t in items], "title": tail, "pin": icon_nodes("pin")}
     if kind == "statement":
-        words = [{"w": w.strip("*"), "hi": w.startswith("*") or w.endswith("*")} for w in spec.split() if w.strip("*")]
+        # "*ship*." - the stars mark the word; punctuation after the closing star stays, the stars never show
+        words = [{"w": w.replace("*", ""), "hi": "*" in w} for w in spec.split() if w.replace("*", "")]
         return {"type": "statement", "words": words[:16]} if words else None
     if kind == "chart":
         from .charts import parse

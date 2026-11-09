@@ -1368,6 +1368,8 @@ svg{display:block}
 </style><script>%SVGJS%</script><script>%ILLU%</script></head><body><script>
 const P=%PLAN%, W=%W%, H=%H%, DUR=%DUR%, K=%KIT%;
 const TALL=H>W, U=Math.min(W,H), ACC=K.acc, INK=K.ink, PAPER=K.paper, DARK=K.dark;
+// money drawings carry the currency the graphic's own figures are in (a dollar story never shows a rupee note)
+window.CUR=(JSON.stringify(P).match(/[$£€¥₹]/)||['₹'])[0];
 const ACT=K.dark?K.acc:(K.accText||K.acc);   // the accent as type on the paper: dark enough to read
 const FG=DARK?'#F3EFE6':INK;
 const draw=SVG().addTo('body').size(W,H);
@@ -1724,7 +1726,9 @@ function number(){ // a huge number; the subject breaks out of it
   const pic=(((P.pics||[])[0]||{}).img||((P.pics||[])[0]||{}).draw)?(P.pics||[])[0]:null;
   if(pic&&!TALL&&K.lay==='side')return numberSide(pic);const big=T(L.back,P.number,TALL?W*.42:H*(pic?.5:.56),W/2,pic?(TALL?H*.22:H*.3):(TALL?H*.34:H*.4),{family:'Anton',weight:400,fill:ACT});fit(big,W*.92);
   slide(big,.05,0,H*.06);
-  if(pic){const h=TALL?H*.36:H*.56;const g=picture(L.hero,pic,W/2,TALL?H*.64:H*.86,h);drop(g,.35,H*.25,-2);
+  if(pic){const d0=pic.draw&&window.ILLU[pic.draw],ar0=pic.img?pic.w/pic.h:d0?d0[0]/d0[1]:1;
+    const h=TALL?H*.36:Math.min(H*.56,W*.42/ar0,H*.46*(ar0>1.3?1:1.22));   // a wide subject stays under the figure, not over it
+    const g=picture(L.hero,pic,W/2,TALL?H*.64:H*.86,h);drop(g,.35,H*.25,-2);
     FOCUS=FOCUS||{x:W/2,y:(TALL?H*.64:H*.86)-h*.45,rx:Math.min(U*.3,(g.data('w')||h)*.6),ry:h*.42}}   // marker and logos go by the subject, off the figure
   if(P.caption){const c=pic?fit(T(L.front,P.caption,U*.04,W/2,TALL?H*.7:H*.92,{family:'Inter',weight:800,fill:'#C0262D'}),W*.9)
       :boxText(L.front,P.caption,U*.055,W/2,TALL?H*.5:H*.7,{anchor:'middle',maxw:W*.86,most:2});wipe(c,.9)}

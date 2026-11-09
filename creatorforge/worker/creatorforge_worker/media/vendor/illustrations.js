@@ -31,13 +31,13 @@ I.factory=[260,170,(g,acc)=>{g.rect(220,90).move(20,80).fill('#B65A3A').stroke(o
 I.warehouse=[240,120,(g,acc)=>{poly(g,[[10,50],[120,10],[230,50],[230,118],[10,118]],'#C9C3B4',2);for(let x=20;x<230;x+=12)g.line(x,50,x,118).stroke({color:'#00000025',width:2});
   g.rect(60,56).move(90,62).fill(NAVY).stroke(o(1.6));for(let y=66;y<118;y+=8)g.line(90,y,150,y).stroke({color:'#FFFFFF30',width:2});shade(g,g.rect(220,24).move(10,94))}];
 I.coins=[160,120,(g,acc)=>{[[20,4],[70,8],[110,5]].forEach(([x,n],k)=>{for(let i=0;i<n;i++){g.ellipse(46,14).move(x,104-i*9).fill(i%2?'#C9A24A':'#D9B55A').stroke(o(1.3))}
-  g.ellipse(46,14).move(x,104-n*9).fill('#E8C86E').stroke(o(1.3));g.text('₹').font({size:10,weight:'bold',family:'Inter'}).fill('#8A6A22').center(x+23,111-n*9)})}];
+  g.ellipse(46,14).move(x,104-n*9).fill('#E8C86E').stroke(o(1.3));g.text(window.CUR||'₹').font({size:10,weight:'bold',family:'Inter'}).fill('#8A6A22').center(x+23,111-n*9)})}];
 I.banknote=[200,96,(g,acc)=>{g.rect(200,96).radius(4).fill('#9CC7A4').stroke(o(1.8));g.rect(184,80).move(8,8).fill('none').stroke({color:'#2E6B47',width:1.4});
-  g.circle(46).center(140,48).fill('#7DB389').stroke({color:'#2E6B47',width:1.4});g.text('₹').font({size:34,weight:'bold',family:'Inter'}).fill('#2E6B47').center(50,46);
+  g.circle(46).center(140,48).fill('#7DB389').stroke({color:'#2E6B47',width:1.4});g.text(window.CUR||'₹').font({size:34,weight:'bold',family:'Inter'}).fill('#2E6B47').center(50,46);
   for(let k=0;k<4;k++)g.line(20,70+k*4,90,70+k*4).stroke({color:'#2E6B47',width:1});shade(g,g.rect(200,30).move(0,66))}];
 I.moneybag=[130,150,(g,acc)=>{g.path('M40 34 Q20 60 14 100 Q10 146 65 146 Q120 146 116 100 Q110 60 90 34 Z').fill('#C9A46A').stroke(o(2));
   g.path('M44 34 L86 34 L96 16 Q65 26 34 16 Z').fill('#B8925A').stroke(o(1.8));g.rect(52,6).move(39,32).fill(INK);
-  g.text('₹').font({size:46,weight:'bold',family:'Inter'}).fill('#6B4E14').center(65,96);shade(g,g.path('M90 60 Q112 90 112 110 Q110 140 70 144 Q100 120 90 60 Z'))}];
+  g.text(window.CUR||'₹').font({size:46,weight:'bold',family:'Inter'}).fill('#6B4E14').center(65,96);shade(g,g.path('M90 60 Q112 90 112 110 Q110 140 70 144 Q100 120 90 60 Z'))}];
 I.smartphone=[80,150,(g,acc)=>{g.rect(80,150).radius(12).fill(INK);g.rect(70,124).move(5,12).radius(4).fill('#DCE9EF');
   [[10,22,48,10,acc],[22,40,48,10,'#FFFFFF'],[10,58,40,10,acc],[22,76,48,10,'#FFFFFF']].forEach(([x,y,w,h,c])=>g.rect(w,h).move(x,y).radius(5).fill(c).stroke({color:'#00000030',width:1}));
   g.rect(24,4).move(28,5).radius(2).fill('#333')}];
