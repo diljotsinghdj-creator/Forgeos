@@ -224,6 +224,15 @@ pkill -f "isnet-general-use.onnx.part" 2>/dev/null || true
 pkill -f "models/clip" 2>/dev/null || true
 [ -s "$HOME_DIR/data/models/isnet-general-use.onnx" ] || nohup bash -c "curl -fsSL -o '$HOME_DIR/data/models/isnet-general-use.onnx.part' \
   https://github.com/danielgatis/rembg/releases/download/v0.0.0/isnet-general-use.onnx && mv '$HOME_DIR/data/models/isnet-general-use.onnx.part' '$HOME_DIR/data/models/isnet-general-use.onnx' && echo 'cut-out model ready'" > cutout_download.log 2>&1 &
+# The Vox look's photo library: ~150 real objects, Indian landmarks and places, cut out and printed in halftone
+# (public-domain / openly licensed photos from Wikimedia Commons, credits kept). Fills in the background once the
+# cut-out model is ready; until then graphics draw their vector icons.
+[ -s cutouts_library.pid ] && kill "$(cat cutouts_library.pid)" 2>/dev/null || true
+nohup bash -c "for i in \$(seq 1 120); do [ -s '$HOME_DIR/data/models/isnet-general-use.onnx' ] && break; sleep 10; done; \
+  '$PYBIN' -m pip install -q opencv-python-headless >/dev/null 2>&1; \
+  '$PYBIN' -m creatorforge_worker.media.cutouts '$HOME_DIR/data/cutouts' '$HOME_DIR/data/models/isnet-general-use.onnx' && echo 'photo library ready'" \
+  > cutouts_library.log 2>&1 &
+echo $! > cutouts_library.pid
 
 # Visual match check: CLIP (ViT-B/32, ONNX, ~600 MB) scores each picture against its line so off-topic pictures are
 # redrawn and off-topic stock is skipped. Until it's downloaded, pictures are used as generated.

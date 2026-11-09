@@ -970,7 +970,7 @@ def _is_heading(line: str) -> bool:
 # Writer keys that fill the whole frame with a graphic instead of the line's picture.
 FULL_FRAME = ("fly", "map", "globe", "steps", "timeline", "icons", "chapter", "quote", "screen", "document", "statement",
               "object", "article", "chat", "search", "pie", "squares", "shade", "timer", "receipt", "animate",
-              "clock", "calendar", "sign", "social", "comments", "trending", "stamp", "board")
+              "clock", "calendar", "sign", "social", "comments", "trending", "stamp", "board", "hero")
 _META_KEYS = ("on-screen hook", "on screen hook", "onscreen hook", "hook text", "visuals", "visual", "visual style",
               "b-roll", "broll", "post title", "video title", "post", "title", "cover", "thumbnail", "caption", "description", "hashtags", "tags",
               "source", "sources", "music", "sfx", "on-screen text", "on screen text", "text on screen", "text",
@@ -979,7 +979,7 @@ _META_KEYS = ("on-screen hook", "on screen hook", "onscreen hook", "hook text", 
               "document", "statement", "split", "archive", "object", "article", "big", "transition",
               "chat", "search", "pie", "squares", "shade", "timer", "receipt", "treat", "clip", "tone", "mood",
               "animate", "animation", "cartoon", "talk", "clock", "calendar", "sign", "social", "comments",
-              "trending", "stamp", "board")
+              "trending", "stamp", "board", "hero")
 _META = re.compile(r"(?i)(?:^|(?<=[\s.]))(" + "|".join(re.escape(k) for k in sorted(_META_KEYS, key=len, reverse=True)) +
                    r")\s*:\s*")
 _STAMP = re.compile(r"^\s*(?:[-\u2022*]\s*)?\(?(?:\d{0,2}:\d{2})(?:\s*[-\u2013]\s*\d{0,2}:\d{2})?\)?\s*")
@@ -1164,7 +1164,9 @@ def parse_script(raw: str) -> tuple[str, dict]:
     for d in per.values():
         d.pop("_from_animate", None)
     if sum(bool(d.get("visual")) + len(d.get("more") or []) for d in per.values()) >= 3 or \
-            sum(1 for d in per.values() if any(v for k, v in d.items() if k not in ("visual", "more"))) >= 3:
+            sum(1 for d in per.values() if any(v for k, v in d.items() if k not in ("visual", "more"))) >= 3 or \
+            (spoken and all(any(v for k, v in per.get(i, {}).items() if k not in ("visual", "more"))
+                            for i in range(len(spoken)))):    # a short script with a graphic on every line
         meta["shots"] = [shot for i, line in enumerate(spoken) for shot in _line_shots(line, per.get(i, {}))][:400]
     elif looks:
         meta["visual_direction"] = " ".join(looks).strip()[:400]

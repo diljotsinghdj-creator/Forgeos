@@ -34,7 +34,7 @@ PALETTE = ("#F2EBDD", "#E3ECF2", "#F6E1DA", "#E4EDE1", "#F7EFD2")
 
 def split_theme(theme: str) -> tuple[str, str | None]:
     """"editorial~3" -> ("editorial", "#E4EDE1"); a plain theme keeps its own paper."""
-    base, _, var = (theme or "editorial").partition("~")
+    base, _, var = (theme or "editorial").split("@")[0].partition("~")      # "@accent" is for the Vox scenes
     try:
         return base, PALETTE[int(var) % len(PALETTE)] if var != "" else None
     except ValueError:
@@ -168,9 +168,12 @@ _PAGE = r"""<!doctype html><html><head><meta charset="utf-8"><style>
 %FONTFACE%
 html,body{margin:0;padding:0;background:%BG%;overflow:hidden}
 svg{display:block}
-text{font-family:'CFBold','DejaVu Sans','FreeSans','Noto Sans Devanagari',sans-serif}
-.lbl{font-family:'DejaVu Sans','FreeSans','Noto Sans Devanagari',sans-serif;font-weight:700}
-</style><script>%SVGJS%</script></head><body><script>
+text{font-family:'Archivo','CFBold','DejaVu Sans','FreeSans','Noto Sans Devanagari',sans-serif}
+.lbl{font-family:'Inter','DejaVu Sans','FreeSans','Noto Sans Devanagari',sans-serif;font-weight:800;letter-spacing:.04em}
+body{background-image:url('%PAPERIMG%');background-size:100% 100%}
+#grain{position:fixed;left:0;top:0;width:100%;height:100%;mix-blend-mode:multiply;opacity:.5;z-index:10;pointer-events:none}
+</style><script>%SVGJS%</script></head><body><img id="grain" src="%GRAINIMG%"><script>
+(async()=>{try{await Promise.all(Array.from(document.fonts).map(f=>f.load()))}catch(e){}   // measure text in the real fonts
 const P=%PLAN%, W=%W%, H=%H%, DUR=%DUR%, TH=%THEME%;
 const [BG,INK,ACC,SEC,GRID]=TH; const TALL=H>W; const U=Math.min(W,H);
 const draw=SVG().addTo('body').size(W,H);
@@ -303,7 +306,8 @@ if(T==='scene'){
   const TOP=TALL?H*.2:H*.22, BOT=TALL?H*.56:H*.72, MY=(TOP+BOT)/2, SZ=U*(TALL?.21:.18);
   const A=P.actors, act=P.action, n=A.length, END=Math.max(1.2,DUR-.3);
   function ico(nodes,size,opt){opt=opt||{};const g=stage.group();
-    if(opt.sticker!==false){g.circle(size*1.22).center(0,0).fill(opt.bg||'#FFFFFF').stroke({color:INK,width:Math.max(2,size*.04)})}
+    const photo=!!(nodes&&nodes[0]&&nodes[0][0]==='image');      // a real cut-out photo instead of the line icon
+    if(opt.sticker!==false&&!photo){g.circle(size*1.22).center(0,0).fill(opt.bg||'#FFFFFF').stroke({color:INK,width:Math.max(2,size*.04)})}
     const ig=g.group();for(const nd of (nodes||[])){try{ig.element(nd[0]).attr(nd[1])}catch(e){}}
     const k=size*.66/24;ig.attr({fill:'none',stroke:opt.ink||INK,'stroke-width':opt.sw||1.7,'stroke-linecap':'round',
       'stroke-linejoin':'round',transform:`translate(${-12*k},${-12*k}) scale(${k})`});return g}
@@ -517,6 +521,7 @@ window.frame=function(t){
   for(const k of tracks){const p=Math.max(0,Math.min(1,(t-k.start)/k.dur));k.fn(k.e(p))}
 };
 window.frame(0);window.READY=true;
+})();
 </script></body></html>"""
 
 
@@ -546,19 +551,55 @@ def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: f
     plan = plan_for(kind, spec)
     if plan is None:
         raise MediaError(f"motion: nothing to draw from {spec!r}")
+    if kind == "animate":
+        _photos(plan)
     fps = int(fps or os.environ.get("CF_MOTION_FPS") or (60 if os.environ.get("CF_FPS") == "60" else 30))
     seconds = max(1.5, float(seconds))
     theme, tint = split_theme(theme)
     th = THEMES.get(theme, THEMES["editorial"])
     if tint and not th[4]:
         th = (tint,) + tuple(th[1:])
-    page = (_PAGE.replace("%SVGJS%", VENDOR.read_text(encoding="utf-8")).replace("%FONTFACE%", _font_face())
+    from . import vox
+    paper_img, grain_img = vox.paper(th[0], width, height, work)
+    page = (_PAGE.replace("%SVGJS%", VENDOR.read_text(encoding="utf-8"))
+            .replace("%FONTFACE%", _font_face() + "\n" + vox._font_css())
+            .replace("%PAPERIMG%", paper_img.as_uri()).replace("%GRAINIMG%", grain_img.as_uri())
             .replace("%BG%", th[0]).replace("%PLAN%", json.dumps(plan, ensure_ascii=False))
             .replace("%W%", str(width)).replace("%H%", str(height)).replace("%DUR%", f"{seconds:.3f}")
             .replace("%THEME%", json.dumps(list(th))))
     work.mkdir(parents=True, exist_ok=True)
     html = work / f"motion_{out.stem}.html"
     html.write_text(page, encoding="utf-8")
+    return capture(html, width, height, seconds, fps, out)
+
+
+def _photos(plan: dict) -> None:
+    """Animated scenes use the real cut-out photo of an object when the library has (or can fetch) one: the
+    photo replaces the line icon, drawn bigger, with a soft shadow."""
+    from . import cutouts
+    model = os.environ.get("CF_CUTOUT_MODEL")
+    for a in list(plan.get("actors") or []) + ([plan["cargo"]] if isinstance(plan.get("cargo"), dict) else []):
+        try:
+            c = cutouts.get(str(a.get("name", "")), model=Path(model) if model else None)
+        except Exception:  # noqa: BLE001 - no photo: the icon stays
+            c = None
+        if c is None:
+            continue
+        from PIL import Image
+        with Image.open(c.path) as im:
+            w, h = im.size
+        hh = 50.0                       # in the icon's 24-unit box: about twice the icon's size
+        ww = hh * w / h
+        if ww > 70:
+            ww, hh = 70.0, 70.0 * h / w
+        a["o"] = [["image", {"href": c.path.as_uri(), "x": 12 - ww / 2, "y": 12 - hh / 2, "width": ww, "height": hh,
+                             "style": "filter:drop-shadow(0 0.6px 0.9px rgba(0,0,0,.35))"}]]
+        if c.credit:
+            plan.setdefault("credits", []).append(c.credit)
+
+
+def capture(html: Path, width: int, height: int, seconds: float, fps: int, out: Path) -> Path:
+    """Plays an animation page (window.frame(t), window.READY) in headless Chromium and encodes it (H.264)."""
     frames = max(1, int(round(seconds * fps)))
     from playwright.sync_api import sync_playwright
     enc = subprocess.Popen(["ffmpeg", "-nostdin", "-y", "-loglevel", "error", "-f", "image2pipe", "-framerate", str(fps),
@@ -573,10 +614,12 @@ def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: f
                 errors: list[str] = []
                 pg.on("pageerror", lambda e: errors.append(str(e)))
                 pg.goto(html.as_uri())
-                pg.wait_for_function("window.READY === true", timeout=15000)
+                pg.wait_for_function("window.READY === true", timeout=30000)
                 if errors:
                     raise MediaError(f"motion page error: {errors[0][:200]}")
                 pg.evaluate("document.fonts.ready")
+                if pg.evaluate("document.querySelectorAll('image').length"):
+                    pg.wait_for_timeout(400)          # cut-out photos: let them decode before the first frame
                 for i in range(frames):
                     pg.evaluate(f"window.frame({i / fps:.4f})")
                     enc.stdin.write(pg.screenshot(type="jpeg", quality=92))

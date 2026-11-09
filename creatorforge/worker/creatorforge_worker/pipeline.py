@@ -21,7 +21,7 @@ from .providers import delivery, gemini_tts, speech
 from .config import Config, VoiceProfile
 from .library import Library
 from .media import captions as cap
-from .media import cards, charts, globe, layout, maps, match, motion, objects, quality, render, sfx, verify
+from .media import cards, charts, globe, layout, maps, match, motion, objects, quality, render, sfx, verify, vox
 from .media import ff
 from .media.ff import Cancelled, MediaError
 
@@ -146,6 +146,9 @@ _PAPERWORK = re.compile(r"\b(newspapers?|front[- ]pages?|headlines?|mastheads?|a
 
 class Pipeline:
     def __init__(self, cfg: Config, store: JobStore, library: Library | None = None):
+        # the cut-out photo library (Vox scenes, animated objects) lives with the pod's data
+        os.environ.setdefault("CF_CUTOUTS", str(cfg.data_dir / "cutouts"))
+        os.environ.setdefault("CF_CUTOUT_MODEL", str(cfg.data_dir / "models" / "isnet-general-use.onnx"))
         self.cfg = cfg
         self.store = store
         self.library = library or Library(cfg.data_dir / "library", cfg.allow_mock)
@@ -1821,6 +1824,13 @@ class Pipeline:
                 credits.append(credit)
         return clip
 
+    @staticmethod
+    def _accent(spec) -> str:
+        """The video's one accent colour: the brand kit's, else yellow (the Vox explainer yellow)."""
+        b = spec.brand or {}
+        acc = str(b.get("accent") or b.get("accent_color") or "").strip()
+        return acc if re.fullmatch(r"#[0-9A-Fa-f]{6}", acc) or acc.lower() in vox.ACCENTS else "yellow"
+
     def _chart_clip(self, spec, beat: dict, length: float, size: tuple[int, int], work: Path,
                     job: dict | None = None, picture: Path | None = None) -> Path | None:
         """An animated number graphic for a beat: the writer's Chart: line, or - in the editorial looks - a Text:
@@ -1844,6 +1854,10 @@ class Pipeline:
                     if out.is_file():
                         return out
                     try:
+                        if kind in vox.KINDS:          # the Vox collage scenes (real cut-outs, big type)
+                            return vox.render(kind, extra[kind], f"{vtheme}@{self._accent(spec)}", size[0], size[1],
+                                              seconds, out, work, lib=self.cfg.data_dir / "cutouts",
+                                              model=self.cfg.data_dir / "models" / "isnet-general-use.onnx")
                         if kind == "object":
                             plan = objects.parse(extra[kind])
                             if plan is None:

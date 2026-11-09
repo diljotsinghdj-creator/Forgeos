@@ -17,6 +17,14 @@ from . import director
 
 # ---- the catalogue the script AI chooses from (exact syntax) --------------------------------------------------
 CATALOG = """GRAPHICS (pick ONE per line; labels and on-screen words in ENGLISH; copy facts only from the line itself):
+Hero: <object> [+ <object>] | <HEADLINE 2-4 words> | <tag> · <tag> | <short note>
+    - THE MAIN LOOK: a big real cut-out photo of an object, place or public figure (person:Full Name), a black-box
+      headline, small tags and a note. Objects: hand pointing, cash, coins, gavel, handcuffs, ballot box, evm,
+      megaphone, microphone, crown, puppet, mask, chain, padlock, newspaper, television, smartphone, laptop, server,
+      magnifying glass, documents, clock, hourglass, light bulb, ladder, trophy, factory chimney, tractor, crowd,
+      parliament, supreme court, red fort, india gate, village, skyline, office building ... (any everyday object)
+      e.g. Hero: smartphone + crowd | ONE MESSAGE | 8 AM · every day | sent to lakhs of groups
+           Hero: person:Amit Shah | THE CLAIM | Kota · 2018
 Chart: <number> | <what it counts>              - one number counting up (e.g. Chart: ₹29.7 crore | Google ads in 30 days)
 Chart: <a> vs <b> | <label a>, <label b>        - two numbers as bars
 Pie: <n>% | <what>                               - a share
@@ -49,8 +57,10 @@ ONE animated graphic that SHOWS what the line says - the viewer must understand 
 RULES:
 - English on screen. Short labels (max 6 words). Never invent numbers, names, dates or quotes not in the line.
 - Variety: never the same graphic type on two lines in a row; at most 1 Statement in every 4 lines.
-- Numbers -> Chart/Pie/Icons. Dates -> Calendar/Timeline. Places -> Map. People, objects, actions -> Animate.
-- Real people: never draw them; name them in labels only.
+- Numbers -> Chart/Pie/Icons. Dates -> Calendar/Timeline. Places on a map -> Map. People, objects, institutions,
+  ideas -> Hero (a metaphor object: power -> crown, control -> puppet, lies -> mask, law -> gavel, money -> cash).
+  Movement or a process -> Animate. About half the lines should be Hero.
+- Real people: only as person:Full Name in a Hero (their real photo); never drawn or cartoon.
 Return JSON only: {{"lines": [{{"n": <line number>, "graphic": "<one line from the catalogue>"}}]}}"""
 
 KINDS = set(director.FULL_FRAME) | {"chart"}
@@ -310,6 +320,12 @@ def rule_graphic(line: str, prev_kind: str = "", prev_graphic: str = "") -> str:
     if place and prev_kind != "map":
         return f"Map: {place}" + (f" | {label}" if label else "")
     verb = next((v for k, v in HI_VERB.items() if _has(_tokens(line), k)), "")
+    from .media import cutouts
+    objs = [w for w in words if cutouts.resolve(w)][:2]
+    if objs and not verb and prev_kind != "hero":
+        subj = " + ".join(cutouts.resolve(w) for w in objs)
+        tags = " · ".join(t for t in (year, place) if t)
+        return f"Hero: {subj} | {' '.join(objs).upper()}" + (f" | {tags}" if tags else "")
     if nouns and prev_kind != "animate":
         if verb and len(nouns) >= 2:
             return f"Animate: {nouns[0]} {verb} {nouns[1]}"
@@ -318,6 +334,8 @@ def rule_graphic(line: str, prev_kind: str = "", prev_graphic: str = "") -> str:
         return f"Animate: {nouns[0]} → {nouns[1]}" if len(nouns) > 1 else f"Animate: {nouns[0]}"
     if year and prev_kind != "statement":
         return f"Statement: *{year}*"
+    if objs:
+        return f"Hero: {' + '.join(cutouts.resolve(w) for w in objs)} | {' '.join(objs).upper()}"
     if nouns and prev_kind == "animate":
         return f"Statement: *{nouns[0].upper()}*" if len(nouns) == 1 else f"Statement: {nouns[0]} and *{nouns[1]}*"
     return ""
@@ -345,6 +363,14 @@ def valid(direction: str, english: bool = True) -> str:
         except Exception:  # noqa: BLE001
             ok = False
         return "" if ok else "the graphic can't be drawn from this line (check its format)"
+    if kind == "hero":
+        from .media import vox
+        p = vox.plan_for("hero", spec)
+        if not p:
+            return "the graphic can't be drawn from this line (check its format)"
+        if len(p["headline"].split()) > 7:
+            return "Hero headline longer than 7 words"
+        return ""
     if kind in ("map", "globe", "fly"):
         from .media import maps
         return "" if maps.parse(re.sub(r"=[^→|]*", "", spec)) else "place not found on the map"
