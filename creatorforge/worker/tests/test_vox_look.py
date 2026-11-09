@@ -92,3 +92,34 @@ def test_a_video_with_hero_lines_renders_them(cfg, monkeypatch):
             c.get(f"/v1/productions/{jid}").json()), timeout=600)
         assert job["status"] == "READY", job
         assert len(list((cfg.jobs_dir / jid / "work").glob("hero_*.mp4"))) == 2
+
+
+def test_round_two_scenes_parse_and_validate():
+    assert vox.plan_for("pinmap", "Kota | A speech | HT, Sep 2018")["pin"]
+    assert vox.plan_for("pinmap", "Atlantis | x") is None
+    pb = vox.plan_for("pinboard", "gavel · 20 SEP 2018 · SOLVED | The case")
+    assert [i["kind"] for i in pb["items"]] == ["photo", "date", "word"] and pb["tone"] == "kraft"
+    assert vox.plan_for("clipping", "Rupee falls 9% | The Hindu, Jan 2024 | cash | 02")["number"] == "02"
+    assert vox.plan_for("bignumber", "1984 | television | War is peace")["number"] == "1984"
+    assert vox.plan_for("bignumber", "no digits | tv") is None
+    assert vox.plan_for("reveal", "a · b · c | Doc | b")["rows"] == ["a", "b", "c"]
+    assert vox.plan_for("opener", "tv | He noticed *something*")["headline"]
+    for k in vox.KINDS:
+        assert k in director.FULL_FRAME
+    assert vox_director.valid("Pinmap: Atlantis | x") == "place not found on the map"
+
+
+@pytest.mark.skipif(not motion.enabled(), reason="needs Chromium + Playwright")
+@pytest.mark.parametrize("kind,spec", [
+    ("desk", "documents + pen | Methylated DNA | 1 in 3"),
+    ("pinboard", "gavel · old phone · 20 SEP 2018 · SOLVED | The case"),
+    ("opener", "television | He noticed *something strange* | Chapter 2"),
+    ("reveal", "Fall 2019 · term gpa 3.33 · Dean's list | The transcript | gpa 3.33"),
+    ("clipping", "Rupee falls 9% | The Hindu, Jan 2024 | cash | 02"),
+    ("pinmap", "Kota | We can make any message viral | Hindustan Times, Sep 2018"),
+    ("bignumber", "1984 | television | War is peace | George Orwell")])
+def test_every_round_two_scene_renders(kind, spec, tmp_path, monkeypatch):
+    monkeypatch.setenv("CF_CUTOUT_FETCH", "0")
+    out = tmp_path / f"{kind}.mp4"
+    vox.render(kind, spec, "editorial@red", 640, 360, 2.0, out, tmp_path / "w", lib=tmp_path / "lib", fetch=False, fps=12)
+    assert out.stat().st_size > 2000

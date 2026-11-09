@@ -25,6 +25,14 @@ Hero: <object> [+ <object>] | <HEADLINE 2-4 words> | <tag> · <tag> | <short not
       parliament, supreme court, red fort, india gate, village, skyline, office building ... (any everyday object)
       e.g. Hero: smartphone + crowd | ONE MESSAGE | 8 AM · every day | sent to lakhs of groups
            Hero: person:Amit Shah | THE CLAIM | Kota · 2018
+Opener: <object or person:Name> | <headline, *key words* highlighted> | <kicker e.g. Chapter 2>  - hooks, new parts
+Pinmap: <Indian city/state or country> | <the real headline> | <publisher, month year>  - news tied to a place
+Clipping: <the real headline> | <publisher, month year> | <object> + <object> | <chapter number>  - a torn newspaper
+Pinboard: <centre item> · <item> · <item> | <title>  - who/what is connected (items: objects, person:Name,
+    dates like 20 SEP 2018, or one-word cards like SOLVED)
+Reveal: <document line> · <line> · <line> | <document name> | <the phrase to highlight>  - zoom into a document
+Desk: <object> + <object> | <LABEL> | <short note>  - research / an investigation on grid paper
+BigNumber: <a year or number> | <object> | <caption>  - a huge year/number with the subject breaking out of it
 Chart: <number> | <what it counts>              - one number counting up (e.g. Chart: ₹29.7 crore | Google ads in 30 days)
 Chart: <a> vs <b> | <label a>, <label b>        - two numbers as bars
 Pie: <n>% | <what>                               - a share
@@ -363,13 +371,16 @@ def valid(direction: str, english: bool = True) -> str:
         except Exception:  # noqa: BLE001
             ok = False
         return "" if ok else "the graphic can't be drawn from this line (check its format)"
-    if kind == "hero":
-        from .media import vox
-        p = vox.plan_for("hero", spec)
+    from .media import vox
+    if kind in vox.KINDS:
+        p = vox.plan_for(kind, spec)
         if not p:
-            return "the graphic can't be drawn from this line (check its format)"
-        if len(p["headline"].split()) > 7:
+            return ("place not found on the map" if kind == "pinmap"
+                    else "the graphic can't be drawn from this line (check its format)")
+        if kind == "hero" and len(p["headline"].split()) > 7:
             return "Hero headline longer than 7 words"
+        if kind == "opener" and len(p["headline"].replace("*", "").split()) > 9:
+            return "Opener headline longer than 9 words"
         return ""
     if kind in ("map", "globe", "fly"):
         from .media import maps

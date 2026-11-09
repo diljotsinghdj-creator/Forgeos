@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import os
 import re
 from pathlib import Path
@@ -28,10 +29,11 @@ from .ff import MediaError
 FONTS = Path(__file__).parent / "vendor" / "fonts"
 ACCENTS = {"yellow": "#F2C200", "red": "#D7262B", "blue": "#2D6BDB", "orange": "#F07A1A", "teal": "#14968A",
            "green": "#2E9B4F"}
-PAPERS = {"cream": "#EFE8DA", "grey": "#E5E3DE", "white": "#F4F2EE", "dark": "#1B1B1D"}
+PAPERS = {"cream": "#EFE8DA", "grey": "#E5E3DE", "white": "#F4F2EE", "dark": "#1B1B1D", "kraft": "#C9A777",
+          "grid": "#F1F0EC"}
 INK = "#141414"
 LAYOUTS = ("word", "disc", "box", "bars")
-KINDS = ("hero",)
+KINDS = ("hero", "desk", "pinboard", "opener", "reveal", "clipping", "pinmap", "bignumber")
 
 
 def accent_of(theme: str) -> str:
@@ -79,7 +81,122 @@ def parse_hero(spec: str) -> dict | None:
             "seed": _seed(spec) % 10000}
 
 
-PARSERS = {"hero": parse_hero}
+_DATE = re.compile(r"^(?:(\d{1,2})\s+)?([A-Za-z]{3,9})\.?\s+(?:(\d{1,2}),?\s+)?(\d{4})$")
+
+
+def _item(text: str) -> dict:
+    """An evidence item: a date card, a photo (object or person:Name) or a word card."""
+    from . import cutouts
+    t = text.strip()
+    m = _DATE.match(t)
+    if m:
+        return {"kind": "date", "mon": m.group(2)[:3].upper(), "day": m.group(1) or m.group(3) or "", "year": m.group(4)}
+    if t.lower().startswith("person:") or cutouts.resolve(t):
+        return {"kind": "photo", "name": t}
+    return {"kind": "word", "text": t.upper()[:22]}
+
+
+def _split_list(s: str) -> list[str]:
+    return [x.strip() for x in re.split(r"\s+\+\s+|·|•|;", s or "") if x.strip()]
+
+
+def parse_desk(spec: str) -> dict | None:
+    """'Desk: dna + documents + pen | Methylated DNA | note' - photos and props on grid paper."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    subs = _split_list(parts[0])[:4]
+    if not subs:
+        return None
+    return {"type": "desk", "subjects": subs, "label": parts[1] if len(parts) > 1 else "",
+            "note": parts[2] if len(parts) > 2 else "", "seed": _seed(spec) % 10000}
+
+
+def parse_evidence(spec: str) -> dict | None:
+    """'Evidence: person:Name · old phone · DEC 20 1962 · SOLVED | title' - the first item in the middle."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    items = [_item(x) for x in re.split(r"·|•|;", parts[0]) if x.strip()][:6]
+    if len(items) < 2:
+        return None
+    return {"type": "evidence", "items": items, "title": parts[1] if len(parts) > 1 else "",
+            "subjects": [i["name"] for i in items if i["kind"] == "photo"], "tone": "kraft", "seed": _seed(spec) % 10000}
+
+
+def parse_opener(spec: str) -> dict | None:
+    """'Opener: person:Name | He noticed *something strange* | Chapter 2' - colour panel + photo."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if len(parts) < 2 or not parts[0] or not parts[1]:
+        return None
+    return {"type": "opener", "subjects": [parts[0]], "headline": parts[1], "kicker": parts[2] if len(parts) > 2 else "",
+            "seed": _seed(spec) % 10000}
+
+
+def parse_reveal(spec: str) -> dict | None:
+    """'Reveal: line · line · line | title | the phrase to highlight' - a magnifier sweeps a document."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    rows = [x.strip() for x in re.split(r"·|•|;", parts[0]) if x.strip()][:7]
+    if not rows:
+        return None
+    return {"type": "reveal", "rows": rows, "title": parts[1] if len(parts) > 1 else "",
+            "mark": parts[2] if len(parts) > 2 else "", "subjects": ["hand holding"], "seed": _seed(spec) % 10000}
+
+
+def parse_headline(spec: str) -> dict | None:
+    """'Headline: Manufacturers may sack workers | The Hindu, Jan 2024 | factory + crowd | 02'."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if not parts or not parts[0]:
+        return None
+    num = next((p for p in parts[2:] if re.fullmatch(r"\d{1,3}", p)), "")
+    subs = next((_split_list(p) for p in parts[2:] if p and p != num), [])[:3]
+    return {"type": "headline", "text": parts[0][:110], "source": parts[1] if len(parts) > 1 else "",
+            "subjects": subs, "number": num, "seed": _seed(spec) % 10000}
+
+
+def parse_pinmap(spec: str) -> dict | None:
+    """'Pinmap: Kota | Amit Shah's speech to IT cell volunteers | Hindustan Times, Sep 2018'."""
+    from . import maps
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if not parts or not parts[0]:
+        return None
+    f = maps._find(parts[0])
+    if not f:
+        return None
+    if f["kind"] == "country":
+        country, pin = f, None
+    else:
+        pin = (f["lon"], f["lat"])
+        # the country around the place: India for Indian places, else the nearest country containing it
+        country = maps._find("India") if 6 <= f["lat"] <= 37 and 68 <= f["lon"] <= 98 else None
+        if country is None:
+            return None
+    rings = [r for r in country["rings"] if len(r) > 3]
+    xs = [x for r in rings for x, _ in r]
+    ys = [y for r in rings for _, y in r]
+    lon0, lon1, lat0, lat1 = min(xs), max(xs), min(ys), max(ys)
+    k = math.cos(math.radians((lat0 + lat1) / 2))
+    def norm(lon, lat):
+        return [round((lon - lon0) * k, 4), round(lat1 - lat, 4)]
+    span = max((lon1 - lon0) * k, lat1 - lat0)
+    shapes = [[[round(v / span, 4) for v in norm(x, y)] for x, y in r[:: max(1, len(r) // 400)]] for r in rings]
+    out = {"type": "pinmap", "place": f.get("name", parts[0]), "shapes": shapes,
+           "box": [round((lon1 - lon0) * k / span, 4), round((lat1 - lat0) / span, 4)],
+           "headline": parts[1] if len(parts) > 1 else "", "source": parts[2] if len(parts) > 2 else "",
+           "country": country.get("name", ""), "seed": _seed(spec) % 10000}
+    if pin:
+        out["pin"] = [round(v / span, 4) for v in norm(*pin)]
+    return out
+
+
+def parse_number(spec: str) -> dict | None:
+    """'Number: 1984 | television | War is peace | George Orwell' - a huge number the subject breaks out of."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if not parts or not re.search(r"\d", parts[0]):
+        return None
+    return {"type": "number", "number": parts[0][:8], "subjects": _split_list(parts[1])[:1] if len(parts) > 1 else [],
+            "caption": parts[2] if len(parts) > 2 else "", "kicker": parts[3] if len(parts) > 3 else "",
+            "seed": _seed(spec) % 10000}
+
+
+PARSERS = {"hero": parse_hero, "desk": parse_desk, "pinboard": parse_evidence, "opener": parse_opener,
+           "reveal": parse_reveal, "clipping": parse_headline, "pinmap": parse_pinmap, "bignumber": parse_number}
 
 
 def plan_for(kind: str, spec: str) -> dict | None:
@@ -88,14 +205,15 @@ def plan_for(kind: str, spec: str) -> dict | None:
 
 
 # ---- pictures -------------------------------------------------------------------------------------------------------
-def _pictures(plan: dict, lib: Path | None, model: Path | None, fetch: bool) -> None:
+def _pictures(plan: dict, lib: Path | None, model: Path | None, fetch: bool,
+              sources: list[tuple[str, str]] | None = None) -> None:
     """Each subject: a cut-out photo {img, w, h, credit} or the vector icon {o} when there's no photo."""
     from . import cutouts
     from .scene_anim import find_icon, icon_nodes
     out = []
     for s in plan.get("subjects", []):
         name = s if s.lower().startswith("person:") else s.lower()
-        c = cutouts.get(name, lib, model=model, fetch=fetch)
+        c = cutouts.get(name, lib, model=model, fetch=fetch, sources=sources)
         if c is not None:
             from PIL import Image
             with Image.open(c.path) as im:
@@ -310,7 +428,145 @@ function hero(){
   if(P.credit){mono(L.front,P.credit,W-U*.03,H-U*.025,{size:U*.014,anchor:'end',fill:DARK?'#BBBBBB':'#555555'})}
 }
 
-const SCENES={hero};
+// ---- more kit: torn paper, tape, pins, prints ----
+function torn(g,x,y,w,h,fill,o){o=o||{};const pts=[];const st=Math.max(6,Math.round(w/(U*.018)));const j=U*.006;
+  for(let i=0;i<=st;i++)pts.push([x+w*i/st,y+(rnd()-.5)*j*(o.top===false?0:1)]);
+  const sv=Math.max(4,Math.round(h/(U*.018)));for(let i=1;i<=sv;i++)pts.push([x+w+(rnd()-.5)*j*(o.side===false?0:1),y+h*i/sv]);
+  for(let i=st;i>=0;i--)pts.push([x+w*i/st,y+h+(rnd()-.5)*j*2.2]);
+  for(let i=sv;i>0;i--)pts.push([x+(rnd()-.5)*j*(o.side===false?0:1),y+h*i/sv]);
+  return g.polygon(pts.map(q=>q.join(',')).join(' ')).fill(fill||'#F4F0E6')}
+function tape(g,x,y,w,ang){const t=g.rect(w,w*.32).move(x-w/2,y-w*.16).fill('#EFE6C9').opacity(.82)
+  .attr({transform:`rotate(${ang||0},${x},${y})`});return t}
+function pinAt(g,x,y){const p=g.group();p.circle(U*.026).center(x,y).fill('#B88A2E').stroke({color:'#6B4E14',width:Math.max(1,U*.002)});
+  p.circle(U*.009).center(x-U*.004,y-U*.004).fill('#F2D58A');p.attr({filter:'url(#softshadow)'});return p}
+function printCard(g,pic,x,y,h,ang,o){ // a photo print: white card with the cut-out (or its name) on it
+  o=o||{};const grp=g.group();const ar=pic&&pic.img?pic.w/pic.h:1;const iw=Math.min(h*ar,h*1.5),ih=iw/ar;const pad=h*.06;
+  grp.rect(iw+pad*2,ih+pad*2+(o.caption?h*.14:0)).move(x-iw/2-pad,y-ih/2-pad).fill('#FBFAF6').attr({filter:'url(#shadow)'});
+  if(pic&&pic.img)grp.image(pic.img).size(iw,ih).move(x-iw/2,y-ih/2);
+  else if(pic&&pic.o){const sub=picture(grp,pic,x,y+ih/2,ih*.9)}
+  else T(grp,(o.label||'').toUpperCase(),h*.12,x,y,{family:'Archivo',weight:400,fill:INK});
+  if(o.caption)T(grp,o.caption.toUpperCase(),h*.07,x,y+ih/2+pad+h*.06,{family:'Mono',weight:700,fill:INK});
+  grp.attr({transform:`rotate(${ang||0},${x},${y})`});return grp}
+function picOf(name){return (P.pics||[]).find(p=>p.name===name)}
+function rich(g,s,size,x,y,o){ // a headline where *words* get the accent highlighter
+  o=o||{};const parts=String(s).split(/(\*[^*]+\*)/).filter(Boolean);const grp=g.group();let cx=0;const marks=[];
+  parts.forEach(pt=>{const hl=pt.startsWith('*');const t=T(grp,pt.replace(/\*/g,''),size,cx,0,{family:o.family||'Playfair',weight:o.weight||900,anchor:'start',fill:o.fill||FG});
+    const bb=t.bbox();if(hl)marks.push(bb);cx+=bb.width+size*.18});
+  marks.forEach((bb,i)=>highlight(grp,bb,(o.start||.6)+.15*i,o.mark||ACC));
+  const w=cx-size*.18;grp.attr({transform:`translate(${o.anchor==='middle'?x-w/2:x},${y})`});grp.data('w',w);return grp}
+
+// ---- round 2 scenes ----
+function desk(){ // grid paper, a pen, stacked photo prints, a paperclip and a label strip
+  const g=L.paper.group().opacity(.55);const st=Math.round(U/22);
+  for(let x=0;x<W;x+=st)g.line(x,0,x,H).stroke({color:'#9DB7CF',width:1});for(let y=0;y<H;y+=st)g.line(0,y,W,y).stroke({color:'#9DB7CF',width:1});
+  const pen=L.back.group();pen.rect(U*.42,U*.03).move(-U*.21,-U*.015).radius(U*.015).fill('#1E2A44');pen.rect(U*.06,U*.034).move(U*.17,-U*.017).fill('#111');
+  pen.attr({transform:`translate(${W*.12},${H*.2}) rotate(-38)`});slide(pen,.05,-W*.1,0);
+  const subs=P.subjects||[];const cx=W*.5,cy=TALL?H*.36:H*.44,h=TALL?H*.26:H*.46;
+  subs.forEach((n,i)=>{const k=subs.length-1-i;const pic=picOf(n);const ang=[-4,3,-2,5][i%4];
+    const c=printCard(L.hero,pic,cx+(k-(subs.length-1)/2)*h*.28,cy+k*h*.04,h*(i===0?1:.82),ang,{label:n});
+    drop(c,.2+k*.18,H*.25,ang*2)});
+  if(P.label){const strip=L.front.group();const lb=T(strip,P.label.toUpperCase(),U*.05,0,0,{family:'Bebas',weight:400,anchor:'start',fill:INK,ls:'0.04em'});
+    const bb=lb.bbox();strip.rect(bb.width+U*.06,bb.height+U*.02).move(bb.x-U*.03,bb.y-U*.01).fill(ACC).back();
+    const x=cx-h*.55,y=cy+h*.58;strip.attr({transform:`translate(${x},${y}) rotate(-3)`});slide(strip,.95,-W*.1,0)}
+  const clip=L.front.group();clip.path(`M0 ${U*.12} L0 ${U*.02} Q0 0 ${U*.018} 0 Q${U*.036} 0 ${U*.036} ${U*.02} L${U*.036} ${U*.1}`).fill('none')
+    .stroke({color:'#9AA0A6',width:U*.006,linecap:'round'});clip.attr({transform:`translate(${cx-h*.48},${cy-h*.56})`});wipe(clip,.9);
+  if(P.note){const nx=TALL?W*.12:cx+h*.62,ny=TALL?cy+h*.95:cy-h*.4;const t=T(L.front,P.note,U*.032,nx,ny,{family:'Mono',weight:700,anchor:'start',fill:INK});fit(t,W-nx-U*.05);wipe(t,1.2);
+    const u=L.front.line(nx,ny+U*.04,nx,ny+U*.04).stroke({color:INK,width:U*.004});
+    at(1.3,.5,p=>u.plot(nx,ny+U*.04,nx+t.bbox().width*p,ny+U*.04),E.inout)}}
+
+function evidence(){ // a pinned board on kraft paper: cards, red string pin to pin, tape, an EVIDENCE tag
+  const it=P.items, n=it.length;const cx=W/2,cy=TALL?H*.36:H*.43;const R=TALL?[W*.34,H*.2]:[W*.32,H*.27];
+  const pos=[[cx,cy]];for(let i=1;i<n;i++){const a=-Math.PI*.82+(i-1)*(Math.PI*1.64/Math.max(1,n-2))*(n>2?1:0)+(n===2?Math.PI*.82:0);
+    pos.push([cx+Math.cos(a)*R[0],cy+Math.sin(a)*R[1]*1.05])}
+  const sz=TALL?U*.3:U*.3;const pins=[];
+  it.forEach((x,i)=>{const [px,py]=pos[i];const ang=(rnd()-.5)*8;const h=i===0?sz*1.25:sz*.78;let card;
+    if(x.kind==='photo'){const pic=picOf(x.name);card=printCard(L.hero,pic||null,px,py,h,ang,{label:x.name.replace(/^person:/i,''),
+        caption:x.name.toLowerCase().startsWith('person:')?x.name.slice(7):''});}
+    else if(x.kind==='date'){card=L.hero.group();const w=h*.62,hh=h*.75;torn(card,px-w/2,py-hh/2,w,hh,'#F6F2E7');
+      T(card,x.mon,hh*.16,px,py-hh*.28,{family:'Archivo',weight:400,fill:INK});T(card,x.day||'',hh*.36,px,py+hh*.02,{family:'Archivo',weight:400,fill:INK});
+      T(card,x.year,hh*.14,px,py+hh*.32,{family:'Archivo',weight:400,fill:INK});card.attr({transform:`rotate(${ang},${px},${py})`,filter:'url(#shadow)'})}
+    else{card=L.hero.group();const t=T(card,x.text,h*.2,px,py,{family:'Archivo',weight:400,fill:INK});const bb=t.bbox();
+      torn(card,bb.x-h*.08,bb.y-h*.06,bb.width+h*.16,bb.height+h*.12,'#F6F2E7').back();card.attr({transform:`rotate(${ang},${px},${py})`,filter:'url(#shadow)'})}
+    const bb=card.rbox(draw);const pinY=bb.y+U*.02;pins.push([px,pinY]);
+    drop(card,.15+i*.22,H*.2,ang);const pn=pinAt(L.front,px,pinY);popIn(pn,px,pinY,.35+i*.22,.3);
+    if(i>0)tape(L.front,bb.x+bb.width*.15,bb.y+bb.height*.92,U*.07,-20)});
+  for(let i=1;i<n;i++){const [x1,y1]=pins[0],[x2,y2]=pins[i];const ln=L.mid.line(x1,y1,x1,y1).stroke({color:'#C0262D',width:U*.004});
+    at(.5+i*.25,.45,p=>ln.plot(x1,y1,x1+(x2-x1)*p,y1+(y2-y1)*p),E.inout)}
+  const ev=tag(L.front,'EVIDENCE',0,0,{size:U*.026});const eb=ev.bbox();ev.attr({transform:`translate(${cx-eb.width/2},${TALL?H*.6:H*.74})`});wipe(ev,1.4);
+  if(P.title){const g=boxText(L.front,P.title,U*.05,W/2,TALL?H*.08:H*.06,{anchor:'middle',maxw:W*.8,most:1});g.children().forEach((r,i)=>slide(r,.1,0,-H*.05))}
+  const q=L.front.group();q.circle(U*.09).center(W-U*.12,TALL?H*.6:H*.72).fill('none').stroke({color:'#C0262D',width:U*.006});
+  T(q,'?',U*.06,W-U*.12,TALL?H*.6:H*.72,{family:'Archivo',weight:400,fill:'#C0262D'});wipe(q,1.6)}
+
+function opener(){ // a colour panel with the headline, the photo beside it
+  const left=!TALL;const pw=left?W*.46:W,ph=left?H:H*.42;const pan=L.back.rect(pw,ph).move(0,0).fill(ACC);
+  slide(pan,0,left?-pw:0,left?0:-ph);
+  const pic=(P.pics||[])[0];
+  if(pic){const h=left?H*.86:H*.46;const x=left?W*.72:W/2;const y=left?H*.97:H*.94;const g=picture(L.hero,pic,x,y,h);drop(g,.3,H*.2,-2)}
+  const size=left?U*.1:U*.12;const ls=lines(P.headline.replace(/\*/g,''),size,(left?pw:W)*.84,'Playfair',900,3);
+  const words=P.headline.split(/(\*[^*]+\*)/).filter(Boolean);const hi=new Set();words.forEach(w=>{if(w.startsWith('*'))w.replace(/\*/g,'').split(/\s+/).forEach(x=>hi.add(x))});
+  const x0=left?W*.05:W*.08;let y=left?H*.5-ls.length*size*.6:H*.12;
+  if(P.kicker){const k=T(L.front,P.kicker.toUpperCase(),U*.03,x0,y-size*.75,{family:'Inter',weight:800,anchor:'start',fill:INK,ls:'0.16em'});wipe(k,.3)}
+  ls.forEach((ln,i)=>{const row=L.front.group();let cx=0;ln.split(' ').forEach(w=>{const t=T(row,w,size,cx,0,{family:'Playfair',weight:900,anchor:'start',fill:hi.has(w)?'#FFFFFF':INK});cx+=t.bbox().width+size*.22});
+    row.attr({transform:`translate(${x0},${y+i*size*1.1})`});slide(row,.45+i*.15,-W*.05,0)})}
+
+function reveal(){ // a document; a magnifier sweeps it and the beam shows the text big and sharp
+  const docW=TALL?W*.84:W*.56,docH=TALL?H*.4:H*.58,dx=W/2-docW/2,dy=TALL?H*.16:H*.16;
+  const doc=L.back.group();torn(doc,dx,dy,docW,docH,'#FBF9F3');doc.attr({filter:'url(#shadow)'});slide(doc,0,0,H*.1);
+  const rows=P.rows;const rs=docH/(rows.length+2.2);
+  rows.forEach((r,i)=>{const t=T(L.back,r,rs*.42,dx+docW*.08,dy+rs*(i+1.4),{family:'Mono',weight:700,anchor:'start',fill:'#3A3A3A'});wipe(t,.15+i*.05);
+    if(P.mark&&r.toLowerCase().includes(P.mark.toLowerCase()))highlight(L.back,t.bbox(),1.6)});
+  if(P.title){const g=boxText(L.front,P.title,U*.05,W/2,TALL?H*.07:H*.075,{anchor:'middle',maxw:W*.8,most:1});g.children().forEach(r=>slide(r,.1,0,-H*.04))}
+  // the lens: a magnified copy of the document inside a circle that sweeps down
+  const R=U*(TALL?.17:.15);const lens=L.front.group();const clipC=draw.clip().add(draw.circle(R*2).center(0,0));
+  const mag=lens.group().clipWith(clipC);const inner=mag.group();
+  inner.rect(docW,docH).move(dx,dy).fill('#FFFFFF');
+  rows.forEach((r,i)=>T(inner,r,rs*.42,dx+docW*.08,dy+rs*(i+1.4),{family:'Mono',weight:700,anchor:'start',fill:'#111'}));
+  lens.circle(R*2).center(0,0).fill('none').stroke({color:'#222',width:U*.012});
+  const handle=lens.rect(U*.03,U*.16).move(R*.62,R*.62).radius(U*.01).fill('#2A2A2A').attr({transform:`rotate(-45,${R*.62},${R*.62})`});
+  const hand=(P.pics||[])[0];if(hand&&hand.img){const hh=U*.22;lens.image(hand.img).size(hh*hand.w/hand.h,hh).move(R*.8,R*.75)}
+  lens.attr({filter:'url(#shadow)'});lens.opacity(0);
+  const path=[[dx+docW*.25,dy+rs*1.2],[dx+docW*.62,dy+rs*2.5],[dx+docW*.35,dy+rs*(rows.length*.8+1)]];
+  at(.5,Math.max(1.5,DUR-.9),p=>{lens.opacity(Math.min(1,p*6));const q=p*(path.length-1),i=Math.min(path.length-2,Math.floor(q)),f=q-i;
+    const x=path[i][0]+(path[i+1][0]-path[i][0])*f,y=path[i][1]+(path[i+1][1]-path[i][1])*f;
+    lens.attr({transform:`translate(${x},${y})`});const z=1.8;inner.attr({transform:`translate(${-x*z},${-y*z}) scale(${z})`})},E.inout)}
+
+function headline(){ // a torn newspaper headline with cut-outs around it, a big chapter number
+  const cw=TALL?W*.82:W*.44,ch=TALL?H*.2:H*.36,cx=W/2-cw/2+(TALL?0:W*.04),cy=TALL?H*.34:H*.42;
+  if(P.number){const n=T(L.back,P.number,TALL?W*.38:H*.42,TALL?W/2:W*.2,TALL?H*.16:H*.36,{family:'Inter',weight:800,fill:DARK?'#F3EFE6':'#FFFFFF'});
+    n.attr({style:'paint-order:stroke',stroke:DARK?'none':'#00000010'});slide(n,.05,-W*.05,0)}
+  disc(L.back,cx+cw*.85,cy-ch*.05,U*.12,ACC);
+  const subs=P.subjects||[];subs.forEach((nm,i)=>{const pic=picOf(nm);if(!pic)return;const h=TALL?H*.24:H*.5;
+    const x=[cx+cw*.5,cx-cw*.02,cx+cw*1.02][i%3],y=cy+(i===0?ch*.05:ch*.75);const g=picture(L.mid,pic,x,y,i===0?h:h*.6);drop(g,.25+i*.2,H*.25,i?4:-3)});
+  const card=L.hero.group();torn(card,cx,cy,cw,ch,'#EEE9DC');card.attr({filter:'url(#shadow)'});
+  const size=Math.min(ch*.26,U*.065);const ls=lines(P.text,size,cw*.86,'Playfair',700,3);
+  ls.forEach((l,i)=>T(card,l,size,cx+cw*.07,cy+ch*.2+i*size*1.12,{family:'Playfair',weight:700,anchor:'start',fill:'#1A1A1A'}));
+  if(P.source)T(card,P.source.toUpperCase(),U*.018,cx+cw*.07,cy+ch*.9,{family:'Mono',weight:700,anchor:'start',fill:'#555'});
+  drop(card,.6,H*.2,-4);tape(L.front,cx+cw*.1,cy+U*.01,U*.09,-12);
+}
+
+function pinmap(){ // the country outline; the place highlighted; the headline clipping drops on the pin
+  const bx=P.box,ms=Math.min((TALL?W*.86:W*.5)/bx[0],(TALL?H*.42:H*.72)/bx[1]);const ox=(TALL?W/2:W*.34)-bx[0]*ms/2,oy=(TALL?H*.28:H*.42)-bx[1]*ms/2;
+  const m=L.back.group();P.shapes.forEach(r=>{m.polygon(r.map(q=>[ox+q[0]*ms,oy+q[1]*ms].join(',')).join(' ')).fill(P.pin?'#E2DBCC':ACC)
+    .stroke({color:'#9A9282',width:Math.max(1,U*.0016)})});m.opacity(0);at(0,.6,p=>m.opacity(p));
+  if(P.country){const c=T(L.back,P.country.toUpperCase(),U*.03,ox+bx[0]*ms/2,oy-U*.03,{family:'Inter',weight:800,ls:'0.3em',fill:'#8C8577'});wipe(c,.3)}
+  let px=ox+bx[0]*ms/2,py=oy+bx[1]*ms/2;
+  if(P.pin){px=ox+P.pin[0]*ms;py=oy+P.pin[1]*ms;const ring=L.mid.circle(U*.05).center(px,py).fill(ACC).opacity(.5);popIn(ring,px,py,.5);
+    const dot=L.mid.circle(U*.02).center(px,py).fill('#C0262D').stroke({color:'#FFFFFF',width:U*.004});popIn(dot,px,py,.55);
+    const lb=tag(L.front,P.place,px+U*.025,py-U*.05);slide(lb,.7,W*.03,0)}
+  if(P.headline){const cw=TALL?W*.8:W*.38,ch=TALL?H*.16:H*.26;const cx=TALL?W*.1:Math.min(W*.58,px+U*.12),cy=TALL?H*.58:Math.max(H*.14,py-ch*.4);
+    const card=L.hero.group();torn(card,cx,cy,cw,ch,'#F3EFE4');const size=Math.min(ch*.24,U*.05);
+    lines(P.headline,size,cw*.86,'Playfair',700,3).forEach((l,i)=>T(card,l,size,cx+cw*.07,cy+ch*.22+i*size*1.12,{family:'Playfair',weight:700,anchor:'start',fill:'#1A1A1A'}));
+    if(P.source)T(card,P.source.toUpperCase(),U*.017,cx+cw*.07,cy+ch*.88,{family:'Mono',weight:700,anchor:'start',fill:'#555'});
+    card.attr({filter:'url(#shadow)'});drop(card,1.0,H*.2,-3);const pn=pinAt(L.front,cx+cw/2,cy+U*.015);popIn(pn,cx+cw/2,cy+U*.015,1.4,.3)}}
+
+function number(){ // a huge number; the subject breaks out of it
+  const pic=(P.pics||[])[0];const big=T(L.back,P.number,TALL?W*.42:H*.5,W/2,TALL?H*.22:H*.3,{family:'Anton',weight:400,fill:ACC});fit(big,W*.92);
+  slide(big,.05,0,H*.06);
+  if(pic){const h=TALL?H*.36:H*.56;const g=picture(L.hero,pic,W/2,TALL?H*.64:H*.86,h);drop(g,.35,H*.25,-2)}
+  if(P.caption){const c=T(L.front,P.caption,U*.04,W/2,TALL?H*.7:H*.92,{family:'Inter',weight:800,fill:'#C0262D'});wipe(c,.9)}
+  if(P.kicker){const k=T(L.front,P.kicker.split('').join(' ').toUpperCase(),U*.022,W/2,TALL?H*.08:H*.06,{family:'Inter',weight:800,fill:'#C0262D',ls:'0.3em'});wipe(k,.2)}}
+
+const SCENES={hero,desk,evidence,opener,reveal,headline,pinmap,number};
 async function boot(){
   try{await Promise.all(Array.from(document.fonts).map(f=>f.load()))}catch(e){}
   const imgs=[];(P.pics||[]).forEach(p=>{if(p.img)imgs.push(new Promise(r=>{const i=new Image();i.onload=i.onerror=r;i.src=p.img}))});
@@ -325,7 +581,7 @@ boot();
 
 def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: float, out: Path, work: Path,
            lib: Path | None = None, model: Path | None = None, fetch: bool = True, fps: int | None = None,
-           tone: str = "cream") -> Path:
+           tone: str = "cream", sources: list[tuple[str, str]] | None = None) -> Path:
     """Draws one Vox scene into `out` (H.264)."""
     from . import motion
     if not motion.enabled():
@@ -333,14 +589,15 @@ def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: f
     plan = plan_for(kind, spec)
     if plan is None:
         raise MediaError(f"vox: nothing to draw from {spec!r}")
-    _pictures(plan, lib, model, fetch)
-    if not plan["pics"]:
+    _pictures(plan, lib, model, fetch, sources)
+    if plan["type"] == "hero" and not plan["pics"]:
         raise MediaError("vox: no picture or icon for the subject")
     fps = int(fps or os.environ.get("CF_MOTION_FPS") or (60 if os.environ.get("CF_FPS") == "60" else 30))
     seconds = max(1.5, float(seconds))
+    tone = plan.get("tone") or ("grid" if plan["type"] in ("desk", "reveal") else tone)
     paper_hex = PAPERS.get(tone, PAPERS["cream"])
     bg, grain = paper(paper_hex, width, height, work)
-    kit = {"acc": accent_of(theme), "ink": INK, "paper": paper_hex, "dark": tone == "dark",
+    kit = {"acc": accent_of(theme), "ink": INK, "paper": paper_hex, "dark": tone == "dark", "tone": tone,
            "bg": bg.as_uri(), "grain": grain.as_uri()}
     page = (_PAGE.replace("%SVGJS%", motion.VENDOR.read_text(encoding="utf-8")).replace("%FONTS%", _font_css())
             .replace("%PAPER%", paper_hex).replace("%PLAN%", json.dumps(plan, ensure_ascii=False))

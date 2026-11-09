@@ -1857,7 +1857,8 @@ class Pipeline:
                         if kind in vox.KINDS:          # the Vox collage scenes (real cut-outs, big type)
                             return vox.render(kind, extra[kind], f"{vtheme}@{self._accent(spec)}", size[0], size[1],
                                               seconds, out, work, lib=self.cfg.data_dir / "cutouts",
-                                              model=self.cfg.data_dir / "models" / "isnet-general-use.onnx")
+                                              model=self.cfg.data_dir / "models" / "isnet-general-use.onnx",
+                                              sources=(providers.photo_sources(job["id"], self.cfg) if job else None))
                         if kind == "object":
                             plan = objects.parse(extra[kind])
                             if plan is None:

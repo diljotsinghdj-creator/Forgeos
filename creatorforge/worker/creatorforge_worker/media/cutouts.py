@@ -192,6 +192,9 @@ ALIASES: dict[str, str] = {
     "letter": "envelope", "secret": "padlock", "freedom": "key", "trap": "chain", "plane": "plane", "flight": "plane",
 }
 
+_PLACES = {"parliament", "new parliament", "red fort", "india gate", "supreme court", "rashtrapati bhavan", "taj mahal",
+           "gateway of india", "qutub minar", "capitol", "white house", "kremlin", "big ben"}
+
 _OK_LICENCE = re.compile(r"^(public domain|pd\b|pd-|cc0|cc by(-sa)?( \d\.\d)?|cc-by(-sa)?(-\d\.\d)?|no restrictions)",
                          re.I)
 
@@ -251,8 +254,49 @@ _locks: dict[str, threading.Lock] = {}
 _locks_guard = threading.Lock()
 
 
+def env_sources() -> list[tuple[str, str]]:
+    """Stock photo keys set on the pod (PIXABAY_KEY, UNSPLASH_KEY)."""
+    out = []
+    if os.environ.get("PIXABAY_KEY"):
+        out.append(("pixabay", os.environ["PIXABAY_KEY"]))
+    if os.environ.get("UNSPLASH_KEY"):
+        out.append(("unsplash", os.environ["UNSPLASH_KEY"]))
+    return out
+
+
+def _candidates(name: str, sources: list[tuple[str, str]] | None, timeout: float) -> list[dict]:
+    """Photos to try, best source first. Objects: Pixabay/Unsplash (many shot on plain backgrounds, which cut out
+    cleanly), then Openverse, then Wikimedia Commons. Public figures and landmarks: Wikimedia Commons only (real,
+    openly licensed photos of the actual person or place)."""
+    person = name.startswith("person:")
+    place = name in _PLACES
+    out: list[dict] = []
+    if not person and not place:
+        from ..providers import stock_photo
+        plain = name.strip()
+        for provider, key in (sources if sources is not None else env_sources()):
+            if provider not in ("pixabay", "unsplash", "pexels") or not key:
+                continue
+            q = f"{plain} isolated white background" if provider == "pixabay" else f"{plain} isolated"
+            try:
+                out += stock_photo.search(provider, key, q, portrait=False, timeout=timeout)[:5]
+            except Exception:  # noqa: BLE001 - bad key / quota: next source
+                pass
+        try:
+            out += stock_photo.search("openverse", "", plain, portrait=False, timeout=timeout)[:3]
+        except Exception:  # noqa: BLE001
+            pass
+    query = (name.split(":", 1)[1] + " portrait") if person else CATALOG[name]
+    try:
+        from ..providers.archive_photo import search
+        out += search(query, timeout=timeout, limit=10)[:6]
+    except Exception:  # noqa: BLE001
+        pass
+    return out
+
+
 def get(word: str, lib: Path | None = None, model: Path | None = None, fetch: bool = True,
-        timeout: float = 25) -> Cutout | None:
+        timeout: float = 25, sources: list[tuple[str, str]] | None = None) -> Cutout | None:
     """A ready cut-out for a word (from the library, or fetched and made now when `fetch`), or None."""
     name = resolve(word)
     if not name:
@@ -270,19 +314,22 @@ def get(word: str, lib: Path | None = None, model: Path | None = None, fetch: bo
         hit = cached(name, lib)
         if hit:
             return hit
-        query = (name.split(":", 1)[1] + " portrait") if name.startswith("person:") else CATALOG[name]
-        try:
-            from ..providers.archive_photo import search
-            results = search(query, timeout=timeout, limit=10)
-        except Exception:  # noqa: BLE001 - offline / blocked: the vector icon is drawn instead
-            return None
-        for r in results[:6]:
+        results = _candidates(name, sources, timeout)
+        if not results:
+            return None                          # offline / blocked: the vector icon is drawn instead
+        for r in results[:10]:
             try:
                 raw = _download(r["url"], d, timeout)
                 out = make(raw, d / f"{_slug(name)}.png", model=model, person=name.startswith("person:"))
             except Exception:  # noqa: BLE001 - try the next photo
                 continue
             if out is not None:
+                if r.get("track") and r.get("key"):      # Unsplash's API terms: report the download
+                    try:
+                        import httpx
+                        httpx.get(r["track"], headers={"Authorization": f"Client-ID {r['key']}"}, timeout=10)
+                    except Exception:  # noqa: BLE001
+                        pass
                 (d / f"{_slug(name)}.json").write_text(json.dumps(
                     {"name": name, "credit": r.get("credit", ""), "source": r.get("url", ""),
                      "title": r.get("title", "")}, ensure_ascii=False), encoding="utf-8")
