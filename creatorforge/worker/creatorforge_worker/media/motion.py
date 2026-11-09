@@ -26,7 +26,7 @@ from pathlib import Path
 from .ff import MediaError
 
 KINDS = ("chart", "timeline", "steps", "pie", "squares", "animate", "clock", "calendar", "sign", "social", "comments",
-         "trending", "stamp")
+         "trending", "stamp", "statement")
 VENDOR = Path(__file__).parent / "vendor" / "svg.min.js"
 # Colour per scene (Vox rhythm): soft paper tints that change as the story moves on; "editorial~2" picks tint 2
 PALETTE = ("#F2EBDD", "#E3ECF2", "#F6E1DA", "#E4EDE1", "#F7EFD2")
@@ -101,6 +101,9 @@ def plan_for(kind: str, spec: str) -> dict | None:
         return {"type": "trending", "tag": head, "others": others}
     if kind == "stamp":
         return {"type": "stamp", "text": head.upper(), "on": tail}
+    if kind == "statement":
+        words = [{"w": w.strip("*"), "hi": w.startswith("*") or w.endswith("*")} for w in spec.split() if w.strip("*")]
+        return {"type": "statement", "words": words[:16]} if words else None
     if kind == "chart":
         from .charts import parse
         head, _, rest = spec.partition("|")
@@ -453,6 +456,24 @@ if(['clock','calendar','sign','social','comments','trending','stamp'].includes(T
       else{at(1.0,1.0,p=>{g.attr({transform:`translate(0,${y0+rowH*p})`});num.text(String(i+1+(p>.5?1:0)))},ease.inout)}});
     rows[n-1][0].front();
   }
+}
+
+if(T==='statement'){
+  // cut-out paper headline: each word on its own paper strip, slightly tilted, popping in as it is said
+  const TOP=TALL?H*.16:H*.14, BOT=TALL?H*.57:H*.74, maxw=W*.84;const ws=P.words;const n=ws.length;
+  let size=U*(TALL?.1:.092);const pad=()=>size*.28,gap=()=>size*.22,lh=()=>size*1.5;
+  const probe=stage.text('').font({size:size,weight:'bold'});
+  function layout(){const rows=[[]];let w=0;for(const it of ws){probe.font({size:size});probe.text(it.w.toUpperCase());const tw=probe.length()+pad()*2;
+      if(rows[rows.length-1].length&&w+tw>maxw){rows.push([]);w=0}rows[rows.length-1].push([it,tw]);w+=tw+gap()}return rows}
+  let rows=layout();while((rows.length*lh()>BOT-TOP||rows.some(r=>r.reduce((a,b)=>a+b[1],0)>maxw))&&size>U*.04){size*=.9;rows=layout()}
+  probe.remove();const y0=(TOP+BOT)/2-(rows.length-1)*lh()/2;let k=0;const per=Math.min(.32,Math.max(.12,(DUR*.5)/n));
+  rows.forEach((r,ri)=>{const tot=r.reduce((a,b)=>a+b[1],0)+gap()*(r.length-1);let x=W/2-tot/2;const y=y0+ri*lh();
+    r.forEach(([it,tw])=>{const g=stage.group();const h=size*1.25,rot=((k*37)%7-3)*.9;
+      g.rect(tw,h).move(-tw/2+size*.06,-h/2+size*.09).fill('#000').opacity(.18);
+      g.rect(tw,h).move(-tw/2,-h/2).fill(it.hi?ACC:'#FFFFFF').stroke({color:INK,width:Math.max(1.5,size*.02)});
+      txt(g,it.w.toUpperCase(),size,0,size*.04,{fill:INK});const cx=x+tw/2;g.opacity(0);
+      const st=.15+k*per;at(st,.28,p=>{g.opacity(Math.min(1,p*2));const s=1.25-.25*p;g.attr({transform:`translate(${cx},${y}) rotate(${rot}) scale(${s})`})},ease.back);
+      g.attr({transform:`translate(${cx},${y}) rotate(${rot})`});x+=tw+gap();k++})});
 }
 draw.rect(W,H).fill(grad).attr({'pointer-events':'none'});
 window.frame=function(t){
