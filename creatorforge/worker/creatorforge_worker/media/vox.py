@@ -1242,7 +1242,7 @@ function route(){ // a paper map; dashed routes draw themselves; the vehicle tra
     .opacity(P.atlas?1:.88).stroke(P.atlas?{color:'#8E7E5C',width:Math.max(1,U*.0015)}:{width:0}));
   if(!P.atlas)land.attr({style:'mix-blend-mode:multiply'});else depthOfField(land);wipe(land,0);
   if(P.title){const g=boxText(L.front,P.title,U*.05,W/2,TALL?H*.07:H*.075,{anchor:'middle',maxw:W*.84,most:1});g.children().forEach(r=>slide(r,.1,0,-H*.04))}
-  const pts=P.stops.map(st=>pr(st.lon,st.lat));{const e=pts[pts.length-1];FOCUS={x:e[0],y:e[1],rx:U*.07,ry:U*.06}}
+  const pts=P.stops.map(st=>pr(st.lon,st.lat));{const e=pts.length>=3?pts[Math.floor(pts.length/2)]:pts[pts.length-1];FOCUS={x:e[0],y:e[1],rx:U*.07,ry:U*.06}}   // a waypoint is the story
   // compass rose
   const cr=L.mid.group(),cx=U*.13,cy=TALL?H*.62:H*.68,R=U*.07;cr.circle(R*2).center(cx,cy).fill('none').stroke({color:'#3A2A1A',width:U*.002});
   [[0,-1],[1,0],[0,1],[-1,0]].forEach(([a,b],i)=>cr.polygon([[cx+a*R,cy+b*R],[cx+b*R*.18,cy-a*R*.18],[cx-b*R*.18,cy+a*R*.18]].map(p=>p.join(',')).join(' ')).fill(i%2?'#7A5230':'#3A2A1A'));
@@ -1414,7 +1414,7 @@ function markerLayer(){if(!P.marker)return;const f=FOCUS||{x:W/2,y:H*.45,rx:U*.2
   // the note goes where there is room: beside the circle, else above or below it
   const roomR=W-(f.x+f.rx),roomL=f.x-f.rx,probe=T(g,P.marker,U*.058,0,0,{family:'Caveat',weight:700});const need=probe.bbox().width+U*.12;probe.remove();
   let right=roomR>=roomL,nx,ny;
-  if(Math.max(roomR,roomL)>=Math.min(need,W*.3)){nx=right?f.x+f.rx+U*.08:f.x-f.rx-U*.08;ny=Math.max(H*.14,f.y-f.ry-U*.04)}
+  if(Math.max(roomR,roomL)>=Math.min(need,W*.3)){nx=right?f.x+f.rx+U*.08:f.x-f.rx-U*.08;ny=Math.max(H*.2,f.y-f.ry-U*.04)}
   else{right=true;nx=Math.max(U*.06,Math.min(W-need,f.x-need/2));ny=f.y+f.ry+U*.1<(TALL?H*.6:H*.76)?f.y+f.ry+U*.1:Math.max(H*.14,f.y-f.ry-U*.06)}
   const t=T(g,P.marker,U*.058,nx,ny,{family:'Caveat',weight:700,fill:red,anchor:right?'start':'end'});fit(t,right?W-nx-U*.04:nx-U*.04);
   t.attr({transform:`rotate(${right?-4:4},${nx},${ny})`});const tb=t.bbox();
