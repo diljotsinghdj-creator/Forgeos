@@ -21,7 +21,7 @@ from .providers import delivery, gemini_tts, speech
 from .config import Config, VoiceProfile
 from .library import Library
 from .media import captions as cap
-from .media import cards, charts, globe, layout, maps, match, motion, objects, quality, render, sfx, verify, vox
+from .media import cards, charts, globe, layout, maps, match, motion, objects, quality, render, scene3d, sfx, verify, vox
 from .media import ff
 from .media.ff import Cancelled, MediaError
 
@@ -1910,6 +1910,9 @@ class Pipeline:
                                               model=self.cfg.data_dir / "models" / "isnet-general-use.onnx",
                                               sources=(providers.photo_sources(job["id"], self.cfg) if job else None),
                                               props=spec.editorial_props, layout=lay)
+                        if kind in scene3d.KINDS:      # genuine 3D: meshes, lights, a moving camera (three.js)
+                            return scene3d.render(kind, extra[kind], f"{vtheme}@{self._accent(spec)}/{self._look(spec)}/",
+                                                  size[0], size[1], seconds, out, work)
                         if kind == "object":
                             plan = objects.parse(extra[kind])
                             if plan is None:

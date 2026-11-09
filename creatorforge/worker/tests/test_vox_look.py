@@ -458,3 +458,31 @@ def test_state_heat_maps_and_dated_borders(tmp_path, monkeypatch):
         out = vox.render("route", "Shanghai → Rotterdam | By sea | ship | atlas", "e~0@teal/field/", 640, 360, 3,
                          tmp_path / "r.mp4", tmp_path, fetch=False, fps=12)
         assert out.stat().st_size > 4000
+
+
+def test_genuine_3d_scenes_parse_and_render(tmp_path):
+    from creatorforge_worker import director, vox_director as vd
+    from creatorforge_worker.media import motion, scene3d
+    specs = (("bars3d", "UP 80, Maharashtra 48, Bihar 40 | Lok Sabha seats | seats"),
+             ("prism", "India 1.9, China 8.0, USA 14.9 | CO2 per person | tonnes"),
+             ("explode", "Smartphone | Glass, Display, Battery, Logic board, Back cover | What is inside"),
+             ("title3d", "THE CANAL | 1914 · Panama"))
+    for kind, spec in specs:
+        assert scene3d.plan_for(kind, spec), kind
+        assert vd.valid(f"{kind.capitalize()}: {spec}") == "", kind
+        assert kind in director.FULL_FRAME
+    assert scene3d.plan_for("prism", "UP 80, Bihar 40, Kerala 20 | Seats")["items"][0]["name"] in ("Kerala", "Uttar Pradesh", "Bihar")
+    assert scene3d.plan_for("title3d", "नहर | 1914") is None                  # the 3D face is Latin: refused, not boxes
+    assert scene3d.plan_for("explode", "Phone | Glass") is None
+    assert vd.valid("Title3d: नहर") and "3D graphic" in vd.valid("Explode: Phone | Glass")
+    if not motion.enabled():
+        return
+    for i, (kind, spec) in enumerate(specs):
+        size = (360, 640) if i == 2 else (640, 360)
+        out = scene3d.render(kind, spec, "editorial~0@red/kraft/", size[0], size[1], 2, tmp_path / f"t{i}.mp4", tmp_path, fps=10)
+        assert out.is_file() and out.stat().st_size > 5000, kind
+        # a real render, not an empty page: the frame has more than the paper's few tones
+        import subprocess
+        raw = subprocess.run(["ffmpeg", "-v", "error", "-ss", "1.5", "-i", str(out), "-frames:v", "1", "-vf", "scale=64:36",
+                              "-f", "rawvideo", "-pix_fmt", "gray", "-"], capture_output=True).stdout
+        assert max(raw) - min(raw) > 60, kind

@@ -66,6 +66,10 @@ Candles: <label> open/high/low/close; ... | <title> | <currency sign>  - a price
 Arrows: <from> → <to> (<label>); <from> → <to> | <title>  - movement on a map: armies, migration, trade
 Railmap: <place> - <place> - <place>; <place> - <place> | <title>  - a rail, road, pipeline or metro network
 Sizemap: <country> vs <country> | <title>  - two countries at the same scale
+Bars3d: <label> <number>, <label> <number>, ... | <title> | <unit>  - 3D bars, lit, the camera orbiting (2-8 bars)
+Prism: <country or state> <number>, ... | <title> | <unit>  - a 3D map: each place rises to its number
+Explode: <thing> | <layer>, <layer>, <layer> | <title>  - an exploded view of what is inside (2-7 layers, top first)
+Title3d: <TITLE IN CAPITALS, English> | <tag> · <tag>  - extruded 3D letters for the film's title or a chapter
 Borders: <year> → today | <region or country> | <title>  - the borders of a past year, then the map as it is now
 Route: ... | ship  - a ship's route follows the real sea lanes (canals, straits, round the capes)
 Heatmap also takes states of one country (India, USA, China, Brazil, Russia, Canada, Australia, Indonesia, South Africa)
@@ -122,7 +126,7 @@ RULES:
 Return JSON only: {{"lines": [{{"n": <line number>, "graphic": "<one line from the catalogue>"}}]}}"""
 
 KINDS = set(director.FULL_FRAME) | {"chart"}
-_KEY = re.compile(r"^\s*([A-Za-z][A-Za-z -]{1,24})\s*:\s*(.*)$")
+_KEY = re.compile(r"^\s*([A-Za-z][A-Za-z0-9 -]{1,24})\s*:\s*(.*)$")
 _DEV = re.compile(r"[ऀ-ॿ]")
 
 # ---- Hindi words a narration uses -> English for labels and icons ------------------------------------------------
@@ -457,6 +461,9 @@ def valid(direction: str, english: bool = True, props: bool = False) -> str:
             ok = False
         return "" if ok else "the graphic can't be drawn from this line (check its format)"
     from .media import vox
+    from .media import scene3d
+    if kind in scene3d.KINDS:
+        return "" if scene3d.plan_for(kind, spec) else "the 3D graphic can't be drawn from this line (check its format)"
     if kind in vox.KINDS:
         p = vox.plan_for(kind, spec)
         if not p:
