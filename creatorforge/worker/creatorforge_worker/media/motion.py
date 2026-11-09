@@ -80,6 +80,9 @@ def plan_for(kind: str, spec: str) -> dict | None:
             h += 12
         return {"type": "clock", "h": h, "m": mi, "show": head.upper(), "label": tail}
     if kind == "calendar":
+        my = re.fullmatch(r"([A-Za-z]{3,9})\s+(\d{4})", head.strip())
+        if my:                                  # "SEP 2018": the month's page shows the year (no invented day)
+            return {"type": "calendar", "day": None, "month": my.group(1)[:3].upper(), "year": my.group(2), "label": tail}
         m = re.search(r"(\d{1,2})\s+([A-Za-z]{3,9})(?:\s+(\d{4}))?", head) or \
             re.search(r"([A-Za-z]{3,9})\s+(\d{1,2})(?:,?\s+(\d{4}))?", head)
         if not m:
@@ -418,8 +421,9 @@ if(['clock','calendar','sign','social','comments','trending','stamp'].includes(T
   if(T==='calendar'){
     const w=Math.min(W*.3,(BOT-TOP)*.75),h=w*1.05,x=W/2-w/2,y=MY-h/2-U*.02;
     const pages=4;for(let i=pages;i>=0;i--){const g=card(x,y,w,h,U*.014);g.rect(w,h*.26).move(x,y).radius(U*.014).fill(ACC==='#E8B400'?'#C8102E':ACC);
-      txt(g,P.month+(P.year?' '+P.year:''),h*.11,W/2,y+h*.13,{fill:'#FFFFFF'});const day=i===0?P.day:Math.max(1,P.day-i);
-      txt(g,String(day),h*.45,W/2,y+h*.62,{});
+      const noDay=P.day==null;txt(g,noDay?P.month:P.month+(P.year?' '+P.year:''),h*.11,W/2,y+h*.13,{fill:'#FFFFFF'});
+      const day=noDay?P.year:(i===0?P.day:Math.max(1,P.day-i));
+      txt(g,String(day),noDay?h*.3:h*.45,W/2,y+h*.62,{});
       if(i>0){const st=.3+(pages-i)*.32;at(st,.3,p=>g.attr({transform:`translate(0,${-h*1.4*p}) rotate(${-25*p},${x},${y})`}).opacity(1-p),ease.inout)}}
     for(let k=0;k<5;k++)stage.circle(U*.018).center(x+w*(.15+k*.175),y).fill(INK);
     lbl(P.label,y+h+U*.06,1.7);

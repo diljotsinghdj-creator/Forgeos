@@ -180,12 +180,15 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
         return a["id"]
 
     def submit(spec: ProductionSpec, title: str = "", director_llm: dict | None = None, stock: dict | None = None,
-               elevenlabs: dict | None = None) -> dict:
+               elevenlabs: dict | None = None, raw_script: str = "") -> dict:
         d = spec.to_dict()
         owner = charge(d)
         job = store.create(d, title)
         if owner:
             job["owner"] = owner
+        if spec.vox_graphics and raw_script:
+            job["vox_raw"] = raw_script[:200_000]   # the script with its direction lines, for the Vox director
+        if owner or job.get("vox_raw"):
             store.save(job)
         if director_llm:
             providers.set_director_llm(job["id"], director_llm)   # memory only - the key is never written to disk
@@ -204,7 +207,8 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
         eleven = body.pop("elevenlabs", None) if isinstance(body, dict) else None
         return submit(build_spec(body), director_llm=director_llm if isinstance(director_llm, dict) else None,
                       stock=stock if isinstance(stock, dict) else None,
-                      elevenlabs=eleven if isinstance(eleven, dict) else None)
+                      elevenlabs=eleven if isinstance(eleven, dict) else None,
+                      raw_script=str(body.get("script") or "") if isinstance(body, dict) else "")
 
     @app.get("/v1/productions", dependencies=[Depends(auth)])
     def list_productions() -> list[dict]:

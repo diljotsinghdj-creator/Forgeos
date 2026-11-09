@@ -253,14 +253,16 @@ class Pipeline:
                     llm = providers.director_llm(self.cfg, job["id"])
                 except NotConfigured:
                     llm = None
-                if spec.style == "editorial" and not job.get("vox_checked"):
-                    # Vox: every line gets a drawn graphic (no AI picture); broken graphic lines are fixed first
+                if spec.vox_graphics and not job.get("vox_checked"):
+                    # Vox: every line gets a drawn graphic (no AI picture); broken graphic lines are fixed first.
+                    # The script is directed with its direction lines, then read again like a freshly pasted one.
                     from . import vox_director
-                    fixed, report = self._with_gpu_room(lambda m: vox_director.ensure(spec.script, m), llm,
-                                                        optional=True)[0]
-                    if fixed.strip() and fixed != spec.script:
-                        spec.script = fixed
-                        job["spec"]["script"] = fixed
+                    fixed, report = vox_director.ensure(job.get("vox_raw") or spec.script, llm)
+                    redo = {k: v for k, v in job["spec"].items() if k not in ("shots", "roles", "publish")}
+                    redo["script"] = fixed
+                    spec = director.ProductionSpec.from_dict(redo)
+                    job["spec"] = spec.to_dict()
+                    job["vox_script"] = fixed[:200_000]
                     job["vox_report"] = report[:400]
                     job["vox_checked"] = True
                 plan, llm = self._with_gpu_room(lambda m: director.direct_script(m, spec), llm, optional=True)

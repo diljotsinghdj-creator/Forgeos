@@ -99,6 +99,7 @@ class ProductionSpec:
     auto_edit: bool = True  # let the Director choose transitions, caption emphasis and dramatic holds
     character_ids: list[str] = field(default_factory=list)  # resolved from the Character Library at submit
     music_asset_id: str = ""  # use a track from the Asset Library as the score
+    vox_graphics: bool = False  # Vox: every script line gets a drawn graphic (no AI picture), checked first
     narration_asset_id: str = ""  # the creator's own recorded narration (an MP3 in the Asset Library) is the voice
     sfx: bool = True  # auto-place sound effects when an SFX folder or SFX assets exist
     script: str = ""  # script mode: the user's exact narration; the Director only plans visuals and the edit
@@ -136,6 +137,7 @@ class ProductionSpec:
             script=clean_script(parse_script(str(d.get("script", "") or ""))[0]),
             music_asset_id=str(d.get("music_asset_id", "") or ""),
             narration_asset_id=str(d.get("narration_asset_id", "") or ""),
+            vox_graphics=bool(d.get("vox_graphics", False)),
             sfx=bool(d.get("sfx", True)),
             brand=clean_brand(d.get("brand")),
         )
@@ -1364,7 +1366,11 @@ def apply_shots(plan: "ProductionPlan", shots: list) -> None:
             per_scene[i].append({"text": words, "visual": str(visual) or s.visual, "emotion": s.emotion,
                                  "stock": str(stock), "overlay": str(text) if k == 0 else "",
                                  "chart": str(chart) if k == 0 else "", "draw": str(draw) if k == 0 else "",
-                                 "bubble": str(bubble) if k == 0 else "", "extra": dict(extra) if k == 0 else {},
+                                 "bubble": str(bubble) if k == 0 else "",
+                                 # the rest of a line that runs into the next scene keeps its drawn graphic
+                                 # (never an AI picture halfway through a graphics line)
+                                 "extra": dict(extra) if k == 0 else {g: v for g, v in extra.items()
+                                                                      if g in FULL_FRAME or g == "archive"},
                                  "writer": True, "line": li})
     for s, beats in zip(plan.scenes, per_scene):
         if not beats:
