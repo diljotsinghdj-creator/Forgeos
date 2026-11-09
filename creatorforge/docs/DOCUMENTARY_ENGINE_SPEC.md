@@ -37,121 +37,127 @@ material first (photo, map, document), drawn illustration second, icon last, nev
 
 ## 2. What works today, discipline by discipline
 
+Checked on rendered frames and by tests (`tests/test_vox_look.py`, `test_vox_director.py`, `test_edit_tools.py`).
+
 ### 2.1 Infographics (`media/vox.py`, `media/motion.py`, `media/charts.py`)
 
 | Capability | Status | Where |
 |---|---|---|
-| Bar charts (object bars, figures on bars) | works | `Stack`, `Stand`, `Chart` |
+| Bar charts (object bars, figures on bars) | works | `Stack`, `Stand`, `Chart`, `Bars3d` |
 | Line graphs | works | `Trend` |
 | Pie / share | works | `Slice`, `Pie`, `Squares` |
-| Population pyramid | works (new) | `Pyramid` |
+| Population pyramid | works | `Pyramid` (values count up) |
 | Comparative statistics, before/after | works | `Compare`, `Chart a vs b`, `Stand` |
 | Timelines | works | `Timeline`, `Photoline`, `Calendar` |
-| Election results | works | `Seats` (parliament arc) |
-| Polling | partial | shown with `Slice` / `Stack`; no poll-tracker (line with margin band) yet |
-| Financial | partial | `Trend`, `BigNumber`, `Receipt`; no candlestick or stacked area |
-| Demographics | works | `Pyramid`, `Squares` (1 in N people) |
-| Flow diagrams | works (new) | `Flowchart` |
-| Network / relationship maps | works (new) | `Linkmap` |
-| Organisational structures | works (new) | `Orgchart` |
-| Animated counters | works | `Chart` counter, `Pyramid` values |
+| Election results | works | `Seats` (parliament arc), state `Heatmap` |
+| Polling | works | `Polltrack` (line with a margin-of-error band) |
+| Financial | works | `Candles` (open/high/low/close), `Area` (stacked), `Trend`, `Receipt` |
+| Demographics | works | `Pyramid`, `Squares`, `Heatmap` |
+| Flow diagrams | works | `Flowchart` (arrows draw in order, a token travels) |
+| Network / relationship maps | works | `Linkmap` |
+| Organisational structures | works | `Orgchart` (two levels) |
+| Data tables | works | `Table` (row by row, one row picked out) |
+| Animated counters | works | `Chart`, `Pyramid`, `Bars3d` |
 | Entry animation, labels, layering, camera | works | every scene |
-| **Exit animation** | **missing** | scenes end on a hold; the cut is a transition, not an animated exit |
-| Colour transitions inside a graphic | partial | `Heatmap` fills animate; others pop to final colour |
+| Exit animation | works | every Vox scene: layers leave front-first (rise / fall / side / shrink) |
+| Colour transitions inside a graphic | partial | `Heatmap`, `Sizemap`, `Borders` animate colour; bar charts pop to their colour |
 | Sync with narration | works | beat lengths come from word timestamps |
 
-### 2.2 Cartography (`globe.py`, `flyover.py`, `maps.py`, `vox.py`)
+### 2.2 Cartography (`globe.py`, `flyover.py`, `maps.py`, `searoute.py`, `history.py`, `vox.py`)
 
 | Capability | Status | Where / limit |
 |---|---|---|
 | World and country maps | works | `Pinmap`, `Map`, `Shade`, `Heatmap` |
 | Globe to country zoom | works | `Globe` |
-| Country to city, tilt and rotate | pod-only | `Fly` (MapLibre + OSM tiles: needs network) |
+| Country to city, tilt and rotate | pod-only | `Fly` (MapLibre + tiles: needs network) |
 | Street level, satellite, terrain | pod-only | `Fly ... | satellite` / `| terrain` |
-| State / regional boundaries | partial | Indian states are pins, not shapes: no sub-national polygons bundled |
-| Routes: flight, shipping, migration, trade | partial | `Route` draws and animates a vehicle; sea routes cut across land (no sea-lane routing) |
-| Country heat map with scale | works (new) | `Heatmap` |
-| Sub-national density / heat | missing | needs state/district shapes |
-| Historical borders | missing | needs a dated border dataset |
-| Animated border change | missing | |
-| Military movement arrows, front lines | missing | |
-| Transport networks | missing | |
+| State / regional boundaries | partial | nine large countries (India, USA, China, Brazil, Russia, Canada, Australia, Indonesia, South Africa); others have no state shapes |
+| Shipping routes | works | `Route ... | ship` follows the sea lanes through canals and straits (`searoute.py`) |
+| Flight, road, rail routes | works | `Route` (arcs), `Railmap` (networks through stations) |
+| Migration, military, trade movement | works | `Arrows` (broad curved arrows, each named) |
+| Country and state heat maps with a scale | works | `Heatmap`; in 3D: `Prism` |
+| Geographic comparison | works | `Sizemap` (same scale, one shape morphs into the other, area ratio) |
+| Historical borders and border change | pod-only | `Borders` needs the dated maps downloaded by setup (`history.py`, GPL data, credited on screen); proven here with the 1914 file |
+| District-level density | missing | no district shapes |
 | Labels by zoom level | pod-only | MapLibre does this in `Fly` |
-| Map to footage / map to infographic transitions | missing | only the generic transitions today |
+| Map to footage / map to infographic transition | works | the `dive` cut (motivated transitions) |
 
 ### 2.3 Motion graphics
 
 | Capability | Status |
 |---|---|
-| Kinetic typography, word emphasis, highlighter, typewriter | works (`kinetic.py`, `Statement`, `rich`, `typeIn`) |
-| Marker circle, arrow, underline, hatching, callouts | works (`marker:`, `pen`, `marks.py`) |
+| Kinetic typography, word emphasis, highlighter, typewriter | works |
+| Marker circle, arrow, underline, hatching, callouts | works |
 | Parallax, push, pull, drift, focus push | works |
 | Split screen | works (`Split`, `Tornsplit`, `Compare`) |
-| Wipes, reveals, blur-whip | works (xfade set) |
-| 3D camera into a still | pod-only (`depth3d.py`, needs the depth model) |
-| Shape morphing | missing |
-| Particles | missing |
-| Motion blur on moving elements | missing (only the blur transition) |
-| Picture-in-picture | missing as a named tool (the framed-footage layout is close) |
-| Animated light / shadow | partial (light leak, drop shadows; no moving light) |
+| Wipes, reveals, blur-whip, dive, page, push, drop, squeeze | works |
+| Motion blur on travelling elements | works (`slide`, `drop`) |
+| Particles | works (`| fx:` dust, embers, snow, rain, confetti, sparks) |
+| Shape morphing | works in `Sizemap` (outline to outline); not a general tool |
+| Picture-in-picture | works (`| inset:` a framed picture; `| with:` a person beside the graphic) |
+| 3D camera movement | works in the 3D scenes (orbiting perspective camera) |
+| 3D camera into a still photo | pod-only (`depth3d.py`, needs the depth model) |
+| Animated light and shadow | works in 3D scenes (sun with soft shadows, a light sweep on `Title3d`) |
 
 ### 2.4 Narration to visuals (`infographic.py`, `vox_director.py`, `literal.py`)
 
-Works: for every line the director extracts facts (numbers, places, people, parties, publishers, quotes, denials,
-false claims), proposes candidates, ranks real material first, rejects a graphic that fails the mute test (the key
-fact must be on screen), varies objects, adds the named person and platform logos, and picks a camera and layout.
-Partial: the transition into the next scene is chosen by style map, not yet by what the two shots share.
+Works: for every line the director extracts facts, proposes candidates, ranks real material first, rejects a graphic
+that fails the mute test, varies objects, adds the named person and platform logos, and picks camera, layout and
+exit. The cut into the next shot now comes from what the two shots are (`pipeline.motivated_transition`).
+Partial: the rule-based director does not yet choose the new kinds on its own (Pyramid, Flowchart, Linkmap,
+Orgchart, Courtdoc, Table, Polltrack, Area, Candles, Arrows, Railmap, Sizemap, Borders, the 3D scenes); the script
+AI can (they are in its catalogue) and a writer can.
 
 ### 2.5 Archival and investigative
 
-Works: clippings, real article screenshots, documents with highlighting, receipts, social posts, comments, chat,
-search, evidence board, photo timeline, source lines, attribution checks in preflight.
-Partial: fact / allegation / commentary are enforced in the script checks, but there is no on-screen badge
-("ALLEGED", "COURT RECORD", "OPINION") except the ILLUSTRATION · OPINION tag.
-Missing: court-document and database-table templates; interview lower-third with pull quote.
+Works: clippings, real article screenshots, documents with highlighting, court documents (`Courtdoc`), data tables,
+interviews with lower third and typed pull quote, receipts, social posts, comments, chat, search, evidence board,
+photo timeline, source lines, attribution checks, and an on-screen standing for any graphic (`| badge:` verified,
+official data, court record, reported, alleged, claim, denied, response, opinion, estimate).
+Pod-only: real archive photographs and footage (need the photo sources).
 
 ### 2.6 2D, 2.5D, 3D
 
 | Pipeline | Status |
 |---|---|
-| 2D vector and character animation | works (`animation/`: rig2d, scene2d, stick) |
-| 2.5D layered photo parallax | works in drawn scenes; depth-map dolly is pod-only |
+| 2D vector and character animation | works (`animation/`) |
+| 2.5D layered parallax | works in drawn scenes; depth-map dolly is pod-only |
+| Genuine 3D: `Bars3d`, `Prism` map, `Explode`, `Title3d` | works (three.js in headless Chromium: meshes, sun, soft shadows, orbiting camera; no Blender, no GPU needed) |
 | 3D globe | works |
-| 3D objects (coin, card, bars) | partial: drawn frame by frame in Pillow, not a 3D engine |
-| Genuine 3D (Blender: characters, title, camera, lights) | pod-only: `blender3d.py`, `intro3d.py` need Blender, which is **not installed in this sandbox**; unproven here |
-| Exploded views, architecture, 3D terrain | missing |
+| Blender characters and intro | pod-only (Blender is not in this sandbox) |
+| Architecture, 3D terrain | missing (terrain needs elevation data) |
 
 ### 2.7 Editing
 
-Works: beat-level cuts on word timestamps, music-beat alignment, punch-in, settle, shake, jump cuts, montage of
-beat clips, multi-layer compositing, 12 fps stepped graphics. Missing: speed ramps, freeze frames, true match
-cuts (today "match" is a short fade), audio-reactive elements.
+Works: beat-level cuts on word timestamps, music-beat alignment, punch-in, settle, shake, jump cuts, montage,
+zoom-through match cut, multi-layer compositing, 12 fps stepped graphics, freeze frame, speed ramp and slow motion
+on footage (`Playback:`), motivated transitions. Missing: audio-reactive graphics.
 
 ### 2.8 Typography
 
-Works: titles, chapter cards, headlines, statistics, source lines, captions (word-by-word, Hindi and English),
-quotes, location labels. Partial: lower thirds and end cards exist in the older card set but are not in the
-Vox kit's type system. Hindi: captions and handwriting are covered; the display faces are Latin-only, so Hindi
-headlines fall back to a system face (a Devanagari display face is needed).
+Works: titles, chapter cards, headlines, statistics, source lines, captions, quotes, location labels, lower third
+(`Interview`), end card (`Endcard`), 3D title. Hindi: display faces for headlines and figures (Rozha One, Teko,
+Mukta under the Latin family names), no tracking on Devanagari, captions and handwriting as before. The 3D title
+face is Latin only (a Hindi title is refused there and belongs in the 2D type scenes).
 
 ### 2.9 Audio
 
 Works: narration, word alignment, music with beat offset, ducking, loudness normalisation, whoosh / hit / pop /
-riser / scribble placed by transition and role. Missing: ambient beds per scene, spatial audio.
+riser / scribble by transition and role, ambient beds per shot (`ambience.py`: sea, wind, city, room, paper,
+projector, hum). Missing: spatial audio.
 
 ### 2.10 Quality control
 
-Works: fail-closed export verification, loudness / clipping / dead air / dark first frame, caption drift, text
-fit and safe areas (`layout_qa`), picture-matches-line (CLIP), script preflight (facts, attribution, graphics
-valid), video-against-video similarity (`variety`). Missing: contrast check, low-resolution asset check,
-map-label check, grade consistency check.
+Works: fail-closed export verification; loudness, clipping, dead air, frozen or black picture, first frame; caption
+drift; text fit and safe areas; picture-matches-line (CLIP); script preflight (facts, attribution, valid graphics,
+places found on the map); flat-contrast frames; colour-grade jumps; frame size; audio cut off at the end; the accent
+made readable as type on its paper; video-against-video similarity (`variety`).
+Missing: a per-asset resolution check before the render (soft pictures are only caught as a symptom).
 
 ### 2.11 Output
 
-Works: 16:9, 9:16, 1:1 with layouts composed per aspect (not cropped), 1080p, 60 fps option.
-Missing: 4K.
-
----
+Works: 16:9, 9:16, 1:1 with layouts composed per aspect, 1080p and 4K (`resolution: "4k"`: graphics are drawn at
+2160p), 60 fps option.
 
 ## 3. Dependencies
 
@@ -168,22 +174,14 @@ Missing: 4K.
 
 ---
 
-## 4. Build order for what is missing
+## 4. What is still open
 
-1. **Exit animations** for every drawn scene, and motivated transitions (shared shape or position; map zoom into
-   the next shot).
-2. **Maps**: sea-lane routing; sub-national shapes (Indian states first) for state heat maps; arrows for movement
-   (migration, military); border-change animation; transport lines.
-3. **Evidence badges** (verified / alleged / opinion / court record) and court-document, data-table, interview
-   templates.
-4. **Charts**: poll tracker with margin band, stacked area, candlestick.
-5. **Type**: Devanagari display face; lower third and end card in the kit.
-6. **Edit**: freeze frame, speed ramp, true match cut.
-7. **Motion**: particles, shape morph, motion blur on movers, picture-in-picture.
-8. **Audio**: ambient beds.
-9. **QC**: contrast, asset resolution, map labels, grade consistency.
-10. **4K** output.
-11. **3D**: prove Blender on the pod; add exploded view and terrain.
+1. The rule-based director choosing the new kinds on its own (2.4).
+2. District-level shapes; state shapes beyond the nine large countries.
+3. 3D terrain and architecture.
+4. Audio-reactive graphics; spatial audio.
+5. A general shape-morph tool; a per-asset resolution check.
+6. On the pod: prove `Fly`, satellite, depth dolly, Blender, dated borders and real photographs in one render.
 
 ## 5. Acceptance test
 

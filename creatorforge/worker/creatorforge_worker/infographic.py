@@ -40,7 +40,13 @@ PUBLISHERS = {"द क्विंट": "The Quint", "क्विंट": "The 
               "द रिपोर्टर्स कलेक्टिव": "The Reporters' Collective", "इंडिया टुडे": "India Today", "एनडीटीवी": "NDTV",
               "प्रिंट": "ThePrint", "लाइव मिंट": "Mint", "इकोनॉमिक टाइम्स": "The Economic Times", "आरबीआई": "RBI",
               "सुप्रीम कोर्ट": "Supreme Court", "चुनाव आयोग": "Election Commission", "लोकसभा": "Lok Sabha"}
-PLACES_MORE = {"कोटा": "Kota", "भारत": "India", "चीन": "China", "जापान": "Japan", "रूस": "Russia", "यूक्रेन": "Ukraine",
+PLACES_MORE = {"जर्मनी": "Germany", "फ्रांस": "France", "इटली": "Italy", "स्पेन": "Spain", "ब्राज़ील": "Brazil",
+               "कनाडा": "Canada", "ऑस्ट्रेलिया": "Australia", "मिस्र": "Egypt", "तुर्की": "Turkey", "इंडोनेशिया": "Indonesia",
+               "दक्षिण अफ्रीका": "South Africa", "दक्षिण कोरिया": "South Korea", "उत्तर कोरिया": "North Korea",
+               "मेक्सिको": "Mexico", "अर्जेंटीना": "Argentina", "नाइजीरिया": "Nigeria", "इराक": "Iraq", "सीरिया": "Syria",
+               "वियतनाम": "Vietnam", "थाईलैंड": "Thailand", "म्यांमार": "Myanmar", "भूटान": "Bhutan", "पनामा": "Panama",
+               "पोलैंड": "Poland", "स्वीडन": "Sweden", "नॉर्वे": "Norway", "ग्रीस": "Greece", "केन्या": "Kenya",
+               "कोटा": "Kota", "भारत": "India", "चीन": "China", "जापान": "Japan", "रूस": "Russia", "यूक्रेन": "Ukraine",
                "अमेरिका": "United States", "ब्रिटेन": "United Kingdom", "लंदन": "London", "पेरिस": "Paris",
                "न्यूयॉर्क": "New York", "दुबई": "Dubai", "सिंगापुर": "Singapore", "श्रीलंका": "Sri Lanka", "नेपाल": "Nepal",
                "बांग्लादेश": "Bangladesh", "पाकिस्तान": "Pakistan", "अफ़ग़ानिस्तान": "Afghanistan", "ईरान": "Iran",
@@ -218,6 +224,12 @@ def candidates(line: str, f: dict, n: int, total: int, ahead: dict | None = None
     if f["question"] and n == total:
         q = head if head.endswith("?") else (f"{head}?" if head else "What do you think?")
         out.append(f"Opener: {obj or 'smartphone'} | {q} | Print Facts")
+    # two countries and a word about size: both at one scale
+    if len(f["places"]) >= 2 and any(vd._has(vd._tokens(line), w) for w in SIZE_WORDS):
+        from .media import vox
+        cs = [p for p in f["places"] if vox._country(p)]
+        if len(cs) >= 2 and vox._country(cs[0]) is not vox._country(cs[1]):
+            out.append(f"Sizemap: {cs[0]} vs {cs[1]} | {head if head and head not in f['places'] else 'How big is it really?'}")
     # who reported it: the report itself
     if f["publisher"] and (f["cited"] or nums):
         if f["places"]:
@@ -319,7 +331,8 @@ def _vary(g: str, used: list[str]) -> str:
 
 
 # Vox / Johnny Harris first: real people, maps with marker notes, documents and clippings; flat forms last
-STYLE_RANK = {"pinmap": 0, "route": 0, "newscard": 1, "clipping": 1, "hero": 2, "pinboard": 2, "reveal": 2,
+SIZE_WORDS = ("बड़ा", "बड़ी", "बड़े", "छोटा", "छोटी", "गुना", "आकार", "क्षेत्रफल", "bigger", "larger", "smaller", "size")
+STYLE_RANK = {"sizemap": -1, "pinmap": 0, "route": 0, "newscard": 1, "clipping": 1, "hero": 2, "pinboard": 2, "reveal": 2,
               "bignumber": 3, "compare": 3, "photoline": 3, "clockmap": 3, "seats": 4, "stack": 4, "trend": 4,
               "slice": 5, "calendar": 5, "stamp": 6, "clock": 6, "opener": 7, "tornsplit": 7, "statement": 9}
 

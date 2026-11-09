@@ -264,3 +264,10 @@ def test_finished_videos_are_compared_frame_by_frame(tmp_path):
                        check=True)
     assert variety.compare_videos(a, a)["same_look"] is True
     assert variety.compare_videos(a, b)["same_look"] is False
+
+
+def test_two_countries_and_a_size_word_get_a_size_map():
+    from creatorforge_worker import infographic as ig
+    line = "भारत जर्मनी से नौ गुना बड़ा है।"
+    g = ig.pick(line, ig.facts(line), 3, 6, [])
+    assert g.startswith("Sizemap: India vs Germany") and v.valid(g) == ""
