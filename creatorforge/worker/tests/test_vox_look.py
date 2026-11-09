@@ -123,3 +123,28 @@ def test_every_round_two_scene_renders(kind, spec, tmp_path, monkeypatch):
     out = tmp_path / f"{kind}.mp4"
     vox.render(kind, spec, "editorial@red", 640, 360, 2.0, out, tmp_path / "w", lib=tmp_path / "lib", fetch=False, fps=12)
     assert out.stat().st_size > 2000
+
+
+def test_object_charts_parse():
+    s = vox.plan_for("seats", "NDA 293, INDIA 234, Others 16 | Lok Sabha 2024")
+    assert s["total"] == 543 and s["majority"] == 272
+    assert vox.plan_for("stack", "coins | UP 80, Bihar 40")["material"] == "coins"
+    st = vox.plan_for("stand", "farmer ₹10,218 vs CEO ₹4,24,114 | Monthly income")
+    assert [v["value"] for v in st["values"]] == [10218, 424114] and st["subjects"] == ["farmer standing", "businessman"]
+    assert vox.plan_for("fan", "A $3M, B $9M | x")["values"][0]["label"] == "B"
+    assert len(vox.plan_for("trend", "1990 100, 2000 62, 2024 12 | x | rupee note")["points"]) == 3
+    assert vox.plan_for("slice", "12% | brain | activated")["pct"] == 12
+    assert vox.plan_for("seats", "nothing") is None and vox.plan_for("slice", "brain") is None
+    assert vox_director.valid("Seats: NDA 293, INDIA 234 | Lok Sabha") == ""
+
+
+@pytest.mark.skipif(not motion.enabled(), reason="needs Chromium + Playwright")
+@pytest.mark.parametrize("kind,spec", [
+    ("seats", "NDA 293, INDIA 234, Others 16 | Lok Sabha 2024"), ("stack", "chimneys | China 29.5%, India 6.8% | CO2"),
+    ("stand", "farmer ₹10,218 vs CEO ₹4,24,114 | Income"), ("fan", "A $378M, B $57M, C $31M | Revenue"),
+    ("trend", "1990 100, 2000 62, 2024 12 | What ₹100 buys"), ("slice", "12% | brain | activated")])
+def test_every_object_chart_renders(kind, spec, tmp_path, monkeypatch):
+    monkeypatch.setenv("CF_CUTOUT_FETCH", "0")
+    out = tmp_path / f"{kind}.mp4"
+    vox.render(kind, spec, "editorial@blue", 640, 360, 2.0, out, tmp_path / "w", lib=tmp_path / "lib", fetch=False, fps=12)
+    assert out.stat().st_size > 2000

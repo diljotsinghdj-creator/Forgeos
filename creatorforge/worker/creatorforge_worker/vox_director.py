@@ -33,6 +33,12 @@ Pinboard: <centre item> · <item> · <item> | <title>  - who/what is connected (
 Reveal: <document line> · <line> · <line> | <document name> | <the phrase to highlight>  - zoom into a document
 Desk: <object> + <object> | <LABEL> | <short note>  - research / an investigation on grid paper
 BigNumber: <a year or number> | <object> | <caption>  - a huge year/number with the subject breaking out of it
+Seats: <party/alliance> <seats>, <party> <seats>, Others <seats> | <title>  - a parliament of seat dots
+Stack: coins|pillars|chimneys|buildings|books | <label> <value>, <label> <value> | <title>  - bars as real things
+Stand: <who> <value> vs <who> <value> | <title> | <note>  - people standing on their bars (income, wealth)
+Fan: <label> <value>, <label> <value>, ... | <title> | <object or person:Name>  - shares around a photo
+Trend: <year> <value>, <year> <value>, ... | <title> | <object>  - a line chart with the object's photo under the line
+Slice: <n>% | <object> | <what the share is>  - a share cut out of a real object
 Chart: <number> | <what it counts>              - one number counting up (e.g. Chart: ₹29.7 crore | Google ads in 30 days)
 Chart: <a> vs <b> | <label a>, <label b>        - two numbers as bars
 Pie: <n>% | <what>                               - a share

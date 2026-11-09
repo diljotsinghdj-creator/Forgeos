@@ -137,6 +137,14 @@ CATALOG: dict[str, str] = {
     "factory chimney": "factory chimney smoke",
     "power tower": "electricity pylon",
     "solar panel": "solar panel",
+    # people as figures (charts with figures standing on bars)
+    "businessman": "businessman standing full length isolated white background",
+    "worker": "construction worker standing full length isolated",
+    "farmer standing": "indian farmer standing full length",
+    "student": "student standing full length isolated white background",
+    "woman standing": "woman standing full length isolated white background",
+    "man standing": "man standing full length isolated white background",
+    "doctor": "doctor standing full length isolated white background",
     # transport
     "car": "car isolated white background",
     "truck": "truck isolated white background",
@@ -204,6 +212,19 @@ class Cutout:
     name: str
     path: Path
     credit: str = ""
+
+
+FIGURES = {"ceo": "businessman", "boss": "businessman", "billionaire": "businessman", "rich": "businessman",
+           "1%": "businessman", "worker": "worker", "labour": "worker", "labourer": "worker", "employee": "worker",
+           "farmer": "farmer standing", "kisan": "farmer standing", "student": "student", "woman": "woman standing",
+           "women": "woman standing", "man": "man standing", "men": "man standing", "doctor": "doctor",
+           "teacher": "man standing", "voter": "man standing", "citizen": "man standing"}
+
+
+def figure(label: str) -> str:
+    """A person figure for a chart label ('farmer' -> 'farmer standing'); generic person otherwise."""
+    words = re.findall(r"[a-z0-9%]+", (label or "").lower())
+    return next((FIGURES[w] for w in words if w in FIGURES), "man standing")
 
 
 def resolve(word: str) -> str | None:

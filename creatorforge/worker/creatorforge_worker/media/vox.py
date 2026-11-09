@@ -33,7 +33,8 @@ PAPERS = {"cream": "#EFE8DA", "grey": "#E5E3DE", "white": "#F4F2EE", "dark": "#1
           "grid": "#F1F0EC"}
 INK = "#141414"
 LAYOUTS = ("word", "disc", "box", "bars")
-KINDS = ("hero", "desk", "pinboard", "opener", "reveal", "clipping", "pinmap", "bignumber")
+KINDS = ("hero", "desk", "pinboard", "opener", "reveal", "clipping", "pinmap", "bignumber",
+         "seats", "stack", "stand", "fan", "trend", "slice")
 
 
 def accent_of(theme: str) -> str:
@@ -195,8 +196,115 @@ def parse_number(spec: str) -> dict | None:
             "seed": _seed(spec) % 10000}
 
 
+_NUM = re.compile(r"([₹$£€]?)\s*(-?\d[\d,]*(?:\.\d+)?)\s*(%|cr(?:ore)?|lakh|k|m|bn|b|million|billion|kt|seats)?", re.I)
+
+
+def _pairs(text: str) -> list[dict]:
+    """'NDA 293, INDIA 234' / 'UP ₹40 crore; Bihar 25' -> [{label, value, shown}] (label may come after)."""
+    out = []
+    for part in re.split(r",(?!\d{2,3}\b)|;|·|•", text or ""):
+        part = part.strip()
+        m = None
+        for m in _NUM.finditer(part):
+            pass
+        if not part or m is None:
+            continue
+        label = (part[:m.start()] + part[m.end():]).strip(" :-=")
+        try:
+            v = float(m.group(2).replace(",", ""))
+        except ValueError:
+            continue
+        out.append({"label": label[:28], "value": v, "shown": m.group(0).strip()})
+    return out
+
+
+def parse_seats(spec: str) -> dict | None:
+    """'Seats: NDA 293, INDIA 234, Others 16 | Lok Sabha 2024' - a parliament of dots; majority line drawn."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    groups = [g for g in _pairs(parts[0]) if g["value"] > 0][:8]
+    if not groups:
+        return None
+    total = int(sum(g["value"] for g in groups))
+    if not 3 <= total <= 1200:
+        return None
+    return {"type": "seats", "groups": groups, "total": total, "majority": total // 2 + 1,
+            "title": parts[1] if len(parts) > 1 else "", "seed": _seed(spec) % 10000}
+
+
+MATERIALS = ("coins", "pillars", "chimneys", "buildings", "books", "bars")
+
+
+def parse_stack(spec: str) -> dict | None:
+    """'Stack: coins | UP 40, Bihar 25, MP 12 | Seats by state' - bars drawn as real things."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if len(parts) < 2:
+        return None
+    mat = parts[0].lower().rstrip("s") + "s" if parts[0] else "bars"
+    mat = next((m for m in MATERIALS if m.startswith(mat[:4])), "bars")
+    vals = [v for v in _pairs(parts[1]) if v["value"] >= 0][:7]
+    if len(vals) < 2:
+        return None
+    return {"type": "stack", "material": mat, "values": vals, "title": parts[2] if len(parts) > 2 else "",
+            "seed": _seed(spec) % 10000}
+
+
+def parse_stand(spec: str) -> dict | None:
+    """'Stand: farmer ₹10,218 vs CEO ₹4,24,114 | 2024 | per month' - figures standing on their bars."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    sides = [x.strip() for x in re.split(r"\s+vs\.?\s+", parts[0], flags=re.I) if x.strip()][:3]
+    vals = []
+    for sd in sides:
+        pr = _pairs(sd)
+        if not pr:
+            return None
+        vals.append(pr[0])
+    if len(vals) < 2:
+        return None
+    from .cutouts import figure
+    return {"type": "stand", "values": vals, "subjects": [figure(v["label"]) for v in vals],
+            "title": parts[1] if len(parts) > 1 else "", "note": parts[2] if len(parts) > 2 else "",
+            "seed": _seed(spec) % 10000}
+
+
+def parse_fan(spec: str) -> dict | None:
+    """'Fan: Hotels $378M, Tokens $57M, Licensing $31M | Trump's $600M year | person:Donald Trump'."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    vals = [v for v in _pairs(parts[0]) if v["value"] > 0][:8]
+    if len(vals) < 2:
+        return None
+    return {"type": "fan", "values": sorted(vals, key=lambda v: -v["value"]), "title": parts[1] if len(parts) > 1 else "",
+            "subjects": [parts[2]] if len(parts) > 2 and parts[2] else [], "seed": _seed(spec) % 10000}
+
+
+def parse_trend(spec: str) -> dict | None:
+    """'Trend: 1990 100, 2000 62, 2010 31, 2024 12 | What ₹100 buys | rupee note' - the picture fills under the line."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    pts = []
+    for part in re.split(r",(?!\d{2,3}\b)|;|·", parts[0]):
+        m = re.match(r"\s*(\d{4}|[A-Za-z]{3,9}\s*\d{0,4})\s*[:=]?\s*([₹$£€]?)\s*(-?\d[\d,]*(?:\.\d+)?)\s*(%|cr|crore|lakh|k|m|bn)?", part)
+        if m:
+            pts.append({"x": m.group(1).strip(), "value": float(m.group(3).replace(",", "")),
+                        "shown": f"{m.group(2)}{m.group(3)}{m.group(4) or ''}"})
+    if len(pts) < 2:
+        return None
+    return {"type": "trend", "points": pts[:12], "title": parts[1] if len(parts) > 1 else "",
+            "subjects": [parts[2]] if len(parts) > 2 and parts[2] else [], "seed": _seed(spec) % 10000}
+
+
+def parse_slice(spec: str) -> dict | None:
+    """'Slice: 12% | brain | activated' - a wedge of the real object, in the accent colour."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    m = re.search(r"(\d+(?:\.\d+)?)\s*%", parts[0] if parts else "")
+    if not m or len(parts) < 2 or not parts[1]:
+        return None
+    return {"type": "slice", "pct": min(100.0, float(m.group(1))), "shown": m.group(0), "subjects": [parts[1]],
+            "label": parts[2] if len(parts) > 2 else "", "seed": _seed(spec) % 10000}
+
+
 PARSERS = {"hero": parse_hero, "desk": parse_desk, "pinboard": parse_evidence, "opener": parse_opener,
-           "reveal": parse_reveal, "clipping": parse_headline, "pinmap": parse_pinmap, "bignumber": parse_number}
+           "reveal": parse_reveal, "clipping": parse_headline, "pinmap": parse_pinmap, "bignumber": parse_number,
+           "seats": parse_seats, "stack": parse_stack, "stand": parse_stand, "fan": parse_fan, "trend": parse_trend,
+           "slice": parse_slice}
 
 
 def plan_for(kind: str, spec: str) -> dict | None:
@@ -566,7 +674,112 @@ function number(){ // a huge number; the subject breaks out of it
   if(P.caption){const c=T(L.front,P.caption,U*.04,W/2,TALL?H*.7:H*.92,{family:'Inter',weight:800,fill:'#C0262D'});wipe(c,.9)}
   if(P.kicker){const k=T(L.front,P.kicker.split('').join(' ').toUpperCase(),U*.022,W/2,TALL?H*.08:H*.06,{family:'Inter',weight:800,fill:'#C0262D',ls:'0.3em'});wipe(k,.2)}}
 
-const SCENES={hero,desk,evidence,opener,reveal,headline,pinmap,number};
+// ---- round 3: charts made of objects ----
+function chartTitle(s){if(!s)return;const g=boxText(L.front,s,U*.05,W/2,TALL?H*.07:H*.075,{anchor:'middle',maxw:W*.84,most:2});
+  g.children().forEach((r,i)=>slide(r,.05+i*.1,0,-H*.04))}
+function valLabel(g,s,x,y,o){o=o||{};const t=T(g,s,o.size||U*.045,x,y,{family:'Anton',weight:400,fill:o.fill||FG,anchor:o.anchor||'middle'});return t}
+function seats(){ // the semicircle of dots, filled in party order; the majority line
+  chartTitle(P.title);const n=P.total;const cx=W/2,cy=TALL?H*.5:H*.7;const R1=TALL?W*.44:Math.min(W*.36,H*.52),R0=R1*.42;
+  let rows=1;while(true){let cap=0;for(let r=0;r<rows;r++){const rr=R0+(R1-R0)*(r+.5)/rows;cap+=Math.floor(Math.PI*rr/((R1-R0)/rows))}if(cap>=n||rows>30)break;rows++}
+  const pts=[];for(let r=0;r<rows;r++){const rr=R0+(R1-R0)*(r+.5)/rows;const k=Math.floor(Math.PI*rr/((R1-R0)/rows));for(let i=0;i<k;i++){const a=Math.PI-(Math.PI*(i+.5)/k);pts.push([a,cx+Math.cos(a)*rr,cy-Math.sin(a)*rr])}}
+  pts.sort((p,q)=>q[0]-p[0]);const dot=(R1-R0)/rows*.78;
+  const cols=[ACC,DARK?'#E8E2D4':'#2B2B2B','#9A9A9A','#C9C1B0','#6E8CA8','#B5735A','#7A9A6E','#B9A35E'];
+  let k=0;P.groups.forEach((g,gi)=>{const c=cols[gi%cols.length];const cnt=Math.round(g.value);const st=.3+gi*.45;
+    for(let i=0;i<cnt&&k<pts.length;i++,k++){const p=pts[k];const d=L.hero.circle(dot).center(p[1],p[2]).fill(c);d.opacity(0);const t0=st+i/cnt*.9;at(t0,.08,q=>d.opacity(q),E.lin)}
+    const lx=TALL?W*.1:(gi%2?cx+R1+U*.04:cx-R1-U*.04),ly=TALL?cy+U*.08+gi*U*.07:cy-R1*.75+Math.floor(gi/2)*U*.12;
+    const lg=L.front.group();lg.rect(U*.03,U*.03).move(0,-U*.015).fill(c);
+    const tt=T(lg,`${g.label} — ${g.shown}`.toUpperCase(),U*.03,U*.045,0,{family:'Inter',weight:800,anchor:'start'});
+    const an=(TALL||gi%2)?'start':'end';if(an==='end'){lg.attr({transform:`translate(${lx-tt.bbox().width-U*.045},${ly})`})}else lg.attr({transform:`translate(${lx},${ly})`});
+    wipe(lg,st+.4)});
+  const ml=L.front.line(cx,cy-R1-U*.02,cx,cy-R0+U*.01).stroke({color:FG,width:U*.003,dasharray:`${U*.008} ${U*.006}`});wipe(ml,1.6);
+  const mt=T(L.front,`MAJORITY ${P.majority}`,U*.024,cx,cy-R1-U*.045,{family:'Mono',weight:700});wipe(mt,1.7);
+  const tot=T(L.front,String(P.total),U*.075,cx,cy-U*.06,{family:'Anton',weight:400});const ts=T(L.front,'SEATS',U*.022,cx,cy-U*.005,{family:'Inter',weight:800,ls:'.2em'});wipe(tot,.2);wipe(ts,.25)}
+function material(g,mat,x,y,w,h,color,i){ // one bar as a real thing; x,y = bottom-left
+  if(mat==='coins'){const ch=w*.16;const n=Math.max(1,Math.round(h/ch));for(let k=0;k<n;k++){const yy=y-(k+1)*ch;
+      g.ellipse(w,ch*1.1).move(x,yy).fill(k%2?'#C9A24A':'#D9B55A').stroke({color:'#8A6A22',width:Math.max(1,U*.0015)})}
+    g.ellipse(w,ch*1.1).move(x,y-n*ch-ch*.55).fill('#E8C86E').stroke({color:'#8A6A22',width:Math.max(1,U*.0015)});return}
+  if(mat==='pillars'){g.rect(w*1.2,w*.14).move(x-w*.1,y-w*.14).fill('#DCD6CA');const sh=h-w*.36;
+    g.rect(w,sh).move(x,y-w*.14-sh).fill('#EDE8DE');for(let k=1;k<6;k++)g.line(x+w*k/6,y-w*.14-sh,x+w*k/6,y-w*.14).stroke({color:'#B9B1A1',width:Math.max(1,w*.02)});
+    g.rect(w*1.25,w*.22).move(x-w*.125,y-h).fill('#DCD6CA');g.rect(w*1.25,h).move(x-w*.125,y-h).fill('none').stroke({color:'#00000010'});return}
+  if(mat==='chimneys'){const top=y-h;g.polygon([[x+w*.1,y],[x+w*.9,y],[x+w*.8,top],[x+w*.2,top]].map(p=>p.join(',')).join(' ')).fill(color);
+    for(let k=1;k<4;k++){const yy=top+h*k/4;g.rect(w*.66,h*.03).move(x+w*.17,yy).fill('#00000022')}
+    g.rect(w*.7,w*.12).move(x+w*.15,top-w*.06).fill('#333');
+    const sm=g.group();for(let k=0;k<5;k++)sm.circle(w*(.5+k*.18)).center(x+w*.5+k*w*.18,top-w*.3-k*w*.28).fill('#2A2A2A').opacity(.55-k*.07);
+    sm.attr({filter:'url(#blur)'}).opacity(.9);return}
+  if(mat==='buildings'){g.rect(w,h).move(x,y-h).fill(color);const cw=w/5,rh=w/5;for(let r=0;r*rh<h-rh;r++)for(let c=0;c<4;c++)
+      g.rect(cw*.55,rh*.5).move(x+cw*(c+.6),y-h+rh*(r+.4)).fill(i%2?'#F3E9C8':'#FFFFFF').opacity(.75);
+    g.rect(w*.06,h*.12).move(x+w*.47,y-h-h*.12).fill(color);return}
+  if(mat==='books'){const cols2=['#7A2E26','#E2B13C','#1F4E3D','#7B5233','#222','#2C3E66','#8B3A2B'];g.rect(w,h).move(x,y-h).fill(cols2[i%cols2.length]).radius(w*.04);
+    g.rect(w,h*.04).move(x,y-h*.9).fill('#D8B65A').opacity(.8);g.rect(w,h*.04).move(x,y-h*.12).fill('#D8B65A').opacity(.8);return}
+  g.rect(w,h).move(x,y-h).fill(color)}
+function stack(){
+  chartTitle(P.title);const vs=P.values,n=vs.length,mx=Math.max(...vs.map(v=>v.value));
+  const base=TALL?H*.66:H*.82,area=W*(TALL?.84:.7),maxh=TALL?H*.42:H*.56,gap=area/n,bw=Math.min(gap*.56,U*.2);
+  L.mid.line(W/2-area/2,base,W/2+area/2,base).stroke({color:FG,width:U*.004});
+  vs.forEach((v,i)=>{const x=W/2-area/2+gap*(i+.5)-bw/2;const h=Math.max(U*.02,maxh*v.value/mx);const g=L.hero.group();
+    material(g,P.material,x,base,bw,h,v.value===mx?ACC:'#3A3A3A',i);const clip=draw.clip().add(draw.rect(W,H).move(0,0));
+    const st=.25+i*.25;g.opacity(0);at(st,.6,p=>{g.opacity(1);g.attr({transform:`translate(0,${h*(1-p)})`})},E.back);
+    const lb=valLabel(L.front,v.shown,x+bw/2,base-h-U*.05,{fill:v.value===mx?FG:FG});wipe(lb,st+.5);
+    if(v.label){const t=T(L.front,v.label.toUpperCase(),U*.026,x+bw/2,base+U*.035,{family:'Inter',weight:800,ls:'.08em'});fit(t,gap*.95);wipe(t,st+.3)}})}
+function stand(){ // figures standing on their bars, value boxes beside them
+  chartTitle(P.title);const vs=P.values,n=vs.length,mx=Math.max(...vs.map(v=>v.value));const pics=P.pics||[];
+  const base=TALL?H*.72:H*.86,area=W*(TALL?.86:.62),maxh=TALL?H*.34:H*.42,gap=area/n,bw=gap*.62;
+  vs.forEach((v,i)=>{const x=W/2-area/2+gap*(i+.5)-bw/2;const h=Math.max(U*.05,maxh*Math.sqrt(v.value/mx));const st=.2+i*.4;
+    const b=L.mid.rect(bw,h).move(x,base-h).fill(i===n-1?'#3E4A55':'#56626C');slide(b,st,0,h);
+    const fh=TALL?H*.16:H*.24;const pic=pics[i];let fig;
+    if(pic&&pic.img){fig=picture(L.hero,pic,x+bw/2,base-h,fh)}
+    else{fig=L.hero.group();const cx=x+bw/2,top=base-h-fh;fig.circle(fh*.18).center(cx,top+fh*.1).fill(INK);
+      fig.rect(fh*.22,fh*.42).move(cx-fh*.11,top+fh*.2).radius(fh*.05).fill(INK);fig.rect(fh*.07,fh*.4).move(cx-fh*.1,top+fh*.6).fill(INK);fig.rect(fh*.07,fh*.4).move(cx+fh*.03,top+fh*.6).fill(INK)}
+    drop(fig,st+.35,H*.15,0);
+    const box=L.front.group();const t=T(box,v.shown,U*.05,0,0,{family:'Anton',weight:400,anchor:'start',fill:'#FFFFFF'});const bb=t.bbox();
+    box.rect(bb.width+U*.04,bb.height+U*.02).move(bb.x-U*.02,bb.y-U*.01).fill('#C24A2B').back();
+    const lb=T(box,(v.label||'').toUpperCase(),U*.022,0,-bb.height*.85,{family:'Inter',weight:800,anchor:'start',ls:'.1em'});
+    const bx=TALL?x+bw*.05:x+bw+U*.03,by=TALL?base-h+U*.1:base-h+U*.05;box.attr({transform:`translate(${bx},${by})`});slide(box,st+.6,W*.03,0)});
+  if(P.note){const t=T(L.front,P.note.toUpperCase(),U*.02,W/2,base+U*.035,{family:'Mono',weight:700});wipe(t,1.5)}}
+function fan(){ // curved bars around a photo disc, longest first
+  const vs=P.values,mx=vs[0].value;const cx=TALL?W/2:W*.4,cy=TALL?H*.42:H*.5,r0=TALL?W*.17:H*.2,rmax=TALL?W*.34:H*.44;
+  const a0=-Math.PI*.95,span=Math.PI*1.3,seg=span/vs.length;
+  vs.forEach((v,i)=>{const r1=r0+(rmax-r0)*Math.sqrt(v.value/mx);const s0=a0+i*seg+seg*.04,s1=a0+(i+1)*seg-seg*.04;
+    const arc=(rr,a)=>[cx+Math.cos(a)*rr,cy+Math.sin(a)*rr];const st=.3+i*.2;
+    const pth=L.back.path('').fill(i===0?ACC:(i%2?'#D9532C':'#E7703F'));
+    at(st,.6,p=>{const r=r0+(r1-r0)*p;const A=arc(r0,s0),B=arc(r,s0),C=arc(r,s1),D=arc(r0,s1);
+      pth.plot(`M${A} L${B} A${r} ${r} 0 0 1 ${C} L${D} A${r0} ${r0} 0 0 0 ${A}`.replace(/,/g,' '))},E.out);
+    const mid=(s0+s1)/2;const lx=cx+Math.cos(mid)*(r1+U*.02),ly=cy+Math.sin(mid)*(r1+U*.02);
+    const vl=T(L.front,v.shown,U*(i===0?.05:.032),cx+Math.cos(mid)*(r0+(r1-r0)*.62),cy+Math.sin(mid)*(r0+(r1-r0)*.62),{family:'Anton',weight:400,fill:'#FFFFFF'});wipe(vl,st+.5);
+    const lt=T(L.front,(v.label||'').toUpperCase(),U*.022,lx,ly,{family:'Inter',weight:800,anchor:Math.cos(mid)>=0?'start':'end',ls:'.08em'});
+    lt.attr({transform:`rotate(${(Math.cos(mid)>=0?mid:mid+Math.PI)*180/Math.PI},${lx},${ly})`});wipe(lt,st+.5)});
+  const d=L.mid.circle(r0*1.9).center(cx,cy).fill(DARK?'#EEE':'#1C1C1C');popIn(d,cx,cy,.1);
+  const pic=(P.pics||[])[0];if(pic&&pic.img){const g=picture(L.hero,pic,cx,cy+r0*1.05,r0*2.1);drop(g,.3,H*.2,0)}
+  if(P.title){const g=boxText(L.front,P.title,U*.06,TALL?W/2:W*.04,TALL?H*.8:H*.8,{anchor:TALL?'middle':'start',maxw:TALL?W*.86:W*.4,most:2});g.children().forEach((r,i)=>slide(r,.9+i*.15,-W*.05,0))}}
+function trend(){ // the line chart; the picture fills the area under the line; labelled points
+  chartTitle(P.title);const pts=P.points,n=pts.length,mx=Math.max(...pts.map(p=>p.value)),mn=0;
+  const L0=W*(TALL?.1:.12),R0=W*(TALL?.9:.88),T0=TALL?H*.2:H*.22,B0=TALL?H*.62:H*.8;
+  const xy=pts.map((p,i)=>[L0+(R0-L0)*i/(n-1),B0-(B0-T0)*(p.value-mn)/(mx-mn||1)]);
+  const area=[[L0,B0],...xy,[R0,B0]];const pic=(P.pics||[])[0];
+  const clipEl=draw.clip().add(draw.polygon(area.map(p=>p.join(',')).join(' ')));
+  const fill=L.back.group().clipWith(clipEl);
+  if(pic&&pic.img){const iw=R0-L0,ih=iw*pic.h/pic.w;fill.image(pic.img).size(Math.max(iw,(B0-T0)*pic.w/pic.h),Math.max(ih,B0-T0)).move(L0,T0).opacity(.95)}
+  else fill.rect(R0-L0,B0-T0).move(L0,T0).fill(ACC).opacity(.85);
+  const cover=L.back.rect(R0-L0,B0-T0+U*.01).move(L0,T0).fill(PAPER);at(.3,Math.min(2.2,DUR*.55),p=>cover.width(Math.max(.1,(R0-L0)*(1-p))).x(L0+(R0-L0)*p),E.inout);
+  L.mid.line(L0,B0,R0,B0).stroke({color:FG,width:U*.004});
+  const line=L.mid.polyline(xy.map(p=>p.join(',')).join(' ')).fill('none').stroke({color:FG,width:U*.006,linejoin:'round'});
+  const len=line.node.getTotalLength();line.attr({'stroke-dasharray':len,'stroke-dashoffset':len});at(.3,Math.min(2.2,DUR*.55),p=>line.attr({'stroke-dashoffset':len*(1-p)}),E.inout);
+  xy.forEach((q,i)=>{const s0=.3+Math.min(2.2,DUR*.55)*i/(n-1);const c=L.front.circle(U*.022).center(q[0],q[1]).fill('#FFFFFF').stroke({color:FG,width:U*.004});popIn(c,q[0],q[1],s0,.3);
+    const v=T(L.front,pts[i].shown,U*.034,q[0],q[1]-U*.04,{family:'Anton',weight:400});wipe(v,s0+.1);
+    const x=T(L.front,pts[i].x,U*.024,q[0],B0+U*.035,{family:'Mono',weight:700});wipe(x,s0)})}
+function slice(){ // the real object with a wedge in the accent colour and a callout
+  const pic=(P.pics||[])[0];let h=TALL?H*.42:H*.62;if(pic&&pic.img&&h*pic.w/pic.h>W*(TALL?.84:.6))h=W*(TALL?.84:.6)*pic.h/pic.w;
+  const cx=TALL?W/2:W*.42,by=TALL?H*.66:H*.84;
+  let g;if(pic)g=picture(L.hero,pic,cx,by,h);drop(g||L.hero.group(),.2,H*.2,0);
+  const r=h*.45,cy=by-h*.55;const a0=-Math.PI/2,a1=a0+Math.PI*2*P.pct/100;const wedge=L.front.path('').fill(ACC).opacity(.92).stroke({color:'#FFFFFF',width:U*.004});
+  at(.8,.6,p=>{const a=a0+(a1-a0)*p;const large=(a-a0)>Math.PI?1:0;wedge.plot(`M${cx} ${cy} L${cx+Math.cos(a0)*r} ${cy+Math.sin(a0)*r} A${r} ${r} 0 ${large} 1 ${cx+Math.cos(a)*r} ${cy+Math.sin(a)*r} Z`)},E.inout);
+  const am=(a0+a1)/2;const x1=cx+Math.cos(am)*r*.7,y1=cy+Math.sin(am)*r*.7;const x2=TALL?W*.82:W*.8,y2=TALL?H*.18:H*.2;
+  const ln=L.front.polyline([[x1,y1],[x1,y1]]).fill('none').stroke({color:FG,width:U*.003});
+  at(1.3,.5,p=>ln.plot([[x1,y1],[x1+(x2-x1)*p,y1+(y2-y1)*p]]),E.inout);
+  const big=T(L.front,P.shown,U*.07,x2,y2-U*.06,{family:'Anton',weight:400,anchor:'end',fill:ACC==='#F2C200'?FG:ACC});wipe(big,1.7);
+  if(P.label){const t=T(L.front,P.label.toUpperCase(),U*.028,x2,y2+U*.005,{family:'Inter',weight:800,anchor:'end',ls:'.08em'});wipe(t,1.8)}}
+
+const SCENES={hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice};
 async function boot(){
   try{await Promise.all(Array.from(document.fonts).map(f=>f.load()))}catch(e){}
   const imgs=[];(P.pics||[]).forEach(p=>{if(p.img)imgs.push(new Promise(r=>{const i=new Image();i.onload=i.onerror=r;i.src=p.img}))});
