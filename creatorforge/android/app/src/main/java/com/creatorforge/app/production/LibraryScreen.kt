@@ -171,8 +171,8 @@ fun LibraryScreen() {
         item {
             Row { Section("VOICE PROFILES"); TextButton({ voiceAdding = true }) { Text("+ ADD VOICE") } }
         }
-        if (voices.isEmpty()) item { Text("No voices yet. Tap + ADD VOICE and pick ★ Human-like.", color = Color.Gray, fontSize = 12.sp) }
-        items(voices, key = { "voice" + it.id }) { v ->
+        if (voices.none { it.provider == "elevenlabs" }) item { Text("No ElevenLabs voice yet. Save your key in Settings, then tap + ADD VOICE → LOAD MY VOICES.", color = Color.Gray, fontSize = 12.sp) }
+        items(voices.filter { it.provider == "elevenlabs" }, key = { "voice" + it.id }) { v ->
             Card(Modifier.fillMaxWidth()) {
                 Column(Modifier.padding(12.dp)) {
                     Text(v.name + if (v.builtin) "  • built-in" else "", color = Gold)
@@ -373,11 +373,11 @@ data class VoiceDraft(val name: String, val provider: String, val voice: String,
 @Composable
 private fun VoiceEditor(v: LibraryVoice?, loadEleven: suspend () -> List<ElevenVoice>, onDismiss: () -> Unit, onSave: (VoiceDraft) -> Unit) {
     var name by remember(v) { mutableStateOf(v?.name.orEmpty()) }
-    var provider by remember(v) { mutableStateOf(v?.provider ?: "chatterbox") }
+    var provider by remember(v) { mutableStateOf("elevenlabs") }      // CreatorForge narrates with ElevenLabs only
     var voice by remember(v) { mutableStateOf(v?.voice ?: "kokoro:am_onyx") }
     var speed by remember(v) { mutableFloatStateOf((v?.speed ?: 1.0).toFloat()) }
     var style by remember(v) { mutableStateOf(v?.style?.ifBlank { null } ?: "documentary") }
-    var lang by remember(v) { mutableStateOf(if (v?.lang == "hi") "hi" else "a") }
+    var lang by remember(v) { mutableStateOf(if (v == null || v.lang == "hi") "hi" else "a") }   // Hinglish channels: Hindi
     var base by remember(v) { mutableStateOf(if (v?.voice?.startsWith("asset:") == true) "mine" else v?.voice?.takeIf { it.startsWith("kokoro:") || it == "default" } ?: "kokoro:am_onyx") }
     var sample by remember { mutableStateOf<android.net.Uri?>(null) }
     var consent by remember(v) { mutableStateOf(v?.voice?.startsWith("asset:") == true) }
@@ -401,11 +401,6 @@ private fun VoiceEditor(v: LibraryVoice?, loadEleven: suspend () -> List<ElevenV
         text = {
             Column(Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 OutlinedTextField(name, { name = it }, Modifier.fillMaxWidth(), singleLine = true, label = { Text("Name (e.g. Deep documentary)") })
-                Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                    listOf("elevenlabs" to "ElevenLabs", "chatterbox" to "★ Human-like", "kokoro" to "Kokoro", "piper" to "Piper").forEach { (id, label) ->
-                        FilterChip(selected = provider == id, onClick = { provider = id }, label = { Text(label) })
-                    }
-                }
                 if (provider == "elevenlabs") {
                     Text("Your ElevenLabs voice narrates the whole script on the pod - every line in its Tone:. " +
                         "Needs your key in Settings → ElevenLabs (or ELEVENLABS_API_KEY on the pod).", color = Color.LightGray, fontSize = 12.sp)

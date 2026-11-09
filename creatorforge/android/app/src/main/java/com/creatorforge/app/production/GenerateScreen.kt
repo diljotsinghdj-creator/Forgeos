@@ -128,7 +128,7 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
     var notice by remember { mutableStateOf<String?>(null) }
     var pollKey by remember { mutableIntStateOf(0) }
     var busy by remember { mutableStateOf(false) }
-    var stickmanOpen by remember { mutableStateOf(false) }
+    var elevenVoices by remember { mutableStateOf<List<LibraryVoice>>(emptyList()) }
     var recent by remember { mutableStateOf<List<ProductionSummary>>(emptyList()) }
     var videoFile by remember { mutableStateOf<File?>(null) }
     var storyboardVersion by remember { mutableIntStateOf(0) }
@@ -139,7 +139,10 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
             if (voice.isBlank() || c.voices.none { it.id == voice }) voice = c.voices.firstOrNull()?.id.orEmpty()
         }.onFailure { capsError = it.message }
         runCatching { client.list() }.onSuccess { recent = it }
-        runCatching { client.characters() }.onSuccess { cs -> library = cs; picked = picked.filter { id -> cs.any { it.id == id } }.toSet() }
+        runCatching { client.voices() }.onSuccess { vs ->
+            elevenVoices = vs.filter { it.provider == "elevenlabs" }
+            if (elevenVoices.none { it.id == voice }) voice = elevenVoices.firstOrNull()?.id.orEmpty()
+        }
         runCatching { client.assets() }.onSuccess { a -> assets = a; if (a.none { it.id == musicAsset }) musicAsset = "" }
     }
 
@@ -236,21 +239,8 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                             runCatching { client.publishKit(p.id) }.onSuccess { kit = it }.onFailure { error = it.message }
                             busy = false
                         }
-                    },
-                    onCapCut = {
-                        busy = true; notice = "Preparing the CapCut pack…"
-                        scope.launch {
-                            runCatching {
-                                runCatching { client.publishKit(p.id) } // so publish.txt has real titles and hashtags
-                                val zip = File(context.getExternalFilesDir("Exports") ?: context.filesDir, "CreatorForge_${p.id}.zip")
-                                client.fetch("/v1/productions/${p.id}/export", zip, ::isZip)
-                                kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) { unpackForEditors(context, zip, p.title) }
-                            }.onSuccess { msg ->
-                                notice = msg + if (openCapCut(context)) "" else " CapCut isn't installed - the files are ready for any editor."
-                            }.onFailure { error = it.message; notice = null }
-                            busy = false
-                        }
                     })
+
             }
             if (p.inReview && swipe && p.scenes.isNotEmpty()) item {
                 key(p.id) {
@@ -336,10 +326,6 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                         label = { Text(if (scriptMode) "Your script - timestamps, HOOK/TWIST labels, On-screen hook, Visuals, Post lines all understood" else "Your idea") },
                         placeholder = { Text(if (scriptMode) "Paste the exact narration. CreatorForge splits it into scenes and builds visuals, captions and the edit around your words."
                             else "A 45-second cinematic short explaining how humanoid robots could change warehouses") })
-                    if (scriptMode) TextButton({ stickmanOpen = true }, enabled = idea.isNotBlank()) {
-                        Text("🎬 STICKMAN VIDEO PROMPTS (Gemini / Veo)", color = Gold, fontSize = 12.sp)
-                    }
-                    if (stickmanOpen) StickmanPackDialog(client, idea, aspect) { stickmanOpen = false }
                 }
             }
             item { Column {
@@ -350,97 +336,25 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                     ChipRow(listOf(15, 30, 45, 60, 90, 180).map { "$it" to "${it}s" }, "$duration") { duration = it.toInt() }
                 }
                 Label("FORMAT")
-                ChipRow(listOf("9:16" to "9:16 Shorts", "16:9" to "16:9 YouTube", "1:1" to "1:1 Square"), aspect) { aspect = it }
-                Label("TEMPLATE")
-                ChipRow((caps?.templates ?: FALLBACK_TEMPLATES).map { it.id to it.name }, template) { template = it }
-                caps?.voices?.takeIf { it.isNotEmpty() }?.let { vs ->
-                    Label("VOICE"); ChipRow(vs.map { it.id to it.name }, voice) { voice = it }
-                    Label("VOICE PACE")
-                    ChipRow(listOf("1.0" to "Natural", "1.1" to "Shorts pace 1.1×", "1.2" to "Fast 1.2×"), voicePace) { voicePace = it }
-                }
-                if (library.isNotEmpty()) {
-                    Label("CHARACTERS (LIBRARY)")
-                    Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                        library.forEach { ch ->
-                            FilterChip(selected = ch.id in picked, onClick = { picked = if (ch.id in picked) picked - ch.id else picked + ch.id },
-                                label = { Text(ch.name) })
-                        }
-                    }
-                }
+                ChipRow(listOf("16:9" to "16:9 YouTube", "9:16" to "9:16 Shorts"), if (aspect == "9:16") "9:16" else "16:9") { aspect = it }
+                Label("VOICE (ELEVENLABS)")
+                if (elevenVoices.isEmpty()) Text("No ElevenLabs voice yet: Settings → ElevenLabs key, then Library → Voice Profiles → " +
+                    "+ ADD VOICE → ElevenLabs (SPEAKS: हिन्दी Hindi).", color = Danger, fontSize = 12.sp)
+                else ChipRow(elevenVoices.map { it.id to it.name }, voice) { voice = it }
                 if (brandChannels.isNotEmpty()) {
-                    Label("BRAND (LOGO, COLOURS, SIGN-OFF)")
+                    Label("BRAND (NAME, COLOURS, SIGN-OFF)")
                     ChipRow(brandChannels.map { it.id to it.name } + listOf("" to "No brand"), brandId) { brandId = it }
                 }
-                Label("PEOPLE IN SHOTS")
-                ChipRow(listOf("show" to "Expressive faces", "faceless" to "Faceless"), faces) { faces = it }
-                Text(if (faces == "faceless") "People from behind, in silhouette or as hands - emotion shown through body language."
-                     else "Faces show the emotion of each moment - shock, fear, suspicion, disgust.", color = Color.Gray, fontSize = 12.sp)
-                Label("CUTS")
-                ChipRow(listOf("fast" to "Fast - new picture every 1-2 s", "calm" to "Calm - one picture per scene"), if (fastCuts) "fast" else "calm") { fastCuts = it == "fast" }
-                Label("PACING")
-                ChipRow(listOf("slow" to "Slow", "medium" to "Medium", "fast" to "Fast"), pacing) { pacing = it }
-                Label("REALISTIC AI VIDEO")
-                if (caps?.aiVideo == false) Text("No video model on this worker - scenes use AI images with camera motion.", color = Color.Gray, fontSize = 12.sp)
-                else {
-                    ChipRow(listOf("off" to "Off", "hook" to "Hook only (cheap)", "all" to "Every line"), videoScope) { videoScope = it }
-                    Text(when (videoScope) {
-                        "hook" -> "The opening shot is animated with AI video; the rest use AI images + camera motion."
-                        "all" -> if (fastCuts) "Every spoken line gets its own AI clip, moving exactly while that line is spoken. " +
-                            "Smooth stabilised camera, people framed without faces. Slow: about 1-3 min of GPU per line " +
-                            "(a Short ~30-40 min, a 7-minute episode ~3-4 h)." else
-                            "Every scene animated with one clip (turn on Fast cuts for one clip per line)."
-                        else -> "AI images with camera motion - fastest and cheapest."
-                    }, color = Color.Gray, fontSize = 12.sp)
-                    if (aiVideo) {
-                        Label("AI VIDEO SPEED")
-                        ChipRow(listOf("fast" to "Fast", "balanced" to "Balanced", "best" to "Best detail"), videoQuality) { videoQuality = it }
-                        Text(when (videoQuality) {
-                            "best" -> "Full 720p, 40 steps - sharpest, about 5x slower than Fast."
-                            "balanced" -> "Middle ground - about 2x slower than Fast."
-                            else -> "Quickest - smaller clips upscaled to 1080p; looks great on phones."
-                        }, color = Color.Gray, fontSize = 12.sp)
-                    }
-                }
-                Row { Switch(autoEdit, { autoEdit = it }); Text(" Auto Edit (AI picks transitions, emphasis, pauses)", Modifier.padding(top = 12.dp)) }
+                Text("Look: Vox-style explainer - every line is an animated graphic (charts, maps, documents, quotes, " +
+                    "phones, timelines). No AI pictures.", color = Color.Gray, fontSize = 12.sp)
                 Row { Switch(review, { review = it }); Text(" Review storyboard before render", Modifier.padding(top = 12.dp)) }
                 val tracks = assets.filter { it.kind == "music" }
                 if (music && tracks.isNotEmpty()) {
                     Label("MUSIC")
                     ChipRow(listOf("" to "Auto") + tracks.map { it.id to it.name }, musicAsset) { musicAsset = it }
                 }
-                Row { Switch(sfx, { sfx = it }); Text(" Sound effects (whooshes, hits, pops)", Modifier.padding(top = 12.dp)) }
+                Row { Switch(sfx, { sfx = it }); Text(" Sound effects (paper, pops, whooshes)", Modifier.padding(top = 12.dp)) }
                 Row { Switch(music, { music = it }); Text(" Music", Modifier.padding(top = 12.dp, end = 16.dp)); Switch(captions, { captions = it }); Text(" Captions", Modifier.padding(top = 12.dp)) }
-                val presets = caps?.styles?.takeIf { it.isNotEmpty() } ?: FALLBACK_STYLES
-                Label("VISUAL STYLE (swipe for animated looks)")
-                ChipRow(listOf("" to "Template") + presets.map { it.id to it.name } + listOf("__custom" to "Custom…"),
-                    if (customLook) "__custom" else style) { choice ->
-                    customLook = choice == "__custom"
-                    style = if (customLook) "" else choice
-                }
-                if (customLook) OutlinedTextField(style, { style = it }, Modifier.fillMaxWidth(), label = { Text("Describe the look") })
-                if (style == "studio_mix") Text("Studio mix: six looks in one video, chosen line by line - cinematic film for " +
-                    "the opening and big moments, hyper-realistic for buildings and places, documentary for everyday life, " +
-                    "editorial collage for named people and real photos, investigative desk for files, papers and maps, " +
-                    "mixed-media collage for history (Archive:) lines. Red-pen text boxes and desk charts throughout.",
-                    color = Color.Gray, fontSize = 12.sp)
-                if (style == "investigative") Text("Investigative desk look: photos and documents taped to a desk and map, " +
-                    "red string and circles, red-pen text boxes, graph-paper charts for numbers. Add Stock: lines for real footage.",
-                    color = Color.Gray, fontSize = 12.sp)
-                if (style == "editorial") Text("Editorial explainer look: cut-out photos on paper, yellow highlighter boxes " +
-                    "for your Text: lines, warm paper texture, sliding paper cuts. Add Stock: lines for real archive footage.",
-                    color = Color.Gray, fontSize = 12.sp)
-                if (style in ANIMATED_LOOKS) Text(when (style) {
-                    "doodle" -> "Whiteboard look: every shot is drawn on - white paper, line sketch, then the finished drawing."
-                    "explainer_2d", "comic", "noir_graphic" -> "Each scene opens as line art that fills in. Characters keep expressive cartoon faces."
-                    else -> "Animated look: characters keep expressive cartoon faces, even with AI video."
-                }, color = Color.Gray, fontSize = 12.sp)
-                TextButton({ director = !director }) { Text(if (director) "▾ Director Mode" else "▸ Director Mode", color = Gold) }
-                if (director) {
-                    OutlinedTextField(mood, { mood = it }, Modifier.fillMaxWidth(), label = { Text("Mood") })
-                    OutlinedTextField(camera, { camera = it }, Modifier.fillMaxWidth(), label = { Text("Camera direction") })
-                    OutlinedTextField(characters, { characters = it }, Modifier.fillMaxWidth(), minLines = 2,
-                        label = { Text("Characters - one per line: Name: description") })
-                }
             } }
             item {
                 Button(enabled = idea.trim().length >= 5 && !busy, modifier = Modifier.fillMaxWidth().height(56.dp), onClick = {
@@ -451,13 +365,13 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                         .putString("video_scope", videoScope).putString("video_quality", videoQuality).putString("faces2", faces).putBoolean("fast_cuts", fastCuts).putString("voice_pace", voicePace).putBoolean("review", review)
                         .putBoolean("auto_edit", autoEdit).putStringSet("character_ids", picked)
                         .putBoolean("script_mode", scriptMode).putBoolean("sfx", sfx).putString("music_asset", musicAsset).putString("brand_channel", brandId).apply()
-                    val chars = characters.lines().mapNotNull { l ->
-                        val i = l.indexOf(':'); if (i > 0) l.substring(0, i).trim() to l.substring(i + 1).trim() else null
-                    }.filter { it.first.isNotBlank() && it.second.isNotBlank() }
-                    fun request(text: String) = ProductionRequest(if (scriptMode) "" else text, duration, aspect, template, voice, pacing,
-                        style.trim(), mood.trim(), camera.trim(), chars, music, captions, aiVideo, review, autoEdit, picked.toList(),
+                    // Vox-style explainer: the look, edit and pacing are fixed; only the words, format and voice change
+                    val fmt = if (aspect == "9:16") "9:16" else "16:9"
+                    fun request(text: String) = ProductionRequest(if (scriptMode) "" else text, duration, fmt,
+                        if (fmt == "9:16") "shorts_cinematic" else "youtube_longform", voice, "medium",
+                        "editorial", "", "", emptyList(), music, captions, false, review, true, emptyList(),
                         script = if (scriptMode) text else "", musicAssetId = if (music) musicAsset else "", sfx = sfx,
-                        aiVideoScenes = if (videoScope == "hook") "hook" else "all", videoQuality = videoQuality, faces = faces, fastCuts = fastCuts, voiceSpeed = voicePace.toDoubleOrNull() ?: 1.1,
+                        aiVideoScenes = "all", videoQuality = "fast", faces = "faceless", fastCuts = true, voiceSpeed = 1.0,
                         brand = brandChannel?.let { it.brand.forWorker(it.name) })
                     val pieces = batchPieces(idea)
                     if (pieces.size <= 1) act { client.create(request(idea.trim())) }
@@ -515,7 +429,7 @@ private fun ProductionCard(
     p: ProductionView, video: File?, busy: Boolean, onCancel: () -> Unit, onRetry: () -> Unit, onApprove: () -> Unit,
     onEditTimeline: () -> Unit, onNew: () -> Unit,
     onPlay: (File) -> Unit, onShare: (File) -> Unit, onSave: (File) -> Unit, onDownload: () -> Unit,
-    onKit: () -> Unit = {}, onCapCut: () -> Unit = {}
+    onKit: () -> Unit = {}
 ) {
     Card { Column(Modifier.padding(16.dp)) {
         Text(p.title.ifBlank { "New production" }, color = Gold, fontSize = 20.sp)
@@ -549,10 +463,6 @@ private fun ProductionCard(
         if ((p.terminal || p.inReview) && p.scenes.isNotEmpty() && p.scenes.all { it.narrationS != null }) {
             OutlinedButton(onEditTimeline, enabled = !busy) { Text("EDIT TIMELINE") }
         }
-        if ((p.status == "FAILED" || p.status == "CANCELLED") && p.scenes.isNotEmpty() && p.scenes.all { it.imageState == "READY" }) {
-            // stopped after the pictures (e.g. at narration): finish the voice-over in CapCut
-            OutlinedButton(onCapCut, enabled = !busy) { Text("SEND PICTURES TO CAPCUT") }
-        }
         if (p.status == "READY") {
             if (video == null) OutlinedButton(onDownload) { Text("DOWNLOAD MP4") }
             else Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -560,10 +470,7 @@ private fun ProductionCard(
                 OutlinedButton({ onShare(video) }) { Text("SHARE") }
                 OutlinedButton({ onSave(video) }) { Text("SAVE") }
             }
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedButton(onKit, enabled = !busy) { Text("PUBLISH KIT") }
-                OutlinedButton(onCapCut, enabled = !busy) { Text("SEND TO CAPCUT") }
-            }
+            OutlinedButton(onKit, enabled = !busy) { Text("PUBLISH KIT") }
         }
     } }
 }
@@ -609,56 +516,6 @@ private fun SceneEditor(scene: SceneView, onDismiss: () -> Unit, onSave: (String
         },
         confirmButton = { Button({ onSave(narration.trim(), visual.trim()) }, enabled = narration.isNotBlank() && visual.isNotBlank()) { Text("SAVE") } },
         dismissButton = { TextButton(onDismiss) { Text("CANCEL") } }
-    )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun StickmanPackDialog(client: ProductionClient, script: String, aspect: String, onDismiss: () -> Unit) {
-    val context = LocalContext.current
-    val scope = rememberCoroutineScope()
-    var look by remember { mutableStateOf("stick_cozy") }
-    var character by remember { mutableStateOf("") }
-    var pack by remember { mutableStateOf<String?>(null) }
-    var making by remember { mutableStateOf(false) }
-    var problem by remember { mutableStateOf<String?>(null) }
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text("Stickman video prompts") },
-        text = {
-            Column(Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text("Your script becomes one prompt per ~8 s shot for Gemini / Veo or any AI video tool, with the same " +
-                    "stickman in every shot. The voiceover stays in your script's words.", fontSize = 12.sp, color = Color.Gray)
-                Text("LOOK", color = Gold, fontSize = 11.sp)
-                Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                    STICK_LOOKS.forEach { (id, label) ->
-                        FilterChip(selected = look == id, onClick = { look = id; pack = null }, label = { Text(label, fontSize = 12.sp) })
-                    }
-                }
-                OutlinedTextField(character, { character = it; pack = null }, Modifier.fillMaxWidth(),
-                    label = { Text("Your character (optional)") },
-                    placeholder = { Text("e.g. a small green dragon with big curious eyes and a red scarf") })
-                problem?.let { Text(it, color = Danger, fontSize = 12.sp) }
-                pack?.let { p ->
-                    Text("${p.lines().count { it.startsWith("===== SHOT") }} shots ready - tap COPY ALL, then paste one " +
-                        "shot at a time into your video tool.", color = Gold, fontSize = 12.sp)
-                    Text(p.take(1500) + if (p.length > 1500) "…" else "", fontSize = 11.sp)
-                }
-            }
-        },
-        confirmButton = {
-            val p = pack
-            if (p == null) Button({
-                making = true; problem = null
-                scope.launch {
-                    runCatching { client.stickmanPrompts(script, look, aspect, character) }
-                        .onSuccess { pack = it }.onFailure { problem = it.message ?: "Could not make the prompts" }
-                    making = false
-                }
-            }, enabled = !making) { Text(if (making) "MAKING…" else "MAKE PROMPTS") }
-            else Button({ copyText(context, p) }) { Text("COPY ALL") }
-        },
-        dismissButton = { TextButton(onDismiss) { Text("CLOSE") } }
     )
 }
 
