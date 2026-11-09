@@ -61,6 +61,9 @@ SYNONYMS = {
     "bomb": "bomb", "gun": "target", "weapon": "target", "target": "target", "hashtag": "hash", "trend": "trending-up",
     "bell": "bell", "notification": "bell", "notifications": "bell", "alarm": "alarm", "robot": "robot",
     "ai": "robot", "virus": "virus", "medicine": "pill", "tree": "tree", "factory_smoke": "building-factory-2",
+    # platforms: generic shapes, never their logos
+    "google": "search", "twitter": "message-2", "x": "message-2", "facebook": "users", "meta": "users",
+    "instagram": "camera", "youtube": "player-play", "telegram": "send", "tiktok": "music", "netflix": "device-tv",
 }
 
 # action -> words that ask for it
@@ -93,8 +96,9 @@ STOP = set("a an the of to in on at by for with and or from into onto over under
            "out up down off about after before while during per via".split())
 
 
-_LETTERS = re.compile(r"^(?:circle-|square-|hexagon-|octagon-|pentagon-|triangle-)?(?:dotted-|dashed-)?(?:letter|number|alphabet|"
-                      r"circle-number|square-number|roman)", re.I)
+# letter/number glyphs, and brand logos (no real logos on screen), are never picked for a word
+_LETTERS = re.compile(r"^(?:brand-|(?:circle-|square-|hexagon-|octagon-|pentagon-|triangle-)?(?:dotted-|dashed-)?(?:letter|number|alphabet|"
+                      r"circle-number|square-number|roman))", re.I)
 
 
 @functools.lru_cache(maxsize=1)
@@ -117,7 +121,7 @@ def find_icon(word: str) -> str | None:
         if c in SYNONYMS and SYNONYMS[c] in idx:
             return SYNONYMS[c]
     for c in cand:
-        if c in idx:
+        if c in idx and not _LETTERS.match(c):
             return c
     base = cand[1]
     # a whole-word part of an icon name ("skyscraper" -> building-skyscraper), shortest name first

@@ -95,6 +95,17 @@ def chapter_lines(spec: str, theme: str, width: int, height: int, seconds: float
     return out
 
 
+def _tape(L: float, T: float, R: float, end: str, unit: float) -> list[str]:
+    """Two strips of masking tape holding a paper card to the page (Vox collage look)."""
+    w, h = unit * 2.2, unit * 0.62
+    out = []
+    for cx, ang in ((L + w * 0.32, 9), (R - w * 0.32, -8)):
+        cy = T + h * 0.05
+        out.append(f"Dialogue: 3,{_ts(0)},{end},T,,0,0,0,,{{\\an7\\pos({cx - w / 2:.0f},{cy - h / 2:.0f})\\org({cx:.0f},{cy:.0f})"
+                   f"\\frz{ang}\\p1\\bord0\\shad0\\1c&HB8D3E3&\\1a&H40&}}m 0 0 l {w:.0f} 0 l {w:.0f} {h:.0f} l 0 {h:.0f}")
+    return out
+
+
 def quote_lines(spec: str, theme: str, width: int, height: int, seconds: float) -> list[str]:
     quote, _, source = spec.partition("|")
     quote = quote.strip().strip('"“”')
@@ -116,6 +127,7 @@ def quote_lines(spec: str, theme: str, width: int, height: int, seconds: float) 
     sh = f"m {L + 14:.0f} {T + 18:.0f} l {L + cw + 14:.0f} {T + 18:.0f} l {L + cw + 14:.0f} {T + ch + 18:.0f} l {L + 14:.0f} {T + ch + 18:.0f}"
     out = [f"Dialogue: 1,{_ts(0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c&H000000&\\1a&HB0&\\blur12}}{sh}",
            f"Dialogue: 2,{_ts(0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c&HFAFCFD&}}{card}"]
+    out += _tape(L, T, L + cw, end, size)
     x = L + size * 1.2
     # each line is typed, then a highlighter sweeps across it (behind the ink)
     per_row = min(0.9, max(0.35, (seconds - 1.2) / max(1, len(rows)) * 0.8))
@@ -476,6 +488,7 @@ def document_lines(spec: str, theme: str, width: int, height: int, seconds: floa
     out = [f"Dialogue: 1,{_ts(0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c&H000000&\\1a&HB0&\\blur14}}"
            f"{_rect(L + 12, T + 18, R + 12, B + 18)}",
            f"Dialogue: 2,{_ts(0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c&HFAFCFD&}}{_rect(L, T, R, B)}"]
+    out += _tape(L, T, R, end, size * 1.4)
     m = pw * 0.09
     gap = size * 1.75
     rows = _wrap(f"“{quote}”", 34, 4)
@@ -564,6 +577,7 @@ def article_lines(spec: str, theme: str, width: int, height: int, seconds: float
     out = [f"Dialogue: 1,{_ts(0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c&H000000&\\1a&HB0&\\blur14}}"
            f"{_rect(L + 12, T + 18, R + 12, B + 18)}",
            f"Dialogue: 2,{_ts(0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c&HFFFFFF&}}{_rect(L, T, R, B)}"]
+    out += _tape(L, T, R, end, size * 1.4)
     pub, _, date = source.partition(",")
     bar = size * 1.6
     out.append(f"Dialogue: 3,{_ts(0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c&H202020&}}{_rect(L, T, R, T + bar)}")

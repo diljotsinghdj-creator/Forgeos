@@ -26,7 +26,7 @@ from pathlib import Path
 from .ff import MediaError
 
 KINDS = ("chart", "timeline", "steps", "pie", "squares", "animate", "clock", "calendar", "sign", "social", "comments",
-         "trending", "stamp", "statement")
+         "trending", "stamp", "statement", "board")
 VENDOR = Path(__file__).parent / "vendor" / "svg.min.js"
 # Colour per scene (Vox rhythm): soft paper tints that change as the story moves on; "editorial~2" picks tint 2
 PALETTE = ("#F2EBDD", "#E3ECF2", "#F6E1DA", "#E4EDE1", "#F7EFD2")
@@ -101,6 +101,16 @@ def plan_for(kind: str, spec: str) -> dict | None:
         return {"type": "trending", "tag": head, "others": others}
     if kind == "stamp":
         return {"type": "stamp", "text": head.upper(), "on": tail}
+    if kind == "board":
+        items = parts(head)[:7]
+        if not items:
+            return None
+        from .scene_anim import find_icon, icon_nodes
+        def ic(t):
+            ws = [w for w in re.findall(r"[A-Za-z]+", t.lower()) if len(w) > 2]
+            name = next((find_icon(w) for w in ws if find_icon(w)), None)
+            return icon_nodes(name) if name else []
+        return {"type": "board", "items": [{"t": t, "o": ic(t)} for t in items], "title": tail, "pin": icon_nodes("pin")}
     if kind == "statement":
         words = [{"w": w.strip("*"), "hi": w.startswith("*") or w.endswith("*")} for w in spec.split() if w.strip("*")]
         return {"type": "statement", "words": words[:16]} if words else None
@@ -474,6 +484,28 @@ if(T==='statement'){
       txt(g,it.w.toUpperCase(),size,0,size*.04,{fill:INK});const cx=x+tw/2;g.opacity(0);
       const st=.15+k*per;at(st,.28,p=>{g.opacity(Math.min(1,p*2));const s=1.25-.25*p;g.attr({transform:`translate(${cx},${y}) rotate(${rot}) scale(${s})`})},ease.back);
       g.attr({transform:`translate(${cx},${y}) rotate(${rot})`});x+=tw+gap();k++})});
+}
+
+if(T==='board'){
+  // investigation board: cork, pinned paper notes, red string from the centre note to each of the others
+  title(P.title);const TOP=TALL?H*.2:H*.2, BOT=TALL?H*.57:H*.74, MY=(TOP+BOT)/2;
+  const bw=TALL?W*.92:W*.86,bh=BOT-TOP+U*.04;stage.rect(bw,bh).move(W/2-bw/2,TOP-U*.02).radius(U*.01).fill('#C9A16B').stroke({color:'#8B6A3E',width:U*.012});
+  for(let i=0;i<220;i++){const x=W/2-bw/2+((i*97)%1000)/1000*bw,y=TOP-U*.02+((i*61)%1000)/1000*bh;stage.circle(U*.004).center(x,y).fill('#8B6A3E').opacity(.35)}
+  const it=P.items,n=it.length;const cx=W/2,cy=MY;const rx=bw*.36,ry=bh*.34;const nw=TALL?W*.3:W*.17,nh=U*.12;
+  const pos=it.map((_,i)=>i===0?[cx,cy]:[cx+Math.cos(-Math.PI/2+2*Math.PI*(i-1)/(n-1))*rx,cy+Math.sin(-Math.PI/2+2*Math.PI*(i-1)/(n-1))*ry]);
+  const strings=[];const pinY=(i)=>pos[i][1]-(i===0?nh*1.3:nh)/2+U*.012;
+  pos.forEach((p,i)=>{if(i===0)return;const l=stage.line(cx,pinY(0),cx,pinY(0)).stroke({color:'#C8102E',width:U*.005,linecap:'round'});strings.push([l,[p[0],pinY(i)],i])});
+  let centre=null;it.forEach((t,i)=>{const [x,y]=pos[i];const g=stage.group();if(i===0)centre=g;const w=i===0?nw*1.25:nw,h=i===0?nh*1.3:nh,rot=((i*53)%9-4)*.8;
+    g.rect(w,h).move(-w/2+U*.006,-h/2+U*.009).fill('#000').opacity(.2);g.rect(w,h).move(-w/2,-h/2).fill(i===0?ACC:'#FFFDF6').stroke({color:INK,width:U*.003});
+    if(t.o&&t.o.length){const ig=g.group();for(const nd of t.o){try{ig.element(nd[0]).attr(nd[1])}catch(e){}};const k=h*.42/24;
+      ig.attr({fill:'none',stroke:INK,'stroke-width':1.8,transform:`translate(${-w/2+h*.12},${-12*k}) scale(${k})`});
+      wrap(g,t.t.toUpperCase(),Math.min(h*.24,U*.03),h*.24,0,w-h*.62,{cls:'lbl',most:2})}
+    else wrap(g,t.t.toUpperCase(),Math.min(h*.24,U*.03),0,0,w*.9,{cls:'lbl',most:2});
+    g.circle(U*.022).center(0,-h/2+U*.012).fill('#C8102E').stroke({color:'#7A0A1C',width:2});
+    g.opacity(0);const st=i===0?.2:.6+i*.35;at(st,.35,p=>{g.opacity(Math.min(1,p*2));g.attr({transform:`translate(${x},${y}) rotate(${rot}) scale(${1.15-.15*p})`})},ease.back);
+    g.attr({transform:`translate(${x},${y}) rotate(${rot})`})});
+  const sy=pinY(0);strings.forEach(([l,p,i])=>{const st=.45+i*.35;at(st,.4,q=>l.plot(cx,sy,cx+(p[0]-cx)*q,sy+(p[1]-sy)*q),ease.inout);l.front()});if(centre)centre.front();
+  stage.find('g').forEach(g=>{});
 }
 draw.rect(W,H).fill(grad).attr({'pointer-events':'none'});
 window.frame=function(t){

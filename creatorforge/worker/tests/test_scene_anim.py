@@ -34,3 +34,11 @@ def test_new_vox_graphics_are_planned():
     assert plan_for("stamp", "manipulated media | the post")["text"] == "MANIPULATED MEDIA"
     for k in ("clock", "calendar", "sign", "social", "comments", "trending", "stamp", "animate"):
         assert k in director.FULL_FRAME
+
+
+def test_board_and_no_brand_logos():
+    from creatorforge_worker.media.motion import plan_for
+    b = plan_for("board", "Amit Malviya · IT cell · WhatsApp groups | The network")
+    assert [i["t"] for i in b["items"]] == ["Amit Malviya", "IT cell", "WhatsApp groups"] and b["title"] == "The network"
+    for w in ("google", "twitter", "facebook", "whatsapp", "youtube", "instagram"):
+        assert not (find_icon(w) or "").startswith("brand-")
