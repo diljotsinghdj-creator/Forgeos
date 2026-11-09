@@ -35,8 +35,35 @@ def _norm(s: str) -> str:
     return re.sub(r"[^a-z ]", "", s.lower().replace("&", "and")).strip()
 
 
+# Indian states (pinned at their middle) and places too small for world.json that explainers often name.
+EXTRA_PLACES = {
+    "uttar pradesh": (27.0, 80.5), "rajasthan": (27.0, 74.2), "bihar": (25.6, 85.5), "gujarat": (22.7, 71.6),
+    "punjab": (30.9, 75.4), "haryana": (29.1, 76.1), "himachal pradesh": (31.9, 77.2), "himachal": (31.9, 77.2),
+    "uttarakhand": (30.1, 79.2), "jammu and kashmir": (33.5, 75.0), "kashmir": (34.1, 74.8), "ladakh": (34.2, 77.6),
+    "madhya pradesh": (23.5, 78.2), "maharashtra": (19.5, 75.7), "karnataka": (15.0, 75.7), "kerala": (10.4, 76.4),
+    "tamil nadu": (11.0, 78.4), "andhra pradesh": (15.9, 79.7), "telangana": (17.9, 79.0), "odisha": (20.5, 84.4),
+    "west bengal": (23.0, 87.9), "bengal": (23.0, 87.9), "assam": (26.2, 92.8), "jharkhand": (23.6, 85.3),
+    "chhattisgarh": (21.3, 81.9), "goa": (15.4, 74.0), "manipur": (24.7, 93.9), "delhi": (28.61, 77.21),
+    "mandi": (31.71, 76.93), "shaheen bagh": (28.545, 77.295), "kota": (25.18, 75.83), "noida": (28.54, 77.39),
+    "gurugram": (28.46, 77.03), "gurgaon": (28.46, 77.03), "ayodhya": (26.80, 82.20), "varanasi": (25.32, 82.97),
+    "amritsar": (31.63, 74.87), "chandigarh": (30.73, 76.78), "shimla": (31.10, 77.17), "srinagar": (34.08, 74.80),
+    "godhra": (22.78, 73.61), "lucknow": (26.85, 80.95), "patna": (25.59, 85.14), "jaipur": (26.91, 75.79),
+}
+
+
 def _find(name: str) -> dict | None:
-    """A country (its shapes) or a city (its position) by name."""
+    """A country (its shapes) or a city (its position) by name. "Kota, Rajasthan" tries the whole name, then
+    each part."""
+    if "," in name:
+        for part in [name] + [x for x in name.split(",") if x.strip()]:
+            f = _find_one(part)
+            if f:
+                return f
+        return None
+    return _find_one(name)
+
+
+def _find_one(name: str) -> dict | None:
     key = _norm(name)
     if not key:
         return None
@@ -54,6 +81,10 @@ def _find(name: str) -> dict | None:
             best = (name_, lat, lon, pop)
     if best:
         return {"kind": "city", "name": best[0], "lat": best[1], "lon": best[2]}
+    if key in EXTRA_PLACES:
+        lat, lon = EXTRA_PLACES[key]
+        return {"kind": "city", "name": name.strip().title() if name.strip().islower() else name.strip(),
+                "lat": lat, "lon": lon}
     return None
 
 

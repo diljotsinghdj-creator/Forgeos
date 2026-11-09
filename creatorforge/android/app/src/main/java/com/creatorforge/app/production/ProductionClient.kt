@@ -17,6 +17,11 @@ data class Choice(val id: String, val name: String)
 data class Capabilities(val templates: List<Choice>, val voices: List<Choice>, val productionReady: Boolean, val problems: List<String>, val aiVideo: Boolean,
                         val styles: List<Choice> = emptyList())
 
+data class VoxIssue(val line: Int, val level: String, val problem: String, val text: String)
+data class VoxResult(val script: String, val issues: List<VoxIssue>, val report: List<String>) {
+    val errors get() = issues.count { it.level == "error" }
+}
+
 data class StageView(val name: String, val state: String, val done: Int, val total: Int, val error: String?)
 
 data class SceneView(
@@ -267,6 +272,25 @@ class ProductionClient(baseUrl: String) {
     }
 
     suspend fun deleteAsset(id: String): Unit = withContext(Dispatchers.IO) { call("DELETE", "/v1/library/assets/$id") }
+
+    /** Vox director: a drawn graphic on every line (the app's Script AI picks them; rules when it can't). */
+    suspend fun voxDirect(script: String): VoxResult = withContext(Dispatchers.IO) {
+        voxResult(JSONObject(call("POST", "/v1/scripts/direct", withDirector(JSONObject().put("script", script)))), script)
+    }
+
+    /** Preflight: what would make the video wrong, line by line, before anything renders. */
+    suspend fun voxCheck(script: String): VoxResult = withContext(Dispatchers.IO) {
+        voxResult(JSONObject(call("POST", "/v1/scripts/check", JSONObject().put("script", script))), script)
+    }
+
+    private fun voxResult(j: JSONObject, script: String): VoxResult {
+        val a = j.optJSONArray("issues") ?: JSONArray()
+        val issues = (0 until a.length()).map { a.getJSONObject(it) }.map {
+            VoxIssue(it.optInt("n"), it.optString("level"), it.optString("problem"), it.optString("line"))
+        }
+        val r = j.optJSONArray("report") ?: JSONArray()
+        return VoxResult(j.optString("script").ifBlank { script }, issues, (0 until r.length()).map { r.optString(it) })
+    }
 
     /** The script as ready-to-paste stickman video prompts (one per ~8 s shot), as one text. */
     suspend fun stickmanPrompts(script: String, look: String, aspect: String, character: String): String = withContext(Dispatchers.IO) {

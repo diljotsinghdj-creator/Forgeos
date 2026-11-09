@@ -5,6 +5,7 @@ Legacy (RC10 app): GET /health, POST /v1/images/generate, POST /v1/voice/generat
 One-button production: POST /v1/productions and friends (see README)."""
 from __future__ import annotations
 
+import asyncio
 import hashlib
 import uuid
 import time
@@ -572,6 +573,41 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
                             "video_url": f"/v1/productions/{j['id']}/video",
                             "thumbnail_url": f"/v1/productions/{j['id']}/scenes/0/image"})
         return out
+
+    # ---- Vox director: a graphic on every line, checked before rendering ----------------------
+    @app.post("/v1/scripts/check", dependencies=[Depends(auth)])
+    async def script_check(request: Request) -> dict:
+        from . import vox_director
+        body = await request.json()
+        script = str(body.get("script") or "")[:200_000]
+        issues = vox_director.check(script)
+        return {"issues": issues, "lines": len(vox_director.blocks(script)[1]),
+                "errors": sum(i["level"] == "error" for i in issues)}
+
+    @app.post("/v1/scripts/direct", dependencies=[Depends(auth)])
+    async def script_direct(request: Request) -> dict:
+        """Adds a Vox graphic to every line (the app's AI when lent, else the pod's model, else rules)."""
+        from . import vox_director
+        body = await request.json()
+        script = str(body.get("script") or "")[:200_000]
+        lent = body.get("director_llm") if isinstance(body.get("director_llm"), dict) else None
+        llm = None
+        try:
+            if lent:
+                tmp = "direct-" + uuid.uuid4().hex
+                providers.set_director_llm(tmp, lent)
+                try:
+                    llm = providers.director_llm(cfg, tmp)
+                finally:
+                    providers._director_llms.pop(tmp, None)
+            else:
+                llm = providers.director_llm(cfg, "")
+        except NotConfigured:
+            llm = None
+        fixed, report = await asyncio.to_thread(vox_director.ensure, script, llm)
+        issues = vox_director.check(fixed)
+        return {"script": fixed, "report": report, "issues": issues,
+                "errors": sum(i["level"] == "error" for i in issues)}
 
     # ---- Chat with your Director ---------------------------------------------------------
     @app.post("/v1/director/chat", dependencies=[Depends(auth)])

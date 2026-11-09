@@ -235,6 +235,12 @@ def fit_lines(lines: list[str], width: int, height: int, fonts: dict[str, str], 
     edges, above the captions). Returns the fitted lines and the moved camera-zoom target."""
     lines = list(lines)
     L0, T0, R0, B0 = _region(width, height, captions)
+    # 0. type too small to read on a phone: that line's type grows to the readable minimum
+    least = min(width, height) * MIN_WARN
+    for i, ln in enumerate(lines):
+        its = parse_ass([ln], fonts) if ln.startswith("Dialogue:") else []
+        if its and its[0]["kind"] == "text" and 0 < its[0]["size"] < least:
+            lines[i] = _map_line(ln, lambda x: x, lambda y: y, least / its[0]["size"] * 1.01)
     # 1. a single line too wide for the screen: smaller type for that line
     for i, ln in enumerate(lines):
         its = parse_ass([ln], fonts)

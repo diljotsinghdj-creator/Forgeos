@@ -75,8 +75,10 @@ class Brain(private val model: TextModel?) {
         val user = "IDEA: ${idea.title}\nHOOK: ${idea.hook}\nANGLE: ${idea.angle}\nTOPIC: ${trend.title}\n" +
             "TARGET: about $words words ($secs seconds of narration)\nSOURCES:\n${signalsBlock(trend)}"
         return ask(SCRIPT_SYSTEM, user) { d ->
-            val text = d.optString("script").replace(Regex("\\s+"), " ").trim()
-            val count = text.split(" ").count { it.isNotBlank() }
+            // one thought per line: each line gets its own graphic, so the line breaks are kept
+            val text = d.optString("script").lines().map { it.replace(Regex("\\s+"), " ").trim() }
+                .filter { it.isNotBlank() }.joinToString("\n")
+            val count = text.split(Regex("\\s+")).count { it.isNotBlank() }
             require(count >= maxOf(15, words / 3)) { "script is too short ($count words, need about $words)" }
             val used = (0 until (d.optJSONArray("facts_used")?.length() ?: 0)).mapNotNull { d.getJSONArray("facts_used").optInt(it, 0).takeIf { n -> n in 1..trend.signals.size } }
             Script(d.optString("title").ifBlank { idea.title }.take(100), text.take(20000), d.optString("description").trim().take(1500),
@@ -120,7 +122,7 @@ class Brain(private val model: TextModel?) {
         fun s(k: String, cur: String) = j.optString(k).trim().ifBlank { cur }
         val dur = j.optInt("duration_s", old.durationS).coerceIn(10, 900)
         val template = s("template", old.template).let { t -> if (Styles.templates.any { it.first == t }) t else if (dur > 90) "youtube_longform" else "shorts_cinematic" }
-        val style = s("style", old.style).let { st -> if (Styles.presets.any { it.first == st }) st else "cinematic" }
+        val style = s("style", old.style).let { st -> if (Styles.presets.any { it.first == st }) st else "editorial" }
         val ai = s("ai_video", old.aiVideo).let { if (it in setOf("off", "hook", "all")) it else "off" }
         return Draft(s("title", old.title).take(100), s("idea", old.idea).take(3000), s("hook", old.hook).take(160),
             s("script", old.script).take(20000), dur, template, style, ai)
@@ -350,37 +352,41 @@ Rules:
 - why_now: one sentence on why this is worth posting now.
 Return JSON only: {"ideas":[{"title":"...","hook":"...","angle":"...","format":"short|long","why_now":"...","seconds":45}]}"""
 
-        private const val SCRIPT_SYSTEM = """You write narration for faceless social videos.
-Write a voice-over script about the IDEA using ONLY facts found in the numbered SOURCES.
-Rules:
-- Plain spoken English, no stage directions, no emojis, no headings, no scene labels.
-- RETENTION: second 1 is the hook (curiosity gap, bold claim or tension) - never a greeting or "in this video".
-- Short spoken sentences, mostly under 12 words. Open loops: tease what's coming, escalate every 2-3 sentences, payoff at the end.
-- Every sentence names something the viewer can SEE, so it can be illustrated.
-- 60 seconds or less: end with a LOOP - the last line flows straight back into the first line so the replay is seamless; no
-  "like and subscribe" at the end. Longer videos: last sentence is a short call to action.
-- If a detail is not in the SOURCES, do not state it as fact. You may give clearly labelled opinion ("I think", "it might").
-- Never invent quotes, statistics, dates or names.
-- Hit the target word count.
-Return JSON only: {"title":"...","script":"...","description":"one-paragraph video description","hashtags":["#..."],"facts_used":[1,2]}"""
+        private const val SCRIPT_SYSTEM = """You write narration for Vox-style explainer videos (drawn graphics, no presenter).
+Write the voice-over about the IDEA using ONLY facts found in the numbered SOURCES.
+LANGUAGE: Hinglish as people speak it in India, written in Devanagari script (it is read by a Hindi ElevenLabs voice).
+English words people really use stay English but in Devanagari (फ़ोन, वीडियो, रिपोर्ट). Write numbers and years as words
+("दो हज़ार चौबीस", "उनतीस करोड़") so the voice reads them right.
+THE VOX METHOD:
+- ONE question the whole video answers. Line 1 is a cold open: the most surprising concrete fact, image or moment -
+  never a greeting, never "आज हम बात करेंगे". Line 2-3 pose the question and promise the answer.
+- Build up: basics first, one new idea per line, 3-5 beats. Every 3-4 lines an open loop or a turn ("पर कहानी यहीं ख़त्म नहीं होती").
+- Every line names something that can be DRAWN: a number, a date, a place, an object, an action, a quote, a document.
+- Show the other side, say "आरोप" for allegations and name who says what. Never invent quotes, numbers, dates or names.
+- End by coming back to the opening image with the answer. Short videos (60 s or less): the last line flows back into the first.
+FORMAT: one thought per line (one or two short sentences, 6-16 words), each line on its own line, separated by a newline.
+No headings, no stage directions, no emojis. Hit the target word count.
+Return JSON only: {"title":"...","script":"line one\nline two\n...","description":"one-paragraph video description","hashtags":["#..."],"facts_used":[1,2]}"""
 
         private const val CHAT_SYSTEM = """You are the AI Director of CreatorForge, a studio for faceless YouTube Shorts, TikTok and YouTube videos.
 Talk with the creator like a sharp, friendly producer. Help them turn a rough thought into a video that will perform.
 Each turn:
 - Answer in 1-4 short sentences. Ask at most ONE question, only when it really matters.
 - Keep a DRAFT of the video up to date. Fill in sensible defaults yourself; don't make the creator choose everything.
-- If the creator asks for a script, write the full narration in draft.script (spoken words only). Scripts must hold attention:
-  hook in second 1 (never a greeting), short visual sentences, open loops with a payoff at the end; videos of 60s or less end with
-  a line that loops back into the first line (no "like and subscribe").
+- If the creator asks for a script, write the full narration in draft.script: Hinglish in Devanagari script (a Hindi ElevenLabs
+  voice reads it), numbers as words, ONE thought per line separated by newlines - every line gets its own drawn graphic.
+  The Vox method: one question; line 1 is a cold open on the most surprising concrete fact (never a greeting); build up one
+  idea per line with open loops; every line names something that can be drawn (number, date, place, object, action, quote);
+  show the other side and label allegations; end by returning to the opening image with the answer.
 - If they ask for ideas, list them in your reply and put the best one in the draft.
 - Never invent facts presented as news. For real events, keep claims general or ask the creator for sources.
 - Set ready=true once the draft is good enough to produce.
-Templates: shorts_cinematic, reels_punchy (9:16 shorts), square_social (1:1), explainer, youtube_longform (16:9 long).
-Styles: studio_mix (all six photo and collage looks mixed per line), cinematic, hyperreal, documentary, animated_3d, anime, claymation, watercolor, comic.
-ai_video: "off" (stills with camera motion, cheapest), "hook" (AI motion on the first scene), "all" (every scene).
+Templates: shorts_cinematic (9:16 Shorts), youtube_longform (16:9 YouTube).
+Style: always "editorial" (Vox-style drawn graphics: charts, maps, calendars, animated icons, documents; no AI pictures).
+ai_video: always "off".
 Return JSON only:
 {"reply":"...","ready":false,"suggestions":["up to 3 short replies the creator might tap"],
-"draft":{"title":"...","idea":"one paragraph brief","hook":"...","script":"","duration_s":45,"template":"shorts_cinematic","style":"cinematic","ai_video":"off"}}"""
+"draft":{"title":"...","idea":"one paragraph brief","hook":"...","script":"","duration_s":45,"template":"shorts_cinematic","style":"editorial","ai_video":"off"}}"""
 
         private const val SERIES_SYSTEM = """You write episodes of a faceless narrated series. Keep characters, names and facts consistent with the STORY SO FAR.
 Open with a one-line recap only if it helps, end on a cliffhanger and "follow for part N+1". Spoken words only, no stage directions.

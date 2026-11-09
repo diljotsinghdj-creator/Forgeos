@@ -134,6 +134,8 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
     var recent by remember { mutableStateOf<List<ProductionSummary>>(emptyList()) }
     var videoFile by remember { mutableStateOf<File?>(null) }
     var storyboardVersion by remember { mutableIntStateOf(0) }
+    var vox by remember { mutableStateOf<VoxResult?>(null) }
+    var voxBusy by remember { mutableStateOf(false) }
 
     LaunchedEffect(reload) {
         runCatching { client.capabilities() }.onSuccess { c ->
@@ -324,10 +326,41 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                             "Turn on Gemini or Groq in Settings for much better results.", color = Danger, fontSize = 12.sp, modifier = Modifier.weight(1f))
                         TextButton(onOpenSettings) { Text("SETTINGS", color = Gold, fontSize = 12.sp) }
                     } else Text("✓ Story & shots planned by your ${StudioHub.preset(context).name.substringBefore(" (")}", color = Gold, fontSize = 12.sp)
-                    OutlinedTextField(idea, { idea = it }, Modifier.fillMaxWidth(), minLines = if (scriptMode) 8 else 4,
+                    OutlinedTextField(idea, { idea = it; vox = null }, Modifier.fillMaxWidth(), minLines = if (scriptMode) 8 else 4,
                         label = { Text(if (scriptMode) "Your script - timestamps, HOOK/TWIST labels, On-screen hook, Visuals, Post lines all understood" else "Your idea") },
-                        placeholder = { Text(if (scriptMode) "Paste the exact narration. CreatorForge splits it into scenes and builds visuals, captions and the edit around your words."
+                        placeholder = { Text(if (scriptMode) "Paste the exact narration, one thought per line. Every line gets a drawn Vox graphic (chart, map, calendar, animation...)."
                             else "A 45-second cinematic short explaining how humanoid robots could change warehouses") })
+                    if (scriptMode && idea.isNotBlank()) {
+                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            Button({
+                                voxBusy = true
+                                scope.launch {
+                                    runCatching { client.voxDirect(idea) }.onSuccess { r ->
+                                        idea = r.script; vox = r
+                                        notice = "Graphics added to every line" + if (r.errors > 0) " - ${r.errors} still need a look (below)" else " - all lines check out"
+                                    }.onFailure { error = it.message }
+                                    voxBusy = false
+                                }
+                            }, enabled = !voxBusy) { Text(if (voxBusy) "WORKING..." else "ADD VOX GRAPHICS TO EVERY LINE", fontSize = 12.sp) }
+                            OutlinedButton({
+                                voxBusy = true
+                                scope.launch {
+                                    runCatching { client.voxCheck(idea) }.onSuccess { vox = it }.onFailure { error = it.message }
+                                    voxBusy = false
+                                }
+                            }, enabled = !voxBusy) { Text("CHECK", fontSize = 12.sp) }
+                        }
+                        vox?.let { r ->
+                            Text(if (r.errors == 0) "✓ Every line has a graphic that will draw correctly" + (if (r.issues.isNotEmpty()) " (${r.issues.size} tips)" else "")
+                                 else "✗ ${r.errors} line(s) will go wrong - tap ADD VOX GRAPHICS to fix them automatically",
+                                color = if (r.errors == 0) Gold else Danger, fontSize = 12.sp)
+                            r.issues.take(12).forEach { i ->
+                                Text("${if (i.level == "error") "✗" else "•"} line ${i.line}: ${i.problem}",
+                                    color = if (i.level == "error") Danger else Color.Gray, fontSize = 11.sp)
+                            }
+                            if (r.issues.size > 12) Text("…and ${r.issues.size - 12} more", color = Color.Gray, fontSize = 11.sp)
+                        }
+                    }
                 }
             }
             item { Column {

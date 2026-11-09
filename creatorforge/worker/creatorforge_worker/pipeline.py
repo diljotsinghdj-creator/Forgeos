@@ -253,6 +253,16 @@ class Pipeline:
                     llm = providers.director_llm(self.cfg, job["id"])
                 except NotConfigured:
                     llm = None
+                if spec.style == "editorial" and not job.get("vox_checked"):
+                    # Vox: every line gets a drawn graphic (no AI picture); broken graphic lines are fixed first
+                    from . import vox_director
+                    fixed, report = self._with_gpu_room(lambda m: vox_director.ensure(spec.script, m), llm,
+                                                        optional=True)[0]
+                    if fixed.strip() and fixed != spec.script:
+                        spec.script = fixed
+                        job["spec"]["script"] = fixed
+                    job["vox_report"] = report[:400]
+                    job["vox_checked"] = True
                 plan, llm = self._with_gpu_room(lambda m: director.direct_script(m, spec), llm, optional=True)
                 job["providers"]["llm"] = f"{llm.id} (script mode)" if llm else "none (script mode: visuals from your words)"
             else:
