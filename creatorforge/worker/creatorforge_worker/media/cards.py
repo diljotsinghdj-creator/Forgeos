@@ -609,9 +609,11 @@ def article_lines(spec: str, theme: str, width: int, height: int, seconds: float
 def _phone(width: int, height: int, size_k: float = 0.062):
     """A phone frame for Shorts (or a centred phone on widescreen); returns (L, T, R, B, pad, size, lines)."""
     tall = height > width
-    fh = height * (0.5 if tall else 0.8)
-    fw = fh * 0.52 if not tall else width * 0.6
-    L, T = width / 2 - fw / 2, height * (0.12 if tall else 0.1)
+    # sized so the chat text reads on a phone (~40 px at 1080p) and the phone ends above the captions
+    fh = height * (0.5 if tall else 0.7)
+    fw = fh * 0.66 if not tall else width * 0.6
+    size_k = max(size_k, 0.08) if not tall else size_k
+    L, T = width / 2 - fw / 2, height * (0.08 if tall else 0.06)
     R, B = L + fw, T + fh
     size = int(fw * size_k)
     lines = [f"Dialogue: 1,{_ts(0)},9:59:59.00,T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c&H000000&\\1a&HB8&\\blur14}}"
@@ -619,6 +621,13 @@ def _phone(width: int, height: int, size_k: float = 0.062):
              f"Dialogue: 2,{_ts(0)},9:59:59.00,T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord{max(6, int(size * 0.35))}\\shad0"
              f"\\1c&HF7F4F2&\\3c&H202020&}}{_rect(L, T, R, B, size * 1.2)}"]
     return L, T, R, B, fw * 0.07, size, lines
+
+
+def _illustration_tag(width: int, height: int, end: str) -> str:
+    """The recreation label, readable and out of the way: top-right corner, inside the safe area."""
+    fs = int(min(width, height) * 0.03)
+    return (f"Dialogue: 7,{_ts(0)},{end},T,,0,0,0,,{{\\an9\\pos({width * 0.94:.0f},{height * 0.06:.0f})\\fs{fs}"
+            f"\\bord{max(2, fs // 5)}\\3c&HF2F2F2&\\1c&H505050&}}ILLUSTRATION")
 
 
 def chat_lines(spec: str, theme: str, width: int, height: int, seconds: float):
@@ -645,8 +654,9 @@ def chat_lines(spec: str, theme: str, width: int, height: int, seconds: float):
     per = min(0.9, max(0.35, (seconds - 0.6) / len(msgs)))
     t = 0.25
     mine_col, their_col = MARK[theme], "&H00E4E1DE&"
+    per_row = max(8, int(((R - L) * 0.72 - size * 1.2) / (size * 0.56)))
     for mine, text in msgs:
-        rows = _wrap(text, 20, 4)
+        rows = _wrap(text, per_row, 4)
         bh = len(rows) * size * 1.25 + size * 0.8
         bw = min((R - L) * 0.72, max(len(r) for r in rows) * size * 0.56 + size * 1.2)
         if y + bh > B - pad:
@@ -667,8 +677,7 @@ def chat_lines(spec: str, theme: str, width: int, height: int, seconds: float):
                    f"\\fad(80,0)}}" + "\\N".join(_esc(r) for r in rows))
         t += per * 0.6
         y += bh + size * 0.7
-    out.append(f"Dialogue: 7,{_ts(0)},{end},T,,0,0,0,,{{\\an9\\pos({R:.0f},{B + size * 0.5:.0f})\\fs{int(size * 0.55)}"
-               f"\\1c&H606060&}}ILLUSTRATION")
+    out.append(_illustration_tag(width, height, end))
     return out, {}
 
 
@@ -942,7 +951,7 @@ def endscreen_lines(spec: str, theme: str, width: int, height: int, seconds: flo
 
 
 def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: float, out: Path, work: Path,
-           brand: str = "") -> Path:
+           brand: str = "", captions: bool = True) -> Path:
     theme = theme if theme in PAPER else "editorial"
     seconds = max(1.5, seconds)
     body = {"chapter": chapter_lines, "quote": quote_lines, "steps": steps_lines, "timeline": timeline_lines,
@@ -955,6 +964,13 @@ def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: f
         body, opts = body
     if not body:
         raise ff.MediaError(f"{kind}: nothing to draw from {spec!r}")     # the line keeps its picture instead
+    if kind != "endscreen":
+        # every graphic is measured with the real fonts and fitted inside the safe area, above the captions
+        from . import layout_qa
+        fonts = {"T": _font(), "Q": "DejaVu Serif"}
+        body, z = layout_qa.fit_lines(body, width, height, fonts, captions=captions, zoom=opts.get("zoom"))
+        if z:
+            opts = {**opts, "zoom": z}
     if brand and kind in ("chapter", "statement"):
         # the channel's name as a small recurring signature on chapter cards and statements
         col = "&H00F4F4F4&" if kind == "statement" else INK
