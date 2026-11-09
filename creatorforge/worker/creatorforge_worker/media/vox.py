@@ -17,6 +17,7 @@ Scenes (one per script line):
 """
 from __future__ import annotations
 
+import functools
 import hashlib
 import json
 import math
@@ -39,7 +40,8 @@ FACE_PROPS = ("blindfold", "mask", "zip", "crown")
 KINDS = ("hero", "desk", "pinboard", "opener", "reveal", "clipping", "pinmap", "bignumber",
          "seats", "stack", "stand", "fan", "trend", "slice", "route", "compare", "photoline", "tv",
          "clockmap", "tornsplit", "newscard", "blueprint", "pyramid", "flowchart", "linkmap", "orgchart", "heatmap",
-         "courtdoc", "table", "interview", "endcard", "polltrack", "area", "candles", "arrows", "railmap", "sizemap")
+         "courtdoc", "table", "interview", "endcard", "polltrack", "area", "candles", "arrows", "railmap", "sizemap",
+         "borders")
 
 
 # A look per video, so no two films share one face: paper, type, map colours and marker pen differ, the method doesn't.
@@ -440,21 +442,36 @@ def parse_route(spec: str) -> dict | None:
     vehicle = next((v for v in ("plane", "ship", "car", "train", "truck", "bus") if v in vehicle), "plane")
     lons = [s["lon"] for s in stops]
     lats = [s["lat"] for s in stops]
+    paths = []
+    if vehicle == "ship":
+        # a ship goes by sea: round the capes, through the canals (searoute); a leg with no sea way stays an arc
+        from . import searoute
+        shift = 0.0
+        for a, b in zip(stops, stops[1:]):
+            sp = [[x + shift, y] for x, y in searoute.path(a["lon"] - shift, a["lat"], b["lon"], b["lat"])]
+            if sp:
+                shift = round((sp[-1][0] - b["lon"]) / 360) * 360     # past the date line the map carries on, unwrapped
+                b["lon"] = sp[-1][0]
+            paths.append(sp[:: max(1, len(sp) // 90)] + ([sp[-1]] if sp else []))
+        lons = [s["lon"] for s in stops] + [q[0] for sp in paths for q in sp]
+        lats = lats + [q[1] for sp in paths for q in sp]
     pad_x = max(8.0, (max(lons) - min(lons)) * 0.35)
     pad_y = max(6.0, (max(lats) - min(lats)) * 0.45)
     box = [min(lons) - pad_x, min(lats) - pad_y, max(lons) + pad_x, max(lats) + pad_y]
     # the visible box keeps the frame's shape; countries that touch it are drawn
     w = maps._world()
     shapes = []
+    offs = [o for o in (-360, 0, 360) if box[0] - 60 <= 180 + o and box[2] + 60 >= -180 + o]   # past the date line too
     for c in w["countries"]:
         for r in c["r"]:
-            if any(box[0] - 60 <= x <= box[2] + 60 and box[1] - 40 <= y <= box[3] + 40 for x, y in r[:: max(1, len(r) // 30)]):
-                shapes.append([[round(x, 2), round(y, 2)] for x, y in r[:: max(1, len(r) // 160)]])
+            for off in offs:
+                if any(box[0] - 60 <= x + off <= box[2] + 60 and box[1] - 40 <= y <= box[3] + 40 for x, y in r[:: max(1, len(r) // 30)]):
+                    shapes.append([[round(x + off, 2), round(y, 2)] for x, y in r[:: max(1, len(r) // 160)]])
     from .scene_anim import icon_nodes, find_icon
     atlas = any(re.fullmatch(r"(style\s*[:=]\s*)?atlas", x.strip(), re.I) for x in parts[1:])
     pen = any(re.fullmatch(r"(style\s*[:=]\s*)?pen", x.strip(), re.I) for x in parts[1:])
     parts = [x for x in parts if not re.fullmatch(r"(style\s*[:=]\s*)?pen", x.strip(), re.I)]
-    return {"type": "route", "pen": pen, "stops": stops, "box": box, "shapes": shapes[:400], "title": parts[1] if len(parts) > 1 and not
+    return {"type": "route", "pen": pen, "stops": stops, "box": box, "paths": paths, "shapes": shapes[:700], "title": parts[1] if len(parts) > 1 and not
             re.fullmatch(r"(style\s*[:=]\s*)?atlas", parts[1], re.I) else "",
             "vehicle": vehicle, "icon": icon_nodes(find_icon(vehicle) or "plane"), "pin": icon_nodes("map-pin"),
             "atlas": atlas, "tone": "atlas" if atlas else "crumple", "seed": _seed(spec) % 10000}
@@ -737,16 +754,47 @@ def _country(name: str) -> dict | None:
         next((c for c in cs if n and maps._norm(c["n"]).startswith(n)), None)
 
 
+_STATE_ALIAS = {"up": "uttar pradesh", "mp": "madhya pradesh", "ap": "andhra pradesh", "hp": "himachal pradesh",
+                "tn": "tamil nadu", "wb": "west bengal", "j&k": "jammu and kashmir", "jk": "jammu and kashmir",
+                "orissa": "odisha", "uttaranchal": "uttarakhand", "bengal": "west bengal", "nyc": "new york"}
+
+
+@functools.lru_cache(maxsize=1)
+def _states() -> dict:
+    """States and provinces of the nine largest countries (Natural Earth 1:50m admin-1, public domain)."""
+    return json.loads((Path(__file__).with_name("states.json")).read_text(encoding="utf-8"))
+
+
+def _state_heat(vals: list[dict]) -> tuple[str, list] | None:
+    """(country, [(state, value)]) when the labels are states of one country."""
+    from . import maps
+    best = None
+    for country, sts in _states().items():
+        idx = {maps._norm(st["n"]): st for st in sts}
+        hit = [(idx[n], v) for v in vals for n in [maps._norm(_STATE_ALIAS.get(v["label"].strip().lower(), v["label"]))] if n in idx]
+        if len(hit) >= 2 and (best is None or len(hit) > len(best[1]) or (len(hit) == len(best[1]) and country == "India")):
+            best = (country, hit)
+    return best
+
+
 def parse_heatmap(spec: str) -> dict | None:
     """'Heatmap: India 1.9, China 8.0, USA 14.9, Brazil 2.2, Germany 8.1 | CO2 per person | tonnes, 2022' - countries
     shaded by their number (darker = more), each labelled, with a scale; the rest of the map stays pale."""
     from . import maps
     parts = [p.strip() for p in (spec or "").split("|")]
     vals = []
-    for v in _pairs(parts[0]):
+    pairs = _pairs(parts[0])
+    for v in pairs:
         c = _country(v["label"])
         if c:
             vals.append((c, v))
+    world = maps._world()["countries"]
+    st = _state_heat(pairs) if len(vals) < 2 or len(vals) < len(pairs) / 2 else None
+    if st:
+        # states of one country: its other states stay pale, the rest of the world paler still
+        vals = st[1]
+        world = [{"n": x["n"], "r": x["r"]} for x in _states()[st[0]] if x["n"] not in {c["n"] for c, _ in vals}] + \
+            [c for c in world if c["n"] != st[0]]
     if len(vals) < 2:
         return None
     pts = [(x, y) for c, _ in vals for r in sorted(c["r"], key=len)[-1:] for x, y in r]
@@ -760,7 +808,7 @@ def parse_heatmap(spec: str) -> dict | None:
         items.append({"name": c["n"], "label": v["label"], "value": v["value"], "shown": v["shown"], "rings": rings[:12],
                       "at": [round(sum(q[0] for q in big) / len(big), 2), round(sum(q[1] for q in big) / len(big), 2)]})
     others = []
-    for c in maps._world()["countries"]:
+    for c in world:
         if c["n"] in named:
             continue
         for r in c["r"]:
@@ -958,7 +1006,73 @@ def parse_sizemap(spec: str) -> dict | None:
             "seed": _seed(spec) % 10000}
 
 
-PARSERS = {"courtdoc": parse_courtdoc, "table": parse_table, "interview": parse_interview, "endcard": parse_endcard,
+REGIONS = {"europe": [-12, 34, 45, 71], "world": [-170, -56, 180, 78], "asia": [25, -10, 150, 60],
+           "south asia": [58, 4, 100, 40], "middle east": [24, 10, 66, 44], "africa": [-20, -36, 54, 38],
+           "north america": [-140, 8, -52, 62], "south america": [-84, -56, -32, 14], "east asia": [95, 15, 150, 55],
+           "southeast asia": [90, -12, 142, 28], "balkans": [12, 34, 32, 49]}
+
+
+def parse_borders(spec: str) -> dict | None:
+    """'Borders: 1914 → today | Europe | The map before the war' - the borders of a past year (history.py), then
+    the map redraws itself as it is now; the old lines stay as a dashed ghost and the year counts across.
+    'Borders: 1914 | Europe' shows the one year. Needs the dated maps on the worker (see media/history.py)."""
+    from . import history, maps
+    parts = [p.strip() for p in (spec or "").split("|")]
+    ys = re.findall(r"(?<!\d)(1[5-9]\d\d|20\d\d)(?!\d)", parts[0])
+    if not ys:
+        return None
+    ya = int(ys[0])
+    yb = int(ys[1]) if len(ys) > 1 else (0 if re.search(r"today|now|present", parts[0], re.I) else None)
+    fa = history.nearest(ya)
+    if fa is None:
+        return None                                   # no dated maps on this worker: never today's map with an old date
+    region = (parts[1] if len(parts) > 1 else "world").strip().lower()
+    box = REGIONS.get(region)
+    if box is None:
+        f = maps._find(region)
+        if not f:
+            return None
+        if f["kind"] == "city":
+            box = [f["lon"] - 9, f["lat"] - 6, f["lon"] + 9, f["lat"] + 6]
+        else:
+            big = max(f["rings"], key=len)
+            xs, ys2 = [x for x, _ in big], [y for _, y in big]
+            px, py = max(4.0, (max(xs) - min(xs)) * .5), max(3.0, (max(ys2) - min(ys2)) * .5)
+            box = [min(xs) - px, min(ys2) - py, max(xs) + px, max(ys2) + py]
+
+    def clip(cs):
+        out = []
+        for c in cs:
+            rings = [r for r in c["r"] if any(box[0] - 12 <= x <= box[2] + 12 and box[1] - 8 <= y <= box[3] + 8
+                                              for x, y in r[:: max(1, len(r) // 24)])]
+            if rings:
+                big = max(rings, key=len)
+                inside = [q for q in big if box[0] <= q[0] <= box[2] and box[1] <= q[1] <= box[3]]
+                xs, ys2 = [q[0] for q in big], [q[1] for q in big]
+                out.append({"n": c["n"], "r": [[[round(x, 2), round(y, 2)] for x, y in r[:: max(1, len(r) // 150)]] for r in rings[:8]],
+                            "size": (max(xs) - min(xs)) * (max(ys2) - min(ys2)) * (len(inside) / max(1, len(big))),
+                            "at": [round(sum(q[0] for q in inside) / len(inside), 2), round(sum(q[1] for q in inside) / len(inside), 2)]
+                            if inside else None})
+        return out
+    then = clip(history.load(fa))
+    if not then:
+        return None
+    if yb is None:
+        now = []
+    elif yb == 0 or yb >= 2011 or history.nearest(yb) in (None, fa):
+        now = clip(maps._world()["countries"])
+        yb = yb or 0
+    else:
+        now = clip(history.load(history.nearest(yb)))
+    for group in (then, now):
+        for c in sorted(group, key=lambda c: -c["size"])[:9]:
+            c["label"] = bool(c["at"] and c["n"])
+    return {"type": "borders", "then": then[:160], "now": now[:160], "ya": ya, "yb": yb, "box": box,
+            "title": parts[2][:48] if len(parts) > 2 else "", "tone": "atlas", "mapcredit": history.CREDIT,
+            "seed": _seed(spec) % 10000}
+
+
+PARSERS = {"borders": parse_borders, "courtdoc": parse_courtdoc, "table": parse_table, "interview": parse_interview, "endcard": parse_endcard,
            "polltrack": parse_polltrack, "area": parse_area, "candles": parse_candles, "arrows": parse_arrows,
            "railmap": parse_railmap, "sizemap": parse_sizemap,
            "pyramid": parse_pyramid, "flowchart": parse_flow, "linkmap": parse_linkmap, "orgchart": parse_orgchart,
@@ -1749,16 +1863,21 @@ function route(){ // a paper map; dashed routes draw themselves; the vehicle tra
   [[0,-1],[1,0],[0,1],[-1,0]].forEach(([a,b],i)=>cr.polygon([[cx+a*R,cy+b*R],[cx+b*R*.18,cy-a*R*.18],[cx-b*R*.18,cy+a*R*.18]].map(p=>p.join(',')).join(' ')).fill(i%2?'#7A5230':'#3A2A1A'));
   T(cr,'N',U*.022,cx,cy-R-U*.02,{family:'Playfair',weight:700,fill:'#3A2A1A'});wipe(cr,.2);
   const legs=[];for(let i=0;i<pts.length-1;i++){const [ax,ay]=pts[i],[bx,by]=pts[i+1];const mx=(ax+bx)/2,my=Math.min(ay,by)-Math.hypot(bx-ax,by-ay)*.22;legs.push([ax,ay,mx,my,bx,by])}
+  // a sea leg follows its charted path (smoothed through the midpoints); any other leg is an arc
+  const legD=(l,i)=>{const sp=(P.paths||[])[i];if(!sp||sp.length<3)return `M${l[0]} ${l[1]} Q${l[2]} ${l[3]} ${l[4]} ${l[5]}`;
+    const q=sp.map(z=>pr(z[0],z[1]));let d=`M${q[0][0].toFixed(1)} ${q[0][1].toFixed(1)}`;
+    for(let k=1;k<q.length-1;k++){const mx=(q[k][0]+q[k+1][0])/2,my=(q[k][1]+q[k+1][1])/2;d+=` Q${q[k][0].toFixed(1)} ${q[k][1].toFixed(1)} ${mx.toFixed(1)} ${my.toFixed(1)}`}
+    const e=q[q.length-1];return d+` L${e[0].toFixed(1)} ${e[1].toFixed(1)}`};
   const per=Math.max(.6,(DUR-1.2)/Math.max(1,legs.length));
   pts.forEach((p,i)=>{const pin=L.front.group();const k=U*.05/24;const ig=pin.group();for(const nd of P.pin){try{ig.element(nd[0]).attr(nd[1])}catch(e){}}
     ig.attr({fill:'#2A1A10',stroke:'#F3E9D4','stroke-width':1.2,transform:`translate(${p[0]-12*k},${p[1]-22*k}) scale(${k})`});popIn(pin,p[0],p[1],.3+i*per,.35);
     const lb=tag(L.front,P.stops[i].name,0,0,{size:U*.02});const bb=lb.bbox();const left=p[0]+U*.02+bb.width>W-U*.03;
     lb.attr({transform:`translate(${left?p[0]-U*.02-bb.width-bb.x:p[0]+U*.02-bb.x},${p[1]+U*.02})`});slide(lb,.4+i*per,(left?-1:1)*W*.02,0)});
-  legs.forEach((l,i)=>{const path=L.mid.path(`M${l[0]} ${l[1]} Q${l[2]} ${l[3]} ${l[4]} ${l[5]}`).fill('none').stroke({color:'#2A1A10',width:U*.004,dasharray:`${U*.012} ${U*.01}`});
+  legs.forEach((l,i)=>{const path=L.mid.path(legD(l,i)).fill('none').stroke({color:'#2A1A10',width:U*.004,dasharray:`${U*.012} ${U*.01}`});
     if(P.atlas)path.stroke({color:'#0F7C7A',width:U*.006,dasharray:'none'});
     if(P.pen){path.opacity(0);const q=[];const pl=path.node.getTotalLength();for(let k=0;k<=24;k++){const pt=path.node.getPointAtLength(pl*k/24);q.push([pt.x,pt.y])}
       penLine(L.mid,q,.5+i*per,per*.9);penCircle(L.front,l[4],l[5],U*.045,.5+(i+1)*per)}
-    const len=path.node.getTotalLength();const mask=draw.mask().add(draw.path(`M${l[0]} ${l[1]} Q${l[2]} ${l[3]} ${l[4]} ${l[5]}`).fill('none').stroke({color:'#fff',width:U*.02}));
+    const len=path.node.getTotalLength();const mask=draw.mask().add(draw.path(legD(l,i)).fill('none').stroke({color:'#fff',width:U*.02}));
     const mp=mask.children()[0];mp.attr({'stroke-dasharray':len,'stroke-dashoffset':len});path.maskWith(mask);
     const v=L.front.group();const vk=U*.1/24;v.circle(U*.085).center(0,0).fill('#F3E9D4').stroke({color:'#2A1A10',width:U*.003});
     const vg=v.group();for(const nd of P.icon){try{vg.element(nd[0]).attr(nd[1])}catch(e){}}
@@ -2047,15 +2166,20 @@ function heatmap(){ // countries shaded by their number, labelled, with a scale
   const pr=(lon,lat)=>[ox+lon*kx*s,oy-lat*s];atlasSea();
   const bg=L.back.group();P.others.forEach(r=>bg.polygon(r.map(q=>pr(q[0],q[1]).join(',')).join(' ')).fill('#EFE3C2').stroke({color:'#8E7E5C',width:Math.max(1,U*.0012)}));
   const vs=P.items.map(i=>i.value),mn=Math.min(...vs),mx=Math.max(...vs),lo=mix('#EFE3C2',ACC,.22);
-  const order=P.items.slice().sort((a,b)=>a.value-b.value);
+  const order=P.items.slice().sort((a,b)=>a.value-b.value);const placed=[];
   order.forEach((it,i)=>{const f=mx>mn?(it.value-mn)/(mx-mn):1,col=mix(lo,ACC,f),st=.4+i*.3;const g=L.hero.group();
     it.rings.forEach(r=>g.polygon(r.map(q=>pr(q[0],q[1]).join(',')).join(' ')).fill('#EFE3C2').stroke({color:INK,width:Math.max(1,U*.002)}));
     at(st,.6,p=>g.children().forEach(c=>c.fill(mix('#EFE3C2',col,p))),E.inout);
     const [px,py]=pr(it.at[0],it.at[1]);const lab=L.front.group();const t=T(lab,it.shown,U*.034,px,py,{family:'Anton',weight:400,fill:'#FFFFFF'});
     const nm=T(lab,it.label.toUpperCase(),U*.017,px,py+U*.034,{family:'Inter',weight:800,fill:'#FFFFFF',ls:'.1em'});const bb=lab.bbox();
-    lab.rect(bb.width+U*.024,bb.height+U*.014).center(bb.cx,bb.cy).fill(INK).back();popIn(lab,px,py,st+.35,.3);
-    if(it.value===mx)FOCUS={x:px,y:py,rx:Math.max(U*.09,bb.width*.8),ry:Math.max(U*.07,bb.height)}});
-  const lw=W*(TALL?.5:.26),lx=W-lw-U*.06,ly=H-U*.09,gr=draw.gradient('linear',a=>{a.stop(0,lo);a.stop(1,ACC)});
+    lab.rect(bb.width+U*.024,bb.height+U*.014).center(bb.cx,bb.cy).fill(INK).back();
+    // neighbours' labels step apart (down, up, further down...) and keep a leader line to their place
+    const bw=bb.width+U*.03,bh=bb.height+U*.02;let dy=0;const hit=d=>placed.some(q=>Math.abs(q[0]-px)<(q[2]+bw)/2&&Math.abs(q[1]-(py+d))<(q[3]+bh)/2);
+    for(const d of [0,1,-1,2,-2,3,-3]){if(!hit(d*bh)){dy=d*bh;break}}
+    placed.push([px,py+dy,bw,bh]);if(dy){L.front.line(px,py,px,py+dy).stroke({color:INK,width:U*.003}).back();L.front.circle(U*.01).center(px,py).fill(INK);lab.attr({transform:`translate(0,${dy})`})}
+    popIn(lab,px,py+dy,st+.35,.3);
+    if(it.value===mx)FOCUS={x:px,y:py+dy,rx:Math.max(U*.09,bb.width*.8),ry:Math.max(U*.07,bb.height)}});
+  const lw=W*(TALL?.5:.26),lx=W-lw-U*.09,ly=H-U*.13,gr=draw.gradient('linear',a=>{a.stop(0,lo);a.stop(1,ACC)});
   const lg=L.front.group();lg.rect(lw,U*.02).move(lx,ly).fill(gr).stroke({color:INK,width:U*.002});
   T(lg,String(mn),U*.02,lx,ly+U*.04,{family:'Mono',weight:700,anchor:'start'});T(lg,String(mx),U*.02,lx+lw,ly+U*.04,{family:'Mono',weight:700,anchor:'end'});
   if(P.unit)T(lg,P.unit.toUpperCase(),U*.018,lx+lw/2,ly-U*.022,{family:'Inter',weight:800,ls:'.12em'});wipe(lg,.3)}
@@ -2195,7 +2319,26 @@ function sizemap(){ // two countries at one scale: the first morphs into the sec
   const sc=L.front.group();const km=[100,200,500,1000,2000].find(v=>v*s>U*.12)||2000;sc.line(U*.06,H*.93,U*.06+km*s,H*.93).stroke({color:FG,width:U*.004});T(sc,km+' km',U*.018,U*.06+km*s/2,H*.93-U*.022,{family:'Mono',weight:700});wipe(sc,.6);
   FOCUS={x:cx,y:cy,rx:Math.min(ea[0],eb[0])*s*.55,ry:Math.min(ea[1],eb[1])*s*.55}}
 
-const SCENES={courtdoc,table,interview,endcard,polltrack,area,candles,arrows,railmap,sizemap,pyramid,flowchart:flow,linkmap,orgchart,heatmap,hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv,
+function borders(){ // the borders of a past year; then the map redraws as it is now, the old lines left as a dashed ghost
+  chartTitle(P.title);const [x0,y0,x1,y1]=P.box,kx=Math.cos((y0+y1)/2*Math.PI/180);const s=Math.min(W/Math.max(4,(x1-x0)*kx),H*(TALL?.62:.86)/Math.max(3,y1-y0))*1.1;   // the whole region in view
+  const ox=W/2-(x0+x1)/2*kx*s,oy=H*(TALL?.48:.54)+(y0+y1)/2*s,pr=(lon,lat)=>[ox+lon*kx*s,oy-lat*s];atlasSea();
+  const tones=['#EFE3C2',mix('#EFE3C2',ACC,.16),mix('#EFE3C2','#8E7E5C',.2),mix('#EFE3C2',ACC,.3),mix('#EFE3C2','#3E4A55',.14)];
+  const layer=(cs,g,stroke)=>cs.forEach((c,i)=>c.r.forEach(r=>g.polygon(r.map(q=>pr(q[0],q[1]).join(',')).join(' ')).fill(tones[(c.n.length+i)%tones.length]).stroke({color:stroke,width:Math.max(1,U*.0022),linejoin:'round'})));
+  const labels=(cs,g,start)=>cs.filter(c=>c.label).forEach((c,i)=>{const [x,y]=pr(c.at[0],c.at[1]);if(x<W*.06||x>W*.94||y<H*.16||y>H*.92)return;
+    const ls=lines(c.n.toUpperCase(),U*.019,U*.26,'Playfair',700,2);const lg=g.group();ls.forEach((l,k)=>T(lg,l,U*.019,x,y+(k-(ls.length-1)/2)*U*.024,{family:'Playfair',weight:700,fill:'#2A2218',ls:'.12em'}));wipe(lg,start+i*.07)});
+  const gThen=L.back.group(),lThen=L.mid.group();layer(P.then,gThen,'#5E4E33');labels(P.then,lThen,.5);wipe(gThen,.05);
+  const two=P.now&&P.now.length;const yx=TALL?W/2:W*.1,yy=TALL?H*.14:H*.86;
+  const ys=TALL?U*.11:U*.12,yw=ys*2.9,yg=L.front.group();yg.rect(yw,ys*1.15).move(TALL?yx-yw/2:yx-ys*.2,yy-ys*.6).fill(INK);
+  const yr=T(yg,String(P.ya),ys,TALL?yx:yx+yw/2-ys*.2,yy,{family:'Anton',weight:400,anchor:'middle',fill:'#FFFFFF'});slide(yg,.2,0,H*.04);
+  if(two){const gNow=L.back.group(),lNow=L.mid.group();layer(P.now,gNow,'#5E4E33');labels(P.now,lNow,2.6);gNow.opacity(0);
+    const ghost=L.hero.group();P.then.forEach(c=>c.r.slice(0,3).forEach(r=>ghost.polygon(r.map(q=>pr(q[0],q[1]).join(',')).join(' ')).fill('none').stroke({color:K.mark||'#C0262D',width:Math.max(1.2,U*.003),dasharray:`${U*.01} ${U*.008}`,linejoin:'round'})));ghost.opacity(0);
+    const end=P.yb||new Date().getFullYear();
+    at(1.7,1.1,p=>{gNow.opacity(p);gThen.opacity(1-p);lThen.opacity(Math.max(0,1-p*2.5));ghost.opacity(p*.9);yr.node.textContent=(P.yb===0&&p>=1)?'TODAY':String(Math.round(P.ya+(end-P.ya)*p))},E.inout);
+    const key=L.front.group();const kx2=TALL?W*.1:W*.1,ky=TALL?H*.9:H*.94;key.line(kx2,ky,kx2+U*.07,ky).stroke({color:K.mark||'#C0262D',width:U*.004,dasharray:`${U*.01} ${U*.008}`});
+    T(key,'BORDERS IN '+P.ya,U*.018,kx2+U*.085,ky,{family:'Mono',weight:700,anchor:'start'});wipe(key,2.4)}
+  wipe(mono(L.front,P.mapcredit.toUpperCase(),W-U*.04,H-U*.03,{anchor:'end',size:U*.013}),.8)}
+
+const SCENES={borders,courtdoc,table,interview,endcard,polltrack,area,candles,arrows,railmap,sizemap,pyramid,flowchart:flow,linkmap,orgchart,heatmap,hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv,
   clockmap,tornsplit,newscard,blueprint};
 async function boot(){
   try{await Promise.all(Array.from(document.fonts).map(f=>f.load()))}catch(e){}

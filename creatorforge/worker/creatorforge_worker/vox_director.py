@@ -66,6 +66,9 @@ Candles: <label> open/high/low/close; ... | <title> | <currency sign>  - a price
 Arrows: <from> → <to> (<label>); <from> → <to> | <title>  - movement on a map: armies, migration, trade
 Railmap: <place> - <place> - <place>; <place> - <place> | <title>  - a rail, road, pipeline or metro network
 Sizemap: <country> vs <country> | <title>  - two countries at the same scale
+Borders: <year> → today | <region or country> | <title>  - the borders of a past year, then the map as it is now
+Route: ... | ship  - a ship's route follows the real sea lanes (canals, straits, round the capes)
+Heatmap also takes states of one country (India, USA, China, Brazil, Russia, Canada, Australia, Indonesia, South Africa)
 Any graphic can end with: | badge: verified / official data / court record / reported / alleged / claim / denied /
     response / opinion / estimate (say how sure it is)   | fx: dust / embers / snow / rain / confetti / sparks
     | inset: <object or person:Name> (a small framed picture in the corner)

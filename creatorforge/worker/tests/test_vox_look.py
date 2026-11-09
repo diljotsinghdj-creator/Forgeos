@@ -414,3 +414,47 @@ def test_evidence_charts_and_movement_maps_render(tmp_path):
         out = vox.render(kind, spec + " | badge: reported | fx: dust", "editorial~0@red/kraft/", size[0], size[1], 2,
                          tmp_path / f"a{i}.mp4", tmp_path, fetch=False, fps=12, layout=("card" if i % 2 else "base"))
         assert out.is_file() and out.stat().st_size > 4000, kind
+
+
+def test_ships_follow_the_sea():
+    from creatorforge_worker.media import searoute, vox
+    p = searoute.path(121.8, 31.2, 4.1, 51.95)                      # Shanghai to Rotterdam
+    assert len(p) > 50 and searoute.crosses_land(p) < 0.05
+    assert any(30 < x < 36 and 27 < y < 32 for x, y in p)            # through Suez
+    assert max(y for _, y in p) < 60                                 # not over the pole
+    q = searoute.path(121.8, 31.2, -74.0, 40.6)                      # Shanghai to New York: the Pacific and Panama
+    assert q and any(8 < y < 10 for _, y in q) and searoute.crosses_land(q) < 0.05
+    plan = vox.plan_for("route", "Shanghai → Singapore → Rotterdam | The long way round | ship | atlas")
+    assert len(plan["paths"]) == 2 and all(len(x) > 10 for x in plan["paths"])
+    assert vox.plan_for("route", "New Delhi → Dubai | x | plane")["paths"] == []     # planes still fly an arc
+
+
+def test_state_heat_maps_and_dated_borders(tmp_path, monkeypatch):
+    import json
+    from creatorforge_worker import vox_director as vd
+    from creatorforge_worker.media import history, vox
+    h = vox.plan_for("heatmap", "UP 80, Maharashtra 48, West Bengal 42, Bihar 40 | Lok Sabha seats | seats")
+    assert [i["name"] for i in h["items"]][:2] == ["Uttar Pradesh", "Maharashtra"] and len(h["others"]) > 20
+    u = vox.plan_for("heatmap", "California 39.0, Texas 30.5, Florida 22.6 | Where Americans live")
+    assert {i["name"] for i in u["items"]} == {"California", "Texas", "Florida"}
+    # dated borders: refused without the maps, drawn from them when they are there
+    monkeypatch.setenv("CF_HISTORY", str(tmp_path))
+    history.load.cache_clear()
+    assert vox.plan_for("borders", "1914 → today | Europe | Before the war") is None
+    assert "can't be drawn" in vd.valid("Borders: 1914 → today | Europe | Before the war")
+    sq = lambda x, y, w: [[[x, y], [x + w, y], [x + w, y + w], [x, y + w], [x, y]]]     # noqa: E731
+    feats = [{"type": "Feature", "properties": {"NAME": n}, "geometry": {"type": "Polygon", "coordinates": sq(x, y, w)}}
+             for n, x, y, w in (("German Empire", 6, 47, 12), ("Russian Empire", 22, 45, 20), ("France", -4, 43, 9))]
+    (tmp_path / "world_1914.geojson").write_text(json.dumps({"type": "FeatureCollection", "features": feats}))
+    assert history.available() == [1914] and history.nearest(1916) == 1914
+    b = vox.plan_for("borders", "1916 → today | Europe | Before the war")
+    assert b["ya"] == 1916 and b["yb"] == 0 and {c["n"] for c in b["then"]} >= {"German Empire", "France"}
+    assert any(c["n"] == "Germany" for c in b["now"]) and "historical-basemaps" in b["mapcredit"]
+    from creatorforge_worker.media import motion
+    if motion.enabled():
+        out = vox.render("borders", "1914 → today | Europe | Before the war", "e~0@x/sepia/1914", 640, 360, 4,
+                         tmp_path / "b.mp4", tmp_path, fetch=False, fps=12)
+        assert out.stat().st_size > 4000
+        out = vox.render("route", "Shanghai → Rotterdam | By sea | ship | atlas", "e~0@teal/field/", 640, 360, 3,
+                         tmp_path / "r.mp4", tmp_path, fetch=False, fps=12)
+        assert out.stat().st_size > 4000

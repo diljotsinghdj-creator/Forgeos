@@ -233,6 +233,8 @@ nohup bash -c "for i in \$(seq 1 120); do [ -s '$HOME_DIR/data/models/isnet-gene
   '$PYBIN' -m creatorforge_worker.media.cutouts '$HOME_DIR/data/cutouts' '$HOME_DIR/data/models/isnet-general-use.onnx' && echo 'photo library ready'" \
   > cutouts_library.log 2>&1 &
 echo $! > cutouts_library.pid
+# Historical borders for "Borders:" maps (historical-basemaps, GPL-3.0; downloaded here, not bundled; credited on screen)
+CF_HISTORY="$HOME_DIR/data/history" nohup "$PYBIN" -m creatorforge_worker.media.history > history_download.log 2>&1 &
 
 # Visual match check: CLIP (ViT-B/32, ONNX, ~600 MB) scores each picture against its line so off-topic pictures are
 # redrawn and off-topic stock is skipped. Until it's downloaded, pictures are used as generated.

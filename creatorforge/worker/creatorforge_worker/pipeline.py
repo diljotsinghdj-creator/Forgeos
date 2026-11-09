@@ -149,6 +149,7 @@ class Pipeline:
         # the cut-out photo library (Vox scenes, animated objects) lives with the pod's data
         os.environ.setdefault("CF_CUTOUTS", str(cfg.data_dir / "cutouts"))
         os.environ.setdefault("CF_CUTOUT_MODEL", str(cfg.data_dir / "models" / "isnet-general-use.onnx"))
+        os.environ.setdefault("CF_HISTORY", str(cfg.data_dir / "history"))      # dated border maps (media/history.py)
         self.cfg = cfg
         self.store = store
         self.library = library or Library(cfg.data_dir / "library", cfg.allow_mock)
