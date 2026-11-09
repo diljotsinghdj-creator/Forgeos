@@ -345,8 +345,12 @@ def icons_lines(spec: str, theme: str, width: int, height: int, seconds: float) 
     appear = min(1.2, max(0.4, seconds * 0.35))
     out = []
     big = f"{m.group(1)}{'%' if m.group(2) == '%' else ' IN ' + m.group(2)}"
-    out.append(f"Dialogue: 6,{_ts(0.1)},{end},T,,0,0,0,,{{\\an8\\pos({width / 2:.0f},{height * (0.07 if tall else 0.06):.0f})"
-               f"\\fs{int(size * 1.6)}\\bord{int(size * 0.35)}\\3c{MARK[theme]}&\\4c{MARK[theme]}&\\fad(150,0)}}{_esc(big.upper())}")
+    # "12 of 12" is a picture of a crowd, not a statistic: no "12 IN 12" headline
+    if m.group(2) != "%" and m.group(1) == m.group(2):
+        big = ""
+    if big:
+        out.append(f"Dialogue: 6,{_ts(0.1)},{end},T,,0,0,0,,{{\\an8\\pos({width / 2:.0f},{height * (0.07 if tall else 0.06):.0f})"
+                   f"\\fs{int(size * 1.6)}\\bord{int(size * 0.35)}\\3c{MARK[theme]}&\\4c{MARK[theme]}&\\fad(150,0)}}{_esc(big.upper())}")
     for i in range(n):
         r_, c_ = divmod(i, cols)
         cx, cy = x0 + cell * (c_ + 0.5), y0 + cell * (r_ + 0.5)
