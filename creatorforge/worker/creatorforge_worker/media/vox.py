@@ -38,7 +38,7 @@ PROPS = ("blindfold", "mask", "zip", "crown", "strings", "chains", "megaphone")
 FACE_PROPS = ("blindfold", "mask", "zip", "crown")
 KINDS = ("hero", "desk", "pinboard", "opener", "reveal", "clipping", "pinmap", "bignumber",
          "seats", "stack", "stand", "fan", "trend", "slice", "route", "compare", "photoline", "tv",
-         "clockmap", "tornsplit", "newscard", "blueprint")
+         "clockmap", "tornsplit", "newscard", "blueprint", "pyramid", "flowchart", "linkmap", "orgchart", "heatmap")
 
 
 # A look per video, so no two films share one face: paper, type, map colours and marker pen differ, the method doesn't.
@@ -635,7 +635,131 @@ def era_in(theme: str) -> int | None:
     return int(bits[2]) if len(bits) > 2 and bits[2].strip().isdigit() else None
 
 
-PARSERS = {"hero": parse_hero, "desk": parse_desk, "pinboard": parse_evidence, "opener": parse_opener,
+def parse_pyramid(spec: str) -> dict | None:
+    """'Pyramid: India, 2021 | 0-14 13.4/12.2; 15-29 14/12.9; 30-44 11/10.4; 45-59 7.6/7.3; 60+ 4.9/5.2 | Men, Women'
+    - a population pyramid: one band per age group, left and right bars growing out from the middle."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if len(parts) < 2:
+        return None
+    bands = []
+    for chunk in re.split(r";|,(?!\d)", parts[1]):
+        m = re.match(r"\s*(.+?)\s+([\d.]+)\s*%?\s*/\s*([\d.]+)\s*%?\s*$", chunk)
+        if m:
+            bands.append({"label": m.group(1).strip()[:10], "l": float(m.group(2)), "r": float(m.group(3)),
+                          "ls": m.group(2), "rs": m.group(3)})
+    if len(bands) < 2:
+        return None
+    sides = [x.strip() for x in re.split(r",|/", parts[2])][:2] if len(parts) > 2 and parts[2] else []
+    sides += ["Men", "Women"][len(sides):]
+    return {"type": "pyramid", "title": parts[0][:44], "bands": bands[:12], "left": sides[0][:14], "right": sides[1][:14],
+            "unit": parts[3][:16] if len(parts) > 3 else "", "tone": "grid", "seed": _seed(spec) % 10000}
+
+
+def parse_flow(spec: str) -> dict | None:
+    """'Flowchart: Donor → Electoral trust (₹5 crore) → Party → Ad agency | How the money moved' - boxes joined by
+    arrows that draw one after another; a token travels the chain. A note in brackets sits under the name."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    nodes = []
+    for x in re.split(r"→|->|=>", parts[0]):
+        x = x.strip()
+        if not x:
+            continue
+        m = re.match(r"(.+?)\s*\((.+)\)\s*$", x)
+        nodes.append({"name": (m.group(1) if m else x).strip()[:30], "note": (m.group(2).strip()[:26] if m else "")})
+    if not 2 <= len(nodes) <= 6:
+        return None
+    return {"type": "flowchart", "nodes": nodes, "title": parts[1][:48] if len(parts) > 1 else "", "tone": "grid",
+            "seed": _seed(spec) % 10000}
+
+
+def parse_linkmap(spec: str) -> dict | None:
+    """'Linkmap: Shell company | Director: funds; Bank: loans; Minister: licence; Auditor: signed off | Who is linked'
+    - a relationship map: the subject in the middle, the others round it, each link drawn and labelled."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if len(parts) < 2 or not parts[0]:
+        return None
+    nodes = []
+    for x in re.split(r";|,", parts[1]):
+        name, _, how = x.partition(":")
+        if name.strip():
+            nodes.append({"name": name.strip()[:24], "how": how.strip()[:22]})
+    if not 2 <= len(nodes) <= 8:
+        return None
+    return {"type": "linkmap", "centre": parts[0][:26], "nodes": nodes, "title": parts[2][:48] if len(parts) > 2 else "",
+            "tone": "crumple", "seed": _seed(spec) % 10000}
+
+
+def parse_orgchart(spec: str) -> dict | None:
+    """'Orgchart: Prime Minister | Home, Finance, Defence, External Affairs | The cabinet' - who reports to whom:
+    the top box, a row of boxes under it, connectors drawn down. A third part 'A > x, y' hangs boxes under A."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if len(parts) < 2 or not parts[0]:
+        return None
+    kids = [{"name": x.strip()[:22], "kids": []} for x in parts[1].split(",") if x.strip()][:6]
+    if len(kids) < 2:
+        return None
+    title = ""
+    for extra in parts[2:]:
+        if ">" in extra:
+            par, _, sub = extra.partition(">")
+            k = next((c for c in kids if c["name"].lower() == par.strip().lower()), None)
+            if k:
+                k["kids"] = [x.strip()[:20] for x in sub.split(",") if x.strip()][:3]
+        elif not title:
+            title = extra[:48]
+    return {"type": "orgchart", "top": parts[0][:26], "kids": kids, "title": title, "tone": "grid",
+            "seed": _seed(spec) % 10000}
+
+
+_COUNTRY_ALIAS = {"usa": "united states of america", "us": "united states of america", "america": "united states of america",
+                  "united states": "united states of america", "uk": "united kingdom", "britain": "united kingdom",
+                  "uae": "united arab emirates", "russia": "russia", "south korea": "south korea", "drc": "dem. rep. congo",
+                  "czech republic": "czechia", "ivory coast": "côte d'ivoire", "burma": "myanmar"}
+
+
+def _country(name: str) -> dict | None:
+    from . import maps
+    n = maps._norm(_COUNTRY_ALIAS.get(name.strip().lower(), name))
+    cs = maps._world()["countries"]
+    return next((c for c in cs if maps._norm(c["n"]) == n), None) or \
+        next((c for c in cs if n and maps._norm(c["n"]).startswith(n)), None)
+
+
+def parse_heatmap(spec: str) -> dict | None:
+    """'Heatmap: India 1.9, China 8.0, USA 14.9, Brazil 2.2, Germany 8.1 | CO2 per person | tonnes, 2022' - countries
+    shaded by their number (darker = more), each labelled, with a scale; the rest of the map stays pale."""
+    from . import maps
+    parts = [p.strip() for p in (spec or "").split("|")]
+    vals = []
+    for v in _pairs(parts[0]):
+        c = _country(v["label"])
+        if c:
+            vals.append((c, v))
+    if len(vals) < 2:
+        return None
+    pts = [(x, y) for c, _ in vals for r in sorted(c["r"], key=len)[-1:] for x, y in r]
+    xs, ys = [q[0] for q in pts], [q[1] for q in pts]
+    box = [min(xs), max(-56.0, min(ys)), max(xs), min(78.0, max(ys))]
+    named = {c["n"] for c, _ in vals}
+    items = []
+    for c, v in vals[:14]:
+        big = max(c["r"], key=len)
+        rings = [[[round(x, 2), round(y, 2)] for x, y in r[:: max(1, len(r) // 140)]] for r in c["r"] if len(r) >= 8 or r is big]
+        items.append({"name": c["n"], "label": v["label"], "value": v["value"], "shown": v["shown"], "rings": rings[:12],
+                      "at": [round(sum(q[0] for q in big) / len(big), 2), round(sum(q[1] for q in big) / len(big), 2)]})
+    others = []
+    for c in maps._world()["countries"]:
+        if c["n"] in named:
+            continue
+        for r in c["r"]:
+            if len(r) >= 12 and any(box[0] - 40 <= x <= box[2] + 40 and box[1] - 30 <= y <= box[3] + 30 for x, y in r[:: max(1, len(r) // 20)]):
+                others.append([[round(x, 1), round(y, 1)] for x, y in r[:: max(1, len(r) // 70)]])
+    return {"type": "heatmap", "items": items, "others": others[:420], "box": box, "title": parts[1][:48] if len(parts) > 1 else "",
+            "unit": parts[2][:26] if len(parts) > 2 else "", "tone": "atlas", "seed": _seed(spec) % 10000}
+
+
+PARSERS = {"pyramid": parse_pyramid, "flowchart": parse_flow, "linkmap": parse_linkmap, "orgchart": parse_orgchart,
+           "heatmap": parse_heatmap, "hero": parse_hero, "desk": parse_desk, "pinboard": parse_evidence, "opener": parse_opener,
            "reveal": parse_reveal, "clipping": parse_headline, "pinmap": parse_pinmap, "bignumber": parse_number,
            "seats": parse_seats, "stack": parse_stack, "stand": parse_stand, "fan": parse_fan, "trend": parse_trend,
            "slice": parse_slice, "route": parse_route, "compare": parse_compare, "photoline": parse_photoline,
@@ -888,7 +1012,7 @@ const DEPTH={paper:.012,back:.03,mid:.045,hero:.07,front:.055,side:.08};
 function camera(t){const p=E.inout(Math.min(1,t/Math.max(DUR,.1)));const m=K.cam||0;
   const fx=(m===3&&FOCUS)?Math.max(W*.3,Math.min(W*.7,FOCUS.x)):W/2,fy=(m===3&&FOCUS)?Math.max(H*.3,Math.min(H*.65,FOCUS.y)):H*.46;
   for(const k in DEPTH){const d=DEPTH[k]*(m===3?1.3:1);const q=m===1?1-p:p;const z=1+d*q;
-    const dx=m===2?(p-.5)*d*W*1.6*(K.dir||1):0;
+    const dx=m===2?(p-.5)*(W*.03+d*W*.12)*(K.dir||1):0;   // layers travel together: labels stay on their bars
     L[k].attr({transform:`translate(${fx*(1-z)+dx},${fy*(1-z)}) scale(${m===2?1+d*.4:z})`})}}
 // ---- the style kit ----
 function T(g,s,size,x,y,o){o=o||{};const t=g.text(String(s)).font({family:(K.fam||{})[o.family]||o.family||'Inter',size:size,weight:o.weight||600,
@@ -1577,7 +1701,86 @@ function layout(){const lay=K.lay||'base';
     for(let y=0;y<H;y+=st)d.line(0,y,W,y+(((y/st)%3)-1)*U*.004).stroke({color:'#000',width:Math.max(1,U*.002)});   // wood grain
     if(FOCUS){FOCUS=Object.assign({},FOCUS,{x:W*(1-k)/2+FOCUS.x*k,y:H*(1-k)/2+FOCUS.y*k,rx:FOCUS.rx*k,ry:FOCUS.ry*k})}}}
 
-const SCENES={hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv,
+// ---- data and structure diagrams ----
+function mix(a,b,t){const h=c=>[1,3,5].map(i=>parseInt(c.slice(i,i+2),16));const x=h(a),y=h(b);
+  return '#'+x.map((v,i)=>Math.round(v+(y[i]-v)*t).toString(16).padStart(2,'0')).join('')}
+function count(t,to,start,dur,fmt){at(start,dur,p=>{t.node.textContent=fmt(to*p)},E.out)}   // a number that counts up
+function pyramid(){ // population pyramid: bands from the youngest at the bottom, two sides growing from the middle
+  chartTitle(P.title);const bs=P.bands,n=bs.length,mx=Math.max(...bs.map(b=>Math.max(b.l,b.r)));
+  const top=TALL?H*.2:H*.24,bot=TALL?H*.8:H*.9,rh=(bot-top)/n,bar=rh*.76,cx=W/2,gc=U*.075,mw=W*(TALL?.3:.3);
+  const dec=v=>(String(v).split('.')[1]||'').length;
+  [[P.left,cx-gc-mw*.5,'#3E4A55'],[P.right,cx+gc+mw*.5,ACC]].forEach(([s,x,c],i)=>{const t=T(L.front,s.toUpperCase(),U*.03,x,top-U*.04,{family:'Inter',weight:800,ls:'.14em'});
+    const sw=L.front.rect(U*.02,U*.02).center(x-t.bbox().width/2-U*.025,top-U*.04).fill(c);wipe(t,.15+i*.1);wipe(sw,.15+i*.1)});
+  bs.forEach((b,i)=>{const y=bot-(i+1)*rh+(rh-bar)/2,lw=mw*b.l/mx,rw=mw*b.r/mx,st=.3+i*.11;
+    const lr=L.hero.rect(.1,bar).move(cx-gc,y).fill('#3E4A55');at(st,.7,p=>{lr.width(Math.max(.1,lw*p)).x(cx-gc-lw*p)});
+    const rr=L.hero.rect(.1,bar).move(cx+gc,y).fill(ACC);at(st,.7,p=>rr.width(Math.max(.1,rw*p)));
+    wipe(T(L.front,b.label,Math.min(U*.028,bar*.6),cx,y+bar/2,{family:'Mono',weight:700}),st);
+    const fs=Math.min(U*.026,bar*.58);
+    const lv=T(L.front,'0',fs,cx-gc-lw-U*.012,y+bar/2,{family:'Inter',weight:800,anchor:'end'});lv.opacity(0);at(st+.1,.2,p=>lv.opacity(p));count(lv,b.l,st,.8,v=>v.toFixed(dec(b.ls)));
+    const rv=T(L.front,'0',fs,cx+gc+rw+U*.012,y+bar/2,{family:'Inter',weight:800,anchor:'start'});rv.opacity(0);at(st+.1,.2,p=>rv.opacity(p));count(rv,b.r,st,.8,v=>v.toFixed(dec(b.rs)));
+    if(Math.max(b.l,b.r)===mx)FOCUS={x:b.l>=b.r?cx-gc-lw/2:cx+gc+rw/2,y:y+bar/2,rx:Math.max(lw,rw)*.62,ry:bar*.95}});
+  L.mid.line(cx-gc,top-U*.01,cx-gc,bot).stroke({color:FG,width:U*.002}).opacity(.5);L.mid.line(cx+gc,top-U*.01,cx+gc,bot).stroke({color:FG,width:U*.002}).opacity(.5);
+  if(P.unit)wipe(mono(L.front,P.unit.toUpperCase(),W-U*.05,bot+U*.03,{anchor:'end',weight:700}),.6)}
+function nodeBox(g,name,note,x,y,bw,bh,fill){const b=g.group();
+  b.rect(bw,bh).move(x-bw/2+U*.008,y-bh/2+U*.008).fill(INK);b.rect(bw,bh).move(x-bw/2,y-bh/2).fill(fill||'#FBF8F0').stroke({color:INK,width:U*.004});
+  const fs=Math.min(U*.03,bh*.3),ls=lines(name,fs,bw*.88,'Inter',800,2),oy=note?-fs*.45:0;
+  ls.forEach((l,k)=>fit(T(b,l,fs,x,y+oy+(k-(ls.length-1)/2)*fs*1.15,{family:'Inter',weight:800,fill:INK}),bw*.9));
+  if(note)fit(T(b,note,fs*.68,x,y+bh/2-fs*.62,{family:'Mono',weight:700,fill:'#3A3A3A'}),bw*.9);return b}
+function arrowHead(g,x,y,ang,start){const s=U*.022;const h=g.path(`M${x-Math.cos(ang-.5)*s} ${y-Math.sin(ang-.5)*s} L${x} ${y} L${x-Math.cos(ang+.5)*s} ${y-Math.sin(ang+.5)*s}`)
+  .fill('none').stroke({color:K.mark||'#D7262B',width:U*.007,linecap:'round',linejoin:'round'});wipe(h,start);return h}
+function flow(){ // boxes joined by arrows drawn one after another; a token travels the chain
+  chartTitle(P.title);const ns=P.nodes,n=ns.length,hz=!TALL;
+  const span=hz?W*.9:H*.66,step=span/n,bw=hz?Math.min(step*.74,U*.42):W*.62,bh=hz?U*.19:Math.min(step*.62,U*.15);
+  const pos=ns.map((_,i)=>hz?[W*.05+step*(i+.5),H*.54+(i%2?U*.05:-U*.05)]:[W/2,H*.19+step*(i+.5)]);
+  ns.forEach((nd,i)=>{const [x,y]=pos[i],st=.25+i*.6,last=i===n-1;const g=nodeBox(L.hero,nd.name,nd.note,x,y,bw,bh,last?ACC:null);popIn(g,x,y,st,.35);
+    if(!last){const [x2,y2]=pos[i+1];const a=hz?[x+bw/2+U*.012,y]:[x,y+bh/2+U*.012],b=hz?[x2-bw/2-U*.018,y2]:[x2,y2-bh/2-U*.018];
+      penLine(L.mid,[a,b],st+.3,.3);arrowHead(L.mid,b[0],b[1],Math.atan2(b[1]-a[1],b[0]-a[0]),st+.56)}
+    const num=T(L.front,String(i+1),U*.024,x-bw/2+U*.004,y-bh/2-U*.004,{family:'Mono',weight:700,fill:'#FFFFFF'});const bb=num.bbox();
+    const tag=L.front.circle(U*.04).center(bb.cx,bb.cy).fill(INK);num.front();popIn(tag,bb.cx,bb.cy,st+.1,.25);wipe(num,st+.15)});
+  const dot=L.front.circle(U*.028).fill(K.mark||'#D7262B').stroke({color:'#FFFFFF',width:U*.005}).opacity(0);
+  at(.5,(n-1)*.6,p=>{const f=p*(n-1),i=Math.min(n-2,Math.floor(f)),t=f-i;dot.opacity(p>0&&p<1?1:0).center(pos[i][0]+(pos[i+1][0]-pos[i][0])*t,pos[i][1]+(pos[i+1][1]-pos[i][1])*t-(hz?bh*.62:0)+(hz?0:0))},E.lin);
+  const e=pos[n-1];FOCUS={x:e[0],y:e[1],rx:bw*.62,ry:bh*.8}}
+function linkmap(){ // the subject in the middle, the others round it; every link is drawn and named
+  chartTitle(P.title);const ns=P.nodes,n=ns.length,cx=W/2,cy=TALL?H*.5:H*.56,rx=W*(TALL?.34:.34),ry=H*(TALL?.28:.3);
+  const cr=U*.12;const cg=L.hero.group();cg.circle(cr*2).center(cx+U*.008,cy+U*.008).fill(INK);cg.circle(cr*2).center(cx,cy).fill(ACC).stroke({color:INK,width:U*.005});
+  const cl=lines(P.centre,U*.032,cr*1.7,'Inter',800,3);cl.forEach((l,k)=>fit(T(cg,l.toUpperCase(),U*.032,cx,cy+(k-(cl.length-1)/2)*U*.038,{family:'Inter',weight:800,fill:INK}),cr*1.8));
+  popIn(cg,cx,cy,.15,.4);FOCUS={x:cx,y:cy,rx:cr*1.25,ry:cr*1.25};
+  ns.forEach((nd,i)=>{const a=-Math.PI/2+(i+.5)/n*Math.PI*2,x=cx+Math.cos(a)*rx,y=cy+Math.sin(a)*ry,st=.55+i*.38;
+    const bw=Math.min(U*.3,W*.24),bh=U*.085;const g=nodeBox(L.hero,nd.name,'',x,y,bw,bh,'#FBF8F0');
+    const d=Math.hypot(x-cx,y-cy),ux=(x-cx)/d,uy=(y-cy)/d;const p1=[cx+ux*cr*1.06,cy+uy*cr*1.06],p2=[x-ux*Math.min(bw*.5,bh*.9/Math.max(.2,Math.abs(uy))),y-uy*bh*.62];
+    penLine(L.mid,[p1,p2],st,.35,INK,U*.005);popIn(g,x,y,st+.3,.3);
+    if(nd.how){const mx2=(p1[0]+p2[0])/2,my=(p1[1]+p2[1])/2;const t=T(L.front,nd.how,U*.021,mx2,my,{family:'Mono',weight:700,fill:'#FFFFFF'});const bb=t.bbox();
+      const tg=L.front.rect(bb.width+U*.02,bb.height+U*.008).center(mx2,my).fill(K.mark||'#D7262B');t.front();wipe(tg,st+.4);wipe(t,st+.45)}})}
+function orgchart(){ // who reports to whom: the top box, the row under it, connectors drawn down
+  chartTitle(P.title);const ks=P.kids,n=ks.length,deep=ks.some(k=>k.kids.length);
+  const ty=TALL?H*.24:H*.28,ky=TALL?H*.46:(deep?H*.52:H*.62),area=W*.92,gap=area/n,bw=Math.min(gap*.86,U*.36),bh=U*.11;
+  const top=nodeBox(L.hero,P.top,'',W/2,ty,Math.min(W*.4,U*.5),bh*1.15,ACC);popIn(top,W/2,ty,.15,.4);FOCUS={x:W/2,y:ty,rx:Math.min(W*.24,U*.3),ry:bh};
+  const busY=(ty+ky)/2;penLine(L.mid,[[W/2,ty+bh*.6],[W/2,busY]],.5,.2,INK,U*.005);
+  penLine(L.mid,[[W*.04+gap*.5,busY],[W*.04+gap*(n-.5),busY]],.65,.35,INK,U*.005);
+  ks.forEach((k,i)=>{const x=W*.04+gap*(i+.5),st=.95+i*.2;penLine(L.mid,[[x,busY],[x,ky-bh*.55]],st,.2,INK,U*.005);
+    const g=nodeBox(L.hero,k.name,'',x,ky,bw,bh,null);popIn(g,x,ky,st+.15,.3);
+    k.kids.forEach((c,j)=>{const cy2=ky+bh*1.25+j*bh*.95,s2=st+.5+j*.15;penLine(L.mid,[[x-bw*.4,ky+bh*.5],[x-bw*.4,cy2],[x-bw*.3,cy2]],s2,.2,INK,U*.004);
+      const t=T(L.front,c,Math.min(U*.024,bh*.3),x-bw*.27,cy2,{family:'Inter',weight:600,anchor:'start'});fit(t,bw*.8);wipe(t,s2+.15)})})}
+function heatmap(){ // countries shaded by their number, labelled, with a scale
+  chartTitle(P.title);const [x0,y0,x1,y1]=P.box,kx=Math.cos((y0+y1)/2*Math.PI/180);
+  const s=Math.min(W*.84/Math.max(8,(x1-x0)*kx),H*(TALL?.5:.62)/Math.max(6,y1-y0)),cxl=(x0+x1)/2,cyl=(y0+y1)/2,ox=W/2-cxl*kx*s,oy=H*(TALL?.46:.53)+cyl*s;
+  const pr=(lon,lat)=>[ox+lon*kx*s,oy-lat*s];atlasSea();
+  const bg=L.back.group();P.others.forEach(r=>bg.polygon(r.map(q=>pr(q[0],q[1]).join(',')).join(' ')).fill('#EFE3C2').stroke({color:'#8E7E5C',width:Math.max(1,U*.0012)}));
+  const vs=P.items.map(i=>i.value),mn=Math.min(...vs),mx=Math.max(...vs),lo=mix('#EFE3C2',ACC,.22);
+  const order=P.items.slice().sort((a,b)=>a.value-b.value);
+  order.forEach((it,i)=>{const f=mx>mn?(it.value-mn)/(mx-mn):1,col=mix(lo,ACC,f),st=.4+i*.3;const g=L.hero.group();
+    it.rings.forEach(r=>g.polygon(r.map(q=>pr(q[0],q[1]).join(',')).join(' ')).fill('#EFE3C2').stroke({color:INK,width:Math.max(1,U*.002)}));
+    at(st,.6,p=>g.children().forEach(c=>c.fill(mix('#EFE3C2',col,p))),E.inout);
+    const [px,py]=pr(it.at[0],it.at[1]);const lab=L.front.group();const t=T(lab,it.shown,U*.034,px,py,{family:'Anton',weight:400,fill:'#FFFFFF'});
+    const nm=T(lab,it.label.toUpperCase(),U*.017,px,py+U*.034,{family:'Inter',weight:800,fill:'#FFFFFF',ls:'.1em'});const bb=lab.bbox();
+    lab.rect(bb.width+U*.024,bb.height+U*.014).center(bb.cx,bb.cy).fill(INK).back();popIn(lab,px,py,st+.35,.3);
+    if(it.value===mx)FOCUS={x:px,y:py,rx:Math.max(U*.09,bb.width*.8),ry:Math.max(U*.07,bb.height)}});
+  const lw=W*(TALL?.5:.26),lx=W-lw-U*.06,ly=H-U*.09,gr=draw.gradient('linear',a=>{a.stop(0,lo);a.stop(1,ACC)});
+  const lg=L.front.group();lg.rect(lw,U*.02).move(lx,ly).fill(gr).stroke({color:INK,width:U*.002});
+  T(lg,String(mn),U*.02,lx,ly+U*.04,{family:'Mono',weight:700,anchor:'start'});T(lg,String(mx),U*.02,lx+lw,ly+U*.04,{family:'Mono',weight:700,anchor:'end'});
+  if(P.unit)T(lg,P.unit.toUpperCase(),U*.018,lx+lw/2,ly-U*.022,{family:'Inter',weight:800,ls:'.12em'});wipe(lg,.3)}
+
+const SCENES={pyramid,flowchart:flow,linkmap,orgchart,heatmap,hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv,
   clockmap,tornsplit,newscard,blueprint};
 async function boot(){
   try{await Promise.all(Array.from(document.fonts).map(f=>f.load()))}catch(e){}

@@ -330,3 +330,41 @@ def test_film_texture_typewriter_and_pen_render(tmp_path, monkeypatch):
         out = tmp_path / f"{i}.mp4"
         vox.render(k, spec, "editorial@red", 640, 360, 2.0, out, tmp_path / "w", lib=tmp_path / "lib", fetch=False, fps=12)
         assert out.stat().st_size > 2000
+
+
+def test_data_and_structure_diagrams_parse_and_validate():
+    from creatorforge_worker import vox_director as vd
+    from creatorforge_worker.media import vox
+    p = vox.plan_for("pyramid", "India, 2021 | 0-14 13.4/12.2; 15-29 14.0/12.9; 60+ 4.9/5.2 | Men, Women | % of people")
+    assert p["type"] == "pyramid" and len(p["bands"]) == 3 and p["bands"][0]["l"] == 13.4 and p["right"] == "Women"
+    f = vox.plan_for("flowchart", "Donor → Electoral trust (₹5 crore) → Party → Ad agency | How the money moved")
+    assert f["type"] == "flowchart" and [n["name"] for n in f["nodes"]][1] == "Electoral trust" and f["nodes"][1]["note"] == "₹5 crore"
+    k = vox.plan_for("linkmap", "Shell company | Director: funds; Bank: loans; Minister: licence | Who is linked | marker: one address")
+    assert k["centre"] == "Shell company" and k["nodes"][1] == {"name": "Bank", "how": "loans"} and k["marker"] == "one address"
+    o = vox.plan_for("orgchart", "Prime Minister | Home, Finance, Defence | The cabinet | Finance > Revenue, Expenditure")
+    assert o["title"] == "The cabinet" and o["kids"][1]["kids"] == ["Revenue", "Expenditure"]
+    h = vox.plan_for("heatmap", "India 1.9, China 8.0, USA 14.9, Brazil 2.2 | CO2 per person | tonnes, 2022")
+    assert [i["name"] for i in h["items"]][2] == "United States of America" and h["others"] and h["unit"] == "tonnes, 2022"
+    assert vox.plan_for("heatmap", "Atlantis 4, Narnia 5 | x") is None       # unknown countries: nothing invented
+    assert vox.plan_for("flowchart", "Only one step") is None
+    for line in ("Pyramid: India, 2021 | 0-14 13.4/12.2; 15-29 14.0/12.9 | Men, Women",
+                 "Flowchart: Donor → Trust → Party | How the money moved",
+                 "Linkmap: Shell company | Director: funds; Bank: loans | Who is linked",
+                 "Orgchart: Prime Minister | Home, Finance, Defence | The cabinet",
+                 "Heatmap: India 1.9, China 8.0, USA 14.9 | CO2 per person | tonnes"):
+        assert vd.valid(line) == "", line
+    assert set(("pyramid", "flowchart", "linkmap", "orgchart", "heatmap")) <= set(vox.LAYOUT_SETS)
+
+
+def test_the_new_diagrams_render(tmp_path):
+    from creatorforge_worker.media import motion, vox
+    if not motion.enabled():
+        return
+    for i, (kind, spec, size) in enumerate((("pyramid", "India, 2021 | 0-14 13.4/12.2; 15-29 14.0/12.9; 60+ 4.9/5.2 | Men, Women", (640, 360)),
+                                            ("flowchart", "Donor → Trust (₹5 crore) → Party | How the money moved", (360, 640)),
+                                            ("linkmap", "Shell company | Director: funds; Bank: loans; Minister: licence | Who", (640, 360)),
+                                            ("orgchart", "Prime Minister | Home, Finance, Defence | The cabinet", (640, 360)),
+                                            ("heatmap", "India 1.9, China 8.0, USA 14.9 | CO2 per person | tonnes", (640, 360)))):
+        out = vox.render(kind, spec, "editorial~0@red/newsprint/", size[0], size[1], 2, tmp_path / f"d{i}.mp4", tmp_path,
+                         fetch=False, fps=12, layout=("card" if i % 2 else "base"))
+        assert out.is_file() and out.stat().st_size > 4000

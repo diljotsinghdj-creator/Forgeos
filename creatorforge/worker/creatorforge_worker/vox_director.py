@@ -51,6 +51,11 @@ Clockmap: <city> <time>, <city> <time>, ... | <title> | <zone>  - the same momen
 Tornsplit: <object> + <object> | <BIG HEADLINE 2-4 words> | <kicker>  - a chapter or story opener
 Newscard: <date> | <the real headline> | <the line under it> | person:Name | <publisher>  - a news report card
 Blueprint: <object> | <title> | <fact> · <fact> · <fact>  - how a place or machine works
+Pyramid: <place, year> | <age band> <left>/<right>; ... | <Left name>, <Right name>  - a population pyramid (ages, two sides)
+Flowchart: <step> → <step (note)> → <step> | <title>  - how money, an order or a process moves, 2-6 steps
+Linkmap: <subject> | <name>: <link>; <name>: <link>; ... | <title>  - who is connected to whom (2-8 links)
+Orgchart: <top> | <under>, <under>, <under> | <title>  - who reports to whom
+Heatmap: <country> <number>, <country> <number>, ... | <title> | <unit, year>  - countries shaded by a number
 Fly: <place> [→ <place>] | <title> | satellite  - a real-map fly-in (satellite imagery when it helps)
 Route/Pinmap: add "| atlas" for the printed-atlas look, "| pen" for Johnny Harris red marker (routes traced by
     hand, stops circled, a country hatched in marker)
