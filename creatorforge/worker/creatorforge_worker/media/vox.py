@@ -749,19 +749,21 @@ function evidence(){ // a pinned board on kraft paper: cards, red string pin to 
     if(i>0)tape(L.front,bb.x+bb.width*.15,bb.y+bb.height*.92,U*.07,-20)});
   for(let i=1;i<n;i++){const [x1,y1]=pins[0],[x2,y2]=pins[i];const ln=L.mid.line(x1,y1,x1,y1).stroke({color:'#C0262D',width:U*.004});
     at(.5+i*.25,.45,p=>ln.plot(x1,y1,x1+(x2-x1)*p,y1+(y2-y1)*p),E.inout)}
-  const ev=tag(L.front,'EVIDENCE',0,0,{size:U*.026});const eb=ev.bbox();ev.attr({transform:`translate(${cx-eb.width/2},${TALL?H*.6:H*.74})`});wipe(ev,1.4);
+  const casey=/\?|case|evidence|crime|murder|scam|who|mystery|probe|investigat/i.test(P.title||'');
+  if(casey){const ev=tag(L.front,'EVIDENCE',0,0,{size:U*.026});const eb=ev.bbox();ev.attr({transform:`translate(${cx-eb.width/2},${TALL?H*.6:H*.74})`});wipe(ev,1.4)}
   if(P.title){const g=boxText(L.front,P.title,U*.05,W/2,TALL?H*.08:H*.06,{anchor:'middle',maxw:W*.8,most:1});g.children().forEach((r,i)=>slide(r,.1,0,-H*.05))}
-  const q=L.front.group();q.circle(U*.09).center(W-U*.12,TALL?H*.6:H*.72).fill('none').stroke({color:'#C0262D',width:U*.006});
-  T(q,'?',U*.06,W-U*.12,TALL?H*.6:H*.72,{family:'Archivo',weight:400,fill:'#C0262D'});wipe(q,1.6)}
+  if(casey){const q=L.front.group();q.circle(U*.09).center(W-U*.12,TALL?H*.6:H*.72).fill('none').stroke({color:'#C0262D',width:U*.006});
+  T(q,'?',U*.06,W-U*.12,TALL?H*.6:H*.72,{family:'Archivo',weight:400,fill:'#C0262D'});wipe(q,1.6)}}
 
 function opener(){ // a colour panel with the headline, the photo beside it
-  const left=!TALL;const pw=left?W*.46:W,ph=left?H:H*.42;const pan=L.back.rect(pw,ph).move(0,0).fill(ACC);
+  const real=((P.pics||[])[0]||{}).img;if(!real)P.pics=[];
+  const left=!TALL&&!!real;const pw=left?W*.46:W,ph=left?H:(real?H*.42:H);const pan=L.back.rect(pw,ph).move(0,0).fill(ACC);
   slide(pan,0,left?-pw:0,left?0:-ph);
   const pic=(P.pics||[])[0];
   if(pic){const h=left?H*.86:H*.46;const x=left?W*.72:W/2;const y=left?H*.97:H*.94;const g=picture(L.hero,pic,x,y,h);drop(g,.3,H*.2,-2)}
   const size=left?U*.1:U*.12;const ls=lines(P.headline.replace(/\*/g,''),size,(left?pw:W)*.84,'Playfair',900,3);
   const words=P.headline.split(/(\*[^*]+\*)/).filter(Boolean);const hi=new Set();words.forEach(w=>{if(w.startsWith('*'))w.replace(/\*/g,'').split(/\s+/).forEach(x=>hi.add(x))});
-  const x0=left?W*.05:W*.08;let y=left?H*.5-ls.length*size*.6:H*.12;
+  const x0=left?W*.05:W*.08;let y=left?H*.5-ls.length*size*.6:(real?H*.12:H*.46-ls.length*size*.55);
   if(P.kicker){const k=T(L.front,P.kicker.toUpperCase(),U*.03,x0,y-size*.75,{family:'Inter',weight:800,anchor:'start',fill:INK,ls:'0.16em'});wipe(k,.3)}
   ls.forEach((ln,i)=>{const row=L.front.group();let cx=0;ln.split(' ').forEach(w=>{const t=T(row,w,size,cx,0,{family:'Playfair',weight:900,anchor:'start',fill:hi.has(w)?'#FFFFFF':INK});cx+=t.bbox().width+size*.22});
     row.attr({transform:`translate(${x0},${y+i*size*1.1})`});slide(row,.45+i*.15,-W*.05,0)})}
@@ -826,11 +828,12 @@ function pinmap(){ // the country outline; the place highlighted; the headline c
     card.attr({filter:'url(#shadow)'});drop(card,1.0,H*.2,-3);const pn=pinAt(L.front,cx+cw/2,cy+U*.015);popIn(pn,cx+cw/2,cy+U*.015,1.4,.3)}}
 
 function number(){ // a huge number; the subject breaks out of it
-  const pic=(P.pics||[])[0];const big=T(L.back,P.number,TALL?W*.42:H*.5,W/2,TALL?H*.22:H*.3,{family:'Anton',weight:400,fill:ACC});fit(big,W*.92);
+  const pic=((P.pics||[])[0]||{}).img?(P.pics||[])[0]:null;const big=T(L.back,P.number,TALL?W*.42:H*(pic?.5:.56),W/2,pic?(TALL?H*.22:H*.3):(TALL?H*.34:H*.4),{family:'Anton',weight:400,fill:ACC});fit(big,W*.92);
   slide(big,.05,0,H*.06);
   if(pic){const h=TALL?H*.36:H*.56;const g=picture(L.hero,pic,W/2,TALL?H*.64:H*.86,h);drop(g,.35,H*.25,-2)}
-  if(P.caption){const c=T(L.front,P.caption,U*.04,W/2,TALL?H*.7:H*.92,{family:'Inter',weight:800,fill:'#C0262D'});wipe(c,.9)}
-  if(P.kicker){const k=T(L.front,P.kicker.split('').join(' ').toUpperCase(),U*.022,W/2,TALL?H*.08:H*.06,{family:'Inter',weight:800,fill:'#C0262D',ls:'0.3em'});wipe(k,.2)}}
+  if(P.caption){const c=pic?T(L.front,P.caption,U*.04,W/2,TALL?H*.7:H*.92,{family:'Inter',weight:800,fill:'#C0262D'})
+      :boxText(L.front,P.caption,U*.055,W/2,TALL?H*.5:H*.7,{anchor:'middle',maxw:W*.86,most:2});wipe(c,.9)}
+  if(P.kicker){const k=T(L.front,P.kicker.toUpperCase(),U*.024,W/2,TALL?H*.08:H*.08,{family:'Inter',weight:800,fill:'#C0262D',ls:'0.45em'});wipe(k,.2)}}
 
 // ---- round 3: charts made of objects ----
 function chartTitle(s){if(!s)return;const g=boxText(L.front,s,U*.05,W/2,TALL?H*.07:H*.075,{anchor:'middle',maxw:W*.84,most:2});
@@ -966,7 +969,7 @@ function route(){ // a paper map; dashed routes draw themselves; the vehicle tra
     vg.attr({fill:'none',stroke:'#2A1A10','stroke-width':1.8,'stroke-linecap':'round','stroke-linejoin':'round',transform:`translate(${-12*vk*.62},${-12*vk*.62}) scale(${vk*.62})`});v.opacity(0);
     const st=.5+i*per;
     at(st,per*.9,p=>{mp.attr({'stroke-dashoffset':len*(1-p)});const q=path.node.getPointAtLength(len*p),q2=path.node.getPointAtLength(Math.min(len,len*p+2));
-      const ang=Math.atan2(q2.y-q.y,q2.x-q.x)*180/Math.PI;v.opacity(p>0&&p<1?1:(i===legs.length-1&&p>=1?1:0));
+      const ang=Math.atan2(q2.y-q.y,q2.x-q.x)*180/Math.PI;v.opacity(p>0&&p<.97?1:0);
       v.attr({transform:`translate(${q.x},${q.y}) rotate(${ang+45})`})},E.inout)})}
 function compare(){ // one picture split by a yellow line: the left half faded "before", the right half "after"
   const pics=P.pics||[];const a=pics[0],b=pics[1]||pics[0];const h=TALL?H*.6:H*.86;const cx=W/2,by=TALL?H*.72:H*.95;

@@ -48,6 +48,9 @@ EXTRA_PLACES = {
     "gurugram": (28.46, 77.03), "gurgaon": (28.46, 77.03), "ayodhya": (26.80, 82.20), "varanasi": (25.32, 82.97),
     "amritsar": (31.63, 74.87), "chandigarh": (30.73, 76.78), "shimla": (31.10, 77.17), "srinagar": (34.08, 74.80),
     "godhra": (22.78, 73.61), "lucknow": (26.85, 80.95), "patna": (25.59, 85.14), "jaipur": (26.91, 75.79),
+    # ports the trade stories name
+    "newark": (40.73, -74.17), "long beach": (33.77, -118.19), "rotterdam": (51.92, 4.48), "felixstowe": (51.96, 1.35),
+    "jebel ali": (25.01, 55.06), "nhava sheva": (18.95, 72.95), "mundra": (22.84, 69.72), "colombo": (6.93, 79.85),
 }
 
 
