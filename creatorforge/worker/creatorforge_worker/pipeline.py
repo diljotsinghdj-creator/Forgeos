@@ -259,10 +259,19 @@ class Pipeline:
                 if spec.vox_graphics and not job.get("vox_checked"):
                     # Vox: every line gets a drawn graphic (no AI picture); broken graphic lines are fixed first.
                     # The script is directed with its direction lines, then read again like a freshly pasted one.
-                    from . import vox_director
-                    fixed, report = vox_director.ensure(job.get("vox_raw") or spec.script, llm,
-                                                        props=spec.editorial_props)
+                    # Every video different: a look no recent video used, and a shot order that doesn't repeat one.
+                    from . import variety
+                    raw = job.get("vox_raw") or spec.script
+                    history = variety.load(self.cfg.data_dir)
+                    look = str((spec.brand or {}).get("look") or "").lower()
+                    if look not in vox.LOOKS:
+                        look = variety.pick_look(raw, vox.era_of(raw), history)
+                    fixed, report, fp, sim = variety.direct_unique(raw, llm, spec.editorial_props, look, history,
+                                                                   job["id"])
+                    variety.remember(self.cfg.data_dir, fp)
+                    job["variety"] = {"look": look, "closest_recent": sim, "hook": fp["hook"]}
                     redo = {k: v for k, v in job["spec"].items() if k not in ("shots", "roles", "publish")}
+                    redo["brand"] = dict(redo.get("brand") or {}, look=look, seed=fp["seed"])
                     redo["script"] = fixed
                     spec = director.ProductionSpec.from_dict(redo)
                     job["spec"] = spec.to_dict()
@@ -1424,6 +1433,11 @@ class Pipeline:
                 return jdir / sc["clip"]
             return None
 
+        # each Vox kind's graphics take turns through its layouts, so the same kind never looks the same twice running
+        all_beats = [b for shot in shots for b in (shot.get("beats") or [])]
+        bkinds = [next((k for k in vox.KINDS if (b.get("extra") or {}).get(k)), "") for b in all_beats]
+        for b, lay in zip(all_beats, vox.plan_layouts(bkinds, self._video_seed(spec))):
+            b["vox_layout"] = lay
         clips, firsts = [], []   # firsts[i]: index in clips of scene i's opening shot
         charted: set[tuple[int, int]] = set()   # (scene, beat) shown as an animated chart
         stepped_files: set[Path] = set()         # drawn graphics, played "on twos" (12 fps) like hand-made animation
@@ -1848,6 +1862,11 @@ class Pipeline:
         return vox.LOOKS[Pipeline._look(spec)]["accent"]     # no brand colour: the video's own look picks one
 
     @staticmethod
+    def _video_seed(spec) -> int:
+        seed = (spec.brand or {}).get("seed")      # the seed the Vox director settled on (see variety.direct_unique)
+        return int(seed) if isinstance(seed, int) else vox._seed("video", spec.script or spec.idea or "")
+
+    @staticmethod
     def _look(spec) -> str:
         """The video's look (paper, type, map colours, marker pen): the brand kit's if it names one, else chosen from
         the script and the era it is set in, so two videos don't share one face."""
@@ -1877,7 +1896,9 @@ class Pipeline:
                 if kind == "statement" and spec.style == "kinetic":
                     continue                          # Editorial type sets the statement as its own headline
                 if extra.get(kind):
-                    out = work / f"{kind}_{hashlib.sha256(f'{extra[kind]}|{vtheme}|{size}|{seconds}'.encode()).hexdigest()[:16]}.mp4"
+                    lay = (beat.get("vox_layout") or vox.layout_for(kind, 0, self._video_seed(spec))) \
+                        if kind in vox.KINDS else ""
+                    out = work / f"{kind}_{hashlib.sha256(f'{extra[kind]}|{vtheme}|{size}|{seconds}|{lay}'.encode()).hexdigest()[:16]}.mp4"
                     if out.is_file():
                         return out
                     try:
@@ -1886,7 +1907,7 @@ class Pipeline:
                                               seconds, out, work, lib=self.cfg.data_dir / "cutouts",
                                               model=self.cfg.data_dir / "models" / "isnet-general-use.onnx",
                                               sources=(providers.photo_sources(job["id"], self.cfg) if job else None),
-                                              props=spec.editorial_props)
+                                              props=spec.editorial_props, layout=lay)
                         if kind == "object":
                             plan = objects.parse(extra[kind])
                             if plan is None:
@@ -2049,6 +2070,22 @@ class Pipeline:
             job["result"]["quality"] = quality.check(final, r["expected_s"], matches, render.TARGET_LUFS)
         except Exception as e:  # noqa: BLE001
             job["result"]["quality"] = {"passed": None, "checks": [], "warnings": [f"quality check skipped: {e}"]}
+        if job.get("variety"):
+            try:   # every video different: this one against the last finished video, frame by frame
+                from . import variety
+                hist = variety.load(self.cfg.data_dir)
+                prev = next((h for h in reversed(hist) if h.get("id") != job["id"] and h.get("file")
+                             and Path(h["file"]).is_file()), None)
+                cmp = variety.compare_videos(final, Path(prev["file"])) if prev else {}
+                job["result"]["variety"] = dict(job["variety"], compared_with=prev["id"] if prev else None, **cmp)
+                if cmp.get("same_look"):
+                    job["result"].setdefault("quality", {}).setdefault("warnings", []).append(
+                        "looks too much like the previous video: re-render or pick another look")
+                mine = next((h for h in hist if h.get("id") == job["id"]), None)
+                if mine:
+                    variety.remember(self.cfg.data_dir, dict(mine, file=str(final)))
+            except Exception as e:  # noqa: BLE001
+                job["result"]["variety"] = dict(job["variety"], error=str(e)[:120])
 
 
 def clip_ref(ref: str) -> tuple[str, float]:

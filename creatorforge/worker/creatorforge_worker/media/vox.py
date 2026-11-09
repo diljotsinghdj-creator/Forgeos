@@ -54,9 +54,46 @@ LOOKS = {
                   "sea": "#A9C6E0", "land": "#F7F4EC", "edge": "#7C8A99", "accent": "blue"},
     "sepia":     {"paper": "#E8DCC0", "head": "Playfair", "big": "Bebas", "hand": "Kalam", "mark": "#8B1E1E",
                   "sea": "#C7C1A6", "land": "#EDE3C8", "edge": "#7A6A48", "accent": "#A8652A"},
+    "engraving": {"paper": "#E6E4DC", "head": "Playfair", "big": "Oswald", "hand": "Caveat", "mark": "#1C1C1C",
+                  "sea": "#AEB9BC", "land": "#ECE6D6", "edge": "#55524A", "accent": "#7B2D26"},
     "field":     {"paper": "#E9EDE4", "head": "DMSerif", "big": "Anton", "hand": "Marker", "mark": "#C2410C",
                   "sea": "#B5D0C8", "land": "#EEE9D6", "edge": "#6E7B66", "accent": "teal"},
 }
+
+
+# Layouts per graphic type, rotated through a video so the same kind never gets the same layout twice in a row.
+# base = the scene as designed; mirror = the composition flipped (words and photos stay readable, never for maps,
+# timelines, parliaments or before/after, where left and right mean something); card = the whole graphic printed on a
+# paper card lying on a desk; side = BigNumber's own second layout.
+_FLIP = ("hero", "opener", "newscard", "tornsplit", "desk", "pinboard", "clipping", "tv", "blueprint", "reveal")
+LAYOUT_SETS = {k: (["base", "mirror", "card"] if k in _FLIP else ["base", "card"]) for k in KINDS}
+LAYOUT_SETS["bignumber"] = ["base", "side", "card"]
+DESKS = ("#3B2F25", "#5A4632", "#2E3A40", "#6B5B4B", "#262626")
+
+
+def layout_for(kind: str, turn: int, seed: int) -> str:
+    """The layout of this kind's `turn`-th graphic (0, 1, 2...) in a video with this seed."""
+    opts = LAYOUT_SETS.get(kind, ["base"])
+    return opts[(turn + seed + _seed("lay", kind)) % len(opts)]
+
+
+def plan_layouts(kinds: list[str], seed: int) -> list[str]:
+    """A layout for every graphic of a video, in order: each kind takes turns through its layouts, and a shot never
+    has the same layout as the shot before it when its kind has another one ('' for a line that isn't a Vox kind)."""
+    turn: dict[str, int] = {}
+    out: list[str] = []
+    for k in kinds:
+        if k not in KINDS:
+            out.append("")
+            continue
+        opts = LAYOUT_SETS.get(k, ["base"])
+        lay = layout_for(k, turn.get(k, 0), seed)
+        if out and out[-1] == lay and len(opts) > 1:
+            turn[k] = turn.get(k, 0) + 1
+            lay = layout_for(k, turn[k], seed)
+        turn[k] = turn.get(k, 0) + 1
+        out.append(lay)
+    return out
 
 
 def look_of(theme: str) -> dict:
@@ -70,7 +107,7 @@ def choose_look(text: str, era: int | None = None) -> str:
     the same script always gets the same look and two scripts rarely share one."""
     if era is not None and era < 1950:
         return "sepia"
-    names = [k for k in LOOKS if k != "sepia"]
+    names = [k for k in LOOKS if k not in ("sepia", "engraving")]
     return names[_seed("look", text) % len(names)]
 
 
@@ -833,8 +870,8 @@ const E={out:t=>1-Math.pow(1-t,3), back:t=>{const c=1.6,c3=c+1;return 1+c3*Math.
 function at(start,dur,fn,e){tracks.push({start,dur,fn,e:e||E.out})}
 let seed=P.seed||1;function rnd(){seed=(seed*16807)%2147483647;return (seed-1)/2147483646}
 // ---- layers (back to front) and the camera ----
-const L={};L.paper=draw.group();const CONTENT=draw.group();
-['back','mid','hero','front'].forEach(k=>L[k]=CONTENT.group());L.side=draw.group();L.grain=draw.group();
+const L={};L.paper=draw.group();const CONTENT=draw.group();const STAGE=CONTENT.group();   // STAGE: the layout's frame
+['back','mid','hero','front'].forEach(k=>L[k]=STAGE.group());L.side=draw.group();L.grain=draw.group();
 draw.defs().svg(`<filter id="shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="${U*.004}" dy="${U*.012}" stdDeviation="${U*.011}" flood-color="#000" flood-opacity=".32"/></filter>
 <filter id="softshadow" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="${U*.006}" stdDeviation="${U*.006}" flood-color="#000" flood-opacity=".22"/></filter>
 <filter id="blur" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="${U*.035}"/></filter>
@@ -865,7 +902,7 @@ function lines(s,size,maxw,family,weight,most){const words=String(s).split(/\s+/
 function boxText(g,s,size,x,y,o){ // black box(es), white serif type - one box per line, like a cut label
   o=o||{};const ls=lines(String(s).toUpperCase(),size,o.maxw||W*.4,o.family||'Playfair',900,o.most||3);const grp=g.group();const pad=size*.28;
   let yy=y;const anchor=o.anchor||'start';
-  ls.forEach((ln,i)=>{const row=grp.group();const t=T(row,ln,size,0,0,{family:o.family||'Playfair',weight:900,anchor:'start',fill:o.ink||'#FFFFFF',ls:'0.02em'});
+  ls.forEach((ln,i)=>{const row=grp.group().addClass('keep');const t=T(row,ln,size,0,0,{family:o.family||'Playfair',weight:900,anchor:'start',fill:o.ink||'#FFFFFF',ls:'0.02em'});
     const bb=t.bbox();const r=row.rect(bb.width+pad*2,bb.height+pad*1.1).move(bb.x-pad,bb.y-pad*.55).fill(o.bg||'#111111').back();
     const w=bb.width+pad*2;const x0=anchor==='middle'?x-w/2+pad:anchor==='end'?x-w+pad:x+pad;
     row.attr({transform:`translate(${x0+(o.stagger?(i%2)*size*.9:0)},${yy})`});row.data('x',x0+(o.stagger?(i%2)*size*.9:0)).data('y',yy);yy+=bb.height+pad*1.5});
@@ -911,7 +948,7 @@ function picture(g,pic,x,y,h,o){ // a cut-out photo (or its icon) with its heigh
   else if(pic&&pic.draw&&window.ILLU&&ILLU[pic.draw]){const [bw,bh,fn]=ILLU[pic.draw];const k=h/bh;const ig=grp.group();
     fn(ig,ACC);ig.attr({transform:`translate(${x-bw*k/2},${y-h}) scale(${k})`,filter:'url(#shadow)'});grp.data('w',bw*k)}
   else{const r=h*.42;grp.circle(r*2).center(x,y-h/2).fill(o.iconBg||'#FFFFFF').stroke({color:INK,width:U*.005}).attr({filter:'url(#softshadow)'});
-    const ig=grp.group();for(const nd of ((pic&&pic.o)||[])){try{ig.element(nd[0]).attr(nd[1])}catch(e){}}
+    const ig=grp.group().addClass('keep');for(const nd of ((pic&&pic.o)||[])){try{ig.element(nd[0]).attr(nd[1])}catch(e){}}
     const k=r*1.15/24;ig.attr({fill:'none',stroke:INK,'stroke-width':1.6,'stroke-linecap':'round','stroke-linejoin':'round',
       transform:`translate(${x-12*k},${y-h/2-12*k}) scale(${k})`});grp.data('w',r*2)}
   return grp}
@@ -1036,7 +1073,7 @@ function printCard(g,pic,x,y,h,ang,o){ // a photo print: white card with the cut
   grp.attr({transform:`rotate(${ang||0},${x},${y})`});return grp}
 function picOf(name){return (P.pics||[]).find(p=>p.name===name)}
 function rich(g,s,size,x,y,o){ // a headline where *words* get the accent highlighter
-  o=o||{};const parts=String(s).split(/(\*[^*]+\*)/).filter(Boolean);const grp=g.group();let cx=0;const marks=[];
+  o=o||{};const parts=String(s).split(/(\*[^*]+\*)/).filter(Boolean);const grp=g.group().addClass('keep');let cx=0;const marks=[];
   parts.forEach(pt=>{const hl=pt.startsWith('*');const t=T(grp,pt.replace(/\*/g,''),size,cx,0,{family:o.family||'Playfair',weight:o.weight||900,anchor:'start',fill:o.fill||FG});
     const bb=t.bbox();if(hl)marks.push(bb);cx+=bb.width+size*.18});
   marks.forEach((bb,i)=>highlight(grp,bb,(o.start||.6)+.15*i,o.mark||ACC));
@@ -1095,7 +1132,7 @@ function opener(){ // a colour panel with the headline, the photo beside it
   const words=P.headline.split(/(\*[^*]+\*)/).filter(Boolean);const hi=new Set();words.forEach(w=>{if(w.startsWith('*'))w.replace(/\*/g,'').split(/\s+/).forEach(x=>hi.add(x))});
   const x0=left?W*.05:W*.08;let y=left?H*.5-ls.length*size*.6:(real?H*.12:H*.46-ls.length*size*.55);
   if(P.kicker){const k=T(L.front,P.kicker.toUpperCase(),U*.03,x0,y-size*.75,{family:'Inter',weight:800,anchor:'start',fill:INK,ls:'0.16em'});wipe(k,.3)}
-  ls.forEach((ln,i)=>{const row=L.front.group();let cx=0;ln.split(' ').forEach(w=>{const t=T(row,w,size,cx,0,{family:'Playfair',weight:900,anchor:'start',fill:hi.has(w)?'#FFFFFF':INK});cx+=t.bbox().width+size*.22});
+  ls.forEach((ln,i)=>{const row=L.front.group().addClass('keep');let cx=0;ln.split(' ').forEach(w=>{const t=T(row,w,size,cx,0,{family:'Playfair',weight:900,anchor:'start',fill:hi.has(w)?'#FFFFFF':INK});cx+=t.bbox().width+size*.22});
     row.attr({transform:`translate(${x0},${y+i*size*1.1})`});slide(row,.45+i*.15,-W*.05,0)})}
 
 function reveal(){ // a document; a magnifier sweeps it and the beam shows the text big and sharp
@@ -1166,9 +1203,10 @@ function pinmap(){ // the country outline; the place highlighted; the headline c
 
 function number(){ // a huge number; the subject breaks out of it
   const pic=(((P.pics||[])[0]||{}).img||((P.pics||[])[0]||{}).draw)?(P.pics||[])[0]:null;
-  if(pic&&!TALL&&(K.v||0)%2===1)return numberSide(pic);const big=T(L.back,P.number,TALL?W*.42:H*(pic?.5:.56),W/2,pic?(TALL?H*.22:H*.3):(TALL?H*.34:H*.4),{family:'Anton',weight:400,fill:ACC});fit(big,W*.92);
+  if(pic&&!TALL&&K.lay==='side')return numberSide(pic);const big=T(L.back,P.number,TALL?W*.42:H*(pic?.5:.56),W/2,pic?(TALL?H*.22:H*.3):(TALL?H*.34:H*.4),{family:'Anton',weight:400,fill:ACC});fit(big,W*.92);
   slide(big,.05,0,H*.06);
-  if(pic){const h=TALL?H*.36:H*.56;const g=picture(L.hero,pic,W/2,TALL?H*.64:H*.86,h);drop(g,.35,H*.25,-2)}
+  if(pic){const h=TALL?H*.36:H*.56;const g=picture(L.hero,pic,W/2,TALL?H*.64:H*.86,h);drop(g,.35,H*.25,-2);
+    FOCUS=FOCUS||{x:W/2,y:(TALL?H*.64:H*.86)-h*.45,rx:Math.min(U*.3,(g.data('w')||h)*.6),ry:h*.42}}   // marker and logos go by the subject, off the figure
   if(P.caption){const c=pic?fit(T(L.front,P.caption,U*.04,W/2,TALL?H*.7:H*.92,{family:'Inter',weight:800,fill:'#C0262D'}),W*.9)
       :boxText(L.front,P.caption,U*.055,W/2,TALL?H*.5:H*.7,{anchor:'middle',maxw:W*.86,most:2});wipe(c,.9)}
   if(P.kicker){const k=T(L.front,P.kicker.toUpperCase(),U*.024,W/2,TALL?H*.08:H*.08,{family:'Inter',weight:800,fill:'#C0262D',ls:'0.45em'});wipe(k,.2)}}
@@ -1522,13 +1560,30 @@ function filmLayer(){if(K.film===false)return()=>{};const g=L.grain.group();let 
     if(r()<.06){const x=r()*W,y=r()*H;g.path(`M${x} ${y} q ${U*.02} ${U*.01} ${U*.04} ${-U*.005} t ${U*.03} ${U*.02}`).fill('none').stroke({color:'#000',width:1.2}).opacity(.35)}
     const dx=(r()-.5)*U*.0024,dy=(r()-.5)*U*.0024;draw.node.style.transform=`translate(${dx}px,${dy}px) scale(1.004)`}}   // gate weave
 
+// ---- layouts: the same scene, composed another way ----
+function keepReadable(root){ // under a mirror, every word, photo and logo flips back in place so nothing reads backwards
+  const els=[];root.node.querySelectorAll('text,image,.keep').forEach(n=>{if(!n.parentNode.closest||!n.parentNode.closest('.keep'))els.push(n)});
+  els.forEach(n=>{let b;try{b=n.getBBox()}catch(e){return}let cx=b.x+b.width/2,cy=b.y+b.height/2;
+    const m=n.transform&&n.transform.baseVal.consolidate();if(m){const q=m.matrix;cx=q.a*(b.x+b.width/2)+q.c*cy+q.e}
+    const w=document.createElementNS('http://www.w3.org/2000/svg','g');w.setAttribute('transform',`matrix(-1,0,0,1,${2*cx},0)`);
+    n.parentNode.insertBefore(w,n);w.appendChild(n)})}
+function layout(){const lay=K.lay||'base';
+  if(lay==='mirror'){STAGE.attr({transform:`matrix(-1,0,0,1,${W},0)`});keepReadable(STAGE);if(FOCUS)FOCUS.x=W-FOCUS.x}
+  else if(lay==='card'){ // the graphic printed on a card, lying a little crooked on a desk
+    const k=.84,rot=((P.seed||0)%2?1.4:-1.4),tr=`rotate(${rot},${W/2},${H/2}) translate(${W*(1-k)/2},${H*(1-k)/2}) scale(${k})`;
+    const card=CONTENT.group();card.back();card.rect(W,H).fill(PAPER).attr({filter:'url(#shadow)'});
+    L.paper.children().forEach(c=>card.add(c));card.attr({transform:tr});STAGE.attr({transform:tr});
+    L.paper.rect(W,H).fill(K.desk||'#3B2F25');const d=L.paper.group().opacity(.18);const st=Math.round(U/30);
+    for(let y=0;y<H;y+=st)d.line(0,y,W,y+(((y/st)%3)-1)*U*.004).stroke({color:'#000',width:Math.max(1,U*.002)});   // wood grain
+    if(FOCUS){FOCUS=Object.assign({},FOCUS,{x:W*(1-k)/2+FOCUS.x*k,y:H*(1-k)/2+FOCUS.y*k,rx:FOCUS.rx*k,ry:FOCUS.ry*k})}}}
+
 const SCENES={hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv,
   clockmap,tornsplit,newscard,blueprint};
 async function boot(){
   try{await Promise.all(Array.from(document.fonts).map(f=>f.load()))}catch(e){}
   const imgs=[];(P.pics||[]).forEach(p=>{if(p.img)imgs.push(new Promise(r=>{const i=new Image();i.onload=i.onerror=r;i.src=p.img}))});
   await Promise.all(imgs);
-  (SCENES[P.type]||hero)();companion();logoLayer();markerLayer();
+  (SCENES[P.type]||hero)();logoLayer();markerLayer();layout();companion();
   const film=filmLayer();
   window.frame=function(t){camera(t);const tq=Math.floor(t*12+1e-6)/12;   // the hand-made 12 fps stutter
     for(const k of tracks){const p=Math.max(0,Math.min(1,(tq-k.start)/k.dur));k.fn(k.e(p))}film(t,tq)};
@@ -1539,8 +1594,9 @@ boot();
 
 def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: float, out: Path, work: Path,
            lib: Path | None = None, model: Path | None = None, fetch: bool = True, fps: int | None = None,
-           tone: str = "cream", sources: list[tuple[str, str]] | None = None, props: bool = False) -> Path:
-    """Draws one Vox scene into `out` (H.264)."""
+           tone: str = "cream", sources: list[tuple[str, str]] | None = None, props: bool = False,
+           layout: str = "") -> Path:
+    """Draws one Vox scene into `out` (H.264). `layout` is one of LAYOUT_SETS[kind] (default: picked from the spec)."""
     from . import motion
     if not motion.enabled():
         raise MediaError("vox scenes need the animation engine (Chromium + Playwright)")
@@ -1558,7 +1614,8 @@ def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: f
     bg, grain = paper(paper_hex, width, height, work)
     kit = {"acc": accent_of(theme), "acc2": "#E0442C" if accent_of(theme) != ACCENTS["red"] else "#F2C200", "ink": INK, "paper": paper_hex, "dark": tone == "dark", "tone": tone, "props": props,
            "bg": bg.as_uri(), "grain": grain.as_uri(),
-           "mark": look["mark"], "cam": _seed("cam", spec, theme) % 4, "v": _seed("layout", spec, theme) % 2, "dir": 1 if _seed("dir", spec) % 2 else -1, "fam": {"Playfair": look["head"], "Anton": look["big"], "Caveat": look["hand"]}}
+           "mark": look["mark"], "cam": _seed("cam", spec, theme) % 4, "lay": layout if layout in LAYOUT_SETS.get(kind, ()) else
+           layout_for(kind, 0, _seed("layout", spec, theme)), "desk": DESKS[_seed("desk", theme) % len(DESKS)], "dir": 1 if _seed("dir", spec) % 2 else -1, "fam": {"Playfair": look["head"], "Anton": look["big"], "Caveat": look["hand"]}}
     js = _PAGE
     for old, new in (("#B8CDD1", look["sea"]), ("#EFE3C2", look["land"]), ("#8E7E5C", look["edge"])):
         js = js.replace(old, new)

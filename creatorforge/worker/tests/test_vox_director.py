@@ -219,3 +219,48 @@ def test_the_marker_is_rationed_and_two_videos_dont_share_one_shot_order():
     hooks = {ig._ranked(["BigNumber: 1 | a | b", "Pinmap: Kota | a", "Opener: a | b | c"], 1, 9, None, s)[0]
              for s in range(1, 20)}
     assert len(hooks) == 3                                          # the opening differs from video to video
+
+
+def test_no_two_videos_alike_even_the_same_script_twice(tmp_path):
+    from creatorforge_worker import variety
+    from creatorforge_worker.media import vox
+    script = "\n".join(["बीजेपी ने गूगल पर उनतीस करोड़ सत्तर लाख रुपये खर्च किए।",
+                        "राजस्थान के कोटा में पंद्रह लाख लोग।",
+                        "डेक्कन हेराल्ड के मुताबिक़, पचास लाख व्हाट्सऐप ग्रुप्स।",
+                        "दिल्ली में अड़तीस फ़ीसदी लोग।",
+                        "तो सवाल ये है, आप उसे आगे भेजेंगे या नहीं?"])
+    fps = []
+    for i in range(6):
+        h = variety.load(tmp_path)
+        look = variety.pick_look(script, None, h)
+        fixed, _, fp, sim = variety.direct_unique(script, None, False, look, h, f"job{i}")
+        assert sim < variety.TOO_CLOSE, (i, sim)
+        assert not [x for x in v.check(fixed) if x["level"] == "error"]
+        variety.remember(tmp_path, fp)
+        fps.append(fp)
+    assert len({f["look"] for f in fps[:5]}) == 5                   # five videos, five looks
+    assert variety.pick_look("old", 1914, [{"look": "sepia"}]) == "engraving"
+    for f in fps:                                                   # neighbouring shots never share a layout
+        lays = [x.split(":")[1] for x in f["layouts"] if ":" in x]
+        assert all(a != b or len(vox.LAYOUT_SETS[k.split(":")[0]]) == 1
+                   for a, b, k in zip(lays, lays[1:], f["layouts"][1:]))
+
+
+def test_layouts_rotate_per_kind_and_never_repeat_back_to_back():
+    from creatorforge_worker.media import vox
+    ks = ["pinmap", "pinmap", "bignumber", "bignumber", "bignumber", "hero", "hero", "hero"]
+    for seed in range(1, 30):
+        lays = vox.plan_layouts(ks, seed)
+        assert all(a != b for a, b in zip(lays, lays[1:]))
+        assert len(set(lays[2:5])) == 3 and len(set(lays[5:8])) == 3   # three BigNumbers, three layouts
+
+
+def test_finished_videos_are_compared_frame_by_frame(tmp_path):
+    import subprocess
+    from creatorforge_worker import variety
+    a, b = tmp_path / "a.mp4", tmp_path / "b.mp4"
+    for out, src in ((a, "testsrc=size=160x90:rate=10"), (b, "mandelbrot=size=160x90:rate=10")):
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "lavfi", "-i", src, "-t", "2", "-pix_fmt", "yuv420p", str(out)],
+                       check=True)
+    assert variety.compare_videos(a, a)["same_look"] is True
+    assert variety.compare_videos(a, b)["same_look"] is False

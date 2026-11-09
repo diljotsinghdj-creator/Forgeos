@@ -241,6 +241,21 @@ def clean_brand(b) -> dict:
     for k, n in (("intro_text", 40), ("outro_text", 50), ("name", 60)):
         if str(b.get(k, "")).strip():
             out[k] = str(b[k]).strip()[:n]
+    # the Vox look and accent (see media/vox.LOOKS / ACCENTS); the worker picks them per video when they're absent
+    look = str(b.get("look") or "").strip().lower()
+    if look:
+        from .media import vox
+        if look not in vox.LOOKS:
+            raise ValueError(f"brand.look must be one of {', '.join(vox.LOOKS)}")
+        out["look"] = look
+    if isinstance(b.get("seed"), int) and not isinstance(b.get("seed"), bool):
+        out["seed"] = b["seed"] & 0xFFFFFFFF       # set by the worker: this video's shot order and layouts
+    acc = str(b.get("accent") or "").strip()
+    if acc:
+        from .media import vox
+        if not (_HEX.match(acc) or acc.lower() in vox.ACCENTS):
+            raise ValueError("brand.accent must look like #FFD400 or be a named accent")
+        out["accent"] = acc
     return out
 
 

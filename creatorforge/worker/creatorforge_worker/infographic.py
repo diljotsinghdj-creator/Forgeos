@@ -324,13 +324,14 @@ STYLE_RANK = {"pinmap": 0, "route": 0, "newscard": 1, "clipping": 1, "hero": 2, 
               "slice": 5, "calendar": 5, "stamp": 6, "clock": 6, "opener": 7, "tornsplit": 7, "statement": 9}
 
 
-def _jitter(seed: int, kind: str) -> float:
+def _jitter(seed: int, kind: str, spread: float = 1.0) -> float:
     """A per-video nudge to a kind's rank (0 to 2.5), so videos with the same kinds of lines don't come out in one
     fixed order: one leads with maps, another with numbers or papers. The same script always gets the same order."""
-    return (zlib.crc32(f"{seed}:{kind}".encode()) % 1000) / 400 if seed else 0.0
+    return (zlib.crc32(f"{seed}:{kind}".encode()) % 1000) / 400 * spread if seed else 0.0
 
 
-def _ranked(cands: list[str], n: int, total: int, f: dict | None = None, seed: int = 0) -> list[str]:
+def _ranked(cands: list[str], n: int, total: int, f: dict | None = None, seed: int = 0,
+            spread: float = 1.0) -> list[str]:
     kind = lambda g: g.split(":", 1)[0].strip().lower()     # noqa: E731
     if n == total:
         return cands                     # the payoff keeps its own order
@@ -345,7 +346,7 @@ def _ranked(cands: list[str], n: int, total: int, f: dict | None = None, seed: i
     rank = dict(STYLE_RANK)
     if f and f.get("false"):
         rank["stamp"] = -1               # a debunk line: the FALSE stamp is the point of the shot
-    return sorted(cands, key=lambda g: (-9 if rank.get(kind(g), 5) < 0 else rank.get(kind(g), 5) + _jitter(seed, kind(g))))
+    return sorted(cands, key=lambda g: (-9 if rank.get(kind(g), 5) < 0 else rank.get(kind(g), 5) + _jitter(seed, kind(g), spread)))
 
 
 PRONOUNS = ("उन्होंने", "उनके", "उनका", "उनकी", "उन्हें", "वे", "उनसे")
@@ -418,12 +419,12 @@ def _marked(g: str, f: dict, prev: list[str]) -> str:
 
 
 def pick(line: str, f: dict, n: int, total: int, prev: list[str], props: bool = False, ahead: dict | None = None,
-         seed: int = 0) -> str:
+         seed: int = 0, spread: float = 1.0) -> str:
     """The first candidate that draws, passes the mute test and doesn't repeat the last two graphics' kind; its
     pictured object is varied so the same thing isn't on screen shot after shot."""
     recent = [p.split(":", 1)[0].strip().lower() for p in prev[-2:]]
     used = [_subject(p) for p in prev if _subject(p)]
-    for g in _ranked(candidates(line, f, n, total, ahead), n, total, f, seed):
+    for g in _ranked(candidates(line, f, n, total, ahead), n, total, f, seed, spread):
         if n < total:                      # the closing line keeps its own object: it's the payoff
             g = _vary(g, used)
         kind = g.split(":", 1)[0].strip().lower()

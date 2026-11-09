@@ -504,7 +504,13 @@ def _keys(b: dict) -> set[str]:
     return {_KEY.match(d).group(1).strip().lower() for d in b["dirs"] if _KEY.match(d)}
 
 
-def ensure(script: str, llm=None, english: bool = True, props: bool = False) -> tuple[str, list[str]]:
+def script_seed(script: str) -> int:
+    """The script's own shot-order seed (its spoken lines, not its directions)."""
+    return zlib.crc32("\n".join(b["line"] for b in blocks(script)[1]).encode()) or 1
+
+
+def ensure(script: str, llm=None, english: bool = True, props: bool = False,
+           seed: int | None = None, spread: float = 1.0) -> tuple[str, list[str]]:
     """The script with a valid graphic on every line. The script AI picks graphics for lines that have none (or
     a broken one); rules cover anything it leaves. Narration words are never changed."""
     header, bl = blocks(script)
@@ -543,7 +549,7 @@ def ensure(script: str, llm=None, english: bool = True, props: bool = False) -> 
     prev, prev_g = "", ""
     chosen: list[str] = []
     last_person = ""
-    seed = zlib.crc32("\n".join(b["line"] for b in bl).encode()) or 1   # this script's own shot order
+    seed = seed or zlib.crc32("\n".join(b["line"] for b in bl).encode()) or 1   # this script's own shot order
     for n, b in enumerate(bl, 1):
         named = infographic.facts(b["line"])["people"]
         if n in need:
@@ -551,7 +557,7 @@ def ensure(script: str, llm=None, english: bool = True, props: bool = False) -> 
             if not g:
                 ahead = infographic.facts(bl[n]["line"]) if n < len(bl) else None
                 fb = infographic.carry_person(b["line"], infographic.facts(b["line"]), last_person)
-                g, how = infographic.pick(b["line"], fb, n, len(bl), chosen, props, ahead, seed), "infographic"
+                g, how = infographic.pick(b["line"], fb, n, len(bl), chosen, props, ahead, seed, spread), "infographic"
             if not g or valid(g, english, props):
                 g, how = rule_graphic(b["line"], prev), "rule"
                 if not g or valid(g, english):
