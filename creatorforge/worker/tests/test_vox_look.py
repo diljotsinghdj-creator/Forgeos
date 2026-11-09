@@ -368,3 +368,49 @@ def test_the_new_diagrams_render(tmp_path):
         out = vox.render(kind, spec, "editorial~0@red/newsprint/", size[0], size[1], 2, tmp_path / f"d{i}.mp4", tmp_path,
                          fetch=False, fps=12, layout=("card" if i % 2 else "base"))
         assert out.is_file() and out.stat().st_size > 4000
+
+
+BATCH_A = (("courtdoc", 'Supreme Court of India | M. Siddiq v. Mahant Suresh Das | "The disputed property shall be handed over to a trust" | para 805 · 9 Nov 2019'),
+           ("table", "State, Seats, Vote % | UP, 62, 49.6; Bihar, 39, 53.3; MP, 28, 58.0 | 2019 result | ECI | highlight: 2"),
+           ("interview", 'person:Raghuram Rajan | "Growth without jobs is not growth" | Former RBI Governor · 2019'),
+           ("endcard", "The canal that changed trade | Next: Suez | Sources: ACP · UNCTAD"),
+           ("polltrack", "Jan 38, Feb 41, Mar 39, Apr 44 | Approval | ±3 | %"),
+           ("area", "2019, 2020, 2021 | Coal: 60, 58, 55; Solar: 5, 9, 14 | Power mix"),
+           ("candles", "Mon 100/112/96/108; Tue 108/115/104/106; Wed 106/107/90/93 | Share | ₹"),
+           ("arrows", "Belarus → Kyiv (north); Russia → Kharkiv | February 2022"),
+           ("railmap", "East: Delhi - Kanpur - Patna - Kolkata; Delhi - Jaipur - Mumbai | Corridors"),
+           ("sizemap", "India vs Germany | How big"))
+
+
+def test_evidence_charts_and_movement_maps_parse():
+    from creatorforge_worker import vox_director as vd
+    from creatorforge_worker.media import vox
+    plans = {k: vox.plan_for(k, s) for k, s in BATCH_A}
+    assert all(plans.values())
+    assert plans["courtdoc"]["badge"][0] == "COURT RECORD" and plans["table"]["hl"] == 2
+    assert plans["polltrack"]["moe"] == 3.0 and len(plans["area"]["series"]) == 2
+    assert plans["candles"]["candles"][2]["c"] == 93 and plans["railmap"]["lines"][0]["name"] == "East"
+    a = plans["arrows"]["arrows"][1]["a"]
+    assert 30 < a["lon"] < 180 and a["lat"] > 45                      # Russia's mainland, not the Atlantic
+    s = plans["sizemap"]["items"]
+    assert 3.0e6 < s[0]["km2"] < 3.5e6 and 3.3e5 < s[1]["km2"] < 3.8e5  # India and Germany, about right
+    assert vox.plan_for("candles", "Mon 100/90/96/108; Tue 1/2/3/4; Wed 1/1/1/1") is None   # high below the open: refused
+    assert vox.plan_for("sizemap", "India vs Atlantis") is None
+    for k, sp in BATCH_A:
+        assert vd.valid(f"{k.capitalize()}: {sp}") == "", k
+    p = vox.plan_for("hero", "ship | THE BLOCKADE | 2021 · Suez | badge: alleged | fx: embers | inset: crane | exit: none")
+    assert p["badge"][0] == "ALLEGED" and p["fx"] == "embers" and p["inset"] == "crane" and p["exit"] == "none"
+    assert vox.plan_for("bignumber", "₹29.7 करोड़ | coins | x")["number"] == "₹29.7 करोड़"   # a Hindi unit is never cut
+    css = vox._font_css()
+    assert css.count("rozha-one-devanagari") >= 4 and css.count("teko-devanagari") >= 4   # Hindi display faces
+
+
+def test_evidence_charts_and_movement_maps_render(tmp_path):
+    from creatorforge_worker.media import motion, vox
+    if not motion.enabled():
+        return
+    for i, (kind, spec) in enumerate(BATCH_A):
+        size = (360, 640) if i % 3 == 0 else (640, 360)
+        out = vox.render(kind, spec + " | badge: reported | fx: dust", "editorial~0@red/kraft/", size[0], size[1], 2,
+                         tmp_path / f"a{i}.mp4", tmp_path, fetch=False, fps=12, layout=("card" if i % 2 else "base"))
+        assert out.is_file() and out.stat().st_size > 4000, kind

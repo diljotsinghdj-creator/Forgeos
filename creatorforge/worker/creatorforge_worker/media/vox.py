@@ -38,7 +38,8 @@ PROPS = ("blindfold", "mask", "zip", "crown", "strings", "chains", "megaphone")
 FACE_PROPS = ("blindfold", "mask", "zip", "crown")
 KINDS = ("hero", "desk", "pinboard", "opener", "reveal", "clipping", "pinmap", "bignumber",
          "seats", "stack", "stand", "fan", "trend", "slice", "route", "compare", "photoline", "tv",
-         "clockmap", "tornsplit", "newscard", "blueprint", "pyramid", "flowchart", "linkmap", "orgchart", "heatmap")
+         "clockmap", "tornsplit", "newscard", "blueprint", "pyramid", "flowchart", "linkmap", "orgchart", "heatmap",
+         "courtdoc", "table", "interview", "endcard", "polltrack", "area", "candles", "arrows", "railmap", "sizemap")
 
 
 # A look per video, so no two films share one face: paper, type, map colours and marker pen differ, the method doesn't.
@@ -65,10 +66,20 @@ LOOKS = {
 # base = the scene as designed; mirror = the composition flipped (words and photos stay readable, never for maps,
 # timelines, parliaments or before/after, where left and right mean something); card = the whole graphic printed on a
 # paper card lying on a desk; side = BigNumber's own second layout.
-_FLIP = ("hero", "opener", "newscard", "tornsplit", "desk", "pinboard", "clipping", "tv", "blueprint", "reveal")
+_FLIP = ("hero", "opener", "newscard", "tornsplit", "desk", "pinboard", "clipping", "tv", "blueprint", "reveal",
+         "interview")
 LAYOUT_SETS = {k: (["base", "mirror", "card"] if k in _FLIP else ["base", "card"]) for k in KINDS}
 LAYOUT_SETS["bignumber"] = ["base", "side", "card"]
 DESKS = ("#3B2F25", "#5A4632", "#2E3A40", "#6B5B4B", "#262626")
+
+
+# "| badge: alleged" on any scene: the standing of what is on screen, said plainly in the corner
+BADGES = {"verified": ("VERIFIED", "#1F7A4D"), "record": ("ON RECORD", "#1F7A4D"), "court": ("COURT RECORD", "#1F4FB8"),
+          "official": ("OFFICIAL DATA", "#1F4FB8"), "reported": ("REPORTED", "#5A5A5A"), "alleg": ("ALLEGED", "#C2410C"),
+          "claim": ("CLAIM", "#C2410C"), "denie": ("DENIED", "#5A5A5A"), "response": ("RESPONSE", "#5A5A5A"),
+          "unverified": ("UNVERIFIED", "#B3261E"), "opinion": ("OPINION", "#7A3E8C"), "estimate": ("ESTIMATE", "#5A5A5A")}
+FX = ("dust", "embers", "snow", "rain", "confetti", "sparks")       # "| fx: embers": particles over the scene
+EXITS = ("rise", "fall", "side", "shrink")                           # how a scene leaves; rotated, or "| exit: none"
 
 
 def layout_for(kind: str, turn: int, seed: int) -> str:
@@ -290,7 +301,8 @@ def parse_number(spec: str) -> dict | None:
     parts = [p.strip() for p in (spec or "").split("|")]
     if not parts or not re.search(r"\d", parts[0]):
         return None
-    return {"type": "number", "number": parts[0][:8], "subjects": _split_list(parts[1])[:1] if len(parts) > 1 else [],
+    # Latin figures are cut short ("₹29.7 cr"); a Hindi unit is never cut mid-word (the marks would be lost)
+    return {"type": "number", "number": parts[0][:16] if re.search(r"[\u0900-\u097F]", parts[0]) else parts[0][:8], "subjects": _split_list(parts[1])[:1] if len(parts) > 1 else [],
             "caption": parts[2] if len(parts) > 2 else "", "kicker": parts[3] if len(parts) > 3 else "",
             "seed": _seed(spec) % 10000}
 
@@ -410,8 +422,8 @@ def _geo(names: list[str]) -> list[dict]:
         if f["kind"] == "city":
             out.append({"name": f["name"], "lon": f["lon"], "lat": f["lat"]})
         else:
-            xs = [x for r in f["rings"] for x, _ in r]
-            ys = [y for r in f["rings"] for _, y in r]
+            big = max(f["rings"], key=len)          # the mainland: a box round every island puts Russia in the Atlantic
+            xs, ys = [x for x, _ in big], [y for _, y in big]
             out.append({"name": f["name"], "lon": (min(xs) + max(xs)) / 2, "lat": (min(ys) + max(ys)) / 2})
     return out
 
@@ -758,7 +770,198 @@ def parse_heatmap(spec: str) -> dict | None:
             "unit": parts[2][:26] if len(parts) > 2 else "", "tone": "atlas", "seed": _seed(spec) % 10000}
 
 
-PARSERS = {"pyramid": parse_pyramid, "flowchart": parse_flow, "linkmap": parse_linkmap, "orgchart": parse_orgchart,
+def _map_frame(pts: list[tuple[float, float]], pad: float = 0.35) -> tuple[list[float], list]:
+    """(visible box, the country outlines that touch it) round some lon/lat points."""
+    from . import maps
+    lons, lats = [q[0] for q in pts], [q[1] for q in pts]
+    px = max(6.0, (max(lons) - min(lons)) * pad)
+    py = max(4.0, (max(lats) - min(lats)) * pad)
+    box = [min(lons) - px, max(-58.0, min(lats) - py), max(lons) + px, min(80.0, max(lats) + py)]
+    shapes = []
+    for c in maps._world()["countries"]:
+        for r in c["r"]:
+            if any(box[0] - 50 <= x <= box[2] + 50 and box[1] - 35 <= y <= box[3] + 35 for x, y in r[:: max(1, len(r) // 30)]):
+                shapes.append([[round(x, 2), round(y, 2)] for x, y in r[:: max(1, len(r) // 150)]])
+    return box, shapes[:420]
+
+
+def parse_courtdoc(spec: str) -> dict | None:
+    """'Courtdoc: Supreme Court of India | M. Siddiq v. Mahant Suresh Das | "the finding, in the court's words" |
+    para 788 · 9 Nov 2019' - the page of a judgment: the court, the case, the quoted paragraph highlighted as read."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if len(parts) < 3 or not parts[2].strip(' "“”'):
+        return None
+    return {"type": "courtdoc", "court": parts[0][:60], "case": parts[1][:80], "quote": parts[2].strip(' "“”')[:260],
+            "ref": parts[3][:60] if len(parts) > 3 else "", "badge": BADGES["court"], "tone": "grid",
+            "seed": _seed(spec) % 10000}
+
+
+def parse_table(spec: str) -> dict | None:
+    """'Table: State, Seats, Vote % | UP, 62, 49.6; Bihar, 39, 53.3; MP, 28, 58.0 | 2019 result | highlight: 2'
+    - a data table that fills row by row; one row can be picked out."""
+    hl = 0
+    m = re.search(r"\|\s*highlight\s*[:=]\s*(\d+)", spec or "", re.I)
+    if m:
+        hl = int(m.group(1))
+        spec = spec[:m.start()] + spec[m.end():]
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if len(parts) < 2:
+        return None
+    head = [h.strip()[:18] for h in parts[0].split(",") if h.strip()][:5]
+    rows = [[c.strip()[:20] for c in re.split(r",(?!\d{2,3}\b)", r)][:len(head)] for r in parts[1].split(";") if r.strip()][:8]
+    rows = [r for r in rows if len(r) == len(head)]
+    if len(head) < 2 or len(rows) < 2:
+        return None
+    return {"type": "table", "head": head, "rows": rows, "title": parts[2][:48] if len(parts) > 2 else "",
+            "source": parts[3][:50] if len(parts) > 3 else "", "hl": hl if 1 <= hl <= len(rows) else 0, "tone": "grid",
+            "seed": _seed(spec) % 10000}
+
+
+def parse_interview(spec: str) -> dict | None:
+    """'Interview: person:Raghuram Rajan | "the words they said" | Former RBI Governor · 2019, The Hindu' - the
+    speaker's photo, a lower third with name and role, the pull quote typed beside them."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if len(parts) < 2 or not parts[0]:
+        return None
+    who = parts[0] if parts[0].lower().startswith("person:") else "person:" + parts[0]
+    return {"type": "interview", "subjects": [who], "name": who.split(":", 1)[1].strip()[:40],
+            "quote": parts[1].strip(' "“”')[:200], "role": parts[2][:70] if len(parts) > 2 else "",
+            "seed": _seed(spec) % 10000}
+
+
+def parse_endcard(spec: str) -> dict | None:
+    """'Endcard: The canal that changed trade | Watch next: the Suez story | Sources: ACP · Lloyd's List · UNCTAD'"""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if not parts or not parts[0]:
+        return None
+    src = next((p.split(":", 1)[1] for p in parts[1:] if p.lower().startswith(("sources:", "source:"))), "")
+    rest = [p for p in parts[1:] if not p.lower().startswith(("sources:", "source:"))]
+    return {"type": "endcard", "title": parts[0][:60], "line": rest[0][:70] if rest else "",
+            "sources": [x.strip()[:34] for x in re.split(r"·|;|,", src) if x.strip()][:6], "seed": _seed(spec) % 10000}
+
+
+def parse_polltrack(spec: str) -> dict | None:
+    """'Polltrack: Jan 38, Feb 41, Mar 39, Apr 44, May 47 | Approval rating | ±3 | %' - a poll line with its margin
+    of error as a band; the last reading is the big number."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    pts = _pairs(parts[0])
+    if len(pts) < 3:
+        return None
+    m = re.search(r"([\d.]+)", parts[2]) if len(parts) > 2 else None
+    return {"type": "polltrack", "points": pts[:14], "title": parts[1][:48] if len(parts) > 1 else "",
+            "moe": float(m.group(1)) if m else 0.0, "unit": parts[3][:6] if len(parts) > 3 else "", "tone": "grid",
+            "seed": _seed(spec) % 10000}
+
+
+def parse_area(spec: str) -> dict | None:
+    """'Area: 2019, 2020, 2021, 2022 | Coal: 60, 58, 55, 50; Solar: 5, 9, 14, 22; Wind: 6, 8, 9, 11 | Power mix'
+    - a stacked area chart that fills from left to right."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if len(parts) < 2:
+        return None
+    xs = [x.strip()[:8] for x in parts[0].split(",") if x.strip()]
+    series = []
+    for chunk in parts[1].split(";"):
+        name, _, vals = chunk.partition(":")
+        try:
+            v = [float(x) for x in vals.split(",") if x.strip()]
+        except ValueError:
+            return None
+        if name.strip() and len(v) == len(xs):
+            series.append({"name": name.strip()[:16], "v": v})
+    if len(xs) < 2 or not 2 <= len(series) <= 5:
+        return None
+    return {"type": "area", "xs": xs[:12], "series": series, "title": parts[2][:48] if len(parts) > 2 else "",
+            "unit": parts[3][:14] if len(parts) > 3 else "", "tone": "grid", "seed": _seed(spec) % 10000}
+
+
+def parse_candles(spec: str) -> dict | None:
+    """'Candles: Mon 100/112/96/108; Tue 108/115/104/106; Wed 106/107/90/93 | Share price | ₹' - open/high/low/close
+    candles drawn one by one; up days in the accent, down days in ink."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    cs = []
+    for chunk in parts[0].split(";"):
+        m = re.match(r"\s*(.*?)\s*([\d.]+)\s*/\s*([\d.]+)\s*/\s*([\d.]+)\s*/\s*([\d.]+)\s*$", chunk)
+        if m:
+            o, h, lo, c = (float(m.group(i)) for i in (2, 3, 4, 5))
+            if lo <= min(o, c) and h >= max(o, c):
+                cs.append({"label": m.group(1)[:8], "o": o, "h": h, "l": lo, "c": c})
+    if len(cs) < 3:
+        return None
+    return {"type": "candles", "candles": cs[:24], "title": parts[1][:48] if len(parts) > 1 else "",
+            "unit": parts[2][:6] if len(parts) > 2 else "", "tone": "grid", "seed": _seed(spec) % 10000}
+
+
+def parse_arrows(spec: str) -> dict | None:
+    """'Arrows: Belarus → Kyiv (north); Russia → Kharkiv (east); Crimea → Kherson | February 2022' - movement on a
+    map (armies, migration, trade): broad arrows that sweep from one place to the next, each one named."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    arrows = []
+    for chunk in parts[0].split(";"):
+        m = re.match(r"\s*(.+?)\s*(?:→|->)\s*(.+?)\s*(?:\((.+)\))?\s*$", chunk)
+        if not m:
+            continue
+        g = _geo([m.group(1), m.group(2)])
+        if len(g) == 2:
+            arrows.append({"a": g[0], "b": g[1], "label": (m.group(3) or "").strip()[:22]})
+    if not arrows:
+        return None
+    box, shapes = _map_frame([(e["lon"], e["lat"]) for a in arrows for e in (a["a"], a["b"])], 0.45)
+    return {"type": "arrows", "arrows": arrows[:6], "box": box, "shapes": shapes, "title": parts[1][:48] if len(parts) > 1 else "",
+            "tone": "atlas", "seed": _seed(spec) % 10000}
+
+
+def parse_railmap(spec: str) -> dict | None:
+    """'Railmap: Delhi - Kanpur - Patna - Kolkata; Delhi - Jaipur - Ahmedabad - Mumbai | Freight corridors' - a
+    transport network: each line draws through its stations, a different colour per line, stations named once."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    lines = []
+    for chunk in parts[0].split(";"):
+        name, sep, rest = chunk.partition(":")
+        stops = _geo([x.strip() for x in re.split(r"\s+-\s+|→|->|–|—", rest if sep else chunk) if x.strip()][:9])
+        if len(stops) >= 2:
+            lines.append({"name": name.strip()[:18] if sep else "", "stops": stops})
+    if not lines:
+        return None
+    box, shapes = _map_frame([(s["lon"], s["lat"]) for ln in lines for s in ln["stops"]], 0.3)
+    return {"type": "railmap", "lines": lines[:5], "box": box, "shapes": shapes, "title": parts[1][:48] if len(parts) > 1 else "",
+            "tone": "atlas", "seed": _seed(spec) % 10000}
+
+
+def _ring_area_km2(r: list) -> float:
+    import math
+    a = 0.0
+    for (x1, y1), (x2, y2) in zip(r, r[1:] + r[:1]):
+        a += math.radians(x2 - x1) * (2 + math.sin(math.radians(y1)) + math.sin(math.radians(y2)))
+    return abs(a) * 6371.0088 ** 2 / 2
+
+
+def parse_sizemap(spec: str) -> dict | None:
+    """'Sizemap: India vs Germany | How big is it really?' - two countries at the same scale: the first is drawn,
+    morphs into the second, then both outlines sit together with how many times bigger one is."""
+    import math
+    parts = [p.strip() for p in (spec or "").split("|")]
+    names = [x.strip() for x in re.split(r"\s+vs\.?\s+", parts[0], flags=re.I) if x.strip()]
+    cs = [_country(n) for n in names[:2]]
+    if len(cs) != 2 or not all(cs) or cs[0] is cs[1]:
+        return None
+    items = []
+    for c, n in zip(cs, names):
+        big = max(c["r"], key=_ring_area_km2)
+        lat0 = sum(y for _, y in big) / len(big)
+        lon0 = sum(x for x, _ in big) / len(big)
+        k = math.cos(math.radians(lat0))
+        step = max(1, len(big) // 200)
+        items.append({"name": n[:22], "km2": round(sum(_ring_area_km2(r) for r in c["r"])),
+                      "ring": [[round((x - lon0) * k * 111.32, 1), round(-(y - lat0) * 110.57, 1)] for x, y in big[::step]]})
+    return {"type": "sizemap", "items": items, "title": parts[1][:48] if len(parts) > 1 else "", "tone": "grid",
+            "seed": _seed(spec) % 10000}
+
+
+PARSERS = {"courtdoc": parse_courtdoc, "table": parse_table, "interview": parse_interview, "endcard": parse_endcard,
+           "polltrack": parse_polltrack, "area": parse_area, "candles": parse_candles, "arrows": parse_arrows,
+           "railmap": parse_railmap, "sizemap": parse_sizemap,
+           "pyramid": parse_pyramid, "flowchart": parse_flow, "linkmap": parse_linkmap, "orgchart": parse_orgchart,
            "heatmap": parse_heatmap, "hero": parse_hero, "desk": parse_desk, "pinboard": parse_evidence, "opener": parse_opener,
            "reveal": parse_reveal, "clipping": parse_headline, "pinmap": parse_pinmap, "bignumber": parse_number,
            "seats": parse_seats, "stack": parse_stack, "stand": parse_stand, "fan": parse_fan, "trend": parse_trend,
@@ -826,7 +1029,24 @@ def plan_for(kind: str, spec: str) -> dict | None:
     if m:
         note = m.group(1).strip()[:60]
         spec = (spec[:m.start()] + spec[m.end():]).strip()
+    opts = {}
+    for key in ("badge", "fx", "inset", "exit"):
+        mm = re.search(rf"\|\s*{key}\s*[:=]\s*([^|]+)", spec or "", re.I)
+        if mm:
+            opts[key] = mm.group(1).strip()[:60]
+            spec = (spec[:mm.start()] + spec[mm.end():]).strip()
     plan = fn(spec)
+    if plan is not None:
+        b = opts.get("badge", "").lower()
+        if b:
+            # how sure we are, on screen: a fact from a record, a report, an allegation, a response, an opinion
+            plan["badge"] = next((v for k, v in BADGES.items() if b.startswith(k)), "")
+        if opts.get("fx", "").lower() in FX:
+            plan["fx"] = opts["fx"].lower()
+        if opts.get("exit", "").lower() in EXITS + ("none",):
+            plan["exit"] = opts["exit"].lower()
+        if opts.get("inset"):
+            plan["inset"] = opts["inset"]
     if plan is not None and note:
         plan["marker"] = note
     if plan is not None and marks:
@@ -888,6 +1108,18 @@ def _pictures(plan: dict, lib: Path | None, model: Path | None, fetch: bool,
             out = out + [plan["comp"]]
         else:
             plan["comp"] = {"name": plan["with"], "draw": "person"}
+    if plan.get("inset"):
+        nm = plan["inset"] if plan["inset"].lower().startswith("person:") else plan["inset"].lower()
+        c = cutouts.get(nm, lib, model=model, fetch=fetch, sources=sources)
+        if c is not None:
+            from PIL import Image
+            with Image.open(c.path) as im:
+                w, h = im.size
+            plan["insetpic"] = {"name": plan["inset"], "img": c.path.as_uri(), "w": w, "h": h, "credit": c.credit}
+            out = out + [plan["insetpic"]]
+        else:
+            drawn = "person" if nm.startswith("person:") else illustration(nm, era)
+            plan["insetpic"] = {"name": plan["inset"], "draw": drawn} if drawn else None
     credits = sorted({p["credit"] for p in out if p.get("credit")})
     plan["credit"] = ("Photo: " + "; ".join(credits))[:120] if credits else ""
 
@@ -967,6 +1199,18 @@ def _font_css() -> str:
              ("Oswald", "oswald-latin-600-normal", 600, "normal"), ("Archivo", "archivo-black-latin-400-normal", 400, "normal"),
              ("Caveat", "caveat-latin-700-normal", 700, "normal"), ("Marker", "permanent-marker-latin-400-normal", 400, "normal"),
              ("Kalam", "kalam-latin-700-normal", 700, "normal"), ("Kalam", "kalam-devanagari-700-normal", 700, "normal")]
+    # Hindi under the same family names and the same weights (unicode-range: Devanagari only), so a Hindi headline
+    # is set in a display face of the same character as the Latin one instead of falling back to a system font
+    hindi = {"Playfair": "rozha-one-devanagari-400-normal", "DMSerif": "rozha-one-devanagari-400-normal",
+             "Anton": "teko-devanagari-700-normal", "Bebas": "teko-devanagari-700-normal",
+             "Oswald": "teko-devanagari-700-normal", "Archivo": "teko-devanagari-700-normal",
+             "Mono": "mukta-devanagari-600-normal", "Caveat": "kalam-devanagari-700-normal",
+             "Marker": "kalam-devanagari-700-normal"}
+    for fam, _, wt, st in list(faces):
+        if fam == "Inter":
+            faces.append((fam, f"mukta-devanagari-{800 if wt >= 800 else 600}-normal", wt, st))
+        elif fam in hindi:
+            faces.append((fam, hindi[fam], wt, st))
     out = []
     for fam, f, wt, st in faces:
         p = FONTS / f"{f}.woff2"
@@ -1009,15 +1253,21 @@ L.grain.image(K.grain).size(W,H).attr({style:'mix-blend-mode:multiply'}).opacity
 const DEPTH={paper:.012,back:.03,mid:.045,hero:.07,front:.055,side:.08};
 // camera moves (one per shot, rotated through a video): 0 push in, 1 pull back, 2 slow lateral drift, 3 push in on the
 // focus (the circled thing), so cut after cut the eye doesn't get the same move
+// the exit: in the last moments the layers leave one after another (rise, fall, side or shrink), front first
+const XORDER=['front','hero','mid','back'];
+function exitOf(k,t){if(K.exit==='none'||k==='paper')return null;const i=XORDER.indexOf(k==='side'?'front':k);if(i<0)return null;
+  const q=Math.max(0,Math.min(1,(t-(DUR-.62)-i*.05)/.3));if(q<=0)return null;const e=q*q;
+  return {o:1-e,tx:K.exit==='side'?(K.dir||1)*W*.14*e:0,ty:K.exit==='rise'?-H*.1*e:K.exit==='fall'?H*.1*e:0,s:K.exit==='shrink'?1-.1*e:1}}
 function camera(t){const p=E.inout(Math.min(1,t/Math.max(DUR,.1)));const m=K.cam||0;
   const fx=(m===3&&FOCUS)?Math.max(W*.3,Math.min(W*.7,FOCUS.x)):W/2,fy=(m===3&&FOCUS)?Math.max(H*.3,Math.min(H*.65,FOCUS.y)):H*.46;
   for(const k in DEPTH){const d=DEPTH[k]*(m===3?1.3:1);const q=m===1?1-p:p;const z=1+d*q;
     const dx=m===2?(p-.5)*(W*.03+d*W*.12)*(K.dir||1):0;   // layers travel together: labels stay on their bars
-    L[k].attr({transform:`translate(${fx*(1-z)+dx},${fy*(1-z)}) scale(${m===2?1+d*.4:z})`})}}
+    const x=exitOf(k,t),zz=(m===2?1+d*.4:z)*(x?x.s:1);
+    L[k].attr({transform:`translate(${fx*(1-zz)+dx+(x?x.tx:0)},${fy*(1-zz)+(x?x.ty:0)}) scale(${zz})`,opacity:x?x.o:1})}}
 // ---- the style kit ----
 function T(g,s,size,x,y,o){o=o||{};const t=g.text(String(s)).font({family:(K.fam||{})[o.family]||o.family||'Inter',size:size,weight:o.weight||600,
   anchor:o.anchor||'middle',style:o.italic?'italic':'normal'}).fill(o.fill||FG).attr({x:x,y:y,'dominant-baseline':'central'});
-  if(o.ls)t.attr({'letter-spacing':o.ls});return t}
+  if(o.ls&&!/[\u0900-\u097F]/.test(String(s)))t.attr({'letter-spacing':o.ls});return t}   // tracking breaks Devanagari conjuncts
 function fit(t,maxw){const w=t.bbox().width;if(w>maxw)t.font({size:t.font('size')*maxw/w});return t}
 function lines(s,size,maxw,family,weight,most){const words=String(s).split(/\s+/).filter(Boolean),out=[];let cur='';
   const pr=draw.text('').font({family:(K.fam||{})[family]||family,size:size,weight:weight});
@@ -1077,10 +1327,16 @@ function picture(g,pic,x,y,h,o){ // a cut-out photo (or its icon) with its heigh
       transform:`translate(${x-12*k},${y-h/2-12*k}) scale(${k})`});grp.data('w',r*2)}
   return grp}
 // ---- motion kit (the stutter: these run on 12 fps steps) ----
-function drop(el,start,dist,rot){el.opacity(0);const base=el.attr('transform')||'';
-  at(start,.55,p=>{el.opacity(p>0?1:0);el.attr({transform:`translate(0,${-(dist||H*.25)*(1-p)}) rotate(${(rot||0)*(1-p)},${W/2},${H/2}) ${base}`})},E.back)}
-function slide(el,start,dx,dy){el.opacity(0);const base=el.attr('transform')||'';
-  at(start,.45,p=>{el.opacity(Math.min(1,p*2));el.attr({transform:`translate(${(dx||0)*(1-p)},${(dy||0)*(1-p)}) ${base}`})},E.snap)}
+function drop(el,start,dist,rot){el.opacity(0);const base=el.attr('transform')||'';const mb=mblur(el);
+  at(start,.55,p=>{el.opacity(p>0?1:0);mb(Math.min(1,p),0,dist||H*.25);el.attr({transform:`translate(0,${-(dist||H*.25)*(1-p)}) rotate(${(rot||0)*(1-p)},${W/2},${H/2}) ${base}`})},E.back)}
+// motion blur: while something travels it smears along its path, and snaps sharp when it lands
+let MBN=0;function mblur(el){const id='mb'+(MBN++);const f=draw.defs().element('filter').attr({id:id,x:'-30%',y:'-30%',width:'160%',height:'160%'});
+  const gb=f.element('feGaussianBlur').attr({stdDeviation:'0 0'});const w=document.createElementNS('http://www.w3.org/2000/svg','g');
+  el.node.parentNode.insertBefore(w,el.node);w.appendChild(el.node);let last=0;
+  return function(p,dx,dy){const v=Math.max(0,p-last);last=p;const sx=Math.min(U*.03,Math.abs(dx)*v*.9),sy=Math.min(U*.03,Math.abs(dy)*v*.9);
+    if(p>=1||sx+sy<.4){w.removeAttribute('filter')}else{gb.attr({stdDeviation:sx.toFixed(1)+' '+sy.toFixed(1)});w.setAttribute('filter','url(#'+id+')')}}}
+function slide(el,start,dx,dy){el.opacity(0);const base=el.attr('transform')||'';const mb=(Math.abs(dx||0)+Math.abs(dy||0))>U*.04?mblur(el):null;
+  at(start,.45,p=>{el.opacity(Math.min(1,p*2));el.attr({transform:`translate(${(dx||0)*(1-p)},${(dy||0)*(1-p)}) ${base}`});if(mb)mb(p,dx||0,dy||0)},E.snap)}
 function popIn(el,cx,cy,start,d){el.opacity(0);const base=el.attr('transform')||'';
   at(start,d||.42,p=>{const s=.4+.6*p;el.opacity(Math.min(1,p*2.5));el.attr({transform:`translate(${cx*(1-s)},${cy*(1-s)}) scale(${s}) ${base}`})},E.back)}
 function wipe(el,start){el.opacity(0);at(start,.35,p=>el.opacity(p),E.lin)}
@@ -1684,6 +1940,30 @@ function filmLayer(){if(K.film===false)return()=>{};const g=L.grain.group();let 
     if(r()<.06){const x=r()*W,y=r()*H;g.path(`M${x} ${y} q ${U*.02} ${U*.01} ${U*.04} ${-U*.005} t ${U*.03} ${U*.02}`).fill('none').stroke({color:'#000',width:1.2}).opacity(.35)}
     const dx=(r()-.5)*U*.0024,dy=(r()-.5)*U*.0024;draw.node.style.transform=`translate(${dx}px,${dy}px) scale(1.004)`}}   // gate weave
 
+// ---- standing of the evidence, particles, an inset picture ----
+function badgeLayer(){if(!P.badge||!P.badge[0])return;const [txt,col]=P.badge;const g=L.front.group().addClass('keep');
+  const x=U*.05,y=TALL?H*.135:H*.9;const t=T(g,txt,U*.024,x+U*.03,y,{family:'Mono',weight:700,anchor:'start',fill:col,ls:'.14em'});const bb=t.bbox();
+  g.rect(bb.width+U*.05,bb.height+U*.022).move(x-U*.004,y-bb.height/2-U*.011).fill('#FBF8F0').stroke({color:col,width:U*.004}).back();
+  g.circle(U*.012).center(x+U*.012,y).fill(col);g.attr({transform:`rotate(-2,${x},${y})`});popIn(g,x,y,.9,.3)}
+function insetLayer(){const pic=P.insetpic;if(!pic)return;const w=TALL?W*.3:W*.17,h=w*1.18,x=W-w-U*.05,y=TALL?H*.6:H-h-U*.11;   // low in the corner: clear of headlinesconst g=L.front.group().addClass('keep');
+  g.rect(w+U*.016,h+U*.016).move(x-U*.008+U*.008,y-U*.008+U*.008).fill(INK);g.rect(w+U*.016,h+U*.016).move(x-U*.008,y-U*.008).fill('#FBF8F0').stroke({color:INK,width:U*.003});
+  const cl=draw.clip();cl.rect(w,h).move(x,y);const inner=g.group();inner.rect(w,h).move(x,y).fill(ACC);
+  const ph=pic.img?Math.max(h,w*pic.h/pic.w):h*.92;picture(inner,pic,x+w/2,y+h+(pic.img?ph-h:0)*.0,ph,{});inner.clipWith(cl);
+  const nm=String(pic.name||'').replace(/^person:/i,'');if(nm){const t=T(g,nm.toUpperCase(),U*.017,x+w/2,y+h+U*.03,{family:'Mono',weight:700});fit(t,w*1.2)}
+  g.attr({transform:`rotate(2.5,${x+w/2},${y+h/2})`});drop(g,.7,H*.2,3)}
+function fxLayer(){const kind=P.fx;if(!kind)return()=>{};const g=draw.group();g.insertBefore(L.grain);const n={dust:46,embers:40,snow:70,rain:90,confetti:60,sparks:36}[kind];
+  let sd=(P.seed||1)*7+3;const r=()=>{sd=(sd*16807)%2147483647;return (sd-1)/2147483646};const ps=[];
+  const cols={dust:['#FFFFFF'],embers:['#FF8A2A','#FFC14D','#E0442C'],snow:['#FFFFFF'],rain:['#DDE8EE'],confetti:[ACC,'#E0442C','#2D6BDB','#14968A','#FFFFFF'],sparks:['#FFE08A','#FFFFFF']}[kind];
+  for(let i=0;i<n;i++){const o={x:r()*W,y:r()*H,v:.3+r()*.7,ph:r()*6.28,sz:U*(.003+r()*.006),c:cols[Math.floor(r()*cols.length)]};
+    o.el=kind==='rain'?g.line(0,0,-U*.006,U*.03).stroke({color:o.c,width:Math.max(1,U*.0016)}).opacity(.5)
+      :kind==='confetti'?g.rect(o.sz*2.4,o.sz*1.2).fill(o.c):g.circle(o.sz*2).fill(o.c).opacity(kind==='dust'?.35:.85);ps.push(o)}
+  return function(t){ps.forEach(o=>{let x,y,a=1;
+    if(kind==='dust'){x=o.x+Math.sin(t*.4*o.v+o.ph)*U*.03;y=o.y+Math.cos(t*.3*o.v+o.ph)*U*.02;a=.2+.25*Math.sin(t*o.v+o.ph)**2}
+    else if(kind==='embers'||kind==='sparks'){const life=((t*o.v*.35+o.ph/6.28)%1);x=o.x+Math.sin(t*1.3+o.ph)*U*.03;y=H*1.05-life*H*1.15;a=1-life}
+    else{const sp=kind==='rain'?2.2:kind==='snow'?.16:.3;y=((o.y+t*H*sp*o.v)%(H*1.1))-H*.05;x=o.x+(kind==='rain'?-(y/H)*U*.12:Math.sin(t*1.1*o.v+o.ph)*U*.03)}
+    if(kind==='rain')o.el.attr({transform:`translate(${x},${y})`});else if(kind==='confetti')o.el.attr({transform:`translate(${x},${y}) rotate(${(t*200*o.v+o.ph*57)%360})`});
+    else o.el.center(x,y).opacity(Math.max(0,a))})}}
+
 // ---- layouts: the same scene, composed another way ----
 function keepReadable(root){ // under a mirror, every word, photo and logo flips back in place so nothing reads backwards
   const els=[];root.node.querySelectorAll('text,image,.keep').forEach(n=>{if(!n.parentNode.closest||!n.parentNode.closest('.keep'))els.push(n)});
@@ -1780,16 +2060,151 @@ function heatmap(){ // countries shaded by their number, labelled, with a scale
   T(lg,String(mn),U*.02,lx,ly+U*.04,{family:'Mono',weight:700,anchor:'start'});T(lg,String(mx),U*.02,lx+lw,ly+U*.04,{family:'Mono',weight:700,anchor:'end'});
   if(P.unit)T(lg,P.unit.toUpperCase(),U*.018,lx+lw/2,ly-U*.022,{family:'Inter',weight:800,ls:'.12em'});wipe(lg,.3)}
 
-const SCENES={pyramid,flowchart:flow,linkmap,orgchart,heatmap,hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv,
+// ---- evidence, tables, interviews, end card ----
+function greek(g,x,y,w,rows,rh,col){for(let i=0;i<rows;i++){const ww=w*(i===rows-1?.55:.86+((i*37)%13)/100);g.rect(ww,rh*.34).move(x,y+i*rh).fill(col||'#B9B4A8')}}
+function courtdoc(){ // a page of the judgment: court, case, the paragraph in its own words, highlighted as it is read
+  const pw=TALL?W*.86:Math.min(W*.56,H*1.0),ph=TALL?H*.74:H*.9,px=TALL?(W-pw)/2:W*.07,py=TALL?H*.16:H*.07;const page=L.hero.group();
+  page.rect(pw,ph).move(px+U*.012,py+U*.012).fill('#00000030');page.rect(pw,ph).move(px,py).fill('#FBF9F3').stroke({color:'#B9B4A8',width:U*.002});
+  const cx=px+pw/2,m=pw*.09;fit(T(page,P.court.toUpperCase(),U*.026,cx,py+ph*.07,{family:'Playfair',weight:700,fill:'#1A1A1A',ls:'.12em'}),pw*.82);
+  page.line(px+m,py+ph*.105,px+pw-m,py+ph*.105).stroke({color:'#1A1A1A',width:U*.002});page.line(px+m,py+ph*.112,px+pw-m,py+ph*.112).stroke({color:'#1A1A1A',width:U*.001});
+  const cs=lines(P.case,U*.022,pw*.8,'Playfair',700,2);cs.forEach((l,i)=>T(page,l,U*.022,cx,py+ph*.155+i*U*.028,{family:'Playfair',weight:700,fill:'#1A1A1A',italic:true}));
+  let y=py+ph*.25;const rh=U*.03;greek(page,px+m,y,pw-2*m,3,rh);y+=rh*3.6;
+  const qs=TALL?U*.036:U*.03,ql=lines(P.quote,qs,pw-2*m-U*.05,'Playfair',400,7);const q0=y;
+  ql.forEach((l,i)=>{const t=T(L.front,l,qs,px+m+U*.05,y+i*qs*1.42,{family:'Playfair',weight:400,anchor:'start',fill:'#111'});const bb=t.bbox();
+    highlight(L.front,bb,1.0+i*.42,mix('#FBF9F3',ACC,.55));t.front()});
+  const num=(P.ref.match(/(?:para(?:graph)?\.?\s*)(\d+)/i)||[])[1];if(num)T(page,num+'.',qs*.8,px+m,q0,{family:'Playfair',weight:700,anchor:'start',fill:'#1A1A1A'});
+  y+=ql.length*qs*1.42+rh*.6;const left=Math.max(0,Math.min(6,Math.floor((py+ph*.9-y)/rh)));greek(page,px+m,y,pw-2*m,left,rh);
+  if(P.ref)T(page,P.ref.toUpperCase(),U*.016,px+pw-m,py+ph*.955,{family:'Mono',weight:700,anchor:'end',fill:'#555'});
+  page.attr({transform:`rotate(-1.2,${cx},${py+ph/2})`});drop(page,.1,H*.3,-3);
+  FOCUS={x:cx,y:q0+ql.length*qs*.7,rx:pw*.5,ry:Math.max(U*.08,ql.length*qs*.9)};
+  if(!TALL){const sx=px+pw+W*.05,sw=W-sx-W*.05;const k=T(L.front,'IN THE COURT\'S WORDS',U*.022,sx,H*.3,{family:'Inter',weight:800,anchor:'start',ls:'.16em',fill:K.mark||'#C0262D'});wipe(k,.6);
+    const b=boxText(L.front,P.case.split(/ v\.? /i)[0],U*.05,sx,H*.4,{anchor:'start',maxw:sw,most:3});wipe(b,.8)}}
+function table(){ // a data table that fills row by row
+  chartTitle(P.title);const hd=P.head,rows=P.rows,nc=hd.length,nr=rows.length;const tw=W*(TALL?.9:.74),x0=(W-tw)/2,y0=TALL?H*.2:H*.22;
+  const rh=Math.min(U*.09,(H*(TALL?.6:.66))/(nr+1)),fs=Math.min(U*.034,rh*.42);const num=c=>rows.every(r=>/^[\s₹$€£]?[\d.,]+\s*%?\w{0,6}$/.test(r[c]));
+  const cw=hd.map((_,c)=>c===0?1.5:1),tot=cw.reduce((a,b)=>a+b,0);let acc=0;const cx=cw.map(w=>{const x=x0+tw*acc/tot;acc+=w;return [x,tw*w/tot]});
+  const hb=L.hero.rect(tw,rh).move(x0,y0).fill(INK);wipe(hb,.15);
+  hd.forEach((h,c)=>{const r=c>0&&num(c);const t=T(L.front,h.toUpperCase(),fs*.72,r?cx[c][0]+cx[c][1]-rh*.3:cx[c][0]+rh*.3,y0+rh/2,{family:'Inter',weight:800,anchor:r?'end':'start',fill:'#FFFFFF',ls:'.1em'});fit(t,cx[c][1]*.9);wipe(t,.2)});
+  rows.forEach((rw,i)=>{const y=y0+rh*(i+1),st=.45+i*.22,hl=P.hl===i+1;const g=L.hero.group();
+    g.rect(tw,rh).move(x0,y).fill(hl?ACC:(i%2?'#00000010':'#FFFFFF90'));g.line(x0,y+rh,x0+tw,y+rh).stroke({color:INK,width:U*.0015});
+    rw.forEach((v,c)=>{const r=c>0&&num(c);const t=T(g,v,fs,r?cx[c][0]+cx[c][1]-rh*.3:cx[c][0]+rh*.3,y+rh/2,{family:c===0?'Inter':'Mono',weight:c===0||hl?800:700,anchor:r?'end':'start',fill:INK});fit(t,cx[c][1]*.9)});
+    slide(g,st,-W*.03,0);if(hl)FOCUS={x:W/2,y:y+rh/2,rx:tw*.53,ry:rh*.8}});
+  L.mid.rect(tw,rh*(nr+1)).move(x0,y0).fill('none').stroke({color:INK,width:U*.003});
+  if(P.source)wipe(mono(L.front,('SOURCE: '+P.source).toUpperCase(),x0,y0+rh*(nr+1)+U*.035,{weight:700}),.5+nr*.22)}
+function interview(){ // the speaker, a lower third with name and role, the pull quote typed beside them
+  const pic=(P.pics||[])[0];const px=TALL?W*.5:W*.26,ph=TALL?H*.46:H*.88,base=TALL?H*.56:H;
+  const disc=L.back.circle(U*.62).center(px,base-ph*.5).fill(ACC).opacity(.9);popIn(disc,px,base-ph*.5,.05,.5);
+  const g=picture(L.hero,pic,px,base,ph);drop(g,.2,H*.2,-2);
+  const ly=TALL?H*.565:H*.8,lx=TALL?W*.06:W*.05,lw=TALL?W*.88:W*.42;const lt=L.front.group().addClass('keep');
+  lt.rect(lw,U*.075).move(lx,ly).fill(INK);lt.rect(U*.012,U*.075).move(lx,ly).fill(ACC);
+  fit(T(lt,P.name.toUpperCase(),U*.036,lx+U*.035,ly+U*.038,{family:'Inter',weight:800,anchor:'start',fill:'#FFFFFF',ls:'.04em'}),lw*.9);
+  if(P.role){lt.rect(lw*.86,U*.046).move(lx,ly+U*.075).fill('#FBF8F0').stroke({color:INK,width:U*.002});
+    fit(T(lt,P.role,U*.021,lx+U*.035,ly+U*.099,{family:'Mono',weight:700,anchor:'start',fill:INK}),lw*.8)}
+  slide(lt,.7,-W*.12,0);
+  const qx=TALL?W*.08:W*.52,qy=TALL?H*.68:H*.26,qw=TALL?W*.84:W*.42,qs=TALL?U*.05:U*.052;
+  const mk=T(L.front,'“',qs*3.2,qx-U*.008,qy,{family:'Playfair',weight:900,anchor:'start',fill:ACC});wipe(mk,.9);
+  const ql=lines(P.quote,qs,qw,'Playfair',700,TALL?5:6);
+  ql.forEach((l,i)=>{const t=T(L.front,l,qs,qx,qy+qs*1.1+i*qs*1.28,{family:'Playfair',weight:700,anchor:'start'});typeIn(t,l,1.1+i*.5)});
+  FOCUS={x:px,y:base-ph*.62,rx:U*.2,ry:U*.22}}
+function endcard(){ // the closing slate: title, one line, the sources
+  const bar=L.back.rect(W,H*.012).move(0,H*.5).fill(ACC);at(.1,.6,p=>bar.width(Math.max(.1,W*p)),E.inout);
+  const ts=TALL?U*.085:U*.1,tl=lines(P.title,ts,W*.84,'Playfair',900,3);tl.forEach((l,i)=>{const t=T(L.front,l,ts,W/2,H*.45-(tl.length-1-i)*ts*1.1-ts*.6,{family:'Playfair',weight:900});slide(t,.3+i*.15,0,H*.05)});
+  if(P.line){const b=boxText(L.front,P.line,U*.04,W/2,H*.57,{anchor:'middle',maxw:W*.8,most:2});wipe(b,1.0)}
+  if(P.sources.length){const k=T(L.front,'SOURCES',U*.02,W/2,H*(TALL?.74:.76),{family:'Inter',weight:800,ls:'.3em',fill:K.mark||'#C0262D'});wipe(k,1.3);
+    const per=TALL?2:3;P.sources.forEach((s2,i)=>{const row=Math.floor(i/per),col=i%per,n=Math.min(per,P.sources.length-row*per);
+      const t=T(L.front,s2,U*.022,W/2+(col-(n-1)/2)*W*(TALL?.42:.28),H*(TALL?.78:.81)+row*U*.04,{family:'Mono',weight:700});fit(t,W*(TALL?.4:.26));wipe(t,1.45+i*.1)})}}
+// ---- more charts ----
+function axes(L0,R0,T0,B0,mn,mx,unit,ticks){const g=L.mid.group();for(let i=0;i<=ticks;i++){const v=mn+(mx-mn)*i/ticks,y=B0-(B0-T0)*i/ticks;
+  g.line(L0,y,R0,y).stroke({color:FG,width:U*.0012}).opacity(i?.25:.9);T(g,(Math.abs(v)>=100?Math.round(v):+v.toFixed(1))+(unit?(unit.length>1?' ':'')+unit:''),U*.019,L0-U*.02,y,{family:'Mono',weight:700,anchor:'end'})}wipe(g,.15);return g}
+function revealClip(L0,R0,start,dur){const c=draw.clip();const r=c.rect(.1,H).move(L0-U*.02,0);at(start,dur,p=>r.width(Math.max(.1,(R0-L0+U*.04)*p)),E.inout);return c}
+function polltrack(){ // a poll line, its margin of error as a band, the latest reading large
+  chartTitle(P.title);const pts=P.points,n=pts.length,vs=pts.map(p=>p.value),m=P.moe||0;let mn=Math.min(...vs)-m,mx=Math.max(...vs)+m;const pad=(mx-mn)*.18||1;mn=Math.max(0,mn-pad);mx+=pad;
+  const L0=W*(TALL?.16:.14),R0=W*(TALL?.9:.8),T0=TALL?H*.24:H*.24,B0=TALL?H*.62:H*.8;axes(L0,R0,T0,B0,mn,mx,P.unit,4);
+  const X=i=>L0+(R0-L0)*i/(n-1),Y=v=>B0-(B0-T0)*(v-mn)/(mx-mn);const clip=revealClip(L0,R0,.4,1.5);const g=L.hero.group().clipWith(clip);
+  if(m){g.polygon(pts.map((p,i)=>[X(i),Y(p.value+m)]).concat(pts.map((p,i)=>[X(i),Y(p.value-m)]).reverse()).map(q=>q.join(',')).join(' ')).fill(ACC).opacity(.28)}
+  g.polyline(pts.map((p,i)=>[X(i),Y(p.value)].join(',')).join(' ')).fill('none').stroke({color:ACC,width:U*.009,linejoin:'round',linecap:'round'});
+  pts.forEach((p,i)=>{const st=.4+1.5*i/(n-1);const d=L.front.circle(U*.022).center(X(i),Y(p.value)).fill('#FFFFFF').stroke({color:INK,width:U*.005});popIn(d,X(i),Y(p.value),st,.25);
+    if(p.label){const t=T(L.front,p.label.toUpperCase(),U*.019,X(i),B0+U*.035,{family:'Inter',weight:800});fit(t,(R0-L0)/n*.95);wipe(t,st)}});
+  const last=pts[n-1],lx=X(n-1),ly=Y(last.value);const big=T(L.front,last.shown+(P.unit&&!last.shown.includes(P.unit)?P.unit:''),U*.09,TALL?W/2:R0+U*.03,TALL?H*.72:ly,{family:'Anton',weight:400,anchor:TALL?'middle':'start'});fit(big,TALL?W*.8:W-R0-U*.06);slide(big,2.0,U*.04,0);
+  if(m){const t=T(L.front,'±'+m+' margin of error',U*.02,TALL?W/2:R0+U*.03,(TALL?H*.72:ly)+U*.07,{family:'Mono',weight:700,anchor:TALL?'middle':'start'});fit(t,TALL?W*.8:W-R0-U*.05);wipe(t,2.2)}
+  FOCUS={x:lx,y:ly,rx:U*.06,ry:U*.06}}
+function area(){ // stacked areas filling from the left
+  chartTitle(P.title);const xs=P.xs,n=xs.length,ser=P.series;const tot=xs.map((_,i)=>ser.reduce((a,s2)=>a+s2.v[i],0)),mx=Math.max(...tot)*1.08;
+  const L0=W*(TALL?.16:.13),R0=W*(TALL?.92:.76),T0=TALL?H*.22:H*.24,B0=TALL?H*.6:H*.8;axes(L0,R0,T0,B0,0,mx,P.unit,4);
+  const X=i=>L0+(R0-L0)*i/(n-1),Y=v=>B0-(B0-T0)*v/mx;const clip=revealClip(L0,R0,.4,1.7);const g=L.hero.group().clipWith(clip);
+  const cols=[ACC,'#3E4A55',mix(ACC,'#FFFFFF',.5),'#8C8577',mix(ACC,'#000000',.45)];let base=xs.map(()=>0);
+  ser.forEach((s2,k)=>{const top=base.map((b,i)=>b+s2.v[i]);g.polygon(top.map((v,i)=>[X(i),Y(v)]).concat(base.map((v,i)=>[X(i),Y(v)]).reverse()).map(q=>q.join(',')).join(' ')).fill(cols[k%cols.length]).stroke({color:PAPER,width:U*.003});
+    const ly=TALL?H*.68+k*U*.055:Y((top[n-1]+base[n-1])/2),lx=TALL?W*.2:R0+U*.03;const lg=L.front.group();if(TALL)lg.rect(U*.03,U*.03).move(lx-U*.05,ly-U*.015).fill(cols[k%cols.length]);
+    const t=T(lg,s2.name.toUpperCase()+'  '+s2.v[n-1],U*.026,lx,ly,{family:'Inter',weight:800,anchor:'start'});fit(t,TALL?W*.7:W-R0-U*.05);wipe(lg,1.6+k*.2);base=top});
+  xs.forEach((x,i)=>{if(n>7&&i%2)return;const t=T(L.front,x,U*.02,X(i),B0+U*.035,{family:'Mono',weight:700});wipe(t,.4+1.7*i/(n-1))})}
+function candles(){ // open / high / low / close, one candle at a time
+  chartTitle(P.title);const cs=P.candles,n=cs.length;let mn=Math.min(...cs.map(c=>c.l)),mx=Math.max(...cs.map(c=>c.h));const pad=(mx-mn)*.1||1;mn-=pad;mx+=pad;
+  const L0=W*(TALL?.18:.14),R0=W*(TALL?.94:.88),T0=TALL?H*.24:H*.24,B0=TALL?H*.66:H*.8;axes(L0,R0,T0,B0,mn,mx,'',4);
+  const gap=(R0-L0)/n,bw=Math.min(gap*.6,U*.06),Y=v=>B0-(B0-T0)*(v-mn)/(mx-mn);
+  cs.forEach((c,i)=>{const x=L0+gap*(i+.5),up=c.c>=c.o,col=up?ACC:INK,st=.35+i*(1.8/n);const g=L.hero.group();
+    g.line(x,Y(c.h),x,Y(c.l)).stroke({color:INK,width:U*.003});const top=Y(Math.max(c.o,c.c)),hh=Math.max(U*.004,Math.abs(Y(c.o)-Y(c.c)));
+    g.rect(bw,hh).move(x-bw/2,top).fill(col).stroke({color:INK,width:U*.002});popIn(g,x,Y((c.h+c.l)/2),st,.25);
+    if(c.label&&(n<=10||i%2===0)){const t=T(L.front,c.label.toUpperCase(),U*.018,x,B0+U*.035,{family:'Mono',weight:700});fit(t,gap*1.6);wipe(t,st)}});
+  const a=cs[0].o,b=cs[n-1].c,ch=(b-a)/a*100;const big=T(L.front,(ch>=0?'+':'')+ch.toFixed(1)+'%',U*.075,R0,T0-U*.02,{family:'Anton',weight:400,anchor:'end',fill:ch>=0?ACC:(K.mark||'#C0262D')});slide(big,2.3,U*.04,0);
+  const sub=T(L.front,(P.unit||'')+a+' → '+(P.unit||'')+b,U*.022,R0,T0+U*.035,{family:'Mono',weight:700,anchor:'end'});wipe(sub,2.5);
+  FOCUS={x:L0+gap*(n-.5),y:Y((cs[n-1].h+cs[n-1].l)/2),rx:Math.max(bw,U*.05),ry:Math.max(U*.07,(Y(cs[n-1].l)-Y(cs[n-1].h))*.7)}}
+// ---- more maps ----
+function mapFrame(fw,fh){const [x0,y0,x1,y1]=P.box,kx=Math.cos((y0+y1)/2*Math.PI/180);
+  const s=Math.min(W*fw/Math.max(4,(x1-x0)*kx),H*fh/Math.max(3,y1-y0)),ox=W/2-(x0+x1)/2*kx*s,oy=H*(TALL?.46:.53)+(y0+y1)/2*s;
+  const pr=(lon,lat)=>[ox+lon*kx*s,oy-lat*s];atlasSea();const land=L.back.group();
+  P.shapes.forEach(r=>land.polygon(r.map(q=>pr(q[0],q[1]).join(',')).join(' ')).fill('#EFE3C2').stroke({color:'#8E7E5C',width:Math.max(1,U*.0015)}));depthOfField(land);return pr}
+function placeTag(g,name,x,y,start,dy){const t=T(g,name.toUpperCase(),U*.02,x,y+(dy||-U*.035),{family:'Inter',weight:800,ls:'.1em',fill:'#FFFFFF'});const bb=t.bbox();
+  const r=g.rect(bb.width+U*.018,bb.height+U*.008).center(bb.cx,bb.cy).fill(INK);t.front();wipe(r,start);wipe(t,start);return bb}
+function arrows(){ // broad arrows sweeping from place to place: armies, migration, trade
+  chartTitle(P.title);const pr=mapFrame(TALL?.8:.7,TALL?.5:.6);const col=K.mark||'#C0262D';const seen={};
+  P.arrows.forEach((a,i)=>{const [x1,y1]=pr(a.a.lon,a.a.lat),[x2,y2]=pr(a.b.lon,a.b.lat),st=.5+i*.55;const d=Math.hypot(x2-x1,y2-y1)||1,nx=-(y2-y1)/d,ny=(x2-x1)/d,bend=d*.18*(i%2?-1:1);
+    const cxm=(x1+x2)/2+nx*bend,cym=(y1+y2)/2+ny*bend;const N=28,wid=Math.min(U*.03,d*.09);const q=t=>[(1-t)*(1-t)*x1+2*(1-t)*t*cxm+t*t*x2,(1-t)*(1-t)*y1+2*(1-t)*t*cym+t*t*y2];
+    const g=L.hero.group();const body=g.path('').fill(col).opacity(.88).stroke({color:'#FFFFFF',width:U*.003,linejoin:'round'});
+    at(st,.7,p=>{const te=Math.max(.02,p*.86);const Lp=[],Rp=[];for(let k=0;k<=N;k++){const t=te*k/N,[x,y]=q(t),[xa,ya]=q(Math.min(1,t+.01));const dd=Math.hypot(xa-x,ya-y)||1,px=-(ya-y)/dd,py=(xa-x)/dd,w=wid*(.35+.65*k/N);Lp.push([x+px*w,y+py*w]);Rp.push([x-px*w,y-py*w])}
+      const [hx,hy]=q(te),[tx,ty]=q(Math.min(1,te+.14)),[bx,by]=q(te-.01);const dd=Math.hypot(hx-bx,hy-by)||1,px=-(hy-by)/dd,py=(hx-bx)/dd;
+      const pts=[...Lp,[hx+px*wid*2.1,hy+py*wid*2.1],[tx,ty],[hx-px*wid*2.1,hy-py*wid*2.1],...Rp.reverse()];body.plot('M'+pts.map(z=>z[0].toFixed(1)+' '+z[1].toFixed(1)).join(' L')+' Z')},E.inout);
+    [[a.a,x1,y1,st],[a.b,x2,y2,st+.6]].forEach(([e,x,y,s2])=>{if(seen[e.name])return;seen[e.name]=1;const dt=L.mid.circle(U*.016).center(x,y).fill(INK).stroke({color:'#FFFFFF',width:U*.003});popIn(dt,x,y,s2,.25);placeTag(L.front,e.name,x,y,s2+.1,y<H*.2?U*.035:-U*.035)});
+    if(a.label){const [mx2,my]=q(.45);const t=T(L.front,a.label,U*.03,mx2+nx*bend*.5,my+ny*bend*.5-U*.03,{family:'Caveat',weight:700,fill:col});wipe(t,st+.5)}
+    if(i===P.arrows.length-1)FOCUS={x:x2,y:y2,rx:U*.08,ry:U*.07}})}
+function railmap(){ // a transport network: each line draws through its stations
+  chartTitle(P.title);const pr=mapFrame(TALL?.8:.7,TALL?.5:.6);const cols=[K.mark||'#C0262D','#1F4FB8','#1F7A4D','#B8860B','#7A3E8C'];const seen={};let t0=.4;
+  P.lines.forEach((ln,i)=>{const col=cols[i%cols.length],pts=ln.stops.map(s2=>pr(s2.lon,s2.lat));const dur=.5+pts.length*.22;
+    const cas=L.mid.polyline(pts.map(q=>q.join(',')).join(' ')).fill('none').stroke({color:'#FFFFFF',width:U*.016,linejoin:'round',linecap:'round'});
+    const pl=L.mid.polyline(pts.map(q=>q.join(',')).join(' ')).fill('none').stroke({color:col,width:U*.009,linejoin:'round',linecap:'round'});
+    [cas,pl].forEach(e=>{const len=e.node.getTotalLength();e.attr({'stroke-dasharray':len,'stroke-dashoffset':len});at(t0,dur,p=>e.attr({'stroke-dashoffset':len*(1-p)}),E.inout)});
+    ln.stops.forEach((s2,k)=>{const [x,y]=pts[k],st=t0+dur*k/(pts.length-1);const d=L.hero.circle(U*.022).center(x,y).fill('#FFFFFF').stroke({color:col,width:U*.006});popIn(d,x,y,st,.22);
+      if(!seen[s2.name]){seen[s2.name]=1;placeTag(L.front,s2.name,x,y,st+.05,(k+i)%2?U*.036:-U*.036)}});
+    if(ln.name){const lg=L.front.group();const y=H*(TALL?.84:.9)-i*U*.045;lg.line(U*.06,y,U*.12,y).stroke({color:col,width:U*.009,linecap:'round'});T(lg,ln.name.toUpperCase(),U*.02,U*.14,y,{family:'Inter',weight:800,anchor:'start',ls:'.08em'});wipe(lg,t0)}
+    t0+=dur*.7;const e=pts[pts.length-1];FOCUS={x:e[0],y:e[1],rx:U*.07,ry:U*.06}})}
+function resample(r,n){const d=[0];for(let i=1;i<=r.length;i++){const a=r[i-1],b=r[i%r.length];d.push(d[i-1]+Math.hypot(b[0]-a[0],b[1]-a[1]))}const tot=d[r.length],o=[];let j=0;
+  for(let k=0;k<n;k++){const t=tot*k/n;while(d[j+1]<t)j++;const a=r[j],b=r[(j+1)%r.length],f=(t-d[j])/Math.max(1e-9,d[j+1]-d[j]);o.push([a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f])}
+  let bi=0,bv=1e18;o.forEach((q,i)=>{const v=q[1]*1e3-q[0];if(v<bv){bv=v;bi=i}});return o.slice(bi).concat(o.slice(0,bi))}   // both start at their northernmost point
+function sizemap(){ // two countries at one scale: the first morphs into the second, then both sit together
+  chartTitle(P.title);const [A,B]=P.items,N=180;const ext=r=>{const xs=r.map(q=>q[0]),ys=r.map(q=>q[1]);return [Math.max(...xs)-Math.min(...xs),Math.max(...ys)-Math.min(...ys),(Math.max(...xs)+Math.min(...xs))/2,(Math.max(...ys)+Math.min(...ys))/2]};
+  const ea=ext(A.ring),eb=ext(B.ring);const s=Math.min(W*(TALL?.8:.5)/Math.max(ea[0],eb[0]),H*(TALL?.42:.58)/Math.max(ea[1],eb[1]));const cx=W/2,cy=H*(TALL?.45:.52);
+  const ra=resample(A.ring.map(q=>[(q[0]-ea[2])*s+cx,(q[1]-ea[3])*s+cy]),N),rb=resample(B.ring.map(q=>[(q[0]-eb[2])*s+cx,(q[1]-eb[3])*s+cy]),N);
+  const str=r=>r.map(q=>q[0].toFixed(1)+','+q[1].toFixed(1)).join(' ');const big=A.km2>=B.km2;
+  const ghost=L.mid.polygon(str(ra)).fill('none').stroke({color:INK,width:U*.004,dasharray:`${U*.012} ${U*.01}`}).opacity(0);
+  const shape=L.hero.polygon(str(ra)).fill(ACC).stroke({color:INK,width:U*.004,linejoin:'round'});popIn(shape,cx,cy,.2,.5);
+  at(1.5,.9,p=>{shape.plot(str(ra.map((q,i)=>[q[0]+(rb[i][0]-q[0])*p,q[1]+(rb[i][1]-q[1])*p])));shape.fill(mix(ACC,'#3E4A55',p));ghost.opacity(p)},E.inout);
+  const na=T(L.front,A.name.toUpperCase(),U*.034,cx,cy-Math.max(ea[1],eb[1])*s/2-U*.05,{family:'Inter',weight:800,ls:'.1em'});wipe(na,.5);
+  at(1.5,.9,p=>{na.node.textContent=(p<.5?A.name:B.name).toUpperCase();na.opacity(Math.abs(p-.5)*2)},E.lin);
+  const ratio=Math.max(A.km2,B.km2)/Math.min(A.km2,B.km2),fmt=v=>v>=1e6?(v/1e6).toFixed(2)+' million km²':Math.round(v/1e3)+',000 km²';
+  const y=H*(TALL?.76:.88);const t=boxText(L.front,(big?A.name:B.name)+' is '+(ratio>=10?Math.round(ratio):ratio.toFixed(1))+'× bigger',U*.045,W/2,y-U*.05,{anchor:'middle',maxw:W*.86,most:2});wipe(t,2.6);
+  const sub=T(L.front,A.name+' '+fmt(A.km2)+'  ·  '+B.name+' '+fmt(B.km2),U*.02,W/2,y+U*.05,{family:'Mono',weight:700});fit(sub,W*.9);wipe(sub,2.8);
+  const sc=L.front.group();const km=[100,200,500,1000,2000].find(v=>v*s>U*.12)||2000;sc.line(U*.06,H*.93,U*.06+km*s,H*.93).stroke({color:FG,width:U*.004});T(sc,km+' km',U*.018,U*.06+km*s/2,H*.93-U*.022,{family:'Mono',weight:700});wipe(sc,.6);
+  FOCUS={x:cx,y:cy,rx:Math.min(ea[0],eb[0])*s*.55,ry:Math.min(ea[1],eb[1])*s*.55}}
+
+const SCENES={courtdoc,table,interview,endcard,polltrack,area,candles,arrows,railmap,sizemap,pyramid,flowchart:flow,linkmap,orgchart,heatmap,hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv,
   clockmap,tornsplit,newscard,blueprint};
 async function boot(){
   try{await Promise.all(Array.from(document.fonts).map(f=>f.load()))}catch(e){}
   const imgs=[];(P.pics||[]).forEach(p=>{if(p.img)imgs.push(new Promise(r=>{const i=new Image();i.onload=i.onerror=r;i.src=p.img}))});
   await Promise.all(imgs);
-  (SCENES[P.type]||hero)();logoLayer();markerLayer();layout();companion();
-  const film=filmLayer();
+  (SCENES[P.type]||hero)();logoLayer();markerLayer();badgeLayer();insetLayer();layout();companion();
+  const film=filmLayer(),fx=fxLayer();
   window.frame=function(t){camera(t);const tq=Math.floor(t*12+1e-6)/12;   // the hand-made 12 fps stutter
-    for(const k of tracks){const p=Math.max(0,Math.min(1,(tq-k.start)/k.dur));k.fn(k.e(p))}film(t,tq)};
+    for(const k of tracks){const p=Math.max(0,Math.min(1,(tq-k.start)/k.dur));k.fn(k.e(p))}film(t,tq);fx(t)};
   window.frame(0);window.READY=true}
 boot();
 </script></body></html>"""
@@ -1817,7 +2232,7 @@ def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: f
     bg, grain = paper(paper_hex, width, height, work)
     kit = {"acc": accent_of(theme), "acc2": "#E0442C" if accent_of(theme) != ACCENTS["red"] else "#F2C200", "ink": INK, "paper": paper_hex, "dark": tone == "dark", "tone": tone, "props": props,
            "bg": bg.as_uri(), "grain": grain.as_uri(),
-           "mark": look["mark"], "cam": _seed("cam", spec, theme) % 4, "lay": layout if layout in LAYOUT_SETS.get(kind, ()) else
+           "mark": look["mark"], "cam": _seed("cam", spec, theme) % 4, "exit": plan.get("exit") or EXITS[_seed("exit", spec, theme) % len(EXITS)], "lay": layout if layout in LAYOUT_SETS.get(kind, ()) else
            layout_for(kind, 0, _seed("layout", spec, theme)), "desk": DESKS[_seed("desk", theme) % len(DESKS)], "dir": 1 if _seed("dir", spec) % 2 else -1, "fam": {"Playfair": look["head"], "Anton": look["big"], "Caveat": look["hand"]}}
     js = _PAGE
     for old, new in (("#B8CDD1", look["sea"]), ("#EFE3C2", look["land"]), ("#8E7E5C", look["edge"])):
