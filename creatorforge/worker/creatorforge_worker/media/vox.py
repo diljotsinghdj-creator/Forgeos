@@ -479,6 +479,35 @@ def parse_blueprint(spec: str) -> dict | None:
     return {"type": "blueprint", "subjects": [parts[0]], "title": parts[1][:40], "points": pts, "seed": _seed(spec) % 10000}
 
 
+# drawn illustrations (vendor/illustrations.js) for subjects without a photo: script word -> drawing
+ILLUS = {"ship": "ship", "container ship": "ship", "cargo ship": "ship", "vessel": "ship", "boat": "ship",
+         "container": "container", "shipping container": "container", "crane": "crane", "truck": "truck",
+         "lorry": "truck", "factory": "factory", "factory chimney": "factory", "warehouse": "warehouse",
+         "coins": "coins", "coin": "coins", "rupee coin": "coins", "cash": "banknote", "money": "banknote",
+         "banknote": "banknote", "rupee note": "banknote", "notes": "banknote", "money bag": "moneybag",
+         "smartphone": "smartphone", "phone": "smartphone", "mobile": "smartphone", "hand phone": "smartphone",
+         "laptop": "laptop", "computer": "laptop", "television": "television", "tv": "television",
+         "newspaper": "newspaper", "old newspaper": "newspaper", "news": "newspaper", "documents": "documents",
+         "document": "documents", "file folder": "documents", "report": "documents", "skyscraper": "skyscraper",
+         "office building": "skyscraper", "skyline": "skyscraper", "building": "building", "parliament": "building",
+         "new parliament": "building", "supreme court": "building", "bank": "building", "column": "building",
+         "house": "house", "home": "house", "village": "house", "plane": "plane", "airplane": "plane",
+         "flight": "plane", "train": "train", "car": "car", "tractor": "tractor", "farmer standing": "person",
+         "oil barrel": "oil barrel", "oil": "oil barrel", "globe": "globe", "world": "globe", "person": "person",
+         "man standing": "person", "woman standing": "person", "businessman": "person", "worker": "person",
+         "student": "person", "doctor": "person", "crowd": "crowd", "people": "crowd", "protest": "crowd",
+         "queue": "crowd", "megaphone": "megaphone", "gavel": "gavel", "scales of justice": "gavel",
+         "ballot box": "ballot box", "evm": "ballot box", "light bulb": "light bulb", "padlock": "padlock",
+         "book": "book", "books": "book", "briefcase": "briefcase", "pill": "pill", "power tower": "tower",
+         "tower": "tower", "chart": "chart", "stock chart": "chart", "port": "port", "harbour": "port"}
+
+
+def illustration(name: str) -> str | None:
+    from .cutouts import resolve
+    n = (name or "").strip().lower()
+    return ILLUS.get(n) or ILLUS.get(resolve(n) or "") or ILLUS.get(n.rstrip("s"))
+
+
 PARSERS = {"hero": parse_hero, "desk": parse_desk, "pinboard": parse_evidence, "opener": parse_opener,
            "reveal": parse_reveal, "clipping": parse_headline, "pinmap": parse_pinmap, "bignumber": parse_number,
            "seats": parse_seats, "stack": parse_stack, "stand": parse_stand, "fan": parse_fan, "trend": parse_trend,
@@ -489,7 +518,18 @@ PARSERS = {"hero": parse_hero, "desk": parse_desk, "pinboard": parse_evidence, "
 
 def plan_for(kind: str, spec: str) -> dict | None:
     fn = PARSERS.get(kind)
-    return fn(spec) if fn else None
+    if not fn:
+        return None
+    # "| marker: <note>" on any scene: a hand-drawn marker circle round the subject and a handwritten note
+    note = ""
+    m = re.search(r"\|\s*marker\s*[:=]\s*([^|]+)", spec or "", re.I)
+    if m:
+        note = m.group(1).strip()[:60]
+        spec = (spec[:m.start()] + spec[m.end():]).strip()
+    plan = fn(spec)
+    if plan is not None and note:
+        plan["marker"] = note
+    return plan
 
 
 # ---- pictures -------------------------------------------------------------------------------------------------------
@@ -511,8 +551,12 @@ def _pictures(plan: dict, lib: Path | None, model: Path | None, fetch: bool,
                 pic["face"] = face_box(c.path)
             out.append(pic)
         elif not name.startswith("person:"):
-            icon = find_icon(name.split()[-1]) or find_icon(name) or "circle"
-            out.append({"name": s, "o": icon_nodes(icon)})
+            drawn = illustration(name)
+            if drawn:
+                out.append({"name": s, "draw": drawn})           # a drawn illustration, never a placeholder
+            else:
+                icon = find_icon(name.split()[-1]) or find_icon(name) or "circle"
+                out.append({"name": s, "o": icon_nodes(icon)})
     plan["pics"] = out
     credits = sorted({p["credit"] for p in out if p.get("credit")})
     plan["credit"] = ("Photo: " + "; ".join(credits))[:120] if credits else ""
@@ -590,13 +634,17 @@ def _font_css() -> str:
              ("Inter", "inter-latin-800-normal", 800, "normal"),
              ("Mono", "jetbrains-mono-latin-400-normal", 400, "normal"),
              ("Mono", "jetbrains-mono-latin-700-normal", 700, "normal"),
-             ("Oswald", "oswald-latin-600-normal", 600, "normal"), ("Archivo", "archivo-black-latin-400-normal", 400, "normal")]
+             ("Oswald", "oswald-latin-600-normal", 600, "normal"), ("Archivo", "archivo-black-latin-400-normal", 400, "normal"),
+             ("Caveat", "caveat-latin-700-normal", 700, "normal"), ("Marker", "permanent-marker-latin-400-normal", 400, "normal"),
+             ("Kalam", "kalam-latin-700-normal", 700, "normal"), ("Kalam", "kalam-devanagari-700-normal", 700, "normal")]
     out = []
     for fam, f, wt, st in faces:
         p = FONTS / f"{f}.woff2"
         if p.is_file():
+            rng = ";unicode-range:U+0900-097F,U+1CD0-1CF9,U+200C-200D,U+20B9,U+25CC,U+A830-A839,U+A8E0-A8FF" \
+                if "devanagari" in f else ""
             out.append(f"@font-face{{font-family:'{fam}';src:url('{p.as_uri()}') format('woff2');"
-                       f"font-weight:{wt};font-style:{st}}}")
+                       f"font-weight:{wt};font-style:{st}{rng}}}")
     return "\n".join(out)
 
 
@@ -605,7 +653,7 @@ _PAGE = r"""<!doctype html><html><head><meta charset="utf-8"><style>
 %FONTS%
 html,body{margin:0;padding:0;background:%PAPER%;overflow:hidden}
 svg{display:block}
-</style><script>%SVGJS%</script></head><body><script>
+</style><script>%SVGJS%</script><script>%ILLU%</script></head><body><script>
 const P=%PLAN%, W=%W%, H=%H%, DUR=%DUR%, K=%KIT%;
 const TALL=H>W, U=Math.min(W,H), ACC=K.acc, INK=K.ink, PAPER=K.paper, DARK=K.dark;
 const FG=DARK?'#F3EFE6':INK;
@@ -620,6 +668,7 @@ const L={};['paper','back','mid','hero','front','grain'].forEach(k=>L[k]=draw.gr
 draw.defs().svg(`<filter id="shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="${U*.004}" dy="${U*.012}" stdDeviation="${U*.011}" flood-color="#000" flood-opacity=".32"/></filter>
 <filter id="softshadow" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="${U*.006}" stdDeviation="${U*.006}" flood-color="#000" flood-opacity=".22"/></filter>
 <filter id="blur" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="${U*.035}"/></filter>
+<pattern id="ildots" width="5" height="5" patternUnits="userSpaceOnUse"><circle cx="2.5" cy="2.5" r="1.1" fill="#000" fill-opacity=".22"/></pattern>
 <filter id="dof" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="${U*.006}"/></filter>
 <filter id="tint"><feFlood flood-color="${K.acc2||'#E0442C'}"/><feComposite in2="SourceAlpha" operator="in"/></filter>
 <filter id="redch"><feColorMatrix type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .55 0"/></filter>
@@ -680,6 +729,8 @@ function picture(g,pic,x,y,h,o){ // a cut-out photo (or its icon) with its heigh
   if(pic&&pic.img){const w=h*pic.w/pic.h;
     if(o.offset){grp.image(pic.img).size(w,h).move(x-w/2+U*.014,y-h+U*.01).attr({filter:'url(#tint)'})}   // a printed colour offset
     grp.image(pic.img).size(w,h).move(x-w/2,y-h).attr({filter:o.offset?'none':'url(#shadow)'});grp.data('w',w)}
+  else if(pic&&pic.draw&&window.ILLU&&ILLU[pic.draw]){const [bw,bh,fn]=ILLU[pic.draw];const k=h/bh;const ig=grp.group();
+    fn(ig,ACC);ig.attr({transform:`translate(${x-bw*k/2},${y-h}) scale(${k})`,filter:'url(#shadow)'});grp.data('w',bw*k)}
   else{const r=h*.42;grp.circle(r*2).center(x,y-h/2).fill(o.iconBg||'#FFFFFF').stroke({color:INK,width:U*.005}).attr({filter:'url(#softshadow)'});
     const ig=grp.group();for(const nd of ((pic&&pic.o)||[])){try{ig.element(nd[0]).attr(nd[1])}catch(e){}}
     const k=r*1.15/24;ig.attr({fill:'none',stroke:INK,'stroke-width':1.6,'stroke-linecap':'round','stroke-linejoin':'round',
@@ -720,13 +771,13 @@ function hero(){
   const pics=P.pics||[], lay=P.layout, taken=[];
   const BOT=TALL?H*.62:H*.78;                       // above the captions
   let HH=TALL?H*.40:H*.66;                          // the subject fills most of the frame height
-  const main=pics[0]||{};const ar=main.img?main.w/main.h:.84;
+  const main=pics[0]||{};const ar=main.img?main.w/main.h:(main.draw&&window.ILLU&&ILLU[main.draw]?ILLU[main.draw][0]/ILLU[main.draw][1]:.84);
   const maxW=W*(TALL?(lay==='word'?.7:.86):(lay==='box'?.46:lay==='word'?.36:.6));   // 'word': the word must show both sides
   if(HH*ar>maxW)HH=maxW/ar;                         // a wide subject: as big as the width allows
   const MW=HH*ar;
   let cx=(lay==='box'&&!TALL)?W*.31:W/2;
   cx=Math.max(U*.05+MW/2,Math.min(W-U*.05-MW/2,cx));
-  const heroBox={x:cx-MW/2,y:BOT-HH,w:MW,h:HH};
+  const heroBox={x:cx-MW/2,y:BOT-HH,w:MW,h:HH};FOCUS={x:cx,y:BOT-HH*.52,rx:Math.min(MW*.56,U*.42),ry:Math.min(HH*.58,U*.36)};
   const core={x:cx-MW*.3,y:BOT-HH*.85,w:MW*.6,h:HH*.7};taken.push(core);
   // back: the accent shape and the big word sit behind the subject
   if(lay==='disc'){const r=Math.max(HH*.46,MW*.48);const dx=cx+MW*.1,dy=BOT-HH*.62;const d=disc(L.back,dx,dy,r);popIn(d,dx,dy,.05,.5)}
@@ -798,7 +849,7 @@ function printCard(g,pic,x,y,h,ang,o){ // a photo print: white card with the cut
   o=o||{};const grp=g.group();const ar=pic&&pic.img?pic.w/pic.h:1;const iw=Math.min(h*ar,h*1.5),ih=iw/ar;const pad=h*.06;
   grp.rect(iw+pad*2,ih+pad*2+(o.caption?h*.14:0)).move(x-iw/2-pad,y-ih/2-pad).fill('#FBFAF6').attr({filter:'url(#shadow)'});
   if(pic&&pic.img)grp.image(pic.img).size(iw,ih).move(x-iw/2,y-ih/2);
-  else if(pic&&pic.o){const sub=picture(grp,pic,x,y+ih/2,ih*.9)}
+  else if(pic&&(pic.o||pic.draw)){const sub=picture(grp,pic,x,y+ih/2,ih*.9)}
   else T(grp,(o.label||'').toUpperCase(),h*.12,x,y,{family:'Archivo',weight:400,fill:INK});
   if(o.caption)T(grp,o.caption.toUpperCase(),h*.07,x,y+ih/2+pad+h*.06,{family:'Mono',weight:700,fill:INK});
   grp.attr({transform:`rotate(${ang||0},${x},${y})`});return grp}
@@ -854,7 +905,7 @@ function evidence(){ // a pinned board on kraft paper: cards, red string pin to 
   T(q,'?',U*.06,W-U*.12,TALL?H*.6:H*.72,{family:'Archivo',weight:400,fill:'#C0262D'});wipe(q,1.6)}}
 
 function opener(){ // a colour panel with the headline, the photo beside it
-  const real=((P.pics||[])[0]||{}).img;if(!real)P.pics=[];
+  const real=((P.pics||[])[0]||{}).img||((P.pics||[])[0]||{}).draw;if(!real)P.pics=[];
   const left=!TALL&&!!real;const pw=left?W*.46:W,ph=left?H:(real?H*.42:H);const pan=L.back.rect(pw,ph).move(0,0).fill(ACC);
   slide(pan,0,left?-pw:0,left?0:-ph);
   const pic=(P.pics||[])[0];
@@ -917,7 +968,7 @@ function pinmap(){ // the country outline; the place highlighted; the headline c
     .stroke({color:P.atlas?'#8E7E5C':'#9A9282',width:Math.max(1,U*.0016)})});if(P.atlas)depthOfField(m);m.opacity(0);at(0,.6,p=>m.opacity(p));
   if(P.country){const c=T(L.back,P.country.toUpperCase(),U*.03,ox+bx[0]*ms/2,oy-U*.03,{family:'Inter',weight:800,ls:'0.3em',fill:'#8C8577'});wipe(c,.3)}
   let px=ox+bx[0]*ms/2,py=oy+bx[1]*ms/2;
-  if(P.pin){px=ox+P.pin[0]*ms;py=oy+P.pin[1]*ms;const ring=L.mid.circle(U*.05).center(px,py).fill(ACC).opacity(.5);popIn(ring,px,py,.5);
+  if(P.pin){px=ox+P.pin[0]*ms;py=oy+P.pin[1]*ms;FOCUS={x:px,y:py,rx:U*.07,ry:U*.06};const ring=L.mid.circle(U*.05).center(px,py).fill(ACC).opacity(.5);popIn(ring,px,py,.5);
     const dot=L.mid.circle(U*.02).center(px,py).fill('#C0262D').stroke({color:'#FFFFFF',width:U*.004});popIn(dot,px,py,.55);
     const lb=tag(L.front,P.place,px+U*.025,py-U*.05);slide(lb,.7,W*.03,0)}
   if(P.headline){const cw=TALL?W*.8:W*.38,ch=TALL?H*.16:H*.26;const cx=TALL?W*.1:Math.min(W*.58,px+U*.12),cy=TALL?H*.58:Math.max(H*.14,py-ch*.4);
@@ -927,7 +978,7 @@ function pinmap(){ // the country outline; the place highlighted; the headline c
     card.attr({filter:'url(#shadow)'});drop(card,1.0,H*.2,-3);const pn=pinAt(L.front,cx+cw/2,cy+U*.015);popIn(pn,cx+cw/2,cy+U*.015,1.4,.3)}}
 
 function number(){ // a huge number; the subject breaks out of it
-  const pic=((P.pics||[])[0]||{}).img?(P.pics||[])[0]:null;const big=T(L.back,P.number,TALL?W*.42:H*(pic?.5:.56),W/2,pic?(TALL?H*.22:H*.3):(TALL?H*.34:H*.4),{family:'Anton',weight:400,fill:ACC});fit(big,W*.92);
+  const pic=(((P.pics||[])[0]||{}).img||((P.pics||[])[0]||{}).draw)?(P.pics||[])[0]:null;const big=T(L.back,P.number,TALL?W*.42:H*(pic?.5:.56),W/2,pic?(TALL?H*.22:H*.3):(TALL?H*.34:H*.4),{family:'Anton',weight:400,fill:ACC});fit(big,W*.92);
   slide(big,.05,0,H*.06);
   if(pic){const h=TALL?H*.36:H*.56;const g=picture(L.hero,pic,W/2,TALL?H*.64:H*.86,h);drop(g,.35,H*.25,-2)}
   if(P.caption){const c=pic?T(L.front,P.caption,U*.04,W/2,TALL?H*.7:H*.92,{family:'Inter',weight:800,fill:'#C0262D'})
@@ -1059,7 +1110,7 @@ function route(){ // a paper map; dashed routes draw themselves; the vehicle tra
     .opacity(P.atlas?1:.88).stroke(P.atlas?{color:'#8E7E5C',width:Math.max(1,U*.0015)}:{width:0}));
   if(!P.atlas)land.attr({style:'mix-blend-mode:multiply'});else depthOfField(land);wipe(land,0);
   if(P.title){const g=boxText(L.front,P.title,U*.05,W/2,TALL?H*.07:H*.075,{anchor:'middle',maxw:W*.84,most:1});g.children().forEach(r=>slide(r,.1,0,-H*.04))}
-  const pts=P.stops.map(st=>pr(st.lon,st.lat));
+  const pts=P.stops.map(st=>pr(st.lon,st.lat));{const e=pts[pts.length-1];FOCUS={x:e[0],y:e[1],rx:U*.07,ry:U*.06}}
   // compass rose
   const cr=L.mid.group(),cx=U*.13,cy=TALL?H*.62:H*.68,R=U*.07;cr.circle(R*2).center(cx,cy).fill('none').stroke({color:'#3A2A1A',width:U*.002});
   [[0,-1],[1,0],[0,1],[-1,0]].forEach(([a,b],i)=>cr.polygon([[cx+a*R,cy+b*R],[cx+b*R*.18,cy-a*R*.18],[cx-b*R*.18,cy+a*R*.18]].map(p=>p.join(',')).join(' ')).fill(i%2?'#7A5230':'#3A2A1A'));
@@ -1139,7 +1190,7 @@ function clockmap(){ // a light map, a clock at every city, joined by lines, the
   P.shapes.forEach(sh=>{const home=sh.n===P.home;land.polygon(sh.r.map(q=>pr(q[0],q[1]).join(',')).join(' ')).fill(home?'#FBFAF6':'#EEECE6')
     .stroke({color:home?'#D04A3A':'#B9B5AC',width:Math.max(1.2,U*(home?.003:.0015))}).back().opacity(1)});
   land.children().filter(c=>c.attr('stroke')==='#D04A3A').forEach(c=>c.front());wipe(land,0);
-  const pts=P.cities.map(c=>pr(c.lon,c.lat));const r=Math.min(U*.045,Math.max(U*.026,U*.3/P.cities.length));
+  const pts=P.cities.map(c=>pr(c.lon,c.lat));FOCUS={x:pts[0][0],y:pts[0][1],rx:U*.06,ry:U*.06};const r=Math.min(U*.045,Math.max(U*.026,U*.3/P.cities.length));
   for(let i=1;i<pts.length;i++){const a=pts[i-1],b=pts[i];const ln=L.mid.line(a[0],a[1],a[0],a[1]).stroke({color:'#4B6E7E',width:U*.004});
     at(.4+i*.18,.4,p=>ln.plot(a[0],a[1],a[0]+(b[0]-a[0])*p,a[1]+(b[1]-a[1])*p),E.inout)}
   pts.forEach((q,i)=>{const st=.25+i*.18;const c=clockFace(L.hero,q[0],q[1],r,P.cities[i].h,P.cities[i].m,st+.2);popIn(c,q[0],q[1],st,.35);
@@ -1160,8 +1211,9 @@ function tornsplit(){ // a big condensed headline, a cut-out on paper, a torn ac
   panel.polyline(pts.map(q=>q.join(',')).join(' ')).fill('none').stroke({color:'#F7F2E6',width:U*.012});slide(panel,.05,TALL?0:W*.3,TALL?H*.2:0);
   const corner=L.back.group();const cp=[[0,H*.72],[W*.12,H*.8],[W*.16,H],[0,H]];corner.polygon(cp.map(q=>q.join(',')).join(' ')).fill(navy);if(!TALL)slide(corner,.1,-W*.1,0);else corner.remove();
   const pics=P.pics||[];
-  if(pics[0]){const h=TALL?H*.3:H*.56;const g=picture(L.hero,pics[0],TALL?W*.42:W*.38,TALL?H*.6:H*.92,h);drop(g,.35,H*.25,-2)}
-  if(pics[1]){const h=TALL?H*.3:H*.62;const g=picture(L.mid,pics[1],TALL?W*.62:W*.8,TALL?H*.95:H*.86,h);drop(g,.55,H*.25,2)}
+  const fitH=(pic,h,maxw)=>{const ar=pic.img?pic.w/pic.h:(pic.draw&&ILLU[pic.draw]?ILLU[pic.draw][0]/ILLU[pic.draw][1]:1);return Math.min(h,maxw/ar)};
+  if(pics[0]){const h=fitH(pics[0],TALL?H*.3:H*.56,TALL?W*.8:W*.46);const g=picture(L.hero,pics[0],TALL?W*.42:W*.3,TALL?H*.6:H*.92,h);drop(g,.35,H*.25,-2)}
+  if(pics[1]){const h=fitH(pics[1],TALL?H*.3:H*.62,TALL?W*.6:W*.36);const g=picture(L.mid,pics[1],TALL?W*.62:W*.8,TALL?H*.95:H*.86,h);drop(g,.55,H*.25,2)}
   const size=TALL?W*.17:H*.2;const ls=lines(P.headline.toUpperCase(),size,TALL?W*.9:W*.56,'Anton',400,2);
   ls.forEach((l,i)=>{const t=T(L.front,l,size,W*.04,(TALL?H*.1:H*.17)+i*size*1.02,{family:'Anton',weight:400,anchor:'start',fill:navy});slide(t,.2+i*.12,-W*.05,0)});
   const bar=L.front.rect(0,U*.016).move(W*.04,(TALL?H*.1:H*.17)+ls.length*size*1.02-size*.35).fill(ACC==='#D7262B'?navy:'#E0442C');at(.7,.4,p=>bar.width(Math.max(.1,W*.2*p)),E.inout);
@@ -1169,7 +1221,7 @@ function tornsplit(){ // a big condensed headline, a cut-out on paper, a torn ac
 function newscard(){ // a news card on grid paper: red date box, the headline highlighted as it is read, the person beside it
   const g=L.paper.group().opacity(.5);const st=Math.round(U/18);
   for(let x=0;x<W;x+=st)g.line(x,0,x,H).stroke({color:'#8E8672',width:1});for(let y=0;y<H;y+=st)g.line(0,y,W,y).stroke({color:'#8E8672',width:1});
-  const pic=((P.pics||[])[0]||{}).img?(P.pics||[])[0]:null;const left=W*.06,maxw=pic&&!TALL?W*.44:W*.86;let y=TALL?H*.12:H*.16;
+  const pic=(((P.pics||[])[0]||{}).img||((P.pics||[])[0]||{}).draw)?(P.pics||[])[0]:null;const left=W*.06,maxw=pic&&!TALL?W*.44:W*.86;let y=TALL?H*.12:H*.16;
   const db=L.front.group();const dt=T(db,P.date,U*.034,0,0,{family:'Inter',weight:600,anchor:'start',fill:'#FFFFFF'});const bb=dt.bbox();
   db.rect(bb.width+U*.04,bb.height+U*.024).move(bb.x-U*.02,bb.y-U*.012).fill('#D32F2F').back();db.attr({transform:`translate(${left+U*.02},${y})`});slide(db,.1,-W*.05,0);
   y+=U*.1;const hs=U*(TALL?.058:.052);const hl=lines(P.headline,hs,maxw,'Inter',800,3);
@@ -1193,13 +1245,34 @@ function blueprint(){ // a blue card with a white grid; the cut-out; an arrow th
   const q=arrow.node.getPointAtLength(len),q2=arrow.node.getPointAtLength(len-2);const ang=Math.atan2(q.y-q2.y,q.x-q2.x)*180/Math.PI;
   const head=L.front.polygon([[0,0],[-U*.03,-U*.018],[-U*.03,U*.018]].map(z=>z.join(',')).join(' ')).fill('#FFFFFF');head.attr({transform:`translate(${q.x},${q.y}) rotate(${ang})`});wipe(head,1.45)}
 
+// ---- the Johnny Harris layer: a red marker circle scribbled round the subject, an arrow, a handwritten note ----
+let FOCUS=null;   // {x,y,rx,ry} set by a scene: what the marker circles
+function markerLayer(){if(!P.marker)return;const f=FOCUS||{x:W/2,y:H*.45,rx:U*.2,ry:U*.16};const red='#D7262B',g=L.front.group();
+  const n=48,pts=[];const turns=1.12,a0=-Math.PI*.6;
+  for(let i=0;i<=n;i++){const a=a0+i/n*Math.PI*2*turns;const j=1+(rnd()-.5)*.06+(i/n)*.06;pts.push([f.x+Math.cos(a)*f.rx*j,f.y+Math.sin(a)*f.ry*j])}
+  const ring=g.path('M'+pts.map(q=>q.join(' ')).join(' L')).fill('none').stroke({color:red,width:U*.008,linecap:'round',linejoin:'round'}).opacity(.9);
+  const len=ring.node.getTotalLength();ring.attr({'stroke-dasharray':len,'stroke-dashoffset':len});at(1.0,.55,p=>ring.attr({'stroke-dashoffset':len*(1-p)}),E.inout);
+  // the note goes where there is room: beside the circle, else above or below it
+  const roomR=W-(f.x+f.rx),roomL=f.x-f.rx,probe=T(g,P.marker,U*.058,0,0,{family:'Caveat',weight:700});const need=probe.bbox().width+U*.12;probe.remove();
+  let right=roomR>=roomL,nx,ny;
+  if(Math.max(roomR,roomL)>=Math.min(need,W*.3)){nx=right?f.x+f.rx+U*.08:f.x-f.rx-U*.08;ny=Math.max(H*.14,f.y-f.ry-U*.04)}
+  else{right=true;nx=Math.max(U*.06,Math.min(W-need,f.x-need/2));ny=f.y+f.ry+U*.1<(TALL?H*.6:H*.76)?f.y+f.ry+U*.1:Math.max(H*.14,f.y-f.ry-U*.06)}
+  const t=T(g,P.marker,U*.058,nx,ny,{family:'Caveat',weight:700,fill:red,anchor:right?'start':'end'});fit(t,right?W-nx-U*.04:nx-U*.04);
+  t.attr({transform:`rotate(${right?-4:4},${nx},${ny})`});const tb=t.bbox();
+  const sx=right?tb.x-U*.01:tb.x+tb.width+U*.01,sy=ny+U*.02,ex=f.x+(right?1:-1)*f.rx*.72,ey=f.y-f.ry*.72;
+  const cx=(sx+ex)/2,cy=Math.min(sy,ey)-U*.06;const arr=g.path(`M${sx} ${sy} Q${cx} ${cy} ${ex} ${ey}`).fill('none').stroke({color:red,width:U*.006,linecap:'round'});
+  const al=arr.node.getTotalLength();arr.attr({'stroke-dasharray':al,'stroke-dashoffset':al});at(1.5,.4,p=>arr.attr({'stroke-dashoffset':al*(1-p)}),E.inout);
+  const q=arr.node.getPointAtLength(al),q2=arr.node.getPointAtLength(al-3);const ang=Math.atan2(q.y-q2.y,q.x-q2.x);
+  const hd=g.path(`M${q.x-Math.cos(ang-0.5)*U*.03} ${q.y-Math.sin(ang-0.5)*U*.03} L${q.x} ${q.y} L${q.x-Math.cos(ang+0.5)*U*.03} ${q.y-Math.sin(ang+0.5)*U*.03}`)
+    .fill('none').stroke({color:red,width:U*.006,linecap:'round',linejoin:'round'});wipe(hd,1.88);t.opacity(0);at(1.6,.3,p=>t.opacity(p),E.lin)}
+
 const SCENES={hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv,
   clockmap,tornsplit,newscard,blueprint};
 async function boot(){
   try{await Promise.all(Array.from(document.fonts).map(f=>f.load()))}catch(e){}
   const imgs=[];(P.pics||[]).forEach(p=>{if(p.img)imgs.push(new Promise(r=>{const i=new Image();i.onload=i.onerror=r;i.src=p.img}))});
   await Promise.all(imgs);
-  (SCENES[P.type]||hero)();
+  (SCENES[P.type]||hero)();markerLayer();
   window.frame=function(t){camera(t);const tq=Math.floor(t*12+1e-6)/12;   // the hand-made 12 fps stutter
     for(const k of tracks){const p=Math.max(0,Math.min(1,(tq-k.start)/k.dur));k.fn(k.e(p))}};
   window.frame(0);window.READY=true}
@@ -1228,6 +1301,7 @@ def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: f
     kit = {"acc": accent_of(theme), "acc2": "#E0442C" if accent_of(theme) != ACCENTS["red"] else "#F2C200", "ink": INK, "paper": paper_hex, "dark": tone == "dark", "tone": tone, "props": props,
            "bg": bg.as_uri(), "grain": grain.as_uri()}
     page = (_PAGE.replace("%SVGJS%", motion.VENDOR.read_text(encoding="utf-8")).replace("%FONTS%", _font_css())
+            .replace("%ILLU%", (Path(__file__).parent / "vendor" / "illustrations.js").read_text(encoding="utf-8"))
             .replace("%PAPER%", paper_hex).replace("%PLAN%", json.dumps(plan, ensure_ascii=False))
             .replace("%W%", str(width)).replace("%H%", str(height)).replace("%DUR%", f"{seconds:.3f}")
             .replace("%KIT%", json.dumps(kit)))

@@ -243,3 +243,24 @@ def test_every_round_six_scene_renders(kind, spec, tmp_path, monkeypatch):
     out = tmp_path / f"{kind}.mp4"
     vox.render(kind, spec, "editorial", 640, 360, 2.0, out, tmp_path / "w", lib=tmp_path / "lib", fetch=False, fps=12)
     assert out.stat().st_size > 2000
+
+
+def test_drawn_illustrations_stand_in_for_missing_photos():
+    assert vox.illustration("container ship") == "ship" and vox.illustration("money") == "banknote"
+    assert vox.illustration("court") == "gavel" and vox.illustration("zzz") is None
+    js = (Path(vox.__file__).parent / "vendor" / "illustrations.js").read_text(encoding="utf-8")
+    for key in set(vox.ILLUS.values()):
+        assert (f"I.{key}=" in js) or (f"I['{key}']=" in js), key
+    p = vox.plan_for("hero", "ship | One steel box | marker: this changed everything")
+    assert p["marker"] == "this changed everything" and "marker" not in p["headline"]
+
+
+@pytest.mark.skipif(not motion.enabled(), reason="needs Chromium + Playwright")
+def test_scenes_with_drawings_and_marker_render(tmp_path, monkeypatch):
+    monkeypatch.setenv("CF_CUTOUT_FETCH", "0")
+    for i, (kind, spec) in enumerate([("hero", "container | One box | marker: ship, truck or train"),
+                                      ("tornsplit", "ship + crane | One steel box | 1956"),
+                                      ("route", "Newark → Houston | 1956 | ship | atlas | marker: 58 boxes")]):
+        out = tmp_path / f"{i}.mp4"
+        vox.render(kind, spec, "editorial@orange", 640, 360, 2.0, out, tmp_path / "w", lib=tmp_path / "lib", fetch=False, fps=12)
+        assert out.stat().st_size > 2000

@@ -1,5 +1,5 @@
 Fonts from Fontsource (npm), all under the SIL Open Font License 1.1:
-Anton, Bebas Neue, Playfair Display, DM Serif Display, Inter, JetBrains Mono, Oswald, Archivo Black.
+Anton, Bebas Neue, Playfair Display, DM Serif Display, Inter, JetBrains Mono, Oswald, Archivo Black, Caveat, Permanent Marker, Kalam.
 
 Copyright 2020 The Anton Project Authors (https://github.com/googlefonts/AntonFont.git)
 

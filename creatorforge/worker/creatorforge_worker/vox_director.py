@@ -52,6 +52,8 @@ Newscard: <date> | <the real headline> | <the line under it> | person:Name | <pu
 Blueprint: <object> | <title> | <fact> · <fact> · <fact>  - how a place or machine works
 Fly: <place> [→ <place>] | <title> | satellite  - a real-map fly-in (satellite imagery when it helps)
 Route/Pinmap: add "| atlas" for the printed-atlas look
+Any graphic: add "| marker: <3-6 words>" for a red hand-drawn circle round the subject and a handwritten note
+    (Johnny Harris style) - use it on the line's key fact, about one line in five.
 Chart: <number> | <what it counts>              - one number counting up (e.g. Chart: ₹29.7 crore | Google ads in 30 days)
 Chart: <a> vs <b> | <label a>, <label b>        - two numbers as bars
 Pie: <n>% | <what>                               - a share
