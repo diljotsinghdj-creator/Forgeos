@@ -13,7 +13,7 @@ import json
 import re
 import unicodedata
 
-from . import director
+from . import director, infographic
 
 # ---- the catalogue the script AI chooses from (exact syntax) --------------------------------------------------
 CATALOG = """GRAPHICS (pick ONE per line; labels and on-screen words in ENGLISH; copy facts only from the line itself):
@@ -525,15 +525,20 @@ def ensure(script: str, llm=None, english: bool = True, props: bool = False) -> 
             data = director._extract_json(raw)
             for it in (data.get("lines") or []) if isinstance(data, dict) else []:
                 n, g = int(it.get("n", 0)), str(it.get("graphic", "")).strip()
-                if n in need and g and not valid(g, english, props):
-                    picked[n] = g
+                if n in need and g and not valid(g, english, props) and \
+                        infographic.mute_test(infographic.facts(bl[n - 1]["line"]), g):
+                    picked[n] = g          # the AI's pick shows the line's key fact; otherwise the picker decides
         except Exception as e:  # noqa: BLE001 - quota, network, bad JSON: rules take over
             report.append(f"script AI unavailable ({str(e)[:60]}) - graphics chosen by rules")
     prev, prev_g = "", ""
+    chosen: list[str] = []
     for n, b in enumerate(bl, 1):
         if n in need:
             g, how = picked.get(n, ""), "AI"
             if not g:
+                ahead = infographic.facts(bl[n]["line"]) if n < len(bl) else None
+                g, how = infographic.pick(b["line"], infographic.facts(b["line"]), n, len(bl), chosen, props, ahead), "infographic"
+            if not g or valid(g, english, props):
                 g, how = rule_graphic(b["line"], prev), "rule"
                 if not g or valid(g, english):
                     g = rule_graphic(b["line"], "")
@@ -544,6 +549,8 @@ def ensure(script: str, llm=None, english: bool = True, props: bool = False) -> 
             b["dirs"].append(g)
             report.append(f"line {n}: {how} -> {g[:60]}")
         kind = graphic_kind(b)
+        if kind:
+            chosen.append(next((d for d in b["dirs"] if _KEY.match(d) and _KEY.match(d).group(1).strip().lower() == kind), ""))
         if kind:
             prev = kind
             prev_g = next(d for d in b["dirs"] if _KEY.match(d) and _KEY.match(d).group(1).strip().lower() == kind)

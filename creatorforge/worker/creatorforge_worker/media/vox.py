@@ -185,7 +185,10 @@ def parse_pinmap(spec: str) -> dict | None:
     shapes = [[[round(v / span, 4) for v in norm(x, y)] for x, y in r[:: max(1, len(r) // 400)]] for r in rings]
     atlas = any(re.fullmatch(r"(style\s*[:=]\s*)?atlas", x.strip(), re.I) for x in parts[1:])
     parts = [x for x in parts if not re.fullmatch(r"(style\s*[:=]\s*)?atlas", x.strip(), re.I)]
+    pinned = next((x for x in parts[1:] if x.lower().startswith("person:")), "")
+    parts = [x for x in parts if x != pinned]
     out = {"type": "pinmap", "place": f.get("name", parts[0]), "shapes": shapes, "atlas": atlas, "tone": "atlas" if atlas else "",
+           "subjects": [pinned] if pinned else [],
            "box": [round((lon1 - lon0) * k / span, 4), round((lat1 - lat0) / span, 4)],
            "headline": parts[1] if len(parts) > 1 else "", "source": parts[2] if len(parts) > 2 else "",
            "country": country.get("name", ""), "seed": _seed(spec) % 10000}
@@ -550,7 +553,10 @@ def _pictures(plan: dict, lib: Path | None, model: Path | None, fetch: bool,
             if plan.get("prop") in FACE_PROPS and not out:
                 pic["face"] = face_box(c.path)
             out.append(pic)
-        elif not name.startswith("person:"):
+        elif name.startswith("person:"):
+            # no photo of this person (yet): a plain drawn figure, never a made-up face; the name stays in the tags
+            out.append({"name": s, "draw": "person"})
+        else:
             drawn = illustration(name)
             if drawn:
                 out.append({"name": s, "draw": drawn})           # a drawn illustration, never a placeholder
@@ -971,6 +977,10 @@ function pinmap(){ // the country outline; the place highlighted; the headline c
   if(P.pin){px=ox+P.pin[0]*ms;py=oy+P.pin[1]*ms;FOCUS={x:px,y:py,rx:U*.07,ry:U*.06};const ring=L.mid.circle(U*.05).center(px,py).fill(ACC).opacity(.5);popIn(ring,px,py,.5);
     const dot=L.mid.circle(U*.02).center(px,py).fill('#C0262D').stroke({color:'#FFFFFF',width:U*.004});popIn(dot,px,py,.55);
     const lb=tag(L.front,P.place,px+U*.025,py-U*.05);slide(lb,.7,W*.03,0)}
+  const who=(P.pics||[])[0];   // a real photo pinned beside the place, like evidence on a map
+  if(who){const h=TALL?H*.2:H*.34,x=TALL?Math.min(W*.78,px+W*.22):Math.max(W*.14,px-W*.2),y=TALL?Math.max(H*.2,py-H*.1):Math.max(H*.26,py-H*.05);
+    const card=printCard(L.hero,who,x,y,h,-4,{caption:(who.name||'').replace(/^person:/i,'')});drop(card,.7,H*.2,-6);
+    pinAt(L.front,x,y-h*.5+U*.012);const ln=L.mid.line(x,y,px,py).stroke({color:'#C0262D',width:U*.003});wipe(ln,1.0)}
   if(P.headline){const cw=TALL?W*.8:W*.38,ch=TALL?H*.16:H*.26;const cx=TALL?W*.1:Math.min(W*.58,px+U*.12),cy=TALL?H*.58:Math.max(H*.14,py-ch*.4);
     const card=L.hero.group();torn(card,cx,cy,cw,ch,'#F3EFE4');const size=Math.min(ch*.24,U*.05);
     lines(P.headline,size,cw*.86,'Playfair',700,3).forEach((l,i)=>T(card,l,size,cx+cw*.07,cy+ch*.22+i*size*1.12,{family:'Playfair',weight:700,anchor:'start',fill:'#1A1A1A'}));

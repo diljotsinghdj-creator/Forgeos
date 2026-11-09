@@ -82,7 +82,7 @@ def test_script_ai_picks_graphics_and_bad_answers_fall_back_to_rules():
     assert llm.calls == 1
     assert "Clock: 8:00 AM | Millions of phones buzz" in bl[0]["dirs"]
     assert "Map: Kota, Rajasthan | September 2018" in bl[1]["dirs"]
-    assert v.graphic_kind(bl[2]) == "chart"               # from the rules
+    assert v.graphic_kind(bl[2]) in ("chart", "bignumber")  # the infographic picker: the money as a big number
     assert all(v.graphic_kind(b) for b in bl)
     out2, report2 = v.ensure(NARRATION, BrokenLLM())
     assert any("rules" in r for r in report2) and all(v.graphic_kind(b) for b in v.blocks(out2)[1])
@@ -95,7 +95,7 @@ def test_broken_graphics_are_replaced_and_ai_pictures_dropped():
     assert any("place not found" in i["problem"] for i in issues)
     out, report = v.ensure(script)
     assert "Atlantis" not in out and "Visual:" not in out
-    assert "Map: New Delhi" in out
+    assert "Pinmap: New Delhi" in out
     assert "Archive: Parliament 1950" in out               # a real photo line is kept and counts as covered
     _, bl = v.blocks(out)
     assert v.graphic_kind(bl[1]) == ""
@@ -134,7 +134,7 @@ def test_a_vox_production_draws_every_line_without_ai_pictures(cfg):
         assert len(job["spec"]["shots"]) == 3
         assert job.get("vox_report")
         work = cfg.jobs_dir / jid / "work"
-        assert list(work.glob("chart_*.mp4"))
+        assert list(work.glob("chart_*.mp4")) + list(work.glob("bignumber_*.mp4"))
 
 
 def test_month_and_year_calendar_never_invents_a_day():
@@ -155,3 +155,34 @@ def test_a_graphic_line_split_across_scenes_keeps_its_graphic():
     director.plan_beats(None, plan, spec)
     beats = [b for s in plan.scenes for b in (s.beats or [])]
     assert beats and all(b.get("extra") or b.get("chart") for b in beats)
+
+
+def test_narration_alone_gets_a_sensible_infographic_per_line():
+    from creatorforge_worker import infographic as ig
+    f = ig.facts("उन्होंने बताया, उत्तर प्रदेश चुनाव में पार्टी के दो व्हाट्सऐप नेटवर्क थे। पंद्रह लाख और सत्रह लाख लोग।")
+    assert [n["shown"] for n in f["numbers"]] == ["15 lakh", "17 lakh"]         # "दो नेटवर्क" is a count, not a figure
+    assert "Uttar Pradesh" in f["places"]
+    assert ig.facts("हर सुबह आठ बजे, एक ही मैसेज।")["numbers"] == []              # a clock time, not a number
+    assert ig.facts("आप उसे आगे भेजेंगे?")["parties"] == []                        # "आप" is "you", not AAP
+    script = ("\"हम कोई भी मैसेज वायरल कर सकते हैं। सच्चा हो या झूठा।\"\n"
+              "ये बात अमित शाह ने कोटा में कही थी।\n"
+              "उन्होंने बताया, दो व्हाट्सऐप नेटवर्क थे। पंद्रह लाख और सत्रह लाख लोग।\n"
+              "शाह ने ख़ुद माना, उसमें कोई सच्चाई नहीं थी।\n"
+              "डेक्कन हेराल्ड के मुताबिक़, पचास लाख व्हाट्सऐप ग्रुप्स।\n"
+              "तो सवाल ये है, आप उसे आगे भेजेंगे या नहीं?\n")
+    out, rep = v.ensure(script)
+    _, bl = v.blocks(out)
+    kinds = [v.graphic_kind(b) for b in bl]
+    assert kinds[0] == "hero" and "person:Amit Shah" in bl[0]["dirs"][0]   # the speaker's real photo with the quote
+    assert kinds[-1] == "opener"
+    assert "pinmap" in kinds and "stack" in kinds and "stamp" in kinds and "bignumber" in kinds
+    assert "Kota" in out and "15 lakh" in out and "50 lakh" in out and "Deccan Herald" in out
+    assert "forward it?" in out.lower()
+    assert not [i for i in v.check(out) if i["level"] == "error"]
+
+
+def test_the_mute_test_rejects_graphics_that_miss_the_key_fact():
+    from creatorforge_worker import infographic as ig
+    f = ig.facts("बीजेपी ने गूगल पर उनतीस करोड़ सत्तर लाख रुपये खर्च किए।")
+    assert ig.mute_test(f, "BigNumber: ₹29.7 crore | banknote | Google ads")
+    assert not ig.mute_test(f, "Hero: megaphone | Ads")
