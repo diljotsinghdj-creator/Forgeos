@@ -952,6 +952,8 @@ def endscreen_lines(spec: str, theme: str, width: int, height: int, seconds: flo
 
 def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: float, out: Path, work: Path,
            brand: str = "", captions: bool = True) -> Path:
+    from .motion import split_theme
+    theme, tint = split_theme(theme)
     theme = theme if theme in PAPER else "editorial"
     seconds = max(1.5, seconds)
     body = {"chapter": chapter_lines, "quote": quote_lines, "steps": steps_lines, "timeline": timeline_lines,
@@ -995,7 +997,7 @@ def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: f
         vf += (f",zoompan=z='{zexpr}':x='max(0,min(iw-iw/zoom,{zx:.0f}-iw/zoom/2))'"
                f":y='max(0,min(ih-ih/zoom,{zy:.0f}-ih/zoom*{0.42 if height > width else 0.5}))':d=1:s={width}x{height}:fps=30")
     vf += ",format=yuv420p"
-    bg = opts.get("bg") or PAPER[theme]
+    bg = opts.get("bg") or (("0x" + tint.lstrip("#")) if tint and theme == "editorial" else PAPER[theme])
     ff.run(["-f", "lavfi", "-i", f"color=c={bg}:s={width * k}x{height * k}:d={seconds:.2f}:r=30",
             "-vf", vf, "-c:v", "libx264", "-preset", "veryfast", "-crf", "18", "-pix_fmt", "yuv420p", str(out)])
     return out

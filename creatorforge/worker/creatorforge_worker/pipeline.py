@@ -1816,6 +1816,8 @@ class Pipeline:
         theme = "investigative" if spec.style in DESK_STYLES else "editorial"
         seconds = round(length + render.TRANSITION_S + 0.2, 2)
         extra = beat.get("extra") or {}
+        # colour per scene: the paper tint moves on every five lines (drawn cards and animations only)
+        vtheme = f"{theme}~{int(beat.get('line') or 0) // 5}" if theme == "editorial" else theme
         if not beat.get("chart"):
             # The writer's full-frame graphics: an animated map, a chapter card, a highlighted quote.
             if extra.get("article"):
@@ -1826,7 +1828,7 @@ class Pipeline:
                 if kind == "statement" and spec.style == "kinetic":
                     continue                          # Editorial type sets the statement as its own headline
                 if extra.get(kind):
-                    out = work / f"{kind}_{hashlib.sha256(f'{extra[kind]}|{theme}|{size}|{seconds}'.encode()).hexdigest()[:16]}.mp4"
+                    out = work / f"{kind}_{hashlib.sha256(f'{extra[kind]}|{vtheme}|{size}|{seconds}'.encode()).hexdigest()[:16]}.mp4"
                     if out.is_file():
                         return out
                     try:
@@ -1864,10 +1866,10 @@ class Pipeline:
                             if mout.is_file():
                                 return mout
                             try:       # smooth SVG animation; the FFmpeg card below if the browser can't
-                                return motion.render(kind, extra[kind], theme, size[0], size[1], seconds, mout, work)
+                                return motion.render(kind, extra[kind], vtheme, size[0], size[1], seconds, mout, work)
                             except MediaError:
                                 pass
-                        return cards.render(kind, extra[kind], theme, size[0], size[1], seconds, out, work,
+                        return cards.render(kind, extra[kind], vtheme, size[0], size[1], seconds, out, work,
                                             brand=(spec.brand or {}).get("name", ""))
                     except MediaError:
                         continue

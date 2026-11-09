@@ -28,6 +28,19 @@ from .ff import MediaError
 KINDS = ("chart", "timeline", "steps", "pie", "squares", "animate", "clock", "calendar", "sign", "social", "comments",
          "trending", "stamp")
 VENDOR = Path(__file__).parent / "vendor" / "svg.min.js"
+# Colour per scene (Vox rhythm): soft paper tints that change as the story moves on; "editorial~2" picks tint 2
+PALETTE = ("#F2EBDD", "#E3ECF2", "#F6E1DA", "#E4EDE1", "#F7EFD2")
+
+
+def split_theme(theme: str) -> tuple[str, str | None]:
+    """"editorial~3" -> ("editorial", "#E4EDE1"); a plain theme keeps its own paper."""
+    base, _, var = (theme or "editorial").partition("~")
+    try:
+        return base, PALETTE[int(var) % len(PALETTE)] if var != "" else None
+    except ValueError:
+        return base, None
+
+
 THEMES = {   # background, ink, accent, second, grid
     "investigative": ("#EFE8D8", "#1A1A1A", "#C8102E", "#5A5A5A", True),
     "editorial": ("#F2EBDD", "#111111", "#E8B400", "#111111", False),
@@ -478,7 +491,10 @@ def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: f
         raise MediaError(f"motion: nothing to draw from {spec!r}")
     fps = int(fps or os.environ.get("CF_MOTION_FPS") or (60 if os.environ.get("CF_FPS") == "60" else 30))
     seconds = max(1.5, float(seconds))
+    theme, tint = split_theme(theme)
     th = THEMES.get(theme, THEMES["editorial"])
+    if tint and not th[4]:
+        th = (tint,) + tuple(th[1:])
     page = (_PAGE.replace("%SVGJS%", VENDOR.read_text(encoding="utf-8")).replace("%FONTFACE%", _font_face())
             .replace("%BG%", th[0]).replace("%PLAN%", json.dumps(plan, ensure_ascii=False))
             .replace("%W%", str(width)).replace("%H%", str(height)).replace("%DUR%", f"{seconds:.3f}")
