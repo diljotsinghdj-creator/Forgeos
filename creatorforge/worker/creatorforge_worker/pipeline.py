@@ -1436,8 +1436,8 @@ class Pipeline:
         # each Vox kind's graphics take turns through its layouts, so the same kind never looks the same twice running
         all_beats = [b for shot in shots for b in (shot.get("beats") or [])]
         bkinds = [next((k for k in vox.KINDS if (b.get("extra") or {}).get(k)), "") for b in all_beats]
-        for b, lay in zip(all_beats, vox.plan_layouts(bkinds, self._video_seed(spec))):
-            b["vox_layout"] = lay
+        # kept beside the plan, not in it: the saved plan stays exactly as directed
+        vox_layouts = {id(b): lay for b, lay in zip(all_beats, vox.plan_layouts(bkinds, self._video_seed(spec)))}
         clips, firsts = [], []   # firsts[i]: index in clips of scene i's opening shot
         charted: set[tuple[int, int]] = set()   # (scene, beat) shown as an animated chart
         stepped_files: set[Path] = set()         # drawn graphics, played "on twos" (12 fps) like hand-made animation
@@ -1462,7 +1462,8 @@ class Pipeline:
                 lengths = _beat_lengths([b["text"] for b in beats], sc.get("word_starts") or [], d, sc.get("narration_s"))
                 for k, length in enumerate(lengths):
                     chart = self._chart_clip(spec, beats[k], length, (w, h), work, job,
-                                             picture=images[k] if k < len(images) else None)
+                                             picture=images[k] if k < len(images) else None,
+                                             vox_layout=vox_layouts.get(id(beats[k]), ""))
                     if chart is not None:
                         stock_clips[k] = chart          # the animated graphic shows the number instead of a picture
                         charted.add((i, k))
@@ -1878,7 +1879,7 @@ class Pipeline:
         return vox.choose_look(text, vox.era_of(text))
 
     def _chart_clip(self, spec, beat: dict, length: float, size: tuple[int, int], work: Path,
-                    job: dict | None = None, picture: Path | None = None) -> Path | None:
+                    job: dict | None = None, picture: Path | None = None, vox_layout: str = "") -> Path | None:
         """An animated number graphic for a beat: the writer's Chart: line, or - in the editorial looks - a Text:
         line that compares figures ("£12 → £720", "48% vs 22%"). None when the beat has no chart."""
         theme = "investigative" if spec.style in DESK_STYLES else "editorial"
@@ -1896,7 +1897,7 @@ class Pipeline:
                 if kind == "statement" and spec.style == "kinetic":
                     continue                          # Editorial type sets the statement as its own headline
                 if extra.get(kind):
-                    lay = (beat.get("vox_layout") or vox.layout_for(kind, 0, self._video_seed(spec))) \
+                    lay = (vox_layout or vox.layout_for(kind, 0, self._video_seed(spec))) \
                         if kind in vox.KINDS else ""
                     out = work / f"{kind}_{hashlib.sha256(f'{extra[kind]}|{vtheme}|{size}|{seconds}|{lay}'.encode()).hexdigest()[:16]}.mp4"
                     if out.is_file():
