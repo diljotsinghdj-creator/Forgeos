@@ -264,3 +264,24 @@ def test_scenes_with_drawings_and_marker_render(tmp_path, monkeypatch):
         out = tmp_path / f"{i}.mp4"
         vox.render(kind, spec, "editorial@orange", 640, 360, 2.0, out, tmp_path / "w", lib=tmp_path / "lib", fetch=False, fps=12)
         assert out.stat().st_size > 2000
+
+
+def test_a_named_public_figure_stands_beside_the_infographic():
+    from creatorforge_worker import infographic as ig
+    p = vox.plan_for("stack", "bars | A 1 15 lakh, A 2 17 lakh | Networks | with: person:Amit Shah")
+    assert p["with"] == "person:Amit Shah" and p["values"][0]["shown"] == "15 lakh"
+    # the director adds the papercut when a line names someone, and keeps it for "he said" lines that follow
+    script = "ये बात अमित शाह ने कोटा में कही थी।\nउन्होंने बताया, दो नेटवर्क थे। पंद्रह लाख और सत्रह लाख लोग।\n"
+    out, _ = vox_director.ensure(script)
+    _, bl = vox_director.blocks(out)
+    assert "person:Amit Shah" in bl[0]["dirs"][0]
+    assert vox_director.graphic_kind(bl[1]) == "stack" and "with: person:Amit Shah" in bl[1]["dirs"][0]
+
+
+@pytest.mark.skipif(not motion.enabled(), reason="needs Chromium + Playwright")
+def test_a_scene_with_a_papercut_companion_renders(tmp_path, monkeypatch):
+    monkeypatch.setenv("CF_CUTOUT_FETCH", "0")
+    out = tmp_path / "c.mp4"
+    vox.render("bignumber", "32 lakh | crowd | Every morning | with: person:Amit Shah", "editorial@red", 640, 360, 2.0,
+               out, tmp_path / "w", lib=tmp_path / "lib", fetch=False, fps=12)
+    assert out.stat().st_size > 2000

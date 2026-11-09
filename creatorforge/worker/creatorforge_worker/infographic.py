@@ -269,7 +269,8 @@ def candidates(line: str, f: dict, n: int, total: int, ahead: dict | None = None
     if f["message"] and not nums:
         out.append(f"Hero: smartphone | {head or 'The message'} | {' · '.join(key_facts(f)[:2]) or 'forwarded'} | style: disc")
     # people and things
-    if who:
+    hard = bool(nums or f["percent"] or f["places"] or f["publisher"] or f["false"] or f["time"] or f["date"])
+    if who and not hard:     # with a fact to show, the infographic leads and the person stands beside it (with:)
         tags = " · ".join(x for x in (who, f["parties"][0] if f["parties"] else "", f["places"][0] if f["places"] else "", year) if x)
         out.append(f"Hero: person:{who} | {head or who} | {tags} | style: grid")
     if obj:
@@ -327,6 +328,34 @@ def _ranked(cands: list[str], n: int, total: int, f: dict | None = None) -> list
     return sorted(cands, key=lambda g: rank.get(g.split(":", 1)[0].strip().lower(), 5))
 
 
+PRONOUNS = ("उन्होंने", "उनके", "उनका", "उनकी", "उन्हें", "वे", "उनसे")
+
+
+def carry_person(line: str, f: dict, last: str) -> dict:
+    """A line that says 'he said' (उन्होंने...) about the person just named keeps that person beside it."""
+    if not f["people"] and last and any(vd._has(vd._tokens(line), w) for w in PRONOUNS):
+        f = dict(f)
+        f["people"] = [last]
+        f["carried"] = True
+    return f
+
+
+def _with_person(g: str, f: dict) -> str:
+    """A public figure named in the line stands beside the infographic as a papercut photo (unless the graphic is
+    already their photo). Only on the Vox scenes, which make room for them."""
+    from .media import vox
+    kind = g.split(":", 1)[0].strip().lower()
+    if not f["people"] or kind not in vox.KINDS or "with:" in g:
+        return g
+    who = f["people"][0]
+    if f"person:{who}".lower() in g.lower():
+        others = [p for p in f["people"][1:] if f"person:{p}".lower() not in g.lower()]
+        if not others:
+            return g
+        who = others[0]
+    return f"{g} | with: person:{who}"
+
+
 def _marked(g: str, f: dict, prev: list[str]) -> str:
     """Johnny Harris annotates the key fact in red marker: on maps, people and numbers, not on every line."""
     kind = g.split(":", 1)[0].strip().lower()
@@ -359,5 +388,5 @@ def pick(line: str, f: dict, n: int, total: int, prev: list[str], props: bool = 
             continue
         if vd.valid(g, True, props) or not mute_test(f, g):
             continue
-        return _marked(g, f, prev)
+        return _with_person(_marked(g, f, prev), f)
     return ""

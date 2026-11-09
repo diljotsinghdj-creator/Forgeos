@@ -52,6 +52,8 @@ Newscard: <date> | <the real headline> | <the line under it> | person:Name | <pu
 Blueprint: <object> | <title> | <fact> · <fact> · <fact>  - how a place or machine works
 Fly: <place> [→ <place>] | <title> | satellite  - a real-map fly-in (satellite imagery when it helps)
 Route/Pinmap: add "| atlas" for the printed-atlas look
+Any graphic: add "| with: person:Full Name" when the line names a public figure - their papercut photo stands
+    beside the infographic (the graphic makes room). Use it on every line that names someone.
 Any graphic: add "| marker: <3-6 words>" for a red hand-drawn circle round the subject and a handwritten note
     (Johnny Harris style) - use it on the line's key fact, about one line in five.
 Chart: <number> | <what it counts>              - one number counting up (e.g. Chart: ₹29.7 crore | Google ads in 30 days)
@@ -532,12 +534,15 @@ def ensure(script: str, llm=None, english: bool = True, props: bool = False) -> 
             report.append(f"script AI unavailable ({str(e)[:60]}) - graphics chosen by rules")
     prev, prev_g = "", ""
     chosen: list[str] = []
+    last_person = ""
     for n, b in enumerate(bl, 1):
+        named = infographic.facts(b["line"])["people"]
         if n in need:
             g, how = picked.get(n, ""), "AI"
             if not g:
                 ahead = infographic.facts(bl[n]["line"]) if n < len(bl) else None
-                g, how = infographic.pick(b["line"], infographic.facts(b["line"]), n, len(bl), chosen, props, ahead), "infographic"
+                fb = infographic.carry_person(b["line"], infographic.facts(b["line"]), last_person)
+                g, how = infographic.pick(b["line"], fb, n, len(bl), chosen, props, ahead), "infographic"
             if not g or valid(g, english, props):
                 g, how = rule_graphic(b["line"], prev), "rule"
                 if not g or valid(g, english):
@@ -548,6 +553,8 @@ def ensure(script: str, llm=None, english: bool = True, props: bool = False) -> 
                 g, how = (prev_g, "held") if prev_g else ("Chapter: Part 1 | " + _title(header), "title")
             b["dirs"].append(g)
             report.append(f"line {n}: {how} -> {g[:60]}")
+        if named:
+            last_person = named[0]
         kind = graphic_kind(b)
         if kind:
             chosen.append(next((d for d in b["dirs"] if _KEY.match(d) and _KEY.match(d).group(1).strip().lower() == kind), ""))

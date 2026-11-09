@@ -524,6 +524,11 @@ def plan_for(kind: str, spec: str) -> dict | None:
     if not fn:
         return None
     # "| marker: <note>" on any scene: a hand-drawn marker circle round the subject and a handwritten note
+    comp = ""
+    w = re.search(r"\|\s*with\s*[:=]\s*([^|]+)", spec or "", re.I)
+    if w:
+        comp = w.group(1).strip()[:60]
+        spec = (spec[:w.start()] + spec[w.end():]).strip()
     note = ""
     m = re.search(r"\|\s*marker\s*[:=]\s*([^|]+)", spec or "", re.I)
     if m:
@@ -532,6 +537,8 @@ def plan_for(kind: str, spec: str) -> dict | None:
     plan = fn(spec)
     if plan is not None and note:
         plan["marker"] = note
+    if plan is not None and comp:
+        plan["with"] = comp if comp.lower().startswith("person:") else "person:" + comp
     return plan
 
 
@@ -564,6 +571,16 @@ def _pictures(plan: dict, lib: Path | None, model: Path | None, fetch: bool,
                 icon = find_icon(name.split()[-1]) or find_icon(name) or "circle"
                 out.append({"name": s, "o": icon_nodes(icon)})
     plan["pics"] = out
+    if plan.get("with"):
+        c = cutouts.get(plan["with"], lib, model=model, fetch=fetch, sources=sources)
+        if c is not None:
+            from PIL import Image
+            with Image.open(c.path) as im:
+                w, h = im.size
+            plan["comp"] = {"name": plan["with"], "img": c.path.as_uri(), "w": w, "h": h, "credit": c.credit}
+            out = out + [plan["comp"]]
+        else:
+            plan["comp"] = {"name": plan["with"], "draw": "person"}
     credits = sorted({p["credit"] for p in out if p.get("credit")})
     plan["credit"] = ("Photo: " + "; ".join(credits))[:120] if credits else ""
 
@@ -670,7 +687,8 @@ const E={out:t=>1-Math.pow(1-t,3), back:t=>{const c=1.6,c3=c+1;return 1+c3*Math.
 function at(start,dur,fn,e){tracks.push({start,dur,fn,e:e||E.out})}
 let seed=P.seed||1;function rnd(){seed=(seed*16807)%2147483647;return (seed-1)/2147483646}
 // ---- layers (back to front) and the camera ----
-const L={};['paper','back','mid','hero','front','grain'].forEach(k=>L[k]=draw.group());
+const L={};L.paper=draw.group();const CONTENT=draw.group();
+['back','mid','hero','front'].forEach(k=>L[k]=CONTENT.group());L.side=draw.group();L.grain=draw.group();
 draw.defs().svg(`<filter id="shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="${U*.004}" dy="${U*.012}" stdDeviation="${U*.011}" flood-color="#000" flood-opacity=".32"/></filter>
 <filter id="softshadow" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="${U*.006}" stdDeviation="${U*.006}" flood-color="#000" flood-opacity=".22"/></filter>
 <filter id="blur" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="${U*.035}"/></filter>
@@ -681,7 +699,7 @@ draw.defs().svg(`<filter id="shadow" x="-20%" y="-20%" width="140%" height="150%
 <filter id="cyanch"><feColorMatrix type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 .55 0"/></filter>`);
 L.paper.image(K.bg).size(W,H);
 L.grain.image(K.grain).size(W,H).attr({style:'mix-blend-mode:multiply'}).opacity(DARK?.25:.55);
-const DEPTH={paper:.012,back:.03,mid:.045,hero:.07,front:.055};
+const DEPTH={paper:.012,back:.03,mid:.045,hero:.07,front:.055,side:.08};
 function camera(t){const p=E.inout(Math.min(1,t/Math.max(DUR,.1)));
   for(const k in DEPTH){const z=1+DEPTH[k]*p;L[k].attr({transform:`translate(${W/2*(1-z)},${H*.46*(1-z)}) scale(${z})`})}}
 // ---- the style kit ----
@@ -1040,6 +1058,7 @@ function stack(){
   vs.forEach((v,i)=>{const x=W/2-area/2+gap*(i+.5)-bw/2;const h=Math.max(U*.02,maxh*v.value/mx);const g=L.hero.group();
     material(g,P.material,x,base,bw,h,v.value===mx?ACC:'#3A3A3A',i);const clip=draw.clip().add(draw.rect(W,H).move(0,0));
     const st=.25+i*.25;g.opacity(0);at(st,.6,p=>{g.opacity(1);g.attr({transform:`translate(0,${h*(1-p)})`})},E.back);
+    if(v.value===mx)FOCUS={x:x+bw/2,y:base-h*.55,rx:bw*.95,ry:Math.max(h*.6,U*.08)};
     const lb=valLabel(L.front,v.shown,x+bw/2,base-h-U*.05,{fill:v.value===mx?FG:FG});wipe(lb,st+.5);
     if(v.label){const t=T(L.front,v.label.toUpperCase(),U*.026,x+bw/2,base+U*.035,{family:'Inter',weight:800,ls:'.08em'});fit(t,gap*.95);wipe(t,st+.3)}})}
 function stand(){ // figures standing on their bars, value boxes beside them
@@ -1255,6 +1274,21 @@ function blueprint(){ // a blue card with a white grid; the cut-out; an arrow th
   const q=arrow.node.getPointAtLength(len),q2=arrow.node.getPointAtLength(len-2);const ang=Math.atan2(q.y-q2.y,q.x-q2.x)*180/Math.PI;
   const head=L.front.polygon([[0,0],[-U*.03,-U*.018],[-U*.03,U*.018]].map(z=>z.join(',')).join(' ')).fill('#FFFFFF');head.attr({transform:`translate(${q.x},${q.y}) rotate(${ang})`});wipe(head,1.45)}
 
+// ---- the papercut companion: a public figure named in the line, cut out of a real photo, beside the infographic ----
+function companion(){const c=P.comp;if(!c)return;
+  // the infographic steps aside: it shrinks a little and moves away from the side the person stands on
+  const h=TALL?H*.38:H*.96, y=H;
+  const ar=c.img?c.w/c.h:(window.ILLU&&ILLU.person?ILLU.person[0]/ILLU.person[1]:.4);const ww=Math.min(h*ar,TALL?W*.56:W*.3);const hh=ww/ar;
+  const x=TALL?W*.3:ww/2+U*.02;
+  if(TALL){const k=.72;CONTENT.attr({transform:`translate(${W*(1-k)/2},${H*.01}) scale(${k})`})}
+  else{const right=ww+U*.05,k=Math.min(.8,(W-right)/W);CONTENT.attr({transform:`translate(${right},${H*(1-k)/2}) scale(${k})`})}
+  const disc=L.side.circle(hh*.62).center(x,y-hh*.62).fill(ACC);popIn(disc,x,y-hh*.62,.15,.45);
+  const g=picture(L.side,c,x,y,hh,{offset:true});slide(g,.25,-W*.25,0);
+  const nm=(c.name||'').replace(/^person:/i,'');
+  if(nm){const t=tag(L.side,nm,0,0,{bg:ACC,size:U*.024});const bb=t.bbox();
+    t.attr({transform:`translate(${Math.max(U*.03,x-bb.width/2)},${TALL?H*.6:y-hh-U*.06})`});slide(t,.6,-W*.1,0)}
+  if(c.credit)mono(L.side,'Photo: '+c.credit,U*.03,H-U*.025,{size:U*.013,fill:DARK?'#BBBBBB':'#555555'})}
+
 // ---- the Johnny Harris layer: a red marker circle scribbled round the subject, an arrow, a handwritten note ----
 let FOCUS=null;   // {x,y,rx,ry} set by a scene: what the marker circles
 function markerLayer(){if(!P.marker)return;const f=FOCUS||{x:W/2,y:H*.45,rx:U*.2,ry:U*.16};const red='#D7262B',g=L.front.group();
@@ -1282,7 +1316,7 @@ async function boot(){
   try{await Promise.all(Array.from(document.fonts).map(f=>f.load()))}catch(e){}
   const imgs=[];(P.pics||[]).forEach(p=>{if(p.img)imgs.push(new Promise(r=>{const i=new Image();i.onload=i.onerror=r;i.src=p.img}))});
   await Promise.all(imgs);
-  (SCENES[P.type]||hero)();markerLayer();
+  (SCENES[P.type]||hero)();companion();markerLayer();
   window.frame=function(t){camera(t);const tq=Math.floor(t*12+1e-6)/12;   // the hand-made 12 fps stutter
     for(const k of tracks){const p=Math.max(0,Math.min(1,(tq-k.start)/k.dur));k.fn(k.e(p))}};
   window.frame(0);window.READY=true}
