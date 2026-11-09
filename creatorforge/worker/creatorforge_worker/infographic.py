@@ -256,10 +256,13 @@ def candidates(line: str, f: dict, n: int, total: int, ahead: dict | None = None
     if f["time"]:
         out.append(f"Clock: {f['time']} | {head or 'Every day'}")
     if len(f["places"]) >= 2:
-        out.append(f"Route: {' → '.join(f['places'][:4])} | {head or 'The route'} | {f['vehicle']}")
+        out.append(f"Route: {' → '.join(f['places'][:4])} | {head or 'The route'} | {f['vehicle']} | atlas | pen")
     if f["places"]:
         ph = _headline(f) or " · ".join(x for x in (who, f["parties"][0] if f["parties"] else "", year) if x) or head
-        out.append(f"Pinmap: {f['places'][0]} | {ph}".rstrip(" |") + (f" | person:{who}" if who else "") + " | atlas")
+        from .media import maps
+        country = (maps._find(f["places"][0]) or {}).get("kind") == "country"
+        out.append(f"Pinmap: {f['places'][0]} | {ph}".rstrip(" |") + (f" | person:{who}" if who else "")
+                   + (" | pen" if country else " | atlas"))      # a whole country gets the marker hatching
     if f["date"]:
         out.append(f"Calendar: {f['date']} | {head or ''}".rstrip(" |"))
     if f["month_year"] and not f["date"]:

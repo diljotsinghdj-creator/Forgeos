@@ -51,7 +51,9 @@ Tornsplit: <object> + <object> | <BIG HEADLINE 2-4 words> | <kicker>  - a chapte
 Newscard: <date> | <the real headline> | <the line under it> | person:Name | <publisher>  - a news report card
 Blueprint: <object> | <title> | <fact> · <fact> · <fact>  - how a place or machine works
 Fly: <place> [→ <place>] | <title> | satellite  - a real-map fly-in (satellite imagery when it helps)
-Route/Pinmap: add "| atlas" for the printed-atlas look
+Route/Pinmap: add "| atlas" for the printed-atlas look, "| pen" for Johnny Harris red marker (routes traced by
+    hand, stops circled, a country hatched in marker)
+Fly: add "| terrain" for a relief map (mountains, valleys, borders in hills)
 Any graphic: add "| logo: whatsapp" (or google, facebook, instagram, x, youtube, telegram, jio, paytm, phonepe...)
     when the line names that platform or company - its official mark appears as an app tile. "logo:whatsapp" can
     also be the subject of a Hero. Only for platforms the line actually names.

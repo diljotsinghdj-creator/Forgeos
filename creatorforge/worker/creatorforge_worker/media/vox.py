@@ -185,10 +185,12 @@ def parse_pinmap(spec: str) -> dict | None:
     shapes = [[[round(v / span, 4) for v in norm(x, y)] for x, y in r[:: max(1, len(r) // 400)]] for r in rings]
     atlas = any(re.fullmatch(r"(style\s*[:=]\s*)?atlas", x.strip(), re.I) for x in parts[1:])
     parts = [x for x in parts if not re.fullmatch(r"(style\s*[:=]\s*)?atlas", x.strip(), re.I)]
+    pen = any(re.fullmatch(r"(style\s*[:=]\s*)?pen", x.strip(), re.I) for x in parts[1:])
+    parts = [x for x in parts if not re.fullmatch(r"(style\s*[:=]\s*)?pen", x.strip(), re.I)]
     pinned = next((x for x in parts[1:] if x.lower().startswith("person:")), "")
     parts = [x for x in parts if x != pinned]
     out = {"type": "pinmap", "place": f.get("name", parts[0]), "shapes": shapes, "atlas": atlas, "tone": "atlas" if atlas else "",
-           "subjects": [pinned] if pinned else [],
+           "subjects": [pinned] if pinned else [], "pen": pen,
            "box": [round((lon1 - lon0) * k / span, 4), round((lat1 - lat0) / span, 4)],
            "headline": parts[1] if len(parts) > 1 else "", "source": parts[2] if len(parts) > 2 else "",
            "country": country.get("name", ""), "seed": _seed(spec) % 10000}
@@ -336,7 +338,7 @@ def parse_route(spec: str) -> dict | None:
     stops = _geo([x.strip() for x in re.split(r"→|->|\bto\b", parts[0]) if x.strip()][:6])
     if len(stops) < 2:
         return None
-    vehicle = next((p.lower() for p in parts[2:] if p and "atlas" not in p.lower()), "plane")
+    vehicle = next((p.lower() for p in parts[2:] if p and "atlas" not in p.lower() and p.strip().lower() not in ("pen", "style: pen")), "plane")
     vehicle = next((v for v in ("plane", "ship", "car", "train", "truck", "bus") if v in vehicle), "plane")
     lons = [s["lon"] for s in stops]
     lats = [s["lat"] for s in stops]
@@ -352,7 +354,9 @@ def parse_route(spec: str) -> dict | None:
                 shapes.append([[round(x, 2), round(y, 2)] for x, y in r[:: max(1, len(r) // 160)]])
     from .scene_anim import icon_nodes, find_icon
     atlas = any(re.fullmatch(r"(style\s*[:=]\s*)?atlas", x.strip(), re.I) for x in parts[1:])
-    return {"type": "route", "stops": stops, "box": box, "shapes": shapes[:400], "title": parts[1] if len(parts) > 1 and not
+    pen = any(re.fullmatch(r"(style\s*[:=]\s*)?pen", x.strip(), re.I) for x in parts[1:])
+    parts = [x for x in parts if not re.fullmatch(r"(style\s*[:=]\s*)?pen", x.strip(), re.I)]
+    return {"type": "route", "pen": pen, "stops": stops, "box": box, "shapes": shapes[:400], "title": parts[1] if len(parts) > 1 and not
             re.fullmatch(r"(style\s*[:=]\s*)?atlas", parts[1], re.I) else "",
             "vehicle": vehicle, "icon": icon_nodes(find_icon(vehicle) or "plane"), "pin": icon_nodes("map-pin"),
             "atlas": atlas, "tone": "atlas" if atlas else "crumple", "seed": _seed(spec) % 10000}
@@ -802,12 +806,15 @@ function cross(g,x,y,s){const c=g.group();c.line(x-s,y,x+s,y).stroke({color:FG,w
   c.line(x,y-s,x,y+s).stroke({color:FG,width:Math.max(1,U*.0016)});c.circle(s*.9).center(x,y).fill('none').stroke({color:FG,width:Math.max(1,U*.0016)});return c}
 function side(g,s){if(!s)return;const t=T(g,String(s),U*.019,0,0,{family:'Inter',weight:600,anchor:'middle',ls:'0.18em'});
   t.attr({transform:`translate(${W-U*.035},${H*.42}) rotate(90)`});return t}
-function mono(g,s,x,y,o){o=o||{};return T(g,s,o.size||U*.019,x,y,{family:'Mono',weight:o.weight||400,anchor:o.anchor||'start',fill:o.fill||FG})}
+function mono(g,s,x,y,o){o=o||{};const t=T(g,s,o.size||U*.019,x,y,{family:'Mono',weight:o.weight||400,anchor:o.anchor||'start',fill:o.fill||FG});
+  if(o.type)typeIn(t,String(s),o.at||.6);return t}
+function typeIn(t,full,start){ // the typewriter: letters appear one by one with a block cursor
+  t.text('');at(start,Math.min(1.4,.1+full.length*.035),p=>{const n=Math.round(full.length*p);t.text(full.slice(0,n)+(p<1?'▌':''))},E.lin)}
 function callout(g,x1,y1,x2,y2,s,start){ // dot on the subject, an elbow line, a mono note
   const dot=g.circle(U*.012).center(x1,y1).fill(ACC).stroke({color:INK,width:Math.max(1,U*.002)});
   const ln=g.polyline([[x1,y1],[x1,y1]]).fill('none').stroke({color:FG,width:Math.max(1,U*.0018)});
   const ls=lines(s,U*.027,W*.24,'Mono',400,3);const tg=g.group();const right=x2>x1;
-  ls.forEach((l,i)=>mono(tg,l,x2+(right?U*.012:-U*.012),y2+i*U*.036,{size:U*.027,anchor:right?'start':'end'}));
+  ls.forEach((l,i)=>mono(tg,l,x2+(right?U*.012:-U*.012),y2+i*U*.036,{size:U*.027,anchor:right?'start':'end',type:true,at:start+.5+i*.3}));
   [dot,tg].forEach(e=>e.opacity(0));
   at(start,.6,p=>{dot.opacity(Math.min(1,p*3));const mx=x1+(x2-x1)*.35;
     const pts=[[x1,y1],[mx,y2],[x2,y2]];const seg=p<.5?[[x1,y1],[x1+(mx-x1)*p*2,y1+(y2-y1)*p*2]]:[pts[0],pts[1],[mx+(x2-mx)*(p-.5)*2,y2]];
@@ -918,7 +925,7 @@ function hero(){
     callout(L.front,x1,y1,x2,y2,P.note,1.3)}
   // the small print: crosshairs, the mono date/place line, side text, the photo credit
   const c=U*.016;[[U*.05,U*.05],[W-U*.05,U*.05]].forEach(([x,y])=>cross(L.front,x,y,c));
-  if(P.meta&&P.meta.length){const m=mono(L.front,P.meta.join('  ·  ').toUpperCase(),U*.05,TALL?H*.66:H*.75,{weight:700});wipe(m,.9)}
+  if(P.meta&&P.meta.length){mono(L.front,P.meta.join('  ·  ').toUpperCase(),U*.05,TALL?H*.66:H*.75,{weight:700,type:true,at:.9})}
   if(P.side)side(L.front,P.side.toUpperCase());
   if(P.credit){mono(L.front,P.credit,W-U*.03,H-U*.025,{size:U*.014,anchor:'end',fill:DARK?'#BBBBBB':'#555555'})}
 }
@@ -1053,10 +1060,12 @@ function headline(){ // a torn newspaper headline with cut-outs around it, a big
 function pinmap(){ // the country outline; the place highlighted; the headline clipping drops on the pin
   const bx=P.box,ms=Math.min((TALL?W*.86:W*.5)/bx[0],(TALL?H*.42:H*.72)/bx[1]);const ox=(TALL?W/2:W*.34)-bx[0]*ms/2,oy=(TALL?H*.28:H*.42)-bx[1]*ms/2;
   if(P.atlas)atlasSea();
-  const m=L.back.group();P.shapes.forEach(r=>{m.polygon(r.map(q=>[ox+q[0]*ms,oy+q[1]*ms].join(',')).join(' ')).fill(P.atlas?(P.pin?'#EFE3C2':'#D9542C'):(P.pin?'#E2DBCC':ACC))
+  const m=L.back.group();P.shapes.forEach(r=>{m.polygon(r.map(q=>[ox+q[0]*ms,oy+q[1]*ms].join(',')).join(' ')).fill(P.pen?'#EFE3C2':P.atlas?(P.pin?'#EFE3C2':'#D9542C'):(P.pin?'#E2DBCC':ACC))
     .stroke({color:P.atlas?'#8E7E5C':'#9A9282',width:Math.max(1,U*.0016)})});if(P.atlas)depthOfField(m);m.opacity(0);at(0,.6,p=>m.opacity(p));
   if(P.country){const c=T(L.back,P.country.toUpperCase(),U*.03,ox+bx[0]*ms/2,oy-U*.03,{family:'Inter',weight:800,ls:'0.3em',fill:'#8C8577'});wipe(c,.3)}
-  let px=ox+bx[0]*ms/2,py=oy+bx[1]*ms/2;
+  let px=ox+bx[0]*ms*(P.pin?.5:.92),py=oy+bx[1]*ms/2;   // no pin: the card goes beside the country, not on it
+  if(P.pen&&!P.pin)P.shapes.forEach(r=>penHatch(L.mid,r.map(q=>[ox+q[0]*ms,oy+q[1]*ms]),.4));
+  if(P.pen&&P.pin)penCircle(L.front,ox+P.pin[0]*ms,oy+P.pin[1]*ms,U*.06,.9);
   if(P.pin){px=ox+P.pin[0]*ms;py=oy+P.pin[1]*ms;FOCUS={x:px,y:py,rx:U*.07,ry:U*.06};const ring=L.mid.circle(U*.05).center(px,py).fill(ACC).opacity(.5);popIn(ring,px,py,.5);
     const dot=L.mid.circle(U*.02).center(px,py).fill('#C0262D').stroke({color:'#FFFFFF',width:U*.004});popIn(dot,px,py,.55);
     const lb=tag(L.front,P.place,px+U*.025,py-U*.05);slide(lb,.7,W*.03,0)}
@@ -1194,6 +1203,22 @@ function depthOfField(grp){ // the edges go soft: a blurred copy under, the shar
   const gr=draw.gradient('radial',a=>{a.stop(0,'#fff');a.stop(.55,'#fff');a.stop(1,'#000')});
   const m=draw.mask().add(draw.rect(W,H).fill(gr));grp.maskWith(m)}
 
+// ---- Johnny Harris pen: a shaky red marker line along any path, drawn on as the narration goes ----
+function penLine(g,pts,start,dur,color,width){ // pts: [[x,y],...] - a wobbly marker stroke through them
+  const out=[];for(let i=0;i<pts.length-1;i++){const [a,b]=[pts[i],pts[i+1]];const n=Math.max(4,Math.round(Math.hypot(b[0]-a[0],b[1]-a[1])/(U*.02)));
+    for(let k=0;k<n;k++){const t=k/n;out.push([a[0]+(b[0]-a[0])*t+(rnd()-.5)*U*.004,a[1]+(b[1]-a[1])*t+(rnd()-.5)*U*.004])}}
+  out.push(pts[pts.length-1]);
+  const pl=g.path('M'+out.map(q=>q.join(' ')).join(' L')).fill('none').stroke({color:color||'#D7262B',width:width||U*.008,linecap:'round',linejoin:'round'}).opacity(.92);
+  const len=pl.node.getTotalLength();pl.attr({'stroke-dasharray':len,'stroke-dashoffset':len});at(start,dur,p=>pl.attr({'stroke-dashoffset':len*(1-p)}),E.inout);return pl}
+function penCircle(g,x,y,r,start){const pts=[];for(let i=0;i<=26;i++){const a=-1.9+i/26*Math.PI*2.2;const j=1+(rnd()-.5)*.12;pts.push([x+Math.cos(a)*r*j,y+Math.sin(a)*r*j*.85])}
+  return penLine(g,pts,start,.45)}
+function penHatch(g,poly,start){ // marker hatching inside a shape (a country, a region)
+  const xs=poly.map(q=>q[0]),ys=poly.map(q=>q[1]);const x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);
+  const cl=draw.clip().add(draw.polygon(poly.map(q=>q.join(',')).join(' ')));const h=g.group().clipWith(cl);const st=U*.018;let i=0;
+  for(let d=-(y1-y0);d<x1-x0;d+=st,i++){h.line(x0+d,y1,x0+d+(y1-y0),y0).stroke({color:'#D7262B',width:U*.004,linecap:'round'}).opacity(0)
+    .attr({'data-i':i})}
+  const ls=h.children();at(start,.9,p=>ls.forEach((l,k)=>l.opacity(k/ls.length<p?.55:0)),E.lin);return h}
+
 // ---- round 5 ----
 function route(){ // a paper map; dashed routes draw themselves; the vehicle travels them; pins at each stop
   const [x0,y0,x1,y1]=P.box;const kx=Math.cos((y0+y1)/2*Math.PI/180);
@@ -1219,6 +1244,8 @@ function route(){ // a paper map; dashed routes draw themselves; the vehicle tra
     lb.attr({transform:`translate(${left?p[0]-U*.02-bb.width-bb.x:p[0]+U*.02-bb.x},${p[1]+U*.02})`});slide(lb,.4+i*per,(left?-1:1)*W*.02,0)});
   legs.forEach((l,i)=>{const path=L.mid.path(`M${l[0]} ${l[1]} Q${l[2]} ${l[3]} ${l[4]} ${l[5]}`).fill('none').stroke({color:'#2A1A10',width:U*.004,dasharray:`${U*.012} ${U*.01}`});
     if(P.atlas)path.stroke({color:'#0F7C7A',width:U*.006,dasharray:'none'});
+    if(P.pen){path.opacity(0);const q=[];const pl=path.node.getTotalLength();for(let k=0;k<=24;k++){const pt=path.node.getPointAtLength(pl*k/24);q.push([pt.x,pt.y])}
+      penLine(L.mid,q,.5+i*per,per*.9);penCircle(L.front,l[4],l[5],U*.045,.5+(i+1)*per)}
     const len=path.node.getTotalLength();const mask=draw.mask().add(draw.path(`M${l[0]} ${l[1]} Q${l[2]} ${l[3]} ${l[4]} ${l[5]}`).fill('none').stroke({color:'#fff',width:U*.02}));
     const mp=mask.children()[0];mp.attr({'stroke-dasharray':len,'stroke-dashoffset':len});path.maskWith(mask);
     const v=L.front.group();const vk=U*.1/24;v.circle(U*.085).center(0,0).fill('#F3E9D4').stroke({color:'#2A1A10',width:U*.003});
@@ -1387,6 +1414,20 @@ function markerLayer(){if(!P.marker)return;const f=FOCUS||{x:W/2,y:H*.45,rx:U*.2
   const hd=g.path(`M${q.x-Math.cos(ang-0.5)*U*.03} ${q.y-Math.sin(ang-0.5)*U*.03} L${q.x} ${q.y} L${q.x-Math.cos(ang+0.5)*U*.03} ${q.y-Math.sin(ang+0.5)*U*.03}`)
     .fill('none').stroke({color:red,width:U*.006,linecap:'round',linejoin:'round'});wipe(hd,1.88);t.opacity(0);at(1.6,.3,p=>t.opacity(p),E.lin)}
 
+// ---- the film: gate weave, dust and scratches on every frame, a warm light leak on openers (Johnny Harris) ----
+function filmLayer(){if(K.film===false)return()=>{};const g=L.grain.group();let last=-1;
+  const leak=['opener','tornsplit','number','headline'].includes(P.type)||P.leak;
+  let lk=null;if(leak){const gr=draw.gradient('radial',a=>{a.stop(0,'#FFB347',.9);a.stop(.45,'#FF6A2A',.45);a.stop(1,'#FF6A2A',0)});
+    lk=L.grain.circle(U*1.3).center(-U*.2,H*.2).fill(gr).attr({style:'mix-blend-mode:screen'}).opacity(0)}
+  return function(t,tq){
+    if(lk){const p=Math.min(1,t/1.6);lk.center(-U*.2+W*.5*p,H*(.2+.1*p)).opacity(Math.max(0,Math.sin(Math.PI*Math.min(1,t/1.8)))*.55)}
+    const tick=Math.round(tq*12);if(tick===last)return;last=tick;g.clear();
+    let sd=tick*9301+P.seed;const r=()=>{sd=(sd*16807)%2147483647;return (sd-1)/2147483646};
+    const n=3+Math.floor(r()*5);for(let i=0;i<n;i++){g.circle(U*(.002+r()*.004)).center(r()*W,r()*H).fill(r()<.5?'#000':'#FFF').opacity(.25+r()*.3)}
+    if(r()<.22){const x=r()*W;g.line(x,0,x+(r()-.5)*U*.02,H).stroke({color:'#000',width:Math.max(1,U*.0012)}).opacity(.12)}
+    if(r()<.06){const x=r()*W,y=r()*H;g.path(`M${x} ${y} q ${U*.02} ${U*.01} ${U*.04} ${-U*.005} t ${U*.03} ${U*.02}`).fill('none').stroke({color:'#000',width:1.2}).opacity(.35)}
+    const dx=(r()-.5)*U*.0024,dy=(r()-.5)*U*.0024;draw.node.style.transform=`translate(${dx}px,${dy}px) scale(1.004)`}}   // gate weave
+
 const SCENES={hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv,
   clockmap,tornsplit,newscard,blueprint};
 async function boot(){
@@ -1394,8 +1435,9 @@ async function boot(){
   const imgs=[];(P.pics||[]).forEach(p=>{if(p.img)imgs.push(new Promise(r=>{const i=new Image();i.onload=i.onerror=r;i.src=p.img}))});
   await Promise.all(imgs);
   (SCENES[P.type]||hero)();companion();logoLayer();markerLayer();
+  const film=filmLayer();
   window.frame=function(t){camera(t);const tq=Math.floor(t*12+1e-6)/12;   // the hand-made 12 fps stutter
-    for(const k of tracks){const p=Math.max(0,Math.min(1,(tq-k.start)/k.dur));k.fn(k.e(p))}};
+    for(const k of tracks){const p=Math.max(0,Math.min(1,(tq-k.start)/k.dur));k.fn(k.e(p))}film(t,tq)};
   window.frame(0);window.READY=true}
 boot();
 </script></body></html>"""

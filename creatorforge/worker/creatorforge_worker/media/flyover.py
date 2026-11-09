@@ -29,6 +29,9 @@ ACCENT = {"investigative": "#C8102E", "editorial": "#E8B400"}
 # Satellite fly-ins: Sentinel-2 cloudless 2016 by EOX (CC BY 4.0 - free to use with credit), sharp to ~10 m.
 SAT_TILES = os.environ.get("CF_SAT_TILES",
                            "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless_3857/default/g/{z}/{y}/{x}.jpg")
+# Terrain fly-ins: OpenTopoMap relief (CC-BY-SA, map data © OpenStreetMap contributors, SRTM) - mountains, valleys
+TOPO_TILES = os.environ.get("CF_TOPO_TILES", "https://tile.opentopomap.org/{z}/{x}/{y}.png")
+TOPO_CREDIT = "Map: © OpenStreetMap contributors, SRTM · style © OpenTopoMap (CC-BY-SA)"
 SAT_CREDIT = os.environ.get("CF_SAT_CREDIT", "Sentinel-2 cloudless 2016 by EOX IT Services GmbH "
                                              "(contains modified Copernicus Sentinel data 2016) · CC BY 4.0")
 
@@ -86,7 +89,8 @@ def parse(spec: str) -> dict | None:
     head, _, title = (spec or "").partition("|")
     opts = [x.strip() for x in title.split("|")]
     satellite = any(re.fullmatch(r"(style\s*[:=]\s*)?satellite", x, re.I) for x in opts)
-    title = " | ".join(x for x in opts if x and not re.fullmatch(r"(style\s*[:=]\s*)?satellite", x, re.I))
+    terrain = any(re.fullmatch(r"(style\s*[:=]\s*)?(terrain|topo|relief)", x, re.I) for x in opts)
+    title = " | ".join(x for x in opts if x and not re.fullmatch(r"(style\s*[:=]\s*)?(satellite|terrain|topo|relief)", x, re.I))
     parts = [x.strip() for x in re.split(r"→|->", head) if x.strip()][:5]
     if not parts:
         return None
@@ -97,7 +101,15 @@ def parse(spec: str) -> dict | None:
         if ll is None:
             return None                     # a place we cannot put on the map: the line keeps its picture
         places.append({"name": (label or look).strip(), "lat": ll[0], "lon": ll[1]})
-    return {"places": places, "route": len(places) >= 2, "title": title.strip(), "satellite": satellite}
+    return {"places": places, "route": len(places) >= 2, "title": title.strip(), "satellite": satellite, "terrain": terrain}
+
+
+def raster_style(tiles: str, maxzoom: int = 15) -> dict:
+    """Any raster basemap (terrain relief...) under the pins and route, with faint borders on top."""
+    st = satellite_style()
+    st["sources"]["sat"] = {"type": "raster", "tiles": [tiles], "tileSize": 256, "maxzoom": maxzoom}
+    st["layers"][0]["paint"] = {"raster-saturation": -0.25}
+    return st
 
 
 def satellite_style() -> dict:
@@ -206,6 +218,9 @@ def render(plan: dict, theme: str, width: int, height: int, seconds: float, out:
     online = os.environ.get("CF_MAP_OFFLINE") != "1" and _online(STYLE_URL)
     style = json.dumps(STYLE_URL) if online else json.dumps(_offline_style(theme))
     credit = "© OpenStreetMap contributors · OpenFreeMap" if online else "Map: Natural Earth"
+    if plan.get("terrain") and os.environ.get("CF_MAP_OFFLINE") != "1" and \
+            _online(TOPO_TILES.replace("{z}", "1").replace("{y}", "0").replace("{x}", "1")):
+        style, credit, online = json.dumps(raster_style(TOPO_TILES, 17)), TOPO_CREDIT, True
     if plan.get("satellite") and os.environ.get("CF_MAP_OFFLINE") != "1" and \
             _online(SAT_TILES.replace("{z}", "0").replace("{y}", "0").replace("{x}", "0")):
         style, credit, online = json.dumps(satellite_style()), SAT_CREDIT, True    # no imagery: the street map

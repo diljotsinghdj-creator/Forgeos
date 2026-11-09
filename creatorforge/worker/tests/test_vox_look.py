@@ -309,3 +309,24 @@ def test_logo_scenes_render(tmp_path, monkeypatch):
     motion.render("animate", "whatsapp spreads to many | One forward", "editorial", 640, 360, 2.0, tmp_path / "b.mp4",
                   tmp_path / "w", fps=12)
     assert out.stat().st_size > 2000 and (tmp_path / "b.mp4").stat().st_size > 2000
+
+
+def test_johnny_harris_pen_and_terrain_options(monkeypatch):
+    assert vox.plan_for("route", "New Delhi → Dubai | Route | plane | atlas | pen")["pen"]
+    p = vox.plan_for("pinmap", "Pakistan | Across the border | pen")
+    assert p["pen"] and not p.get("pin")
+    from creatorforge_worker.media import flyover
+    monkeypatch.setattr(flyover, "geocode", lambda name: (30.0, 79.0))
+    assert flyover.parse("Uttarakhand | The mountains | terrain")["terrain"]
+    assert flyover.raster_style(flyover.TOPO_TILES)["sources"]["sat"]["tiles"][0].startswith("https://")
+
+
+@pytest.mark.skipif(not motion.enabled(), reason="needs Chromium + Playwright")
+def test_film_texture_typewriter_and_pen_render(tmp_path, monkeypatch):
+    monkeypatch.setenv("CF_CUTOUT_FETCH", "0")
+    for i, (k, spec) in enumerate([("route", "New Delhi → Dubai | Route | plane | atlas | pen"),
+                                   ("pinmap", "Pakistan | Across the border | pen"),
+                                   ("tornsplit", "ship + crane | One steel box | 1956")]):
+        out = tmp_path / f"{i}.mp4"
+        vox.render(k, spec, "editorial@red", 640, 360, 2.0, out, tmp_path / "w", lib=tmp_path / "lib", fetch=False, fps=12)
+        assert out.stat().st_size > 2000
