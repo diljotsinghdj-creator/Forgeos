@@ -24,9 +24,9 @@ BEDS = {
     "city": ("anoisesrc=c=brown:a=0.8:r=48000,lowpass=f=1100,highpass=f=70,tremolo=f=0.09:d=0.4", 0.11),
 }
 SEA = {"route", "railmap"}
-LAND_MAPS = {"fly", "map", "globe", "pinmap", "heatmap", "arrows", "borders", "clockmap", "shade", "sizemap"}
+LAND_MAPS = {"terrain3d", "fly", "map", "globe", "pinmap", "heatmap", "arrows", "borders", "clockmap", "shade", "sizemap"}
 PAPERS = {"document", "article", "clipping", "newscard", "courtdoc", "receipt", "reveal", "table", "pinboard", "desk"}
-THREE_D = {"bars3d", "prism", "explode", "title3d", "object"}
+THREE_D = {"bars3d", "prism", "explode", "title3d", "towers3d", "object"}
 
 
 def bed_for(kind: str, spec: str = "", archive: bool = False) -> str:

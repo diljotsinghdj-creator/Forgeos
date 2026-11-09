@@ -22,7 +22,15 @@ from pathlib import Path
 
 from .ff import MediaError
 
-KINDS = ("bars3d", "prism", "explode", "title3d")
+KINDS = ("bars3d", "prism", "explode", "title3d", "terrain3d", "towers3d")
+TERRAIN_URL = "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png"
+TERRAIN_CREDIT = "Elevation: Mapzen terrain tiles (AWS Open Data; SRTM, GMTED, ETOPO1 and others)"
+# places explainers go to that the place list doesn't hold: (lat, lon)
+PEAKS = {"mount everest": (27.988, 86.925), "everest": (27.988, 86.925), "k2": (35.881, 76.513),
+         "kangchenjunga": (27.703, 88.147), "mont blanc": (45.833, 6.865), "matterhorn": (45.976, 7.658),
+         "kilimanjaro": (-3.067, 37.355), "mount fuji": (35.361, 138.727), "denali": (63.069, -151.007),
+         "grand canyon": (36.1, -112.1), "siachen": (35.42, 77.1), "kailash": (31.067, 81.312),
+         "nanda devi": (30.376, 79.971), "khyber pass": (34.09, 71.15), "strait of hormuz": (26.57, 56.25)}
 VENDOR = Path(__file__).parent / "vendor"
 
 
@@ -92,7 +100,92 @@ def parse_title3d(spec: str) -> dict | None:
     return {"type": "title3d", "text": text, "sub": parts[1][:60] if len(parts) > 1 else ""}
 
 
-PARSERS = {"bars3d": parse_bars3d, "prism": parse_prism, "explode": parse_explode, "title3d": parse_title3d}
+def parse_terrain3d(spec: str) -> dict | None:
+    """'Terrain3d: Mount Everest | The roof of the world | 40 km' or 'Terrain3d: Siachen @ 35.42, 77.1 | ...' - the
+    real shape of the land (elevation tiles), lit from the side, the camera circling; the highest point is named."""
+    from . import maps
+    parts = [p.strip() for p in (spec or "").split("|")]
+    name, _, at = parts[0].partition("@")
+    name = name.strip()
+    m = re.match(r"\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*$", at)
+    if m:
+        lat, lon = float(m.group(1)), float(m.group(2))
+    elif name.lower() in PEAKS:
+        lat, lon = PEAKS[name.lower()]
+    else:
+        f = maps._find(name)
+        if not f or f["kind"] != "city":
+            return None                                   # a whole country is a map, not a landform
+        lat, lon = f["lat"], f["lon"]
+    if not name or not (-80 <= lat <= 80):
+        return None
+    km = next((float(x.group(1)) for p in parts[2:] for x in [re.search(r"([\d.]+)\s*km", p, re.I)] if x), 40.0)
+    hm = next((x.group(1).strip() for p in parts[2:] for x in [re.search(r"height\s*[:=]\s*(.+)", p, re.I)] if x), "")
+    return {"type": "terrain3d", "name": name[:28], "lat": lat, "lon": lon, "km": min(300.0, max(8.0, km)), "height": hm[:16],
+            "title": parts[1][:48] if len(parts) > 1 else "", "credit": TERRAIN_CREDIT}
+
+
+def heights(lat: float, lon: float, km: float, cache: Path, n: int = 150, timeout: float = 30) -> dict:
+    """An n x n grid of elevations (metres) for a square `km` wide round a point, from the open terrain tiles
+    (downloaded once into `cache`). {"h": [[...]], "min", "max", "peak": (row, col)}"""
+    import io
+    import math
+    import urllib.request
+    import numpy as np
+    from PIL import Image
+    z = int(max(5, min(12, math.floor(math.log2(40075.0 * math.cos(math.radians(lat)) / km * 1.6)))))
+
+    def tile_xy(la, lo):
+        x = (lo + 180) / 360 * 2 ** z
+        y = (1 - math.asinh(math.tan(math.radians(la))) / math.pi) / 2 * 2 ** z
+        return x, y
+    dlat = km / 2 / 110.57
+    dlon = km / 2 / (111.32 * math.cos(math.radians(lat)))
+    x0, y0 = tile_xy(lat + dlat, lon - dlon)
+    x1, y1 = tile_xy(lat - dlat, lon + dlon)
+    tx0, ty0, tx1, ty1 = int(x0), int(y0), int(x1), int(y1)
+    if (tx1 - tx0 + 1) * (ty1 - ty0 + 1) > 36:
+        raise MediaError("terrain: the area is too wide for its zoom")
+    cache.mkdir(parents=True, exist_ok=True)
+    mosaic = np.zeros(((ty1 - ty0 + 1) * 256, (tx1 - tx0 + 1) * 256), np.float32)
+    for ty in range(ty0, ty1 + 1):
+        for tx in range(tx0, tx1 + 1):
+            f = cache / f"{z}_{tx % 2 ** z}_{ty}.png"
+            if not (f.is_file() and f.stat().st_size > 100):
+                try:
+                    req = urllib.request.Request(TERRAIN_URL.format(z=z, x=tx % 2 ** z, y=ty), headers={"User-Agent": "CreatorForge"})
+                    with urllib.request.urlopen(req, timeout=timeout) as r:
+                        f.write_bytes(r.read())
+                except Exception as e:  # noqa: BLE001
+                    raise MediaError(f"terrain: elevation tiles not reachable ({str(e)[:80]})") from e
+            a = np.asarray(Image.open(io.BytesIO(f.read_bytes())).convert("RGB"), np.float32)
+            mosaic[(ty - ty0) * 256:(ty - ty0 + 1) * 256, (tx - tx0) * 256:(tx - tx0 + 1) * 256] = \
+                a[..., 0] * 256 + a[..., 1] + a[..., 2] / 256 - 32768
+    px0, py0 = int((x0 - tx0) * 256), int((y0 - ty0) * 256)
+    px1, py1 = max(px0 + 8, int((x1 - tx0) * 256)), max(py0 + 8, int((y1 - ty0) * 256))
+    crop = mosaic[py0:py1, px0:px1]
+    grid = np.asarray(Image.fromarray(crop).resize((n, n), Image.BILINEAR), np.float32)
+    grid = np.maximum(grid, -50.0)                         # the sea floor is not the story
+    r, c = np.unravel_index(int(grid.argmax()), grid.shape)
+    # the label uses the full-resolution data (the drawn grid is thinned and rounds the summit off)
+    return {"h": [[int(v) for v in row] for row in grid], "min": float(grid.min()), "max": float(grid.max()),
+            "top": float(crop.max()),
+            "peak": [int(r), int(c)], "n": n}
+
+
+def parse_towers3d(spec: str) -> dict | None:
+    """'Towers3d: Burj Khalifa 828, Shanghai Tower 632, Eiffel Tower 330, Qutub Minar 73 | How tall? | m' - buildings
+    to scale as stepped 3D towers with their floors marked (the massing of a height, not a model of the building)."""
+    from . import vox
+    parts = [p.strip() for p in (spec or "").split("|")]
+    vals = [v for v in vox._pairs(parts[0]) if v["value"] > 0 and v["label"]][:6]
+    if len(vals) < 2:
+        return None
+    return {"type": "towers3d", "values": vals, "title": parts[1][:48] if len(parts) > 1 else "",
+            "unit": parts[2][:10] if len(parts) > 2 else "m"}
+
+
+PARSERS = {"terrain3d": parse_terrain3d, "towers3d": parse_towers3d, "bars3d": parse_bars3d, "prism": parse_prism, "explode": parse_explode, "title3d": parse_title3d}
 
 
 def plan_for(kind: str, spec: str) -> dict | None:
@@ -211,7 +304,43 @@ function title3d(){const words=P.text.split(' '),rows=TALL&&words.length>1?words
     const s=seg(t,1.2,1.4);sweep.position.set(-widest*.7+widest*1.4*s,hh*.6,2.6);sweep.intensity=60*Math.sin(Math.PI*s);
     if(sub)sub.style.opacity=seg(t,1.3,.3)*leave(t)}}
 
-({bars3d,prism,explode,title3d})[P.type]();
+function terrain3d(){const G=P.grid,n=G.n,size=12,rel=Math.max(1,G.max-G.min),ex=Math.min(4.2,Math.max(1.6,P.km*1000/rel*.085))*size/(P.km*1000);   // vertical exaggeration, capped
+  const geo=new THREE.PlaneGeometry(size,size,n-1,n-1);geo.rotateX(-Math.PI/2);const pos=geo.attributes.position,cols=new Float32Array(pos.count*3);
+  const ramp=[[0,K.land||'#EFE3C2'],[.35,mix(K.land||'#EFE3C2','#8E7E5C',.55)],[.7,mix('#8E7E5C','#5B5346',.6)],[.9,'#E9E6DF'],[1,'#FFFFFF']].map(([t,c])=>[t,col(c)]);
+  const shade=f=>{for(let i=1;i<ramp.length;i++)if(f<=ramp[i][0]){const a=ramp[i-1],b=ramp[i];return a[1].clone().lerp(b[1],(f-a[0])/(b[0]-a[0]))}return ramp[ramp.length-1][1]};
+  for(let r=0;r<n;r++)for(let c=0;c<n;c++){const i=r*n+c,h=G.h[r][c];pos.setY(i,(h-G.min)*ex);const f=h<=0&&G.min<0?-1:(h-G.min)/rel,cc=f<0?col(K.sea||'#B8CDD1'):shade(f);cols[i*3]=cc.r;cols[i*3+1]=cc.g;cols[i*3+2]=cc.b}
+  geo.setAttribute('color',new THREE.BufferAttribute(cols,3));geo.computeVertexNormals();
+  const land=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({vertexColors:true,roughness:.95,metalness:0,flatShading:true}));land.castShadow=land.receiveShadow=true;
+  const top=rel*ex,base=new THREE.Mesh(new THREE.BoxGeometry(size,.5,size),mat(mix(K.land||'#EFE3C2','#5B5346',.5)));base.position.y=-.26;base.receiveShadow=true;
+  const g=new THREE.Group();g.add(land);g.add(inked(base));g.position.y=.55;scene.add(g);
+  sun.position.set(-9,7.5,5);sun.intensity=2.6;
+  const [pr,pc]=G.peak,peak=new THREE.Vector3(-size/2+pc/(n-1)*size,.55+top,-size/2+pr/(n-1)*size);
+  const pole=new THREE.Mesh(new THREE.CylinderGeometry(.02,.02,1.1,6),mat(K.mark||'#D7262B'));pole.position.copy(peak).y+=.55;scene.add(pole);
+  const tt=title(P.title||P.name),pk=label(P.name.toUpperCase(),'tag',U*.024,'Inter',800),el=label(P.height||('about '+(Math.round((G.top||G.max)/50)*50).toLocaleString('en-US')+' m'),'box',U*.04,'Anton',400);   // the writer's figure, else the data's, said as 'about'
+  const cr=label(P.credit,'src',U*.013,'Mono',700);cr.style.left=W/2+'px';cr.style.top=(H-U*.03)+'px';
+  const sc=label(Math.round(P.km)+' km across','src',U*.018,'Mono',700);sc.style.left=(TALL?W/2:W*.14)+'px';sc.style.top=(TALL?H*.9:H*.9)+'px';
+  const o={tx:0,ty:.55+top*.4,tz:0,a0:-.75,a1:.55,r0:TALL?30:22,r1:TALL?25:17.5,h0:top+9,h1:top+4.5};
+  update=t=>{orbit(t,o);const rise=E.out(seg(t,0,1.4));g.scale.y=.02+.98*rise;pole.scale.y=seg(t,1.3,.4);pole.visible=t>1.3;
+    const p2=peak.clone();p2.y=.55+top*rise+1.15*seg(t,1.3,.4);pin(el,p2,0,-U*.05);pin(pk,p2,0,-U*.012);
+    const v=seg(t,1.5,.3)*leave(t);el.style.opacity=v;pk.style.opacity=v;if(tt)tt.style.opacity=seg(t,.1,.3)*leave(t);cr.style.opacity=seg(t,.8,.3)*leave(t)*.9;sc.style.opacity=seg(t,.8,.3)*leave(t)}}
+function towers3d(){const vs=P.values,n=vs.length,mx=Math.max(...vs.map(v=>v.value)),maxh=TALL?6.6:4.6,gap=2.5,x0=-(n-1)*gap/2,tt=title(P.title);
+  const order=vs.map((v,i)=>i);const ts=order.map(i=>{const v=vs[i],h=Math.max(.12,maxh*v.value/mx),g=new THREE.Group(),top=v.value===mx;
+    const tiers=h>1.2?3:h>.5?2:1;let y=0;for(let k=0;k<tiers;k++){const th=h*(k===tiers-1?1-(tiers-1)*.38:.38),w=1.15*(1-k*.24);
+      const floors=Math.max(1,Math.round(th/.16));const m=new THREE.Mesh(new THREE.BoxGeometry(w,th,w,1,floors,1),mat(top?ACC:(k%2?'#5A6670':'#46525C')));
+      m.position.y=y+th/2;m.castShadow=m.receiveShadow=true;g.add(m);
+      const fl=new THREE.LineSegments(new THREE.WireframeGeometry(new THREE.BoxGeometry(w*1.002,th,w*1.002,1,floors,1)),new THREE.LineBasicMaterial({color:col(top?mix(ACC,'#000000',.35):'#2B343B'),transparent:true,opacity:.55}));fl.position.y=y+th/2;g.add(fl);y+=th}
+    if(tiers>1){const sp=new THREE.Mesh(new THREE.CylinderGeometry(.015,.05,h*.06,6),mat('#2B343B'));sp.position.y=h+h*.03;g.add(sp)}
+    g.position.set(x0+i*gap,0,0);scene.add(g);const pl=new THREE.Mesh(new THREE.BoxGeometry(1.7,.05,1.7),mat('#FBF8F0'));pl.position.set(x0+i*gap,.025,0);pl.receiveShadow=true;scene.add(inked(pl));
+    return {g,h,v,val:label(v.shown+(/[a-z]/i.test(v.shown)?'':' '+P.unit),'val',U*.044,'Anton',400),nm:label(v.label,'tag',U*.019,'Inter',800)}});
+  // a person, for scale, when the tallest is under a kilometre: 1.8 m at the same scale
+  const ph=maxh*1.8/mx;if(ph>.012){const man=new THREE.Mesh(new THREE.BoxGeometry(ph*.3,ph,ph*.2),mat(K.mark||'#D7262B'));man.position.set(x0-gap*.55,ph/2,1.2);scene.add(man)}
+  const span=(n-1)*gap+1.7,o={tx:0,ty:maxh*.48,tz:0,a0:.55,a1:-.35,r0:Math.max(18,span*(TALL?3.3:2.0)),r1:Math.max(16.5,span*(TALL?3.0:1.8)),h0:maxh*.6,h1:maxh*1.1};
+  update=t=>{orbit(t,o);if(tt)tt.style.opacity=seg(t,.1,.3)*leave(t);
+    ts.forEach((b,i)=>{const p=E.out(seg(t,.3+i*.3,1.0));b.g.scale.y=Math.max(.001,p);
+      pin(b.val,new THREE.Vector3(b.g.position.x,b.h*p*1.08,0),0,-U*.036);pin(b.nm,new THREE.Vector3(b.g.position.x,0,1.25),0,U*.03);
+      b.val.style.opacity=seg(t,.9+i*.3,.25)*leave(t);b.nm.style.opacity=seg(t,.3+i*.3,.2)*leave(t)})}}
+
+({bars3d,prism,explode,title3d,terrain3d,towers3d})[P.type]();
 document.fonts.ready.then(()=>{window.frame=t=>{update(t);renderer.render(scene,camera)};window.frame(0);window.READY=true});
 </script></body></html>"""
 
@@ -225,11 +354,16 @@ def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: f
     plan = plan_for(kind, spec)
     if plan is None:
         raise MediaError(f"3d: nothing to draw from {spec!r}")
+    if kind == "terrain3d":
+        cache = Path(os.environ.get("CF_TERRAIN") or Path(os.environ.get("CF_DATA_DIR", "./creatorforge-data")) / "terrain")
+        plan["grid"] = heights(plan["lat"], plan["lon"], plan["km"], cache)
+        if plan["grid"]["max"] - plan["grid"]["min"] < 30:
+            raise MediaError("terrain: this place is flat; a map shows it better")
     look = vox.look_of(theme)
     fps = int(fps or os.environ.get("CF_MOTION_FPS") or (60 if os.environ.get("CF_FPS") == "60" else 30))
     seconds = max(2.0, float(seconds))
     bg, grain = vox.paper(look["paper"], width, height, work)
-    kit = {"acc": vox.accent_of(theme), "mark": look["mark"], "land": look["land"], "edge": look["edge"],
+    kit = {"acc": vox.accent_of(theme), "mark": look["mark"], "land": look["land"], "edge": look["edge"], "sea": look["sea"],
            "fam": {"Playfair": look["head"], "Anton": look["big"], "Caveat": look["hand"]}}
     page = (_PAGE.replace("%THREE%", (VENDOR / "three.min.js").read_text(encoding="utf-8"))
             .replace("%FONT%", (VENDOR / "helvetiker_bold.typeface.json").read_text(encoding="utf-8") if kind == "title3d" else "null")

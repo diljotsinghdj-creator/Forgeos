@@ -41,7 +41,7 @@ KINDS = ("hero", "desk", "pinboard", "opener", "reveal", "clipping", "pinmap", "
          "seats", "stack", "stand", "fan", "trend", "slice", "route", "compare", "photoline", "tv",
          "clockmap", "tornsplit", "newscard", "blueprint", "pyramid", "flowchart", "linkmap", "orgchart", "heatmap",
          "courtdoc", "table", "interview", "endcard", "polltrack", "area", "candles", "arrows", "railmap", "sizemap",
-         "borders")
+         "borders", "morph")
 
 
 # A look per video, so no two films share one face: paper, type, map colours and marker pen differ, the method doesn't.
@@ -82,6 +82,11 @@ BADGES = {"verified": ("VERIFIED", "#1F7A4D"), "record": ("ON RECORD", "#1F7A4D"
           "unverified": ("UNVERIFIED", "#B3261E"), "opinion": ("OPINION", "#7A3E8C"), "estimate": ("ESTIMATE", "#5A5A5A")}
 FX = ("dust", "embers", "snow", "rain", "confetti", "sparks")       # "| fx: embers": particles over the scene
 EXITS = ("rise", "fall", "side", "shrink")                           # how a scene leaves; rotated, or "| exit: none"
+
+
+def wants_voice(kind: str, spec: str) -> bool:
+    """Scenes whose graphics move with the narration: an interview always, any scene that says '| voice'."""
+    return kind == "interview" or bool(re.search(r"\|\s*voice\s*(\||$)", spec or "", re.I))
 
 
 def layout_for(kind: str, turn: int, seed: int) -> str:
@@ -785,8 +790,16 @@ _STATE_ALIAS = {"up": "uttar pradesh", "mp": "madhya pradesh", "ap": "andhra pra
 
 @functools.lru_cache(maxsize=1)
 def _states() -> dict:
-    """States and provinces of the nine largest countries (Natural Earth 1:50m admin-1, public domain)."""
+    """States and provinces of every country (Natural Earth admin-1, public domain): the nine largest countries at
+    1:50m, the rest thinned from 1:10m, with their local and alternative names under "a"."""
     return json.loads((Path(__file__).with_name("states.json")).read_text(encoding="utf-8"))
+
+
+def _fold(name: str) -> str:
+    """'Québec' -> 'quebec': accents folded, then the map lookup's own normalising."""
+    import unicodedata
+    from . import maps
+    return maps._norm("".join(c for c in unicodedata.normalize("NFKD", name) if not unicodedata.combining(c)))
 
 
 def _state_heat(vals: list[dict]) -> tuple[str, list] | None:
@@ -794,8 +807,9 @@ def _state_heat(vals: list[dict]) -> tuple[str, list] | None:
     from . import maps
     best = None
     for country, sts in _states().items():
-        idx = {maps._norm(st["n"]): st for st in sts}
-        hit = [(idx[n], v) for v in vals for n in [maps._norm(_STATE_ALIAS.get(v["label"].strip().lower(), v["label"]))] if n in idx]
+        idx = {_fold(a): st for st in sts for a in st.get("a", [])}     # local and alternative names
+        idx.update({_fold(st["n"]): st for st in sts})
+        hit = [(idx[n], v) for v in vals for n in [_fold(_STATE_ALIAS.get(v["label"].strip().lower(), v["label"]))] if n in idx]
         if len(hit) >= 2 and (best is None or len(hit) > len(best[1]) or (len(hit) == len(best[1]) and country == "India")):
             best = (country, hit)
     return best
@@ -819,6 +833,15 @@ def parse_heatmap(spec: str) -> dict | None:
         vals = st[1]
         world = [{"n": x["n"], "r": x["r"]} for x in _states()[st[0]] if x["n"] not in {c["n"] for c, _ in vals}] + \
             [c for c in world if c["n"] != st[0]]
+    mapcredit = ""
+    if len(vals) < 2 or len(vals) < len(pairs) / 2:
+        # districts (downloaded per country, see media/districts.py): the country's other districts stay pale
+        from . import districts
+        dd = districts.find([v["label"] for v in pairs])
+        if dd:
+            vals = [({"n": u["n"], "r": u["r"]}, v) for u, v in zip(dd[1], pairs) if u]
+            world = [{"n": u["n"], "r": u["r"]} for u in dd[2]]
+            mapcredit = dd[3]
     if len(vals) < 2:
         return None
     pts = [(x, y) for c, _ in vals for r in sorted(c["r"], key=len)[-1:] for x, y in r]
@@ -836,10 +859,11 @@ def parse_heatmap(spec: str) -> dict | None:
         if c["n"] in named:
             continue
         for r in c["r"]:
-            if len(r) >= 12 and any(box[0] - 40 <= x <= box[2] + 40 and box[1] - 30 <= y <= box[3] + 30 for x, y in r[:: max(1, len(r) // 20)]):
+            if len(r) >= (4 if mapcredit else 12) and any(box[0] - 40 <= x <= box[2] + 40 and box[1] - 30 <= y <= box[3] + 30 for x, y in r[:: max(1, len(r) // 20)]):
                 others.append([[round(x, 1), round(y, 1)] for x, y in r[:: max(1, len(r) // 70)]])
     return {"type": "heatmap", "items": items, "others": others[:420], "box": box, "title": parts[1][:48] if len(parts) > 1 else "",
-            "unit": parts[2][:26] if len(parts) > 2 else "", "tone": "atlas", "seed": _seed(spec) % 10000}
+            "unit": parts[2][:26] if len(parts) > 2 else "", "tone": "atlas", "mapcredit": mapcredit,
+            "seed": _seed(spec) % 10000}
 
 
 def _map_frame(pts: list[tuple[float, float]], pad: float = 0.35) -> tuple[list[float], list]:
@@ -1096,7 +1120,64 @@ def parse_borders(spec: str) -> dict | None:
             "seed": _seed(spec) % 10000}
 
 
-PARSERS = {"borders": parse_borders, "courtdoc": parse_courtdoc, "table": parse_table, "interview": parse_interview, "endcard": parse_endcard,
+def _basic_shape(name: str) -> list | None:
+    """Plain shapes for Morph: unit-box outlines (y down)."""
+    import math
+    n = name.strip().lower()
+    poly = {"triangle": 3, "square": 4, "diamond": 4, "pentagon": 5, "hexagon": 6, "octagon": 8, "circle": 72}
+    if n in poly:
+        k, rot = poly[n], {"square": math.pi / 4, "triangle": -math.pi / 2, "pentagon": -math.pi / 2}.get(n, 0.0)
+        return [[math.cos(rot + i / k * 2 * math.pi), math.sin(rot + i / k * 2 * math.pi)] for i in range(k)]
+    if n == "star":
+        return [[(1 if i % 2 == 0 else .42) * math.cos(-math.pi / 2 + i / 10 * 2 * math.pi),
+                 (1 if i % 2 == 0 else .42) * math.sin(-math.pi / 2 + i / 10 * 2 * math.pi)] for i in range(10)]
+    if n == "heart":
+        return [[16 * math.sin(t) ** 3 / 17, -(13 * math.cos(t) - 5 * math.cos(2 * t) - 2 * math.cos(3 * t) - math.cos(4 * t)) / 17]
+                for t in (i / 80 * 2 * math.pi for i in range(80))]
+    if n in ("drop", "droplet"):
+        return [[.72 * math.sin(t) * (1 - math.cos(t)) / 1.3 * 1.0, -math.cos(t) * .95 - .05] for t in (i / 70 * 2 * math.pi for i in range(70))]
+    if n == "arrow":
+        return [[-1, -.3], [.2, -.3], [.2, -.75], [1, 0], [.2, .75], [.2, .3], [-1, .3]]
+    return None
+
+
+def _outline(name: str) -> dict | None:
+    """A named shape as one closed outline in a unit box: a plain shape, a country, or a state / province."""
+    import math
+    r = _basic_shape(name)
+    label = name.strip()
+    if r is None:
+        c = _country(name)
+        if c is None:
+            key = _fold(_STATE_ALIAS.get(name.strip().lower(), name))
+            c = next((st for sts in [_states().get("India", [])] + list(_states().values()) for st in sts
+                      if _fold(st["n"]) == key or key in [_fold(a) for a in st.get("a", [])]), None)
+        if c is None:
+            return None
+        big = max(c["r"], key=_ring_area_km2)
+        lat0 = sum(y for _, y in big) / len(big)
+        k = math.cos(math.radians(lat0))
+        r = [[x * k, -y] for x, y in big[:: max(1, len(big) // 220)]]
+        label = c["n"]
+    xs, ys = [q[0] for q in r], [q[1] for q in r]
+    sc = 2 / max(max(xs) - min(xs), max(ys) - min(ys), 1e-9)
+    cx, cy = (max(xs) + min(xs)) / 2, (max(ys) + min(ys)) / 2
+    return {"name": label[:24], "ring": [[round((x - cx) * sc, 4), round((y - cy) * sc, 4)] for x, y in r]}
+
+
+def parse_morph(spec: str) -> dict | None:
+    """'Morph: India → drop → Bihar | Where the water goes' - one shape flows into the next (2-4 shapes): countries,
+    states and provinces, or plain shapes (circle, square, triangle, diamond, pentagon, hexagon, octagon, star,
+    heart, drop, arrow). Each is drawn to fill the frame; for true relative size use Sizemap."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    shapes = [_outline(x) for x in re.split(r"→|->|=>", parts[0]) if x.strip()][:4]
+    if len(shapes) < 2 or not all(shapes):
+        return None
+    return {"type": "morph", "shapes": shapes, "title": parts[1][:48] if len(parts) > 1 else "",
+            "caption": parts[2][:60] if len(parts) > 2 else "", "seed": _seed(spec) % 10000}
+
+
+PARSERS = {"morph": parse_morph, "borders": parse_borders, "courtdoc": parse_courtdoc, "table": parse_table, "interview": parse_interview, "endcard": parse_endcard,
            "polltrack": parse_polltrack, "area": parse_area, "candles": parse_candles, "arrows": parse_arrows,
            "railmap": parse_railmap, "sizemap": parse_sizemap,
            "pyramid": parse_pyramid, "flowchart": parse_flow, "linkmap": parse_linkmap, "orgchart": parse_orgchart,
@@ -1167,6 +1248,7 @@ def plan_for(kind: str, spec: str) -> dict | None:
     if m:
         note = m.group(1).strip()[:60]
         spec = (spec[:m.start()] + spec[m.end():]).strip()
+    spec = re.sub(r"\|\s*voice\s*(?=\||$)", "", spec or "", flags=re.I).strip()     # "| voice": see wants_voice
     opts = {}
     for key in ("badge", "fx", "inset", "exit"):
         mm = re.search(rf"\|\s*{key}\s*[:=]\s*([^|]+)", spec or "", re.I)
@@ -2099,6 +2181,12 @@ function insetLayer(){const pic=P.insetpic;if(!pic)return;const w=TALL?W*.3:W*.1
   const ph=pic.img?Math.max(h,w*pic.h/pic.w):h*.92;picture(inner,pic,x+w/2,y+h+(pic.img?ph-h:0)*.0,ph,{});inner.clipWith(cl);
   const nm=String(pic.name||'').replace(/^person:/i,'');if(nm){const t=T(g,nm.toUpperCase(),U*.017,x+w/2,y+h+U*.03,{family:'Mono',weight:700});fit(t,w*1.2)}
   g.attr({transform:`rotate(2.5,${x+w/2},${y+h/2})`});drop(g,.7,H*.2,3)}
+function voiceLayer(){const lv=P.levels;if(!lv||!lv.length)return()=>{};const n=TALL?22:28,bw=U*.012,gap=U*.008,tot=n*(bw+gap);
+  const x0=P.type==='interview'&&!TALL?W*.52:(W-tot)/2,y=P.type==='interview'?(TALL?H*.93:H*.86):H*.95,g=L.front.group();
+  const bars=[];for(let i=0;i<n;i++)bars.push(g.rect(bw,2).move(x0+i*(bw+gap),y-1).fill(i%5===2?(K.mark||'#D7262B'):FG).radius(bw*.3));
+  let sd=(P.seed||1)+11;const ph=bars.map(()=>{sd=(sd*16807)%2147483647;return sd/2147483647*6.28});
+  return function(t){const f=t*12,i=Math.min(lv.length-1,Math.floor(f)),a=lv[i]||0,b=lv[Math.min(lv.length-1,i+1)]||0,v=a+(b-a)*(f-i);
+    bars.forEach((r,k)=>{const h=Math.max(2,U*.07*v*(.35+.65*Math.abs(Math.sin(ph[k]+t*7+k*.6))));r.height(h).y(y-h/2)})}}
 function fxLayer(){const kind=P.fx;if(!kind)return()=>{};const g=draw.group();g.insertBefore(L.grain);const n={dust:46,embers:40,snow:70,rain:90,confetti:60,sparks:36}[kind];
   let sd=(P.seed||1)*7+3;const r=()=>{sd=(sd*16807)%2147483647;return (sd-1)/2147483646};const ps=[];
   const cols={dust:['#FFFFFF'],embers:['#FF8A2A','#FFC14D','#E0442C'],snow:['#FFFFFF'],rain:['#DDE8EE'],confetti:[ACC,'#E0442C','#2D6BDB','#14968A','#FFFFFF'],sparks:['#FFE08A','#FFFFFF']}[kind];
@@ -2211,7 +2299,8 @@ function heatmap(){ // countries shaded by their number, labelled, with a scale
   const lw=W*(TALL?.5:.26),lx=W-lw-U*.09,ly=H-U*.13,gr=draw.gradient('linear',a=>{a.stop(0,lo);a.stop(1,ACC)});
   const lg=L.front.group();lg.rect(lw,U*.02).move(lx,ly).fill(gr).stroke({color:INK,width:U*.002});
   T(lg,String(mn),U*.02,lx,ly+U*.04,{family:'Mono',weight:700,anchor:'start'});T(lg,String(mx),U*.02,lx+lw,ly+U*.04,{family:'Mono',weight:700,anchor:'end'});
-  if(P.unit)T(lg,P.unit.toUpperCase(),U*.018,lx+lw/2,ly-U*.022,{family:'Inter',weight:800,ls:'.12em'});wipe(lg,.3)}
+  if(P.unit)T(lg,P.unit.toUpperCase(),U*.018,lx+lw/2,ly-U*.022,{family:'Inter',weight:800,ls:'.12em'});wipe(lg,.3);
+  if(P.mapcredit)wipe(mono(L.front,P.mapcredit.toUpperCase(),U*.04,H-U*.03,{size:U*.013}),.8)}
 
 // ---- evidence, tables, interviews, end card ----
 function greek(g,x,y,w,rows,rh,col){for(let i=0;i<rows;i++){const ww=w*(i===rows-1?.55:.86+((i*37)%13)/100);g.rect(ww,rh*.34).move(x,y+i*rh).fill(col||'#B9B4A8')}}
@@ -2367,16 +2456,34 @@ function borders(){ // the borders of a past year; then the map redraws as it is
     T(key,'BORDERS IN '+P.ya,U*.018,kx2+U*.085,ky,{family:'Mono',weight:700,anchor:'start'});wipe(key,2.4)}
   wipe(mono(L.front,P.mapcredit.toUpperCase(),W-U*.04,H-U*.03,{anchor:'end',size:U*.013}),.8)}
 
-const SCENES={borders,courtdoc,table,interview,endcard,polltrack,area,candles,arrows,railmap,sizemap,pyramid,flowchart:flow,linkmap,orgchart,heatmap,hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv,
+function morph(){ // one outline flows into the next; the name changes with it
+  chartTitle(P.title);const N=200,R=Math.min(W*(TALL?.38:.24),H*(TALL?.26:(P.caption?.26:.32))),cx=W/2,cy=H*(TALL?.46:(P.caption?.45:.52));
+  const rs=P.shapes.map(sh=>resample(sh.ring.map(q=>[cx+q[0]*R,cy+q[1]*R]),N)),k=rs.length;
+  // start every outline at its top point and run it the same way round, so shapes don't turn inside out
+  const turn=r=>{let a=0;for(let i=0;i<r.length;i++){const p=r[i],q=r[(i+1)%r.length];a+=p[0]*q[1]-q[0]*p[1]}return a};
+  rs.forEach((r,i)=>{if(turn(r)<0){const f=r[0];rs[i]=[f].concat(r.slice(1).reverse())}});
+  const str=r=>r.map(q=>q[0].toFixed(1)+','+q[1].toFixed(1)).join(' ');const cols=[ACC,'#3E4A55',K.mark||'#D7262B',mix(ACC,'#000000',.4)];
+  const sh=L.hero.polygon(str(rs[0])).fill(cols[0]).stroke({color:INK,width:U*.005,linejoin:'round'});const shadow=L.mid.polygon(str(rs[0])).fill(INK).opacity(.18).attr({transform:`translate(${U*.012},${U*.014})`});
+  popIn(sh,cx,cy,.15,.5);wipe(shadow,.5);
+  const nm=T(L.front,P.shapes[0].name.toUpperCase(),U*.04,cx,cy+R+U*.08,{family:'Inter',weight:800,ls:'.12em'});wipe(nm,.5);
+  // one track for the whole chain (separate tracks would each reset the outline to their own start)
+  const each=Math.max(.9,(DUR-1.7)/(k-1)),mv=Math.min(1.0,each*.7);
+  at(.9,each*(k-1),q=>{const tt=q*each*(k-1),i=Math.min(k-2,Math.floor(tt/each)),p=E.inout(Math.min(1,(tt-i*each)/mv)),a=rs[i],b=rs[i+1];
+    const m=a.map((v,j)=>[v[0]+(b[j][0]-v[0])*p,v[1]+(b[j][1]-v[1])*p]);sh.plot(str(m));shadow.plot(str(m));sh.fill(mix(cols[i%cols.length],cols[(i+1)%cols.length],p));
+    nm.node.textContent=(p<.5?P.shapes[i].name:P.shapes[i+1].name).toUpperCase();nm.opacity(Math.max(.001,Math.abs(p-.5)*2))},E.lin);
+  if(P.caption){const c=boxText(L.front,P.caption,U*.04,cx,cy+R+U*.16,{anchor:'middle',maxw:W*.8,most:2});wipe(c,1.1)}
+  FOCUS={x:cx,y:cy,rx:R*1.05,ry:R*1.05}}
+
+const SCENES={morph,borders,courtdoc,table,interview,endcard,polltrack,area,candles,arrows,railmap,sizemap,pyramid,flowchart:flow,linkmap,orgchart,heatmap,hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv,
   clockmap,tornsplit,newscard,blueprint};
 async function boot(){
   try{await Promise.all(Array.from(document.fonts).map(f=>f.load()))}catch(e){}
   const imgs=[];(P.pics||[]).forEach(p=>{if(p.img)imgs.push(new Promise(r=>{const i=new Image();i.onload=i.onerror=r;i.src=p.img}))});
   await Promise.all(imgs);
   (SCENES[P.type]||hero)();logoLayer();markerLayer();badgeLayer();insetLayer();layout();companion();
-  const film=filmLayer(),fx=fxLayer();
+  const film=filmLayer(),fx=fxLayer(),voice=voiceLayer();
   window.frame=function(t){camera(t);const tq=Math.floor(t*12+1e-6)/12;   // the hand-made 12 fps stutter
-    for(const k of tracks){const p=Math.max(0,Math.min(1,(tq-k.start)/k.dur));k.fn(k.e(p))}film(t,tq);fx(t)};
+    for(const k of tracks){const p=Math.max(0,Math.min(1,(tq-k.start)/k.dur));k.fn(k.e(p))}film(t,tq);fx(t);voice(t)};
   window.frame(0);window.READY=true}
 boot();
 </script></body></html>"""
@@ -2385,7 +2492,7 @@ boot();
 def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: float, out: Path, work: Path,
            lib: Path | None = None, model: Path | None = None, fetch: bool = True, fps: int | None = None,
            tone: str = "cream", sources: list[tuple[str, str]] | None = None, props: bool = False,
-           layout: str = "") -> Path:
+           layout: str = "", levels: list[float] | None = None) -> Path:
     """Draws one Vox scene into `out` (H.264). `layout` is one of LAYOUT_SETS[kind] (default: picked from the spec)."""
     from . import motion
     if not motion.enabled():
@@ -2394,6 +2501,13 @@ def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: f
     if plan is None:
         raise MediaError(f"vox: nothing to draw from {spec!r}")
     _pictures(plan, lib, model, fetch, sources, era_in(theme))
+    # asset check before the render: a photo much smaller than the size it is shown at will look soft
+    soft = [f"{p.get('name')}: {p['w']}x{p['h']} px shown about {int(height * (0.4 if height > width else 0.6))} px tall"
+            for p in plan.get("pics", []) if p.get("img") and p.get("h", 9999) < height * (0.4 if height > width else 0.6) * 0.55]
+    if soft:
+        out.with_suffix(".qa.json").write_text(json.dumps({"low_resolution": soft}), encoding="utf-8")
+    if levels and wants_voice(kind, spec):
+        plan["levels"] = [float(v) for v in levels][:1200]     # the voice, 12 readings a second: the bars move with it
     if plan["type"] == "hero" and not plan["pics"]:
         raise MediaError("vox: no picture or icon for the subject")
     fps = int(fps or os.environ.get("CF_MOTION_FPS") or (60 if os.environ.get("CF_FPS") == "60" else 30))

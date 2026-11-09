@@ -175,7 +175,7 @@ def test_narration_alone_gets_a_sensible_infographic_per_line():
     kinds = [v.graphic_kind(b) for b in bl]
     assert kinds[0] == "hero" and "person:Amit Shah" in bl[0]["dirs"][0]   # the speaker's real photo with the quote
     assert kinds[-1] == "opener"
-    assert "pinmap" in kinds and "stack" in kinds and "stamp" in kinds
+    assert "pinmap" in kinds and ("stack" in kinds or "bars3d" in kinds) and "stamp" in kinds   # the two figures, compared
     assert "newscard" in kinds or "bignumber" in kinds        # the reported figure, as the report itself
     assert "Kota" in out and "15 lakh" in out and "50 lakh" in out and "Deccan Herald" in out
     assert "forward it?" in out.lower()
@@ -271,3 +271,17 @@ def test_two_countries_and_a_size_word_get_a_size_map():
     line = "भारत जर्मनी से नौ गुना बड़ा है।"
     g = ig.pick(line, ig.facts(line), 3, 6, [])
     assert g.startswith("Sizemap: India vs Germany") and v.valid(g) == ""
+
+
+def test_the_director_picks_the_new_graphics_from_narration_alone():
+    from creatorforge_worker import infographic as ig
+
+    def pick(line):
+        return ig.pick(line, ig.facts(line), 3, 8, [], seed=5)
+    g = pick("भारत में चौदह लाख, चीन में चौदह लाख दस हज़ार और जापान में बारह लाख लोग।")
+    assert g.startswith("Heatmap: India 14 lakh, China 14.1 lakh, Japan 12 lakh")        # each number with its own place
+    assert pick("उन्नीस सौ सैंतालीस में रूस ने यूक्रेन पर हमला किया।").startswith("Arrows: Russia → Ukraine")
+    assert pick("एवरेस्ट दुनिया की सबसे ऊँची चोटी है।").startswith("Terrain3d: Mount Everest")
+    assert pick('अमित शाह ने कहा, "हम कोई भी मैसेज वायरल कर सकते हैं।"').startswith("Interview: person:Amit Shah")
+    assert pick("बीजेपी, कांग्रेस और आम आदमी पार्टी आपस में जुड़े हैं।").startswith("Linkmap: BJP | Congress; AAP")
+    assert ig.facts("जापान से भारत तक।")["places"] == ["Japan", "India"]                 # the order they are said in

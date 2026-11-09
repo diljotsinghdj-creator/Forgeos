@@ -486,3 +486,73 @@ def test_genuine_3d_scenes_parse_and_render(tmp_path):
         raw = subprocess.run(["ffmpeg", "-v", "error", "-ss", "1.5", "-i", str(out), "-frames:v", "1", "-vf", "scale=64:36",
                               "-f", "rawvideo", "-pix_fmt", "gray", "-"], capture_output=True).stdout
         assert max(raw) - min(raw) > 60, kind
+
+
+def test_states_of_every_country_districts_morph_and_3d_land(tmp_path, monkeypatch):
+    import json
+    from creatorforge_worker import vox_director as vd
+    from creatorforge_worker.media import districts, motion, scene3d, vox
+    # states and provinces anywhere, by their English or local names
+    for spec, first in (("Bavaria 13.4, Berlin 3.8, Hesse 6.4 | People", "Bavaria"), ("Punjab 127, Sindh 55, Balochistan 15 | x", "Punjab"),
+                        ("Ontario 15, Quebec 9 | x", "Ontario"), ("Osaka 8.8, Hokkaido 5.1 | x", "Ōsaka Prefecture")):
+        assert vox.plan_for("heatmap", spec)["items"][0]["name"] == first, spec
+    # districts: refused without the file, drawn (with the dataset's credit) with it
+    monkeypatch.setenv("CF_DISTRICTS", str(tmp_path / "d"))
+    districts.load.cache_clear()
+    assert vox.plan_for("heatmap", "Patna 58, Gaya 44, Nalanda 29 | People") is None
+    sq = lambda x, y: [[[x, y], [x + .6, y], [x + .6, y + .6], [x, y + .6], [x, y]]]      # noqa: E731
+    (tmp_path / "d").mkdir()
+    (tmp_path / "d" / "IND.json").write_text(json.dumps({"credit": "Districts: geoBoundaries (test; CC BY 4.0)", "units": [
+        {"n": n, "r": sq(x, y)} for n, x, y in (("Patna", 85.1, 25.4), ("Gaya", 84.9, 24.6), ("Nalanda", 85.4, 25.0), ("Saran", 84.7, 25.8))]}))
+    d = vox.plan_for("heatmap", "Patna 58, Gaya 44, Nalanda 29 | People per sq km")
+    assert [i["name"] for i in d["items"]] == ["Patna", "Gaya", "Nalanda"] and "geoBoundaries" in d["mapcredit"] and d["others"]
+    # morph: countries, states and plain shapes; unknown shapes are refused
+    m = vox.plan_for("morph", "India → drop → Bihar | Where the water goes | A third of it")
+    assert [x["name"] for x in m["shapes"]] == ["India", "drop", "Bihar"] and all(len(x["ring"]) > 20 for x in m["shapes"])
+    assert vox.plan_for("morph", "India → blob") is None and vd.valid("Morph: circle → star → heart | Shapes") == ""
+    # 3D land and buildings
+    t = scene3d.plan_for("terrain3d", "Mount Everest | The roof of the world | 40 km | height: 8,849 m")
+    assert abs(t["lat"] - 27.99) < .1 and t["km"] == 40 and t["height"] == "8,849 m"
+    assert scene3d.plan_for("terrain3d", "Somewhere @ 35.42, 77.1 | x")["lon"] == 77.1 and scene3d.plan_for("terrain3d", "India | x") is None
+    assert len(scene3d.plan_for("towers3d", "Burj Khalifa 828, Eiffel Tower 330, Qutub Minar 73 | How tall | m")["values"]) == 3
+    assert vox.wants_voice("interview", "x") and vox.wants_voice("stack", "coins | a 1, b 2 | t | voice") and not vox.wants_voice("stack", "x")
+    assert "voice" not in json.dumps(vox.plan_for("stack", "coins | UP 40, Bihar 25 | Seats | voice"))
+    if not motion.enabled():
+        return
+    out = vox.render("morph", "circle → star → heart | Shapes", "e~0@red/kraft/", 480, 270, 3, tmp_path / "m.mp4", tmp_path, fetch=False, fps=10)
+    assert out.stat().st_size > 4000
+    out = vox.render("interview", 'person:A Person | "Some words they said" | Role', "e~0@red/kraft/", 480, 270, 3, tmp_path / "i.mp4",
+                     tmp_path, fetch=False, fps=10, levels=[0.1, 0.9, 0.4, 1.0, 0.2] * 8)
+    assert out.stat().st_size > 4000
+    out = scene3d.render("towers3d", "Burj Khalifa 828, Eiffel Tower 330 | How tall | m", "e~0@teal/field/", 480, 270, 2, tmp_path / "tw.mp4", tmp_path, fps=8)
+    assert out.stat().st_size > 4000
+    # terrain from a synthetic height grid (the tiles need the network; the mesh, lights and labels do not)
+    monkeypatch.setattr(scene3d, "heights", lambda *a, **k: {"h": [[int(3000 * max(0, 1 - ((r - 20) ** 2 + (c - 20) ** 2) ** .5 / 20)) for c in range(40)]
+                                                                   for r in range(40)], "min": 0.0, "max": 3000.0, "top": 3050.0, "peak": [20, 20], "n": 40})
+    out = scene3d.render("terrain3d", "Mount Everest | Test", "e~0@red/archive/", 480, 270, 2, tmp_path / "te.mp4", tmp_path, fps=8)
+    assert out.stat().st_size > 4000
+
+
+def test_voice_levels_and_stereo_whooshes(tmp_path):
+    import subprocess
+    import threading
+    from creatorforge_worker.media import render
+    tone = tmp_path / "t.wav"
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "lavfi", "-i", "sine=f=300:d=2,volume='if(lt(t,1),0.05,0.9)':eval=frame",
+                    "-ar", "48000", str(tone)], check=True)
+    lv = render.levels(tone, 0, 2)
+    assert len(lv) >= 20 and max(lv[:8]) < 0.3 < min(lv[-8:])              # quiet first second, loud second
+    narr, hit = tmp_path / "n.wav", tmp_path / "h.wav"
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "lavfi", "-i", "anullsrc=r=48000:cl=mono", "-t", "3", str(narr)], check=True)
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "lavfi", "-i", "sine=f=500:d=0.6", "-ar", "48000", str(hit)], check=True)
+    out = tmp_path / "mix.wav"
+    render.mix_audio(narr, None, 3.0, out, threading.Event(), sfx=[(hit, 0.5, 0.8, "lr"), (hit, 1.8, 0.8, -1.0)])
+
+    def side(t0, ch):
+        r = subprocess.run(["ffmpeg", "-v", "info", "-ss", f"{t0}", "-t", "0.12", "-i", str(out), "-af", f"pan=mono|c0=c{ch},astats=metadata=0",
+                            "-f", "null", "-"], capture_output=True, text=True).stderr
+        import re
+        m = re.findall(r"RMS level dB: (-?[\d.]+|-inf)", r)
+        return -120.0 if not m or m[-1] == "-inf" else float(m[-1])
+    assert side(0.52, 0) > side(0.52, 1) + 6 and side(0.98, 1) > side(0.98, 0) + 6     # the whoosh travels left to right
+    assert side(1.9, 0) > side(1.9, 1) + 12                                           # a cue placed hard left

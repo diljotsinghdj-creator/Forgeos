@@ -229,12 +229,26 @@ def mix_audio(narration: Path, music: Path | None, total: float, out: Path, canc
         graph.append("[m][key]sidechaincompress=threshold=0.03:ratio=8:attack=20:release=400[duck]")
         mix.append("[duck]")
         idx += 1
-    for k, (path, at, gain) in enumerate(sfx):
+    for k, hit in enumerate(sfx):
+        path, at, gain = hit[:3]
+        pan = hit[3] if len(hit) > 3 else 0.0     # stereo place: -1 left .. 1 right, or "lr" / "rl" to travel across
         if at >= total:
             continue
         ms = int(at * 1000)
         args += ["-i", str(path)]
-        graph.append(f"[{idx}:a]aresample={SAMPLE_RATE},aformat=channel_layouts=stereo,volume={gain:.2f},"
+        if pan in ("lr", "rl"):
+            a, b = ("cos", "sin") if pan == "lr" else ("sin", "cos")
+            place = (f",channelsplit=channel_layout=stereo[pl{k}][pr{k}];"
+                     f"[pl{k}]volume='1.3*{a}(PI/2*min(1,t/0.55))':eval=frame[ql{k}];"
+                     f"[pr{k}]volume='1.3*{b}(PI/2*min(1,t/0.55))':eval=frame[qr{k}];"
+                     f"[ql{k}][qr{k}]join=inputs=2:channel_layout=stereo")
+        elif isinstance(pan, (int, float)) and abs(pan) > 0.01:
+            import math
+            th = (max(-1.0, min(1.0, float(pan))) + 1) * math.pi / 4          # equal-power pan
+            place = f",pan=stereo|c0={math.cos(th) * 1.414:.3f}*c0|c1={math.sin(th) * 1.414:.3f}*c1"
+        else:
+            place = ""
+        graph.append(f"[{idx}:a]aresample={SAMPLE_RATE},aformat=channel_layouts=stereo,volume={gain:.2f}{place},"
                      f"adelay={ms}|{ms}[s{k}]")
         mix.append(f"[s{k}]")
         idx += 1
@@ -247,6 +261,21 @@ def mix_audio(narration: Path, music: Path | None, total: float, out: Path, canc
         graph.append(f"{''.join(mix)}amix=inputs={len(mix)}:duration=first:normalize=0,alimiter=limit=0.95,{level}[a]")
     ff.run([*args, "-filter_complex", ";".join(graph), "-map", "[a]", "-t", f"{total:.3f}",
             "-ar", str(SAMPLE_RATE), "-c:a", "pcm_s16le", str(out)], cancel)
+
+
+def levels(audio: Path, start: float, seconds: float, rate: int = 12) -> list[float]:
+    """How loud a stretch of audio is, `rate` times a second, 0..1 (for graphics that move with the voice)."""
+    import subprocess
+    import numpy as np
+    raw = subprocess.run(["ffmpeg", "-nostdin", "-v", "error", "-ss", f"{max(0.0, start):.3f}", "-t", f"{max(0.1, seconds):.3f}",
+                          "-i", str(audio), "-ac", "1", "-ar", "8000", "-f", "s16le", "-"], capture_output=True, timeout=120).stdout
+    a = np.frombuffer(raw, np.int16).astype(np.float32) / 32768.0
+    step = 8000 // rate
+    if len(a) < step:
+        return []
+    rms = np.sqrt((a[: len(a) // step * step].reshape(-1, step) ** 2).mean(axis=1))
+    top = float(np.percentile(rms, 95)) or 1.0
+    return [round(float(min(1.0, v / top)), 2) for v in rms]
 
 
 def _motion(camera: str, frames: int) -> str:

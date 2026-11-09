@@ -149,6 +149,8 @@ class Pipeline:
         # the cut-out photo library (Vox scenes, animated objects) lives with the pod's data
         os.environ.setdefault("CF_CUTOUTS", str(cfg.data_dir / "cutouts"))
         os.environ.setdefault("CF_CUTOUT_MODEL", str(cfg.data_dir / "models" / "isnet-general-use.onnx"))
+        os.environ.setdefault("CF_DISTRICTS", str(cfg.data_dir / "districts"))  # district shapes (media/districts.py)
+        os.environ.setdefault("CF_TERRAIN", str(cfg.data_dir / "terrain"))      # elevation tiles (media/scene3d.py)
         os.environ.setdefault("CF_HISTORY", str(cfg.data_dir / "history"))      # dated border maps (media/history.py)
         self.cfg = cfg
         self.store = store
@@ -1465,7 +1467,9 @@ class Pipeline:
                 for k, length in enumerate(lengths):
                     chart = self._chart_clip(spec, beats[k], length, (w, h), work, job,
                                              picture=images[k] if k < len(images) else None,
-                                             vox_layout=vox_layouts.get(id(beats[k]), ""))
+                                             vox_layout=vox_layouts.get(id(beats[k]), ""),
+                                             voice=(jdir / sc["narration"], sum(lengths[:k]), length)
+                                             if sc.get("narration") else None)
                     if chart is not None:
                         stock_clips[k] = chart          # the animated graphic shows the number instead of a picture
                         charted.add((i, k))
@@ -1717,7 +1721,7 @@ class Pipeline:
         job["edit"] = {"auto_edit": spec.auto_edit, "transitions": [c.transition for c in heads[1:]],
                        "shots": len(clips),
                        "durations": [round(d, 2) for d in timings],
-                       "sfx": [{"file": p.name, "at": round(at, 2)} for p, at, _ in sfx_hits],
+                       "sfx": [{"file": h[0].name, "at": round(h[1], 2)} for h in sfx_hits],
                        "clip_stretch": [round(min(1.6, (d + render.TRANSITION_S) / c.video_duration), 2)
                                         if c.video_duration and c.video_duration < d + render.TRANSITION_S else 1.0
                                         for c, d in zip(heads, timings)]}
@@ -1903,7 +1907,8 @@ class Pipeline:
         return vox.choose_look(text, vox.era_of(text))
 
     def _chart_clip(self, spec, beat: dict, length: float, size: tuple[int, int], work: Path,
-                    job: dict | None = None, picture: Path | None = None, vox_layout: str = "") -> Path | None:
+                    job: dict | None = None, picture: Path | None = None, vox_layout: str = "",
+                    voice: tuple | None = None) -> Path | None:
         """An animated number graphic for a beat: the writer's Chart: line, or - in the editorial looks - a Text:
         line that compares figures ("£12 → £720", "48% vs 22%"). None when the beat has no chart."""
         theme = "investigative" if spec.style in DESK_STYLES else "editorial"
@@ -1932,7 +1937,9 @@ class Pipeline:
                                               seconds, out, work, lib=self.cfg.data_dir / "cutouts",
                                               model=self.cfg.data_dir / "models" / "isnet-general-use.onnx",
                                               sources=(providers.photo_sources(job["id"], self.cfg) if job else None),
-                                              props=spec.editorial_props, layout=lay)
+                                              props=spec.editorial_props, layout=lay,
+                                              levels=(render.levels(*voice) if voice and vox.wants_voice(kind, extra[kind])
+                                                      else None))
                         if kind in scene3d.KINDS:      # genuine 3D: meshes, lights, a moving camera (three.js)
                             return scene3d.render(kind, extra[kind], f"{vtheme}@{self._accent(spec)}/{self._look(spec)}/",
                                                   size[0], size[1], seconds, out, work)
@@ -2099,6 +2106,14 @@ class Pipeline:
                                                      expected_size=self._out_size(job))
         except Exception as e:  # noqa: BLE001
             job["result"]["quality"] = {"passed": None, "checks": [], "warnings": [f"quality check skipped: {e}"]}
+        try:   # pictures that were shown larger than they are (written beside each drawn scene before the render)
+            soft = sorted({w for f in (jdir / "work").glob("*.qa.json")
+                           for w in json.loads(f.read_text(encoding="utf-8")).get("low_resolution", [])})
+            if soft:
+                job["result"].setdefault("quality", {}).setdefault("warnings", []).extend(
+                    f"low-resolution picture: {w}" for w in soft[:8])
+        except (OSError, ValueError):
+            pass
         if job.get("variety"):
             try:   # every video different: this one against the last finished video, frame by frame
                 from . import variety
@@ -2117,12 +2132,12 @@ class Pipeline:
                 job["result"]["variety"] = dict(job["variety"], error=str(e)[:120])
 
 
-MAP_KINDS = {"fly", "map", "globe", "pinmap", "route", "heatmap", "arrows", "railmap", "borders", "prism", "clockmap",
+MAP_KINDS = {"terrain3d", "fly", "map", "globe", "pinmap", "route", "heatmap", "arrows", "railmap", "borders", "prism", "clockmap",
              "shade", "sizemap"}
 PAPER_KINDS = {"document", "article", "clipping", "newscard", "courtdoc", "receipt", "reveal"}
 CARD_KINDS = {"pinboard", "desk", "table", "interview", "social", "comments", "chat"}
 CHART_KINDS = {"chart", "stack", "stand", "trend", "slice", "pie", "squares", "seats", "pyramid", "polltrack", "area",
-               "candles", "bars3d", "fan", "bignumber"}
+               "candles", "bars3d", "towers3d", "fan", "bignumber"}
 
 
 def beat_kind(beat: dict | None) -> str:

@@ -137,6 +137,14 @@ def facts(line: str) -> dict:
                    {int(v) for v, u in vd._spoken_numbers(line) if u == 1 and 1900 <= v <= 2100})
     places = _find(vd.PLACES, line) + [p for p in _find(PLACES_MORE, line)]
     places = list(dict.fromkeys(places))
+    # in the order the line names them (a route, an arrow and a number each belong to the place said with it)
+    pl = vd._plain(line)
+
+    def said_at(name: str) -> int:
+        at = [pl.find(vd._plain(k)) for d in (vd.PLACES, PLACES_MORE) for k, v in d.items() if v == name]
+        at = [a for a in at if a >= 0]
+        return min(at) if at else 10 ** 6
+    places.sort(key=said_at)
     return {
         "numbers": nums[:4], "money": money, "percent": pct, "date": full if full and re.search(r"\d", full.split()[0]) else "",
         "month_year": full, "years": years, "time": vd._clock(line), "places": places[:4],
@@ -224,6 +232,36 @@ def candidates(line: str, f: dict, n: int, total: int, ahead: dict | None = None
     if f["question"] and n == total:
         q = head if head.endswith("?") else (f"{head}?" if head else "What do you think?")
         out.append(f"Opener: {obj or 'smartphone'} | {q} | Print Facts")
+    toks = vd._tokens(line)
+    cue = lambda words: any(vd._has(toks, w) for w in words)     # noqa: E731
+    from .media import vox as _vox
+    # a mountain, pass or glacier named in the line: the land itself, in 3D
+    peak = next((en for hi, en in PEAK_WORDS.items() if vd._has(toks, hi)), "")
+    if peak:
+        out.append(f"Terrain3d: {peak} | {head if head and head not in f['places'] else peak}")
+    # three or more places, each with its number: the map shaded by the numbers (flat, or rising in 3D)
+    if len(f["places"]) >= 3 and len(nums) == len(f["places"]):
+        pairs = ", ".join(f"{p} {x['shown']}" for p, x in zip(f["places"], nums))
+        if _vox.plan_for("heatmap", pairs):
+            title = head if head and head not in f["places"] else "Compared"
+            out.append(f"Heatmap: {pairs} | {title}")
+            out.append(f"Prism: {pairs} | {title}")
+    # a movement between two places (an army, a migration, a flow of goods): arrows, not a vehicle on a line
+    if len(f["places"]) >= 2 and cue(MOVE_WORDS):
+        out.append(f"Arrows: {f['places'][0]} → {f['places'][1]}"
+                   + (f"; {f['places'][2]} → {f['places'][1]}" if len(f["places"]) > 2 else "") + f" | {head or 'The movement'}")
+    # an old year, a place and a word about borders: the map as it was then, redrawn into today's
+    if f["years"] and f["years"][0] < 1950 and f["places"] and cue(BORDER_WORDS):
+        g = f"Borders: {f['years'][0]} → today | {f['places'][0]} | {head if head and head not in f['places'] else 'The map then and now'}"
+        if _vox.plan_for("borders", g.split(":", 1)[1]):       # only where the dated maps are on this worker
+            out.append(g)
+    # three or more named people or organisations and a word about ties: who is linked to whom
+    ents = list(dict.fromkeys(f["people"] + f["parties"] + ([f["publisher"]] if f["publisher"] else [])))
+    if len(ents) >= 3 and cue(LINK_WORDS):
+        out.append(f"Linkmap: {ents[0]} | " + "; ".join(ents[1:6]) + f" | {head or 'Who is linked'}")
+    # a named person speaking in this very line: their words as an interview card
+    if f["quote"] and who and not f["side"]:
+        out.append(f"Interview: person:{who} | “{head or 'In their words'}” | {who} · translated")
     # two countries and a word about size: both at one scale
     if len(f["places"]) >= 2 and any(vd._has(vd._tokens(line), w) for w in SIZE_WORDS):
         from .media import vox
@@ -256,6 +294,8 @@ def candidates(line: str, f: dict, n: int, total: int, ahead: dict | None = None
         label = (nouns[0] if nouns else "Value").capitalize()
         title = " · ".join(x for x in (head if f.get("phrases") else label, f["places"][0] if f["places"] else "") if x)
         out.append(f"Stack: {mat} | {label} 1 {nums[0]['shown']}, {label} 2 {nums[1]['shown']} | {title or 'Compared'}")
+        if not f["money"]:        # the same comparison as lit 3D bars (the director alternates the two)
+            out.append(f"Bars3d: {label} 1 {nums[0]['shown']}, {label} 2 {nums[1]['shown']} | {title or 'Compared'}")
     if f["percent"]:
         out.append(f"Slice: {f['percent']} | {obj or 'globe'} | {head or 'share'}")
     if len(nums) == 1:
@@ -331,8 +371,16 @@ def _vary(g: str, used: list[str]) -> str:
 
 
 # Vox / Johnny Harris first: real people, maps with marker notes, documents and clippings; flat forms last
+PEAK_WORDS = {"एवरेस्ट": "Mount Everest", "के2": "K2", "कंचनजंगा": "Kangchenjunga", "कैलाश": "Kailash", "सियाचिन": "Siachen",
+              "नंदा देवी": "Nanda Devi", "किलिमंजारो": "Kilimanjaro", "खैबर": "Khyber Pass", "everest": "Mount Everest",
+              "siachen": "Siachen", "kilimanjaro": "Kilimanjaro"}
+MOVE_WORDS = ("हमला", "आक्रमण", "पलायन", "घुसपैठ", "कूच", "चढ़ाई", "विस्थापन", "शरणार्थी", "invaded", "invasion", "migration",
+              "refugees", "advanced", "marched", "fled")
+BORDER_WORDS = ("सीमा", "सीमाएँ", "सरहद", "नक्शा", "नक़्शा", "बँटवारा", "विभाजन", "साम्राज्य", "border", "borders", "partition", "empire", "map")
+LINK_WORDS = ("जुड़े", "जुड़ा", "जुड़ी", "रिश्ता", "रिश्ते", "संबंध", "नेटवर्क", "गठजोड़", "साँठगाँठ", "linked", "connected", "ties", "network")
 SIZE_WORDS = ("बड़ा", "बड़ी", "बड़े", "छोटा", "छोटी", "गुना", "आकार", "क्षेत्रफल", "bigger", "larger", "smaller", "size")
-STYLE_RANK = {"sizemap": -1, "pinmap": 0, "route": 0, "newscard": 1, "clipping": 1, "hero": 2, "pinboard": 2, "reveal": 2,
+STYLE_RANK = {"sizemap": -1, "terrain3d": -1, "borders": -1, "arrows": -0.5, "heatmap": -0.5, "prism": 0.5, "linkmap": 1,
+              "interview": 1.5, "bars3d": 4.5, "pinmap": 0, "route": 0, "newscard": 1, "clipping": 1, "hero": 2, "pinboard": 2, "reveal": 2,
               "bignumber": 3, "compare": 3, "photoline": 3, "clockmap": 3, "seats": 4, "stack": 4, "trend": 4,
               "slice": 5, "calendar": 5, "stamp": 6, "clock": 6, "opener": 7, "tornsplit": 7, "statement": 9}
 

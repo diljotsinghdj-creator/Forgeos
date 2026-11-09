@@ -20,6 +20,8 @@ ROLES = {
 TRANSITION_ROLE = {"dive": "whoosh", "page": "whoosh", "push": "whoosh", "drop": "hit", "squeeze": "whoosh",
                    "whip": "whoosh", "blur": "whoosh", "slide": "whoosh", "wipe": "whoosh", "zoom": "whoosh", "reveal": "whoosh",
                    "cut": "hit", "flash": "hit"}
+# which way a moving cut's whoosh travels: slides and wipes go the way the picture goes
+SWEEP = {"slide": "rl", "wipe": "lr", "push": "rl", "whip": "rl"}
 GAIN = {"projector": 0.5, "whoosh": 0.55, "hit": 0.6, "pop": 0.45, "riser": 0.4, "scribble": 0.5}
 REVEALS = {"flash", "zoom"}   # twists / reveals: a riser builds into the cut, a deep hit lands on it
 
@@ -68,7 +70,9 @@ def place(bank: SfxBank, transitions: list[str], timings: list[float], overlays:
             sound = bank.pick(role, f"{seed}:t{i}") if role else None
             if sound:
                 lead = 0.25 if role == "whoosh" else 0.0  # whooshes swell into the cut
-                hits.append((sound, max(0.0, offset - lead), GAIN[role]))
+                # stereo: a whoosh travels across the picture the way the cut does (alternating sides), a hit is centred
+                pan = SWEEP.get(transitions[i], "lr" if i % 2 else "rl") if role == "whoosh" else 0.0
+                hits.append((sound, max(0.0, offset - lead), GAIN[role], pan))
             riser = bank.pick("riser", f"{seed}:r{i}") if transitions[i] in REVEALS else None
             if riser and offset >= 1.6:
                 hits.append((riser, offset - 1.55, GAIN["riser"]))
