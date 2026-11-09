@@ -207,3 +207,39 @@ def test_every_round_five_scene_renders(kind, spec, tmp_path, monkeypatch):
     out = tmp_path / f"{kind}.mp4"
     vox.render(kind, spec, "editorial", 640, 360, 2.0, out, tmp_path / "w", lib=tmp_path / "lib", fetch=False, fps=12)
     assert out.stat().st_size > 2000
+
+
+def test_round_six_scenes_parse():
+    c = vox.plan_for("clockmap", "Mumbai 9:30, Kolkata 9:30, Chennai 9:30 | One clock | IST")
+    assert [x["shown"] for x in c["cities"]] == ["9:30"] * 3 and c["home"] == "India"
+    assert vox.plan_for("clockmap", "Atlantis 9:30, Mumbai 9:30") is None
+    assert vox.plan_for("tornsplit", "ship + crane | One steel box | 1956")["subjects"] == ["ship", "crane"]
+    n = vox.plan_for("newscard", "29 Aug 2024 | A headline | the line under it | person:A | The Paper")
+    assert n["subjects"] == ["person:A"] and n["source"] == "The Paper" and n["sub"] == "the line under it"
+    assert vox.plan_for("blueprint", "factory | How it works | a · b")["points"] == ["a", "b"]
+    assert vox.plan_for("route", "London → Paris | Tour | train | atlas")["atlas"]
+    assert vox.plan_for("pinmap", "Kota | head | src | atlas")["atlas"]
+
+
+def test_satellite_fly_in_option(monkeypatch):
+    from creatorforge_worker.media import flyover
+    monkeypatch.setattr(flyover, "geocode", lambda name: (25.18, 75.83))
+    p = flyover.parse("Kota | Where it began | satellite")
+    assert p["satellite"] and p["title"] == "Where it began"
+    assert not flyover.parse("Kota | Where it began")["satellite"]
+    st = flyover.satellite_style()
+    assert st["sources"]["sat"]["type"] == "raster" and "{z}" in st["sources"]["sat"]["tiles"][0]
+
+
+@pytest.mark.skipif(not motion.enabled(), reason="needs Chromium + Playwright")
+@pytest.mark.parametrize("kind,spec", [
+    ("clockmap", "Mumbai 9:30, Kolkata 9:30, Chennai 9:30 | One clock | IST"),
+    ("tornsplit", "ship + crane | One steel box | 1956"),
+    ("newscard", "29 Aug 2024 | A headline | the line under it | gavel | The Paper"),
+    ("blueprint", "factory | How it works | a · b"),
+    ("route", "London → Paris | Tour | train | atlas"), ("pinmap", "Kota | head | src | atlas")])
+def test_every_round_six_scene_renders(kind, spec, tmp_path, monkeypatch):
+    monkeypatch.setenv("CF_CUTOUT_FETCH", "0")
+    out = tmp_path / f"{kind}.mp4"
+    vox.render(kind, spec, "editorial", 640, 360, 2.0, out, tmp_path / "w", lib=tmp_path / "lib", fetch=False, fps=12)
+    assert out.stat().st_size > 2000

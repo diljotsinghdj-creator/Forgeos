@@ -46,6 +46,12 @@ Compare: <object or person:Name> [+ <second>] | <before label> | <after label> |
 Photoline: <year> <event> (<object>) → <year> <event> (<object>) | <title>  - a timeline of photo cards
 Tv: <object or person:Name> | <label e.g. 1975 broadcast> | <caption>  - something seen on old television
 Hero styles: add "| style: word|disc|box|bars|grid" to choose the look (grid = cut-out with a colour offset on grid paper)
+Clockmap: <city> <time>, <city> <time>, ... | <title> | <zone>  - the same moment in many places
+Tornsplit: <object> + <object> | <BIG HEADLINE 2-4 words> | <kicker>  - a chapter or story opener
+Newscard: <date> | <the real headline> | <the line under it> | person:Name | <publisher>  - a news report card
+Blueprint: <object> | <title> | <fact> · <fact> · <fact>  - how a place or machine works
+Fly: <place> [→ <place>] | <title> | satellite  - a real-map fly-in (satellite imagery when it helps)
+Route/Pinmap: add "| atlas" for the printed-atlas look
 Chart: <number> | <what it counts>              - one number counting up (e.g. Chart: ₹29.7 crore | Google ads in 30 days)
 Chart: <a> vs <b> | <label a>, <label b>        - two numbers as bars
 Pie: <n>% | <what>                               - a share

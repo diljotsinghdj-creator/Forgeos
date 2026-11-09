@@ -26,6 +26,11 @@ VENDOR = Path(__file__).parent / "vendor"
 STYLE_URL = os.environ.get("CF_MAP_STYLE", "https://tiles.openfreemap.org/styles/liberty")
 GEO_CACHE = Path(os.environ.get("CF_GEO_CACHE", Path.home() / ".cache" / "creatorforge" / "geocode.json"))
 ACCENT = {"investigative": "#C8102E", "editorial": "#E8B400"}
+# Satellite fly-ins: Sentinel-2 cloudless 2016 by EOX (CC BY 4.0 - free to use with credit), sharp to ~10 m.
+SAT_TILES = os.environ.get("CF_SAT_TILES",
+                           "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless_3857/default/g/{z}/{y}/{x}.jpg")
+SAT_CREDIT = os.environ.get("CF_SAT_CREDIT", "Sentinel-2 cloudless 2016 by EOX IT Services GmbH "
+                                             "(contains modified Copernicus Sentinel data 2016) · CC BY 4.0")
 
 
 def _online(url: str, timeout: float = 4.0) -> bool:
@@ -79,6 +84,9 @@ def geocode(name: str) -> tuple[float, float] | None:
 
 def parse(spec: str) -> dict | None:
     head, _, title = (spec or "").partition("|")
+    opts = [x.strip() for x in title.split("|")]
+    satellite = any(re.fullmatch(r"(style\s*[:=]\s*)?satellite", x, re.I) for x in opts)
+    title = " | ".join(x for x in opts if x and not re.fullmatch(r"(style\s*[:=]\s*)?satellite", x, re.I))
     parts = [x.strip() for x in re.split(r"→|->", head) if x.strip()][:5]
     if not parts:
         return None
@@ -89,7 +97,24 @@ def parse(spec: str) -> dict | None:
         if ll is None:
             return None                     # a place we cannot put on the map: the line keeps its picture
         places.append({"name": (label or look).strip(), "lat": ll[0], "lon": ll[1]})
-    return {"places": places, "route": len(places) >= 2, "title": title.strip()}
+    return {"places": places, "route": len(places) >= 2, "title": title.strip(), "satellite": satellite}
+
+
+def satellite_style() -> dict:
+    """Real satellite imagery under the pins and route, with faint country borders on top."""
+    from . import maps
+    feats = []
+    for c in maps._world()["countries"]:
+        polys = [[ring + ([ring[0]] if ring and ring[0] != ring[-1] else [])] for ring in c["r"] if len(ring) >= 3]
+        if polys:
+            feats.append({"type": "Feature", "properties": {}, "geometry": {"type": "MultiPolygon", "coordinates": polys}})
+    return {"version": 8,
+            "sources": {"sat": {"type": "raster", "tiles": [SAT_TILES], "tileSize": 256, "maxzoom": 15},
+                        "land": {"type": "geojson", "data": {"type": "FeatureCollection", "features": feats}}},
+            "layers": [{"id": "sat", "type": "raster", "source": "sat",
+                        "paint": {"raster-saturation": -0.15, "raster-contrast": 0.08}},
+                       {"id": "borders", "type": "line", "source": "land",
+                        "paint": {"line-color": "#FFFFFF", "line-opacity": 0.55, "line-width": 0.8}}]}
 
 
 def _offline_style(theme: str) -> dict:
@@ -181,6 +206,9 @@ def render(plan: dict, theme: str, width: int, height: int, seconds: float, out:
     online = os.environ.get("CF_MAP_OFFLINE") != "1" and _online(STYLE_URL)
     style = json.dumps(STYLE_URL) if online else json.dumps(_offline_style(theme))
     credit = "© OpenStreetMap contributors · OpenFreeMap" if online else "Map: Natural Earth"
+    if plan.get("satellite") and os.environ.get("CF_MAP_OFFLINE") != "1" and \
+            _online(SAT_TILES.replace("{z}", "0").replace("{y}", "0").replace("{x}", "0")):
+        style, credit, online = json.dumps(satellite_style()), SAT_CREDIT, True    # no imagery: the street map
     u = min(width, height)
     page = (_PAGE.replace("%CSS%", (VENDOR / "maplibre-gl.css").read_text(encoding="utf-8"))
             .replace("%JS%", (VENDOR / "maplibre-gl.js").read_text(encoding="utf-8"))

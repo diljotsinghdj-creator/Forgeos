@@ -29,7 +29,7 @@ from .ff import MediaError
 FONTS = Path(__file__).parent / "vendor" / "fonts"
 ACCENTS = {"yellow": "#F2C200", "red": "#D7262B", "blue": "#2D6BDB", "orange": "#F07A1A", "teal": "#14968A",
            "green": "#2E9B4F"}
-PAPERS = {"cream": "#EFE8DA", "grey": "#E5E3DE", "white": "#F4F2EE", "dark": "#1B1B1D", "kraft": "#C9A777", "crumple": "#EADFC9",
+PAPERS = {"cream": "#EFE8DA", "grey": "#E5E3DE", "white": "#F4F2EE", "dark": "#1B1B1D", "kraft": "#C9A777", "crumple": "#EADFC9", "atlas": "#E9E1C8",
           "grid": "#F1F0EC"}
 INK = "#141414"
 LAYOUTS = ("word", "disc", "box", "bars", "grid")
@@ -37,7 +37,8 @@ LAYOUTS = ("word", "disc", "box", "bars", "grid")
 PROPS = ("blindfold", "mask", "zip", "crown", "strings", "chains", "megaphone")
 FACE_PROPS = ("blindfold", "mask", "zip", "crown")
 KINDS = ("hero", "desk", "pinboard", "opener", "reveal", "clipping", "pinmap", "bignumber",
-         "seats", "stack", "stand", "fan", "trend", "slice", "route", "compare", "photoline", "tv")
+         "seats", "stack", "stand", "fan", "trend", "slice", "route", "compare", "photoline", "tv",
+         "clockmap", "tornsplit", "newscard", "blueprint")
 
 
 def accent_of(theme: str) -> str:
@@ -182,7 +183,9 @@ def parse_pinmap(spec: str) -> dict | None:
         return [round((lon - lon0) * k, 4), round(lat1 - lat, 4)]
     span = max((lon1 - lon0) * k, lat1 - lat0)
     shapes = [[[round(v / span, 4) for v in norm(x, y)] for x, y in r[:: max(1, len(r) // 400)]] for r in rings]
-    out = {"type": "pinmap", "place": f.get("name", parts[0]), "shapes": shapes,
+    atlas = any(re.fullmatch(r"(style\s*[:=]\s*)?atlas", x.strip(), re.I) for x in parts[1:])
+    parts = [x for x in parts if not re.fullmatch(r"(style\s*[:=]\s*)?atlas", x.strip(), re.I)]
+    out = {"type": "pinmap", "place": f.get("name", parts[0]), "shapes": shapes, "atlas": atlas, "tone": "atlas" if atlas else "",
            "box": [round((lon1 - lon0) * k / span, 4), round((lat1 - lat0) / span, 4)],
            "headline": parts[1] if len(parts) > 1 else "", "source": parts[2] if len(parts) > 2 else "",
            "country": country.get("name", ""), "seed": _seed(spec) % 10000}
@@ -330,7 +333,7 @@ def parse_route(spec: str) -> dict | None:
     stops = _geo([x.strip() for x in re.split(r"→|->|\bto\b", parts[0]) if x.strip()][:6])
     if len(stops) < 2:
         return None
-    vehicle = (parts[2].lower() if len(parts) > 2 and parts[2] else "plane")
+    vehicle = next((p.lower() for p in parts[2:] if p and "atlas" not in p.lower()), "plane")
     vehicle = next((v for v in ("plane", "ship", "car", "train", "truck", "bus") if v in vehicle), "plane")
     lons = [s["lon"] for s in stops]
     lats = [s["lat"] for s in stops]
@@ -345,9 +348,11 @@ def parse_route(spec: str) -> dict | None:
             if any(box[0] - 60 <= x <= box[2] + 60 and box[1] - 40 <= y <= box[3] + 40 for x, y in r[:: max(1, len(r) // 30)]):
                 shapes.append([[round(x, 2), round(y, 2)] for x, y in r[:: max(1, len(r) // 160)]])
     from .scene_anim import icon_nodes, find_icon
-    return {"type": "route", "stops": stops, "box": box, "shapes": shapes[:400], "title": parts[1] if len(parts) > 1 else "",
+    atlas = any(re.fullmatch(r"(style\s*[:=]\s*)?atlas", x.strip(), re.I) for x in parts[1:])
+    return {"type": "route", "stops": stops, "box": box, "shapes": shapes[:400], "title": parts[1] if len(parts) > 1 and not
+            re.fullmatch(r"(style\s*[:=]\s*)?atlas", parts[1], re.I) else "",
             "vehicle": vehicle, "icon": icon_nodes(find_icon(vehicle) or "plane"), "pin": icon_nodes("map-pin"),
-            "tone": "crumple", "seed": _seed(spec) % 10000}
+            "atlas": atlas, "tone": "atlas" if atlas else "crumple", "seed": _seed(spec) % 10000}
 
 
 def parse_compare(spec: str) -> dict | None:
@@ -383,11 +388,103 @@ def parse_tv(spec: str) -> dict | None:
             "caption": parts[2] if len(parts) > 2 else "", "seed": _seed(spec) % 10000}
 
 
+def _region(points: list[tuple[float, float]], pad: float = 0.35) -> tuple[list, list]:
+    """Country shapes around some lon/lat points, and the box to show."""
+    from . import maps
+    lons = [p[0] for p in points]
+    lats = [p[1] for p in points]
+    px = max(3.0, (max(lons) - min(lons)) * pad)
+    py = max(2.5, (max(lats) - min(lats)) * pad)
+    box = [min(lons) - px, min(lats) - py, max(lons) + px, max(lats) + py]
+    shapes = []
+    for c in maps._world()["countries"]:
+        for r in c["r"]:
+            if any(box[0] - 40 <= x <= box[2] + 40 and box[1] - 25 <= y <= box[3] + 25 for x, y in r[:: max(1, len(r) // 30)]):
+                shapes.append({"n": c["n"], "r": [[round(x, 2), round(y, 2)] for x, y in r[:: max(1, len(r) // 220)]]})
+    return box, shapes[:450]
+
+
+def _inside(x: float, y: float, rings: list) -> bool:
+    """Point in any of a country's rings (ray casting)."""
+    for r in rings:
+        inside = False
+        for (x1, y1), (x2, y2) in zip(r, r[1:] + r[:1]):
+            if (y1 > y) != (y2 > y) and x < (x2 - x1) * (y - y1) / ((y2 - y1) or 1e-9) + x1:
+                inside = not inside
+        if inside:
+            return True
+    return False
+
+
+def parse_clockmap(spec: str) -> dict | None:
+    """'Clockmap: Mumbai 9:30, Delhi 9:30, Kolkata 9:30, Guwahati 9:30 | One country, one clock | IST' - a clock at
+    every city, joined by lines, the time in a big box."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    cities = []
+    for x in re.split(r",|;|·", parts[0] if parts else ""):
+        m = re.match(r"\s*(.+?)\s+(\d{1,2})(?::(\d{2}))?\s*(am|pm)?\s*$", x.strip(), re.I)
+        if not m:
+            continue
+        g = _geo([m.group(1)])
+        if not g:
+            return None
+        h = int(m.group(2)) % 12 + (12 if (m.group(4) or "").lower() == "pm" else 0)
+        cities.append({**g[0], "h": h, "m": int(m.group(3) or 0), "shown": f"{m.group(2)}:{m.group(3) or '00'}"})
+    if len(cities) < 2:
+        return None
+    box, shapes = _region([(c["lon"], c["lat"]) for c in cities])
+    from . import maps
+    home = ""
+    for c in maps._world()["countries"]:
+        if c["n"] in {sh["n"] for sh in shapes} and _inside(cities[0]["lon"], cities[0]["lat"], c["r"]):
+            home = c["n"]
+            break
+    return {"type": "clockmap", "cities": cities[:10], "box": box, "shapes": shapes, "home": home,
+            "title": parts[1] if len(parts) > 1 else "",
+            "zone": parts[2] if len(parts) > 2 else "", "tone": "white", "seed": _seed(spec) % 10000}
+
+
+def parse_tornsplit(spec: str) -> dict | None:
+    """'Tornsplit: ship + crane | One steel box | 1956' - a big condensed headline, a cut-out on the paper side, a
+    torn accent panel with halftone dots and a second cut-out on it."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if len(parts) < 2 or not parts[0] or not parts[1]:
+        return None
+    return {"type": "tornsplit", "subjects": _split_list(parts[0])[:2], "headline": parts[1][:40],
+            "kicker": parts[2] if len(parts) > 2 else "", "seed": _seed(spec) % 10000}
+
+
+def parse_newscard(spec: str) -> dict | None:
+    """'Newscard: 29 Aug 2024 | The headline | the line under it | person:Name | Publisher' - a news card on grid
+    paper: red date box, the headline highlighted as it is read, the person beside it, the publisher's name in type."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if len(parts) < 2 or not parts[1]:
+        return None
+    from . import cutouts
+    rest = parts[2:]
+    subject = next((x for x in rest if x.lower().startswith("person:") or cutouts.resolve(x)), "")
+    others = [x for x in rest if x and x != subject]
+    return {"type": "newscard", "date": parts[0][:24], "headline": parts[1][:120], "sub": others[0][:160] if others else "",
+            "source": others[1][:40] if len(others) > 1 else "", "subjects": [subject] if subject else [],
+            "tone": "grid", "seed": _seed(spec) % 10000}
+
+
+def parse_blueprint(spec: str) -> dict | None:
+    """'Blueprint: factory | Factory production | 3 shifts · 1,200 workers · 40 trucks a day' - a cut-out on a blue
+    grid card, an arrow pointing at it, a few bullet lines."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if len(parts) < 2 or not parts[0]:
+        return None
+    pts = [x.strip() for x in re.split(r"·|•|;", parts[2]) if x.strip()][:4] if len(parts) > 2 else []
+    return {"type": "blueprint", "subjects": [parts[0]], "title": parts[1][:40], "points": pts, "seed": _seed(spec) % 10000}
+
+
 PARSERS = {"hero": parse_hero, "desk": parse_desk, "pinboard": parse_evidence, "opener": parse_opener,
            "reveal": parse_reveal, "clipping": parse_headline, "pinmap": parse_pinmap, "bignumber": parse_number,
            "seats": parse_seats, "stack": parse_stack, "stand": parse_stand, "fan": parse_fan, "trend": parse_trend,
            "slice": parse_slice, "route": parse_route, "compare": parse_compare, "photoline": parse_photoline,
-           "tv": parse_tv}
+           "tv": parse_tv, "clockmap": parse_clockmap, "tornsplit": parse_tornsplit, "newscard": parse_newscard,
+           "blueprint": parse_blueprint}
 
 
 def plan_for(kind: str, spec: str) -> dict | None:
@@ -523,6 +620,7 @@ const L={};['paper','back','mid','hero','front','grain'].forEach(k=>L[k]=draw.gr
 draw.defs().svg(`<filter id="shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="${U*.004}" dy="${U*.012}" stdDeviation="${U*.011}" flood-color="#000" flood-opacity=".32"/></filter>
 <filter id="softshadow" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="${U*.006}" stdDeviation="${U*.006}" flood-color="#000" flood-opacity=".22"/></filter>
 <filter id="blur" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="${U*.035}"/></filter>
+<filter id="dof" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="${U*.006}"/></filter>
 <filter id="tint"><feFlood flood-color="${K.acc2||'#E0442C'}"/><feComposite in2="SourceAlpha" operator="in"/></filter>
 <filter id="redch"><feColorMatrix type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .55 0"/></filter>
 <filter id="cyanch"><feColorMatrix type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 .55 0"/></filter>`);
@@ -814,8 +912,9 @@ function headline(){ // a torn newspaper headline with cut-outs around it, a big
 
 function pinmap(){ // the country outline; the place highlighted; the headline clipping drops on the pin
   const bx=P.box,ms=Math.min((TALL?W*.86:W*.5)/bx[0],(TALL?H*.42:H*.72)/bx[1]);const ox=(TALL?W/2:W*.34)-bx[0]*ms/2,oy=(TALL?H*.28:H*.42)-bx[1]*ms/2;
-  const m=L.back.group();P.shapes.forEach(r=>{m.polygon(r.map(q=>[ox+q[0]*ms,oy+q[1]*ms].join(',')).join(' ')).fill(P.pin?'#E2DBCC':ACC)
-    .stroke({color:'#9A9282',width:Math.max(1,U*.0016)})});m.opacity(0);at(0,.6,p=>m.opacity(p));
+  if(P.atlas)atlasSea();
+  const m=L.back.group();P.shapes.forEach(r=>{m.polygon(r.map(q=>[ox+q[0]*ms,oy+q[1]*ms].join(',')).join(' ')).fill(P.atlas?(P.pin?'#EFE3C2':'#D9542C'):(P.pin?'#E2DBCC':ACC))
+    .stroke({color:P.atlas?'#8E7E5C':'#9A9282',width:Math.max(1,U*.0016)})});if(P.atlas)depthOfField(m);m.opacity(0);at(0,.6,p=>m.opacity(p));
   if(P.country){const c=T(L.back,P.country.toUpperCase(),U*.03,ox+bx[0]*ms/2,oy-U*.03,{family:'Inter',weight:800,ls:'0.3em',fill:'#8C8577'});wipe(c,.3)}
   let px=ox+bx[0]*ms/2,py=oy+bx[1]*ms/2;
   if(P.pin){px=ox+P.pin[0]*ms;py=oy+P.pin[1]*ms;const ring=L.mid.circle(U*.05).center(px,py).fill(ACC).opacity(.5);popIn(ring,px,py,.5);
@@ -940,6 +1039,14 @@ function slice(){ // the real object with a wedge in the accent colour and a cal
   const big=T(L.front,P.shown,U*.07,x2,y2-U*.06,{family:'Anton',weight:400,anchor:'end',fill:ACC==='#F2C200'?FG:ACC});wipe(big,1.7);
   if(P.label){const t=T(L.front,P.label.toUpperCase(),U*.028,x2,y2+U*.005,{family:'Inter',weight:800,anchor:'end',ls:'.08em'});wipe(t,1.8)}}
 
+// ---- atlas look: pale sea with engraved hatching, cream land, serif labels, shallow depth of field ----
+function atlasSea(){const g=L.paper.group();g.rect(W,H).fill('#B8CDD1');const st=U*.012;
+  for(let y=0;y<H;y+=st)g.line(0,y,W,y).stroke({color:'#9DB6BC',width:Math.max(1,U*.0012)});return g}
+function depthOfField(grp){ // the edges go soft: a blurred copy under, the sharp map faded out towards the edges
+  const soft=grp.clone();L.paper.add(soft);soft.attr({filter:'url(#dof)'});
+  const gr=draw.gradient('radial',a=>{a.stop(0,'#fff');a.stop(.55,'#fff');a.stop(1,'#000')});
+  const m=draw.mask().add(draw.rect(W,H).fill(gr));grp.maskWith(m)}
+
 // ---- round 5 ----
 function route(){ // a paper map; dashed routes draw themselves; the vehicle travels them; pins at each stop
   const [x0,y0,x1,y1]=P.box;const kx=Math.cos((y0+y1)/2*Math.PI/180);
@@ -947,8 +1054,10 @@ function route(){ // a paper map; dashed routes draw themselves; the vehicle tra
   const s=Math.min(W*(TALL?.7:.72)/sx,H*(TALL?.4:.56)/sy);const cxl=(Math.max(...ls)+Math.min(...ls))/2,cyl=(Math.max(...as)+Math.min(...as))/2;
   const ox=W/2-cxl*kx*s,oy=H*(TALL?.4:.5)+cyl*s;
   const pr=(lon,lat)=>[ox+lon*kx*s,oy-lat*s];
-  const land=L.back.group();P.shapes.forEach(r=>land.polygon(r.map(q=>pr(q[0],q[1]).join(',')).join(' ')).fill('#9C5B2E').opacity(.88));
-  land.attr({style:'mix-blend-mode:multiply'});wipe(land,0);
+  if(P.atlas)atlasSea();
+  const land=L.back.group();P.shapes.forEach(r=>land.polygon(r.map(q=>pr(q[0],q[1]).join(',')).join(' ')).fill(P.atlas?'#EFE3C2':'#9C5B2E')
+    .opacity(P.atlas?1:.88).stroke(P.atlas?{color:'#8E7E5C',width:Math.max(1,U*.0015)}:{width:0}));
+  if(!P.atlas)land.attr({style:'mix-blend-mode:multiply'});else depthOfField(land);wipe(land,0);
   if(P.title){const g=boxText(L.front,P.title,U*.05,W/2,TALL?H*.07:H*.075,{anchor:'middle',maxw:W*.84,most:1});g.children().forEach(r=>slide(r,.1,0,-H*.04))}
   const pts=P.stops.map(st=>pr(st.lon,st.lat));
   // compass rose
@@ -962,6 +1071,7 @@ function route(){ // a paper map; dashed routes draw themselves; the vehicle tra
     const lb=tag(L.front,P.stops[i].name,0,0,{size:U*.02});const bb=lb.bbox();const left=p[0]+U*.02+bb.width>W-U*.03;
     lb.attr({transform:`translate(${left?p[0]-U*.02-bb.width-bb.x:p[0]+U*.02-bb.x},${p[1]+U*.02})`});slide(lb,.4+i*per,(left?-1:1)*W*.02,0)});
   legs.forEach((l,i)=>{const path=L.mid.path(`M${l[0]} ${l[1]} Q${l[2]} ${l[3]} ${l[4]} ${l[5]}`).fill('none').stroke({color:'#2A1A10',width:U*.004,dasharray:`${U*.012} ${U*.01}`});
+    if(P.atlas)path.stroke({color:'#0F7C7A',width:U*.006,dasharray:'none'});
     const len=path.node.getTotalLength();const mask=draw.mask().add(draw.path(`M${l[0]} ${l[1]} Q${l[2]} ${l[3]} ${l[4]} ${l[5]}`).fill('none').stroke({color:'#fff',width:U*.02}));
     const mp=mask.children()[0];mp.attr({'stroke-dasharray':len,'stroke-dashoffset':len});path.maskWith(mask);
     const v=L.front.group();const vk=U*.1/24;v.circle(U*.085).center(0,0).fill('#F3E9D4').stroke({color:'#2A1A10',width:U*.003});
@@ -1012,7 +1122,79 @@ function tv(){ // an old TV set: the picture inside with scan lines and a colour
   if(P.label){const t=tag(L.front,P.label,tx,ty-U*.05,{bg:ACC,size:U*.026});slide(t,.6,-W*.04,0)}
   if(P.caption){const c=boxText(L.front,P.caption,U*.045,W/2,ty+th+U*.12,{anchor:'middle',maxw:W*.86,most:2});c.children().forEach((q,i)=>slide(q,.9+i*.12,0,H*.04))}}
 
-const SCENES={hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv};
+// ---- round 6 ----
+function clockFace(g,x,y,r,h,m,start){ // a station clock; its hands sweep to the time
+  const c=g.group();c.circle(r*2).center(x,y).fill('#FFFFFF').stroke({color:'#1E5C78',width:r*.14});
+  for(let k=0;k<12;k++){const a=k*Math.PI/6;c.line(x+Math.sin(a)*r*.72,y-Math.cos(a)*r*.72,x+Math.sin(a)*r*.86,y-Math.cos(a)*r*.86).stroke({color:'#111',width:r*(k%3?.05:.1)})}
+  const hh=c.line(x,y,x,y-r*.5).stroke({color:'#111',width:r*.12,linecap:'round'}),mm=c.line(x,y,x,y-r*.78).stroke({color:'#111',width:r*.08,linecap:'round'});
+  c.circle(r*.14).center(x,y).fill('#C62828');
+  at(start,.9,p=>{const ha=((h%12)+m/60)*Math.PI/6*p+(1-p)*-Math.PI/2,ma=(m/60)*Math.PI*2*p+(1-p)*Math.PI;
+    hh.plot(x,y,x+Math.sin(ha)*r*.5,y-Math.cos(ha)*r*.5);mm.plot(x,y,x+Math.sin(ma)*r*.78,y-Math.cos(ma)*r*.78)},E.inout);
+  c.attr({filter:'url(#softshadow)'});return c}
+function clockmap(){ // a light map, a clock at every city, joined by lines, the time in a big red box
+  const [x0,y0,x1,y1]=P.box;const kx=Math.cos((y0+y1)/2*Math.PI/180);const bw=(x1-x0)*kx,bh=y1-y0;
+  const s=Math.min(W*.86/bw,H*(TALL?.5:.74)/bh);const ox=W/2-(x0+x1)/2*kx*s,oy=H*(TALL?.42:.53)+(y0+y1)/2*s;const pr=(lon,lat)=>[ox+lon*kx*s,oy-lat*s];
+  L.paper.rect(W,H).fill('#E7EEF1');
+  const land=L.back.group();const home=P.cities.length?null:null;
+  P.shapes.forEach(sh=>{const home=sh.n===P.home;land.polygon(sh.r.map(q=>pr(q[0],q[1]).join(',')).join(' ')).fill(home?'#FBFAF6':'#EEECE6')
+    .stroke({color:home?'#D04A3A':'#B9B5AC',width:Math.max(1.2,U*(home?.003:.0015))}).back().opacity(1)});
+  land.children().filter(c=>c.attr('stroke')==='#D04A3A').forEach(c=>c.front());wipe(land,0);
+  const pts=P.cities.map(c=>pr(c.lon,c.lat));const r=Math.min(U*.045,Math.max(U*.026,U*.3/P.cities.length));
+  for(let i=1;i<pts.length;i++){const a=pts[i-1],b=pts[i];const ln=L.mid.line(a[0],a[1],a[0],a[1]).stroke({color:'#4B6E7E',width:U*.004});
+    at(.4+i*.18,.4,p=>ln.plot(a[0],a[1],a[0]+(b[0]-a[0])*p,a[1]+(b[1]-a[1])*p),E.inout)}
+  pts.forEach((q,i)=>{const st=.25+i*.18;const c=clockFace(L.hero,q[0],q[1],r,P.cities[i].h,P.cities[i].m,st+.2);popIn(c,q[0],q[1],st,.35);
+    const t=T(L.front,P.cities[i].name.toUpperCase(),U*.02,q[0],q[1]-r-U*.02,{family:'Inter',weight:800,ls:'.06em'});
+    t.attr({style:'paint-order:stroke',stroke:'#E7EEF1','stroke-width':U*.006});wipe(t,st+.2)});
+  const tb=L.front.group();const hh=String(P.cities[0].shown).split(':');const big=T(tb,hh[0],U*.09,0,0,{family:'Archivo',weight:400,fill:'#FFFFFF',anchor:'start'});
+  const bb=big.bbox();const mn=T(tb,':'+(hh[1]||'00'),U*.045,bb.x+bb.width+U*.012,0,{family:'Archivo',weight:400,fill:'#FFFFFF',anchor:'start'});
+  const mb=mn.bbox();tb.rect(mb.x+mb.width-bb.x+U*.04,bb.height+U*.02).move(bb.x-U*.02,bb.y-U*.01).radius(U*.01).fill('#D32F2F').back();
+  tb.attr({transform:`translate(${TALL?W*.08:W*.06},${TALL?H*.12:H*.14})`});popIn(tb,W*.1,H*.14,.15);
+  if(P.zone){const z=tag(L.front,P.zone,TALL?W*.08:W*.06,TALL?H*.19:H*.25,{bg:'#FFFFFF'});wipe(z,.5)}
+  if(P.title){const g=boxText(L.front,P.title,U*.05,TALL?W*.58:W/2,TALL?H*.06:H*.075,{anchor:'middle',maxw:TALL?W*.68:W*.6,most:2});g.children().forEach(q=>slide(q,.1,0,-H*.04))}}
+function tornsplit(){ // a big condensed headline, a cut-out on paper, a torn accent panel with halftone dots, a navy corner
+  const navy='#1E2B4A';const pat=draw.pattern(U*.014,U*.014,a=>a.circle(U*.006).center(U*.007,U*.007).fill('#000').opacity(.18));
+  const ex=TALL?[[W*.0,H*.62],[W,H*.48]]:[[W*.66,0],[W*.54,H]];const pts=[];const n=40;
+  for(let i=0;i<=n;i++){const t=i/n;pts.push([ex[0][0]+(ex[1][0]-ex[0][0])*t+(rnd()-.5)*U*.02,ex[0][1]+(ex[1][1]-ex[0][1])*t+(rnd()-.5)*U*.02])}
+  const poly=TALL?pts.concat([[W,H],[0,H]]):pts.concat([[W,H],[W,0]]);
+  const panel=L.back.group();panel.polygon(poly.map(q=>q.join(',')).join(' ')).fill(ACC);panel.polygon(poly.map(q=>q.join(',')).join(' ')).fill(pat);
+  panel.polyline(pts.map(q=>q.join(',')).join(' ')).fill('none').stroke({color:'#F7F2E6',width:U*.012});slide(panel,.05,TALL?0:W*.3,TALL?H*.2:0);
+  const corner=L.back.group();const cp=[[0,H*.72],[W*.12,H*.8],[W*.16,H],[0,H]];corner.polygon(cp.map(q=>q.join(',')).join(' ')).fill(navy);if(!TALL)slide(corner,.1,-W*.1,0);else corner.remove();
+  const pics=P.pics||[];
+  if(pics[0]){const h=TALL?H*.3:H*.56;const g=picture(L.hero,pics[0],TALL?W*.42:W*.38,TALL?H*.6:H*.92,h);drop(g,.35,H*.25,-2)}
+  if(pics[1]){const h=TALL?H*.3:H*.62;const g=picture(L.mid,pics[1],TALL?W*.62:W*.8,TALL?H*.95:H*.86,h);drop(g,.55,H*.25,2)}
+  const size=TALL?W*.17:H*.2;const ls=lines(P.headline.toUpperCase(),size,TALL?W*.9:W*.56,'Anton',400,2);
+  ls.forEach((l,i)=>{const t=T(L.front,l,size,W*.04,(TALL?H*.1:H*.17)+i*size*1.02,{family:'Anton',weight:400,anchor:'start',fill:navy});slide(t,.2+i*.12,-W*.05,0)});
+  const bar=L.front.rect(0,U*.016).move(W*.04,(TALL?H*.1:H*.17)+ls.length*size*1.02-size*.35).fill(ACC==='#D7262B'?navy:'#E0442C');at(.7,.4,p=>bar.width(Math.max(.1,W*.2*p)),E.inout);
+  if(P.kicker){const k=T(L.front,P.kicker.toUpperCase(),U*.026,W*.04,(TALL?H*.1:H*.17)+ls.length*size*1.02-size*.05,{family:'Mono',weight:700,anchor:'start',fill:navy});wipe(k,.9)}}
+function newscard(){ // a news card on grid paper: red date box, the headline highlighted as it is read, the person beside it
+  const g=L.paper.group().opacity(.5);const st=Math.round(U/18);
+  for(let x=0;x<W;x+=st)g.line(x,0,x,H).stroke({color:'#8E8672',width:1});for(let y=0;y<H;y+=st)g.line(0,y,W,y).stroke({color:'#8E8672',width:1});
+  const pic=((P.pics||[])[0]||{}).img?(P.pics||[])[0]:null;const left=W*.06,maxw=pic&&!TALL?W*.44:W*.86;let y=TALL?H*.12:H*.16;
+  const db=L.front.group();const dt=T(db,P.date,U*.034,0,0,{family:'Inter',weight:600,anchor:'start',fill:'#FFFFFF'});const bb=dt.bbox();
+  db.rect(bb.width+U*.04,bb.height+U*.024).move(bb.x-U*.02,bb.y-U*.012).fill('#D32F2F').back();db.attr({transform:`translate(${left+U*.02},${y})`});slide(db,.1,-W*.05,0);
+  y+=U*.1;const hs=U*(TALL?.058:.052);const hl=lines(P.headline,hs,maxw,'Inter',800,3);
+  hl.forEach((l,i)=>{const t=T(L.front,l,hs,left,y+i*hs*1.25,{family:'Inter',weight:800,anchor:'start',fill:INK});wipe(t,.3+i*.1);highlight(L.mid,t.bbox(),.8+i*.35,'#F2C94C')});
+  y+=hl.length*hs*1.25+U*.03;
+  if(P.sub){const ss=U*.03;lines(P.sub,ss,maxw,'Inter',400,3).forEach((l,i)=>{const t=T(L.front,l,ss,left+U*.03,y+i*ss*1.4,{family:'Inter',weight:400,anchor:'start',fill:'#333'});wipe(t,1.2+i*.1)});y+=U*.16}
+  if(P.source){const ln=L.front.line(left,y,left,y).stroke({color:INK,width:U*.003});at(1.5,.5,p=>ln.plot(left,y,left+W*.24*p,y),E.inout);
+    const t=T(L.front,P.source,U*.045,left+W*.26,y,{family:'Playfair',weight:700,italic:true,anchor:'start',fill:INK});wipe(t,1.8)}
+  if(pic){const h=TALL?H*.36:H*.86;const g=picture(L.hero,pic,TALL?W*.6:W*.8,TALL?H*.98:H*1.0,h);drop(g,.4,H*.2,0)}}
+function blueprint(){ // a blue card with a white grid; the cut-out; an arrow that points at it; a few bullet lines
+  const bg=L.paper.group();bg.rect(W,H).fill('#2F6FD6');const st=Math.round(U/16);
+  for(let x=0;x<W;x+=st)bg.line(x,0,x,H).stroke({color:'#FFFFFF',width:1}).opacity(.28);for(let y=0;y<H;y+=st)bg.line(0,y,W,y).stroke({color:'#FFFFFF',width:1}).opacity(.28);
+  const pic=(P.pics||[])[0];const cx=TALL?W*.5:W*.66,by=TALL?H*.6:H*.82,h=TALL?H*.3:H*.5;
+  if(pic){const g=picture(L.hero,pic,cx,by,h);drop(g,.3,H*.2,0)}
+  const tx=TALL?W*.08:W*.07;const t=T(L.front,P.title,U*.065,tx,TALL?H*.12:H*.2,{family:'Inter',weight:800,anchor:'start',fill:'#FFFFFF'});fit(t,TALL?W*.84:W*.42);slide(t,.15,-W*.05,0);
+  (P.points||[]).forEach((pt,i)=>{const y=(TALL?H*.68:H*.36)+i*U*.075;const d=L.front.polygon([[0,-U*.012],[U*.018,0],[0,U*.012]].map(q=>q.join(',')).join(' ')).fill('#FFFFFF');
+    d.attr({transform:`translate(${tx},${y})`});const l=T(L.front,pt,U*.034,tx+U*.035,y,{family:'Inter',weight:600,anchor:'start',fill:'#FFFFFF'});fit(l,TALL?W*.8:W*.38);wipe(d,.7+i*.2);wipe(l,.75+i*.2)});
+  const ax=TALL?W*.7:W*.5,ay=TALL?H*.24:H*.2,bx=cx+(TALL?0:-h*.15),bY=by-h*.95;
+  const arrow=L.front.path(`M${ax} ${ay} Q${ax+U*.2} ${ay-U*.08} ${bx} ${bY}`).fill('none').stroke({color:'#FFFFFF',width:U*.006,linecap:'round'});
+  const len=arrow.node.getTotalLength();arrow.attr({'stroke-dasharray':len,'stroke-dashoffset':len});at(.9,.6,p=>arrow.attr({'stroke-dashoffset':len*(1-p)}),E.inout);
+  const q=arrow.node.getPointAtLength(len),q2=arrow.node.getPointAtLength(len-2);const ang=Math.atan2(q.y-q2.y,q.x-q2.x)*180/Math.PI;
+  const head=L.front.polygon([[0,0],[-U*.03,-U*.018],[-U*.03,U*.018]].map(z=>z.join(',')).join(' ')).fill('#FFFFFF');head.attr({transform:`translate(${q.x},${q.y}) rotate(${ang})`});wipe(head,1.45)}
+
+const SCENES={hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv,
+  clockmap,tornsplit,newscard,blueprint};
 async function boot(){
   try{await Promise.all(Array.from(document.fonts).map(f=>f.load()))}catch(e){}
   const imgs=[];(P.pics||[]).forEach(p=>{if(p.img)imgs.push(new Promise(r=>{const i=new Image();i.onload=i.onerror=r;i.src=p.img}))});
@@ -1040,7 +1222,7 @@ def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: f
         raise MediaError("vox: no picture or icon for the subject")
     fps = int(fps or os.environ.get("CF_MOTION_FPS") or (60 if os.environ.get("CF_FPS") == "60" else 30))
     seconds = max(1.5, float(seconds))
-    tone = plan.get("tone") or ("grid" if plan["type"] in ("desk", "reveal") else tone)
+    tone = plan.get("tone") or ("grid" if plan["type"] in ("desk", "reveal", "newscard") else tone)
     paper_hex = PAPERS.get(tone, PAPERS["cream"])
     bg, grain = paper(paper_hex, width, height, work)
     kit = {"acc": accent_of(theme), "acc2": "#E0442C" if accent_of(theme) != ACCENTS["red"] else "#F2C200", "ink": INK, "paper": paper_hex, "dark": tone == "dark", "tone": tone, "props": props,
