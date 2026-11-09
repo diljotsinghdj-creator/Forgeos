@@ -974,11 +974,14 @@ def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: f
     theme, tint = split_theme(theme)
     theme = theme if theme in PAPER else "editorial"
     seconds = max(1.5, seconds)
-    body = {"chapter": chapter_lines, "quote": quote_lines, "steps": steps_lines, "timeline": timeline_lines,
+    fn = {"chapter": chapter_lines, "quote": quote_lines, "steps": steps_lines, "timeline": timeline_lines,
             "icons": icons_lines, "screen": screen_lines, "document": document_lines,
             "statement": statement_lines, "article": article_lines, "chat": chat_lines, "search": search_lines,
             "pie": pie_lines, "squares": squares_lines, "timer": timer_lines, "receipt": receipt_lines,
-            "endscreen": endscreen_lines}[kind](spec, theme, width, height, seconds)
+            "endscreen": endscreen_lines}.get(kind)
+    if fn is None:      # animate, clock, calendar... are drawn only by the animation engine (motion.py)
+        raise ff.MediaError(f"'{kind}' needs the animation engine (Chromium + Playwright)")
+    body = fn(spec, theme, width, height, seconds)
     opts: dict = {}
     if isinstance(body, tuple):
         body, opts = body
