@@ -167,7 +167,8 @@ def test_music_beats_and_cuts_on_the_beat(tmp_path):
 
 def test_channel_rules_flags_logos_and_props():
     assert "flags" in vox_director.valid("Hero: flag | India")
-    assert "brand logos" in vox_director.valid("Hero: google logo | Ads")
+    assert vox_director.valid("Hero: google logo | Ads") == ""          # platforms appear as their official mark
+    assert vox.logo_key("google logo") == "google"
     assert vox_director.valid("Hero: smartphone | Google ads | Google · 30 days") == ""
     assert "props" in vox_director.valid("Hero: person:A | Claim | prop: blindfold")
     assert vox_director.valid("Hero: person:A | Claim | prop: blindfold", props=True) == ""
@@ -285,3 +286,26 @@ def test_a_scene_with_a_papercut_companion_renders(tmp_path, monkeypatch):
     vox.render("bignumber", "32 lakh | crowd | Every morning | with: person:Amit Shah", "editorial@red", 640, 360, 2.0,
                out, tmp_path / "w", lib=tmp_path / "lib", fetch=False, fps=12)
     assert out.stat().st_size > 2000
+
+
+def test_platform_logos_identify_the_platforms_a_line_names():
+    from creatorforge_worker import infographic as ig
+    assert vox.logo_key("व्हाट्सऐप") == "whatsapp" and vox.logo_key("twitter") == "x" and vox.logo_key("nothing") == ""
+    p = vox.plan_for("bignumber", "50 lakh | smartphone | WhatsApp groups | logo: whatsapp")
+    assert p["logos"][0]["title"] == "WhatsApp" and p["logos"][0]["hex"].startswith("#")
+    assert ig.platforms("डेक्कन हेराल्ड के मुताबिक़, पचास लाख व्हाट्सऐप ग्रुप्स।") == ["whatsapp"]
+    out, _ = vox_director.ensure("डेक्कन हेराल्ड के मुताबिक़, पचास लाख व्हाट्सऐप ग्रुप्स।\n")
+    assert "logo: whatsapp" in out
+    assert vox_director.valid("Hero: logo:whatsapp + crowd | One message") == ""
+
+
+@pytest.mark.skipif(not motion.enabled(), reason="needs Chromium + Playwright")
+def test_logo_scenes_render(tmp_path, monkeypatch):
+    monkeypatch.setenv("CF_CUTOUT_FETCH", "0")
+    monkeypatch.setenv("CF_CUTOUTS", str(tmp_path / "lib"))
+    out = tmp_path / "a.mp4"
+    vox.render("stack", "bars | Facebook 22.7 crore, Google 9 crore | Ads | logo: facebook, google", "editorial", 640, 360,
+               2.0, out, tmp_path / "w", lib=tmp_path / "lib", fetch=False, fps=12)
+    motion.render("animate", "whatsapp spreads to many | One forward", "editorial", 640, 360, 2.0, tmp_path / "b.mp4",
+                  tmp_path / "w", fps=12)
+    assert out.stat().st_size > 2000 and (tmp_path / "b.mp4").stat().st_size > 2000

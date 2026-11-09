@@ -167,7 +167,8 @@ def _headline(f: dict, most: int = 3) -> str:
         h = ", ".join(f["phrases"][:2])
         return h[:1].upper() + h[1:]
     words = [c for c in f["concepts"] if c not in ("every", "morning", "night", "party", "question", "answer")]
-    return " ".join(words[:most]).strip().capitalize()
+    h = " ".join(words[:most]).strip()
+    return h[:1].upper() + h[1:]          # keep brand capitals (WhatsApp), only the first letter goes up
 
 
 def key_facts(f: dict) -> list[str]:
@@ -340,6 +341,28 @@ def carry_person(line: str, f: dict, last: str) -> dict:
     return f
 
 
+def platforms(line: str) -> list[str]:
+    """Platforms and companies the line names, as logo keys (WhatsApp, Google, Facebook...)."""
+    from .media import vox
+    toks = vd._tokens(line)
+    low = line.lower()
+    out = []
+    for word, key in vox.LOGO_WORDS.items():
+        hit = vd._has(toks, word) if vd._DEV.search(word) else re.search(rf"\b{re.escape(word)}\b", low)
+        if hit and key in vox.logos() and key not in out:
+            out.append(key)
+    return out[:2]
+
+
+def _with_logos(g: str, line: str) -> str:
+    from .media import vox
+    kind = g.split(":", 1)[0].strip().lower()
+    keys = platforms(line)
+    if not keys or kind not in vox.KINDS or "logo" in g.lower():
+        return g
+    return f"{g} | logo: {', '.join(keys)}"
+
+
 def _with_person(g: str, f: dict) -> str:
     """A public figure named in the line stands beside the infographic as a papercut photo (unless the graphic is
     already their photo). Only on the Vox scenes, which make room for them."""
@@ -388,5 +411,5 @@ def pick(line: str, f: dict, n: int, total: int, prev: list[str], props: bool = 
             continue
         if vd.valid(g, True, props) or not mute_test(f, g):
             continue
-        return _with_person(_marked(g, f, prev), f)
+        return _with_logos(_with_person(_marked(g, f, prev), f), line)
     return ""

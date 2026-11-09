@@ -306,7 +306,11 @@ if(T==='scene'){
   const TOP=TALL?H*.2:H*.22, BOT=TALL?H*.56:H*.72, MY=(TOP+BOT)/2, SZ=U*(TALL?.21:.18);
   const A=P.actors, act=P.action, n=A.length, END=Math.max(1.2,DUR-.3);
   function ico(nodes,size,opt){opt=opt||{};const g=stage.group();
-    const photo=!!(nodes&&nodes[0]&&(nodes[0][0]==='image'||nodes[0][0]==='illu'));   // a photo or drawing, not the line icon
+    const photo=!!(nodes&&nodes[0]&&(nodes[0][0]==='image'||nodes[0][0]==='illu'||nodes[0][0]==='logo'));   // a photo or drawing, not the line icon
+    if(nodes&&nodes[0]&&nodes[0][0]==='logo'){const m=nodes[0][1],sz=size*1.15,k=sz*.6/24;
+      g.rect(sz,sz).move(-sz/2,-sz/2).radius(sz*.22).fill(m.hex).stroke({color:'#FFFFFF',width:sz*.04});
+      g.path(m.d).fill('#FFFFFF').attr({transform:`translate(${-12*k},${-12*k}) scale(${k})`});
+      g.attr({style:'filter:drop-shadow(0 2px 3px rgba(0,0,0,.3))'});return g}
     if(nodes&&nodes[0]&&nodes[0][0]==='illu'&&window.ILLU&&ILLU[nodes[0][1]]){
       const [bw,bh,fn]=ILLU[nodes[0][1]];const k=size*1.5/Math.max(bw,bh);const ig2=g.group();fn(ig2,ACC);
       ig2.attr({transform:`translate(${-bw*k/2},${-bh*k/2}) scale(${k})`,style:'filter:drop-shadow(0 2px 3px rgba(0,0,0,.3))'});return g}
@@ -582,7 +586,12 @@ def _photos(plan: dict) -> None:
     photo replaces the line icon, drawn bigger, with a soft shadow."""
     from . import cutouts
     model = os.environ.get("CF_CUTOUT_MODEL")
+    from .vox import logo_key, logos
     for a in list(plan.get("actors") or []) + ([plan["cargo"]] if isinstance(plan.get("cargo"), dict) else []):
+        k = logo_key(str(a.get("name", "")))
+        if k:                                  # a platform the line names: its own app tile
+            a["o"] = [["logo", logos()[k]]]
+            continue
         try:
             c = cutouts.get(str(a.get("name", "")), model=Path(model) if model else None)
         except Exception:  # noqa: BLE001 - no photo: the icon stays

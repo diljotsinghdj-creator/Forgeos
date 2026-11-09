@@ -52,6 +52,9 @@ Newscard: <date> | <the real headline> | <the line under it> | person:Name | <pu
 Blueprint: <object> | <title> | <fact> · <fact> · <fact>  - how a place or machine works
 Fly: <place> [→ <place>] | <title> | satellite  - a real-map fly-in (satellite imagery when it helps)
 Route/Pinmap: add "| atlas" for the printed-atlas look
+Any graphic: add "| logo: whatsapp" (or google, facebook, instagram, x, youtube, telegram, jio, paytm, phonepe...)
+    when the line names that platform or company - its official mark appears as an app tile. "logo:whatsapp" can
+    also be the subject of a Hero. Only for platforms the line actually names.
 Any graphic: add "| with: person:Full Name" when the line names a public figure - their papercut photo stands
     beside the infographic (the graphic makes room). Use it on every line that names someone.
 Any graphic: add "| marker: <3-6 words>" for a red hand-drawn circle round the subject and a handwritten note
@@ -395,7 +398,9 @@ def _content_rules(kind: str, spec: str, props: bool) -> str:
         subs = pictured
         bad = [b for b in BRANDS for sub in subs if not sub.startswith("person:") and re.search(rf"\b{re.escape(b)}\b", sub)]
         if bad:
-            return f"no brand logos as pictures ('{bad[0]}'): show a smartphone/laptop and name it in a tag"
+            from .media import vox
+            if not all(vox.logo_key(b) for b in bad):
+                return f"no picture for '{bad[0]}': show it with '| logo: {bad[0]}' or as logo:{bad[0]}"
         if p.get("prop") and not props:
             return "symbolic props over a real person are off for this video (turn on Editorial cartoon props)"
         if p.get("prop") and not any(sub.startswith("person:") for sub in subs[:1]):

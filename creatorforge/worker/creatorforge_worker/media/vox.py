@@ -532,11 +532,55 @@ PARSERS = {"hero": parse_hero, "desk": parse_desk, "pinboard": parse_evidence, "
            "blueprint": parse_blueprint}
 
 
+_LOGOS: dict | None = None
+
+
+def logos() -> dict:
+    """Official brand marks (Simple Icons, CC0 data) by key: {title, hex, d}."""
+    global _LOGOS
+    if _LOGOS is None:
+        try:
+            _LOGOS = json.loads((Path(__file__).parent / "vendor" / "logos.json").read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            _LOGOS = {}
+    return _LOGOS
+
+
+LOGO_WORDS = {"whatsapp": "whatsapp", "व्हाट्सऐप": "whatsapp", "व्हाट्सएप": "whatsapp", "facebook": "facebook",
+              "फ़ेसबुक": "facebook", "फेसबुक": "facebook", "instagram": "instagram", "इंस्टाग्राम": "instagram",
+              "twitter": "x", "ट्विटर": "x", "एक्स": "x", "youtube": "youtube", "यूट्यूब": "youtube", "telegram": "telegram",
+              "टेलीग्राम": "telegram", "google": "google", "गूगल": "google", "meta": "meta", "मेटा": "meta",
+              "snapchat": "snapchat", "स्नैपचैट": "snapchat", "tiktok": "tiktok", "टिकटॉक": "tiktok", "jio": "jio",
+              "जियो": "jio", "paytm": "paytm", "पेटीएम": "paytm", "phonepe": "phonepe", "फ़ोनपे": "phonepe",
+              "फोनपे": "phonepe", "google pay": "googlepay", "गूगल पे": "googlepay", "zomato": "zomato", "ज़ोमैटो": "zomato",
+              "swiggy": "swiggy", "स्विगी": "swiggy", "airtel": "airtel", "एयरटेल": "airtel", "netflix": "netflix",
+              "नेटफ्लिक्स": "netflix", "spotify": "spotify", "wikipedia": "wikipedia", "विकिपीडिया": "wikipedia",
+              "android": "android", "एंड्रॉयड": "android", "apple": "apple", "एप्पल": "apple", "iphone": "apple",
+              "samsung": "samsung", "सैमसंग": "samsung", "tesla": "tesla", "टेस्ला": "tesla", "uber": "uber", "उबर": "uber",
+              "signal": "signal", "सिग्नल": "signal", "threads": "threads", "reddit": "reddit", "gmail": "gmail",
+              "google maps": "googlemaps", "nvidia": "nvidia", "एनवीडिया": "nvidia", "intel": "intel", "visa": "visa",
+              "mastercard": "mastercard", "bitcoin": "bitcoin", "बिटकॉइन": "bitcoin", "tata": "tata", "टाटा": "tata",
+              "infosys": "infosys", "इंफ़ोसिस": "infosys", "wipro": "wipro", "xiaomi": "xiaomi", "oneplus": "oneplus",
+              "vivo": "vivo", "oppo": "oppo", "zoom": "zoom", "discord": "discord", "messenger": "messenger",
+              "wechat": "wechat", "hdfc": "hdfcbank", "icici": "icicibank", "bluesky": "bluesky", "pinterest": "pinterest"}
+
+
+def logo_key(word: str) -> str:
+    w = (word or "").strip().lower().removeprefix("logo:").removesuffix(" logo").removesuffix(" app").strip()
+    k = LOGO_WORDS.get(w, w.replace(" ", ""))
+    return k if k in logos() else ""
+
+
 def plan_for(kind: str, spec: str) -> dict | None:
     fn = PARSERS.get(kind)
     if not fn:
         return None
     # "| marker: <note>" on any scene: a hand-drawn marker circle round the subject and a handwritten note
+    marks = []
+    lg = re.search(r"\|\s*logos?\s*[:=]\s*([^|]+)", spec or "", re.I)
+    if lg:
+        marks = [k for k in (logo_key(x) for x in re.split(r",|\+|·", lg.group(1))) if k][:3]
+        spec = (spec[:lg.start()] + spec[lg.end():]).strip()
     comp = ""
     w = re.search(r"\|\s*with\s*[:=]\s*([^|]+)", spec or "", re.I)
     if w:
@@ -550,6 +594,8 @@ def plan_for(kind: str, spec: str) -> dict | None:
     plan = fn(spec)
     if plan is not None and note:
         plan["marker"] = note
+    if plan is not None and marks:
+        plan["logos"] = [dict(logos()[k], key=k) for k in marks]
     if plan is not None and comp:
         plan["with"] = comp if comp.lower().startswith("person:") else "person:" + comp
     return plan
@@ -564,6 +610,11 @@ def _pictures(plan: dict, lib: Path | None, model: Path | None, fetch: bool,
     out = []
     for s in plan.get("subjects", []):
         name = s if s.lower().startswith("person:") else s.lower()
+        if name.startswith("logo:") or (logo_key(name) and not cutouts.resolve(name)):
+            k = logo_key(name)
+            if k:
+                out.append({"name": s, "logo": dict(logos()[k], key=k)})
+                continue
         c = cutouts.get(name, lib, model=model, fetch=fetch, sources=sources)
         if c is not None:
             from PIL import Image
@@ -766,6 +817,7 @@ function picture(g,pic,x,y,h,o){ // a cut-out photo (or its icon) with its heigh
   if(pic&&pic.img){const w=h*pic.w/pic.h;
     if(o.offset){grp.image(pic.img).size(w,h).move(x-w/2+U*.014,y-h+U*.01).attr({filter:'url(#tint)'})}   // a printed colour offset
     grp.image(pic.img).size(w,h).move(x-w/2,y-h).attr({filter:o.offset?'none':'url(#shadow)'});grp.data('w',w)}
+  else if(pic&&pic.logo){const t=logoTile(grp,pic.logo,x,y-h/2,h);grp.data('w',h)}
   else if(pic&&pic.draw&&window.ILLU&&ILLU[pic.draw]){const [bw,bh,fn]=ILLU[pic.draw];const k=h/bh;const ig=grp.group();
     fn(ig,ACC);ig.attr({transform:`translate(${x-bw*k/2},${y-h}) scale(${k})`,filter:'url(#shadow)'});grp.data('w',bw*k)}
   else{const r=h*.42;grp.circle(r*2).center(x,y-h/2).fill(o.iconBg||'#FFFFFF').stroke({color:INK,width:U*.005}).attr({filter:'url(#softshadow)'});
@@ -1072,6 +1124,8 @@ function stack(){
     material(g,P.material,x,base,bw,h,v.value===mx?ACC:'#3A3A3A',i);const clip=draw.clip().add(draw.rect(W,H).move(0,0));
     const st=.25+i*.25;g.opacity(0);at(st,.6,p=>{g.opacity(1);g.attr({transform:`translate(0,${h*(1-p)})`})},E.back);
     if(v.value===mx)FOCUS={x:x+bw/2,y:base-h*.55,rx:bw*.95,ry:Math.max(h*.6,U*.08)};
+    const lm=(P.logos||[]).find(m=>!m.used&&v.label&&(m.title.toLowerCase()===v.label.toLowerCase()||m.key===v.label.toLowerCase()));
+    if(lm){lm.used=true;const sz=Math.min(bw*.8,U*.1),ty=base-h-U*.12-sz/2;const t=logoTile(L.front,lm,x+bw/2,ty,sz);popIn(t,x+bw/2,ty,st+.55,.35)}
     const lb=valLabel(L.front,v.shown,x+bw/2,base-h-U*.05,{fill:v.value===mx?FG:FG});wipe(lb,st+.5);
     if(v.label){const t=T(L.front,v.label.toUpperCase(),U*.026,x+bw/2,base+U*.035,{family:'Inter',weight:800,ls:'.08em'});fit(t,gap*.95);wipe(t,st+.3)}})}
 function stand(){ // figures standing on their bars, value boxes beside them
@@ -1287,6 +1341,16 @@ function blueprint(){ // a blue card with a white grid; the cut-out; an arrow th
   const q=arrow.node.getPointAtLength(len),q2=arrow.node.getPointAtLength(len-2);const ang=Math.atan2(q.y-q2.y,q.x-q2.x)*180/Math.PI;
   const head=L.front.polygon([[0,0],[-U*.03,-U*.018],[-U*.03,U*.018]].map(z=>z.join(',')).join(' ')).fill('#FFFFFF');head.attr({transform:`translate(${q.x},${q.y}) rotate(${ang})`});wipe(head,1.45)}
 
+// ---- brand marks: the platform the line names, as its own app tile (official mark, own colour) ----
+function logoTile(g,m,cx,cy,size){const t=g.group();const r=size*.22;
+  t.rect(size,size).move(cx-size/2,cy-size/2).radius(r).fill(m.hex).stroke({color:'#FFFFFF',width:size*.04});
+  const k=size*.6/24;t.path(m.d).fill('#FFFFFF').attr({transform:`translate(${cx-12*k},${cy-12*k}) scale(${k})`});
+  t.attr({filter:'url(#shadow)'});return t}
+function logoLayer(){const ms=(P.logos||[]).filter(m=>!m.used);if(!ms.length)return;
+  const f=FOCUS||{x:W*.7,y:H*.35,rx:U*.1,ry:U*.1};const size=U*(TALL?.13:.12);
+  ms.forEach((m,i)=>{let x=f.x+f.rx*.85+i*size*1.15,y=f.y-f.ry*.85;x=Math.min(W-size*.7,Math.max(size*.7,x));y=Math.max(size*.8,y);
+    const t=logoTile(L.front,m,x,y,size);t.attr({transform:`rotate(${i%2?6:-6},${x},${y})`});popIn(t,x,y,.55+i*.15,.4)})}
+
 // ---- the papercut companion: a public figure named in the line, cut out of a real photo, beside the infographic ----
 function companion(){const c=P.comp;if(!c)return;
   // the infographic steps aside: it shrinks a little and moves away from the side the person stands on
@@ -1329,7 +1393,7 @@ async function boot(){
   try{await Promise.all(Array.from(document.fonts).map(f=>f.load()))}catch(e){}
   const imgs=[];(P.pics||[]).forEach(p=>{if(p.img)imgs.push(new Promise(r=>{const i=new Image();i.onload=i.onerror=r;i.src=p.img}))});
   await Promise.all(imgs);
-  (SCENES[P.type]||hero)();companion();markerLayer();
+  (SCENES[P.type]||hero)();companion();logoLayer();markerLayer();
   window.frame=function(t){camera(t);const tq=Math.floor(t*12+1e-6)/12;   // the hand-made 12 fps stutter
     for(const k of tracks){const p=Math.max(0,Math.min(1,(tq-k.start)/k.dur));k.fn(k.e(p))}};
   window.frame(0);window.READY=true}
