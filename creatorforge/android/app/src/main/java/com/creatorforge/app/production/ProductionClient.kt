@@ -57,7 +57,8 @@ data class ProductionRequest(
     val aiVideo: Boolean, val review: Boolean, val autoEdit: Boolean, val characterIds: List<String>,
     val script: String = "", val musicAssetId: String = "", val sfx: Boolean = true, val aiVideoScenes: String = "all",
     val videoQuality: String = "fast", val faces: String = "show", val fastCuts: Boolean = true,
-    val voiceSpeed: Double = 1.1, val brand: org.json.JSONObject? = null, val narrationAssetId: String = ""
+    val voiceSpeed: Double = 1.1, val brand: org.json.JSONObject? = null, val narrationAssetId: String = "",
+    val editorialProps: Boolean = false
 )
 
 data class LibraryVoice(val id: String, val name: String, val provider: String, val voice: String, val speed: Double, val builtin: Boolean,
@@ -159,6 +160,7 @@ class ProductionClient(baseUrl: String) {
             .put("motion", if (r.aiVideo) "ai_video" else "stills").put("review", r.review).put("ai_video_scenes", r.aiVideoScenes)
             .put("video_quality", r.videoQuality).put("faces", r.faces).put("fast_cuts", r.fastCuts).put("voice_speed", r.voiceSpeed).put("auto_edit", r.autoEdit).put("character_ids", JSONArray(r.characterIds))
             .put("script", r.script).put("music_asset_id", r.musicAssetId).put("sfx", r.sfx).put("narration_asset_id", r.narrationAssetId)
+            .put("editorial_props", r.editorialProps)
             .put("vox_graphics", r.script.isNotBlank() && r.style == "editorial")
             .put("characters", JSONArray().apply { r.characters.forEach { (n, d) -> put(JSONObject().put("name", n).put("description", d)) } })
         r.brand?.let { body.put("brand", it) }   // channel name, colours, logo, intro/outro for this video
@@ -275,13 +277,15 @@ class ProductionClient(baseUrl: String) {
     suspend fun deleteAsset(id: String): Unit = withContext(Dispatchers.IO) { call("DELETE", "/v1/library/assets/$id") }
 
     /** Vox director: a drawn graphic on every line (the app's Script AI picks them; rules when it can't). */
-    suspend fun voxDirect(script: String): VoxResult = withContext(Dispatchers.IO) {
-        voxResult(JSONObject(call("POST", "/v1/scripts/direct", withDirector(JSONObject().put("script", script)))), script)
+    suspend fun voxDirect(script: String, props: Boolean = false): VoxResult = withContext(Dispatchers.IO) {
+        voxResult(JSONObject(call("POST", "/v1/scripts/direct", withDirector(JSONObject().put("script", script)
+            .put("editorial_props", props)))), script)
     }
 
     /** Preflight: what would make the video wrong, line by line, before anything renders. */
-    suspend fun voxCheck(script: String): VoxResult = withContext(Dispatchers.IO) {
-        voxResult(JSONObject(call("POST", "/v1/scripts/check", JSONObject().put("script", script))), script)
+    suspend fun voxCheck(script: String, props: Boolean = false): VoxResult = withContext(Dispatchers.IO) {
+        voxResult(JSONObject(call("POST", "/v1/scripts/check", JSONObject().put("script", script)
+            .put("editorial_props", props))), script)
     }
 
     private fun voxResult(j: JSONObject, script: String): VoxResult {

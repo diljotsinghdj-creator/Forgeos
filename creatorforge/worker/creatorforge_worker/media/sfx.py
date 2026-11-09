@@ -17,7 +17,7 @@ ROLES = {
     "riser": ("riser", "rise", "build", "tension", "swell"),
     "scribble": ("scribble", "pen", "marker", "pencil", "draw", "scratch"),
 }
-TRANSITION_ROLE = {"whip": "whoosh", "slide": "whoosh", "wipe": "whoosh", "zoom": "whoosh", "reveal": "whoosh",
+TRANSITION_ROLE = {"whip": "whoosh", "blur": "whoosh", "slide": "whoosh", "wipe": "whoosh", "zoom": "whoosh", "reveal": "whoosh",
                    "cut": "hit", "flash": "hit"}
 GAIN = {"projector": 0.5, "whoosh": 0.55, "hit": 0.6, "pop": 0.45, "riser": 0.4, "scribble": 0.5}
 REVEALS = {"flash", "zoom"}   # twists / reveals: a riser builds into the cut, a deep hit lands on it

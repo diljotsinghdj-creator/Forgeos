@@ -148,3 +148,39 @@ def test_every_object_chart_renders(kind, spec, tmp_path, monkeypatch):
     out = tmp_path / f"{kind}.mp4"
     vox.render(kind, spec, "editorial@blue", 640, 360, 2.0, out, tmp_path / "w", lib=tmp_path / "lib", fetch=False, fps=12)
     assert out.stat().st_size > 2000
+
+
+def test_music_beats_and_cuts_on_the_beat(tmp_path):
+    from creatorforge_worker.media import render
+    click, track = tmp_path / "c.wav", tmp_path / "beat.wav"
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "lavfi", "-i", "sine=frequency=1000:duration=0.05,apad=pad_dur=0.45",
+                    "-t", "0.5", str(click)], check=True)
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-stream_loop", "39", "-i", str(click), "-t", "20", str(track)], check=True)
+    beats = render.music_beats(track)
+    gaps = [b - a for a, b in zip(beats, beats[1:])]
+    assert len(beats) >= 35 and all(abs(g - 0.5) < 0.03 for g in gaps)
+    cuts = [1.27, 2.77, 4.21]
+    off = render.music_offset(beats, cuts)
+    assert all(min(abs(b - (c + off)) for b in beats) <= 0.08 for c in cuts)
+    assert render.music_offset([], cuts) == 0.0
+
+
+def test_channel_rules_flags_logos_and_props():
+    assert "flags" in vox_director.valid("Hero: flag | India")
+    assert "brand logos" in vox_director.valid("Hero: google logo | Ads")
+    assert vox_director.valid("Hero: smartphone | Google ads | Google · 30 days") == ""
+    assert "props" in vox_director.valid("Hero: person:A | Claim | prop: blindfold")
+    assert vox_director.valid("Hero: person:A | Claim | prop: blindfold", props=True) == ""
+    assert "real person" in vox_director.valid("Hero: gavel | Claim | prop: blindfold", props=True)
+    out, rep = vox_director.ensure("एक।\nHero: person:A | The claim | prop: blindfold\n")
+    assert "prop" not in out.lower() and "Hero: person:A | The claim" in out
+    s = "एक।\nHero: person:A | x | prop: blindfold\n\nदो।\nHero: person:B | y\n"
+    assert any("fair" in i["problem"] for i in vox_director.check(s, props=True))
+
+
+def test_props_only_when_the_video_allows_them():
+    assert vox.plan_for("hero", "person:A | x | prop: blindfold")["prop"] == "blindfold"
+    assert vox.plan_for("hero", "person:A | x | prop: halo")["prop"] == ""
+    from creatorforge_worker import director as d
+    assert d.ProductionSpec.from_dict({"idea": "a test idea here", "editorial_props": True}).editorial_props
+    assert not d.ProductionSpec.from_dict({"idea": "a test idea here"}).editorial_props

@@ -25,6 +25,8 @@ Hero: <object> [+ <object>] | <HEADLINE 2-4 words> | <tag> · <tag> | <short not
       parliament, supreme court, red fort, india gate, village, skyline, office building ... (any everyday object)
       e.g. Hero: smartphone + crowd | ONE MESSAGE | 8 AM · every day | sent to lakhs of groups
            Hero: person:Amit Shah | THE CLAIM | Kota · 2018
+    Opinion lines only: add "| prop: blindfold|mask|zip|crown|strings|chains|megaphone" over a person:Name photo
+    (ignoring facts -> blindfold, silenced -> zip, controlled -> strings, power -> crown, propaganda -> megaphone).
 Opener: <object or person:Name> | <headline, *key words* highlighted> | <kicker e.g. Chapter 2>  - hooks, new parts
 Pinmap: <Indian city/state or country> | <the real headline> | <publisher, month year>  - news tied to a place
 Clipping: <the real headline> | <publisher, month year> | <object> + <object> | <chapter number>  - a torn newspaper
@@ -356,7 +358,37 @@ def rule_graphic(line: str, prev_kind: str = "", prev_graphic: str = "") -> str:
 
 
 # ---- checking and fixing -----------------------------------------------------------------------------------------
-def valid(direction: str, english: bool = True) -> str:
+BRANDS = {"google", "facebook", "meta", "whatsapp", "youtube", "instagram", "twitter", "tiktok", "jio", "airtel",
+          "spotify", "gaana", "amazon", "flipkart", "apple", "microsoft", "netflix", "paytm", "snapdeal", "uber", "ola",
+          "zomato", "swiggy", "tesla", "nvidia", "openai", "chatgpt", "telegram", "snapchat", "linkedin", "reliance",
+          "adani", "tata", "infosys", "samsung", "coca-cola", "pepsi", "mcdonald's", "starbucks"}
+
+
+def _content_rules(kind: str, spec: str, props: bool) -> str:
+    """Channel rules that hold for every graphic: no national flags, no brand logos as pictures, no props over a
+    real person unless the video turned them on."""
+    from .media import vox
+    pictured = []
+    if kind in vox.KINDS:
+        pictured = [str(x).lower() for x in (vox.plan_for(kind, spec) or {}).get("subjects", [])]
+    elif kind in ("animate", "object"):
+        pictured = [spec.split("|")[0].lower()]
+    if any(re.search(r"\bflags?\b", x) and "pole" not in x for x in pictured):
+        return "no national flags (name the country in a tag instead)"
+    if kind in vox.KINDS:
+        p = vox.plan_for(kind, spec) or {}
+        subs = pictured
+        bad = [b for b in BRANDS for sub in subs if not sub.startswith("person:") and re.search(rf"\b{re.escape(b)}\b", sub)]
+        if bad:
+            return f"no brand logos as pictures ('{bad[0]}'): show a smartphone/laptop and name it in a tag"
+        if p.get("prop") and not props:
+            return "symbolic props over a real person are off for this video (turn on Editorial cartoon props)"
+        if p.get("prop") and not any(sub.startswith("person:") for sub in subs[:1]):
+            return "props go on a real person's photo (person:Name first)"
+    return ""
+
+
+def valid(direction: str, english: bool = True, props: bool = False) -> str:
     """'' when the graphic line will draw correctly; otherwise the reason."""
     m = _KEY.match(direction)
     if not m:
@@ -366,6 +398,9 @@ def valid(direction: str, english: bool = True) -> str:
         return f"'{m.group(1)}' is not a graphic"
     if not spec:
         return "empty"
+    rule = _content_rules(kind, spec, props)
+    if rule:
+        return rule
     if english and _DEV.search(spec.split("|")[0] if kind in ("quote", "document") else spec):
         return "Hindi text on screen (graphics are English)"
     from .media import motion
@@ -402,11 +437,22 @@ def valid(direction: str, english: bool = True) -> str:
     return ""
 
 
-def check(script: str, english: bool = True) -> list[dict]:
+def check(script: str, english: bool = True, props: bool = False) -> list[dict]:
     """Everything that would make the video wrong, line by line: [{"n", "line", "level", "problem"}]."""
     _, bl = blocks(script)
     issues = []
     prev = ""
+    shown, propped = set(), set()            # people pictured / people given a symbolic prop (fairness check)
+    for b in bl:
+        for d in b["dirs"]:
+            for who in re.findall(r"person:\s*([^|·+\n]+)", d, re.I):
+                shown.add(who.strip().lower())
+                if re.search(r"\bprop\s*[:=]", d, re.I):
+                    propped.add(who.strip().lower())
+    if props and propped and shown - propped:
+        issues.append({"n": 0, "line": "", "level": "warning",
+                       "problem": f"only {', '.join(sorted(propped))} get symbolic props; "
+                                  f"{', '.join(sorted(shown - propped))} never do - check the video is fair"})
     for n, b in enumerate(bl, 1):
         kind = graphic_kind(b)
         if not kind and not (_keys(b) & set(REAL)):
@@ -414,7 +460,7 @@ def check(script: str, english: bool = True) -> list[dict]:
         for d in b["dirs"]:
             m = _KEY.match(d)
             if m and m.group(1).strip().lower() in KINDS:
-                why = valid(d, english)
+                why = valid(d, english, props)
                 if why:
                     issues.append({"n": n, "line": b["line"][:60], "level": "error", "problem": f"{d[:50]}: {why}"})
             elif m and m.group(1).strip().lower() in ("visual", "visuals", "b-roll", "broll"):
@@ -435,17 +481,22 @@ def _keys(b: dict) -> set[str]:
     return {_KEY.match(d).group(1).strip().lower() for d in b["dirs"] if _KEY.match(d)}
 
 
-def ensure(script: str, llm=None, english: bool = True) -> tuple[str, list[str]]:
+def ensure(script: str, llm=None, english: bool = True, props: bool = False) -> tuple[str, list[str]]:
     """The script with a valid graphic on every line. The script AI picks graphics for lines that have none (or
     a broken one); rules cover anything it leaves. Narration words are never changed."""
     header, bl = blocks(script)
     report: list[str] = []
     need = []
     for n, b in enumerate(bl, 1):
-        good = [d for d in b["dirs"] if (_KEY.match(d) and _KEY.match(d).group(1).strip().lower() in KINDS and not valid(d, english))]
-        bad = [d for d in b["dirs"] if (_KEY.match(d) and _KEY.match(d).group(1).strip().lower() in KINDS and valid(d, english))]
+        if not props:      # props switched off: the prop goes, the graphic stays
+            for i, d in enumerate(b["dirs"]):
+                if re.search(r"\|\s*prop\s*[:=][^|]*", d, re.I):
+                    b["dirs"][i] = re.sub(r"\s*\|\s*prop\s*[:=][^|]*", "", d, flags=re.I)
+                    report.append(f"line {n}: removed the prop (Editorial cartoon props are off)")
+        good = [d for d in b["dirs"] if (_KEY.match(d) and _KEY.match(d).group(1).strip().lower() in KINDS and not valid(d, english, props))]
+        bad = [d for d in b["dirs"] if (_KEY.match(d) and _KEY.match(d).group(1).strip().lower() in KINDS and valid(d, english, props))]
         for d in bad:
-            report.append(f"line {n}: replaced '{d[:40]}' ({valid(d, english)})")
+            report.append(f"line {n}: replaced '{d[:40]}' ({valid(d, english, props)})")
         # AI-picture and over-the-picture directions go: every line is a drawn graphic
         keep = [d for d in b["dirs"] if not (_KEY.match(d) and _KEY.match(d).group(1).strip().lower() in KINDS)
                 and not (_KEY.match(d) and _KEY.match(d).group(1).strip().lower() in _FIX_DROP)]
@@ -461,7 +512,7 @@ def ensure(script: str, llm=None, english: bool = True) -> tuple[str, list[str]]
             data = director._extract_json(raw)
             for it in (data.get("lines") or []) if isinstance(data, dict) else []:
                 n, g = int(it.get("n", 0)), str(it.get("graphic", "")).strip()
-                if n in need and g and not valid(g, english):
+                if n in need and g and not valid(g, english, props):
                     picked[n] = g
         except Exception as e:  # noqa: BLE001 - quota, network, bad JSON: rules take over
             report.append(f"script AI unavailable ({str(e)[:60]}) - graphics chosen by rules")

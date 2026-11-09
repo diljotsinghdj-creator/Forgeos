@@ -229,7 +229,7 @@ pkill -f "models/clip" 2>/dev/null || true
 # cut-out model is ready; until then graphics draw their vector icons.
 [ -s cutouts_library.pid ] && kill "$(cat cutouts_library.pid)" 2>/dev/null || true
 nohup bash -c "for i in \$(seq 1 120); do [ -s '$HOME_DIR/data/models/isnet-general-use.onnx' ] && break; sleep 10; done; \
-  '$PYBIN' -m pip install -q opencv-python-headless >/dev/null 2>&1; \
+  '$PYBIN' -m pip install -q 'opencv-python-headless<5' >/dev/null 2>&1; \
   '$PYBIN' -m creatorforge_worker.media.cutouts '$HOME_DIR/data/cutouts' '$HOME_DIR/data/models/isnet-general-use.onnx' && echo 'photo library ready'" \
   > cutouts_library.log 2>&1 &
 echo $! > cutouts_library.pid

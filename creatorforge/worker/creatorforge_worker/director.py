@@ -100,6 +100,7 @@ class ProductionSpec:
     character_ids: list[str] = field(default_factory=list)  # resolved from the Character Library at submit
     music_asset_id: str = ""  # use a track from the Asset Library as the score
     vox_graphics: bool = False  # Vox: every script line gets a drawn graphic (no AI picture), checked first
+    editorial_props: bool = False  # opt-in: symbolic props (blindfold, strings...) over real photos, tagged ILLUSTRATION
     narration_asset_id: str = ""  # the creator's own recorded narration (an MP3 in the Asset Library) is the voice
     sfx: bool = True  # auto-place sound effects when an SFX folder or SFX assets exist
     script: str = ""  # script mode: the user's exact narration; the Director only plans visuals and the edit
@@ -138,6 +139,7 @@ class ProductionSpec:
             music_asset_id=str(d.get("music_asset_id", "") or ""),
             narration_asset_id=str(d.get("narration_asset_id", "") or ""),
             vox_graphics=bool(d.get("vox_graphics", False)),
+            editorial_props=bool(d.get("editorial_props", False)),
             sfx=bool(d.get("sfx", True)),
             brand=clean_brand(d.get("brand")),
         )

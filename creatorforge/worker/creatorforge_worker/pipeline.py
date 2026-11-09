@@ -260,7 +260,8 @@ class Pipeline:
                     # Vox: every line gets a drawn graphic (no AI picture); broken graphic lines are fixed first.
                     # The script is directed with its direction lines, then read again like a freshly pasted one.
                     from . import vox_director
-                    fixed, report = vox_director.ensure(job.get("vox_raw") or spec.script, llm)
+                    fixed, report = vox_director.ensure(job.get("vox_raw") or spec.script, llm,
+                                                        props=spec.editorial_props)
                     redo = {k: v for k, v in job["spec"].items() if k not in ("shots", "roles", "publish")}
                     redo["script"] = fixed
                     spec = director.ProductionSpec.from_dict(redo)
@@ -1407,7 +1408,7 @@ class Pipeline:
             if spec.style in EDITORIAL_STYLES and not shot.get("transition_locked"):
                 # Paper cut-outs slide and wipe; they don't dissolve.
                 chosen = {"fade": "slide", "dissolve": "wipe", "dip": "cut", "zoom": "wipe", "reveal": "wipe",
-                          "flash": "whip"}.get(chosen, chosen)
+                          "flash": "blur", "whip": "blur"}.get(chosen, chosen)
             return chosen
 
         def line_videos(sc: dict) -> list:
@@ -1647,7 +1648,20 @@ class Pipeline:
         mixed = work / "audio.wav"
         # the music steps back under chapter cards and big statements (a beat of near-silence before the next part)
         dips = [(at - 0.1, at + 1.4) for at, kind in graphics if kind in ("chapter", "statement")]
-        render.mix_audio(narr, music, total, mixed, cancel, sfx_hits, dips)
+        # cuts on the beat: the music starts at the point in the track where the most picture cuts land on a beat
+        # (the pictures, narration and captions never move)
+        start = 0.0
+        if music is not None and music.is_file() and len(timings) > 2 and not job.get("music_parts"):
+            try:
+                cuts, acc = [], 0.0
+                for d in timings[:-1]:
+                    acc += d
+                    cuts.append(acc)
+                start = render.music_offset(render.music_beats(music), cuts)
+                job["providers"]["music_sync"] = f"music starts {start:.2f}s in: cuts on the beat"
+            except Exception:  # noqa: BLE001 - beat detection is a nicety
+                start = 0.0
+        render.mix_audio(narr, music, total, mixed, cancel, sfx_hits, dips, music_start=start)
 
         ass = None
         if spec.captions:
@@ -1858,7 +1872,8 @@ class Pipeline:
                             return vox.render(kind, extra[kind], f"{vtheme}@{self._accent(spec)}", size[0], size[1],
                                               seconds, out, work, lib=self.cfg.data_dir / "cutouts",
                                               model=self.cfg.data_dir / "models" / "isnet-general-use.onnx",
-                                              sources=(providers.photo_sources(job["id"], self.cfg) if job else None))
+                                              sources=(providers.photo_sources(job["id"], self.cfg) if job else None),
+                                              props=spec.editorial_props)
                         if kind == "object":
                             plan = objects.parse(extra[kind])
                             if plan is None:

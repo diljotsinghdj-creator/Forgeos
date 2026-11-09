@@ -198,6 +198,13 @@ ALIASES: dict[str, str] = {
     "company": "office building", "health": "stethoscope", "medicine": "pill", "pollution": "factory chimney",
     "oil": "oil barrel", "electricity": "power tower", "school": "school", "education": "books", "book": "book",
     "letter": "envelope", "secret": "padlock", "freedom": "key", "trap": "chain", "plane": "plane", "flight": "plane",
+    "stage": "podium", "rally speech": "podium", "censorship": "padlock", "corruption": "cash", "bribe": "hand cash",
+    "inflation": "shopping cart", "prices": "price tag", "economy": "coins", "debt": "chain", "tax": "calculator",
+    "budget": "calculator", "scam": "mask", "truth": "magnifying glass", "fear": "padlock", "hope": "light bulb",
+    "risk": "dice", "luck": "dice", "war": "soldier", "attack": "bomb", "crisis": "fire", "danger": "fire",
+    "victory": "trophy", "winner": "trophy", "race": "trophy", "strategy": "chess king", "game": "chess pawn",
+    "pawn": "chess pawn", "voice": "microphone", "speak": "megaphone", "surveillance": "camera", "spy": "binoculars",
+    "watch": "binoculars", "world": "globe", "global": "globe", "trade": "ship", "export": "ship", "jobs": "briefcase",
 }
 
 _PLACES = {"parliament", "new parliament", "red fort", "india gate", "supreme court", "rashtrapati bhavan", "taj mahal",

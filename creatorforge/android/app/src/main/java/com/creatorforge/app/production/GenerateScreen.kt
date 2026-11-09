@@ -109,6 +109,7 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
     var voicePace by remember { mutableStateOf(prefs.getString("voice_pace", "1.1").orEmpty()) }
     var videoQuality by remember { mutableStateOf(prefs.getString("video_quality", "fast").orEmpty()) }
     var review by remember { mutableStateOf(prefs.getBoolean("review", false)) }
+    var props by remember { mutableStateOf(prefs.getBoolean("editorial_props", false)) }
     var editing by remember { mutableStateOf<SceneView?>(null) }
     var autoEdit by remember { mutableStateOf(prefs.getBoolean("auto_edit", true)) }
     var library by remember { mutableStateOf<List<LibraryCharacter>>(emptyList()) }
@@ -335,7 +336,7 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                             Button({
                                 voxBusy = true
                                 scope.launch {
-                                    runCatching { client.voxDirect(idea) }.onSuccess { r ->
+                                    runCatching { client.voxDirect(idea, props) }.onSuccess { r ->
                                         idea = r.script; vox = r
                                         notice = "Graphics added to every line" + if (r.errors > 0) " - ${r.errors} still need a look (below)" else " - all lines check out"
                                     }.onFailure { error = it.message }
@@ -345,7 +346,7 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                             OutlinedButton({
                                 voxBusy = true
                                 scope.launch {
-                                    runCatching { client.voxCheck(idea) }.onSuccess { vox = it }.onFailure { error = it.message }
+                                    runCatching { client.voxCheck(idea, props) }.onSuccess { vox = it }.onFailure { error = it.message }
                                     voxBusy = false
                                 }
                             }, enabled = !voxBusy) { Text("CHECK", fontSize = 12.sp) }
@@ -398,6 +399,9 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                     ChipRow(listOf("" to "Auto") + tracks.map { it.id to it.name }, musicAsset) { musicAsset = it }
                 }
                 Row { Switch(sfx, { sfx = it }); Text(" Sound effects (paper, pops, whooshes)", Modifier.padding(top = 12.dp)) }
+                Row { Switch(props, { props = it; vox = null }); Text(" Editorial cartoon props (blindfold, strings, crown on real photos)", Modifier.padding(top = 12.dp)) }
+                if (props) Text("Opinion visuals: only on opinion or labelled-allegation lines, tagged ILLUSTRATION, the face is never " +
+                    "changed. The checker warns if only one side gets props.", color = Color.Gray, fontSize = 12.sp)
                 Row { Switch(music, { music = it }); Text(" Music", Modifier.padding(top = 12.dp, end = 16.dp)); Switch(captions, { captions = it }); Text(" Captions", Modifier.padding(top = 12.dp)) }
             } }
             item {
@@ -408,7 +412,7 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                         .putString("mood", mood).putString("camera", camera).putString("characters", characters)
                         .putString("video_scope", videoScope).putString("video_quality", videoQuality).putString("faces2", faces).putBoolean("fast_cuts", fastCuts).putString("voice_pace", voicePace).putBoolean("review", review)
                         .putBoolean("auto_edit", autoEdit).putStringSet("character_ids", picked)
-                        .putBoolean("script_mode", scriptMode).putBoolean("sfx", sfx).putString("music_asset", musicAsset).putString("brand_channel", brandId).putString("narration_asset", narrationAsset).apply()
+                        .putBoolean("script_mode", scriptMode).putBoolean("sfx", sfx).putBoolean("editorial_props", props).putString("music_asset", musicAsset).putString("brand_channel", brandId).putString("narration_asset", narrationAsset).apply()
                     // Vox-style explainer: the look, edit and pacing are fixed; only the words, format and voice change
                     val fmt = if (aspect == "9:16") "9:16" else "16:9"
                     fun request(text: String) = ProductionRequest(if (scriptMode) "" else text, duration, fmt,
@@ -417,7 +421,7 @@ fun GenerateScreen(onOpenSettings: () -> Unit = {}) {
                         script = if (scriptMode) text else "", musicAssetId = if (music) musicAsset else "", sfx = sfx,
                         aiVideoScenes = "all", videoQuality = "fast", faces = "faceless", fastCuts = true, voiceSpeed = 1.0,
                         brand = brandChannel?.let { it.brand.forWorker(it.name) },
-                        narrationAssetId = if (scriptMode) narrationAsset else "")
+                        narrationAssetId = if (scriptMode) narrationAsset else "", editorialProps = props)
                     val pieces = batchPieces(idea)
                     if (pieces.size <= 1) act { client.create(request(idea.trim())) }
                     else {

@@ -584,7 +584,7 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
         from . import vox_director
         body = await request.json()
         script = str(body.get("script") or "")[:200_000]
-        issues = vox_director.check(script)
+        issues = vox_director.check(script, props=bool(body.get("editorial_props")))
         return {"issues": issues, "lines": len(vox_director.blocks(script)[1]),
                 "errors": sum(i["level"] == "error" for i in issues)}
 
@@ -608,8 +608,9 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
                 llm = providers.director_llm(cfg, "")
         except NotConfigured:
             llm = None
-        fixed, report = await asyncio.to_thread(vox_director.ensure, script, llm)
-        issues = vox_director.check(fixed)
+        props = bool(body.get("editorial_props"))
+        fixed, report = await asyncio.to_thread(vox_director.ensure, script, llm, True, props)
+        issues = vox_director.check(fixed, props=props)
         return {"script": fixed, "report": report, "issues": issues,
                 "errors": sum(i["level"] == "error" for i in issues)}
 

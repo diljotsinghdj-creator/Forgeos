@@ -22,6 +22,7 @@ TRANSITIONS = {
     "cut": ("fade", 0.08), "fade": ("fade", 0.5), "dissolve": ("dissolve", 0.5), "dip": ("fadeblack", 0.5),
     "flash": ("fadewhite", 0.3), "slide": ("slideleft", 0.4), "wipe": ("wipeleft", 0.4),
     "whip": ("smoothleft", 0.3), "zoom": ("circleopen", 0.45), "reveal": ("vertopen", 0.45),
+    "blur": ("hblur", 0.3),       # the explainer camera-blur whip between two graphics
     "iris": ("circleopen", 0.45),
     # paper tear: a wipe whose edge is a ragged strip of torn white paper (drawn over the seam, see render_video)
     "tear": ("wipeleft", 0.45),
@@ -136,8 +137,73 @@ def chapter_music(tracks: list[Path], starts: list[float], total: float, out: Pa
             "-c:a", "pcm_s16le", str(out)], cancel)
 
 
+def music_beats(music: Path, seconds: float = 240.0) -> list[float]:
+    """Beat times (s) in a music track: an onset-strength envelope (rising energy, ~23 ms frames), its tempo from
+    autocorrelation, then the beat grid that best follows the onsets. [] when the track has no clear pulse."""
+    import subprocess
+    import numpy as np
+    sr, hop = 11025, 256
+    try:
+        raw = subprocess.run(["ffmpeg", "-nostdin", "-v", "error", "-t", f"{seconds:.1f}", "-i", str(music), "-ac", "1",
+                              "-ar", str(sr), "-f", "s16le", "-"], capture_output=True, timeout=120).stdout
+    except (OSError, subprocess.SubprocessError):
+        return []
+    x = np.frombuffer(raw, dtype=np.int16).astype(np.float32) / 32768.0
+    if len(x) < sr * 4:
+        return []
+    n = len(x) // hop
+    energy = np.sqrt((x[: n * hop].reshape(n, hop) ** 2).mean(axis=1) + 1e-9)
+    log_e = np.log(energy)
+    onset = np.maximum(0.0, np.diff(log_e, prepend=log_e[0]))
+    onset = onset - np.convolve(onset, np.ones(16) / 16, mode="same")
+    onset = np.maximum(onset, 0)
+    if onset.max() <= 0:
+        return []
+    fps = sr / hop                                           # envelope frames per second (~43)
+    lo, hi = int(fps * 60 / 180), int(fps * 60 / 70)         # 70-180 BPM
+    ac = np.correlate(onset, onset, mode="full")[len(onset) - 1:]
+    if hi >= len(ac):
+        return []
+    lag = lo + int(np.argmax(ac[lo:hi]))
+    if ac[lag] < 0.1 * ac[0]:
+        return []                                            # no steady pulse (ambient, speech)
+    # fractional period (parabolic peak), then each predicted beat snaps to the strongest onset near it
+    a, b, c = ac[lag - 1], ac[lag], ac[lag + 1] if lag + 1 < len(ac) else ac[lag]
+    period = lag + (0.5 * (a - c) / (a - 2 * b + c) if (a - 2 * b + c) != 0 else 0.0)
+    strong = np.nonzero(onset > 0.5 * onset.max())[0]
+    phase = int(strong[0]) % lag if len(strong) else int(np.argmax([onset[p::lag].sum() for p in range(lag)]))
+    beats, t, win = [], float(phase), max(1, int(fps * 0.07))
+    while t < n:
+        i = int(round(t))
+        j0, j1 = max(0, i - win), min(n, i + win + 1)
+        k = j0 + int(np.argmax(onset[j0:j1])) if j1 > j0 else i
+        if onset[k] > 0.3 * onset.max():
+            t = float(k)                                     # follow the music
+        beats.append(round(float(t) / fps, 3))
+        t += period
+    return beats
+
+
+def music_offset(beats: list[float], cuts: list[float], window: float = 0.08) -> float:
+    """Where to start the music so the most picture cuts land on a beat (seconds into the track, < one beat)."""
+    if len(beats) < 4 or not cuts:
+        return 0.0
+    period = (beats[-1] - beats[0]) / (len(beats) - 1)
+    best, best_hits = 0.0, -1
+    import numpy as np
+    b = np.array(beats)
+    for k in range(int(period / 0.01) + 1):
+        off = k * 0.01
+        # music time = video time + off; a cut at video time c is on a beat when c + off is near a beat
+        hits = sum(1 for c in cuts if np.min(np.abs(b - (c + off))) <= window)
+        if hits > best_hits:
+            best, best_hits = off, hits
+    return round(best, 2)
+
+
 def mix_audio(narration: Path, music: Path | None, total: float, out: Path, cancel: threading.Event,
-              sfx: list[tuple[Path, float, float]] | None = None, dips: list[tuple[float, float]] | None = None) -> None:
+              sfx: list[tuple[Path, float, float]] | None = None, dips: list[tuple[float, float]] | None = None,
+              music_start: float = 0.0) -> None:
     """Narration + optional music bed (ducked under the voice) + optional timed sound effects."""
     sfx = sfx or []
     args = ["-i", str(narration)]
@@ -147,7 +213,7 @@ def mix_audio(narration: Path, music: Path | None, total: float, out: Path, canc
     idx = 1
     if music is not None:
         fade_out = max(0.0, total - 2.0)
-        args += ["-stream_loop", "-1", "-i", str(music)]
+        args += ["-stream_loop", "-1"] + (["-ss", f"{music_start:.2f}"] if music_start > 0 else []) + ["-i", str(music)]
         graph.append(f"[{idx}:a]aresample={SAMPLE_RATE},aformat=channel_layouts=stereo,volume=0.35,"
                      f"afade=t=in:d=1,afade=t=out:st={fade_out:.3f}:d=2,atrim=0:{total:.3f}"
                      # the music drops away under a chapter card or a big statement, then comes back

@@ -33,6 +33,9 @@ PAPERS = {"cream": "#EFE8DA", "grey": "#E5E3DE", "white": "#F4F2EE", "dark": "#1
           "grid": "#F1F0EC"}
 INK = "#141414"
 LAYOUTS = ("word", "disc", "box", "bars")
+# symbolic props laid over a real photo (opt-in editorial cartoons; the face itself is never changed)
+PROPS = ("blindfold", "mask", "zip", "crown", "strings", "chains", "megaphone")
+FACE_PROPS = ("blindfold", "mask", "zip", "crown")
 KINDS = ("hero", "desk", "pinboard", "opener", "reveal", "clipping", "pinmap", "bignumber",
          "seats", "stack", "stand", "fan", "trend", "slice")
 
@@ -59,7 +62,7 @@ def parse_hero(spec: str) -> dict | None:
     opts = {}
     keep = []
     for p in parts[1:]:
-        m = re.fullmatch(r"(style|layout|word|date|place|side)\s*[:=]\s*(.+)", p, re.I)
+        m = re.fullmatch(r"(style|layout|word|date|place|side|prop)\s*[:=]\s*(.+)", p, re.I)
         if m:
             opts[m.group(1).lower()] = m.group(2).strip()
         else:
@@ -77,8 +80,10 @@ def parse_hero(spec: str) -> dict | None:
         hw = re.sub(r"[^\w\s'-]", "", headline).split()
         word = headline if 0 < len(hw) <= 2 else (max(hw, key=len) if hw else subjects[0].split(":")[-1])
     meta = [x for x in (opts.get("date", ""), opts.get("place", "")) if x]
+    prop = opts.get("prop", "").strip().lower()
     return {"type": "hero", "subjects": subjects, "headline": headline, "tags": tags, "note": note,
             "layout": layout, "word": word.upper()[:14], "meta": meta, "side": opts.get("side", ""),
+            "prop": prop if prop in PROPS else "",
             "seed": _seed(spec) % 10000}
 
 
@@ -326,13 +331,34 @@ def _pictures(plan: dict, lib: Path | None, model: Path | None, fetch: bool,
             from PIL import Image
             with Image.open(c.path) as im:
                 w, h = im.size
-            out.append({"name": s, "img": c.path.as_uri(), "w": w, "h": h, "credit": c.credit})
+            pic = {"name": s, "img": c.path.as_uri(), "w": w, "h": h, "credit": c.credit}
+            if plan.get("prop") in FACE_PROPS and not out:
+                pic["face"] = face_box(c.path)
+            out.append(pic)
         elif not name.startswith("person:"):
             icon = find_icon(name.split()[-1]) or find_icon(name) or "circle"
             out.append({"name": s, "o": icon_nodes(icon)})
     plan["pics"] = out
     credits = sorted({p["credit"] for p in out if p.get("credit")})
     plan["credit"] = ("Photo: " + "; ".join(credits))[:120] if credits else ""
+
+
+def face_box(path: Path) -> list[float] | None:
+    """The main face in a cut-out photo as [x, y, w, h] (0-1 of the picture), or None (OpenCV's face finder)."""
+    try:
+        import cv2
+        import numpy as np
+        from PIL import Image
+        with Image.open(path) as im:
+            g = np.asarray(im.convert("L"))
+        casc = cv2.CascadeClassifier(str(Path(cv2.data.haarcascades) / "haarcascade_frontalface_default.xml"))
+        faces = casc.detectMultiScale(g, scaleFactor=1.08, minNeighbors=6, minSize=(max(24, g.shape[1] // 12),) * 2)
+        if len(faces) == 0:
+            return None
+        x, y, w, h = max(faces, key=lambda f: f[2] * f[3])
+        return [round(x / g.shape[1], 4), round(y / g.shape[0], 4), round(w / g.shape[1], 4), round(h / g.shape[0], 4)]
+    except Exception:  # noqa: BLE001 - no OpenCV / unreadable: face props are left out
+        return None
 
 
 # ---- paper and grain (baked once per size/tone) ---------------------------------------------------------------------
@@ -473,6 +499,25 @@ function popIn(el,cx,cy,start,d){el.opacity(0);const base=el.attr('transform')||
 function wipe(el,start){el.opacity(0);at(start,.35,p=>el.opacity(p),E.lin)}
 
 // ---- scenes ----
+function propOver(g,pic,x,y,h){ // a symbolic prop laid over the photo (never changing the face itself)
+  const w=h*(pic.w||1)/(pic.h||1),x0=x-w/2,y0=y-h;const f=pic.face;const grp=L.hero.group();const red='#D32F2F';
+  if(['blindfold','mask','zip','crown'].includes(P.prop)&&!f)return null;
+  if(f){const fx=x0+f[0]*w,fy=y0+f[1]*h,fw=f[2]*w,fh=f[3]*h;
+    if(P.prop==='blindfold'){const by=fy+fh*.36,bw=fw*1.5,bh=fh*.2;grp.rect(bw,bh).move(fx+fw/2-bw/2,by).radius(bh*.25).fill(red)
+        .attr({transform:`rotate(-3,${fx+fw/2},${by})`});grp.polygon([[fx+fw*1.2,by+bh*.4],[fx+fw*1.55,by+bh*1.8],[fx+fw*1.35,by+bh*1.9]].map(p=>p.join(',')).join(' ')).fill(red)}
+    if(P.prop==='mask'){const by=fy+fh*.32,mw=fw*1.15,mh=fh*.26;grp.ellipse(mw,mh).center(fx+fw/2,by+mh/2).fill('#111');
+      grp.ellipse(mw*.28,mh*.42).center(fx+fw*.3,by+mh/2).fill('#FFF').opacity(.0)}
+    if(P.prop==='zip'){const zy=fy+fh*.82,zw=fw*.6;grp.rect(zw,fh*.07).move(fx+fw/2-zw/2,zy-fh*.035).fill('#C9A24A').stroke({color:'#6B5114',width:U*.002});
+      for(let k=0;k<9;k++)grp.line(fx+fw/2-zw/2+zw*k/8,zy-fh*.035,fx+fw/2-zw/2+zw*k/8,zy+fh*.035).stroke({color:'#6B5114',width:U*.002});
+      grp.rect(fh*.08,fh*.14).move(fx+fw/2+zw/2-fh*.02,zy-fh*.02).fill('#9C7A2A')}
+    if(P.prop==='crown'){const cy=fy-fh*.42,cw=fw*.9;const pts=[[0,1],[0,.3],[.2,.6],[.35,0],[.5,.55],[.65,0],[.8,.6],[1,.3],[1,1]];
+      grp.polygon(pts.map(p=>[fx+fw/2-cw/2+p[0]*cw,cy+p[1]*fh*.38].join(',')).join(' ')).fill('#E2B13C').stroke({color:'#7A5A12',width:U*.003})}}
+  if(P.prop==='strings'){[.18,.5,.82].forEach(k=>{const sx=x0+w*k,sy=y0+h*(k===.5?.08:.3);grp.line(sx,U*.06,sx,sy).stroke({color:'#2A2A2A',width:Math.max(1.5,U*.0028)})});
+    grp.rect(w*.9,U*.02).move(x0+w*.05,U*.05).fill('#5B3A1E').radius(U*.006)}
+  if(P.prop==='chains'){for(let k=0;k<12;k++){const cx=x0+w*(.05+k*.08),cy=y0+h*.72+Math.sin(k)*h*.01;grp.ellipse(w*.1,h*.04).center(cx,cy).fill('none')
+      .stroke({color:'#777',width:U*.008}).attr({transform:`rotate(${k%2?0:90},${cx},${cy})`})}}
+  if(P.prop==='megaphone'){const mx=x0+w*.85,my=y0+h*.45;grp.polygon([[mx,my-h*.04],[mx+w*.35,my-h*.12],[mx+w*.35,my+h*.12],[mx,my+h*.04]].map(p=>p.join(',')).join(' ')).fill(red)}
+  grp.attr({style:'filter:drop-shadow(0 2px 3px rgba(0,0,0,.35))'});return grp}
 function hit(a,b){return a.x<b.x+b.w&&b.x<a.x+a.w&&a.y<b.y+b.h&&b.y<a.y+a.h}
 function free(r,taken){return r.x>=U*.03&&r.x+r.w<=W-U*.03&&r.y>=U*.03&&r.y+r.h<=(TALL?H*.6:H*.77)&&!taken.some(t=>hit(r,t))}
 function hero(){
@@ -507,7 +552,10 @@ function hero(){
     const side=i===1?1:-1;const x=isMain?cx:Math.max(U*.12,Math.min(W-U*.12,cx+side*(MW*.5+HH*.22)));const y=isMain?BOT:BOT-HH*.02;
     const g=picture(isMain?L.hero:L.mid,pic,x,y,h);
     if(!isMain)taken.push({x:x-h*.4,y:y-h,w:h*.8,h:h});
+    if(isMain&&P.prop&&K.props){const pg=propOver(g,pic,x,y,h);if(pg)drop(pg,.35,H*.3,-3)}
     drop(g,isMain?.35:.6+i*.15,H*.3,isMain?-3:4)});
+  if(P.prop&&K.props){const it=tag(L.front,'ILLUSTRATION · OPINION',0,0,{size:U*.018,bg:'#111',ink:'#FFF'});
+    const bb=it.bbox();it.attr({transform:`translate(${W-U*.05-bb.width},${U*.09})`});wipe(it,.5)}
   // headline: black boxes, serif
   if(P.headline&&!(lay==='word'&&P.word&&P.word===P.headline.toUpperCase())){
     let g;
@@ -794,7 +842,7 @@ boot();
 
 def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: float, out: Path, work: Path,
            lib: Path | None = None, model: Path | None = None, fetch: bool = True, fps: int | None = None,
-           tone: str = "cream", sources: list[tuple[str, str]] | None = None) -> Path:
+           tone: str = "cream", sources: list[tuple[str, str]] | None = None, props: bool = False) -> Path:
     """Draws one Vox scene into `out` (H.264)."""
     from . import motion
     if not motion.enabled():
@@ -810,7 +858,7 @@ def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: f
     tone = plan.get("tone") or ("grid" if plan["type"] in ("desk", "reveal") else tone)
     paper_hex = PAPERS.get(tone, PAPERS["cream"])
     bg, grain = paper(paper_hex, width, height, work)
-    kit = {"acc": accent_of(theme), "ink": INK, "paper": paper_hex, "dark": tone == "dark", "tone": tone,
+    kit = {"acc": accent_of(theme), "ink": INK, "paper": paper_hex, "dark": tone == "dark", "tone": tone, "props": props,
            "bg": bg.as_uri(), "grain": grain.as_uri()}
     page = (_PAGE.replace("%SVGJS%", motion.VENDOR.read_text(encoding="utf-8")).replace("%FONTS%", _font_css())
             .replace("%PAPER%", paper_hex).replace("%PLAN%", json.dumps(plan, ensure_ascii=False))
