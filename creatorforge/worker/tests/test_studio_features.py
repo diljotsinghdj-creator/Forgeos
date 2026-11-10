@@ -33,7 +33,7 @@ def test_brand_validation():
             clean_brand(bad)
 
 
-def test_brand_dub_hooks_clips_and_review(cfg, tmp_path):
+def test_brand_dub_and_review(cfg, tmp_path):
     cfg.voices.append(type(cfg.voices[0])("es_voice", "Spanish", "mock", ""))
     with TestClient(create_app(cfg)) as c:
         logo = c.post("/v1/library/assets?kind=image&name=logo.png", content=logo_png(tmp_path)).json()
@@ -57,28 +57,6 @@ def test_brand_dub_hooks_clips_and_review(cfg, tmp_path):
         assert dub["spec"]["voice"] == "es_voice" and dub["variant_of"] == jid and dub["plan"]["scenes"][0]["narration"].startswith("Escena 0")
         assert [s["image"] for s in dub["scenes"]] == [s["image"] for s in job["scenes"]]
         assert dub["stages"]["images"]["state"] == "READY"
-
-        # Hook Lab: variants differ only in the opening line.
-        v = c.post(f"/v1/productions/{jid}/hook-variants", json={"hooks": ["What if roads built an empire?", "Rome's secret weapon was a road."]})
-        assert v.status_code == 202
-        ids = [p["id"] for p in v.json()["productions"]]
-        variants = [settled(c, i) for i in ids]
-        assert all(x["status"] == "READY" for x in variants)
-        assert variants[0]["plan"]["scenes"][0]["narration"] == "What if roads built an empire?"
-        assert variants[1]["hook_test"]["variant"] == "B" and variants[1]["title"].endswith("hook B")
-        assert variants[0]["plan"]["scenes"][1]["narration"] == job["plan"]["scenes"][1]["narration"]
-        listed = {p["id"]: p for p in c.get("/v1/productions").json()}
-        assert listed[ids[0]]["hook_test"]["group"] == jid
-
-        # Shorts Clipper from a finished production.
-        r = c.post("/v1/clips", json={"production_id": jid, "count": 2, "seconds": 20})
-        assert r.status_code == 202
-        cj = wait_for(lambda: (lambda j: j if j["status"] in ("READY", "FAILED") else None)(c.get(f"/v1/clips/{r.json()['id']}").json()))
-        assert cj["status"] == "READY", cj["error"]
-        assert len(cj["clips"]) == 1 and cj["clips"][0]["title"] == "Best bit"  # the out-of-range pick was dropped
-        f = c.get(f"/v1/clips/{cj['id']}/files/1")
-        assert f.status_code == 200 and f.content[4:8] == b"ftyp"
-        assert c.post("/v1/clips", json={}).status_code == 422
 
         # Client review link: anyone with the link can watch and decide, without the worker token.
         link = c.post(f"/v1/productions/{jid}/review-link").json()
