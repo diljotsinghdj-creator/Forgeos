@@ -66,8 +66,12 @@ Newest entries go at the bottom. Rules here are binding for both channels unless
 - **Winning Pattern:** Topics come from research and the owner, not trend feeds; publishing goes through Uplika.
 
 ### 2026-11-10: No mascot
-- **Mistake Logged:** A rigged dragon mascot was built for Dragon Psychology; the owner doesn't want a mascot.
+- **Mistake Logged:** A rigged dragon mascot was built for Dragon Psychology. The owner never asked for one: it was
+  Claude's own assumption, written into MASTER_DIRECTIVES as if it were the owner's rule, and the owner had already
+  rejected the dragon drawing on 2026-11-08.
 - **New Permanent Rule:** Neither channel has a mascot or a recurring character. Both are faceless; Dragon
   Psychology's identity is its look (palette, cut-outs, type) and the narrator's voice.
+- **Also permanent:** Only the owner's own words go into MASTER_DIRECTIVES. Claude's suggestions stay marked as
+  suggestions until the owner says yes, and nothing is built from them before that.
 - **Used Mechanics to Retire:** the dragon character, in thumbnails and scenes.
 - **Winning Pattern:** Evidence and diagrams carry the film, not a character.
