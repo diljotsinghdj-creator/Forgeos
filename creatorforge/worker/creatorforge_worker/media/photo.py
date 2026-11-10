@@ -2,7 +2,7 @@
 annotations, and both can hand over to a map or a figure inside the same shot.
 
     Photo: <src> | <move> | <title> | key: value ...
-    Photos: <src>, <src>[, ...] | collage | split | sequence | <title> | labels: A, B
+    Photos: <src>, <src>[, ...] | collage | split | sequence | swipe | fade | <title> | labels: A, B
     Footage: <src> | <title> | in: 2.0 | speed: 0.5 | key: value ...
 
 <src> is a ledger asset ("asset:P0007", see studio/assets.py) or a file path. Options (any of them, any order):
@@ -79,7 +79,8 @@ def parse(kind: str, spec: str) -> dict | None:
     plan = {"type": kind, "move": move if move in MOVES else "push", "depth": opts.get("depth", "layers" if kind == "photo" else "flat"),
             "frame": opts.get("frame", "none"), "annotate": _annotations(opts.get("annotate", "")), "grade": opts.get("grade", "none"),
             "light": opts.get("light", ""), "illustrative": "illustrative" in flags,
-            "title": next((f for f in free if f.lower() not in MOVES and f.lower() not in ("illustrative", "collage", "split", "sequence")), "")[:60]}
+            "title": next((f for f in free if f.lower() not in MOVES and f.lower() not in ("illustrative", "collage", "split", "sequence",
+                                                                                             "swipe", "fade", "cutout", "follow")), "")[:60]}
     if plan["grade"] not in GRADES:
         plan["grade"] = "none"
     at = _floats(opts.get("at", ""))
@@ -95,13 +96,18 @@ def parse(kind: str, spec: str) -> dict | None:
             plan["then"] = {"kind": "number", "figure": fig[:14], "caption": cap[:60]}
     if kind == "photos":
         plan["srcs"] = [s.strip() for s in parts[0].split(",") if s.strip()][:6]
-        plan["mode"] = next((f for f in flags if f in ("collage", "split", "sequence")), "collage" if len(plan["srcs"]) > 2 else "split")
+        plan["mode"] = next((f for f in flags if f in ("collage", "split", "sequence", "swipe", "fade")), "collage" if len(plan["srcs"]) > 2 else "split")
         plan["labels"] = [x.strip()[:30] for x in opts.get("labels", "").split(",") if x.strip()]
         if len(plan["srcs"]) < 2:
             return None
     else:
         plan["path"] = parts[0]          # (not "src": that key is the on-screen source line)
     if kind == "footage":
+        # cutout: the subject is rotoscoped out of the footage onto the paper; follow: a marker stays on the subject
+        plan["cutout"] = "cutout" in flags
+        plan["follow"] = opts.get("follow", "")[:40] if "follow" in opts else ("" if "follow" not in flags else " ")
+        sub = _floats(opts.get("subject", ""))
+        plan["subject"] = sub if len(sub) == 4 else None
         plan["in"] = (_floats(opts.get("in", "0")) or [0.0])[0]
         plan["speed"] = min(2.0, max(0.25, (_floats(opts.get("speed", "1")) or [1.0])[0]))
         plan["depth"] = "flat"
@@ -180,6 +186,37 @@ def prepare(plan: dict, work: Path, model: Path | None = None, width: int = 1920
         if not frames:
             raise MediaError("footage: no frames could be read")
         plan["frames"] = [f.as_uri() for f in frames]
+        if plan.get("cutout") or plan.get("follow"):
+            from . import track
+            tdir = fdir / "track"
+            info = tdir / ("track_cut.json" if plan.get("cutout") else "track.json")
+            if info.is_file():
+                tr = json.loads(info.read_text())
+            else:
+                res, how = track.track(frames, plan.get("subject"), tdir)
+                tr = {"how": how, "pos": [[round(r["cx"], 4), round(r["cy"], 4)] for r in res],
+                      "box": [[round(v, 4) for v in r["box"]] for r in res]}
+                if plan.get("cutout"):
+                    import numpy as np
+                    from PIL import Image, ImageFilter
+                    cut = []
+                    for f, r in zip(frames, res):
+                        m = Image.open(r["mask"]).convert("L").filter(ImageFilter.GaussianBlur(1.2))
+                        edge = m.filter(ImageFilter.MaxFilter(9))
+                        im = Image.open(f).convert("RGB")
+                        rgba = Image.new("RGBA", im.size, (0, 0, 0, 0))
+                        rgba.paste(Image.new("RGBA", im.size, (251, 249, 243, 255)), (0, 0), edge)   # the white paper edge
+                        rgba.paste(im, (0, 0), m)
+                        out = tdir / f"cut_{Path(f).stem}.png"
+                        rgba.save(out)
+                        cut.append(out.as_uri())
+                    tr["cut"] = cut
+                info.write_text(json.dumps(tr))
+            plan["track"] = tr["pos"]
+            plan["trackBox"] = tr["box"]
+            if plan.get("cutout"):
+                plan["frames"] = tr["cut"]
+            mods.append(f"subject {'cut out (rotoscoped)' if plan.get('cutout') else 'tracked'} with {tr['how']}")
         plan["ffps"] = int(os.environ.get("CF_MOTION_FPS") or 24)
         plan["w"], plan["h"] = width, height
         mods.append(f"trimmed from {plan['in']:.1f}s" + (f", played at {plan['speed']}x" if plan["speed"] != 1 else "") + ", cropped to frame")
@@ -221,19 +258,18 @@ def prepare(plan: dict, work: Path, model: Path | None = None, width: int = 1920
             if layers:
                 try:
                     import cv2
+                    from . import inpaint
                     # fill only the inside of the nearer layers: at their edges the far layer keeps the real pixels,
                     # so a small parallax move shows real picture, not fill
                     hole = ((d > t[0]) * 255).astype("uint8")
                     hole = cv2.erode(hole, np.ones((7, 7), np.uint8))
-                    small = cv2.resize(a, (a.shape[1] // 2, a.shape[0] // 2))
-                    hs = cv2.resize(hole, (small.shape[1], small.shape[0]), interpolation=cv2.INTER_NEAREST)
-                    painted = cv2.resize(cv2.inpaint(small, hs, 7, cv2.INPAINT_TELEA), (a.shape[1], a.shape[0]))
+                    painted, how_fill = inpaint.fill(a, hole)
                     far = np.where(hole[..., None] > 0, painted, a)
                     Image.fromarray(far.astype("uint8")).save(base.with_name(f"photo_{key}_far.jpg"), quality=92)
-                    fill = "OpenCV inpainting behind the nearer layers"
+                    fill = f"{how_fill} behind the nearer layers"
                 except ImportError:
                     fill = "none (OpenCV missing): parallax kept very small"
-            info = {"layers": layers, "far": base.with_name(f"photo_{key}_far.jpg").as_uri() if fill.startswith("OpenCV") else base.as_uri(),
+            info = {"layers": layers, "far": base.with_name(f"photo_{key}_far.jpg").as_uri() if "inpainting" in fill else base.as_uri(),
                     "depthHow": how, "fill": fill}
             manifest.write_text(json.dumps(info))
             plan.update(info)

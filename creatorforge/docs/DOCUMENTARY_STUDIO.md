@@ -94,3 +94,16 @@ Keys for the sources live in the pod's environment: `UNSPLASH_KEY`, `PIXABAY_KEY
 
 Deliverables added: `writing/visual_decisions.md` (every line's options and why one won) and `research/assets.csv`
 (the asset ledger for this film). The method and each technique's status are in `PRODUCTION_KNOWLEDGE_BASE.md`.
+
+## Style tools on the pod
+
+`setup_gpu.sh` downloads these in the background. Until each file is there, the older method is used and the shot
+records which one ran.
+
+* BiRefNet (MIT) makes the cut-outs: hair, rigging and thin edges. ISNet is next.
+* LaMa (Apache-2.0) fills behind a layer that moves. OpenCV is next.
+* SAM 2.1 small (Apache-2.0) is for `Footage: ... | cutout` and `| follow: <note>`. BiRefNet frame by frame is next.
+* deck.gl (MIT, bundled) draws `Flowmap:`, `Columns:` and `Dots:`.
+* `Satellite:` uses NASA GIBS, which needs no key. For Sentinel-2, set `CF_CDSE_CLIENT_ID` and
+  `CF_CDSE_CLIENT_SECRET` (Copernicus Data Space, free) in the pod's environment. `SH_CLIENT_ID` and
+  `SH_CLIENT_SECRET` also work. The imagery credit is drawn on the picture.

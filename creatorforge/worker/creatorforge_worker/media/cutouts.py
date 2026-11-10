@@ -404,9 +404,47 @@ def make(image: Path, out: Path, model: Path | None = None, person: bool = False
     return out
 
 
-def _mask(rgb, model: Path | None, person: bool):
-    """Subject mask (L, 0-255): ISNet when available, else GrabCut, else plain-background flood fill."""
+_BIREF: dict = {}
+
+
+def birefnet_model(near: Path | None = None) -> Path | None:
+    """BiRefNet (MIT): the sharpest cut-out model we use - hair, fine edges, thin masts. CF_BIREFNET, else a
+    birefnet*.onnx beside the ISNet model or in <data>/models."""
+    if os.environ.get("CF_BIREFNET") and Path(os.environ["CF_BIREFNET"]).is_file():
+        return Path(os.environ["CF_BIREFNET"])
+    dirs = [Path(near).parent] if near else []
+    dirs.append(Path(os.environ.get("CF_DATA_DIR", "./creatorforge-data")) / "models")
+    for d in dirs:
+        found = sorted(d.glob("birefnet*.onnx")) if d.is_dir() else []
+        if found:
+            return found[0]
+    return None
+
+
+def _birefnet(rgb, path: Path):
+    """Subject mask from BiRefNet (1024x1024, ImageNet normalisation, sigmoid of the first output)."""
+    import numpy as np
     from PIL import Image
+    if str(path) not in _BIREF:
+        import onnxruntime as ort
+        _BIREF[str(path)] = ort.InferenceSession(str(path), providers=["CPUExecutionProvider"])
+    sess = _BIREF[str(path)]
+    x = np.asarray(rgb.convert("RGB").resize((1024, 1024), Image.BICUBIC), np.float32) / 255.0
+    x = (x - np.array([0.485, 0.456, 0.406], np.float32)) / np.array([0.229, 0.224, 0.225], np.float32)
+    pred = sess.run(None, {sess.get_inputs()[0].name: x.transpose(2, 0, 1)[None].astype(np.float32)})[0][0, 0]
+    pred = 1 / (1 + np.exp(-pred))
+    return Image.fromarray((np.clip(pred, 0, 1) * 255).astype("uint8"), "L").resize(rgb.size, Image.LANCZOS)
+
+
+def _mask(rgb, model: Path | None, person: bool):
+    """Subject mask (L, 0-255): BiRefNet when available, else ISNet, else GrabCut, else plain-background flood fill."""
+    from PIL import Image
+    bref = birefnet_model(model)
+    if bref is not None:
+        try:
+            return _birefnet(rgb, bref)
+        except Exception:  # noqa: BLE001 - the next model down still cuts
+            pass
     if model is not None and Path(model).is_file():
         try:
             import numpy as np

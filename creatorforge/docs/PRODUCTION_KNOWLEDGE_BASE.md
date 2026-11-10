@@ -54,10 +54,11 @@ neither is animation.
 | 1 | Full-screen photograph | `Photo: src` | works |
 | 2-5 | Push, pull, horizontal and vertical moves | `push`, `pull`, `pan-left/right`, `tilt-up/down` | works |
 | 6-7 | Multi-layer parallax, foreground and background | `depth: layers` (default): depth bands; the far layer filled only inside the nearer ones | works (estimated depth: pod-only) |
-| 8 | Animated subject cut-outs | the nearer layer is the subject (ISNet / GrabCut; never a guessed cut of a person) | works |
+| 8 | Animated subject cut-outs | the nearer layer is the subject (BiRefNet, else ISNet, else GrabCut; never a guessed cut of a person) | works (BiRefNet: pod-only download) |
 | 9 | Depth-map animation | Depth Anything V2 bands; `Photo3d` mesh | pod-only for the model; the subject-plane fallback works |
 | 10 | Animated photographic collage | `Photos: a, b, c \| collage` | works |
 | 11 | Split-screen comparison | `Photos: a, b \| split \| labels: 1960, today` | works |
+| - | Before / after on the same frame | `Photos: a, b \| swipe` (a wipe with a handle) or `\| fade` (a dissolve), dates as labels | works |
 | 12 | Photo to map | `then: pin <place>` (the photo becomes a card pinned on the map) | works |
 | 13 | Photo to infographic | `then: number <figure> <caption>` (the photo greys out under the figure) | works |
 | 14-16 | Annotations, highlighted detail, moving labels and arrows | `annotate: circle / arrow / box / label`, `detail \| at: x,y,w,h` (a spotlight) | works |
@@ -105,10 +106,12 @@ fixed template.
 | Technique | How | Status |
 |---|---|---|
 | Green-screen compositing, chroma keying | `Key: fg \| background: bg \| color: 00FF00` (FFmpeg chromakey and despill) | works |
-| Rotoscoping | per-frame subject masks for stills (ISNet); footage rotoscoping is not built | partial |
-| Motion tracking | footage pan tracking for marks (`render.Clip.track`); point tracking of a subject is not built | partial |
+| Rotoscoping | stills: BiRefNet / ISNet masks. Footage: `Footage: clip \| cutout` cuts the subject out of every frame onto the paper (SAM 2 video tracking from one box, else BiRefNet frame by frame); `subject: x,y,w,h` names it | works (SAM 2: pod-only) |
+| Motion tracking | `Footage: clip \| follow: <note>`: a ring and a note stay on the tracked subject (SAM 2 / BiRefNet masks); footage pan tracking for marks (`render.Clip.track`) | works (SAM 2: pod-only) |
 | Camera projection, 3D camera mapping | `Photo3d` | works |
 | Depth-map animation | `Photo` depth layers, `Photo3d` | works (model on the pod) |
+| Fill behind a moved layer | LaMa inpainting, else OpenCV; only inside the nearer layer, so nothing new is shown | works (LaMa: pod-only) |
+| Data maps in 3D | `Flowmap: A → B 120, ...` (arcs as wide as their numbers, lights travelling along them), `Columns: place 1.4, ...` (3D columns standing on the map), `Dots: place 37, ...` (circles by area). deck.gl, Natural Earth land, the camera tilting slowly | works |
 | Matte painting, digital set extension | **not built, deliberately:** it would add detail that was not there to a documentary picture; allowed only as a labelled reconstruction | - |
 | Animated cut-paper compositions | the Vox scenes' cut-outs, paper and print looks | works |
 | Isometric illustration | `\| isometric` on the 3D scenes | works |
@@ -118,7 +121,7 @@ fixed template.
 | Newspaper reconstruction, document animation | `Clipping`, `Newscard`, `Courtdoc`, `Document` | works |
 | Visual evidence boards | `Pinboard`, `Linkmap` | works |
 | Animated historical photographs | `Photo` with `grade: archive`, depth layers and annotations; no colourisation | works |
-| Satellite imagery | `Fly ... \| satellite` (tiles) | pod-only |
+| Satellite imagery | `Satellite: <place> \| 2000 vs 2020 \| swipe / fade / split`: the same ground on two dates (NASA GIBS MODIS / VIIRS, keyless; Sentinel-2 10 m with Copernicus keys). The clearest day within two days of each date is used and its year is on screen; a date with no imagery stops the shot. Also `Fly ... \| satellite` (tiles) | works (imagery: pod-only) |
 | Photogrammetry | not practical here (needs many photos of one subject and a reconstruction toolchain) | not built |
 | Environmental sound, colour grading, film grain | `ambience.py`; per-film grade (`warm / cool / bleach / neutral`); the film layer | works |
 

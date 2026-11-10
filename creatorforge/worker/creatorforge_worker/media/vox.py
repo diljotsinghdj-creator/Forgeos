@@ -41,7 +41,7 @@ KINDS = ("hero", "desk", "pinboard", "opener", "reveal", "clipping", "pinmap", "
          "seats", "stack", "stand", "fan", "trend", "slice", "route", "compare", "photoline", "tv",
          "clockmap", "tornsplit", "newscard", "blueprint", "pyramid", "flowchart", "linkmap", "orgchart", "heatmap",
          "courtdoc", "table", "interview", "endcard", "polltrack", "area", "candles", "arrows", "railmap", "sizemap",
-         "borders", "morph", "shrink", "photo", "photos", "footage")
+         "borders", "morph", "shrink", "photo", "photos", "footage", "satellite", "flowmap", "columns", "dots")
 
 
 # A look per video, so no two films share one face: paper, type, map colours and marker pen differ, the method doesn't.
@@ -72,6 +72,8 @@ _FLIP = ("hero", "opener", "newscard", "tornsplit", "desk", "pinboard", "clippin
          "interview")
 LAYOUT_SETS = {k: (["base", "mirror", "card"] if k in _FLIP else ["base", "card"]) for k in KINDS}
 LAYOUT_SETS["bignumber"] = ["base", "side", "card"]
+for _k in ("photo", "photos", "footage", "satellite"):
+    LAYOUT_SETS[_k] = ["base"]          # a photograph or footage is the frame itself: never mirrored or put on a card
 DESKS = ("#3B2F25", "#5A4632", "#2E3A40", "#6B5B4B", "#262626")
 
 
@@ -1245,6 +1247,20 @@ PARSERS = {"photo": _photo_parser("photo"), "photos": _photo_parser("photos"), "
            "slice": parse_slice, "route": parse_route, "compare": parse_compare, "photoline": parse_photoline,
            "tv": parse_tv, "clockmap": parse_clockmap, "tornsplit": parse_tornsplit, "newscard": parse_newscard,
            "blueprint": parse_blueprint}
+
+
+def _ext_parser(mod: str, kind: str):
+    def parse(spec: str) -> dict | None:
+        from importlib import import_module
+        m = import_module(f".{mod}", __package__)
+        return m.parse(spec) if mod == "satellite" else m.parse(kind, spec)
+    return parse
+
+
+# data maps drawn with deck.gl (media/datamap.py) and dated satellite imagery (media/satellite.py)
+DATAMAP_KINDS = ("flowmap", "columns", "dots")
+PARSERS.update({k: _ext_parser("datamap", k) for k in DATAMAP_KINDS})
+PARSERS["satellite"] = _ext_parser("satellite", "satellite")
 
 
 _LOGOS: dict | None = None
@@ -2579,7 +2595,7 @@ function annoLayer(g,list,x0,y0,iw,ih,start){const col=K.mark||'#D7262B';
       if(a.label){const t=T(g,a.label.toUpperCase(),U*.022,X(bx),Y(by)-U*.022,{family:'Inter',weight:800,anchor:'start',fill:'#FFFFFF'});const bb=t.bbox();
         g.rect(bb.width+U*.02,bb.height+U*.01).center(bb.cx,bb.cy).fill(col);t.front();wipe(t,st)}}
     else if(a.kind==='label'){const [lx,ly]=a.p;placeTag(g,a.label,X(lx),Y(ly),st,0)}})}
-function photoCredit(){if(P.credit){const t=mono(L.front,('PHOTO: '+P.credit).toUpperCase(),W-U*.04,H-U*.03,{anchor:'end',size:U*.013,weight:700});t.addClass('keep');fit(t,W*.6);t.opacity(.85)}}
+function photoCredit(){if(P.credit){const t=mono(L.front,(((P.creditLabel||'PHOTO')+': ')+P.credit).toUpperCase(),W-U*.04,H-U*.03,{anchor:'end',size:U*.013,weight:700});t.addClass('keep');fit(t,W*.6);t.opacity(.85)}}
 function photo(){ // one photograph as a moving composition: depth layers, a deliberate camera, annotations, a handover
   const framed=P.frame&&P.frame!=='none',k=framed?Math.min(W*.74/P.w,H*.72/P.h):Math.max(W/P.w,H/P.h)*1.1;
   const iw=P.w*k,ih=P.h*k,x0=(W-iw)/2,y0=framed?(H-ih)/2-U*.02:(H-ih)/2;
@@ -2624,6 +2640,18 @@ function photos(){ // several photographs: side by side, a collage of prints, or
       TICKS.push(t=>{const s=1+.05*Math.min(1,t/DUR);el.attr({transform:`translate(${i*pw+pw/2},${H/2}) scale(${s}) translate(${-(i*pw+pw/2)},${-H/2})`})});slide(g,.1+i*.2,0,i%2?H*.06:-H*.06);
       const lb=P.labels[i];if(lb){const t=boxText(L.front,lb,U*.04,i*pw+pw/2,H*.1,{anchor:'middle',maxw:pw*.85,most:2});wipe(t,.5+i*.2)}});
     for(let i=1;i<n;i++){const ln=L.mid.rect(U*.008,H).move(i*W/n-U*.004,0).fill(PAPER);wipe(ln,.2)}}
+  else if((P.mode==='swipe'||P.mode==='fade')&&n>=2){ // before / after: the same frame, the later picture wiped or dissolved over the earlier
+    const im0=ims[0],k=Math.max(W/im0.w,H/im0.h)*1.04,iw=im0.w*k,ih=im0.h*k,ix=(W-iw)/2,iy=(H-ih)/2;
+    const a=L.back.image(ims[0].img).size(iw,ih).move(ix,iy),gb=L.back.group(),b=gb.image(ims[1].img).size(iw,ih).move(ix,iy);if(filt){a.attr({style:'filter:'+filt});b.attr({style:'filter:'+filt})}
+    const T0=DUR*.3,T1=Math.min(DUR-.6,T0+Math.max(1.2,DUR*.3));
+    TICKS.push(t=>{const s=1+.04*Math.min(1,t/DUR),tr=`translate(${W/2},${H/2}) scale(${s}) translate(${-W/2},${-H/2})`;a.attr({transform:tr});b.attr({transform:tr})});
+    const la=P.labels[0]?boxText(L.front,P.labels[0],U*.045,U*.06,H-U*.12,{anchor:'start',maxw:W*.4,most:1}):null,lb=P.labels[1]?boxText(L.front,P.labels[1],U*.045,W-U*.06,H-U*.12,{anchor:'end',maxw:W*.4,most:1}):null;
+    if(la)wipe(la,.3);if(lb){lb.opacity(0)}
+    if(P.mode==='swipe'){const cl=draw.clip(),cr=cl.rect(W,H).move(W,0);gb.clipWith(cl);const ln=L.mid.group();ln.rect(U*.006,H).move(-U*.003,0).fill('#FFFFFF');
+      ln.circle(U*.05).center(0,H/2).fill('#FFFFFF').stroke({color:INK,width:U*.004});ln.path(`M${-U*.012} ${H/2-U*.01} l${-U*.008} ${U*.01} l${U*.008} ${U*.01} M${U*.012} ${H/2-U*.01} l${U*.008} ${U*.01} l${-U*.008} ${U*.01}`).fill('none').stroke({color:INK,width:U*.004});
+      TICKS.push(t=>{const p=E.inout(Math.max(0,Math.min(1,(t-T0)/(T1-T0))));const xx=W*(1-p);cr.move(xx,0);ln.attr({transform:`translate(${xx},0)`});ln.opacity(p>0&&p<1?1:p>=1?Math.max(0,1-(t-T1)/.4):0);
+        if(la)la.opacity(p<.98?1:Math.max(0,1-(t-T1)/.3));if(lb)lb.opacity(Math.min(1,p*1.5))})}
+    else{b.opacity(0);TICKS.push(t=>{const p=E.inout(Math.max(0,Math.min(1,(t-T0)/(T1-T0))));b.opacity(p);if(la)la.opacity(1-p);if(lb)lb.opacity(p)})}}
   else if(P.mode==='sequence'){const each=DUR/n;const els=ims.map((im,i)=>{const k=Math.max(W/im.w,H/im.h)*1.08;const el=L.back.image(im.img).size(im.w*k,im.h*k).move((W-im.w*k)/2,(H-im.h*k)/2);if(filt)el.attr({style:'filter:'+filt});el.opacity(i?0:1);return el});
     TICKS.push(t=>{els.forEach((el,i)=>{const a=t-i*each,o=i===0?(a<each-.25?1:Math.max(0,1-(a-each+.25)/.35)):(a<0?0:a<.35?a/.35:a<each-.25||i===n-1?1:Math.max(0,1-(a-each+.25)/.35));el.opacity(o);
       const s=1+.07*Math.max(0,Math.min(1,a/each));el.attr({transform:`translate(${W/2},${H/2}) scale(${s}) translate(${-W/2},${-H/2})`})})});
@@ -2635,11 +2663,19 @@ function photos(){ // several photographs: side by side, a collage of prints, or
       const lb=P.labels[i];if(lb)placeTag(L.front,lb,cx,cy+ih/2+U*.05,.6+i*.25,0)})}
   if(P.title&&P.mode!=='split'){chartTitle(P.title)}photoCredit()}
 function footage(){ // moving footage, frame by frame, with the same annotations and titles as a photograph
-  const el=L.back.image(P.frames[0]).size(W,H).move(0,0);const filt=GRADE[P.grade]||'';if(filt)el.attr({style:'filter:'+filt});let cur=-1;
+  // cutout: the rotoscoped subject (white paper edge) moves on the paper, a little smaller, with a shadow
+  const cut=!!P.cutout,k=cut?.86:1,el=(cut?L.hero:L.back).image(P.frames[0]).size(W*k,H*k).move(W*(1-k)/2,H*(1-k)/2+(cut?H*.03:0));
+  if(cut)el.attr({filter:'url(#shadow)'});const filt=GRADE[P.grade]||'';if(filt)el.attr({style:'filter:'+filt});let cur=-1;
+  if(P.track&&P.follow!==undefined&&P.follow!==''){const mk=L.front.group(),col=K.mark||'#D7262B';
+    const ring=mk.ellipse(10,10).fill('none').stroke({color:col,width:U*.007});const note=P.follow.trim()?T(mk,P.follow.trim(),U*.045,0,0,{family:'Caveat',weight:700,fill:col,anchor:'start'}):null;
+    mk.opacity(0);at(.6,.4,q=>mk.opacity(q));
+    TICKS.push(t=>{const i=Math.min(P.track.length-1,Math.floor(t*P.ffps+1e-6)),b=P.trackBox[i],[cx,cy]=P.track[i];
+      const X=v=>W*(1-k)/2+v*W*k,Y=v=>H*(1-k)/2+(cut?H*.03:0)+v*H*k,rx=Math.max(U*.05,(b[2]-b[0])*W*k*.62),ry=Math.max(U*.05,(b[3]-b[1])*H*k*.62);
+      ring.size(rx*2,ry*2).center(X(cx),Y(cy));if(note)note.attr({x:X(cx)+rx+U*.02,y:Y(cy)-ry*.7});return null})}
   TICKS.push(t=>{const i=Math.min(P.frames.length-1,Math.floor(t*P.ffps+1e-6));if(i===cur)return null;cur=i;
     return new Promise(res=>{el.node.addEventListener('load',()=>res(),{once:true});setTimeout(res,250);el.attr({href:P.frames[i]})})});
   const ann=L.mid.group();annoLayer(ann,P.annotate,0,0,W,H,.9);
-  const vg=draw.gradient('radial',a=>{a.stop(.55,'#000',0);a.stop(1,'#000',.45)});L.mid.rect(W,H).fill(vg);
+  if(!cut){const vg=draw.gradient('radial',a=>{a.stop(.55,'#000',0);a.stop(1,'#000',.45)});L.mid.rect(W,H).fill(vg)}
   if(P.title){const b=boxText(L.front,P.title,U*.05,U*.06,H-U*.16,{anchor:'start',maxw:W*.6,most:2});wipe(b,.5)}
   if(P.annotate&&P.annotate.length){const a=P.annotate[0];FOCUS={x:a.p[0]*W,y:a.p[1]*H,rx:U*.1,ry:U*.1}}
   photoCredit()}
@@ -2669,6 +2705,15 @@ def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: f
     from . import motion
     if not motion.enabled():
         raise MediaError("vox scenes need the animation engine (Chromium + Playwright)")
+    if kind in DATAMAP_KINDS:
+        from . import datamap
+        return datamap.render(kind, spec, theme, width, height, seconds, out, work, fps=fps)
+    sat_credit = ""
+    if kind == "satellite":
+        # dated imagery downloaded, then shown as a before / after of two photographs (swipe, dissolve or side by side)
+        from . import satellite
+        spec, sat_credit, _ = satellite.prepare(spec, work, width, height)
+        kind = "photos"
     plan = plan_for(kind, spec)
     if plan is None:
         raise MediaError(f"vox: nothing to draw from {spec!r}")
@@ -2676,6 +2721,8 @@ def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: f
         # a real photograph or footage: prepared into layers / frames; the shot moves itself (the page camera holds)
         from . import photo as _photo
         _photo.prepare(plan, work, model, width, height)
+        if sat_credit:
+            plan["credit"], plan["creditLabel"] = sat_credit, "IMAGERY"
         plan.setdefault("camera", "still")
         if plan.get("illustrative"):
             plan["badge"] = BADGES["illustrative"]

@@ -246,6 +246,17 @@ for f in kokoro-v1.0.int8.onnx voices-v1.0.bin; do
     mv "$HOME_DIR/data/models/kokoro/$f.part" "$HOME_DIR/data/models/kokoro/$f" 2>/dev/null || true
 done
 
+# Documentary style tools (all downloaded in the background; until a file is there the older method is used):
+#   BiRefNet (MIT) sharper cut-outs, else ISNet  ·  LaMa (Apache-2.0) fills behind moved layers, else OpenCV
+#   SAM 2.1 small (Apache-2.0) tracks and cuts a subject out of footage, else BiRefNet frame by frame
+# Satellite shots use NASA GIBS (no key). Sentinel-2 needs CF_CDSE_CLIENT_ID / CF_CDSE_CLIENT_SECRET in the pod's env.
+nohup bash -c "cd '$HOME_DIR/data/models' && \
+  { [ -s birefnet-general.onnx ] || { curl -fsSL -m 1800 -o birefnet-general.onnx.part https://github.com/danielgatis/rembg/releases/download/v0.0.0/BiRefNet-general-epoch_244.onnx && mv birefnet-general.onnx.part birefnet-general.onnx; }; } ; \
+  { [ -s big-lama.pt ] || { curl -fsSL -m 1800 -o big-lama.pt.part https://github.com/Sanster/models/releases/download/add_big_lama/big-lama.pt && mv big-lama.pt.part big-lama.pt; }; } ; \
+  { '$PYBIN' -c 'import sam2' 2>/dev/null || SAM2_BUILD_CUDA=0 '$PYBIN' -m pip install -q --no-cache-dir 'sam2>=1.1' ; } ; \
+  { [ -s sam2.1_hiera_small.pt ] || { curl -fsSL -m 1800 -o sam2.1_hiera_small.pt.part https://dl.fbaipublicfiles.com/segment_anything_2/092824/sam2.1_hiera_small.pt && mv sam2.1_hiera_small.pt.part sam2.1_hiera_small.pt; }; } ; \
+  echo 'style tools ready'" > style_tools_download.log 2>&1 &
+
 # Visual match check: CLIP (ViT-B/32, ONNX, ~600 MB) scores each picture against its line so off-topic pictures are
 # redrawn and off-topic stock is skipped. Until it's downloaded, pictures are used as generated.
 mkdir -p "$HOME_DIR/data/models/clip"

@@ -124,11 +124,14 @@ def score(opt: dict, line: str, facts: dict, need: str, prev_kinds: list[str], s
         explains = 1.0 if not keys else 0.35          # a picture alone can't carry a figure or a date
     authentic = {"photo": 1.0 if specific else 0.55, "footage": 0.9 if specific else 0.45, "combo": 0.9 if specific else 0.6,
                  "graphic": 0.8 if keys else 0.6}[t]
+    sat = t == "graphic" and opt["what"].split(":", 1)[0].strip().lower() == "satellite"
+    if sat:
+        authentic = 1.0                               # real imagery of this very place on the stated dates
     rank = PREFER.get(need, PREFER["abstract"]).index(t)
     fit = 1.0 - rank * 0.25
     kind = opt["what"].split(":", 1)[0].strip().lower() if t == "graphic" else t
     variety = 0.5 if kind in prev_kinds[-1:] else 0.8 if kind in prev_kinds[-2:] else 1.0
-    avail = 1.0 if t == "graphic" else (0.75 if assets_likely else 0.0)
+    avail = (0.85 if sat else 1.0) if t == "graphic" else (0.75 if assets_likely else 0.0)
     total = .32 * explains + .22 * authentic + .26 * fit + .1 * variety + .1 * avail
     return {**opt, "explains": round(explains, 2), "authentic": round(authentic, 2), "fit": round(fit, 2), "variety": variety,
             "available": avail, "score": round(total, 3)}
