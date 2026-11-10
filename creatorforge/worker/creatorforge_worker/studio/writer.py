@@ -21,6 +21,16 @@ from .dossier import NEEDS_ATTRIBUTION, Dossier, attributed, figures_in
 
 ACTS = ("hook", "world", "investigation", "discovery", "consequences", "ending")
 WORDS_PER_SECOND = 2.6          # a documentary narrator, for the hook-length estimate before the audio exists
+INTERRUPT_SECONDS = 20          # no stretch this long without a new kind of picture (a visual pattern interrupt)
+# Phrases that make a script sound generated; the showrunner bans them by name (channels/SHOWRUNNER.md)
+BANNED_PHRASES = ("delve", "delving", "testament to", "moreover", "in a world where", "it's important to remember",
+                  "it is important to remember", "let's unpack", "lets unpack", "buckle up", "game-changer", "game changer",
+                  "unlock the secrets", "in today's fast-paced", "navigate the complexities", "tapestry")
+# The narrative engines a new film is pitched in; back-to-back films never share one (channels/SHOWRUNNER.md)
+ENGINES = {"reverse-autopsy": "start at the aftermath and rewind clock by clock",
+           "live-viewer-trap": "a 45-second test in which the viewer's own brain falls for the effect",
+           "trojan-horse": "an everyday object or rule hiding a large machine",
+           "historical-echo": "a modern tactic paralleled with a forgotten historical con or survival glitch"}
 
 
 def graphic_problem(graphic: str) -> str:
@@ -47,6 +57,11 @@ def check(sp: dict, dossier: Dossier) -> list[dict]:
     for k in ("logline", "central_question"):
         if not (sp.get("concept") or {}).get(k):
             add("error", "concept", f"concept has no {k}")
+    eng = str(sp.get("engine", "")).strip()
+    if eng and eng not in ENGINES:
+        add("error", "concept", f"engine must be one of {', '.join(ENGINES)}")
+    elif not eng:
+        add("warning", "concept", "no narrative engine named (engine: " + " | ".join(ENGINES) + ")")
     seen_ids, seen_text = set(), set()
     for i, s in enumerate(scenes):
         sid = str(s.get("id") or f"#{i + 1}")
@@ -58,6 +73,10 @@ def check(sp: dict, dossier: Dossier) -> list[dict]:
             add("error", sid, "no narration")
         if text in seen_text:
             add("error", sid, "narration repeats an earlier line")
+        low = text.lower().replace("’", "'")
+        for ph in BANNED_PHRASES:
+            if re.search(rf"(?<![a-z]){re.escape(ph)}(?![a-z])", low):
+                add("error", sid, f"banned phrase '{ph}': it reads as generated")
         seen_text.add(text)
         if s.get("act") not in ACTS:
             add("error", sid, f"act must be one of {', '.join(ACTS)}")
@@ -85,6 +104,21 @@ def check(sp: dict, dossier: Dossier) -> list[dict]:
                               f"({', '.join(dossier.claims[c].status for c in needs)})")
         if i and str(scenes[i - 1].get("graphic", "")).split(":")[0] == g.split(":")[0] and g:
             add("warning", sid, "the same kind of graphic as the line before")
+    # pattern interrupts: no stretch of about 20 s on one kind of picture
+    run_kind, run_secs, run_start = None, 0.0, None
+    for s in scenes:
+        sid = str(s.get("id", "?"))
+        secs = len(str(s.get("narration", "")).split()) / WORDS_PER_SECOND + float(s.get("pause", 0) or 0)
+        kind = str(s.get("graphic", "")).split(":")[0].strip().lower()
+        if secs > INTERRUPT_SECONDS:
+            add("warning", sid, f"about {secs:.0f}s on one picture: split it or add a visual pattern interrupt")
+        if kind == run_kind:
+            run_secs += secs
+        else:
+            run_kind, run_secs, run_start = kind, secs, sid
+        if run_secs > INTERRUPT_SECONDS and kind == run_kind and run_start != sid:
+            add("warning", sid, f"about {run_secs:.0f}s of '{kind}' since {run_start}: no visual pattern interrupt")
+            run_secs = -1e9                       # report a run once
     # structure: a hook first, the central question asked early
     if scenes[0].get("act") != "hook":
         add("error", scenes[0].get("id", "#1"), "the film must open on its hook")
@@ -103,11 +137,39 @@ def check(sp: dict, dossier: Dossier) -> list[dict]:
     return out
 
 
+def novelty(sp: dict, hist: list[dict]) -> list[dict]:
+    """The anti-clone check: a film never shares its narrative engine, its hook mechanism or a visual metaphor with
+    the channel's previous film. `hist` is the studio history (oldest first)."""
+    out = []
+    chan = str(sp.get("channel", "")).strip().lower()
+    prev = [h for h in hist if str(h.get("channel", "")).strip().lower() == chan and h.get("id") != sp.get("id")]
+    if not prev:
+        return out
+    last = prev[-1]
+    if sp.get("engine") and sp.get("engine") == last.get("engine"):
+        out.append({"level": "error", "scene": "concept", "problem": f"the narrative engine '{sp['engine']}' was used by the previous film ({last.get('id')})"})
+    hook = str(sp.get("hook_mechanism", "")).strip().lower()
+    if hook and hook == str(last.get("hook_mechanism", "")).strip().lower():
+        out.append({"level": "error", "scene": "hook", "problem": f"the hook mechanism '{hook}' was used by the previous film ({last.get('id')})"})
+    used = {str(m).strip().lower() for m in last.get("metaphors", [])}
+    for m in sp.get("metaphors", []):
+        if str(m).strip().lower() in used:
+            out.append({"level": "error", "scene": "concept", "problem": f"the visual metaphor '{m}' was used by the previous film ({last.get('id')})"})
+    older = {str(m).strip().lower() for h in prev[-4:-1] for m in h.get("metaphors", [])}
+    for m in sp.get("metaphors", []):
+        if str(m).strip().lower() in older:
+            out.append({"level": "warning", "scene": "concept", "problem": f"the visual metaphor '{m}' was used in the last few films"})
+    return out
+
+
 PROMPT = """You are an investigative documentary writer. Write a complete documentary screenplay as JSON from the
 research dossier below. Rules:
 - Build it around ONE central question. Open with a scene, contradiction or revelation (15-30 s), never "today we".
 - Acts in order: hook, world, investigation, discovery (the turn), consequences, ending (return to the question).
-- Narration: conversational, precise, varied sentence length, no AI phrasing. One to two sentences per scene.
+- Narration: written for the ear: short, punchy sentences, sudden pacing shifts, curiosity ("Wait. Look at this line.").
+  One to two sentences per scene. Never use: {banned}. Bridge acts with open-loop questions.
+- Use the narrative engine given in the brief; name it in "engine", the hook's mechanism in "hook_mechanism" and the
+  film's visual metaphors in "metaphors". Change the kind of picture at least every 20 seconds.
 - Every scene cites the dossier claim ids it relies on ("claims"). Use ONLY figures that are in those claims' "figures".
   Claims marked reported / estimate / disputed / allegation / opinion / interpretation must be attributed or qualified
   in the narration ("according to...", "an estimate", "is still debated"). Never use an unverified claim.
@@ -115,7 +177,7 @@ research dossier below. Rules:
   Do not use the same kind of graphic twice in a row. Mark the opening, the climax and the ending with "role".
 - Add "delivery" (e.g. "quiet, curious"), "pause" (seconds after the line), "emphasis" (words) per scene, a
   "pronunciation" guide for hard names, a "thumbnail" graphic line and 1-2 "cutdowns" (scene ids, 30-60 s each).
-Return JSON with keys: id, title, genre, language, concept{logline, central_question, conflict, discovery, unanswered,
+Return JSON with keys: id, title, channel, genre, language, engine, hook_mechanism, metaphors[], concept{logline, central_question, conflict, discovery, unanswered,
 consequences, implications, structure, structure_note, visual_concept}, pronunciation, scenes[], thumbnail, cutdowns.
 
 GRAPHICS CATALOGUE:
@@ -131,7 +193,7 @@ def write(llm, dossier: Dossier, brief: str = "", tries: int = 2) -> tuple[dict,
     from .. import vox_director as vd
     from ..media import scene3d
     cat = vd.CATALOG + "\n" + scene3d.__doc__
-    user = PROMPT.replace("{catalogue}", cat).replace("{dossier}", json.dumps(dossier.to_dict(), ensure_ascii=False)[:60000])
+    user = PROMPT.replace("{banned}", ", ".join(BANNED_PHRASES)).replace("{catalogue}", cat).replace("{dossier}", json.dumps(dossier.to_dict(), ensure_ascii=False)[:60000])
     if brief:
         user += "\nBRIEF FROM THE PRODUCER:\n" + brief
     sp, issues = {}, [{"level": "error", "scene": "-", "problem": "not written"}]

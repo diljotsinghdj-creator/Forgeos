@@ -216,7 +216,7 @@ def produce(screenplay: Path | str, dossier: Path | str, out_dir: Path | str, si
     step("research dossier checked", note=f"{len(dos.claims)} claims, {sum(len(c.sources) for c in dos.claims.values())} sources")
 
     # 2 editorial review
-    issues = writer.check(sp, dos)
+    issues = writer.check(sp, dos) + writer.novelty(sp, artdirection.history(data))
     rev = ["# Editorial review", "", f"Film: {sp.get('title')}", ""]
     rev += ["## Problems", ""] + ([f"- **{i['level']}** {i['scene']}: {i['problem']}" for i in issues] or ["- none"])
     rev += ["", "## Evidence per scene", "", "| Scene | Figures said or shown | Claims | Status |", "|---|---|---|---|"]
@@ -522,7 +522,8 @@ def produce(screenplay: Path | str, dossier: Path | str, out_dir: Path | str, si
                      else "three.js scene" if t["kind"] in scene3d.KINDS else "drawn in the engine")
         assets.append(f"| {t['scene']} | scenes/{t['scene']}_{t['kind']}.mp4 | {t['kind']} | {made_from} |")
     (dirs["writing"] / "asset_list.md").write_text("\n".join(assets), encoding="utf-8")
-    artdirection.remember(data, {"id": film, "title": sp.get("title"), **{k: ad[k] for k in ("look", "accent", "cinematography", "maps",
+    artdirection.remember(data, {"id": film, "title": sp.get("title"), "channel": sp.get("channel", ""), "engine": sp.get("engine", ""),
+                                 "hook_mechanism": sp.get("hook_mechanism", ""), "metaphors": list(sp.get("metaphors", [])), **{k: ad[k] for k in ("look", "accent", "cinematography", "maps",
                                                                                               "infographics", "animation", "rhythm", "music", "grade")},
                                  "kinds": kinds})
     deliver = [("1. Research dossier with source links", "research/dossier.md"), ("2. Documentary concept", "writing/concept.md"),
