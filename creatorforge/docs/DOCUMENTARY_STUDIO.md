@@ -75,3 +75,22 @@ written by hand in the same format, as the Aral Sea film's was.
 by the editorial review, and the review caught four unsupported figures in the first draft. Its research could not
 open the source pages from the sandbox, so every quotation is the search engine's summary, marked `[summary]`. The
 dossier's method note says so.
+
+## Photographs and footage in a screenplay
+
+A scene can ask for a real picture as well as its graphic:
+
+```json
+{"id": "S01", "narration": "...", "graphic": "Pinmap: Moynaq | Once a port | atlas",
+ "visual": {"kind": "photo", "subject": "ship graveyard", "place": "Moynaq", "purpose": "location", "specific": true,
+            "move": "push", "annotate": "circle .52,.66,.1 a trawler", "then": "pin Moynaq", "title": "The old harbour"}}
+```
+
+The decision engine (`decide.py`) weighs the options: footage, the photograph, the graphic, and a combination. When a
+photograph or footage wins, `assets.select` finds and scores one. Library assets come first, then Unsplash, Pixabay,
+Pexels and Openverse. The scene's line becomes `Photo: asset:P0007 | push | ...`. When nothing is good enough, or the
+worker has no photo sources, the scene's `graphic` is used. The decision and the search are recorded either way.
+Keys for the sources live in the pod's environment: `UNSPLASH_KEY`, `PIXABAY_KEY`, `PEXELS_KEY`.
+
+Deliverables added: `writing/visual_decisions.md` (every line's options and why one won) and `research/assets.csv`
+(the asset ledger for this film). The method and each technique's status are in `PRODUCTION_KNOWLEDGE_BASE.md`.

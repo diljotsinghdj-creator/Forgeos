@@ -186,7 +186,9 @@ def search(provider: str, key: str, query: str, portrait: bool = True, timeout: 
                     if v.get("url") and v.get("width"):
                         out.append({"url": v["url"], "width": v["width"], "height": v["height"],
                                     "duration": float(h.get("duration") or 0), "credit": f"{h.get('user', '')} / Pixabay",
-                                    "about": str(h.get("tags") or "")})
+                                    "about": str(h.get("tags") or ""), "id": str(h.get("id", "")), "page": h.get("pageURL", ""),
+                                    "creator": str(h.get("user", "")), "site": "pixabay", "licence": "Pixabay Content License",
+                                    "attribution": "not required"})
                         break
         else:
             r = httpx.get("https://api.pexels.com/videos/search", headers={"Authorization": key}, timeout=timeout,
@@ -201,7 +203,9 @@ def search(provider: str, key: str, query: str, portrait: bool = True, timeout: 
                     out.append({"url": f["link"], "width": f["width"], "height": f["height"],
                                 "duration": float(v.get("duration") or 0), "credit": f"{(v.get('user') or {}).get('name', '')} / Pexels",
                                 # Pexels has no tags; its page address describes the clip ("/video/protesters-marching-...")
-                                "about": re.sub(r"[-/_\d]+", " ", str(v.get("url") or "").split("/video/")[-1])})
+                                "about": re.sub(r"[-/_\d]+", " ", str(v.get("url") or "").split("/video/")[-1]),
+                                "id": str(v.get("id", "")), "page": v.get("url", ""), "creator": str((v.get("user") or {}).get("name", "")),
+                                "site": "pexels", "licence": "Pexels License", "attribution": "not required"})
     except (httpx.HTTPError, ValueError, KeyError) as e:
         raise ProviderError(f"stock video search failed: {e}") from e
     # Big enough for a sharp 1080p frame (a 480p film blown up 4x is the "pixelated old picture")

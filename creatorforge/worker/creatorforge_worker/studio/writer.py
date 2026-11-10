@@ -27,6 +27,9 @@ def graphic_problem(graphic: str) -> str:
     from .. import vox_director as vd
     from ..media import scene3d
     kind = graphic.split(":", 1)[0].strip().lower()
+    if kind == "key":
+        from ..media import composite
+        return "" if composite.parse(graphic.split(":", 1)[1]) else "a key shot needs a foreground and a background"
     if kind in scene3d.KINDS:
         return "" if scene3d.plan_for(kind, graphic.split(":", 1)[1]) else "the 3D graphic can't be drawn from this line"
     return vd.valid(graphic)

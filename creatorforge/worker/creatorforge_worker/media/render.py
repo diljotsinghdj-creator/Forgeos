@@ -670,7 +670,14 @@ def _compose(clips: list[Clip], trans: list, segments: list[Path], audio: Path |
     if grade:
         # One consistent "film" look over every shot: a touch of contrast and colour, soft vignette, fine grain.
         # "bw": the writer asked for a black-and-white look - AI shots and stock footage are matched to it.
-        if grade == "paper":
+        looks = {   # a film's own colour grade (the art direction picks one)
+            "warm": "eq=contrast=1.05:saturation=1.04:gamma=0.98,colorbalance=rs=0.05:gs=0.01:bs=-0.06:rm=0.03:bm=-0.03",
+            "cool": "eq=contrast=1.06:saturation=0.92,colorbalance=rs=-0.04:bs=0.05:rh=-0.02:bh=0.03",
+            "bleach": "eq=contrast=1.18:saturation=0.62:gamma=0.97",
+            "neutral": "eq=contrast=1.03:saturation=1.0"}
+        if grade in looks:
+            graph.append(f"[{last}]{looks[grade]},vignette=angle=PI/5,noise=alls=5:allf=t+u,format=yuv420p[graded]")
+        elif grade == "paper":
             # Editorial look: warm printed-paper tone, slightly muted colour, fine paper grain, no heavy vignette.
             graph.append(f"[{last}]eq=contrast=1.05:saturation=0.9,colorbalance=rs=0.04:gs=0.02:bs=-0.05,"
                          f"noise=alls=8:allf=u,format=yuv420p[graded]")

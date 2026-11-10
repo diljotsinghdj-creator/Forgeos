@@ -41,7 +41,7 @@ KINDS = ("hero", "desk", "pinboard", "opener", "reveal", "clipping", "pinmap", "
          "seats", "stack", "stand", "fan", "trend", "slice", "route", "compare", "photoline", "tv",
          "clockmap", "tornsplit", "newscard", "blueprint", "pyramid", "flowchart", "linkmap", "orgchart", "heatmap",
          "courtdoc", "table", "interview", "endcard", "polltrack", "area", "candles", "arrows", "railmap", "sizemap",
-         "borders", "morph", "shrink")
+         "borders", "morph", "shrink", "photo", "photos", "footage")
 
 
 # A look per video, so no two films share one face: paper, type, map colours and marker pen differ, the method doesn't.
@@ -78,7 +78,7 @@ DESKS = ("#3B2F25", "#5A4632", "#2E3A40", "#6B5B4B", "#262626")
 CAMERAS = {"still": -1, "push": 0, "pull": 1, "drift": 2, "focus": 3}
 # "| badge: alleged" on any scene: the standing of what is on screen, said plainly in the corner
 BADGES = {"verified": ("VERIFIED", "#1F7A4D"), "record": ("ON RECORD", "#1F7A4D"), "court": ("COURT RECORD", "#1F4FB8"),
-          "official": ("OFFICIAL DATA", "#1F4FB8"), "reported": ("REPORTED", "#5A5A5A"), "alleg": ("ALLEGED", "#C2410C"),
+          "official": ("OFFICIAL DATA", "#1F4FB8"), "illustrative": ("ILLUSTRATIVE", "#5A5A5A"), "reported": ("REPORTED", "#5A5A5A"), "alleg": ("ALLEGED", "#C2410C"),
           "claim": ("CLAIM", "#C2410C"), "denie": ("DENIED", "#5A5A5A"), "response": ("RESPONSE", "#5A5A5A"),
           "unverified": ("UNVERIFIED", "#B3261E"), "opinion": ("OPINION", "#7A3E8C"), "estimate": ("ESTIMATE", "#5A5A5A")}
 FX = ("dust", "embers", "snow", "rain", "confetti", "sparks")       # "| fx: embers": particles over the scene
@@ -1227,7 +1227,15 @@ def parse_shrink(spec: str) -> dict | None:
             "seed": _seed(spec) % 10000}
 
 
-PARSERS = {"shrink": parse_shrink, "morph": parse_morph, "borders": parse_borders, "courtdoc": parse_courtdoc, "table": parse_table, "interview": parse_interview, "endcard": parse_endcard,
+def _photo_parser(kind):
+    def parse(spec: str) -> dict | None:
+        from . import photo
+        return photo.parse(kind, spec)
+    return parse
+
+
+PARSERS = {"photo": _photo_parser("photo"), "photos": _photo_parser("photos"), "footage": _photo_parser("footage"),
+           "shrink": parse_shrink, "morph": parse_morph, "borders": parse_borders, "courtdoc": parse_courtdoc, "table": parse_table, "interview": parse_interview, "endcard": parse_endcard,
            "polltrack": parse_polltrack, "area": parse_area, "candles": parse_candles, "arrows": parse_arrows,
            "railmap": parse_railmap, "sizemap": parse_sizemap,
            "pyramid": parse_pyramid, "flowchart": parse_flow, "linkmap": parse_linkmap, "orgchart": parse_orgchart,
@@ -2553,16 +2561,101 @@ function shrink(){ // a lake as it was drains to what is left; the old shore sta
   wipe(mono(L.front,P.mapcredit.toUpperCase(),W-U*.04,H-U*.03,{anchor:'end',size:U*.012}),.8);
   const c=P.then[0],cx=c.reduce((a,q)=>a+q[0],0)/c.length,cy=c.reduce((a,q)=>a+q[1],0)/c.length,[fx,fy]=pr(cx,cy);FOCUS={x:fx,y:fy,rx:W*.14,ry:H*.18}}
 
-const SCENES={shrink,morph,borders,courtdoc,table,interview,endcard,polltrack,area,candles,arrows,railmap,sizemap,pyramid,flowchart:flow,linkmap,orgchart,heatmap,hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv,
+// ---- real photographs and footage ----
+const TICKS=[];   // run on every real frame (not the 12 fps drawn cadence): the camera on a photograph, footage frames
+const GRADE={none:'',mono:'grayscale(1) contrast(1.12)',warm:'sepia(.22) saturate(1.08) contrast(1.04)',cool:'saturate(.85) hue-rotate(-8deg) contrast(1.05)',
+  archive:'sepia(.65) contrast(1.18) brightness(.97)'};
+function frameFor(g,x,y,w,h,style,caption){ // the print around a photograph
+  if(style==='print'||style==='taped'||style==='polaroid'){const b=U*.014,bb=style==='polaroid'?U*.09:b;
+    g.rect(w+b*2,h+b+bb).move(x-b+U*.01,y-b+U*.012).fill('#00000040');g.rect(w+b*2,h+b+bb).move(x-b,y-b).fill('#FBF9F3');
+    if(style==='taped')[[x+w*.12,y-b],[x+w*.82,y-b]].forEach(([tx,ty],i)=>g.rect(U*.12,U*.035).center(tx,ty).fill('#E8DDBF').opacity(.85).attr({transform:`rotate(${i?6:-5},${tx},${ty})`}));
+    if(style==='polaroid'&&caption)fit(T(g,caption,U*.03,x+w/2,y+h+bb*.55,{family:'Caveat',weight:700,fill:INK}),w*.9)}}
+function annoLayer(g,list,x0,y0,iw,ih,start){const col=K.mark||'#D7262B';
+  (list||[]).forEach((a,i)=>{const st=start+i*.45,X=v=>x0+v*iw,Y=v=>y0+v*ih;
+    if(a.kind==='circle'){const [cx,cy,r]=a.p;penCircle(g,X(cx),Y(cy),r*iw,st);if(a.label){const t=T(g,a.label,U*.045,X(cx)+r*iw*1.15,Y(cy)-r*ih*.8,{family:'Caveat',weight:700,fill:col,anchor:'start'});wipe(t,st+.35)}}
+    else if(a.kind==='arrow'){const [x1,y1,x2,y2]=a.p;penLine(g,[[X(x1),Y(y1)],[X(x2),Y(y2)]],st,.4,col,U*.007);arrowHead(g,X(x2),Y(y2),Math.atan2(Y(y2)-Y(y1),X(x2)-X(x1)),st+.38);
+      if(a.label){const t=T(g,a.label,U*.042,X(x1),Y(y1)-U*.03,{family:'Caveat',weight:700,fill:col});wipe(t,st)}}
+    else if(a.kind==='box'){const [bx,by,bw,bh]=a.p;const r=g.rect(bw*iw,bh*ih).move(X(bx),Y(by)).fill('none').stroke({color:col,width:U*.006});wipe(r,st);
+      if(a.label){const t=T(g,a.label.toUpperCase(),U*.022,X(bx),Y(by)-U*.022,{family:'Inter',weight:800,anchor:'start',fill:'#FFFFFF'});const bb=t.bbox();
+        g.rect(bb.width+U*.02,bb.height+U*.01).center(bb.cx,bb.cy).fill(col);t.front();wipe(t,st)}}
+    else if(a.kind==='label'){const [lx,ly]=a.p;placeTag(g,a.label,X(lx),Y(ly),st,0)}})}
+function photoCredit(){if(P.credit){const t=mono(L.front,('PHOTO: '+P.credit).toUpperCase(),W-U*.04,H-U*.03,{anchor:'end',size:U*.013,weight:700});t.addClass('keep');fit(t,W*.6);t.opacity(.85)}}
+function photo(){ // one photograph as a moving composition: depth layers, a deliberate camera, annotations, a handover
+  const framed=P.frame&&P.frame!=='none',k=framed?Math.min(W*.74/P.w,H*.72/P.h):Math.max(W/P.w,H/P.h)*1.1;
+  const iw=P.w*k,ih=P.h*k,x0=(W-iw)/2,y0=framed?(H-ih)/2-U*.02:(H-ih)/2;
+  let pr=null;const th=P.then||null;if(th&&th.kind==='pin'&&P.box){pr=mapFrame(TALL?.86:.62,TALL?.52:.66)}
+  const cover=L.back.rect(W,H).fill(PAPER);if(!th||th.kind!=='pin')cover.opacity(0);
+  const G=L.back.group();if(framed)frameFor(G,x0,y0,iw,ih,P.frame,P.title);const ph=G.group(),pcl=draw.clip();pcl.rect(iw,ih).move(x0,y0);ph.clipWith(pcl);   // layers never leave the picture's own edge
+  const filt=GRADE[P.grade]||'';const base=ph.image(P.far||P.img).size(iw,ih).move(x0,y0);if(filt)base.attr({style:'filter:'+filt});
+  const lays=(P.layers||[]).map(l=>{const im=ph.image(l.img).size(iw,ih).move(x0,y0);if(filt)im.attr({style:'filter:'+filt});return {im,d:l.depth}});
+  const ann=G.group();annoLayer(ann,P.annotate,x0,y0,iw,ih,.9);
+  // the move: scale and drift over the shot; near layers move more than far ones (2.5D parallax)
+  const mv=P.move||'push';let s0=1,s1=1.09,dx0=0,dx1=0,dy0=0,dy1=0;
+  if(mv==='pull'){s0=1.12;s1=1.0}else if(mv==='pan-left'){dx0=iw*.04;dx1=-iw*.04;s0=s1=1.05}else if(mv==='pan-right'){dx0=-iw*.04;dx1=iw*.04;s0=s1=1.05}
+  else if(mv==='tilt-up'){dy0=ih*.035;dy1=-ih*.035;s0=s1=1.05}else if(mv==='tilt-down'){dy0=-ih*.035;dy1=ih*.035;s0=s1=1.05}else if(mv==='still'){s1=1.0}
+  let spot=null,spotFr=null;if(mv==='detail'&&P.at){const [ax,ay,aw,ah]=P.at;const cx=x0+(ax+aw/2)*iw,cy=y0+(ay+ah/2)*ih;s1=Math.min(2.6,Math.max(1.3,.6*Math.min(W/(aw*iw),H/(ah*ih))));
+    dx1=(W/2-cx);dy1=(H/2-cy);
+    const m=draw.mask();m.rect(W*4,H*4).move(-W*1.5,-H*1.5).fill('#fff');m.rect(aw*iw,ah*ih).move(x0+ax*iw,y0+ay*ih).fill('#000').radius(U*.01);
+    spot=G.rect(W*4,H*4).move(-W*1.5,-H*1.5).fill('#000').opacity(0).maskWith(m);
+    spotFr=G.rect(aw*iw,ah*ih).move(x0+ax*iw,y0+ay*ih).fill('none').stroke({color:K.mark||'#D7262B',width:U*.004}).opacity(0)}
+  const T1=th?Math.max(1.4,DUR*.55):DUR;
+  TICKS.push(t=>{const p=E.inout(Math.min(1,t/Math.max(.5,T1))),s=s0+(s1-s0)*p,dx=dx0+(dx1-dx0)*p,dy=dy0+(dy1-dy0)*p;
+    const tf=(sc,ox,oy)=>`translate(${W/2+ox},${H/2+oy}) scale(${sc}) translate(${-W/2},${-H/2})`;
+    let hs=1,hx=0,hy=0,ho=1;if(th){const q=E.inout(Math.max(0,Math.min(1,(t-T1)/.9)));
+      if(th.kind==='pin'&&pr&&th.at){const [px,py]=pr(th.at[0],th.at[1]);const card=Math.min(W*.24,H*.3)/Math.max(iw,ih);hs=1+(card-1)*q;hx=(px-W/2)*q;hy=(py-H/2-ih*card*.72)*q;cover.opacity(1-q)}   // the photo becomes a card pinned above its place
+      else if(th.kind==='number'){base.attr({style:`filter:${filt} grayscale(${q}) brightness(${1-.55*q})`});lays.forEach(l=>l.im.attr({style:`filter:${filt} grayscale(${q}) brightness(${1-.55*q})`}))}}
+    G.attr({transform:`translate(${hx},${hy}) `+tf(s*hs,dx*hs,dy*hs)});
+    const calm=th?Math.max(0,1-Math.max(0,t-T1)/.6):1;lays.forEach(l=>{const par=(l.d-.35)*(p-.5)*calm;l.im.attr({transform:`translate(${-(dx1-dx0)*.06*par*4+(mv==='push'?0:0)},${-(dy1-dy0)*.06*par*4}) `+
+      `translate(${W/2},${H/2}) scale(${1+(s1-s0)*.35*l.d*p*calm}) translate(${-W/2},${-H/2})`})});
+    if(spot){const out=th?Math.max(0,1-(t-T1)/.5):1;spot.opacity(.55*Math.min(1,Math.max(0,(t-.6)/.6))*Math.min(1,out));spotFr.opacity(Math.min(1,Math.max(0,(t-.9)/.4))*Math.min(1,out))}});
+  if(P.light==='sweep'){const gr=draw.gradient('linear',a=>{a.stop(0,'#FFFFFF',0);a.stop(.5,'#FFF6E0',.55);a.stop(1,'#FFFFFF',0)});
+    const sw=L.front.rect(W*.35,H*1.6).fill(gr).attr({style:'mix-blend-mode:screen'}).opacity(.7);TICKS.push(t=>{const q=Math.min(1,t/DUR);sw.attr({transform:`translate(${-W*.4+W*1.5*q},${-H*.3}) rotate(14,${W*.17},${H*.8})`})})}
+  if(P.title&&!framed){const b=boxText(L.front,P.title,U*.05,U*.06,H-U*.16,{anchor:'start',maxw:W*.6,most:2});wipe(b,.5)}
+  if(th&&th.kind==='pin'&&pr&&th.at){const [px,py]=pr(th.at[0],th.at[1]);const pn=L.front.group();pn.circle(U*.02).center(px,py).fill(INK).stroke({color:'#FFFFFF',width:U*.004});
+    pn.opacity(0);at(T1+.7,.3,q=>pn.opacity(q));placeTag(L.front,th.place,px,py+U*.11,T1+.9,0);FOCUS={x:px,y:py,rx:U*.1,ry:U*.1}}
+  if(th&&th.kind==='number'){const n=T(L.front,th.figure,TALL?W*.32:H*.36,W/2,H*.44,{family:'Anton',weight:400,fill:'#FFFFFF'});fit(n,W*.85);n.opacity(0);at(T1+.3,.5,q=>n.opacity(q));
+    if(th.caption){const c=boxText(L.front,th.caption,U*.045,W/2,H*.7,{anchor:'middle',maxw:W*.8,most:2});c.opacity(0);at(T1+.6,.4,q=>c.opacity(q))}}
+  if(!FOCUS&&P.annotate&&P.annotate.length){const a=P.annotate[0];FOCUS={x:x0+a.p[0]*iw,y:y0+a.p[1]*ih,rx:U*.1,ry:U*.1}}
+  photoCredit()}
+function photos(){ // several photographs: side by side, a collage of prints, or one after another
+  const ims=P.imgs,n=ims.length,filt=GRADE[P.grade]||'';
+  if(P.mode==='split'){const pw=W/n;ims.forEach((im,i)=>{const g=L.back.group(),cl=draw.clip();cl.rect(pw-U*.006,H).move(i*pw,0);
+      const k=Math.max(pw/im.w,H/im.h)*1.08,iw=im.w*k,ih=im.h*k;const el=g.image(im.img).size(iw,ih).move(i*pw+(pw-iw)/2,(H-ih)/2);if(filt)el.attr({style:'filter:'+filt});g.clipWith(cl);
+      TICKS.push(t=>{const s=1+.05*Math.min(1,t/DUR);el.attr({transform:`translate(${i*pw+pw/2},${H/2}) scale(${s}) translate(${-(i*pw+pw/2)},${-H/2})`})});slide(g,.1+i*.2,0,i%2?H*.06:-H*.06);
+      const lb=P.labels[i];if(lb){const t=boxText(L.front,lb,U*.04,i*pw+pw/2,H*.1,{anchor:'middle',maxw:pw*.85,most:2});wipe(t,.5+i*.2)}});
+    for(let i=1;i<n;i++){const ln=L.mid.rect(U*.008,H).move(i*W/n-U*.004,0).fill(PAPER);wipe(ln,.2)}}
+  else if(P.mode==='sequence'){const each=DUR/n;const els=ims.map((im,i)=>{const k=Math.max(W/im.w,H/im.h)*1.08;const el=L.back.image(im.img).size(im.w*k,im.h*k).move((W-im.w*k)/2,(H-im.h*k)/2);if(filt)el.attr({style:'filter:'+filt});el.opacity(i?0:1);return el});
+    TICKS.push(t=>{els.forEach((el,i)=>{const a=t-i*each,o=i===0?(a<each-.25?1:Math.max(0,1-(a-each+.25)/.35)):(a<0?0:a<.35?a/.35:a<each-.25||i===n-1?1:Math.max(0,1-(a-each+.25)/.35));el.opacity(o);
+      const s=1+.07*Math.max(0,Math.min(1,a/each));el.attr({transform:`translate(${W/2},${H/2}) scale(${s}) translate(${-W/2},${-H/2})`})})});
+    P.labels.forEach((lb,i)=>{const b=boxText(L.front,lb,U*.045,U*.06,H-U*.15,{anchor:'start',maxw:W*.6,most:1});b.opacity(0);at(i*each+.3,.3,q=>b.opacity(i===n-1?q:q))})}
+  else{const cols=Math.min(3,n),rows=Math.ceil(n/cols),cw=W*.8/cols,ch=H*.74/rows;ims.forEach((im,i)=>{const c=i%cols,r=Math.floor(i/cols);
+      const k=Math.min(cw*.86/im.w,ch*.8/im.h),iw=im.w*k,ih=im.h*k,cx=W*.1+cw*(c+.5),cy=H*.16+ch*(r+.5);const g=L.hero.group();
+      frameFor(g,cx-iw/2,cy-ih/2,iw,ih,'print','');const el=g.image(im.img).size(iw,ih).move(cx-iw/2,cy-ih/2);if(filt)el.attr({style:'filter:'+filt});
+      g.attr({transform:`rotate(${((i*37)%9)-4},${cx},${cy})`});drop(g,.15+i*.25,H*.25,((i*53)%11)-5);
+      const lb=P.labels[i];if(lb)placeTag(L.front,lb,cx,cy+ih/2+U*.05,.6+i*.25,0)})}
+  if(P.title&&P.mode!=='split'){chartTitle(P.title)}photoCredit()}
+function footage(){ // moving footage, frame by frame, with the same annotations and titles as a photograph
+  const el=L.back.image(P.frames[0]).size(W,H).move(0,0);const filt=GRADE[P.grade]||'';if(filt)el.attr({style:'filter:'+filt});let cur=-1;
+  TICKS.push(t=>{const i=Math.min(P.frames.length-1,Math.floor(t*P.ffps+1e-6));if(i===cur)return null;cur=i;
+    return new Promise(res=>{el.node.addEventListener('load',()=>res(),{once:true});setTimeout(res,250);el.attr({href:P.frames[i]})})});
+  const ann=L.mid.group();annoLayer(ann,P.annotate,0,0,W,H,.9);
+  const vg=draw.gradient('radial',a=>{a.stop(.55,'#000',0);a.stop(1,'#000',.45)});L.mid.rect(W,H).fill(vg);
+  if(P.title){const b=boxText(L.front,P.title,U*.05,U*.06,H-U*.16,{anchor:'start',maxw:W*.6,most:2});wipe(b,.5)}
+  if(P.annotate&&P.annotate.length){const a=P.annotate[0];FOCUS={x:a.p[0]*W,y:a.p[1]*H,rx:U*.1,ry:U*.1}}
+  photoCredit()}
+
+const SCENES={photo,photos,footage,shrink,morph,borders,courtdoc,table,interview,endcard,polltrack,area,candles,arrows,railmap,sizemap,pyramid,flowchart:flow,linkmap,orgchart,heatmap,hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv,
   clockmap,tornsplit,newscard,blueprint};
 async function boot(){
   try{await Promise.all(Array.from(document.fonts).map(f=>f.load()))}catch(e){}
-  const imgs=[];(P.pics||[]).forEach(p=>{if(p.img)imgs.push(new Promise(r=>{const i=new Image();i.onload=i.onerror=r;i.src=p.img}))});
+  const imgs=[];const pre=u=>imgs.push(new Promise(r=>{const i=new Image();i.onload=i.onerror=r;i.src=u}));
+  (P.pics||[]).forEach(p=>{if(p.img)pre(p.img)});[P.img,P.far].concat((P.layers||[]).map(l=>l.img),(P.imgs||[]).map(x=>x.img),P.frames||[]).forEach(u=>{if(u)pre(u)});
   await Promise.all(imgs);
   (SCENES[P.type]||hero)();logoLayer();markerLayer();badgeLayer();srcLayer();insetLayer();layout();companion();
   const film=filmLayer(),fx=fxLayer(),voice=voiceLayer();
   window.frame=function(t){camera(t);const tq=Math.floor(t*12+1e-6)/12;   // the hand-made 12 fps stutter
-    for(const k of tracks){const p=Math.max(0,Math.min(1,(tq-k.start)/k.dur));k.fn(k.e(p))}film(t,tq);fx(t);voice(t)};
+    for(const k of tracks){const p=Math.max(0,Math.min(1,(tq-k.start)/k.dur));k.fn(k.e(p))}film(t,tq);fx(t);voice(t);
+    const w=TICKS.map(f=>f(t)).filter(Boolean);return w.length?Promise.all(w):undefined};   // photo / footage: every real frame
   window.frame(0);window.READY=true}
 boot();
 </script></body></html>"""
@@ -2579,7 +2672,23 @@ def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: f
     plan = plan_for(kind, spec)
     if plan is None:
         raise MediaError(f"vox: nothing to draw from {spec!r}")
-    _pictures(plan, lib, model, fetch, sources, era_in(theme))
+    if plan["type"] in ("photo", "photos", "footage"):
+        # a real photograph or footage: prepared into layers / frames; the shot moves itself (the page camera holds)
+        from . import photo as _photo
+        _photo.prepare(plan, work, model, width, height)
+        plan.setdefault("camera", "still")
+        if plan.get("illustrative"):
+            plan["badge"] = BADGES["illustrative"]
+        th = plan.get("then") or {}
+        if th.get("kind") == "pin":
+            g = _geo([th["place"]])
+            if g:
+                th["at"] = [g[0]["lon"], g[0]["lat"]]
+                plan["box"], plan["shapes"] = _map_frame([(g[0]["lon"] - 9, g[0]["lat"] - 6), (g[0]["lon"] + 9, g[0]["lat"] + 6)], 0.2)
+            else:
+                plan.pop("then")
+    else:
+        _pictures(plan, lib, model, fetch, sources, era_in(theme))
     # asset check before the render: a photo much smaller than the size it is shown at will look soft
     soft = [f"{p.get('name')}: {p['w']}x{p['h']} px shown about {int(height * (0.4 if height > width else 0.6))} px tall"
             for p in plan.get("pics", []) if p.get("img") and p.get("h", 9999) < height * (0.4 if height > width else 0.6) * 0.55]

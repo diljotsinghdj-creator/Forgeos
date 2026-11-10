@@ -22,7 +22,7 @@ from pathlib import Path
 
 from .ff import MediaError
 
-KINDS = ("bars3d", "prism", "explode", "title3d", "terrain3d", "towers3d")
+KINDS = ("bars3d", "prism", "explode", "title3d", "terrain3d", "towers3d", "photo3d")
 TERRAIN_URL = "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png"
 TERRAIN_CREDIT = "Elevation: Mapzen terrain tiles (AWS Open Data; SRTM, GMTED, ETOPO1 and others)"
 # places explainers go to that the place list doesn't hold: (lat, lon)
@@ -202,12 +202,29 @@ def parse_towers3d(spec: str) -> dict | None:
             "unit": parts[2][:10] if len(parts) > 2 else "m"}
 
 
-PARSERS = {"terrain3d": parse_terrain3d, "towers3d": parse_towers3d, "bars3d": parse_bars3d, "prism": parse_prism, "explode": parse_explode, "title3d": parse_title3d}
+def parse_photo3d(spec: str) -> dict | None:
+    """'Photo3d: asset:P0007 | dolly | The old harbour' - camera projection: the photograph is projected onto its own
+    depth (a mesh displaced by the estimated depth) and a real 3D camera moves through it: dolly (in), orbit (a slow
+    turn), tilt-left / tilt-right (the picture as a print turning in space, for a perspective reveal)."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if not parts or not parts[0]:
+        return None
+    move = next((p.lower() for p in parts[1:] if p.lower() in ("dolly", "orbit", "tilt-left", "tilt-right")), "dolly")
+    title = next((p for p in parts[1:] if p.lower() not in ("dolly", "orbit", "tilt-left", "tilt-right", "illustrative") and ":" not in p), "")
+    return {"type": "photo3d", "path": parts[0], "move": move, "title": title[:60],
+            "illustrative": any(p.lower() == "illustrative" for p in parts[1:])}
+
+
+PARSERS = {"photo3d": parse_photo3d, "terrain3d": parse_terrain3d, "towers3d": parse_towers3d, "bars3d": parse_bars3d, "prism": parse_prism, "explode": parse_explode, "title3d": parse_title3d}
 
 
 def plan_for(kind: str, spec: str) -> dict | None:
     fn = PARSERS.get(kind)
-    return fn(spec) if fn else None
+    iso = bool(re.search(r"\|\s*isometric\s*(\||$)", spec or "", re.I))
+    plan = fn(re.sub(r"\|\s*isometric\s*(?=\||$)", "", spec or "", flags=re.I)) if fn else None
+    if plan is not None and iso:
+        plan["iso"] = True            # an isometric (orthographic) camera: the technical-drawing view of the same scene
+    return plan
 
 
 _PAGE = r"""<!doctype html><html><head><meta charset="utf-8"><style>
@@ -230,7 +247,8 @@ const col=c=>new THREE.Color(c);
 function mix(a,b,t){return '#'+col(a).lerp(col(b),t).getHexString()}
 const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});renderer.setPixelRatio(1);renderer.setSize(W,H);
 renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;document.body.insertBefore(renderer.domElement,document.getElementById('ov'));
-const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(TALL?44:30,W/H,.1,500);
+const scene=new THREE.Scene();let camera=new THREE.PerspectiveCamera(TALL?44:30,W/H,.1,500);
+if(P.iso){const f=TALL?11:8;camera=new THREE.OrthographicCamera(-f*W/H,f*W/H,f,-f,.1,600)}   // isometric: no perspective, true proportions
 scene.add(new THREE.HemisphereLight(0xffffff,0xb9ad94,1.15));
 const sun=new THREE.DirectionalLight(0xfff1d8,2.1);sun.position.set(-7,13,9);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);
 Object.assign(sun.shadow.camera,{left:-16,right:16,top:16,bottom:-16,near:.5,far:60});sun.shadow.bias=-.0006;sun.shadow.radius=5;scene.add(sun);
@@ -243,6 +261,8 @@ function label(text,cls,size,family,weight){const d=document.createElement('div'
 function pin(d,v,dx,dy){const q=v.clone().project(camera);d.style.left=((q.x*.5+.5)*W+(dx||0))+'px';d.style.top=((-q.y*.5+.5)*H+(dy||0))+'px'}
 function title(s){if(!s)return null;const d=label(s.toUpperCase(),'box',U*.05,'Playfair',900);d.style.left=W/2+'px';d.style.top=(TALL?H*.075:H*.085)+'px';return d}
 function orbit(t,o){const p=E.inout(cl(t/DUR)),a=o.a0+(o.a1-o.a0)*p,r=o.r0+(o.r1-o.r0)*p,h=o.h0+(o.h1-o.h0)*p;
+  if(P.iso){const a2=Math.PI/4+(o.a1-o.a0)*.15*p,R=60;camera.position.set(o.tx+Math.sin(a2)*R,o.ty+R*.82,o.tz+Math.cos(a2)*R);camera.lookAt(o.tx,o.ty,o.tz);
+    camera.zoom=(TALL?11:8)/Math.max(3,o.r0*.3);camera.updateProjectionMatrix();camera.lookAt(o.tx,o.ty,o.tz);return}
   camera.position.set(o.tx+Math.sin(a)*r,h,o.tz+Math.cos(a)*r);camera.lookAt(o.tx,o.ty,o.tz)}
 const leave=t=>1-seg(t,DUR-.55,.35);   // labels clear before the cut
 let update=()=>{};
@@ -373,8 +393,25 @@ function towers3d(){const vs=P.values,n=vs.length,mx=Math.max(...vs.map(v=>v.val
       pin(b.val,new THREE.Vector3(b.g.position.x,b.h*p*1.08,0),0,-U*.036);pin(b.nm,new THREE.Vector3(b.g.position.x,0,1.25),0,U*.03);
       b.val.style.opacity=seg(t,.9+i*.3,.25)*leave(t);b.nm.style.opacity=seg(t,.3+i*.3,.2)*leave(t)})}}
 
-({bars3d,prism,explode,title3d,terrain3d,towers3d})[P.type]();
-document.fonts.ready.then(()=>{window.frame=t=>{update(t);renderer.render(scene,camera)};window.frame(0);window.READY=true});
+function photo3d(){ // camera projection: the photograph on a mesh shaped by its own depth; a real camera moves through it
+  let done;window.WAIT=(window.WAIT||[]).concat(new Promise(r=>done=r));const tex=new THREE.TextureLoader().load(P.data,()=>done(),()=>done());tex.colorSpace=THREE.SRGBColorSpace;   // the first frame waits for the picture
+  const ar=P.w/P.h,pw=ar>=1?16:16*ar,ph=pw/ar,n=P.depth.length,m=P.depth[0].length;
+  const geo=new THREE.PlaneGeometry(pw,ph,m-1,n-1),pos=geo.attributes.position;
+  for(let r=0;r<n;r++)for(let c=0;c<m;c++)pos.setZ(r*m+c,P.depth[r][c]*P.relief);
+  geo.computeVertexNormals();ground.visible=false;
+  const mesh=new THREE.Mesh(geo,new THREE.MeshBasicMaterial({map:tex}));scene.add(mesh);
+  if(P.move.startsWith('tilt')){mesh.geometry=new THREE.PlaneGeometry(pw,ph);const fr=new THREE.Mesh(new THREE.BoxGeometry(pw*1.04,ph*1.04,.05),mat('#FBF9F3'));fr.position.z=-.04;
+    const g=new THREE.Group();g.add(fr);g.add(mesh);scene.add(g);g.castShadow=true;fr.castShadow=true;const dir=P.move==='tilt-left'?1:-1;
+    update=t=>{const p=E.inout(cl(t/DUR));g.rotation.y=dir*(.55-.45*p);g.rotation.x=-.12+.08*p;camera.position.set(0,0,22-3*p);camera.lookAt(0,0,0)}}
+  else if(P.move==='orbit'){update=t=>{const p=E.inout(cl(t/DUR)),a=-.16+.32*p;camera.position.set(Math.sin(a)*19,Math.sin(a*.5)*1.5,Math.cos(a)*19);camera.lookAt(0,0,P.relief*.4)}}
+  else{update=t=>{const p=E.inout(cl(t/DUR));camera.position.set(.6*(p-.5),.3*(p-.5),20-4.2*p);camera.lookAt(0,0,P.relief*.3)}}
+  camera.fov=TALL?50:36;camera.updateProjectionMatrix();
+  if(P.title){const d=label(P.title.toUpperCase(),'box',U*.05,'Playfair',900);d.style.left=W/2+'px';d.style.top=(H*.86)+'px';const u0=update;update=t=>{u0(t);d.style.opacity=seg(t,.4,.4)*leave(t)}}
+  if(P.credit){const c=label('PHOTO: '+P.credit.toUpperCase(),'src',U*.013,'Mono',700);c.style.left=(W-U*.04)+'px';c.style.top=(H-U*.03)+'px';c.style.transform='translate(-100%,-50%)'}
+  if(P.illustrative){const b=label('ILLUSTRATIVE','src',U*.018,'Mono',700);b.style.left=(U*.12)+'px';b.style.top=(H*.08)+'px';b.style.background='#FBF8F0';b.style.padding='.3em .6em';b.style.border='2px solid #5A5A5A';b.style.opacity=.95}}
+
+({bars3d,prism,explode,title3d,terrain3d,towers3d,photo3d})[P.type]();
+Promise.all([document.fonts.ready].concat(window.WAIT||[])).then(()=>{window.frame=t=>{update(t);renderer.render(scene,camera)};window.frame(0);window.READY=true});
 </script></body></html>"""
 
 
@@ -392,6 +429,28 @@ def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: f
         plan["grid"] = heights(plan["lat"], plan["lon"], plan["km"], cache)
         if plan["grid"]["max"] - plan["grid"]["min"] < 30:
             raise MediaError("terrain: this place is flat; a map shows it better")
+    if kind == "photo3d":
+        import base64
+        import io
+
+        import numpy as np
+        from PIL import Image
+
+        from . import photo as _photo
+        path, rec = _photo.resolve(plan["path"])
+        im = Image.open(path).convert("RGB")
+        if max(im.size) > 2048:
+            k = 2048 / max(im.size)
+            im = im.resize((int(im.size[0] * k), int(im.size[1] * k)), Image.LANCZOS)
+        d, how = _photo._depth(im, None, person_ok=False)
+        n = 96
+        m = max(16, int(n * im.size[0] / im.size[1]))
+        dd = np.asarray(Image.fromarray((np.clip(d, 0, 1) * 255).astype("uint8")).resize((m, n), Image.BILINEAR), np.float32) / 255
+        buf = io.BytesIO()
+        im.save(buf, "JPEG", quality=90)
+        plan.update({"data": "data:image/jpeg;base64," + base64.b64encode(buf.getvalue()).decode(), "w": im.size[0], "h": im.size[1],
+                     "depth": [[round(float(v), 3) for v in row] for row in dd], "relief": 1.6, "depthHow": how,
+                     "credit": rec.get("credit", "")})
     look = vox.look_of(theme)
     fps = int(fps or os.environ.get("CF_MOTION_FPS") or (60 if os.environ.get("CF_FPS") == "60" else 30))
     seconds = max(2.0, float(seconds))

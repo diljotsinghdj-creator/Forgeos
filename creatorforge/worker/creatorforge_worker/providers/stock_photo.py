@@ -30,6 +30,9 @@ def _unsplash(key: str, query: str, portrait: bool, timeout: float) -> list[dict
         about = " ".join([str(p.get("alt_description") or ""), str(p.get("description") or ""),
                           " ".join(str(t.get("title", "")) for t in p.get("tags") or [] if isinstance(t, dict))])
         out.append({"url": f"{raw}&w=2160&q=85&fm=jpg&fit=max", "width": int(p.get("width") or 0), "about": about,
+                    "id": str(p.get("id", "")), "page": (p.get("links") or {}).get("html", ""), "creator": name, "site": "unsplash",
+                    "licence": "Unsplash License", "attribution": "not required; credit the photographer and Unsplash",
+                    "created": str(p.get("created_at") or "")[:10], "location": str(((p.get("location") or {}).get("name")) or ""),
                     "height": int(p.get("height") or 0), "credit": f"Photo by {name} on Unsplash",
                     # Unsplash's API terms: tell them when a photo is used.
                     "track": (p.get("links") or {}).get("download_location", ""), "key": key})
@@ -42,7 +45,9 @@ def _pixabay(key: str, query: str, portrait: bool, timeout: float) -> list[dict]
         "orientation": "vertical" if portrait else "horizontal"})
     r.raise_for_status()
     return [{"url": h["largeImageURL"], "width": int(h.get("imageWidth") or 0), "height": int(h.get("imageHeight") or 0),
-             "credit": f"{h.get('user', '')} / Pixabay", "about": str(h.get("tags") or "")}
+             "credit": f"{h.get('user', '')} / Pixabay", "about": str(h.get("tags") or ""), "id": str(h.get("id", "")),
+             "page": h.get("pageURL", ""), "creator": str(h.get("user", "")), "site": "pixabay", "licence": "Pixabay Content License",
+             "attribution": "not required"}
             for h in r.json().get("hits", []) if h.get("largeImageURL")]
 
 
@@ -52,7 +57,8 @@ def _pexels(key: str, query: str, portrait: bool, timeout: float) -> list[dict]:
     r.raise_for_status()
     return [{"url": (p.get("src") or {}).get("original"), "width": int(p.get("width") or 0),
              "height": int(p.get("height") or 0), "credit": f"{p.get('photographer') or 'a Pexels photographer'} / Pexels",
-             "about": str(p.get("alt") or "")} for p in r.json().get("photos", []) if (p.get("src") or {}).get("original")]
+             "about": str(p.get("alt") or ""), "id": str(p.get("id", "")), "page": p.get("url", ""),
+             "creator": str(p.get("photographer") or ""), "site": "pexels", "licence": "Pexels License", "attribution": "not required"} for p in r.json().get("photos", []) if (p.get("src") or {}).get("original")]
 
 
 def _openverse(query: str, timeout: float) -> list[dict]:
@@ -69,7 +75,10 @@ def _openverse(query: str, timeout: float) -> list[dict]:
         label = "Public domain" if lic in ("cc0", "pdm") else f"CC {lic.upper()}{version}"
         who = (p.get("creator") or "unknown author")[:60]
         out.append({"url": p["url"], "width": int(p.get("width") or 0), "height": int(p.get("height") or 0),
-                    "credit": f"{who} / {p.get('source') or 'Openverse'} ({label})", "about": f"{p.get('title', '')} {tags}"})
+                    "credit": f"{who} / {p.get('source') or 'Openverse'} ({label})", "about": f"{p.get('title', '')} {tags}",
+                    "id": str(p.get("id", "")), "page": p.get("foreign_landing_url", ""), "creator": who, "site": "openverse",
+                    "licence": label, "attribution": "not required" if lic in ("cc0", "pdm") else
+                    f"required: {who}, {p.get('title', '')}, {label}" + (", share alike" if lic == "by-sa" else "")})
     return out
 
 

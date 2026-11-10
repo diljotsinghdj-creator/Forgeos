@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import csv
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -33,6 +34,19 @@ from .dossier import Dossier, figures_in
 
 LEAD_S = 0.18          # air before each line
 MIN_SLOT = 2.6         # a graphic needs this long to read, however short its line
+
+
+def asset_sources() -> list[tuple[str, str]]:
+    """Photo and footage sources on this worker: the keys in its environment, then the keyless ones."""
+    out = []
+    for name, keys in (("unsplash", ("UNSPLASH_KEY", "CF_UNSPLASH_KEY")), ("pixabay", ("PIXABAY_KEY", "CF_PIXABAY_KEY")),
+                       ("pexels", ("PEXELS_KEY", "CF_PEXELS_KEY"))):
+        k = next((os.environ[x] for x in keys if os.environ.get(x)), "")
+        if k:
+            out.append((name, k))
+    if os.environ.get("CF_FREE_STOCK", "1") != "0" and out:
+        out.append(("openverse", ""))
+    return out
 
 
 class ProductionStopped(RuntimeError):
@@ -84,6 +98,9 @@ def _sheet(images: list[Path], labels: list[str], out: Path, cols: int = 4) -> P
 
 
 def _render_scene(kind, spec, theme, w, h, seconds, out, work, fps, layout, fetch, lib):
+    if kind == "key":
+        from ..media import composite
+        return composite.render(spec, w, h, seconds, out, fps)
     if kind in scene3d.KINDS:
         return scene3d.render(kind, spec, theme, w, h, seconds, out, work, fps=fps)
     if kind in vox.KINDS:
@@ -224,6 +241,42 @@ def produce(screenplay: Path | str, dossier: Path | str, out_dir: Path | str, si
     (dirs["writing"] / "art_direction.json").write_text(json.dumps(ad, ensure_ascii=False, indent=1), encoding="utf-8")
     step("art direction", note=f"{ad['look']} / {ad['accent']} / {ad['cinematography']} / {ad['rhythm']} / {ad['music']}")
 
+    # 3b visual decisions and assets: every line's options weighed; photographs and footage found, scored, licensed
+    from . import assets as _assets
+    from . import decide
+    ledger = _assets.Ledger(Path(os.environ.get("CF_ASSET_LEDGER") or data / "assets" / "ledger.json"))
+    os.environ["CF_ASSET_LEDGER"] = str(ledger.path)
+    srcs = asset_sources()
+    decisions, prev_kinds, prev_pic = [], [], None
+    for s in sp["scenes"]:
+        d = decide.choose(s["narration"], s, prev_kinds)
+        used = s["graphic"]
+        v = s.get("visual")
+        if v and (d["chosen"] or {}).get("treatment") in ("photo", "footage", "combo") or (v or {}).get("force"):
+            need = _assets.Need(scene=s["id"], film=film, subject=v.get("subject", ""), kind=v.get("kind", "photo"), place=v.get("place", ""),
+                                era=v.get("era"), purpose=v.get("purpose", "location"), specific=bool(v.get("specific")),
+                                queries=v.get("queries", []), orientation="portrait" if size[1] > size[0] else "landscape", min_side=min(size))
+            rec, rep = (None, {"reason": "no photo or footage sources on this worker"}) if not srcs else \
+                _assets.select(need, srcs, data / "assets" / "files", ledger, ad["palette"], prev_pic, size)
+            d["asset_search"] = rep
+            if rec:
+                head = "Footage" if rec["type"] == "video" else "Photo"
+                opts = [f"asset:{rec['id']}", v.get("move", "push" if head == "Photo" else ""), v.get("title", "")]
+                for k in ("annotate", "then", "frame", "grade", "at", "light", "in", "speed"):
+                    if v.get(k):
+                        opts.append(f"{k}: {v[k]}")
+                if rec.get("illustrative") or rec.get("illustrative_reason"):
+                    opts.append("illustrative")
+                used = f"{head}: " + " | ".join(o for o in opts if o)
+                s["graphic"] = used
+                prev_pic = Path(rec["file"])
+        prev_kinds.append(_kind(used))
+        decisions.append((s["id"], s["narration"], d, used))
+    (dirs["writing"] / "visual_decisions.md").write_text(decide.to_markdown(decisions), encoding="utf-8")
+    ledger.export(film, dirs["research"] / "assets.csv")
+    step("visual decisions", note=f"{sum(1 for x in decisions if _kind(x[3]) in ('photo', 'photos', 'footage'))} photo / footage shots, "
+                                  f"{len(srcs)} asset sources")
+
     # 4 narration, one file per scene
     ndir = dirs["audio"] / "narration"
     ndir.mkdir(exist_ok=True)
@@ -302,6 +355,19 @@ def produce(screenplay: Path | str, dossier: Path | str, out_dir: Path | str, si
         paper, _ = vox.paper(vox.look_of(theme)["paper"], w, h, work)
         clips.append(render.Clip(paper, t["end"] - t["start"], "static", t["transition_in"], mp4, ff.duration(mp4),
                                  stepped=bool(ad["stepped"]) and t["kind"] not in scene3d.KINDS))
+    for t in timeline:                       # what was done to each photograph, in its ledger history
+        if t["kind"] in ("photo", "footage"):
+            from ..media import photo as _photo
+            pl = _photo.parse(t["kind"], _spec(t["visual"]))
+            if pl and str(pl.get("path", "")).startswith("asset:"):
+                try:
+                    pl = _photo.prepare(pl, work, None, w, h)
+                    for m in pl.get("mods", []) + [f"camera: {pl.get('move', '')}", f"grade: {pl.get('grade', 'none')}"] + \
+                            ([f"annotated: {len(pl['annotate'])} marks"] if pl.get("annotate") else []):
+                        ledger.modified(pl["path"].split(":", 1)[1], f"{film}/{t['scene']}: {m}")
+                except Exception:  # noqa: BLE001 - the history is a record, never a reason to fail the film
+                    pass
+    ledger.export(film, dirs["research"] / "assets.csv")
     step("scenes drawn", note=f"{len(clips)} scenes at {w}x{h}")
 
     # 7 storyboard
@@ -333,7 +399,7 @@ def produce(screenplay: Path | str, dossier: Path | str, out_dir: Path | str, si
 
     # 9 the edit
     final = dirs["video"] / f"{film}.mp4"
-    expected = render.render_video(clips, mix, None, w, h, final, work, threading.Event(), grade="")
+    expected = render.render_video(clips, mix, None, w, h, final, work, threading.Event(), grade=ad.get("grade", ""))
     step("edit rendered", note=f"{expected:.1f}s")
 
     # 10 captions
@@ -457,7 +523,7 @@ def produce(screenplay: Path | str, dossier: Path | str, out_dir: Path | str, si
         assets.append(f"| {t['scene']} | scenes/{t['scene']}_{t['kind']}.mp4 | {t['kind']} | {made_from} |")
     (dirs["writing"] / "asset_list.md").write_text("\n".join(assets), encoding="utf-8")
     artdirection.remember(data, {"id": film, "title": sp.get("title"), **{k: ad[k] for k in ("look", "accent", "cinematography", "maps",
-                                                                                              "infographics", "animation", "rhythm", "music")},
+                                                                                              "infographics", "animation", "rhythm", "music", "grade")},
                                  "kinds": kinds})
     deliver = [("1. Research dossier with source links", "research/dossier.md"), ("2. Documentary concept", "writing/concept.md"),
                ("3. Complete final script", "writing/screenplay.md"), ("4. Separate narration script", "writing/narration_script.md"),

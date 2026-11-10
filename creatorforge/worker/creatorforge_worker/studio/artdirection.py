@@ -40,6 +40,10 @@ AXES = {
     "rhythm": [("measured", "Long holds on evidence; a full breath after every line", 1.25),
                ("brisk", "Short gaps, cuts on the word, the film keeps moving", 0.8),
                ("tidal", "Fast when the story builds, slow when it lands", 1.0)],
+    "grade": [("warm", "A warm print: lifted reds, held-back blues, soft vignette"),
+              ("cool", "Cool and clear: a steel tint for distance and evidence"),
+              ("bleach", "Bleach bypass: high contrast, low saturation, for hard stories"),
+              ("neutral", "Neutral: the pictures as they are, only matched to each other")],
     "music": [("drone", "Low sustained drones that change key with each act"),
               ("pulse", "A soft pulse under the investigation, released at the turn"),
               ("sparse", "Near silence; music only at the opening, the turn and the end")],
@@ -100,6 +104,7 @@ def direct(film_id: str, title: str, genre: str, concept: dict, scenes: list[dic
     anim = _pick(AXES["animation"], used["animation"], seed >> 11)
     rhythm = _pick(AXES["rhythm"], used["rhythm"], seed >> 13)
     music = _pick(AXES["music"], used["music"], seed >> 15)
+    grade = _pick(AXES["grade"], [h.get("grade") for h in recent], seed >> 17)
     ov = overrides or {}
     look = ov.get("look", look) if ov.get("look") in vox.LOOKS else look
     accent = ov.get("accent", accent)
@@ -131,6 +136,7 @@ def direct(film_id: str, title: str, genre: str, concept: dict, scenes: list[dic
                                                                 "every reconstruction is drawn and labelled as one"),
         "sound": f"{music[1]}; ambience follows each place (sea, wind, room, paper)", "music": music[0],
         "rhythm": rhythm[0], "rhythm_note": rhythm[1], "breath": rhythm[2],
+        "grade": grade[0], "grade_note": grade[1],
         "opening_sequence": f"{what(opening)}: {opening.get('narration', '')[:90]}",
         "visual_climax": f"{what(climax)}: {climax.get('narration', '')[:90]}" if climax else "-",
         "ending_sequence": f"{what(ending)}: {ending.get('narration', '')[:90]}",
@@ -164,7 +170,7 @@ def to_markdown(doc: dict) -> str:
             ("8. Infographic treatment", f"{doc['infographics']}: {doc['infographics_note']}"),
             ("9. Animation style", f"{doc['animation']}: {doc['animation_note']}"),
             ("10. Footage strategy", doc["footage_strategy"]), ("11. Sound design", doc["sound"]),
-            ("12. Editing rhythm", f"{doc['rhythm']}: {doc['rhythm_note']}"), ("13. Opening sequence", doc["opening_sequence"]),
+            ("12. Editing rhythm", f"{doc['rhythm']}: {doc['rhythm_note']}"), ("12b. Colour grade", f"{doc['grade']}: {doc['grade_note']}"), ("13. Opening sequence", doc["opening_sequence"]),
             ("14. Visual climax", doc["visual_climax"]), ("15. Ending sequence", doc["ending_sequence"])]
     return "\n".join([f"# Art direction: {doc['title']}", ""] + [f"## {a}\n\n{b}\n" for a, b in rows] +
                      ["## Graphics in this film", "", ", ".join(doc["graphics_used"]), ""])
