@@ -60,7 +60,8 @@ CreatorForge serves only these two channels. A new feature must serve one of the
   - Trojan Horse;
   - Historical Echo.
 
-  No script comes before the pick.
+  No script comes before the pick. `writer.pitch()` offers three engines, never the channel's last one, and
+  `writer.write(..., engine=<the pick>)` holds the script to it.
 - **No back-to-back repeats on a channel:** never repeat the previous film's engine, hook mechanism or visual
   metaphors. This is enforced by `writer.novelty`. Retired mechanics are listed in `BRAIN_LOG.md`.
 - **A unique art direction for every film,** rotated by the studio history.
@@ -92,9 +93,10 @@ CreatorForge serves only these two channels. A new feature must serve one of the
   - any 20-second stretch without a pattern interrupt;
   - a sharper rewrite.
 
-  Plus a fact audit.
+  Plus a fact audit. The studio writes it as `writing/retention_audit.md` (`writer.retention_audit`).
 - **Every correction from the owner produces a `[BRAIN_LOG_PATCH]`:** Mistake Logged, New Permanent Rule, Used
-  Mechanics to Retire, Winning Pattern. It is appended to `BRAIN_LOG.md`.
+  Mechanics to Retire, Winning Pattern. It is appended to `BRAIN_LOG.md` with `studio/brainlog.py`. The editorial review checks
+  every new film against the log's used-mechanics table as well as the studio history.
 
 ## 5. Photos, footage and assets (Part 15)
 

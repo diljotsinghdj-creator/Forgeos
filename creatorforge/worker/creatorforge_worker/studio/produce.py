@@ -220,7 +220,9 @@ def produce(screenplay: Path | str, dossier: Path | str, out_dir: Path | str, si
     step("research dossier checked", note=f"{len(dos.claims)} claims, {sum(len(c.sources) for c in dos.claims.values())} sources")
 
     # 2 editorial review
-    issues = writer.check(sp, dos) + writer.novelty(sp, artdirection.history(data))
+    from . import brainlog
+    log = Path(os.environ.get("CF_BRAIN_LOG") or brainlog.DEFAULT)
+    issues = writer.check(sp, dos) + writer.novelty(sp, (brainlog.used(log) if log.exists() else []) + artdirection.history(data))
     rev = ["# Editorial review", "", f"Film: {sp.get('title')}", ""]
     rev += ["## Problems", ""] + ([f"- **{i['level']}** {i['scene']}: {i['problem']}" for i in issues] or ["- none"])
     rev += ["", "## Evidence per scene", "", "| Scene | Figures said or shown | Claims | Status |", "|---|---|---|---|"]
@@ -551,6 +553,9 @@ def produce(screenplay: Path | str, dossier: Path | str, out_dir: Path | str, si
 
     # narration script with the final timestamps; asset list; history; index
     (dirs["writing"] / "narration_script.md").write_text(writer.narration_markdown(sp, timeline), encoding="utf-8")
+    audit = writer.retention_audit(sp, timeline)
+    (dirs["writing"] / "retention_audit.md").write_text(writer.retention_markdown(sp, audit), encoding="utf-8")
+    report["retention"] = {"weakest": [w["scene"] for w in audit["weakest"]], "no_interrupt": len(audit["no_interrupt"])}
     assets = ["# Visual assets", "", "| Scene | Asset | Kind | Made from |", "|---|---|---|---|"]
     for t in timeline:
         made_from = ("Natural Earth outlines" if t["kind"] in ("shrink", "pinmap", "route", "heatmap", "arrows", "railmap", "sizemap", "morph")
@@ -574,7 +579,7 @@ def produce(screenplay: Path | str, dossier: Path | str, out_dir: Path | str, si
            "", "| Deliverable | File | Present |", "|---|---|---|"]
     for name, rel in deliver:
         idx.append(f"| {name} | {rel} | {'yes' if (out / rel).exists() else 'NO'} |")
-    idx += ["", "Also: writing/editorial_review.md, qc/report.md, qc/review_sheet.png, timeline/timeline.md"]
+    idx += ["", "Also: writing/editorial_review.md, writing/retention_audit.md, qc/report.md, qc/review_sheet.png, timeline/timeline.md"]
     (out / "README.md").write_text("\n".join(idx), encoding="utf-8")
     report.update({"file": str(final), "seconds": round(expected, 1), "art": ad, "deliverables_missing":
                    [n for n, r in deliver if not (out / r).exists()]})

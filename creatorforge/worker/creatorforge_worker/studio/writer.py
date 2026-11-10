@@ -194,8 +194,43 @@ DOSSIER:
 """
 
 
-def write(llm, dossier: Dossier, brief: str = "", tries: int = 2) -> tuple[dict, list[dict]]:
-    """A screenplay written by the language model and reviewed; returns (screenplay, remaining issues)."""
+def pitch(dossier: Dossier, hist: list[dict] | None = None, channel: str = "", llm=None) -> list[dict]:
+    """Step one of every new film: three different narrative engines for the owner to pick from. No script is written
+    before the pick (channels/SHOWRUNNER.md). The channel's previous engine is never offered. With a language model,
+    each pitch gets a one-line opening written from the dossier; without one, the engine's own description stands."""
+    chan = channel.strip().lower()
+    prev = [h for h in (hist or []) if str(h.get("channel", "")).strip().lower() == chan]
+    last = prev[-1].get("engine") if prev else None
+    recent = [h.get("engine") for h in prev[-3:]]
+    pool = [e for e in ENGINES if e != last]
+    pool.sort(key=lambda e: recent.count(e))          # the least-used engines first
+    out = [{"engine": e, "how": ENGINES[e], "opening": ""} for e in pool[:3]]
+    if llm is not None and dossier.claims:
+        facts = "\n".join(f"- {c.claim}" for c in list(dossier.claims.values())[:40])
+        ask = ("For each narrative engine below, write ONE opening beat (two sentences, for the ear) for a documentary on "
+               f"'{dossier.topic}', using only these facts:\n{facts}\n\nEngines:\n" +
+               "\n".join(f"{p['engine']}: {p['how']}" for p in out) +
+               '\nReturn JSON: {"pitches": [{"engine": ..., "opening": ...}]}. Never use: ' + ", ".join(BANNED_PHRASES))
+        try:
+            raw = llm.complete_json("You pitch documentary openings as strict JSON.", ask)
+            got = json.loads(raw if isinstance(raw, str) else json.dumps(raw)).get("pitches", [])
+            lines = {str(g.get("engine")): str(g.get("opening", "")).strip() for g in got if isinstance(g, dict)}
+            for p in out:
+                line = lines.get(p["engine"], "")
+                if line and not any(re.search(rf"(?<![a-z]){re.escape(b)}(?![a-z])", line.lower()) for b in BANNED_PHRASES):
+                    p["opening"] = line
+        except Exception:  # noqa: BLE001 - a pitch without an opening line is still a pitch
+            pass
+    return out
+
+
+def write(llm, dossier: Dossier, brief: str = "", tries: int = 2, engine: str = "") -> tuple[dict, list[dict]]:
+    """A screenplay written by the language model and reviewed; returns (screenplay, remaining issues).
+    `engine` is the owner's pick from pitch(); the screenplay is held to it."""
+    if engine and engine not in ENGINES:
+        raise ValueError(f"engine must be one of {', '.join(ENGINES)}")
+    if engine:
+        brief = (brief + "\n" if brief else "") + f"NARRATIVE ENGINE (the producer's pick): {engine}: {ENGINES[engine]}"
     from .. import vox_director as vd
     from ..media import scene3d
     cat = vd.CATALOG + "\n" + scene3d.__doc__
@@ -210,6 +245,8 @@ def write(llm, dossier: Dossier, brief: str = "", tries: int = 2) -> tuple[dict,
         except ValueError:
             m = re.search(r"\{.*\}", str(raw), re.S)
             sp = json.loads(m.group(0)) if m else {}
+        if engine and isinstance(sp, dict):
+            sp["engine"] = engine
         issues = check(sp, dossier)
         if not [i for i in issues if i["level"] == "error"]:
             break
@@ -263,3 +300,71 @@ def screenplay_markdown(sp: dict, dossier: Dossier) -> str:
                   f"VISUAL: `{s['graphic']}`", "",
                   "EVIDENCE: " + ", ".join(f"{i} ({dossier.claims[i].status})" for i in s.get("claims", []) if i in dossier.claims), ""]
     return "\n".join(lines)
+
+
+def retention_audit(sp: dict, timeline: list[dict] | None = None) -> dict:
+    """The [RETENTION & MISTAKE AUDIT] every draft ends with: the weakest 10% of scenes, every stretch of more than 20 s
+    without a visual pattern interrupt, and what to sharpen in each. Scores are heuristics a person reviews; the
+    rewrite itself is the writer's (or the language model's) job and is asked for, never invented here."""
+    scenes = sp.get("scenes") or []
+    when = {str(t.get("scene")): (float(t.get("start", 0)), float(t.get("end", 0))) for t in (timeline or [])}
+    rows, t0 = [], 0.0
+    for i, s in enumerate(scenes):
+        sid = str(s.get("id", f"#{i + 1}"))
+        text = str(s.get("narration", ""))
+        words = text.split()
+        secs = (when[sid][1] - when[sid][0]) if sid in when else len(words) / WORDS_PER_SECOND + float(s.get("pause", 0) or 0)
+        start = when[sid][0] if sid in when else t0
+        t0 = start + secs
+        kind = str(s.get("graphic", "")).split(":")[0].strip().lower()
+        why, score = [], 0.0
+        if secs > 12:
+            score += (secs - 12) / 4
+            why.append(f"{secs:.0f}s on one picture")
+        if words and sum(len(w) for w in words) / len(words) > 6.2:
+            score += 1
+            why.append("long words: hard on the ear")
+        if words and len(words) / max(1, text.count(".") + text.count("?") + text.count("!")) > 22:
+            score += 1
+            why.append("long sentences")
+        if i and kind == str(scenes[i - 1].get("graphic", "")).split(":")[0].strip().lower():
+            score += 1.5
+            why.append(f"same kind of picture as the line before ({kind})")
+        if not s.get("claims") and s.get("act") not in ("hook", "ending") and not re.search(r"\?", text):
+            score += .5
+            why.append("no evidence cited and no question asked")
+        if s.get("act") in ("investigation", "consequences") and i + 1 < len(scenes) and scenes[i + 1].get("act") != s.get("act") \
+                and "?" not in text:
+            score += 1
+            why.append("act ends without an open loop")
+        rows.append({"scene": sid, "start": round(start, 1), "seconds": round(secs, 1), "kind": kind, "score": round(score, 2), "why": why})
+    n = max(1, round(len(rows) * .1))
+    weakest = [r for r in sorted(rows, key=lambda r: -r["score"]) if r["score"] > 0][:n]
+    gaps, run = [], None
+    for r in rows:
+        if run and r["kind"] == run["kind"]:
+            run["end"] = r["start"] + r["seconds"]
+            run["scenes"].append(r["scene"])
+        else:
+            if run and run["end"] - run["start"] > INTERRUPT_SECONDS:
+                gaps.append(run)
+            run = {"kind": r["kind"], "start": r["start"], "end": r["start"] + r["seconds"], "scenes": [r["scene"]]}
+    if run and run["end"] - run["start"] > INTERRUPT_SECONDS:
+        gaps.append(run)
+    return {"weakest": weakest, "no_interrupt": [{**g, "start": round(g["start"], 1), "end": round(g["end"], 1)} for g in gaps], "scenes": rows}
+
+
+def retention_markdown(sp: dict, audit: dict) -> str:
+    by = {str(s.get("id")): s for s in sp.get("scenes") or []}
+    out = ["# [RETENTION & MISTAKE AUDIT]", "", f"Film: {sp.get('title', '')}", "", "## 1. The weakest 10%", ""]
+    for w in audit["weakest"] or []:
+        out += [f"- **{w['scene']}** at {_ts(w['start'])} ({w['seconds']}s, {w['kind']}): {'; '.join(w['why'])}",
+                f"  - Now: \"{by.get(w['scene'], {}).get('narration', '')}\"",
+                "  - Sharper rewrite: _to write before the next draft: shorter, one concrete image, end on a question_"]
+    if not audit["weakest"]:
+        out.append("- nothing scored as weak; a person still watches the draft")
+    out += ["", "## 2. Stretches over 20 s without a visual pattern interrupt", ""]
+    out += [f"- {_ts(g['start'])}-{_ts(g['end'])}: {g['kind']} across {', '.join(g['scenes'])}: cut in a map, document or "
+            "number, or change the camera" for g in audit["no_interrupt"]] or ["- none"]
+    out += ["", "## 3. Fact audit", "", "See editorial_review.md: every figure is checked against the claims each scene cites."]
+    return "\n".join(out)
