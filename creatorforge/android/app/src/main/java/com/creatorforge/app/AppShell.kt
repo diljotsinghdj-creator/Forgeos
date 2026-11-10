@@ -28,20 +28,16 @@ data class Dest(val id: String, val icon: String, val label: String, val section
 
 object Dests {
     val all = listOf(
-        Dest("trends", "📈", "Trends", "CREATE"),
         Dest("director", "💬", "Director", "CREATE"),
         Dest("scripts", "📝", "Scripts", "CREATE"),
         Dest("generate", "🎬", "Generate", "PRODUCE"),
         Dest("library", "🗂", "Library", "PRODUCE"),
-        Dest("clipper", "✂️", "Shorts Clipper", "PRODUCE"),
-        Dest("channels", "📅", "Channels", "GROW"),
-        Dest("analytics", "📊", "Analytics", "GROW"),
         Dest("brand", "🎨", "Brand Kits", "BRAND"),
         Dest("cloud", "☁️", "Cloud Studio", "ADVANCED"),
         Dest("settings", "⚙", "Settings", "SETTINGS"),
     )
     /** Pages that now live as tabs inside another page: old route -> (page, tab). */
-    val moved = mapOf("hooks" to ("scripts" to 1), "safety" to ("scripts" to 2), "calendar" to ("channels" to 1), "templates" to ("channels" to 2))
+    val moved = mapOf<String, Pair<String, Int>>()
     operator fun get(id: String) = all.firstOrNull { it.id == id } ?: all[0]
 }
 

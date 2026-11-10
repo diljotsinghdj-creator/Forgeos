@@ -1,8 +1,10 @@
 import json
 
 import pytest
+from fastapi.testclient import TestClient
 
 from creatorforge_worker import director
+from creatorforge_worker.api import create_app
 from creatorforge_worker.director import Character, ProductionSpec
 from creatorforge_worker.providers.base import ProviderError
 
@@ -409,3 +411,23 @@ def test_storybook_stickman_style_draws_dressed_stickmen_and_keeps_out_realistic
     sc = d.direct_script(None, spec).scenes[0]
     assert "stickman character" in sc.prompt and "period-accurate clothes" in sc.prompt
     assert "realistic human face" in sc.negative and "faceless framing" not in sc.prompt
+
+
+# moved here from the removed Trend Radar tests
+def test_director_chat_and_produce(cfg):
+    c = TestClient(create_app(cfg, start_runner=False))
+    assert c.post("/v1/director/chat", json={"messages": []}).status_code == 422
+    r = c.post("/v1/director/chat", json={"messages": [{"role": "user", "content": "A video about deep sea creatures"}]}).json()
+    assert r["reply"] and r["ready"] and r["draft"]["template"] == "reels_punchy" and r["draft"]["ai_video"] == "hook"
+    msgs = [{"role": "user", "content": "A video about deep sea creatures"}, {"role": "assistant", "content": r["reply"]},
+            {"role": "user", "content": "Write the script please"}]
+    r2 = c.post("/v1/director/chat", json={"messages": msgs, "draft": r["draft"]}).json()
+    assert r2["draft"]["script"].startswith("Line 1")
+    job = c.post("/v1/director/produce", json={"draft": r2["draft"], "production": {"voice": "narrator"}})
+    assert job.status_code == 202
+    spec = c.get(f"/v1/productions/{job.json()['id']}").json()["spec"]
+    assert spec["script"].startswith("Line 1") and spec["motion"] == "ai_video" and spec["ai_video_scenes"] == "hook"
+    # bad values from the model are replaced with safe defaults
+    from creatorforge_worker.chat import _clean_draft
+    d = _clean_draft({"template": "nope", "style": "??", "duration_s": "abc", "ai_video": "max"}, {})
+    assert d["template"] == "shorts_cinematic" and d["style"] == "cinematic" and d["duration_s"] == 45 and d["ai_video"] == "off"

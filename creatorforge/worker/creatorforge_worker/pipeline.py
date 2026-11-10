@@ -2021,40 +2021,9 @@ class Pipeline:
         return out
 
     def _talking(self, job: dict, clips: list, firsts: list[int], w: int, h: int, work: Path, cancel) -> None:
-        """The writer's "Talk: Dastango" lines: that line's picture of the mascot speaks the narration (LatentSync).
-        Only when lip-sync is installed (CF_LIPSYNC=1); a face it can't find keeps the line's picture."""
-        from .media import lipsync
-        shots = job["plan"]["scenes"]
-        wanted = [i for i, shot in enumerate(shots) if _talk_of(shot)]
-        if not wanted:
-            return
-        if not lipsync.available():
-            job.setdefault("warnings", []).append(
-                "Talk: lines need lip-sync on the pod (CF_LIPSYNC=1 in worker.env, then run the setup) - "
-                "those lines kept their pictures")
-            return
-        jdir = self.store.dir(job["id"])
-        done = 0
-        for i in wanted:
-            if cancel.is_set():
-                raise Cancelled()
-            if i >= len(firsts) or i >= len(job["scenes"]):
-                continue
-            c, sc = clips[firsts[i]], job["scenes"][i]
-            audio = jdir / sc.get("narration", "")
-            if not sc.get("narration") or not audio.is_file():
-                continue
-            src = c.video if c.video is not None else Path(c.image)
-            out = work / f"talk_{_key(str(src), str(audio), w, h)[:16]}.mp4"
-            try:
-                if not out.is_file():
-                    lipsync.talk(Path(src), audio, out, w, h, float(sc.get("narration_s") or c.duration))
-                c.video, c.video_duration = out, ff.duration(out)
-                done += 1
-            except (MediaError, OSError, subprocess.SubprocessError) as e:
-                job.setdefault("warnings", []).append(f"Talk on line {i + 1} kept its picture ({str(e)[:80]})")
-        if done:
-            job["providers"]["lipsync"] = f"LatentSync: {done} talking shot{'s' if done != 1 else ''}"
+        """"Talk:" lines keep their picture: talking-mascot lip-sync was removed from CreatorForge."""
+        if any(_talk_of(shot) for shot in job["plan"]["scenes"]):
+            job.setdefault("warnings", []).append("Talk: lines keep their picture (lip-sync is not part of CreatorForge)")
 
     def _depth_moves(self, job: dict, clips: list, w: int, h: int, work: Path, cancel) -> None:
         """Plain pictures get a 3D camera move (Depth Anything V2 Small): the camera dollies into the scene and near

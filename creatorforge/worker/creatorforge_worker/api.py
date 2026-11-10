@@ -9,7 +9,6 @@ import asyncio
 import hashlib
 import uuid
 import time
-import json
 import hmac
 import re
 import shutil
@@ -24,9 +23,9 @@ from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, Redirect
 from . import __version__, providers
 from .config import Config
 from . import accounts as acct
-from . import autopilot, clipper, publish
+from . import publish
 from . import chat as director_chat
-from .director import MAX_SCRIPT_CHARS, Character, ProductionSpec
+from .director import Character, ProductionSpec
 from .library import ASSET_KINDS, Library
 from .media import ff
 from .media import verify
@@ -36,9 +35,6 @@ from .providers.base import NotConfigured, ProviderError
 from .runner import Runner
 from .store import JobStore
 from .templates import ASPECTS, STYLE_PRESETS, TEMPLATES
-from .trends import NICHES, PERIODS, REGIONS, TrendRadar
-from .trends import writer as trend_writer
-from .trends.sources import SourceError
 
 
 def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
@@ -48,22 +44,18 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
     pipeline = Pipeline(cfg, store, library)
     runner = Runner(pipeline, store)
     characters = library.characters
-    radar = TrendRadar(cfg.data_dir, cfg.youtube_api_key)
-    channels = autopilot.ChannelStore(cfg.data_dir / "library" / "channels.json")
     accounts = acct.AccountStore(cfg.data_dir / "accounts.json")
-    clips = clipper.ClipJobs(cfg.data_dir / "clips")
 
     @asynccontextmanager
     async def lifespan(_app: FastAPI):
         stop = threading.Event()
         if start_runner:
             runner.start()
-            threading.Thread(target=autopilot_loop, args=(stop,), daemon=True, name="autopilot").start()
         yield
         stop.set()
 
     app = FastAPI(title="CreatorForge Worker", version=__version__, lifespan=lifespan)
-    app.state.cfg, app.state.store, app.state.runner, app.state.radar = cfg, store, runner, radar
+    app.state.cfg, app.state.store, app.state.runner = cfg, store, runner
 
     activity = cfg.data_dir / "last_request"
 
@@ -150,7 +142,6 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
                 "motion": ["stills"] + (["ai_video"] if cfg.video_provider else []),
                 "styles": [{"id": k, "name": v[0]} for k, v in STYLE_PRESETS.items()],
                 "voices": [{"id": v.id, "name": v.name, "provider": v.provider} for v in cfg.voices + pipeline.library_voices()],
-                "trends": {"youtube": bool(cfg.youtube_api_key)},
                 "providers": provider_status()}
 
     # ---- one-button production -----------------------------------------------------------
@@ -669,94 +660,6 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
         own_new([job], owner)
         return public(job)
 
-    @app.post("/v1/productions/{job_id}/hook-variants", status_code=202, dependencies=[Depends(auth)])
-    async def hook_variants(job_id: str, request: Request) -> dict:
-        src = job_or_404(job_id)
-        hooks = (await request.json()).get("hooks") or []
-        owner = variant_charge(src, 0.25 * max(1, len(hooks)))
-        try:
-            jobs = runner.hook_variants(job_id, [str(h) for h in hooks])
-        except ValueError as e:
-            raise HTTPException(409 if "busy" in str(e) else 422, str(e)) from None
-        own_new(jobs, owner)
-        return {"productions": [public(j) for j in jobs]}
-
-    # ---- Shorts Clipper -------------------------------------------------------------------
-    def clip_source(body: dict) -> tuple[dict, Path, list]:
-        from .providers.base import Word
-        if body.get("production_id"):
-            job = job_or_404(str(body["production_id"]))
-            if job["status"] != "READY":
-                raise HTTPException(409, "the video isn't finished yet")
-            jdir = store.dir(job["id"])
-            words_file = jdir / "words.json"
-            if not words_file.is_file():
-                raise HTTPException(409, "this video has no captions to find moments in - turn captions on")
-            words = [Word(**d) for d in json.loads(words_file.read_text())]
-            return {"production_id": job["id"], "title": job.get("title") or job["plan"]["title"]}, jdir / "creatorforge.mp4", words
-        if body.get("asset_id"):
-            path, kind, name = resolve_asset(str(body["asset_id"]))
-            if kind != "video":
-                raise HTTPException(422, "pick a video asset")
-            try:
-                asr = providers.build_asr(cfg)
-            except NotConfigured as e:
-                raise HTTPException(503, str(e)) from None
-            if asr is None:
-                raise HTTPException(503, "clipping an uploaded video needs Whisper on the worker (CF_ASR_PROVIDER=whisper)")
-            return {"asset_id": str(body["asset_id"]), "title": name}, path, asr.words(path)
-        raise HTTPException(422, "send production_id or asset_id")
-
-    @app.post("/v1/clips", status_code=202, dependencies=[Depends(auth)])
-    async def create_clips(request: Request) -> dict:
-        body = await request.json()
-        count = max(1, min(8, int(body.get("count", 3))))
-        seconds = max(15.0, min(60.0, float(body.get("seconds", 45))))
-        source, path, words = clip_source(body)
-        a = acct.current.get()
-        if a is not None:
-            if a["role"] == "client":
-                raise HTTPException(403, "client accounts can review videos but not create them")
-            try:
-                accounts.charge(a["id"], count)
-            except PermissionError as e:
-                raise HTTPException(402, str(e)) from None
-        try:
-            llm = providers.build_llm(cfg)
-        except NotConfigured:
-            llm = None
-        brand = director.clean_brand(body.get("brand")) if body.get("brand") else {}
-        job = clips.create(source, count, seconds, brand, a["id"] if a else "")
-        threading.Thread(target=clips.run, args=(job["id"], path, words, llm), daemon=True).start()
-        return job
-
-    def clip_or_404(cid: str) -> dict:
-        try:
-            job = clips.load(cid)
-        except KeyError:
-            raise HTTPException(404, "clip job not found") from None
-        a = acct.current.get()
-        if a is not None and job.get("owner") != a["id"]:
-            raise HTTPException(404, "clip job not found")
-        return job
-
-    @app.get("/v1/clips", dependencies=[Depends(auth)])
-    def list_clips() -> list[dict]:
-        a = acct.current.get()
-        return [j for j in clips.all() if a is None or j.get("owner") == a["id"]]
-
-    @app.get("/v1/clips/{cid}", dependencies=[Depends(auth)])
-    def get_clips(cid: str) -> dict:
-        return clip_or_404(cid)
-
-    @app.get("/v1/clips/{cid}/files/{n}", dependencies=[Depends(auth)])
-    def clip_file(cid: str, n: int):
-        job = clip_or_404(cid)
-        item = next((c for c in job["clips"] if c["index"] == n), None)
-        if item is None:
-            raise HTTPException(404, "clip not found")
-        return FileResponse(clips.dir(cid) / item["file"], media_type="video/mp4", filename=f"short_{n:02d}.mp4")
-
     # ---- Team: client review links --------------------------------------------------------
     def review_job(token: str) -> dict:
         if not token.isalnum() or len(token) < 16:
@@ -849,193 +752,11 @@ def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
             raise HTTPException(404, "account not found") from None
         return Response(status_code=204)
 
-    # ---- Channel Autopilot ---------------------------------------------------------------
-    def channel_or_404(cid: str) -> dict:
-        try:
-            return channels.get(cid)
-        except KeyError:
-            raise HTTPException(404, "channel not found") from None
-
-    def produce_items(ch: dict, items: list[dict]) -> list[dict]:
-        specs = [(i, build_spec(autopilot.production_body(ch, i))) for i in items]  # validate all first
-        out = []
-        for item, spec in specs:
-            job = submit(spec, item["idea"]["title"])
-            item.update(status="queued", production_id=job["id"])
-            out.append(job)
-        channels.save(ch)
-        return out
-
-    def autopilot_tick(today=None) -> int:
-        """Queues approved slots that are due (used by the background loop and by tests)."""
-        from datetime import datetime, timezone
-        today = today or datetime.now(timezone.utc).date()
-        n = 0
-        for ch in channels.list():
-            if ch.get("auto_produce"):
-                due = autopilot.due_items(ch, today)
-                if due:
-                    try:
-                        n += len(produce_items(ch, due))
-                    except HTTPException:
-                        pass
-        return n
-
-    app.state.autopilot_tick = autopilot_tick
-
-    def autopilot_loop(stop: threading.Event) -> None:
-        while not stop.wait(600):
-            try:
-                autopilot_tick()
-            except Exception:  # never let a bad channel stop the worker
-                pass
-
-    @app.get("/v1/channels", dependencies=[Depends(auth)])
-    def list_channels() -> list[dict]:
-        return channels.list()
-
-    @app.post("/v1/channels", status_code=201, dependencies=[Depends(auth)])
-    async def create_channel(request: Request) -> dict:
-        try:
-            return channels.create(await request.json())
-        except ValueError as e:
-            raise HTTPException(422, str(e)) from None
-
-    @app.put("/v1/channels/{cid}", dependencies=[Depends(auth)])
-    async def update_channel(cid: str, request: Request) -> dict:
-        channel_or_404(cid)
-        try:
-            return channels.update(cid, await request.json())
-        except ValueError as e:
-            raise HTTPException(422, str(e)) from None
-
-    @app.delete("/v1/channels/{cid}", status_code=204, dependencies=[Depends(auth)])
-    def delete_channel(cid: str) -> Response:
-        channel_or_404(cid)
-        channels.delete(cid)
-        return Response(status_code=204)
-
-    @app.post("/v1/channels/{cid}/plan", dependencies=[Depends(auth)])
-    def plan_channel(cid: str) -> dict:
-        ch = channel_or_404(cid)
-        try:
-            ch["plan"] = autopilot.make_plan(llm_or_503(), radar, ch)
-        except ValueError as e:
-            raise HTTPException(422, str(e)) from None
-        except ProviderError as e:
-            raise HTTPException(502, str(e)) from None
-        return channels.save(ch)
-
-    @app.patch("/v1/channels/{cid}/plan/{item_id}", dependencies=[Depends(auth)])
-    async def edit_plan_item(cid: str, item_id: str, request: Request) -> dict:
-        ch = channel_or_404(cid)
-        body = await request.json()
-        item = next((i for i in (ch.get("plan") or {}).get("items", []) if i["id"] == item_id), None)
-        if item is None:
-            raise HTTPException(404, "plan slot not found")
-        if item.get("production_id"):
-            raise HTTPException(409, "this slot is already in production")
-        if "status" in body:
-            if body["status"] not in ("planned", "approved", "skipped"):
-                raise HTTPException(422, "status must be planned, approved or skipped")
-            item["status"] = body["status"]
-        for k in ("title", "hook", "angle"):
-            if str(body.get(k, "")).strip():
-                item["idea"][k] = str(body[k]).strip()[:400]
-        if str(body.get("script", "")).strip():
-            item["idea"]["script"] = str(body["script"]).strip()[:MAX_SCRIPT_CHARS]
-        if body.get("day"):
-            item["day"] = str(body["day"])[:10]
-        return channels.save(ch)
-
-    @app.post("/v1/channels/{cid}/plan/produce", status_code=202, dependencies=[Depends(auth)])
-    async def produce_plan(cid: str, request: Request) -> dict:
-        """Queues the chosen slots now (default: every approved slot not yet produced)."""
-        ch = channel_or_404(cid)
-        body = await request.json()
-        wanted = set(body.get("item_ids") or [])
-        items = [i for i in (ch.get("plan") or {}).get("items", []) if not i.get("production_id") and i["status"] != "skipped"
-                 and ((i["id"] in wanted) if wanted else i["status"] == "approved")]
-        if not items:
-            raise HTTPException(422, "approve at least one slot first")
-        return {"productions": produce_items(ch, items), "channel": channels.get(cid)}
-
-    # ---- Trend Radar ---------------------------------------------------------------------
-    @app.get("/v1/trends/options", dependencies=[Depends(auth)])
-    def trend_options() -> dict:
-        return {"periods": list(PERIODS), "niches": [{"id": n.id, "name": n.name} for n in NICHES.values()],
-                "regions": [{"id": k, "name": v["name"]} for k, v in REGIONS.items()],
-                "youtube": bool(cfg.youtube_api_key)}
-
-    @app.get("/v1/trends", dependencies=[Depends(auth)])
-    def trends(period: str = "week", niche: str = "all", region: str = "GB", q: str = "", refresh: bool = False,
-               limit: int = 30) -> dict:
-        try:
-            return radar.scan(period, niche, region, q, refresh, max(1, min(60, limit)))
-        except ValueError as e:
-            raise HTTPException(422, str(e)) from None
-        except SourceError as e:
-            raise HTTPException(502, str(e)) from None
-
-    def resolve_trend(body: dict) -> dict:
-        if body.get("trend_id"):
-            found = radar.find(str(body["trend_id"]))
-            if not found:
-                raise HTTPException(404, "trend not found; refresh the Trend Radar and try again")
-            return found
-        t = body.get("trend")
-        if isinstance(t, dict) and str(t.get("title", "")).strip():
-            return {"title": str(t["title"]).strip()[:200], "headlines": [str(h)[:300] for h in t.get("headlines") or []][:10],
-                    "signals": [x for x in t.get("signals") or [] if isinstance(x, dict)][:10]}
-        topic = str(body.get("topic", "")).strip()
-        if len(topic) >= 3:
-            return {"title": topic[:200], "headlines": [], "signals": []}
-        raise HTTPException(422, "send trend_id, trend {title, headlines} or topic")
-
     def llm_or_503():
         try:
             return providers.build_llm(cfg)
         except NotConfigured as e:
             raise HTTPException(503, str(e)) from None
-
-    @app.post("/v1/trends/ideas", dependencies=[Depends(auth)])
-    async def trend_ideas(request: Request) -> dict:
-        body = await request.json()
-        trend = resolve_trend(body)
-        try:
-            out = trend_writer.ideas(llm_or_503(), trend, body.get("count", 5), str(body.get("format", "short")),
-                                     str(body.get("niche", "")), str(body.get("period", "week")))
-        except ValueError as e:
-            raise HTTPException(422, str(e)) from None
-        except ProviderError as e:
-            raise HTTPException(502, str(e)) from None
-        return {"trend": {"id": trend.get("id", ""), "title": trend["title"]}, "ideas": out}
-
-    @app.post("/v1/trends/script", dependencies=[Depends(auth)])
-    async def trend_script(request: Request) -> dict:
-        body = await request.json()
-        trend = resolve_trend(body)
-        idea = body.get("idea") if isinstance(body.get("idea"), dict) else {"title": trend["title"]}
-        try:
-            return trend_writer.script(llm_or_503(), trend, idea, body.get("seconds") or idea.get("seconds") or 45)
-        except (ValueError, TypeError) as e:
-            raise HTTPException(422, str(e)) from None
-        except ProviderError as e:
-            raise HTTPException(502, str(e)) from None
-
-    @app.post("/v1/trends/produce", status_code=202, dependencies=[Depends(auth)])
-    async def trend_produce(request: Request) -> dict:
-        """One tap: queue a production for each chosen idea (batch)."""
-        body = await request.json()
-        trend = resolve_trend(body)
-        ideas = [i for i in body.get("ideas") or [] if isinstance(i, dict)]
-        if not ideas:
-            ideas = [{"title": trend["title"], "hook": "", "angle": ""}]
-        if len(ideas) > 20:
-            raise HTTPException(422, "at most 20 videos per batch")
-        base = body.get("production") if isinstance(body.get("production"), dict) else {}
-        specs = [build_spec(trend_writer.production_spec(trend, i, base)) for i in ideas]  # validate all first
-        return {"productions": [submit(s) for s in specs]}
 
     # ---- legacy single-asset endpoints used by CreatorForge RC10 ---------------------------
     @app.post("/v1/images/generate", dependencies=[Depends(auth)])

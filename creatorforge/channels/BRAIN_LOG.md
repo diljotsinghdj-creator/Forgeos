@@ -58,3 +58,9 @@ Newest entries go at the bottom. Rules here are binding for both channels unless
   Enforced in `studio/writer.py` (`check`, `novelty`).
 - **Used Mechanics to Retire:** n/a
 - **Winning Pattern:** Micro-moment first, then the system.
+
+### 2026-11-10: Simplify CreatorForge
+- **Mistake Logged:** The app carried tools for a different kind of channel: trend-chasing Shorts, autopilot plans, hook tests, a clipper, a posting calendar, analytics, a safety screen, lip-sync.
+- **New Permanent Rule:** CreatorForge serves two channels only: Print Facts (researched documentaries) and Dragon Psychology (animated psychology). New features must serve one of them. Removed: Trends + Autopilot, Hook Lab, Templates, Shorts Clipper, Publish Calendar, Analytics, Safety Check, talking-mascot lip-sync. Kept: Director, Scripts, Generate, Library, Brand Kits, Cloud Studio, AI images, preset voices, stickman looks.
+- **Used Mechanics to Retire:** n/a
+- **Winning Pattern:** Topics come from research and the owner, not trend feeds; publishing goes through Uplika.

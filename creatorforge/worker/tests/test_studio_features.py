@@ -119,20 +119,6 @@ def test_accounts_credits_and_privacy(cfg):
         assert c.get("/v1/me", headers=ch).status_code == 401
 
 
-def test_clipper_picks_without_ai():
-    from creatorforge_worker.clipper import pick, sentences
-    from creatorforge_worker.providers.base import Word
-    words, t = [], 0.0
-    for i in range(30):
-        text = f"Why is fact number {i} the biggest secret?" if i in (12, 13) else f"Plain sentence {i} goes here."
-        for w in text.split():
-            words.append(Word(w, t, t + 0.4)); t += 0.45
-    picks = pick(sentences(words), 2, 20)
-    assert 1 <= len(picks) <= 2 and all(10 <= p["end"] - p["start"] <= 20.5 for p in picks)
-    assert any(p["start"] <= words[12 * 6].start <= p["end"] for p in picks)  # the curious bit is chosen
-    assert all(a["end"] <= b["start"] for a, b in zip(picks, picks[1:]))
-
-
 def test_cancel_stuck_and_review_jobs(cfg):
     """A job left RUNNING by a restart (nothing working on it) and a job in review both cancel at once."""
     app = create_app(cfg, start_runner=False)
