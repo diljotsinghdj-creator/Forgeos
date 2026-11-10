@@ -70,8 +70,7 @@ def test_sentinel_needs_its_keys_and_sends_a_least_cloud_request(monkeypatch, tm
     for k in ("CF_CDSE_CLIENT_ID", "CF_CDSE_CLIENT_SECRET", "SH_CLIENT_ID", "SH_CLIENT_SECRET"):
         monkeypatch.delenv(k, raising=False)
     plan = satellite.parse("bbox: 58,43,62,47 | 2017 vs 2023 | source: sentinel")
-    with pytest.raises(MediaError, match="CF_CDSE_CLIENT_ID"):
-        satellite.fetch(plan, tmp_path / "c")
+    # without keys the public AWS archive is used instead (test_sentinel_without_an_account_...)
     monkeypatch.setenv("CF_CDSE_CLIENT_ID", "id")
     monkeypatch.setenv("CF_CDSE_CLIENT_SECRET", "secret")
     sent = []
@@ -161,3 +160,26 @@ def test_satellite_and_data_map_scenes_render(gibs, tmp_path):
     out = vox.render("dots", "Tokyo 37, Delhi 32, Shanghai 29 | Cities | million", "e~0@red/field/", 480, 270, 2, tmp_path / "d.mp4",
                      tmp_path / "w", fps=6)
     assert out.stat().st_size > 3000
+
+
+def test_sentinel_without_an_account_uses_the_public_aws_archive(monkeypatch, tmp_path):
+    from PIL import Image
+    from creatorforge_worker.media import sentinel_aws
+    for k in ("CF_CDSE_CLIENT_ID", "CF_CDSE_CLIENT_SECRET", "SH_CLIENT_ID", "SH_CLIENT_SECRET"):
+        monkeypatch.delenv(k, raising=False)
+    monkeypatch.setattr(sentinel_aws, "tile_of", lambda lon, lat: ("41", "T", "NM"))
+
+    def http(url):
+        if "list-type=2" in url:
+            pre = urllib.parse.parse_qs(urllib.parse.urlparse(url).query)["prefix"][0]
+            return ("<ListBucketResult>" + "".join(f"<CommonPrefixes><Prefix>{pre}S2A_41TNM_2023{pre.split('/')[-2].zfill(2)}{d:02d}_0_L2A/</Prefix></CommonPrefixes>"
+                                                    for d in (3, 10, 18)) + "</ListBucketResult>").encode()
+        cloud = {"03": 60.0, "10": 2.0, "18": 1.5}[url.split("_0_L2A.json")[0][-2:]]
+        return json.dumps({"properties": {"eo:cloud_cover": cloud, "s2:nodata_pixel_percentage": 0}}).encode()
+    reads = []
+    monkeypatch.setattr(sentinel_aws, "HTTP", http)
+    monkeypatch.setattr(sentinel_aws, "READ", lambda url, bbox, w, h: reads.append(url) or Image.new("RGB", (w, h), (90, 120, 80)))
+    plan = satellite.parse("bbox: 58.6,43.6,59.1,43.95 | 2023-06-12 vs 2023-06-20 | source: sentinel")
+    shots = satellite.fetch(plan, tmp_path / "c", 400)
+    assert shots[0]["date"] in ("2023-06-10", "2023-06-18") and "AWS Open Data" in shots[0]["credit"]
+    assert all(u.endswith("/TCI.tif") for u in reads) and "2023-06-03" not in shots[0]["date"]   # the cloudy scene loses

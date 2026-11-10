@@ -242,7 +242,7 @@ CF_DISTRICTS="$HOME_DIR/data/districts" nohup "$PYBIN" -m creatorforge_worker.me
 # Sound: BS.1770 loudness (pyloudnorm) and stem separation (Demucs, MIT) now; the ACE-Step composer (Apache-2.0, GPU,
 # checkpoints download on first use) in the background. The studio uses ACE-Step for the score when CF_ACESTEP=1 is set
 # in the pod's environment, else its synthesised score. Freesound effects need FREESOUND_KEY in the environment.
-"$PYBIN" -m pip install -q "pyloudnorm>=0.1" "demucs>=4.0" >/dev/null 2>&1 || true
+"$PYBIN" -m pip install -q "pyloudnorm>=0.1" "demucs>=4.0" "rasterio>=1.3" "mgrs>=1.4" >/dev/null 2>&1 || true
 "$PYBIN" -c "import acestep" 2>/dev/null || nohup "$PYBIN" -m pip install -q "git+https://github.com/ace-step/ACE-Step.git" > acestep_install.log 2>&1 &
 mkdir -p "$HOME_DIR/data/models/kokoro"
 for f in kokoro-v1.0.int8.onnx voices-v1.0.bin; do
@@ -254,7 +254,7 @@ done
 # Documentary style tools (all downloaded in the background; until a file is there the older method is used):
 #   BiRefNet (MIT) sharper cut-outs, else ISNet  ·  LaMa (Apache-2.0) fills behind moved layers, else OpenCV
 #   SAM 2.1 small (Apache-2.0) tracks and cuts a subject out of footage, else BiRefNet frame by frame
-# Satellite shots use NASA GIBS (no key). Sentinel-2 needs CF_CDSE_CLIENT_ID / CF_CDSE_CLIENT_SECRET in the pod's env.
+# Satellite shots use NASA GIBS and the public Sentinel-2 archive on AWS: no keys needed.
 nohup bash -c "cd '$HOME_DIR/data/models' && \
   { [ -s birefnet-general.onnx ] || { curl -fsSL -m 1800 -o birefnet-general.onnx.part https://github.com/danielgatis/rembg/releases/download/v0.0.0/BiRefNet-general-epoch_244.onnx && mv birefnet-general.onnx.part birefnet-general.onnx; }; } ; \
   { [ -s big-lama.pt ] || { curl -fsSL -m 1800 -o big-lama.pt.part https://github.com/Sanster/models/releases/download/add_big_lama/big-lama.pt && mv big-lama.pt.part big-lama.pt; }; } ; \

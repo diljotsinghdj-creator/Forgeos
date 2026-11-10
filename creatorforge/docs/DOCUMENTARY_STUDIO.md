@@ -104,9 +104,9 @@ records which one ran.
 * LaMa (Apache-2.0) fills behind a layer that moves. OpenCV is next.
 * SAM 2.1 small (Apache-2.0) is for `Footage: ... | cutout` and `| follow: <note>`. BiRefNet frame by frame is next.
 * deck.gl (MIT, bundled) draws `Flowmap:`, `Columns:` and `Dots:`.
-* `Satellite:` uses NASA GIBS, which needs no key. For Sentinel-2, set `CF_CDSE_CLIENT_ID` and
-  `CF_CDSE_CLIENT_SECRET` (Copernicus Data Space, free) in the pod's environment. `SH_CLIENT_ID` and
-  `SH_CLIENT_SECRET` also work. The imagery credit is drawn on the picture.
+* `Satellite:` uses NASA GIBS (no key) and, for `source: sentinel`, the public Sentinel-2 archive on AWS (10 m, no
+  key, `media/sentinel_aws.py`). Copernicus or Sentinel Hub client credentials are optional. The imagery credit is
+  drawn on the picture.
 * Sound: ACE-Step (Apache-2.0) composes the score when `CF_ACESTEP=1` is set on the pod; Freesound effects (CC0 and
   CC-BY only, credited) need `FREESOUND_KEY`; Demucs removes singing from a licensed `music_track`; pyloudnorm
   cross-checks loudness. Hand-drawn ink uses perfect-freehand and Rough.js (MIT, bundled).

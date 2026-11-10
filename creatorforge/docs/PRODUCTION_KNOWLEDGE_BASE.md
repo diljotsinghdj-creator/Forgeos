@@ -132,7 +132,7 @@ fixed template.
 | Newspaper reconstruction, document animation | `Clipping`, `Newscard`, `Courtdoc`, `Document` | works |
 | Visual evidence boards | `Pinboard`, `Linkmap` | works |
 | Animated historical photographs | `Photo` with `grade: archive`, depth layers and annotations; no colourisation | works |
-| Satellite imagery | `Satellite: <place> \| 2000 vs 2020 \| swipe / fade / split`: the same ground on two dates (NASA GIBS MODIS / VIIRS, keyless; Sentinel-2 10 m with Copernicus keys). The clearest day within two days of each date is used and its year is on screen; a date with no imagery stops the shot. Also `Fly ... \| satellite` (tiles) | works (imagery: pod-only) |
+| Satellite imagery | `Satellite: <place> \| 2000 vs 2020 \| swipe / fade / split`: the same ground on two dates (NASA GIBS MODIS / VIIRS, keyless; Sentinel-2 10 m from the public AWS archive, keyless, or Copernicus with keys). The clearest day within two days of each date is used and its year is on screen; a date with no imagery stops the shot. Also `Fly ... \| satellite` (tiles) | works (imagery: pod-only) |
 | Photogrammetry | not practical here (needs many photos of one subject and a reconstruction toolchain) | not built |
 | Environmental sound, colour grading, film grain | `ambience.py`; per-film grade (`warm / cool / bleach / neutral`); the film layer | works |
 | Music | ACE-Step composes an instrumental bed per act from its mood (pod, `CF_ACESTEP=1`), else the synthesised score; a licensed track (`music_track`) has any singing removed by Demucs | pod-only for ACE-Step and Demucs |

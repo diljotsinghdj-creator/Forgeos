@@ -6,9 +6,9 @@
 Sources:
     gibs      NASA GIBS (Global Imagery Browse Services), keyless WMS. Daily MODIS Terra / Aqua true colour from 2000
               (Aqua from mid-2002), VIIRS SNPP from late 2015. About 250 m a pixel: a sea, a delta, a city's sprawl.
-    sentinel  Copernicus Sentinel-2 L2A true colour (10 m) through the Sentinel Hub Process API. Needs client
-              credentials in the pod's environment: CF_CDSE_CLIENT_ID / CF_CDSE_CLIENT_SECRET (Copernicus Data Space,
-              free) or SH_CLIENT_ID / SH_CLIENT_SECRET (sentinel-hub.com). Coverage from mid-2015.
+    sentinel  Sentinel-2 true colour (10 m), from mid-2015. With no account it reads the public Sentinel-2 archive on
+              AWS (media/sentinel_aws.py, no key). With CF_CDSE_CLIENT_ID / CF_CDSE_CLIENT_SECRET (Copernicus Data
+              Space) or SH_CLIENT_ID / SH_CLIENT_SECRET it uses the Sentinel Hub Process API instead.
 
 Nothing is invented or retouched. A daily picture can be cloudy, so the clearest day within a few days of each
 date is used and the date actually shown is the one on screen. A date with no imagery stops the shot rather than
@@ -189,11 +189,16 @@ def fetch(plan: dict, cache: Path, longest: int = 2048) -> list[dict]:
     token = None
     for ds in plan["dates"]:
         want = _dt.date.fromisoformat(ds)
+        if plan["source"] == "sentinel" and _sh_keys() is None:
+            # no Copernicus / Sentinel Hub account: the public Sentinel-2 archive on AWS, no key needed
+            from . import sentinel_aws
+            if ds < S2_FROM:
+                raise MediaError(f"satellite: Sentinel-2 starts in mid-2015, not {ds}; use source: gibs for older dates")
+            w, h = _size(bbox, min(longest, 2500))
+            out.append(sentinel_aws.fetch(bbox, want, w, h, cache))
+            continue
         if plan["source"] == "sentinel":
             keys = _sh_keys()
-            if keys is None:
-                raise MediaError("satellite: Sentinel-2 needs CF_CDSE_CLIENT_ID / CF_CDSE_CLIENT_SECRET (or SH_CLIENT_ID / "
-                                 "SH_CLIENT_SECRET) in the pod's environment; use source: gibs without them")
             if ds < S2_FROM:
                 raise MediaError(f"satellite: Sentinel-2 starts in mid-2015, not {ds}; use source: gibs for older dates")
             w, h = _size(bbox, min(longest, 2500))

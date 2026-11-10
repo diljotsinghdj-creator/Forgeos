@@ -14,7 +14,8 @@ dependencies = [
 whisper = ["faster-whisper>=1.0"]
 kokoro = ["kokoro>=0.9", "soundfile>=0.12", "numpy"]
 studio = ["kokoro-onnx>=0.4", "numpy", "pyloudnorm>=0.1"]
-sound = ["demucs>=4.0", "pyloudnorm>=0.1"]    # stem separation (licensed tracks, noisy takes) and BS.1770 loudness
+sound = ["demucs>=4.0", "pyloudnorm>=0.1"]
+satellite = ["rasterio>=1.3", "mgrs>=1.4"]    # keyless Sentinel-2 from the public AWS archive    # stem separation (licensed tracks, noisy takes) and BS.1770 loudness
 diffusers = ["diffusers>=0.35", "transformers", "accelerate", "torch", "sentencepiece", "protobuf", "ftfy", "imageio", "imageio-ffmpeg"]
 animation = ["espeakng-loader>=0.2", "Pillow>=10", "numpy"]   # 2D/2.5D characters + lip-sync speech
 test = ["pytest>=8", "Pillow>=10", "numpy", "espeakng-loader>=0.2"]   # animation, thumbnail, assembly and lip-sync tests
