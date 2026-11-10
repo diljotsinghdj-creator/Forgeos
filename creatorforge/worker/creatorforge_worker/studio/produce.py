@@ -235,7 +235,7 @@ def produce(screenplay: Path | str, dossier: Path | str, out_dir: Path | str, si
     for i, s in enumerate(sp["scenes"]):
         wav = ndir / f"{s['id']}.wav"
         secs, engine = voice.synth(s["narration"], wav, voice=sp.get("voice", "am_michael"), speed=voice.speed_for(s.get("delivery", "")),
-                                   lang=sp.get("lang", "en-us"), guide=sp.get("pronunciation", {}))
+                                   lang=sp.get("lang", "en-us"), guide=sp.get("pronunciation", {}), delivery=s.get("delivery", ""))
         pause = float(s.get("pause", 0.45)) * float(ad["breath"])
         slot = round(max(MIN_SLOT, LEAD_S + secs + pause), 3)
         timeline.append({"scene": s["id"], "act": s["act"], "start": round(at, 3), "end": round(at + slot, 3), "speech_s": round(secs, 3),

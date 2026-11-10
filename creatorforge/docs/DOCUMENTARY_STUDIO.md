@@ -47,10 +47,20 @@ python -m creatorforge_worker.studio films/<id>/screenplay.json films/<id>/dossi
 
 ## Voices
 
-The studio narrates with Kokoro through `kokoro-onnx`: natural voices, CPU only, Apache-2.0. Setup downloads the two
-model files into `<data>/models/kokoro`. FFmpeg's flite is the fallback, and it is robotic. The pipeline's voices
-(ElevenLabs, Gemini, Chatterbox) can replace Kokoro through the same `voice.synth()`. The pronunciation guide changes
-only what the voice reads, never the captions.
+**The creator's own ElevenLabs voice is the narrator.** In the screenplay set
+`"voice": "elevenlabs:<your voice id>"`, or `"elevenlabs:<voice id>:multilingual"` for the steadier Multilingual v2
+model (the default is Eleven v3). Each scene is one take, so the timeline is built from that take's real length. Each
+line's delivery note becomes the take's tone: "curious" becomes [curious], "warm" becomes [warmly], "firm" becomes
+[firmly], "grave" becomes [dramatic], and quiet or measured lines become [serious]. The pronunciation guide changes
+only what the voice reads, never the captions. Silence at the start and end of each take is trimmed, and the studio
+adds the measured pauses itself.
+
+The key is the creator's own. It is set as `ELEVENLABS_API_KEY` in the pod's environment, or saved in the app's
+encrypted settings for pipeline jobs. It is never written into a screenplay or a chat. Without a key the studio stops
+with that message; it does not fall back to another voice.
+
+Other voices: Kokoro through `kokoro-onnx` (natural, CPU-only, Apache-2.0; setup downloads its two model files into
+`<data>/models/kokoro`), and FFmpeg's robotic flite as a last resort for timing drafts.
 
 ## Research providers
 

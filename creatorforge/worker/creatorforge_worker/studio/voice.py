@@ -78,11 +78,52 @@ def _trim(samples, sr: int, floor: float = 0.006, keep: float = 0.06):
     return a[max(0, loud[0] - k): min(len(a), loud[-1] + k)]
 
 
+# a line's delivery note -> the ElevenLabs tone (an audio tag on v3, stability/style on Multilingual v2)
+TONES = (("question", ("curious", "question", "wonder")), ("warm", ("warm", "gentle", "tender")),
+         ("strong", ("firm", "strong", "certain")), ("dramatic", ("dramatic", "tense", "grave")),
+         ("urgent", ("urgent", "brisk")), ("sad", ("sad", "sombre", "somber", "loss")), ("calm", ("quiet", "calm", "measured", "neutral")))
+_eleven: dict = {}
+
+
+def tone_for(delivery: str) -> str:
+    d = (delivery or "").lower()
+    return next((t for t, ws in TONES if any(w in d for w in ws)), "calm")
+
+
+def eleven_key() -> str:
+    """The creator's ElevenLabs key: from the pod's environment only (never from a script or a chat)."""
+    return os.environ.get("ELEVENLABS_API_KEY") or os.environ.get("CF_ELEVENLABS_API_KEY") or ""
+
+
+def _elevenlabs(voice: str, lang: str):
+    """'elevenlabs:<voice id>[:v3|multilingual|flash]' -> one voice object per film, so each take hears the line before."""
+    _, vid, *rest = voice.split(":")
+    key = (vid, rest[0] if rest else "v3", lang)
+    if key not in _eleven:
+        from ..providers.elevenlabs_tts import ElevenLabsVoice
+        _eleven[key] = ElevenLabsVoice(vid, rest[0] if rest else "v3", {"en-us": "en", "en-gb": "en"}.get(lang, lang), eleven_key())
+    return _eleven[key]
+
+
 def synth(text: str, out: Path, voice: str = "am_michael", speed: float = 1.0, lang: str = "en-us",
-          guide: dict[str, str] | None = None) -> tuple[float, str]:
-    """Speaks `text` into `out` (48 kHz mono). Returns (seconds, engine used)."""
+          guide: dict[str, str] | None = None, delivery: str = "", pause: float = 0.0) -> tuple[float, str]:
+    """Speaks `text` into `out` (48 kHz mono). Returns (seconds, engine used).
+    voice: a Kokoro voice name, or 'elevenlabs:<voice id>[:v3|multilingual|flash]' for the creator's own voice."""
     said = speakable(text, guide or {})
     out.parent.mkdir(parents=True, exist_ok=True)
+    if voice.startswith("elevenlabs:"):
+        v = _elevenlabs(voice, lang)
+        tmp = out.with_suffix(".raw.wav")
+        v.synthesize(said, tmp, segments=[{"text": said, "tone": tone_for(delivery), "pause": 0.0}])
+        import numpy as np
+        with wave.open(str(tmp)) as w:
+            sr = w.getframerate()
+            a = np.frombuffer(w.readframes(w.getnframes()), np.int16).astype("float32") / 32768
+        _write(tmp, _trim(a, sr), sr)           # the timeline adds its own measured pauses
+        subprocess.run(["ffmpeg", "-nostdin", "-y", "-loglevel", "error", "-i", str(tmp), "-ar", str(SR), "-ac", "1", str(out)], check=True)
+        tmp.unlink(missing_ok=True)
+        with wave.open(str(out)) as w:
+            return w.getnframes() / w.getframerate(), f"ElevenLabs ({v.model}, the creator's voice)"
     if kokoro_ready():
         k = _engine()
         samples, sr = k.create(said, voice=voice, speed=float(speed), lang=lang)

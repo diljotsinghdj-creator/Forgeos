@@ -132,3 +132,33 @@ def test_the_writer_repairs_a_screenplay_its_review_rejects():
     llm = FakeLLM([first, fixed])
     sp, issues = writer.write(llm, d)
     assert not [i for i in issues if i["level"] == "error"] and "68,000" in sp["scenes"][0]["narration"]
+
+
+def test_the_creators_elevenlabs_voice_narrates_each_scene(tmp_path, monkeypatch):
+    """No network and no credits: the ElevenLabs request is replaced by a short synthetic take."""
+    import subprocess
+    import wave
+    from creatorforge_worker.providers import elevenlabs_tts
+    from creatorforge_worker.studio import voice
+    mp3 = tmp_path / "take.mp3"
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "lavfi", "-i", "anullsrc=r=44100:cl=mono:d=0.8", "-f", "lavfi", "-i", "sine=f=220:r=44100:d=1.2",
+                    "-filter_complex", "[0][1]concat=n=2:v=0:a=1,atrim=0:2.0", "-b:a", "64k", str(mp3)], check=True)
+    sent = []
+
+    def fake_take(self, text, tone, previous=""):
+        sent.append((text, tone))
+        return mp3.read_bytes()
+    monkeypatch.setattr(elevenlabs_tts.ElevenLabsVoice, "_take", fake_take)
+    monkeypatch.setenv("ELEVENLABS_API_KEY", "test-key-not-real")
+    voice._eleven.clear()
+    secs, engine = voice.synth("Moynaq was a port.", tmp_path / "s1.wav", voice="elevenlabs:AbCdEf123456", lang="en-us",
+                               guide={"Moynaq": "Moy-nahk"}, delivery="quiet, curious")
+    assert "ElevenLabs" in engine and 1.0 < secs < 1.6                     # the leading silence is trimmed off
+    assert sent and "Moy-nahk" in sent[0][0] and sent[0][1] == "question"  # pronunciation and tone reach the voice
+    with wave.open(str(tmp_path / "s1.wav")) as w:
+        assert w.getframerate() == 48000 and w.getnchannels() == 1
+    monkeypatch.delenv("ELEVENLABS_API_KEY")
+    voice._eleven.clear()
+    from creatorforge_worker.providers.base import NotConfigured
+    with pytest.raises(NotConfigured):
+        voice.synth("x", tmp_path / "s2.wav", voice="elevenlabs:AbCdEf123456")
