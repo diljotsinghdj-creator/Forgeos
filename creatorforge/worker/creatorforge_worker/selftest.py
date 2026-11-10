@@ -82,6 +82,18 @@ def network_checks(work: Path) -> list[dict]:
         return _row("Freesound search", "works", f"{len(fs.search('whoosh', fs.key(), n=2))} results")
     rows.append(_try("Freesound search", freesound))
 
+    def archives():
+        from .providers import stock_photo
+        got = {}
+        for src in ("wikimedia", "nasa", "loc"):
+            try:
+                got[src] = len(stock_photo.search(src, "", "harbor ship", portrait=False))
+            except Exception as e:  # noqa: BLE001
+                got[src] = f"error {type(e).__name__}"
+        ok = all(isinstance(v, int) for v in got.values())
+        return _row("Photo archives", "works" if ok else "failed", ", ".join(f"{k}: {v}" for k, v in got.items()))
+    rows.append(_try("Photo archives", archives))
+
     def eleven():
         if not os.environ.get("ELEVENLABS_API_KEY"):
             return _row("ElevenLabs reachable", "missing", "no key")

@@ -44,8 +44,9 @@ def asset_sources() -> list[tuple[str, str]]:
         k = next((os.environ[x] for x in keys if os.environ.get(x)), "")
         if k:
             out.append((name, k))
-    if os.environ.get("CF_FREE_STOCK", "1") != "0" and out:
-        out.append(("openverse", ""))
+    if os.environ.get("CF_FREE_STOCK", "1") != "0":
+        # no keys needed: real archives first (people, places and events as they were), then Openverse
+        out += [("wikimedia", ""), ("nasa", ""), ("loc", ""), ("archive", ""), ("openverse", "")]
     return out
 
 

@@ -1,6 +1,8 @@
-"""Real photos for beats that video libraries couldn't fill: Unsplash (free key, moody high-quality photos), Pixabay
-(the same key as its videos) and Openverse (no key; only licences that allow commercial use and editing). A photo gets
-the same slow camera move as an AI still. Credits go into the post description."""
+"""Real photos: Unsplash and Pixabay (free keys), and with no key Openverse, Wikimedia Commons, the NASA image library
+and the Library of Congress. Only material whose licence or rights statement allows commercial use is returned:
+public domain, CC0, CC BY and CC BY-SA (share-alike flagged), NASA media (not copyrighted unless marked), and Library
+of Congress items marked "no known restrictions". Every result carries its page, author, licence and attribution
+for the asset ledger and the credits."""
 from __future__ import annotations
 
 import hashlib
@@ -11,7 +13,8 @@ import httpx
 from .base import ProviderError
 from .stock_video import UA, relevant
 
-FREE_SOURCES = ("openverse",)
+FREE_SOURCES = ("openverse", "wikimedia", "nasa", "loc")
+ARCHIVES = ("wikimedia", "nasa", "loc")         # real archives: people, places and events as they were
 _OK_LICENCES = {"cc0", "pdm", "by", "by-sa"}
 
 
@@ -82,6 +85,111 @@ def _openverse(query: str, timeout: float) -> list[dict]:
     return out
 
 
+def _clean(x) -> str:
+    import html as _html
+    import re as _re
+    return _html.unescape(_re.sub(r"<[^>]+>", "", str(x or ""))).strip()
+
+
+def _wikimedia(query: str, timeout: float) -> list[dict]:
+    """Wikimedia Commons photographs (no key): public domain, CC0, CC BY and CC BY-SA only."""
+    import re as _re
+    from .stock_video import _FREE_LICENCE
+    r = httpx.get("https://commons.wikimedia.org/w/api.php", timeout=timeout, headers={"User-Agent": UA}, params={
+        "action": "query", "format": "json", "generator": "search", "gsrsearch": f"filetype:bitmap {query}",
+        "gsrnamespace": 6, "gsrlimit": 20, "prop": "imageinfo", "iiprop": "url|size|extmetadata", "iiurlwidth": 2400})
+    r.raise_for_status()
+    pages = sorted(((r.json().get("query") or {}).get("pages") or {}).values(), key=lambda p: p.get("index", 0))
+    out = []
+    for p in pages:
+        info = (p.get("imageinfo") or [{}])[0]
+        meta = info.get("extmetadata") or {}
+        val = lambda k: _clean((meta.get(k) or {}).get("value", ""))
+        licence = val("LicenseShortName")
+        if not _FREE_LICENCE.search(licence) or val("NonFree"):
+            continue
+        title = p.get("title", "").removeprefix("File:").rsplit(".", 1)[0]
+        about = f"{title} {val('ImageDescription')[:400]} {val('Categories')}"
+        if not relevant(query, about):
+            continue
+        who = val("Artist")[:60] or "unknown author"
+        pd = bool(_re.search(r"public domain|\bpd\b|cc0", licence, _re.I))
+        sa = "sa" in licence.lower().replace("usa", "")
+        out.append({"url": info.get("thumburl") or info.get("url"), "width": int(info.get("thumbwidth") or info.get("width") or 0),
+                    "height": int(info.get("thumbheight") or info.get("height") or 0), "about": about,
+                    "credit": f"{who} / Wikimedia Commons ({licence})", "id": str(p.get("pageid", "")),
+                    "page": info.get("descriptionurl", ""), "creator": who, "site": "wikimedia", "licence": licence,
+                    "attribution": "not required" if pd else f"required: {who}, {title}, {licence}" + (", share alike" if sa else ""),
+                    "archive": True})
+    return out
+
+
+def _nasa(query: str, timeout: float) -> list[dict]:
+    """The NASA image library (no key). NASA media is generally not copyrighted; items whose text names another
+    rights holder or a copyright are skipped."""
+    import re as _re
+    from urllib.parse import quote as _q
+    r = httpx.get("https://images-api.nasa.gov/search", timeout=timeout, headers={"User-Agent": UA},
+                  params={"q": query, "media_type": "image", "page_size": 20})
+    r.raise_for_status()
+    out = []
+    for it in (r.json().get("collection") or {}).get("items", []):
+        d = (it.get("data") or [{}])[0]
+        about = f"{d.get('title', '')} {_clean(d.get('description', ''))[:500]} {' '.join(d.get('keywords') or [])}"
+        if not d.get("nasa_id") or not relevant(query, about) or _re.search(r"©|copyright|courtesy of (?!nasa)", about, _re.I):
+            continue
+        try:
+            a = httpx.get(f"https://images-api.nasa.gov/asset/{_q(d['nasa_id'])}", timeout=timeout, headers={"User-Agent": UA})
+            hrefs = [x.get("href", "") for x in (a.json().get("collection") or {}).get("items", [])]
+        except (httpx.HTTPError, ValueError):
+            continue
+        pick = next((h for tag in ("~large.jpg", "~orig.jpg", "~medium.jpg") for h in hrefs if h.lower().endswith(tag)), "")
+        if not pick:
+            continue
+        who = d.get("photographer") or d.get("center") or "NASA"
+        out.append({"url": pick.replace("http://", "https://"), "width": 0, "height": 0, "about": about,
+                    "credit": f"{who} / NASA", "id": d["nasa_id"], "page": f"https://images.nasa.gov/details/{_q(d['nasa_id'])}",
+                    "creator": who, "site": "nasa", "licence": "NASA media (not copyrighted unless noted)",
+                    "attribution": "NASA (credit requested)", "archive": True, "date": str(d.get("date_created", ""))[:10]})
+        if len(out) >= 4:
+            break
+    return out
+
+
+def _loc(query: str, timeout: float) -> list[dict]:
+    """Library of Congress photographs (no key), only items whose rights statement says there are no known
+    restrictions on publication."""
+    import re as _re
+    r = httpx.get("https://www.loc.gov/photos/", timeout=timeout, headers={"User-Agent": UA},
+                  params={"q": query, "fo": "json", "c": 25})
+    r.raise_for_status()
+    out = []
+    for it in r.json().get("results", []):
+        item = it.get("item") or {}
+        rights = " ".join(str(x) for x in [it.get("rights_advisory"), item.get("rights_advisory"), it.get("rights"),
+                                           item.get("rights")] if x)
+        if not _re.search(r"no known restrictions|public domain", rights, _re.I):
+            continue
+        about = f"{it.get('title', '')} {' '.join(it.get('subject') or [])} {_clean(' '.join(it.get('description') or []))[:300]}"
+        if not relevant(query, about):
+            continue
+        imgs = [u for u in it.get("image_url") or [] if isinstance(u, str)]
+        if not imgs:
+            continue
+        url = imgs[-1].split("#")[0]
+        if url.startswith("//"):
+            url = "https:" + url
+        who = ", ".join((it.get("contributor") or [])[:1]) or "Library of Congress"
+        out.append({"url": url, "width": 0, "height": 0, "about": about, "credit": f"{who} / Library of Congress",
+                    "id": str(it.get("id", ""))[-40:], "page": it.get("url") or it.get("id", ""), "creator": who, "site": "loc",
+                    "licence": "No known restrictions on publication (Library of Congress)",
+                    "attribution": "Library of Congress, Prints & Photographs Division (credit requested)", "archive": True,
+                    "date": str(it.get("date", ""))[:10]})
+        if len(out) >= 5:
+            break
+    return out
+
+
 def search(provider: str, key: str, query: str, portrait: bool = True, timeout: float = 20) -> list[dict]:
     if provider == "mock":
         return [{"url": f"mock://{query}", "width": 1080, "height": 1920, "credit": "test photo"}]
@@ -94,6 +202,12 @@ def search(provider: str, key: str, query: str, portrait: bool = True, timeout: 
             found = _pexels(key, query, portrait, timeout)
         elif provider == "openverse":
             found = _openverse(query, timeout)
+        elif provider == "wikimedia":
+            found = _wikimedia(query, timeout)
+        elif provider == "nasa":
+            found = _nasa(query, timeout)
+        elif provider == "loc":
+            found = _loc(query, timeout)
         else:
             return []
     except (httpx.HTTPError, ValueError, KeyError) as e:

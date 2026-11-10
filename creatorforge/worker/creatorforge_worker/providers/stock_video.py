@@ -101,7 +101,10 @@ def _wikimedia(query: str, timeout: float) -> list[dict]:
         out.append({"url": url, "width": int(src.get("width") or info.get("width") or 0),
                     "height": int(src.get("height") or info.get("height") or 0),
                     "duration": float(info.get("duration") or 0),
-                    "credit": f"{artist} / Wikimedia Commons ({licence})", "trim": True})
+                    "credit": f"{artist} / Wikimedia Commons ({licence})", "trim": True, "site": "wikimedia",
+                    "creator": artist, "licence": licence, "page": info.get("descriptionurl", ""), "id": str(p.get("pageid", "")),
+                    "about": f"{title} {val('ImageDescription')[:200]}", "archive": True,
+                    "attribution": "not required" if re.search(r"public domain|\bpd\b|cc0", licence, re.I) else f"required: {artist}, {title}, {licence}"})
         if len(out) >= 3:
             break
     return out
@@ -136,7 +139,10 @@ def _archive(query: str, timeout: float) -> list[dict]:
             out.append({"url": f"https://archive.org/download/{quote(ident)}/{quote(str(f['name']))}",
                         "width": int(f.get("width") or 640), "height": int(f.get("height") or 480),
                         "duration": float(f.get("length") or 0) if str(f.get("length", "")).replace(".", "", 1).isdigit() else 0.0,
-                        "credit": "Prelinger Archives / Internet Archive", "trim": True})
+                        "credit": "Prelinger Archives / Internet Archive", "trim": True, "site": "archive",
+                        "creator": "Prelinger Archives", "licence": "Public domain (Prelinger Archives)", "id": ident,
+                        "page": f"https://archive.org/details/{quote(ident)}", "about": about[:300], "archive": True,
+                        "attribution": "Prelinger Archives / Internet Archive (credit requested)"})
         if len(out) >= 2:
             break
     return out
@@ -190,6 +196,8 @@ def search(provider: str, key: str, query: str, portrait: bool = True, timeout: 
                                     "creator": str(h.get("user", "")), "site": "pixabay", "licence": "Pixabay Content License",
                                     "attribution": "not required"})
                         break
+        elif provider != "pexels" or not key:
+            return []                      # a photo-only source (Unsplash, Openverse, the Library of Congress)
         else:
             r = httpx.get("https://api.pexels.com/videos/search", headers={"Authorization": key}, timeout=timeout,
                           params={"query": query, "per_page": 10, "orientation": "portrait" if portrait else "landscape"})
