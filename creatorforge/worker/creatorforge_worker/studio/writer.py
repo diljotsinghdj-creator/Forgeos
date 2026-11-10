@@ -102,6 +102,9 @@ def check(sp: dict, dossier: Dossier) -> list[dict]:
         if needs and not attributed(text):
             add("error", sid, f"{', '.join(needs)} must be attributed or qualified in the narration "
                               f"({', '.join(dossier.claims[c].status for c in needs)})")
+        if g and str(sp.get("channel", "")).strip().lower().replace(" ", "-") == "print-facts" and \
+                re.search(r"(^\s*mascot\s*:|\|\s*mascot\s*[:=])", g, re.I):
+            add("error", sid, "Print Facts has no mascot (MASTER_DIRECTIVES §1)")
         if i and str(scenes[i - 1].get("graphic", "")).split(":")[0] == g.split(":")[0] and g:
             add("warning", sid, "the same kind of graphic as the line before")
     # pattern interrupts: no stretch of about 20 s on one kind of picture

@@ -41,6 +41,14 @@ They've seen pop-psychology Shorts and want something smarter, but still fun. Se
 - Personality: wise and a little sarcastic, warm, never preachy.
 - The name is still to be chosen.
 - It stays original: no resemblance to existing film or game dragons.
+- **Built (v1, awaiting the owner's approval):** a drawn, rigged dragon in the scene engine (`media/vox.py`,
+  `dragonRig`). It's green, with a cream belly and plates, cream horns, small wings and round spectacles (1,000 years of
+  watching humans), and a single fang. It has 9 faces (neutral, curious, shocked, smug, worried, sad, happy, thinking,
+  suspicious), 8 poses (stand, point, shrug, think, hold, wave, explain, cover) and 4 props (magnifier, phone,
+  clipboard, note). It breathes, blinks, flicks its tail and moves its wings. It reacts; it never lip-syncs.
+  - In a script: `Mascot: curious point magnifier | Wait. Look at this line.`, or `| mascot: smug` on any graphic
+    (the corner).
+  - Design sheet: `mascot_v1_sheet.jpg`. The editorial review blocks the mascot on Print Facts.
 
 **Production:** the CreatorForge studio does the research dossier, script, mascot animation, narration, captions,
 thumbnail and Shorts. Your role: pick topics, approve the script and approve the final cut.
