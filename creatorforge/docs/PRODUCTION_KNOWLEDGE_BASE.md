@@ -112,6 +112,10 @@ fixed template.
 | Depth-map animation | `Photo` depth layers, `Photo3d` | works (model on the pod) |
 | Fill behind a moved layer | LaMa inpainting, else OpenCV; only inside the nearer layer, so nothing new is shown | works (LaMa: pod-only) |
 | Data maps in 3D | `Flowmap: A → B 120, ...` (arcs as wide as their numbers, lights travelling along them), `Columns: place 1.4, ...` (3D columns standing on the map), `Dots: place 37, ...` (circles by area). deck.gl, Natural Earth land, the camera tilting slowly | works |
+| Hand-drawn ink | Every marker stroke (circles, arrows, strike-throughs, map routes, annotations) is a perfect-freehand pen stroke, tapered like a real marker; photo boxes are Rough.js sketches. All of them draw on cue and then "boil" (re-posed 6 times a second, seeded, so renders match). A look can switch the boil off | works |
+| Myth turned over | `Myth: <wrong idea> \| <what is true> \| <stamp>`: the wrong line struck through in marker, a stamp, the true line printed over it. Only when the dossier shows it is a myth | works |
+| Title entrances | Chart titles enter one of three ways (slide, blur-in, wipe), chosen per scene so a film doesn't repeat one, then land dead still | works |
+| Reading holds | The editorial review warns when on-screen words can't be read in the time the line is up (0.5 s + 0.3 s a word) | works |
 | Matte painting, digital set extension | **not built, deliberately:** it would add detail that was not there to a documentary picture; allowed only as a labelled reconstruction | - |
 | Animated cut-paper compositions | the Vox scenes' cut-outs, paper and print looks | works |
 | Isometric illustration | `\| isometric` on the 3D scenes | works |
@@ -124,6 +128,9 @@ fixed template.
 | Satellite imagery | `Satellite: <place> \| 2000 vs 2020 \| swipe / fade / split`: the same ground on two dates (NASA GIBS MODIS / VIIRS, keyless; Sentinel-2 10 m with Copernicus keys). The clearest day within two days of each date is used and its year is on screen; a date with no imagery stops the shot. Also `Fly ... \| satellite` (tiles) | works (imagery: pod-only) |
 | Photogrammetry | not practical here (needs many photos of one subject and a reconstruction toolchain) | not built |
 | Environmental sound, colour grading, film grain | `ambience.py`; per-film grade (`warm / cool / bleach / neutral`); the film layer | works |
+| Music | ACE-Step composes an instrumental bed per act from its mood (pod, `CF_ACESTEP=1`), else the synthesised score; a licensed track (`music_track`) has any singing removed by Demucs | pod-only for ACE-Step and Demucs |
+| Sound effects | Real recorded effects from Freesound, CC0 and CC-BY only, credited in `audio/sfx_credits.txt` (`FREESOUND_KEY`); the built-in set otherwise | pod-only (key) |
+| Loudness | FFmpeg EBU R128 plus an independent BS.1770 measurement (pyloudnorm) in the QC report | works |
 
 ## 4. How a reference is studied (15.7)
 

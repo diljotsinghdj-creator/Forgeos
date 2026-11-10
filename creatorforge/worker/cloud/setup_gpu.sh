@@ -239,6 +239,11 @@ CF_HISTORY="$HOME_DIR/data/history" nohup "$PYBIN" -m creatorforge_worker.media.
 CF_DISTRICTS="$HOME_DIR/data/districts" nohup "$PYBIN" -m creatorforge_worker.media.districts IND > districts_download.log 2>&1 &
 # The documentary studio's own narrator (Kokoro through kokoro-onnx, CPU, Apache-2.0): the two model files, once
 "$PYBIN" -m pip install -q "kokoro-onnx>=0.4" >/dev/null 2>&1 || true
+# Sound: BS.1770 loudness (pyloudnorm) and stem separation (Demucs, MIT) now; the ACE-Step composer (Apache-2.0, GPU,
+# checkpoints download on first use) in the background. The studio uses ACE-Step for the score when CF_ACESTEP=1 is set
+# in the pod's environment, else its synthesised score. Freesound effects need FREESOUND_KEY in the environment.
+"$PYBIN" -m pip install -q "pyloudnorm>=0.1" "demucs>=4.0" >/dev/null 2>&1 || true
+"$PYBIN" -c "import acestep" 2>/dev/null || nohup "$PYBIN" -m pip install -q "git+https://github.com/ace-step/ACE-Step.git" > acestep_install.log 2>&1 &
 mkdir -p "$HOME_DIR/data/models/kokoro"
 for f in kokoro-v1.0.int8.onnx voices-v1.0.bin; do
   [ -s "$HOME_DIR/data/models/kokoro/$f" ] || curl -fsSL -m 900 -o "$HOME_DIR/data/models/kokoro/$f.part" \

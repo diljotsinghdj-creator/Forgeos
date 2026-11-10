@@ -41,7 +41,7 @@ KINDS = ("hero", "desk", "pinboard", "opener", "reveal", "clipping", "pinmap", "
          "seats", "stack", "stand", "fan", "trend", "slice", "route", "compare", "photoline", "tv",
          "clockmap", "tornsplit", "newscard", "blueprint", "pyramid", "flowchart", "linkmap", "orgchart", "heatmap",
          "courtdoc", "table", "interview", "endcard", "polltrack", "area", "candles", "arrows", "railmap", "sizemap",
-         "borders", "morph", "shrink", "photo", "photos", "footage", "satellite", "flowmap", "columns", "dots")
+         "borders", "morph", "shrink", "photo", "photos", "footage", "satellite", "flowmap", "columns", "dots", "myth")
 
 
 # A look per video, so no two films share one face: paper, type, map colours and marker pen differ, the method doesn't.
@@ -1229,6 +1229,15 @@ def parse_shrink(spec: str) -> dict | None:
             "seed": _seed(spec) % 10000}
 
 
+def parse_myth(spec: str) -> dict | None:
+    """Myth: <the wrong idea> | <what is true> | <stamp word, default MYTH>: a myth turned over."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if len(parts) < 2 or not parts[0] or not parts[1]:
+        return None
+    return {"type": "myth", "wrong": parts[0][:110], "right": parts[1][:120],
+            "label": (parts[2] if len(parts) > 2 and parts[2] else "MYTH")[:14], "seed": _seed(spec) % 10000}
+
+
 def _photo_parser(kind):
     def parse(spec: str) -> dict | None:
         from . import photo
@@ -1261,6 +1270,7 @@ def _ext_parser(mod: str, kind: str):
 DATAMAP_KINDS = ("flowmap", "columns", "dots")
 PARSERS.update({k: _ext_parser("datamap", k) for k in DATAMAP_KINDS})
 PARSERS["satellite"] = _ext_parser("satellite", "satellite")
+PARSERS["myth"] = parse_myth
 
 
 _LOGOS: dict | None = None
@@ -1525,7 +1535,7 @@ _PAGE = r"""<!doctype html><html><head><meta charset="utf-8"><style>
 %FONTS%
 html,body{margin:0;padding:0;background:%PAPER%;overflow:hidden}
 svg{display:block}
-</style><script>%SVGJS%</script><script>%ILLU%</script></head><body><script>
+</style><script>%SVGJS%</script><script>%HAND%</script><script>%ILLU%</script></head><body><script>
 const P=%PLAN%, W=%W%, H=%H%, DUR=%DUR%, K=%KIT%;
 const TALL=H>W, U=Math.min(W,H), ACC=K.acc, INK=K.ink, PAPER=K.paper, DARK=K.dark;
 // money drawings carry the currency the graphic's own figures are in (a dollar story never shows a rupee note)
@@ -1883,6 +1893,17 @@ function pinmap(){ // the country outline; the place highlighted; the headline c
     if(P.source)T(card,P.source.toUpperCase(),U*.017,cx+cw*.07,cy+ch*.88,{family:'Mono',weight:700,anchor:'start',fill:'#555'});
     card.attr({filter:'url(#shadow)'});drop(card,1.0,H*.2,-3);const pn=pinAt(L.front,cx+cw/2,cy+U*.015);popIn(pn,cx+cw/2,cy+U*.015,1.4,.3)}}
 
+function myth(){ // a myth turned over: the wrong idea struck through in marker, a stamp, the true line printed over it
+  const big=TALL?U*.075:U*.068,red=K.mark||'#D7262B',g=L.hero.group();const ls=lines(P.wrong,big,W*.8,'Playfair',700,3);
+  const y0=(TALL?H*.46:H*.5)-((ls.length-1)*big*1.3+big*1.6)/2,wr=ls.map((ln,i)=>{const t=T(g,ln,big,W/2,y0+i*big*1.3,{family:'Playfair',weight:700,fill:FG});t.opacity(0);return t});
+  wr.forEach((t,i)=>{at(.12+i*.09,.4,p=>t.opacity(p),E.snap);const bb=t.bbox();
+    penLine(g,[[bb.x-U*.015,bb.y+bb.height*.58],[bb.x+bb.width*.5,bb.y+bb.height*.5],[bb.x+bb.width+U*.015,bb.y+bb.height*.46]],1.05+i*.16,.3,red,U*.011);
+    at(1.55+i*.05,.35,p=>t.opacity(1-.62*p),E.lin)});
+  const stp=L.front.group(),word=T(stp,String(P.label).toUpperCase(),U*.06,0,0,{family:'Anton',weight:400,fill:red,ls:'.08em'}),sb=word.bbox();
+  stp.rect(sb.width+U*.045,sb.height+U*.02).move(sb.x-U*.0225,sb.y-U*.01).fill('none').stroke({color:red,width:U*.006}).radius(U*.006);
+  const sx=W*(TALL?.68:.76),sy=y0-big*1.05;stp.attr({transform:`translate(${sx},${sy}) rotate(-8)`});popIn(stp,sx,sy,1.32,.2);
+  const ty=y0+ls.length*big*1.3+U*.05,tr=boxText(L.front,P.right,TALL?U*.058:U*.052,W/2,ty,{anchor:'middle',maxw:W*.86,most:3});
+  tr.opacity(0);at(1.95,.3,p=>tr.opacity(p),E.snap);FOCUS={x:W/2,y:ty+U*.04,rx:W*.32,ry:U*.08}}
 function number(){ // a huge number; the subject breaks out of it
   const pic=(((P.pics||[])[0]||{}).img||((P.pics||[])[0]||{}).draw)?(P.pics||[])[0]:null;
   if(pic&&!TALL&&K.lay==='side')return numberSide(pic);const big=T(L.back,P.number,TALL?W*.42:H*(pic?.5:.56),W/2,pic?(TALL?H*.22:H*.3):(TALL?H*.34:H*.4),{family:'Anton',weight:400,fill:ACT});fit(big,W*.92);
@@ -1905,7 +1926,13 @@ function numberSide(pic){ // second layout: the number and its words on the left
 
 // ---- round 3: charts made of objects ----
 function chartTitle(s){if(!s)return;const g=boxText(L.front,s,U*.05,W/2,TALL?H*.07:H*.075,{anchor:'middle',maxw:W*.84,most:2});
-  g.children().forEach((r,i)=>slide(r,.05+i*.1,0,-H*.04))}
+  enterTitle(g)}
+// titles enter in one of several ways (by the scene's seed, so a film doesn't repeat one entrance), then land dead still
+function enterTitle(g){const st=((P.seed||1)+(K.titleIn||0))%3,rows=g.children();
+  if(st===0)rows.forEach((r,i)=>slide(r,.05+i*.1,0,-H*.04));
+  else if(st===1)rows.forEach((r,i)=>{r.opacity(0);at(.05+i*.067,.18,p=>{r.opacity(p);r.attr({style:p<1?`filter:blur(${(8*(1-p)).toFixed(1)}px)`:''})},E.snap)});
+  else rows.forEach((r,i)=>{const bb=r.bbox(),cl=draw.clip(),m=cl.rect(0,bb.height+U*.02).move(bb.x,bb.y-U*.01);r.clipWith(cl);
+    at(.05+i*.09,.32,p=>m.width(Math.max(.1,(bb.width+U*.01)*p)),E.inout)})}
 function valLabel(g,s,x,y,o){o=o||{};const t=T(g,s,o.size||U*.045,x,y,{family:'Anton',weight:400,fill:o.fill||FG,anchor:o.anchor||'middle'});return t}
 function seats(){ // the semicircle of dots, filled in party order; the majority line
   chartTitle(P.title);const n=P.total;const cx=W/2,cy=TALL?H*.5:H*.7;const R1=TALL?W*.44:Math.min(W*.36,H*.52),R0=R1*.42;
@@ -2020,12 +2047,32 @@ function depthOfField(grp){ // the edges go soft: a blurred copy under, the shar
   const m=draw.mask().add(draw.rect(W,H).fill(gr));grp.maskWith(m)}
 
 // ---- Johnny Harris pen: a shaky red marker line along any path, drawn on as the narration goes ----
-function penLine(g,pts,start,dur,color,width){ // pts: [[x,y],...] - a wobbly marker stroke through them
-  const out=[];for(let i=0;i<pts.length-1;i++){const [a,b]=[pts[i],pts[i+1]];const n=Math.max(4,Math.round(Math.hypot(b[0]-a[0],b[1]-a[1])/(U*.02)));
-    for(let k=0;k<n;k++){const t=k/n;out.push([a[0]+(b[0]-a[0])*t+(rnd()-.5)*U*.004,a[1]+(b[1]-a[1])*t+(rnd()-.5)*U*.004])}}
-  out.push(pts[pts.length-1]);
-  const pl=g.path('M'+out.map(q=>q.join(' ')).join(' L')).fill('none').stroke({color:color||K.mark||'#D7262B',width:width||U*.008,linecap:'round',linejoin:'round'}).opacity(.92);
-  const len=pl.node.getTotalLength();pl.attr({'stroke-dasharray':len,'stroke-dashoffset':len});at(start,dur,p=>pl.attr({'stroke-dashoffset':len*(1-p)}),E.inout);return pl}
+// ---- hand-drawn ink: perfect-freehand pen strokes (tapered like a real marker) that draw on cue and then "boil" ----
+// the outline is re-posed 6 times a second from a seeded hash, so it lives while it holds still and every render matches
+function hsh(a){const v=Math.sin(a*12.9898+78.233)*43758.5453;return v-Math.floor(v)}
+function inkPath(pts,size){if(!window.PF||pts.length<2)return '';const o=PF.getStroke(pts,{size,thinning:.5,smoothing:.55,streamline:.35,
+  simulatePressure:true,start:{taper:size*2.5},end:{taper:size*3.5}});return o.length?'M'+o.map(q=>q[0].toFixed(1)+' '+q[1].toFixed(1)).join(' L')+' Z':''}
+function penLine(g,pts,start,dur,color,width){ // pts: [[x,y],...] - a marker stroke through them
+  const out=[];for(let i=0;i<pts.length-1;i++){const [a,b]=[pts[i],pts[i+1]];const n=Math.max(4,Math.round(Math.hypot(b[0]-a[0],b[1]-a[1])/(U*.012)));
+    for(let k=0;k<n;k++){const t=k/n;out.push([a[0]+(b[0]-a[0])*t+(rnd()-.5)*U*.003,a[1]+(b[1]-a[1])*t+(rnd()-.5)*U*.003])}}
+  out.push(pts[pts.length-1]);const col=color||K.mark||'#D7262B',size=(width||U*.008)*1.35,sd=rnd()*1000;
+  if(!window.PF){const pl=g.path('M'+out.map(q=>q.join(' ')).join(' L')).fill('none').stroke({color:col,width:width||U*.008,linecap:'round',linejoin:'round'}).opacity(.92);
+    const len=pl.node.getTotalLength();pl.attr({'stroke-dasharray':len,'stroke-dashoffset':len});at(start,dur,p=>pl.attr({'stroke-dashoffset':len*(1-p)}),E.inout);return pl}
+  const el=g.path('M0 0').fill(col).opacity(.93);const st={n:-1,k:-1};
+  TICKS.push(t=>{const tq=Math.floor(t*12+1e-6)/12,p=Math.max(0,Math.min(1,(tq-start)/dur)),n=Math.round(E.inout(p)*out.length);
+    const k=K.boil===false?0:Math.floor(tq*6);if(n===st.n&&k===st.k)return;st.n=n;st.k=k;
+    if(n<2){el.plot('M0 0');return}const a=size*.18;
+    el.plot(inkPath(out.slice(0,n).map((q,i)=>[q[0]+(hsh(sd+k*131+i*7.1)-.5)*a,q[1]+(hsh(sd+k*173+i*3.7)-.5)*a]),size))});
+  return el}
+function roughShape(g,make,start,dur,color,width){ // a Rough.js sketch (box, ellipse, line) that draws on cue and boils
+  if(!window.rough)return null;const gen=rough.generator(),sd=Math.floor(rnd()*1e6)+1;
+  const vars=[0,1,2].map(i=>{const grp=g.group();gen.toPaths(make(gen,{seed:sd+i,roughness:1.3,bowing:1.3,stroke:color,strokeWidth:width}))
+    .forEach(pi=>{const p=grp.path(pi.d).fill('none').stroke({color:pi.stroke||color,width:pi.strokeWidth||width,linecap:'round',linejoin:'round'});
+      const len=Math.max(1,p.node.getTotalLength());p.attr({'stroke-dasharray':len,'stroke-dashoffset':len});p.data('len',len)});grp.opacity(i?0:1);return grp});
+  const st={p:-1,k:-1};
+  TICKS.push(t=>{const tq=Math.floor(t*12+1e-6)/12,p=E.inout(Math.max(0,Math.min(1,(tq-start)/dur)));const k=p<1||K.boil===false?0:Math.floor(tq*6)%3;
+    if(p===st.p&&k===st.k)return;st.p=p;st.k=k;vars.forEach((v,i)=>{v.opacity(i===k?1:0);v.children().forEach(c=>c.attr({'stroke-dashoffset':c.data('len')*(1-p)}))})});
+  return vars[0]}
 function penCircle(g,x,y,r,start){const pts=[];for(let i=0;i<=26;i++){const a=-1.9+i/26*Math.PI*2.2;const j=1+(rnd()-.5)*.12;pts.push([x+Math.cos(a)*r*j,y+Math.sin(a)*r*j*.85])}
   return penLine(g,pts,start,.45)}
 function penHatch(g,poly,start){ // marker hatching inside a shape (a country, a region)
@@ -2219,8 +2266,7 @@ let FOCUS=null;   // {x,y,rx,ry} set by a scene: what the marker circles
 function markerLayer(){if(!P.marker)return;const f=FOCUS||{x:W/2,y:H*.45,rx:U*.2,ry:U*.16};const red=K.mark||'#D7262B',g=L.front.group();
   const n=48,pts=[];const turns=1.12,a0=-Math.PI*.6;
   for(let i=0;i<=n;i++){const a=a0+i/n*Math.PI*2*turns;const j=1+(rnd()-.5)*.06+(i/n)*.06;pts.push([f.x+Math.cos(a)*f.rx*j,f.y+Math.sin(a)*f.ry*j])}
-  const ring=g.path('M'+pts.map(q=>q.join(' ')).join(' L')).fill('none').stroke({color:red,width:U*.008,linecap:'round',linejoin:'round'}).opacity(.9);
-  const len=ring.node.getTotalLength();ring.attr({'stroke-dasharray':len,'stroke-dashoffset':len});at(1.0,.55,p=>ring.attr({'stroke-dashoffset':len*(1-p)}),E.inout);
+  penLine(g,pts,1.0,.55,red,U*.008);
   // the note goes where there is room: beside the circle, else above or below it
   const roomR=W-(f.x+f.rx),roomL=f.x-f.rx,probe=T(g,P.marker,U*.058,0,0,{family:'Caveat',weight:700});const need=probe.bbox().width+U*.12;probe.remove();
   let right=roomR>=roomL,nx,ny;
@@ -2229,11 +2275,9 @@ function markerLayer(){if(!P.marker)return;const f=FOCUS||{x:W/2,y:H*.45,rx:U*.2
   const t=T(g,P.marker,U*.058,nx,ny,{family:'Caveat',weight:700,fill:red,anchor:right?'start':'end'});fit(t,right?W-nx-U*.04:nx-U*.04);
   t.attr({transform:`rotate(${right?-4:4},${nx},${ny})`});const tb=t.bbox();
   const sx=right?tb.x-U*.01:tb.x+tb.width+U*.01,sy=ny+U*.02,ex=f.x+(right?1:-1)*f.rx*.72,ey=f.y-f.ry*.72;
-  const cx=(sx+ex)/2,cy=Math.min(sy,ey)-U*.06;const arr=g.path(`M${sx} ${sy} Q${cx} ${cy} ${ex} ${ey}`).fill('none').stroke({color:red,width:U*.006,linecap:'round'});
-  const al=arr.node.getTotalLength();arr.attr({'stroke-dasharray':al,'stroke-dashoffset':al});at(1.5,.4,p=>arr.attr({'stroke-dashoffset':al*(1-p)}),E.inout);
-  const q=arr.node.getPointAtLength(al),q2=arr.node.getPointAtLength(al-3);const ang=Math.atan2(q.y-q2.y,q.x-q2.x);
-  const hd=g.path(`M${q.x-Math.cos(ang-0.5)*U*.03} ${q.y-Math.sin(ang-0.5)*U*.03} L${q.x} ${q.y} L${q.x-Math.cos(ang+0.5)*U*.03} ${q.y-Math.sin(ang+0.5)*U*.03}`)
-    .fill('none').stroke({color:red,width:U*.006,linecap:'round',linejoin:'round'});wipe(hd,1.88);t.opacity(0);at(1.6,.3,p=>t.opacity(p),E.lin)}
+  const cx=(sx+ex)/2,cy=Math.min(sy,ey)-U*.06;const qp=[];for(let i=0;i<=14;i++){const u=i/14;qp.push([(1-u)*(1-u)*sx+2*(1-u)*u*cx+u*u*ex,(1-u)*(1-u)*sy+2*(1-u)*u*cy+u*u*ey])}
+  penLine(g,qp,1.5,.4,red,U*.006);const ang=Math.atan2(ey-qp[13][1],ex-qp[13][0]);const q={x:ex,y:ey};
+  penLine(g,[[q.x-Math.cos(ang-0.5)*U*.03,q.y-Math.sin(ang-0.5)*U*.03],[q.x,q.y],[q.x-Math.cos(ang+0.5)*U*.03,q.y-Math.sin(ang+0.5)*U*.03]],1.86,.18,red,U*.006);t.opacity(0);at(1.6,.3,p=>t.opacity(p),E.lin)}
 
 // ---- the film: gate weave, dust and scratches on every frame, a warm light leak on openers (Johnny Harris) ----
 function filmLayer(){if(K.film===false)return()=>{};const g=L.grain.group();let last=-1;
@@ -2591,7 +2635,7 @@ function annoLayer(g,list,x0,y0,iw,ih,start){const col=K.mark||'#D7262B';
     if(a.kind==='circle'){const [cx,cy,r]=a.p;penCircle(g,X(cx),Y(cy),r*iw,st);if(a.label){const t=T(g,a.label,U*.045,X(cx)+r*iw*1.15,Y(cy)-r*ih*.8,{family:'Caveat',weight:700,fill:col,anchor:'start'});wipe(t,st+.35)}}
     else if(a.kind==='arrow'){const [x1,y1,x2,y2]=a.p;penLine(g,[[X(x1),Y(y1)],[X(x2),Y(y2)]],st,.4,col,U*.007);arrowHead(g,X(x2),Y(y2),Math.atan2(Y(y2)-Y(y1),X(x2)-X(x1)),st+.38);
       if(a.label){const t=T(g,a.label,U*.042,X(x1),Y(y1)-U*.03,{family:'Caveat',weight:700,fill:col});wipe(t,st)}}
-    else if(a.kind==='box'){const [bx,by,bw,bh]=a.p;const r=g.rect(bw*iw,bh*ih).move(X(bx),Y(by)).fill('none').stroke({color:col,width:U*.006});wipe(r,st);
+    else if(a.kind==='box'){const [bx,by,bw,bh]=a.p;const r=roughShape(g,(gen,o)=>gen.rectangle(X(bx),Y(by),bw*iw,bh*ih,o),st,.45,col,U*.005)||g.rect(bw*iw,bh*ih).move(X(bx),Y(by)).fill('none').stroke({color:col,width:U*.006});if(!window.rough)wipe(r,st);
       if(a.label){const t=T(g,a.label.toUpperCase(),U*.022,X(bx),Y(by)-U*.022,{family:'Inter',weight:800,anchor:'start',fill:'#FFFFFF'});const bb=t.bbox();
         g.rect(bb.width+U*.02,bb.height+U*.01).center(bb.cx,bb.cy).fill(col);t.front();wipe(t,st)}}
     else if(a.kind==='label'){const [lx,ly]=a.p;placeTag(g,a.label,X(lx),Y(ly),st,0)}})}
@@ -2680,7 +2724,7 @@ function footage(){ // moving footage, frame by frame, with the same annotations
   if(P.annotate&&P.annotate.length){const a=P.annotate[0];FOCUS={x:a.p[0]*W,y:a.p[1]*H,rx:U*.1,ry:U*.1}}
   photoCredit()}
 
-const SCENES={photo,photos,footage,shrink,morph,borders,courtdoc,table,interview,endcard,polltrack,area,candles,arrows,railmap,sizemap,pyramid,flowchart:flow,linkmap,orgchart,heatmap,hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv,
+const SCENES={myth,photo,photos,footage,shrink,morph,borders,courtdoc,table,interview,endcard,polltrack,area,candles,arrows,railmap,sizemap,pyramid,flowchart:flow,linkmap,orgchart,heatmap,hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv,
   clockmap,tornsplit,newscard,blueprint};
 async function boot(){
   try{await Promise.all(Array.from(document.fonts).map(f=>f.load()))}catch(e){}
@@ -2759,6 +2803,7 @@ def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: f
     for old, new in (("#B8CDD1", look["sea"]), ("#EFE3C2", look["land"]), ("#8E7E5C", look["edge"])):
         js = js.replace(old, new)
     page = (js.replace("%SVGJS%", motion.VENDOR.read_text(encoding="utf-8")).replace("%FONTS%", _font_css())
+            .replace("%HAND%", (Path(__file__).parent / "vendor" / "hand.js").read_text(encoding="utf-8"))
             .replace("%ILLU%", (Path(__file__).parent / "vendor" / "illustrations.js").read_text(encoding="utf-8"))
             .replace("%PAPER%", paper_hex).replace("%PLAN%", json.dumps(plan, ensure_ascii=False))
             .replace("%W%", str(width)).replace("%H%", str(height)).replace("%DUR%", f"{seconds:.3f}")

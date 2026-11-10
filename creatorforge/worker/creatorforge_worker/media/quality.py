@@ -23,7 +23,29 @@ def loudness(path: Path) -> dict:
     if not m:
         return {}
     d = json.loads(m.group(0))
-    return {"lufs": float(d["input_i"]), "true_peak": float(d["input_tp"])}
+    res = {"lufs": float(d["input_i"]), "true_peak": float(d["input_tp"])}
+    precise = lufs_precise(path)
+    if precise is not None:
+        res["lufs_bs1770"] = precise           # a second, independent measurement (pyloudnorm, ITU-R BS.1770-4)
+    return res
+
+
+def lufs_precise(path: Path, rate: int = 48000) -> float | None:
+    """Integrated loudness with pyloudnorm (MIT), when installed; None otherwise."""
+    try:
+        import numpy as np
+        import pyloudnorm
+    except ImportError:
+        return None
+    raw = subprocess.run(["ffmpeg", "-nostdin", "-v", "error", "-i", str(path), "-vn", "-ac", "2", "-ar", str(rate), "-f", "f32le", "-"],
+                         capture_output=True, timeout=600).stdout
+    if not raw:
+        return None
+    data = np.frombuffer(raw, np.float32).reshape(-1, 2)
+    if len(data) < rate // 2:
+        return None
+    v = pyloudnorm.Meter(rate).integrated_loudness(data)
+    return round(float(v), 2) if np.isfinite(v) else None
 
 
 def silences(path: Path, total: float) -> list[tuple[float, float]]:

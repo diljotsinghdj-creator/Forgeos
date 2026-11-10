@@ -314,7 +314,14 @@ def produce(screenplay: Path | str, dossier: Path | str, out_dir: Path | str, si
         from ..pipeline import motivated_transition
         tr = s.get("transition") or ("cut" if i == 0 else motivated_transition(kinds[i - 1], kinds[i]) or "blur")
         transitions.append(tr if tr in render.TRANSITIONS else "blur")
-    bank = sfx.SfxBank.load("", sfx_builtin.ensure(data / "sfx_builtin"))
+    # real recorded effects from Freesound (CC0 / CC-BY) when the pod has a key; the built-in set otherwise
+    from ..providers import freesound
+    fs_dir = data / "sfx_freesound"
+    if freesound.key():
+        freesound.fill_bank(fs_dir)
+    bank = sfx.SfxBank.load(str(fs_dir) if fs_dir.is_dir() else "", sfx_builtin.ensure(data / "sfx_builtin"))
+    if (fs_dir / "CREDITS.txt").is_file():
+        shutil.copy(fs_dir / "CREDITS.txt", dirs["audio"] / "sfx_credits.txt")
     hits = sfx.place(bank, transitions, [t["end"] - t["start"] for t in timeline], [], film)
     beds = ambience.place(data / "ambience", [(t["start"], t["end"] - t["start"], kinds[i], _spec(sp["scenes"][i]["graphic"]), False)
                                               for i, t in enumerate(timeline)])
@@ -392,10 +399,14 @@ def produce(screenplay: Path | str, dossier: Path | str, out_dir: Path | str, si
             cur = t["act"]
         acts[-1][2] = t["end"] - acts[-1][1]
     acts[-1][2] += tail
-    music = score.compose([tuple(a) for a in acts], ad["music"], dirs["audio"])
+    track = sp.get("music_track")
+    if track and Path(track).is_file():
+        music = score.from_track(Path(track), total, dirs["audio"])      # a licensed track the creator chose
+    else:
+        music = score.compose([tuple(a) for a in acts], ad["music"], dirs["audio"])
     mix = dirs["audio"] / "mix.wav"
     render.mix_audio(narr, music, total, mix, threading.Event(), sfx=sorted(hits + beds, key=lambda x: x[1]))
-    step("sound", note=f"score ({ad['music']}), {len(hits)} effects, {len(beds)} ambience beds")
+    step("sound", note=f"score ({ad['music']}, {score.LAST_HOW or 'none'}), {len(hits)} effects ({bank.describe()}), {len(beds)} ambience beds")
 
     # 9 the edit
     final = dirs["video"] / f"{film}.mp4"

@@ -110,6 +110,12 @@ def check(sp: dict, dossier: Dossier) -> list[dict]:
         sid = str(s.get("id", "?"))
         secs = len(str(s.get("narration", "")).split()) / WORDS_PER_SECOND + float(s.get("pause", 0) or 0)
         kind = str(s.get("graphic", "")).split(":")[0].strip().lower()
+        # on-screen words must be readable in the time the line is up: 0.5 s plus 0.3 s a word
+        shown = [x.strip() for x in str(s.get("graphic", "")).split(":", 1)[-1].split("|")]
+        shown = [x for x in shown if x and ":" not in x and not re.fullmatch(r"[\w-]+", x)]
+        words = sum(len(x.split()) for x in shown)
+        if words and secs < 0.5 + 0.3 * words:
+            add("warning", sid, f"{words} on-screen words need about {0.5 + 0.3 * words:.0f}s to read; the line lasts about {secs:.0f}s")
         if secs > INTERRUPT_SECONDS:
             add("warning", sid, f"about {secs:.0f}s on one picture: split it or add a visual pattern interrupt")
         if kind == run_kind:
