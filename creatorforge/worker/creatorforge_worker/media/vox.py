@@ -1611,7 +1611,10 @@ function camera(t){const p=E.inout(Math.min(1,t/Math.max(DUR,.1)));const m=K.cam
     const x=exitOf(k,t),zz=(m===2?1+d*.4:z)*(x?x.s:1);
     L[k].attr({transform:`translate(${fx*(1-zz)+dx+(x?x.tx:0)},${fy*(1-zz)+(x?x.ty:0)}) scale(${zz})`,opacity:x?x.o:1})}}
 // ---- the style kit ----
-function T(g,s,size,x,y,o){o=o||{};const t=g.text(String(s)).font({family:(K.fam||{})[o.family]||o.family||'Inter',size:size,weight:o.weight||600,
+// the phone floor: nothing the viewer must read is set under 3.1% of the frame's short side (2.6% once a card layout
+// has shrunk it); credits and source lines are fine print and exempt
+const FLOOR=U*.031,FINE=/^(SOURCE|PHOTO|IMAGERY|MAP|DATA|OUTLINES?)[: ]|©/i;
+function T(g,s,size,x,y,o){o=o||{};if(!o.fine&&!FINE.test(String(s))&&String(s).trim())size=Math.max(size,FLOOR);const t=g.text(String(s)).font({family:(K.fam||{})[o.family]||o.family||'Inter',size:size,weight:o.weight||600,
   anchor:o.anchor||'middle',style:o.italic?'italic':'normal'}).fill(o.fill||FG).attr({x:x,y:y,'dominant-baseline':'central'});
   if(o.ls&&!/[\u0900-\u097F]/.test(String(s)))t.attr({'letter-spacing':o.ls});return t}   // tracking breaks Devanagari conjuncts
 function fit(t,maxw){const w=t.bbox().width;if(w>maxw)t.font({size:t.font('size')*maxw/w});return t}
