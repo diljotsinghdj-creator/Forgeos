@@ -335,8 +335,11 @@ def parse_number(spec: str) -> dict | None:
     parts = [p.strip() for p in (spec or "").split("|")]
     if not parts or not re.search(r"\d", parts[0]):
         return None
-    # Latin figures are cut short ("₹29.7 cr"); a Hindi unit is never cut mid-word (the marks would be lost)
-    return {"type": "number", "number": parts[0][:16] if re.search(r"[\u0900-\u097F]", parts[0]) else parts[0][:8], "subjects": _split_list(parts[1])[:1] if len(parts) > 1 else [],
+    # a figure is never cut short (₹1,737.68 must not become ₹1,737.6): too long for the big type, the line is
+    # refused so the writer uses Counter instead
+    if len(parts[0]) > (16 if re.search(r"[\u0900-\u097F]", parts[0]) else 8):
+        return None
+    return {"type": "number", "number": parts[0], "subjects": _split_list(parts[1])[:1] if len(parts) > 1 else [],
             "caption": parts[2] if len(parts) > 2 else "", "kicker": parts[3] if len(parts) > 3 else "",
             "seed": _seed(spec) % 10000}
 
@@ -1955,7 +1958,8 @@ function counter(){ // a number counting in steady digits (each digit in its own
   const slots=[];for(let i=0;i<n;i++)slots.push(T(g,'',big,x0+adv*(i+.5),y,{family:'Anton',weight:400,fill:ACT}));
   const show=v=>{const s=num(v).padStart(n,' ');for(let i=0;i<n;i++){const c=s[i]===' '?'':s[i];if(slots[i].text()!==c)slots[i].text(c)}
     if(pre){const lead=s.length-s.trimStart().length;pre.attr({x:x0+adv*lead})}};   // the currency sign stays against the first digit
-  show(P.from);const span=Math.min(1.6,Math.max(1.2,DUR*.3));fit(g,W*.92);
+  show(P.from);const span=Math.min(1.6,Math.max(1.2,DUR*.3));
+  const tw=pw+adv*n+qw;if(tw>W*.9){const k=W*.9/tw;g.attr({transform:`translate(${W/2},${y}) scale(${k}) translate(${-W/2},${-y})`})}   // the full figure, unit included, fits the frame
   TICKS.push(t=>{const p=Math.max(0,Math.min(1,(t-.35)/span)),e=1-Math.pow(1-p,4);show(P.from+(P.to-P.from)*e)});
   if(P.unit){const u=T(L.front,P.unit.toUpperCase(),U*.03,W/2,y+big*.62,{family:'Mono',weight:700,fill:FG,ls:'.2em'});fit(u,W*.86);wipe(u,.4)}
   if(P.caption){const c=boxText(L.front,P.caption,U*.045,W/2,TALL?H*.72:H*.8,{anchor:'middle',maxw:W*.84,most:2});c.opacity(0);at(.35+span+.15,.3,p=>c.opacity(p),E.snap)}
