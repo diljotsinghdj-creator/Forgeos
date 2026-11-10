@@ -1025,6 +1025,234 @@
    ],
    "contradictions": [],
    "notes": "For a 2019 vs 2024 growth graphic; verify against the libraries."
+  },
+  {
+   "id": "C39",
+   "claim": "In its own expenditure report to the Election Commission, the BJP declared spending ₹1,737.68 crore on the 2024 Lok Sabha election, including ₹611.50 crore on media advertisement, of which ₹156.95 crore went to Google India and ₹24.63 crore to Facebook.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "2024",
+    "₹1,737.68 crore",
+    "₹611.50 crore",
+    "₹156.95 crore",
+    "₹24.63 crore"
+   ],
+   "sources": [
+    {
+     "title": "BJP says it spent Rs 1,737.68 crore on 2024 Lok Sabha elections (Scroll)",
+     "url": "https://scroll.in/latest/1078621/rs-1737-68-crore-spent-on-2024-lok-sabha-elections-bjp-tells-ec",
+     "quote": "[summary] Rs 1,737.68 crore, per its expenditure report to the Election Commission"
+    },
+    {
+     "title": "BJP spent Rs 1,737.68 cr for 2024 Lok Sabha polls (ThePrint / PTI)",
+     "url": "https://theprint.in/india/bjp-spent-rs-1737-68-cr-for-2024-lok-sabha-polls-states-partys-expenditure-report-to-ec/2472071",
+     "quote": "[summary] expenditure report to EC"
+    },
+    {
+     "title": "BJP spent over Rs 611 cr on media ads (Storyboard18)",
+     "url": "https://www.storyboard18.com/advertising/bjp-spent-over-rs-611-cr-on-media-ads-for-lok-sabha-campaigning-in-2024-55423.htm",
+     "quote": "[summary] Rs 611.50 crore media advertisement; Rs 156.95 crore to Google India, Rs 24.63 crore to Facebook"
+    }
+   ],
+   "contradictions": [
+    "The Wire collated Rs 684.57 crore from state forms and noted Part-C of the report showed only Rs 58.45 lakh on media advertisement; the separate 'social media' line was about Rs 6.94 crore."
+   ],
+   "notes": "Party's own filing; open the ECI PDF before rendering numbers."
+  },
+  {
+   "id": "C40",
+   "claim": "The Association for Democratic Reforms found the BJP spent about ₹1,494 crore on the 2024 Lok Sabha and four simultaneous Assembly elections, nearly 45% of what 22 parties spent, including ₹983.92 crore on publicity.",
+   "status": "reported",
+   "confidence": "high",
+   "figures": [
+    "2024",
+    "₹1,494 crore",
+    "45%",
+    "22",
+    "₹983.92 crore"
+   ],
+   "sources": [
+    {
+     "title": "BJP accounted for nearly 45% of election spending (Scroll)",
+     "url": "https://scroll.in/latest/1083708/scroll_in",
+     "quote": "[summary] nearly 45 per cent"
+    },
+    {
+     "title": "BJP accounts for nearly 45 pc of total election spending (ThePrint / PTI)",
+     "url": "https://theprint.in/india/bjp-accounts-for-nearly-45-pc-of-total-election-spending-in-2024-lok-sabha-polls-adr/2664597",
+     "quote": "[summary] ADR analysis; publicity Rs 983.92 crore"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Different scope from C39: say which figure is which."
+  },
+  {
+   "id": "C41",
+   "claim": "In its 2023-24 audited accounts the BJP reported spending ₹2,211.69 crore, of which about ₹1,754 crore went on 'election and general propaganda' and ₹591 crore on advertisements.",
+   "status": "reported",
+   "confidence": "high",
+   "figures": [
+    "2023-24",
+    "₹2,211.69 crore",
+    "₹1,754 crore",
+    "₹591 crore"
+   ],
+   "sources": [
+    {
+     "title": "BJP spent Rs 1,754 crore on election, general propaganda in 2023-24 (ADR)",
+     "url": "https://adrindia.org/content/bjp-spent-1754-crore-on-election-general-propaganda-in-2023-24-report",
+     "quote": "[summary] Rs 2,211.69 crore total; Rs 1,754 crore election and general propaganda"
+    },
+    {
+     "title": "BJP richest party with Rs 7,113 crore (Tribune)",
+     "url": "https://www.tribuneindia.com/news/india/bjp-richest-party-with-7113-crore-cong-has-857-cr-shows-ec-data",
+     "quote": "[summary] Rs 591 crore in advertisements: Rs 434.84 crore electronic, Rs 115.62 crore print"
+    }
+   ],
+   "contradictions": [],
+   "notes": ""
+  },
+  {
+   "id": "C42",
+   "claim": "Election Commission data showed the BJP with a fund balance of ₹7,113 crore, against Congress's ₹857 crore.",
+   "status": "reported",
+   "confidence": "high",
+   "figures": [
+    "₹7,113 crore",
+    "₹857 crore"
+   ],
+   "sources": [
+    {
+     "title": "BJP richest party with Rs 7,113 crore, Cong has Rs 857 cr (Tribune)",
+     "url": "https://www.tribuneindia.com/news/india/bjp-richest-party-with-7113-crore-cong-has-857-cr-shows-ec-data",
+     "quote": "[summary] fund balance per EC data"
+    },
+    {
+     "title": "BJP emerges richest party (Free Press Journal)",
+     "url": "https://www.freepressjournal.in/amp/india/bjp-emerges-richest-party-with-7113-crore-fund-balance-congress-reports-857-crore-election-commission-data",
+     "quote": "[summary] Rs 7,113 crore vs Rs 857 crore"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Give the year of the filing on screen."
+  },
+  {
+   "id": "C43",
+   "claim": "No independent body has measured or ranked the size of party IT cells, so 'the world's biggest IT cell' cannot be stated as fact. The BJP's own claims: about 1.2 million social media volunteers (Malviya, as reported), over 50 lakh WhatsApp groups (party leaders, 2024), and 14 to 18 crore party members, which it says makes it the world's largest party.",
+   "status": "reported",
+   "confidence": "medium",
+   "figures": [
+    "1.2 million",
+    "12 lakh",
+    "50 lakh",
+    "14 crore",
+    "18 crore"
+   ],
+   "sources": [
+    {
+     "title": "BJP IT Cell (Wikipedia)",
+     "url": "https://en.wikipedia.org/wiki/BJP_IT_Cell",
+     "quote": "[summary] Malviya reportedly told the Indian Express the party has roughly 1.2 million social media volunteers"
+    },
+    {
+     "title": "BJP IT cell working, 2024 Lok Sabha poll plan explained (Deccan Herald)",
+     "url": "https://www.deccanherald.com/elections/india/bjp-it-cell-working-2024-lok-sabha-poll-plan-explained-assembly-elections-2703566",
+     "quote": "[summary] party leaders: the IT Cell manages over 50 lakh WhatsApp groups"
+    },
+    {
+     "title": "With 14 crore members BJP world's largest party, says Nadda (Tribune)",
+     "url": "https://www.tribuneindia.com/news/india/with-14-crore-members-bjp-worlds-largest-party-says-nadda",
+     "quote": "[summary] 14 crore members, 2 crore active"
+    },
+    {
+     "title": "BJP to launch membership drive (News On Air)",
+     "url": "https://newsonair.gov.in/bjp-to-launch-new-membership-drive-on-september-1-aiming-for-10-crore-new-members",
+     "quote": "[summary] claims over 18 crore members"
+    }
+   ],
+   "contradictions": [
+    "Membership claims fell from 18 crore (2024) to 14 crore (2025) with no explanation; Congress has called the drive enrolment without consent."
+   ],
+   "notes": "Say 'the party says' and 'possibly the largest'. Find the Indian Express original for 1.2 million."
+  },
+  {
+   "id": "C44",
+   "claim": "Reporting on how content is made: Newslaundry found the Uttar Pradesh unit had a 25-member core team plus about 20 designers, technicians and cartoonists making the visuals; in Delhi one official signs off every post and a separate team monitors rival parties. Leaked 'toolkits' have listed ready-made tweets and hashtags for supporters to post at set times.",
+   "status": "reported",
+   "confidence": "medium",
+   "figures": [
+    "25",
+    "20"
+   ],
+   "sources": [
+    {
+     "title": "Delhi BJP's IT cell is trying its best to take on AAP (Newslaundry)",
+     "url": "https://www.newslaundry.com/2020/01/22/delhi-bjps-it-cell-is-trying-its-best-to-take-on-aap-is-it-working",
+     "quote": "[summary] final sign-off on every piece of content; a team monitors AAP and Congress content"
+    },
+    {
+     "title": "Here's what BJP is going to tweet today: toolkit exposed (Telangana Today)",
+     "url": "https://telanganatoday.com/heres-what-bjp-is-going-to-tweet-today-toolkit-for-modis-telangana-visit-exposed",
+     "quote": "[summary] readymade tweets for supporters to post at a predetermined time"
+    },
+    {
+     "title": "Beyond the trend: analysing BJP's social media toolkit in Bengal (The Quint)",
+     "url": "https://www.thequint.com/news/politics/beyond-the-trend-analyzing-bjps-social-media-toolkit-in-bengal",
+     "quote": "[summary] toolkit analysis"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Confirm the UP team figures in the Newslaundry original. Toolkits are used by many parties and campaigns: say so."
+  },
+  {
+   "id": "C45",
+   "claim": "Decode (BOOM) reported in 2024 that Varahe Analytics, a political consultancy working for the BJP, paid young influencers to make reels for a network of proxy pages without labelling them as paid. Asked how much it pays influencers, the BJP declined to say and pointed to rival parties doing the same.",
+   "status": "allegation",
+   "confidence": "medium",
+   "figures": [
+    "2024"
+   ],
+   "sources": [
+    {
+     "title": "BJP, Varahe Analytics, Instagram troll accounts and influencers (BOOM Decode)",
+     "url": "https://www.boomlive.in/decode/bjp-varahe-analytics-instagram-troll-accounts-influencers-youtube-misinformation-elections-india-25181",
+     "quote": "[summary] influencers were not disclosing that this content is paid and sponsored; one influencer confirmed being paid by Varahe Analytics"
+    },
+    {
+     "title": "Indian political parties investing in influencers (AsiaNews / Reuters)",
+     "url": "https://www.asianews.it/news-en/Indian-political-parties-investing-in-influencers-ahead-of-2024-elections-58893.html",
+     "quote": "[summary] the BJP declined to answer and pointed at rival parties"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Ask Varahe Analytics for comment."
+  },
+  {
+   "id": "C46",
+   "claim": "The BJP's influencer outreach spanned 18 states and thousands of creators, according to Newslaundry in 2023. Since August 2026, under the new team, its posts have shifted to fast reels, memes, rap and internet slang.",
+   "status": "reported",
+   "confidence": "medium",
+   "figures": [
+    "18",
+    "2023",
+    "2026"
+   ],
+   "sources": [
+    {
+     "title": "BJP's social media push: outreach spans 18 states, 1000s of influencers (Newslaundry)",
+     "url": "https://www.newslaundry.com/2023/07/31/bjps-social-media-push-outreach-efforts-spans-18-states-1000s-of-influencers",
+     "quote": "[summary] 18 states, thousands of influencers"
+    },
+    {
+     "title": "Rap, memes and internet slang mark BJP's revamped digital outreach (Newslaundry)",
+     "url": "https://www.newslaundry.com/2026/10/26/rap-memes-and-internet-slang-mark-bjps-revamped-digital-outreach",
+     "quote": "[summary] since August, fast-paced reels with trending music, memes and slang",
+     "date": "2026-10-26"
+    }
+   ],
+   "contradictions": [],
+   "notes": ""
   }
  ]
 }
