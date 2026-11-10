@@ -1,0 +1,56 @@
+{
+ "id": "evolution-sample",
+ "title": "Evolution: one family",
+ "channel": "sample",
+ "engine": "trojan-horse",
+ "hook_mechanism": "your own DNA as the everyday object",
+ "metaphors": [
+  "counter of shared DNA",
+  "the 1859 page under a magnifier"
+ ],
+ "genre": "science",
+ "language": "hi",
+ "lang": "hi",
+ "voice": "dj (owner's ElevenLabs voice)",
+ "concept": {
+  "logline": "Why your DNA is almost a chimpanzee's.",
+  "central_question": "Why are we 98.8% the same?"
+ },
+ "thumbnail": "Statement: 98.8% *the same*",
+ "cutdowns": [],
+ "scenes": [
+  {
+   "id": "S1",
+   "act": "hook",
+   "narration": "आपका DNA और एक चिंपांज़ी का DNA... लगभग 98.8 percent एक जैसा है। क्यों?",
+   "graphic": "Counter: 0 → 98.8% | of DNA, human vs chimpanzee | Chimpanzee Sequencing Consortium, Nature 2005 | badge: verified",
+   "claims": [
+    "C1"
+   ],
+   "pause": 0.2
+  },
+  {
+   "id": "S2",
+   "act": "discovery",
+   "narration": "1859 में, Charles Darwin ने जवाब दिया: हम सबके पूर्वज एक ही थे।",
+   "graphic": "Reveal: endless forms most beautiful · have been, and are being, evolved | On the Origin of Species, 1859 | endless forms most beautiful",
+   "claims": [
+    "C2",
+    "C3"
+   ],
+   "pause": 0.2
+  },
+  {
+   "id": "S3",
+   "act": "ending",
+   "narration": "हर जीवित चीज़... एक ही परिवार है।",
+   "graphic": "Endcard: One family | Every living thing shares one ancestor | Sources: Nature 2005 · Darwin 1859 · Nature 2010",
+   "claims": [
+    "C1",
+    "C2",
+    "C3"
+   ],
+   "pause": 0.3
+  }
+ ]
+}

@@ -1867,15 +1867,18 @@ function opener(){ // a colour panel with the headline, the photo beside it
 function reveal(){ // a document; a magnifier sweeps it and the beam shows the text big and sharp
   const docW=TALL?W*.84:W*.56,docH=TALL?H*.4:H*.58,dx=W/2-docW/2,dy=TALL?H*.16:H*.16;
   const doc=L.back.group();torn(doc,dx,dy,docW,docH,'#FBF9F3');doc.attr({filter:'url(#shadow)'});slide(doc,0,0,H*.1);
+  const hlg=L.back.group();slide(hlg,0,0,H*.1);   // highlights above the page, under the words
   const rows=P.rows;const rs=docH/(rows.length+2.2);
-  rows.forEach((r,i)=>{const t=T(L.back,r,rs*.42,dx+docW*.08,dy+rs*(i+1.4),{family:'Mono',weight:700,anchor:'start',fill:'#3A3A3A'});wipe(t,.15+i*.05);
-    if(P.mark&&r.toLowerCase().includes(P.mark.toLowerCase()))highlight(L.back,t.bbox(),1.6)});
+  // one type size for every line, the largest at which the longest line still sits inside the page
+  let fs=rs*.42;rows.forEach(r=>{const pr=T(L.back,r,fs,0,0,{family:'Mono',weight:700,anchor:'start'});const w=pr.bbox().width;pr.remove();if(w>docW*.84)fs*=docW*.84/w});
+  rows.forEach((r,i)=>{const t=T(L.back,r,fs,dx+docW*.08,dy+rs*(i+1.4),{family:'Mono',weight:700,anchor:'start',fill:'#3A3A3A'});wipe(t,.15+i*.05);
+    if(P.mark&&r.toLowerCase().includes(P.mark.toLowerCase()))highlight(hlg,t.bbox(),1.6,'#F2C94C')});
   if(P.title){const g=boxText(L.front,P.title,U*.05,W/2,TALL?H*.07:H*.075,{anchor:'middle',maxw:W*.8,most:1});g.children().forEach(r=>slide(r,.1,0,-H*.04))}
   // the lens: a magnified copy of the document inside a circle that sweeps down
   const R=U*(TALL?.17:.15);const lens=L.front.group();const clipC=draw.clip().add(draw.circle(R*2).center(0,0));
   const mag=lens.group().clipWith(clipC);const inner=mag.group();
   inner.rect(docW,docH).move(dx,dy).fill('#FFFFFF');
-  rows.forEach((r,i)=>T(inner,r,rs*.42,dx+docW*.08,dy+rs*(i+1.4),{family:'Mono',weight:700,anchor:'start',fill:'#111'}));
+  rows.forEach((r,i)=>T(inner,r,fs,dx+docW*.08,dy+rs*(i+1.4),{family:'Mono',weight:700,anchor:'start',fill:'#111'}));
   lens.circle(R*2).center(0,0).fill('none').stroke({color:'#222',width:U*.012});
   const handle=lens.rect(U*.03,U*.16).move(R*.62,R*.62).radius(U*.01).fill('#2A2A2A').attr({transform:`rotate(-45,${R*.62},${R*.62})`});
   const hand=(P.pics||[])[0];if(hand&&hand.img){const hh=U*.22;lens.image(hand.img).size(hh*hand.w/hand.h,hh).move(R*.8,R*.75)}
