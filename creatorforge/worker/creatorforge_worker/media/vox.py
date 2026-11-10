@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import functools
 import hashlib
+import base64
 import json
 import math
 import os
@@ -1313,18 +1314,38 @@ PARSERS.update({"counter": parse_counter, "staircase": parse_staircase, "scale":
 _LOGOS: dict | None = None
 
 
+# Party symbols, only to identify a party the line names (never as decoration; MASTER_DIRECTIVES §6). They are the
+# official, unaltered symbols: a file the pod downloads into <data>/symbols/<key>.png|svg (credited). Until it is
+# there, the frame shows a labelled empty slot: the engine never redraws a symbol itself.
+PARTIES = {"bjp": ("BJP", "Bharatiya Janata Party", "#F97D09"), "congress": ("INC", "Indian National Congress", "#19AAED"),
+           "aap": ("AAP", "Aam Aadmi Party", "#0066A4")}
+
+
+def _symbol(key: str) -> dict:
+    short, title, hexc = PARTIES[key]
+    d = Path(os.environ.get("CF_DATA_DIR", "./creatorforge-data")) / "symbols"
+    out = {"title": title, "short": short, "hex": hexc, "party": True, "d": "", "credit": "Symbol: Election Commission of India"}
+    for ext, mime in (("png", "image/png"), ("svg", "image/svg+xml")):
+        f = d / f"{key}.{ext}"
+        if f.is_file():
+            out["img"] = f"data:{mime};base64," + base64.b64encode(f.read_bytes()).decode()
+            break
+    return out
+
+
 def logos() -> dict:
-    """Official brand marks (Simple Icons, CC0 data) by key: {title, hex, d}."""
+    """Official brand marks (Simple Icons, CC0 data) by key: {title, hex, d}; party symbols as {party: True, img?}."""
     global _LOGOS
     if _LOGOS is None:
         try:
             _LOGOS = json.loads((Path(__file__).parent / "vendor" / "logos.json").read_text(encoding="utf-8"))
         except (OSError, ValueError):
             _LOGOS = {}
-    return _LOGOS
+    return {**_LOGOS, **{k: _symbol(k) for k in PARTIES}}
 
 
-LOGO_WORDS = {"whatsapp": "whatsapp", "व्हाट्सऐप": "whatsapp", "व्हाट्सएप": "whatsapp", "facebook": "facebook",
+LOGO_WORDS = {"bjp": "bjp", "bharatiya janata party": "bjp", "congress": "congress", "inc": "congress",
+              "indian national congress": "congress", "aap": "aap", "aam aadmi party": "aap", "whatsapp": "whatsapp", "व्हाट्सऐप": "whatsapp", "व्हाट्सएप": "whatsapp", "facebook": "facebook",
               "फ़ेसबुक": "facebook", "फेसबुक": "facebook", "instagram": "instagram", "इंस्टाग्राम": "instagram",
               "twitter": "x", "ट्विटर": "x", "एक्स": "x", "youtube": "youtube", "यूट्यूब": "youtube", "telegram": "telegram",
               "टेलीग्राम": "telegram", "google": "google", "गूगल": "google", "meta": "meta", "मेटा": "meta",
@@ -1616,7 +1637,7 @@ function camera(t){const p=E.inout(Math.min(1,t/Math.max(DUR,.1)));const m=K.cam
 // ---- the style kit ----
 // the phone floor: nothing the viewer must read is set under 3.1% of the frame's short side (2.6% once a card layout
 // has shrunk it); credits and source lines are fine print and exempt
-const FLOOR=U*.031,FINE=/^(SOURCE|PHOTO|IMAGERY|MAP|DATA|OUTLINES?)[: ]|©/i;
+const FLOOR=U*.031/(P.comp?(TALL?.72:.78):1),FINE=/^(SOURCE|PHOTO|IMAGERY|MAP|DATA|OUTLINES?)[: ]|©/i;
 function T(g,s,size,x,y,o){o=o||{};if(!o.fine&&!FINE.test(String(s))&&String(s).trim())size=Math.max(size,FLOOR);const t=g.text(String(s)).font({family:(K.fam||{})[o.family]||o.family||'Inter',size:size,weight:o.weight||600,
   anchor:o.anchor||'middle',style:o.italic?'italic':'normal'}).fill(o.fill||FG).attr({x:x,y:y,'dominant-baseline':'central'});
   if(o.ls&&!/[\u0900-\u097F]/.test(String(s)))t.attr({'letter-spacing':o.ls});return t}   // tracking breaks Devanagari conjuncts
@@ -1671,6 +1692,11 @@ function picture(g,pic,x,y,h,o){ // a cut-out photo (or its icon) with its heigh
     if(o.offset){grp.image(pic.img).size(w,h).move(x-w/2+U*.014,y-h+U*.01).attr({filter:'url(#tint)'})}   // a printed colour offset
     grp.image(pic.img).size(w,h).move(x-w/2,y-h).attr({filter:o.offset?'none':'url(#shadow)'});grp.data('w',w)}
   else if(pic&&pic.logo){const t=logoTile(grp,pic.logo,x,y-h/2,h);grp.data('w',h)}
+  else if(pic&&/^person:/i.test(pic.name||'')){const w=h*.72,nm=pic.name.replace(/^person:/i,'');
+    grp.rect(w,h).move(x-w/2,y-h).fill('#E9E4D8').stroke({color:INK,width:U*.004,dasharray:`${U*.014} ${U*.01}`});
+    T(grp,'PHOTO',Math.max(U*.03,Math.min(w*.16,U*.05)),x,y-h*.6,{family:'Mono',weight:700,fill:'#C0262D'});
+    const nl=lines(nm,Math.max(U*.03,Math.min(w*.13,U*.04)),w*.9,'Inter',800,2);nl.forEach((l,i)=>T(grp,l,Math.max(U*.03,Math.min(w*.13,U*.04)),x,y-h*.46+i*U*.045,{family:'Inter',weight:800}));
+    grp.data('w',w)}
   else if(pic&&pic.draw&&window.ILLU&&ILLU[pic.draw]){const [bw,bh,fn]=ILLU[pic.draw];const k=h/bh;const ig=grp.group();
     fn(ig,ACC);ig.attr({transform:`translate(${x-bw*k/2},${y-h}) scale(${k})`,filter:'url(#shadow)'});grp.data('w',bw*k)}
   else{const r=h*.42;grp.circle(r*2).center(x,y-h/2).fill(o.iconBg||'#FFFFFF').stroke({color:INK,width:U*.005}).attr({filter:'url(#softshadow)'});
@@ -2333,6 +2359,11 @@ function blueprint(){ // a blue card with a white grid; the cut-out; an arrow th
 
 // ---- brand marks: the platform the line names, as its own app tile (official mark, own colour) ----
 function logoTile(g,m,cx,cy,size){const t=g.group();const r=size*.22;
+  if(m.party){   // a party symbol: the official file on white, or a labelled empty slot until it is downloaded
+    t.rect(size,size).move(cx-size/2,cy-size/2).radius(r).fill('#FFFFFF').stroke({color:m.img?'#FFFFFF':INK,width:size*.04,dasharray:m.img?'':`${size*.08} ${size*.06}`});
+    if(m.img)t.image(m.img).size(size*.78,size*.78).move(cx-size*.39,cy-size*.39);
+    else{T(t,m.short,size*.32,cx,cy-size*.1,{family:'Inter',weight:800,fine:1});T(t,'SYMBOL',size*.19,cx,cy+size*.24,{family:'Mono',weight:700,fine:1,fill:'#C0262D'})}
+    t.attr({filter:'url(#shadow)'});return t}
   t.rect(size,size).move(cx-size/2,cy-size/2).radius(r).fill(m.hex).stroke({color:'#FFFFFF',width:size*.04});
   const k=size*.6/24;t.path(m.d).fill('#FFFFFF').attr({transform:`translate(${cx-12*k},${cy-12*k}) scale(${k})`});
   t.attr({filter:'url(#shadow)'});return t}
@@ -2342,7 +2373,7 @@ function logoLayer(){const ms=(P.logos||[]).filter(m=>!m.used);if(!ms.length)ret
   const words=[];document.querySelectorAll('text').forEach(el=>{const r=el.getBoundingClientRect();if(r.width>1&&r.height>1)words.push(r)});
   const taken=[],h=size*.62;const clear=(x,y)=>[...words,...taken].every(r=>x+h<r.left-4||x-h>r.right+4||y+h<r.top-4||y-h>r.bottom+4);
   ms.forEach((m,i)=>{const c=[[f.x+f.rx*.85,f.y-f.ry*.85],[f.x-f.rx*.85,f.y-f.ry*.85],[f.x+f.rx*1.1,f.y],[f.x-f.rx*1.1,f.y],[f.x+f.rx*.85,f.y+f.ry*.85],
-      [W-size*1.2,H*.22],[W-size*1.2,H*.5],[W-size*1.2,H-size*1.6],[size*1.2,H*.22],[size*1.2,H-size*1.6]].map(([x,y])=>[Math.min(W-size*.7,Math.max(size*.7,x+i*size*1.15)),Math.min(H-size*.8,Math.max(size*.8,y))]);
+      [W-size*1.2,H*.22],[W-size*1.2,H*.5],[W-size*1.2,H-size*1.6],[size*1.2,H*.22],[size*1.2,H-size*1.6]].map(([x,y])=>[Math.min(W-size*.9,Math.max(size*.9,x+i*size*1.15)),Math.min(H-size*.9,Math.max(size*.9,y))]);
     const [x,y]=c.find(([x,y])=>clear(x,y))||c[0];taken.push({left:x-h,right:x+h,top:y-h,bottom:y+h});
     const t=logoTile(L.front,m,x,y,size);t.attr({transform:`rotate(${i%2?6:-6},${x},${y})`});popIn(t,x,y,.55+i*.15,.4)})}
 
@@ -2358,7 +2389,7 @@ function companion(){const c=P.comp;if(!c)return;
   const g=picture(L.side,c,x,y,hh,{offset:true});slide(g,.25,-W*.25,0);
   const nm=(c.name||'').replace(/^person:/i,'');
   if(nm){const t=tag(L.side,nm,0,0,{bg:ACC,size:U*.024});const bb=t.bbox();
-    t.attr({transform:`translate(${Math.max(U*.03,x-bb.width/2)},${TALL?H*.6:y-hh-U*.06})`});slide(t,.6,-W*.1,0)}
+    t.attr({transform:`translate(${Math.max(U*.03,x-bb.width/2)},${TALL?H*.6:Math.max(U*.05,y-hh-U*.06)})`});slide(t,.6,-W*.1,0)}
   if(c.credit)mono(L.side,'Photo: '+c.credit,U*.03,H-U*.025,{size:U*.013,fill:DARK?'#BBBBBB':'#555555'})}
 
 // ---- the Johnny Harris layer: a red marker circle scribbled round the subject, an arrow, a handwritten note ----
