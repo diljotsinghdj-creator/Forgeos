@@ -508,9 +508,17 @@ def produce(screenplay: Path | str, dossier: Path | str, out_dir: Path | str, si
                                           + "\n\n## Keywords and tags\n\n" + ", ".join(tags), encoding="utf-8")
     (dirs["promo"] / "seo.json").write_text(json.dumps({"title": title, "description": "\n".join(desc), "tags": tags}, ensure_ascii=False, indent=1),
                                             encoding="utf-8")
-    cw, chh = cutdown_size
     made = []
-    for k, cd in enumerate(sp.get("cutdowns", []), 1):
+    # each cutdown in 9:16 (Shorts, Reels, TikTok) and, when the screenplay asks ("aspects": ["9:16", "1:1"]), in 1:1;
+    # every scene is drawn again at that shape (laid out for it), never cropped out of the 16:9 film
+    shapes = {"9:16": tuple(cutdown_size), "1:1": (cutdown_size[0], cutdown_size[0]), "4:5": (cutdown_size[0], cutdown_size[0] * 5 // 4)}
+    jobs = []
+    for n, cd in enumerate(sp.get("cutdowns", []), 1):
+        asp = [a for a in (cd.get("aspects") or sp.get("cutdown_aspects") or ["9:16"]) if a in shapes]
+        for a in asp or ["9:16"]:
+            jobs.append((n if a == "9:16" else f"{n}_{a.replace(':', 'x')}", cd, a))
+    for k, cd, aspect in jobs:
+        cw, chh = shapes[aspect]
         ids = [x for x in cd.get("scenes", []) if any(t["scene"] == x for t in timeline)]
         if not ids:
             continue
@@ -545,8 +553,8 @@ def produce(screenplay: Path | str, dossier: Path | str, out_dir: Path | str, si
         subprocess.run(["ffmpeg", "-nostdin", "-y", "-loglevel", "error", "-i", str(raw), "-vf", f"ass={ass}", "-c:a", "copy",
                         "-c:v", "libx264", "-crf", "19", "-preset", "veryfast", "-pix_fmt", "yuv420p", str(dst)], check=True, timeout=1800)
         _write_captions(ccues, dirs["promo"] / f"cutdown_{k}")
-        made.append({"file": dst.name, "title": cd.get("title", ""), "scenes": ids, "seconds": round(ctot, 1)})
-    (dirs["promo"] / "cutdowns.md").write_text("# Social cutdowns\n\n" + "\n".join(f"- **{m['file']}** ({m['seconds']}s, 9:16, captions burned in): "
+        made.append({"file": dst.name, "title": cd.get("title", ""), "scenes": ids, "seconds": round(ctot, 1), "aspect": aspect})
+    (dirs["promo"] / "cutdowns.md").write_text("# Social cutdowns\n\n" + "\n".join(f"- **{m['file']}** ({m['seconds']}s, {m['aspect']}, captions burned in): "
                                                                                    f"{m['title']}; scenes {', '.join(m['scenes'])}" for m in made),
                                                encoding="utf-8")
     step("thumbnail, SEO and cutdowns", note=f"{len(made)} cutdowns")

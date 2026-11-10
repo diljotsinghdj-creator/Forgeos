@@ -161,6 +161,9 @@ def _terms(s: str) -> list[str]:
     return [w for w in re.findall(r"[a-z]+", (s or "").lower()) if len(w) > 2 and w not in ("the", "and", "with", "view")]
 
 
+ARCHIVES = ("wikimedia", "nasa", "loc", "archive")
+
+
 def meta_score(c: dict, n: Need, frame: tuple[int, int]) -> dict:
     about = (str(c.get("about", "")) + " " + str(c.get("location", ""))).lower()
     sub = _terms(n.subject)
@@ -172,9 +175,12 @@ def meta_score(c: dict, n: Need, frame: tuple[int, int]) -> dict:
     res = min(1.0, min(w, h) / max(1, n.min_side)) if w and h else 0.5
     ar, fr = (w / h if w and h else 1.6), frame[0] / frame[1]
     crop = min(ar / fr, fr / ar)
-    total = 0.4 * rel + (0.2 if geo else 0.0) + 0.15 * era + 0.15 * res + 0.1 * crop
+    # real archives first (MASTER_DIRECTIVES §5): for a specific person, place or event, an archive record of it beats
+    # an equally relevant stock picture; stock is never the default
+    arch = c.get("site") in ARCHIVES
+    total = 0.4 * rel + (0.2 if geo else 0.0) + 0.15 * era + 0.15 * res + 0.1 * crop + (0.1 if arch and n.specific and rel >= 0.5 else 0.0)
     return {"relevance": round(rel, 2), "geography": geo, "period": round(era, 2), "resolution": round(res, 2), "crop_kept": round(crop, 2),
-            "meta": round(total, 3)}
+            "archive": arch, "meta": round(total, 3)}
 
 
 def pixel_score(path: Path, palette: dict | None = None, prev: Path | None = None) -> dict:

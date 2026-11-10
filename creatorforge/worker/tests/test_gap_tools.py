@@ -192,10 +192,20 @@ def test_studio_end_to_end_reel_varies_its_cuts_and_passes_qc(tmp_path):
         return
     from creatorforge_worker.studio.produce import PLAIN_CUTS, produce
     data = Path(__file__).parent / "data" / "reel"
-    res = produce(data / "screenplay.json", data / "dossier.json", tmp_path / "out", size=(320, 180), fps=12,
+    sp = json.loads((data / "screenplay.json").read_text())
+    sp["cutdowns"] = [{"title": "End", "scenes": ["S5", "S6"], "aspects": ["9:16", "1:1"]}]
+    (tmp_path / "screenplay.json").write_text(json.dumps(sp))
+    res = produce(tmp_path / "screenplay.json", data / "dossier.json", tmp_path / "out", size=(320, 180), fps=12,
                   data_dir=tmp_path / "d", cutdown_size=(180, 320), progress=lambda *a, **k: None)
     assert res["deliverables_missing"] == [] and Path(res["file"]).stat().st_size > 20000
     tl = json.loads((tmp_path / "out" / "timeline" / "timeline.json").read_text())
     cuts = [t["transition_in"] for t in tl]
     assert all(not (a == b and a in PLAIN_CUTS) for a, b in zip(cuts, cuts[1:])), cuts
     assert "every line is at least" in (tmp_path / "out" / "qc" / "report.md").read_text()
+    from creatorforge_worker.media import ff
+    promo = tmp_path / "out" / "promo"
+    def wh(f):
+        v = next(x for x in ff.probe(f)["streams"] if x["codec_type"] == "video")
+        return v["width"], v["height"]
+    assert wh(promo / "cutdown_1.mp4") == (180, 320) and wh(promo / "cutdown_1_1x1.mp4") == (180, 180)
+    assert "[RETENTION & MISTAKE AUDIT]" in (tmp_path / "out" / "writing" / "retention_audit.md").read_text()

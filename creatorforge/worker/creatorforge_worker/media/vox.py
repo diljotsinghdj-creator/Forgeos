@@ -1571,7 +1571,7 @@ html,body{margin:0;padding:0;background:%PAPER%;overflow:hidden}
 svg{display:block}
 </style><script>%SVGJS%</script><script>%HAND%</script><script>%ILLU%</script></head><body><script>
 const P=%PLAN%, W=%W%, H=%H%, DUR=%DUR%, K=%KIT%;
-const TALL=H>W, U=Math.min(W,H), ACC=K.acc, INK=K.ink, PAPER=K.paper, DARK=K.dark;
+const TALL=H>W, VERT=TALL||W<H*1.35, U=Math.min(W,H), ACC=K.acc, INK=K.ink, PAPER=K.paper, DARK=K.dark;
 // money drawings carry the currency the graphic's own figures are in (a dollar story never shows a rupee note)
 window.CUR=(JSON.stringify(P).match(/[$£€¥₹]/)||['₹'])[0];
 const ACT=K.dark?K.acc:(K.accText||K.acc);   // the accent as type on the paper: dark enough to read
@@ -1823,7 +1823,7 @@ function desk(){ // grid paper, a pen, stacked photo prints, a paperclip and a l
     const x=cx-h*.55,y=cy+h*.58;strip.attr({transform:`translate(${x},${y}) rotate(-3)`});slide(strip,.95,-W*.1,0)}
   const clip=L.front.group();clip.path(`M0 ${U*.12} L0 ${U*.02} Q0 0 ${U*.018} 0 Q${U*.036} 0 ${U*.036} ${U*.02} L${U*.036} ${U*.1}`).fill('none')
     .stroke({color:'#9AA0A6',width:U*.006,linecap:'round'});clip.attr({transform:`translate(${cx-h*.48},${cy-h*.56})`});wipe(clip,.9);
-  if(P.note){const nx=TALL?W*.12:cx+h*.62,ny=TALL?cy+h*.95:cy-h*.4;const t=T(L.front,P.note,U*.032,nx,ny,{family:'Mono',weight:700,anchor:'start',fill:INK});fit(t,W-nx-U*.05);wipe(t,1.2);
+  if(P.note){const side=!TALL&&W-(cx+h*.62)-U*.05>U*.34,nx=side?cx+h*.62:W*.12,ny=side?cy-h*.4:Math.min(H*.93,cy+h*.95);const t=T(L.front,P.note,U*.032,nx,ny,{family:'Mono',weight:700,anchor:'start',fill:INK});fit(t,W-nx-U*.05);wipe(t,1.2);
     const u=L.front.line(nx,ny+U*.04,nx,ny+U*.04).stroke({color:INK,width:U*.004});
     at(1.3,.5,p=>u.plot(nx,ny+U*.04,nx+t.bbox().width*p,ny+U*.04),E.inout)}}
 
@@ -1909,7 +1909,7 @@ function headline(){ // a torn newspaper headline with cut-outs around it, a big
 }
 
 function pinmap(){ // the country outline; the place highlighted; the headline clipping drops on the pin
-  const bx=P.box,ms=Math.min((TALL?W*.86:W*.5)/bx[0],(TALL?H*.42:H*.72)/bx[1]);const ox=(TALL?W/2:W*.34)-bx[0]*ms/2,oy=(TALL?H*.28:H*.42)-bx[1]*ms/2;
+  const bx=P.box,ms=Math.min((TALL?W*.86:W*.5)/bx[0],(TALL?H*.42:H*.72)/bx[1]);const ox=(TALL?W/2:W*.34)-bx[0]*ms/2,oy=Math.max(U*.1,(TALL?H*.28:H*.42)-bx[1]*ms/2);
   if(P.atlas)atlasSea();
   const m=L.back.group();P.shapes.forEach(r=>{m.polygon(r.map(q=>[ox+q[0]*ms,oy+q[1]*ms].join(',')).join(' ')).fill(P.pen?'#EFE3C2':P.atlas?(P.pin?'#EFE3C2':'#D9542C'):(P.pin?'#E2DBCC':ACC))
     .stroke({color:P.atlas?'#8E7E5C':'#9A9282',width:Math.max(1,U*.0016)})});if(P.atlas)depthOfField(m);m.opacity(0);at(0,.6,p=>m.opacity(p));
@@ -2022,17 +2022,17 @@ function enterTitle(g){const st=((P.seed||1)+(K.titleIn||0))%3,rows=g.children()
     at(.05+i*.09,.32,p=>m.width(Math.max(.1,(bb.width+U*.01)*p)),E.inout)})}
 function valLabel(g,s,x,y,o){o=o||{};const t=T(g,s,o.size||U*.045,x,y,{family:'Anton',weight:400,fill:o.fill||FG,anchor:o.anchor||'middle'});return t}
 function seats(){ // the semicircle of dots, filled in party order; the majority line
-  chartTitle(P.title);const n=P.total;const cx=W/2,cy=TALL?H*.5:H*.7;const R1=TALL?W*.44:Math.min(W*.36,H*.52),R0=R1*.42;
+  chartTitle(P.title);const n=P.total;const cx=W/2,cy=TALL?H*.5:VERT?H*.62:H*.7;const R1=TALL?W*.44:Math.min(W*.36,H*.52),R0=R1*.42;
   let rows=1;while(true){let cap=0;for(let r=0;r<rows;r++){const rr=R0+(R1-R0)*(r+.5)/rows;cap+=Math.floor(Math.PI*rr/((R1-R0)/rows))}if(cap>=n||rows>30)break;rows++}
   const pts=[];for(let r=0;r<rows;r++){const rr=R0+(R1-R0)*(r+.5)/rows;const k=Math.floor(Math.PI*rr/((R1-R0)/rows));for(let i=0;i<k;i++){const a=Math.PI-(Math.PI*(i+.5)/k);pts.push([a,cx+Math.cos(a)*rr,cy-Math.sin(a)*rr])}}
   pts.sort((p,q)=>q[0]-p[0]);const dot=(R1-R0)/rows*.78;
   const cols=[ACC,DARK?'#E8E2D4':'#2B2B2B','#9A9A9A','#C9C1B0','#6E8CA8','#B5735A','#7A9A6E','#B9A35E'];
   let k=0;P.groups.forEach((g,gi)=>{const c=cols[gi%cols.length];const cnt=Math.round(g.value);const st=.3+gi*.45;
     for(let i=0;i<cnt&&k<pts.length;i++,k++){const p=pts[k];const d=L.hero.circle(dot).center(p[1],p[2]).fill(c);d.opacity(0);const t0=st+i/cnt*.9;at(t0,.08,q=>d.opacity(q),E.lin)}
-    const lx=TALL?W*.1:(gi%2?cx+R1+U*.04:cx-R1-U*.04),ly=TALL?cy+U*.08+gi*U*.07:cy-R1*.75+Math.floor(gi/2)*U*.12;
+    const lx=TALL?W*.1:VERT?W*(gi%2?.54:.08):(gi%2?cx+R1+U*.04:cx-R1-U*.04),ly=TALL?cy+U*.08+gi*U*.07:VERT?cy+U*.09+Math.floor(gi/2)*U*.07:cy-R1*.75+Math.floor(gi/2)*U*.12;
     const lg=L.front.group();lg.rect(U*.03,U*.03).move(0,-U*.015).fill(c);
     const tt=T(lg,`${g.label} — ${g.shown}`.toUpperCase(),U*.03,U*.045,0,{family:'Inter',weight:800,anchor:'start'});
-    const an=(TALL||gi%2)?'start':'end';if(an==='end'){lg.attr({transform:`translate(${lx-tt.bbox().width-U*.045},${ly})`})}else lg.attr({transform:`translate(${lx},${ly})`});
+    const an=(VERT||gi%2)?'start':'end';fit(tt,VERT&&!TALL?W*.36:W);if(an==='end'){lg.attr({transform:`translate(${lx-tt.bbox().width-U*.045},${ly})`})}else lg.attr({transform:`translate(${lx},${ly})`});
     wipe(lg,st+.4)});
   const ml=L.front.line(cx,cy-R1-U*.02,cx,cy-R0+U*.01).stroke({color:FG,width:U*.003,dasharray:`${U*.008} ${U*.006}`});wipe(ml,1.6);
   const mt=T(L.front,`MAJORITY ${P.majority}`,U*.024,cx,cy-R1-U*.045,{family:'Mono',weight:700});wipe(mt,1.7);
@@ -2083,7 +2083,7 @@ function stand(){ // figures standing on their bars, value boxes beside them
     const bx=TALL?x+bw*.05:x+bw+U*.03,by=TALL?base-h+U*.1:base-h+U*.05;box.attr({transform:`translate(${bx},${by})`});slide(box,st+.6,W*.03,0)});
   if(P.note){const t=T(L.front,P.note.toUpperCase(),U*.02,W/2,base+U*.035,{family:'Mono',weight:700});wipe(t,1.5)}}
 function fan(){ // curved bars around a photo disc, longest first
-  const vs=P.values,mx=vs[0].value;const cx=TALL?W/2:W*.4,cy=TALL?H*.42:H*.5,r0=TALL?W*.17:H*.2,rmax=TALL?W*.34:H*.44;
+  const vs=P.values,mx=vs[0].value;const cx=VERT?W/2:W*.4,cy=VERT?H*.42:H*.5,room=Math.min(cx,W-cx,cy,H-cy)-U*.05-Math.max(...vs.map(v=>String(v.label||'').length))*U*.022*.78,rmax=Math.min(VERT?W*.34:H*.44,room),r0=Math.min(VERT?W*.17:H*.2,rmax*.5);
   const a0=-Math.PI*.95,span=Math.PI*1.3,seg=span/vs.length;
   vs.forEach((v,i)=>{const r1=r0+(rmax-r0)*Math.sqrt(v.value/mx);const s0=a0+i*seg+seg*.04,s1=a0+(i+1)*seg-seg*.04;
     const arc=(rr,a)=>[cx+Math.cos(a)*rr,cy+Math.sin(a)*rr];const st=.3+i*.2;
@@ -2096,7 +2096,7 @@ function fan(){ // curved bars around a photo disc, longest first
     lt.attr({transform:`rotate(${(Math.cos(mid)>=0?mid:mid+Math.PI)*180/Math.PI},${lx},${ly})`});wipe(lt,st+.5)});
   const d=L.mid.circle(r0*1.9).center(cx,cy).fill(DARK?'#EEE':'#1C1C1C');popIn(d,cx,cy,.1);
   const pic=(P.pics||[])[0];if(pic&&pic.img){const g=picture(L.hero,pic,cx,cy+r0*1.05,r0*2.1);drop(g,.3,H*.2,0)}
-  if(P.title){const g=boxText(L.front,P.title,U*.06,TALL?W/2:W*.04,TALL?H*.8:H*.8,{anchor:TALL?'middle':'start',maxw:TALL?W*.86:W*.4,most:2});g.children().forEach((r,i)=>slide(r,.9+i*.15,-W*.05,0))}}
+  if(P.title){const g=boxText(L.front,P.title,U*.06,VERT?W/2:W*.04,VERT?H*.84:H*.8,{anchor:VERT?'middle':'start',maxw:VERT?W*.86:W*.4,most:2});g.children().forEach((r,i)=>slide(r,.9+i*.15,-W*.05,0))}}
 function trend(){ // the line chart; the picture fills the area under the line; labelled points
   chartTitle(P.title);const pts=P.points,n=pts.length,mx=Math.max(...pts.map(p=>p.value)),mn=0;
   const L0=W*(TALL?.1:.12),R0=W*(TALL?.9:.88),T0=TALL?H*.2:H*.22,B0=TALL?H*.62:H*.8;
@@ -2415,10 +2415,14 @@ function fxLayer(){const kind=P.fx;if(!kind)return()=>{};const g=draw.group();g.
 // ---- layouts: the same scene, composed another way ----
 function keepReadable(root){ // under a mirror, every word, photo and logo flips back in place so nothing reads backwards
   const els=[];root.node.querySelectorAll('text,image,.keep').forEach(n=>{if(!n.parentNode.closest||!n.parentNode.closest('.keep'))els.push(n)});
-  els.forEach(n=>{let b;try{b=n.getBBox()}catch(e){return}let cx=b.x+b.width/2,cy=b.y+b.height/2;
-    const m=n.transform&&n.transform.baseVal.consolidate();if(m){const q=m.matrix;cx=q.a*(b.x+b.width/2)+q.c*cy+q.e}
-    const w=document.createElementNS('http://www.w3.org/2000/svg','g');w.setAttribute('transform',`matrix(-1,0,0,1,${2*cx},0)`);
-    n.parentNode.insertBefore(w,n);w.appendChild(n)})}
+  els.forEach(n=>{const w=document.createElementNS('http://www.w3.org/2000/svg','g');n.parentNode.insertBefore(w,n);w.appendChild(n);
+    FLIPS.push([n,w])});reflip()}
+// the flip-back axis follows the element: an animated word (sliding in) is re-centred every frame, so it lands where
+// the mirrored design puts it instead of where it started
+const FLIPS=[];
+function reflip(){FLIPS.forEach(([n,w])=>{let b;try{b=n.getBBox()}catch(e){return}let cx=b.x+b.width/2;const cy=b.y+b.height/2;
+  const m=n.transform&&n.transform.baseVal.consolidate();if(m){const q=m.matrix;cx=q.a*(b.x+b.width/2)+q.c*cy+q.e}
+  w.setAttribute('transform',`matrix(-1,0,0,1,${2*cx},0)`)})}
 function layout(){const lay=K.lay||'base';
   if(lay==='mirror'){STAGE.attr({transform:`matrix(-1,0,0,1,${W},0)`});keepReadable(STAGE);if(FOCUS)FOCUS.x=W-FOCUS.x}
   else if(lay==='card'){ // the graphic printed on a card, lying a little crooked on a desk
@@ -2517,13 +2521,13 @@ function heatmap(){ // countries shaded by their number, labelled, with a scale
 // ---- evidence, tables, interviews, end card ----
 function greek(g,x,y,w,rows,rh,col){for(let i=0;i<rows;i++){const ww=w*(i===rows-1?.55:.86+((i*37)%13)/100);g.rect(ww,rh*.34).move(x,y+i*rh).fill(col||'#B9B4A8')}}
 function courtdoc(){ // a page of the judgment: court, case, the paragraph in its own words, highlighted as it is read
-  const pw=TALL?W*.86:Math.min(W*.56,H*1.0),ph=TALL?H*.74:H*.9,px=TALL?(W-pw)/2:W*.07,py=TALL?H*.16:H*.07;const page=L.hero.group();
+  const pw=VERT?W*.86:Math.min(W*.56,H*1.0),ph=VERT?H*.74:H*.9,px=VERT?(W-pw)/2:W*.07,py=VERT?H*.16:H*.07;const page=L.hero.group();
   page.rect(pw,ph).move(px+U*.012,py+U*.012).fill('#00000030');page.rect(pw,ph).move(px,py).fill('#FBF9F3').stroke({color:'#B9B4A8',width:U*.002});
   const cx=px+pw/2,m=pw*.09;fit(T(page,P.court.toUpperCase(),U*.026,cx,py+ph*.07,{family:'Playfair',weight:700,fill:'#1A1A1A',ls:'.12em'}),pw*.82);
   page.line(px+m,py+ph*.105,px+pw-m,py+ph*.105).stroke({color:'#1A1A1A',width:U*.002});page.line(px+m,py+ph*.112,px+pw-m,py+ph*.112).stroke({color:'#1A1A1A',width:U*.001});
   const cs=lines(P.case,U*.022,pw*.8,'Playfair',700,2);cs.forEach((l,i)=>T(page,l,U*.022,cx,py+ph*.155+i*U*.028,{family:'Playfair',weight:700,fill:'#1A1A1A',italic:true}));
   let y=py+ph*.25;const rh=U*.03;greek(page,px+m,y,pw-2*m,3,rh);y+=rh*3.6;
-  const qs=TALL?U*.036:U*.03,ql=lines(P.quote,qs,pw-2*m-U*.05,'Playfair',400,7);const q0=y;
+  const qs=VERT?U*.036:U*.03,ql=lines(P.quote,qs,pw-2*m-U*.05,'Playfair',400,7);const q0=y;
   ql.forEach((l,i)=>{const t=T(L.front,l,qs,px+m+U*.05,y+i*qs*1.42,{family:'Playfair',weight:400,anchor:'start',fill:'#111'});const bb=t.bbox();
     highlight(L.front,bb,1.0+i*.42,mix('#FBF9F3',ACC,.55));t.front()});
   const num=(P.ref.match(/(?:para(?:graph)?\.?\s*)(\d+)/i)||[])[1];if(num)T(page,num+'.',qs*.8,px+m,q0,{family:'Playfair',weight:700,anchor:'start',fill:'#1A1A1A'});
@@ -2531,7 +2535,7 @@ function courtdoc(){ // a page of the judgment: court, case, the paragraph in it
   if(P.ref)T(page,P.ref.toUpperCase(),U*.016,px+pw-m,py+ph*.955,{family:'Mono',weight:700,anchor:'end',fill:'#555'});
   page.attr({transform:`rotate(-1.2,${cx},${py+ph/2})`});drop(page,.1,H*.3,-3);
   FOCUS={x:cx,y:q0+ql.length*qs*.7,rx:pw*.5,ry:Math.max(U*.08,ql.length*qs*.9)};
-  if(!TALL){const sx=px+pw+W*.05,sw=W-sx-W*.05;const k=T(L.front,'IN THE COURT\'S WORDS',U*.022,sx,H*.3,{family:'Inter',weight:800,anchor:'start',ls:'.16em',fill:K.mark||'#C0262D'});wipe(k,.6);
+  if(!VERT){const sx=px+pw+W*.05,sw=W-sx-W*.05;const k=T(L.front,'IN THE COURT\'S WORDS',U*.022,sx,H*.3,{family:'Inter',weight:800,anchor:'start',ls:'.16em',fill:K.mark||'#C0262D'});wipe(k,.6);
     const b=boxText(L.front,(P.case||P.court).split(/ v\.? /i)[0],U*.05,sx,H*.4,{anchor:'start',maxw:sw,most:3});wipe(b,.8)}}
 function table(){ // a data table that fills row by row
   chartTitle(P.title);const hd=P.head,rows=P.rows,nc=hd.length,nr=rows.length;const tw=W*(TALL?.9:.74),x0=(W-tw)/2,y0=TALL?H*.2:H*.22;
@@ -2549,11 +2553,13 @@ function interview(){ // the speaker, a lower third with name and role, the pull
   const pic=(P.pics||[])[0];const px=TALL?W*.5:W*.26,ph=TALL?H*.46:H*.88,base=TALL?H*.56:H;
   const disc=L.back.circle(U*.62).center(px,base-ph*.5).fill(ACC).opacity(.9);popIn(disc,px,base-ph*.5,.05,.5);
   const g=picture(L.hero,pic,px,base,ph);drop(g,.2,H*.2,-2);
-  const ly=TALL?H*.565:H*.8,lx=TALL?W*.06:W*.05,lw=TALL?W*.88:W*.42;const lt=L.front.group().addClass('keep');
-  lt.rect(lw,U*.075).move(lx,ly).fill(INK);lt.rect(U*.012,U*.075).move(lx,ly).fill(ACC);
-  fit(T(lt,P.name.toUpperCase(),U*.036,lx+U*.035,ly+U*.038,{family:'Inter',weight:800,anchor:'start',fill:'#FFFFFF',ls:'.04em'}),lw*.9);
-  if(P.role){lt.rect(lw*.86,U*.046).move(lx,ly+U*.075).fill('#FBF8F0').stroke({color:INK,width:U*.002});
-    fit(T(lt,P.role,U*.021,lx+U*.035,ly+U*.099,{family:'Mono',weight:700,anchor:'start',fill:INK}),lw*.8)}
+  const lw=TALL?W*.88:Math.max(W*.42,U*.62),ns=U*.036,rs=U*.028,nl=lines(P.name.toUpperCase(),ns,lw*.86,'Inter',800,2),
+    rl=P.role?lines(P.role,rs,lw*.8,'Mono',700,2):[],nh=U*.04+nl.length*ns*1.15,rh=rl.length?U*.022+rl.length*rs*1.3:0;
+  const ly=TALL?H*.565:Math.min(H*.8,H*.97-nh-rh),lx=TALL?W*.06:W*.05;const lt=L.front.group().addClass('keep');
+  lt.rect(lw,nh).move(lx,ly).fill(INK);lt.rect(U*.012,nh).move(lx,ly).fill(ACC);
+  nl.forEach((l,i)=>fit(T(lt,l,ns,lx+U*.035,ly+U*.02+ns*.58+i*ns*1.15,{family:'Inter',weight:800,anchor:'start',fill:'#FFFFFF',ls:'.04em'}),lw*.9));
+  if(rl.length){lt.rect(lw*.92,rh).move(lx,ly+nh).fill('#FBF8F0').stroke({color:INK,width:U*.002});
+    rl.forEach((l,i)=>fit(T(lt,l,rs,lx+U*.035,ly+nh+U*.011+rs*.65+i*rs*1.3,{family:'Mono',weight:700,anchor:'start',fill:INK}),lw*.86))}
   slide(lt,.7,-W*.12,0);
   const qx=TALL?W*.08:W*.52,qy=TALL?H*.68:H*.26,qw=TALL?W*.84:W*.42,qs=TALL?U*.05:U*.052;
   const mk=T(L.front,'“',qs*3.2,qx-U*.008,qy,{family:'Playfair',weight:900,anchor:'start',fill:ACC});wipe(mk,.9);
@@ -2832,18 +2838,23 @@ async function boot(){
   (SCENES[P.type]||hero)();logoLayer();markerLayer();badgeLayer();srcLayer();insetLayer();layout();companion();
   const film=filmLayer(),fx=fxLayer(),voice=voiceLayer();
   window.frame=function(t){camera(t);const tq=Math.floor(t*12+1e-6)/12;   // the hand-made 12 fps stutter
-    for(const k of tracks){const p=Math.max(0,Math.min(1,(tq-k.start)/k.dur));k.fn(k.e(p))}film(t,tq);fx(t);voice(t);
+    for(const k of tracks){const p=Math.max(0,Math.min(1,(tq-k.start)/k.dur));k.fn(k.e(p))}if(FLIPS.length)reflip();film(t,tq);fx(t);voice(t);
     const w=TICKS.map(f=>f(t)).filter(Boolean);return w.length?Promise.all(w):undefined};   // photo / footage: every real frame
   // the page measures what the viewer will read (motion.capture calls it once everything has landed):
   // text under 2.6% of the frame's short side is too small on a phone; text past the frame edge is cut off
   window.QA=function(){const small=[],cut=[],floor=U*.026;
-    document.querySelectorAll('text').forEach(el=>{const s=(el.textContent||'').trim();if(!s||/^(SOURCE|PHOTO|IMAGERY|MAP|DATA)[: ]|©/i.test(s))return;
+    document.querySelectorAll('text').forEach(el=>{const s=(el.textContent||'').trim();if(!s||/^(SOURCES?|PHOTO|IMAGERY|MAPS?|DATA|OUTLINES|CREDIT)[: ]|©/i.test(s))return;
       let o=1;for(let n=el;n&&n.getAttribute;n=n.parentNode){const v=n.getAttribute('opacity');if(v!==null)o*=parseFloat(v)||0;
         const st=n.style&&n.style.opacity;if(st!=='')o*=parseFloat(st)}
-      if(o<.5)return;const r=el.getBoundingClientRect();if(r.width<1||r.height<1)return;
+      if(o<.5||el.closest('[clip-path]'))return;const r=el.getBoundingClientRect();   // clipped copies (a lens) are only seen inside the clip
+if(r.width<1||r.height<1)return;
       const m=el.getScreenCTM(),fs=parseFloat(el.getAttribute('font-size')||getComputedStyle(el).fontSize)||0,px=fs*(m?Math.hypot(m.a,m.b):1);
       if(px&&px<floor)small.push(s.slice(0,40)+' ('+px.toFixed(0)+'px)');
-      if(r.left<-2||r.top<-2||r.right>W+2||r.bottom>H+2)cut.push(s.slice(0,40))});
+      // the ink, not the font's line box: tall display faces (Anton, Oswald) carry a lot of empty ascent
+      let top=r.top,bot=r.bottom;try{const cs=getComputedStyle(el),c=QA.cx||(QA.cx=document.createElement('canvas').getContext('2d'));
+        c.font=`${cs.fontStyle} ${cs.fontWeight} 100px ${cs.fontFamily}`;const mm=c.measureText(s),fa=mm.fontBoundingBoxAscent,fd=mm.fontBoundingBoxDescent;
+        if(fa&&fd){const k=r.height/(fa+fd),base=r.top+fa*k;top=base-mm.actualBoundingBoxAscent*k;bot=base+mm.actualBoundingBoxDescent*k}}catch(e){}
+      if(r.left<-2||top<-2||r.right>W+2||bot>H+2)cut.push(s.slice(0,40))});
     return {text_below_floor:small.slice(0,8),text_cut_off:cut.slice(0,8)}};
   window.frame(0);window.READY=true}
 boot();

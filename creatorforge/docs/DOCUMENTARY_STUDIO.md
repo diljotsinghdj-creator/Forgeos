@@ -13,7 +13,8 @@ python -m creatorforge_worker.studio films/<id>/screenplay.json films/<id>/dossi
 | # | Step | Module | Stops the film when |
 |---|---|---|---|
 | 1-3 | Research, verification | `research.py` (search provider + model), `dossier.py` | a claim has no URL, "verified" rests on one source, "disputed" has no other side |
-| 4-6 | Story, structure, script | `writer.write()` (model) or a hand-written screenplay | - |
+| 0 | Pitch | `writer.pitch()`: three narrative engines, never the channel's last one | no script until the owner picks |
+| 4-6 | Story, structure, script | `writer.write(engine=<the pick>)` (model) or a hand-written screenplay | - |
 | 7 | Editorial review | `writer.check()` | a figure said or shown is not in the scene's cited evidence; a reported / estimated / disputed / alleged claim is stated as fact; a claim is unverified; a graphic can't be drawn; the film doesn't open on a hook or end on an ending |
 | 8-10 | Narration, timing | `voice.py` (Kokoro, one file per scene) | - |
 | 11-12 | Storyboard, art direction | `produce.py`, `artdirection.py` | - |
@@ -21,7 +22,8 @@ python -m creatorforge_worker.studio films/<id>/screenplay.json films/<id>/dossi
 | 21-22 | Sound, music | `media/sfx.py`, `media/ambience.py`, `score.py` | - |
 | 23 | Captions | `produce.captions()` (cut on the narrator's own breaths) | - |
 | 24-28 | Visual and factual QC, watch-through | `produce.py` + `media/quality.py` | reported in `qc/report.md` |
-| 29 | Export | `produce.py` | a deliverable is missing (listed in `README.md`) |
+| 7b | Retention and mistake audit | `writer.retention_audit()` writes `writing/retention_audit.md` | - (a person writes the rewrites) |
+| 29 | Export | `produce.py`; cutdowns in 9:16, plus 1:1 or 4:5 when a cutdown lists `"aspects"`, every scene redrawn for that shape | a deliverable is missing (listed in `README.md`) |
 
 ## What makes each film different
 
@@ -33,6 +35,8 @@ python -m creatorforge_worker.studio films/<id>/screenplay.json films/<id>/dossi
   drift, push or pull), drawn graphics at 12 fps or the full frame rate, the breath after each line, and the music
   treatment (drone, pulse or sparse).
 * The screenplay chooses the graphics line by line, and the engine rotates layouts per graphic type.
+* `writer.novelty()` checks a new film against the studio history and the used-mechanics table in
+  `channels/BRAIN_LOG.md` (`studio/brainlog.py` appends patches and rows).
 
 ## Truthfulness rules built in
 

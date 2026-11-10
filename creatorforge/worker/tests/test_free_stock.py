@@ -169,7 +169,8 @@ def test_photo_sources_order(cfg):
     from creatorforge_worker import providers
     providers.set_stock_key("job-x", {"provider": "pixabay", "key": "pk", "unsplash": "uk"})
     cfg.free_stock = True
-    assert providers.photo_sources("job-x", cfg) == [("unsplash", "uk"), ("pixabay", "pk"), ("openverse", "")]
+    assert providers.photo_sources("job-x", cfg) == [("unsplash", "uk"), ("pixabay", "pk"), ("openverse", ""), ("wikimedia", ""),
+                                                        ("nasa", ""), ("loc", "")]
     assert providers.stock_sources("job-x", cfg) == [("pixabay", "pk"), ("nasa", ""), ("wikimedia", "")]
 
 

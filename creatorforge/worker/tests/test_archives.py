@@ -69,3 +69,14 @@ def test_studio_searches_archives_with_no_keys(monkeypatch):
     assert names[:4] == ["wikimedia", "nasa", "loc", "archive"] and "openverse" in names
     monkeypatch.setenv("CF_FREE_STOCK", "0")
     assert produce.asset_sources() == []
+
+
+def test_an_archive_record_beats_an_equal_stock_picture_for_a_specific_subject():
+    from creatorforge_worker.studio import assets
+    n = assets.Need(scene="S1", film="f", subject="Aral Sea harbour", kind="photo", place="Moynaq", specific=True)
+    pic = {"about": "Aral Sea harbour, Moynaq", "width": 3000, "height": 2000}
+    a = assets.meta_score({**pic, "site": "wikimedia"}, n, (1920, 1080))
+    s = assets.meta_score({**pic, "site": "pixabay"}, n, (1920, 1080))
+    assert a["archive"] and a["meta"] > s["meta"]
+    g = assets.Need(scene="S1", film="f", subject="harbour", kind="photo")
+    assert assets.meta_score({**pic, "site": "wikimedia"}, g, (1920, 1080))["meta"] == assets.meta_score({**pic, "site": "pixabay"}, g, (1920, 1080))["meta"]
