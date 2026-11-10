@@ -2071,7 +2071,8 @@ function stack(){
     const st=.25+i*.25;g.opacity(0);at(st,.6,p=>{g.opacity(1);g.attr({transform:`translate(0,${h*(1-p)})`})},E.back);
     if(v.value===mx)FOCUS={x:x+bw/2,y:base-h*.55,rx:bw*.95,ry:Math.max(h*.6,U*.08)};
     const lm=(P.logos||[]).find(m=>!m.used&&v.label&&(m.title.toLowerCase()===v.label.toLowerCase()||m.key===v.label.toLowerCase()));
-    if(lm){lm.used=true;const sz=Math.min(bw*.8,U*.1),ty=base-h-U*.12-sz/2;const t=logoTile(L.front,lm,x+bw/2,ty,sz);popIn(t,x+bw/2,ty,st+.55,.35)}
+    if(lm){lm.used=true;const sz=Math.min(bw*.8,U*.1);let tx=x+bw/2,ty=base-h-U*.12-sz/2;if(ty-sz/2<(TALL?H*.16:H*.2)){tx=x+bw+sz*.75;ty=base-h+sz*.7}   // a tall bar: beside its top, clear of the title
+      const t=logoTile(L.front,lm,tx,ty,sz);popIn(t,tx,ty,st+.55,.35)}
     const lb=valLabel(L.front,v.shown,x+bw/2,base-h-U*.05,{fill:v.value===mx?FG:FG});wipe(lb,st+.5);
     if(v.label){const t=T(L.front,v.label.toUpperCase(),U*.026,x+bw/2,base+U*.035,{family:'Inter',weight:800,ls:'.08em'});fit(t,gap*.95);wipe(t,st+.3)}})}
 function stand(){ // figures standing on their bars, value boxes beside them
@@ -2337,7 +2338,12 @@ function logoTile(g,m,cx,cy,size){const t=g.group();const r=size*.22;
   t.attr({filter:'url(#shadow)'});return t}
 function logoLayer(){const ms=(P.logos||[]).filter(m=>!m.used);if(!ms.length)return;
   const f=FOCUS||{x:W*.7,y:H*.35,rx:U*.1,ry:U*.1};const size=U*(TALL?.13:.12);
-  ms.forEach((m,i)=>{let x=f.x+f.rx*.85+i*size*1.15,y=f.y-f.ry*.85;x=Math.min(W-size*.7,Math.max(size*.7,x));y=Math.max(size*.8,y);
+  // a logo never covers words: try spots round the subject, then the frame's corners, and take the first that is clear
+  const words=[];document.querySelectorAll('text').forEach(el=>{const r=el.getBoundingClientRect();if(r.width>1&&r.height>1)words.push(r)});
+  const taken=[],h=size*.62;const clear=(x,y)=>[...words,...taken].every(r=>x+h<r.left-4||x-h>r.right+4||y+h<r.top-4||y-h>r.bottom+4);
+  ms.forEach((m,i)=>{const c=[[f.x+f.rx*.85,f.y-f.ry*.85],[f.x-f.rx*.85,f.y-f.ry*.85],[f.x+f.rx*1.1,f.y],[f.x-f.rx*1.1,f.y],[f.x+f.rx*.85,f.y+f.ry*.85],
+      [W-size*1.2,H*.22],[W-size*1.2,H*.5],[W-size*1.2,H-size*1.6],[size*1.2,H*.22],[size*1.2,H-size*1.6]].map(([x,y])=>[Math.min(W-size*.7,Math.max(size*.7,x+i*size*1.15)),Math.min(H-size*.8,Math.max(size*.8,y))]);
+    const [x,y]=c.find(([x,y])=>clear(x,y))||c[0];taken.push({left:x-h,right:x+h,top:y-h,bottom:y+h});
     const t=logoTile(L.front,m,x,y,size);t.attr({transform:`rotate(${i%2?6:-6},${x},${y})`});popIn(t,x,y,.55+i*.15,.4)})}
 
 // ---- the papercut companion: a public figure named in the line, cut out of a real photo, beside the infographic ----
