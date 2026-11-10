@@ -41,7 +41,7 @@ KINDS = ("hero", "desk", "pinboard", "opener", "reveal", "clipping", "pinmap", "
          "seats", "stack", "stand", "fan", "trend", "slice", "route", "compare", "photoline", "tv",
          "clockmap", "tornsplit", "newscard", "blueprint", "pyramid", "flowchart", "linkmap", "orgchart", "heatmap",
          "courtdoc", "table", "interview", "endcard", "polltrack", "area", "candles", "arrows", "railmap", "sizemap",
-         "borders", "morph", "shrink", "photo", "photos", "footage", "satellite", "flowmap", "columns", "dots", "myth")
+         "borders", "morph", "shrink", "photo", "photos", "footage", "satellite", "flowmap", "columns", "dots", "myth", "counter", "staircase", "scale")
 
 
 # A look per video, so no two films share one face: paper, type, map colours and marker pen differ, the method doesn't.
@@ -1238,6 +1238,39 @@ def parse_myth(spec: str) -> dict | None:
             "label": (parts[2] if len(parts) > 2 and parts[2] else "MYTH")[:14], "seed": _seed(spec) % 10000}
 
 
+def parse_counter(spec: str) -> dict | None:
+    """Counter: <from> → <to> | <unit> | <caption>: a number counting up or down in steady digits, then holding."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    m = re.match(r"\s*([^\d\-]*)(-?[\d,]*\.?\d+)\s*(?:→|->|to)\s*([^\d\-]*)(-?[\d,]*\.?\d+)\s*(\S*)\s*$", parts[0] if parts else "")
+    if not m:
+        return None
+    a, b = m.group(2).replace(",", ""), m.group(4).replace(",", "")
+    dec = max(len(a.split(".")[1]) if "." in a else 0, len(b.split(".")[1]) if "." in b else 0)
+    return {"type": "counter", "from": float(a), "to": float(b), "dec": dec, "comma": "," in m.group(4),
+            "pre": (m.group(3) or m.group(1)).strip()[:3], "post": m.group(5)[:10],
+            "unit": parts[1][:60] if len(parts) > 1 else "", "caption": parts[2][:80] if len(parts) > 2 else "",
+            "seed": _seed(spec) % 10000}
+
+
+def parse_staircase(spec: str) -> dict | None:
+    """Staircase: <step>; <step>; <step> | <title>: steps that light up one after another as the story climbs them."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    steps = [x.strip()[:48] for x in re.split(r";|→|->", parts[0] if parts else "") if x.strip()][:6]
+    if len(steps) < 2:
+        return None
+    return {"type": "staircase", "steps": steps, "title": parts[1][:60] if len(parts) > 1 else "", "seed": _seed(spec) % 10000}
+
+
+def parse_scale(spec: str) -> dict | None:
+    """Scale: <weight>, <weight>, ... | <the other side> | <verdict>: a balance tipping as weights pile on one pan."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    left = [x.strip()[:34] for x in re.split(r",|;|·", parts[0] if parts else "") if x.strip()][:5]
+    if not left or len(parts) < 2 or not parts[1]:
+        return None
+    return {"type": "scale", "left": left, "right": parts[1][:34], "verdict": parts[2][:40] if len(parts) > 2 else "",
+            "seed": _seed(spec) % 10000}
+
+
 def _photo_parser(kind):
     def parse(spec: str) -> dict | None:
         from . import photo
@@ -1271,6 +1304,7 @@ DATAMAP_KINDS = ("flowmap", "columns", "dots")
 PARSERS.update({k: _ext_parser("datamap", k) for k in DATAMAP_KINDS})
 PARSERS["satellite"] = _ext_parser("satellite", "satellite")
 PARSERS["myth"] = parse_myth
+PARSERS.update({"counter": parse_counter, "staircase": parse_staircase, "scale": parse_scale})
 
 
 _LOGOS: dict | None = None
@@ -1904,6 +1938,55 @@ function myth(){ // a myth turned over: the wrong idea struck through in marker,
   const sx=W*(TALL?.68:.76),sy=y0-big*1.05;stp.attr({transform:`translate(${sx},${sy}) rotate(-8)`});popIn(stp,sx,sy,1.32,.2);
   const ty=y0+ls.length*big*1.3+U*.05,tr=boxText(L.front,P.right,TALL?U*.058:U*.052,W/2,ty,{anchor:'middle',maxw:W*.86,most:3});
   tr.opacity(0);at(1.95,.3,p=>tr.opacity(p),E.snap);FOCUS={x:W/2,y:ty+U*.04,rx:W*.32,ry:U*.08}}
+function counter(){ // a number counting in steady digits (each digit in its own fixed slot, so nothing jitters), then holding
+  const big=TALL?W*.24:H*.3,g=L.hero.group(),num=v=>{let s=Math.abs(v).toFixed(P.dec);if(P.comma){const [i,f]=s.split('.');s=i.replace(/\B(?=(\d{3})+(?!\d))/g,',')+(f?'.'+f:'')}
+    return (v<0?'-':'')+s};
+  const probe=T(g,'0',big,0,0,{family:'Anton',weight:400});const adv=probe.bbox().width*1.04;probe.remove();
+  const n=Math.max(num(P.from).length,num(P.to).length),y=TALL?H*.42:H*.46;
+  const pre=P.pre?T(g,P.pre,big,0,y,{family:'Anton',weight:400,fill:ACT,anchor:'end'}):null,post=P.post?T(g,P.post,big*(P.post.length>2?.5:1),0,y,{family:'Anton',weight:400,fill:ACT,anchor:'start'}):null;
+  const pw=pre?pre.bbox().width:0,qw=post?post.bbox().width+big*.06:0,x0=W/2-(adv*n+pw+qw)/2+pw;
+  if(pre)pre.attr({x:x0});if(post)post.attr({x:x0+adv*n+big*.06});
+  const slots=[];for(let i=0;i<n;i++)slots.push(T(g,'',big,x0+adv*(i+.5),y,{family:'Anton',weight:400,fill:ACT}));
+  const show=v=>{const s=num(v).padStart(n,' ');for(let i=0;i<n;i++){const c=s[i]===' '?'':s[i];if(slots[i].text()!==c)slots[i].text(c)}};
+  show(P.from);const span=Math.min(1.6,Math.max(1.2,DUR*.3));fit(g,W*.92);
+  TICKS.push(t=>{const p=Math.max(0,Math.min(1,(t-.35)/span)),e=1-Math.pow(1-p,4);show(P.from+(P.to-P.from)*e)});
+  if(P.unit){const u=T(L.front,P.unit.toUpperCase(),U*.03,W/2,y+big*.62,{family:'Mono',weight:700,fill:FG,ls:'.2em'});fit(u,W*.86);wipe(u,.4)}
+  if(P.caption){const c=boxText(L.front,P.caption,U*.045,W/2,TALL?H*.72:H*.8,{anchor:'middle',maxw:W*.84,most:2});c.opacity(0);at(.35+span+.15,.3,p=>c.opacity(p),E.snap)}
+  FOCUS={x:W/2,y:y-big*.35,rx:Math.min(W*.4,(adv*n+pw+qw)*.62),ry:big*.55}}
+function staircase(){ // isometric steps rising left to right; each one lights up as the story climbs it, the last in red
+  const n=P.steps.length,top=TALL?H*.3:H*.24,bot=TALL?H*.82:H*.86,left=W*.08,right=W*.92,sw=(right-left)/n,sh=(bot-top)/n,d=Math.min(sw,sh)*.35;
+  const g=L.hero.group(),red=K.mark||'#D7262B',seg=Math.max(.7,(DUR-1.6)/n),tops=[];
+  for(let i=0;i<n;i++){const x=left+i*sw,y=bot-(i+1)*sh;const st=g.group();
+    st.polygon([[x,y],[x+sw,y],[x+sw+d,y-d*.6],[x+d,y-d*.6]]).fill(DARK?'#2A2E36':'#FFFFFF').stroke({color:INK,width:U*.003});
+    const face=st.rect(sw,bot-y).move(x,y).fill(DARK?'#1A1D24':'#ECE7DC').stroke({color:INK,width:U*.003});
+    st.polygon([[x+sw,y],[x+sw+d,y-d*.6],[x+sw+d,bot-d*.6],[x+sw,bot]]).fill(DARK?'#11141A':'#D6D0C3').stroke({color:INK,width:U*.003});
+    slide(st,.1+i*.07,0,H*.05);tops.push({x,y,face});
+    const lit=st.rect(sw,sh*.18).move(x,y).fill(i===n-1?red:ACC).opacity(0);const t0=.8+i*seg;at(t0,.3,p=>lit.opacity(p),E.snap);
+    const lab=T(L.front,P.steps[i],U*.034,x+sw*.06,y+sh*.55,{family:'Inter',weight:800,fill:i===n-1?red:FG,anchor:'start'});fit(lab,sw*.9);
+    lab.opacity(0);at(t0+.1,.3,p=>lab.opacity(p),E.snap);const num=T(L.front,String(i+1).padStart(2,'0'),U*.028,x+sw*.06,y+sh*.25,{family:'Mono',weight:700,fill:FG});
+    num.opacity(0);at(t0,.2,p=>num.opacity(p),E.lin)}
+  if(P.title)chartTitle(P.title);const last=tops[n-1];FOCUS={x:last.x+sw/2,y:last.y+sh*.3,rx:sw*.7,ry:sh*.7}}
+function scale(){ // a balance: weights drop one by one onto the left pan, the beam tips, the other side is thrown off
+  const cx=W/2,py=TALL?H*.42:H*.4,arm=Math.min(W*.36,U*.62),g=L.hero.group(),red=K.mark||'#D7262B',n=P.left.length;
+  g.polygon([[cx-U*.05,H*.86],[cx+U*.05,H*.86],[cx,py]]).fill(INK);g.rect(U*.2,U*.018).move(cx-U*.1,H*.86).fill(INK);
+  const beam=g.group();beam.rect(arm*2,U*.014).move(cx-arm,py-U*.007).fill(INK);beam.circle(U*.03).center(cx,py).fill(ACC);
+  const panL=beam.group(),panR=beam.group();
+  const pan=(grp,x)=>{grp.line(x,py,x-U*.07,py+U*.16).stroke({color:INK,width:U*.003});grp.line(x,py,x+U*.07,py+U*.16).stroke({color:INK,width:U*.003});
+    grp.path(`M${x-U*.1} ${py+U*.16} Q${x} ${py+U*.22} ${x+U*.1} ${py+U*.16} Z`).fill(DARK?'#2A2E36':'#FFFFFF').stroke({color:INK,width:U*.004})};
+  pan(panL,cx-arm);pan(panR,cx+arm);
+  const rb=tag(panR,P.right,0,0,{size:U*.033,bg:'#FFFFFF'}),rw=rb.data('w')||U*.2,rs=Math.min(1,arm*.9/rw),rx=cx+arm-rw*rs/2+U*.02,ry=py+U*.095;rb.attr({transform:`translate(${rx},${ry}) scale(${rs})`});
+  const each=Math.max(.35,(DUR*.55)/n),tags=[];
+  P.left.forEach((w,i)=>{const tg=tag(panL,w,0,0,{size:U*.033,bg:ACC,ink:INK}),tw=tg.data('w')||U*.2,ts=Math.min(1,arm*.9/tw);tg.attr({transform:`translate(${cx-arm-tw*ts/2+U*.02},${py+U*.095-i*U*.065}) scale(${ts})`});drop(tg,.4+i*each,H*.3,((i*37)%9)-4);tags.push(tg)});
+  const tipAt=.4+n*each,ang=-14;
+  TICKS.push(t=>{const tq=Math.floor(t*12+1e-6)/12;const fill=Math.max(0,Math.min(1,(tq-.4)/(n*each)));
+    const settle=tq<tipAt?0:Math.min(1,(tq-tipAt)/.5);const a=ang*(fill*.35+ (settle>0?.65*(1-Math.pow(1-settle,3))*(1+.12*Math.sin(settle*9)*(1-settle)):0));
+    beam.attr({transform:`rotate(${a.toFixed(2)},${cx},${py})`});panL.attr({transform:`rotate(${(-a).toFixed(2)},${cx-arm},${py})`});
+    panR.attr({transform:`rotate(${(-a).toFixed(2)},${cx+arm},${py})`});
+    const fly=Math.max(0,Math.min(1,(tq-tipAt-.15)/.6));if(fly>0)rb.attr({transform:`translate(${rx+fly*W*.25},${ry-fly*H*.5}) rotate(${fly*40}) scale(${rs})`});rb.opacity(1-fly)});
+  if(P.verdict){const v=L.front.group(),word=T(v,P.verdict.toUpperCase(),U*.045,0,0,{family:'Anton',weight:400,fill:red,ls:'.06em'}),bb=word.bbox();
+    v.rect(bb.width+U*.04,bb.height+U*.02).move(bb.x-U*.02,bb.y-U*.01).fill('none').stroke({color:red,width:U*.005});
+    const vx=cx,vy=TALL?H*.2:H*.17;v.attr({transform:`translate(${vx},${vy}) rotate(-5)`});popIn(v,vx,vy,tipAt+.5,.22)}
+  FOCUS={x:cx-arm,y:py+U*.08,rx:U*.14,ry:U*.16}}
 function number(){ // a huge number; the subject breaks out of it
   const pic=(((P.pics||[])[0]||{}).img||((P.pics||[])[0]||{}).draw)?(P.pics||[])[0]:null;
   if(pic&&!TALL&&K.lay==='side')return numberSide(pic);const big=T(L.back,P.number,TALL?W*.42:H*(pic?.5:.56),W/2,pic?(TALL?H*.22:H*.3):(TALL?H*.34:H*.4),{family:'Anton',weight:400,fill:ACT});fit(big,W*.92);
@@ -2724,7 +2807,7 @@ function footage(){ // moving footage, frame by frame, with the same annotations
   if(P.annotate&&P.annotate.length){const a=P.annotate[0];FOCUS={x:a.p[0]*W,y:a.p[1]*H,rx:U*.1,ry:U*.1}}
   photoCredit()}
 
-const SCENES={myth,photo,photos,footage,shrink,morph,borders,courtdoc,table,interview,endcard,polltrack,area,candles,arrows,railmap,sizemap,pyramid,flowchart:flow,linkmap,orgchart,heatmap,hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv,
+const SCENES={myth,counter,staircase,scale,photo,photos,footage,shrink,morph,borders,courtdoc,table,interview,endcard,polltrack,area,candles,arrows,railmap,sizemap,pyramid,flowchart:flow,linkmap,orgchart,heatmap,hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv,
   clockmap,tornsplit,newscard,blueprint};
 async function boot(){
   try{await Promise.all(Array.from(document.fonts).map(f=>f.load()))}catch(e){}
@@ -2736,6 +2819,17 @@ async function boot(){
   window.frame=function(t){camera(t);const tq=Math.floor(t*12+1e-6)/12;   // the hand-made 12 fps stutter
     for(const k of tracks){const p=Math.max(0,Math.min(1,(tq-k.start)/k.dur));k.fn(k.e(p))}film(t,tq);fx(t);voice(t);
     const w=TICKS.map(f=>f(t)).filter(Boolean);return w.length?Promise.all(w):undefined};   // photo / footage: every real frame
+  // the page measures what the viewer will read (motion.capture calls it once everything has landed):
+  // text under 2.6% of the frame's short side is too small on a phone; text past the frame edge is cut off
+  window.QA=function(){const small=[],cut=[],floor=U*.026;
+    document.querySelectorAll('text').forEach(el=>{const s=(el.textContent||'').trim();if(!s||/^(SOURCE|PHOTO|IMAGERY|MAP|DATA)[: ]|©/i.test(s))return;
+      let o=1;for(let n=el;n&&n.getAttribute;n=n.parentNode){const v=n.getAttribute('opacity');if(v!==null)o*=parseFloat(v)||0;
+        const st=n.style&&n.style.opacity;if(st!=='')o*=parseFloat(st)}
+      if(o<.5)return;const r=el.getBoundingClientRect();if(r.width<1||r.height<1)return;
+      const m=el.getScreenCTM(),fs=parseFloat(el.getAttribute('font-size')||getComputedStyle(el).fontSize)||0,px=fs*(m?Math.hypot(m.a,m.b):1);
+      if(px&&px<floor)small.push(s.slice(0,40)+' ('+px.toFixed(0)+'px)');
+      if(r.left<-2||r.top<-2||r.right>W+2||r.bottom>H+2)cut.push(s.slice(0,40))});
+    return {text_below_floor:small.slice(0,8),text_cut_off:cut.slice(0,8)}};
   window.frame(0);window.READY=true}
 boot();
 </script></body></html>"""

@@ -638,9 +638,12 @@ def capture(html: Path, width: int, height: int, seconds: float, fps: int, out: 
                 pg.evaluate("document.fonts.ready")
                 if pg.evaluate("document.querySelectorAll('image').length"):
                     pg.wait_for_timeout(400)          # cut-out photos: let them decode before the first frame
+                qa_at, qa = max(0, frames - int(0.75 * fps) - 1), None
                 for i in range(frames):
                     pg.evaluate(f"window.frame({i / fps:.4f})")
                     enc.stdin.write(pg.screenshot(type="jpeg", quality=92))
+                    if i == qa_at:      # everything has landed and nothing has left yet: measure what the viewer reads
+                        qa = pg.evaluate("window.QA ? window.QA() : null")
             finally:
                 browser.close()
         enc.stdin.close()
@@ -654,4 +657,12 @@ def capture(html: Path, width: int, height: int, seconds: float, fps: int, out: 
         raise MediaError(f"motion render failed: {e}") from None
     if not out.is_file() or out.stat().st_size < 1000:
         raise MediaError("motion: empty output")
+    if qa:
+        import json as _json
+        f = out.with_suffix(".qa.json")
+        try:
+            prev = _json.loads(f.read_text(encoding="utf-8")) if f.is_file() else {}
+        except ValueError:
+            prev = {}
+        f.write_text(_json.dumps({**prev, **qa}), encoding="utf-8")
     return out

@@ -445,6 +445,23 @@ def produce(screenplay: Path | str, dossier: Path | str, out_dir: Path | str, si
     qmd += [f"- {'OK  ' if c['ok'] else 'FAIL'} {c['name']}: {c['detail']}" for c in qc["checks"]]
     qmd += ["", "## Watch-through (a frame from the middle of every scene, compared with the one before)", ""]
     qmd += [f"- {p}" for p in problems] or ["- every scene shows a distinct, readable picture"]
+    # what the viewer reads: each scene page measured its own text once everything had landed (motion.capture)
+    small, cut = [], []
+    for t in timeline:
+        for f in dirs["scenes"].glob(f"{t['scene']}_*.qa.json"):
+            try:
+                q = json.loads(f.read_text(encoding="utf-8"))
+            except ValueError:
+                continue
+            small += [f"{t['scene']}: {x}" for x in q.get("text_below_floor", [])]
+            cut += [f"{t['scene']}: {x}" for x in q.get("text_cut_off", [])]
+    qmd += ["", "## On-screen text (phone test)", ""]
+    qmd += [f"- too small to read on a phone: {x}" for x in small] + [f"- cut off at the frame edge: {x}" for x in cut]
+    if not small and not cut:
+        qmd += ["- every line is at least 2.6% of the frame's short side and inside the frame"]
+    phone = [_frame(final, (t["start"] + t["end"]) / 2, dirs["qc"] / f"phone_{t['scene']}.png", 360) for t in timeline]
+    _sheet([p for p in phone if p], [t["scene"] for t in timeline], dirs["qc"] / "phone_sheet.png")
+    qmd += ["", "Phone-width contact sheet: qc/phone_sheet.png (every scene at 360 px wide)."]
     qmd += ["", "## Sync", "", f"{len(drift)} of {len(starts) - 1} cuts measured; worst {worst:.2f}s, mean "
             f"{(sum(drift) / len(drift)) if drift else 0:.2f}s from the spoken line", "",
             "## Facts", "", "Every figure said or shown is in the evidence its scene cites (editorial review passed)."]

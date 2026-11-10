@@ -87,6 +87,9 @@ Fly: add "| terrain" for a relief map (mountains, valleys, borders in hills)
 Satellite: <place> | <year or date> vs <year or date> | swipe|fade|split | <title> [| km: 300]  - real satellite
     pictures of the same place on two dates (NASA MODIS true colour from 2000; "| source: sentinel" for 10 m Sentinel-2
     from 2015 when the pod has its keys). For a sea shrinking, a city spreading, a forest cleared, a flood.
+Counter: <from> → <to> | <unit> | <caption>  - a real number counting up or down in steady digits, then holding
+Staircase: <step>; <step>; <step> | <title>  - steps that light up one by one as the story climbs them (a process, an escalation)
+Scale: <weight>, <weight>, ... | <the other side> | <verdict>  - a balance tipping as weights pile up (a trade-off, a decision)
 Myth: <the wrong idea> | <what is actually true> | <stamp word, default MYTH>  - a myth turned over: the wrong
     idea struck through in marker, a stamp, the true line printed over it (only when the dossier shows it is a myth)
 Flowmap: <place> → <place> <number>, ... | <title> | <unit>  - flows between places as arcs as wide as their numbers

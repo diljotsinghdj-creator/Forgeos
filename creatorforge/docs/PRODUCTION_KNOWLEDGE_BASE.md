@@ -114,6 +114,12 @@ fixed template.
 | Data maps in 3D | `Flowmap: A → B 120, ...` (arcs as wide as their numbers, lights travelling along them), `Columns: place 1.4, ...` (3D columns standing on the map), `Dots: place 37, ...` (circles by area). deck.gl, Natural Earth land, the camera tilting slowly | works |
 | Hand-drawn ink | Every marker stroke (circles, arrows, strike-throughs, map routes, annotations) is a perfect-freehand pen stroke, tapered like a real marker; photo boxes are Rough.js sketches. All of them draw on cue and then "boil" (re-posed 6 times a second, seeded, so renders match). A look can switch the boil off | works |
 | Myth turned over | `Myth: <wrong idea> \| <what is true> \| <stamp>`: the wrong line struck through in marker, a stamp, the true line printed over it. Only when the dossier shows it is a myth | works |
+| Counter | `Counter: <from> → <to> \| <unit> \| <caption>`: a real figure counting in fixed digit slots (no jitter), 1.2–1.6 s, then holding | works |
+| Staircase | `Staircase: step; step; step \| title`: isometric steps lighting one by one as the story climbs (an escalation, a process) | works |
+| Balance scale | `Scale: weight, weight \| other side \| verdict`: weights drop on one pan, the beam tips, the other side is thrown off, a verdict stamp | works |
+| Text QA in every scene | Each scene measures its own text once everything has landed: text under 2.6% of the frame's short side, and text cut off at the edge, go to the QC report with a 360-px phone contact sheet | works |
+| Effect timing | Every effect's loudest moment lands one frame after its picture (a whoosh's swell on the cut); two takes of a sound never play back to back | works |
+| Pod self-test | `python -m creatorforge_worker.selftest --network` reports every model, key and service as works / missing / failed (key values never shown) | works |
 | Title entrances | Chart titles enter one of three ways (slide, blur-in, wipe), chosen per scene so a film doesn't repeat one, then land dead still | works |
 | Reading holds | The editorial review warns when on-screen words can't be read in the time the line is up (0.5 s + 0.3 s a word) | works |
 | Matte painting, digital set extension | **not built, deliberately:** it would add detail that was not there to a documentary picture; allowed only as a labelled reconstruction | - |

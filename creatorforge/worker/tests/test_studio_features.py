@@ -598,7 +598,8 @@ def test_screens_documents_statements_splits_archive_and_sound_design(tmp_path):
     assert ff.duration(tmp_path / "arch.mp4") > 0.9
     bank = sfx.SfxBank.load("", sfx_builtin.ensure(tmp_path / "sfx"))
     cues = sfx.graphic_cues(bank, [(5.0, "chapter"), (7.0, "statement"), (9.0, "chart")], "seed")
-    assert [round(at, 2) for _, at, _ in cues] == [3.5, 5.0, 7.05, 9.55]     # one riser only: never back to back
+    # one riser only (never back to back); each hit lands one frame after its picture (sfx.FRAME)
+    assert [round(at, 2) for _, at, _ in cues] == [3.5, 5.03, 7.08, 9.58]
 
 
 def test_objects_articles_big_words_marks_transitions_music_and_archive_search(tmp_path, monkeypatch):

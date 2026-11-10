@@ -112,3 +112,46 @@ def test_stems_score_and_loudness(tmp_path, monkeypatch):
     tone = _tone(tmp_path / "l.wav", 3.0)
     lufs = quality.lufs_precise(tone)
     assert lufs is None or abs(lufs - quality.loudness(tone)["lufs"]) < 1.5     # two independent meters agree
+
+
+def test_counter_staircase_scale_parse_validate_and_render(tmp_path):
+    c = vox.plan_for("counter", "£0 → £450m | lost to bank-transfer scams | one year")
+    assert c["from"] == 0 and c["to"] == 450 and c["pre"] == "£" and c["post"] == "m"
+    assert vox.plan_for("counter", "0 → 1,250,000 | people")["comma"] is True
+    assert vox.plan_for("staircase", "only one") is None and len(vox.plan_for("staircase", "a; b; c | t")["steps"]) == 3
+    assert vox.plan_for("scale", "a, b | c | d")["left"] == ["a", "b"] and vox.plan_for("scale", "a, b") is None
+    for g in ("Counter: 0 → 450 | x", "Staircase: a; b; c | t", "Scale: a, b | c | d"):
+        assert vox_director.valid(g) == "", g
+    if not motion.enabled():
+        return
+    for k, sp in (("counter", "£0 → £450m | lost | one year"), ("staircase", "One; Two; Three | Steps"),
+                  ("scale", "45 minutes, pride | admitting it | too heavy")):
+        out = vox.render(k, sp, "e~0@red/field/", 480, 270, 4.0, tmp_path / f"{k}.mp4", tmp_path / "w", fetch=False, fps=8)
+        assert out.stat().st_size > 3000
+        qa = json.loads(out.with_suffix(".qa.json").read_text())
+        assert qa["text_cut_off"] == [] and qa["text_below_floor"] == [], (k, qa)
+
+
+def test_sound_effects_land_one_frame_after_the_picture_and_rotate(tmp_path):
+    from creatorforge_worker.media import sfx
+    a, b = tmp_path / "whoosh_a.wav", tmp_path / "whoosh_b.wav"
+    for p in (a, b):
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "lavfi", "-i", "anullsrc=r=8000:cl=mono", "-f", "lavfi", "-i",
+                        "sine=frequency=500:duration=0.05", "-filter_complex", "[0]atrim=0:0.3[s];[s][1]concat=n=2:v=0:a=1",
+                        str(p)], check=True)
+    assert 0.25 < sfx.peak(a) < 0.4
+    bank = sfx.SfxBank({r: [] for r in sfx.ROLES})
+    bank.sounds["whoosh"] = [a, b]
+    hits = sfx.place(bank, ["cut", "slide", "slide", "slide"], [2.0, 2.0, 2.0, 2.0], [], "seed")
+    assert len(hits) == 3 and all(abs((h[1] + sfx.peak(h[0])) - c) < 0.02 for h, c in zip(hits, (2.0, 4.0, 6.0)))
+    assert all(hits[i][0] != hits[i + 1][0] for i in range(len(hits) - 1))       # never the same take twice in a row
+
+
+def test_selftest_reports_without_failing(tmp_path, monkeypatch, capsys):
+    from creatorforge_worker import selftest
+    monkeypatch.setenv("CF_DATA_DIR", str(tmp_path))
+    monkeypatch.setenv("ELEVENLABS_API_KEY", "secret-value-123")
+    rows = selftest.local_checks()
+    assert {r["status"] for r in rows} <= {"works", "missing", "failed"}
+    assert not any("secret-value-123" in json.dumps(r) for r in rows)        # key values are never reported
+    assert next(r for r in rows if r["tool"] == "ElevenLabs key")["status"] == "works"
