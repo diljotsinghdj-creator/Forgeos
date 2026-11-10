@@ -57,6 +57,9 @@ def _sam2(frames: list[Path], box_px: list[float]):
     return [out.get(i) for i in range(len(frames))]
 
 
+KEYS_CPU = 12          # on a CPU, BiRefNet runs on this many keyframes and optical flow carries the mask between them
+
+
 def _birefnet_each(frames: list[Path]):
     import numpy as np
     from PIL import Image
@@ -64,7 +67,44 @@ def _birefnet_each(frames: list[Path]):
     path = cutouts.birefnet_model()
     if path is None:
         raise MediaError("tracking footage needs SAM 2 or BiRefNet on the worker")
-    return [np.asarray(cutouts._birefnet(Image.open(f).convert("RGB"), path)) for f in frames]
+    n = len(frames)
+    if cutouts.birefnet_fast() or n <= KEYS_CPU:
+        return [np.asarray(cutouts._birefnet(Image.open(f).convert("RGB"), path)) for f in frames]
+    step = -(-n // KEYS_CPU)
+    keys = sorted(set(range(0, n, step)) | {n - 1})
+    key_masks = {i: np.asarray(cutouts._birefnet(Image.open(frames[i]).convert("RGB"), path)) for i in keys}
+    return propagate(frames, key_masks)
+
+
+def propagate(frames: list[Path], key_masks: dict) -> list:
+    """Masks for every frame from masks on some of them: each in-between frame takes the previous keyframe's mask
+    carried forward by dense optical flow (Farneback) and the next keyframe's carried back, blended by distance.
+    Real motion only: the flow is measured between the real frames, nothing is drawn."""
+    import cv2
+    import numpy as np
+    gray = [cv2.cvtColor(cv2.imread(str(f)), cv2.COLOR_BGR2GRAY) for f in frames]
+    h, w = gray[0].shape
+    gx, gy = np.meshgrid(np.arange(w, dtype=np.float32), np.arange(h, dtype=np.float32))
+
+    def carry(mask, a, b):                       # mask on frame a, warped to frame b (b = a ± 1)
+        flow = cv2.calcOpticalFlowFarneback(gray[b], gray[a], None, 0.5, 3, 21, 3, 5, 1.1, 0)
+        return cv2.remap(mask, gx + flow[..., 0], gy + flow[..., 1], cv2.INTER_LINEAR, borderMode=cv2.BORDER_REPLICATE)
+
+    keys = sorted(key_masks)
+    out = [None] * len(frames)
+    for i in keys:
+        m = np.asarray(key_masks[i], np.uint8)
+        out[i] = cv2.resize(m, (w, h)) if m.shape != (h, w) else m
+    for a, b in zip(keys, keys[1:]):
+        fwd, bwd = {a: out[a].astype(np.float32)}, {b: out[b].astype(np.float32)}
+        for i in range(a + 1, b):
+            fwd[i] = carry(fwd[i - 1], i - 1, i)
+        for i in range(b - 1, a, -1):
+            bwd[i] = carry(bwd[i + 1], i + 1, i)
+        for i in range(a + 1, b):
+            wgt = (i - a) / (b - a)
+            out[i] = np.clip(fwd[i] * (1 - wgt) + bwd[i] * wgt, 0, 255).astype(np.uint8)
+    return out
 
 
 def first_box(frame: Path) -> list[float] | None:
@@ -81,6 +121,28 @@ def first_box(frame: Path) -> list[float] | None:
     ys, xs = np.nonzero(m)
     h, w = m.shape
     return [xs.min() / w, ys.min() / h, (xs.max() - xs.min()) / w, (ys.max() - ys.min()) / h]
+
+
+def clean(mask):
+    """A tidy matte from a raw one: stray specks and background leaks removed (only pieces at least a fifth the size of
+    the largest stay), small holes closed, the edge feathered by a pixel or two. It only removes; it never adds subject."""
+    import numpy as np
+    try:
+        import cv2
+    except ImportError:
+        return mask
+    m = (np.asarray(mask, np.uint8) > 127).astype(np.uint8)
+    if not m.any():
+        return np.asarray(mask, np.uint8)
+    k = max(3, (min(m.shape) // 90) | 1)
+    m = cv2.morphologyEx(m, cv2.MORPH_OPEN, np.ones((k, k), np.uint8))
+    n, lab, stats, _ = cv2.connectedComponentsWithStats(m, 8)
+    if n > 1:
+        areas = stats[1:, cv2.CC_STAT_AREA]
+        keep = [i + 1 for i, a in enumerate(areas) if a >= areas.max() * 0.2]
+        m = np.isin(lab, keep).astype(np.uint8)
+    m = cv2.morphologyEx(m, cv2.MORPH_CLOSE, np.ones((k * 2 + 1, k * 2 + 1), np.uint8))
+    return cv2.GaussianBlur(m * 255, (0, 0), max(0.8, k / 3))
 
 
 def track(frames: list[Path], box: list[float] | None, out_dir: Path) -> tuple[list[dict], str]:
@@ -103,6 +165,8 @@ def track(frames: list[Path], box: list[float] | None, out_dir: Path) -> tuple[l
         if m is None:
             m = last if last is not None else np.zeros((h, w), np.uint8)
         m = np.asarray(Image.fromarray(np.asarray(m, np.uint8)).resize((w, h)), np.uint8)
+        if BACKEND is None:
+            m = clean(m)
         last = m
         p = out_dir / f"m_{i:05d}.png"
         Image.fromarray(m).save(p)

@@ -2603,7 +2603,7 @@ function mapFrame(fw,fh){const [x0,y0,x1,y1]=P.box,kx=Math.cos((y0+y1)/2*Math.PI
   const s=Math.min(W*fw/Math.max(4,(x1-x0)*kx),H*fh/Math.max(3,y1-y0)),ox=W/2-(x0+x1)/2*kx*s,oy=H*(TALL?.46:.53)+(y0+y1)/2*s;
   const pr=(lon,lat)=>[ox+lon*kx*s,oy-lat*s];atlasSea();const land=L.back.group();
   P.shapes.forEach(r=>land.polygon(r.map(q=>pr(q[0],q[1]).join(',')).join(' ')).fill('#EFE3C2').stroke({color:'#8E7E5C',width:Math.max(1,U*.0015)}));depthOfField(land);return pr}
-function placeTag(g,name,x,y,start,dy){const t=T(g,name.toUpperCase(),U*.02,x,y+(dy||-U*.035),{family:'Inter',weight:800,ls:'.1em',fill:'#FFFFFF'});const bb=t.bbox();
+function placeTag(g,name,x,y,start,dy){const t=T(g,name.toUpperCase(),U*.028,x,y+(dy||-U*.035),{family:'Inter',weight:800,ls:'.1em',fill:'#FFFFFF'});const bb=t.bbox();
   const r=g.rect(bb.width+U*.018,bb.height+U*.008).center(bb.cx,bb.cy).fill(INK);t.front();wipe(r,start);wipe(t,start);return bb}
 function arrows(){ // broad arrows sweeping from place to place: armies, migration, trade
   chartTitle(P.title);const pr=mapFrame(TALL?.8:.7,TALL?.5:.6);const col=K.mark||'#C0262D';const seen={};
@@ -2713,13 +2713,13 @@ function frameFor(g,x,y,w,h,style,caption){ // the print around a photograph
     g.rect(w+b*2,h+b+bb).move(x-b+U*.01,y-b+U*.012).fill('#00000040');g.rect(w+b*2,h+b+bb).move(x-b,y-b).fill('#FBF9F3');
     if(style==='taped')[[x+w*.12,y-b],[x+w*.82,y-b]].forEach(([tx,ty],i)=>g.rect(U*.12,U*.035).center(tx,ty).fill('#E8DDBF').opacity(.85).attr({transform:`rotate(${i?6:-5},${tx},${ty})`}));
     if(style==='polaroid'&&caption)fit(T(g,caption,U*.03,x+w/2,y+h+bb*.55,{family:'Caveat',weight:700,fill:INK}),w*.9)}}
-function annoLayer(g,list,x0,y0,iw,ih,start){const col=K.mark||'#D7262B';
+function annoLayer(g,list,x0,y0,iw,ih,start){const col=K.mark||'#D7262B',halo=t=>t.attr({stroke:'#FFFFFF','stroke-width':U*.007,'stroke-linejoin':'round','paint-order':'stroke'});   // marker notes stay readable over any photo
   (list||[]).forEach((a,i)=>{const st=start+i*.45,X=v=>x0+v*iw,Y=v=>y0+v*ih;
-    if(a.kind==='circle'){const [cx,cy,r]=a.p;penCircle(g,X(cx),Y(cy),r*iw,st);if(a.label){const t=T(g,a.label,U*.045,X(cx)+r*iw*1.15,Y(cy)-r*ih*.8,{family:'Caveat',weight:700,fill:col,anchor:'start'});wipe(t,st+.35)}}
+    if(a.kind==='circle'){const [cx,cy,r]=a.p;penCircle(g,X(cx),Y(cy),r*iw,st);if(a.label){const t=halo(T(g,a.label,U*.05,X(cx)+r*iw*1.15,Y(cy)-r*ih*.8,{family:'Caveat',weight:700,fill:col,anchor:'start'}));wipe(t,st+.35)}}
     else if(a.kind==='arrow'){const [x1,y1,x2,y2]=a.p;penLine(g,[[X(x1),Y(y1)],[X(x2),Y(y2)]],st,.4,col,U*.007);arrowHead(g,X(x2),Y(y2),Math.atan2(Y(y2)-Y(y1),X(x2)-X(x1)),st+.38);
-      if(a.label){const t=T(g,a.label,U*.042,X(x1),Y(y1)-U*.03,{family:'Caveat',weight:700,fill:col});wipe(t,st)}}
+      if(a.label){const t=halo(T(g,a.label,U*.048,X(x1),Y(y1)-U*.03,{family:'Caveat',weight:700,fill:col}));wipe(t,st)}}
     else if(a.kind==='box'){const [bx,by,bw,bh]=a.p;const r=roughShape(g,(gen,o)=>gen.rectangle(X(bx),Y(by),bw*iw,bh*ih,o),st,.45,col,U*.005)||g.rect(bw*iw,bh*ih).move(X(bx),Y(by)).fill('none').stroke({color:col,width:U*.006});if(!window.rough)wipe(r,st);
-      if(a.label){const t=T(g,a.label.toUpperCase(),U*.022,X(bx),Y(by)-U*.022,{family:'Inter',weight:800,anchor:'start',fill:'#FFFFFF'});const bb=t.bbox();
+      if(a.label){const t=T(g,a.label.toUpperCase(),U*.028,X(bx),Y(by)-U*.024,{family:'Inter',weight:800,anchor:'start',fill:'#FFFFFF'});const bb=t.bbox();
         g.rect(bb.width+U*.02,bb.height+U*.01).center(bb.cx,bb.cy).fill(col);t.front();wipe(t,st)}}
     else if(a.kind==='label'){const [lx,ly]=a.p;placeTag(g,a.label,X(lx),Y(ly),st,0)}})}
 function photoCredit(){if(P.credit){const t=mono(L.front,(((P.creditLabel||'PHOTO')+': ')+P.credit).toUpperCase(),W-U*.04,H-U*.03,{anchor:'end',size:U*.013,weight:700});t.addClass('keep');fit(t,W*.6);t.opacity(.85)}}
@@ -2736,6 +2736,17 @@ function photo(){ // one photograph as a moving composition: depth layers, a del
   const mv=P.move||'push';let s0=1,s1=1.09,dx0=0,dx1=0,dy0=0,dy1=0;
   if(mv==='pull'){s0=1.12;s1=1.0}else if(mv==='pan-left'){dx0=iw*.04;dx1=-iw*.04;s0=s1=1.05}else if(mv==='pan-right'){dx0=-iw*.04;dx1=iw*.04;s0=s1=1.05}
   else if(mv==='tilt-up'){dy0=ih*.035;dy1=-ih*.035;s0=s1=1.05}else if(mv==='tilt-down'){dy0=-ih*.035;dy1=ih*.035;s0=s1=1.05}else if(mv==='still'){s1=1.0}
+  // subject-aware framing: a push or pull pivots toward the subject the cut-out found, and never crops its head
+  // annotated points come first: the move keeps every circle, arrow and box (and its label) in the frame
+  const an=(P.annotate||[]).map(a=>a.kind==='circle'?[a.p[0],a.p[1],a.p[2]]:a.kind==='box'?[a.p[0]+a.p[2]/2,a.p[1]+a.p[3]/2,Math.max(a.p[2],a.p[3])/2]:[a.p[0],a.p[1],.03]);
+  const focus=an.length?[an.reduce((v,a)=>v+a[0],0)/an.length,an.reduce((v,a)=>v+a[1],0)/an.length,Math.min(...an.map(a=>a[1]-a[2]))-.08,Math.max(...an.map(a=>a[1]+a[2]))+.06]:P.subj;
+  if(an.length&&mv==='push')s1=Math.min(s1,1.06);
+  if(focus&&(mv==='push'||mv==='pull')){const C=[W/2,H/2],sp=[x0+focus[0]*iw,y0+focus[1]*ih],top=y0+focus[2]*ih,bot=y0+focus[3]*ih;
+    const aim=(s,o)=>{let ox=(sp[0]-C[0])*(1-s)*.75,oy=(sp[1]-C[1])*(1-s)*.75;
+      const ty=C[1]+oy+s*(top-C[1]),by=C[1]+oy+s*(bot-C[1]);if(ty<H*.05)oy+=H*.05-ty;else if(by>H*1.02&&ty-(by-H*1.02)>H*.05)oy-=Math.min(by-H*1.02,ty-H*.05);
+      const ix0=C[0]+ox+s*(x0-C[0]),ix1=C[0]+ox+s*(x0+iw-C[0]),iy0=C[1]+oy+s*(y0-C[1]),iy1=C[1]+oy+s*(y0+ih-C[1]);   // never show past the photo's edge
+      if(ix0>0)ox-=ix0;if(ix1<W)ox+=W-ix1;if(iy0>0)oy-=iy0;if(iy1<H)oy+=H-iy1;return [ox,oy]};
+    [dx0,dy0]=aim(s0);[dx1,dy1]=aim(s1)}
   let spot=null,spotFr=null;if(mv==='detail'&&P.at){const [ax,ay,aw,ah]=P.at;const cx=x0+(ax+aw/2)*iw,cy=y0+(ay+ah/2)*ih;s1=Math.min(2.6,Math.max(1.3,.6*Math.min(W/(aw*iw),H/(ah*ih))));
     dx1=(W/2-cx);dy1=(H/2-cy);
     const m=draw.mask();m.rect(W*4,H*4).move(-W*1.5,-H*1.5).fill('#fff');m.rect(aw*iw,ah*ih).move(x0+ax*iw,y0+ay*ih).fill('#000').radius(U*.01);

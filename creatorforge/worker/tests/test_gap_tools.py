@@ -155,3 +155,31 @@ def test_selftest_reports_without_failing(tmp_path, monkeypatch, capsys):
     assert {r["status"] for r in rows} <= {"works", "missing", "failed"}
     assert not any("secret-value-123" in json.dumps(r) for r in rows)        # key values are never reported
     assert next(r for r in rows if r["tool"] == "ElevenLabs key")["status"] == "works"
+
+
+def test_masks_propagate_between_keyframes_and_are_cleaned(tmp_path):
+    import numpy as np
+    cv2 = pytest.importorskip("cv2")
+    from creatorforge_worker.media import track
+    frames = []
+    for i in range(9):
+        im = np.full((120, 160, 3), 40, np.uint8)
+        x = 20 + i * 8
+        cv2.rectangle(im, (x, 40), (x + 30, 80), (200, 220, 240), -1)
+        cv2.circle(im, (x + 10, 50), 4, (10, 10, 10), -1)
+        f = tmp_path / f"f_{i:03d}.jpg"
+        cv2.imwrite(str(f), im)
+        frames.append(f)
+
+    def truth(i):
+        z = np.zeros((120, 160), np.uint8)
+        z[40:81, 20 + i * 8:51 + i * 8] = 255
+        return z
+    out = track.propagate(frames, {0: truth(0), 8: truth(8)})
+    for i in (2, 4, 6):
+        a, b = out[i] > 127, truth(i) > 127
+        assert (a & b).sum() / (a | b).sum() > 0.75                 # carried by real optical flow, not guessed
+    noisy = truth(4).copy()
+    noisy[5:9, 5:9] = 255                                          # a stray speck far from the subject
+    c = track.clean(noisy)
+    assert c[6, 6] < 40 and c[60, 70] > 200

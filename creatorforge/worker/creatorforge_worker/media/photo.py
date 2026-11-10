@@ -271,6 +271,13 @@ def prepare(plan: dict, work: Path, model: Path | None = None, width: int = 1920
                     fill = "none (OpenCV missing): parallax kept very small"
             info = {"layers": layers, "far": base.with_name(f"photo_{key}_far.jpg").as_uri() if "inpainting" in fill else base.as_uri(),
                     "depthHow": how, "fill": fill}
+            # the subject (the nearest layer): the camera pushes toward it and keeps its head in frame
+            near = d > t[-1]
+            if 0.02 < near.mean() < 0.6:
+                ys, xs = np.nonzero(near)
+                h_, w_ = near.shape
+                info["subj"] = [round(float(xs.mean() / w_), 3), round(float(ys.mean() / h_), 3), round(float(ys.min() / h_), 3),
+                                round(float(ys.max() / h_), 3)]
             manifest.write_text(json.dumps(info))
             plan.update(info)
         if plan["layers"]:

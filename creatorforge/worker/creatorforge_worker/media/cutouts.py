@@ -421,13 +421,30 @@ def birefnet_model(near: Path | None = None) -> Path | None:
     return None
 
 
+def _providers() -> list[str]:
+    """The GPU first when the pod has one (BiRefNet takes well under a second a frame there; ~17 s on CPU)."""
+    try:
+        import onnxruntime as ort
+        have = ort.get_available_providers()
+    except Exception:  # noqa: BLE001
+        return ["CPUExecutionProvider"]
+    return [p for p in ("CUDAExecutionProvider", "CPUExecutionProvider") if p in have] or ["CPUExecutionProvider"]
+
+
+def birefnet_fast() -> bool:
+    return _providers()[0] == "CUDAExecutionProvider"
+
+
 def _birefnet(rgb, path: Path):
     """Subject mask from BiRefNet (1024x1024, ImageNet normalisation, sigmoid of the first output)."""
     import numpy as np
     from PIL import Image
     if str(path) not in _BIREF:
         import onnxruntime as ort
-        _BIREF[str(path)] = ort.InferenceSession(str(path), providers=["CPUExecutionProvider"])
+        so = ort.SessionOptions()
+        so.enable_cpu_mem_arena = False        # the arena kept every run's buffers: 12 GB after two frames, 6.7 GB without
+        so.enable_mem_pattern = False
+        _BIREF[str(path)] = ort.InferenceSession(str(path), so, providers=_providers())
     sess = _BIREF[str(path)]
     x = np.asarray(rgb.convert("RGB").resize((1024, 1024), Image.BICUBIC), np.float32) / 255.0
     x = (x - np.array([0.485, 0.456, 0.406], np.float32)) / np.array([0.229, 0.224, 0.225], np.float32)
