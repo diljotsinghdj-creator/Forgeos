@@ -285,3 +285,55 @@ def test_the_director_picks_the_new_graphics_from_narration_alone():
     assert pick('अमित शाह ने कहा, "हम कोई भी मैसेज वायरल कर सकते हैं।"').startswith("Interview: person:Amit Shah")
     assert pick("बीजेपी, कांग्रेस और आम आदमी पार्टी आपस में जुड़े हैं।").startswith("Linkmap: BJP | Congress; AAP")
     assert ig.facts("जापान से भारत तक।")["places"] == ["Japan", "India"]                 # the order they are said in
+
+
+STRUCTURED = [
+    ('सुप्रीम कोर्ट ने कहा, "The right to privacy is a fundamental right."', "Courtdoc: Supreme Court of India"),
+    ("शून्य से चौदह साल के तेरह प्रतिशत पुरुष और बारह प्रतिशत महिलाएँ, पंद्रह से उनतीस साल के चौदह प्रतिशत पुरुष और "
+     "तेरह प्रतिशत महिलाएँ।", "Pyramid: Population | 0-14 13/12; 15-29 14/13"),
+    ("शेयर सौ रुपये पर खुला, एक सौ बारह तक ऊपर गया, छियानवे तक गिरा और एक सौ आठ पर बंद हुआ।", "Candles: 100/112/96/108"),
+    ("बुर्ज ख़लीफ़ा आठ सौ अट्ठाईस मीटर और एफ़िल टावर तीन सौ तीस मीटर ऊँचा है।", "Towers3d: Burj Khalifa 828, Eiffel Tower 330"),
+    ("जनवरी में अड़तीस प्रतिशत, फ़रवरी में इकतालीस प्रतिशत और मार्च में उनतालीस प्रतिशत लोग साथ थे।", "Polltrack: Jan 38, Feb 41, Mar 39"),
+    ("दो हज़ार उन्नीस से दो हज़ार बाईस तक कोयला साठ से पचास और सौर पाँच से बाईस हुआ।", "Area: 2019, 2022 | Coal: 60, 50; Solar: 5, 22"),
+    ("उत्तर प्रदेश में बासठ सीटें और पचास प्रतिशत वोट, बिहार में उनतालीस सीटें और तिरपन प्रतिशत वोट।",
+     "Table: Name, Seats, Share % | Uttar Pradesh, 62, 50; Bihar, 39, 53"),
+    ("प्रधानमंत्री के अधीन गृह मंत्री, वित्त मंत्री और रक्षा मंत्री काम करते हैं।", "Orgchart: Prime Minister | Home Minister, Finance Minister"),
+    ("दिल्ली से कानपुर, पटना और कोलकाता तक रेल कॉरिडोर बनेगा।", "Railmap: New Delhi - "),
+    ("पैसा दानकर्ता से ट्रस्ट में गया, फिर पार्टी के पास, उसके बाद एजेंसी के पास।", "Flowchart: Donor → Trust → Party → Agency"),
+    ("स्मार्टफ़ोन के अंदर शीशा, स्क्रीन, बैटरी और कैमरा होता है।", "Explode: Smartphone | Glass, Display, Battery, Camera"),
+]
+
+
+def test_structured_graphics_come_from_narration_alone():
+    from creatorforge_worker import infographic as ig
+    for line, want in STRUCTURED:
+        g = ig.pick(line, ig.facts(line), 3, 12, [], seed=5)
+        assert g.startswith(want), (line, g)
+        assert v.valid(g) == "", (g, v.valid(g))
+
+
+def test_a_line_with_only_part_of_a_structure_gets_no_structured_graphic():
+    from creatorforge_worker import infographic as ig
+    for line in ("शेयर सौ रुपये पर खुला और एक सौ आठ पर बंद हुआ।",                     # two of four prices: no candle
+                 "जनवरी में अड़तीस प्रतिशत लोग साथ थे।",                                 # one month: no poll line
+                 "प्रधानमंत्री और गृह मंत्री मिले।",                                     # no word about rank: no org chart
+                 "स्मार्टफ़ोन में बैटरी होती है।",                                        # one part, no word about inside
+                 "बुर्ज ख़लीफ़ा बहुत ऊँचा है।",                                           # no heights
+                 "पुरुष और महिलाएँ दोनों आए।"):                                         # no age bands
+        g = ig.pick(line, ig.facts(line), 3, 12, [], seed=5)
+        assert not g.split(":")[0].lower() in ("candles", "polltrack", "orgchart", "explode", "towers3d", "pyramid", "table",
+                                                 "area", "flowchart", "railmap", "courtdoc"), (line, g)
+
+
+def test_a_hindi_court_quote_is_shown_as_given_and_marked_reported():
+    from creatorforge_worker import infographic as ig
+    line = 'सुप्रीम कोर्ट ने कहा, "निजता का अधिकार एक मौलिक अधिकार है।"'
+    g = ig.pick(line, ig.facts(line), 3, 12, [], seed=5)
+    assert g.startswith("Courtdoc:") and "निजता का अधिकार" in g and "badge: reported" in g and v.valid(g) == ""
+
+
+def test_hindi_numbers_zero_bare_hundred_and_spelling_variants():
+    assert v._spoken_numbers("शून्य से चौदह") == [(0.0, 1), (14.0, 1)]
+    assert v._spoken_numbers("सौ रुपये") == [(100.0, 1)] and v._spoken_numbers("हज़ार लोग") == [(1000.0, 1)]
+    assert v._spoken_numbers("तिरपन प्रतिशत") == [(53.0, 1)]
+    assert v._spoken_numbers("दो हज़ार अठारह") == [(2018.0, 1)] and v._spoken_numbers("एक सौ बारह") == [(112.0, 1)]

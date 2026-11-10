@@ -105,12 +105,25 @@ Checked on rendered frames and by tests (`tests/test_vox_look.py`, `test_vox_dir
 Works: for every line the director extracts facts, proposes candidates, ranks real material first, rejects a graphic
 that fails the mute test, varies objects, adds the named person and platform logos, and picks camera, layout and
 exit. The cut into the next shot now comes from what the two shots are (`pipeline.motivated_transition`).
-The rule-based director picks from narration alone: Sizemap, Heatmap / Prism (three or more places each with its
-number), Bars3d, Arrows (a movement between places), Linkmap (three or more names and a word about ties), Interview
-(a named person speaking in the line), Borders (an old year, a place, a word about borders) and Terrain3d (a named
-peak or pass). Kinds that need structured data a sentence does not carry (Pyramid, Orgchart, Table, Polltrack, Area,
-Candles, Flowchart, Railmap, Towers3d, Explode) and Courtdoc (it must quote the court's own words, which Hindi
-narration does not give in English) are chosen by the script AI or written by hand, never guessed.
+The rule-based director picks every graphic type from narration alone. Simple facts: Sizemap, Heatmap / Prism,
+Bars3d, Arrows, Linkmap, Interview, Borders, Terrain3d. Structured graphics (`structure.py`) fire only when the line
+carries the whole structure, built from exactly its words and never filled in:
+
+| Graphic | The line must carry |
+|---|---|
+| Pyramid | age bands, each "from A to B: X men, Y women" |
+| Orgchart | a word about rank ("के अधीन", "reports to") and three or more named offices |
+| Table | two or more places or parties, each with the same two figures |
+| Polltrack | three or more months or years, each with one percentage |
+| Area | two or more years and two or more named series, a figure for each |
+| Candles | opened, rose to, fell to, closed at: four prices that agree |
+| Flowchart | a word of sequence ("फिर", "उसके बाद") and three or more named steps |
+| Railmap | a word about a line or network and three or more places |
+| Towers3d | two or more named buildings, each with its height in metres |
+| Explode | a word about what is inside, a named thing and two or more named parts |
+| Courtdoc | a named court and its words in quotation marks: English words are shown as the court record; Hindi words are shown exactly as given, marked REPORTED (they are someone's rendering, not the record) |
+
+A line that carries only part of a structure gets the simpler graphic it always got (tested).
 
 ### 2.5 Archival and investigative
 

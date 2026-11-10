@@ -232,6 +232,9 @@ def candidates(line: str, f: dict, n: int, total: int, ahead: dict | None = None
     if f["question"] and n == total:
         q = head if head.endswith("?") else (f"{head}?" if head else "What do you think?")
         out.append(f"Opener: {obj or 'smartphone'} | {q} | Print Facts")
+    # graphics that need a whole structure (a table, a pyramid, a flow...): only when the line carries all of it
+    from . import structure
+    out += structure.candidates(line, f, head)
     toks = vd._tokens(line)
     cue = lambda words: any(vd._has(toks, w) for w in words)     # noqa: E731
     from .media import vox as _vox
@@ -379,7 +382,9 @@ MOVE_WORDS = ("हमला", "आक्रमण", "पलायन", "घु�
 BORDER_WORDS = ("सीमा", "सीमाएँ", "सरहद", "नक्शा", "नक़्शा", "बँटवारा", "विभाजन", "साम्राज्य", "border", "borders", "partition", "empire", "map")
 LINK_WORDS = ("जुड़े", "जुड़ा", "जुड़ी", "रिश्ता", "रिश्ते", "संबंध", "नेटवर्क", "गठजोड़", "साँठगाँठ", "linked", "connected", "ties", "network")
 SIZE_WORDS = ("बड़ा", "बड़ी", "बड़े", "छोटा", "छोटी", "गुना", "आकार", "क्षेत्रफल", "bigger", "larger", "smaller", "size")
-STYLE_RANK = {"sizemap": -1, "terrain3d": -1, "borders": -1, "arrows": -0.5, "heatmap": -0.5, "prism": 0.5, "linkmap": 1,
+STYLE_RANK = {"courtdoc": -2, "pyramid": -2, "candles": -2, "towers3d": -2, "polltrack": -2, "area": -2, "table": -2,
+              "orgchart": -2, "railmap": -2, "flowchart": -2, "explode": -2,
+              "sizemap": -1, "terrain3d": -1, "borders": -1, "arrows": -0.5, "heatmap": -0.5, "prism": 0.5, "linkmap": 1,
               "interview": 1.5, "bars3d": 4.5, "pinmap": 0, "route": 0, "newscard": 1, "clipping": 1, "hero": 2, "pinboard": 2, "reveal": 2,
               "bignumber": 3, "compare": 3, "photoline": 3, "clockmap": 3, "seats": 4, "stack": 4, "trend": 4,
               "slice": 5, "calendar": 5, "stamp": 6, "clock": 6, "opener": 7, "tornsplit": 7, "statement": 9}

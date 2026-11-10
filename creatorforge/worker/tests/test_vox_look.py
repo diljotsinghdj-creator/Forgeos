@@ -394,7 +394,8 @@ def test_evidence_charts_and_movement_maps_parse():
     assert 30 < a["lon"] < 180 and a["lat"] > 45                      # Russia's mainland, not the Atlantic
     s = plans["sizemap"]["items"]
     assert 3.0e6 < s[0]["km2"] < 3.5e6 and 3.3e5 < s[1]["km2"] < 3.8e5  # India and Germany, about right
-    assert vox.plan_for("candles", "Mon 100/90/96/108; Tue 1/2/3/4; Wed 1/1/1/1") is None   # high below the open: refused
+    assert vox.plan_for("candles", "Mon 100/90/96/108; Tue 1/2/3/4") is None              # highs below the open: refused
+    assert len(vox.plan_for("candles", "Mon 100/90/96/108; Wed 100/112/96/108")["candles"]) == 1   # only the sound day stays
     assert vox.plan_for("sizemap", "India vs Atlantis") is None
     for k, sp in BATCH_A:
         assert vd.valid(f"{k.capitalize()}: {sp}") == "", k

@@ -246,7 +246,9 @@ _HI_1_100 = ("एक दो तीन चार पाँच छह सात �
              "उन्यासी अस्सी इक्यासी बयासी तिरासी चौरासी पचासी छियासी सत्तासी अट्ठासी नवासी नब्बे इक्यानवे बानवे "
              "तिरानवे चौरानवे पचानवे छियानवे सत्तानवे अट्ठानवे निन्यानवे").split()
 _HI_N = {unicodedata.normalize("NFD", w).replace(_NUKTA, ""): i for i, w in enumerate(_HI_1_100, 1)} | {_plain_k: v for _plain_k, v in ((unicodedata.normalize("NFD", k).replace(_NUKTA, ""), v)
-                                  for k, v in {"छः": 6, "पांच": 5, "डेढ़": 1.5, "ढाई": 2.5}.items())}
+                                  for k, v in {"छः": 6, "पांच": 5, "डेढ़": 1.5, "ढाई": 2.5, "शून्य": 0, "तिरपन": 53, "तिरसठ": 63,
+                                              "सड़सठ": 67, "उन्नासी": 79, "नवासी": 89, "सत्तानबे": 97, "इकावन": 51,
+                                              "बावन": 52, "अठावन": 58}.items())}
 _MULT = {unicodedata.normalize("NFD", k).replace(_NUKTA, ""): v
          for k, v in {"सौ": 100, "हज़ार": 1000, "लाख": 100000, "करोड़": 10**7, "अरब": 10**9}.items()}
 _UNIT = {100000: "lakh", 10**7: "crore", 10**9: "billion"}
@@ -298,6 +300,9 @@ def _spoken_numbers(line: str) -> list[tuple[float, int]]:
 
     while i < len(toks):
         n = num_at(i)
+        # a bare "सौ" / "हज़ार" said on its own ("सौ रुपये", "हज़ार लोग") is one hundred / one thousand
+        if n is None and _MULT.get(toks[i]) in (100, 1000) and (i == 0 or num_at(i - 1) is None):
+            n, toks = 1.0, toks[:i] + ["1"] + toks[i:]
         # "एक" alone is usually "a/one" in Hindi, not a number worth a chart
         if n is None or (toks[i] == "एक" and not _MULT.get(toks[i + 1] if i + 1 < len(toks) else "")):
             i += 1
@@ -453,7 +458,9 @@ def valid(direction: str, english: bool = True, props: bool = False) -> str:
     rule = _content_rules(kind, spec, props)
     if rule:
         return rule
-    if english and _DEV.search(spec.split("|")[0] if kind in ("quote", "document") else spec):
+    # a court's words are shown as they were given (Hindi stays Hindi): only the court and case names must be English
+    if english and _DEV.search(spec.split("|")[0] if kind in ("quote", "document") else
+                               "|".join(spec.split("|")[:2]) if kind == "courtdoc" else spec):
         return "Hindi text on screen (graphics are English)"
     from .media import motion
     if kind in motion.KINDS:

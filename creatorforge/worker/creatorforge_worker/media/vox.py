@@ -982,8 +982,8 @@ def parse_candles(spec: str) -> dict | None:
             o, h, lo, c = (float(m.group(i)) for i in (2, 3, 4, 5))
             if lo <= min(o, c) and h >= max(o, c):
                 cs.append({"label": m.group(1)[:8], "o": o, "h": h, "l": lo, "c": c})
-    if len(cs) < 3:
-        return None
+    if not cs:
+        return None                      # one day's candle is a graphic too ("opened at..., closed at...")
     return {"type": "candles", "candles": cs[:24], "title": parts[1][:48] if len(parts) > 1 else "",
             "unit": parts[2][:6] if len(parts) > 2 else "", "tone": "grid", "seed": _seed(spec) % 10000}
 
@@ -2223,7 +2223,7 @@ function mix(a,b,t){const h=c=>[1,3,5].map(i=>parseInt(c.slice(i,i+2),16));const
 function count(t,to,start,dur,fmt){at(start,dur,p=>{t.node.textContent=fmt(to*p)},E.out)}   // a number that counts up
 function pyramid(){ // population pyramid: bands from the youngest at the bottom, two sides growing from the middle
   chartTitle(P.title);const bs=P.bands,n=bs.length,mx=Math.max(...bs.map(b=>Math.max(b.l,b.r)));
-  const top=TALL?H*.2:H*.24,bot=TALL?H*.8:H*.9,rh=(bot-top)/n,bar=rh*.76,cx=W/2,gc=U*.075,mw=W*(TALL?.3:.3);
+  const rh0=((TALL?H*.8:H*.9)-(TALL?H*.2:H*.24))/n,rh=Math.min(rh0,U*.11),mid=TALL?H*.5:H*.57,top=mid-rh*n/2,bot=mid+rh*n/2,bar=rh*.76,cx=W/2,gc=U*.075,mw=W*(TALL?.3:.3);   // few bands: slim bars, the chart sits low
   const dec=v=>(String(v).split('.')[1]||'').length;
   [[P.left,cx-gc-mw*.5,'#3E4A55'],[P.right,cx+gc+mw*.5,ACC]].forEach(([s,x,c],i)=>{const t=T(L.front,s.toUpperCase(),U*.03,x,top-U*.04,{family:'Inter',weight:800,ls:'.14em'});
     const sw=L.front.rect(U*.02,U*.02).center(x-t.bbox().width/2-U*.025,top-U*.04).fill(c);wipe(t,.15+i*.1);wipe(sw,.15+i*.1)});
@@ -2232,8 +2232,8 @@ function pyramid(){ // population pyramid: bands from the youngest at the bottom
     const rr=L.hero.rect(.1,bar).move(cx+gc,y).fill(ACC);at(st,.7,p=>rr.width(Math.max(.1,rw*p)));
     wipe(T(L.front,b.label,Math.min(U*.028,bar*.6),cx,y+bar/2,{family:'Mono',weight:700}),st);
     const fs=Math.min(U*.026,bar*.58);
-    const lv=T(L.front,'0',fs,cx-gc-lw-U*.012,y+bar/2,{family:'Inter',weight:800,anchor:'end'});lv.opacity(0);at(st+.1,.2,p=>lv.opacity(p));count(lv,b.l,st,.8,v=>v.toFixed(dec(b.ls)));
-    const rv=T(L.front,'0',fs,cx+gc+rw+U*.012,y+bar/2,{family:'Inter',weight:800,anchor:'start'});rv.opacity(0);at(st+.1,.2,p=>rv.opacity(p));count(rv,b.r,st,.8,v=>v.toFixed(dec(b.rs)));
+    const lv=T(L.front,'0',fs,cx-gc-lw-U*.022,y+bar/2,{family:'Inter',weight:800,anchor:'end'});lv.opacity(0);at(st+.1,.2,p=>lv.opacity(p));count(lv,b.l,st,.8,v=>v.toFixed(dec(b.ls)));
+    const rv=T(L.front,'0',fs,cx+gc+rw+U*.022,y+bar/2,{family:'Inter',weight:800,anchor:'start'});rv.opacity(0);at(st+.1,.2,p=>rv.opacity(p));count(rv,b.r,st,.8,v=>v.toFixed(dec(b.rs)));
     if(Math.max(b.l,b.r)===mx)FOCUS={x:b.l>=b.r?cx-gc-lw/2:cx+gc+rw/2,y:y+bar/2,rx:Math.max(lw,rw)*.62,ry:bar*.95}});
   L.mid.line(cx-gc,top-U*.01,cx-gc,bot).stroke({color:FG,width:U*.002}).opacity(.5);L.mid.line(cx+gc,top-U*.01,cx+gc,bot).stroke({color:FG,width:U*.002}).opacity(.5);
   if(P.unit)wipe(mono(L.front,P.unit.toUpperCase(),W-U*.05,bot+U*.03,{anchor:'end',weight:700}),.6)}
@@ -2320,7 +2320,7 @@ function courtdoc(){ // a page of the judgment: court, case, the paragraph in it
   page.attr({transform:`rotate(-1.2,${cx},${py+ph/2})`});drop(page,.1,H*.3,-3);
   FOCUS={x:cx,y:q0+ql.length*qs*.7,rx:pw*.5,ry:Math.max(U*.08,ql.length*qs*.9)};
   if(!TALL){const sx=px+pw+W*.05,sw=W-sx-W*.05;const k=T(L.front,'IN THE COURT\'S WORDS',U*.022,sx,H*.3,{family:'Inter',weight:800,anchor:'start',ls:'.16em',fill:K.mark||'#C0262D'});wipe(k,.6);
-    const b=boxText(L.front,P.case.split(/ v\.? /i)[0],U*.05,sx,H*.4,{anchor:'start',maxw:sw,most:3});wipe(b,.8)}}
+    const b=boxText(L.front,(P.case||P.court).split(/ v\.? /i)[0],U*.05,sx,H*.4,{anchor:'start',maxw:sw,most:3});wipe(b,.8)}}
 function table(){ // a data table that fills row by row
   chartTitle(P.title);const hd=P.head,rows=P.rows,nc=hd.length,nr=rows.length;const tw=W*(TALL?.9:.74),x0=(W-tw)/2,y0=TALL?H*.2:H*.22;
   const rh=Math.min(U*.09,(H*(TALL?.6:.66))/(nr+1)),fs=Math.min(U*.034,rh*.42);const num=c=>rows.every(r=>/^[\s₹$€£]?[\d.,]+\s*%?\w{0,6}$/.test(r[c]));
