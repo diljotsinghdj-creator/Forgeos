@@ -83,3 +83,10 @@ Newest entries go at the bottom. Rules here are binding for both channels unless
   spending credits (ElevenLabs, image or video models). Never guess them from an earlier film.
 - **Used Mechanics to Retire:** n/a
 - **Winning Pattern:** n/a
+
+### 2026-11-10: English, and no images without asking
+- **Mistake Logged:** Storyboard stills and mock-up images were made without asking; the evolution sample was in Hindi.
+- **New Permanent Rule:** All videos, on both channels, are in English. No images (stills, storyboards, mock-ups, AI
+  images) are created without asking the owner first.
+- **Used Mechanics to Retire:** n/a
+- **Winning Pattern:** n/a

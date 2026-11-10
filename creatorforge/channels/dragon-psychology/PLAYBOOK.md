@@ -4,7 +4,7 @@ Version 1. Five parts: the blueprint, 20 video ideas, the content system, the an
 Everything here can be changed.
 
 **Assumptions to confirm:**
-- English first, with Hindi versions later, because English psychology audiences pay several times more per view.
+- English (the owner's rule: all videos in English).
 - No mascot (the owner's decision, 2026-11-10): faceless, Vox × Johnny Harris explainers with the owner's own voice.
 - Animation made with CreatorForge.
 - You approve every script.
@@ -35,7 +35,6 @@ They've seen pop-psychology Shorts and want something smarter, but still fun. Se
 - 1 long video a week (8–12 minutes).
 - 4–5 Shorts a week, cut from it plus standalone ones.
 - 2 community posts a week.
-- From month 3, the same videos go out in Hindi on the same channel (multi-language audio) or on a second channel.
 
 **No mascot.** The channel is faceless like Print Facts. Its identity is the look and the voice:
 - the strict three-colour palette (charcoal, highlighter yellow, signal red);
@@ -252,7 +251,7 @@ depending on RPM.
 | 10 | Video 7 + Shorts. Thumbnail tests on the two weakest videos |
 | 11 | Video 8 + Shorts. Plan the newsletter |
 | 12 | Video 9 + Shorts. Second monthly review |
-| 13 | **90-day review:** keep, kill or double down by pillar; set the next quarter's targets; decide on the Hindi versions |
+| 13 | **90-day review:** keep, kill or double down by pillar; set the next quarter's targets |
 
 **A good outcome at 90 days:** 9 long videos and about 50 Shorts; a clear winning pillar; a stable thumbnail style;
 early momentum towards the Partner Program. Not $10K yet. That comes from compounding over the following year.

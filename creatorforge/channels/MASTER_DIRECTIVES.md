@@ -21,7 +21,7 @@ the order is:
 | | **Print Facts** | **Dragon Psychology** |
 |---|---|---|
 | What | Researched investigative documentaries | Psychology, scams, biases and manipulation, explained |
-| Language | Hindi (Hinglish when asked) | English first; Hindi versions later |
+| Language | **English** (owner, 2026-11-10: all videos in English) | **English** |
 | Face | None: faceless, **no mascot, no Dastango** | None: faceless, **no mascot** (owner, 2026-11-10) |
 | Style | Vox × Johnny Harris, editorial and evidence-led | Vox × Johnny Harris explanation with animation (cut-outs, diagrams, stickman scenes), no character |
 | Narrator | The owner's own ElevenLabs voice | The channel's own voice |
@@ -115,6 +115,7 @@ CreatorForge serves only these two channels. A new feature must serve one of the
 ## 6. Hard rules (never break)
 
 - **No video is produced until the owner says "go".** Tests and synthetic test renders only.
+- **No images are created without asking the owner first** (stills, storyboards, mock-ups, AI images).
 - **Keys and tokens never go in chat** and are never asked for in chat. They live in the pod's environment or the
   app's encrypted settings. The owner's RunPod links and tokens are never used or shared.
 - **Voices:** no cloned celebrity voices; the owner narrates with their own ElevenLabs voice.

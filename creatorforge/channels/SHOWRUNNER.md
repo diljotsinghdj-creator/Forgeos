@@ -1,6 +1,6 @@
 # Showrunner operating rules (both channels)
 
-These rules apply to **Print Facts** (Hindi investigative journalism, faceless, no mascot) and **Dragon Psychology**
+These rules apply to **Print Facts** (investigative journalism in English, faceless, no mascot) and **Dragon Psychology**
 (behaviour, scams, biases and manipulation; also faceless, no mascot). They come from the owner's showrunner directive
 (2026-11-10) and sit on top of the master directives. The truthfulness rules still win every conflict.
 
