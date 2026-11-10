@@ -41,7 +41,7 @@ KINDS = ("hero", "desk", "pinboard", "opener", "reveal", "clipping", "pinmap", "
          "seats", "stack", "stand", "fan", "trend", "slice", "route", "compare", "photoline", "tv",
          "clockmap", "tornsplit", "newscard", "blueprint", "pyramid", "flowchart", "linkmap", "orgchart", "heatmap",
          "courtdoc", "table", "interview", "endcard", "polltrack", "area", "candles", "arrows", "railmap", "sizemap",
-         "borders", "morph", "shrink", "photo", "photos", "footage", "satellite", "flowmap", "columns", "dots", "myth", "counter", "staircase", "scale", "mascot")
+         "borders", "morph", "shrink", "photo", "photos", "footage", "satellite", "flowmap", "columns", "dots", "myth", "counter", "staircase", "scale")
 
 
 # A look per video, so no two films share one face: paper, type, map colours and marker pen differ, the method doesn't.
@@ -72,7 +72,6 @@ _FLIP = ("hero", "opener", "newscard", "tornsplit", "desk", "pinboard", "clippin
          "interview")
 LAYOUT_SETS = {k: (["base", "mirror", "card"] if k in _FLIP else ["base", "card"]) for k in KINDS}
 LAYOUT_SETS["bignumber"] = ["base", "side", "card"]
-LAYOUT_SETS["mascot"] = ["base", "mirror"]          # the character on the page, never a printed card
 for _k in ("photo", "photos", "footage", "satellite"):
     LAYOUT_SETS[_k] = ["base"]          # a photograph or footage is the frame itself: never mirrored or put on a card
 DESKS = ("#3B2F25", "#5A4632", "#2E3A40", "#6B5B4B", "#262626")
@@ -1307,38 +1306,6 @@ PARSERS["satellite"] = _ext_parser("satellite", "satellite")
 PARSERS["myth"] = parse_myth
 PARSERS.update({"counter": parse_counter, "staircase": parse_staircase, "scale": parse_scale})
 
-MASCOT_FACES = ("neutral", "curious", "shocked", "smug", "worried", "sad", "happy", "thinking", "suspicious")
-MASCOT_POSES = ("stand", "point", "shrug", "think", "hold", "wave", "explain", "cover")
-MASCOT_PROPS = ("magnifier", "phone", "clipboard", "note")
-
-
-def mascot_of(words: str) -> dict:
-    """'curious point magnifier' -> {face, pose, prop}: the Dragon Psychology mascot's look for one line."""
-    w = re.findall(r"[a-z]+", (words or "").lower())
-    face = next((x for x in w if x in MASCOT_FACES), "neutral")
-    prop = next((x for x in w if x in MASCOT_PROPS), "")
-    pose = next((x for x in w if x in MASCOT_POSES), "hold" if prop else "stand")
-    return {"face": face, "pose": pose, "prop": prop}
-
-
-def parse_mascot(spec: str) -> dict | None:
-    """Mascot: <face> <pose> [<prop>] | <the line on its card> | <small title>: the channel's dragon reacting.
-    Faces: neutral, curious, shocked, smug, worried, sad, happy, thinking, suspicious. Poses: stand, point, shrug,
-    think, hold, wave, explain, cover. Props: magnifier, phone, clipboard, note. It reacts; it never lip-syncs."""
-    parts = [p.strip() for p in (spec or "").split("|")]
-    if not parts or not parts[0] or not re.search(r"[a-z]", parts[0].lower()):
-        return None
-    look = mascot_of(parts[0])
-    if look["face"] == "neutral" and look["pose"] == "stand" and not look["prop"] and "neutral" not in parts[0].lower() \
-            and "stand" not in parts[0].lower():
-        return None
-    return {"type": "mascot", "face": look["face"], "pose": look["pose"], "holds": look["prop"], "line": (parts[1] if len(parts) > 1 else "")[:120],
-            "title": (parts[2] if len(parts) > 2 else "")[:40], "seed": _seed(spec) % 10000}
-
-
-PARSERS["mascot"] = parse_mascot
-
-
 
 _LOGOS: dict | None = None
 
@@ -1401,7 +1368,7 @@ def plan_for(kind: str, spec: str) -> dict | None:
         spec = (spec[:m.start()] + spec[m.end():]).strip()
     spec = re.sub(r"\|\s*voice\s*(?=\||$)", "", spec or "", flags=re.I).strip()     # "| voice": see wants_voice
     opts = {}
-    for key in ("badge", "fx", "inset", "exit", "camera", "src", "mascot"):
+    for key in ("badge", "fx", "inset", "exit", "camera", "src"):
         mm = re.search(rf"\|\s*{key}\s*[:=]\s*([^|]+)", spec or "", re.I)
         if mm:
             opts[key] = mm.group(1).strip()[:60]
@@ -1420,8 +1387,6 @@ def plan_for(kind: str, spec: str) -> dict | None:
             plan["inset"] = opts["inset"]
         if opts.get("camera", "").lower() in CAMERAS:
             plan["camera"] = opts["camera"].lower()       # the director's camera for this shot (still for evidence...)
-        if opts.get("mascot") and plan.get("type") != "mascot":
-            plan["mascot"] = mascot_of(opts["mascot"])     # the channel's dragon reacting in the corner
         if opts.get("src"):
             plan["src"] = opts["src"]                      # the source, in small type on the frame
     if plan is not None and note:
@@ -1976,99 +1941,6 @@ function myth(){ // a myth turned over: the wrong idea struck through in marker,
   const sx=W*(TALL?.68:.76),sy=y0-big*1.05;stp.attr({transform:`translate(${sx},${sy}) rotate(-8)`});popIn(stp,sx,sy,1.32,.2);
   const ty=y0+ls.length*big*1.3+U*.05,tr=boxText(L.front,P.right,TALL?U*.058:U*.052,W/2,ty,{anchor:'middle',maxw:W*.86,most:3});
   tr.opacity(0);at(1.95,.3,p=>tr.opacity(p),E.snap);FOCUS={x:W/2,y:ty+U*.04,rx:W*.32,ry:U*.08}}
-// ---- the Dragon Psychology mascot: one original drawn dragon, the same in every video ----
-// A cut-paper character rigged in parts (body, belly plates, wings, tail, legs, arms, head, horns, eyes, lids, brows,
-// spectacles, mouth) so it can breathe, blink, look, tilt, gesture and hold a prop. No lip-sync: it reacts, it doesn't talk.
-const DRAGON={body:'#2F7D63',dark:'#1F5A47',belly:'#F1E4C3',plate:'#D9C69A',horn:'#F4EBD2',ink:'#14171C',eye:'#FFFFFF',
-  tongue:'#E2483D',blush:'#F08A7A',glass:'#14171C'};
-const DRAGON_FACES={neutral:{brow:[0,0],tilt:0,lid:0,mouth:'flat',look:[0,0]},curious:{brow:[-14,8],tilt:9,lid:0,mouth:'o',look:[.35,-.2]},
-  shocked:{brow:[-18,18],tilt:-3,lid:-.15,mouth:'open',look:[0,0]},smug:{brow:[10,-6],tilt:-6,lid:.45,mouth:'smirk',look:[.4,0]},
-  worried:{brow:[18,-18],tilt:5,lid:.1,mouth:'wavy',look:[-.3,.2]},sad:{brow:[16,-16],tilt:7,lid:.35,mouth:'frown',look:[0,.45]},
-  happy:{brow:[-6,6],tilt:-4,lid:0,mouth:'smile',look:[0,0],blush:1},thinking:{brow:[-12,-4],tilt:10,lid:.2,mouth:'side',look:[.45,-.45]},
-  suspicious:{brow:[14,14],tilt:-8,lid:.55,mouth:'flat',look:[-.5,0]}};
-const DRAGON_POSES={stand:{l:12,r:-12},point:{l:12,r:-118},shrug:{l:70,r:-70},think:{l:12,r:-150},hold:{l:12,r:-62},wave:{l:12,r:-160},
-  explain:{l:40,r:-95},cover:{l:150,r:-150}};
-function dragonRig(g,x,y,h,o){ // feet centred at (x,y), height h; o: {face, pose, prop, start, mirror}
-  o=o||{};const C=DRAGON,s=h,F=DRAGON_FACES[o.face]||DRAGON_FACES.neutral,P0=DRAGON_POSES[o.pose]||DRAGON_POSES.stand,st=o.start||0;
-  const root=g.group().addClass('keep');const rig=root.group();
-  const p=(d)=>d.replace(/-?\d*\.?\d+/g,v=>String(+(+v*s).toFixed(2)));   // unit path -> pixels
-  const part=(pr,piv)=>{const q=pr.group();q.piv=piv;return q};
-  const rot=(q,a)=>q.attr({transform:`rotate(${a},${q.piv[0]*s},${q.piv[1]*s})`});
-  // tail (behind), wings (behind), legs, body, belly
-  const tail=part(rig,[-.14,-.2]);tail.path(p('M -0.14 -0.25 C -0.29 -0.25 -0.38 -0.17 -0.38 -0.07 C -0.38 -0.02 -0.33 -0.01 -0.3 -0.04 C -0.31 -0.1 -0.25 -0.15 -0.14 -0.14 Z')).fill(C.body).stroke({color:C.ink,width:s*.008});
-  tail.path(p('M -0.32 -0.05 L -0.44 -0.11 L -0.4 -0.01 L -0.47 0.01 L -0.33 0.02 Z')).fill(C.dark).stroke({color:C.ink,width:s*.007});
-  const wing=(side)=>{const w=part(rig,[side*.12,-.46]);const m=v=>side*v;
-    w.path(p(`M ${m(.12)} -0.46 C ${m(.21)} -0.61 ${m(.35)} -0.67 ${m(.41)} -0.59 L ${m(.36)} -0.54 L ${m(.39)} -0.47 L ${m(.32)} -0.44 L ${m(.31)} -0.38 L ${m(.15)} -0.37 Z`))
-      .fill(C.dark).stroke({color:C.ink,width:s*.008});
-    [[.41,-.59],[.39,-.47],[.31,-.38]].forEach(q=>w.line(m(.14)*s,-.44*s,m(q[0])*s*.93,q[1]*s*.98).stroke({color:C.ink,width:s*.005,opacity:.55}));return w};
-  const wl=wing(-1),wr=wing(1);
-  [-1,1].forEach(sd=>{const lg=rig.group();lg.ellipse(s*.17,s*.11).center(sd*.1*s,-.045*s).fill(C.body).stroke({color:C.ink,width:s*.008});
-    [-.04,0,.04].forEach(c=>lg.circle(s*.024).center((sd*.1+c)*s,-.0*s).fill(C.horn).stroke({color:C.ink,width:s*.004}))});
-  const body=rig.group();
-  body.path(p('M -0.2 -0.07 C -0.27 -0.3 -0.2 -0.53 0 -0.56 C 0.2 -0.53 0.27 -0.3 0.2 -0.07 Q 0 0.0 -0.2 -0.07 Z')).fill(C.body).stroke({color:C.ink,width:s*.009});
-  body.path(p('M -0.12 -0.1 C -0.16 -0.28 -0.12 -0.44 0 -0.47 C 0.12 -0.44 0.16 -0.28 0.12 -0.1 Q 0 -0.05 -0.12 -0.1 Z')).fill(C.belly).stroke({color:C.ink,width:s*.006});
-  [-.4,-.33,-.26,-.19,-.13].forEach((yy,i)=>{const hw=[.09,.12,.13,.13,.11][i];body.path(p(`M ${-hw} ${yy} Q 0 ${yy+.03} ${hw} ${yy}`)).fill('none').stroke({color:C.plate,width:s*.008})});
-  [[-.08,-.52],[0,-.555],[.08,-.52]].forEach(q=>body.path(p(`M ${q[0]-.025} ${q[1]+.01} L ${q[0]} ${q[1]-.05} L ${q[0]+.025} ${q[1]+.01} Z`)).fill(C.horn).stroke({color:C.ink,width:s*.005}).back());
-  // arms: pivot at the shoulder; 0 deg hangs down
-  const arm=(side,a)=>{const q=part(rig,[side*.16,-.4]);q.path(p(`M ${side*.13} -0.42 Q ${side*.2} -0.43 ${side*.2} -0.36 L ${side*.19} -0.24 Q ${side*.16} -0.2 ${side*.13} -0.25 Z`))
-      .fill(C.body).stroke({color:C.ink,width:s*.008});q.circle(s*.06).center(side*.165*s,-.22*s).fill(C.body).stroke({color:C.ink,width:s*.007});
-    [-.02,0,.02].forEach(c=>q.circle(s*.016).center((side*.165+c)*s,-.19*s).fill(C.horn).stroke({color:C.ink,width:s*.003}));q.ang=0;rot(q,a);return q};
-  const al=arm(-1,P0.l*0),ar=arm(1,0);
-  let propG=null;if(o.prop){propG=ar.group();const hx=.165*s,hy=-.2*s;
-    if(o.prop==='magnifier'){propG.line(hx,hy,hx+s*.08,hy+s*.08).stroke({color:'#6B4A2E',width:s*.022,linecap:'round'});propG.circle(s*.13).center(hx-s*.035,hy-s*.035).fill('#CFE8F2').opacity(.75);
-      propG.circle(s*.13).center(hx-s*.035,hy-s*.035).fill('none').stroke({color:C.ink,width:s*.012})}
-    else if(o.prop==='phone'){propG.rect(s*.085,s*.15).move(hx-s*.04,hy-s*.13).radius(s*.012).fill(C.ink);propG.rect(s*.068,s*.115).move(hx-s*.031,hy-s*.115).fill('#DDE7EE')}
-    else if(o.prop==='clipboard'){propG.rect(s*.14,s*.18).move(hx-s*.02,hy-s*.16).fill('#B98B55').stroke({color:C.ink,width:s*.006});propG.rect(s*.11,s*.13).move(hx-s*.005,hy-s*.13).fill('#FFFFFF');
-      [0,1,2].forEach(i=>propG.line(hx+s*.01,hy-s*.1+i*s*.035,hx+s*.09,hy-s*.1+i*s*.035).stroke({color:'#888',width:s*.005}))}
-    else if(o.prop==='note'){propG.rect(s*.13,s*.1).move(hx-s*.02,hy-s*.1).fill('#F5B700').stroke({color:C.ink,width:s*.005}).rotate(-8)}}
-  // head
-  const head=part(rig,[0,-.55]);
-  [-1,1].forEach(sd=>head.path(p(`M ${sd*.1} -0.86 C ${sd*.13} -0.95 ${sd*.2} -1.0 ${sd*.25} -0.99 C ${sd*.2} -0.95 ${sd*.17} -0.9 ${sd*.16} -0.82 Z`)).fill(C.horn).stroke({color:C.ink,width:s*.007}));
-  [-1,1].forEach(sd=>head.path(p(`M ${sd*.19} -0.76 L ${sd*.29} -0.8 L ${sd*.25} -0.72 L ${sd*.3} -0.69 L ${sd*.19} -0.67 Z`)).fill(C.dark).stroke({color:C.ink,width:s*.006}));
-  head.path(p('M -0.2 -0.74 C -0.2 -0.86 -0.1 -0.92 0 -0.92 C 0.1 -0.92 0.2 -0.86 0.2 -0.74 C 0.2 -0.66 0.16 -0.6 0 -0.58 C -0.16 -0.6 -0.2 -0.66 -0.2 -0.74 Z')).fill(C.body).stroke({color:C.ink,width:s*.009});
-  head.ellipse(s*.27,s*.15).center(0,-.635*s).fill(C.belly).stroke({color:C.ink,width:s*.006});
-  [-1,1].forEach(sd=>head.ellipse(s*.022,s*.014).center(sd*.035*s,-.675*s).fill(C.ink));
-  const blush=head.group();[-1,1].forEach(sd=>blush.ellipse(s*.05,s*.025).center(sd*.15*s,-.66*s).fill(C.blush));blush.opacity(F.blush?.8:0);
-  const eyes=[],lids=[],brows=[];
-  [-1,1].forEach(sd=>{const ex=sd*.075*s,ey=-.765*s;head.ellipse(s*.105,s*.115).center(ex,ey).fill(C.eye).stroke({color:C.ink,width:s*.006});
-    const pu=head.circle(s*.052).fill(C.ink).center(ex,ey);head.circle(s*.016).fill('#FFFFFF');eyes.push([pu,ex,ey]);
-    const cl=draw.clip();cl.ellipse(s*.105,s*.115).center(ex,ey);const ld=head.rect(s*.12,s*.13).move(ex-s*.06,ey-s*.06-s*.13).fill(C.body);ld.clipWith(cl);lids.push([ld,ex,ey]);
-    const br=head.group();br.path(p(`M ${sd*.075-.045} -0.845 Q ${sd*.075} -0.865 ${sd*.075+.045} -0.845`)).fill('none').stroke({color:C.ink,width:s*.016,linecap:'round'});br.piv=[sd*.075,-.85];brows.push([br,sd])});
-  const gl=head.group();[-1,1].forEach(sd=>gl.circle(s*.135).center(sd*.075*s,-.765*s).fill('none').stroke({color:C.glass,width:s*.008}));
-  gl.path(p('M -0.01 -0.775 Q 0 -0.79 0.01 -0.775')).fill('none').stroke({color:C.glass,width:s*.008});
-  const mouth=head.group();
-  const M={flat:'M -0.05 -0.6 Q 0 -0.595 0.05 -0.6',smile:'M -0.08 -0.615 Q 0 -0.56 0.08 -0.615',frown:'M -0.06 -0.585 Q 0 -0.62 0.06 -0.585',
-    smirk:'M -0.05 -0.6 Q 0.02 -0.595 0.07 -0.625',wavy:'M -0.06 -0.598 Q -0.03 -0.61 0 -0.598 Q 0.03 -0.586 0.06 -0.598',side:'M 0.0 -0.6 L 0.07 -0.605'};
-  if(F.mouth==='open'||F.mouth==='o'){const r=F.mouth==='open'?[.075,.06]:[.04,.035];mouth.ellipse(r[0]*s,r[1]*s).center(0,-.6*s).fill(C.ink);
-    if(F.mouth==='open')mouth.ellipse(r[0]*s*.6,r[1]*s*.35).center(0,-.583*s).fill(C.tongue)}
-  else mouth.path(p(M[F.mouth]||M.flat)).fill('none').stroke({color:C.ink,width:s*.011,linecap:'round'});
-  mouth.path(p('M 0.03 -0.603 L 0.04 -0.585 L 0.05 -0.603 Z')).fill('#FFFFFF').stroke({color:C.ink,width:s*.003}).opacity(F.mouth==='open'?0:1);  // the one fang
-  if(o.mirror)rig.attr({transform:'scale(-1,1)'});
-  root.attr({transform:`translate(${x},${y})`});
-  // motion: arrive, settle into the pose and face, then idle (breathe, blink, flick the tail, look)
-  const base=`translate(${x},${y})`;root.opacity(0);
-  at(st,.45,q=>{root.opacity(Math.min(1,q*2));root.attr({transform:`${base} translate(0,${(1-q)*s*.12}) scale(${.92+.08*q})`})},E.back);
-  const face=(q)=>{brows.forEach(([br,sd])=>rot(br,(sd<0?F.brow[0]:F.brow[1])*q*-sd));
-    lids.forEach(([ld,ex,ey])=>ld.attr({y:ey-s*.06-s*.13+s*.13*F.lid*q}));
-    eyes.forEach(([pu,ex,ey])=>pu.center(ex+F.look[0]*s*.022*q,ey+F.look[1]*s*.022*q))};
-  at(st+.35,.4,q=>{face(q);rot(al,P0.l*q);rot(ar,P0.r*q)},E.out);
-  TICKS.push(t=>{const tt=Math.max(0,t-st);const br=Math.sin(tt*2*Math.PI/3.2);
-    body.attr({transform:`translate(0,${-.42*s}) scale(1,${1+.012*br}) translate(0,${.42*s})`});
-    rot(tail,6*Math.sin(tt*1.7));rot(wl,-4*Math.sin(tt*1.3)-2);rot(wr,4*Math.sin(tt*1.3)+2);
-    rot(head,F.tilt*Math.min(1,Math.max(0,(tt-.35)/.4))+1.5*Math.sin(tt*1.1));
-    if(P0===DRAGON_POSES.wave&&tt>.8)rot(ar,P0.r+14*Math.sin((tt-.8)*7));
-    const bl=((tt+.7)%3.4);const shut=bl<.12?Math.sin(bl/.12*Math.PI):0;   // a blink every 3.4 s
-    if(tt>.8)lids.forEach(([ld,ex,ey])=>ld.attr({y:ey-s*.06-s*.13+s*.13*Math.max(F.lid,shut)}))});
-  return root}
-function mascot(){ // the channel's dragon reacting beside the line (a caption card), or alone and big
-  const h=TALL?H*.42:H*.66,x=TALL?W*.5:(P.line?W*.3:W*.5),y=TALL?H*.6:H*.9;
-  const sh=L.back.ellipse(h*.62,h*.07).center(x,y+h*.01).fill('#000').opacity(.14);wipe(sh,.05);
-  dragonRig(L.hero,x,y,h,{face:P.face,pose:P.pose,prop:P.holds,start:.1});FOCUS={x,y:y-h*.7,rx:h*.35,ry:h*.3};
-  if(P.line){const bx=TALL?W/2:W*.57,by=TALL?H*.72:H*.42,mw=TALL?W*.86:W*.4;
-    const b=boxText(L.front,P.line,TALL?U*.05:U*.052,bx,by,{anchor:TALL?'middle':'start',maxw:mw,most:4});b.opacity(0);at(.75,.3,q=>b.opacity(q),E.snap)}
-  if(P.title){const t=T(L.front,P.title.toUpperCase(),U*.026,TALL?W/2:W*.57,TALL?H*.08:H*.3,{family:'Mono',weight:700,anchor:TALL?'middle':'start',ls:'.18em',fill:K.mark||'#C0262D'});wipe(t,.6)}}
-function mascotLayer(){const m=P.mascot;if(!m)return;const h=TALL?H*.2:H*.34,x=TALL?W*.82:W*.88,y=TALL?H*.97:H*.98;
-  dragonRig(L.front,x,y,h,{face:m.face,pose:m.pose,prop:m.prop,start:.6})}
 function counter(){ // a number counting in steady digits (each digit in its own fixed slot, so nothing jitters), then holding
   const big=TALL?W*.24:H*.3,g=L.hero.group(),num=v=>{let s=Math.abs(v).toFixed(P.dec);if(P.comma){const [i,f]=s.split('.');s=i.replace(/\B(?=(\d{3})+(?!\d))/g,',')+(f?'.'+f:'')}
     return (v<0?'-':'')+s};
@@ -2957,14 +2829,14 @@ function footage(){ // moving footage, frame by frame, with the same annotations
   if(P.annotate&&P.annotate.length){const a=P.annotate[0];FOCUS={x:a.p[0]*W,y:a.p[1]*H,rx:U*.1,ry:U*.1}}
   photoCredit()}
 
-const SCENES={mascot,myth,counter,staircase,scale,photo,photos,footage,shrink,morph,borders,courtdoc,table,interview,endcard,polltrack,area,candles,arrows,railmap,sizemap,pyramid,flowchart:flow,linkmap,orgchart,heatmap,hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv,
+const SCENES={myth,counter,staircase,scale,photo,photos,footage,shrink,morph,borders,courtdoc,table,interview,endcard,polltrack,area,candles,arrows,railmap,sizemap,pyramid,flowchart:flow,linkmap,orgchart,heatmap,hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv,
   clockmap,tornsplit,newscard,blueprint};
 async function boot(){
   try{await Promise.all(Array.from(document.fonts).map(f=>f.load()))}catch(e){}
   const imgs=[];const pre=u=>imgs.push(new Promise(r=>{const i=new Image();i.onload=i.onerror=r;i.src=u}));
   (P.pics||[]).forEach(p=>{if(p.img)pre(p.img)});[P.img,P.far].concat((P.layers||[]).map(l=>l.img),(P.imgs||[]).map(x=>x.img),P.frames||[]).forEach(u=>{if(u)pre(u)});
   await Promise.all(imgs);
-  (SCENES[P.type]||hero)();logoLayer();markerLayer();badgeLayer();srcLayer();insetLayer();mascotLayer();layout();companion();
+  (SCENES[P.type]||hero)();logoLayer();markerLayer();badgeLayer();srcLayer();insetLayer();layout();companion();
   const film=filmLayer(),fx=fxLayer(),voice=voiceLayer();
   window.frame=function(t){camera(t);const tq=Math.floor(t*12+1e-6)/12;   // the hand-made 12 fps stutter
     for(const k of tracks){const p=Math.max(0,Math.min(1,(tq-k.start)/k.dur));k.fn(k.e(p))}if(FLIPS.length)reflip();film(t,tq);fx(t);voice(t);

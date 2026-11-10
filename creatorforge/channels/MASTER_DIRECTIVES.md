@@ -22,8 +22,8 @@ the order is:
 |---|---|---|
 | What | Researched investigative documentaries | Psychology, scams, biases and manipulation, explained |
 | Language | Hindi (Hinglish when asked) | English first; Hindi versions later |
-| Face | None: faceless, **no mascot, no Dastango** | An **original dragon mascot**, a drawn and rigged character, the same in every video |
-| Style | Vox × Johnny Harris, editorial and evidence-led | Vox × Johnny Harris explanation with animation |
+| Face | None: faceless, **no mascot, no Dastango** | None: faceless, **no mascot** (owner, 2026-11-10) |
+| Style | Vox × Johnny Harris, editorial and evidence-led | Vox × Johnny Harris explanation with animation (cut-outs, diagrams, stickman scenes), no character |
 | Narrator | The owner's own ElevenLabs voice | The channel's own voice |
 
 CreatorForge serves only these two channels. A new feature must serve one of them.

@@ -92,10 +92,6 @@ Staircase: <step>; <step>; <step> | <title>  - steps that light up one by one as
 Scale: <weight>, <weight>, ... | <the other side> | <verdict>  - a balance tipping as weights pile up (a trade-off, a decision)
 Myth: <the wrong idea> | <what is actually true> | <stamp word, default MYTH>  - a myth turned over: the wrong
     idea struck through in marker, a stamp, the true line printed over it (only when the dossier shows it is a myth)
-Mascot: <face> <pose> [<prop>] | <the line on its card> | <small title>  - DRAGON PSYCHOLOGY ONLY: the channel's
-    dragon reacting (faces: neutral, curious, shocked, smug, worried, sad, happy, thinking, suspicious; poses: stand,
-    point, shrug, think, hold, wave, explain, cover; props: magnifier, phone, clipboard, note). It reacts; it never
-    talks on screen. Any graphic can add "| mascot: <face> <pose>" to put the dragon in the corner. Never on Print Facts.
 Flowmap: <place> → <place> <number>, ... | <title> | <unit>  - flows between places as arcs as wide as their numbers
 Columns: <place> <number>, ... | <title> | <unit>  - a 3D column standing on each place, as tall as its number
 Dots: <place> <number>, ... | <title> | <unit>  - a circle on each place, its area showing the number

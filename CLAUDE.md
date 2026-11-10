@@ -17,7 +17,7 @@ The essentials, in case nothing else is read:
   metaphor.
 - **Every fact is in the research dossier with a source and a status.** Allegations are attributed and the other
   side is shown.
-- **Print Facts:** Hindi, faceless, no mascot. **Dragon Psychology:** English, with an original dragon mascot.
+- **Print Facts:** Hindi, faceless, no mascot. **Dragon Psychology:** English, faceless, no mascot.
 
 **Code:** the worker is in `creatorforge/worker` (tests: `python -m pytest -q`); the Android app is in
 `creatorforge/android`.

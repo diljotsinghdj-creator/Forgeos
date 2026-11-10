@@ -64,3 +64,10 @@ Newest entries go at the bottom. Rules here are binding for both channels unless
 - **New Permanent Rule:** CreatorForge serves two channels only: Print Facts (researched documentaries) and Dragon Psychology (animated psychology). New features must serve one of them. Removed: Trends + Autopilot, Hook Lab, Templates, Shorts Clipper, Publish Calendar, Analytics, Safety Check, talking-mascot lip-sync. Kept: Director, Scripts, Generate, Library, Brand Kits, Cloud Studio, AI images, preset voices, stickman looks.
 - **Used Mechanics to Retire:** n/a
 - **Winning Pattern:** Topics come from research and the owner, not trend feeds; publishing goes through Uplika.
+
+### 2026-11-10: No mascot
+- **Mistake Logged:** A rigged dragon mascot was built for Dragon Psychology; the owner doesn't want a mascot.
+- **New Permanent Rule:** Neither channel has a mascot or a recurring character. Both are faceless; Dragon
+  Psychology's identity is its look (palette, cut-outs, type) and the narrator's voice.
+- **Used Mechanics to Retire:** the dragon character, in thumbnails and scenes.
+- **Winning Pattern:** Evidence and diagrams carry the film, not a character.

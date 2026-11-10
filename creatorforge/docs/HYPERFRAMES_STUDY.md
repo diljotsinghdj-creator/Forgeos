@@ -92,7 +92,7 @@ can be adopted without switching engines.
 16. **Music under voice at about 0.14 volume.** True peak at −1 dBTP or below; mix at −16 to −14 LUFS. We target −14
     already; add the true-peak check.
 
-### P2: characters (for the Dragon Psychology mascot)
+### P2: characters (stickman scenes; the owner dropped the mascot on 2026-11-10)
 
 17. **Acting rules:**
     - mood changes go anticipation → squash → new face → settle; never a snap;

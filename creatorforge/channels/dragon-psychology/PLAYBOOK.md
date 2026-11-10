@@ -5,7 +5,7 @@ Everything here can be changed.
 
 **Assumptions to confirm:**
 - English first, with Hindi versions later, because English psychology audiences pay several times more per view.
-- An original dragon mascot.
+- No mascot (the owner's decision, 2026-11-10): faceless, Vox × Johnny Harris explainers with the owner's own voice.
 - Animation made with CreatorForge.
 - You approve every script.
 
@@ -13,7 +13,7 @@ Everything here can be changed.
 
 ## 1. The blueprint
 
-**Positioning:** *"The psychology behind what you do, explained by a dragon who has watched humans for 1,000 years."*
+**Positioning:** *"The psychology behind what you do, investigated: the study, the evidence, the trick, and how to spot it."*
 - Every video uses an animated story, real studies cited on screen and one useful takeaway.
 - The difference from other psychology channels: we **check the science**. We say when a famous study failed to
   replicate, which most channels don't, and we turn that into a recurring hook ("the study everyone quotes is wrong").
@@ -37,20 +37,12 @@ They've seen pop-psychology Shorts and want something smarter, but still fun. Se
 - 2 community posts a week.
 - From month 3, the same videos go out in Hindi on the same channel (multi-language audio) or on a second channel.
 
-**The mascot:** one original dragon. Same design, voice and personality in every video.
-- Personality: wise and a little sarcastic, warm, never preachy.
-- The name is still to be chosen.
-- It stays original: no resemblance to existing film or game dragons.
-- **Built (v1, awaiting the owner's approval):** a drawn, rigged dragon in the scene engine (`media/vox.py`,
-  `dragonRig`). It's green, with a cream belly and plates, cream horns, small wings and round spectacles (1,000 years of
-  watching humans), and a single fang. It has 9 faces (neutral, curious, shocked, smug, worried, sad, happy, thinking,
-  suspicious), 8 poses (stand, point, shrug, think, hold, wave, explain, cover) and 4 props (magnifier, phone,
-  clipboard, note). It breathes, blinks, flicks its tail and moves its wings. It reacts; it never lip-syncs.
-  - In a script: `Mascot: curious point magnifier | Wait. Look at this line.`, or `| mascot: smug` on any graphic
-    (the corner).
-  - Design sheet: `mascot_v1_sheet.jpg`. The editorial review blocks the mascot on Print Facts.
+**No mascot.** The channel is faceless like Print Facts. Its identity is the look and the voice:
+- the strict three-colour palette (charcoal, highlighter yellow, signal red);
+- 12 fps cut-outs over a smooth camera, real papers and documents on screen;
+- one consistent narrator: wise, a little dry, warm, never preachy.
 
-**Production:** the CreatorForge studio does the research dossier, script, mascot animation, narration, captions,
+**Production:** the CreatorForge studio does the research dossier, script, animation, narration, captions,
 thumbnail and Shorts. Your role: pick topics, approve the script and approve the final cut.
 
 ---
@@ -62,34 +54,34 @@ leads to check, not final facts.
 
 | # | Title | Thumbnail | Opening hook (first 5 seconds) | Angle and why people click |
 |---|---|---|---|---|
-| 1 | Why Your Brain Replays Embarrassing Moments at 3 AM | Dragon wide awake in bed, a cringe memory in a thought bubble | "It's 3 a.m. You're thinking about something you said in 2014." | Negativity bias and rumination. A universal, relatable feeling. |
-| 2 | 6 Tactics Manipulators Use (Spot Them in 10 Seconds) | Six icons; dragon holding a magnifier | "Someone has used at least one of these on you this month." | Gaslighting, love bombing, DARVO, foot-in-the-door, guilt-tripping, the silent treatment, framed as self-defence. Self-protection is a strong click reason. |
+| 1 | Why Your Brain Replays Embarrassing Moments at 3 AM | A bedside clock at 3:00, a cringe memory in a thought bubble | "It's 3 a.m. You're thinking about something you said in 2014." | Negativity bias and rumination. A universal, relatable feeling. |
+| 2 | 6 Tactics Manipulators Use (Spot Them in 10 Seconds) | Six icons under a magnifier | "Someone has used at least one of these on you this month." | Gaslighting, love bombing, DARVO, foot-in-the-door, guilt-tripping, the silent treatment, framed as self-defence. Self-protection is a strong click reason. |
 | 3 | The Famous Prison Experiment Was Mostly Staged | Prison bars, a huge "STAGED?" stamp | "The most famous experiment in psychology may have been coached." | Stanford Prison Experiment critiques (Le Texier 2018). "Everything you learned is wrong" curiosity. |
-| 4 | Procrastination Isn't Laziness | Dragon hiding from a to-do list | "You don't avoid the task. You avoid a feeling." | Procrastination as emotion regulation (Sirois & Pychyl). It reframes the viewer's guilt. |
+| 4 | Procrastination Isn't Laziness | A to-do list with one task circled in red marker | "You don't avoid the task. You avoid a feeling." | Procrastination as emotion regulation (Sirois & Pychyl). It reframes the viewer's guilt. |
 | 5 | Nobody Is Looking at You (Science Proved It) | One person in a spotlight; the crowd looking at their phones | "Students wore an embarrassing T-shirt into a room. Here's how many people noticed." | Spotlight effect (Gilovich, 2000). Relief and surprise. |
 | 6 | Why Smart People Fall for Scams | A genius brain with a fishing hook | "The people who get scammed are often the ones who think they never would." | Urgency, authority, scarcity, with real scam scripts taken apart. Fear plus self-protection. |
 | 7 | Dunning–Kruger: The Famous Graph Is Wrong | The "Mount Stupid" curve crossed out | "That graph you've seen 1,000 times isn't in the original study." | A myth-bust that viewers share to correct friends. |
-| 8 | Why You Can't Stop Scrolling | Dragon trapped inside an endless phone feed | "This app was designed like a slot machine." | Variable rewards, while busting the "dopamine detox" myths. Relatable guilt. |
+| 8 | Why You Can't Stop Scrolling | A thumb on an endless phone feed shaped like a slot-machine reel | "This app was designed like a slot machine." | Variable rewards, while busting the "dopamine detox" myths. Relatable guilt. |
 | 9 | The Bystander Effect Is Mostly a Myth | A CCTV frame with people rushing in to help | "We were told 38 people watched a murder and did nothing. It wasn't true." | The Kitty Genovese story corrected; the CCTV study across three countries (Philpot et al., 2019). Hope and myth-bust. |
 | 10 | Love Bombing: When the Perfect Start Is a Red Flag | A heart made of chains | "Too much, too fast. Here's why it feels so good." | A relationship self-defence video. |
 | 11 | People Judge You in 0.1 Seconds | A stopwatch at 0.1 s over a face (illustrated) | "Before you've said a word, they've already decided." | First impressions (Willis & Todorov, 2006). Anxiety plus tips. |
 | 12 | The Marshmallow Test Was Wrong About You | A marshmallow with a "MYTH" stamp | "You were told willpower at age four predicts your life. Not quite." | The 2018 replication (Watts et al.): family background matters. Comforting myth-bust. |
 | 13 | How Cults Recruit Normal People | A friendly door with a staircase going down behind it | "Nobody joins a cult. They join a friendly group." | Small steps of commitment. Dark curiosity, kept as education. |
-| 14 | Why Smart People Believe Conspiracy Theories | A red-string board around the dragon | "It's not about intelligence. It's about three needs." | Control, certainty, feeling special (research by Douglas et al.). Shareable. |
-| 15 | Why You Stay Too Long (Jobs, Relationships, Bad Films) | Dragon sitting on a sinking ship | "You've wasted two hours on this film, so you watch one more." | Sunk-cost fallacy. Relatable decisions. |
-| 16 | Why Successful People Feel Like Frauds | A trophy and the dragon in a disguise | "70% of people feel this at some point." (Check the figure.) | Impostor phenomenon (Clance & Imes, 1978). Validation. |
+| 14 | Why Smart People Believe Conspiracy Theories | A red-string evidence board | "It's not about intelligence. It's about three needs." | Control, certainty, feeling special (research by Douglas et al.). Shareable. |
+| 15 | Why You Stay Too Long (Jobs, Relationships, Bad Films) | A cinema ticket on a sinking ship | "You've wasted two hours on this film, so you watch one more." | Sunk-cost fallacy. Relatable decisions. |
+| 16 | Why Successful People Feel Like Frauds | A trophy and a paper disguise mask | "70% of people feel this at some point." (Check the figure.) | Impostor phenomenon (Clance & Imes, 1978). Validation. |
 | 17 | Why a Breakup Hurts Like a Burn | A broken heart with a bandage | "Your brain may process rejection a bit like physical pain." | Social pain research (Kross 2011, plus the debate about it). Emotional; strong retention. |
-| 18 | Why You Copy People You Like | Two dragons in mirrored poses | "You're doing it right now with someone you know." | Chameleon effect (Chartrand & Bargh, 1999). A fun "try this" video. |
+| 18 | Why You Copy People You Like | Two silhouettes in mirrored poses | "You're doing it right now with someone you know." | Chameleon effect (Chartrand & Bargh, 1999). A fun "try this" video. |
 | 19 | Why Attractive People Get Away With More | A halo over a face, a gavel below | "Juries, teachers, bosses: the halo follows you." | Halo effect, with cautious claims. Injustice drives clicks. |
-| 20 | Why Waiting for a Reply Feels Unbearable | A phone with "typing…" and the dragon biting its claws | "Two blue ticks. No reply. Your brain is in full alarm." | Intolerance of uncertainty. Extremely relatable. |
+| 20 | Why Waiting for a Reply Feels Unbearable | A phone with "typing…" and a clock ticking | "Two blue ticks. No reply. Your brain is in full alarm." | Intolerance of uncertainty. Extremely relatable. |
 
 **Same structure for every video:**
 1. **0–5 s, the hook:** a relatable moment, or "what you were told is wrong".
-2. **5–30 s, the promise:** the question this video answers, the mascot's first reaction, and one surprising fact.
+2. **5–30 s, the promise:** the question this video answers, and one surprising fact.
 3. **The story:** an animated scene shows the effect happening.
 4. **The science:** the study, recreated as an animation with the paper cited on screen. Say how strong the evidence is.
 5. **The twist:** a myth corrected, a limit of the study, or "it's not what you think".
-6. **The takeaway:** one thing to do or notice. Then the dragon's line, and a lead into the next video.
+6. **The takeaway:** one thing to do or notice. Then the closing line, and a lead into the next video.
 
 **How the first 30 seconds keep viewers:**
 - No channel intro.
@@ -107,7 +99,7 @@ leads to check, not final facts.
 | 2. Research | Claude | Studio dossier (studies, statuses) | `dossier.json`: every claim with a source |
 | 3. Script | Claude → **you approve** | Studio writer + editorial check | Script with a visual for every line |
 | 4. Voice | Pod | ElevenLabs (the channel's own voice) or Kokoro | Narration takes |
-| 5. Animation | Pod | Mascot, stickman / 3D scenes, Vox-style graphics | Scenes |
+| 5. Animation | Pod | Stickman / 3D scenes, Vox-style graphics | Scenes |
 | 6. Edit, captions, music | Pod | Studio | Full video, burned-in captions |
 | 7. Thumbnail and title | Claude → **you pick** | Studio thumbnail generator, 3 options | Thumbnail A/B/C |
 | 8. Repurpose | Pod | Studio cutdowns | 4–6 Shorts, 2 community posts, 1 carousel |
@@ -142,7 +134,7 @@ channels/dragon-psychology/videos/<nn>-<slug>/
 
 **Checklists before publishing:**
 - Every claim is in the dossier, and myths are labelled as myths.
-- The mascot looks consistent.
+- The look is consistent (palette, type, cut-outs).
 - Captions are checked.
 - The thumbnail is readable at phone size.
 - No medical or diagnostic advice.
@@ -168,7 +160,7 @@ channels/dragon-psychology/videos/<nn>-<slug>/
 - **Low impressions:** topic or title. Try a new title in week 1.
 - **Low CTR:** thumbnail or title. Swap the thumbnail; YouTube's built-in thumbnail test can compare up to three.
 - **Good CTR, poor retention:** the thumbnail promised something the video didn't deliver quickly. Fix the hook.
-- **Good retention, few subscribers:** a good video with an unclear channel promise. Add a "next video" ending and a stronger mascot identity.
+- **Good retention, few subscribers:** a good video with an unclear channel promise. Add a "next video" ending and a stronger visual identity.
 
 **Monthly (first Sunday):**
 - Rank all videos by views per day and by retention.
@@ -200,7 +192,7 @@ uploads, not 90 days. Many channels never get there. The plan below grows income
 | 5 | ~10K subs | **Newsletter:** a weekly "one psychology idea" | Your own audience, independent of the algorithm |
 | 6 | ~20–50K subs | **Digital products:** e.g. "Spot the Manipulator" guide, a journal, flashcards | High margin; made once |
 | 7 | ~50K+ subs | **Sponsorships:** learning apps, book apps, productivity tools | Choose sponsors with care (see below) |
-| 8 | ~100K+ subs | **Memberships:** bonus videos, mascot extras, early access | |
+| 8 | ~100K+ subs | **Memberships:** bonus videos, extra breakdowns, early access | |
 | Skip | – | Consulting or "therapy" services | Not a licensed practice; legal and ethical risk |
 
 **A rough mix at $10K a month:** about $4–5K from ads, $2–3K from sponsors, $1–2K from products and affiliates,
@@ -217,7 +209,7 @@ depending on RPM.
 ## Priorities, things to ignore, and the biggest mistakes
 
 **Do first:**
-1. The mascot design and voice: the channel's face.
+1. The look and the voice: the channel's identity (no mascot).
 2. Three pilot videos from pillars 1 and 2.
 3. A thumbnail style that is recognisable at phone size.
 4. One long video a week, reliably.
@@ -231,7 +223,7 @@ depending on RPM.
 
 **Biggest mistakes that slow growth:**
 1. **Content that looks mass-produced or "AI slop".** YouTube's monetisation rules exclude "inauthentic",
-   mass-produced, repetitive content. Our protection: original scripts, a consistent mascot, a real story in each
+   mass-produced, repetitive content. Our protection: original scripts, a consistent look and voice, a real story in each
    video, cited research and your approval of every script.
 2. **Pop-psychology myths:** fake "dark psychology" tricks, "dopamine detox" or invented statistics. It costs trust
    and gets called out in the comments. The re-checked-studies pillar is our edge.
@@ -239,7 +231,7 @@ depending on RPM.
 4. **Diagnosing viewers:** "you have narcissistic personality disorder". Talk about behaviours and tactics, not
    diagnoses, and point to professional help where relevant.
 5. **Teaching manipulation as a how-to.** Always frame dark psychology as recognising and defending.
-6. **An inconsistent mascot**, or switching styles every video.
+6. **An inconsistent look**, or switching styles every video.
 7. **Chasing five topics at once**, or quitting before about 30 videos.
 
 ---
@@ -248,7 +240,7 @@ depending on RPM.
 
 | Week | Milestone |
 |---|---|
-| 1 | Confirm language and pillars. Design the mascot (3 options, you pick). Choose the voice. Brand kit in CreatorForge |
+| 1 | Confirm language and pillars. Fix the look (palette, type, 3 options, you pick). Choose the voice. Brand kit in CreatorForge |
 | 2 | Channel setup: banner, about text, playlists per pillar. Dossiers for videos 1–3 |
 | 3 | Scripts 1–3 approved. Animate video 1. Thumbnail style fixed |
 | 4 | **Publish video 1** + 4 Shorts. Connect Uplika |
