@@ -75,3 +75,11 @@ Newest entries go at the bottom. Rules here are binding for both channels unless
   suggestions until the owner says yes, and nothing is built from them before that.
 - **Used Mechanics to Retire:** the dragon character, in thumbnails and scenes.
 - **Winning Pattern:** Evidence and diagrams carry the film, not a character.
+
+### 2026-11-10: Evolution sample in Hindi
+- **Mistake Logged:** The owner asked for "a 10 second video on evolution", naming no language and no channel. Claude
+  assumed Hindi, wrote the narration in Hindi script and spent about 330 ElevenLabs credits on it.
+- **New Permanent Rule:** When a request doesn't name the language and the channel, ask before writing a script or
+  spending credits (ElevenLabs, image or video models). Never guess them from an earlier film.
+- **Used Mechanics to Retire:** n/a
+- **Winning Pattern:** n/a
