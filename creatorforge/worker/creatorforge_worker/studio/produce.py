@@ -97,6 +97,9 @@ def _sheet(images: list[Path], labels: list[str], out: Path, cols: int = 4) -> P
     return out
 
 
+PLAIN_CUTS = ["blur", "dipcut", "whip"]      # unmotivated seams: a camera-blur whip, a dip cut, a smooth slide
+
+
 def _render_scene(kind, spec, theme, w, h, seconds, out, work, fps, layout, fetch, lib):
     if kind == "key":
         from ..media import composite
@@ -312,7 +315,11 @@ def produce(screenplay: Path | str, dossier: Path | str, out_dir: Path | str, si
     transitions = []
     for i, s in enumerate(sp["scenes"]):
         from ..pipeline import motivated_transition
-        tr = s.get("transition") or ("cut" if i == 0 else motivated_transition(kinds[i - 1], kinds[i]) or "blur")
+        tr = s.get("transition") or ("cut" if i == 0 else motivated_transition(kinds[i - 1], kinds[i]))
+        prev = transitions[-1] if transitions else ""
+        if not tr or (tr == prev and tr in PLAIN_CUTS and not s.get("transition")):
+            # no cause on screen (or the same plain cut again): rotate, so one cut never plays twice in a row
+            tr = next(x for x in PLAIN_CUTS[i % len(PLAIN_CUTS):] + PLAIN_CUTS if x != prev)
         transitions.append(tr if tr in render.TRANSITIONS else "blur")
     # real recorded effects from Freesound (CC0 / CC-BY) when the pod has a key; the built-in set otherwise
     from ..providers import freesound

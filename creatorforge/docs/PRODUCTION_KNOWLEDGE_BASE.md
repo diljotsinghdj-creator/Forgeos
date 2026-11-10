@@ -120,6 +120,7 @@ fixed template.
 | Text QA in every scene | Each scene measures its own text once everything has landed: text under 2.6% of the frame's short side, and text cut off at the edge, go to the QC report with a 360-px phone contact sheet | works |
 | Effect timing | Every effect's loudest moment lands one frame after its picture (a whoosh's swell on the cut); two takes of a sound never play back to back | works |
 | Pod self-test | `python -m creatorforge_worker.selftest --network` reports every model, key and service as works / missing / failed (key values never shown) | works |
+| Cuts with a cause | A cut follows from what is on screen (into a map: blur pan; out of a map: dive into the place; into a document: page push; onto evidence: drop). Seams with no cause rotate a camera-blur whip, a dip cut (the frame darkens a few frames before a hard cut) and a smooth slide, never the same one twice in a row | works |
 | Title entrances | Chart titles enter one of three ways (slide, blur-in, wipe), chosen per scene so a film doesn't repeat one, then land dead still | works |
 | Reading holds | The editorial review warns when on-screen words can't be read in the time the line is up (0.5 s + 0.3 s a word) | works |
 | Matte painting, digital set extension | **not built, deliberately:** it would add detail that was not there to a documentary picture; allowed only as a labelled reconstruction | - |

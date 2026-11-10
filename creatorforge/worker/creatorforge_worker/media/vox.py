@@ -1950,7 +1950,8 @@ function counter(){ // a number counting in steady digits (each digit in its own
   const pw=pre?pre.bbox().width:0,qw=post?post.bbox().width+big*.06:0,x0=W/2-(adv*n+pw+qw)/2+pw;
   if(pre)pre.attr({x:x0});if(post)post.attr({x:x0+adv*n+big*.06});
   const slots=[];for(let i=0;i<n;i++)slots.push(T(g,'',big,x0+adv*(i+.5),y,{family:'Anton',weight:400,fill:ACT}));
-  const show=v=>{const s=num(v).padStart(n,' ');for(let i=0;i<n;i++){const c=s[i]===' '?'':s[i];if(slots[i].text()!==c)slots[i].text(c)}};
+  const show=v=>{const s=num(v).padStart(n,' ');for(let i=0;i<n;i++){const c=s[i]===' '?'':s[i];if(slots[i].text()!==c)slots[i].text(c)}
+    if(pre){const lead=s.length-s.trimStart().length;pre.attr({x:x0+adv*lead})}};   // the currency sign stays against the first digit
   show(P.from);const span=Math.min(1.6,Math.max(1.2,DUR*.3));fit(g,W*.92);
   TICKS.push(t=>{const p=Math.max(0,Math.min(1,(t-.35)/span)),e=1-Math.pow(1-p,4);show(P.from+(P.to-P.from)*e)});
   if(P.unit){const u=T(L.front,P.unit.toUpperCase(),U*.03,W/2,y+big*.62,{family:'Mono',weight:700,fill:FG,ls:'.2em'});fit(u,W*.86);wipe(u,.4)}

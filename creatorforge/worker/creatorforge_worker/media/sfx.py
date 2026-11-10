@@ -21,7 +21,7 @@ ROLES = {
 }
 TRANSITION_ROLE = {"dive": "whoosh", "page": "whoosh", "push": "whoosh", "drop": "hit", "squeeze": "whoosh",
                    "whip": "whoosh", "blur": "whoosh", "slide": "whoosh", "wipe": "whoosh", "zoom": "whoosh", "reveal": "whoosh",
-                   "cut": "hit", "flash": "hit"}
+                   "cut": "hit", "flash": "hit", "dipcut": "hit"}
 # which way a moving cut's whoosh travels: slides and wipes go the way the picture goes
 SWEEP = {"slide": "rl", "wipe": "lr", "push": "rl", "whip": "rl"}
 GAIN = {"projector": 0.5, "whoosh": 0.55, "hit": 0.6, "pop": 0.45, "riser": 0.4, "scribble": 0.5}

@@ -24,6 +24,7 @@ TRANSITIONS = {
     "whip": ("smoothleft", 0.3), "zoom": ("circleopen", 0.45), "reveal": ("vertopen", 0.45),
     "blur": ("hblur", 0.3),       # the explainer camera-blur whip between two graphics
     "iris": ("circleopen", 0.45),
+    "dipcut": ("fadeblack", 0.12),  # the frame darkens for a few frames before a hard cut, so the cut reads as meant
     # paper tear: a wipe whose edge is a ragged strip of torn white paper (drawn over the seam, see render_video)
     "tear": ("wipeleft", 0.45),
     # match cut / zoom-through: the old shot flies in, a quick blend, the new one lands from close (see _segment_args)

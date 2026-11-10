@@ -183,3 +183,19 @@ def test_masks_propagate_between_keyframes_and_are_cleaned(tmp_path):
     noisy[5:9, 5:9] = 255                                          # a stray speck far from the subject
     c = track.clean(noisy)
     assert c[6, 6] < 40 and c[60, 70] > 200
+
+
+def test_studio_end_to_end_reel_varies_its_cuts_and_passes_qc(tmp_path):
+    """The whole studio on a six-scene test reel (robotic voice, small frame): every step runs, the cuts never repeat
+    a plain cut back to back, the text QA is clean and every deliverable is present."""
+    if not motion.enabled():
+        return
+    from creatorforge_worker.studio.produce import PLAIN_CUTS, produce
+    data = Path(__file__).parent / "data" / "reel"
+    res = produce(data / "screenplay.json", data / "dossier.json", tmp_path / "out", size=(320, 180), fps=12,
+                  data_dir=tmp_path / "d", cutdown_size=(180, 320), progress=lambda *a, **k: None)
+    assert res["deliverables_missing"] == [] and Path(res["file"]).stat().st_size > 20000
+    tl = json.loads((tmp_path / "out" / "timeline" / "timeline.json").read_text())
+    cuts = [t["transition_in"] for t in tl]
+    assert all(not (a == b and a in PLAIN_CUTS) for a, b in zip(cuts, cuts[1:])), cuts
+    assert "every line is at least" in (tmp_path / "out" / "qc" / "report.md").read_text()
