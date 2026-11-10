@@ -16,9 +16,6 @@ CreatorForge -> Generate -> Script. CreatorForge reads it like this:
   Draw: ............. a red pen mark that draws itself on over the line's last picture: circle, box, underline
                       (under the Text: callout), arrow, cross or tick - e.g. "Draw: circle" or "Draw: circle, arrow"
   Bubble: / Thought:  a speech bubble / thought cloud that pops in and types its words (keep under ~45 characters)
-  Talk: ............. "Talk: Dastango" - on this line your mascot (a saved Library character) speaks the narration,
-                      mouth moving with the voice (LatentSync on the pod; opt-in: CF_LIPSYNC=1 in worker.env).
-                      Pair it with a Visual: that shows the character facing the camera.
   Fly: .............. a real-map fly-in (OpenStreetMap on the pod): the camera swoops from all of India down to
                       the place, tilts in, pins drop and a route draws itself. "Fly: Kota | title",
                       "Fly: Delhi → Khanauri | किसानों का रास्ता", "Fly: Delhi=दिल्ली → Mandi=मंडी" (name=Hindi label).

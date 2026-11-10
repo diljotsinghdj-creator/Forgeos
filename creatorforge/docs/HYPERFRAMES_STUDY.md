@@ -99,7 +99,7 @@ can be adopted without switching engines.
     - offset the parts (head leads, arms follow) and never move both arms or both eyes in unison;
     - contact sells it: feet on the ground, eyes on what they look at.
 18. **Hand-drawn "boil":** redraw outlines about 12 times a second with jitter seeded by `floor(t*12)`, so the line
-    lives while the character holds still. → Add to the mascot and to our marker strokes.
+    lives while the character holds still. → Add to our marker strokes.
 19. **A rig is parameters over time:** mood changes are keyed states (`[[t0,"normal"],[t1,"scared"]]`) the rig eases
     between.
 
@@ -132,6 +132,6 @@ Credit HyperFrames (Apache-2.0) in `CREDITS` for any code adapted from it.
 1. Director patterns: "myth turned over"; ease-by-role in the scene engine; the reading-hold check.
 2. Review pass in the studio QC, plus the `line_unread`, `dead_stretch` and `text_below_floor` warnings.
 3. New transitions: dip cut, iris, object-becomes-world, velocity-matched cut.
-4. Hand-drawn boil on markers and the mascot rig's acting rules.
+4. Hand-drawn boil on markers.
 5. The four new scenes for the scam video (counter, two-track brain, isometric staircase, balance scale), built to
    these rules.

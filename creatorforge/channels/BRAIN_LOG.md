@@ -16,7 +16,7 @@ Newest entries go at the bottom. Rules here are binding for both channels unless
 
 ### 2026-11-07: The two channels
 - **Mistake Logged:** The storyteller character (Dastango) was being applied to every video.
-- **New Permanent Rule:** Print Facts has no mascot and no Dastango. Dragon Psychology is the animation and character channel.
+- **New Permanent Rule:** Print Facts has no mascot and no Dastango. Dragon Psychology is the animation channel. (Superseded 2026-11-10: no mascot or character on either channel.)
 - **Used Mechanics to Retire:** n/a
 - **Winning Pattern:** Separate brand kits per channel.
 
