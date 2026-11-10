@@ -237,6 +237,14 @@ echo $! > cutouts_library.pid
 CF_HISTORY="$HOME_DIR/data/history" nohup "$PYBIN" -m creatorforge_worker.media.history > history_download.log 2>&1 &
 # District shapes for heat maps below state level (geoBoundaries; downloaded here, not bundled; credited on screen)
 CF_DISTRICTS="$HOME_DIR/data/districts" nohup "$PYBIN" -m creatorforge_worker.media.districts IND > districts_download.log 2>&1 &
+# The documentary studio's own narrator (Kokoro through kokoro-onnx, CPU, Apache-2.0): the two model files, once
+"$PYBIN" -m pip install -q "kokoro-onnx>=0.4" >/dev/null 2>&1 || true
+mkdir -p "$HOME_DIR/data/models/kokoro"
+for f in kokoro-v1.0.int8.onnx voices-v1.0.bin; do
+  [ -s "$HOME_DIR/data/models/kokoro/$f" ] || curl -fsSL -m 900 -o "$HOME_DIR/data/models/kokoro/$f.part" \
+    "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/$f" && \
+    mv "$HOME_DIR/data/models/kokoro/$f.part" "$HOME_DIR/data/models/kokoro/$f" 2>/dev/null || true
+done
 
 # Visual match check: CLIP (ViT-B/32, ONNX, ~600 MB) scores each picture against its line so off-topic pictures are
 # redrawn and off-topic stock is skipped. Until it's downloaded, pictures are used as generated.

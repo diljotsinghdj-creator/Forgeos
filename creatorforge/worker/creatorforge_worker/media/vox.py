@@ -41,7 +41,7 @@ KINDS = ("hero", "desk", "pinboard", "opener", "reveal", "clipping", "pinmap", "
          "seats", "stack", "stand", "fan", "trend", "slice", "route", "compare", "photoline", "tv",
          "clockmap", "tornsplit", "newscard", "blueprint", "pyramid", "flowchart", "linkmap", "orgchart", "heatmap",
          "courtdoc", "table", "interview", "endcard", "polltrack", "area", "candles", "arrows", "railmap", "sizemap",
-         "borders", "morph")
+         "borders", "morph", "shrink")
 
 
 # A look per video, so no two films share one face: paper, type, map colours and marker pen differ, the method doesn't.
@@ -75,6 +75,7 @@ LAYOUT_SETS["bignumber"] = ["base", "side", "card"]
 DESKS = ("#3B2F25", "#5A4632", "#2E3A40", "#6B5B4B", "#262626")
 
 
+CAMERAS = {"still": -1, "push": 0, "pull": 1, "drift": 2, "focus": 3}
 # "| badge: alleged" on any scene: the standing of what is on screen, said plainly in the corner
 BADGES = {"verified": ("VERIFIED", "#1F7A4D"), "record": ("ON RECORD", "#1F7A4D"), "court": ("COURT RECORD", "#1F4FB8"),
           "official": ("OFFICIAL DATA", "#1F4FB8"), "reported": ("REPORTED", "#5A5A5A"), "alleg": ("ALLEGED", "#C2410C"),
@@ -1177,7 +1178,56 @@ def parse_morph(spec: str) -> dict | None:
             "caption": parts[2][:60] if len(parts) > 2 else "", "seed": _seed(spec) % 10000}
 
 
-PARSERS = {"morph": parse_morph, "borders": parse_borders, "courtdoc": parse_courtdoc, "table": parse_table, "interview": parse_interview, "endcard": parse_endcard,
+@functools.lru_cache(maxsize=1)
+def _lakes() -> dict:
+    """Natural Earth 1:10m lakes (public domain): {"historic": {name: lake}, "current": {name: lake}} where a lake is
+    {"a": alt names, "km2": area measured from the outline, "r": rings}. The historic set is lakes as they were before
+    recent change (the Aral Sea's pre-1960s extent among them)."""
+    return json.loads((Path(__file__).with_name("lakes.json")).read_text(encoding="utf-8"))
+
+
+def parse_shrink(spec: str) -> dict | None:
+    """'Shrink: Aral Sea | 1960 -> today | The sea that left | pins: Moynaq, Aralsk' - a lake as it was (Natural Earth's
+    historic outline) drains to its outline now: the old shoreline stays as a ghost, the area counts down (measured
+    from the outlines), towns on the old shore are pinned."""
+    from . import maps
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if not parts or not parts[0]:
+        return None
+    lk = _lakes()
+    key = _fold(parts[0])
+    then = next((v | {"n": n} for n, v in lk["historic"].items() if _fold(n) == key or key in [_fold(a) for a in v["a"]]), None)
+    if then is None:
+        return None
+    base = key.replace(" sea", "").replace("lake ", "").strip()
+    now = [v | {"n": n} for n, v in lk["current"].items() if base and (base in _fold(n) or any(base in _fold(a) for a in v["a"]))]
+    pts = [q for r in then["r"] for q in r]
+    xs, ys = [q[0] for q in pts], [q[1] for q in pts]
+    px, py = (max(xs) - min(xs)) * .4, (max(ys) - min(ys)) * .3
+    box = [min(xs) - px, min(ys) - py, max(xs) + px, max(ys) + py]
+    shapes = []
+    for c in maps._world()["countries"]:
+        for r in c["r"]:
+            if any(box[0] - 12 <= x <= box[2] + 12 and box[1] - 8 <= y <= box[3] + 8 for x, y in r[:: max(1, len(r) // 30)]):
+                shapes.append([[round(x, 2), round(y, 2)] for x, y in r[:: max(1, len(r) // 160)]])
+    years = re.findall(r"\d{4}|today|now", parts[1] if len(parts) > 1 else "", re.I)
+    pins = []
+    for p in parts[2:]:
+        k, _, v = p.partition(":")
+        if k.strip().lower() == "pins":
+            for nm in [x.strip() for x in v.split(",") if x.strip()][:5]:
+                f = maps._find(nm)
+                if f and f["kind"] == "city":
+                    pins.append({"name": nm[:20], "lon": f["lon"], "lat": f["lat"]})
+    title = next((p for p in parts[2:] if ":" not in p), "")
+    return {"type": "shrink", "name": then["n"], "then": then["r"], "now": [r for v in now for r in v["r"]],
+            "nowNames": [v["n"] for v in now], "km2": [then["km2"], sum(v["km2"] for v in now)],
+            "years": [years[0] if years else "", years[1] if len(years) > 1 else "today"], "box": box, "shapes": shapes[:300],
+            "pins": pins, "title": title[:48], "tone": "atlas", "mapcredit": "Outlines: Natural Earth 1:10m lakes (public domain); areas measured from them",
+            "seed": _seed(spec) % 10000}
+
+
+PARSERS = {"shrink": parse_shrink, "morph": parse_morph, "borders": parse_borders, "courtdoc": parse_courtdoc, "table": parse_table, "interview": parse_interview, "endcard": parse_endcard,
            "polltrack": parse_polltrack, "area": parse_area, "candles": parse_candles, "arrows": parse_arrows,
            "railmap": parse_railmap, "sizemap": parse_sizemap,
            "pyramid": parse_pyramid, "flowchart": parse_flow, "linkmap": parse_linkmap, "orgchart": parse_orgchart,
@@ -1250,7 +1300,7 @@ def plan_for(kind: str, spec: str) -> dict | None:
         spec = (spec[:m.start()] + spec[m.end():]).strip()
     spec = re.sub(r"\|\s*voice\s*(?=\||$)", "", spec or "", flags=re.I).strip()     # "| voice": see wants_voice
     opts = {}
-    for key in ("badge", "fx", "inset", "exit"):
+    for key in ("badge", "fx", "inset", "exit", "camera", "src"):
         mm = re.search(rf"\|\s*{key}\s*[:=]\s*([^|]+)", spec or "", re.I)
         if mm:
             opts[key] = mm.group(1).strip()[:60]
@@ -1267,6 +1317,10 @@ def plan_for(kind: str, spec: str) -> dict | None:
             plan["exit"] = opts["exit"].lower()
         if opts.get("inset"):
             plan["inset"] = opts["inset"]
+        if opts.get("camera", "").lower() in CAMERAS:
+            plan["camera"] = opts["camera"].lower()       # the director's camera for this shot (still for evidence...)
+        if opts.get("src"):
+            plan["src"] = opts["src"]                      # the source, in small type on the frame
     if plan is not None and note:
         plan["marker"] = note
     if plan is not None and marks:
@@ -1482,6 +1536,7 @@ function exitOf(k,t){if(K.exit==='none'||k==='paper')return null;const i=XORDER.
   const q=Math.max(0,Math.min(1,(t-(DUR-.62)-i*.05)/.3));if(q<=0)return null;const e=q*q;
   return {o:1-e,tx:K.exit==='side'?(K.dir||1)*W*.14*e:0,ty:K.exit==='rise'?-H*.1*e:K.exit==='fall'?H*.1*e:0,s:K.exit==='shrink'?1-.1*e:1}}
 function camera(t){const p=E.inout(Math.min(1,t/Math.max(DUR,.1)));const m=K.cam||0;
+  if(m===-1){for(const k in DEPTH){const x=exitOf(k,t),zz=x?x.s:1;L[k].attr({transform:`translate(${W/2*(1-zz)+(x?x.tx:0)},${H*.46*(1-zz)+(x?x.ty:0)}) scale(${zz})`,opacity:x?x.o:1})}return}   // still: the frame holds
   const fx=(m===3&&FOCUS)?Math.max(W*.3,Math.min(W*.7,FOCUS.x)):W/2,fy=(m===3&&FOCUS)?Math.max(H*.3,Math.min(H*.65,FOCUS.y)):H*.46;
   for(const k in DEPTH){const d=DEPTH[k]*(m===3?1.3:1);const q=m===1?1-p:p;const z=1+d*q;
     const dx=m===2?(p-.5)*(W*.03+d*W*.12)*(K.dir||1):0;   // layers travel together: labels stay on their bars
@@ -2171,6 +2226,8 @@ function filmLayer(){if(K.film===false)return()=>{};const g=L.grain.group();let 
     const dx=(r()-.5)*U*.0024,dy=(r()-.5)*U*.0024;draw.node.style.transform=`translate(${dx}px,${dy}px) scale(1.004)`}}   // gate weave
 
 // ---- standing of the evidence, particles, an inset picture ----
+function srcLayer(){if(!P.src)return;const t=mono(L.front,('SOURCE: '+P.src).toUpperCase(),W-U*.04,H-U*.055,{anchor:'end',size:U*.015,weight:700});
+  t.addClass('keep');fit(t,W*.6);wipe(t,.9)}
 function badgeLayer(){if(!P.badge||!P.badge[0])return;const [txt,col]=P.badge;const g=L.front.group().addClass('keep');
   const x=U*.05,y=TALL?H*.135:H*.9;const t=T(g,txt,U*.024,x+U*.03,y,{family:'Mono',weight:700,anchor:'start',fill:col,ls:'.14em'});const bb=t.bbox();
   g.rect(bb.width+U*.05,bb.height+U*.022).move(x-U*.004,y-bb.height/2-U*.011).fill('#FBF8F0').stroke({color:col,width:U*.004}).back();
@@ -2474,13 +2531,35 @@ function morph(){ // one outline flows into the next; the name changes with it
   if(P.caption){const c=boxText(L.front,P.caption,U*.04,cx,cy+R+U*.16,{anchor:'middle',maxw:W*.8,most:2});wipe(c,1.1)}
   FOCUS={x:cx,y:cy,rx:R*1.05,ry:R*1.05}}
 
-const SCENES={morph,borders,courtdoc,table,interview,endcard,polltrack,area,candles,arrows,railmap,sizemap,pyramid,flowchart:flow,linkmap,orgchart,heatmap,hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv,
+function shrink(){ // a lake as it was drains to what is left; the old shore stays as a ghost; the area counts down
+  chartTitle(P.title);const pr=mapFrame(TALL?.86:.62,TALL?.52:.66);
+  const str=r=>r.map(q=>pr(q[0],q[1]).map(v=>v.toFixed(1)).join(',')).join(' '),wcol=K.sea||'#7FA7B5';
+  const then=L.mid.group();P.then.forEach(r=>then.polygon(str(r)).fill(wcol).stroke({color:mix(wcol,'#000000',.35),width:U*.003}));
+  const ghost=L.hero.group();P.then.forEach(r=>ghost.polygon(str(r)).fill('none').stroke({color:K.mark||'#C0262D',width:U*.0035,dasharray:`${U*.012} ${U*.009}`}));ghost.opacity(0);
+  const now=L.mid.group();P.now.forEach(r=>now.polygon(str(r)).fill(wcol).stroke({color:mix(wcol,'#000000',.4),width:U*.003}));now.opacity(0);
+  wipe(then,.2);const T0=1.3,T1=Math.max(T0+1.2,DUR-1.5);
+  at(T0,T1-T0,p=>{then.opacity(1-p);now.opacity(p);ghost.opacity(Math.min(1,p*1.6))},E.inout);
+  const yb=L.front.group().addClass('keep');const yx=TALL?W/2:W*.08,yy=TALL?H*.16:H*.2;const ys=TALL?U*.1:U*.085;yb.rect(ys*3.1,ys*1.15).move(TALL?yx-ys*1.55:yx,yy-ys*.58).fill(INK);
+  const yt=T(yb,P.years[0]||'',ys,TALL?yx:yx+ys*1.55,yy,{family:'Anton',weight:400,fill:'#FFFFFF'});wipe(yb,.3);
+  const y0=parseInt(P.years[0]),y1=/^\d{4}$/.test(P.years[1])?parseInt(P.years[1]):null;
+  const kb=L.front.group().addClass('keep');const kx=TALL?W/2:W*.08,ky=yy+ys*1.2;
+  const kt=T(kb,'',U*.04,TALL?kx:kx,ky,{family:'Anton',weight:400,anchor:TALL?'middle':'start'});const ku=T(kb,'KM² OF WATER',U*.018,TALL?kx:kx,ky+U*.042,{family:'Inter',weight:800,anchor:TALL?'middle':'start',ls:'.12em'});wipe(kb,.5);
+  const fmt=v=>Math.round(v/100)*100,num=v=>fmt(v).toLocaleString('en-US');kt.node.textContent=num(P.km2[0]);
+  at(T0,T1-T0,p=>{kt.node.textContent=num(P.km2[0]+(P.km2[1]-P.km2[0])*p);
+    yt.node.textContent=p>=1?(y1?String(y1):String(P.years[1]).toUpperCase()):(y1&&y0?String(Math.round(y0+(y1-y0)*p)):(p<.5?String(y0||''):'…'))},E.inout);
+  (P.pins||[]).forEach((pn,i)=>{const [x,y]=pr(pn.lon,pn.lat);const d=L.front.circle(U*.016).center(x,y).fill(INK).stroke({color:'#FFFFFF',width:U*.003});popIn(d,x,y,.6+i*.15,.25);placeTag(L.front,pn.name,x,y,.7+i*.15,-U*.035)});
+  const lg=L.front.group();const lx=TALL?W*.1:W*.08,ly=TALL?H*.9:H*.9;lg.line(lx,ly,lx+U*.06,ly).stroke({color:K.mark||'#C0262D',width:U*.004,dasharray:`${U*.012} ${U*.009}`});
+  T(lg,('SHORELINE '+(P.years[0]||'THEN')).toUpperCase(),U*.017,lx+U*.075,ly,{family:'Mono',weight:700,anchor:'start'});wipe(lg,T1-.3);
+  wipe(mono(L.front,P.mapcredit.toUpperCase(),W-U*.04,H-U*.03,{anchor:'end',size:U*.012}),.8);
+  const c=P.then[0],cx=c.reduce((a,q)=>a+q[0],0)/c.length,cy=c.reduce((a,q)=>a+q[1],0)/c.length,[fx,fy]=pr(cx,cy);FOCUS={x:fx,y:fy,rx:W*.14,ry:H*.18}}
+
+const SCENES={shrink,morph,borders,courtdoc,table,interview,endcard,polltrack,area,candles,arrows,railmap,sizemap,pyramid,flowchart:flow,linkmap,orgchart,heatmap,hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv,
   clockmap,tornsplit,newscard,blueprint};
 async function boot(){
   try{await Promise.all(Array.from(document.fonts).map(f=>f.load()))}catch(e){}
   const imgs=[];(P.pics||[]).forEach(p=>{if(p.img)imgs.push(new Promise(r=>{const i=new Image();i.onload=i.onerror=r;i.src=p.img}))});
   await Promise.all(imgs);
-  (SCENES[P.type]||hero)();logoLayer();markerLayer();badgeLayer();insetLayer();layout();companion();
+  (SCENES[P.type]||hero)();logoLayer();markerLayer();badgeLayer();srcLayer();insetLayer();layout();companion();
   const film=filmLayer(),fx=fxLayer(),voice=voiceLayer();
   window.frame=function(t){camera(t);const tq=Math.floor(t*12+1e-6)/12;   // the hand-made 12 fps stutter
     for(const k of tracks){const p=Math.max(0,Math.min(1,(tq-k.start)/k.dur));k.fn(k.e(p))}film(t,tq);fx(t);voice(t)};
@@ -2518,7 +2597,7 @@ def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: f
     bg, grain = paper(paper_hex, width, height, work)
     kit = {"acc": accent_of(theme), "accText": readable(accent_of(theme), paper_hex), "acc2": "#E0442C" if accent_of(theme) != ACCENTS["red"] else "#F2C200", "ink": INK, "paper": paper_hex, "dark": tone == "dark", "tone": tone, "props": props,
            "bg": bg.as_uri(), "grain": grain.as_uri(),
-           "mark": look["mark"], "cam": _seed("cam", spec, theme) % 4, "exit": plan.get("exit") or EXITS[_seed("exit", spec, theme) % len(EXITS)], "lay": layout if layout in LAYOUT_SETS.get(kind, ()) else
+           "mark": look["mark"], "cam": CAMERAS[plan["camera"]] if plan.get("camera") in CAMERAS else _seed("cam", spec, theme) % 4, "exit": plan.get("exit") or EXITS[_seed("exit", spec, theme) % len(EXITS)], "lay": layout if layout in LAYOUT_SETS.get(kind, ()) else
            layout_for(kind, 0, _seed("layout", spec, theme)), "desk": DESKS[_seed("desk", theme) % len(DESKS)], "dir": 1 if _seed("dir", spec) % 2 else -1, "fam": {"Playfair": look["head"], "Anton": look["big"], "Caveat": look["hand"]}}
     js = _PAGE
     for old, new in (("#B8CDD1", look["sea"]), ("#EFE3C2", look["land"]), ("#8E7E5C", look["edge"])):

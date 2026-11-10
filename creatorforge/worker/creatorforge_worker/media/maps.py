@@ -37,6 +37,10 @@ def _norm(s: str) -> str:
 
 # Indian states (pinned at their middle) and places too small for world.json that explainers often name.
 EXTRA_PLACES = {
+    # the Aral basin (towns on the old shore, the sea's middle)
+    "moynaq": (43.77, 59.02), "muynak": (43.77, 59.02), "aralsk": (46.80, 61.67), "aral": (46.80, 61.67),
+    "aral sea": (45.0, 59.8), "north aral sea": (46.3, 61.0), "south aral sea": (44.6, 59.0), "kok-aral": (46.13, 60.75),
+    "kokaral": (46.13, 60.75), "nukus": (42.46, 59.61), "karakalpakstan": (43.0, 59.0),
     "uttar pradesh": (27.0, 80.5), "rajasthan": (27.0, 74.2), "bihar": (25.6, 85.5), "gujarat": (22.7, 71.6),
     "punjab": (30.9, 75.4), "haryana": (29.1, 76.1), "himachal pradesh": (31.9, 77.2), "himachal": (31.9, 77.2),
     "uttarakhand": (30.1, 79.2), "jammu and kashmir": (33.5, 75.0), "kashmir": (34.1, 74.8), "ladakh": (34.2, 77.6),

@@ -1,0 +1,480 @@
+"""The production run: from a dossier and a screenplay to a finished, reviewed documentary and every deliverable.
+
+    produce(screenplay.json, dossier.json, out_dir)
+
+Steps (the order of the master directive; a step that finds an error stops the film rather than shipping it):
+  1  check the research dossier                    research/dossier.md, dossier.json
+  2  editorial review of the screenplay            writing/editorial_review.md (figures, sources, attribution, structure)
+  3  art direction, against the studio history     writing/art_direction.md
+  4  narration audio, one file per scene           audio/narration/S01.wav..., audio/narration.wav
+  5  the master timeline from the real audio       timeline/timeline.json, .csv, .md
+  6  every scene drawn                             scenes/S01_*.mp4
+  7  storyboard                                    storyboard/storyboard.md, sheet.png
+  8  score, effects, ambience, mix                 audio/score.wav, audio/mix.wav
+  9  the edit                                      video/<id>.mp4
+  10 captions                                      captions/<id>.srt, .vtt
+  11 quality control and the watch-through         qc/report.md, qc/review_sheet.png
+  12 thumbnail, SEO, cutdowns                      promo/thumbnail.png, seo.md, cutdown_*.mp4
+  13 deliverables index                            README.md
+"""
+from __future__ import annotations
+
+import csv
+import json
+import re
+import shutil
+import subprocess
+import threading
+from pathlib import Path
+
+from ..media import ambience, ff, motion, quality, render, scene3d, sfx, sfx_builtin, vox
+from . import artdirection, score, voice, writer
+from .dossier import Dossier, figures_in
+
+LEAD_S = 0.18          # air before each line
+MIN_SLOT = 2.6         # a graphic needs this long to read, however short its line
+
+
+class ProductionStopped(RuntimeError):
+    pass
+
+
+def _ts(x: float, srt: bool = True) -> str:
+    h, m, s = int(x // 3600), int(x % 3600 // 60), x % 60
+    return f"{h:02d}:{m:02d}:{s:06.3f}".replace(".", "," if srt else ".")
+
+
+def _mmss(x: float) -> str:
+    return f"{int(x // 60)}:{int(x % 60):02d}"
+
+
+def _kind(graphic: str) -> str:
+    return graphic.split(":", 1)[0].strip().lower()
+
+
+def _spec(graphic: str) -> str:
+    return graphic.split(":", 1)[1].strip() if ":" in graphic else ""
+
+
+def _frame(video: Path, t: float, out: Path, width: int = 640) -> Path:
+    subprocess.run(["ffmpeg", "-nostdin", "-y", "-loglevel", "error", "-ss", f"{max(0.0, t):.2f}", "-i", str(video), "-frames:v", "1",
+                    "-vf", f"scale={width}:-2", str(out)], check=True, timeout=120)
+    return out
+
+
+def _sheet(images: list[Path], labels: list[str], out: Path, cols: int = 4) -> Path | None:
+    from PIL import Image, ImageDraw, ImageFont
+    ims = [Image.open(p).convert("RGB") for p in images if p.is_file()]
+    if not ims:
+        return None
+    w, h = ims[0].size
+    rows = (len(ims) + cols - 1) // cols
+    sheet = Image.new("RGB", (cols * w, rows * (h + 28)), "#202020")
+    try:
+        font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 16)
+    except OSError:
+        font = ImageFont.load_default()
+    d = ImageDraw.Draw(sheet)
+    for i, (im, lb) in enumerate(zip(ims, labels)):
+        x, y = (i % cols) * w, (i // cols) * (h + 28)
+        sheet.paste(im.resize((w, h)), (x, y + 28))
+        d.text((x + 6, y + 5), lb[:90], fill="#FFFFFF", font=font)
+    sheet.save(out)
+    return out
+
+
+def _render_scene(kind, spec, theme, w, h, seconds, out, work, fps, layout, fetch, lib):
+    if kind in scene3d.KINDS:
+        return scene3d.render(kind, spec, theme, w, h, seconds, out, work, fps=fps)
+    if kind in vox.KINDS:
+        return vox.render(kind, spec, theme, w, h, seconds, out, work, lib=lib, fetch=fetch, fps=fps, layout=layout)
+    return motion.render(kind, spec, theme, w, h, seconds, out, work, fps=fps)
+
+
+def _directed(graphic: str, ad: dict, scene: dict) -> str:
+    """The graphic line with the art direction applied: the shot's camera, the film's map treatment."""
+    kind, spec = _kind(graphic), _spec(graphic)
+    if kind in vox.KINDS:
+        cam = scene.get("camera") or artdirection.camera_for(ad, kind)
+        if cam in vox.CAMERAS and not re.search(r"\|\s*camera\s*:", spec):
+            spec += f" | camera: {cam}"
+        if kind in ("route", "pinmap") and not re.search(r"\|\s*(atlas|pen)\s*(\||$)", spec):
+            spec += {"atlas": " | atlas", "pen": " | pen", "relief": " | atlas"}.get(ad.get("map_style"), "")
+    return f"{graphic.split(':', 1)[0]}: {spec}"
+
+
+def captions(scenes: list[dict], timeline: list[dict], max_chars: int = 42) -> list[tuple[float, float, str]]:
+    """Caption cues from the real audio: each line split into short phrases, timed by the voice's own pauses
+    (a cue ends where the narrator breathes) and, between pauses, by the share of characters."""
+    cues = []
+    for s, t in zip(scenes, timeline):
+        words = s["narration"].split()
+        chunks, cur = [], ""
+        for wd in words:
+            if cur and len(cur) + 1 + len(wd) > max_chars:
+                chunks.append(cur)
+                cur = wd
+            else:
+                cur = (cur + " " + wd).strip()
+            if re.search(r"[.?!;:,]$", wd) and len(cur) > max_chars * .55:
+                chunks.append(cur)
+                cur = ""
+        if cur:
+            chunks.append(cur)
+        start, speech = t["start"] + LEAD_S, t["speech_s"]
+        total = sum(len(c) for c in chunks) or 1
+        breaths = [a + b / 2 for a, b in t.get("pauses", [])]
+        at = 0.0
+        for c in chunks:
+            end = at + speech * len(c) / total
+            near = [p for p in breaths if abs(p - end) < 0.7 and p > at + 0.6]
+            if near:
+                end = min(near, key=lambda p: abs(p - end))
+            cues.append((start + at, start + min(speech, max(end, at + 0.6)), c))
+            at = end
+    return cues
+
+
+def _write_captions(cues, base: Path) -> tuple[Path, Path]:
+    srt = base.with_suffix(".srt")
+    srt.write_text("\n".join(f"{i}\n{_ts(a)} --> {_ts(b)}\n{t}\n" for i, (a, b, t) in enumerate(cues, 1)), encoding="utf-8")
+    vtt = base.with_suffix(".vtt")
+    vtt.write_text("WEBVTT\n\n" + "\n".join(f"{_ts(a, False)} --> {_ts(b, False)}\n{t}\n" for a, b, t in cues), encoding="utf-8")
+    return srt, vtt
+
+
+def _ass(cues, w: int, h: int, out: Path) -> Path:
+    fs = int(h * 0.034 if h > w else h * 0.05)
+    head = ("[Script Info]\nScriptType: v4.00+\nPlayResX: %d\nPlayResY: %d\n\n[V4+ Styles]\nFormat: Name, Fontname, Fontsize, "
+            "PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, "
+            "Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding\n"
+            "Style: Cap,DejaVu Sans,%d,&H00FFFFFF,&H00FFFFFF,&H00141414,&H96141414,1,0,0,0,100,100,0,0,3,%d,0,2,60,60,%d,1\n\n"
+            "[Events]\nFormat: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n") % (
+        w, h, fs, max(4, fs // 6), int(h * 0.2 if h > w else h * 0.07))
+
+    def t(x):
+        return f"{int(x // 3600)}:{int(x % 3600 // 60):02d}:{x % 60:05.2f}"
+    out.write_text(head + "\n".join(f"Dialogue: 0,{t(a)},{t(b)},Cap,,0,0,0,,{c}" for a, b, c in cues), encoding="utf-8")
+    return out
+
+
+def _cuts(video: Path) -> list[float]:
+    r = subprocess.run(["ffmpeg", "-nostdin", "-loglevel", "info", "-i", str(video), "-vf", "select='gt(scene,0.12)',showinfo",
+                        "-an", "-f", "null", "-"], capture_output=True, text=True, timeout=1800)
+    return [float(x) for x in re.findall(r"pts_time:([\d.]+)", r.stderr)]
+
+
+def _gray(video: Path, t: float):
+    import numpy as np
+    raw = subprocess.run(["ffmpeg", "-nostdin", "-v", "error", "-ss", f"{max(0.0, t):.2f}", "-i", str(video), "-frames:v", "1",
+                          "-vf", "scale=96:54", "-f", "rawvideo", "-pix_fmt", "gray", "-"], capture_output=True, timeout=60).stdout
+    return np.frombuffer(raw, np.uint8).astype("float32") if raw else None
+
+
+def produce(screenplay: Path | str, dossier: Path | str, out_dir: Path | str, size: tuple[int, int] = (1920, 1080), fps: int = 24,
+            data_dir: Path | str | None = None, fetch: bool = False, lib: Path | None = None, cutdown_size=(1080, 1920),
+            progress=print) -> dict:
+    out = Path(out_dir)
+    dirs = {k: out / k for k in ("research", "writing", "audio", "scenes", "storyboard", "timeline", "captions", "video", "promo", "qc")}
+    for d in dirs.values():
+        d.mkdir(parents=True, exist_ok=True)
+    work = out / ".work"
+    work.mkdir(exist_ok=True)
+    data = Path(data_dir) if data_dir else out / ".studio"
+    sp = json.loads(Path(screenplay).read_text(encoding="utf-8"))
+    dos = Dossier.load(dossier)
+    film = sp.get("id") or re.sub(r"\W+", "-", sp.get("title", "film").lower()).strip("-")
+    report: dict = {"film": film, "title": sp.get("title", ""), "steps": []}
+
+    def step(name, **kw):
+        report["steps"].append({"step": name, **kw})
+        progress(f"[{len(report['steps']):02d}] {name}" + (f": {kw.get('note', '')}" if kw.get("note") else ""))
+
+    # 1 research dossier
+    di = dos.check()
+    (dirs["research"] / "dossier.md").write_text(dos.to_markdown(), encoding="utf-8")
+    (dirs["research"] / "dossier.json").write_text(json.dumps(dos.to_dict(), ensure_ascii=False, indent=1), encoding="utf-8")
+    if [i for i in di if i["level"] == "error"]:
+        raise ProductionStopped("dossier: " + "; ".join(f"{i['claim']}: {i['problem']}" for i in di if i["level"] == "error"))
+    step("research dossier checked", note=f"{len(dos.claims)} claims, {sum(len(c.sources) for c in dos.claims.values())} sources")
+
+    # 2 editorial review
+    issues = writer.check(sp, dos)
+    rev = ["# Editorial review", "", f"Film: {sp.get('title')}", ""]
+    rev += ["## Problems", ""] + ([f"- **{i['level']}** {i['scene']}: {i['problem']}" for i in issues] or ["- none"])
+    rev += ["", "## Evidence per scene", "", "| Scene | Figures said or shown | Claims | Status |", "|---|---|---|---|"]
+    for s in sp["scenes"]:
+        figs = sorted(set(figures_in(s["narration"]) + figures_in(_spec(s["graphic"]))))
+        rev.append(f"| {s['id']} | {', '.join(figs) or '-'} | {', '.join(s.get('claims', [])) or '-'} | "
+                   + ", ".join(dos.claims[c].status for c in s.get("claims", []) if c in dos.claims) + " |")
+    (dirs["writing"] / "editorial_review.md").write_text("\n".join(rev), encoding="utf-8")
+    if [i for i in issues if i["level"] == "error"]:
+        raise ProductionStopped("editorial review: " + "; ".join(f"{i['scene']}: {i['problem']}" for i in issues if i["level"] == "error"))
+    step("editorial review passed", note=f"{len([i for i in issues if i['level'] == 'warning'])} warnings")
+    (dirs["writing"] / "concept.md").write_text(
+        f"# {sp.get('title')}\n\n" + "\n".join(f"- **{k.replace('_', ' ').capitalize()}**: {v}" for k, v in sp.get("concept", {}).items()),
+        encoding="utf-8")
+    (dirs["writing"] / "screenplay.md").write_text(writer.screenplay_markdown(sp, dos), encoding="utf-8")
+    shutil.copy(screenplay, dirs["writing"] / "screenplay.json")
+
+    # 3 art direction
+    hist = artdirection.history(data)
+    ad = artdirection.direct(film, sp.get("title", film), sp.get("genre", ""), sp.get("concept", {}), sp["scenes"], hist, sp.get("art"))
+    (dirs["writing"] / "art_direction.md").write_text(artdirection.to_markdown(ad), encoding="utf-8")
+    (dirs["writing"] / "art_direction.json").write_text(json.dumps(ad, ensure_ascii=False, indent=1), encoding="utf-8")
+    step("art direction", note=f"{ad['look']} / {ad['accent']} / {ad['cinematography']} / {ad['rhythm']} / {ad['music']}")
+
+    # 4 narration, one file per scene
+    ndir = dirs["audio"] / "narration"
+    ndir.mkdir(exist_ok=True)
+    engine = ""
+    timeline: list[dict] = []
+    at = 0.0
+    kinds = [_kind(s["graphic"]) for s in sp["scenes"]]
+    layouts = vox.plan_layouts(kinds, vox._seed("studio", film))
+    for i, s in enumerate(sp["scenes"]):
+        wav = ndir / f"{s['id']}.wav"
+        secs, engine = voice.synth(s["narration"], wav, voice=sp.get("voice", "am_michael"), speed=voice.speed_for(s.get("delivery", "")),
+                                   lang=sp.get("lang", "en-us"), guide=sp.get("pronunciation", {}))
+        pause = float(s.get("pause", 0.45)) * float(ad["breath"])
+        slot = round(max(MIN_SLOT, LEAD_S + secs + pause), 3)
+        timeline.append({"scene": s["id"], "act": s["act"], "start": round(at, 3), "end": round(at + slot, 3), "speech_s": round(secs, 3),
+                         "narration": s["narration"], "audio": str(wav.relative_to(out)), "pauses": voice.pauses_in(wav)})
+        at += slot
+    # narration tracks start each line LEAD_S into its slot
+    padded = []
+    for s, t in zip(sp["scenes"], timeline):
+        p = work / f"lead_{s['id']}.wav"
+        subprocess.run(["ffmpeg", "-nostdin", "-y", "-loglevel", "error", "-i", str(out / t["audio"]), "-af", f"adelay={int(LEAD_S * 1000)}",
+                        "-ar", "48000", "-ac", "1", str(p)], check=True)
+        padded.append(p)
+    tail = render.TRANSITION_S
+    total = at + tail
+    narr = dirs["audio"] / "narration.wav"
+    render.narration_track(padded, [t["end"] - t["start"] for t in timeline], tail, narr)
+    step("narration recorded", note=f"{engine}, {at:.1f}s")
+
+    # 5 the master timeline
+    theme = f"editorial~0@{ad['accent']}/{ad['look']}/"
+    transitions = []
+    for i, s in enumerate(sp["scenes"]):
+        from ..pipeline import motivated_transition
+        tr = s.get("transition") or ("cut" if i == 0 else motivated_transition(kinds[i - 1], kinds[i]) or "blur")
+        transitions.append(tr if tr in render.TRANSITIONS else "blur")
+    bank = sfx.SfxBank.load("", sfx_builtin.ensure(data / "sfx_builtin"))
+    hits = sfx.place(bank, transitions, [t["end"] - t["start"] for t in timeline], [], film)
+    beds = ambience.place(data / "ambience", [(t["start"], t["end"] - t["start"], kinds[i], _spec(sp["scenes"][i]["graphic"]), False)
+                                              for i, t in enumerate(timeline)])
+    for i, (s, t) in enumerate(zip(sp["scenes"], timeline)):
+        g = _directed(s["graphic"], ad, s)
+        t.update({"visual": g, "kind": kinds[i], "layout": layouts[i] or "-", "transition_in": transitions[i],
+                  "camera": (re.search(r"\|\s*camera\s*:\s*(\w+)", g) or [None, "orbit" if kinds[i] in scene3d.KINDS else "drawn"])[1],
+                  "animation": "stepped 12 fps" if ad["stepped"] and kinds[i] not in scene3d.KINDS else f"{fps} fps",
+                  "onscreen": " / ".join(p.strip() for p in _spec(g).split("|")[:3] if p.strip() and ":" not in p)[:120],
+                  "sfx": [Path(h[0]).stem for h in hits if t["start"] - 0.4 <= h[1] < t["end"]],
+                  "ambience": [Path(b[0]).stem.split("_")[0] for b in beds if b[1] < t["end"] and b[1] + 0.1 >= t["start"] - 0.2],
+                  "music": score.ACT_MOOD.get(s["act"], "inquiry") if ad["music"] != "sparse" or s["act"] in ("hook", "discovery", "ending") else "-",
+                  "sources": [src["url"] for c in s.get("claims", []) if c in dos.claims for src in dos.claims[c].sources][:4],
+                  "claims": s.get("claims", [])})
+    (dirs["timeline"] / "timeline.json").write_text(json.dumps(timeline, ensure_ascii=False, indent=1), encoding="utf-8")
+    cols = ["scene", "act", "start", "end", "narration", "audio", "visual", "kind", "layout", "camera", "animation", "onscreen", "sfx",
+            "ambience", "music", "transition_in", "sources"]
+    with open(dirs["timeline"] / "timeline.csv", "w", newline="", encoding="utf-8") as f:
+        wr = csv.writer(f)
+        wr.writerow(cols)
+        for t in timeline:
+            wr.writerow([("; ".join(t[c]) if isinstance(t[c], list) else t[c]) for c in cols])
+    md = ["# Master timeline", "", "| Scene | Time | Narration | Visual | Camera | In | Sound | Sources |", "|---|---|---|---|---|---|---|---|"]
+    for t in timeline:
+        md.append(f"| {t['scene']} | {_mmss(t['start'])}-{_mmss(t['end'])} | {t['narration']} | `{t['visual'][:70]}` | {t['camera']} | "
+                  f"{t['transition_in']} | {', '.join(t['sfx'] + t['ambience']) or '-'} / {t['music']} | {len(t['sources'])} |")
+    (dirs["timeline"] / "timeline.md").write_text("\n".join(md), encoding="utf-8")
+    step("master timeline", note=f"{len(timeline)} scenes from the measured audio")
+
+    # 6 every scene drawn
+    w, h = size
+    clips = []
+    for i, t in enumerate(timeline):
+        seconds = (t["end"] - t["start"]) + render.TRANSITION_S + 0.2
+        mp4 = dirs["scenes"] / f"{t['scene']}_{t['kind']}.mp4"
+        progress(f"    drawing {t['scene']} {t['kind']} ({seconds:.1f}s)")
+        _render_scene(t["kind"], _spec(t["visual"]), theme, w, h, seconds, mp4, work, fps, layouts[i], fetch, lib)
+        paper, _ = vox.paper(vox.look_of(theme)["paper"], w, h, work)
+        clips.append(render.Clip(paper, t["end"] - t["start"], "static", t["transition_in"], mp4, ff.duration(mp4),
+                                 stepped=bool(ad["stepped"]) and t["kind"] not in scene3d.KINDS))
+    step("scenes drawn", note=f"{len(clips)} scenes at {w}x{h}")
+
+    # 7 storyboard
+    frames = []
+    for t in timeline:
+        mp4 = dirs["scenes"] / f"{t['scene']}_{t['kind']}.mp4"
+        frames.append(_frame(mp4, (t["end"] - t["start"]) * 0.72, dirs["storyboard"] / f"{t['scene']}.png", 480))
+    _sheet(frames, [f"{t['scene']} {_mmss(t['start'])} {t['kind']}" for t in timeline], dirs["storyboard"] / "sheet.png")
+    sb = ["# Storyboard", ""]
+    for t, f in zip(timeline, frames):
+        sb += [f"## {t['scene']} · {_mmss(t['start'])}-{_mmss(t['end'])} · {t['act']}", "", f"![{t['scene']}]({f.name})", "",
+               f"**Narration:** {t['narration']}", "", f"**Visual:** `{t['visual']}`", "",
+               f"**Camera:** {t['camera']} · **Layout:** {t['layout']} · **Animation:** {t['animation']} · **Cut in:** {t['transition_in']}", ""]
+    (dirs["storyboard"] / "storyboard.md").write_text("\n".join(sb), encoding="utf-8")
+    step("storyboard")
+
+    # 8 score, effects, ambience, mix
+    acts, cur = [], None
+    for t in timeline:
+        if t["act"] != cur:
+            acts.append([t["act"], t["start"], 0.0])
+            cur = t["act"]
+        acts[-1][2] = t["end"] - acts[-1][1]
+    acts[-1][2] += tail
+    music = score.compose([tuple(a) for a in acts], ad["music"], dirs["audio"])
+    mix = dirs["audio"] / "mix.wav"
+    render.mix_audio(narr, music, total, mix, threading.Event(), sfx=sorted(hits + beds, key=lambda x: x[1]))
+    step("sound", note=f"score ({ad['music']}), {len(hits)} effects, {len(beds)} ambience beds")
+
+    # 9 the edit
+    final = dirs["video"] / f"{film}.mp4"
+    expected = render.render_video(clips, mix, None, w, h, final, work, threading.Event(), grade="")
+    step("edit rendered", note=f"{expected:.1f}s")
+
+    # 10 captions
+    cues = captions(sp["scenes"], timeline)
+    srt, vtt = _write_captions(cues, dirs["captions"] / film)
+    step("captions", note=f"{len(cues)} cues")
+
+    # 11 quality control and the watch-through
+    qc = quality.check(final, expected, [], expected_size=(w, h))
+    starts = [t["start"] for t in timeline]
+    found = _cuts(final)
+    drift = [d for d in (min((abs(c - s) for c in found), default=9.9) for s in starts[1:]) if d < 1.0]
+    review, problems = [], []
+    prev = None
+    for t in timeline:
+        mid = (t["start"] + t["end"]) / 2
+        g = _gray(final, mid)
+        if g is None:
+            problems.append(f"{t['scene']}: no frame at {mid:.1f}s")
+            continue
+        if g.std() < 12:
+            problems.append(f"{t['scene']}: the frame at {mid:.1f}s is nearly flat")
+        if prev is not None and abs(g - prev).mean() < 4:
+            problems.append(f"{t['scene']}: looks the same as the scene before")
+        prev = g
+        review.append(_frame(final, mid, dirs["qc"] / f"watch_{t['scene']}.png", 480))
+    _sheet(review, [f"{t['scene']} @{_mmss((t['start'] + t['end']) / 2)}: {t['narration'][:60]}" for t in timeline], dirs["qc"] / "review_sheet.png")
+    worst = max(drift) if drift else 0.0
+    if worst > 0.35:
+        problems.append(f"a cut lands {worst:.2f}s away from its line")
+    qmd = ["# Quality control", "", f"Film: {final.name} · {expected:.1f}s · {w}x{h}", "", "## Finished film", ""]
+    qmd += [f"- {'OK  ' if c['ok'] else 'FAIL'} {c['name']}: {c['detail']}" for c in qc["checks"]]
+    qmd += ["", "## Watch-through (a frame from the middle of every scene, compared with the one before)", ""]
+    qmd += [f"- {p}" for p in problems] or ["- every scene shows a distinct, readable picture"]
+    qmd += ["", "## Sync", "", f"{len(drift)} of {len(starts) - 1} cuts measured; worst {worst:.2f}s, mean "
+            f"{(sum(drift) / len(drift)) if drift else 0:.2f}s from the spoken line", "",
+            "## Facts", "", "Every figure said or shown is in the evidence its scene cites (editorial review passed)."]
+    (dirs["qc"] / "report.md").write_text("\n".join(qmd), encoding="utf-8")
+    report["qc"] = {"film": qc, "watch": problems, "sync_worst_s": round(worst, 3)}
+    step("quality control", note=("clean" if qc["passed"] and not problems else f"{len(qc['warnings']) + len(problems)} to look at"))
+
+    # 12 thumbnail, SEO, cutdowns
+    if sp.get("thumbnail"):
+        tk, ts = _kind(sp["thumbnail"]), _spec(sp["thumbnail"]) + " | exit: none | camera: still"
+        tmp = work / "thumb.mp4"
+        _render_scene(tk, ts if tk in vox.KINDS else _spec(sp["thumbnail"]), theme, 1280, 720, 3.0, tmp, work, 12, "base", fetch, lib)
+        _frame(tmp, 2.7, dirs["promo"] / "thumbnail.png", 1280)
+    chapters, last = [], None
+    names = sp.get("act_titles", {})
+    for t in timeline:
+        if t["act"] != last:
+            chapters.append(f"{_mmss(t['start'])} {names.get(t['act'], t['act'].title())}")
+            last = t["act"]
+    srcs = []
+    for c in dos.claims.values():
+        for s in c.sources:
+            if s.get("url") and s["url"] not in [x[1] for x in srcs]:
+                srcs.append((s.get("title") or s["url"], s["url"]))
+    seo = sp.get("seo", {})
+    title = seo.get("title") or sp.get("title")
+    desc = [seo.get("description") or sp.get("concept", {}).get("logline", ""), "", sp.get("concept", {}).get("central_question", ""), "",
+            "Chapters", *chapters, "", "Sources", *[f"- {a}: {b}" for a, b in srcs], "",
+            "How this film was made: maps are drawn from public-domain outlines (Natural Earth) and open elevation data; "
+            "every chart shows figures from the sources above; reconstructions are drawn and labelled; narration voice: "
+            + engine + "."]
+    tags = seo.get("keywords") or []
+    (dirs["promo"] / "seo.md").write_text(f"# SEO\n\n## Title\n\n{title}\n\n## Description\n\n" + "\n".join(desc)
+                                          + "\n\n## Keywords and tags\n\n" + ", ".join(tags), encoding="utf-8")
+    (dirs["promo"] / "seo.json").write_text(json.dumps({"title": title, "description": "\n".join(desc), "tags": tags}, ensure_ascii=False, indent=1),
+                                            encoding="utf-8")
+    cw, chh = cutdown_size
+    made = []
+    for k, cd in enumerate(sp.get("cutdowns", []), 1):
+        ids = [x for x in cd.get("scenes", []) if any(t["scene"] == x for t in timeline)]
+        if not ids:
+            continue
+        sub = [t for t in timeline if t["scene"] in ids]
+        cclips, wavs, slots = [], [], []
+        for t in sub:
+            idx = next(i for i, x in enumerate(timeline) if x["scene"] == t["scene"])
+            mp4 = work / f"cut{k}_{t['scene']}.mp4"
+            sec = (t["end"] - t["start"]) + render.TRANSITION_S + 0.2
+            _render_scene(t["kind"], _spec(t["visual"]), theme, cw, chh, sec, mp4, work, fps, layouts[idx], fetch, lib)
+            paper, _ = vox.paper(vox.look_of(theme)["paper"], cw, chh, work)
+            cclips.append(render.Clip(paper, t["end"] - t["start"], "static", "cut" if not cclips else t["transition_in"], mp4, ff.duration(mp4),
+                                      stepped=bool(ad["stepped"]) and t["kind"] not in scene3d.KINDS))
+            wavs.append(work / f"lead_{t['scene']}.wav")
+            slots.append(t["end"] - t["start"])
+        ctot = sum(slots) + tail
+        cn = work / f"cut{k}_narr.wav"
+        render.narration_track(wavs, slots, tail, cn)
+        cm = score.compose([("hook", 0.0, ctot)], "drone", work / f"cut{k}_score")
+        cmix = work / f"cut{k}_mix.wav"
+        render.mix_audio(cn, cm, ctot, cmix, threading.Event())
+        raw = work / f"cut{k}_raw.mp4"
+        render.render_video(cclips, cmix, None, cw, chh, raw, work / f"cut{k}", threading.Event(), grade="")
+        ccues, at2 = [], 0.0
+        for t in sub:
+            for a, b, c in cues:
+                if t["start"] <= a < t["end"]:
+                    ccues.append((a - t["start"] + at2, b - t["start"] + at2, c))
+            at2 += t["end"] - t["start"]
+        ass = _ass(ccues, cw, chh, work / f"cut{k}.ass")
+        dst = dirs["promo"] / f"cutdown_{k}.mp4"
+        subprocess.run(["ffmpeg", "-nostdin", "-y", "-loglevel", "error", "-i", str(raw), "-vf", f"ass={ass}", "-c:a", "copy",
+                        "-c:v", "libx264", "-crf", "19", "-preset", "veryfast", "-pix_fmt", "yuv420p", str(dst)], check=True, timeout=1800)
+        _write_captions(ccues, dirs["promo"] / f"cutdown_{k}")
+        made.append({"file": dst.name, "title": cd.get("title", ""), "scenes": ids, "seconds": round(ctot, 1)})
+    (dirs["promo"] / "cutdowns.md").write_text("# Social cutdowns\n\n" + "\n".join(f"- **{m['file']}** ({m['seconds']}s, 9:16, captions burned in): "
+                                                                                   f"{m['title']}; scenes {', '.join(m['scenes'])}" for m in made),
+                                               encoding="utf-8")
+    step("thumbnail, SEO and cutdowns", note=f"{len(made)} cutdowns")
+
+    # narration script with the final timestamps; asset list; history; index
+    (dirs["writing"] / "narration_script.md").write_text(writer.narration_markdown(sp, timeline), encoding="utf-8")
+    assets = ["# Visual assets", "", "| Scene | Asset | Kind | Made from |", "|---|---|---|---|"]
+    for t in timeline:
+        made_from = ("Natural Earth outlines" if t["kind"] in ("shrink", "pinmap", "route", "heatmap", "arrows", "railmap", "sizemap", "morph")
+                     else "open elevation tiles (AWS Terrain)" if t["kind"] == "terrain3d"
+                     else "three.js scene" if t["kind"] in scene3d.KINDS else "drawn in the engine")
+        assets.append(f"| {t['scene']} | scenes/{t['scene']}_{t['kind']}.mp4 | {t['kind']} | {made_from} |")
+    (dirs["writing"] / "asset_list.md").write_text("\n".join(assets), encoding="utf-8")
+    artdirection.remember(data, {"id": film, "title": sp.get("title"), **{k: ad[k] for k in ("look", "accent", "cinematography", "maps",
+                                                                                              "infographics", "animation", "rhythm", "music")},
+                                 "kinds": kinds})
+    deliver = [("1. Research dossier with source links", "research/dossier.md"), ("2. Documentary concept", "writing/concept.md"),
+               ("3. Complete final script", "writing/screenplay.md"), ("4. Separate narration script", "writing/narration_script.md"),
+               ("5. Narration audio", "audio/narration.wav"), ("6. Scene-by-scene storyboard", "storyboard/storyboard.md"),
+               ("7. Art direction document", "writing/art_direction.md"), ("8. Visual asset list", "writing/asset_list.md"),
+               ("9. Map and infographic assets", "scenes/"), ("10. Animation and motion-graphics assets", "scenes/"),
+               ("11. Complete editing timeline", "timeline/timeline.csv"), ("12. Captions / subtitles", f"captions/{film}.srt"),
+               ("13. Finished documentary", f"video/{film}.mp4"), ("14. Thumbnail", "promo/thumbnail.png"), ("15. SEO title", "promo/seo.md"),
+               ("16. Description", "promo/seo.md"), ("17. Keywords and tags", "promo/seo.md"), ("18. Social cutdowns", "promo/cutdowns.md")]
+    idx = [f"# {sp.get('title')}", "", sp.get("concept", {}).get("logline", ""), "", f"Running time {_mmss(expected)} · {w}x{h} · {fps} fps",
+           "", "| Deliverable | File | Present |", "|---|---|---|"]
+    for name, rel in deliver:
+        idx.append(f"| {name} | {rel} | {'yes' if (out / rel).exists() else 'NO'} |")
+    idx += ["", "Also: writing/editorial_review.md, qc/report.md, qc/review_sheet.png, timeline/timeline.md"]
+    (out / "README.md").write_text("\n".join(idx), encoding="utf-8")
+    report.update({"file": str(final), "seconds": round(expected, 1), "art": ad, "deliverables_missing":
+                   [n for n, r in deliver if not (out / r).exists()]})
+    (dirs["qc"] / "report.json").write_text(json.dumps(report, ensure_ascii=False, indent=1, default=str), encoding="utf-8")
+    step("deliverables", note="all present" if not report["deliverables_missing"] else f"missing: {report['deliverables_missing']}")
+    return report

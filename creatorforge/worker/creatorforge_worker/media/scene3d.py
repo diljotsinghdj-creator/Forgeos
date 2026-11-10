@@ -121,7 +121,23 @@ def parse_terrain3d(spec: str) -> dict | None:
         return None
     km = next((float(x.group(1)) for p in parts[2:] for x in [re.search(r"([\d.]+)\s*km", p, re.I)] if x), 40.0)
     hm = next((x.group(1).strip() for p in parts[2:] for x in [re.search(r"height\s*[:=]\s*(.+)", p, re.I)] if x), "")
-    return {"type": "terrain3d", "name": name[:28], "lat": lat, "lon": lon, "km": min(300.0, max(8.0, km)), "height": hm[:16],
+    opt = {k: v.strip() for p in parts[2:] for k, _, v in [p.partition(":")] if v}
+    opt = {k.strip().lower(): v for k, v in opt.items()}
+    # "water: 53.4 -> 26.5": a water surface at those heights (metres above sea level) that fills the real terrain and
+    # drains to the second level; "years: 1960 -> 2009" counts with it; "pins: Moynaq, Aralsk" names places
+    water = [float(x) for x in re.findall(r"-?\d+(?:\.\d+)?", opt.get("water", ""))][:2]
+    # "-> floor": drain to the lowest surface the elevation data holds (radar maps a lake's water surface as land, so
+    # draining below it would show water that is there as gone)
+    if water and re.search(r"floor", opt.get("water", ""), re.I):
+        water = water[:1] + [-9999.0]
+    years = [int(x) for x in re.findall(r"\d{4}", opt.get("years", ""))][:2]
+    pins = []
+    for nm in [x.strip() for x in opt.get("pins", "").split(",") if x.strip()][:6]:
+        f = maps._find(nm)
+        if f and f["kind"] == "city":
+            pins.append({"name": nm[:22], "lat": f["lat"], "lon": f["lon"]})
+    return {"type": "terrain3d", "name": name[:28], "lat": lat, "lon": lon, "km": min(600.0, max(8.0, km)), "height": hm[:16],
+            "water": water, "years": years, "pins": pins,
             "title": parts[1][:48] if len(parts) > 1 else "", "credit": TERRAIN_CREDIT}
 
 
@@ -133,7 +149,7 @@ def heights(lat: float, lon: float, km: float, cache: Path, n: int = 150, timeou
     import urllib.request
     import numpy as np
     from PIL import Image
-    z = int(max(5, min(12, math.floor(math.log2(40075.0 * math.cos(math.radians(lat)) / km * 1.6)))))
+    z = int(max(4, min(12, math.floor(math.log2(40075.0 * math.cos(math.radians(lat)) / km * 1.6)))))
 
     def tile_xy(la, lo):
         x = (lo + 180) / 360 * 2 ** z
@@ -166,11 +182,12 @@ def heights(lat: float, lon: float, km: float, cache: Path, n: int = 150, timeou
     crop = mosaic[py0:py1, px0:px1]
     grid = np.asarray(Image.fromarray(crop).resize((n, n), Image.BILINEAR), np.float32)
     grid = np.maximum(grid, -50.0)                         # the sea floor is not the story
+    dlat_, dlon_ = dlat, dlon
     r, c = np.unravel_index(int(grid.argmax()), grid.shape)
     # the label uses the full-resolution data (the drawn grid is thinned and rounds the summit off)
     return {"h": [[int(v) for v in row] for row in grid], "min": float(grid.min()), "max": float(grid.max()),
             "top": float(crop.max()),
-            "peak": [int(r), int(c)], "n": n}
+            "peak": [int(r), int(c)], "n": n, "dlat": dlat_, "dlon": dlon_}
 
 
 def parse_towers3d(spec: str) -> dict | None:
@@ -304,7 +321,9 @@ function title3d(){const words=P.text.split(' '),rows=TALL&&words.length>1?words
     const s=seg(t,1.2,1.4);sweep.position.set(-widest*.7+widest*1.4*s,hh*.6,2.6);sweep.intensity=60*Math.sin(Math.PI*s);
     if(sub)sub.style.opacity=seg(t,1.3,.3)*leave(t)}}
 
-function terrain3d(){const G=P.grid,n=G.n,size=12,rel=Math.max(1,G.max-G.min),ex=Math.min(4.2,Math.max(1.6,P.km*1000/rel*.085))*size/(P.km*1000);   // vertical exaggeration, capped
+function terrain3d(){const G=P.grid,n=G.n,size=12,rel=Math.max(1,G.max-G.min);
+  // vertical exaggeration: mountains a little, plains a lot (the relief would be invisible otherwise) - always said on screen
+  const exf=Math.max(1.6,Math.min(120,(P.water&&P.water.length?.07:.16)*P.km*1000/rel)),ex=exf*size/(P.km*1000);
   const geo=new THREE.PlaneGeometry(size,size,n-1,n-1);geo.rotateX(-Math.PI/2);const pos=geo.attributes.position,cols=new Float32Array(pos.count*3);
   const ramp=[[0,K.land||'#EFE3C2'],[.35,mix(K.land||'#EFE3C2','#8E7E5C',.55)],[.7,mix('#8E7E5C','#5B5346',.6)],[.9,'#E9E6DF'],[1,'#FFFFFF']].map(([t,c])=>[t,col(c)]);
   const shade=f=>{for(let i=1;i<ramp.length;i++)if(f<=ramp[i][0]){const a=ramp[i-1],b=ramp[i];return a[1].clone().lerp(b[1],(f-a[0])/(b[0]-a[0]))}return ramp[ramp.length-1][1]};
@@ -314,6 +333,16 @@ function terrain3d(){const G=P.grid,n=G.n,size=12,rel=Math.max(1,G.max-G.min),ex
   const top=rel*ex,base=new THREE.Mesh(new THREE.BoxGeometry(size,.5,size),mat(mix(K.land||'#EFE3C2','#5B5346',.5)));base.position.y=-.26;base.receiveShadow=true;
   const g=new THREE.Group();g.add(land);g.add(inked(base));g.position.y=.55;scene.add(g);
   sun.position.set(-9,7.5,5);sun.intensity=2.6;
+  const xz=(lat,lon)=>[(lon-P.lon)/(2*G.dlon)*size,-(lat-P.lat)/(2*G.dlat)*size];
+  const hAt=(x,z)=>{const c=Math.round((x/size+.5)*(n-1)),r=Math.round((z/size+.5)*(n-1));return (G.h[Math.max(0,Math.min(n-1,r))]||[])[Math.max(0,Math.min(n-1,c))]||G.min};
+  const exl=label('HEIGHT ×'+(exf>=10?Math.round(exf):exf.toFixed(1)),'src',U*.016,'Mono',700);exl.style.left=(TALL?W/2:W*.86)+'px';exl.style.top=(TALL?H*.93:H*.9)+'px';
+  let wat=null,yr=null;if(P.water&&P.water.length){const [a,b]=[P.water[0],P.water.length>1?Math.max(P.water[1],G.min+.8):P.water[0]];
+    wat=new THREE.Mesh(new THREE.PlaneGeometry(size*.999,size*.999),new THREE.MeshStandardMaterial({color:col(K.sea||'#7FA7B5'),roughness:.35,metalness:.05,transparent:true,opacity:.86}));
+    wat.rotation.x=-Math.PI/2;wat.receiveShadow=true;g.add(wat);wat.userData={a,b};
+    if(P.years&&P.years.length){yr=label(String(P.years[0]),'box',U*.06,'Anton',400);yr.style.left=(TALL?W/2:W*.13)+'px';yr.style.top=(TALL?H*.16:H*.2)+'px'}}
+  const pins=(P.pins||[]).map(pn=>{const [x,z]=xz(pn.lat,pn.lon);const y=.55+(Math.max(hAt(x,z),wat?Math.max(...P.water):G.min)-G.min)*ex;
+    const st=new THREE.Mesh(new THREE.CylinderGeometry(.025,.025,.9,6),mat(INK));st.position.set(x,y+.45,z);scene.add(st);
+    return {st,v:new THREE.Vector3(x,y+.95,z),lb:label(pn.name.toUpperCase(),'tag',U*.02,'Inter',800)}});
   const [pr,pc]=G.peak,peak=new THREE.Vector3(-size/2+pc/(n-1)*size,.55+top,-size/2+pr/(n-1)*size);
   const pole=new THREE.Mesh(new THREE.CylinderGeometry(.02,.02,1.1,6),mat(K.mark||'#D7262B'));pole.position.copy(peak).y+=.55;scene.add(pole);
   const tt=title(P.title||P.name),pk=label(P.name.toUpperCase(),'tag',U*.024,'Inter',800),el=label(P.height||('about '+(Math.round((G.top||G.max)/50)*50).toLocaleString('en-US')+' m'),'box',U*.04,'Anton',400);   // the writer's figure, else the data's, said as 'about'
@@ -322,7 +351,11 @@ function terrain3d(){const G=P.grid,n=G.n,size=12,rel=Math.max(1,G.max-G.min),ex
   const o={tx:0,ty:.55+top*.4,tz:0,a0:-.75,a1:.55,r0:TALL?30:22,r1:TALL?25:17.5,h0:top+9,h1:top+4.5};
   update=t=>{orbit(t,o);const rise=E.out(seg(t,0,1.4));g.scale.y=.02+.98*rise;pole.scale.y=seg(t,1.3,.4);pole.visible=t>1.3;
     const p2=peak.clone();p2.y=.55+top*rise+1.15*seg(t,1.3,.4);pin(el,p2,0,-U*.05);pin(pk,p2,0,-U*.012);
-    const v=seg(t,1.5,.3)*leave(t);el.style.opacity=v;pk.style.opacity=v;if(tt)tt.style.opacity=seg(t,.1,.3)*leave(t);cr.style.opacity=seg(t,.8,.3)*leave(t)*.9;sc.style.opacity=seg(t,.8,.3)*leave(t)}}
+    const v=seg(t,1.5,.3)*leave(t)*(wat?0:1);el.style.opacity=v;pk.style.opacity=v;pole.visible=pole.visible&&!wat;if(tt)tt.style.opacity=seg(t,.1,.3)*leave(t);cr.style.opacity=seg(t,.8,.3)*leave(t)*.9;sc.style.opacity=seg(t,.8,.3)*leave(t);
+    exl.style.opacity=seg(t,.8,.3)*leave(t)*(exf>1.5?1:0);
+    if(wat){const q=E.inout(seg(t,1.2,Math.max(1,DUR-2.2))),lev=wat.userData.a+(wat.userData.b-wat.userData.a)*q;wat.position.y=Math.max(.001,(lev-G.min)*ex*rise);wat.visible=rise>.95;
+      if(yr){yr.textContent=String(Math.round(P.years[0]+((P.years[1]||P.years[0])-P.years[0])*q));yr.style.opacity=seg(t,1,.3)*leave(t)}}
+    pins.forEach((p,i)=>{p.st.visible=t>1.1+i*.15;pin(p.lb,p.v,0,-U*.02);p.lb.style.opacity=seg(t,1.1+i*.15,.3)*leave(t)})}}
 function towers3d(){const vs=P.values,n=vs.length,mx=Math.max(...vs.map(v=>v.value)),maxh=TALL?6.6:4.6,gap=2.5,x0=-(n-1)*gap/2,tt=title(P.title);
   const order=vs.map((v,i)=>i);const ts=order.map(i=>{const v=vs[i],h=Math.max(.12,maxh*v.value/mx),g=new THREE.Group(),top=v.value===mx;
     const tiers=h>1.2?3:h>.5?2:1;let y=0;for(let k=0;k<tiers;k++){const th=h*(k===tiers-1?1-(tiers-1)*.38:.38),w=1.15*(1-k*.24);

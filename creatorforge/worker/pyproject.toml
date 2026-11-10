@@ -13,6 +13,7 @@ dependencies = [
 # Install only the backends you use.
 whisper = ["faster-whisper>=1.0"]
 kokoro = ["kokoro>=0.9", "soundfile>=0.12", "numpy"]
+studio = ["kokoro-onnx>=0.4", "numpy"]
 diffusers = ["diffusers>=0.35", "transformers", "accelerate", "torch", "sentencepiece", "protobuf", "ftfy", "imageio", "imageio-ffmpeg"]
 animation = ["espeakng-loader>=0.2", "Pillow>=10", "numpy"]   # 2D/2.5D characters + lip-sync speech
 test = ["pytest>=8", "Pillow>=10", "numpy", "espeakng-loader>=0.2"]   # animation, thumbnail, assembly and lip-sync tests
@@ -28,7 +29,7 @@ build-backend = "setuptools.build_meta"
 include = ["creatorforge_worker*"]
 
 [tool.setuptools.package-data]
-"creatorforge_worker.media" = ["world.json", "states.json", "vendor/*", "vendor/fonts/*"]
+"creatorforge_worker.media" = ["world.json", "states.json", "lakes.json", "vendor/*", "vendor/fonts/*"]
 
 [tool.pytest.ini_options]
 markers = ["ffmpeg: needs ffmpeg"]
