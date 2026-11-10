@@ -18,7 +18,7 @@ The essentials, in case nothing else is read:
 - **Every fact is in the research dossier with a source and a status.** Allegations are attributed and the other
   side is shown.
 - **All videos are in English** (both channels), faceless, no mascot.
-- **No images are created without asking the owner first.**
+- **No images are created without asking the owner first.** ElevenLabs only with the owner's permission.
 
 **Code:** the worker is in `creatorforge/worker` (tests: `python -m pytest -q`); the Android app is in
 `creatorforge/android`.
