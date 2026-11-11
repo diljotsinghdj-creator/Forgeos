@@ -1,0 +1,21 @@
+{
+ "id": "bjp-it-cell-short",
+ "title": "BJP IT Cell: the Short",
+ "channel": "print-facts",
+ "topic": "bjp-it-cell",
+ "format": "short 9:16",
+ "engine": "trojan-horse",
+ "hook_mechanism": "a catchy reel taken apart",
+ "pick": {
+  "engine": "trojan-horse",
+  "pitched": [
+   "reverse-autopsy",
+   "historical-echo",
+   "trojan-horse"
+  ],
+  "owner_words": "\"3. Trojan Horse\"",
+  "date": "2026-11-11"
+ },
+ "target_seconds": 45,
+ "status": "storyboard only"
+}

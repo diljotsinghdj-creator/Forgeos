@@ -184,5 +184,32 @@
   ],
   "voice": "bm_george",
   "look": "field"
+ },
+ {
+  "id": "bjp-it-cell-short",
+  "kind": "storyboard",
+  "channel": "print-facts",
+  "topic": "bjp-it-cell",
+  "date": "2026-11-11",
+  "engine": "trojan-horse",
+  "hook_mechanism": "a catchy reel taken apart",
+  "hook_line": "A catchy political rap reel. Harmless?",
+  "opening": "reel",
+  "shots": [
+   "Reel: recreated rap reel on a phone",
+   "Evidence slot: BJP upload Kota 2018 true or false",
+   "Explode: phone layers theme design sign-off post",
+   "Stamp: one sign-off every post Delhi",
+   "Counter: 900,000 booth volunteers planned 2019 India",
+   "Tiles: Bihar 72,000 WhatsApp groups",
+   "Cards: 17 fact-checks FALSE MISLEADING",
+   "Grids: junk news 28 vs 21 in 100",
+   "Card: May 2024 Congress arrests doctored video",
+   "Ledger: BJP filing Google 156.95 Facebook 24.63",
+   "Reel: new chief new beat",
+   "Question: who made the last reel you shared"
+  ],
+  "voice": "",
+  "look": "newsprint-yellow"
  }
 ]
