@@ -1963,7 +1963,10 @@ function pinmap(){ // the country outline; the place highlighted; the headline c
   if(who){const h=TALL?H*.2:H*.34,x=TALL?Math.min(W*.78,px+W*.22):Math.max(W*.14,px-W*.2),y=TALL?Math.max(H*.2,py-H*.1):Math.max(H*.26,py-H*.05);
     const card=printCard(L.hero,who,x,y,h,-4,{caption:(who.name||'').replace(/^person:/i,'')});drop(card,.7,H*.2,-6);
     pinAt(L.front,x,y-h*.5+U*.012);const ln=L.mid.line(x,y,px,py).stroke({color:'#C0262D',width:U*.003});wipe(ln,1.0)}
-  if(P.headline){const cw=TALL?W*.8:W*.38,ch=TALL?H*.16:H*.26;const cx=TALL?W*.1:Math.min(W-cw-U*.04,px+U*.24),cy=TALL?H*.58:Math.max(H*.14,py-ch*.4);
+  if(P.headline){const cw=TALL?W*.8:W*.38,ch=TALL?H*.16:H*.26;let cx=TALL?W*.1:Math.min(W-cw-U*.04,px+U*.24),cy=TALL?H*.58:Math.max(H*.14,py-ch*.4);
+    // the headline card never covers the place's own label: right of the label, or else below the pin
+    const tagR=P.pin?px+U*.025+String(P.place||'').length*U*.017+U*.06:0;
+    if(!TALL&&P.pin&&cx<tagR){if(tagR+cw<W-U*.03)cx=tagR;else cy=Math.min(H-ch-U*.05,py+U*.07)}
     const card=L.hero.group();torn(card,cx,cy,cw,ch,'#F3EFE4');const size=Math.min(ch*.24,U*.05);
     lines(P.headline,size,cw*.86,'Playfair',700,3).forEach((l,i)=>T(card,l,size,cx+cw*.07,cy+ch*.22+i*size*1.12,{family:'Playfair',weight:700,anchor:'start',fill:'#1A1A1A'}));
     if(P.source)T(card,P.source.toUpperCase(),U*.017,cx+cw*.07,cy+ch*.88,{family:'Mono',weight:700,anchor:'start',fill:'#555'});
