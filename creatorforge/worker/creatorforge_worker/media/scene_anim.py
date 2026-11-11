@@ -19,7 +19,7 @@ from pathlib import Path
 ICONS = Path(__file__).parent / "vendor" / "tabler_icons.json"
 
 # words a script uses -> the icon that shows it best (checked before the library's own names and tags)
-SYNONYMS = {
+SYNONYMS = {"magnifying-glass": "zoom", "magnifyingglass": "zoom", "magnifier": "zoom", "documents": "files", "document": "file-text", 
     "machine": "building-factory-2",
     "plane": "plane", "aeroplane": "plane", "airplane": "plane", "flight": "plane-departure", "jet": "plane",
     "car": "car", "taxi": "car", "truck": "truck", "lorry": "truck", "bus": "bus", "train": "train",

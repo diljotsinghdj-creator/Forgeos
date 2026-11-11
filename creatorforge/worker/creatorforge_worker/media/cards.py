@@ -463,7 +463,7 @@ def screen_lines(spec: str, theme: str, width: int, height: int, seconds: float)
             target = ((L + R) / 2, cy, box)
         y += step
     out.append(f"Dialogue: 7,{_ts(0)},{end},T,,0,0,0,,{{\\an9\\pos({R - pad * 0.4:.0f},{B + size * 0.4:.0f})\\fs{int(size * 0.5)}"
-               f"\\1c&H606060&}}ILLUSTRATION")
+               f"\\1c&H606060&}}RECREATION")
     zoom = None
     if target:
         cx, cy, (rx, ry) = target
@@ -645,7 +645,7 @@ def _illustration_tag(width: int, height: int, end: str) -> str:
     """The recreation label, readable and out of the way: top-right corner, inside the safe area."""
     fs = int(min(width, height) * 0.03)
     return (f"Dialogue: 7,{_ts(0)},{end},T,,0,0,0,,{{\\an9\\pos({width * 0.94:.0f},{height * 0.06:.0f})\\fs{fs}"
-            f"\\bord{max(2, fs // 5)}\\3c&HF2F2F2&\\1c&H505050&}}ILLUSTRATION")
+            f"\\bord{max(2, fs // 5)}\\3c&HF2F2F2&\\1c&H505050&}}RECREATION")
 
 
 def chat_lines(spec: str, theme: str, width: int, height: int, seconds: float):

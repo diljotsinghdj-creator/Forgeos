@@ -744,10 +744,12 @@ def parse_linkmap(spec: str) -> dict | None:
     if len(parts) < 2 or not parts[0]:
         return None
     nodes = []
-    for x in re.split(r";|,", parts[1]):
+    for x in re.split(r";|,(?!\d{3}\b)", parts[1]):          # "34,884" stays one number
         name, _, how = x.partition(":")
         if name.strip():
-            nodes.append({"name": name.strip()[:24], "how": how.strip()[:22]})
+            if len(name.strip()) > 28 or len(how.strip()) > 28:
+                return None                                      # never cut a label (or its figure) short
+            nodes.append({"name": name.strip(), "how": how.strip()})
     if not 2 <= len(nodes) <= 8:
         return None
     return {"type": "linkmap", "centre": parts[0][:26], "nodes": nodes, "title": parts[2][:48] if len(parts) > 2 else "",
@@ -910,8 +912,11 @@ def parse_table(spec: str) -> dict | None:
     parts = [p.strip() for p in (spec or "").split("|")]
     if len(parts) < 2:
         return None
-    head = [h.strip()[:18] for h in parts[0].split(",") if h.strip()][:5]
-    rows = [[c.strip()[:20] for c in re.split(r",(?!\d{2,3}\b)", r)][:len(head)] for r in parts[1].split(";") if r.strip()][:8]
+    head = [h.strip() for h in parts[0].split(",") if h.strip()][:5]
+    rows = [[c.strip() for c in re.split(r",(?!\d{2,3}\b)", r)][:len(head)] for r in parts[1].split(";") if r.strip()][:8]
+    # a cell is never cut short (the figure or the label would change): too long, the line is refused
+    if any(len(h) > 28 for h in head) or any(len(c) > 40 for r in rows for c in r):
+        return None
     rows = [r for r in rows if len(r) == len(head)]
     if len(head) < 2 or len(rows) < 2:
         return None
@@ -1645,7 +1650,9 @@ function fit(t,maxw){const w=t.bbox().width;if(w>maxw)t.font({size:t.font('size'
 function lines(s,size,maxw,family,weight,most){const words=String(s).split(/\s+/).filter(Boolean),out=[];let cur='';
   const pr=draw.text('').font({family:(K.fam||{})[family]||family,size:size,weight:weight});
   for(const w of words){const tr=cur?cur+' '+w:w;pr.text(tr);if(cur&&pr.bbox().width>maxw){out.push(cur);cur=w}else cur=tr}
-  if(cur)out.push(cur);pr.remove();return out.slice(0,most||3)}
+  if(cur)out.push(cur);pr.remove();const n=most||3;if(out.length>n)DROPPED.push(out.slice(n).join(' ').slice(0,40));   // words that don't fit are reported, never lost quietly
+  return out.slice(0,n)}
+const DROPPED=[];
 function boxText(g,s,size,x,y,o){ // black box(es), white serif type - one box per line, like a cut label
   o=o||{};const ls=lines(String(s).toUpperCase(),size,o.maxw||W*.4,o.family||'Playfair',900,o.most||3);const grp=g.group();const pad=size*.28;
   let yy=y;const anchor=o.anchor||'start';
@@ -2428,7 +2435,7 @@ function filmLayer(){if(K.film===false)return()=>{};const g=L.grain.group();let 
 function srcLayer(){if(!P.src)return;const t=mono(L.front,('SOURCE: '+P.src).toUpperCase(),W-U*.04,H-U*.055,{anchor:'end',size:U*.015,weight:700});
   t.addClass('keep');fit(t,W*.6);wipe(t,.9)}
 function badgeLayer(){if(!P.badge||!P.badge[0])return;const [txt,col]=P.badge;const g=L.front.group().addClass('keep');
-  const x=U*.05,y=TALL?H*.135:H*.9;const t=T(g,txt,U*.024,x+U*.03,y,{family:'Mono',weight:700,anchor:'start',fill:col,ls:'.14em'});const bb=t.bbox();
+  const x=P.comp&&!TALL?W*.33:U*.05,y=TALL?H*.135:H*.9;const t=T(g,txt,U*.024,x+U*.03,y,{family:'Mono',weight:700,anchor:'start',fill:col,ls:'.14em'});const bb=t.bbox();
   g.rect(bb.width+U*.05,bb.height+U*.022).move(x-U*.004,y-bb.height/2-U*.011).fill('#FBF8F0').stroke({color:col,width:U*.004}).back();
   g.circle(U*.012).center(x+U*.012,y).fill(col);g.attr({transform:`rotate(-2,${x},${y})`});popIn(g,x,y,.9,.3)}
 function insetLayer(){const pic=P.insetpic;if(!pic)return;const w=TALL?W*.3:W*.17,h=w*1.18,x=W-w-U*.05,y=TALL?H*.6:H-h-U*.11;   // low in the corner: clear of headlines
@@ -2900,7 +2907,7 @@ if(r.width<1||r.height<1)return;
         c.font=`${cs.fontStyle} ${cs.fontWeight} 100px ${cs.fontFamily}`;const mm=c.measureText(s),fa=mm.fontBoundingBoxAscent,fd=mm.fontBoundingBoxDescent;
         if(fa&&fd){const k=r.height/(fa+fd),base=r.top+fa*k;top=base-mm.actualBoundingBoxAscent*k;bot=base+mm.actualBoundingBoxDescent*k}}catch(e){}
       if(r.left<-2||top<-2||r.right>W+2||bot>H+2)cut.push(s.slice(0,40))});
-    return {text_below_floor:small.slice(0,8),text_cut_off:cut.slice(0,8)}};
+    return {text_below_floor:small.slice(0,8),text_cut_off:cut.concat(DROPPED.map(d=>'dropped: '+d)).slice(0,8)}};
   window.frame(0);window.READY=true}
 boot();
 </script></body></html>"""
