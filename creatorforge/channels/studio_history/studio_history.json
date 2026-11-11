@@ -23,5 +23,30 @@
    "sunrise",
    "zones"
   ]
+ },
+ {
+  "id": "netherlands-sea-sample",
+  "title": "Below the sea in 15 seconds",
+  "channel": "sample",
+  "engine": "historical-echo",
+  "hook_mechanism": "a death toll and a date",
+  "metaphors": [
+   "the 1953 water rising over today's real land"
+  ],
+  "look": "field",
+  "accent": "#21CACA",
+  "cinematography": "investigative",
+  "maps": "relief",
+  "infographics": "editorial",
+  "animation": "fluid",
+  "rhythm": "brisk",
+  "music": "drone",
+  "grade": "warm",
+  "kinds": [
+   "arrows",
+   "bignumber",
+   "terrain3d",
+   "terrain3d"
+  ]
  }
 ]

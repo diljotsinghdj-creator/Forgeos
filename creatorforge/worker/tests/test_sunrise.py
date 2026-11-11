@@ -27,3 +27,11 @@ def test_render_small_clip(tmp_path):
     p = s.parse("sunrise", "21 June 2026 4:00 → 4:20 | IST 5.5 | pins: Dong @97.02,28.17 | T")
     out = s.render(p, 320, 180, 1.0, tmp_path / "a.mp4", fps=8)
     assert ff.duration(out) > 0.8
+
+
+def test_arrows_take_exact_coordinates_and_terrain_gauge_options():
+    from creatorforge_worker.media import scene3d, vox
+    a = vox.parse_arrows("North of Scotland @ 59.3, 0.5 → Zeeland @ 51.6, 3.6 (storm surge) | The North Sea")
+    assert a["arrows"][0]["a"] == {"name": "North of Scotland", "lon": 0.5, "lat": 59.3}
+    t = scene3d.parse_terrain3d("Utrecht @ 52.2, 5.3 | T | 260 km | water: 0 -> 4.55 | gauge: Sea level | rise: off")
+    assert t["gauge"] == "Sea level" and t["norise"] and t["water"] == [0.0, 4.55]

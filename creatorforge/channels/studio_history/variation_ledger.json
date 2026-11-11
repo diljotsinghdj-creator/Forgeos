@@ -21,5 +21,31 @@
    "/home/user/Forgeos/creatorforge/channels/studio_history/keyframes/india-one-clock-sample/key3.png"
   ],
   "beds": []
+ },
+ {
+  "film": "netherlands-sea-sample",
+  "date": "2026-11-11",
+  "channel": "sample",
+  "question": "What holds back the sea in the Netherlands?",
+  "claim": "A quarter of the Netherlands lies below the sea; in 1953 the sea came four and a half metres higher.",
+  "native": "elevation, sea level, flood records",
+  "lead": "3d",
+  "support": "maps",
+  "accent": "#21CACA",
+  "opening": "arrows",
+  "family": "match cuts",
+  "tempo": 4.0,
+  "avg_shot": 4.3,
+  "camera": "slow pans and parallax",
+  "sound": "natural ambience; sparse strings",
+  "keyframes": [
+   "/home/user/Forgeos/creatorforge/channels/studio_history/keyframes/netherlands-sea-sample/key1.png",
+   "/home/user/Forgeos/creatorforge/channels/studio_history/keyframes/netherlands-sea-sample/key2.png",
+   "/home/user/Forgeos/creatorforge/channels/studio_history/keyframes/netherlands-sea-sample/key3.png"
+  ],
+  "beds": [
+   "wind_0040",
+   "wind_0090"
+  ]
  }
 ]

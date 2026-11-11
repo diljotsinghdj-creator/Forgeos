@@ -454,6 +454,11 @@ def _geo(names: list[str]) -> list[dict]:
     from . import maps
     out = []
     for n in names:
+        # "North of Scotland @ 59.5, -1.0": a named point at exact coordinates (lat, lon), for places the gazetteer lacks
+        m = re.match(r"\s*(.+?)\s*@\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*$", n)
+        if m and -90 <= float(m.group(2)) <= 90 and -180 <= float(m.group(3)) <= 180:
+            out.append({"name": m.group(1), "lon": float(m.group(3)), "lat": float(m.group(2))})
+            continue
         f = maps._find(n)
         if not f:
             return []
@@ -2065,7 +2070,7 @@ function number(){ // a huge number; the subject breaks out of it
     const g=picture(L.hero,pic,W/2,TALL?H*.64:H*.86,h);drop(g,.35,H*.25,-2);
     FOCUS=FOCUS||{x:W/2,y:(TALL?H*.64:H*.86)-h*.45,rx:Math.min(U*.3,(g.data('w')||h)*.6),ry:h*.42}}   // marker and logos go by the subject, off the figure
   if(P.caption){const c=pic?fit(T(L.front,P.caption,U*.04,W/2,TALL?H*.7:H*.92,{family:'Inter',weight:800,fill:'#C0262D'}),W*.9)
-      :boxText(L.front,P.caption,U*.055,W/2,TALL?H*.5:H*.7,{anchor:'middle',maxw:W*.86,most:2});wipe(c,.9)}
+      :boxText(L.front,P.caption,U*.055,W/2,TALL?H*.56:H*.8,{anchor:'middle',maxw:W*.86,most:2});wipe(c,.9)}   // under the figure, clear of it
   if(P.kicker){const k=T(L.front,P.kicker.toUpperCase(),U*.024,W/2,TALL?H*.08:H*.08,{family:'Inter',weight:800,fill:'#C0262D',ls:'0.45em'});wipe(k,.2)}}
 
 function numberSide(pic){ // second layout: the number and its words on the left, the subject standing on the right
@@ -2719,7 +2724,8 @@ function arrows(){ // broad arrows sweeping from place to place: armies, migrati
       const [hx,hy]=q(te),[tx,ty]=q(Math.min(1,te+.14)),[bx,by]=q(te-.01);const dd=Math.hypot(hx-bx,hy-by)||1,px=-(hy-by)/dd,py=(hx-bx)/dd;
       const pts=[...Lp,[hx+px*wid*2.1,hy+py*wid*2.1],[tx,ty],[hx-px*wid*2.1,hy-py*wid*2.1],...Rp.reverse()];body.plot('M'+pts.map(z=>z[0].toFixed(1)+' '+z[1].toFixed(1)).join(' L')+' Z')},E.inout);
     [[a.a,x1,y1,st],[a.b,x2,y2,st+.6]].forEach(([e,x,y,s2])=>{if(seen[e.name])return;seen[e.name]=1;const dt=L.mid.circle(U*.016).center(x,y).fill(INK).stroke({color:'#FFFFFF',width:U*.003});popIn(dt,x,y,s2,.25);placeTag(L.front,e.name,x,y,s2+.1,y<H*.2?U*.035:-U*.035)});
-    if(a.label){const [mx2,my]=q(.45);const t=T(L.front,a.label,U*.03,mx2+nx*bend*.5,my+ny*bend*.5-U*.03,{family:'Caveat',weight:700,fill:col});wipe(t,st+.5)}
+    if(a.label){const [mx2,my]=q(.45),sg=(nx*(W/2-mx2)+ny*(H/2-my))>=0?1:-1,off=wid*1.7+U*.015,lx=mx2+nx*sg*off,ly=my+ny*sg*off;   // beside the arrow, on the side toward the frame's centre, never on it
+      const t=T(L.front,a.label,U*.032,lx,ly,{family:'Caveat',weight:700,fill:col,anchor:nx*sg>=0?'start':'end'});wipe(t,st+.5)}
     if(i===P.arrows.length-1)FOCUS={x:x2,y:y2,rx:U*.08,ry:U*.07}})}
 function railmap(){ // a transport network: each line draws through its stations
   chartTitle(P.title);const pr=mapFrame(TALL?.8:.7,TALL?.5:.6);const cols=[K.mark||'#C0262D','#1F4FB8','#1F7A4D','#B8860B','#7A3E8C'];const seen={};let t0=.4;

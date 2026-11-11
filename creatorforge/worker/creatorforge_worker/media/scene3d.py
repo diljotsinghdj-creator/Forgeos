@@ -141,6 +141,9 @@ def parse_terrain3d(spec: str) -> dict | None:
             pins.append({"name": nm[:22], "lat": f["lat"], "lon": f["lon"]})
     return {"type": "terrain3d", "name": name[:28], "lat": lat, "lon": lon, "km": min(600.0, max(8.0, km)), "height": hm[:16],
             "water": water, "years": years, "pins": pins,
+            # "gauge: Sea level" reads the water's height out as it moves; "rise: off" starts on the finished land
+            # (a continuation of the shot before, so the land does not grow out of the table again)
+            "gauge": opt.get("gauge", "")[:24], "norise": opt.get("rise", "").lower() in ("off", "no", "none"),
             "title": parts[1][:48] if len(parts) > 1 else "", "credit": TERRAIN_CREDIT}
 
 
@@ -402,7 +405,8 @@ function terrain3d(){const G=P.grid,n=G.n,size=12,rel=Math.max(1,G.max-G.min);
   let wat=null,yr=null;if(P.water&&P.water.length){const [a,b]=[P.water[0],P.water.length>1?Math.max(P.water[1],G.min+.8):P.water[0]];
     wat=new THREE.Mesh(new THREE.PlaneGeometry(size*.999,size*.999),new THREE.MeshStandardMaterial({color:col(K.sea||'#7FA7B5'),roughness:.35,metalness:.05,transparent:true,opacity:.86}));
     wat.rotation.x=-Math.PI/2;wat.receiveShadow=true;g.add(wat);wat.userData={a,b};
-    if(P.years&&P.years.length){yr=label(String(P.years[0]),'box',U*.06,'Anton',400);yr.style.left=(TALL?W/2:W*.13)+'px';yr.style.top=(TALL?H*.16:H*.2)+'px'}}
+    if(P.years&&P.years.length){yr=label(String(P.years[0]),'box',U*.06,'Anton',400);yr.style.left=(TALL?W/2:W*.13)+'px';yr.style.top=(TALL?H*.16:H*.2)+'px'}
+    if(P.gauge){wat.userData.gauge=label('','box',U*.055,'Anton',400);const gg=wat.userData.gauge;gg.style.left=(TALL?W/2:W*.16)+'px';gg.style.top=(TALL?H*.2:H*.3)+'px'}}
   const pins=(P.pins||[]).map(pn=>{const [x,z]=xz(pn.lat,pn.lon);const y=.55+(Math.max(hAt(x,z),wat?Math.max(...P.water):G.min)-G.min)*ex;
     const st=new THREE.Mesh(new THREE.CylinderGeometry(.025,.025,.9,6),mat(INK));st.position.set(x,y+.45,z);scene.add(st);
     return {st,v:new THREE.Vector3(x,y+.95,z),lb:label(pn.name.toUpperCase(),'tag',U*.02,'Inter',800)}});
@@ -412,11 +416,12 @@ function terrain3d(){const G=P.grid,n=G.n,size=12,rel=Math.max(1,G.max-G.min);
   const cr=label(P.credit,'src',U*.013,'Mono',700);cr.style.left=W/2+'px';cr.style.top=(H-U*.03)+'px';
   const sc=label(Math.round(P.km)+' km across','src',U*.018,'Mono',700);sc.style.left=(TALL?W/2:W*.14)+'px';sc.style.top=(TALL?H*.9:H*.9)+'px';
   const o={tx:0,ty:.55+top*.4,tz:0,a0:-.75,a1:.55,r0:TALL?30:22,r1:TALL?25:17.5,h0:top+9,h1:top+4.5};
-  update=t=>{orbit(t,o);const rise=E.out(seg(t,0,1.4));g.scale.y=.02+.98*rise;pole.scale.y=seg(t,1.3,.4);pole.visible=t>1.3;
+  update=t=>{orbit(t,o);const rise=P.norise?1:E.out(seg(t,0,1.4));g.scale.y=.02+.98*rise;pole.scale.y=seg(t,1.3,.4);pole.visible=t>1.3;
     const p2=peak.clone();p2.y=.55+top*rise+1.15*seg(t,1.3,.4);pin(el,p2,0,-U*.05);pin(pk,p2,0,-U*.012);
     const v=seg(t,1.5,.3)*leave(t)*(wat?0:1);el.style.opacity=v;pk.style.opacity=v;pole.visible=pole.visible&&!wat;if(tt)tt.style.opacity=seg(t,.1,.3)*leave(t);cr.style.opacity=seg(t,.8,.3)*leave(t)*.9;sc.style.opacity=seg(t,.8,.3)*leave(t);
     exl.style.opacity=seg(t,.8,.3)*leave(t)*(exf>1.5?1:0);
-    if(wat){const q=E.inout(seg(t,1.2,Math.max(1,DUR-2.2))),lev=wat.userData.a+(wat.userData.b-wat.userData.a)*q;wat.position.y=Math.max(.001,(lev-G.min)*ex*rise);wat.visible=rise>.95;
+    if(wat){const q=P.norise?E.inout(seg(t,.25,Math.max(1,DUR-1.4))):E.inout(seg(t,1.2,Math.max(1,DUR-2.2))),lev=wat.userData.a+(wat.userData.b-wat.userData.a)*q;wat.position.y=Math.max(.001,(lev-G.min)*ex*rise);wat.visible=rise>.95;
+      if(wat.userData.gauge){const gg=wat.userData.gauge;gg.textContent=(P.gauge.toUpperCase()+' '+(Math.abs(lev)<.005?'':lev>0?'+':'−')+Math.abs(lev).toFixed(2)+' M');gg.style.opacity=seg(t,P.norise?.1:1,.3)*leave(t)}
       if(yr){yr.textContent=String(Math.round(P.years[0]+((P.years[1]||P.years[0])-P.years[0])*q));yr.style.opacity=seg(t,1,.3)*leave(t)}}
     pins.forEach((p,i)=>{p.st.visible=t>1.1+i*.15;pin(p.lb,p.v,0,-U*.02);p.lb.style.opacity=seg(t,1.1+i*.15,.3)*leave(t)})}}
 function towers3d(){const vs=P.values,n=vs.length,mx=Math.max(...vs.map(v=>v.value)),maxh=TALL?6.6:4.6,gap=2.5,x0=-(n-1)*gap/2,tt=title(P.title);

@@ -165,5 +165,24 @@
   ],
   "voice": "bf_emma",
   "look": "kraft"
+ },
+ {
+  "id": "netherlands-sea-sample",
+  "kind": "sample",
+  "channel": "print-facts",
+  "topic": "netherlands-below-sea",
+  "date": "2026-11-11",
+  "engine": "historical-echo",
+  "hook_mechanism": "a death toll and a date",
+  "hook_line": "In 1953, the North Sea broke through.",
+  "opening": "arrows",
+  "shots": [
+   "Arrows: North of Scotland @ 59.3, 0.5 → Zeeland @ 51.6, 3.6 (storm surge) | The North Sea, 31 January 1953",
+   "BigNumber: 1,836 | - | died in the Netherlands | North Sea flood, 1 February 1953",
+   "Terrain3d: Utrecht @ 52.2, 5.3 | Below sea level today | 260 km | water: -7 -> 0 | gauge: Sea level | pins: Amsterdam, Rotterdam",
+   "Terrain3d: Utrecht @ 52.2, 5.3 | The 1953 peak, without the dikes (illustrative) | 260 km | water: 0 -> 4.55 | gauge: Sea level | rise: off | pins: Amsterdam, Rotterdam"
+  ],
+  "voice": "bm_george",
+  "look": "field"
  }
 ]
