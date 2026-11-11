@@ -13,7 +13,8 @@
  "lang": "en-us",
  "concept": {
   "logline": "pipeline test",
-  "central_question": "Do smart people fall for scams?"
+  "central_question": "Do smart people fall for scams?",
+  "claim": "Smart people fall for scams because calm authority beats intelligence."
  },
  "scenes": [
   {
@@ -30,7 +31,7 @@
    "id": "S2",
    "act": "world",
    "narration": "According to UK Finance, around four hundred and fifty million pounds were lost to these scams in 2024.",
-   "graphic": "Counter: \u00a30 \u2192 \u00a3450m | lost to bank-transfer scams, UK 2024 | according to UK Finance",
+   "graphic": "Counter: £0 → £450m | lost to bank-transfer scams, UK 2024 | according to UK Finance",
    "claims": [
     "C1"
    ],
@@ -78,5 +79,6 @@
   }
  ],
  "thumbnail": "Statement: *Test*",
- "cutdowns": []
+ "cutdowns": [],
+ "native_material": "experiments, statistics"
 }

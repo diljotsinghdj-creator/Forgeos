@@ -67,6 +67,40 @@ CreatorForge serves only these two channels. A new feature must serve one of the
 - **A unique art direction for every film,** rotated by the studio history.
 - **Cuts with a cause;** plain cuts never repeat back to back.
 
+## 3b. The 20/80 rule: a recognisable channel, a different film every time (owner's playbook, 11 Nov 2026)
+
+- **Fixed brand layer (never changes):** channel name and two typefaces (a logo once the owner designs one); caption
+  style (position, size, weight); colour *roles* (one base, one accent, one signal; the hues change per film); source
+  line style and end card; pacing rules (a hook in the first 5 seconds, no intro logo, no generic call to action); the
+  audio loudness target.
+- **Variable layer (new every film):** lead visual technique (data, documents, maps, collage, 3D, illustration); palette
+  hues taken from the subject; motion language (cut rhythm, camera moves, transition family); typography treatment;
+  sound palette; opening shot and chapter structure.
+- **The method:**
+  1. Write the central question and a one-sentence claim.
+  2. Name the subject's native material.
+  3. Pick one lead and one support technique, neither the lead of the last two films.
+  4. Take the palette from the subject, with the accent hue at least a third of the wheel from the last film. Keep
+     it as far as the wheel allows from the two before: with three films spread round the wheel, 120° from all
+     three isn't always possible.
+  5. Set the tempo, the camera grammar and one transition family.
+  6. Choose the sound palette (more than one music cue).
+  7. Compare three key frames with the last three films; if they could be swapped, redesign.
+  8. Record it all in the variation ledger.
+- **Anti-repetition:**
+  - no lead technique more than twice in a row;
+  - rotate transition families;
+  - no identical opening twice running (the opening shot type differs from the last three films);
+  - any single effect at most three times a film;
+  - never reuse the same background loop across films.
+- **Enforced in code:** `studio/variation.py` (plan, checks, ledger, key-frame comparison), run by the studio before
+  anything is drawn; an error stops the film.
+- **Where the playbook met an earlier rule, the earlier rule stands:**
+  - narration is the owner's own ElevenLabs voice (Kokoro only for drafts and timing);
+  - the narration sets the timing, with the playbook's tempo (a cut about every 1.5 s or every 4 s) as a target;
+  - no logo until the owner designs one;
+  - the subject-to-visual table applies to both channels as a starting point.
+
 ## 4. The production workflow (the master directive, Parts 1–14)
 
 - **The studio's steps:**

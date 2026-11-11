@@ -338,7 +338,7 @@ def parse_number(spec: str) -> dict | None:
         return None
     # a figure is never cut short (₹1,737.68 must not become ₹1,737.6): too long for the big type, the line is
     # refused so the writer uses Counter instead
-    if len(parts[0]) > (16 if re.search(r"[\u0900-\u097F]", parts[0]) else 8):
+    if len(parts[0]) > (16 if re.search(r"[\u0900-\u097F]", parts[0]) else 12):
         return None
     return {"type": "number", "number": parts[0], "subjects": _split_list(parts[1])[:1] if len(parts) > 1 else [],
             "caption": parts[2] if len(parts) > 2 else "", "kicker": parts[3] if len(parts) > 3 else "",

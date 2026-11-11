@@ -124,7 +124,7 @@ def synth(text: str, out: Path, voice: str = "am_michael", speed: float = 1.0, l
         tmp.unlink(missing_ok=True)
         with wave.open(str(out)) as w:
             return w.getnframes() / w.getframerate(), f"ElevenLabs ({v.model}, the creator's voice)"
-    if kokoro_ready():
+    if voice != "flite" and kokoro_ready():           # 'flite' asks for the robotic test voice by name
         k = _engine()
         samples, sr = k.create(said, voice=voice, speed=float(speed), lang=lang)
         tmp = out.with_suffix(".raw.wav")

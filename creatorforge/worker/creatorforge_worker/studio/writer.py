@@ -183,7 +183,10 @@ research dossier below. Rules:
   Do not use the same kind of graphic twice in a row. Mark the opening, the climax and the ending with "role".
 - Add "delivery" (e.g. "quiet, curious"), "pause" (seconds after the line), "emphasis" (words) per scene, a
   "pronunciation" guide for hard names, a "thumbnail" graphic line and 1-2 "cutdowns" (scene ids, 30-60 s each).
-Return JSON with keys: id, title, channel, genre, language, engine, hook_mechanism, metaphors[], concept{logline, central_question, conflict, discovery, unanswered,
+- Name the subject's native material (what evidence looks like here: numbers, documents, places, experiments, bodies)
+  in "native_material", the subject (money, politics, evolution, mind, fear, technology, culture) in "subject", and give
+  each scene a "purpose": explain, prove, orient or move. The concept has a one-sentence "claim".
+Return JSON with keys: id, title, channel, genre, subject, native_material, language, engine, hook_mechanism, metaphors[], concept{logline, central_question, claim, conflict, discovery, unanswered,
 consequences, implications, structure, structure_note, visual_concept}, pronunciation, scenes[], thumbnail, cutdowns.
 
 GRAPHICS CATALOGUE:

@@ -14,7 +14,8 @@
  "voice": "dj (owner's ElevenLabs voice)",
  "concept": {
   "logline": "Why your DNA is almost a chimpanzee's.",
-  "central_question": "Why are we 98.8% the same?"
+  "central_question": "Why are we 98.8% the same?",
+  "claim": "Humans and chimpanzees are 98.8% alike because all life shares one ancestor."
  },
  "thumbnail": "Statement: 98.8% *the same*",
  "cutdowns": [],
@@ -52,5 +53,6 @@
    ],
    "pause": 0.3
   }
- ]
+ ],
+ "native_material": "fossils, genomes, timelines"
 }

@@ -247,6 +247,19 @@ def produce(screenplay: Path | str, dossier: Path | str, out_dir: Path | str, si
     (dirs["writing"] / "art_direction.json").write_text(json.dumps(ad, ensure_ascii=False, indent=1), encoding="utf-8")
     step("art direction", note=f"{ad['look']} / {ad['accent']} / {ad['cinematography']} / {ad['rhythm']} / {ad['music']}")
 
+    # 3a the variation ledger: the variable layer chosen from the subject and away from the channel's last films
+    from . import variation
+    vledger = variation.Ledger(Path(os.environ.get("CF_VARIATION_LEDGER") or data / "variation_ledger.json"))
+    vprev = vledger.rows(sp.get("channel", ""))
+    vp = variation.plan(sp, vprev)
+    if not (sp.get("art") or {}).get("accent"):
+        ad["accent"] = vp["accent"]                      # the palette hue comes from the subject, a third of the wheel away
+    vissues = variation.check(sp, vp, vprev)
+    (dirs["writing"] / "variation.md").write_text(variation.markdown(vp, vissues), encoding="utf-8")
+    if [i for i in vissues if i["level"] == "error"]:
+        raise ProductionStopped("variation: " + "; ".join(f"{i['scene']}: {i['problem']}" for i in vissues if i["level"] == "error"))
+    step("variation plan", note=f"lead {vp['lead']} + {vp['support']}, hue {vp['hue']:.0f}°, opening {vp['opening']}, {vp['family']}")
+
     # 3b visual decisions and assets: every line's options weighed; photographs and footage found, scored, licensed
     from . import assets as _assets
     from . import decide
@@ -322,8 +335,14 @@ def produce(screenplay: Path | str, dossier: Path | str, out_dir: Path | str, si
         prev = transitions[-1] if transitions else ""
         if not tr or (tr == prev and tr in PLAIN_CUTS and not s.get("transition")):
             # no cause on screen (or the same plain cut again): rotate, so one cut never plays twice in a row
-            tr = next(x for x in PLAIN_CUTS[i % len(PLAIN_CUTS):] + PLAIN_CUTS if x != prev)
+            fam = [x for x in variation.FAMILIES.get(vp["family"], ()) if x in render.TRANSITIONS]
+            pool = fam if len(fam) >= 2 else PLAIN_CUTS            # the film's transition family first
+            tr = next(x for x in pool[i % len(pool):] + pool if x != prev)
         transitions.append(tr if tr in render.TRANSITIONS else "blur")
+    fams = [variation.family_of(t) for t in transitions[1:]] or ["hard cuts"]
+    vp["family"] = max(set(fams), key=fams.count)            # the family the film actually uses
+    if vprev and vprev[-1].get("family") == vp["family"]:
+        raise ProductionStopped(f"variation: transition family '{vp['family']}' was the last film's")
     # real recorded effects from Freesound (CC0 / CC-BY) when the pod has a key; the built-in set otherwise
     from ..providers import freesound
     fs_dir = data / "sfx_freesound"
@@ -430,6 +449,13 @@ def produce(screenplay: Path | str, dossier: Path | str, out_dir: Path | str, si
 
     # 11 quality control and the watch-through
     qc = quality.check(final, expected, [], expected_size=(w, h))
+    # three key frames (opening, climax, ending) beside the last three films': if they could be swapped, redesign
+    mid = lambda t: (t["start"] + t["end"]) / 2
+    roles = [str(s.get("role", "")).lower() for s in sp["scenes"]]
+    ci = roles.index("climax") if "climax" in roles else len(timeline) // 2
+    kf, kprob = variation.keyframes(final, [mid(timeline[0]), mid(timeline[ci]), mid(timeline[-1])],
+                                    vledger.path.parent / "keyframes" / film, vprev, dirs["qc"] / "keyframes_compare.png")
+    vissues += kprob
     starts = [t["start"] for t in timeline]
     found = _cuts(final)
     drift = [d for d in (min((abs(c - s) for c in found), default=9.9) for s in starts[1:]) if d < 1.0]
@@ -571,6 +597,9 @@ def produce(screenplay: Path | str, dossier: Path | str, out_dir: Path | str, si
                      else "three.js scene" if t["kind"] in scene3d.KINDS else "drawn in the engine")
         assets.append(f"| {t['scene']} | scenes/{t['scene']}_{t['kind']}.mp4 | {t['kind']} | {made_from} |")
     (dirs["writing"] / "asset_list.md").write_text("\n".join(assets), encoding="utf-8")
+    vledger.add(variation.row(film, sp, vp, kf, [Path(b[0]).stem for b in beds], round(expected / max(1, len(timeline)), 2)))
+    (dirs["writing"] / "variation.md").write_text(variation.markdown(vp, vissues), encoding="utf-8")
+    (dirs["writing"] / "variation_ledger.md").write_text(vledger.markdown(), encoding="utf-8")
     artdirection.remember(data, {"id": film, "title": sp.get("title"), "channel": sp.get("channel", ""), "engine": sp.get("engine", ""),
                                  "hook_mechanism": sp.get("hook_mechanism", ""), "metaphors": list(sp.get("metaphors", [])), **{k: ad[k] for k in ("look", "accent", "cinematography", "maps",
                                                                                               "infographics", "animation", "rhythm", "music", "grade")},
@@ -587,7 +616,7 @@ def produce(screenplay: Path | str, dossier: Path | str, out_dir: Path | str, si
            "", "| Deliverable | File | Present |", "|---|---|---|"]
     for name, rel in deliver:
         idx.append(f"| {name} | {rel} | {'yes' if (out / rel).exists() else 'NO'} |")
-    idx += ["", "Also: writing/editorial_review.md, writing/retention_audit.md, qc/report.md, qc/review_sheet.png, timeline/timeline.md"]
+    idx += ["", "Also: writing/editorial_review.md, writing/retention_audit.md, writing/variation.md, qc/keyframes_compare.png, qc/report.md, qc/review_sheet.png, timeline/timeline.md"]
     (out / "README.md").write_text("\n".join(idx), encoding="utf-8")
     report.update({"file": str(final), "seconds": round(expected, 1), "art": ad, "deliverables_missing":
                    [n for n, r in deliver if not (out / r).exists()]})
