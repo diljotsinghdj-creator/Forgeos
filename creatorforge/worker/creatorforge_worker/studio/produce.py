@@ -111,6 +111,13 @@ def _render_scene(kind, spec, theme, w, h, seconds, out, work, fps, layout, fetc
         return scene3d.render(kind, spec, theme, w, h, seconds, out, work, fps=fps)
     if kind in vox.KINDS:
         return vox.render(kind, spec, theme, w, h, seconds, out, work, lib=lib, fetch=fetch, fps=fps, layout=layout)
+    if kind in ("sunrise", "zones"):
+        # the Sun's real position over the country, or its time zones (media/sunrise.py)
+        from ..media import sunrise as _sun
+        plan = _sun.parse(kind, spec)
+        if plan is None:
+            raise ProductionStopped(f"{kind}: can't read '{spec[:60]}'")
+        return _sun.render(plan, w, h, seconds, out, fps)
     if kind in ("globe", "map"):
         # the globe fly-in and the flat map, drawn offline from the bundled Natural Earth shapes
         from ..media import globe as _globe, maps as _maps
@@ -252,7 +259,7 @@ def produce(screenplay: Path | str, dossier: Path | str, out_dir: Path | str, si
     # 2 editorial review
     from . import brainlog
     log = Path(os.environ.get("CF_BRAIN_LOG") or brainlog.DEFAULT)
-    issues = writer.check(sp, dos) + writer.novelty(sp, (brainlog.used(log) if log.exists() else []) + artdirection.history(hdir))
+    issues = writer.check(sp, dos) + writer.novelty(sp, (brainlog.used(log) if log.exists() else []) + [x for x in artdirection.history(hdir) if x.get("id") != film])
     rev = ["# Editorial review", "", f"Film: {sp.get('title')}", ""]
     rev += ["## Problems", ""] + ([f"- **{i['level']}** {i['scene']}: {i['problem']}" for i in issues] or ["- none"])
     rev += ["", "## Evidence per scene", "", "| Scene | Figures said or shown | Claims | Status |", "|---|---|---|---|"]
@@ -271,7 +278,7 @@ def produce(screenplay: Path | str, dossier: Path | str, out_dir: Path | str, si
     shutil.copy(screenplay, dirs["writing"] / "screenplay.json")
 
     # 3 art direction
-    hist = artdirection.history(hdir)
+    hist = [x for x in artdirection.history(hdir) if x.get("id") != film]
     ad = artdirection.direct(film, sp.get("title", film), sp.get("genre", ""), sp.get("concept", {}), sp["scenes"], hist, sp.get("art"))
     (dirs["writing"] / "art_direction.md").write_text(artdirection.to_markdown(ad), encoding="utf-8")
     (dirs["writing"] / "art_direction.json").write_text(json.dumps(ad, ensure_ascii=False, indent=1), encoding="utf-8")
@@ -283,7 +290,8 @@ def produce(screenplay: Path | str, dossier: Path | str, out_dir: Path | str, si
     # 3a the variation ledger: the variable layer chosen from the subject and away from the channel's last films
     from . import variation
     vledger = variation.Ledger(Path(os.environ.get("CF_VARIATION_LEDGER") or hdir / "variation_ledger.json"))
-    vprev = vledger.rows(None if sp.get("sample_for") else sp.get("channel", ""))   # samples are compared with everything shown
+    vprev = [r for r in vledger.rows(None if sp.get("sample_for") else sp.get("channel", ""))   # samples: against everything shown
+             if r.get("film") != film]                                   # a re-render is never compared with itself
     vp = variation.plan(sp, vprev)
     if not (sp.get("art") or {}).get("accent"):
         ad["accent"] = vp["accent"]                      # the palette hue comes from the subject, a third of the wheel away

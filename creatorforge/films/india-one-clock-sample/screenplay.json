@@ -1,0 +1,91 @@
+{
+ "id": "india-one-clock-sample",
+ "title": "India's one clock in 15 seconds",
+ "channel": "sample",
+ "sample_for": "print-facts",
+ "topic": "india-one-clock",
+ "target_seconds": 15,
+ "subject": "time zones",
+ "genre": "explainer",
+ "native_material": "the Sun's position, clocks, meridians, maps",
+ "engine": "reverse-autopsy",
+ "hook_mechanism": "a clock reading that contradicts the sky",
+ "metaphors": [
+  "night lifting off the map while one clock runs"
+ ],
+ "pick": {
+  "engine": "reverse-autopsy",
+  "pitched": [
+   "reverse-autopsy",
+   "historical-echo",
+   "trojan-horse"
+  ],
+  "owner_words": "\"You pick any topic. Make sure it is completely vox style\"; asked which approach, the owner answered \"[No preference]\"",
+  "date": "2026-11-11"
+ },
+ "evidence_waiver": {
+  "reason": "every photo and document archive is blocked from this machine; the owner was asked on 2026-11-11 whether to go ahead with graphics only and answered \"[No preference]\"",
+  "told_owner": true
+ },
+ "language": "en",
+ "lang": "en-gb",
+ "voice": "bf_emma",
+ "concept": {
+  "logline": "One country, one clock, and a Sun that rises two hours apart.",
+  "central_question": "Why does the sun rise at 4 a.m. in one corner of India?",
+  "claim": "India keeps one clock across two hours of sunlight; its own timekeepers proposed two."
+ },
+ "thumbnail": "Statement: *4:05 a.m.*",
+ "cutdowns": [],
+ "scenes": [
+  {
+   "id": "S1",
+   "act": "hook",
+   "purpose": "orient",
+   "delivery": "urgent",
+   "pause": 0.1,
+   "narration": "In June, the sun rises over Arunachal before 4:30 a.m.",
+   "graphic": "Sunrise: 21 June 2026 3:50 → 4:30 | IST 5.5 | pins: Dong, Arunachal Pradesh @97.02,28.17; Kutch, Gujarat @68.8,23.8 | Sunrise across India",
+   "claims": [
+    "C1"
+   ]
+  },
+  {
+   "id": "S2",
+   "act": "discovery",
+   "purpose": "explain",
+   "delivery": "urgent",
+   "pause": 0.1,
+   "narration": "In Gujarat, it stays dark for two more hours.",
+   "graphic": "Sunrise: 21 June 2026 4:30 → 6:15 | IST 5.5 | pins: Dong, Arunachal Pradesh @97.02,28.17; Kutch, Gujarat @68.8,23.8 | Sunrise across India",
+   "claims": [
+    "C1"
+   ]
+  },
+  {
+   "id": "S3",
+   "act": "discovery",
+   "purpose": "explain",
+   "delivery": "urgent",
+   "pause": 0.1,
+   "narration": "Same country. One clock, chosen in 1947.",
+   "graphic": "Sunrise: 21 June 2026 5:15 | IST 5.5 | clocks: Ahmedabad @72.58,23.03; Delhi @77.21,28.61; Kolkata @88.36,22.57; Guwahati @91.74,26.14 | One country, one clock | IST, UTC+5:30, chosen in 1947",
+   "claims": [
+    "C1",
+    "C2"
+   ]
+  },
+  {
+   "id": "S4",
+   "act": "ending",
+   "purpose": "move",
+   "delivery": "urgent",
+   "pause": 0.4,
+   "narration": "In 2018, researchers at India's own timekeeping lab proposed two.",
+   "graphic": "Zones: 89.87 | IST-I, UTC+5:30; IST-II, UTC+6:30 | Two clocks, proposed | CSIR-NPL researchers, Current Science, 2018",
+   "claims": [
+    "C3"
+   ]
+  }
+ ]
+}

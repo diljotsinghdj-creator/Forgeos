@@ -36,7 +36,7 @@ EXPLAIN_KINDS = ("counter", "bignumber", "number", "stack", "stand", "fan", "tre
                  "dots", "table", "polltrack", "area", "candles", "pyramid", "squares", "icons", "units", "flowchart", "linkmap",
                  "orgchart", "steps", "timeline", "blueprint", "staircase", "scale", "bars3d", "prism", "explode", "towers3d",
                  "planets", "terrain3d", "flowmap", "heatmap", "shrink", "morph", "borders", "sizemap", "route", "arrows", "railmap",
-                 "compare")
+                 "compare", "sunrise", "zones", "clockmap")
 # shots that hold one picture; everything else builds on screen as it is named
 STILL_KINDS = ("hero", "statement", "newscard", "tornsplit", "clipping", "quote", "interview", "opener", "endcard", "document",
                "article", "photo", "reveal", "stamp", "sign", "title3d", "courtdoc")

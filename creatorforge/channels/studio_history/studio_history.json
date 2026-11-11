@@ -1,0 +1,27 @@
+[
+ {
+  "id": "india-one-clock-sample",
+  "title": "India's one clock in 15 seconds",
+  "channel": "sample",
+  "engine": "reverse-autopsy",
+  "hook_mechanism": "a clock reading that contradicts the sky",
+  "metaphors": [
+   "night lifting off the map while one clock runs"
+  ],
+  "look": "kraft",
+  "accent": "#CA2121",
+  "cinematography": "drifting",
+  "maps": "marker",
+  "infographics": "dimensional",
+  "animation": "hand",
+  "rhythm": "tidal",
+  "music": "sparse",
+  "grade": "cool",
+  "kinds": [
+   "sunrise",
+   "sunrise",
+   "sunrise",
+   "zones"
+  ]
+ }
+]

@@ -1,0 +1,25 @@
+[
+ {
+  "film": "india-one-clock-sample",
+  "date": "2026-11-11",
+  "channel": "sample",
+  "question": "Why does the sun rise at 4 a.m. in one corner of India?",
+  "claim": "India keeps one clock across two hours of sunlight; its own timekeepers proposed two.",
+  "native": "the Sun's position, clocks, meridians, maps",
+  "lead": "maps",
+  "support": "illustration",
+  "accent": "#CA2121",
+  "opening": "sunrise",
+  "family": "hard cuts",
+  "tempo": 1.5,
+  "avg_shot": 4.13,
+  "camera": "static, hard cuts",
+  "sound": "low drone; typewriter ticks",
+  "keyframes": [
+   "/home/user/Forgeos/creatorforge/channels/studio_history/keyframes/india-one-clock-sample/key1.png",
+   "/home/user/Forgeos/creatorforge/channels/studio_history/keyframes/india-one-clock-sample/key2.png",
+   "/home/user/Forgeos/creatorforge/channels/studio_history/keyframes/india-one-clock-sample/key3.png"
+  ],
+  "beds": []
+ }
+]
