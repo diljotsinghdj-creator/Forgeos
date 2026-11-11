@@ -109,7 +109,7 @@ def _centre(targets: list[dict]) -> tuple[float, float, float]:
     lon = (min(lons) + max(lons)) / 2
     lat = (min(lats) + max(lats)) / 2
     # never closer than a region: a lone city keeps its neighbours in view (and the coarse world shapes stay smooth)
-    floor = 30.0 if all(t["kind"] == "city" for t in targets) and len(targets) == 1 else 12.0
+    floor = 14.0 if all(t["kind"] == "city" for t in targets) and len(targets) == 1 else 12.0
     span = max((max(lons) - min(lons)) * math.cos(math.radians(lat)), max(lats) - min(lats), floor)
     return lon, lat, math.radians(span)
 
@@ -141,7 +141,8 @@ def render(plan: dict, theme: str, width: int, height: int, seconds: float, out:
     lon1, lat1, span = _centre(plan["targets"])
     lon0, lat0 = lon1 + 75.0, max(-30.0, min(40.0, lat1 * 0.4 + 10))     # starts a quarter-turn away
     r0 = min(width, height) * 0.40
-    r1 = max(r0 * 1.2, min(width, height * 0.55) * 0.62 / max(span, 0.05))
+    lone_city = len(plan["targets"]) == 1 and plan["targets"][0]["kind"] == "city"
+    r1 = max(r0 * 1.2, min(width, height * 0.55) * (1.5 if lone_city else 0.62) / max(span, 0.05))   # a city: dive to its region
     spin_end, dive_from, dive_end = 0.55, 0.30, 0.78                     # share of the clip
     hi_names = {t["name"] for t in plan["targets"] if t["kind"] == "country"}
     world = maps._world()
@@ -209,6 +210,16 @@ def render(plan: dict, theme: str, width: int, height: int, seconds: float, out:
                 if len(run) > 1:
                     d.line(run + ([(float(x[0]), float(y[0]))] if vis[0] > 0.12 and vis[-1] > 0.12 else []), fill=border,
                            width=line_w)
+            # state / province lines fade in as the camera arrives, for the countries we have them for
+            if dive > 0.55:
+                sw = max(1, line_w // 2)
+                fade = min(1.0, (dive - 0.55) / 0.3)
+                sc = tuple(int(lo_ + (b_ - lo_) * 0.55 * fade) for lo_, b_ in zip(land, border))
+                for lo, la in _state_rings():
+                    x, y, vis = _project(lo, la, lon_c, lat_c, r, cx, cy)
+                    if vis.min() <= 0.12 or x.max() < 0 or x.min() > width or y.max() < 0 or y.min() > height:
+                        continue
+                    d.line(list(zip(x.tolist(), y.tolist())) + [(float(x[0]), float(y[0]))], fill=sc, width=sw)
             landed = fill_in > 0.01
             pts = []
             for c in cities:
@@ -246,6 +257,25 @@ def render(plan: dict, theme: str, width: int, height: int, seconds: float, out:
         raise ff.MediaError(f"globe render failed: {e}") from e
     if proc.returncode != 0:
         raise ff.MediaError(f"globe render failed: {(proc.stderr.read() if proc.stderr else b'').decode(errors='replace')[-400:]}")
+    return out
+
+
+@lru_cache(maxsize=1)
+def _state_rings():
+    """Every state / province ring in the bundled states.json, as (lons, lats) arrays."""
+    import json
+    import numpy as np
+    out = []
+    try:
+        data = json.loads((Path(__file__).with_name("states.json")).read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return []
+    for states in data.values():
+        for st in states:
+            for ring in st.get("r", []):
+                if len(ring) > 2:
+                    a = np.asarray(ring, float)
+                    out.append((a[:, 0], a[:, 1]))
     return out
 
 
