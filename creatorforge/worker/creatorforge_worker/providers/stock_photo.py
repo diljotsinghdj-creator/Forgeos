@@ -1,5 +1,6 @@
-"""Real photos: Unsplash and Pixabay (free keys), and with no key Openverse, Wikimedia Commons, the NASA image library
-and the Library of Congress. Only material whose licence or rights statement allows commercial use is returned:
+"""Real photos: Unsplash and Pixabay (free keys), and with no key Openverse, Wikimedia Commons, the NASA image library,
+the Library of Congress, Smithsonian Open Access and Europeana (public demo keys, or free keys for more searches), and
+Flickr Commons (free key). Only material whose licence or rights statement allows commercial use is returned:
 public domain, CC0, CC BY and CC BY-SA (share-alike flagged), NASA media (not copyrighted unless marked), and Library
 of Congress items marked "no known restrictions". Every result carries its page, author, licence and attribution
 for the asset ledger and the credits."""
@@ -13,8 +14,8 @@ import httpx
 from .base import ProviderError
 from .stock_video import UA, relevant
 
-FREE_SOURCES = ("openverse", "wikimedia", "nasa", "loc")
-ARCHIVES = ("wikimedia", "nasa", "loc")         # real archives: people, places and events as they were
+FREE_SOURCES = ("openverse", "wikimedia", "nasa", "loc", "smithsonian", "europeana")
+ARCHIVES = ("wikimedia", "nasa", "loc", "smithsonian", "europeana", "flickr")         # real archives: people, places and events as they were
 _OK_LICENCES = {"cc0", "pdm", "by", "by-sa"}
 
 
@@ -190,6 +191,120 @@ def _loc(query: str, timeout: float) -> list[dict]:
     return out
 
 
+def _smithsonian(key: str, query: str, timeout: float) -> list[dict]:
+    """Smithsonian Open Access (millions of CC0 images from 19 museums). A free api.data.gov key (SMITHSONIAN_KEY);
+    without one the public DEMO_KEY, which allows a few dozen searches an hour. Only CC0 media is returned."""
+    import os
+    key = key or os.environ.get("SMITHSONIAN_KEY") or os.environ.get("DATA_GOV_KEY") or "DEMO_KEY"
+    r = httpx.get("https://api.si.edu/openaccess/api/v1.0/search", timeout=timeout, headers={"User-Agent": UA},
+                  params={"q": f'{query} AND online_media_type:"Images"', "rows": 25, "api_key": key})
+    r.raise_for_status()
+    out = []
+    for row in (r.json().get("response") or {}).get("rows", []):
+        c = row.get("content") or {}
+        dn = c.get("descriptiveNonRepeating") or {}
+        ft = c.get("freetext") or {}
+        title = (dn.get("title") or {}).get("content") or row.get("title", "")
+        about = f"{title} {' '.join(x.get('content', '') for x in (ft.get('notes') or [])[:2])}"[:400]
+        if not relevant(query, about):
+            continue
+        for m in (dn.get("online_media") or {}).get("media", []):
+            if m.get("type") != "Images" or (m.get("usage") or {}).get("access") != "CC0":
+                continue
+            hi = next((x.get("url") for x in m.get("resources") or [] if "High-resolution" in str(x.get("label", ""))), "")
+            url = hi or m.get("content", "")
+            if not url:
+                continue
+            unit = dn.get("data_source") or "Smithsonian Institution"
+            out.append({"url": url, "width": 0, "height": 0, "about": about, "credit": f"{unit} (CC0)", "id": str(row.get("id", ""))[-40:],
+                        "page": dn.get("record_link") or "", "creator": unit, "site": "smithsonian", "licence": "CC0",
+                        "attribution": "not required (CC0); credit the museum as good practice", "archive": True,
+                        "date": " ".join(x.get("content", "") for x in (ft.get("date") or [])[:1])[:10]})
+            break
+        if len(out) >= 5:
+            break
+    return out
+
+
+def _rights(url: str) -> str:
+    """A Europeana / Creative Commons rights URL as one of our licence codes, '' when it doesn't allow commercial use."""
+    u = (url or "").lower()
+    if "publicdomain/zero" in u:
+        return "cc0"
+    if "publicdomain/mark" in u:
+        return "pdm"
+    if "/licenses/by-sa/" in u:
+        return "by-sa"
+    if "/licenses/by/" in u:
+        return "by"
+    return ""
+
+
+def _europeana(key: str, query: str, timeout: float) -> list[dict]:
+    """Europeana (photos, newspapers and documents from thousands of European archives). A free key
+    (EUROPEANA_KEY); without one the public demo key. Only open reuse (CC0, public domain mark, CC BY, CC BY-SA)."""
+    import os
+    key = key or os.environ.get("EUROPEANA_KEY") or "api2demo"
+    r = httpx.get("https://api.europeana.eu/record/v2/search.json", timeout=timeout, headers={"User-Agent": UA},
+                  params={"wskey": key, "query": query, "media": "true", "reusability": "open", "qf": "TYPE:IMAGE", "rows": 25})
+    r.raise_for_status()
+    out = []
+    for it in r.json().get("items", []):
+        lic = _rights((it.get("rights") or [""])[0])
+        if not lic:
+            continue
+        title = " ".join(it.get("title") or [])
+        about = f"{title} {' '.join((it.get('dcDescription') or [])[:1])}"[:400]
+        if not relevant(query, about):
+            continue
+        url = (it.get("edmIsShownBy") or [""])[0] or (it.get("edmPreview") or [""])[0]
+        if not url:
+            continue
+        who = (it.get("dataProvider") or ["Europeana"])[0]
+        creator = (it.get("dcCreator") or [who])[0]
+        out.append({"url": url, "width": 0, "height": 0, "about": about, "credit": f"{creator} / {who} via Europeana ({lic.upper()})",
+                    "id": str(it.get("id", ""))[-40:], "page": it.get("guid", ""), "creator": creator, "site": "europeana",
+                    "licence": {"cc0": "CC0", "pdm": "Public Domain Mark", "by": "CC BY", "by-sa": "CC BY-SA"}[lic],
+                    "attribution": "required" if lic in ("by", "by-sa") else "not required", "archive": True,
+                    "sharealike": lic == "by-sa", "date": str((it.get("year") or [""])[0])[:10]})
+        if len(out) >= 5:
+            break
+    return out
+
+
+def _flickr(key: str, query: str, timeout: float) -> list[dict]:
+    """Flickr Commons: photographs from libraries and museums worldwide, marked 'no known copyright restrictions'.
+    Needs a free Flickr API key (FLICKR_KEY); without one, nothing is searched."""
+    import os
+    key = key or os.environ.get("FLICKR_KEY", "")
+    if not key:
+        return []
+    r = httpx.get("https://api.flickr.com/services/rest/", timeout=timeout, headers={"User-Agent": UA},
+                  params={"method": "flickr.photos.search", "api_key": key, "text": query, "is_commons": "true",
+                          "extras": "url_l,url_o,owner_name,license,description,date_taken", "per_page": 25,
+                          "format": "json", "nojsoncallback": 1})
+    r.raise_for_status()
+    out = []
+    for p in (r.json().get("photos") or {}).get("photo", []):
+        if str(p.get("license")) != "7":                 # 7 = "No known copyright restrictions" (Flickr Commons)
+            continue
+        about = f"{p.get('title', '')} {_clean((p.get('description') or {}).get('_content', ''))[:300]}"
+        if not relevant(query, about):
+            continue
+        url = p.get("url_o") or p.get("url_l")
+        if not url:
+            continue
+        who = p.get("ownername") or "Flickr Commons"
+        out.append({"url": url, "width": int(p.get("width_o") or p.get("width_l") or 0), "height": int(p.get("height_o") or p.get("height_l") or 0),
+                    "about": about, "credit": f"{who} / Flickr Commons", "id": str(p.get("id", "")),
+                    "page": f"https://www.flickr.com/photos/{p.get('owner')}/{p.get('id')}", "creator": who, "site": "flickr",
+                    "licence": "No known copyright restrictions (Flickr Commons)",
+                    "attribution": f"{who} (credit requested)", "archive": True, "date": str(p.get("datetaken", ""))[:10]})
+        if len(out) >= 5:
+            break
+    return out
+
+
 def search(provider: str, key: str, query: str, portrait: bool = True, timeout: float = 20) -> list[dict]:
     if provider == "mock":
         return [{"url": f"mock://{query}", "width": 1080, "height": 1920, "credit": "test photo"}]
@@ -208,6 +323,12 @@ def search(provider: str, key: str, query: str, portrait: bool = True, timeout: 
             found = _nasa(query, timeout)
         elif provider == "loc":
             found = _loc(query, timeout)
+        elif provider == "smithsonian":
+            found = _smithsonian(key, query, timeout)
+        elif provider == "europeana":
+            found = _europeana(key, query, timeout)
+        elif provider == "flickr":
+            found = _flickr(key, query, timeout)
         else:
             return []
     except (httpx.HTTPError, ValueError, KeyError) as e:

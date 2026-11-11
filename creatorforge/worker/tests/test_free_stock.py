@@ -170,7 +170,7 @@ def test_photo_sources_order(cfg):
     providers.set_stock_key("job-x", {"provider": "pixabay", "key": "pk", "unsplash": "uk"})
     cfg.free_stock = True
     assert providers.photo_sources("job-x", cfg) == [("unsplash", "uk"), ("pixabay", "pk"), ("openverse", ""), ("wikimedia", ""),
-                                                        ("nasa", ""), ("loc", "")]
+                                                        ("nasa", ""), ("loc", ""), ("smithsonian", ""), ("europeana", "")]
     assert providers.stock_sources("job-x", cfg) == [("pixabay", "pk"), ("nasa", ""), ("wikimedia", "")]
 
 

@@ -95,6 +95,10 @@ photograph or footage wins, `assets.select` finds and scores one. Library assets
 Pexels and Openverse. The scene's line becomes `Photo: asset:P0007 | push | ...`. When nothing is good enough, or the
 worker has no photo sources, the scene's `graphic` is used. The decision and the search are recorded either way.
 Keys for the sources live in the pod's environment: `UNSPLASH_KEY`, `PIXABAY_KEY`, `PEXELS_KEY`.
+Worldwide archives, searched with no account (public demo keys) or with a free key for more searches:
+Smithsonian Open Access (CC0 only; `SMITHSONIAN_KEY` from api.data.gov), Europeana (open reuse only; `EUROPEANA_KEY`)
+and Flickr Commons (no known copyright restrictions; `FLICKR_KEY`, required). They sit with Wikimedia Commons, NASA, the
+Library of Congress and the Internet Archive, and an archive record outranks an equally good stock picture.
 
 Deliverables added: `writing/visual_decisions.md` (every line's options and why one won) and `research/assets.csv`
 (the asset ledger for this film). The method and each technique's status are in `PRODUCTION_KNOWLEDGE_BASE.md`.

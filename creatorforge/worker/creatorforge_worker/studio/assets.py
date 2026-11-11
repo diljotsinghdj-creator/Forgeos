@@ -161,7 +161,7 @@ def _terms(s: str) -> list[str]:
     return [w for w in re.findall(r"[a-z]+", (s or "").lower()) if len(w) > 2 and w not in ("the", "and", "with", "view")]
 
 
-ARCHIVES = ("wikimedia", "nasa", "loc", "archive")
+ARCHIVES = ("wikimedia", "nasa", "loc", "archive", "smithsonian", "europeana", "flickr")
 
 
 def meta_score(c: dict, n: Need, frame: tuple[int, int]) -> dict:

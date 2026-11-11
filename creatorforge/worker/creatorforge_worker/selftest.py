@@ -59,7 +59,8 @@ def local_checks() -> list[dict]:
         rows.append(_row("pyloudnorm loudness", "missing"))
     for name, var in (("Freesound key", ("FREESOUND_KEY", "CF_FREESOUND_KEY")), ("Pixabay key", ("PIXABAY_KEY",)),
                       ("Unsplash key", ("UNSPLASH_KEY",)), ("Pexels key", ("PEXELS_KEY",)),
-                      ("Sentinel Hub keys", ("CF_CDSE_CLIENT_ID", "SH_CLIENT_ID")), ("Search key", ("CF_BRAVE_KEY", "CF_TAVILY_KEY"))):
+                      ("Sentinel Hub keys", ("CF_CDSE_CLIENT_ID", "SH_CLIENT_ID")), ("Smithsonian key", ("SMITHSONIAN_KEY", "DATA_GOV_KEY")),
+                      ("Europeana key", ("EUROPEANA_KEY",)), ("Flickr key", ("FLICKR_KEY",)), ("Search key", ("CF_BRAVE_KEY", "CF_TAVILY_KEY"))):
         ok = any(os.environ.get(v) for v in var)
         rows.append(_row(name, "works" if ok else "missing", "set" if ok else f"{' or '.join(var)} not set"))
     return rows
@@ -85,7 +86,7 @@ def network_checks(work: Path) -> list[dict]:
     def archives():
         from .providers import stock_photo
         got = {}
-        for src in ("wikimedia", "nasa", "loc"):
+        for src in ("wikimedia", "nasa", "loc", "smithsonian", "europeana", "flickr"):
             try:
                 got[src] = len(stock_photo.search(src, "", "harbor ship", portrait=False))
             except Exception as e:  # noqa: BLE001

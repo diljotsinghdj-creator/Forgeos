@@ -66,7 +66,7 @@ def test_studio_searches_archives_with_no_keys(monkeypatch):
         monkeypatch.delenv(k, raising=False)
     monkeypatch.delenv("CF_FREE_STOCK", raising=False)
     names = [n for n, _ in produce.asset_sources()]
-    assert names[:4] == ["wikimedia", "nasa", "loc", "archive"] and "openverse" in names
+    assert names[:6] == ["wikimedia", "nasa", "loc", "smithsonian", "europeana", "archive"] and "openverse" in names
     monkeypatch.setenv("CF_FREE_STOCK", "0")
     assert produce.asset_sources() == []
 
@@ -80,3 +80,46 @@ def test_an_archive_record_beats_an_equal_stock_picture_for_a_specific_subject()
     assert a["archive"] and a["meta"] > s["meta"]
     g = assets.Need(scene="S1", film="f", subject="harbour", kind="photo")
     assert assets.meta_score({**pic, "site": "wikimedia"}, g, (1920, 1080))["meta"] == assets.meta_score({**pic, "site": "pixabay"}, g, (1920, 1080))["meta"]
+
+
+def test_smithsonian_europeana_and_flickr_commons_return_only_reusable_records(monkeypatch):
+    seen = []
+
+    def get(url, params=None, **kw):
+        seen.append((url, dict(params or {})))
+        if "api.si.edu" in url:
+            def row(i, access):
+                return {"id": f"si{i}", "title": "Aral Sea fishing boat", "content": {
+                    "descriptiveNonRepeating": {"title": {"content": "Aral Sea fishing boat"}, "record_link": f"https://si.edu/{i}",
+                                                "data_source": "National Museum of Natural History",
+                                                "online_media": {"media": [{"type": "Images", "content": f"https://ids.si.edu/{i}",
+                                                                            "usage": {"access": access},
+                                                                            "resources": [{"label": "High-resolution JPEG", "url": f"https://ids.si.edu/{i}/hi.jpg"}]}]}},
+                    "freetext": {"date": [{"content": "1965"}]}}}
+            return Resp({"response": {"rows": [row(1, "CC0"), row(2, "Usage conditions apply")]}})
+        if "api.europeana.eu" in url:
+            def item(i, rights):
+                return {"id": f"/e/{i}", "title": ["Aral Sea harbour"], "rights": [rights], "edmIsShownBy": [f"https://eu/{i}.jpg"],
+                        "dataProvider": ["Some Archive"], "dcCreator": ["A Photographer"], "guid": f"https://europeana.eu/{i}", "year": ["1970"]}
+            return Resp({"items": [item(1, "http://creativecommons.org/licenses/by-sa/4.0/"),
+                                   item(2, "http://creativecommons.org/licenses/by-nc/4.0/"),
+                                   item(3, "http://creativecommons.org/publicdomain/mark/1.0/")]})
+        if "api.flickr.com" in url:
+            return Resp({"photos": {"photo": [
+                {"id": "1", "owner": "o@N", "title": "Aral Sea harbour", "license": "7", "url_l": "https://live.staticflickr.com/1.jpg",
+                 "width_l": "2048", "height_l": "1536", "ownername": "Some Library", "description": {"_content": ""}},
+                {"id": "2", "owner": "o@N", "title": "Aral Sea harbour", "license": "4", "url_l": "https://x/2.jpg", "width_l": "1024", "height_l": "768"}]}})
+        raise AssertionError(url)
+    monkeypatch.setattr(httpx, "get", get)
+    monkeypatch.delenv("SMITHSONIAN_KEY", raising=False)
+    monkeypatch.delenv("EUROPEANA_KEY", raising=False)
+    monkeypatch.delenv("FLICKR_KEY", raising=False)
+    si = stock_photo.search("smithsonian", "", "Aral Sea boat", portrait=False)
+    assert [x["url"] for x in si] == ["https://ids.si.edu/1/hi.jpg"] and si[0]["licence"] == "CC0" and si[0]["site"] == "smithsonian"
+    assert seen[-1][1]["api_key"] == "DEMO_KEY"
+    eu = stock_photo.search("europeana", "", "Aral Sea harbour", portrait=False)
+    assert [x["licence"] for x in eu] == ["CC BY-SA", "Public Domain Mark"] and eu[0]["sharealike"] and seen[-1][1]["wskey"] == "api2demo"
+    assert stock_photo.search("flickr", "", "Aral Sea harbour", portrait=False) == []          # no key, no search
+    fl = stock_photo.search("flickr", "k", "Aral Sea harbour", portrait=False)
+    assert [x["id"] for x in fl] == ["1"] and "No known copyright restrictions" in fl[0]["licence"]
+    assert {"smithsonian", "europeana"} <= set(stock_photo.FREE_SOURCES)
