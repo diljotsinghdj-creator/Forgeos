@@ -223,6 +223,24 @@ def produce(screenplay: Path | str, dossier: Path | str, out_dir: Path | str, si
         report["steps"].append({"step": name, **kw})
         progress(f"[{len(report['steps']):02d}] {name}" + (f": {kw.get('note', '')}" if kw.get("note") else ""))
 
+    # 0 the owner's gates (studio/gates.py): an engine the owner picked, and evidence before explanation
+    from . import gates
+    gated = gates.applies(sp)
+    gate_issues: list[dict] = []
+    # the studio's memory of past films lives in the repository for the channels, never in a throwaway output folder
+    hdir = Path(os.environ["CF_STUDIO_HISTORY"]) if os.environ.get("CF_STUDIO_HISTORY") else gates.HISTORY_DIR if gated else data
+
+    def gate_stop(found: list[dict]):
+        gate_issues.extend(found)
+        (dirs["writing"] / "gates.md").write_text("# Gates\n\n" + "\n".join(f"- **{i['level']}** gate {i['gate']} {i['scene']}: {i['problem']}"
+                                                                         for i in gate_issues) + "\n", encoding="utf-8")
+        if [i for i in found if i["level"] == "error"]:
+            raise ProductionStopped(gates.stop_message(found))
+
+    if gated:
+        gate_stop(gates.check_pick(sp) + gates.check_evidence(sp))
+        step("gates 1 and 3", note="engine picked by the owner; evidence before explanation")
+
     # 1 research dossier
     di = dos.check()
     (dirs["research"] / "dossier.md").write_text(dos.to_markdown(), encoding="utf-8")
@@ -234,7 +252,7 @@ def produce(screenplay: Path | str, dossier: Path | str, out_dir: Path | str, si
     # 2 editorial review
     from . import brainlog
     log = Path(os.environ.get("CF_BRAIN_LOG") or brainlog.DEFAULT)
-    issues = writer.check(sp, dos) + writer.novelty(sp, (brainlog.used(log) if log.exists() else []) + artdirection.history(data))
+    issues = writer.check(sp, dos) + writer.novelty(sp, (brainlog.used(log) if log.exists() else []) + artdirection.history(hdir))
     rev = ["# Editorial review", "", f"Film: {sp.get('title')}", ""]
     rev += ["## Problems", ""] + ([f"- **{i['level']}** {i['scene']}: {i['problem']}" for i in issues] or ["- none"])
     rev += ["", "## Evidence per scene", "", "| Scene | Figures said or shown | Claims | Status |", "|---|---|---|---|"]
@@ -253,16 +271,19 @@ def produce(screenplay: Path | str, dossier: Path | str, out_dir: Path | str, si
     shutil.copy(screenplay, dirs["writing"] / "screenplay.json")
 
     # 3 art direction
-    hist = artdirection.history(data)
+    hist = artdirection.history(hdir)
     ad = artdirection.direct(film, sp.get("title", film), sp.get("genre", ""), sp.get("concept", {}), sp["scenes"], hist, sp.get("art"))
     (dirs["writing"] / "art_direction.md").write_text(artdirection.to_markdown(ad), encoding="utf-8")
     (dirs["writing"] / "art_direction.json").write_text(json.dumps(ad, ensure_ascii=False, indent=1), encoding="utf-8")
     step("art direction", note=f"{ad['look']} / {ad['accent']} / {ad['cinematography']} / {ad['rhythm']} / {ad['music']}")
+    if gated:
+        gate_stop(gates.check_seen(sp, ad["look"], gates.seen()))
+        step("gate 2", note="nothing the owner has already seen is repeated")
 
     # 3a the variation ledger: the variable layer chosen from the subject and away from the channel's last films
     from . import variation
-    vledger = variation.Ledger(Path(os.environ.get("CF_VARIATION_LEDGER") or data / "variation_ledger.json"))
-    vprev = vledger.rows(sp.get("channel", ""))
+    vledger = variation.Ledger(Path(os.environ.get("CF_VARIATION_LEDGER") or hdir / "variation_ledger.json"))
+    vprev = vledger.rows(None if sp.get("sample_for") else sp.get("channel", ""))   # samples are compared with everything shown
     vp = variation.plan(sp, vprev)
     if not (sp.get("art") or {}).get("accent"):
         ad["accent"] = vp["accent"]                      # the palette hue comes from the subject, a third of the wheel away
@@ -391,6 +412,9 @@ def produce(screenplay: Path | str, dossier: Path | str, out_dir: Path | str, si
                   f"{t['transition_in']} | {', '.join(t['sfx'] + t['ambience']) or '-'} / {t['music']} | {len(t['sources'])} |")
     (dirs["timeline"] / "timeline.md").write_text("\n".join(md), encoding="utf-8")
     step("master timeline", note=f"{len(timeline)} scenes from the measured audio")
+    if gated:
+        gate_stop(gates.check_pacing(timeline, kinds))
+        step("gate 4", note=f"no shot holds too long (mean {sum(t['end'] - t['start'] for t in timeline) / max(1, len(timeline)):.1f}s)")
 
     # 6 every scene drawn
     w, h = size
@@ -468,6 +492,8 @@ def produce(screenplay: Path | str, dossier: Path | str, out_dir: Path | str, si
     kf, kprob = variation.keyframes(final, [mid(timeline[0]), mid(timeline[ci]), mid(timeline[-1])],
                                     vledger.path.parent / "keyframes" / film, vprev, dirs["qc"] / "keyframes_compare.png")
     vissues += kprob
+    if gated:   # key frames that could be swapped with a piece the owner has seen fail gate 2 (reported in PRESHOW.md)
+        gate_issues += [{"gate": 2, "level": "error", "scene": "key frames", "problem": k["problem"]} for k in kprob]
     starts = [t["start"] for t in timeline]
     found = _cuts(final)
     drift = [d for d in (min((abs(c - s) for c in found), default=9.9) for s in starts[1:]) if d < 1.0]
@@ -615,7 +641,7 @@ def produce(screenplay: Path | str, dossier: Path | str, out_dir: Path | str, si
     vledger.add(variation.row(film, sp, vp, kf, [Path(b[0]).stem for b in beds], round(expected / max(1, len(timeline)), 2)))
     (dirs["writing"] / "variation.md").write_text(variation.markdown(vp, vissues), encoding="utf-8")
     (dirs["writing"] / "variation_ledger.md").write_text(vledger.markdown(), encoding="utf-8")
-    artdirection.remember(data, {"id": film, "title": sp.get("title"), "channel": sp.get("channel", ""), "engine": sp.get("engine", ""),
+    artdirection.remember(hdir, {"id": film, "title": sp.get("title"), "channel": sp.get("channel", ""), "engine": sp.get("engine", ""),
                                  "hook_mechanism": sp.get("hook_mechanism", ""), "metaphors": list(sp.get("metaphors", [])), **{k: ad[k] for k in ("look", "accent", "cinematography", "maps",
                                                                                               "infographics", "animation", "rhythm", "music", "grade")},
                                  "kinds": kinds})
@@ -637,4 +663,13 @@ def produce(screenplay: Path | str, dossier: Path | str, out_dir: Path | str, si
                    [n for n, r in deliver if not (out / r).exists()]})
     (dirs["qc"] / "report.json").write_text(json.dumps(report, ensure_ascii=False, indent=1, default=str), encoding="utf-8")
     step("deliverables", note="all present" if not report["deliverables_missing"] else f"missing: {report['deliverables_missing']}")
+    # 14 gate 5: the pre-show list, read by the owner with the video; the piece now counts as seen
+    if gated:
+        extra = {"symbols": gates.missing_symbols(sp), "editorial": issues, "variation": vissues,
+                 "qc": list(qc.get("warnings", [])) + problems, "weakest": report.get("retention", {}).get("weakest", []),
+                 "brainlog": gates.brainlog_rules(log)}
+        (out / "PRESHOW.md").write_text(gates.preshow(sp, gate_issues, timeline, kinds, report, extra), encoding="utf-8")
+        report["preshow"] = str(out / "PRESHOW.md")
+        gates.record(gates.entry(sp, "sample" if sp.get("sample_for") else "film", ad["look"]))
+        step("gate 5", note="PRESHOW.md written: send it with the video")
     return report

@@ -85,5 +85,7 @@
     "C46"
    ]
   }
- ]
+ ],
+ "sample_for": "print-facts",
+ "target_seconds": 30
 }

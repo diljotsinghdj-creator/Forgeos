@@ -54,5 +54,6 @@
    "pause": 0.3
   }
  ],
- "native_material": "fossils, genomes, timelines"
+ "native_material": "fossils, genomes, timelines",
+ "target_seconds": 10
 }

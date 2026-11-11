@@ -70,5 +70,6 @@
    "pause": 0.12,
    "delivery": "urgent"
   }
- ]
+ ],
+ "target_seconds": 15
 }

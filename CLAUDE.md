@@ -20,5 +20,18 @@ The essentials, in case nothing else is read:
 - **All videos are in English** (both channels), faceless, no mascot.
 - **No images are created without asking the owner first.** ElevenLabs only with the owner's permission.
 
+**The owner's five gates** (2026-11-11, enforced by `studio/gates.py` for both channels and every sample with
+`"sample_for"`). A gate stops the studio; it is never worked around:
+1. **No pick, no script:** pitch three engines and record the owner's pick (`"pick"`) before writing or drawing.
+2. **Seen means used:** `creatorforge/channels/SEEN.json` holds everything the owner has seen. Never repeat the last
+   piece's engine, look or stand-in voice, an opening shot from the last three, or a hook or shot already shown on the topic.
+3. **Evidence first (Print Facts):** a real document, photo or footage comes before the first explanation, or an
+   `"evidence_waiver"` the owner has been told about.
+4. **Pacing:** a still shot holds at most 4.5 s, a building shot at most 7 s, and the average hold is at most 5 s.
+5. **Pre-show list:** every render writes `PRESHOW.md`. Send it to the owner with the video, before any summary of your own.
+
+The studio's memory of past looks and variations lives in `creatorforge/channels/studio_history/`. Never render
+channel work with a throwaway history.
+
 **Code:** the worker is in `creatorforge/worker` (tests: `python -m pytest -q`); the Android app is in
 `creatorforge/android`.

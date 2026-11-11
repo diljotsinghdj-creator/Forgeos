@@ -56,5 +56,6 @@
    "graphic": "Planets: Mercury, Venus, Earth, Mars, Jupiter, Saturn | Space is weird",
    "claims": []
   }
- ]
+ ],
+ "target_seconds": 10
 }
