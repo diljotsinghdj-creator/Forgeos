@@ -109,3 +109,17 @@ Newest entries go at the bottom. Rules here are binding for both channels unless
   4. Only then show it, and list what's still weak.
 - **Used Mechanics to Retire:** generic stand-ins (counter for a subject, desk globe for planets, flat map for a place)
 - **Winning Pattern:** Subject-native visuals (3D planets, the globe dive to the city, the evidence on the desk).
+
+### 2026-11-11: Samples that look like the last ones
+- **Mistake Logged:** The BJP IT cell sample repeated what the owner had already seen:
+  - its shots were lifted from the BJP storyboard shown on 2026-11-10 (the family-group forward hook, the chain flowchart, 687 vs 15, the smartphone headline, the news card);
+  - four of the five samples used the same narrative approach (trojan-horse) and the same voice (am_michael);
+  - every sample shared one look: cream paper, grain, vignette, black title box, mono tags, one sentence per shot held 5-10 s, hard cuts.
+  The variation check passed it because it compared only finished films, not samples or storyboards, and never compared the look itself.
+- **New Permanent Rule:** Every sample is a film for the anti-repetition rules. Before anything is drawn:
+  1. List what the owner has already seen on this subject and in the last three samples: hook, approach, shot list, look, voice, pacing.
+  2. Change all of them that the 20/80 rule calls variable: approach, hook, lead technique, palette, background and texture, typography treatment, cut rhythm, transition family, opening shot.
+  3. A storyboard shown to the owner counts as used: its hook and shots are not reused in a sample unless the owner asks for them.
+  4. Rotate the stand-in voice when the owner's voice is not used.
+- **Used Mechanics to Retire:** the family-group forward hook; one sentence per shot on cream paper; trojan-horse for samples; am_michael as the default stand-in voice
+- **Winning Pattern:** The Antarctica landmarks and the 687-squares unit chart: subject-native visuals that were new to the owner.
