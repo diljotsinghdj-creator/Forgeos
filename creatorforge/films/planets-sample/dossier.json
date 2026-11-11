@@ -1,0 +1,15 @@
+{
+ "topic": "Planets: a 10-second sample (Vox style only)",
+ "researched": "2026-11-11",
+ "method": "Well-documented NASA facts; links not re-opened from this container. Check before publishing.",
+ "claims": [
+  {"id": "C1", "claim": "About 1,300 Earths could fit inside Jupiter (by volume).", "status": "verified", "confidence": "high",
+   "figures": ["1,300", "0"],
+   "sources": [{"title": "NASA Science: Jupiter facts", "url": "https://science.nasa.gov/jupiter/jupiter-facts/", "quote": "[summary] about 1,300 Earths could fit inside Jupiter"},
+               {"title": "NASA Space Place: How big is Jupiter?", "url": "https://spaceplace.nasa.gov/all-about-jupiter/", "quote": "[summary] more than 1,300 Earths would fit inside"}]},
+  {"id": "C2", "claim": "Venus turns once in about 243 Earth days but orbits the Sun in about 225, so its day is longer than its year.", "status": "verified", "confidence": "high",
+   "figures": ["243", "225"],
+   "sources": [{"title": "NASA Science: Venus facts", "url": "https://science.nasa.gov/venus/venus-facts/", "quote": "[summary] a day on Venus (243 Earth days) is longer than its year (225 Earth days)"},
+               {"title": "Encyclopaedia Britannica: Venus", "url": "https://www.britannica.com/place/Venus-planet", "quote": "[summary] rotation period 243 days, orbital period 225 days"}]}
+ ]
+}

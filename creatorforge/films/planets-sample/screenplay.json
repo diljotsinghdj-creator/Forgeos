@@ -1,0 +1,60 @@
+{
+ "id": "planets-sample",
+ "title": "Planets in 10 seconds",
+ "channel": "sample",
+ "subject": "mind",
+ "genre": "science",
+ "native_material": "measurements, scale comparisons",
+ "engine": "trojan-horse",
+ "hook_mechanism": "an impossible-sounding number",
+ "metaphors": [
+  "Earths poured into Jupiter",
+  "a day outlasting a year"
+ ],
+ "language": "en",
+ "lang": "en-us",
+ "voice": "am_michael",
+ "concept": {
+  "logline": "Two planet facts that break intuition.",
+  "central_question": "How strange are our planets?",
+  "claim": "Our neighbouring planets break our everyday sense of size and time."
+ },
+ "thumbnail": "Statement: *1,300* Earths",
+ "cutdowns": [],
+ "scenes": [
+  {
+   "id": "S1",
+   "act": "hook",
+   "purpose": "move",
+   "delivery": "urgent",
+   "pause": 0.12,
+   "narration": "How many Earths fit inside Jupiter? About 1,300.",
+   "graphic": "Hero: globe | 1,300 EARTHS | fit inside Jupiter | NASA | style: box | badge: verified",
+   "claims": [
+    "C1"
+   ]
+  },
+  {
+   "id": "S2",
+   "act": "discovery",
+   "purpose": "explain",
+   "delivery": "urgent",
+   "pause": 0.12,
+   "narration": "And on Venus, one day lasts longer than a whole year.",
+   "graphic": "Chart: 243 vs 225 | Venus day, Venus year",
+   "claims": [
+    "C2"
+   ]
+  },
+  {
+   "id": "S3",
+   "act": "ending",
+   "purpose": "move",
+   "delivery": "urgent",
+   "pause": 0.3,
+   "narration": "Space is weird.",
+   "graphic": "Statement: Space is *weird*.",
+   "claims": []
+  }
+ ]
+}
