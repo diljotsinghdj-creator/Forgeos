@@ -2616,7 +2616,7 @@ function interview(){ // the speaker, a lower third with name and role, the pull
   if(rl.length){lt.rect(lw*.92,rh).move(lx,ly+nh).fill('#FBF8F0').stroke({color:INK,width:U*.002});
     rl.forEach((l,i)=>fit(T(lt,l,rs,lx+U*.035,ly+nh+U*.011+rs*.65+i*rs*1.3,{family:'Mono',weight:700,anchor:'start',fill:INK}),lw*.86))}
   slide(lt,.7,-W*.12,0);
-  const qx=TALL?W*.08:W*.52,qy=TALL?H*.68:H*.26,qw=TALL?W*.84:W*.42,qs=TALL?U*.05:U*.052;
+  const qs=TALL?U*.05:U*.052,qx=TALL?W*.08:W*.52,qy=TALL?Math.max(H*.68,ly+nh+rh+qs*2.6):H*.26,qw=TALL?W*.84:W*.42;   // the quote starts below the name box
   const mk=T(L.front,'“',qs*3.2,qx-U*.008,qy,{family:'Playfair',weight:900,anchor:'start',fill:ACC});wipe(mk,.9);
   const ql=lines(P.quote,qs,qw,'Playfair',700,TALL?5:6);
   ql.forEach((l,i)=>{const t=T(L.front,l,qs,qx,qy+qs*1.1+i*qs*1.28,{family:'Playfair',weight:700,anchor:'start'});typeIn(t,l,1.1+i*.5)});
@@ -2910,7 +2910,17 @@ if(r.width<1||r.height<1)return;
         c.font=`${cs.fontStyle} ${cs.fontWeight} 100px ${cs.fontFamily}`;const mm=c.measureText(s),fa=mm.fontBoundingBoxAscent,fd=mm.fontBoundingBoxDescent;
         if(fa&&fd){const k=r.height/(fa+fd),base=r.top+fa*k;top=base-mm.actualBoundingBoxAscent*k;bot=base+mm.actualBoundingBoxDescent*k}}catch(e){}
       if(r.left<-2||top<-2||r.right>W+2||bot>H+2)cut.push(s.slice(0,40))});
-    return {text_below_floor:small.slice(0,8),text_cut_off:cut.concat(DROPPED.map(d=>'dropped: '+d)).slice(0,8)}};
+    // words sitting on other words: two visible lines whose ink boxes overlap by more than a quarter of the smaller
+    const seen=[];document.querySelectorAll('text').forEach(el=>{const s=(el.textContent||'').trim();if(!s||el.closest('[clip-path]'))return;
+      let o=1;for(let n=el;n&&n.getAttribute;n=n.parentNode){const v=n.getAttribute('opacity');if(v!==null)o*=parseFloat(v)||0}
+      if(o<.5)return;const r=el.getBoundingClientRect();if(r.width<=1||r.height<=1)return;let top=r.top,bot=r.bottom;
+      try{const cs=getComputedStyle(el),c=QA.cx||(QA.cx=document.createElement('canvas').getContext('2d'));c.font=`${cs.fontStyle} ${cs.fontWeight} 100px ${cs.fontFamily}`;
+        const mm=c.measureText(s),fa=mm.fontBoundingBoxAscent,fd=mm.fontBoundingBoxDescent;if(fa&&fd){const k=r.height/(fa+fd),base=r.top+fa*k;top=base-mm.actualBoundingBoxAscent*k;bot=base+mm.actualBoundingBoxDescent*k}}catch(e){}
+      seen.push([s,{left:r.left,right:r.right,top,bottom:bot,width:r.width,height:Math.max(1,bot-top)}])});   // the ink, as for the cut-off test
+    const over=[];for(let i=0;i<seen.length;i++)for(let j=i+1;j<seen.length;j++){const a=seen[i][1],b=seen[j][1];
+      const w=Math.min(a.right,b.right)-Math.max(a.left,b.left),h=Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top);
+      if(w>0&&h>0&&w*h>.25*Math.min(a.width*a.height,b.width*b.height))over.push(seen[i][0].slice(0,24)+' / '+seen[j][0].slice(0,24))}
+    return {text_below_floor:small.slice(0,8),text_cut_off:cut.concat(DROPPED.map(d=>'dropped: '+d)).slice(0,8),text_overlap:over.slice(0,8)}};
   window.frame(0);window.READY=true}
 boot();
 </script></body></html>"""

@@ -109,7 +109,17 @@ def _render_scene(kind, spec, theme, w, h, seconds, out, work, fps, layout, fetc
         return scene3d.render(kind, spec, theme, w, h, seconds, out, work, fps=fps)
     if kind in vox.KINDS:
         return vox.render(kind, spec, theme, w, h, seconds, out, work, lib=lib, fetch=fetch, fps=fps, layout=layout)
-    return motion.render(kind, spec, theme, w, h, seconds, out, work, fps=fps)
+    if kind in ("globe", "map"):
+        # the globe fly-in and the flat map, drawn offline from the bundled Natural Earth shapes
+        from ..media import globe as _globe, maps as _maps
+        plan = _maps.parse(spec)
+        if plan is None:
+            raise ProductionStopped(f"{kind}: the map doesn't know the place in '{spec[:60]}'")
+        return (_globe if kind == "globe" else _maps).render(plan, theme, w, h, seconds, out, work)
+    if kind in motion.KINDS:
+        return motion.render(kind, spec, theme, w, h, seconds, out, work, fps=fps)
+    from ..media import cards                              # chat, social, quote, document...: the card renderer
+    return cards.render(kind, spec, theme, w, h, seconds, out, work)
 
 
 def _directed(graphic: str, ad: dict, scene: dict) -> str:
@@ -482,7 +492,7 @@ def produce(screenplay: Path | str, dossier: Path | str, out_dir: Path | str, si
     qmd += ["", "## Watch-through (a frame from the middle of every scene, compared with the one before)", ""]
     qmd += [f"- {p}" for p in problems] or ["- every scene shows a distinct, readable picture"]
     # what the viewer reads: each scene page measured its own text once everything had landed (motion.capture)
-    small, cut = [], []
+    small, cut, over = [], [], []
     for t in timeline:
         for f in dirs["scenes"].glob(f"{t['scene']}_*.qa.json"):
             try:
@@ -491,9 +501,12 @@ def produce(screenplay: Path | str, dossier: Path | str, out_dir: Path | str, si
                 continue
             small += [f"{t['scene']}: {x}" for x in q.get("text_below_floor", [])]
             cut += [f"{t['scene']}: {x}" for x in q.get("text_cut_off", [])]
+            over += [f"{t['scene']}: {x}" for x in q.get("text_overlap", [])]
     qmd += ["", "## On-screen text (phone test)", ""]
     qmd += [f"- too small to read on a phone: {x}" for x in small] + [f"- cut off at the frame edge: {x}" for x in cut]
-    if not small and not cut:
+    qmd += [f"- words on top of other words: {x}" for x in over]
+    problems += [f"text overlap in {x}" for x in over]
+    if not small and not cut and not over:
         qmd += ["- every line is at least 2.6% of the frame's short side and inside the frame"]
     phone = [_frame(final, (t["start"] + t["end"]) / 2, dirs["qc"] / f"phone_{t['scene']}.png", 360) for t in timeline]
     _sheet([p for p in phone if p], [t["scene"] for t in timeline], dirs["qc"] / "phone_sheet.png")
