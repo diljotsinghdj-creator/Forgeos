@@ -90,3 +90,22 @@ Newest entries go at the bottom. Rules here are binding for both channels unless
   images) are created without asking the owner first.
 - **Used Mechanics to Retire:** n/a
 - **Winning Pattern:** n/a
+
+### 2026-11-11: Use judgment, not the nearest template
+- **Mistake Logged:** The owner kept having to point out basics:
+  - logos left out of shots that name a platform;
+  - a flat pin map where the globe fly-in existed;
+  - a number counter where the subject (planets) should have been drawn;
+  - "people standing on bars" for planets;
+  - overlaps and cut-off words;
+  - a mascot and Hindi narration nobody asked for.
+
+  The pattern: the quickest available graphic was used, then shown before it was judged.
+- **New Permanent Rule:** Before showing the owner anything:
+  1. For every shot, ask what a Vox or Johnny Harris editor would put on screen for this exact subject. If the
+     engine can't draw it, build it, or say so plainly. Never settle for a generic stand-in.
+  2. Watch every frame and fix what a viewer would notice.
+  3. Check the work against every patch in this log.
+  4. Only then show it, and list what's still weak.
+- **Used Mechanics to Retire:** generic stand-ins (counter for a subject, desk globe for planets, flat map for a place)
+- **Winning Pattern:** Subject-native visuals (3D planets, the globe dive to the city, the evidence on the desk).
