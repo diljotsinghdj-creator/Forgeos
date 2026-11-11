@@ -29,7 +29,7 @@
    "delivery": "urgent",
    "pause": 0.12,
    "narration": "How many Earths fit inside Jupiter? About 1,300.",
-   "graphic": "Hero: globe | 1,300 EARTHS | fit inside Jupiter | NASA | style: box | badge: verified",
+   "graphic": "Planets: Jupiter, Earth | 1,300 Earths fit inside Jupiter | move: fill | n: 1300",
    "claims": [
     "C1"
    ]
@@ -41,7 +41,7 @@
    "delivery": "urgent",
    "pause": 0.12,
    "narration": "And on Venus, one day lasts longer than a whole year.",
-   "graphic": "Chart: 243 vs 225 | Venus day, Venus year",
+   "graphic": "Planets: Venus | A day on Venus: 243 Earth days. Its year: 225.",
    "claims": [
     "C2"
    ]
@@ -53,7 +53,7 @@
    "delivery": "urgent",
    "pause": 0.3,
    "narration": "Space is weird.",
-   "graphic": "Statement: Space is *weird*.",
+   "graphic": "Planets: Mercury, Venus, Earth, Mars, Jupiter, Saturn | Space is weird",
    "claims": []
   }
  ]

@@ -10,6 +10,9 @@ software rasteriser when there is no graphics card).
              - an exploded view: the layers of a thing lift apart, each one named
     Title3d: THE CANAL | 1914 · Panama
              - extruded letters that swing up one by one, a light sweeping across them, a slow push in
+    Planets: Jupiter, Earth | 1,300 Earths fit inside | move: fill | n: 1300
+             - planets drawn in 3D with painted surfaces (Earth from the real coastlines), lit by the Sun:
+               compare (side by side at true scale), fill (small bodies pouring into a big one, ILLUSTRATIVE), spin
 
 They carry the video's look (paper, accent, fonts) so they sit in the same film as the 2D scenes.
 """
@@ -22,7 +25,7 @@ from pathlib import Path
 
 from .ff import MediaError
 
-KINDS = ("bars3d", "prism", "explode", "title3d", "terrain3d", "towers3d", "photo3d")
+KINDS = ("bars3d", "prism", "explode", "title3d", "terrain3d", "towers3d", "photo3d", "planets")
 TERRAIN_URL = "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png"
 TERRAIN_CREDIT = "Elevation: Mapzen terrain tiles (AWS Open Data; SRTM, GMTED, ETOPO1 and others)"
 # places explainers go to that the place list doesn't hold: (lat, lon)
@@ -215,7 +218,39 @@ def parse_photo3d(spec: str) -> dict | None:
             "illustrative": any(p.lower() == "illustrative" for p in parts[1:])}
 
 
-PARSERS = {"photo3d": parse_photo3d, "terrain3d": parse_terrain3d, "towers3d": parse_towers3d, "bars3d": parse_bars3d, "prism": parse_prism, "explode": parse_explode, "title3d": parse_title3d}
+
+# mean radius in km (NASA planetary fact sheets)
+BODIES = {"sun": 696340, "mercury": 2440, "venus": 6052, "earth": 6371, "moon": 1737, "mars": 3390, "jupiter": 69911,
+          "saturn": 58232, "uranus": 25362, "neptune": 24622, "pluto": 1188}
+
+
+def parse_planets(spec: str) -> dict | None:
+    """'Planets: Jupiter, Earth | 1,300 Earths fit inside | move: fill | n: 1300'."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    names = [x.strip().lower() for x in re.split(r",|\+|·| vs ", parts[0]) if x.strip()] if parts else []
+    if not names or any(n not in BODIES for n in names) or len(names) > 6:
+        return None
+    opts, free = {}, []
+    for x in parts[1:]:
+        k, _, v = x.partition(":")
+        if _ and k.strip().lower() in ("move", "n"):      # only these are settings; a colon in a title is part of it
+            opts[k.strip().lower()] = v.strip()
+        else:
+            free.append(x)
+    move = opts.get("move", "spin" if len(names) == 1 else "compare").lower()
+    if move not in ("spin", "compare", "fill") or (move == "fill" and len(names) != 2):
+        return None
+    n = int(re.sub(r"\D", "", opts.get("n", "")) or 0)
+    plan = {"type": "planets", "bodies": [{"name": x, "r": BODIES[x]} for x in names], "title": (free[0] if free else "")[:60],
+            "move": move, "count": n, "illustrative": move == "fill"}
+    if "earth" in names:
+        from . import maps
+        w = json.loads((Path(__file__).with_name("world.json")).read_text(encoding="utf-8"))
+        plan["land"] = [ring for c in w["countries"] for ring in c["r"] if len(ring) > 3]
+    return plan
+
+
+PARSERS = {"planets": parse_planets, "photo3d": parse_photo3d, "terrain3d": parse_terrain3d, "towers3d": parse_towers3d, "bars3d": parse_bars3d, "prism": parse_prism, "explode": parse_explode, "title3d": parse_title3d}
 
 
 def plan_for(kind: str, spec: str) -> dict | None:
@@ -233,7 +268,7 @@ html,body{margin:0;padding:0;overflow:hidden;width:%W%px;height:%H%px;background
 canvas{position:absolute;left:0;top:0}
 #ov{position:absolute;left:0;top:0;width:%W%px;height:%H%px;pointer-events:none}
 #grain{position:absolute;left:0;top:0;width:%W%px;height:%H%px;background:url('%GRAIN%') center/cover;mix-blend-mode:multiply;opacity:.5}
-.t{position:absolute;white-space:nowrap;transform:translate(-50%,-50%);will-change:transform,opacity}
+.t{position:absolute;white-space:nowrap;transform:translate(-50%,-50%)}
 .box{background:#141414;color:#fff;padding:.12em .32em;font-weight:900}
 .val{color:#141414}
 .tag{background:#141414;color:#fff;padding:.18em .5em;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
@@ -410,7 +445,83 @@ function photo3d(){ // camera projection: the photograph on a mesh shaped by its
   if(P.credit){const c=label('PHOTO: '+P.credit.toUpperCase(),'src',U*.013,'Mono',700);c.style.left=(W-U*.04)+'px';c.style.top=(H-U*.03)+'px';c.style.transform='translate(-100%,-50%)'}
   if(P.illustrative){const b=label('ILLUSTRATIVE','src',U*.018,'Mono',700);b.style.left=(U*.12)+'px';b.style.top=(H*.08)+'px';b.style.background='#FBF8F0';b.style.padding='.3em .6em';b.style.border='2px solid #5A5A5A';b.style.opacity=.95}}
 
-({bars3d,prism,explode,title3d,terrain3d,towers3d,photo3d})[P.type]();
+// ---- planets: painted spheres lit by the Sun --------------------------------------------------------------------
+function noise2(){const p=new Uint8Array(512);for(let i=0;i<256;i++)p[i]=i;let s=7;for(let i=255;i>0;i--){s=(s*16807)%2147483647;const j=s%(i+1);[p[i],p[j]]=[p[j],p[i]]}
+  for(let i=0;i<256;i++)p[i+256]=p[i];const f=t=>t*t*(3-2*t),g=(h,x,y)=>((h&1)?x:-x)+((h&2)?y:-y);
+  const n=(x,y)=>{const X=Math.floor(x)&255,Y=Math.floor(y)&255;x-=Math.floor(x);y-=Math.floor(y);const u=f(x),v=f(y),a=p[X]+Y,b=p[X+1]+Y;
+    return (1-v)*((1-u)*g(p[a],x,y)+u*g(p[b],x-1,y))+v*((1-u)*g(p[a+1],x,y-1)+u*g(p[b+1],x-1,y-1))};
+  return (x,y,o)=>{let t=0,a=.5,fq=1;for(let i=0;i<(o||5);i++){t+=a*n(x*fq,y*fq);a*=.5;fq*=2}return t}}
+const NZ=noise2();
+function hex(c){const v=parseInt(c.slice(1),16);return [v>>16&255,v>>8&255,v&255]}
+function lerpc(a,b,t){return a.map((v,i)=>v+(b[i]-v)*t)}
+function painted(name){const cw=1024,ch=512,cv=document.createElement('canvas');cv.width=cw;cv.height=ch;const c=cv.getContext('2d');
+  const img=c.createImageData(cw,ch),d=img.data;
+  const pal={jupiter:['#F1E6D2','#D8B48A','#B07A55','#E9D9BE','#8E5E42'],saturn:['#F2E4BF','#E0C88E','#C9AA72','#EADBB0','#B99A63'],
+    uranus:['#BFE7EA','#A6DDE2','#93D2D9','#B2E2E6','#8CCBD3'],neptune:['#4F7EDB','#3D68C4','#5A8AE3','#2F57AE','#6B97E8'],
+    venus:['#EBD3A0','#E2C385','#F0DDB3','#D6B274','#F4E6C4'],mars:['#C1643A','#A9502C','#8C3F24','#D07A4C','#6E3220'],
+    mercury:['#9A958F','#8A857F','#B0ABA5','#77726D','#A39E98'],moon:['#B8B5B0','#A4A19C','#C9C6C1','#8F8C88','#D3D0CB'],
+    pluto:['#D9C2A6','#C2A383','#E8D8C2','#A9876A','#F0E4D4'],sun:['#FFD27A','#FFB547','#FF9E2C','#FFE29B','#FF8A1F'],earth:['#2E5E8C']}[name]||['#888','#999','#777','#aaa','#666'];
+  const P5=pal.map(hex),banded={jupiter:1,saturn:1,uranus:1,neptune:1};
+  for(let y=0;y<ch;y++){const lat=(.5-y/ch)*Math.PI;for(let x=0;x<cw;x++){const u=x/cw,i=(y*cw+x)*4;let col;
+      if(banded[name]){const w=NZ(u*6,y/ch*3,3)*.35,b=Math.sin(lat*(name==='jupiter'?14:9)+w*4),k=(b+1)/2,k2=(NZ(u*20,y/ch*40,3)+1)/2;
+        col=lerpc(lerpc(P5[0],P5[2],k),lerpc(P5[1],P5[4],k2),.35)}
+      else if(name==='earth'){col=lerpc(hex('#24527E'),hex('#3B74A6'),(NZ(u*8,y/ch*4,3)+1)/2)}
+      else if(name==='venus'){const s=NZ(u*3+NZ(u*2,y/ch*2,2),y/ch*6,5);col=lerpc(P5[0],P5[3],(s+1)/2)}
+      else if(name==='sun'){const s=NZ(u*30,y/ch*15,4);col=lerpc(P5[0],P5[2],(s+1)/2)}
+      else{const s=NZ(u*10,y/ch*5,6);col=lerpc(P5[0],P5[3],(s+1)/2);if(name==='mars'&&Math.abs(lat)>1.3)col=lerpc(col,[245,240,235],.85)}
+      d[i]=col[0];d[i+1]=col[1];d[i+2]=col[2];d[i+3]=255}}
+  c.putImageData(img,0,0);
+  if(name==='jupiter'){c.fillStyle='rgba(196,86,58,.85)';c.beginPath();c.ellipse(cw*.62,ch*.64,cw*.035,ch*.04,0,0,Math.PI*2);c.fill()}   // the Great Red Spot
+  if(name==='mercury'||name==='moon'){for(let k=0;k<160;k++){const x=(k*733%cw),y=(k*389%ch),r=2+(k*97%14);c.strokeStyle='rgba(60,58,55,.35)';c.lineWidth=1.5;c.beginPath();c.arc(x,y,r,0,7);c.stroke()}}
+  if(name==='earth'&&P.land){c.fillStyle='#6F8E4F';P.land.forEach(ring=>{c.beginPath();ring.forEach(([lo,la],k)=>{const x=(lo+180)/360*cw,y=(90-la)/180*ch;k?c.lineTo(x,y):c.moveTo(x,y)});c.closePath();c.fill()});
+    const g=c.createLinearGradient(0,0,0,ch);g.addColorStop(0,'rgba(255,255,255,.95)');g.addColorStop(.08,'rgba(255,255,255,0)');g.addColorStop(.88,'rgba(255,255,255,0)');g.addColorStop(1,'rgba(255,255,255,.95)');
+    c.fillStyle=g;c.fillRect(0,0,cw,ch);c.fillStyle='rgba(255,255,255,.55)';
+    const cl2=c.getImageData(0,0,cw,ch),dd=cl2.data;for(let y=0;y<ch;y++)for(let x=0;x<cw;x++){const v=NZ(x/cw*14,y/ch*7,6),a=Math.max(0,v-.12)*1.6;   // soft cloud bands
+      if(a>0){const i=(y*cw+x)*4,k=Math.min(.75,a);dd[i]+=(255-dd[i])*k;dd[i+1]+=(255-dd[i+1])*k;dd[i+2]+=(255-dd[i+2])*k}}c.putImageData(cl2,0,0)}
+  const t=new THREE.CanvasTexture(cv);t.anisotropy=4;return t}
+function ringTex(){const s=512,cv=document.createElement('canvas');cv.width=cv.height=s;const c=cv.getContext('2d');
+  for(let r=s*.5*.52;r<s*.5;r++){const k=(r/(s*.5)-.52)/.48,a=(.35+.5*Math.abs(Math.sin(k*22)))*(k<.62&&k>.58?.1:1);c.strokeStyle=`rgba(226,205,160,${a})`;c.beginPath();c.arc(s/2,s/2,r,0,7);c.stroke()}
+  return new THREE.CanvasTexture(cv)}
+function planets(){document.body.style.background='#06080D';document.getElementById('grain').style.opacity=.18;ground.visible=false;
+  scene.children.filter(o=>o.isHemisphereLight).forEach(o=>o.intensity=.18);sun.position.set(-30,8,18);sun.intensity=3.2;sun.castShadow=false;
+  const sg=new THREE.BufferGeometry(),sp=[];for(let i=0;i<1600;i++){const a=(i*137.5)*Math.PI/180,z=-60-((i*53)%40),r=20+((i*7919)%60);sp.push(Math.cos(a)*r*1.8,Math.sin(a)*r,z)}
+  sg.setAttribute('position',new THREE.Float32BufferAttribute(sp,3));scene.add(new THREE.Points(sg,new THREE.PointsMaterial({color:0xffffff,size:.08,transparent:true,opacity:.7})));
+  const bs=P.bodies,maxr=Math.max(...bs.map(b=>b.r)),S=(P.move==='spin'?3.4:TALL?2.4:3.2)/maxr;
+  const make=b=>{const r=b.r*S,g=new THREE.Group(),m=b.name==='sun'?new THREE.MeshBasicMaterial({map:painted('sun')}):new THREE.MeshStandardMaterial({map:painted(b.name),roughness:.92,metalness:0});
+    const me=new THREE.Mesh(new THREE.SphereGeometry(r,96,64),m);me.rotation.z=b.name==='uranus'?1.7:.05;g.add(me);
+    if(b.name==='saturn'){const rg=new THREE.Mesh(new THREE.RingGeometry(r*1.25,r*2.3,128),new THREE.MeshStandardMaterial({map:ringTex(),transparent:true,side:THREE.DoubleSide,roughness:1}));rg.rotation.x=-Math.PI/2+.45;g.add(rg)}
+    g.userData={r,me};scene.add(g);return g};
+  const tt=P.title?title(P.title):null,lbs=[];
+  if(P.move==='fill'){const big=make(bs[0]),small=bs[1],r=big.userData.r;big.userData.me.material.transparent=true;big.userData.me.material.opacity=.5;big.userData.me.material.depthWrite=false;
+    const sr=small.r*S,n=Math.min(P.count||300,1400),geo=new THREE.SphereGeometry(sr,16,12),mt=new THREE.MeshStandardMaterial({map:painted(small.name),roughness:.9});
+    const inst=new THREE.InstancedMesh(geo,mt,n),M=new THREE.Matrix4(),pts=[];for(let i=0;i<n;i++){let v;do{v=new THREE.Vector3((Math.random()*2-1),(Math.random()*2-1),(Math.random()*2-1))}while(v.length()>1);
+      v.multiplyScalar(r-sr);pts.push(v.clone().add(new THREE.Vector3(0,r*2.2,0)).toArray().concat(v.toArray()))}
+    pts.sort((a,b)=>a[4]-b[4]);inst.count=0;scene.add(inst);
+    const cnt=label('0','box',U*.06,'Anton',400),nm=label(small.name.toUpperCase()+'S','tag',U*.024,'Inter',800),il=label('ILLUSTRATIVE · BY VOLUME','src',U*.016,'Mono',700);
+    il.style.left=U*.04+'px';il.style.top=(H-U*.06)+'px';il.style.transform='translate(0,-50%)';il.style.background='#FBF8F0';il.style.padding='.3em .6em';il.style.fontSize=(U*.022)+'px';
+    update=t=>{const p=E.inout(cl(t/DUR)),D=r*(TALL?6.2:4.6);camera.position.set(Math.sin(.25-.5*p)*D,r*.3,Math.cos(.25-.5*p)*D);camera.lookAt(0,r*.12,0);big.rotation.y=t*.15;big.userData.me.material.opacity=1-.55*seg(t,.3,.8);   // solid first, see-through as the small bodies pour in
+      const k=Math.floor(n*E.out(seg(t,.4,Math.max(1,DUR-1.4))));inst.count=k;for(let i=0;i<k;i++){const q=pts[i],f=E.out(cl((t-.4-i/n*(DUR-1.4))/.5));
+        M.makeTranslation(q[0]+(q[3]-q[0])*f,q[1]+(q[4]-q[1])*f,q[2]+(q[5]-q[2])*f);inst.setMatrixAt(i,M)}inst.instanceMatrix.needsUpdate=true;
+      cnt.textContent=Math.round((P.count||n)*k/n).toLocaleString('en-US');cnt.style.left=W/2+'px';cnt.style.top=(H*.86)+'px';nm.style.left=W/2+'px';nm.style.top=(H*.93)+'px';
+      cnt.style.opacity=nm.style.opacity=seg(t,.3,.3)*leave(t);il.style.opacity=.95*leave(t);if(tt)tt.style.opacity=seg(t,.1,.3)*leave(t)}}
+  else{const gs=bs.map(make),half=g=>g.userData.r*(bs[gs.indexOf(g)].name==='saturn'?2.3:1),tot=gs.reduce((a,g)=>a+half(g)*2,0)+(gs.length-1)*.5;let x=-tot/2;   // Saturn takes the room its rings need
+    gs.forEach(g=>{const r=half(g);g.position.set(x+r,0,0);x+=r*2+.5;const lb=label(P.bodies[gs.indexOf(g)].name.toUpperCase(),'tag',U*.022,'Inter',800);lbs.push([g,lb])});
+    const span=Math.max(tot,4.2);update=t=>{const p=E.inout(cl(t/DUR));const dist=(P.move==='spin'?(TALL?19:14.5):span*(TALL?2.6:1.45))*(1-.08*p);
+      camera.position.set(Math.sin(-.1+.2*p)*dist,dist*.08,Math.cos(-.1+.2*p)*dist);camera.lookAt(0,0,0);gs.forEach(g=>g.children[0].rotation.y=t*.35);
+      let lastR=-1e9,flip=false;lbs.forEach(([g,lb],i)=>{pin(lb,g.position.clone().add(new THREE.Vector3(0,-g.userData.r-.35,0)),0,U*.02);
+        const w=lb.getBoundingClientRect().width,x=parseFloat(lb.style.left);flip=x-w/2<lastR+U*.012?!flip:false;   // crowded small bodies: alternate above / below
+        if(flip)pin(lb,g.position.clone().add(new THREE.Vector3(0,g.userData.r+.35,0)),0,-U*.02);lastR=x+w/2;
+        const rb=lb.getBoundingClientRect(),off=rb.bottom>H-U*.02||rb.top<U*.13;   // no room in frame (a close-up): the title names it
+        lb.style.opacity=off?0:seg(t,.4+i*.12,.3)*leave(t)});
+      if(tt)tt.style.opacity=seg(t,.1,.3)*leave(t)}}}
+
+({bars3d,prism,explode,title3d,terrain3d,towers3d,photo3d,planets})[P.type]();
+window.QA=function(){const els=[...document.querySelectorAll('#ov .t')].filter(e=>parseFloat(e.style.opacity||1)>.5&&e.textContent.trim()),cut=[],over=[],small=[];
+  const rs=els.map(e=>[e.textContent.trim().slice(0,30),e.getBoundingClientRect()]);
+  rs.forEach(([s2,r])=>{if(r.left<-2||r.top<-2||r.right>W+2||r.bottom>H+2)cut.push(s2)});
+  for(let i=0;i<rs.length;i++)for(let j=i+1;j<rs.length;j++){const a=rs[i][1],b=rs[j][1],w=Math.min(a.right,b.right)-Math.max(a.left,b.left),h=Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top);
+    if(w>0&&h>0&&w*h>.25*Math.min(a.width*a.height,b.width*b.height))over.push(rs[i][0]+' / '+rs[j][0])}
+  return {text_below_floor:small,text_cut_off:cut.slice(0,8),text_overlap:over.slice(0,8)}};
 Promise.all([document.fonts.ready].concat(window.WAIT||[])).then(()=>{window.frame=t=>{update(t);renderer.render(scene,camera)};window.frame(0);window.READY=true});
 </script></body></html>"""
 

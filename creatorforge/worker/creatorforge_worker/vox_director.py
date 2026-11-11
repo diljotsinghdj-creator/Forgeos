@@ -70,6 +70,8 @@ Bars3d: <label> <number>, <label> <number>, ... | <title> | <unit>  - 3D bars, l
 Prism: <country or state> <number>, ... | <title> | <unit>  - a 3D map: each place rises to its number
 Explode: <thing> | <layer>, <layer>, <layer> | <title>  - an exploded view of what is inside (2-7 layers, top first)
 Title3d: <TITLE IN CAPITALS, English> | <tag> · <tag>  - extruded 3D letters for the film's title or a chapter
+Planets: <body>, <body> | <title> | move: compare|fill|spin | n: <count>  - planets in 3D, to true scale (sun, mercury, venus,
+    earth, moon, mars, jupiter, saturn, uranus, neptune, pluto); fill pours the second into the first (ILLUSTRATIVE)
 Terrain3d: <mountain, pass or place> [@ <lat>, <lon>] | <title> | <width> km | height: <figure>  - the real land in 3D
 Towers3d: <building> <height>, <building> <height>, ... | <title> | m  - buildings to scale in 3D (2-6)
 Morph: <shape> → <shape> [→ <shape>] | <title> | <caption>  - one outline flows into the next (country, state, or

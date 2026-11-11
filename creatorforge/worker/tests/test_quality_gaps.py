@@ -32,3 +32,18 @@ def test_the_text_qa_catches_overlapping_words(tmp_path):
           e.setAttribute('font-size','24');e.textContent=t;s.appendChild(e)}}""")
         assert pg.evaluate("window.QA()")["text_overlap"] == ["WORDS HERE / MORE WORDS"]
         b.close()
+
+
+def test_planets_parse_and_render_with_clean_labels(tmp_path):
+    from creatorforge_worker.media import scene3d
+    p = scene3d.parse_planets("Venus | A day on Venus: 243 Earth days. Its year: 225.")
+    assert p["title"].startswith("A day on Venus:") and p["move"] == "spin"           # a colon in a title is not a setting
+    f = scene3d.parse_planets("Jupiter, Earth | 1,300 Earths | move: fill | n: 1300")
+    assert f["move"] == "fill" and f["count"] == 1300 and f["illustrative"] and f["land"]
+    assert scene3d.parse_planets("Narnia") is None and scene3d.parse_planets("Earth, Mars, Venus | x | move: fill") is None
+    if not motion.enabled():
+        return
+    out = scene3d.render("planets", "Mercury, Venus, Earth, Mars, Jupiter, Saturn | The planets", "e~0@red/field/", 480, 270, 2.0,
+                         tmp_path / "p.mp4", tmp_path / "w", fps=6)
+    qa = json.loads(out.with_suffix(".qa.json").read_text())
+    assert out.stat().st_size > 3000 and qa["text_overlap"] == [] and qa["text_cut_off"] == []

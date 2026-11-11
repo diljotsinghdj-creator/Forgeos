@@ -81,8 +81,10 @@ def first_frame(path: Path) -> dict:
     out = _stderr(["-i", str(path), "-frames:v", "1", "-vf", "signalstats,metadata=print,blurdetect,metadata=print",
                    "-f", "null", "-"])
     bright = re.search(r"lavfi\.signalstats\.YAVG=([\d.]+)", out)
+    high = re.search(r"lavfi\.signalstats\.YHIGH=([\d.]+)", out)
     blur = re.search(r"lavfi\.blur=([\d.]+)", out)
-    return {"brightness": float(bright.group(1)) if bright else None, "blur": float(blur.group(1)) if blur else None}
+    return {"brightness": float(bright.group(1)) if bright else None, "highlights": float(high.group(1)) if high else None,
+            "blur": float(blur.group(1)) if blur else None}
 
 
 def _samples(path: Path, total: float, n: int = 12, size: int = 96):
@@ -158,7 +160,9 @@ def check(path: Path, total: float, asr_matches: list[float], target_lufs: float
         ", ".join(f"{d:.1f}s black at {s:.1f}s" for s, d in black[:4]))
     ff = first_frame(path)
     if ff["brightness"] is not None:
-        add("first frame visible", ff["brightness"] >= 22, f"brightness {ff['brightness']:.0f}/255")
+        # a dark frame with something lit on it (a planet in space, a lamp in a room) is a picture, not a blank
+        lit = ff["brightness"] >= 22 or (ff["brightness"] >= 8 and (ff.get("highlights") or 0) >= 120)
+        add("first frame visible", lit, f"brightness {ff['brightness']:.0f}/255, highlights {ff.get('highlights') or 0:.0f}/255")
     if ff["blur"] is not None:
         add("first frame sharp", ff["blur"] <= 8.0, f"blur score {ff['blur']:.1f}")
     try:
