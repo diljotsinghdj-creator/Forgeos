@@ -48,7 +48,7 @@ EXTRA_PLACES = {
     "tamil nadu": (11.0, 78.4), "andhra pradesh": (15.9, 79.7), "telangana": (17.9, 79.0), "odisha": (20.5, 84.4),
     "west bengal": (23.0, 87.9), "bengal": (23.0, 87.9), "assam": (26.2, 92.8), "jharkhand": (23.6, 85.3),
     "chhattisgarh": (21.3, 81.9), "goa": (15.4, 74.0), "manipur": (24.7, 93.9), "delhi": (28.61, 77.21),
-    "mandi": (31.71, 76.93), "shaheen bagh": (28.545, 77.295), "kota": (25.18, 75.83), "noida": (28.54, 77.39),
+    "mandi": (31.71, 76.93), "vostok station": (-78.46, 106.84), "vostok": (-78.46, 106.84), "south pole": (-90.0, 0.0), "shaheen bagh": (28.545, 77.295), "kota": (25.18, 75.83), "noida": (28.54, 77.39),
     "gurugram": (28.46, 77.03), "gurgaon": (28.46, 77.03), "ayodhya": (26.80, 82.20), "varanasi": (25.32, 82.97),
     "amritsar": (31.63, 74.87), "chandigarh": (30.73, 76.78), "shimla": (31.10, 77.17), "srinagar": (34.08, 74.80),
     "godhra": (22.78, 73.61), "lucknow": (26.85, 80.95), "patna": (25.59, 85.14), "jaipur": (26.91, 75.79),
@@ -97,7 +97,7 @@ def _find_one(name: str) -> dict | None:
 
 def parse(spec: str) -> dict | None:
     head, _, title = spec.partition("|")
-    names = [x.strip() for x in re.split(r"→|->|\bto\b", head) if x.strip()]
+    names = [x.strip() for x in re.split(r"→|->|\bto\b|\s\+\s", head) if x.strip()]   # "A + B": both shown, no route drawn
     found = [f for f in (_find(n) for n in names[:4]) if f]
     if not found:
         return None

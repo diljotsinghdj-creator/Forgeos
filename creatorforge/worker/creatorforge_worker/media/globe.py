@@ -143,7 +143,7 @@ def render(plan: dict, theme: str, width: int, height: int, seconds: float, out:
     r0 = min(width, height) * 0.40
     lone_city = len(plan["targets"]) == 1 and plan["targets"][0]["kind"] == "city"
     r1 = max(r0 * 1.2, min(width, height * 0.55) * (1.5 if lone_city else 0.62) / max(span, 0.05))   # a city: dive to its region
-    spin_end, dive_from, dive_end = 0.55, 0.30, 0.78                     # share of the clip
+    spin_end, dive_from, dive_end = 0.45, 0.22, 0.62                     # share of the clip: the payoff lands with time to read it
     hi_names = {t["name"] for t in plan["targets"] if t["kind"] == "country"}
     world = maps._world()
     shapes = []

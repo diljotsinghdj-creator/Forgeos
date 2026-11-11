@@ -198,11 +198,19 @@ def parse_towers3d(spec: str) -> dict | None:
     to scale as stepped 3D towers with their floors marked (the massing of a height, not a model of the building)."""
     from . import vox
     parts = [p.strip() for p in (spec or "").split("|")]
+    water = 0.0
+    keep = []
+    for x in parts[1:]:
+        m = re.match(r"\s*water\s*[:=]\s*([\d.,]+)", x, re.I)
+        if m:
+            water = float(m.group(1).replace(",", ""))     # the sea rising to this height around them
+        else:
+            keep.append(x)
     vals = [v for v in vox._pairs(parts[0]) if v["value"] > 0 and v["label"]][:6]
-    if len(vals) < 2:
+    if len(vals) < (1 if water else 2):
         return None
-    return {"type": "towers3d", "values": vals, "title": parts[1][:48] if len(parts) > 1 else "",
-            "unit": parts[2][:10] if len(parts) > 2 else "m"}
+    return {"type": "towers3d", "values": vals, "title": keep[0][:60] if keep else "",
+            "unit": keep[1][:10] if len(keep) > 1 else "m", "water": water}
 
 
 def parse_photo3d(spec: str) -> dict | None:
@@ -413,7 +421,38 @@ function terrain3d(){const G=P.grid,n=G.n,size=12,rel=Math.max(1,G.max-G.min);
     pins.forEach((p,i)=>{p.st.visible=t>1.1+i*.15;pin(p.lb,p.v,0,-U*.02);p.lb.style.opacity=seg(t,1.1+i*.15,.3)*leave(t)})}}
 function towers3d(){const vs=P.values,n=vs.length,mx=Math.max(...vs.map(v=>v.value)),maxh=TALL?6.6:4.6,gap=2.5,x0=-(n-1)*gap/2,tt=title(P.title);
   const order=vs.map((v,i)=>i);const ts=order.map(i=>{const v=vs[i],h=Math.max(.12,maxh*v.value/mx),g=new THREE.Group(),top=v.value===mx;
-    const tiers=h>1.2?3:h>.5?2:1;let y=0;for(let k=0;k<tiers;k++){const th=h*(k===tiers-1?1-(tiers-1)*.38:.38),w=1.15*(1-k*.24);
+    if(/\b(ice|glacier|ice sheet|snow)\b/i.test(v.label)){   // ice is a wide slab with blue depths, not a building
+      const ice=new THREE.Mesh(new THREE.BoxGeometry(3.2,h,1.8,1,1,1),new THREE.MeshStandardMaterial({color:col('#E4F3FA'),emissive:col('#5E9CC2'),emissiveIntensity:.22,roughness:.3,metalness:0,transparent:true,opacity:.94}));
+      ice.position.y=h/2;ice.castShadow=ice.receiveShadow=true;g.add(inked(ice,'#7FA9C2'));
+      for(let k=1;k<6;k++){const l=new THREE.Mesh(new THREE.BoxGeometry(3.212,h*.004,1.812),new THREE.MeshBasicMaterial({color:col('#A9CFE3')}));l.position.y=h*k/6;g.add(l)}   // annual layers
+      g.position.set(x0+i*gap,0,0);scene.add(g);const pl=new THREE.Mesh(new THREE.BoxGeometry(3.5,.05,2.1),mat('#6E7B86'));pl.position.set(x0+i*gap,.025,0);scene.add(pl);
+      return {g,h,v,val:label(v.shown+(/[a-z]/i.test(v.shown)?'':' '+P.unit),'val',U*.044,'Anton',400),nm:label(v.label,'tag',U*.019,'Inter',800)}}
+    if(/\bburj khalifa\b/i.test(v.label)){   // a needle: stacked setbacks that taper into a long spire (base about a fifth of its height)
+      const w0=h*.2,glass=k=>mat(top?ACC:(k%2?'#8FA3B1':'#7A8E9C'));let y=0;const steps=7;
+      for(let k=0;k<steps;k++){const th=h*.72/steps,w=w0*(1-k*.12);const m=new THREE.Mesh(new THREE.CylinderGeometry(w*.5,w*.55,th,6),glass(k));
+        m.position.y=y+th/2;m.castShadow=m.receiveShadow=true;g.add(inked(m,'#4A5A66'));y+=th}
+      const sp=new THREE.Mesh(new THREE.CylinderGeometry(h*.004,w0*.1,h*.28,6),mat('#9AAAB6'));sp.position.y=y+h*.14;sp.castShadow=true;g.add(sp);
+      g.position.set(x0+i*gap,0,0);scene.add(g);const pl=new THREE.Mesh(new THREE.BoxGeometry(Math.max(.5,w0*1.4),.05,Math.max(.5,w0*1.4)),mat('#FBF8F0'));pl.position.set(x0+i*gap,.025,0);pl.receiveShadow=true;scene.add(inked(pl));
+      return {g,h,v,val:label(v.shown+(/[a-z]/i.test(v.shown)?'':' '+P.unit),'val',U*.044,'Anton',400),nm:label(v.label,'tag',U*.019,'Inter',800)}}
+    if(/\b(big ben|elizabeth tower|clock tower)\b/i.test(v.label)){   // a clock tower: stone shaft, clock stage with four dials, belfry, spire roof
+      const w=Math.max(.42,h*.13),stone=mat('#CBB68C'),dark=mat('#3B4148'),gold=mat('#C9A227');
+      const add=(geo,m,y,ry)=>{const o=new THREE.Mesh(geo,m);o.position.y=y;if(ry)o.rotation.y=ry;o.castShadow=o.receiveShadow=true;g.add(o);return o};
+      add(new THREE.BoxGeometry(w,h*.58,w,1,Math.max(1,Math.round(h*.58/.18)),1),stone,h*.29);
+      inked(g.children[g.children.length-1],'#8C7650');
+      add(new THREE.BoxGeometry(w*1.16,h*.15,w*1.16),stone,h*.655);
+      for(let k=0;k<4;k++){const a=k*Math.PI/2,f=new THREE.Group(),d=new THREE.Mesh(new THREE.CircleGeometry(w*.42,40),new THREE.MeshBasicMaterial({color:col('#FBF6E4')}));
+        const rim=new THREE.Mesh(new THREE.RingGeometry(w*.42,w*.47,40),gold);f.add(d);f.add(rim);
+        const hh=new THREE.Mesh(new THREE.PlaneGeometry(w*.035,w*.24),new THREE.MeshBasicMaterial({color:col('#222')}));hh.position.set(w*.07,w*.07,.002);hh.rotation.z=-.8;f.add(hh);
+        const mh=new THREE.Mesh(new THREE.PlaneGeometry(w*.025,w*.36),new THREE.MeshBasicMaterial({color:col('#222')}));mh.position.set(0,w*.16,.003);f.add(mh);
+        f.position.set(Math.sin(a)*w*.585,h*.655,Math.cos(a)*w*.585);f.rotation.y=a;g.add(f)}
+      add(new THREE.BoxGeometry(w*1.02,h*.09,w*1.02),stone,h*.775);
+      add(new THREE.BoxGeometry(w*.8,h*.07,w*.8),dark,h*.855);                                      // the open belfry, in shadow
+      add(new THREE.ConeGeometry(w*.78,h*.12,4),dark,h*.95,Math.PI/4);                                // the iron spire roof
+      add(new THREE.CylinderGeometry(.008,w*.05,h*.03,6),gold,h*.985);
+      for(const [sx,sz] of [[1,1],[1,-1],[-1,1],[-1,-1]])add(new THREE.ConeGeometry(w*.07,h*.07,4),dark,h*.765,Math.PI/4).position.set(sx*w*.5,h*.765+h*.035,sz*w*.5);
+      g.position.set(x0+i*gap,0,0);scene.add(g);const pl=new THREE.Mesh(new THREE.BoxGeometry(1.7,.05,1.7),mat('#FBF8F0'));pl.position.set(x0+i*gap,.025,0);pl.receiveShadow=true;scene.add(inked(pl));
+      return {g,h,v,val:label(v.shown+(/[a-z]/i.test(v.shown)?'':' '+P.unit),'val',U*.044,'Anton',400),nm:label(v.label,'tag',U*.019,'Inter',800)}}
+    const tiers=h>1.2?3:h>.5?2:1;let y=0;for(let k=0;k<tiers;k++){const th=h*(k===tiers-1?1-(tiers-1)*.38:.38),w=Math.max(.18,Math.min(1.15,h*.25))*(1-k*.24);
       const floors=Math.max(1,Math.round(th/.16));const m=new THREE.Mesh(new THREE.BoxGeometry(w,th,w,1,floors,1),mat(top?ACC:(k%2?'#5A6670':'#46525C')));
       m.position.y=y+th/2;m.castShadow=m.receiveShadow=true;g.add(m);
       const fl=new THREE.LineSegments(new THREE.WireframeGeometry(new THREE.BoxGeometry(w*1.002,th,w*1.002,1,floors,1)),new THREE.LineBasicMaterial({color:col(top?mix(ACC,'#000000',.35):'#2B343B'),transparent:true,opacity:.55}));fl.position.y=y+th/2;g.add(fl);y+=th}
@@ -423,7 +462,11 @@ function towers3d(){const vs=P.values,n=vs.length,mx=Math.max(...vs.map(v=>v.val
   // a person, for scale, when the tallest is under a kilometre: 1.8 m at the same scale
   const ph=maxh*1.8/mx;if(ph>.012){const man=new THREE.Mesh(new THREE.BoxGeometry(ph*.3,ph,ph*.2),mat(K.mark||'#D7262B'));man.position.set(x0-gap*.55,ph/2,1.2);scene.add(man)}
   const span=(n-1)*gap+1.7,o={tx:0,ty:maxh*.48,tz:0,a0:.55,a1:-.35,r0:Math.max(18,span*(TALL?3.3:2.0)),r1:Math.max(16.5,span*(TALL?3.0:1.8)),h0:maxh*.6,h1:maxh*1.1};
+  let sea=null,seaLb=null;if(P.water){const wh=maxh*P.water/mx;sea=new THREE.Mesh(new THREE.BoxGeometry(span+6,wh,9),new THREE.MeshStandardMaterial({color:col('#3E8FC7'),transparent:true,opacity:.4,roughness:.1,metalness:.1,depthWrite:false}));
+    sea.userData.h=wh;sea.position.set(0,0,0);scene.add(sea);seaLb=label('+'+P.water.toLocaleString('en-US')+' '+P.unit,'box',U*.05,'Anton',400)}
   update=t=>{orbit(t,o);if(tt)tt.style.opacity=seg(t,.1,.3)*leave(t);
+    if(sea){const q=E.inout(seg(t,1.2,Math.max(1,DUR-2.2))),hh=Math.max(.001,sea.userData.h*q);sea.scale.y=hh/sea.userData.h;sea.position.y=hh/2;
+      pin(seaLb,new THREE.Vector3(-(span/2)-2.6,hh,3.2),0,-U*.03);seaLb.style.opacity=seg(t,1.3,.3)*leave(t)}
     ts.forEach((b,i)=>{const p=E.out(seg(t,.3+i*.3,1.0));b.g.scale.y=Math.max(.001,p);
       pin(b.val,new THREE.Vector3(b.g.position.x,b.h*p*1.08,0),0,-U*.036);pin(b.nm,new THREE.Vector3(b.g.position.x,0,1.25),0,U*.03);
       b.val.style.opacity=seg(t,.9+i*.3,.25)*leave(t);b.nm.style.opacity=seg(t,.3+i*.3,.2)*leave(t)})}}
