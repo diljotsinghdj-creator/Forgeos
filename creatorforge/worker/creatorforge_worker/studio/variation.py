@@ -71,6 +71,9 @@ def hex_of(hue: float, light: float = .46, sat: float = .72) -> str:
     return "#%02X%02X%02X" % tuple(round(v * 255) for v in (r, g, b))
 
 
+SIGNATURE_HUE = 50.0   # the signature yellow #FFDD33 (media/vox.py SIGNATURE)
+
+
 def hue_gap(a: float, b: float) -> float:
     d = abs(a - b) % 360
     return min(d, 360 - d)
@@ -126,6 +129,8 @@ def plan(sp: dict, prev: list[dict]) -> dict:
     used = [hue_of(r["accent"]) for r in last3 if re.fullmatch(r"#[0-9A-Fa-f]{6}", str(r.get("accent", "")))]
     # the subject's own hues first; when none clears the last films, walk the wheel in 15-degree steps
     cands = list(base["hues"]) + [h for h in range(0, 360, 15) if h not in base["hues"]]
+    # a film's accent keeps clear of the channel's signature yellow, so the highlighter always stands out
+    cands = [h for h in cands if hue_gap(h, SIGNATURE_HUE) >= 25] or cands
     def score(h):
         if not used:
             return (1, 0)

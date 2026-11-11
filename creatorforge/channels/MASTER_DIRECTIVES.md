@@ -73,6 +73,9 @@ CreatorForge serves only these two channels. A new feature must serve one of the
   style (position, size, weight); colour *roles* (one base, one accent, one signal; the hues change per film); source
   line style and end card; pacing rules (a hook in the first 5 seconds, no intro logo, no generic call to action); the
   audio loudness target.
+- **Signature colour** (owner, 2026-11-11: "Vox style yellow is my pick"): yellow **#FFDD33** is fixed in every film for
+  the highlighter, the key numbers (yellow type on dark scenes, a yellow bar under the figure on light ones) and the
+  signal. Each film's own accent still changes and keeps clear of the yellow.
 - **Variable layer (new every film):** lead visual technique (data, documents, maps, collage, 3D, illustration); palette
   hues taken from the subject; motion language (cut rhythm, camera moves, transition family); typography treatment;
   sound palette; opening shot and chapter structure.

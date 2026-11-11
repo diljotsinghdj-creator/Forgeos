@@ -96,7 +96,7 @@ def direct(film_id: str, title: str, genre: str, concept: dict, scenes: list[dic
     if all(x in used["look"][-2:] for x in looks):
         looks = [x for x in vox.LOOKS if x not in used["look"][-3:]] or looks
     look = _pick(looks, used["look"], seed)
-    accents = [a for a in vox.ACCENTS if a != "yellow"] + ["yellow"]
+    accents = [a for a in vox.ACCENTS if a != "yellow"]   # yellow is the channel signature, never a film accent
     accent = _pick(accents, used["accent"] + [vox.LOOKS[look]["accent"]], seed >> 3)
     cine = _pick(AXES["cinematography"], used["cinematography"], seed >> 5)
     maps = _pick(AXES["maps"], used["maps"], seed >> 7)

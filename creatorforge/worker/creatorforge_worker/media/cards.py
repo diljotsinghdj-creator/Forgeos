@@ -22,7 +22,8 @@ from pathlib import Path
 from . import ff
 
 PAPER = {"editorial": "0xF2ECDF", "investigative": "0xE9E0CC"}
-MARK = {"editorial": "&H002BD6F7", "investigative": "&H00414BD2"}   # yellow highlighter / red-orange marker
+MARK = {"editorial": "&H0033DDFF",   # the channel signature yellow #FFDD33 (ASS colours are BGR)
+         "investigative": "&H00414BD2"}   # yellow highlighter / red-orange marker
 PEN = {"editorial": "&H002B26D6", "investigative": "&H002E10C8"}
 INK = "&H00141414"
 

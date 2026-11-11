@@ -19,6 +19,8 @@ The essentials, in case nothing else is read:
   side is shown.
 - **All videos are in English** (both channels), faceless, no mascot.
 - **No images are created without asking the owner first.** ElevenLabs only with the owner's permission.
+- **Signature colour:** yellow #FFDD33 in every film (highlighter, key numbers, signal), the owner's pick; each
+  film's own accent still changes.
 
 **The owner's five gates** (2026-11-11, enforced by `studio/gates.py` for both channels and every sample with
 `"sample_for"`). A gate stops the studio; it is never worked around:

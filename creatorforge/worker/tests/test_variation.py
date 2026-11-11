@@ -62,3 +62,13 @@ def test_the_ledger_keeps_one_row_per_film_and_key_frames_are_compared(tmp_path)
     kf, probs = v.keyframes(vid, [0.5, 1.5, 2.5], tmp_path / "k", [{"film": "old", "keyframes": [str(x) for x in a]}], tmp_path / "sheet.png")
     assert len(kf) == 3 and Path(kf[0]).is_file() and (tmp_path / "sheet.png").is_file()
     assert probs and "look like old" in probs[0]["problem"]
+
+
+def test_signature_yellow_is_fixed_and_never_a_film_accent():
+    """The owner's pick (2026-11-11): yellow #FFDD33 is the channel signature; a film's accent keeps clear of it."""
+    from creatorforge_worker.media import cards, vox
+    from creatorforge_worker.studio import variation
+    assert vox.SIGNATURE == "#FFDD33" and cards.MARK["editorial"] == "&H0033DDFF"
+    for subject in ("money", "evolution", "culture"):
+        p = variation.plan({"id": "x", "subject": subject, "scenes": [{"graphic": "Counter: 1 → 2"}]}, [])
+        assert variation.hue_gap(p["hue"], variation.SIGNATURE_HUE) >= 25

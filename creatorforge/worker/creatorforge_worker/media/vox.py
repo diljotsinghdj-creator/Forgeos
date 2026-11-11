@@ -29,6 +29,9 @@ from pathlib import Path
 from .ff import MediaError
 
 FONTS = Path(__file__).parent / "vendor" / "fonts"
+# The channel's signature colour (the owner's pick, 2026-11-11: "Vox style yellow is my pick"): fixed in every film for
+# the highlighter, key numbers on dark scenes, and the signal; each film's own accent changes, the signature does not.
+SIGNATURE = "#FFDD33"
 ACCENTS = {"yellow": "#F2C200", "red": "#D7262B", "blue": "#2D6BDB", "orange": "#F07A1A", "teal": "#14968A",
            "green": "#2E9B4F"}
 PAPERS = {"cream": "#EFE8DA", "grey": "#E5E3DE", "white": "#F4F2EE", "dark": "#1B1B1D", "kraft": "#C9A777", "crumple": "#EADFC9", "atlas": "#E9E1C8",
@@ -1627,7 +1630,7 @@ html,body{margin:0;padding:0;background:%PAPER%;overflow:hidden}
 svg{display:block}
 </style><script>%SVGJS%</script><script>%HAND%</script><script>%ILLU%</script></head><body><script>
 const P=%PLAN%, W=%W%, H=%H%, DUR=%DUR%, K=%KIT%;
-const TALL=H>W, VERT=TALL||W<H*1.35, U=Math.min(W,H), ACC=K.acc, INK=K.ink, PAPER=K.paper, DARK=K.dark;
+const TALL=H>W, VERT=TALL||W<H*1.35, U=Math.min(W,H), ACC=K.acc, INK=K.ink, PAPER=K.paper, DARK=K.dark, SIG=K.sig||'#FFDD33';
 // money drawings carry the currency the graphic's own figures are in (a dollar story never shows a rupee note)
 window.CUR=(JSON.stringify(P).match(/[$£€¥₹]/)||['₹'])[0];
 const ACT=K.dark?K.acc:(K.accText||K.acc);   // the accent as type on the paper: dark enough to read
@@ -1693,7 +1696,7 @@ function tag(g,s,x,y,o){o=o||{};const grp=g.group();const size=o.size||U*.021;
   const bb=t.bbox(),pad=size*.55;grp.rect(bb.width+pad*2,bb.height+pad*1.2).move(bb.x-pad,bb.y-pad*.6).fill(o.bg||'#FFFFFF')
     .stroke({color:o.ink||INK,width:Math.max(1,size*.07)}).back();
   grp.attr({transform:`translate(${x},${y})`});grp.data('w',bb.width+pad*2);return grp}
-function highlight(g,bb,start,color){const r=g.rect(0,bb.height*.9).move(bb.x-bb.height*.12,bb.y+bb.height*.08).fill(color||ACC).back();
+function highlight(g,bb,start,color){const r=g.rect(0,bb.height*.9).move(bb.x-bb.height*.12,bb.y+bb.height*.08).fill(color||SIG).back();   // the signature highlighter
   at(start,.45,p=>r.width(Math.max(.1,(bb.width+bb.height*.24)*p)),E.inout);return r}
 function brush(g,x,y,w,h,color,angle){ // a dry-brush stroke: ragged ends, streaky body
   const grp=g.group();const n=26;
@@ -1868,7 +1871,7 @@ function rich(g,s,size,x,y,o){ // a headline where *words* get the accent highli
   o=o||{};const parts=String(s).split(/(\*[^*]+\*)/).filter(Boolean);const grp=g.group().addClass('keep');let cx=0;const marks=[];
   parts.forEach(pt=>{const hl=pt.startsWith('*');const t=T(grp,pt.replace(/\*/g,''),size,cx,0,{family:o.family||'Playfair',weight:o.weight||900,anchor:'start',fill:o.fill||FG});
     const bb=t.bbox();if(hl)marks.push(bb);cx+=bb.width+size*.18});
-  marks.forEach((bb,i)=>highlight(grp,bb,(o.start||.6)+.15*i,o.mark||ACC));
+  marks.forEach((bb,i)=>highlight(grp,bb,(o.start||.6)+.15*i,o.mark||SIG));
   const w=cx-size*.18;grp.attr({transform:`translate(${o.anchor==='middle'?x-w/2:x},${y})`});grp.data('w',w);return grp}
 
 // ---- round 2 scenes ----
@@ -1935,7 +1938,7 @@ function reveal(){ // a document; a magnifier sweeps it and the beam shows the t
   // one type size for every line, the largest at which the longest line still sits inside the page
   let fs=rs*.42;rows.forEach(r=>{const pr=T(L.back,r,fs,0,0,{family:'Mono',weight:700,anchor:'start'});const w=pr.bbox().width;pr.remove();if(w>docW*.84)fs*=docW*.84/w});
   rows.forEach((r,i)=>{const t=T(L.back,r,fs,dx+docW*.08,dy+rs*(i+1.4),{family:'Mono',weight:700,anchor:'start',fill:'#3A3A3A'});wipe(t,.15+i*.05);
-    if(P.mark&&r.toLowerCase().includes(P.mark.toLowerCase()))highlight(hlg,t.bbox(),1.6,'#F2C94C')});
+    if(P.mark&&r.toLowerCase().includes(P.mark.toLowerCase()))highlight(hlg,t.bbox(),1.6,SIG)});
   if(P.title){const g=boxText(L.front,P.title,U*.05,W/2,TALL?H*.07:H*.075,{anchor:'middle',maxw:W*.8,most:1});g.children().forEach(r=>slide(r,.1,0,-H*.04))}
   // the lens: a magnified copy of the document inside a circle that sweeps down
   const R=U*(TALL?.17:.15);const lens=L.front.group();const clipC=draw.clip().add(draw.circle(R*2).center(0,0));
@@ -2063,7 +2066,9 @@ function scale(){ // a balance: weights drop one by one onto the left pan, the b
   FOCUS={x:cx-arm,y:py+U*.08,rx:U*.14,ry:U*.16}}
 function number(){ // a huge number; the subject breaks out of it
   const pic=(((P.pics||[])[0]||{}).img||((P.pics||[])[0]||{}).draw)?(P.pics||[])[0]:null;
-  if(pic&&!TALL&&K.lay==='side')return numberSide(pic);const big=T(L.back,P.number,TALL?W*.42:H*(pic?.5:.56),W/2,pic?(TALL?H*.22:H*.3):(TALL?H*.34:H*.4),{family:'Anton',weight:400,fill:ACT});fit(big,W*.92);
+  if(pic&&!TALL&&K.lay==='side')return numberSide(pic);const big=T(L.back,P.number,TALL?W*.42:H*(pic?.5:.56),W/2,pic?(TALL?H*.22:H*.3):(TALL?H*.34:H*.4),{family:'Anton',weight:400,fill:DARK?SIG:INK});fit(big,W*.92);
+  if(!DARK){const bb=big.bbox(),bar=L.back.rect(0,bb.height*.42).move(bb.x-U*.02,bb.y+bb.height*.5).fill(SIG).back();
+    at(.35,.5,p=>bar.width(Math.max(.1,(bb.width+U*.04)*p)),E.inout)}   // the signature bar under the figure
   slide(big,.05,0,H*.06);
   if(pic){const d0=pic.draw&&window.ILLU[pic.draw],ar0=pic.img?pic.w/pic.h:d0?d0[0]/d0[1]:1;
     const h=TALL?H*.36:Math.min(H*.56,W*.42/ar0,H*.46*(ar0>1.3?1:1.22));   // a wide subject stays under the figure, not over it
@@ -2392,7 +2397,7 @@ function newscard(){ // a news card on grid paper: red date box, the headline hi
   const db=L.front.group();const dt=T(db,P.date,U*.034,0,0,{family:'Inter',weight:600,anchor:'start',fill:'#FFFFFF'});const bb=dt.bbox();
   db.rect(bb.width+U*.04,bb.height+U*.024).move(bb.x-U*.02,bb.y-U*.012).fill('#D32F2F').back();db.attr({transform:`translate(${left+U*.02},${y})`});slide(db,.1,-W*.05,0);
   y+=U*.1;const hs=U*(TALL?.058:.052);const hl=lines(P.headline,hs,maxw,'Inter',800,3);
-  hl.forEach((l,i)=>{const t=T(L.front,l,hs,left,y+i*hs*1.25,{family:'Inter',weight:800,anchor:'start',fill:INK});wipe(t,.3+i*.1);highlight(L.mid,t.bbox(),.8+i*.35,'#F2C94C')});
+  hl.forEach((l,i)=>{const t=T(L.front,l,hs,left,y+i*hs*1.25,{family:'Inter',weight:800,anchor:'start',fill:INK});wipe(t,.3+i*.1);highlight(L.mid,t.bbox(),.8+i*.35,SIG)});
   y+=hl.length*hs*1.25+U*.03;
   if(P.sub){const ss=U*.03;lines(P.sub,ss,maxw,'Inter',400,3).forEach((l,i)=>{const t=T(L.front,l,ss,left+U*.03,y+i*ss*1.4,{family:'Inter',weight:400,anchor:'start',fill:'#333'});wipe(t,1.2+i*.1)});y+=U*.16}
   if(P.source){const ln=L.front.line(left,y,left,y).stroke({color:INK,width:U*.003});at(1.5,.5,p=>ln.plot(left,y,left+W*.24*p,y),E.inout);
@@ -2629,7 +2634,7 @@ function courtdoc(){ // a page of the judgment: court, case, the paragraph in it
   let y=py+ph*.25;const rh=U*.03;greek(page,px+m,y,pw-2*m,3,rh);y+=rh*3.6;
   const qs=VERT?U*.036:U*.03,ql=lines(P.quote,qs,pw-2*m-U*.05,'Playfair',400,7);const q0=y;
   ql.forEach((l,i)=>{const t=T(L.front,l,qs,px+m+U*.05,y+i*qs*1.42,{family:'Playfair',weight:400,anchor:'start',fill:'#111'});const bb=t.bbox();
-    highlight(L.front,bb,1.0+i*.42,mix('#FBF9F3',ACC,.55));t.front()});
+    highlight(L.front,bb,1.0+i*.42,SIG);t.front()});
   const num=(P.ref.match(/(?:para(?:graph)?\.?\s*)(\d+)/i)||[])[1];if(num)T(page,num+'.',qs*.8,px+m,q0,{family:'Playfair',weight:700,anchor:'start',fill:'#1A1A1A'});
   y+=ql.length*qs*1.42+rh*.6;const left=Math.max(0,Math.min(6,Math.floor((py+ph*.9-y)/rh)));greek(page,px+m,y,pw-2*m,left,rh);
   if(P.ref)T(page,P.ref.toUpperCase(),U*.016,px+pw-m,py+ph*.955,{family:'Mono',weight:700,anchor:'end',fill:'#555'});
@@ -3026,7 +3031,7 @@ def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: f
     tone = plan.get("tone") or ("grid" if plan["type"] in ("desk", "reveal", "newscard") else tone)
     paper_hex = look["paper"] if tone == "cream" else PAPERS.get(tone, PAPERS["cream"])
     bg, grain = paper(paper_hex, width, height, work)
-    kit = {"acc": accent_of(theme), "accText": readable(accent_of(theme), paper_hex), "acc2": "#E0442C" if accent_of(theme) != ACCENTS["red"] else "#F2C200", "ink": INK, "paper": paper_hex, "dark": tone == "dark", "tone": tone, "props": props,
+    kit = {"sig": SIGNATURE, "acc": accent_of(theme), "accText": readable(accent_of(theme), paper_hex), "acc2": "#E0442C" if accent_of(theme) != ACCENTS["red"] else "#F2C200", "ink": INK, "paper": paper_hex, "dark": tone == "dark", "tone": tone, "props": props,
            "bg": bg.as_uri(), "grain": grain.as_uri(),
            "mark": look["mark"], "cam": CAMERAS[plan["camera"]] if plan.get("camera") in CAMERAS else _seed("cam", spec, theme) % 4, "exit": plan.get("exit") or EXITS[_seed("exit", spec, theme) % len(EXITS)], "lay": layout if layout in LAYOUT_SETS.get(kind, ()) else
            layout_for(kind, 0, _seed("layout", spec, theme)), "desk": DESKS[_seed("desk", theme) % len(DESKS)], "dir": 1 if _seed("dir", spec) % 2 else -1, "fam": {"Playfair": look["head"], "Anton": look["big"], "Caveat": look["hand"]}}
