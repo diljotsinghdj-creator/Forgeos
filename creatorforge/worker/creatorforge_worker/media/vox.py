@@ -42,7 +42,7 @@ KINDS = ("hero", "desk", "pinboard", "opener", "reveal", "clipping", "pinmap", "
          "seats", "stack", "stand", "fan", "trend", "slice", "route", "compare", "photoline", "tv",
          "clockmap", "tornsplit", "newscard", "blueprint", "pyramid", "flowchart", "linkmap", "orgchart", "heatmap",
          "courtdoc", "table", "interview", "endcard", "polltrack", "area", "candles", "arrows", "railmap", "sizemap",
-         "borders", "morph", "shrink", "photo", "photos", "footage", "satellite", "flowmap", "columns", "dots", "myth", "counter", "staircase", "scale")
+         "borders", "morph", "shrink", "photo", "photos", "footage", "satellite", "flowmap", "columns", "dots", "myth", "counter", "staircase", "scale", "units")
 
 
 # A look per video, so no two films share one face: paper, type, map colours and marker pen differ, the method doesn't.
@@ -610,6 +610,24 @@ def parse_tornsplit(spec: str) -> dict | None:
         return None
     return {"type": "tornsplit", "subjects": _split_list(parts[0])[:2], "headline": parts[1][:40],
             "kicker": parts[2] if len(parts) > 2 else "", "seed": _seed(spec) % 10000}
+
+
+def parse_units(spec: str) -> dict | None:
+    """'Units: Congress-linked 687 vs BJP-leaning 15 | Facebook takedowns, 2019 | one square = one page' - a unit
+    chart: one square per item, each group filling in its own colour while its count runs, so a ratio is seen whole."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    sides = [x.strip() for x in re.split(r"\s+vs\.?\s+|,\s+(?=\D)", parts[0], flags=re.I) if x.strip()][:3]
+    vals = []
+    for sd in sides:
+        pr = _pairs(sd)
+        if not pr:
+            return None
+        vals.append(pr[0])
+    total = sum(v["value"] for v in vals)
+    if len(vals) < 2 or not (2 <= total <= 2500) or any(v["value"] != int(v["value"]) for v in vals):
+        return None              # whole things only, and few enough to draw one by one
+    return {"type": "units", "values": vals, "title": parts[1] if len(parts) > 1 else "",
+            "note": parts[2] if len(parts) > 2 else "", "seed": _seed(spec) % 10000}
 
 
 def parse_newscard(spec: str) -> dict | None:
@@ -1297,7 +1315,7 @@ PARSERS = {"photo": _photo_parser("photo"), "photos": _photo_parser("photos"), "
            "seats": parse_seats, "stack": parse_stack, "stand": parse_stand, "fan": parse_fan, "trend": parse_trend,
            "slice": parse_slice, "route": parse_route, "compare": parse_compare, "photoline": parse_photoline,
            "tv": parse_tv, "clockmap": parse_clockmap, "tornsplit": parse_tornsplit, "newscard": parse_newscard,
-           "blueprint": parse_blueprint}
+           "blueprint": parse_blueprint, "units": parse_units}
 
 
 def _ext_parser(mod: str, kind: str):
@@ -1421,7 +1439,11 @@ def plan_for(kind: str, spec: str) -> dict | None:
     if plan is not None and note:
         plan["marker"] = note
     if plan is not None and marks:
-        plan["logos"] = [dict(logos()[k], key=k) for k in marks]
+        # a party symbol is shown only as the official file; without it the shot carries no stand-in tile
+        # (storyboards can still mark the empty slot with CF_SYMBOL_SLOTS=1)
+        lg = logos()
+        plan["logos"] = [dict(lg[k], key=k) for k in marks
+                         if not lg[k].get("party") or lg[k].get("img") or os.environ.get("CF_SYMBOL_SLOTS") == "1"]
     if plan is not None and comp:
         plan["with"] = comp if comp.lower().startswith("person:") else "person:" + comp
     return plan
@@ -2126,6 +2148,22 @@ function stand(){ // figures standing on their bars, value boxes beside them
     const lb=T(box,(v.label||'').toUpperCase(),U*.022,0,-bb.height*.85,{family:'Inter',weight:800,anchor:'start',ls:'.1em'});
     const bx=TALL?x+bw*.05:x+bw+U*.03,by=TALL?base-h+U*.1:base-h+U*.05;box.attr({transform:`translate(${bx},${by})`});slide(box,st+.6,W*.03,0)});
   if(P.note){const t=T(L.front,P.note.toUpperCase(),U*.02,W/2,base+U*.035,{family:'Mono',weight:700});wipe(t,1.5)}}
+function units(){ // one square per item: each group fills in its own colour as its count runs
+  chartTitle(P.title);const vs=P.values,tot=vs.reduce((a,v)=>a+v.value,0);
+  const gx=TALL?W*.08:W*.06,gw=TALL?W*.84:W*.49,gy=TALL?H*.2:H*.2,gh=TALL?H*.44:H*.6;
+  let cols=Math.max(4,Math.ceil(Math.sqrt(tot*gw/gh)));let rows=Math.ceil(tot/cols);const cell=Math.min(gw/cols,gh/rows),sq=cell*.8;
+  const ox=gx+(gw-cols*cell)/2,oy=gy+(gh-rows*cell)/2;const cols2=['#56626C',ACC==='#56626C'?'#C24A2B':ACC,'#B9A27A'];
+  const fillDur=Math.min(2.6,Math.max(1.2,DUR*.45));let k=0;
+  vs.forEach((v,i)=>{const g=L.mid.group();for(let j=0;j<v.value;j++,k++){const c=k%cols,r=Math.floor(k/cols);
+      g.rect(sq,sq).move(ox+c*cell,oy+r*cell).radius(sq*.14).fill(cols2[i%3])}
+    const st=.35+fillDur*(k-v.value)/tot,du=Math.max(.35,fillDur*v.value/tot);const kids=g.children();kids.forEach(q=>q.opacity(0));
+    at(st,du,p=>{const m=Math.round(p*kids.length);for(let j=0;j<kids.length;j++)kids[j].opacity(j<m?1:0)},E.lin);
+    const lx=TALL?W*(.12+i*.42):W*.69,ly=TALL?H*.74:H*(.32+i*.25);
+    const sw=L.front.rect(U*.03,U*.03).move(lx,ly-U*.085).radius(U*.005).fill(cols2[i%3]);wipe(sw,st);
+    const n=T(L.front,'0',U*.085,lx+U*.05,ly,{family:'Anton',weight:400,anchor:'start',fill:i?cols2[1]:INK});
+    count(n,v.value,st,du,x=>Math.round(x).toLocaleString('en-US'));
+    const lb=T(L.front,(v.label||'').toUpperCase(),U*.026,lx,ly+U*.05,{family:'Inter',weight:800,anchor:'start',ls:'.08em'});wipe(lb,st+.1)});
+  if(P.note){const t=T(L.front,P.note.toUpperCase(),U*.022,W/2,TALL?H*.86:H*.9,{family:'Mono',weight:700});wipe(t,fillDur+.5)}}
 function fan(){ // curved bars around a photo disc, longest first
   const vs=P.values,mx=vs[0].value;const cx=VERT?W/2:W*.4,cy=VERT?H*.42:H*.5,room=Math.min(cx,W-cx,cy,H-cy)-U*.05-Math.max(...vs.map(v=>String(v.label||'').length))*U*.022*.78,rmax=Math.min(VERT?W*.34:H*.44,room),r0=Math.min(VERT?W*.17:H*.2,rmax*.5);
   const a0=-Math.PI*.95,span=Math.PI*1.3,seg=span/vs.length;
@@ -2334,7 +2372,9 @@ function tornsplit(){ // a big condensed headline, a cut-out on paper, a torn ac
   const corner=L.back.group();const cp=[[0,H*.72],[W*.12,H*.8],[W*.16,H],[0,H]];corner.polygon(cp.map(q=>q.join(',')).join(' ')).fill(navy);if(!TALL)slide(corner,.1,-W*.1,0);else corner.remove();
   const pics=P.pics||[];
   const fitH=(pic,h,maxw)=>{const ar=pic.img?pic.w/pic.h:(pic.draw&&ILLU[pic.draw]?ILLU[pic.draw][0]/ILLU[pic.draw][1]:1);return Math.min(h,maxw/ar)};
-  if(pics[0]){const h=fitH(pics[0],TALL?H*.3:H*.56,TALL?W*.8:W*.46);const g=picture(L.hero,pics[0],TALL?W*.42:W*.3,TALL?H*.6:H*.92,h);drop(g,.35,H*.25,-2)}
+  // the first cut-out stands below the headline block (headline, bar, kicker), never across it
+  const hs=TALL?W*.17:H*.2,nl=lines(P.headline.toUpperCase(),hs,TALL?W*.9:W*.56,'Anton',400,2).length,kb=(TALL?H*.1:H*.17)+nl*hs*1.02+(P.kicker?U*.05:0);
+  if(pics[0]){const h=fitH(pics[0],Math.min(TALL?H*.3:H*.56,(TALL?H*.6:H*.92)-kb),TALL?W*.8:W*.46);const g=picture(L.hero,pics[0],TALL?W*.42:W*.3,TALL?H*.6:H*.92,h);drop(g,.35,H*.25,-2)}
   if(pics[1]){const h=fitH(pics[1],TALL?H*.3:H*.62,TALL?W*.6:W*.36);const g=picture(L.mid,pics[1],TALL?W*.62:W*.8,TALL?H*.95:H*.86,h);drop(g,.55,H*.25,2)}
   const size=TALL?W*.17:H*.2;const ls=lines(P.headline.toUpperCase(),size,TALL?W*.9:W*.56,'Anton',400,2);
   ls.forEach((l,i)=>{const t=T(L.front,l,size,W*.04,(TALL?H*.1:H*.17)+i*size*1.02,{family:'Anton',weight:400,anchor:'start',fill:navy});slide(t,.2+i*.12,-W*.05,0)});
@@ -2883,7 +2923,7 @@ function footage(){ // moving footage, frame by frame, with the same annotations
   if(P.annotate&&P.annotate.length){const a=P.annotate[0];FOCUS={x:a.p[0]*W,y:a.p[1]*H,rx:U*.1,ry:U*.1}}
   photoCredit()}
 
-const SCENES={myth,counter,staircase,scale,photo,photos,footage,shrink,morph,borders,courtdoc,table,interview,endcard,polltrack,area,candles,arrows,railmap,sizemap,pyramid,flowchart:flow,linkmap,orgchart,heatmap,hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv,
+const SCENES={units,myth,counter,staircase,scale,photo,photos,footage,shrink,morph,borders,courtdoc,table,interview,endcard,polltrack,area,candles,arrows,railmap,sizemap,pyramid,flowchart:flow,linkmap,orgchart,heatmap,hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv,
   clockmap,tornsplit,newscard,blueprint};
 async function boot(){
   try{await Promise.all(Array.from(document.fonts).map(f=>f.load()))}catch(e){}

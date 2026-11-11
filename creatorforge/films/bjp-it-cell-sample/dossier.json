@@ -1,0 +1,172 @@
+{
+ "topic": "The BJP IT Cell: a 30-second sample",
+ "researched": "2026-11-11",
+ "method": "Web search through a search provider; source pages were not opened from the sandbox, so every quotation is the search engine's summary of the source, marked [summary]. Before scripting, open each source and replace summaries with exact quotations. Statuses follow the studio rules: an allegation is always attributed and paired with the response of the accused where one exists. The Tek Fog investigation was retracted by its publisher and is used only as an example of a collapsed accusation. Studies about online abuse that do not attribute it to the IT cell are never presented as if they do. Gaps: the BJP's own published numbers of IT-cell volunteers; AAP, TMC and other parties' cells; the outcome of the Wire case; the original Washington Post text; written replies from the BJP and Amit Malviya (to be requested). Claims copied from films/bjp-it-cell/dossier.json.",
+ "claims": [
+  {
+   "id": "C04",
+   "claim": "On 17 August 2026 the BJP replaced Amit Malviya as head of the IT Cell with Chhattisgarh leader Deepak Mhaskey, in party president Nitin Nabin's new team. The party gave no public reason.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "2026",
+    "17",
+    "11"
+   ],
+   "sources": [
+    {
+     "title": "Deepak Mhaskey replaces Amit Malviya as BJP IT cell chief (Newslaundry)",
+     "url": "https://www.newslaundry.com/2026/08/17/deepak-mhaskey-replaces-amit-malviya-as-bjp-it-cell-chief",
+     "quote": "[summary] Mhaskey replaces Malviya as head of the BJP IT cell",
+     "date": "2026-08-17"
+    },
+    {
+     "title": "Who is Deepak Mhaskey, BJP's new IT cell chief (Outlook)",
+     "url": "https://www.outlookindia.com/national/who-is-deepak-mhaskey-bjps-new-it-cell-chief",
+     "quote": "[summary] the BJP has not publicly stated why it decided to replace Amit Malviya"
+    },
+    {
+     "title": "BJP replaces Amit Malviya with Deepak Mhaskey as social media chief (The Wire)",
+     "url": "https://thewire.in/politics/bjp-replaces-amit-malviya-with-deepak-mhaskey-as-social-media-chief",
+     "quote": "[summary] Malviya replaced as social media chief"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Malviya remains the party's West Bengal co-in-charge."
+  },
+  {
+   "id": "C07",
+   "claim": "At a meeting of BJP social media volunteers in Kota, Rajasthan, on 22 September 2018, party president Amit Shah said party workers could make any message go viral, true or false. As an example he described a false message, about Akhilesh Yadav slapping his father, that went viral. He said two WhatsApp groups in the 2017 Uttar Pradesh election had 15 lakh and 17 lakh members, 32 lakh in all. The BJP posted the speech on its own YouTube channel. Reported in the same speech: he added that this was something that should not be done (The Logical Indian, citing 26:30 of the BJP's video).",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "2018",
+    "22",
+    "32 lakh",
+    "15 lakh",
+    "17 lakh",
+    "2017"
+   ],
+   "sources": [
+    {
+     "title": "Real or fake, we can make any message viral: Amit Shah (The Quint)",
+     "url": "https://www.thequint.com/news/politics/amit-shah-real-fake-can-make-messages-viral",
+     "quote": "[summary] Shah made the remarks during a social media volunteers' meet at Kota on September 22; the party posted the video on its YouTube channel the same day",
+     "date": "2018-09-22"
+    },
+    {
+     "title": "Why is BJP president Amit Shah inciting party workers to spread lies (The Wire)",
+     "url": "https://m.thewire.in/article/politics/watch-why-is-bjp-president-amit-shah-inciting-party-workers-to-spread-lies",
+     "quote": "[summary] boasted that workers could spread any message regardless of whether it is true or false; 'There was no truth to this message, but it went viral'"
+    },
+    {
+     "title": "Amit Shah's poll plans (National Herald)",
+     "url": "https://www.nationalheraldindia.com/india/bjp-president-amit-shah-poll-plans-tells-cyber-warriors-to-spread-fire-make-even-fake-messages-go-viral",
+     "quote": "[summary] reports the 32 lakh figure"
+    },
+    {
+     "title": "'BJP Workers Have The Power To Make Even Fake Messages Go Viral,' Says Amit Shah (The Logical Indian)",
+     "url": "https://thelogicalindian.com/news/amit-shah-speech/",
+     "quote": "[summary] he goes on to say this is something that shouldn't be done (26:30 in the video)"
+    }
+   ],
+   "contradictions": [
+    "Some outlets give 31 lakh; the 15 + 17 lakh split is consistent."
+   ],
+   "notes": "Use the BJP's own upload of the speech, and quote the exact Hindi words with their context. Check whether Shah also told workers not to spread false messages; if he did, the film must say so. Caveat found 2026-11-11 in The Logical Indian; other reports omit it. Check the exact words at 26:30 of the BJP upload before publishing."
+  },
+  {
+   "id": "C08",
+   "claim": "For the 2019 general election the BJP planned a 'cell phone pramukh' for each polling booth, reported as about 900,000 volunteers, each running WhatsApp groups that pass on material from the central IT cell through the state units.",
+   "status": "reported",
+   "confidence": "medium",
+   "figures": [
+    "2019",
+    "900,000",
+    "9 lakh"
+   ],
+   "sources": [
+    {
+     "title": "India's WhatsApp election (Down To Earth, Williams & Kamra)",
+     "url": "https://www.downtoearth.org.in/amp/story/general-elections-2019/india-s-whatsapp-election-political-parties-risk-undermining-democracy-with-technology-63559",
+     "quote": "[summary] more than 900,000 volunteer cell phone pramukhs"
+    },
+    {
+     "title": "BJP designs WhatsApp strategy for 2019 (Oneindia)",
+     "url": "https://www.oneindia.com/india/bjp-designs-whatsapp-strategy-for-2019-lok-sabha-elections-2785324.html",
+     "quote": "[summary] around 900,000, one for each polling station",
+     "date": "2018-09"
+    },
+    {
+     "title": "BJP to appoint cell phone pramukhs (Latestly)",
+     "url": "https://www.latestly.com/india/politics/lok-sabha-elections-2019-bjp-to-appoint-nealy-1-lakh-cell-phone-pramukh-for-extensive-whatsapp-based-campaign-410887.html",
+     "quote": "[summary] each pramukh would create three WhatsApp groups per polling station; material supplied by the central IT cell via state units"
+    }
+   ],
+   "contradictions": [
+    "Latestly's headline says 'nearly 1 lakh'; other reports say about 900,000."
+   ],
+   "notes": "These are plans the party described, not counts: say 'the party planned'."
+  },
+  {
+   "id": "C18",
+   "claim": "On 1 April 2019 Facebook removed 687 pages and accounts it linked to the Congress IT cell, for 'coordinated inauthentic behaviour'. It also removed 15 pages, groups and accounts linked to Silver Touch, an Ahmedabad IT firm seen as close to the BJP. One of those pages, 'The India Eye', had 2.6 million followers.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "2019",
+    "687",
+    "15",
+    "2.6 million"
+   ],
+   "sources": [
+    {
+     "title": "Facebook takes down hundreds of pro-Congress pages, BJP pages also hit (BOOM)",
+     "url": "https://www.boomlive.in/facebook-takes-down-hundreds-of-pro-congress-pages-bjp-pages-also-hit/",
+     "quote": "[summary] 687 pages and accounts linked to the INC IT cell; 15 linked to Silver Touch; The Indian Eye had 2.6 million followers"
+    },
+    {
+     "title": "Explainer: Why did Facebook take down BJP and Congress-linked pages? (Dawn)",
+     "url": "https://www.dawn.com/news/1473455",
+     "quote": "[summary] coordinated inauthentic behaviour by both"
+    },
+    {
+     "title": "Facebook removes 702 pages (The Quint)",
+     "url": "https://www.thequint.com/elections/facebook-removes-702-pages-congress-bjp-linked-it-firm-silver-touch",
+     "quote": "[summary] 702 pages and accounts linked to the INC and Silver Touch"
+    }
+   ],
+   "contradictions": [
+    "Ad spend reported as about $39,000 (Congress-linked) and $70,000 or $79,000 (Silver Touch).",
+    "Congress said none of its official pages were removed."
+   ],
+   "notes": "Facebook named the Congress IT cell but did not name the BJP. Silver Touch was reported to be behind the NaMo app, which Amit Malviya denied. Fairness: both sides were hit."
+  },
+  {
+   "id": "C46",
+   "claim": "The BJP's influencer outreach spanned 18 states and thousands of creators, according to Newslaundry in 2023. Since August 2026, under the new team, its posts have shifted to fast reels, memes, rap and internet slang.",
+   "status": "reported",
+   "confidence": "medium",
+   "figures": [
+    "18",
+    "2023",
+    "2026"
+   ],
+   "sources": [
+    {
+     "title": "BJP's social media push: outreach spans 18 states, 1000s of influencers (Newslaundry)",
+     "url": "https://www.newslaundry.com/2023/07/31/bjps-social-media-push-outreach-efforts-spans-18-states-1000s-of-influencers",
+     "quote": "[summary] 18 states, thousands of influencers"
+    },
+    {
+     "title": "Rap, memes and internet slang mark BJP's revamped digital outreach (Newslaundry)",
+     "url": "https://www.newslaundry.com/2026/10/26/rap-memes-and-internet-slang-mark-bjps-revamped-digital-outreach",
+     "quote": "[summary] since August, fast-paced reels with trending music, memes and slang",
+     "date": "2026-10-26"
+    }
+   ],
+   "contradictions": [],
+   "notes": ""
+  }
+ ]
+}

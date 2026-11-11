@@ -651,9 +651,14 @@ def _illustration_tag(width: int, height: int, end: str) -> str:
 def chat_lines(spec: str, theme: str, width: int, height: int, seconds: float):
     """A recreated (fictional, labelled) text conversation: bubbles pop in one by one, the other side's after a
     'typing' dots bubble. "Chat: Unknown number | them: Hi, is this Sam? · me: Wrong number · them: Oh, sorry!" """
-    head, _, body = spec.partition("|")
-    if not body.strip():
-        head, body = "", head
+    # options after the messages ("| app: whatsapp", "| logo: whatsapp") style the app; they are never message text
+    segs = [x.strip() for x in (spec or "").split("|")]
+    opts = {}
+    while len(segs) > 1 and re.match(r"^(app|logo|badge)\s*:", segs[-1], re.I):
+        k, _, v = segs.pop().partition(":")
+        opts[k.strip().lower()] = v.strip().lower()
+    wa = "whatsapp" in (opts.get("app", "") + opts.get("logo", ""))
+    head, body = (segs[0], " | ".join(segs[1:])) if len(segs) > 1 else ("", segs[0])
     msgs = []
     for part in [x.strip() for x in re.split(r"·|•", body) if x.strip()][:7]:
         who, _, text = part.partition(":")
@@ -664,17 +669,33 @@ def chat_lines(spec: str, theme: str, width: int, height: int, seconds: float):
     L, T, R, B, pad, size, out = _phone(width, height)
     end = _ts(seconds)
     bar = size * 2.4
-    out.append(f"Dialogue: 3,{_ts(0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c&HFFFFFF&}}{_rect(L + 4, T + size, R - 4, T + size + bar)}")
-    if head.strip():
-        out.append(f"Dialogue: 4,{_ts(0)},{end},T,,0,0,0,,{{\\an5\\pos({(L + R) / 2:.0f},{T + size + bar / 2:.0f})\\fs{int(size * 0.85)}}}"
-                   f"{_esc(head.strip())}")
+    if wa:   # the messaging app's look: green header, beige wallpaper, light-green own bubbles (a labelled recreation)
+        out.append(f"Dialogue: 3,{_ts(0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c&H00DDE5EC&}}{_rect(L + 4, T + size, R - 4, B - size * .6)}")
+        out.append(f"Dialogue: 3,{_ts(0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c&H00545E07&}}{_rect(L + 4, T + size, R - 4, T + size + bar)}")
+        out.append(f"Dialogue: 4,{_ts(0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c&H00C9C9C9&}}"
+                   f"{_rect(L + pad, T + size + bar * .2, L + pad + bar * .6, T + size + bar * .8, bar * .3)}")
+        if head.strip():
+            out.append(f"Dialogue: 4,{_ts(0)},{end},T,,0,0,0,,{{\\an4\\pos({L + pad + bar * .8:.0f},{T + size + bar * .3:.0f})\\fs{int(size * 0.72)}\\b1\\1c&HFFFFFF&}}"
+                       f"{_esc(head.strip())}")
+            out.append(f"Dialogue: 4,{_ts(0)},{end},T,,0,0,0,,{{\\an4\\pos({L + pad + bar * .8:.0f},{T + size + bar * .8:.0f})\\fs{int(size * 0.46)}\\1c&HD8E8D0&}}"
+                       f"{len(msgs) + 41} participants")
+        mine_col, their_col = "&H00C6F8DC&", "&H00FFFFFF&"
+    else:
+        out.append(f"Dialogue: 3,{_ts(0)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c&HFFFFFF&}}{_rect(L + 4, T + size, R - 4, T + size + bar)}")
+        if head.strip():
+            out.append(f"Dialogue: 4,{_ts(0)},{end},T,,0,0,0,,{{\\an5\\pos({(L + R) / 2:.0f},{T + size + bar / 2:.0f})\\fs{int(size * 0.85)}}}"
+                       f"{_esc(head.strip())}")
     y = T + size + bar + pad
     per = min(0.9, max(0.35, (seconds - 0.6) / len(msgs)))
     t = 0.25
-    mine_col, their_col = MARK[theme], "&H00E4E1DE&"
+    if not wa:
+        mine_col, their_col = MARK[theme], "&H00E4E1DE&"
     per_row = max(8, int(((R - L) * 0.72 - size * 1.2) / (size * 0.56)))
     for mine, text in msgs:
+        fwd = bool(re.match(r"^fwd\s*:", text, re.I))
+        text = re.sub(r"^fwd\s*:\s*", "", text, flags=re.I) if fwd else text
         rows = _wrap(text, per_row, 4)
+        rows = (["» Forwarded many times"] + rows) if fwd else rows
         bh = len(rows) * size * 1.25 + size * 0.8
         bw = min((R - L) * 0.72, max(len(r) for r in rows) * size * 0.56 + size * 1.2)
         if y + bh > B - pad:
@@ -692,7 +713,7 @@ def chat_lines(spec: str, theme: str, width: int, height: int, seconds: float):
         out.append(f"Dialogue: 5,{_ts(t)},{end},T,,0,0,0,,{{\\an7\\pos(0,0)\\p1\\bord0\\shad0\\1c{mine_col if mine else their_col}}}"
                    f"{_rect(x0, y, x0 + bw, y + bh, size * 0.7)}")
         out.append(f"Dialogue: 6,{_ts(t)},{end},T,,0,0,0,,{{\\an7\\pos({x0 + size * 0.6:.0f},{y + size * 0.4:.0f})\\fs{size}"
-                   f"\\fad(80,0)}}" + "\\N".join(_esc(r) for r in rows))
+                   f"\\fad(80,0)}}" + "\\N".join(("{\\i1\\fs%d\\1c&H8A8A8A&}%s{\\i0\\fs%d\\1c&H202020&}" % (int(size * .78), _esc(r), size)) if fwd and k == 0 else _esc(r) for k, r in enumerate(rows)))
         t += per * 0.6
         y += bh + size * 0.7
     out.append(_illustration_tag(width, height, end))
