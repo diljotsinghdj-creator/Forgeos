@@ -121,7 +121,7 @@
    "delivery": "measured",
    "pause": 0.1,
    "narration": "It has room for about twenty thousand standard containers.",
-   "graphic": "Hero: container ship | ROOM FOR 20,000 | containers · TEU | twenty-foot boxes, by capacity",
+   "graphic": "Desk: container ship + documents | 20,000 BOXES | room for twenty-foot containers",
    "claims": [
     "C2"
    ],
@@ -200,7 +200,7 @@
    "delivery": "measured",
    "pause": 0.1,
    "narration": "Tugs pulled, and she floated free.",
-   "graphic": "Pinboard: Ever Given · 23 MAR 2021 · 29 MAR 2021 · FREED | Six days, start to finish",
+   "graphic": "Newscard: 29 March 2021 | Ever Given blocking Suez Canal re-floated | tugs and a high tide free the ship | | Seatrade Maritime",
    "claims": [
     "C8",
     "C1"
