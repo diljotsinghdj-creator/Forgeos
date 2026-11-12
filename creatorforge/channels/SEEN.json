@@ -257,5 +257,29 @@
   ],
   "voice": "bm_lewis",
   "look": "chart"
+ },
+ {
+  "id": "anchoring-sample",
+  "kind": "sample",
+  "channel": "dragon-psychology",
+  "topic": "anchoring",
+  "date": "2026-11-12",
+  "engine": "historical-echo",
+  "hook_mechanism": "a rigged 1974 wheel, then the first number in your own day",
+  "hook_line": "In 1974, two psychologists rigged a wheel.",
+  "opening": "statement",
+  "shots": [
+   "Statement: A *rigged* wheel, 1974",
+   "Photo: asset:P0007 | push | A gambling wheel (Library of Congress) | illustrative",
+   "Photo: asset:P0008 | pan-right | Only two numbers ever came up | illustrative",
+   "Search: share of UN members that are African | Higher or lower than the wheel? · Your best guess",
+   "Chart: 25 vs 45 | after a 10, after a 65",
+   "Statement: A *meaningless* number moved it",
+   "Timeline: 1974 the rigged wheel → 2014 many labs repeat it | It held",
+   "Steps: First number → Your guess → Your price? | At the till: the evidence is mixed",
+   "Statement: Who picked the *first number*?"
+  ],
+  "voice": "bf_alice",
+  "look": "archive"
  }
 ]

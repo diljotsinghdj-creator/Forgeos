@@ -106,5 +106,35 @@
    "photo",
    "photo"
   ]
+ },
+ {
+  "id": "anchoring-sample",
+  "title": "The rigged wheel in 30 seconds",
+  "channel": "sample",
+  "engine": "historical-echo",
+  "hook_mechanism": "a rigged 1974 wheel, then the first number in your own day",
+  "metaphors": [
+   "the wheel's number as the first number you ever see"
+  ],
+  "look": "archive",
+  "accent": "#2121CA",
+  "cinematography": "drifting",
+  "maps": "relief",
+  "infographics": "editorial",
+  "animation": "hand",
+  "rhythm": "brisk",
+  "music": "drone",
+  "grade": "cool",
+  "kinds": [
+   "statement",
+   "photo",
+   "photo",
+   "search",
+   "chart",
+   "statement",
+   "timeline",
+   "steps",
+   "statement"
+  ]
  }
 ]

@@ -1,0 +1,81 @@
+{
+ "topic": "Anchoring: the rigged wheel of 1974 and the first number today (30-second sample)",
+ "researched": "2026-11-12",
+ "method": "Search summaries of the 1974 Science paper and later replication literature, checked across independent sources; the original paper was not re-opened.",
+ "claims": [
+  {
+   "id": "C1",
+   "claim": "In a 1974 experiment, Tversky and Kahneman used a wheel of fortune rigged to stop only at 10 or 65. Participants then estimated the percentage of UN member countries that are African; the median estimate was 25 after a 10 and 45 after a 65.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "1974",
+    "10",
+    "65",
+    "25",
+    "45",
+    "20"
+   ],
+   "sources": [
+    {
+     "title": "Tversky, A. & Kahneman, D. (1974) Judgment under Uncertainty: Heuristics and Biases. Science 185(4157):1124-1131",
+     "url": "https://doi.org/10.1126/science.185.4157.1124",
+     "quote": "[method and medians as summarised, read 2026-11-12] wheel stopping at 10 or 65; median estimates 25 and 45"
+    },
+    {
+     "title": "University College Dublin economics working paper WP2024/07 (summary of the 1974 anchoring experiment)",
+     "url": "https://www.ucd.ie/economics/t4media/WP2024_07.pdf",
+     "quote": "[search summary 2026-11-12] wheel at 10 or 65 shifted estimates by 20 points"
+    },
+    {
+     "title": "LibreTexts Cognitive Psychology 9.3: Anchoring",
+     "url": "https://socialsci.libretexts.org/Bookshelves/Psychology/Cognitive_Psychology/Cognitive_Psychology_(Andrade_and_Walker)/09%3A_Decision_Making/9.03%3A_Anchoring",
+     "quote": "[search summary] median estimates 25% and 45%"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Replication status: robust for factual estimates (C2)."
+  },
+  {
+   "id": "C2",
+   "claim": "The Many Labs 1 project (Klein et al., 2014) replicated classic anchoring effects across many labs, with effects at least as large as the originals; anchoring is among psychology's best-replicated findings.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "2014"
+   ],
+   "sources": [
+    {
+     "title": "Klein, R. A. et al. (2014) Investigating variation in replicability: A 'Many Labs' replication project. Social Psychology 45(3):142-152",
+     "url": "https://osf.io/wx7ck/wiki",
+     "quote": "[project wiki, 2026-11-12] anchoring replicated; numbers corrected 2017"
+    },
+    {
+     "title": "Judgment and Decision Making 14(4), 2019, pp. 470-487",
+     "url": "https://dlab.sauder.ubc.ca/sjdm/journal/19/190426/jdm190426.html",
+     "quote": "[search summary] Many Labs showed stronger effects than the original for factual anchoring"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Replication status: robust (factual estimation)."
+  },
+  {
+   "id": "C3",
+   "claim": "For prices and product valuations, anchoring evidence is mixed: replications have been inconsistent, including a failed direct replication of a well-known price-anchoring study.",
+   "status": "disputed",
+   "confidence": "medium",
+   "figures": [],
+   "sources": [
+    {
+     "title": "Judgment and Decision Making 14(4), 2019, pp. 470-487",
+     "url": "https://dlab.sauder.ubc.ca/sjdm/journal/19/190426/jdm190426.html",
+     "quote": "[search summary 2026-11-12] replications of anchoring for product valuations have been inconsistent"
+    }
+   ],
+   "contradictions": [
+    "Retail research reports that advertised reference prices raise perceived discounts (Journal of Marketing Research, 2021)."
+   ],
+   "notes": "Shown as mixed, badged DISPUTED."
+  }
+ ]
+}

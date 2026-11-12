@@ -97,5 +97,28 @@
   "beds": [
    "wind_0035"
   ]
+ },
+ {
+  "film": "anchoring-sample",
+  "date": "2026-11-12",
+  "channel": "sample",
+  "question": "Why does a random number change your answer?",
+  "claim": "In 1974 a rigged wheel moved people's estimates by 20 points; the effect replicates, though for prices the evidence is mixed.",
+  "native": "the 1974 rigged wheel, number cards, price stickers",
+  "lead": "illustration",
+  "support": "collage",
+  "accent": "#2121CA",
+  "opening": "statement",
+  "family": "wipes",
+  "tempo": 1.5,
+  "avg_shot": 3.59,
+  "camera": "static, hard cuts",
+  "sound": "low drone; typewriter ticks",
+  "keyframes": [
+   "/home/user/Forgeos/creatorforge/channels/studio_history/keyframes/anchoring-sample/key1.png",
+   "/home/user/Forgeos/creatorforge/channels/studio_history/keyframes/anchoring-sample/key2.png",
+   "/home/user/Forgeos/creatorforge/channels/studio_history/keyframes/anchoring-sample/key3.png"
+  ],
+  "beds": []
  }
 ]

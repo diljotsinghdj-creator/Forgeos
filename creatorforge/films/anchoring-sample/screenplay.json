@@ -1,0 +1,151 @@
+{
+ "id": "anchoring-sample",
+ "title": "The rigged wheel in 30 seconds",
+ "channel": "sample",
+ "sample_for": "dragon-psychology",
+ "topic": "anchoring",
+ "target_seconds": 30,
+ "subject": "psychology",
+ "genre": "psychology",
+ "native_material": "the 1974 rigged wheel, number cards, price stickers",
+ "engine": "historical-echo",
+ "hook_mechanism": "a rigged 1974 wheel, then the first number in your own day",
+ "metaphors": [
+  "the wheel's number as the first number you ever see"
+ ],
+ "pick": {
+  "engine": "historical-echo",
+  "pitched": [
+   "historical-echo",
+   "reverse-autopsy",
+   "trojan-horse"
+  ],
+  "owner_words": "\"pick any topic and give 30 seconds sample video. im giving you free hand, do not ask me.\" (the owner delegated the pick; live-viewer-trap excluded as the last piece's engine; trojan-horse flagged as retired for samples)",
+  "date": "2026-11-12"
+ },
+ "language": "en",
+ "lang": "en-gb",
+ "voice": "bf_alice",
+ "transition_family": "wipes",
+ "concept": {
+  "logline": "A rigged 1974 wheel shows how the first number you see bends your guess.",
+  "central_question": "Why does a random number change your answer?",
+  "claim": "In 1974 a rigged wheel moved people's estimates by 20 points; the effect replicates, though for prices the evidence is mixed."
+ },
+ "thumbnail": "Statement: Who picked the *first number*?",
+ "cutdowns": [],
+ "scenes": [
+  {
+   "id": "S1",
+   "act": "hook",
+   "purpose": "orient",
+   "delivery": "curious",
+   "pause": 0.1,
+   "narration": "In 1974, two psychologists rigged a wheel.",
+   "graphic": "Statement: A *rigged* wheel, 1974",
+   "claims": [
+    "C1"
+   ]
+  },
+  {
+   "id": "S2",
+   "act": "world",
+   "purpose": "explain",
+   "delivery": "measured",
+   "pause": 0.05,
+   "narration": "It could only stop on two numbers.",
+   "graphic": "Photo: asset:P0007 | push | A gambling wheel | illustrative",
+   "claims": [
+    "C1"
+   ],
+   "transition": "wipe"
+  },
+  {
+   "id": "S3",
+   "act": "world",
+   "purpose": "explain",
+   "delivery": "measured",
+   "pause": 0.15,
+   "narration": "Ten, or sixty-five.",
+   "graphic": "Photo: asset:P0008 | pan-right | Only two numbers ever came up | illustrative",
+   "claims": [
+    "C1"
+   ],
+   "transition": "slide"
+  },
+  {
+   "id": "S4",
+   "act": "investigation",
+   "purpose": "explain",
+   "delivery": "curious",
+   "pause": 0.2,
+   "narration": "Then people guessed what share of UN members are African.",
+   "graphic": "Photo: asset:P0008 | pull | Your guess: what share of the UN is African? | illustrative",
+   "claims": [
+    "C1"
+   ],
+   "transition": "slide"
+  },
+  {
+   "id": "S5",
+   "act": "discovery",
+   "purpose": "explain",
+   "delivery": "measured",
+   "pause": 0.25,
+   "narration": "After a 10, the middle guess was 25 percent. After 65, it was 45.",
+   "graphic": "Chart: 25 vs 45 | after a 10, after a 65",
+   "claims": [
+    "C1"
+   ],
+   "transition": "wipe"
+  },
+  {
+   "id": "S6",
+   "act": "discovery",
+   "purpose": "move",
+   "delivery": "grave",
+   "pause": 0.3,
+   "narration": "A meaningless number moved the answer.",
+   "graphic": "Statement: A *meaningless* number moved it",
+   "claims": []
+  },
+  {
+   "id": "S7",
+   "act": "consequences",
+   "purpose": "explain",
+   "delivery": "measured",
+   "pause": 0.15,
+   "narration": "Big replications since have found the same pull.",
+   "graphic": "Timeline: 1974 the rigged wheel → 2014 many labs repeat it | It held",
+   "claims": [
+    "C1",
+    "C2"
+   ],
+   "transition": "wipe"
+  },
+  {
+   "id": "S8",
+   "act": "consequences",
+   "purpose": "explain",
+   "delivery": "measured",
+   "pause": 0.2,
+   "narration": "With prices, researchers say the evidence is mixed.",
+   "graphic": "Steps: First number → Your guess → Your price? | At the till: the evidence is mixed",
+   "claims": [
+    "C3"
+   ],
+   "transition": "slide"
+  },
+  {
+   "id": "S9",
+   "act": "ending",
+   "purpose": "move",
+   "delivery": "grave",
+   "pause": 0.5,
+   "narration": "So ask: who picked the first number?",
+   "graphic": "Statement: Who picked the *first number*?",
+   "claims": [],
+   "transition": "wipe"
+  }
+ ]
+}
