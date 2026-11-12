@@ -78,3 +78,19 @@ truthfulness and safety first).
    (vox-method TRANSCRIPT_STUDY) is a reference only.
 5. **"Episode Visual Theme" at the top of every response** applies to responses that produce a video, script or
    Artifact.
+
+## What the studio does with this system (built 2026-11-12)
+
+- **Archetypes:** the art direction gives every film one of A–E as its "Episode Visual Theme". It fits the genre
+  (Dragon Psychology counts as psychology), is never the last film's, and the one used longest ago goes first. The
+  owner can pick one with `"art": {"archetype": "C"}` in the screenplay. It is written at the top of art_direction.md,
+  in PRESHOW.md and in the studio history. B and E are dark in this system; the film renderer draws ink on light
+  paper, so films use a light variant of their palette until it has a dark-ink mode (PRESHOW says so). The film's
+  accent hue still comes from the subject (variation plan); #FFDD33 stays the signal.
+- **Optical finish:** every studio film gets a 1 px colour-plate offset, a soft radial vignette, and paper grain
+  swapped every 10 frames. The chromatic split is across the whole frame, not only near the edges.
+- **[SFX_LOG]:** every render writes SFX_LOG.md next to PRESHOW.md, and the mix follows it: foley low-passed at
+  800 Hz and 2 frames early, a stereo room tone at −35 dB under everything, and an analog noise floor at −42 dB where
+  the music drops out.
+- **Not built yet:** redaction tape, the waveform transcript card with word-by-word highlight, pop-up monuments and
+  the CSS 3D stage in films. Stamps, red-string boards, halftone cut-outs from real photos and torn paper already exist.

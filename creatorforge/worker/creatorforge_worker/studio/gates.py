@@ -227,6 +227,9 @@ def preshow(sp: dict, gate_issues: list[dict], timeline: list[dict], kinds: list
     L += ["", "## Against what was asked", ""]
     L.append(f"- Length: {secs:.1f}s" + (f" against {tgt}s asked" + (" (over)" if secs > tgt * 1.05 else "") if tgt else ""))
     L.append(f"- Language: {sp.get('language', '?')}; channel: {channel_of(sp) or sp.get('channel', '?')}")
+    art = report.get("art") or {}
+    if art.get("episode_visual_theme"):
+        L.append(f"- Episode Visual Theme: {art['episode_visual_theme']}" + (" (dark archetype on its light variant)" if "light variant" in art.get("archetype_note", "") else ""))
     L.append(f"- Voice: {sp.get('voice', '?')}" + ("" if _owner_voice(sp.get("voice", "")) else " (a stand-in, not the owner's ElevenLabs voice)"))
     L += ["", "## Stand-ins and gaps", ""]
     gaps = list(extra.get("symbols", []))
@@ -246,6 +249,7 @@ def preshow(sp: dict, gate_issues: list[dict], timeline: list[dict], kinds: list
         role = ("evidence" if k in EVIDENCE_KINDS else "explains" if k in EXPLAIN_KINDS else "recreation" if k in RECREATION_KINDS
                 else "still" if k in STILL_KINDS else "builds")
         L.append(f"| {t['scene']} | {t['start']:.1f}-{t['end']:.1f}s | {t['end'] - t['start']:.1f}s | {k} | {role} |")
+    L += ["", "Sound: SFX_LOG.md (next to this file) has every foley, room-tone and music cue with its time and level."]
     L += ["", "## Brain Log rules to check by eye", ""]
     L += [f"- {r}" for r in extra.get("brainlog", [])] or ["- (no Brain Log found)"]
     return "\n".join(L) + "\n"

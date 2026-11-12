@@ -39,6 +39,11 @@ GRADES = {"none": "", "mono": "grayscale(1) contrast(1.12)", "warm": "sepia(.22)
 NUM = r"-?(?:\d+(?:\.\d+)?|\.\d+)"          # 0.3, .3, 12
 
 
+# the settings a Photo / Photos / Footage line understands; any other "word: text" part is caption text
+OPTION_KEYS = {"annotate", "at", "depth", "follow", "frame", "grade", "in", "labels", "light", "move", "speed", "subject",
+               "then", "badge", "fx", "inset", "exit", "camera", "src", "logo", "logos", "with", "marker", "voice"}
+
+
 def _floats(s: str) -> list[float]:
     return [float(x) for x in re.findall(NUM, s or "")]
 
@@ -70,7 +75,7 @@ def parse(kind: str, spec: str) -> dict | None:
     opts, free = {}, []
     for p in parts[1:]:
         k, sep, v = p.partition(":")
-        if sep and re.fullmatch(r"[a-z]+", k.strip().lower()):
+        if sep and k.strip().lower() in OPTION_KEYS:     # only known settings: "Guess: how much…" stays a caption
             opts[k.strip().lower()] = v.strip()
         elif p:
             free.append(p)

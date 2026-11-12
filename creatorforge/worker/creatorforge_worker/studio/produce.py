@@ -29,6 +29,7 @@ import threading
 from pathlib import Path
 
 from ..media import ambience, ff, motion, quality, render, scene3d, sfx, sfx_builtin, vox
+from ..media.ff import MediaError
 from . import artdirection, score, voice, writer
 from .dossier import Dossier, figures_in
 
@@ -118,6 +119,19 @@ def _render_scene(kind, spec, theme, w, h, seconds, out, work, fps, layout, fetc
         if plan is None:
             raise ProductionStopped(f"{kind}: can't read '{spec[:60]}'")
         return _sun.render(plan, w, h, seconds, out, fps)
+    if kind == "fly":
+        # a real-map fly-in (map tiles or satellite when the network has them); offline, the globe fly-in to the same place
+        from ..media import flyover as _fly, globe as _globe, maps as _maps
+        fplan = _fly.parse(spec)
+        if fplan is not None:
+            try:
+                return _fly.render(fplan, theme, w, h, seconds, out, work)
+            except MediaError:
+                pass
+        plan = _maps.parse(re.sub(r"=[^→|]*", "", spec))
+        if plan is None:
+            raise ProductionStopped(f"fly: the map doesn't know the place in '{spec[:60]}'")
+        return _globe.render(plan, theme, w, h, seconds, out, work)
     if kind in ("globe", "map"):
         # the globe fly-in and the flat map, drawn offline from the bundled Natural Earth shapes
         from ..media import globe as _globe, maps as _maps
@@ -279,7 +293,8 @@ def produce(screenplay: Path | str, dossier: Path | str, out_dir: Path | str, si
 
     # 3 art direction
     hist = [x for x in artdirection.history(hdir) if x.get("id") != film]
-    ad = artdirection.direct(film, sp.get("title", film), sp.get("genre", ""), sp.get("concept", {}), sp["scenes"], hist, sp.get("art"))
+    ad = artdirection.direct(film, sp.get("title", film), sp.get("genre", ""), sp.get("concept", {}), sp["scenes"], hist, sp.get("art"),
+                                channel=sp.get("channel", ""))
     (dirs["writing"] / "art_direction.md").write_text(artdirection.to_markdown(ad), encoding="utf-8")
     (dirs["writing"] / "art_direction.json").write_text(json.dumps(ad, ensure_ascii=False, indent=1), encoding="utf-8")
     step("art direction", note=f"{ad['look']} / {ad['accent']} / {ad['cinematography']} / {ad['rhythm']} / {ad['music']}")
@@ -478,12 +493,17 @@ def produce(screenplay: Path | str, dossier: Path | str, out_dir: Path | str, si
     else:
         music = score.compose([tuple(a) for a in acts], ad["music"], dirs["audio"])
     mix = dirs["audio"] / "mix.wav"
-    render.mix_audio(narr, music, total, mix, threading.Event(), sfx=sorted(hits + beds, key=lambda x: x[1]))
+    # the owner's [SFX_LOG]: foley low-passed and 2 frames early, room tone under everything, a noise floor in music drops
+    from . import sfxlog
+    foley = sfxlog.treat_foley(hits, fps)
+    floor = sfxlog.floor_beds(total, timeline, dirs["audio"])
+    (out / "SFX_LOG.md").write_text(sfxlog.markdown(sp.get("title", film), timeline, foley, beds, floor, fps, ad["music"]), encoding="utf-8")
+    render.mix_audio(narr, music, total, mix, threading.Event(), sfx=sorted(foley + beds + floor, key=lambda x: x[1]))
     step("sound", note=f"score ({ad['music']}, {score.LAST_HOW or 'none'}), {len(hits)} effects ({bank.describe()}), {len(beds)} ambience beds")
 
     # 9 the edit
     final = dirs["video"] / f"{film}.mp4"
-    expected = render.render_video(clips, mix, None, w, h, final, work, threading.Event(), grade=ad.get("grade", ""))
+    expected = render.render_video(clips, mix, None, w, h, final, work, threading.Event(), grade=ad.get("grade", "") + "+optical")
     step("edit rendered", note=f"{expected:.1f}s")
 
     # 10 captions
@@ -528,7 +548,7 @@ def produce(screenplay: Path | str, dossier: Path | str, out_dir: Path | str, si
     qmd += ["", "## Watch-through (a frame from the middle of every scene, compared with the one before)", ""]
     qmd += [f"- {p}" for p in problems] or ["- every scene shows a distinct, readable picture"]
     # what the viewer reads: each scene page measured its own text once everything had landed (motion.capture)
-    small, cut, over = [], [], []
+    small, cut, over, nopic = [], [], [], []
     for t in timeline:
         for f in dirs["scenes"].glob(f"{t['scene']}_*.qa.json"):
             try:
@@ -538,6 +558,7 @@ def produce(screenplay: Path | str, dossier: Path | str, out_dir: Path | str, si
             small += [f"{t['scene']}: {x}" for x in q.get("text_below_floor", [])]
             cut += [f"{t['scene']}: {x}" for x in q.get("text_cut_off", [])]
             over += [f"{t['scene']}: {x}" for x in q.get("text_overlap", [])]
+            nopic += [f"{t['scene']}: no picture for '{x}', left out of the shot" for x in q.get("no_picture", [])]
     qmd += ["", "## On-screen text (phone test)", ""]
     qmd += [f"- too small to read on a phone: {x}" for x in small] + [f"- cut off at the frame edge: {x}" for x in cut]
     qmd += [f"- words on top of other words: {x}" for x in over]
@@ -650,7 +671,7 @@ def produce(screenplay: Path | str, dossier: Path | str, out_dir: Path | str, si
     (dirs["writing"] / "variation.md").write_text(variation.markdown(vp, vissues), encoding="utf-8")
     (dirs["writing"] / "variation_ledger.md").write_text(vledger.markdown(), encoding="utf-8")
     artdirection.remember(hdir, {"id": film, "title": sp.get("title"), "channel": sp.get("channel", ""), "engine": sp.get("engine", ""),
-                                 "hook_mechanism": sp.get("hook_mechanism", ""), "metaphors": list(sp.get("metaphors", [])), **{k: ad[k] for k in ("look", "accent", "cinematography", "maps",
+                                 "hook_mechanism": sp.get("hook_mechanism", ""), "metaphors": list(sp.get("metaphors", [])), "archetype": ad.get("archetype"), **{k: ad[k] for k in ("look", "accent", "cinematography", "maps",
                                                                                               "infographics", "animation", "rhythm", "music", "grade")},
                                  "kinds": kinds})
     deliver = [("1. Research dossier with source links", "research/dossier.md"), ("2. Documentary concept", "writing/concept.md"),
@@ -673,7 +694,7 @@ def produce(screenplay: Path | str, dossier: Path | str, out_dir: Path | str, si
     step("deliverables", note="all present" if not report["deliverables_missing"] else f"missing: {report['deliverables_missing']}")
     # 14 gate 5: the pre-show list, read by the owner with the video; the piece now counts as seen
     if gated:
-        extra = {"symbols": gates.missing_symbols(sp), "editorial": issues, "variation": vissues,
+        extra = {"symbols": gates.missing_symbols(sp) + nopic, "editorial": issues, "variation": vissues,
                  "qc": list(qc.get("warnings", [])) + problems, "weakest": report.get("retention", {}).get("weakest", []),
                  "brainlog": gates.brainlog_rules(log)}
         (out / "PRESHOW.md").write_text(gates.preshow(sp, gate_issues, timeline, kinds, report, extra), encoding="utf-8")

@@ -50,6 +50,52 @@ AXES = {
 }
 
 
+# The owner's five archetypes (creatorforge/channels/VOX_PRODUCTION_SYSTEM.md, section 2). Each film gets one as its
+# "Episode Visual Theme"; it is never the last film's. The look, accent and type follow it; the yellow signal stays.
+ARCHETYPES = {
+    "A": {"name": "Classic Editorial Paper", "look": "editorial", "dark": False,
+          "palette": "cream paper #F4F1EA, charcoal ink #1C1C1C, coral #D9534F",
+          "type": "heavy serif headlines, monospace citations",
+          "collage": "scissor-cut halftone portraits from real photos, masking tape, highlighter",
+          "fits": ("human", "science", "psychology", "environment")},
+    "B": {"name": "Dark Intelligence / Geopolitics", "look": "intel", "dark": True,
+          "palette": "slate, bone text, radar cyan, tactical crimson",
+          "type": "condensed bold sans headers, technical monospace coordinates",
+          "collage": "topographic contours, radar sweeps, map pins and coordinates",
+          "fits": ("geopolitics", "politics", "investigation")},
+    "C": {"name": "Declassified Archive / Cold War", "look": "declassified", "dark": False,
+          "palette": "manila #E5DEC9, typewriter ink #22201E, stamp red #B91C1C, carbon blue #1D4ED8",
+          "type": "typewriter headers",
+          "collage": "redaction bars, ink stamps, staples, coffee rings, index cards",
+          "fits": ("history", "investigation", "politics")},
+    "D": {"name": "Swiss Data / Modern Tech", "look": "swiss", "dark": False,
+          "palette": "gallery white #F8F9FA, black #0F172A, signal orange #F97316, cobalt #2563EB",
+          "type": "geometric sans, strict grid",
+          "collage": "grid-line builds, isometric diagrams",
+          "fits": ("economics", "science", "environment")},
+    "E": {"name": "Noir / Cognitive Shadow", "look": "noir", "dark": True,
+          "palette": "warm charcoal, parchment #D6D3D1, amber, dusty rose",
+          "type": "high-contrast italic serif pull-quotes",
+          "collage": "halftone duotone cut-outs from real photos, spotlight vignette reveals",
+          "fits": ("psychology", "human", "investigation")},
+}
+
+
+def archetype_for(genre: str, channel: str, hist: list[dict], seed: int, override: str | None = None) -> str:
+    """The film's archetype: the owner's pick if given; else one that fits the genre (Dragon Psychology also counts as
+    psychology) and was not the last film's; the one used longest ago first, so all five take turns."""
+    if override and override.upper() in ARCHETYPES:
+        return override.upper()
+    last = next((h.get("archetype") for h in reversed(hist) if h.get("archetype")), None)
+    tags = {genre} | ({"psychology"} if "psych" in (channel or "").lower() else set())
+    fit = [k for k, a in ARCHETYPES.items() if tags & set(a["fits"]) and k != last]
+    pool = fit or [k for k in ARCHETYPES if k != last]
+    age = {k: next((i for i, h in enumerate(reversed(hist)) if h.get("archetype") == k), 999) for k in pool}
+    oldest = max(age.values())
+    pool = [k for k in pool if age[k] == oldest]
+    return pool[seed % len(pool)]
+
+
 def _pick(options: list, used: list, seed: int):
     """An option the last films did not use: the window is one shorter than the number of options, so there is
     always a fresh one and no treatment comes back until the others have had their turn."""
@@ -83,7 +129,7 @@ def remember(data_dir: Path, entry: dict) -> None:
 
 
 def direct(film_id: str, title: str, genre: str, concept: dict, scenes: list[dict], hist: list[dict],
-           overrides: dict | None = None) -> dict:
+           overrides: dict | None = None, channel: str = "") -> dict:
     """The art direction for one film. `scenes` are the screenplay's scenes (their graphics show what the film is
     made of); `hist` the studio history; `overrides` the writer's own choices, which always win."""
     from ..media import vox
@@ -91,13 +137,6 @@ def direct(film_id: str, title: str, genre: str, concept: dict, scenes: list[dic
     seed = zlib.crc32(f"{film_id}|{title}".encode())
     recent = hist[-8:]
     used = {ax: [h.get(ax) for h in recent] for ax in ("look", "cinematography", "maps", "infographics", "animation", "rhythm", "music", "accent")}
-    # the genre's looks first; once those have all had a turn, any look the last films did not use
-    looks = [x for x in AXES["look"][genre] if x in vox.LOOKS] or list(vox.LOOKS)
-    if all(x in used["look"][-2:] for x in looks):
-        looks = [x for x in vox.LOOKS if x not in used["look"][-3:]] or looks
-    look = _pick(looks, used["look"], seed)
-    accents = [a for a in vox.ACCENTS if a != "yellow"]   # yellow is the channel signature, never a film accent
-    accent = _pick(accents, used["accent"] + [vox.LOOKS[look]["accent"]], seed >> 3)
     cine = _pick(AXES["cinematography"], used["cinematography"], seed >> 5)
     maps = _pick(AXES["maps"], used["maps"], seed >> 7)
     info = _pick(AXES["infographics"], used["infographics"], seed >> 9)
@@ -106,6 +145,10 @@ def direct(film_id: str, title: str, genre: str, concept: dict, scenes: list[dic
     music = _pick(AXES["music"], used["music"], seed >> 15)
     grade = _pick(AXES["grade"], [h.get("grade") for h in recent], seed >> 17)
     ov = overrides or {}
+    arch = archetype_for(genre, channel, hist, seed >> 19, ov.get("archetype"))
+    A = ARCHETYPES[arch]
+    look, accent = A["look"], vox.LOOKS[A["look"]]["accent"]     # the archetype sets the look and the film's accent;
+    # yellow (#FFDD33) stays the channel's signal on top of every archetype
     look = ov.get("look", look) if ov.get("look") in vox.LOOKS else look
     accent = ov.get("accent", accent)
     L = vox.LOOKS[look]
@@ -123,6 +166,9 @@ def direct(film_id: str, title: str, genre: str, concept: dict, scenes: list[dic
                                                                                                 + concept.get("central_question", "")),
         "visual_concept": concept.get("visual_concept") or f"The {genre} story told through {maps[1].split(':')[0].lower()} maps and "
                                                            f"{info[1].split(':')[0].lower()}, on {look} paper",
+        "archetype": arch, "episode_visual_theme": f"Archetype {arch}: {A['name']}",
+        "archetype_note": f"{A['palette']}; {A['type']}; collage: {A['collage']}" + (
+            " (a dark archetype: films use its light variant until the renderer has a dark-ink mode)" if A["dark"] else ""),
         "look": look, "accent": accent,
         "palette": {"paper": L["paper"], "ink": "#141414", "accent": vox.ACCENTS.get(accent, accent), "marker": L["mark"],
                     "sea": L["sea"], "land": L["land"]},
@@ -161,7 +207,8 @@ def camera_for(doc: dict, kind: str) -> str:
 
 
 def to_markdown(doc: dict) -> str:
-    rows = [("1. Documentary identity", doc["identity"]), ("2. Narrative approach", doc["narrative_approach"]),
+    rows = [("Episode Visual Theme", f"{doc.get('episode_visual_theme', '-')}. {doc.get('archetype_note', '')}".strip()),
+            ("1. Documentary identity", doc["identity"]), ("2. Narrative approach", doc["narrative_approach"]),
             ("3. Visual concept", doc["visual_concept"]),
             ("4. Colour palette", ", ".join(f"{k} {v}" for k, v in doc["palette"].items()) + f" (look: {doc['look']})"),
             ("5. Typography", ", ".join(f"{k}: {v}" for k, v in doc["typography"].items())),

@@ -254,8 +254,9 @@ def mix_audio(narration: Path, music: Path | None, total: float, out: Path, canc
             place = f",pan=stereo|c0={math.cos(th) * 1.414:.3f}*c0|c1={math.sin(th) * 1.414:.3f}*c1"
         else:
             place = ""
-        graph.append(f"[{idx}:a]aresample={SAMPLE_RATE},aformat=channel_layouts=stereo,volume={gain:.2f}{place},"
-                     f"adelay={ms}|{ms}[s{k}]")
+        lp = hit[4] if len(hit) > 4 and hit[4] else 0          # a low-pass in Hz (the owner's foley rule: under 800 Hz)
+        graph.append(f"[{idx}:a]aresample={SAMPLE_RATE},aformat=channel_layouts=stereo,volume={gain:.4f}{place}"
+                     + (f",lowpass=f={int(lp)}" if lp else "") + f",adelay={ms}|{ms}[s{k}]")
         mix.append(f"[s{k}]")
         idx += 1
     # Every video lands at the loudness social platforms normalise to (-14 LUFS, true peak under -1.5 dB), so it is
@@ -741,6 +742,8 @@ def _compose(clips: list[Clip], trans: list, segments: list[Path], audio: Path |
     total = length
     audio_idx = len(clips)
     nxt = len(clips) + (1 if audio is not None else 0)   # index of the next extra input
+    optical = grade.endswith("+optical")
+    grade = grade.removesuffix("+optical")
     if grade:
         # One consistent "film" look over every shot: a touch of contrast and colour, soft vignette, fine grain.
         # "bw": the writer asked for a black-and-white look - AI shots and stock footage are matched to it.
@@ -760,6 +763,16 @@ def _compose(clips: list[Clip], trans: list, segments: list[Path], audio: Path |
             graph.append(f"[{last}]{tone},vignette=angle=PI/5,noise=alls={7 if grade == 'bw' else 5}:allf=t+u,"
                          f"format=yuv420p[graded]")
         last = "graded"
+    if optical:
+        # The owner's optical finish (VOX_PRODUCTION_SYSTEM.md section 4): a 1 px print-registration offset between the
+        # colour plates, a soft radial vignette, and a paper grain that is swapped every 10 frames instead of every
+        # frame, so it reads as printed texture, not video noise.
+        swap = max(1.0, FPS / 10)
+        graph.append(f"color=c=0x808080:s={width}x{height}:r={swap:g}:d={length + 1:.3f},noise=alls=28:allf=t,"
+                     f"gblur=sigma=0.7,fps={FPS},format=yuv420p[ograin]")
+        graph.append(f"[{last}]rgbashift=rh=1:bv=1:edge=smear,vignette=angle=PI/6[oshift]")
+        graph.append("[oshift][ograin]blend=all_mode=overlay:all_opacity=0.10:shortest=1,format=yuv420p[optic]")
+        last = "optic"
     tears, at = [], 0.0
     for i in range(1, len(clips)):
         at += clips[i - 1].duration

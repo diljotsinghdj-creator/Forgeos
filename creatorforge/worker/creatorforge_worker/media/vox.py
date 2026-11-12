@@ -65,6 +65,19 @@ LOOKS = {
                   "sea": "#AEB9BC", "land": "#ECE6D6", "edge": "#55524A", "accent": "#7B2D26"},
     "field":     {"paper": "#E9EDE4", "head": "DMSerif", "big": "Anton", "hand": "Marker", "mark": "#C2410C",
                   "sea": "#B5D0C8", "land": "#EEE9D6", "edge": "#6E7B66", "accent": "teal"},
+    # the owner's five archetypes (VOX_PRODUCTION_SYSTEM.md section 2), as film looks. B and E are dark in the owner's
+    # system; the film renderer draws ink on light paper, so they run on a light variant of their own palette until
+    # it has a dark-ink mode (PRESHOW says so).
+    "editorial": {"paper": "#F4F1EA", "head": "Playfair", "big": "Playfair", "hand": "Caveat", "mark": "#1C1C1C",
+                  "sea": "#C9D6D8", "land": "#F7F3EA", "edge": "#7A7770", "accent": "#D9534F"},
+    "intel":     {"paper": "#E3E7EC", "head": "Oswald", "big": "Bebas", "hand": "Kalam", "mark": "#EF4444",
+                  "sea": "#B9CBD8", "land": "#EEF1F4", "edge": "#475569", "accent": "#0E7490"},
+    "declassified": {"paper": "#E5DEC9", "head": "Mono", "big": "Oswald", "hand": "Marker", "mark": "#B91C1C",
+                  "sea": "#C2C6B6", "land": "#EDE6D2", "edge": "#6B604A", "accent": "#1D4ED8"},
+    "swiss":     {"paper": "#F8F9FA", "head": "Inter", "big": "Archivo", "hand": "Caveat", "mark": "#F97316",
+                  "sea": "#BFD3EA", "land": "#FAFAFA", "edge": "#0F172A", "accent": "#2563EB"},
+    "noir":      {"paper": "#D6D3D1", "head": "Playfair", "big": "DMSerif", "hand": "Caveat", "mark": "#E11D48",
+                  "sea": "#B4AFAA", "land": "#E2DEDA", "edge": "#44403C", "accent": "#B45309"},
 }
 
 
@@ -145,6 +158,9 @@ def readable(colour: str, paper: str, least: float = 2.6) -> str:
     return c
 
 
+ARCHETYPE_LOOKS = ("editorial", "intel", "declassified", "swiss", "noir")   # chosen by the art direction, never at random
+
+
 def look_of(theme: str) -> dict:
     """'editorial~2@red/kraft' -> the kraft look (default: archive, the original look)."""
     name = ((theme or "").split("/") + ["", ""])[1]
@@ -156,7 +172,7 @@ def choose_look(text: str, era: int | None = None) -> str:
     the same script always gets the same look and two scripts rarely share one."""
     if era is not None and era < 1950:
         return "sepia"
-    names = [k for k in LOOKS if k not in ("sepia", "engraving")]
+    names = [k for k in LOOKS if k not in ("sepia", "engraving") and k not in ARCHETYPE_LOOKS]
     return names[_seed("look", text) % len(names)]
 
 
@@ -1643,8 +1659,11 @@ def _pictures(plan: dict, lib: Path | None, model: Path | None, fetch: bool,
             if drawn:
                 out.append({"name": s, "draw": drawn})           # a drawn illustration, never a placeholder
             else:
-                icon = find_icon(name.split()[-1]) or find_icon(name) or "circle"
-                out.append({"name": s, "o": icon_nodes(icon)})
+                icon = find_icon(name.split()[-1]) or find_icon(name)
+                if icon:
+                    out.append({"name": s, "o": icon_nodes(icon)})
+                else:   # no photo, drawing or icon: never a blank circle in its place (BRAIN_LOG 2026-11-11); PRESHOW lists it
+                    plan.setdefault("missing", []).append(s)
     plan["pics"] = out
     if plan.get("with"):
         c = cutouts.get(plan["with"], lib, model=model, fetch=fetch, sources=sources)
@@ -2752,7 +2771,8 @@ function filmLayer(){if(K.film===false)return()=>{};const g=L.grain.group();let 
 function srcLayer(){if(!P.src)return;const t=mono(L.front,('SOURCE: '+P.src).toUpperCase(),W-U*.04,H-U*.055,{anchor:'end',size:U*.015,weight:700});
   t.addClass('keep');fit(t,W*.6);wipe(t,.9)}
 function badgeLayer(){if(!P.badge||!P.badge[0])return;const [txt,col]=P.badge;const g=L.front.group().addClass('keep');
-  const x=P.comp&&!TALL?W*.33:U*.05,y=TALL?H*.135:H*.9;const t=T(g,txt,U*.024,x+U*.03,y,{family:'Mono',weight:700,anchor:'start',fill:col,ls:'.14em'});const bb=t.bbox();
+  const cb=K.capBox;   // a photo or footage caption sits bottom-left: the badge goes just above it, never across it
+  const x=cb&&!TALL?cb.x:P.comp&&!TALL?W*.33:U*.05,y=cb&&!TALL?cb.y-U*.04:TALL?H*.135:H*.9;const t=T(g,txt,U*.024,x+U*.03,y,{family:'Mono',weight:700,anchor:'start',fill:col,ls:'.14em'});const bb=t.bbox();
   g.rect(bb.width+U*.05,bb.height+U*.022).move(x-U*.004,y-bb.height/2-U*.011).fill('#FBF8F0').stroke({color:col,width:U*.004}).back();
   g.circle(U*.012).center(x+U*.012,y).fill(col);g.attr({transform:`rotate(-2,${x},${y})`});popIn(g,x,y,.9,.3)}
 function insetLayer(){const pic=P.insetpic;if(!pic)return;const w=TALL?W*.3:W*.17,h=w*1.18,x=W-w-U*.05,y=TALL?H*.6:H-h-U*.11;   // low in the corner: clear of headlines
@@ -3144,7 +3164,7 @@ function photo(){ // one photograph as a moving composition: depth layers, a del
     if(spot){const out=th?Math.max(0,1-(t-T1)/.5):1;spot.opacity(.55*Math.min(1,Math.max(0,(t-.6)/.6))*Math.min(1,out));spotFr.opacity(Math.min(1,Math.max(0,(t-.9)/.4))*Math.min(1,out))}});
   if(P.light==='sweep'){const gr=draw.gradient('linear',a=>{a.stop(0,'#FFFFFF',0);a.stop(.5,'#FFF6E0',.55);a.stop(1,'#FFFFFF',0)});
     const sw=L.front.rect(W*.35,H*1.6).fill(gr).attr({style:'mix-blend-mode:screen'}).opacity(.7);TICKS.push(t=>{const q=Math.min(1,t/DUR);sw.attr({transform:`translate(${-W*.4+W*1.5*q},${-H*.3}) rotate(14,${W*.17},${H*.8})`})})}
-  if(P.title&&!framed){const b=boxText(L.front,P.title,U*.05,U*.06,H-U*.16,{anchor:'start',maxw:W*.6,most:2});wipe(b,.5)}
+  if(P.title&&!framed){const b=boxText(L.front,P.title,U*.05,U*.06,H-U*.16,{anchor:'start',maxw:W*.6,most:2});K.capBox=b.bbox();wipe(b,.5)}
   if(th&&th.kind==='pin'&&pr&&th.at){const [px,py]=pr(th.at[0],th.at[1]);const pn=L.front.group();pn.circle(U*.02).center(px,py).fill(INK).stroke({color:'#FFFFFF',width:U*.004});
     pn.opacity(0);at(T1+.7,.3,q=>pn.opacity(q));placeTag(L.front,th.place,px,py+U*.11,T1+.9,0);FOCUS={x:px,y:py,rx:U*.1,ry:U*.1}}
   if(th&&th.kind==='number'){const n=T(L.front,th.figure,TALL?W*.32:H*.36,W/2,H*.44,{family:'Anton',weight:400,fill:'#FFFFFF'});fit(n,W*.85);n.opacity(0);at(T1+.3,.5,q=>n.opacity(q));
@@ -3194,7 +3214,7 @@ function footage(){ // moving footage, frame by frame, with the same annotations
     return new Promise(res=>{el.node.addEventListener('load',()=>res(),{once:true});setTimeout(res,250);el.attr({href:P.frames[i]})})});
   const ann=L.mid.group();annoLayer(ann,P.annotate,0,0,W,H,.9);
   if(!cut){const vg=draw.gradient('radial',a=>{a.stop(.55,'#000',0);a.stop(1,'#000',.45)});L.mid.rect(W,H).fill(vg)}
-  if(P.title){const b=boxText(L.front,P.title,U*.05,U*.06,H-U*.16,{anchor:'start',maxw:W*.6,most:2});wipe(b,.5)}
+  if(P.title){const b=boxText(L.front,P.title,U*.05,U*.06,H-U*.16,{anchor:'start',maxw:W*.6,most:2});K.capBox=b.bbox();wipe(b,.5)}
   if(P.annotate&&P.annotate.length){const a=P.annotate[0];FOCUS={x:a.p[0]*W,y:a.p[1]*H,rx:U*.1,ry:U*.1}}
   photoCredit()}
 
@@ -3283,12 +3303,13 @@ def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: f
     # asset check before the render: a photo much smaller than the size it is shown at will look soft
     soft = [f"{p.get('name')}: {p['w']}x{p['h']} px shown about {int(height * (0.4 if height > width else 0.6))} px tall"
             for p in plan.get("pics", []) if p.get("img") and p.get("h", 9999) < height * (0.4 if height > width else 0.6) * 0.55]
-    if soft:
-        out.with_suffix(".qa.json").write_text(json.dumps({"low_resolution": soft}), encoding="utf-8")
+    sidecar = {k: v for k, v in (("low_resolution", soft), ("no_picture", plan.get("missing", []))) if v}
+    if sidecar:
+        out.with_suffix(".qa.json").write_text(json.dumps(sidecar), encoding="utf-8")
     if levels and wants_voice(kind, spec):
         plan["levels"] = [float(v) for v in levels][:1200]     # the voice, 12 readings a second: the bars move with it
     if plan["type"] == "hero" and not plan["pics"]:
-        raise MediaError("vox: no picture or icon for the subject")
+        raise MediaError("vox: no picture or icon for the subject" + (f" ({', '.join(plan['missing'])})" if plan.get("missing") else ""))
     fps = int(fps or os.environ.get("CF_MOTION_FPS") or (60 if os.environ.get("CF_FPS") == "60" else 30))
     seconds = max(1.5, float(seconds))
     look = look_of(theme)

@@ -58,6 +58,52 @@ EXTRA_PLACES = {
 }
 
 
+# Regions drawn as one shape: every member country filled together ("Map: Africa"). Members by world.json name.
+_AFRICA = ["Algeria", "Angola", "Benin", "Botswana", "Burkina Faso", "Burundi", "Cameroon", "Central African Rep.", "Chad",
+           "Congo", "Côte d'Ivoire", "Dem. Rep. Congo", "Djibouti", "Egypt", "Eq. Guinea", "Eritrea", "Ethiopia", "Gabon",
+           "Gambia", "Ghana", "Guinea", "Guinea-Bissau", "Kenya", "Lesotho", "Liberia", "Libya", "Madagascar", "Malawi",
+           "Mali", "Mauritania", "Morocco", "Mozambique", "Namibia", "Niger", "Nigeria", "Rwanda", "S. Sudan", "Senegal",
+           "Sierra Leone", "Somalia", "Somaliland", "South Africa", "Sudan", "Tanzania", "Togo", "Tunisia", "Uganda",
+           "W. Sahara", "Zambia", "Zimbabwe", "eSwatini"]
+_EU = ["Austria", "Belgium", "Bulgaria", "Croatia", "Cyprus", "Czechia", "Denmark", "Estonia", "Finland", "France", "Germany",
+       "Greece", "Hungary", "Ireland", "Italy", "Latvia", "Lithuania", "Luxembourg", "Netherlands", "Poland", "Portugal",
+       "Romania", "Slovakia", "Slovenia", "Spain", "Sweden"]   # Malta is too small for world.json
+_EUROPE = _EU + ["Albania", "Belarus", "Bosnia and Herz.", "Iceland", "Kosovo", "Moldova", "Montenegro", "North Macedonia",
+                 "Norway", "Serbia", "Switzerland", "Ukraine", "United Kingdom"]
+_SOUTH_AMERICA = ["Argentina", "Bolivia", "Brazil", "Chile", "Colombia", "Ecuador", "Falkland Is.", "Guyana", "Paraguay", "Peru",
+                  "Suriname", "Uruguay", "Venezuela"]
+_NORTH_AMERICA = ["Canada", "United States of America", "Mexico", "Greenland", "Guatemala", "Belize", "Honduras", "El Salvador",
+                  "Nicaragua", "Costa Rica", "Panama", "Cuba", "Jamaica", "Haiti", "Dominican Rep.", "Bahamas", "Puerto Rico"]
+_MIDDLE_EAST = ["Saudi Arabia", "Iran", "Iraq", "Syria", "Jordan", "Israel", "Palestine", "Lebanon", "Kuwait", "Qatar",
+                "United Arab Emirates", "Oman", "Yemen", "Turkey"]
+_SOUTH_ASIA = ["India", "Pakistan", "Bangladesh", "Nepal", "Bhutan", "Sri Lanka", "Afghanistan"]
+_SOUTHEAST_ASIA = ["Indonesia", "Malaysia", "Thailand", "Vietnam", "Philippines", "Myanmar", "Cambodia", "Laos", "Brunei",
+                   "Timor-Leste"]
+_CENTRAL_ASIA = ["Kazakhstan", "Uzbekistan", "Turkmenistan", "Kyrgyzstan", "Tajikistan"]
+_EAST_ASIA = ["China", "Japan", "South Korea", "North Korea", "Mongolia", "Taiwan"]
+_OCEANIA = ["Australia", "New Zealand", "Papua New Guinea", "Fiji", "Solomon Is.", "Vanuatu", "New Caledonia"]
+REGIONS = {"africa": ("Africa", _AFRICA), "sub saharan africa": ("Sub-Saharan Africa",
+                                                                [c for c in _AFRICA if c not in ("Algeria", "Egypt", "Libya", "Morocco", "Tunisia", "W. Sahara")]),
+           "north africa": ("North Africa", ["Algeria", "Egypt", "Libya", "Morocco", "Tunisia", "W. Sahara"]),
+           "european union": ("European Union", _EU), "eu": ("European Union", _EU), "europe": ("Europe", _EUROPE),
+           "south america": ("South America", _SOUTH_AMERICA), "latin america": ("Latin America", _SOUTH_AMERICA + _NORTH_AMERICA[2:]),
+           "north america": ("North America", _NORTH_AMERICA), "middle east": ("Middle East", _MIDDLE_EAST),
+           "south asia": ("South Asia", _SOUTH_ASIA), "southeast asia": ("Southeast Asia", _SOUTHEAST_ASIA),
+           "south east asia": ("Southeast Asia", _SOUTHEAST_ASIA), "central asia": ("Central Asia", _CENTRAL_ASIA),
+           "east asia": ("East Asia", _EAST_ASIA), "oceania": ("Oceania", _OCEANIA),
+           "asia": ("Asia", _SOUTH_ASIA + _SOUTHEAST_ASIA + _CENTRAL_ASIA + _EAST_ASIA + _MIDDLE_EAST)}
+
+
+def _region(key: str) -> dict | None:
+    """A region as one shape: the rings of all its member countries, filled together like a single country."""
+    if key not in REGIONS:
+        return None
+    label, members = REGIONS[key]
+    by_name = {c["n"]: c["r"] for c in _world()["countries"]}
+    rings = [r for m in members for r in by_name.get(m, [])]
+    return {"kind": "country", "name": label, "rings": rings, "region": True} if rings else None
+
+
 def _find(name: str) -> dict | None:
     """A country (its shapes) or a city (its position) by name. "Kota, Rajasthan" tries the whole name, then
     each part."""
@@ -88,6 +134,9 @@ def _find_one(name: str) -> dict | None:
             best = (name_, lat, lon, pop)
     if best:
         return {"kind": "city", "name": best[0], "lat": best[1], "lon": best[2]}
+    region = _region(key)
+    if region:
+        return region
     if key in EXTRA_PLACES:
         lat, lon = EXTRA_PLACES[key]
         return {"kind": "city", "name": name.strip().title() if name.strip().islower() else name.strip(),
