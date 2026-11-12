@@ -69,7 +69,9 @@
    "pause": 0.15,
    "narration": "So how does one ship stop a sea road between Asia and Europe?",
    "graphic": "Title3d: ONE SHIP, SIX DAYS | Suez Canal · March 2021",
-   "claims": [],
+   "claims": [
+    "C1"
+   ],
    "transition": "zoom"
   },
   {
