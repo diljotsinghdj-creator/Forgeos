@@ -18,7 +18,13 @@ Labels: [V] source-backed (sources.md, case_studies/) · [I] interpretation · [
 - [V] 3D globe and terrain moves come from Google Earth Studio: slow orbits mimicking drone surveillance over a site,
   and zooms to a specific building. Frames go to After Effects, linked to a master world map and annotated (P23).
 - [V] Earth Studio moves were also used to plan real drone flights: map moves as previs for the shoot (P23).
-- [V] Experts shape the map's nuance, for example what a loan network does and doesn't mean (P9).
+- [V] Experts shape the map's nuance, for example that the money is loans to be repaid, not aid (P9). The best expert
+  source also has the data to map: a think tank's database of ports and railways (P9).
+- [V] The film toggles between the bird's-eye map and what is happening on the ground, because ten minutes of map
+  alone doesn't hold; labels and boxes are animated over aerial or drone footage to sync the two (P22).
+- [V] Building a map from a dataset: find the data's geographic unit (e.g. census tracts), download the matching
+  shapes, join data to shapes, make one city work, then point the same build at the others (P26).
+- [V] Maps are among the most tedious graphics because borders change; other staff help check them (P8).
 - [V] Case studies in the history and geography set show maps carrying arguments about borders, capitals and
   settlement (see case_studies/INDEX.md: divided-island, Egypt's capital, Nevada ghost towns, South China Sea).
 

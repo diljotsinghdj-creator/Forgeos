@@ -15,7 +15,12 @@ Labels: [V] source-backed (sources.md P#, case_studies/) · [I] interpretation �
 - [V] Maps start from existing cartography; historical maps were traced from old books (P22).
 - [V] Satellite and 3D map imagery from Google Earth Studio, annotated (P23). [O] Check Google's attribution and
   licence terms for any Earth Studio export; prefer open satellite data where the terms are unclear.
-- [V] Rights risk for music and clips is real: Content ID takedowns even for fair use (P32).
+- [V] Rights risk for music and clips is real: Content ID demonetisation, and takedowns, even for fair use (P32;
+  PATTERNS sci/culture §4).
+- [V] Archive research happens during research, not after the script: the visuals that prove each fact are found
+  alongside the facts (P16). Sources include public-domain archives, old magazines and instrument manuals, gathered
+  on a mood board tool in pre-production (P27).
+- [V] Data often sits behind research papers or in think-tank databases; ask the researchers for it (P9, P26).
 - [V] Companion packages share the data and sources: a playlist and an interactive, a card stack, a resource list
   (PATTERNS sci/culture §7, politics §6).
 

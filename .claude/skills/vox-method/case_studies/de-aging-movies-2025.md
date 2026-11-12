@@ -1,13 +1,13 @@
 ---
 id: de-aging-movies-2025
 title: "How de-aging in movies got so good"
-url: not confirmed (rosetta.to mirror: rosetta.to/u/vox/how-de-aging-in-movies-got-so-good; a third-party player lists YouTube id UBc38VjI7NU, unverified)
-published: February 2025 (a blog post embedding it is dated 2025-02-23; PetaPixel wrote it up 2025-03-05; exact upload date not confirmed)
+url: https://www.youtube.com/watch?v=UBc38VjI7NU
+published: 2025-02-19 (rosetta.to listing)
 series: standalone
 producer: not confirmed
 category: culture
-length: about 9:42 (third-party listing as summarised by search)
-evidence_basis: Search-engine summaries of PetaPixel (2025-03-05), Fstoppers, the rosetta.to listing, a 2025 blog embed, and a ResetEra discussion thread (anecdotal viewer reaction only). No page was opened directly (WebFetch was blocked in this session). Transcript NOT read; video frames NOT viewed.
+length: 9:42 (rosetta.to listing)
+evidence_basis: Verification pass 2026-11-12, pages opened directly - (1) rosetta.to page carrying the YouTube embed (id UBc38VjI7NU), date, length, timestamped quotes and a full machine transcript (auto-caption style; names garbled, e.g. "Kevin Bailey" for Kevin Baillie); its chapter times are out of order and are not used; (2) YouTube oEmbed endpoint confirming the id is titled "How de-aging in movies got so good" on the Vox channel. Earlier pass (search summaries only) - PetaPixel, Fstoppers, a blog embed, ResetEra. NOT accessed - video frames (not viewed by us); any making-of interview.
 ---
 
 # How de-aging in movies got so good
@@ -23,29 +23,32 @@ Timestamps appear only when a source (transcript, chapter list) supplies them.
 - [I] Central question: why does it finally look convincing, and what changed technically? Inferred from the title.
 
 ## 2. Opening technique
-- Not verified. [I] The title implies a before/after: it is a "got so good" story, so it has to show "bad" first. Inference only.
+- [V] Cold open in 2006: the actors' ages are listed, then *X-Men: The Last Stand* is named as widely seen as the first use of digital de-aging, with a dry verdict that it looks like a first attempt (transcript).
+- [V] Kevin Baillie's "lizard brain" explanation of why a slightly wrong face reads as sick comes within the first minute or so, before he is introduced by name (transcript).
 
 ## 3. Narrative structure
-- [V] Historical anchor: Vox identifies *X-Men: The Last Stand* (2006) as the first film to de-age actors, and says the result was poor (PetaPixel).
-- [V] The old method was slow, labour-intensive and expensive (PetaPixel); Fstoppers describes it as building detailed 3D face scans and modelling muscle movement.
-- [V] The new method: on *Here*, the crew used the company Metaphysic for real-time de-aging and up-aging (PetaPixel, citing VFX supervisor Kevin Baillie in the video). Fstoppers describes the AI approach as generating new facial features in milliseconds from a model trained on many reference images, rather than editing a 3D model (Fstoppers' description; whether the video uses these words is not verified).
-- [I] Shape: first attempt (bad), old pipeline (costly), new pipeline (fast), present-day case study with the practitioner. A technology-evolution arc.
+- [V] Order in the transcript: 2006 first attempt → Baillie on why faces are hard (quote stamped 00:01:18) → the old 3D pipeline, "like giving birth" (00:02:08), and why it was done after filming → *Here* needed 53 minutes of age work, so post-only face swaps would not do → Metaphysic and its earlier public stunts → how the model learns a face from grouped photos (Baillie's book-of-photos analogy) and that it generates rather than collages → speed, milliseconds (00:04:53), enabling live on-set monitors → actors adjusting their physicality between takes, contrasted with *The Irishman* → editors cutting with the rough real-time version, then higher-fidelity passes in post → ageing up, with prosthetics and digital makeup combined → a membership appeal (transcript).
+- [I] Shape: first failure, old pipeline, new pipeline, consequences on set, limits.
 
 ## 4. Narration characteristics
-- Not verified. [V] Includes interview material with Kevin Baillie, production VFX supervisor on *Here* (PetaPixel).
+- [V] A first-person narrator with opinions and asides ("I mean no disrespect" about De Niro; a scene the narrator "found so moving"), plus extended Baillie interview (transcript).
+- [V] The outro explains the channel's aim of deep, accessible industry explainers and asks for Vox memberships (transcript).
 
 ## 5. Visual techniques
-- Not verified. [I] A de-aging explainer depends on side-by-side and split-screen comparisons of raw and processed plates; not observed.
+- [V] Baillie describes on-set monitors showing young and present-day Tom Hanks side by side (transcript).
+- [V] The narration invites close looking: the real-time result changes the face but leaves ears and neck untouched (transcript, "if you look closely").
+- [I] That line implies a close-up of real-time footage on screen. Inferred from the words; not observed.
 
 ## 6. Graphics and animation
 - Not verified.
 
 ## 7. Footage selection
 - [V] Uses the practitioner's perspective (Baillie). [V] He argues faces are the hardest effect because audiences look at faces all day and recognise them best (PetaPixel, paraphrasing Baillie in the video).
-- [I] Film clips from *X-Men: The Last Stand* and *Here* are very likely shown under fair use; not verified.
+- [V] Films named and discussed: *X-Men: The Last Stand*, *Here*, *The Irishman*; Metaphysic's *America's Got Talent* and Eminem work (transcript). [I] Clips are very likely shown under fair use; not verified.
 
 ## 8. Editing techniques
-- Not verified.
+- [V] Runtime 9:42 (rosetta.to). Key beats at about 1:18, 2:08 and 4:53 per rosetta.to quote stamps.
+- [I] Cut patterns are not described by any source.
 
 ## 9. Sound design
 - Not verified.
@@ -72,3 +75,6 @@ Timestamps appear only when a source (transcript, chapter list) supplies them.
 - rosetta.to listing: https://rosetta.to/u/vox/how-de-aging-in-movies-got-so-good
 - Blog embed, 2025-02-23: https://crazyeddiethemotie.blogspot.com/2025/02/vox-explains-how-de-aging-in-movies-got.html
 - ResetEra thread (viewer reaction only): https://www.resetera.com/threads/vox-how-de-aging-in-movies-got-so-good.1116687/
+(Entries above this note were read only through search-result summaries in the earlier pass.)
+- rosetta.to page with full transcript (opened 2026-11-12): https://rosetta.to/u/vox/how-de-aging-in-movies-got-so-good
+- YouTube oEmbed check of the id (opened 2026-11-12): https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=UBc38VjI7NU&format=json

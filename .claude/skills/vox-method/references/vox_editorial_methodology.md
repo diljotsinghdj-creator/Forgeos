@@ -12,10 +12,11 @@ checklist
 
 ## 1. What the studied craft shows
 
-- [V] **Pick stories that are poorly suited to text,** ones that only become clear when you see them (P1). Some
-  stories were chosen because they can't be explained "without drawing it on a napkin" (P9).
+- [V] **Pick stories that are poorly suited to text,** ones that only become clear when you see them (P1, snippet;
+  confirmed on full pages by P9 and P42: the founding rule was to use video only when a story has distinctly visual
+  elements). Some stories were chosen because they can't be explained "without drawing it on a napkin" (P9).
 - [V] **No desks, no anchors, few talking heads.** Video is its own medium, not a broadcast or an article read aloud
-  (P1).
+  (P1, snippet). The team began by avoiding on-camera talent and leaning on motion graphics and narration (P18).
 - [V] **Late, not first.** On big ongoing news, the video usually arrives a week or two after the event. The aim is
   the most meaningful piece, not the fastest (P2). One case study came out about three months after the event it
   explains (the-taliban-explained-2021).
@@ -23,10 +24,11 @@ checklist
   conference because it adapted an earlier explainer with a reserved slot for the real image (P3,
   black-hole-photo-big-deal-2019).
 - [V] **Evergreen library over news spikes.** Explainers are seen as long-life content, and the long-form spin-off
-  was framed as building a library (P4, P5).
+  was framed as building a library (P4; P41: Netflix was wanted as an evergreen archive; P5 snippet only).
 - [V] **Trivial-looking subjects made nontrivial.** One producer's pieces on fonts, siding and graffiti reached
   millions by finding the system behind the small thing (P12).
-- [V] **Experts shape the nuance,** for example what a loan is and isn't (P9). Long-form pieces give first-hand
+- [V] **Experts shape the nuance,** for example that infrastructure money is a loan to be repaid, not aid (P9).
+  Long-form pieces give first-hand
   guides room to explain their own reasoning and say what is unknown (PATTERNS: science/culture §5).
 - [V] **The outsider problem.** A travelling reporter can read as "parachuting in"; the series answered with local
   source networks and engagement reporting (P6, P7).
@@ -34,6 +36,29 @@ checklist
   detailed critiques of its maps, names and verbs from several sides (israel-palestine-brief-simple-history).
 - [V] **Public corrections.** A buried-history video published a timestamped wording correction
   (when-white-supremacists-overthrew-a-government). A science producer named the flaw in her own video (P3).
+  Content normally stays live with editor's notes and corrections; readers report errors by email (P10).
+- [V] **The pitch is a package, not a topic:** a headline, the angle, the list of visual evidence that will prove it,
+  and the people who will be interviewed to fact-check it. Finding the counter-arguments is part of the job; how the
+  animation looks comes last (P16).
+- [V] **Experts are asked for two things:** an explanation the producer can translate, and visual evidence or data
+  (a think tank's database of ports and railways). Ask them what nobody is covering yet (P9).
+- [V] **One key document per film:** a producer looks for the "Rosetta stone" source that carries the narrative, and
+  treats research as finished when new sources only repeat facts already found (P12).
+- [V] **Neutrality is built shot by shot:** which words are highlighted and which photo is used (a flattering or
+  unflattering angle) can tilt a profile, so both went through several iterations; candidate "moments" were checked
+  against the experts interviewed (P15).
+- [V] **Review is heavy:** weeks of research and interviews, then six rounds of review (P33). A field series added an
+  assistant producer for about six weeks to fact-check (P17).
+
+- [V] **Evidence, then explanation, as the house style:** Johnny Harris described the Vox style as frequent
+  first-hand visual anchors that show the subject, followed by a quick, succinct explanation, unlike broadcast
+  segments built on long anchor talk (P2).
+- [V] **Ideas start as questions:** the editorial director says the best brainstorms bring questions to the table,
+  not answers ("what do you want to know about?"), and that the aim is to go deeper than a simple
+  question-and-explanation (P2).
+- [V] **Style and substance together.** The team of 20 includes 12 reporter-producers who report and edit, plus
+  researchers, designers and story editors. Some staff come from art or social backgrounds and are trained in
+  journalism (P2).
 
 ## 2. The story test [O]
 
@@ -103,7 +128,8 @@ film yet. Keep researching or drop it.
 ## 7. Corrections [O]
 
 - Any error found after release gets a correction line in the description (after the chapters) and, if possible,
-  an on-screen card at the error's timestamp (YouTube's corrections feature, P11).
+  a "Correction:" line with the error's timestamp in the description, which makes YouTube show an info pop-up at that
+  moment linking to it (P11).
 - Log the correction in BRAIN_LOG (CreatorForge) with the rule that would have prevented it.
 
 ## 8. Our editorial checklist (run before the script is locked)

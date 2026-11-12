@@ -35,3 +35,39 @@ Newest entries at the bottom. One entry per study session, film or correction (l
   4. Find any source on Vox's music sourcing, SFX and mix standards.
 - **Contradictions found:** none yet. One flagged discrepancy inside a source set: a households-equivalent figure
   given as 80,000 vs 880,000 (clean-energy-ai-boom-2024). The lesson: verify every unit conversion.
+
+## 2026-11-12: Source verification pass (full pages)
+
+- **Studied:** the 45 process sources (sources.md), now read from the full pages where the site allowed an ordinary
+  read. 33 opened (P7 through its republished copy, P21 description only); 12 refused with a bot check or 403
+  (P1, P2, P3, P5, P14, P20, P23, P24, P34, P39, P40, P45) and were recorded, not worked around.
+- **Result:** 25 confirmed, 8 corrected, 0 found unsupported, 12 could not open. Table: sources.md, "Verification
+  pass (2026-11-12)".
+- **Corrections made in the reference files:**
+  - P26: a data piece's extra effort went into the final 10% (the state-to-state transition), not "most of the
+    effort" (motion_graphics).
+  - P31: nothing on "five films in 12 days"; the location-shoot bullet now rests on P17 (about 11 days per place) and
+    P31 (season 1: three months, six films) (documentary_editing).
+  - P32: Content ID cost monetisation; the takedown comes from the case study's source (sound_design,
+    asset_sourcing).
+  - P27: Earworm is assembled in After Effects and edited in Premiere (documentary_editing, motion_graphics).
+  - P9: the expert nuance was "loans, not aid" (editorial, maps).
+  - P8: paper craft evoked a child's project, not "warmth" (visual_language); the music rule cites P8 only by analogy.
+  - P37: impact-framed titles downgraded to [I], an outside opinion with illustrative examples (packaging).
+  - P11: the corrections rule now describes the real feature (a timestamped description line triggers a pop-up).
+  - Claims resting on unopened P1 and P24 are now corroborated by P6, P9, P18 and P42.
+- **New [V] craft details added (section 1 of each file):**
+  - The pitch package: headline, angle, visual-evidence list, fact-checking interviewees (P16).
+  - A "Rosetta stone" key document, and research ends when sources start repeating (P12).
+  - The visual column holds the actual item; a long voiceover run on one visual is a warning sign (P13).
+  - Writing to a found document; one visual hook built up across the film (P16); one anchor motif per film (P8).
+  - Six rounds of review (P33); neutrality in photo choice and word highlights (P15).
+  - Jump cut by default, J/L-cuts; riser plus bass hit between music beds; stock music is usually too much;
+    about 70% of a music producer's time on audio (P13, P16, P27).
+  - Toggling between map and ground, labels over drone footage, a dataset-to-map pipeline (P22, P26).
+  - Third-party emulation techniques for lower thirds, texture backgrounds and lens edges (P28).
+- **Contradictions found:** Borders season-1 suggestions are given as about 6,000 (P31) and 7,000 (P6), probably
+  different counting windows. Normal production time varies by team and era: 1–2 weeks to 3 weeks (P8, P15), 4–6 weeks
+  (P9), about 5 weeks (P22), and up to 10 weeks for Explained (P41).
+- **Next:** read P1, P2, P3, P23 and P24 from a session or browser that can pass their bot checks, or find the same
+  articles republished. Still no source covers Vox's music library, SFX or mix standard.

@@ -13,7 +13,7 @@ information · 8. Callouts and tracking · 9. Failure modes
 
 ## 1. What the studied craft shows
 
-- [V] After Effects is the core build tool for maps and animation, with Premiere for assembly and Photoshop for
+- [V] After Effects is the core build tool for maps and animation, with Premiere for the final edit and Photoshop for
   textures (P8, P9, P27).
 - [V] An art director gives visual notes on a producer's animation and keeps it within a shared style guide of
   "tools, templates and rules", while producers develop their own style inside it (P9, P25). [I] This is the 20/80
@@ -26,10 +26,21 @@ information · 8. Callouts and tracking · 9. Failure modes
 - [V] Animation is used carefully on serious subjects: the art director warns against misleading positivity, since
   animation rarely shows graphic real images (P8).
 - [V] The "explained in N moments" format organises chapters with a recurring visual device (P15).
-- [V] In a data interactive, most of the effort went into making the transition between two states readable (P26).
+- [V] In a data interactive, the base map took about a day; the extra time went into the last 10 percent, chiefly
+  making the animated change between two states (work and home) readable (P26).
   [I] The transferable lesson: the transition between two states of a graphic is where the understanding happens,
   so budget for it.
-- [V] Transitions that carry no information are dismissed as worthless (P16).
+- [V] Transitions carry no information, so they are used rarely and only for pacing (P16).
+- [V] One anchor motif per film: the art director picks one visual idea (flying text for a film about AI writing)
+  and builds the whole film on it. Where sources are scarce, a period style can be quoted (protest posters for a
+  Black Panther story). Too much polish reads like an ad, not journalism (P8).
+- [V] A recurring device can be 2.5D, not 3D: a wall of monitors built with corner pinning, key moments opening
+  inside a screen then going full screen, other clips used only as texture, and art-directed CRT jitter (P15).
+- [V] Archival documents and timelines are animated so the film doesn't feel like an archive dump; 3D or game-engine
+  renders can stage what was never filmed (P12, one former producer's own channel).
+- [V] Third-party emulation details (not Vox's own account): lower thirds revealed by a jagged, frame-skipping mask
+  with the text a few frames late; a held photo sits on a background cycling two or three textures a second; photos
+  and clippings get a slight edge-only chromatic split and blur for a lens feel (P28).
 
 ## 2. The core rule: build on the word [O]
 

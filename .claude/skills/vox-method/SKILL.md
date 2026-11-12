@@ -33,7 +33,7 @@ compositions, and no claim of affiliation.
 |---|---|---|
 | 1. Question | One question, a surprising answer, why now; the five story tests | `vox_editorial_methodology.md` |
 | 2. Research | Dossier (claim id, source, status) **and** visual leads (archives, data, documents, places) | `vox_editorial_methodology.md` §6, `vox_asset_sourcing.md` §5 |
-| 3. Pitch | Three engines, three hooks, three opening frames; never the last film's. **Stop for the pick** | `vox_storytelling_methodology.md` §3–4 |
+| 3. Pitch | Three engines, three hooks, three opening frames; never the last film's; say which engines are blocked and why. **Stop for the pick** | `vox_storytelling_methodology.md` §3–4, `creatorforge_house_rules.md` (engine pool) |
 | 4. Structure | Architecture chosen by claim type; chapters with jobs and open loops; the turn at 60–75% | `vox_storytelling_methodology.md` §4–6 |
 | 5. Script | Two-column beats (visual first); written for the ear; claim ids on every fact; retention audit | `vox_storytelling_methodology.md`, `vox_narration.md` |
 | 6. Visual identity | Subject profile → native material → lead and support → palette from subject → texture, type, motion, transitions, signature device, sound palette; swap test | `visual_decision_engine.md` §2, `vox_visual_language.md` §5 |
@@ -74,7 +74,8 @@ S=<this skill's directory>
 python3 $S/scripts/visual_decide.py beats.json --domain <domains> --avoid <recent leads>   # first-pass ranking
 python3 $S/scripts/blueprint_check.py blueprint.json                                       # house rules (CreatorForge)
 python3 $S/scripts/blueprint_check.py blueprint.json --profile generic                     # craft rules only
-python3 $S/scripts/blueprint_check.py blueprint.json --compare last.json earlier.json      # sameness vs recent films
+python3 $S/scripts/history_stubs.py --repo <repo> --out compare_stubs                       # recent films to compare with
+python3 $S/scripts/blueprint_check.py blueprint.json --compare compare_stubs/*.json         # sameness vs recent films
 python3 $S/scripts/render_blueprint.py blueprint.json                                      # blueprint.md + department sheets
 python3 $S/scripts/qc_check.py qc_scorecard.json                                           # QC gate
 ```

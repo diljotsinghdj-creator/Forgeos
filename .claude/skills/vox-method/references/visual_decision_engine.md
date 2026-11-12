@@ -38,12 +38,23 @@ Do these in order, before any scene is planned. Record them in `blueprint.json` 
    shipping manifests", "the canal's lock gates", "a phone's lock screen", "the price board at a fuel station").
 3. **Name the proof types available:** archives, documents, datasets, satellite passes, footage, first-person
    testimony. The lead technique must come from what can actually be proven on screen.
-4. **Pick a lead technique and one support technique** (from §4). The lead carries the argument for at least about
-   30% of runtime; the support carries the counterpoint (evidence against explanation, human against system). Under
+4. **Pick a lead technique and one support technique** (from §4). The lead is the film's largest single mode by
+   screen time (in a 12–15-mode documentary that is typically 18–30%), and lead plus support together fill 30% or
+   more. The support carries the counterpoint: evidence against explanation, human against system. The checker
+   warns when the declared lead isn't among the top two modes, or when lead plus support fall under 30%. These
+   numbers were recalibrated after the first tests, where well-mixed films put their lead at 19–26%. Under
    CreatorForge rules neither may be the lead of the last two films (`studio_history`, `SEEN.json`).
 5. **Take the palette from the subject:** sample the hues of the native material (the canal's oxidised green, the
    ledger paper's buff, the warning-label orange). Assign roles: base, accent, signal. On CreatorForge the signal is
    always #FFDD33. The accent sits at least 120° round the wheel from the last film's.
+   **Don't default to the complement of the last film.** The 120° rule only excludes hues; it doesn't choose one.
+   Tests on 2026-11-12 showed three unrelated films all landing on green, opposite the previous film's magenta.
+   Instead:
+   1. List three candidate accent hues, each sampled from a different part of the native material (the object, the
+      place, the document, the warning).
+   2. Drop any within 120° of the last film or 60° of the two before.
+   3. Of the rest, pick the one farthest from all three recent films. Write the three candidates and the reason for
+      the pick in `palette.from_subject`.
 6. **Set the texture and typography treatment** by the material. Archival subjects suit paper, halftone and
    typewriter. Data subjects suit clean grids and tabular figures. Science suits soft light and scientific plates.
    Interfaces suit pixel-true UI.

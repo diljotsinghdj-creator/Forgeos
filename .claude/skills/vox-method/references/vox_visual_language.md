@@ -20,7 +20,12 @@ craft standard, to be checked against frames when access allows (learning_protoc
 - [V] **Real material over illustration when it exists:** the black-hole piece stresses that the image is assembled
   real data, not an artist's impression (black-hole-photo-big-deal-2019).
 - [V] **Footage sources are credited with timestamps** in descriptions (from-spy-to-president-putin-2017).
-- [V] **Handmade materials** (construction paper) for some films, chosen for warmth and approachability (P8).
+- [V] **Handmade materials** (construction paper) for some films: a schooling film evoked a child's craft project,
+  e.g. a paper clock that turns into a pie chart (P8).
+- [V] **Clip or photo is an editorial choice:** a clip gives context, a photo can carry an abstract idea, and the
+  framing of a photo can flatter or not, so it is chosen for neutrality (P15).
+- [V] **Visual evidence is the built-in priority** of an editorial video: what can be shown that proves the story
+  (P16).
 - [V] **A shared style guide with room for each producer's voice** (P25).
 - [V] **The artefact is the evidence** in visual-history pieces: two photographs compared (famous-war-photo).
 - [V] **Hand-built datasets become visuals:** every lyric mention logged and sorted by year (why-rappers-love-grey-poupon-2016).

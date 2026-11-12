@@ -13,12 +13,19 @@ tested against frames when access allows.
 
 ## 1. What the studied craft shows
 
-- [V] Premiere for assembly, After Effects for animation (P27, P30).
+- [V] After Effects for animation (one producer assembles whole sequences there), Premiere for the final edit and
+  most sound work (P13, P27, P30).
 - [V] Visual changes cut on the music's beat in at least one studied video (P3).
-- [V] A producer owns the whole film, including the edit (P1, P24), so script, visuals and cut come from one mind.
+- [V] A producer owns the whole film, including the edit (P1, P24 snippets; confirmed by P6, P9, P42): one senior
+  producer pitches, researches, scripts with a story editor, then voices, animates and cuts (P9).
 - [V] Footage shot on location is planned with previs: map moves used to plan drone flights (P23). Location shoots
-  were short and intense (about 11 days per place) and fed several films (P17, P31).
-- [V] Transitions are judged by whether they carry information (P16).
+  were short and intense: about 11 days per place, with pre-production done at home (P17). In the first season of a
+  field series one reporter travelled for about three months to make six films, posting dispatches on the way (P31).
+- [V] Transitions carry no information, so the default is a jump cut; a transition is used rarely, for pacing (P16).
+- [V] J- and L-cuts (sound before picture) and cutting on action lift a self-shot sequence (P13). A third-party
+  breakdown shows one "invisible" sequence change: a short 3D camera push across the edit with a brief blur peaking on
+  the cut (P28).
+- [V] One producer reports 72–75% average retention whether a film runs six or twelve minutes (P9).
 - [V] Watch time grew to half of viewers watching at least 4 minutes (P35). [I] The editing is built to hold attention
   through the middle of the film, not just the hook.
 

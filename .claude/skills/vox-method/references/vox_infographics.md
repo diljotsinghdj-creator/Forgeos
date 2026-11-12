@@ -20,6 +20,8 @@ Labels: [V] source-backed (sources.md, case_studies/) · [I] interpretation · [
 - [V] Unit conversions such as "households' worth of electricity" vary between sources. One case study found
   conflicting figures (clean-energy-ai-boom-2024). [O] Verify every conversion and show its basis.
 - [V] Atlas pieces combine maps, news clips, photos and data visualisations in one layout (P22).
+- [V] Data can be made physical: one producer printed a series of charts on paper and walked through them on camera
+  (P19).
 
 ## 2. Choosing the chart [O]
 

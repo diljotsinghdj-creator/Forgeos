@@ -1,13 +1,13 @@
 ---
 id: are-we-automating-racism-2021
 title: "Are we automating racism?"
-url: not confirmed (also on Vox's Facebook page: facebook.com/Vox/videos/are-we-automating-racism/289996529150836/)
-published: 2021-03-31 (podcast and show-note listings citing "Joss Fong, Vox.com, March 31, 2021"; Vox tweet promoting the episode)
+url: https://www.youtube.com/watch?v=Ok5sKLXqynQ
+published: 2021-03-31 (rosetta.to listing; podcast and show-note listings agree)
 series: Glad You Asked (season 2)
 producer: Joss Fong, host and producer (Vox tweet; Racism and Technology Center write-up)
 category: culture
 length: about 22 minutes (Popular Sociology listing as summarised by search)
-evidence_basis: Search-engine summaries of the Racism and Technology Center write-up (2021-08-07), Popular Sociology's video page, Vox's promotional tweet, a thetvdb Glad You Asked listing, a 2022 interview with Fong about the Glad You Asked format (outlet not pinned down: surfaced alongside Video Consortium and The Gradient pages), and PhoneArena on Twitter's cropping change (context). No page was opened directly (WebFetch was blocked in this session). Transcript NOT read; video frames NOT viewed.
+evidence_basis: Verification pass 2026-11-12, pages opened directly - (1) rosetta.to page carrying the YouTube embed (id Ok5sKLXqynQ), date, view count, untimed chapter titles and a full punctuated transcript with speaker labels and sound tags; (2) YouTube oEmbed endpoint confirming the id is titled "Are We Automating Racism?" on the Vox channel. Earlier pass (search summaries only) - Racism and Technology Center write-up, Popular Sociology, Vox tweet, thetvdb, interviews with Fong on the format, PhoneArena. NOT accessed - video frames (not viewed by us); any making-of interview describing this episode's shots.
 ---
 
 # Are we automating racism?
@@ -23,14 +23,15 @@ Timestamps appear only when a source (transcript, chapter list) supplies them.
 - [V] Examples include image-cropping algorithms, sensors and beauty filters (Popular Sociology summary), and racial disparity in healthcare priority scores (Racism and Technology Center).
 
 ## 2. Opening technique
-- [V] The episode opens with Fong testing Twitter's automatic image-cropping algorithm herself, with two colleagues (Racism and Technology Center).
-- [V] Context: Twitter introduced saliency-based cropping in 2018; users reported it favoured lighter-skinned faces; Twitter later said it found no bias in its own analyses but acknowledged potential for harm and changed the feature (PhoneArena).
-- [I] It opens on a live, repeatable experiment the viewer can understand without any theory: a personal test of a public product, before any explanation.
+- [V] Cold open mid-shoot: Fong directs two colleagues (Lee and Christophe) to pose, a shutter clicks, and she frames them as "just pixels" to a machine; the crop test then picks one of them, and she says she cannot explain it (transcript).
+- [V] Ruha Benjamin's line that neutral or good intentions can still produce discriminatory outcomes comes before the theme music (transcript).
+- [V] After the theme, Fong explains the viral Twitter tests (McConnell and Obama in tall images) and the team runs the test themselves, live (transcript).
+- [V] Context: Twitter introduced saliency-based cropping in 2018 and later changed the feature (PhoneArena, earlier pass); in the episode, Twitter's blog post saying its own tests found no racial bias is reported (transcript).
 
 ## 3. Narrative structure
-- [V] Order reported by the Racism and Technology Center: (1) the hands-on Twitter cropping test; (2) a conversation with Ruha Benjamin, author of *Race After Technology*, about racial disparity in healthcare priority scores; (3) a closing turn from "how do we remove bias" to whether some algorithms should be used at all.
-- [V] Between these, the episode explains how machine learning works (Vox tweet).
-- [I] Shape: personal experiment, then mechanism (how ML learns from data), then high-stakes case (healthcare), then reframed question. The healthcare segment very likely draws on the widely reported 2019 Obermeyer et al. study of a commercial risk algorithm, but the video's exact source was NOT verified.
+- [V] Order in the transcript: live crop test on colleagues → plan for a systematic test with AI-generated faces → Benjamin interview (soap dispenser video, tech neutrality) → a physical "black box" prop built to explain machine learning → montage of news headlines on biased systems → Christophe's results by video call (180 image sets; 131 vs 229 crops, 36% vs 64%) → saliency models and eye-tracking data → how bias enters (with Deborah Raji, named in rosetta.to's people list) → the healthcare algorithm that predicted cost rather than illness, and the fix researchers are working on with the company → auditing and regulation → power: who poses the question, and to whom designers are accountable (transcript).
+- [V] Rosetta.to's chapter titles (untimed) match this order: myth of neutral tech → testing bias → expert insights → how machines learn bias → healthcare case → auditing and regulating → power dynamics.
+- [I] Shape: personal experiment, then mechanism, then a high-stakes case, then a reframed question. The healthcare segment is consistent with the 2019 Obermeyer et al. study, but the transcript does not name the paper.
 
 ## 4. Narration characteristics
 - [V] Host-led and first-person: Fong appears as host and runs the experiment herself (Racism and Technology Center; Vox tweet).
@@ -38,22 +39,30 @@ Timestamps appear only when a source (transcript, chapter list) supplies them.
 - [I] The title question ("Are we...?") and the inclusive "we" set an inquiring rather than accusatory tone; inferred from the title and description.
 
 ## 5. Visual techniques
-- Not verified at shot level. [I] The Twitter test implies screen recordings of uploads and resulting crops; not observed.
+- [V] Fong says "we built this" to explain machine learning: a physical black box standing for the system we interact with (transcript).
+- [V] The crop tests are run on screen with colleagues reacting; results are reported over a Skype call (transcript sound tag "Skype ringing").
+- [I] Screen recordings of the uploads and crops are implied by the live test; the exact treatment is not observed.
 
 ## 6. Graphics and animation
-- Not verified. [I] Explaining training data and prediction usually calls for a diagram of inputs, model and outputs; not observed.
+- [V] The explanatory device is a built prop rather than only animation (transcript, "we built this").
+- [V] Numbers that would need graphics: 180 image sets, 131 vs 229 crops, 36% vs 64% (transcript).
+- [I] Whether those figures appear as charts is not described by any source.
 
 ## 7. Footage selection
 - [V] Includes on-camera colleagues (for the cropping test) and an interview with Ruha Benjamin (Racism and Technology Center).
 
 ## 8. Editing techniques
-- Not verified. [V] The format is described by its host as allowing more breathing room than standard Vox videos (2022 interview summary).
+- [V] The episode keeps production chatter in: directions to the crew at the start and a crew voice under the end ("Can you lift up your arm a little?") (transcript).
+- [V] Fong has said Glad You Asked gives more room for pacing and breathers than denser Vox explainers (2022 interview, earlier pass).
+- [I] Showing the shoot itself is a deliberate texture of the series: the process is part of the evidence.
 
 ## 9. Sound design
-- Not verified.
+- [V] Sound tags in the transcript: shutter click at the open, theme music after the cold open, music under transitions, Skype ring, indistinct chatter at the end (transcript).
+- [I] Mix levels and track choices are not described by any source.
 
 ## 10. Transitions
-- Not verified.
+- [V] Music cues and the theme mark section changes; a video call is used as a bridge to the systematic-test results (transcript).
+- [I] Picture transitions are not described by any source.
 
 ## 11. What makes it effective
 - [V] About 2 million views by August 2021 (Racism and Technology Center).
@@ -75,3 +84,6 @@ Timestamps appear only when a source (transcript, chapter list) supplies them.
 - Vox on Facebook (video page): https://www.facebook.com/Vox/videos/are-we-automating-racism/289996529150836/
 - PhoneArena on Twitter cropping (context): https://www.phonearena.com/news/Twitter-to-change-its-automated-image-cropping-feature_id127554
 - Interviews with Fong on the format (search summaries): https://videoconsortium.org/mag/episode-1-joss-fong ; https://thegradientpub.substack.com/p/joss-fong-videomaking-ai-science-communication
+(Entries above this note were read only through search-result summaries in the earlier pass.)
+- rosetta.to page with full transcript (opened 2026-11-12): https://rosetta.to/u/vox/are-we-automating-racism
+- YouTube oEmbed check of the id (opened 2026-11-12): https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=Ok5sKLXqynQ&format=json

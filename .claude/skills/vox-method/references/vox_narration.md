@@ -10,9 +10,11 @@ Labels: [V] source-backed (sources.md P#, case_studies/) · [I] interpretation �
 
 ## 1. What the studied craft shows
 
-- [V] One producer owns a video from pitch to delivery (P1, P24). [I] The voice that explains is the voice that
-  researched it, which is why it sounds like explaining rather than reading. No source confirmed that producers
-  always narrate their own films (sources.md §I).
+- [V] One producer owns a video from pitch to delivery (P6, P9, P42; P1 and P24 snippet only). One senior producer
+  voices his own script once it is locked (P9). [I] The voice that explains is the voice that researched it, which
+  is why it sounds like explaining rather than reading. No source confirmed that producers always narrate their own
+  films (sources.md §I).
+- [V] "Look at this": naming the evidence and then showing it grabs attention, and is underused in explainers (P16).
 - [V] Different formats change the voice: analyst-narrated short explainers for fast news; a travelling host for
   field series; presenter authority for a policy piece; a host who joins the experiment in long-form series
   (PATTERNS: politics §8, history/geography §8, econ/tech §9).

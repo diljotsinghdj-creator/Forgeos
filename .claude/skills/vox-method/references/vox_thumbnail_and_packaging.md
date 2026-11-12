@@ -19,15 +19,23 @@ Labels: [V] source-backed (sources.md P#, case_studies/, PATTERNS.md) · [I] int
   (when-white-supremacists-overthrew-a-government).
 - [V] **"feat." credit** when a known investigator stars (famous-war-photo).
 - [V] **Thumbnails with a single central subject and one text element** (P36, one example cited by a third party).
-- [V] **Impact-framed titles** rather than bare topics (P37, one independent creator's reading, low confidence).
+- [I] **Impact-framed titles** rather than bare topics (P37: one outside creator's opinion; its example titles are
+  illustrative, not checked Vox titles).
+- [V] **Test the package before greenlighting:** one former producer makes the thumbnail and headline first and
+  shows them to a private group of creators before committing to the film (P12).
 - [V] **Series brands carry the method** (Borders: travel along a line; Atlas: maps; Missing Chapter: buried history)
   (PATTERNS history/geography §7).
 - [V] **Companion packages** (article, interactive, playlist, resource list) and **timestamped source lists** in
   descriptions (PATTERNS politics §6, sci/culture §7).
 - [V] **Re-cuts and Shorts** extend a film (Syria re-made; Nevada cut into a Short) (PATTERNS history/geography §7).
-- [V] Strategy: the highest average views per video among news publishers (P2, P34); watch time grew to half of
+- [V] Strategy: the highest average views per video among news publishers, about 2 million in a January 2025
+  ranking (P42 citing Press Gazette; P2, P34 snippet only); watch time grew to half of
   viewers watching at least 4 minutes (P35); YouTube-first formats, metadata and a consistent identity credited for
   growth (P24).
+
+- [V] **Length:** Vox's video director calls the 5–15 minute "medium form" the one the outlet has perfected
+  (P2, 2022). The channel sample measures a median of 9.1 minutes for recent standalone explainers, with the
+  middle half between 7.3 and 11.6 minutes (case_studies/CHANNEL_SAMPLE.md).
 
 ## 2. Titles [O]
 

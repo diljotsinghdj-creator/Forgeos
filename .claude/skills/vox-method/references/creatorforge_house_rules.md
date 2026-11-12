@@ -36,6 +36,29 @@ differ, the owner's rules win. The full, current rules are in the repo; read the
   recreations, simple re-staged experiments and charts from studies. No character, no mascot. The look carries the
   identity.
 
+## Comparing with recent films
+
+- Build comparison stubs: `python3 scripts/history_stubs.py --repo <repo root> --out compare_stubs`. It uses the
+  saved blueprints first, then the studio's variation ledger and SEEN.json, mapped onto this skill's vocabulary
+  (approximate). Then run `blueprint_check.py blueprint.json --compare compare_stubs/1_*.json compare_stubs/2_*.json
+  compare_stubs/3_*.json`.
+- **When a blueprint is shown to the owner,** save a copy to `creatorforge/channels/blueprints/<film-id>.json` and log
+  it in SEEN.json as a storyboard (gate 2: seen means used). Later comparisons then run against the real blueprint,
+  not an approximation.
+- Pacing classes match the studio's gate 4: annotated documents and photos, quote cards and on-screen type are
+  *still* shots (4.5 s max). Where this skill and `studio/gates.py` ever disagree, the studio's stricter rule wins.
+
+## When the engine pool runs dry
+
+The owner's four engines, minus the last film's and those the brain log retires for samples, can leave only one or
+two engines that are truly free. Tests on 2026-11-12 showed all three films landing on the same engine. When this
+happens:
+- say so in the pitch, and name which engines are blocked and why;
+- still pitch three, with the blocked ones honestly flagged;
+- optionally offer one new engine, built from an architecture in `vox_storytelling_methodology.md` §4 (forensic,
+  controlled comparison, object biography…), clearly marked as **a suggestion**. A new engine joins the house list
+  only if the owner says yes (BRAIN_LOG 2026-11-10: Claude's suggestions stay suggestions).
+
 ## Handing the blueprint to the studio engine
 
 The studio's screenplay format (`creatorforge/worker`) has its own graphic line syntax and its own gates

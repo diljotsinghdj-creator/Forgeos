@@ -1,13 +1,13 @@
 ---
 id: why-rappers-love-grey-poupon-2016
 title: "Why rappers love Grey Poupon"
-url: not confirmed (rosetta.to mirror: rosetta.to/u/vox/why-rappers-love-grey-poupon; an aggregator gives the Vox page as vox.com/videos/2016/10/12/13250360/grey-poupon-in-hip-hop, unverified)
-published: 2016-10-12 (Tildes listing; First We Feast, The Drum and Hypebeast covered it in October 2016)
-series: standalone Vox video by Estelle Caswell (sources did not confirm it as an Earworm episode)
-producer: Estelle Caswell (First We Feast, Tildes and School of Motion interview, all as summarised by search)
+url: https://www.youtube.com/watch?v=jOgPk5T1xi0
+published: 2016-10-12 (vox.com companion page dated Oct 12, 2016; rosetta.to listing agrees)
+series: standalone Vox video by Estelle Caswell; Caswell says it came before she pitched Earworm (School of Motion interview)
+producer: Estelle Caswell (narrator and producer; vox.com page byline "Estelle Caswell and Sarah Frostenson"; Frostenson built the companion interactive, per the video's own outro)
 category: culture
-length: about 10:04 (rosetta.to listing as summarised by search)
-evidence_basis: Search-engine summaries of First We Feast, AV Club, The Drum, Hypebeast, Tildes and the rosetta.to listing; a search summary of a School of Motion interview with Caswell describing her research method for this video; Wikipedia's Grey Poupon entry (for the 1980s commercial). No page was opened directly (WebFetch was blocked in this session). Transcript NOT read; video frames NOT viewed; the Vox interactive timeline NOT seen.
+length: 10:04 (rosetta.to listing)
+evidence_basis: Verification pass 2026-11-12, pages opened directly - (1) rosetta.to page carrying the YouTube embed (id jOgPk5T1xi0), date, length, quotes with timestamps and a full machine transcript (auto-caption style; lyrics are garbled by the captioning); its chapter times are out of order and are not used; (2) YouTube oEmbed endpoint confirming the id is titled "Why rappers love Grey Poupon" on the Vox channel; (3) the vox.com companion page "How Grey Poupon became hip-hop's favorite condiment" (Oct 12, 2016), read in full; its only YouTube embed is the 1981 ad uploaded by a third party (id tvDazrJuSdA), not the Vox video; (4) School of Motion podcast transcript with Caswell (the passages on this video and on her on-camera voice). Earlier pass (search summaries only) - First We Feast, AV Club, The Drum, Hypebeast, Tildes, Wikipedia, Caswell on X. NOT accessed - video frames (not viewed by us); the Vox interactive itself; the Spotify playlist.
 ---
 
 # Why rappers love Grey Poupon
@@ -19,63 +19,76 @@ Evidence labels used below:
 Timestamps appear only when a source (transcript, chapter list) supplies them.
 
 ## 1. Subject and central question
-- [V] Why a mid-priced Dijon mustard became one of hip-hop's most frequent food references across about 24 years of songs (First We Feast; AV Club).
-- [V] The explanation offered is advertising: the 1980s TV campaign (a Rolls-Royce passenger asking another for the mustard) positioned the product as affordable luxury, a status symbol that rappers then borrowed (The Drum; Wikipedia on the ad; coverage summary).
-- [I] The underlying question is how a brand's manufactured meaning gets adopted and changed by a culture. Inferred from the ad-to-lyric through-line every source describes.
+- [V] Why a fancy Dijon mustard keeps turning up in rap lyrics, nearly every year from 1992 to 2016 (transcript; vox.com page).
+- [V] The film has two questions, not one: why the brand became a rap reference at all (the 1980s ads, an easy rhyme, a status symbol) and why references spiked in 2007, a decade after the ads stopped (vox.com page; transcript).
+- [V] CORRECTION: the earlier draft said the explanation offered is advertising. The transcript says the ad campaign explains the origin, but that the commercial itself probably had little to do with the later rise; the spike is explained by hit records repeating it, so the more it was heard, the more it was rapped (transcript, paraphrased).
 
 ## 2. Opening technique
-- Not verified. No source describes the first shot or line.
-- [I] A condiment in rap lyrics is an absurd-seeming premise; the title states the oddity outright, so the opening likely establishes how often the reference appears before explaining why. This is inferred from the title and the "dozens of songs" framing, not observed.
+- [V] Cold open in the first person on a favourite record: a Ghostface Killah track from *Ironman* (1996), then a Raekwon verse four tracks earlier that gives a sense of déjà vu (transcript; quote stamped 00:00:13).
+- [V] Then Kanye West's 2016 reference, "fully 20 years later", and the reveal that Caswell had begun logging every mention she heard; the central question is stated within about the first 20 seconds per the rosetta.to quote stamp (transcript).
+- [I] The opening is personal discovery, not statistics: a listener's pattern-noticing becomes the hook.
 
 ## 3. Narrative structure
-- [V] Chronological thread from the 1980s ad campaign, through Das EFX's 1992 "East Coast" (described as probably the first hip-hop reference), Big L's "Sandman 118 Freestyle", Jay Z and Ghostface Killah references in the 1990s, up to Kanye West's "Facts" on *The Life of Pablo* (2016) (AV Club; First We Feast).
-- [I] Shape: an origin (the ad) explains a pattern (the lyrics), told as a timeline. Inferred from the sources listing examples by year.
+- [V] Order in the transcript: personal discovery → the 1981 ad and its sales test (a reported 100% jump in Seattle, repeated in New England) → the early-1990s campaign refresh and squeeze bottle, with the ad agency's Lee Garfinkel interviewed → Das EFX's 1992 "East Coast" as probably the first hip-hop reference, and *Wayne's World* the same month → a chart of references 1992-2016 → why it works (rhyme and status), with rapper Open Mike Eagle interviewed → the 2007 spike explained through chart hits (Jim Jones "We Fly High", the "Ballin'" craze, T.I., Lil Wayne, Kanye West's "Southside") → a Dutch song that uses the phrase in a country where the mustard is not sold → closing interview reflections → outro pointing to the interactive and playlist.
+- [V] The vox.com page withholds the 2007 answer and sends readers to the video (vox.com page, paraphrased).
+- [I] Shape: discovery → origin → pattern in data → anomaly (2007) → explanation of the anomaly → a final odd case that proves the meme spreads on its own.
 
 ## 4. Narration characteristics
-- Not verified (no transcript).
-- [V] Coverage describes the mustard with gently mocking language, suggesting a wry voice (First We Feast's summary paraphrases the video's description of the product as an overpriced white-wine Dijon); exact narration wording not confirmed.
+- [V] First-person narrator who is also the researcher ("I listen to hip-hop all day long", "through my research I discovered") (transcript; vox.com page).
+- [V] Caswell says she inserts herself so the film feels like telling a friend about something she loves, rather than a "robotic" objective account; her story editor (Mona Lalwani) pushes her to cut tangents and stay on the headline (School of Motion interview, paraphrased).
+- [V] Interviewees: Lee Garfinkel (ad agency), Open Mike Eagle (rapper), and at least one other rapper reacting to the list (transcript).
+- [V] A reporting beat is narrated on screen: she emails Kraft Heinz to ask whether the mustard is sold in the Netherlands and reads out the one-line reply (transcript).
 
 ## 5. Visual techniques
-- Not verified (no frames viewed).
+- [V] A chart of Grey Poupon references in recorded music from 1992 to 2016 is introduced with "this chart shows" (transcript).
+- [I] Most of the visuals are not described by any source; lyric on-screen text is likely given that lyrics play under narration, but that is inference.
 
 ## 6. Graphics and animation
-- [V] Caswell built an original data set by searching lyric databases for every mention and logging them in a spreadsheet (School of Motion interview, as summarised).
-- [V] Vox published an interactive graphic sorting the references by year with audio clips, plus a Spotify playlist of the songs (coverage summary).
-- [I] The on-screen version very likely visualises the same data as a timeline or count, since the data set and the interactive share it; not observed.
+- [V] The data set: Caswell spent about three months scraping Genius for every Grey Poupon lyric into a spreadsheet; once charted, the trend became the pitch (School of Motion interview).
+- [V] Counts given in the film: 118 songs; "coupon" is the most common rhyme (20), followed by "futon" and "crouton" (transcript).
+- [V] Sarah Frostenson of the graphics team built an interactive with a timeline and sortable list where each song can be played, published on vox.com (transcript outro; vox.com byline).
 
 ## 7. Footage selection
-- [V] The 1980s Rolls-Royce commercial is the central archival artefact the explanation rests on (The Drum; Wikipedia). Whether and how much of it is shown is not verified.
-- [V] Caswell has said elsewhere that a separate video was taken down by Content ID over a few seconds of fair-used audio (Caswell on X, about a 2021 video). This shows the licensing risk of music-led videos; it is not evidence about this video.
+- [V] The 1981 Grey Poupon TV ad and the early-1990s follow-up ads are used; the ad's tagline is heard (transcript quote stamped 00:02:03). The vox.com page embeds a third-party upload of the 1981 ad.
+- [V] A *Wayne's World* clip with the line is referenced as a pop-culture moment in 1992 (transcript).
+- [V] Many short lyric excerpts from the songs (transcript).
+- [V] Interview footage with Garfinkel and Open Mike Eagle (transcript).
 
 ## 8. Editing techniques
-- Not verified.
+- [V] Runtime 10:04 (rosetta.to).
+- [I] The film cuts rapidly between short lyric clips to build the sense of ubiquity, then slows for interviews. Inferred from the transcript's alternation of lyric fragments and interview passages; frames not viewed.
 
 ## 9. Sound design
-- Not verified for this video. [I] Music-led explainers depend on short lyric clips placed exactly; the companion interactive's per-year audio clips suggest the video also cut to short lyric excerpts. Inference only.
+- [V] Music is the evidence: lyric excerpts are heard, not only quoted (transcript).
+- [V] Background (not this video): Caswell has said elsewhere that a different video was taken down by Content ID over a few seconds of fair-used audio (Caswell on X, earlier pass). A licensing risk for music-led films.
 
 ## 10. Transitions
-- Not verified.
+- [V] Each section opens with a spoken signpost ("well, it starts here", "this of course brings us to the early 90s", "here's the thing") (transcript; vox.com page).
+- [I] Picture transitions not described by any source.
 
 ## 11. What makes it effective
-- [V] Original data journalism on a trivial-seeming subject: a hand-built data set, not an aggregated listicle (School of Motion interview summary).
-- [V] Multi-platform package: video, interactive timeline and playlist (coverage summary).
-- [V] Wide pickup: food, music, advertising and culture sites all covered it within days (First We Feast, The Drum, Hypebeast, AV Club).
-- [I] It works because a small object carries a big idea (class, aspiration, branding). Inferred from the explanation the coverage reports.
+- [V] Original data journalism on a trivial-seeming subject: a hand-built data set, charted, with the anomaly (2007) driving the second half (School of Motion; transcript).
+- [V] Multi-platform package: video, vox.com post, interactive timeline and Spotify playlist (vox.com page; transcript outro).
+- [V] It led to a role: after this video Caswell was encouraged to focus on music stories and pitched Earworm (School of Motion).
+- [I] It refuses the easy answer (the ads did it) and finds a better one in its own data.
 
 ## 12. What we can adapt (original equivalents, never copies)
-- [O] **Count it yourself:** for any cultural motif, build a primary data set (every mention, every instance) in a spreadsheet and log it in the research dossier with a source per row; the count becomes the film's spine and its proof.
-- [O] **Small object, big system:** choose one ordinary object that keeps turning up in a culture and use it as the lens on status, money or identity. For Dragon Psychology: one recurring gesture, phrase or object across myths. For Print Facts: one recurring detail across documents.
-- [O] **Origin artefact as evidence:** find the single real artefact (an ad, a memo, a first printing) where the meaning was manufactured, and show it before explaining (this also satisfies our evidence-first gate).
-- [O] **Companion data drop:** publish the data set or a playlist or source list with the video, so viewers can check the count.
-- [O] **Licensing plan up front:** music-heavy films need a clip-by-clip rights or fair-use log before editing; budget for re-performed or described audio where licensing is risky.
+- [O] **Count it yourself:** for any cultural motif, build a primary data set (every mention, every instance) with a source per row; the count becomes the film's spine and its proof.
+- [O] **Find the anomaly in your own chart:** after the origin story, look for the spike or gap the obvious cause cannot explain, and make that the second act.
+- [O] **Origin artefact as evidence:** show the single real artefact where the meaning was made (an ad, a memo, a first printing) before explaining it; this satisfies our evidence-first gate.
+- [O] **Ask the owner on screen:** where a factual question can be put to a company or archive, put it, and show the reply as a document card with date.
+- [O] **Companion data drop:** publish the data set or a source list with the video, so viewers can check the count.
+- [O] **Licensing plan up front:** music- or clip-heavy films need a clip-by-clip rights or fair-use log before editing.
 
 ## Sources
-- First We Feast, October 2016: https://amp.firstwefeast.com/eat/2016/10/hip-hops-long-love-affair-with-grey-poupon
-- AV Club: https://avclub.com/grey-poupon-has-had-a-lengthy-distinguished-career-in-1798252980
-- The Drum, 2016-10-15: https://www.thedrum.com/news/2016/10/15/why-grey-poupons-advertising-cuts-the-mustard-rappers
-- Hypebeast, October 2016: https://hypebeast.com/2016/10/rappers-grey-poupon-video
-- Tildes listing (date): https://tildes.net/~music/14o0/how_grey_poupon_became_hip_hops_favorite_condiment
-- rosetta.to listing: https://rosetta.to/u/vox/why-rappers-love-grey-poupon
-- School of Motion interview with Estelle Caswell: https://schoolofmotion.com/blog/estelle-caswell-vox-podcast
-- Wikipedia, Grey Poupon (ad campaign): https://en.wikipedia.org/wiki/Grey_Poupon
-- Estelle Caswell on X (Content ID takedown, different video): https://x.com/estellecaswell/status/1386716348219338757
+- vox.com companion page, "How Grey Poupon became hip-hop's favorite condiment", Estelle Caswell and Sarah Frostenson, Oct 12, 2016 (opened 2026-11-12): https://www.vox.com/videos/2016/10/12/13250360/grey-poupon-in-hip-hop
+- rosetta.to page with full transcript (opened 2026-11-12): https://rosetta.to/u/vox/why-rappers-love-grey-poupon
+- YouTube oEmbed check of the id (opened 2026-11-12): https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=jOgPk5T1xi0&format=json
+- School of Motion podcast with Estelle Caswell (opened 2026-11-12): https://schoolofmotion.com/blog/estelle-caswell-vox-podcast
+- First We Feast, October 2016 (search summary only, earlier pass): https://amp.firstwefeast.com/eat/2016/10/hip-hops-long-love-affair-with-grey-poupon
+- AV Club (search summary only, earlier pass): https://avclub.com/grey-poupon-has-had-a-lengthy-distinguished-career-in-1798252980
+- The Drum, 2016-10-15 (search summary only, earlier pass): https://www.thedrum.com/news/2016/10/15/why-grey-poupons-advertising-cuts-the-mustard-rappers
+- Hypebeast, October 2016 (search summary only, earlier pass): https://hypebeast.com/2016/10/rappers-grey-poupon-video
+- Tildes listing (search summary only, earlier pass): https://tildes.net/~music/14o0/how_grey_poupon_became_hip_hops_favorite_condiment
+- Wikipedia, Grey Poupon (search summary only, earlier pass): https://en.wikipedia.org/wiki/Grey_Poupon
+- Estelle Caswell on X (Content ID takedown, different video; earlier pass): https://x.com/estellecaswell/status/1386716348219338757

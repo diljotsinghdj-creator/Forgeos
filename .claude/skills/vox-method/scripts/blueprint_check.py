@@ -30,7 +30,8 @@ MODES = {
     "location_footage": ("evidence", "build"), "news_footage": ("evidence", "build"),
     "document": ("evidence", "still"), "newspaper": ("evidence", "still"), "screenshot": ("evidence", "still"),
     "satellite": ("evidence", "build"), "official_record": ("evidence", "still"), "interview": ("evidence", "build"),
-    "photo_annotated": ("evidence", "build"), "document_annotated": ("evidence", "build"),
+    # annotated evidence holds one picture while marks land on it: a still shot (as in the studio's gate 4)
+    "photo_annotated": ("evidence", "still"), "document_annotated": ("evidence", "still"),
     # explain
     "map_2d": ("explain", "build"), "map_globe": ("explain", "build"), "map_route": ("explain", "build"),
     "chart": ("explain", "build"), "data_viz": ("explain", "build"), "unit_chart": ("explain", "build"),
@@ -45,7 +46,7 @@ MODES = {
     # atmosphere
     "stock_footage": ("atmosphere", "build"), "stock_photo": ("atmosphere", "still"), "texture_plate": ("atmosphere", "still"),
     # text-led
-    "kinetic_type": ("text", "build"), "quote_card": ("text", "still"), "title_card": ("text", "still"),
+    "kinetic_type": ("text", "still"), "quote_card": ("text", "still"), "title_card": ("text", "still"),
     "chapter_card": ("text", "still"), "end_card": ("text", "still"),
 }
 PURPOSES = {"hook", "inform", "context", "prove", "emotion", "turn", "payoff", "transition"}
@@ -63,6 +64,12 @@ BANNED = ("delve", "delving", "testament to", "moreover", "in a world where", "i
           "unlock the secrets", "in today's fast-paced", "navigate the complexities", "tapestry")
 SIGNATURE_YELLOW = "#FFDD33"
 NUM_RE = re.compile(r"(?<![\w#])(\d[\d,.]*\s*(%|percent|million|billion|trillion|crore|lakh|km|miles|years?)?)", re.I)
+
+# numbers written as words ("two hundred million", "half of", "a third") are claims too
+WORD_NUM_RE = re.compile(r"\b((?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|fifteen|twenty|thirty|"
+                         r"forty|fifty|sixty|seventy|eighty|ninety|a|several|hundreds of|tens of)(?:\s+(?:hundred|thousand|"
+                         r"million|billion|trillion))+|(?:half|a third|two thirds|a quarter|three quarters) of|"
+                         r"\w+ (?:percent|per cent)|twice as|three times|four times|ten times)\b", re.I)
 
 HOUSE = {"max_still": 4.5, "max_build": 7.0, "last_extra": 1.5, "max_mean": 5.0, "interrupt_every": 20.0,
          "stock_share": 0.25, "effect_max": 3, "min_modes": 5, "max_mode_share": 0.40}
@@ -185,6 +192,9 @@ def check(bp: dict, prof: dict, house: bool, rep: Report) -> dict:
         nums = [m.group(1) for m in NUM_RE.finditer(narr) if not re.fullmatch(r"(19|20)\d\d", m.group(1).strip())]
         if nums and not s.get("claim_ids"):
             rep.add("error", sid, f"narration states {nums[0]!r} but cites no dossier claim (claim_ids)")
+        words = [m.group(1) for m in WORD_NUM_RE.finditer(narr)]
+        if words and not nums and not s.get("claim_ids"):
+            rep.add("warning", sid, f"narration states {words[0]!r} but cites no dossier claim (claim_ids)")
         if nums and not s.get("on_screen_text"):
             rep.add("warning", sid, "a figure is spoken but nothing is on screen (mute test)")
         for fx in s.get("effects", []) or []:
@@ -224,6 +234,16 @@ def check(bp: dict, prof: dict, house: bool, rep: Report) -> dict:
         lead = dna.get("lead_technique")
         if lead and lead in MODES and modes_time.get(lead, 0) == 0:
             rep.add("error", "dna", f"declared lead technique '{lead}' never appears in the scenes")
+        elif lead in modes_time:
+            ranked = sorted(modes_time, key=lambda k: -modes_time[k])
+            sup = dna.get("support_technique")
+            pair = (modes_time.get(lead, 0) + modes_time.get(sup, 0)) / total
+            if ranked.index(lead) > 1:
+                rep.add("warning", "dna", f"lead '{lead}' is only the #{ranked.index(lead) + 1} mode by runtime; "
+                                          "the lead should carry the most screen time (or declare the real lead)")
+            if pair < 0.30:
+                rep.add("warning", "dna", f"lead + support fill only {pair:.0%} of runtime (aim for 30%+): "
+                                          "the film's identity may be diluted")
     for fx, n in effects.items():
         if n > prof["effect_max"]:
             rep.add("error", "effects", f"effect '{fx}' used {n} times (max {prof['effect_max']})")

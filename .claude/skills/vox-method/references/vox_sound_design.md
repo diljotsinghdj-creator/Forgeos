@@ -16,7 +16,16 @@ to be checked against real audio when access allows.
 - [V] The music's emotional tone tracks the explanation, and visual changes are cut on the beat (P3).
 - [V] One music-led producer composed some of her own music on a hardware synthesiser (P27).
 - [V] Music rights are a live risk: a music-analysis video was taken down by Content ID over a few seconds of fair-used
-  audio, and the producer criticised Content ID's handling of fair use (P32, PATTERNS sci/culture §4).
+  audio (PATTERNS sci/culture §4, from the producer's own post), and the producer has said Content ID cannot judge fair
+  use, which cost her videos their monetisation (P32).
+- [V] Audio is most of the work in music-led films: one producer spends about 70% of her time editing audio, and builds
+  a playlist while outlining to choose the songs a film will feature (P27).
+- [V] Stock music is mostly too much (too sad, too happy, too cheesy); most of a former producer's music time goes
+  on finding subtle tracks and reviewing stems, and a serious stretch is undercut with lighter imagery so it doesn't
+  turn pretentious (P13).
+- [V] A riser followed by a bass hit carries the viewer out of one music bed into the next scene (P13).
+- [V] The team kept short internal tutorials on craft such as editing music, as part of a script and editing
+  curriculum (P42).
 - [V] Music-analysis pieces treat sound as data and evidence: lyric mentions logged and sorted by year with audio
   per entry (why-rappers-love-grey-poupon-2016); a performer-scholar plays the instrument on camera
   (banjo-black-american-folk-music-2022).
@@ -42,8 +51,8 @@ Each film declares (`dna.sound_palette`):
 - **Duck under narration** by about 12–18 dB; let it swell 3–6 dB in gaps and on visual-only beats.
 - **Edit music to picture:** cut on downbeats, end cues on a phrase end or a hard button, never fade mid-phrase
   without a reason.
-- **Avoid emotional overreach:** the music never tells the viewer to feel more than the evidence supports (P8:
-  don't downplay or overplay serious subjects).
+- **Avoid emotional overreach:** the music never tells the viewer to feel more than the evidence supports (after
+  P8, which says the same of visuals: no misleading positivity on serious subjects).
 
 ## 4. Sound effects [O]
 

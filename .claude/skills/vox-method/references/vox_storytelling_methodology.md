@@ -16,6 +16,18 @@ Contents: 1. What the studied craft shows · 2. The two-column script · 3. Hook
 - [V] **Research front-loaded, story never skimped** (P12, P13).
 - [V] **A two-column script:** voiceover on the left, visuals on the right, written together (P13). Another former
   producer's process: pitch → research document → outline → script, with the visual idea at the core (P14).
+- [V] **The visual column is filled with the real thing:** the planned archive item, or a pasted placeholder frame for
+  a shot still to get. A long run of voiceover against a single visual cell means the visual homework is not done.
+  All assets are gathered, and map tests made, before a word is recorded (P13).
+- [V] **Write to a found document:** a historical article or record is found during research and the script is
+  written specifically to it (P16).
+- [V] **One visual hook, built up:** a producer adopted the diagram her experts kept returning to (the circle of
+  fifths) and built every later concept on it (P16).
+- [V] **A three-part shape with bookends** (one former producer, on his own channel): teaser; part one gives context
+  and any simple answer early; part two is the substance; part three is what it means; a conclusion echoes the
+  teaser (P13).
+- [V] **One memorable moment beats total coverage:** a long-form series aimed for a moment per episode that sticks,
+  rather than jamming in every fact (P18).
 - [V] **The delayed reveal:** the black-hole video explains why imaging one is hard *before* showing the photo
   (P3, black-hole-photo-big-deal-2019).
 - [V] **Format devices organise chapters,** e.g. "explained in N moments", with a recurring visual device per moment
