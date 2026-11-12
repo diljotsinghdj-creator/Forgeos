@@ -113,3 +113,11 @@ def test_an_object_photo_with_a_face_is_never_used(tmp_path, monkeypatch):
     assert cutouts.get("smartphone", lib, fetch=False) is None
     monkeypatch.setattr(cutouts, "has_face", lambda p: False)
     assert cutouts.get("smartphone", lib, fetch=False) is fake
+
+
+def test_a_timeline_card_draws_its_object_in_its_own_year(monkeypatch):
+    from creatorforge_worker.media import cutouts
+    monkeypatch.setattr(cutouts, "get", lambda *a, **k: None)
+    plan = vox.parse_photoline("1903 First powered flight (plane) → 1969 Moon landing (rocket) | 66 years")
+    vox._pictures(plan, None, None, False)
+    assert [p.get("draw") for p in plan["pics"]] == ["biplane", "rocket"]

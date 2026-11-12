@@ -1655,7 +1655,10 @@ def _pictures(plan: dict, lib: Path | None, model: Path | None, fetch: bool,
             # no photo of this person (yet): a plain drawn figure, never a made-up face; the name stays in the tags
             out.append({"name": s, "draw": "person"})
         else:
-            drawn = illustration(name, era)
+            # a timeline card draws its object as it looked in that card's year (a 1903 plane is a biplane)
+            when = next((int(re.findall(r"\d{4}", str(i.get("when")))[0]) for i in plan.get("items", [])
+                         if i.get("pic") == s and re.findall(r"\d{4}", str(i.get("when", "")))), era)
+            drawn = illustration(name, when)
             if drawn:
                 out.append({"name": s, "draw": drawn})           # a drawn illustration, never a placeholder
             else:
