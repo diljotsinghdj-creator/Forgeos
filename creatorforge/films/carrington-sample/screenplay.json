@@ -77,7 +77,7 @@
    "delivery": "urgent",
    "pause": 0.1,
    "narration": "By NASA's account, it hit Earth within days.",
-   "graphic": "Photo: asset:P0003 | push | A solar storm leaving the Sun (SOHO) | illustrative",
+   "graphic": "Photo: asset:P0003 | push | A solar storm (SOHO) | illustrative",
    "claims": [
     "C2"
    ],
@@ -90,7 +90,7 @@
    "delivery": "urgent",
    "pause": 0.1,
    "narration": "Telegraph lines sparked. Some offices caught fire.",
-   "graphic": "Photo: asset:P0002 | push | A telegraph operator (sketch, Alfred Waud) | illustrative",
+   "graphic": "Photo: asset:P0006 | push | A telegraph operator (A. Waud) | illustrative",
    "claims": [
     "C3"
    ]
@@ -125,7 +125,7 @@
    "delivery": "urgent",
    "pause": 0.05,
    "narration": "In July 2012, one that strong missed us by a week.",
-   "graphic": "Photo: asset:P0004 | push | A major flare, seen by NASA's SDO | illustrative",
+   "graphic": "Photo: asset:P0004 | push | A flare seen by NASA's SDO | illustrative",
    "claims": [
     "C4"
    ],
@@ -138,7 +138,7 @@
    "delivery": "grave",
    "pause": 0.5,
    "narration": "Analysts say it could knock out everything we plug in.",
-   "graphic": "Photo: asset:P0005 | pull | Earth at night: everything we plug in | badge: estimate",
+   "graphic": "Photo: asset:P0005 | pull | Earth at night (NASA) | badge: estimate",
    "claims": [
     "C6"
    ],
