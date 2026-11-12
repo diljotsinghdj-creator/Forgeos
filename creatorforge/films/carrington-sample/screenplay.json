@@ -102,7 +102,7 @@
    "delivery": "urgent",
    "pause": 0.1,
    "narration": "Auroras were reported as far south as Cuba.",
-   "graphic": "Fly: Cuba | Northern lights seen this far south, 1859 | badge: reported",
+   "graphic": "Globe: Cuba | Northern lights reported this far south, 1859 | badge: reported",
    "claims": [
     "C2"
    ],
