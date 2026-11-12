@@ -130,6 +130,9 @@ Board: <centre> · <link> · <link> | <title>       - who is connected to whom
 Frame: <background photo: asset:P0001 or a real place to search> | <subject: object or person:Name, or -> | <HEADLINE, *word* highlighted> | <kicker> | <number>
     - THE VOX KEY FRAME: a real photograph full-bleed and graded, a torn paper panel with big type, the subject as a
       halftone cut-out breaking out of it, a data chip; add "| marker: <note>" for the red hand-drawn note
+Poster: <hero cut-out: object or person:Name> [+ <second piece, in spot colour>] | <BIG WORD> | <small line> | disc|burst|torn|flat
+    - THE EDITORIAL COLLAGE POSTER (the owner's mood board): light paper or flat colour ground, one huge black-and-white
+      halftone cut-out breaking into huge type, a flat shape behind it, one piece in spot colour, doodles
 Statement: <max 8 words, *key word* highlighted> - a punchline or turning point
 Chapter: Part <n> | <title>                      - a new section"""
 

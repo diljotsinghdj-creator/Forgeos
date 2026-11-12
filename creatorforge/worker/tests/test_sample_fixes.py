@@ -130,3 +130,9 @@ def test_frame_parses_and_its_background_must_match():
     from creatorforge_worker.providers.stock_video import relevant
     assert not relevant("Lincoln Memorial Reflecting Pool", "taj mahal agra india monument")
     assert relevant("Lincoln Memorial Reflecting Pool", "Lincoln Memorial Reflecting Pool at dusk, Washington")
+
+
+def test_poster_parses():
+    p = vox.parse_poster("person:Albert Einstein + light bulb | IMAGINATION | more important than knowledge | disc")
+    assert p["type"] == "poster" and p["subjects"] == ["person:Albert Einstein", "light bulb"] and p["shape"] == "disc"
+    assert vox.parse_poster("brain | LOSSES")["shape"] in ("disc", "burst", "torn", "flat")

@@ -45,7 +45,7 @@ KINDS = ("hero", "desk", "pinboard", "opener", "reveal", "clipping", "pinmap", "
          "seats", "stack", "stand", "fan", "trend", "slice", "route", "compare", "photoline", "tv",
          "clockmap", "tornsplit", "newscard", "blueprint", "pyramid", "flowchart", "linkmap", "orgchart", "heatmap",
          "courtdoc", "table", "interview", "endcard", "polltrack", "area", "candles", "arrows", "railmap", "sizemap",
-         "borders", "morph", "shrink", "photo", "photos", "footage", "satellite", "flowmap", "columns", "dots", "myth", "counter", "staircase", "scale", "units", "reel", "conveyor", "tiles", "pile", "wash", "grids", "frame")
+         "borders", "morph", "shrink", "photo", "photos", "footage", "satellite", "flowmap", "columns", "dots", "myth", "counter", "staircase", "scale", "units", "reel", "conveyor", "tiles", "pile", "wash", "grids", "frame", "poster")
 
 
 # A look per video, so no two films share one face: paper, type, map colours and marker pen differ, the method doesn't.
@@ -89,7 +89,8 @@ _FLIP = ("hero", "opener", "newscard", "tornsplit", "desk", "pinboard", "clippin
          "interview")
 LAYOUT_SETS = {k: (["base", "mirror", "card"] if k in _FLIP else ["base", "card"]) for k in KINDS}
 LAYOUT_SETS["bignumber"] = ["base", "side", "card"]
-LAYOUT_SETS["frame"] = ["base"]          # the frame is already a full composition; it mirrors itself from its seed
+LAYOUT_SETS["frame"] = ["base"]
+LAYOUT_SETS["poster"] = ["base"]         # a full-bleed poster: never put on a card or mirrored          # the frame is already a full composition; it mirrors itself from its seed
 for _k in ("photo", "photos", "footage", "satellite"):
     LAYOUT_SETS[_k] = ["base"]          # a photograph or footage is the frame itself: never mirrored or put on a card
 DESKS = ("#3B2F25", "#5A4632", "#2E3A40", "#6B5B4B", "#262626")
@@ -1706,6 +1707,24 @@ def _background(query: str, fetch: bool = True, timeout: float = 30) -> dict | N
 PARSERS["frame"] = parse_frame
 
 
+def parse_poster(spec: str) -> dict | None:
+    """'Poster: <hero cut-out: object or person:Name> [+ <second piece, printed in the spot colour>] | <BIG WORD(S)> |
+    <small line> | <disc|burst|torn|flat>' - the editorial collage poster: a light or flat-colour ground, one big
+    black-and-white halftone cut-out, a flat shape behind it, huge type it overlaps, one piece in spot colour, doodles."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if len(parts) < 2 or not parts[0] or not parts[1]:
+        return None
+    subs = [x.strip() for x in parts[0].split("+") if x.strip()][:3]
+    shape = next((x.lower() for x in parts[3:4] if x.lower() in ("disc", "burst", "torn", "flat")), "")
+    seed = _seed("poster", spec) % 10000
+    return {"type": "poster", "subjects": subs, "word": parts[1][:28], "line": parts[2][:70] if len(parts) > 2 else "",
+            "shape": shape or ("disc", "burst", "torn", "flat")[seed % 4], "seed": seed}
+
+
+PARSERS["poster"] = parse_poster
+
+
+
 # ---- pictures -------------------------------------------------------------------------------------------------------
 def _pictures(plan: dict, lib: Path | None, model: Path | None, fetch: bool,
               sources: list[tuple[str, str]] | None = None, era: int | None = None) -> None:
@@ -1905,6 +1924,7 @@ draw.defs().svg(`<filter id="shadow" x="-20%" y="-20%" width="140%" height="150%
 <pattern id="ildots" width="5" height="5" patternUnits="userSpaceOnUse"><circle cx="2.5" cy="2.5" r="1.1" fill="#000" fill-opacity=".22"/></pattern>
 <filter id="dof" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="${U*.006}"/></filter>
 <filter id="mono"><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="linear" slope="1.25" intercept="-.08"/><feFuncG type="linear" slope="1.25" intercept="-.08"/><feFuncB type="linear" slope="1.25" intercept="-.08"/></feComponentTransfer></filter>
+<filter id="spot"><feColorMatrix type="saturate" values="0" result="g"/><feFlood flood-color="${K.acc}" result="f"/><feComposite in="f" in2="SourceAlpha" operator="in" result="fa"/><feBlend in="g" in2="fa" mode="multiply"/></filter>
 <filter id="tint"><feFlood flood-color="${K.acc2||'#E0442C'}"/><feComposite in2="SourceAlpha" operator="in"/></filter>
 <filter id="redch"><feColorMatrix type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .55 0"/></filter>
 <filter id="cyanch"><feColorMatrix type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 .55 0"/></filter>`);
@@ -2344,6 +2364,42 @@ function voxFrame(){ // the layered Vox key frame: real photo -> paper -> type -
     items.forEach(it=>{const tr=cur?cur+' · '+it:it;if(cur&&tr.length>maxc){rows.push(cur);cur=it}else cur=tr});if(cur)rows.push(cur);
     rows.forEach((r,i)=>{const y=H-U*.07-(rows.length-1-i)*cs*1.55;const t=mono(L.front,r.length>maxc+8?r.slice(0,maxc+6)+'…':r,flip?W-U*.12:U*.12,y,{anchor:flip?'end':'start',size:cs,weight:700,fill:'#F3EEE2'});
       t.addClass('keep');t.opacity(.92);const bb=t.bbox();L.front.rect(bb.width+U*.02,bb.height+U*.01).move(bb.x-U*.01,bb.y-U*.005).fill('#000').opacity(.45).back()})}}
+function poster(){ // the editorial collage poster: ground -> flat shape -> huge type -> halftone hero -> spot-colour piece -> doodles
+  const sd=P.seed||0,flat=P.shape==='flat',ground=flat?ACC:'#EFEAE0',ink=flat?'#F7F2E8':INK;
+  L.back.rect(W,H).fill(ground);
+  const pat=draw.pattern(U*.012,U*.012,a=>a.circle(U*.0035).center(U*.006,U*.006).fill('#000').opacity(flat?.08:.05));L.back.rect(W,H).fill(pat);
+  const cx=TALL?W*.5:W*(sd%3===0?.5:sd%3===1?.42:.58),cy=H*.54,R=Math.min(W,H)*(TALL?.42:.4);
+  // the flat shape behind the hero
+  const sh=L.back.group();
+  if(P.shape==='disc'){sh.circle(R*2).center(cx+R*.18,cy-R*.05).fill(ACC)}
+  else if(P.shape==='burst'){const n=22,pts=[];for(let i=0;i<n*2;i++){const a=i/(n*2)*Math.PI*2,r=i%2?R*.72:R*1.08;pts.push([cx+Math.cos(a)*r,cy+Math.sin(a)*r])}
+    sh.polygon(pts.map(q=>q.join(',')).join(' ')).fill(SIG)}
+  else if(P.shape==='torn'){torn(sh,cx-R*1.1,cy-R*.9,R*2.2,R*1.6,ACC);sh.attr({transform:`rotate(${sd%2?-4:4},${cx},${cy})`})}
+  if(!flat)popIn(sh,cx,cy,.05,.4);
+  // huge type, behind the hero: the hero's head breaks it
+  const word=String(P.word).toUpperCase(),fam=['Anton','Playfair','Bebas'][sd%3],wt=fam==='Playfair'?900:400;
+  let size=TALL?W*.32:H*.42;const probe=T(L.back,word,size,0,0,{family:fam,weight:wt});const bw=probe.bbox().width;probe.remove();
+  if(bw>W*.94)size*=W*.94/bw;
+  const ty=TALL?H*.24:H*.3+size*.36;const tw=T(L.back,word,size,W/2,ty,{family:fam,weight:wt,fill:flat?ink:INK});tw.attr({'letter-spacing':fam==='Playfair'?'-.02em':'0'});wipe(tw,.25);
+  // the hero: one big black-and-white halftone cut-out
+  const pics=P.pics||[],hero=pics[0];
+  if(hero){const ar=hero.img?hero.w/hero.h:(hero.draw&&window.ILLU&&ILLU[hero.draw]?ILLU[hero.draw][0]/ILLU[hero.draw][1]:.8);
+    let h=TALL?H*.58:H*.72;if(h*ar>W*.56)h=W*.56/ar;   // the head breaks into the bottom of the word, the word stays readable
+    const g=picture(L.hero,hero,cx,H+U*.02,h,{});if(hero.img)g.attr({filter:'url(#mono)'});drop(g,.3,H*.25,sd%2?2:-2);
+    FOCUS={x:cx,y:H-h*.62,rx:Math.min(h*ar*.4,U*.3),ry:h*.28}}
+  // the second piece in spot colour, cut in at an angle
+  const two=pics[1];if(two){const ar=two.img?two.w/two.h:1;let h=TALL?H*.24:H*.34;if(h*ar>W*.3)h=W*.3/ar;
+    const sx=cx+(sd%2?-1:1)*(TALL?W*.28:W*.26),sy=TALL?H*.82:H*.62;const g=picture(L.hero,two,sx,sy,h,{});if(two.img)g.attr({filter:'url(#spot)'});
+    g.attr({transform:`rotate(${sd%2?8:-8},${sx},${sy-h/2})`});drop(g,.55,H*.2,0)}
+  // doodles: a scribbled arrow to the hero, a few sparks
+  const red=K.mark&&!/^#(1|2)[0-9A-F]/i.test(K.mark)?K.mark:'#D7262B';const dg=L.front.group();
+  const ax=sd%2?W*.84:W*.16,ay=H*.2,bx=cx+(sd%2?1:-1)*U*.18,by=H*.36;const ap=[];for(let i=0;i<=12;i++){const u=i/12;ap.push([ax+(bx-ax)*u+Math.sin(u*3.1)*U*.03,ay+(by-ay)*u-Math.sin(u*3.1)*U*.05])}
+  penLine(dg,ap,1.1,.45,flat?'#F7F2E8':red,U*.007);
+  const ang=Math.atan2(by-ap[10][1],bx-ap[10][0]);penLine(dg,[[bx-Math.cos(ang-.5)*U*.04,by-Math.sin(ang-.5)*U*.04],[bx,by],[bx-Math.cos(ang+.5)*U*.04,by-Math.sin(ang+.5)*U*.04]],1.5,.15,flat?'#F7F2E8':red,U*.007);
+  for(let k=0;k<3;k++){const sx2=(sd%2?W*.12:W*.88)+(k-1)*U*.05,sy2=H*(.72+k*.06),l=U*.025;penLine(dg,[[sx2-l,sy2],[sx2+l,sy2]],1.6+k*.08,.1,flat?'#F7F2E8':INK,U*.005);penLine(dg,[[sx2,sy2-l],[sx2,sy2+l]],1.65+k*.08,.1,flat?'#F7F2E8':INK,U*.005)}
+  // the small line: a black label, low on the quiet side
+  if(P.line){const b=boxText(L.front,P.line,TALL?W*.04:U*.034,sd%2?W-U*.1:U*.1,TALL?H*.9:H*.84,{anchor:sd%2?'end':'start',maxw:TALL?W*.8:W*.42,most:2,family:'Mono'});wipe(b,.8)}
+  if(P.credit)P.credit=P.credit.replace(/^Photos?:\s*/i,'');photoCredit()}
 function staircase(){ // isometric steps rising left to right; each one lights up as the story climbs it, the last in red
   const n=P.steps.length,top=VERT?H*.3:H*.24,bot=VERT?H*.82:H*.86,left=W*.08,right=W*.92,sw=(right-left)/n,sh=(bot-top)/n,d=Math.min(sw,sh)*.35;
   const g=L.hero.group(),red=K.mark||'#D7262B',seg=Math.max(.7,(DUR-1.6)/n),tops=[];
@@ -3366,7 +3422,7 @@ function footage(){ // moving footage, frame by frame, with the same annotations
   if(P.annotate&&P.annotate.length){const a=P.annotate[0];FOCUS={x:a.p[0]*W,y:a.p[1]*H,rx:U*.1,ry:U*.1}}
   photoCredit()}
 
-const SCENES={frame:voxFrame,grids,wash,reel,conveyor,tiles,pile,units,myth,counter,staircase,scale,photo,photos,footage,shrink,morph,borders,courtdoc,table,interview,endcard,polltrack,area,candles,arrows,railmap,sizemap,pyramid,flowchart:flow,linkmap,orgchart,heatmap,hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv,
+const SCENES={frame:voxFrame,poster,grids,wash,reel,conveyor,tiles,pile,units,myth,counter,staircase,scale,photo,photos,footage,shrink,morph,borders,courtdoc,table,interview,endcard,polltrack,area,candles,arrows,railmap,sizemap,pyramid,flowchart:flow,linkmap,orgchart,heatmap,hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv,
   clockmap,tornsplit,newscard,blueprint};
 async function boot(){
   try{await Promise.all(Array.from(document.fonts).map(f=>f.load()))}catch(e){}
