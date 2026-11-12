@@ -89,3 +89,12 @@ def test_layout_numbers_are_not_facts():
     from creatorforge_worker.studio.writer import _without_layout, figures_in
     g = "asset:P0009 | detail | Radar, 25 March 2021 | at: 0.42, 0.06, 0.32, 0.24 | annotate: circle 0.58,0.17,0.05 Ship 400 m"
     assert figures_in(_without_layout(g)) == ["25", "2021", "400"]
+
+
+def test_no_two_scene_functions_share_a_name():
+    """A second 'function headline' once silently replaced the torn-newspaper scene: every Clipping rendered blank."""
+    import collections
+    import re
+    src = Path(vox.__file__).read_text(encoding="utf-8")
+    names = collections.Counter(re.findall(r"^function (\w+)\(", src, re.M))
+    assert [n for n, c in names.items() if c > 1] == []

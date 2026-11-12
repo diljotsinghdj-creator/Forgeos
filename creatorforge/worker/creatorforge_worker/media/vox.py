@@ -2137,7 +2137,10 @@ function headline(){ // a torn newspaper headline with cut-outs around it, a big
   const subs=P.subjects||[];subs.forEach((nm,i)=>{const pic=picOf(nm);if(!pic)return;const h=VERT?H*.24:H*.5;
     const x=[cx+cw*.5,cx-cw*.02,cx+cw*1.02][i%3],y=cy+(i===0?ch*.05:ch*.75);const g=picture(L.mid,pic,x,y,i===0?h:h*.6);drop(g,.25+i*.2,H*.25,i?4:-3)});
   const card=L.hero.group();torn(card,cx,cy,cw,ch,'#EEE9DC');card.attr({filter:'url(#shadow)'});
-  const size=Math.min(ch*.26,U*.065);const ls=lines(P.text,size,cw*.86,'Playfair',700,3);
+  // a real headline is never cut: the type steps down (to 60%) until every word fits in three lines
+  let size=Math.min(ch*.26,U*.065);const nw=String(P.text).split(/\s+/).filter(Boolean).length,
+    fits=z=>{const d=DROPPED.length,r=lines(P.text,z,cw*.86,'Playfair',700,99);DROPPED.length=d;return r.length<=3};
+  for(let k=0;k<6&&!fits(size);k++)size*=.9;const ls=lines(P.text,size,cw*.86,'Playfair',700,3);
   ls.forEach((l,i)=>T(card,l,size,cx+cw*.07,cy+ch*.2+i*size*1.12,{family:'Playfair',weight:700,anchor:'start',fill:'#1A1A1A'}));
   if(P.source)T(card,P.source.toUpperCase(),U*.018,cx+cw*.07,cy+ch*.9,{family:'Mono',weight:700,anchor:'start',fill:'#555'});
   drop(card,.6,H*.2,-4);tape(L.front,cx+cw*.1,cy+U*.01,U*.09,-12);
@@ -2345,10 +2348,10 @@ function units(){ // one square per item: each group fills in its own colour as 
   if(P.note){const t=T(L.front,P.note.toUpperCase(),U*.022,W/2,VERT?H*.86:H*.9,{family:'Mono',weight:700});wipe(t,fillDur+.5)}}
 
 // ---- the Short's pieces: a recreated reel, a stamp conveyor, a state filled with tiles, a stamped pile ----
-function headline(){if(!P.title)return null;const size=VERT?W*.075:H*.075,y=VERT?H*.185:H*.17;   // under the corner badge, never beside it
+function sceneTitle(){if(!P.title)return null;const size=VERT?W*.075:H*.075,y=VERT?H*.185:H*.17;   // under the corner badge, never beside it
   const g=rich(L.front,P.title,size,W/2,y,{anchor:'middle'});
   if(g.data('w')>W*.9){g.attr({transform:`translate(${W*.05},${y}) scale(${W*.9/g.data('w')})`})}slide(g,.05,0,-H*.02);return g}
-function reel(){headline();
+function reel(){sceneTitle();
   const pw=VERT?Math.min(W*.5,H*.26):H*.33,ph=pw*2.0,cx=W/2,cy=VERT?H*.58:H*.58,x0=cx-pw/2,y0=cy-ph/2,g=L.hero.group();
   const grad=draw.gradient('linear',a=>{a.stop(0,'#FF4F9A');a.stop(.55,'#7B2FF7');a.stop(1,'#1D1D6B')}).from(0,0).to(.35,1);
   g.rect(pw,ph).move(x0,y0).radius(pw*.13).fill('#0E0E10');
@@ -2363,7 +2366,7 @@ function reel(){headline();
     notes.attr({transform:`translate(0,${Math.sin(t*3)*pw*.03})`});
     caps.forEach((c,i)=>c.width(Math.max(1,sw*[.78,.56,.36][i]*Math.min(1,Math.max(0,(t-.8-i*.35)/.6)))))},E.lin);
   FOCUS={x:cx,y:cy,rx:pw*.7,ry:ph*.55}}
-function conveyor(){headline();
+function conveyor(){sceneTitle();
   const by=VERT?H*.62:H*.74,cw=VERT?W*.26:W*.1,chh=cw*1.3,sp=cw*1.35,g=L.mid.group();
   g.rect(W*.9,U*.018).move(W*.05,by).fill(INK);for(let x=W*.06;x<W*.95;x+=U*.06)g.circle(U*.012).center(x,by+U*.009).fill('#777');   // the belt stays on the page
   const lane=L.hero.group().clipWith(draw.clip().add(draw.rect(W*.9,H).move(W*.05,0)));   // cards enter and leave inside the frame
@@ -2382,7 +2385,7 @@ function conveyor(){headline();
     const top=by-chh-shh-U*.06,lift=U*.09*(1-hit);st.attr({transform:`translate(${W/2-sw/2},${top-lift}) rotate(-6 ${sw/2} ${shh/2})`});
     arm.move(W/2-U*.01,top-lift-U*.1)},E.lin);
   if(P.caption){const c=boxText(L.front,P.caption,U*.04,W/2,VERT?H*.74:H*.88,{anchor:'middle',maxw:W*.86,most:3});wipe(c,1.0)}}
-function tiles(){headline();const SQ0=VERT&&!TALL;
+function tiles(){sceneTitle();const SQ0=VERT&&!TALL;
   const [b0,b1,b2,b3]=P.box,kx=Math.cos((b1+b3)/2*Math.PI/180),aw=TALL?W*.88:W*.56,ah=TALL?H*.42:H*.66,
     s=Math.min(aw/((b2-b0)*kx),ah/(b3-b1)),ox=(TALL?W/2:W*.34)-(b2-b0)*kx*s/2,oy=(TALL?H*.26:H*.24)+(ah-(b3-b1)*s)/2,
     pr=(lo,la)=>[ox+(lo-b0)*kx*s,oy+(b3-la)*s],poly=r=>r.map(q=>pr(q[0],q[1]).map(v=>v.toFixed(1)).join(',')).join(' ');
@@ -2400,7 +2403,7 @@ function tiles(){headline();const SQ0=VERT&&!TALL;
   const un=T(L.front,P.unit.toUpperCase()+' · PLACEMENT ILLUSTRATIVE',U*.02,TALL?W*.06:W*.06,TALL?H*.7:SQ0?H*.7:H*.8,{family:'Mono',weight:700,anchor:'start'});wipe(un,1.2);
   const SQ=VERT&&!TALL;if(P.caption){const c=boxText(L.front,P.caption,U*.032,TALL?W/2:SQ?W*.58:W*.78,TALL?H*.8:SQ?H*.79:H*.66,{anchor:'middle',maxw:TALL?W*.86:SQ?W*.7:W*.36,most:TALL?4:3});wipe(c,t1)}
   FOCUS={x:(Math.min(...xs)+Math.max(...xs))/2,y:(Math.min(...ys)+Math.max(...ys))/2,rx:(Math.max(...xs)-Math.min(...xs))*.6,ry:(Math.max(...ys)-Math.min(...ys))*.6}}
-function pile(){headline();
+function pile(){sceneTitle();
   const cols=TALL?3:VERT?5:6,cw=TALL?W*.27:VERT?W*.175:W*.12,chh=cw*.62,gx=TALL?W*.04:W*.02,gy=chh*.18,rows=Math.ceil(P.n/cols),
     x0=W/2-(cols*cw+(cols-1)*gx)/2,y0=TALL?H*.28:VERT?H*.32:H*.27,t0=.5,t1=Math.max(t0+.8,DUR*.6);
   for(let i=0;i<P.n;i++){const r=Math.floor(i/cols),c=i%cols,x=x0+c*(cw+gx),y=y0+r*(chh+gy),rot=((i*37)%7)-3,g=L.hero.group();
@@ -2412,7 +2415,7 @@ function pile(){headline();
   const n=T(L.front,'0',VERT?W*.16:H*.16,VERT?W*.94:W*.95,VERT?H*.27:H*.25,{family:'Anton',weight:400,anchor:'end',fill:INK});
   count(n,P.n,t0,t1-t0,v=>String(Math.round(v)));
   const SQ=VERT&&!TALL;if(P.caption){const c=boxText(L.front,P.caption,U*.032,SQ?W*.62:W/2,y0+rows*(chh+gy)+U*.07,{anchor:'middle',maxw:SQ?W*.6:W*.86,most:3});wipe(c,t1)}}
-function grids(){headline(); // two (or three) 10x10 grids filling in the signature yellow while their counts run
+function grids(){sceneTitle(); // two (or three) 10x10 grids filling in the signature yellow while their counts run
   const SQ=VERT&&!TALL,vs=P.values,n=vs.length,gapG=TALL?W*.07:W*.06,aw=(TALL?W*.88:SQ?W*.8:W*.62)-(n-1)*gapG,top=TALL?H*.27:H*.26,
     cell=Math.min(aw/n/10,(TALL?H*.36:SQ?H*.3:H*.36)/10),sq=cell*.82,gw=cell*10,x0=W/2-(n*gw+(n-1)*gapG)/2,t0=.5,t1=Math.max(t0+1,DUR*.62),
     big=TALL?W*.17:SQ?H*.12:H*.13,lab=U*.026;
@@ -2431,7 +2434,7 @@ function grids(){headline(); // two (or three) 10x10 grids filling in the signat
     const t=logoTile(L.front,m,lx,ly,sz);popIn(t,lx,ly,.55+i*.15,.4)});
   if(P.note){const t=boxText(L.front,P.note,U*.03,TALL?W/2:W*.6,TALL?H*.86:SQ?H*.87:H*.91,{anchor:'middle',maxw:TALL?W*.86:W*.62,most:SQ?3:2});wipe(t,t1)}   // clear of the corner badge
   FOCUS={x:W/2,y:top+gw/2,rx:(n*gw)/2,ry:gw/2}}
-function wash(){headline(); // a painted map: p5.brush watercolour washes and pencil, brushed on from left to right
+function wash(){sceneTitle(); // a painted map: p5.brush watercolour washes and pencil, brushed on from left to right
   const [b0,b1,b2,b3]=P.box,kx=Math.cos((b1+b3)/2*Math.PI/180),aw=VERT?W*.9:W*.8,ah=VERT?H*.56:H*.7,
     s=Math.min(aw/((b2-b0)*kx),ah/(b3-b1)),ox=W/2-(b2-b0)*kx*s/2,oy=(VERT?H*.26:H*.24)+(ah-(b3-b1)*s)/2,
     pr=(lo,la)=>[ox+(lo-b0)*kx*s,oy+(b3-la)*s];
