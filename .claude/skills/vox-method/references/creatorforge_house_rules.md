@@ -21,7 +21,7 @@ differ, the owner's rules win. The full, current rules are in the repo; read the
 | **Pacing** (gate 4) | Still ≤ 4.5 s, building ≤ 7 s, last shot +1.5 s, mean ≤ 5 s. The validator's house profile enforces this |
 | **Pre-show list** (gate 5) | Any render writes PRESHOW.md and it goes to the owner first |
 | **English, faceless, no mascot** | Both channels |
-| **Signature yellow #FFDD33** | Highlighter, key numbers, signal, in every film. The film's accent keeps clear of it |
+| **Signature yellow #FFDD33** | Highlighter, key numbers, signal, in every film. The film's accent keeps clear of it. The yellow highlighter is the channel's signal, **not an "effect"** for the three-uses-per-film limit; list it in `effects` only when used as a distinct device (e.g. a full-frame wipe) |
 | **Badges** | REPORTED, ALLEGATION, PARTY CLAIM, ILLUSTRATIVE, RECREATION on anything that isn't plain fact |
 | **People** | No AI faces of real people, no cartoons over real faces, no private individuals |
 | **No flags or emblems as decoration**; platform and party logos only when named | Applies to every frame |
