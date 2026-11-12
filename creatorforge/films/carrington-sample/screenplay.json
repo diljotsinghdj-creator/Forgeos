@@ -123,8 +123,8 @@
    "act": "consequences",
    "purpose": "explain",
    "delivery": "urgent",
-   "pause": 0.15,
-   "narration": "In July 2012, a storm that strong missed Earth by a week.",
+   "pause": 0.05,
+   "narration": "In July 2012, one that strong missed us by a week.",
    "graphic": "Photo: asset:P0004 | push | A major flare, seen by NASA's SDO | illustrative",
    "claims": [
     "C4"
