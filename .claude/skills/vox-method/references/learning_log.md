@@ -102,3 +102,21 @@ Newest entries at the bottom. One entry per study session, film or correction (l
   films is now part of learning_protocol.md.
 - **Still open:** P1, P3, P23 and P24 (blocked pages); more watched videos as credits allow (vidIQ renews on
   2026-12-03).
+
+## 2026-11-12: Test rounds 1 and 2 (skill-creator evals)
+
+- **Setup:** three unrelated films (Panama Canal water, the 1952 London smog, subscriptions we never use), each run
+  with and without the skill. Assertions are in evals/.
+- **Round 1:** 93% with the skill, 80% without. The skill's gains: a per-shot viewer takeaway, and a reason for every
+  visual with the rejected alternative. Bugs found and fixed:
+  - pacing classes differed from the studio's gate 4;
+  - spelled-out numbers went unchecked;
+  - the lead-share rule was miscalibrated;
+  - each run hand-built comparison stubs (history_stubs.py now does it);
+  - palettes converged on the complement of the last film.
+- **Round 2:** 100% with the skill. Each film correctly avoided its given history. But the three films still
+  converged on each other: the same engine, forced by the engine pool, and nearly the same blue. "Farthest hue" was
+  deterministic. **Rule changed:** the subject picks the colour; distance only filters and breaks ties; no nudging
+  hues to clear warnings. Also, run visual_decide before choosing visuals, never after.
+- **Lesson:** sameness is a sequence property. Always compare with the films actually made before, using real saved
+  blueprints (creatorforge/channels/blueprints/).

@@ -53,8 +53,12 @@ Do these in order, before any scene is planned. Record them in `blueprint.json` 
    1. List three candidate accent hues, each sampled from a different part of the native material (the object, the
       place, the document, the warning).
    2. Drop any within 120° of the last film or 60° of the two before.
-   3. Of the rest, pick the one farthest from all three recent films. Write the three candidates and the reason for
-      the pick in `palette.from_subject`.
+   3. Of the rest, pick the one that is **most characteristic of the subject**: the colour a viewer would name for
+      this material. Distance from recent films is only a filter and a tie-break, never the goal. Round-2 tests on
+      2026-11-12 showed "farthest from all three" making every film land on the same blue, whatever the subject.
+      Write the three candidates and the reason for the pick in `palette.from_subject`.
+   4. Don't nudge a hue a few degrees just to clear a checker warning. If the subject's colour sits too close to a
+      recent film, change the *role* (a different base, a different texture) or pick the subject's next candidate.
 6. **Set the texture and typography treatment** by the material. Archival subjects suit paper, halftone and
    typewriter. Data subjects suit clean grids and tabular figures. Science suits soft light and scientific plates.
    Interfaces suit pixel-true UI.

@@ -86,6 +86,10 @@ python3 scripts/render_blueprint.py blueprint.json                              
 ```
 Fix every error. Read the warnings and fix them or write down why not.
 
+**Order matters:** classify each line's need from the script (`beats.json`) and run `visual_decide.py` *before*
+choosing any visual. Back-filling needs after the visuals are chosen turns the ranker into a rubber stamp (round-2
+tests, 2026-11-12).
+
 **Stages 8–12** follow the department references. Nothing is drawn, voiced with paid credits or rendered until the
 owner says "go" (CreatorForge hard rule).
 
