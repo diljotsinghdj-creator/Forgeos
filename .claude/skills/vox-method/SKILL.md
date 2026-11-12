@@ -33,6 +33,7 @@ compositions, and no claim of affiliation.
 |---|---|---|
 | 1. Question | One question, a surprising answer, why now; the five story tests | `vox_editorial_methodology.md` |
 | 2. Research | Dossier (claim id, source, status) **and** visual leads (archives, data, documents, places) | `vox_editorial_methodology.md` §6, `vox_asset_sourcing.md` §5 |
+| 2b. Psychology (Dragon Psychology) | Every psychological claim also gets a **replication status** (robust / mixed / failed / single study); famous classics are checked first | `psychology_of_everything.md` |
 | 3. Pitch | Three engines, three hooks, three opening frames; never the last film's; say which engines are blocked and why. **Stop for the pick** | `vox_storytelling_methodology.md` §3–4, `creatorforge_house_rules.md` (engine pool) |
 | 4. Structure | Architecture chosen by claim type; chapters with jobs and open loops; the turn at 60–75% | `vox_storytelling_methodology.md` §4–6 |
 | 5. Script | Two-column beats (visual first); written for the ear; claim ids on every fact; retention audit | `vox_storytelling_methodology.md`, `vox_narration.md` |

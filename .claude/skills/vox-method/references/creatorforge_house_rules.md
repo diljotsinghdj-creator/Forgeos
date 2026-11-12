@@ -32,7 +32,8 @@ differ, the owner's rules win. The full, current rules are in the repo; read the
 
 - **Print Facts** (investigative documentaries): lead with evidence. Natural leads are documents, satellite, maps,
   archive and official records. Vox clarity explains; investigation proves.
-- **Dragon Psychology** (psychology, scams, biases): the lead is illustration and visual metaphor, interface
+- **Dragon Psychology** (the psychology of everything, in the owner's words on 2026-11-12; earlier brief: psychology, scams,
+  biases). Read `psychology_of_everything.md` for its evidence standard (replication status) and visual language: the lead is illustration and visual metaphor, interface
   recreations, simple re-staged experiments and charts from studies. No character, no mascot. The look carries the
   identity.
 
