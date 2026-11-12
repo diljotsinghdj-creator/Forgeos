@@ -121,3 +121,12 @@ def test_a_timeline_card_draws_its_object_in_its_own_year(monkeypatch):
     plan = vox.parse_photoline("1903 First powered flight (plane) → 1969 Moon landing (rocket) | 66 years")
     vox._pictures(plan, None, None, False)
     assert [p.get("draw") for p in plan["pics"]] == ["biplane", "rocket"]
+
+
+def test_frame_parses_and_its_background_must_match():
+    p = vox.parse_frame("Nassau Hall Princeton | person:Albert Einstein | Imagination beats *knowledge* | 1929 interview | 1929")
+    assert p["type"] == "frame" and p["subjects"] == ["person:Albert Einstein"] and p["number"] == "1929"
+    assert vox.parse_frame("only one part") is None
+    from creatorforge_worker.providers.stock_video import relevant
+    assert not relevant("Lincoln Memorial Reflecting Pool", "taj mahal agra india monument")
+    assert relevant("Lincoln Memorial Reflecting Pool", "Lincoln Memorial Reflecting Pool at dusk, Washington")

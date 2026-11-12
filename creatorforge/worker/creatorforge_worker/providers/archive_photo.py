@@ -23,10 +23,16 @@ def _plain(text: str) -> str:
 def search(query: str, timeout: float = 20, limit: int = 8) -> list[dict]:
     """Photos for the query, best first: [{url, width, height, credit, title}]. Empty on no result."""
     try:
-        r = httpx.get(API, timeout=timeout, headers={"User-Agent": UA}, params={
-            "action": "query", "format": "json", "generator": "search", "gsrnamespace": 6, "gsrlimit": limit,
-            "gsrsearch": f"{query} filetype:bitmap", "prop": "imageinfo", "iiprop": "url|extmetadata|size|mime",
-            "iiurlwidth": 2000})
+        for wait in (0, 8, 20):                   # Commons throttles bursts (429): wait and ask again, twice
+            if wait:
+                import time
+                time.sleep(wait)
+            r = httpx.get(API, timeout=timeout, headers={"User-Agent": UA}, params={
+                "action": "query", "format": "json", "generator": "search", "gsrnamespace": 6, "gsrlimit": limit,
+                "gsrsearch": f"{query} filetype:bitmap", "prop": "imageinfo", "iiprop": "url|extmetadata|size|mime",
+                "iiurlwidth": 2000})
+            if r.status_code != 429:
+                break
         r.raise_for_status()
         pages = (r.json().get("query") or {}).get("pages") or {}
     except (httpx.HTTPError, ValueError) as e:

@@ -45,7 +45,7 @@ KINDS = ("hero", "desk", "pinboard", "opener", "reveal", "clipping", "pinmap", "
          "seats", "stack", "stand", "fan", "trend", "slice", "route", "compare", "photoline", "tv",
          "clockmap", "tornsplit", "newscard", "blueprint", "pyramid", "flowchart", "linkmap", "orgchart", "heatmap",
          "courtdoc", "table", "interview", "endcard", "polltrack", "area", "candles", "arrows", "railmap", "sizemap",
-         "borders", "morph", "shrink", "photo", "photos", "footage", "satellite", "flowmap", "columns", "dots", "myth", "counter", "staircase", "scale", "units", "reel", "conveyor", "tiles", "pile", "wash", "grids")
+         "borders", "morph", "shrink", "photo", "photos", "footage", "satellite", "flowmap", "columns", "dots", "myth", "counter", "staircase", "scale", "units", "reel", "conveyor", "tiles", "pile", "wash", "grids", "frame")
 
 
 # A look per video, so no two films share one face: paper, type, map colours and marker pen differ, the method doesn't.
@@ -89,6 +89,7 @@ _FLIP = ("hero", "opener", "newscard", "tornsplit", "desk", "pinboard", "clippin
          "interview")
 LAYOUT_SETS = {k: (["base", "mirror", "card"] if k in _FLIP else ["base", "card"]) for k in KINDS}
 LAYOUT_SETS["bignumber"] = ["base", "side", "card"]
+LAYOUT_SETS["frame"] = ["base"]          # the frame is already a full composition; it mirrors itself from its seed
 for _k in ("photo", "photos", "footage", "satellite"):
     LAYOUT_SETS[_k] = ["base"]          # a photograph or footage is the frame itself: never mirrored or put on a card
 DESKS = ("#3B2F25", "#5A4632", "#2E3A40", "#6B5B4B", "#262626")
@@ -1620,6 +1621,91 @@ def plan_for(kind: str, spec: str) -> dict | None:
     return plan
 
 
+def parse_frame(spec: str) -> dict | None:
+    """'Frame: <background: asset:P0001 or words to search> | <subject: object or person:Name, or -> | <HEADLINE, *word*
+    highlighted> | <kicker> | <number or year>' - the layered Vox key frame: a real photograph full-bleed and graded,
+    a torn paper panel carrying big type, the subject as a halftone cut-out breaking out of the panel, a data chip."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if len(parts) < 3 or not parts[0] or not parts[2]:
+        return None
+    subj = parts[1] if parts[1] and parts[1] != "-" else ""
+    return {"type": "frame", "bgq": parts[0][:120], "subjects": [subj] if subj else [], "headline": parts[2][:70],
+            "kicker": parts[3][:60] if len(parts) > 3 else "", "number": parts[4][:14] if len(parts) > 4 else "",
+            "seed": _seed("frame", spec) % 10000}
+
+
+def _background(query: str, fetch: bool = True, timeout: float = 30) -> dict | None:
+    """A real photograph for a frame's background: a ledger asset, or the first good landscape photo for the words
+    (Wikimedia Commons first, then the stock libraries). Never one with a recognisable face: a background must not put
+    a private person on screen. Cached with its credit."""
+    from . import cutouts
+    from PIL import Image
+    q = query.strip()
+    if q.lower().startswith("asset:"):
+        from ..studio.assets import Ledger, default_ledger
+        led = Ledger(Path(os.environ.get("CF_ASSET_LEDGER") or default_ledger()))
+        r = led.get(q.split(":", 1)[1].strip())
+        if not r or not Path(r.get("file", "")).is_file():
+            return None
+        with Image.open(r["file"]) as im:
+            w, h = im.size
+        return {"img": Path(r["file"]).resolve().as_uri(), "w": w, "h": h, "credit": r.get("credit") or r.get("attribution", "")}
+    d = cutouts.library_dir(None) / "backgrounds"
+    d.mkdir(parents=True, exist_ok=True)
+    slug = re.sub(r"[^a-z0-9]+", "-", q.lower()).strip("-")[:60]
+    jf, img = d / f"{slug}.json", d / f"{slug}.jpg"
+    if jf.is_file() and img.is_file():
+        meta = json.loads(jf.read_text(encoding="utf-8"))
+        return {"img": img.as_uri(), **meta}
+    if not fetch or (d / f"{slug}.miss").is_file():
+        return None
+    results = []
+    try:
+        from ..providers.archive_photo import search
+        results += search(q, timeout=timeout, limit=10)[:6]
+    except Exception:  # noqa: BLE001
+        pass
+    try:
+        from ..providers import stock_photo
+        for provider, key in cutouts.env_sources():
+            if provider in ("pixabay", "pexels", "unsplash") and key:
+                try:
+                    results += stock_photo.search(provider, key, q, portrait=False, timeout=timeout)[:5]
+                except Exception:  # noqa: BLE001
+                    pass
+    except Exception:  # noqa: BLE001
+        pass
+    from ..providers.stock_video import relevant
+    for r in results[:12]:
+        if not relevant(q, " ".join(str(r.get(k, "")) for k in ("title", "about"))):
+            continue                                  # a loosely ranked hit of another place: never shown as this one
+        try:
+            raw = cutouts._download(r["url"], d, timeout)
+            with Image.open(raw) as im:
+                im = im.convert("RGB")
+                w, h = im.size
+                if w < 1200 or w < h * 1.15:          # a landscape picture big enough to fill the frame
+                    continue
+                if w > 2600:
+                    im = im.resize((2600, int(h * 2600 / w)), Image.LANCZOS)
+                im.save(img, quality=90)
+            if cutouts.has_face(img):
+                img.unlink(missing_ok=True)
+                continue
+            with Image.open(img) as im:
+                w, h = im.size
+            meta = {"w": w, "h": h, "credit": r.get("credit", ""), "source": r.get("url", "")}
+            jf.write_text(json.dumps(meta), encoding="utf-8")
+            return {"img": img.as_uri(), **meta}
+        except Exception:  # noqa: BLE001
+            continue
+    (d / f"{slug}.miss").write_text("", encoding="utf-8")
+    return None
+
+
+PARSERS["frame"] = parse_frame
+
+
 # ---- pictures -------------------------------------------------------------------------------------------------------
 def _pictures(plan: dict, lib: Path | None, model: Path | None, fetch: bool,
               sources: list[tuple[str, str]] | None = None, era: int | None = None) -> None:
@@ -1818,6 +1904,7 @@ draw.defs().svg(`<filter id="shadow" x="-20%" y="-20%" width="140%" height="150%
 <filter id="blur" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="${U*.035}"/></filter>
 <pattern id="ildots" width="5" height="5" patternUnits="userSpaceOnUse"><circle cx="2.5" cy="2.5" r="1.1" fill="#000" fill-opacity=".22"/></pattern>
 <filter id="dof" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="${U*.006}"/></filter>
+<filter id="mono"><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="linear" slope="1.25" intercept="-.08"/><feFuncG type="linear" slope="1.25" intercept="-.08"/><feFuncB type="linear" slope="1.25" intercept="-.08"/></feComponentTransfer></filter>
 <filter id="tint"><feFlood flood-color="${K.acc2||'#E0442C'}"/><feComposite in2="SourceAlpha" operator="in"/></filter>
 <filter id="redch"><feColorMatrix type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .55 0"/></filter>
 <filter id="cyanch"><feColorMatrix type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 .55 0"/></filter>`);
@@ -2205,6 +2292,58 @@ function counter(){ // a number counting in steady digits (each digit in its own
   if(P.unit){const u=T(L.front,P.unit.toUpperCase(),U*.03,W/2,y+big*.62,{family:'Mono',weight:700,fill:FG,ls:'.2em'});fit(u,W*.86);wipe(u,.4)}
   if(P.caption){const c=boxText(L.front,P.caption,U*.045,W/2,VERT?H*.72:H*.8,{anchor:'middle',maxw:W*.84,most:2});c.opacity(0);at(.35+span+.15,.3,p=>c.opacity(p),E.snap)}
   FOCUS={x:W/2,y:y-big*.35,rx:Math.min(W*.4,(tot+pw+qw)*.62),ry:big*.55}}
+function voxFrame(){ // the layered Vox key frame: real photo -> paper -> type -> cut-out -> chip (notes, badge, source on top)
+  const flip=(P.seed||0)%2===1&&!TALL,bg=P.bgpic;
+  if(bg){const ar=bg.w/bg.h;let w=W*1.1,h=w/ar;if(h<H*1.1){h=H*1.1;w=h*ar}
+    const g=L.back.group();g.image(bg.img).size(w,h).move((W-w)/2,(H-h)/2).attr({filter:'url(#mono)'});
+    g.rect(W,H).fill(ACC).opacity(.42).attr({style:'mix-blend-mode:multiply'});
+    const pat=draw.pattern(U*.011,U*.011,a=>a.circle(U*.0042).center(U*.0055,U*.0055).fill('#000').opacity(.2));g.rect(W,H).fill(pat);
+    const gr=draw.gradient('linear',st=>{st.stop(0,'#000',.55);st.stop(.55,'#000',.08);st.stop(1,'#000',0)});if(flip)gr.from(1,0).to(0,0);
+    g.rect(W,H).fill(gr);at(0,DUR,p=>g.attr({transform:`translate(${W/2},${H/2}) scale(${1+p*.04}) translate(${-W/2},${-H/2})`}),E.lin||(t=>t))}
+  // the torn paper panel, taped, on the photo's quiet side
+  const pw=TALL?W*.88:W*.47,ph=TALL?H*.36:H*.62,px=TALL?W*.06:(flip?W*.485:W*.045),py=TALL?H*.1:H*.14;
+  const panel=L.mid.group();torn(panel,px,py,pw,ph,'#F3EEE2');panel.attr({filter:'url(#shadow)'});
+  const ang=flip?1.4:-1.4;panel.attr({transform:`rotate(${ang},${px+pw/2},${py+ph/2})`});
+  tape(L.mid,px+pw*.14,py+U*.004,U*.13,-12);tape(L.mid,px+pw*.88,py+ph-U*.004,U*.11,9);slide(panel,.05,flip?W*.45:-W*.45,0);
+  const pad=pw*.08,inner=pw-pad*2;let y=py+pad*.9;
+  if(P.kicker){const k=mono(L.mid,P.kicker.toUpperCase(),px+pad,y+U*.02,{anchor:'start',size:U*.02,weight:700});fit(k,inner);wipe(k,.3);y+=U*.055}
+  // the headline, wrapped to the panel; *words* keep their highlighter on whichever line they land
+  const hot=new Set((String(P.headline).match(/\*[^*]+\*/g)||[]).join(' ').replace(/\*/g,'').toUpperCase().split(/\s+/).filter(Boolean));
+  const plain=String(P.headline).replace(/\*/g,'').toUpperCase();let size=TALL?W*.1:H*.105,ls;
+  for(let k=0;k<7;k++){ls=lines(plain,size,inner,'Anton',400,9);if(ls.length<=3&&ls.length*size*1.05<ph*(P.number?.5:.68))break;size*=.9}
+  ls=lines(plain,size,inner,'Anton',400,3);
+  ls.forEach((ln,i)=>{const marked=ln.split(' ').map(w=>hot.has(w)?'*'+w+'*':w).join(' ').replace(/\* \*/g,' ');
+    const t=rich(L.mid,marked,size,px+pad,y+size*.86+i*size*1.04,{family:'Anton',weight:400,fill:INK,start:.75+.12*i});wipe(t,.35+.1*i)});
+  y+=ls.length*size*1.04+U*.02;
+  // the data chip: the number in the film's accent, half off the panel's lower edge
+  if(P.number){const cs=TALL?W*.12:H*.13,cg=L.hero.group();const t=T(cg,P.number,cs,0,0,{family:'Anton',weight:400,fill:'#FFFFFF',anchor:'start'});
+    const bb=t.bbox();cg.rect(bb.width+cs*.5,bb.height+cs*.28).move(bb.x-cs*.25,bb.y-cs*.14).fill(ACC).back();
+    const cx=px+pad,cy=y+U*.03+bb.height*.92;cg.attr({transform:`translate(${cx+cs*.25},${cy}) rotate(${flip?2:-2})`,filter:'url(#shadow)'});popIn(cg,cx+bb.width/2,cy-bb.height/2,.9,.35)}
+  // the subject, big, printed with a colour offset, breaking the bottom of the frame
+  const pic=(P.pics||[])[0];
+  if(pic){const ar=pic.img?pic.w/pic.h:(pic.draw&&window.ILLU&&ILLU[pic.draw]?ILLU[pic.draw][0]/ILLU[pic.draw][1]:.8);
+    const maxw=TALL?W*.86:W*.44;let h=TALL?H*.5:H*.94;if(h*ar>maxw)h=maxw/ar;
+    const cx=TALL?W*.5:(flip?W*.27:W*.73),by=H+(pic.img?U*.01:-H*.06);
+    const g=picture(L.hero,pic,cx,by,h,{offset:!!pic.img});drop(g,.25,H*.3,flip?3:-3);
+    const w=g.data('w')||h*ar;FOCUS={x:cx,y:by-h*.62,rx:Math.min(w*.42,U*.3),ry:Math.min(h*.3,U*.26)}}
+  else FOCUS={x:TALL?W*.5:(flip?W*.24:W*.76),y:TALL?H*.72:H*.55,rx:TALL?W*.3:W*.15,ry:TALL?H*.12:H*.2};   // no subject: the note circles the photo itself
+  // the hand-written note lives on the photo, in the top corner over the subject, never on the panel
+  if(!bg&&!pic)P.marker='';   // nothing real to point at: no circle drawn round empty paper
+  if(P.marker&&FOCUS&&!TALL){const red=/^#(1|2)[0-9A-F]/i.test(K.mark||'')?'#D7262B':(K.mark||'#D7262B'),mg=L.front.group(),f=FOCUS,n=48,pts=[];
+    for(let i=0;i<=n;i++){const a=-Math.PI*.6+i/n*Math.PI*2*1.12,j=1+(rnd()-.5)*.06+(i/n)*.06;pts.push([f.x+Math.cos(a)*f.rx*j,f.y+Math.sin(a)*f.ry*j])}
+    penLine(mg,pts,1.0,.55,red,U*.008);
+    const right=!flip,nx=right?W-U*.1:U*.1,ny=U*.14;   // inside the slow push's crop
+    const t=T(mg,P.marker,U*.056,nx,ny,{family:'Caveat',weight:700,fill:red,anchor:right?'end':'start'});fit(t,W*.34);
+    t.attr({transform:`rotate(${right?3:-3},${nx},${ny})`});const tb=t.bbox();
+    const sx=tb.x+tb.width/2,sy=tb.y+tb.height+U*.012,ex=f.x+(right?1:-1)*f.rx*.35,ey=f.y-f.ry*.95;
+    const q=[];for(let i=0;i<=14;i++){const u=i/14,mx=(sx+ex)/2+(right?1:-1)*U*.05;q.push([(1-u)*(1-u)*sx+2*(1-u)*u*mx+u*u*ex,(1-u)*(1-u)*sy+2*(1-u)*u*((sy+ey)/2)+u*u*ey])}
+    penLine(mg,q,1.35,.35,red,U*.005);wipe(t,1.2);P.marker='';mg.addClass('keep')}
+  // the credit, light on the dark photo: always readable
+  if(P.credit){const items=('PHOTOS: '+P.credit).toUpperCase().split(' · '),cs=U*.016,maxw=W*.5,rows=[];let cur='';
+    const maxc=Math.floor(maxw/(cs*.62));   // a monospace face: about .6 em per letter, measured without waiting for the font
+    items.forEach(it=>{const tr=cur?cur+' · '+it:it;if(cur&&tr.length>maxc){rows.push(cur);cur=it}else cur=tr});if(cur)rows.push(cur);
+    rows.forEach((r,i)=>{const y=H-U*.07-(rows.length-1-i)*cs*1.55;const t=mono(L.front,r.length>maxc+8?r.slice(0,maxc+6)+'…':r,flip?W-U*.12:U*.12,y,{anchor:flip?'end':'start',size:cs,weight:700,fill:'#F3EEE2'});
+      t.addClass('keep');t.opacity(.92);const bb=t.bbox();L.front.rect(bb.width+U*.02,bb.height+U*.01).move(bb.x-U*.01,bb.y-U*.005).fill('#000').opacity(.45).back()})}}
 function staircase(){ // isometric steps rising left to right; each one lights up as the story climbs it, the last in red
   const n=P.steps.length,top=VERT?H*.3:H*.24,bot=VERT?H*.82:H*.86,left=W*.08,right=W*.92,sw=(right-left)/n,sh=(bot-top)/n,d=Math.min(sw,sh)*.35;
   const g=L.hero.group(),red=K.mark||'#D7262B',seg=Math.max(.7,(DUR-1.6)/n),tops=[];
@@ -3227,7 +3366,7 @@ function footage(){ // moving footage, frame by frame, with the same annotations
   if(P.annotate&&P.annotate.length){const a=P.annotate[0];FOCUS={x:a.p[0]*W,y:a.p[1]*H,rx:U*.1,ry:U*.1}}
   photoCredit()}
 
-const SCENES={grids,wash,reel,conveyor,tiles,pile,units,myth,counter,staircase,scale,photo,photos,footage,shrink,morph,borders,courtdoc,table,interview,endcard,polltrack,area,candles,arrows,railmap,sizemap,pyramid,flowchart:flow,linkmap,orgchart,heatmap,hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv,
+const SCENES={frame:voxFrame,grids,wash,reel,conveyor,tiles,pile,units,myth,counter,staircase,scale,photo,photos,footage,shrink,morph,borders,courtdoc,table,interview,endcard,polltrack,area,candles,arrows,railmap,sizemap,pyramid,flowchart:flow,linkmap,orgchart,heatmap,hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv,
   clockmap,tornsplit,newscard,blueprint};
 async function boot(){
   try{await Promise.all(Array.from(document.fonts).map(f=>f.load()))}catch(e){}
@@ -3309,6 +3448,15 @@ def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: f
                 plan.pop("then")
     else:
         _pictures(plan, lib, model, fetch, sources, era_in(theme))
+    if plan["type"] == "frame":
+        plan["bgpic"] = _background(plan["bgq"], fetch)
+        if plan["bgpic"] is None:
+            plan.setdefault("missing", []).append(f"background photo: {plan['bgq']}")
+        else:
+            cr = plan["bgpic"].get("credit", "")
+            rest = plan.get("credit", "").split(": ", 1)[-1] if plan.get("credit") else ""
+            short = lambda c: re.sub(r"\s*/\s*Wikimedia Commons", " / Wikimedia", re.sub(r"\(per [^)]*\)\s*", "", c)).strip()
+            plan["credit"] = " · ".join(short(x) for x in (cr, rest) if x)[:110]
     # asset check before the render: a photo much smaller than the size it is shown at will look soft
     soft = [f"{p.get('name')}: {p['w']}x{p['h']} px shown about {int(height * (0.4 if height > width else 0.6))} px tall"
             for p in plan.get("pics", []) if p.get("img") and p.get("h", 9999) < height * (0.4 if height > width else 0.6) * 0.55]

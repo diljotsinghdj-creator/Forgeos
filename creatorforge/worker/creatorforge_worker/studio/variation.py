@@ -28,7 +28,7 @@ KIND_TECHNIQUE = {
                                  "article", "social", "chat", "tornsplit", "comments", "trending", "search", "reel")},
     **{k: "maps" for k in ("pinmap", "route", "arrows", "railmap", "sizemap", "heatmap", "shrink", "morph", "borders", "flowmap",
                             "satellite", "fly", "map", "clockmap", "globe", "sunrise", "zones", "wash")},
-    **{k: "collage" for k in ("hero", "opener", "pinboard", "photos", "photo", "photoline", "tv", "compare", "footage", "photo3d")},
+    **{k: "collage" for k in ("frame", "hero", "opener", "pinboard", "photos", "photo", "photoline", "tv", "compare", "footage", "photo3d")},
     **{k: "3d" for k in ("bars3d", "prism", "explode", "title3d", "terrain3d", "towers3d", "planets")},
     **{k: "illustration" for k in ("animate", "statement", "myth", "staircase", "scale", "blueprint", "flowchart", "linkmap",
                                     "orgchart", "steps", "timeline", "endcard", "chapter", "stamp", "sign", "clock", "calendar", "conveyor")},
