@@ -83,3 +83,9 @@ def test_sfx_log_rules(tmp_path):
     assert floor[0][0].is_file() and abs(floor[0][2] - 10 ** (-35 / 20)) < 1e-3 and floor[1][1] == 4.0 and floor[1][0].is_file()
     md = sfxlog.markdown("T", tl, foley, [], floor, 24, "drone")
     assert "| 00:03:22 | s2 | Foley | whoosh |" in md and "Room tone" in md and "Noise floor" in md and "drop out" in md
+
+
+def test_layout_numbers_are_not_facts():
+    from creatorforge_worker.studio.writer import _without_layout, figures_in
+    g = "asset:P0009 | detail | Radar, 25 March 2021 | at: 0.42, 0.06, 0.32, 0.24 | annotate: circle 0.58,0.17,0.05 Ship 400 m"
+    assert figures_in(_without_layout(g)) == ["25", "2021", "400"]

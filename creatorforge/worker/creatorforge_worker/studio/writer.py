@@ -45,6 +45,28 @@ def graphic_problem(graphic: str) -> str:
     return vd.valid(graphic)
 
 
+# options that place or move a picture (crops, camera, timing, grain): their numbers are layout, not facts
+_LAYOUT_KEYS = ("at", "depth", "frame", "grade", "in", "light", "move", "speed", "camera", "exit", "fx", "src", "voice",
+                "follow", "subject", "km")
+_COORDS = re.compile(r"(?<![\w.])-?\d*\.?\d+(?:\s*,\s*-?\d*\.?\d+)+")
+
+
+def _without_layout(spec: str) -> str:
+    """The graphic line without its layout numbers: layout options dropped, annotation coordinates removed (their labels,
+    which can state a fact, are kept)."""
+    out = []
+    for part in spec.split("|"):
+        k, sep, v = part.partition(":")
+        key = k.strip().lower()
+        if sep and key in _LAYOUT_KEYS:
+            continue
+        if sep and key == "annotate":
+            v = re.sub(r"->", " ", _COORDS.sub(" ", v))
+            part = f"{k}:{v}"
+        out.append(part)
+    return "|".join(out)
+
+
 def check(sp: dict, dossier: Dossier) -> list[dict]:
     out = []
 
@@ -95,7 +117,7 @@ def check(sp: dict, dossier: Dossier) -> list[dict]:
                 add("error", sid, f"cites {c}, which is unverified")
         # every figure said or shown must be one the cited evidence supports
         allowed = dossier.figures(ids)
-        for f in figures_in(text) + figures_in(g.split(":", 1)[1] if ":" in g else g):
+        for f in figures_in(text) + figures_in(_without_layout(g.split(":", 1)[1] if ":" in g else g)):
             if f not in allowed:
                 add("error", sid, f"the figure {f} is not in the evidence this scene cites ({', '.join(ids) or 'none'})")
         needs = [c for c in ids if c in dossier.claims and dossier.claims[c].status in NEEDS_ATTRIBUTION]
