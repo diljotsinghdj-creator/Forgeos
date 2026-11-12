@@ -1,16 +1,13 @@
 ---
 id: the-taliban-explained-2021
 title: "The Taliban, explained"
-url: not confirmed (Vox YouTube page not opened; Vox Facebook post exists)
-published: "2021-11-10 (TheTVDB, Vox Atlas S01E33); other sources give 2021-11-11"
+url: https://www.youtube.com/watch?v=qIDkZAOjx9w
+published: 2021-11-10 (rosetta.to listing; TheTVDB agrees)
 series: Vox Atlas (episode 33, per TheTVDB)
 producer: not confirmed
 category: geopolitics
 length: "14:06 (Iolani School library guide, via search excerpt); a teaching resource calls it a 14-minute video"
-evidence_basis: >
-  Web-search result excerpts only: TheTVDB Vox Atlas listing (tagline), Vox's Facebook post (description), a
-  Snopes fact-check that cites the video on the Taliban's origins, a teaching module (Generation Human Rights) and a
-  school library guide (runtime). NOT accessed: the video, frames, audio, transcript, any companion article.
+evidence_basis: Verification pass 2026-11-12, pages opened directly - (1) rosetta.to page carrying the YouTube embed (id qIDkZAOjx9w), date, view count, untimed chapter titles and a full punctuated transcript with archival news lines in quotation marks; (2) YouTube oEmbed endpoint confirming the id is titled "The Taliban, explained" on the Vox channel. Earlier pass (search summaries only) - TheTVDB, Snopes, a teaching module, Iolani School library guide, Vox Facebook post. NOT accessed - video frames (not viewed by us); any vox.com companion article; credits; length (rosetta.to shows views, not length).
 ---
 
 # The Taliban, explained
@@ -26,25 +23,29 @@ Timestamps appear only when a source (transcript, chapter list) supplies them.
 - [I] Central question: "how did a movement the US fought for twenty years retake the country in weeks?" A news-driven explainer published about three months after the fall of Kabul.
 
 ## 2. Opening technique
-- Not verified. [I] The description's emphasis on speed suggests a present-tense open on the 2021 takeover before going back to origins.
+- [V] Cold open on testimony, not on 2021 news: a woman recalls being stopped by the Taliban in 1999 while carrying books to teach girls in a remote village and being sure they would kill her (transcript).
+- [I] The speaker is very likely Sweeta Noori, who is introduced by name later and is listed by rosetta.to; the transcript does not name the opening voice.
+- [V] Then the narration states the first rule and the return two decades later, and journalist Nagieb Khaja gives the thesis: they took Afghanistan twice because of others' failures, not their own governing (transcript, paraphrased).
 
 ## 3. Narrative structure
-- [V] The video covers the Taliban's origins in infighting among mujahideen factions after the Soviet invasion (cited by Snopes).
-- [V] It covers the ban on girls' education under the first Taliban government (teaching module).
-- [I] Shape: present shock (2021), flashback to origins (1980s and 1990s), first rule (1996 to 2001), the US war, and the return. A loop that ends where it began.
+- [V] Chapter titles (rosetta.to, untimed): introduction → Soviet invasion and mujahideen resistance → civil war and rise of the Taliban → Taliban rule and isolation → post-9/11 invasion and resurgence → consolidation and US withdrawal → the new regime and an uncertain future.
+- [V] Order in the transcript matches: 1979 Soviet invasion and rural revolt → mujahideen, foreign funding including US weapons; about a million dead and 6 million displaced → Soviet exit (1989), civil war (1992) → Kandahar, Mohammed Omar and the students (1994) → expansion funded by highway taxes, opium and Pakistani support → first rule → 2001 → resurgence → 2021 takeover → September 2021 interim government, mostly Pashtun with 1990s figures → the two interviewees on unpredictability and a "small window of hope" (transcript).
+- [I] Shape: testimony, thesis, chronology, return to the present with the same two voices.
 
 ## 4. Narration characteristics
-- Not verified.
+- [V] Unnamed narrator carries the chronology; two interviewees carry judgement and lived experience: Nagieb Khaja (reporting on the war for 17 years) and Sweeta Noori (born and raised in Afghanistan, worked on education and women's rights) (transcript).
+- [V] The final words are given to an interviewee, not the narrator (transcript).
 
 ## 5. Visual techniques
 - [V] Vox Atlas is defined as a map-led series showing where conflicts happen and how foreign policy shapes a region (TheTVDB series description).
-- Specific shots not verified.
+- [V] An archival report line, "a glance at the map shows why", introduces Afghanistan's geography; the narration then explains the urban/rural split (transcript). [I] A map is very likely on screen there. Specific shots not verified.
 
 ## 6. Graphics and animation
 - Not verified.
 
 ## 7. Footage selection
-- Not verified.
+- [V] Archival news audio is quoted throughout, e.g. "Afghanistan falls to Taliban control" and Cold War-era reports on Soviet troops and the mujahideen (transcript; marked as quotations).
+- [V] Interviews with Khaja and Noori (transcript).
 
 ## 8. Editing techniques
 - Not verified.
@@ -73,3 +74,6 @@ Timestamps appear only when a source (transcript, chapter list) supplies them.
 - Generation Human Rights teaching module: https://www.generationhumanrights.org/imagine-module-five-lesson-1 (search excerpt)
 - Iolani School library guide (runtime 14:06): https://iolani.libguides.com/wg7taliban (search excerpt)
 - Press Gazette, "How Vox became maybe the most successful news outlet on YouTube": https://pressgazette.co.uk/news/vox-youtube/ (search excerpt)
+(Entries above this note were read only through search-result summaries in the earlier pass.)
+- rosetta.to page with full transcript (opened 2026-11-12): https://rosetta.to/u/vox/the-taliban-explained
+- YouTube oEmbed check of the id (opened 2026-11-12): https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=qIDkZAOjx9w&format=json

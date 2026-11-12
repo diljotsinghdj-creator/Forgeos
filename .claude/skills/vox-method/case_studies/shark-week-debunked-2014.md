@@ -1,13 +1,13 @@
 ---
 id: shark-week-debunked-2014
 title: "Does Megalodon still exist? Shark Week debunked"
-url: not confirmed (YouTube URL not surfaced by any source accessed; a transcript-derived mirror exists at rosetta.to/u/vox/does-megalodon-still-exist-shark-week-debunked)
-published: August 2014 (companion Vox article dated 2014-08-11 per the rosetta.to summary; Neatorama embedded the video 2014-08-13)
+url: https://www.youtube.com/watch?v=i5C-DQ0edR0
+published: 2014-08-12 (rosetta.to listing; Neatorama embedded it 2014-08-13)
 series: standalone
 producer: not confirmed (no source accessed names the producer)
 category: science
-length: about 2:42 (rosetta.to listing as summarised by search)
-evidence_basis: Search-engine summaries of (a) the rosetta.to transcript-derived summary page, (b) a thetvdb episode listing, (c) Neatorama's 2014 embed post, (d) channel-history profiles of Vox (Nieman Lab, Digiday, Hollywood Insider/Wikiwand) that describe this as an early non-political Vox video. No page was opened directly (WebFetch was blocked in this session), the full transcript was NOT read, video frames were NOT viewed, and the Vox companion article was NOT read. Every [V] claim below therefore rests on a secondary summary.
+length: 2:42 (rosetta.to listing)
+evidence_basis: Verification pass 2026-11-12, pages opened directly - (1) rosetta.to page carrying the YouTube embed (id i5C-DQ0edR0), date, length, a short chapter list (0:00, 0:49, 1:32), a full machine transcript (auto-caption style, unpunctuated, some names garbled); (2) YouTube oEmbed endpoint confirming the id is titled "Does Megalodon still exist? Shark Week debunked" on the Vox channel. Earlier pass (search summaries only) - thetvdb, Neatorama, channel-history profiles (Nieman Lab, Digiday, Hollywood Insider/Wikiwand). NOT accessed - video frames (not viewed by us); the Vox companion article; any making-of interview.
 ---
 
 # Does Megalodon still exist? Shark Week debunked
@@ -24,17 +24,17 @@ Timestamps appear only when a source (transcript, chapter list) supplies them.
 - [I] The real question is about media trust, and the animal is the way in: the title asks a science question, and the body answers a media-literacy one. Inferred from the summary's emphasis on the channel's shift away from education.
 
 ## 2. Opening technique
-- Not verified. No source describes the first shot or the first line.
-- [I] At under three minutes the video has little room for a long cold open. The title question works as the hook, and the debunking has to start almost at once. Inferred from the length alone.
+- [V] Opens on enthusiasm, not attack: sharks are "really really cool", with three quick facts (about 400 million years, over 400 species, electroreception), then the turn that this is why it is baffling Shark Week has so little biology (transcript).
+- [I] Praise the subject first, then indict its treatment: the opening sets the standard the channel is judged against.
 
 ## 3. Narrative structure
-- [V] Three evidence beats appear in the summary: (1) the fake Megalodon special was still the most-watched episode in the show's history; (2) a post-broadcast online poll found about 73% of respondents believed the shark was real (other outlets report about 70%); (3) a second hoax claimed a shark was in Lake Ontario, and Discovery admitted it only after Canadian officials raised concerns (rosetta.to summary; Vox context summary).
-- [V] The resolution is the scientific consensus on extinction (rosetta.to summary).
-- [I] The shape is claim, then audience harm (people believed it), then a pattern (a second hoax), then the science. This is a compact "pattern of deception" structure, inferred from the order in which the summary lists the points (the order may not match the video).
+- [V] Chapter list (rosetta.to): intro 0:00 → Megalodon 0:49 → fake shark programming 1:32.
+- [V] Order in the transcript: shark facts → Shark Week began in 1988 as educational, became sensational → attack-focused shows make people fear sharks, though attacks are rare → the 2013 Megalodon special: actor as scientist, faked footage, an invented death, only a "dramatized" disclaimer → scientific consensus that Megalodon went extinct about 2 million years ago, yet an online poll found 73% thought it real → it was the highest-rated episode, so the 2014 season doubled down (Lake Ontario promo hoax, *Shark of Darkness*, a Megalodon sequel) → counter-evidence of appetite for real science: BBC's *Life* drew over 11 million viewers, more than twice Megalodon → closing jab at Discovery's "number one non-fiction" claim (transcript).
+- [I] Shape: standard, decline, the worst case, the pattern, the counter-evidence.
 
 ## 4. Narration characteristics
-- Not verified. No transcript was read.
-- [I] The topic is framed as a critique (the summary uses the word for the shift away from education), so the tone was likely pointed rather than neutral. This is inference only.
+- [V] Unnamed narrator, conversational and openly critical ("really weird territory", "the worst part") (transcript).
+- [V] Claims are concrete and checkable: dates, the 73% poll figure, viewer counts (transcript).
 
 ## 5. Visual techniques
 - Not verified. No frames were viewed and no source describes shots.
@@ -44,10 +44,12 @@ Timestamps appear only when a source (transcript, chapter list) supplies them.
 - [I] Two hard numbers (most-watched episode; the share of viewers who believed it) are natural on-screen stat cards. That is a production inference, not an observation.
 
 ## 7. Footage selection
-- Not verified. [I] A critique of a TV programme very likely relies on clips of that programme under fair use, but no source confirms which clips were used.
+- [V] Audio from the 2013 Megalodon special is quoted: a voice asks to zoom in on a blurry image and points out a fin (transcript).
+- [I] So clips of the programme are shown as the evidence being debunked. Inferred from the quoted audio; framing not observed.
 
 ## 8. Editing techniques
-- Not verified.
+- [V] Runtime 2:42; the Megalodon case starts at 0:49 and the 2014 pattern at 1:32 (rosetta.to chapters).
+- [I] About 50 seconds per beat; a very fast early-Vox format.
 
 ## 9. Sound design
 - Not verified.
@@ -73,3 +75,6 @@ Timestamps appear only when a source (transcript, chapter list) supplies them.
 - Neatorama, "Shark Week Debunked", 2014-08-13: https://www.neatorama.com/2014/08/13/Shark-Week-Debunked
 - Lead Stories fact-check (extinction date range): https://leadstories.com/hoax-alert/2024/03/fact-check-video-does-not-show-real-megalodon-shark-attack-of-fishing-boat-staged-production-for-shark-week.html
 - Vox channel history (early non-political video claim): https://www.niemanlab.org/?p=124626 ; https://www.wikiwand.com/en/articles/Vox.com
+(Entries above this note were read only through search-result summaries in the earlier pass.)
+- rosetta.to page with chapters and full transcript (opened 2026-11-12): https://rosetta.to/u/vox/does-megalodon-still-exist-shark-week-debunked
+- YouTube oEmbed check of the id (opened 2026-11-12): https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=i5C-DQ0edR0&format=json

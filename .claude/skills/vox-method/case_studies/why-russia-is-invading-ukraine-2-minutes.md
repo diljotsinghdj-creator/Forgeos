@@ -1,13 +1,13 @@
 ---
 id: why-russia-is-invading-ukraine-2-minutes
 title: "Why Russia is invading Ukraine, explained in 2 minutes"
-url: not confirmed (YouTube page not opened; listed in TheTVDB's Vox 2014 season)
-published: 2014-09-02 (TheTVDB listing, via search-result summary)
+url: https://www.youtube.com/watch?v=u-qO42qjShg
+published: 2014-09-02 (rosetta.to listing; TheTVDB agrees)
 series: standalone (early Vox video explainer)
 producer: not confirmed; on-camera/voice explainer is Vox foreign editor Max Fisher per TheTVDB description
 category: geopolitics
-length: 2:17 (third-party transcript-site listing, via search-result summary; not confirmed on YouTube)
-evidence_basis: Search-engine result summaries only, of (a) TheTVDB episode listing, (b) a third-party transcript site's machine-caption excerpts and auto-summary, (c) later Vox Ukraine explainers for context. No page could be opened directly (rosetta.to and wikipedia hosts unreachable from this session; vox.com blocked to the fetch tool). Video frames NOT viewed, full transcript NOT read, no companion article read. Visual claims below are therefore absent or marked [I].
+length: 2:17 (rosetta.to listing)
+evidence_basis: Verification pass 2026-11-12, pages opened directly - (1) rosetta.to page carrying the YouTube embed (id u-qO42qjShg), date, length, timestamped quotes and a full machine transcript (auto-caption style, unpunctuated); (2) YouTube oEmbed endpoint confirming the id is titled "Why Russia is invading Ukraine, explained in 2 minutes" on the Vox channel. Earlier pass (search summaries only) - TheTVDB, a third-party transcript site's excerpts and auto-summary, later Vox Ukraine explainers. NOT accessed - video frames (not viewed by us); any vox.com companion article. Rosetta.to chapter times are out of order and are not used; its people list mislabels Max Fisher.
 ---
 
 # Why Russia is invading Ukraine, explained in 2 minutes
@@ -24,12 +24,12 @@ Timestamps appear only when a source (transcript, chapter list) supplies them.
 - [V] Per caption excerpts, the argument lands on the idea that the escalation may be reactive (a response to Ukrainian military gains and fear of lost influence) and that there may be no clear objective or end point (transcript-site excerpt and auto-summary; machine captions, approximate).
 
 ## 2. Opening technique
-- Not verified. No source describes the first shot or first line.
-- [I] A 2-minute runtime with a "less obvious than you think" framing implies the film opens on the popular assumption and then undercuts it (inferred from the listing description).
+- [V] Opens on the stakes in one line ("Russia is invading Europe in 2014", "this is a big deal"), then news audio about Russian units seen on satellite imagery near Donetsk, then the West's fury and an official statement on sovereignty (transcript; quote stamped 00:00:20).
+- [V] The explanation then jumps to 2012 to find the motive (transcript).
 
 ## 3. Narrative structure
-- [V] Traces motive back to Putin's 2012 re-election and a turn toward nationalism and anti-Western positioning, then to the 2014 situation (auto-summary of transcript; approximate).
-- [I] Structure is probably: common assumption → backstory of motive → present situation → unsettling conclusion (no clear end state). Inferred from the summary's order of points.
+- [V] Order in the transcript: stakes and news audio → 2012 re-election protests and Putin's shift to anti-Western nationalism → November 2013 Kyiv protests, read by Putin as a US-made threat (quote stamped 00:00:59) → Crimea and the popularity boost; "he gets addicted to it" (00:01:14) → support for separatists → July missiles and MH17 → Ukraine's counter-offensive → Putin's panic and escalation (00:01:43) → conclusion: no strategy, no objective, no end in sight (transcript).
+- [I] Structure: stakes → backstory of motive → escalation chain → unsettling conclusion.
 
 ## 4. Narration characteristics
 - [V] An editor-expert (Max Fisher) explains in his own voice (TheTVDB description).
@@ -43,7 +43,8 @@ Timestamps appear only when a source (transcript, chapter list) supplies them.
 - Not verified.
 
 ## 7. Footage selection
-- Not verified.
+- [V] News audio is cut in: a report on satellite images of Russian combat units, an official statement on Ukraine's sovereignty, and a line that US officials blame pro-Russian rebels for MH17 (transcript).
+- [I] Matching news pictures are likely; not observed.
 
 ## 8. Editing techniques
 - [V] Runtime about 2:17 (aggregator).
@@ -70,3 +71,6 @@ Timestamps appear only when a source (transcript, chapter list) supplies them.
 - TheTVDB, Vox 2014 episode listing: https://www.thetvdb.com/dereferrer/episode/8698667 (via search summary)
 - Third-party transcript listing (rosetta.to, could not be opened; excerpts via search summary): https://rosetta.to/u/vox/why-russia-is-invading-ukraine-explained-in-2-minutes
 - Later Vox Ukraine context (2022 explainer listing, via search summary): https://rosetta.to/u/vox/putin-s-war-on-ukraine-explained
+(Entries above this note were read only through search-result summaries in the earlier pass.)
+- rosetta.to page with full transcript (opened 2026-11-12): https://rosetta.to/u/vox/why-russia-is-invading-ukraine-explained-in-2-minutes
+- YouTube oEmbed check of the id (opened 2026-11-12): https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=u-qO42qjShg&format=json

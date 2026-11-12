@@ -1,13 +1,13 @@
 ---
 id: why-nevada-has-so-many-ghost-towns
 title: "Why Nevada has so many ghost towns"
-url: not confirmed (YouTube page not opened)
-published: about late September 2025 (an aggregator repost lists 2025-09-30; relative dates on a Yahoo Creators article and a Vox Short agree on late 2025). One other listing mentions a 17:42 Nevada ghost-town video dated 2019; it could not be confirmed and may be a different video.
+url: https://www.youtube.com/watch?v=kg18CwWeMnc
+published: 2025-09-30 (rosetta.to listing)
 series: standalone (sponsored: presented by Travel Nevada, which states it has no say over editorial decisions)
 producer: Dolly Li, Vox producer (YouTube Short description and aggregator, via search summary)
 category: geography
-length: 10:31 (aggregator listing via search summary; not confirmed on YouTube)
-evidence_basis: Search-engine result summaries only, of: aggregator transcript excerpts, a Vox YouTube Short's description, Yahoo Creators article on the video, Travel Nevada's Nevada Magazine "Ghost Town Primer" (background). No page opened directly. Video frames NOT viewed; full transcript NOT read.
+length: 10:31 (rosetta.to listing)
+evidence_basis: Verification pass 2026-11-12, pages opened directly - (1) rosetta.to page carrying the YouTube embed (id kg18CwWeMnc), date, length, timestamped quotes and a full punctuated transcript with speaker turns; (2) YouTube oEmbed endpoint confirming the id is titled "Why Nevada has so many ghost towns" on the Vox channel. Earlier pass (search summaries only) - a Vox YouTube Short description, Yahoo Creators article, Nevada Magazine (background). NOT accessed - video frames (not viewed by us); any vox.com companion article; credits. Rosetta.to chapter times are out of order and are not used.
 ---
 
 # Why Nevada has so many ghost towns
@@ -24,21 +24,22 @@ Timestamps appear only when a source (transcript, chapter list) supplies them.
 - [V] Vox's caption ties the towns to gold-rush-era booms of the 1800s and 1900s (mirror of the channel caption).
 
 ## 2. Opening technique
-- [V] Leads with a striking count (600+) (transcript excerpt).
-- [I] A big number about a place is the hook; the "why" in the title is the promise.
+- [V] Cold open lost on the road: "we've been driving for about 4 hours" looking for a ghost town not even on the map, then the count, more than 600 ghost towns, more than populated towns (transcript; quote stamped 00:00:16).
+- [V] Voices of experts and a resident are cut in before the questions are posed; the resident line about living there full-time with her husband sets up the final destination (transcript).
+- [V] The sponsorship disclosure (presented by Travel Nevada; Travel Nevada did not dictate the content) comes right after the opening questions (transcript).
 
 ## 3. Narrative structure
-- [V] The producer road-tripped through northern Nevada looking for lesser-known sites (Short description).
-- [V] A local ghost-town historian, Tami Force, guides the explanation (Yahoo Creators).
-- [I] Likely road-trip structure: each stop illustrates one stage of a boom-and-bust cycle. Background source (Nevada Magazine) describes that cycle (ore found → depleted → move to new claim), but the film's exact beats are not verified.
+- [V] Order in the transcript: lost-on-the-road open and questions → sponsor disclosure → why gold matters (Nevada still produces over 70% of US gold) → Reno, meeting ghost-town historian Tammy Force → "about 90%" are mining towns (quote stamped 00:02:39) → professor Eric Nystrom on the first discoveries and the Comstock Lode → square-set timbering ("like a set of Legos") → depletion and abandonment → Sutro and the Sutro Tunnel → coordinates to unmarked Tunnel Camp → Midas, a living ghost town, with historian Dana Bennett on its mill-dependent economy (00:09:03) and the WWII gold-mine closure order → closing reflection (transcript). Names as spelled in the auto transcript and rosetta.to; the earlier pass had "Tami Force".
+- [I] Road-trip structure where each stop illustrates one stage of the boom-and-bust cycle.
 
 ## 4. Narration characteristics
 - [V] Producer on the road plus expert guide (sources above).
 - [V] Sponsored film with an explicit editorial-independence statement (aggregator).
 
 ## 5. Visual techniques
-- [V] On-location road-trip footage at ghost-town sites (implied by "road tripped ... to find" in the Short description; specific shots not verified).
-- Others not verified.
+- [V] Self-documenting road-trip footage: the team narrates getting lost, losing signal, entering coordinates, and points out "remnants of an ore mill" and one-bedroom cabins at Tunnel Camp (transcript).
+- [V] The narration notes the unmarked town cannot be found on Google Maps, only by coordinates (transcript).
+- [I] On-location footage at each site; framing not described by any source.
 
 ## 6. Graphics and animation
 - Not verified.
@@ -51,10 +52,12 @@ Timestamps appear only when a source (transcript, chapter list) supplies them.
 - [V] About 10.5 minutes (aggregator). A Short cut-down was published separately.
 
 ## 9. Sound design
-- Not verified.
+- [V] Archival audio appears ("$20 million in gold. The magic cry of gold rush") (transcript).
+- [I] Music and ambient sound are not described by any source.
 
 ## 10. Transitions
-- Not verified. [I] Road-trip films naturally use the drive between sites as transitions.
+- [V] Drives between sites and handed-over directions (Tammy's map and coordinates) move the film from stop to stop (transcript).
+- [I] Picture transitions are not described by any source.
 
 ## 11. What makes it effective
 - [I] A simple, countable mystery (why so many?) with a single dominant cause, told through places viewers can actually visit.
@@ -74,4 +77,6 @@ Timestamps appear only when a source (transcript, chapter list) supplies them.
 - Yahoo Creators, "Here's why Nevada has so many ghost towns": https://creators.yahoo.com/lifestyle/story/heres-why-nevada-has-so-many-ghost-towns-125202130.html
 - gondola.cc repost of Vox upload: https://gondola.cc/posts/35320466-vox-youtube
 - Nevada Magazine, Ghost Town Primer (background): https://travelnevada.com/nevada-magazine/ghost-town-primer/
-(All accessed only through search-result summaries; none opened directly.)
+(Entries above this note were read only through search-result summaries in the earlier pass.)
+- rosetta.to page with full transcript (opened 2026-11-12): https://rosetta.to/u/vox/why-nevada-has-so-many-ghost-towns
+- YouTube oEmbed check of the id (opened 2026-11-12): https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=kg18CwWeMnc&format=json
