@@ -1,0 +1,131 @@
+{
+ "id": "avengers-sample",
+ "title": "The Avengers in 30 seconds",
+ "channel": "sample",
+ "sample_for": "print-facts",
+ "topic": "avengers-box-office",
+ "target_seconds": 30,
+ "subject": "culture",
+ "genre": "culture",
+ "native_material": "box-office figures, release dates",
+ "engine": "reverse-autopsy",
+ "hook_mechanism": "the biggest number first, then rewind",
+ "metaphors": [
+  "a counter running backwards through the films"
+ ],
+ "pick": {
+  "engine": "reverse-autopsy",
+  "pitched": [
+   "reverse-autopsy",
+   "historical-echo",
+   "live-viewer-trap"
+  ],
+  "owner_words": "\"Reverse Autopsy (Recommended)\" (re-picked after Historical Echo was stopped as the previous film's approach)",
+  "date": "2026-11-12"
+ },
+ "evidence_waiver": {
+  "reason": "film data sites and archives are blocked from this machine; the owner was asked on 2026-11-12 and answered \"Yes, graphics only\"",
+  "told_owner": true
+ },
+ "language": "en",
+ "lang": "en-gb",
+ "voice": "bf_isabella",
+ "concept": {
+  "logline": "The Avengers films, by the money, as the next one arrives.",
+  "central_question": "What does Doomsday have to beat?",
+  "claim": "Four Avengers films earned about $7.8 billion; the next one arrives on 18 December."
+ },
+ "thumbnail": "Statement: *$2.8 billion*",
+ "cutdowns": [],
+ "scenes": [
+  {
+   "id": "S1",
+   "act": "hook",
+   "purpose": "orient",
+   "delivery": "urgent",
+   "pause": 0.1,
+   "narration": "Avengers: Endgame made about 2.8 billion dollars. One of the biggest films ever.",
+   "graphic": "BigNumber: $2.8 billion | - | Avengers: Endgame, 2019 | worldwide | badge: verified | camera: still",
+   "claims": [
+    "C3"
+   ]
+  },
+  {
+   "id": "S2",
+   "act": "discovery",
+   "purpose": "explain",
+   "delivery": "urgent",
+   "pause": 0.1,
+   "narration": "Rewind a year: Infinity War, 2.05 billion.",
+   "graphic": "Counter: $2.80 → $2.05 billion | worldwide | rewind to Infinity War, 2018 | badge: verified",
+   "claims": [
+    "C2",
+    "C3"
+   ]
+  },
+  {
+   "id": "S3",
+   "act": "discovery",
+   "purpose": "explain",
+   "delivery": "urgent",
+   "pause": 0.1,
+   "narration": "2015: Age of Ultron, 1.4 billion.",
+   "graphic": "Bars3d: 2019 2.80, 2018 2.05, 2015 1.40 | Rewinding the Avengers films | $ billion",
+   "claims": [
+    "C2",
+    "C3"
+   ]
+  },
+  {
+   "id": "S4",
+   "act": "discovery",
+   "purpose": "explain",
+   "delivery": "urgent",
+   "pause": 0.1,
+   "narration": "And 2012, where it began: Marvel's first team-up film.",
+   "graphic": "Title3d: 2012 | Where it began",
+   "claims": [
+    "C1"
+   ]
+  },
+  {
+   "id": "S5",
+   "act": "discovery",
+   "purpose": "explain",
+   "delivery": "urgent",
+   "pause": 0.1,
+   "narration": "Four films, about 7.8 billion dollars.",
+   "graphic": "Stack: coins | The Avengers 1.52, Age of Ultron 1.40, Infinity War 2.05, Endgame 2.80 | Four films, about $7.8 billion",
+   "claims": [
+    "C1",
+    "C2",
+    "C3",
+    "C4"
+   ]
+  },
+  {
+   "id": "S6",
+   "act": "ending",
+   "purpose": "move",
+   "delivery": "urgent",
+   "pause": 0.1,
+   "narration": "On 18 December, Avengers: Doomsday arrives.",
+   "graphic": "Calendar: 18 DEC 2026 | Avengers: Doomsday, in cinemas",
+   "claims": [
+    "C5"
+   ]
+  },
+  {
+   "id": "S7",
+   "act": "ending",
+   "purpose": "move",
+   "delivery": "urgent",
+   "pause": 0.4,
+   "narration": "The bar it has to clear? Endgame's 2.8 billion.",
+   "graphic": "Statement: The bar to clear: *$2.8 billion*",
+   "claims": [
+    "C3"
+   ]
+  }
+ ]
+}

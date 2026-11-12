@@ -48,5 +48,33 @@
    "terrain3d",
    "terrain3d"
   ]
+ },
+ {
+  "id": "avengers-sample",
+  "title": "The Avengers in 30 seconds",
+  "channel": "sample",
+  "engine": "reverse-autopsy",
+  "hook_mechanism": "the biggest number first, then rewind",
+  "metaphors": [
+   "a counter running backwards through the films"
+  ],
+  "look": "newsprint",
+  "accent": "#CA21CA",
+  "cinematography": "breathing",
+  "maps": "atlas",
+  "infographics": "objects",
+  "animation": "hand",
+  "rhythm": "measured",
+  "music": "pulse",
+  "grade": "bleach",
+  "kinds": [
+   "bignumber",
+   "counter",
+   "bars3d",
+   "title3d",
+   "stack",
+   "calendar",
+   "statement"
+  ]
  }
 ]

@@ -47,3 +47,10 @@ def test_morph_cut_draws_a_yellow_shape_between_two_shots(tmp_path):
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", "1.75", "-i", str(tmp_path / "o.mp4"), "-frames:v", "1", str(png)], check=True)
     px = Image.open(png).convert("RGB").getpixel((160, 95))
     assert px[0] > 200 and px[1] > 180 and px[2] < 120, px       # the middle of the cut is the yellow morphing shape
+
+
+def test_statement_keeps_a_starred_phrase_on_one_strip():
+    from creatorforge_worker.media import motion
+    ws = motion.plan_for("statement", "The bar to clear: *$2.8 billion*")["words"]
+    assert ws[-1] == {"w": "$2.8 billion", "hi": True} and len(ws) == 5
+    assert motion.plan_for("statement", "A name that began as an *advert*.")["words"][-1] == {"w": "advert.", "hi": True}

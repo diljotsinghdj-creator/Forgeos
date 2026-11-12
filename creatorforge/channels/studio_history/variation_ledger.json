@@ -47,5 +47,30 @@
    "wind_0040",
    "wind_0090"
   ]
+ },
+ {
+  "film": "avengers-sample",
+  "date": "2026-11-12",
+  "channel": "sample",
+  "question": "What does Doomsday have to beat?",
+  "claim": "Four Avengers films earned about $7.8 billion; the next one arrives on 18 December.",
+  "native": "box-office figures, release dates",
+  "lead": "data",
+  "support": "3d",
+  "accent": "#CA21CA",
+  "opening": "bignumber",
+  "family": "camera moves",
+  "tempo": 4.0,
+  "avg_shot": 3.99,
+  "camera": "slow cinematic moves, long holds",
+  "sound": "piano or acoustic bed",
+  "keyframes": [
+   "/home/user/Forgeos/creatorforge/channels/studio_history/keyframes/avengers-sample/key1.png",
+   "/home/user/Forgeos/creatorforge/channels/studio_history/keyframes/avengers-sample/key2.png",
+   "/home/user/Forgeos/creatorforge/channels/studio_history/keyframes/avengers-sample/key3.png"
+  ],
+  "beds": [
+   "hum_0085"
+  ]
  }
 ]

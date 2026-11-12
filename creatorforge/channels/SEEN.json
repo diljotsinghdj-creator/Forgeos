@@ -211,5 +211,27 @@
   ],
   "voice": "",
   "look": "newsprint-yellow"
+ },
+ {
+  "id": "avengers-sample",
+  "kind": "sample",
+  "channel": "print-facts",
+  "topic": "avengers-box-office",
+  "date": "2026-11-12",
+  "engine": "reverse-autopsy",
+  "hook_mechanism": "the biggest number first, then rewind",
+  "hook_line": "Avengers: Endgame made about 2.8 billion dollars. One of the biggest films ever.",
+  "opening": "bignumber",
+  "shots": [
+   "BigNumber: $2.8 billion | - | Avengers: Endgame, 2019 | worldwide | badge: verified | camera: still",
+   "Counter: $2.80 → $2.05 billion | worldwide | rewind to Infinity War, 2018 | badge: verified",
+   "Bars3d: 2019 2.80, 2018 2.05, 2015 1.40 | Rewinding the Avengers films | $ billion",
+   "Title3d: 2012 | Where it began",
+   "Stack: coins | The Avengers 1.52, Age of Ultron 1.40, Infinity War 2.05, Endgame 2.80 | Four films, about $7.8 billion",
+   "Calendar: 18 DEC 2026 | Avengers: Doomsday, in cinemas",
+   "Statement: The bar to clear: *$2.8 billion*"
+  ],
+  "voice": "bf_isabella",
+  "look": "newsprint"
  }
 ]
