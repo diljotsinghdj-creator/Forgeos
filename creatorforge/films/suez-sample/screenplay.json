@@ -145,9 +145,22 @@
    "act": "discovery",
    "purpose": "explain",
    "delivery": "measured",
-   "pause": 0.1,
-   "narration": "Lloyd's List estimated about five billion dollars of goods a day heading west, and four and a half heading east.",
+   "pause": 0.0,
+   "narration": "Lloyd's List estimated about five billion dollars of goods a day heading west,",
    "graphic": "Clipping: Suez Canal blockage halts $9.6bn a day of ship traffic | Al Jazeera, March 2021 | container ship + cash",
+   "claims": [
+    "C5"
+   ],
+   "transition": "push"
+  },
+  {
+   "id": "S9b",
+   "act": "discovery",
+   "purpose": "explain",
+   "delivery": "measured",
+   "pause": 0.1,
+   "narration": "and four and a half billion heading east.",
+   "graphic": "Chart: 5.1 vs 4.5 | Westbound $bn a day, Eastbound $bn a day | badge: estimate",
    "claims": [
     "C5"
    ],
