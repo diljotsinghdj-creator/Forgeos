@@ -20,7 +20,7 @@ the order is:
 
 | | **Print Facts** | **Dragon Psychology** |
 |---|---|---|
-| What | Researched investigative documentaries | Psychology, scams, biases and manipulation, explained |
+| What | Researched investigative documentaries | The psychology of everything, explained (owner, 2026-11-12), including scams, biases and manipulation |
 | Language | **English** (owner, 2026-11-10: all videos in English) | **English** |
 | Face | None: faceless, **no mascot, no Dastango** | None: faceless, **no mascot** (owner, 2026-11-10) |
 | Style | Vox × Johnny Harris, editorial and evidence-led | Vox × Johnny Harris explanation with animation (cut-outs, diagrams, stickman scenes), no character |
