@@ -30,6 +30,15 @@ to be checked against real audio when access allows.
   per entry (why-rappers-love-grey-poupon-2016); a performer-scholar plays the instrument on camera
   (banjo-black-american-folk-music-2022).
 
+- [V-auto] **From four full-video analyses (case_studies/TRANSCRIPT_STUDY.md and the four watch-based case studies):**
+  - beds are light percussion, mallets, pizzicato or acoustic guitar, and the music changes register with each act:
+    mystery, explanation, harm, human cost (piano), resolution;
+  - clicks and pops sync to graphic builds; paper rustle and pen strokes sit under document highlights;
+  - **the subject's own sounds are mixed forward** (a dessert shell cracking, engine rumble, wood cracking);
+  - music dips under interviews;
+  - a sting or drop into silence comes before the title;
+  - endings resolve on a contemplative pad or a clean chord, then a silent tail.
+
 ## 2. The sound palette, per film [O]
 
 Each film declares (`dna.sound_palette`):

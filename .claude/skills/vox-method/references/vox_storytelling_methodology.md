@@ -44,6 +44,13 @@ Contents: 1. What the studied craft shows · 2. The two-column script · 3. Hook
 - [V] **Length follows the subject:** single-snapshot disputes at about 5 minutes, origin-plus-present stories at about
   14–16, long multi-segment pieces at about 22 (politics §7, sci/culture §2).
 
+- [V] **Measured on recent explainers (case_studies/TRANSCRIPT_STUDY.md and the four watch-based case studies):**
+  - the central question lands at a median of about **1:00**, after a concrete cold open (range 0:27–2:05);
+  - arguments by causes are numbered aloud ("the first reason…", "the second way…") in three of six transcripts;
+  - **five of six endings return to the opening** (the refrain, the company, the chant, the sharks);
+  - sponsor or membership reads sit in the middle third or at the very end;
+  - a chart that returns three times becomes a deliberate anchor.
+
 ## 2. The two-column script [O, after P13/P14]
 
 Write the visual and the words together, beat by beat. Our format uses the CreatorForge beat order:
@@ -77,7 +84,8 @@ the mechanism for *this* subject, and never the previous film's.
 
 Hook rules [O]:
 - The first frame is the subject, never a title card or logo.
-- State the central question explicitly by about 0:20–0:40, after the hook has earned it.
+- State the central question explicitly by about 1:00 (measured median on recent explainers; range 0:27–2:05), after a
+  concrete cold open has earned it. Under 0:30 only when the hook *is* the question (TRANSCRIPT_STUDY.md).
 - Promise what the film will deliver (the "by the end you'll know…" contract), in our own words.
 - Pay off the title and thumbnail promise within the first minute, at least partly.
 
@@ -148,7 +156,7 @@ Pick the ending the question deserves; never a generic "like and subscribe".
 ## 10. Script format and audit
 
 - Write `script.md` chapter by chapter in the beat format of §2.
-- Estimate runtime at about 2.6 words/second (measured read); 8–15 minutes ≈ 1,250–2,350 words.
+- Estimate runtime at about 2.8 words/second (measured median of recent Vox explainers); 8–15 minutes ≈ 1,350–2,500 words.
 - Run CreatorForge's checks (banned phrases, pattern interrupt every 20 s) and the blueprint validator once scenes
   exist.
 - End with the **retention and mistake audit**: the weakest 10% rewritten, any 20-second stretch without a new kind of

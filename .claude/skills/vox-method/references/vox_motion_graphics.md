@@ -42,6 +42,16 @@ information · 8. Callouts and tracking · 9. Failure modes
   with the text a few frames late; a held photo sits on a background cycling two or three textures a second; photos
   and clippings get a slight edge-only chromatic split and blur for a lens feel (P28).
 
+- [V-auto] **From four full-video analyses (case_studies/TRANSCRIPT_STUDY.md and the four watch-based case studies):**
+  - **no full-screen chapter cards in any of them.** Chapters are marked by a recurring device instead: a growing
+    isometric object that gains a wall per chapter; a running paper timeline with portrait badges; a route map and
+    travel milestones; a menu "puzzle" that keeps being reassembled;
+  - charts build as the values are named, and highlight bars recolour the key bar;
+  - document text gets translucent highlighter wipes;
+  - lines are traced directly onto real terrain footage;
+  - exploded 3D cutaways show inside an object;
+  - clicks and pops are synced to each build.
+
 ## 2. The core rule: build on the word [O]
 
 Every element of a graphic arrives at the moment the narration names it, and not before.

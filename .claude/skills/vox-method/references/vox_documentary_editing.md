@@ -29,6 +29,14 @@ tested against frames when access allows.
 - [V] Watch time grew to half of viewers watching at least 4 minutes (P35). [I] The editing is built to hold attention
   through the middle of the film, not just the hook.
 
+- [V-auto] **Measured shot lengths** from automated full-video analyses of four recent explainers (case_studies/TRANSCRIPT_STUDY.md and the four watch-based case studies):
+  - average shot length is **about 2.8–3.2 s** overall;
+  - cold-open and news montages run at 1.5–2.5 s (one hook packs about 14 cuts into 36 s);
+  - document and chart holds run 3–5 s, interviews 4–7 s;
+  - human-cost sections slow deliberately to 4.5–6 s;
+  - closing portrait or example montages run at about 1.2–2 s;
+  - films end on one long take (about 6 s), or cut to black for the credits.
+
 ## 2. Shot selection [O]
 
 For every line, the editor asks three questions in order:
@@ -58,6 +66,8 @@ means something), and the quiet frame over the busy one.
 | New *kind* of picture | at least every 20 s |
 | Same effect | ≤ 3 times per film |
 
+- **Target an average hold of about 3–3.5 s** in explanatory stretches (measured Vox average 2.8–3.2 s). The 5 s
+  mean is the gate's ceiling, not the target.
 - **Vary the hold.** Constant 4-second cuts become a metronome. Mix 1.5–2.5 s punches (lists, montage), 3–5 s
   explanations and 5–7 s builds.
 - **Cut on the word:** a cut lands on the stressed syllable of the word that introduces the new idea, or just before.

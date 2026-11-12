@@ -88,7 +88,7 @@ def check(path: Path) -> list[str]:
 def index(folder: Path):
     rows = []
     for p in sorted(folder.glob("*.md")):
-        if p.name in ("INDEX.md", "README.md", "PATTERNS.md", "CHANNEL_SAMPLE.md"):
+        if p.name in ("INDEX.md", "README.md", "PATTERNS.md", "CHANNEL_SAMPLE.md", "TRANSCRIPT_STUDY.md"):
             continue
         fm, _ = parse(p)
         basis = fm.get("evidence_basis", "")
@@ -106,7 +106,7 @@ def main(argv):
         print(__doc__)
         return 2
     p = Path(argv[0])
-    files = [p] if p.is_file() else sorted(x for x in p.glob("*.md") if x.name not in ("INDEX.md", "README.md", "PATTERNS.md", "CHANNEL_SAMPLE.md"))
+    files = [p] if p.is_file() else sorted(x for x in p.glob("*.md") if x.name not in ("INDEX.md", "README.md", "PATTERNS.md", "CHANNEL_SAMPLE.md", "TRANSCRIPT_STUDY.md"))
     bad = 0
     total_gaps = []
     for f in files:

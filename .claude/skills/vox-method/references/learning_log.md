@@ -71,3 +71,34 @@ Newest entries at the bottom. One entry per study session, film or correction (l
   (P9), about 5 weeks (P22), and up to 10 weeks for Explained (P41).
 - **Next:** read P1, P2, P3, P23 and P24 from a session or browser that can pass their bot checks, or find the same
   articles republished. Still no source covers Vox's music library, SFX or mix standard.
+
+## 2026-11-12: First real video analysis (vidIQ, owner-connected)
+
+- **Studied:**
+  - four full videos through vidIQ's automated watch analysis: Why China is winning the EV war, Why the US has
+    birthright citizenship, Why does this forest look like a fingerprint?, Why every restaurant has the same desserts;
+  - six full timestamped transcripts: prices, Paris, El Niño, animals and AI, Kamala Harris in 7 moments, EV war;
+  - Press Gazette (P2) from the full page.
+  - Cost: 130 vidIQ credits (4 × 25 for watches, 6 × 5 for transcripts).
+- **Evidence labels:** [V] for transcript words and timings. **[V-auto]** for automated visual analysis: it describes
+  frames but wasn't checked by a person.
+- **Corrections to earlier guidance (measured, so they replace the earlier assumptions):**
+  - Question timing is about 1:00 (median), not 0:20–0:40.
+  - Narration speed is about 2.8 words/s (167 wpm), not 2.6.
+  - Sentence length is a median of about 15 words, not 10–14.
+  - The average shot is 2.8–3.2 s; the 5 s mean is only the gate's ceiling. The target is now 3–3.5 s.
+  - Chapter cards are absent in all four watched films. A recurring device marks chapters instead.
+- **New patterns:**
+  - Endings return to the opening (5 of 6).
+  - Causes are numbered aloud.
+  - A returning anchor chart.
+  - The evidence-to-graphics share follows the subject (25–65% evidence).
+  - Source lines are small, muted and tracked in a corner.
+  - The subject's own sounds are mixed forward.
+  - Music changes register per act.
+  - Lines are traced on real terrain.
+  - GPS coordinates appear over the opening shot of a place.
+- **Our own channel's analytics:** the owner connected Windsor.ai (their YouTube channel). Learning from published
+  films is now part of learning_protocol.md.
+- **Still open:** P1, P3, P23 and P24 (blocked pages); more watched videos as credits allow (vidIQ renews on
+  2026-12-03).

@@ -111,8 +111,8 @@ owner says "go" (CreatorForge hard rule).
 
 ## 5. Timing
 
-- Before audio exists, estimate at about 2.6 spoken words per second for a measured documentary read, and mark the
-  timings as estimates.
+- Before audio exists, estimate at about 2.8 spoken words per second (the measured median of recent Vox explainers,
+  case_studies/TRANSCRIPT_STUDY.md), and mark the timings as estimates.
 - After narration is recorded, re-time every scene to the real audio. A line that runs over its cap splits into two
   shots; never stretch a shot to fit.
 - Leave room: a beat of silence after a reveal (0.5–1.5 s), and a longer breath at chapter turns.

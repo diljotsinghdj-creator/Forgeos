@@ -30,6 +30,18 @@ craft standard, to be checked against frames when access allows (learning_protoc
 - [V] **The artefact is the evidence** in visual-history pieces: two photographs compared (famous-war-photo).
 - [V] **Hand-built datasets become visuals:** every lyric mention logged and sorted by year (why-rappers-love-grey-poupon-2016).
 
+- [V-auto] **From four full-video analyses (case_studies/TRANSCRIPT_STUDY.md and the four watch-based case studies):**
+  - **The evidence-to-graphics share follows the subject:** about 40/60 for an economics-and-technology piece, 25/75
+    for a legal history, and 65/35 for a field investigation and for a culture piece.
+  - **Source attribution sits in a corner, small, muted and tracked** ("SOURCE: X" under the chart title, or
+    lower-left with name, outlet and date). Broadcaster tags stay on news clips.
+  - **The ground is editorial:** off-white paper, sometimes with blueprint grid lines, an editorial serif paired with
+    a grotesque sans, a yellow highlighter, and one or two vivid accents.
+  - **Exact GPS coordinates on screen** over the opening shot of a place.
+  - **Interface recreations** (a social post, a search bar, a file window) show how the story was found.
+  - [O] We learn the *roles*. Our channel layer keeps its own two faces, and each film's palette comes from its
+    subject.
+
 ## 2. The material, mode by mode [O]
 
 | Material | Use it to | Treatment | Watch out |

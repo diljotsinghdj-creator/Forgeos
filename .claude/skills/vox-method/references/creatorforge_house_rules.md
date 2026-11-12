@@ -14,7 +14,7 @@ differ, the owner's rules win. The full, current rules are in the repo; read the
 |---|---|
 | **No video until the owner says "go"** | Stop at the blueprint. No render, no paid narration, no image generation without the word |
 | **No images without asking** | Storyboard frames, style frames and mock-ups count as images. Blueprints are words |
-| **ElevenLabs only with permission** | Estimate timings at about 2.6 words/s until real audio is approved |
+| **ElevenLabs only with permission** | Estimate timings at about 2.8 words/s (measured Vox median) until real audio is approved |
 | **Pitch three engines, wait for the pick** (gate 1) | The blueprint records `pick` with three pitched engines and the owner's words |
 | **Seen means used** (gate 2) | Before designing, list what the owner has seen on this topic and in the last three pieces (engine, look, voice, opening shot, hooks, shots) and change all variable elements |
 | **Evidence first** (gate 3, Print Facts) | The first real document, photo or footage comes before the first explanatory graphic, or an `evidence_waiver` the owner has been told about |

@@ -37,6 +37,17 @@ is a transcript, describe what the words do, not what the picture did.
 - After each finished film, record what worked as an [O] technique, with the film and the evidence that it worked
   (owner reaction, retention, QC score). Record what failed as a rule.
 
+## Learning from our own published films
+
+Once a film is published, pull its numbers from the owner's connected analytics: the Windsor.ai YouTube connector, or
+vidIQ channel analytics, read-only. Fetch the retention curve (`audience_retention`), the average view percentage
+and the traffic sources. Record in the learning log:
+- where viewers left (map each drop to its scene id in the blueprint);
+- where they rewatched;
+- how the first 30 s held.
+
+A rule earns [O] status only when the numbers back it.
+
 ## Pruning
 
 Every ten case studies, reread the reference files. Merge duplicates, cut rules nobody has used, and move anything

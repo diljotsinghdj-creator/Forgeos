@@ -23,6 +23,12 @@ Labels: [V] source-backed (sources.md P#, case_studies/) · [I] interpretation �
   (PATTERNS sci/culture §5).
 - [V] The narration names its own limits: one producer publicly named the flaw in her setup (P3).
 
+- [V] **Measured (case_studies/TRANSCRIPT_STUDY.md and the four watch-based case studies):**
+  - narration runs at about **167 words a minute** (147–190 on sampled segments; about 2.8 words a second);
+  - sentences in punctuated transcripts run a median of **15–16 words** (range 7–35), with short punches mixed in;
+  - expert voices enter as soundbites, not long interviews;
+  - field sound is sometimes played *as* evidence ("this is what it usually sounds like").
+
 ## 2. Narrator personality [O]
 
 - **The curious expert friend:** has done the reading, is still a bit amazed, explains without condescending.
@@ -34,7 +40,8 @@ Labels: [V] source-backed (sources.md P#, case_studies/) · [I] interpretation �
 
 ## 3. Sentence construction (writing for the ear) [O]
 
-- **Short sentences,** averaging 10–14 words; vary with an occasional long one that carries a list or a build.
+- **Sentences of about 15 words on average** (measured median 15–16), varied hard: short punches (5–8 words) after
+  reveals, an occasional long one (25+) that carries a list or a build.
 - **One idea per sentence; one number per sentence.**
 - **Subject–verb early:** "The canal lifts ships 26 metres," not "Lifting ships some 26 metres is what the canal…".
 - **Concrete nouns and active verbs** that can be pictured.
@@ -60,7 +67,8 @@ Mark up `script_narration.md`:
 - **bold** = stressed word (usually the new information, often the number)
 - `{pron: …}` pronunciation for names and places, checked against an authoritative source
 - `(warmer)`, `(flatter)`, `(slower)` mood notes per paragraph, sparingly
-- Pace target: about 150–165 words per minute (2.5–2.75 words/s) overall; slower for evidence, faster for lists.
+- Pace target: about 160–175 words per minute (about 2.8 words/s, the measured Vox median) overall; slower for
+  evidence and human beats, faster for lists.
 
 ## 6. Recording and checking [O]
 

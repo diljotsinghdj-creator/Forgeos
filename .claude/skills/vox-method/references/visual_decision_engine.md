@@ -62,7 +62,9 @@ Do these in order, before any scene is planned. Record them in `blueprint.json` 
    pull for context, still to let a document be read) and one transition family with a cause.
 8. **Choose the signature device:** one recurring visual idea that belongs to this film only, such as a water-level
    bar, a ledger line that keeps a running total, or a map pin that never leaves the corner. It returns at every
-   chapter turn.
+   chapter turn. Prefer it to full-screen chapter cards: none of the four Vox films analysed frame by frame
+   used chapter cards. Each marked chapters with a recurring device (a growing object, a running timeline, a route
+   map, a reassembled puzzle) (case_studies, 2026-11-12).
 9. **Sound palette:** more than one music cue (a change of cue marks a turn), an SFX family matched to the material
    (paper, metal, UI clicks, ambient field recordings), and planned silences.
 10. **Swap test at film level.** Sketch three key frames in words (hook, the midpoint proof, the payoff). Compare them
