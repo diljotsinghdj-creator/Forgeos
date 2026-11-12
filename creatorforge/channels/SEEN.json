@@ -248,12 +248,12 @@
    "Photo: asset:P0001 | push | Carrington's drawing, 1859 | badge: verified",
    "Statement: Guess what it *broke*",
    "Photo: asset:P0001 | pan-right | The flare he saw | badge: verified",
-   "Photo: asset:P0003 | push | A solar storm leaving the Sun (SOHO) | illustrative",
-   "Photo: asset:P0002 | push | A telegraph operator (sketch, Alfred Waud) | illustrative",
+   "Photo: asset:P0003 | push | A solar storm (SOHO) | illustrative",
+   "Photo: asset:P0006 | push | A telegraph operator (A. Waud) | illustrative",
    "Globe: Cuba | Northern lights reported this far south, 1859",
    "Statement: What would it break *today*?",
-   "Photo: asset:P0004 | push | A major flare, seen by NASA's SDO | illustrative",
-   "Photo: asset:P0005 | pull | Earth at night: everything we plug in | badge: estimate"
+   "Photo: asset:P0004 | push | A flare seen by NASA's SDO | illustrative",
+   "Photo: asset:P0005 | pull | Earth at night (NASA) | badge: estimate"
   ],
   "voice": "bm_lewis",
   "look": "chart"
