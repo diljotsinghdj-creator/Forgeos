@@ -54,7 +54,7 @@ EXTRA_PLACES = {
     "godhra": (22.78, 73.61), "lucknow": (26.85, 80.95), "patna": (25.59, 85.14), "jaipur": (26.91, 75.79),
     # ports the trade stories name
     "newark": (40.73, -74.17), "long beach": (33.77, -118.19), "rotterdam": (51.92, 4.48), "felixstowe": (51.96, 1.35),
-    "calicut": (11.25, 75.78), "kozhikode": (11.25, 75.78),
+    "panama canal": (9.08, -79.68), "calicut": (11.25, 75.78), "kozhikode": (11.25, 75.78),
     "suez canal": (30.58, 32.33), "port said": (31.26, 32.30), "gulf of suez": (29.5, 32.8),
     "cape of good hope": (-34.36, 18.47), "strait of malacca": (2.5, 101.4), "bab el mandeb": (12.58, 43.33),
     "jebel ali": (25.01, 55.06), "nhava sheva": (18.95, 72.95), "mundra": (22.84, 69.72), "colombo": (6.93, 79.85),

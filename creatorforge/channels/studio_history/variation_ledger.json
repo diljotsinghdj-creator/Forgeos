@@ -128,13 +128,13 @@
   "question": "How did one ship stop a sea road between Asia and Europe?",
   "claim": "The Ever Given blocked the Suez Canal from 23 to 29 March 2021; the detour round Africa is about 3,300 nautical miles longer.",
   "native": "ESA and NASA satellite images of the blockage, sea routes, the ship's length",
-  "lead": "maps",
-  "support": "collage",
+  "lead": "documents",
+  "support": "maps",
   "accent": "#CA4B21",
   "opening": "fly",
   "family": "camera moves",
   "tempo": 4.0,
-  "avg_shot": 4.23,
+  "avg_shot": 3.95,
   "camera": "steady push-ins",
   "sound": "dry pulse; coin and register textures",
   "keyframes": [
@@ -143,8 +143,10 @@
    "/home/user/Forgeos/creatorforge/channels/studio_history/keyframes/suez-sample/key3.png"
   ],
   "beds": [
-   "hum_0040",
-   "hum_0085",
+   "hum_0050",
+   "room_0030",
+   "room_0035",
+   "room_0040",
    "sea_0040",
    "sea_0055"
   ]

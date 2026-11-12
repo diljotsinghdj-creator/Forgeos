@@ -146,8 +146,8 @@
   "metaphors": [
    "a 400-metre ship stood on end against the Eiffel Tower"
   ],
-  "archetype": "D",
-  "look": "swiss",
+  "archetype": "C",
+  "look": "declassified",
   "accent": "#CA4B21",
   "cinematography": "investigative",
   "maps": "atlas",
@@ -159,17 +159,18 @@
   "kinds": [
    "fly",
    "photo",
-   "title3d",
+   "tornsplit",
    "photo",
    "photos",
    "towers3d",
-   "explode",
+   "desk",
    "route",
-   "flowmap",
+   "clipping",
+   "chart",
    "counter",
    "route",
    "bignumber",
-   "calendar",
+   "newscard",
    "statement"
   ]
  }

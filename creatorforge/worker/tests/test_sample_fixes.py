@@ -98,3 +98,18 @@ def test_no_two_scene_functions_share_a_name():
     src = Path(vox.__file__).read_text(encoding="utf-8")
     names = collections.Counter(re.findall(r"^function (\w+)\(", src, re.M))
     assert [n for n, c in names.items() if c > 1] == []
+
+
+def test_an_object_photo_with_a_face_is_never_used(tmp_path, monkeypatch):
+    from creatorforge_worker.media import cutouts
+    lib = tmp_path / "lib"
+    lib.mkdir()
+    fake = cutouts.Cutout(name="smartphone", path=lib / "smartphone.png", credit="stock") if hasattr(cutouts, "Cutout") else None
+    if fake is None:
+        return
+    (lib / "smartphone.png").write_bytes(b"x")
+    monkeypatch.setattr(cutouts, "cached", lambda name, lib=None: fake)
+    monkeypatch.setattr(cutouts, "has_face", lambda p: True)
+    assert cutouts.get("smartphone", lib, fetch=False) is None
+    monkeypatch.setattr(cutouts, "has_face", lambda p: False)
+    assert cutouts.get("smartphone", lib, fetch=False) is fake

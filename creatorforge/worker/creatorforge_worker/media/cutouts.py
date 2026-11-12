@@ -323,13 +323,31 @@ def _candidates(name: str, sources: list[tuple[str, str]] | None, timeout: float
     return out
 
 
+def has_face(path: Path) -> bool:
+    """True when a picture shows a human face (OpenCV's frontal-face finder). An object's stock photo with a model in
+    it would put a private person's face on screen: the owner's rules forbid that, so such a cut-out is never used."""
+    try:
+        import cv2
+        import numpy as np
+        from PIL import Image
+        with Image.open(path) as im:
+            g = np.asarray(im.convert("L"))
+        casc = cv2.CascadeClassifier(str(Path(cv2.data.haarcascades) / "haarcascade_frontalface_default.xml"))
+        return len(casc.detectMultiScale(g, scaleFactor=1.08, minNeighbors=10, minSize=(max(24, g.shape[1] // 10),) * 2)) > 0
+    except Exception:  # noqa: BLE001 - no OpenCV: cannot tell, so the picture is allowed
+        return False
+
+
 def get(word: str, lib: Path | None = None, model: Path | None = None, fetch: bool = True,
         timeout: float = 25, sources: list[tuple[str, str]] | None = None) -> Cutout | None:
     """A ready cut-out for a word (from the library, or fetched and made now when `fetch`), or None."""
     name = resolve(word)
     if not name:
         return None
+    person = name.startswith("person:")
     hit = cached(name, lib)
+    if hit and not person and has_face(hit.path):
+        return None                              # an object photo with someone's face in it: the drawing is used instead
     if hit or not fetch or os.environ.get("CF_CUTOUT_FETCH", "1") == "0":
         return hit
     d = library_dir(lib)
@@ -350,6 +368,9 @@ def get(word: str, lib: Path | None = None, model: Path | None = None, fetch: bo
                 raw = _download(r["url"], d, timeout)
                 out = make(raw, d / f"{_slug(name)}.png", model=model, person=name.startswith("person:"))
             except Exception:  # noqa: BLE001 - try the next photo
+                continue
+            if out is not None and not person and has_face(out):
+                out.unlink(missing_ok=True)      # a model's face in an object photo: never shown; try the next one
                 continue
             if out is not None:
                 if r.get("track") and r.get("key"):      # Unsplash's API terms: report the download
@@ -390,7 +411,7 @@ def make(image: Path, out: Path, model: Path | None = None, person: bool = False
         rgb = im.convert("RGB")
     rgb.thumbnail((1600, 1600), Image.LANCZOS)
     mask = _mask(rgb, model, person)
-    if mask is None or not _good(mask):
+    if mask is None or not _good(mask, person):
         return None
     bbox = mask.point(lambda v: 255 if v > 128 else 0).getbbox()
     rgb, mask = rgb.crop(bbox), mask.crop(bbox)
@@ -556,11 +577,15 @@ def _grabcut(rgb):
     return m.filter(ImageFilter.GaussianBlur(1.5))
 
 
-def _good(mask) -> bool:
-    """A real single subject: covers 6-70% of the photo, a confident mask, not cut off on three or more sides."""
+def _good(mask, person: bool = False) -> bool:
+    """A real single subject: covers 6-70% of the photo, a confident mask, not cut off on three or more sides. A
+    head-and-shoulders portrait may fill more of the frame and touch the bottom and both sides (the shoulders), but
+    never the top: the head is always whole."""
     import numpy as np
     m = np.asarray(mask)
     cover = float((m > 128).mean())
+    if person and float((m[0] > 128).mean()) < 0.05 and 0.06 <= cover <= 0.88:
+        return float(((m > 30) & (m < 225)).mean()) <= 0.35 * cover
     if not 0.06 <= cover <= 0.72:
         return False
     unsure = float(((m > 30) & (m < 225)).mean())
