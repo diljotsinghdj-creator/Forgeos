@@ -41,7 +41,7 @@
    "delivery": "urgent",
    "pause": 0.15,
    "narration": "Here's a drawing from 1859.",
-   "graphic": "Photo: asset:P0001 | push | Richard Carrington's drawing, 1 September 1859 | badge: verified",
+   "graphic": "Photo: asset:P0001 | push | Carrington's drawing, 1859 | badge: verified",
    "claims": [
     "C1"
    ]
@@ -64,7 +64,7 @@
    "delivery": "urgent",
    "pause": 0.1,
    "narration": "Richard Carrington saw these sunspots flash white.",
-   "graphic": "Photo: asset:P0001 | pan-right | The white flashes he saw: a solar flare | badge: verified",
+   "graphic": "Photo: asset:P0001 | pan-right | The flare he saw | badge: verified",
    "claims": [
     "C1"
    ],
@@ -77,7 +77,7 @@
    "delivery": "urgent",
    "pause": 0.1,
    "narration": "By NASA's account, it hit Earth within days.",
-   "graphic": "Animate: storm flies from sun to earth | Sun to Earth, 1859",
+   "graphic": "Planets: sun, earth | Sun to Earth, 1859: the storm took days | move: compare",
    "claims": [
     "C2"
    ],
@@ -90,7 +90,7 @@
    "delivery": "urgent",
    "pause": 0.1,
    "narration": "Telegraph lines sparked. Some offices caught fire.",
-   "graphic": "Hero: telegraph | LINES ON FIRE | 1859 · telegraph offices | badge: reported | fx: sparks",
+   "graphic": "Steps: Solar storm → Telegraph wires → Sparks → Offices on fire | Telegraph lines, 1859 (reported)",
    "claims": [
     "C3"
    ]
@@ -102,7 +102,7 @@
    "delivery": "urgent",
    "pause": 0.1,
    "narration": "Auroras were reported as far south as Cuba.",
-   "graphic": "Globe: Cuba | Northern lights reported this far south, 1859 | badge: reported",
+   "graphic": "Globe: Cuba | Northern lights reported this far south, 1859",
    "claims": [
     "C2"
    ],
@@ -125,7 +125,7 @@
    "delivery": "urgent",
    "pause": 0.15,
    "narration": "In July 2012, a storm that strong missed Earth by a week.",
-   "graphic": "Calendar: 23 JUL 2012 | A Carrington-class storm misses Earth by a week | badge: verified",
+   "graphic": "Calendar: 23 JUL 2012 | A storm as strong misses Earth by a week",
    "claims": [
     "C4"
    ],
@@ -138,7 +138,7 @@
    "delivery": "grave",
    "pause": 0.5,
    "narration": "Analysts say it could knock out everything we plug in.",
-   "graphic": "Compare: telegraph + power socket | 1859 | today | What the same storm could hit | badge: estimate",
+   "graphic": "Timeline: 1859 telegraph lines spark → 2012 a near miss → today everything we plug in | What the same storm could hit (estimate)",
    "claims": [
     "C3",
     "C6"
