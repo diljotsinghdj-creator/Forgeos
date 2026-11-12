@@ -72,5 +72,30 @@
   "beds": [
    "hum_0085"
   ]
+ },
+ {
+  "film": "carrington-sample",
+  "date": "2026-11-12",
+  "channel": "sample",
+  "question": "What would the 1859 storm do today?",
+  "claim": "In 1859 a solar storm set telegraph offices on fire; in 2012 a storm as strong missed Earth by about a week.",
+  "native": "Carrington's 1859 drawing, telegraph lines, auroras, solar storm records",
+  "lead": "illustration",
+  "support": "collage",
+  "accent": "#75CA21",
+  "opening": "photo",
+  "family": "match cuts",
+  "tempo": 4.0,
+  "avg_shot": 3.53,
+  "camera": "slow pans and parallax",
+  "sound": "natural ambience; sparse strings",
+  "keyframes": [
+   "/home/user/Forgeos/creatorforge/channels/studio_history/keyframes/carrington-sample/key1.png",
+   "/home/user/Forgeos/creatorforge/channels/studio_history/keyframes/carrington-sample/key2.png",
+   "/home/user/Forgeos/creatorforge/channels/studio_history/keyframes/carrington-sample/key3.png"
+  ],
+  "beds": [
+   "wind_0035"
+  ]
  }
 ]

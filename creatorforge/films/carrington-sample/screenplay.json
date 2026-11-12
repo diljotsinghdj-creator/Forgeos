@@ -141,6 +141,7 @@
    "graphic": "Timeline: 1859 telegraph lines spark → 2012 a near miss → today everything we plug in | What the same storm could hit (estimate)",
    "claims": [
     "C3",
+    "C4",
     "C6"
    ],
    "transition": "match"

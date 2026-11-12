@@ -76,5 +76,35 @@
    "calendar",
    "statement"
   ]
+ },
+ {
+  "id": "carrington-sample",
+  "title": "The 1859 storm in 30 seconds",
+  "channel": "sample",
+  "engine": "live-viewer-trap",
+  "hook_mechanism": "the viewer guesses what Carrington's 1859 drawing broke, then what it would break today",
+  "metaphors": [
+   "the viewer's own guess, asked twice: 1859 and today"
+  ],
+  "look": "chart",
+  "accent": "#75CA21",
+  "cinematography": "restrained",
+  "maps": "marker",
+  "infographics": "dimensional",
+  "animation": "fluid",
+  "rhythm": "tidal",
+  "music": "sparse",
+  "grade": "neutral",
+  "kinds": [
+   "photo",
+   "statement",
+   "photo",
+   "planets",
+   "steps",
+   "globe",
+   "statement",
+   "calendar",
+   "timeline"
+  ]
  }
 ]

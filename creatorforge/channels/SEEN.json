@@ -233,5 +233,29 @@
   ],
   "voice": "bf_isabella",
   "look": "newsprint"
+ },
+ {
+  "id": "carrington-sample",
+  "kind": "sample",
+  "channel": "print-facts",
+  "topic": "carrington-event",
+  "date": "2026-11-12",
+  "engine": "live-viewer-trap",
+  "hook_mechanism": "the viewer guesses what Carrington's 1859 drawing broke, then what it would break today",
+  "hook_line": "Here's a drawing from 1859.",
+  "opening": "photo",
+  "shots": [
+   "Photo: asset:P0001 | push | Carrington's drawing, 1859 | badge: verified",
+   "Statement: Guess what it *broke*",
+   "Photo: asset:P0001 | pan-right | The flare he saw | badge: verified",
+   "Planets: sun, earth | Sun to Earth, 1859: the storm took days | move: compare",
+   "Steps: Solar storm → Telegraph wires → Sparks → Offices on fire | Telegraph lines, 1859 (reported)",
+   "Globe: Cuba | Northern lights reported this far south, 1859",
+   "Statement: What would it break *today*?",
+   "Calendar: 23 JUL 2012 | A storm as strong misses Earth by a week",
+   "Timeline: 1859 telegraph lines spark → 2012 a near miss → today everything we plug in | What the same storm could hit (estimate)"
+  ],
+  "voice": "bm_lewis",
+  "look": "chart"
  }
 ]
