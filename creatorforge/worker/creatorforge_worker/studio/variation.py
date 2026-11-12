@@ -23,15 +23,15 @@ from pathlib import Path
 TECHNIQUES = ("data", "documents", "maps", "collage", "3d", "illustration")
 KIND_TECHNIQUE = {
     **{k: "data" for k in ("counter", "bignumber", "number", "stack", "stand", "fan", "trend", "slice", "seats", "pie", "chart",
-                            "columns", "dots", "table", "polltrack", "area", "candles", "pyramid", "squares", "icons", "units")},
+                            "columns", "dots", "table", "polltrack", "area", "candles", "pyramid", "squares", "icons", "units", "tiles", "pile")},
     **{k: "documents" for k in ("courtdoc", "reveal", "clipping", "newscard", "headline", "document", "quote", "desk", "interview",
-                                 "article", "social", "chat", "tornsplit", "comments", "trending", "search")},
+                                 "article", "social", "chat", "tornsplit", "comments", "trending", "search", "reel")},
     **{k: "maps" for k in ("pinmap", "route", "arrows", "railmap", "sizemap", "heatmap", "shrink", "morph", "borders", "flowmap",
                             "satellite", "fly", "map", "clockmap", "globe", "sunrise", "zones")},
     **{k: "collage" for k in ("hero", "opener", "pinboard", "photos", "photo", "photoline", "tv", "compare", "footage", "photo3d")},
     **{k: "3d" for k in ("bars3d", "prism", "explode", "title3d", "terrain3d", "towers3d", "planets")},
     **{k: "illustration" for k in ("animate", "statement", "myth", "staircase", "scale", "blueprint", "flowchart", "linkmap",
-                                    "orgchart", "steps", "timeline", "endcard", "chapter", "stamp", "sign", "clock", "calendar")},
+                                    "orgchart", "steps", "timeline", "endcard", "chapter", "stamp", "sign", "clock", "calendar", "conveyor")},
 }
 # transitions grouped into families; a film's family is the one most of its cuts belong to
 FAMILIES = {"wipes": ("wipe", "slide", "page", "tear", "reveal", "iris", "squeeze"),

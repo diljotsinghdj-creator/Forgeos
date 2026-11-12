@@ -45,7 +45,7 @@ KINDS = ("hero", "desk", "pinboard", "opener", "reveal", "clipping", "pinmap", "
          "seats", "stack", "stand", "fan", "trend", "slice", "route", "compare", "photoline", "tv",
          "clockmap", "tornsplit", "newscard", "blueprint", "pyramid", "flowchart", "linkmap", "orgchart", "heatmap",
          "courtdoc", "table", "interview", "endcard", "polltrack", "area", "candles", "arrows", "railmap", "sizemap",
-         "borders", "morph", "shrink", "photo", "photos", "footage", "satellite", "flowmap", "columns", "dots", "myth", "counter", "staircase", "scale", "units")
+         "borders", "morph", "shrink", "photo", "photos", "footage", "satellite", "flowmap", "columns", "dots", "myth", "counter", "staircase", "scale", "units", "reel", "conveyor", "tiles", "pile")
 
 
 # A look per video, so no two films share one face: paper, type, map colours and marker pen differ, the method doesn't.
@@ -83,7 +83,7 @@ DESKS = ("#3B2F25", "#5A4632", "#2E3A40", "#6B5B4B", "#262626")
 
 CAMERAS = {"still": -1, "push": 0, "pull": 1, "drift": 2, "focus": 3}
 # "| badge: alleged" on any scene: the standing of what is on screen, said plainly in the corner
-BADGES = {"verified": ("VERIFIED", "#1F7A4D"), "record": ("ON RECORD", "#1F7A4D"), "court": ("COURT RECORD", "#1F4FB8"),
+BADGES = {"recreation": ("RECREATION", "#5A5A5A"), "verified": ("VERIFIED", "#1F7A4D"), "record": ("ON RECORD", "#1F7A4D"), "court": ("COURT RECORD", "#1F4FB8"),
           "official": ("OFFICIAL DATA", "#1F4FB8"), "illustrative": ("ILLUSTRATIVE", "#5A5A5A"), "reported": ("REPORTED", "#5A5A5A"), "alleg": ("ALLEGED", "#C2410C"),
           "claim": ("CLAIM", "#C2410C"), "denie": ("DENIED", "#5A5A5A"), "response": ("RESPONSE", "#5A5A5A"),
           "unverified": ("UNVERIFIED", "#B3261E"), "opinion": ("OPINION", "#7A3E8C"), "estimate": ("ESTIMATE", "#5A5A5A")}
@@ -636,6 +636,99 @@ def parse_units(spec: str) -> dict | None:
         return None              # whole things only, and few enough to draw one by one
     return {"type": "units", "values": vals, "title": parts[1] if len(parts) > 1 else "",
             "note": parts[2] if len(parts) > 2 else "", "seed": _seed(spec) % 10000}
+
+
+def parse_reel(spec: str) -> dict | None:
+    """'Reel: rap | Just a *catchy reel*?' - a recreated short-video post on a phone (never a real post): the screen's
+    waveform pulses, caption lines type on, the side buttons pop. Always labelled RECREATION."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if not parts or not parts[0]:
+        return None
+    return {"type": "reel", "style": parts[0][:20].lower(), "title": parts[1][:60] if len(parts) > 1 else "",
+            "badge": BADGES["recreation"], "seed": _seed(spec) % 10000}
+
+
+def parse_conveyor(spec: str) -> dict | None:
+    """'Conveyor: APPROVED | 6 | In Delhi, one official signs off every post | Every post, *one sign-off*' - cards ride
+    a belt under one stamp; each card leaves with the stamp's mark on it."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if len(parts) < 2 or not parts[0] or not re.fullmatch(r"\d{1,2}", parts[1]):
+        return None
+    return {"type": "conveyor", "stamp": parts[0][:14].upper(), "n": max(3, min(12, int(parts[1]))),
+            "caption": parts[2][:90] if len(parts) > 2 else "", "title": parts[3][:60] if len(parts) > 3 else "",
+            "seed": _seed(spec) % 10000}
+
+
+def parse_tiles(spec: str) -> dict | None:
+    """'Tiles: Bihar | 72 | 1 tile = 1,000 groups | Bihar, 2020: *72,000* groups' - a state, its neighbours around it,
+    filled tile by tile while the total counts up. Tiles are spread evenly over the shape: the placement is
+    illustrative, and the scene says so."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if len(parts) < 3 or not re.fullmatch(r"\d{1,3}", parts[1]):
+        return None
+    n = int(parts[1])
+    per = re.search(r"=\s*([\d,]+)", parts[2])
+    if not (2 <= n <= 200) or not per:
+        return None
+    hit = None
+    for country, sts in _states().items():
+        for st in sts:
+            if _fold(st["n"]) == _fold(parts[0]) or any(_fold(a) == _fold(parts[0]) for a in st.get("a", [])):
+                hit = (country, st)
+                break
+        if hit:
+            break
+    if not hit:
+        return None
+    country, st = hit
+    ring = max(st["r"], key=len)
+    xs, ys = [q[0] for q in ring], [q[1] for q in ring]
+    padx, pady = (max(xs) - min(xs)) * .3, (max(ys) - min(ys)) * .3
+    box = [min(xs) - padx, min(ys) - pady, max(xs) + padx, max(ys) + pady]
+
+    def near(r):
+        return any(box[0] <= q[0] <= box[2] and box[1] <= q[1] <= box[3] for q in r[::3])
+    others = [[[round(x, 3), round(y, 3)] for x, y in r] for o in _states()[country] if o is not st for r in o["r"] if near(r)]
+
+    def inside(x, y):
+        c = False
+        for i in range(len(ring)):
+            (x1, y1), (x2, y2) = ring[i], ring[i - 1]
+            if (y1 > y) != (y2 > y) and x < (x2 - x1) * (y - y1) / (y2 - y1) + x1:
+                c = not c
+        return c
+    cand, k = [], 4.0
+    while k < 400 and len(cand) < n * 1.6:
+        cand = []
+        sx, sy = (max(xs) - min(xs)) / k, (max(ys) - min(ys)) / k
+        y = min(ys) + sy / 2
+        while y < max(ys):
+            x = min(xs) + sx / 2
+            while x < max(xs):
+                if inside(x, y):
+                    cand.append((x, y))
+                x += sx
+            y += sy
+        k *= 1.25
+    pts = [cand[round(i * (len(cand) - 1) / max(1, n - 1))] for i in range(n)] if len(cand) >= n else cand
+    return {"type": "tiles", "name": st["n"], "n": n, "per": int(per.group(1).replace(",", "")), "unit": parts[2][:40],
+            "ring": [[round(x, 3), round(y, 3)] for x, y in ring], "others": others, "box": box,
+            "pts": [[round(x, 3), round(y, 3)] for x, y in pts], "title": parts[3][:60] if len(parts) > 3 else "",
+            "caption": parts[4][:120] if len(parts) > 4 else "", "seed": _seed(spec) % 10000}
+
+
+def parse_pile(spec: str) -> dict | None:
+    """'Pile: 17 | FALSE, MISLEADING | Flagged *17 times* | posts flagged by fact-checkers' - cards land one by one on a
+    pile, each stamped, while the count runs."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if not parts or not re.fullmatch(r"\d{1,2}", parts[0]):
+        return None
+    n = int(parts[0])
+    if not 2 <= n <= 40:
+        return None
+    stamps = [x.strip().upper()[:12] for x in (parts[1].split(",") if len(parts) > 1 else []) if x.strip()] or ["FLAGGED"]
+    return {"type": "pile", "n": n, "stamps": stamps[:3], "title": parts[2][:60] if len(parts) > 2 else "",
+            "caption": parts[3][:110] if len(parts) > 3 else "", "seed": _seed(spec) % 10000}
 
 
 def parse_newscard(spec: str) -> dict | None:
@@ -1323,7 +1416,8 @@ PARSERS = {"photo": _photo_parser("photo"), "photos": _photo_parser("photos"), "
            "seats": parse_seats, "stack": parse_stack, "stand": parse_stand, "fan": parse_fan, "trend": parse_trend,
            "slice": parse_slice, "route": parse_route, "compare": parse_compare, "photoline": parse_photoline,
            "tv": parse_tv, "clockmap": parse_clockmap, "tornsplit": parse_tornsplit, "newscard": parse_newscard,
-           "blueprint": parse_blueprint, "units": parse_units}
+           "blueprint": parse_blueprint, "units": parse_units, "reel": parse_reel,
+           "conveyor": parse_conveyor, "tiles": parse_tiles, "pile": parse_pile}
 
 
 def _ext_parser(mod: str, kind: str):
@@ -1433,7 +1527,7 @@ def plan_for(kind: str, spec: str) -> dict | None:
         b = opts.get("badge", "").lower()
         if b:
             # how sure we are, on screen: a fact from a record, a report, an allegation, a response, an opinion
-            plan["badge"] = next((v for k, v in BADGES.items() if b.startswith(k)), "")
+            plan["badge"] = next((v for k, v in BADGES.items() if b.startswith(k)), "") or plan.get("badge", "")
         if opts.get("fx", "").lower() in FX:
             plan["fx"] = opts["fx"].lower()
         if opts.get("exit", "").lower() in EXITS + ("none",):
@@ -1630,7 +1724,7 @@ html,body{margin:0;padding:0;background:%PAPER%;overflow:hidden}
 svg{display:block}
 </style><script>%SVGJS%</script><script>%HAND%</script><script>%ILLU%</script></head><body><script>
 const P=%PLAN%, W=%W%, H=%H%, DUR=%DUR%, K=%KIT%;
-const TALL=H>W, VERT=TALL||W<H*1.35, U=Math.min(W,H), ACC=K.acc, INK=K.ink, PAPER=K.paper, DARK=K.dark, SIG=K.sig||'#FFDD33';
+const TALL=H>W, VERT=TALL||W<H*1.35, U=Math.min(W,H), ACC=K.acc, INK=K.ink, PAPER=K.paper, DARK=K.dark, SIG=K.sig||'#FFDD33', ACC2='#C8202D';   // ACC2: stamp ink
 // money drawings carry the currency the graphic's own figures are in (a dollar story never shows a rupee note)
 window.CUR=(JSON.stringify(P).match(/[$£€¥₹]/)||['₹'])[0];
 const ACT=K.dark?K.acc:(K.accText||K.acc);   // the accent as type on the paper: dark enough to read
@@ -1964,11 +2058,11 @@ function newsprint(){ // a pile of newspaper scraps behind: columns of grey type
     sc.attr({transform:`rotate(${a},${x+w/2},${y+h/2})`})}}
 function headline(){ // a torn newspaper headline with cut-outs around it, a big chapter number
   newsprint();
-  const cw=TALL?W*.82:W*.44,ch=TALL?H*.2:H*.36,cx=W/2-cw/2+(TALL?0:W*.04),cy=TALL?H*.34:H*.42;
-  if(P.number){const n=T(L.back,P.number,TALL?W*.38:H*.42,TALL?W/2:W*.2,TALL?H*.16:H*.36,{family:'Inter',weight:800,fill:DARK?'#F3EFE6':'#FFFFFF'});
+  const cw=VERT?W*.82:W*.44,ch=VERT?H*.2:H*.36,cx=W/2-cw/2+(VERT?0:W*.04),cy=VERT?H*.34:H*.42;
+  if(P.number){const n=T(L.back,P.number,VERT?W*.38:H*.42,VERT?W/2:W*.2,VERT?H*.16:H*.36,{family:'Inter',weight:800,fill:DARK?'#F3EFE6':'#FFFFFF'});
     n.attr({style:'paint-order:stroke',stroke:DARK?'none':'#00000010'});slide(n,.05,-W*.05,0)}
   disc(L.back,cx+cw*.85,cy-ch*.05,U*.12,ACC);
-  const subs=P.subjects||[];subs.forEach((nm,i)=>{const pic=picOf(nm);if(!pic)return;const h=TALL?H*.24:H*.5;
+  const subs=P.subjects||[];subs.forEach((nm,i)=>{const pic=picOf(nm);if(!pic)return;const h=VERT?H*.24:H*.5;
     const x=[cx+cw*.5,cx-cw*.02,cx+cw*1.02][i%3],y=cy+(i===0?ch*.05:ch*.75);const g=picture(L.mid,pic,x,y,i===0?h:h*.6);drop(g,.25+i*.2,H*.25,i?4:-3)});
   const card=L.hero.group();torn(card,cx,cy,cw,ch,'#EEE9DC');card.attr({filter:'url(#shadow)'});
   const size=Math.min(ch*.26,U*.065);const ls=lines(P.text,size,cw*.86,'Playfair',700,3);
@@ -1978,7 +2072,7 @@ function headline(){ // a torn newspaper headline with cut-outs around it, a big
 }
 
 function pinmap(){ // the country outline; the place highlighted; the headline clipping drops on the pin
-  const bx=P.box,ms=Math.min((TALL?W*.86:W*.5)/bx[0],(TALL?H*.42:H*.72)/bx[1]);const ox=(TALL?W/2:W*.34)-bx[0]*ms/2,oy=Math.max(U*.1,(TALL?H*.28:H*.42)-bx[1]*ms/2);
+  const bx=P.box,ms=Math.min((VERT?W*.86:W*.5)/bx[0],(VERT?H*.42:H*.72)/bx[1]);const ox=(VERT?W/2:W*.34)-bx[0]*ms/2,oy=Math.max(U*.1,(VERT?H*.28:H*.42)-bx[1]*ms/2);
   if(P.atlas)atlasSea();
   const m=L.back.group();P.shapes.forEach(r=>{m.polygon(r.map(q=>[ox+q[0]*ms,oy+q[1]*ms].join(',')).join(' ')).fill(P.pen?'#EFE3C2':P.atlas?(P.pin?'#EFE3C2':'#D9542C'):(P.pin?'#E2DBCC':ACC))
     .stroke({color:P.atlas?'#8E7E5C':'#9A9282',width:Math.max(1,U*.0016)})});if(P.atlas)depthOfField(m);m.opacity(0);at(0,.6,p=>m.opacity(p));
@@ -1990,10 +2084,10 @@ function pinmap(){ // the country outline; the place highlighted; the headline c
     const dot=L.mid.circle(U*.02).center(px,py).fill('#C0262D').stroke({color:'#FFFFFF',width:U*.004});popIn(dot,px,py,.55);
     const lb=tag(L.front,P.place,px+U*.025,py-U*.05);slide(lb,.7,W*.03,0)}
   const who=(P.pics||[])[0];   // a real photo pinned beside the place, like evidence on a map
-  if(who){const h=TALL?H*.2:H*.34,x=TALL?Math.min(W*.78,px+W*.22):Math.max(W*.14,px-W*.2),y=TALL?Math.max(H*.2,py-H*.1):Math.max(H*.26,py-H*.05);
+  if(who){const h=VERT?H*.2:H*.34,x=VERT?Math.min(W*.78,px+W*.22):Math.max(W*.14,px-W*.2),y=VERT?Math.max(H*.2,py-H*.1):Math.max(H*.26,py-H*.05);
     const card=printCard(L.hero,who,x,y,h,-4,{caption:(who.name||'').replace(/^person:/i,'')});drop(card,.7,H*.2,-6);
     pinAt(L.front,x,y-h*.5+U*.012);const ln=L.mid.line(x,y,px,py).stroke({color:'#C0262D',width:U*.003});wipe(ln,1.0)}
-  if(P.headline){const cw=TALL?W*.8:W*.38,ch=TALL?H*.16:H*.26;let cx=TALL?W*.1:Math.min(W-cw-U*.04,px+U*.24),cy=TALL?H*.58:Math.max(H*.14,py-ch*.4);
+  if(P.headline){const cw=VERT?W*.8:W*.38,ch=VERT?H*.16:H*.26;let cx=VERT?W*.1:Math.min(W-cw-U*.04,px+U*.24),cy=VERT?H*.58:Math.max(H*.14,py-ch*.4);
     // the headline card never covers the place's own label: right of the label, or else below the pin
     const tagR=P.pin?px+U*.025+String(P.place||'').length*U*.017+U*.06:0;
     if(!TALL&&P.pin&&cx<tagR){if(tagR+cw<W-U*.03)cx=tagR;else cy=Math.min(H-ch-U*.05,py+U*.07)}
@@ -2003,21 +2097,21 @@ function pinmap(){ // the country outline; the place highlighted; the headline c
     card.attr({filter:'url(#shadow)'});drop(card,1.0,H*.2,-3);const pn=pinAt(L.front,cx+cw/2,cy+U*.015);popIn(pn,cx+cw/2,cy+U*.015,1.4,.3)}}
 
 function myth(){ // a myth turned over: the wrong idea struck through in marker, a stamp, the true line printed over it
-  const big=TALL?U*.075:U*.068,red=K.mark||'#D7262B',g=L.hero.group();const ls=lines(P.wrong,big,W*.8,'Playfair',700,3);
-  const y0=(TALL?H*.46:H*.5)-((ls.length-1)*big*1.3+big*1.6)/2,wr=ls.map((ln,i)=>{const t=T(g,ln,big,W/2,y0+i*big*1.3,{family:'Playfair',weight:700,fill:FG});t.opacity(0);return t});
+  const big=VERT?U*.075:U*.068,red=K.mark||'#D7262B',g=L.hero.group();const ls=lines(P.wrong,big,W*.8,'Playfair',700,3);
+  const y0=(VERT?H*.46:H*.5)-((ls.length-1)*big*1.3+big*1.6)/2,wr=ls.map((ln,i)=>{const t=T(g,ln,big,W/2,y0+i*big*1.3,{family:'Playfair',weight:700,fill:FG});t.opacity(0);return t});
   wr.forEach((t,i)=>{at(.12+i*.09,.4,p=>t.opacity(p),E.snap);const bb=t.bbox();
     penLine(g,[[bb.x-U*.015,bb.y+bb.height*.58],[bb.x+bb.width*.5,bb.y+bb.height*.5],[bb.x+bb.width+U*.015,bb.y+bb.height*.46]],1.05+i*.16,.3,red,U*.011);
     at(1.55+i*.05,.35,p=>t.opacity(1-.62*p),E.lin)});
   const stp=L.front.group(),word=T(stp,String(P.label).toUpperCase(),U*.06,0,0,{family:'Anton',weight:400,fill:red,ls:'.08em'}),sb=word.bbox();
   stp.rect(sb.width+U*.045,sb.height+U*.02).move(sb.x-U*.0225,sb.y-U*.01).fill('none').stroke({color:red,width:U*.006}).radius(U*.006);
-  const sx=W*(TALL?.68:.76),sy=y0-big*1.05;stp.attr({transform:`translate(${sx},${sy}) rotate(-8)`});popIn(stp,sx,sy,1.32,.2);
-  const ty=y0+ls.length*big*1.3+U*.05,tr=boxText(L.front,P.right,TALL?U*.058:U*.052,W/2,ty,{anchor:'middle',maxw:W*.86,most:3});
+  const sx=W*(VERT?.68:.76),sy=y0-big*1.05;stp.attr({transform:`translate(${sx},${sy}) rotate(-8)`});popIn(stp,sx,sy,1.32,.2);
+  const ty=y0+ls.length*big*1.3+U*.05,tr=boxText(L.front,P.right,VERT?U*.058:U*.052,W/2,ty,{anchor:'middle',maxw:W*.86,most:3});
   tr.opacity(0);at(1.95,.3,p=>tr.opacity(p),E.snap);FOCUS={x:W/2,y:ty+U*.04,rx:W*.32,ry:U*.08}}
 function counter(){ // a number counting in steady digits (each digit in its own fixed slot, so nothing jitters), then holding
-  const big=TALL?W*.24:H*.3,g=L.hero.group(),num=v=>{let s=Math.abs(v).toFixed(P.dec);if(P.comma){const [i,f]=s.split('.');s=i.replace(/\B(?=(\d{3})+(?!\d))/g,',')+(f?'.'+f:'')}
+  const big=VERT?W*.24:H*.3,g=L.hero.group(),num=v=>{let s=Math.abs(v).toFixed(P.dec);if(P.comma){const [i,f]=s.split('.');s=i.replace(/\B(?=(\d{3})+(?!\d))/g,',')+(f?'.'+f:'')}
     return (v<0?'-':'')+s};
   const probe=T(g,'0',big,0,0,{family:'Anton',weight:400});const adv=probe.bbox().width*1.04;probe.remove();
-  const n=Math.max(num(P.from).length,num(P.to).length),y=TALL?H*.42:H*.46;
+  const n=Math.max(num(P.from).length,num(P.to).length),y=VERT?H*.42:H*.46;
   const pre=P.pre?T(g,P.pre,big,0,y,{family:'Anton',weight:400,fill:ACT,anchor:'end'}):null,post=P.post?T(g,P.post,big*(P.post.length>2?.5:1),0,y,{family:'Anton',weight:400,fill:ACT,anchor:'start'}):null;
   const pw=pre?pre.bbox().width:0,qw=post?post.bbox().width+big*.06:0,x0=W/2-(adv*n+pw+qw)/2+pw;
   if(pre)pre.attr({x:x0});if(post)post.attr({x:x0+adv*n+big*.06});
@@ -2028,10 +2122,10 @@ function counter(){ // a number counting in steady digits (each digit in its own
   const tw=pw+adv*n+qw;if(tw>W*.9){const k=W*.9/tw;g.attr({transform:`translate(${W/2},${y}) scale(${k}) translate(${-W/2},${-y})`})}   // the full figure, unit included, fits the frame
   TICKS.push(t=>{const p=Math.max(0,Math.min(1,(t-.35)/span)),e=1-Math.pow(1-p,4);show(P.from+(P.to-P.from)*e)});
   if(P.unit){const u=T(L.front,P.unit.toUpperCase(),U*.03,W/2,y+big*.62,{family:'Mono',weight:700,fill:FG,ls:'.2em'});fit(u,W*.86);wipe(u,.4)}
-  if(P.caption){const c=boxText(L.front,P.caption,U*.045,W/2,TALL?H*.72:H*.8,{anchor:'middle',maxw:W*.84,most:2});c.opacity(0);at(.35+span+.15,.3,p=>c.opacity(p),E.snap)}
+  if(P.caption){const c=boxText(L.front,P.caption,U*.045,W/2,VERT?H*.72:H*.8,{anchor:'middle',maxw:W*.84,most:2});c.opacity(0);at(.35+span+.15,.3,p=>c.opacity(p),E.snap)}
   FOCUS={x:W/2,y:y-big*.35,rx:Math.min(W*.4,(adv*n+pw+qw)*.62),ry:big*.55}}
 function staircase(){ // isometric steps rising left to right; each one lights up as the story climbs it, the last in red
-  const n=P.steps.length,top=TALL?H*.3:H*.24,bot=TALL?H*.82:H*.86,left=W*.08,right=W*.92,sw=(right-left)/n,sh=(bot-top)/n,d=Math.min(sw,sh)*.35;
+  const n=P.steps.length,top=VERT?H*.3:H*.24,bot=VERT?H*.82:H*.86,left=W*.08,right=W*.92,sw=(right-left)/n,sh=(bot-top)/n,d=Math.min(sw,sh)*.35;
   const g=L.hero.group(),red=K.mark||'#D7262B',seg=Math.max(.7,(DUR-1.6)/n),tops=[];
   for(let i=0;i<n;i++){const x=left+i*sw,y=bot-(i+1)*sh;const st=g.group();
     st.polygon([[x,y],[x+sw,y],[x+sw+d,y-d*.6],[x+d,y-d*.6]]).fill(DARK?'#2A2E36':'#FFFFFF').stroke({color:INK,width:U*.003});
@@ -2044,7 +2138,7 @@ function staircase(){ // isometric steps rising left to right; each one lights u
     num.opacity(0);at(t0,.2,p=>num.opacity(p),E.lin)}
   if(P.title)chartTitle(P.title);const last=tops[n-1];FOCUS={x:last.x+sw/2,y:last.y+sh*.3,rx:sw*.7,ry:sh*.7}}
 function scale(){ // a balance: weights drop one by one onto the left pan, the beam tips, the other side is thrown off
-  const cx=W/2,py=TALL?H*.42:H*.4,arm=Math.min(W*.36,U*.62),g=L.hero.group(),red=K.mark||'#D7262B',n=P.left.length;
+  const cx=W/2,py=VERT?H*.42:H*.4,arm=Math.min(W*.36,U*.62),g=L.hero.group(),red=K.mark||'#D7262B',n=P.left.length;
   g.polygon([[cx-U*.05,H*.86],[cx+U*.05,H*.86],[cx,py]]).fill(INK);g.rect(U*.2,U*.018).move(cx-U*.1,H*.86).fill(INK);
   const beam=g.group();beam.rect(arm*2,U*.014).move(cx-arm,py-U*.007).fill(INK);beam.circle(U*.03).center(cx,py).fill(ACC);
   const panL=beam.group(),panR=beam.group();
@@ -2062,21 +2156,21 @@ function scale(){ // a balance: weights drop one by one onto the left pan, the b
     const fly=Math.max(0,Math.min(1,(tq-tipAt-.15)/.6));if(fly>0)rb.attr({transform:`translate(${rx+fly*W*.25},${ry-fly*H*.5}) rotate(${fly*40}) scale(${rs})`});rb.opacity(1-fly)});
   if(P.verdict){const v=L.front.group(),word=T(v,P.verdict.toUpperCase(),U*.045,0,0,{family:'Anton',weight:400,fill:red,ls:'.06em'}),bb=word.bbox();
     v.rect(bb.width+U*.04,bb.height+U*.02).move(bb.x-U*.02,bb.y-U*.01).fill('none').stroke({color:red,width:U*.005});
-    const vx=cx,vy=TALL?H*.2:H*.17;v.attr({transform:`translate(${vx},${vy}) rotate(-5)`});popIn(v,vx,vy,tipAt+.5,.22)}
+    const vx=cx,vy=VERT?H*.2:H*.17;v.attr({transform:`translate(${vx},${vy}) rotate(-5)`});popIn(v,vx,vy,tipAt+.5,.22)}
   FOCUS={x:cx-arm,y:py+U*.08,rx:U*.14,ry:U*.16}}
 function number(){ // a huge number; the subject breaks out of it
   const pic=(((P.pics||[])[0]||{}).img||((P.pics||[])[0]||{}).draw)?(P.pics||[])[0]:null;
-  if(pic&&!TALL&&K.lay==='side')return numberSide(pic);const big=T(L.back,P.number,TALL?W*.42:H*(pic?.5:.56),W/2,pic?(TALL?H*.22:H*.3):(TALL?H*.34:H*.4),{family:'Anton',weight:400,fill:DARK?SIG:INK});fit(big,W*.92);
+  if(pic&&!TALL&&K.lay==='side')return numberSide(pic);const big=T(L.back,P.number,VERT?W*.42:H*(pic?.5:.56),W/2,pic?(VERT?H*.22:H*.3):(VERT?H*.34:H*.4),{family:'Anton',weight:400,fill:DARK?SIG:INK});fit(big,W*.92);
   if(!DARK){const bb=big.bbox(),bar=L.back.rect(0,bb.height*.42).move(bb.x-U*.02,bb.y+bb.height*.5).fill(SIG).back();
     at(.35,.5,p=>bar.width(Math.max(.1,(bb.width+U*.04)*p)),E.inout)}   // the signature bar under the figure
   slide(big,.05,0,H*.06);
   if(pic){const d0=pic.draw&&window.ILLU[pic.draw],ar0=pic.img?pic.w/pic.h:d0?d0[0]/d0[1]:1;
-    const h=TALL?H*.36:Math.min(H*.56,W*.42/ar0,H*.46*(ar0>1.3?1:1.22));   // a wide subject stays under the figure, not over it
-    const g=picture(L.hero,pic,W/2,TALL?H*.64:H*.86,h);drop(g,.35,H*.25,-2);
-    FOCUS=FOCUS||{x:W/2,y:(TALL?H*.64:H*.86)-h*.45,rx:Math.min(U*.3,(g.data('w')||h)*.6),ry:h*.42}}   // marker and logos go by the subject, off the figure
-  if(P.caption){const c=pic?fit(T(L.front,P.caption,U*.04,W/2,TALL?H*.7:H*.92,{family:'Inter',weight:800,fill:'#C0262D'}),W*.9)
-      :boxText(L.front,P.caption,U*.055,W/2,TALL?H*.56:H*.8,{anchor:'middle',maxw:W*.86,most:2});wipe(c,.9)}   // under the figure, clear of it
-  if(P.kicker){const k=T(L.front,P.kicker.toUpperCase(),U*.024,W/2,TALL?H*.08:H*.08,{family:'Inter',weight:800,fill:'#C0262D',ls:'0.45em'});wipe(k,.2)}}
+    const h=VERT?H*.36:Math.min(H*.56,W*.42/ar0,H*.46*(ar0>1.3?1:1.22));   // a wide subject stays under the figure, not over it
+    const g=picture(L.hero,pic,W/2,VERT?H*.64:H*.86,h);drop(g,.35,H*.25,-2);
+    FOCUS=FOCUS||{x:W/2,y:(VERT?H*.64:H*.86)-h*.45,rx:Math.min(U*.3,(g.data('w')||h)*.6),ry:h*.42}}   // marker and logos go by the subject, off the figure
+  if(P.caption){const c=pic?fit(T(L.front,P.caption,U*.04,W/2,VERT?H*.7:H*.92,{family:'Inter',weight:800,fill:'#C0262D'}),W*.9)
+      :boxText(L.front,P.caption,U*.055,W/2,VERT?H*.56:H*.8,{anchor:'middle',maxw:W*.86,most:2});wipe(c,.9)}   // under the figure, clear of it
+  if(P.kicker){const k=T(L.front,P.kicker.toUpperCase(),U*.024,W/2,VERT?H*.08:H*.08,{family:'Inter',weight:800,fill:'#C0262D',ls:'0.45em'});wipe(k,.2)}}
 
 function numberSide(pic){ // second layout: the number and its words on the left, the subject standing on the right
   // the number across the top, the subject lower right, the words lower left: nothing overlaps the figure
@@ -2087,7 +2181,7 @@ function numberSide(pic){ // second layout: the number and its words on the left
   if(P.kicker){const k=T(L.front,P.kicker.toUpperCase(),U*.024,W*.05,H*.06,{family:'Inter',weight:800,fill:'#C0262D',ls:'0.45em',anchor:'start'});wipe(k,.2)}}
 
 // ---- round 3: charts made of objects ----
-function chartTitle(s){if(!s)return;const g=boxText(L.front,s,U*.05,W/2,TALL?H*.07:H*.075,{anchor:'middle',maxw:W*.84,most:2});
+function chartTitle(s){if(!s)return;const g=boxText(L.front,s,U*.05,W/2,VERT?H*.07:H*.075,{anchor:'middle',maxw:W*.84,most:2});
   enterTitle(g)}
 // titles enter in one of several ways (by the scene's seed, so a film doesn't repeat one entrance), then land dead still
 function enterTitle(g){const st=((P.seed||1)+(K.titleIn||0))%3,rows=g.children();
@@ -2097,17 +2191,17 @@ function enterTitle(g){const st=((P.seed||1)+(K.titleIn||0))%3,rows=g.children()
     at(.05+i*.09,.32,p=>m.width(Math.max(.1,(bb.width+U*.01)*p)),E.inout)})}
 function valLabel(g,s,x,y,o){o=o||{};const t=T(g,s,o.size||U*.045,x,y,{family:'Anton',weight:400,fill:o.fill||FG,anchor:o.anchor||'middle'});return t}
 function seats(){ // the semicircle of dots, filled in party order; the majority line
-  chartTitle(P.title);const n=P.total;const cx=W/2,cy=TALL?H*.5:VERT?H*.62:H*.7;const R1=TALL?W*.44:Math.min(W*.36,H*.52),R0=R1*.42;
+  chartTitle(P.title);const n=P.total;const cx=W/2,cy=VERT?H*.5:VERT?H*.62:H*.7;const R1=VERT?W*.44:Math.min(W*.36,H*.52),R0=R1*.42;
   let rows=1;while(true){let cap=0;for(let r=0;r<rows;r++){const rr=R0+(R1-R0)*(r+.5)/rows;cap+=Math.floor(Math.PI*rr/((R1-R0)/rows))}if(cap>=n||rows>30)break;rows++}
   const pts=[];for(let r=0;r<rows;r++){const rr=R0+(R1-R0)*(r+.5)/rows;const k=Math.floor(Math.PI*rr/((R1-R0)/rows));for(let i=0;i<k;i++){const a=Math.PI-(Math.PI*(i+.5)/k);pts.push([a,cx+Math.cos(a)*rr,cy-Math.sin(a)*rr])}}
   pts.sort((p,q)=>q[0]-p[0]);const dot=(R1-R0)/rows*.78;
   const cols=[ACC,DARK?'#E8E2D4':'#2B2B2B','#9A9A9A','#C9C1B0','#6E8CA8','#B5735A','#7A9A6E','#B9A35E'];
   let k=0;P.groups.forEach((g,gi)=>{const c=cols[gi%cols.length];const cnt=Math.round(g.value);const st=.3+gi*.45;
     for(let i=0;i<cnt&&k<pts.length;i++,k++){const p=pts[k];const d=L.hero.circle(dot).center(p[1],p[2]).fill(c);d.opacity(0);const t0=st+i/cnt*.9;at(t0,.08,q=>d.opacity(q),E.lin)}
-    const lx=TALL?W*.1:VERT?W*(gi%2?.54:.08):(gi%2?cx+R1+U*.04:cx-R1-U*.04),ly=TALL?cy+U*.08+gi*U*.07:VERT?cy+U*.09+Math.floor(gi/2)*U*.07:cy-R1*.75+Math.floor(gi/2)*U*.12;
+    const lx=VERT?W*.1:VERT?W*(gi%2?.54:.08):(gi%2?cx+R1+U*.04:cx-R1-U*.04),ly=VERT?cy+U*.08+gi*U*.07:VERT?cy+U*.09+Math.floor(gi/2)*U*.07:cy-R1*.75+Math.floor(gi/2)*U*.12;
     const lg=L.front.group();lg.rect(U*.03,U*.03).move(0,-U*.015).fill(c);
     const tt=T(lg,`${g.label} — ${g.shown}`.toUpperCase(),U*.03,U*.045,0,{family:'Inter',weight:800,anchor:'start'});
-    const an=(VERT||gi%2)?'start':'end';fit(tt,VERT&&!TALL?W*.36:W);if(an==='end'){lg.attr({transform:`translate(${lx-tt.bbox().width-U*.045},${ly})`})}else lg.attr({transform:`translate(${lx},${ly})`});
+    const an=(VERT||gi%2)?'start':'end';fit(tt,VERT&&!VERT?W*.36:W);if(an==='end'){lg.attr({transform:`translate(${lx-tt.bbox().width-U*.045},${ly})`})}else lg.attr({transform:`translate(${lx},${ly})`});
     wipe(lg,st+.4)});
   const ml=L.front.line(cx,cy-R1-U*.02,cx,cy-R0+U*.01).stroke({color:FG,width:U*.003,dasharray:`${U*.008} ${U*.006}`});wipe(ml,1.6);
   const mt=T(L.front,`MAJORITY ${P.majority}`,U*.024,cx,cy-R1-U*.045,{family:'Mono',weight:700});wipe(mt,1.7);
@@ -2132,23 +2226,23 @@ function material(g,mat,x,y,w,h,color,i){ // one bar as a real thing; x,y = bott
   g.rect(w,h).move(x,y-h).fill(color)}
 function stack(){
   chartTitle(P.title);const vs=P.values,n=vs.length,mx=Math.max(...vs.map(v=>v.value));
-  const base=TALL?H*.66:H*.82,area=W*(TALL?.84:.7),maxh=TALL?H*.42:H*.56,gap=area/n,bw=Math.min(gap*.56,U*.2);
+  const base=VERT?H*.66:H*.82,area=W*(VERT?.84:.7),maxh=VERT?H*.42:H*.56,gap=area/n,bw=Math.min(gap*.56,U*.2);
   L.mid.line(W/2-area/2,base,W/2+area/2,base).stroke({color:FG,width:U*.004});
   vs.forEach((v,i)=>{const x=W/2-area/2+gap*(i+.5)-bw/2;const h=Math.max(U*.02,maxh*v.value/mx);const g=L.hero.group();
     material(g,P.material,x,base,bw,h,v.value===mx?ACC:'#3A3A3A',i);const clip=draw.clip().add(draw.rect(W,H).move(0,0));
     const st=.25+i*.25;g.opacity(0);at(st,.6,p=>{g.opacity(1);g.attr({transform:`translate(0,${h*(1-p)})`})},E.back);
     if(v.value===mx)FOCUS={x:x+bw/2,y:base-h*.55,rx:bw*.95,ry:Math.max(h*.6,U*.08)};
     const lm=(P.logos||[]).find(m=>!m.used&&v.label&&(m.title.toLowerCase()===v.label.toLowerCase()||m.key===v.label.toLowerCase()));
-    if(lm){lm.used=true;const sz=Math.min(bw*.8,U*.1);let tx=x+bw/2,ty=base-h-U*.12-sz/2;if(ty-sz/2<(TALL?H*.16:H*.2)){tx=x+bw+sz*.75;ty=base-h+sz*.7}   // a tall bar: beside its top, clear of the title
+    if(lm){lm.used=true;const sz=Math.min(bw*.8,U*.1);let tx=x+bw/2,ty=base-h-U*.12-sz/2;if(ty-sz/2<(VERT?H*.16:H*.2)){tx=x+bw+sz*.75;ty=base-h+sz*.7}   // a tall bar: beside its top, clear of the title
       const t=logoTile(L.front,lm,tx,ty,sz);popIn(t,tx,ty,st+.55,.35)}
     const lb=valLabel(L.front,v.shown,x+bw/2,base-h-U*.05,{fill:v.value===mx?FG:FG});wipe(lb,st+.5);
     if(v.label){const t=T(L.front,v.label.toUpperCase(),U*.026,x+bw/2,base+U*.035,{family:'Inter',weight:800,ls:'.08em'});fit(t,gap*.95);wipe(t,st+.3)}})}
 function stand(){ // figures standing on their bars, value boxes beside them
   chartTitle(P.title);const vs=P.values,n=vs.length,mx=Math.max(...vs.map(v=>v.value));const pics=P.pics||[];
-  const base=TALL?H*.72:H*.86,area=W*(TALL?.86:.62),maxh=TALL?H*.34:H*.42,gap=area/n,bw=gap*.62;
+  const base=VERT?H*.72:H*.86,area=W*(VERT?.86:.62),maxh=VERT?H*.34:H*.42,gap=area/n,bw=gap*.62;
   vs.forEach((v,i)=>{const x=W/2-area/2+gap*(i+.5)-bw/2;const h=Math.max(U*.05,maxh*Math.sqrt(v.value/mx));const st=.2+i*.4;
     const b=L.mid.rect(bw,h).move(x,base-h).fill(i===n-1?'#3E4A55':'#56626C');slide(b,st,0,h);
-    const fh=TALL?H*.16:H*.24;const pic=pics[i];let fig;
+    const fh=VERT?H*.16:H*.24;const pic=pics[i];let fig;
     if(pic&&pic.img){fig=picture(L.hero,pic,x+bw/2,base-h,fh)}
     else{fig=L.hero.group();const cx=x+bw/2,top=base-h-fh;fig.circle(fh*.18).center(cx,top+fh*.1).fill(INK);
       fig.rect(fh*.22,fh*.42).move(cx-fh*.11,top+fh*.2).radius(fh*.05).fill(INK);fig.rect(fh*.07,fh*.4).move(cx-fh*.1,top+fh*.6).fill(INK);fig.rect(fh*.07,fh*.4).move(cx+fh*.03,top+fh*.6).fill(INK)}
@@ -2156,11 +2250,11 @@ function stand(){ // figures standing on their bars, value boxes beside them
     const box=L.front.group();const t=T(box,v.shown,U*.05,0,0,{family:'Anton',weight:400,anchor:'start',fill:'#FFFFFF'});const bb=t.bbox();
     box.rect(bb.width+U*.04,bb.height+U*.02).move(bb.x-U*.02,bb.y-U*.01).fill('#C24A2B').back();
     const lb=T(box,(v.label||'').toUpperCase(),U*.022,0,-bb.height*.85,{family:'Inter',weight:800,anchor:'start',ls:'.1em'});
-    const bx=TALL?x+bw*.05:x+bw+U*.03,by=TALL?base-h+U*.1:base-h+U*.05;box.attr({transform:`translate(${bx},${by})`});slide(box,st+.6,W*.03,0)});
+    const bx=VERT?x+bw*.05:x+bw+U*.03,by=VERT?base-h+U*.1:base-h+U*.05;box.attr({transform:`translate(${bx},${by})`});slide(box,st+.6,W*.03,0)});
   if(P.note){const t=T(L.front,P.note.toUpperCase(),U*.02,W/2,base+U*.035,{family:'Mono',weight:700});wipe(t,1.5)}}
 function units(){ // one square per item: each group fills in its own colour as its count runs
   chartTitle(P.title);const vs=P.values,tot=vs.reduce((a,v)=>a+v.value,0);
-  const gx=TALL?W*.08:W*.06,gw=TALL?W*.84:W*.49,gy=TALL?H*.2:H*.2,gh=TALL?H*.44:H*.6;
+  const gx=VERT?W*.08:W*.06,gw=VERT?W*.84:W*.49,gy=VERT?H*.2:H*.2,gh=VERT?H*.44:H*.6;
   let cols=Math.max(4,Math.ceil(Math.sqrt(tot*gw/gh)));let rows=Math.ceil(tot/cols);const cell=Math.min(gw/cols,gh/rows),sq=cell*.8;
   const ox=gx+(gw-cols*cell)/2,oy=gy+(gh-rows*cell)/2;const cols2=['#56626C',ACC==='#56626C'?'#C24A2B':ACC,'#B9A27A'];
   const fillDur=Math.min(2.6,Math.max(1.2,DUR*.45));let k=0;
@@ -2168,12 +2262,81 @@ function units(){ // one square per item: each group fills in its own colour as 
       g.rect(sq,sq).move(ox+c*cell,oy+r*cell).radius(sq*.14).fill(cols2[i%3])}
     const st=.35+fillDur*(k-v.value)/tot,du=Math.max(.35,fillDur*v.value/tot);const kids=g.children();kids.forEach(q=>q.opacity(0));
     at(st,du,p=>{const m=Math.round(p*kids.length);for(let j=0;j<kids.length;j++)kids[j].opacity(j<m?1:0)},E.lin);
-    const lx=TALL?W*(.12+i*.42):W*.69,ly=TALL?H*.74:H*(.32+i*.25);
+    const lx=VERT?W*(.12+i*.42):W*.69,ly=VERT?H*.74:H*(.32+i*.25);
     const sw=L.front.rect(U*.03,U*.03).move(lx,ly-U*.085).radius(U*.005).fill(cols2[i%3]);wipe(sw,st);
     const n=T(L.front,'0',U*.085,lx+U*.05,ly,{family:'Anton',weight:400,anchor:'start',fill:i?cols2[1]:INK});
     count(n,v.value,st,du,x=>Math.round(x).toLocaleString('en-US'));
     const lb=T(L.front,(v.label||'').toUpperCase(),U*.026,lx,ly+U*.05,{family:'Inter',weight:800,anchor:'start',ls:'.08em'});wipe(lb,st+.1)});
-  if(P.note){const t=T(L.front,P.note.toUpperCase(),U*.022,W/2,TALL?H*.86:H*.9,{family:'Mono',weight:700});wipe(t,fillDur+.5)}}
+  if(P.note){const t=T(L.front,P.note.toUpperCase(),U*.022,W/2,VERT?H*.86:H*.9,{family:'Mono',weight:700});wipe(t,fillDur+.5)}}
+
+// ---- the Short's pieces: a recreated reel, a stamp conveyor, a state filled with tiles, a stamped pile ----
+function headline(){if(!P.title)return null;const size=VERT?W*.075:H*.075,y=VERT?H*.185:H*.17;   // under the corner badge, never beside it
+  const g=rich(L.front,P.title,size,W/2,y,{anchor:'middle'});
+  if(g.data('w')>W*.9){g.attr({transform:`translate(${W*.05},${y}) scale(${W*.9/g.data('w')})`})}slide(g,.05,0,-H*.02);return g}
+function reel(){headline();
+  const pw=VERT?Math.min(W*.5,H*.26):H*.33,ph=pw*2.0,cx=W/2,cy=VERT?H*.58:H*.58,x0=cx-pw/2,y0=cy-ph/2,g=L.hero.group();
+  const grad=draw.gradient('linear',a=>{a.stop(0,'#FF4F9A');a.stop(.55,'#7B2FF7');a.stop(1,'#1D1D6B')}).from(0,0).to(.35,1);
+  g.rect(pw,ph).move(x0,y0).radius(pw*.13).fill('#0E0E10');
+  const sx=x0+pw*.045,sy=y0+pw*.045,sw=pw*.91,sh=ph-pw*.09;g.rect(sw,sh).move(sx,sy).radius(pw*.1).fill(grad);
+  const notes=T(g,'♪ ♫ ♪',pw*.16,cx,sy+sh*.16,{family:'Anton',weight:400,fill:'#FFFFFF',fine:1});
+  const N=15,bw=sw*.045,gap=(sw*.8-N*bw)/(N-1),bars=[];for(let i=0;i<N;i++){bars.push(g.rect(bw,10).radius(bw/2).fill(SIG))}
+  const caps=[.78,.56,.36].map((f,i)=>g.rect(1,sw*.05).radius(sw*.025).fill('#FFFFFF').opacity(1-i*.2).move(sx+sw*.07,sy+sh*.74+i*sw*.085));
+  const btns=[0,1,2].map(i=>{const c=g.circle(sw*.11).center(sx+sw*.88,sy+sh*.5+i*sw*.17).fill('#FFFFFF').opacity(.9);popIn(c,sx+sw*.88,sy+sh*.5+i*sw*.17,.6+i*.12,.3);return c});
+  g.attr({transform:`rotate(-3 ${cx} ${cy})`});drop(g,.1,H*.2,-4);
+  at(0,DUR,p=>{const t=p*DUR;bars.forEach((b,i)=>{const h=sh*.06+sh*.16*Math.abs(Math.sin(t*5.2+i*.7))*(.6+.4*Math.sin(i*1.3));
+      b.size(bw,h).move(sx+sw*.1+i*(bw+gap),sy+sh*.42-h/2)});
+    notes.attr({transform:`translate(0,${Math.sin(t*3)*pw*.03})`});
+    caps.forEach((c,i)=>c.width(Math.max(1,sw*[.78,.56,.36][i]*Math.min(1,Math.max(0,(t-.8-i*.35)/.6)))))},E.lin);
+  FOCUS={x:cx,y:cy,rx:pw*.7,ry:ph*.55}}
+function conveyor(){headline();
+  const by=VERT?H*.62:H*.74,cw=VERT?W*.26:W*.1,chh=cw*1.3,sp=cw*1.35,g=L.mid.group();
+  g.rect(W*.9,U*.018).move(W*.05,by).fill(INK);for(let x=W*.06;x<W*.95;x+=U*.06)g.circle(U*.012).center(x,by+U*.009).fill('#777');   // the belt stays on the page
+  const lane=L.hero.group().clipWith(draw.clip().add(draw.rect(W*.9,H).move(W*.05,0)));   // cards enter and leave inside the frame
+  const cards=[];for(let i=0;i<P.n;i++){const c=lane.group();c.rect(cw,chh).radius(cw*.08).fill('#FFFFFF').stroke({color:'#D6D0C3',width:2});
+    c.rect(cw*.8,chh*.42).move(cw*.1,chh*.1).radius(cw*.04).fill('#D8D2C4');c.rect(cw*.7,cw*.07).move(cw*.1,chh*.62).radius(cw*.03).fill('#BBB');
+    const mk=c.group().opacity(0);mk.rect(cw*.86,cw*.26).move(cw*.07,chh*.7).fill('none').stroke({color:ACC2,width:cw*.03});
+    T(mk,P.stamp,cw*.17,cw*.5,chh*.72+cw*.17,{family:'Anton',weight:400,fill:ACC2,fine:1});mk.attr({transform:`rotate(-8 ${cw/2} ${chh*.84})`});
+    cards.push({c,mk,done:false})}
+  const st=L.front.group(),sw=VERT?W*.56:W*.2,shh=sw*.32;st.rect(sw,shh).fill('none').stroke({color:ACC2,width:U*.012});
+  T(st,P.stamp,shh*.62,sw/2,shh*.72,{family:'Anton',weight:400,fill:ACC2,fine:1});
+  const arm=L.mid.rect(U*.02,U*.1).fill('#333');   // a short handle, clear of the headline
+  const speed=(W+sp*P.n)/(DUR*.95),x0=-cw;
+  at(0,DUR,p=>{const t=p*DUR;let hit=0;
+    cards.forEach((k,i)=>{const x=x0+t*speed-i*sp;k.c.attr({transform:`translate(${x},${by-chh})`});
+      const d=Math.abs(x+cw/2-W/2);if(d<cw*.6)hit=Math.max(hit,1-d/(cw*.6));if(!k.done&&x+cw/2>W/2){k.done=true;k.mk.opacity(1)}});
+    const top=by-chh-shh-U*.06,lift=U*.09*(1-hit);st.attr({transform:`translate(${W/2-sw/2},${top-lift}) rotate(-6 ${sw/2} ${shh/2})`});
+    arm.move(W/2-U*.01,top-lift-U*.1)},E.lin);
+  if(P.caption){const c=boxText(L.front,P.caption,U*.04,W/2,VERT?H*.74:H*.88,{anchor:'middle',maxw:W*.86,most:3});wipe(c,1.0)}}
+function tiles(){headline();const SQ0=VERT&&!TALL;
+  const [b0,b1,b2,b3]=P.box,kx=Math.cos((b1+b3)/2*Math.PI/180),aw=TALL?W*.88:W*.56,ah=TALL?H*.42:H*.66,
+    s=Math.min(aw/((b2-b0)*kx),ah/(b3-b1)),ox=(TALL?W/2:W*.34)-(b2-b0)*kx*s/2,oy=(TALL?H*.26:H*.24)+(ah-(b3-b1)*s)/2,
+    pr=(lo,la)=>[ox+(lo-b0)*kx*s,oy+(b3-la)*s],poly=r=>r.map(q=>pr(q[0],q[1]).map(v=>v.toFixed(1)).join(',')).join(' ');
+  const clip=draw.clip().add(draw.rect(aw*1.06,ah*1.04).move((TALL?W/2:W*.34)-aw*.53,(TALL?H*.26:H*.24)-ah*.02));
+  const map=L.back.group().clipWith(clip);P.others.forEach(r=>map.polygon(poly(r)).fill('#D9D3C5').stroke({color:PAPER,width:2}));
+  const shape=L.mid.polygon(poly(P.ring)).fill(INK).stroke({color:PAPER,width:3});wipe(map,.1);wipe(shape,.3);
+  const xs=P.ring.map(q=>pr(q[0],q[1])[0]),ys=P.ring.map(q=>pr(q[0],q[1])[1]);
+  const nm=T(L.front,P.name.toUpperCase(),U*.035,Math.min(...xs),Math.min(...ys)-U*.025,{family:'Inter',weight:800,anchor:'start'});wipe(nm,.4);
+  const area=(Math.max(...xs)-Math.min(...xs))*(Math.max(...ys)-Math.min(...ys)),tw=Math.max(U*.012,Math.min(U*.05,Math.sqrt(area/P.n)*.55)),th=tw*.75;
+  const t0=.7,t1=Math.max(t0+.8,DUR*.62);
+  P.pts.forEach((q,i)=>{const [x,y]=pr(q[0],q[1]);const g=L.hero.group();g.rect(tw,th).move(x-tw/2,y-th/2).radius(th*.3).fill(SIG).stroke({color:INK,width:Math.max(1.5,tw*.07)});
+    g.polygon([[x-tw*.25,y+th/2],[x-tw*.4,y+th*.85],[x+tw*.05,y+th/2]].map(z=>z.join(',')).join(' ')).fill(INK);popIn(g,x,y,t0+(t1-t0)*i/P.n,.22)});
+  const tot=T(L.front,'0',TALL?W*.13:H*.13,TALL?W*.94:W*.92,TALL?H*.74:H*.5,{family:'Anton',weight:400,anchor:'end'});
+  count(tot,P.n*P.per,t0,t1-t0,v=>Math.round(v).toLocaleString('en-US'));
+  const un=T(L.front,P.unit.toUpperCase()+' · PLACEMENT ILLUSTRATIVE',U*.02,TALL?W*.06:W*.06,TALL?H*.7:SQ0?H*.7:H*.8,{family:'Mono',weight:700,anchor:'start'});wipe(un,1.2);
+  const SQ=VERT&&!TALL;if(P.caption){const c=boxText(L.front,P.caption,U*.032,TALL?W/2:SQ?W*.58:W*.78,TALL?H*.8:SQ?H*.79:H*.66,{anchor:'middle',maxw:TALL?W*.86:SQ?W*.7:W*.36,most:TALL?4:3});wipe(c,t1)}
+  FOCUS={x:(Math.min(...xs)+Math.max(...xs))/2,y:(Math.min(...ys)+Math.max(...ys))/2,rx:(Math.max(...xs)-Math.min(...xs))*.6,ry:(Math.max(...ys)-Math.min(...ys))*.6}}
+function pile(){headline();
+  const cols=TALL?3:VERT?5:6,cw=TALL?W*.27:VERT?W*.175:W*.12,chh=cw*.62,gx=TALL?W*.04:W*.02,gy=chh*.18,rows=Math.ceil(P.n/cols),
+    x0=W/2-(cols*cw+(cols-1)*gx)/2,y0=TALL?H*.28:VERT?H*.32:H*.27,t0=.5,t1=Math.max(t0+.8,DUR*.6);
+  for(let i=0;i<P.n;i++){const r=Math.floor(i/cols),c=i%cols,x=x0+c*(cw+gx),y=y0+r*(chh+gy),rot=((i*37)%7)-3,g=L.hero.group();
+    g.rect(cw,chh).radius(cw*.06).fill('#FFFFFF').stroke({color:'#D6D0C3',width:2});g.rect(cw*.8,cw*.05).move(cw*.1,chh*.16).radius(cw*.025).fill('#CCC');
+    g.rect(cw*.5,cw*.05).move(cw*.1,chh*.3).radius(cw*.025).fill('#DDD');const sTxt=P.stamps[i%P.stamps.length];
+    const sg=g.group();const tt=T(sg,sTxt,cw*(VERT&&!TALL?.18:.15),cw*.55,chh*.8,{family:'Anton',weight:400,fill:ACC2,fine:1});const bb=tt.bbox();
+    sg.rect(bb.width+cw*.06,bb.height*.95).move(bb.x-cw*.03,bb.y).fill('none').stroke({color:ACC2,width:cw*.02});sg.attr({transform:`rotate(-7 ${cw*.55} ${chh*.7})`});
+    g.attr({transform:`translate(${x},${y}) rotate(${rot} ${cw/2} ${chh/2})`});drop(g,t0+(t1-t0)*i/P.n,H*.12,rot)}
+  const n=T(L.front,'0',VERT?W*.16:H*.16,VERT?W*.94:W*.95,VERT?H*.27:H*.25,{family:'Anton',weight:400,anchor:'end',fill:INK});
+  count(n,P.n,t0,t1-t0,v=>String(Math.round(v)));
+  const SQ=VERT&&!TALL;if(P.caption){const c=boxText(L.front,P.caption,U*.032,SQ?W*.62:W/2,y0+rows*(chh+gy)+U*.07,{anchor:'middle',maxw:SQ?W*.6:W*.86,most:3});wipe(c,t1)}}
 function fan(){ // curved bars around a photo disc, longest first
   const vs=P.values,mx=vs[0].value;const cx=VERT?W/2:W*.4,cy=VERT?H*.42:H*.5,room=Math.min(cx,W-cx,cy,H-cy)-U*.05-Math.max(...vs.map(v=>String(v.label||'').length))*U*.022*.78,rmax=Math.min(VERT?W*.34:H*.44,room),r0=Math.min(VERT?W*.17:H*.2,rmax*.5);
   const a0=-Math.PI*.95,span=Math.PI*1.3,seg=span/vs.length;
@@ -2934,7 +3097,7 @@ function footage(){ // moving footage, frame by frame, with the same annotations
   if(P.annotate&&P.annotate.length){const a=P.annotate[0];FOCUS={x:a.p[0]*W,y:a.p[1]*H,rx:U*.1,ry:U*.1}}
   photoCredit()}
 
-const SCENES={units,myth,counter,staircase,scale,photo,photos,footage,shrink,morph,borders,courtdoc,table,interview,endcard,polltrack,area,candles,arrows,railmap,sizemap,pyramid,flowchart:flow,linkmap,orgchart,heatmap,hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv,
+const SCENES={reel,conveyor,tiles,pile,units,myth,counter,staircase,scale,photo,photos,footage,shrink,morph,borders,courtdoc,table,interview,endcard,polltrack,area,candles,arrows,railmap,sizemap,pyramid,flowchart:flow,linkmap,orgchart,heatmap,hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv,
   clockmap,tornsplit,newscard,blueprint};
 async function boot(){
   try{await Promise.all(Array.from(document.fonts).map(f=>f.load()))}catch(e){}

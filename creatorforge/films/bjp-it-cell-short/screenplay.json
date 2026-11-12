@@ -1,0 +1,155 @@
+{
+ "id": "bjp-it-cell-short",
+ "title": "BJP IT Cell: the Short",
+ "channel": "print-facts",
+ "topic": "bjp-it-cell",
+ "format": "short 9:16",
+ "engine": "trojan-horse",
+ "hook_mechanism": "a catchy reel taken apart",
+ "pick": {
+  "engine": "trojan-horse",
+  "pitched": [
+   "reverse-autopsy",
+   "historical-echo",
+   "trojan-horse"
+  ],
+  "owner_words": "\"3. Trojan Horse\"",
+  "date": "2026-11-11"
+ },
+ "target_seconds": 45,
+ "status": "script draft (not rendered: the owner has not said go)",
+ "notes": "S2 needs the BJP's own upload (evidence slot). S8 needs a two-grid scene ('Grids', not built yet). Party symbols left out until the official files are downloaded. Right-of-reply before release.",
+ "voice": "",
+ "language": "en",
+ "scenes": [
+  {
+   "id": "S1",
+   "act": "hook",
+   "purpose": "explain",
+   "delivery": "urgent",
+   "narration": "A catchy political rap reel. Harmless?",
+   "graphic": "Reel: rap | Just a *catchy reel*?",
+   "claims": []
+  },
+  {
+   "id": "S2",
+   "act": "discovery",
+   "purpose": "explain",
+   "delivery": "urgent",
+   "narration": "On the party's own YouTube channel, 2018: Amit Shah told volunteers any message could go viral, true or false. He added it shouldn't be done.",
+   "graphic": "Footage: EVIDENCE-SLOT bjp-kota-2018 | in: 26:30 | The party's *own upload*, Kota, 22 Sep 2018 | badge: verified | logo: youtube",
+   "claims": [
+    "C07"
+   ]
+  },
+  {
+   "id": "S3",
+   "act": "investigation",
+   "purpose": "explain",
+   "delivery": "urgent",
+   "narration": "Break the phone open. Behind one post, reporting found a core team, designers and a sign-off.",
+   "graphic": "Explode: phone | THE POST: your screen; THE SIGN-OFF: one official, every post (Delhi); THE DESIGN: about 20 designers (UP); THE THEME: a 25-member core team (UP) | Break it open | badge: reported",
+   "claims": [
+    "C44"
+   ]
+  },
+  {
+   "id": "S4",
+   "act": "investigation",
+   "purpose": "explain",
+   "delivery": "urgent",
+   "narration": "In Delhi, one official signs off every post, reports say.",
+   "graphic": "Conveyor: APPROVED | 6 | In Delhi, one official signs off every post | Every post, *one sign-off* | badge: reported",
+   "claims": [
+    "C44"
+   ]
+  },
+  {
+   "id": "S5",
+   "act": "investigation",
+   "purpose": "explain",
+   "delivery": "urgent",
+   "narration": "For 2019, the party planned a phone volunteer at every booth: about 900,000, by reports.",
+   "graphic": "Counter: 0 → 900,000 | booth volunteers planned for 2019 | one report said nearly 1 lakh | badge: reported",
+   "claims": [
+    "C08"
+   ]
+  },
+  {
+   "id": "S6",
+   "act": "investigation",
+   "purpose": "explain",
+   "delivery": "urgent",
+   "narration": "In Bihar in 2020, party leaders said 72,000 WhatsApp groups were planned. Over a lakh were formed, its convenor said.",
+   "graphic": "Tiles: Bihar | 72 | 1 tile = 1,000 groups | Bihar, 2020: *72,000* groups | 72,000 WhatsApp groups planned (party leaders to ThePrint); over 1 lakh formed (state convenor to Caravan) | badge: reported | logo: whatsapp",
+   "claims": [
+    "C09"
+   ]
+  },
+  {
+   "id": "S7",
+   "act": "investigation",
+   "purpose": "explain",
+   "delivery": "urgent",
+   "narration": "Fact-checkers flagged the IT cell's then-head 17 times, one 2020 tally found.",
+   "graphic": "Pile: 17 | FALSE, MISLEADING | Flagged *17 times* | Posts by the IT cell's then-head flagged by fact-checkers (The News Minute, 2020) | badge: reported",
+   "claims": [
+    "C21"
+   ]
+  },
+  {
+   "id": "S8",
+   "act": "consequences",
+   "purpose": "explain",
+   "delivery": "urgent",
+   "narration": "But it isn't one party. Oxford researchers found junk news on both sides' Facebook pages: 28 in 100 links, and 21.",
+   "graphic": "Grids: pro-BJP pages 28, pro-Congress pages 21 | It isn't *one party* | junk news per 100 links, Facebook, 2019 | badge: reported | logo: facebook",
+   "claims": [
+    "C16"
+   ]
+  },
+  {
+   "id": "S9",
+   "act": "consequences",
+   "purpose": "explain",
+   "delivery": "urgent",
+   "narration": "In 2024, police arrested Congress social-media workers over a doctored video of Amit Shah. They're on bail; Congress says the BJP is the expert in fakes.",
+   "graphic": "Statement: MAY 2024 · Police arrest Congress social-media workers over a *doctored video* of Amit Shah | badge: verified",
+   "claims": [
+    "C32"
+   ]
+  },
+  {
+   "id": "S10",
+   "act": "consequences",
+   "purpose": "explain",
+   "delivery": "urgent",
+   "narration": "And the money: the party's own filing shows 156.95 crore rupees to Google and 24.63 crore to Facebook in 2024.",
+   "graphic": "Table: Item, ₹ crore | Total election spending, 1,737.68; Media advertisement, 611.50; Google India, 156.95; Facebook, 24.63 | The party's own filing, 2024 | Election Commission | highlight: 3 | badge: verified | logo: google, facebook",
+   "claims": [
+    "C39"
+   ]
+  },
+  {
+   "id": "S11",
+   "act": "ending",
+   "purpose": "explain",
+   "delivery": "urgent",
+   "narration": "In August 2026 the party changed its IT cell chief. The posts got catchier, reports say.",
+   "graphic": "Reel: rap | New chief. *New beat.* | badge: reported",
+   "claims": [
+    "C04",
+    "C46"
+   ]
+  },
+  {
+   "id": "S12",
+   "act": "ending",
+   "purpose": "explain",
+   "delivery": "urgent",
+   "narration": "Who made the last reel you shared?",
+   "graphic": "Statement: *Who made* the last reel you shared?",
+   "claims": []
+  }
+ ]
+}

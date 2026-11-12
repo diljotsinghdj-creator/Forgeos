@@ -36,12 +36,12 @@ EXPLAIN_KINDS = ("counter", "bignumber", "number", "stack", "stand", "fan", "tre
                  "dots", "table", "polltrack", "area", "candles", "pyramid", "squares", "icons", "units", "flowchart", "linkmap",
                  "orgchart", "steps", "timeline", "blueprint", "staircase", "scale", "bars3d", "prism", "explode", "towers3d",
                  "planets", "terrain3d", "flowmap", "heatmap", "shrink", "morph", "borders", "sizemap", "route", "arrows", "railmap",
-                 "compare", "sunrise", "zones", "clockmap")
+                 "compare", "sunrise", "zones", "clockmap", "tiles", "pile", "conveyor")
 # shots that hold one picture; everything else builds on screen as it is named
 STILL_KINDS = ("hero", "statement", "newscard", "tornsplit", "clipping", "quote", "interview", "opener", "endcard", "document",
                "article", "photo", "reveal", "stamp", "sign", "title3d", "courtdoc")
 MAX_STILL, MAX_BUILD, LAST_EXTRA, MAX_MEAN = 4.5, 7.0, 1.5, 5.0
-RECREATION_KINDS = ("chat", "social", "comments", "trending", "search")
+RECREATION_KINDS = ("chat", "social", "comments", "trending", "search", "reel")
 
 
 def applies(sp: dict) -> bool:

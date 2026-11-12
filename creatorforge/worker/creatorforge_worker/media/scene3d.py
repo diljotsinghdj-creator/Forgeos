@@ -88,7 +88,9 @@ def parse_explode(spec: str) -> dict | None:
     parts = [p.strip() for p in (spec or "").split("|")]
     if len(parts) < 2 or not parts[0]:
         return None
-    layers = [x.strip()[:24] for x in parts[1].split(",") if x.strip()][:7]
+    # "THE POST: your screen; THE SIGN-OFF: one official..." - with ";" each layer may carry a description after ":"
+    sep = ";" if ";" in parts[1] else ","
+    layers = [x.strip()[:70] for x in parts[1].split(sep) if x.strip()][:7]
     if len(layers) < 2:
         return None
     return {"type": "explode", "thing": parts[0][:30], "layers": layers, "title": parts[2][:48] if len(parts) > 2 else ""}
@@ -353,17 +355,33 @@ function partMesh(name,w,d){const n=name.toLowerCase(),g=new THREE.Group();const
   else if(/case|cover|back|frame|shell|body|hull|chassis|housing/.test(n)){add(new THREE.BoxGeometry(w,.14,d),mat('#46525C'));add(new THREE.BoxGeometry(w*.9,.06,d*.9),mat('#5A6670'),0,.1,0)}
   else{add(new THREE.BoxGeometry(w*.94,.12,d*.94),mat('#D9D4C7'))}
   return g}
-function explode(){const ls=P.layers,n=ls.length,w=TALL?3.0:4.4,d=TALL?5.2:2.7,gap=TALL?1.25:1.0,tt=title(P.title||P.thing);
-  const parts=ls.map((nm,i)=>{const g=partMesh(nm,w,d);scene.add(g);const lb=label(nm,'tag',U*.022,'Inter',800),num=label(String(i+1),'box',U*.022,'Mono',700);return {g,lb,num}});
+function phoneSlab(i,n,w,d){ // a phone's layer: a rounded slab; the top one is the lit screen with the signature edge
+  const r=Math.min(w,d)*.16,sh=new THREE.Shape();sh.moveTo(-w/2+r,-d/2);sh.lineTo(w/2-r,-d/2);sh.quadraticCurveTo(w/2,-d/2,w/2,-d/2+r);
+  sh.lineTo(w/2,d/2-r);sh.quadraticCurveTo(w/2,d/2,w/2-r,d/2);sh.lineTo(-w/2+r,d/2);sh.quadraticCurveTo(-w/2,d/2,-w/2,d/2-r);
+  sh.lineTo(-w/2,-d/2+r);sh.quadraticCurveTo(-w/2,-d/2,-w/2+r,-d/2);
+  const geo=new THREE.ExtrudeGeometry(sh,{depth:.12,bevelEnabled:true,bevelThickness:.02,bevelSize:.02,bevelSegments:2,curveSegments:10});geo.rotateX(-Math.PI/2);
+  const top=i===0,cols=['#2A2A2E','#3A3A40','#4A4A52','#5A5A64','#6A6A74','#7A7A84','#8A8A94'];
+  const m=new THREE.Mesh(geo,mat(top?'#16161A':cols[Math.min(i,cols.length-1)],{roughness:top?.15:.55,metalness:top?.3:.1}));m.castShadow=m.receiveShadow=true;
+  const g=new THREE.Group();g.add(inked(m,top?(K.sig||'#FFDD33'):'#8A8A94'));
+  if(top){const glow=new THREE.Mesh(new THREE.PlaneGeometry(w*.86,d*.9),new THREE.MeshBasicMaterial({color:col(K.sig||'#FFDD33'),transparent:true,opacity:.62}));glow.rotation.x=-Math.PI/2;glow.position.y=.16;g.add(glow)}
+  return g}
+function explode(){const ls=P.layers,n=ls.length,phone=/phone|mobile/i.test(P.thing),w=phone?(TALL?2.6:2.2):(TALL?3.0:4.4),d=phone?(TALL?5.0:4.2):(TALL?5.2:2.7),gap=TALL?1.25:1.0,tt=title(P.title||P.thing);
+  const parts=ls.map((nm,i)=>{const g=phone?phoneSlab(i,n,w,d):partMesh(nm,w,d);scene.add(g);const [head,...rest]=nm.split(':');
+    const lb=label(head.trim(),'tag',U*.022,'Inter',800),num=label(String(i+1),'box',U*.022,'Mono',700);
+    if(phone&&i===0){lb.style.background=K.sig||'#FFDD33';lb.style.color='#141414'}
+    const ds=rest.length?label(rest.join(':').trim(),'src',U*.017,'Inter',600):null;return {g,lb,num,ds}});
   const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('width',W);svg.setAttribute('height',H);svg.style.position='absolute';OV.insertBefore(svg,OV.firstChild);
   parts.forEach(p=>{p.ln=document.createElementNS('http://www.w3.org/2000/svg','line');p.ln.setAttribute('stroke',K.mark||'#D7262B');p.ln.setAttribute('stroke-width',Math.max(1.5,U*.003));svg.appendChild(p.ln)});
-  const mid=(n-1)*gap/2+.6,o={tx:TALL?0:.9,ty:mid,tz:0,a0:.95,a1:.45,r0:TALL?17:15,r1:TALL?19:16.5,h0:mid+3.2,h1:mid+5.2};
+  const side=phone&&TALL;   // a tall frame: the phone stands right, the labels in a column on the left
+  const mid=(n-1)*gap/2+.6,o={tx:side?-2.1:TALL?0:.9,ty:mid,tz:0,a0:.95,a1:.45,r0:TALL?17:15,r1:TALL?19:16.5,h0:mid+3.2,h1:mid+5.2};
   update=t=>{orbit(t,o);const e=E.inout(seg(t,.7,1.5));if(tt)tt.style.opacity=seg(t,.1,.3)*leave(t);
     parts.forEach((p,i)=>{const k=n-1-i;p.g.position.y=.3+k*(.16+(gap-.16)*e)+Math.sin(t*1.4+i)*.02*e;
-      const a=new THREE.Vector3(w*.5,p.g.position.y,0).project(camera),ax=(a.x*.5+.5)*W,ay=(-a.y*.5+.5)*H,lx=TALL?W*.72:W*.76,ly=ay-U*.01;
-      p.lb.style.left=lx+'px';p.lb.style.top=ly+'px';p.num.style.left=(ax-U*.012)+'px';p.num.style.top=ay+'px';
-      const bw=p.lb.getBoundingClientRect().width;p.ln.setAttribute('x1',ax);p.ln.setAttribute('y1',ay);p.ln.setAttribute('x2',lx-bw/2-U*.008);p.ln.setAttribute('y2',ly);
-      const v=seg(t,1.5+i*.14,.25)*leave(t);p.lb.style.opacity=v;p.ln.style.opacity=v;p.num.style.opacity=v})}}
+      const a=new THREE.Vector3(side?-w*.5:w*.5,p.g.position.y,0).project(camera),ax=(a.x*.5+.5)*W,ay=(-a.y*.5+.5)*H,ly=ay-U*.01;
+      const bw=p.lb.getBoundingClientRect().width,lx=side?W*.06+bw/2:TALL?W*.72:W*.76;
+      p.lb.style.left=lx+'px';p.lb.style.top=ly+'px';p.num.style.left=(ax+(side?U*.012:-U*.012))+'px';p.num.style.top=ay+'px';
+      p.ln.setAttribute('x1',ax);p.ln.setAttribute('y1',ay);p.ln.setAttribute('x2',side?lx+bw/2+U*.008:lx-bw/2-U*.008);p.ln.setAttribute('y2',ly);
+      if(p.ds){const dw=p.ds.getBoundingClientRect().width;p.ds.style.left=(side?W*.06+dw/2:lx)+'px';p.ds.style.top=(ly+U*.034)+'px';if(side)p.ds.style.maxWidth=(W*.42)+'px';else p.ds.style.maxWidth=(W-lx)*1.6+'px'}
+      const v=seg(t,1.5+i*.14,.25)*leave(t);p.lb.style.opacity=v;p.ln.style.opacity=v;p.num.style.opacity=v;if(p.ds)p.ds.style.opacity=v})}}
 
 function glyphs(text,size){const sc=size/FONT.resolution,out=[];let ox=0;
   for(const ch of text){const g=FONT.glyphs[ch]||FONT.glyphs['?'];if(!g)continue;
