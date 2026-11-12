@@ -173,3 +173,9 @@ CreatorForge serves only these two channels. A new feature must serve one of the
   - promote political films in India only with the ECI/MCMC pre-certificate (paid ads); otherwise promote freely.
     The owner lives in London, so UK defamation law applies too.
 - **Kill processes only by PID.** Commit and push every change; never open pull requests unless asked.
+
+## 7. Interactive Artifacts (owner, 2026-11-12)
+
+Every interactive Artifact follows `channels/ARTIFACT_MOTION_SYSTEM.md`, the owner's master Vox motion and sandbox
+system: no network calls, no CDNs or web fonts, no remote images, the house palette and stage spec, source
+receipts, a top-right Play/Replay and Hide UI bar, and the [SIMULATE], [3D_STAGE] and [SFX_LOG] shortcuts.

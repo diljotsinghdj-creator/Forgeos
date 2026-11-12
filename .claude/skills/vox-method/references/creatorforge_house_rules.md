@@ -68,3 +68,15 @@ The studio's screenplay format (`creatorforge/worker`) has its own graphic line 
 (`studio/gates.py`). When a blueprint is approved, translate each scene card into a screenplay scene. Where the engine
 can't draw a mode the blueprint needs, say so and list it as a build requirement. Don't swap in a generic stand-in
 (BRAIN_LOG 2026-11-11).
+
+## Interactive Artifacts (owner, 2026-11-12)
+
+Any interactive Artifact (chart, simulation, recording stage) follows
+`creatorforge/channels/ARTIFACT_MOTION_SYSTEM.md`:
+- self-contained vanilla HTML/CSS/JS only: no fetch, no CDN scripts, no web fonts, no remote images;
+- data hardcoded, with a bottom-left monospace source receipt;
+- system editorial fonts;
+- the house palette: paper #F4F1EA, ink #1C1C1C, yellow #F4D03F with multiply blending;
+- 16:9 stage with grain and desk shadow, overshoot pop-ins and 12 fps stepped hand-drawn strokes;
+- a top-right Play/Replay and Hide UI bar, with Space to replay;
+- the shortcuts [SIMULATE], [3D_STAGE] and [SFX_LOG].

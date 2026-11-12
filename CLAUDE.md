@@ -7,6 +7,9 @@ Read **`creatorforge/channels/MASTER_DIRECTIVES.md`** first. It holds the owner'
 - the production workflow;
 - the hard rules.
 
+For any interactive Artifact, also read **`creatorforge/channels/ARTIFACT_MOTION_SYSTEM.md`** (no network, no CDNs, house
+palette, recording controls).
+
 Then read **`creatorforge/channels/BRAIN_LOG.md`**: lessons from the owner's corrections, and the mechanics already
 used.
 
