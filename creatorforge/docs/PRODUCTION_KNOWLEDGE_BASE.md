@@ -156,11 +156,15 @@ are never a copied sequence.
 
 | Tool | Verdict | Why |
 |---|---|---|
-| p5.brush (npm, MIT, v3.0.0) | **Keep: worth adding** | Hand-painted strokes, watercolour fills and hatching drawn in code. The studio has nothing painterly yet; it fits Dragon Psychology's animation and gives the per-film look a new texture. |
-| cth9191/animate: shape-morph transitions | **Keep the idea** | The studio morphs shapes inside a scene (`Morph:`) but not as a cut between scenes; a morph transition would be new. Its boiling line and stepped camera are already in the studio (perfect-freehand and Rough.js ink that boils at 12 fps, the stepped option). Repository not opened here (GitHub blocked). |
+| p5.brush (npm, MIT, v3.0.0) | **Built** (2026-11-12): `Wash:` painted maps, standalone build vendored as `media/vendor/p5brush.js` | Hand-painted strokes, watercolour fills and hatching drawn in code. The studio has nothing painterly yet; it fits Dragon Psychology's animation and gives the per-film look a new texture. |
+| cth9191/animate: shape-morph transitions | **Built** (2026-11-12): the `morph` cut in `media/render.py` | The studio morphs shapes inside a scene (`Morph:`) but not as a cut between scenes; a morph transition would be new. Its boiling line and stepped camera are already in the studio (perfect-freehand and Rough.js ink that boils at 12 fps, the stepped option). Repository not opened here (GitHub blocked). |
 | claude-motion-design (HTML + Playwright + ffmpeg) | Already the studio's method | vox, scene3d and motion render HTML/SVG/three.js in headless Chromium and assemble with ffmpeg. |
 | digitalsamba/claude-code-video-toolkit (narrate, score, compose, render) | Already covered | The studio runs dossier → script → voice → score → timeline → scenes → QC → deliverables. Repository not opened here. |
 | opus-video-skills (p5.brush + three.js) | Covered by the two lines above | three.js is in the studio; p5.brush is the part worth taking. |
 | Remotion | Skip | Its licence charges companies above a small size; the studio already renders without it. |
 | Manim | Skip for now | Built for mathematical animation; the studio's charts and diagrams cover the channels' needs. |
 | HyperFrames | Already studied | See `docs/HYPERFRAMES_STUDY.md`. |
+| Remotion agent skill (npx skills add remotion) | Skip | Teaches Remotion's API; the studio doesn't use Remotion (licence above). |
+| Anything2Explainer | Skip unless its repository shows something new | Topic in, motion-graphics video out: the studio already does this, with the owner's gates, dossier and QC on top. Repository not opened. |
+| animation-studio (plugin directory) | Skip | Hand-drawn cartoon shorts; the channels are faceless documentaries with no characters. |
+| video-shotcraft (plugin directory) | Skip | Remotion product-video recipes; the studio's scenes already cover explainer shots. |

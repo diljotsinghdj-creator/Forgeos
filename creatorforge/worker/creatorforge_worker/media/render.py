@@ -35,7 +35,11 @@ TRANSITIONS = {
     "push": ("slideleft", 0.35),      # the same kind of chart again: the next one pushes in beside it
     "drop": ("slidedown", 0.4),       # an evidence card drops over the last
     "squeeze": ("squeezeh", 0.4),     # a comparison closes like a book onto its answer
+    # shape morph: the outgoing shot's main shape fills with the signature yellow, morphs into the incoming shot's
+    # main shape, and opens onto it (drawn over a plain blend, see _morph_clip)
+    "morph": (r"custom:expr=if(gt(P\,0.5)\,A\,B)", 0.5),   # the shots swap at the middle, under the shape
 }
+MORPH_COLOUR = (0xFF, 0xDD, 0x33)   # the channel's signature yellow
 SAMPLE_RATE = 48000
 TARGET_LUFS = -14
 AUDIO_EXT = (".mp3", ".wav", ".m4a", ".aac", ".ogg", ".flac")
@@ -56,6 +60,7 @@ class Clip:
     marks: Path | None = None  # pen marks / bubbles for this shot (ASS, clip-relative times) drawn ON the picture,
     #                           so they move with it (the cut-out's push-in, or the footage's own motion)
     track: list | None = None  # footage only: [(seconds, dx, dy)] how the picture content moved (pixels)
+    morph: Path | None = None  # the shape-morph overlay drawn over the cut INTO this clip (made by render_video)
     exit_zoom: bool = False   # match cut out of this shot: the camera accelerates into it at the end
     enter_zoom: bool = False  # match cut into this shot: it starts close and settles
     stepped: bool = False     # a drawn graphic: played at 12 frames a second, the hand-made look of video essays
@@ -614,6 +619,13 @@ def render_video(clips: list[Clip], audio: Path, captions: Path | None, width: i
         overlap = trans[i + 1][1] if i + 1 < len(clips) else tail
         jobs.append((c, max(2, round((c.duration + overlap) * FPS))))
     segments = _segments(jobs, width, height, work, cancel, progress)
+    for i in range(1, len(clips)):
+        if clips[i].transition == "morph":
+            try:
+                clips[i].morph = _morph_clip(segments[i - 1], clips[i - 1].duration, segments[i], trans[i][1],
+                                             width, height, work / f"morph_{i:03d}", cancel)
+            except Exception:              # no clear shape to read: the cut stays a plain blend
+                clips[i].morph = None
     total = sum(c.duration for c in clips) + tail
     if len(clips) <= CHUNK_SHOTS:
         _compose(clips, trans, segments, audio, captions, width, height, out, work, cancel, logo, grade,
@@ -646,6 +658,62 @@ def render_video(clips: list[Clip], audio: Path, captions: Path | None, width: i
     return total
 
 
+def _shape(rgb, small: int = 4):
+    """The main shape of a frame, as a boolean mask at 1/small size: pixels that differ from the page (the median
+    of the border), the largest connected part, holes filled. None when nothing clear stands out."""
+    import numpy as np
+    from scipy import ndimage
+    a = rgb[::small, ::small].astype(np.float32)
+    border = np.concatenate([a[0], a[-1], a[:, 0], a[:, -1]])
+    bg = np.median(border, axis=0)
+    diff = np.sqrt(((a - bg) ** 2).sum(axis=2)) > 42
+    diff = ndimage.binary_opening(diff, iterations=2)
+    lab, n = ndimage.label(diff)
+    if n == 0:
+        return None
+    sizes = ndimage.sum(diff, lab, range(1, n + 1))
+    big = lab == (int(np.argmax(sizes)) + 1)
+    big = ndimage.binary_fill_holes(ndimage.binary_closing(big, iterations=3))
+    frac = big.mean()
+    return big if 0.015 < frac < 0.85 else None
+
+
+def _morph_clip(seg_a: Path, t_a: float, seg_b: Path, dur: float, width: int, height: int, out_dir: Path,
+                cancel: threading.Event) -> Path:
+    """PNG frames (RGBA) of a yellow shape that takes the outgoing frame's main shape, morphs (signed distance
+    interpolation) into the incoming frame's main shape, and fades as the new shot settles. A frame with no clear
+    shape morphs to or from a centred disc."""
+    import numpy as np
+    from PIL import Image
+    from scipy import ndimage
+    out_dir.mkdir(parents=True, exist_ok=True)
+    frames = []
+    for seg, t in ((seg_a, t_a), (seg_b, dur)):
+        png = out_dir / f"src_{len(frames)}.png"
+        ff.run(["-ss", f"{max(0.0, t):.3f}", "-i", str(Path(seg).resolve()), "-frames:v", "1", "-y", str(png.resolve())], cancel)
+        frames.append(np.asarray(Image.open(png).convert("RGB").resize((width, height))))
+    small = 4
+    yy, xx = np.mgrid[0:frames[0][::small, ::small].shape[0], 0:frames[0][::small, ::small].shape[1]]
+
+    def disc():
+        cy, cx = yy.shape[0] / 2, yy.shape[1] / 2
+        return (yy - cy) ** 2 + (xx - cx) ** 2 < (min(yy.shape) * .22) ** 2
+    masks = [m if m is not None else disc() for m in (_shape(f, small) for f in frames)]
+    sdf = [ndimage.distance_transform_edt(~m) - ndimage.distance_transform_edt(m) for m in masks]
+    n = max(2, round(dur * FPS))
+    col = np.array(MORPH_COLOUR, dtype=np.float32)
+    for k in range(n):
+        t = k / (n - 1)
+        e = t * t * (3 - 2 * t)
+        d = (1 - e) * sdf[0] + e * sdf[1]
+        inside = 1 / (1 + np.exp(np.clip(d * 1.6, -30, 30)))            # soft, anti-aliased edge
+        env = min(1.0, 3.2 * min(t, 1 - t) + 0.12)                       # rises fast, holds, opens onto the new shot
+        a = Image.fromarray((inside * env * 255).astype(np.uint8)).resize((width, height), Image.BILINEAR)
+        rgba = np.dstack([np.broadcast_to(col, (height, width, 3)), np.asarray(a, dtype=np.float32)]).astype(np.uint8)
+        Image.fromarray(rgba, "RGBA").save(out_dir / f"m_{k:03d}.png")
+    return out_dir
+
+
 def _compose(clips: list[Clip], trans: list, segments: list[Path], audio: Path | None, captions: Path | None,
              width: int, height: int, out: Path, work: Path, cancel: threading.Event,
              logo: tuple[Path, str, float] | None, grade: str, t0: float, length: float, fade_out: bool) -> None:
@@ -665,6 +733,11 @@ def _compose(clips: list[Clip], trans: list, segments: list[Path], audio: Path |
         name, dur = trans[i]
         graph.append(f"[{last}][v{i}]xfade=transition={name}:duration={dur}:offset={offset:.3f}[x{i}]")
         last = f"x{i}"
+    morphs, mo_at = [], 0.0
+    for i in range(1, len(clips)):
+        mo_at += clips[i - 1].duration
+        if clips[i].morph is not None:
+            morphs.append((mo_at, clips[i].morph))
     total = length
     audio_idx = len(clips)
     nxt = len(clips) + (1 if audio is not None else 0)   # index of the next extra input
@@ -703,6 +776,13 @@ def _compose(clips: list[Clip], trans: list, segments: list[Path], audio: Path |
             graph.append(f"[{last}][tr{k}]overlay=x='{width}*(1-(t-{o:.3f})/{d:.3f})-{sw // 2}':y=0:"
                          f"enable='between(t,{o:.3f},{o + d:.3f})':eval=frame:eof_action=repeat,format=yuv420p[tear{k}]")
             last = f"tear{k}"
+    if morphs:
+        # each shape morph rides its cut: its frames start at the cut's offset (-itsoffset) and pass through after
+        base = nxt + (1 if logo is not None else 0) + (1 if tear_input is not None else 0)
+        for k, (o, mdir) in enumerate(morphs):
+            graph.append(f"[{base + k}:v]format=rgba,setpts=PTS-STARTPTS+{o:.3f}/TB[mk{k}]")
+            graph.append(f"[{last}][mk{k}]overlay=eof_action=pass:repeatlast=0,format=yuv420p[mo{k}]")
+            last = f"mo{k}"
     if logo is not None:
         # Brand watermark: about 14% of the frame width, in a corner, slightly transparent. Captions go on top.
         path, pos, opacity = logo
@@ -728,6 +808,8 @@ def _compose(clips: list[Clip], trans: list, segments: list[Path], audio: Path |
         args += ["-i", str(logo_png)]
     if tear_input is not None:
         args += ["-i", str(tear_input)]
+    for _, mdir in morphs:
+        args += ["-framerate", str(FPS), "-i", str((mdir / "m_%03d.png").resolve())]
     # -filter_complex_threads: every filter in a graph otherwise gets a thread per CPU core. With ~200 shots that
     # was over a thousand threads on 4 cores, and tens of thousands on a GPU server that shows 64+ cores, which
     # ran into the thread limit ("Failed to configure output pad ... Resource temporarily unavailable").

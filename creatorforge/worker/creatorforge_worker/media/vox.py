@@ -45,7 +45,7 @@ KINDS = ("hero", "desk", "pinboard", "opener", "reveal", "clipping", "pinmap", "
          "seats", "stack", "stand", "fan", "trend", "slice", "route", "compare", "photoline", "tv",
          "clockmap", "tornsplit", "newscard", "blueprint", "pyramid", "flowchart", "linkmap", "orgchart", "heatmap",
          "courtdoc", "table", "interview", "endcard", "polltrack", "area", "candles", "arrows", "railmap", "sizemap",
-         "borders", "morph", "shrink", "photo", "photos", "footage", "satellite", "flowmap", "columns", "dots", "myth", "counter", "staircase", "scale", "units", "reel", "conveyor", "tiles", "pile")
+         "borders", "morph", "shrink", "photo", "photos", "footage", "satellite", "flowmap", "columns", "dots", "myth", "counter", "staircase", "scale", "units", "reel", "conveyor", "tiles", "pile", "wash")
 
 
 # A look per video, so no two films share one face: paper, type, map colours and marker pen differ, the method doesn't.
@@ -729,6 +729,45 @@ def parse_pile(spec: str) -> dict | None:
     stamps = [x.strip().upper()[:12] for x in (parts[1].split(",") if len(parts) > 1 else []) if x.strip()] or ["FLAGGED"]
     return {"type": "pile", "n": n, "stamps": stamps[:3], "title": parts[2][:60] if len(parts) > 2 else "",
             "caption": parts[3][:110] if len(parts) > 3 else "", "seed": _seed(spec) % 10000}
+
+
+def parse_wash(spec: str) -> dict | None:
+    """'Wash: Bihar, Jharkhand, West Bengal | hi: Bihar | East India | note' - a painted map (p5.brush, MIT):
+    watercolour washes with bleeding edges and pencil outlines, the highlighted place in the signature yellow with
+    ink hatching, revealed as if brushed on from left to right. Places are states of one country, or countries."""
+    from . import maps
+    parts = [p.strip() for p in (spec or "").split("|")]
+    names = [x.strip() for x in parts[0].split(",") if x.strip()][:8] if parts else []
+    if not names:
+        return None
+    hi = next((re.sub(r"^hi\s*[:=]\s*", "", p) for p in parts[1:] if re.match(r"^hi\s*[:=]", p, re.I)), "")
+    rest = [p for p in parts[1:] if not re.match(r"^hi\s*[:=]", p, re.I)]
+
+    def thin(r, most=220):
+        k = max(1, len(r) // most)
+        return [[round(x, 3), round(y, 3)] for x, y in r[::k]]
+    shapes, context = [], []
+    st = _state_heat([{"label": n} for n in names])
+    if st and len(st[1]) == len(names):
+        country, hits = st
+        for s_, _ in hits:
+            shapes.append({"name": s_["n"], "rings": [thin(r) for r in s_["r"] if len(r) > 3]})
+        named = {s_["n"] for s_, _ in hits}
+        context = [thin(r, 120) for o in _states()[country] if o["n"] not in named for r in o["r"] if len(r) > 3]
+    else:
+        for n in names:
+            f = maps._find(n)
+            if not f or f["kind"] != "country":
+                return None
+            shapes.append({"name": f["name"], "rings": [thin(r) for r in f["rings"] if len(r) > 3]})
+    pts = [q for sh in shapes for r in sh["rings"] for q in r]
+    xs, ys = [q[0] for q in pts], [q[1] for q in pts]
+    px, py = (max(xs) - min(xs)) * .12 + .2, (max(ys) - min(ys)) * .12 + .2
+    box = [min(xs) - px, min(ys) - py, max(xs) + px, max(ys) + py]
+    context = [r for r in context if any(box[0] <= q[0] <= box[2] and box[1] <= q[1] <= box[3] for q in r)]
+    return {"type": "wash", "shapes": shapes, "context": context, "box": box,
+            "hi": next((sh["name"] for sh in shapes if _fold(sh["name"]) == _fold(hi)), ""),
+            "title": rest[0][:60] if rest else "", "note": rest[1][:90] if len(rest) > 1 else "", "seed": _seed(spec) % 10000}
 
 
 def parse_newscard(spec: str) -> dict | None:
@@ -1417,7 +1456,7 @@ PARSERS = {"photo": _photo_parser("photo"), "photos": _photo_parser("photos"), "
            "slice": parse_slice, "route": parse_route, "compare": parse_compare, "photoline": parse_photoline,
            "tv": parse_tv, "clockmap": parse_clockmap, "tornsplit": parse_tornsplit, "newscard": parse_newscard,
            "blueprint": parse_blueprint, "units": parse_units, "reel": parse_reel,
-           "conveyor": parse_conveyor, "tiles": parse_tiles, "pile": parse_pile}
+           "conveyor": parse_conveyor, "tiles": parse_tiles, "pile": parse_pile, "wash": parse_wash}
 
 
 def _ext_parser(mod: str, kind: str):
@@ -1722,7 +1761,7 @@ _PAGE = r"""<!doctype html><html><head><meta charset="utf-8"><style>
 %FONTS%
 html,body{margin:0;padding:0;background:%PAPER%;overflow:hidden}
 svg{display:block}
-</style><script>%SVGJS%</script><script>%HAND%</script><script>%ILLU%</script></head><body><script>
+</style><script>%SVGJS%</script><script>%HAND%</script><script>%ILLU%</script>%BRUSH%</head><body><script>
 const P=%PLAN%, W=%W%, H=%H%, DUR=%DUR%, K=%KIT%;
 const TALL=H>W, VERT=TALL||W<H*1.35, U=Math.min(W,H), ACC=K.acc, INK=K.ink, PAPER=K.paper, DARK=K.dark, SIG=K.sig||'#FFDD33', ACC2='#C8202D';   // ACC2: stamp ink
 // money drawings carry the currency the graphic's own figures are in (a dollar story never shows a rupee note)
@@ -2337,6 +2376,35 @@ function pile(){headline();
   const n=T(L.front,'0',VERT?W*.16:H*.16,VERT?W*.94:W*.95,VERT?H*.27:H*.25,{family:'Anton',weight:400,anchor:'end',fill:INK});
   count(n,P.n,t0,t1-t0,v=>String(Math.round(v)));
   const SQ=VERT&&!TALL;if(P.caption){const c=boxText(L.front,P.caption,U*.032,SQ?W*.62:W/2,y0+rows*(chh+gy)+U*.07,{anchor:'middle',maxw:SQ?W*.6:W*.86,most:3});wipe(c,t1)}}
+function wash(){headline(); // a painted map: p5.brush watercolour washes and pencil, brushed on from left to right
+  const [b0,b1,b2,b3]=P.box,kx=Math.cos((b1+b3)/2*Math.PI/180),aw=VERT?W*.9:W*.8,ah=VERT?H*.56:H*.7,
+    s=Math.min(aw/((b2-b0)*kx),ah/(b3-b1)),ox=W/2-(b2-b0)*kx*s/2,oy=(VERT?H*.26:H*.24)+(ah-(b3-b1)*s)/2,
+    pr=(lo,la)=>[ox+(lo-b0)*kx*s,oy+(b3-la)*s];
+  const pigments=['#8FA9C4','#A9B98F','#C4A28F','#9F94B8','#8FB8B0','#C2B07A','#B88F9F'];
+  let cv=null;try{cv=window.PB&&PB.createCanvas(W,H)}catch(e){cv=null}
+  if(cv){cv.style.cssText='position:absolute;left:-99999px;top:0';   // painted off-screen, then laid into the page as an image
+    PB.seed(P.seed);PB.noiseSeed(P.seed);PB.scaleBrushes(U/380);
+    const c=q=>{const [x,y]=pr(q[0],q[1]);return [x-W/2,y-H/2]};
+    PB.noFill();PB.set('HB','#8A8478',1.0);P.context.forEach(r=>PB.polygon(r.map(c)));   // the rest of the country, in pencil
+    P.shapes.forEach((sh,i)=>{const hi=sh.name===P.hi;sh.rings.forEach(r=>{const pts=r.map(c);
+      PB.noStroke();PB.noHatch();PB.fill(hi?SIG:pigments[i%pigments.length],hi?170:125);PB.fillBleed(hi?.16:.24);PB.fillTexture(.55,.35);PB.polygon(pts);
+      PB.noFill();if(hi){PB.set('rotring',INK,.7);PB.hatch(Math.max(6,U*.012),.7);PB.polygon(pts);PB.noHatch()}
+      PB.set('2B',INK,1.9);PB.polygon(pts)})});
+    PB.render();
+    let url='';try{url=cv.toDataURL('image/png')}catch(e){url=''}
+    if(url){const rv=draw.rect(0,H).move(0,0),cl=draw.clip().add(rv);const im=L.mid.image(url).size(W,H).move(0,0).clipWith(cl);
+      im.node.style.mixBlendMode='multiply';   // the paper shows through the wash, as on real paper
+      at(.15,1.5,p=>rv.width(Math.max(.1,W*p)),E.inout)}}   // brushed on from left to right
+  else{P.shapes.forEach((sh,i)=>sh.rings.forEach(r=>{const g=L.mid.polygon(r.map(q=>pr(q[0],q[1]).join(',')).join(' ')).fill(sh.name===P.hi?SIG:pigments[i%pigments.length]).opacity(.75).stroke({color:INK,width:2});wipe(g,.3)}))}
+  const taken=[];   // name tags at each place's centre, nudged apart so no two overlap
+  P.shapes.forEach((sh,i)=>{const big=sh.rings.reduce((a,r)=>r.length>a.length?r:a,[]);const pp=big.map(q=>pr(q[0],q[1]));
+    const cx=pp.reduce((a,q)=>a+q[0],0)/pp.length;let cy=pp.reduce((a,q)=>a+q[1],0)/pp.length;
+    const g=L.front.group(),t=T(g,sh.name.toUpperCase(),U*.026,cx,cy,{family:'Inter',weight:800,ls:'.1em',fill:'#FFFFFF'}),bb=t.bbox();
+    g.rect(bb.width+U*.02,bb.height+U*.008).move(bb.x-U*.01,bb.y-U*.004).fill(INK).back();
+    let box=g.bbox(),tries=0;const hit=b=>taken.some(o=>!(b.x2<o.x||b.x>o.x2||b.y2<o.y||b.y>o.y2));
+    while(hit(box)&&tries++<8){const dy=(box.height+U*.008)*(tries%2?1:-1)*Math.ceil(tries/2);g.attr({transform:`translate(0,${dy})`});box=g.rbox(draw)}
+    taken.push(box);wipe(g,1.0+i*.15);if(sh.name===P.hi)FOCUS={x:cx,y:cy,rx:U*.12,ry:U*.1}});
+  if(P.note){const t=T(L.front,P.note.toUpperCase(),U*.02,W*.06,VERT?H*.86:H*.92,{family:'Mono',weight:700,anchor:'start'});wipe(t,1.6)}}
 function fan(){ // curved bars around a photo disc, longest first
   const vs=P.values,mx=vs[0].value;const cx=VERT?W/2:W*.4,cy=VERT?H*.42:H*.5,room=Math.min(cx,W-cx,cy,H-cy)-U*.05-Math.max(...vs.map(v=>String(v.label||'').length))*U*.022*.78,rmax=Math.min(VERT?W*.34:H*.44,room),r0=Math.min(VERT?W*.17:H*.2,rmax*.5);
   const a0=-Math.PI*.95,span=Math.PI*1.3,seg=span/vs.length;
@@ -3097,7 +3165,7 @@ function footage(){ // moving footage, frame by frame, with the same annotations
   if(P.annotate&&P.annotate.length){const a=P.annotate[0];FOCUS={x:a.p[0]*W,y:a.p[1]*H,rx:U*.1,ry:U*.1}}
   photoCredit()}
 
-const SCENES={reel,conveyor,tiles,pile,units,myth,counter,staircase,scale,photo,photos,footage,shrink,morph,borders,courtdoc,table,interview,endcard,polltrack,area,candles,arrows,railmap,sizemap,pyramid,flowchart:flow,linkmap,orgchart,heatmap,hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv,
+const SCENES={wash,reel,conveyor,tiles,pile,units,myth,counter,staircase,scale,photo,photos,footage,shrink,morph,borders,courtdoc,table,interview,endcard,polltrack,area,candles,arrows,railmap,sizemap,pyramid,flowchart:flow,linkmap,orgchart,heatmap,hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv,
   clockmap,tornsplit,newscard,blueprint};
 async function boot(){
   try{await Promise.all(Array.from(document.fonts).map(f=>f.load()))}catch(e){}
@@ -3204,6 +3272,9 @@ def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: f
     page = (js.replace("%SVGJS%", motion.VENDOR.read_text(encoding="utf-8")).replace("%FONTS%", _font_css())
             .replace("%HAND%", (Path(__file__).parent / "vendor" / "hand.js").read_text(encoding="utf-8"))
             .replace("%ILLU%", (Path(__file__).parent / "vendor" / "illustrations.js").read_text(encoding="utf-8"))
+            .replace("%BRUSH%", "<script>" + (Path(__file__).parent / "vendor" / "p5brush.js").read_text(encoding="utf-8")
+                     + "</script><script>window.PB=window.brush;</script>"    # kept as PB: the page has its own brush()
+                     if plan.get("type") == "wash" else "")   # p5.brush (MIT) only where a scene paints
             .replace("%PAPER%", paper_hex).replace("%PLAN%", json.dumps(plan, ensure_ascii=False))
             .replace("%W%", str(width)).replace("%H%", str(height)).replace("%DUR%", f"{seconds:.3f}")
             .replace("%KIT%", json.dumps(kit)))
