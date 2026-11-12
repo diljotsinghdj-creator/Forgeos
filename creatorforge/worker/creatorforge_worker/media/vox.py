@@ -2185,17 +2185,20 @@ function counter(){ // a number counting in steady digits (each digit in its own
   const probe=T(g,'0',big,0,0,{family:'Anton',weight:400});const adv=probe.bbox().width*1.04;probe.remove();
   const n=Math.max(num(P.from).length,num(P.to).length),y=VERT?H*.42:H*.46;
   const pre=P.pre?T(g,P.pre,big,0,y,{family:'Anton',weight:400,fill:ACT,anchor:'end'}):null,post=P.post?T(g,P.post,big*(P.post.length>2?.5:1),0,y,{family:'Anton',weight:400,fill:ACT,anchor:'start'}):null;
-  const pw=pre?pre.bbox().width:0,qw=post?post.bbox().width+big*.06:0,x0=W/2-(adv*n+pw+qw)/2+pw;
-  if(pre)pre.attr({x:x0});if(post)post.attr({x:x0+adv*n+big*.06});
-  const slots=[];for(let i=0;i<n;i++)slots.push(T(g,'',big,x0+adv*(i+.5),y,{family:'Anton',weight:400,fill:ACT}));
+  // a decimal point or a comma gets a narrow slot (its place from the right never moves), digits a full one
+  const ref=num(Math.abs(P.to)>=Math.abs(P.from)?P.to:P.from).padStart(n,' '),sw=[...ref].map(c=>c==='.'||c===','?adv*.42:adv),
+        off=sw.map((w,i)=>sw.slice(0,i).reduce((a,b)=>a+b,0)),tot=sw.reduce((a,b)=>a+b,0);
+  const pw=pre?pre.bbox().width:0,qw=post?post.bbox().width+big*.06:0,x0=W/2-(tot+pw+qw)/2+pw;
+  if(pre)pre.attr({x:x0});if(post)post.attr({x:x0+tot+big*.06});
+  const slots=[];for(let i=0;i<n;i++)slots.push(T(g,'',big,x0+off[i]+sw[i]/2,y,{family:'Anton',weight:400,fill:ACT}));
   const show=v=>{const s=num(v).padStart(n,' ');for(let i=0;i<n;i++){const c=s[i]===' '?'':s[i];if(slots[i].text()!==c)slots[i].text(c)}
-    if(pre){const lead=s.length-s.trimStart().length;pre.attr({x:x0+adv*lead})}};   // the currency sign stays against the first digit
+    if(pre){const lead=s.length-s.trimStart().length;pre.attr({x:x0+(off[lead]||0)})}};   // the currency sign stays against the first digit
   show(P.from);const span=Math.min(1.6,Math.max(1.2,DUR*.3));
-  const tw=pw+adv*n+qw;if(tw>W*.9){const k=W*.9/tw;g.attr({transform:`translate(${W/2},${y}) scale(${k}) translate(${-W/2},${-y})`})}   // the full figure, unit included, fits the frame
+  const tw=pw+tot+qw;if(tw>W*.9){const k=W*.9/tw;g.attr({transform:`translate(${W/2},${y}) scale(${k}) translate(${-W/2},${-y})`})}   // the full figure, unit included, fits the frame
   TICKS.push(t=>{const p=Math.max(0,Math.min(1,(t-.35)/span)),e=1-Math.pow(1-p,4);show(P.from+(P.to-P.from)*e)});
   if(P.unit){const u=T(L.front,P.unit.toUpperCase(),U*.03,W/2,y+big*.62,{family:'Mono',weight:700,fill:FG,ls:'.2em'});fit(u,W*.86);wipe(u,.4)}
   if(P.caption){const c=boxText(L.front,P.caption,U*.045,W/2,VERT?H*.72:H*.8,{anchor:'middle',maxw:W*.84,most:2});c.opacity(0);at(.35+span+.15,.3,p=>c.opacity(p),E.snap)}
-  FOCUS={x:W/2,y:y-big*.35,rx:Math.min(W*.4,(adv*n+pw+qw)*.62),ry:big*.55}}
+  FOCUS={x:W/2,y:y-big*.35,rx:Math.min(W*.4,(tot+pw+qw)*.62),ry:big*.55}}
 function staircase(){ // isometric steps rising left to right; each one lights up as the story climbs it, the last in red
   const n=P.steps.length,top=VERT?H*.3:H*.24,bot=VERT?H*.82:H*.86,left=W*.08,right=W*.92,sw=(right-left)/n,sh=(bot-top)/n,d=Math.min(sw,sh)*.35;
   const g=L.hero.group(),red=K.mark||'#D7262B',seg=Math.max(.7,(DUR-1.6)/n),tops=[];

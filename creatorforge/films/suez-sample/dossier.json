@@ -39,12 +39,13 @@
   },
   {
    "id": "C2",
-   "claim": "The Ever Given is 400 metres long, longer than the Eiffel Tower is tall (330 m).",
+   "claim": "The Ever Given is 400 metres long, longer than the Eiffel Tower is tall (330 m). It can carry about 20,000 twenty-foot containers (TEU).",
    "status": "verified",
    "confidence": "high",
    "figures": [
     "400",
-    "330"
+    "330",
+    "20,000"
    ],
    "sources": [
     {
@@ -62,6 +63,11 @@
      "title": "Eiffel Tower (Wikipedia): height 330 m",
      "url": "https://en.wikipedia.org/wiki/Eiffel_Tower",
      "quote": "330 m (1,083 ft) with antennas"
+    },
+    {
+     "title": "Seatrade Maritime / Khaleej Times: the Ever Given carries the equivalent of 20,000 twenty-foot containers",
+     "url": "https://www.khaleejtimes.com/world/mena/monster-ship-blocking-suez-canal-finally-freed",
+     "quote": "[search summary] it carries the equivalent of 20,000 units of 20-foot containers"
     }
    ],
    "contradictions": [],
@@ -116,11 +122,13 @@
   },
   {
    "id": "C5",
-   "claim": "Lloyd's List estimated that the blockage held up about 9.6 billion US dollars of goods a day (its own rough calculation; figures of 9.5-9.7 billion appear in different reports).",
+   "claim": "Lloyd's List estimated that the blockage held up about 9.6 billion US dollars of goods a day (its own rough calculation; figures of 9.5-9.7 billion appear in different reports). Lloyd's List split it as about 5.1 billion westbound and 4.5 billion eastbound.",
    "status": "estimate",
    "confidence": "medium",
    "figures": [
-    "9.6"
+    "9.6",
+    "5.1",
+    "4.5"
    ],
    "sources": [
     {
@@ -186,12 +194,13 @@
   },
   {
    "id": "C8",
-   "claim": "Tug boats and a high tide freed the ship on 29 March 2021.",
+   "claim": "Tug boats and a high tide freed the ship on 29 March 2021. NASA reported the tide rose about 46 centimetres above normal that day.",
    "status": "verified",
    "confidence": "high",
    "figures": [
     "29",
-    "2021"
+    "2021",
+    "46"
    ],
    "sources": [
     {
@@ -204,6 +213,28 @@
      "title": "NBC News: Suez Canal ship Ever Given partially refloated after huge effort",
      "url": "https://www.nbcnews.com/news/world/suez-canal-ship-ever-given-partially-refloated-after-huge-effort-n1262299",
      "quote": "[search summary] tug boats, high tide"
+    }
+   ],
+   "contradictions": [],
+   "notes": ""
+  },
+  {
+   "id": "C9",
+   "claim": "On 21 March 2021, before the grounding, Sentinel-1 radar showed routine traffic in the canal with vessels every 2 to 3 km.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "21",
+    "2021",
+    "2",
+    "3"
+   ],
+   "sources": [
+    {
+     "title": "ESA: Suez Canal traffic jam seen from space",
+     "url": "https://www.esa.int/ESA_Multimedia/Images/2021/03/Suez_Canal_traffic_jam_seen_from_space",
+     "quote": "The image on the left, captured on 21 March, shows routine maritime traffic in the canal with vessels visible every 2 to 3 km.",
+     "primary": true
     }
    ],
    "contradictions": [],

@@ -136,5 +136,36 @@
    "steps",
    "statement"
   ]
+ },
+ {
+  "id": "suez-sample",
+  "title": "One ship, six days",
+  "channel": "sample",
+  "engine": "reverse-autopsy",
+  "hook_mechanism": "the queue on day six seen from orbit, then rewind to the one ship that caused it",
+  "metaphors": [
+   "a 400-metre ship stood on end against the Eiffel Tower"
+  ],
+  "archetype": "D",
+  "look": "swiss",
+  "accent": "#CA4B21",
+  "cinematography": "investigative",
+  "maps": "atlas",
+  "infographics": "objects",
+  "animation": "fluid",
+  "rhythm": "measured",
+  "music": "pulse",
+  "grade": "warm",
+  "kinds": [
+   "fly",
+   "photo",
+   "photo",
+   "towers3d",
+   "route",
+   "route",
+   "counter",
+   "calendar",
+   "statement"
+  ]
  }
 ]

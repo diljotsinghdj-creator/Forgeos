@@ -281,5 +281,29 @@
   ],
   "voice": "bf_alice",
   "look": "archive"
+ },
+ {
+  "id": "suez-sample",
+  "kind": "sample",
+  "channel": "print-facts",
+  "topic": "suez-ever-given",
+  "date": "2026-11-12",
+  "engine": "reverse-autopsy",
+  "hook_mechanism": "the queue on day six seen from orbit, then rewind to the one ship that caused it",
+  "hook_line": "Day six. At least three hundred and sixty-nine ships, reported waiting.",
+  "opening": "fly",
+  "shots": [
+   "Fly: Suez Canal | The Suez Canal, 28 March 2021 | satellite | badge: reported",
+   "Photo: asset:P0010 | push | Waiting at the canal's south end (NASA Terra) | at: 0.25, 0.35, 0.5, 0.45 | badge: verified",
+   "Photo: asset:P0009 | detail | Sentinel-1 radar, 25 March 2021 (ESA) | at: 0.42, 0.06, 0.32, 0.24 | annotate: circle 0.58,0.17,0.05 | badge: verified",
+   "Towers3d: Ever Given (on end) 400, Eiffel Tower 330 | Stood on end | m",
+   "Route: Shanghai → Suez Canal → Rotterdam | China to the Netherlands | ship",
+   "Route: Tokyo → Cape of Good Hope → Rotterdam | About 3,300 extra nautical miles | ship | pen | badge: estimate",
+   "Counter: $0 → $9.6 billion | a day | goods held up, Lloyd's List estimate | badge: estimate",
+   "Calendar: 29 MAR 2021 | tugs and a high tide free the Ever Given",
+   "Statement: One ship. *Six days.*"
+  ],
+  "voice": "bm_daniel",
+  "look": "swiss"
  }
 ]

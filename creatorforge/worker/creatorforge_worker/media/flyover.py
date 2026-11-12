@@ -90,7 +90,8 @@ def parse(spec: str) -> dict | None:
     opts = [x.strip() for x in title.split("|")]
     satellite = any(re.fullmatch(r"(style\s*[:=]\s*)?satellite", x, re.I) for x in opts)
     terrain = any(re.fullmatch(r"(style\s*[:=]\s*)?(terrain|topo|relief)", x, re.I) for x in opts)
-    title = " | ".join(x for x in opts if x and not re.fullmatch(r"(style\s*[:=]\s*)?(satellite|terrain|topo|relief)", x, re.I))
+    title = " | ".join(x for x in opts if x and not re.fullmatch(r"(style\s*[:=]\s*)?(satellite|terrain|topo|relief)", x, re.I)
+                       and not re.match(r"(badge|fx|camera|marker|inset|with|logo|exit|voice)\s*:", x, re.I))   # options, never title text
     parts = [x.strip() for x in re.split(r"→|->", head) if x.strip()][:5]
     if not parts:
         return None

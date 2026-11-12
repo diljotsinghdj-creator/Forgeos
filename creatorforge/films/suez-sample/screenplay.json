@@ -4,7 +4,7 @@
  "channel": "sample",
  "sample_for": "print-facts",
  "topic": "suez-ever-given",
- "target_seconds": 30,
+ "target_seconds": 60,
  "subject": "money",
  "genre": "economics",
  "native_material": "ESA and NASA satellite images of the blockage, sea routes, the ship's length",
@@ -42,7 +42,7 @@
    "delivery": "curious",
    "pause": 0.1,
    "narration": "Day six. At least three hundred and sixty-nine ships, reported waiting.",
-   "graphic": "Fly: Suez Canal | The Suez Canal, 28 March 2021 | satellite | badge: reported",
+   "graphic": "Fly: Suez Canal | The Suez Canal, 28 March 2021 | satellite",
    "claims": [
     "C4"
    ],
@@ -63,46 +63,111 @@
   },
   {
    "id": "S3",
+   "act": "world",
+   "purpose": "explain",
+   "delivery": "curious",
+   "pause": 0.15,
+   "narration": "So how does one ship stop a sea road between Asia and Europe?",
+   "graphic": "Title3d: ONE SHIP, SIX DAYS | Suez Canal · March 2021",
+   "claims": [],
+   "transition": "zoom"
+  },
+  {
+   "id": "S4",
    "act": "investigation",
    "purpose": "explain",
    "delivery": "measured",
    "pause": 0.1,
    "narration": "Rewind. The cause: one ship, wedged across the canal.",
-   "graphic": "Photo: asset:P0009 | detail | Sentinel-1 radar, 25 March 2021 (ESA) | at: 0.42, 0.06, 0.32, 0.24 | annotate: circle 0.58,0.17,0.05 | badge: verified",
+   "graphic": "Photo: asset:P0009 | detail | Sentinel-1 radar, 25 March 2021 (ESA) | at: 0.42, 0.06, 0.32, 0.24 | annotate: circle 0.585,0.175,0.028 | badge: verified",
    "claims": [
     "C1"
    ],
    "transition": "push"
   },
   {
-   "id": "S4",
+   "id": "S5",
    "act": "investigation",
    "purpose": "explain",
-   "delivery": "curious",
+   "delivery": "measured",
    "pause": 0.1,
-   "narration": "Four hundred metres long. On end, it beats the Eiffel Tower.",
-   "graphic": "Towers3d: Ever Given (on end) 400, Eiffel Tower 330 | Stood on end | m",
+   "narration": "Four days earlier, radar showed ships passing every two to three kilometres. Then nothing moved.",
+   "graphic": "Photos: asset:P0011, asset:P0009 | swipe | Sentinel-1 radar (ESA) | labels: 21 March, 25 March | badge: verified",
    "claims": [
-    "C2"
+    "C9",
+    "C1"
    ],
    "transition": "whip"
   },
   {
-   "id": "S5",
-   "act": "discovery",
+   "id": "S6",
+   "act": "investigation",
+   "purpose": "explain",
+   "delivery": "curious",
+   "pause": 0.1,
+   "narration": "The Ever Given. Four hundred metres long. On end, it beats the Eiffel Tower.",
+   "graphic": "Towers3d: Ever Given (on end) 400, Eiffel Tower 330 | Stood on end | m",
+   "claims": [
+    "C2"
+   ],
+   "transition": "push"
+  },
+  {
+   "id": "S7",
+   "act": "investigation",
    "purpose": "explain",
    "delivery": "measured",
-   "pause": 0.05,
-   "narration": "Sailing from China to the Netherlands.",
-   "graphic": "Route: Shanghai → Suez Canal → Rotterdam | China to the Netherlands | ship",
+   "pause": 0.1,
+   "narration": "It has room for about twenty thousand standard containers.",
+   "graphic": "Explode: Ever Given | containers, deck, hull, engine room | Room for about 20,000 containers | badge: illustrative",
    "claims": [
-    "C3"
+    "C2"
    ],
    "transition": "zoom"
   },
   {
-   "id": "S6",
+   "id": "S8",
    "act": "discovery",
+   "purpose": "explain",
+   "delivery": "measured",
+   "pause": 0.05,
+   "narration": "It was sailing from China to the Netherlands, through the shortcut.",
+   "graphic": "Route: Shanghai → Suez Canal → Rotterdam | China to the Netherlands | ship",
+   "claims": [
+    "C3"
+   ],
+   "transition": "whip"
+  },
+  {
+   "id": "S9",
+   "act": "discovery",
+   "purpose": "explain",
+   "delivery": "measured",
+   "pause": 0.1,
+   "narration": "Lloyd's List estimated about five billion dollars of goods a day heading west, and four and a half heading east.",
+   "graphic": "Flowmap: Shanghai → Rotterdam 5.1, Rotterdam → Shanghai 4.5 | Goods through the canal, each way, per day | $bn | badge: estimate",
+   "claims": [
+    "C5"
+   ],
+   "transition": "push"
+  },
+  {
+   "id": "S10",
+   "act": "consequences",
+   "purpose": "explain",
+   "delivery": "grave",
+   "pause": 0.1,
+   "narration": "Together, about nine point six billion dollars held up, every day.",
+   "graphic": "Counter: $0 → $9.6 billion | a day | goods held up, Lloyd's List estimate | badge: estimate",
+   "claims": [
+    "C5"
+   ],
+   "transition": "drop",
+   "role": "climax"
+  },
+  {
+   "id": "S11",
+   "act": "consequences",
    "purpose": "explain",
    "delivery": "measured",
    "pause": 0.1,
@@ -114,46 +179,46 @@
    "transition": "whip"
   },
   {
-   "id": "S7",
-   "act": "consequences",
-   "purpose": "explain",
-   "delivery": "grave",
-   "pause": 0.1,
-   "narration": "Lloyd's List estimated nine point six billion dollars of goods held up a day.",
-   "graphic": "Counter: $0 → $9.6 billion | a day | goods held up, Lloyd's List estimate | badge: estimate",
-   "claims": [
-    "C5"
-   ],
-   "transition": "push",
-   "role": "climax"
-  },
-  {
-   "id": "S8",
+   "id": "S12",
    "act": "consequences",
    "purpose": "explain",
    "delivery": "measured",
    "pause": 0.1,
-   "narration": "On the twenty-ninth, tugs and a high tide pulled her free.",
+   "narration": "On the twenty-ninth, NASA says, the tide rose about forty-six centimetres above normal.",
+   "graphic": "BigNumber: 46 cm | ship | the tide above normal, 29 March 2021 | badge: verified",
+   "claims": [
+    "C8"
+   ],
+   "transition": "zoom"
+  },
+  {
+   "id": "S13",
+   "act": "ending",
+   "purpose": "explain",
+   "delivery": "measured",
+   "pause": 0.1,
+   "narration": "Tugs pulled, and she floated free.",
    "graphic": "Calendar: 29 MAR 2021 | tugs and a high tide free the Ever Given",
    "claims": [
     "C8",
     "C1"
    ],
-   "transition": "whip"
+   "transition": "push"
   },
   {
-   "id": "S9",
+   "id": "S14",
    "act": "ending",
    "purpose": "explain",
    "delivery": "grave",
-   "pause": 0.5,
+   "pause": 0.6,
    "narration": "One ship. Six days.",
    "graphic": "Statement: One ship. *Six days.*",
    "claims": [
     "C1"
    ],
-   "transition": "drop",
-   "role": "ending"
+   "role": "ending",
+   "transition": "drop"
   }
- ]
+ ],
+ "owner_words_length": "\"Street the sample 1 minute\" (owner, 2026-11-12: stretch the sample to one minute)"
 }
