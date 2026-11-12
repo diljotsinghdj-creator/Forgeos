@@ -53,10 +53,11 @@
    "delivery": "measured",
    "pause": 0.15,
    "narration": "Astronomer Richard Carrington saw these sunspots flash white. A solar flare.",
-   "graphic": "Photo: asset:P0001 | detail | at: 0.55, 0.50, 0.30, 0.32 | annotate: circle 0.69, 0.66, 0.11 the flare | badge: verified",
+   "graphic": "Photo: asset:P0001 | pan-right | The white flashes he saw: a solar flare | badge: verified",
    "claims": [
     "C1"
-   ]
+   ],
+   "transition": "match"
   },
   {
    "id": "S3",
@@ -64,11 +65,12 @@
    "purpose": "explain",
    "delivery": "urgent",
    "pause": 0.1,
-   "narration": "Within days, the storm hit Earth.",
+   "narration": "Within days, by NASA's account, the storm hit Earth.",
    "graphic": "Animate: storm flies from sun to earth | Sun to Earth, 1859",
    "claims": [
     "C2"
-   ]
+   ],
+   "transition": "dissolve"
   },
   {
    "id": "S4",
@@ -88,15 +90,16 @@
    "purpose": "explain",
    "delivery": "urgent",
    "pause": 0.1,
-   "narration": "Northern lights glowed as far south as Cuba.",
+   "narration": "Accounts say northern lights glowed as far south as Cuba.",
    "graphic": "Fly: Cuba | Northern lights seen this far south, 1859 | badge: reported",
    "claims": [
     "C2"
-   ]
+   ],
+   "transition": "match"
   },
   {
    "id": "S6",
-   "act": "turn",
+   "act": "consequences",
    "purpose": "move",
    "delivery": "curious",
    "pause": 0.4,
@@ -106,7 +109,7 @@
   },
   {
    "id": "S7",
-   "act": "turn",
+   "act": "consequences",
    "purpose": "explain",
    "delivery": "measured",
    "pause": 0.1,
@@ -114,11 +117,12 @@
    "graphic": "Calendar: 23 JUL 2012 | A Carrington-class storm crosses Earth's orbit | badge: verified",
    "claims": [
     "C4"
-   ]
+   ],
+   "transition": "fade"
   },
   {
    "id": "S8",
-   "act": "turn",
+   "act": "consequences",
    "purpose": "move",
    "delivery": "grave",
    "pause": 0.25,
@@ -139,7 +143,9 @@
    "claims": [
     "C3",
     "C6"
-   ]
+   ],
+   "transition": "match"
   }
- ]
+ ],
+ "transition_family": "match cuts"
 }
