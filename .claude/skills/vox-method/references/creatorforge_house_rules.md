@@ -55,10 +55,12 @@ The owner's four engines, minus the last film's and those the brain log retires 
 two engines that are truly free. Tests on 2026-11-12 showed all three films landing on the same engine. When this
 happens:
 - say so in the pitch, and name which engines are blocked and why;
-- still pitch three, with the blocked ones honestly flagged;
-- optionally offer one new engine, built from an architecture in `vox_storytelling_methodology.md` §4 (forensic,
-  controlled comparison, object biography…), clearly marked as **a suggestion**. A new engine joins the house list
-  only if the owner says yes (BRAIN_LOG 2026-11-10: Claude's suggestions stay suggestions).
+- still pitch **three of the four house engines** (gate 1 in `studio/gates.py` rejects any other name), with the
+  blocked ones honestly flagged;
+- a new engine (forensic, controlled comparison, object biography…, from `vox_storytelling_methodology.md` §4) may
+  be offered only **in addition to** the three, clearly marked as a suggestion, never as one of them. It joins the
+  house list only if the owner says yes (BRAIN_LOG 2026-11-10: Claude's suggestions stay suggestions). Gate 1
+  stopped a sample on 2026-11-12 for exactly this.
 
 ## Handing the blueprint to the studio engine
 
