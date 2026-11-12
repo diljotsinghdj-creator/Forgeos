@@ -55,7 +55,7 @@
    "delivery": "measured",
    "pause": 0.05,
    "narration": "From space, the queue looks like this.",
-   "graphic": "Photo: asset:P0010 | push | Waiting at the canal's south end (NASA Terra) | at: 0.25, 0.35, 0.5, 0.45 | badge: verified",
+   "graphic": "Photo: asset:P0010 | push | Waiting at the canal's south end (NASA Terra) | at: 0.25, 0.35, 0.5, 0.45 | frame: taped | badge: verified",
    "claims": [
     "C7"
    ],
@@ -68,7 +68,7 @@
    "delivery": "curious",
    "pause": 0.15,
    "narration": "So how does one ship stop a sea road between Asia and Europe?",
-   "graphic": "Title3d: ONE SHIP, SIX DAYS | Suez Canal · March 2021",
+   "graphic": "Tornsplit: container ship + tugboat | ONE SHIP, SIX DAYS | Suez Canal · March 2021",
    "claims": [
     "C1"
    ],
@@ -81,7 +81,7 @@
    "delivery": "measured",
    "pause": 0.1,
    "narration": "Rewind. The cause: one ship, wedged across the canal.",
-   "graphic": "Photo: asset:P0009 | detail | Sentinel-1 radar, 25 March 2021 (ESA) | at: 0.42, 0.06, 0.32, 0.24 | annotate: circle 0.585,0.175,0.028 | badge: verified",
+   "graphic": "Photo: asset:P0009 | detail | Sentinel-1 radar, 25 March 2021 (ESA) | at: 0.42, 0.06, 0.32, 0.24 | annotate: circle 0.585,0.175,0.028 | frame: print | badge: verified",
    "claims": [
     "C1"
    ],
@@ -121,7 +121,7 @@
    "delivery": "measured",
    "pause": 0.1,
    "narration": "It has room for about twenty thousand standard containers.",
-   "graphic": "Explode: Ever Given | containers, deck, hull, engine room | Room for about 20,000 containers | badge: illustrative",
+   "graphic": "Hero: container ship | ROOM FOR 20,000 | containers · TEU | twenty-foot boxes, by capacity",
    "claims": [
     "C2"
    ],
@@ -134,7 +134,7 @@
    "delivery": "measured",
    "pause": 0.05,
    "narration": "It was sailing from China to the Netherlands, through the shortcut.",
-   "graphic": "Route: Shanghai → Suez Canal → Rotterdam | China to the Netherlands | ship",
+   "graphic": "Route: Shanghai → Suez Canal → Rotterdam | China to the Netherlands | ship | atlas",
    "claims": [
     "C3"
    ],
@@ -147,7 +147,7 @@
    "delivery": "measured",
    "pause": 0.1,
    "narration": "Lloyd's List estimated about five billion dollars of goods a day heading west, and four and a half heading east.",
-   "graphic": "Flowmap: Shanghai → Rotterdam 5.1, Rotterdam → Shanghai 4.5 | Goods through the canal, each way, per day | $bn | badge: estimate",
+   "graphic": "Clipping: Suez Canal blockage halts $9.6bn a day of ship traffic | Al Jazeera, March 2021 | container ship + cash",
    "claims": [
     "C5"
    ],
@@ -200,7 +200,7 @@
    "delivery": "measured",
    "pause": 0.1,
    "narration": "Tugs pulled, and she floated free.",
-   "graphic": "Calendar: 29 MAR 2021 | tugs and a high tide free the Ever Given",
+   "graphic": "Pinboard: Ever Given · 23 MAR 2021 · 29 MAR 2021 · FREED | Six days, start to finish",
    "claims": [
     "C8",
     "C1"
@@ -222,5 +222,9 @@
    "transition": "drop"
   }
  ],
- "owner_words_length": "\"Street the sample 1 minute\" (owner, 2026-11-12: stretch the sample to one minute)"
+ "owner_words_length": "\"Street the sample 1 minute\" (owner, 2026-11-12: stretch the sample to one minute)",
+ "art": {
+  "archetype": "C"
+ },
+ "owner_words_mixed_media": "\"Remember mixed media\" (owner, 2026-11-12)"
 }

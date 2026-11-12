@@ -134,7 +134,7 @@
   "opening": "fly",
   "family": "camera moves",
   "tempo": 4.0,
-  "avg_shot": 3.75,
+  "avg_shot": 4.23,
   "camera": "steady push-ins",
   "sound": "dry pulse; coin and register textures",
   "keyframes": [
@@ -144,7 +144,9 @@
   ],
   "beds": [
    "hum_0040",
-   "sea_0080"
+   "hum_0085",
+   "sea_0040",
+   "sea_0055"
   ]
  }
 ]

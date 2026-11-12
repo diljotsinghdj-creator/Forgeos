@@ -159,11 +159,16 @@
   "kinds": [
    "fly",
    "photo",
+   "title3d",
    "photo",
+   "photos",
    "towers3d",
+   "explode",
    "route",
-   "route",
+   "flowmap",
    "counter",
+   "route",
+   "bignumber",
    "calendar",
    "statement"
   ]
