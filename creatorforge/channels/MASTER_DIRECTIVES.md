@@ -174,8 +174,14 @@ CreatorForge serves only these two channels. A new feature must serve one of the
     The owner lives in London, so UK defamation law applies too.
 - **Kill processes only by PID.** Commit and push every change; never open pull requests unless asked.
 
-## 7. Interactive Artifacts (owner, 2026-11-12)
+## 7. The Vox production system (owner, 2026-11-12, both channels)
 
-Every interactive Artifact follows `channels/ARTIFACT_MOTION_SYSTEM.md`, the owner's master Vox motion and sandbox
-system: no network calls, no CDNs or web fonts, no remote images, the house palette and stage spec, source
-receipts, a top-right Play/Replay and Hide UI bar, and the [SIMULATE], [3D_STAGE] and [SFX_LOG] shortcuts.
+Every video, script and Artifact on both channels follows `channels/VOX_PRODUCTION_SYSTEM.md`:
+- a different visual archetype each episode (A editorial paper, B dark intelligence, C declassified archive, D Swiss
+  data, E noir), named as the "Episode Visual Theme";
+- the mixed-media collage vocabulary;
+- rigid paper physics and the filmed optical finish;
+- the Artifact sandbox (no network, CDNs, web fonts or remote images);
+- the top-right Play/Replay and Hide UI controls;
+- the 3-handle filter and the 30-cue master canvas;
+- the [STYLE_SHIFT], [SIMULATE], [3D_STAGE], [SFX_LOG] and [SCRIPT_PLAN] shortcuts.

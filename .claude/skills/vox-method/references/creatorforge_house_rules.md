@@ -69,14 +69,19 @@ The studio's screenplay format (`creatorforge/worker`) has its own graphic line 
 can't draw a mode the blueprint needs, say so and list it as a build requirement. Don't swap in a generic stand-in
 (BRAIN_LOG 2026-11-11).
 
-## Interactive Artifacts (owner, 2026-11-12)
+## The owner's Vox production system (2026-11-12, both channels)
 
-Any interactive Artifact (chart, simulation, recording stage) follows
-`creatorforge/channels/ARTIFACT_MOTION_SYSTEM.md`:
-- self-contained vanilla HTML/CSS/JS only: no fetch, no CDN scripts, no web fonts, no remote images;
-- data hardcoded, with a bottom-left monospace source receipt;
-- system editorial fonts;
-- the house palette: paper #F4F1EA, ink #1C1C1C, yellow #F4D03F with multiply blending;
-- 16:9 stage with grain and desk shadow, overshoot pop-ins and 12 fps stepped hand-drawn strokes;
-- a top-right Play/Replay and Hide UI bar, with Space to replay;
-- the shortcuts [SIMULATE], [3D_STAGE] and [SFX_LOG].
+Read `creatorforge/channels/VOX_PRODUCTION_SYSTEM.md` before any film, script or Artifact. In this skill's terms:
+- **Visual identity:** the owner's archetypes (A–E or a fresh hybrid) are the starting point for `dna`. Name the
+  "Episode Visual Theme"; never the last episode's archetype.
+- **[STYLE_SHIFT]** = three visual concepts before building, alongside the three engine pitches (gate 1).
+- **Scripts:** at least two of the three handles (Geography, Numbers, Time). One reusable master canvas (30-cue
+  rule). Focal points on the centre or the thirds for match cuts. ~150 WPM, one beat every 3.5–4.5 s.
+- **Motion:** rigid paper physics (4–6 frame overshoot, then still), 12 fps stepped hand-drawn accents, smooth
+  camera, and the optical finish (chromatic edge split, print offset, vignette, grain swaps every 8–12 frames).
+- **Receipts:** a bottom-left monospace source citation on every data visual.
+- **Sound:** [SFX_LOG] under every script or visual (low-passed foley 2 frames early, room tone at −35 dB, an
+  analog noise floor in music drops).
+- **Artifacts:** fully self-contained vanilla code, with the top-right Play/Replay and Hide UI bar.
+- **Where it meets the hard rules:** real people only from real credited photos (no invented likeness); films keep
+  #FFDD33 as the signal and real evidence first. See the notes at the end of the system file.

@@ -7,8 +7,9 @@ Read **`creatorforge/channels/MASTER_DIRECTIVES.md`** first. It holds the owner'
 - the production workflow;
 - the hard rules.
 
-For any interactive Artifact, also read **`creatorforge/channels/ARTIFACT_MOTION_SYSTEM.md`** (no network, no CDNs, house
-palette, recording controls).
+Also read **`creatorforge/channels/VOX_PRODUCTION_SYSTEM.md`**: the owner's production system for both channels
+(visual archetypes that rotate every episode, the collage vocabulary, paper physics and optical finish, the Artifact
+sandbox rules, and the [STYLE_SHIFT] [SIMULATE] [3D_STAGE] [SFX_LOG] [SCRIPT_PLAN] shortcuts).
 
 Then read **`creatorforge/channels/BRAIN_LOG.md`**: lessons from the owner's corrections, and the mechanics already
 used.
