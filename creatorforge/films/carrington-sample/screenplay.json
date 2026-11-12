@@ -1,0 +1,145 @@
+{
+ "id": "carrington-sample",
+ "title": "The 1859 storm in 30 seconds",
+ "channel": "sample",
+ "sample_for": "print-facts",
+ "topic": "carrington-event",
+ "target_seconds": 30,
+ "subject": "space weather",
+ "genre": "science",
+ "native_material": "Carrington's 1859 drawing, telegraph lines, auroras, solar storm records",
+ "engine": "live-viewer-trap",
+ "hook_mechanism": "the viewer guesses what Carrington's 1859 drawing broke, then what it would break today",
+ "metaphors": [
+  "the viewer's own guess, asked twice: 1859 and today"
+ ],
+ "pick": {
+  "engine": "live-viewer-trap",
+  "pitched": [
+   "historical-echo",
+   "live-viewer-trap",
+   "trojan-horse"
+  ],
+  "owner_words": "\"Live Viewer Trap\" (re-pitched after gate 1 stopped the first pitch, whose third option was not a house engine; Reverse Autopsy excluded as the last piece's engine; Trojan Horse flagged as retired for samples)",
+  "date": "2026-11-12"
+ },
+ "language": "en",
+ "lang": "en-gb",
+ "voice": "bm_lewis",
+ "concept": {
+  "logline": "The worst solar storm on record, and the one that missed us in 2012.",
+  "central_question": "What would the 1859 storm do today?",
+  "claim": "In 1859 a solar storm set telegraph offices on fire; in 2012 a storm as strong missed Earth by about a week."
+ },
+ "thumbnail": "Statement: What would it break *today*?",
+ "cutdowns": [],
+ "scenes": [
+  {
+   "id": "S1",
+   "act": "hook",
+   "purpose": "orient",
+   "delivery": "curious",
+   "pause": 0.3,
+   "narration": "This is a drawing from September 1859. Guess what it broke.",
+   "graphic": "Photo: asset:P0001 | push | Richard Carrington's drawing, 1 September 1859 | badge: verified",
+   "claims": [
+    "C1"
+   ]
+  },
+  {
+   "id": "S2",
+   "act": "discovery",
+   "purpose": "explain",
+   "delivery": "measured",
+   "pause": 0.15,
+   "narration": "Astronomer Richard Carrington saw these sunspots flash white. A solar flare.",
+   "graphic": "Photo: asset:P0001 | detail | at: 0.55, 0.50, 0.30, 0.32 | annotate: circle 0.69, 0.66, 0.11 the flare | badge: verified",
+   "claims": [
+    "C1"
+   ]
+  },
+  {
+   "id": "S3",
+   "act": "discovery",
+   "purpose": "explain",
+   "delivery": "urgent",
+   "pause": 0.1,
+   "narration": "Within days, the storm hit Earth.",
+   "graphic": "Animate: storm flies from sun to earth | Sun to Earth, 1859",
+   "claims": [
+    "C2"
+   ]
+  },
+  {
+   "id": "S4",
+   "act": "discovery",
+   "purpose": "explain",
+   "delivery": "urgent",
+   "pause": 0.15,
+   "narration": "Telegraph lines sparked. Some offices caught fire.",
+   "graphic": "Hero: telegraph | LINES ON FIRE | 1859 · telegraph offices | badge: reported | fx: sparks",
+   "claims": [
+    "C3"
+   ]
+  },
+  {
+   "id": "S5",
+   "act": "discovery",
+   "purpose": "explain",
+   "delivery": "urgent",
+   "pause": 0.1,
+   "narration": "Northern lights glowed as far south as Cuba.",
+   "graphic": "Fly: Cuba | Northern lights seen this far south, 1859 | badge: reported",
+   "claims": [
+    "C2"
+   ]
+  },
+  {
+   "id": "S6",
+   "act": "turn",
+   "purpose": "move",
+   "delivery": "curious",
+   "pause": 0.4,
+   "narration": "Now guess again. What would it break today?",
+   "graphic": "Statement: What would it break *today*?",
+   "claims": []
+  },
+  {
+   "id": "S7",
+   "act": "turn",
+   "purpose": "explain",
+   "delivery": "measured",
+   "pause": 0.1,
+   "narration": "In July 2012, a storm that strong crossed Earth's path.",
+   "graphic": "Calendar: 23 JUL 2012 | A Carrington-class storm crosses Earth's orbit | badge: verified",
+   "claims": [
+    "C4"
+   ]
+  },
+  {
+   "id": "S8",
+   "act": "turn",
+   "purpose": "move",
+   "delivery": "grave",
+   "pause": 0.25,
+   "narration": "A week earlier, it would have hit us.",
+   "graphic": "Statement: *One week* from a direct hit",
+   "claims": [
+    "C4"
+   ]
+  },
+  {
+   "id": "S9",
+   "act": "ending",
+   "purpose": "move",
+   "delivery": "grave",
+   "pause": 0.5,
+   "narration": "Analysts say it could knock out everything we plug in.",
+   "graphic": "Compare: telegraph + power socket | 1859 | today | What the same storm could hit | badge: estimate",
+   "claims": [
+    "C3",
+    "C6"
+   ]
+  }
+ ]
+}
