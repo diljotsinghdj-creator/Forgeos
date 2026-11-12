@@ -6,12 +6,8 @@ published: "2017-02-17 (TheTVDB, Vox Atlas S01E01, via search excerpt)"
 series: Vox Atlas (episode 1)
 producer: "not confirmed for this episode; TheTVDB's series description names senior producer Sam Ellis as the maker of Vox Atlas"
 category: geopolitics
-length: "about 5 minutes (TheTVDB, via search excerpt)"
-evidence_basis: >
-  Web-search result excerpts only: TheTVDB Vox Atlas series and episode pages (series description, episode
-  description, runtime), the YouTube description quoted in search results, Vox's Facebook reposts (view count),
-  Wikipedia "Great Wall of Sand" (cites the video). NOT accessed: the video, frames, audio, transcript, any Vox
-  companion article. No shot is described as seen.
+length: 7:25 (rosetta.to listing; corrects the earlier "about 5 minutes")
+evidence_basis: Verification pass 2026-11-12, pages opened directly - rosetta.to page carrying the YouTube embed (id luTPMHC7zHY, matching the url field), date, length, a short chapter list (0:00, 0:02, 1:51, 3:05), and a full transcript; YouTube oEmbed endpoint confirming the id is titled "Why China is building islands in the South China Sea" on the Vox channel. Video frames still NOT viewed. Earlier pass, kept for reference - Web-search result excerpts only: TheTVDB Vox Atlas series and episode pages (series description, episode description, runtime), the YouTube description quoted in search results, Vox's Facebook reposts (view count), Wikipedia 'Great Wall of Sand' (cites the video). NOT accessed: the video, frames, audio, transcript, any Vox companion article. No shot is described as seen.
 ---
 
 # Why China is building islands in the South China Sea
@@ -28,14 +24,16 @@ Timestamps appear only when a source (transcript, chapter list) supplies them.
 - [I] Central question: "why build land in the sea?" The title asks motive, and the description signals that the answer contradicts the official explanation.
 
 ## 2. Opening technique
-- Not verified. [I] The title's "why" plus the "says X, does Y" description suggests the film sets the official claim against the physical evidence early.
+- [V] Opens by pointing at one island: Fiery Cross, a little over a square mile, with a 10,000 ft airstrip, radar, missile defence and about 200 troops; then the twist that two years earlier it did not exist (transcript).
+- [V] The narration then directs the viewer to a 2014 satellite image of Chinese ships pumping sand onto reefs in the Spratlys, followed by news audio (transcript; "if you look at this satellite image").
+- [I] Evidence first: the satellite image is the first exhibit, before any explanation of claims.
 
 ## 3. Narrative structure
 - [V] Series design: Vox Atlas uses maps to show where conflicts happen and how foreign policy shapes a region (TheTVDB series description).
 - [I] Likely shape for a five-minute Atlas piece: locate (where are these reefs), claim (who claims what), evidence (what has been built), motive (why it matters strategically). Not verified.
 
 ## 4. Narration characteristics
-- Not verified.
+- [V] Unnamed narrator who points at images ("this is", "in this image") and explains claims and law (the exclusive economic zone section starts at 1:51 per the chapter list) (transcript; rosetta.to).
 
 ## 5. Visual techniques
 - [V] Map-led by series definition (TheTVDB series description).
@@ -74,3 +72,6 @@ Timestamps appear only when a source (transcript, chapter list) supplies them.
 - YouTube listing (description via search excerpt): https://www.youtube.com/watch?v=luTPMHC7zHY
 - Vox Facebook repost: https://www.facebook.com/Vox/videos/why-china-is-building-islands-in-the-south-china-sea/741925602661711/ (search excerpt)
 - Wikipedia, Great Wall of Sand: https://en.wikipedia.org/wiki/Great_Wall_of_Sand (search excerpt)
+(Entries above this note were read only through search-result summaries in the earlier pass.)
+- rosetta.to page with full transcript (opened 2026-11-12): https://rosetta.to/u/vox/why-china-is-building-islands-in-the-south-china-sea
+- YouTube oEmbed check of the id (opened 2026-11-12): https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=luTPMHC7zHY&format=json

@@ -6,13 +6,8 @@ published: "2015-09-23 (TheTVDB listing and National Democratic Redistricting Co
 series: standalone (policy explainer linked to a Vox card stack)
 producer: "presented by Ezra Klein, then Vox editor-in-chief (description); producer credit not confirmed"
 category: politics
-length: not confirmed
-evidence_basis: >
-  Web-search result excerpts only: the YouTube listing's description (via search), TheTVDB listing, the Sanders
-  Institute and National Democratic Redistricting Committee reposts (which summarise the content), and a
-  course-reader page that reproduces Vox's companion card stack "Gerrymandering, explained" (collegesidekick).
-  NOT accessed: the video, frames, audio, transcript, or vox.com itself (blocked to the fetch tool). Whether the
-  piece is animated, on camera or mixed is not confirmed.
+length: 2:46 (rosetta.to listing)
+evidence_basis: Verification pass 2026-11-12, pages opened directly - rosetta.to page carrying the YouTube embed (id QZZwoObFMhU, matching the url field), date, length, a short chapter list (0:00, 0:17), and a full transcript; YouTube oEmbed endpoint confirming the id is titled "Gerrymandering: How politicians rig elections" on the Vox channel. Video frames still NOT viewed. Earlier pass, kept for reference - Web-search result excerpts only: the YouTube listing's description (via search), TheTVDB listing, the Sanders Institute and National Democratic Redistricting Committee reposts (which summarise the content), and a course-reader page that reproduces Vox's companion card stack 'Gerrymandering, explained' (collegesidekick). NOT accessed: the video, frames, audio, transcript, or vox.com itself (blocked to the fetch tool). Whether the piece is animated, on camera or mixed is not confirmed.
 ---
 
 # Gerrymandering: How politicians rig elections
@@ -29,8 +24,9 @@ Timestamps appear only when a source (transcript, chapter list) supplies them.
 - [I] Central question: "who draws the lines, and what happens when the players draw the field?" A mechanism-plus-remedy explainer, not a history.
 
 ## 2. Opening technique
-- [V] The description leads with a hard number (435 districts) and a rule (they must be redrawn).
-- [I] If the film mirrors its description, it opens on the neutral mechanism first and only then introduces the conflict of interest. Not verified against the video.
+- [V] Opens with a joke list of things Canada does better (poutine, politeness, a sitcom reference) ending on "elections", then the core inversion: voters should choose politicians, but in America politicians often choose their voters (transcript).
+- [V] The history (Elbridge Gerry, 1810-1812) starts at 0:17 per the chapter list (rosetta.to).
+- [I] Correction to the earlier inference: the film opens on a comic comparison and the conflict of interest, not on the neutral mechanism.
 
 ## 3. Narrative structure
 - [V] Reported beats: the mechanism (districts, redrawing); a case study in North Carolina; an alternative in the form of Canada's independent commissions (Sanders Institute summary).
@@ -78,3 +74,6 @@ Timestamps appear only when a source (transcript, chapter list) supplies them.
 - Vox Cards reprint (course reader): https://www.collegesidekick.com/study-guides/cochise-usgovernment/reading-vox-cards-gerrymandering-explained (search excerpt)
 - Vox on X, "Whose Vote Counts, Explained": https://twitter.com/voxdotcom/status/1310581276257079296 (search excerpt)
 - Wikipedia, Whose Vote Counts, Explained: https://en.wikipedia.org/wiki/Whose_Vote_Counts,_Explained (search excerpt)
+(Entries above this note were read only through search-result summaries in the earlier pass.)
+- rosetta.to page with full transcript (opened 2026-11-12): https://rosetta.to/u/vox/gerrymandering-how-politicians-rig-elections
+- YouTube oEmbed check of the id (opened 2026-11-12): https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=QZZwoObFMhU&format=json

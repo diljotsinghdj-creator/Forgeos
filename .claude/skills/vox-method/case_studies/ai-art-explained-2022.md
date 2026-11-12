@@ -7,7 +7,7 @@ series: standalone
 producer: Joss Fong (Gradient podcast show notes list her as its author; a blog post by James Gurney credits "producer Joss Fong and her team")
 category: technology
 length: 13:32 (rosetta.to listing, via search summary)
-evidence_basis: Web-search result summaries of the YouTube listing, a ytscribe transcript page (opening excerpt only), rosetta.to listing, Gurney Journey blog post, Boing Boing post, and The Gradient podcast episode page (interview with Joss Fong, 2024). Full transcript and frames NOT accessed; direct fetches to these hosts failed in this session. No shots described from observation.
+evidence_basis: Verification pass 2026-11-12, pages opened directly - rosetta.to page carrying the YouTube embed (id SVcsDDABEkM, matching the url field), date, view count, untimed chapter titles and a full transcript; YouTube oEmbed endpoint confirming the id is titled "AI art, explained" on the Vox channel. Video frames still NOT viewed. Earlier pass, kept for reference - Web-search result summaries of the YouTube listing, a ytscribe transcript page (opening excerpt only), rosetta.to listing, Gurney Journey blog post, Boing Boing post, and The Gradient podcast episode page (interview with Joss Fong, 2024). Full transcript and frames NOT accessed; direct fetches to these hosts failed in this session. No shots described from observation.
 ---
 
 # AI art, explained
@@ -72,3 +72,6 @@ Timestamps appear only when a source (transcript, chapter list) supplies them.
 - Boing Boing: https://boingboing.net/2022/06/03/how-do-ai-art-generators-work.html
 - The Gradient, Joss Fong interview: https://thegradientpub.substack.com/p/joss-fong-videomaking-ai-science-communication
 - indac.org listing of bonus video: https://indac.org/blog/vox-bonus-video-what-ai-art-means-for-human-artists/
+(Entries above this note were read only through search-result summaries in the earlier pass.)
+- rosetta.to page with full transcript (opened 2026-11-12): https://rosetta.to/u/vox/ai-art-explained
+- YouTube oEmbed check of the id (opened 2026-11-12): https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=SVcsDDABEkM&format=json

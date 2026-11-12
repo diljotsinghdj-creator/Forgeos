@@ -373,3 +373,24 @@ Motion's Caswell interview) would firm up the craft layer.
 - Reframe ending for long films, attributed and with the opposing view shown.
 - A companion drop (data set, source list) with every film.
 
+
+## Verification pass notes (2026-11-12)
+
+This pass opened pages directly: rosetta.to transcript pages for all 24 videos, the YouTube oEmbed endpoint to confirm each id's title and channel, and making-of or companion pages where they exist (The Open Notebook Q&A with Joss Fong, Storybench interviews with Sam Ellis, the School of Motion interview with Estelle Caswell, vox.com companion pages for Grey Poupon and Wilmington). Frames were still not viewed. Each case study's evidence_basis lists what was read.
+
+**Corrections to points above**
+- **HT17 / HAI: the "why" question is at about 3:50, not 7:00.** Transcript quote stamps put "it embodies the asymmetry" at 3:47, and the question follows it, about a quarter of the way into 15:52. The 7:00 figure came from an aggregator chapter list whose times are out of order. "Immerse, then ask" still holds, but the immersion is about four minutes, not half the film.
+- **Grey Poupon: the ad campaign is not the film's main explanation.** The ad explains the origin. The film then finds a 2007 spike in its own data and says the commercial probably had little to do with it; the spike follows hit records. The second act is an anomaly in the data, not the origin story.
+- **GER: the film opens on a joke, not on a number.** It opens with a comic list of things Canada does better, then the inversion that politicians choose their voters. The "435 districts" line comes later.
+- **SY15 / SYR: the confirmed upload is the 2017 remake.** It opens on the April 2017 US strike and the four-sided war, then goes back to 2011. The 2015 original was not located.
+- **Two URLs were wrong:** Egypt (blWuMjkLqW8 does not exist) and inflation (Q_khP5h5lvY belongs to another channel). Lesson: confirm every id with a title-and-channel check, never with a search summary alone.
+- **Sound is no longer "not verified anywhere".** HOLE has a detailed first-hand account (below).
+
+**Sharpened patterns, now with transcript or interview evidence**
+- **Point at a real thing in the first line.** EG22 ("This is Cairo... this building... this public square"), FENTON ("This is the first famous photograph of war"), CHN ("this is Fiery Cross Island", then a 2014 satellite image), HS (a 1995 scene, then a "very tight shot" of the paycheck), WM19 (a refused library request, then "this empty patch of grass"), HOLE (Google Earth flights to the real telescope sites, per Fong). [V] from transcripts and the Fong Q&A. This supports our evidence-first gate: a real document or place usually comes before the explanation.
+- **Hold back the payoff until the difficulty is understood.** Fong deliberately delayed the black hole photo so a blurry image would land (Open Notebook) [V]. EG22 delays its political answer until about three-quarters in [V transcript position].
+- **First-person reporter-narrators are common, not occasional.** HAI, EX (self-shot grocery footage that returns as evidence), Grey Poupon, CE, NV25 and RACISM. Caswell explains it as talking to a friend, not reciting a "robotic" account (School of Motion) [V].
+- **Archival news audio is the default punctuation for politics and history.** It is quoted in the transcripts of EG22, TAL21, Putin, RU14, SYR, ISR and WM19 [V transcripts].
+- **Music marks structure (HOLE, first-hand).** APM stock music kept clear of the voice's pitch; a re-cut or change about every 20 seconds; a cue's start or end marks a main point; the music stops on a section's summary line; a fast cue at the very top; an "angelic choir" under the reveal [V, Fong in The Open Notebook]. For our edit decision lists: log each cue's start and end against the line it marks.
+- **Sponsor disclosure in the film.** NV25 says Travel Nevada did not dictate the content; HAI ends with a sponsor read [V transcripts].
+- **Source-reading lesson.** Rosetta.to's auto-generated chapter titles often carry out-of-order times; use only lists with ascending times, or the quote stamps. Its people lists mislabel names (e.g. Max Fisher, Jim Jones).

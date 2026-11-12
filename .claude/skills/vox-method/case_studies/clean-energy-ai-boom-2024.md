@@ -2,12 +2,12 @@
 id: clean-energy-ai-boom-2024
 title: "Can clean energy handle the AI boom?"
 url: https://www.youtube.com/watch?v=YGfJeH5HRDQ
-published: 2024-10-01 (thetvdb listing, via search summary); Vox X post announcing it, Oct 2024
+published: 2024-10-01 (rosetta.to listing; thetvdb agrees)
 series: Explain It to Me (Vox reader-question series); also grouped under an "AI, explained" channel listing
 producer: not confirmed
 category: technology
-length: about 9 minutes (rosetta.to listing, via search summary); exact mm:ss not confirmed
-evidence_basis: Web-search result summaries of a third-party transcript republished by Best of the Left, the Vox X post, the rosetta.to listing, a SummarizeYou auto-summary and thetvdb. Transcript read only through search summaries, not directly; frames NOT viewed. Note a figure conflict: the transcript repost gives 80,000 households, an auto-summary gives 880,000; treat both as unverified.
+length: 9:18 (rosetta.to listing)
+evidence_basis: Verification pass 2026-11-12, pages opened directly - rosetta.to page carrying the YouTube embed (id YGfJeH5HRDQ, matching the url field), date, length, and a full transcript; YouTube oEmbed endpoint confirming the id is titled "Can clean energy handle the AI boom?" on the Vox channel. Video frames still NOT viewed. Earlier pass, kept for reference - Web-search result summaries of a third-party transcript republished by Best of the Left, the Vox X post, the rosetta.to listing, a SummarizeYou auto-summary and thetvdb. Transcript read only through search summaries, not directly; frames NOT viewed. Note a figure conflict: the transcript repost gives 80,000 households, an auto-summary gives 880,000; treat both as unverified.
 ---
 
 # Can clean energy handle the AI boom?
@@ -70,3 +70,6 @@ Timestamps appear only when a source (transcript, chapter list) supplies them.
 - rosetta.to listing: https://rosetta.to/u/vox/can-clean-energy-handle-the-ai-boom
 - SummarizeYou: https://summarizeyou.com/video-20413-can-clean-energy-handle-the-ai-boom
 - thetvdb listing: https://thetvdb.com/series/vox/episodes/10837443
+(Entries above this note were read only through search-result summaries in the earlier pass.)
+- rosetta.to page with full transcript (opened 2026-11-12): https://rosetta.to/u/vox/can-clean-energy-handle-the-ai-boom
+- YouTube oEmbed check of the id (opened 2026-11-12): https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=YGfJeH5HRDQ&format=json

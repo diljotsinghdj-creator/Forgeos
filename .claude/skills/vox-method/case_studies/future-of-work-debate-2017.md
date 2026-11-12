@@ -2,12 +2,12 @@
 id: future-of-work-debate-2017
 title: "The big debate about the future of work, explained"
 url: https://www.youtube.com/watch?v=TUmyygCMMGA
-published: 2017-11-13 (citation listing reported in a search summary; YouTube ID from a Springer reference list)
+published: 2017-11-13 (rosetta.to listing)
 series: standalone
 producer: not confirmed
 category: economics
-length: about 9 minutes (rosetta.to listing, via search summary); exact mm:ss not confirmed
-evidence_basis: Web-search result summaries of a rosetta.to transcript page (partial transcript excerpts), a videohighlight.com AI summary, The Urbanist "Sunday Video" repost (2019), and a Springer reference list. No full transcript, companion article or video frames accessed (direct fetches to these hosts were blocked in this session). No shots are described from observation.
+length: 9:02 (rosetta.to listing)
+evidence_basis: Verification pass 2026-11-12, pages opened directly - rosetta.to page carrying the YouTube embed (id TUmyygCMMGA, matching the url field), date, length, and a full transcript; YouTube oEmbed endpoint confirming the id is titled "The big debate about the future of work, explained" on the Vox channel. Video frames still NOT viewed. Earlier pass, kept for reference - Web-search result summaries of a rosetta.to transcript page (partial transcript excerpts), a videohighlight.com AI summary, The Urbanist 'Sunday Video' repost (2019), and a Springer reference list. No full transcript, companion article or video frames accessed (direct fetches to these hosts were blocked in this session). No shots are described from observation.
 ---
 
 # The big debate about the future of work, explained
@@ -23,7 +23,9 @@ Timestamps appear only when a source (transcript, chapter list) supplies them.
 - [V] Its leaning: past waves of automation destroyed jobs without the economy running out of work; another summary notes the wealth technology creates is not necessarily shared with workers. (rosetta.to excerpts; search summary of the same page)
 
 ## 2. Opening technique
-- Not verified (opening lines not available).
+- [V] Opens on the pace of machine progress: robots once limited, computers now winning Jeopardy (with an archival Watson answer) and Go, then futurist voices predicting people who are not just unemployed but "unemployable" (transcript; short phrase).
+- [V] The turn comes fast: economists tend to see it differently, introduced with an interview question about mass unemployment (transcript).
+- [I] The opening stages the debate as futurists vs economists before any data is shown.
 
 ## 3. Narrative structure
 - [V] Elements reported in transcript excerpts: (a) historical precedent, automation anxiety in the late 1950s and early 1960s, including President Kennedy ranking automation first among job challenges, and longshoremen protesting automation; (b) employment data, the share of prime-age Americans in work staying near 80% outside recessions; (c) a 2004 economics paper judging driving in traffic very hard to teach a computer; (d) slowing productivity growth, presented as evidence against an automation surge. (rosetta.to excerpts; videohighlight summary)
@@ -66,3 +68,6 @@ Timestamps appear only when a source (transcript, chapter list) supplies them.
 - videohighlight summary: https://videohighlight.com/v/TUmyygCMMGA?mediaType=youtube&language=en&summaryType=compressed&aiFormatted=false
 - The Urbanist repost: https://www.theurbanist.org/2019/04/07/sunday-video-the-big-debate-about-the-future-of-work-explained
 - Springer reference list (YouTube ID): https://link.springer.com/chapter/10.1007/978-3-030-85969-5_12
+(Entries above this note were read only through search-result summaries in the earlier pass.)
+- rosetta.to page with full transcript (opened 2026-11-12): https://rosetta.to/u/vox/the-big-debate-about-the-future-of-work-explained
+- YouTube oEmbed check of the id (opened 2026-11-12): https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=TUmyygCMMGA&format=json

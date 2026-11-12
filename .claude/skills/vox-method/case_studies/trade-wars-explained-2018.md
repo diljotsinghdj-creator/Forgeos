@@ -6,8 +6,8 @@ published: 2018-06-06 (thetvdb Vox listing, via search summary)
 series: standalone ("explained" format)
 producer: not confirmed
 category: economics
-length: about 5 minutes (rosetta.to listing via search summary); exact mm:ss not confirmed
-evidence_basis: Web-search result summaries of the YouTube/thetvdb description, the videosift repost description, a VoiceTube caption excerpt, and a rosetta.to listing summary. No full transcript, companion article or frames accessed. Caption excerpt is from an unofficial mirror. No shots described from observation.
+length: 5:02 (rosetta.to listing)
+evidence_basis: Verification pass 2026-11-12, pages opened directly - rosetta.to page carrying the YouTube embed (id Iwa3vLoeNmQ, matching the url field), date, length, a short chapter list (0:00, 2:13, 2:16, 2:39), and a full transcript; YouTube oEmbed endpoint confirming the id is titled "Trade wars, explained" on the Vox channel. Video frames still NOT viewed. Earlier pass, kept for reference - Web-search result summaries of the YouTube/thetvdb description, the videosift repost description, a VoiceTube caption excerpt, and a rosetta.to listing summary. No full transcript, companion article or frames accessed. Caption excerpt is from an unofficial mirror. No shots described from observation.
 ---
 
 # Trade wars, explained
@@ -68,3 +68,6 @@ Timestamps appear only when a source (transcript, chapter list) supplies them.
 - VoiceTube caption mirror: https://voicetube.com/videos/66831
 - rosetta.to listing: https://rosetta.to/u/vox/trade-wars-explained
 - YouTube page (not fetched): https://www.youtube.com/watch?v=Iwa3vLoeNmQ
+(Entries above this note were read only through search-result summaries in the earlier pass.)
+- rosetta.to page with full transcript (opened 2026-11-12): https://rosetta.to/u/vox/trade-wars-explained
+- YouTube oEmbed check of the id (opened 2026-11-12): https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=Iwa3vLoeNmQ&format=json
