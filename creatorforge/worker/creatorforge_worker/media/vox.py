@@ -45,7 +45,7 @@ KINDS = ("hero", "desk", "pinboard", "opener", "reveal", "clipping", "pinmap", "
          "seats", "stack", "stand", "fan", "trend", "slice", "route", "compare", "photoline", "tv",
          "clockmap", "tornsplit", "newscard", "blueprint", "pyramid", "flowchart", "linkmap", "orgchart", "heatmap",
          "courtdoc", "table", "interview", "endcard", "polltrack", "area", "candles", "arrows", "railmap", "sizemap",
-         "borders", "morph", "shrink", "photo", "photos", "footage", "satellite", "flowmap", "columns", "dots", "myth", "counter", "staircase", "scale", "units", "reel", "conveyor", "tiles", "pile", "wash")
+         "borders", "morph", "shrink", "photo", "photos", "footage", "satellite", "flowmap", "columns", "dots", "myth", "counter", "staircase", "scale", "units", "reel", "conveyor", "tiles", "pile", "wash", "grids")
 
 
 # A look per video, so no two films share one face: paper, type, map colours and marker pen differ, the method doesn't.
@@ -770,6 +770,20 @@ def parse_wash(spec: str) -> dict | None:
             "title": rest[0][:60] if rest else "", "note": rest[1][:90] if len(rest) > 1 else "", "seed": _seed(spec) % 10000}
 
 
+def parse_grids(spec: str) -> dict | None:
+    """'Grids: pro-BJP pages 28, pro-Congress pages 21 | It isn't *one party* | junk news per 100 links, 2019' - two
+    or three 10x10 grids side by side, each filling square by square in the signature yellow while its count runs:
+    shares out of 100, compared at a glance."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    head = re.sub(r"\s+vs\.?\s+", ", ", parts[0] if parts else "", flags=re.I)
+    vals = _pairs(head)
+    if not 2 <= len(vals) <= 3 or any(not 0 <= v["value"] <= 100 for v in vals):
+        return None
+    return {"type": "grids", "values": [{"label": v["label"][:28], "value": round(v["value"]), "shown": v["shown"]} for v in vals],
+            "title": parts[1][:60] if len(parts) > 1 else "", "note": parts[2][:90] if len(parts) > 2 else "",
+            "seed": _seed(spec) % 10000}
+
+
 def parse_newscard(spec: str) -> dict | None:
     """'Newscard: 29 Aug 2024 | The headline | the line under it | person:Name | Publisher' - a news card on grid
     paper: red date box, the headline highlighted as it is read, the person beside it, the publisher's name in type."""
@@ -1456,7 +1470,7 @@ PARSERS = {"photo": _photo_parser("photo"), "photos": _photo_parser("photos"), "
            "slice": parse_slice, "route": parse_route, "compare": parse_compare, "photoline": parse_photoline,
            "tv": parse_tv, "clockmap": parse_clockmap, "tornsplit": parse_tornsplit, "newscard": parse_newscard,
            "blueprint": parse_blueprint, "units": parse_units, "reel": parse_reel,
-           "conveyor": parse_conveyor, "tiles": parse_tiles, "pile": parse_pile, "wash": parse_wash}
+           "conveyor": parse_conveyor, "tiles": parse_tiles, "pile": parse_pile, "wash": parse_wash, "grids": parse_grids}
 
 
 def _ext_parser(mod: str, kind: str):
@@ -2376,6 +2390,25 @@ function pile(){headline();
   const n=T(L.front,'0',VERT?W*.16:H*.16,VERT?W*.94:W*.95,VERT?H*.27:H*.25,{family:'Anton',weight:400,anchor:'end',fill:INK});
   count(n,P.n,t0,t1-t0,v=>String(Math.round(v)));
   const SQ=VERT&&!TALL;if(P.caption){const c=boxText(L.front,P.caption,U*.032,SQ?W*.62:W/2,y0+rows*(chh+gy)+U*.07,{anchor:'middle',maxw:SQ?W*.6:W*.86,most:3});wipe(c,t1)}}
+function grids(){headline(); // two (or three) 10x10 grids filling in the signature yellow while their counts run
+  const SQ=VERT&&!TALL,vs=P.values,n=vs.length,gapG=TALL?W*.07:W*.06,aw=(TALL?W*.88:SQ?W*.8:W*.62)-(n-1)*gapG,top=TALL?H*.27:H*.26,
+    cell=Math.min(aw/n/10,(TALL?H*.36:SQ?H*.3:H*.36)/10),sq=cell*.82,gw=cell*10,x0=W/2-(n*gw+(n-1)*gapG)/2,t0=.5,t1=Math.max(t0+1,DUR*.62),
+    big=TALL?W*.17:SQ?H*.12:H*.13,lab=U*.026;
+  vs.forEach((v,gi)=>{const gx=x0+gi*(gw+gapG),cells=[];
+    for(let k=0;k<100;k++){const r=9-Math.floor(k/10),c=k%10;   // filled from the bottom row up, left to right
+      const q=L.mid.rect(sq,sq).move(gx+c*cell,top+r*cell).radius(sq*.16).fill('#D5CEBF');cells.push(q)}
+    const on=cells.slice(0,v.value).map(q=>{const y=L.hero.rect(sq,sq).move(q.x(),q.y()).radius(sq*.16).fill(SIG).stroke({color:INK,width:Math.max(1.5,sq*.07)});y.opacity(0);return y});
+    at(t0,t1-t0,p=>{const m=Math.round(p*on.length);on.forEach((y,i)=>y.opacity(i<m?1:0))},E.lin);
+    const base=top+gw+cell*.6+big*.86,num=T(L.front,'0',big,gx,base,{family:'Anton',weight:400,anchor:'start'});
+    count(num,v.value,t0,t1-t0,x=>String(Math.round(x)));
+    const per=T(L.front,'IN 100',big*.32,gx+big*.95,base,{family:'Anton',weight:400,anchor:'start'});wipe(per,t0);
+    const lb=T(L.front,v.label.toUpperCase(),lab,gx,base+big*.42+lab*1.3,{family:'Inter',weight:800,anchor:'start',ls:'.06em'});wipe(lb,t0+.2)});
+  const after=top+gw+cell*.6+big*.86+big*.42+lab*2.2;
+  // the platform's logo goes where nothing else is: under the grids on a tall frame, beside them otherwise
+  (P.logos||[]).forEach((m,i)=>{m.used=true;const sz=U*(TALL?.12:.11),lx=TALL?W/2+(i-(P.logos.length-1)/2)*sz*1.3:W-sz*.85,ly=TALL?after+sz*.9:top+sz*(.7+i*1.3);
+    const t=logoTile(L.front,m,lx,ly,sz);popIn(t,lx,ly,.55+i*.15,.4)});
+  if(P.note){const t=boxText(L.front,P.note,U*.03,TALL?W/2:W*.6,TALL?H*.86:SQ?H*.87:H*.91,{anchor:'middle',maxw:TALL?W*.86:W*.62,most:SQ?3:2});wipe(t,t1)}   // clear of the corner badge
+  FOCUS={x:W/2,y:top+gw/2,rx:(n*gw)/2,ry:gw/2}}
 function wash(){headline(); // a painted map: p5.brush watercolour washes and pencil, brushed on from left to right
   const [b0,b1,b2,b3]=P.box,kx=Math.cos((b1+b3)/2*Math.PI/180),aw=VERT?W*.9:W*.8,ah=VERT?H*.56:H*.7,
     s=Math.min(aw/((b2-b0)*kx),ah/(b3-b1)),ox=W/2-(b2-b0)*kx*s/2,oy=(VERT?H*.26:H*.24)+(ah-(b3-b1)*s)/2,
@@ -3165,7 +3198,7 @@ function footage(){ // moving footage, frame by frame, with the same annotations
   if(P.annotate&&P.annotate.length){const a=P.annotate[0];FOCUS={x:a.p[0]*W,y:a.p[1]*H,rx:U*.1,ry:U*.1}}
   photoCredit()}
 
-const SCENES={wash,reel,conveyor,tiles,pile,units,myth,counter,staircase,scale,photo,photos,footage,shrink,morph,borders,courtdoc,table,interview,endcard,polltrack,area,candles,arrows,railmap,sizemap,pyramid,flowchart:flow,linkmap,orgchart,heatmap,hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv,
+const SCENES={grids,wash,reel,conveyor,tiles,pile,units,myth,counter,staircase,scale,photo,photos,footage,shrink,morph,borders,courtdoc,table,interview,endcard,polltrack,area,candles,arrows,railmap,sizemap,pyramid,flowchart:flow,linkmap,orgchart,heatmap,hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv,
   clockmap,tornsplit,newscard,blueprint};
 async function boot(){
   try{await Promise.all(Array.from(document.fonts).map(f=>f.load()))}catch(e){}

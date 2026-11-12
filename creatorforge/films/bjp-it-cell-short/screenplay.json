@@ -18,7 +18,7 @@
  },
  "target_seconds": 45,
  "status": "script draft (not rendered: the owner has not said go)",
- "notes": "S2 needs the BJP's own upload (evidence slot). S8 needs a two-grid scene ('Grids', not built yet). Party symbols left out until the official files are downloaded. Right-of-reply before release.",
+ "notes": "S2 needs the BJP's own upload (evidence slot). Party symbols left out until the official files are downloaded. Right-of-reply before release.",
  "voice": "",
  "language": "en",
  "scenes": [
@@ -103,7 +103,7 @@
    "purpose": "explain",
    "delivery": "urgent",
    "narration": "But it isn't one party. Oxford researchers found junk news on both sides' Facebook pages: 28 in 100 links, and 21.",
-   "graphic": "Grids: pro-BJP pages 28, pro-Congress pages 21 | It isn't *one party* | junk news per 100 links, Facebook, 2019 | badge: reported | logo: facebook",
+   "graphic": "Grids: pro-BJP pages 28, pro-Congress pages 21 | It isn't *one party* | Shared news links rated junk news on Facebook pages, 2019 (Oxford Internet Institute) | badge: reported | logo: facebook",
    "claims": [
     "C16"
    ]

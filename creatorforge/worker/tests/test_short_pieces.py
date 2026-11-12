@@ -9,7 +9,8 @@ from creatorforge_worker.media import motion, scene3d, vox
 SPECS = {"reel": "rap | Just a *catchy reel*?",
          "conveyor": "APPROVED | 6 | In Delhi, one official signs off every post | Every post, *one sign-off*",
          "tiles": "Bihar | 72 | 1 tile = 1,000 groups | Bihar, 2020: *72,000* groups | planned (ThePrint)",
-         "pile": "17 | FALSE, MISLEADING | Flagged *17 times* | flagged by fact-checkers"}
+         "pile": "17 | FALSE, MISLEADING | Flagged *17 times* | flagged by fact-checkers",
+         "grids": "pro-BJP pages 28, pro-Congress pages 21 | It isn't *one party* | junk news per 100 links, 2019 | logo: facebook"}
 
 
 def test_parsers():
@@ -23,6 +24,9 @@ def test_parsers():
     assert vox.parse_tiles("Atlantis | 5 | 1 tile = 10 x") is None
     p = vox.parse_pile(SPECS["pile"])
     assert p["n"] == 17 and p["stamps"] == ["FALSE", "MISLEADING"]
+    g = vox.parse_grids("pro-BJP pages 28 vs pro-Congress pages 21 | t")
+    assert [v["value"] for v in g["values"]] == [28, 21]
+    assert vox.parse_grids("a 120, b 3 | over a hundred") is None and vox.parse_grids("a 5 | one grid") is None
     e = scene3d.parse_explode("phone | THE POST: your screen; THE SIGN-OFF: one official, every post")
     assert e["layers"][1] == "THE SIGN-OFF: one official, every post"
 

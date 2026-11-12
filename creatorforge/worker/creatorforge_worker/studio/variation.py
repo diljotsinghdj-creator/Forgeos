@@ -23,7 +23,7 @@ from pathlib import Path
 TECHNIQUES = ("data", "documents", "maps", "collage", "3d", "illustration")
 KIND_TECHNIQUE = {
     **{k: "data" for k in ("counter", "bignumber", "number", "stack", "stand", "fan", "trend", "slice", "seats", "pie", "chart",
-                            "columns", "dots", "table", "polltrack", "area", "candles", "pyramid", "squares", "icons", "units", "tiles", "pile")},
+                            "columns", "dots", "table", "polltrack", "area", "candles", "pyramid", "squares", "icons", "units", "tiles", "pile", "grids")},
     **{k: "documents" for k in ("courtdoc", "reveal", "clipping", "newscard", "headline", "document", "quote", "desk", "interview",
                                  "article", "social", "chat", "tornsplit", "comments", "trending", "search", "reel")},
     **{k: "maps" for k in ("pinmap", "route", "arrows", "railmap", "sizemap", "heatmap", "shrink", "morph", "borders", "flowmap",
