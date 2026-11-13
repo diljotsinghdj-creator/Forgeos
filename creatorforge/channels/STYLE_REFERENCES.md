@@ -268,3 +268,18 @@ paid providers), every ElevenLabs / Gemini / fal path, AI-generated "archival" i
 - **Applied to the kit:** newsprint inside shards, ink splats, hand-drawn arrows and loops linking elements, number
   badges, a stop-motion jitter on settled paper. Still to build: hand-held objects, the head-opens reveal, in-place
   object swaps along a strip, a single-accent look as its own kit.
+
+### Owner references, rounds 5-6 (2026-11-13): map and flyover clips (19)
+- **Paid/AI (study only):** 3D cities with light-trail roads and glowing terrain (high_end_vfx), blue network globe
+  (RVT369), plane-over-the-world flyovers and AI landmark dioramas (TarZan, visualfragments, Monat, mmmivvv3,
+  serafia), AI tech explainers (engineered49), AI compass (chtokt34), AI warehouse/port inserts (alexblk003), game IP
+  cinematic (Runeterra, valuable826: never copied).
+- **Free to build (done as stills):** antique paper map on a table with props and a tilted camera (mdriturana);
+  dark war map with glowing borders, spreading red territory, triangle marker, leader lines, dashed ring
+  (muskmedia01); satellite map with pins, flags and photo cards (fiverr); satellite route drawn as a growing orange
+  line between pins (fiverr Lucerne; we use Sentinel-2 cloudless 2016 by EOX, CC BY 4.0: region scale only, street
+  scale imagery is paid or non-commercial); extruded 3D region map with orange city tags (behance); political map
+  with countries popping colour and icon badges, captions (GEOalldaY-style, motiondesigners2d); illustrated storybook
+  map with a dashed path (yaduratnam: would need illustration, partly AI).
+- **Map kit now:** 11 styles (design_kits/maps): antique table, war map, shards choropleth, minimal one-accent,
+  night arcs, torn newsprint, blueprint, globe, tilted US paper map with lifted states, satellite route, extruded 3D.
