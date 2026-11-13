@@ -383,7 +383,7 @@ B["L35"] = dict(cls="coal", push=.05, credit=credit("neander") + " · LA CHAPELL
 B["L36"] = dict(cls="coal", push=.06, credit=credit("skulls") + " · REPLICA SKULLS: NEANDERTHAL (LEFT), MODERN HUMAN (RIGHT)",
                 body=photo("skulls", 640, 20, 640, .05, 0, h=960, pos="center 45%") + hand("as large as ours", 1320, 450, 80, .9, SIG))
 B["L37a"] = dict(cls="coal", push=.06, credit=credit("denisova") + " · REPLICA",
-                 body=photo("denisova", 320, 140, 900, .05, -1, h=600) + big("Denisovans", 1260, 300, 96, .6, BONE, k="slide", extra='data-from="r"'))
+                 body=photo("denisova", 160, 140, 900, .05, -1, h=600) + big("Denisovans", 1180, 300, 104, .6, BONE, k="slide", extra='data-from="r"'))
 dna = "".join(el(f'<div class="tag" style="font-size:44px;color:{["#6E8F3E", "#C4882C", "#A4442A", "#EAE2CF"][j % 4]}">{"ACGTTGCA"[j % 8]}</div>', 200 + j * 70, 300 + (j % 5) * 90, .05 + j * .04, "pop") for j in range(22))
 B["L37b"] = dict(cls="coal", push=.05, credit="FIRST DENISOVAN GENOME FROM A FINGER BONE, DENISOVA CAVE, SIBERIA (KRAUSE ET AL. 2010; REICH ET AL. 2010)",
                  body=dna + el('<div class="stamp" style="font-size:110px;background:#1E1D1A">2010</div>', 1300, 720, 1.0, "pop", base="rotate(-6deg)") + hand("known mostly from DNA", 160, 120, 72, .5, SIG))
@@ -429,7 +429,7 @@ B["L47"] = dict(cls="coal", push=.04, credit=BUSHCRED,
 B["L48"] = dict(cls="coal", push=.05, credit=credit("neander") + " · DATES: HIGHAM ET AL., NATURE 2014 (41,000–39,000 YEARS AGO)",
                 body=el(f'<div class="card"><img src="{img("neander")}" style="width:600px;height:740px;object-fit:cover;display:block;filter:grayscale(1) brightness(.75)"></div>', 200, 120, 0, "pop", extra=STILL)
                 + el('<div class="disp" style="font-size:200px;color:#EAE2CF">≈<span class="el" data-in="count" data-comma="1" data-from0="400000" data-to="40000" data-at=".3" data-d="1.4" style="position:static">40,000</span></div>', 900, 320, .2, "pop")
-                + tag("years ago · Neanderthals vanish from the record", 920, 560, 32, 1.2, SIG))
+                + tag("years ago · Neanderthals vanish", 920, 560, 32, 1.2, SIG))
 B["L49a"] = dict(cls="coal", push=.06, credit=credit("flores") + " · LB1 (CAST)",
                  body=el(f'<div class="card"><img src="{img("flores")}" style="width:900px;height:640px;object-fit:cover;display:block;filter:grayscale(1) brightness(.75)"></div>', 500, 160, 0, "pop", extra=STILL))
 B["L49b"] = dict(cls="coal", push=.05, credit="SOURCE: SUTIKNA ET AL., NATURE 2016: SKELETAL REMAINS ~100,000–60,000 YEARS OLD",
@@ -471,7 +471,9 @@ def specimen(name, x, y, w, at=.1, label=None, cr=""):
     if not cut.exists():
         return None
     b = el('<div style="width:1920px;height:1080px;background:radial-gradient(ellipse 34% 60% at 50% 0%,rgba(255,236,190,.22),transparent 70%)"></div>', 0, 0, 0, "pop", extra=STILL)
-    b += el(f'<div style="width:{w + 160}px;height:70px;background:linear-gradient(#3A3731,#262420);border-top:3px solid #57524A"></div>', x - 80, y + int(w * .78) + 30, 0, "pop", extra=STILL)
+    from PIL import Image as _I
+    iw, ih = _I.open(cut).size
+    b += el(f'<div style="width:{w + 160}px;height:70px;background:linear-gradient(#3A3731,#262420);border-top:3px solid #57524A"></div>', x - 80, y + int(w * ih / iw) - 10, 0, "pop", extra=STILL)
     b += el(f'<img src="{cut.as_uri()}" style="width:{w}px;filter:drop-shadow(0 30px 30px rgba(0,0,0,.7))">', x, y, at, "drop", extra='data-jit="0"')
     if label:
         b += el(f'<div class="label" style="font-size:24px;line-height:1.5">{label}</div>', x + w + 40, y + 120, at + .7, "wipe")
@@ -493,7 +495,7 @@ sp = specimen("boisei", 300, 170, 640, .1, '<i class="sp" style="font-size:30px"
 if sp:
     B["L23a"] = dict(cls="coal", push=.05, credit=credit("boisei") + " · CAST · BACKGROUND REMOVED (BIREFNET)", body=sp
                      + tag("Homo erectus", 1240, 700, 40, 1.3, "#1E1D1A", SIG) + tag("Paranthropus boisei", 1240, 790, 40, 1.6, "#1E1D1A", OCHRE))
-sp = specimen("neander", 240, 140, 560, .05)
+sp = specimen("neander", 280, 90, 600, .05)
 if sp:
     B["L35"] = dict(cls="coal", push=.05, credit=credit("neander") + " · LA CHAPELLE-AUX-SAINTS (CAST) · BACKGROUND REMOVED (BIREFNET)", body=sp
                     + el('<div class="disp" style="font-size:112px;color:#EAE2CF">Neanderthals</div>', 990, 320, .5, "slide", extra='data-from="r"') + tag("Europe · western Asia", 1000, 470, 34, .9, SIG))

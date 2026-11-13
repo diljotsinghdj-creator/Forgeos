@@ -523,5 +523,43 @@
   ],
   "voice": "bf_isabella",
   "look": "atlas-red"
+ },
+ {
+  "id": "evolution-5min",
+  "kind": "film",
+  "channel": "dragon-psychology",
+  "topic": "human-evolution-bush-not-ladder",
+  "date": "2026-11-13",
+  "engine": "myth-buster",
+  "hook_mechanism": "open on the famous ape-to-human march (our own pictograms), stamp it WRONG, then Haeckel's 1874 tree with Man on top vs Darwin's 1837 'I think' bush",
+  "hook_line": "You've seen this picture. Ape, to stooped ape-man, to upright human, marching left to right.",
+  "opening": "illustration",
+  "shots": [
+   "Illustration: march of progress pictograms",
+   "Collage: copies of the march",
+   "Stamp: WRONG",
+   "Document: Haeckel 1874 Pedigree of Man",
+   "Title: ladder crossed, bush grows",
+   "Document: Darwin 1837 I think",
+   "Specimen cut-out: Toumai",
+   "Debate cards: walked upright?",
+   "Scan: Laetoli 3D footprint",
+   "Photo: Lucy",
+   "Brain circles",
+   "Footprint trails: boisei + erectus",
+   "Tilted paper map: erectus spread",
+   "Counter: 110,000",
+   "Filled type: The crowd",
+   "Bush chart with 110 ka line: six branches",
+   "Six specimen cards",
+   "DNA strip: ~2%",
+   "Braided branches",
+   "Bush chart: branches end",
+   "Quote card: Gould",
+   "Brain circles: floresiensis vs chimp",
+   "Finale: the last twig"
+  ],
+  "voice": "bm_lewis",
+  "look": "museum"
  }
 ]

@@ -13,7 +13,7 @@ total = t
 subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(D / "render/list.txt"), "-c", "copy", str(D / "render/picture_raw.mp4")], check=True)
 # optical finish: a soft lens vignette and a touch of halation over the whole film
 subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", str(D / "render/picture_raw.mp4"), "-vf",
-                "split[a][b];[b]gblur=sigma=18,colorlevels=rimin=0.55:gimin=0.55:bimin=0.55[g];[a][g]blend=all_mode=screen:all_opacity=0.18,vignette=angle=PI/5:mode=forward",
+                "format=gbrp,split[a][b];[b]gblur=sigma=18,colorlevels=rimin=0.55:gimin=0.55:bimin=0.55[g];[a][g]blend=all_mode=screen:all_opacity=0.18,format=yuv420p,vignette=angle=PI/5:mode=forward",
                 "-c:v", "libx264", "-preset", "medium", "-crf", "17", "-pix_fmt", "yuv420p", str(D / "render/picture.mp4")], check=True)
 # sound design: cues derived from each shot's own animation events (built-in synthesised SFX, nothing licensed)
 import re
