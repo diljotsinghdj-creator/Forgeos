@@ -309,7 +309,7 @@ PLAN = [("B01", ["B01"]), ("B02", ["B02"]), ("B03", ["B03"]), ("B04", ["B04"]), 
 PAUSE = {"B05": .7, "B07": .5, "B08": .8, "B15": .4, "B30": .5, "B37": .5, "B55": .6, "B66": .4, "B69": .5, "B78": .8, "B79": 2.6}
 GAP = .65
 import re
-FOCUS = [(1.32, 18, 38), (1.28, 70, 45), (1.36, 30, 60)]
+FOCUS = [(1.22, 2, 30), (1.18, 2, 60), (1.25, 2, 45)]   # anchored at the left edge, where every shot's content starts
 def reframe(b, n):
     """A closer framing of the same shot, everything settled: a real cut to the detail."""
     z, ox, oy = FOCUS[n % len(FOCUS)]
