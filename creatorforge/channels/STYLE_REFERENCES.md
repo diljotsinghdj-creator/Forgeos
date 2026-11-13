@@ -283,3 +283,17 @@ paid providers), every ElevenLabs / Gemini / fal path, AI-generated "archival" i
   map with a dashed path (yaduratnam: would need illustration, partly AI).
 - **Map kit now:** 11 styles (design_kits/maps): antique table, war map, shards choropleth, minimal one-accent,
   night arcs, torn newsprint, blueprint, globe, tilted US paper map with lifted states, satellite route, extruded 3D.
+
+### Owner references, round 7 (2026-11-13): four collages, seven clips
+- **Collages:** a giant B&W photographer over a colour 1970s street with planets rolling in it; a giant astronaut over
+  1950s Times Square with pink elephants and retro discs (scale play, B&W giant over colour city); Tesla with a torn
+  strip across the eyes revealing flowers and butterflies (torn-strip reveal); "Break the rules" pile-up of B&W
+  landmarks, a woodblock wave, speech bubbles, hands from the sky, a sun cut-out.
+- **Clips:** AI 3D country dioramas (Spain, UK + glowing logistics routes: paid/AI); B&W handshake on a cream/orange
+  split ground (duotone split); "YES YOU CAN" letters filled with moving photos (photo-filled type); building collage
+  then doodle icons popping on white paper; minimal kinetic italic serif with small charts; landmarks sprouting along
+  the Earth's horizon.
+- **Tried on the US film (stills in films/us-midterms-30/tests):** photo-filled "FLIPPED" (the Capitol inside the
+  letters), torn-strip reveal across the Capitol (2006 -> 2026), giant halftone figure over the Capitol with retro
+  discs. Rule kept: scale play and torn strips on a real politician stay neutral in wording ("Same Hill, new
+  Congress", never a loaded verb), and a torn strip never covers a real person's eyes in our political films.
