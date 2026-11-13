@@ -395,13 +395,13 @@
   "hook_line": "Quick. Which costs more: two ninety-nine, or three dollars?",
   "opening": "footage",
   "shots": [
-   "Footage: asset:V0015 | | Which is more? | in: 3 | illustrative",
+   "Footage: asset:V0015 | | | in: 3 | illustrative",
    "Counter: $3.00 → $2.99 | one cent apart | the same price, read left to right",
-   "Footage: asset:V0016 | | You saw a 2 | illustrative",
-   "BigNumber: 2005 | brain | Thomas and Morwitz name the left-digit effect | badge: verified",
-   "Footage: asset:V0017 | | One mile | in: 1 | illustrative",
+   "Footage: asset:V0016 | | | illustrative",
+   "BigNumber: 2005 | documents | Thomas and Morwitz name the left-digit effect | badge: verified",
+   "Footage: asset:V0017 | | | in: 1 | illustrative",
    "Counter: 49,999 → 50,000 | miles | one mile, a new left digit",
-   "BigNumber: $200 | car | up to about $150 to $200 less, just past a 10,000-mile mark (Lacetera, Pope and Sydnor, 2012) | badge: verified",
+   "BigNumber: $200 | car | about $150 to $200 less (Lacetera, Pope, Sydnor, 2012) | badge: verified",
    "Statement: Read the *whole* number."
   ],
   "voice": "af_heart",
