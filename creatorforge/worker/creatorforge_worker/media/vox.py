@@ -45,7 +45,7 @@ KINDS = ("hero", "desk", "pinboard", "opener", "reveal", "clipping", "pinmap", "
          "seats", "stack", "stand", "fan", "trend", "slice", "route", "compare", "photoline", "tv",
          "clockmap", "tornsplit", "newscard", "blueprint", "pyramid", "flowchart", "linkmap", "orgchart", "heatmap",
          "courtdoc", "table", "interview", "endcard", "polltrack", "area", "candles", "arrows", "railmap", "sizemap",
-         "borders", "morph", "shrink", "photo", "photos", "footage", "satellite", "flowmap", "columns", "dots", "myth", "counter", "staircase", "scale", "units", "reel", "conveyor", "tiles", "pile", "wash", "grids", "frame", "poster")
+         "borders", "morph", "shrink", "photo", "photos", "footage", "satellite", "flowmap", "columns", "dots", "myth", "counter", "staircase", "scale", "units", "reel", "conveyor", "tiles", "pile", "wash", "grids", "frame", "poster", "mapdesk")
 
 
 # A look per video, so no two films share one face: paper, type, map colours and marker pen differ, the method doesn't.
@@ -90,7 +90,8 @@ _FLIP = ("hero", "opener", "newscard", "tornsplit", "desk", "pinboard", "clippin
 LAYOUT_SETS = {k: (["base", "mirror", "card"] if k in _FLIP else ["base", "card"]) for k in KINDS}
 LAYOUT_SETS["bignumber"] = ["base", "side", "card"]
 LAYOUT_SETS["frame"] = ["base"]
-LAYOUT_SETS["poster"] = ["base"]         # a full-bleed poster: never put on a card or mirrored          # the frame is already a full composition; it mirrors itself from its seed
+LAYOUT_SETS["poster"] = ["base"]
+LAYOUT_SETS["mapdesk"] = ["base"]         # a full-bleed poster: never put on a card or mirrored          # the frame is already a full composition; it mirrors itself from its seed
 for _k in ("photo", "photos", "footage", "satellite"):
     LAYOUT_SETS[_k] = ["base"]          # a photograph or footage is the frame itself: never mirrored or put on a card
 DESKS = ("#3B2F25", "#5A4632", "#2E3A40", "#6B5B4B", "#262626")
@@ -1723,6 +1724,54 @@ def parse_poster(spec: str) -> dict | None:
 
 PARSERS["poster"] = parse_poster
 
+def parse_mapdesk(spec: str) -> dict | None:
+    """'Mapdesk: Switzerland | gold bars + banknote + rubber stamp | NEUTRALITY | Europe, 1934 | arrows: 6' - the map
+    desk: an aged paper map of the region (neighbours, sea, spaced serif names), the country glowing red, black paper
+    arrows closing in, real cut-out props dropped on the map with red string pinned to the country, a stamp."""
+    from . import maps
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if not parts or not parts[0]:
+        return None
+    f = maps._find(parts[0])
+    if not f or f["kind"] != "country":
+        return None
+    arrows = 0
+    for x in parts[1:]:
+        m = re.fullmatch(r"arrows?\s*[:=]\s*(\d+)", x, re.I)
+        if m:
+            arrows = min(10, int(m.group(1)))
+    parts = [x for x in parts if not re.fullmatch(r"arrows?\s*[:=]\s*\d+", x, re.I)]
+    rings = [r for r in f["rings"] if len(r) > 3]
+    xs = [x for r in rings for x, _ in r]
+    ys = [y for r in rings for _, y in r]
+    cx, cy = (min(xs) + max(xs)) / 2, (min(ys) + max(ys)) / 2
+    span = max(max(xs) - min(xs), (max(ys) - min(ys)) * 1.3, 6.0) * 2.4    # the region around it, not just the country
+    k = math.cos(math.radians(cy))
+    vx0, vx1, vy0, vy1 = cx - span * .9, cx + span * .9, cy - span * .55, cy + span * .55
+    def proj(r):
+        return [[round((x - cx) * k, 3), round(cy - y, 3)] for x, y in r[:: max(1, len(r) // 300)]]
+    lands, labels = [], []
+    for c in maps._world()["countries"]:
+        crs = [r for r in c["r"] if len(r) > 3]
+        bx = [x for r in crs for x, _ in r]
+        by = [y for r in crs for _, y in r]
+        if not bx or max(bx) < vx0 or min(bx) > vx1 or max(by) < vy0 or min(by) > vy1:
+            continue
+        me = c["n"] == f["name"]
+        lands.append({"me": me, "rings": [proj(r) for r in crs]})
+        big = max(crs, key=len)
+        lx, ly = sum(x for x, _ in big) / len(big), sum(y for _, y in big) / len(big)
+        if not me and vx0 < lx < vx1 and vy0 < ly < vy1 and (max(bx) - min(bx)) > span * .12:
+            labels.append({"name": c["n"].upper(), "x": round((lx - cx) * k, 3), "y": round(cy - ly, 3)})
+    props = [x.strip() for x in parts[1].split("+") if x.strip()][:4] if len(parts) > 1 and parts[1] != "-" else []
+    return {"type": "mapdesk", "name": f["name"], "lands": lands, "labels": labels[:8], "half": [round(span * .9 * k, 3), round(span * .55, 3)],
+            "subjects": props, "stamp": parts[2][:18] if len(parts) > 2 else "", "kicker": parts[3][:50] if len(parts) > 3 else "",
+            "arrows": arrows or 6, "seed": _seed("mapdesk", spec) % 10000}
+
+
+PARSERS["mapdesk"] = parse_mapdesk
+
+
 
 
 # ---- pictures -------------------------------------------------------------------------------------------------------
@@ -1925,6 +1974,7 @@ draw.defs().svg(`<filter id="shadow" x="-20%" y="-20%" width="140%" height="150%
 <filter id="dof" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="${U*.006}"/></filter>
 <filter id="mono"><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="linear" slope="1.25" intercept="-.08"/><feFuncG type="linear" slope="1.25" intercept="-.08"/><feFuncB type="linear" slope="1.25" intercept="-.08"/></feComponentTransfer></filter>
 <filter id="spot"><feColorMatrix type="saturate" values="0" result="g"/><feFlood flood-color="${K.acc}" result="f"/><feComposite in="f" in2="SourceAlpha" operator="in" result="fa"/><feBlend in="g" in2="fa" mode="multiply"/></filter>
+<filter id="glowred" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="${U*.012}" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
 <filter id="tint"><feFlood flood-color="${K.acc2||'#E0442C'}"/><feComposite in2="SourceAlpha" operator="in"/></filter>
 <filter id="redch"><feColorMatrix type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .55 0"/></filter>
 <filter id="cyanch"><feColorMatrix type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 .55 0"/></filter>`);
@@ -2399,6 +2449,45 @@ function poster(){ // the editorial collage poster: ground -> flat shape -> huge
   for(let k=0;k<3;k++){const sx2=(sd%2?W*.12:W*.88)+(k-1)*U*.05,sy2=H*(.72+k*.06),l=U*.025;penLine(dg,[[sx2-l,sy2],[sx2+l,sy2]],1.6+k*.08,.1,flat?'#F7F2E8':INK,U*.005);penLine(dg,[[sx2,sy2-l],[sx2,sy2+l]],1.65+k*.08,.1,flat?'#F7F2E8':INK,U*.005)}
   // the small line: a black label, low on the quiet side
   if(P.line){const b=boxText(L.front,P.line,TALL?W*.04:U*.034,sd%2?W-U*.1:U*.1,TALL?H*.9:H*.84,{anchor:sd%2?'end':'start',maxw:TALL?W*.8:W*.42,most:2,family:'Mono'});wipe(b,.8)}
+  if(P.credit)P.credit=P.credit.replace(/^Photos?:\s*/i,'');photoCredit()}
+function mapdesk(){ // the map desk: aged map -> red country -> paper arrows -> props with red string -> stamp, camera pushing in
+  const sd=P.seed||0,[hx,hy]=P.half,sc=Math.max(W/(2*hx),H/(2*hy))*1.02,ox=W/2,oy=H/2;
+  const world=L.back.group(),pt=q=>[ox+q[0]*sc,oy+q[1]*sc];
+  world.rect(W*1.4,H*1.4).move(-W*.2,-H*.2).fill('#B7C2B0');   // the sea, faded print
+  const hatch=draw.pattern(U*.016,U*.016,a=>a.line(0,U*.016,U*.016,0).stroke({color:'#8FA095',width:U*.0012}));world.rect(W*1.4,H*1.4).move(-W*.2,-H*.2).fill(hatch).opacity(.5);
+  let tgt=null;
+  P.lands.forEach(l=>{const d=l.rings.map(r=>'M'+r.map(q=>pt(q).map(v=>v.toFixed(1)).join(',')).join('L')+'Z').join('');
+    const sh=world.path(d).fill(l.me?'#EBDFC2':'#EBDFC2').stroke({color:'#8C7A55',width:U*.0018});if(l.me)tgt={d,sh}});
+  P.labels.forEach(lb=>{const [x,y]=pt([lb.x,lb.y]);T(world,lb.name,U*.026,x,y,{family:'Playfair',weight:400,fill:'#6B5838',ls:'.32em'})});
+  // stains, folds and a dark edge: an old paper map on a desk
+  const st=draw.gradient('radial',g=>{g.stop(0,'#7A5A2E',0);g.stop(.7,'#7A5A2E',.06);g.stop(1,'#3B2A12',.45)});L.back.rect(W,H).fill(st);
+  L.back.line(W*.5,0,W*.5,H).stroke({color:'#FFFFFF',width:U*.003,opacity:.25});L.back.line(0,H*.5,W,H*.5).stroke({color:'#5A4422',width:U*.002,opacity:.18});
+  at(0,DUR,p=>world.attr({transform:`translate(${ox},${oy}) scale(${1+p*.07}) translate(${-ox},${-oy})`}),E.lin);
+  // the country: red, glowing, its name on it
+  let cxy=[ox,oy];if(tgt){const g=L.mid.group();const red=g.path(tgt.d).fill('#C8372D').stroke({color:'#7E1B14',width:U*.003}).attr({filter:'url(#glowred)'});
+    g.opacity(0);at(.15,.5,p=>g.opacity(p*.92),E.out);const bb=red.bbox();cxy=[bb.cx,bb.cy];
+    at(0,DUR,p=>g.attr({transform:`translate(${ox},${oy}) scale(${1+p*.07}) translate(${-ox},${-oy})`}),E.lin);
+    const nm=T(L.mid,P.name.toUpperCase(),U*.024,bb.cx,bb.cy+U*.01,{family:'Mono',weight:700,fill:'#FFF4E6',ls:'.12em'});wipe(nm,.6)}
+  const [tx,ty]=cxy;FOCUS={x:tx,y:ty,rx:U*.14,ry:U*.1};
+  // black paper arrows closing in from all sides
+  for(let i=0;i<P.arrows;i++){const a=i/P.arrows*Math.PI*2+(sd%7)*.1,r0=U*.5,r1=U*.13,len=r0-r1,wd=U*.034;
+    const g=L.mid.group(),ang=a*180/Math.PI;
+    g.polygon(`0,${-wd/2} ${len-wd*1.6},${-wd/2} ${len-wd*1.6},${-wd*1.2} ${len},0 ${len-wd*1.6},${wd*1.2} ${len-wd*1.6},${wd/2} 0,${wd/2}`).fill('#1C1A17').attr({filter:'url(#shadow)'});
+    const sx=tx-Math.cos(a)*r0,sy=ty-Math.sin(a)*r0;g.attr({transform:`translate(${sx},${sy}) rotate(${ang})`});
+    g.opacity(0);at(.45+i*.08,.35,p=>{const e=E.back(p),d=(1-e)*U*.08;g.opacity(Math.min(1,p*3));g.attr({transform:`translate(${sx-Math.cos(a)*d},${sy-Math.sin(a)*d}) rotate(${ang})`})},E.lin)}
+  // real props dropped on the map, each tied to the country with red string
+  const spots=[[W*.15,H*.28],[W*.84,H*.26],[W*.16,H*.76],[W*.85,H*.74]];
+  (P.pics||[]).filter(q=>q.img).slice(0,4).forEach((pic,i)=>{const [x,y]=spots[(i+sd)%4],h=U*.24;   // real photos only: no icon stand-ins on the map
+    const g=picture(L.hero,pic,x,y+h/2,h,{});g.attr({transform:`rotate(${(i%2?1:-1)*(4+i*2)},${x},${y})`});drop(g,1.0+i*.18,H*.2,0);
+    const sg=L.hero.group().back();penLine(sg,[[x,y],[(x+tx)/2,(y+ty)/2+U*.02],[tx,ty]],1.3+i*.18,.4,'#B3261E',U*.0032);
+    const pn=pinAt(L.front,x,y-h*.3);pn.opacity(0);at(1.25+i*.18,.15,p=>pn.opacity(p),E.lin)});
+  pinAt(L.front,tx,ty-U*.035);
+  // the stamp slams down
+  if(P.stamp){const g=L.front.group(),sz=U*.07,t=T(g,P.stamp.toUpperCase(),sz,0,0,{family:'Mono',weight:700,fill:'#A3221B',ls:'.08em'});
+    const bb=t.bbox();g.rect(bb.width+sz*.6,bb.height+sz*.5).move(bb.x-sz*.3,bb.y-sz*.25).fill('none').stroke({color:'#A3221B',width:U*.006}).radius(U*.006);
+    const sx=W*(sd%2?.66:.34),sy=H*.82;g.opacity(0);g.attr({style:'mix-blend-mode:multiply'});
+    at(2.0,.22,p=>{const k=1.8-.8*E.out(p);g.opacity(Math.min(.88,p*2));g.attr({transform:`translate(${sx},${sy}) rotate(-8) scale(${k})`})},E.lin)}
+  if(P.kicker){const b=boxText(L.front,P.kicker,U*.026,U*.07,U*.09,{anchor:'start',maxw:W*.4,most:1,family:'Mono'});wipe(b,.3)}
   if(P.credit)P.credit=P.credit.replace(/^Photos?:\s*/i,'');photoCredit()}
 function staircase(){ // isometric steps rising left to right; each one lights up as the story climbs it, the last in red
   const n=P.steps.length,top=VERT?H*.3:H*.24,bot=VERT?H*.82:H*.86,left=W*.08,right=W*.92,sw=(right-left)/n,sh=(bot-top)/n,d=Math.min(sw,sh)*.35;
@@ -3422,7 +3511,7 @@ function footage(){ // moving footage, frame by frame, with the same annotations
   if(P.annotate&&P.annotate.length){const a=P.annotate[0];FOCUS={x:a.p[0]*W,y:a.p[1]*H,rx:U*.1,ry:U*.1}}
   photoCredit()}
 
-const SCENES={frame:voxFrame,poster,grids,wash,reel,conveyor,tiles,pile,units,myth,counter,staircase,scale,photo,photos,footage,shrink,morph,borders,courtdoc,table,interview,endcard,polltrack,area,candles,arrows,railmap,sizemap,pyramid,flowchart:flow,linkmap,orgchart,heatmap,hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv,
+const SCENES={frame:voxFrame,poster,mapdesk,grids,wash,reel,conveyor,tiles,pile,units,myth,counter,staircase,scale,photo,photos,footage,shrink,morph,borders,courtdoc,table,interview,endcard,polltrack,area,candles,arrows,railmap,sizemap,pyramid,flowchart:flow,linkmap,orgchart,heatmap,hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv,
   clockmap,tornsplit,newscard,blueprint};
 async function boot(){
   try{await Promise.all(Array.from(document.fonts).map(f=>f.load()))}catch(e){}

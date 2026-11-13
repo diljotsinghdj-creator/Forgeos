@@ -133,6 +133,9 @@ Frame: <background photo: asset:P0001 or a real place to search> | <subject: obj
 Poster: <hero cut-out: object or person:Name> [+ <second piece, in spot colour>] | <BIG WORD> | <small line> | disc|burst|torn|flat
     - THE EDITORIAL COLLAGE POSTER (the owner's mood board): light paper or flat colour ground, one huge black-and-white
       halftone cut-out breaking into huge type, a flat shape behind it, one piece in spot colour, doodles
+Mapdesk: <country> | <prop> + <prop> + ... | <STAMP WORD> | <kicker> | arrows: <n>
+    - THE MAP DESK (owner's references): an aged paper map of the region, the country glowing red, black paper arrows
+      closing in, real cut-out props pinned to it with red string, a stamp slamming down, the camera pushing in
 Statement: <max 8 words, *key word* highlighted> - a punchline or turning point
 Chapter: Part <n> | <title>                      - a new section"""
 

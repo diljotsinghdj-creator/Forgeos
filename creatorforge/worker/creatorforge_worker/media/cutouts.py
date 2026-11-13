@@ -251,7 +251,10 @@ def resolve(word: str) -> str | None:
     if s in ALIASES:
         return ALIASES[s]
     hits = [n for n in CATALOG if w in n.split() or s in n.split()]
-    return min(hits, key=len) if hits else None
+    if hits:
+        return min(hits, key=len)
+    # anything else that names an object ("gold bars", "rubber stamp"): searched for as it is
+    return "obj:" + w if re.fullmatch(r"[a-z][a-z0-9 '\-]{2,40}", w) and len(w.split()) <= 4 else None
 
 
 def library_dir(base: Path | None = None) -> Path:
@@ -301,7 +304,7 @@ def _candidates(name: str, sources: list[tuple[str, str]] | None, timeout: float
     out: list[dict] = []
     if not person and not place:
         from ..providers import stock_photo
-        plain = name.strip()
+        plain = name.removeprefix("obj:").strip()
         for provider, key in (sources if sources is not None else env_sources()):
             if provider not in ("pixabay", "unsplash", "pexels") or not key:
                 continue
@@ -314,7 +317,7 @@ def _candidates(name: str, sources: list[tuple[str, str]] | None, timeout: float
             out += stock_photo.search("openverse", "", plain, portrait=False, timeout=timeout)[:3]
         except Exception:  # noqa: BLE001
             pass
-    query = (name.split(":", 1)[1] + " portrait") if person else CATALOG[name]
+    query = (name.split(":", 1)[1] + " portrait") if person else CATALOG.get(name, name.removeprefix("obj:"))
     try:
         from ..providers.archive_photo import search
         out += search(query, timeout=timeout, limit=10)[:6]

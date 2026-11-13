@@ -136,3 +136,11 @@ def test_poster_parses():
     p = vox.parse_poster("person:Albert Einstein + light bulb | IMAGINATION | more important than knowledge | disc")
     assert p["type"] == "poster" and p["subjects"] == ["person:Albert Einstein", "light bulb"] and p["shape"] == "disc"
     assert vox.parse_poster("brain | LOSSES")["shape"] in ("disc", "burst", "torn", "flat")
+
+
+def test_mapdesk_parses_a_region():
+    p = vox.parse_mapdesk("Switzerland | gold bars + banknote | NEUTRALITY | Europe, 1934 | arrows: 5")
+    assert p["name"] == "Switzerland" and p["arrows"] == 5 and any(l["me"] for l in p["lands"])
+    assert "GERMANY" in [l["name"] for l in p["labels"]]
+    from creatorforge_worker.media import cutouts
+    assert cutouts.resolve("rubber stamp") == "obj:rubber stamp"
