@@ -3471,6 +3471,8 @@ function annoLayer(g,list,x0,y0,iw,ih,start){const col=K.mark||'#D7262B',halo=t=
     else if(a.kind==='box'){const [bx,by,bw,bh]=a.p;const r=roughShape(g,(gen,o)=>gen.rectangle(X(bx),Y(by),bw*iw,bh*ih,o),st,.45,col,U*.005)||g.rect(bw*iw,bh*ih).move(X(bx),Y(by)).fill('none').stroke({color:col,width:U*.006});if(!window.rough)wipe(r,st);
       if(a.label){const t=T(g,a.label.toUpperCase(),U*.028,X(bx),Y(by)-U*.024,{family:'Inter',weight:800,anchor:'start',fill:'#FFFFFF'});const bb=t.bbox();
         g.rect(bb.width+U*.02,bb.height+U*.01).center(bb.cx,bb.cy).fill(col);t.front();wipe(t,st)}}
+    else if(a.kind==='highlight'){const [bx,by,bw,bh]=a.p;   // the key line of a real document: the yellow marker sweeps it, under the ink
+      const r=g.rect(1,bh*ih).move(X(bx),Y(by)).fill(SIG).opacity(0).attr({style:'mix-blend-mode:multiply'});at(st,.6,p=>r.width(Math.max(1,bw*iw*p)).opacity(p>0?.62:0),E.inout)}
     else if(a.kind==='label'){const [lx,ly]=a.p;placeTag(g,a.label,X(lx),Y(ly),st,0)}})}
 function photoCredit(){if(P.credit){const t=mono(L.front,(((P.creditLabel||'PHOTO')+': ')+P.credit).toUpperCase(),W-U*.04,H-U*.03,{anchor:'end',size:U*.013,weight:700});t.addClass('keep');fit(t,W*.6);t.opacity(.85)}}
 function photo(){ // one photograph as a moving composition: depth layers, a deliberate camera, annotations, a handover
@@ -3488,7 +3490,7 @@ function photo(){ // one photograph as a moving composition: depth layers, a del
   else if(mv==='tilt-up'){dy0=ih*.035;dy1=-ih*.035;s0=s1=1.05}else if(mv==='tilt-down'){dy0=-ih*.035;dy1=ih*.035;s0=s1=1.05}else if(mv==='still'){s1=1.0}
   // subject-aware framing: a push or pull pivots toward the subject the cut-out found, and never crops its head
   // annotated points come first: the move keeps every circle, arrow and box (and its label) in the frame
-  const an=(P.annotate||[]).map(a=>a.kind==='circle'?[a.p[0],a.p[1],a.p[2]]:a.kind==='box'?[a.p[0]+a.p[2]/2,a.p[1]+a.p[3]/2,Math.max(a.p[2],a.p[3])/2]:[a.p[0],a.p[1],.03]);
+  const an=(P.annotate||[]).map(a=>a.kind==='circle'?[a.p[0],a.p[1],a.p[2]]:(a.kind==='box'||a.kind==='highlight')?[a.p[0]+a.p[2]/2,a.p[1]+a.p[3]/2,Math.max(a.p[2],a.p[3])/2]:[a.p[0],a.p[1],.03]);
   const focus=an.length?[an.reduce((v,a)=>v+a[0],0)/an.length,an.reduce((v,a)=>v+a[1],0)/an.length,Math.min(...an.map(a=>a[1]-a[2]))-.08,Math.max(...an.map(a=>a[1]+a[2]))+.06]:P.subj;
   if(an.length&&mv==='push')s1=Math.min(s1,1.06);
   if(focus&&(mv==='push'||mv==='pull')){const C=[W/2,H/2],sp=[x0+focus[0]*iw,y0+focus[1]*ih],top=y0+focus[2]*ih,bot=y0+focus[3]*ih;

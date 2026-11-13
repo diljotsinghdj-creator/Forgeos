@@ -59,8 +59,8 @@ def _annotations(text: str) -> list[dict]:
             label = re.sub(r"^[\s\d.,-]+", "", b).strip()
             if len(pa) == 2 and len(pb) >= 2:
                 out.append({"kind": "arrow", "p": pa + pb[:2], "label": label[:40]})
-        elif kind in ("circle", "box", "label"):
-            n = {"circle": 3, "box": 4, "label": 2}[kind]
+        elif kind in ("circle", "box", "label", "highlight"):
+            n = {"circle": 3, "box": 4, "label": 2, "highlight": 4}[kind]   # highlight: the signature marker sweeps a line
             m = re.match(r"\s*((?:%s\s*,\s*){%d}%s)\s*(.*)$" % (NUM, n - 1, NUM), rest)
             if m:
                 out.append({"kind": kind, "p": _floats(m.group(1)), "label": m.group(2).strip()[:40]})

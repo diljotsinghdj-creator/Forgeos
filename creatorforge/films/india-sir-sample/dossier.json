@@ -1,0 +1,230 @@
+{
+ "topic": "India's Special Intensive Revision of the voter rolls (60-second sample)",
+ "researched": "2026-11-13",
+ "method": "Election Commission press note (primary) cross-checked with Deccan Herald (EC data), The Indian Express (via Wikipedia's citation) and Wikipedia's summary. Allegations attributed; the Commission's answer shown.",
+ "claims": [
+  {
+   "id": "C1",
+   "claim": "By the end of September 2026 the Special Intensive Revision had removed about 13.3 crore (about 130 million) names from India's draft voter rolls, according to Election Commission data.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "13.3",
+    "13",
+    "130",
+    "2026"
+   ],
+   "sources": [
+    {
+     "title": "Deccan Herald, 'SIR: 13.3 crore names wiped out of draft voter lists so far, triggering Opposition backlash' (Shemin Joy, 30 Sept 2026; Election Commission data)",
+     "url": "https://www.deccanherald.com/india/sir-133-crore-names-wiped-out-of-draft-voter-lists-so-far-triggering-opposition-backlash-4164836",
+     "quote": "13.3 crore Total deleted names from draft voter lists"
+    },
+    {
+     "title": "Wikipedia, '2026 Indian electoral controversy' (read 13 Nov 2026)",
+     "url": "https://en.wikipedia.org/wiki/2026_Indian_electoral_controversy",
+     "quote": "As of September 2026, the SIR had removed 130 million names from voter rolls"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Draft-roll deletions; restorations through claims continue, so final-roll figures may differ."
+  },
+  {
+   "id": "C2",
+   "claim": "Of the deleted names, about 71.5% were marked absent, permanently shifted or 'other'; about 2.8 crore were recorded as dead; about 1.01 crore were multiple enrolments.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "71.5",
+    "71",
+    "2.8",
+    "1.01",
+    "1",
+    "21",
+    "7.5",
+    "27",
+    "10",
+    "95"
+   ],
+   "sources": [
+    {
+     "title": "Deccan Herald, 'SIR: 13.3 crore names wiped out of draft voter lists so far, triggering Opposition backlash' (Shemin Joy, 30 Sept 2026; Election Commission data)",
+     "url": "https://www.deccanherald.com/india/sir-133-crore-names-wiped-out-of-draft-voter-lists-so-far-triggering-opposition-backlash-4164836",
+     "quote": "Nearly 71.5% ... absent, permanently shifted ... 21% were due to death and 7.5% for multiple enrolments ... 2.8 crore ... 1.01 crore"
+    },
+    {
+     "title": "Wikipedia, '2026 Indian electoral controversy' (read 13 Nov 2026)",
+     "url": "https://en.wikipedia.org/wiki/2026_Indian_electoral_controversy",
+     "quote": "95 million or 71% under 'absent shifted or others' category, 27 million under deceased category and 10 million as duplicate entries"
+    }
+   ],
+   "contradictions": []
+  },
+  {
+   "id": "C3",
+   "claim": "The SIR re-checks the voter roll: a reference roll is frozen, booth-level officers verify house to house, a draft roll is published, claims and objections are heard (Forms 6, 7 and 8), then the final roll is issued. The last such revision was in 2002-05.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "2002",
+    "2005",
+    "6",
+    "7",
+    "8"
+   ],
+   "sources": [
+    {
+     "title": "Wikipedia, '2026 Indian electoral controversy' (read 13 Nov 2026)",
+     "url": "https://en.wikipedia.org/wiki/2026_Indian_electoral_controversy",
+     "quote": "freezing reference roll ... house-to-house verification by Booth Level Operators ... publication of draft rolls ... form-6 ... form-7 ... form-8 ... final roll ... since the last such exercise conducted in 2002-05"
+    },
+    {
+     "title": "Election Commission of India, Press Note No. ECI/PN/120/2026, 26 Sept 2026",
+     "url": "https://commons.wikimedia.org/wiki/File:Election_Commission_Of_India_Press_Note_26_09_26.pdf",
+     "primary": true,
+     "quote": "BLOs will visit the homes of such persons for collection of documents"
+    }
+   ],
+   "contradictions": []
+  },
+  {
+   "id": "C4",
+   "claim": "The Indian Express reported on 23 September 2026 that two of the three election commissioners had objected on record to the Chief Election Commissioner's decisions 14 times in 10 months.",
+   "status": "allegation",
+   "confidence": "medium",
+   "figures": [
+    "23",
+    "2026",
+    "14",
+    "10",
+    "2",
+    "3"
+   ],
+   "sources": [
+    {
+     "title": "The Indian Express, '14 times in 10 months, two Election Commissioners objected on record to poll panel steps' (Ritika Chopra, 23 Sept 2026), as cited by Wikipedia",
+     "url": "https://en.wikipedia.org/wiki/2026_Indian_electoral_controversy"
+    },
+    {
+     "title": "Wikipedia, '2026 Indian electoral controversy' (read 13 Nov 2026)",
+     "url": "https://en.wikipedia.org/wiki/2026_Indian_electoral_controversy",
+     "quote": "they had formally objected to such decisions 14 times in 10 months"
+    }
+   ],
+   "contradictions": [
+    "The Election Commission said the same day that all key decisions had been taken unanimously, and later described some objections as suggestions (C5)."
+   ]
+  },
+  {
+   "id": "C5",
+   "claim": "The Election Commission said all its key decisions were taken unanimously, and on 26 September 2026 issued Press Note ECI/PN/120/2026 with new decisions on the SIR.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "26",
+    "2026",
+    "120"
+   ],
+   "sources": [
+    {
+     "title": "Wikipedia, '2026 Indian electoral controversy' (read 13 Nov 2026)",
+     "url": "https://en.wikipedia.org/wiki/2026_Indian_electoral_controversy",
+     "quote": "the Election Commission issued a statement on the same day that all key decisions of the commission had been taken unanimously"
+    },
+    {
+     "title": "Election Commission of India, Press Note No. ECI/PN/120/2026, 26 Sept 2026",
+     "url": "https://commons.wikimedia.org/wiki/File:Election_Commission_Of_India_Press_Note_26_09_26.pdf",
+     "primary": true,
+     "quote": "The meeting of the Commission was held today i.e. 26.09.2026 ... The following decisions were taken"
+    }
+   ],
+   "contradictions": []
+  },
+  {
+   "id": "C6",
+   "claim": "The 26 September press note orders help desks and special camps for people living in night shelters, labourers, the poor and the homeless, and says the Form 6 declaration for the SIR has been upheld by the Supreme Court.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "26",
+    "6",
+    "2026",
+    "120"
+   ],
+   "sources": [
+    {
+     "title": "Election Commission of India, Press Note No. ECI/PN/120/2026, 26 Sept 2026",
+     "url": "https://commons.wikimedia.org/wiki/File:Election_Commission_Of_India_Press_Note_26_09_26.pdf",
+     "primary": true,
+     "quote": "special camps for the people living in night shelters, labor, poor people, homeless etc. ... The declaration attached to Form 6 for SIR has been upheld by the Hon'ble Supreme Court."
+    }
+   ],
+   "contradictions": []
+  },
+  {
+   "id": "C7",
+   "claim": "The Congress Working Committee demanded the immediate restoration of all deleted names; opposition parties have called for the SIR to be annulled.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [],
+   "sources": [
+    {
+     "title": "Deccan Herald, 'SIR: 13.3 crore names wiped out of draft voter lists so far, triggering Opposition backlash' (Shemin Joy, 30 Sept 2026; Election Commission data)",
+     "url": "https://www.deccanherald.com/india/sir-133-crore-names-wiped-out-of-draft-voter-lists-so-far-triggering-opposition-backlash-4164836",
+     "quote": "The Congress Working Committee has demanded the immediate restoration of all deleted voters"
+    },
+    {
+     "title": "Wikipedia, '2026 Indian electoral controversy' (read 13 Nov 2026)",
+     "url": "https://en.wikipedia.org/wiki/2026_Indian_electoral_controversy",
+     "quote": "opposition parties ... demanding ... annulment of SIR"
+    }
+   ],
+   "contradictions": [
+    "The Election Commission says the revision removes dead, shifted and duplicate entries (C3, C2)."
+   ]
+  },
+  {
+   "id": "C8",
+   "claim": "In early October 2026 the Election Commission ordered a drive to enrol voters left out of the rolls.",
+   "status": "verified",
+   "confidence": "medium",
+   "figures": [
+    "2026"
+   ],
+   "sources": [
+    {
+     "title": "Wikipedia, '2026 Indian electoral controversy' (read 13 Nov 2026)",
+     "url": "https://en.wikipedia.org/wiki/2026_Indian_electoral_controversy",
+     "quote": "The ECI also announced a 'special drive' for enrollment of voters excluded in SIR"
+    },
+    {
+     "title": "The Indian Express, 'After 13 crore names dropped from draft rolls, EC orders left out voter drive' (2 Oct 2026), as cited by Wikipedia",
+     "url": "https://indianexpress.com/"
+    }
+   ],
+   "contradictions": []
+  },
+  {
+   "id": "C9",
+   "claim": "Voters removed as absent or permanently shifted can apply to be added again with Form 6.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "6"
+   ],
+   "sources": [
+    {
+     "title": "Deccan Herald, 'SIR: 13.3 crore names wiped out of draft voter lists so far, triggering Opposition backlash' (Shemin Joy, 30 Sept 2026; Election Commission data)",
+     "url": "https://www.deccanherald.com/india/sir-133-crore-names-wiped-out-of-draft-voter-lists-so-far-triggering-opposition-backlash-4164836",
+     "quote": "Voters removed for being absent or permanently shifted can apply for re-entry into the final lists by filling out Form-6"
+    },
+    {
+     "title": "Wikipedia, '2026 Indian electoral controversy' (read 13 Nov 2026)",
+     "url": "https://en.wikipedia.org/wiki/2026_Indian_electoral_controversy",
+     "quote": "Form-6 ... was also used for deleted users seeking inclusion in the SIR"
+    }
+   ],
+   "contradictions": []
+  }
+ ]
+}

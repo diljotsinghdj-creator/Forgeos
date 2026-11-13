@@ -1,0 +1,237 @@
+{
+ "topic": "The 2026 US midterms as an echo of 2006 (60-second sample)",
+ "researched": "2026-11-13",
+ "method": "AP tallies via Al Jazeera, KCRA/Hearst data team, Wikipedia (2026 Senate, 2006 elections) and the Constitution; counts still moving are avoided or marked.",
+ "claims": [
+  {
+   "id": "U1",
+   "claim": "In the midterm elections of 3 November 2026, Democrats won control of both the House of Representatives and the Senate.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "3",
+    "2026"
+   ],
+   "sources": [
+    {
+     "title": "Al Jazeera, 'Democrats win control of House and Senate: Key US midterms takeaways' (Priyanka Shankar, 4 Nov 2026; AP tallies)",
+     "url": "https://www.aljazeera.com/news/2026/11/4/democrats-win-control-of-house-and-senate-key-us-midterms-takeaways",
+     "quote": "Democrats have won control of Congress"
+    },
+    {
+     "title": "KCRA / Hearst Get the Facts Data Team, '8 charts that explain the 2026 midterms' (5 Nov 2026)",
+     "url": "https://www.kcra.com/article/8-charts-explain-2026-midterms/74335794",
+     "quote": "Democrats will control Congress next term"
+    },
+    {
+     "title": "Wikipedia, '2026 United States Senate elections' (read 13 Nov 2026)",
+     "url": "https://en.wikipedia.org/wiki/2026_United_States_Senate_elections",
+     "quote": "The opposition Democratic Caucus led by Chuck Schumer defeated the Republican majority"
+    }
+   ],
+   "contradictions": [
+    "Some seat counts were still being finalised; totals vary by source."
+   ]
+  },
+  {
+   "id": "U2",
+   "claim": "It is the first time in 20 years that a Republican president has lost control of both houses of Congress; the last was George W. Bush in 2006.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "20",
+    "2006",
+    "2026"
+   ],
+   "sources": [
+    {
+     "title": "Al Jazeera, 'Democrats win control of House and Senate: Key US midterms takeaways' (Priyanka Shankar, 4 Nov 2026; AP tallies)",
+     "url": "https://www.aljazeera.com/news/2026/11/4/democrats-win-control-of-house-and-senate-key-us-midterms-takeaways",
+     "quote": "This is the first time in 20 years that a Republican president has lost control of both houses of Congress, after George W Bush in 2006."
+    },
+    {
+     "title": "Wikipedia, '2006 United States elections' (read 13 Nov 2026)",
+     "url": "https://en.wikipedia.org/wiki/2006_United_States_elections",
+     "quote": "the first midterm election since 1954 in which the Democrats ended unified Republican control of Congress ... This would not happen again until 2026"
+    }
+   ],
+   "contradictions": []
+  },
+  {
+   "id": "U3",
+   "claim": "Before the 2026 election the Senate had 53 Republicans, 45 Democrats and 2 independents who caucus with the Democrats (47).",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "53",
+    "45",
+    "2",
+    "47"
+   ],
+   "sources": [
+    {
+     "title": "Wikipedia, '2026 United States Senate elections' (read 13 Nov 2026)",
+     "url": "https://en.wikipedia.org/wiki/2026_United_States_Senate_elections",
+     "quote": "Seats before 45 ... 53 ... Independent Seats before 2"
+    },
+    {
+     "title": "Al Jazeera, 'Democrats win control of House and Senate: Key US midterms takeaways' (Priyanka Shankar, 4 Nov 2026; AP tallies)",
+     "url": "https://www.aljazeera.com/news/2026/11/4/democrats-win-control-of-house-and-senate-key-us-midterms-takeaways",
+     "quote": "the Republicans had a majority with 53 seats, while the Democrats won 47 seats"
+    }
+   ],
+   "contradictions": []
+  },
+  {
+   "id": "U4",
+   "claim": "A party needs 51 Senate seats to control the chamber outright; Democrats passed that mark.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "51"
+   ],
+   "sources": [
+    {
+     "title": "Al Jazeera, 'Democrats win control of House and Senate: Key US midterms takeaways' (Priyanka Shankar, 4 Nov 2026; AP tallies)",
+     "url": "https://www.aljazeera.com/news/2026/11/4/democrats-win-control-of-house-and-senate-key-us-midterms-takeaways",
+     "quote": "To control the Senate, a party needs 51 seats."
+    },
+    {
+     "title": "Wikipedia, '2026 United States Senate elections' (read 13 Nov 2026)",
+     "url": "https://en.wikipedia.org/wiki/2026_United_States_Senate_elections",
+     "quote": "51 seats needed for a majority ... Seats after 53-54"
+    }
+   ],
+   "contradictions": []
+  },
+  {
+   "id": "U5",
+   "claim": "Democrat Adam Hamilton won the Kansas Senate seat; a Democrat had not won a Senate seat in Kansas since 1932.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "1932"
+   ],
+   "sources": [
+    {
+     "title": "Al Jazeera, 'Democrats win control of House and Senate: Key US midterms takeaways' (Priyanka Shankar, 4 Nov 2026; AP tallies)",
+     "url": "https://www.aljazeera.com/news/2026/11/4/democrats-win-control-of-house-and-senate-key-us-midterms-takeaways",
+     "quote": "A Democrat has not won a Senate seat in Kansas since 1932."
+    },
+    {
+     "title": "KCRA / Hearst Get the Facts Data Team, '8 charts that explain the 2026 midterms' (5 Nov 2026)",
+     "url": "https://www.kcra.com/article/8-charts-explain-2026-midterms/74335794",
+     "quote": "Some of these states, like Texas, Kansas and South Carolina, had not elected a Democratic senator in decades."
+    }
+   ],
+   "contradictions": []
+  },
+  {
+   "id": "U6",
+   "claim": "Democrats flipped Republican-held Senate seats in states including Texas, Kansas, Iowa, South Carolina and Maine (one seat each).",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "1"
+   ],
+   "sources": [
+    {
+     "title": "KCRA / Hearst Get the Facts Data Team, '8 charts that explain the 2026 midterms' (5 Nov 2026)",
+     "url": "https://www.kcra.com/article/8-charts-explain-2026-midterms/74335794",
+     "quote": "Democrats gained Senate seats in Texas, Kansas, Iowa, Ohio, South Carolina and Maine."
+    },
+    {
+     "title": "Al Jazeera, 'Democrats win control of House and Senate: Key US midterms takeaways' (Priyanka Shankar, 4 Nov 2026; AP tallies)",
+     "url": "https://www.aljazeera.com/news/2026/11/4/democrats-win-control-of-house-and-senate-key-us-midterms-takeaways",
+     "quote": "flipping Republican-held House and Senate seats in Texas, South Carolina, Iowa, Michigan and Kansas ... Democrat Troy Jackson wins Maine US Senate seat"
+    }
+   ],
+   "contradictions": []
+  },
+  {
+   "id": "U7",
+   "claim": "In 2006, under President George W. Bush, Republicans fell from 232 House seats to 202, and from 55 Senate seats to 49.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "2006",
+    "232",
+    "202",
+    "55",
+    "49"
+   ],
+   "sources": [
+    {
+     "title": "Wikipedia, '2006 United States elections' (read 13 Nov 2026)",
+     "url": "https://en.wikipedia.org/wiki/2006_United_States_elections",
+     "quote": "Republican Party 232 202 ... achieved a 49-49 tie in the United States Senate ... Before these elections 55"
+    },
+    {
+     "title": "Al Jazeera, 'Democrats win control of House and Senate: Key US midterms takeaways' (Priyanka Shankar, 4 Nov 2026; AP tallies)",
+     "url": "https://www.aljazeera.com/news/2026/11/4/democrats-win-control-of-house-and-senate-key-us-midterms-takeaways",
+     "quote": "In the 2006 midterms, the Republican strength in the House went down from 232 to 202, while the party's numbers in the Senate fell from 55 to 49."
+    }
+   ],
+   "contradictions": []
+  },
+  {
+   "id": "U8",
+   "claim": "In 18 of the 20 midterms from 1946 to 2022, the president's party lost House seats.",
+   "status": "reported",
+   "confidence": "medium",
+   "figures": [
+    "18",
+    "20",
+    "1946",
+    "2022"
+   ],
+   "sources": [
+    {
+     "title": "Al Jazeera, 'Democrats win control of House and Senate: Key US midterms takeaways' (Priyanka Shankar, 4 Nov 2026; AP tallies)",
+     "url": "https://www.aljazeera.com/news/2026/11/4/democrats-win-control-of-house-and-senate-key-us-midterms-takeaways",
+     "quote": "in 18 of the 20 midterms held from 1946 to 2022, voters have taken House seats away from the party in power"
+    }
+   ],
+   "contradictions": []
+  },
+  {
+   "id": "U9",
+   "claim": "About 124 million people voted in the 2026 midterms, according to preliminary data from the University of Florida Election Lab.",
+   "status": "estimate",
+   "confidence": "medium",
+   "figures": [
+    "124",
+    "2026"
+   ],
+   "sources": [
+    {
+     "title": "KCRA / Hearst Get the Facts Data Team, '8 charts that explain the 2026 midterms' (5 Nov 2026)",
+     "url": "https://www.kcra.com/article/8-charts-explain-2026-midterms/74335794",
+     "quote": "About 124 million people voted in the 2026 midterm elections, according to preliminary data from the University of Florida Election Lab."
+    }
+   ],
+   "contradictions": [
+    "Preliminary; final counts may differ."
+   ]
+  },
+  {
+   "id": "U10",
+   "claim": "The newly elected Congress assembles on 3 January 2027.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "3",
+    "2027"
+   ],
+   "sources": [
+    {
+     "title": "U.S. Constitution, Twentieth Amendment, section 2 (Congress assembles at noon on 3 January)",
+     "url": "https://constitution.congress.gov/constitution/amendment-20/",
+     "primary": true,
+     "quote": "The Congress shall assemble at least once in every year, and such meeting shall begin at noon on the 3d day of January"
+    }
+   ],
+   "contradictions": []
+  }
+ ]
+}
