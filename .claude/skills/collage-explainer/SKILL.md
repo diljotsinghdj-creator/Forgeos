@@ -44,7 +44,11 @@ reference files here: `beat-layer.md` (STORY), `prompt-guide.md` (LOOK), `motion
 - **Pacing (gate 4):** shots of 4-6 s as the original says, but a still-like shot never holds past 4.5 s.
 - **Credits:** image and video generation spends the owner's ElevenLabs credits. Bake-offs use one image per
   theme; re-roll images (cheap) before clips (dear). Never repeat a generation call to retry. Confirm with the
-  owner before any run of more than about 12 clips.
+  owner before any run of more than about 12 clips. `creative_generate_video` has no duration field and Omni
+  defaults to 10 s (about 6,100 credits at 720p, 2026-11-13): set `duration_secs` to 5 on the node first
+  (creative_get_model_schema, then creative_update_node) and price with `estimate_only` before running.
+- **No invented elements:** a clip may not add a person, document or object the poster did not have (Omni does
+  this on its own). Check frames of every clip; cut around or reject what was added.
 - **Labels:** every AI plate or clip is logged in `creatorforge-data/assets/ledger.json` as AI-generated with model
   and prompt, and the film shows ILLUSTRATION on it. PRESHOW lists every AI shot.
 - **Colour:** the theme's palette drives the film; the signature #FFDD33 stays the signal (highlighter, key number).
