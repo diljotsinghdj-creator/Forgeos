@@ -76,7 +76,8 @@ Before the first generation each session: load the ElevenLabs tools, call `creat
    the last film's theme (SEEN.json).
 4. **Keyframes:** the 5-part image prompt, style block verbatim on every poster, the real evidence composited on
    evidence beats only. Check each poster is truly layered and the real photo was not redrawn; re-roll misses.
-5. **Motion:** the 5-axis motion prompt, positive phrasing only for Omni Flash, SFX-only audio (no spoken words),
+5. **Motion:** one verbatim MOTION BLOCK (camera family, amplitude, paper physics, audio rule) shared by every clip
+   so all cuts move alike, plus the per-shot element motion; the 5-axis motion prompt, positive phrasing only for Omni Flash, SFX-only audio (no spoken words),
    dramatic moves (assemble-from-empty, fly-in, scatter, impact kick, whip) only on hook, reveal and payoff.
 6. **Assembly:** the clips become the film's scenes in the studio (Footage lines), narration and score on top,
    blue-box word captions, gates, PRESHOW and SFX_LOG, then sent to the owner PRESHOW first.

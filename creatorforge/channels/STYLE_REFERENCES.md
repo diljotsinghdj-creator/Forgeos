@@ -115,3 +115,14 @@ Print Facts; every fact sourced; yellow #FFDD33 stays the signal.
   ILLUSTRATION; real faces only from real photos.
 
 - **Collage method (owner-supplied skill, 2026-11-13):** installed as `.claude/skills/collage-explainer/`, adapted to the ElevenLabs flows and the house rules.
+
+### Digi Curator: viral Vox-style animations for free (2026)
+- Thin article (its prompts are behind a sign-up). Useful: the short-form "archived photo" treatment: an old
+  black-and-white portrait pops off the page with a red cut-out outline and a small bounce, a stamped label
+  (ARCHIVED / CLASSIFIED) lands on it, and a Ken Burns push in or out runs under the voiceover.
+- Consistency trick: ONE universal motion prompt applied to every image in the film, so every cut moves the same way
+  (the collage-explainer skill already does this with a verbatim style block; add a verbatim motion block too).
+- Pipeline: a chatbot writes the script, beats and one image prompt per beat; images are batch-generated (they use a
+  Chrome extension on Google Flow; we use ElevenLabs flows); one motion prompt animates them all.
+- For us: the archived-photo pop needs no AI. The studio already has real cut-outs, the red offset print and stamps;
+  a person in it must be a real credited photo (never generated).
