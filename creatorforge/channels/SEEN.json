@@ -466,5 +466,33 @@
   ],
   "voice": "am_michael",
   "look": "intel"
+ },
+ {
+  "id": "panama-60",
+  "kind": "sample",
+  "channel": "print-facts",
+  "topic": "panama-canal-water",
+  "date": "2026-11-13",
+  "engine": "trojan-horse",
+  "hook_mechanism": "opening day 1914 on today's satellite map, then the twist: ships climb a lake, and the lake runs on rain",
+  "hook_line": "August fifteenth, 1914. The first ship crosses the Panama Canal.",
+  "opening": "map",
+  "shots": [
+   "Map: satellite zoom, Pacific-side locks + LoC print 1914 drops in",
+   "Map: satellite route 82 km",
+   "Photo: Pedro Miguel colour 1913 on rust shard, They climb.",
+   "Diagram: lock staircase cross-section +26 m",
+   "Type: photo-filled GATUN (satellite)",
+   "Object: ship in a glass, 200,000,000 L",
+   "Units: 80 pool tiles",
+   "Torn strip: October 2023 over tinted lake",
+   "Statement: driest October on record (highlight)",
+   "Units: 36 ships, 14 struck, 22 left",
+   "Document: ACP quote highlighted, first time ever stamp",
+   "Counter: 22 to 24, rain doodles",
+   "Finale: shortcut filled by Panama's rain"
+  ],
+  "voice": "bm_george",
+  "look": "water"
  }
 ]
