@@ -42,7 +42,7 @@
    "delivery": "measured",
    "pause": 0.1,
    "role": "opening",
-   "narration": "September twenty-six, twenty twenty-six. India's Election Commission issues a press note.",
+   "narration": "India's Election Commission, September twenty-six.",
    "graphic": "Photo: asset:P0019 | push | Election Commission of India, Press Note 120, 26 Sept 2026 | depth: flat | badge: verified",
    "claims": [
     "C5"
@@ -133,7 +133,7 @@
    "purpose": "explain",
    "delivery": "grave",
    "pause": 0.05,
-   "narration": "Then The Indian Express reported two commissioners had objected, fourteen times.",
+   "narration": "The Indian Express reported two commissioners objected, fourteen times.",
    "graphic": "Clipping: 14 times in 10 months, two Election Commissioners objected on record to poll panel steps | The Indian Express, September 2026 | documents + newspaper",
    "claims": [
     "C4"
