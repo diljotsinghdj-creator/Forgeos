@@ -185,3 +185,16 @@ Every video, script and Artifact on both channels follows `channels/VOX_PRODUCTI
 - the top-right Play/Replay and Hide UI controls;
 - the 3-handle filter and the 30-cue master canvas;
 - the [STYLE_SHIFT], [SIMULATE], [3D_STAGE], [SFX_LOG] and [SCRIPT_PLAN] shortcuts.
+
+## 8. AI-generated plates (owner, 2026-11-13)
+
+Owner's words: "use AI-generated plates for objects, tabletops and backgrounds, real people's faces and labelled as
+illustration. and i'll send you more to learn"
+
+As applied (Claude's reading, for the owner to confirm):
+- AI-generated plates are allowed for objects, props, tabletops, desks, maps-as-objects and backgrounds, in the style of
+  the owner's references (STYLE_REFERENCES.md). Every one is labelled ILLUSTRATION on screen and logged in the asset
+  ledger as AI-generated, with the model and prompt.
+- Real people's faces still come only from real, credited photographs, labelled. No AI-generated or AI-altered face
+  of a real person (hard rule in section 6), and no AI faces passed off as real or private people.
+- A plate never stands in for evidence: documents, photos and footage that prove a fact stay real.
