@@ -131,6 +131,7 @@ Frame: <background photo: asset:P0001 or a real place to search> | <subject: obj
     - THE VOX KEY FRAME: a real photograph full-bleed and graded, a torn paper panel with big type, the subject as a
       halftone cut-out breaking out of it, a data chip; add "| marker: <note>" for the red hand-drawn note
 Poster: <hero cut-out: object or person:Name> [+ <second piece, in spot colour>] | <BIG WORD> | <small line> | disc|burst|torn|flat
+Assemble: <asset:P0001 or a poster file> | <label> | pieces: x0 y0 x1 y1; ... | illustrative  - a finished collage poster (an AI plate, labelled) whose pieces land back in place one by one; boxes are fractions of the poster, or leave them out for an automatic split
     - THE EDITORIAL COLLAGE POSTER (the owner's mood board): light paper or flat colour ground, one huge black-and-white
       halftone cut-out breaking into huge type, a flat shape behind it, one piece in spot colour, doodles
 Mapdesk: <country> | <prop> + <prop> + ... | <STAMP WORD> | <kicker> | arrows: <n>

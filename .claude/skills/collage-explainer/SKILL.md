@@ -11,6 +11,10 @@ description: >
 
 # Collage explainer (adapted for CreatorForge)
 
+> **Paused 2026-11-13 by the owner's free-tools rule** (MASTER_DIRECTIVES section 9): every generation step here
+> (ElevenLabs images, clips, voice, music) is paid, so none of it runs. The free parts still apply: the beat map,
+> cadence, poster composition rules, and the build-on assembly, now done locally by the studio's `Assemble:` kind.
+
 Adapted on 2026-11-13 from the owner-supplied skill "vox-explainer" (Advibly). The original is kept verbatim in
 `references/original/`. Its method is unchanged here; three things differ: the tools (ElevenLabs flows instead of
 the Advibly MCP), the purpose (documentary, not product ads) and the house rules, which win wherever they meet.

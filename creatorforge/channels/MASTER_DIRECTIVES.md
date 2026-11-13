@@ -198,3 +198,15 @@ As applied (Claude's reading, for the owner to confirm):
 - Real people's faces still come only from real, credited photographs, labelled. No AI-generated or AI-altered face
   of a real person (hard rule in section 6), and no AI faces passed off as real or private people.
 - A plate never stands in for evidence: documents, photos and footage that prove a fact stay real.
+
+## 9. Free tools only (owner, 2026-11-13)
+The owner's words: "if something is paid, or we i have to pay later then drop it".
+- Nothing that costs money now or later: no paid APIs, credits, subscriptions or trials that turn paid. When a
+  reference or repo depends on one (Atlas Cloud, MuAPI, Kling, Veo, Seedance, Higgsfield, Suno, MiniMax, Runway,
+  OpenAI keys...), keep only its free ideas and build them locally.
+- This stops ElevenLabs generation (images, clips, voice, music, SFX: all paid credits; about 19,500 were spent on the
+  left-digit sample before this rule) and vidIQ (credits). Section 8's AI plates are therefore off: collage scenes are
+  drawn by the studio itself from real archive photos and our own cut-outs (Poster, Frame, Mapdesk, Assemble).
+- Free and local stays: the studio renderer, Kokoro voice, BiRefNet/ISNet cut-outs, OpenCV, ffmpeg, the synthesised
+  score and the SFX bank, Wikimedia Commons / NASA / Library of Congress / Internet Archive, free web pages.
+- If a paid tool ever looks essential, say so and ask; never spend first.

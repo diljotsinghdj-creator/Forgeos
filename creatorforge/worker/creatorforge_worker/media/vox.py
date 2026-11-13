@@ -45,7 +45,7 @@ KINDS = ("hero", "desk", "pinboard", "opener", "reveal", "clipping", "pinmap", "
          "seats", "stack", "stand", "fan", "trend", "slice", "route", "compare", "photoline", "tv",
          "clockmap", "tornsplit", "newscard", "blueprint", "pyramid", "flowchart", "linkmap", "orgchart", "heatmap",
          "courtdoc", "table", "interview", "endcard", "polltrack", "area", "candles", "arrows", "railmap", "sizemap",
-         "borders", "morph", "shrink", "photo", "photos", "footage", "satellite", "flowmap", "columns", "dots", "myth", "counter", "staircase", "scale", "units", "reel", "conveyor", "tiles", "pile", "wash", "grids", "frame", "poster", "mapdesk")
+         "borders", "morph", "shrink", "photo", "photos", "footage", "satellite", "flowmap", "columns", "dots", "myth", "counter", "staircase", "scale", "units", "reel", "conveyor", "tiles", "pile", "wash", "grids", "frame", "poster", "mapdesk", "assemble")
 
 
 # A look per video, so no two films share one face: paper, type, map colours and marker pen differ, the method doesn't.
@@ -91,6 +91,7 @@ LAYOUT_SETS = {k: (["base", "mirror", "card"] if k in _FLIP else ["base", "card"
 LAYOUT_SETS["bignumber"] = ["base", "side", "card"]
 LAYOUT_SETS["frame"] = ["base"]
 LAYOUT_SETS["poster"] = ["base"]
+LAYOUT_SETS["assemble"] = ["base"]
 LAYOUT_SETS["mapdesk"] = ["base"]         # a full-bleed poster: never put on a card or mirrored          # the frame is already a full composition; it mirrors itself from its seed
 for _k in ("photo", "photos", "footage", "satellite"):
     LAYOUT_SETS[_k] = ["base"]          # a photograph or footage is the frame itself: never mirrored or put on a card
@@ -1724,6 +1725,31 @@ def parse_poster(spec: str) -> dict | None:
 
 PARSERS["poster"] = parse_poster
 
+
+def parse_assemble(spec: str) -> dict | None:
+    """'Assemble: <poster: asset:P0001 or a file> | <label> | pieces: x0 y0 x1 y1; ... | illustrative' - the build-on
+    assembly: the finished collage poster cut into its pieces, which land back in place one by one, back to front, all
+    down by about 60% of the shot, then a living hold. Boxes are fractions of the poster; without them the split is
+    automatic (and a poster that will not split cleanly is a slow push instead)."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if not parts or not parts[0]:
+        return None
+    from .assemble import boxes_from
+    label, boxes, illus = "", [], False
+    for p in parts[1:]:
+        k, sep, v = p.partition(":")
+        if sep and k.strip().lower() == "pieces":
+            boxes = boxes_from(v)
+        elif p.strip().lower() == "illustrative":
+            illus = True
+        elif p.strip() and not label:
+            label = p.strip()[:60]
+    return {"type": "assemble", "file": parts[0][:300], "label": label, "boxes": boxes, "illustrative": illus,
+            "seed": _seed("assemble", spec) % 10000}
+
+
+PARSERS["assemble"] = parse_assemble
+
 def parse_mapdesk(spec: str) -> dict | None:
     """'Mapdesk: Switzerland | gold bars + banknote + rubber stamp | NEUTRALITY | Europe, 1934 | arrows: 6' - the map
     desk: an aged paper map of the region (neighbours, sea, spaced serif names), the country glowing red, black paper
@@ -2362,6 +2388,25 @@ function counter(){ // a number counting in steady digits (each digit in its own
   if(P.unit){const u=T(L.front,P.unit.toUpperCase(),U*.03,W/2,y+big*.62,{family:'Mono',weight:700,fill:FG,ls:'.2em'});fit(u,W*.86);wipe(u,.4)}
   if(P.caption){const c=boxText(L.front,P.caption,U*.045,W/2,VERT?H*.72:H*.8,{anchor:'middle',maxw:W*.84,most:2});c.opacity(0);at(.35+span+.15,.3,p=>c.opacity(p),E.snap)}
   FOCUS={x:W/2,y:y-big*.35,rx:Math.min(W*.4,(tot+pw+qw)*.62),ry:big*.55}}
+function assembleScene(){ // the build-on assembly: the poster's pieces land back in place, back to front
+  const A=P.asm;if(!A)return;const ar=A.w/A.h;let w=W,h=W/ar;if(h<H){h=H;w=H*ar}const ox=(W-w)/2,oy=(H-h)/2;
+  const G=L.mid.group();G.image(A.bd).size(w,h).move(ox,oy);
+  const n=A.pieces.length,first=.12,last=Math.max(first+.3,DUR*.6-.45),step=n>1?(last-first)/(n-1):0;
+  A.pieces.forEach((pc,i)=>{const pw=pc.w*w,ph=pc.h*h,x=ox+pc.x*w,y=oy+pc.y*h,cx=x+pw/2,cy=y+ph/2;
+    const g=G.group();g.image(pc.img).size(pw,ph).move(x,y);g.attr({filter:'url(#shadow)'});g.opacity(0);
+    const t0=first+step*i,d=.42,kind=(P.seed+i*7)%3,ph0=rnd()*6.28,amp=.35+rnd()*.35;
+    // where it comes from: off the nearest edge (fly), from above (drop) or in place, enlarged (pop)
+    const ex=cx<W/2?-(cx+pw*.6):(W-cx+pw*.6),ey=cy<H/2?-(cy+ph*.6):(H-cy+ph*.6),fromX=Math.abs(ex)<Math.abs(ey)*1.2;
+    const rot0=(rnd()-.5)*24;
+    at(0,DUR,p=>{const t=p*DUR,q=Math.min(1,Math.max(0,(t-t0)/d));let dx=0,dy=0,s=1,r=0,o=1;
+      if(t<t0){g.opacity(0);return}
+      if(kind===0){const e=E.back(q);dx=fromX?ex*(1-e):0;dy=fromX?0:ey*(1-e);r=rot0*(1-E.out(q));o=Math.min(1,q*4)}
+      else if(kind===1){dy=-(cy+ph*.6)*(1-E.back(q));o=Math.min(1,q*5)}
+      else{s=1+.35*(1-E.out(q));o=Math.min(1,q*3)}
+      const life=Math.max(0,t-t0-d);r+=Math.sin(life*1.7+ph0)*amp*Math.min(1,life*2);   // settled, but alive
+      g.opacity(o).attr({transform:`translate(${dx},${dy}) rotate(${r},${cx},${cy}) translate(${cx},${cy}) scale(${s}) translate(${-cx},${-cy})`})},E.lin)});
+  at(0,DUR,p=>G.attr({transform:`translate(${W/2},${H/2}) scale(${1+p*.045}) translate(${-W/2},${-H/2})`}),E.lin);
+}
 function voxFrame(){ // the layered Vox key frame: real photo -> paper -> type -> cut-out -> chip (notes, badge, source on top)
   const flip=(P.seed||0)%2===1&&!TALL,bg=P.bgpic;
   if(bg){const ar=bg.w/bg.h;let w=W*1.1,h=w/ar;if(h<H*1.1){h=H*1.1;w=h*ar}
@@ -3523,7 +3568,7 @@ function footage(){ // moving footage, frame by frame, with the same annotations
   if(P.annotate&&P.annotate.length){const a=P.annotate[0];FOCUS={x:a.p[0]*W,y:a.p[1]*H,rx:U*.1,ry:U*.1}}
   photoCredit()}
 
-const SCENES={frame:voxFrame,poster,mapdesk,grids,wash,reel,conveyor,tiles,pile,units,myth,counter,staircase,scale,photo,photos,footage,shrink,morph,borders,courtdoc,table,interview,endcard,polltrack,area,candles,arrows,railmap,sizemap,pyramid,flowchart:flow,linkmap,orgchart,heatmap,hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv,
+const SCENES={frame:voxFrame,poster,mapdesk,assemble:assembleScene,grids,wash,reel,conveyor,tiles,pile,units,myth,counter,staircase,scale,photo,photos,footage,shrink,morph,borders,courtdoc,table,interview,endcard,polltrack,area,candles,arrows,railmap,sizemap,pyramid,flowchart:flow,linkmap,orgchart,heatmap,hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv,
   clockmap,tornsplit,newscard,blueprint};
 async function boot(){
   try{await Promise.all(Array.from(document.fonts).map(f=>f.load()))}catch(e){}
@@ -3603,6 +3648,21 @@ def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: f
                 plan["box"], plan["shapes"] = _map_frame([(g[0]["lon"] - 9, g[0]["lat"] - 6), (g[0]["lon"] + 9, g[0]["lat"] + 6)], 0.2)
             else:
                 plan.pop("then")
+    elif plan["type"] == "assemble":
+        from . import assemble as _asm, cutouts as _cut, photo as _photo
+        try:
+            f, rec = _photo.resolve(plan["file"])
+        except MediaError:
+            raise MediaError(f"vox: assemble needs a poster image: {plan['file']} was not found")
+        cut = _asm.pieces(Path(f), work, plan.get("boxes") or None, lambda im: _cut._mask(im, model, False))
+        plan["asm"] = {"bd": Path(cut["bd"]).resolve().as_uri(), "w": cut["w"], "h": cut["h"], "mode": cut["mode"],
+                       "pieces": [{**{k: v for k, v in pc.items() if k != "file"}, "img": Path(pc["file"]).resolve().as_uri()}
+                                  for pc in cut["pieces"]]}
+        if rec.get("illustrative") or rec.get("ai_generated") or plan.get("illustrative"):
+            plan["badge"] = BADGES["illustrative"]
+        if rec.get("credit") and not rec.get("ai_generated"):
+            plan["credit"] = rec["credit"][:110]
+        plan["pics"], plan["camera"] = [], "still"
     else:
         _pictures(plan, lib, model, fetch, sources, era_in(theme))
     if plan["type"] == "frame":

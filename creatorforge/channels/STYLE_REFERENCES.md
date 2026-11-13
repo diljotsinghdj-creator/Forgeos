@@ -178,3 +178,23 @@ Google Flow -> one universal motion prompt -> clips -> voice -> music -> CapCut)
 - Their story facts are unsourced; nothing from the demo goes into our films without the dossier.
 **Applied:** next collage sample: 12-14 beats per 30 s, clips priced first and set to 5 s, every clip checked for
 invented elements.
+
+### GitHub Alisa0808/vox-director (owner-sent, 2026-11-13; MIT)
+The upstream original of the vox-explainer zip: topic -> beat map (gate) -> theme bake-off (gate) -> one collage
+poster per shot (Nano Banana 2) -> Omni Flash motion -> TTS + music -> ffmpeg assembly, all on the paid Atlas Cloud
+API. Paid parts dropped (section 9 of the directives); also not for us: Kling for real people, the AI presenter
+("host") mode, A-roll restyling of a face, the watermark. Kept, free:
+- **Cadence:** shots 3-6 s, never past about 7 s; each beat's narration (8-10 s) carries TWO shots, a wide with the
+  headline and a detail cut-in without it, the narration running across the cut mid-sentence.
+- **Real things stay real:** a real photo is cut out as a photographic sticker, never redrawn; poses go to the body,
+  halftone is kept off skin, labels are frozen (their video model re-lettered "PARFUM" to "PAREUM").
+- **The local element engine** (no video model): cut the finished poster into pieces, fly them back to their
+  ORIGINAL positions so the assembled frame IS the poster; entrances fly-in with overshoot, slap, drop with bounce,
+  pop-settle; settled pieces keep a slow sway; clean each piece's home spot first so no copy shows before it lands.
+  **Built as the studio's `Assemble:` kind** (media/assemble.py): automatic split (flat ground + salient mask, cut
+  at narrow joins) or hand-picked boxes; spots filled with the surrounding ground colour and grain (their blur fix
+  and inpainting both left visible ghosts on busy posters in our tests); a poster that will not split is a slow push.
+
+### GitHub Anil-matcha/vox-ai-motion-graphics-generator (owner-sent, 2026-11-13)
+A repackaging of vox-director on the paid MuAPI aggregator (Veo 3.1, Suno, MiniMax, an OpenAI key). Dropped under
+section 9; nothing free in it that vox-director does not already have.

@@ -144,3 +144,25 @@ def test_mapdesk_parses_a_region():
     assert "GERMANY" in [l["name"] for l in p["labels"]]
     from creatorforge_worker.media import cutouts
     assert cutouts.resolve("rubber stamp") == "obj:rubber stamp"
+
+
+def test_assemble_pieces_land_back_on_the_poster(tmp_path):
+    """Assemble: a flat-ground poster splits into its pieces; the backdrop keeps no copy of them; boxes parse."""
+    import numpy as np
+    from PIL import Image, ImageDraw
+    from creatorforge_worker.media import assemble, vox
+    im = Image.new("RGB", (600, 400), (230, 180, 40))
+    d = ImageDraw.Draw(im)
+    for box, col in (((40, 30, 560, 110), (240, 235, 220)), ((60, 160, 250, 330), (210, 60, 50)), ((350, 160, 540, 330), (80, 170, 90))):
+        d.rectangle(box, fill=col)
+    src = tmp_path / "poster.png"
+    im.save(src)
+    cut = assemble.pieces(src, tmp_path / "w")
+    assert cut["mode"] == "auto" and len(cut["pieces"]) == 3
+    bd = np.asarray(Image.open(cut["bd"]).convert("RGB")).astype(int)
+    assert abs(bd[245, 155] - np.array([230, 180, 40])).max() < 40       # the red piece's spot is bare ground now
+    plan = vox.parse_assemble("asset:P0001 | One mile | pieces: 0.1 0.1 0.5 0.4; 0.6 0.2 0.9 0.8 | illustrative")
+    assert plan["boxes"] == [(0.1, 0.1, 0.5, 0.4), (0.6, 0.2, 0.9, 0.8)] and plan["illustrative"] and "src" not in plan
+    flat = Image.new("RGB", (300, 200), (200, 200, 200))
+    flat.save(tmp_path / "flat.png")
+    assert assemble.pieces(tmp_path / "flat.png", tmp_path / "w2")["mode"] == "push"   # nothing to split: a push
