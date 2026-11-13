@@ -2405,7 +2405,7 @@ function assembleScene(){ // the build-on assembly: the poster's pieces land bac
       else{s=1+.35*(1-E.out(q));o=Math.min(1,q*3)}
       const life=Math.max(0,t-t0-d);r+=Math.sin(life*1.7+ph0)*amp*Math.min(1,life*2);   // settled, but alive
       g.opacity(o).attr({transform:`translate(${dx},${dy}) rotate(${r},${cx},${cy}) translate(${cx},${cy}) scale(${s}) translate(${-cx},${-cy})`})},E.lin)});
-  at(0,DUR,p=>G.attr({transform:`translate(${W/2},${H/2}) scale(${1+p*.045}) translate(${-W/2},${-H/2})`}),E.lin);
+  TICKS.push(t=>{const p=Math.min(1,t/DUR);G.attr({transform:`translate(${W/2},${H/2}) scale(${1+p*.045}) translate(${-W/2},${-H/2})`})});   // the camera smooth, the pieces on 12 fps
 }
 function voxFrame(){ // the layered Vox key frame: real photo -> paper -> type -> cut-out -> chip (notes, badge, source on top)
   const flip=(P.seed||0)%2===1&&!TALL,bg=P.bgpic;

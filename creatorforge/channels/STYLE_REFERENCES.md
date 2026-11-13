@@ -198,3 +198,22 @@ API. Paid parts dropped (section 9 of the directives); also not for us: Kling fo
 ### GitHub Anil-matcha/vox-ai-motion-graphics-generator (owner-sent, 2026-11-13)
 A repackaging of vox-director on the paid MuAPI aggregator (Veo 3.1, Suno, MiniMax, an OpenAI key). Dropped under
 section 9; nothing free in it that vox-director does not already have.
+
+### GitHub iart-ai/map-animation-skills (owner-sent, 2026-11-13; MIT, free text; the After Effects path is paid, dropped)
+"Vox-style" editorial maps: a camera that zooms, orbits or pans over a base map while pins drop, routes draw on,
+regions highlight and labels call out. Two paths: Google Earth Studio -> After Effects (dropped: AE is paid) or
+code-rendered vector maps (GeoJSON -> SVG with a real projection), which is what the studio already does.
+Rules worth keeping, checked against the studio:
+- **12 fps stutter on the graphics only**, base camera smooth at 24 ("stuttering everything looks like dropped
+  frames"). The studio already does this (vox.py: tracks quantised to 12 fps, TICKS run every frame). Applying it
+  caught a bug in the new Assemble kind (its push ran on the 12 fps tracks); fixed, the push is now a TICK.
+- **One projection for everything** (basemap, pins, routes, labels in one coordinate space); [lng, lat] order.
+- **Great-circle arcs** for flights (densify with geoInterpolate): our Globe does this; flat Route maps use arcs.
+- **Focus + context:** the target region lit, the rest dimmed but visible; colour = meaning, never reassigned.
+- **Labels:** upright, a couple of words, inside the safe area, counter-scaled so type stays one size while the map
+  zooms; they appear after their pin lands.
+- **Camera:** slow and deliberate ("establish, don't whip"), eased; fly A->B by zooming out toward the midpoint and
+  back in.
+- **One ordered beats array** drives camera targets, pin order, routes and labels (our Route/Pinmap lines already).
+- **Verify by stills:** frame 0, mid each beat, last; check every pin on its real coordinate and two adjacent frames
+  inside a move (the overlay holds for 2 frames while the camera advances).
