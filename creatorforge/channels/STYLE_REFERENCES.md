@@ -113,3 +113,5 @@ Print Facts; every fact sourced; yellow #FFDD33 stays the signal.
   about 70% of the shot, then a living hold. Cuts mostly hard; the track transition for section changes.
 - AI plates (owner allowed, section 8): one locked style frame per film; every plate made from it; labelled
   ILLUSTRATION; real faces only from real photos.
+
+- **Collage method (owner-supplied skill, 2026-11-13):** installed as `.claude/skills/collage-explainer/`, adapted to the ElevenLabs flows and the house rules.
