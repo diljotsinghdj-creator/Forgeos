@@ -126,3 +126,30 @@ Print Facts; every fact sourced; yellow #FFDD33 stays the signal.
   Chrome extension on Google Flow; we use ElevenLabs flows); one motion prompt animates them all.
 - For us: the archived-photo pop needs no AI. The studio already has real cut-outs, the red offset print and stamps;
   a person in it must be a real credited photo (never generated).
+
+### YouTube kg_N3dJ8cCs: "How to create videos like Vox with Claude" (owner-sent, 2026-11-13)
+Studied from the transcript only (the visual walkthrough was refused: vidIQ credits ran out). A Claude Code +
+HyperFrames (HTML-to-video, like our Chromium capture in vox.py) tutorial. Its thesis: the Vox look is three
+signatures, then a calm edit.
+1. **The highlighted document.** An off-white article page, tilted a little, paper texture so it reads as a real
+   printout; a slow push-in while a yellow highlighter sweeps the one key line. "The highlight tells viewers
+   exactly what to read." Studio: `Document:` / `Article:` / `Clipping:` (signature #FFDD33 sweep).
+2. **The annotated chart.** Light background, faint grid lines, ONE bold line that draws itself, and a small note
+   pointing at the part that matters. "The chart explains itself." Numbers go in the prompt so the chart is exact.
+   Studio: `Chart:`/line charts with `note:`.
+3. **Footage framed like a paper collage**, not filling the screen: a card on the page, a small yellow label, a slow
+   zoom. "Framing stock footage makes it look designed, not borrowed." Studio: `Footage: ... | frame: taped`.
+4. **Edit:** narration calm and curious, everything cut to the voice, quiet music underneath.
+Its demo film (coffee prices; figures theirs, not checked by us) runs: hook line on a cup, the doubled price on a
+chart, the cause on framed footage, the consequence, a soft question to end.
+
+**Self-check against our last sample ("Read the whole number"):** it used none of signature 1 and missed 3.
+- The study itself was the evidence and was never shown: the move was the paper's title page with the key finding
+  highlighted (Thomas & Morwitz 2005, Journal of Consumer Research; the NBER auction paper), not a bare "2005".
+- The AI clips ran full-bleed; framed as cards with a yellow label they would sit in the same paper world as the
+  data shots, which was the film's biggest style gap.
+- The two counters should have been one annotated chart (the price drop at each 10,000-mile mark, a note on the
+  cliff).
+**Rule from this:** every explainer, either channel, carries at least one highlighted real document, and its numbers
+go on an annotated chart rather than a lone counter where a shape exists; AI or stock footage is framed unless it is
+the hero shot.
