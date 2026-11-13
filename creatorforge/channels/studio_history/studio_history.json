@@ -203,5 +203,35 @@
    "counter",
    "statement"
   ]
+ },
+ {
+  "id": "left-digit-sample",
+  "title": "Read the whole number",
+  "channel": "sample",
+  "engine": "live-viewer-trap",
+  "hook_mechanism": "the viewer is asked which price is bigger and feels the pull of the 2 before the answer",
+  "metaphors": [
+   "the left digit as the price your brain actually pays attention to"
+  ],
+  "archetype": "E",
+  "look": "noir",
+  "accent": "#CA21CA",
+  "cinematography": "restrained",
+  "maps": "relief",
+  "infographics": "editorial",
+  "animation": "fluid",
+  "rhythm": "brisk",
+  "music": "drone",
+  "grade": "neutral",
+  "kinds": [
+   "footage",
+   "counter",
+   "footage",
+   "bignumber",
+   "footage",
+   "counter",
+   "bignumber",
+   "statement"
+  ]
  }
 ]

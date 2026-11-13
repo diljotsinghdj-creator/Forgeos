@@ -173,5 +173,28 @@
    "/home/user/Forgeos/creatorforge/channels/studio_history/keyframes/india-symbols-sample/key3.png"
   ],
   "beds": []
+ },
+ {
+  "film": "left-digit-sample",
+  "date": "2026-11-13",
+  "channel": "sample",
+  "question": "Why does $2.99 feel so much cheaper than $3?",
+  "claim": "People anchor on the leftmost digit (Thomas and Morwitz 2005); the same bias moves used-car prices at every 10,000-mile mark (Lacetera, Pope and Sydnor 2012).",
+  "native": "price tags, odometers, the 2005 experiments and the 22-million-car auction study",
+  "lead": "data",
+  "support": "collage",
+  "accent": "#CA21CA",
+  "opening": "footage",
+  "family": "hard cuts",
+  "tempo": 4.0,
+  "avg_shot": 4.12,
+  "camera": "moves through space",
+  "sound": "soft synth; glitch accents",
+  "keyframes": [
+   "/home/user/Forgeos/creatorforge/channels/studio_history/keyframes/left-digit-sample/key1.png",
+   "/home/user/Forgeos/creatorforge/channels/studio_history/keyframes/left-digit-sample/key2.png",
+   "/home/user/Forgeos/creatorforge/channels/studio_history/keyframes/left-digit-sample/key3.png"
+  ],
+  "beds": []
  }
 ]
