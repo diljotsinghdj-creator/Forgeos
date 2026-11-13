@@ -233,5 +233,42 @@
    "bignumber",
    "statement"
   ]
+ },
+ {
+  "id": "india-sir-sample",
+  "title": "Before any vote, a list",
+  "channel": "sample",
+  "engine": "reverse-autopsy",
+  "hook_mechanism": "open on the Commission's own press note at the end of the story, then rewind to how 13 crore names left the rolls",
+  "metaphors": [
+   "the list before the vote"
+  ],
+  "archetype": "C",
+  "look": "declassified",
+  "accent": "#75CA21",
+  "cinematography": "drifting",
+  "maps": "atlas",
+  "infographics": "objects",
+  "animation": "hand",
+  "rhythm": "measured",
+  "music": "pulse",
+  "grade": "cool",
+  "kinds": [
+   "photo",
+   "counter",
+   "tornsplit",
+   "steps",
+   "timeline",
+   "pie",
+   "chart",
+   "clipping",
+   "bignumber",
+   "newscard",
+   "article",
+   "photo",
+   "photo",
+   "desk",
+   "statement"
+  ]
  }
 ]

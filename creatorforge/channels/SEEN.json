@@ -406,5 +406,35 @@
   ],
   "voice": "af_heart",
   "look": "noir"
+ },
+ {
+  "id": "india-sir-sample",
+  "kind": "sample",
+  "channel": "print-facts",
+  "topic": "india-sir-voter-rolls",
+  "date": "2026-11-13",
+  "engine": "reverse-autopsy",
+  "hook_mechanism": "open on the Commission's own press note at the end of the story, then rewind to how 13 crore names left the rolls",
+  "hook_line": "India's Election Commission, September twenty-six.",
+  "opening": "photo",
+  "shots": [
+   "Photo: asset:P0021 | push | Election Commission of India, Press Note 120, 26 Sept 2026 | depth: flat | badge: verified",
+   "Counter: 0 → 13.3 | crore names removed | draft voter rolls, Election Commission data, Sept 2026 | badge: verified",
+   "Tornsplit: newspaper + magnifying glass | 13 CRORE NAMES | Rewind",
+   "Steps: Freeze the roll → House-to-house check → Draft roll → Claims → Final roll | How the revision works",
+   "Timeline: 2002 Last full revision → 2005 Revision ends → 2026 Revision across India | Voter-roll revisions",
+   "Pie: 71.5% | of deleted names marked absent, shifted or other",
+   "Chart: 2.8 vs 1.01 | dead (crore), duplicates (crore)",
+   "Clipping: 14 times in 10 months, two Election Commissioners objected on record to poll panel steps | The Indian Express, September 2026 | newspaper",
+   "BigNumber: 14 | magnifying glass | objections on record, as reported | badge: reported",
+   "Newscard: 23 September 2026 | Election Commission: key decisions were unanimous | it later called some objections suggestions | | Election Commission of India | badge: response",
+   "Article: SIR: 13.3 crore names wiped out of draft voter lists so far, triggering Opposition backlash | Deccan Herald, September 2026",
+   "Photo: asset:P0020 | push | Press Note 120, item ii | depth: flat | annotate: highlight 0.248,0.195,0.705,0.045 | badge: verified",
+   "Photo: asset:P0020 | pull | Press Note 120, item iii | depth: flat | annotate: highlight 0.248,0.318,0.705,0.046 | badge: verified",
+   "Desk: rubber stamp + newspaper | FORM 6 | absent or shifted? apply to be added again",
+   "Statement: Before any vote, there is a *list*."
+  ],
+  "voice": "bf_emma",
+  "look": "declassified"
  }
 ]

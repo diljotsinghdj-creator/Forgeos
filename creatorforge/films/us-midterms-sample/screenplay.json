@@ -107,7 +107,7 @@
    "purpose": "explain",
    "delivery": "curious",
    "pause": 0.1,
-   "narration": "Kansas had not elected a Democratic senator since 1932.",
+   "narration": "In Kansas, the first Democratic senator since 1932.",
    "graphic": "Hero: wheat + ballot box | KANSAS | Democrat · Senate | first since 1932",
    "claims": [
     "U5"
@@ -172,11 +172,24 @@
    "purpose": "explain",
    "delivery": "measured",
    "pause": 0.05,
-   "narration": "By Al Jazeera's count, the president's party lost House seats in eighteen of twenty midterms since 1946.",
+   "narration": "Al Jazeera reports the president's party usually loses at the midterms.",
    "graphic": "Timeline: 1946 First postwar midterm → 2006 Bush loses Congress → 2026 Trump loses Congress | Midterms since 1946",
    "claims": [
     "U8",
     "U2"
+   ],
+   "transition": "fade"
+  },
+  {
+   "id": "S10b",
+   "act": "consequences",
+   "purpose": "explain",
+   "delivery": "grave",
+   "pause": 0.05,
+   "narration": "Eighteen of twenty since 1946, it says.",
+   "graphic": "Statement: *18* of 20 midterms since 1946",
+   "claims": [
+    "U8"
    ],
    "transition": "fade"
   },

@@ -196,5 +196,31 @@
    "/home/user/Forgeos/creatorforge/channels/studio_history/keyframes/left-digit-sample/key3.png"
   ],
   "beds": []
+ },
+ {
+  "film": "india-sir-sample",
+  "date": "2026-11-13",
+  "channel": "sample",
+  "question": "How did India's voter lists lose 13 crore names, and who says what about it?",
+  "claim": "The SIR removed about 13.3 crore draft-roll entries (mostly marked absent or shifted); critics and two commissioners objected; the Commission answers with camps and Form 6.",
+  "native": "the Election Commission's own press note, voter-roll data, the newspaper report, the opposition's demand",
+  "lead": "documents",
+  "support": "data",
+  "accent": "#75CA21",
+  "opening": "photo",
+  "family": "wipes",
+  "tempo": 1.5,
+  "avg_shot": 3.65,
+  "camera": "static, hard cuts",
+  "sound": "low drone; typewriter ticks",
+  "keyframes": [
+   "/home/user/Forgeos/creatorforge/channels/studio_history/keyframes/india-sir-sample/key1.png",
+   "/home/user/Forgeos/creatorforge/channels/studio_history/keyframes/india-sir-sample/key2.png",
+   "/home/user/Forgeos/creatorforge/channels/studio_history/keyframes/india-sir-sample/key3.png"
+  ],
+  "beds": [
+   "room_0040",
+   "room_0065"
+  ]
  }
 ]

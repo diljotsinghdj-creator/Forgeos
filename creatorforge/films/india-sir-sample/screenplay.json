@@ -43,7 +43,7 @@
    "pause": 0.1,
    "role": "opening",
    "narration": "India's Election Commission, September twenty-six.",
-   "graphic": "Photo: asset:P0019 | push | Election Commission of India, Press Note 120, 26 Sept 2026 | depth: flat | badge: verified",
+   "graphic": "Photo: asset:P0021 | push | Election Commission of India, Press Note 120, 26 Sept 2026 | depth: flat | badge: verified",
    "claims": [
     "C5"
    ]
@@ -68,7 +68,7 @@
    "delivery": "curious",
    "pause": 0.1,
    "narration": "How does a list lose that many names? Rewind.",
-   "graphic": "Tornsplit: documents + newspaper | 13 CRORE NAMES | Rewind",
+   "graphic": "Tornsplit: newspaper + magnifying glass | 13 CRORE NAMES | Rewind",
    "claims": [
     "C1"
    ],
@@ -134,7 +134,7 @@
    "delivery": "grave",
    "pause": 0.0,
    "narration": "Then The Indian Express reported dissent inside the Commission.",
-   "graphic": "Clipping: 14 times in 10 months, two Election Commissioners objected on record to poll panel steps | The Indian Express, September 2026 | documents + newspaper",
+   "graphic": "Clipping: 14 times in 10 months, two Election Commissioners objected on record to poll panel steps | The Indian Express, September 2026 | newspaper",
    "claims": [
     "C4"
    ],
@@ -147,7 +147,7 @@
    "delivery": "grave",
    "pause": 0.05,
    "narration": "Two commissioners, it said, objected on record fourteen times.",
-   "graphic": "BigNumber: 14 | documents | objections on record by two commissioners, in 10 months, as reported | badge: reported",
+   "graphic": "BigNumber: 14 | magnifying glass | objections on record, as reported | badge: reported",
    "claims": [
     "C4"
    ],
@@ -214,7 +214,7 @@
    "delivery": "curious",
    "pause": 0.1,
    "narration": "Removed as absent or shifted? Form six is the way back.",
-   "graphic": "Desk: documents + pen | FORM 6 | absent or shifted? apply to be added again",
+   "graphic": "Desk: rubber stamp + newspaper | FORM 6 | absent or shifted? apply to be added again",
    "claims": [
     "C9"
    ],
