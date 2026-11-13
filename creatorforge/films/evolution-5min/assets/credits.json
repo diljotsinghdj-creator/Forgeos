@@ -1,0 +1,29 @@
+{
+ "darwin_1837": {
+  "file": "darwin_1837.jpg",
+  "title": "File:Darwin Tree 1837.png",
+  "license": "Public domain",
+  "artist": "Charles Darwin"
+ },
+ "haeckel_1874": {
+  "file": "haeckel_1874.jpg",
+  "title": "File:Pedigree of man (Haeckel 1874).jpg",
+  "license": "Public domain",
+  "artist": "<a href=\"https://en.wikipedia.org/wiki/en:Ernst_Haeckel\" class=\"extiw\" titl",
+  "page": "https://commons.wikimedia.org/wiki/Pedigree_of_man_%28Haeckel_1874%29.jpg"
+ },
+ "toumai": {
+  "file": "toumai.jpg",
+  "title": "File:Sahelanthropus tchadensis skull - Naturmuseum Senckenberg - DSC02104.JPG",
+  "license": "CC0",
+  "artist": "Daderot",
+  "page": "https://commons.wikimedia.org/wiki/Sahelanthropus_tchadensis_skull_-_Naturmuseum_Senckenberg_-_DSC02104.JPG"
+ },
+ "lucy": {
+  "file": "lucy.jpg",
+  "title": "File:Reconstruction of the fossil skeleton of \"Lucy\" the Australopithecus afarensis.jpg",
+  "license": "CC BY 2.5",
+  "artist": "120",
+  "page": "https://commons.wikimedia.org/wiki/Reconstruction_of_the_fossil_skeleton_of_%22Lucy%22_the_Australopithecus_afarensis.jpg"
+ }
+}
