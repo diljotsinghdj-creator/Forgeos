@@ -270,5 +270,42 @@
    "desk",
    "statement"
   ]
+ },
+ {
+  "id": "us-midterms-sample",
+  "title": "Twenty years on, the midterms rhymed",
+  "channel": "sample",
+  "engine": "historical-echo",
+  "hook_mechanism": "the 2026 flip of both houses, echoed by the 2006 flip under the last Republican president to lose both",
+  "metaphors": [
+   "history rhyming at the midterms"
+  ],
+  "archetype": "B",
+  "look": "intel",
+  "accent": "#2121CA",
+  "cinematography": "investigative",
+  "maps": "marker",
+  "infographics": "dimensional",
+  "animation": "fluid",
+  "rhythm": "tidal",
+  "music": "sparse",
+  "grade": "warm",
+  "kinds": [
+   "poster",
+   "photo",
+   "seats",
+   "bignumber",
+   "heatmap",
+   "poster",
+   "statement",
+   "compare",
+   "chart",
+   "photoline",
+   "timeline",
+   "statement",
+   "counter",
+   "frame",
+   "statement"
+  ]
  }
 ]

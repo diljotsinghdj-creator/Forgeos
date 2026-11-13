@@ -436,5 +436,35 @@
   ],
   "voice": "bf_emma",
   "look": "declassified"
+ },
+ {
+  "id": "us-midterms-sample",
+  "kind": "sample",
+  "channel": "print-facts",
+  "topic": "us-midterms-2026",
+  "date": "2026-11-13",
+  "engine": "historical-echo",
+  "hook_mechanism": "the 2026 flip of both houses, echoed by the 2006 flip under the last Republican president to lose both",
+  "hook_line": "November third, twenty twenty-six. Both houses of Congress flip.",
+  "opening": "poster",
+  "shots": [
+   "Poster: ballot box | FLIPPED | both houses of Congress, 3 November 2026 | burst",
+   "Photo: asset:P0018 | push | The US Capitol",
+   "Seats: Republicans 53, Democrats 45, Independents 2 | The Senate before the vote",
+   "BigNumber: 51 | ballot box | Senate seats for control | badge: verified",
+   "Heatmap: Texas 1, Kansas 1, Iowa 1, South Carolina 1, Maine 1 | Senate seats Democrats flipped | seats, 2026",
+   "Poster: ballot box | KANSAS | its first Democratic senator since 1932 | disc",
+   "Statement: We have seen this *before*.",
+   "Compare: person:George W. Bush + person:Donald Trump | 2006 | 2026 | Lost both houses of Congress",
+   "Chart: 232 vs 202 | Republican House seats before 2006, after 2006",
+   "Photoline: 2006 Bush loses Congress (ballot box) → 2026 Trump loses Congress (ballot box) | Twenty years apart",
+   "Timeline: 1946 First postwar midterm → 2006 Bush loses Congress → 2026 Trump loses Congress | Midterms since 1946",
+   "Statement: *18* of 20 midterms since 1946",
+   "Counter: 0 → 124 | million votes | preliminary, University of Florida Election Lab | badge: estimate",
+   "Frame: asset:P0018 | - | A *new* Congress | meets 3 January | 2027",
+   "Statement: Twenty years on, the midterms *rhymed*."
+  ],
+  "voice": "am_michael",
+  "look": "intel"
  }
 ]

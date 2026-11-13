@@ -222,5 +222,30 @@
    "room_0040",
    "room_0065"
   ]
+ },
+ {
+  "film": "us-midterms-sample",
+  "date": "2026-11-13",
+  "channel": "sample",
+  "question": "Why did 2026 look like 2006?",
+  "claim": "Democrats took both houses on 3 November 2026; the last time a Republican president lost both was Bush in 2006, and the president's party usually loses House seats at midterms.",
+  "native": "the Capitol, Senate seat counts, the flipped states, the 2006 precedent",
+  "lead": "collage",
+  "support": "data",
+  "accent": "#2121CA",
+  "opening": "poster",
+  "family": "match cuts",
+  "tempo": 1.5,
+  "avg_shot": 4.29,
+  "camera": "static, hard cuts",
+  "sound": "low drone; typewriter ticks",
+  "keyframes": [
+   "/home/user/Forgeos/creatorforge/channels/studio_history/keyframes/us-midterms-sample/key1.png",
+   "/home/user/Forgeos/creatorforge/channels/studio_history/keyframes/us-midterms-sample/key2.png",
+   "/home/user/Forgeos/creatorforge/channels/studio_history/keyframes/us-midterms-sample/key3.png"
+  ],
+  "beds": [
+   "wind_0050"
+  ]
  }
 ]
