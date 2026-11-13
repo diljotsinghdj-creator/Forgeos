@@ -313,8 +313,9 @@ ash = "".join(f'<rect x="0" y="{600 + i * 70}" width="1920" height="70" fill="{c
 prints = "".join(f'<ellipse class="el" data-in="pop" data-at="{.6 + i * .2:.1f}" cx="{300 + i * 220}" cy="{640 + (i % 2) * 50}" rx="34" ry="70" fill="#3A3833" transform="rotate(80 {300 + i * 220} {640 + (i % 2) * 50})"/>' for i, c in enumerate(range(7)))
 B["L16b"] = dict(cls="coal", push=.05, credit="ILLUSTRATION: A TRAIL IN WET VOLCANIC ASH (NOT TO SCALE)",
                  body=svg(ash, 0, "pop", STILL) + svg(prints, 0, "pop", 'data-breathe="0" data-jit="0"') + hand("wet volcanic ash", 1250, 420, 80, .3, SIG))
-B["L17"] = dict(cls="coal", push=.06, credit=credit("laetoli"),
-                body=photo("laetoli", 420, 60, 1080, .1, 1, h=760, label="Laetoli footprints · Tanzania · ~3.66 Ma · upright, two-footed", lab_at=1.0))
+B["L17"] = dict(cls="coal", push=.06, credit="3D SCAN, PANEL C OF A FIGURE BY " + credit("laetoli").replace("PHOTO: ", "") + " (RAICHLEN ET AL. 2010, PLOS ONE)",
+                body=photo("laetoli_scan", 460, 80, 1000, .1, 1, h=720, bg="#000", label="3D scan of a real Laetoli footprint (G1-37) · Tanzania · ~3.66 Ma · upright, two-footed", lab_at=1.0)
+                + hand("heel", 560, 700, 64, 1.6, SIG) + hand("toes", 1250, 690, 64, 1.9, SIG))
 B["L18a"] = dict(cls="coal", push=.05, credit=credit("lucy") + " · RECONSTRUCTED CAST",
                  body=photo("lucy", 760, 20, 380, .1, -1, h=900, pos="center top")
                  + big('"Lucy"', 1250, 260, 130, .6, BONE) + el('<div class="sp" style="font-size:44px;color:#EAE2CF">Australopithecus afarensis</div>', 1260, 420, .9, "wipe"))
@@ -462,6 +463,40 @@ B["L56a"] = dict(cls="coal", push=.12, credit=BUSHCRED,
 B["L56b"] = dict(cls="paper", push=.05, credit="",
                  body=big("The last twig left", 140, 220, 140, .1) + big("on a crowded bush.", 140, 400, 140, .8, MOSS)
                  + svg(f'<path d="M1500 1000 C1500 860 1500 800 1500 700" stroke="{MOSS}" stroke-width="20" stroke-linecap="round"/><circle cx="1500" cy="690" r="30" fill="{SIG}"/>', 1.6, "draw"))
+
+# ---------------- upgrades: cut-out specimens, photo-filled type, tilted paper map ----------------
+def specimen(name, x, y, w, at=.1, label=None, cr=""):
+    """A BiRefNet cut-out of the real fossil (colour kept, nothing redrawn) on a lit plinth."""
+    cut = (AS / f"{name}_cut.png")
+    if not cut.exists():
+        return None
+    b = el('<div style="width:1920px;height:1080px;background:radial-gradient(ellipse 34% 60% at 50% 0%,rgba(255,236,190,.22),transparent 70%)"></div>', 0, 0, 0, "pop", extra=STILL)
+    b += el(f'<div style="width:{w + 160}px;height:70px;background:linear-gradient(#3A3731,#262420);border-top:3px solid #57524A"></div>', x - 80, y + int(w * .78) + 30, 0, "pop", extra=STILL)
+    b += el(f'<img src="{cut.as_uri()}" style="width:{w}px;filter:drop-shadow(0 30px 30px rgba(0,0,0,.7))">', x, y, at, "drop", extra='data-jit="0"')
+    if label:
+        b += el(f'<div class="label" style="font-size:24px;line-height:1.5">{label}</div>', x + w + 40, y + 120, at + .7, "wipe")
+    return b
+def filled(text, imgname, size, x, y, at, pos="center", extra_style=""):
+    return el(f'<div class="disp" style="font-size:{size}px;background:url({img(imgname)}) {pos}/cover;-webkit-background-clip:text;background-clip:text;color:transparent;filter:contrast(1.2) brightness(1.15);{extra_style}">{text}</div>', x, y, at, "pop")
+sp = specimen("toumai", 470, 150, 760, .1, '<i class="sp" style="font-size:30px">Sahelanthropus tchadensis</i><br>nicknamed Toumaï · ~7 Ma<br>Chad · found 2001')
+if sp:
+    B["L14a"] = dict(cls="coal", push=.06, credit=credit("toumai") + " · CAST · BACKGROUND REMOVED (BIREFNET), FOSSIL UNALTERED", body=sp.replace('left:1270px', 'left:1250px'))
+if img("laetoli"):
+    B["K2"]["body"] = tag("Chapter one", 140, 300, 34, .1, "#8C8577") + filled('<span class="el" data-in="count" data-comma="1" data-from0="0" data-to="7000000" data-at=".3" data-d="1.4" style="position:static">7,000,000</span>', "toumai", 250, 120, 350, .2, "center 45%") + big("years ago", 140, 640, 90, .9, SIG)
+    B["K2"]["credit"] = "TYPE FILLED WITH THE TOUMAÏ FOSSIL PHOTO · " + credit("toumai")
+if img("haeckel_1874"):
+    B["K3"]["body"] = tag("Chapter two", 140, 330, 34, .1, "#8C8577") + filled("The crowd", "haeckel_1874", 300, 110, 380, .3, "center 40%", "filter:sepia(.35) contrast(1.1)")
+    B["K3"]["credit"] = "TYPE FILLED WITH HAECKEL'S 1874 ENGRAVING (PUBLIC DOMAIN)"
+B["L26"]["body"] = f'<div class="el" data-in="pop" data-at="0" data-d=".01" data-breathe="0" data-jit="0" data-base="perspective(1500px) rotateX(36deg) scale(1.12) translateY(-40px)" style="inset:0;transform-origin:50% 70%">{B["L26"]["body"]}</div>' + big("Further than anyone before", 80, 60, 70, .2, BONE)
+
+sp = specimen("boisei", 300, 170, 640, .1, '<i class="sp" style="font-size:30px">Paranthropus boisei</i><br>huge jaws and teeth<br>for tough food')
+if sp:
+    B["L23a"] = dict(cls="coal", push=.05, credit=credit("boisei") + " · CAST · BACKGROUND REMOVED (BIREFNET)", body=sp
+                     + tag("Homo erectus", 1240, 700, 40, 1.3, "#1E1D1A", SIG) + tag("Paranthropus boisei", 1240, 790, 40, 1.6, "#1E1D1A", OCHRE))
+sp = specimen("neander", 240, 140, 560, .05)
+if sp:
+    B["L35"] = dict(cls="coal", push=.05, credit=credit("neander") + " · LA CHAPELLE-AUX-SAINTS (CAST) · BACKGROUND REMOVED (BIREFNET)", body=sp
+                    + el('<div class="disp" style="font-size:112px;color:#EAE2CF">Neanderthals</div>', 990, 320, .5, "slide", extra='data-from="r"') + tag("Europe · western Asia", 1000, 470, 34, .9, SIG))
 
 # ---------------- timing ----------------
 PLAN = [("L01", ["L01a", "L01b"]), ("L02", ["L02"]), ("L03", ["L03"]), ("L04", ["L04"]), ("L05", ["L05a", "L05b"]), ("L06", ["L06"]), ("L07", ["L07"]),
