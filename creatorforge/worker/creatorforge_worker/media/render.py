@@ -770,7 +770,13 @@ def _compose(clips: list[Clip], trans: list, segments: list[Path], audio: Path |
         swap = max(1.0, FPS / 10)
         graph.append(f"color=c=0x808080:s={width}x{height}:r={swap:g}:d={length + 1:.3f},noise=alls=28:allf=t,"
                      f"gblur=sigma=0.7,fps={FPS},format=yuv420p[ograin]")
-        graph.append(f"[{last}]rgbashift=rh=1:bv=1:edge=smear,vignette=angle=PI/6[oshift]")
+        # lens character only at the edges (PremiumBeat's recipe: chromatic split + blur 3.5 with a feathered centre
+        # mask): the centre stays sharp and true
+        ring = "clip(155*(hypot(X-W/2,Y-H/2)/hypot(W/2,H/2)-0.66)/0.34,0,155)"   # outer third only, at most 60%: corner labels stay readable
+        graph.append(f"[{last}]format=yuv444p,split[oa][ob0];[ob0]rgbashift=rh=2:bh=-2:edge=smear,gblur=sigma=3.5[oblur];"
+                     f"color=c=black:s={width}x{height}:r={FPS}:d={length + 1:.3f},format=yuv444p,"
+                     f"geq=lum='{ring}':cb='{ring}':cr='{ring}'[omask];"
+                     f"[oa][oblur][omask]maskedmerge,format=yuv420p,vignette=angle=PI/6[oshift]")
         graph.append("[oshift][ograin]blend=all_mode=overlay:all_opacity=0.10:shortest=1,format=yuv420p[optic]")
         last = "optic"
     tears, at = [], 0.0

@@ -67,3 +67,49 @@ Print Facts; every fact sourced; yellow #FFDD33 stays the signal.
   photos, puzzle and torn-paper transitions, parallax drift on maps.
 - The owner's decision: whether to use AI-generated scene plates (props and tabletops, never real people's faces)
   the way these creators do. Owner's rule: no images are created without asking.
+
+## Articles studied (owner's links, 2026-11-13)
+
+### PremiumBeat: 5 breakdowns on replicating the Vox motion-graphic look (Lewis McGregor, 2021)
+1. **12 fps graphics in a 24 fps edit.** Animate the graphics composition at 12 fps and drop it into 24 fps: the
+   stutter gives plain elements character. (Studio: done, stepped 12 fps.)
+2. **Tracking transition.** Two shots as 3D layers; a 3D camera moves backward across the cut on eased keyframes whose
+   speed peaks exactly on the edit point; an adjustment-layer blur ramps up to the cut and down after, much shorter
+   than the camera move. (Studio: to build, "track".)
+3. **Step-by-step lower third.** A rough-edged texture revealed by a mask path grown frame by frame in a jagged way,
+   skipping frames; the text revealed the same way a few frames later. (Studio: to build, jagged reveal.)
+4. **Motion background.** Several paper/grunge textures swapped two or three times a second behind a still photo, so
+   a long hold is never dead. (Studio: grain swap every 10 frames; make the paper itself swap.)
+5. **Lens characteristics.** Chromatic aberration and a Gaussian blur of 3.5, only at the edges (centre mask
+   subtracted, feather 50). (Studio: done 2026-11-13, edge-only.)
+
+### Easy-Peasy.AI: how to make Vox-style videos with AI (2026)
+- **Script formula** (Johnny Harris: "visual evidence, then context"): cold open on a visual anchor -> one question ->
+  short context bridges -> the anchor returns -> zoom out to the bigger idea. Music changes about every 20 s, ducked,
+  animation cut to the beat. Lines written to be spoken ("Look at this", "Here's the thing").
+- **Seven signatures:** kinetic type with the yellow highlight sweep; archival photos as paper cut-outs with
+  parallax; zooming annotated maps (lat, lon, zoom, bearing, pitch; offset bearing so the camera comes down and
+  orbits); data that answers the narrator on the number; 12 fps; texture on everything (no pure white); muted palette
+  with one loud accent.
+- **The image-first pipeline:** lock one style frame, generate every scene still from it (image edit with the style
+  frame as reference: "Using the exact same style, palette and textures as this reference image, create a new scene
+  showing..."), then animate each still with image-to-video. Reuse the style sentence word for word.
+- One narration line of at most 20 words and one visual idea per scene; name the imperfections in prompts (grain,
+  paper, hand-drawn, choppy); never let a model invent statistics.
+
+### Kapwing: how to make informational videos like Vox (2026)
+- Beats of 2-3 s (5-8 spoken words), one visual idea each; a 2-minute script made 51 beats.
+- One finished collage image per beat, then an image-to-video pass that BUILDS TOWARD it. Their animation rule:
+  locked camera; 0-7 s the frame opens on the empty plate and elements enter one by one, back to front, in narrative
+  order (background scraps, the hero cut-out slides in with paper drag and a small settle, supporting cut-outs drop or
+  pin with a 2-frame stamp settle, tape, typewriter strips, stamps, red string pin to pin, marker lines last); each
+  lands with a small bounce and a real shadow and never moves again; 7-10 s a "living poster" (corners lift, halftone
+  shimmers, shadows breathe). Audio: paper sounds only (slide, tap, tape, stamp thud, string zip, pin click).
+- Edit: trim each clip to the beat, simple cuts (the paper motion is the movement), music, paper sound effects,
+  subtitles.
+
+### Applied to the studio
+- Build-on assembly becomes the default for collage scenes: empty plate first, back to front, everything landed by
+  about 70% of the shot, then a living hold. Cuts mostly hard; the track transition for section changes.
+- AI plates (owner allowed, section 8): one locked style frame per film; every plate made from it; labelled
+  ILLUSTRATION; real faces only from real photos.

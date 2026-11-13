@@ -87,7 +87,7 @@ truthfulness and safety first).
   in PRESHOW.md and in the studio history. B and E are dark in this system; the film renderer draws ink on light
   paper, so films use a light variant of their palette until it has a dark-ink mode (PRESHOW says so). The film's
   accent hue still comes from the subject (variation plan); #FFDD33 stays the signal.
-- **Optical finish:** every studio film gets a 1 px colour-plate offset, a soft radial vignette, and paper grain
+- **Optical finish:** every studio film gets an edge-only chromatic split and lens blur (centre sharp), a vignette, a soft radial vignette, and paper grain
   swapped every 10 frames. The chromatic split is across the whole frame, not only near the edges.
 - **[SFX_LOG]:** every render writes SFX_LOG.md next to PRESHOW.md, and the mix follows it: foley low-passed at
   800 Hz and 2 frames early, a stereo room tone at −35 dB under everything, and an analog noise floor at −42 dB where
