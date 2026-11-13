@@ -1,0 +1,133 @@
+{
+ "id": "india-symbols-sample",
+ "title": "The picture was the vote",
+ "channel": "sample",
+ "sample_for": "print-facts",
+ "topic": "india-election-symbols",
+ "target_seconds": 30,
+ "subject": "politics",
+ "genre": "politics",
+ "native_material": "1952 Photo Division election photographs, ballot boxes with symbols, the EVM ballot unit",
+ "engine": "historical-echo",
+ "hook_mechanism": "a 1952 polling-room photo of picture-marked ballot boxes, echoed by the same symbols on today's machines",
+ "metaphors": [
+  "the picture as the vote"
+ ],
+ "pick": {
+  "engine": "historical-echo",
+  "pitched": [
+   "historical-echo",
+   "live-viewer-trap",
+   "trojan-horse"
+  ],
+  "owner_words": "\"Give me sample on Indian politics 30 seconds. Again its free hand, dont ask me. I wana see if you are learning from the things im giving you\" (the owner delegated the pick; reverse-autopsy excluded as the last film's engine; trojan-horse flagged as retired for samples)",
+  "date": "2026-11-13"
+ },
+ "language": "en",
+ "lang": "en-gb",
+ "voice": "bm_fable",
+ "transition_family": "wipes",
+ "concept": {
+  "logline": "In 1952 most Indian voters could not read, so every candidate got a picture; the picture is still the vote.",
+  "central_question": "Why does every Indian party have a symbol?",
+  "claim": "Symbols on separate ballot boxes let a mostly non-literate electorate of 173 million vote in 1951-52; EVMs still show them."
+ },
+ "thumbnail": "Statement: The *picture* was the vote.",
+ "cutdowns": [],
+ "scenes": [
+  {
+   "id": "S1",
+   "act": "hook",
+   "purpose": "orient",
+   "delivery": "curious",
+   "pause": 0.1,
+   "narration": "India, nineteen fifty-two. Look at the boxes.",
+   "graphic": "Photo: asset:P0013 | push | India's first election, 1952 | at: 0.42, 0.42, 0.55, 0.3 | annotate: circle 0.79,0.6,0.07 | badge: verified",
+   "claims": [
+    "C3"
+   ],
+   "role": "opening"
+  },
+  {
+   "id": "S2",
+   "act": "world",
+   "purpose": "explain",
+   "delivery": "measured",
+   "pause": 0.05,
+   "narration": "One hundred and seventy-three million voters.",
+   "graphic": "Poster: ballot box | 173 MILLION | registered voters, India's first election, 1951-52 | burst",
+   "claims": [
+    "C1"
+   ],
+   "transition": "wipe"
+  },
+  {
+   "id": "S3",
+   "act": "world",
+   "purpose": "explain",
+   "delivery": "grave",
+   "pause": 0.1,
+   "narration": "But only about eighteen percent of them could read.",
+   "graphic": "Pie: 18% | Indians who could read, 1951 census",
+   "claims": [
+    "C2"
+   ],
+   "transition": "slide"
+  },
+  {
+   "id": "S4",
+   "act": "investigation",
+   "purpose": "explain",
+   "delivery": "measured",
+   "pause": 0.1,
+   "narration": "So every candidate got a picture, and a box of their own.",
+   "graphic": "Mapdesk: India | ballot box + newspaper | SYMBOLS | India, 1951-52 | arrows: 8",
+   "claims": [
+    "C3"
+   ],
+   "transition": "wipe"
+  },
+  {
+   "id": "S5",
+   "act": "discovery",
+   "purpose": "explain",
+   "delivery": "curious",
+   "pause": 0.1,
+   "narration": "Seventy years on, the picture is still there, on the machine.",
+   "graphic": "Frame: asset:P0014 | - | The *same* symbols | electronic voting machine, today | 2024 | marker: name and symbol",
+   "claims": [
+    "C4",
+    "C5"
+   ],
+   "transition": "slide"
+  },
+  {
+   "id": "S6",
+   "act": "consequences",
+   "purpose": "explain",
+   "delivery": "measured",
+   "pause": 0.1,
+   "narration": "In twenty twenty-four, about nine hundred and eighty million registered voters.",
+   "graphic": "Counter: 173 → 980 | million registered voters | 1951-52 to 2024, Election Commission data",
+   "claims": [
+    "C1",
+    "C5"
+   ],
+   "transition": "wipe"
+  },
+  {
+   "id": "S7",
+   "act": "ending",
+   "purpose": "explain",
+   "delivery": "grave",
+   "pause": 0.5,
+   "narration": "The picture was the vote.",
+   "graphic": "Statement: The *picture* was the vote.",
+   "claims": [
+    "C3"
+   ],
+   "role": "ending",
+   "transition": "slide"
+  }
+ ]
+}

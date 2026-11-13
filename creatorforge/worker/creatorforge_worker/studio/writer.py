@@ -47,7 +47,7 @@ def graphic_problem(graphic: str) -> str:
 
 # options that place or move a picture (crops, camera, timing, grain): their numbers are layout, not facts
 _LAYOUT_KEYS = ("at", "depth", "frame", "grade", "in", "light", "move", "speed", "camera", "exit", "fx", "src", "voice",
-                "follow", "subject", "km")
+                "follow", "subject", "km", "arrows")
 _COORDS = re.compile(r"(?<![\w.])-?\d*\.?\d+(?:\s*,\s*-?\d*\.?\d+)+")
 
 
