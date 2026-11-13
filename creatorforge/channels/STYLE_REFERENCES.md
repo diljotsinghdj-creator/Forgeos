@@ -238,3 +238,18 @@ Playwright + ffmpeg studio already does what it does. Ideas worth rebuilding in 
    frames, silence, levels, 1-2 frame flicker, reported in PRESHOW.md.
 Skipped: editor-pro-max and remotion-video-skill (generic Remotion templates, paid TTS), OpenChatCut's code (AGPL,
 paid providers), every ElevenLabs / Gemini / fal path, AI-generated "archival" images.
+
+### Owner references, round 3 (2026-11-13): seven stills and three clips
+- **"2024" election collage:** B&W cut-out leaders over big angular orange, blue and black shards on cream; stacked
+  serif year in two colours. **Ledger collage (Obama, Trump, Capitol):** aged ledger and blueprint paper, a diagonal
+  composition, the Capitol inside a black disc, a red triangle, a hand. **Kupang:** B&W landmarks on a giant yellow
+  disc, scattered big letters, a road ribbon. **Monument Teller:** newspaper wall ground, a cluster of B&W landmark
+  cut-outs, warning tape, halftone dots, X marks, heavy type. **Vintage collage:** cream, B&W cut-outs, one or two
+  colour accents (yellow flowers, a bird), ticket stubs, a dotted circle. **NYC pass:** a real object held in a hand
+  with sketched doodles around it (mixed media). **Passport pop-up:** a 3D world rising out of a document.
+- **Clips:** ChengYiUniverse888, a miniature 3D Italy on a paper map with a slow push (AI-made; our free 3D map
+  scenes can do a version). Toromotion: white paper, lavender blobs, B&W cut-outs with ONE colour object, torn
+  newspaper strips, stretched condensed type, label boxes. Studio Phenix: a diorama inside an unrolling scroll (AI;
+  the "story unrolls on paper" idea is free to use).
+- **Lesson:** the look is B&W halftone cut-outs of REAL people and places + flat geometric colour + big type + one
+  paper world per film. Charts must be made of that same paper (torn bars, typed sheets, stamps), never a clean card.

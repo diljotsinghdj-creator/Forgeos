@@ -1,0 +1,32 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="fonts.css"><style>
+body{margin:0;width:1920px;height:1080px;overflow:hidden;background:#EEE7D8;position:relative;font-family:Inter}
+.paper{position:absolute;inset:0;filter:url(#grain);opacity:.55}
+.cut{position:absolute;filter:grayscale(1) contrast(1.15) drop-shadow(10px 14px 0 rgba(0,0,0,.18))}
+.year{position:absolute;font-family:Playfair;font-weight:900;line-height:.82;letter-spacing:-4px}
+.tag{position:absolute;background:#111;color:#EEE7D8;font:800 22px Inter;letter-spacing:3px;padding:10px 16px;text-transform:uppercase}
+.credit{position:absolute;right:28px;bottom:16px;font:600 13px Inter;color:#555;letter-spacing:1px}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute"><filter id="grain"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3" seed="4"/><feColorMatrix values="0 0 0 0 .35  0 0 0 0 .3  0 0 0 0 .25  0 0 0 .35 0"/></filter></svg>
+<svg class="paper" width="1920" height="1080"><rect width="1920" height="1080" filter="url(#grain)"/></svg>
+<svg style="position:absolute;inset:0" width="1920" height="1080">
+  <polygon points="520,120 1130,60 1250,820 610,900" fill="#E8551E"/>
+  <polygon points="1180,200 1760,140 1700,760 1290,820" fill="#2B57A8"/>
+  <polygon points="1030,90 1150,70 1190,520 1080,540" fill="#111"/>
+  <polygon points="330,540 640,470 700,980 360,1040" fill="#2B57A8"/>
+  <polygon points="1540,640 1840,560 1800,940" fill="#E8551E"/>
+  <polygon points="1830,40 1900,30 1890,200" fill="#111"/>
+  <path d="M120 1000 C 520 975, 900 1010, 1400 985 S 1800 995, 1880 990" stroke="#111" stroke-width="7" fill="none" stroke-linecap="round" opacity=".85"/>
+  <path d="M160 1012 C 600 995, 1000 1022, 1500 1002" stroke="#111" stroke-width="3" fill="none" opacity=".6"/>
+</svg>
+<img class="cut" src="file:///root/.cache/creatorforge/cutouts/person-george-w-bush.png" style="left:360px;top:360px;height:660px">
+<img class="cut" src="file:///tmp/claude-0/-home-user-Forgeos/4511f341-cf91-5fed-ac10-e7043335b256/scratchpad/stills/capitol_cut.png" style="left:860px;top:640px;height:380px">
+<img class="cut" src="file:///root/.cache/creatorforge/cutouts/person-donald-trump.png" style="left:1190px;top:150px;height:880px">
+<div class="year" style="left:70px;top:70px;font-size:190px;color:#2B57A8">2006</div>
+<div class="year" style="left:70px;top:225px;font-size:190px;color:#E8551E">2026</div>
+<div style="position:absolute;left:78px;top:410px;width:420px">
+  <div style="font:900 64px Playfair;line-height:1.02;color:#111"><span style="background:linear-gradient(transparent 55%,#FFDD33 55%,#FFDD33 92%,transparent 92%)">Both houses.</span><br>Again.</div>
+</div>
+<div class="tag" style="left:78px;top:600px;transform:rotate(-2deg)">A Republican president loses Congress</div>
+<div style="position:absolute;left:880px;top:560px;font:46px Marker;color:#111;transform:rotate(-7deg);background:#EEE7D8;padding:2px 14px">twenty years apart &rarr;</div>
+<div class="credit">PHOTOS: ERIC DRAPER (PD) · DANIEL TOROK / WHITE HOUSE (PD) · CAROL M. HIGHSMITH / LIBRARY OF CONGRESS</div>
+</body></html>
