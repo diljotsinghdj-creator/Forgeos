@@ -1,0 +1,5 @@
+{"engine": "reverse-autopsy",
+ "considered": ["reverse-autopsy: open on the 17 Aug 2026 handover, rewind 19 years", "paper-trail: follow the party's own filings and ad libraries", "the clock: 2007 to 2026 as a running counter"],
+ "owner_words": "\"Another video of 10 minutes on bjp it cell . Free hand for this. This is for print facts\" (2026-11-13): the owner delegated the pick",
+ "excluded": {"live-viewer-trap": "seen on this topic (bjp-it-cell-sample)", "trojan-horse": "seen on this topic (bjp-it-cell-short)", "myth-buster": "the last piece's engine"},
+ "channel": "print-facts", "target_seconds": 600, "date": "2026-11-13"}
