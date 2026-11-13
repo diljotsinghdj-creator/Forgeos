@@ -25,5 +25,12 @@
   "license": "CC BY 2.5",
   "artist": "120",
   "page": "https://commons.wikimedia.org/wiki/Reconstruction_of_the_fossil_skeleton_of_%22Lucy%22_the_Australopithecus_afarensis.jpg"
+ },
+ "laetoli": {
+  "file": "laetoli.png",
+  "title": "File:Laetoli footprints.png",
+  "license": "CC BY 2.5",
+  "artist": "Raichlen DA, Gordon AD, Harcourt-Smith WEH, Foster AD, Haas WR Jr",
+  "page": "https://commons.wikimedia.org/wiki/Laetoli_footprints.png"
  }
 }
