@@ -217,3 +217,24 @@ Rules worth keeping, checked against the studio:
 - **One ordered beats array** drives camera targets, pin order, routes and labels (our Route/Pinmap lines already).
 - **Verify by stills:** frame 0, mid each beat, last; check every pin on its real coordinate and two adjacent frames
   inside a move (the overlay holds for 2 frames while the camera advances).
+
+### Eight Claude/Remotion video repos (owner-sent, 2026-11-13): what to take
+Read only, nothing installed. **Remotion itself is not for us:** source-available, free only for individuals and
+very small companies, a paid company licence above that, so it fails the free-tools rule (section 9). Our
+Playwright + ffmpeg studio already does what it does. Ideas worth rebuilding in our own code:
+1. **Audio-aware cut placement** (AgriciDaniel/claude-shorts `scripts/snap_boundaries.py`): snap a cut to a word
+   start, prefer a sentence start, extend to finish the sentence if within 3 s, +300 ms pad; silence detection on a
+   measured threshold (remotion-dev/skills silence-detection: loudnorm's input_thresh as silencedetect's level).
+   For shorts cutdowns and for cuts that land off their line.
+2. **Word captions, Vox style**: word timings from our own narration, paged at most 2 lines x 24 characters
+   (OpenChatCut caption paging), drawn as a cream strip behind each word then a yellow sweep once all are in
+   (faceless-shorts-creator `SerifStatement`), in our signature #FFDD33.
+3. **Speed** (Kianzzz/xilo-opus-video, MIT, same architecture as ours): pipe screenshots straight into ffmpeg (no
+   PNGs on disk), re-render one segment only. Done today separately: the optical-finish mask is computed once.
+4. **SFX as a cue sheet** (hassancs91/claude-youtube-editor `tools/mix_sfx.py`): one cue per effect with its own
+   gain, ducked under the voice, a limiter, and a measured check that each cue is audible; the owner approves the
+   sheet. (Its bundled ElevenLabs SFX are not reusable.)
+5. **More pre-show checks** (OpenChatCut export QA, claude-youtube-editor `scan_flicker.py`): black frames, frozen
+   frames, silence, levels, 1-2 frame flicker, reported in PRESHOW.md.
+Skipped: editor-pro-max and remotion-video-skill (generic Remotion templates, paid TTS), OpenChatCut's code (AGPL,
+paid providers), every ElevenLabs / Gemini / fal path, AI-generated "archival" images.

@@ -715,6 +715,19 @@ def _morph_clip(seg_a: Path, t_a: float, seg_b: Path, dur: float, width: int, he
     return out_dir
 
 
+def _optical_mask(width: int, height: int, work: Path) -> Path:
+    """The optical finish's edge mask as one raw yuv444p frame: 0 in the centre, rising to 155 (about 60%) over the
+    outer third, the same value in all three planes (the expression the per-frame geq used to evaluate)."""
+    import numpy as np
+    out = work / f"optical_mask_{width}x{height}.yuv"
+    if not out.is_file():
+        y, x = np.mgrid[0:height, 0:width].astype(np.float32)
+        r = np.hypot(x - width / 2, y - height / 2) / np.hypot(width / 2, height / 2)
+        m = np.clip(155 * (r - 0.66) / 0.34, 0, 155).astype(np.uint8)
+        out.write_bytes(np.concatenate([m.ravel()] * 3).tobytes())
+    return out
+
+
 def _compose(clips: list[Clip], trans: list, segments: list[Path], audio: Path | None, captions: Path | None,
              width: int, height: int, out: Path, work: Path, cancel: threading.Event,
              logo: tuple[Path, str, float] | None, grade: str, t0: float, length: float, fade_out: bool) -> None:
@@ -773,9 +786,11 @@ def _compose(clips: list[Clip], trans: list, segments: list[Path], audio: Path |
         # lens character only at the edges (PremiumBeat's recipe: chromatic split + blur 3.5 with a feathered centre
         # mask): the centre stays sharp and true
         ring = "clip(155*(hypot(X-W/2,Y-H/2)/hypot(W/2,H/2)-0.66)/0.34,0,155)"   # outer third only, at most 60%: corner labels stay readable
+        # the mask never changes: drawn once here (numpy) and looped, instead of ffmpeg's per-pixel geq on every
+        # frame (that alone took ~20 minutes for a one-minute film on 4 cores)
+        mask_file = _optical_mask(width, height, work)
         graph.append(f"[{last}]format=yuv444p,split[oa][ob0];[ob0]rgbashift=rh=2:bh=-2:edge=smear,gblur=sigma=3.5[oblur];"
-                     f"color=c=black:s={width}x{height}:r={FPS}:d={length + 1:.3f},format=yuv444p,"
-                     f"geq=lum='{ring}':cb='{ring}':cr='{ring}'[omask];"
+                     f"[MASKIN]format=yuv444p,trim=duration={length + 1:.3f},setpts=PTS-STARTPTS[omask];"
                      f"[oa][oblur][omask]maskedmerge,format=yuv420p,vignette=angle=PI/6[oshift]")
         graph.append("[oshift][ograin]blend=all_mode=overlay:all_opacity=0.10:shortest=1,format=yuv420p[optic]")
         last = "optic"
@@ -829,6 +844,11 @@ def _compose(clips: list[Clip], trans: list, segments: list[Path], audio: Path |
         args += ["-i", str(tear_input)]
     for _, mdir in morphs:
         args += ["-framerate", str(FPS), "-i", str((mdir / "m_%03d.png").resolve())]
+    if optical:
+        mask_idx = args.count("-i")
+        args += ["-stream_loop", "-1", "-f", "rawvideo", "-pix_fmt", "yuv444p", "-s", f"{width}x{height}",
+                 "-framerate", str(FPS), "-i", str(mask_file.resolve())]
+        graph = [g.replace("[MASKIN]", f"[{mask_idx}:v]") for g in graph]
     # -filter_complex_threads: every filter in a graph otherwise gets a thread per CPU core. With ~200 shots that
     # was over a thousand threads on 4 cores, and tens of thousands on a GPU server that shows 64+ cores, which
     # ran into the thread limit ("Failed to configure output pad ... Resource temporarily unavailable").
