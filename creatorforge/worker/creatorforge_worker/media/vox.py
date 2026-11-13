@@ -2412,7 +2412,7 @@ function voxFrame(){ // the layered Vox key frame: real photo -> paper -> type -
   if(P.credit){const items=('PHOTOS: '+P.credit).toUpperCase().split(' · '),cs=U*.016,maxw=W*.5,rows=[];let cur='';
     const maxc=Math.floor(maxw/(cs*.62));   // a monospace face: about .6 em per letter, measured without waiting for the font
     items.forEach(it=>{const tr=cur?cur+' · '+it:it;if(cur&&tr.length>maxc){rows.push(cur);cur=it}else cur=tr});if(cur)rows.push(cur);
-    rows.forEach((r,i)=>{const y=H-U*.07-(rows.length-1-i)*cs*1.55;const t=mono(L.front,r.length>maxc+8?r.slice(0,maxc+6)+'…':r,flip?W-U*.12:U*.12,y,{anchor:flip?'end':'start',size:cs,weight:700,fill:'#F3EEE2'});
+    rows.forEach((r,i)=>{const y=H-U*.07-(rows.length-1-i)*cs*1.55;const t=T(L.front,r.length>maxc+8?r.slice(0,maxc+6)+'…':r,cs,flip?W-U*.12:U*.12,y,{family:'Mono',anchor:flip?'end':'start',weight:700,fill:'#F3EEE2',fine:1});
       t.addClass('keep');t.opacity(.92);const bb=t.bbox();L.front.rect(bb.width+U*.02,bb.height+U*.01).move(bb.x-U*.01,bb.y-U*.005).fill('#000').opacity(.45).back()})}}
 function poster(){ // the editorial collage poster: ground -> flat shape -> huge type -> halftone hero -> spot-colour piece -> doodles
   const sd=P.seed||0,flat=P.shape==='flat',ground=flat?ACC:'#EFEAE0',ink=flat?'#F7F2E8':INK;
@@ -2458,7 +2458,9 @@ function mapdesk(){ // the map desk: aged map -> red country -> paper arrows -> 
   let tgt=null;
   P.lands.forEach(l=>{const d=l.rings.map(r=>'M'+r.map(q=>pt(q).map(v=>v.toFixed(1)).join(',')).join('L')+'Z').join('');
     const sh=world.path(d).fill(l.me?'#EBDFC2':'#EBDFC2').stroke({color:'#8C7A55',width:U*.0018});if(l.me)tgt={d,sh}});
-  P.labels.forEach(lb=>{const [x,y]=pt([lb.x,lb.y]);T(world,lb.name,U*.026,x,y,{family:'Playfair',weight:400,fill:'#6B5838',ls:'.32em'})});
+  P.labels.forEach(lb=>{let [x,y]=pt([lb.x,lb.y]);const t=T(world,lb.name,U*.026,x,y,{family:'Playfair',weight:400,fill:'#6B5838',ls:'.32em'});
+    const bb=t.bbox(),m=U*.1;if(y<m||y>H-m){t.remove();return}   // a name half off the top or bottom is dropped
+    const dx=Math.max(0,m-bb.x)-Math.max(0,bb.x+bb.width-(W-m));if(dx)t.attr({x:x+dx})});   // kept inside the frame
   // stains, folds and a dark edge: an old paper map on a desk
   const st=draw.gradient('radial',g=>{g.stop(0,'#7A5A2E',0);g.stop(.7,'#7A5A2E',.06);g.stop(1,'#3B2A12',.45)});L.back.rect(W,H).fill(st);
   L.back.line(W*.5,0,W*.5,H).stroke({color:'#FFFFFF',width:U*.003,opacity:.25});L.back.line(0,H*.5,W,H*.5).stroke({color:'#5A4422',width:U*.002,opacity:.18});
@@ -2470,7 +2472,12 @@ function mapdesk(){ // the map desk: aged map -> red country -> paper arrows -> 
     const nm=T(L.mid,P.name.toUpperCase(),U*.024,bb.cx,bb.cy+U*.01,{family:'Mono',weight:700,fill:'#FFF4E6',ls:'.12em'});wipe(nm,.6)}
   const [tx,ty]=cxy;FOCUS={x:tx,y:ty,rx:U*.14,ry:U*.1};
   // black paper arrows closing in from all sides
-  for(let i=0;i<P.arrows;i++){const a=i/P.arrows*Math.PI*2+(sd%7)*.1,r0=U*.5,r1=U*.13,len=r0-r1,wd=U*.034;
+  const stampAng=Math.atan2(H*.82-ty,W*(sd%2?.66:.34)-tx);   // no arrow comes from where the stamp lands
+  // evenly spaced round the country, with one slot left empty where the stamp lands (stamp direction seen from the country)
+  const slots=P.stamp?P.arrows+1:P.arrows,angs=[];
+  for(let j=0;j<slots;j++)angs.push(stampAng+Math.PI+(j+(P.stamp?1:0))/slots*Math.PI*2);
+  for(let i=0;i<P.arrows;i++){const a=angs[i];
+    const r0=U*.5,r1=U*.13,len=r0-r1,wd=U*.034;
     const g=L.mid.group(),ang=a*180/Math.PI;
     g.polygon(`0,${-wd/2} ${len-wd*1.6},${-wd/2} ${len-wd*1.6},${-wd*1.2} ${len},0 ${len-wd*1.6},${wd*1.2} ${len-wd*1.6},${wd/2} 0,${wd/2}`).fill('#1C1A17').attr({filter:'url(#shadow)'});
     const sx=tx-Math.cos(a)*r0,sy=ty-Math.sin(a)*r0;g.attr({transform:`translate(${sx},${sy}) rotate(${ang})`});
@@ -2488,7 +2495,12 @@ function mapdesk(){ // the map desk: aged map -> red country -> paper arrows -> 
     const sx=W*(sd%2?.66:.34),sy=H*.82;g.opacity(0);g.attr({style:'mix-blend-mode:multiply'});
     at(2.0,.22,p=>{const k=1.8-.8*E.out(p);g.opacity(Math.min(.88,p*2));g.attr({transform:`translate(${sx},${sy}) rotate(-8) scale(${k})`})},E.lin)}
   if(P.kicker){const b=boxText(L.front,P.kicker,U*.026,U*.07,U*.09,{anchor:'start',maxw:W*.4,most:1,family:'Mono'});wipe(b,.3)}
-  if(P.credit)P.credit=P.credit.replace(/^Photos?:\s*/i,'');photoCredit()}
+  creditBlock(W-U*.06,U*.06,'end')}
+function creditBlock(x,y,anchor){ // the photo credits, wrapped on a dark band so every name can be read
+  if(!P.credit)return;const items=('PHOTOS: '+P.credit.replace(/^Photos?:\s*/i,'')).toUpperCase().split(/\s*[;·]\s*/),cs=U*.014,maxc=Math.floor(W*.36/(cs*.62)),rows=[];let cur='';
+  items.forEach(it=>{const tr=cur?cur+' · '+it:it;if(cur&&tr.length>maxc){rows.push(cur);cur=it}else cur=tr});if(cur)rows.push(cur);
+  rows.forEach((r,i)=>{const t=T(L.front,r,cs,x,y+i*cs*1.6,{family:'Mono',anchor:anchor||'end',weight:700,fill:'#F3EEE2',fine:1});t.addClass('keep');
+    const bb=t.bbox();L.front.rect(bb.width+U*.016,bb.height+U*.008).move(bb.x-U*.008,bb.y-U*.004).fill('#000').opacity(.55).back()})}
 function staircase(){ // isometric steps rising left to right; each one lights up as the story climbs it, the last in red
   const n=P.steps.length,top=VERT?H*.3:H*.24,bot=VERT?H*.82:H*.86,left=W*.08,right=W*.92,sw=(right-left)/n,sh=(bot-top)/n,d=Math.min(sw,sh)*.35;
   const g=L.hero.group(),red=K.mark||'#D7262B',seg=Math.max(.7,(DUR-1.6)/n),tops=[];

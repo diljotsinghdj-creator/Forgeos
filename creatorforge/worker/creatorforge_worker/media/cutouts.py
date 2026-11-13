@@ -364,6 +364,11 @@ def get(word: str, lib: Path | None = None, model: Path | None = None, fetch: bo
         if hit:
             return hit
         results = _candidates(name, sources, timeout)
+        if name.startswith("obj:"):
+            # a free-form object: the photo must be tagged with it (a "bank vault" search must not give a piggy bank)
+            from ..providers.stock_video import relevant
+            want = name.removeprefix("obj:")
+            results = [r for r in results if relevant(want, " ".join(str(r.get(k, "")) for k in ("about", "title")))]
         if not results:
             return None                          # offline / blocked: the vector icon is drawn instead
         for r in results[:10]:
