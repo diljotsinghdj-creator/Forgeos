@@ -153,3 +153,28 @@ chart, the cause on framed footage, the consequence, a soft question to end.
 **Rule from this:** every explainer, either channel, carries at least one highlighted real document, and its numbers
 go on an annotated chart rather than a lone counter where a shape exists; AI or stock footage is framed unless it is
 the hero shot.
+
+### YouTube RaxX_Q7Apj0: "Vox-style animations with free AI tools" (owner-sent, 2026-11-13)
+Studied from the transcript (vidIQ visual credits exhausted). The same pipeline as the Digi Curator article (master
+prompt -> niche -> 10 ideas -> script -> visual beats -> one image prompt per beat -> batch Nano Banana stills on
+Google Flow -> one universal motion prompt -> clips -> voice -> music -> CapCut). New or sharper points:
+- **Beat density:** a 1-minute script became 27 beats, about 2.2 s a picture. Their demo (Victor Lustig "selling" the
+  Eiffel Tower, 1925) is told in the present tense, one concrete action per sentence ("Then he boards a train to
+  Vienna."), each sentence its own picture. Our 30 s samples ran 8 shots (3.8 s); the reference pace is 12-14.
+- **Clip length = cost:** ask the motion model for 5 s, not the 10 s default, at 720p; "the more time an image has to
+  animate, the more it costs." Our left-digit clips came back 10 s at 6,105 credits each because the ElevenLabs
+  video tool has no duration field: set `duration_secs` on the node (creative_update_node, after
+  creative_get_model_schema) or price with estimate_only first. 5 s halves the bill.
+- **Omni Flash beat Seedance** in their side-by-side ("much more animated"). They praise Omni for inventing a photo
+  that was not in the poster. For us that is a hazard, not a feature: a documentary clip may not add a person,
+  document or object the poster did not have. Check every clip for added elements (our clip 2 grew a second ".99"
+  scrap) and cut around or reject them.
+- **Voice:** ElevenLabs audio tags in square brackets ([whispers], etc.) steer delivery per chunk; generate in chunks
+  and audition each. (ElevenLabs only with the owner's permission; Kokoro otherwise.)
+- **Music:** instrumental, quiet, "growing intense"; the narration sits well above it (they lift the voice about
+  +6.7 dB). Our ducking already does this.
+- **Edit:** vary the transitions so they never repeat in a row, mostly slides; skip burned-in captions when the
+  pictures already carry text pointers (for us: blue-box captions only on shots without baked text).
+- Their story facts are unsourced; nothing from the demo goes into our films without the dossier.
+**Applied:** next collage sample: 12-14 beats per 30 s, clips priced first and set to 5 s, every clip checked for
+invented elements.
