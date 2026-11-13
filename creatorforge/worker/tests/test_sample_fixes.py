@@ -166,3 +166,15 @@ def test_assemble_pieces_land_back_on_the_poster(tmp_path):
     flat = Image.new("RGB", (300, 200), (200, 200, 200))
     flat.save(tmp_path / "flat.png")
     assert assemble.pieces(tmp_path / "flat.png", tmp_path / "w2")["mode"] == "push"   # nothing to split: a push
+
+
+def test_person_photo_must_be_the_person():
+    """A 'person:' result that is a lookalike, statue or costume is rejected; official portraits rank first."""
+    from creatorforge_worker.media import cutouts
+    bad = {"title": "Donald Trump and Kim Jong-un impersonators", "about": "Howard X and Dennis Alan, impersonators"}
+    assert not cutouts.person_ok("person:Donald Trump", bad)
+    assert not cutouts.person_ok("person:Mahatma Gandhi", {"title": "Statue of Mahatma Gandhi, London"})
+    good = {"title": "Official Presidential Portrait of President Donald J. Trump (2025)"}
+    assert cutouts.person_ok("person:Donald Trump", good)
+    plain = {"title": "Donald Trump speaking in 2019"}
+    assert sorted([plain, good], key=cutouts._person_rank)[0] is good

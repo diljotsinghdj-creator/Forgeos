@@ -115,12 +115,25 @@
    "transition": "match"
   },
   {
+   "id": "S7a",
+   "act": "discovery",
+   "purpose": "orient",
+   "delivery": "curious",
+   "pause": 0.05,
+   "narration": "We have seen this before.",
+   "graphic": "Statement: We have seen this *before*.",
+   "claims": [
+    "U2"
+   ],
+   "transition": "fade"
+  },
+  {
    "id": "S7",
    "act": "discovery",
    "purpose": "orient",
    "delivery": "curious",
    "pause": 0.1,
-   "narration": "We have seen this before. The last Republican president to lose both houses: George W. Bush, in two thousand six.",
+   "narration": "The last Republican president to lose both houses: George W. Bush, in two thousand six.",
    "graphic": "Compare: person:George W. Bush + person:Donald Trump | 2006 | 2026 | Lost both houses of Congress",
    "claims": [
     "U2"
@@ -160,9 +173,10 @@
    "delivery": "measured",
    "pause": 0.05,
    "narration": "By Al Jazeera's count, the president's party lost House seats in eighteen of twenty midterms since 1946.",
-   "graphic": "Statement: *18* of 20 midterms since 1946",
+   "graphic": "Timeline: 1946 First postwar midterm → 2006 Bush loses Congress → 2026 Trump loses Congress | Midterms since 1946",
    "claims": [
-    "U8"
+    "U8",
+    "U2"
    ],
    "transition": "fade"
   },

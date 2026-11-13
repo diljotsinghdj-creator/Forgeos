@@ -317,18 +317,20 @@ def _candidates(name: str, sources: list[tuple[str, str]] | None, timeout: float
             out += stock_photo.search("openverse", "", plain, portrait=False, timeout=timeout)[:3]
         except Exception:  # noqa: BLE001
             pass
-    query = (name.split(":", 1)[1] + " portrait") if person else CATALOG.get(name, name.removeprefix("obj:"))
-    try:
-        from ..providers.archive_photo import search
-        out += search(query, timeout=timeout, limit=10)[:6]
-    except Exception:  # noqa: BLE001
-        pass
+    queries = [name.split(":", 1)[1] + " official portrait", name.split(":", 1)[1] + " portrait"] if person \
+        else [CATALOG.get(name, name.removeprefix("obj:"))]
+    for query in queries:
+        try:
+            from ..providers.archive_photo import search
+            out += search(query, timeout=timeout, limit=10)[:6]
+        except Exception:  # noqa: BLE001
+            pass
     return out
 
 
-def has_face(path: Path) -> bool:
-    """True when a picture shows a human face (OpenCV's frontal-face finder). An object's stock photo with a model in
-    it would put a private person's face on screen: the owner's rules forbid that, so such a cut-out is never used."""
+def face_count(path: Path, min_frac: int = 10) -> int:
+    """How many human faces a picture shows (OpenCV's frontal-face finder; faces at least 1/min_frac of the width).
+    -1 when it cannot tell (no OpenCV)."""
     try:
         import cv2
         import numpy as np
@@ -336,9 +338,34 @@ def has_face(path: Path) -> bool:
         with Image.open(path) as im:
             g = np.asarray(im.convert("L"))
         casc = cv2.CascadeClassifier(str(Path(cv2.data.haarcascades) / "haarcascade_frontalface_default.xml"))
-        return len(casc.detectMultiScale(g, scaleFactor=1.08, minNeighbors=10, minSize=(max(24, g.shape[1] // 10),) * 2)) > 0
-    except Exception:  # noqa: BLE001 - no OpenCV: cannot tell, so the picture is allowed
-        return False
+        return len(casc.detectMultiScale(g, scaleFactor=1.08, minNeighbors=10, minSize=(max(24, g.shape[1] // min_frac),) * 2))
+    except Exception:  # noqa: BLE001
+        return -1
+
+
+def has_face(path: Path) -> bool:
+    """True when a picture shows a human face. An object's stock photo with a model in it would put a private person's
+    face on screen: the owner's rules forbid that, so such a cut-out is never used."""
+    return face_count(path) > 0
+
+
+# a "person:" photo must be the person: a lookalike, a statue or a costume is not them (2026-11-13: a search for
+# Donald Trump returned a well-known photo of a Trump impersonator beside a Kim Jong-un impersonator)
+NOT_THE_PERSON = ("impersonat", "lookalike", "look-alike", "look alike", "double", "parody", "costume", "cosplay",
+                  "wax", "madame tussaud", "statue", "sculpture", "bust of", "mural", "graffiti", "caricature", "cartoon",
+                  "effigy", "puppet", "mask", "drawing", "painting", "poster of", "cutout", "cardboard")
+
+
+def person_ok(name: str, r: dict) -> bool:
+    """Is this search result a photograph of the actual person (by its title and description)?"""
+    text = " ".join(str(r.get(k, "")) for k in ("about", "title")).lower()
+    return not any(w in text for w in NOT_THE_PERSON)
+
+
+def _person_rank(r: dict) -> int:
+    """Official portraits first: they show the person alone, facing the camera, with a clear public-domain record."""
+    text = " ".join(str(r.get(k, "")) for k in ("about", "title")).lower()
+    return 0 if "official" in text and "portrait" in text else 1 if "portrait" in text else 2
 
 
 def get(word: str, lib: Path | None = None, model: Path | None = None, fetch: bool = True,
@@ -369,11 +396,15 @@ def get(word: str, lib: Path | None = None, model: Path | None = None, fetch: bo
             from ..providers.stock_video import relevant
             want = name.removeprefix("obj:")
             results = [r for r in results if relevant(want, " ".join(str(r.get(k, "")) for k in ("about", "title")))]
+        if person:
+            results = sorted([r for r in results if person_ok(name, r)], key=_person_rank)
         if not results:
             return None                          # offline / blocked: the vector icon is drawn instead
         for r in results[:10]:
             try:
                 raw = _download(r["url"], d, timeout)
+                if person and face_count(raw, 14) > 1:
+                    continue                     # two or more faces: not a portrait of one person (could be anyone)
                 out = make(raw, d / f"{_slug(name)}.png", model=model, person=name.startswith("person:"))
             except Exception:  # noqa: BLE001 - try the next photo
                 continue

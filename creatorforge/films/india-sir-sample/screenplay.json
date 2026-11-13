@@ -132,13 +132,26 @@
    "act": "discovery",
    "purpose": "explain",
    "delivery": "grave",
-   "pause": 0.05,
-   "narration": "The Indian Express reported two commissioners objected, fourteen times.",
+   "pause": 0.0,
+   "narration": "Then The Indian Express reported dissent inside the Commission.",
    "graphic": "Clipping: 14 times in 10 months, two Election Commissioners objected on record to poll panel steps | The Indian Express, September 2026 | documents + newspaper",
    "claims": [
     "C4"
    ],
    "transition": "tear"
+  },
+  {
+   "id": "S8b",
+   "act": "discovery",
+   "purpose": "explain",
+   "delivery": "grave",
+   "pause": 0.05,
+   "narration": "Two commissioners, it said, objected on record fourteen times.",
+   "graphic": "BigNumber: 14 | documents | objections on record by two commissioners, in 10 months, as reported | badge: reported",
+   "claims": [
+    "C4"
+   ],
+   "transition": "wipe"
   },
   {
    "id": "S9",
@@ -147,7 +160,7 @@
    "delivery": "measured",
    "pause": 0.1,
    "narration": "The Commission says its key decisions were unanimous.",
-   "graphic": "Newscard: 23 September 2026 | Election Commission: key decisions were unanimous | it later called some objections suggestions | | Election Commission of India",
+   "graphic": "Newscard: 23 September 2026 | Election Commission: key decisions were unanimous | it later called some objections suggestions | | Election Commission of India | badge: response",
    "claims": [
     "C4",
     "C5"
