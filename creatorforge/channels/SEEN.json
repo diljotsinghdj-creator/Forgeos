@@ -360,5 +360,28 @@
    "BigNumber: 1879 | light bulb | Edison's first long-lasting bulb",
    "Counter: 0 → 65 | on the rigged wheel | the number you saw first | marker: then guess the UN"
   ]
+ },
+ {
+  "id": "india-symbols-sample",
+  "kind": "sample",
+  "channel": "print-facts",
+  "topic": "india-election-symbols",
+  "date": "2026-11-13",
+  "engine": "historical-echo",
+  "hook_mechanism": "a 1952 polling-room photo of picture-marked ballot boxes, echoed by the same symbols on today's machines",
+  "hook_line": "India, nineteen fifty-two. Look at the boxes.",
+  "opening": "frame",
+  "shots": [
+   "Frame: asset:P0013 | - | One box per *candidate* | India's first election | 1952 | marker: a picture on each",
+   "Photo: asset:P0013 | detail | Ballot boxes, 1952 | at: 0.42, 0.42, 0.55, 0.3 | annotate: circle 0.79,0.6,0.07 | badge: verified",
+   "Poster: ballot box | 173 MILLION | registered voters, India's first election, 1951-52 | burst",
+   "Pie: 18% | Indians who could read, 1951 census",
+   "Mapdesk: India | ballot box + newspaper | SYMBOLS | India, 1951-52 | arrows: 8",
+   "Frame: asset:P0014 | - | The *same* symbols | electronic voting machine, today | 2024 | marker: name and symbol",
+   "Counter: 173 → 980 | million registered voters | 1951-52 to 2024, Election Commission data",
+   "Statement: The *picture* was the vote."
+  ],
+  "voice": "bm_fable",
+  "look": "intel"
  }
 ]

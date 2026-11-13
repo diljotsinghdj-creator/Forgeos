@@ -40,13 +40,26 @@
    "act": "hook",
    "purpose": "orient",
    "delivery": "curious",
-   "pause": 0.1,
+   "pause": 0.05,
+   "role": "opening",
    "narration": "India, nineteen fifty-two. Look at the boxes.",
-   "graphic": "Photo: asset:P0013 | push | India's first election, 1952 | at: 0.42, 0.42, 0.55, 0.3 | annotate: circle 0.79,0.6,0.07 | badge: verified",
+   "graphic": "Frame: asset:P0013 | - | One box per *candidate* | India's first election | 1952 | marker: a picture on each",
+   "claims": [
+    "C3"
+   ]
+  },
+  {
+   "id": "S1b",
+   "act": "hook",
+   "purpose": "orient",
+   "delivery": "measured",
+   "pause": 0.1,
+   "narration": "Every box carries a picture.",
+   "graphic": "Photo: asset:P0013 | detail | Ballot boxes, 1952 | at: 0.42, 0.42, 0.55, 0.3 | annotate: circle 0.79,0.6,0.07 | badge: verified",
    "claims": [
     "C3"
    ],
-   "role": "opening"
+   "transition": "slide"
   },
   {
    "id": "S2",

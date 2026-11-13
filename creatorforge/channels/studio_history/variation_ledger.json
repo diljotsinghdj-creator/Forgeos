@@ -150,5 +150,28 @@
    "sea_0040",
    "sea_0055"
   ]
+ },
+ {
+  "film": "india-symbols-sample",
+  "date": "2026-11-13",
+  "channel": "sample",
+  "question": "Why does every Indian party have a symbol?",
+  "claim": "Symbols on separate ballot boxes let a mostly non-literate electorate of 173 million vote in 1951-52; EVMs still show them.",
+  "native": "1952 Photo Division election photographs, ballot boxes with symbols, the EVM ballot unit",
+  "lead": "collage",
+  "support": "data",
+  "accent": "#21CAA0",
+  "opening": "frame",
+  "family": "wipes",
+  "tempo": 1.5,
+  "avg_shot": 3.86,
+  "camera": "static, hard cuts",
+  "sound": "low drone; typewriter ticks",
+  "keyframes": [
+   "/home/user/Forgeos/creatorforge/channels/studio_history/keyframes/india-symbols-sample/key1.png",
+   "/home/user/Forgeos/creatorforge/channels/studio_history/keyframes/india-symbols-sample/key2.png",
+   "/home/user/Forgeos/creatorforge/channels/studio_history/keyframes/india-symbols-sample/key3.png"
+  ],
+  "beds": []
  }
 ]

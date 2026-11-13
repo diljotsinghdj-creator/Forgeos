@@ -173,5 +173,35 @@
    "newscard",
    "statement"
   ]
+ },
+ {
+  "id": "india-symbols-sample",
+  "title": "The picture was the vote",
+  "channel": "sample",
+  "engine": "historical-echo",
+  "hook_mechanism": "a 1952 polling-room photo of picture-marked ballot boxes, echoed by the same symbols on today's machines",
+  "metaphors": [
+   "the picture as the vote"
+  ],
+  "archetype": "B",
+  "look": "intel",
+  "accent": "#21CAA0",
+  "cinematography": "breathing",
+  "maps": "marker",
+  "infographics": "dimensional",
+  "animation": "hand",
+  "rhythm": "tidal",
+  "music": "sparse",
+  "grade": "bleach",
+  "kinds": [
+   "frame",
+   "photo",
+   "poster",
+   "pie",
+   "mapdesk",
+   "frame",
+   "counter",
+   "statement"
+  ]
  }
 ]
