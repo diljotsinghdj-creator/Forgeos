@@ -18,7 +18,8 @@ window.setT=function(t){
     else if(k==='draw'){el.querySelectorAll('path').forEach(pa=>{const L=pa.getTotalLength();pa.style.strokeDasharray=L;pa.style.strokeDashoffset=L*(1-E.out(p))});op=1}
     else if(k==='count'){const a=+el.dataset.from0,b=+el.dataset.to;el.textContent=Math.round(a+(b-a)*E.out(p));op=p>0?1:0}
     const life=Math.max(0,tq-at-d), br=(el.dataset.breathe!=='0')?Math.sin(life*1.6+i)*.35*Math.min(1,life*2):0;
-    el.style.opacity=op; el.style.transform=`${base} ${tf} rotate(${br}deg)`;
+    const js=(el.dataset.jit!=='0'&&life>0)?((Math.sin(Math.floor(tq*6)*12.9898+i*78.233)*43758.5453)%1):0;
+    el.style.opacity=op; el.style.transform=`${base} ${tf} translate(${js*1.6}px,${-js*1.2}px) rotate(${br}deg)`;
   });
 };
 window.addEventListener('load',()=>setT(+(new URLSearchParams(location.search).get('t')||99)));

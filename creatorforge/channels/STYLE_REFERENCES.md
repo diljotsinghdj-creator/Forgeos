@@ -253,3 +253,18 @@ paid providers), every ElevenLabs / Gemini / fal path, AI-generated "archival" i
   the "story unrolls on paper" idea is free to use).
 - **Lesson:** the look is B&W halftone cut-outs of REAL people and places + flat geometric colour + big type + one
   paper world per film. Charts must be made of that same paper (torn bars, typed sheets, stamps), never a clean card.
+
+### Owner references, round 4 (2026-11-13): seven images, eight clips
+- **Stills:** halftone man carrying a giant clock (the ONLY colour is the yellow hands: one accent on the key
+  detail); torn-face surreal collage (orange sun, newsprint, ink splats, black triangles, a handwritten scrap);
+  sailor (photo head on a flat illustrated coat, a yellow brush stroke behind); Tesla in a chair (wood-grain room,
+  red floor, a thought cloud filled with blueprints and machines, orange light beams); Jagiellonian/Casimir layout
+  (B&W building, a painted king whose hand is line-drawn, a yellow diamond, doodle arrows, number badges).
+- **Clips:** schaapening, objects replace each other in place along one road strip (train, man, diner, truck; one
+  orange object); kgolcova3, the top of a head swings open like a lid and objects burst out in yellow; surrealixta,
+  face collage whose strips slide and swap in stop-motion jitter; wallfive (finance explainer), B&W cut-outs, ONE
+  coral accent and soft green blobs, objects held in hands, scraps of paper as transitions; AmericanDesignHub, social
+  motion reels and a postcard collage with bobbing pieces.
+- **Applied to the kit:** newsprint inside shards, ink splats, hand-drawn arrows and loops linking elements, number
+  badges, a stop-motion jitter on settled paper. Still to build: hand-held objects, the head-opens reveal, in-place
+  object swaps along a strip, a single-accent look as its own kit.
