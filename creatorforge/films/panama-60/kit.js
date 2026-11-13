@@ -8,7 +8,7 @@ window.setT=function(t){
   const cam=document.getElementById('cam'), push=+(document.body.dataset.push||0.05), dur=+(document.body.dataset.dur||4);
   if(cam)cam.style.transform=`scale(${1+push*clamp(t/dur)})`;
   document.querySelectorAll('[data-in]').forEach((el,i)=>{
-    const at=+el.dataset.at||0, d=+(el.dataset.d||.45), p=clamp((tq-at)/d), k=el.dataset.in, base=el.dataset.base||'';
+    const at=+el.dataset.at||0, d=+(el.dataset.d||.45), p=d<=.05?(tq>=at?1:0):clamp((tq-at)/d), k=el.dataset.in, base=el.dataset.base||'';
     let tf='',op=p>0?1:0; if(el.ownerSVGElement){el.style.transformBox='fill-box';el.style.transformOrigin='center'}
     if(k==='slide'){const f=el.dataset.from||'l',e=E.back(p),dist=(1-e)*1.25;const v={l:[-dist*1920,0],r:[dist*1920,0],t:[0,-dist*1080],b:[0,dist*1080]}[f];tf=`translate(${v[0]}px,${v[1]}px)`}
     else if(k==='drop'){tf=`translateY(${-(1-E.back(p))*700}px) rotate(${(1-p)*-8}deg)`}

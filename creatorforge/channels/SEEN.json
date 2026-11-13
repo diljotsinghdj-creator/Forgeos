@@ -494,5 +494,34 @@
   ],
   "voice": "bm_george",
   "look": "water"
+ },
+ {
+  "id": "russia-60",
+  "kind": "sample",
+  "channel": "print-facts",
+  "topic": "russia-putin-economy-scale",
+  "date": "2026-11-13",
+  "engine": "scale-shock",
+  "hook_mechanism": "the IMF's own chart: two GDP lines meet; one is Italy, the other the largest country on Earth",
+  "hook_line": "On the IMF's chart of the world's economies, these two lines have almost met.",
+  "opening": "document",
+  "shots": [
+   "Document: IMF DataMapper trend chart, Russia vs Italy, circled",
+   "Document push-in: ITALY / RUSSIA labels",
+   "Map: equal-area Russia, 17.1 million km2, 11 clocks",
+   "Units: Italy same scale inside Russia, x57 Italy icons",
+   "Bars: $2.86T vs $2.70T over map ghosts, $3T line",
+   "Units: people figures 143 m vs 59 m",
+   "Bars + counters: GDP per person $20,000 vs $46,000",
+   "Ranking: PPP top five, Russia 4th",
+   "Cut-out photo: Putin (Kremlin.ru) + 1999-2026 role timeline",
+   "Waffle: oil and gas 30% (2024)",
+   "Waffle: 23% (2025), finance ministry stamp",
+   "Pie: 7.5% of GDP military (SIPRI)",
+   "Redacted page: classified ~79% (illustration)",
+   "Finale: Russia map, Italy same scale, size of Italy's"
+  ],
+  "voice": "bf_isabella",
+  "look": "atlas-red"
  }
 ]

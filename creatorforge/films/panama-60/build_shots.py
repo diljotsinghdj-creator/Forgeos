@@ -43,7 +43,7 @@ shots["s01"] = dict(bg="#000", push=.06, credit=LOC + " · S.S. ANCON, 15 AUG 19
     + el('<div class="note" style="font-size:58px;color:#FFDD33;transform:rotate(-5deg)">the first ship through</div>', 900, 900, 2.2, "wipe"))
 # s02 satellite route: Colón to Balboa (Sentinel-2 tiles from the map kit)
 shots["s02"] = dict(bg="#000", push=.07, credit=S2 + " · ROUTE APPROXIMATE", body=
-    f'<div class="el" data-in="pop" data-at="0" data-breathe="0" data-jit="0" style="inset:0;filter:saturate(.85) contrast(1.08) brightness(.8)">{imgs}</div>'
+    f'<div class="el" data-in="pop" data-at="0" data-d=".01" data-breathe="0" data-jit="0" style="inset:0;filter:saturate(.85) contrast(1.08) brightness(.8)">{imgs}</div>'
     + f'<svg class="el" data-in="draw" data-at=".3" data-d="2.4" data-jit="0" data-breathe="0" style="inset:0" width="1920" height="1080"><path d="{dpath}" stroke="#FFDD33" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>'
     + svg(f'<circle cx="{pts[0][0]:.0f}" cy="{pts[0][1]:.0f}" r="16" fill="#D9663A" stroke="#fff" stroke-width="5"/>', .2)
     + svg(f'<circle cx="{pts[-1][0]:.0f}" cy="{pts[-1][1]:.0f}" r="16" fill="#fff" stroke="#14212B" stroke-width="5"/>', 2.6)
