@@ -1,0 +1,22 @@
+{
+  "film": "<title>",
+  "stage": "blueprint | rough cut | fine cut | final",
+  "reviewer": "<who scored it>",
+  "categories": {
+    "research_depth":        {"score": 0, "evidence": "<what was checked: dossier coverage, primary sources, other side shown>"},
+    "accuracy_and_honesty":  {"score": 0, "evidence": "<claims with ids, badges, no invented precision, recreations labelled>"},
+    "storytelling":          {"score": 0, "evidence": "<question, hook, escalation, turn, payoff, open loops>"},
+    "information_clarity":   {"score": 0, "evidence": "<mute test, one idea per shot, jargon defined, numbers given bodies>"},
+    "visual_explanation":    {"score": 0, "evidence": "<every shot does a job; evidence before explanation; native material>"},
+    "graphic_design":        {"score": 0, "evidence": "<hierarchy, type, palette roles, consistency, legibility on phone>"},
+    "animation":             {"score": 0, "evidence": "<builds synced to words, easing, purposeful camera>"},
+    "editing":               {"score": 0, "evidence": "<rhythm, holds within caps, cuts with a cause, pattern interrupts>"},
+    "narration":             {"score": 0, "evidence": "<written for the ear, pace, emphasis, pronunciation>"},
+    "sound_design":          {"score": 0, "evidence": "<music cue changes on turns, SFX sync, silence, loudness target>"},
+    "audience_engagement":   {"score": 0, "evidence": "<first 30 s, open loops, payoff, title/thumbnail promise kept>"},
+    "originality":           {"score": 0, "evidence": "<swap test vs last three films; no copied asset/script/composition>"},
+    "rights_and_sourcing":   {"score": 0, "evidence": "<every asset licensed or sourced; credits; ILLUSTRATIVE tags>"}
+  },
+  "weak_areas": ["<category: what is weak and the specific revision>"],
+  "verdict": "revise | ready for owner"
+}

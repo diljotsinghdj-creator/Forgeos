@@ -1,0 +1,73 @@
+{
+ "topic": "Evolution: a 10-second sample",
+ "researched": "2026-11-10",
+ "method": "Well-established sources; links not re-opened from this session (news and reference sites are blocked here). Check each link before publishing.",
+ "claims": [
+  {
+   "id": "C1",
+   "claim": "Humans and chimpanzees share about 98.8% of their DNA (single-nucleotide differences of about 1.2%).",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "98.8",
+    "98.8%",
+    "0",
+    "2005"
+   ],
+   "sources": [
+    {
+     "title": "Chimpanzee Sequencing and Analysis Consortium, Nature 437 (2005)",
+     "url": "https://www.nature.com/articles/nature04072",
+     "quote": "[summary] single-nucleotide substitutions occur at a mean rate of 1.23% between the human and chimpanzee genomes"
+    },
+    {
+     "title": "Smithsonian National Museum of Natural History, Human Origins: Genetics",
+     "url": "https://humanorigins.si.edu/evidence/genetics",
+     "quote": "[summary] humans and chimpanzees share 98.8 percent of their DNA"
+    }
+   ]
+  },
+  {
+   "id": "C2",
+   "claim": "Charles Darwin published On the Origin of Species in 1859, arguing that living things descend from common ancestors.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "1859"
+   ],
+   "sources": [
+    {
+     "title": "Darwin, On the Origin of Species (1859), Darwin Online",
+     "url": "https://darwin-online.org.uk/content/frameset?itemID=F373&viewtype=text&pageseq=1",
+     "quote": "There is grandeur in this view of life ... endless forms most beautiful and most wonderful have been, and are being, evolved."
+    },
+    {
+     "title": "Encyclopaedia Britannica: On the Origin of Species",
+     "url": "https://www.britannica.com/topic/On-the-Origin-of-Species",
+     "quote": "[summary] published 24 November 1859"
+    }
+   ]
+  },
+  {
+   "id": "C3",
+   "claim": "All known life shares a single common ancestor.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "2010"
+   ],
+   "sources": [
+    {
+     "title": "Theobald, A formal test of the theory of universal common ancestry, Nature 465 (2010)",
+     "url": "https://www.nature.com/articles/nature09014",
+     "quote": "[summary] the test strongly supports universal common ancestry"
+    },
+    {
+     "title": "University of California Museum of Paleontology, Understanding Evolution: the history of life (common ancestry)",
+     "url": "https://evolution.berkeley.edu/the-history-of-life-looking-at-the-patterns/",
+     "quote": "[summary] all living things share a common ancestor; the tree of life"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,84 @@
+{
+ "id": "test-reel",
+ "title": "Test reel",
+ "channel": "test",
+ "engine": "trojan-horse",
+ "hook_mechanism": "test",
+ "metaphors": [
+  "test"
+ ],
+ "genre": "investigation",
+ "language": "en",
+ "voice": "flite",
+ "lang": "en-us",
+ "concept": {
+  "logline": "pipeline test",
+  "central_question": "Do smart people fall for scams?",
+  "claim": "Smart people fall for scams because calm authority beats intelligence."
+ },
+ "scenes": [
+  {
+   "id": "S1",
+   "act": "hook",
+   "narration": "Some people say smart people never fall for scams. Is that true?",
+   "graphic": "Myth: Smart people never fall for scams | Researchers say intelligence is not armour",
+   "claims": [
+    "C2"
+   ],
+   "pause": 0.4
+  },
+  {
+   "id": "S2",
+   "act": "world",
+   "narration": "According to UK Finance, around four hundred and fifty million pounds were lost to these scams in 2024.",
+   "graphic": "Counter: £0 → £450m | lost to bank-transfer scams, UK 2024 | according to UK Finance",
+   "claims": [
+    "C1"
+   ],
+   "pause": 0.4
+  },
+  {
+   "id": "S3",
+   "act": "investigation",
+   "narration": "Researchers believe the call climbs one small step at a time.",
+   "graphic": "Staircase: The safety line; The small yes; The secret; The transfer | How the call climbs",
+   "claims": [
+    "C2"
+   ],
+   "pause": 0.4
+  },
+  {
+   "id": "S4",
+   "act": "discovery",
+   "narration": "Researchers argue that by the end, stopping feels heavier than going on.",
+   "graphic": "Scale: minutes, small yeses, pride | admitting it | too heavy to drop",
+   "claims": [
+    "C2"
+   ],
+   "pause": 0.4
+  },
+  {
+   "id": "S5",
+   "act": "consequences",
+   "narration": "The money moves across the map in minutes, researchers say.",
+   "graphic": "Pinmap: London | A transfer in minutes | test reel",
+   "claims": [
+    "C2"
+   ],
+   "pause": 0.4
+  },
+  {
+   "id": "S6",
+   "act": "ending",
+   "narration": "So, hang up and call back. That is the whole trick, researchers suggest.",
+   "graphic": "Statement: Hang up. *Call back.*",
+   "claims": [
+    "C2"
+   ],
+   "pause": 0.4
+  }
+ ],
+ "thumbnail": "Statement: *Test*",
+ "cutdowns": [],
+ "native_material": "experiments, statistics"
+}

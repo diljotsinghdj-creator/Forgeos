@@ -1,0 +1,189 @@
+{
+ "title": "Fixture: why locks lift ships",
+ "channel": "print-facts",
+ "language": "en",
+ "runtime_target_s": 40,
+ "central_question": "How does a canal lift a ship?",
+ "answer": "With gravity and doors.",
+ "why_now": "fixture",
+ "engine": "trojan-horse",
+ "pick": {},
+ "hook": {
+  "mechanism": "anomaly",
+  "line": "This ship is climbing.",
+  "first_frame": "satellite of a lock"
+ },
+ "dna": {
+  "lead_technique": "map_2d",
+  "support_technique": "document_annotated",
+  "palette": {
+   "base": "#000000",
+   "accent": "#FFD000",
+   "signal": "#FF0000",
+   "from_subject": "x"
+  },
+  "typography": "grotesk display, serif captions",
+  "texture": "clean print",
+  "motion_language": "slow pushes, builds on the word",
+  "transition_family": "map_fly",
+  "sound_palette": "two cues: pulse, strings",
+  "opening_shot": "satellite",
+  "signature_device": "water-level bar"
+ },
+ "chapters": [
+  {
+   "id": "C1",
+   "title": "Lift",
+   "job": "mechanism",
+   "open_loop": "why doors?"
+  }
+ ],
+ "evidence_waiver": null,
+ "scenes": [
+  {
+   "id": "S1",
+   "chapter": "C1",
+   "start": 0,
+   "end": 8,
+   "narration": "Welcome back. Moreover, today we delve into canals.",
+   "viewer_understands": "test understanding 1",
+   "purpose": "inform",
+   "claim_ids": [],
+   "visual_mode": "title_card",
+   "visual": "test visual 1",
+   "why_this_visual": "fixture",
+   "alternatives": [
+    "chart"
+   ],
+   "motion": "push in 5%",
+   "on_screen_text": "label 1",
+   "badge": "",
+   "sound": {
+    "music": "cue A",
+    "sfx": "tick",
+    "ambience": "",
+    "silence": false
+   },
+   "transition_out": {
+    "family": "cut",
+    "cause": "new idea"
+   }
+  },
+  {
+   "id": "S2",
+   "chapter": "C1",
+   "start": 8,
+   "end": 16,
+   "narration": "Canals cost 5 billion dollars.",
+   "viewer_understands": "test understanding 2",
+   "purpose": "inform",
+   "claim_ids": [],
+   "visual_mode": "stock_footage",
+   "visual": "test visual 2",
+   "why_this_visual": "fixture",
+   "alternatives": [
+    "chart"
+   ],
+   "motion": "push in 5%",
+   "on_screen_text": "label 2",
+   "badge": "",
+   "sound": {
+    "music": "cue A",
+    "sfx": "tick",
+    "ambience": "",
+    "silence": false
+   },
+   "transition_out": {
+    "family": "cut",
+    "cause": "new idea"
+   }
+  },
+  {
+   "id": "S3",
+   "chapter": "C1",
+   "start": 16,
+   "end": 24,
+   "narration": "They are important.",
+   "viewer_understands": "test understanding 3",
+   "purpose": "inform",
+   "claim_ids": [],
+   "visual_mode": "stock_footage",
+   "visual": "test visual 3",
+   "why_this_visual": "fixture",
+   "alternatives": [
+    "chart"
+   ],
+   "motion": "push in 5%",
+   "on_screen_text": "label 3",
+   "badge": "",
+   "sound": {
+    "music": "cue A",
+    "sfx": "tick",
+    "ambience": "",
+    "silence": false
+   },
+   "transition_out": {
+    "family": "cut",
+    "cause": "new idea"
+   }
+  },
+  {
+   "id": "S4",
+   "chapter": "C1",
+   "start": 24,
+   "end": 32,
+   "narration": "Many people use them.",
+   "viewer_understands": "test understanding 4",
+   "purpose": "inform",
+   "claim_ids": [],
+   "visual_mode": "stock_footage",
+   "visual": "test visual 4",
+   "why_this_visual": "fixture",
+   "alternatives": [
+    "chart"
+   ],
+   "motion": "push in 5%",
+   "on_screen_text": "label 4",
+   "badge": "",
+   "sound": {
+    "music": "cue A",
+    "sfx": "tick",
+    "ambience": "",
+    "silence": false
+   },
+   "transition_out": {
+    "family": "cut",
+    "cause": "new idea"
+   }
+  },
+  {
+   "id": "S5",
+   "chapter": "C1",
+   "start": 32,
+   "end": 40,
+   "narration": "Here is a chart.",
+   "viewer_understands": "test understanding 5",
+   "purpose": "inform",
+   "claim_ids": [],
+   "visual_mode": "chart",
+   "visual": "test visual 5",
+   "why_this_visual": "fixture",
+   "alternatives": [
+    "chart"
+   ],
+   "motion": "push in 5%",
+   "on_screen_text": "label 5",
+   "badge": "",
+   "sound": {
+    "music": "cue A",
+    "sfx": "tick",
+    "ambience": "",
+    "silence": false
+   },
+   "transition_out": {
+    "family": "cut",
+    "cause": "new idea"
+   }
+  }
+ ]
+}

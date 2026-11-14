@@ -1,0 +1,91 @@
+{
+ "id": "bjp-it-cell-sample",
+ "title": "The BJP IT Cell in 30 seconds",
+ "channel": "sample",
+ "subject": "politics",
+ "genre": "politics",
+ "native_material": "messages, phones, org charts, filings and platform takedowns",
+ "engine": "live-viewer-trap",
+ "hook_mechanism": "the viewer's own phone",
+ "metaphors": [
+  "a forward travelling down a chain to your family group"
+ ],
+ "language": "en",
+ "lang": "en-us",
+ "voice": "am_michael",
+ "art": {
+  "accent": "#E0662B"
+ },
+ "concept": {
+  "logline": "How a political message reaches your family group, and who else plays the game.",
+  "central_question": "Where did that forward come from?",
+  "claim": "The BJP built a booth-by-booth phone network; the party president said it could make any message viral; every side has been caught."
+ },
+ "thumbnail": "Statement: *True or false*",
+ "cutdowns": [],
+ "scenes": [
+  {
+   "id": "S1",
+   "act": "hook",
+   "purpose": "orient",
+   "delivery": "urgent",
+   "pause": 0.15,
+   "narration": "That forward in your family WhatsApp group? Some, reportedly, start in a party office.",
+   "graphic": "Chat: Family group | them: fwd: SHARE THIS BEFORE IT GETS DELETED!! · me: Is this true? | app: whatsapp",
+   "claims": [
+    "C08"
+   ]
+  },
+  {
+   "id": "S2",
+   "act": "investigation",
+   "purpose": "explain",
+   "delivery": "urgent",
+   "pause": 0.15,
+   "narration": "For 2019, the BJP planned a volunteer per polling booth. Reportedly, 900,000.",
+   "graphic": "Flowchart: Central IT cell → State units → Booth volunteers → Your family group | The chain the BJP planned for 2019 | badge: reported | logo: whatsapp",
+   "claims": [
+    "C08"
+   ]
+  },
+  {
+   "id": "S3",
+   "act": "discovery",
+   "purpose": "reveal",
+   "delivery": "urgent",
+   "pause": 0.15,
+   "narration": "Amit Shah once told volunteers any message could go viral, true or false. He added they shouldn't.",
+   "graphic": "Newscard: 22 Sept 2018 | “Any message can go viral, true or false” | Amit Shah to BJP social media volunteers in Kota; he added it shouldn't be done | The Quint | badge: verified",
+   "claims": [
+    "C07"
+   ]
+  },
+  {
+   "id": "S4",
+   "act": "investigation",
+   "purpose": "balance",
+   "delivery": "urgent",
+   "pause": 0.15,
+   "narration": "But in 2019, Facebook took down 687 Congress-linked pages, and 15 tied to a BJP-leaning firm.",
+   "graphic": "Units: Congress-linked 687 vs BJP-leaning 15 | Facebook takedowns, 1 April 2019 | one square = one page or account removed | badge: verified | logo: facebook",
+   "claims": [
+    "C18"
+   ]
+  },
+  {
+   "id": "S5",
+   "act": "ending",
+   "purpose": "move",
+   "delivery": "urgent",
+   "pause": 0.35,
+   "narration": "Now, under a new chief, it's memes and rap, reports say.",
+   "graphic": "Tornsplit: smartphone | MEMES AND RAP | Since Aug 2026 · Newslaundry | badge: reported",
+   "claims": [
+    "C04",
+    "C46"
+   ]
+  }
+ ],
+ "sample_for": "print-facts",
+ "target_seconds": 30
+}

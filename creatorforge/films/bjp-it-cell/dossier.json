@@ -1,0 +1,1258 @@
+{
+ "topic": "The BJP IT Cell: how a party's social media team became a political machine, and the accusations against it",
+ "researched": "2026-11-10",
+ "method": "Web search through a search provider; source pages were not opened from the sandbox, so every quotation is the search engine's summary of the source, marked [summary]. Before scripting, open each source and replace summaries with exact quotations. Statuses follow the studio rules: an allegation is always attributed and paired with the response of the accused where one exists. The Tek Fog investigation was retracted by its publisher and is used only as an example of a collapsed accusation. Studies about online abuse that do not attribute it to the IT cell are never presented as if they do. Gaps: the BJP's own published numbers of IT-cell volunteers; AAP, TMC and other parties' cells; the outcome of the Wire case; the original Washington Post text; written replies from the BJP and Amit Malviya (to be requested).",
+ "claims": [
+  {
+   "id": "C01",
+   "claim": "The BJP IT Cell was set up in 2007, under party president Rajnath Singh, and Prodyut Bora was its first head.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "2007"
+   ],
+   "sources": [
+    {
+     "title": "Prodyut Bora (Wikipedia)",
+     "url": "https://en.wikipedia.org/wiki/Prodyut_Bora",
+     "quote": "[summary] Prodyut Bora set up the BJP IT Cell in 2007, under the aegis of the then party President Rajnath Singh"
+    },
+    {
+     "title": "'It's like Frankenstein's monster': the father of the BJP's IT cell (HuffPost India)",
+     "url": "https://huffingtonpost.in/2018/06/22/its-like-frankensteins-monster-the-father-of-the-bjps-it-cell-says-team-modi-started-the-rot_a_23464587",
+     "quote": "[summary] Bora, who founded the IT cell, speaks about what it has become",
+     "date": "2018-06-22"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Bora described its original aims as automating party work, reaching voters and advising on policy."
+  },
+  {
+   "id": "C02",
+   "claim": "Arvind Gupta led the IT Cell from about 2010 until 2015.",
+   "status": "reported",
+   "confidence": "medium",
+   "figures": [
+    "2010",
+    "2015"
+   ],
+   "sources": [
+    {
+     "title": "BJP IT Cell (Wikipedia)",
+     "url": "https://en.wikipedia.org/wiki/BJP_IT_Cell",
+     "quote": "[summary] Arvind Gupta became convenor in 2010 and was succeeded by Amit Malviya in 2015"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Single encyclopaedic source; find a 2010 news report (Governance Now is cited) before stating the year on screen."
+  },
+  {
+   "id": "C03",
+   "claim": "Amit Malviya became national head of the BJP IT Cell in 2015, under party president Amit Shah, and led it for about eleven years.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "2015",
+    "11",
+    "eleven"
+   ],
+   "sources": [
+    {
+     "title": "Why BJP has replaced Amit Malviya as party's IT cell chief (ThePrint)",
+     "url": "https://theprint.in/politics/why-bjp-has-replaced-amit-malviya-as-partys-it-cell-chief/3017377/",
+     "quote": "[summary] He was appointed the national head of its IT Cell in 2015 under then national president Amit Shah"
+    },
+    {
+     "title": "11 Years, Millions Of Posts: How Amit Malviya Built BJP's Digital War Machine (Outlook)",
+     "url": "https://www.outlookindia.com/national/11-years-millions-of-posts-how-amit-malviya-built-bjps-digital-war-machine-and-made-it-big",
+     "quote": "[summary] gives 2015 for his appointment as head; he entered the BJP's orbit in 2009 through the online forum Friends of BJP"
+    }
+   ],
+   "contradictions": [
+    "One encyclopaedia mirror gives 2014 for Malviya taking over."
+   ],
+   "notes": ""
+  },
+  {
+   "id": "C04",
+   "claim": "On 17 August 2026 the BJP replaced Amit Malviya as head of the IT Cell with Chhattisgarh leader Deepak Mhaskey, in party president Nitin Nabin's new team. The party gave no public reason.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "2026",
+    "17",
+    "11"
+   ],
+   "sources": [
+    {
+     "title": "Deepak Mhaskey replaces Amit Malviya as BJP IT cell chief (Newslaundry)",
+     "url": "https://www.newslaundry.com/2026/08/17/deepak-mhaskey-replaces-amit-malviya-as-bjp-it-cell-chief",
+     "quote": "[summary] Mhaskey replaces Malviya as head of the BJP IT cell",
+     "date": "2026-08-17"
+    },
+    {
+     "title": "Who is Deepak Mhaskey, BJP's new IT cell chief (Outlook)",
+     "url": "https://www.outlookindia.com/national/who-is-deepak-mhaskey-bjps-new-it-cell-chief",
+     "quote": "[summary] the BJP has not publicly stated why it decided to replace Amit Malviya"
+    },
+    {
+     "title": "BJP replaces Amit Malviya with Deepak Mhaskey as social media chief (The Wire)",
+     "url": "https://thewire.in/politics/bjp-replaces-amit-malviya-with-deepak-mhaskey-as-social-media-chief",
+     "quote": "[summary] Malviya replaced as social media chief"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Malviya remains the party's West Bengal co-in-charge."
+  },
+  {
+   "id": "C05",
+   "claim": "ThePrint, citing party insiders, linked the change to Gen Z protests that exposed gaps in the BJP's social media outreach, and to unhappiness over some posts on foreign relations. A senior BJP leader defended Malviya's record of reaching core voters.",
+   "status": "reported",
+   "confidence": "medium",
+   "figures": [],
+   "sources": [
+    {
+     "title": "Why BJP has replaced Amit Malviya as party's IT cell chief (ThePrint)",
+     "url": "https://theprint.in/politics/why-bjp-has-replaced-amit-malviya-as-partys-it-cell-chief/3017377/",
+     "quote": "[summary] the party seeks fresh ideas after the Gen Z protests exposed gaps in its social media outreach; insiders cited posts related to foreign relations; a senior leader said he effectively shaped the BJP's social media strategy over 11 years"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Anonymous party sources: attribute to ThePrint."
+  },
+  {
+   "id": "C06",
+   "claim": "Prodyut Bora, who founded the IT Cell and later left the BJP, said in 2018 that it had become a 'Frankenstein's monster' and that the rot started with Team Modi.",
+   "status": "opinion",
+   "confidence": "high",
+   "figures": [
+    "2018"
+   ],
+   "sources": [
+    {
+     "title": "Father of BJP's IT cell says it's now a Frankenstein's monster (The Quint)",
+     "url": "https://www.thequint.com/news/politics/bjp-it-cell-now-frankensteins-monster-says-man-who-founded-it",
+     "quote": "[summary] Bora opined that the BJP IT Cell has become 'Frankenstein's monster'"
+    },
+    {
+     "title": "HuffPost India interview",
+     "url": "https://huffingtonpost.in/2018/06/22/its-like-frankensteins-monster-the-father-of-the-bjps-it-cell-says-team-modi-started-the-rot_a_23464587",
+     "quote": "[summary] It's like Frankenstein's monster... Team Modi started the rot",
+     "date": "2018-06-22"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Bora is now a political rival (founder of the Liberal Democratic Party, Assam): say so on screen."
+  },
+  {
+   "id": "C07",
+   "claim": "At a meeting of BJP social media volunteers in Kota, Rajasthan, on 22 September 2018, party president Amit Shah said party workers could make any message go viral, true or false. As an example he described a false message, about Akhilesh Yadav slapping his father, that went viral. He said two WhatsApp groups in the 2017 Uttar Pradesh election had 15 lakh and 17 lakh members, 32 lakh in all. The BJP posted the speech on its own YouTube channel.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "2018",
+    "22",
+    "32 lakh",
+    "15 lakh",
+    "17 lakh",
+    "2017"
+   ],
+   "sources": [
+    {
+     "title": "Real or fake, we can make any message viral: Amit Shah (The Quint)",
+     "url": "https://www.thequint.com/news/politics/amit-shah-real-fake-can-make-messages-viral",
+     "quote": "[summary] Shah made the remarks during a social media volunteers' meet at Kota on September 22; the party posted the video on its YouTube channel the same day",
+     "date": "2018-09-22"
+    },
+    {
+     "title": "Why is BJP president Amit Shah inciting party workers to spread lies (The Wire)",
+     "url": "https://m.thewire.in/article/politics/watch-why-is-bjp-president-amit-shah-inciting-party-workers-to-spread-lies",
+     "quote": "[summary] boasted that workers could spread any message regardless of whether it is true or false; 'There was no truth to this message, but it went viral'"
+    },
+    {
+     "title": "Amit Shah's poll plans (National Herald)",
+     "url": "https://www.nationalheraldindia.com/india/bjp-president-amit-shah-poll-plans-tells-cyber-warriors-to-spread-fire-make-even-fake-messages-go-viral",
+     "quote": "[summary] reports the 32 lakh figure"
+    }
+   ],
+   "contradictions": [
+    "Some outlets give 31 lakh; the 15 + 17 lakh split is consistent."
+   ],
+   "notes": "Use the BJP's own upload of the speech, and quote the exact Hindi words with their context. Check whether Shah also told workers not to spread false messages; if he did, the film must say so."
+  },
+  {
+   "id": "C08",
+   "claim": "For the 2019 general election the BJP planned a 'cell phone pramukh' for each polling booth, reported as about 900,000 volunteers, each running WhatsApp groups that pass on material from the central IT cell through the state units.",
+   "status": "reported",
+   "confidence": "medium",
+   "figures": [
+    "2019",
+    "900,000",
+    "9 lakh"
+   ],
+   "sources": [
+    {
+     "title": "India's WhatsApp election (Down To Earth, Williams & Kamra)",
+     "url": "https://www.downtoearth.org.in/amp/story/general-elections-2019/india-s-whatsapp-election-political-parties-risk-undermining-democracy-with-technology-63559",
+     "quote": "[summary] more than 900,000 volunteer cell phone pramukhs"
+    },
+    {
+     "title": "BJP designs WhatsApp strategy for 2019 (Oneindia)",
+     "url": "https://www.oneindia.com/india/bjp-designs-whatsapp-strategy-for-2019-lok-sabha-elections-2785324.html",
+     "quote": "[summary] around 900,000, one for each polling station",
+     "date": "2018-09"
+    },
+    {
+     "title": "BJP to appoint cell phone pramukhs (Latestly)",
+     "url": "https://www.latestly.com/india/politics/lok-sabha-elections-2019-bjp-to-appoint-nealy-1-lakh-cell-phone-pramukh-for-extensive-whatsapp-based-campaign-410887.html",
+     "quote": "[summary] each pramukh would create three WhatsApp groups per polling station; material supplied by the central IT cell via state units"
+    }
+   ],
+   "contradictions": [
+    "Latestly's headline says 'nearly 1 lakh'; other reports say about 900,000."
+   ],
+   "notes": "These are plans the party described, not counts: say 'the party planned'."
+  },
+  {
+   "id": "C09",
+   "claim": "For the 2020 Bihar election, BJP leaders told ThePrint the party had appointed 9,500 IT cell heads and planned 72,000 booth-level WhatsApp groups. The Bihar IT cell convenor told Caravan the party had formed over one lakh groups.",
+   "status": "reported",
+   "confidence": "medium",
+   "figures": [
+    "2020",
+    "9,500",
+    "72,000",
+    "1 lakh",
+    "one lakh"
+   ],
+   "sources": [
+    {
+     "title": "9,500 IT cell heads, 72,000 WhatsApp groups (ThePrint)",
+     "url": "https://theprint.in/politics/9500-it-cell-heads-72000-whatsapp-groups-how-bjp-is-preparing-for-bihar-poll-battle/451740/",
+     "quote": "[summary] the appointment of 9,500 IT cell heads; WhatsApp groups managed by booth-level workers; IT cell heads work under national head Amit Malviya"
+    },
+    {
+     "title": "WhatsApp groups, virtual rallies and war rooms (Caravan)",
+     "url": "https://caravanmagazine.in/news/bihar-elections-coronavirus-bjp-whatsapp-virtual-rallies-rjd-nitish-kumar",
+     "quote": "[summary] 'We have formed over one lakh WhatsApp groups in order to circulate positive news to influence voters'"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Party's own claims."
+  },
+  {
+   "id": "C10",
+   "claim": "The Washington Post reported in 2023 that the BJP had about 150,000 workers staffing WhatsApp for the Karnataka state election, according to a former head of BJP social media for Karnataka. It also described a parallel campaign of anonymous pages feeding polarising content into WhatsApp groups. The series was a Pulitzer Prize finalist.",
+   "status": "reported",
+   "confidence": "medium",
+   "figures": [
+    "2023",
+    "150,000"
+   ],
+   "sources": [
+    {
+     "title": "Inside the vast digital campaign by Hindu nationalists to inflame India (Washington Post, reprint)",
+     "url": "https://www.pressherald.com/2023/09/30/inside-the-vast-digital-campaign-by-hindu-nationalists-to-inflame-india/",
+     "quote": "[summary] the BJP had 150,000 workers staffing WhatsApp just for the state election, according to Vinod Krishnamurthy, a former head of BJP social media for Karnataka; a shadowy parallel campaign",
+     "date": "2023-09-30"
+    },
+    {
+     "title": "Pulitzer finalist: Staff of The Washington Post",
+     "url": "https://www.pulitzer.org/finalists/staff-washington-post-2",
+     "quote": "[summary] a sweeping on-the-ground investigation in India"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Read the original on washingtonpost.com for exact wording and the BJP's and Meta's responses."
+  },
+  {
+   "id": "C11",
+   "claim": "In 2024 Rest of World and Princeton's Digital Witness Lab reported that BJP-affiliated administrators ran a network of more than 400 WhatsApp groups in Mandi, Himachal Pradesh, a town of about 26,000 people at the 2011 census. They analysed 20 public groups and found praise for Modi and the BJP, along with fake news, conspiracy theories, attack ads and hate speech. One video reached groups with over 1,700 residents within ten minutes.",
+   "status": "reported",
+   "confidence": "medium",
+   "figures": [
+    "2024",
+    "400",
+    "26,000",
+    "2011",
+    "20",
+    "1,700",
+    "10"
+   ],
+   "sources": [
+    {
+     "title": "Inside the BJP's WhatsApp machine (Rest of World)",
+     "url": "https://restofworld.org/2024/bjp-whatsapp-modi/",
+     "quote": "[summary] administrators affiliated with the BJP run a network of more than 400 WhatsApp groups in the town"
+    },
+    {
+     "title": "How Digital Witness Lab analyzed data from BJP WhatsApp groups (Rest of World)",
+     "url": "https://restofworld.org/2024/how-digital-witness-lab-analyzed-data-from-bjp-whatsapp-groups-ahead-of-the-indian-elections/",
+     "quote": "[summary] 20 groups met the criteria for public; the smallest had 32 members, the largest more than 1,500"
+    }
+   ],
+   "contradictions": [
+    "The 400 is the whole network; only 20 groups were analysed."
+   ],
+   "notes": ""
+  },
+  {
+   "id": "C12",
+   "claim": "India is WhatsApp's largest market, with about 500 million users according to Meta.",
+   "status": "estimate",
+   "confidence": "medium",
+   "figures": [
+    "500 million",
+    "50 crore"
+   ],
+   "sources": [
+    {
+     "title": "India largest market for Meta AI usage (TechCrunch)",
+     "url": "https://techcrunch.com/2024/07/31/mark-zuckerberg-says-india-is-the-largest-market-for-meta-ai-usage",
+     "quote": "[summary] WhatsApp has about 500 million users in the country"
+    },
+    {
+     "title": "WhatsApp business revenue doubled in a year (Business Standard)",
+     "url": "https://business-standard.com/companies/news/whatsapp-business-revenue-doubled-in-a-year-meta-s-sandhya-devanathan-124091201135_1.html",
+     "quote": "[summary] Meta executives cited over 500 million users in India"
+    }
+   ],
+   "contradictions": [
+    "Third-party trackers give about 536 million (DataReportal 2025)."
+   ],
+   "notes": ""
+  },
+  {
+   "id": "C13",
+   "claim": "In July 2018, after a wave of lynchings linked to rumours spread on WhatsApp, WhatsApp limited forwarding in India to five chats at a time. It made the limit worldwide in January 2019.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "2018",
+    "5",
+    "five",
+    "2019"
+   ],
+   "sources": [
+    {
+     "title": "WhatsApp to limit message forwarding after India mob lynchings (Reuters via Jakarta Post)",
+     "url": "https://www.thejakartapost.com/life/2018/07/20/whatsapp-to-limit-message-forwarding-after-india-mob-lynchings.html",
+     "quote": "[summary] test a lower limit of five chats at a time and remove the quick forward button",
+     "date": "2018-07-20"
+    },
+    {
+     "title": "WhatsApp forwarding limits (CNN)",
+     "url": "https://amp.cnn.com/cnn/2019/01/21/tech/whatsapp-forwarding-limits-india",
+     "quote": "[summary] extended worldwide following a six-month experiment in India",
+     "date": "2019-01-21"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Context for why WhatsApp matters; not about any party."
+  },
+  {
+   "id": "C14",
+   "claim": "A peer-reviewed study (Jakesch, Garimella, Eckles and Naaman, CSCW 2021) joined 600 pro-BJP WhatsApp groups during the 2019 election. It found 75 coordinated campaigns that sent 'trend alerts' and produced hundreds of nationwide Twitter trends.",
+   "status": "reported",
+   "confidence": "high",
+   "figures": [
+    "600",
+    "75",
+    "2019",
+    "2021"
+   ],
+   "sources": [
+    {
+     "title": "Trend Alert: How a Cross-Platform Organization Manipulated Twitter Trends in the Indian General Election (arXiv)",
+     "url": "https://arxiv.org/abs/2104.13259",
+     "quote": "[summary] joined 600 WhatsApp groups that support the BJP; evidence of 75 cross-platform manipulation campaigns; hundreds of nationwide Twitter trends"
+    },
+    {
+     "title": "Researchers detail manipulation of Twitter in 2019 Indian election (Tech Policy Press)",
+     "url": "https://techpolicy.press/researchers-detail-manipulation-of-twitter-in-2019-indian-election",
+     "quote": "[summary] summary of the study"
+    }
+   ],
+   "contradictions": [],
+   "notes": ""
+  },
+  {
+   "id": "C15",
+   "claim": "The study's authors could not confirm who organised the campaigns. They concluded that an organisation, 'most likely' the BJP's social media department, developed the narratives.",
+   "status": "interpretation",
+   "confidence": "medium",
+   "figures": [],
+   "sources": [
+    {
+     "title": "Trend Alert (arXiv)",
+     "url": "https://arxiv.org/abs/2104.13259",
+     "quote": "[summary] an organization, most likely the BJP's social media department, develops the campaign narratives"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Say 'the researchers believe'; never 'the IT cell ran it'."
+  },
+  {
+   "id": "C16",
+   "claim": "An Oxford Internet Institute study of the 2019 election found that 28% of news links shared on pro-BJP Facebook pages were 'junk news', against 21% on pro-Congress pages. On WhatsApp, 34.5% of the BJP's visual content and 28.5% of Congress's was classed as divisive and conspiratorial.",
+   "status": "reported",
+   "confidence": "high",
+   "figures": [
+    "2019",
+    "28%",
+    "21%",
+    "34.5%",
+    "28.5%"
+   ],
+   "sources": [
+    {
+     "title": "Junk news and misinformation prevalent in Indian election campaign (Oxford Internet Institute)",
+     "url": "https://www.oii.ox.ac.uk/junk-news-and-misinformation-prevalent-in-indian-election-campaign/",
+     "quote": "[summary] over a quarter (28%) of news links on pro-BJP Facebook pages were junk news; Congress 21%; WhatsApp visual content 34.5% BJP, 28.5% INC divisive and conspiratorial"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Shows both main parties; good for fairness."
+  },
+  {
+   "id": "C17",
+   "claim": "The Oxford Internet Institute's 2020 global inventory found organised social media manipulation in 81 countries, India among them.",
+   "status": "reported",
+   "confidence": "medium",
+   "figures": [
+    "2020",
+    "81"
+   ],
+   "sources": [
+    {
+     "title": "Industrialized Disinformation: 2020 Global Inventory (OII)",
+     "url": "https://commbox.org/document/industrialized-disinformation-2020-global-inventory-of-organized-social-media-manipulation",
+     "quote": "[summary] evidence of 81 countries using social media to spread computational propaganda"
+    },
+    {
+     "title": "India among 70 nations hiring cyber troops (ThePrint, 2019 edition)",
+     "url": "https://theprint.in/india/india-among-70-nations-hiring-cyber-troops-for-propaganda-says-oxford-university-study/299042",
+     "quote": "[summary] India's cyber troops were of medium capacity"
+    }
+   ],
+   "contradictions": [
+    "Capacity ratings for India differ between editions (medium in 2019; high in some summaries of 2020)."
+   ],
+   "notes": "Check India's country profile in the primary report."
+  },
+  {
+   "id": "C18",
+   "claim": "On 1 April 2019 Facebook removed 687 pages and accounts it linked to the Congress IT cell, for 'coordinated inauthentic behaviour'. It also removed 15 pages, groups and accounts linked to Silver Touch, an Ahmedabad IT firm seen as close to the BJP. One of those pages, 'The India Eye', had 2.6 million followers.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "2019",
+    "687",
+    "15",
+    "2.6 million"
+   ],
+   "sources": [
+    {
+     "title": "Facebook takes down hundreds of pro-Congress pages, BJP pages also hit (BOOM)",
+     "url": "https://www.boomlive.in/facebook-takes-down-hundreds-of-pro-congress-pages-bjp-pages-also-hit/",
+     "quote": "[summary] 687 pages and accounts linked to the INC IT cell; 15 linked to Silver Touch; The Indian Eye had 2.6 million followers"
+    },
+    {
+     "title": "Explainer: Why did Facebook take down BJP and Congress-linked pages? (Dawn)",
+     "url": "https://www.dawn.com/news/1473455",
+     "quote": "[summary] coordinated inauthentic behaviour by both"
+    },
+    {
+     "title": "Facebook removes 702 pages (The Quint)",
+     "url": "https://www.thequint.com/elections/facebook-removes-702-pages-congress-bjp-linked-it-firm-silver-touch",
+     "quote": "[summary] 702 pages and accounts linked to the INC and Silver Touch"
+    }
+   ],
+   "contradictions": [
+    "Ad spend reported as about $39,000 (Congress-linked) and $70,000 or $79,000 (Silver Touch).",
+    "Congress said none of its official pages were removed."
+   ],
+   "notes": "Facebook named the Congress IT cell but did not name the BJP. Silver Touch was reported to be behind the NaMo app, which Amit Malviya denied. Fairness: both sides were hit."
+  },
+  {
+   "id": "C19",
+   "claim": "On 2 December 2020 Twitter labelled a post by Amit Malviya 'manipulated media'. It was the first such label on an Indian politician's post. His clip of a policeman swinging a baton at an elderly farmer showed only the swing that missed; a longer video showed two policemen swinging, one after the other. The farmer, Sukhdev Singh, said he had been hit.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "2020",
+    "2",
+    "28"
+   ],
+   "sources": [
+    {
+     "title": "Amit Malviya's tweet about farmer gets 'manipulated media' tag (Scroll)",
+     "url": "https://scroll.in/latest/980043/amit-malviyas-tweet-about-farmer-gets-manipulated-media-tag-on-twitter",
+     "quote": "[summary] Twitter labelled the tweet as manipulated media",
+     "date": "2020-12-02"
+    },
+    {
+     "title": "Twitter labels Malviya's post on farmers' protest as manipulated (The Quint)",
+     "url": "https://www.thequint.com/news/webqoof/twitter-marks-amit-malviyas-tweet-on-farmer-protest-as-manipulated",
+     "quote": "[summary] a longer version showed two policemen swinging their batons; Malviya's video only showed the second cop whose baton missed"
+    },
+    {
+     "title": "In a first, Twitter flags BJP leader's post as manipulated media (Dawn)",
+     "url": "https://www.dawn.com/news/1593615",
+     "quote": "[summary] first such action by Twitter in India"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Malviya's post replied to Rahul Gandhi. Show the label as a screenshot recreation, labelled."
+  },
+  {
+   "id": "C20",
+   "claim": "On 20 May 2021 Twitter labelled BJP spokesperson Sambit Patra's post about an alleged Congress 'toolkit' as manipulated media. Fact-checkers at Alt News reported the documents carried a forged Congress letterhead. Congress filed police complaints, and Chhattisgarh police registered an FIR.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "2021",
+    "20"
+   ],
+   "sources": [
+    {
+     "title": "Twitter labels Sambit Patra's 'toolkit' tweet as manipulated (The Quint)",
+     "url": "https://www.thequint.com/amp/story/news/webqoof/twitter-labels-sambit-patras-toolkit-tweet-as-manipulated",
+     "quote": "[summary] Twitter on 20 May tagged the tweet as manipulated media",
+     "date": "2021-05-20"
+    },
+    {
+     "title": "Sambit Patra's tweets flagged as manipulated media (Newslaundry)",
+     "url": "https://www.newslaundry.com/2021/05/21/sambit-patras-tweets-on-congress-toolkit-flagged-as-manipulated-media-by-twitter",
+     "quote": "[summary] labelled under Twitter's synthetic and manipulated media policy"
+    },
+    {
+     "title": "Twitter labels Patra's tweet (The News Minute)",
+     "url": "https://www.thenewsminute.com/news/twitter-labels-sambit-patras-tweet-cong-toolkit-manipulated-media-149257",
+     "quote": "[summary] Congress had asked Twitter to act; police complaint filed"
+    }
+   ],
+   "contradictions": [
+    "The BJP maintained the toolkit was genuine (find a primary statement)."
+   ],
+   "notes": "This involved a BJP spokesperson, not the IT cell as such: say so."
+  },
+  {
+   "id": "C21",
+   "claim": "Fact-checkers have repeatedly flagged Amit Malviya's posts as false or misleading. A 2020 tally by The News Minute counted 17 instances.",
+   "status": "reported",
+   "confidence": "medium",
+   "figures": [
+    "17",
+    "2020"
+   ],
+   "sources": [
+    {
+     "title": "Repeat offender? 17 times BJP IT in-charge Amit Malviya has spread misinformation (The News Minute)",
+     "url": "https://www.thenewsminute.com/news/repeat-offender-17-times-bjp-it-incharge-amit-malviya-has-spread-misinformation-118014",
+     "quote": "[summary] 17 instances"
+    },
+    {
+     "title": "How the BJP IT Cell head weaponises misinformation (The Quint)",
+     "url": "https://www.thequint.com/news/webqoof/bjp-it-cell-head-amit-malviya-tweets-16-pieces-of-misinformation",
+     "quote": "[summary] 16 pieces of misinformation"
+    }
+   ],
+   "contradictions": [
+    "The Quint's count was 16; some flagged posts had correct figures but misleading framing."
+   ],
+   "notes": "Show two or three specific fact-checks on screen rather than a bare count, and ask Malviya for comment."
+  },
+  {
+   "id": "C22",
+   "claim": "The Wall Street Journal reported in August 2020 that Facebook's top policy executive in India, Ankhi Das, opposed applying its hate-speech rules to BJP politician T. Raja Singh, saying it would hurt the company's business in India. Facebook said her view was not the only factor and later banned Singh. Das left Facebook two months after the report.",
+   "status": "reported",
+   "confidence": "high",
+   "figures": [
+    "2020"
+   ],
+   "sources": [
+    {
+     "title": "Facebook ignored hate speech by India's BJP politicians: report (Al Jazeera)",
+     "url": "https://www.aljazeera.com/news/2020/08/15/facebook-ignored-hate-speech-by-indias-bjp-politicians-report/",
+     "quote": "[summary] Das opposed applying the hate-speech rules to Singh; punishing violations would damage business prospects",
+     "date": "2020-08-15"
+    },
+    {
+     "title": "Facebook bans BJP MLA T Raja Singh (Scroll)",
+     "url": "https://scroll.in/latest/972090/facebook-bans-bjp-mla-t-raja-singh-as-india-hate-speech-controversy-mounts",
+     "quote": "[summary] Facebook banned Singh"
+    },
+    {
+     "title": "Ankhi Das quits (The Quint)",
+     "url": "https://thequint.com/news/india/ankhi-das-facebook-quits-resigns-hate-speech-controversy",
+     "quote": "[summary] resignation two months after the WSJ report"
+    }
+   ],
+   "contradictions": [],
+   "notes": "About Facebook's policy staff, not the IT cell: use as platform context. Das said she received threats after the report."
+  },
+  {
+   "id": "C23",
+   "claim": "Facebook whistleblower Sophie Zhang said in 2021 that Facebook paused removing a small network of fake accounts, about 50, after finding a BJP MP was probably directly involved, while networks linked to AAP and Congress were removed. Facebook gave The Guardian contradictory accounts, and said fighting coordinated inauthentic behaviour is its priority.",
+   "status": "allegation",
+   "confidence": "medium",
+   "figures": [
+    "2021",
+    "50"
+   ],
+   "sources": [
+    {
+     "title": "Facebook planned to remove fake accounts in India until it realised a BJP politician was involved (The Guardian, via PressReader)",
+     "url": "https://www.pressreader.com/australia/the-guardian-australia/20210416/281938840741549",
+     "quote": "[summary] the company paused when it found evidence that the politician was probably directly involved",
+     "date": "2021-04-16"
+    },
+    {
+     "title": "Facebook delayed action on fake accounts promoting BJP MP (ThePrint)",
+     "url": "https://theprint.in/tech/facebook-delayed-action-on-fake-accounts-promoting-bjp-mp-claims-us-whistleblower/712373",
+     "quote": "[summary] whistleblower claims; Facebook says it prioritises coordinated inauthentic behaviour"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Later reports named the MP. Do not name him on screen without a lawyer's advice; the claim is about one MP, not the IT cell."
+  },
+  {
+   "id": "C24",
+   "claim": "Internal Facebook documents disclosed by whistleblower Frances Haugen in 2021 described bots and fake accounts tied to both the BJP and the opposition during the 2019 election. One internal survey found 40% of top civic posters in West Bengal were fake or inauthentic. Another document was cited as suggesting BJP-linked members ran multiple accounts.",
+   "status": "reported",
+   "confidence": "medium",
+   "figures": [
+    "2021",
+    "2019",
+    "40%"
+   ],
+   "sources": [
+    {
+     "title": "Internal documents reveal how Facebook struggled with misinformation and hate speech in India (Business Insider / AP)",
+     "url": "https://www.businessinsider.in/tech/enterprise/news/how-facebook-struggled-to-deal-with-misinformation-and-hate-speech-in-india/articleshow/87251411.cms",
+     "quote": "[summary] bots and fake accounts tied to the ruling BJP and the opposition"
+    },
+    {
+     "title": "Further disclosures by Facebook whistleblower (Internet Freedom Foundation)",
+     "url": "https://www.internetfreedom.in/further-disclosures-by-fb-whistleblower-reveal-political-bias/",
+     "quote": "[summary] 40% of top VPV civic posters in West Bengal were fake/inauthentic; Lotus Mahal document"
+    }
+   ],
+   "contradictions": [],
+   "notes": "The BJP and RSS did not respond at the time. Running multiple accounts is against Facebook's rules but not illegal."
+  },
+  {
+   "id": "C25",
+   "claim": "A 2022 investigation by The Reporters' Collective and ad.watch, published by Al Jazeera, analysed 536,070 political ads in Meta's Ad Library. It reported that at least 23 'surrogate' or 'ghost' advertisers ran 34,884 ads promoting the BJP, against two such advertisers running 3,130 ads for Congress, and that Facebook's system charged the BJP less for ads than Congress in nine of the ten elections studied. Meta said it applies its policies uniformly.",
+   "status": "allegation",
+   "confidence": "medium",
+   "figures": [
+    "2022",
+    "536,070",
+    "23",
+    "34,884",
+    "3,130",
+    "9",
+    "10"
+   ],
+   "sources": [
+    {
+     "title": "Inside Facebook and BJP's world of ghost advertisers (Al Jazeera)",
+     "url": "https://www.aljazeera.com/economy/2022/3/15/inside-facebook-and-bjps-world-of-ghost-advertisers",
+     "quote": "[summary] surrogate advertisers promoted the BJP",
+     "date": "2022-03-15"
+    },
+    {
+     "title": "Facebook ad policy gave BJP 'unfair advantage', shows series of reports (Scroll)",
+     "url": "https://scroll.in/latest/1019747/facebook-ad-policy-gave-bjp-unfair-advantage-in-indian-elections-shows-series-of-reports",
+     "quote": "[summary] 23 surrogate advertisers, 34,884 ads; cheaper rates in nine of ten elections"
+    },
+    {
+     "title": "Al Jazeera claims FB ran surrogate ads; Jio-funded news site denies link (ThePrint)",
+     "url": "https://theprint.in/india/al-jazeera-claims-fb-ran-surrogate-ads-to-help-bjp-in-2019-jio-funded-news-site-denies-link/874962",
+     "quote": "[summary] NEWJ denied any link; Meta's response"
+    }
+   ],
+   "contradictions": [],
+   "notes": "No regulator has found against Meta or the BJP on this."
+  },
+  {
+   "id": "C26",
+   "claim": "In her 2016 book 'I Am a Troll', journalist Swati Chaturvedi reported, from about two years of research and interviews with more than 30 people she called trolls, that a former volunteer, Sadhavi Khosla, said volunteers were given a 'hit list' of journalists. The BJP's then IT head Arvind Gupta said Khosla had never been part of the IT or social media cell and called the claim false.",
+   "status": "allegation",
+   "confidence": "medium",
+   "figures": [
+    "2016",
+    "30",
+    "2"
+   ],
+   "sources": [
+    {
+     "title": "I am a troll: Inside the secret world of BJP's digital army (Business Standard review)",
+     "url": "https://www.business-standard.com/article/beyond-business/the-bjp-s-online-bully-boys-116122801182_1.html",
+     "quote": "[summary] book review"
+    },
+    {
+     "title": "India's ruling party takes online abuse to a professional level (The National)",
+     "url": "https://www.thenationalnews.com/world/indias-ruling-party-takes-online-abuse-to-a-professional-level-1.204151",
+     "quote": "[summary] over two years of research and interviews with more than 30 trolls; hit list of mainstream journalists"
+    },
+    {
+     "title": "BJP IT man denies troll army charges (Asian Age)",
+     "url": "https://www.asianage.com/india/all-india/281216/bjp-it-man-denies-troll-army-charges.html",
+     "quote": "[summary] Sadhavi Khosla has not been part of any BJP IT/social media cell. Any such claim is false, scurrilous and self promotion"
+    }
+   ],
+   "contradictions": [
+    "One review criticised the book's reliance on a single named source."
+   ],
+   "notes": "Gupta also said Khosla later joined a Congress campaign. Show both."
+  },
+  {
+   "id": "C27",
+   "claim": "In September 2017, after the murder of journalist Gauri Lankesh, Alt News and others reported that Prime Minister Modi followed Twitter accounts that had posted abusive content, including posts about her death. The BJP called the controversy 'mischievous'; Amit Malviya said following an account is not an endorsement, and pointed out that Modi also follows Rahul Gandhi and Arvind Kejriwal.",
+   "status": "reported",
+   "confidence": "high",
+   "figures": [
+    "2017"
+   ],
+   "sources": [
+    {
+     "title": "Row over Modi following some Twitter users 'mischievous': BJP (Business Standard / PTI)",
+     "url": "https://www.business-standard.com/article/pti-stories/row-over-modi-following-some-twitter-users-mischievous-bjp-117090701516_1.html",
+     "quote": "[summary] BJP called the controversy mischievous",
+     "date": "2017-09-07"
+    },
+    {
+     "title": "Can BJP's 'freedom of speech' excuse cover up for PM following... (Newslaundry)",
+     "url": "https://www.newslaundry.com/2017/09/11/bjp-freedom-of-speech-modi-twitter",
+     "quote": "[summary] critics said the statement did not condemn the abusive tweets"
+    },
+    {
+     "title": "Amit Malviya, Gauri Lankesh and Twitter trolls (DailyO)",
+     "url": "https://dailyo.in/politics/amit-malviya-bjp-gauri-lankesh-twitter-trolls-narendra-modi-19393",
+     "quote": "[summary] Malviya pointed out Modi follows Rahul Gandhi and Kejriwal"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Name no ordinary account holders; show the pattern, not people."
+  },
+  {
+   "id": "C28",
+   "claim": "In September 2020 BJP MP Subramanian Swamy wrote that 'The BJP IT cell has gone rogue', saying some members were posting fake-ID tweets attacking him, and demanded Amit Malviya's removal. The BJP did not respond publicly.",
+   "status": "opinion",
+   "confidence": "high",
+   "figures": [
+    "2020"
+   ],
+   "sources": [
+    {
+     "title": "BJP IT cell has gone rogue: Subramanian Swamy (Deccan Herald)",
+     "url": "https://www.deccanherald.com/national/national-politics/bjp-it-cell-has-gone-rogue-subramanian-swamy-883996.html",
+     "quote": "[summary] 'The BJP IT cell has gone rogue. Some of its members are putting out fake ID tweets to make personal attacks on me'",
+     "date": "2020-09-07"
+    },
+    {
+     "title": "Swamy gives ultimatum to BJP to remove IT cell head (Tribune)",
+     "url": "https://www.tribuneindia.com/news/nation/subramanian-swamy-gives-ultimatum-to-bjp-to-remove-it-cell-head-amit-malviya-138689",
+     "quote": "[summary] BJP leadership chose not to comment"
+    },
+    {
+     "title": "Swamy attacks Malviya (ThePrint)",
+     "url": "https://theprint.in/politics/subramanian-swamy-attacks-amit-malviya-calls-for-sacking-of-bjp-it-cell-members/497506",
+     "quote": "[summary] calls for sacking"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Criticism from inside the party. Party insiders noted Swamy often goes against the party line: include that."
+  },
+  {
+   "id": "C29",
+   "claim": "Amnesty International's 'Troll Patrol India' study found that 13.8% of 7.1 million tweets mentioning 95 Indian women politicians between March and May 2019 were problematic or abusive: about a million tweets, or 113 per woman per day. Muslim women politicians received 94.1% more ethnic or religious slurs, and women from parties other than the BJP faced more abuse.",
+   "status": "reported",
+   "confidence": "high",
+   "figures": [
+    "2019",
+    "13.8%",
+    "7.1 million",
+    "95",
+    "1 million",
+    "113",
+    "94.1%"
+   ],
+   "sources": [
+    {
+     "title": "India: Women politicians face shocking scale of abuse on Twitter (Amnesty UK)",
+     "url": "https://www.amnesty.org.uk/press-releases/india-women-politicians-face-shocking-scale-abuse-twitter-new-research",
+     "quote": "[summary] 13.8% of tweets problematic or abusive; 113 per woman per day"
+    },
+    {
+     "title": "Troll Patrol India findings (Amnesty International India, PDF)",
+     "url": "https://amnistia.org.ar/wp-content/uploads/delightful-downloads/2020/01/Amnesty-International-India_Troll-Patrol-India-Findings_2020.pdf",
+     "quote": "[summary] the study's findings"
+    }
+   ],
+   "contradictions": [],
+   "notes": "The study does NOT attribute the abuse to any party's IT cell. The film must not imply it does."
+  },
+  {
+   "id": "C30",
+   "claim": "In the 2024 Lok Sabha campaign the BJP was the largest political advertiser online. From 1 January to 31 May 2024 parties spent at least ₹290 crore on more than two lakh Google ads; the BJP placed about 180,000 of them, over half. On Meta from March to 31 May, the BJP's page spent ₹19.3 crore against Congress's ₹10.8 crore.",
+   "status": "reported",
+   "confidence": "medium",
+   "figures": [
+    "2024",
+    "₹290 crore",
+    "2 lakh",
+    "180,000",
+    "₹19.3 crore",
+    "₹10.8 crore"
+   ],
+   "sources": [
+    {
+     "title": "Digital ad spending, Lok Sabha elections 2024 (The Quint)",
+     "url": "https://www.thequint.com/elections/digital-advertisement-spending-lok-sabha-elections-2024-political-parties",
+     "quote": "[summary] at least Rs 290 crore on more than two lakh ads on Google; BJP published over 50 percent, or 180,000; Meta BJP Rs 19.3 crore, Congress Rs 10.8 crore"
+    },
+    {
+     "title": "Over Rs 100 crore spent on political ads on Google, BJP leads (Storyboard18)",
+     "url": "https://www.storyboard18.com/amp/how-it-works/over-rs-100-crore-spent-on-political-ads-on-google-bjp-leads-the-advertising-chart-26771.htm",
+     "quote": "[summary] BJP the leading spender, Rs 31.1 crore, Jan 1 to Mar 19"
+    }
+   ],
+   "contradictions": [
+    "Congress outspent the BJP on Meta in at least one early-April window."
+   ],
+   "notes": "Re-check against Google's Ads Transparency Center and Meta's Ad Library before rendering figures."
+  },
+  {
+   "id": "C31",
+   "claim": "Other parties run their own digital cells. Congress named actor and former MP Divya Spandana its digital head in 2017; she later accused Karnataka Congress leaders of having her trolled.",
+   "status": "reported",
+   "confidence": "medium",
+   "figures": [
+    "2017"
+   ],
+   "sources": [
+    {
+     "title": "A toxic work environment could be weakening the Congress's social media cell (Scroll)",
+     "url": "https://scroll.in/article/899619/a-toxic-work-environment-could-be-weakening-the-congresss-social-media-cell",
+     "quote": "[summary] on the Congress social media cell"
+    },
+    {
+     "title": "Office circulated messages to troll me, says ex-Congress social media head (ThePrint)",
+     "url": "https://theprint.in/politics/office-circulated-messages-to-troll-me-says-ex-congress-social-media-head-ramya-shares-images/952412",
+     "quote": "[summary] Ramya alleges trolling by Karnataka Congress"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Research AAP, TMC and other cells too before the comparison scene."
+  },
+  {
+   "id": "C32",
+   "claim": "In May 2024 police arrested members of the Telangana Congress social media team over a doctored video of Amit Shah that falsely suggested the BJP would end reservations. Delhi Police also arrested the person running the 'Spirit of Congress' account. Congress president Mallikarjun Kharge responded that the BJP was the expert in fake videos.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "2024",
+    "5"
+   ],
+   "sources": [
+    {
+     "title": "Amit Shah's doctored video: 5 members of Congress IT cell arrested (Business Today)",
+     "url": "https://www.businesstoday.in/india/story/amit-shahs-doctored-video-5-members-of-congress-it-cell-arrested-in-telangana-427988-2024-05-02",
+     "quote": "[summary] five members arrested",
+     "date": "2024-05-02"
+    },
+    {
+     "title": "Delhi Police arrests Telangana Congress worker over doctored video (Scroll)",
+     "url": "https://scroll.in/latest/1067426/delhi-police-arrests-telangana-congress-worker-in-connection-with-doctored-video-of-amit-shah",
+     "quote": "[summary] arrest of Arun Reddy"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Those arrested were released on bail; no court finding yet. Shows the same tactics across parties."
+  },
+  {
+   "id": "C33",
+   "claim": "In September 2025 the Assam BJP posted an AI-generated video that critics said showed Muslims taking over the state; the Supreme Court issued notice on a plea seeking its removal. In February 2026 the Assam BJP deleted another AI video, showing the chief minister firing at Muslim men, and removed a social media co-convenor.",
+   "status": "reported",
+   "confidence": "medium",
+   "figures": [
+    "2025",
+    "2026"
+   ],
+   "sources": [
+    {
+     "title": "SC issues notice on plea seeking removal of AI video by Assam BJP (Scroll)",
+     "url": "https://scroll.in/latest/1087384/sc-issues-notice-on-plea-seeking-removal-of-ai-generated-video-by-assam-bjp-vilifying-muslims",
+     "quote": "[summary] Supreme Court notice"
+    },
+    {
+     "title": "Assam BJP social media co-convenor removed for uploading controversial video (DT Next)",
+     "url": "https://www.dtnext.in/news/national/assam-bjp-social-media-co-convenor-removed-for-uploading-controversial-video",
+     "quote": "[summary] co-convenor removed after the video was deleted"
+    }
+   ],
+   "contradictions": [
+    "One report says the Election Commission ordered the 2025 video taken down; not confirmed by a second source."
+   ],
+   "notes": "A state unit, not the national IT cell. Do not show the videos themselves."
+  },
+  {
+   "id": "C34",
+   "claim": "In January 2022 The Wire published an investigation alleging that BJP supporters used an app called 'Tek Fog' to hijack trends. In October 2022 The Wire withdrew it, along with stories claiming Meta gave Amit Malviya special powers, saying it had been deceived by a member of its own team. Malviya filed a complaint, Delhi Police registered an FIR against The Wire, and the Editors Guild withdrew its earlier statement on Tek Fog.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "2022"
+   ],
+   "sources": [
+    {
+     "title": "The Wire retracts articles about Meta (Scroll)",
+     "url": "https://scroll.in/latest/1035706/the-wire-retracts-articles-about-meta-amid-dispute-with-social-media-company",
+     "quote": "[summary] The Wire retracted its reports",
+     "date": "2022-10-23"
+    },
+    {
+     "title": "Wire retracts Meta stories, Tek Fog investigation to be reviewed too (The News Minute)",
+     "url": "https://www.thenewsminute.com/amp/story/news/wire-retracts-meta-stories-tek-fog-investigation-be-reviewed-too-169165",
+     "quote": "[summary] Tek Fog taken down"
+    },
+    {
+     "title": "Editors Guild retracts Tek Fog remarks (Scroll)",
+     "url": "https://scroll.in/latest/1036058/editors-guild-removes-references-to-articles-on-tek-fog-after-the-wire-retracts-its-investigation",
+     "quote": "[summary] EGI withdrew references"
+    },
+    {
+     "title": "Wire says they were deceived; Amit Malviya to sue (The News Minute)",
+     "url": "https://www.thenewsminute.com/news/wire-says-they-were-deceived-amit-malviya-sue-five-developments-so-far-169330",
+     "quote": "[summary] Delhi Police FIR on Malviya's complaint"
+    }
+   ],
+   "contradictions": [],
+   "notes": "NEVER use Tek Fog as evidence. Tell this as a warning: accusations need proof, and one false story damaged the case against real problems. The outcome of the cases is not known: check before release."
+  },
+  {
+   "id": "C35",
+   "claim": "In September 2024 the Bombay High Court struck down the 2023 IT Rules amendment that would have let a government fact-check unit label online content about the government as fake. The challenge was brought by comedian Kunal Kamra, the Editors Guild of India and the Association of Indian Magazines. The Supreme Court had stayed the unit's notification in March 2024.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "2024",
+    "2023"
+   ],
+   "sources": [
+    {
+     "title": "Bombay HC strikes down provision in IT rules that allowed Centre to set up fact-checking unit (Scroll)",
+     "url": "https://scroll.in/latest/1073533/scroll_in",
+     "quote": "[summary] provision struck down"
+    },
+    {
+     "title": "Violative of Article 14, 19: Bombay HC strikes down amended IT rules (The Wire)",
+     "url": "https://thewire.in/law/violative-of-article-14-19-bombay-hc-strikes-down-amended-it-rules-no-govt-fact-check-unit-now",
+     "quote": "[summary] tie-breaking judgment"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Context: who decides what is fake. Check whether the government appealed."
+  },
+  {
+   "id": "C36",
+   "claim": "The BJP's defence: it describes its digital operation as organised political communication by volunteers, the kind every party runs. It has denied that it directs abuse, saying a leader following an account is not an endorsement, rejecting named accusers, and denying links reported by the press.",
+   "status": "opinion",
+   "confidence": "medium",
+   "figures": [],
+   "sources": [
+    {
+     "title": "BJP IT man denies troll army charges (Asian Age)",
+     "url": "https://www.asianage.com/india/all-india/281216/bjp-it-man-denies-troll-army-charges.html",
+     "quote": "[summary] Arvind Gupta: claim false, scurrilous and self promotion"
+    },
+    {
+     "title": "Row over Modi following some Twitter users 'mischievous': BJP (Business Standard / PTI)",
+     "url": "https://www.business-standard.com/article/pti-stories/row-over-modi-following-some-twitter-users-mischievous-bjp-117090701516_1.html",
+     "quote": "[summary] BJP statement"
+    },
+    {
+     "title": "Why BJP has replaced Amit Malviya (ThePrint)",
+     "url": "https://theprint.in/politics/why-bjp-has-replaced-amit-malviya-as-partys-it-cell-chief/3017377/",
+     "quote": "[summary] a senior leader says Malviya's strategy helped reach core voters"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Before release, send written questions to the BJP IT Cell (Deepak Mhaskey) and to Amit Malviya, and quote their answers or say they did not reply."
+  },
+  {
+   "id": "C37",
+   "claim": "Under Malviya the IT Cell grew into one of India's largest political communication operations. Outlook credits him, as the party's West Bengal co-in-charge, with helping the BJP win its first Bengal government in 2026.",
+   "status": "reported",
+   "confidence": "medium",
+   "figures": [
+    "2026"
+   ],
+   "sources": [
+    {
+     "title": "11 Years, Millions Of Posts (Outlook)",
+     "url": "https://www.outlookindia.com/national/11-years-millions-of-posts-how-amit-malviya-built-bjps-digital-war-machine-and-made-it-big",
+     "quote": "[summary] credits him with helping the party win its first Bengal government in 2026"
+    },
+    {
+     "title": "Amit Malviya tenure as BJP IT cell head: a look back (The Quint)",
+     "url": "https://www.thequint.com/news/webqoof/amit-malviya-tenure-as-bjp-it-cell-head-a-look-back",
+     "quote": "[summary] the IT cell expanded massively under him; his stint was marked by accusations of spreading misinformation"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Confirm the 2026 Bengal result from the Election Commission before using it."
+  },
+  {
+   "id": "C38",
+   "claim": "Before the 2024 campaign, Google and Facebook reported combined political ad spending in India of about ₹58 crore for February to May 2019.",
+   "status": "reported",
+   "confidence": "medium",
+   "figures": [
+    "2019",
+    "₹58 crore"
+   ],
+   "sources": [
+    {
+     "title": "2024 election: BJP far ahead of Congress... (Storyboard18)",
+     "url": "https://stgcms.storyboard18.com/?p=22871",
+     "quote": "[summary] Between February 2019 and May 2019, Google and Facebook reported a combined political ad expenditure of approximately Rs 58 crore"
+    }
+   ],
+   "contradictions": [],
+   "notes": "For a 2019 vs 2024 growth graphic; verify against the libraries."
+  },
+  {
+   "id": "C39",
+   "claim": "In its own expenditure report to the Election Commission, the BJP declared spending ₹1,737.68 crore on the 2024 Lok Sabha election, including ₹611.50 crore on media advertisement, of which ₹156.95 crore went to Google India and ₹24.63 crore to Facebook.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "2024",
+    "₹1,737.68 crore",
+    "₹611.50 crore",
+    "₹156.95 crore",
+    "₹24.63 crore"
+   ],
+   "sources": [
+    {
+     "title": "BJP says it spent Rs 1,737.68 crore on 2024 Lok Sabha elections (Scroll)",
+     "url": "https://scroll.in/latest/1078621/rs-1737-68-crore-spent-on-2024-lok-sabha-elections-bjp-tells-ec",
+     "quote": "[summary] Rs 1,737.68 crore, per its expenditure report to the Election Commission"
+    },
+    {
+     "title": "BJP spent Rs 1,737.68 cr for 2024 Lok Sabha polls (ThePrint / PTI)",
+     "url": "https://theprint.in/india/bjp-spent-rs-1737-68-cr-for-2024-lok-sabha-polls-states-partys-expenditure-report-to-ec/2472071",
+     "quote": "[summary] expenditure report to EC"
+    },
+    {
+     "title": "BJP spent over Rs 611 cr on media ads (Storyboard18)",
+     "url": "https://www.storyboard18.com/advertising/bjp-spent-over-rs-611-cr-on-media-ads-for-lok-sabha-campaigning-in-2024-55423.htm",
+     "quote": "[summary] Rs 611.50 crore media advertisement; Rs 156.95 crore to Google India, Rs 24.63 crore to Facebook"
+    }
+   ],
+   "contradictions": [
+    "The Wire collated Rs 684.57 crore from state forms and noted Part-C of the report showed only Rs 58.45 lakh on media advertisement; the separate 'social media' line was about Rs 6.94 crore."
+   ],
+   "notes": "Party's own filing; open the ECI PDF before rendering numbers."
+  },
+  {
+   "id": "C40",
+   "claim": "The Association for Democratic Reforms found the BJP spent about ₹1,494 crore on the 2024 Lok Sabha and four simultaneous Assembly elections, nearly 45% of what 22 parties spent, including ₹983.92 crore on publicity.",
+   "status": "reported",
+   "confidence": "high",
+   "figures": [
+    "2024",
+    "₹1,494 crore",
+    "45%",
+    "22",
+    "₹983.92 crore"
+   ],
+   "sources": [
+    {
+     "title": "BJP accounted for nearly 45% of election spending (Scroll)",
+     "url": "https://scroll.in/latest/1083708/scroll_in",
+     "quote": "[summary] nearly 45 per cent"
+    },
+    {
+     "title": "BJP accounts for nearly 45 pc of total election spending (ThePrint / PTI)",
+     "url": "https://theprint.in/india/bjp-accounts-for-nearly-45-pc-of-total-election-spending-in-2024-lok-sabha-polls-adr/2664597",
+     "quote": "[summary] ADR analysis; publicity Rs 983.92 crore"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Different scope from C39: say which figure is which."
+  },
+  {
+   "id": "C41",
+   "claim": "In its 2023-24 audited accounts the BJP reported spending ₹2,211.69 crore, of which about ₹1,754 crore went on 'election and general propaganda' and ₹591 crore on advertisements.",
+   "status": "reported",
+   "confidence": "high",
+   "figures": [
+    "2023-24",
+    "₹2,211.69 crore",
+    "₹1,754 crore",
+    "₹591 crore"
+   ],
+   "sources": [
+    {
+     "title": "BJP spent Rs 1,754 crore on election, general propaganda in 2023-24 (ADR)",
+     "url": "https://adrindia.org/content/bjp-spent-1754-crore-on-election-general-propaganda-in-2023-24-report",
+     "quote": "[summary] Rs 2,211.69 crore total; Rs 1,754 crore election and general propaganda"
+    },
+    {
+     "title": "BJP richest party with Rs 7,113 crore (Tribune)",
+     "url": "https://www.tribuneindia.com/news/india/bjp-richest-party-with-7113-crore-cong-has-857-cr-shows-ec-data",
+     "quote": "[summary] Rs 591 crore in advertisements: Rs 434.84 crore electronic, Rs 115.62 crore print"
+    }
+   ],
+   "contradictions": [],
+   "notes": ""
+  },
+  {
+   "id": "C42",
+   "claim": "Election Commission data showed the BJP with a fund balance of ₹7,113 crore, against Congress's ₹857 crore.",
+   "status": "reported",
+   "confidence": "high",
+   "figures": [
+    "₹7,113 crore",
+    "₹857 crore"
+   ],
+   "sources": [
+    {
+     "title": "BJP richest party with Rs 7,113 crore, Cong has Rs 857 cr (Tribune)",
+     "url": "https://www.tribuneindia.com/news/india/bjp-richest-party-with-7113-crore-cong-has-857-cr-shows-ec-data",
+     "quote": "[summary] fund balance per EC data"
+    },
+    {
+     "title": "BJP emerges richest party (Free Press Journal)",
+     "url": "https://www.freepressjournal.in/amp/india/bjp-emerges-richest-party-with-7113-crore-fund-balance-congress-reports-857-crore-election-commission-data",
+     "quote": "[summary] Rs 7,113 crore vs Rs 857 crore"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Give the year of the filing on screen."
+  },
+  {
+   "id": "C43",
+   "claim": "No independent body has measured or ranked the size of party IT cells, so 'the world's biggest IT cell' cannot be stated as fact. The BJP's own claims: about 1.2 million social media volunteers (Malviya, as reported), over 50 lakh WhatsApp groups (party leaders, 2024), and 14 to 18 crore party members, which it says makes it the world's largest party.",
+   "status": "reported",
+   "confidence": "medium",
+   "figures": [
+    "1.2 million",
+    "12 lakh",
+    "50 lakh",
+    "14 crore",
+    "18 crore"
+   ],
+   "sources": [
+    {
+     "title": "BJP IT Cell (Wikipedia)",
+     "url": "https://en.wikipedia.org/wiki/BJP_IT_Cell",
+     "quote": "[summary] Malviya reportedly told the Indian Express the party has roughly 1.2 million social media volunteers"
+    },
+    {
+     "title": "BJP IT cell working, 2024 Lok Sabha poll plan explained (Deccan Herald)",
+     "url": "https://www.deccanherald.com/elections/india/bjp-it-cell-working-2024-lok-sabha-poll-plan-explained-assembly-elections-2703566",
+     "quote": "[summary] party leaders: the IT Cell manages over 50 lakh WhatsApp groups"
+    },
+    {
+     "title": "With 14 crore members BJP world's largest party, says Nadda (Tribune)",
+     "url": "https://www.tribuneindia.com/news/india/with-14-crore-members-bjp-worlds-largest-party-says-nadda",
+     "quote": "[summary] 14 crore members, 2 crore active"
+    },
+    {
+     "title": "BJP to launch membership drive (News On Air)",
+     "url": "https://newsonair.gov.in/bjp-to-launch-new-membership-drive-on-september-1-aiming-for-10-crore-new-members",
+     "quote": "[summary] claims over 18 crore members"
+    }
+   ],
+   "contradictions": [
+    "Membership claims fell from 18 crore (2024) to 14 crore (2025) with no explanation; Congress has called the drive enrolment without consent."
+   ],
+   "notes": "Say 'the party says' and 'possibly the largest'. Find the Indian Express original for 1.2 million."
+  },
+  {
+   "id": "C44",
+   "claim": "Reporting on how content is made: Newslaundry found the Uttar Pradesh unit had a 25-member core team plus about 20 designers, technicians and cartoonists making the visuals; in Delhi one official signs off every post and a separate team monitors rival parties. Leaked 'toolkits' have listed ready-made tweets and hashtags for supporters to post at set times.",
+   "status": "reported",
+   "confidence": "medium",
+   "figures": [
+    "25",
+    "20"
+   ],
+   "sources": [
+    {
+     "title": "Delhi BJP's IT cell is trying its best to take on AAP (Newslaundry)",
+     "url": "https://www.newslaundry.com/2020/01/22/delhi-bjps-it-cell-is-trying-its-best-to-take-on-aap-is-it-working",
+     "quote": "[summary] final sign-off on every piece of content; a team monitors AAP and Congress content"
+    },
+    {
+     "title": "Here's what BJP is going to tweet today: toolkit exposed (Telangana Today)",
+     "url": "https://telanganatoday.com/heres-what-bjp-is-going-to-tweet-today-toolkit-for-modis-telangana-visit-exposed",
+     "quote": "[summary] readymade tweets for supporters to post at a predetermined time"
+    },
+    {
+     "title": "Beyond the trend: analysing BJP's social media toolkit in Bengal (The Quint)",
+     "url": "https://www.thequint.com/news/politics/beyond-the-trend-analyzing-bjps-social-media-toolkit-in-bengal",
+     "quote": "[summary] toolkit analysis"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Confirm the UP team figures in the Newslaundry original. Toolkits are used by many parties and campaigns: say so."
+  },
+  {
+   "id": "C45",
+   "claim": "Decode (BOOM) reported in 2024 that Varahe Analytics, a political consultancy working for the BJP, paid young influencers to make reels for a network of proxy pages without labelling them as paid. Asked how much it pays influencers, the BJP declined to say and pointed to rival parties doing the same.",
+   "status": "allegation",
+   "confidence": "medium",
+   "figures": [
+    "2024"
+   ],
+   "sources": [
+    {
+     "title": "BJP, Varahe Analytics, Instagram troll accounts and influencers (BOOM Decode)",
+     "url": "https://www.boomlive.in/decode/bjp-varahe-analytics-instagram-troll-accounts-influencers-youtube-misinformation-elections-india-25181",
+     "quote": "[summary] influencers were not disclosing that this content is paid and sponsored; one influencer confirmed being paid by Varahe Analytics"
+    },
+    {
+     "title": "Indian political parties investing in influencers (AsiaNews / Reuters)",
+     "url": "https://www.asianews.it/news-en/Indian-political-parties-investing-in-influencers-ahead-of-2024-elections-58893.html",
+     "quote": "[summary] the BJP declined to answer and pointed at rival parties"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Ask Varahe Analytics for comment."
+  },
+  {
+   "id": "C46",
+   "claim": "The BJP's influencer outreach spanned 18 states and thousands of creators, according to Newslaundry in 2023. Since August 2026, under the new team, its posts have shifted to fast reels, memes, rap and internet slang.",
+   "status": "reported",
+   "confidence": "medium",
+   "figures": [
+    "18",
+    "2023",
+    "2026"
+   ],
+   "sources": [
+    {
+     "title": "BJP's social media push: outreach spans 18 states, 1000s of influencers (Newslaundry)",
+     "url": "https://www.newslaundry.com/2023/07/31/bjps-social-media-push-outreach-efforts-spans-18-states-1000s-of-influencers",
+     "quote": "[summary] 18 states, thousands of influencers"
+    },
+    {
+     "title": "Rap, memes and internet slang mark BJP's revamped digital outreach (Newslaundry)",
+     "url": "https://www.newslaundry.com/2026/10/26/rap-memes-and-internet-slang-mark-bjps-revamped-digital-outreach",
+     "quote": "[summary] since August, fast-paced reels with trending music, memes and slang",
+     "date": "2026-10-26"
+    }
+   ],
+   "contradictions": [],
+   "notes": ""
+  }
+ ]
+}

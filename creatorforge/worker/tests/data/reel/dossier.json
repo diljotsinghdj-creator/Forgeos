@@ -1,0 +1,40 @@
+{
+ "topic": "Test reel",
+ "researched": "2026-11-10",
+ "method": "pipeline test only (not a film)",
+ "claims": [
+  {
+   "id": "C1",
+   "claim": "UK bank-transfer scam losses were about \u00a3450 million in 2024.",
+   "status": "reported",
+   "confidence": "medium",
+   "figures": [
+    "\u00a3450m",
+    "450",
+    "2024",
+    "\u00a30"
+   ],
+   "sources": [
+    {
+     "title": "UK Finance via Fluxforce",
+     "url": "https://www.fluxforce.ai/statistics/app-fraud-losses-uk-us-eu",
+     "quote": "[summary] about 450.7 million in 2024"
+    }
+   ]
+  },
+  {
+   "id": "C2",
+   "claim": "Scam calls often follow a sequence of small agreements.",
+   "status": "interpretation",
+   "confidence": "medium",
+   "figures": [],
+   "sources": [
+    {
+     "title": "Freedman & Fraser 1966",
+     "url": "https://doi.org/10.1037/h0023552",
+     "quote": "[summary] foot-in-the-door"
+    }
+   ]
+  }
+ ]
+}

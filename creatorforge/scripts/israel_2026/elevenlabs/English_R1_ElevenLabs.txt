@@ -1,0 +1,74 @@
+# English R1 - English narration for ElevenLabs (33 lines, 3 chunks)
+# Generate each chunk separately (paste the text between the CHUNK lines, not these # lines),
+# then join the chunk MP3s into R1.mp3 - see README_ELEVENLABS.txt.
+
+===== CHUNK 1 of 3 (2717 characters) =====
+On the twenty-seventh of October, Israel held an election. Almost four in five voters showed up. It was the highest turnout in a generation.
+<break time="0.6s" />
+And when the counting stopped, the country had produced a parliament with a hundred and twenty seats, and no government.
+<break time="0.7s" />
+To govern Israel you need sixty-one seats. That's it. That's the whole game. One more than half.
+<break time="0.8s" />
+The bloc led by Prime Minister Benjamin Netanyahu got fifty-three. The bloc led by former army chief Gadi Eisenkot got forty-eight. And the Arab-led parties got nineteen.
+<break time="0.8s" />
+Add any two of those numbers together and you get a majority. Ask any two of those groups to sit together, and you get a lecture.
+<break time="0.7s" />
+So Israel did what Israel does best. It voted, loudly, passionately, and in enormous numbers, for an argument.
+<break time="0.6s" />
+This is a film about that argument. Who won. Who lost. Who says they were robbed. And who is still waiting for anyone in that building to talk about them.
+<break time="0.6s" />
+Think of it as a musical chairs game where the music stopped, and everyone sat down, and nobody got a chair, and they're all now insisting the chairs were rigged.
+<break time="0.8s" />
+We'll keep coming back to one seat in this film. Not a real seat. A missing one. Seat number sixty-one. Every camp in Israel wants it. Nobody can find it. By the end, you'll know exactly why.
+<break time="0.7s" />
+A note before we start. Everything you'll hear is sourced. Allegations are labelled as allegations. Illustrations are labelled as illustrations. And where the facts are still moving, we'll tell you.
+<break time="1.5s" />
+Let's start with how we got here. This election wasn't supposed to be on the twenty-seventh of October. It was supposed to be whenever the government ran out of road.
+<break time="0.6s" />
+It ran out of road over one issue more than any other: whether ultra-Orthodox, or Haredi, young men should be drafted into the army like everyone else.
+<break time="0.8s" />
+The Haredi parties walked out of the government in 2025 when no lasting legal exemption appeared. The Knesset dissolved in July 2026, and the election landed on the last legal date available.
+<break time="0.6s" />
+The main fight was simple to describe. On one side, Netanyahu's Likud and its partners: the religious parties and the hard right. On the other, a new party called Yashar, led by Gadi Eisenkot, a former chief of staff of the army.
+<break time="0.6s" />
+Eisenkot was joined by a merged list called Beyachad, meaning Together, built by two former prime ministers, Naftali Bennett and Yair Lapid, with Bennett at the top.
+<break time="0.6s" />
+
+===== CHUNK 2 of 3 (2574 characters) =====
+Also on that side: Avigdor Lieberman's Yisrael Beytenu, and the Democrats, led by Yair Golan, the merged home of what used to be Labor and Meretz.
+<break time="0.6s" />
+And then, outside both camps, the Arab-led parties: the revived Joint List, and Ra'am, the Islamist party led by Mansour Abbas, which in 2021 became the first Arab party to sit in an Israeli governing coalition.
+<break time="0.8s" />
+Here's the final count, as the Central Elections Committee reported it. Likud, twenty-seven. Yashar, twenty-one. Beyachad, twelve. The Joint List, eleven.
+<break time="0.6s" />
+United Torah Judaism, seven. Otzma Yehudit, seven. Yisrael Beytenu, seven. Ra'am, eight. The Democrats, eight. Shas, six. Religious Zionism, six.
+<break time="0.6s" />
+Shas, the party that has been a fixture of Israeli governments for decades, hit what reports called a historic low. And one list you might expect to sail in did not.
+<break time="0.7s" />
+A party of army reservists, people who had spent months of the war in uniform, got two point seven percent. The threshold is three point two five. So the reservists are out of the Knesset, which, after the last three years, they may honestly consider a holiday.
+<break time="0.8s" />
+The headline number on the Arab side was historic. Nineteen seats for Arab-led parties, more than the previous record of fifteen, on a sharp rise in Arab turnout.
+<break time="0.8s" />
+And that is where the night turned ugly. Because within a day, Netanyahu's party had an explanation for why it hadn't won.
+<break time="1.0s" />
+Likud said the election had been, in its word, stolen, by Arab parties. It alleged bribery, intimidation and forgery at Arab polling stations, and said it was handing hundreds of testimonies to the police, the Shin Bet and the election committee.
+<break time="0.8s" />
+That is an allegation. Here is what is on the record so far. A senior election committee official called the fraud claims baseless. Police said there was no evidence the election was stolen.
+<break time="0.6s" />
+The election committee chair, Justice Noam Sohlberg, did ask the Shin Bet to look at reports of possible foreign, reportedly Qatari, money in the campaign. He also said he could not verify that material, and the Shin Bet described its probe as limited. Qatar denies it.
+<break time="0.6s" />
+Right-wing lawmakers then wrote to Sohlberg asking for every vote cast for Ra'am to be disqualified. Every vote. For a party that won eight seats. Which is one way of solving a maths problem: delete the people who make it hard.
+<break time="0.8s" />
+
+===== CHUNK 3 of 3 (1399 characters) =====
+Arab party leaders called the campaign against them racist. And whatever you think of the parties themselves, the arithmetic of the claim is worth saying out loud. Arab citizens are about a fifth of Israel's citizens, and they voted.
+<break time="0.6s" />
+So what happens now? In Israel, voters don't pick a prime minister. Parties do, through one man who mostly cuts ribbons: President Isaac Herzog.
+<break time="0.7s" />
+The committee hands Herzog the results in early November. He then hosts every party, asks each one who it recommends, and within seven days gives the mandate to whoever he thinks has the best chance of forming a government.
+<break time="0.6s" />
+That person gets twenty-eight days, plus a possible extension of up to fourteen. If they fail, Herzog can try someone else. If that fails, any Knesset member who can gather sixty-one signatures gets a shot. And if nobody can, Israel goes back to the polls.
+<break time="0.8s" />
+Both camps reportedly expect Eisenkot to get the first try. Herzog has urged everyone to keep an open mind and avoid yet another election. Israel has heard that before. It has held five elections between 2019 and 2022 alone.
+<break time="0.7s" />
+And until a new government is sworn in, the old one stays. Benjamin Netanyahu remains prime minister, at the head of a caretaker government. Which brings us to the most durable thing in Israeli politics.

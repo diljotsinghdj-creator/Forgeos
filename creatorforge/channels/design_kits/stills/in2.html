@@ -1,0 +1,31 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="fonts.css"><link rel="stylesheet" href="in_common.css"><style>
+.sheet{position:absolute;left:180px;top:90px;width:1000px;height:900px;background:#F4EEDD;transform:rotate(-2deg);box-shadow:16px 20px 0 rgba(0,0,0,.18);padding:40px 50px;box-sizing:border-box}
+.row{position:relative;display:flex;align-items:center;gap:28px;height:68px;border-bottom:2px dotted #b9ab88;font:700 22px Mono;color:#222}
+.row .bar{display:inline-block;height:20px;background:#2a2a2a}
+.row .code{margin-left:auto;font:400 20px Caveat;font-weight:700;color:#B3261E;font-size:30px}
+.row.s:after{content:"";position:absolute;left:-10px;right:120px;top:31px;height:6px;background:#B3261E;opacity:.85;transform:rotate(-.6deg);border-radius:3px}
+</style></head><body>
+<div class="ledger"></div><svg width="0" height="0" style="position:absolute"><filter id="grainf"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="3" seed="9"/><feColorMatrix values="0 0 0 0 .3  0 0 0 0 .22  0 0 0 0 .12  0 0 0 .45 0"/></filter><filter id="rough"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="2" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -1.6 1.25" result="m"/><feComposite in="SourceGraphic" in2="m" operator="in"/></filter></svg><svg class="grain" width="1920" height="1080"><rect width="1920" height="1080" filter="url(#grainf)"/></svg>
+<div class="sheet">
+  <div style="font:700 22px Mono;letter-spacing:4px;color:#555;margin-bottom:14px"><span style="background:#111;color:#F4EEDD;padding:2px 8px;letter-spacing:3px">ILLUSTRATIVE</span>&nbsp; SPECIMEN ROLL · NAMES WITHHELD</div>
+  <div class="row s"><span>112/0341</span><span class="bar" style="width:240px"></span><span class="bar" style="width:195px"></span><span>35</span><span class="code">SHIFTED</span></div>
+<div class="row s"><span>112/0342</span><span class="bar" style="width:257px"></span><span class="bar" style="width:197px"></span><span>79</span><span class="code">ABSENT</span></div>
+<div class="row"><span>112/0343</span><span class="bar" style="width:290px"></span><span class="bar" style="width:194px"></span><span>27</span><span class="code"></span></div>
+<div class="row s"><span>112/0344</span><span class="bar" style="width:287px"></span><span class="bar" style="width:121px"></span><span>79</span><span class="code">SHIFTED</span></div>
+<div class="row s"><span>112/0345</span><span class="bar" style="width:243px"></span><span class="bar" style="width:190px"></span><span>48</span><span class="code">ABSENT</span></div>
+<div class="row s"><span>112/0346</span><span class="bar" style="width:234px"></span><span class="bar" style="width:180px"></span><span>79</span><span class="code">ABSENT</span></div>
+<div class="row"><span>112/0347</span><span class="bar" style="width:260px"></span><span class="bar" style="width:139px"></span><span>48</span><span class="code"></span></div>
+<div class="row s"><span>112/0348</span><span class="bar" style="width:291px"></span><span class="bar" style="width:139px"></span><span>68</span><span class="code">ABSENT</span></div>
+<div class="row s"><span>112/0349</span><span class="bar" style="width:304px"></span><span class="bar" style="width:121px"></span><span>27</span><span class="code">ABSENT</span></div>
+<div class="row"><span>112/0350</span><span class="bar" style="width:230px"></span><span class="bar" style="width:195px"></span><span>24</span><span class="code"></span></div>
+</div>
+<div class="tape" style="left:150px;top:70px;transform:rotate(-30deg)"></div>
+<div style="position:absolute;left:1240px;top:150px">
+  <div style="font:400 250px Anton;line-height:.9;color:#111">71.5<span style="font-size:140px">%</span></div>
+  <div class="type" style="position:static;font-size:26px;line-height:1.5;margin-top:18px;width:600px">of the names removed were marked <span style="background:#FFDD33;padding:0 6px">absent, shifted</span> or "other"</div>
+</div>
+<div class="stamp" style="left:1260px;top:640px;font-size:58px;transform:rotate(6deg)">absent / shifted</div>
+
+<div style="position:absolute;left:1270px;top:820px;font:700 46px Caveat;color:#B3261E;transform:rotate(-4deg)">about 7 in 10 of those removed</div>
+<div class="credit">SPECIMEN ROLL, NAMES WITHHELD · DATA: ELECTION COMMISSION, VIA DECCAN HERALD, 30 SEPT 2026</div>
+</body></html>

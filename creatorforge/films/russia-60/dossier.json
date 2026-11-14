@@ -1,0 +1,20 @@
+{"film": "russia-60", "accessed": "2026-11-13", "claims": [
+ {"id": "R1", "claim": "IMF chart: Russia's and Italy's nominal GDP lines have nearly met; 2026 projection Russia $2.86 trillion, Italy $2.70 trillion", "status": "verified",
+  "sources": ["IMF World Economic Outlook, October 2026, GDP current prices (NGDPD), DataMapper https://www.imf.org/external/datamapper/NGDPD@WEO/RUS/ITA (screenshot 2026-11-13)", "IMF DataMapper API NGDPD (RUS 2861.156, ITA 2701.737 bn USD, 2026)"]},
+ {"id": "R2", "claim": "Russia is the largest country on Earth, about 17.1 million km2 (17,098,242 km2)", "status": "verified",
+  "sources": ["CIA World Factbook, Russia, Area (public domain; page blocks automated access, figure via Factbook mirrors and Fondation Robert Schuman country sheet)", "Britannica: Russia"]},
+ {"id": "R3", "claim": "Russia has 11 time zones, Kaliningrad UTC+2 to Kamchatka UTC+12", "status": "verified", "sources": ["Russian federal law on the calculation of time (2011, amended 2014)", "timeanddate.com"]},
+ {"id": "R4", "claim": "Italy would fit inside Russia about 57 times", "status": "computed", "method": "17,098,242 / 301,340 km2 (CIA Factbook Italy total area) = 56.7"},
+ {"id": "R5", "claim": "IMF puts both economies under 3 trillion dollars in 2026", "status": "verified", "sources": ["IMF WEO Oct 2026 (as R1)"]},
+ {"id": "R6", "claim": "Population 2026: Russia about 143 million, Italy about 59 million", "status": "verified", "sources": ["IMF WEO Oct 2026, LP: RUS 143.394 m, ITA 58.879 m"]},
+ {"id": "R7", "claim": "GDP per person 2026: Russia about $20,000, Italy about $46,000", "status": "verified", "sources": ["IMF WEO Oct 2026, NGDPDPC: RUS 19,953, ITA 45,886"]},
+ {"id": "R8", "claim": "By purchasing power parity, Russia ranks fourth in the world (after China, the US, India)", "status": "verified", "sources": ["IMF WEO Oct 2026, PPPGDP 2026: CHN 44,555; USA 32,642; IND 19,193; RUS 7,543; JPN 7,324 bn intl $"]},
+ {"id": "R9", "claim": "Vladimir Putin has led Russia for more than 25 years as president or prime minister (acting president from 31 Dec 1999; prime minister 2008-2012)", "status": "verified", "sources": ["Kremlin.ru biography", "Britannica: Vladimir Putin"]},
+ {"id": "R10", "claim": "Oil and gas: about 30% of federal budget revenue in 2024 (11.131 of 36.707 trillion roubles); 23% in 2025 according to Finance Minister Anton Siluanov (8.48 trillion roubles)", "status": "verified",
+  "sources": ["Interfax, 21 Jan 2025, citing the Finance Ministry (2024 totals)", "TASS: Oil and gas revenues of Russian budget down 23.8% in 2025 (ministry)", "Reuters via oilandgas360: revenue falls 24% to lowest since 2020", "Siluanov, quoted by TASS/Interfax: share 23% in 2025"]},
+ {"id": "R11", "claim": "Russia's military spending rose 5.9% in 2025 to an estimated $190 billion, 7.5% of GDP; the classified residual was about 79% of the National Defence budget", "status": "verified",
+  "sources": ["SIPRI press release, 27 April 2026: Global military spending rise continues...", "SIPRI Fact Sheet: Trends in World Military Expenditure, 2025"]}
+], "images": [
+ {"file": "assets/imf_trend.png", "what": "IMF DataMapper trend chart, Russia and Italy, GDP current prices", "credit": "International Monetary Fund, World Economic Outlook October 2026 (screenshot, used as evidence)"},
+ {"file": "assets/putin_2025-09-02.jpg", "what": "Vladimir Putin, 2 September 2025 (meeting with Aleksandar Vucic)", "credit": "Kremlin.ru, CC BY 4.0, via Wikimedia Commons", "url": "http://en.kremlin.ru/events/president/news/77905"}
+]}

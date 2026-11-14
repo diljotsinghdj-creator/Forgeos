@@ -1,0 +1,132 @@
+{
+ "topic": "The Netherlands below the sea: a 15-second sample",
+ "researched": "2026-11-11",
+ "method": "Well-documented figures; links not re-opened from this container (blocked here). Terrain from Mapzen elevation tiles (SRTM-based, about 30-90 m cells, a few metres of vertical error): the flooded areas are approximate, not the official AHN map. Check before publishing.",
+ "claims": [
+  {
+   "id": "C1",
+   "claim": "In the North Sea flood of 31 January to 1 February 1953, 1,836 people died in the Netherlands.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "1953",
+    "1,836",
+    "1836",
+    "1",
+    "February"
+   ],
+   "sources": [
+    {
+     "title": "North Sea flood of 1953 (Wikipedia)",
+     "url": "https://en.wikipedia.org/wiki/North_Sea_flood_of_1953",
+     "quote": "[summary] 1,836 deaths in the Netherlands"
+    },
+    {
+     "title": "Watersnoodmuseum (the national flood museum, Ouwerkerk)",
+     "url": "https://watersnoodmuseum.nl/",
+     "quote": "[summary] 1,836 victims"
+    }
+   ],
+   "contradictions": [],
+   "notes": "More died in England, Belgium and at sea; the figure here is the Netherlands only."
+  },
+  {
+   "id": "C2",
+   "claim": "About a quarter (26%) of the Netherlands lies below sea level.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "26%",
+    "quarter",
+    "26",
+    "51.9",
+    "4.45",
+    "140",
+    "7",
+    "52.2",
+    "5.3",
+    "260",
+    "0"
+   ],
+   "sources": [
+    {
+     "title": "PBL Netherlands Environmental Assessment Agency (2010): 26% below sea level, 29% prone to river flooding",
+     "url": "https://www.pbl.nl/",
+     "quote": "[summary] 26% of the country lies below sea level"
+    },
+    {
+     "title": "Government of the Netherlands: water management",
+     "url": "https://www.government.nl/topics/water-management",
+     "quote": "[summary] about a quarter below sea level"
+    }
+   ],
+   "contradictions": [
+    "Popular sources sometimes say 'a third'; PBL's 26% is the official figure."
+   ],
+   "notes": "Map frame: centred at 52.2N 5.3E, 260 km across (shown on screen). The water starts at -7 m, just below the lowest point, Zuidplaspolder (-6.76 m NAP); the gauge reads the level as it rises."
+  },
+  {
+   "id": "C3",
+   "claim": "In 1953 the sea reached 4.55 m above NAP (Dutch mean sea level) at Vlissingen, the highest level recorded there.",
+   "status": "verified",
+   "confidence": "medium",
+   "figures": [
+    "4.55",
+    "four",
+    "half",
+    "1953",
+    "51.9",
+    "4.45",
+    "140",
+    "7",
+    "52.2",
+    "5.3",
+    "260",
+    "0"
+   ],
+   "sources": [
+    {
+     "title": "Rijkswaterstaat: Watersnood 1953",
+     "url": "https://www.rijkswaterstaat.nl/",
+     "quote": "[summary] 4.55 m +NAP at Vlissingen"
+    },
+    {
+     "title": "North Sea flood of 1953 (Wikipedia)",
+     "url": "https://en.wikipedia.org/wiki/North_Sea_flood_of_1953",
+     "quote": "[summary] record water level at Vlissingen"
+    }
+   ],
+   "contradictions": [],
+   "notes": "The peak varied along the coast; the film applies the Vlissingen figure evenly and says so (illustrative)."
+  },
+  {
+   "id": "C4",
+   "claim": "On the night of 31 January to 1 February 1953, a severe storm drove a surge south down the North Sea from north of Scotland onto the coasts of England, the Netherlands and Belgium.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "1953",
+    "31",
+    "January",
+    "59.3",
+    "0.5",
+    "51.6",
+    "3.6"
+   ],
+   "sources": [
+    {
+     "title": "Met Office: the 1953 North Sea flood",
+     "url": "https://www.metoffice.gov.uk/weather/learn-about/weather/case-studies/1953-flood",
+     "quote": "[summary] the storm surge travelled down the North Sea"
+    },
+    {
+     "title": "North Sea flood of 1953 (Wikipedia)",
+     "url": "https://en.wikipedia.org/wiki/North_Sea_flood_of_1953",
+     "quote": "[summary] storm north of Scotland, surge moved south"
+    }
+   ],
+   "contradictions": [],
+   "notes": "The arrow from north of Scotland (59.3N 0.5E) to Zeeland (51.6N 3.6E) shows the direction only (illustrative)."
+  }
+ ]
+}

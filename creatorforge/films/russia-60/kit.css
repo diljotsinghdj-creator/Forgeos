@@ -1,0 +1,20 @@
+@font-face{font-family:Archivo;src:url(file:///home/user/Forgeos/creatorforge/worker/creatorforge_worker/media/vendor/fonts/archivo-black-latin-400-normal.woff2)}
+@font-face{font-family:Bebas;src:url(file:///home/user/Forgeos/creatorforge/worker/creatorforge_worker/media/vendor/fonts/bebas-neue-latin-400-normal.woff2)}
+@font-face{font-family:Mono;src:url(file:///home/user/Forgeos/creatorforge/worker/creatorforge_worker/media/vendor/fonts/jetbrains-mono-latin-700-normal.woff2)}
+@font-face{font-family:Kalam;src:url(file:///home/user/Forgeos/creatorforge/worker/creatorforge_worker/media/vendor/fonts/kalam-latin-700-normal.woff2)}
+@font-face{font-family:Inter;src:url(file:///home/user/Forgeos/creatorforge/worker/creatorforge_worker/media/vendor/fonts/inter-latin-600-normal.woff2)}
+:root{--paper:#ECE6DA;--ink:#15171C;--red:#C8341F;--blue:#2F6DB5;--steel:#6E7B85;--sig:#FFDD33}
+body{margin:0;width:1920px;height:1080px;overflow:hidden;background:var(--paper);font-family:Inter}
+#cam{position:absolute;inset:0;transform-origin:50% 50%}
+.el{position:absolute}
+.h{font-family:Archivo;text-transform:uppercase;letter-spacing:-3px;line-height:.88;color:var(--ink)}
+.lab{font-family:Bebas;letter-spacing:5px;color:var(--ink);white-space:nowrap}
+.mono{font-family:Mono;color:var(--ink);white-space:nowrap}
+.hand{font-family:Kalam;color:var(--red);white-space:nowrap}
+.print{background:#fff;padding:14px;box-shadow:14px 16px 0 rgba(21,23,28,.85)}
+.tape{position:absolute;width:150px;height:40px;background:rgba(255,221,51,.8)}
+.stamp{font-family:Bebas;color:var(--red);border:6px solid var(--red);padding:2px 20px;letter-spacing:6px;mix-blend-mode:multiply}
+.hl{background:linear-gradient(transparent 52%,var(--sig) 52%,var(--sig) 94%,transparent 94%);background-size:var(--hl,100%) 100%;background-repeat:no-repeat}
+.credit{position:absolute;left:28px;bottom:16px;font:600 13px Inter;color:#6d675c;letter-spacing:1px;text-transform:uppercase}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.45}
+.dots{background-image:radial-gradient(rgba(21,23,28,.16) 1.6px,transparent 1.8px);background-size:14px 14px}

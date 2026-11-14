@@ -1,0 +1,74 @@
+[
+ {
+  "id": "s01",
+  "text": "August fifteenth, 1914. The first ship crosses the Panama Canal.",
+  "claim": "P1",
+  "sec": 5.2
+ },
+ {
+  "id": "s02",
+  "text": "Eighty-two kilometres, from the Caribbean to the Pacific.",
+  "claim": "P2",
+  "sec": 3.95
+ },
+ {
+  "id": "s03",
+  "text": "But ships don't sail across Panama. They climb it.",
+  "claim": "P3",
+  "sec": 3.19
+ },
+ {
+  "id": "s04",
+  "text": "Locks lift them twenty-six metres, up to a lake.",
+  "claim": "P3",
+  "sec": 3.32
+ },
+ {
+  "id": "s05",
+  "text": "Gatun Lake. A man-made lake of fresh water.",
+  "claim": "P3",
+  "sec": 3.2
+ },
+ {
+  "id": "s06",
+  "text": "Every ship that crosses uses about two hundred million litres of it.",
+  "claim": "P4",
+  "sec": 4.46
+ },
+ {
+  "id": "s07",
+  "text": "That's roughly eighty Olympic pools. Per ship.",
+  "claim": "P5",
+  "sec": 2.98
+ },
+ {
+  "id": "s08",
+  "text": "Then, in October 2023, the canal's watershed had its driest October on record.",
+  "claim": "P6",
+  "sec": 6.33
+ },
+ {
+  "id": "s09",
+  "text": "Normally, thirty-six ships cross each day. By December, twenty-two.",
+  "claim": "P7",
+  "sec": 4.65
+ },
+ {
+  "id": "s10",
+  "text": "The canal authority said it was the first time it had ever had to limit crossings.",
+  "claim": "P8",
+  "sec": 5.21
+ },
+ {
+  "id": "s11",
+  "text": "From January 2024, it allowed twenty-four.",
+  "claim": "P7",
+  "sec": 3.76
+ },
+ {
+  "id": "s12",
+  "text": "A shortcut for the world's ships, filled by Panama's rain.",
+  "claim": "P3",
+  "sec": 3.88
+ }
+]

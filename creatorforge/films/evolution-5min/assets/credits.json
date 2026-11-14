@@ -1,0 +1,92 @@
+{
+ "darwin_1837": {
+  "file": "darwin_1837.jpg",
+  "title": "File:Darwin Tree 1837.png",
+  "license": "Public domain",
+  "artist": "Charles Darwin"
+ },
+ "haeckel_1874": {
+  "file": "haeckel_1874.jpg",
+  "title": "File:Pedigree of man (Haeckel 1874).jpg",
+  "license": "Public domain",
+  "artist": "<a href=\"https://en.wikipedia.org/wiki/en:Ernst_Haeckel\" class=\"extiw\" titl",
+  "page": "https://commons.wikimedia.org/wiki/Pedigree_of_man_%28Haeckel_1874%29.jpg"
+ },
+ "toumai": {
+  "file": "toumai.jpg",
+  "title": "File:Sahelanthropus tchadensis skull - Naturmuseum Senckenberg - DSC02104.JPG",
+  "license": "CC0",
+  "artist": "Daderot",
+  "page": "https://commons.wikimedia.org/wiki/Sahelanthropus_tchadensis_skull_-_Naturmuseum_Senckenberg_-_DSC02104.JPG"
+ },
+ "lucy": {
+  "file": "lucy.jpg",
+  "title": "File:Reconstruction of the fossil skeleton of \"Lucy\" the Australopithecus afarensis.jpg",
+  "license": "CC BY 2.5",
+  "artist": "120",
+  "page": "https://commons.wikimedia.org/wiki/Reconstruction_of_the_fossil_skeleton_of_%22Lucy%22_the_Australopithecus_afarensis.jpg"
+ },
+ "laetoli": {
+  "file": "laetoli.png",
+  "title": "File:Laetoli footprints.png",
+  "license": "CC BY 2.5",
+  "artist": "Raichlen DA, Gordon AD, Harcourt-Smith WEH, Foster AD, Haas WR Jr",
+  "page": "https://commons.wikimedia.org/wiki/Laetoli_footprints.png"
+ },
+ "naledi": {
+  "file": "naledi.jpg",
+  "title": "File:Homo naledi skeletal specimens (cropped).jpg",
+  "license": "CC BY 4.0",
+  "artist": "Lee Roger Berger research team",
+  "page": "https://commons.wikimedia.org/wiki/Homo_naledi_skeletal_specimens_%28cropped%29.jpg"
+ },
+ "flores": {
+  "file": "flores.jpg",
+  "title": "File:LB1 skull.jpg",
+  "license": "CC BY-SA 2.0",
+  "artist": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/people/2918",
+  "page": "https://commons.wikimedia.org/wiki/LB1_skull.jpg"
+ },
+ "neander": {
+  "file": "neander.jpg",
+  "title": "File:Homo sapiens neanderthalensis.jpg",
+  "license": "CC BY 2.5",
+  "artist": "<a href=\"//commons.wikimedia.org/wiki/User:Luna04~commonswiki\" title=\"User:Luna0",
+  "page": "https://commons.wikimedia.org/wiki/Homo_sapiens_neanderthalensis.jpg"
+ },
+ "denisova": {
+  "file": "denisova.jpg",
+  "title": "File:Denisova Phalanx distalis.jpg",
+  "license": "CC BY-SA 3.0",
+  "artist": "T",
+  "page": "https://commons.wikimedia.org/wiki/Denisova_Phalanx_distalis.jpg"
+ },
+ "turkana": {
+  "file": "turkana.jpg",
+  "title": "File:Em - Homo erectus, Turkana boy - 1.jpg",
+  "license": "CC BY-SA 4.0",
+  "artist": "Em\u0151ke D\u00e9nes",
+  "page": "https://commons.wikimedia.org/wiki/Em_-_Homo_erectus%2C_Turkana_boy_-_1.jpg"
+ },
+ "irhoud": {
+  "file": "irhoud.jpg",
+  "title": "File:Jebel Irhoud 1. Homo Sapiens.jpg",
+  "license": "CC BY-SA 2.0",
+  "artist": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.flickr.com/people/1440",
+  "page": "https://commons.wikimedia.org/wiki/Jebel_Irhoud_1._Homo_Sapiens.jpg"
+ },
+ "boisei": {
+  "file": "boisei.jpg",
+  "title": "File:Australophithecus boisei (cast), Olduvai Gorge - Springfield Science Museum - Springfield, MA - DSC03368.JPG",
+  "license": "CC0",
+  "artist": "Daderot",
+  "page": "https://commons.wikimedia.org/wiki/Australophithecus_boisei_%28cast%29%2C_Olduvai_Gorge_-_Springfield_Science_Museum_-_Springfield%2C_MA_-_DSC03368.JPG"
+ },
+ "skulls": {
+  "file": "skulls.jpg",
+  "title": "File:Replica skulls of Homo neanderthalensis & Homo sapiens, Lee Kong Chian Natural History Museum (101936).jpg",
+  "license": "CC BY-SA 4.0",
+  "artist": "<a href=\"https://www.wikidata.org/wiki/Q28709819\" class=\"extiw\" title=\"d:Q2",
+  "page": "https://commons.wikimedia.org/wiki/Replica_skulls_of_Homo_neanderthalensis_%26_Homo_sapiens%2C_Lee_Kong_Chian_Natural_History_Museum_%28101936%29.jpg"
+ }
+}

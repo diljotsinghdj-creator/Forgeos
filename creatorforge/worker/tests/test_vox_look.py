@@ -1,0 +1,571 @@
+"""The Vox look: real cut-out photos (halftone, paper edge), the Hero scene, one accent colour, the shared paper,
+grain and fonts in every animated graphic."""
+import subprocess
+from pathlib import Path
+
+import pytest
+
+from creatorforge_worker import director, vox_director
+from creatorforge_worker.media import cutouts, motion, vox
+
+
+def _object_on_white(path: Path) -> Path:
+    from PIL import Image, ImageDraw
+    im = Image.new("RGB", (600, 500), (252, 252, 250))
+    d = ImageDraw.Draw(im)
+    d.rectangle((220, 120, 380, 300), fill=(90, 60, 40))           # a gavel-ish head
+    d.rectangle((285, 300, 315, 450), fill=(120, 80, 50))          # its handle
+    im.save(path)
+    return path
+
+
+def test_a_photo_on_plain_background_becomes_a_halftone_cutout(tmp_path):
+    out = cutouts.make(_object_on_white(tmp_path / "raw.png"), tmp_path / "gavel.png")
+    assert out and out.is_file()
+    from PIL import Image
+    im = Image.open(out)
+    assert im.mode == "RGBA"
+    assert im.getpixel((0, 0))[3] == 0                    # background removed
+    px = [im.getpixel((x, y)) for x in range(im.width // 2 - 20, im.width // 2 + 20) for y in range(im.height // 3, im.height // 3 + 30)]
+    assert all(abs(p[0] - p[1]) < 6 and abs(p[1] - p[2]) < 8 for p in px)   # printed in black and white
+
+
+def test_scene_words_resolve_to_library_objects():
+    assert cutouts.resolve("money") == "cash"
+    assert cutouts.resolve("Court") == "gavel"
+    assert cutouts.resolve("person:Narendra Modi") == "person:Narendra Modi"
+    assert cutouts.resolve("zzzz") is None
+
+
+def test_no_photo_and_no_network_means_no_cutout_not_an_error(tmp_path, monkeypatch):
+    monkeypatch.setenv("CF_CUTOUT_FETCH", "0")
+    assert cutouts.get("gavel", tmp_path) is None
+
+
+def test_hero_lines_parse_and_validate():
+    p = vox.plan_for("hero", "gavel + crowd | The verdict | 2019 · Supreme Court | five judges | style: disc")
+    assert p["subjects"] == ["gavel", "crowd"] and p["headline"] == "The verdict"
+    assert p["tags"] == ["2019", "Supreme Court"] and p["note"] == "five judges" and p["layout"] == "disc"
+    assert vox.plan_for("hero", "") is None
+    assert "hero" in director.FULL_FRAME
+    assert vox_director.valid("Hero: gavel | The verdict") == ""
+    assert "7 words" in vox_director.valid("Hero: gavel | one two three four five six seven eight")
+
+
+def test_accent_colour_and_theme_tint_travel_together():
+    assert vox.accent_of("editorial~2@red") == vox.ACCENTS["red"]
+    assert vox.accent_of("editorial") == vox.ACCENTS["yellow"]
+    assert vox.accent_of("editorial@#123456") == "#123456"
+    assert motion.split_theme("editorial~1@blue")[1] == motion.PALETTE[1]
+
+
+def test_rules_give_objects_a_hero_scene():
+    g = vox_director.rule_graphic("आलोचकों ने कहा, ये झूठ फैलाने की खुली छूट थी।")
+    assert g.startswith("Hero: mask")
+
+
+@pytest.mark.skipif(not motion.enabled(), reason="needs Chromium + Playwright")
+def test_a_hero_scene_renders_with_a_photo_and_with_only_an_icon(tmp_path, monkeypatch):
+    monkeypatch.setenv("CF_CUTOUT_FETCH", "0")
+    lib = tmp_path / "lib"
+    cutouts.make(_object_on_white(tmp_path / "raw.png"), lib / "gavel.png")
+    for spec in ("gavel | The verdict | 2019 · Supreme Court | five judges", "ballot box | Vote | style: word"):
+        out = tmp_path / f"{len(spec)}.mp4"
+        vox.render("hero", spec, "editorial@red", 640, 360, 2.0, out, tmp_path / "w", lib=lib, fetch=False, fps=12)
+        d = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(out)],
+                                 capture_output=True, text=True).stdout)
+        assert 1.8 < d < 2.3
+
+
+@pytest.mark.skipif(not motion.enabled(), reason="needs Chromium + Playwright")
+def test_a_video_with_hero_lines_renders_them(cfg, monkeypatch):
+    from fastapi.testclient import TestClient
+    from creatorforge_worker.api import create_app
+    from .conftest import wait_for
+    monkeypatch.setenv("CF_CUTOUT_FETCH", "0")
+    script = ("एक ही मैसेज, लाखों ग्रुप्स में।\nHero: smartphone + crowd | One message | 8 AM · every day\n\n"
+              "और अदालत ने फ़ैसला सुनाया।\nHero: gavel | The verdict | style: word\n")
+    with TestClient(create_app(cfg)) as c:
+        jid = c.post("/v1/productions", json={"script": script, "style": "editorial", "vox_graphics": True,
+                                              "template": "youtube_longform"}).json()["id"]
+        job = wait_for(lambda: (lambda j: j if j["status"] in ("READY", "FAILED") else None)(
+            c.get(f"/v1/productions/{jid}").json()), timeout=600)
+        assert job["status"] == "READY", job
+        assert len(list((cfg.jobs_dir / jid / "work").glob("hero_*.mp4"))) == 2
+
+
+def test_round_two_scenes_parse_and_validate():
+    assert vox.plan_for("pinmap", "Kota | A speech | HT, Sep 2018")["pin"]
+    assert vox.plan_for("pinmap", "Atlantis | x") is None
+    pb = vox.plan_for("pinboard", "gavel · 20 SEP 2018 · SOLVED | The case")
+    assert [i["kind"] for i in pb["items"]] == ["photo", "date", "word"] and pb["tone"] == "kraft"
+    assert vox.plan_for("clipping", "Rupee falls 9% | The Hindu, Jan 2024 | cash | 02")["number"] == "02"
+    assert vox.plan_for("bignumber", "1984 | television | War is peace")["number"] == "1984"
+    assert vox.plan_for("bignumber", "no digits | tv") is None
+    assert vox.plan_for("reveal", "a · b · c | Doc | b")["rows"] == ["a", "b", "c"]
+    assert vox.plan_for("opener", "tv | He noticed *something*")["headline"]
+    for k in vox.KINDS:
+        assert k in director.FULL_FRAME
+    assert vox_director.valid("Pinmap: Atlantis | x") == "place not found on the map"
+
+
+@pytest.mark.skipif(not motion.enabled(), reason="needs Chromium + Playwright")
+@pytest.mark.parametrize("kind,spec", [
+    ("desk", "documents + pen | Methylated DNA | 1 in 3"),
+    ("pinboard", "gavel · old phone · 20 SEP 2018 · SOLVED | The case"),
+    ("opener", "television | He noticed *something strange* | Chapter 2"),
+    ("reveal", "Fall 2019 · term gpa 3.33 · Dean's list | The transcript | gpa 3.33"),
+    ("clipping", "Rupee falls 9% | The Hindu, Jan 2024 | cash | 02"),
+    ("pinmap", "Kota | We can make any message viral | Hindustan Times, Sep 2018"),
+    ("bignumber", "1984 | television | War is peace | George Orwell")])
+def test_every_round_two_scene_renders(kind, spec, tmp_path, monkeypatch):
+    monkeypatch.setenv("CF_CUTOUT_FETCH", "0")
+    out = tmp_path / f"{kind}.mp4"
+    vox.render(kind, spec, "editorial@red", 640, 360, 2.0, out, tmp_path / "w", lib=tmp_path / "lib", fetch=False, fps=12)
+    assert out.stat().st_size > 2000
+
+
+def test_object_charts_parse():
+    s = vox.plan_for("seats", "NDA 293, INDIA 234, Others 16 | Lok Sabha 2024")
+    assert s["total"] == 543 and s["majority"] == 272
+    assert vox.plan_for("stack", "coins | UP 80, Bihar 40")["material"] == "coins"
+    st = vox.plan_for("stand", "farmer ₹10,218 vs CEO ₹4,24,114 | Monthly income")
+    assert [v["value"] for v in st["values"]] == [10218, 424114] and st["subjects"] == ["farmer standing", "businessman"]
+    assert vox.plan_for("fan", "A $3M, B $9M | x")["values"][0]["label"] == "B"
+    assert len(vox.plan_for("trend", "1990 100, 2000 62, 2024 12 | x | rupee note")["points"]) == 3
+    assert vox.plan_for("slice", "12% | brain | activated")["pct"] == 12
+    assert vox.plan_for("seats", "nothing") is None and vox.plan_for("slice", "brain") is None
+    assert vox_director.valid("Seats: NDA 293, INDIA 234 | Lok Sabha") == ""
+
+
+@pytest.mark.skipif(not motion.enabled(), reason="needs Chromium + Playwright")
+@pytest.mark.parametrize("kind,spec", [
+    ("seats", "NDA 293, INDIA 234, Others 16 | Lok Sabha 2024"), ("stack", "chimneys | China 29.5%, India 6.8% | CO2"),
+    ("stand", "farmer ₹10,218 vs CEO ₹4,24,114 | Income"), ("fan", "A $378M, B $57M, C $31M | Revenue"),
+    ("trend", "1990 100, 2000 62, 2024 12 | What ₹100 buys"), ("slice", "12% | brain | activated")])
+def test_every_object_chart_renders(kind, spec, tmp_path, monkeypatch):
+    monkeypatch.setenv("CF_CUTOUT_FETCH", "0")
+    out = tmp_path / f"{kind}.mp4"
+    vox.render(kind, spec, "editorial@blue", 640, 360, 2.0, out, tmp_path / "w", lib=tmp_path / "lib", fetch=False, fps=12)
+    assert out.stat().st_size > 2000
+
+
+def test_music_beats_and_cuts_on_the_beat(tmp_path):
+    from creatorforge_worker.media import render
+    click, track = tmp_path / "c.wav", tmp_path / "beat.wav"
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "lavfi", "-i", "sine=frequency=1000:duration=0.05,apad=pad_dur=0.45",
+                    "-t", "0.5", str(click)], check=True)
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-stream_loop", "39", "-i", str(click), "-t", "20", str(track)], check=True)
+    beats = render.music_beats(track)
+    gaps = [b - a for a, b in zip(beats, beats[1:])]
+    assert len(beats) >= 35 and all(abs(g - 0.5) < 0.03 for g in gaps)
+    cuts = [1.27, 2.77, 4.21]
+    off = render.music_offset(beats, cuts)
+    assert all(min(abs(b - (c + off)) for b in beats) <= 0.08 for c in cuts)
+    assert render.music_offset([], cuts) == 0.0
+
+
+def test_channel_rules_flags_logos_and_props():
+    assert "flags" in vox_director.valid("Hero: flag | India")
+    assert vox_director.valid("Hero: google logo | Ads") == ""          # platforms appear as their official mark
+    assert vox.logo_key("google logo") == "google"
+    assert vox_director.valid("Hero: smartphone | Google ads | Google · 30 days") == ""
+    assert "props" in vox_director.valid("Hero: person:A | Claim | prop: blindfold")
+    assert vox_director.valid("Hero: person:A | Claim | prop: blindfold", props=True) == ""
+    assert "real person" in vox_director.valid("Hero: gavel | Claim | prop: blindfold", props=True)
+    out, rep = vox_director.ensure("एक।\nHero: person:A | The claim | prop: blindfold\n")
+    assert "prop" not in out.lower() and "Hero: person:A | The claim" in out
+    s = "एक।\nHero: person:A | x | prop: blindfold\n\nदो।\nHero: person:B | y\n"
+    assert any("fair" in i["problem"] for i in vox_director.check(s, props=True))
+
+
+def test_props_only_when_the_video_allows_them():
+    assert vox.plan_for("hero", "person:A | x | prop: blindfold")["prop"] == "blindfold"
+    assert vox.plan_for("hero", "person:A | x | prop: halo")["prop"] == ""
+    from creatorforge_worker import director as d
+    assert d.ProductionSpec.from_dict({"idea": "a test idea here", "editorial_props": True}).editorial_props
+    assert not d.ProductionSpec.from_dict({"idea": "a test idea here"}).editorial_props
+
+
+def test_round_five_scenes_parse():
+    r = vox.plan_for("route", "New Delhi → Dubai → London | The route | plane")
+    assert [s["name"] for s in r["stops"]] == ["New Delhi", "Dubai", "London"] and r["shapes"] and r["vehicle"] == "plane"
+    assert vox.plan_for("route", "Atlantis → Dubai") is None
+    assert vox.plan_for("compare", "rupee note | 1991 | 2024")["left"] == "1991"
+    p = vox.plan_for("photoline", "1935 Laws (documents) → 1939 War (soldier) | WWII")
+    assert [i["when"] for i in p["items"]] == ["1935", "1939"] and p["subjects"] == ["documents", "soldier"]
+    assert vox.plan_for("tv", "television | 1975")["subjects"] == ["television"]
+    assert vox.plan_for("hero", "gavel | x | style: grid")["layout"] == "grid"
+
+
+@pytest.mark.skipif(not motion.enabled(), reason="needs Chromium + Playwright")
+@pytest.mark.parametrize("kind,spec", [
+    ("route", "New Delhi → Dubai → London | Route | plane"), ("compare", "rupee note | 1991 | 2024 | Then and now"),
+    ("photoline", "1935 Laws (documents) → 1939 War (soldier) | WWII"), ("tv", "television | 1975 | Broadcast"),
+    ("hero", "gavel | Verdict | 2019 · Court | style: grid")])
+def test_every_round_five_scene_renders(kind, spec, tmp_path, monkeypatch):
+    monkeypatch.setenv("CF_CUTOUT_FETCH", "0")
+    out = tmp_path / f"{kind}.mp4"
+    vox.render(kind, spec, "editorial", 640, 360, 2.0, out, tmp_path / "w", lib=tmp_path / "lib", fetch=False, fps=12)
+    assert out.stat().st_size > 2000
+
+
+def test_round_six_scenes_parse():
+    c = vox.plan_for("clockmap", "Mumbai 9:30, Kolkata 9:30, Chennai 9:30 | One clock | IST")
+    assert [x["shown"] for x in c["cities"]] == ["9:30"] * 3 and c["home"] == "India"
+    assert vox.plan_for("clockmap", "Atlantis 9:30, Mumbai 9:30") is None
+    assert vox.plan_for("tornsplit", "ship + crane | One steel box | 1956")["subjects"] == ["ship", "crane"]
+    n = vox.plan_for("newscard", "29 Aug 2024 | A headline | the line under it | person:A | The Paper")
+    assert n["subjects"] == ["person:A"] and n["source"] == "The Paper" and n["sub"] == "the line under it"
+    assert vox.plan_for("blueprint", "factory | How it works | a · b")["points"] == ["a", "b"]
+    assert vox.plan_for("route", "London → Paris | Tour | train | atlas")["atlas"]
+    assert vox.plan_for("pinmap", "Kota | head | src | atlas")["atlas"]
+
+
+def test_satellite_fly_in_option(monkeypatch):
+    from creatorforge_worker.media import flyover
+    monkeypatch.setattr(flyover, "geocode", lambda name: (25.18, 75.83))
+    p = flyover.parse("Kota | Where it began | satellite")
+    assert p["satellite"] and p["title"] == "Where it began"
+    assert not flyover.parse("Kota | Where it began")["satellite"]
+    st = flyover.satellite_style()
+    assert st["sources"]["sat"]["type"] == "raster" and "{z}" in st["sources"]["sat"]["tiles"][0]
+
+
+@pytest.mark.skipif(not motion.enabled(), reason="needs Chromium + Playwright")
+@pytest.mark.parametrize("kind,spec", [
+    ("clockmap", "Mumbai 9:30, Kolkata 9:30, Chennai 9:30 | One clock | IST"),
+    ("tornsplit", "ship + crane | One steel box | 1956"),
+    ("newscard", "29 Aug 2024 | A headline | the line under it | gavel | The Paper"),
+    ("blueprint", "factory | How it works | a · b"),
+    ("route", "London → Paris | Tour | train | atlas"), ("pinmap", "Kota | head | src | atlas")])
+def test_every_round_six_scene_renders(kind, spec, tmp_path, monkeypatch):
+    monkeypatch.setenv("CF_CUTOUT_FETCH", "0")
+    out = tmp_path / f"{kind}.mp4"
+    vox.render(kind, spec, "editorial", 640, 360, 2.0, out, tmp_path / "w", lib=tmp_path / "lib", fetch=False, fps=12)
+    assert out.stat().st_size > 2000
+
+
+def test_drawn_illustrations_stand_in_for_missing_photos():
+    assert vox.illustration("container ship") == "ship" and vox.illustration("money") == "banknote"
+    assert vox.illustration("court") == "gavel" and vox.illustration("zzz") is None
+    js = (Path(vox.__file__).parent / "vendor" / "illustrations.js").read_text(encoding="utf-8")
+    for key in set(vox.ILLUS.values()):
+        assert (f"I.{key}=" in js) or (f"I['{key}']=" in js), key
+    p = vox.plan_for("hero", "ship | One steel box | marker: this changed everything")
+    assert p["marker"] == "this changed everything" and "marker" not in p["headline"]
+
+
+@pytest.mark.skipif(not motion.enabled(), reason="needs Chromium + Playwright")
+def test_scenes_with_drawings_and_marker_render(tmp_path, monkeypatch):
+    monkeypatch.setenv("CF_CUTOUT_FETCH", "0")
+    for i, (kind, spec) in enumerate([("hero", "container | One box | marker: ship, truck or train"),
+                                      ("tornsplit", "ship + crane | One steel box | 1956"),
+                                      ("route", "Newark → Houston | 1956 | ship | atlas | marker: 58 boxes")]):
+        out = tmp_path / f"{i}.mp4"
+        vox.render(kind, spec, "editorial@orange", 640, 360, 2.0, out, tmp_path / "w", lib=tmp_path / "lib", fetch=False, fps=12)
+        assert out.stat().st_size > 2000
+
+
+def test_a_named_public_figure_stands_beside_the_infographic():
+    from creatorforge_worker import infographic as ig
+    p = vox.plan_for("stack", "bars | A 1 15 lakh, A 2 17 lakh | Networks | with: person:Amit Shah")
+    assert p["with"] == "person:Amit Shah" and p["values"][0]["shown"] == "15 lakh"
+    # the director adds the papercut when a line names someone, and keeps it for "he said" lines that follow
+    script = "ये बात अमित शाह ने कोटा में कही थी।\nउन्होंने बताया, दो नेटवर्क थे। पंद्रह लाख और सत्रह लाख लोग।\n"
+    out, _ = vox_director.ensure(script)
+    _, bl = vox_director.blocks(out)
+    assert "person:Amit Shah" in bl[0]["dirs"][0]
+    assert vox_director.graphic_kind(bl[1]) == "stack" and "with: person:Amit Shah" in bl[1]["dirs"][0]
+
+
+@pytest.mark.skipif(not motion.enabled(), reason="needs Chromium + Playwright")
+def test_a_scene_with_a_papercut_companion_renders(tmp_path, monkeypatch):
+    monkeypatch.setenv("CF_CUTOUT_FETCH", "0")
+    out = tmp_path / "c.mp4"
+    vox.render("bignumber", "32 lakh | crowd | Every morning | with: person:Amit Shah", "editorial@red", 640, 360, 2.0,
+               out, tmp_path / "w", lib=tmp_path / "lib", fetch=False, fps=12)
+    assert out.stat().st_size > 2000
+
+
+def test_platform_logos_identify_the_platforms_a_line_names():
+    from creatorforge_worker import infographic as ig
+    assert vox.logo_key("व्हाट्सऐप") == "whatsapp" and vox.logo_key("twitter") == "x" and vox.logo_key("nothing") == ""
+    p = vox.plan_for("bignumber", "50 lakh | smartphone | WhatsApp groups | logo: whatsapp")
+    assert p["logos"][0]["title"] == "WhatsApp" and p["logos"][0]["hex"].startswith("#")
+    assert ig.platforms("डेक्कन हेराल्ड के मुताबिक़, पचास लाख व्हाट्सऐप ग्रुप्स।") == ["whatsapp"]
+    out, _ = vox_director.ensure("डेक्कन हेराल्ड के मुताबिक़, पचास लाख व्हाट्सऐप ग्रुप्स।\n")
+    assert "logo: whatsapp" in out
+    assert vox_director.valid("Hero: logo:whatsapp + crowd | One message") == ""
+
+
+@pytest.mark.skipif(not motion.enabled(), reason="needs Chromium + Playwright")
+def test_logo_scenes_render(tmp_path, monkeypatch):
+    monkeypatch.setenv("CF_CUTOUT_FETCH", "0")
+    monkeypatch.setenv("CF_CUTOUTS", str(tmp_path / "lib"))
+    out = tmp_path / "a.mp4"
+    vox.render("stack", "bars | Facebook 22.7 crore, Google 9 crore | Ads | logo: facebook, google", "editorial", 640, 360,
+               2.0, out, tmp_path / "w", lib=tmp_path / "lib", fetch=False, fps=12)
+    motion.render("animate", "whatsapp spreads to many | One forward", "editorial", 640, 360, 2.0, tmp_path / "b.mp4",
+                  tmp_path / "w", fps=12)
+    assert out.stat().st_size > 2000 and (tmp_path / "b.mp4").stat().st_size > 2000
+
+
+def test_johnny_harris_pen_and_terrain_options(monkeypatch):
+    assert vox.plan_for("route", "New Delhi → Dubai | Route | plane | atlas | pen")["pen"]
+    p = vox.plan_for("pinmap", "Pakistan | Across the border | pen")
+    assert p["pen"] and not p.get("pin")
+    from creatorforge_worker.media import flyover
+    monkeypatch.setattr(flyover, "geocode", lambda name: (30.0, 79.0))
+    assert flyover.parse("Uttarakhand | The mountains | terrain")["terrain"]
+    assert flyover.raster_style(flyover.TOPO_TILES)["sources"]["sat"]["tiles"][0].startswith("https://")
+
+
+@pytest.mark.skipif(not motion.enabled(), reason="needs Chromium + Playwright")
+def test_film_texture_typewriter_and_pen_render(tmp_path, monkeypatch):
+    monkeypatch.setenv("CF_CUTOUT_FETCH", "0")
+    for i, (k, spec) in enumerate([("route", "New Delhi → Dubai | Route | plane | atlas | pen"),
+                                   ("pinmap", "Pakistan | Across the border | pen"),
+                                   ("tornsplit", "ship + crane | One steel box | 1956")]):
+        out = tmp_path / f"{i}.mp4"
+        vox.render(k, spec, "editorial@red", 640, 360, 2.0, out, tmp_path / "w", lib=tmp_path / "lib", fetch=False, fps=12)
+        assert out.stat().st_size > 2000
+
+
+def test_data_and_structure_diagrams_parse_and_validate():
+    from creatorforge_worker import vox_director as vd
+    from creatorforge_worker.media import vox
+    p = vox.plan_for("pyramid", "India, 2021 | 0-14 13.4/12.2; 15-29 14.0/12.9; 60+ 4.9/5.2 | Men, Women | % of people")
+    assert p["type"] == "pyramid" and len(p["bands"]) == 3 and p["bands"][0]["l"] == 13.4 and p["right"] == "Women"
+    f = vox.plan_for("flowchart", "Donor → Electoral trust (₹5 crore) → Party → Ad agency | How the money moved")
+    assert f["type"] == "flowchart" and [n["name"] for n in f["nodes"]][1] == "Electoral trust" and f["nodes"][1]["note"] == "₹5 crore"
+    k = vox.plan_for("linkmap", "Shell company | Director: funds; Bank: loans; Minister: licence | Who is linked | marker: one address")
+    assert k["centre"] == "Shell company" and k["nodes"][1] == {"name": "Bank", "how": "loans"} and k["marker"] == "one address"
+    o = vox.plan_for("orgchart", "Prime Minister | Home, Finance, Defence | The cabinet | Finance > Revenue, Expenditure")
+    assert o["title"] == "The cabinet" and o["kids"][1]["kids"] == ["Revenue", "Expenditure"]
+    h = vox.plan_for("heatmap", "India 1.9, China 8.0, USA 14.9, Brazil 2.2 | CO2 per person | tonnes, 2022")
+    assert [i["name"] for i in h["items"]][2] == "United States of America" and h["others"] and h["unit"] == "tonnes, 2022"
+    assert vox.plan_for("heatmap", "Atlantis 4, Narnia 5 | x") is None       # unknown countries: nothing invented
+    assert vox.plan_for("flowchart", "Only one step") is None
+    for line in ("Pyramid: India, 2021 | 0-14 13.4/12.2; 15-29 14.0/12.9 | Men, Women",
+                 "Flowchart: Donor → Trust → Party | How the money moved",
+                 "Linkmap: Shell company | Director: funds; Bank: loans | Who is linked",
+                 "Orgchart: Prime Minister | Home, Finance, Defence | The cabinet",
+                 "Heatmap: India 1.9, China 8.0, USA 14.9 | CO2 per person | tonnes"):
+        assert vd.valid(line) == "", line
+    assert set(("pyramid", "flowchart", "linkmap", "orgchart", "heatmap")) <= set(vox.LAYOUT_SETS)
+
+
+def test_the_new_diagrams_render(tmp_path):
+    from creatorforge_worker.media import motion, vox
+    if not motion.enabled():
+        return
+    for i, (kind, spec, size) in enumerate((("pyramid", "India, 2021 | 0-14 13.4/12.2; 15-29 14.0/12.9; 60+ 4.9/5.2 | Men, Women", (640, 360)),
+                                            ("flowchart", "Donor → Trust (₹5 crore) → Party | How the money moved", (360, 640)),
+                                            ("linkmap", "Shell company | Director: funds; Bank: loans; Minister: licence | Who", (640, 360)),
+                                            ("orgchart", "Prime Minister | Home, Finance, Defence | The cabinet", (640, 360)),
+                                            ("heatmap", "India 1.9, China 8.0, USA 14.9 | CO2 per person | tonnes", (640, 360)))):
+        out = vox.render(kind, spec, "editorial~0@red/newsprint/", size[0], size[1], 2, tmp_path / f"d{i}.mp4", tmp_path,
+                         fetch=False, fps=12, layout=("card" if i % 2 else "base"))
+        assert out.is_file() and out.stat().st_size > 4000
+
+
+BATCH_A = (("courtdoc", 'Supreme Court of India | M. Siddiq v. Mahant Suresh Das | "The disputed property shall be handed over to a trust" | para 805 · 9 Nov 2019'),
+           ("table", "State, Seats, Vote % | UP, 62, 49.6; Bihar, 39, 53.3; MP, 28, 58.0 | 2019 result | ECI | highlight: 2"),
+           ("interview", 'person:Raghuram Rajan | "Growth without jobs is not growth" | Former RBI Governor · 2019'),
+           ("endcard", "The canal that changed trade | Next: Suez | Sources: ACP · UNCTAD"),
+           ("polltrack", "Jan 38, Feb 41, Mar 39, Apr 44 | Approval | ±3 | %"),
+           ("area", "2019, 2020, 2021 | Coal: 60, 58, 55; Solar: 5, 9, 14 | Power mix"),
+           ("candles", "Mon 100/112/96/108; Tue 108/115/104/106; Wed 106/107/90/93 | Share | ₹"),
+           ("arrows", "Belarus → Kyiv (north); Russia → Kharkiv | February 2022"),
+           ("railmap", "East: Delhi - Kanpur - Patna - Kolkata; Delhi - Jaipur - Mumbai | Corridors"),
+           ("sizemap", "India vs Germany | How big"))
+
+
+def test_evidence_charts_and_movement_maps_parse():
+    from creatorforge_worker import vox_director as vd
+    from creatorforge_worker.media import vox
+    plans = {k: vox.plan_for(k, s) for k, s in BATCH_A}
+    assert all(plans.values())
+    assert plans["courtdoc"]["badge"][0] == "COURT RECORD" and plans["table"]["hl"] == 2
+    assert plans["polltrack"]["moe"] == 3.0 and len(plans["area"]["series"]) == 2
+    assert plans["candles"]["candles"][2]["c"] == 93 and plans["railmap"]["lines"][0]["name"] == "East"
+    a = plans["arrows"]["arrows"][1]["a"]
+    assert 30 < a["lon"] < 180 and a["lat"] > 45                      # Russia's mainland, not the Atlantic
+    s = plans["sizemap"]["items"]
+    assert 3.0e6 < s[0]["km2"] < 3.5e6 and 3.3e5 < s[1]["km2"] < 3.8e5  # India and Germany, about right
+    assert vox.plan_for("candles", "Mon 100/90/96/108; Tue 1/2/3/4") is None              # highs below the open: refused
+    assert len(vox.plan_for("candles", "Mon 100/90/96/108; Wed 100/112/96/108")["candles"]) == 1   # only the sound day stays
+    assert vox.plan_for("sizemap", "India vs Atlantis") is None
+    for k, sp in BATCH_A:
+        assert vd.valid(f"{k.capitalize()}: {sp}") == "", k
+    p = vox.plan_for("hero", "ship | THE BLOCKADE | 2021 · Suez | badge: alleged | fx: embers | inset: crane | exit: none")
+    assert p["badge"][0] == "ALLEGED" and p["fx"] == "embers" and p["inset"] == "crane" and p["exit"] == "none"
+    assert vox.plan_for("bignumber", "₹29.7 करोड़ | coins | x")["number"] == "₹29.7 करोड़"   # a Hindi unit is never cut
+    css = vox._font_css()
+    assert css.count("rozha-one-devanagari") >= 4 and css.count("teko-devanagari") >= 4   # Hindi display faces
+
+
+def test_evidence_charts_and_movement_maps_render(tmp_path):
+    from creatorforge_worker.media import motion, vox
+    if not motion.enabled():
+        return
+    for i, (kind, spec) in enumerate(BATCH_A):
+        size = (360, 640) if i % 3 == 0 else (640, 360)
+        out = vox.render(kind, spec + " | badge: reported | fx: dust", "editorial~0@red/kraft/", size[0], size[1], 2,
+                         tmp_path / f"a{i}.mp4", tmp_path, fetch=False, fps=12, layout=("card" if i % 2 else "base"))
+        assert out.is_file() and out.stat().st_size > 4000, kind
+
+
+def test_ships_follow_the_sea():
+    from creatorforge_worker.media import searoute, vox
+    p = searoute.path(121.8, 31.2, 4.1, 51.95)                      # Shanghai to Rotterdam
+    assert len(p) > 50 and searoute.crosses_land(p) < 0.05
+    assert any(30 < x < 36 and 27 < y < 32 for x, y in p)            # through Suez
+    assert max(y for _, y in p) < 60                                 # not over the pole
+    q = searoute.path(121.8, 31.2, -74.0, 40.6)                      # Shanghai to New York: the Pacific and Panama
+    assert q and any(8 < y < 10 for _, y in q) and searoute.crosses_land(q) < 0.05
+    plan = vox.plan_for("route", "Shanghai → Singapore → Rotterdam | The long way round | ship | atlas")
+    assert len(plan["paths"]) == 2 and all(len(x) > 10 for x in plan["paths"])
+    assert vox.plan_for("route", "New Delhi → Dubai | x | plane")["paths"] == []     # planes still fly an arc
+
+
+def test_state_heat_maps_and_dated_borders(tmp_path, monkeypatch):
+    import json
+    from creatorforge_worker import vox_director as vd
+    from creatorforge_worker.media import history, vox
+    h = vox.plan_for("heatmap", "UP 80, Maharashtra 48, West Bengal 42, Bihar 40 | Lok Sabha seats | seats")
+    assert [i["name"] for i in h["items"]][:2] == ["Uttar Pradesh", "Maharashtra"] and len(h["others"]) > 20
+    u = vox.plan_for("heatmap", "California 39.0, Texas 30.5, Florida 22.6 | Where Americans live")
+    assert {i["name"] for i in u["items"]} == {"California", "Texas", "Florida"}
+    # dated borders: refused without the maps, drawn from them when they are there
+    monkeypatch.setenv("CF_HISTORY", str(tmp_path))
+    history.load.cache_clear()
+    assert vox.plan_for("borders", "1914 → today | Europe | Before the war") is None
+    assert "can't be drawn" in vd.valid("Borders: 1914 → today | Europe | Before the war")
+    sq = lambda x, y, w: [[[x, y], [x + w, y], [x + w, y + w], [x, y + w], [x, y]]]     # noqa: E731
+    feats = [{"type": "Feature", "properties": {"NAME": n}, "geometry": {"type": "Polygon", "coordinates": sq(x, y, w)}}
+             for n, x, y, w in (("German Empire", 6, 47, 12), ("Russian Empire", 22, 45, 20), ("France", -4, 43, 9))]
+    (tmp_path / "world_1914.geojson").write_text(json.dumps({"type": "FeatureCollection", "features": feats}))
+    assert history.available() == [1914] and history.nearest(1916) == 1914
+    b = vox.plan_for("borders", "1916 → today | Europe | Before the war")
+    assert b["ya"] == 1916 and b["yb"] == 0 and {c["n"] for c in b["then"]} >= {"German Empire", "France"}
+    assert any(c["n"] == "Germany" for c in b["now"]) and "historical-basemaps" in b["mapcredit"]
+    from creatorforge_worker.media import motion
+    if motion.enabled():
+        out = vox.render("borders", "1914 → today | Europe | Before the war", "e~0@x/sepia/1914", 640, 360, 4,
+                         tmp_path / "b.mp4", tmp_path, fetch=False, fps=12)
+        assert out.stat().st_size > 4000
+        out = vox.render("route", "Shanghai → Rotterdam | By sea | ship | atlas", "e~0@teal/field/", 640, 360, 3,
+                         tmp_path / "r.mp4", tmp_path, fetch=False, fps=12)
+        assert out.stat().st_size > 4000
+
+
+def test_genuine_3d_scenes_parse_and_render(tmp_path):
+    from creatorforge_worker import director, vox_director as vd
+    from creatorforge_worker.media import motion, scene3d
+    specs = (("bars3d", "UP 80, Maharashtra 48, Bihar 40 | Lok Sabha seats | seats"),
+             ("prism", "India 1.9, China 8.0, USA 14.9 | CO2 per person | tonnes"),
+             ("explode", "Smartphone | Glass, Display, Battery, Logic board, Back cover | What is inside"),
+             ("title3d", "THE CANAL | 1914 · Panama"))
+    for kind, spec in specs:
+        assert scene3d.plan_for(kind, spec), kind
+        assert vd.valid(f"{kind.capitalize()}: {spec}") == "", kind
+        assert kind in director.FULL_FRAME
+    assert scene3d.plan_for("prism", "UP 80, Bihar 40, Kerala 20 | Seats")["items"][0]["name"] in ("Kerala", "Uttar Pradesh", "Bihar")
+    assert scene3d.plan_for("title3d", "नहर | 1914") is None                  # the 3D face is Latin: refused, not boxes
+    assert scene3d.plan_for("explode", "Phone | Glass") is None
+    assert vd.valid("Title3d: नहर") and "3D graphic" in vd.valid("Explode: Phone | Glass")
+    if not motion.enabled():
+        return
+    for i, (kind, spec) in enumerate(specs):
+        size = (360, 640) if i == 2 else (640, 360)
+        out = scene3d.render(kind, spec, "editorial~0@red/kraft/", size[0], size[1], 2, tmp_path / f"t{i}.mp4", tmp_path, fps=10)
+        assert out.is_file() and out.stat().st_size > 5000, kind
+        # a real render, not an empty page: the frame has more than the paper's few tones
+        import subprocess
+        raw = subprocess.run(["ffmpeg", "-v", "error", "-ss", "1.5", "-i", str(out), "-frames:v", "1", "-vf", "scale=64:36",
+                              "-f", "rawvideo", "-pix_fmt", "gray", "-"], capture_output=True).stdout
+        assert max(raw) - min(raw) > 60, kind
+
+
+def test_states_of_every_country_districts_morph_and_3d_land(tmp_path, monkeypatch):
+    import json
+    from creatorforge_worker import vox_director as vd
+    from creatorforge_worker.media import districts, motion, scene3d, vox
+    # states and provinces anywhere, by their English or local names
+    for spec, first in (("Bavaria 13.4, Berlin 3.8, Hesse 6.4 | People", "Bavaria"), ("Punjab 127, Sindh 55, Balochistan 15 | x", "Punjab"),
+                        ("Ontario 15, Quebec 9 | x", "Ontario"), ("Osaka 8.8, Hokkaido 5.1 | x", "Ōsaka Prefecture")):
+        assert vox.plan_for("heatmap", spec)["items"][0]["name"] == first, spec
+    # districts: refused without the file, drawn (with the dataset's credit) with it
+    monkeypatch.setenv("CF_DISTRICTS", str(tmp_path / "d"))
+    districts.load.cache_clear()
+    assert vox.plan_for("heatmap", "Patna 58, Gaya 44, Nalanda 29 | People") is None
+    sq = lambda x, y: [[[x, y], [x + .6, y], [x + .6, y + .6], [x, y + .6], [x, y]]]      # noqa: E731
+    (tmp_path / "d").mkdir()
+    (tmp_path / "d" / "IND.json").write_text(json.dumps({"credit": "Districts: geoBoundaries (test; CC BY 4.0)", "units": [
+        {"n": n, "r": sq(x, y)} for n, x, y in (("Patna", 85.1, 25.4), ("Gaya", 84.9, 24.6), ("Nalanda", 85.4, 25.0), ("Saran", 84.7, 25.8))]}))
+    d = vox.plan_for("heatmap", "Patna 58, Gaya 44, Nalanda 29 | People per sq km")
+    assert [i["name"] for i in d["items"]] == ["Patna", "Gaya", "Nalanda"] and "geoBoundaries" in d["mapcredit"] and d["others"]
+    # morph: countries, states and plain shapes; unknown shapes are refused
+    m = vox.plan_for("morph", "India → drop → Bihar | Where the water goes | A third of it")
+    assert [x["name"] for x in m["shapes"]] == ["India", "drop", "Bihar"] and all(len(x["ring"]) > 20 for x in m["shapes"])
+    assert vox.plan_for("morph", "India → blob") is None and vd.valid("Morph: circle → star → heart | Shapes") == ""
+    # 3D land and buildings
+    t = scene3d.plan_for("terrain3d", "Mount Everest | The roof of the world | 40 km | height: 8,849 m")
+    assert abs(t["lat"] - 27.99) < .1 and t["km"] == 40 and t["height"] == "8,849 m"
+    assert scene3d.plan_for("terrain3d", "Somewhere @ 35.42, 77.1 | x")["lon"] == 77.1 and scene3d.plan_for("terrain3d", "India | x") is None
+    assert len(scene3d.plan_for("towers3d", "Burj Khalifa 828, Eiffel Tower 330, Qutub Minar 73 | How tall | m")["values"]) == 3
+    assert vox.wants_voice("interview", "x") and vox.wants_voice("stack", "coins | a 1, b 2 | t | voice") and not vox.wants_voice("stack", "x")
+    assert "voice" not in json.dumps(vox.plan_for("stack", "coins | UP 40, Bihar 25 | Seats | voice"))
+    if not motion.enabled():
+        return
+    out = vox.render("morph", "circle → star → heart | Shapes", "e~0@red/kraft/", 480, 270, 3, tmp_path / "m.mp4", tmp_path, fetch=False, fps=10)
+    assert out.stat().st_size > 4000
+    out = vox.render("interview", 'person:A Person | "Some words they said" | Role', "e~0@red/kraft/", 480, 270, 3, tmp_path / "i.mp4",
+                     tmp_path, fetch=False, fps=10, levels=[0.1, 0.9, 0.4, 1.0, 0.2] * 8)
+    assert out.stat().st_size > 4000
+    out = scene3d.render("towers3d", "Burj Khalifa 828, Eiffel Tower 330 | How tall | m", "e~0@teal/field/", 480, 270, 2, tmp_path / "tw.mp4", tmp_path, fps=8)
+    assert out.stat().st_size > 4000
+    # terrain from a synthetic height grid (the tiles need the network; the mesh, lights and labels do not)
+    monkeypatch.setattr(scene3d, "heights", lambda *a, **k: {"h": [[int(3000 * max(0, 1 - ((r - 20) ** 2 + (c - 20) ** 2) ** .5 / 20)) for c in range(40)]
+                                                                   for r in range(40)], "min": 0.0, "max": 3000.0, "top": 3050.0, "peak": [20, 20], "n": 40})
+    out = scene3d.render("terrain3d", "Mount Everest | Test", "e~0@red/archive/", 480, 270, 2, tmp_path / "te.mp4", tmp_path, fps=8)
+    assert out.stat().st_size > 4000
+
+
+def test_voice_levels_and_stereo_whooshes(tmp_path):
+    import subprocess
+    import threading
+    from creatorforge_worker.media import render
+    tone = tmp_path / "t.wav"
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "lavfi", "-i", "sine=f=300:d=2,volume='if(lt(t,1),0.05,0.9)':eval=frame",
+                    "-ar", "48000", str(tone)], check=True)
+    lv = render.levels(tone, 0, 2)
+    assert len(lv) >= 20 and max(lv[:8]) < 0.3 < min(lv[-8:])              # quiet first second, loud second
+    narr, hit = tmp_path / "n.wav", tmp_path / "h.wav"
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "lavfi", "-i", "anullsrc=r=48000:cl=mono", "-t", "3", str(narr)], check=True)
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "lavfi", "-i", "sine=f=500:d=0.6", "-ar", "48000", str(hit)], check=True)
+    out = tmp_path / "mix.wav"
+    render.mix_audio(narr, None, 3.0, out, threading.Event(), sfx=[(hit, 0.5, 0.8, "lr"), (hit, 1.8, 0.8, -1.0)])
+
+    def side(t0, ch):
+        r = subprocess.run(["ffmpeg", "-v", "info", "-ss", f"{t0}", "-t", "0.12", "-i", str(out), "-af", f"pan=mono|c0=c{ch},astats=metadata=0",
+                            "-f", "null", "-"], capture_output=True, text=True).stderr
+        import re
+        m = re.findall(r"RMS level dB: (-?[\d.]+|-inf)", r)
+        return -120.0 if not m or m[-1] == "-inf" else float(m[-1])
+    assert side(0.52, 0) > side(0.52, 1) + 6 and side(0.98, 1) > side(0.98, 0) + 6     # the whoosh travels left to right
+    assert side(1.9, 0) > side(1.9, 1) + 12                                           # a cue placed hard left
+
+
+def test_visual_dna_changes_the_face_not_the_scene(tmp_path):
+    from creatorforge_worker.media import vox as V
+    assert V.dna_of("editorial@yellow/archive//dna:blueprint")["pattern"] == "blueprint"
+    assert V.dna_of("editorial@yellow/archive/") is None
+    assert V.choose_dna("a script", last=V.choose_dna("a script")) != V.choose_dna("a script")    # never the last film's
+    for name, d in V.DNAS.items():                       # every DNA keeps text readable on cards and on its surface
+        assert V.contrast(d["ink"], "#FFFFFF") > 7, name
+        fg = d.get("fg") or d["ink"]
+        assert V.contrast(fg, d["surface"]) > 4.5, name
+        assert d["frame"] in V.FRAMES and set(d["fonts"]) == {"head", "big", "hand", "label"}

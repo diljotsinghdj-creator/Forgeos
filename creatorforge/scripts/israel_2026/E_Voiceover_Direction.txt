@@ -1,0 +1,59 @@
+E - VOICEOVER DIRECTION
+Israel 2026: The Election That Settled Nothing
+
+VOICE
+  English narrator, mid-range, warm and dry. Think a well-read friend explaining over coffee, not an anchor.
+  If you use ElevenLabs: a calm documentary voice. Use a voice you own or a library voice licensed for commercial use.
+  No cloned voice of any real person, and no voice that imitates a known presenter or comedian.
+
+PACE
+  CreatorForge draft voice: voice speed 0.9 (≈135 words a minute) gives a ~48 min film.
+  ElevenLabs: Stability 55-65, Similarity 75, Style 10-20, Speaker boost on. Generate one file per render part (R1-R6),
+  so each part can be synced with voiceover_sync.
+  Leave ~0.4 s between lines and ~1.5 s at each Chapter card. Let the last line of each chapter breathe (1 s).
+
+TONE TAGS IN THE SCRIPT (each spoken line has a Tone: line)
+  calm      - even, explanatory. Most lines.
+  question  - lift the end, a small smile in the voice.
+  strong    - firmer, slower on the key number or the punchline's last word.
+  dramatic  - slower, lower, pause BEFORE the key phrase.
+  Part 4 is calm and strong only. No smile in the voice anywhere in Part 4.
+
+COMEDY DELIVERY
+  Deadpan. Never laugh at your own line. Punchlines are thrown away, a beat after the setup:
+    "...they may honestly consider [beat] a holiday."
+    "...the opposition [beat] with better furniture."
+    "...not just the door, but the window, [beat] and the cat flap."
+  Do not lean on the jokes. If a line reads as a joke only because of the voice, it isn't a joke.
+
+PRONUNCIATION GUIDE
+  Knesset            KNESS-et
+  Eisenkot           ICE-en-kot  (Gadi = GAH-dee)
+  Yashar             yah-SHAR
+  Beyachad           beh-YAH-khad
+  Netanyahu          neh-tan-YAH-hoo
+  Herzog             HER-tsog (Isaac = ee-TSAHK is fine; English "Isaac" also accepted)
+  Ben-Gvir           ben-GVEER (Itamar = ee-tah-MAR)
+  Smotrich           SMOT-rich (Bezalel = beh-tsal-EL)
+  Lieberman          LEE-ber-man (Avigdor = ah-VIG-dor)
+  Yisrael Beytenu    yis-ra-EL bay-TEH-noo
+  Otzma Yehudit      OTS-mah yeh-hoo-DEET
+  Haredi / Haredim   ha-reh-DEE / ha-reh-DEEM
+  Shas               SHAHS;  Aryeh Deri = ar-YEH DEH-ree
+  Ra'am              RAH-ahm;  Mansour Abbas = man-SOOR ah-BAHS
+  Sohlberg           SOLE-berg
+  Shin Bet           SHIN BET
+  Gallant            gah-LAHNT
+  Dahiya             DAH-hee-yeh
+  Mojtaba Khamenei   moj-TAH-bah kha-meh-NAY
+  Hormuz             hor-MOOZ
+  Fordow             for-DOH
+  E1                 "E one"
+  Bnei Brak          bnay BRAHK;  Mea Shearim = meh-AH sheh-ah-REEM
+  Gvili              GVEE-lee
+  Kikar HaShabbat    kee-KAR ha-sha-BAHT
+  Numbers: "fifty-three, forty-eight, nineteen" are written out in the script - read exactly as written.
+
+ACCURACY RULES FOR THE VOICE
+  Read every line exactly as written - the words were checked against the evidence register (F).
+  If you must change a word for rhythm, do not change a number, a name, a date, a quote, or "allegedly/reported".

@@ -1,0 +1,38 @@
+TITLE (Hinglish, max 100 chars):
+CJI Bahar! Chunav Ayukt Kaun Chunta Hai? Modi-Shah vs Rahul: 2 vs 1 Ka Khel 🔥 #Shorts
+
+CAPTION / FIRST LINE:
+Aapka vote ginne wale ko kaun chunta hai? 2023 mein CJI committee mein the - phir naya kanoon aaya. Sarkar 2, Vipaksh 1.
+
+DESCRIPTION (Hinglish):
+Chunav Ayukt (Election Commissioner) kaun chunta hai? 2023 mein Supreme Court ne kaha tha - Pradhan Mantri, Vipaksh ke Neta aur Mukhya Nyayadhish (CJI). Kuch hi mahino mein Sansad ne naya kanoon banaya: CJI bahar, unki jagah PM ka chuna ek Union Minister. Yaani committee mein Sarkar ke 2 vote, Vipaksh ka 1.
+
+February 2025 mein isi committee ne Gyanesh Kumar ko Chief Election Commissioner (CEC) chuna - committee mein PM Modi, Amit Shah aur Rahul Gandhi the, aur Rahul Gandhi ne likhit asahmati (dissent) di. Aaj SIR ke baad draft voter list se 13.3 crore naam kate hain aur Vipaksh istifa maang raha hai.
+
+Doosra paksh: Sarkar ke mutabik kanoon banana Sansad ka adhikar hai; Chunav Ayog ke mutabik SIR voter list ki safai hai. Supreme Court ka faisla abhi baaki hai.
+
+Aap kya sochte hain - committee mein CJI hone chahiye? Comment mein batayiye.
+Poori kahani: [long video ka link]
+
+Sources:
+Open Magazine - Why is the CJI missing from the Election Commissioner selection panel
+LiveLaw - Supreme Court refuses to stay Election Commissioners' Act (Mar 2024)
+Scroll - Gyanesh Kumar named CEC overruling Rahul Gandhi's dissent (Feb 2025)
+Deccan Herald - SIR: 13.3 crore names wiped out of draft voter lists (Sep 2026)
+Newslaundry - Opposition MPs march to Election Commission (Oct 2026)
+
+Thumbnail photos: Wikimedia Commons - [paste the credits the thumbnail command prints]
+
+Print Facts tathya aur source ke saath khabar dikhata hai. Aarop saboot nahi hote - hum dono paksh dikhate hain.
+
+#GyaneshKumar #ElectionCommission #CJI #Shorts
+
+TAGS:
+gyanesh kumar, chunav ayog, chunav ayukt kaun chunta hai, election commission of india, chief election commissioner, CEC appointment, CJI bahar, CJI removed from selection panel, election commissioners act 2023, modi amit shah, rahul gandhi dissent, gyanesh kumar istifa, gyanesh kumar resign, SIR voter list, 13 crore naam kate, voter list naam kata, vote chori, supreme court election commission, print facts, hindi news shorts, hinglish news
+
+HASHTAGS (first 3 show above the title):
+#GyaneshKumar #ElectionCommission #CJI #ChunavAyog #Modi #AmitShah #RahulGandhi #VoteChori #SIR #VoterList #PrintFacts #Shorts
+
+THUMBNAIL (9:16, 1080x1920) - made on the pod with real, credited photos:
+  cd /workspace/creatorforge && . venv/bin/activate && set -a && . ./worker.env && set +a && python -m creatorforge_worker.thumbs --left "Narendra Modi" "Amit Shah" "Gyanesh Kumar" --right "Rahul Gandhi" --name "Do Banaam Ek thumbnail"
+It lands in the app: Library -> Assets -> image -> "Do Banaam Ek thumbnail". Paste the printed credits into the description.

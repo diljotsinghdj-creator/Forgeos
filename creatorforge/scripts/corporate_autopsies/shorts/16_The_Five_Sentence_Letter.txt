@@ -1,0 +1,94 @@
+The Five-Sentence Letter
+On-screen hook: 5 SENTENCES. 1 SALES PITCH?
+Title: How a Five-Sentence Letter From 1980 Became an OxyContin Talking Point
+Tags: #CorporateAutopsies #opioids #purdue #oxycontin #medicalhistory
+Source: Porter J, Jick H, Addiction rare in patients treated with narcotics, NEJM 1980;302:123 (Jan 10, 1980), https://www.nejm.org/doi/full/10.1056/NEJM198001103020221; Leung PTM et al., A 1980 Letter on the Risk of Opioid Addiction, NEJM 2017, https://www.nejm.org/doi/full/10.1056/NEJMc1700150; NPR, Doctor Who Wrote 1980 Letter On Painkillers Regrets That It Fed The Opioid Crisis (Jun 2017), https://www.npr.org/sections/health-shots/2017/06/16/533060031/doctor-who-wrote-1980-letter-on-painkillers-regrets-that-it-fed-the-opioid-crisi; Van Zee A, The Promotion and Marketing of OxyContin, Am J Public Health 2009, https://pmc.ncbi.nlm.nih.gov/articles/PMC2622774/; KFF Health News, Purdue Pharma's Sales Pitch Downplayed Risks Of Opioid Addiction, https://kffhealthnews.org/news/purdue-pharma-sales-pitch-downplayed-risks-of-opioid-addiction/; US DOJ, Purdue Frederick 2007 plea (FDA OCI), https://www.judiciary.senate.gov/imo/media/doc/Brownlee%20Testimony%20073107.pdf; US DOJ, Opioid Manufacturer Purdue Pharma Pleads Guilty to Fraud and Kickback Conspiracies (Nov 2020), https://www.justice.gov/archives/opa/pr/opioid-manufacturer-purdue-pharma-pleads-guilty-fraud-and-kickback-conspiracies
+
+Five sentences, cited six hundred and eight times.
+Visual: A short typed letter lying on an old wooden desk, text unreadable
+Visual: Stacks of bound medical journals on library shelves
+Chart: 608 | citations of the 1980 letter, to 2017
+Cite: NEJM, 2017
+Archive: 1980s
+
+Most used it to say addiction was rare.
+Visual: A highlighted footnote on a printed page, text unreadable
+Visual: A pen circling a reference number on a journal page
+Text: "ADDICTION IS RARE"
+
+So how did five sentences become a pitch?
+Visual: A medical journal lying open on a library table, text unreadable
+Visual: A sales rep's sample case on a clinic counter, labels unreadable
+Text: 5 SENTENCES. 1 SALES PITCH?
+Transition: whip
+
+In nineteen eighty, two Boston researchers wrote a journal letter.
+Visual: A typewriter with a sheet of paper on a 1980 office desk, text unreadable
+Visual: An envelope addressed to a journal on a desk, text unreadable
+Place: BOSTON · 1980
+Cite: NEJM, January 1980
+Archive: 1980s
+
+Of nearly twelve thousand hospital patients on narcotics, four had documented addiction.
+Visual: A row of empty hospital beds in a 1980 ward
+Visual: A stack of paper patient files on a hospital desk, text unreadable
+Document: Addiction rare in patients treated with narcotics | Porter & Jick, NEJM, 1980
+Cite: NEJM, January 1980
+Archive: 1980s
+
+The catch? All were already in hospital.
+Visual: A hospital corridor with a nurse seen from behind pushing a cart
+Visual: A hospital wristband lying on a folded white sheet, text unreadable
+Text: HOSPITAL PATIENTS ONLY
+Draw: underline
+Archive: 1980s
+
+Sixteen years later, Purdue launched OxyContin.
+Visual: A pharmacy shelf lined with plain white pill bottles, labels unreadable
+Visual: A hand holding a sealed pill bottle, label unreadable
+Text: 1996
+Transition: tear
+
+One study found Purdue trained reps to call addiction risk under one percent.
+Visual: A sales rep seen from behind carrying a sample case into a clinic
+Visual: A glossy brochure on a doctor's desk, text unreadable
+Text: "LESS THAN ONE PERCENT"
+Cite: Van Zee, AJPH 2009
+Big: UNDER 1%
+
+Eight in ten citing papers never said the patients were hospitalised.
+Visual: A hospital bed with a folded blanket in an empty room
+Visual: A journal page with a paragraph crossed out in pen, text unreadable
+Pie: 81% | never said the patients were in hospital
+Cite: NEJM, 2017
+
+And the author?
+Visual: An old office with a desk lamp and a stack of journals
+Text: AND THE AUTHOR?
+
+Co-author Hershel Jick later said he was essentially mortified.
+Visual: A man's hands folded on an office desk beside old papers
+Visual: An old medical journal closed on a desk under a lamp
+Text: "ESSENTIALLY MORTIFIED"
+Cite: AP via NPR, 2017
+
+Purdue companies pleaded guilty to federal crimes in two thousand seven and twenty twenty.
+Visual: A federal courthouse's stone steps on a grey morning
+Visual: A judge's gavel resting on a closed law book
+Text: GUILTY PLEAS · 2007 & 2020
+Cite: US DOJ
+Treat: duotone
+
+How did five sentences become a pitch? Drop the hospital part.
+Visual: A short typed letter on a desk under a lamp, text unreadable
+Visual: A hospital ward corridor at night with the lights dimmed
+Text: 5 SENTENCES · HOSPITAL ONLY
+Draw: circle
+
+Ask of any quoted study, who was studied?
+Visual: A finger pointing at a footnote in a printed journal, text unreadable
+Visual: A stack of medical journals on a library table
+Text: WHO WAS STUDIED?
+
+Would you ask about your pills?
+Visual: A pill bottle and a printed leaflet on a kitchen table, text unreadable

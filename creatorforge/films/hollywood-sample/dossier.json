@@ -1,0 +1,19 @@
+{
+ "topic": "Hollywood: a 15-second sample",
+ "researched": "2026-11-11",
+ "method": "Well-documented facts; links not re-opened from this container (reference sites are blocked here). Check each before publishing.",
+ "claims": [
+  {"id": "C1", "claim": "The first Academy Awards ceremony, on 16 May 1929, lasted about 15 minutes.", "status": "verified", "confidence": "high",
+   "figures": ["1929", "15", "fifteen"],
+   "sources": [{"title": "Academy of Motion Picture Arts and Sciences: the 1st Academy Awards", "url": "https://www.oscars.org/oscars/ceremonies/1929", "quote": "[summary] the first ceremony, held 16 May 1929, lasted 15 minutes"},
+               {"title": "Encyclopaedia Britannica: Academy Award", "url": "https://www.britannica.com/art/Academy-Award", "quote": "[summary] first presented in 1929"}]},
+  {"id": "C2", "claim": "The Hollywood sign was put up in 1923 reading HOLLYWOODLAND, as an advertisement for a housing development; the last four letters were removed in 1949.", "status": "verified", "confidence": "high",
+   "figures": ["1923", "1949"],
+   "sources": [{"title": "Hollywood Sign Trust: history", "url": "https://www.hollywoodsign.org/history", "quote": "[summary] erected in 1923 as HOLLYWOODLAND to advertise a real estate development; LAND removed in 1949"},
+               {"title": "Encyclopaedia Britannica: Hollywood sign", "url": "https://www.britannica.com/topic/Hollywood-sign", "quote": "[summary] built 1923 as an advertisement for Hollywoodland"}]},
+  {"id": "C3", "claim": "Avatar (2009) is the highest-grossing film worldwide, with about $2.9 billion at the box office, including re-releases.", "status": "reported", "confidence": "high",
+   "figures": ["2.9", "$2.9 billion", "2009", "$0"],
+   "sources": [{"title": "Box Office Mojo: all-time worldwide box office", "url": "https://www.boxofficemojo.com/chart/ww_top_lifetime_gross/", "quote": "[summary] Avatar, about $2.92 billion worldwide"},
+               {"title": "The Numbers: all-time worldwide box office", "url": "https://www.the-numbers.com/box-office-records/worldwide/all-movies/cumulative/all-time", "quote": "[summary] Avatar, about $2.9 billion"}]}
+ ]
+}

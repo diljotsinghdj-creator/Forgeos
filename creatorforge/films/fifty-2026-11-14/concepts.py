@@ -1,0 +1,61 @@
+"""50 compositions in the owner's 2026-11-14 reference style (photo collage: giant B&W hands, colour cut-outs, sun
+discs, colour blocking, one symbolic prop; halftone maps with a marker route and a pulse dot; satellite maps with a
+bold outlined label). Titles are themes, never claims. Photos: Pixabay (free licence) unless noted; maps: Natural
+Earth outlines with India's official boundary; satellite: NASA GIBS (public domain)."""
+
+# (id, channel, title, kicker, device, assets)   assets: role -> Pixabay search
+C = [
+ # ---------------- Print Facts ----------------
+ ("lever", "pf", "Who Pulls the Lever", "oil, money, power", "hand", {"subject": "oil pump jack isolated", "ground": "desert sand dunes", "hand": "hand pinch fingers isolated white"}),
+ ("routeindia", "pf", "One Vote, Many Miles", "the long road to the booth", "routemap", {"country": "India", "from": "Delhi", "to": "Guwahati", "skyline": "city skyline silhouette isolated"}),
+ ("container", "pf", "Made Somewhere Else", "the box that moved the world", "diorama", {"subject": "shipping container isolated white", "facade": "colorful building facade", "hand": "hand holding object isolated white"}),
+ ("bread", "pf", "The Price of Bread", "when food becomes politics", "sundisc", {"subject": "bread loaf isolated white", "second": "wheat ears isolated white"}),
+ ("money", "pf", "Paper Promises", "what makes money money", "hand", {"subject": "stack of coins isolated white", "ground": "grass field", "hand": "hand dropping isolated white"}),
+ ("cctv", "pf", "Always Watching", "the camera on every corner", "scale", {"subject": "cctv camera isolated white", "tiny": "man walking silhouette isolated", "ground": "city street night"}),
+ ("indiasat", "pf", "India", "from orbit", "satellite", {"country": "India", "bbox": (66, 5, 99, 37.5)}),
+ ("nile", "pf", "The Nile", "a green line through the desert", "satellite", {"country": "Egypt", "bbox": (24, 21, 37, 32)}),
+ ("smoke", "pf", "Smoke Stacks", "the factories behind the growth", "sundisc", {"subject": "factory chimney isolated", "second": "industrial smokestack isolated"}),
+ ("wall", "pf", "The Wall", "one brick at a time", "hand", {"subject": "brick isolated white", "ground": "brick wall", "hand": "hand pinch fingers isolated white"}),
+ ("bigtech", "pf", "Too Big to Ignore", "platforms the size of states", "scale", {"subject": "smartphone isolated white", "tiny": "crowd silhouette isolated", "ground": "city skyline"}),
+ ("arms", "pf", "The Arms Race", "toys of a dangerous game", "diorama", {"subject": "toy tank isolated white", "facade": "old government building facade", "hand": "hand holding object isolated white"}),
+ ("debt", "pf", "The Weight of Debt", "who carries it", "hand", {"subject": "anvil isolated white", "ground": "concrete floor", "hand": "hand open palm isolated white"}),
+ ("votesmap", "pf", "Where the Votes Are", "a country in dots", "routemap", {"country": "India", "from": "Mumbai", "to": "Kolkata", "skyline": "city skyline silhouette isolated"}),
+ ("oilwater", "pf", "Oil and Water", "two resources, one fight", "split", {"subject": "oil barrel isolated white", "second": "water drop isolated"}),
+ ("shipping", "pf", "The Long Way Round", "the sea lanes of trade", "routemap", {"country": "World", "from": "Shanghai", "to": "Rotterdam", "skyline": "port cranes silhouette isolated"}),
+ ("rising", "pf", "Cities Rising", "the building boom", "sundisc", {"subject": "skyscraper isolated white", "second": "construction crane isolated"}),
+ ("court", "pf", "Order in Court", "the gavel falls", "hand", {"subject": "gavel isolated white", "ground": "wooden table", "hand": "hand pointing finger isolated white"}),
+ ("himalaya", "pf", "The Himalaya", "the wall of water", "satellite", {"country": "Nepal", "bbox": (74, 25, 96, 37)}),
+ ("fuel", "pf", "Fill It Up", "the pump that runs politics", "diorama", {"subject": "vintage gas pump isolated", "facade": "old storefront facade", "hand": "hand holding object isolated white"}),
+ ("censor", "pf", "Censored", "what you are not told", "torn", {"subject": "newspapers stack isolated white", "second": "padlock isolated white"}),
+ ("water", "pf", "Every Last Drop", "the coming water fights", "scale", {"subject": "water tap faucet isolated white", "tiny": "man walking silhouette isolated", "ground": "cracked dry earth"}),
+ ("grid", "pf", "The Grid", "who keeps the lights on", "scale", {"subject": "electricity pylon isolated", "tiny": "small house isolated white", "ground": "green field"}),
+ ("chad", "pf", "Lake Chad", "a lake on the edge of the Sahara", "satellite", {"country": "Chad", "bbox": (10, 9, 19, 17)}),
+ ("ballot", "pf", "The Box", "where power changes hands", "split", {"subject": "ballot box isolated white", "second": "crown isolated white"}),
+ # ---------------- Dragon Psychology ----------------
+ ("puppet", "dp", "Pulled by Strings", "who moves you", "hand", {"subject": "marionette puppet isolated", "ground": "theater stage curtain", "hand": "hand pinch fingers isolated white"}),
+ ("overthink", "dp", "Overthinking", "the loop that never closes", "sundisc", {"subject": "human brain model isolated", "second": "maze isolated white"}),
+ ("compare", "dp", "The Comparison Trap", "their highlight, your behind-the-scenes", "split", {"subject": "red apple isolated white", "second": "golden apple isolated"}),
+ ("slot", "dp", "The Slot Machine in Your Pocket", "variable rewards", "scale", {"subject": "slot machine isolated", "tiny": "man walking silhouette isolated", "ground": "casino lights"}),
+ ("fear", "dp", "Fear", "the oldest alarm", "sundisc", {"subject": "candle flame isolated black", "second": "shadow hand"}),
+ ("memory", "dp", "Memory Is a Copy", "of a copy of a copy", "diorama", {"subject": "vintage camera isolated white", "facade": "old house facade", "hand": "hand holding object isolated white"}),
+ ("habit", "dp", "The Habit Loop", "cue, routine, reward", "hand", {"subject": "padlock with key isolated", "ground": "wooden floor", "hand": "hand holding key isolated"}),
+ ("anxiety", "dp", "Anxiety", "the storm before the storm", "scale", {"subject": "storm cloud isolated", "tiny": "man walking silhouette isolated", "ground": "empty road"}),
+ ("choice", "dp", "Two Roads", "why choosing hurts", "split", {"subject": "door isolated white", "second": "open door isolated"}),
+ ("ego", "dp", "The Ego", "a crown you made yourself", "sundisc", {"subject": "crown isolated white", "second": "mirror isolated white"}),
+ ("timeblind", "dp", "Time Blindness", "where did the hour go", "hand", {"subject": "hourglass isolated white", "ground": "sand", "hand": "hand holding object isolated white"}),
+ ("lonely", "dp", "Alone in a Crowd", "the quiet hunger", "scale", {"subject": "empty chair isolated white", "tiny": "crowd silhouette isolated", "ground": "empty field"}),
+ ("status", "dp", "The Status Game", "everyone is keeping score", "diorama", {"subject": "trophy cup isolated white", "facade": "luxury building facade", "hand": "hand holding object isolated white"}),
+ ("attention", "dp", "Attention Is the Price", "of everything free", "sundisc", {"subject": "magnifying glass isolated white", "second": "eye isolated"}),
+ ("impulse", "dp", "Just One More", "the impulse that wins", "hand", {"subject": "donut isolated white", "ground": "pink background", "hand": "hand reaching isolated white"}),
+ ("mask", "dp", "The Mask", "the self we show", "sundisc", {"subject": "venetian mask isolated white", "second": "theater mask isolated"}),
+ ("critic", "dp", "The Inner Critic", "the voice that is never kind", "scale", {"subject": "megaphone isolated white", "tiny": "man walking silhouette isolated", "ground": "concrete wall"}),
+ ("wait", "dp", "Wait for It", "the power of later", "diorama", {"subject": "marshmallow isolated white", "facade": "candy shop facade", "hand": "hand holding object isolated white"}),
+ ("trust", "dp", "Trust", "a bet on another mind", "hand", {"subject": "bridge isolated", "ground": "river water", "hand": "hand open palm isolated white"}),
+ ("escape", "dp", "Escapism", "the door out of now", "sundisc", {"subject": "hot air balloon isolated", "second": "paper plane isolated white"}),
+ ("overload", "dp", "Too Much Information", "the mind's full inbox", "scale", {"subject": "pile of papers isolated white", "tiny": "man walking silhouette isolated", "ground": "office"}),
+ ("nostalgia", "dp", "Nostalgia", "the past, edited", "diorama", {"subject": "cassette tape isolated white", "facade": "retro shop facade", "hand": "hand holding object isolated white"}),
+ ("risk", "dp", "One Wrong Move", "how we judge risk", "hand", {"subject": "jenga tower isolated white", "ground": "wooden table", "hand": "hand pinch fingers isolated white"}),
+ ("envy", "dp", "Greener Grass", "the envy machine", "split", {"subject": "green grass isolated white", "second": "wooden fence isolated"}),
+ ("sleep", "dp", "The Lost Hours", "what sleep does at night", "torn", {"subject": "alarm clock isolated white", "second": "moon isolated"}),
+]
+assert len(C) == 50 and len({c[0] for c in C}) == 50

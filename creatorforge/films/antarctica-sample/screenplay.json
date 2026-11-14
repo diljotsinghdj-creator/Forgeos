@@ -1,0 +1,68 @@
+{
+ "id": "antarctica-sample",
+ "title": "Antarctica in 15 seconds",
+ "channel": "sample",
+ "subject": "evolution",
+ "genre": "environment",
+ "native_material": "measurements of cold, ice and sea level; places",
+ "engine": "trojan-horse",
+ "hook_mechanism": "a world record number",
+ "metaphors": [
+  "ice beside a skyscraper",
+  "the sea rising up a London landmark"
+ ],
+ "language": "en",
+ "lang": "en-us",
+ "voice": "am_michael",
+ "art": {
+  "accent": "#3E8FC7"
+ },
+ "concept": {
+  "logline": "The coldest place on Earth, and the water locked in its ice.",
+  "central_question": "How much ice is down there?",
+  "claim": "Antarctica's ice is so thick that melting it would raise the seas 58 metres."
+ },
+ "thumbnail": "Statement: *58 metres*",
+ "cutdowns": [],
+ "scenes": [
+  {
+   "id": "S1",
+   "act": "hook",
+   "purpose": "orient",
+   "delivery": "urgent",
+   "pause": 0.15,
+   "narration": "The coldest place ever measured? Here. Minus 89.2 degrees.",
+   "graphic": "Globe: Antarctica + Vostok Station | Coldest ever: −89.2 °C · Vostok, 1983",
+   "claims": [
+    "C1"
+   ]
+  },
+  {
+   "id": "S2",
+   "act": "discovery",
+   "purpose": "explain",
+   "delivery": "urgent",
+   "pause": 0.15,
+   "narration": "Its ice is almost five kilometres thick. Here's the Burj Khalifa beside it.",
+   "graphic": "Towers3d: Ice sheet at its thickest 4,897, Burj Khalifa 828 | Antarctica's ice, to scale | m",
+   "claims": [
+    "C2",
+    "C4"
+   ]
+  },
+  {
+   "id": "S3",
+   "act": "ending",
+   "purpose": "move",
+   "delivery": "urgent",
+   "pause": 0.35,
+   "narration": "Melt it all, and the seas rise 58 metres. Most of Big Ben's tower, gone.",
+   "graphic": "Towers3d: Big Ben's tower 96 | If all of Antarctica's ice melted | m | water: 58",
+   "claims": [
+    "C3",
+    "C5"
+   ]
+  }
+ ],
+ "target_seconds": 15
+}

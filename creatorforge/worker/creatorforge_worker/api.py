@@ -1,0 +1,928 @@
+"""CreatorForge worker HTTP API.
+
+Legacy (RC10 app): GET /health, POST /v1/images/generate, POST /v1/voice/generate,
+                    /v1/video/jobs (501 until video models land).
+One-button production: POST /v1/productions and friends (see README)."""
+from __future__ import annotations
+
+import asyncio
+import hashlib
+import uuid
+import time
+import hmac
+import re
+import shutil
+import tempfile
+import threading
+from contextlib import asynccontextmanager
+from pathlib import Path
+
+from fastapi import Depends, FastAPI, HTTPException, Request
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse, Response
+
+from . import __version__, providers
+from .config import Config
+from . import accounts as acct
+from . import publish
+from . import chat as director_chat
+from .director import Character, ProductionSpec
+from .library import ASSET_KINDS, Library
+from .media import ff
+from .media import verify
+from .media.ff import MediaError
+from .pipeline import Pipeline
+from .providers.base import NotConfigured, ProviderError
+from .runner import Runner
+from .store import JobStore
+from .templates import ASPECTS, STYLE_PRESETS, TEMPLATES
+
+
+def create_app(cfg: Config | None = None, start_runner: bool = True) -> FastAPI:
+    cfg = cfg or Config.from_env()
+    store = JobStore(cfg.jobs_dir)
+    library = Library(cfg.data_dir / "library", cfg.allow_mock)
+    pipeline = Pipeline(cfg, store, library)
+    runner = Runner(pipeline, store)
+    characters = library.characters
+    accounts = acct.AccountStore(cfg.data_dir / "accounts.json")
+
+    @asynccontextmanager
+    async def lifespan(_app: FastAPI):
+        stop = threading.Event()
+        if start_runner:
+            runner.start()
+        yield
+        stop.set()
+
+    app = FastAPI(title="CreatorForge Worker", version=__version__, lifespan=lifespan)
+    app.state.cfg, app.state.store, app.state.runner = cfg, store, runner
+
+    activity = cfg.data_dir / "last_request"
+
+    @app.middleware("http")
+    async def mark_activity(request: Request, call_next):
+        # Lets the cloud idle guard know someone is using the studio (it stops idle pods to save money).
+        if request.url.path != "/health":
+            try:
+                activity.touch()
+            except OSError:
+                pass
+        return await call_next(request)
+
+    async def auth(request: Request) -> None:
+        """The owner's token (CF_WORKER_TOKEN) sees everything; account keys see only their own work."""
+        header = request.headers.get("authorization", "")
+        key = header[7:].strip() if header.lower().startswith("bearer ") else ""
+        if cfg.token and hmac.compare_digest(key.encode(), cfg.token.encode()):
+            acct.current.set(None)
+            return
+        a = accounts.by_key(key)
+        if a is not None:
+            acct.current.set(a)
+            return
+        if not cfg.token and not accounts.any():
+            acct.current.set(None)
+            return
+        raise HTTPException(401, "missing or invalid worker token")
+
+    def admin_only() -> None:
+        if acct.current.get() is not None:
+            raise HTTPException(403, "only the worker owner can do this")
+
+    def visible(job: dict) -> bool:
+        a = acct.current.get()
+        return a is None or job.get("owner") == a["id"]
+
+    def provider_status() -> dict:
+        status = {}
+        for name, build in [("llm", lambda: providers.build_llm(cfg)), ("image", lambda: providers.build_image(cfg)),
+                            ("voice", lambda: providers.build_voice(cfg, providers.voice_profile(cfg, None, pipeline.library_voices()))),
+                            ("video", lambda: providers.build_video(cfg))]:
+            try:
+                status[name] = {"ready": True, "id": build().id}
+            except NotConfigured as e:
+                status[name] = {"ready": False, "error": str(e)}
+        status["captions"] = {"ready": True, "id": "whisper" if cfg.asr_provider == "whisper" else "estimated"}
+        try:
+            gen = providers.build_music(cfg)
+            status["music"] = {"ready": True, "id": gen.id if gen else (f"library:{cfg.music_dir}" if cfg.music_dir else "none")}
+        except NotConfigured as e:
+            status["music"] = {"ready": False, "error": str(e)}
+        return status
+
+    def job_or_404(job_id: str) -> dict:
+        try:
+            job = store.load(job_id)
+        except KeyError:
+            raise HTTPException(404, "production not found") from None
+        if not visible(job):
+            raise HTTPException(404, "production not found")
+        return job
+
+    def public(job: dict) -> dict:
+        j = {k: v for k, v in job.items() if k not in ("music_track", "render")}
+        if j.get("status") == "RUNNING" and runner.cancelling(j["id"]):
+            j.update(message="Cancelling - stops after the current step", cancelling=True)
+        if j.get("result"):
+            j["result"] = {**j["result"], "video_url": f"/v1/productions/{job['id']}/video"}
+        return j
+
+    @app.get("/health")
+    def health() -> dict:
+        st = provider_status()
+        return {"ok": True, "version": __version__, "auth_required": bool(cfg.token),
+                "production_ready": all(v["ready"] for k, v in st.items() if k != "video"),
+                "ai_video_ready": st["video"]["ready"], "providers": st,
+                "mock": cfg.allow_mock}
+
+    @app.get("/v1/capabilities", dependencies=[Depends(auth)])
+    def capabilities() -> dict:
+        return {"templates": [{"id": t.id, "name": t.name, "aspect": t.aspect} for t in TEMPLATES.values()],
+                "aspects": list(ASPECTS), "pacing": ["slow", "medium", "fast"],
+                "motion": ["stills"] + (["ai_video"] if cfg.video_provider else []),
+                "styles": [{"id": k, "name": v[0]} for k, v in STYLE_PRESETS.items()],
+                "voices": [{"id": v.id, "name": v.name, "provider": v.provider} for v in cfg.voices + pipeline.library_voices()],
+                "providers": provider_status()}
+
+    # ---- one-button production -----------------------------------------------------------
+    def build_spec(body: dict) -> ProductionSpec:
+        try:
+            spec = ProductionSpec.from_dict(body)
+            # Snapshot library characters so later library edits never change a production mid-flight.
+            known = {c.name.lower() for c in spec.characters}
+            for c in characters.get_many(spec.character_ids):
+                if c["name"].lower() not in known:
+                    spec.characters.append(Character(c["name"], c["description"]))
+        except (ValueError, TypeError) as e:
+            raise HTTPException(422, str(e)) from None
+        return spec
+
+    def charge(spec_dict: dict) -> str:
+        """Takes credits from the calling account (the owner is never charged). Returns the owner id."""
+        a = acct.current.get()
+        if a is None:
+            return ""
+        if a["role"] == "client":
+            raise HTTPException(403, "client accounts can review videos but not create them")
+        try:
+            accounts.charge(a["id"], acct.cost(spec_dict))
+        except PermissionError as e:
+            raise HTTPException(402, str(e)) from None
+        return a["id"]
+
+    def submit(spec: ProductionSpec, title: str = "", director_llm: dict | None = None, stock: dict | None = None,
+               elevenlabs: dict | None = None, raw_script: str = "") -> dict:
+        d = spec.to_dict()
+        owner = charge(d)
+        job = store.create(d, title)
+        if owner:
+            job["owner"] = owner
+        if spec.vox_graphics and raw_script:
+            job["vox_raw"] = raw_script[:200_000]   # the script with its direction lines, for the Vox director
+        if owner or job.get("vox_raw"):
+            store.save(job)
+        if director_llm:
+            providers.set_director_llm(job["id"], director_llm)   # memory only - the key is never written to disk
+        if stock:
+            providers.set_stock_key(job["id"], stock)
+        if elevenlabs:
+            providers.set_elevenlabs_key(job["id"], elevenlabs)   # memory only, like the keys above
+        runner.submit(job["id"])
+        return public(job)
+
+    @app.post("/v1/productions", status_code=202, dependencies=[Depends(auth)])
+    async def create_production(request: Request) -> dict:
+        body = await request.json()
+        director_llm = body.pop("director_llm", None) if isinstance(body, dict) else None
+        stock = body.pop("stock", None) if isinstance(body, dict) else None
+        eleven = body.pop("elevenlabs", None) if isinstance(body, dict) else None
+        return submit(build_spec(body), director_llm=director_llm if isinstance(director_llm, dict) else None,
+                      stock=stock if isinstance(stock, dict) else None,
+                      elevenlabs=eleven if isinstance(eleven, dict) else None,
+                      raw_script=str(body.get("script") or "") if isinstance(body, dict) else "")
+
+    @app.get("/v1/productions", dependencies=[Depends(auth)])
+    def list_productions() -> list[dict]:
+        return [{"id": j["id"], "status": j["status"], "progress": j["progress"], "message": j["message"],
+                 "title": j.get("title") or (j.get("plan") or {}).get("title") or j["spec"]["idea"][:60],
+                 "cancelling": j["status"] == "RUNNING" and runner.cancelling(j["id"]),
+                 "created_at": j["created_at"], "variant_of": j.get("variant_of"), "hook_test": j.get("hook_test"),
+                 "language": j["spec"].get("language", "")} for j in store.all() if visible(j)]
+
+    @app.get("/v1/productions/{job_id}", dependencies=[Depends(auth)])
+    def get_production(job_id: str) -> dict:
+        return public(job_or_404(job_id))
+
+    @app.delete("/v1/productions/{job_id}", dependencies=[Depends(auth)])
+    def cancel_production(job_id: str, purge: bool = False):
+        job_or_404(job_id)
+        if purge:
+            try:
+                runner.purge(job_id)
+            except ValueError as e:
+                raise HTTPException(409, str(e)) from None
+            return Response(status_code=204)
+        return public(runner.cancel(job_id))
+
+    @app.post("/v1/productions/{job_id}/retry", dependencies=[Depends(auth)])
+    async def retry_production(job_id: str, request: Request, from_stage: str | None = None) -> dict:
+        job_or_404(job_id)
+        try:
+            body = await request.json()
+        except ValueError:
+            body = {}
+        if isinstance(body, dict) and isinstance(body.get("elevenlabs"), dict):
+            providers.set_elevenlabs_key(job_id, body["elevenlabs"])   # lent again after a pod restart
+        return public(runner.retry(job_id, from_stage))
+
+    @app.post("/v1/productions/{job_id}/scenes/{index}/regenerate", dependencies=[Depends(auth)])
+    def regenerate_scene(job_id: str, index: int) -> dict:
+        job_or_404(job_id)
+        try:
+            return public(runner.regenerate_scene(job_id, index))
+        except ValueError as e:
+            raise HTTPException(409, str(e)) from None
+
+    @app.post("/v1/productions/{job_id}/redraw", dependencies=[Depends(auth)])
+    async def redraw_scenes(job_id: str, request: Request) -> dict:
+        job_or_404(job_id)
+        body = await request.json()
+        try:
+            return public(runner.redraw_scenes(job_id, [int(i) for i in body.get("scenes") or []]))
+        except (ValueError, TypeError) as e:
+            raise HTTPException(409 if "busy" in str(e) else 422, str(e)) from None
+
+    @app.patch("/v1/productions/{job_id}/scenes/{index}", dependencies=[Depends(auth)])
+    async def edit_scene(job_id: str, index: int, request: Request) -> dict:
+        job_or_404(job_id)
+        body = await request.json()
+        try:
+            if body.get("asset_id"):
+                path, kind, name = resolve_asset(str(body["asset_id"]))
+                return public(runner.use_asset(job_id, index, path, kind, name))
+            return public(runner.edit_scene(job_id, index, body.get("narration"), body.get("visual")))
+        except KeyError:
+            raise HTTPException(404, "asset not found") from None
+        except (ValueError, MediaError) as e:
+            raise HTTPException(409, str(e)) from None
+
+    @app.patch("/v1/productions/{job_id}", dependencies=[Depends(auth)])
+    async def rename_production(job_id: str, request: Request) -> dict:
+        job_or_404(job_id)
+        try:
+            return public(runner.rename(job_id, str((await request.json()).get("title", ""))))
+        except ValueError as e:
+            raise HTTPException(422, str(e)) from None
+
+    @app.patch("/v1/productions/{job_id}/timeline", dependencies=[Depends(auth)])
+    async def edit_timeline(job_id: str, request: Request) -> dict:
+        job_or_404(job_id)
+        try:
+            return public(runner.edit_timeline(job_id, await request.json()))
+        except (ValueError, TypeError) as e:
+            raise HTTPException(409, str(e)) from None
+
+    @app.get("/v1/productions/{job_id}/files/{name}", dependencies=[Depends(auth)])
+    def production_file(job_id: str, name: str):
+        job_or_404(job_id)
+        if "/" in name or "\\" in name or name.startswith(".") or not name.startswith("scene_"):
+            raise HTTPException(404, "file not found")
+        path = store.dir(job_id) / name
+        if not path.is_file():
+            raise HTTPException(404, "file not found")
+        return FileResponse(path, media_type=_media_type(path))
+
+    @app.post("/v1/productions/{job_id}/publish-kit", dependencies=[Depends(auth)])
+    def publish_kit(job_id: str, refresh: bool = False) -> dict:
+        job = job_or_404(job_id)
+        if not job.get("plan"):
+            raise HTTPException(409, "the video has no script yet")
+        if job.get("publish_kit") and not refresh:
+            return job["publish_kit"]
+        try:
+            llm = providers.build_llm(cfg)
+        except NotConfigured:
+            llm = None
+        try:
+            kit = publish.make_kit(llm, job)
+        except ProviderError as e:
+            raise HTTPException(502, str(e)) from None
+        if job["status"] not in ("QUEUED", "RUNNING"):  # never race the runner's own saves
+            job = store.load(job_id)
+            job["publish_kit"] = kit
+            store.save(job)
+        return kit
+
+    @app.get("/v1/productions/{job_id}/export", dependencies=[Depends(auth)])
+    def export_production(job_id: str):
+        """CapCut / editor export: media in order, voice-over, music, SRT, timeline, MP4 and publish kit."""
+        job = job_or_404(job_id)
+        pictures = job["status"] in ("FAILED", "CANCELLED") and job.get("scenes") and \
+            all(s.get("image_state") == "READY" for s in job["scenes"])
+        if job["status"] != "READY" and not pictures:
+            raise HTTPException(409, "the video isn't finished yet")
+        jdir = store.dir(job_id)
+        # a video stopped after its pictures (e.g. at narration) still exports: pictures, timings and the script,
+        # for a voice-over made in CapCut
+        out = publish.export_zip(job, jdir, jdir / "work" / "export.zip", job.get("publish_kit"))
+        safe = re.sub(r"[^A-Za-z0-9]+", "_", job.get("title") or (job.get("plan") or {}).get("title") or job_id).strip("_")[:50]
+        return FileResponse(out, media_type="application/zip", filename=f"CreatorForge_{safe or job_id}.zip")
+
+    @app.post("/v1/productions/{job_id}/approve", dependencies=[Depends(auth)])
+    def approve_production(job_id: str) -> dict:
+        job_or_404(job_id)
+        return public(runner.approve(job_id))
+
+    @app.get("/v1/productions/{job_id}/video", dependencies=[Depends(auth)])
+    def production_video(job_id: str):
+        job = job_or_404(job_id)
+        if job["status"] != "READY" or not job.get("result"):
+            raise HTTPException(409, "video is not ready")
+        return FileResponse(store.dir(job_id) / job["result"]["file"], media_type="video/mp4",
+                            filename=f"creatorforge_{job_id}.mp4")
+
+    @app.get("/v1/productions/{job_id}/scenes/{index}/image", dependencies=[Depends(auth)])
+    def scene_image(job_id: str, index: int):
+        job = job_or_404(job_id)
+        if not 0 <= index < len(job["scenes"]) or not job["scenes"][index].get("image"):
+            raise HTTPException(404, "scene image not ready")
+        return FileResponse(store.dir(job_id) / job["scenes"][index]["image"], media_type="image/png")
+
+    # ---- libraries -----------------------------------------------------------------------
+    @app.get("/v1/library/characters", dependencies=[Depends(auth)])
+    def list_characters() -> list[dict]:
+        return characters.list()
+
+    @app.post("/v1/library/characters", status_code=201, dependencies=[Depends(auth)])
+    async def create_character(request: Request) -> dict:
+        try:
+            return characters.create(await request.json())
+        except ValueError as e:
+            raise HTTPException(422, str(e)) from None
+
+    @app.put("/v1/library/characters/{cid}", dependencies=[Depends(auth)])
+    async def update_character(cid: str, request: Request) -> dict:
+        try:
+            return characters.update(cid, await request.json())
+        except ValueError as e:
+            raise HTTPException(422, str(e)) from None
+        except KeyError:
+            raise HTTPException(404, "character not found") from None
+
+    @app.delete("/v1/library/characters/{cid}", status_code=204, dependencies=[Depends(auth)])
+    def delete_character(cid: str) -> Response:
+        try:
+            characters.delete(cid)
+        except KeyError:
+            raise HTTPException(404, "character not found") from None
+        return Response(status_code=204)
+
+    # Voice Profiles -----------------------------------------------------------------------
+    @app.get("/v1/library/voices", dependencies=[Depends(auth)])
+    def list_voices() -> list[dict]:
+        builtin = [{"id": v.id, "name": v.name, "provider": v.provider, "voice": v.voice, "speed": v.speed,
+                    "style": v.style, "lang": v.lang, "builtin": True} for v in cfg.voices]
+        return builtin + [{**v, "builtin": False} for v in library.voices.list()]
+
+    @app.post("/v1/library/voices", status_code=201, dependencies=[Depends(auth)])
+    async def create_voice(request: Request) -> dict:
+        try:
+            return library.voices.create(await request.json(), {v.id for v in cfg.voices})
+        except ValueError as e:
+            raise HTTPException(422, str(e)) from None
+
+    @app.put("/v1/library/voices/{vid}", dependencies=[Depends(auth)])
+    async def update_voice(vid: str, request: Request) -> dict:
+        try:
+            return library.voices.update(vid, await request.json())
+        except ValueError as e:
+            raise HTTPException(422, str(e)) from None
+        except KeyError:
+            raise HTTPException(404, "voice not found (built-in voices are set on the worker)") from None
+
+    @app.delete("/v1/library/voices/{vid}", status_code=204, dependencies=[Depends(auth)])
+    def delete_voice(vid: str) -> Response:
+        try:
+            library.voices.delete(vid)
+        except KeyError:
+            raise HTTPException(404, "voice not found (built-in voices are set on the worker)") from None
+        return Response(status_code=204)
+
+    @app.post("/v1/voice/elevenlabs/voices", dependencies=[Depends(auth)])
+    async def elevenlabs_voices(request: Request) -> list[dict]:
+        """The voices in the creator's ElevenLabs account, for the app's voice picker (key lent or on the pod)."""
+        try:
+            body = await request.json()
+        except ValueError:
+            body = {}
+        from .providers.elevenlabs_tts import list_voices
+        try:
+            return list_voices(providers.elevenlabs_key(cfg, lent=body if isinstance(body, dict) else None))
+        except NotConfigured as e:
+            raise HTTPException(400, str(e)) from None
+        except ProviderError as e:
+            raise HTTPException(502, str(e)) from None
+
+    @app.post("/v1/library/voices/{vid}/preview", dependencies=[Depends(auth)])
+    async def preview_voice(vid: str, request: Request):
+        try:
+            body = await request.json()
+        except ValueError:
+            body = {}
+        try:
+            lent = body.get("director_llm") if isinstance(body, dict) else None
+            profile = providers.voice_profile(cfg, vid, pipeline.library_voices())
+            key = (providers.elevenlabs_key(cfg, lent=body.get("elevenlabs") if isinstance(body, dict) else None)
+                   if profile.provider == "elevenlabs" else providers.gemini_key(cfg, lent=lent))
+            voice = providers.build_voice(cfg, profile, key=key)
+            sample = ("नमस्ते, मैं आपके क्रिएटरफ़ोर्ज वीडियो की कहानी ऐसे सुनाऊँगा।" if getattr(voice, "lang", "") == "hi"
+                      else "This is how I sound narrating your CreatorForge video.")
+            text = str(body.get("text") or sample)[:300]
+            with tempfile.TemporaryDirectory() as d:
+                out = Path(d) / "preview.wav"
+                voice.synthesize(text, out)
+                verify.wav(out)
+                return Response(out.read_bytes(), media_type="audio/wav")
+        except NotConfigured as e:
+            raise HTTPException(404, str(e)) from None
+        except (ProviderError, MediaError) as e:
+            raise HTTPException(502, str(e)) from None
+
+    # Asset Library ------------------------------------------------------------------------
+    def resolve_asset(asset_id: str) -> tuple[Path, str, str]:
+        """Library uploads by id, or generated scene files as 'gen~<production>~<file>'."""
+        if asset_id.startswith("gen~"):
+            _, jid, name = asset_id.split("~", 2)
+            if "/" in name or not name.startswith("scene_"):
+                raise KeyError(asset_id)
+            path = store.dir(jid) / name
+            if not path.is_file():
+                raise KeyError(asset_id)
+            kind = {".png": "image", ".jpg": "image", ".jpeg": "image", ".mp4": "video"}.get(path.suffix.lower(), "audio")
+            return path, kind, name
+        a = library.assets.get(asset_id)
+        kind = "audio" if a["kind"] in ("music", "sfx") else a["kind"]
+        return library.assets.path(a), kind, a["name"]
+
+    @app.get("/v1/library/assets", dependencies=[Depends(auth)])
+    def list_assets(kind: str | None = None, generated: bool = False) -> list[dict]:
+        out = [{**a, "source": "upload", "file_url": f"/v1/library/assets/{a['id']}/file"} for a in library.assets.list(kind)]
+        if generated:
+            for j in store.all():
+                title = j.get("title") or (j.get("plan") or {}).get("title") or j["spec"]["idea"][:40]
+                for sc in j.get("scenes", []):
+                    for key, k in (("image", "image"), ("clip", "video"), ("narration", "audio")):
+                        name = sc.get(key)
+                        if not name or (kind and kind != k) or not (store.dir(j["id"]) / name).is_file():
+                            continue
+                        out.append({"id": f"gen~{j['id']}~{name}", "kind": k, "source": "generated",
+                                    "name": f"{title[:40]} - scene {sc['index'] + 1} {k}", "created_at": j["created_at"],
+                                    "file_url": f"/v1/productions/{j['id']}/files/{name}"})
+        return out
+
+    @app.post("/v1/library/assets", status_code=201, dependencies=[Depends(auth)])
+    async def upload_asset(request: Request, kind: str, name: str = "") -> dict:
+        if kind not in ASSET_KINDS:
+            raise HTTPException(422, f"kind must be one of: {', '.join(ASSET_KINDS)}")
+        ext = Path(name).suffix.lower()[:6] or {"image": ".png", "video": ".mp4"}.get(kind, ".wav")
+        tmpdir = Path(tempfile.mkdtemp(dir=library.assets.root))
+        tmp = tmpdir / f"upload{ext}"
+        size = 0
+        try:
+            with tmp.open("wb") as f:
+                async for chunk in request.stream():
+                    size += len(chunk)
+                    if size > 2048 * 1024 * 1024:     # a 45-60 min 1080p documentary is well over 300 MB
+                        raise HTTPException(413, "asset larger than 2 GB")
+                    f.write(chunk)
+            return library.assets.add(kind, name, tmp, ext, lambda p: _check_asset(kind, p))
+        except (MediaError, ValueError) as e:
+            raise HTTPException(422, f"not a usable {kind}: {e}") from None
+        finally:
+            shutil.rmtree(tmpdir, ignore_errors=True)
+
+    @app.post("/v1/library/intro3d", status_code=201, dependencies=[Depends(auth)])
+    def make_intro3d(body: dict) -> dict:
+        """A 3D channel intro made in Blender, saved to the asset library as a video:
+        {"title": "PRINT FACTS", "tagline": "...", "aspect": "16:9" | "9:16", "seconds": 3}"""
+        from .media import intro3d
+        portrait = str(body.get("aspect", "16:9")) == "9:16"
+        tmpdir = Path(tempfile.mkdtemp(dir=library.assets.root))
+        try:
+            out = intro3d.render(str(body.get("title", "")), tmpdir / "intro.mp4", str(body.get("tagline", "")),
+                                 width=1080 if portrait else 1920, height=1920 if portrait else 1080,
+                                 seconds=max(2.0, min(6.0, float(body.get("seconds", 3)))))
+            return library.assets.add("video", f"3D intro - {str(body.get('title', ''))[:40]}", out, ".mp4",
+                                      lambda p: _check_asset("video", p))
+        except MediaError as e:
+            raise HTTPException(422, str(e)) from None
+        finally:
+            shutil.rmtree(tmpdir, ignore_errors=True)
+
+    @app.post("/v1/library/stickman-prompts", dependencies=[Depends(auth)])
+    def stickman_prompts(body: dict) -> dict:
+        """A script as ready-to-paste stickman video prompts (Gemini / Veo / any video model), one per ~8 s shot:
+        {"script": "...", "look": "stick_cozy", "aspect": "16:9", "character": "", "shot_seconds": 8}"""
+        from . import stickman_prompts as sp
+        try:
+            return sp.build(str(body.get("script", ""))[:150_000], str(body.get("look", sp.DEFAULT_LOOK)),
+                            str(body.get("aspect", "16:9")), str(body.get("character", ""))[:600],
+                            float(body.get("shot_seconds", 8) or 8))
+        except (ValueError, TypeError) as e:
+            raise HTTPException(422, str(e)) from None
+
+    @app.patch("/v1/library/assets/{aid}", dependencies=[Depends(auth)])
+    async def rename_asset(aid: str, request: Request) -> dict:
+        try:
+            return library.assets.rename(aid, str((await request.json()).get("name", "")))
+        except KeyError:
+            raise HTTPException(404, "asset not found") from None
+
+    @app.delete("/v1/library/assets/{aid}", status_code=204, dependencies=[Depends(auth)])
+    def delete_asset(aid: str) -> Response:
+        try:
+            library.assets.delete(aid)
+        except KeyError:
+            raise HTTPException(404, "asset not found") from None
+        return Response(status_code=204)
+
+    @app.get("/v1/library/assets/{aid}/file", dependencies=[Depends(auth)])
+    def asset_file(aid: str):
+        try:
+            a = library.assets.get(aid)
+        except KeyError:
+            raise HTTPException(404, "asset not found") from None
+        path = library.assets.path(a)
+        return FileResponse(path, media_type=_media_type(path), filename=a["name"])
+
+    @app.get("/v1/library/videos", dependencies=[Depends(auth)])
+    def list_videos() -> list[dict]:
+        """Media Library: every finished, verified production."""
+        out = []
+        for j in store.all():
+            if j["status"] == "READY" and j.get("result") and visible(j):
+                v = j["result"]["verification"]
+                out.append({"id": j["id"], "title": j.get("title") or j["result"].get("title") or j["spec"]["idea"][:60],
+                            "aspect": j["spec"]["aspect"], "template": j["spec"]["template"],
+                            "duration_s": v["duration_s"], "bytes": v["bytes"], "created_at": j["created_at"],
+                            "video_url": f"/v1/productions/{j['id']}/video",
+                            "thumbnail_url": f"/v1/productions/{j['id']}/scenes/0/image"})
+        return out
+
+    # ---- Vox director: a graphic on every line, checked before rendering ----------------------
+    @app.post("/v1/scripts/check", dependencies=[Depends(auth)])
+    async def script_check(request: Request) -> dict:
+        from . import vox_director
+        body = await request.json()
+        script = str(body.get("script") or "")[:200_000]
+        issues = vox_director.check(script, props=bool(body.get("editorial_props")))
+        return {"issues": issues, "lines": len(vox_director.blocks(script)[1]),
+                "errors": sum(i["level"] == "error" for i in issues)}
+
+    @app.post("/v1/scripts/direct", dependencies=[Depends(auth)])
+    async def script_direct(request: Request) -> dict:
+        """Adds a Vox graphic to every line (the app's AI when lent, else the pod's model, else rules)."""
+        from . import vox_director
+        body = await request.json()
+        script = str(body.get("script") or "")[:200_000]
+        lent = body.get("director_llm") if isinstance(body.get("director_llm"), dict) else None
+        llm = None
+        try:
+            if lent:
+                tmp = "direct-" + uuid.uuid4().hex
+                providers.set_director_llm(tmp, lent)
+                try:
+                    llm = providers.director_llm(cfg, tmp)
+                finally:
+                    providers._director_llms.pop(tmp, None)
+            else:
+                llm = providers.director_llm(cfg, "")
+        except NotConfigured:
+            llm = None
+        props = bool(body.get("editorial_props"))
+        fixed, report = await asyncio.to_thread(vox_director.ensure, script, llm, True, props)
+        issues = vox_director.check(fixed, props=props)
+        return {"script": fixed, "report": report, "issues": issues,
+                "errors": sum(i["level"] == "error" for i in issues)}
+
+    # ---- Chat with your Director ---------------------------------------------------------
+    @app.post("/v1/director/chat", dependencies=[Depends(auth)])
+    async def director_chat_turn(request: Request) -> dict:
+        body = await request.json()
+        try:
+            return director_chat.chat(llm_or_503(), body.get("messages") or [],
+                                      body.get("draft") if isinstance(body.get("draft"), dict) else None)
+        except ValueError as e:
+            raise HTTPException(422, str(e)) from None
+        except ProviderError as e:
+            raise HTTPException(502, str(e)) from None
+
+    @app.post("/v1/director/produce", status_code=202, dependencies=[Depends(auth)])
+    async def director_produce(request: Request) -> dict:
+        body = await request.json()
+        draft = body.get("draft") if isinstance(body.get("draft"), dict) else {}
+        base = body.get("production") if isinstance(body.get("production"), dict) else {}
+        return submit(build_spec(director_chat.production_body(draft, base)))
+
+    # ---- Dubbing and Hook Lab --------------------------------------------------------------
+    def variant_charge(job: dict, factor: float = 1.0) -> str:
+        a = acct.current.get()
+        if a is None:
+            return ""
+        if a["role"] == "client":
+            raise HTTPException(403, "client accounts can review videos but not create them")
+        try:
+            accounts.charge(a["id"], max(1, round(acct.cost(job["spec"]) * factor)))
+        except PermissionError as e:
+            raise HTTPException(402, str(e)) from None
+        return a["id"]
+
+    def own_new(jobs: list[dict], owner: str) -> None:
+        if owner:
+            for j in jobs:
+                j = store.load(j["id"])
+                j["owner"] = owner
+                store.save(j)
+
+    @app.post("/v1/productions/{job_id}/dub", status_code=202, dependencies=[Depends(auth)])
+    async def dub_production(job_id: str, request: Request) -> dict:
+        """Same visuals, new language. The phone translates (so no worker LLM is needed) and sends one line per scene."""
+        src = job_or_404(job_id)
+        body = await request.json()
+        language = str(body.get("language", "")).strip()
+        if not language:
+            raise HTTPException(422, "language is required")
+        owner = variant_charge(src, 0.5)  # visuals are reused, so dubbing costs half
+        try:
+            job = runner.dub(job_id, language, str(body.get("voice", "")), body.get("narrations") or [], str(body.get("title", "")))
+        except ValueError as e:
+            raise HTTPException(409 if "busy" in str(e) else 422, str(e)) from None
+        own_new([job], owner)
+        return public(job)
+
+    # ---- Team: client review links --------------------------------------------------------
+    def review_job(token: str) -> dict:
+        if not token.isalnum() or len(token) < 16:
+            raise HTTPException(404, "review link not found")
+        for j in store.all():
+            if (j.get("review") or {}).get("token") == token:
+                return j
+        raise HTTPException(404, "review link not found")
+
+    @app.post("/v1/productions/{job_id}/review-link", dependencies=[Depends(auth)])
+    def make_review_link(job_id: str) -> dict:
+        job = job_or_404(job_id)
+        if job["status"] != "READY":
+            raise HTTPException(409, "the video isn't finished yet")
+        if not job.get("review"):
+            job = store.load(job_id)
+            job["review"] = {"token": uuid.uuid4().hex + uuid.uuid4().hex[:8], "status": "pending", "comments": []}
+            store.save(job)
+        return {"path": f"/review/{job['review']['token']}", "status": job["review"]["status"],
+                "comments": job["review"]["comments"]}
+
+    @app.get("/v1/reviews", dependencies=[Depends(auth)])
+    def list_reviews() -> list[dict]:
+        return [{"id": j["id"], "title": j.get("title") or (j.get("plan") or {}).get("title", ""), "path": f"/review/{j['review']['token']}",
+                 "status": j["review"]["status"], "comments": j["review"]["comments"]}
+                for j in store.all() if j.get("review") and visible(j)]
+
+    @app.get("/review/{token}", response_class=HTMLResponse)
+    def review_page(token: str):
+        import html as _h
+        j = review_job(token)
+        comments = "".join(f"<li><b>{_h.escape(c['decision'])}</b> {_h.escape(c['comment'])}</li>" for c in j["review"]["comments"])
+        return acct.REVIEW_PAGE.format(title=_h.escape(j.get("title") or j["plan"]["title"]), status=_h.escape(j["review"]["status"]),
+                                       token=token, comments=comments)
+
+    @app.get("/review/{token}/video")
+    def review_video(token: str):
+        j = review_job(token)
+        return FileResponse(store.dir(j["id"]) / "creatorforge.mp4", media_type="video/mp4")
+
+    @app.post("/review/{token}")
+    async def review_decision(token: str, request: Request):
+        from urllib.parse import parse_qs
+        j = review_job(token)
+        form = {k: v[0] for k, v in parse_qs((await request.body()).decode(errors="replace")).items()}
+        decision = form.get("decision", "")
+        if decision not in ("approved", "changes"):
+            raise HTTPException(422, "decision must be approved or changes")
+        j = store.load(j["id"])
+        j["review"]["status"] = decision
+        j["review"]["comments"].append({"decision": decision, "comment": form.get("comment", "")[:2000], "at": time.time()})
+        store.save(j)
+        return RedirectResponse(f"/review/{token}", status_code=303)
+
+    # ---- Accounts (hosted-ready) ----------------------------------------------------------
+    @app.get("/v1/me", dependencies=[Depends(auth)])
+    def me() -> dict:
+        a = acct.current.get()
+        if a is None:
+            return {"role": "owner", "name": "Worker owner", "credits": None, "used": None, "accounts": len(accounts.list())}
+        return acct.public(a)
+
+    @app.get("/v1/accounts", dependencies=[Depends(auth), Depends(admin_only)])
+    def list_accounts() -> list[dict]:
+        return [acct.public(a) for a in accounts.list()]
+
+    @app.post("/v1/accounts", status_code=201, dependencies=[Depends(auth), Depends(admin_only)])
+    async def create_account(request: Request) -> dict:
+        body = await request.json()
+        try:
+            return acct.public(accounts.create(str(body.get("name", "")), str(body.get("role", "creator")), int(body.get("credits", 0))), with_key=True)
+        except (ValueError, TypeError) as e:
+            raise HTTPException(422, str(e)) from None
+
+    @app.patch("/v1/accounts/{aid}", dependencies=[Depends(auth), Depends(admin_only)])
+    async def update_account(aid: str, request: Request) -> dict:
+        body = await request.json()
+        try:
+            return acct.public(accounts.update(aid, int(body.get("add_credits", 0)), str(body.get("name", "")), str(body.get("role", ""))))
+        except KeyError:
+            raise HTTPException(404, "account not found") from None
+        except (ValueError, TypeError) as e:
+            raise HTTPException(422, str(e)) from None
+
+    @app.delete("/v1/accounts/{aid}", status_code=204, dependencies=[Depends(auth), Depends(admin_only)])
+    def delete_account(aid: str) -> Response:
+        try:
+            accounts.delete(aid)
+        except KeyError:
+            raise HTTPException(404, "account not found") from None
+        return Response(status_code=204)
+
+    def llm_or_503():
+        try:
+            return providers.build_llm(cfg)
+        except NotConfigured as e:
+            raise HTTPException(503, str(e)) from None
+
+    # ---- legacy single-asset endpoints used by CreatorForge RC10 ---------------------------
+    @app.post("/v1/images/generate", dependencies=[Depends(auth)])
+    async def legacy_image(request: Request):
+        body = await request.json()
+        prompt = str(body.get("prompt", "")).strip()
+        aspect = str(body.get("aspect_ratio", "9:16"))
+        if not prompt or aspect not in ASPECTS:
+            raise HTTPException(422, "prompt and a valid aspect_ratio are required")
+        (w, h), _ = ASPECTS[aspect]
+        style = str(body.get("style", "") or "")
+        if style in STYLE_PRESETS:   # style preview: the same picture in any look, with that look's model
+            prompt = f"{prompt}. {STYLE_PRESETS[style][1]}"
+        try:
+            img = providers.build_image(cfg, style)
+            with tempfile.TemporaryDirectory() as d:
+                out = Path(d) / "image.png"
+                img.generate(prompt, "", w, h, int(body.get("seed", 0)) or int(hashlib.sha256(prompt.encode()).hexdigest()[:8], 16), out)
+                verify.image(out)
+                return Response(out.read_bytes(), media_type="image/png")
+        except (ProviderError, MediaError) as e:
+            raise HTTPException(502, str(e)) from None
+
+    @app.post("/v1/voice/generate", dependencies=[Depends(auth)])
+    async def legacy_voice(request: Request):
+        body = await request.json()
+        text = str(body.get("text", "")).strip()
+        if not text:
+            raise HTTPException(422, "text is required")
+        try:
+            voice = providers.build_voice(cfg, providers.voice_profile(cfg, body.get("voice") or None))
+            with tempfile.TemporaryDirectory() as d:
+                out = Path(d) / "voice.wav"
+                voice.synthesize(text, out)
+                verify.wav(out)
+                return Response(out.read_bytes(), media_type="audio/wav")
+        except (ProviderError, MediaError) as e:
+            raise HTTPException(502, str(e)) from None
+
+    # ---- stickman animation studio: production documents, editor operations, renders, asset library ----
+    studio = None
+
+    def anim():
+        nonlocal studio
+        if studio is None:
+            from .animation.studio_service import AnimationStore
+            studio = AnimationStore(cfg.data_dir / "animation")
+        return studio
+
+    owner = [Depends(auth), Depends(admin_only)]
+
+    def anim_call(fn, *args):
+        try:
+            return fn(*args)
+        except KeyError:
+            raise HTTPException(404, "not found") from None
+        except ValueError as e:
+            raise HTTPException(422, str(e)) from None
+
+    @app.get("/v1/animation/editor", response_class=HTMLResponse)
+    def anim_editor() -> HTMLResponse:
+        """The animation editor page (it asks for the worker token and calls the owner-only API below)."""
+        return HTMLResponse((Path(__file__).parent / "animation" / "editor.html").read_text())
+
+    @app.get("/v1/animation/vocab", dependencies=owner)
+    def anim_vocab() -> dict:
+        return anim().vocab()
+
+    @app.post("/v1/animation/docs/from-script", status_code=201, dependencies=owner)
+    async def anim_from_script(request: Request) -> dict:
+        body = await request.json()
+        return anim_call(anim().from_script, str(body.get("script", "")), str(body.get("title", "")),
+                         body.get("voice") or None, body.get("sources") or None)
+
+    @app.get("/v1/animation/docs", dependencies=owner)
+    def anim_list() -> list:
+        return anim().list()
+
+    @app.post("/v1/animation/docs", status_code=201, dependencies=owner)
+    async def anim_create(request: Request) -> dict:
+        return anim_call(anim().create, await request.json())
+
+    @app.get("/v1/animation/docs/{doc_id}", dependencies=owner)
+    def anim_get(doc_id: str) -> dict:
+        return anim_call(anim().get, doc_id)
+
+    @app.post("/v1/animation/docs/{doc_id}/ops", dependencies=owner)
+    async def anim_op(doc_id: str, request: Request) -> dict:
+        body = await request.json()
+        return anim_call(anim().apply, doc_id, str(body.get("op", "")), dict(body.get("args") or {}))
+
+    @app.post("/v1/animation/docs/{doc_id}/undo", dependencies=owner)
+    def anim_undo(doc_id: str) -> dict:
+        return anim_call(anim().undo, doc_id)
+
+    @app.post("/v1/animation/docs/{doc_id}/redo", dependencies=owner)
+    def anim_redo(doc_id: str) -> dict:
+        return anim_call(anim().redo, doc_id)
+
+    @app.get("/v1/animation/docs/{doc_id}/versions", dependencies=owner)
+    def anim_versions(doc_id: str) -> list:
+        return anim_call(anim().versions, doc_id)
+
+    @app.post("/v1/animation/docs/{doc_id}/versions", dependencies=owner)
+    async def anim_save_version(doc_id: str, request: Request) -> dict:
+        return anim_call(anim().save_version, doc_id, str((await request.json()).get("message", "")))
+
+    @app.post("/v1/animation/docs/{doc_id}/versions/{vid}/restore", dependencies=owner)
+    def anim_restore(doc_id: str, vid: str) -> dict:
+        return anim_call(anim().restore, doc_id, vid)
+
+    @app.post("/v1/animation/docs/{doc_id}/render", status_code=202, dependencies=owner)
+    def anim_render(doc_id: str, quality: str = "preview") -> dict:
+        return anim_call(anim().render, doc_id, quality)
+
+    @app.get("/v1/animation/docs/{doc_id}/render", dependencies=owner)
+    def anim_status(doc_id: str) -> dict:
+        return anim_call(anim().status, doc_id)
+
+    @app.get("/v1/animation/docs/{doc_id}/files/{name}", dependencies=owner)
+    def anim_file(doc_id: str, name: str):
+        return FileResponse(anim_call(anim().file, doc_id, name), media_type="video/mp4")
+
+    @app.get("/v1/animation/assets", dependencies=owner)
+    def anim_assets(kind: str | None = None, use: str | None = None) -> list:
+        return anim().asset_list(kind, use)
+
+    @app.post("/v1/animation/assets", status_code=201, dependencies=owner)
+    async def anim_asset_generate(request: Request) -> dict:
+        desc = str((await request.json()).get("description", "")).strip()
+        if not desc:
+            raise HTTPException(422, "describe the asset")
+        return anim_call(anim().asset_generate, desc)
+
+    @app.get("/v1/animation/assets/{aid}/thumbnail", dependencies=owner)
+    def anim_asset_thumb(aid: str):
+        return FileResponse(anim_call(anim().asset_thumbnail, aid), media_type="image/png")
+
+    @app.api_route("/v1/video/jobs{rest:path}", methods=["GET", "POST", "DELETE"], dependencies=[Depends(auth)])
+    def video_jobs(rest: str):
+        return JSONResponse({"error": "AI video clip generation is not enabled on this worker yet"}, status_code=501)
+
+    return app
+
+
+def _media_type(path: Path) -> str:
+    return {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".webp": "image/webp",
+            ".mp4": "video/mp4", ".mov": "video/quicktime", ".webm": "video/webm", ".wav": "audio/wav",
+            ".mp3": "audio/mpeg", ".m4a": "audio/mp4", ".aac": "audio/aac", ".ogg": "audio/ogg",
+            ".flac": "audio/flac"}.get(path.suffix.lower(), "application/octet-stream")
+
+
+def _check_asset(kind: str, path: Path) -> dict:
+    """Fail-closed import check: the file must really be the kind it claims to be."""
+    if kind == "image":
+        return verify.image(path)
+    info = ff.probe(path)
+    streams = info["streams"]
+    duration = float(info["format"].get("duration") or 0)
+    if kind == "video":
+        v = [s for s in streams if s.get("codec_type") == "video"]
+        if not v or duration < 0.5:
+            raise MediaError("no playable video stream")
+        return {"duration_s": round(duration, 2), "width": int(v[0]["width"]), "height": int(v[0]["height"])}
+    if not [s for s in streams if s.get("codec_type") == "audio"]:
+        raise MediaError("no audio stream")
+    if duration < (0.05 if kind == "sfx" else 0.5):
+        raise MediaError("audio too short")
+    return {"duration_s": round(duration, 2)}

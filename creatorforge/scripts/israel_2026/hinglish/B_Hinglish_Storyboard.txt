@@ -1,0 +1,1104 @@
+B - TIMESTAMPED STORYBOARD (HINGLISH)
+Israel 2026: Woh Chunav Jisne Kuch Tay Nahin Kiya
+Times at CreatorForge's 2.5 words a second. Total ~48.2 min. Real Hindi narration timing varies -
+re-time chapters after the final edit. Pictures, graphics and citations are the same as the English version.
+
+==================== RENDER 1: R1_Cold_Open_aur_Part_1  (1087 words, ~7.2 min, 16811 chars) ====================
+
+[0:00:00]  (10s)  VO: 27 अक्टूबर को इज़राइल में चुनाव हुआ। लगभग हर पाँच में से चार वोटर वोट डालने पहुँचे। एक पूरी पीढ़ी में इतना turnout नहीं देखा गया।
+            Tone: calm
+            Visual: A blue ballot box in an Israeli polling station, slips of paper beside it
+            Visual: A queue of voters seen from behind outside a school building in Israel
+            Stock: Israel polling station
+            Text: 27 OCT 2026 · TURNOUT ~78%
+            Cite: Israel National News; Israel Hayom, Oct 2026
+
+[0:00:10]  (8s)  VO: और जब गिनती ख़त्म हुई, तो देश के हाथ में आई 120 सीटों वाली एक संसद... और सरकार? ज़ीरो।
+            Tone: question
+            Visual: The Knesset building in Jerusalem at dusk, lights on
+            Visual: An empty semicircle of parliament seats seen from above
+            Big: 120 seats · 0 governments
+
+[0:00:18]  (8s)  VO: इज़राइल में सरकार बनाने के लिए चाहिए 61 सीटें। बस। पूरा खेल इतना ही है। आधे से एक ज़्यादा।
+            Tone: strong
+            Visual: A pocket calculator on a wooden desk showing a number
+            Visual: A wooden gavel resting on a stack of papers
+            Text: MAJORITY = 61
+
+[0:00:25]  (10s)  VO: प्रधानमंत्री बिन्यामिन नेतन्याहू के bloc को मिलीं 53 सीटें। पूर्व आर्मी चीफ़ गादी आइज़नकोट के bloc को 48। और अरब नेतृत्व वाली पार्टियों को 19।
+            Tone: strong
+            Visual: A pie of coloured seats in a parliament hemicycle chart printed on paper
+            Visual: Three stacks of coins of different heights on a table
+            Pie: Netanyahu bloc 53 | Eisenkot bloc 48 | Arab-led parties 19
+            Cite: Central Elections Committee results as reported by Israel Hayom, Times of Israel, 30 Oct 2026
+
+[0:00:35]  (12s)  VO: इनमें से कोई भी दो नंबर जोड़ दो, majority बन जाती है। पर इनमें से किन्हीं दो गुटों को साथ बैठने को कहो... तो मिलता है एक लंबा भाषण।
+            Tone: question
+            Visual: Two chairs facing away from each other in an empty room
+            Visual: A long conference table with only one chair pulled out
+            Animate: two people sit at a table, then turn their chairs away from each other and fold their arms
+
+[0:00:47]  (10s)  VO: तो इज़राइल ने वही किया जो उसे सबसे अच्छा आता है। ज़ोर-शोर से, पूरे जोश से, भारी संख्या में वोट डाला... एक बहस के लिए।
+            Tone: calm
+            Visual: A crowd of campaign placards leaning against a wall after an election, text unreadable
+            Visual: A street in Tel Aviv at night with traffic lights changing
+            Text: THE ELECTION THAT SETTLED NOTHING
+
+[0:00:57]  (15s)  VO: ये फ़िल्म उसी बहस के बारे में है। कौन जीता, कौन हारा, कौन कह रहा है कि उसका चुनाव चुरा लिया गया। और कौन अब भी इंतज़ार कर रहा है कि उस इमारत में कोई उसकी बात करे।
+            Tone: calm
+            Visual: Coils of rubble and broken concrete in Gaza seen from a distance under grey sky
+            Visual: A West Bank hillside with olive trees and a road winding below
+            Visual: The Knesset building in Jerusalem seen across a garden
+
+[0:01:12]  (10s)  VO: इसे म्यूज़िकल चेयर्स समझिए। म्यूज़िक रुका, सब बैठ गए, किसी को कुर्सी नहीं मिली... और अब सब कह रहे हैं कि कुर्सियाँ ही fixed थीं।
+            Tone: strong
+            Visual: A circle of empty chairs in a school hall
+            Visual: A record player with the needle lifted off the record
+            Animate: a group of people walk around chairs, the music stops, and they all stand still looking confused
+
+[0:01:22]  (14s)  VO: इस फ़िल्म में हम बार-बार एक सीट पर लौटेंगे। असली सीट नहीं, एक गुमशुदा सीट। सीट नंबर 61। हर गुट को चाहिए, किसी को मिल नहीं रही। आख़िर तक आपको समझ आ जाएगा कि क्यों।
+            Tone: question
+            Visual: A single theatre seat with a numbered tag, in an empty auditorium
+            Visual: A torch beam sweeping across dark rows of seats
+            Text: SEAT 61 · MISSING
+
+[0:01:36]  (14s)  VO: शुरू करने से पहले एक बात। आप जो भी सुनेंगे, उसका source है। आरोप को आरोप कहा जाएगा। Illustration को illustration लिखा जाएगा। और जहाँ तथ्य अभी बदल रहे हैं, वहाँ हम साफ़ बताएँगे।
+            Tone: calm
+            Visual: A stack of printed news reports held together with a black binder clip
+            Visual: A magnifying glass on a printed page, text unreadable
+            Text: SOURCES ON SCREEN · RESEARCH CUT-OFF 31 OCT 2026
+
+[1:50]  CHAPTER CARD  Part 1 | Asal Mein Hua Kya
+
+[0:01:50]  (12s)  VO: पहले ये समझिए कि यहाँ तक पहुँचे कैसे। ये चुनाव 27 अक्टूबर को होना ही नहीं था। इसे तब होना था जब सरकार की गाड़ी का पेट्रोल ख़त्म हो जाए।
+            Tone: calm
+            Visual: A long straight road in the Israeli desert running to the horizon
+            Visual: A calendar page for October with one date circled in red pen
+            Draw: circle
+
+[0:02:02]  (10s)  VO: और पेट्रोल ख़त्म हुआ एक मुद्दे पर, बाक़ी सबसे ज़्यादा: क्या अल्ट्रा-ऑर्थोडॉक्स, यानी हरेदी, नौजवानों को भी बाक़ी सबकी तरह आर्मी में भर्ती होना चाहिए?
+            Tone: strong
+            Visual: An army recruitment office building in Israel with a flag outside
+            Visual: Rows of empty military boots lined up on a concrete floor
+            Text: THE DRAFT EXEMPTION FIGHT
+            Cite: Times of Israel, 2025-2026
+
+[0:02:12]  (12s)  VO: 2025 में जब कोई पक्की क़ानूनी छूट नहीं मिली, तो हरेदी पार्टियाँ सरकार से बाहर निकल गईं। जुलाई 2026 में Knesset भंग हुई, और चुनाव आख़िरी क़ानूनी तारीख़ पर जाकर टिका।
+            Tone: calm
+            Visual: A row of empty cabinet chairs around a long table
+            Visual: A Knesset voting board with lights, seen from the gallery
+            Timeline: 2025 Haredi parties walk out | Jul 2026 Knesset dissolves | 27 Oct 2026 election day
+            Cite: Times of Israel; Jerusalem Post, 2025-2026
+
+[0:02:24]  (14s)  VO: मुख्य मुक़ाबला समझना आसान था। एक तरफ़ नेतन्याहू की Likud और उसके साथी: धार्मिक पार्टियाँ और कट्टर दक्षिणपंथ। दूसरी तरफ़ एक नई पार्टी, Yashar, जिसके नेता हैं गादी आइज़नकोट, आर्मी के पूर्व chief of staff।
+            Tone: calm
+            Visual: Likud campaign billboard on a highway, seen from a distance
+            Visual: A military beret and a folded map on a table
+            Split: Netanyahu bloc | Eisenkot bloc
+
+[0:02:38]  (11s)  VO: आइज़नकोट के साथ आई एक merged list, Beyachad, यानी "साथ मिलकर"। इसे बनाया दो पूर्व प्रधानमंत्रियों ने, नफ़्ताली बेनेट और याइर लापिड ने, और सबसे ऊपर बेनेट।
+            Tone: calm
+            Visual: Two empty podium lecterns side by side on a campaign stage
+            Visual: A campaign stage with blue lights and empty seats before a rally
+            Text: BEYACHAD = BENNETT + LAPID
+            Cite: Times of Israel, April 2026
+
+[0:02:49]  (9s)  VO: उसी तरफ़ थे अविगडोर लीबरमैन की Yisrael Beytenu, और याइर गोलान की Democrats, जिसमें पुरानी Labor और Meretz पार्टियाँ मिल चुकी हैं।
+            Tone: calm
+            Visual: A row of campaign flyers on a table, text unreadable
+            Visual: A party office doorway in Tel Aviv with a closed shutter
+            Cite: Times of Israel, 2026
+
+[0:02:58]  (14s)  VO: और दोनों गुटों से बाहर, अरब नेतृत्व वाली पार्टियाँ: दोबारा ज़िंदा हुई Joint List, और मंसूर अब्बास की इस्लामी पार्टी Ra'am, जो 2021 में इज़राइल की सत्ताधारी coalition में बैठने वाली पहली अरब पार्टी बनी थी।
+            Tone: strong
+            Visual: A polling station sign in Hebrew and Arabic on a school wall
+            Visual: A street in Nazareth with shops and pedestrians seen from behind
+            Text: 2021 · FIRST ARAB PARTY IN A COALITION
+            Cite: Al Jazeera; J Street, 2026
+
+[0:03:12]  (8s)  VO: Central Elections Committee के हिसाब से फ़ाइनल गिनती ये रही। Likud, 27। Yashar, 21। Beyachad, 12। Joint List, 11।
+            Tone: calm
+            Visual: A desk covered in sorted paper ballots in neat piles
+            Visual: Election officials' hands counting ballots under a lamp
+            Chart: Likud 27 | Yashar 21 | Beyachad 12 | Joint List 11
+            Cite: Central Elections Committee via Israel Hayom and Times of Israel, 30 Oct 2026
+
+[0:03:20]  (8s)  VO: United Torah Judaism, 7। Otzma Yehudit, 7। Yisrael Beytenu, 7। Ra'am, 8। Democrats, 8। Shas, 6। Religious Zionism, 6।
+            Tone: calm
+            Visual: Paper ballot slips with Hebrew letters fanned out on a table
+            Visual: An official stamping a stack of forms
+            Chart: Ra'am 8 | Democrats 8 | UTJ 7 | Otzma 7 | Yisrael Beytenu 7 | Shas 6 | Religious Zionism 6
+            Cite: Central Elections Committee via Israel Hayom and Times of Israel, 30 Oct 2026
+
+[0:03:27]  (14s)  VO: Shas, जो दशकों से इज़राइली सरकारों का पक्का हिस्सा रही, रिपोर्टों के मुताबिक़ अपने सबसे निचले स्तर पर पहुँच गई। और एक लिस्ट, जिसके बारे में आप सोचेंगे कि आराम से अंदर जाएगी, नहीं गई।
+            Tone: question
+            Visual: A deflated balloon lying on a polling station floor
+            Visual: An empty campaign office with chairs stacked
+            Cite: Israel National News, Oct 2026
+
+[0:03:41]  (16s)  VO: आर्मी reservists की एक पार्टी, वो लोग जिन्होंने जंग के कई महीने वर्दी में गुज़ारे, उसे मिले 2.7 प्रतिशत वोट। threshold है 3.25। तो reservists Knesset से बाहर... और पिछले तीन साल के बाद, शायद वो इसे छुट्टी ही मानें।
+            Tone: strong
+            Visual: A soldier's backpack and helmet on a bench at a bus station
+            Visual: A beach chair facing the sea at sunset
+            Text: RESERVISTS 2.7% · THRESHOLD 3.25%
+            Cite: Central Elections Committee via Times of Israel, Oct 2026
+
+[0:03:57]  (11s)  VO: अरब पक्ष का आँकड़ा ऐतिहासिक था। अरब नेतृत्व वाली पार्टियों को 19 सीटें, पिछले रिकॉर्ड 15 से ज़्यादा, और अरब वोटरों का turnout भी तेज़ी से बढ़ा।
+            Tone: strong
+            Visual: Voters seen from behind entering a polling station in an Arab town in Israel
+            Visual: A ballot slip being dropped into a blue box, close-up of hand
+            Text: 19 SEATS · PREVIOUS RECORD 15
+            Cite: Jerusalem Post; Al-Ahram, Oct 2026
+
+[0:04:08]  (10s)  VO: और यहीं से रात बिगड़ गई। क्योंकि एक दिन के अंदर नेतन्याहू की पार्टी के पास एक explanation था कि वो जीती क्यों नहीं।
+            Tone: dramatic
+            Visual: A dark television studio with an empty anchor desk
+            Visual: A smartphone on a table lighting up with a notification
+            Statement: The *explanation* came before the evidence.
+
+[0:04:18]  (16s)  VO: Likud ने कहा कि चुनाव, उनके शब्दों में, "चुरा लिया गया", और चुराया अरब पार्टियों ने। रिश्वत, धमकी और जालसाज़ी का आरोप लगाया, और कहा कि वो सैकड़ों गवाहियाँ पुलिस, Shin Bet और चुनाव समिति को सौंप रहे हैं।
+            Tone: strong
+            Visual: A folder of papers stamped with a red mark on a desk, text unreadable
+            Visual: A police station entrance in Israel at night
+            Quote: The elections were stolen by Arab parties | Likud statement, Oct 2026
+            Cite: Ynet; i24NEWS, 28 Oct 2026
+
+[0:04:33]  (15s)  VO: ये एक आरोप है। अब तक रिकॉर्ड पर क्या है, वो सुनिए। चुनाव समिति के एक वरिष्ठ अधिकारी ने धांधली के दावों को बेबुनियाद कहा। पुलिस ने कहा कि चुनाव चोरी होने का कोई सबूत नहीं है।
+            Tone: calm
+            Visual: A government office corridor with closed doors
+            Visual: A printed official statement on letterhead, text unreadable
+            Text: ALLEGATION · NOT PROVEN
+            Cite: Channel 12 via Jewish News; Ynet, Oct 2026
+
+[0:04:48]  (23s)  VO: चुनाव समिति के chairman, जस्टिस नोआम सोलबर्ग ने Shin Bet से विदेशी पैसे की रिपोर्टों की जाँच करने को ज़रूर कहा, जो कथित तौर पर क़तर से जुड़ी थीं। पर उन्होंने ये भी कहा कि वो उस सामग्री की पुष्टि नहीं कर सकते, और Shin Bet ने अपनी जाँच को सीमित बताया। क़तर इससे इनकार करता है।
+            Tone: calm
+            Visual: A judge's robe hanging on a coat stand in an office
+            Visual: An empty interrogation-style table under a lamp
+            Text: PROBE: LIMITED · NO FINDINGS PUBLISHED
+            Cite: Calcalist; Ynet; ABC, Oct 2026
+
+[0:05:11]  (20s)  VO: फिर दक्षिणपंथी सांसदों ने सोलबर्ग को चिट्ठी लिखी कि Ra'am को पड़ा हर एक वोट रद्द कर दिया जाए। हर एक वोट। उस पार्टी का, जिसने 8 सीटें जीतीं। गणित का सवाल मुश्किल लगे, तो एक तरीक़ा ये भी है: जो लोग सवाल मुश्किल बना रहे हैं, उन्हें ही मिटा दो।
+            Tone: strong
+            Visual: An eraser rubbing out pencil marks on a sheet of paper
+            Visual: A stack of ballots with a large rubber eraser on top
+            Animate: a man erases numbers from a blackboard while another man looks shocked
+            Cite: Jewish News; Ynet, Oct 2026
+
+[0:05:31]  (18s)  VO: अरब पार्टियों के नेताओं ने इस अभियान को नस्लवादी कहा। और पार्टियों के बारे में आपकी राय जो भी हो, इस दावे का गणित ज़ोर से बोलना ज़रूरी है। इज़राइल के लगभग हर पाँच में से एक नागरिक अरब है, और उन्होंने वोट डाला।
+            Tone: calm
+            Visual: A grandmother's hands holding a voter ID card, face out of frame
+            Visual: A town square in an Arab Israeli town with a mosque minaret and church tower
+            Text: ~1 IN 5 ISRAELI CITIZENS IS ARAB
+            Cite: Israel Central Bureau of Statistics; JTA, Oct 2026
+
+[0:05:49]  (10s)  VO: तो अब होगा क्या? इज़राइल में वोटर प्रधानमंत्री नहीं चुनते। पार्टियाँ चुनती हैं, एक ऐसे इंसान के ज़रिए जो ज़्यादातर फ़ीते काटता है: राष्ट्रपति आइज़क हर्ज़ोग।
+            Tone: question
+            Visual: The President's Residence in Jerusalem behind a gate
+            Visual: A pair of ceremonial scissors next to a ribbon
+            Cite: Basic Law: The Government
+
+[0:05:59]  (17s)  VO: नवंबर की शुरुआत में समिति नतीजे हर्ज़ोग को सौंपती है। फिर वो हर पार्टी से मिलते हैं, पूछते हैं कि वो किसका नाम सुझाती है, और सात दिन के अंदर mandate उसे देते हैं जिसके सरकार बनाने के chances उन्हें सबसे बेहतर लगें।
+            Tone: calm
+            Visual: A row of empty armchairs facing one armchair in a formal sitting room
+            Visual: A sealed envelope on a polished wooden table
+            Steps: Results to Herzog → Party consultations → Mandate within 7 days | How the mandate works
+            Cite: Basic Law: The Government; Kuwait Times; Jewish News, Oct 2026
+
+[0:06:16]  (21s)  VO: उस इंसान को मिलते हैं 28 दिन, और ज़रूरत पड़े तो 14 दिन और। वो fail हुआ, तो हर्ज़ोग किसी और को मौक़ा दे सकते हैं। वो भी fail, तो कोई भी सांसद जो 61 दस्तख़त जुटा ले, उसे मौक़ा मिलता है। और कोई न कर पाए, तो इज़राइल फिर से चुनाव में।
+            Tone: strong
+            Visual: An hourglass with sand running on a desk
+            Visual: A wall clock above a closed door
+            Timeline: 28 days | +14 days | second candidate | Knesset window | new election
+            Cite: Basic Law: The Government
+
+[0:06:38]  (19s)  VO: रिपोर्टों के मुताबिक़ दोनों गुट मान रहे हैं कि पहला मौक़ा आइज़नकोट को मिलेगा। हर्ज़ोग ने सबसे खुले दिमाग़ से सोचने और एक और चुनाव से बचने की अपील की है। इज़राइल ये पहले भी सुन चुका है। सिर्फ़ 2019 से 2022 के बीच वहाँ पाँच चुनाव हुए।
+            Tone: question
+            Visual: A row of five old ballot boxes on a storage shelf
+            Visual: A stack of old newspapers tied with string
+            Text: 5 ELECTIONS · 2019-2022
+            Cite: Ynet; Jewish News, Oct 2026
+
+[0:06:57]  (14s)  VO: और जब तक नई सरकार शपथ नहीं लेती, पुरानी चलती रहती है। बिन्यामिन नेतन्याहू caretaker सरकार के मुखिया के तौर पर प्रधानमंत्री बने रहते हैं। तो अब मिलिए इज़राइली राजनीति की सबसे टिकाऊ चीज़ से।
+            Tone: dramatic
+            Visual: The Prime Minister's Office building in Jerusalem
+            Visual: A single lamp left on in a dark office window
+
+==================== RENDER 2: R2_Part_2_aur_3  (1456 words, ~9.7 min, 15043 chars) ====================
+
+[7:11]  CHAPTER CARD  Part 2 | Netanyahu: Jo Har Baar Bach Nikalte Hain
+
+[0:07:11]  (16s)  VO: बिन्यामिन नेतन्याहू इज़राइल के इतिहास में सबसे लंबे समय तक प्रधानमंत्री रहे हैं, देश के संस्थापक डेविड बेन-गुरियन से भी ज़्यादा। पहली बार वो 1996 में पद पर आए, जब ज़्यादातर घरों में सबसे hi-tech चीज़ fax machine हुआ करती थी।
+            Tone: calm
+            Visual: An old fax machine on an office desk printing a page
+            Visual: The Knesset building in Jerusalem in 1990s-era photograph style
+            Archive: 1990s
+            Text: PM SINCE 1996 (WITH BREAKS) · LONGEST-SERVING
+            Cite: Knesset; Prime Minister's Office
+
+[0:07:27]  (12s)  VO: वो सत्ता खो चुके हैं और लौटे हैं। उन्हें ख़त्म मान लिया गया और वो लौटे। अब तो उनका राजनीतिक मर्सिया लिखना पत्रकारिता कम, एक सालाना त्योहार ज़्यादा लगता है।
+            Tone: strong
+            Visual: A typewriter with a blank sheet of paper in it
+            Visual: A row of old newspaper front pages pinned to a wall, text unreadable
+            Animate: a man writes on a paper, crumples it, throws it away and starts again
+
+[0:07:39]  (12s)  VO: और ये सब उन्होंने तब किया, जब उन पर मुक़दमा चल रहा है। 2019 में उन पर तीन मामलों में आरोप तय हुए, जिन्हें कहते हैं केस 1000, 2000 और 4000।
+            Tone: strong
+            Visual: The Jerusalem District Court building
+            Visual: Three thick case files stacked on a courtroom table
+            Text: CASES 1000 · 2000 · 4000
+            Cite: Attorney General's indictment, 2019-2020
+
+[0:07:52]  (24s)  VO: केस 1000 में आरोप है कि उन्होंने अमीर दोस्तों से महँगे तोहफ़े लिए, बदले में मदद के लिए। केस 2000 में आरोप है कि उन्होंने एक अख़बार मालिक से बेहतर coverage की बात की। और केस 4000, सबसे गंभीर, में आरोप है कि एक telecom कारोबारी को regulatory फ़ायदे दिए गए, बदले में एक news site पर अच्छी coverage के लिए।
+            Tone: calm
+            Visual: Boxes of cigars and bottles of champagne on a shelf, no labels visible
+            Visual: A newspaper printing press running
+            Visual: A telephone switchboard with cables
+            Steps: 1000: gifts → 2000: newspaper talks → 4000: telecoms and coverage | The allegations
+            Cite: Indictment as reported by Times of Israel and Haaretz
+
+[0:08:16]  (16s)  VO: आरोप हैं रिश्वत, धोखाधड़ी और विश्वासघात। वो सारे आरोपों से इनकार करते हैं। वो इस केस को गढ़ा हुआ बताते हैं। कोई फ़ैसला नहीं आया है। यानी वो आरोपी हैं, दोषी नहीं, और हम उन्हें बिल्कुल वैसे ही देखेंगे।
+            Tone: calm
+            Visual: The scales of justice statue in a courthouse lobby
+            Visual: An empty witness stand in a courtroom
+            Text: DENIES ALL CHARGES · NO VERDICT
+            Cite: Times of Israel; Reuters, 2026
+
+[0:08:32]  (20s)  VO: मुक़दमा 2020 में शुरू हुआ। उनकी अपनी गवाही दिसंबर 2024 में शुरू हुई। और ये अब भी चल रहा है। इज़राइली न्याय धीरे चलता है, और शायद यही एक बात है जिस पर प्रधानमंत्री और उनके आलोचक पूरी तरह सहमत हैं कि ये किसी न किसी के लिए बड़ा convenient है।
+            Tone: question
+            Visual: A snail crawling across a stack of legal documents
+            Visual: A calendar with years of pages torn off on the floor
+            Timeline: 2019 indictment | 2020 trial opens | Dec 2024 Netanyahu testifies | Oct 2026 still no verdict
+            Cite: Times of Israel; Reuters
+
+[0:08:52]  (14s)  VO: नवंबर 2025 में नेतन्याहू ने राष्ट्रपति हर्ज़ोग से माफ़ी, यानी pardon माँगा, मुक़दमे के बीच में, जिसकी इज़राइल में कोई मिसाल नहीं है। राष्ट्रपति डोनाल्ड ट्रम्प ने भी खुलकर उन्हें pardon देने की माँग की।
+            Tone: strong
+            Visual: A formal letter in an envelope with a wax seal
+            Visual: The White House at dusk seen from a distance
+            Text: PARDON REQUEST · NOV 2025
+            Cite: Al-Monitor/AP, Apr 2026; American Israelite
+
+[0:09:06]  (24s)  VO: अप्रैल 2026 में हर्ज़ोग ने फ़ैसला टाल दिया। उन्होंने कहा कि पहले वो plea deal की कोशिश करना चाहते हैं, और दोनों पक्षों को बातचीत के लिए बुलाया। इज़राइल के क़ानूनी जानकारों ने कहा है कि कोई भी plea deal इस शर्त पर हो कि नेतन्याहू सार्वजनिक जीवन छोड़ें। हमारी cut-off तारीख़ तक, न कोई deal है, न pardon।
+            Tone: calm
+            Visual: Two empty chairs on either side of a table with a single document between them
+            Visual: A pen lying on an unsigned agreement
+            Text: NO DEAL · NO PARDON (AS OF 31 OCT)
+            Cite: Algemeiner; Israel Hayom; Ynet, Apr-May 2026
+
+[0:09:30]  (7s)  VO: पर इस चुनाव में उनके कंधों पर सबसे भारी बोझ मुक़दमा नहीं है। वो है 7 अक्टूबर, 2023।
+            Tone: dramatic
+            Visual: A memorial wall of candles at night in Israel
+            Visual: An empty kibbutz path lined with trees in early morning
+            Statement: October 7, 2023.
+
+[0:09:37]  (16s)  VO: उस सुबह हमास के नेतृत्व में बंदूक़धारी ग़ाज़ा की सीमा की बाड़ तोड़कर इज़राइली क़स्बों, आर्मी चौकियों और एक म्यूज़िक फ़ेस्टिवल पर टूट पड़े। लगभग 1,200 लोग मारे गए, ज़्यादातर आम नागरिक। 251 लोगों को बंधक बनाकर ग़ाज़ा ले जाया गया।
+            Tone: dramatic
+            Visual: A broken section of border fence in a field
+            Visual: Rows of memorial candles and photographs, faces blurred, at a festival site memorial
+            Text: ~1,200 KILLED · 251 TAKEN HOSTAGE
+            Cite: Israeli government figures; AP
+
+[0:09:53]  (15s)  VO: Holocaust के बाद यहूदियों के लिए ये सबसे ख़ूनी दिन था। ये नेतन्याहू के रहते हुआ। और तीन साल बाद भी इज़राइल ने ये जानने के लिए कोई state commission of inquiry नहीं बनाया कि ये हुआ कैसे।
+            Tone: strong
+            Visual: A long table set for a meeting with no one seated
+            Visual: Blank sheets of paper in a file marked with a tab, text unreadable
+            Text: STATE COMMISSION OF INQUIRY: NONE
+            Cite: JusticeInfo; Ynet, 2026
+
+[0:10:08]  (20s)  VO: State commission वो औज़ार है जिसे इज़राइल आमतौर पर बड़ी आपदाओं के लिए इस्तेमाल करता है। इसकी अगुवाई एक जज करता है, जिसे सुप्रीम कोर्ट के प्रेसिडेंट नियुक्त करते हैं। इसकी रिपोर्टें पहले कई करियर ख़त्म कर चुकी हैं। शायद इसीलिए कुछ करियर इसे शुरू करने की जल्दी में नहीं हैं।
+            Tone: strong
+            Visual: A judge's gavel on a bench
+            Visual: A row of framed portraits in a government corridor, faces not visible
+            Cite: Commissions of Inquiry Law, 1968
+
+[0:10:29]  (16s)  VO: इसके बजाय जुलाई 2026 में coalition ने एक अलग बिल की पहली reading पास की। इसमें commission के छह सदस्य Knesset चुनेगी, यानी नेता चुनेंगे। बिल 59 के मुक़ाबले ज़ीरो से पास हुआ, क्योंकि विपक्ष वोटिंग छोड़कर बाहर चला गया।
+            Tone: calm
+            Visual: The Knesset plenum seen from the gallery with many empty seats
+            Visual: A voting board showing numbers
+            Text: FIRST READING · 59-0 · OPPOSITION BOYCOTT
+            Cite: JusticeInfo; Arab News, Jul 2026
+
+[0:10:45]  (21s)  VO: October Council, जो मारे गए लोगों के परिवारों का समूह है, उसने इस बिल को सरकार की नाकामियों पर पर्दा डालने की कोशिश कहा। विपक्षी नेताओं ने वादा किया कि नई सरकार के पहले महीने में असली state commission बनेगा। ये बिल नई Knesset में आगे बढ़ सकता है। और ये बहस भी।
+            Tone: strong
+            Visual: Hands holding a framed photograph at a vigil, face out of frame
+            Visual: Protesters' placards held up at night in Tel Aviv, text unreadable
+            Quote: Whitewash | October Council, bereaved families, Jul 2026
+            Cite: JusticeInfo; Times of Israel, 2026
+
+[0:11:06]  (19s)  VO: नेतन्याहू के समर्थकों का अपना पक्ष है। उनका कहना है कि उस दिन सिर्फ़ प्रधानमंत्री नहीं, पूरा security establishment नाकाम हुआ, कि उसके बाद की जंग ने हमास की सैन्य ताक़त तोड़ी और हिज़्बुल्लाह और ईरान को पीछे धकेला, और ये कि फ़ैसला commissions नहीं, वोटर करेंगे।
+            Tone: calm
+            Visual: An army command room with screens, no people visible
+            Visual: A map of the Middle East spread on a table
+            Split: Critics: he failed to prevent it | Supporters: he won the war that followed
+            Cite: Likud statements; Netanyahu interviews, 2024-2026
+
+[0:11:25]  (17s)  VO: और सच कहें तो बहुत सारे वोटर उनसे सहमत थे। 53 सीटें कोई collapse नहीं है। Knesset का सबसे बड़ा bloc है। बस majority नहीं है। और इज़राइल में जो सबसे बड़ा bloc majority न हो, उसे कहते हैं, बेहतर फ़र्नीचर वाला विपक्ष।
+            Tone: strong
+            Visual: A large leather office chair in an empty office
+            Visual: A folding plastic chair next to it
+            Animate: a man sits proudly in a big chair, then the chair slowly sinks lower
+
+[0:11:42]  (22s)  VO: याद रखना ज़रूरी है कि ये कितनी बार हो चुका है। नेतन्याहू 1999 में सत्ता हारे। 2009 में लौटे। 2021 में एक अनोखी coalition ने उन्हें हटाया, जिसमें दक्षिणपंथ, बीच का रास्ता, वामपंथ और एक अरब पार्टी, सब थे, पहले नफ़्ताली बेनेट की अगुवाई में, फिर याइर लापिड की। वो सरकार क़रीब डेढ़ साल चली।
+            Tone: calm
+            Visual: Old campaign posters peeling off a concrete wall
+            Visual: A revolving door in a government building lobby
+            Timeline: 1996 first term | 1999 loses | 2009 returns | 2021 ousted | 2022 returns
+            Cite: Knesset; Times of Israel
+
+[0:12:04]  (18s)  VO: 2022 के आख़िर में वो लौटे, इज़राइल के इतिहास की सबसे दक्षिणपंथी सरकार के मुखिया बनकर, जिसमें इतामार बेन-ग्वीर और बेज़लेल स्मोट्रिच बड़े मंत्री पदों पर थे। कुछ ही हफ़्तों में उस सरकार ने सुप्रीम कोर्ट की ताक़त कम करने का प्लान पेश किया।
+            Tone: strong
+            Visual: The Supreme Court building in Jerusalem in afternoon light
+            Visual: A judge's chair behind a bench, empty
+            Text: 2023 · JUDICIAL OVERHAUL PLAN
+            Cite: Times of Israel; Reuters, 2023
+
+[0:12:22]  (26s)  VO: 2023 का ज़्यादातर हिस्सा, हफ़्ते दर हफ़्ते, लाखों इज़राइली सड़कों पर रहे। air force pilots समेत reservists ने कहा कि वो volunteer करना बंद कर देंगे। समर्थकों का कहना था कि वो ग़ैर-चुने जजों पर चुनी हुई सरकार की ताक़त लौटा रहे हैं। विरोधियों का कहना था कि जिस देश का कोई लिखित संविधान नहीं, वहाँ वो सरकार पर इकलौता असली अंकुश हटा रहे हैं।
+            Tone: strong
+            Visual: A huge crowd with blue and white flags on a Tel Aviv avenue at night, seen from far above
+            Visual: Israeli flags waving over a highway at night
+            Stock: Tel Aviv protest night
+            Split: Supporters: power to elected officials | Opponents: removing the only check
+            Cite: Reuters; Times of Israel, 2023
+
+[0:12:48]  (19s)  VO: फिर आया 7 अक्टूबर, और जो देश सड़कों पर लड़ रहा था, वो साथ मिलकर जंग में उतर गया। विरोध करने वाले कई reservists ही सबसे पहले ड्यूटी पर पहुँचे। ये बात मायने रखती है, क्योंकि 2023 की बहसें कभी ख़त्म नहीं हुईं। बस रुक गई थीं।
+            Tone: dramatic
+            Visual: A row of military boots by the door of a family home
+            Visual: A protest placard leaning against a wall, faded by sun, text unreadable
+            Statement: The arguments weren't settled. They were *paused*.
+
+[0:13:06]  (17s)  VO: नेतन्याहू के लिए सत्ता में टिके रहने का मतलब हमेशा दो चीज़ें रहा है: अपने साथियों को साथ रखना, और दूसरी तरफ़ वालों को इतने साथी न मिलने देना। ये काम क्यों करता है, ये समझने के लिए मशीन को समझना होगा।
+            Tone: calm
+            Visual: Interlocking metal gears turning inside a machine
+            Visual: A chessboard mid-game with several pieces removed
+
+[13:23]  CHAPTER CARD  Part 3 | Israel Ki Siyasi Machine
+
+[0:13:23]  (6s)  VO: इज़राइल की संसद, Knesset, में 120 सीटें हैं। और पूरा देश एक ही चुनाव क्षेत्र है।
+            Tone: calm
+            Visual: The Knesset menorah sculpture outside the parliament in Jerusalem
+            Visual: A map of Israel printed on paper, no internal lines
+            Map: Israel | One country · One constituency · 120 seats
+            Cite: Basic Law: The Knesset
+
+[0:13:30]  (16s)  VO: आप किसी स्थानीय उम्मीदवार को वोट नहीं देते। आप पार्टी की लिस्ट को वोट देते हैं। अगर किसी पार्टी को 10 प्रतिशत वोट मिले, तो उसे क़रीब 10 प्रतिशत सीटें मिलती हैं, यानी 12 सदस्य, लिस्ट में ऊपर से।
+            Tone: calm
+            Visual: A ballot slip with Hebrew letters being folded by a hand
+            Visual: A printed party list on a clipboard, names unreadable
+            Icons: 🗳️ Vote for a list | 📊 Share of votes | 💺 Share of seats
+
+[0:13:45]  (12s)  VO: एक रुकावट है। किसी पार्टी को अंदर जाने के लिए कम से कम 3.25 प्रतिशत वोट चाहिए। उससे नीचे, उसके वोट ग़ायब, जैसा हमारे reservist दोस्तों ने अभी-अभी सीखा।
+            Tone: strong
+            Visual: A high-jump bar set on a stand in an empty stadium
+            Visual: A pile of ballot slips swept into a bin
+            Text: THRESHOLD 3.25% ≈ 4 SEATS
+            Cite: Knesset Elections Law
+
+[0:13:57]  (17s)  VO: नतीजा ये कि संसद में बहुत सारी मझोली पार्टियाँ होती हैं, कोई दिग्गज नहीं। किसी पार्टी ने कभी अकेले 61 सीटें नहीं जीतीं। एक बार भी नहीं। न बेन-गुरियन ने, न किसी और ने। हर इज़राइली सरकार एक coalition होती है, एक सौदा।
+            Tone: strong
+            Visual: A jigsaw puzzle with pieces of different colours scattered on a table
+            Visual: Hands shaking across a table, cropped at the wrists
+            Text: SINGLE-PARTY MAJORITIES SINCE 1949: ZERO
+
+[0:14:14]  (15s)  VO: और सौदों की क़ीमत होती है। छोटी पार्टियाँ मंत्रालय माँगती हैं, बजट माँगती हैं, क़ानून माँगती हैं। जो पार्टी आपको 60 से 61 पर पहुँचाए, वो लगभग कुछ भी माँग सकती है, क्योंकि उसके बिना सरकार ही नहीं।
+            Tone: strong
+            Visual: A price tag hanging from a wooden chair
+            Visual: A shopping receipt curling on a table, numbers unreadable
+            Receipt: Ministry | Budget for schools | A law of your choice | Total: 1 seat
+
+[0:14:29]  (16s)  VO: अब इसी नज़र से दोनों गुटों को फिर देखिए। नेतन्याहू का खेमा: Likud, साथ में दो हरेदी पार्टियाँ, Shas और United Torah Judaism, और साथ में इतामार बेन-ग्वीर की कट्टर दक्षिणपंथी Otzma Yehudit और बेज़लेल स्मोट्रिच की Religious Zionism।
+            Tone: calm
+            Visual: Black hats hanging on a coat rack in a hallway
+            Visual: Hilltop houses with red roofs in the West Bank seen from a distance
+            Icons: Likud 27 | Haredi parties 13 | Far right 13
+
+[0:14:45]  (16s)  VO: ये खेमा security और धर्म के मुद्दे पर विचारधारा से कसा हुआ है। इसकी दिक़्क़त एकता नहीं है। दिक़्क़त ये है कि इसके पास 53 हैं, और बाक़ी हर पार्टी ने इसे 61 बनाने से मना कर दिया है।
+            Tone: calm
+            Visual: A locked padlock on a gate
+            Visual: A measuring tape stretched short of a mark
+            Text: 53 · 8 SHORT
+
+[0:15:00]  (18s)  VO: आइज़नकोट का खेमा उल्टा है। इसमें चार यहूदी पार्टियाँ हैं: Yashar, Beyachad, Democrats और Yisrael Beytenu। ये सब सहमत हैं कि नेतन्याहू को जाना चाहिए। बाक़ी लगभग हर चीज़ पर, धर्म से लेकर फ़िलिस्तीनियों तक, और कमरे में कौन बैठेगा, सब पर इनमें असहमति है।
+            Tone: calm
+            Visual: Four different-coloured umbrellas leaning together
+            Visual: A group photograph with people standing far apart, seen from behind
+            Text: 48 · 13 SHORT
+
+[0:15:18]  (14s)  VO: तो आइज़नकोट का गणित या तो 19 अरब सीटों से होकर जाता है, या दूसरे खेमे से किसी के पाला बदलने से। और इन दोनों रास्तों पर लोग "नहीं" की तख़्ती लिए खड़े हैं।
+            Tone: question
+            Visual: A fork in a dusty road with two directions
+            Visual: A no-entry road sign at a junction
+            Steps: 48 + Arab-led parties? → 48 + defectors? → Unity government? | Eisenkot's three roads
+
+[0:15:32]  (19s)  VO: इस बार नियमों की एक बारीकी बहुत मायने रखती है। नई सरकार को तकनीकी तौर पर 61 वोट "हाँ" में नहीं चाहिए। उसे बस "विरोध" से ज़्यादा "समर्थन" चाहिए। यानी अगर काफ़ी सांसद abstain करें, या आएँ ही नहीं, तो एक minority सरकार भी टिक सकती है।
+            Tone: question
+            Visual: A parliament voting board with green, red and blank lights
+            Visual: An empty seat in a row of occupied parliament seats, people not visible
+            Text: CONFIDENCE VOTE: MORE FOR THAN AGAINST
+            Cite: Basic Law: The Government, section 13
+
+[0:15:51]  (21s)  VO: इसीलिए अविगडोर लीबरमैन की red line इतनी बारीक है। उन्होंने सिर्फ़ अरब पार्टियों के साथ बैठने से इनकार नहीं किया। उन्होंने ऐसी सरकार से भी इनकार किया है जो अरब सांसदों के abstain करने से बचे। उन्होंने सिर्फ़ दरवाज़ा नहीं, खिड़की भी बंद कर दी है... और बिल्ली वाला छोटा दरवाज़ा भी।
+            Tone: strong
+            Visual: A cat flap in a wooden door, taped shut
+            Visual: A window with its shutters closed and bolted
+            Animate: a man closes a door, then closes a window, then kneels and blocks a small hatch, then dusts off his hands
+
+[0:16:12]  (20s)  VO: इस बीच पुरानी सरकार caretaker बनकर देश चलाती रहती है। caretaker से उम्मीद होती है कि वो बड़े नए फ़ैसले न ले, पर असल में इज़राइल की caretaker सरकारें महीनों तक जंगें लड़ चुकी हैं और बजट चला चुकी हैं। इज़राइल की सबसे स्थिर संस्था शायद अस्थायी सरकार ही है।
+            Tone: strong
+            Visual: A sign reading temporary on a construction fence
+            Visual: A building with scaffolding that has clearly been there for years
+            Text: CARETAKER GOVERNMENT · PM NETANYAHU
+            Cite: Israel Democracy Institute
+
+[0:16:32]  (16s)  VO: ये गतिरोध कौन तोड़ सकता है, उस पर आने से पहले एक चीज़ है जिस पर पूरे चुनाव प्रचार में ज़्यादा बात ही नहीं हुई। ये पिछले तीन साल का केंद्र है, और ये कोई सीटों की गिनती नहीं है।
+            Tone: dramatic
+            Visual: A view across the Gaza border at dusk with smoke on the horizon
+            Visual: An empty road leading toward a checkpoint
+
+==================== RENDER 3: R3_Part_4_Gaza_aur_West_Bank  (1612 words, ~10.7 min, 15986 chars) ====================
+
+[16:48]  CHAPTER CARD  Part 4 | Gaza, West Bank Aur Woh Log Jo Ballot Par Nahin The
+
+[0:16:48]  (14s)  VO: इस chapter में कोई मज़ाक़ नहीं है। इसका कुछ हिस्सा सुनना मुश्किल है। हम आपको आँकड़े देंगे, बताएँगे कि वो कहाँ से आए, और ये भी कि हर पक्ष उनके बारे में क्या कहता है।
+            Tone: calm
+            Visual: A single candle burning on a stone ledge at night
+            Visual: An empty school classroom with broken windows, desks covered in dust
+            Text: THIS CHAPTER CONTAINS DESCRIPTIONS OF WAR
+
+[0:17:02]  (17s)  VO: ग़ाज़ा में बीस लाख से ज़्यादा फ़िलिस्तीनी रहते हैं। उनमें से एक भी इस चुनाव में वोट नहीं डाल सकता था। न ही West Bank के क़रीब तीस लाख फ़िलिस्तीनी। उनकी ज़िंदगी पिछली सरकार ने तय की, और अगली सरकार तय करेगी।
+            Tone: strong
+            Visual: A crowded Gaza street seen from a rooftop, people too small to identify
+            Visual: A West Bank town on a hillside at dusk with lights coming on
+            Text: ~2.1M IN GAZA · ~3M IN WEST BANK · 0 VOTES IN THE KNESSET
+            Cite: UN OCHA; Palestinian Central Bureau of Statistics
+
+[0:17:18]  (12s)  VO: 7 अक्टूबर के हमले के बाद इज़राइल ने ग़ाज़ा में जंग छेड़ी, घोषित मक़सद था हमास को ख़त्म करना और बंधकों को घर लाना। जंग दो साल चली, फिर ceasefire हुआ।
+            Tone: calm
+            Visual: Collapsed concrete buildings in Gaza seen from a distance, no people visible
+            Visual: A row of tents on sand under grey sky
+            Stock: Gaza destruction aerial
+            Cite: AP; Reuters
+
+[0:17:31]  (25s)  VO: ग़ाज़ा का स्वास्थ्य मंत्रालय, जो हमास के प्रशासन का हिस्सा है, अक्टूबर 2023 से अब तक 74,000 से ज़्यादा फ़िलिस्तीनियों के मारे जाने की गिनती करता है। संयुक्त राष्ट्र आमतौर पर इसके आँकड़ों को भरोसेमंद मानता रहा है। इज़राइल इन्हें चुनौती देता है और कहता है कि मरने वालों में बहुत से लड़ाके थे। मंत्रालय आम नागरिकों और लड़ाकों को अलग नहीं गिनता।
+            Tone: calm
+            Visual: A hospital corridor with empty stretchers lined up
+            Visual: Rows of white sheets on the ground in a courtyard, seen from far away
+            Text: 74,000+ KILLED · GAZA HEALTH MINISTRY · DISPUTED BY ISRAEL
+            Cite: Gaza Health Ministry via Reuters, Oct 2026; UNICEF, Jun 2026
+
+[0:17:56]  (21s)  VO: जिस पर विवाद नहीं है, वो है इस जगह पर जो गुज़रा उसका पैमाना। ग़ाज़ा की ज़्यादातर इमारतें टूटीं या तबाह हुईं। ज़्यादातर लोग बेघर हुए, बहुत से कई-कई बार। 2025 में संयुक्त राष्ट्र समर्थित विशेषज्ञों ने ग़ाज़ा के कुछ हिस्सों में अकाल घोषित किया। इज़राइल ने उस निष्कर्ष को ख़ारिज किया।
+            Tone: strong
+            Visual: A water tank on a damaged rooftop under a hazy sun
+            Visual: An empty bread oven made of clay in a tent camp
+            Visual: A child's sandal lying in sand beside a tent
+            Cite: UN OCHA; IPC famine review, Aug 2025; Israeli government response
+
+[0:18:17]  (18s)  VO: अक्टूबर 2025 में राष्ट्रपति ट्रम्प की योजना पर बना ceasefire लागू हुआ। सभी 20 जीवित बंधक उसी महीने घर लौटे। आख़िरी मृत बंधक, रान ग्विली, के अवशेष जनवरी 2026 में लौटाए गए। अक्टूबर 2023 के बाद पहली बार ग़ाज़ा में कोई बंधक नहीं है।
+            Tone: calm
+            Visual: Yellow ribbons tied to a fence in Tel Aviv, fluttering
+            Visual: An empty plaza with a large clock and a chair left in the middle
+            Timeline: 10 Oct 2025 ceasefire | Oct 2025 20 living hostages freed | Jan 2026 last remains returned
+            Cite: Times of Israel; AP, 2025-2026
+
+[0:18:34]  (16s)  VO: इस योजना को संयुक्त राष्ट्र सुरक्षा परिषद ने Resolution 2803 में मंज़ूरी दी, और एक तथाकथित Board of Peace बना, जिसके chairman ट्रम्प हैं। वादा था: हमास हथियार डालेगा, एक अंतरराष्ट्रीय फ़ोर्स आएगी, और इज़राइली सेना चरणों में पीछे हटेगी।
+            Tone: calm
+            Visual: The UN Security Council chamber with the large mural, seats empty
+            Visual: A blank agreement document with a signature line
+            Steps: Hamas disarms → International force → Israel pulls back | The plan on paper
+            Cite: UN Security Council Resolution 2803, Nov 2025
+
+[0:18:50]  (15s)  VO: एक साल बाद, ग़ाज़ा ऐसा नहीं दिखता। रिपोर्टों के मुताबिक़ इज़राइल का क़ब्ज़ा पट्टी के क़रीब 65 प्रतिशत हिस्से पर है, और बढ़ रहा है। हमास ने हथियार नहीं डाले। और हमले कभी पूरी तरह रुके नहीं।
+            Tone: strong
+            Visual: A concrete barrier and watchtower in sand under a bright sky
+            Visual: Smoke rising from a distant neighbourhood seen across an empty field
+            Text: ISRAELI CONTROL ~65% · REPORTED
+            Cite: Times of Israel; Reuters, Oct 2026
+
+[0:19:05]  (22s)  VO: UNICEF कहता है कि ceasefire की घोषणा के बाद ग़ाज़ा में 340 से ज़्यादा बच्चे मारे गए हैं। ग़ाज़ा का स्वास्थ्य मंत्रालय कुल मिलाकर क़रीब 1,500 लोगों की बात करता है। इज़राइल कहता है कि वो हमास के उल्लंघनों और ख़तरों का जवाब दे रहा है। इसी दौरान ग़ाज़ा में पाँच इज़राइली सैनिक भी मारे गए।
+            Tone: dramatic
+            Visual: A child's drawing pinned to a tent wall, flapping in wind
+            Visual: An empty playground swing moving slightly
+            Text: 340+ CHILDREN KILLED SINCE THE CEASEFIRE · UNICEF
+            Cite: UNICEF, 17 Oct 2026; Gaza Health Ministry; IDF statements
+
+[0:19:28]  (14s)  VO: सौ से ज़्यादा सहायता संगठन कहते हैं कि ये ceasefire, उनके शब्दों में, "सिर्फ़ नाम का" है। Physicians for Human Rights Israel के मुताबिक़ ग़ाज़ा का कोई भी अस्पताल पूरी क्षमता पर काम नहीं कर रहा।
+            Tone: strong
+            Visual: A hospital ward with damaged equipment and dim light
+            Visual: Aid trucks waiting in a long line on a desert road
+            Quote: A ceasefire in name only | 100+ aid organisations, Oct 2026
+            Cite: Amnesty International, 9 Oct 2026; PHRI
+
+[0:19:42]  (18s)  VO: हम साफ़ कहना चाहते हैं कि ये आँकड़े क्या हैं। ये बहस का मुद्दा नहीं हैं। इनमें से हर एक किसी का बच्चा है, किसी के माँ-बाप, किसी का पड़ोसी, जो एक ऐसी जगह मारा गया जहाँ आज भी ज़्यादातर विदेशी पत्रकार खुलकर जा नहीं सकते।
+            Tone: calm
+            Visual: A row of small shoes placed on a wall
+            Visual: A press vest lying on a chair in an empty room
+            Text: FOREIGN PRESS ACCESS TO GAZA: RESTRICTED
+
+[0:20:00]  (26s)  VO: और इस कहानी में एक दूसरा दुख भी है। इज़राइल में बंधकों के परिवारों ने दो साल तक, हर हफ़्ते, तेल अवीव के एक चौक पर अभियान चलाया, जो Hostages Square के नाम से जाना गया। उनमें से कई को लगा कि सरकार ने उनके अपनों को घर लाने से ऊपर राजनीति को रखा। सरकार का कहना था कि सैन्य दबाव ने ही उन्हें वापस लाया।
+            Tone: calm
+            Visual: Hostages Square in Tel Aviv with yellow chairs and posters, faces not visible
+            Visual: A long dinner table set with empty chairs and yellow ribbons
+            Stock: Hostages Square Tel Aviv
+            Split: Families: politics delayed the deals | Government: pressure brought them home
+            Cite: Hostages and Missing Families Forum; Times of Israel, 2024-2025
+
+[0:20:27]  (14s)  VO: ये दोनों दुख सच्चे हैं। एक देश दोनों को अपने अंदर रख सकता है। एक फ़िल्म भी। जो ईमानदारी से नहीं किया जा सकता, वो ये दिखाना है कि एक दुख दूसरे को काट देता है।
+            Tone: calm
+            Visual: Two candles burning side by side on a stone wall
+            Visual: Waves breaking on a quiet beach at dusk
+
+[0:20:41]  (36s)  VO: आज ग़ाज़ा के लोगों के लिए जंग के बाद की रोज़मर्रा ज़िंदगी का मतलब है: लाखों लोगों के लिए तंबू, पानी जो टैंकर से आता है या ढोकर लाना पड़ता है, स्कूल जो ज़्यादातर मलबा हैं या शेल्टर, और पुनर्निर्माण की कोई साफ़ तारीख़ नहीं। सहायता एजेंसियाँ कहती हैं कि crossings बिना भरोसे के खुलती-बंद होती हैं। इज़राइल कहता है कि वो भारी मात्रा में मदद अंदर जाने देता है, और हमास पर उसे हड़पने का आरोप लगाता है। सहायता एजेंसियाँ इस हड़पने के पैमाने पर सवाल उठाती हैं।
+            Tone: strong
+            Visual: Plastic water jerrycans lined up beside a tent camp
+            Visual: A classroom used as a shelter with mattresses on the floor
+            Visual: A queue of empty aid trucks at a border crossing
+            Split: Israel: aid flows, Hamas diverts | Aid agencies: access is the problem
+            Cite: UN OCHA; COGAT statements; UNICEF, 2026
+
+[0:21:17]  (14s)  VO: तो उम्मीदवारों ने ग़ाज़ा से क्या वादा किया? नेतन्याहू कहते हैं कि हमास वहाँ फिर कभी राज नहीं करेगा और security का नियंत्रण इज़राइल के पास रहेगा। उन्होंने फ़िलिस्तीनी अथॉरिटी की भूमिका का विरोध किया है।
+            Tone: calm
+            Visual: A security fence stretching across open farmland
+            Visual: A lectern with a microphone in an empty press room
+            Cite: Netanyahu statements, 2025-2026
+
+[0:21:31]  (26s)  VO: और आइज़नकोट? उन्होंने वादा किया कि PM बनने के 18 महीने के अंदर ग़ाज़ा में हमास का राज ख़त्म करेंगे। रिपोर्टों के मुताबिक़ वो ग़ाज़ा को अपने में मिलाने या वहाँ बस्तियाँ बसाने के ख़िलाफ़ हैं, और हमास के मुक़ाबले एक सुधरी हुई फ़िलिस्तीनी अथॉरिटी को बेहतर मानते हैं। वो ये भी कहते हैं कि इज़राइल के पीछे हटने से पहले हमास के हथियार छीने जाएँ।
+            Tone: calm
+            Visual: A stopwatch on a map of the Middle East
+            Visual: A green line drawn in marker on a printed map, no labels
+            Text: EISENKOT: END HAMAS RULE IN 18 MONTHS
+            Cite: Times of Israel; Jerusalem Post; Al-Monitor, 2026
+
+[0:21:58]  (16s)  VO: और फ़िलिस्तीनी राष्ट्र पर, इज़राइल चलाने के दोनों दावेदार एक ही बात कहते हैं। आइज़नकोट ने लिखा: कोई फ़िलिस्तीनी राष्ट्र नहीं है, और हमारी बनाई सरकार में कोई फ़िलिस्तीनी राष्ट्र नहीं बनेगा। नेतन्याहू सालों से यही कहते आए हैं।
+            Tone: strong
+            Visual: Two identical keys lying side by side on a table
+            Visual: A locked gate in a stone wall
+            Quote: Under a government we form, no Palestinian state will be established | Gadi Eisenkot on X, 2026
+            Cite: Jewish News, 2026
+
+[0:22:13]  (18s)  VO: यही इस चुनाव की ख़ामोश सहमति है। मुख्य मुक़ाबला इस पर था कि जंग कौन चलाए, 7 अक्टूबर का दोष किस पर हो, और हरेदी आदमी सेना में जाएँ या नहीं। पचास लाख फ़िलिस्तीनियों का आगे क्या होगा, ये सवाल ज़्यादातर menu में था ही नहीं।
+            Tone: strong
+            Visual: A restaurant menu with one blank section, text unreadable
+            Visual: A long dining table with one empty place setting
+            Statement: The biggest question wasn't *on the ballot*.
+
+[0:22:32]  (7s)  VO: अब West Bank। यहाँ पिछले दो साल का बदलाव बाहर से कम दिखा, पर शायद ज़्यादा स्थायी है।
+            Tone: calm
+            Visual: Terraced olive groves on a West Bank hillside at morning
+            Visual: A settlement on a hilltop with red roofs, seen across a valley
+
+[0:22:39]  (17s)  VO: संयुक्त राष्ट्र के मानवीय कार्यालय, OCHA, ने 2026 के पहले सात महीनों में बसने वालों, यानी settlers, के 1,300 से ज़्यादा ऐसे हमले दर्ज किए जिनमें लोग घायल हुए या संपत्ति का नुक़सान हुआ, क़रीब 250 फ़िलिस्तीनी बस्तियों में। मतलब रोज़ क़रीब छह।
+            Tone: strong
+            Visual: A burned car on the edge of an olive grove
+            Visual: A broken window in a stone house in a village
+            Text: 1,330+ SETTLER ATTACKS · JAN-JUL 2026 · OCHA
+            Cite: UN OCHA via UN Palestine, Jul 2026
+
+[0:22:56]  (19s)  VO: जुलाई के आख़िर तक OCHA ने कहा कि 2026 में settler हिंसा से जुड़ी घटनाओं में 18 फ़िलिस्तीनी मारे गए, जो पूरे 2025 से भी ज़्यादा है, और 2,300 से ज़्यादा लोग बेघर हुए। Human Rights Watch ने अगस्त की एक रिपोर्ट में इस pattern को दर्ज किया।
+            Tone: strong
+            Visual: An empty shepherd's enclosure on a dry hillside
+            Visual: Household belongings piled on a truck on a dirt road
+            Text: 18 KILLED · 2,300+ DISPLACED · 2026 · OCHA
+            Cite: UN OCHA, Jul 2026; Human Rights Watch, 20 Aug 2026
+
+[0:23:15]  (18s)  VO: इज़राइल सरकार कहती है कि वो हिंसक settlers पर क़ानून लागू करती है, और West Bank में इज़राइलियों पर फ़िलिस्तीनी हमलों की ओर ध्यान दिलाती है। आलोचक, जिनमें इज़राइली मानवाधिकार संगठन भी हैं, कहते हैं कि settlers की गिरफ़्तारी और सज़ा बहुत कम होती है।
+            Tone: calm
+            Visual: A military jeep parked by a roadside checkpoint
+            Visual: A courthouse door in Jerusalem
+            Split: Government: we enforce the law | Rights groups: prosecutions are rare
+            Cite: Israeli government statements; Yesh Din; B'Tselem
+
+[0:23:33]  (22s)  VO: इस बीच नीति आगे बढ़ती रही। फ़रवरी 2026 में कैबिनेट ने West Bank में इज़राइली अधिकार बढ़ाने वाले फ़ैसले लिए, जिन्हें संयुक्त राष्ट्र के मानवाधिकार कार्यालय ने annexation, यानी क़ब्ज़े को अपने में मिलाने, की तरफ़ क़दम बताया। इज़राइल के रक्षा मंत्री इसराइल काट्ज़ 104 नई बस्तियों की मंज़ूरी की बात कर चुके हैं।
+            Tone: strong
+            Visual: An architect's site plan rolled out on a table, labels unreadable
+            Visual: A bulldozer clearing ground on a hillside
+            Text: FEB 2026 · CABINET DECISIONS · "104 NEW SETTLEMENTS" (KATZ)
+            Cite: UN OHCHR, Feb 2026; Israel Katz statements as reported
+
+[0:23:55]  (19s)  VO: और अगस्त 2026 में E1 के लिए निर्माण टेंडरों की ख़बर आई। E1, यरूशलम के पूरब की वो पट्टी, जिस पर अंतरराष्ट्रीय दबाव में दशकों से रोक लगी थी, क्योंकि वहाँ निर्माण से उत्तरी West Bank दक्षिणी West Bank से कट जाएगा। ब्रिटेन ने इसे red line कहा।
+            Tone: strong
+            Visual: A wide dry valley east of Jerusalem with a highway running through
+            Visual: A red line drawn across a printed map with a marker
+            Draw: arrow
+            Map: E1, east of Jerusalem | Planned building · splits the West Bank north and south
+            Cite: Times of Israel; UK Foreign Office, Aug 2026
+
+[0:24:14]  (17s)  VO: आइज़नकोट ने E1 टेंडरों की आलोचना की। वित्त मंत्री स्मोट्रिच ने इस पर उन पर हमला बोला। इससे पता चलता है कि दोनों खेमों के बीच भी West Bank पर बहस असली है। बस वो बहस फ़िलिस्तीनी राष्ट्र के बारे में नहीं है।
+            Tone: calm
+            Visual: Two men's hands pointing at the same map from opposite sides, no faces
+            Visual: A paper map with pencil lines erased and redrawn
+            Cite: JNS, 2026
+
+[0:24:31]  (32s)  VO: इस जंग ने इज़राइली नागरिकों पर भी असली डर और नुक़सान छोड़ा है। ग़ाज़ा और लेबनान सीमा के पास के क़स्बों से हज़ारों-हज़ार इज़राइलियों को हटाया गया, कुछ को एक साल से भी ज़्यादा समय के लिए। ईरानी मिसाइलें 2025 में और फिर 2026 में इज़राइली शहरों पर गिरीं। आम लोगों ने रातें बंकरों में गुज़ारीं। ये डर इज़राइलियों के वोट को आकार देता है, और ये भी एक वजह है कि इतने कम उम्मीदवार फ़िलिस्तीनी राष्ट्र की बात करते हैं।
+            Tone: calm
+            Visual: A concrete bomb shelter entrance in an Israeli apartment block
+            Visual: An empty kibbutz playground near the Gaza border at dawn
+            Visual: A northern Israeli town street with shuttered shops
+            Cite: Israeli government; Times of Israel; AP, 2023-2026
+
+[0:25:04]  (28s)  VO: इज़राइल के अंदर अरब नागरिक अपनी एक अलग इमरजेंसी झेल रहे हैं, जिस पर इस अभियान में कम ही बात हुई। Abraham Initiatives, जो इसकी गिनती रखता है, उसके मुताबिक़ हाल के सालों में अरब बस्तियों में हत्याएँ रिकॉर्ड स्तर पर पहुँची हैं। अरब नेता कहते हैं कि पुलिस उन्हें नाकाम करती है। यही एक वजह है कि Ra'am बाक़ी सबसे पहले बजट और पुलिसिंग की बात करती है।
+            Tone: strong
+            Visual: Police tape across a quiet residential street at night
+            Visual: Candles placed on a pavement in an Arab town in Israel
+            Cite: Abraham Initiatives; Times of Israel, 2024-2026
+
+[0:25:31]  (21s)  VO: फिर अदालतें हैं। नवंबर 2024 में अंतरराष्ट्रीय अपराध न्यायालय, ICC, ने ग़ाज़ा में कथित युद्ध अपराधों और मानवता के ख़िलाफ़ अपराधों के लिए नेतन्याहू और उनके पूर्व रक्षा मंत्री योआव गैलेंट के ख़िलाफ़ गिरफ़्तारी वारंट जारी किए। इज़राइल अदालत के अधिकार क्षेत्र को नहीं मानता, और नेतन्याहू ने इस फ़ैसले को यहूदी-विरोधी कहा।
+            Tone: strong
+            Visual: The International Criminal Court building in The Hague
+            Visual: A legal document with an official seal, text unreadable
+            Text: ICC WARRANTS · NOV 2024 · ISRAEL REJECTS
+            Cite: ICC press release, 21 Nov 2024; NBC News
+
+[0:25:52]  (23s)  VO: अदालत ने हमास के सैन्य कमांडर मोहम्मद दैफ़ के लिए भी वारंट जारी किया था, जो उसकी मौत की पुष्टि के बाद वापस ले लिया गया। इज़राइल ने वारंट वापस लेने की माँग की है। हमारी cut-off तक, वारंट बने हुए हैं। इससे नेतन्याहू के सफ़र सीमित होते हैं, ज़्यादातर उन देशों तक जो इन्हें लागू नहीं करते।
+            Tone: calm
+            Visual: An airport departures board with destinations, text unreadable
+            Visual: A passport lying on a table next to a boarding pass
+            Cite: ICC; Tehran Times, Sep 2026 (verify on icc-cpi.int)
+
+[0:26:16]  (19s)  VO: अलग से, अंतरराष्ट्रीय न्यायालय, ICJ, में दक्षिण अफ़्रीका का वो केस चल रहा है जिसमें इज़राइल पर नरसंहार का आरोप है। इज़राइल इससे इनकार करता है और उसने मार्च 2026 में अपना औपचारिक जवाब दाख़िल किया। लिखित दौर 2027 और 2029 तक चलेंगे। मुख्य फ़ैसला सालों दूर है।
+            Tone: calm
+            Visual: The Peace Palace in The Hague with its clock tower
+            Visual: Stacks of bound legal volumes on a shelf
+            Timeline: Mar 2026 Israel files | Nov 2027 South Africa reply due | May 2029 Israel rejoinder due
+            Cite: ICJ, South Africa v. Israel, orders 2026
+
+[0:26:35]  (30s)  VO: चलिए एक बार हिसाब लगाते हैं, क्योंकि हम आधे रास्ते पर हैं और बात बहुत हो चुकी है। एक चुनाव से निकला 53, 48 और 19। प्रधानमंत्री पर मुक़दमा चल रहा है और वो पद पर हैं। इज़राइल के इतिहास के सबसे बुरे दिन की कोई जाँच नहीं हुई। ग़ाज़ा में काग़ज़ पर ceasefire है और ज़मीन पर मौतें। West Bank तेज़ी से बदल रहा है। और दो अंतरराष्ट्रीय अदालतें नज़र रखे हुए हैं।
+            Tone: calm
+            Visual: A cork board covered in pinned notes and string, text unreadable
+            Visual: A cup of coffee going cold next to a stack of reports
+            Icons: 🗳️ 53-48-19 | ⚖️ Trial ongoing | 🕯️ No Oct 7 inquiry | 🏚️ Gaza | 🗺️ West Bank
+
+[0:27:04]  (22s)  VO: ये अदालतें क्या फ़ैसला देंगी, हम नहीं बता सकते। कोई नहीं बता सकता। जो बता सकते हैं, वो ये है कि अगली इज़राइली सरकार, जो भी चलाए, उसे विरासत में मिलेगा ग़ाज़ा, West Bank, दो अंतरराष्ट्रीय केस, और पचास लाख लोग जिनके पास न वोट है, न ज़्यादा उम्मीद कि ये चुनाव उनके बारे में था।
+            Tone: dramatic
+            Visual: A sunrise over Gaza's coast seen from far out at sea
+            Visual: An olive tree standing alone on a terraced hill
+            Statement: Whoever wins inherits *all of it*.
+
+==================== RENDER 4: R4_Part_5_Kingmakers  (1270 words, ~8.5 min, 12305 chars) ====================
+
+[27:27]  CHAPTER CARD  Part 5 | Kingmakers
+
+[0:27:27]  (14s)  VO: लोगों से मिलने से पहले, सीटों के गणित का एक quick recap। 53। 48। 19। याद रखिए: कोई भी दो जोड़ो, majority बन जाती है। पूरी समस्या यही है, और अब ये personal होने वाली है।
+            Tone: calm
+            Visual: A pocket calculator on a wooden desk showing a number
+            Visual: Three pens lying side by side on a blank sheet
+            Pie: Netanyahu bloc 53 | Eisenkot bloc 48 | Arab-led parties 19
+
+[0:27:41]  (17s)  VO: तो असल में तय कौन करता है कि आगे क्या होगा? वोटर नहीं। उन्होंने अपना काम कर दिया। अब बात कुछ गिने-चुने लोगों पर है, हर एक के पास एक red line, और हर line किसी और के ऊपर से खिंची हुई।
+            Tone: question
+            Visual: A chess king piece standing alone on a board
+            Visual: Red tape stretched across a doorway
+            Animate: five people stand in a circle, each points at another one and shakes their head
+
+[0:27:58]  (20s)  VO: शुरुआत उससे जिसे सबसे पहले मौक़ा मिलने की उम्मीद है। गादी आइज़नकोट। पूर्व chief of staff। उन्होंने ग़ाज़ा की जंग में अपना बेटा खोया, और अपना भतीजा भी। उन्होंने बेनी गैंट्ज़ के साथ राजनीति में क़दम रखा, war cabinet में observer के तौर पर बैठे, इस्तीफ़ा दिया, और अपनी पार्टी बनाई।
+            Tone: calm
+            Visual: A military parade ground with flags at dawn, no people
+            Visual: An army cemetery with rows of white headstones in Jerusalem
+            Text: GADI EISENKOT · YASHAR · 21 SEATS
+            Cite: Al Jazeera, 17 Oct 2026; Times of Israel
+
+[0:28:18]  (23s)  VO: उनके agenda में security सबसे ऊपर है, और ठीक उसके बाद हरेदी लोगों की सैन्य सेवा। वामपंथी आलोचक याद दिलाते हैं कि वो उस जनरल हैं जिनका नाम दाहिया doctrine से जुड़ा है, यानी जहाँ से हमले हों उन इलाक़ों पर ज़बरदस्त ताक़त का इस्तेमाल। उनके समर्थक उन्हें इस दौड़ की सबसे भरोसेमंद security आवाज़ बताते हैं।
+            Tone: calm
+            Visual: A soldier's helmet on a folded flag
+            Visual: A city skyline at night seen from a distance
+            Split: Critics: author of the Dahiya doctrine | Supporters: the credible general
+            Cite: Al-Monitor; TRT; Jerusalem Post, Oct 2026
+
+[0:28:41]  (12s)  VO: उनकी समस्या है गणित। 48 सीटें। 61 तक पहुँचने के लिए चाहिए या तो अरब पार्टियाँ, coalition के अंदर या पीछे से, या फिर नेतन्याहू के खेमे से लोग।
+            Tone: strong
+            Visual: A blackboard with a sum written in chalk, numbers smudged
+            Visual: A ruler laid across an unfinished bridge model
+            Text: 48 + ? = 61
+
+[0:28:53]  (27s)  VO: अरब पार्टियों पर, रिपोर्टों के मुताबिक़ आइज़नकोट ने शर्तें रखी हैं, जिनमें इज़राइल को यहूदी राष्ट्र मानना और हमास को आतंकी संगठन कहना शामिल है। सितंबर के एक interview में उन्होंने कहा कि पार्टियाँ ये शर्तें पूरी नहीं करतीं। चुनाव के बाद से वो सोच-समझकर गोलमोल बोल रहे हैं। और coalition की बातचीत में ये कमज़ोरी नहीं होती। ये भेस बदलकर बैठी एक negotiating position होती है।
+            Tone: strong
+            Visual: A man's hand holding a pair of sunglasses and a fake moustache on a table
+            Visual: A fogged-up window with a city behind it
+            Cite: Arab Center DC; Channel 12 via Ynet, 2026
+
+[0:29:20]  (14s)  VO: अगले, नफ़्ताली बेनेट। पूर्व प्रधानमंत्री। Beyachad लिस्ट के नेता। वो 2021 में प्रधानमंत्री बने, इज़राइल की उस इकलौती सरकार में जिसमें एक अरब पार्टी, Ra'am, अंदर थी। उनका प्रधानमंत्री काल क़रीब एक साल चला।
+            Tone: calm
+            Visual: The Prime Minister's Office in Jerusalem
+            Visual: A wall calendar with exactly one year marked in highlighter
+            Text: NAFTALI BENNETT · BEYACHAD · 12 SEATS
+            Cite: Times of Israel
+
+[0:29:33]  (14s)  VO: इस बार बेनेट ने कहा है: अरब पार्टियाँ ज़ायोनिस्ट नहीं हैं, इसलिए हम उन पर निर्भर नहीं रहेंगे। बड़ी दिलचस्प बात है, उस इंसान के लिए जिसकी पिछली सरकार एक अरब पार्टी पर ही निर्भर थी।
+            Tone: strong
+            Visual: A bridge someone has already crossed, with a sign saying closed
+            Visual: A pair of muddy boots by a door
+            Quote: The Arab parties are not Zionist, therefore we will not rely on them | Naftali Bennett, 2026
+            Cite: Times of Israel; Jewish News, 2026
+
+[0:29:48]  (24s)  VO: Yisrael Beytenu के अविगडोर लीबरमैन, 7 सीटें, और भी पक्के हैं। उन्होंने कहा है कि वो ऐसी किसी coalition का साथ नहीं देंगे जिसमें अरब पार्टियाँ हों, भले वो विश्वास मत में सिर्फ़ abstain करें। रिकॉर्ड के लिए, लीबरमैन हरेदियों की भर्ती भी चाहते हैं, और नेतन्याहू को भी ना कहते हैं। उनके पास "ना" का अच्छा-ख़ासा stock है।
+            Tone: strong
+            Visual: A rubber stamp reading no on a stack of papers
+            Visual: A door with three locks
+            Text: LIEBERMAN: NO ARAB PARTIES · NO HAREDI EXEMPTION · NO NETANYAHU
+            Cite: Kuwait Times; Times of Israel, Oct 2026
+
+[0:30:11]  (25s)  VO: "ज़ायोनिस्ट" शब्द इतना भारी क्यों है, ये समझने के लिए थोड़ा इतिहास चाहिए। इज़राइल के ज़्यादातर इतिहास में अरब पार्टियों को coalition के खेल से बाहर रखा गया। सबसे क़रीब वो 1992 में आईं, जब अरब पार्टियों ने बाहर से यित्ज़ाक राबिन की सरकार का साथ दिया, जिससे Oslo शांति प्रक्रिया मुमकिन हुई। उनके विरोधियों ने उन्हें ये बात कभी भूलने नहीं दी।
+            Tone: calm
+            Visual: An old photograph style image of the Knesset plenum in the 1990s
+            Archive: 1990s
+            Visual: A pair of reading glasses on old parliamentary papers
+            Cite: Knesset archives; Times of Israel
+
+[0:30:36]  (26s)  VO: नेतन्याहू इस मुद्दे को सालों से चुनावी हथियार की तरह इस्तेमाल करते आए हैं। 2015 में चुनाव वाले दिन उन्होंने एक video में चेतावनी दी कि अरब वोटर, उनके शब्दों में, "झुंड के झुंड" polling stations जा रहे हैं। बाद में उन्होंने माफ़ी माँगी। इस साल उनकी पार्टी ने कहा कि चुनाव उन्हीं ने चुरा लिया। ये script, कह सकते हैं, काफ़ी लंबा चल रहा है।
+            Tone: strong
+            Visual: A vintage television set showing static in a dark room
+            Visual: A theatre poster on a wall saying now in its tenth year, text unreadable
+            Quote: Arab voters are moving in droves to the polling stations | Netanyahu, election day 2015 (he later apologised)
+            Cite: Times of Israel; Haaretz, 2015
+
+[0:31:03]  (21s)  VO: फिर Democrats के याइर गोलान, 8 सीटें, इस खेमे की सबसे वामपंथी आवाज़। उन्होंने खुलकर अरब पार्टियों के साथ coalition की वकालत की है। तो एक ही खेमे में, एक नेता कह रहा है हाँ, दो कह रहे हैं ना, और जो सबसे आगे है वो कह रहा है, चलो बात करते हैं।
+            Tone: calm
+            Visual: Four signposts pointing in different directions at a crossroads
+            Visual: A meeting room whiteboard with arrows crossed out
+            Cite: Times of Israel, 2026
+
+[0:31:24]  (22s)  VO: अब ख़ुद अरब नेतृत्व वाली पार्टियाँ। Ra'am के मंसूर अब्बास, 8 सीटें, ने कहा है कि वो शर्तों के साथ आइज़नकोट की सरकार का साथ देने को तैयार हैं। अब्बास व्यावहारिक नेता हैं। उनका pitch लंबे समय से रहा है: अरब क़स्बों के लिए बजट, अरब बस्तियों में अपराध से लड़ाई, और बेदुइन गाँवों को मान्यता।
+            Tone: calm
+            Visual: A Bedouin village of corrugated homes in the Negev desert
+            Visual: A police car parked outside a shop in an Arab town at night
+            Text: MANSOUR ABBAS · RA'AM · 8 SEATS
+            Cite: Times of Israel (French); i24NEWS, Oct 2026
+
+[0:31:46]  (22s)  VO: अभियान के दौरान उन्होंने एक भाषण में फ़िलिस्तीनी राष्ट्र का मुद्दा भी उठाया, और इस पर आइज़नकोट और नेतन्याहू, दोनों ने उन्हें फटकारा। इससे पता चलता है कि रास्ता कितना तंग है: व्यावहारिक अरब पार्टी की आलोचना होती है कि वो बहुत फ़िलिस्तीनी है, और फ़िलिस्तीनी सवाल की आलोचना होती है कि उसे उठाया ही क्यों।
+            Tone: strong
+            Visual: A narrow alley between two tall walls
+            Visual: A microphone switched off on a stand
+            Cite: i24NEWS, 2026
+
+[0:32:09]  (24s)  VO: Joint List, 11 सीटें, किसी भी इज़राइली सरकार में शामिल होने को लेकर ज़्यादा शक़्क़ी है, और उसके नेताओं ने बराबरी, जंग ख़त्म करने और फ़िलिस्तीनी राष्ट्र के मुद्दे पर प्रचार किया। रिपोर्टों के मुताबिक़ उसके नेतृत्व का तर्क था कि ऊँचा अरब turnout नेतन्याहू की वापसी रोक सकता है। कम से कम इस पर, आँकड़ों ने उन्हें सही साबित किया।
+            Tone: calm
+            Visual: A crowd of voters seen from behind at a rally in an Arab town, flags not visible
+            Visual: A ballot box being carried by two officials, hands only
+            Text: JOINT LIST · 11 SEATS
+            Cite: Türkiye Today; New Arab, 2026
+
+[0:32:33]  (21s)  VO: अब दूसरे खेमे के kingmakers। Otzma Yehudit के इतामार बेन-ग्वीर, 7 सीटें, राष्ट्रीय सुरक्षा मंत्री जिनके हाथ में पुलिस है। उन्हें एक बार नस्लवाद भड़काने और एक आतंकी संगठन का समर्थन करने के लिए दोषी ठहराया जा चुका है। वो नेतन्याहू की किसी भी सरकार का हिस्सा होंगे, और किसी और की नहीं।
+            Tone: strong
+            Visual: The Ministry of Public Security building sign in Jerusalem, out of focus
+            Visual: A police officer's cap on a desk
+            Text: ITAMAR BEN-GVIR · OTZMA YEHUDIT · 7 SEATS
+            Cite: Jerusalem Magistrates' Court, 2007, as reported by Times of Israel
+
+[0:32:54]  (13s)  VO: Religious Zionism के बेज़लेल स्मोट्रिच, 6 सीटें, वित्त मंत्री हैं और West Bank में नागरिक जीवन पर भी अधिकार रखते हैं। annexation उनका मुख्य मक़सद है। वो भी सिर्फ़ नेतन्याहू के साथ बैठेंगे।
+            Tone: strong
+            Visual: A finance ministry building with flags in Jerusalem
+            Visual: A stack of coins next to a hilltop map
+            Text: BEZALEL SMOTRICH · RELIGIOUS ZIONISM · 6 SEATS
+            Cite: Times of Israel; Peace Now
+
+[0:33:08]  (12s)  VO: और फिर वो पार्टियाँ जिन्हें, theory में, पाला बदलने के लिए मनाया जा सकता है: हरेदी पार्टियाँ। आर्ये देरी की Shas, और United Torah Judaism। दोनों मिलाकर 13 सीटें।
+            Tone: question
+            Visual: A yeshiva study hall with rows of books and empty benches
+            Visual: A street in Bnei Brak with men walking, seen from behind at a distance
+            Text: SHAS 6 + UTJ 7 = 13
+            Cite: Central Elections Committee, Oct 2026
+
+[0:33:19]  (29s)  VO: हरेदी पक्ष को उसकी अपनी शर्तों पर सुनना ज़रूरी है। उनके समुदाय के लिए पूरे समय तोरा की पढ़ाई एक केंद्रीय धार्मिक मूल्य है, और उनका तर्क है कि ये यहूदी लोगों की उतनी ही रक्षा करती है जितनी सेना। बहुत से हरेदी परिवारों को ये डर भी है कि सेना उनके नौजवानों को उनकी जीवनशैली से दूर कर देगी। ये सच्चे विश्वास हैं, जो दस लाख से ज़्यादा इज़राइलियों के हैं।
+            Tone: calm
+            Visual: Open religious books on a wooden table under warm light
+            Visual: A quiet street in Jerusalem's Mea Shearim neighbourhood seen from a distance
+            Text: HAREDI ISRAELIS: ~14% OF POPULATION
+            Cite: Israel Democracy Institute, Haredi Society report
+
+[0:33:48]  (20s)  VO: दूसरे पक्ष का तर्क भी उतना ही सच्चा है। तीन साल की जंग में reservists ने सैकड़ों दिन सेवा दी, परिवार एक माँ या बाप के भरोसे चले, और सैनिक मारे गए। वो पूछते हैं कि एक समुदाय क़ानूनन छूट क्यों पाए, जब उनका समुदाय पूरा बोझ उठा रहा है।
+            Tone: calm
+            Visual: A soldier's uniform hanging by a child's bedroom door
+            Visual: A kitchen table with a single parent's coffee cup and school bags
+            Split: Torah study protects us | Everyone should share the burden
+
+[0:34:08]  (16s)  VO: उनकी red line है भर्ती। देरी कह चुके हैं कि जब तक हरेदी छूट क़ानून में नहीं लिखी जाती, Shas किसी सरकार में शामिल नहीं होगी। United Torah Judaism ने भी यही कहा, एक शब्द में: बस, पूर्ण विराम।
+            Tone: strong
+            Visual: A draft notice envelope on a doormat, text unreadable
+            Visual: A full stop drawn huge in black ink on white paper
+            Quote: Will not enter a government that does not pass the law. Period. | UTJ chair Yaakov Asher, 2026
+            Cite: Times of Israel; Kikar HaShabbat, 2026
+
+[0:34:24]  (23s)  VO: जुलाई 2026 में जाती हुई सरकार ने एक अस्थायी क़ानून पास किया जिससे भर्ती से बचने वालों की गिरफ़्तारी पर रोक लगी। High Court ने उस पर रोक लगा दी। जंग के दौरान के polls दिखाते रहे कि ज़्यादातर यहूदी इज़राइली हरेदी आदमियों की भर्ती के पक्ष में हैं, और आइज़नकोट के खेमे की लगभग हर पार्टी भी।
+            Tone: calm
+            Visual: The Supreme Court building in Jerusalem
+            Visual: A soldier's duffel bag next to a pair of civilian shoes
+            Text: TEMPORARY LAW · FROZEN BY HIGH COURT
+            Cite: Times of Israel; Israel Democracy Institute polling
+
+[0:34:47]  (22s)  VO: तो जाल ये है। हरेदी पार्टियाँ आइज़नकोट को majority दिला सकती हैं, पर सिर्फ़ उस छूट के बदले जिससे उनके वोटर नफ़रत करते हैं। अरब पार्टियाँ उन्हें majority दिला सकती हैं, पर उनके दो साथी उनके साथ बैठेंगे नहीं। हर चाबी जिस दरवाज़े को खोलती है, उसे किसी और ने वेल्ड करके बंद कर रखा है।
+            Tone: strong
+            Visual: A heavy door with a welded seam across the lock
+            Visual: A ring of keys hanging on a nail
+            Animate: a man tries three keys in a door, one by one, then sits down on the floor
+
+[0:35:09]  (14s)  VO: Channel 12 की एक रिपोर्ट ने कहा कि United Torah Judaism आइज़नकोट की सरकार का विरोध नहीं करेगी। शामिल नहीं होगी। विरोध नहीं करेगी। इज़राइली राजनीति में इस फ़र्क़ की क़ीमत एक पूरा मंत्रालय होती है।
+            Tone: calm
+            Visual: A chair pulled slightly back from a table, not occupied
+            Visual: A half-open door with light coming through
+            Cite: Channel 12 via Times of Israel, 2026
+
+[0:35:24]  (20s)  VO: और इन सबके ऊपर बैठे हैं राष्ट्रपति हर्ज़ोग, एक ऐसे इंसान जिनके पास कोई कार्यकारी ताक़त नहीं, और अगले कुछ हफ़्तों में जिनका मुख्य काम है उस इंसान को चुनना जो सबसे धीरे fail हो। उन्होंने सबसे एक और चुनाव से बचने को कहा है। वो उन्हें मजबूर नहीं कर सकते।
+            Tone: calm
+            Visual: A grand empty reception hall with a single chair at the end
+            Visual: A pocket watch lying open on a desk
+            Cite: Jewish News; Kuwait Times, Oct 2026
+
+[0:35:44]  (5s)  VO: वैसे इस चुनाव में एक वोटर और था। वो इज़राइल में नहीं रहता।
+            Tone: question
+            Visual: The White House seen through a fence at night
+            Visual: A smartphone screen glowing in a dark room, text unreadable
+
+==================== RENDER 5: R5_Part_6_Paisa_Missiles_Washington  (1023 words, ~6.8 min, 10107 chars) ====================
+
+[35:49]  CHAPTER CARD  Part 6 | Paisa, Missiles Aur Washington Wale Sahab
+
+[0:35:49]  (14s)  VO: 18 अक्टूबर को, वोटिंग से नौ दिन पहले, डोनाल्ड ट्रम्प ने नेतन्याहू का समर्थन किया। उन्होंने उन्हें कहा, उनके शब्दों में, "Great Warrior Prime Minister", और Likud ने उस post को चुनावी video बना दिया।
+            Tone: strong
+            Visual: A smartphone showing a social media post, text unreadable
+            Visual: A campaign video being edited on a laptop screen, no faces
+            Quote: Great Warrior Prime Minister | Donald Trump, 18 Oct 2026
+            Cite: AP via OPB, 19 Oct 2026
+
+[0:36:03]  (22s)  VO: उसी post में ट्रम्प ने इशारा किया कि अगर नेतन्याहू हारे, तो अमेरिका शायद ईरान के ख़िलाफ़ काम पूरा न करे, ये कहते हुए कि तब अमेरिका को ये काम ख़ुद करना पड़ेगा, और उनका ऐसा करने का मन नहीं है। आइज़नकोट का जवाब: अपना देश कौन चलाए, ये सिर्फ़ इज़राइली तय कर सकते हैं।
+            Tone: strong
+            Visual: A wall map of the Persian Gulf with pins in it
+            Visual: A ballot slip held up against a window
+            Split: Trump: vote Netanyahu | Eisenkot: Israelis choose
+            Cite: AP via OPB, 19 Oct 2026
+
+[0:36:25]  (20s)  VO: वोटिंग से कुछ दिन पहले किसी विदेशी नेता का समर्थन करना असामान्य है। इससे वोट बदले या नहीं, साबित करना नामुमकिन है। जो हम कह सकते हैं, वो ये कि जिस bloc का उन्होंने समर्थन किया उसे 53 सीटें मिलीं, और ईरान वाला काम ज़ाहिर है अभी बाक़ी है।
+            Tone: calm
+            Visual: A to-do list on a notepad with one item unchecked, text unreadable
+            Visual: An office in-tray full of papers
+
+[0:36:45]  (22s)  VO: उस वाक्य को समझने के लिए जून 2025 में चलना होगा। इज़राइल ने ईरान के परमाणु कार्यक्रम और सैन्य नेतृत्व पर अचानक हवाई हमले शुरू किए। ईरान ने इज़राइली शहरों पर सैकड़ों बैलिस्टिक मिसाइलें दागीं। अमेरिका भी परमाणु ठिकानों पर हमलों में शामिल हुआ, जिनमें Fordow भी था। बारह दिन बाद ceasefire घोषित हुआ।
+            Tone: strong
+            Visual: A mountain range in Iran at dusk seen from far away
+            Visual: A missile interceptor trail in a night sky over a city
+            Timeline: 13 Jun 2025 Israel strikes Iran | 22 Jun 2025 US strikes Fordow | 24 Jun 2025 ceasefire
+            Cite: Reuters; AP, June 2025
+
+[0:37:06]  (14s)  VO: क्योंकि ये ईरान युद्ध का साल भी था। 28 फ़रवरी 2026 को अमेरिका और इज़राइल ने ईरान पर भारी हमले किए। ईरान के सर्वोच्च नेता, आयतुल्लाह अली ख़ामेनेई, मारे गए। उनके बेटे मुज्तबा उनके उत्तराधिकारी बने।
+            Tone: dramatic
+            Visual: A night sky over a city with streaks of light, seen from far away
+            Visual: A large empty ceremonial hall with a single portrait frame, empty
+            Text: 28 FEB 2026 · US-ISRAEL STRIKES ON IRAN
+            Cite: Bloomberg Government; Iranian state media, 1 Mar 2026
+
+[0:37:21]  (24s)  VO: ईरान ने इज़राइल पर और उन खाड़ी देशों पर मिसाइलें दागीं जहाँ अमेरिकी अड्डे हैं। Strait of Hormuz, जिससे दुनिया का क़रीब पाँचवाँ हिस्सा तेल गुज़रता है, लगभग बंद हो गया। अप्रैल में पाकिस्तान की मदद से दो हफ़्ते का ceasefire हुआ, फिर बातचीत, फिर extensions, और जून में एक अंतरिम समझौता, जिसकी details पर अब भी विवाद है।
+            Tone: strong
+            Visual: An oil tanker at anchor in calm water at dusk
+            Visual: A conference table with flags removed and water glasses half full
+            Timeline: 28 Feb strikes begin | 7-8 Apr two-week ceasefire | Apr Islamabad talks | Jun interim deal reported
+            Cite: AP; Al Jazeera; Wikipedia (2026 Iran war ceasefire), 2026
+
+[0:37:44]  (19s)  VO: जंग उत्तर तक फैली। मार्च में हिज़्बुल्लाह ने इज़राइल पर हमला किया। इज़राइल ने हवाई अभियान और दक्षिणी लेबनान में ज़मीनी हमले से जवाब दिया। Reuters पर आधारित एक गिनती के मुताबिक़ लेबनान में 3,900 से ज़्यादा लोग मारे गए। इज़राइल ने अपनी तरफ़ 36 मौतें बताईं।
+            Tone: strong
+            Visual: A southern Lebanese village on a hillside with damaged buildings, seen from far
+            Visual: An Israeli northern town street with closed shops and sandbags
+            Text: LEBANON: 3,900+ KILLED · ISRAEL: 36 · AS REPORTED
+            Cite: Reuters via Aaj News; Wikipedia (2026 Lebanon war)
+
+[0:38:03]  (13s)  VO: अप्रैल में और फिर जून में ceasefire हुए। उसके बाद भी लेबनान में इज़राइली हमले जारी रहे, जिन्हें इज़राइल हिज़्बुल्लाह के ख़तरों पर कार्रवाई बताता है, और लेबनान और हिज़्बुल्लाह उल्लंघन कहते हैं।
+            Tone: calm
+            Visual: A UN peacekeeper's blue helmet resting on a sandbag wall
+            Visual: A border fence on a green hillside in the north
+            Cite: L'Orient Today; Asharq Al-Awsat, 2026
+
+[0:38:16]  (27s)  VO: और हर असहमति दुश्मनों के बीच ही नहीं थी। रिपोर्टों के मुताबिक़ 2026 की जंग के शुरुआती हफ़्तों में ट्रम्प ने ईरान के एक अहम gas field पर इज़राइल के हमले की खुलकर आलोचना की। यानी इतिहास का सबसे नेतन्याहू-समर्थक अमेरिकी राष्ट्रपति वही है जो बीच-बीच में सबके सामने उन्हें डाँट भी देता है। रिश्ता है। उलझा हुआ है। superpower के साथ ज़्यादातर रिश्ते ऐसे ही होते हैं।
+            Tone: strong
+            Visual: A gas processing plant with flares at night
+            Visual: Two coffee mugs on a table, one turned away from the other
+            Cite: AP via OPB, Oct 2026
+
+[0:38:44]  (15s)  VO: जंग में पैसा लगता है। इज़राइल का 2026 का बजट उसके इतिहास का सबसे ज़्यादा सैन्य बजट है। रक्षा ख़र्च अर्थव्यवस्था के लगभग 8 प्रतिशत तक पहुँचने की उम्मीद है, जबकि 2022 में ये क़रीब 4 प्रतिशत था।
+            Tone: strong
+            Visual: Stacks of Israeli shekel banknotes on a table
+            Visual: A military supply depot with crates stacked high
+            Chart: Defence spend, % of GDP | 2022: 4.2 | 2026: ~8
+            Cite: Czech Embassy Tel Aviv / BusinessInfo.cz; Times of Israel, 2026
+
+[0:38:59]  (23s)  VO: Bank of Israel ने जंग की कुल लागत क़रीब 350 अरब शेकेल आँकी। घाटे का लक्ष्य बढ़ाकर 5 प्रतिशत से ऊपर किया गया, और केंद्रीय बैंक ने चेतावनी दी कि कर्ज़ GDP के क़रीब 70 प्रतिशत तक जा सकता है, और सरकार की आलोचना की कि वो बाक़ी जगह कटौती करते हुए coalition funds बचाए बैठी है।
+            Tone: strong
+            Visual: The Bank of Israel building in Jerusalem
+            Visual: A calculator next to a stack of unpaid bills, numbers unreadable
+            Text: WAR COST ~NIS 350BN · DEFICIT TARGET 5.1% · DEBT ~70% OF GDP
+            Cite: Bank of Israel Annual Report 2025; Globes, 2026
+
+[0:39:22]  (22s)  VO: उस पैसे को लेकर सरकार के अंदर भी लड़ाई है। सितंबर की रिपोर्टों में वित्त और रक्षा मंत्रालयों के बीच इस पर टकराव बताया गया कि सेना को कितना चाहिए, और रक्षा अधिकारी ग़ाज़ा, लेबनान, सीरिया, ईरान की तैयारी और West Bank में ज़्यादा सैनिकों के लिए क़रीब 40 अरब शेकेल और माँग रहे थे।
+            Tone: calm
+            Visual: Two office doors facing each other across a corridor in a ministry
+            Visual: A spreadsheet printed on paper with columns of numbers, unreadable
+            Text: DEFENCE ASKS +NIS 40BN · REPORTED
+            Cite: Al Jazeera, 1 Sep 2026; Israeli media reports
+
+[0:39:44]  (20s)  VO: Coalition funds वो पैसा है जो छोटी पार्टियों की प्राथमिकताओं के लिए अलग रखा जाता है, 61 की क़ीमत। जब जंग का बिल आता है, और coalition राजनीति का बिल फिर भी चुकाया जाता है, तो वोटर ध्यान देते हैं। उनमें से बहुत से वही reservists हैं जिन्हें बार-बार बुलाया गया।
+            Tone: strong
+            Visual: A wallet on a kitchen table with a military ID card next to it, name unreadable
+            Visual: An envelope labelled with a coalition party colour, text unreadable
+            Receipt: War | Reservist call-ups | Coalition funds | Total: someone else pays
+
+[0:40:04]  (18s)  VO: फिर है अमेरिकी मदद। 2019 से, दस साल के एक समझौते के तहत इज़राइल को हर साल 3.8 अरब डॉलर की अमेरिकी सैन्य मदद मिलती है, 3.3 अरब हथियारों के लिए grant, और 50 करोड़ missile defence के लिए। ये 2028 में ख़त्म होता है।
+            Tone: calm
+            Visual: A pallet of crates on an airfield at dawn
+            Visual: An air-defence battery silhouetted against an evening sky
+            Text: $3.8BN A YEAR · MOU 2019-2028
+            Cite: US State Department; Jewish Insider
+
+[0:40:22]  (20s)  VO: जून 2026 में दोनों सरकारों ने आगे के लिए बातचीत शुरू की। नेतन्याहू ख़ुद समय के साथ अमेरिकी मदद ख़त्म करने का विचार रख चुके हैं। वॉशिंगटन ने grants की जगह व्यापार और साझा projects की ओर बढ़ने के संकेत दिए हैं। अगला प्रधानमंत्री अगले दशक की डील तय करेगा।
+            Tone: calm
+            Visual: Two pens lying on an unsigned agreement on a conference table
+            Visual: A cargo ship being loaded at a port
+            Cite: Jewish Insider; FDD, Jun 2026
+
+[0:40:42]  (21s)  VO: यूरोप, इज़राइल का सबसे बड़ा व्यापारिक साझेदार, ज़्यादा नाराज़ रहा है पर धीमा। सितंबर 2025 में European Commission ने EU-Israel Association Agreement के व्यापारिक हिस्से निलंबित करने का प्रस्ताव दिया। अप्रैल 2026 तक भी सदस्य देशों में इसके लिए बहुमत नहीं था। जर्मनी और इटली अड़े रहे। स्पेन और बेल्जियम ने ज़ोर लगाया।
+            Tone: calm
+            Visual: The European Commission Berlaymont building in Brussels
+            Visual: A row of EU flags on poles in wind
+            Split: Spain, Belgium: suspend | Germany, Italy: hold
+            Cite: JURIST; Al-Monitor, Apr 2026
+
+[0:41:03]  (20s)  VO: और खाड़ी? नेतन्याहू सालों से जिस बड़े इनाम के पीछे हैं, वो है सऊदी अरब के साथ संबंध सामान्य करना। सऊदी अरब का रुख़, जो मई 2026 में दोहराया गया, हिला नहीं है: फ़िलिस्तीनी राष्ट्र की ओर एक ऐसे रास्ते के बिना, जो पलटा न जा सके, कोई सामान्य संबंध नहीं।
+            Tone: strong
+            Visual: The Riyadh skyline at dusk
+            Visual: A closed door with an ornate handle
+            Quote: An irreversible pathway to a Palestinian state | Saudi position, May 2026
+            Cite: Al Arabiya, 25 May 2026
+
+[0:41:24]  (21s)  VO: खाड़ी के बारे में सटीक रहना ज़रूरी है। UAE, बहरीन और मोरक्को ने 2020 में Abraham Accords के तहत इज़राइल से संबंध सामान्य किए, और वो रिश्ते जंग में दबाव के बावजूद बचे रहे। जो देश शामिल नहीं हुए, उन्होंने ज़्यादातर रियाद वाली ही बात कही: पहले फ़िलिस्तीनी राष्ट्र का रास्ता दिखाओ।
+            Tone: calm
+            Visual: The Abu Dhabi skyline at sunset
+            Visual: Three national flags on poles outside a conference centre, flags unidentifiable in wind
+            Timeline: 2020 Abraham Accords | 2023-2025 ties strained by war | 2026 Saudi still waiting
+            Cite: US State Department; Al Arabiya, 2026
+
+[0:41:44]  (20s)  VO: और ये हमें वापस Part 4 वाली इज़राइली सहमति पर ले आता है। दोनों मुख्य उम्मीदवार कहते हैं, कोई फ़िलिस्तीनी राष्ट्र नहीं। सऊदी अरब कहता है, उसके बिना कोई डील नहीं। तो इस इलाक़े का सबसे चाहा गया हाथ मिलाना उसी एक सवाल पर अटका है जिससे ये चुनाव बचता रहा।
+            Tone: strong
+            Visual: Two hands reaching toward each other but not touching
+            Visual: A circle drawn on a map, then a question mark next to it
+            Statement: The prize needs the *question nobody asked*.
+
+[0:42:05]  (28s)  VO: विदेशी प्रभाव पर एक बात, क्योंकि ये मुद्दा उठा। इज़राइली राजनीति में क़तर पर प्रभाव डालने के लिए पैसा लगाने के आरोप लगे हैं। क़तर इससे इनकार करता है। नेतन्याहू के सहयोगियों के क़तर से जुड़े काम की जाँच 2025 और 2026 में चल रही थी, और उन मामलों में किसी को दोषी नहीं ठहराया गया है। हम वही कहेंगे जो दस्तावेज़ों में है, और दस्तावेज़ों में इतना ही है।
+            Tone: calm
+            Visual: A Doha skyline at night across the water
+            Visual: A closed case file on a desk tied with string
+            Text: INVESTIGATION · NO CONVICTIONS
+            Cite: Times of Israel; Haaretz, 2025-2026
+
+==================== RENDER 6: R6_Part_7_aur_8  (868 words, ~5.8 min, 8275 chars) ====================
+
+[42:33]  CHAPTER CARD  Part 7 | Yeh Khel Paanch Tarah Khatam Ho Sakta Hai
+
+[0:42:33]  (16s)  VO: तो अब होगा क्या? हम आपको प्रतिशत नहीं देंगे। जो कोई इज़राइली coalition बातचीत पर सटीक संभावना बताए, वो आपको कुछ बेच रहा है। इसके बजाय, ये रहे पाँच रास्ते, और हर एक के लिए क्या सच होना ज़रूरी है।
+            Tone: calm
+            Visual: Five roads branching from one roundabout seen from above
+            Visual: A crystal ball on a desk with a crack in it
+            Text: NO PREDICTIONS · ONLY CONDITIONS
+
+[0:42:49]  (22s)  VO: Scenario A। आइज़नकोट एक पतली सरकार बनाते हैं, जिसे अरब पार्टियाँ बाहर से समर्थन दें, शामिल हुए बिना। इसके लिए बेनेट या लीबरमैन को अपनी red line तोड़नी होगी, या उनकी जगह कहीं और से वोट आने होंगे। हर्ज़ोग से मुलाक़ात के बाद लीबरमैन क्या कहते हैं, उस पर नज़र रखिए। असली इशारा वहीं है।
+            Tone: calm
+            Visual: A bridge with only half its planks laid
+            Visual: A pair of reading glasses on a printed transcript, text unreadable
+            Text: A · EISENKOT + OUTSIDE ARAB SUPPORT
+            Cite: Analysis based on party statements, Oct 2026
+
+[0:43:11]  (20s)  VO: Scenario B। आइज़नकोट हरेदी पार्टियों को साथ लाते हैं। इसके लिए उन्हें वो भर्ती व्यवस्था देनी होगी जिसे ख़त्म करने का वादा उनके साथी और वोटर पूरे प्रचार में करते रहे। देखिए कि भर्ती पर Yashar की भाषा नरम होती है या नहीं। अगर हुई, तो मंत्रालय गिनना शुरू कर दीजिए।
+            Tone: calm
+            Visual: Two puzzle pieces that almost fit, slightly forced together
+            Visual: A handshake over a table, cropped at the wrists
+            Text: B · EISENKOT + HAREDI PARTIES
+
+[0:43:31]  (18s)  VO: Scenario C। उल्टा नेतन्याहू वहाँ पहुँच जाते हैं। 53 और 8। इसका मतलब होगा दूसरी तरफ़ से किसी पार्टी को खींच लाना, सबसे संभावित वो जिसे कोई बड़ा पद और एकता का भाषण लुभा ले। दलबदल, टूट, और "emergency government" शब्द पर नज़र रखिए।
+            Tone: question
+            Visual: A single chess piece moving to the other side of the board
+            Visual: An empty ministerial chair with a nameplate, name unreadable
+            Text: C · NETANYAHU + DEFECTORS
+
+[0:43:49]  (20s)  VO: Scenario D। एक national unity सरकार: Likud के साथ आइज़नकोट खेमे के कुछ हिस्से। अभी सब ना कह रहे हैं। सब पहले भी ना कह चुके हैं। इज़राइल में बारी-बारी प्रधानमंत्री वाली unity सरकारें रह चुकी हैं, और आख़िरी rotation, 2020 में, rotation होने से पहले ही ख़त्म हो गया।
+            Tone: strong
+            Visual: A revolving door in an office lobby
+            Visual: A two-sided name plate on a desk, both sides blank
+            Text: D · UNITY GOVERNMENT / ROTATION
+            Cite: 2020 Netanyahu-Gantz agreement
+
+[0:44:09]  (17s)  VO: Scenario E। कोई नहीं पहुँचता। mandates ख़त्म होते हैं, Knesset नाकाम रहती है, और इज़राइल 2027 में फिर चुनाव कराता है, और पूरे वक़्त नेतन्याहू caretaker प्रधानमंत्री रहते हैं। ये सबसे कम संभावित अंत नहीं है। इतिहास में ये जाना-पहचाना अंत है।
+            Tone: dramatic
+            Visual: A ballot box being taken off a storage shelf, dust on top
+            Visual: A calendar flipped to a new year
+            Text: E · ANOTHER ELECTION
+            Cite: Basic Law: The Government
+
+[0:44:26]  (25s)  VO: अगर आप ख़ुद इस पर नज़र रखना चाहते हैं, तो क्रम से ये देखिए। पहला: हर पार्टी हर्ज़ोग को किसका नाम सुझाती है। ये सिफ़ारिशें सार्वजनिक होती हैं। ख़ुद गिनिए। अगर आइज़नकोट को साठ से ज़्यादा नाम मिलते हैं, तो वो आधे रास्ते पर हैं। अगर उससे कम नामों के साथ mandate मिला, तो वो सरकार नहीं, मोलभाव शुरू कर रहे हैं।
+            Tone: calm
+            Visual: A notepad with a tally of marks in pencil
+            Visual: A row of name cards on a table, names unreadable
+            Steps: Recommendations to Herzog → Who gets the mandate → How many names they carry | What to watch first
+
+[0:44:50]  (20s)  VO: दूसरा: भर्ती। कोई भी coalition text जो हरेदी सेवा का ज़िक्र करे, बता देगा कि किसने हार मानी। तीसरा: Knesset speaker का वोट। रिपोर्टें पहले ही कह रही हैं कि आइज़नकोट खेमा अरब पार्टियों के समर्थन से speaker बदलना चाहेगा। speaker का वोट, सरकार वाले वोट की rehearsal होता है।
+            Tone: calm
+            Visual: The speaker's chair in a parliament chamber, empty
+            Visual: A rehearsal stage with a script on a stool
+            Cite: Jewish News, Oct 2026
+
+[0:45:10]  (17s)  VO: चौथा: वॉशिंगटन। अगर बातचीत के दौरान ईरान या ग़ाज़ा पर अमेरिकी दबाव का रूप बदले, तो देखिए वो किस खेमे पर है। और पाँचवाँ: मुक़दमा। plea deal पर कोई भी हलचल रातों-रात नेतन्याहू के विकल्प बदल सकती है, किसी भी दिशा में।
+            Tone: calm
+            Visual: The US Capitol dome at night
+            Visual: A courthouse clock at noon
+            Text: WATCH: RECOMMENDATIONS · DRAFT · SPEAKER · WASHINGTON · TRIAL
+
+[0:45:27]  (35s)  VO: और फ़िलिस्तीनियों के लिए ये रास्ते यरूशलम से अलग दिखते हैं। बेन-ग्वीर और स्मोट्रिच वाली नेतन्याहू सरकार, उसके मंत्री जो चाहते हैं उसे देखते हुए, शायद West Bank में अपना ज़ोर जारी रखेगी। आइज़नकोट सरकार कहती है कि वो ग़ाज़ा को अपने में नहीं मिलाएगी और उसने E1 की आलोचना की, पर वो भी फ़िलिस्तीनी राष्ट्र को ख़ारिज करती है और हमास से लड़ते रहने का वादा करती है। फ़िलिस्तीनी नेता जो माँगते हैं, क़ब्ज़े का अंत और एक राष्ट्र, वो दोनों में से कोई नहीं देता।
+            Tone: strong
+            Visual: A checkpoint turnstile seen from the Palestinian side, no people
+            Visual: A Palestinian olive harvest, hands picking olives, faces out of frame
+            Split: Netanyahu bloc: annexation agenda | Eisenkot bloc: no annexation of Gaza, no state
+            Cite: Party statements as reported, 2026; Palestinian Authority statements
+
+[0:46:02]  (18s)  VO: इज़राइल के अरब नागरिकों के लिए फ़र्क़ और भी तीखा है। एक scenario में, उनके चुने हुए प्रतिनिधियों पर चुनाव चुराने का आरोप है। दूसरे में, वही वो वजह हैं जिससे एक सरकार बनती है। वही लोग। वही वोट। बस कहानी अलग कि वो हैं कौन।
+            Tone: calm
+            Visual: A school in an Arab town in Israel with children's paintings on the gate, no faces
+            Visual: Two newspapers lying side by side on a café table, headlines unreadable
+
+[0:46:20]  (16s)  VO: और इन सब रास्तों पर तीन चीज़ें नहीं बदलतीं। मुक़दमा चलता रहेगा। 7 अक्टूबर की जाँच का सवाल खुला रहेगा। और ग़ाज़ा और West Bank उस सरकार के फ़ैसलों के नीचे रहेंगे जिसे वहाँ के लोगों ने चुना ही नहीं।
+            Tone: strong
+            Visual: A courtroom door closed with light under it
+            Visual: A candle burning down on a windowsill
+            Visual: A dusty road in the West Bank lined with olive trees
+            Steps: Trial continues → Inquiry question open → Gaza and West Bank wait | In every scenario
+
+[46:36]  CHAPTER CARD  Part 8 | Aakhir Tay Kya Hua
+
+[0:46:36]  (5s)  VO: तो क्या इस चुनाव ने कुछ तय किया? किया, असल में। कुछ चीज़ें।
+            Tone: calm
+            Visual: The Knesset building in Jerusalem at dawn
+            Visual: A pen resting on a closed notebook
+
+[0:46:42]  (18s)  VO: इसने तय किया कि इज़राइली आज भी अपने लोकतंत्र से गहराई से जुड़े हैं। लगभग पाँच में से चार ने वोट डाला। अरब नागरिकों ने ऐतिहासिक संख्या में वोट डाला। ये मायने रखता है, और ये बात बिना किसी punchline के कही जानी चाहिए।
+            Tone: calm
+            Visual: Voters seen from behind queueing outside a polling station in morning light
+            Visual: A ballot slip falling into a blue box
+            Text: TURNOUT ~78% · HIGHEST SINCE 1999
+
+[0:46:59]  (12s)  VO: इसने तय किया कि देश नेतन्याहू पर लगभग ठीक बीच से बँटा है, और वो "बीच" भी ज़्यादातर इससे तय होता है कि कौन किसके साथ बैठ सकता है।
+            Tone: calm
+            Visual: A long table split by a line of tape down the middle
+            Visual: Two halves of an apple on a cutting board
+
+[0:47:11]  (19s)  VO: और इसने चुपचाप ये तय किया कि इज़राइल चलाने के दोनों दावेदार जितना उनके प्रचार ने दिखाया, उससे ज़्यादा बातों पर सहमत हैं: कोई फ़िलिस्तीनी राष्ट्र नहीं, लंबी सैन्य मौजूदगी, और हमास से एक जंग जो तब तक ख़त्म नहीं होगी जब तक हमास ख़त्म न हो।
+            Tone: strong
+            Visual: Two chairs facing the same direction at a window
+            Visual: A map of Gaza on a table with a ruler across it
+
+[0:47:30]  (18s)  VO: जो तय नहीं हुआ: सरकार कौन चलाएगा, जंग का ख़र्च कौन उठाएगा, 7 अक्टूबर का जवाब कौन देगा, हरेदी आदमी सेना में जाएँगे या नहीं, और उन लाखों लोगों का क्या होगा जो इज़राइल के नियंत्रण में रहते हैं और जिनके पास कोई वोट ही नहीं।
+            Tone: strong
+            Visual: A list on paper with five unchecked boxes
+            Visual: A sunset over the Mediterranean seen from Gaza's coast, no people
+            Steps: Who governs? → Who pays? → Who answers for Oct 7? → Who serves? → What about Palestinians? | Unsettled
+
+[0:47:48]  (19s)  VO: हर्ज़ोग की मुलाक़ातें नवंबर की शुरुआत में होंगी। पहले mandate की घड़ी उसके बाद शुरू होगी। ये कहानी जैसे आगे बढ़ेगी, हम update करेंगे। अगर आपको लगता है कि हमसे कुछ ग़लत हुआ, तो comments में बताइए, source के साथ। हम जाँचेंगे और screen पर सुधार करेंगे।
+            Tone: calm
+            Visual: A desk calendar showing November
+            Visual: A laptop open on a desk with a comments page, text unreadable
+            Text: CORRECTIONS PINNED IN THE COMMENTS
+
+[0:48:07]  (8s)  VO: 120 सीटें। सरकार के लिए 61। और अभी तक, कोई भी, एक भी इंसान, 61वीं सीट नहीं ढूँढ पाया।
+            Tone: dramatic
+            Visual: The Knesset plenum seen from above, every seat empty
+            Visual: A single chair in a spotlight in an empty hall
+            Big: 61 · STILL MISSING

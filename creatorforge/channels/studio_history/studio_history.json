@@ -1,0 +1,311 @@
+[
+ {
+  "id": "india-one-clock-sample",
+  "title": "India's one clock in 15 seconds",
+  "channel": "sample",
+  "engine": "reverse-autopsy",
+  "hook_mechanism": "a clock reading that contradicts the sky",
+  "metaphors": [
+   "night lifting off the map while one clock runs"
+  ],
+  "look": "kraft",
+  "accent": "#CA2121",
+  "cinematography": "drifting",
+  "maps": "marker",
+  "infographics": "dimensional",
+  "animation": "hand",
+  "rhythm": "tidal",
+  "music": "sparse",
+  "grade": "cool",
+  "kinds": [
+   "sunrise",
+   "sunrise",
+   "sunrise",
+   "zones"
+  ]
+ },
+ {
+  "id": "netherlands-sea-sample",
+  "title": "Below the sea in 15 seconds",
+  "channel": "sample",
+  "engine": "historical-echo",
+  "hook_mechanism": "a death toll and a date",
+  "metaphors": [
+   "the 1953 water rising over today's real land"
+  ],
+  "look": "field",
+  "accent": "#21CACA",
+  "cinematography": "investigative",
+  "maps": "relief",
+  "infographics": "editorial",
+  "animation": "fluid",
+  "rhythm": "brisk",
+  "music": "drone",
+  "grade": "warm",
+  "kinds": [
+   "arrows",
+   "bignumber",
+   "terrain3d",
+   "terrain3d"
+  ]
+ },
+ {
+  "id": "avengers-sample",
+  "title": "The Avengers in 30 seconds",
+  "channel": "sample",
+  "engine": "reverse-autopsy",
+  "hook_mechanism": "the biggest number first, then rewind",
+  "metaphors": [
+   "a counter running backwards through the films"
+  ],
+  "look": "newsprint",
+  "accent": "#CA21CA",
+  "cinematography": "breathing",
+  "maps": "atlas",
+  "infographics": "objects",
+  "animation": "hand",
+  "rhythm": "measured",
+  "music": "pulse",
+  "grade": "bleach",
+  "kinds": [
+   "bignumber",
+   "counter",
+   "bars3d",
+   "title3d",
+   "stack",
+   "calendar",
+   "statement"
+  ]
+ },
+ {
+  "id": "carrington-sample",
+  "title": "The 1859 storm in 30 seconds",
+  "channel": "sample",
+  "engine": "live-viewer-trap",
+  "hook_mechanism": "the viewer guesses what Carrington's 1859 drawing broke, then what it would break today",
+  "metaphors": [
+   "the viewer's own guess, asked twice: 1859 and today"
+  ],
+  "look": "chart",
+  "accent": "#75CA21",
+  "cinematography": "restrained",
+  "maps": "marker",
+  "infographics": "dimensional",
+  "animation": "fluid",
+  "rhythm": "tidal",
+  "music": "sparse",
+  "grade": "neutral",
+  "kinds": [
+   "photo",
+   "statement",
+   "photo",
+   "photo",
+   "photo",
+   "globe",
+   "statement",
+   "photo",
+   "photo"
+  ]
+ },
+ {
+  "id": "anchoring-sample",
+  "title": "The rigged wheel in 30 seconds",
+  "channel": "sample",
+  "engine": "historical-echo",
+  "hook_mechanism": "a rigged 1974 wheel, then the first number in your own day",
+  "metaphors": [
+   "the wheel's number as the first number you ever see"
+  ],
+  "look": "archive",
+  "accent": "#2121CA",
+  "cinematography": "drifting",
+  "maps": "relief",
+  "infographics": "editorial",
+  "animation": "hand",
+  "rhythm": "brisk",
+  "music": "drone",
+  "grade": "cool",
+  "kinds": [
+   "statement",
+   "photo",
+   "photo",
+   "photo",
+   "chart",
+   "statement",
+   "timeline",
+   "steps",
+   "statement"
+  ]
+ },
+ {
+  "id": "suez-sample",
+  "title": "One ship, six days",
+  "channel": "sample",
+  "engine": "reverse-autopsy",
+  "hook_mechanism": "the queue on day six seen from orbit, then rewind to the one ship that caused it",
+  "metaphors": [
+   "a 400-metre ship stood on end against the Eiffel Tower"
+  ],
+  "archetype": "C",
+  "look": "declassified",
+  "accent": "#CA4B21",
+  "cinematography": "investigative",
+  "maps": "atlas",
+  "infographics": "objects",
+  "animation": "fluid",
+  "rhythm": "measured",
+  "music": "pulse",
+  "grade": "warm",
+  "kinds": [
+   "fly",
+   "photo",
+   "tornsplit",
+   "photo",
+   "photos",
+   "towers3d",
+   "desk",
+   "route",
+   "clipping",
+   "chart",
+   "counter",
+   "route",
+   "bignumber",
+   "newscard",
+   "statement"
+  ]
+ },
+ {
+  "id": "india-symbols-sample",
+  "title": "The picture was the vote",
+  "channel": "sample",
+  "engine": "historical-echo",
+  "hook_mechanism": "a 1952 polling-room photo of picture-marked ballot boxes, echoed by the same symbols on today's machines",
+  "metaphors": [
+   "the picture as the vote"
+  ],
+  "archetype": "B",
+  "look": "intel",
+  "accent": "#21CAA0",
+  "cinematography": "breathing",
+  "maps": "marker",
+  "infographics": "dimensional",
+  "animation": "hand",
+  "rhythm": "tidal",
+  "music": "sparse",
+  "grade": "bleach",
+  "kinds": [
+   "frame",
+   "photo",
+   "poster",
+   "pie",
+   "mapdesk",
+   "frame",
+   "counter",
+   "statement"
+  ]
+ },
+ {
+  "id": "left-digit-sample",
+  "title": "Read the whole number",
+  "channel": "sample",
+  "engine": "live-viewer-trap",
+  "hook_mechanism": "the viewer is asked which price is bigger and feels the pull of the 2 before the answer",
+  "metaphors": [
+   "the left digit as the price your brain actually pays attention to"
+  ],
+  "archetype": "E",
+  "look": "noir",
+  "accent": "#CA21CA",
+  "cinematography": "restrained",
+  "maps": "relief",
+  "infographics": "editorial",
+  "animation": "fluid",
+  "rhythm": "brisk",
+  "music": "drone",
+  "grade": "neutral",
+  "kinds": [
+   "footage",
+   "counter",
+   "footage",
+   "bignumber",
+   "footage",
+   "counter",
+   "bignumber",
+   "statement"
+  ]
+ },
+ {
+  "id": "india-sir-sample",
+  "title": "Before any vote, a list",
+  "channel": "sample",
+  "engine": "reverse-autopsy",
+  "hook_mechanism": "open on the Commission's own press note at the end of the story, then rewind to how 13 crore names left the rolls",
+  "metaphors": [
+   "the list before the vote"
+  ],
+  "archetype": "C",
+  "look": "declassified",
+  "accent": "#75CA21",
+  "cinematography": "drifting",
+  "maps": "atlas",
+  "infographics": "objects",
+  "animation": "hand",
+  "rhythm": "measured",
+  "music": "pulse",
+  "grade": "cool",
+  "kinds": [
+   "photo",
+   "counter",
+   "tornsplit",
+   "steps",
+   "timeline",
+   "pie",
+   "chart",
+   "clipping",
+   "bignumber",
+   "newscard",
+   "article",
+   "photo",
+   "photo",
+   "desk",
+   "statement"
+  ]
+ },
+ {
+  "id": "us-midterms-sample",
+  "title": "Twenty years on, the midterms rhymed",
+  "channel": "sample",
+  "engine": "historical-echo",
+  "hook_mechanism": "the 2026 flip of both houses, echoed by the 2006 flip under the last Republican president to lose both",
+  "metaphors": [
+   "history rhyming at the midterms"
+  ],
+  "archetype": "B",
+  "look": "intel",
+  "accent": "#2121CA",
+  "cinematography": "investigative",
+  "maps": "marker",
+  "infographics": "dimensional",
+  "animation": "fluid",
+  "rhythm": "tidal",
+  "music": "sparse",
+  "grade": "warm",
+  "kinds": [
+   "poster",
+   "photo",
+   "seats",
+   "bignumber",
+   "heatmap",
+   "poster",
+   "statement",
+   "compare",
+   "chart",
+   "photoline",
+   "timeline",
+   "statement",
+   "counter",
+   "frame",
+   "statement"
+  ]
+ }
+]

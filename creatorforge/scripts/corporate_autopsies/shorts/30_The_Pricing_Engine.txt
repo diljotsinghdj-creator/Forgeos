@@ -1,0 +1,86 @@
+The Pricing Engine
+On-screen hook: ONE ALGORITHM. YOUR RENT?
+Title: Did One Algorithm Help Set Your Rent? The DOJ's RealPage Case
+Tags: #CorporateAutopsies #rent #antitrust #RealPage #housing
+Source: U.S. DOJ, Justice Department Sues RealPage for Algorithmic Pricing Scheme that Harms Millions of American Renters (Aug 23, 2024), https://www.justice.gov/archives/opa/pr/justice-department-sues-realpage-algorithmic-pricing-scheme-harms-millions-american-renters; NPR, DOJ accuses real estate software company of helping landlords collude to raise rents (Aug 23, 2024), https://www.wusf.org/2024-08-23/doj-accuses-real-estate-software-company-of-helping-landlords-collude-to-raise-rents; U.S. DOJ, Justice Department Requires RealPage to End Sharing of Competitively Sensitive Information (Nov 24, 2025), https://www.justice.gov/opa/pr/justice-department-requires-realpage-end-sharing-competitively-sensitive-information-and; Baker McKenzie, United States: DOJ settles RealPage case (Dec 2025), https://www.bakermckenzie.com/en/insight/publications/alerts/2025/12/united-states-doj-settles-realpage-case; Law360, NC Judge OKs DOJ, RealPage Deal In Antitrust Suit (May 2026), https://www.law360.com/articles/2479431; WSOC, RealPage settles with DOJ over rent pricing scheme; NC case still active, https://www.wsoctv.com/news/local/realpage-settles-with-doj-over-rent-pricing-scheme-nc-case-still-active/AKJI2ZH7R5GOHIK3JGVIPKM4HM/
+
+One algorithm, rival landlords, and your rent.
+Visual: A rent increase letter on a doormat inside an apartment, text unreadable
+Visual: A row of apartment block balconies at dusk with lights on
+Text: ONE ALGORITHM. YOUR RENT?
+Thought: Why did everyone's rent rise?
+
+Rivals stopped competing on price, the DOJ alleged.
+Visual: Two identical For Rent signs on neighbouring apartment buildings, prices unreadable
+Visual: A leasing agent seen from behind handing over keys at a desk
+Text: ALLEGED: LESS PRICE COMPETITION
+Transition: whip
+
+So did that algorithm help set yours?
+Visual: A rent renewal form on a kitchen table beside a pen, text unreadable
+Visual: A laptop on a sofa showing a rent payment page, numbers blurred
+Text: DID IT SET YOURS?
+
+In twenty twenty-four, the Justice Department sued its maker, RealPage.
+Visual: A large government justice building with stone columns on a clear day
+Visual: A thick bound legal complaint on a desk, text unreadable
+Article: Justice Department Sues RealPage for Algorithmic Pricing Scheme that Harms Millions of American Renters | U.S. DOJ, Aug 2024
+Cite: U.S. DOJ, Aug 2024
+
+Here's the claim: rival landlords shared private rent data with it.
+Visual: Several hands placing sealed folders into one shared box, faces out of frame
+Visual: A server room aisle with blinking lights
+Text: ALLEGED: PRIVATE RENT DATA SHARED
+Cite: DOJ complaint, 2024
+Treat: halftone
+
+Then it suggested rents to those same rivals, daily.
+Visual: A leasing office desk with a monitor showing a price table, text unreadable
+Visual: Two apartment towers facing each other across a city street
+Steps: Rivals share private rents → Software pools it → Daily rent advice → Rents move together | The DOJ's allegation
+
+RealPage even pitched it as a way to outperform the market.
+Visual: A sales brochure fanned out on a conference table, text unreadable
+Visual: A presentation screen in an empty meeting room showing a rising line
+Text: "OUTPERFORM THE MARKET"
+Cite: NPR, Aug 2024
+
+RealPage denied wrongdoing. So how did it end?
+Visual: A closed conference room door in a corporate office
+Visual: A pen resting on an unsigned legal agreement, text unreadable
+Text: DENIED WRONGDOING · HOW DID IT END?
+Big: DENIED
+
+In November twenty twenty-five, it settled, admitting no wrongdoing and paying no penalty.
+Visual: A hand signing the last page of a legal agreement, text unreadable
+Visual: A stapled settlement document on a boardroom table, text unreadable
+Text: SETTLED · NO ADMISSION · NO PENALTY
+Cite: U.S. DOJ, Nov 2025
+
+Here's what it agreed: its live pricing can't use rivals' private data.
+Visual: A hand unplugging a network cable from a server panel
+Visual: A laptop screen showing a rent table with columns blanked out, text unreadable
+Text: NO RIVALS' PRIVATE DATA IN LIVE PRICING
+Cite: U.S. DOJ settlement, 2025
+Transition: flash
+
+A federal judge approved it in twenty twenty-six. State cases continue.
+Visual: A federal courthouse in North Carolina seen across a quiet street
+Visual: A row of court case folders on a shelf, labels unreadable
+Text: APPROVED 2026 · STATE CASES CONTINUE
+Cite: Law360, May 2026
+
+The algorithm and your rent? Alleged, settled, never proven at trial.
+Visual: A rent increase letter on a kitchen table beside a mug, text unreadable
+Visual: Apartment windows lit at night in a tall residential block
+Text: ALLEGED · SETTLED · NOT PROVEN AT TRIAL
+Treat: duotone
+
+So before renewing, ask how the rent was calculated.
+Visual: A tenant seen from behind reading a lease renewal letter at a kitchen table, text unreadable
+Visual: A set of flat keys on top of a folded rent letter
+Text: ASK HOW IT WAS SET
+
+Would you know who set your number?
+Visual: A pen resting on a lease renewal form beside house keys, text unreadable
+Visual: Apartment windows lit at dusk in a tall block

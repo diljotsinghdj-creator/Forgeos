@@ -1,0 +1,61 @@
+C - ASSET MANIFEST AND LICENSING
+Israel 2026: The Election That Settled Nothing
+
+HOW PICTURES ARE MADE IN THIS FILM
+  1. Visual: lines (334 in the script) - CreatorForge finds or makes one picture per line.
+     - Named people, parties, buildings and institutions (Netanyahu, Knesset, ICC, Herzog...) are matched by name to a
+       REAL photo on Wikipedia / Wikimedia Commons (automatic). Licence: mostly CC BY / CC BY-SA or public domain.
+       Credit each one in the description (CreatorForge writes the credits list into the job's provenance file).
+     - Generic subjects (a ballot box, a calculator, an empty chair) come from stock (Pixabay/Unsplash/Pexels licences:
+       free for commercial use, no credit required, credit given anyway) or are generated as illustrations.
+  2. Stock: lines (4) - real footage searches: Israel polling station; Gaza destruction aerial; Tel Aviv protest night;
+     Hostages Square Tel Aviv. Licence: Pixabay Content Licence / Wikimedia (check each clip's page) / Internet Archive (PD).
+  3. Graphics (Chart, Pie, Timeline, Steps, Quote, Split, Text, Big, Statement, Icons, Receipt, Map) - drawn by
+     CreatorForge from the script's own words and numbers. Original work, owned by you.
+  4. Animate: lines (8) - generic stick figures drawn by CreatorForge. Original, no real person depicted.
+  5. Archive: lines (2) - public-domain archive photos from Wikimedia Commons when one matches.
+
+HARD RULES (apply in the storyboard review before rendering)
+  - NO AI-generated face of any real person. If an auto-matched "real photo" of a politician is actually AI-made or
+    a caricature, replace it. Never generate a politician's likeness.
+  - NO cartoon, sticker, or animation composited over a real person's face.
+  - Party logos: only for identification (e.g. on the seat chart), credited, never altered or mocked.
+  - No real logos of companies, media brands or NGOs except as identification next to their own quote/claim.
+  - Gaza / Lebanon imagery: no identifiable dead or injured people, no children's faces. Use places and objects.
+  - Hostage imagery: no hostage faces or posters unless from an official family forum release for press use.
+  - Every illustration (AI image, stick-figure animation, reconstruction) gets the corner label ILLUSTRATION.
+  - YouTube "altered or synthetic content" switch: ON if any realistic AI image remains in the final cut.
+
+ASSET TABLE (key assets; the rest are generic per-line pictures)
+#  | Asset                                   | Where used                 | Source to fetch                                  | Licence / legal status                  | Credit line
+1  | Knesset building exterior               | cold open, Parts 1,3,8      | Wikimedia Commons "Knesset building"              | CC BY-SA (check file)                   | "Knesset: <author>, CC BY-SA, Wikimedia Commons"
+2  | Knesset plenum interior                 | Parts 2,3,8                 | Knesset press office photo / Commons              | Knesset press photos: free for editorial use with credit | "Knesset spokesperson / <photographer>"
+3  | Benjamin Netanyahu portrait             | Part 2 (first mention)      | Commons, official GPO photo                       | Israel GPO: free with credit            | "Government Press Office (Israel)"
+4  | Gadi Eisenkot portrait                  | Part 5                      | Commons (IDF Spokesperson Unit photo)             | IDF photos released CC BY-SA 3.0         | "IDF Spokesperson's Unit, CC BY-SA 3.0"
+5  | Naftali Bennett, Yair Lapid, Lieberman, Golan, Ben-Gvir, Smotrich, Deri, Mansour Abbas, Herzog | Part 5 | Commons; Knesset official portraits | Knesset portraits: free with credit; Commons per file | per file
+6  | Party symbols (Likud, Yashar, etc.)     | seat charts only            | Party official sites / Commons                    | Identification use; credit; no alteration | "Party logos used for identification"
+7  | President's Residence Jerusalem         | Parts 1,5                   | Commons                                           | CC BY-SA                                | per file
+8  | Jerusalem District Court / Supreme Court| Parts 2,5                   | Commons                                           | CC BY-SA / PD                           | per file
+9  | ICC building The Hague                  | Part 4                      | Commons "ICC building"                            | CC BY-SA                                | per file
+10 | Peace Palace (ICJ)                      | Part 4                      | Commons                                           | CC BY-SA / PD                           | per file
+11 | UN Security Council chamber             | Part 4                      | UN Photo                                          | UN Photo: editorial use with credit     | "UN Photo/<photographer>"
+12 | Gaza aerial / destruction footage       | Part 4                      | Stock search; UNRWA/UN Photo; OCHA                | Pixabay licence or UN editorial credit  | per clip
+13 | West Bank landscapes, E1 area           | Part 4                      | Commons; stock                                     | CC BY-SA / stock licence                | per file
+14 | E1 map                                  | Part 4                      | Drawn by CreatorForge (Map: key)                   | Original                                | -
+15 | Hostages Square                         | Part 4                      | Stock / Commons                                    | per file; no faces on posters           | per file
+16 | Tel Aviv 2023 protests                  | Part 2                      | Commons (many CC BY-SA crowd photos)              | CC BY-SA                                | per file
+17 | Bank of Israel building                 | Part 6                      | Commons                                           | CC BY-SA                                | per file
+18 | Riyadh / Abu Dhabi / Doha skylines      | Part 6                      | Stock                                             | stock licence                           | -
+19 | Berlaymont building Brussels            | Part 6                      | Commons / EC Audiovisual Service                   | EC AV: free with credit                 | "© European Union"
+20 | Oil tanker, Hormuz                      | Part 6                      | Stock                                             | stock licence                           | -
+21 | Trump social media post                 | Part 6                      | DO NOT screenshot. Use the Quote: card (re-typed words, attributed) | Fair-dealing quote | "Donald Trump, Truth Social, 18 Oct 2026 (via AP)"
+22 | Likud "stolen" statement                | Part 1                      | Quote: card, re-typed                             | Quote with attribution                  | "Likud statement via Ynet, 28 Oct 2026"
+23 | Eisenkot X post                         | Part 4                      | Quote: card, re-typed (locate original first)     | Quote with attribution                  | "Gadi Eisenkot on X, 2026"
+24 | Music                                   | whole film                  | CreatorForge music off; add YouTube Audio Library tracks in the edit | YouTube Audio Library licence (check "attribution required") | per track
+25 | Sound effects                           | whole film                  | CreatorForge built-in SFX                          | Generated in-house                      | -
+
+FOOTAGE NEVER TO USE
+  - Hamas or other propaganda videos, hostage videos, or footage of killings.
+  - Footage of the dead or wounded, or identifiable children in Gaza.
+  - News channel footage (Channel 12, Al Jazeera, i24, etc.) without a licence - cite their reporting, don't show their video.
+  - Any AI-generated "photo" of a real event.

@@ -1,0 +1,192 @@
+{
+ "topic": "The Panama Canal runs on rain (60-second sample)",
+ "researched": "2026-11-13",
+ "method": "Panama Canal Authority advisory (primary), Library of Congress photographs (primary), Wikipedia and Britannica cross-checks; the pool comparison is computed.",
+ "claims": [
+  {
+   "id": "P1",
+   "claim": "The Panama Canal opened on 15 August 1914; the S.S. Ancon made the opening transit.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "15",
+    "1914"
+   ],
+   "sources": [
+    {
+     "title": "Wikipedia, 'Panama Canal' (read 13 Nov 2026)",
+     "url": "https://en.wikipedia.org/wiki/Panama_Canal",
+     "quote": "Date completed 15 August 1914"
+    },
+    {
+     "title": "Library of Congress, 'Opening of the Panama Canal. S.S. Ancon entering east chamber of Pedro Miguel locks', 1914 Aug. 15",
+     "url": "https://www.loc.gov/pictures/item/92510051/",
+     "primary": true,
+     "quote": "Opening of the Panama Canal. S.S. Ancon entering east chamber of Pedro Miguel locks. 1914 Aug. 15"
+    }
+   ],
+   "contradictions": []
+  },
+  {
+   "id": "P2",
+   "claim": "The canal is 82 km long and links the Caribbean Sea to the Pacific Ocean.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "82"
+   ],
+   "sources": [
+    {
+     "title": "Wikipedia, 'Panama Canal' (read 13 Nov 2026)",
+     "url": "https://en.wikipedia.org/wiki/Panama_Canal",
+     "quote": "Length 82 km (51 miles) ... Start point Caribbean Sea ... End point Pacific Ocean"
+    },
+    {
+     "title": "Panama Canal Authority, 'Panama Canal to increase daily transits to 24 starting in January', 15 Dec 2023 (Advisory to Shipping A-54-2023)",
+     "url": "https://pancanal.com/en/panama-canal-to-increase-daily-transits-to-24-starting-in-january/",
+     "primary": true,
+     "quote": "(Panama Canal Authority) Canal Watershed"
+    }
+   ],
+   "contradictions": []
+  },
+  {
+   "id": "P3",
+   "claim": "Locks at each end lift ships up to Gatun Lake, an artificial fresh-water lake 26 metres above sea level, then lower them at the other end.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "26",
+    "3"
+   ],
+   "sources": [
+    {
+     "title": "Wikipedia, 'Panama Canal' (read 13 Nov 2026)",
+     "url": "https://en.wikipedia.org/wiki/Panama_Canal",
+     "quote": "Locks at each end lift ships up to Gatun Lake, an artificial fresh water lake 26 meters (85 ft) above sea level"
+    },
+    {
+     "title": "Encyclopaedia Britannica, 'Panama Canal: Locks'",
+     "url": "https://www.britannica.com/topic/Panama-Canal/Locks",
+     "quote": "locks raise ships to Gatun Lake"
+    }
+   ],
+   "contradictions": []
+  },
+  {
+   "id": "P4",
+   "claim": "Each ship's passage uses about 200 million litres (52 million US gallons) of fresh water.",
+   "status": "verified",
+   "confidence": "medium",
+   "figures": [
+    "200",
+    "52"
+   ],
+   "sources": [
+    {
+     "title": "Wikipedia, 'Panama Canal' (read 13 Nov 2026)",
+     "url": "https://en.wikipedia.org/wiki/Panama_Canal",
+     "quote": "For each ship that passes through, about 200 million liters (52 million gallons) of freshwater are needed."
+    },
+    {
+     "title": "WaterWorld, 'Leveraging data to optimize shipping through the Panama Canal while protecting local water supply'",
+     "url": "https://www.waterworld.com/smart-water-utility/article/55142313/leveraging-data-to-optimize-shipping-through-the-panama-canal-while-protecting-local-water-supply",
+     "quote": "about 50 million gallons of fresh water per transit"
+    }
+   ],
+   "contradictions": [
+    "An average; it varies with the locks and the ship."
+   ]
+  },
+  {
+   "id": "P5",
+   "claim": "200 million litres is about 80 Olympic-size pools (2,500 cubic metres, i.e. 2.5 million litres, each). Computed.",
+   "status": "verified",
+   "confidence": "medium",
+   "figures": [
+    "80",
+    "200",
+    "2.5",
+    "2,500"
+   ],
+   "sources": [
+    {
+     "title": "Wikipedia, 'Olympic-size swimming pool' (50 m x 25 m x 2 m minimum depth = 2,500 cubic metres)",
+     "url": "https://en.wikipedia.org/wiki/Olympic-size_swimming_pool",
+     "quote": "50 m long, 25 m wide, at least 2 m deep: 2,500 m3"
+    },
+    {
+     "title": "Wikipedia, 'Panama Canal' (read 13 Nov 2026)",
+     "url": "https://en.wikipedia.org/wiki/Panama_Canal",
+     "quote": "about 200 million liters"
+    }
+   ],
+   "contradictions": [
+    "Computed from the average transit volume."
+   ]
+  },
+  {
+   "id": "P6",
+   "claim": "October 2023 was the driest October on record for the Canal Watershed.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "2023"
+   ],
+   "sources": [
+    {
+     "title": "Panama Canal Authority, 'Panama Canal to increase daily transits to 24 starting in January', 15 Dec 2023 (Advisory to Shipping A-54-2023)",
+     "url": "https://pancanal.com/en/panama-canal-to-increase-daily-transits-to-24-starting-in-january/",
+     "primary": true,
+     "quote": "October 2023 marked the driest October on record for the Canal Watershed."
+    }
+   ],
+   "contradictions": []
+  },
+  {
+   "id": "P7",
+   "claim": "Normally 36 ships transit each day; in December 2023 the canal allowed 22; from January 2024, 24.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "36",
+    "22",
+    "24",
+    "2023",
+    "2024"
+   ],
+   "sources": [
+    {
+     "title": "Panama Canal Authority, 'Panama Canal to increase daily transits to 24 starting in January', 15 Dec 2023 (Advisory to Shipping A-54-2023)",
+     "url": "https://pancanal.com/en/panama-canal-to-increase-daily-transits-to-24-starting-in-january/",
+     "primary": true,
+     "quote": "TOTAL 36 22 24 (Regular Scenario, Current Period, January 2024) ... Currently, 22 vessels transit daily"
+    },
+    {
+     "title": "Wikipedia, 'Panama Canal' (read 13 Nov 2026)",
+     "url": "https://en.wikipedia.org/wiki/Panama_Canal",
+     "quote": "In normal times, 36 ships can transit the canal each day, but in early December 2023 ... only 22 ships per day ... In January 2024, 24 ships per day"
+    }
+   ],
+   "contradictions": []
+  },
+  {
+   "id": "P8",
+   "claim": "The Panama Canal Authority said 2023 marked the first time the canal had ever had to restrict transits.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "2023"
+   ],
+   "sources": [
+    {
+     "title": "Panama Canal Authority, 'Panama Canal to increase daily transits to 24 starting in January', 15 Dec 2023 (Advisory to Shipping A-54-2023)",
+     "url": "https://pancanal.com/en/panama-canal-to-increase-daily-transits-to-24-starting-in-january/",
+     "primary": true,
+     "quote": "This year marks the first time the Canal has ever had to restrict transits."
+    }
+   ],
+   "contradictions": []
+  }
+ ]
+}

@@ -1,0 +1,245 @@
+{
+ "topic": "The Ever Given and the Suez Canal, March 2021 (30-second sample)",
+ "researched": "2026-11-12",
+ "method": "Primary agency pages (ESA, NASA) read directly; shipping press and reference summaries via web search, cross-checked; estimates kept as estimates and attributed.",
+ "claims": [
+  {
+   "id": "C1",
+   "claim": "The container ship Ever Given ran aground in the Suez Canal on 23 March 2021 and was refloated on 29 March 2021, about six days later.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "2021",
+    "23",
+    "29",
+    "six",
+    "6",
+    "25"
+   ],
+   "sources": [
+    {
+     "title": "ESA: Suez Canal traffic jam seen from space (Copernicus Sentinel-1, March 2021)",
+     "url": "https://www.esa.int/ESA_Multimedia/Images/2021/03/Suez_Canal_traffic_jam_seen_from_space",
+     "quote": "The giant container ship ran aground in the canal on 23 March; the image on the right, captured on 25 March, shows the 400 m-ship blocking the canal",
+     "primary": true
+    },
+    {
+     "title": "Seatrade Maritime: Ever Given blocking Suez Canal re-floated",
+     "url": "https://www.seatrade-maritime.com/containers/ever-given-blocking-suez-canal-re-floated",
+     "quote": "[search summary 2026-11-12] refloated 29 March 2021"
+    },
+    {
+     "title": "2021 Suez Canal obstruction (Wikipedia)",
+     "url": "https://en.wikipedia.org/wiki/2021_Suez_Canal_obstruction",
+     "quote": "6 days and 7 hours, 23-29 March 2021"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Partial refloat early on 29 March, full refloat about 15:05 local time (SCA)."
+  },
+  {
+   "id": "C2",
+   "claim": "The Ever Given is 400 metres long, longer than the Eiffel Tower is tall (330 m). It can carry about 20,000 twenty-foot containers (TEU).",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "400",
+    "330",
+    "20,000"
+   ],
+   "sources": [
+    {
+     "title": "ESA: Suez Canal traffic jam seen from space (Copernicus Sentinel-1, March 2021)",
+     "url": "https://www.esa.int/ESA_Multimedia/Images/2021/03/Suez_Canal_traffic_jam_seen_from_space",
+     "quote": "the 400 m-ship blocking the canal",
+     "primary": true
+    },
+    {
+     "title": "Riviera Maritime Media: Evergreen box ship blocks Suez Canal",
+     "url": "https://www.rivieramm.com/news-content-hub/evergeen-box-ship-blocks-suez-canal-64532",
+     "quote": "[search summary] 400m long, beam 59m, over 20,000 TEU"
+    },
+    {
+     "title": "Eiffel Tower (Wikipedia): height 330 m",
+     "url": "https://en.wikipedia.org/wiki/Eiffel_Tower",
+     "quote": "330 m (1,083 ft) with antennas"
+    },
+    {
+     "title": "Seatrade Maritime / Khaleej Times: the Ever Given carries the equivalent of 20,000 twenty-foot containers",
+     "url": "https://www.khaleejtimes.com/world/mena/monster-ship-blocking-suez-canal-finally-freed",
+     "quote": "[search summary] it carries the equivalent of 20,000 units of 20-foot containers"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Comparison stands the ship on end: a scale picture, not an event."
+  },
+  {
+   "id": "C3",
+   "claim": "The Ever Given was sailing from China to the Netherlands.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [],
+   "sources": [
+    {
+     "title": "ESA: Suez Canal traffic jam seen from space (Copernicus Sentinel-1, March 2021)",
+     "url": "https://www.esa.int/ESA_Multimedia/Images/2021/03/Suez_Canal_traffic_jam_seen_from_space",
+     "quote": "on its journey from China to the Netherlands",
+     "primary": true
+    },
+    {
+     "title": "2021 Suez Canal obstruction (Wikipedia)",
+     "url": "https://en.wikipedia.org/wiki/2021_Suez_Canal_obstruction",
+     "quote": "bound from Tanjung Pelepas/Yantian (China) to Rotterdam"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Map uses Shanghai as a stand-in Chinese port; Rotterdam was the destination. The on-screen route is labelled as the route, not the exact track."
+  },
+  {
+   "id": "C4",
+   "claim": "By 28 March 2021 at least 369 ships were reported queuing to pass through the canal.",
+   "status": "reported",
+   "confidence": "medium",
+   "figures": [
+    "369",
+    "28",
+    "2021"
+   ],
+   "sources": [
+    {
+     "title": "2021 Suez Canal obstruction (Wikipedia)",
+     "url": "https://en.wikipedia.org/wiki/2021_Suez_Canal_obstruction",
+     "quote": "On 28 March, at least 369 ships were queuing to pass through the canal"
+    },
+    {
+     "title": "Port Economics, Management and Policy: Blockage of the Suez Canal, March 2021",
+     "url": "https://porteconomicsmanagement.org/suez-canal-blockage-2021/",
+     "quote": "[search summary] by 28 March, at least 369 ships were queuing"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Counts came from the canal authority and shipping agents and changed daily; attributed as reported."
+  },
+  {
+   "id": "C5",
+   "claim": "Lloyd's List estimated that the blockage held up about 9.6 billion US dollars of goods a day (its own rough calculation; figures of 9.5-9.7 billion appear in different reports). Lloyd's List split it as about 5.1 billion westbound and 4.5 billion eastbound.",
+   "status": "estimate",
+   "confidence": "medium",
+   "figures": [
+    "9.6",
+    "5.1",
+    "4.5",
+    "2021"
+   ],
+   "sources": [
+    {
+     "title": "Al Jazeera: Suez Canal blockage halts $9.6bn a day of ship traffic (25 March 2021)",
+     "url": "https://www.aljazeera.com/economy/2021/3/25/suez-blockage-seen-halting-9-6-billion-a-day-of-ship-traffic",
+     "quote": "[search summary] $9.6bn a day, citing Lloyd's List"
+    },
+    {
+     "title": "Engineering News / Bloomberg: Suez snarl seen halting $9.6bn a day worth of ship traffic",
+     "url": "https://www.engineeringnews.co.za/article/suez-snarl-seen-halting-96bn-a-day-worth-of-ship-traffic-2021-03-25",
+     "quote": "[search summary] $5.1bn westbound, $4.5bn eastbound, rough calculations"
+    }
+   ],
+   "contradictions": [
+    "Some reports give 9.5 or 9.7 billion; Lloyd's List called its numbers rough calculations."
+   ],
+   "notes": "Shown with an ESTIMATE badge and named source."
+  },
+  {
+   "id": "C6",
+   "claim": "Sailing from Tokyo to Rotterdam round the southern tip of Africa instead of through the canal adds about 3,300 nautical miles (3,315 by the World Economic Forum's figure).",
+   "status": "estimate",
+   "confidence": "medium",
+   "figures": [
+    "3,300",
+    "3,315"
+   ],
+   "sources": [
+    {
+     "title": "World Economic Forum: The Suez Canal in numbers (March 2021)",
+     "url": "https://www.weforum.org/stories/2021/03/the-suez-canal-in-numbers/",
+     "quote": "3,315 nautical miles: distance saving Tokyo-Rotterdam via the canal rather than the southern tip of Africa"
+    },
+    {
+     "title": "Windward: What is the Suez Canal",
+     "url": "https://windward.ai/glossary/what-is-the-suez-canal/",
+     "quote": "[search summary] detour adds approximately 3,500-4,000 nautical miles"
+    }
+   ],
+   "contradictions": [
+    "The extra distance depends on the ports: 3,000 to 5,000 nautical miles in other sources."
+   ],
+   "notes": "Said as 'about'."
+  },
+  {
+   "id": "C7",
+   "claim": "NASA's Terra satellite (ASTER) photographed more than 100 freighters waiting at the canal's southern entrance during the blockage.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "100"
+   ],
+   "sources": [
+    {
+     "title": "NASA/JPL Photojournal PIA24553: Suez Canal Crisis",
+     "url": "https://photojournal.jpl.nasa.gov/catalog/PIA24553",
+     "quote": "the southern entrance to the Suez Canal, where over 100 freighters wait their turn",
+     "primary": true
+    }
+   ],
+   "contradictions": [],
+   "notes": "Primary record (the image itself)."
+  },
+  {
+   "id": "C8",
+   "claim": "Tug boats and a high tide freed the ship on 29 March 2021. NASA reported the tide rose about 46 centimetres above normal that day.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "29",
+    "2021",
+    "46"
+   ],
+   "sources": [
+    {
+     "title": "NASA Earth Observatory: Traffic Jam on the Suez Canal",
+     "url": "https://earthobservatory.nasa.gov/images/148114/traffic-jam-on-the-suez-canal",
+     "quote": "the tides in the Suez Canal rose about 46 centimeters above normal on March 29",
+     "primary": true
+    },
+    {
+     "title": "NBC News: Suez Canal ship Ever Given partially refloated after huge effort",
+     "url": "https://www.nbcnews.com/news/world/suez-canal-ship-ever-given-partially-refloated-after-huge-effort-n1262299",
+     "quote": "[search summary] tug boats, high tide"
+    }
+   ],
+   "contradictions": [],
+   "notes": ""
+  },
+  {
+   "id": "C9",
+   "claim": "On 21 March 2021, before the grounding, Sentinel-1 radar showed routine traffic in the canal with vessels every 2 to 3 km.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "21",
+    "2021",
+    "2",
+    "3"
+   ],
+   "sources": [
+    {
+     "title": "ESA: Suez Canal traffic jam seen from space",
+     "url": "https://www.esa.int/ESA_Multimedia/Images/2021/03/Suez_Canal_traffic_jam_seen_from_space",
+     "quote": "The image on the left, captured on 21 March, shows routine maritime traffic in the canal with vessels visible every 2 to 3 km.",
+     "primary": true
+    }
+   ],
+   "contradictions": [],
+   "notes": ""
+  }
+ ]
+}

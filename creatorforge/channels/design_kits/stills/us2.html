@@ -1,0 +1,33 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="fonts.css"><style>
+body{margin:0;width:1920px;height:1080px;overflow:hidden;background:#EEE7D8;position:relative;font-family:Inter}
+.paper{position:absolute;inset:0;opacity:.55}
+.cut{position:absolute;filter:grayscale(1) contrast(1.15) drop-shadow(10px 14px 0 rgba(0,0,0,.18))}
+.num{position:absolute;font-family:Playfair;font-weight:900;color:#111;letter-spacing:-4px}
+.credit{position:absolute;right:28px;bottom:16px;font:600 13px Inter;color:#555;letter-spacing:1px}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute"><filter id="grain"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3" seed="7"/><feColorMatrix values="0 0 0 0 .35  0 0 0 0 .3  0 0 0 0 .25  0 0 0 .35 0"/></filter>
+<filter id="torn"><feTurbulence type="fractalNoise" baseFrequency=".04" numOctaves="4" seed="3"/><feDisplacementMap in="SourceGraphic" scale="22"/></filter></svg>
+<svg class="paper" width="1920" height="1080"><rect width="1920" height="1080" filter="url(#grain)"/></svg>
+<svg style="position:absolute;inset:0" width="1920" height="1080">
+  <polygon points="40,60 560,20 620,350 90,390" fill="#2B57A8"/><polygon points="500,300 690,260 640,430" fill="#111"/>
+  <g filter="url(#torn)">
+    <rect x="760" y="196" width="250" height="784" fill="#E8551E"/>
+    <rect x="1130" y="298" width="250" height="682" fill="#2B57A8"/>
+  </g>
+  <rect x="1130" y="196" width="250" height="102" fill="none" stroke="#111" stroke-width="4" stroke-dasharray="14 10"/>
+  <polygon points="1420,330 1520,330 1470,450" fill="#111"/><polygon points="1500,520 1860,470 1880,1000 1460,1000" fill="#E8551E"/>
+  <path d="M660 985 C 1000 975, 1300 992, 1700 982" stroke="#111" stroke-width="7" fill="none" stroke-linecap="round"/>
+</svg>
+<div class="num" style="left:770px;top:60px;font-size:150px">232</div>
+<div class="num" style="left:1140px;top:300px;font-size:150px;color:#EEE7D8">202</div><div style="position:absolute;left:1160px;top:205px;font:58px Marker;color:#E8551E;transform:rotate(-5deg)">&minus;30</div>
+<div style="position:absolute;left:775px;top:1000px;font:800 20px Inter;letter-spacing:3px">BEFORE</div>
+<div style="position:absolute;left:1145px;top:1000px;font:800 20px Inter;letter-spacing:3px">AFTER</div>
+<img class="cut" src="file:///root/.cache/creatorforge/cutouts/person-george-w-bush.png" style="left:1430px;top:440px;height:560px">
+<div style="position:absolute;left:80px;top:70px;font:900 150px Playfair;line-height:1;color:#EEE7D8;letter-spacing:-4px">2006</div><img class="cut" src="file:///tmp/claude-0/-home-user-Forgeos/4511f341-cf91-5fed-ac10-e7043335b256/scratchpad/stills/capitol_cut.png" style="left:380px;top:120px;height:260px">
+<div style="position:absolute;left:70px;top:420px;width:560px">
+  <div style="font:900 78px Playfair;line-height:1;color:#111">Thirty seats <span style="background:linear-gradient(transparent 55%,#FFDD33 55%,#FFDD33 92%,transparent 92%)">gone</span></div>
+  <div style="margin-top:22px;font:800 22px Inter;letter-spacing:3px;color:#111">REPUBLICAN HOUSE SEATS, 2006 MIDTERMS</div>
+  <div style="margin-top:30px;font:44px Marker;color:#E8551E;transform:rotate(-4deg)">the last time it happened</div>
+</div>
+<div class="credit">PHOTO: ERIC DRAPER (PD) · DATA: 2006 HOUSE RESULTS</div>
+</body></html>

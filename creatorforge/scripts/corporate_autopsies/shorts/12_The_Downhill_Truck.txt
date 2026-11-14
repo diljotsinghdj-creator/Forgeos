@@ -1,0 +1,92 @@
+The Downhill Truck
+On-screen hook: DRIVING? OR ROLLING?
+Title: The Downhill Truck: Nikola's Video, a Fraud Conviction and a Pardon
+Tags: #CorporateAutopsies #Nikola #TrevorMilton #fraud #EV
+Source: Hindenburg Research, Nikola: How to Parlay An Ocean of Lies Into a Partnership With the Largest Auto OEM in America, Sept 10 2020 (https://hindenburgresearch.com/nikola/); Teslarati, Nikola admits One wasn't self-propelled in response to Hindenburg (https://www.teslarati.com/nikola-one-response-self-propelled-hill-hindenburg-report/); Automotive Fleet, Nikola hits back at Hindenburg report (https://www.automotive-fleet.com/10125699/nikola-hits-back-at-hindenburg-report); TipRanks, Nikola founder Trevor Milton convicted of securities fraud, Oct 2022 (https://www.tipranks.com/news/nikola-nasdaqnkla-founder-trevor-milton-convicted-of-securities-fraud); TechCrunch, Nikola founder Trevor Milton sentenced to 4 years, Dec 2023 (https://techcrunch.com/2023/12/18/nikola-founder-trevor-milton-sentenced-to-4-years-for-securities-fraud); AP via KRDO, Nikola files for Chapter 11 bankruptcy protection, Feb 19 2025 (https://krdo.com/news/2025/02/19/electric-truck-maker-nikola-files-for-chapter-11-bankruptcy-protection/); AP via Fox 9, Trevor Milton pardoned by President Trump, March 2025 (https://fox9.com/news/trevor-milton-nikola-founder-pardoned-president-trump)
+
+The truck in the video? It wasn't driving.
+Visual: A semi-truck cab on an empty desert highway, no markings
+Visual: A video camera on a tripod beside a desert road
+Text: DRIVING... OR ROLLING?
+
+It ended in a fraud conviction, then a pardon.
+Visual: A federal courthouse in Manhattan seen across a street
+Visual: A signed official document with a red wax seal, text unreadable
+Text: CONVICTED. THEN PARDONED.
+
+So what was really moving that truck?
+Visual: A truck cab parked at the top of a desert hill road
+Visual: A truck's front wheel on a sloping road, close up
+Text: WHAT MOVED IT?
+Transition: slide
+
+Founder Trevor Milton promised hydrogen-electric trucks.
+Visual: A hydrogen fuel nozzle hanging at a roadside pump
+Visual: A row of truck cabs inside a factory hall, no logos
+Text: HYDROGEN-ELECTRIC TRUCKS
+
+A company video showed the Nikola One prototype seemingly driving.
+Visual: A large truck cab on a two-lane road filmed from a chase car
+Visual: A laptop playing a video of a truck on a highway, screen blurred
+Text: THE NIKOLA ONE VIDEO
+
+In twenty twenty, short seller Hindenburg Research published a report.
+Visual: A printed research report on a desk under a lamp, text unreadable
+Visual: A stock price chart on a monitor in a dark office, text unreadable
+Article: Nikola: How to Parlay An Ocean of Lies Into a Partnership With the Largest Auto OEM in America | Hindenburg Research, Sept 2020
+Cite: Hindenburg Research, Sept 2020
+
+Here's the twist. It said the truck was towed uphill and rolled down.
+Visual: A tow truck pulling a truck cab up a desert hill road
+Visual: A truck cab coasting down a gentle slope with no exhaust
+Text: TOWED UP · ROLLED DOWN
+Cite: Hindenburg Research, Sept 2020
+Big: ROLLED
+Transition: whip
+
+Nikola admitted the truck wasn't moving under its own power.
+Visual: A printed company statement on a desk, text unreadable
+Visual: A truck cab parked in a showroom under spotlights, no logos
+Text: NOT UNDER ITS OWN POWER
+Draw: circle
+Cite: Nikola statement, Sept 2020
+
+In twenty twenty-two, a jury convicted Milton of securities fraud and wire fraud.
+Visual: A courtroom seen from the back benches, people seen from behind
+Visual: A gavel resting on a verdict form, text unreadable
+Text: GUILTY · SECURITIES & WIRE FRAUD
+Cite: TipRanks / Reuters, Oct 2022
+
+He was sentenced to four years. But here's the strange part.
+Visual: A courthouse hallway with closed double doors
+Visual: A calendar on a wall with four years of pages, numbers unreadable
+Text: 4-YEAR SENTENCE · DEC 2023
+Cite: TechCrunch, Dec 2023
+Treat: duotone
+
+He never served it. In twenty twenty-five, President Trump pardoned him.
+Visual: A signed official document with a gold seal, text unreadable
+Visual: The White House seen through iron railings on a clear day
+Text: PARDONED · MARCH 2025
+Timeline: 2020 Hindenburg report → 2022 Convicted → 2023 Sentenced → 2025 Pardoned | Trevor Milton
+Cite: AP, March 2025
+
+Nikola itself had filed for bankruptcy weeks earlier.
+Visual: A shuttered factory gate with a chain and padlock
+Visual: Unfinished truck cabs lined up in an empty yard
+Text: CHAPTER 11 · FEB 2025
+Cite: AP, Feb 2025
+
+Was it driving? No. It was rolling downhill.
+Visual: A truck cab coasting down a desert slope at sunset
+Visual: The empty desert highway after the truck has gone
+Statement: It wasn't *driving*. It was *rolling*.
+
+So ask what powers any demo.
+Visual: A truck parked on a hill with its hood open, engine bay empty
+Visual: A hand lifting an engine cover in a workshop
+Text: WHAT'S POWERING IT?
+
+Would you ask before investing?
+Visual: A person seen from behind reading a glossy brochure at a desk, text unreadable
+Text: ASK FIRST

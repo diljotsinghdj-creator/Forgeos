@@ -1,0 +1,22 @@
+{"film": "bjp-it-cell-10min", "channel": "print-facts", "base_dossier": "../bjp-it-cell/dossier.json (C01-C45)", "verified_live": "2026-11-13",
+ "corrections_from_live_check": [
+  "C19: Twitter's Dec 2020 label is reported as the first 'manipulated media' label in India, not 'the first on an Indian politician'. Film wording changed.",
+  "C07: at Kota, reports differ on whether Shah added a caveat; the clear 'do not post fake news' instruction came at an earlier Delhi meeting (mid-2018, reported by Times of India via Bloomberg). Film shows both.",
+  "C18: Facebook's own post gives 687 Congress-linked pages/accounts (~206,000 followers) and 15 Silver Touch items; the 2.6 million follower figure is Alt News's, so the film does not use it.",
+  "C14: press counts of groups vary (600+ to 664); film says 'more than six hundred'. The paper also says campaigns were smaller than reported and found no evidence of payment: both shown.",
+  "C30: reported Google totals for the BJP conflict between outlets; film uses only the consistent figures (200,000+ ads, ~180,000 by the BJP; biggest advertiser).",
+  "C35: date given as September 2024 (sources differ between 20 and 26 Sept)."],
+ "used": {
+  "B02-B06": ["C04 verified (ThePrint 17 Aug 2026; Outlook; DNA; Asianet)", "C05 reported (ThePrint, party insiders)", "Outlook: Mhaskey a former chemistry professor, Chhattisgarh IT since 2009 (reported)"],
+  "B09-B15": ["C01 verified", "C02 reported (one account)", "C03 verified", "C06 opinion (Bora; The Quint; HuffPost India 22 Jun 2018)"],
+  "B16-B20": ["C07 verified/reported (The Quint 27 Sep 2018; The Wire; Bloomberg; National Herald)"],
+  "B22-B30b": ["C08 reported", "C09 reported (ThePrint; Caravan)", "C10 reported (Washington Post 2023)", "C11 reported (Rest of World / Digital Witness Lab 2024; Mandi census 2011)", "C12 estimate (Meta)", "C13 verified", "C44 reported (Newslaundry)", "C43 reported"],
+  "B32-B37": ["C39 verified (BJP expenditure report via PTI/Scroll 31 Jan 2025)", "C41 reported (audited accounts via ADR/Tribune)", "C30 reported", "C42 reported (EC data via The Tribune 29 Jan 2025)"],
+  "B40-B44": ["C19 verified (The Quint 2 Dec 2020; Scroll; Dawn; ThePrint)", "C20 verified"],
+  "B46-B51": ["C14 reported, C15 interpretation (Jakesch et al. CSCW 2021, arXiv 2104.13259)", "C45 allegation + BJP response (Decode/BOOM 2024)"],
+  "B53-B59": ["C28 opinion (Swamy, 7 Sep 2020; ThePrint; The Quint; BJP reappointed Malviya: Republic, The Week)", "C22 reported + Facebook response (WSJ Aug 2020)", "C26 allegation + BJP response (Chaturvedi 2016; Arvind Gupta)"],
+  "B61-B71": ["C18 verified (Meta newsroom 1 Apr 2019)", "C16 reported (Oxford Internet Institute 2019)", "C32 verified + Kharge response (Scroll 4 May 2024; Business Today)", "C34 verified (The Wire retraction 23 Oct 2022; Scroll; The News Minute: Malviya to sue)", "C36 opinion (BJP's defence)"],
+  "B73-B74": ["C35 verified (LiveLaw; Bar & Bench; Scroll)"],
+  "B78": ["interpretation: the film's own closing reading, labelled 'our reading' on screen"]},
+ "red_lines_followed": ["Tek Fog shown only as a retracted story, never as evidence", "Amnesty Troll Patrol figures (C29) not used", "no ordinary account holders named or shown; the book's source is not named", "Sophie Zhang MP allegation (C23) not used", "Patra identified as spokesperson, not IT cell", "Kota quote shown with the context of the caveat dispute and the earlier Delhi instruction"],
+ "before_publication": ["Right of reply: send written questions to the BJP IT cell (Deepak Mhaskey) and to Amit Malviya; quote answers or state no reply. NOT DONE (sample only; outward contact needs the owner).", "Legal read of the full script."]}

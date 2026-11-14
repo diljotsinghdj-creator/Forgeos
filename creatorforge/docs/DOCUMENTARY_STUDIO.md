@@ -1,0 +1,120 @@
+# The documentary studio
+
+`creatorforge_worker/studio` turns a topic into a researched, written, narrated, animated, edited and reviewed
+documentary, with every deliverable a channel needs. It is the "autonomous documentary filmmaker" of the master
+directive, built on the engine described in `DOCUMENTARY_ENGINE_SPEC.md`.
+
+```
+python -m creatorforge_worker.studio films/<id>/screenplay.json films/<id>/dossier.json <out_dir> [1920x1080] [fps]
+```
+
+## The workflow (and where each step lives)
+
+| # | Step | Module | Stops the film when |
+|---|---|---|---|
+| 1-3 | Research, verification | `research.py` (search provider + model), `dossier.py` | a claim has no URL, "verified" rests on one source, "disputed" has no other side |
+| 0 | Pitch | `writer.pitch()`: three narrative engines, never the channel's last one | no script until the owner picks |
+| 4-6 | Story, structure, script | `writer.write(engine=<the pick>)` (model) or a hand-written screenplay | - |
+| 7 | Editorial review | `writer.check()` | a figure said or shown is not in the scene's cited evidence; a reported / estimated / disputed / alleged claim is stated as fact; a claim is unverified; a graphic can't be drawn; the film doesn't open on a hook or end on an ending |
+| 8-10 | Narration, timing | `voice.py` (Kokoro, one file per scene) | - |
+| 11-12 | Storyboard, art direction | `produce.py`, `artdirection.py` | - |
+| 13-20 | Visuals, sync | the engine (`media/vox.py`, `media/scene3d.py`, `media/motion.py`), `produce.py` | - |
+| 21-22 | Sound, music | `media/sfx.py`, `media/ambience.py`, `score.py` | - |
+| 23 | Captions | `produce.captions()` (cut on the narrator's own breaths) | - |
+| 24-28 | Visual and factual QC, watch-through | `produce.py` + `media/quality.py` | reported in `qc/report.md` |
+| 7b | Retention and mistake audit | `writer.retention_audit()` writes `writing/retention_audit.md` | - (a person writes the rewrites) |
+| 29 | Export | `produce.py`; cutdowns in 9:16, plus 1:1 or 4:5 when a cutdown lists `"aspects"`, every scene redrawn for that shape | a deliverable is missing (listed in `README.md`) |
+
+## What makes each film different
+
+* `artdirection.direct()` writes a fifteen-part treatment (identity, narrative approach, visual concept, palette,
+  typography, cinematography, maps, infographics, animation, footage, sound, rhythm, opening, climax, ending).
+* Each axis has several treatments. The genre narrows them, and the studio history (`<data>/studio_history.json`)
+  rules out whatever the last films used. No treatment comes back until the others have had their turn.
+* The renderer applies the treatment: the look and accent, the camera policy per kind of shot (still on evidence,
+  drift, push or pull), drawn graphics at 12 fps or the full frame rate, the breath after each line, and the music
+  treatment (drone, pulse or sparse).
+* The screenplay chooses the graphics line by line, and the engine rotates layouts per graphic type.
+* `writer.novelty()` checks a new film against the studio history and the used-mechanics table in
+  `channels/BRAIN_LOG.md` (`studio/brainlog.py` appends patches and rows).
+
+## Truthfulness rules built in
+
+* No figure reaches the screen or the narration unless the scene cites a claim that lists it.
+* A claim's status decides how it may be said: `verified` as fact; `reported`, `estimate`, `disputed`, `allegation`,
+  `opinion` and `interpretation` only with attribution or a qualifier. `unverified` claims cannot be used.
+* Graphics say how they were made. Map outlines and elevation data are credited on screen, and exaggerated terrain
+  shows its factor (`HEIGHT ×N`). Badges (`REPORTED`, `ESTIMATE`, `DISPUTED`...) mark evidence that is not
+  established fact.
+* Measured graphics are checked against the sources. The Aral Sea's historic outline (Natural Earth) measures
+  67,500 km² against the sourced 68,000 km². Today's outlines measure 6,800 km², about 10%, matching NASA.
+
+## Voices
+
+**The creator's own ElevenLabs voice is the narrator.** In the screenplay set
+`"voice": "elevenlabs:<your voice id>"`, or `"elevenlabs:<voice id>:multilingual"` for the steadier Multilingual v2
+model (the default is Eleven v3). Each scene is one take, so the timeline is built from that take's real length. Each
+line's delivery note becomes the take's tone: "curious" becomes [curious], "warm" becomes [warmly], "firm" becomes
+[firmly], "grave" becomes [dramatic], and quiet or measured lines become [serious]. The pronunciation guide changes
+only what the voice reads, never the captions. Silence at the start and end of each take is trimmed, and the studio
+adds the measured pauses itself.
+
+The key is the creator's own. It is set as `ELEVENLABS_API_KEY` in the pod's environment, or saved in the app's
+encrypted settings for pipeline jobs. It is never written into a screenplay or a chat. Without a key the studio stops
+with that message; it does not fall back to another voice.
+
+Other voices: Kokoro through `kokoro-onnx` (natural, CPU-only, Apache-2.0; setup downloads its two model files into
+`<data>/models/kokoro`), and FFmpeg's robotic flite as a last resort for timing drafts.
+
+## Research providers
+
+`research.research()` needs a search API key in the pod environment: `CF_BRAVE_KEY` (Brave Search) or
+`CF_TAVILY_KEY` (Tavily). A claim survives only if its quotation is found in the text of the result it cites. Its
+status comes from the number of independent hosts, not from the model's say-so. Without a key, the dossier is
+written by hand in the same format, as the Aral Sea film's was.
+
+## The first film: `films/aral-sea`
+
+*The Sea That Was Switched Off.* It has 27 claims from 52 sources, and 32 scenes in six acts. Every figure is checked
+by the editorial review, and the review caught four unsupported figures in the first draft. Its research could not
+open the source pages from the sandbox, so every quotation is the search engine's summary, marked `[summary]`. The
+dossier's method note says so.
+
+## Photographs and footage in a screenplay
+
+A scene can ask for a real picture as well as its graphic:
+
+```json
+{"id": "S01", "narration": "...", "graphic": "Pinmap: Moynaq | Once a port | atlas",
+ "visual": {"kind": "photo", "subject": "ship graveyard", "place": "Moynaq", "purpose": "location", "specific": true,
+            "move": "push", "annotate": "circle .52,.66,.1 a trawler", "then": "pin Moynaq", "title": "The old harbour"}}
+```
+
+The decision engine (`decide.py`) weighs the options: footage, the photograph, the graphic, and a combination. When a
+photograph or footage wins, `assets.select` finds and scores one. Library assets come first, then Unsplash, Pixabay,
+Pexels and Openverse. The scene's line becomes `Photo: asset:P0007 | push | ...`. When nothing is good enough, or the
+worker has no photo sources, the scene's `graphic` is used. The decision and the search are recorded either way.
+Keys for the sources live in the pod's environment: `UNSPLASH_KEY`, `PIXABAY_KEY`, `PEXELS_KEY`.
+Worldwide archives, searched with no account (public demo keys) or with a free key for more searches:
+Smithsonian Open Access (CC0 only; `SMITHSONIAN_KEY` from api.data.gov), Europeana (open reuse only; `EUROPEANA_KEY`)
+and Flickr Commons (no known copyright restrictions; `FLICKR_KEY`, required). They sit with Wikimedia Commons, NASA, the
+Library of Congress and the Internet Archive, and an archive record outranks an equally good stock picture.
+
+Deliverables added: `writing/visual_decisions.md` (every line's options and why one won) and `research/assets.csv`
+(the asset ledger for this film). The method and each technique's status are in `PRODUCTION_KNOWLEDGE_BASE.md`.
+
+## Style tools on the pod
+
+`setup_gpu.sh` downloads these in the background. Until each file is there, the older method is used and the shot
+records which one ran.
+
+* BiRefNet (MIT) makes the cut-outs: hair, rigging and thin edges. ISNet is next.
+* LaMa (Apache-2.0) fills behind a layer that moves. OpenCV is next.
+* SAM 2.1 small (Apache-2.0) is for `Footage: ... | cutout` and `| follow: <note>`. BiRefNet frame by frame is next.
+* deck.gl (MIT, bundled) draws `Flowmap:`, `Columns:` and `Dots:`.
+* `Satellite:` uses NASA GIBS (no key) and, for `source: sentinel`, the public Sentinel-2 archive on AWS (10 m, no
+  key, `media/sentinel_aws.py`). Copernicus or Sentinel Hub client credentials are optional. The imagery credit is
+  drawn on the picture.
+* Sound: ACE-Step (Apache-2.0) composes the score when `CF_ACESTEP=1` is set on the pod; Freesound effects (CC0 and
+  CC-BY only, credited) need `FREESOUND_KEY`; Demucs removes singing from a licensed `music_track`; pyloudnorm
+  cross-checks loudness. Hand-drawn ink uses perfect-freehand and Rough.js (MIT, bundled).

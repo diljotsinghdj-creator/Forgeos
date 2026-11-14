@@ -1,0 +1,84 @@
+The Empty Building Inspection
+On-screen hook: THE JOB SITE WAS FAKE
+Title: The Teenage CEO Who Showed His Auditors a Fake Job Site
+Tags: #CorporateAutopsies #ZZZZBest #BarryMinkow #fraud #auditing
+Source: Barry Minkow on CBS 60 Minutes (transcript), https://amara.org/subtitles/96gBdSYifLs6/en/2/download/Barry%20Minkow%20ZZZZ%20Best%20CEO%20Profiled%20on%20CBS%2060%20Minutes.en.srt; Barry Minkow testimony to the U.S. Senate Special Committee on Aging (March 2006), https://www.aging.senate.gov/download/barry-minkow-testimony-032906?download=1; MoneyWeek, Great frauds in history: ZZZZ Best, https://moneyweek.com/503094/great-frauds-in-history-zzzz-best; Wikipedia, Barry Minkow (summary of Los Angeles Times coverage), https://en.wikipedia.org/wiki/Barry_Minkow; CNBC, Barry Minkow, https://www.cnbc.com/id/101357919; EBSCO Research Starters, ZZZZ Best founder indicted on federal fraud charges, https://www.ebsco.com/research-starters/law/zzzz-best-founder-indicted-federal-fraud-charges
+
+The auditors toured a job that never existed.
+Visual: A half-finished office building with bare concrete floors, seen from the street
+Visual: Two men in 1980s suits seen from behind walking into a building lobby
+Text: CALIFORNIA · 1980s
+Big: NEVER EXISTED
+Archive: 1980s
+
+Most of the company's revenue came from repair jobs Minkow later admitted never existed.
+Visual: A stack of 1980s insurance repair contracts on a desk, text unreadable
+Visual: A hand signing a typed invoice with a fountain pen, text unreadable
+Text: RESTORATION JOBS: REPORTED 86% OF REVENUE
+Pie: 86% | of revenue, from fake restoration jobs
+Cite: Minkow, Senate testimony, 2006
+Archive: 1980s
+
+So how do you show auditors a job that isn't there?
+Visual: An auditor's open briefcase with blank checklists inside, text unreadable
+Visual: A 1980s desk telephone with its receiver lifted off the cradle
+Text: AUDITORS ASK FOR A SITE VISIT
+Archive: 1980s
+Transition: whip
+
+At only sixteen, Barry Minkow started a carpet cleaner, ZZZZ Best. It went public.
+Visual: A suburban garage with its door open, a carpet cleaning machine inside
+Visual: A 1980s stock certificate lying on a desk, text unreadable
+Text: STARTED AT 16 · PUBLIC BY 1986
+Cite: MoneyWeek
+Archive: 1980s
+Treat: halftone
+
+Minkow later told 60 Minutes they used a new building in Sacramento.
+Visual: A new mid-rise office building in a California city on a sunny day
+Visual: Empty office floors with fresh drywall and no furniture
+Text: SACRAMENTO · THE STAGED SITE
+Map: Sacramento | the staged job site
+Cite: CBS 60 Minutes
+Archive: 1980s
+
+The trick? They paid the guard fifty dollars to act like he knew them.
+Visual: A security guard's desk in an empty lobby, the guard seen from behind
+Visual: A hand sliding folded banknotes across a lobby counter
+Text: $50 TO THE GUARD
+Cite: Minkow, CBS 60 Minutes
+Draw: circle
+Archive: 1980s
+
+To the auditors, it looked like a real repair job. It wasn't.
+Visual: Clipboards and hard hats left on a bare concrete floor
+Visual: A man in a suit seen from behind looking up at an unfinished ceiling
+Statement: It was *never* a real job.
+Archive: 1980s
+
+The end? It collapsed in nineteen eighty-seven, costing investors and lenders about a hundred million.
+Visual: Office furniture lined up for auction in an empty warehouse
+Visual: A padlock on the glass door of a closed office, text unreadable
+Text: ABOUT $100M LOST · 1987
+Cite: Wikipedia, Barry Minkow
+Archive: 1980s
+Transition: flash
+
+Minkow was convicted on fifty-seven fraud counts and sentenced to twenty-five years.
+Visual: A federal courthouse's stone front steps on a grey day
+Visual: A judge's wooden gavel resting on a stack of case files
+Text: 1988 · 57 COUNTS · 25 YEARS
+Cite: CNBC
+Archive: 1980s
+
+What did the auditors inspect? A building. Never the job.
+Visual: The half-finished building at dusk, its lights off
+Visual: An auditor's checklist lying blank on a bare concrete floor, text unreadable
+Text: THEY CHECKED THE BUILDING, NOT THE JOB
+Archive: 1980s
+Treat: duotone
+
+Seeing isn't checking. What gets checked at your work?
+Visual: A visitor badge lying on an empty reception desk
+Visual: A clipboard checklist resting on a workbench beside a pen, text unreadable
+Text: SEEING ≠ CHECKING

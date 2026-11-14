@@ -1,0 +1,21 @@
+@font-face{font-family:Grotesk;src:url(file:///home/user/Forgeos/creatorforge/worker/creatorforge_worker/media/vendor/fonts/space-grotesk-latin-700-normal.woff2)}
+@font-face{font-family:GroteskM;src:url(file:///home/user/Forgeos/creatorforge/worker/creatorforge_worker/media/vendor/fonts/space-grotesk-latin-500-normal.woff2)}
+@font-face{font-family:Serif;src:url(file:///home/user/Forgeos/creatorforge/worker/creatorforge_worker/media/vendor/fonts/instrument-serif-latin-400-normal.woff2)}
+@font-face{font-family:SerifI;src:url(file:///home/user/Forgeos/creatorforge/worker/creatorforge_worker/media/vendor/fonts/instrument-serif-latin-400-italic.woff2)}
+@font-face{font-family:DMono;src:url(file:///home/user/Forgeos/creatorforge/worker/creatorforge_worker/media/vendor/fonts/dm-mono-latin-500-normal.woff2)}
+:root{--table:#EDEFF1;--navy:#0F1D2B;--ink:#13202D;--ver:#1F8A70;--rep:#2F6DB5;--alg:#D2553C;--opi:#7A5BBF;--res:#5E6B78;--sig:#FFDD33}
+body{margin:0;width:1920px;height:1080px;overflow:hidden;font-family:GroteskM;color:var(--ink)}
+#cam{position:absolute;inset:0;transform-origin:50% 50%}
+.el{position:absolute}
+.g{font-family:Grotesk;letter-spacing:-2px;line-height:.95}
+.q{font-family:SerifI;line-height:1.08;letter-spacing:-.5px}
+.s{font-family:Serif;line-height:1.05}
+.m{font-family:DMono;letter-spacing:2px;text-transform:uppercase;white-space:nowrap}
+.chip{font-family:DMono;letter-spacing:3px;font-size:22px;padding:6px 14px 5px;color:#fff;text-transform:uppercase;white-space:nowrap;border-radius:3px}
+.c-ver{background:var(--ver)}.c-rep{background:var(--rep)}.c-alg{background:var(--alg)}.c-opi{background:var(--opi)}.c-res{background:#fff;color:var(--ink);border:2px solid var(--ink)}.c-com{background:var(--ink)}
+.doc{background:#fff;box-shadow:0 2px 0 rgba(15,29,43,.08),0 24px 50px rgba(15,29,43,.22);overflow:hidden}
+.hl{background:linear-gradient(transparent 55%,var(--sig) 55%,var(--sig) 94%,transparent 94%);background-size:var(--hl,100%) 100%;background-repeat:no-repeat}
+.credit{position:absolute;left:30px;bottom:14px;font:500 12px DMono;letter-spacing:1px;text-transform:uppercase;max-width:1500px;color:#7B8794}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.35}
+.table{background:#EDEFF1;background-image:radial-gradient(rgba(15,29,43,.13) 1.3px,transparent 1.6px);background-size:28px 28px}
+.night{background:radial-gradient(ellipse at 50% 30%,#18304A 0%,#0F1D2B 60%,#0A141E 100%)}

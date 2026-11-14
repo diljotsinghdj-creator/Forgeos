@@ -1,0 +1,60 @@
+# English R4 - English narration for ElevenLabs (26 lines, 3 chunks)
+# Generate each chunk separately (paste the text between the CHUNK lines, not these # lines),
+# then join the chunk MP3s into R4.mp3 - see README_ELEVENLABS.txt.
+
+===== CHUNK 1 of 3 (2788 characters) =====
+Quick recap of the seat maths before we meet the people who hold the pens. Fifty-three. Forty-eight. Nineteen. Remember: any two add up to a majority. That's the whole problem, and it's about to get personal.
+<break time="0.6s" />
+So who actually decides what happens next? Not the voters. They've done their part. It's now down to a handful of people, each with a red line, and each line drawn through somebody else.
+<break time="0.7s" />
+Start with the man most likely to go first. Gadi Eisenkot. Former chief of staff. He lost his son in Gaza, and his nephew, in the war. He entered politics with Benny Gantz, served in the emergency war cabinet, quit, and built his own party.
+<break time="0.6s" />
+His platform puts security first and Haredi military service right behind it. Critics on the left point out that he is the general associated with the Dahiya doctrine, the idea of using overwhelming force against areas from which attacks are launched. His supporters call him the most credible security voice in the race.
+<break time="0.6s" />
+His problem is arithmetic. Forty-eight seats. To get to sixty-one he needs either Arab-led parties inside or behind his coalition, or people from Netanyahu's side.
+<break time="0.8s" />
+On the Arab parties, reports say Eisenkot has set conditions, including recognising Israel as a Jewish state and condemning Hamas as a terrorist organisation. In a September interview, he said the parties didn't meet them. Since the election, he has been carefully vague. Which in coalition talks is not a weakness. It's a negotiating position wearing a disguise.
+<break time="0.8s" />
+Next, Naftali Bennett. Former prime minister. Leader of the Beyachad list. He became prime minister in 2021, in the only Israeli government that ever had an Arab party inside it, Ra'am. His premiership lasted about a year.
+<break time="0.6s" />
+This time, Bennett has said: the Arab parties are not Zionist, therefore we will not rely on them. Which is a fascinating position for a man whose last government relied on one.
+<break time="0.8s" />
+Avigdor Lieberman of Yisrael Beytenu, seven seats, is even firmer. He has said he will not support any coalition in which Arab parties take part, not even if they just abstain in the confidence vote. Lieberman, for the record, also wants the Haredim drafted, and says no to Netanyahu. He has a lot of no.
+<break time="0.8s" />
+To understand why the word Zionist carries so much weight, you need a bit of history. For most of Israel's existence, the Arab parties have been treated as outside the coalition game. The closest they came was in 1992, when Arab parties backed Yitzhak Rabin's government from outside, which helped make the Oslo peace process possible. His opponents never let him forget it.
+<break time="0.6s" />
+
+===== CHUNK 2 of 3 (2655 characters) =====
+Netanyahu has used the issue as a campaign weapon for years. On election day in 2015, he warned in a video that Arab voters were, quote, moving in droves to the polling stations. He later apologised. This year, his party said the election had been stolen by them. The script, as it were, has a long run.
+<break time="0.8s" />
+Then the Democrats' Yair Golan, eight seats, the most left-leaning voice in the bloc. He has openly urged a coalition with Arab parties. So inside one camp, you have one leader saying yes, two saying no, and the man in charge saying, let's talk.
+<break time="0.6s" />
+Now the Arab-led parties themselves. Mansour Abbas of Ra'am, eight seats, has said he is willing to back an Eisenkot government, with conditions. Abbas is a pragmatist. His pitch has long been budgets for Arab towns, fighting crime in Arab communities, and recognition for Bedouin villages.
+<break time="0.6s" />
+During the campaign he also raised Palestinian statehood in a speech, and was rebuked for it by both Eisenkot and Netanyahu. Which tells you how narrow the lane is: the pragmatic Arab party is criticised for being too Palestinian, and the Palestinian question is criticised for being raised at all.
+<break time="0.8s" />
+The Joint List, eleven seats, is more sceptical of joining any Israeli government, and its leaders have campaigned on equality, ending the war, and a Palestinian state. Its leadership reportedly argued that high Arab turnout could block Netanyahu's return. On that, at least, the numbers proved them right.
+<break time="0.6s" />
+Now the other camp's kingmakers. Itamar Ben-Gvir of Otzma Yehudit, seven seats, the national security minister who controls the police. He was once convicted of incitement to racism and supporting a terrorist organisation. He'd be part of any Netanyahu government, and of no other.
+<break time="0.8s" />
+Bezalel Smotrich of Religious Zionism, six seats, is finance minister and also holds powers over civilian life in the West Bank. He has made annexation his central cause. He'd also sit only with Netanyahu.
+<break time="0.8s" />
+And then the parties that might, in theory, be persuaded to cross: the Haredi parties. Shas, led by Aryeh Deri, and United Torah Judaism. Thirteen seats between them.
+<break time="0.7s" />
+It's worth hearing the Haredi case on its own terms. For their communities, full-time Torah study is a central religious value, and they argue it protects the Jewish people as surely as an army does. Many Haredi families also fear the army would pull young men away from their way of life. Those are sincere beliefs, held by more than a million Israelis.
+<break time="0.6s" />
+
+===== CHUNK 3 of 3 (1612 characters) =====
+The other side's case is just as sincere. Through three years of war, reservists have served hundreds of days, families have run on one parent, and soldiers have died. They ask why one community should be exempt by law while theirs carries the weight.
+<break time="0.6s" />
+Their red line is the draft. Deri has said Shas will not join any government unless the Haredi exemption from military service is written into law. United Torah Judaism has said the same, in one word: period.
+<break time="0.8s" />
+In July 2026, the outgoing government passed a temporary law barring the arrest of draft evaders. The High Court froze it. Polls through the war showed most Jewish Israelis support drafting Haredi men, and so does almost every party in Eisenkot's camp.
+<break time="0.6s" />
+So here's the trap. The Haredi parties could give Eisenkot a majority, but only for an exemption his voters hate. The Arab parties could give him a majority, but two of his partners won't sit with them. Every key unlocks a door that someone else has welded shut.
+<break time="0.8s" />
+One Channel 12 report said United Torah Judaism would not oppose a government led by Eisenkot. Not join. Not oppose. In Israeli politics, that difference is worth an entire ministry.
+<break time="0.6s" />
+And above all of them sits President Herzog, a man with no executive power, whose main job for the next few weeks is to pick the person most likely to fail slowest. He has asked everyone to avoid another election. He can't force them to.
+<break time="0.6s" />
+There was one more voter in this election, by the way. He doesn't live in Israel.
