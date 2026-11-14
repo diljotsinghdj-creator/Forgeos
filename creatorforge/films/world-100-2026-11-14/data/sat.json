@@ -1,0 +1,77 @@
+{
+ "sahara": {
+  "layer": "BlueMarble_NextGeneration"
+ },
+ "amazon": {
+  "layer": "BlueMarble_NextGeneration"
+ },
+ "japan": {
+  "layer": "BlueMarble_NextGeneration"
+ },
+ "greenland": {
+  "layer": "BlueMarble_NextGeneration"
+ },
+ "panama": {
+  "layer": "Blue Marble Next Generation (cloud-free composite)",
+  "date": "2004 composite"
+ },
+ "bosphorus": {
+  "layer": "MODIS Terra",
+  "date": "2024-08-13",
+  "score": 0.0063
+ },
+ "hormuz": {
+  "layer": "MODIS Terra",
+  "date": "2024-11-12",
+  "score": 0.0085
+ },
+ "aral_a": {
+  "layer": "MODIS Terra",
+  "date": "2000-08-24",
+  "score": 0.0008
+ },
+ "aral_b": {
+  "layer": "MODIS Terra",
+  "date": "2025-08-24",
+  "score": 0.0
+ },
+ "urmia_a": {
+  "layer": "MODIS Terra",
+  "date": "2000-09-04",
+  "score": 0.0003
+ },
+ "urmia_b": {
+  "layer": "MODIS Terra",
+  "date": "2025-09-01",
+  "score": 0.0069
+ },
+ "poopo_a": {
+  "layer": "MODIS Terra",
+  "date": "2001-04-15",
+  "score": 0.0
+ },
+ "poopo_b": {
+  "layer": "MODIS Terra",
+  "date": "2025-04-15",
+  "score": 0.0002
+ },
+ "mead_a": {
+  "layer": "MODIS Terra",
+  "date": "2000-06-18",
+  "score": 0.0044
+ },
+ "mead_b": {
+  "layer": "MODIS Terra",
+  "date": "2022-07-15",
+  "score": 0.0088
+ },
+ "korea": {
+  "layer": "VIIRS Black Marble 2016"
+ },
+ "europe": {
+  "layer": "VIIRS Black Marble 2016"
+ },
+ "indianight": {
+  "layer": "VIIRS Black Marble 2016"
+ }
+}

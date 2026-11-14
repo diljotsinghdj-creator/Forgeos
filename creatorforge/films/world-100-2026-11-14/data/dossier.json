@@ -1,0 +1,50 @@
+{
+ "date": "2026-11-14",
+ "method": "search-result snippets restricted to official domains; un.org, whc.unesco.org and wikipedia.org were not reachable from the container, so pages were not read directly",
+ "numbers": [
+  {
+   "frame": "everest",
+   "shown": "8,848.86 m",
+   "status": "confirmed (snippet)",
+   "source": "Xinhua, 8 Dec 2020, China and Nepal joint announcement",
+   "url": "http://www.xinhuanet.com/english/2020-12/08/c_139573748.htm",
+   "backup": "https://www.britannica.com/place/Mount-Everest/The-height-of-Everest"
+  },
+  {
+   "frame": "unitednations",
+   "shown": "193",
+   "status": "confirmed (snippet)",
+   "source": "United Nations, About Us",
+   "url": "https://www.un.org/en/about-us"
+  },
+  {
+   "frame": "baikal",
+   "shown": "~1,700 m",
+   "status": "confirmed as UNESCO's rounded figure (snippet); other sources give 1,632-1,642 m, so the frame says approximate",
+   "source": "UNESCO World Heritage Centre, Lake Baikal (754)",
+   "url": "https://whc.unesco.org/en/list/754/"
+  },
+  {
+   "frame": "africa",
+   "shown": "54 UN member states",
+   "status": "confirmed (snippet)",
+   "source": "African Union mission to the UN",
+   "url": "https://africanunion-un.org/memberstates"
+  },
+  {
+   "frame": "gama",
+   "shown": "1497-98",
+   "status": "well-known date (Vasco da Gama's first voyage); not re-checked today"
+  },
+  {
+   "frame": "eiffel/greatwall/ellis/culebra",
+   "shown": "archive captions",
+   "status": "from the Library of Congress records (data/loc.json)"
+  }
+ ],
+ "illustrative": [
+  "ticket and passport stamps are illustrative (labelled)",
+  "barstack bars are illustrative (labelled)",
+  "ring of fire line is approximate (labelled)"
+ ]
+}

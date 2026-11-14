@@ -784,5 +784,14 @@
   "date": "2026-11-14",
   "look": "27 devices (hand, sun disc, diorama, scale, split, route map, satellite, satellite route, glowing sourced counter, notebook, kinetic type, clock face, warm haze, stickers, torn hole, archival, spotlit board, pinned note, worker bars, map diorama, open head, statue, ransom letters, placards, postcard, engraving film frame, two-hand stack); see films/fifty-2026-11-14/concepts.py",
   "rule": "new photos picked by eye from numbered candidate sheets; reuse: the pinching hand in 2 frames, a small walking silhouette in 4 (to vary next time); negative traits never on a real person"
+ },
+ {
+  "id": "world-100-2026-11-14",
+  "kind": "sample-visuals",
+  "channel": "both",
+  "topic": "100 world topics (satellite, maps, archives, collage) in the Vox collage style",
+  "date": "2026-11-14",
+  "look": "39 devices, none more than 4 times; repeats of a device change layout (variant index), palette and photos; see films/world-100-2026-11-14/concepts.py",
+  "rule": "every photo picked by eye; no stock photo reused except a small walking silhouette in the 3 scale frames; failed cut-outs become torn cards; numbers in data/dossier.json"
  }
 ]

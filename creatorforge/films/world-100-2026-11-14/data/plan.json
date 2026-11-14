@@ -1,0 +1,38 @@
+{
+ "spiceislands": {
+  "device": "lens",
+  "scheme": [
+   "#1B1B1B",
+   "#E63946",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/1 FrauncesI",
+   "Grotesk"
+  ]
+ },
+ "backpack": {
+  "device": "polaroids",
+  "scheme": [
+   "#22333B",
+   "#E9C46A",
+   "#F4EFE6"
+  ],
+  "type": [
+   "900 {s}px/0.95 Playfair",
+   "Mono"
+  ]
+ },
+ "homesick": {
+  "device": "openhead",
+  "scheme": [
+   "#22333B",
+   "#E9C46A",
+   "#F4EFE6"
+  ],
+  "type": [
+   "900 {s}px/0.95 Playfair",
+   "Mono"
+  ]
+ }
+}

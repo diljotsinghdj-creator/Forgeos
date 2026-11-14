@@ -1,0 +1,104 @@
+# Credits: 100 world visuals (2026-11-14)
+
+Photos: Pixabay (Pixabay Content License: free for commercial use, no attribution needed), each picked by eye from numbered candidate sheets. Satellite: NASA GIBS (public domain). Archives: Library of Congress. Maps: Natural Earth with India's official boundary.
+
+- **001 The Sahara** (satellite): NASA GIBS: BlueMarble_NextGeneration
+- **002 The Amazon** (satellite): NASA GIBS: BlueMarble_NextGeneration
+- **003 Japan** (satellite): NASA GIBS: BlueMarble_NextGeneration
+- **004 Greenland** (satellite): NASA GIBS: BlueMarble_NextGeneration
+- **005 The Cut** (satroute): NASA GIBS: Blue Marble Next Generation (cloud-free composite) 2004 composite
+- **006 One Strait, Two Continents** (satroute): NASA GIBS: MODIS Terra 2024-08-13
+- **007 The Narrow Door** (satroute): NASA GIBS: MODIS Terra 2024-11-12
+- **008 The Sea That Left** (beforeafter): NASA GIBS: MODIS Terra 2000-08-24; MODIS Terra 2025-08-24
+- **009 Lake Urmia** (beforeafter): NASA GIBS: MODIS Terra 2000-09-04; MODIS Terra 2025-09-01
+- **010 Lake Poopó** (beforeafter): NASA GIBS: MODIS Terra 2001-04-15; MODIS Terra 2025-04-15
+- **011 Lake Mead** (beforeafter): NASA GIBS: MODIS Terra 2000-06-18; MODIS Terra 2022-07-15
+- **012 One Peninsula After Dark** (nightlights): NASA GIBS: VIIRS Black Marble 2016
+- **013 Europe After Dark** (nightlights): NASA GIBS: VIIRS Black Marble 2016
+- **014 India After Dark** (nightlights): NASA GIBS: VIIRS Black Marble 2016
+- **015 The Silk Road** (routemap): drawn in the studio (Natural Earth outlines)
+- **016 Moscow to Vladivostok** (routemap): drawn in the studio (Natural Earth outlines)
+- **017 The Long Way to India** (routemap): drawn in the studio (Natural Earth outlines)
+- **018 The Ring of Fire** (globe): drawn in the studio (Natural Earth outlines)
+- **019 Africa** (globe): drawn in the studio (Natural Earth outlines)
+- **020 Where India Sits** (globe): drawn in the studio (Natural Earth outlines)
+- **021 Paris to Istanbul** (ticket): drawn in the studio (Natural Earth outlines)
+- **022 Cape to Cairo** (ticket): drawn in the studio (Natural Earth outlines)
+- **023 Stamps in a Passport** (passport): drawn in the studio (Natural Earth outlines)
+- **024 The Island of Arrivals** (archival): Library of Congress, Immigrants at Ellis Island <https://www.loc.gov/item/97501640/> (No known restrictions on publication.)
+- **025 Under the Tower** (archival): Library of Congress, [Exhibit buildings and grounds seen through the lower part of the Eiffel Tower, Paris Exposition, 1889] <https://www.loc.gov/item/91722254/> (published 1889; public domain by age (no rights statement on the LoC record))
+- **026 Digging the Canal** (archival): Library of Congress, Culebra Cut, looking south near Culebra, Panama Canal <https://www.loc.gov/item/2016814113/> (No known restrictions on publication.)
+- **027 The Great Wall** (archival): Library of Congress, Nankow Pass. Great Wall in the distance. China <https://www.loc.gov/item/2019633783/> (No known restrictions on publication.)
+- **028 The Printing Press** (engraving): Library of Congress, Invention of printing - Gutenberg taking the first proof <https://www.loc.gov/item/2006690328/> (No known restrictions on publication.)
+- **029 Terra Incognita** (lens): WikiImages <https://pixabay.com/photos/map-of-the-world-continents-globe-60526/>
+- **030 The Mapmakers** (lens): flutie8211 <https://pixabay.com/photos/map-old-world-vintage-map-vintage-7109829/>
+- **031 The Price of Coffee** (hand): maja7777 <https://pixabay.com/photos/coffee-beans-coffee-beans-roasting-2156978/>; danramirez <https://pixabay.com/photos/coffee-grains-mature-farming-plant-1474601/>; elkofla <https://pixabay.com/photos/white-background-hand-white-men-5244152/>
+- **032 The Chip** (hand): blickpixel <https://pixabay.com/photos/cpu-processor-macro-pen-pin-564771/>; axonite <https://pixabay.com/photos/cyber-security-network-internet-2377718/>; Sunriseforever <https://pixabay.com/photos/gestures-hands-black-and-white-6842772/>
+- **033 The Great Game** (hand): RosZie <https://pixabay.com/photos/chess-pieces-king-queen-heart-wood-7465249/>; ha11ok <https://pixabay.com/photos/chess-chessboard-board-game-1215079/>; zhivko <https://pixabay.com/photos/hand-woman-female-man-touch-3035665/>
+- **034 Rice** (sundisc): mikuratv <https://pixabay.com/photos/usd-rice-food-china-bowl-67411/>; Kanenori <https://pixabay.com/photos/crop-usd-paddy-field-grain-harvest-5582141/>
+- **035 A Cup of Tea** (sundisc): ahuanzuishuai111 <https://pixabay.com/photos/white-porcelain-teapot-10266737/>; hana_chado <https://pixabay.com/photos/green-tea-tea-koreatea-korea-5301025/>
+- **036 Cocoa** (sundisc): HOLIET <https://pixabay.com/photos/cocoa-cultivation-fruit-harvest-1529746/>; StockSnap <https://pixabay.com/photos/dark-chocolate-bar-food-black-dark-2562840/>
+- **037 Venice** (diorama): garten-gg <https://pixabay.com/photos/emotions-to-travel-vacation-italy-3490223/>; lenalindell20 <https://pixabay.com/photos/buildings-water-channel-3011177/>
+- **038 The Night Market** (diorama): 31192603 <https://pixabay.com/photos/noodles-noodle-soup-8021415/>; meguraw645 <https://pixabay.com/photos/yokohama-chinatown-motomachi-lamp-2223502/>
+- **039 The Corner Shop** (diorama): garten-gg <https://pixabay.com/photos/basket-shopping-basket-isolated-1710068/>; Pexels <https://pixabay.com/photos/apparel-boutique-bags-shoes-shop-1850804/>; 1857643 <https://pixabay.com/photos/hand-freedom-worship-man-4661763/>
+- **040 Melting Ice** (scale): spalla67 <https://pixabay.com/photos/iceberg-antarctica-cold-arctic-5163649/>; MabelAmber <https://pixabay.com/photos/man-outdoors-monochrome-sunlight-3556090/>; makabera <https://pixabay.com/photos/coast-island-mountain-atlantic-8587004/>
+- **041 Fast Fashion** (scale): AGKrejci <https://pixabay.com/photos/folded-laundry-stack-t-shirt-red-443509/>; MabelAmber <https://pixabay.com/photos/man-outdoors-monochrome-sunlight-3556090/>; hoeldino <https://pixabay.com/photos/havana-cuba-sewing-factory-work-2269059/>
+- **042 The Plastic Tide** (scale): pasja1000 <https://pixabay.com/photos/the-bottle-plastic-segregation-5128607/>; MabelAmber <https://pixabay.com/photos/man-outdoors-monochrome-sunlight-3556090/>; StockSnap <https://pixabay.com/photos/beach-coast-sea-sand-wave-ocean-2562563/>
+- **043 Paper or Plastic** (split): promil69 <https://pixabay.com/photos/torka-torekba-paper-package-5144920/>; Servetphotograph <https://pixabay.com/photos/transparent-bag-plastic-bag-6380418/>
+- **044 Coal or Sun** (split): KenStock <https://pixabay.com/photos/charcoal-hardwood-pure-5000519/>; mrganso <https://pixabay.com/photos/photovoltaic-system-solar-2742302/>
+- **045 Fork or Chopsticks** (split): Divily <https://pixabay.com/photos/spaghetti-pasta-noodles-italian-2931846/>; Adamsov <https://pixabay.com/photos/food-sushi-seafood-japan-oriental-3581341/>
+- **046 Everest** (counter): lutz6078 <https://pixabay.com/photos/everest-nepal-himalaya-1199431/>
+- **047 The United Nations** (counter): Gina_Janosch <https://pixabay.com/photos/globe-map-of-the-world-europe-earth-653566/>
+- **048 Lake Baikal** (counter): 8moments <https://pixabay.com/photos/ice-iceberg-ice-floes-winter-cold-2062433/>
+- **049 Monsoon** (haze): xusenru <https://pixabay.com/photos/girl-umbrella-rain-park-autumn-1438138/>
+- **050 The Midnight Sun** (haze): ebaso <https://pixabay.com/photos/norway-sunset-the-world-has-water-3757499/>
+- **051 Sandstorm** (haze): ELG21 <https://pixabay.com/photos/desert-storm-sandy-adventure-light-4694557/>
+- **052 Behind the Label** (tornhole): Pexels <https://pixabay.com/photos/antique-sewing-machine-home-old-1838324/>; esztinogradi <https://pixabay.com/photos/premium-premium-shirt-polo-shirt-991221/>
+- **053 Under the Ice** (tornhole): NaomiBooth <https://pixabay.com/photos/iceberg-climate-ice-glacier-6966784/>; Bru-nO <https://pixabay.com/photos/ice-cubes-ice-frozen-cold-3506782/>
+- **054 Rising Rents** (barstack): minka2507 <https://pixabay.com/photos/model-house-house-miniature-small-4074800/>; Ralphs_Fotos <https://pixabay.com/photos/key-keychain-door-key-house-keys-2148476/>
+- **055 Football Money** (barstack): pixel2013 <https://pixabay.com/photos/football-soccer-sport-ball-field-3471371/>; fotoblend <https://pixabay.com/photos/banknotes-currency-finance-euro-7850299/>
+- **056 Petra** (mapdiorama): Couleur <https://pixabay.com/photos/map-map-of-the-world-old-countries-1434486/>; dimitrisvetsikas1969 <https://pixabay.com/photos/petra-jordan-treasury-ancient-4337901/>; stofinho <https://pixabay.com/photos/camel-sahara-sand-dunes-desert-8430227/>
+- **057 Machu Picchu** (mapdiorama): beasternchen <https://pixabay.com/photos/compass-map-navigation-travel-8324516/>; LoggaWiggler <https://pixabay.com/photos/machu-picchu-peru-inka-tourism-43387/>; Pezibear <https://pixabay.com/photos/lama-head-curious-nose-mouth-7024125/>
+- **058 Angkor** (mapdiorama): WikiImages <https://pixabay.com/photos/map-of-the-world-continents-globe-60526/>; sharonang <https://pixabay.com/photos/angkor-wat-temple-amazing-934094/>; ajoheyho <https://pixabay.com/photos/elephant-animal-safari-mammal-114543/>
+- **059 Clean Air** (placards): marcinjozwiak <https://pixabay.com/photos/pollution-environment-drone-aerial-4796858/>
+- **060 Car-Free Day** (placards): Tama66 <https://pixabay.com/photos/street-architecture-city-road-3453557/>
+- **061 Megacities** (handstack): jsachs99 <https://pixabay.com/photos/skyscraper-modern-architecture-10482055/>; Pexels <https://pixabay.com/photos/apartments-architecture-balconies-1845884/>; Pancreas <https://pixabay.com/photos/hand-hands-fingers-man-hold-3133031/>
+- **062 Built on Sand** (handstack): WildPixar <https://pixabay.com/photos/dubai-tower-arab-khalifa-burj-1420494/>; ArtTower <https://pixabay.com/photos/desert-sand-dunes-landscape-65310/>; 1857643 <https://pixabay.com/photos/hands-together-community-touch-5216585/>
+- **063 The Great Migration** (stamp): Matthew_Stone <https://pixabay.com/photos/gnu-wildebeest-animal-migration-10382012/>
+- **064 Mount Fuji** (stamp): ThuanJapan <https://pixabay.com/photos/mount-fuji-lake-mountain-park-8010752/>
+- **065 The Taj Mahal** (stamp): wiganparky0 <https://pixabay.com/photos/taj-mahal-india-agra-islamic-866692/>
+- **066 Markets of the World** (clothesline): OleksandrPidvalnyi <https://pixabay.com/photos/spices-market-flavor-ingredients-6786608/>; Quangpraha <https://pixabay.com/photos/floating-market-on-the-river-culture-3013639/>; 652234 <https://pixabay.com/photos/fruit-stand-fruits-produce-harvest-1275551/>
+- **067 Festivals** (clothesline): thuanvo <https://pixabay.com/photos/lantern-hoian-light-travel-culture-5235537/>; frankspandl <https://pixabay.com/photos/holi-holi-powder-colorful-powder-300343/>; Pexels <https://pixabay.com/photos/venetian-mask-carnival-feathers-1283163/>
+- **068 World Cup Fever** (tv): WikiImages <https://pixabay.com/photos/football-stadium-stadium-soccer-62891/>
+- **069 The Weather Report** (tv): janeb13 <https://pixabay.com/photos/tropical-cyclone-catarina-march-26-1167137/>
+- **070 Three Cities** (triptych): ArtisticRealms <https://pixabay.com/photos/vehicles-road-city-traffic-street-5871002/>; ibrahimpoonawala553 <https://pixabay.com/photos/boats-sea-skyline-cityscape-7001054/>; ikedaleo <https://pixabay.com/photos/city-building-architecture-urban-2278497/>
+- **071 Bread of the World** (triptych): Alexas_Fotos <https://pixabay.com/photos/baguette-loaf-baked-goods-food-1743939/>; 2SIF <https://pixabay.com/photos/pakistani-plain-naan-naan-roti-7155154/>; hekoer_1 <https://pixabay.com/photos/maiz-tortilla-food-mexican-mexico-5135234/>
+- **072 Concrete** (swiss): stas336 <https://pixabay.com/photos/old-iron-building-house-dark-2708409/>
+- **073 Kyoto** (swiss): Pexels <https://pixabay.com/photos/shinto-shrine-gates-torii-tunnel-1869216/>
+- **074 Brasília** (swiss): Thorge <https://pixabay.com/photos/brazil-brasilia-architecture-3661533/>
+- **075 Route 66** (polaroids): MrRick <https://pixabay.com/photos/route-66-sign-classic-highway-3529778/>; elizabethannphotolv <https://pixabay.com/photos/road-sandstone-sunset-pavement-1303617/>; MikeGoad <https://pixabay.com/photos/mount-horeb-lunch-cafe-lunch-4162348/>; Daddy3D <https://pixabay.com/photos/neon-night-motel-lights-4457900/>
+- **076 Backpacking** (polaroids): InsightPhotography <https://pixabay.com/photos/orange-jacket-man-mountains-4714097/>; Hans <https://pixabay.com/photos/beds-youth-hostel-bunk-beds-sleep-182965/>; Didgeman <https://pixabay.com/photos/train-tracks-train-station-railroad-619082/>; Julius_Silver <https://pixabay.com/photos/hallstatt-austria-mountain-lake-3609863/>
+- **077 Santorini** (postcard): MustangJoe <https://pixabay.com/photos/santorini-blue-dome-island-greece-1546901/>; Kranich17 <https://pixabay.com/photos/water-waves-ocean-sea-beach-6901805/>
+- **078 Iceland** (postcard): Noel_Bauza <https://pixabay.com/photos/christmas-background-aurora-1197753/>; IdaT <https://pixabay.com/photos/diamond-beach-iceland-ice-7566872/>
+- **079 Cape Town** (postcard): D_V_Rensburg <https://pixabay.com/photos/sunset-table-mountain-landscape-sky-5004905/>; dimitrisvetsikas1969 <https://pixabay.com/photos/waves-sea-ocean-beach-blue-water-3473335/>
+- **080 Learning a Language** (notebook): stevepb <https://pixabay.com/photos/dictionary-reference-book-learning-1619740/>; Engin_Akyurt <https://pixabay.com/photos/notebook-pen-work-course-page-2637757/>
+- **081 Jet Lag** (notebook): Alexandra_Koch <https://pixabay.com/photos/plane-aviator-toy-aviation-2827329/>; tensaisaisai <https://pixabay.com/photos/grid-paper-paper-school-science-1806470/>
+- **082 Borders** (kinetic): Monoar_CGI_Artist <https://pixabay.com/photos/pencils-writing-stationery-1486278/>
+- **083 Time Zones** (kinetic): qimono <https://pixabay.com/photos/clock-time-watch-hours-minutes-1461689/>
+- **084 Daylight Saving** (clockface): drawn in the studio (Natural Earth outlines)
+- **085 Siesta** (clockface): drawn in the studio (Natural Earth outlines)
+- **086 The World on a Plate** (sticker): Yezmin <https://pixabay.com/photos/tacos-pastor-tacos-tacos-mexico-4505032/>; Amatheus <https://pixabay.com/photos/rolls-sushi-food-restaurant-8735316/>
+- **087 Souvenirs** (sticker): Bellahu123 <https://pixabay.com/photos/composing-glass-sphere-christmas-7493690/>; lulek41 <https://pixabay.com/photos/teddy-bear-key-ring-keychain-139279/>
+- **088 Two Wheels** (sticker): Didgeman <https://pixabay.com/photos/scooter-electric-scooter-4384701/>; Pexels <https://pixabay.com/photos/bicycle-bike-forest-path-sports-1834265/>
+- **089 The Hidden Fee** (pinnote): Joshuamiranda <https://pixabay.com/photos/bill-coins-money-mortgage-4822451/>; patrykdzido <https://pixabay.com/photos/pen-office-fountain-pens-write-543858/>
+- **090 Lost in Translation** (pinnote): tensaisaisai <https://pixabay.com/photos/ripped-paper-legal-pad-ripped-paper-1806471/>; _Alicja_ <https://pixabay.com/photos/scraps-pencil-sharpener-shavings-4521511/>
+- **091 Passport Power** (pinnote): 18924851 <https://pixabay.com/photos/envelope-paper-old-vintage-texture-7348722/>; cytis <https://pixabay.com/photos/passport-flag-travel-visa-2642171/>
+- **092 Homesick** (openhead): LeeTravathan <https://pixabay.com/photos/goddess-statue-head-sculpture-185457/>; image4you <https://pixabay.com/photos/house-structure-real-estate-concept-1353389/>
+- **093 Culture Shock** (openhead): PilotBrent <https://pixabay.com/photos/people-adult-portrait-man-male-3180888/>; stux <https://pixabay.com/photos/luggage-travel-sunlight-vacations-1149289/>
+- **094 Selfie Tourism** (statue): intographics <https://pixabay.com/photos/poseidon-sea-greek-mythology-1621062/>; JESHOOTS-com <https://pixabay.com/photos/iphone-hand-screen-smartphone-apps-410311/>
+- **095 Stolen Art** (statue): ChiemSeherin <https://pixabay.com/photos/statue-sculpture-artwork-art-8342978/>; avantrend <https://pixabay.com/photos/picture-frame-stucco-frame-frame-427233/>
+- **096 Scam Calls** (ransom): 526663 <https://pixabay.com/photos/phone-letter-fountain-pen-dial-499991/>; 652234 <https://pixabay.com/photos/phone-old-telephone-receiver-2863663/>
+- **097 Fake Goods** (ransom): LUM3N <https://pixabay.com/photos/pocket-leather-goods-purse-notebook-1565402/>; Felix-Mittermeier <https://pixabay.com/photos/pocket-watch-time-clock-old-hours-2061228/>
+- **098 Going Viral** (ransom): FunkyFocus <https://pixabay.com/photos/train-track-railroad-smartphone-2507499/>; stux <https://pixabay.com/photos/balloon-talk-paper-opinion-cut-out-1014411/>
+- **099 Overtourism** (window): 12019 <https://pixabay.com/photos/beach-sand-umbrellas-tourism-2459884/>
+- **100 The Night Train** (window): Yeskay1211 <https://pixabay.com/photos/hills-india-nature-kodaikanal-2836301/>

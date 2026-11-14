@@ -1,0 +1,37 @@
+{
+ "loc-ellis": {
+  "what": "Immigrants at Ellis Island",
+  "date": "1907-01-01",
+  "url": "https://www.loc.gov/item/97501640/",
+  "rights": "No known restrictions on publication.",
+  "width": 811
+ },
+ "loc-eiffel": {
+  "what": "[Exhibit buildings and grounds seen through the lower part of the Eiffel Tower, Paris Exposition, 1889]",
+  "date": "1889-01-01",
+  "url": "https://www.loc.gov/item/91722254/",
+  "rights": "published 1889; public domain by age (no rights statement on the LoC record)",
+  "width": 1024
+ },
+ "loc-culebra": {
+  "what": "Culebra Cut, looking south near Culebra, Panama Canal",
+  "date": "1910-01-01",
+  "url": "https://www.loc.gov/item/2016814113/",
+  "rights": "No known restrictions on publication.",
+  "width": 1024
+ },
+ "loc-greatwall": {
+  "what": "Nankow Pass. Great Wall in the distance. China",
+  "date": "1902-01-01",
+  "url": "https://www.loc.gov/item/2019633783/",
+  "rights": "No known restrictions on publication.",
+  "width": 1024
+ },
+ "loc-press2": {
+  "what": "Invention of printing - Gutenberg taking the first proof",
+  "date": "1869-01-01",
+  "url": "https://www.loc.gov/item/2006690328/",
+  "rights": "No known restrictions on publication.",
+  "width": 640
+ }
+}

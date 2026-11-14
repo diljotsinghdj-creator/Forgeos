@@ -1,0 +1,6 @@
+assets/
+work/
+html/
+png/
+fetch_log*.txt
+__pycache__/
