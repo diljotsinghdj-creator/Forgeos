@@ -323,3 +323,16 @@ paid providers), every ElevenLabs / Gemini / fal path, AI-generated "archival" i
   frames; clothesline of polaroids (perfect for timelines); pinned-polaroid desk; floating platform UI cards (as
   labelled recreations, never fake posts by real people); pixel-dissolve reveal; sunburst rays; draw-on ink
   illustration; falling-object particles. Rule kept: no "head opens" or surreal edits on real politicians.
+
+### Owner reference, round 9 (2026-11-14): Vox year-in-review montage (277 s)
+- **Measured pacing:** 220 shots, median 0.96 s, shortest tenth ~0.16 s (flash cuts), longest tenth ~2.2 s. Our
+  films average 3.7-4.4 s; a hook, a recap or a "the year in" passage should use a montage mode at Vox speed.
+- **Mostly real footage**, each clip credited top-left ("NBC Sports", "ABC News | December 9, 2024", "@handle"). Our
+  free equivalent: CC/PD footage (Wikimedia Commons video, NASA, Internet Archive, GODL-India/PIB, Kremlin.ru CC BY),
+  always credited the same way. We currently use no moving footage at all: the biggest gap this reference shows.
+- **Map:** one country in hot pink on a black world, RGB-split glow on its edge, small serif label.
+- **Place title:** huge white uppercase word over footage ("INDONESIA", "POLAND").
+- **Headline card:** outlet name, the exact headline in white serif with the key phrase on a pink marker, byline and
+  date, over darkened footage. **Charts:** minimal on black, one highlighted word in the title.
+- **Social triptych:** three vertical clips side by side, each with its handle credit.
+- **Applied (stills):** films/bjp-it-cell-10min/collage/round9 (headline card, pink official-boundary map, minimal chart).
