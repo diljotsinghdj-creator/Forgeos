@@ -78,7 +78,7 @@ def test_topic_routing_picks_libraries_by_subject(monkeypatch):
     assert "dvids" not in names("troops on the border")            # keyed library skipped without its key
     monkeypatch.setenv("DVIDS_KEY", "k")
     assert ("dvids", "k") in stock_video.topic_sources("troops on the border")
-    assert names("a quiet kitchen table") == []
+    assert names("a kitchen table with receipts") == []
     assert len(names("space war russia")) == len(set(names("space war russia")))
 
 
@@ -114,3 +114,18 @@ def test_us_government_films_use_their_own_collection(monkeypatch):
     monkeypatch.setattr(httpx, "get", get)
     [c] = stock_video.search("usgov", "", "flood")
     assert "FedFlix" in seen["q"] and c["licence"] == "Public domain (US government work)" and c["site"] == "usgov"
+
+
+def test_dareful_reads_only_its_own_clips_never_shutterstock_ads(monkeypatch):
+    def get(url, **kw):
+        if url == "https://dareful.com/":
+            return R(text='<a href="https://shutterstock.7eer.net/c/1/2"><video src="https://ak.picdn.net/x.mp4"></video></a>'
+                          '<a href="https://dareful.com/sitemap/">s</a><a href="https://dareful.com/crashing-waves-ocean/">c</a>')
+        assert url == "https://dareful.com/crashing-waves-ocean/"
+        return R(text='<title>Crashing Waves Ocean Royalty Free Stock Video</title><meta itemprop="width" content="1920">'
+                      '<meta itemprop="height" content="1080"><a href="https://stream.mux.com/AbC123.m3u8" download class="x">')
+    monkeypatch.setattr(httpx, "get", get)
+    [c] = stock_video.search("dareful", "", "ocean waves")
+    assert c["url"] == "https://stream.mux.com/AbC123/high.mp4" and c["licence"] == "CC BY 4.0"
+    assert "picdn" not in c["url"] and c["attribution"].startswith("required")
+    assert "dareful" in [n for n, _ in stock_video.topic_sources("calm ocean at sunset")]

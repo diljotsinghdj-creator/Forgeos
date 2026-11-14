@@ -340,6 +340,41 @@ def _observatory(query: str, timeout: float, which: str) -> list[dict]:
     return out
 
 
+def _dareful(query: str, timeout: float) -> list[dict]:
+    """Dareful: free 4K/HD nature, travel and city b-roll, CC BY 4.0 (credit "Video courtesy of Dareful").
+    Its search pages also show paid Shutterstock clips as adverts: only dareful.com's own clip pages are read, and
+    the file is Dareful's own MP4 on Mux, never a shutterstock / picdn link. Kept gentle: one search, at most four
+    clip pages."""
+    r = httpx.get("https://dareful.com/", params={"s": query}, timeout=timeout, headers={"User-Agent": UA}, follow_redirects=True)
+    r.raise_for_status()
+    skip = {"about-dareful-completely-free-4k-stock-video", "sitemap", "feed", "comments", "page", "videos", "search", "wp-content"}
+    pages = []
+    for slug in re.findall(r'href="https://dareful\.com/([a-z0-9-]+)/"', r.text):
+        if slug not in skip and slug not in pages:
+            pages.append(slug)
+    out = []
+    for slug in pages[:4]:
+        p = httpx.get(f"https://dareful.com/{slug}/", timeout=timeout, headers={"User-Agent": UA}, follow_redirects=True)
+        if p.status_code != 200:
+            continue
+        m = re.search(r'href="https://stream\.mux\.com/([A-Za-z0-9]+)\.m3u8"[^>]*\bdownload\b', p.text)
+        if not m:
+            continue
+        title = html.unescape(re.sub(r"\s*Royalty Free Stock Video.*$", "", (re.search(r"<title>(.*?)</title>", p.text, re.S) or [None, ""])[1])).strip()
+        if not relevant(query, f"{title} {slug.replace('-', ' ')}"):
+            continue
+        w = re.search(r'itemprop="width" content="(\d+)"', p.text)
+        h = re.search(r'itemprop="height" content="(\d+)"', p.text)
+        out.append({"url": f"https://stream.mux.com/{m.group(1)}/high.mp4", "width": int(w.group(1)) if w else 1920,
+                    "height": int(h.group(1)) if h else 1080, "duration": 0.0, "credit": "Video courtesy of Dareful (CC BY 4.0)",
+                    "trim": True, "site": "dareful", "creator": "Dareful", "licence": "CC BY 4.0", "id": slug,
+                    "page": f"https://dareful.com/{slug}/", "about": title[:300],
+                    "attribution": "required: Video courtesy of Dareful, CC BY 4.0"})
+        if len(out) >= 2:
+            break
+    return out
+
+
 def _dvids(query: str, key: str, timeout: float) -> list[dict]:
     """DVIDS (US military public affairs): public domain, free personal key (DVIDS_KEY in the pod's environment)."""
     if not key:
@@ -375,7 +410,9 @@ TOPICS = [
      ["esahubble", "eso", "esawebb", "noirlab", "svs"]),
     (r"\b(climate|sea level|flood\w*|drought|storm|hurricane|cyclone|monsoon|ocean|glacier|ice|wildfire|fire|heat ?wave|weather|earth)\b",
      ["svs", "noaa", "usgov", "loc"]),
-    (r"\b(forest|wildlife|animal\w*|bear|bird\w*|river|mountain|national park|landscape|nature)\b", ["nps", "noaa"]),
+    (r"\b(forest|wildlife|animal\w*|bear|bird\w*|river|mountain\w*|national park|landscape|nature)\b", ["nps", "noaa", "dareful"]),
+    (r"\b(ocean|sea|beach|coast|wave\w*|sky|clouds?|sunset|sunrise|lake|snow|city|skyline|road|travel|aerial|drone|calm|peace\w*|alone|lonely|quiet)\b",
+     ["dareful"]),
     (r"\b(white house|president|congress|senate|house of representatives|washington|biden|trump|usa?|united states|america\w*)\b",
      ["whitehouse", "cspan", "voa", "voanews", "usgov"]),
     (r"\b(russia\w*|kremlin|putin|moscow|soviet)\b", ["kremlin", "voa", "voanews", "europeana"]),
@@ -443,6 +480,8 @@ def search(provider: str, key: str, query: str, portrait: bool = True, timeout: 
             return _wikimedia(query, timeout, provider)
         if provider in OBSERVATORIES:
             return _observatory(query, timeout, provider)
+        if provider == "dareful":
+            return _dareful(query, timeout)
         if provider == "dvids":
             import os
             return _dvids(query, key or os.environ.get("DVIDS_KEY", ""), timeout)

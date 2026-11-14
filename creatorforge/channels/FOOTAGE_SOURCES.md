@@ -46,6 +46,7 @@ restrictions"). Such clips go to the owner as *needs a check*, never straight in
 | `pib` | Press Information Bureau, India | GODL-India | Commons (pib.gov.in) |
 | `nps` | US National Park Service: nature, wildlife | public domain | Commons (nps.gov) |
 | `noaa` | NOAA: storms, satellites, oceans | public domain | Commons (noaa.gov) |
+| `dareful` | Dareful: nature, ocean, sky, snow, city, travel b-roll (1080p MP4 on Mux) | CC BY 4.0, credit "Video courtesy of Dareful" | Dareful search; **its paid Shutterstock adverts are skipped**, only dareful.com clip pages are read |
 | `dvids` *key* | US military public affairs | public domain | DVIDS API (`DVIDS_KEY`) |
 
 For every source reached through Commons, the licence is still read from each file. A non-free file never gets
@@ -76,7 +77,8 @@ adds libraries, most specific first. They only join the search when the studio's
 |---|---|
 | space, galaxy, star, black hole, telescope, Mars | ESA/Hubble, ESO, ESA/Webb, NOIRLab, SVS |
 | climate, flood, storm, monsoon, glacier, wildfire | SVS, NOAA, US gov films, LoC |
-| forest, wildlife, animals, mountains | NPS, NOAA |
+| forest, wildlife, animals, mountains | NPS, NOAA, Dareful |
+| ocean, sky, sunset, snow, city, travel, aerial, calm, alone, quiet | Dareful |
 | US president, Congress, Senate, Washington | White House, C-SPAN floor, VOA |
 | Russia, Kremlin, Putin, Soviet | Kremlin.ru, VOA, Europeana |
 | Europe, EU, Brussels, Netherlands | European Parliament, Open Beelden, Europeana |
@@ -110,11 +112,12 @@ Checked 2026-11-14 against Mixkit's own licence pages and User Terms:
 |---|---|---|
 | Pexels, Pixabay | bot check on the website; official free APIs (keys) | **use via API** (already wired) |
 | Coverr | own licence, free commercial use; API needs a free key; has premium and AI clips too | **use, free clips only**, key needed |
-| Dareful | CC BY 4.0, commercial allowed | **use by hand** (small 4K nature site, credit required) |
+| Dareful | CC BY 4.0, commercial allowed; robots allow it; no terms against searching | **wired in** (`dareful`): nature, sea, sky, cities, travel; credit "Video courtesy of Dareful" |
 | Free Nature Stock | says attribution required | **use by hand**, with credit |
 | SplitShire | licence page gone (404) | check the licence before any use |
 | Ignite Motion | free motion backgrounds | low value (abstract loops) |
 | Videvo, Mazwai | now redirect to Magnific (Freepik's AI platform) | **dropped**: the free libraries are gone or paid |
+| Freepik videos | now Magnific (freepik.com redirects there); free clips need attribution and an account, with download limits; Premium and the API are paid; the terms forbid downloads "through any robots, spiders or ... tool"; robots.txt blocks /download/ and /search | **dropped**: no automation allowed, and it pushes towards paid |
 | Motion Places | "Pro License" | **dropped** (paid) |
 | Vecteezy | free clips need attribution, Pro is paid | per clip only, risky; low priority |
 | Videezy | bot check; mix of free (attribution) and Pro | per clip only; not automated |
