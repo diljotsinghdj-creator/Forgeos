@@ -35,14 +35,16 @@ def loc(q):
     for x in (r.json().get("results", []) if r else []):
         year = re.search(r"(1[789]\d\d|19\d\d|20\d\d)", str(x.get("date") or ""))
         rights = " ".join(map(str, x.get("rights") or [])) if isinstance(x.get("rights"), list) else str(x.get("rights") or "")
-        ok = (year and int(year.group(1)) < 1930) or "no known restrictions" in rights.lower()
+        coll = " ".join(map(str, x.get("partof") or [])).lower()
+        govt = any(k in coll for k in ("farm security administration", "work projects administration", "posters from the wpa", "wpa posters"))   # US government work; LoC: no known restrictions
+        ok = (year and int(year.group(1)) < 1930) or "no known restrictions" in rights.lower() or govt
         imgs = [u.split("#")[0] for u in (x.get("image_url") or []) if u.split("#")[0].endswith(".jpg")]
         if not ok or not imgs or x.get("id") in used:
             continue
         big = imgs[-1].split("#")[0]
         yield {"source": "Library of Congress", "source_id": x.get("id"), "url": big, "title": str(x.get("title", ""))[:200],
                "date": str(x.get("date") or ""), "maker": ", ".join(map(str, x.get("contributor") or []))[:120],
-               "licence": "Public domain (published before 1930)" if year and int(year.group(1)) < 1930 else "No known restrictions on publication",
+               "licence": "Public domain (published before 1930)" if year and int(year.group(1)) < 1930 else ("Public domain (US government work, FSA/OWI or WPA collection)" if govt else "No known restrictions on publication"),
                "page": x.get("id")}
 
 

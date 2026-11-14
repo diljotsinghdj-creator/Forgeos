@@ -766,5 +766,14 @@
   "type_pairing": "Oswald + Inter",
   "motif": "proportional discs on a world map",
   "voice": ""
+ },
+ {
+  "id": "hundred-2026-11-14",
+  "kind": "sample-visuals",
+  "channel": "both",
+  "topic": "100 themes (50 print-facts, 50 dragon-psychology)",
+  "date": "2026-11-14",
+  "look": "100 unique combinations of frame x treatment x surface x type pairing x layout x prop x per-image palette; see films/hundred-2026-11-14/data/combos.json",
+  "rule": "no two images share (frame, treatment, surface, type); negative traits never on a real person"
  }
 ]

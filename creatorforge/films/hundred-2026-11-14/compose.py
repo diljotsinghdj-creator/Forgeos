@@ -28,6 +28,11 @@ def prep(tid):
     out = {}
     im = Image.open(src).convert("RGB")
     im.thumbnail((1600, 1600))
+    from PIL import ImageStat
+    st = ImageStat.Stat(im.convert("L"))
+    out["mean"], out["std"] = st.mean[0], st.stddev[0]
+    if out["mean"] < 90:                               # dark paintings: lift them so they read on screen
+        im = ImageOps.autocontrast(im, cutoff=1)
     p = D / "img" / f"{tid}_web.jpg"
     im.save(p, quality=88)
     out["web"] = p.as_uri()
@@ -179,6 +184,8 @@ def t_inkblot(r, im, rnd):
     return body, "background:#EFE9DC"
 
 
+# light or low-contrast images that the halftone washes out get a photographic treatment instead
+OVERRIDE = {"breadline": t_board, "railroad": t_duotone, "ice": t_duotone, "map": t_blueprint, "desert": t_blueprint}
 T_PF = [t_kraft, t_duotone, t_board, t_newsprint, t_riso, t_blueprint, t_contact, t_sunburst, t_loupe]
 T_DP = [t_museum, t_mirror, t_inkblot, t_duotone, t_riso, t_loupe, t_sunburst, t_kraft, t_contact]
 
@@ -191,7 +198,7 @@ if __name__ == "__main__":
                 continue
             if only and tid not in only:
                 continue
-            t = ts[i % len(ts)]
+            t = OVERRIDE.get(tid, ts[i % len(ts)])
             rnd = random.Random(tid)
             im = prep(tid)
             body, bg = t(rec[tid], im, rnd)
