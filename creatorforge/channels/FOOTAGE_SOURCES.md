@@ -64,7 +64,7 @@ Until a key is set, that source is skipped.
 - The NPS API, Coverr and NARA's catalog API (free keys, not wired yet).
 - The EU Audiovisual Service (a JavaScript-only site; manual pulls).
 
-**Not automated:** Mixkit, Pond5 Public Domain, Videvo/Videezy (no API, or a mix of free and paid clips) and
+**Not automated:** Mixkit (checked by hand, see below), Pond5 Public Domain, Videvo/Videezy (no API, or a mix of free and paid clips) and
 Google Earth Studio (a manual tool, with Google's attribution rules).
 
 ## Topic routing (`stock_video.topic_sources`)
@@ -86,6 +86,23 @@ adds libraries, most specific first. They only join the search when the studio's
 | history, a year from 1800 to 1979, newsreel | US gov films, LoC, Open Beelden, Europeana |
 | mind, brain, emotion, fear, children, school | Prelinger, Wellcome |
 | medicine, disease, hospital, pandemic | Wellcome, US gov films |
+
+## Mixkit (by hand, one clip at a time)
+
+Modern, polished b-roll: nature, cities, hands, offices, abstract. It is a good fit for Dragon Psychology texture.
+Checked 2026-11-14 against Mixkit's own licence pages and User Terms:
+
+- **Two video licences, named on each clip page.**
+  - **Stock Video Free License:** YouTube, commercial and monetised use allowed; credit not required (we credit
+    anyway). Allowed.
+  - **Stock Video Restricted License:** personal projects only. It says it can "never" appear in "a monetized YouTube
+    video". **Refused.** Example: "Scientist looks at 3D brain model" (5665) is Restricted.
+- **No automatic search.** The User Terms forbid "scripts or bots to mass download Items" and using the site "in any
+  way not expressly permitted". So the studio never searches or crawls Mixkit.
+- **The checker.** A person picks a clip page, then `providers/mixkit.py: check(url)` reads that one page. It returns
+  the 1080p file only when the page names the Free licence; otherwise it gives the reason.
+- **People in Mixkit clips are models, not real subjects.** Never use them to stand in for a real person or a real
+  event in Print Facts.
 
 ## Photos (`providers/stock_photo.py`, already wired)
 
