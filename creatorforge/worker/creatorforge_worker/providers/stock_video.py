@@ -327,7 +327,7 @@ def _observatory(query: str, timeout: float, which: str) -> list[dict]:
         mp4 = [u for u in re.findall(r'https://[^"\'\s<>]+?\.mp4', p.text) if re.search(r"hd_1080p?\d*_screen|hd_1080_screen", u)]
         if not mp4:
             continue
-        cm = (re.search(r'Credit:</strong>\s*<div class="credit">(.*?)</div>', p.text, re.S)
+        cm = (re.search(r'Credit:</strong>\s*(?:<br\s*/?>)?\s*<div class="credit">(.*?)</div>', p.text, re.S)
               or re.search(r"Credit:</[^>]+>\s*(?:</th>)?\s*<td[^>]*>(.*?)</td>", p.text, re.S))
         credit = html.unescape(re.sub(r"<[^>]+>", " ", cm.group(1))).split("Directed by")[0].strip() if cm else fallback
         credit = re.split(r"\s*(?:Music|Acknowledge?ments?|Directed by)\s*:", re.sub(r"\s+", " ", credit))[0]
