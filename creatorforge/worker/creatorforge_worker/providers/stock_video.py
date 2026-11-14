@@ -14,9 +14,9 @@ import httpx
 
 from .base import ProviderError
 
-FREE_SOURCES = ("nasa", "wikimedia")
+FREE_SOURCES = ("nasa", "svs", "wikimedia")
 # Prelinger (1930s-80s films, mostly black and white, often 480p): only for history lines (Archive:)
-ARCHIVE_SOURCES = ("archive",)
+ARCHIVE_SOURCES = ("archive", "loc", "wellcome")
 MIN_CLIP_SIDE = 720       # a smaller clip is blown up into visible pixels on a 1080p frame
 UA = "CreatorForge/1.0 (video worker; https://github.com/diljotsinghdj-creator/Forgeos)"
 _STOP = {"the", "and", "with", "from", "into", "over", "for", "of", "a", "an", "in", "on", "at", "to", "by"}
@@ -118,14 +118,15 @@ def _archive(query: str, timeout: float) -> list[dict]:
         return []
     r = httpx.get("https://archive.org/advancedsearch.php", timeout=timeout, headers={"User-Agent": UA}, params={
         "q": f"{q} AND collection:(prelinger) AND mediatype:(movies)", "fl[]": ["identifier", "title", "description",
-        "subject"], "rows": 15, "output": "json"})
+        "subject", "licenseurl"], "rows": 15, "output": "json"})
     r.raise_for_status()
     out = []
     for doc in (r.json().get("response") or {}).get("docs", []):
         about = " ".join(str(doc.get(k) or "") for k in ("title", "description", "subject"))[:1500]
         ident = str(doc.get("identifier") or "")
-        if not ident or not relevant(query, about):
-            continue
+        lic_url = str(doc.get("licenseurl") or "")
+        if not ident or not relevant(query, about) or _PRIVATE.search(about) or re.search(r"-nc|-nd", lic_url):
+            continue                     # each film's own licence: non-commercial or no-derivatives films are skipped
         m = httpx.get(f"https://archive.org/metadata/{quote(ident)}", timeout=timeout, headers={"User-Agent": UA})
         if m.status_code != 200:
             continue
@@ -140,10 +141,126 @@ def _archive(query: str, timeout: float) -> list[dict]:
                         "width": int(f.get("width") or 640), "height": int(f.get("height") or 480),
                         "duration": float(f.get("length") or 0) if str(f.get("length", "")).replace(".", "", 1).isdigit() else 0.0,
                         "credit": "Prelinger Archives / Internet Archive", "trim": True, "site": "archive",
-                        "creator": "Prelinger Archives", "licence": "Public domain (Prelinger Archives)", "id": ident,
+                        "creator": "Prelinger Archives", "licence": "Public domain mark" if "publicdomain" in lic_url else "Public domain (Prelinger Archives, no licence field)", "id": ident,
                         "page": f"https://archive.org/details/{quote(ident)}", "about": about[:300], "archive": True,
                         "attribution": "Prelinger Archives / Internet Archive (credit requested)"})
         if len(out) >= 2:
+            break
+    return out
+
+
+def _svs(query: str, timeout: float) -> list[dict]:
+    """NASA's Scientific Visualization Studio: data visualisations of Earth, climate and space (public domain, NASA
+    media policy; credit NASA's Scientific Visualization Studio)."""
+    r = httpx.get("https://svs.gsfc.nasa.gov/api/search/", params={"search": query, "limit": 12}, timeout=timeout, headers={"User-Agent": UA})
+    r.raise_for_status()
+    out = []
+    for hit in r.json().get("results", [])[:12]:
+        if not relevant(query, f"{hit.get('title', '')} {hit.get('description', '')}"):
+            continue
+        it = httpx.get(f"https://svs.gsfc.nasa.gov/api/{hit['id']}", timeout=timeout, headers={"User-Agent": UA})
+        if it.status_code != 200:
+            continue
+        cands = []
+        for g in it.json().get("media_groups") or []:
+            for m in g.get("items") or []:
+                inst = (m or {}).get("instance") or {}
+                url = inst.get("url") or ""
+                if url.endswith(".mp4") and int(inst.get("width") or 0) >= MIN_CLIP_SIDE and int(inst.get("filesize") or 0) < 300 * 1024 * 1024:
+                    cands.append((abs(int(inst.get("width") or 0) - 1920), url, inst))
+        if cands:
+            cands.sort(key=lambda c: c[0])
+            _, url, inst = cands[0]
+            out.append({"url": _https(url), "width": int(inst.get("width") or 1920), "height": int(inst.get("height") or 1080),
+                        "duration": 0.0, "credit": "NASA's Scientific Visualization Studio", "trim": True, "site": "svs",
+                        "creator": "NASA SVS", "licence": "Public domain (NASA media policy)", "id": str(hit["id"]),
+                        "page": f"https://svs.gsfc.nasa.gov/{hit['id']}", "about": str(hit.get("title", ""))[:300],
+                        "attribution": "NASA's Scientific Visualization Studio (credit requested)"})
+        if len(out) >= 3:
+            break
+    return out
+
+
+def _loc(query: str, timeout: float) -> list[dict]:
+    """Library of Congress films: only those published before 1930 (public domain in the US by age) or marked
+    'no known restrictions'. Early actualities, newsreels and events."""
+    r = httpx.get("https://www.loc.gov/film-and-videos/", params={"q": query, "fo": "json", "c": 25}, timeout=timeout, headers={"User-Agent": UA})
+    r.raise_for_status()
+    out = []
+    for x in r.json().get("results", []):
+        year = re.search(r"(1[89]\d\d|20\d\d)", str(x.get("date") or ""))
+        rights = " ".join(map(str, x.get("rights") or [])) if isinstance(x.get("rights"), list) else str(x.get("rights") or "")
+        free = (year and int(year.group(1)) < 1930) or "no known restrictions" in rights.lower()
+        if not free or x.get("access_restricted") or not relevant(query, f"{x.get('title', '')} {' '.join(map(str, x.get('description') or []))} {' '.join(map(str, x.get('subject') or []))}"):
+            continue
+        for res in x.get("resources") or []:
+            if res.get("video") and int(res.get("height") or 0) >= 480:
+                out.append({"url": res["video"], "width": int(res.get("width") or 1440), "height": int(res.get("height") or 1080),
+                            "duration": float(res.get("duration") or 0), "credit": "Library of Congress", "trim": True, "site": "loc",
+                            "creator": "Library of Congress", "id": str(x.get("id", "")), "page": str(x.get("id", "")),
+                            "licence": f"Public domain ({year.group(1)}, published before 1930)" if year and int(year.group(1)) < 1930 else "No known restrictions",
+                            "about": str(x.get("title", ""))[:300], "archive": True, "attribution": "Library of Congress (credit requested)"})
+                break
+        if len(out) >= 3:
+            break
+    return out
+
+
+_OPEN_WELLCOME = {"cc-by", "cc-0", "pdm"}
+# home movies show private individuals, whom the channels never feature (owner's rule); skip them at the source
+_PRIVATE = re.compile(r"home movie", re.I)
+
+
+def _wellcome(query: str, timeout: float) -> list[dict]:
+    """Wellcome Collection films (medicine, mind, health history). Only CC BY, CC0 or public-domain items: most of
+    its films are CC BY-NC or in copyright, which a monetised channel cannot use."""
+    r = httpx.get("https://api.wellcomecollection.org/catalogue/v2/works", timeout=timeout, headers={"User-Agent": UA},
+                  params={"query": query, "workType": "g", "pageSize": 30, "include": "items"})
+    r.raise_for_status()
+    out = []
+    for w in r.json().get("results", []):
+        lic, manifest = set(), None
+        for it in w.get("items") or []:
+            for loc in it.get("locations") or []:
+                if loc.get("license"):
+                    lic.add(loc["license"].get("id"))
+                if (loc.get("locationType") or {}).get("id") == "iiif-presentation":
+                    manifest = loc.get("url")
+        if not lic or not lic <= _OPEN_WELLCOME or not manifest or _PRIVATE.search(str(w.get("title", ""))) or not relevant(query, f"{w.get('title', '')} {w.get('description', '')}"):
+            continue
+        m = httpx.get(manifest, timeout=timeout, headers={"User-Agent": UA})
+        mp4 = re.findall(r'https://[^"]+?\.mp4', m.text) if m.status_code == 200 else []
+        if mp4:
+            out.append({"url": mp4[0], "width": 720, "height": 576, "duration": 0.0, "credit": "Wellcome Collection", "trim": True,
+                        "site": "wellcome", "creator": "Wellcome Collection", "licence": "/".join(sorted(lic)).upper(), "id": w.get("id", ""),
+                        "page": f"https://wellcomecollection.org/works/{w.get('id', '')}", "about": str(w.get("title", ""))[:300], "archive": True,
+                        "attribution": "not required" if lic <= {"cc-0", "pdm"} else f"required: {w.get('title', '')}, Wellcome Collection, CC BY"})
+        if len(out) >= 2:
+            break
+    return out
+
+
+def _europeana(query: str, key: str, timeout: float) -> list[dict]:
+    """Europeana (European archives): openly reusable videos only (reusability=open). Needs a free personal key in
+    the pod's environment (EUROPEANA_KEY); never put a key in a script or a chat."""
+    if not key:
+        return []
+    r = httpx.get("https://api.europeana.eu/record/v2/search.json", timeout=timeout, headers={"User-Agent": UA},
+                  params={"query": query, "media": "true", "type": "VIDEO", "reusability": "open", "rows": 15, "wskey": key})
+    r.raise_for_status()
+    out = []
+    for it in r.json().get("items", []):
+        url = (it.get("edmIsShownBy") or [""])[0]
+        rights = (it.get("rights") or [""])[0]
+        if not url or re.search(r"-nc|-nd|/InC", rights) or not relevant(query, " ".join(it.get("title") or []) + " " + " ".join(it.get("dcDescription") or [])):
+            continue
+        if not re.search(r"\.(mp4|webm|mov)(\?|$)", url, re.I):
+            continue
+        out.append({"url": url, "width": 1280, "height": 720, "duration": 0.0, "credit": f"{(it.get('dataProvider') or ['Europeana'])[0]} / Europeana",
+                    "trim": True, "site": "europeana", "creator": (it.get("dataProvider") or [""])[0], "licence": rights, "id": it.get("id", ""),
+                    "page": (it.get("guid") or ""), "about": " ".join(it.get("title") or [])[:300], "archive": True,
+                    "attribution": f"required: {(it.get('dataProvider') or [''])[0]}, {rights}"})
+        if len(out) >= 3:
             break
     return out
 
@@ -182,6 +299,15 @@ def search(provider: str, key: str, query: str, portrait: bool = True, timeout: 
             return _wikimedia(query, timeout)
         if provider == "archive":
             return _archive(query, timeout)
+        if provider == "svs":
+            return _svs(query, timeout)
+        if provider == "loc":
+            return _loc(query, timeout)
+        if provider == "wellcome":
+            return _wellcome(query, timeout)
+        if provider == "europeana":
+            import os
+            return _europeana(query, key or os.environ.get("EUROPEANA_KEY", ""), timeout)
         if provider == "pixabay":
             r = httpx.get("https://pixabay.com/api/videos/", params={"key": key, "q": query, "per_page": 10,
                                                                       "safesearch": "true"}, timeout=timeout)
