@@ -104,6 +104,27 @@ Checked 2026-11-14 against Mixkit's own licence pages and User Terms:
 - **People in Mixkit clips are models, not real subjects.** Never use them to stand in for a real person or a real
   event in Print Facts.
 
+## The usual "free stock footage" sites (checked 2026-11-14)
+
+| Site | Status from the pod | Verdict |
+|---|---|---|
+| Pexels, Pixabay | bot check on the website; official free APIs (keys) | **use via API** (already wired) |
+| Coverr | own licence, free commercial use; API needs a free key; has premium and AI clips too | **use, free clips only**, key needed |
+| Dareful | CC BY 4.0, commercial allowed | **use by hand** (small 4K nature site, credit required) |
+| Free Nature Stock | says attribution required | **use by hand**, with credit |
+| SplitShire | licence page gone (404) | check the licence before any use |
+| Ignite Motion | free motion backgrounds | low value (abstract loops) |
+| Videvo, Mazwai | now redirect to Magnific (Freepik's AI platform) | **dropped**: the free libraries are gone or paid |
+| Motion Places | "Pro License" | **dropped** (paid) |
+| Vecteezy | free clips need attribution, Pro is paid | per clip only, risky; low priority |
+| Videezy | bot check; mix of free (attribution) and Pro | per clip only; not automated |
+| Vimeo Stock | redirects to the paid editor | **dropped** |
+| Life of Vids, Stockio | connection reset from the pod | unverified |
+| Clip Canvas | broken certificate | unverified; not used |
+| Vidsplay | no licence text found | unverified; not used |
+
+Bot checks are never worked around.
+
 ## Photos (`providers/stock_photo.py`, already wired)
 
 Openverse, Wikimedia Commons, NASA, Library of Congress, Smithsonian Open Access (CC0), Europeana.
