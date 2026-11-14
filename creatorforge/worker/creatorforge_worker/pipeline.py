@@ -937,6 +937,8 @@ class Pipeline:
             history = bool((b.get("extra") or {}).get("archive"))
             # keyless libraries rank loosely: without the picture check they are not trusted at all
             sources = list(stock if checked else keyed) + (providers.archive_sources(self.cfg) if history else [])
+            if checked:          # subject libraries are keyless too, so they need the picture check as well
+                sources += [x for x in providers.topic_sources(f"{b['stock']} {b.get('text', '')}", self.cfg) if x not in sources]
             queries, place = stock_queries(b["stock"], *self._story_place(job)) if not history else ([b["stock"]], ())
             candidates = []
             for q in queries:

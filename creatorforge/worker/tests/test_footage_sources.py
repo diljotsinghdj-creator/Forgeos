@@ -66,3 +66,51 @@ def test_europeana_needs_a_key_and_drops_nc(monkeypatch):
 def test_new_sources_registered():
     assert "svs" in stock_video.FREE_SOURCES
     assert {"loc", "wellcome"} <= set(stock_video.ARCHIVE_SOURCES)
+
+
+def test_topic_routing_picks_libraries_by_subject(monkeypatch):
+    monkeypatch.delenv("DVIDS_KEY", raising=False)
+    names = lambda t: [n for n, _ in stock_video.topic_sources(t)]
+    assert names("A galaxy far away")[:2] == ["esahubble", "eso"]
+    assert names("Putin speaks in Moscow")[0] == "kremlin"
+    assert names("Modi addresses the Lok Sabha")[0] == "pib"
+    assert "wellcome" in names("why fear shapes children")
+    assert "dvids" not in names("troops on the border")            # keyed library skipped without its key
+    monkeypatch.setenv("DVIDS_KEY", "k")
+    assert ("dvids", "k") in stock_video.topic_sources("troops on the border")
+    assert names("a quiet kitchen table") == []
+    assert len(names("space war russia")) == len(set(names("space war russia")))
+
+
+def test_publisher_search_narrows_by_source_link(monkeypatch):
+    seen = {}
+    def get(url, **kw):
+        seen.update(kw["params"])
+        return R({"query": {"pages": {}}})
+    monkeypatch.setattr(httpx, "get", get)
+    assert stock_video.search("kremlin", "", "Putin address") == []
+    assert 'insource:"kremlin.ru"' in seen["gsrsearch"]
+
+
+def test_observatory_reads_1080_file_and_credit(monkeypatch):
+    def get(url, **kw):
+        if "search=" in url:
+            return R(text='<a href="/public/videos/eso2612a/">x</a><a href="/public/videos/eso2612a/">x</a>')
+        return R(text='<title>Black hole spins | ESO</title> "https://cdn.eso.org/videos/hd_1080p25_screen/eso2612a.mp4" '
+                      '<strong>Credit:</strong><div class="credit"><p>ESO/M. Kornmesser Music: Someone</p></div>')
+    monkeypatch.setattr(httpx, "get", get)
+    [c] = stock_video._observatory("black hole", 5, "eso")
+    assert c["url"].endswith("hd_1080p25_screen/eso2612a.mp4") and c["licence"] == "CC BY 4.0"
+    assert c["credit"] == "ESO/M. Kornmesser (CC BY 4.0)"
+
+
+def test_us_government_films_use_their_own_collection(monkeypatch):
+    seen = {}
+    def get(url, **kw):
+        if "advancedsearch" in url:
+            seen["q"] = kw["params"]["q"]
+            return R({"response": {"docs": [{"identifier": "f1", "title": "Flood control film"}]}})
+        return R({"files": [{"name": "f1.mp4", "format": "h.264", "size": "1000", "width": "640", "height": "480"}]})
+    monkeypatch.setattr(httpx, "get", get)
+    [c] = stock_video.search("usgov", "", "flood")
+    assert "FedFlix" in seen["q"] and c["licence"] == "Public domain (US government work)" and c["site"] == "usgov"

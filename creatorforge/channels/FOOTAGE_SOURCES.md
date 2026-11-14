@@ -29,11 +29,63 @@ restrictions"). Such clips go to the owner as *needs a check*, never straight in
 | **Europeana** (`europeana`) *new, key* | European archives, newsreels | `reusability=open`, then drops NC/ND/InC | Print Facts (Europe, Russia) |
 | **Pixabay / Pexels** (key) | modern b-roll: people, cities, hands, phones | their own free licence (no attribution needed, credit anyway) | Dragon b-roll, Print Facts texture |
 
-Keys (Europeana, Pixabay, Pexels, DVIDS) are **free personal keys** that live only in the pod's environment
-(`EUROPEANA_KEY`, etc.). They never go in chat or in a file. Without a key, that source is skipped silently.
+### Added 2026-11-14 (round 2), all keyless unless marked
 
-Not wired yet (probed): **DVIDS** (US military, public domain, free key: 403 without one); **EU Audiovisual Service**
-(EU institutions, free reuse with credit; no clean API yet, manual pulls only).
+| Provider | Source | Licence | Reached via |
+|---|---|---|---|
+| `usgov` | US government films: FedFlix, NARA uploads, CBS WWI, Army films | public domain (US government work) | Internet Archive |
+| `voa` | Voice of America news reports | public domain (US government work), only items marked PD | Internet Archive |
+| `voanews` | Voice of America news reports | public domain | Wikimedia Commons (file source = voanews.com) |
+| `eso`, `esahubble`, `esawebb`, `noirlab` | observatory footage and animations | CC BY 4.0, credit exactly as the page gives it | the observatories' own sites |
+| `kremlin` | Kremlin.ru: Putin addresses and events | CC BY 4.0 | Commons (kremlin.ru) |
+| `whitehouse` | White House videos | public domain | Commons (whitehouse.gov) |
+| `cspan` | House/Senate floor footage only | free to use (C-SPAN's own shows are not) | Commons (c-span.org) |
+| `openbeelden` | Dutch archive (Beeld en Geluid) | CC BY-SA, read per file | Commons (openbeelden.nl) |
+| `europarl` | European Parliament | per file | Commons |
+| `agenciabrasil` | Agência Brasil | CC BY | Commons |
+| `pib` | Press Information Bureau, India | GODL-India | Commons (pib.gov.in) |
+| `nps` | US National Park Service: nature, wildlife | public domain | Commons (nps.gov) |
+| `noaa` | NOAA: storms, satellites, oceans | public domain | Commons (noaa.gov) |
+| `dvids` *key* | US military public affairs | public domain | DVIDS API (`DVIDS_KEY`) |
+
+For every source reached through Commons, the licence is still read from each file. A non-free file never gets
+through, whatever its publisher.
+
+Observatory clips often carry music: **we use the picture only**, never their soundtrack.
+
+**Keys still needed (free, kept in the pod's environment only):** `EUROPEANA_KEY`, `DVIDS_KEY`, plus Pixabay/Pexels.
+Until a key is set, that source is skipped.
+
+**Not reachable from here, so handled by hand:**
+- The Open Beelden site itself (the connection is reset), so we go through its Commons mirror instead.
+- Kremlin.ru directly (does not resolve from the pod), so we go through Commons.
+- houselive.gov (connection reset).
+- NOAA Photo Library (403; not circumvented).
+- The NPS API, Coverr and NARA's catalog API (free keys, not wired yet).
+- The EU Audiovisual Service (a JavaScript-only site; manual pulls).
+
+**Not automated:** Mixkit, Pond5 Public Domain, Videvo/Videezy (no API, or a mix of free and paid clips) and
+Google Earth Studio (a manual tool, with Google's attribution rules).
+
+## Topic routing (`stock_video.topic_sources`)
+
+The always-on set (NASA, SVS, Wikimedia, plus any keyed library) is searched for every line. The line's subject then
+adds libraries, most specific first. They only join the search when the studio's picture check is on.
+
+| Subject words | Extra libraries |
+|---|---|
+| space, galaxy, star, black hole, telescope, Mars | ESA/Hubble, ESO, ESA/Webb, NOIRLab, SVS |
+| climate, flood, storm, monsoon, glacier, wildfire | SVS, NOAA, US gov films, LoC |
+| forest, wildlife, animals, mountains | NPS, NOAA |
+| US president, Congress, Senate, Washington | White House, C-SPAN floor, VOA |
+| Russia, Kremlin, Putin, Soviet | Kremlin.ru, VOA, Europeana |
+| Europe, EU, Brussels, Netherlands | European Parliament, Open Beelden, Europeana |
+| Brazil, Amazon, Latin America | Agência Brasil, VOA |
+| India, Modi, Lok Sabha, ministry | PIB, VOA |
+| war, army, military, nuclear | US gov films, DVIDS, LoC, Open Beelden |
+| history, a year from 1800 to 1979, newsreel | US gov films, LoC, Open Beelden, Europeana |
+| mind, brain, emotion, fear, children, school | Prelinger, Wellcome |
+| medicine, disease, hospital, pandemic | Wellcome, US gov films |
 
 ## Photos (`providers/stock_photo.py`, already wired)
 

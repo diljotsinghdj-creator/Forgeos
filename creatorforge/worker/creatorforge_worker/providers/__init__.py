@@ -113,6 +113,12 @@ def photo_sources(job_id: str, cfg: Config) -> list[tuple[str, str]]:
     return out
 
 
+def topic_sources(text: str, cfg: Config) -> list[tuple[str, str]]:
+    """Libraries picked by the line's subject (space -> ESO/Hubble/Webb, Russia -> Kremlin.ru, India -> PIB, ...)."""
+    from .stock_video import topic_sources as pick
+    return pick(text) if cfg.free_stock else []
+
+
 def stock_video_free() -> tuple[str, ...]:
     from .stock_video import FREE_SOURCES
     return FREE_SOURCES

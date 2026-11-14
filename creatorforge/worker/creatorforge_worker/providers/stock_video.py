@@ -21,7 +21,7 @@ MIN_CLIP_SIDE = 720       # a smaller clip is blown up into visible pixels on a 
 UA = "CreatorForge/1.0 (video worker; https://github.com/diljotsinghdj-creator/Forgeos)"
 _STOP = {"the", "and", "with", "from", "into", "over", "for", "of", "a", "an", "in", "on", "at", "to", "by"}
 # Free licences that allow commercial use and editing (credit goes in the publish kit).
-_FREE_LICENCE = re.compile(r"public domain|\bpd\b|cc0|cc[ -]by(?![ -]?n[cd])(?:[ -]sa)?(?![ -]?n[cd])", re.I)
+_FREE_LICENCE = re.compile(r"public domain|\bpd\b|cc0|godl|cc[ -]by(?![ -]?n[cd])(?:[ -]sa)?(?![ -]?n[cd])", re.I)
 
 
 def _words(query: str) -> list[str]:
@@ -70,9 +70,27 @@ def _nasa(query: str, timeout: float) -> list[dict]:
     return out
 
 
-def _wikimedia(query: str, timeout: float) -> list[dict]:
+# Publishers whose free videos are mirrored on Wikimedia Commons, found by the source link on each file page.
+# The licence is still read from each file, so a file that is not free never gets through.
+PUBLISHERS = {
+    "kremlin": ("kremlin.ru", "Kremlin.ru"),                       # CC BY 4.0
+    "whitehouse": ("whitehouse.gov", "The White House"),            # public domain
+    "cspan": ("c-span.org", "C-SPAN (House/Senate floor)"),         # floor feeds only; C-SPAN's own shows are not free
+    "openbeelden": ("openbeelden.nl", "Open Beelden / Beeld en Geluid"),  # CC BY-SA
+    "europarl": ("europarl.europa.eu", "European Parliament"),
+    "agenciabrasil": ("agenciabrasil.ebc.com.br", "Agência Brasil"),     # CC BY
+    "pib": ("pib.gov.in", "Press Information Bureau, Govt. of India"),  # GODL-India
+    "nps": ("nps.gov", "US National Park Service"),                 # public domain
+    "noaa": ("noaa.gov", "NOAA"),                                   # public domain
+    "voanews": ("voanews.com", "Voice of America"),                 # public domain
+}
+
+
+def _wikimedia(query: str, timeout: float, publisher: str = "") -> list[dict]:
+    domain, label = PUBLISHERS.get(publisher, ("", ""))
+    narrow = f' insource:"{domain}"' if domain else ""
     r = httpx.get("https://commons.wikimedia.org/w/api.php", timeout=timeout, headers={"User-Agent": UA}, params={
-        "action": "query", "format": "json", "generator": "search", "gsrsearch": f"filetype:video {query}",
+        "action": "query", "format": "json", "generator": "search", "gsrsearch": f"filetype:video {query}{narrow}",
         "gsrnamespace": 6, "gsrlimit": 20, "prop": "videoinfo",
         "viprop": "url|size|mime|extmetadata|derivatives"})
     r.raise_for_status()
@@ -97,11 +115,11 @@ def _wikimedia(query: str, timeout: float) -> list[dict]:
         url = src.get("src") or info.get("url")
         if not url or int(info.get("size") or 0) > 200 * 1024 * 1024 and not ders:
             continue
-        artist = val("Artist")[:60] or "unknown author"
+        artist = val("Artist")[:60] or label or "unknown author"
         out.append({"url": url, "width": int(src.get("width") or info.get("width") or 0),
                     "height": int(src.get("height") or info.get("height") or 0),
                     "duration": float(info.get("duration") or 0),
-                    "credit": f"{artist} / Wikimedia Commons ({licence})", "trim": True, "site": "wikimedia",
+                    "credit": f"{label or artist} / Wikimedia Commons ({licence})", "trim": True, "site": publisher or "wikimedia",
                     "creator": artist, "licence": licence, "page": info.get("descriptionurl", ""), "id": str(p.get("pageid", "")),
                     "about": f"{title} {val('ImageDescription')[:200]}", "archive": True,
                     "attribution": "not required" if re.search(r"public domain|\bpd\b|cc0", licence, re.I) else f"required: {artist}, {title}, {licence}"})
@@ -110,20 +128,35 @@ def _wikimedia(query: str, timeout: float) -> list[dict]:
     return out
 
 
-def _archive(query: str, timeout: float) -> list[dict]:
-    """Prelinger Archives on the Internet Archive: thousands of public-domain 1930s-80s films (ads, educational and
-    science films, newsreels) - the real "old experiment footage" look. The archive asks for a credit."""
+# Internet Archive collections: (search filter, credit, creator, site, licence when the item has no licence field)
+IA_COLLECTIONS = {
+    "archive": ("collection:(prelinger)", "Prelinger Archives / Internet Archive", "Prelinger Archives", "Public domain (Prelinger Archives, no licence field)"),
+    # US government films (FedFlix, NARA's own uploads, CBS WWI, Army films): works of the US government are public domain
+    "usgov": ("collection:(FedFlix OR usgovfilms OR us-national-archives-youtube)", "US National Archives / Internet Archive",
+              "US government (via FedFlix / NARA)", "Public domain (US government work)"),
+    # Voice of America news reports: US government work; only items the uploader marked public domain
+    "voa": ('(creator:("Voice of America") OR subject:(VOA)) AND licenseurl:(*publicdomain*)', "Voice of America (VOA)",
+            "Voice of America", "Public domain (US government work)"),
+}
+
+
+def _archive(query: str, timeout: float, which: str = "archive") -> list[dict]:
+    """Films on the Internet Archive. Default: Prelinger (thousands of public-domain 1930s-80s educational films,
+    ads and newsreels). `which` picks another collection from IA_COLLECTIONS. The archive asks for a credit."""
+    flt, credit, creator, default_lic = IA_COLLECTIONS[which]
     q = " AND ".join(f"({w})" for w in _words(query)[:4])
     if not q:
         return []
     r = httpx.get("https://archive.org/advancedsearch.php", timeout=timeout, headers={"User-Agent": UA}, params={
-        "q": f"{q} AND collection:(prelinger) AND mediatype:(movies)", "fl[]": ["identifier", "title", "description",
+        "q": f"{q} AND {flt} AND mediatype:(movies)", "fl[]": ["identifier", "title", "description",
         "subject", "licenseurl"], "rows": 15, "output": "json"})
     r.raise_for_status()
     out = []
     for doc in (r.json().get("response") or {}).get("docs", []):
         about = " ".join(str(doc.get(k) or "") for k in ("title", "description", "subject"))[:1500]
         ident = str(doc.get("identifier") or "")
+        if any(o["about"][:60] == about[:60] for o in out):
+            continue
         lic_url = str(doc.get("licenseurl") or "")
         if not ident or not relevant(query, about) or _PRIVATE.search(about) or re.search(r"-nc|-nd", lic_url):
             continue                     # each film's own licence: non-commercial or no-derivatives films are skipped
@@ -140,10 +173,10 @@ def _archive(query: str, timeout: float) -> list[dict]:
             out.append({"url": f"https://archive.org/download/{quote(ident)}/{quote(str(f['name']))}",
                         "width": int(f.get("width") or 640), "height": int(f.get("height") or 480),
                         "duration": float(f.get("length") or 0) if str(f.get("length", "")).replace(".", "", 1).isdigit() else 0.0,
-                        "credit": "Prelinger Archives / Internet Archive", "trim": True, "site": "archive",
-                        "creator": "Prelinger Archives", "licence": "Public domain mark" if "publicdomain" in lic_url else "Public domain (Prelinger Archives, no licence field)", "id": ident,
+                        "credit": credit, "trim": True, "site": which,
+                        "creator": creator, "licence": "Public domain mark" if "publicdomain" in lic_url else default_lic, "id": ident,
                         "page": f"https://archive.org/details/{quote(ident)}", "about": about[:300], "archive": True,
-                        "attribution": "Prelinger Archives / Internet Archive (credit requested)"})
+                        "attribution": f"{credit} (credit requested)"})
         if len(out) >= 2:
             break
     return out
@@ -265,6 +298,111 @@ def _europeana(query: str, key: str, timeout: float) -> list[dict]:
     return out
 
 
+# Observatory video archives on the same platform: (search page, video page prefix, CDN pattern hint, credit fallback)
+OBSERVATORIES = {
+    "eso": ("https://www.eso.org/public/videos/list/1/?search={q}", "https://www.eso.org/public/videos/{id}/", "ESO"),
+    "esahubble": ("https://esahubble.org/videos/?search={q}", "https://esahubble.org/videos/{id}/", "ESA/Hubble"),
+    "esawebb": ("https://esawebb.org/videos/?search={q}", "https://esawebb.org/videos/{id}/", "ESA/Webb"),
+    "noirlab": ("https://noirlab.edu/public/videos/?search={q}", "https://noirlab.edu/public/videos/{id}/", "NOIRLab/NSF/AURA"),
+}
+
+
+def _observatory(query: str, timeout: float, which: str) -> list[dict]:
+    """Space footage and animations from ESO, ESA/Hubble, ESA/Webb and NOIRLab: CC BY 4.0, credit as each page says."""
+    search, page, fallback = OBSERVATORIES[which]
+    r = httpx.get(search.format(q=quote(query)), timeout=timeout, headers={"User-Agent": UA}, follow_redirects=True)
+    r.raise_for_status()
+    ids = []
+    for i in re.findall(r'href="/(?:public/)?videos/([a-z]+\d{3,}[a-z]?)/"', r.text):
+        if i not in ids:
+            ids.append(i)
+    out = []
+    for vid in ids[:8]:
+        p = httpx.get(page.format(id=vid), timeout=timeout, headers={"User-Agent": UA}, follow_redirects=True)
+        if p.status_code != 200:
+            continue
+        title = html.unescape(re.sub(r"\s*\|.*$", "", (re.search(r"<title>(.*?)</title>", p.text, re.S) or [None, ""])[1].strip()))
+        # the observatory's own search already matched its full record (our page text is thin); the studio's picture
+        # check still judges each clip before it is used
+        mp4 = [u for u in re.findall(r'https://[^"\'\s<>]+?\.mp4', p.text) if re.search(r"hd_1080p?\d*_screen|hd_1080_screen", u)]
+        if not mp4:
+            continue
+        cm = (re.search(r'Credit:</strong>\s*<div class="credit">(.*?)</div>', p.text, re.S)
+              or re.search(r"Credit:</[^>]+>\s*(?:</th>)?\s*<td[^>]*>(.*?)</td>", p.text, re.S))
+        credit = html.unescape(re.sub(r"<[^>]+>", " ", cm.group(1))).split("Directed by")[0].strip() if cm else fallback
+        credit = re.split(r"\s*(?:Music|Acknowledge?ments?|Directed by)\s*:", re.sub(r"\s+", " ", credit))[0]
+        credit = re.sub(r"\s*/\s*", "/", credit).strip()[:120] or fallback      # picture only: their music is never used
+        out.append({"url": mp4[0], "width": 1920, "height": 1080, "duration": 0.0, "credit": f"{credit} (CC BY 4.0)", "trim": True,
+                    "site": which, "creator": credit, "licence": "CC BY 4.0", "id": vid, "page": page.format(id=vid),
+                    "about": title[:300], "attribution": f"required: {credit}, CC BY 4.0"})
+        if len(out) >= 2:
+            break
+    return out
+
+
+def _dvids(query: str, key: str, timeout: float) -> list[dict]:
+    """DVIDS (US military public affairs): public domain, free personal key (DVIDS_KEY in the pod's environment)."""
+    if not key:
+        return []
+    r = httpx.get("https://api.dvidshub.net/search", timeout=timeout, headers={"User-Agent": UA},
+                  params={"api_key": key, "q": query, "type": "video", "max_results": 10})
+    r.raise_for_status()
+    out = []
+    for hit in r.json().get("results", []):
+        if not relevant(query, f"{hit.get('title', '')} {hit.get('description', '')}"):
+            continue
+        a = httpx.get("https://api.dvidshub.net/asset", timeout=timeout, headers={"User-Agent": UA},
+                      params={"api_key": key, "id": hit.get("id", "")})
+        if a.status_code != 200:
+            continue
+        files = [f for f in ((a.json().get("results") or {}).get("files") or []) if str(f.get("src", "")).endswith(".mp4")]
+        files = [f for f in files if int(f.get("height") or 0) >= 720] or files
+        if files:
+            f = sorted(files, key=lambda f: abs(int(f.get("height") or 0) - 1080))[0]
+            out.append({"url": f["src"], "width": int(f.get("width") or 1920), "height": int(f.get("height") or 1080),
+                        "duration": 0.0, "credit": "DVIDS / US Department of Defense", "trim": True, "site": "dvids",
+                        "creator": "DVIDS", "licence": "Public domain (US government work)", "id": str(hit.get("id", "")),
+                        "page": str(hit.get("url", "")), "about": str(hit.get("title", ""))[:300], "archive": True,
+                        "attribution": "DVIDS (credit requested)"})
+        if len(out) >= 2:
+            break
+    return out
+
+
+# Topic routing: which extra libraries a line's subject should search, beyond the always-on free set.
+TOPICS = [
+    (r"\b(space|planet|galax\w*|star|stars|universe|cosmos|nebula|black hole|telescope|moon|mars|astronom\w*)\b",
+     ["esahubble", "eso", "esawebb", "noirlab", "svs"]),
+    (r"\b(climate|sea level|flood\w*|drought|storm|hurricane|cyclone|monsoon|ocean|glacier|ice|wildfire|fire|heat ?wave|weather|earth)\b",
+     ["svs", "noaa", "usgov", "loc"]),
+    (r"\b(forest|wildlife|animal\w*|bear|bird\w*|river|mountain|national park|landscape|nature)\b", ["nps", "noaa"]),
+    (r"\b(white house|president|congress|senate|house of representatives|washington|biden|trump|usa?|united states|america\w*)\b",
+     ["whitehouse", "cspan", "voa", "voanews", "usgov"]),
+    (r"\b(russia\w*|kremlin|putin|moscow|soviet)\b", ["kremlin", "voa", "voanews", "europeana"]),
+    (r"\b(europe\w*|eu|brussels|european parliament|netherlands|dutch|germany|france)\b", ["europarl", "openbeelden", "europeana"]),
+    (r"\b(brazil\w*|lula|bolsonaro|amazon|latin america)\b", ["agenciabrasil", "voa"]),
+    (r"\b(india\w*|delhi|modi|lok sabha|parliament of india|ministry|government of india)\b", ["pib", "voa", "voanews"]),
+    (r"\b(war|army|military|soldier\w*|troops|navy|world war|ww[i12]+|cold war|nuclear)\b", ["usgov", "dvids", "loc", "openbeelden"]),
+    (r"\b(19[0-7]\d|18\d\d|history|historic\w*|newsreel|old film|vintage|archive)\b", ["usgov", "loc", "openbeelden", "europeana"]),
+    (r"\b(mind|brain|emotion\w*|feeling\w*|anxiety|fear|anger|psycholog\w*|mental|habit\w*|child\w*|teen\w*|school|family|behaviou?r)\b",
+     ["archive", "wellcome"]),
+    (r"\b(medicine|medical|disease|doctor|hospital|health|virus|pandemic)\b", ["wellcome", "usgov"]),
+]
+KEYED = {"europeana": "EUROPEANA_KEY", "dvids": "DVIDS_KEY"}
+
+
+def topic_sources(text: str) -> list[tuple[str, str]]:
+    """Extra (provider, key) pairs for a line's subject, most specific first; keyed libraries only when the pod has
+    their free key in its environment. Never the same provider twice."""
+    import os
+    out: list[str] = []
+    for pattern, names in TOPICS:
+        if re.search(pattern, text or "", re.I):
+            out += [n for n in names if n not in out]
+    return [(n, os.environ.get(KEYED[n], "") if n in KEYED else "") for n in out
+            if n not in KEYED or os.environ.get(KEYED[n])]
+
+
 def search_any(sources: list[tuple[str, str]], query: str, portrait: bool = True) -> list[dict]:
     """First source with a matching clip wins (keyed library first, then the keyless ones). A source that is
     down or rate-limited is skipped."""
@@ -299,6 +437,15 @@ def search(provider: str, key: str, query: str, portrait: bool = True, timeout: 
             return _wikimedia(query, timeout)
         if provider == "archive":
             return _archive(query, timeout)
+        if provider in IA_COLLECTIONS and provider != "archive":
+            return _archive(query, timeout, provider)
+        if provider in PUBLISHERS:
+            return _wikimedia(query, timeout, provider)
+        if provider in OBSERVATORIES:
+            return _observatory(query, timeout, provider)
+        if provider == "dvids":
+            import os
+            return _dvids(query, key or os.environ.get("DVIDS_KEY", ""), timeout)
         if provider == "svs":
             return _svs(query, timeout)
         if provider == "loc":
