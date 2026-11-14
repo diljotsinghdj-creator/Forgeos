@@ -5,3 +5,4 @@ creatorforge-data/
 build/
 .gradle/
 creatorforge-demo-data/
+creatorforge/worker/creatorforge_worker/providers/openbeelden_index.jsonl.parts/

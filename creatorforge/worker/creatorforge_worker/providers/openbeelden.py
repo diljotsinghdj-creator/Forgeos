@@ -64,10 +64,9 @@ def _record(xml: str) -> dict | None:
             "attribution": (tag("attributionName") or ["Beeld en Geluid"])[0][:200]}
 
 
-def harvest(out: Path = INDEX, pause: float = 3.0, tries: int = 8, log=print) -> int:
-    """Walk the whole OAI feed politely (one page at a time, a pause between pages, patient retries on the site's
-    frequent connection resets) and write the open-licence films to a gzipped JSON-lines index."""
-    params, rows, page = {"verb": "ListRecords", "metadataPrefix": "oai_oi"}, [], 0
+def _harvest_window(params: dict, pause: float, tries: int, log) -> list[dict]:
+    """One run of the feed (a date window), following its resumption tokens to the end."""
+    rows, page = [], 0
     while True:
         for i in range(tries):
             try:
@@ -75,21 +74,51 @@ def harvest(out: Path = INDEX, pause: float = 3.0, tries: int = 8, log=print) ->
                 r.raise_for_status()
                 break
             except Exception as e:                       # noqa: BLE001 - the site resets often; back off and retry
-                log(f"page {page}: retry {i + 1} ({type(e).__name__})")
+                log(f"  {params.get('from', '')}: page {page} retry {i + 1} ({type(e).__name__})")
                 time.sleep(pause * (i + 2))
         else:
-            raise RuntimeError(f"Open Beelden feed unreachable at page {page}; {len(rows)} films kept so far")
+            raise RuntimeError(f"feed unreachable at page {page}")
+        if "noRecordsMatch" in r.text:
+            return rows
         rows += [x for x in (_record(rec) for rec in re.findall(r"(?s)<record>.*?</record>", r.text)) if x]
         page += 1
         token = re.search(r"<resumptionToken[^>]*>([^<]+)</resumptionToken>", r.text)
-        log(f"page {page}: {len(rows)} open films")
         if not token:
-            break
+            return rows
         params = {"verb": "ListRecords", "resumptionToken": token.group(1)}
         time.sleep(pause)
+
+
+def harvest(out: Path = INDEX, pause: float = 3.0, tries: int = 8, log=print, years=range(2008, 2027)) -> int:
+    """Walk the OAI feed politely, one year of record dates at a time (from/until windows), saving each year to a
+    checkpoint as soon as it is done. A year that fails is retried on the next run; finished years are kept.
+    Writes the open-licence films to a gzipped JSON-lines index and returns how many it holds."""
+    ck = out.with_suffix(".parts")
+    ck.mkdir(exist_ok=True)
+    for y in years:
+        part = ck / f"{y}.json"
+        if part.is_file():
+            continue
+        try:
+            rows = _harvest_window({"verb": "ListRecords", "metadataPrefix": "oai_oi", "from": f"{y}-01-01", "until": f"{y}-12-31"},
+                                   pause, tries, log)
+        except RuntimeError as e:
+            log(f"{y}: {e}; will retry on the next run")
+            continue
+        part.write_text(json.dumps(rows, ensure_ascii=False), encoding="utf-8")
+        log(f"{y}: {len(rows)} open films")
+    rows, seen = [], set()
+    for part in sorted(ck.glob("*.json")):
+        for row in json.loads(part.read_text(encoding="utf-8")):
+            if row["id"] not in seen:
+                seen.add(row["id"])
+                rows.append(row)
     with gzip.open(out, "wt", encoding="utf-8") as f:
         for row in rows:
             f.write(json.dumps(row, ensure_ascii=False) + "\n")
+    missing = [y for y in years if not (ck / f"{y}.json").is_file()]
+    if missing:
+        log(f"years still missing: {missing}")
     return len(rows)
 
 

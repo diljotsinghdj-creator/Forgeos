@@ -30,12 +30,13 @@ def test_harvest_keeps_open_licences_and_follows_the_token(tmp_path, monkeypatch
 
     def get(url, params=None, **kw):
         calls.append(dict(params))
-        return R(pages[len(calls) - 1])
+        return R(pages[len(calls) - 1] if len(calls) <= len(pages) else "<error code=\"noRecordsMatch\"/>")
     monkeypatch.setattr(httpx, "get", get)
     monkeypatch.setattr(openbeelden.time, "sleep", lambda s: None)
     out = tmp_path / "ix.jsonl.gz"
-    assert openbeelden.harvest(out, log=lambda m: None) == 2                    # the NC film is dropped
-    assert calls[1] == {"verb": "ListRecords", "resumptionToken": "t1"}
+    assert openbeelden.harvest(out, log=lambda m: None, years=[2024]) == 2      # the NC film is dropped
+    assert calls[0]["from"] == "2024-01-01" and calls[1] == {"verb": "ListRecords", "resumptionToken": "t1"}
+    assert (tmp_path / "ix.jsonl.parts" / "2024.json").is_file()               # checkpoint kept for the next run
     rows = [json.loads(x) for x in gzip.open(out, "rt", encoding="utf-8")]
     assert [r["id"] for r in rows] == ["1", "3"]
 
