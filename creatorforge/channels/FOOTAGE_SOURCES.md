@@ -124,7 +124,7 @@ Checked 2026-11-14 against Mixkit's own licence pages and User Terms:
 | Vimeo Stock | redirects to the paid editor | **dropped** |
 | Life of Vids, Stockio | the site resets the connection from the pod (rechecked 2026-11-14, every address); not the pod's network rules | unverified; the owner can check it from a normal browser |
 | Clip Canvas | broken certificate | unverified; not used |
-| Vidsplay | no licence text found | unverified; not used |
+| Vidsplay | terms (read 2026-11-14): free for personal and commercial use, edits allowed; **a credit link to Vidsplay.com is required** (end credits or the YouTube description); never resold as-is. About 520 clips (nature, cities, landmarks, an old-movie intro). Its robots.txt opts out of AI use (`use=reference`, AI crawlers blocked by name) | **by hand only**: the owner downloads a chosen clip with its "Free Download" button; the studio never fetches Vidsplay itself; every film using one puts "Footage: Vidsplay.com" with the link in the description |
 
 Bot checks are never worked around.
 
