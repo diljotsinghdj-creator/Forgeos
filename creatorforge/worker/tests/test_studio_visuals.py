@@ -131,9 +131,20 @@ def test_the_decision_engine_chooses_the_strongest_explanation(monkeypatch):
                                                                                                          "specific": True}}, [])
     assert place["needs"][0] == "location" and place["chosen"]["treatment"] in ("photo", "footage", "combo")
     monkeypatch.setenv("CF_FREE_STOCK", "0")
-    monkeypatch.delenv("PIXABAY_KEY")
+    for k in ("PIXABAY_KEY", "CF_PIXABAY_KEY", "UNSPLASH_KEY", "CF_UNSPLASH_KEY", "PEXELS_KEY", "CF_PEXELS_KEY"):
+        monkeypatch.delenv(k, raising=False)              # the pod may hold real keys; this case has none
     nopics = decide.choose("This is Moynaq, a town in the desert.", {"graphic": "Pinmap: Moynaq | x", "visual": {"subject": "town", "place": "Moynaq"}}, [])
     assert nopics["chosen"]["treatment"] == "graphic"                         # no photo sources: the map, not an empty promise
     assert set(decide.classify("The company moved billions of pounds through its subsidiaries.", {"numbers": [], "money": True}, [])) >= {"institution"}
     md = decide.to_markdown([("S1", "line", stat, "BigNumber: 90%")])
     assert "| Option |" in md and "Decision:" in md
+
+
+def test_an_option_that_cannot_be_filled_is_never_chosen(monkeypatch):
+    monkeypatch.setenv("CF_FREE_STOCK", "0")
+    for k in ("PIXABAY_KEY", "CF_PIXABAY_KEY", "UNSPLASH_KEY", "CF_UNSPLASH_KEY", "PEXELS_KEY", "CF_PEXELS_KEY"):
+        monkeypatch.delenv(k, raising=False)
+    d = decide.choose("NASA puts the loss at roughly ninety percent, 68,000 square kilometres down to 6,800.",
+                      {"graphic": "BigNumber: 90% | ship | of the sea", "visual": {"subject": "ship", "specific": True}}, [])
+    assert d["chosen"]["available"] > 0 and d["chosen"]["treatment"] == "graphic"
+    assert any(o["available"] == 0 for o in d["options"])            # still listed in the decision report

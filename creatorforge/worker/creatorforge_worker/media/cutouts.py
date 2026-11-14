@@ -253,8 +253,20 @@ def resolve(word: str) -> str | None:
     hits = [n for n in CATALOG if w in n.split() or s in n.split()]
     if hits:
         return min(hits, key=len)
-    # anything else that names an object ("gold bars", "rubber stamp"): searched for as it is
-    return "obj:" + w if re.fullmatch(r"[a-z][a-z0-9 '\-]{2,40}", w) and len(w.split()) <= 4 else None
+    # anything else that names an object ("gold bars", "rubber stamp"): searched for as it is; gibberish ("zzzz")
+    # has no vowel in some word and is never searched for
+    words = w.split()
+    if re.fullmatch(r"[a-z][a-z0-9 '\-]{2,40}", w) and len(words) <= 4 and all(re.search(r"[aeiouy]", x) for x in words):
+        return "obj:" + w
+    return None
+
+
+def known(word: str) -> bool:
+    """True when a word is surely a picture: a person or an object in the catalogue (with its aliases). Scenes that
+    must tell a picture from plain text (a pinboard's word card, a news card's subtitle) use this, not the open
+    object search, so 'SOLVED' stays a word and 'the line under it' stays a subtitle."""
+    r = resolve(word)
+    return bool(r) and not r.startswith("obj:")
 
 
 def library_dir(base: Path | None = None) -> Path:

@@ -160,7 +160,8 @@ def choose(line: str, scene: dict, prev_kinds: list[str]) -> dict:
     v = scene.get("visual") or {}
     specific = bool(v.get("specific", bool(facts.get("people") or facts.get("places"))))
     opts = [score(o, line, facts, needs[0], prev_kinds, specific, assets_likely()) for o in options(line, facts, needs[0], scene.get("graphic", ""), v)]
-    opts.sort(key=lambda o: -o["score"])
+    # an option this worker cannot fill (a photo with no photo source) stays in the report but is never chosen
+    opts.sort(key=lambda o: (o["available"] <= 0, -o["score"]))
     best = opts[0] if opts else None
     why = ""
     if best:

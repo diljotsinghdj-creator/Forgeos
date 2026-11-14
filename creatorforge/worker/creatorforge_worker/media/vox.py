@@ -244,7 +244,7 @@ def _item(text: str) -> dict:
     m = _DATE.match(t)
     if m:
         return {"kind": "date", "mon": m.group(2)[:3].upper(), "day": m.group(1) or m.group(3) or "", "year": m.group(4)}
-    if t.lower().startswith("person:") or cutouts.resolve(t):
+    if t.lower().startswith("person:") or cutouts.known(t):
         return {"kind": "photo", "name": t}
     return {"kind": "word", "text": t.upper()[:22]}
 
@@ -812,7 +812,7 @@ def parse_newscard(spec: str) -> dict | None:
         return None
     from . import cutouts
     rest = parts[2:]
-    subject = next((x for x in rest if x.lower().startswith("person:") or cutouts.resolve(x)), "")
+    subject = next((x for x in rest if x.lower().startswith("person:") or cutouts.known(x)), "")
     others = [x for x in rest if x and x != subject]
     return {"type": "newscard", "date": parts[0][:24], "headline": parts[1][:120], "sub": others[0][:160] if others else "",
             "source": others[1][:40] if len(others) > 1 else "", "subjects": [subject] if subject else [],
