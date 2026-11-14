@@ -1,0 +1,40 @@
+{
+ "date": "2026-11-14",
+ "numbers": [
+  {
+   "frame": "09_smoke",
+   "shown": "427 ppm",
+   "claim": "CO2 at Mauna Loa, annual mean, 2025",
+   "status": "verified 2026-11-14",
+   "source": "NOAA GML co2_annmean_mlo.txt: 2025 427.35 ppm",
+   "url": "https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_annmean_mlo.txt"
+  },
+  {
+   "frame": "12_arms",
+   "shown": "12,187",
+   "claim": "nuclear warheads in the world, start of 2026",
+   "status": "verified 2026-11-14 (an estimate, labelled as one)",
+   "source": "Federation of American Scientists, Status of World Nuclear Forces: 'roughly 12,187 warheads as of the beginning of 2026'",
+   "url": "https://fas.org/initiative/status-world-nuclear-forces/"
+  },
+  {
+   "frame": "13_debt",
+   "shown": "$40.6 trillion",
+   "claim": "total US public debt outstanding, 12 Nov 2026",
+   "status": "RE-CHECK BEFORE USE: reported verified earlier in the session, but the Treasury API is blocked from this container now (502), so not re-confirmed here",
+   "source": "US Treasury, Debt to the Penny (tot_pub_debt_out_amt)",
+   "url": "https://fiscaldata.treasury.gov/datasets/debt-to-the-penny/"
+  },
+  {
+   "frame": "36_timeblind",
+   "shown": "86,400",
+   "claim": "seconds in a day",
+   "status": "arithmetic: 24 x 60 x 60"
+  }
+ ],
+ "illustrative": [
+  "23_wages: bars are illustrative, not data (labelled on the frame)"
+ ],
+ "people": "No AI faces or AI images. Statues: David torso (Michelangelo, a public artwork) and an anonymous veiled bust; engraving figures from an 1849 print (the figure on the ground is cropped out). Stock photos show no identifiable private person's face except a hi-vis worker on a roof (positive role).",
+ "maps": "India drawn only with the official boundary; satellite imagery NASA GIBS (public domain)."
+}

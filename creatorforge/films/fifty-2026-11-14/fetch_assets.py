@@ -18,6 +18,7 @@ A.mkdir(exist_ok=True)
 REC = D / "data" / "assets.json"
 rec = json.loads(REC.read_text()) if REC.is_file() else {}
 KEY = os.environ.get("PIXABAY_KEY", "")
+PHOTO_ROLES = {"subject", "second", "hand", "tiny", "skyline", "facade", "ground", "paper"}
 CUT_ROLES = {"subject", "second", "hand", "tiny", "skyline", "facade"}
 
 
@@ -62,7 +63,7 @@ if __name__ == "__main__":
     wanted = {}
     for cid, ch, title, kick, dev, assets in C:
         for role, q in assets.items():
-            if isinstance(q, str) and role not in ("country", "from", "to"):
+            if isinstance(q, str) and role in PHOTO_ROLES:
                 wanted[slug(q)] = (q, role in CUT_ROLES)
     for s, (q, needs_cut) in wanted.items():
         if s in rec and (A / f"{s}.jpg").is_file() and (not needs_cut or (A / f"{s}.png").is_file()):

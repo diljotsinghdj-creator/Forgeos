@@ -125,14 +125,16 @@ def d_diorama(c, sc, typ, rnd):
     body = ""
     if png(a.get("facade", "")):
         fw, fh = fit_box(a["facade"], 1300, 640)
-        body += el(cutimg(a["facade"], fw, fh), 1920 - fw - 60, 700 - fh, .1, "pop", z=2)
+        body += el(cutimg(a["facade"], fw, fh, grey=True), 1920 - fw - 60, 700 - fh, .1, "pop", z=2)
     body += el(f'<div style="width:1920px;height:120px;background:{accent}"></div>', 0, 700, 0, "pop", extra=STILL, z=3)
     w, h = fit_box(a["subject"], 560, 420)
     sx = rnd.choice([560, 700, 820])
     body += el(cutimg(a["subject"], w, h), sx, 760 - h + 20, .3, "drop", z=6)
-    body += hand(a["hand"], sx - 260, 760 - h - 420, 520, HAND_ROT.get(slug(a["hand"]), 150))
-    body += el(title(c[2], c[3], typ, 120, ink, accent, 900), 110, 860, .5, "wipe", z=8)
-    return body, f"background:{bg if bg not in ('#F4F2EA', '#E8E1D3', '#EDE6DA', '#F1E3C8', '#EAEAEA') else '#141414'}"
+    if a.get("hand"):
+        body += hand(a["hand"], sx - 120, 760 - h - 300, 380, HAND_ROT.get(slug(a["hand"]), 200))
+    dark = bg if bg not in ('#F4F2EA', '#E8E1D3', '#EDE6DA', '#F1E3C8', '#EAEAEA') else '#141414'
+    body += el(title(c[2], c[3], typ, 110, "#F4EFE6", accent if accent != dark else SIG, 1500), 110, 860, .5, "wipe", z=8)
+    return body, f"background:{dark}"
 
 
 def d_scale(c, sc, typ, rnd):
@@ -211,11 +213,16 @@ def d_routemap(c, sc, typ, rnd):
     pa, pb = maps._find(a["from"]), maps._find(a["to"])
     way = [(pa["lon"], pa["lat"]), (pb["lon"], pb["lat"])]
     if a["country"] == "World":
-        way = [(121.5, 31.2), (115, 10), (103.8, 1.3), (80, 6), (52, 13), (43, 12.6), (32.5, 30), (20, 35), (-6, 36), (-10, 44), (4.5, 51.9)]
+        way = [(121.5, 31.2), (123, 27), (119, 21), (113, 12), (106, 5), (103.8, 1.3), (97, 6), (88, 5), (80, 5.5), (72, 9), (60, 13), (51, 12.5), (43.4, 12.6), (40, 16), (38, 21), (34.5, 26.5), (32.55, 29.9), (32.35, 31.3), (25, 33.5), (15, 36.5), (5, 37.5), (-5.6, 36), (-9.5, 37.5), (-9.8, 43), (-5, 48), (-3, 49.6), (2, 50.8), (4.1, 51.95)]
     pts = [_proj(lo, la, box) for lo, la in way]
     rng = random.Random(c[0])
     dstr = f"M{pts[0][0]:.0f} {pts[0][1]:.0f}"
-    for (x0, y0), (x1, y1) in zip(pts, pts[1:]):
+    if a["country"] == "World":       # sea lanes: follow the fixed waypoints exactly, no wiggle (a wiggle crosses land)
+        dstr += "".join(f" L{x:.0f} {y:.0f}" for x, y in pts[1:])
+        pts_iter = []
+    else:
+        pts_iter = list(zip(pts, pts[1:]))
+    for (x0, y0), (x1, y1) in pts_iter:
         for t in (.33, .66, 1.0):
             x, y = x0 + (x1 - x0) * t + rng.uniform(-40, 40) * (t < 1), y0 + (y1 - y0) * t + rng.uniform(-60, 60) * (t < 1)
             dstr += f" T{x:.0f} {y:.0f}" if t < 1 else f" L{x:.0f} {y:.0f}"
@@ -266,17 +273,33 @@ def d_satellite(c, sc, typ, rnd):
     return body, "background:#000"
 
 
-DEV = {"hand": d_hand, "sundisc": d_sundisc, "diorama": d_diorama, "scale": d_scale, "split": d_split, "torn": d_torn, "routemap": d_routemap, "satellite": d_satellite}
+import dev2
+DEV2 = {k: (lambda f: (lambda c, sc, typ, rnd: f(sys.modules[__name__], c, sc, typ, rnd)))(f) for k, f in dev2.DEV2.items()}
+DEV = {**DEV2, "hand": d_hand, "sundisc": d_sundisc, "diorama": d_diorama, "scale": d_scale, "split": d_split, "torn": d_torn, "routemap": d_routemap, "satellite": d_satellite}
 
 
 def credit(c):
     a = c[5]
+    if c[4] == "satroute":
+        return "IMAGERY: NASA GIBS, MODIS TERRA CORRECTED REFLECTANCE, 15 OCT 2024 (PUBLIC DOMAIN) · ROUTE TRACED ON THE IMAGE"
+    if c[4] == "archival":
+        return "PHOTO: LIBRARY OF CONGRESS, DETROIT PUBLISHING CO. COLLECTION, LOC.GOV/ITEM/2016818111 · NO KNOWN RESTRICTIONS"
+    if c[4] == "spotboard":
+        return "DOCUMENTS: US NATIONAL ARCHIVES, NAID 299807, 596314, 299857, 6922351 (US GOVERNMENT RECORDS)"
+    if c[4] == "engraving":
+        return "ENGRAVING: THE FIRST TRIAL BY JURY, H. S. SADD AFTER C. W. COPE, 1849 · LIBRARY OF CONGRESS, LOC.GOV/ITEM/2018647550 · NO KNOWN RESTRICTIONS"
+    if c[4] == "clockface":
+        return "CLOCK DRAWN IN THE STUDIO"
+    if c[4] == "counter":
+        extra = " · NUMBER: " + c[5]["src"]
+    else:
+        extra = ""
     if c[4] == "satellite":
         return "IMAGERY: NASA BLUE MARBLE NEXT GENERATION VIA GIBS (PUBLIC DOMAIN)" + (" · INDIA: OFFICIAL BOUNDARY" if a["country"] == "India" else "")
-    srcs = [REC.get(slug(q), {}) for r, q in a.items() if isinstance(q, str) and r not in ("country", "from", "to")]
+    srcs = [REC.get(slug(q), {}) for r, q in a.items() if isinstance(q, str) and r in ("subject", "second", "hand", "tiny", "skyline", "facade", "ground", "paper")]
     who = sorted({s.get("author", "") for s in srcs if s})
     m = "MAP: NATURAL EARTH, INDIA OFFICIAL BOUNDARY · " if c[4] == "routemap" else ""
-    return (m + "PHOTOS: PIXABAY (" + ", ".join(w for w in who if w)[:120] + ") · PIXABAY CONTENT LICENSE").upper()
+    return (m + "PHOTOS: PIXABAY (" + ", ".join(w for w in who if w)[:120] + ") · PIXABAY CONTENT LICENSE" + extra).upper()
 
 
 if __name__ == "__main__":
@@ -295,7 +318,7 @@ if __name__ == "__main__":
         except Exception as e:  # noqa: BLE001
             print("SKIP", c[0], type(e).__name__, e)
             continue
-        (out / f"{i + 1:02d}_{c[0]}.html").write_text(K.page(FACES + body, bg, 5, .03, credit(c)), encoding="utf-8")
+        (out / f"{i + 1:02d}_{c[0]}.html").write_text(K.page(FACES + dev2.FACES2 + body, bg, 5, .03, credit(c)), encoding="utf-8")
         plan[c[0]] = {"device": c[4], "scheme": sc, "type": typ}
     (D / "data" / "plan.json").write_text(json.dumps(plan, indent=1))
     print(len(plan), "pages")
