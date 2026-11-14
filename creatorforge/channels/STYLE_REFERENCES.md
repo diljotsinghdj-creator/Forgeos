@@ -297,3 +297,29 @@ paid providers), every ElevenLabs / Gemini / fal path, AI-generated "archival" i
   letters), torn-strip reveal across the Capitol (2006 -> 2026), giant halftone figure over the Capitol with retro
   discs. Rule kept: scale play and torn strips on a real politician stay neutral in wording ("Same Hill, new
   Congress", never a loaded verb), and a torn strip never covers a real person's eyes in our political films.
+
+### Owner references, round 8 (2026-11-14): seven clips, one collage
+- **sharozmedia (editorial grid poster):** light grid paper with poster micro-typography (index "00001", barcodes,
+  columns of tiny text, crop marks), giant condensed type overlapping a B&W cut-out ("HIM?"), image reveals by pixel
+  dissolve, falling banknotes, a green-outlined cut-out photo, real vintage props (CRT TV, rangefinder camera), an
+  engraved lion; a soft window shadow drifts over everything.
+- **Burzaev studio (two clips):** pale grey studio paper lit by moving window-blind shadows (gobo), B&W cut-outs
+  (banknote, statue, hand) inside gold/khaki discs, khaki label boxes ("EVERY SCROLL"), phone mock-ups, app icons
+  drifting; polaroids on a clothesline counting 1-2-3 with a light flare; hourglass; black disc holding one huge word;
+  gold serif + tracked small caps.
+- **EarnEdits, dark red:** black-red cinematic ground, glowing red condensed type, red-toned B&W cut-outs, a head that
+  opens to show the brain (concept: a cognitive bias), floating YouTube/Instagram UI cards, red discs rolling along a
+  rounded track on white.
+- **EarnEdits, vintage desk:** aged papers and envelopes with wax seals on wood, pinned polaroids with red pins, torn
+  paper labels with typewriter text, an ink illustration that draws itself (hand holding a bulb), lantern light,
+  heavy vignette. (Some figures are AI; the method is free.)
+- **PatagoniaEU:** a city built from stacked real photos with deep perspective, "10%" with an image cut through the
+  numerals, cut-out T-shirts as units on flat blue, a black organic blob holding the slogan, low-centre subtitles.
+- **Foodie2027:** AI miniature city on a paper map with a slow push (AI, study only; our free version is the
+  extruded paper map).
+- **Collage still:** engraved B&W figures at mixed scales, orange sunburst rays, teal paper planes, a checkerboard
+  floor, volcano and rocket as one surreal world.
+- **To build (free):** gobo light layer; editorial micro-type layer (index numbers, barcodes, tiny columns); disc
+  frames; clothesline of polaroids (perfect for timelines); pinned-polaroid desk; floating platform UI cards (as
+  labelled recreations, never fake posts by real people); pixel-dissolve reveal; sunburst rays; draw-on ink
+  illustration; falling-object particles. Rule kept: no "head opens" or surreal edits on real politicians.
