@@ -603,5 +603,38 @@
   ],
   "voice": "bf_alice",
   "look": "light-table"
+ },
+ {
+  "id": "moon-disaster-60-visuals",
+  "kind": "sample-visuals",
+  "channel": "print-facts",
+  "topic": "apollo-11-moon-disaster-speech",
+  "date": "2026-11-14",
+  "engine": "trojan-horse",
+  "hook_mechanism": "NASA's first-steps footage, then the real 18 July 1969 memo: a speech for the astronauts' deaths, typed two days before the landing",
+  "hook_line": "July 1969. Two men walk on the Moon.",
+  "opening": "footage",
+  "shots": [
+   "Footage: NASA TV first steps in a 16 mm gate",
+   "Document: Safire memo page 1 on onionskin, header highlighted",
+   "Typewriter title: IN EVENT OF MOON DISASTER",
+   "Quote over NASA photo AS11-40-5903",
+   "Procedure card: the call, the statement, the burial at sea, beside memo page 2",
+   "Carbon peel: top copy (footage) over the carbon of the speech",
+   "Two timelines: mission clock vs dashed 'if' branch",
+   "Earth over the lunar limb with the memo's last line"
+  ],
+  "look": "onionskin-carbon",
+  "voice": "",
+  "palette": [
+   "#0B0D12",
+   "#F2EEE3",
+   "#8D8A84",
+   "#C8372D",
+   "+#FFDD33"
+  ],
+  "type_pairing": "Instrument Serif + Space Grotesk 700 + DM Mono",
+  "motion": "weightless drift, 16 mm gate weave, typewriter strike, carbon lift",
+  "motif": "the carbon copy"
  }
 ]

@@ -1,0 +1,10 @@
+{"engine": "trojan-horse",
+ "pitched": ["trojan-horse", "historical-echo", "live-viewer-trap"],
+ "considered": ["trojan-horse: a two-page typed memo hides the whole machinery of a nation's mourning (calls, statement, the cut-off, a burial at sea)",
+                "historical-echo: newsrooms pre-write obituaries today; the White House pre-wrote two in 1969",
+                "live-viewer-trap: show the speech first and let the viewer believe it was read, then reveal it never was"],
+ "owner_words": "\"give me sample of 60 seconds on any topic of your choice. freehand. make sure you show me what you have learnt. first give me visuals before creating videos\" (2026-11-14): the owner delegated the topic and the pick",
+ "excluded": {"reverse-autopsy": "the last piece's engine (bjp-it-cell-10min)"},
+ "why": "trojan-horse lets the real document lead (gate 3) and turns a short memo into the reveal of a hidden plan; historical-echo needs a modern comparison we have not sourced; live-viewer-trap risks presenting a speech as if it was given",
+ "channel": "print-facts", "topic": "apollo-11-moon-disaster-speech", "target_seconds": 60, "date": "2026-11-14",
+ "visual_dna": "see VISUAL_DNA.md: onionskin and carbon paper over 16 mm film; Instrument Serif + Space Grotesk + DM Mono; ink, onionskin, regolith + abort red, signal yellow on top; weightless drift and film-gate jitter; signature motif: the carbon copy"}
