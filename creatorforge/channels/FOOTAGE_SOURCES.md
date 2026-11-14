@@ -114,7 +114,7 @@ Checked 2026-11-14 against Mixkit's own licence pages and User Terms:
 | Coverr | own licence, free commercial use; API needs a free key; has premium and AI clips too | **use, free clips only**, key needed |
 | Dareful | CC BY 4.0, commercial allowed; robots allow it; no terms against searching | **wired in** (`dareful`): nature, sea, sky, cities, travel; credit "Video courtesy of Dareful" |
 | Free Nature Stock | says attribution required | **use by hand**, with credit |
-| SplitShire | licence page gone (404) | check the licence before any use |
+| SplitShire | now an AI image/video generator with paid plans; its "community videos" are user-made AI clips (even "Retro Footage" and "Crowd Footage"); no licence page, only general site terms | **dropped**: paid, no clear licence, and AI clips must never pass as real footage |
 | Ignite Motion | free motion backgrounds | low value (abstract loops) |
 | Videvo, Mazwai | now redirect to Magnific (Freepik's AI platform) | **dropped**: the free libraries are gone or paid |
 | Freepik videos | now Magnific (freepik.com redirects there); free clips need attribution and an account, with download limits; Premium and the API are paid; the terms forbid downloads "through any robots, spiders or ... tool"; robots.txt blocks /download/ and /search | **dropped**: no automation allowed, and it pushes towards paid |
