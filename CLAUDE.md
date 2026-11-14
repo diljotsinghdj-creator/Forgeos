@@ -11,6 +11,10 @@ Also read **`creatorforge/channels/VOX_PRODUCTION_SYSTEM.md`**: the owner's prod
 (visual archetypes that rotate every episode, the collage vocabulary, paper physics and optical finish, the Artifact
 sandbox rules, and the [STYLE_SHIFT] [SIMULATE] [3D_STAGE] [SFX_LOG] [SCRIPT_PLAN] shortcuts).
 
+And read **`creatorforge/channels/PRODUCTION_CONSTITUTION.md`** (2026-11-14): the owner's constitution for every
+video. It covers the channel lock, the four Vox and Johnny Harris pillars, a unique **Visual DNA Blueprint** per
+video, beat-by-beat skill use, zero-defect QA, the `[ACCESS / SYSTEM BLOCKER]` alert, and the director commands.
+
 Then read **`creatorforge/channels/BRAIN_LOG.md`**: lessons from the owner's corrections, and the mechanics already
 used.
 

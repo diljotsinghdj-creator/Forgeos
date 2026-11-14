@@ -476,6 +476,9 @@ def search(provider: str, key: str, query: str, portrait: bool = True, timeout: 
             return _archive(query, timeout)
         if provider in IA_COLLECTIONS and provider != "archive":
             return _archive(query, timeout, provider)
+        if provider == "openbeelden":
+            from . import openbeelden    # the local catalogue first; its Wikimedia Commons mirror only as a fallback
+            return openbeelden.search(query) or _wikimedia(query, timeout, provider)
         if provider in PUBLISHERS:
             return _wikimedia(query, timeout, provider)
         if provider in OBSERVATORIES:
