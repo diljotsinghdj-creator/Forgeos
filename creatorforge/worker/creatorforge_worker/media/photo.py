@@ -166,6 +166,7 @@ def prepare(plan: dict, work: Path, model: Path | None = None, width: int = 1920
         plan["imgs"] = []
         for s in plan["srcs"]:
             path, rec = resolve(s)
+            path = Path(path).resolve()                      # satellite downloads come back relative; a file URI needs absolute
             im = Image.open(path).convert("RGB")
             plan["imgs"].append({"img": path.as_uri(), "w": im.size[0], "h": im.size[1]})
             if rec.get("credit"):

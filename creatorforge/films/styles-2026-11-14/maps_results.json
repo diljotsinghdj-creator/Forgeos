@@ -1,0 +1,98 @@
+{
+ "map": {
+  "status": "ok",
+  "look": "archive"
+ },
+ "globe": {
+  "status": "ok",
+  "look": "newsprint"
+ },
+ "fly": {
+  "status": "ok",
+  "look": "kraft"
+ },
+ "shade": {
+  "status": "ok",
+  "look": "chart"
+ },
+ "pinmap": {
+  "status": "ok",
+  "look": "sepia"
+ },
+ "route": {
+  "status": "ok",
+  "look": "engraving"
+ },
+ "clockmap": {
+  "status": "ok",
+  "look": "field"
+ },
+ "heatmap": {
+  "status": "ok",
+  "look": "editorial"
+ },
+ "arrows": {
+  "status": "ok",
+  "look": "intel"
+ },
+ "railmap": {
+  "status": "ok",
+  "look": "declassified"
+ },
+ "sizemap": {
+  "status": "ok",
+  "look": "swiss"
+ },
+ "borders": {
+  "status": "FAILED: MediaError: vox: nothing to draw from '1914 \u2192 today | Europe | The map before the war'",
+  "look": "noir"
+ },
+ "morph": {
+  "status": "ok",
+  "look": "archive"
+ },
+ "shrink": {
+  "status": "ok",
+  "look": "newsprint"
+ },
+ "wash": {
+  "status": "ok",
+  "look": "kraft"
+ },
+ "tiles": {
+  "status": "ok",
+  "look": "chart"
+ },
+ "mapdesk": {
+  "status": "ok",
+  "look": "sepia"
+ },
+ "flowmap": {
+  "status": "ok",
+  "look": "engraving"
+ },
+ "columns": {
+  "status": "ok",
+  "look": "field"
+ },
+ "dots": {
+  "status": "ok",
+  "look": "editorial"
+ },
+ "zones": {
+  "status": "FAILED: TypeError: render() takes from 5 to 6 positional arguments but 7 were given",
+  "look": "intel"
+ },
+ "sunrise": {
+  "status": "FAILED: TypeError: render() takes from 5 to 6 positional arguments but 7 were given",
+  "look": "declassified"
+ },
+ "terrain3d": {
+  "status": "ok",
+  "look": "swiss"
+ },
+ "satellite": {
+  "status": "FAILED: ValueError: relative path can't be expressed as a file URI",
+  "look": "noir"
+ }
+}
