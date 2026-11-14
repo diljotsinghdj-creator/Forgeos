@@ -121,3 +121,18 @@ Required Action: <exactly what access, upload, toggle or permission the owner mu
 - **Real people only from credited real photos;** no AI faces, no private individuals. Footage follows
   `FOOTAGE_SOURCES.md`.
 - The Blueprint is written into each film's `pick.json` (key `"visual_dna"`) so the next film can be checked against it.
+
+## In the studio (2026-11-14)
+
+The Visual DNA is now part of the renderer (`media/vox.py: DNAS`). Each DNA sets:
+- the surface (colour and pattern);
+- the ink, plus a separate colour for type straight on dark surfaces;
+- the accent (your yellow stays the signal);
+- the four type roles (headline, big numbers, handwriting, label);
+- the title device: box, solid, ink block, outline, highlighter, underline or stamp;
+- the framing: centre, tight, tilt, low, left or Dutch;
+- the finish: grain, vignette, map colours.
+
+Six DNAs to start: ledger, blueprint, riso, noir, newsprint, kraftdesk. A film uses its brand kit's `"dna"`;
+otherwise the studio picks one from the script and never repeats the last film's (`last_dna.txt` in
+`CF_STUDIO_HISTORY`). Proof sheet: `films/styles-2026-11-14/dna_sheet.jpg`.

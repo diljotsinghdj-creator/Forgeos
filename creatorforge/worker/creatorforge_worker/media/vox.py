@@ -37,6 +37,48 @@ ACCENTS = {"yellow": "#F2C200", "red": "#D7262B", "blue": "#2D6BDB", "orange": "
 PAPERS = {"cream": "#EFE8DA", "grey": "#E5E3DE", "white": "#F4F2EE", "dark": "#1B1B1D", "kraft": "#C9A777", "crumple": "#EADFC9", "atlas": "#E9E1C8",
           "grid": "#F1F0EC"}
 INK = "#141414"
+
+# Visual DNA (owner's constitution, 2026-11-14): a film's own face, beyond the paper tint and three fonts of a LOOK.
+# It sets the surface (colour + pattern), ink, accent, the four type roles (headline, big numbers, handwriting and the
+# small label face every scene uses), the title device, the framing and the finish. The owner's signal yellow stays
+# the highlighter in every DNA. Chosen per film ("…/dna:blueprint" in the theme); no DNA = the classic look.
+DNAS = {
+    "ledger":    {"surface": "#EFE6D2", "dark": False, "pattern": "ruled", "ink": "#2B1D12", "accent": "#9E1B1B",
+                  "fonts": {"head": "Playfair", "big": "Anton", "hand": "Caveat", "label": "Plex"}, "tag": "underline",
+                  "frame": "centre", "grain": .55, "vignette": 1.2, "sea": "#C9D4CF", "land": "#EFE3C2", "edge": "#6E5A3C"},
+    "blueprint": {"surface": "#123B6B", "dark": True, "pattern": "blueprint", "ink": "#0E1726", "fg": "#F4F4F0", "accent": "#FF7A1A",
+                  "fonts": {"head": "Grotesk", "big": "Bebas", "hand": "Shadows", "label": "DMMono"}, "tag": "outline",
+                  "frame": "tight", "grain": .12, "vignette": 0.35, "sea": "#0E3159", "land": "#1D4C80", "edge": "#9FC0E6"},
+    "riso":      {"surface": "#F6F1E7", "dark": False, "pattern": "dots", "ink": "#1F2A5A", "accent": "#FF48B0",
+                  "fonts": {"head": "Archivo", "big": "Archivo", "hand": "Marker", "label": "Grotesk"}, "tag": "solid",
+                  "frame": "tilt", "grain": .35, "vignette": 0.4, "sea": "#BFD6EA", "land": "#F9E3EE", "edge": "#1F2A5A"},
+    "noir":      {"surface": "#1C1F24", "dark": True, "pattern": "scan", "ink": "#141414", "fg": "#EDE7DA", "accent": "#3FB6A8",
+                  "fonts": {"head": "ISerif", "big": "Oswald", "hand": "Caveat", "label": "Plex"}, "tag": "highlight",
+                  "frame": "low", "grain": .3, "vignette": 1.6, "sea": "#14171B", "land": "#2A3038", "edge": "#6F7A86"},
+    "newsprint": {"surface": "#E6E3DC", "dark": False, "pattern": "lines", "ink": "#111111", "accent": "#1F4FB8",
+                  "fonts": {"head": "DMSerif", "big": "Bebas", "hand": "Kalam", "label": "Mono"}, "tag": "inkblock",
+                  "frame": "left", "grain": .7, "vignette": 0.8, "sea": "#C3CFD3", "land": "#F3EFE4", "edge": "#6F6F6A"},
+    "kraftdesk": {"surface": "#C9A777", "dark": False, "pattern": "none", "ink": "#1E1A14", "accent": "#2E7D32",
+                  "fonts": {"head": "Fraunces", "big": "Anton", "hand": "Kalam", "label": "DMMono"}, "tag": "stamp",
+                  "frame": "dutch", "grain": .6, "vignette": 1.0, "sea": "#9FB4B0", "land": "#E9DCBC", "edge": "#5E4E33"},
+}
+FRAMES = {"centre": "none", "tight": "scale(1.12)", "tilt": "perspective(2400px) rotateX(9deg) rotateZ(-2deg) scale(1.08)",
+          "low": "translate(0,4%) scale(1.06)", "left": "translate(-4%,0) scale(1.08)", "dutch": "rotate(2.6deg) scale(1.1)"}
+
+
+def choose_dna(text: str, last: str = "") -> str:
+    """A film's Visual DNA when its brand kit names none: picked from the script (the same script always gets the
+    same DNA) but never the previous film's, so two films in a row never share a face."""
+    names = [k for k in DNAS if k != last] or list(DNAS)
+    return names[_seed("dna", text) % len(names)]
+
+
+def dna_of(theme: str) -> dict | None:
+    """'editorial@red/kraft//dna:blueprint' -> that film's Visual DNA (None: the classic look)."""
+    m = re.search(r"dna[:=]([a-z0-9_-]+)", theme or "", re.I)
+    return DNAS.get(m.group(1).lower()) if m else None
+
+
 LAYOUTS = ("word", "disc", "box", "bars", "grid")
 # symbolic props laid over a real photo (opt-in editorial cartoons; the face itself is never changed)
 PROPS = ("blindfold", "mask", "zip", "crown", "strings", "chains", "megaphone")
@@ -1893,12 +1935,12 @@ def face_box(path: Path) -> list[float] | None:
 
 
 # ---- paper and grain (baked once per size/tone) ---------------------------------------------------------------------
-def paper(tone: str, w: int, h: int, work: Path) -> tuple[Path, Path]:
+def paper(tone: str, w: int, h: int, work: Path, vignette: float = 1.0) -> tuple[Path, Path]:
     """(paper background PNG, transparent fine-grain overlay PNG)."""
     import numpy as np
     from PIL import Image, ImageFilter
     work.mkdir(parents=True, exist_ok=True)
-    bg, gr = work / f"vox_paper_{tone[1:]}_{w}x{h}.png", work / f"vox_grain_{w}x{h}.png"
+    bg, gr = work / f"vox_paper_{tone[1:]}_{w}x{h}_v{vignette:.2f}.png", work / f"vox_grain_{w}x{h}.png"
     if not bg.is_file():
         rng = np.random.default_rng(7)
         base = np.array([int(tone[i:i + 2], 16) for i in (1, 3, 5)], np.float32)
@@ -1909,7 +1951,7 @@ def paper(tone: str, w: int, h: int, work: Path) -> tuple[Path, Path]:
         yy, xx = np.mgrid[0:h, 0:w].astype(np.float32)
         vig = ((xx / w - 0.5) ** 2 + (yy / h - 0.5) ** 2)
         dark = base.mean() < 90
-        img = base[None, None, :] + (mottle * 10)[..., None] + (fine * 3.2)[..., None] - (vig * (18 if not dark else 10))[..., None]
+        img = base[None, None, :] + (mottle * 10)[..., None] + (fine * 3.2)[..., None] - (vig * (18 if not dark else 10) * vignette)[..., None]
         if tone.upper() == PAPERS["crumple"].upper():
             # crumpled paper: a web of soft creases, each a light ridge beside a dark fold
             from PIL import ImageDraw
@@ -1948,7 +1990,14 @@ def _font_css() -> str:
              ("Mono", "jetbrains-mono-latin-700-normal", 700, "normal"),
              ("Oswald", "oswald-latin-600-normal", 600, "normal"), ("Archivo", "archivo-black-latin-400-normal", 400, "normal"),
              ("Caveat", "caveat-latin-700-normal", 700, "normal"), ("Marker", "permanent-marker-latin-400-normal", 400, "normal"),
-             ("Kalam", "kalam-latin-700-normal", 700, "normal"), ("Kalam", "kalam-devanagari-700-normal", 700, "normal")]
+             ("Kalam", "kalam-latin-700-normal", 700, "normal"), ("Kalam", "kalam-devanagari-700-normal", 700, "normal"),
+             ("Fraunces", "fraunces-latin-900-normal", 400, "normal"), ("Fraunces", "fraunces-latin-900-normal", 800, "normal"),
+             ("ISerif", "instrument-serif-latin-400-normal", 400, "normal"), ("ISerif", "instrument-serif-latin-400-normal", 800, "normal"),
+             ("Grotesk", "space-grotesk-latin-500-normal", 400, "normal"), ("Grotesk", "space-grotesk-latin-700-normal", 600, "normal"),
+             ("Grotesk", "space-grotesk-latin-700-normal", 800, "normal"), ("DMMono", "dm-mono-latin-500-normal", 400, "normal"),
+             ("DMMono", "dm-mono-latin-500-normal", 600, "normal"), ("DMMono", "dm-mono-latin-500-normal", 800, "normal"),
+             ("Plex", "ibm-plex-mono-latin-500-normal", 400, "normal"), ("Plex", "ibm-plex-mono-latin-500-normal", 600, "normal"),
+             ("Plex", "ibm-plex-mono-latin-500-normal", 800, "normal"), ("Shadows", "shadows-into-light-latin-400-normal", 700, "normal")]
     # Hindi under the same family names and the same weights (unicode-range: Devanagari only), so a Hindi headline
     # is set in a display face of the same character as the Latin one instead of falling back to a system font
     hindi = {"Playfair": "rozha-one-devanagari-400-normal", "DMSerif": "rozha-one-devanagari-400-normal",
@@ -1983,7 +2032,7 @@ const TALL=H>W, VERT=TALL||W<H*1.35, U=Math.min(W,H), ACC=K.acc, INK=K.ink, PAPE
 // money drawings carry the currency the graphic's own figures are in (a dollar story never shows a rupee note)
 window.CUR=(JSON.stringify(P).match(/[$£€¥₹]/)||['₹'])[0];
 const ACT=K.dark?K.acc:(K.accText||K.acc);   // the accent as type on the paper: dark enough to read
-const FG=DARK?'#F3EFE6':INK;
+const FG=K.fg||(DARK?'#F3EFE6':INK);   // type straight on the surface; INK stays dark for type on cards
 const draw=SVG().addTo('body').size(W,H);
 const tracks=[], cam=[];
 const E={out:t=>1-Math.pow(1-t,3), back:t=>{const c=1.6,c3=c+1;return 1+c3*Math.pow(t-1,3)+c*Math.pow(t-1,2)},
@@ -2005,7 +2054,15 @@ draw.defs().svg(`<filter id="shadow" x="-20%" y="-20%" width="140%" height="150%
 <filter id="redch"><feColorMatrix type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .55 0"/></filter>
 <filter id="cyanch"><feColorMatrix type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 .55 0"/></filter>`);
 L.paper.image(K.bg).size(W,H);
-L.grain.image(K.grain).size(W,H).attr({style:'mix-blend-mode:multiply'}).opacity(DARK?.25:.55);
+{const pc=DARK?'rgba(255,255,255,':'rgba(0,0,0,',pats={grid:`<pattern id="surf" width="${U*.05}" height="${U*.05}" patternUnits="userSpaceOnUse"><path d="M ${U*.05} 0 L 0 0 0 ${U*.05}" fill="none" stroke="${pc}.08)" stroke-width="1"/></pattern>`,
+  blueprint:`<pattern id="surf" width="${U*.04}" height="${U*.04}" patternUnits="userSpaceOnUse"><path d="M ${U*.04} 0 L 0 0 0 ${U*.04}" fill="none" stroke="${pc}.13)" stroke-width="1"/></pattern>`,
+  ruled:`<pattern id="surf" width="${W}" height="${U*.045}" patternUnits="userSpaceOnUse"><line x1="0" y1="${U*.044}" x2="${W}" y2="${U*.044}" stroke="rgba(60,90,140,.16)" stroke-width="1"/></pattern>`,
+  lines:`<pattern id="surf" width="${W}" height="4" patternUnits="userSpaceOnUse"><line x1="0" y1="3" x2="${W}" y2="3" stroke="${pc}.05)" stroke-width="1"/></pattern>`,
+  scan:`<pattern id="surf" width="${W}" height="3" patternUnits="userSpaceOnUse"><line x1="0" y1="2" x2="${W}" y2="2" stroke="${pc}.06)" stroke-width="1"/></pattern>`,
+  dots:`<pattern id="surf" width="${U*.012}" height="${U*.012}" patternUnits="userSpaceOnUse"><circle cx="${U*.006}" cy="${U*.006}" r="${U*.0016}" fill="${K.acc}" fill-opacity=".35"/></pattern>`};
+ if(K.pattern&&pats[K.pattern]){draw.defs().svg(pats[K.pattern]);L.paper.rect(W,H).fill('url(#surf)')}}
+L.grain.image(K.grain).size(W,H).attr({style:'mix-blend-mode:multiply'}).opacity(K.grainOp!=null?K.grainOp:(DARK?.25:.55));
+if(K.frame&&K.frame!=='none'){draw.node.style.transformOrigin='50% 50%';draw.node.style.transform=K.frame}
 const DEPTH={paper:.012,back:.03,mid:.045,hero:.07,front:.055,side:.08};
 // camera moves (one per shot, rotated through a video): 0 push in, 1 pull back, 2 slow lateral drift, 3 push in on the
 // focus (the circled thing), so cut after cut the eye doesn't get the same move
@@ -2043,10 +2100,17 @@ function boxText(g,s,size,x,y,o){ // black box(es), white serif type - one box p
     const w=bb.width+pad*2;const x0=anchor==='middle'?x-w/2+pad:anchor==='end'?x-w+pad:x+pad;
     row.attr({transform:`translate(${x0+(o.stagger?(i%2)*size*.9:0)},${yy})`});row.data('x',x0+(o.stagger?(i%2)*size*.9:0)).data('y',yy);yy+=bb.height+pad*1.5});
   return grp}
-function tag(g,s,x,y,o){o=o||{};const grp=g.group();const size=o.size||U*.021;
-  const t=T(grp,String(s).toUpperCase(),size,0,0,{family:'Inter',weight:800,anchor:'start',fill:o.ink||INK,ls:'0.14em'});
-  const bb=t.bbox(),pad=size*.55;grp.rect(bb.width+pad*2,bb.height+pad*1.2).move(bb.x-pad,bb.y-pad*.6).fill(o.bg||'#FFFFFF')
-    .stroke({color:o.ink||INK,width:Math.max(1,size*.07)}).back();
+function tag(g,s,x,y,o){o=o||{};const grp=g.group();const size=o.size||U*.021,st=o.bg?'box':(K.tagstyle||'box');
+  const tink=st==='solid'||st==='inkblock'?(st==='solid'?'#FFFFFF':(DARK?'#F3EFE6':PAPER)):(o.ink||(DARK&&(st==='outline'||st==='underline'||st==='stamp')?FG:INK));
+  const t=T(grp,String(s).toUpperCase(),size,0,0,{family:'Inter',weight:800,anchor:'start',fill:tink,ls:'0.14em'});
+  const bb=t.bbox(),pad=size*.55,bw=bb.width+pad*2,bh=bb.height+pad*1.2,bx=bb.x-pad,by=bb.y-pad*.6;
+  if(st==='box')grp.rect(bw,bh).move(bx,by).fill(o.bg||'#FFFFFF').stroke({color:o.ink||INK,width:Math.max(1,size*.07)}).back();
+  else if(st==='solid')grp.rect(bw,bh).move(bx,by).fill(ACC).back();
+  else if(st==='inkblock')grp.rect(bw,bh).move(bx,by).fill(INK).back();
+  else if(st==='outline')grp.rect(bw,bh).move(bx,by).fill('none').stroke({color:FG,width:Math.max(1,size*.08),dasharray:`${size*.5} ${size*.25}`}).back();
+  else if(st==='highlight')grp.rect(bw,bh*.62).move(bx,by+bh*.34).fill(SIG).back();
+  else if(st==='underline')grp.rect(bw,Math.max(2,size*.18)).move(bx,by+bh).fill(ACC);
+  else if(st==='stamp'){grp.rect(bw,bh).move(bx,by).fill('none').stroke({color:ACC,width:Math.max(2,size*.12)}).back();t.fill(ACC);grp.rotate(-4)}
   grp.attr({transform:`translate(${x},${y})`});grp.data('w',bb.width+pad*2);return grp}
 function highlight(g,bb,start,color){const r=g.rect(0,bb.height*.9).move(bb.x-bb.height*.12,bb.y+bb.height*.08).fill(color||SIG).back();   // the signature highlighter
   at(start,.45,p=>r.width(Math.max(.1,(bb.width+bb.height*.24)*p)),E.inout);return r}
@@ -3691,11 +3755,20 @@ def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: f
     look = look_of(theme)
     tone = plan.get("tone") or ("grid" if plan["type"] in ("desk", "reveal", "newscard") else tone)
     paper_hex = look["paper"] if tone == "cream" else PAPERS.get(tone, PAPERS["cream"])
-    bg, grain = paper(paper_hex, width, height, work)
+    dna = dna_of(theme)
+    if dna:
+        paper_hex = dna["surface"]
+        theme = re.sub(r"@[^/]*", "@" + dna["accent"], theme, count=1) if "@" in theme else theme + "@" + dna["accent"]
+    bg, grain = paper(paper_hex, width, height, work, dna["vignette"] if dna else 1.0)
     kit = {"sig": SIGNATURE, "acc": accent_of(theme), "accText": readable(accent_of(theme), paper_hex), "acc2": "#E0442C" if accent_of(theme) != ACCENTS["red"] else "#F2C200", "ink": INK, "paper": paper_hex, "dark": tone == "dark", "tone": tone, "props": props,
            "bg": bg.as_uri(), "grain": grain.as_uri(),
            "mark": look["mark"], "cam": CAMERAS[plan["camera"]] if plan.get("camera") in CAMERAS else _seed("cam", spec, theme) % 4, "exit": plan.get("exit") or EXITS[_seed("exit", spec, theme) % len(EXITS)], "lay": layout if layout in LAYOUT_SETS.get(kind, ()) else
            layout_for(kind, 0, _seed("layout", spec, theme)), "desk": DESKS[_seed("desk", theme) % len(DESKS)], "dir": 1 if _seed("dir", spec) % 2 else -1, "fam": {"Playfair": look["head"], "Anton": look["big"], "Caveat": look["hand"]}}
+    if dna:
+        f = dna["fonts"]
+        kit.update({"ink": dna["ink"], "fg": dna.get("fg"), "dark": dna["dark"], "fam": {"Playfair": f["head"], "Anton": f["big"], "Caveat": f["hand"], "Inter": f["label"]},
+                    "tagstyle": dna["tag"], "frame": FRAMES.get(dna["frame"], "none"), "pattern": dna["pattern"], "grainOp": dna["grain"]})
+        look = {**look, "sea": dna["sea"], "land": dna["land"], "edge": dna["edge"]}
     js = _PAGE
     for old, new in (("#B8CDD1", look["sea"]), ("#EFE3C2", look["land"]), ("#8E7E5C", look["edge"])):
         js = js.replace(old, new)

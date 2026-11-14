@@ -49,6 +49,8 @@ def _covered(beat: dict) -> bool:
     extra = beat.get("extra") or {}
     return bool(beat.get("chart") or any(extra.get(k) for k in director.FULL_FRAME))
 
+_FILM_DNA: dict[str, str] = {}      # script hash -> its Visual DNA, so every scene of a film shares one
+
 class StageFailed(Exception):
     pass
 
@@ -1908,6 +1910,34 @@ class Pipeline:
         text = spec.script or ""
         return vox.choose_look(text, vox.era_of(text))
 
+    @staticmethod
+    def _dna(spec) -> str:
+        """The film's Visual DNA (surface, ink, accent, type, title device, framing, finish): the brand kit's if it
+        names one, else picked from the script, never the DNA of the last film the studio made."""
+        b = spec.brand or {}
+        name = str(b.get("dna") or "").strip().lower()
+        if name in vox.DNAS:
+            return name
+        key = hashlib.sha256((spec.script or "").encode()).hexdigest()
+        if key in _FILM_DNA:                       # one DNA for every scene of a film
+            return _FILM_DNA[key]
+        folder = os.environ.get("CF_STUDIO_HISTORY", "")
+        hist = Path(folder) / "last_dna.txt" if folder else None
+        last = ""
+        try:
+            last = hist.read_text(encoding="utf-8").strip() if hist and hist.is_file() else ""
+        except OSError:
+            pass
+        name = vox.choose_dna(spec.script or "", last)
+        _FILM_DNA[key] = name
+        if hist:
+            try:
+                hist.parent.mkdir(parents=True, exist_ok=True)
+                hist.write_text(name, encoding="utf-8")    # the next film will not reuse it
+            except OSError:
+                pass
+        return name
+
     def _chart_clip(self, spec, beat: dict, length: float, size: tuple[int, int], work: Path,
                     job: dict | None = None, picture: Path | None = None, vox_layout: str = "",
                     voice: tuple | None = None) -> Path | None:
@@ -1935,7 +1965,7 @@ class Pipeline:
                         return out
                     try:
                         if kind in vox.KINDS:          # the Vox collage scenes (real cut-outs, big type)
-                            return vox.render(kind, extra[kind], f"{vtheme}@{self._accent(spec)}/{self._look(spec)}/{vox.era_of(spec.script or '') or ''}", size[0], size[1],
+                            return vox.render(kind, extra[kind], f"{vtheme}@{self._accent(spec)}/{self._look(spec)}/{vox.era_of(spec.script or '') or ''}/dna:{self._dna(spec)}", size[0], size[1],
                                               seconds, out, work, lib=self.cfg.data_dir / "cutouts",
                                               model=self.cfg.data_dir / "models" / "isnet-general-use.onnx",
                                               sources=(providers.photo_sources(job["id"], self.cfg) if job else None),

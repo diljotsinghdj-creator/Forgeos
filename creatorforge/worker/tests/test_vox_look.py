@@ -557,3 +557,15 @@ def test_voice_levels_and_stereo_whooshes(tmp_path):
         return -120.0 if not m or m[-1] == "-inf" else float(m[-1])
     assert side(0.52, 0) > side(0.52, 1) + 6 and side(0.98, 1) > side(0.98, 0) + 6     # the whoosh travels left to right
     assert side(1.9, 0) > side(1.9, 1) + 12                                           # a cue placed hard left
+
+
+def test_visual_dna_changes_the_face_not_the_scene(tmp_path):
+    from creatorforge_worker.media import vox as V
+    assert V.dna_of("editorial@yellow/archive//dna:blueprint")["pattern"] == "blueprint"
+    assert V.dna_of("editorial@yellow/archive/") is None
+    assert V.choose_dna("a script", last=V.choose_dna("a script")) != V.choose_dna("a script")    # never the last film's
+    for name, d in V.DNAS.items():                       # every DNA keeps text readable on cards and on its surface
+        assert V.contrast(d["ink"], "#FFFFFF") > 7, name
+        fg = d.get("fg") or d["ink"]
+        assert V.contrast(fg, d["surface"]) > 4.5, name
+        assert d["frame"] in V.FRAMES and set(d["fonts"]) == {"head", "big", "hand", "label"}
