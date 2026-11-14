@@ -111,7 +111,7 @@ Checked 2026-11-14 against Mixkit's own licence pages and User Terms:
 | Site | Status from the pod | Verdict |
 |---|---|---|
 | Pexels, Pixabay | bot check on the website; official free APIs (keys) | **use via API** (already wired) |
-| Coverr | own licence, free commercial use; API needs a free key; has premium and AI clips too | **use, free clips only**, key needed |
+| Coverr | licence allows free commercial use of stock clips downloaded from the site; Premium needs a plan; part of the library is AI-generated; robots block its search; the API's free tier needs a clickable logo, and its developer page still says "non-commercial" | **by hand, one clip at a time** (`providers/coverr.py: check(url)`): refuses Premium and AI-generated clips; API not used until Coverr settles the commercial-use wording |
 | Dareful | CC BY 4.0, commercial allowed; robots allow it; no terms against searching | **wired in** (`dareful`): nature, sea, sky, cities, travel; credit "Video courtesy of Dareful" |
 | Free Nature Stock | says attribution required | **use by hand**, with credit |
 | SplitShire | now an AI image/video generator with paid plans; its "community videos" are user-made AI clips (even "Retro Footage" and "Crowd Footage"); no licence page, only general site terms | **dropped**: paid, no clear licence, and AI clips must never pass as real footage |
@@ -122,7 +122,7 @@ Checked 2026-11-14 against Mixkit's own licence pages and User Terms:
 | Vecteezy | free clips need attribution, Pro is paid | per clip only, risky; low priority |
 | Videezy | bot check; mix of free (attribution) and Pro | per clip only; not automated |
 | Vimeo Stock | redirects to the paid editor | **dropped** |
-| Life of Vids, Stockio | connection reset from the pod | unverified |
+| Life of Vids, Stockio | the site resets the connection from the pod (rechecked 2026-11-14, every address); not the pod's network rules | unverified; the owner can check it from a normal browser |
 | Clip Canvas | broken certificate | unverified; not used |
 | Vidsplay | no licence text found | unverified; not used |
 
