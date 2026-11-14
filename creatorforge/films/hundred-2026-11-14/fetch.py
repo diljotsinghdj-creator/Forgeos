@@ -63,9 +63,9 @@ def aic(q):
     for x in (r.json().get("data", []) if r else []):
         if not x.get("is_public_domain") or not x.get("image_id") or f"aic-{x['id']}" in used:
             continue
-        if (x.get("thumbnail") or {}).get("width", 0) < 900:
+        if (x.get("thumbnail") or {}).get("width", 0) < 843:
             continue
-        yield {"source": "Art Institute of Chicago", "source_id": f"aic-{x['id']}", "url": f"https://www.artic.edu/iiif/2/{x['image_id']}/full/1400,/0/default.jpg",
+        yield {"source": "Art Institute of Chicago", "source_id": f"aic-{x['id']}", "url": f"https://www.artic.edu/iiif/2/{x['image_id']}/full/843,/0/default.jpg",
                "title": x.get("title", "")[:200], "date": x.get("date_display", ""), "maker": (x.get("artist_display") or "").split("\n")[0][:120],
                "licence": "CC0 (public domain)", "page": f"https://www.artic.edu/artworks/{x['id']}"}
 
