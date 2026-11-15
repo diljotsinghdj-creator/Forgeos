@@ -1,119 +1,138 @@
-# [SCRIPT_PLAN] Pepper Was Money: Print Facts long video (draft 1, 2026-11-15)
+# [SCRIPT_PLAN] Pepper Was Money: Print Facts long video (draft 2, Vox voice, 2026-11-15)
 
 - **Channel:** Print Facts.
-- **Format:** YouTube long video, 16:9, about 10 min (1,470 words at ~2.5 words a second), with 9:16 cutdowns.
-- **Engine:** 3B, "pepper as money" (picked by the owner). Non-political: history, economics and today's market.
-- **Sources:** every number is in `dossier.json`, with its source and status.
-- **Status:** script for approval. No visuals until the owner approves it, and no video until "go".
+- **Format:** YouTube long video, 16:9, about 10 min (about 1,450 words at about 2.5 words a second), with 9:16 cutdowns (✂).
+- **Engine:** 3B, "pepper as money" (picked by the owner). Non-political.
+- **Sources:** every fact is in `dossier.json`, with a source and a status. Draft 2 adds no new claims.
+- **Status:** for approval. No visuals or video until approved, and video only after "go".
 
-## The idea in one line
-For about 1,500 years, a dried berry from India's Western Ghats did the jobs of money. It was valued by weight, traded everywhere, used to pay rent and tolls, and once to buy off an army. Then there was too much of it, and it became just a spice.
+## What changed from draft 1 (the Vox pass)
+- **One central question,** asked in the first 20 seconds and answered at the end: *how does a spice become money?*
+- **Spoken to "you", with short lines and one idea per sentence.** Questions lead you on: "So why pepper?", "Here's the thing."
+- **Signposts:** a chapter card for every turn, and each chapter ends on a small question that opens the next one.
+- **Evidence on screen:** every fact appears as a document, chart or map at the moment it's said (code in the Visual column).
+- **Callbacks:** the balance scale and the ransom list return, and the ending pays off the opening.
+- **Restraint:** one accent per chapter, signature yellow on the key number, the source line always on screen.
 
-## Visual DNA (this film only)
-- **Palette:** pepper-black (#1B1A17), parchment (#EFE6D2), Venetian ledger red (#9E2B25), with the signature yellow #FFDD33 on the key number in every chapter.
-- **Texture:** ledgers, charters and coins on a merchant's table. Peppercorns are physical objects that get weighed, counted and stacked. The maps are old sea charts.
-- **Recurring device:** a brass balance scale. Pepper goes on one pan, and the other pan holds whatever it is worth in that era (silver, rent, gold, rupees).
-- **Opening shot:** a document, Zosimus's account of Rome's ransom, set as a page. It is new, not one of the last three openers.
-- **Not reused:**
-  - engines: the bank account (last piece), the bowl, scale shock, reverse autopsy, Trojan horse, myth-buster;
-  - looks: no satellite opener, no neon hologram.
+## Visual DNA (unchanged)
+- **Palette:** pepper-black #1B1A17, parchment #EFE6D2, ledger red #9E2B25, signature yellow #FFDD33.
+- **Recurring device:** a brass balance scale.
+- **Opening:** the ransom list as a document.
+- **Logo:** Print Facts mark D in the corner.
 
-## Chapters (9:16 cutdowns marked ✂)
+---
 
-### 0 · Cold open (0:00–0:42)
-| # | Narration | Visual (code) | Sound |
-|---|---|---|---|
-| 1 | In the year 408, an army surrounded Rome, and the city paid to make it leave. | `[25D-DOC]` The ransom list as a printed page (Zosimus, *New History* 5.41), camera push | low drone, distant drum |
-| 2 | Five thousand pounds of gold. Thirty thousand pounds of silver. Four thousand silk tunics. Three thousand scarlet skins. | Each line highlighted in turn; the objects stack on a balance pan | coin pours, cloth |
-| 3 | And three thousand pounds of pepper. | The highlighter stops on PEPPER (yellow). One peppercorn drops on the empty pan; the scale tips | single hit |
-| 4 | Pepper. In a ransom, next to gold. To understand why, you have to stop thinking of pepper as a spice, and start thinking of it as money. | Title card: PEPPER WAS MONEY. The Print Facts mark (logo D) in the corner | music in |
-
-### 1 · The vine (0:42–1:35)
+### COLD OPEN (0:00–0:45)
 | # | Narration | Visual | Sound |
 |---|---|---|---|
-| 5 | Black pepper is the fruit of a climbing vine, *Piper nigrum*, from the hills of India's Western Ghats. | `[3D-MAP]` Relief of the Western Ghats, the Malabar coast lit; a vine photo cut-out | wind, birds |
-| 6 | Black, white and green pepper all come from the same plant. They're just picked at different times and treated differently. | `[25D-CARD]` Three cards: black (unripe, dried), white (riper, outer skin removed), green (unripe, preserved) | paper slides |
-| 7 | For most of history, the pepper the world wanted grew in one place: here. And everyone who wanted it had to come to that coast. | Route lines converge on Malabar from Egypt and Arabia | whoosh |
+| 1 | Rome, the year 408. An army is camped outside the walls, and the city is starving. | `[25D-DOC]` Zosimus page; slow push; dark | drone, wind |
+| 2 | So Rome does what cities did back then. It pays the army to leave. | The ransom list fades up line by line | quill scratch |
+| 3 | Five thousand pounds of gold. Thirty thousand pounds of silver. Four thousand silk tunics. Three thousand scarlet skins. | Each line highlighted; objects stack on a balance pan | coin, cloth, leather |
+| 4 | And three thousand pounds… of pepper. | Highlighter stops on PEPPER (yellow); one peppercorn drops; the scale tips | hit, then silence |
+| 5 | Pepper. In a ransom. Right next to the gold. | Freeze; marker circle round "pepper" | marker squeak |
+| 6 | That's strange, right? Unless, for a very long time, pepper wasn't really a spice. It was money. So how does a spice become money? | Title: PEPPER WAS MONEY; logo D | music in |
 
-### 2 · Rome buys it by weight (1:35–3:40) ✂
+### 1 · WHERE IT GROWS (0:45–1:30)
 | # | Narration | Visual | Sound |
 |---|---|---|---|
-| 8 | Around 77 CE, the Roman writer Pliny the Elder wrote down what pepper cost in Rome. | `[25D-DOC]` A *Natural History* page, the line highlighted | page turn |
-| 9 | Long pepper: fifteen denarii a pound. White: seven. Black: four. | `[2D-BAR]` Three bars from zero; black lit in yellow | ticks |
-| 10 | And he complained that Romans bought pepper by weight, as if it were gold or silver. | Pepper and a gold bar on the balance scale | metal clink |
-| 11 | That line became a famous saying: pepper was worth its weight in gold. It wasn't. | The saying stamped on screen, then a red MYTH stamp | stamp |
-| 12 | By Pliny's own prices, a pound of gold was worth around 1,100 denarii, nearly 280 times a pound of black pepper. Pepper was sold like gold, not priced like it. | `[2D-UNIT]` 1 gold pound = 280 small pepper sacks, popping in at 12 fps | pops |
-| 13 | But Rome bought a lot of it. Pliny says India took at least fifty million sesterces out of the empire every year. | `[GLOW]` 50,000,000 lit; "India alone, says Pliny" | low hit |
-| 14 | Rome even had warehouses just for it, the Horrea Piperataria, built under Emperor Domitian. Their remains lie under the Roman Forum. | `[25D-PARALLAX]` Photo of the Basilica of Maxentius area (free archive), label | footsteps, echo |
-| 15 | And we have a receipt. A papyrus now in Vienna records the cargo of one ship sailing back from Muziris, on India's southwest coast. | `[25D-DOC]` The Muziris papyrus (museum image, if licence allows; else a labelled reconstruction) | paper |
-| 16 | Its cargo was valued at about 1,150 talents, close to seven million drachmas. Historians estimate that pepper was at least two-thirds of it. | Value bar; ⅔ shaded yellow, labelled "scholarly estimate" | cash register |
-| 17 | The money flowed the other way. Hoards of Roman gold coins have been dug up in South India, including one at Kottayam in Kerala, found in 1847. | `[3D-PIN]` Map pins on the hoards; a coin close-up (museum image) | coin spin |
+| 7 | To answer that, start where the pepper starts. | Chapter card 1 · WHERE IT GROWS | page flip |
+| 8 | Black pepper is a berry from a climbing vine, *Piper nigrum*, native to the Western Ghats of India. | `[3D-MAP]` Western Ghats relief; Malabar coast lit | birds, wind |
+| 9 | Black, white, green: it's all the same plant, just picked and treated differently. | `[25D-CARD]` Three cards: black, white, green | paper slides |
+| 10 | And here's the thing. For most of history, if you wanted pepper, it had to come from this one coast. | Route lines converge on Malabar | whoosh |
+| 11 | Which means everyone who wanted it had to pay. Rome wanted it a lot. | Hard cut to Rome | drum |
 
-### 3 · Why a spice can be money (3:40–4:35) ✂
+### 2 · ROME PAYS BY THE POUND (1:30–3:40) ✂
 | # | Narration | Visual | Sound |
 |---|---|---|---|
-| 18 | Back to the ransom. Why pepper? Because it did what money does. | The 408 list returns, pepper circled | marker squeak |
-| 19 | It held its value: dried pepper keeps for years. It was valuable for its size, so a sack of it was worth a lot. | `[25D-CARD]` Checklist card: KEEPS ✓ · LIGHT FOR ITS VALUE ✓ | tick, tick |
-| 20 | And everyone, everywhere, wanted it, so you could always trade it on. That's the whole trick of money: something other people will accept. | ✓ ACCEPTED EVERYWHERE; the three ticks glow | third tick, music lift |
+| 12 | Chapter two. How much did Rome pay? | Chapter card 2 · ROME PAYS BY THE POUND | page flip |
+| 13 | We actually know. Around 77 CE, Pliny the Elder wrote the prices down. | `[25D-DOC]` *Natural History* page, line highlighted | page turn |
+| 14 | Long pepper: fifteen denarii a pound. White: seven. Black: four. | `[2D-BAR]` Three bars from zero; black lit | ticks |
+| 15 | And he grumbled that Romans bought pepper by weight, as if it were gold. | Pepper vs a gold bar on the scale | clink |
+| 16 | You've probably heard that pepper was "worth its weight in gold". It wasn't. | Saying stamped, then a red MYTH stamp | stamp |
+| 17 | By Pliny's own numbers, a pound of gold was worth about eleven hundred denarii. That's roughly two hundred and eighty pounds of pepper. | `[2D-UNIT]` 1 gold pound = 280 pepper sacks, popping in at 12 fps | pops |
+| 18 | So pepper wasn't priced like gold. It was traded like gold: weighed, counted, stored. Hold on to that. | Scale balances: 1 gold vs 280 sacks | scale settles |
+| 19 | Rome bought so much that Pliny complained India was draining fifty million sesterces out of the empire every single year. | `[GLOW]` 50,000,000 lit, "India alone, says Pliny" | low hit |
+| 20 | Rome built warehouses just for pepper, the Horrea Piperataria. Their remains are still there, under the Roman Forum. | `[25D-PARALLAX]` Site photo, label | footsteps |
+| 21 | And here's a receipt. A papyrus in Vienna lists the cargo of one ship coming back from Muziris, on India's southwest coast. | `[25D-DOC]` Muziris papyrus (licensed, or a labelled reconstruction) | paper |
+| 22 | Its cargo was worth about 1,150 talents, close to seven million drachmas. Historians think most of that was pepper. | Value bar; ⅔ shaded, "scholarly estimate" | register |
+| 23 | Where did all that money go? To India. Hoards of Roman gold coins have been dug up in Kerala. | `[3D-PIN]` Hoard pins; coin close-up | coin spin |
 
-### 4 · Rent, tolls and debts (4:35–6:35) ✂
+### 3 · WHAT MAKES MONEY, MONEY (3:40–4:35) ✂
 | # | Narration | Visual | Sound |
 |---|---|---|---|
-| 21 | In medieval Europe, pepper wasn't just bought with money. It was paid as money. | Ledger table, quill, peppercorns on a scale | quill |
-| 22 | An Anglo-Saxon toll code says German merchants in London owed the king ten pounds of pepper at Christmas, and again at Easter. | `[25D-DOC]` Toll text page; "10 lb pepper" highlighted | church bell, faint |
-| 23 | In Genoa in 1156, a contract let a debt be paid in pepper or in coin. | `[2D-TIME]` Timeline pins: c.1000 London · 1156 Genoa | timeline ticks |
-| 24 | In 1194, an English abbey's yearly rent was a thousand eels, two pounds each of pepper and ginger, and a pair of scarlet trousers. | Collage: eels, pepper, ginger, trousers on the scale | comic beat (subtle) |
-| 25 | In Kent, around 1270, a plot of land was rented for half a pound of pepper a year. The charter still survives, in Oxford's Bodleian Library. | `[25D-DOC]` The Bodleian charter record, highlighted | wax seal |
-| 26 | In Scotland in 1286, an agreement was settled with a pound of pepper. | Timeline adds 1270 Kent · 1286 Scotland | tick |
-| 27 | London's pepper merchants were organised by 1180. As the Pepperers, they later became the Grocers' Company, which still exists. | `[25D-CARD]` Name card: PEPPERERS → GROCERS | paper |
-| 28 | In Germany, a rich merchant was called a *Pfeffersack*, a pepper sack. | Kinetic type: PFEFFERSACK = "pepper sack" | soft pop |
+| 24 | Chapter three. Back to that ransom. Why would anyone accept pepper? | Chapter card 3; the 408 list returns | page flip |
+| 25 | Think about what money needs to do. | Blank checklist card | pen click |
+| 26 | One: it has to last. Dried pepper keeps for years. | ✓ IT LASTS | tick |
+| 27 | Two: it has to be worth a lot for its size. A sack of pepper is a small fortune you can carry. | ✓ SMALL BUT VALUABLE | tick |
+| 28 | Three, and this is the big one: other people have to want it. And everybody wanted pepper. | ✓ EVERYONE ACCEPTS IT; all three glow | tick, music lift |
+| 29 | Tick all three, and it doesn't matter that it's a berry. It works as money. And in medieval Europe, it did. | Scale with a single peppercorn, glowing | — |
 
-### 5 · The markup (6:35–7:45) ✂
+### 4 · PAYING THE RENT IN PEPPER (4:35–6:35) ✂
 | # | Narration | Visual | Sound |
 |---|---|---|---|
-| 29 | Why was pepper so valuable in Europe? Because of the journey. | `[3D-MAP]` Old sea chart: Calicut → Red Sea → Alexandria → Venice → Europe | ship creak |
-| 30 | One estimate: a hundredweight of pepper cost about three ducats in Calicut, and about eighty by the time Venetian merchants sold it in Europe. | `[2D-BAR]` 3 vs 80, from zero; "UNESCO estimate, 15th c." | rising tone |
-| 31 | Every port, every ship and every middleman added to the price. In 1497, pepper bought in Alexandria for about 42 ducats sold in Venice for 56. | `[25D-NODE]` Chain of hands, each adding a price tag | coin taps per step |
-| 32 | Whoever controlled that route got rich. So someone went looking for a way around it. | Venice glows, then a dotted line starts down Africa | tension riser |
+| 30 | Chapter four. Not buying pepper with money. Paying with pepper as money. | Chapter card 4 | page flip |
+| 31 | In London, an old toll code says German merchants owed the king ten pounds of pepper at Christmas. And again at Easter. | `[25D-DOC]` Toll text; "10 lb pepper" highlighted | faint bell |
+| 32 | In Genoa, 1156: a debt could be repaid in pepper or in coin. Your choice. | `[2D-TIME]` Timeline pin 1156 | tick |
+| 33 | In 1194, an English abbey's yearly rent was a thousand eels, two pounds of pepper, two of ginger… and a pair of scarlet trousers. | Collage: eels, pepper, ginger, trousers on the scale | light comic beat |
+| 34 | In Kent, around 1270, a piece of land rented for half a pound of pepper a year. The charter still exists. It's in Oxford. | `[25D-DOC]` Bodleian charter record | wax seal |
+| 35 | Scotland, 1286: a deal settled with one pound of pepper. | Timeline: c.1000 · 1156 · 1194 · c.1270 · 1286 | ticks |
+| 36 | London's pepper dealers organised by 1180. As the Pepperers, they became the Grocers' Company, which still exists today. | `[25D-CARD]` PEPPERERS → GROCERS | paper |
+| 37 | In German, a rich merchant got a nickname: *Pfeffersack*. A pepper sack. | Kinetic type | pop |
+| 38 | So if pepper was this valuable in Europe, someone was making a fortune moving it. Who? | Cut to sea chart | ship creak |
 
-### 6 · The ship (7:45–8:45)
+### 5 · THE MARKUP (6:35–7:45) ✂
 | # | Narration | Visual | Sound |
 |---|---|---|---|
-| 33 | On 20 May 1498, Vasco da Gama's ships reached the coast near Calicut, today's Kozhikode, having sailed round Africa. | `[3D-GLOBE]` The route round the Cape traced on a globe; pin at Kozhikode | waves |
-| 34 | The pepper he brought home was said to have paid for the voyage many times over. Some histories say sixty times. Nobody has the original accounts. | Number "60×?" with a REPORTED tag | low hit |
-| 35 | Portugal ran a royal monopoly from Lisbon. Then Dutch and English companies came for the trade. The English East India Company was chartered in 1600, and the Dutch company in 1602. | `[2D-TIME]` 1498 · ~1500 Casa da Índia · 1600 EIC · 1602 VOC | stamp per date |
+| 39 | Chapter five. Follow the price. | Chapter card 5 | page flip |
+| 40 | One estimate: a hundredweight of pepper cost about three ducats in Calicut, and about eighty by the time Venice sold it on in Europe. | `[2D-BAR]` 3 vs 80 from zero; "UNESCO estimate, 15th c." | rising tone |
+| 41 | Every port, every ship, every middleman took a cut. In 1497, pepper bought in Alexandria for about 42 ducats sold in Venice for 56. | `[25D-NODE]` A chain of hands, each adding a price tag | coin tap per step |
+| 42 | Venice sat at the end of that chain, and got rich. Which gave everyone else an idea. | Venice glows; a dotted line starts down Africa | riser |
+| 43 | What if you skipped the chain entirely? | Question card | silence |
 
-### 7 · Too much pepper (8:45–9:30) ✂
+### 6 · THE SHORTCUT (7:45–8:45)
 | # | Narration | Visual | Sound |
 |---|---|---|---|
-| 36 | And that's what ended pepper's reign. More ships brought more pepper, and by the 1600s prices in Europe were falling. | `[2D-LINE]` An illustrative price line falling (labelled ILLUSTRATIVE TREND unless a series is sourced) | descending tone |
-| 37 | When anyone can get something, it stops working as money. | The balance scale: pepper's pan rises, empty | scale creak |
-| 38 | It left one fossil behind. In English law, a "peppercorn rent" is a token rent: one single peppercorn, enough to make a contract. | `[25D-DOC]` legislation.gov.uk text, 2022 Act, "one peppercorn" highlighted | page |
-| 39 | In 1960, a British judge put it best. A peppercorn is still a valid payment, even if the person paid doesn't like pepper. | Quote card, *Chappell v Nestlé*, 1960 | — |
+| 44 | Chapter six. On 20 May 1498, Vasco da Gama's ships reached the coast near Calicut, today's Kozhikode. They had sailed all the way round Africa. | `[3D-GLOBE]` Route round the Cape; pin at Kozhikode | waves |
+| 45 | The pepper he brought home was said to have paid for the voyage many times over. Some histories say sixty times. But nobody has the original accounts. | "60×?" with a REPORTED tag | low hit |
+| 46 | After that, the race was on. Portugal set up a royal monopoly. The English East India Company was chartered in 1600. The Dutch company followed in 1602. | `[2D-TIME]` 1498 · ~1500 · 1600 · 1602 | stamp per date |
+| 47 | More ships. More routes. More pepper. And you can probably guess what happens next. | Many ship icons multiplying | rising swell |
 
-### 8 · Today (9:30–10:20) ✂
+### 7 · TOO MUCH PEPPER (8:45–9:30) ✂
 | # | Narration | Visual | Sound |
 |---|---|---|---|
-| 40 | Today Vietnam grows more pepper than any other country, about a third of the world's crop. | `[2D-BUBBLE]` Producer circles: Vietnam, Brazil, Indonesia, India (FAO) | music returns |
-| 41 | In India, the biggest grower isn't Kerala, where pepper began. It's Karnataka, next door. | `[3D-MAP]` Kerala vs Karnataka shares (Spices Board), Karnataka lit | pop |
-| 42 | And in Kochi, the old pepper market, a kilo now trades at around seven hundred rupees. | Market photo; ₹695/kg tag with date, "Spices Board, indicative" | market ambience |
-| 43 | Something Rome once paid a ransom with now sits on every table. Money is just what people agree is valuable. For fifteen hundred years, they agreed on a dried berry from the Western Ghats. | The balance scale empty, a single peppercorn rolls in; logo D | final chord |
-| 44 | So what are we treating as money today that people will one day laugh about? | Question card, yellow | — |
+| 48 | Chapter seven. By the 1600s, pepper prices in Europe were falling. | `[2D-LINE]` Price trend falling (labelled ILLUSTRATIVE TREND) | descending tone |
+| 49 | Remember rule three? Money only works if it's scarce enough that people want it. | Checklist returns; tick three flickers | glitch |
+| 50 | Once pepper was everywhere, it stopped working as money. It went back to being a spice. | Scale: pepper's pan rises, empty | creak |
+| 51 | Except for one thing it left behind. In English law, a "peppercorn rent" is still a real payment: one single peppercorn. | `[25D-DOC]` 2022 Act text, "one peppercorn" highlighted | page |
+| 52 | A British judge said it in 1960: a peppercorn still counts, even if the person paid doesn't like pepper. | Quote card, *Chappell v Nestlé* | — |
 
-## Fairness and accuracy rules applied
-- **"Worth its weight in gold"** is presented as a myth and disproved with Pliny's own numbers. The gold price in denarii is our calculation from the coin standard, and the frame says so.
-- **Pliny's 50 million sesterces** is for India alone. The 100 million figure (India, China and Arabia) is not used.
-- **The Alaric ransom** is dated 408 (the siege), not 410 (the sack).
-- **Things said as "reported" or "estimated":** Gama's "60 times" is said as reported, with no source. The pepper share of the Muziris cargo is called a scholarly estimate. The markups are attributed estimates.
-- **Not claimed:** pepper as a dowry or a "tax", and counting peppercorns out like coins. No source supports them.
-- **Rome's prices** are not converted into rupees: there's no honest exchange rate.
-- **People:** no real person's face is invented. Historical figures appear only through documents and maps.
+### 8 · PEPPER TODAY (9:30–10:20) ✂
+| # | Narration | Visual | Sound |
+|---|---|---|---|
+| 53 | Chapter eight. So where is pepper now? | Chapter card 8 | page flip |
+| 54 | Vietnam grows more than anyone, about a third of the world's crop. | `[2D-BUBBLE]` Producer circles (FAO) | music returns |
+| 55 | And in India, the top grower isn't Kerala, where it all began. It's Karnataka, next door. | `[3D-MAP]` Shares (Spices Board); Karnataka lit | pop |
+| 56 | In Kochi, the old pepper market, a kilo trades at around seven hundred rupees. | Market photo; ₹695/kg tag, dated, "indicative" | market ambience |
 
-## Open checks before visuals or video ([ACCESS / SYSTEM BLOCKER])
-- **Sources:** every row is snippet-confirmed. The pages themselves (livius.org, the Fordham sourcebooks, LacusCurtius, Gutenberg, Wikipedia, indianspices.com, fao.org) can't be reached from this machine. Either the owner allows those sites, or the PRESHOW says "snippet-confirmed".
-- **Archive images to license-check later:**
-  - Muziris papyrus (Austrian National Library);
-  - Kottayam coins (Chennai Government Museum);
-  - Hoxne pepper pot (British Museum);
-  - the Bodleian charter.
-- **Price to refresh before air:** the Kochi price (latest indexed: 22 Aug 2026).
+### ENDING (10:20–10:50)
+| # | Narration | Visual | Sound |
+|---|---|---|---|
+| 57 | So, how does a spice become money? | Ransom list returns, pepper circled | drone |
+| 58 | When it lasts, when it's worth a lot for its size, and when everybody agrees to want it. | Three ticks glow one by one | three soft hits |
+| 59 | For fifteen hundred years, people agreed on a dried berry from the Western Ghats. Rome even paid a ransom with it. | Single peppercorn on the scale; the scale tips | final chord |
+| 60 | Which raises a question worth sitting with. What are we treating as money today that people will one day find just as strange? | Question card, yellow; logo D | music out |
+
+---
+
+## Accuracy rules kept from draft 1
+- **"Worth its weight in gold"** is presented as a myth. The gold price in denarii is our calculation, and the frame labels it.
+- **The 50 million sesterces** is Pliny's figure for India alone. The ransom is dated 408, not 410.
+- **Labelled as estimates or reports:** the pepper share of the Muziris cargo, the markups and Gama's "60×".
+- **Not claimed:** dowries, "taxes" or counting peppercorns out like coins.
+- **No conversion:** Rome's prices are not converted into rupees.
+- **No invented faces:** historical people appear only through documents and maps.
+
+## Open checks ([ACCESS / SYSTEM BLOCKER]), unchanged
+- **Sources:** the facts are confirmed only from search results; the source pages can't be reached from this machine.
+- **Archive images:** licences still to check for the Muziris papyrus, the Kottayam coins, the Hoxne pepper pot and the Bodleian charter.
+- **Price:** refresh the Kochi price before air.
