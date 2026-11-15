@@ -1,4 +1,4 @@
-# [SCRIPT_PLAN] Pepper Was Money: Print Facts long video (draft 2, Vox voice, 2026-11-15)
+# [SCRIPT_PLAN] Pepper Was Money: Print Facts long video (draft 3, Vox × Johnny Harris, 2026-11-15)
 
 - **Channel:** Print Facts.
 - **Format:** YouTube long video, 16:9, about 10 min (about 1,450 words at about 2.5 words a second), with 9:16 cutdowns (✂).
@@ -6,7 +6,14 @@
 - **Sources:** every fact is in `dossier.json`, with a source and a status. Draft 2 adds no new claims.
 - **Status:** for approval. No visuals or video until approved, and video only after "go".
 
-## What changed from draft 1 (the Vox pass)
+## What changed in draft 3 (the Johnny Harris half)
+- **An investigator's voice:** the narrator says "I" and goes looking: "I went looking for receipts", "And then I found this". It stays faceless, with no presenter and no face.
+- **A personal way in:** the pepper jar on your table opens the film and closes it.
+- **The map table:** an old Indian Ocean chart on a desk. A red string follows the pepper pin by pin (Malabar → Muziris → Red Sea → Alexandria → Venice), then goes the long way round Africa in 1498. It returns in every chapter, with handwritten price tags.
+- **Discovery beats:** the evidence is found, not just stated. These are the Muziris papyrus, the Kent charter and the ransom list.
+- **Kept from the Vox pass:** the central question, the signposted chapters, the three-rule explainer, charts from zero and the source line on screen.
+
+## Draft 2 notes (the Vox pass)
 - **One central question,** asked in the first 20 seconds and answered at the end: *how does a spice become money?*
 - **Spoken to "you", with short lines and one idea per sentence.** Questions lead you on: "So why pepper?", "Here's the thing."
 - **Signposts:** a chapter card for every turn, and each chapter ends on a small question that opens the next one.
@@ -16,7 +23,7 @@
 
 ## Visual DNA (unchanged)
 - **Palette:** pepper-black #1B1A17, parchment #EFE6D2, ledger red #9E2B25, signature yellow #FFDD33.
-- **Recurring device:** a brass balance scale.
+- **Recurring devices:** a brass balance scale (Vox explainer) and the investigator's map table with red string (Johnny Harris journey).
 - **Opening:** the ransom list as a document.
 - **Logo:** Print Facts mark D in the corner.
 
@@ -25,17 +32,17 @@
 ### COLD OPEN (0:00–0:45)
 | # | Narration | Visual | Sound |
 |---|---|---|---|
-| 1 | Rome, the year 408. An army is camped outside the walls, and the city is starving. | `[25D-DOC]` Zosimus page; slow push; dark | drone, wind |
-| 2 | So Rome does what cities did back then. It pays the army to leave. | The ransom list fades up line by line | quill scratch |
+| 1 | There's a jar of pepper on almost every table in India. I'd never given it a second thought. Then I came across a list from the year 408. | Opening shot: a kitchen pepper jar (photo), then a match cut to `[25D-DOC]`, the Zosimus page on the investigator's desk | drone, wind |
+| 2 | Rome. An army is camped outside the walls, and the city is starving. So Rome does what cities did back then. It pays the army to leave. | The ransom list fades up line by line | quill scratch |
 | 3 | Five thousand pounds of gold. Thirty thousand pounds of silver. Four thousand silk tunics. Three thousand scarlet skins. | Each line highlighted; objects stack on a balance pan | coin, cloth, leather |
 | 4 | And three thousand pounds… of pepper. | Highlighter stops on PEPPER (yellow); one peppercorn drops; the scale tips | hit, then silence |
 | 5 | Pepper. In a ransom. Right next to the gold. | Freeze; marker circle round "pepper" | marker squeak |
-| 6 | That's strange, right? Unless, for a very long time, pepper wasn't really a spice. It was money. So how does a spice become money? | Title: PEPPER WAS MONEY; logo D | music in |
+| 6 | That's strange, right? Unless, for a very long time, pepper wasn't really a spice. It was money. So I went looking for an answer: how does a spice become money? | Title: PEPPER WAS MONEY; logo D | music in |
 
 ### 1 · WHERE IT GROWS (0:45–1:30)
 | # | Narration | Visual | Sound |
 |---|---|---|---|
-| 7 | To answer that, start where the pepper starts. | Chapter card 1 · WHERE IT GROWS | page flip |
+| 7 | I started where the pepper starts. On a map. | Investigator's map table: an old chart of the Indian Ocean, a pin on Malabar, red string tied on (JH map journey begins) | page flip |
 | 8 | Black pepper is a berry from a climbing vine, *Piper nigrum*, native to the Western Ghats of India. | `[3D-MAP]` Western Ghats relief; Malabar coast lit | birds, wind |
 | 9 | Black, white, green: it's all the same plant, just picked and treated differently. | `[25D-CARD]` Three cards: black, white, green | paper slides |
 | 10 | And here's the thing. For most of history, if you wanted pepper, it had to come from this one coast. | Route lines converge on Malabar | whoosh |
@@ -45,7 +52,7 @@
 | # | Narration | Visual | Sound |
 |---|---|---|---|
 | 12 | Chapter two. How much did Rome pay? | Chapter card 2 · ROME PAYS BY THE POUND | page flip |
-| 13 | We actually know. Around 77 CE, Pliny the Elder wrote the prices down. | `[25D-DOC]` *Natural History* page, line highlighted | page turn |
+| 13 | I went looking for receipts. And Rome left some. Around 77 CE, Pliny the Elder wrote down what pepper cost. | `[25D-DOC]` *Natural History* page, line highlighted | page turn |
 | 14 | Long pepper: fifteen denarii a pound. White: seven. Black: four. | `[2D-BAR]` Three bars from zero; black lit | ticks |
 | 15 | And he grumbled that Romans bought pepper by weight, as if it were gold. | Pepper vs a gold bar on the scale | clink |
 | 16 | You've probably heard that pepper was "worth its weight in gold". It wasn't. | Saying stamped, then a red MYTH stamp | stamp |
@@ -53,7 +60,7 @@
 | 18 | So pepper wasn't priced like gold. It was traded like gold: weighed, counted, stored. Hold on to that. | Scale balances: 1 gold vs 280 sacks | scale settles |
 | 19 | Rome bought so much that Pliny complained India was draining fifty million sesterces out of the empire every single year. | `[GLOW]` 50,000,000 lit, "India alone, says Pliny" | low hit |
 | 20 | Rome built warehouses just for pepper, the Horrea Piperataria. Their remains are still there, under the Roman Forum. | `[25D-PARALLAX]` Site photo, label | footsteps |
-| 21 | And here's a receipt. A papyrus in Vienna lists the cargo of one ship coming back from Muziris, on India's southwest coast. | `[25D-DOC]` Muziris papyrus (licensed, or a labelled reconstruction) | paper |
+| 21 | And then I found this. A papyrus, now in Vienna, listing the cargo of one ship coming back from Muziris, on India's southwest coast. | `[25D-DOC]` Muziris papyrus (licensed, or a labelled reconstruction) | paper |
 | 22 | Its cargo was worth about 1,150 talents, close to seven million drachmas. Historians think most of that was pepper. | Value bar; ⅔ shaded, "scholarly estimate" | register |
 | 23 | Where did all that money go? To India. Hoards of Roman gold coins have been dug up in Kerala. | `[3D-PIN]` Hoard pins; coin close-up | coin spin |
 
@@ -74,7 +81,7 @@
 | 31 | In London, an old toll code says German merchants owed the king ten pounds of pepper at Christmas. And again at Easter. | `[25D-DOC]` Toll text; "10 lb pepper" highlighted | faint bell |
 | 32 | In Genoa, 1156: a debt could be repaid in pepper or in coin. Your choice. | `[2D-TIME]` Timeline pin 1156 | tick |
 | 33 | In 1194, an English abbey's yearly rent was a thousand eels, two pounds of pepper, two of ginger… and a pair of scarlet trousers. | Collage: eels, pepper, ginger, trousers on the scale | light comic beat |
-| 34 | In Kent, around 1270, a piece of land rented for half a pound of pepper a year. The charter still exists. It's in Oxford. | `[25D-DOC]` Bodleian charter record | wax seal |
+| 34 | And then there's this one. In Kent, around 1270, a plot of land rented for half a pound of pepper a year. I looked it up: the charter still exists, in Oxford. | `[25D-DOC]` Bodleian charter record | wax seal |
 | 35 | Scotland, 1286: a deal settled with one pound of pepper. | Timeline: c.1000 · 1156 · 1194 · c.1270 · 1286 | ticks |
 | 36 | London's pepper dealers organised by 1180. As the Pepperers, they became the Grocers' Company, which still exists today. | `[25D-CARD]` PEPPERERS → GROCERS | paper |
 | 37 | In German, a rich merchant got a nickname: *Pfeffersack*. A pepper sack. | Kinetic type | pop |
@@ -83,7 +90,7 @@
 ### 5 · THE MARKUP (6:35–7:45) ✂
 | # | Narration | Visual | Sound |
 |---|---|---|---|
-| 39 | Chapter five. Follow the price. | Chapter card 5 | page flip |
+| 39 | Chapter five. I wanted to follow the money, so I followed the pepper, port by port. | Map table: the red string runs pin to pin, Calicut → Red Sea → Alexandria → Venice; hand-written price tags on each pin | page flip |
 | 40 | One estimate: a hundredweight of pepper cost about three ducats in Calicut, and about eighty by the time Venice sold it on in Europe. | `[2D-BAR]` 3 vs 80 from zero; "UNESCO estimate, 15th c." | rising tone |
 | 41 | Every port, every ship, every middleman took a cut. In 1497, pepper bought in Alexandria for about 42 ducats sold in Venice for 56. | `[25D-NODE]` A chain of hands, each adding a price tag | coin tap per step |
 | 42 | Venice sat at the end of that chain, and got rich. Which gave everyone else an idea. | Venice glows; a dotted line starts down Africa | riser |
@@ -92,7 +99,7 @@
 ### 6 · THE SHORTCUT (7:45–8:45)
 | # | Narration | Visual | Sound |
 |---|---|---|---|
-| 44 | Chapter six. On 20 May 1498, Vasco da Gama's ships reached the coast near Calicut, today's Kozhikode. They had sailed all the way round Africa. | `[3D-GLOBE]` Route round the Cape; pin at Kozhikode | waves |
+| 44 | Chapter six. On 20 May 1498, Vasco da Gama's ships reached the coast near Calicut, today's Kozhikode. They had sailed all the way round Africa. On my map, the string has to go the long way round. | Map table: a new string round the Cape; then `[3D-GLOBE]` shows the true route; pin at Kozhikode | waves |
 | 45 | The pepper he brought home was said to have paid for the voyage many times over. Some histories say sixty times. But nobody has the original accounts. | "60×?" with a REPORTED tag | low hit |
 | 46 | After that, the race was on. Portugal set up a royal monopoly. The English East India Company was chartered in 1600. The Dutch company followed in 1602. | `[2D-TIME]` 1498 · ~1500 · 1600 · 1602 | stamp per date |
 | 47 | More ships. More routes. More pepper. And you can probably guess what happens next. | Many ship icons multiplying | rising swell |
@@ -109,7 +116,7 @@
 ### 8 · PEPPER TODAY (9:30–10:20) ✂
 | # | Narration | Visual | Sound |
 |---|---|---|---|
-| 53 | Chapter eight. So where is pepper now? | Chapter card 8 | page flip |
+| 53 | Chapter eight. So where is pepper now? I wanted to see how the story ends. | Chapter card 8 | page flip |
 | 54 | Vietnam grows more than anyone, about a third of the world's crop. | `[2D-BUBBLE]` Producer circles (FAO) | music returns |
 | 55 | And in India, the top grower isn't Kerala, where it all began. It's Karnataka, next door. | `[3D-MAP]` Shares (Spices Board); Karnataka lit | pop |
 | 56 | In Kochi, the old pepper market, a kilo trades at around seven hundred rupees. | Market photo; ₹695/kg tag, dated, "indicative" | market ambience |
@@ -117,7 +124,7 @@
 ### ENDING (10:20–10:50)
 | # | Narration | Visual | Sound |
 |---|---|---|---|
-| 57 | So, how does a spice become money? | Ransom list returns, pepper circled | drone |
+| 57 | So, back to that jar on your table. How does a spice become money? | The kitchen jar returns; match cut to the ransom list, pepper circled | drone |
 | 58 | When it lasts, when it's worth a lot for its size, and when everybody agrees to want it. | Three ticks glow one by one | three soft hits |
 | 59 | For fifteen hundred years, people agreed on a dried berry from the Western Ghats. Rome even paid a ransom with it. | Single peppercorn on the scale; the scale tips | final chord |
 | 60 | Which raises a question worth sitting with. What are we treating as money today that people will one day find just as strange? | Question card, yellow; logo D | music out |
