@@ -1,0 +1,468 @@
+# Credits: 200 Vox × Johnny Harris visuals (2026-11-15)
+
+Photos: Pixabay (Pixabay Content License: free for commercial use, no attribution required), every one picked by eye from numbered candidate sheets. Archives: Library of Congress (rights statement per item below). Satellite: NASA GIBS (public domain) and, for small areas, Sentinel-2 cloudless 2016 by EOX (s2maps.eu, CC BY 4.0, contains modified Copernicus Sentinel data 2016). Maps: Natural Earth with India's official boundary. Data: World Bank API, NASA GISS.
+
+- **001 Salt** (hand): PHOTOS: PIXABAY (MAXKNOXVILL, MINREE, MTORRAZZINA) · PIXABAY CONTENT LICENSE
+- **002 Lithium** (hand): PHOTOS: PIXABAY (2427999, AJCESPEDES, LBOKEL) · PIXABAY CONTENT LICENSE
+- **003 The Endless Scroll** (hand): PHOTOS: PIXABAY (JOHNEDWARD, KANENORI, ELKOFLA) · PIXABAY CONTENT LICENSE
+- **004 The Kharif Bet** (sundisc): PHOTOS: PIXABAY (MOMENTMAL, R-Q) · PIXABAY CONTENT LICENSE
+- **005 Sugar Rush** (sundisc): PHOTOS: PIXABAY (HUMUSAK, WIKIMEDIAIMAGES) · PIXABAY CONTENT LICENSE
+- **006 White Gold** (sundisc): PHOTOS: PIXABAY (BEAUTYCLICK, MORITZ320) · PIXABAY CONTENT LICENSE
+- **007 The Station** (diorama): PHOTOS: PIXABAY (652234, MOMENTMAL) · PIXABAY CONTENT LICENSE
+- **008 The Unread Pile** (diorama): PHOTOS: PIXABAY (HERMANN, STMACIOROWSKI) · PIXABAY CONTENT LICENSE
+- **009 The Pharmacy Shelf** (diorama): PHOTOS: PIXABAY (16081684, DS_30) · PIXABAY CONTENT LICENSE
+- **010 The Small Bite** (scale): PHOTOS: PIXABAY (NANDUVASUDEVAN, STOCKSNAP, BUCHSE12) · PIXABAY CONTENT LICENSE
+- **011 The Pollinators** (scale): PHOTOS: PIXABAY (MIREY2222, NIKI_EMMERT, PLANET_FOX) · PIXABAY CONTENT LICENSE
+- **012 Overwhelm** (scale): PHOTOS: PIXABAY (652234, SARAHRICHTERART, GERSHOOTS) · PIXABAY CONTENT LICENSE
+- **013 Cash or Card** (split): PHOTOS: PIXABAY (ANATERATE, GERALT) · PIXABAY CONTENT LICENSE
+- **014 Train or Plane** (split): PHOTOS: PIXABAY (GIULIAMAR, KLAUSHAUSMANN) · PIXABAY CONTENT LICENSE
+- **015 Stay or Go** (split): PHOTOS: PIXABAY (GARTEN-GG, STUX) · PIXABAY CONTENT LICENSE
+- **016 The Grand Trunk Road** (routemap): MAP: NATURAL EARTH, INDIA OFFICIAL BOUNDARY · PHOTOS: PIXABAY () · PIXABAY CONTENT LICENSE
+- **017 Up the Amazon** (routemap): MAP: NATURAL EARTH, INDIA OFFICIAL BOUNDARY · PHOTOS: PIXABAY () · PIXABAY CONTENT LICENSE
+- **018 The Salt Caravans** (routemap): MAP: NATURAL EARTH, INDIA OFFICIAL BOUNDARY · PHOTOS: PIXABAY () · PIXABAY CONTENT LICENSE
+- **019 The Indus** (routemap): MAP: NATURAL EARTH, INDIA OFFICIAL BOUNDARY · PHOTOS: PIXABAY () · PIXABAY CONTENT LICENSE
+- **020 The Sundarbans** (satellite): IMAGERY: NASA BLUE MARBLE NEXT GENERATION VIA GIBS (PUBLIC DOMAIN) · INDIA: OFFICIAL BOUNDARY
+- **021 The Great Barrier Reef** (satellite): IMAGERY: SENTINEL-2 CLOUDLESS 2016 BY EOX (S2MAPS.EU), CONTAINS MODIFIED COPERNICUS SENTINEL DATA 2016, CC BY 4.0 · OUTLINE: NATURAL EARTH
+- **022 The Dead Sea** (satellite): IMAGERY: NASA BLUE MARBLE NEXT GENERATION VIA GIBS (PUBLIC DOMAIN)
+- **023 The Alps** (satellite): IMAGERY: NASA BLUE MARBLE NEXT GENERATION VIA GIBS (PUBLIC DOMAIN)
+- **024 The Nile Delta** (satellite): IMAGERY: NASA BLUE MARBLE NEXT GENERATION VIA GIBS (PUBLIC DOMAIN)
+- **025 Eight Billion** (counter): PHOTOS: PIXABAY (BARNI1) · PIXABAY CONTENT LICENSE · NUMBER: WORLD BANK, WORLD DEVELOPMENT INDICATORS (SP.POP.TOTL, WLD, 2023)
+- **026 Money Sent Home** (counter): PHOTOS: PIXABAY (18924851) · PIXABAY CONTENT LICENSE · NUMBER: WORLD BANK, WORLD DEVELOPMENT INDICATORS (BX.TRF.PWKR.CD.DT, IND, 2023)
+- **027 An Older Country** (counter): PHOTOS: PIXABAY (MISTYTABLEAU) · PIXABAY CONTENT LICENSE · NUMBER: WORLD BANK, WORLD DEVELOPMENT INDICATORS (SP.POP.65UP.TO.ZS, JPN, 2023)
+- **028 More Phones Than People** (counter): PHOTOS: PIXABAY (ELMEKKI) · PIXABAY CONTENT LICENSE · NUMBER: WORLD BANK, WORLD DEVELOPMENT INDICATORS (IT.CEL.SETS.P2, WLD, 2023)
+- **029 Decision Fatigue** (notebook): PHOTOS: PIXABAY (GADOST0, TENSAISAISAI) · PIXABAY CONTENT LICENSE
+- **030 Imposter Feeling** (notebook): PHOTOS: PIXABAY (BRRT, PIXEL_PERFECT) · PIXABAY CONTENT LICENSE
+- **031 Three Good Things** (notebook): PHOTOS: PIXABAY (BRU-NO, YLANITE) · PIXABAY CONTENT LICENSE
+- **032 Boredom** (kinetic): PHOTOS: PIXABAY (PUBLICDOMAINPICTURES) · PIXABAY CONTENT LICENSE
+- **033 Memory** (kinetic): PHOTOS: PIXABAY (MAXMANN) · PIXABAY CONTENT LICENSE
+- **034 Fear** (kinetic): PHOTOS: PIXABAY (MOMENTMAL) · PIXABAY CONTENT LICENSE
+- **035 Silence** (kinetic): PHOTOS: PIXABAY (ALEXAS_FOTOS) · PIXABAY CONTENT LICENSE
+- **036 The Deadline** (clockface): CLOCK DRAWN IN THE STUDIO
+- **037 Pomodoro** (clockface): CLOCK DRAWN IN THE STUDIO
+- **038 Night Owl** (clockface): CLOCK DRAWN IN THE STUDIO
+- **039 The Golden Hour** (clockface): CLOCK DRAWN IN THE STUDIO
+- **040 Fire Season** (haze): PHOTOS: PIXABAY (YLVERS) · PIXABAY CONTENT LICENSE
+- **041 Brain Fog** (haze): PHOTOS: PIXABAY (JWVEIN) · PIXABAY CONTENT LICENSE
+- **042 Festival of Lights** (haze): PHOTOS: PIXABAY (VPRTHAWAIT) · PIXABAY CONTENT LICENSE
+- **043 Gully Cricket** (sticker): PHOTOS: PIXABAY (SHUTTERBUG26, U_G5KZOWAN0Q) · PIXABAY CONTENT LICENSE
+- **044 Cutting Chai** (sticker): PHOTOS: PIXABAY (RITAZMAINI, SUMAN) · PIXABAY CONTENT LICENSE
+- **045 Three Wheels** (sticker): PHOTOS: PIXABAY (RICHSTAR, BEGINMAG) · PIXABAY CONTENT LICENSE
+- **046 Behind the Brand** (tornhole): PHOTOS: PIXABAY (MARCIN049, PROMIL69) · PIXABAY CONTENT LICENSE
+- **047 Under the Waves** (tornhole): PHOTOS: PIXABAY (INSPIREDIMAGES, JOAKANT) · PIXABAY CONTENT LICENSE
+- **048 Inside the Screen** (tornhole): PHOTOS: PIXABAY (BLICKPIXEL, LUMPI) · PIXABAY CONTENT LICENSE
+- **049 Spanning the River** (archival): LIBRARY OF CONGRESS: NEW EAST RIVER BRIDGE FROM BROOKLYN · HTTP://WWW.LOC.GOV/ITEM/2016802198/ · NO KNOWN RESTRICTIONS ON PUBLICATION.
+- **050 The White City** (archival): LIBRARY OF CONGRESS: SCENE AROUND THE ADMINISTRATION BUILDING, WORLD'S FAIR, CHICAGO, U.S.A · HTTP://WWW.LOC.GOV/ITEM/2023634891/ · NO KNOWN RESTRICTIONS ON PUBLICATION.
+- **051 After the Shaking** (archival): LIBRARY OF CONGRESS: RUINS AFTER SAN FRANCISCO EARTHQUAKE, 1906 · HTTP://WWW.LOC.GOV/ITEM/00652579/ · NO KNOWN RESTRICTIONS ON PUBLICATION
+- **052 The Headlines** (spotboard): PHOTOS: PIXABAY () · PIXABAY CONTENT LICENSE
+- **053 Read at 2:14 AM** (pinnote): PHOTOS: PIXABAY (PEXELS, ARTEMTATION) · PIXABAY CONTENT LICENSE
+- **054 Unsubscribe?** (pinnote): PHOTOS: PIXABAY (YLANITE, COCOPARISIENNE) · PIXABAY CONTENT LICENSE
+- **055 password123** (pinnote): PHOTOS: PIXABAY (ROONZNL, SIMON) · PIXABAY CONTENT LICENSE
+- **056 The Gig** (barstack): PHOTOS: PIXABAY (SURPRISING_MEDIA, YOBYKES) · PIXABAY CONTENT LICENSE
+- **057 The Side Hustle** (barstack): PHOTOS: PIXABAY (AMARPREET25, KIRILL_MAKES_PICS) · PIXABAY CONTENT LICENSE
+- **058 The Malacca Strait** (satroute): IMAGERY: SENTINEL-2 CLOUDLESS 2016 BY EOX (S2MAPS.EU), CONTAINS MODIFIED COPERNICUS SENTINEL DATA 2016, CC BY 4.0 · ROUTE APPROXIMATE, TRACED ON THE IMAGE
+- **059 The Strait of Gibraltar** (satroute): IMAGERY: NASA GIBS, MODIS TERRA CORRECTED REFLECTANCE, 2024-07-10 (PUBLIC DOMAIN) · ROUTE APPROXIMATE, TRACED ON THE IMAGE
+- **060 Bab-el-Mandeb** (satroute): IMAGERY: NASA GIBS, MODIS TERRA CORRECTED REFLECTANCE, 2024-01-06 (PUBLIC DOMAIN) · ROUTE APPROXIMATE, TRACED ON THE IMAGE
+- **061 Timbuktu** (mapdiorama): PHOTOS: PIXABAY (HUMUSAK, FLUTIE8211) · PIXABAY CONTENT LICENSE
+- **062 Samarkand** (mapdiorama): PHOTOS: PIXABAY (BEESMURF, LOGGAWIGGLER, YLANITE) · PIXABAY CONTENT LICENSE
+- **063 Istanbul** (mapdiorama): PHOTOS: PIXABAY (STHLMSABBE, TANERSOYLER, NIEKVERLAAN) · PIXABAY CONTENT LICENSE
+- **064 Daydreaming** (openhead): PHOTOS: PIXABAY (DERKS24, PADRINAN) · PIXABAY CONTENT LICENSE
+- **065 Rumination** (openhead): PHOTOS: PIXABAY (INSPIREDIMAGES, TOTUMREVOLUTUM) · PIXABAY CONTENT LICENSE
+- **066 The Aha Moment** (openhead): PHOTOS: PIXABAY (MIMZY, PUBLICDOMAINPICTURES) · PIXABAY CONTENT LICENSE
+- **067 Bad News Loop** (statue): PHOTOS: PIXABAY (GAIMARD, MORITZ320) · PIXABAY CONTENT LICENSE
+- **068 Perfectionism** (statue): PHOTOS: PIXABAY (BRRT, PUBLICDOMAINPICTURES) · PIXABAY CONTENT LICENSE
+- **069 Burnout** (statue): PHOTOS: PIXABAY (MONIKAP, STEINCHEN) · PIXABAY CONTENT LICENSE
+- **070 Phishing** (ransom): PHOTOS: PIXABAY (LAETY79, KIRILL_MAKES_PICS) · PIXABAY CONTENT LICENSE
+- **071 Clickbait** (ransom): PHOTOS: PIXABAY (BERGER-TEAM, MATTHEWSJACKIE) · PIXABAY CONTENT LICENSE
+- **072 Forwarded Many Times** (ransom): PHOTOS: PIXABAY (BRU-NO, NILE) · PIXABAY CONTENT LICENSE
+- **073 Right to Ask** (placards): PHOTOS: PIXABAY (PETERDARGATZ) · PIXABAY CONTENT LICENSE
+- **074 Less Plastic** (placards): PHOTOS: PIXABAY (CCIPEGGY) · PIXABAY CONTENT LICENSE
+- **075 Ladakh** (postcard): PHOTOS: PIXABAY (CASCAYOYO, GAURAVKTWL) · PIXABAY CONTENT LICENSE
+- **076 The Backwaters** (postcard): PHOTOS: PIXABAY (ALLEPPEYHOUSEBOATCLUB, PONRAJK22) · PIXABAY CONTENT LICENSE
+- **077 Patagonia** (postcard): PHOTOS: PIXABAY (MAKABERA, PLUTOZOOM) · PIXABAY CONTENT LICENSE
+- **078 The Age of Steam** (engraving): LIBRARY OF CONGRESS:  ·  · 
+- **079 The Telegraph** (engraving): LIBRARY OF CONGRESS:  ·  · 
+- **080 The Housing Ladder** (handstack): PHOTOS: PIXABAY (PEXELS, ANALOGICUS, ZHIVKO) · PIXABAY CONTENT LICENSE
+- **081 Stacked Cargo** (handstack): PHOTOS: PIXABAY (PUBLICDOMAINPICTURES, DENDOKTOOR, PIXEL2013) · PIXABAY CONTENT LICENSE
+- **082 The Fishbone Forest** (beforeafter): IMAGERY: NASA GIBS, MODIS TERRA CORRECTED REFLECTANCE, 2000-07-20 AND 2024-07-20 (PUBLIC DOMAIN)
+- **083 Islands Made by Hand** (beforeafter): IMAGERY: NASA GIBS, MODIS TERRA CORRECTED REFLECTANCE, 2000-11-15 AND 2024-11-15 (PUBLIC DOMAIN)
+- **084 When the Indus Spilled** (beforeafter): IMAGERY: NASA GIBS, MODIS TERRA CORRECTED REFLECTANCE, 2022-06-15 AND 2022-09-02 (PUBLIC DOMAIN)
+- **085 Lake Hamun** (beforeafter): IMAGERY: NASA GIBS, MODIS TERRA CORRECTED REFLECTANCE, 2000-04-15 AND 2023-04-15 (PUBLIC DOMAIN)
+- **086 The Nile After Dark** (nightlights): IMAGERY: NASA GIBS, VIIRS BLACK MARBLE 2016 (PUBLIC DOMAIN)
+- **087 The Gulf After Dark** (nightlights): IMAGERY: NASA GIBS, VIIRS BLACK MARBLE 2016 (PUBLIC DOMAIN)
+- **088 Boston to Washington** (nightlights): IMAGERY: NASA GIBS, VIIRS BLACK MARBLE 2016 (PUBLIC DOMAIN)
+- **089 Japan After Dark** (nightlights): IMAGERY: NASA GIBS, VIIRS BLACK MARBLE 2016 (PUBLIC DOMAIN)
+- **090 The Largest Country** (globe): MAP: NATURAL EARTH
+- **091 Indonesia** (globe): MAP: NATURAL EARTH
+- **092 Brazil** (globe): MAP: NATURAL EARTH
+- **093 Australia** (globe): MAP: NATURAL EARTH
+- **094 The Toy Train** (ticket): MAP: NATURAL EARTH · ILLUSTRATIVE TICKET, ROUTE APPROXIMATE
+- **095 Beijing to Ulaanbaatar** (ticket): MAP: NATURAL EARTH · ILLUSTRATIVE TICKET, ROUTE APPROXIMATE
+- **096 Zermatt to St. Moritz** (ticket): MAP: NATURAL EARTH · ILLUSTRATIVE TICKET, ROUTE APPROXIMATE
+- **097 Stamps of Asia** (passport): ILLUSTRATIVE STAMPS DRAWN IN THE STUDIO
+- **098 Stamps of Africa** (passport): ILLUSTRATIVE STAMPS DRAWN IN THE STUDIO
+- **099 The Mapmakers' Africa** (lens): PHOTOS: PIXABAY (FLUTIE8211) · PIXABAY CONTENT LICENSE
+- **100 Reading the Sea** (lens): PHOTOS: PIXABAY (ARIELMORE) · PIXABAY CONTENT LICENSE
+- **101 A City on Paper** (lens): PHOTOS: PIXABAY (STHLMSABBE) · PIXABAY CONTENT LICENSE
+- **102 Hawa Mahal** (stamp): PHOTOS: PIXABAY (DEDISHARI) · PIXABAY CONTENT LICENSE
+- **103 Iguazú Falls** (stamp): PHOTOS: PIXABAY (WILLIAN_HLUDKE) · PIXABAY CONTENT LICENSE
+- **104 Uluru** (stamp): PHOTOS: PIXABAY (WALKERSSK) · PIXABAY CONTENT LICENSE
+- **105 Kilimanjaro** (stamp): PHOTOS: PIXABAY (GREGMONTANI) · PIXABAY CONTENT LICENSE
+- **106 Breakfasts of the World** (clothesline): PHOTOS: PIXABAY (PUBLICDOMAINPICTURES, LILLITH_UM, MCTHRISSUR) · PIXABAY CONTENT LICENSE
+- **107 Boats of the World** (clothesline): PHOTOS: PIXABAY (WILHK, FLYINGCARPETTOURSEGYPT, WASEEMLAZKANI) · PIXABAY CONTENT LICENSE
+- **108 Hats of the World** (clothesline): PHOTOS: PIXABAY (MARLYNEART, PNGUY, HROHMANN) · PIXABAY CONTENT LICENSE
+- **109 Counting Night** (tv): PHOTOS: PIXABAY (8385) · PIXABAY CONTENT LICENSE
+- **110 The Final Over** (tv): PHOTOS: PIXABAY (DHANA311) · PIXABAY CONTENT LICENSE
+- **111 Lift-Off** (tv): PHOTOS: PIXABAY (WIKIIMAGES) · PIXABAY CONTENT LICENSE
+- **112 Three Rivers** (triptych): PHOTOS: PIXABAY (HENRYLESNUSSA, KHGRAF, BALOURIARAJESH) · PIXABAY CONTENT LICENSE
+- **113 Three Deserts** (triptych): PHOTOS: PIXABAY (12254307, RAVENDRASINGH, WOLFGANG_HASSELMANN) · PIXABAY CONTENT LICENSE
+- **114 Three Ports** (triptych): PHOTOS: PIXABAY (ELLEN26, FINDINGSR, IBRAHIMPOONAWALA553) · PIXABAY CONTENT LICENSE
+- **115 Le Havre** (swiss): PHOTOS: PIXABAY (DDZPHOTO) · PIXABAY CONTENT LICENSE
+- **116 Shibuya** (swiss): PHOTOS: PIXABAY (MEGURAW645) · PIXABAY CONTENT LICENSE
+- **117 Bauhaus** (swiss): PHOTOS: PIXABAY (MOONGLOW) · PIXABAY CONTENT LICENSE
+- **118 Hill Stations** (polaroids): PHOTOS: PIXABAY (ANTRIKSH, DONVIKRO, SADIKALAM, SAXANRAPPAI) · PIXABAY CONTENT LICENSE
+- **119 Old Delhi** (polaroids): PHOTOS: PIXABAY (AESTHICE, KATETRYSH, MARIOMAN2026, SUHAILSURI) · PIXABAY CONTENT LICENSE
+- **120 Lisbon** (polaroids): PHOTOS: PIXABAY (1970LUIZCOSTA, CAROLINAP, LEONHARD_NIEDERWIMMER, SCHNURZIPURZ) · PIXABAY CONTENT LICENSE
+- **121 The Window Seat** (window): PHOTOS: PIXABAY (12019) · PIXABAY CONTENT LICENSE
+- **122 The Office Window** (window): PHOTOS: PIXABAY (JOTHAMSUTHARSON) · PIXABAY CONTENT LICENSE
+- **123 Room With a View** (window): PHOTOS: PIXABAY (RHWD2003) · PIXABAY CONTENT LICENSE
+- **124 Edison** (portrait_board): PORTRAIT: LIBRARY OF CONGRESS (NO KNOWN RESTRICTIONS) · DATES: WELL-ESTABLISHED HISTORY
+- **125 Marie Curie** (portrait_board): PORTRAIT: LIBRARY OF CONGRESS (NO KNOWN RESTRICTIONS) · PRIZES: NOBELPRIZE.ORG (WELL-ESTABLISHED)
+- **126 Tesla** (portrait_board): PORTRAIT: LIBRARY OF CONGRESS (NO KNOWN RESTRICTIONS) · PATENT: US 381,968 (1888)
+- **127 The Congo Basin** (map_fill): IMAGERY: NASA BLUE MARBLE NG VIA GIBS · OUTLINE: NATURAL EARTH · TEXTURE: PIXABAY (ILLUSTRATIVE)
+- **128 The Empty Quarter** (map_fill): IMAGERY: NASA BLUE MARBLE NG VIA GIBS · OUTLINE: NATURAL EARTH · TEXTURE: PIXABAY (ILLUSTRATIVE)
+- **129 The Steppe** (map_fill): IMAGERY: NASA BLUE MARBLE NG VIA GIBS · OUTLINE: NATURAL EARTH · TEXTURE: PIXABAY (ILLUSTRATIVE)
+- **130 1.4 Billion** (bar_photo): WORLD BANK, WORLD DEVELOPMENT INDICATORS (SP.POP.TOTL, IND)
+- **131 Island Arrivals** (bar_photo): WORLD BANK, WORLD DEVELOPMENT INDICATORS (ST.INT.ARVL, MDV)
+- **132 Lights On** (bar_photo): WORLD BANK, WORLD DEVELOPMENT INDICATORS (EG.ELC.ACCS.ZS, IND)
+- **133 The OTP Call** (spot_sticker): PHOTO: PIXABAY · REMINDER: GENERAL SAFETY ADVICE
+- **134 The Parcel You Didn't Order** (spot_sticker): PHOTO: PIXABAY · REMINDER: GENERAL SAFETY ADVICE
+- **135 The Sticker on the Meter** (spot_sticker): PHOTO: PIXABAY · REMINDER: GENERAL SAFETY ADVICE
+- **136 How a Rumour Travels** (chalk_node): DIAGRAM DRAWN IN THE STUDIO · PHOTOS: PIXABAY
+- **137 Silk Road Cities** (chalk_node): DIAGRAM DRAWN IN THE STUDIO · PHOTOS: PIXABAY · ROUTE ORDER SIMPLIFIED
+- **138 Venice in Five Frames** (strips): PHOTOS: PIXABAY · STATUE: PIXABAY
+- **139 Mumbai in Five Frames** (strips): PHOTOS: PIXABAY · STATUE: PIXABAY
+- **140 Qutub Minar** (monument_card): PHOTO: PIXABAY · MAP: NATURAL EARTH, INDIA OFFICIAL BOUNDARY · DESCRIPTION: STUDIO
+- **141 The Leaning Tower** (monument_card): PHOTO: PIXABAY · MAP: NATURAL EARTH · DESCRIPTION: STUDIO
+- **142 Elizabeth Tower** (monument_card): PHOTO: PIXABAY · MAP: NATURAL EARTH · DESCRIPTION: STUDIO
+- **143 The Galápagos** (portal): LENS VIEW: NASA BLUE MARBLE NG VIA GIBS · BINOCULARS: PIXABAY
+- **144 Socotra** (portal): LENS VIEW: NASA BLUE MARBLE NG VIA GIBS · KEY: PIXABAY
+- **145 The Ice Shelf** (portal): LENS VIEW: NASA BLUE MARBLE NG VIA GIBS · CAMERA: PIXABAY
+- **146 Three Delhis** (panorama): PHOTOS: PIXABAY · PLACE NAMES ONLY
+- **147 Tokyo in Layers** (panorama): PHOTOS: PIXABAY · PLACE NAMES ONLY
+- **148 Charminar** (strip_monument): PHOTOS: PIXABAY
+- **149 Sagrada Família** (strip_monument): PHOTOS: PIXABAY
+- **150 Watching a Cyclone** (hud): IMAGERY: NASA GIBS, MODIS TERRA CORRECTED REFLECTANCE, 13 MAY 2023 (PUBLIC DOMAIN) · READOUTS FROM THE IMAGE METADATA
+- **151 Smoke Over a Continent** (hud): IMAGERY: NASA GIBS, MODIS TERRA, 9 SEP 2020 (PUBLIC DOMAIN) · READOUTS FROM THE IMAGE METADATA
+- **152 Dust Across an Ocean** (hud): IMAGERY: NASA GIBS, MODIS TERRA, 18 JUN 2020 (PUBLIC DOMAIN) · READOUTS FROM THE IMAGE METADATA
+- **153 Earhart** (doc_board): PHOTOS: LIBRARY OF CONGRESS (NO KNOWN RESTRICTIONS) · SATELLITE: NASA BLUE MARBLE NG · 1932 FLIGHT: WELL-ESTABLISHED HISTORY
+- **154 Bell** (doc_board): PHOTOS: LIBRARY OF CONGRESS · SATELLITE: NASA BLUE MARBLE NG · 1892 LINE: LOC CAPTION
+- **155 Static** (doodle): PHOTO: PIXABAY · DOODLES DRAWN IN THE STUDIO
+- **156 The Kettle** (doodle): PHOTO: PIXABAY · DIAGRAM DRAWN IN THE STUDIO
+- **157 The Snooze Button** (doodle): PHOTO: PIXABAY · DOODLES DRAWN IN THE STUDIO
+- **158 Pearl Harbor** (map_event): IMAGERY: SENTINEL-2 CLOUDLESS 2016 BY EOX (S2MAPS.EU), CONTAINS MODIFIED COPERNICUS SENTINEL DATA, CC BY 4.0 · DATES: WELL-ESTABLISHED HISTORY · POSITIONS ILLUSTRATIVE
+- **159 D-Day** (map_event): IMAGERY: SENTINEL-2 CLOUDLESS 2016 BY EOX (S2MAPS.EU), CONTAINS MODIFIED COPERNICUS SENTINEL DATA, CC BY 4.0 · DATES AND BEACH NAMES: WELL-ESTABLISHED HISTORY · POSITIONS ILLUSTRATIVE
+- **160 Trafalgar** (map_event): IMAGERY: SENTINEL-2 CLOUDLESS 2016 BY EOX (S2MAPS.EU), CONTAINS MODIFIED COPERNICUS SENTINEL DATA, CC BY 4.0 · DATE: WELL-ESTABLISHED HISTORY · POSITIONS ILLUSTRATIVE
+- **161 Beirut Port** (map_event): IMAGERY: SENTINEL-2 CLOUDLESS 2016 BY EOX (S2MAPS.EU), CONTAINS MODIFIED COPERNICUS SENTINEL DATA, CC BY 4.0 · DATE: WIDELY REPORTED · POSITIONS ILLUSTRATIVE
+- **162 A Founding** (flag_paper): LIBRARY OF CONGRESS: PORTRAIT 1859 AND CONSTITUTION 1828 PRINTING (PUBLIC DOMAIN BY AGE) · FLAG DRAWN IN THE STUDIO (SIMPLIFIED)
+- **163 The Black Ships** (flag_paper): LIBRARY OF CONGRESS (NO KNOWN RESTRICTIONS) · FLAG DRAWN IN THE STUDIO
+- **164 The Rough Draft** (portrait_doc): LIBRARY OF CONGRESS: JEFFERSON'S ROUGH DRAUGHT OF THE DECLARATION · PORTRAIT: LIBRARY OF CONGRESS
+- **165 Success Four Flights** (portrait_doc): LIBRARY OF CONGRESS: WRIGHT BROTHERS TELEGRAM, 17 DEC 1903 · PORTRAIT: LIBRARY OF CONGRESS
+- **166 Tea** (v_object_map): PHOTO: PIXABAY · MAP: INDIA, OFFICIAL BOUNDARY
+- **167 Coffee** (v_object_map): PHOTO: PIXABAY · MAP: NATURAL EARTH
+- **168 Cocoa** (v_object_map): PHOTO: PIXABAY · MAP: NATURAL EARTH
+- **169 Pepper** (v_object_map): PHOTO: PIXABAY · MAP: INDIA, OFFICIAL BOUNDARY
+- **170 Be the Lion** (v_depth): PHOTOS: PIXABAY
+- **171 Odd One Out** (v_depth): PHOTOS: PIXABAY
+- **172 The Quiet One** (v_depth): PHOTOS: PIXABAY
+- **173 Go Your Own Way** (v_depth): PHOTOS: PIXABAY
+- **174 relief_andes** (relief): Elevation: Terrarium tiles (Mapzen/Tilezen, AWS Open Data; SRTM) · borders: Natural Earth · heights from the dossier
+- **175 relief_rift** (relief): Elevation: Terrarium tiles (Mapzen/Tilezen, AWS Open Data; SRTM) · borders: Natural Earth · heights from the dossier
+- **176 relief_iceland** (relief): Elevation: Terrarium tiles (Mapzen/Tilezen, AWS Open Data; SRTM) · borders: Natural Earth · heights from the dossier
+- **177 relief_atlas** (relief): Elevation: Terrarium tiles (Mapzen/Tilezen, AWS Open Data; SRTM) · borders: Natural Earth · heights from the dossier
+- **178 physics_bottleneck** (physics): Real rigid-body simulation (Rapier, Apache-2.0) rendered with three.js · idea sources in the dossier
+- **179 physics_scale** (physics): Real rigid-body simulation (Rapier, Apache-2.0) rendered with three.js · idea sources in the dossier
+- **180 physics_sandpile** (physics): Real rigid-body simulation (Rapier, Apache-2.0) rendered with three.js · idea sources in the dossier
+- **181 cutaway_dam** (cutaway): Drawn in the studio (three.js) · simplified, not to scale
+- **182 cutaway_solar** (cutaway): Drawn in the studio (three.js) · simplified, not to scale
+- **183 glow_warming** (glow): Data: World Bank API / NASA GISS GISTEMP v4 (see dossier) · bars from zero
+- **184 glow_fertility** (glow): Data: World Bank API / NASA GISS GISTEMP v4 (see dossier) · bars from zero
+- **185 glow_renewables** (glow): Data: World Bank API / NASA GISS GISTEMP v4 (see dossier) · bars from zero
+- **186 glow_literacy** (glow): Data: World Bank API / NASA GISS GISTEMP v4 (see dossier) · bars from zero
+- **187 draw_anchoring** (draw): Drawn stroke by stroke in the studio · idea sources in the dossier
+- **188 draw_confirmation** (draw): Drawn stroke by stroke in the studio · idea sources in the dossier
+- **189 draw_spotlight** (draw): Drawn stroke by stroke in the studio · idea sources in the dossier
+- **190 draw_planning** (draw): Drawn stroke by stroke in the studio · idea sources in the dossier
+- **191 box_giss** (box): Data: NASA GISS GISTEMP v4 / World Bank API (see dossier)
+- **192 box_life** (box): Data: NASA GISS GISTEMP v4 / World Bank API (see dossier)
+- **193 unit_internet** (unit): Data: World Bank API (see dossier) · one icon = 1%
+- **194 unit_forest** (unit): Data: World Bank API (see dossier) · one icon = 1%
+- **195 unit_urban** (unit): Data: World Bank API (see dossier) · one icon = 1%
+- **196 node_upi** (node): Diagram drawn in the studio · NPCI / RBI (see dossier) · simplified
+- **197 node_monsoon** (node): Diagram drawn in the studio · NPCI / RBI (see dossier) · simplified
+- **198 globe_shanghai** (globe): Imagery: NASA Blue Marble Next Generation via GIBS (public domain) · India: official boundary · route: shortest path on the sphere
+- **199 globe_mumbai** (globe): Imagery: NASA Blue Marble Next Generation via GIBS (public domain) · India: official boundary · route: shortest path on the sphere
+- **200 globe_sydney** (globe): Imagery: NASA Blue Marble Next Generation via GIBS (public domain) · India: official boundary · route: shortest path on the sphere
+
+## Library of Congress items
+
+- loc-brooklyn: New East River bridge from Brooklyn (1900-01-01) <https://www.loc.gov/item/2016802198/> — No known restrictions on publication.
+- loc-quake: Ruins after San Francisco earthquake, 1906 (1906-01-01) <https://www.loc.gov/item/00652579/> — No known restrictions on publication
+- loc-fair: Scene around the Administration Building, World's Fair, Chicago, U.S.A. (1893) <https://www.loc.gov/item/2023634891/> — No known restrictions on publication.
+- loc-tit1: Brochure for White Star Line's Two Ships "Olympic" and "Titanic". (1911-01-01) <https://www.loc.gov/item/2021666878/> — PUBLIC DOMAIN BY AGE (CREATED/PUBLISHED BEFORE 1931; LOC GIVES NO RIGHTS STATEMENT)
+- loc-tit2: The great Titanic disaster (1912-01-01) <https://www.loc.gov/item/96514444/> — No known restrictions on publication.
+- loc-tit3: Titanic disaster (1912) <https://www.loc.gov/item/mp73125400/> — PUBLIC DOMAIN BY AGE (CREATED/PUBLISHED BEFORE 1931; LOC GIVES NO RIGHTS STATEMENT)
+- loc-tit4: Crowd awaiting TITANIC survivors (1912-01-01) <https://www.loc.gov/item/2014690329/> — No known restrictions on publication. For more information, see George Grantham Bain Collection - Rights and Restrictions Information https://www.loc.gov/rr/print/res/274_bain.html
+- loc-steam-a: An American steam fire engine (1872-01-01) <https://www.loc.gov/item/2003670954/> — PUBLIC DOMAIN BY AGE (CREATED/PUBLISHED BEFORE 1931; LOC GIVES NO RIGHTS STATEMENT)
+- loc-steam-b: The self-propelling steam fire-engine, "J.C. Cary" (1858-01-01) <https://www.loc.gov/item/99614176/> — No known restrictions on publication.
+- loc-tel-a: General Operating Department, Western Union Telegraph Building, New York (1875-01-01) <https://www.loc.gov/item/2002706683/> — No known restrictions on publication.
+- loc-tel-b: The Atlantic telegraph cable (1865-01-01) <https://www.loc.gov/item/91795085/> — No known restrictions on publication.
+- loc-edison: [Thomas Edison, half-length portrait, facing front] (1893-01-01) <https://www.loc.gov/item/89714702/> — PUBLIC DOMAIN BY AGE (CREATED/PUBLISHED BEFORE 1931; LOC GIVES NO RIGHTS STATEMENT)
+- loc-curie: [Marie Skłodowska Curie, half-length portrait, seated, facing right] (1890-01-01) <https://www.loc.gov/item/96512741/> — No known restrictions on publication. No renewal found in Copyright office.
+- loc-tesla: Nicola Tesla (1900-01-01) <https://www.loc.gov/item/2014684845/> — No known restrictions on publication. For more information, see George Grantham Bain Collection - Rights and Restrictions Information https://www.loc.gov/rr/print/res/274_bain.html
+- loc-earhart: Amelia Earhart (1928-01-01) <https://www.loc.gov/item/2004671909/> — No known restrictions on publication. No copyright found; checked by staff December 2000.
+- loc-bell: [Alexander Graham Bell] (1904-01-01) <https://www.loc.gov/item/2016647791/> — No known restrictions on publication.
+- loc-bell-call: Alexander Graham Bell at the opening of the long-distance line from New York to Chicago (1892) <https://www.loc.gov/item/00650383/> — PUBLIC DOMAIN BY AGE (CREATED/PUBLISHED BEFORE 1931; LOC GIVES NO RIGHTS STATEMENT)
+- loc-washington: [George Washington, head-and-shoulders portrait, facing left] (1859-01-01) <https://www.loc.gov/item/97504002/> — PUBLIC DOMAIN BY AGE (CREATED/PUBLISHED BEFORE 1931; LOC GIVES NO RIGHTS STATEMENT)
+- loc-constitution: The Constitution of the United States of America: (1828) <https://www.loc.gov/item/01009198/> — PUBLIC DOMAIN BY AGE (CREATED/PUBLISHED BEFORE 1931; LOC GIVES NO RIGHTS STATEMENT)
+- loc-perry: [Commodore Matthew C. Perry, three-quarter length portrait, standing, facing slightly left (1854-01-01) <https://www.loc.gov/item/2001695235/> — No known restrictions on publication.
+- loc-perry-print: Kita Amerika jinbutsu: Peruri zō (1854) <https://www.loc.gov/item/2002700123/> — No known restrictions on publication.
+- loc-jefferson: [Thomas Jefferson, half-length portrait] (1900-01-01) <https://www.loc.gov/item/2016817257/> — No known restrictions on publication.
+- loc-declaration: Thomas Jefferson, June 1776, Rough Draft of the Declaration of Independence (1776-06) <https://www.loc.gov/item/mtjbib000156/> — No known restriction on use or reproduction.
+- loc-orville: [Orville Wright, bust portrait, facing left] (1928-01-01) <https://www.loc.gov/item/2005687268/> — No known restrictions on publication.
+- loc-telegram: Telegram, Orville Wright to Bishop Milton Wright announcing the first successful powered f (1903-12-17) <https://www.loc.gov/item/mcc.061/> — PUBLIC DOMAIN BY AGE (CREATED/PUBLISHED BEFORE 1931; LOC GIVES NO RIGHTS STATEMENT)
+- loc-earhart-2: [Amelia Earhart, three-quarter length portrait, standing facing front] (1930) <https://www.loc.gov/item/90709840/> — PUBLISHED 1930 OR EARLIER: US PUBLIC DOMAIN BY AGE (LOC GIVES NO RIGHTS STATEMENT)
+
+## Pixabay photos
+
+- alarm-clock-isolated: https://pixabay.com/photos/tact-clock-alarm-clock-deadline-3035731/ by SarahRichterArt
+- amazon-river: https://pixabay.com/photos/amazon-river-amazon-nature-river-10150169/ by HenryLesnussa
+- apartment-block-isolated: https://pixabay.com/photos/apartments-architecture-balconies-1845884/ by Pexels
+- armchair-isolated: https://pixabay.com/photos/reside-furniture-chair-comfortable-3402501/ by garten-gg
+- atacama-desert: https://pixabay.com/photos/chile-atacama-desert-licancabur-4141925/ by 12254307
+- auto-rickshaw-isolated: https://pixabay.com/photos/rickshaw-wheelbarrow-vehicle-5043348/ by Richstar
+- azulejo-tiles: https://pixabay.com/photos/porto-tile-azulejos-portugal-250419/ by schnurzipurz
+- baby-shoes-isolated: https://pixabay.com/photos/childrens-shoes-shoes-child-687959/ by Barni1
+- backpack-isolated: https://pixabay.com/photos/backpack-sports-leisure-time-blue-1324445/ by stux
+- backwaters-palm: https://pixabay.com/photos/sunset-kerala-aleppay-boat-1139293/ by ponrajk22
+- baghdad: https://pixabay.com/photos/arc-triumph-saddam-sword-victory-14716/ by PublicDomainPictures
+- barcelona-apartment: https://pixabay.com/photos/barcelona-spain-catalonia-street-3436976/ by sosinda
+- barcelona-rooftops: https://pixabay.com/photos/barcelona-spain-city-urban-1875848/ by 12019
+- bauhaus-building: https://pixabay.com/photos/architecture-bauhaus-dessau-college-1574298/ by Moonglow
+- big-ben-tower: https://pixabay.com/photos/big-ben-london-clock-tower-uk-4728199/ by Leonhard_Niederwimmer
+- binoculars-isolated: https://pixabay.com/photos/binoculars-old-antique-equipment-354623/ by BenjaminNelan
+- black-pepper-bowl: https://pixabay.com/photos/pepper-seasoning-sharp-cook-curry-3940086/ by Moos-Media
+- blank-notebook-page: https://pixabay.com/photos/laptop-paper-to-write-business-3076957/ by Ylanite
+- blue-sky-clouds-vertical: https://pixabay.com/photos/clouds-weather-cloudscape-dramatic-3994154/ by sandid
+- bookshop-front: https://pixabay.com/photos/shakespeare-and-company-paris-books-1701307/ by stmaciorowski
+- bronze-statue: https://pixabay.com/photos/king-artus-metal-sculpture-bronze-1507392/ by MonikaP
+- bronze-statue-head-side: https://pixabay.com/photos/sculpture-julius-caesar-statue-art-3357150/ by Couleur
+- buddhist-monastery-ladakh: https://pixabay.com/photos/monastery-ladakh-india-397885/ by cascayoyo
+- burnt-match-isolated: https://pixabay.com/photos/burned-down-match-solo-individually-252232/ by steinchen
+- businessman-silhouette-walking: https://pixabay.com/photos/man-suit-city-business-male-5515150/ by gershoots
+- cardboard-box-parcel: https://pixabay.com/photos/space-wood-deliver-logistics-4967335/ by ha11ok
+- chai-glass: https://pixabay.com/photos/milk-tea-drink-glass-beverage-92153/ by suman
+- chandni-chowk: https://pixabay.com/photos/new-delhi-old-delhi-india-10510291/ by marioman2026
+- charminar: https://pixabay.com/photos/charminar-hyderabad-street-india-6925617/ by shivaphotographyy
+- chinese-junk-boat: https://pixabay.com/photos/hong-kong-junk-boat-hong-kong-symbol-2644630/ by Wilhk
+- chocolate-pieces: https://pixabay.com/photos/chocolate-chocolate-bar-567234/ by Counselling
+- circuit-board-macro: https://pixabay.com/photos/circuit-board-computer-chip-564815/ by blickpixel
+- city-skyline-window: https://pixabay.com/photos/nyc-nyc-skyline-nyc-apartment-7710506/ by jothamsutharson
+- classical-bust: https://pixabay.com/photos/romans-art-antique-rome-sculpture-4719199/ by Derks24
+- classical-statue-woman: https://pixabay.com/photos/female-roman-statue-316705/ by PublicDomainPictures
+- cocoa-tree-leaves: https://pixabay.com/photos/martinique-caribbean-island-france-4900895/ by falco
+- coffee-cup-ceramic: https://pixabay.com/photos/coffee-cup-cappuccino-drink-8342636/ by Arturo_Anez
+- coffee-cup-isolated: https://pixabay.com/photos/cappuccino-drink-cup-coffee-756490/ by gadost0
+- coffee-mug-isolated: https://pixabay.com/photos/cup-coffee-mug-mug-drink-2591892/ by amarpreet25
+- coffee-plant-branch: https://pixabay.com/photos/coffee-grain-coffee-bean-cup-747604/ by carllilo3070
+- commuter-train: https://pixabay.com/photos/train-snowstorm-snow-winter-6907884/ by Kanenori
+- computer-mouse-isolated: https://pixabay.com/photos/mouse-red-computer-information-74533/ by Berger-Team
+- congee-bowl: https://pixabay.com/photos/mush-food-egg-yolk-2765178/ by lillith_um
+- conical-straw-hat: https://pixabay.com/photos/asia-myanmar-burma-culture-4852147/ by MarlyneArt
+- construction-crane-tower: https://pixabay.com/photos/cranes-construction-load-crane-3703469/ by analogicus
+- container-ship-isolated: https://pixabay.com/photos/container-ship-container-transport-6631117/ by dendoktoor
+- coral-reef-underwater: https://pixabay.com/photos/lemon-butterflyfish-fishes-exotic-380037/ by joakant
+- cotton-boll: https://pixabay.com/photos/cotton-plant-flower-shrub-1817186/ by BeautyClick
+- credit-card-isolated: https://pixabay.com/photos/business-businessman-chip-card-3362080/ by geralt
+- cricket-bat-isolated: https://pixabay.com/photos/cricket-sports-athlete-game-8444899/ by u_g5kzowan0q
+- cricket-stadium-night: https://pixabay.com/photos/cricket-cricket-ground-sport-ground-662956/ by dhana311
+- croissant-breakfast: https://pixabay.com/photos/bread-croissant-food-breakfast-cup-18987/ by PublicDomainPictures
+- crowd-street: https://pixabay.com/photos/pedestrians-people-busy-movement-400811/ by B_Me
+- cycle-rickshaw: https://pixabay.com/photos/rickshaw-transport-taxi-320581/ by beginmag
+- darjeeling-tea-garden: https://pixabay.com/photos/darjeeling-himalayan-railway-toy-197611/ by donvikro
+- delivery-bag: https://pixabay.com/photos/bicyclist-man-bike-cycling-running-9457760/ by Surprising_Media
+- dhow-boat: https://pixabay.com/photos/boats-gulf-qatar-doha-water-sea-6390724/ by waseemlazkani
+- diya-lamps-night: https://pixabay.com/photos/light-lamp-diya-deepak-deepawali-3853415/ by vprthawait
+- election-ballot-box: https://pixabay.com/photos/ballot-box-choice-federal-election-2586565/ by 8385
+- envelope-email-icon: https://pixabay.com/photos/telephone-contact-recruitment-612061/ by Laety79
+- envelope-isolated: https://pixabay.com/photos/envelope-paper-old-vintage-texture-7348722/ by 18924851
+- envelope-stamp: https://pixabay.com/photos/vintage-old-old-postcards-retro-3938883/ by Ylanite
+- factory-assembly-line: https://pixabay.com/photos/company-factory-production-186980/ by marcin049
+- felucca-nile: https://pixabay.com/photos/egypt-tour-packages-egypt-packages-2637992/ by flyingcarpettoursegypt
+- fez-hat: https://pixabay.com/photos/turkey-fez-headgear-cap-red-felt-687647/ by hrohmann
+- foggy-road: https://pixabay.com/photos/way-street-road-travel-car-auto-7869311/ by jwvein
+- folded-newspaper-isolated: https://pixabay.com/photos/background-article-3182873/ by moritz320
+- ganges-varanasi: https://pixabay.com/photos/ganga-ghats-varanasi-ganga-river-5268994/ by balouriarajesh
+- glacier-ice: https://pixabay.com/photos/iceberg-glacier-outdoors-sea-6624332/ by makabera
+- government-building: https://pixabay.com/photos/architecture-building-landmark-51058/ by PeterDargatz
+- group-chat-phone: https://pixabay.com/photos/new-year-mobile-phones-texting-1490691/ by terimakasih0
+- hagia-sophia: https://pixabay.com/photos/hagia-sophia-turkey-istanbul-church-216471/ by niekverlaan
+- hand-grabbing-isolated: https://pixabay.com/photos/hands-puzzle-pieces-connect-20333/ by PublicDomainPictures
+- hand-pinching-isolated: https://pixabay.com/photos/hand-hands-finger-gesture-1098531/ by maxknoxvill
+- hand-pointing-down-isolated: https://pixabay.com/photos/white-background-hand-white-men-5244149/ by elkofla
+- hand-reaching-isolated: https://pixabay.com/photos/hand-woman-female-man-touch-3035665/ by zhivko
+- harbor-crane: https://pixabay.com/photos/port-cranes-harbor-cranes-heaven-1650374/ by pixel2013
+- hawa-mahal: https://pixabay.com/photos/hawa-mahal-palace-architecture-6156123/ by dedishari
+- honey-bee-isolated: https://pixabay.com/photos/bee-honey-bee-insect-fauna-bloom-7413333/ by mirey2222
+- horse-isolated: https://pixabay.com/photos/horse-mare-animal-female-horse-561221/ by Sponchia
+- houseboat-kerala: https://pixabay.com/photos/houseboat-kerala-alleppey-houseboat-2791119/ by alleppeyhouseboatclub
+- hyderabad-skyline: https://pixabay.com/photos/city-hyderabad-sunset-buildings-7382274/ by shivaphotographyy
+- idli-sambar: https://pixabay.com/photos/breakfast-idli-indian-foods-2408818/ by mcthrissur
+- iguazu-falls: https://pixabay.com/photos/waterfalls-of-igua%C3%A7u-cataracts-455610/ by willian_hludke
+- indian-countryside-train-view: https://pixabay.com/photos/train-locomotive-travel-1728537/ by 12019
+- indian-rupee-notes: https://pixabay.com/photos/rupee-banknotes-banknote-currency-2931876/ by anaterate
+- jama-masjid: https://pixabay.com/photos/eid-al-adha-eid-al-fitr-eid-mubarak-5374989/ by suhailsuri
+- kashgar: https://pixabay.com/photos/mu-tagg-xinjiang-kashgar-2356429/ by xiaofengzi-traveler
+- keyboard-keys: https://pixabay.com/photos/keyboard-computer-keys-white-886462/ by Simon
+- kilimanjaro: https://pixabay.com/photos/mount-kilimanjaro-mountain-safari-1025146/ by GregMontani
+- laptop-isolated: https://pixabay.com/photos/computer-laptop-blank-empty-screen-3036166/ by kirill_makes_pics
+- laptop-open: https://pixabay.com/photos/computer-laptop-blank-empty-screen-3036166/ by kirill_makes_pics
+- le-havre: https://pixabay.com/photos/building-le-havre-port-architecture-3396651/ by ddzphoto
+- leaning-tower-of-pisa: https://pixabay.com/photos/tower-of-pisa-pisa-architecture-4426291/ by sitoruiz
+- light-bulb-isolated: https://pixabay.com/photos/bulb-light-white-concept-bright-316751/ by PublicDomainPictures
+- light-bulbs-hanging: https://pixabay.com/photos/lightbulb-light-electricity-energy-5352822/ by Alexas_Fotos
+- lined-paper-notebook: https://pixabay.com/photos/vector-notepad-notepad-5x8-notepad-2111645/ by Pixel_perfect
+- lion-isolated: https://pixabay.com/photos/lion-boss-wildlife-brown-5271187/ by annawaldl
+- lisbon-pastel-houses: https://pixabay.com/photos/houses-roofs-lisbon-portugal-7030773/ by 1970luizcosta
+- lisbon-tram: https://pixabay.com/photos/lisbon-tram-portugal-8275988/ by Leonhard_Niederwimmer
+- lithium-battery-cell: https://pixabay.com/photos/battery-cell-lithium-cr2032-3281346/ by 2427999
+- magnet-isolated: https://pixabay.com/photos/magnet-horseshoe-pair-alnico-6114651/ by matthewsjackie
+- maldives-beach: https://pixabay.com/photos/beach-resort-jetty-pier-boardwalk-666122/ by romaneau
+- man-walking-silhouette: https://pixabay.com/photos/mountains-sunrise-sunset-6818253/ by NanduVasudevan
+- manuscript-book-old: https://pixabay.com/photos/book-vintage-old-texture-retro-544965/ by Humusak
+- marble-head-sculpture: https://pixabay.com/photos/depression-sadness-autism-body-3297810/ by TotumRevolutum
+- medicine-bottle-isolated: https://pixabay.com/photos/background-bottle-care-color-5478092/ by ds_30
+- microphone-isolated: https://pixabay.com/photos/microphone-music-audio-micro-sound-2800921/ by Alexas_Fotos
+- model-airplane-isolated: https://pixabay.com/photos/airplane-blue-red-plane-toy-195062/ by Giuliamar
+- model-train-isolated: https://pixabay.com/photos/locomotive-loc-steam-locomotive-970381/ by KlausHausmann
+- monsoon-street: https://pixabay.com/photos/children-happy-playing-riding-2586002/ by StockSnap
+- mosquito-macro: https://pixabay.com/photos/mosquito-insect-schnake-insects-83639/ by buchse12
+- mountain-lake-blue: https://pixabay.com/photos/ladakh-mountains-river-himalayas-2818861/ by gauravktwl
+- mud-mosque: https://pixabay.com/photos/mosque-evils-mud-436241/ by Kibi86
+- mumbai-harbour: https://pixabay.com/photos/bandraworli-sea-link-boats-bridge-7001050/ by ibrahimpoonawala553
+- mumbai-skyline: https://pixabay.com/photos/bridge-sealink-mumbai-skyline-5216884/ by yogendras31
+- munnar-tea: https://pixabay.com/photos/munnar-kerala-tea-plantation-green-4769654/ by saxanrappai
+- name-badge-isolated: https://pixabay.com/photos/name-tag-plastic-card-holder-office-3662913/ by BRRT
+- nautical-chart-old: https://pixabay.com/photos/ancient-map-nautical-figure-2684068/ by arielmore
+- nile-river: https://pixabay.com/photos/nile-aswan-elephantine-desert-495098/ by KHGraf
+- notebook-paper-grid: https://pixabay.com/photos/grid-paper-paper-school-science-1806470/ by tensaisaisai
+- office-corridor: https://pixabay.com/photos/architecture-glass-modern-city-3734552/ by 652234
+- old-city-buildings: https://pixabay.com/photos/catania-cathedral-city-landmark-10333720/ by ahmetyuksek
+- old-city-map: https://pixabay.com/photos/maps-prag-the-czech-republic-map-4755697/ by Sthlmsabbe
+- old-key-isolated: https://pixabay.com/photos/key-old-close-up-rusted-iron-846525/ by Silberfuchs
+- old-letter-paper: https://pixabay.com/photos/s%C3%BCtterlin-handwriting-typography-1362879/ by cocoparisienne
+- old-map-africa: https://pixabay.com/photos/map-old-world-vintage-map-vintage-7109829/ by flutie8211
+- old-map-africa-vintage: https://pixabay.com/photos/map-old-world-vintage-map-vintage-7109829/ by flutie8211
+- old-map-central-asia: https://pixabay.com/photos/compass-map-direction-degrees-2946959/ by Ylanite
+- old-map-turkey: https://pixabay.com/photos/maps-turkey-istanbul-map-city-4755698/ by Sthlmsabbe
+- old-mobile-phone-isolated: https://pixabay.com/photos/telephone-former-old-phone-1523342/ by elmekki
+- old-photograph-isolated: https://pixabay.com/photos/camera-old-nostalgia-vintage-1719708/ by maxmann
+- old-railway-station-building: https://pixabay.com/photos/lost-places-railway-system-rail-2899887/ by 652234
+- old-smartphone: https://pixabay.com/photos/phone-mobile-smartphone-2920775/ by Bru-nO
+- ooty-lake: https://pixabay.com/photos/ooty-tamilnadu-india-landscape-3882538/ by sadikalam
+- open-palm-hand-isolated: https://pixabay.com/photos/hand-asking-offering-1620466/ by ajcespedes
+- owl-isolated: https://pixabay.com/photos/uhu-bubo-bubo-owl-bird-feathers-1728218/ by A_Different_Perspective
+- pano-1: https://pixabay.com/photos/street-road-people-crowd-buildings-5703332/ by eddypellegrino
+- pano-2: https://pixabay.com/photos/reflection-water-monument-5251885/ by vikram__siingh
+- pano-3: https://pixabay.com/photos/mrg-world-residential-buildings-6569743/ by mrgtheskylinee
+- pano-4: https://pixabay.com/photos/asakusa-temple-asakusa-temple-9607420/ by ChiemSeherin
+- pano-5: https://pixabay.com/photos/skyscrapers-tokyo-japan-cityscape-1670937/ by Purota
+- pano-6: https://pixabay.com/photos/shibuya-intersection-cityscape-2328029/ by meguraw645
+- paper-airplane-isolated: https://pixabay.com/photos/origami-paper-candle-sailboat-boat-1067673/ by padrinan
+- paper-chain: https://pixabay.com/photos/clock-time-pocket-watch-old-623168/ by Nile
+- paper-clip-isolated: https://pixabay.com/photos/binder-blue-clips-clip-green-15454/ by PublicDomainPictures
+- paratha: https://pixabay.com/photos/paratha-cuisine-breakfast-indian-8298620/ by Aesthice
+- pastel-de-nata: https://pixabay.com/photos/portuguese-custard-tart-758547/ by CarolinaP
+- patagonia-lake: https://pixabay.com/photos/mountain-lake-nature-rock-glacier-9467826/ by plutozoom
+- pencil-isolated: https://pixabay.com/photos/colored-pencils-pencils-crayons-3682424/ by Bru-nO
+- penguin-walking: https://pixabay.com/photos/penguin-walk-water-edge-water-7845305/ by JensPeter
+- penguins-group: https://pixabay.com/photos/king-penguin-walk-penguin-parade-1154432/ by Pixel-mixer
+- pepper-vine: https://pixabay.com/photos/leaf-nature-food-fruit-flora-3284526/ by 7834816
+- person-walking-silhouette: https://pixabay.com/photos/tree-hill-nature-outdoors-travel-7040298/ by planet_fox
+- pharmacy-storefront: https://pixabay.com/photos/old-fashioned-drug-store-5084602/ by 16081684
+- pigeon-isolated: https://pixabay.com/photos/city-pigeon-foraging-dove-bird-2663432/ by Alexas_Fotos
+- plaster-head-statue: https://pixabay.com/photos/sculpture-female-woman-bust-2754170/ by Mimzy
+- plough: https://pixabay.com/photos/plough-ploughshare-fields-plow-up-2658575/ by Momentmal
+- propeller-wooden: https://pixabay.com/photos/vintage-aviation-aircraft-classic-3701352/ by PilotBrent
+- qr-code-sticker: https://pixabay.com/photos/qr-code-quick-response-code-to-scan-1903447/ by geralt
+- quill-pen-isolated: https://pixabay.com/photos/pen-feather-fountain-pen-write-3237969/ by Bru-nO
+- qutub-minar: https://pixabay.com/photos/qutubminar-delhi-architecture-2816202/ by zeeshan91
+- rain-cloud-isolated: https://pixabay.com/photos/thunderstorm-rain-double-rainbow-10356765/ by r-q
+- rainforest-canopy-aerial: https://pixabay.com/photos/ai-generated-fantasy-landscape-7516287/ by Alan_Frijns
+- red-balloon-isolated: https://pixabay.com/photos/balloon-red-weather-inflate-flying-4990657/ by Engin_Akyurt
+- registan-samarkand: https://pixabay.com/photos/samarkand-registan-square-uzbekistan-196924/ by LoggaWiggler
+- rocket-launch: https://pixabay.com/photos/rocket-launch-rocket-take-off-67643/ by WikiImages
+- rotterdam-port: https://pixabay.com/photos/pilot-port-container-ship-piloting-3396486/ by Ellen26
+- rumour-phone: https://pixabay.com/photos/iphone-smartphone-apps-apple-inc-410324/ by JESHOOTS-com
+- rusk-biscuit: https://pixabay.com/photos/masala-tea-cookies-indian-tea-tea-8020912/ by RitazMaini
+- sagrada-familia: https://pixabay.com/photos/sagrada-fam%C3%ADlia-cathedral-552084/ by Patrice_Audet
+- sahara-desert: https://pixabay.com/photos/desert-nature-sand-landscape-9985132/ by Wolfgang_Hasselmann
+- salt-evaporation-ponds: https://pixabay.com/photos/saline-sea-water-salt-salt-sea-salt-3404233/ by lbokel
+- salt-flats: https://pixabay.com/photos/flamingos-landscape-bolivia-lagoons-4919079/ by mtorrazzina
+- salt-pile: https://pixabay.com/photos/himalayan-salt-salt-pakistan-salt-2199823/ by minree
+- samarkand: https://pixabay.com/photos/bibi-xanom-mosque-samarkand-196942/ by LoggaWiggler
+- sand-dunes-aerial: https://pixabay.com/photos/namibia-desert-birds-eye-view-sand-4956610/ by Jürgen_Bierlein
+- scooter-isolated: https://pixabay.com/photos/electric-bike-electric-scooters-1313455/ by YoBykes
+- screenshot-phone: https://pixabay.com/photos/iphone-smartphone-apps-apple-inc-410324/ by JESHOOTS-com
+- sea-view-balcony: https://pixabay.com/photos/beach-water-balcony-ocean-6953104/ by rhwd2003
+- seashell-isolated: https://pixabay.com/photos/sea-shell-clam-ocean-sea-shells-1162808/ by InspiredImages
+- sheep-isolated: https://pixabay.com/photos/sheep-meadow-isolated-lamb-wool-2752810/ by Janson_G
+- shibuya-crossing: https://pixabay.com/photos/shibuya-intersection-cityscape-2328029/ by meguraw645
+- shimla: https://pixabay.com/photos/train-railway-hills-travel-2055307/ by antriksh
+- shopping-bag-isolated: https://pixabay.com/photos/torka-torekba-paper-package-5144918/ by promil69
+- silk-fabric: https://pixabay.com/photos/silk-textile-texture-cotton-fabric-4916174/ by Beesmurf
+- singapore-port: https://pixabay.com/photos/boats-water-twilight-singapore-200681/ by FindingSR
+- smartphone-dark: https://pixabay.com/photos/apple-iphone-notebook-pen-1841553/ by Pexels
+- smartphone-in-hand: https://pixabay.com/photos/train-track-railroad-smartphone-2507499/ by FunkyFocus
+- smartphone-isolated-white: https://pixabay.com/photos/iphone-6s-white-mobile-smartphone-993199/ by lumpi
+- smartphone-screen-isolated: https://pixabay.com/photos/hand-holding-smartphone-5682222/ by JohnEdward
+- soda-bottle-isolated: https://pixabay.com/photos/candy-sugar-sweet-unhealthy-food-2201927/ by WikimediaImages
+- sombrero-hat: https://pixabay.com/photos/hat-sombrero-woven-mexican-culture-10466979/ by Pnguy
+- spice-market-delhi: https://pixabay.com/photos/spice-market-dubai-souq-9060102/ by katetrysh
+- spinning-top-toy: https://pixabay.com/photos/spinning-top-toy-top-spin-play-1312052/ by InspiredImages
+- spinning-wheel-isolated: https://pixabay.com/photos/spinning-wheel-old-spinning-wheel-1126016/ by moritz320
+- stack-of-books-isolated: https://pixabay.com/photos/books-training-school-literature-441866/ by Hermann
+- statue-profile-marble: https://pixabay.com/photos/voltaire-statue-museum-philosopher-2702980/ by korpiri
+- steam-locomotive-isolated: https://pixabay.com/photos/railroad-steam-locomotive-old-2509081/ by Momentmal
+- steel-kettle-isolated: https://pixabay.com/photos/teapot-tea-grey-kitchen-cook-2729187/ by Engin_Akyurt
+- steppe-grassland: https://pixabay.com/photos/kyrgyzstan-mountains-valley-hill-4661907/ by Makalu
+- sticky-note-yellow: https://pixabay.com/photos/note-clothespin-clothesline-3454277/ by RoonzNL
+- stone-statue-man: https://pixabay.com/photos/sculpture-statue-pierre-man-young-7561468/ by GAIMARD
+- strip-1: https://pixabay.com/photos/italian-venezia-tourism-winter-7700549/ by MARTINOPHUC
+- strip-10: https://pixabay.com/photos/india-mumbai-bombay-houses-290/ by Simon
+- strip-2: https://pixabay.com/photos/venice-canale-grande-rialto-bridge-1721988/ by mfoddo
+- strip-3: https://pixabay.com/photos/emotions-to-travel-vacation-italy-3490223/ by garten-gg
+- strip-4: https://pixabay.com/photos/doges-palace-venice-church-554807/ by 495756
+- strip-5: https://pixabay.com/photos/venice-italy-burano-island-2896591/ by lenalindell20
+- strip-6: https://pixabay.com/photos/india-mumbai-bombay-train-crowds-296/ by Simon
+- strip-7: https://pixabay.com/photos/marine-drive-boulevard-south-mumbai-2300181/ by sarangib
+- strip-8: https://pixabay.com/photos/pinto-food-holder-container-thai-3628571/ by minipukkik
+- strip-9: https://pixabay.com/photos/gateway-of-india-monument-mumbai-609076/ by sarangib
+- sugar-cubes: https://pixabay.com/photos/lump-sugar-sugar-cubes-white-sweet-549096/ by Humusak
+- sunflower-field: https://pixabay.com/photos/sunflowers-yellow-flowers-sunset-8980921/ by niki_emmert
+- sunset-sky-vertical: https://pixabay.com/photos/sunset-oregon-reflection-clouds-7361491/ by Barrymore217
+- supermarket-aisle: https://pixabay.com/photos/grocery-store-supermarket-retail-2619380/ by ccipeggy
+- tea-plant-leaves: https://pixabay.com/photos/tea-leaf-plant-nature-sprig-3292827/ by martabystron
+- teapot-brass: https://pixabay.com/photos/carafe-magic-mysticism-esoteric-615395/ by reverent
+- tennis-ball-isolated: https://pixabay.com/photos/alone-background-ball-championship-1238482/ by Shutterbug26
+- thar-desert: https://pixabay.com/photos/jaisalmer-desert-camel-animal-sand-7473623/ by RavendraSingh
+- torn-note-paper: https://pixabay.com/photos/old-vintage-writing-note-write-243010/ by artemtation
+- turkish-tea-glass: https://pixabay.com/photos/bagel-pretzels-bakery-food-simit-4291496/ by TanerSoyler
+- twin-bell-alarm-clock: https://pixabay.com/photos/alarm-clock-clock-time-hours-dial-5255982/ by 16871531
+- uluru: https://pixabay.com/photos/uluru-australia-monolith-2058380/ by Walkerssk
+- vintage-camera-lens: https://pixabay.com/photos/camera-retro-hobby-photo-camera-3985711/ by Olga1205
+- walking-cane-isolated: https://pixabay.com/photos/walking-stick-stick-wood-wooden-4144487/ by mistytableau
+- warning-sign-isolated: https://pixabay.com/photos/railroad-crossing-sign-train-2444337/ by Momentmal
+- wildfire-smoke-forest: https://pixabay.com/photos/the-ugly-swamp-nature-reserve-433688/ by Ylvers
+- wooden-ruler-isolated: https://pixabay.com/photos/school-ruler-measure-school-840113/ by BRRT
+- xian-city-wall: https://pixabay.com/photos/xian-china-rampart-pierre-1891110/ by christels
+- zebra-isolated: https://pixabay.com/photos/grevyzebra-zebra-africa-1341547/ by Wildfaces

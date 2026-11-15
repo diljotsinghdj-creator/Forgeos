@@ -1,0 +1,314 @@
+{
+ "date": "2026-11-15",
+ "method": "numbers read by script from the source files in data/; history and science checked by a web-search pass (snippets, official pages linked). Illustrative items are labelled on the frame (positions, prices, physics block weights, diagrams).",
+ "numbers": [
+  {
+   "frame": "eightbn",
+   "shown": "8,062,923,417 → 8.06 billion (2023)",
+   "status": "pulled from the source file by script; shown as recorded",
+   "source": "World Bank API (api.worldbank.org/v2), fetched 2026-11-15, SP.POP.TOTL WLD",
+   "url": ""
+  },
+  {
+   "frame": "remit",
+   "shown": "$119.5 billion (2023)",
+   "status": "pulled from the source file by script; shown as recorded",
+   "source": "World Bank API (api.worldbank.org/v2), fetched 2026-11-15, BX.TRF.PWKR.CD.DT IND",
+   "url": ""
+  },
+  {
+   "frame": "japan65",
+   "shown": "29.6% (2023)",
+   "status": "pulled from the source file by script; shown as recorded",
+   "source": "World Bank API (api.worldbank.org/v2), fetched 2026-11-15, SP.POP.65UP.TO.ZS JPN",
+   "url": ""
+  },
+  {
+   "frame": "mobiles",
+   "shown": "109.8 per 100 (2023)",
+   "status": "pulled from the source file by script; shown as recorded",
+   "source": "World Bank API (api.worldbank.org/v2), fetched 2026-11-15, IT.CEL.SETS.P2 WLD",
+   "url": ""
+  },
+  {
+   "frame": "indiapop",
+   "shown": "0.44 bn (1960) … 1.44 bn (2023)",
+   "status": "pulled from the source file by script; shown as recorded",
+   "source": "World Bank API (api.worldbank.org/v2), fetched 2026-11-15, SP.POP.TOTL IND",
+   "url": ""
+  },
+  {
+   "frame": "maldives",
+   "shown": "tourist arrivals 2005–2020, 1.70 m (2019) → 0.56 m (2020)",
+   "status": "pulled from the source file by script; shown as recorded",
+   "source": "World Bank API (api.worldbank.org/v2), fetched 2026-11-15, ST.INT.ARVL MDV",
+   "url": ""
+  },
+  {
+   "frame": "electric",
+   "shown": "60% (2000) → 99.5% (2023)",
+   "status": "pulled from the source file by script; shown as recorded",
+   "source": "World Bank API (api.worldbank.org/v2), fetched 2026-11-15, EG.ELC.ACCS.ZS IND",
+   "url": ""
+  },
+  {
+   "frame": "glow_fertility",
+   "shown": "India TFR 5.92 (1960) → 1.98 (2023)",
+   "status": "pulled from the source file by script; shown as recorded",
+   "source": "World Bank API (api.worldbank.org/v2), fetched 2026-11-15, SP.DYN.TFRT.IN IND",
+   "url": ""
+  },
+  {
+   "frame": "glow_renewables",
+   "shown": "17.5% (2000) → 19.7% (2020, latest in series)",
+   "status": "pulled from the source file by script; shown as recorded",
+   "source": "World Bank API (api.worldbank.org/v2), fetched 2026-11-15, EG.FEC.RNEW.ZS WLD",
+   "url": ""
+  },
+  {
+   "frame": "glow_literacy",
+   "shown": "61.0% (2001), 69.3% (2011), 73.7% (2018), 81.7% (2023); survey years only",
+   "status": "pulled from the source file by script; shown as recorded",
+   "source": "World Bank API (api.worldbank.org/v2), fetched 2026-11-15, SE.ADT.LITR.ZS IND",
+   "url": ""
+  },
+  {
+   "frame": "glow_warming / box_giss",
+   "shown": "decade means 1980s 0.25 … 2020s 1.06 °C vs 1951–1980; monthly values by 20-year group",
+   "status": "pulled from the source file by script; shown as recorded",
+   "source": "NASA GISS GISTEMP v4, GLB.Ts+dSST.csv (data.giss.nasa.gov), fetched 2026-11-15",
+   "url": ""
+  },
+  {
+   "frame": "box_life",
+   "shown": "life expectancy 2022, all countries, by World Bank region",
+   "status": "pulled from the source file by script; shown as recorded",
+   "source": "World Bank API (api.worldbank.org/v2), fetched 2026-11-15, SP.DYN.LE00.IN + country regions",
+   "url": ""
+  },
+  {
+   "frame": "unit_internet",
+   "shown": "71.2% (2024)",
+   "status": "pulled from the source file by script; shown as recorded",
+   "source": "World Bank API (api.worldbank.org/v2), fetched 2026-11-15, IT.NET.USER.ZS WLD",
+   "url": ""
+  },
+  {
+   "frame": "unit_forest",
+   "shown": "31.13% (2022)",
+   "status": "pulled from the source file by script; shown as recorded",
+   "source": "World Bank API (api.worldbank.org/v2), fetched 2026-11-15, AG.LND.FRST.ZS WLD",
+   "url": ""
+  },
+  {
+   "frame": "unit_urban",
+   "shown": "35.1% (2023)",
+   "status": "pulled from the source file by script; shown as recorded",
+   "source": "World Bank API (api.worldbank.org/v2), fetched 2026-11-15, SP.URB.TOTL.IN.ZS IND",
+   "url": ""
+  },
+  {
+   "frame": "relief_andes",
+   "shown": "Aconcagua 6,961 m; highest peak outside Asia",
+   "status": "confirmed by web search 2026-11-15 (snippets; canonical page linked)",
+   "source": "Instituto Geográfico Nacional (Argentina) 2012 survey (6,960.8 m)",
+   "url": "https://rpp.pe/lima/actualidad/nueva-altura-oficial-del-cerro-aconcagua-es-de-69608-metros-noticia-518097"
+  },
+  {
+   "frame": "relief_rift",
+   "shown": "Mount Kenya 5,199 m; Lake Naivasha on the Gregory Rift floor",
+   "status": "confirmed by web search 2026-11-15 (snippets; canonical page linked)",
+   "source": "Kenya Wildlife Service / UNESCO WHS 800; IUCN WH Outlook",
+   "url": "https://whc.unesco.org/en/list/800"
+  },
+  {
+   "frame": "relief_atlas",
+   "shown": "Toubkal 4,167 m, North Africa's highest peak (Britannica: 4,165 m)",
+   "status": "confirmed by web search 2026-11-15 (snippets; canonical page linked)",
+   "source": "Britannica",
+   "url": "https://www.britannica.com/place/Mount-Toubkal"
+  },
+  {
+   "frame": "relief_iceland",
+   "shown": "Þingvellir shows the North American–Eurasian plate boundary on land",
+   "status": "confirmed by web search 2026-11-15 (snippets; canonical page linked)",
+   "source": "Þingvellir National Park",
+   "url": "https://www.thingvellir.is/en/"
+  },
+  {
+   "frame": "physics_scale",
+   "shown": "loss-aversion coefficient ≈ 2.25",
+   "status": "confirmed by web search 2026-11-15 (snippets; canonical page linked)",
+   "source": "Tversky & Kahneman, J. Risk Uncertainty 5 (1992) 297–323",
+   "url": "https://doi.org/10.1007/BF00122574"
+  },
+  {
+   "frame": "physics_sandpile",
+   "shown": "self-organised criticality",
+   "status": "confirmed by web search 2026-11-15 (snippets; canonical page linked)",
+   "source": "Bak, Tang & Wiesenfeld, PRL 59, 381 (1987)",
+   "url": "https://doi.org/10.1103/PhysRevLett.59.381"
+  },
+  {
+   "frame": "draw_confirmation",
+   "shown": "Wason 1960",
+   "status": "confirmed by web search 2026-11-15 (snippets; canonical page linked)",
+   "source": "QJEP 12(3) 129–140",
+   "url": "https://doi.org/10.1080/17470216008416717"
+  },
+  {
+   "frame": "draw_spotlight",
+   "shown": "Gilovich, Medvec & Savitsky 2000",
+   "status": "confirmed by web search 2026-11-15 (snippets; canonical page linked)",
+   "source": "JPSP 78(2) 211–222",
+   "url": "https://doi.org/10.1037/0022-3514.78.2.211"
+  },
+  {
+   "frame": "draw_planning",
+   "shown": "Buehler, Griffin & Ross 1994",
+   "status": "confirmed by web search 2026-11-15 (snippets; canonical page linked)",
+   "source": "JPSP 67(3) 366–381",
+   "url": "https://doi.org/10.1037/0022-3514.67.3.366"
+  },
+  {
+   "frame": "draw_anchoring",
+   "shown": "Tversky & Kahneman 1974",
+   "status": "confirmed by web search 2026-11-15 (snippets; canonical page linked)",
+   "source": "Science 185, 1124–1131",
+   "url": "https://doi.org/10.1126/science.185.4157.1124"
+  },
+  {
+   "frame": "pearl",
+   "shown": "7:55 a.m. first wave; second wave attacks ~8:54 a.m.; US declares war 8 Dec",
+   "status": "confirmed by web search 2026-11-15 (snippets; canonical page linked)",
+   "source": "NPS; Naval History & Heritage Command (sources differ 8:40–8:55 on the second wave, so the frame says ~)",
+   "url": "https://www.nps.gov/articles/pearlattackww2.htm"
+  },
+  {
+   "frame": "earhart",
+   "shown": "1932 solo transatlantic flight landed near Derry, Northern Ireland (21 May 1932)",
+   "status": "confirmed by web search 2026-11-15 (snippets; canonical page linked)",
+   "source": "Smithsonian NASM",
+   "url": "https://airandspace.si.edu/explore/stories/amelia-earhart"
+  },
+  {
+   "frame": "bell",
+   "shown": "New York–Chicago line opened 1892 (18 Oct)",
+   "status": "confirmed by web search 2026-11-15 (snippets; canonical page linked)",
+   "source": "Library of Congress, Bell papers timeline",
+   "url": "https://www.loc.gov/collections/alexander-graham-bell-papers/articles-and-essays/time-line-of-alexander-graham-bell/"
+  },
+  {
+   "frame": "tesla",
+   "shown": "US 381,968, 1 May 1888; 1856–1943; Smiljan → New York",
+   "status": "confirmed by web search 2026-11-15 (snippets; canonical page linked)",
+   "source": "Google Patents; Britannica",
+   "url": "https://patents.google.com/patent/US381968A"
+  },
+  {
+   "frame": "edison",
+   "shown": "phonograph 1877; carbon-filament lamp 1879; Menlo Park; 1847–1931",
+   "status": "confirmed by web search 2026-11-15 (snippets; canonical page linked)",
+   "source": "NPS Thomas Edison NHP",
+   "url": "https://www.nps.gov/edis/learn/historyculture/index.htm"
+  },
+  {
+   "frame": "curie",
+   "shown": "Physics 1903, Chemistry 1911; 1867–1934",
+   "status": "confirmed by web search 2026-11-15 (snippets; canonical page linked)",
+   "source": "NobelPrize.org",
+   "url": "https://www.nobelprize.org/prizes/physics/1903/marie-curie/biographical/"
+  },
+  {
+   "frame": "cyclone",
+   "shown": "Cyclone Mocha over the Bay of Bengal, 13 May 2023",
+   "status": "confirmed by web search 2026-11-15 (snippets; canonical page linked)",
+   "source": "IMD RSMC New Delhi bulletin 13 May 2023",
+   "url": "https://rsmcnewdelhi.imd.gov.in/"
+  },
+  {
+   "frame": "smokeplume",
+   "shown": "West Coast wildfire smoke, 9 Sep 2020",
+   "status": "confirmed by web search 2026-11-15 (snippets; canonical page linked)",
+   "source": "NASA Earth Observatory",
+   "url": "https://science.nasa.gov/earth/earth-observatory/a-wall-of-smoke-on-the-us-west-coast-147261/"
+  },
+  {
+   "frame": "dustplume",
+   "shown": "Saharan dust over the Atlantic, 18 Jun 2020 (our image: MODIS Terra via GIBS; NASA's own image that day is VIIRS)",
+   "status": "confirmed by web search 2026-11-15 (snippets; canonical page linked)",
+   "source": "NASA Earth Observatory",
+   "url": "https://earthobservatory.nasa.gov/images/146871/dust-traverses-the-atlantic-ocean"
+  },
+  {
+   "frame": "trafalgar/dday/lebanon",
+   "shown": "21 Oct 1805; 6 Jun 1944, five beaches, Paris freed Aug 1944; Beirut 4 Aug 2020",
+   "status": "confirmed by web search 2026-11-15 (snippets; canonical page linked)",
+   "source": "Royal Museums Greenwich; National WWII Museum; UN",
+   "url": "https://www.nationalww2museum.org/students-teachers/student-resources/research-starters/d-day-june-6-1944"
+  },
+  {
+   "frame": "toytrain",
+   "shown": "Siliguri · Kurseong · Ghum (highest station)",
+   "status": "confirmed by web search 2026-11-15 (snippets; canonical page linked)",
+   "source": "UNESCO WHS 944",
+   "url": "https://whc.unesco.org/en/list/944"
+  },
+  {
+   "frame": "transmongol",
+   "shown": "Datong · Erenhot · Zamyn-Üüd",
+   "status": "confirmed by web search 2026-11-15 (snippets; canonical page linked)",
+   "source": "Seat61",
+   "url": "https://www.seat61.com/Trans-Siberian-Railway.htm"
+  },
+  {
+   "frame": "glacierexp",
+   "shown": "Brig · Andermatt · Chur",
+   "status": "confirmed by web search 2026-11-15 (snippets; canonical page linked)",
+   "source": "Glacier Express",
+   "url": "https://www.glacierexpress.ch/en/"
+  },
+  {
+   "frame": "lehavre",
+   "shown": "city centre rebuilt by Auguste Perret; UNESCO 2005",
+   "status": "confirmed by web search 2026-11-15 (snippets; canonical page linked)",
+   "source": "UNESCO WHC 1181",
+   "url": "https://whc.unesco.org/en/list/1181"
+  },
+  {
+   "frame": "node_upi",
+   "shown": "UPI is run by NPCI",
+   "status": "confirmed by web search 2026-11-15 (snippets; canonical page linked)",
+   "source": "NPCI",
+   "url": "https://www.npci.org.in/what-we-do/upi/product-overview"
+  },
+  {
+   "frame": "perry",
+   "shown": "fleet at Uraga, July 1853",
+   "status": "confirmed by web search 2026-11-15 (snippets; canonical page linked)",
+   "source": "Office of the Historian",
+   "url": "https://history.state.gov/milestones/1830-1860/opening-to-japan"
+  },
+  {
+   "frame": "wright",
+   "shown": "'Success four flights', 17 Dec 1903",
+   "status": "confirmed by web search 2026-11-15 (snippets; canonical page linked)",
+   "source": "Library of Congress",
+   "url": "https://www.loc.gov/item/mcc.016/"
+  },
+  {
+   "frame": "gigwork",
+   "shown": "7.7 million gig and platform workers (2020–21); 23.5 million projected (2029–30)",
+   "status": "confirmed by web search 2026-11-15 (snippets; canonical page linked)",
+   "source": "NITI Aayog, 'India's Booming Gig and Platform Economy', June 2022 (well-known report figures; not re-fetched today)",
+   "url": "https://www.niti.gov.in/sites/default/files/2022-06/Policy_Brief_India%27s_Booming_Gig_and_Platform_Economy_27062022.pdf"
+  },
+  {
+   "frame": "jefferson",
+   "shown": "rough draught held at the Library of Congress",
+   "status": "confirmed by web search 2026-11-15 (snippets; canonical page linked)",
+   "source": "Library of Congress",
+   "url": "https://www.loc.gov/exhibits/declara/ruffdrft.html"
+  }
+ ]
+}
