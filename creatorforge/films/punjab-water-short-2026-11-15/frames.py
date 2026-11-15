@@ -108,11 +108,11 @@ put("05_orbit", page(a('<img src="/maps/nw_india.jpg" style="width:1080px;height
                      dark=True))
 
 # 06 a sack of paddy and the water behind one kilo: 30 buckets of 100 litres
-bk = "".join(a(icon("bucket", 70, "#2F6FB5", 1.8), 120 + (i % 6) * 140, 1040 + (i // 6) * 100) for i in range(30))
+bk = "".join(a(icon("bucket", 66, "#2F6FB5", 1.8), 120 + (i % 6) * 140, 1075 + (i // 6) * 88) for i in range(30))
 put("06_litres", page(kick("ONE KILO OF PADDY", 70, SAFE_TOP)
                       + a(f'<div style="font:400 210px/0.9 Anton;color:{NAVY}">~3,000</div><div style="font:400 64px/1 Anton;color:{NAVY}">LITRES OF WATER</div>', 66, 270)
                       + a('<img src="/assets/ricesack.png" style="width:420px;transform:rotate(4deg);filter:drop-shadow(0 20px 22px rgba(0,0,0,.35))">', 600, 600)
-                      + bk + a('<div style="font:700 44px Caveat;color:#2F6FB5">each bucket = 100 litres</div>', 130, 1560 - 80)
+                      + bk + a('<div style="font:700 44px Caveat;color:#2F6FB5">each bucket = 100 litres</div>', 130, 1512)
                       + a(f'<div style="font:500 20px/1.5 Plex;color:#555;width:900px">ICAR estimate for flooded paddy: ~3,333 L/kg; other estimates range from about 1,500 to 4,500.</div>', 70, 950),
                       "#F1ECE0", "SOURCE: INDIAN FARMING (ICAR) · PHOTO: PIXABAY"))
 

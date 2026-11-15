@@ -15,6 +15,7 @@ import numpy as np
 
 D = Path(__file__).resolve().parent
 FPS = 24
+ONLY = next((a.split("=", 1)[1].split(",") for a in sys.argv if a.startswith("--only=")), [])
 GAP = 0.35
 DUR = json.load(open(D / "audio" / "durs.json"))
 LINES = json.load(open(D / "lines.json"))
@@ -24,7 +25,7 @@ SHOTS = {1: [("01_rivers", 1)], 2: [("01_statement", .45), ("02_columns", .55)],
          9: [("09_trend", .52), ("09b_canal", .48)], 10: [("10_warning", 1)], 11: [("11_tubewell", 1)], 12: [("12_end", 1)]}
 SFX = {1: "whoosh_air", 2: "impact_punch", 3: "impact_deep", 4: "click_projector", 5: "whoosh_low", 6: "pop_soft", 7: "scribble_pen",
        8: "whoosh_paper", 9: "riser_tension", 10: "whoosh_paper", 11: "impact_deep", 12: "impact_deep"}
-CAP_Y = {"02_columns": 1240, "12_end": 1210, "06_litres": 1180, "04_blocks": 940, "05c_cube": 1590 - 120, "01_rivers": 1230}
+CAP_Y = {"02_columns": 1240, "12_end": 1210, "06_litres": 900, "07_chain": 1478, "04_blocks": 940, "05c_cube": 1590 - 120, "01_rivers": 1230}
 
 LIB = """<div id="cap" style="position:absolute;left:0;right:0;text-align:center;z-index:999;pointer-events:none"></div><script>
 window.setT=function(t,sec,dur,capY,capHTML){
@@ -111,7 +112,9 @@ def timeline():
 def render_frames(shots):
     from playwright.sync_api import sync_playwright
     out = D / "frames"
-    shutil.rmtree(out, ignore_errors=True); out.mkdir()
+    only = set(ONLY)
+    if not only:
+        shutil.rmtree(out, ignore_errors=True); out.mkdir()
     srv = serve()
     vo_words = {}
     for b in range(1, 13):
@@ -124,6 +127,9 @@ def render_frames(shots):
         pg = br.new_page(viewport={"width": 1080, "height": 1920})
         k = 0
         for s in shots:
+            n = max(1, round(s["dur"] * FPS))
+            if only and s["page"] not in only:
+                k += n; continue
             src = (D / "html" / f"{s['page']}.html").read_text()
             src = src.replace("</body>", "<script>" + CUSTOM.get(s["page"], "") + "</script>" + LIB + "</body>")
             (D / "html" / f"_anim_{s['page']}.html").write_text(src)
