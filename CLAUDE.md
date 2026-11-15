@@ -15,6 +15,9 @@ And read **`creatorforge/channels/PRODUCTION_CONSTITUTION.md`** (2026-11-14): th
 video. It covers the channel lock, the four Vox and Johnny Harris pillars, a unique **Visual DNA Blueprint** per
 video, beat-by-beat skill use, zero-defect QA, the `[ACCESS / SYSTEM BLOCKER]` alert, and the director commands.
 
+Read **`creatorforge/channels/VIDEO_PLAYBOOK.md`** (2026-11-15): the owner's prompts and director commands for a
+Vox-style film, step by step, and which tool serves each beat.
+
 Then read **`creatorforge/channels/BRAIN_LOG.md`**: lessons from the owner's corrections, and the mechanics already
 used.
 
