@@ -133,3 +133,12 @@ Newest entries go at the bottom. Rules here are binding for both channels unless
 - **Winning Pattern:** one real thing (photo, map, document, portrait) + one flat accent colour + paper texture +
   geometry behind the subject + type that acts like an object. People enter through public-domain portraits and
   their own papers; places through satellite maps that glow.
+
+### 2026-11-15: "All must be Vox and Johnny Harris style"
+- **Mistake Logged:** n/a (owner rule).
+- **New Permanent Rule:** No look is used as pure poster art. Every frame passes the seven-point Vox × Johnny Harris
+  test in STYLE_REFERENCES.md: explains one sourced thing, real evidence visible, map/document/chart when possible,
+  a hand-made investigator layer (marker, highlighter, notes, string, desk), camera feel, a source line, restraint.
+  Glossy elements (e.g. 3D waving flags) are replaced by paper or archival versions.
+- **Winning Pattern:** Vox gives the explanation and honest charts; Johnny Harris gives the reporter's desk, the
+  marker on the map and the feeling of following a trail.

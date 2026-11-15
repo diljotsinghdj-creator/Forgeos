@@ -117,6 +117,8 @@ For geography, geopolitics, scale, infrastructure and movement.
 - These sit alongside the existing rules: pacing gate, evidence first, India's official boundary, numbers sourced,
   illustrative layers labelled.
 
+**Every look in this playbook, old and new, must pass the seven-point Vox × Johnny Harris test (STYLE_REFERENCES.md): one sourced idea, real evidence, map/document/chart, the investigator's hand-made layer, camera feel, a source line, restraint.**
+
 ### 5. New looks from the 2026-11-15 reference study (to build on the owner's "build")
 Details and rules in STYLE_REFERENCES.md. Status for all: **to build**.
 
@@ -125,7 +127,7 @@ Details and rules in STYLE_REFERENCES.md. Status for all: **to build**.
 | `[25D-PORTRAIT-BOARD]` | framed public-domain portrait on a chalkboard of notes | introducing a person in history or science |
 | `[25D-PORTRAIT-DOC]` | the person's photo over their own letter | "who was this", in their own words |
 | `[25D-DOC-BOARD]` | portrait + year badge + satellite panel on a green grid board | who / when / where opener |
-| `[3D-FLAG-RIBBON]` | waving flag cloth framing a portrait, title and bio banner | a nation's leader or symbol (neutral only) |
+| `[3D-FLAG-RIBBON]` | paper or archival flag cut-out pinned beside a portrait and a dated document (no glossy waving cloth) | a nation's leader or symbol (neutral only) |
 | `[3D-MAP-FILL]` | satellite region filled with photo texture, arrow, typewriter labels | what grows or lives in a region |
 | `[3D-MAP-EVENT]` | vehicle icons, tracers and date on a satellite place | a historical event at a place |
 | `[2D-BAR-PHOTO]` | bars sliced from one photo, or standing over a landscape photo | a statistic about a place or thing |

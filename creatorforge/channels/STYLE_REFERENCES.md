@@ -400,3 +400,43 @@ split with sepia photo (split).
 - **AI-made imagery in references** (some look generated) is a style cue only; our frames use real photos,
   archives and satellite imagery.
 - **Every number on screen** (bars, readouts, counters, dates) comes from the research dossier.
+
+### Owner's rule (2026-11-15): every look is Vox × Johnny Harris, never just a poster
+The references are style cues. Each look is rebuilt in the Vox × Johnny Harris grammar before it is used.
+
+**The test every frame must pass (all seven):**
+1. **It explains one thing.** One claim per frame, from the dossier, said in the caption or by the image itself.
+   Decoration with no meaning is cut.
+2. **Real evidence is visible:** a document, archive photo, satellite image, footage or real data.
+3. **A map, document or chart whenever the beat allows** (Vox): places on maps, numbers on honest charts
+   (bars from zero, labelled units, source line).
+4. **A hand-made investigator layer** (Johnny Harris): marker on the map, highlighter on the document, sticky notes,
+   red string, a desk or paper surface, pins, hand-drawn arrows and circles.
+5. **Camera feel:** a slow push-in, a handheld drift over the desk or map, rack focus between layers, a match cut
+   into the next beat. Nothing sits dead still.
+6. **A source line on screen** for every fact, image and number.
+7. **Restraint:** muted archival palette, one accent plus the signature yellow, grain and paper; never glossy
+   advertising polish.
+
+**How each of the 19 looks becomes Vox × Johnny Harris:**
+| Look | What changes |
+|---|---|
+| `[25D-PORTRAIT-BOARD]` | the chalkboard holds the person's real equations, dates or claims from the dossier; a marker circles the one that matters |
+| `[V-OBJECT-MAP]` | the silhouette is a real map with the source region marked; the stacked phrase is the script line |
+| `[3D-MAP-FILL]` | the filled region is the real area from data (not a guess); marker arrow and typewriter labels carry dossier facts |
+| `[2D-BAR-PHOTO]` | bars from zero, axis and units labelled, source line; the photo is of the place the data describes |
+| `[25D-SPOT-STICKER]` | the object sits on the investigator's desk next to the document it relates to; the spot colour marks the evidence |
+| `[25D-CHALK-NODE]` | every link is a sourced relationship; the camera drifts along the chalk lines like Johnny Harris over his wall |
+| `[25D-STRIPS]` | each strip is a dated archive photo of the same place or subject, in order, with micro captions |
+| `[25D-MONUMENT-CARD]` | the paragraph is the dossier text; a pin on a small locator map shows where the monument stands |
+| `[25D-PORTAL]` | the lens or frame reveals the real satellite or archive view of the place being discussed |
+| `[25D-PANORAMA]` | layers are dated archive photos of one city; a year counter ticks as they blend |
+| `[25D-STRIP-MONUMENT]` | the reveal ends on a map pin or a dated archive photo of the landmark |
+| `[25D-HUD]` | readouts show only measured, sourced values; a hand-written note explains what they mean |
+| `[25D-DOC-BOARD]` | portrait, year and satellite panel each carry a source; marker arrows connect them |
+| `[2D-DOODLE]` | marker on maps, photos of objects and documents, like a reporter annotating; never on faces |
+| `[V-DEPTH-CROWD]` | used only with a sourced idea (a study or a figure); the sticky note quotes the script line |
+| `[3D-MAP-EVENT]` | positions from a source (or labelled illustrative); a timeline strip under the map; marker route of the event |
+| `[3D-FLAG-RIBBON]` | no glossy waving flag: a paper or archival flag cut-out pinned to the board next to the portrait and a dated document |
+| `[25D-PORTRAIT-DOC]` | a highlighter sweeps the key line of the person's own letter; the camera pushes from the line to the face |
+| `[2D-BAR-PHOTO]` (landscape) | same chart rules; labels sit on paper tabs pinned to the bars |
