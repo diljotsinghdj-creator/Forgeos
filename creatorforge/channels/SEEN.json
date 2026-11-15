@@ -793,5 +793,13 @@
   "date": "2026-11-14",
   "look": "39 devices, none more than 4 times; repeats of a device change layout (variant index), palette and photos; see films/world-100-2026-11-14/concepts.py",
   "rule": "every photo picked by eye; no stock photo reused except a small walking silhouette in the 3 scale frames; failed cut-outs become torn cards; numbers in data/dossier.json"
+ },
+ {
+  "id": "vox-tools-2026-11-15",
+  "kind": "sample-visuals",
+  "channel": "both",
+  "topic": "tool samples: relief map (Alps, Grand Canyon), physics (Galton board, dominoes, tower), turbine cutaway, CO2 glow bars, sunk-cost drawing",
+  "date": "2026-11-15",
+  "look": "neon relief on black grid; cream physics stage; blueprint blue cutaway; dark bars with one lit; notebook ink drawing"
  }
 ]
