@@ -1,0 +1,22 @@
+{
+ "2024-11-14": {
+  "layers": "MODIS Terra true colour, gaps filled from MODIS Aqua (same day)",
+  "box": [
+   70.5,
+   24.0,
+   90.5,
+   33.5
+  ],
+  "black_left": 0.0002
+ },
+ "2024-10-03": {
+  "layers": "MODIS Terra true colour, gaps filled from MODIS Aqua (same day)",
+  "box": [
+   70.5,
+   24.0,
+   90.5,
+   33.5
+  ],
+  "black_left": 0.0
+ }
+}

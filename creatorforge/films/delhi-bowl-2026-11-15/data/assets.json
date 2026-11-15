@@ -1,0 +1,26 @@
+{
+ "indiagate": {
+  "pixabay_id": 5251885,
+  "page": "https://pixabay.com/photos/reflection-water-monument-5251885/",
+  "author": "vikram__siingh",
+  "tags": "reflection, water, monument, india gate, india, sky, famous, landmark, door, gate, tourism, structure, heritage, delhi, ",
+  "licence": "Pixabay Content License",
+  "cut": true
+ },
+ "street": {
+  "pixabay_id": 2178704,
+  "page": "https://pixabay.com/photos/city-street-alley-architecture-2178704/",
+  "author": "Pexels",
+  "tags": "city, street, alley, architecture, asphalt, business, cityscape, crossroad, crowd, culture, delhi, downtown, india, mode",
+  "licence": "Pixabay Content License",
+  "cut": null
+ },
+ "mask": {
+  "pixabay_id": 5800472,
+  "page": "https://pixabay.com/photos/face-mask-covid-19-protection-5800472/",
+  "author": "OWNFILTERS",
+  "tags": "face mask, covid-19, protection, pandemic, coronavirus, covid, hygiene, sars-cov-2, protective mask, safety",
+  "licence": "Pixabay Content License",
+  "cut": true
+ }
+}

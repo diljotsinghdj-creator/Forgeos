@@ -801,5 +801,16 @@
   "topic": "tool samples: relief map (Alps, Grand Canyon), physics (Galton board, dominoes, tower), turbine cutaway, CO2 glow bars, sunk-cost drawing",
   "date": "2026-11-15",
   "look": "neon relief on black grid; cream physics stage; blueprint blue cutaway; dark bars with one lit; notebook ink drawing"
+ },
+ {
+  "id": "delhi-bowl-2026-11-15",
+  "kind": "key-frames",
+  "channel": "printfacts",
+  "topic": "why Delhi's air gets worst in November",
+  "date": "2026-11-15",
+  "engine": "the-bowl",
+  "hook": "NASA satellite, 14 Nov 2024: a blanket over the plains",
+  "look": "dust ochre + haze; relief bowl with haze layer; lid physics; notebook sketch; glowing 494",
+  "opening_shot": "satellite true colour of north India with Delhi pin"
  }
 ]
