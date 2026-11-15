@@ -1,2 +1,0 @@
-16 shots, total 73.5s, longest 6.63s, mean 4.59s
-shot 01_rivers 106
