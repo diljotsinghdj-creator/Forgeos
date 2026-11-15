@@ -45,7 +45,7 @@ owner's own narration if it's their voice. Everything else it finds.
 | Command | What it does |
 |---|---|
 | `[PRINTFACTS]` / `[DRAGONPSYCH]` | lock the channel |
-| `[SCRIPT_PLAN]` | 30-cue script: line → visual → sound, Visual DNA blueprint, skill per beat |
+| `[SCRIPT_PLAN]` | 30-cue script: line → visual (with its asset code, see the taxonomy) → sound, Visual DNA blueprint, skill per beat |
 | `[STYLE_SHIFT]` | three new visual directions (type, palette, texture, motion) |
 | `[SIMULATE]` | one self-contained HTML motion scene for a beat ("viewer brain trap" for Dragon Psychology) |
 | `[3D_STAGE]` | three-layer parallax desk or map stage |
@@ -69,6 +69,78 @@ owner's own narration if it's their voice. Everything else it finds.
 | `[REDO] <frame numbers>` | rebuild only those frames | |
 | `[CHECK]` | QA pass: facts, overlaps, pacing, licences, repeats, India boundary | QC + gates |
 | `[PUBLISH_PACK]` | titles, thumbnail options, description with sources, chapters, 9:16 cutdowns | studio SEO + thumbnail |
+
+## Visual asset taxonomy (owner, 2026-11-15)
+
+Every beat in a `[SCRIPT_PLAN]` carries one asset code from this list (a beat may pair two, e.g. `[3D-MAP]+[3D-PIN]`).
+Status says what the studio can render today.
+
+### 1. 2D statistical and infographic charts (flat vector + grid texture)
+For hard numbers, trends, comparisons and quick proof points.
+
+| Code | Visual | Studio status |
+|---|---|---|
+| `[2D-LINE]` | trim-path line (optional translucent area fill) drawing left to right over graph paper | ready (vox charts) |
+| `[2D-BAR]` | bars that wipe or scale on cue; the outlier switches to the accent colour | ready (object bars, `[GLOW]` 3D bars) |
+| `[2D-UNIT]` | pictogram grid: icons pop in at 12 fps to make a huge number countable | partial (figures on bars); full grid to build |
+| `[2D-BUBBLE]` | proportional circles side by side, or a radial fill for a share | ready (size compare, object pie) |
+| `[2D-BOX]` | box plot / range strip: averages, medians, outliers across groups | **to build** |
+| `[2D-TIME]` | scrubbing horizontal timeline; year counter ticks, events pop up | ready (photo timeline) |
+
+### 2. 2.5D motion graphics (flat layers in 3D camera space)
+For storytelling, history, documents and systems.
+
+| Code | Visual | Studio status |
+|---|---|---|
+| `[25D-PARALLAX]` | archival photo split into foreground / midground / background, camera pushes in | ready (Depth Anything parallax, `[3D_STAGE]`) |
+| `[25D-DOC]` | scanned document in 3D space, highlighter sweep on the key line, the rest blurs | ready (court doc, highlighter) |
+| `[25D-NODE]` | infinite-canvas web of portraits, icons and boxes linked by animated curves | partial (evidence board, red string); pan-across canvas to build |
+| `[25D-CARD]` | textured index cards or folders sliding / fanning out as numbered steps | ready (card on desk, polaroids, clothesline) |
+
+### 3. True 3D and spatial (terrain, globes, low-poly models)
+For geography, geopolitics, scale, infrastructure and movement.
+
+| Code | Visual | Studio status |
+|---|---|---|
+| `[3D-MAP]` | tilted real-terrain relief (DEM), camera swoops low, borders hug the ground | ready (`[RELIEF]`); satellite draped on the terrain to add |
+| `[3D-PRISM]` | regions extruded into columns by a value (population, GDP) | ready (extruded map) |
+| `[3D-PIN]` | pins, flags and leader-line callouts anchored to coordinates, facing the camera | ready (relief pins, cutaway labels) |
+| `[3D-MODEL]` | isometric / low-poly cutaway of infrastructure (ships, pipelines, dams) | ready (`[CUTAWAY]`, isometric scenes) |
+| `[3D-GLOBE]` | rotating Earth with paths or ranges; morph between sphere and flat map | partial (globe frames); spin and sphere-to-Mercator morph to build |
+
+### 4. Global style rules (all visuals)
+- **Frame rate:** smooth 24/30 fps camera moves; chart reveals and icon pops stepped at 12 fps.
+- **Texture:** paper grain, halftone dots and light film noise over clean vectors and 3D renders.
+- **Colour hierarchy:** about 80 % muted archival neutrals (off-white paper, warm beige, charcoal ink) and 20 % one
+  high-contrast accent. The signature yellow #FFDD33 stays the signal colour; the film's own accent (e.g. burnt red)
+  rotates per film.
+- These sit alongside the existing rules: pacing gate, evidence first, India's official boundary, numbers sourced,
+  illustrative layers labelled.
+
+## Mapping guide: which visual for which beat
+
+| Script beat | First choice | Also good | Avoid |
+|---|---|---|---|
+| A single headline number | `[2D-BAR]` (outlier lit) or `[GLOW]` counter | `[2D-UNIT]` if the number is countable | a table |
+| A trend over time | `[2D-LINE]` | `[2D-TIME]` with events | bars for 20+ points |
+| Comparing sizes or shares | `[2D-BUBBLE]` | `[2D-BAR]`, `[3D-PRISM]` for places | pies with more than 4 slices |
+| A huge abstract number (people, money) | `[2D-UNIT]` | `[2D-BUBBLE]` scale shock | a bare number with no anchor |
+| Spread / inequality / outliers in groups | `[2D-BOX]` | `[2D-BAR]` sorted | averages alone |
+| A sequence of dated events | `[2D-TIME]` | `[25D-CARD]` for 3-5 steps | a bulleted list |
+| A historical quote, law, report or court record | `[25D-DOC]` | `[25D-PARALLAX]` for the archive photo of the moment | paraphrase without the document |
+| An archival photo moment | `[25D-PARALLAX]` | collage cut-out on paper | a flat still over 4.5 s |
+| Who is connected to whom / cause and effect | `[25D-NODE]` | evidence board | arrows on a plain slide |
+| A step-by-step argument or process | `[25D-CARD]` | `[DRAW]` stroke-by-stroke | five bullets at once |
+| A place, border or terrain | `[3D-MAP]` + `[3D-PIN]` | `[ORBIT]` satellite, halftone route map | a flat locator map only |
+| Movement (trade, migration, smoke, armies) | `[3D-MAP]` route or `[3D-GLOBE]` paths | halftone route map | a static arrow |
+| A value by region | `[3D-PRISM]` | choropleth | prisms where heights can't be compared |
+| How a machine, building or system works | `[3D-MODEL]` cutaway | `[PHYSICS]` for the mechanism | stock footage only |
+| Global reach (cables, flights, ranges) | `[3D-GLOBE]` | world route map | a cropped flat map hiding distance |
+| A behaviour or bias (Dragon Psychology) | `[PHYSICS]` metaphor or `[DRAW]` | `[SIMULATE]` viewer test | a real person shown as the "bad" example |
+| Before vs after | `[ORBIT]` slider | split collage | two separate shots far apart |
+
+Rules of use: one code per beat is the default; never the same code three beats running; Print Facts opens on
+`[25D-DOC]`, `[ORBIT]` or real footage (evidence first).
 
 ## What the studio uses, beat by beat
 
