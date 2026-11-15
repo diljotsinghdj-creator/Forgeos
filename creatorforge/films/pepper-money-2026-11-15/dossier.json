@@ -1,0 +1,205 @@
+{
+ "date": "2026-11-15",
+ "method": "web-search pass, snippets only; primary pages unreachable from the container",
+ "numbers": [
+  {
+   "chapter": "cold open",
+   "shown": "Rome's ransom to Alaric, 408 CE: 5,000 lb gold, 30,000 lb silver, 4,000 silk tunics, 3,000 scarlet skins, 3,000 lb pepper",
+   "source": "Zosimus, New History 5.41; Bury 1923",
+   "url": "https://www.livius.org/sources/content/zosimus/zosimus-new-history-5/zosimus-new-history-5.41/",
+   "status": "snippet"
+  },
+  {
+   "chapter": "vine",
+   "shown": "Piper nigrum, native to the Western Ghats; black/white/green from the same plant",
+   "source": "Kew POWO",
+   "url": "https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:682369-1/general-information",
+   "status": "snippet"
+  },
+  {
+   "chapter": "rome",
+   "shown": "Pliny prices per pound: long 15, white 7, black 4 denarii (NH 12.14 / 12.28-29)",
+   "source": "Pliny, Natural History",
+   "url": "https://nunc.ch/en/a-spicy-history-of-pepper/",
+   "status": "snippet"
+  },
+  {
+   "chapter": "rome",
+   "shown": "Pliny: bought by weight as if gold or silver (NH 12.14)",
+   "source": "Pliny via Bostock/Riley",
+   "url": "https://peterburk.github.io/pliny/",
+   "status": "snippet"
+  },
+  {
+   "chapter": "rome",
+   "shown": "Gold ~1,125 denarii per Roman pound (45 aurei x 25 denarii, post-Nero) = ~280x black pepper",
+   "source": "our calculation from the coin standard",
+   "url": "",
+   "status": "calculation; label on screen"
+  },
+  {
+   "chapter": "rome",
+   "shown": "India takes at least 50 million sesterces a year (NH 6.26 / 6.101)",
+   "source": "Pliny, Fordham translation",
+   "url": "https://sourcebooks.web.fordham.edu/ancient/pliny-india.asp",
+   "status": "snippet; Bostock reads 550M, modern reading 50M"
+  },
+  {
+   "chapter": "rome",
+   "shown": "Horrea Piperataria built under Domitian (81-96 CE); beneath the Basilica of Maxentius",
+   "source": "Platner & Ashby 1929; Wanted in Rome",
+   "url": "https://digi.ub.uni-heidelberg.de/diglit/platner1929/0318",
+   "status": "snippet; no source for '92 CE'"
+  },
+  {
+   "chapter": "rome",
+   "shown": "Muziris papyrus (P.Vindob. G 40822): cargo ~1,150 talents; pepper at least 2/3 (De Romanis estimate)",
+   "source": "De Romanis; Casson 1990",
+   "url": "https://dlib.nyu.edu/awdl/isaw/isaw-papers/8/",
+   "status": "snippet; estimate"
+  },
+  {
+   "chapter": "rome",
+   "shown": "Kottayam hoard of Roman gold coins, Kerala, 1847",
+   "source": "CHRE database",
+   "url": "https://en.wikipedia.org/wiki/Kottayam_coin_hoard",
+   "status": "snippet; no coin count on screen"
+  },
+  {
+   "chapter": "medieval",
+   "shown": "London toll: 10 lb pepper at Christmas and Easter (Anglo-Saxon toll code)",
+   "source": "Fordham Medieval Sourcebook (Billingsgate tolls)",
+   "url": "https://sourcebooks.web.fordham.edu/source/billingsgate-tolls.asp",
+   "status": "snippet; date disputed"
+  },
+  {
+   "chapter": "medieval",
+   "shown": "Genoa 1156: debt payable in pepper or coin",
+   "source": "Hunt et al., Making of the West, doc 10.1",
+   "url": "https://digfir-published.macmillanusa.com/hunt5e/hunt5e_ch10_40.html",
+   "status": "snippet"
+  },
+  {
+   "chapter": "medieval",
+   "shown": "Ramsey Abbey 1194 rent: 1,000 eels, 2 lb each pepper and ginger, scarlet trousers",
+   "source": "BBC History Magazine (Greenlee)",
+   "url": "https://www.pressreader.com/uk/bbc-history-magazine/20200903/281552293230053",
+   "status": "snippet; secondary"
+  },
+  {
+   "chapter": "medieval",
+   "shown": "Kent c.1270: half a pound of pepper a year (charter 113275)",
+   "source": "Bodleian Medieval Charters",
+   "url": "https://charters.bodleian.ox.ac.uk/catalog/charter_113275",
+   "status": "snippet; primary catalogue"
+  },
+  {
+   "chapter": "medieval",
+   "shown": "Scotland 11 Nov 1286: one pound of pepper",
+   "source": "People of Medieval Scotland",
+   "url": "https://poms.ac.uk/record/factoid/81831",
+   "status": "snippet"
+  },
+  {
+   "chapter": "medieval",
+   "shown": "Pepperers recorded 1180; Grocers 1376; charter 1428",
+   "source": "Worshipful Company of Grocers",
+   "url": "https://grocershall.co.uk/the-company/history",
+   "status": "snippet"
+  },
+  {
+   "chapter": "medieval",
+   "shown": "Pfeffersack = 'pepper sack', nickname for rich merchants",
+   "source": "Port of Hamburg FAQ",
+   "url": "https://www.hafen-hamburg.de/en/faq/2018-05-23-15-54-43-19",
+   "status": "snippet"
+  },
+  {
+   "chapter": "markup",
+   "shown": "Hundredweight ~3 ducats in Calicut, ~80 in Europe (15th c.)",
+   "source": "UNESCO Silk Roads, 'The Arab monopoly'",
+   "url": "https://en.unesco.org/silkroad/sites/default/files/knowledge-bank-article/the%20arab%20monopoly.pdf",
+   "status": "snippet; estimate"
+  },
+  {
+   "chapter": "markup",
+   "shown": "1497: ~42 ducats in Alexandria, 56 in Venice (per cargo)",
+   "source": "Lane, J. Econ. History 28 (1968)",
+   "url": "https://resolve.cambridge.org/core/journals/journal-of-economic-history/article/pepper-prices-before-da-gama/6C850DB458DB453869EB8F41791F02BF",
+   "status": "snippet"
+  },
+  {
+   "chapter": "ship",
+   "shown": "Da Gama reaches coast near Calicut 20 May 1498",
+   "source": "Fordham Modern Sourcebook",
+   "url": "https://sourcebooks.web.fordham.edu/mod/1497degama.asp",
+   "status": "snippet; some say 17/18 May"
+  },
+  {
+   "chapter": "ship",
+   "shown": "'60 times the cost' - reported only",
+   "source": "old histories",
+   "url": "",
+   "status": "unclear; said as reported"
+  },
+  {
+   "chapter": "ship",
+   "shown": "EIC chartered 31 Dec 1600; VOC March 1602; Casa da India c.1500",
+   "source": "Infopedia; histories",
+   "url": "https://www.infopedia.pt/artigos/$casa-da-india",
+   "status": "snippet"
+  },
+  {
+   "chapter": "fall",
+   "shown": "17th c. prices fell (~40% below Portuguese level)",
+   "source": "Encyclopedia.com",
+   "url": "https://encyclopedia.com/history/news-wires-white-papers-and-books/spices-and-spice-trade",
+   "status": "snippet; trend shown as illustrative"
+  },
+  {
+   "chapter": "fall",
+   "shown": "Peppercorn rent = one peppercorn (Leasehold Reform (Ground Rent) Act 2022)",
+   "source": "legislation.gov.uk",
+   "url": "https://www.legislation.gov.uk/ukpga/2022/1/crossheading/prohibited-and-permitted-rent",
+   "status": "snippet; section no. to confirm"
+  },
+  {
+   "chapter": "fall",
+   "shown": "Chappell v Nestle [1960] AC 87: a peppercorn is good consideration even if the promisee does not like pepper",
+   "source": "House of Lords (Lord Somervell)",
+   "url": "https://en.wikipedia.org/wiki/Peppercorn_(law)",
+   "status": "snippet; obiter"
+  },
+  {
+   "chapter": "today",
+   "shown": "Vietnam largest producer, ~257,000 t (2023), ~30%",
+   "source": "FAO via Tridge",
+   "url": "https://www.tridge.com/intelligences/black-pepper/production",
+   "status": "snippet"
+  },
+  {
+   "chapter": "today",
+   "shown": "India: Karnataka ~71%, Kerala ~22% (2023-24)",
+   "source": "Spices Board via Deccan Herald",
+   "url": "https://indianspices.com/sites/default/files/majorstatewise%20areaproduction%202024-25%20web.pdf",
+   "status": "snippet; Tribune gives 60/30"
+  },
+  {
+   "chapter": "today",
+   "shown": "Kochi black pepper ~Rs 695/kg ungarbled (22 Aug 2026), indicative",
+   "source": "Spices Board Spice Market weekly",
+   "url": "https://indianspices.com/indianspices/sites/default/files/22.08.2026%20Spicemarket.pdf",
+   "status": "snippet; refresh before air"
+  }
+ ],
+ "myths_not_used": [
+  "worth its weight in gold (shown as a myth)",
+  "peppercorns counted out as coins",
+  "pepper as dowry or tax (no source)",
+  "spices hid rotten meat",
+  "Dutch monopolised pepper",
+  "Kerala is today's top grower",
+  "100M sesterces as India alone",
+  "410 CE for the ransom"
+ ]
+}
