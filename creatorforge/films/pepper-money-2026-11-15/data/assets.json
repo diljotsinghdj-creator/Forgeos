@@ -61,5 +61,33 @@
   "tags": "spice, herbs, indian, ingredient, cooking, market, taste, curry, aromatic, chili, cuisine,",
   "licence": "Pixabay Content License",
   "cut": null
+ },
+ "bust": {
+  "page": "https://pixabay.com/photos/marcus-aurelius-roman-emperor-2721715/",
+  "author": "6212079",
+  "tags": "marcus aurelius, roman, emperor, statue, face, beard, history, europe, archaeology, rome, ",
+  "licence": "Pixabay Content License",
+  "cut": true
+ },
+ "coins": {
+  "page": "https://pixabay.com/photos/coins-ancient-roman-money-old-4786028/",
+  "author": "papazachariasa",
+  "tags": "coins, ancient, roman, money, old, copper, bronze, collection, finance, emperor, vintage, ",
+  "licence": "Pixabay Content License",
+  "cut": null
+ },
+ "forum": {
+  "page": "https://pixabay.com/photos/rome-italy-architecture-europe-1036018/",
+  "author": "Wengen",
+  "tags": "rome, italy, architecture, europe, tourists, vacation, walk, rome, rome, rome, rome, rome",
+  "licence": "Pixabay Content License",
+  "cut": null
+ },
+ "pile": {
+  "page": "https://pixabay.com/photos/pepper-black-pepper-peppercorn-5501218/",
+  "author": "ka_re",
+  "tags": "pepper, black pepper, peppercorn, spice, seasoning, pepper grains, ingredient, food, piper",
+  "licence": "Pixabay Content License",
+  "cut": null
  }
 }
