@@ -123,3 +123,13 @@ Newest entries go at the bottom. Rules here are binding for both channels unless
   4. Rotate the stand-in voice when the owner's voice is not used.
 - **Used Mechanics to Retire:** the family-group forward hook; one sentence per shot on cream paper; trojan-horse for samples; am_michael as the default stand-in voice
 - **Winning Pattern:** The Antarctica landmarks and the 687-squares unit chart: subject-native visuals that were new to the owner.
+
+### 2026-11-15: Reference study, eight batches ("learn from these visuals")
+- **Mistake Logged:** n/a (owner taught by example).
+- **New Permanent Rule:** Every look needs a real 9:16 layout, not a crop (a third of the references are vertical).
+  Doodles, scribbles and sparks go around objects, never on a person's face. Bars and readouts carry only dossier
+  numbers. Old maps of India appear only as dated historical documents.
+- **Used Mechanics to Retire:** none yet; the 19 new looks are logged in STYLE_REFERENCES.md and VIDEO_PLAYBOOK.md.
+- **Winning Pattern:** one real thing (photo, map, document, portrait) + one flat accent colour + paper texture +
+  geometry behind the subject + type that acts like an object. People enter through public-domain portraits and
+  their own papers; places through satellite maps that glow.

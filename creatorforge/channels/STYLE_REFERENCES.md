@@ -336,3 +336,67 @@ paid providers), every ElevenLabs / Gemini / fal path, AI-generated "archival" i
   date, over darkened footage. **Charts:** minimal on black, one highlighted word in the title.
 - **Social triptych:** three vertical clips side by side, each with its handle credit.
 - **Applied (stills):** films/bjp-it-cell-10min/collage/round9 (headline card, pink official-boundary map, minimal chart).
+
+## Reference study, 2026-11-15 (eight batches, about 45 images)
+
+The owner sent eight batches of stills from collage and Vox-style motion work. What they teach, so every session
+uses it. Building any of the looks below still needs the owner's "build" (no images without asking).
+
+### What the whole set shares
+- **Real material, one strong idea per frame.** A real photo, engraving, satellite image or document carries the
+  frame; one prop or gesture says the idea (a hand moving a chess piece, a key that opens a landscape).
+- **Black-and-white cut-outs plus one or two flat colours.** Most frames are greyscale photos with a single accent
+  (yellow, red, orange, teal). Our signature yellow #FFDD33 fits this exactly.
+- **Paper you can feel.** Grid paper, dotted paper, aged paper, torn white edges, halftone dots, scratch textures.
+- **Geometry as stage.** Sun discs, half-suns, dashed orbit rings, colour rectangles and torn strips sit behind
+  the subject and frame it.
+- **Type that behaves like an object.** Stacked words, a word half-hidden behind the subject, typewriter labels in
+  yellow boxes, brush hand-lettering, editorial serif with a small mono caption.
+- **Maps as heroes.** Satellite maps with glowing outlines, routes that draw themselves, pins with leader lines,
+  icons of ships or planes on the map, monuments standing on old maps.
+- **History told through people and their papers.** A public-domain portrait over the person's own letter, a framed
+  portrait on a chalkboard, a "who / when / where" board with a year badge.
+- **Vertical first.** About a third of the references are 9:16. Every look needs a real vertical layout, not a crop.
+
+### The 19 new looks (codes for the playbook)
+| # | Code | Look | Taught by |
+|---|---|---|---|
+| 1 | `[25D-PORTRAIT-BOARD]` | gilt-framed portrait on a chalkboard of chalk notes, name label | Einstein frame |
+| 2 | `[V-OBJECT-MAP]` | 9:16: real object in front of a grey country silhouette, stacked kinetic phrase, leaves rising | "tea didn't" |
+| 3 | `[3D-MAP-FILL]` | satellite continent, glowing outline, a region filled with photo texture, drawn arrow, typewriter labels | Sahara/Amazon |
+| 4 | `[2D-BAR-PHOTO]` | bars cut from one photo (sliced) or standing over a landscape photo | Rich List, Cappadocia |
+| 5 | `[25D-SPOT-STICKER]` | B&W cut-out with thick white torn edge, scratch-ink discs, one spot colour, flat dark ground | phone in hand |
+| 6 | `[25D-CHALK-NODE]` | chalk lines linking photo cards and objects on a dark board | crime-board diagram |
+| 7 | `[25D-STRIPS]` | a profile (statue or monument) sliced into vertical strips of archive photos, red dots, micro type | Surrealixta poster |
+| 8 | `[25D-MONUMENT-CARD]` | B&W monument on dotted paper, half-sun, local pattern strip, encyclopedia paragraph behind | Giralda |
+| 9 | `[25D-PORTAL]` | an object whose glass or frame shows another landscape, torn colour strips, brush lettering | key and magnifier |
+| 10 | `[25D-PANORAMA]` | B&W city layers fading into each other, halftone, one colour element | Lucknow layers |
+| 11 | (variant of 4) | yellow bars rising out of a real landscape photo with labelled values | Cappadocia chart |
+| 12 | `[25D-STRIP-MONUMENT]` | monument assembled from a sky strip and skyline pieces, reflection below | Taj reveal |
+| 13 | `[25D-HUD]` | thin instrument readouts, rulers, target circle over a real photo | smoke plume |
+| 14 | `[25D-DOC-BOARD]` | green grid board: portrait cut-out + name, round archive photo + year badge, satellite panel | Machu Picchu |
+| 15 | `[2D-DOODLE]` | marker scribbles, sparks, lightning and simple drawn diagrams around objects, never on faces | Edison/Tesla grid |
+| 16 | `[V-DEPTH-CROWD]` | 9:16: one sharp figure among many, a huge blurred one in front, sticky note | lion and sheep |
+| 17 | `[3D-MAP-EVENT]` | satellite place with vehicle icons, tracers, smoke, glowing date; positions labelled illustrative unless sourced | Pearl Harbor |
+| 18 | `[3D-FLAG-RIBBON]` | waving 3D flag cloth framing a public-domain portrait, serif title and short bio banner | Napoleon |
+| 19 | `[25D-PORTRAIT-DOC]` | a person's archive photo laid over their own handwritten letter, related objects in the corners | Edison letter |
+
+### Already in the studio (seen again, small upgrades only)
+Giant hand placing a car or a chess piece (diorama, hand + sun disc); spotlit evidence board and red-string
+newspaper board (spotboard); building with yellow sun disc (add dashed orbit ring, birds, aged paper); statue with
+colour blocks (scale); dark map with glowing outline and pins; engravings in a film frame; monument on an old map
+(map diorama); brain in a dashed circle with a glowing number (counter); satellite route by a lake (satroute); red
+split with sepia photo (split).
+
+### Rules these references tested
+- **Never cartoons, doodles or mocking marks on real faces;** no negative traits on a real, identifiable person
+  (the Trump-with-phone and doodled-glasses frames are examples of what we do not do). Doodles go on objects.
+- **Politicians only from official, credited photos, in neutral framing.**
+- **Private individuals' faces stay out** (stock models shown from behind or as silhouettes; case-board victims
+  never).
+- **Portraits:** real, public-domain and credited only; never painted or AI portraits standing in for a real person.
+- **Old maps of India** are dated historical documents only ("map of 18xx"); any present-day India map uses the
+  official boundary.
+- **AI-made imagery in references** (some look generated) is a style cue only; our frames use real photos,
+  archives and satellite imagery.
+- **Every number on screen** (bars, readouts, counters, dates) comes from the research dossier.

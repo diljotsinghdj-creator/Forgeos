@@ -117,6 +117,34 @@ For geography, geopolitics, scale, infrastructure and movement.
 - These sit alongside the existing rules: pacing gate, evidence first, India's official boundary, numbers sourced,
   illustrative layers labelled.
 
+### 5. New looks from the 2026-11-15 reference study (to build on the owner's "build")
+Details and rules in STYLE_REFERENCES.md. Status for all: **to build**.
+
+| Code | Visual | Best beat |
+|---|---|---|
+| `[25D-PORTRAIT-BOARD]` | framed public-domain portrait on a chalkboard of notes | introducing a person in history or science |
+| `[25D-PORTRAIT-DOC]` | the person's photo over their own letter | "who was this", in their own words |
+| `[25D-DOC-BOARD]` | portrait + year badge + satellite panel on a green grid board | who / when / where opener |
+| `[3D-FLAG-RIBBON]` | waving flag cloth framing a portrait, title and bio banner | a nation's leader or symbol (neutral only) |
+| `[3D-MAP-FILL]` | satellite region filled with photo texture, arrow, typewriter labels | what grows or lives in a region |
+| `[3D-MAP-EVENT]` | vehicle icons, tracers and date on a satellite place | a historical event at a place |
+| `[2D-BAR-PHOTO]` | bars sliced from one photo, or standing over a landscape photo | a statistic about a place or thing |
+| `[25D-HUD]` | instrument readouts over a real photo | measuring: climate, disasters, science |
+| `[25D-CHALK-NODE]` | chalk network of photo cards on a dark board | investigations, organisations |
+| `[25D-STRIPS]` | a statue or monument profile sliced into archive photo strips | one idea through many images |
+| `[25D-MONUMENT-CARD]` | monument cut-out, half-sun, pattern strip, paragraph | a building or site in its context |
+| `[25D-STRIP-MONUMENT]` | monument built from sky and skyline strips, reflection | reveal of a landmark |
+| `[25D-PANORAMA]` | B&W city layers blending, halftone, one colour | a city across time |
+| `[25D-PORTAL]` | an object whose glass shows another landscape | travel, discovery, "a way in" |
+| `[25D-SPOT-STICKER]` | B&W cut-out, white torn edge, scratch discs, one spot colour | a single device or object (phones, scams) |
+| `[2D-DOODLE]` | scribbles, sparks, drawn diagrams around objects (never faces) | energy, shock, a simple mechanism |
+| `[V-OBJECT-MAP]` | 9:16: object over a country silhouette, stacked phrase | Shorts: a thing and where it comes from |
+| `[V-DEPTH-CROWD]` | 9:16: one sharp figure among many, blurred one in front | Shorts: standing out, conformity (animals) |
+
+Mapping additions: introducing a historical person → `[25D-PORTRAIT-DOC]` or `[25D-PORTRAIT-BOARD]`;
+"who, when, where" → `[25D-DOC-BOARD]`; an event at a place → `[3D-MAP-EVENT]`; a statistic about a place →
+`[2D-BAR-PHOTO]`; anything measured → `[25D-HUD]`; Shorts → `[V-...]` first.
+
 ## Mapping guide: which visual for which beat
 
 | Script beat | First choice | Also good | Avoid |
