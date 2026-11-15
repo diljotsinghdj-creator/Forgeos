@@ -1,0 +1,101 @@
+{
+ "shots": [
+  {
+   "beat": 1,
+   "page": "01_rivers",
+   "start": 0.0,
+   "dur": 4.4
+  },
+  {
+   "beat": 2,
+   "page": "01_statement",
+   "start": 4.4,
+   "dur": 3.609
+  },
+  {
+   "beat": 2,
+   "page": "02_columns",
+   "start": 8.009,
+   "dur": 4.411
+  },
+  {
+   "beat": 3,
+   "page": "03_glow",
+   "start": 12.42,
+   "dur": 4.65
+  },
+  {
+   "beat": 4,
+   "page": "04_blocks",
+   "start": 17.07,
+   "dur": 3.83
+  },
+  {
+   "beat": 5,
+   "page": "05h_paper",
+   "start": 20.9,
+   "dur": 4.332
+  },
+  {
+   "beat": 5,
+   "page": "05c_cube",
+   "start": 25.232,
+   "dur": 3.998
+  },
+  {
+   "beat": 6,
+   "page": "06_litres",
+   "start": 29.23,
+   "dur": 4.9
+  },
+  {
+   "beat": 7,
+   "page": "07a_power",
+   "start": 34.13,
+   "dur": 3.388
+  },
+  {
+   "beat": 7,
+   "page": "07_chain",
+   "start": 37.518,
+   "dur": 5.082
+  },
+  {
+   "beat": 8,
+   "page": "08_farmers",
+   "start": 42.6,
+   "dur": 5.02
+  },
+  {
+   "beat": 9,
+   "page": "09_trend",
+   "start": 47.62,
+   "dur": 4.404
+  },
+  {
+   "beat": 9,
+   "page": "09b_canal",
+   "start": 52.024,
+   "dur": 4.066
+  },
+  {
+   "beat": 10,
+   "page": "10_warning",
+   "start": 56.09,
+   "dur": 6.63
+  },
+  {
+   "beat": 11,
+   "page": "11_tubewell",
+   "start": 62.72,
+   "dur": 5.09
+  },
+  {
+   "beat": 12,
+   "page": "12_end",
+   "start": 67.81,
+   "dur": 5.65
+  }
+ ],
+ "total": 73.46
+}

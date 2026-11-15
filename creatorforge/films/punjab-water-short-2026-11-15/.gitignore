@@ -2,3 +2,6 @@ assets/
 html/
 png/
 __pycache__/
+audio/
+frames/
+*.mp4
