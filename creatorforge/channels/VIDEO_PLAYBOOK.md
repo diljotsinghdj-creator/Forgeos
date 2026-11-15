@@ -57,7 +57,7 @@ owner's own narration if it's their voice. Everything else it finds.
 |---|---|---|
 | `[VISUALS]` | key frames of every beat as contact sheets, no video | the whole studio |
 | `[RELIEF] <place>, <route>` | real-terrain 3D relief map, one area lit, a glowing route | Terrarium elevation tiles + three.js bloom (`films/vox-tools-2026-11-15/relief.py`) |
-| `[ORBIT] <place>, <date or two dates>` | real satellite view, or a before/after slider | NASA GIBS (MODIS, Blue Marble, VIIRS night lights) |
+| `[ORBIT] <place>, <date or two dates>` | real satellite view, or a before/after slider | NASA GIBS (MODIS, Blue Marble, VIIRS night lights); small areas: Sentinel-2 cloudless 2016 by EOX, CC BY 4.0 (`fetch_s2.py`) |
 | `[PHYSICS] <dominoes | tower | galton | custom>` | real rigid-body physics as a metaphor | Rapier (Apache-2.0) + three.js |
 | `[CUTAWAY] <object>` | labelled blueprint cutaway, one part glowing | three.js + bloom |
 | `[GLOW] <the fact>` | dark 3D chart or object, only the key fact lit | three.js UnrealBloomPass |
@@ -119,8 +119,8 @@ For geography, geopolitics, scale, infrastructure and movement.
 
 **Every look in this playbook, old and new, must pass the seven-point Vox × Johnny Harris test (STYLE_REFERENCES.md): one sourced idea, real evidence, map/document/chart, the investigator's hand-made layer, camera feel, a source line, restraint.**
 
-### 5. New looks from the 2026-11-15 reference study (to build on the owner's "build")
-Details and rules in STYLE_REFERENCES.md. Status for all: **to build**.
+### 5. New looks from the 2026-11-15 reference study
+Details and rules in STYLE_REFERENCES.md. Status for all: **ready** (`films/two-hundred-2026-11-15/dev4.py`; used in the 200 samples, frames 124–173).
 
 | Code | Visual | Best beat |
 |---|---|---|
