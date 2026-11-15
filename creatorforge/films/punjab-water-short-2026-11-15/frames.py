@@ -27,7 +27,7 @@ def page(body, bg=PAPER, src="", dark=False):
     col = "rgba(255,255,255,.62)" if dark else "rgba(20,20,20,.6)"
     return (f'<!doctype html><html><head><meta charset="utf-8"><style>{FONTS}body{{margin:0;width:1080px;height:1920px;overflow:hidden;background:{bg};position:relative}}'
             f'.a{{position:absolute}}</style></head><body>{body}{GRAIN}'
-            f'<div class="a" style="left:40px;right:40px;top:1590px;font:500 17px/1.5 Plex;letter-spacing:1px;color:{col}">{src}</div>'
+            f'<div class="a" style="left:0;right:0;top:1574px;padding:16px 40px;{"background:linear-gradient(transparent,rgba(0,0,0,.78) 30%)" if dark else ""};font:500 17px/1.5 Plex;letter-spacing:1px;color:{col}">{src}</div>'
             '<script>document.fonts.ready.then(()=>window.READY=true)</script></body></html>')
 
 
