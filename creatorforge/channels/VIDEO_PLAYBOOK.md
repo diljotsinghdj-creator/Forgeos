@@ -82,9 +82,9 @@ For hard numbers, trends, comparisons and quick proof points.
 |---|---|---|
 | `[2D-LINE]` | trim-path line (optional translucent area fill) drawing left to right over graph paper | ready (vox charts) |
 | `[2D-BAR]` | bars that wipe or scale on cue; the outlier switches to the accent colour | ready (object bars, `[GLOW]` 3D bars) |
-| `[2D-UNIT]` | pictogram grid: icons pop in at 12 fps to make a huge number countable | partial (figures on bars); full grid to build |
+| `[2D-UNIT]` | pictogram grid: icons pop in at 12 fps to make a huge number countable | ready (`films/taxonomy-2026-11-15/taxonomy.py` `unit_grid`) |
 | `[2D-BUBBLE]` | proportional circles side by side, or a radial fill for a share | ready (size compare, object pie) |
-| `[2D-BOX]` | box plot / range strip: averages, medians, outliers across groups | **to build** |
+| `[2D-BOX]` | box plot / range strip: averages, medians, outliers across groups | ready (`taxonomy.py` `box_plot`) |
 | `[2D-TIME]` | scrubbing horizontal timeline; year counter ticks, events pop up | ready (photo timeline) |
 
 ### 2. 2.5D motion graphics (flat layers in 3D camera space)
@@ -94,7 +94,7 @@ For storytelling, history, documents and systems.
 |---|---|---|
 | `[25D-PARALLAX]` | archival photo split into foreground / midground / background, camera pushes in | ready (Depth Anything parallax, `[3D_STAGE]`) |
 | `[25D-DOC]` | scanned document in 3D space, highlighter sweep on the key line, the rest blurs | ready (court doc, highlighter) |
-| `[25D-NODE]` | infinite-canvas web of portraits, icons and boxes linked by animated curves | partial (evidence board, red string); pan-across canvas to build |
+| `[25D-NODE]` | infinite-canvas web of portraits, icons and boxes linked by animated curves | ready (`taxonomy.py` `node_canvas`; also the evidence board) |
 | `[25D-CARD]` | textured index cards or folders sliding / fanning out as numbered steps | ready (card on desk, polaroids, clothesline) |
 
 ### 3. True 3D and spatial (terrain, globes, low-poly models)
@@ -106,7 +106,7 @@ For geography, geopolitics, scale, infrastructure and movement.
 | `[3D-PRISM]` | regions extruded into columns by a value (population, GDP) | ready (extruded map) |
 | `[3D-PIN]` | pins, flags and leader-line callouts anchored to coordinates, facing the camera | ready (relief pins, cutaway labels) |
 | `[3D-MODEL]` | isometric / low-poly cutaway of infrastructure (ships, pipelines, dams) | ready (`[CUTAWAY]`, isometric scenes) |
-| `[3D-GLOBE]` | rotating Earth with paths or ranges; morph between sphere and flat map | partial (globe frames); spin and sphere-to-Mercator morph to build |
+| `[3D-GLOBE]` | rotating Earth with paths or ranges; morph between sphere and flat map | ready (`taxonomy.py` `globe`: spin + sphere-to-flat morph) |
 
 ### 4. Global style rules (all visuals)
 - **Frame rate:** smooth 24/30 fps camera moves; chart reveals and icon pops stepped at 12 fps.

@@ -812,5 +812,12 @@
   "hook": "NASA satellite, 14 Nov 2024: a blanket over the plains",
   "look": "dust ochre + haze; relief bowl with haze layer; lid physics; notebook sketch; glowing 494",
   "opening_shot": "satellite true colour of north India with Delhi pin"
+ },
+ {
+  "id": "taxonomy-2026-11-15",
+  "kind": "tool-samples",
+  "channel": "both",
+  "topic": "box plot (CO2 by decade), unit grid (193 UN members, 54 African), node canvas (Delhi air chain), globe morph (Delhi-London)",
+  "date": "2026-11-15"
  }
 ]
