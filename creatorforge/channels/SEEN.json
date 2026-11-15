@@ -828,5 +828,18 @@
   "topic": "200 topics: 173 collage frames (126 print-facts, 47 dragon-psychology) + 27 generated frames (relief Andes/Rift/Iceland/Atlas; physics bottleneck/loss-aversion scale/sand pile; dam and solar cutaways; glow bars warming/India fertility/renewables/India literacy; drawings anchoring/confirmation/spotlight/planning fallacy; box plots GISS months/life expectancy; unit grids internet/forest/India urban; nodes UPI/monsoon prices; globes Shanghai-Rotterdam/Mumbai-New York/Delhi-Sydney)",
   "look": "58 devices, none more than 5 times, including the 19 looks from the 2026-11-15 reference study and two true 9:16 layouts; see films/two-hundred-2026-11-15/concepts.py and data/order.json",
   "rule": "every photo picked by eye; numbers only from the dossier; archive portraits from LoC with rights recorded; illustrative items labelled"
+ },
+ {
+  "id": "punjab-water-short",
+  "kind": "short",
+  "channel": "printfacts",
+  "date": "2026-11-15",
+  "topic": "Punjab's groundwater overdraft",
+  "engine": "bank-account",
+  "voice": "am_onyx",
+  "hook": "the land of five rivers, and its water account is in the red",
+  "opening_shot": "Sentinel-2 satellite of the Punjab with the five rivers flowing on, Punjab turning red",
+  "look": "ledger paper + bank-ink navy + overdraft red; satellite, relief, chalk chain, paper map, cube, tubewell cutaway, passbook end card",
+  "shots": 16
  }
 ]

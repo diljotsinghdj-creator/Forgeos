@@ -25,7 +25,7 @@ SHOTS = {1: [("01_rivers", 1)], 2: [("01_statement", .45), ("02_columns", .55)],
          9: [("09_trend", .52), ("09b_canal", .48)], 10: [("10_warning", 1)], 11: [("11_tubewell", 1)], 12: [("12_end", 1)]}
 SFX = {1: "whoosh_air", 2: "impact_punch", 3: "impact_deep", 4: "click_projector", 5: "whoosh_low", 6: "pop_soft", 7: "scribble_pen",
        8: "whoosh_paper", 9: "riser_tension", 10: "whoosh_paper", 11: "impact_deep", 12: "impact_deep"}
-CAP_Y = {"02_columns": 1240, "12_end": 1210, "06_litres": 900, "07_chain": 1478, "04_blocks": 940, "05c_cube": 1590 - 120, "01_rivers": 1230}
+CAP_Y = {"02_columns": 1240, "12_end": 185, "06_litres": 835, "07_chain": 1478, "04_blocks": 940, "05c_cube": 1590 - 120, "01_rivers": 1230}
 
 LIB = """<div id="cap" style="position:absolute;left:0;right:0;text-align:center;z-index:999;pointer-events:none"></div><script>
 window.setT=function(t,sec,dur,capY,capHTML){
@@ -193,6 +193,8 @@ def mix(shots, total):
     out = vo * 1.0 + fx + m * duck
     import pyloudnorm as pyln
     meter = pyln.Meter(sr)
+    out = pyln.normalize.loudness(out, meter.integrated_loudness(out), -14.0)
+    out = np.tanh(out * 1.1) / np.tanh(1.1)          # soft limiter instead of hard clipping
     out = pyln.normalize.loudness(out, meter.integrated_loudness(out), -14.0)
     out = np.clip(out, -0.98, 0.98)
     with wave.open(str(D / "audio" / "mix.wav"), "wb") as w:
