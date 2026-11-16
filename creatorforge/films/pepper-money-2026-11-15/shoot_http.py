@@ -20,7 +20,9 @@ with sync_playwright() as p:
     pg = b.new_page(viewport={"width": 1920, "height": 1080})
     errs = []; pg.on("pageerror", lambda e: errs.append(str(e))); pg.on("console", lambda m: m.type == "error" and errs.append(m.text))
     for n in names:
-        pg.goto(f"http://127.0.0.1:8765/html/{n}.html"); pg.wait_for_function("window.READY===true", timeout=300000); pg.wait_for_timeout(400)
-        pg.screenshot(path=str(D / "png" / f"{n}.jpg"), type="jpeg", quality=92); print("shot", n, flush=True)
+        base, _, t = n.partition("@")  # "06_pliny@0.4" shoots that page at moment t of its timeline into png/anim/
+        out = D / "png" / (f"anim/{base}@{float(t):.2f}.jpg" if t else f"{n}.jpg"); out.parent.mkdir(exist_ok=True)
+        pg.goto(f"http://127.0.0.1:8765/html/{base}.html" + (f"?t={t}" if t else "")); pg.wait_for_function("window.READY===true", timeout=300000); pg.wait_for_timeout(400)
+        pg.screenshot(path=str(out), type="jpeg", quality=88); print("shot", n, flush=True)
     print("errors:", errs[:5]); b.close()
 srv.shutdown()
