@@ -9,7 +9,7 @@ description: >
   "paper collage", "torn-paper", "living poster" or "Vox-style AI" look, or for AI plates for a film.
 ---
 
-> **House style:** load `printfacts-style` alongside this skill; its Vox x Johnny Harris rules decide the final look. AI image or video models only with the owner's explicit permission for that film.
+> **House style:** load `printfacts-style` (Print Facts) or `dragonpsych-style` (Dragon Psychology) alongside this skill; its Vox x Johnny Harris rules decide the final look. AI image or video models only with the owner's explicit permission for that film.
 
 
 # Collage explainer (adapted for CreatorForge)

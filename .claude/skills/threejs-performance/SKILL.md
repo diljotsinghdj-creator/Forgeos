@@ -3,7 +3,7 @@ name: threejs-performance
 description: "Measuring and optimizing three.js speed: render statistics, memory counters, fewer draw calls via merging, instancing, batching and LOD, fill rate, shadows, CPU work per frame, shader stalls and GPU compute for particles, WebGL or WebGPU with TSL. Use when a scene is slow, janks or exceeds memory."
 ---
 
-> **This repo (CreatorForge / Print Facts):** load `printfacts-style` first. Its house rules (Vox x Johnny Harris look, palette, type, grain, captions, loudness, sources) override this skill's defaults.
+> **This repo (CreatorForge / Print Facts):** load `printfacts-style` (Print Facts) or `dragonpsych-style` (Dragon Psychology) first. Its house rules (Vox x Johnny Harris look, palette, type, grain, captions, loudness, sources) override this skill's defaults.
 
 
 # Three.js Performance

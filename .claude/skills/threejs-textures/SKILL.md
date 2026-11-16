@@ -3,7 +3,7 @@ name: threejs-textures
 description: "Three.js textures: image loading, color spaces, UV channels and transforms, texture types from canvas to HDR and KTX2, render targets, texture memory. Use when working with images on materials, UV coordinates, cubemaps, render targets or texture optimization; on WebGL or with WebGPU and TSL."
 ---
 
-> **This repo (CreatorForge / Print Facts):** load `printfacts-style` first. Its house rules (Vox x Johnny Harris look, palette, type, grain, captions, loudness, sources) override this skill's defaults.
+> **This repo (CreatorForge / Print Facts):** load `printfacts-style` (Print Facts) or `dragonpsych-style` (Dragon Psychology) first. Its house rules (Vox x Johnny Harris look, palette, type, grain, captions, loudness, sources) override this skill's defaults.
 
 
 # Three.js Textures

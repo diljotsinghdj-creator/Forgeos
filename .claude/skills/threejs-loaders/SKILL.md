@@ -3,7 +3,7 @@ name: threejs-loaders
 description: "Loading three.js assets: glTF with Draco, meshopt and KTX2 compression, other model formats, textures, HDR and EXR environments, progress, caching, cloning and disposal. Use when loading 3D models, textures or environment maps, or managing loading progress, on WebGL or with WebGPU and TSL."
 ---
 
-> **This repo (CreatorForge / Print Facts):** load `printfacts-style` first. Its house rules (Vox x Johnny Harris look, palette, type, grain, captions, loudness, sources) override this skill's defaults.
+> **This repo (CreatorForge / Print Facts):** load `printfacts-style` (Print Facts) or `dragonpsych-style` (Dragon Psychology) first. Its house rules (Vox x Johnny Harris look, palette, type, grain, captions, loudness, sources) override this skill's defaults.
 
 
 # Three.js Loaders

@@ -3,7 +3,7 @@ name: threejs-postprocessing
 description: "Three.js post-processing: composer pass chains, built-in renderer effects, and the WebGPU/TSL node pipeline — bloom, depth of field, ambient occlusion, custom screen effects. Use when adding visual effects, color grading, blur, glow, or screen-space shaders, on WebGL or with WebGPU and TSL."
 ---
 
-> **This repo (CreatorForge / Print Facts):** load `printfacts-style` first. Its house rules (Vox x Johnny Harris look, palette, type, grain, captions, loudness, sources) override this skill's defaults.
+> **This repo (CreatorForge / Print Facts):** load `printfacts-style` (Print Facts) or `dragonpsych-style` (Dragon Psychology) first. Its house rules (Vox x Johnny Harris look, palette, type, grain, captions, loudness, sources) override this skill's defaults.
 
 
 # Three.js Post-Processing

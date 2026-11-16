@@ -3,7 +3,7 @@ name: threejs-fundamentals
 description: "Three.js scene setup: scenes and fog, cameras, the renderer and tone mapping, the animation loop, object hierarchies, transforms, core math and cleanup, on WebGL or with WebGPU and TSL. Use when creating a scene from scratch, configuring a camera or renderer, handling resize, or arranging objects."
 ---
 
-> **This repo (CreatorForge / Print Facts):** load `printfacts-style` first. Its house rules (Vox x Johnny Harris look, palette, type, grain, captions, loudness, sources) override this skill's defaults.
+> **This repo (CreatorForge / Print Facts):** load `printfacts-style` (Print Facts) or `dragonpsych-style` (Dragon Psychology) first. Its house rules (Vox x Johnny Harris look, palette, type, grain, captions, loudness, sources) override this skill's defaults.
 
 
 # Three.js Fundamentals
