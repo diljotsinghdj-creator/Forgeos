@@ -185,7 +185,7 @@ Rules of use: one code per beat is the default; never the same code three beats 
 | Archive | NARA, Library of Congress, Internet Archive, Wikimedia, Open Beelden, NASA, ESO/ESA |
 | Motion | 12 fps paper physics, motivated transitions, match cuts, camera push, 60 fps (RIFE) for live footage, depth parallax (Depth Anything) |
 | Voice | the owner's ElevenLabs voice (with permission) or a Kokoro stand-in, never a cloned celebrity |
-| Captions | WhisperX word-by-word, signature yellow #FFDD33 highlight |
+| Captions | exact word timings from the narration (`media/wordtimes.py`, faster-whisper base.en), word-by-word, signature yellow #FFDD33 highlight |
 | Music & sound | ACE-Step or free licensed music, Freesound foley, `[SFX_LOG]` mix, cuts on the beat |
 | Finish | grain, vignette, one accent colour + signature yellow, pacing gate (still ≤ 4.5 s, build ≤ 7 s, mean ≤ 5 s) |
 
@@ -201,6 +201,12 @@ tokens, anything that clones another creator's film.
 - **Frame notes:** "Frame 7: number too small. Frame 12: wrong photo. Frame 15: swap to [RELIEF]."
 - **Beat prompt:** "[PHYSICS] dominoes for the bank-run beat" / "[DRAW] the sunk-cost idea for beat 4".
 - **Final:** "go" (only then is the video rendered), then "[PUBLISH_PACK]".
+
+## Added tools (2026-11-16, owner approved)
+- **three.js skills** (CloudAI-X/threejs-skills, MIT): 13 skills in `.claude/skills/threejs-*`, current API for three.js r186. r186 is vendored at `vendor/three186` beside r160; new 3D scenes use r186 (a globe scene rendered identically on both).
+- **ffmpeg-skill** (MIT, local, stdlib Python, no network): `.claude/skills/ffmpeg-skill`: cuts, silence removal, 9:16 refit, loudness, captions, with verify-after-every-step. Used for cutdowns and final delivery checks.
+- **Exact caption timing**: `media/wordtimes.py` (faster-whisper). Captions follow the voice word for word.
+- Looked at and left out: MotionClone (clones others' videos, paid), iArt.ai (paid, AI imagery), yt-dlp (others' footage), Ghost Editor (talking-head), Remotion-based Shorts Creator (Remotion's company licence).
 
 ## Where things live
 
