@@ -3,6 +3,9 @@ name: vox-method
 description: Documentary production method distilled from a study of Vox's publicly observable craft (editorial choices, script architecture, visual language, motion graphics, maps, data graphics, editing, sound, packaging), turned into our own original production system with a visual decision engine and a machine-checked production blueprint. Use this whenever the task is to plan, pitch, research, script, storyboard, visually plan, edit, review or package a documentary, video essay or explainer, for Print Facts, Dragon Psychology or any faceless channel; whenever someone asks for "Vox style", "Vox quality", "Johnny Harris style" or "documentary quality"; whenever a topic needs to be turned into a scene-by-scene production plan; and whenever a Vox video is to be analysed and its lessons added to the knowledge base. Prefer it over generic storyboarding even if the user never says "Vox".
 ---
 
+> **House style:** load `printfacts-style` alongside this skill; its Vox x Johnny Harris rules decide the final look. AI image or video models only with the owner's explicit permission for that film.
+
+
 # Vox method: elite documentary production, in our own identity
 
 This skill is a production capability, not a style filter. It encodes what a professional explainer-documentary studio

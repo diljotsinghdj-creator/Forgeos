@@ -203,6 +203,8 @@ tokens, anything that clones another creator's film.
 - **Final:** "go" (only then is the video rendered), then "[PUBLISH_PACK]".
 
 ## Added tools (2026-11-16, owner approved)
+All of them answer to **`.claude/skills/printfacts-style`** (the house style: seven-point test, palette, logo D, type, grain, 12 fps steps, captions, −14 LUFS). Every third-party skill file carries a note pointing to it, and the house file wins where they differ.
+
 - **three.js skills** (CloudAI-X/threejs-skills, MIT): 13 skills in `.claude/skills/threejs-*`, current API for three.js r186. r186 is vendored at `vendor/three186` beside r160; new 3D scenes use r186 (a globe scene rendered identically on both).
 - **ffmpeg-skill** (MIT, local, stdlib Python, no network): `.claude/skills/ffmpeg-skill`: cuts, silence removal, 9:16 refit, loudness, captions, with verify-after-every-step. Used for cutdowns and final delivery checks.
 - **Exact caption timing**: `media/wordtimes.py` (faster-whisper). Captions follow the voice word for word.

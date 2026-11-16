@@ -46,5 +46,7 @@ The essentials, in case nothing else is read:
 The studio's memory of past looks and variations lives in `creatorforge/channels/studio_history/`. Never render
 channel work with a throwaway history.
 
+**House style for every tool:** before using any skill that makes or changes a picture, 3D scene, chart, map, caption, edit or export (`threejs-*`, `ffmpeg-skill`, `vox-method`, `collage-explainer`, `dataviz`), load **`.claude/skills/printfacts-style`**. Its Vox × Johnny Harris rules override those tools' own defaults. Captions use `printfacts-style/captions.py`.
+
 **Code:** the worker is in `creatorforge/worker` (tests: `python -m pytest -q`); the Android app is in
 `creatorforge/android`.
