@@ -15,12 +15,15 @@ file for those, then apply the differences below. The owner's hard rules (CLAUDE
   - Every claim is shown on screen with its study card: authors, year, journal and sample size.
   - Studies that failed to replicate say so on screen, with a REPLICATION stamp.
   - "The study everyone quotes is wrong" is a recurring hook.
-- **Strict three-colour palette:**
-  - charcoal #1C1C1C;
-  - signature highlighter yellow #FFDD33;
-  - signal red #E63946.
+- **Palette (owner, 2026-11-16):**
+  - clinical slate #141824;
+  - lab-paper off-white #F0F4F8;
+  - electric cobalt #2B6CB0;
+  - experimental amber/coral **#ED8936**, the signal colour for key numbers, the highlighter and the current caption word.
 
-  The background is warm paper #F1ECE0 or charcoal. No other colours except inside real photos, which go black and white or duotone.
+  There's no yellow on this channel. Real photos go black and white or cobalt duotone.
+- **Voice:** a John Oliver satirical layer inside the documentary structure. The brain is treated as an incompetent middle manager making terrible decisions. Targets are irrationality, pop-psychology scams, wellness grifts and self-sabotaging biases. The comedy visuals follow MASTER_DIRECTIVES §10.
+- **Motifs:** peer-reviewed study PDFs, experimental diagrams, brain-region schematics, behavioural charts, and vintage psychology-textbook cut-outs.
 - **No mascot, faceless.** People appear as plain stick figures or black-and-white cut-out silhouettes.
   - Real people only in credited photos, framed neutrally.
   - A negative trait (manipulator, liar) is never put on a real, identifiable person.
@@ -29,7 +32,7 @@ file for those, then apply the differences below. The owner's hard rules (CLAUDE
 ## The Vox x Johnny Harris grammar, for the mind
 - **Vox (explain):**
   - one mental model per beat, built as it's named;
-  - a big number in yellow;
+  - a big number in amber #ED8936;
   - real-object charts;
   - highlighter sweeps over the key line of a paper.
 - **Johnny Harris (prove):**
@@ -49,7 +52,7 @@ file for those, then apply the differences below. The owner's hard rules (CLAUDE
 ## How each tool skill is used here
 | Skill | Use it for | Dragon Psychology overrides |
 |---|---|---|
-| `threejs-*` (r186) | brain cutaways, physics metaphors, illusion scenes | The three colours only; the subject in yellow, warnings in red. Paper-grain overlay. Labelled "simplified" or "metaphor, not anatomy". |
+| `threejs-*` (r186) | brain cutaways, physics metaphors, illusion scenes | The channel palette only; the subject in amber, structure in cobalt. Paper-grain overlay. Labelled "simplified" or "metaphor, not anatomy". |
 | physics (Rapier) | biases as mechanisms | The block weights or ratios shown come from the study (e.g. λ ≈ 2.25), and the frame says so. |
 | `ffmpeg-skill` | cuts, 9:16 Shorts, loudness | Same as printfacts-style: −14 LUFS, house captions via `printfacts-style/captions.py`. |
 | `vox-method` | the production blueprint | Its Visual DNA names the study desk and the experiment device. |

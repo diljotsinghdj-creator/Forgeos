@@ -73,9 +73,10 @@ CreatorForge serves only these two channels. A new feature must serve one of the
   style (position, size, weight); colour *roles* (one base, one accent, one signal; the hues change per film); source
   line style and end card; pacing rules (a hook in the first 5 seconds, no intro logo, no generic call to action); the
   audio loudness target.
-- **Signature colour** (owner, 2026-11-11: "Vox style yellow is my pick"): yellow **#FFDD33** is fixed in every film for
-  the highlighter, the key numbers (yellow type on dark scenes, a yellow bar under the figure on light ones) and the
-  signal. Each film's own accent still changes and keeps clear of the yellow.
+- **Channel palettes** (owner, 2026-11-16, replaces the single #FFDD33 rule):
+  - **Print Facts:** archival cream #F4EFE6, ink charcoal #1A1A1A, investigative crimson #D93829, highlighter yellow **#F7D046** (highlighter, key numbers, signal).
+  - **Dragon Psychology:** clinical slate #141824, lab-paper off-white #F0F4F8, electric cobalt #2B6CB0, experimental amber/coral **#ED8936** (its signal colour; no yellow).
+  - Each film may add one accent of its own that keeps clear of the channel's signal colour.
 - **Variable layer (new every film):** lead visual technique (data, documents, maps, collage, 3D, illustration); palette
   hues taken from the subject; motion language (cut rhythm, camera moves, transition family); typography treatment;
   sound palette; opening shot and chapter structure.
@@ -210,3 +211,48 @@ The owner's words: "if something is paid, or we i have to pay later then drop it
 - Free and local stays: the studio renderer, Kokoro voice, BiRefNet/ISNet cut-outs, OpenCV, ffmpeg, the synthesised
   score and the SFX bank, Wikimedia Commons / NASA / Library of Congress / Internet Archive, free web pages.
 - If a paid tool ever looks essential, say so and ask; never spend first.
+
+## 10. Script voice: Vox × Johnny Harris structure, John Oliver voice (owner, 2026-11-16)
+
+**Structure and visuals: 100% Vox × Johnny Harris, never changed.** Every script follows the documentary arc:
+1. **Visual hook and question:** a map, archival artifact or physical paradox that poses one central question. For Print Facts the evidence comes first (gate 3).
+2. **Spatial and historical context (the map beat):** cartography, timelines and primary documents show how we got here.
+3. **The mechanics:** the hidden system, incentive or psychological mechanism, step by step, with diagrams and highlighted receipts.
+4. **Stakes and real-world impact:** zoom from the system down to tangible consequences.
+5. **Synthesis:** pull back out and answer the opening question cleanly.
+
+Never a late-night talk-show format or a comedy monologue.
+
+**Voice: John Oliver's satirical layer inside that structure.**
+- **The micro-cadence:** a straight fact, then a primary-source receipt that exposes the absurdity, then incredulity with an ultra-specific, incongruous simile, then a snap back into the documentary without lingering.
+- **Deadpan:** mock seriousness about bureaucratic language, corporate spin and self-deception, then puncture it.
+- **Callbacks:** plant an absurd detail or official quote early, and pay it off in the stakes or synthesis beat.
+
+**Satirical targets:**
+- **Print Facts:** institutional hypocrisy, bureaucratic doublespeak, loopholes, geopolitical absurdity.
+- **Dragon Psychology:** human irrationality, pop-psychology scams, wellness grifts, self-sabotaging biases. The brain is treated as an incompetent middle manager.
+
+**Comedy inside the documentary look:**
+- **Sight gags:** cut-outs with halftone, a 4 px white paper border and a hard shadow, thudded on at 12 fps.
+- **Sarcastic captions:** styled exactly like archival date and location tags (mono caps, sharp box).
+- **Stacked frames:** Polaroid or CRT frames stack onto the desk at 12 fps.
+- **Receipts:** a highlighter sweep, a 1-frame hard smash-zoom (scale 1 to 1.32, no easing) and a red ink circle.
+- **Scale jokes:** vector silhouette overlays on Natural Earth maps.
+
+**Sound:**
+- `[SFX: MUSIC HARD CUT — 0.2s SILENCE]` right before a deadpan punchline.
+- Comedy sound effects are analog only: stamp thud, typewriter bell, slide-projector click, paper slap.
+- Every script carries `[VISUAL / FOLEY]` cues.
+
+**Guardrails (owner-approved):**
+- **Accuracy first:** satire never changes the pacing, the map progression or the facts. Every joke rests on a sourced fact in the dossier.
+- **Targets:** systems, documents and absurd official language, never a party or a named person's character. Allegations are attributed and the other side is shown.
+- **No faces:** nothing is drawn on real faces.
+- **Clips:** no copyrighted TV or news footage. Stacked frames hold public-domain archives, government video, documents, or quotes set as attributed text.
+- **Anti-clone:** borrow the rhythm, never the material. No John Oliver catchphrases, recurring bits, segment names or show look.
+- **The gates still apply:** pick before script, dossier first, evidence first, pacing, PRESHOW, and no video until "go".
+
+**Tools:**
+- All free and local. Scenes are single-file HTML, SVG or CSS with bundled local fonts and no CDN. Textures use inline SVG filters and patterns.
+- Natural Earth + mapshaper (MPL-2.0) for maps; FFmpeg; Manim and Motion Canvas.
+- **Remotion:** allowed while the owner is an individual or a company of up to 3 employees (its free licence). A larger company needs Remotion's paid company licence.

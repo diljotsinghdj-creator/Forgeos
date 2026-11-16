@@ -68,6 +68,10 @@ owner's own narration if it's their voice. Everything else it finds.
 | `[BEAT]` | time cuts and number pops to the music beat | librosa (to add) |
 | `[REDO] <frame numbers>` | rebuild only those frames | |
 | `[CHECK]` | QA pass: facts, overlaps, pacing, licences, repeats, India boundary | QC + gates |
+| `/pitch [channel] [topic]` | three documentary angles in the Vox × Johnny Harris arc: central question, key map and visual beats, satirical target (this is gate 1's three engines) | studio + dossier |
+| `/script [channel] [topic]` | broadcast-ready script, locked to the arc (hook → map context → mechanics → stakes → synthesis) in the John Oliver voice, with `[VISUAL / FOLEY]` cues and music hard cuts before punchlines (only after a `/pitch` pick) | MASTER_DIRECTIVES §10 |
+| `/scene [channel] [description]` | one self-contained HTML/SVG/CSS scene at 12 fps, bundled local fonts, no CDN, inline-SVG textures | house style skills |
+| `/map [region/data]` | mapshaper CLI commands and SVG styling for a Natural Earth sequence (India with its official boundary) | mapshaper (MPL-2.0), Natural Earth |
 | `[PUBLISH_PACK]` | titles, thumbnail options, description with sources, chapters, 9:16 cutdowns | studio SEO + thumbnail |
 
 ## Visual asset taxonomy (owner, 2026-11-15)
@@ -112,8 +116,7 @@ For geography, geopolitics, scale, infrastructure and movement.
 - **Frame rate:** smooth 24/30 fps camera moves; chart reveals and icon pops stepped at 12 fps.
 - **Texture:** paper grain, halftone dots and light film noise over clean vectors and 3D renders.
 - **Colour hierarchy:** about 80 % muted archival neutrals (off-white paper, warm beige, charcoal ink) and 20 % one
-  high-contrast accent. The signature yellow #FFDD33 stays the signal colour; the film's own accent (e.g. burnt red)
-  rotates per film.
+  high-contrast accent. Signal colour per channel (2026-11-16): Print Facts #F7D046, Dragon Psychology #ED8936; one film accent may be added.
 - These sit alongside the existing rules: pacing gate, evidence first, India's official boundary, numbers sourced,
   illustrative layers labelled.
 
@@ -185,7 +188,7 @@ Rules of use: one code per beat is the default; never the same code three beats 
 | Archive | NARA, Library of Congress, Internet Archive, Wikimedia, Open Beelden, NASA, ESO/ESA |
 | Motion | 12 fps paper physics, motivated transitions, match cuts, camera push, 60 fps (RIFE) for live footage, depth parallax (Depth Anything) |
 | Voice | the owner's ElevenLabs voice (with permission) or a Kokoro stand-in, never a cloned celebrity |
-| Captions | exact word timings from the narration (`media/wordtimes.py`, faster-whisper base.en), word-by-word, signature yellow #FFDD33 highlight |
+| Captions | exact word timings from the narration (`media/wordtimes.py`, faster-whisper base.en), word-by-word, the current word in the channel's signal colour (Print Facts #F7D046, Dragon Psychology #ED8936) |
 | Music & sound | ACE-Step or free licensed music, Freesound foley, `[SFX_LOG]` mix, cuts on the beat |
 | Finish | grain, vignette, one accent colour + signature yellow, pacing gate (still ≤ 4.5 s, build ≤ 7 s, mean ≤ 5 s) |
 

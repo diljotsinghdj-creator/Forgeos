@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """House captions: exact word timing (media/wordtimes.py), 4-word groups on a dark box, Anton white with the current
-word in signature yellow; then -14 LUFS via ffmpeg-skill. usage: captions.py in.mp4 out.mp4 [shorts|youtube] [script.txt]"""
+word in signature yellow; then -14 LUFS via ffmpeg-skill. usage: captions.py in.mp4 out.mp4 [shorts|youtube] [script.txt] [printfacts|dragonpsych]"""
 import subprocess, sys, tempfile, wave
 from pathlib import Path
 sys.path.insert(0, "/home/user/Forgeos/creatorforge/worker")
@@ -10,7 +10,9 @@ FONTS = "/home/user/Forgeos/creatorforge/worker/creatorforge_worker/media/vendor
 SKILL = Path(__file__).resolve().parent.parent / "ffmpeg-skill" / "scripts"
 src, out = sys.argv[1], sys.argv[2]
 plat = sys.argv[3] if len(sys.argv) > 3 else "youtube"
-prompt = Path(sys.argv[4]).read_text() if len(sys.argv) > 4 else ""
+prompt = Path(sys.argv[4]).read_text() if len(sys.argv) > 4 and sys.argv[4] else ""
+chan = sys.argv[5] if len(sys.argv) > 5 else "printfacts"
+SIGNAL = {"printfacts": "&H46D0F7&", "dragonpsych": "&H3689ED&"}[chan]   # ASS colours are BGR: #F7D046, #ED8936
 W, H = (1080, 1920) if plat == "shorts" else (1920, 1080)
 size, marg = (64, 380) if plat == "shorts" else (54, 90)
 tmp = Path(tempfile.mkdtemp())
@@ -24,7 +26,7 @@ ass = [f"[Script Info]\nScriptType: v4.00+\nPlayResX: {W}\nPlayResY: {H}\n\n[V4+
 for i, (w, s, e) in enumerate(words):
     g0 = i - i % 4; grp = words[g0:g0 + 4]
     end = words[i + 1][1] if i + 1 < len(words) and words[i + 1][1] - e < .6 else e + .25
-    txt = " ".join(("{\\c&H33DDFF&}" + x + "{\\c&HFFFFFF&}") if g0 + j == i else x for j, (x, _, _) in enumerate(grp))
+    txt = " ".join(("{\\c" + SIGNAL + "}" + x + "{\\c&HFFFFFF&}") if g0 + j == i else x for j, (x, _, _) in enumerate(grp))
     ass.append(f"Dialogue: 0,{ts(s)},{ts(end)},C,,0,0,0,,{txt}\n")
 (tmp / "c.ass").write_text("".join(ass))
 mid = tmp / "c.mp4"
