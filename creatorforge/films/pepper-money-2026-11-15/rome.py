@@ -9,7 +9,7 @@ from frames import page, a, put, chapter, hl, SIG, RED, INK, PARCH, DESK, BLK, c
 QUOTE = "…we buy them by weight, just as if they were so much gold or silver."
 for tag, k in (("a", 30), ("b", len(QUOTE))):
     typed = QUOTE[:k]
-    shown = typed.replace("just as if they were so much gold or silver.", hl("just as if they were so much gold or silver.")) if k == len(QUOTE) else typed + '<span style="color:#FFDD33">▍</span>'
+    shown = typed.replace("just as if they were so much gold or silver.", hl("just as if they were so much gold or silver.")) if k == len(QUOTE) else typed + '<span style="color:#F7D046">▍</span>'
     put(f"r1_{tag}", page(
         a('<div style="width:1920px;height:1080px;background:radial-gradient(ellipse at 30% 45%,#3A2E22 0%,#120E0A 70%)"></div>', 0, 0)
         + a(cut("bust.png", 640 if tag == "a" else 680, "filter:grayscale(.15) contrast(1.05) drop-shadow(0 30px 40px rgba(0,0,0,.7))"), 120 if tag == "a" else 90, 140 if tag == "a" else 110)

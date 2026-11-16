@@ -10,7 +10,7 @@ sys.path.insert(0, str(D))
 sys.path.insert(0, "/home/user/Forgeos/creatorforge/films/taxonomy-2026-11-15")
 sys.path.insert(0, "/home/user/Forgeos/creatorforge/worker")
 H = D / "html"; H.mkdir(exist_ok=True)
-BLK, PARCH, RED, SIG, INK = "#1B1A17", "#EFE6D2", "#9E2B25", "#FFDD33", "#141414"
+BLK, PARCH, RED, SIG, INK = "#1A1A1A", "#F4EFE6", "#D93829", "#F7D046", "#1A1A1A"
 FONTS = "".join(f"@font-face{{font-family:{n};src:url(/fonts/{f}.woff2)}}" for n, f in (
     ("Anton", "anton-latin-400-normal"), ("Plex", "ibm-plex-mono-latin-500-normal"), ("Caveat", "caveat-latin-700-normal"),
     ("Playfair", "playfair-display-latin-900-normal"), ("ISerif", "instrument-serif-latin-400-italic"), ("Grotesk", "space-grotesk-latin-700-normal"),
@@ -104,7 +104,7 @@ put("04_maptable", page(a(f'<div style="width:1920px;height:1080px;{DESK}"></div
                         + f'<svg class="a" style="left:0;top:0;z-index:30" width="1920" height="1080">{string}{"".join(pin(x, y) for x, y, *_ in pins)}</svg>'
                         + a(f'<div style="background:{PARCH};padding:8px 14px;font:700 40px Caveat;color:{INK};transform:rotate(3deg);box-shadow:0 8px 14px rgba(0,0,0,.4)">Malabar: the vine grows here</div>', 860, 660, "z-index:31")
                         + chapter(1, "WHERE IT GROWS")
-                        + a(f'<div style="font:700 50px Caveat;color:{SIG};transform:rotate(-2deg)">"I started where the pepper starts. On a map."</div>', 120, 960, "z-index:31"),
+                        + a(f'<div style="background:{INK};padding:6px 18px;font:700 46px Caveat;color:{SIG};transform:rotate(-2deg);box-shadow:6px 6px 0 rgba(0,0,0,.35)">"I started where the pepper starts. On a map."</div>', 120, 930, "z-index:31"),
                         "#2A1D12", "PINS AND STRING PLACED BY HAND, POSITIONS APPROXIMATE · MAP: LINSCHOTEN, 1596, 'MAP OUTLINING THE MARITIME COASTS OF ARABIA FELIX…', LIBRARY OF CONGRESS (PUBLIC DOMAIN BY AGE) · A DATED HISTORICAL DOCUMENT, NOT A MODERN BOUNDARY", dark=True))
 
 # ---- 1: the vine and the three peppers -------------------------------------------------------------------------------
@@ -148,7 +148,7 @@ put("07_myth", page(chapter(2, "ROME PAYS BY THE POUND")
 # ---- 2: the drain ----------------------------------------------------------------------------------------------------
 put("08_drain", page(chapter(2, "ROME PAYS BY THE POUND")
                      + a(f'<div style="font:400 40px ISerif;color:#CFC6B4">Every year, Pliny says, India took at least</div>', 130, 260)
-                     + a(f'<div style="font:400 230px/1 Anton;color:{SIG};text-shadow:0 0 40px rgba(255,221,51,.5)">50,000,000</div><div style="font:400 64px Anton;color:#F3EFE6">SESTERCES</div>', 120, 330)
+                     + a(f'<div style="font:400 230px/1 Anton;color:{SIG};text-shadow:0 0 40px rgba(247,208,70,.5)">50,000,000</div><div style="font:400 64px Anton;color:#F3EFE6">SESTERCES</div>', 120, 330)
                      + a(f'<div style="font:500 24px/1.5 Plex;color:#CFC6B4;width:640px">out of the Roman Empire, "sold with us at a hundred times its prime cost".</div>', 120, 760)
                      + a(f'<div style="font:500 20px Plex;letter-spacing:4px;color:{SIG}">INDIA ALONE · NATURAL HISTORY 6.26</div>', 1250, 300)
                      + a(cut("corns_spoon.jpg", 1, "display:none"), 0, 0),
@@ -215,7 +215,7 @@ put("13_markup", page(a(f'<div style="width:1920px;height:1080px;{DESK}"></div>'
                       + tag(860, 650, "Calicut: ~3 ducats", 3) + tag(110, 140, "Europe: ~80 ducats", -3) + tag(380, 290, "Alexandria → Venice: 42 → 56", 2)
                       + chapter(5, "THE MARKUP")
                       + a(f'<div style="background:{SIG};color:{INK};padding:14px 22px;transform:rotate(-2deg)"><div style="font:400 64px/1 Anton">~25× ON THE WAY</div>'
-                          f'<div style="font:500 18px Plex;letter-spacing:3px">PER HUNDREDWEIGHT, 15TH CENTURY (UNESCO ESTIMATE)</div></div>', 1260, 860, "z-index:31"),
+                          f'<div style="font:500 18px Plex;letter-spacing:3px">PER HUNDREDWEIGHT, 15TH CENTURY (UNESCO ESTIMATE)</div></div>', 1140, 820, "z-index:31"),
                       "#2A1D12", "PRICES: UNESCO SILK ROADS, 'THE ARAB MONOPOLY' (ESTIMATE); LANE, JOURNAL OF ECONOMIC HISTORY 28 (1968), 1497 · MAP: LINSCHOTEN 1596, LIBRARY OF CONGRESS", dark=True))
 
 # ---- 7: too much pepper + the peppercorn rent -----------------------------------------------------------------------
