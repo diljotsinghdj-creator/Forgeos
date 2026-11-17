@@ -82,3 +82,16 @@ should be checked too.
   subscribers rose from 239 million to 776 million. The archive tag quotes the slide's real title, "Extraordinary Achievements of
   India".
 - **Still unconfirmed (the sites block automated access):** IMF rank, UNESCO count, NPCI UPI figure, NCRI, CEPF and IQAir.
+
+## Added 2026-11-17: faces and the full script
+- **Portraits (Wikimedia Commons, public domain):**
+  - Macaulay: an engraving from about 1840, beside his *Minute*.
+  - Gandhi: a 1931 photograph, beside his "drain inspector" review.
+  - Kalpana Chawla: her 1995 NASA portrait, on the "Named, not viral" card.
+- **Faces grid (18c):** 12 real people, varied by region and gender, including an army officer and a scientist. Photos come from
+  Pixabay and Flickr (CC BY 2.0), with a credit on each photo. Nothing is drawn on any face. The tag "VIRAL POTENTIAL: TRAGICALLY
+  LOW" jokes about the algorithm, not the people.
+- **Named achievers (18b):** Kalpana Chawla now. Harnaaz Sandhu, Manushi Chhillar, Sushmita Sen and Rohit Khandelwal join once
+  their CC BY photos download; Wikimedia is rate-limiting. They're shown as factual, captioned achievements with no endorsement
+  implied.
+- **Script:** `SCRIPT_PLAN.md` draft 1, in the John Oliver voice across the five Vox beats, with every line mapped to a frame.

@@ -125,9 +125,11 @@ put("06_macaulay", page(
            + f'<div style="font:400 36px/1.4 ISerif;color:#2A2118;margin-top:26px">"I have no knowledge of either Sanscrit or Arabic."</div>'
            + f'<div style="font:500 15px Plex;color:#7A6A4A;margin-top:22px">Text after the 1835 Minute (Columbia University, Pritchett edition). Page set in the studio.</div>', 1060, 140, 150, "up 0 .15", -1, "#F4ECD8")
     + f'<svg class="a" data-anim="draw .55 .68" style="left:0;top:0;z-index:30" width="1920" height="1080"><path d="{wobble(490, 390, 345, 40, 6)}" pathLength="1" fill="none" stroke="{RED}" stroke-width="6"/></svg>'
-    + tag("AUTHOR'S QUALIFICATIONS: SEE LINE 2", 1180, 880, 2, "snap .75 .75")
+    + A(f'<div style="background:#fff;padding:12px 12px 16px;box-shadow:12px 14px 0 rgba(0,0,0,.55);transform:rotate(2deg)"><img src="/assets/p_macaulay.jpg" style="width:420px;height:520px;object-fit:cover;object-position:50% 18%;display:block;filter:grayscale(1) contrast(1.1)"></div>', 1360, 250, "up .1 .25", "z-index:25")
+    + A(f'<div style="background:{PARCH};padding:6px 12px;font:500 16px Plex;letter-spacing:2px;color:{INK};box-shadow:0 6px 10px rgba(0,0,0,.35);white-space:nowrap">T. B. MACAULAY · ENGRAVING, c. 1840 · PUBLIC DOMAIN</div>', 1300, 830, "fade .15 .25", "z-index:26")
+    + tag("AUTHOR'S QUALIFICATIONS: SEE LINE 2", 160, 860, -2, "snap .75 .75")
     + chapter(1, "THE PAPER TRAIL"),
-    "#2A1D12", "SOURCE: MACAULAY, MINUTE ON INDIAN EDUCATION (2 FEB 1835), COLUMBIA UNIVERSITY (F. PRITCHETT) · CONFIRMED; PUNCTUATION TO CHECK AGAINST 'SELECTIONS FROM EDUCATIONAL RECORDS' (1920)", dark=True))
+    "#2A1D12", "SOURCE: MACAULAY, MINUTE ON INDIAN EDUCATION (2 FEB 1835), COLUMBIA UNIVERSITY (F. PRITCHETT) · CONFIRMED; PUNCTUATION TO CHECK AGAINST 'SELECTIONS FROM EDUCATIONAL RECORDS' (1920) · PORTRAIT: ENGRAVING, c. 1840, WIKIMEDIA COMMONS (PUBLIC DOMAIN)", dark=True))
 
 put("07_drain", page(
     a(f'<div style="width:1920px;height:1080px;{DESK}"></div>', 0, 0)
@@ -136,10 +138,12 @@ put("07_drain", page(
         f'<div style="font:500 13px Plex;color:#C9B9A0;margin-top:300px">COVER DRAWN IN THE STUDIO</div></div>', 150, 220, "up 0 .14")
     + card(kicker("M. K. GANDHI · YOUNG INDIA · SEPTEMBER 1927")
            + f'<div style="font:400 46px/1.35 ISerif;color:#2A2118;margin-top:18px">"…{hl("the report of a drain inspector")} sent out with the one purpose of opening and examining the drains of the country."</div>', 860, 960, 260, "up .3 .45")
-    + A(f'<div style="font:700 56px/1.1 Caveat;color:{SIG};transform:rotate(-2deg);width:760px">"He named the genre ninety-eight years before the algorithm did."</div>', 920, 760, "fade .7 .85")
+    + A(f'<div style="font:700 56px/1.1 Caveat;color:{SIG};transform:rotate(-2deg);width:760px">"He named the genre ninety-eight years before the algorithm did."</div>', 1000, 760, "fade .7 .85")
+    + A(f'<div style="background:#fff;padding:12px 12px 16px;box-shadow:12px 14px 0 rgba(0,0,0,.55);transform:rotate(3deg)"><img src="/assets/p_gandhi.jpg" style="width:270px;height:330px;object-fit:cover;object-position:50% 30%;display:block;filter:grayscale(1) contrast(1.1)">'
+        f'<div style="font:500 13px Plex;letter-spacing:1px;color:{INK};margin-top:8px">M. K. GANDHI · 1931 · PUBLIC DOMAIN</div></div>', 600, 560, "up .3 .42", "z-index:24")
     + tag("BOOK REVIEW · ONE STAR, APPROX.", 200, 880, -2, "snap .55 .55")
     + chapter(1, "THE PAPER TRAIL"),
-    "#2A1D12", "QUOTE: GANDHI, 'DRAIN INSPECTOR'S REPORT', YOUNG INDIA (SEPT 1927; ISSUE DATE TO CHECK), VIA MKGANDHI.ORG · BOOK: MAYO, MOTHER INDIA (1927) · COVER IS A STUDIO DRAWING", dark=True))
+    "#2A1D12", "QUOTE: GANDHI, 'DRAIN INSPECTOR'S REPORT', YOUNG INDIA (SEPT 1927; ISSUE DATE TO CHECK), VIA MKGANDHI.ORG · BOOK: MAYO, MOTHER INDIA (1927) · COVER IS A STUDIO DRAWING · PHOTO: GANDHI, 1931, WIKIMEDIA COMMONS (PUBLIC DOMAIN)", dark=True))
 
 chalk = lambda t, s, x, y, an, c="#ECEADF": A(f'<div style="font:{s}px/1 Marker;color:{c};opacity:.92">{t}</div>', x, y, an)
 put("08_worlds", page(

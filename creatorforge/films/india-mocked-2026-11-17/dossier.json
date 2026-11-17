@@ -208,5 +208,23 @@
   "source": "FBI IC3 2024 annual report PDF",
   "status": "confirmed (primary); IC3 does not attribute these losses to any country",
   "frames": "(dossier only)"
+ },
+ {
+  "claim": "Kalpana Chawla, first Indian-born woman in space, flew on STS-87 in Nov 1997",
+  "source": "NASA biography",
+  "status": "well-established; not re-fetched",
+  "frames": "18b"
+ },
+ {
+  "claim": "Faces grid: 12 real people, photos from Pixabay (Pixabay Content License) and Flickr via Openverse (CC BY 2.0), each credited",
+  "source": "data/face_credits.json",
+  "status": "licences recorded",
+  "frames": "18c"
+ },
+ {
+  "claim": "Portraits: Macaulay engraving c.1840 (PD), Gandhi 1931 (PD), Chawla NASA 1995 (PD)",
+  "source": "Wikimedia Commons",
+  "status": "licences recorded",
+  "frames": "06, 07, 18b"
  }
 ]
