@@ -148,5 +148,47 @@
   "source": "UN WPP",
   "status": "to check latest",
   "frames": "20"
+ },
+ {
+  "claim": "East India Company chartered 31 Dec 1600",
+  "source": "standard history (Britannica)",
+  "status": "confirmed",
+  "frames": "globe"
+ },
+ {
+  "claim": "Government of India Act 1858: Crown takes over from the Company",
+  "source": "standard history (Britannica)",
+  "status": "confirmed",
+  "frames": "globe"
+ },
+ {
+  "claim": "Company traders settle at Calcutta, 1690 (Job Charnock)",
+  "source": "standard history (Britannica)",
+  "status": "confirmed",
+  "frames": "ship"
+ },
+ {
+  "claim": "India overlaps 4 of 36 biodiversity hotspots (Himalaya, Western Ghats & Sri Lanka, Indo-Burma, Sundaland via Nicobar)",
+  "source": "CEPF",
+  "status": "confirmed",
+  "frames": "relief"
+ },
+ {
+  "claim": "Canada: police-reported hate crimes vs South Asians 321 (2024), 483 (2025), +49%",
+  "source": "Statistics Canada",
+  "status": "confirmed (includes suspected)",
+  "frames": "bars"
+ },
+ {
+  "claim": "Sundarbans: largest mangrove forest on Earth; UNESCO World Heritage (India 1987, Bangladesh 1997)",
+  "source": "UNESCO WHC",
+  "status": "confirmed; check wording against whc.unesco.org",
+  "frames": "rivers"
+ },
+ {
+  "claim": "India official boundary incl. islands",
+  "source": "DataMeet India composite (CC BY 4.0)",
+  "status": "source",
+  "frames": "05, globe, relief, rivers"
  }
 ]

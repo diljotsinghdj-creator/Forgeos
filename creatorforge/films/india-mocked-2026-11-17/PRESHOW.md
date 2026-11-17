@@ -53,3 +53,17 @@ also shown at four moments of its animation. There is no video, voice or music.
 ## Still to decide
 - **The script:** write the full John Oliver-voice script for these frames.
 - **The voice:** Kokoro (am_onyx), your ElevenLabs voice (with your permission), or your cloned voice.
+
+## Added 2026-11-17: six motion upgrades (owner: "add all")
+| Upgrade | Where in the film | What moves |
+|---|---|---|
+| 3D globe | chapter 1, after the London map | The Company's sea route draws from London round the Cape to Calcutta. Then India's official outline lights up, and the dates run 1600 → round the Cape → 1858. |
+| Ship on the old map | chapter 1 | A ship sails the 1596 Linschoten chart round Ceylon into the Bay of Bengal. Then "1690: Company traders settle at Calcutta" and the tag "MISSION STATEMENT: 'TRADE' (APPROX.)". |
+| 3D relief | synthesis (the other India) | Real terrain of India with the camera pushing in, and the four biodiversity hotspots pinned. |
+| Glowing bars | chapter 4 | Canada's police-reported hate crimes against South Asians rise from 321 (2024) to 483 (2025). The 2025 bar glows crimson, with the tag "TIMING, NOT CAUSE". |
+| Smash-zoom | chapter 1 | A 1-frame jump (scale 1 → 1.32, no easing) onto Macaulay's own line, "I have no knowledge of either Sanscrit or Arabic". |
+| Satellite rivers | synthesis | NASA imagery of the Ganga plain. The Ganga, Yamuna, Gandak and Brahmaputra draw on and flow downstream to the Sundarbans, the largest mangrove forest on Earth. |
+
+**Boundary fix:** every India outline in this film now uses the DataMeet India composite (official boundary, CC BY 4.0), which
+includes the Andaman and Nicobar Islands and Lakshadweep. The studio's old world file was missing the islands, so earlier films
+should be checked too.

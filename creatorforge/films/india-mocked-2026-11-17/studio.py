@@ -51,6 +51,7 @@ else if(k==='snap')st.opacity=p>=1?1:0;
 else if(k==='grow'){st.transformOrigin='50% 100%';st.transform=`scaleY(${v})`}
 else if(k==='wipe')st.clipPath=`inset(-20px ${(1-v)*100}% -20px -20px)`;
 else if(k==='draw')el.querySelectorAll('[pathLength]').forEach(pa=>{pa.style.strokeDasharray=1;pa.style.strokeDashoffset=1-v;pa.style.opacity=p>0?1:0});
+else if(k==='flow')el.querySelectorAll('path').forEach(pa=>{pa.style.strokeDashoffset=-(T*s)})
 else if(k==='count'){el.textContent=Math.round(+el.dataset.to*v).toLocaleString('en-US')}
 else if(k==='fill'){const ch=el.children;const n=Math.round(ch.length*v);for(let i=0;i<ch.length;i++)ch[i].style.opacity=i<n?1:0}});}
 document.addEventListener('DOMContentLoaded',run);})()</script>"""

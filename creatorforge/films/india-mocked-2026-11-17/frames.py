@@ -104,7 +104,8 @@ Y = lambda lat: (62 - lat) * 16.7
 path = lambda rings: "".join("M" + " L".join(f"{X(lo):.0f} {Y(la):.0f}" for lo, la in r) + "Z" for r in rings)
 by = {c["n"]: c["r"] for c in W}
 land = "".join(f'<path d="{path(c["r"])}" fill="#D9D0BE" stroke="#B9AE98" stroke-width="1"/>' for c in W)
-india = maps._find("India")["rings"]
+from india_shape import rings as india_rings  # noqa: E402
+india = india_rings(20)
 put("05_map", page(
     a(f'<div style="width:1920px;height:1080px;background:#BCC6C4"></div>', 0, 0)
     + f'<svg class="a" style="left:0;top:0" width="1920" height="1080">{land}<path d="{path(by["United Kingdom"])}" fill="{INK}"/></svg>'
@@ -117,7 +118,7 @@ put("05_map", page(
         f'<div style="font:400 40px/1.05 Anton;color:{INK}">TWO CENTURIES OF COMPANY AND CROWN RULE</div>'
         f'<div style="font:400 28px ISerif;color:#444;margin-top:6px">deep red: today\'s India · lighter: other lands then under British India</div></div>', 90, 760, "up .7 .82")
     + chapter(1, "THE PAPER TRAIL"),
-    "#BCC6C4", "MAP: NATURAL EARTH; INDIA: OFFICIAL BOUNDARY · BRITISH INDIA EXTENT SIMPLIFIED (BURMA SEPARATED 1937; CEYLON WAS A SEPARATE COLONY) · DRAWN IN THE STUDIO"))
+    "#BCC6C4", "MAP: NATURAL EARTH; INDIA: OFFICIAL BOUNDARY, DATAMEET COMPOSITE (CC BY 4.0) · BRITISH INDIA EXTENT SIMPLIFIED (BURMA SEPARATED 1937; CEYLON WAS A SEPARATE COLONY) · DRAWN IN THE STUDIO"))
 
 put("06_macaulay", page(
     a(f'<div style="width:1920px;height:1080px;{DESK}"></div>', 0, 0)
