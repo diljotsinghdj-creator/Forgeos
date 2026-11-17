@@ -35,7 +35,7 @@ cards = ""
 n = len(ach)
 w = min(400, int(1680 / n) - 40)
 for i, (f, name, what, cred) in enumerate(ach):
-    x = 110 + i * (w + 40)
+    x = (1920 - n * (w + 40) + 40) // 2 + i * (w + 40)
     cards += A(f'<div style="width:{w}px;background:#fff;padding:12px 12px 16px;box-shadow:12px 14px 0 rgba(0,0,0,.45);transform:rotate({(-1.5, 1.5)[i % 2]}deg)">'
                f'<img src="/assets/{f}" style="width:{w}px;height:{int(w * 1.15)}px;object-fit:cover;object-position:50% 22%;display:block">'
                f'<div style="font:400 {38 if w > 300 else 30}px/1 Anton;color:{INK};margin-top:10px">{name}</div><div style="font:400 24px/1.15 ISerif;color:#444;margin-top:4px">{what}</div>'

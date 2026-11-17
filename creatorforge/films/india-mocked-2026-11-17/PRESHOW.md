@@ -95,3 +95,9 @@ should be checked too.
   their CC BY photos download; Wikimedia is rate-limiting. They're shown as factual, captioned achievements with no endorsement
   implied.
 - **Script:** `SCRIPT_PLAN.md` draft 1, in the John Oliver voice across the five Vox beats, with every line mapped to a frame.
+
+## Update: named achievers
+- **Pageant photos:** Wikimedia refused every download for hours, so the four pageant winners couldn't be added. The download has
+  stopped.
+- **Added instead:** the "Named, not viral" card now shows Kalpana Chawla and Sunita Williams. Williams is a NASA astronaut who
+  commanded the International Space Station. Both are NASA portraits, public domain.
