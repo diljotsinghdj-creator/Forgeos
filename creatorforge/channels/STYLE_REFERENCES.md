@@ -335,7 +335,7 @@ paid providers), every ElevenLabs / Gemini / fal path, AI-generated "archival" i
 - **Headline card:** outlet name, the exact headline in white serif with the key phrase on a pink marker, byline and
   date, over darkened footage. **Charts:** minimal on black, one highlighted word in the title.
 - **Social triptych:** three vertical clips side by side, each with its handle credit.
-- **Applied (stills):** films/bjp-it-cell-10min/collage/round9 (headline card, pink official-boundary map, minimal chart).
+- **Applied (stills):** an earlier film's collage round (removed on the owner's instruction, 2026-11-17).
 
 ## Reference study, 2026-11-15 (eight batches, about 45 images)
 

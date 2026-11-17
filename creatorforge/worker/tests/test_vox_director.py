@@ -12,7 +12,7 @@ from creatorforge_worker.media import maps
 NARRATION = """सुबह के आठ बजे। लाखों फ़ोन एक साथ बजते हैं।
 <break time="1.2s" />
 सितंबर दो हज़ार अठारह. राजस्थान का कोटा।
-बीजेपी ने गूगल पर उनतीस करोड़ सत्तर लाख रुपये खर्च किए।
+एक कंपनी ने गूगल पर उनतीस करोड़ सत्तर लाख रुपये खर्च किए।
 अड़तीस फ़ीसदी लोग।
 और जो कहा, वो सुनकर आप चौंक जाएँगे।
 ये बात अध्यक्ष ने अपने ही कार्यकर्ताओं के सामने कही थी।
@@ -101,14 +101,6 @@ def test_broken_graphics_are_replaced_and_ai_pictures_dropped():
     assert v.graphic_kind(bl[1]) == ""
 
 
-def test_the_bjp_graphics_script_has_no_errors():
-    from pathlib import Path
-    script = (Path(__file__).resolve().parents[2] / "scripts" / "bjp_it_cell" / "BJP_IT_CELL_ALL_GRAPHICS.txt")
-    if not script.is_file():
-        return
-    assert not [i for i in v.check(script.read_text(encoding="utf-8")) if i["level"] == "error"]
-
-
 def test_scripts_direct_and_check_endpoints(cfg):
     with TestClient(create_app(cfg)) as c:
         r = c.post("/v1/scripts/check", json={"script": NARRATION})
@@ -122,7 +114,7 @@ def test_scripts_direct_and_check_endpoints(cfg):
 def test_a_vox_production_draws_every_line_without_ai_pictures(cfg):
     from .conftest import wait_for
     script = ("सुबह के आठ बजे। लाखों फ़ोन एक साथ बजते हैं।\n"
-              "बीजेपी ने गूगल पर उनतीस करोड़ सत्तर लाख रुपये खर्च किए।\n"
+              "एक कंपनी ने गूगल पर उनतीस करोड़ सत्तर लाख रुपये खर्च किए।\n"
               "सितंबर दो हज़ार अठारह. राजस्थान का कोटा।\n")
     with TestClient(create_app(cfg)) as c:
         jid = c.post("/v1/productions", json={"script": script, "style": "editorial", "vox_graphics": True,
@@ -142,19 +134,6 @@ def test_month_and_year_calendar_never_invents_a_day():
     p = motion.plan_for("calendar", "SEP 2018 | Kota")
     assert p["day"] is None and p["month"] == "SEP" and p["year"] == "2018"
     assert motion.plan_for("calendar", "26 SEP 2018")["day"] == 26
-
-
-def test_a_graphic_line_split_across_scenes_keeps_its_graphic():
-    from creatorforge_worker import director
-    raw = "\n".join(open(Path(__file__).resolve().parents[2] / "scripts" / "bjp_it_cell" /
-                         "BJP_IT_CELL_ElevenLabs_PART_1.txt", encoding="utf-8").read().split("\n")[:14])
-    fixed, _ = v.ensure(raw)
-    spec = director.ProductionSpec.from_dict({"script": fixed, "style": "editorial", "vox_graphics": True,
-                                              "template": "youtube_longform"})
-    plan = director.direct_script(None, spec)
-    director.plan_beats(None, plan, spec)
-    beats = [b for s in plan.scenes for b in (s.beats or [])]
-    assert beats and all(b.get("extra") or b.get("chart") for b in beats)
 
 
 def test_narration_alone_gets_a_sensible_infographic_per_line():
@@ -184,7 +163,7 @@ def test_narration_alone_gets_a_sensible_infographic_per_line():
 
 def test_the_mute_test_rejects_graphics_that_miss_the_key_fact():
     from creatorforge_worker import infographic as ig
-    f = ig.facts("बीजेपी ने गूगल पर उनतीस करोड़ सत्तर लाख रुपये खर्च किए।")
+    f = ig.facts("एक कंपनी ने गूगल पर उनतीस करोड़ सत्तर लाख रुपये खर्च किए।")
     assert ig.mute_test(f, "BigNumber: ₹29.7 crore | banknote | Google ads")
     assert not ig.mute_test(f, "Hero: megaphone | Ads")
 
@@ -203,7 +182,7 @@ def test_every_video_gets_its_own_look_and_old_stories_get_old_objects():
 
 def test_the_marker_is_rationed_and_two_videos_dont_share_one_shot_order():
     from creatorforge_worker import infographic as ig
-    script = "\n".join(["बीजेपी ने गूगल पर उनतीस करोड़ सत्तर लाख रुपये खर्च किए।",
+    script = "\n".join(["एक कंपनी ने गूगल पर उनतीस करोड़ सत्तर लाख रुपये खर्च किए।",
                         "राजस्थान के कोटा में पंद्रह लाख लोग।",
                         "डेक्कन हेराल्ड के मुताबिक़, पचास लाख व्हाट्सऐप ग्रुप्स।",
                         "उत्तर प्रदेश में सत्रह लाख लोग।",
@@ -224,7 +203,7 @@ def test_the_marker_is_rationed_and_two_videos_dont_share_one_shot_order():
 def test_no_two_videos_alike_even_the_same_script_twice(tmp_path):
     from creatorforge_worker import variety
     from creatorforge_worker.media import vox
-    script = "\n".join(["बीजेपी ने गूगल पर उनतीस करोड़ सत्तर लाख रुपये खर्च किए।",
+    script = "\n".join(["एक कंपनी ने गूगल पर उनतीस करोड़ सत्तर लाख रुपये खर्च किए।",
                         "राजस्थान के कोटा में पंद्रह लाख लोग।",
                         "डेक्कन हेराल्ड के मुताबिक़, पचास लाख व्हाट्सऐप ग्रुप्स।",
                         "दिल्ली में अड़तीस फ़ीसदी लोग।",

@@ -1,4 +1,4 @@
-"""The parts built for the BJP IT cell sample: unit chart, the messaging-app chat, no stand-in party symbol tiles."""
+"""Unit chart, the messaging-app chat, and no stand-in party symbol tiles."""
 from creatorforge_worker.media import cards, layout_qa, vox
 
 

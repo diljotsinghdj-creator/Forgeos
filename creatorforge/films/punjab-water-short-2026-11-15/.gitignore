@@ -1,8 +1,0 @@
-assets/
-html/
-png/
-__pycache__/
-audio/
-frames/
-*.mp4
-render_log.txt

@@ -53,17 +53,6 @@ def test_gate2_lets_the_owners_own_voice_repeat_and_a_rerender_of_the_same_piece
     assert gates.check_seen(me, "field", [gates.entry(me, "sample", "field")]) == []
 
 
-def test_gate2_catches_the_bjp_sample_repeating_the_storyboard():
-    """The mistake that made this gate: the BJP sample re-used the storyboard the owner had already seen."""
-    shown = gates.seen(Path(__file__).resolve().parents[2] / "channels" / "SEEN.json")
-    board = [r for r in shown if r["kind"] == "storyboard"]
-    assert board, "SEEN.json must hold the BJP storyboard"
-    mine = json.loads((FILMS / "bjp-it-cell-sample" / "screenplay.json").read_text())
-    mine["id"] = "bjp-it-cell-sample-2"
-    found = gates.check_seen(mine, "field", board)
-    assert {"S1", "S2"} <= {i["scene"] for i in found}, found
-
-
 def test_gate2_reuse_is_allowed_only_for_the_shots_listed():
     board = {"id": "b", "kind": "storyboard", "topic": "x", "shots": ["Flowchart: A → B → C | The chain"], "engine": "", "look": "",
              "voice": "", "opening": "footage", "hook_mechanism": "", "hook_line": ""}
@@ -96,7 +85,7 @@ def test_gate4_still_shots_and_building_shots_have_their_own_limits():
     assert gates.check_pacing(tl(3, 4), ["newscard", "units"]) == []
     found = gates.check_pacing(tl(6, 4), ["newscard", "units"])
     assert found and found[0]["scene"] == "S1"
-    assert gates.check_pacing(tl(4, 9.5, 3), ["chat", "units", "hero"])[0]["scene"] == "S2"      # the BJP sample's 687 shot
+    assert gates.check_pacing(tl(4, 9.5, 3), ["chat", "units", "hero"])[0]["scene"] == "S2"      # a 9.5 s chart shot
     assert gates.check_pacing(tl(4, 5.5), ["units", "hero"]) == []                               # the last shot may hold longer
 
 
@@ -128,10 +117,10 @@ def test_produce_stops_at_gate1_before_anything_is_drawn(tmp_path, monkeypatch):
     from creatorforge_worker.studio.produce import ProductionStopped, produce
     monkeypatch.setenv("CF_STUDIO_HISTORY", str(tmp_path / "h"))
     monkeypatch.setenv("CF_SEEN", str(tmp_path / "seen.json"))
-    mine = json.loads((FILMS / "bjp-it-cell-sample" / "screenplay.json").read_text())
+    mine = json.loads((FILMS / "india-sir-sample" / "screenplay.json").read_text())
     mine.pop("pick", None)
     (tmp_path / "sp.json").write_text(json.dumps(mine))
     with pytest.raises(ProductionStopped, match="gate 1"):
-        produce(tmp_path / "sp.json", FILMS / "bjp-it-cell-sample" / "dossier.json", tmp_path / "out", progress=lambda *a: None)
+        produce(tmp_path / "sp.json", FILMS / "india-sir-sample" / "dossier.json", tmp_path / "out", progress=lambda *a: None)
     assert not list((tmp_path / "out" / "scenes").glob("*.mp4"))
     assert "gate 1" in (tmp_path / "out" / "writing" / "gates.md").read_text()

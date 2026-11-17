@@ -1,7 +1,7 @@
 """India in its official boundary, islands included: DataMeet India composite (CC BY 4.0), as used by the studio before.
 Rings are [(lon, lat)], thinned for drawing (every `step`-th point on long rings)."""
 import json
-SRC = "/home/user/Forgeos/creatorforge/films/bjp-it-cell-10min/collage/assets/india-composite.geojson"
+SRC = str(__import__("pathlib").Path(__file__).resolve().parent / "data" / "india-composite.geojson")
 CREDIT = "INDIA: OFFICIAL BOUNDARY, DATAMEET INDIA COMPOSITE (CC BY 4.0)"
 
 
