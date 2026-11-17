@@ -66,15 +66,13 @@ put("01_feed", page(
 
 put("02_receipt", page(
     a(f'<div style="width:1920px;height:1080px;{DESK}"></div>', 0, 0)
-    + card(kicker("CENTER FOR THE STUDY OF ORGANIZED HATE · REPORT, 9 JAN 2025")
-           + f'<div style="font:400 40px/1.3 ISerif;color:{INK};margin:16px 0 22px">Posts on X targeting Indians after a White House tech appointment, counted to 3 Jan 2025:</div>'
-           + f'<div style="display:flex;gap:60px"><div><div style="font:400 120px/1 Anton;color:{INK}">128</div><div style="font:500 20px Plex;letter-spacing:3px">POSTS</div></div>'
-           + f'<div><div style="font:400 120px/1 Anton;color:{INK}">{hl("138.5M")}</div><div style="font:500 20px Plex;letter-spacing:3px">VIEWS</div></div></div>'
-           + f'<div style="font:500 16px Plex;color:#7A6A4A;margin-top:24px">Page set in the studio from the report\'s published figures.</div>', 980, 160, 200, "up 0 .15")
-    + f'<svg class="a" data-anim="draw .45 .6" style="left:0;top:0;z-index:30" width="1920" height="1080"><path d="{wobble(575, 478, 200, 70, 3)}" pathLength="1" fill="none" stroke="{RED}" stroke-width="6"/></svg>'
-    + A(f'<div style="font:700 60px/1.05 Caveat;color:{SIG};transform:rotate(-3deg);width:520px">"I went looking for a number. Somebody had already counted."</div>', 1290, 780, "fade .7 .85")
-    + tag("RECEIPT · CSOH, 9 JAN 2025", 230, 120, -2, "snap .3 .3"),
-    "#2A1D12", "SOURCE: CSOH, 'ANTI-INDIAN RACISM ON X' (9 JAN 2025), FIGURES AS OF 3 JAN 2025 · REPORTED; CHECK AGAINST THE PRIMARY BEFORE AIR", dark=True))
+    + A('<img src="/assets/csoh_title.png" style="width:760px;display:block;box-shadow:0 24px 44px rgba(0,0,0,.6)">', 110, 150, "up 0 .14", "transform:rotate(-2deg)")
+    + A('<img src="/assets/csoh_kf.png" style="width:1100px;display:block;box-shadow:0 24px 44px rgba(0,0,0,.6)">', 700, 520, "up .2 .34", "transform:rotate(1deg)")
+    + A(f'<div style="width:72px;height:30px;background:{SIG};opacity:.55;mix-blend-mode:multiply"></div>', 1700, 582, "wipe .45 .52", "z-index:31;transform:rotate(1deg)")
+    + f'<svg class="a" data-anim="draw .58 .7" style="left:0;top:0;z-index:30" width="1920" height="1080"><path d="{wobble(1356, 683, 128, 36, 3)}" pathLength="1" fill="none" stroke="{RED}" stroke-width="6"/></svg>'
+    + A(f'<div style="font:700 60px/1.05 Caveat;color:{SIG};transform:rotate(-3deg);width:560px">"I went looking for a number. Somebody had already counted."</div>', 120, 820, "fade .75 .88")
+    + tag("RECEIPT · CSOH, 9 JAN 2025", 980, 200, 2, "snap .38 .38"),
+    "#2A1D12", "SCREENSHOTS: CSOH, 'ANTI-INDIAN HATE ON X' (9 JAN 2025), CSOHATE.ORG, CAPTURED 17 NOV 2026 · FIGURES CHECKED AGAINST THE REPORT · CSOH IS A US-BASED NON-PROFIT RESEARCH GROUP; SOME IN INDIA CRITICISE ITS WORK AS PARTISAN", dark=True))
 
 tiles = [("23 AUG 2023", "CHANDRAYAAN-3", "soft landing near the Moon's south pole", "ISRO"),
          ("OCT 2026", "25.47 BN", "UPI payments in one month", "NPCI, VIA PRESS"),
@@ -155,6 +153,21 @@ put("08_worlds", page(
     + tag("DEFINITION UPDATED WITHOUT NOTICE", 820, 820, -2, "snap .9 .9"),
     CH, "TERM: ALFRED SAUVY, 'TROIS MONDES, UNE PLANÈTE', L'OBSERVATEUR, 14 AUG 1952 (VIA BRITANNICA) · CHALKBOARD DRAWN IN THE STUDIO", dark=True))
 
+# ==== the 2016 data drop (TRAI) ==========================================================================
+COST = [('2014', 268.97), ('2015', 226.8), ('2016', 75.57), ('2017', 19.35), ('2018', 11.78), ('2019', 11.17), ('2020', 10.9)]
+bars_ = "".join(A(f'<div style="width:96px;height:{v / 268.97 * 480:.0f}px;background:{SIG if y == "2020" else ("#3A3F4B" if y != "2016" else RED)}"></div>', 760 + i * 150, 880 - v / 268.97 * 480, f"grow {.15 + i * .07:.2f} {.24 + i * .07:.2f}")
+                + A(f'<div style="font:400 40px Anton;color:{INK};width:96px;text-align:center">₹{v:.0f}</div>', 760 + i * 150, 880 - v / 268.97 * 480 - 52, f"fade {.22 + i * .07:.2f} {.26 + i * .07:.2f}")
+                + a(f'<div style="font:500 20px Plex;color:#555;width:96px;text-align:center">{y}</div>', 760 + i * 150, 892) for i, (y, v) in enumerate(COST))
+put("08b_data", page(
+    chapter(2, "WHAT THE FEED PAYS FOR")
+    + A(f'<div style="font:400 84px/0.95 Anton;color:{INK};width:620px">DATA GOT CHEAP.<br>{hl("INDIA CAME ONLINE.")}</div>', 110, 150, "up 0 .1")
+    + A(f'<div style="font:500 22px Plex;letter-spacing:3px;color:#555;width:600px">WHAT A GB OF MOBILE DATA COST, ON AVERAGE (₹)</div>', 112, 390, "fade .08 .14")
+    + bars_ + a(f'<div style="width:1060px;height:4px;background:{INK}"></div>', 740, 880)
+    + A(f'<div style="background:{PARCH};padding:8px 14px;font:700 34px Caveat;color:{RED};transform:rotate(-3deg);box-shadow:0 8px 14px rgba(0,0,0,.2);white-space:nowrap">2016: a new 4G network, Jio, launches with free data</div>', 980, 300, "drop .3 .38", "z-index:31")
+    + card(f'<div style="font:500 17px Plex;letter-spacing:3px;color:#7A6A4A">INTERNET SUBSCRIBERS, 2014 → 2020</div><div style="font:400 84px/1 Anton;color:{INK};margin-top:8px">239M → <span data-anim="count .62 .85" data-to="776">776</span>M</div>', 560, 110, 500, "up .6 .7", -1.5)
+    + tag("SLIDE TITLE (REAL): \"EXTRAORDINARY ACHIEVEMENTS OF INDIA\"", 112, 960, -1.5, "snap .9 .9"),
+    PARCH, "SOURCE: TRAI, PRESENTATION ON THE TELECOM SECTOR (31 MAY 2021), 'DATA COST TO SUBSCRIBER PER GB' AND INTERNET SUBSCRIBERS, TRAI.GOV.IN · CONFIRMED · JIO LAUNCH, SEPT 2016: WELL-ESTABLISHED · BARS START AT ZERO"))
+
 # ==== 3 MECHANICS ==========================================================================================
 put("09_dial", page(
     a(f'<div style="width:1920px;height:1080px;background:#0E1116;background-image:linear-gradient(rgba(46,134,222,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(46,134,222,.08) 1px,transparent 1px);background-size:48px 48px"></div>', 0, 0)
@@ -205,10 +218,10 @@ put("12_count", page(
     + "".join(A(f'<div style="display:flex;align-items:baseline;gap:28px;width:1500px"><div style="font:400 96px/1 Anton;color:{RED};width:300px">{n}</div><div style="font:400 40px/1.2 ISerif;color:{INK}">{t}</div></div>', 112, 470 + i * 150, f"up {.25 + i * .18:.2f} {.35 + i * .18:.2f}")
               for i, (n, t) in enumerate(shares))
     + tag("THE INTERNET, KEEPING RECEIPTS ON ITSELF", 1180, 160, 2, "snap .88 .88"),
-    PARCH, "SOURCE: CSOH, 'THE RISING TIDE OF ANTI-SOUTH ASIAN HATE IN THE UNITED STATES' (28 SEP 2026), VIA AL JAZEERA · REPORTED, NOT PEER-REVIEWED · CHECK AGAINST THE PRIMARY BEFORE AIR"))
+    PARCH, "SOURCE: CSOH, 'THE RISING TIDE OF ANTI-SOUTH ASIAN HATE IN THE UNITED STATES' (28 SEP 2026), CSOHATE.ORG · CHECKED AGAINST THE REPORT 17 NOV 2026 · AN NGO REPORT, NOT PEER-REVIEWED"))
 
 ev = [("DEC 2024", "H-1B fight on X", .1), ("JUL 2025", "Tallaght, Dublin: assault recorded as racially motivated", .3), ("AUG 2025", "Australia: rally flyers single out Indian migration", .5),
-      ("2025", "Canada: police-reported hate crimes vs South Asians 321 → 483", .7)]
+      ("2025", "Canada: police-reported hate crimes vs South Asians 324 → 483", .7)]
 put("13_timing", page(
     chapter(4, "WHERE IT LANDS")
     + A(f'<div style="font:400 84px/0.95 Anton;color:{INK}">SAME MONTHS,<br>{hl("SAME HEADLINES")}</div>', 110, 150, "up 0 .1")
@@ -216,16 +229,16 @@ put("13_timing", page(
     + "".join(A(f'<div style="width:390px"><div style="width:22px;height:22px;border-radius:50%;background:{RED};margin-bottom:16px"></div><div style="font:400 48px Anton;color:{INK}">{d}</div>'
                 f'<div style="font:400 30px/1.2 ISerif;color:#333;margin-top:6px">{t}</div></div>', 110 + i * 430, 590, f"up {s:.2f} {s + .08:.2f}") for i, (d, t, s) in enumerate(ev))
     + tag("TIMING, NOT CAUSE · NO STUDY LINKS A POST TO AN ATTACK", 900, 200, 1.5, "snap .9 .9"),
-    PARCH, "SOURCES: CNBC 27 DEC 2024 · IRISH TIMES 26 JUL 2025 (GARDAÍ) · AL JAZEERA 1 SEP 2025 · STATISTICS CANADA (30 MAR, 22 JUL 2026; INCLUDES SUSPECTED INCIDENTS) · CONFIRMED"))
+    PARCH, "SOURCES: CNBC 27 DEC 2024 · IRISH TIMES 26 JUL 2025 (GARDAÍ) · AL JAZEERA 1 SEP 2025 · STATISTICS CANADA TABLE 6 (22 JUL 2026; 2024 REVISED TO 324; INCLUDES SUSPECTED INCIDENTS) · CONFIRMED"))
 
 put("14_classifier", page(
     a(f'<div style="width:1920px;height:1080px;{DESK}"></div>', 0, 0) + chapter(4, "WHERE IT LANDS")
     + card(kicker("THE FACEBOOK PAPERS · TEST ACCOUNT, KERALA · FROM 4 FEB 2019")
            + f'<div style="font:400 40px/1.35 ISerif;color:#2A2118;margin-top:16px">Three weeks of following recommendations filled the feed with hate. Much of it was "{hl("never flagged or actioned")}": there were no classifiers for Hindi or Bengali.</div>'
            + f'<div style="font:500 16px Plex;color:#7A6A4A;margin-top:18px">Facebook says Hindi classifiers came in 2018 and Bengali in 2020. Content was domestic hate, not foreign mockery.</div>', 860, 120, 210, "up 0 .15", -1.5, "#F4ECD8")
-    + card(kicker("CSOH · JAN 2025") + f'<div style="font:400 120px/1 Anton;color:{INK}">125 <span style="font-size:60px">OF</span> 128</div><div style="font:400 34px ISerif;color:#444">anti-Indian posts still up when the report came out</div>', 700, 1100, 520, "up .4 .55", 2)
+    + card(kicker("CSOH · JAN 2025") + f'<div style="font:400 120px/1 Anton;color:{INK}">125 <span style="font-size:60px">OF</span> 128</div><div style="font:400 34px ISerif;color:#444">of the anti-Indian posts it logged were still live on 3 Jan 2025</div>', 700, 1100, 520, "up .4 .55", 2)
     + tag("MODERATION STATUS: PENDING SINCE 2019", 160, 860, -2, "snap .75 .75"),
-    "#2A1D12", "SOURCES: AL JAZEERA (25 OCT 2021) AND AP ON THE HAUGEN DOCUMENTS · REPORTED; FACEBOOK'S RESPONSE QUOTED · CSOH (9 JAN 2025) · REPORTED", dark=True))
+    "#2A1D12", "SOURCES: AL JAZEERA (25 OCT 2021) AND AP ON THE HAUGEN DOCUMENTS · REPORTED; FACEBOOK'S RESPONSE QUOTED · CSOH (9 JAN 2025) · CHECKED AGAINST THE REPORT", dark=True))
 
 # ==== the other side ========================================================================================
 side = [("19%", "of households had no toilet facility", "NFHS-5, 2019–21"), ("6th of 143", "most polluted country by PM2.5", "IQAir 2025"),

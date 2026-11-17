@@ -1,8 +1,8 @@
 [
  {
-  "claim": "CSOH: 128 posts, 138.5M views to 3 Jan 2025",
-  "source": "CSOH 9 Jan 2025",
-  "status": "reported",
+  "claim": "CSOH: 128 posts, 138.54M views as of 3 Jan 2025",
+  "source": "csohate.org report page, captured 17 Nov 2026",
+  "status": "confirmed (primary)",
   "frames": "02"
  },
  {
@@ -67,8 +67,8 @@
  },
  {
   "claim": "CSOH: ~542,360 anti-South Asian posts on X Jan 2025-Jun 2026; 45% invader/job-thief framing; ~30% slur; hygiene insults +171%",
-  "source": "CSOH 28 Sep 2026 via Al Jazeera",
-  "status": "reported; check primary",
+  "source": "csohate.org report page (28 Sep 2026)",
+  "status": "confirmed (primary); 240% figure is Jan 2024 to Jun 2026, a longer trajectory the report states separately",
   "frames": "12"
  },
  {
@@ -90,9 +90,9 @@
   "frames": "13"
  },
  {
-  "claim": "StatCan: police-reported hate crimes vs South Asians 321 (2024) to 483 (2025)",
+  "claim": "StatCan: police-reported hate crimes vs South Asians 324 (2024, revised) to 483 (2025)",
   "source": "Statistics Canada 2026",
-  "status": "confirmed (includes suspected)",
+  "status": "confirmed (primary)",
   "frames": "13"
  },
  {
@@ -102,9 +102,9 @@
   "frames": "14"
  },
  {
-  "claim": "CSOH: 125 of 128 posts still live",
-  "source": "CSOH Jan 2025",
-  "status": "reported",
+  "claim": "CSOH: 125 of 128 posts active as of 3 Jan 2025",
+  "source": "csohate.org report page",
+  "status": "confirmed (primary)",
   "frames": "14"
  },
  {
@@ -174,9 +174,9 @@
   "frames": "relief"
  },
  {
-  "claim": "Canada: police-reported hate crimes vs South Asians 321 (2024), 483 (2025), +49%",
-  "source": "Statistics Canada",
-  "status": "confirmed (includes suspected)",
+  "claim": "Canada: police-reported hate crimes vs South Asians 167 (2021), 196, 279, 324 (2024 revised), 483 (2025, +49%)",
+  "source": "Statistics Canada, The Daily, Table 6, 22 Jul 2026",
+  "status": "confirmed (primary; includes suspected)",
   "frames": "bars"
  },
  {
@@ -190,5 +190,23 @@
   "source": "DataMeet India composite (CC BY 4.0)",
   "status": "source",
   "frames": "05, globe, relief, rivers"
+ },
+ {
+  "claim": "Mobile data cost per GB: Rs 268.97 (2014), 226.80, 75.57, 19.35, 11.78, 11.17, 10.90 (2020); internet subscribers 238.71M to 776.45M",
+  "source": "TRAI presentation, 31 May 2021 (trai.gov.in)",
+  "status": "confirmed (primary; a government presentation)",
+  "frames": "08b"
+ },
+ {
+  "claim": "Reliance Jio launched Sept 2016 with free data",
+  "source": "widely reported (Reuters, BBC, 2016)",
+  "status": "well-established; not re-fetched",
+  "frames": "08b"
+ },
+ {
+  "claim": "FBI IC3 2024: tech-support fraud losses $1,464,755,976 (36,002 complaints); age 60+: $982,440,006",
+  "source": "FBI IC3 2024 annual report PDF",
+  "status": "confirmed (primary); IC3 does not attribute these losses to any country",
+  "frames": "(dossier only)"
  }
 ]

@@ -67,3 +67,18 @@ also shown at four moments of its animation. There is no video, voice or music.
 **Boundary fix:** every India outline in this film now uses the DataMeet India composite (official boundary, CC BY 4.0), which
 includes the Andaman and Nicobar Islands and Lakshadweep. The studio's old world file was missing the islands, so earlier films
 should be checked too.
+
+## Checked against the original sources (17 Nov 2026)
+- **CSOH (three reports):** every figure matches: 128 posts and 138.54M views; 125 of 128 posts still live; 680 posts and 281.2M
+  views; 542,360 posts; 45% "invaders/job thieves"; 30% slur; hygiene insults +171%. The opening frame now shows **the real
+  report page** (title and key findings, captured 17 Nov 2026), so the evidence-first gate is met without a waiver. The crop leaves
+  out the report's political commentary. CSOH is a US-based non-profit, and some in India criticise its work as partisan; the source
+  line says so.
+- **Statistics Canada:** 2024 was revised from 321 to 324. The glowing bars now show the full series: 167, 196, 279, 324, 483
+  (2021 to 2025).
+- **FBI IC3 2024:** tech-support fraud losses $1.46 billion, $982 million of it from people over 60. IC3 does not say where the
+  scams come from.
+- **New frame 08b, the 2016 data drop:** TRAI's own 2021 presentation gives ₹268.97 per GB in 2014 and ₹10.90 in 2020; internet
+  subscribers rose from 239 million to 776 million. The archive tag quotes the slide's real title, "Extraordinary Achievements of
+  India".
+- **Still unconfirmed (the sites block automated access):** IMF rank, UNESCO count, NPCI UPI figure, NCRI, CEPF and IQAir.

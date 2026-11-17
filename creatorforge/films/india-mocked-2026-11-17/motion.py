@@ -153,15 +153,15 @@ const LABELS=()=>{let h='';for(const [yr,v,t,b,hot] of tops){const [x,y]=proj(t,
  ov.innerHTML=h+`<div style="left:90px;top:120px"><div style="font:400 56px ISerif;color:#E8E4DA">${CFG.kick}</div><div style="font:400 112px/0.9 Anton;color:#F3EFE6">${CFG.title}</div>
  <div style="font:500 22px Plex;letter-spacing:4px;color:${CFG.lab};margin-top:16px;width:900px">${CFG.what}</div></div>
  <div style="left:90px;top:22px;background:#1A1A1A;color:#F4EFE6;padding:8px 16px;font:500 20px Plex;letter-spacing:5px">CHAPTER 4 · WHERE IT LANDS</div>
- <div style="left:90px;top:560px;${CFG.tag}">${CFG.tagtext}</div>
+ <div style="left:1250px;top:330px;${CFG.tag}">${CFG.tagtext}</div>
  <div style="left:24px;bottom:14px;font:500 12px Plex;color:rgba(255,255,255,.55)">${CFG.src}</div>`};
 """
 for tag, grow in (("a", .3), ("b", .7), ("c", 1.0)):
-    cfg = dict(bg="#0B0A0D", data=[["2024", 321], ["2025", 483]], gap=4.2, hot=[1], glow=RED, lab=SIG, grow=grow, k=5.0 / 483,
-               cam=[-5, 5.2, 24], look=[-.6, 3.2, 0], kick="Not online. On paper, at the police station.", title="CANADA: +49%",
+    cfg = dict(bg="#0B0A0D", data=[["2021", 167], ["2022", 196], ["2023", 279], ["2024", 324], ["2025", 483]], gap=3.0, hot=[4], glow=RED, lab=SIG, grow=grow, k=5.0 / 483,
+               cam=[-4, 5.4, 27], look=[0.4, 3.0, 0], kick="Not online. On paper, at the police station.", title="CANADA: +49% IN A YEAR",
                what="POLICE-REPORTED HATE CRIMES AGAINST SOUTH ASIANS, CANADA (INCLUDES SUSPECTED INCIDENTS)",
                tag=TAGCSS + ";position:absolute;transform:rotate(-1.5deg)" + (";opacity:0" if grow < 1 else ""), tagtext="TIMING, NOT CAUSE",
-               src="SOURCE: STATISTICS CANADA, THE DAILY (30 MAR 2026) AND TABLE (22 JUL 2026) · CONFIRMED · BARS START AT ZERO · TWO YEARS SHOWN; EARLIER YEARS NOT YET IN THE DOSSIER")
+               src="SOURCE: STATISTICS CANADA, THE DAILY, TABLE 6 (22 JUL 2026), 2024 REVISED · CONFIRMED · INCLUDES SUSPECTED INCIDENTS · BARS START AT ZERO")
     html = S3.HEAD + f"const CFG={json.dumps(cfg, ensure_ascii=False)};\n" + BARS + S3.TAIL
     html = html.replace("</body>", f'<div style="position:absolute;right:56px;top:44px;z-index:90">{logo_d(1.0)}</div><style>{FONTS}</style></body>', 1)
     put(f"bars_{tag}", html)
