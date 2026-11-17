@@ -256,3 +256,16 @@ Never a late-night talk-show format or a comedy monologue.
 - All free and local. Scenes are single-file HTML, SVG or CSS with bundled local fonts and no CDN. Textures use inline SVG filters and patterns.
 - Natural Earth + mapshaper (MPL-2.0) for maps; FFmpeg; Manim and Motion Canvas.
 - **Remotion:** allowed while the owner is an individual or a company of up to 3 employees (its free licence). A larger company needs Remotion's paid company licence.
+
+### 10b. Writing for motion (owner, 2026-11-17)
+Scripts are written as a four-column table (beat and time · voiceover · canvas layer · camera and motion cue). The other rules:
+- deictic, point-at-the-screen writing;
+- a zoom-out hook;
+- 30-second micro-loops (artifact → anomaly → curiosity gap → spatial pivot);
+- a cadence of 4–7-word punchlines against 15–20-word explanations;
+- no "Now let's look at / Secondly / In conclusion";
+- camera physics with `[HOLD 0.6s]` after reveals;
+- the tabletop as the in-film backbone, with hard cuts only as comedy beats.
+
+The channel palettes and the John Oliver voice stay. The full rules are in the house-style skills (`printfacts-style`,
+`dragonpsych-style`), under "Writing the script for motion".

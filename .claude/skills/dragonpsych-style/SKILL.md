@@ -65,3 +65,32 @@ file for those, then apply the differences below. The owner's hard rules (CLAUDE
 - Manipulation tactics framed as how-to. Always frame them as how to spot and resist them.
 - Mocking marks on real faces, or AI faces.
 - Rainbow colours or emoji.
+
+## Writing the script for motion (owner, 2026-11-17)
+These rules add to the voice (MASTER_DIRECTIVES §10). They don't replace it. Every script is written so that the narration drives
+the camera.
+
+1. **Format:** every script is a four-column table:
+   `| Beat / Time | Voiceover (spoken) | Canvas layer (what's on screen) | Camera & motion cue |`
+2. **Point at the screen (deictic writing):** write as if a finger is tracing the frame. Use phrases like "Look closely at…",
+   "Follow this line…" and "Right here, in the corner…". Never an abstract essay.
+3. **The zoom-out hook (first 30–45 s):** open on one tangible detail, such as a border kink, an object or one sentence in a
+   document. Hold the mystery, then pull out to the stakes.
+4. **The micro-loop (each ~30 s block):** artifact (the map, photo or document) → anomaly (highlight what's strange) →
+   curiosity gap (ask why) → spatial pivot (the camera moves to the next clue).
+5. **Cadence:** alternate 4–7-word punchlines, for impact freezes and highlighter sweeps, with 15–20-word explanations, for slow
+   pans and routes drawing on. The John Oliver line ("fact → receipt → simile → snap back") sits inside this rhythm, and the snap
+   back is the short line.
+6. **No clunky transitions:** never "Now let's look at", "Secondly" or "In conclusion". Bridge with cause: "But there was one
+   problem…", "And that's when everything shifted…".
+7. **Camera physics on every row:**
+   - the move (`slow push-in 1.0× → 1.4×`, `smooth pan east`, `whip-pan to the timeline`);
+   - the tactile action (`highlighter sweep`, `dashed route draws at constant speed`, `paper cut-out drops in, 12-frame ease-out`);
+   - `[HOLD 0.6s]` after every major reveal.
+8. **The tabletop is the backbone:** keep the base canvas (the desk, paper or map) on screen and slide clippings, photos and
+   callouts onto it with drop shadows. Don't hard-cut to unrelated B-roll.
+   - **The one exception is comedy:** a 1-frame smash-zoom or a hard music cut before a punchline is a deliberate beat.
+   - **The canvas changes per film** (gate 2, SEEN.json); the continuity rule applies within a film.
+9. **Colour:** the channel palette stays.
+   - **Signal colour:** one per moment: amber #ED8936. No yellow.
+   - **Background:** slate #141824 or lab-paper #F0F4F8, with cobalt #2B6CB0 for structure.

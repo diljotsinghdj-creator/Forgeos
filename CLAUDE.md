@@ -34,7 +34,7 @@ The essentials, in case nothing else is read:
   - **Print Facts:** cream #F4EFE6, charcoal #1A1A1A, crimson #D93829 and highlighter yellow #F7D046.
   - **Dragon Psychology:** slate #141824, lab-paper #F0F4F8, cobalt #2B6CB0 and amber #ED8936.
   - Each film may add one accent of its own.
-- **Scripts:** Vox × Johnny Harris structure and visuals, written in a John Oliver satirical voice (MASTER_DIRECTIVES §10).
+- **Scripts:** Vox × Johnny Harris structure and visuals, written in a John Oliver satirical voice (MASTER_DIRECTIVES §10), as a four-column table that writes for motion (§10b).
 
 **The owner's five gates** (2026-11-11, enforced by `studio/gates.py` for both channels and every sample with
 `"sample_for"`). A gate stops the studio; it is never worked around:
