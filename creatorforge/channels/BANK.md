@@ -40,7 +40,7 @@ on a YouTube schedule. Until then nothing is uploaded.
 |---|------|---------|--------|--------|---------|-------|--------------------|--------|
 | 1 | Pepper Was Money (`films/pepper-money-2026-11-15`) | Print Facts | long, 16:9 | draft 4, John Oliver voice (passes the script test) | 30 key frames and 17 motion builds | not made | Kochi price; UNESCO and other counts | on hold (owner, 2026-11-17); needs go and a voice |
 | 2 | Punjab's water overdraft (`films/punjab-water-short-2026-11-15`) | Print Facts | Short, 9:16 | Vox voice, not John Oliver: needs a rewrite | old palette: needs restyle | made (73.5 s), but fails both tests | groundwater figures | made before the 2026-11-16 rules; needs a rewrite and restyle to count |
-| 3 | Why India is mocked online (working title) | Print Facts | long, 16:9 | owner's draft: needs the corrections and a script-test pass (cut the catchphrase and the named-person jokes) | not started | not made | IMF rank; CSOH, NCRI and FBI figures; UPI; UNESCO | research done (`reports/Why India is mocked online.md`); next: pitch 3 engines |
+| 3 | Why India is mocked online (working title) | Print Facts | long, 16:9 | owner's draft: needs the corrections and a script-test pass (cut the catchphrase and the named-person jokes) | 20 key frames and motion sheets (2026-11-17, `films/india-mocked-2026-11-17`) | not made | IMF rank; CSOH, NCRI and FBI figures; UPI; UNESCO | research done (`reports/Why India is mocked online.md`); next: pitch 3 engines |
 
 Older work waiting on the owner (not counted until approved in the current style):
 - the BJP IT cell film: right of reply pending;

@@ -1,0 +1,152 @@
+[
+ {
+  "claim": "CSOH: 128 posts, 138.5M views to 3 Jan 2025",
+  "source": "CSOH 9 Jan 2025",
+  "status": "reported",
+  "frames": "02"
+ },
+ {
+  "claim": "Chandrayaan-3 soft landing near lunar south pole, 23 Aug 2023",
+  "source": "ISRO",
+  "status": "confirmed",
+  "frames": "03"
+ },
+ {
+  "claim": "UPI 25.47 bn transactions, Oct 2026",
+  "source": "NPCI via Free Press Journal",
+  "status": "reported",
+  "frames": "03,18"
+ },
+ {
+  "claim": "Tigers 3,682 (range 3,167-3,925), ~75% of world",
+  "source": "NTCA/WII 2022 cycle",
+  "status": "confirmed",
+  "frames": "03"
+ },
+ {
+  "claim": "Calcutta capital of British India until 1911",
+  "source": "standard history",
+  "status": "confirmed",
+  "frames": "05"
+ },
+ {
+  "claim": "Macaulay Minute 2 Feb 1835, 'single shelf' and 'no knowledge of either Sanscrit or Arabic'",
+  "source": "Columbia (Pritchett)",
+  "status": "confirmed; punctuation to check",
+  "frames": "06"
+ },
+ {
+  "claim": "Gandhi 'drain inspector' review of Mayo's Mother India (1927), Young India Sept 1927",
+  "source": "mkgandhi.org",
+  "status": "quote confirmed; issue date to check",
+  "frames": "07"
+ },
+ {
+  "claim": "Sauvy coined 'Third World', L'Observateur 14 Aug 1952, meaning non-aligned",
+  "source": "Britannica",
+  "status": "confirmed",
+  "frames": "08"
+ },
+ {
+  "claim": "Rathje et al. PNAS 2021: 2.73M posts; ~67% higher share odds per out-group word",
+  "source": "PNAS/PMC",
+  "status": "confirmed",
+  "frames": "09"
+ },
+ {
+  "claim": "Facebook weighted emoji reactions incl. angry 5x a like from 2017; angry weight 0 by end-2020",
+  "source": "Washington Post 26 Oct 2021",
+  "status": "reported; counter-view Cato",
+  "frames": "10"
+ },
+ {
+  "claim": "X pays creators by Premium-user engagement since Oct 2024",
+  "source": "TechCrunch 9 Oct 2024",
+  "status": "confirmed",
+  "frames": "11"
+ },
+ {
+  "claim": "CSOH: ~542,360 anti-South Asian posts on X Jan 2025-Jun 2026; 45% invader/job-thief framing; ~30% slur; hygiene insults +171%",
+  "source": "CSOH 28 Sep 2026 via Al Jazeera",
+  "status": "reported; check primary",
+  "frames": "12"
+ },
+ {
+  "claim": "H-1B fight on X, Dec 2024",
+  "source": "CNBC 27 Dec 2024",
+  "status": "confirmed",
+  "frames": "13"
+ },
+ {
+  "claim": "Tallaght assault 19 Jul 2025 recorded by Gardai as racially motivated",
+  "source": "Irish Times 26 Jul 2025",
+  "status": "confirmed",
+  "frames": "13"
+ },
+ {
+  "claim": "March for Australia rallies 31 Aug 2025, flyers singled out Indian migration",
+  "source": "Al Jazeera 1 Sep 2025",
+  "status": "confirmed",
+  "frames": "13"
+ },
+ {
+  "claim": "StatCan: police-reported hate crimes vs South Asians 321 (2024) to 483 (2025)",
+  "source": "Statistics Canada 2026",
+  "status": "confirmed (includes suspected)",
+  "frames": "13"
+ },
+ {
+  "claim": "Facebook Papers: Kerala test account from 4 Feb 2019; no Hindi/Bengali classifiers; Facebook says added 2018/2020",
+  "source": "Al Jazeera 25 Oct 2021; AP",
+  "status": "reported",
+  "frames": "14"
+ },
+ {
+  "claim": "CSOH: 125 of 128 posts still live",
+  "source": "CSOH Jan 2025",
+  "status": "reported",
+  "frames": "14"
+ },
+ {
+  "claim": "NFHS-5: 19% of households no toilet facility",
+  "source": "NFHS-5 via Deccan Herald",
+  "status": "confirmed",
+  "frames": "15"
+ },
+ {
+  "claim": "IQAir 2025: India 6th of 143",
+  "source": "IQAir via The Wire",
+  "status": "reported",
+  "frames": "15"
+ },
+ {
+  "claim": "FSSAI 2023-24: 19.8% of samples non-conforming",
+  "source": "Lok Sabha reply",
+  "status": "confirmed; totals differ",
+  "frames": "15"
+ },
+ {
+  "claim": "Microsoft 2021: 69% of Indians encountered tech-support scam, highest",
+  "source": "Microsoft",
+  "status": "confirmed",
+  "frames": "15"
+ },
+ {
+  "claim": "Fact-checks: AI-generated (Correctiv 13 May 2026); scripted (BOOM); not from India (BOOM)",
+  "source": "Correctiv, BOOM, The Quint",
+  "status": "confirmed",
+  "frames": "16"
+ },
+ {
+  "claim": "Naatu Naatu, Best Original Song, 12 Mar 2023",
+  "source": "Oscars.org",
+  "status": "confirmed",
+  "frames": "18"
+ },
+ {
+  "claim": "India population about 1.4 billion",
+  "source": "UN WPP",
+  "status": "to check latest",
+  "frames": "20"
+ }
+]
