@@ -7,7 +7,6 @@ Newest entries go at the bottom. Rules here are binding for both channels unless
 
 | Channel | Film | Engine | Hook mechanism | Visual metaphors | Status |
 |---|---|---|---|---|---|
-| Print Facts | The BJP IT Cell (draft plan) | not pitched yet | the party president's own words ("true or false") over a black screen | message arcs across India; org chart on string; evidence board with red string | research done |
 | Dragon Psychology | Phone scam / "Phantom Authority" (owner's draft v1) | explainer (before the engines existed) | a counter freezing at a number, then the smart victim | two-track brain grid; compliance staircase; balance scale; protocol card | under revision |
 
 ---
@@ -111,8 +110,8 @@ Newest entries go at the bottom. Rules here are binding for both channels unless
 - **Winning Pattern:** Subject-native visuals (3D planets, the globe dive to the city, the evidence on the desk).
 
 ### 2026-11-11: Samples that look like the last ones
-- **Mistake Logged:** The BJP IT cell sample repeated what the owner had already seen:
-  - its shots were lifted from the BJP storyboard shown on 2026-11-10 (the family-group forward hook, the chain flowchart, 687 vs 15, the smartphone headline, the news card);
+- **Mistake Logged:** A sample repeated what the owner had already seen:
+  - its shots were lifted from a storyboard shown on 2026-11-10 (a family-group forward hook, a chain flowchart, a two-number comparison, a smartphone headline, a news card);
   - four of the five samples used the same narrative approach (trojan-horse) and the same voice (am_michael);
   - every sample shared one look: cream paper, grain, vignette, black title box, mono tags, one sentence per shot held 5-10 s, hard cuts.
   The variation check passed it because it compared only finished films, not samples or storyboards, and never compared the look itself.
