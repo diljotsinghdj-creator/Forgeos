@@ -48,6 +48,9 @@ on a YouTube schedule. Until then nothing is uploaded.
 
 | 3 | The Night the World Didn't End (`films/prophecy-2026-11-19`) | Dragon Psychology | long, 16:9 | draft 1, four-column, John Oliver voice | 24 key frames and motion sheets (DJ style, 2026-11-19) | not made | Kelly rebuttal status; Festinger & Carlsmith scores | engine A (countdown) picked by the owner 2026-11-19; script draft 1 done |
 
+| 4 | Why does landlocked Bolivia have a navy? (`films/bolivia-navy-2026-11-19`) | Print Facts | long, 16:9 | not started: dossier, then four-column script | not made | not made | ICJ 2018 vote; Day of the Sea; navy size | engine A (Reverse Autopsy) picked by the owner 2026-11-19 |
+| 5 | The buttons that do nothing (`films/dead-buttons-2026-11-19`) | Dragon Psychology | long, 16:9 | not started: dossier, then four-column script | not made | not made | NYC button count; lift-button rules | engine A (Live Viewer Trap) picked by the owner 2026-11-19 |
+
 Older work waiting on the owner (not counted until approved in the current style):
 - US midterms: awaits go;
 - the Delhi film: awaits go.
