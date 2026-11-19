@@ -43,8 +43,8 @@ on a YouTube schedule. Until then nothing is uploaded.
 ## Bank status
 | # | Film | Channel | Format | Script | Visuals | Video | Refresh before air | Status |
 |---|------|---------|--------|--------|---------|-------|--------------------|--------|
-| 1 | Pepper Was Money (`films/pepper-money-2026-11-15`) | Print Facts | long, 16:9 | draft 4, John Oliver voice (passes the script test) | 30 key frames and 17 motion builds | not made | Kochi price; UNESCO and other counts | on hold (owner, 2026-11-17); needs go and a voice |
-| 2 | Why India is mocked online (working title) | Print Facts | long, 16:9 | owner's draft: needs the corrections and a script-test pass (cut the catchphrase and the named-person jokes) | 20 key frames and motion sheets (2026-11-17, `films/india-mocked-2026-11-17`) | not made | IMF rank; CSOH, NCRI and FBI figures; UPI; UNESCO | research done (`reports/Why India is mocked online.md`); next: pitch 3 engines |
+| 1 | Pepper Was Money (`films/pepper-money-2026-11-15`) | Print Facts | long, 16:9, ~9 min | draft 5, four-column `SCRIPT_TABLE.md` (2026-11-19), John Oliver voice; pacing checked (101 shots, avg 4.5 s) | 30 key frames and 17 motion builds; 7 new beats listed in the table | not made | Kochi price; UNESCO and other counts; 2022 Act section | script for owner's approval; then go and a voice |
+| 2 | Why India is mocked online (working title) | Print Facts | long, 16:9 | owner's draft: needs the corrections and a script-test pass (cut the catchphrase and the named-person jokes) | 20 key frames and motion sheets (2026-11-17, `films/india-mocked-2026-11-17`) | not made | IMF rank; CSOH, NCRI and FBI figures; UPI; UNESCO | research done (`reports/Why India is mocked online.md`); pick: the owner's own draft (`pick.json`); next: corrections and script-test pass |
 
 | 3 | The Night the World Didn't End (`films/prophecy-2026-11-19`) | Dragon Psychology | long, 16:9 | draft 1, four-column, John Oliver voice | 24 key frames and motion sheets (DJ style, 2026-11-19) | not made | Kelly rebuttal status; Festinger & Carlsmith scores | engine A (countdown) picked by the owner 2026-11-19; script draft 1 done |
 
