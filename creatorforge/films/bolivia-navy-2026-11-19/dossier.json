@@ -1,0 +1,230 @@
+[
+ {
+  "claim": "Lake Titicaca lies at about 3,810 m (12,500 ft) on the Peru–Bolivia border and is the world's highest lake navigable by large vessels",
+  "source": "Britannica, 'Lake Titicaca' summary, https://www.britannica.com/summary/Lake-Titicaca ; Wikipedia 'Lake Titicaca' gives 3,812 m, https://en.wikipedia.org/wiki/Lake_Titicaca",
+  "status": "confirmed (secondary)",
+  "frames": "1 · 0:02, 1 · 0:08, 5 · end"
+ },
+ {
+  "claim": "Bolivia set up a River and Lake Force (Fuerza Fluvial y Lacustre) in January 1963, renamed the Bolivian Naval Force (Fuerza Naval Boliviana) in January 1966",
+  "source": "Wikipedia 'Bolivian Navy', https://en.wikipedia.org/wiki/Bolivian_Navy (via search; page fetch blocked in this session)",
+  "status": "confirmed (secondary) · to check against the navy's own site (armada.mil.bo) ⚠",
+  "frames": "2 · rewind to 1963"
+ },
+ {
+  "claim": "The Bolivian Navy has roughly 5,000 personnel",
+  "source": "WIRED (2018) feature on the Bolivian navy, as reported in search results; Wikipedia 'Bolivian Navy' ('as of 2018'); older figure in The Guardian, Rory Carroll, 2008",
+  "status": "reported · to check and refresh before air ⚠",
+  "frames": "4 · Tiquina"
+ },
+ {
+  "claim": "The navy's main lake base is at Tiquina on Lake Titicaca",
+  "source": "Wikipedia 'Bolivian Navy'; Avaunt Magazine, 'The Navy Without a Sea', https://avauntmagazine.com/the-navy-without-a-sea/",
+  "status": "confirmed (secondary)",
+  "frames": "4 · Tiquina"
+ },
+ {
+  "claim": "The navy patrols Lake Titicaca and Bolivia's rivers, intercepts smugglers, delivers supplies to remote towns and rescues people during floods",
+  "source": "WIRED 2018 (via search); NBC News/AP, 'Floods give Bolivia's inland navy a fleeting sea', 2007, https://www.nbcnews.com/id/wbna17784744",
+  "status": "reported (secondary)",
+  "frames": "4 · rivers"
+ },
+ {
+  "claim": "Bolivia's major rivers drain east into the Amazon basin (and the Plata basin in the south-east)",
+  "source": "Natural Earth rivers + lake centerlines 1:10m, https://www.naturalearthdata.com/ (drawn by the studio)",
+  "status": "confirmed (geodata)",
+  "frames": "4 · rivers"
+ },
+ {
+  "claim": "Some Bolivian naval officers train at sea on other navies' ships, e.g. Argentina's",
+  "source": "Wikipedia 'Bolivian Navy' (via search); geogarage blog 2018, https://blog.geogarage.com/2018/05/bolivia-is-landlocked-dont-tell-that-to.html",
+  "status": "reported · to check ⚠",
+  "frames": "4 · training abroad"
+ },
+ {
+  "claim": "The War of the Pacific (1879–1884) was fought by Chile against Bolivia and Peru",
+  "source": "Wikipedia 'War of the Pacific'; New World Encyclopedia, https://www.newworldencyclopedia.org/entry/War_of_the_Pacific",
+  "status": "confirmed (secondary)",
+  "frames": "3 · war map"
+ },
+ {
+  "claim": "The 1874 Boundary Treaty between Bolivia and Chile fixed for 25 years the taxes on Chilean persons, industries and capital in the disputed zone, in return for Chile dropping its claims",
+  "source": "Wikipedia 'War of the Pacific' / 'Boundary Treaty of 1874' (via search)",
+  "status": "confirmed (secondary) · check the article number in the 1874 text ⚠",
+  "frames": "2 · Chile's side"
+ },
+ {
+  "claim": "A Bolivian law of 14 Feb 1878 created a tax of 10 centavos per quintal on nitrate exported by the Compañía de Salitres y Ferrocarril de Antofagasta (CSFA); Bolivia tried to enforce it from Dec 1878",
+  "source": "Andes ACD timeline PDF, https://www.andesacd.org/wp-content/uploads/2016/02/Conflicto-Chile-Bolivia-data-antes-de-invasión-en-1879.pdf ; Wikipedia 'War of the Pacific' ('Ten Cents War')",
+  "status": "confirmed (secondary) · the unit (quintal ≈ 46 kg) to check ⚠",
+  "frames": "2 · 1878 ledger"
+ },
+ {
+  "claim": "A quintal is about 46 kg (100 Spanish pounds)",
+  "source": "standard Spanish unit: 1 quintal = 4 arrobas = 100 libras ≈ 46 kg",
+  "status": "confirmed (reference) · check that the 1878 law used the Spanish quintal ⚠",
+  "frames": "2 · coin"
+ },
+ {
+  "claim": "The CSFA refused to pay; Bolivia rescinded its licence, moved to expropriate it and set an auction for 14 Feb 1879",
+  "source": "Wikipedia 'War of the Pacific' (via search); FRUS 1879, https://history.state.gov/historicaldocuments/frus1879/d98",
+  "status": "confirmed (secondary)",
+  "frames": "2 · auction"
+ },
+ {
+  "claim": "On 14 Feb 1879 Chilean forces occupied the Bolivian port of Antofagasta without resistance",
+  "source": "Wikipedia 'War of the Pacific'; albumdesierto.cl history page, https://albumdesierto.cl/ingles/2histori.htm",
+  "status": "confirmed (secondary)",
+  "frames": "2 · 14 Feb 1879"
+ },
+ {
+  "claim": "Battle of Topáter, near Calama, 23 Mar 1879: the first armed clash of the war; the civilian Eduardo Abaroa was killed defending the bridge (posthumously made a colonel)",
+  "source": "Wikipedia 'Eduardo Abaroa', https://en.wikipedia.org/wiki/Eduardo_Abaroa ; eju.tv explainer on Día del Mar, https://eju.tv/?p=2785164",
+  "status": "confirmed (secondary)",
+  "frames": "3 · Topáter"
+ },
+ {
+  "claim": "Peru fought on Bolivia's side (secret alliance of 1873) and lost the province of Tarapacá under the Treaty of Ancón, signed 20 Oct 1883",
+  "source": "Wikipedia 'Treaty of Ancón' and 'War of the Pacific'",
+  "status": "confirmed (secondary)",
+  "frames": "3 · Ancón"
+ },
+ {
+  "claim": "Historians cite deeper causes of the war beyond the tax: the nitrate and guano wealth of the Atacama, the 1873 Peru–Bolivia secret defensive alliance, and a long-disputed border",
+  "source": "Wikipedia 'War of the Pacific' (causes section); New World Encyclopedia 'War of the Pacific', https://www.newworldencyclopedia.org/entry/War_of_the_Pacific",
+  "status": "confirmed (secondary)",
+  "frames": "2 · 14 Feb 1879"
+ },
+ {
+  "claim": "Bolivia and Chile signed a truce (Pacto de Tregua) at Valparaíso on 4 April 1884; Chile continued to administer the occupied coast",
+  "source": "Bolivian foreign ministry, 'El Libro del Mar' (via search, scribd copy https://es.scribd.com/document/596501882/El-Libro-del-Mar); 1904 treaty preamble cites Art. 8 of the 1884 truce",
+  "status": "confirmed (secondary)",
+  "frames": "2 · 1884"
+ },
+ {
+  "claim": "Bolivia lost the department of Litoral: about 400 km of coastline and about 120,000 km² of territory",
+  "source": "Bolivian government, 'El Libro del Mar' (Dirección Estratégica de Reivindicación Marítima)",
+  "status": "reported (Bolivian government figures; labelled as such on screen) ⚠",
+  "frames": "3 · Litoral"
+ },
+ {
+  "claim": "The Treaty of Peace and Friendship was signed in Santiago on 20 Oct 1904 by Emilio Bello Codesido (Chile) and Alberto Gutiérrez (Bolivia)",
+  "source": "Treaty text, EFE (Chilean state railways) PDF, https://www.efe.cl/wp-content/uploads/2020/06/Tratado-de-1904.pdf ; Cooperativa full text, https://cooperativa.cl/noticias/pais/relaciones-exteriores/bolivia/texto-completo-del-tratado-de-paz-y-amistad-de-1/2004-10-20/100031.html",
+  "status": "confirmed (primary)",
+  "frames": "1 · evidence, 2 · 1904"
+ },
+ {
+  "claim": "Art. II: the territories occupied by Chile under Art. 2 of the 1884 truce are recognised as 'del dominio absoluto y perpetuo de Chile'",
+  "source": "1904 treaty text (EFE PDF above); English translation in FRUS 1905, https://history.state.gov/historicaldocuments/frus1905/d128 (document number to confirm)",
+  "status": "confirmed (primary) · exact on-screen wording to match the scan used ⚠",
+  "frames": "1 · evidence (gate 3), 3 · two forevers"
+ },
+ {
+  "claim": "Art. III: the parties will unite the port of Arica with the Alto de La Paz by railway, built by Chile at its cost; the Bolivian section passes to Bolivia 15 years after the line is finished",
+  "source": "1904 treaty text (EFE PDF; Wikipedia 'Treaty of Peace and Friendship (1904)', https://en.wikipedia.org/wiki/Treaty_of_Peace_and_Friendship_(1904))",
+  "status": "confirmed (primary)",
+  "frames": "3 · Article III"
+ },
+ {
+  "claim": "Art. IV: Chile pays Bolivia £300,000 sterling in cash, in two instalments of £150,000",
+  "source": "1904 treaty text (EFE PDF; Universidad de Concepción, Revista de Historia, https://revistas.udec.cl/index.php/historia/article/download/6839/6451/15305)",
+  "status": "confirmed (primary)",
+  "frames": "3 · Article IV"
+ },
+ {
+  "claim": "Art. VI: Chile recognises in favour of Bolivia, 'a perpetuidad, el más amplio y libre derecho de tránsito comercial por su territorio y puertos del Pacífico'",
+  "source": "1904 treaty text as transcribed by Chile's tax service (SII), https://www.sii.cl/pagina/jurisprudencia/adminis/2000/ventas/ja4774.htm ; Chile MINREL",
+  "status": "confirmed (primary)",
+  "frames": "3 · Article VI"
+ },
+ {
+  "claim": "Art. VII: Bolivia may establish customs agencies in the ports it designates for its trade (Arica and Antofagasta named)",
+  "source": "1904 treaty text (EFE PDF)",
+  "status": "confirmed (primary)",
+  "frames": "3 · Article VII"
+ },
+ {
+  "claim": "The Arica–La Paz railway was inaugurated in 1913",
+  "source": "Memoria Chilena, 'Ferrocarril Arica-La Paz', https://www.memoriachilena.gob.cl/602/w3-article-92273.html ; Wikipedia 'Arica–La Paz railway'",
+  "status": "confirmed (secondary) · exact date to check ⚠",
+  "frames": "3 · train"
+ },
+ {
+  "claim": "Bolivian cargo was about 76% of all cargo moved through the port of Arica in 2023",
+  "source": "Puerto Arica figures reported by MundoMarítimo, 'Puerto Arica alcanza récord…33 millones de toneladas en 2023', https://mundomaritimo.cl/noticias/puerto-arica-alcanza-record-en-movilizacion-de-carga-tras-superar-los-33-millones-de-toneladas-en-2023",
+  "status": "reported · refresh before air ⚠",
+  "frames": "3 · Arica bar"
+ },
+ {
+  "claim": "Chile's position: the 1904 treaty is valid, was freely concluded and ratified, settled sovereignty, and Chile has honoured Bolivia's transit rights",
+  "source": "Chile, Preliminary Objection to the ICJ (July 2014), https://minrel.gob.cl/minrel_old/site/artic/20150504/asocfile/20150504130611/preliminary_objection_of_the_republic_of_chile.pdf",
+  "status": "confirmed (primary, Chile's own filing) · date of filing to check ⚠",
+  "frames": "3 · Chile's position"
+ },
+ {
+  "claim": "Bolivia's position: the treaty was imposed after military defeat and is unjust; Bolivia has said Chile breaches Art. VI free transit",
+  "source": "Bolivia, 'El Libro del Mar'; eju.tv 2015, https://eju.tv/2015/05/bolivia-dice-que-chile-incumple-tratado-de-1904-y-exige-suspensin-de-medidas-que-impiden-circulacin-de-carga-boliviana/",
+  "status": "reported (attributed to the Bolivian government)",
+  "frames": "3 · Bolivia's position, transit dispute"
+ },
+ {
+  "claim": "Treaty ratification: promulgated in Bolivia 21 March 1905 and published in Chile's Diario Oficial 27 March 1905; ratifications exchanged 1905 (sources disagree on the day)",
+  "source": "eju.tv (Bolivian source) and SII Chile transcription, via search",
+  "status": "to check ⚠ (script says only 'ratified by both')",
+  "frames": "3 · Chile's position"
+ },
+ {
+  "claim": "Día del Mar is held every 23 March (the date of Topáter), closing a Semana del Mar, with a main ceremony at Plaza Abaroa in La Paz and civic-military parades in which the navy marches",
+  "source": "Wikipedia 'Día del Mar', https://en.wikipedia.org/wiki/D%C3%ADa_del_Mar ; Reuters Screenocean 'Bolivia marks Day of Sea with parade in La Paz', https://reuters.screenocean.com/record/1968329 ; The World (PRI) 2019, https://stag.theworld.org/stories/2019/03/22/dia-del-mar",
+  "status": "confirmed (secondary)",
+  "frames": "4 · Día del Mar"
+ },
+ {
+  "claim": "Art. 267 of Bolivia's 2009 constitution: 'El Estado boliviano declara su derecho irrenunciable e imprescriptible sobre el territorio que le dé acceso al océano Pacífico y su espacio marítimo'",
+  "source": "Constitución Política del Estado 2009, Constitute Project PDF, https://www.constituteproject.org/constitution/Bolivia_2009.pdf?lang=es ; Justia Bolivia, https://bolivia.justia.com/nacionales/nueva-constitucion-politica-del-estado/segunda-parte/titulo-viii/capitulo-cuarto",
+  "status": "confirmed (primary)",
+  "frames": "4 · constitution, 5 · our reading"
+ },
+ {
+  "claim": "In 1992 Peru granted Bolivia a ~5 km beach strip south of Ilo ('Bolivia Mar') for a renewable 99 years, as a tourist free zone; a 2010 protocol extended the arrangement; the promised facilities were largely never built",
+  "source": "Wikipedia 'Bolivia Mar', https://en.wikipedia.org/wiki/Bolivia_Mar ; MercoPress 2010, https://en.mercopress.com/2010/10/23/bolivian-navy-to-have-access-to-the-pacific-for-the-first-time-in-130-years ; Rio Times, https://www.riotimesonline.com/bolivias-coastal-hope-fades-the-unfulfilled-promise-of-boliviamar/ ; MercoPress 2022 (Peru: agreement of 24 Jan 1992 still in force)",
+  "status": "reported · 'still mostly sand' to check with a current source or satellite image ⚠",
+  "frames": "4 · Boliviamar"
+ },
+ {
+  "claim": "Bolivia filed its ICJ application against Chile on 24 April 2013 (Obligation to Negotiate Access to the Pacific Ocean)",
+  "source": "ICJ case 153 page, https://www.icj-cij.org/case/153 ; ICJ 2015 judgment operative clause (via search)",
+  "status": "confirmed (primary, via search; ICJ site blocked in this session)",
+  "frames": "4 · 2013"
+ },
+ {
+  "claim": "Chile objected that the Court lacked jurisdiction (the matter was settled by the 1904 treaty); on 24 Sep 2015 the Court rejected the objection and found it had jurisdiction",
+  "source": "ICJ judgment of 24 Sep 2015 (preliminary objection), https://www.icj-cij.org/case/153 ; lagen.nu copy, https://ferenda.lagen.nu/icj/153-20150924-JUD-01-00",
+  "status": "confirmed (primary, via search) ⚠ confirm date on the PDF",
+  "frames": "4 · 2015"
+ },
+ {
+  "claim": "On 1 Oct 2018 the ICJ found, by twelve votes to three, that Chile did not undertake a legal obligation to negotiate a sovereign access to the Pacific Ocean for Bolivia; dissenting: Judges Robinson, Salam and Judge ad hoc Daudet",
+  "source": "ICJ judgment 1 Oct 2018, https://api.icj-cij.org/sites/default/files/case-related/153/153-20181001-JUD-01-00-EN.pdf ; press release 2018/49, https://api.icj-cij.org/sites/default/files/case-related/153/153-20181001-PRE-01-00-EN.pdf ; Al Jazeera, https://www.aljazeera.com/news/2018/10/1/chile-not-obliged-to-negotiate-sea-access-with-bolivia-icj ; BioBioChile",
+  "status": "confirmed (secondary; the ICJ PDFs were blocked here) · check the dispositif wording on the PDF ⚠",
+  "frames": "4 · judgment"
+ },
+ {
+  "claim": "Para. 176: the Court's finding should not be understood as precluding the parties from continuing their dialogue and exchanges, in a spirit of good neighbourliness, to address Bolivia's landlocked situation",
+  "source": "ICJ judgment 1 Oct 2018, para. 176; EJIL:Talk!, https://www.ejiltalk.org/beyond-the-icj-1-october-2018-judgment-in-bolivia-v-chile-do-human-rights-obligate-negotiated-access-to-the-pacific-ocean/ ; Judge Robinson's dissent cites para. 176",
+  "status": "confirmed (secondary) · exact wording to check on the PDF ⚠",
+  "frames": "4 · para 176"
+ },
+ {
+  "claim": "After the ruling, Bolivia's government cited para. 176 as a reason to keep talking; Chile's government said it was open to dialogue but not on its territorial sovereignty",
+  "source": "MercoPress, 10 Oct 2018, https://en.mercopress.com/2018/10/10/evo-can-t-give-up-asks-pinera-to-resume-negotiations ; MercoPress 2 Oct 2018",
+  "status": "reported (attributed to the governments; no politician named in the script)",
+  "frames": "4 · reactions"
+ },
+ {
+  "claim": "OUR READING (labelled): the navy works as a standing expression of the constitutional claim",
+  "source": "the film's interpretation, drawn from Art. 267 and the navy's role in Día del Mar; labelled OUR READING on screen",
+  "status": "opinion (labelled)",
+  "frames": "5 · synthesis"
+ }
+]
