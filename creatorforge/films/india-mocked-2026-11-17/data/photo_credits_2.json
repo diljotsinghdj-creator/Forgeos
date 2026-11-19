@@ -1,0 +1,189 @@
+{
+ "tiger_ka": {
+  "file": "assets/real2/tiger_ka.jpg",
+  "use": "03b_tiger",
+  "title": "Bengal tiger, Karnataka, India",
+  "creator": "Paul Mannix",
+  "licence": "CC BY 2.0",
+  "licence_url": "https://creativecommons.org/licenses/by/2.0/",
+  "source": "https://www.flickr.com/photos/19511776@N00/464051145",
+  "via": "Openverse (flickr)",
+  "fetched": "2026-11-19"
+ },
+ "tiger_pb": {
+  "file": "assets/real2/tiger_pb.jpg",
+  "use": "03b_tiger (alt)",
+  "title": "bengal tiger, tiger, nature, animal, mammal, big cat, wild animal, wildlife, fauna, wilderness",
+  "creator": "ignartonosbg",
+  "licence": "Pixabay Content License",
+  "licence_url": null,
+  "source": "https://pixabay.com/photos/bengal-tiger-tiger-animal-mammal-8013012/",
+  "via": "Pixabay API",
+  "fetched": "2026-11-19"
+ },
+ "mangrove": {
+  "file": "assets/real2/mangrove.jpg",
+  "use": "03b_tiger backdrop",
+  "title": "cone roots, nature, mangroves, flora, species, forest, roots, sundarbans, swamp, national park, unesco, heritage, ramsar site, india",
+  "creator": "sarangib",
+  "licence": "Pixabay Content License",
+  "licence_url": null,
+  "source": "https://pixabay.com/photos/cone-roots-mangroves-flora-species-1226567/",
+  "via": "Pixabay API",
+  "fetched": "2026-11-19"
+ },
+ "thumbs": {
+  "file": "assets/real2/thumbs.jpg",
+  "use": "19b_button",
+  "title": "smartphone, phone, typing, key in, telephone set, mobile, cell phone, screen, text message, send, call up, contact, gadget, digital, finger, technology, connection, conversation, message, errand, electronics, communication, to send, enter, dates, data, internet, information, input, cell phone, cell phone, cell phone, text message, text message, text message, text message, text message, send",
+  "creator": "niekverlaan",
+  "licence": "Pixabay Content License",
+  "licence_url": null,
+  "source": "https://pixabay.com/photos/smartphone-phone-typing-key-in-431231/",
+  "via": "Pixabay API",
+  "fetched": "2026-11-19"
+ },
+ "slots": {
+  "file": "assets/real2/slots.jpg",
+  "use": "11b_slot",
+  "title": "slots, slot, slot machine, slot machines, neon, vegas, las vegas, casino, casinos, gambling, gamble, one armed bandit, online casino, online gambling, fruit machine, luck, chance, payout, slots, slots, slots, slot, slot machine, slot machine, slot machine, slot machine, slot machine, casino, casino, casino, casino, gambling, online casino, online casino, online casino, online casino, online gambling",
+  "creator": "AidanHowe",
+  "licence": "Pixabay Content License",
+  "licence_url": null,
+  "source": "https://pixabay.com/photos/slots-slot-slot-machine-5012428/",
+  "via": "Pixabay API",
+  "fetched": "2026-11-19"
+ },
+ "slots_old": {
+  "file": "assets/real2/slots_old.jpg",
+  "use": "11b_slot (alt)",
+  "title": "addiction, amusement, antique, bar, cash, casino, chance, coin, collection, entertainment, fruit, fun, gamble, gambler, gambling, game, gamer, gaming, jackpot, leisure, luck, lucky, machine, metal, money, old, plastic, play, random, reel, retro, risk, rust, rusty, slot, slot machine, success, toy, vegas, wheels, win, winner, jackpot, jackpot, jackpot, jackpot, jackpot, slot, slot machine, slot machine, slot machine",
+  "creator": "igorovsyannykov",
+  "licence": "Pixabay Content License",
+  "licence_url": null,
+  "source": "https://pixabay.com/photos/addiction-amusement-antique-bar-2974642/",
+  "via": "Pixabay API",
+  "fetched": "2026-11-19"
+ },
+ "drain": {
+  "file": "assets/real2/drain.jpg",
+  "use": "13b_inspector, 20b_edit",
+  "title": "Street storm drain",
+  "creator": "Fried Dough",
+  "licence": "Public Domain Mark 1.0",
+  "licence_url": "https://creativecommons.org/publicdomain/mark/1.0/",
+  "source": "https://www.flickr.com/photos/42787780@N04/6447392233",
+  "via": "Openverse (flickr)",
+  "fetched": "2026-11-19"
+ },
+ "ladakh": {
+  "file": "assets/real2/ladakh.jpg",
+  "use": "20b_edit",
+  "title": "zanskar river, indus river, mountains, sangam, blue, landscape, river, himalaya, blue sky, peak, travel, water, nature, valley, rock, asia, india, sky",
+  "creator": "Heartography",
+  "licence": "Pixabay Content License",
+  "licence_url": null,
+  "source": "https://pixabay.com/photos/zanskar-river-indus-river-mountains-3859214/",
+  "via": "Pixabay API",
+  "fetched": "2026-11-19"
+ },
+ "varanasi": {
+  "file": "assets/real2/varanasi.jpg",
+  "use": "20b_edit",
+  "title": "varanasi, river, india, religion, travel, holy, ganga, culture, benares, nature, ghat, religious, spiritual, sun, blue river, blue culture",
+  "creator": "oreotikii",
+  "licence": "Pixabay Content License",
+  "licence_url": null,
+  "source": "https://pixabay.com/photos/varanasi-river-india-religion-2371751/",
+  "via": "Pixabay API",
+  "fetched": "2026-11-19"
+ },
+ "kerala": {
+  "file": "assets/real2/kerala.jpg",
+  "use": "20b_edit",
+  "title": "houseboat kerala, alleppey houseboat, boa, houseboat, kerala, alleppey, boathouse, kerala, kerala, kerala, kerala, kerala, alleppey",
+  "creator": "alleppeyhouseboatclub",
+  "licence": "Pixabay Content License",
+  "licence_url": null,
+  "source": "https://pixabay.com/photos/houseboat-kerala-alleppey-houseboat-2791119/",
+  "via": "Pixabay API",
+  "fetched": "2026-11-19"
+ },
+ "thar": {
+  "file": "assets/real2/thar.jpg",
+  "use": "20b_edit",
+  "title": "jaisalmer, desert, camel, animal, sand, dunes, landscape, nature, india, rajasthan, asia, jaisalmer, jaisalmer, jaisalmer, rajasthan, rajasthan, rajasthan, rajasthan, rajasthan",
+  "creator": "RavendraSingh",
+  "licence": "Pixabay Content License",
+  "licence_url": null,
+  "source": "https://pixabay.com/photos/jaisalmer-desert-camel-animal-sand-7473623/",
+  "via": "Pixabay API",
+  "fetched": "2026-11-19"
+ },
+ "mumbai": {
+  "file": "assets/real2/mumbai.jpg",
+  "use": "20b_edit",
+  "title": "bridge, sealink, nature, mumbai, skyline, cloudy, landscape, monochrome, urban, sea, water, city, road, highway, travel, transportation, bandra, worli",
+  "creator": "yogendras31",
+  "licence": "Pixabay Content License",
+  "licence_url": null,
+  "source": "https://pixabay.com/photos/bridge-sealink-mumbai-skyline-5216884/",
+  "via": "Pixabay API",
+  "fetched": "2026-11-19"
+ },
+ "ghats": {
+  "file": "assets/real2/ghats.jpg",
+  "use": "20b_edit",
+  "title": "visapur fort, mumbai, india, maharashtra, lohagad, lonavala, malavali, sky, monsoon, trek, trekking, top, shivaji maharaj, killa, nature, bhaje caves, patan route, rock, easy trek",
+  "creator": "ankita_gkd",
+  "licence": "Pixabay Content License",
+  "licence_url": null,
+  "source": "https://pixabay.com/photos/visapur-fort-mumbai-india-4432061/",
+  "via": "Pixabay API",
+  "fetched": "2026-11-19"
+ },
+ "taj": {
+  "file": "assets/real2/taj.jpg",
+  "use": "20b_edit",
+  "title": "cultural tourism, nature, taj mahal, garden, very beautiful",
+  "creator": "yosratawakol",
+  "licence": "Pixabay Content License",
+  "licence_url": null,
+  "source": "https://pixabay.com/photos/cultural-tourism-taj-mahal-garden-5264542/",
+  "via": "Pixabay API",
+  "fetched": "2026-11-19"
+ },
+ "hampi": {
+  "file": "assets/real2/hampi.jpg",
+  "use": "20b_edit",
+  "title": "hampi, india, indian, ancient, culture, architecture, ruins, historical, structure, monument, history, landmark, stone, yoga, karnataka, temple, sculpture, travel, artistic, unesco, blue yoga, blue history, blue culture, blue stone, hampi, hampi, hampi, hampi, hampi, karnataka, karnataka",
+  "creator": "travelphotographer",
+  "licence": "Pixabay Content License",
+  "licence_url": null,
+  "source": "https://pixabay.com/photos/hampi-india-indian-ancient-culture-4109490/",
+  "via": "Pixabay API",
+  "fetched": "2026-11-19"
+ },
+ "meghalaya": {
+  "file": "assets/real2/meghalaya.jpg",
+  "use": "20b_edit",
+  "title": "shillong, cloud, hills, green, beautiful, nature, shillong, shillong, shillong, shillong, shillong",
+  "creator": "Mobilephotography_Tareq",
+  "licence": "Pixabay Content License",
+  "licence_url": null,
+  "source": "https://pixabay.com/photos/shillong-cloud-hills-green-2847246/",
+  "via": "Pixabay API",
+  "fetched": "2026-11-19"
+ },
+ "goa": {
+  "file": "assets/real2/goa.jpg",
+  "use": "20b_edit",
+  "title": "goa, nature, india, beach, sunset",
+  "creator": "Sumit_T",
+  "licence": "Pixabay Content License",
+  "licence_url": null,
+  "source": "https://pixabay.com/photos/goa-india-beach-sunset-2355883/",
+  "via": "Pixabay API",
+  "fetched": "2026-11-19"
+ }
+}
