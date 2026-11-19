@@ -29,8 +29,6 @@ def logo_d(s=1.0, dark=True):
 
 
 def page(body, bg=PARCH, src="", dark=False, logo=True):
-    if "AI1.jpg" in body:
-        src += " · DESK: AI ILLUSTRATION"
     col = "rgba(255,255,255,.62)" if dark else "rgba(20,20,20,.6)"
     return (f'<!doctype html><html><head><meta charset="utf-8"><style>{FONTS}body{{margin:0;width:1920px;height:1080px;overflow:hidden;background:{bg};position:relative}}'
             f'.a{{position:absolute}}</style></head><body>{body}{GRAIN}'
@@ -54,6 +52,9 @@ else if(k==='grow'){st.transformOrigin='50% 100%';st.transform=`scaleY(${v})`}
 else if(k==='wipe')st.clipPath=`inset(-20px ${(1-v)*100}% -20px -20px)`;
 else if(k==='draw')el.querySelectorAll('[pathLength]').forEach(pa=>{pa.style.strokeDasharray=1;pa.style.strokeDashoffset=1-v;pa.style.opacity=p>0?1:0});
 else if(k==='flow')el.querySelectorAll('path').forEach(pa=>{pa.style.strokeDashoffset=-(T*s)})
+else if(k==='push'){st.transformOrigin=el.dataset.o||'50% 50%';st.transform=`scale(${1+(+el.dataset.z||.06)*p})`}
+else if(k==='out'){st.opacity=1-v;st.transform=`translateY(${v*260}px) rotate(${v*(+el.dataset.r||8)}deg)`}
+else if(k==='countdown'){el.textContent=Math.round(+el.dataset.from-(+el.dataset.from-+el.dataset.to)*p).toLocaleString('en-US')}
 else if(k==='count'){el.textContent=Math.round(+el.dataset.to*v).toLocaleString('en-US')}
 else if(k==='fill'){const ch=el.children;const n=Math.round(ch.length*v);for(let i=0;i<ch.length;i++)ch[i].style.opacity=i<n?1:0}});}
 document.addEventListener('DOMContentLoaded',run);})()</script>"""
@@ -92,7 +93,7 @@ def tape(x, y, rot):
     return a(f'<div style="width:150px;height:40px;background:rgba(236,226,200,.85);transform:rotate({rot}deg);box-shadow:0 2px 4px rgba(0,0,0,.25)"></div>', x, y, "z-index:20")
 
 
-DESK = "background:#3A2A1C url(/assets/ai/AI1.jpg) center/cover"  # AI·1 walnut desk plate (owner, 2026-11-19; MASTER_DIRECTIVES 8c), studio-finished by ai_finish.py
+DESK = "background:#3A2A1C;background-image:repeating-linear-gradient(90deg,rgba(0,0,0,.08) 0 3px,transparent 3px 41px),radial-gradient(ellipse at 40% 40%,#5A4128,#2A1D12 80%)"  # drawn walnut, no AI (owner, 2026-11-19: "less ai"; MASTER_DIRECTIVES 8c "Base")
 img = lambda f, w, h, extra="": f'<img src="/assets/{f}" style="width:{w}px;height:{h}px;object-fit:cover;display:block;{extra}">'
 cut = lambda f, w, extra="": f'<img src="/assets/{f}" style="width:{w}px;display:block;filter:drop-shadow(0 22px 22px rgba(0,0,0,.45));{extra}">'
 

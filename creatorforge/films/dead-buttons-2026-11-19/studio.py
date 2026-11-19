@@ -53,6 +53,9 @@ else if(k==='wipe')st.clipPath=`inset(-20px ${(1-v)*100}% -20px -20px)`;
 else if(k==='draw')el.querySelectorAll('[pathLength]').forEach(pa=>{pa.style.strokeDasharray=1;pa.style.strokeDashoffset=1-v;pa.style.opacity=p>0?1:0});
 else if(k==='flow')el.querySelectorAll('path').forEach(pa=>{pa.style.strokeDashoffset=-(T*s)})
 else if(k==='count'){el.textContent=Math.round(+el.dataset.to*v).toLocaleString('en-US')}
+else if(k==='push'){st.transformOrigin=el.dataset.o||'50% 50%';st.transform=`scale(${1+(+(el.dataset.k||.05))*p})`}
+else if(k==='drift'){const q=Math.min(1,Math.max(0,(T-s)/(e-s)));st.transform=`translate(${(q-.5)*(+el.dataset.dx||0)}px,${(q-.5)*(+el.dataset.dy||0)}px)`}
+else if(k==='zoom'){const f=+el.dataset.from;st.transformOrigin=el.dataset.o;st.transform=`scale(${f+(1-f)*v})`}
 else if(k==='fill'){const ch=el.children;const n=Math.round(ch.length*v);for(let i=0;i<ch.length;i++)ch[i].style.opacity=i<n?1:0}});}
 document.addEventListener('DOMContentLoaded',run);})()</script>"""
 

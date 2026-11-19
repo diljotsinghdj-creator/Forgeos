@@ -14,11 +14,13 @@
   "credits": 190.4,
   "finish": "channels/design_kits/ai_finish.py (palette pull 0.35, grain, halftone, vignette) -> assets/ai/AI1.jpg",
   "label_on_screen": "AI ILLUSTRATION (desk: in the source line)",
-  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8c)"
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8c)",
+  "retired": "replaced by the drawn walnut desk (studio CSS, no AI) (2026-11-19)",
+  "retired_detail": "replaced by the drawn walnut desk (studio CSS, no AI) (2026-11-19)"
  },
  {
   "label": "AI2",
-  "use": "03b_tiger (1 \u00b7 0:53)",
+  "use": "03b_tiger (1 · 0:53)",
   "generation_id": "HHSySAbpWWGl0ASsaWCd",
   "flow_id": "TqEmfXfQP7ZvL79XUAW5",
   "model": "gpt-image-2.5-sunburst",
@@ -31,11 +33,13 @@
   "credits": 190.4,
   "finish": "channels/design_kits/ai_finish.py (palette pull 0.35, grain, halftone, vignette) -> assets/ai/AI2.jpg",
   "label_on_screen": "AI ILLUSTRATION (desk: in the source line)",
-  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8c)"
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8c)",
+  "retired": "replaced by real image (2026-11-19)",
+  "retired_detail": "replaced by real image (2026-11-19): Bengal tiger, Karnataka (Paul Mannix, CC BY 2.0) cut out over a real Sundarbans mangrove photo (sarangib, Pixabay)"
  },
  {
   "label": "AI3",
-  "use": "11b_slot (3 \u00b7 4:44)",
+  "use": "11b_slot (3 · 4:44)",
   "generation_id": "iw0D5aO0q34P6TZjHQQr",
   "flow_id": "TqEmfXfQP7ZvL79XUAW5",
   "model": "gpt-image-2.5-sunburst",
@@ -48,11 +52,13 @@
   "credits": 190.4,
   "finish": "channels/design_kits/ai_finish.py (palette pull 0.35, grain, halftone, vignette) -> assets/ai/AI3.jpg",
   "label_on_screen": "AI ILLUSTRATION (desk: in the source line)",
-  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8c)"
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8c)",
+  "retired": "replaced by real image (2026-11-19)",
+  "retired_detail": "replaced by real image (2026-11-19): slot-machine photo (AidanHowe, Pixabay), reels relabelled in the studio"
  },
  {
   "label": "AI4",
-  "use": "13b_inspector (4 \u00b7 5:36)",
+  "use": "13b_inspector (4 · 5:36)",
   "generation_id": "ikZR9UMjrmFQo2ImdNKN",
   "flow_id": "TqEmfXfQP7ZvL79XUAW5",
   "model": "gpt-image-2.5-sunburst",
@@ -65,11 +71,13 @@
   "credits": 190.4,
   "finish": "channels/design_kits/ai_finish.py (palette pull 0.35, grain, halftone, vignette) -> assets/ai/AI4.jpg",
   "label_on_screen": "AI ILLUSTRATION (desk: in the source line)",
-  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8c)"
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8c)",
+  "retired": "replaced by real image (2026-11-19)",
+  "retired_detail": "replaced by real image (2026-11-19): real street storm-drain photo (Fried Dough, Flickr, PDM) in a drawn verified-account phone, Gandhi 1927 quote card"
  },
  {
   "label": "AI5",
-  "use": "20b_edit (5 \u00b7 8:33)",
+  "use": "20b_edit (5 · 8:33)",
   "generation_id": "56ZkLBaBgOyvCBbvfveE",
   "flow_id": "TqEmfXfQP7ZvL79XUAW5",
   "model": "gpt-image-2.5-sunburst",
@@ -82,11 +90,13 @@
   "credits": 190.4,
   "finish": "channels/design_kits/ai_finish.py (palette pull 0.35, grain, halftone, vignette) -> assets/ai/AI5.jpg",
   "label_on_screen": "AI ILLUSTRATION (desk: in the source line)",
-  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8c)"
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8c)",
+  "retired": "replaced by real image (2026-11-19)",
+  "retired_detail": "replaced by real image (2026-11-19): motion graphic of 12 real India photos on drawn film strips, snipped away to one real drain frame"
  },
  {
   "label": "AI6",
-  "use": "19b_button (5 \u00b7 8:30)",
+  "use": "19b_button (5 · 8:30)",
   "generation_id": "TAxfpgVcQ2GiLbSwxj2B",
   "flow_id": "TqEmfXfQP7ZvL79XUAW5",
   "model": "gpt-image-2.5-sunburst",
@@ -99,6 +109,8 @@
   "credits": 190.4,
   "finish": "channels/design_kits/ai_finish.py (palette pull 0.35, grain, halftone, vignette) -> assets/ai/AI6.jpg",
   "label_on_screen": "AI ILLUSTRATION (desk: in the source line)",
-  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8c)"
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8c)",
+  "retired": "replaced by real image (2026-11-19)",
+  "retired_detail": "replaced by real image (2026-11-19): real hands holding a smartphone (niekverlaan, Pixabay), cut out; menu drawn on the screen"
  }
 ]

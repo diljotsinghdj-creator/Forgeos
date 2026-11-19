@@ -153,7 +153,7 @@ const LABELS=()=>{let h='';for(const [yr,v,t,b,hot] of tops){const [x,y]=proj(t,
  ov.innerHTML=h+`<div style="left:90px;top:120px"><div style="font:400 56px ISerif;color:#E8E4DA">${CFG.kick}</div><div style="font:400 112px/0.9 Anton;color:#F3EFE6">${CFG.title}</div>
  <div style="font:500 22px Plex;letter-spacing:4px;color:${CFG.lab};margin-top:16px;width:900px">${CFG.what}</div></div>
  <div style="left:90px;top:22px;background:#1A1A1A;color:#F4EFE6;padding:8px 16px;font:500 20px Plex;letter-spacing:5px">CHAPTER 4 · WHERE IT LANDS</div>
- <div style="left:1250px;top:330px;${CFG.tag}">${CFG.tagtext}</div>
+ <div style="left:90px;top:640px;${CFG.tag}">${CFG.tagtext}</div>
  <div style="left:24px;bottom:14px;font:500 12px Plex;color:rgba(255,255,255,.55)">${CFG.src}</div>`};
 """
 for tag, grow in (("a", .3), ("b", .7), ("c", 1.0)):

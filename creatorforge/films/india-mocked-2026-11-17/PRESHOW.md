@@ -119,3 +119,91 @@ should be checked too.
   - No chart, number or map is AI. Every word on the plates was added by the studio.
   - Each plate was finished in the studio (`channels/design_kits/ai_finish.py`: palette pull, grain, halftone).
 - **Credits:** 6 plates, one take each, about 1,142 ElevenLabs credits.
+
+## Updated 2026-11-19: more real, less AI (sheets `V5_1`–`V5_6`, motion sheet `M_7`)
+Owner: "we need more real pictures, animation, motion graphics etc and less ai" (MASTER_DIRECTIVES §8c, "Real first").
+
+### Counts
+| | Before (this morning) | Now |
+|---|---|---|
+| Frames | 42 | 42 |
+| Frames using an AI plate | 14 (5 plate frames + the AI desk under 9 desk frames) | **0** |
+| Frames carrying real material | 21 (50%) | **30 (71%)** |
+| Motion builds | 8 | **12** |
+
+### What replaced each AI plate (all six are marked `retired` in `data/ai_ledger.json`)
+- **AI·1, the desk:** back to the drawn walnut surface (studio CSS). The "DESK: AI ILLUSTRATION" note is gone from the source lines.
+- **AI·2 → 03b_tiger:** a real wild Bengal tiger (Karnataka, CC BY 2.0), cut out with a white sticker edge, stepping out of a
+  real photo print of Sundarbans mangrove roots taped to the desk. The "0 VIEWS" badge is circled in red, with an arrow, above the NTCA card (3,682).
+- **AI·3 → 11b_slot:** a real slot-machine photo, desaturated to the palette, with its three reels relabelled OUTRAGE by the studio.
+  The tag says "REAL MACHINE · REELS RELABELLED · VIEW COUNT ILLUSTRATIVE".
+- **AI·4 → 13b_inspector:** a real street storm-drain photo (public domain mark), posted from a drawn "Drain Inspector ✓ · since 1927"
+  account on a drawn phone, next to the Gandhi 1927 quote card. A tag says the account is drawn.
+- **AI·5 → 20b_edit:** a motion graphic. Twelve real photos of India sit on three drawn film strips: Ladakh, Varanasi, Kerala,
+  Jaisalmer, the Mumbai sea link, the Sahyadri, the Taj Mahal, Hampi, Shillong, Goa, the Sundarbans and one street drain. The photos
+  show no people. A red splice mark flashes and the frames fall away one by one, while "FRAMES LEFT" counts down from 12 to 1. The drain is circled, then "1.4 BILLION PEOPLE → ONE FRAME".
+- **AI·6 → 19b_button:** real hands holding a real phone (cut out, no face). The "Not interested" menu is drawn on its screen and circled in red, then the NOT INTERESTED sticker slams in.
+
+### New motion builds and real material
+- **12_count:** the counter runs up to 542,360. Share bars wipe in for 45% and ~30% (on a 0–100% track), and before/after bars show +171%.
+- **13_timing:** the map table returns. A real NASA Blue Marble print is taped to the desk, with India in its official boundary
+  (DataMeet). Four pins drop in date order (US, Dublin, Australia, Canada), and red string draws between them. Each pin has a handwritten
+  date card. The tag "TIMING, NOT CAUSE" stays.
+- **03_otherfeed:** a real tiger photo on the tiger tile, and the number circled in red.
+- **20_end:** the map table one last time. A paper India map (official boundary) is pinned to the desk, with red string running to "Gandhi already reviewed it".
+- **Counted builds (12):**
+  - the London–Calcutta route (05_map);
+  - the 3D globe;
+  - the ship on the 1596 chart;
+  - the smash-zoom;
+  - the TRAI price bars (08b);
+  - the CSOH count (12);
+  - the map table with pins and string (13);
+  - the glow bars (Canada);
+  - the 3D relief;
+  - the satellite rivers;
+  - the tiger cut-out parallax (03b);
+  - the film-strip cut-down (20b).
+
+### Seven-point check (Vox × Johnny Harris)
+Every frame has a source line, the palette and the logo. Hand-made marks were added where a frame had none: red circles on 03_otherfeed,
+12_count, 15_drains, 13b, 19b and 20b, and tape on the prints and cards. The map table (desk, real map, pins and red string) now runs
+through chapter 1 (the ship), chapter 4 (13_timing) and the end card.
+
+**Frames still without real material (12), by design:**
+- 01_feed, 11_repost, 16_fakes and 19_notinterested are drawn stand-ins. That's the rule: no real viral clips are republished.
+- 04_title and 17_sowhat are kinetic type.
+- 08_worlds is the chalkboard.
+- 09_dial and 10_angry are drawn mechanisms.
+- 14_classifier, 15_drains and 18_softpower are studio-set figure cards.
+
+**Layout fixes:**
+- the TIMING tag no longer covers the 483 bar label;
+- the BOOK REVIEW tag no longer covers Gandhi's caption;
+- highlighter words on dark frames now sit on a solid yellow block.
+
+### Credits (all in `data/photo_credits_2.json`, and on screen in each source line)
+- **Bengal tiger, Karnataka:** Paul Mannix, Flickr via Openverse, CC BY 2.0.
+- **Pixabay (Pixabay Content License):**
+  - Bengal tiger: ignartonosbg;
+  - Sundarbans mangroves: sarangib;
+  - hands and phone: niekverlaan;
+  - slot machine: AidanHowe;
+  - Ladakh: Heartography;
+  - Varanasi: oreotikii;
+  - Kerala: alleppeyhouseboatclub;
+  - Jaisalmer: RavendraSingh;
+  - Mumbai: yogendras31;
+  - Sahyadri: ankita_gkd;
+  - Taj Mahal: yosratawakol;
+  - Hampi: travelphotographer;
+  - Shillong: Mobilephotography_Tareq;
+  - Goa: Sumit_T.
+- **Street storm drain:** Fried Dough, Flickr via Openverse, Public Domain Mark 1.0.
+- **World map:** NASA Blue Marble Next Generation (public domain).
+
+No new AI images were made and no ElevenLabs credits were used. Files are in `assets/real2/` (gitignored).
+
+### Couldn't find
+- **A free photo of a tiger in the Sundarbans itself:** Openverse and Pixabay had none, so the tiger is from Karnataka on a real Sundarbans backdrop, and the frame says so.
+- **A clean-licence Chandrayaan-3 photo:** the only Openverse hit is a third-party reworking of ISRO images. Not used.

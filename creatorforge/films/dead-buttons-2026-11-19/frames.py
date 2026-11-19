@@ -1,7 +1,8 @@
 """Key frames (16:9) for "The Buttons That Do Nothing", Dragon Psychology, DJ style (John Oliver script, Vox x Johnny Harris
 visuals). Palette: slate #141824, lab-paper #F0F4F8, cobalt #2B6CB0 (structure), amber #ED8936 (the only signal colour). No logo.
-Canvas backbone: the K1 control panel (AI plate, finished in the studio); every device, lamp, label, chart and number on it is
-drawn here. People are stick figures. Numbers only from dossier.json; items still to check say TO CHECK in the source line.
+Canvas backbone: the control panel, built in the studio by panel.py on a REAL brushed-steel photo (it replaced the AI plate K1,
+owner 2026-11-19: "more real pictures ... less ai"); every device, lamp, label, chart and number on it is drawn here, and real
+photos sit in its sockets and on its cards. The only AI plate left is K3 (a metaphor). People are stick figures. Numbers only from dossier.json; items still to check say TO CHECK in the source line.
 Helpers are copied (not imported) from the channel's Prophecy film so this film stays self-contained.
 Run:  python3 frames.py && python3 shoot_http.py"""
 import math
@@ -21,7 +22,8 @@ GRID = (f"background:{PAPER};background-image:linear-gradient(rgba(43,108,176,.1
 hl = lambda t: f'<span style="background:linear-gradient(transparent 52%,{AM} 52%,{AM} 92%,transparent 92%)">{t}</span>'
 
 AISRC = "AI ILLUSTRATION ({k}): GPT-IMAGE-2.5 VIA ELEVENLABS, OWNER-APPROVED (MASTER_DIRECTIVES 8b/8c), STUDIO FINISH, LOGGED IN DATA/AI_LEDGER.JSON"
-PLATES = {"K1": "PANEL", "K2": "OFFICE", "K3": "MIDDLE MANAGER", "K4": "WINDOWSILL"}
+PLATES = {"K3": "MIDDLE MANAGER"}   # K1, K2 and K4 retired 2026-11-19 (see data/ai_ledger.json)
+PANEL_SRC = "PANEL: DRAWN IN THE STUDIO ON A REAL BRUSHED-STEEL PHOTO (TEXTUREX.COM, CC BY 2.0, VIA OPENVERSE)"
 DRAWN = "DEVICES, LAMPS, LABELS AND NUMBERS DRAWN IN THE STUDIO"
 
 
@@ -30,6 +32,9 @@ def page(body, src, bg=SL, dark=True):
     if used:
         assert "AI ILLUSTRATION" in body, "every AI plate must carry an on-screen AI ILLUSTRATION label"
         src += " · " + AISRC.format(k=", ".join(f"{k} {PLATES[k]}" for k in used))
+    assert "/ai/K1" not in body and "/ai/K2" not in body and "/ai/K4" not in body, "retired AI plate used"
+    if "studio/panel.jpg" in body:
+        src += " · " + PANEL_SRC
     return studio.page(body, bg, src, dark=dark, logo=False)
 
 
@@ -242,18 +247,20 @@ def devices(lamp_states=("off", "off", "off"), drop=None, extra="", screen_conte
     return out + extra
 
 
-def rig(inner, html="", s=1.0, cx=960, cy=540, dim=0.0, anim=None, extra=""):
-    """The panel (K1 + studio devices) as one rigid piece, framed by a camera at scale s centred on K1 point (cx, cy)."""
+def rig(inner, html="", s=1.0, cx=960, cy=540, dim=0.0, anim=None, extra="", push=.04):
+    """The studio panel + devices as one rigid piece, framed by a camera at scale s centred on panel point (cx, cy).
+    push = a slow camera push-in over the shot (camera feel), 0 for a locked-off shot."""
     tx, ty = 960 - cx * s, 540 - cy * s
     da = f' data-anim="{anim}"' if anim else ""
-    return (f'<div class="a"{da} style="left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;transform:translate({tx:.0f}px,{ty:.0f}px) scale({s});{extra}">'
-            f'<img src="/assets/ai/K1.jpg" style="position:absolute;left:0;top:0;width:1920px;height:1080px">'
+    cam = f'<div class="a" data-anim="push 0 1" data-k="{push}" style="left:0;top:0;width:1920px;height:1080px">' if push else ""
+    return cam + (f'<div class="a"{da} style="left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;transform:translate({tx:.0f}px,{ty:.0f}px) scale({s});{extra}">'
+            f'<img src="/assets/studio/panel.jpg" style="position:absolute;left:0;top:0;width:1920px;height:1080px">'
             f'<svg style="position:absolute;left:0;top:0" width="1920" height="1080">{inner}</svg>{html}'
             + (f'<div style="position:absolute;left:-2000px;top:-2000px;width:6000px;height:6000px;background:rgba(14,18,28,{dim})"></div>' if dim else "")
-            + '</div>')
+            + '</div>') + ("</div>" if push else "")
 
 
-PANEL_LBL = LBL("AI ILLUSTRATION · PANEL")
+PANEL_LBL = ""   # the panel is studio-drawn now: no AI label; its texture photo is credited in the source line
 
 # ==== REAL PHOTOS AND REAL MAPS =============================================================================================
 import json as _json  # noqa: E402
@@ -268,13 +275,34 @@ def pcred(slug):
     return f'PHOTO: "{t.upper()}" BY {c["author"].upper()}, {c["licence"]}, VIA OPENVERSE ({c["finish"].upper()})'
 
 
-def photo(slug, w, h, x, y, anim, rot=0, pos="50% 50%", cap=True, extra="", zoom=1.0):
+def photo(slug, w, h, x, y, anim, rot=0, pos="50% 50%", cap=True, extra="", zoom=1.0, drift=None, tape=True):
+    """A real photo print, taped down (investigator layer). drift = (dx, dy): cut-out parallax over the shot."""
     c = CRED[slug]
     capt = (f'<div style="font:500 13px/1.35 Plex;letter-spacing:2px;color:{SL};margin-top:8px;width:{w}px">{c["on_screen_caption"]}<br>'
             f'<span style="color:{BODY}">PHOTO: {c["author"].upper()} · {c["licence"]}</span></div>') if cap else ""
-    return A(f'<div style="background:#fff;padding:12px 12px 14px;box-shadow:0 22px 40px rgba(0,0,0,.5);transform:rotate({rot}deg)">'
+    tp = (f'<div style="position:absolute;left:{w / 2 - 60:.0f}px;top:-18px;width:130px;height:36px;background:rgba(236,232,220,.82);'
+          f'transform:rotate({-rot * 2 - 3:.1f}deg);box-shadow:0 2px 4px rgba(0,0,0,.25)"></div>') if tape else ""
+    out = A(f'<div style="position:relative;background:#fff;padding:12px 12px 14px;box-shadow:0 22px 40px rgba(0,0,0,.5);transform:rotate({rot}deg)">{tp}'
              f'<div style="width:{w}px;height:{h}px;overflow:hidden"><img src="/assets/real/{slug}.jpg" style="width:100%;height:100%;object-fit:cover;object-position:{pos};'
              f'transform:scale({zoom});transform-origin:{pos};display:block"></div>{capt}</div>', x, y, anim, "z-index:45;" + extra)
+    if drift:
+        out = f'<div class="a" data-anim="drift 0 1" data-dx="{drift[0]}" data-dy="{drift[1]}" style="left:0;top:0;z-index:45">{out}</div>'
+    return out
+
+
+def ring(cx, cy, rx, ry, anim, seed=3, w=8):
+    """Investigator layer: a hand-drawn amber circle (frame coords)."""
+    return svg(f'<g data-anim="{anim}"><path d="{wobble(cx, cy, rx, ry, seed)}" fill="none" stroke="{AM}" stroke-width="{w}" stroke-linecap="round" pathLength="1"/></g>', "z-index:72")
+
+
+def arrow(x0, y0, x1, y1, anim, bend=40, w=8):
+    """Investigator layer: a hand-drawn amber arrow from (x0, y0) to (x1, y1)."""
+    mx, my = (x0 + x1) / 2 - bend * (y1 - y0) / max(1, math.hypot(x1 - x0, y1 - y0)), (y0 + y1) / 2 + bend * (x1 - x0) / max(1, math.hypot(x1 - x0, y1 - y0))
+    ang = math.atan2(y1 - my, x1 - mx)
+    hx = lambda da: (x1 - 34 * math.cos(ang + da), y1 - 34 * math.sin(ang + da))
+    (ax, ay), (bx_, by_) = hx(.5), hx(-.5)
+    return svg(f'<g data-anim="{anim}"><path d="M{x0:.0f} {y0:.0f} Q{mx:.0f} {my:.0f} {x1:.0f} {y1:.0f}" fill="none" stroke="{AM}" stroke-width="{w}" stroke-linecap="round" pathLength="1"/>'
+               f'<path d="M{ax:.0f} {ay:.0f} L{x1:.0f} {y1:.0f} L{bx_:.0f} {by_:.0f}" fill="none" stroke="{AM}" stroke-width="{w}" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></g>', "z-index:72")
 
 
 def plate_print(k, w, x, y, anim, rot=-1.5, label="AI ILLUSTRATION", extra=""):
@@ -368,7 +396,7 @@ def scr_label(t, fx=560):   # label under the zoomed screen (frame coords)
 
 
 # ==== 1 HOOK: THE TRAP =====================================================================================================
-BACKDROP = a(f'<div style="width:1920px;height:1080px;background:{SL};overflow:hidden"><img src="/assets/ai/K1.jpg" style="width:5760px;height:3240px;margin:-1700px 0 0 -1500px;filter:blur(6px) brightness(.38);opacity:.9"></div>', 0, 0)
+BACKDROP = a(f'<div style="width:1920px;height:1080px;background:{SL};overflow:hidden"><img src="/assets/studio/panel.jpg" style="width:5760px;height:3240px;margin:-1700px 0 0 -1500px;filter:blur(6px) brightness(.38);opacity:.9"></div>', 0, 0)
 
 
 def trap(lamp_states, html="", glow=True, extra_svg="", breathe=None, flare=None):
@@ -376,8 +404,8 @@ def trap(lamp_states, html="", glow=True, extra_svg="", breathe=None, flare=None
     return BACKDROP + rig(inner, html, s=2.0, cx=1680, cy=740, extra="clip-path:inset(545px 55px 135px 1490px round 26px)")
 
 
-TRAP_SRC = "THE VIEWER TRAP ([SIMULATE]): THE LAMPS RUN ON A TIMER KEYED TO THE NARRATION, NOT TO THE VIEWER · BUTTON AND LAMPS DRAWN IN THE STUDIO ON THE K1 PANEL"
-TRAP_LBL = LBL("AI ILLUSTRATION · PANEL")
+TRAP_SRC = "THE VIEWER TRAP ([SIMULATE]): THE LAMPS RUN ON A TIMER KEYED TO THE NARRATION, NOT TO THE VIEWER · BUTTON AND LAMPS DRAWN IN THE STUDIO"
+TRAP_LBL = ""
 
 put("01_press", page(
     trap((.82, "off", "off"), breathe=".0 .5")
@@ -407,26 +435,32 @@ qmarks = [(235, 70, 235, 0), (597, 105, 597, 0), (1110, 140, 1110, 0), (1680, 90
 wires = "".join(f'<path d="M{x0} {y0} L{x1} {y1 + (30 if y1 == 0 else -30)}" stroke="{CO}" stroke-width="7" stroke-dasharray="14 10" fill="none"/>'
                 f'<text x="{x1 + 14}" y="{(y1 + 72) if y1 == 0 else (y1 - 40)}" font-family="Anton" font-size="56" fill="{AM}">?</text>' for x0, y0, x1, y1 in qmarks)
 put("04_panel", page(
-    rig(devices(("on", "on", "on"), drop=.08) + "".join(outline(d, f"draw {.45 + i * .05:.2f} {.55 + i * .05:.2f}") for i, d in enumerate(("crosswalk", "lift", "thermo")))
-        + f'<g data-anim="fade .75 .85">{wires}</g>', anim=None)
-    + tag("CROSSWALK", 80, 960, 0, "snap .5 .5", light=True) + tag("LIFT", 500, 960, 0, "snap .55 .55", light=True)
-    + tag("THERMOSTAT", 1530, 40, 0, "snap .6 .6", light=True) + tag("YOUR BUTTON", 1590, 505, 0, "snap .3 .3", amber=True)
+    '<div class="a" data-anim="zoom 0 .3" data-from="2" data-o="2400px 980px" style="left:0;top:0;width:1920px;height:1080px">'
+    + rig(devices(("on", "on", "on"), drop=.3, screen_content=screen_svg(nyc_streets(op=.85))) + "".join(outline(d, f"draw {.62 + i * .04:.2f} {.7 + i * .04:.2f}") for i, d in enumerate(("crosswalk", "lift", "thermo")))
+        + f'<g data-anim="fade .8 .88">{wires}</g>', anim=None, push=0) + '</div>'
+    + tag("CROSSWALK", 80, 960, 0, "snap .64 .64", light=True) + tag("LIFT", 500, 960, 0, "snap .68 .68", light=True)
+    + tag("THERMOSTAT", 1530, 40, 0, "snap .72 .72", light=True) + tag("YOUR BUTTON", 1590, 505, 0, "snap .3 .3", amber=True)
+    + tag("SCREEN: REAL MIDTOWN STREETS", 880, 50, 0, "snap .5 .5", light=True, size=16)
     + A(f'<div style="background:{SL};border:3px solid {AM};padding:14px 22px;font:700 46px/1.1 Caveat;color:{AM};width:600px;box-shadow:0 14px 30px rgba(0,0,0,.5)">So how many of them are actually wired to anything?</div>', 790, 450, "up .82 .9", "z-index:66") + PANEL_LBL,
-    "PANEL: K1 PLATE WITH " + DRAWN + " · THE DEVICES STAND FOR REAL ONES SHOWN LATER IN REAL PHOTOS"))
+    "PANEL WITH " + DRAWN + " · THE DEVICES STAND FOR REAL ONES SHOWN LATER IN REAL PHOTOS · SCREEN: " + NYC_SRC))
 
 put("05_title", page(
-    rig(devices(("on", "on", "on")), dim=.72)
-    + A(f'<div style="background:{PAPER};padding:46px 70px 40px;border:6px solid {SL};box-shadow:0 30px 60px rgba(0,0,0,.6);outline:3px solid {PAPER};outline-offset:10px">'
-        f'<div style="font:400 150px/0.9 Anton;color:{SL};letter-spacing:2px;text-align:center">THE BUTTONS<br>THAT DO <span style="color:{AM}">NOTHING</span></div></div>', 330, 250, "slam .2 .21", "z-index:60")
+    rig(devices(("on", "on", "on"), screen_content=screen_svg(nyc_streets(op=.85))), dim=.72, push=.06)
+    + A(f'<div style="width:1260px;height:420px;background:{PAPER};border:6px solid {SL};box-shadow:0 30px 60px rgba(0,0,0,.6);outline:3px solid {PAPER};outline-offset:10px"></div>', 330, 250, "pop .05 .15", "z-index:58")
+    + A(f'<div style="font:400 150px/0.9 Anton;color:{SL};letter-spacing:2px;width:1260px;text-align:center">THE BUTTONS</div>', 333, 300, "slam .18 .2", "z-index:60")
+    + A(f'<div style="font:400 150px/0.9 Anton;color:{SL};letter-spacing:2px;width:700px;text-align:right">THAT DO</div>', 290, 445, "slam .3 .32", "z-index:60")
+    + A(f'<div style="font:400 150px/0.9 Anton;color:{AM};letter-spacing:2px">NOTHING</div>', 1020, 445, "slam .45 .47", "z-index:60")
+    + A(f'<div style="width:520px;height:16px;background:{AM}"></div>', 1025, 590, "wipe .55 .7", "z-index:59")
     + A(f'<div style="font:500 20px Plex;letter-spacing:6px;color:{PAPER};text-align:center;width:1920px">DRAGON PSYCHOLOGY · WE CHECK THE SCIENCE</div>', 0, 880, "fade .4 .5", "z-index:60") + PANEL_LBL,
-    "TITLE PLATE SET IN THE STUDIO"))
+    "TITLE PLATE SET IN THE STUDIO (KINETIC TYPE, WORD BY WORD) · SCREEN: " + NYC_SRC))
 
 # ==== 2 MAP AND HISTORY ====================================================================================================
 put("06_crosswalk", page(
     rig(devices(("on", "on", "on")), s=1.25, cx=744, cy=510, dim=.3)
     + chapter(2, "WHERE THE DEAD BUTTONS ARE")
-    + photo("nyc_wait_sign", 360, 470, 700, 150, "up .05 .18", -3, "50% 45%")
-    + photo("push_sign", 440, 470, 1170, 170, "up .14 .26", 2.5, "33% 40%")
+    + photo("nyc_wait_sign", 360, 470, 700, 150, "up .05 .18", -3, "50% 45%", drift=(-26, -8))
+    + photo("push_sign", 440, 470, 1170, 170, "up .14 .26", 2.5, "33% 40%", drift=(30, 6))
+    + ring(1322, 300, 95, 115, "draw .3 .4", 5) + arrow(1640, 110, 1440, 220, "draw .32 .4", -30)
     + card(doc("THE NEW YORK TIMES · 27 FEB 2004", f'"For Exercise in New York Futility, {hl("Push Button")}"', "BY MICHAEL LUO · HEADLINE QUOTED AS PUBLISHED"),
            980, 700, 770, "up .4 .55", -1)
     + A(f'<div style="background:{SL};padding:8px 16px;font:700 46px Caveat;color:{AM};white-space:nowrap">Look closely at its face.</div>', 110, 945, "fade .02 .12", "z-index:66") + PANEL_LBL,
@@ -452,6 +486,7 @@ put("08_placebo", page(
     rig(devices(("on", "on", "on")), dim=.55)
     + chapter(2, "WHERE THE DEAD BUTTONS ARE")
     + photo("dead_button", 440, 560, 110, 170, "up .02 .15", -2.5, "80% 75%")
+    + ring(420, 680, 52, 52, "draw .82 .9", 9) + arrow(800, 760, 500, 700, "draw .86 .93", 40)
     + card(kicker("THE NEW YORK TIMES · 2004 · QUOTED")
            + f'<div style="font:400 40px/1.2 ISerif;color:{SL};margin-top:10px">"More than 2,500 of the 3,250 walk buttons that still exist function essentially as {hl("mechanical placebos")}, city figures show."</div>', 820, 700, 150, "up .12 .25", 1)
     + A(f'<div style="width:380px;background:{PAPER};border:3px dashed {SL};padding:18px 22px;transform:rotate(-6deg);box-shadow:0 12px 26px rgba(0,0,0,.45)">'
@@ -486,7 +521,7 @@ put("10_sydney", page(
 put("11_lift", page(
     rig(devices(("on", "on", "on"), close_glow=True, smudges=3), s=1.5, cx=1037, cy=520, dim=.35)
     + chapter(2, "WHERE THE DEAD BUTTONS ARE")
-    + photo("lift_buttons", 330, 440, 570, 150, "up .05 .18", -2.5, "50% 80%")
+    + photo("lift_buttons", 330, 440, 570, 150, "up .05 .18", -2.5, "50% 80%", drift=(-18, 0))
     + card(kicker("LAW CARD") + f'<div style="font:400 44px/1.05 Anton;color:{SL};margin-top:6px">AMERICANS WITH DISABILITIES ACT · 1990</div>', 820, 1000, 110, "up .15 .27", 1.2)
     + card(kicker("2010 ADA STANDARDS FOR ACCESSIBLE DESIGN · §407.3.5 DOOR DELAY")
            + f'<div style="font:400 36px/1.3 ISerif;color:{SL};margin-top:10px">"… remain fully open in response to a car call for {hl("3 seconds minimum")}."</div>'
@@ -498,19 +533,20 @@ put("11_lift", page(
 put("12_lift_split", page(
     rig(devices(("on", "on", "on"), close_glow=True), s=1.5, cx=1037, cy=520, dim=.55)
     + A(f'<div style="width:6px;height:700px;background:{PAPER}"></div>', 1257, 200, "wipe 0 .1", "z-index:55")
+    + photo("lift_panel", 340, 560, 80, 40, "up .02 .14", -2, "50% 55%", drift=(-16, 0))
     + head("PLACEBO?", 840, 200, "fade .05 .12", 90) + head("DELAYED?", 1340, 200, "fade .05 .12", 90, AM)
     + card(kicker("NEII · VIA THE NEW YORK TIMES · 2016 · PARAPHRASE") + f'<div style="font:400 30px/1.3 ISerif;color:{SL};margin-top:8px">Working close buttons were {hl("phased out")} after the 1990 law.</div>', 380, 840, 340, "up .2 .32", -1)
     + card(kicker("SAME TRADE GROUP · VIA ABC7") + f'<div style="font:400 30px/1.3 ISerif;color:{SL};margin-top:8px">"People think it is merely a placebo button and it\'s not."</div>'
            + f'<div style="margin-top:16px;height:22px;background:#DCE3EC;position:relative"><div data-anim="wipe .5 .8" style="position:absolute;inset:0;background:{CO}"></div></div>'
            + f'<div style="font:500 14px Plex;letter-spacing:2px;color:{SL};margin-top:6px">LEGAL WAIT → THEN ▶◀ CLOSES</div>', 420, 1340, 340, "up .35 .47", 1)
     + tag("BUTTON BEHAVIOUR: SET BY THE CUSTOMER", 1000, 820, -1.5, "snap .85 .85", light=True) + PANEL_LBL,
-    "NEII (KAREN PENAFIEL) VIA NYT 2016 AS REPORTED BY CBS BOSTON/AOL (TO CHECK: WORDING) · ABC7 · OTIS VIA AOL/YAHOO (OWNER SETS THE BEHAVIOUR)"))
+    "NEII (KAREN PENAFIEL) VIA NYT 2016 AS REPORTED BY CBS BOSTON/AOL (TO CHECK: WORDING) · ABC7 · OTIS VIA AOL/YAHOO (OWNER SETS THE BEHAVIOUR) · " + pcred("lift_panel")))
 
 dots70 = "".join(f'<div style="width:30px;height:30px;border-radius:50%;background:{AM if i < 51 else CO}"></div>' for i in range(70))
 put("13_office", page(
     rig(devices(("on", "on", "on")), s=1.6, cx=1680, cy=300, dim=.6)
     + chapter(2, "WHERE THE DEAD BUTTONS ARE")
-    + plate_print("K2", 860, 70, 150, "up .02 .15", -1.5, "AI ILLUSTRATION · OFFICE")
+    + photo("office_cubicle", 840, 470, 70, 150, "up .02 .15", -1.5, "50% 55%", drift=(-24, 0))
     + card(kicker("THE WALL STREET JOURNAL · JAN 2003 · REPORTED") + f'<div style="font:400 32px/1.3 ISerif;color:{SL};margin-top:8px">Many office thermostats are {hl("fakes")}: plastic boxes on the wall, so people feel they\'ve changed the temperature.</div>', 760, 120, 700, "up .2 .32", 1)
     + photo("placebo_thermo", 270, 360, 990, 110, "up .1 .22", 2.5, "50% 70%")
     + card(kicker("ACHR NEWS · 'PLACEBO STATS' · 2003") + f'<div style="font:400 84px/0.9 Anton;color:{AM};margin-top:6px">51 <span style="font:400 40px Anton;color:{SL}">OF 70</span></div>'
@@ -519,13 +555,13 @@ put("13_office", page(
            + f'<div style="display:inline-block;margin-top:14px;background:{SL};color:{PAPER};font:500 17px Plex;letter-spacing:3px;padding:6px 10px">INFORMAL WEB POLL</div>', 500, 1360, 110, "up .3 .42", -1)
     + card(kicker("ACHR NEWS · ITS OWN DESCRIPTION") + f'<div style="font:400 28px/1.3 ISerif;color:{SL};margin-top:8px">comfort for occupants {hl("without giving them a direct interface")} to the mechanical system</div>', 560, 1300, 690, "up .6 .72", 1.2)
     + tag("SAMPLE: 70 · METHOD: WHOEVER CLICKED", 940, 960, -1.5, "snap .88 .88", light=True) + PANEL_LBL,
-    "WSJ JAN 2003 (JARED SANDBERG), VIA NPR 15-16 JAN 2003 (TO CHECK: DATE) · ACHR NEWS 'PLACEBO STATS', ~31 MAR 2003 (TO CHECK: PAGE, DATE AND WORDING) · " + pcred("placebo_thermo")))
+    "WSJ JAN 2003 (JARED SANDBERG), VIA NPR 15-16 JAN 2003 (TO CHECK: DATE) · ACHR NEWS 'PLACEBO STATS', ~31 MAR 2003 (TO CHECK: PAGE, DATE AND WORDING) · " + pcred("placebo_thermo") + " · " + pcred("office_cubicle")))
 
 # ==== 3 MECHANICS ==========================================================================================================
 put("14_langer", page(
-    rig(devices(("on", "on", "on")), dim=.62)
+    rig(devices(("on", "on", "on")), dim=.76)
     + chapter(3, "WHY PRESSING FEELS GOOD")
-    + card(study("ELLEN LANGER", "1975", "Journal of Personality and Social Psychology 32(2): 311–328", '"THE ILLUSION OF CONTROL" · SIX STUDIES'), 820, 110, 170, "up .02 .15", -1.5)
+    + card(study("ELLEN LANGER", "1975", "Journal of Personality and Social Psychology 32(2): 311–328", '"THE ILLUSION OF CONTROL" · SIX STUDIES', "LOTTERY STUDY: N = 53"), 820, 110, 170, "up .02 .15", -1.5)
     + card(kicker("HER DEFINITION, RIGHT HERE") + f'<div style="font:400 44px/1.3 ISerif;color:{SL};margin-top:10px">"an expectancy of a personal success probability {hl("inappropriately higher")} than the objective probability would warrant"</div>', 900, 900, 330, "up .2 .35", 1.2)
     + tag("TRANSLATION: VIBES ≠ ODDS", 1060, 840, -2, "snap .6 .6", amber=True)
     + A(f'<div style="width:640px;height:230px;background:rgba(20,24,36,.92);border-top:6px solid {CO};padding:18px 24px;box-sizing:border-box"><div style="font:500 16px Plex;letter-spacing:3px;color:{PAPER}">LANGER\'S SKILL CUES: LUCK BORROWS THE COSTUME OF SKILL</div></div>', 110, 500, "fade .66 .7", "z-index:58")
@@ -552,10 +588,11 @@ put("15_lottery", page(
            f'<div style="position:absolute;left:40px;width:210px;text-align:center;top:456px;font:500 16px Plex;letter-spacing:2px;color:{SL}">HANDED A TICKET</div>'
            f'<div style="position:absolute;left:290px;width:210px;text-align:center;top:456px;font:500 16px Plex;letter-spacing:2px;color:{SL}">PICKED THEIR OWN</div></div></div>',
            1320, 300, 170, "up .02 .15", 0)
-    + ticket(120, 790, -8, .05) + ticket(250, 800, 4, .1) + ticket(380, 785, -3, .15)
+    + photo("lottery_ticket", 300, 190, 110, 770, "up .05 .15", -4, "50% 50%", cap=False, drift=(-14, 0))
+    + A(f'<div style="font:500 14px/1.4 Plex;letter-spacing:2px;color:{PAPER};width:520px">A MODERN LOTTERY TICKET, NOT LANGER&#39;S 1975 ONES<br>PHOTO: {CRED["lottery_ticket"]["author"].upper()} · {CRED["lottery_ticket"]["licence"]}</div>', 470, 905, "fade .12 .2", "z-index:60")
     + tag("PREMIUM: POINTING", 1190, 430, -4, "slam .86 .87")
-    + A(f'<div style="font:500 16px Plex;letter-spacing:2px;color:{PAPER};width:900px">TICKETS: SILHOUETTE FOOTBALLERS, NO FACES · ILLUSTRATION</div>', 560, 900, "fade .2 .3", "z-index:60") + PANEL_LBL,
-    "LANGER 1975 LOTTERY: N = 27 CHOSE / 26 ASSIGNED; MEAN RESALE ASKED $8.67 VS $1.96 VIA PMC5399809 (TO CHECK: AGAINST THE ORIGINAL JPSP TABLE AND EXPERIMENT NUMBER) · BARS FROM ZERO"))
+    + PANEL_LBL,
+    "LANGER 1975 LOTTERY: N = 27 CHOSE / 26 ASSIGNED; MEAN RESALE ASKED $8.67 VS $1.96 VIA PMC5399809 (TO CHECK: AGAINST THE ORIGINAL JPSP TABLE AND EXPERIMENT NUMBER) · BARS FROM ZERO · " + pcred("lottery_ticket")))
 
 # [TRAP REVEAL]: the button plate swings open on its hinge
 SWING_JS = """<script>(function(){const q=new URLSearchParams(location.search);const T=q.has('t')?parseFloat(q.get('t')):1;
@@ -566,7 +603,7 @@ bx, by = 960, 580             # button terminal position (frame)
 lx = [(1557, 672), (1680, 612), (1803, 672)]
 LF = [(960 + (x - 1680) * 2, 540 + (y - 740) * 2) for x, y in lx]
 drum_x, drum_y = 960, 830
-door_face = (f'<div style="position:absolute;inset:0;background:url(/assets/ai/K1.jpg) -2980px -1090px/3840px 2160px;border-radius:26px"></div>'
+door_face = (f'<div style="position:absolute;inset:0;background:url(/assets/studio/panel.jpg) -2980px -1090px/3840px 2160px;border-radius:26px"></div>'
              f'<svg style="position:absolute;left:0;top:0" width="750" height="800" viewBox="1490 545 375 400">{DEFS}{big_button()}{lamps(("on", "on", "on"))}</svg>')
 mech = (
     f'<rect x="{CAV[0]}" y="{CAV[1]}" width="{CAV[2] - CAV[0]}" height="{CAV[3] - CAV[1]}" rx="26" fill="{DEEP}"/>'
@@ -587,10 +624,12 @@ put("16_reveal", page(
     BACKDROP + svg(mech)
     + a(f'<div style="perspective:1800px;width:750px;height:800px"><div data-swing=".05 .3 118" style="position:relative;width:750px;height:800px;transform-origin:0 50%;transform-style:preserve-3d"><div style="position:absolute;inset:0;backface-visibility:hidden;box-shadow:0 30px 60px rgba(0,0,0,.6);border-radius:26px">{door_face}</div><div style="position:absolute;inset:0;backface-visibility:hidden;transform:rotateY(180deg);border-radius:26px;background:#3A4456;border:10px solid #5A6578;box-sizing:border-box;display:flex;align-items:center;justify-content:center;font:500 22px Plex;letter-spacing:5px;color:{PAPER}">BACK OF THE PANEL</div></div></div>', 580, 150, "z-index:30")
     + hand("No wire.", 1080, 470, "fade .68 .76", 64, AM, 300, -4)
+    + photo("signal_cabinet", 470, 320, 60, 480, "up .55 .66", -2, "50% 50%", drift=(-14, 0))
+    + A(f'<div style="width:470px;font:700 40px/1.05 Caveat;color:{AM};transform:rotate(-2deg);background:rgba(20,24,36,.85);padding:8px 14px">The real crossing version: the timing lives in a box like this.</div>', 60, 330, "fade .6 .7", "z-index:60")
     + A(f'<div style="font:400 30px/1.2 Anton;color:{PAPER};letter-spacing:2px">[TRAP REVEAL]</div><div style="font:400 64px/1 Anton;color:{PAPER};margin-top:8px">THE BUTTON WAS<br>NEVER <span style="color:{AM}">CONNECTED</span></div>', 1390, 160, "up .3 .42", "z-index:60")
     + A(f'<div style="width:470px;background:{PAPER};padding:14px 22px;box-shadow:0 18px 34px rgba(0,0,0,.45);border-top:8px solid {CO}">{kicker("THE TIMER TAPE")}{tape}</div>', 1390, 420, "up .68 .74", "z-index:60")
     + SWING_JS + TRAP_LBL,
-    "STUDIO RECONSTRUCTION OF OUR OWN TRAP: THE TIMES ARE THE SCRIPT'S [WAIT] CUES · CAM TIMER, WIRES AND TERMINAL DRAWN IN THE STUDIO · DOOR FACE: K1 PANEL"))
+    "STUDIO RECONSTRUCTION OF OUR OWN TRAP: THE TIMES ARE THE SCRIPT'S [WAIT] CUES · CAM TIMER, WIRES AND TERMINAL DRAWN IN THE STUDIO · " + pcred("signal_cabinet")))
 
 sand = (stick(300, 614, 3.0, SL, False)
         + f'<rect x="230" y="800" width="560" height="22" fill="{SL}"/>'
@@ -630,12 +669,17 @@ put("19_replication", page(
            + f'<div style="display:flex;gap:30px;margin-top:12px"><div style="font:400 64px/1 Anton;color:{SL}"><span data-anim="count .2 .4" data-to="17">17</span><div style="font:500 14px Plex;letter-spacing:2px">EXPERIMENTS</div></div>'
              f'<div style="font:400 64px/1 Anton;color:{SL}">N = <span data-anim="count .2 .45" data-to="10825">10,825</span><div style="font:500 14px Plex;letter-spacing:2px">~11,000 PEOPLE</div></div></div>'
            + f'<div style="font:400 26px/1.3 ISerif;color:{BODY};margin-top:10px">Choice rarely made people feel luckier, unless it really did improve their odds.</div>', 640, 660, 150, "up .15 .28", 1)
-    + stamp("REPLICATION: CHOICE ≠ CONFIDENCE (MOSTLY)", 690, 590, "slam .5 .52", -4, 40)
+    + stamp("REPLICATION: CHOICE ≠ CONFIDENCE (MOSTLY)", 560, 660, "slam .5 .52", -4, 40)
     + card(study("STEFAN & DAVID", "2013", "J. Applied Social Psychology", "META-ANALYSIS · POOLED STUDIES")
            + f'<div style="font:400 72px/1 Anton;color:{AM};margin-top:10px">d = 0.62</div>'
+           + f'<div style="position:relative;height:56px;margin-top:10px;border-bottom:3px solid {SL}">'
+             f'<div data-anim="wipe .74 .84" style="position:absolute;left:{0.49 / 1.0 * 400:.0f}px;width:{(0.75 - 0.49) * 400:.0f}px;top:22px;height:10px;background:{CO}"></div>'
+             f'<div data-anim="pop .82 .88" style="position:absolute;left:{0.62 * 400 - 12:.0f}px;top:15px;width:24px;height:24px;border-radius:50%;background:{AM}"></div>'
+             + "".join(f'<div style="position:absolute;left:{v * 400:.0f}px;top:58px;font:500 13px Plex;color:{SL};transform:translateX(-50%)">{v:g}</div>' for v in (0, .5, 1.0))
+           + f'</div><div style="font:500 14px Plex;letter-spacing:2px;color:{BODY};margin-top:24px">95% CI 0.49–0.75</div>'
            + f'<div style="display:inline-block;margin-top:10px;background:{AM};color:{SL};font:500 16px Plex;letter-spacing:2px;padding:5px 9px">TO CHECK: JOURNAL AND d</div>', 470, 1360, 170, "up .6 .72", 1.5)
     + A(f'<div style="border-top:6px solid {CO};width:1700px;padding-top:12px;font:400 56px Anton;color:{PAPER};text-align:center">REAL · SMALLER · <span style="color:{AM}">DEPENDS</span></div>', 110, 830, "wipe .82 .95", "z-index:60") + PANEL_LBL,
-    "LANGER 1975 (N = 27 + 26) · KLUSOWSKI, SMALL & SIMMONS 2021, PSYCH. SCIENCE 32(2):159-172 (ABSTRACT) · STEFAN & DAVID 2013 META-ANALYSIS, d = 0.62 (TO CHECK: JOURNAL AND CI)"))
+    "LANGER 1975 (N = 27 + 26) · KLUSOWSKI, SMALL & SIMMONS 2021, PSYCH. SCIENCE 32(2):159-172 (ABSTRACT) · STEFAN & DAVID 2013 META-ANALYSIS, d = 0.62, 95% CI 0.49-0.75 (TO CHECK: JOURNAL AND CI)"))
 
 waves = "".join(f'<path d="M{x} 170 l20 -50 l20 90 l20 -110 l20 120 l20 -80 l20 40" stroke="{CO}" stroke-width="6" fill="none" data-anim="fade {.05 + k * .05:.2f} {.1 + k * .05:.2f}"/>' for k, x in enumerate((140, 300, 460)))
 put("20_glass", page(
@@ -647,7 +691,7 @@ put("20_glass", page(
         f'<rect x="170" y="420" width="140" height="16" fill="{SL}"/></svg>', 90, 150, "fade .05 .15", "z-index:41")
     + tag("PLEASE DON'T", 690, 470, 4, "snap .3 .3", light=True)
     + A(f'<div style="font:500 16px Plex;letter-spacing:3px;color:{SL}">RECONSTRUCTION · STICK FIGURES · UNPREDICTABLE NOISE</div>', 120, 650, "fade .1 .2", "z-index:42")
-    + card(study("GLASS & SINGER", "1972", "Urban Stress · Academic Press", "A BUTTON THAT COULD STOP THE NOISE, AND A REQUEST NOT TO PRESS IT. ALMOST NOBODY PRESSED IT.")
+    + card(study("GLASS & SINGER", "1972", "Urban Stress · Academic Press", "A BUTTON THAT COULD STOP THE NOISE, AND A REQUEST NOT TO PRESS IT. ALMOST NOBODY PRESSED IT.", "N: NOT IN OUR SOURCES (TO CHECK)")
            + f'<div style="position:relative;height:230px;margin-top:18px;border-bottom:4px solid {SL}">'
              f'<div data-anim="grow .4 .6" style="position:absolute;left:40px;bottom:0;width:150px;height:190px;background:{AM}"></div><div data-anim="grow .4 .6" style="position:absolute;left:260px;bottom:0;width:150px;height:110px;background:{CO}"></div></div>'
            + f'<div style="display:flex;font:500 15px Plex;letter-spacing:2px;color:{SL};margin-top:8px"><div style="width:220px;padding-left:30px">WITH BUTTON</div><div>NO BUTTON</div></div>'
@@ -657,7 +701,7 @@ put("20_glass", page(
     "GLASS & SINGER, URBAN STRESS (ACADEMIC PRESS 1972), VIA SECONDARY SUMMARIES (TO CHECK: TASK DETAILS) · NON-REPLICATION WITH CONSENT PROCEDURES: CITATION TO CHECK · BARS SHOW DIRECTION ONLY"))
 
 put("21_plant", page(
-    a('<img src="/assets/ai/K4.jpg" style="width:1920px;height:1080px;display:block">', 0, 0)
+    A('<img src="/assets/real/windowsill.jpg" style="width:1920px;height:1080px;object-fit:cover;display:block;filter:brightness(.62)">', 0, 0, "push 0 1", "transform-origin:75% 50%")
     + chapter(4, "WE CHECK THE SCIENCE")
     + card(study("LANGER & RODIN", "1976", "JPSP 34(2): 191–198 · a Connecticut nursing home", "ONE FLOOR: A TALK ABOUT TAKING CHARGE, AND EACH RESIDENT CHOSE A PLANT. THE OTHER: PLANTS TOO, CARED FOR BY STAFF (TO CHECK).")
            + f'<div style="font:400 64px/1 Anton;color:{AM};margin-top:8px">N = 91</div>', 700, 110, 150, "up .05 .18", -1.2)
@@ -665,8 +709,8 @@ put("21_plant", page(
     + card(kicker("CAVEATS", AM) + f'<div style="font:400 36px/1.1 Anton;color:{SL};margin-top:6px">{hl("CONFOUND")}: THE FLOORS GOT DIFFERENT SPEECHES</div>'
            + f'<div style="font:400 26px/1.3 ISerif;color:{BODY};margin-top:8px">and the authors warned that too much responsibility can hurt.</div>', 560, 1240, 560, "up .5 .62", -1.5)
     + A(f'<div style="width:280px;background:{PAPER};border:3px dashed {SL};padding:14px 18px;transform:rotate(7deg);box-shadow:0 12px 26px rgba(0,0,0,.45)"><div style="font:500 14px Plex;letter-spacing:3px;color:{CO}">Rx</div><div style="font:400 64px/1 Anton;color:{SL}">1 FERN</div><div style="font:500 13px Plex;letter-spacing:2px;color:{BODY}">NOBODY SHOULD PRESCRIBE THIS</div></div>', 1420, 190, "slam .85 .86", "z-index:66")
-    + LBL("AI ILLUSTRATION · RECONSTRUCTION, NOT THE REAL HOME", 1240, 960),
-    "LANGER & RODIN (1976) JPSP 34(2):191-198, N = 91 (SECONDARY SUMMARIES) · RODIN & LANGER (1977) JPSP 35(12) · CAVEATS: SECONDARY CRITIQUES AND THE AUTHORS' DISCUSSION · Rx: SIGHT GAG"))
+    + LBL("PHOTO: A WINDOWSILL TODAY, NOT THE 1976 HOME", 1240, 960),
+    "LANGER & RODIN (1976) JPSP 34(2):191-198, N = 91 (SECONDARY SUMMARIES) · RODIN & LANGER (1977) JPSP 35(12) · CAVEATS: SECONDARY CRITIQUES AND THE AUTHORS' DISCUSSION · Rx: SIGHT GAG · " + pcred("windowsill") + " (NOT THE STUDY'S HOME)"))
 
 rings = "".join(f'<circle cx="230" cy="300" r="{r}" fill="none" stroke="{CO}" stroke-width="7" data-anim="fade {.4 + i * .08:.2f} {.46 + i * .08:.2f}"/>' for i, r in enumerate((130, 175, 220)))
 aps = (f'<svg width="460" height="600" viewBox="0 0 460 600">{rings}<rect x="140" y="110" width="180" height="380" rx="24" fill="{PAPER}" stroke="{SL}" stroke-width="6"/>'
@@ -678,11 +722,13 @@ put("22_court", page(
     + A(f'<div style="font:400 120px/1 Anton;color:{AM};text-shadow:0 4px 20px rgba(0,0,0,.7)">95%+</div><div style="font:500 18px/1.4 Plex;letter-spacing:2px;color:{PAPER};width:560px">OF SIGNALLED INTERSECTIONS: NOTHING TO TELL A BLIND PEDESTRIAN WHEN TO WALK</div>', 200, 360, "fade .45 .55", "z-index:62")
     + card(kicker("COURT CARD · S.D.N.Y. · 20 OCT 2020") + f'<div style="font:400 40px/1.05 Anton;color:{SL};margin-top:6px">ACB OF NEW YORK v. CITY OF NEW YORK</div>'
            + f'<div style="font:400 26px/1.3 ISerif;color:{BODY};margin-top:6px">The city\'s crosswalks broke the disability law.</div>', 760, 1090, 100, "up .1 .22", 1)
-    + card(kicker("REMEDIAL ORDER · DEC 2021") + f'<div style="font:400 64px/1 Anton;color:{SL};margin-top:6px">~10,000 <span style="font:400 30px Anton">INTERSECTIONS</span></div>'
+    + card(kicker("REMEDIAL ORDER · DEC 2021") + f'<div style="font:400 64px/1 Anton;color:{SL};margin-top:6px">~<span data-anim="count .3 .5" data-to="10000">10,000</span> <span style="font:400 30px Anton">INTERSECTIONS</span></div>'
            + f'<div style="font:400 24px ISerif;color:{BODY}">with accessible signals by the early 2030s</div>'
            + f'<div style="display:inline-block;margin-top:8px;background:{AM};color:{SL};font:500 15px Plex;letter-spacing:2px;padding:4px 8px">TO CHECK: 9,000 MORE VS 10,000 TOTAL</div>', 560, 1090, 390, "up .3 .42", -1)
     + A(f'<div style="width:560px;background:{SL};border:3px solid {PAPER};padding:20px 26px;box-shadow:0 18px 34px rgba(0,0,0,.45)"><div style="font:500 15px Plex;letter-spacing:3px;color:{PAPER}">NYC DOT · 2024</div>'
-        f'<div style="font:400 110px/1 Anton;color:{AM}" data-anim="count .6 .8" data-to="855">855</div><div style="font:500 16px Plex;letter-spacing:2px;color:{PAPER}">INTERSECTIONS FITTED IN ONE YEAR</div></div>', 1090, 720, "up .58 .66", "z-index:60")
+        f'<div style="font:400 110px/1 Anton;color:{AM}" data-anim="count .6 .8" data-to="855">855</div><div style="font:500 16px Plex;letter-spacing:2px;color:{PAPER}">INTERSECTIONS FITTED IN ONE YEAR</div>'
+        f'<div style="margin-top:14px;height:18px;background:#26314A;position:relative"><div data-anim="wipe .8 .9" style="position:absolute;left:0;top:0;bottom:0;width:{855 / 10000 * 100:.1f}%;background:{AM}"></div></div>'
+        f'<div style="font:500 13px Plex;letter-spacing:2px;color:{PAPER};margin-top:6px">855 OF ~10,000 · ~12 YEARS AT THAT PACE (OUR ARITHMETIC)</div></div>', 1090, 700, "up .58 .66", "z-index:60")
     + A(aps.replace('width="460" height="600"', 'width="230" height="300"'), 1680, 690, "pop .35 .45", "z-index:61") + PANEL_LBL,
     "ACB OF NEW YORK v. CITY OF NEW YORK, S.D.N.Y. OPINION 20 OCT 2020 (PRIMARY) · REMEDIAL ORDER DEC 2021: COURTHOUSE NEWS, ROUTE FIFTY (TO CHECK: COUNT) · 855 IN 2024: NYC STREETS PLAN UPDATE (PRIMARY) · " + NYC_SRC + " · APS BUTTON DRAWN"))
 
@@ -692,14 +738,19 @@ put("23_fire", page(
     + A(f'<svg width="260" height="120" viewBox="0 0 260 120"><circle cx="50" cy="60" r="44" fill="{AM}" stroke="{SL}" stroke-width="6"/><circle cx="50" cy="60" r="14" fill="{SL}"/>'
         f'<rect x="90" y="48" width="150" height="24" fill="{AM}" stroke="{SL}" stroke-width="5"/><rect x="190" y="72" width="16" height="26" fill="{AM}" stroke="{SL}" stroke-width="5"/><rect x="220" y="72" width="14" height="18" fill="{AM}" stroke="{SL}" stroke-width="5"/></svg>', 120, 720, "pop .2 .3", "z-index:60;transform:rotate(-20deg)")
     + A(f'<div style="font:500 16px Plex;letter-spacing:3px;color:{PAPER}">FIRE KEY · ILLUSTRATION</div>', 130, 870, "fade .3 .4", "z-index:60")
+    + photo("lift_buttons", 300, 380, 560, 170, "up .05 .16", 2, "50% 85%", drift=(14, 0))
     + card(kicker("CODE CARD · ASME A17.1 / CSA B44") + f'<div style="font:400 50px/1 Anton;color:{SL};margin-top:8px">FIREFIGHTERS\' PHASE II</div>'
            + f'<div style="font:400 34px/1.3 ISerif;color:{SL};margin-top:10px">Open power doors close only by {hl("continuous pressure on the door-close button")}.</div>', 820, 1000, 200, "up .15 .28", 1)
     + tag("DOOR CLOSE · ON CALL FOR EMERGENCIES ONLY", 1000, 640, -1.5, "slam .8 .81", amber=True) + PANEL_LBL,
-    "ASME A17.1 PHASE II TEXT AS QUOTED BY IUEC ALERT AND A 2007 CODE EXTRACT (STANDARD ITSELF PAYWALLED) · ADA STANDARDS INCORPORATE ASME A17.1-2000 WITH ADDENDA"))
+    "ASME A17.1 PHASE II TEXT AS QUOTED BY IUEC ALERT AND A 2007 CODE EXTRACT (STANDARD ITSELF PAYWALLED) · ADA STANDARDS INCORPORATE ASME A17.1-2000 WITH ADDENDA · " + pcred("lift_buttons")))
 
 # ==== 5 SYNTHESIS ==========================================================================================================
 put("24_recap", page(
-    rig(devices(("on", "on", "on"), close_glow=True) + "".join(outline(d, "draw 0 .01") for d in ("crosswalk", "lift", "thermo", "button")), dim=.2)
+    rig(devices(("on", "on", "on"), close_glow=True, screen_content=screen_svg(nyc_streets(op=.85) + nyc_dots(750 / 3250, appear="fill 0 .01", turn="fill 0 .01")))
+        + "".join(outline(d, "draw 0 .01") for d in ("crosswalk", "lift", "thermo", "button")), dim=.2)
+    + photo("push_sign", 200, 150, 300, 560, "drop .05 .12", -4, "33% 40%", cap=False)
+    + photo("lift_panel", 150, 200, 690, 600, "drop .15 .22", 3, "50% 55%", cap=False)
+    + photo("placebo_thermo", 150, 200, 1330, 230, "drop .25 .32", -3, "50% 70%", cap=False)
     + tag("NYC 2004 · MOSTLY DEAD", 60, 300, -3, "snap .1 .1") + tag("LONDON · MOSTLY LIVE", 70, 370, 2, "snap .18 .18") + tag("SYDNEY · AUTO BY DAY", 60, 440, -1, "snap .26 .26", amber=True)
     + tag("WORKS · AFTER THE WAIT", 420, 960, 1.5, "snap .36 .36", light=True)
     + tag("51 OF 70 · INFORMAL POLL", 1500, 520, -2, "snap .46 .46", light=True)
@@ -707,18 +758,19 @@ put("24_recap", page(
     + A(f'<div style="background:{PAPER};padding:22px 30px;box-shadow:0 18px 34px rgba(0,0,0,.5);border-top:8px solid {CO}"><div style="font:400 50px/1 Anton;color:{SL}">BEFORE YOU PRESS,<br>ASK WHAT IT\'S {hl("WIRED TO")}.</div>'
         f'<div style="font:500 17px Plex;letter-spacing:3px;color:{BODY};margin-top:12px">TIMER · SENSOR · PERSON · FACILITIES (HOPEFUL)</div></div>', 800, 400, "up .7 .82", "z-index:66")
     + PANEL_LBL,
-    "RECAP OF CHAPTERS 2-4: NYT 2004; TfL/DfT VIA BBC 2013; TRANSPORT FOR NSW 2020; ADA §407.3.5 AND NEII VIA ABC7; ACHR NEWS 2003 (INFORMAL POLL) · " + DRAWN))
+    "RECAP OF CHAPTERS 2-4: NYT 2004; TfL/DfT VIA BBC 2013; TRANSPORT FOR NSW 2020; ADA §407.3.5 AND NEII VIA ABC7; ACHR NEWS 2003 (INFORMAL POLL) · " + DRAWN
+    + " · PHOTOS: ERIC FISCHER, NSEIKA, EL CAJON YACHT CLUB (ALL CC BY 2.0, VIA OPENVERSE) · SCREEN: " + NYC_SRC))
 
 put("25_last", page(
     trap(("off", "off", "off"), breathe=".0 .6")
     + A(f'<div style="font:400 52px/1.15 ISerif;color:#C9D3E0;width:450px">"Press it one more time. Whenever you\'re ready."</div>', 90, 300, "fade .02 .15", "z-index:60")
     + A(f'<div style="font:500 24px/1.6 Plex;letter-spacing:3px;color:{PAPER};width:460px">[WAIT 4.0 S]<br>NO CLICK. NO LAMP.</div>', 1420, 420, "fade .3 .4", "z-index:60")
     + A(f'<div style="font:400 86px/1 Anton;color:{PAPER}">NOTHING.</div><div style="font:400 40px/1.2 ISerif;color:#C9D3E0;margin-top:8px">Slightly offended?<br><span style="color:{AM}">Notice that.</span></div>', 110, 600, "up .7 .8", "z-index:60")
-    + tag("EXHIBIT B · ALSO YOUR FEELING", 1420, 560, 2, "snap .88 .88", amber=True) + TRAP_LBL,
+    + tag("EXHIBIT B · ALSO YOUR FEELING", 1330, 560, 2, "snap .88 .88", amber=True) + TRAP_LBL,
     TRAP_SRC + " · THIS TIME THE TIMER IS OFF"))
 
 put("26_pause", page(
-    rig(devices(("off", "off", "off"), glow=False), dim=.86)
+    rig(devices(("off", "off", "off"), glow=False), dim=.92)
     + svg(f'<g data-anim="draw .3 .55"><path d="M104 928 C 60 928, 40 860, -10 850" stroke="#4F8FD6" stroke-width="12" fill="none" pathLength="1"/></g>'
           f'<g data-anim="fade .5 .7"><circle cx="150" cy="930" r="90" fill="{AM}" opacity=".45" filter="url(#g2)"/></g>'
           f'<defs><filter id="g2" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="18"/></filter></defs>'

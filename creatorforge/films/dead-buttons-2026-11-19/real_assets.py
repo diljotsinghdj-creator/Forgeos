@@ -21,6 +21,13 @@ PICKS = {
     "uk_button_box": ("walk_button", 5, "bw", "10 London", "A UK CROSSING PUSH-BUTTON BOX"),
     "sydney_street": ("syd2", 15, "duo", "11 Sydney", "PARK ST AND ELIZABETH ST, CENTRAL SYDNEY"),
     "london_pelican": ("pelican", 1, "bw", "10 London", "A PELICAN CROSSING, GROSVENOR PLACE, LONDON"),
+    # second pass (owner, 2026-11-19: "more real pictures ... less ai")
+    "metal_texture": ("brushed", 0, "bw", "the studio control panel: real brushed-steel surface under every frame", "BRUSHED STEEL (PANEL SURFACE)"),
+    "lift_panel": ("liftpanel", 2, "bw", "12 lift split / 23 fire / 24 recap", "A LIFT PANEL WITH DOOR CONTROLS"),
+    "signal_cabinet": ("controller", 2, "bw", "08 placebo / 16 reveal", "INSIDE A TRAFFIC-SIGNAL CABINET (GREENVILLE, NC)"),
+    "office_cubicle": ("office", 0, "duo", "13 office (replaces AI plate K2)", "AN OFFICE CUBICLE, CIRCA 2001 (NOT THE WSJ'S OFFICE)"),
+    "windowsill": ("plant2", 0, "bw", "21 plant (replaces AI plate K4)", "A HOUSEPLANT ON A WINDOWSILL (NOT THE 1976 HOME)"),
+    "lottery_ticket": ("lottery", 5, "bw", "15 lottery", "A MODERN LOTTERY TICKET (NOT LANGER'S 1975 TICKETS)"),
 }
 SL, CO, PAPER = (20, 24, 36), (43, 108, 176), (240, 244, 248)
 
@@ -48,7 +55,7 @@ def main():
         out.save(R / f"{slug}.jpg", quality=90)
         lic = meta["license"].upper() + (f" {meta['license_version']}" if meta.get("license_version") and meta["license"] != "pdm" else "")
         lic = {"PDM": "PUBLIC DOMAIN MARK", "CC0 1.0": "CC0 1.0"}.get(lic, lic.replace("BY", "CC BY"))
-        credits.append({"slug": slug, "file": f"assets/real/{slug}.jpg", "title": meta["title"], "author": meta["creator"], "licence": lic,
+        credits.append({"slug": slug, "file": f"assets/real/{slug}.jpg", "title": meta["title"], "author": meta.get("creator") or meta["source"], "licence": lic,
                         "url": meta["foreign_landing_url"], "image_url": meta["url"], "found_via": "Openverse API", "source": meta["source"],
                         "finish": "black and white" if look == "bw" else "cobalt duotone", "used_in": use, "on_screen_caption": caption,
                         "people": "none identifiable as a 'bad' example; no faces added"})

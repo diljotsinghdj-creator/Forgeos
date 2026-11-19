@@ -82,10 +82,13 @@ put("03_otherfeed", page(
     + A(f'<div style="font:400 84px/1 Anton;color:#F3EFE6">MEANWHILE, OFF THE FEED</div>', 110, 120, "fade 0 .08")
     + "".join(A(f'<div style="width:520px;background:{PARCH};padding:26px 30px;transform:rotate({(-1) ** i * 1.5}deg);box-shadow:0 20px 40px rgba(0,0,0,.5)">{kicker(d)}'
                 f'<div style="font:400 72px/1 Anton;color:{INK};margin-top:10px">{n}</div><div style="font:400 34px ISerif;color:#444">{s}</div>'
-                f'<div style="font:500 14px Plex;color:#7A6A4A;margin-top:12px">SOURCE: {src}</div></div>', 110 + i * 590, 400 + (i % 2) * 40, f"slam {.2 + i * .22:.2f} {.23 + i * .22:.2f}")
+                f'<div style="font:500 14px Plex;color:#7A6A4A;margin-top:12px">SOURCE: {src}</div>'
+                + (f'<img src="/assets/real2/tiger_pb.jpg" style="width:520px;height:170px;object-fit:cover;object-position:80% 35%;display:block;margin-top:14px;filter:saturate(.85)">'
+                   f'<div style="font:500 11px Plex;color:#7A6A4A;margin-top:4px">PHOTO: BENGAL TIGER · IGNARTONOSBG / PIXABAY</div>' if i == 2 else "") + '</div>', 110 + i * 590, 400 + (i % 2) * 40, f"slam {.2 + i * .22:.2f} {.23 + i * .22:.2f}")
               for i, (d, n, s, src) in enumerate(tiles))
-    + tag("NOT TRENDING", 1500, 880, 2, "snap .9 .9"),
-    "#101317", "ISRO, CHANDRAYAAN-3 (23 AUG 2023) · NPCI MONTHLY UPI DATA, OCT 2026 (VIA PRESS; CHECK NPCI) · NTCA/WII 'STATUS OF TIGERS' 2022 (RANGE 3,167–3,925)", dark=True))
+    + f'<svg class="a" data-anim="draw .78 .86" style="left:0;top:0;z-index:40" width="1920" height="1080"><path d="{wobble(1420, 478, 120, 46, 7)}" pathLength="1" fill="none" stroke="{RED}" stroke-width="6"/></svg>'
+    + tag("NOT TRENDING", 1200, 250, 2, "snap .9 .9"),
+    "#101317", "ISRO, CHANDRAYAAN-3 (23 AUG 2023) · NPCI MONTHLY UPI DATA, OCT 2026 (VIA PRESS; CHECK NPCI) · NTCA/WII 'STATUS OF TIGERS' 2022 (RANGE 3,167–3,925) · PHOTO: BENGAL TIGER, IGNARTONOSBG / PIXABAY (PIXABAY CONTENT LICENSE)", dark=True))
 
 put("04_title", page(
     a(f'<div style="width:1920px;height:1080px;background:{BLK};background-image:radial-gradient(rgba(255,255,255,.04) 1px,transparent 1.5px);background-size:5px 5px"></div>', 0, 0)
@@ -141,7 +144,7 @@ put("07_drain", page(
     + A(f'<div style="font:700 56px/1.1 Caveat;color:{SIG};transform:rotate(-2deg);width:760px">"He named the genre ninety-eight years before the algorithm did."</div>', 1000, 760, "fade .7 .85")
     + A(f'<div style="background:#fff;padding:12px 12px 16px;box-shadow:12px 14px 0 rgba(0,0,0,.55);transform:rotate(3deg)"><img src="/assets/p_gandhi.jpg" style="width:270px;height:330px;object-fit:cover;object-position:50% 30%;display:block;filter:grayscale(1) contrast(1.1)">'
         f'<div style="font:500 13px Plex;letter-spacing:1px;color:{INK};margin-top:8px">M. K. GANDHI · 1931 · PUBLIC DOMAIN</div></div>', 600, 560, "up .3 .42", "z-index:24")
-    + tag("BOOK REVIEW · ONE STAR, APPROX.", 200, 880, -2, "snap .55 .55")
+    + tag("BOOK REVIEW · ONE STAR, APPROX.", 1000, 950, -2, "snap .55 .55")
     + chapter(1, "THE PAPER TRAIL"),
     "#2A1D12", "QUOTE: GANDHI, 'DRAIN INSPECTOR'S REPORT', YOUNG INDIA (SEPT 1927; ISSUE DATE TO CHECK), VIA MKGANDHI.ORG · BOOK: MAYO, MOTHER INDIA (1927) · COVER IS A STUDIO DRAWING · PHOTO: GANDHI, 1931, WIKIMEDIA COMMONS (PUBLIC DOMAIN)", dark=True))
 
@@ -214,26 +217,52 @@ put("11_repost", page(
     + tag("ILLUSTRATIVE · DRAWN", 1450, 700, 2, "snap .3 .3"),
     "#0E1116", "PAYOUT RULE: TECHCRUNCH, 9 OCT 2024 · CONFIRMED · POSTS, VIEW COUNTS AND CAPTION ARE ILLUSTRATIVE STAND-INS, NOT A REAL CASE", dark=True))
 
-shares = [("45%", "call South Asians \"invaders\", \"job thieves\" or a demographic threat"), ("~30%", "use the slur that began on 4chan in 2015"), ("+171%", "rise in hygiene-based insults: the fastest-growing kind")]
+shares = [("45%", 45, "call South Asians \"invaders\", \"job thieves\" or a demographic threat", "OF POSTS"), ("~30%", 30, "use the slur that began on 4chan in 2015", "OF POSTS"),
+          ("+171%", 0, "rise in hygiene-based insults: the fastest-growing kind", "GROWTH")]
+rows_ = ""
+for i, (n, v, t, unit) in enumerate(shares):
+    y, s0 = 470 + i * 160, .3 + i * .17
+    rows_ += A(f'<div style="font:400 96px/1 Anton;color:{RED};width:300px">{n}</div>', 112, y, f"up {s0:.2f} {s0 + .06:.2f}")
+    rows_ += A(f'<div style="font:400 36px/1.2 ISerif;color:{INK};width:1300px">{t}</div>', 440, y + 4, f"fade {s0:.2f} {s0 + .08:.2f}")
+    if v:   # share of all posts: a 0-100% track, the share wiping in
+        rows_ += a(f'<div style="width:1000px;height:26px;background:#E2DACB"></div>', 440, y + 62)
+        rows_ += A(f'<div style="width:{v * 10}px;height:26px;background:{RED if i == 0 else INK}"></div>', 440, y + 62, f"wipe {s0 + .04:.2f} {s0 + .14:.2f}")
+        rows_ += a(f'<div style="font:500 16px Plex;color:#7A6A4A">100%</div>', 1452, y + 64)
+    else:   # growth: before (1x) and after (2.71x) bars
+        rows_ += A(f'<div style="width:300px;height:26px;background:#9A9284"></div>', 440, y + 62, f"wipe {s0 + .02:.2f} {s0 + .06:.2f}")
+        rows_ += A(f'<div style="width:813px;height:26px;background:{SIG}"></div>', 440, y + 96, f"wipe {s0 + .06:.2f} {s0 + .16:.2f}")
+        rows_ += a(f'<div style="font:500 16px Plex;color:#7A6A4A;white-space:nowrap">BEFORE · AFTER (×2.71)</div>', 1270, y + 98)
 put("12_count", page(
     chapter(3, "THE COUNT")
-    + A(f'<div style="font:400 84px/0.95 Anton;color:{INK}">~542,360 POSTS<br>{hl("IN 18 MONTHS")}</div>', 110, 150, "up 0 .1")
+    + A(f'<div style="font:400 84px/0.95 Anton;color:{INK}">~<span data-anim="count .02 .26" data-to="542360">542,360</span> POSTS<br>{hl("IN 18 MONTHS")}</div>', 110, 150, "up 0 .1")
     + A(f'<div style="font:500 22px Plex;letter-spacing:3px;color:#555">ANTI-SOUTH ASIAN HATE ON X · JAN 2025 – JUN 2026</div>', 112, 360, "fade .08 .15")
-    + "".join(A(f'<div style="display:flex;align-items:baseline;gap:28px;width:1500px"><div style="font:400 96px/1 Anton;color:{RED};width:300px">{n}</div><div style="font:400 40px/1.2 ISerif;color:{INK}">{t}</div></div>', 112, 470 + i * 150, f"up {.25 + i * .18:.2f} {.35 + i * .18:.2f}")
-              for i, (n, t) in enumerate(shares))
+    + rows_
+    + f'<svg class="a" data-anim="draw .84 .92" style="left:0;top:0;z-index:30" width="1920" height="1080"><path d="{wobble(262, 528, 150, 58, 11)}" pathLength="1" fill="none" stroke="{RED}" stroke-width="6"/></svg>'
     + tag("THE INTERNET, KEEPING RECEIPTS ON ITSELF", 1180, 160, 2, "snap .88 .88"),
-    PARCH, "SOURCE: CSOH, 'THE RISING TIDE OF ANTI-SOUTH ASIAN HATE IN THE UNITED STATES' (28 SEP 2026), CSOHATE.ORG · CHECKED AGAINST THE REPORT 17 NOV 2026 · AN NGO REPORT, NOT PEER-REVIEWED"))
+    PARCH, "SOURCE: CSOH, 'THE RISING TIDE OF ANTI-SOUTH ASIAN HATE IN THE UNITED STATES' (28 SEP 2026), CSOHATE.ORG · CHECKED AGAINST THE REPORT 17 NOV 2026 · AN NGO REPORT, NOT PEER-REVIEWED · SHARES MAY OVERLAP; BARS START AT ZERO"))
 
 ev = [("DEC 2024", "H-1B fight on X", .1), ("JUL 2025", "Tallaght, Dublin: assault recorded as racially motivated", .3), ("AUG 2025", "Australia: rally flyers single out Indian migration", .5),
       ("2025", "Canada: police-reported hate crimes vs South Asians 324 → 483", .7)]
+MX = lambda lo: 110 + (lo + 130) / 290 * 1700
+MY = lambda la: 250 + (70 - la) / 120 * 703
+pins13 = [(-77.04, 38.9, "DEC 2024", "H-1B fight on X", .18, (-280, 70)), (-6.37, 53.29, "JUL 2025", "Tallaght, Dublin: assault recorded as racially motivated", .34, (40, 20)),
+          (151.2, -33.87, "AUG 2025", "Australia: rally flyers single out Indian migration", .5, (-430, -190)), (-75.7, 45.42, "2025", "Canada: police-reported hate crimes vs South Asians 324 → 483", .66, (-290, -150))]
+ring13 = "".join("M" + " L".join(f"{MX(lo):.0f} {MY(la):.0f}" for lo, la in r) + "Z" for r in india_rings(20))
+string13 = "M" + " Q ".join(f"{MX(lo):.0f} {MY(la):.0f}" if i == 0 else f"{(MX(pins13[i - 1][0]) + MX(lo)) / 2:.0f} {(MY(pins13[i - 1][1]) + MY(la)) / 2 + 60:.0f} {MX(lo):.0f} {MY(la):.0f}" for i, (lo, la, *_ ) in enumerate(pins13))
 put("13_timing", page(
-    chapter(4, "WHERE IT LANDS")
-    + A(f'<div style="font:400 84px/0.95 Anton;color:{INK}">SAME MONTHS,<br>{hl("SAME HEADLINES")}</div>', 110, 150, "up 0 .1")
-    + A(f'<div style="width:1700px;height:4px;background:{INK}"></div>', 110, 600, "wipe .08 .8")
-    + "".join(A(f'<div style="width:390px"><div style="width:22px;height:22px;border-radius:50%;background:{RED};margin-bottom:16px"></div><div style="font:400 48px Anton;color:{INK}">{d}</div>'
-                f'<div style="font:400 30px/1.2 ISerif;color:#333;margin-top:6px">{t}</div></div>', 110 + i * 430, 590, f"up {s:.2f} {s + .08:.2f}") for i, (d, t, s) in enumerate(ev))
-    + tag("TIMING, NOT CAUSE · NO STUDY LINKS A POST TO AN ATTACK", 900, 200, 1.5, "snap .9 .9"),
-    PARCH, "SOURCES: CNBC 27 DEC 2024 · IRISH TIMES 26 JUL 2025 (GARDAÍ) · AL JAZEERA 1 SEP 2025 · STATISTICS CANADA TABLE 6 (22 JUL 2026; 2024 REVISED TO 324; INCLUDES SUSPECTED INCIDENTS) · CONFIRMED"))
+    a(f'<div style="width:1920px;height:1080px;{DESK}"></div>', 0, 0) + chapter(4, "WHERE IT LANDS")
+    + A(f'<div style="background:#fff;padding:12px;box-shadow:16px 20px 0 rgba(0,0,0,.45);transform:rotate(-.6deg)"><div style="width:1700px;height:703px;overflow:hidden;position:relative">'
+        f'<img data-anim="push 0 1" data-z=".04" src="/maps/bluemarble_world.jpg" style="position:absolute;left:-293px;top:-117px;width:2110px;height:1055px;filter:saturate(.7) sepia(.25) brightness(.95)"></div></div>', 98, 238, "up 0 .1")
+    + f'<svg class="a" style="left:0;top:0;z-index:30" width="1920" height="1080"><path d="{ring13}" fill="{SIG}" fill-opacity=".35" stroke="{SIG}" stroke-width="2"/>'
+      f'<g data-anim="draw .2 .8"><path d="{string13}" pathLength="1" fill="none" stroke="{RED}" stroke-width="4"/></g></svg>'
+    + A(f'<div style="background:{INK};color:{PARCH};padding:3px 8px;font:500 14px Plex;letter-spacing:2px">INDIA</div>', MX(79) - 30, MY(18), "fade .05 .12", "z-index:31")
+    + "".join(A(f'<div style="width:24px;height:24px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff 0 12%,{RED} 30%,#7A1810 100%);box-shadow:3px 5px 4px rgba(0,0,0,.5)"></div>', MX(lo) - 12, MY(la) - 12, f"drop {s0:.2f} {s0 + .05:.2f}", "z-index:40")
+              + A(f'<div style="width:330px;background:{PARCH};padding:10px 14px;box-shadow:8px 10px 0 rgba(0,0,0,.4);transform:rotate({(-1) ** k * 1.5}deg)"><div style="font:400 36px Anton;color:{INK}">{d}</div>'
+                  f'<div style="font:400 24px/1.15 ISerif;color:#333">{t}</div></div>', MX(lo) + ox, MY(la) + oy, f"up {s0 + .03:.2f} {s0 + .1:.2f}", "z-index:41")
+              for k, (lo, la, d, t, s0, (ox, oy)) in enumerate(pins13))
+    + A(f'<div style="font:400 72px/0.95 Anton;color:#F3EFE6;text-shadow:0 4px 16px #000">SAME MONTHS, <span style="display:inline-block;margin-top:14px;background:{SIG};color:{INK};padding:4px 12px 0;text-shadow:none">SAME HEADLINES</span></div>', 520, 110, "up 0 .1", "z-index:50")
+    + tag("TIMING, NOT CAUSE · NO STUDY LINKS A POST TO AN ATTACK", 980, 990, 1.5, "snap .9 .9"),
+    "#2A1D12", "MAP: NASA BLUE MARBLE NEXT GENERATION (PUBLIC DOMAIN) · INDIA: OFFICIAL BOUNDARY, DATAMEET (CC BY 4.0) · PINS APPROXIMATE · SOURCES: CNBC 27 DEC 2024 · IRISH TIMES 26 JUL 2025 (GARDAÍ) · AL JAZEERA 1 SEP 2025 · STATISTICS CANADA TABLE 6 (22 JUL 2026; 2024 REVISED TO 324) · CONFIRMED", dark=True))
 
 put("14_classifier", page(
     a(f'<div style="width:1920px;height:1080px;{DESK}"></div>', 0, 0) + chapter(4, "WHERE IT LANDS")
@@ -254,6 +283,8 @@ put("15_drains", page(
     + "".join(A(f'<div style="width:500px;background:#FBF8F0;padding:22px 26px;box-shadow:0 14px 26px rgba(0,0,0,.18);transform:rotate({(-1) ** i * 1.2}deg)">'
                 f'<div style="font:400 70px/1 Anton;color:{INK}">{n}</div><div style="font:400 30px/1.2 ISerif;color:#333">{t}</div><div style="font:500 15px Plex;color:#7A6A4A;margin-top:8px">{s}</div></div>',
                 740 + (i % 2) * 570, 170 + (i // 2) * 360, f"up {.2 + i * .15:.2f} {.3 + i * .15:.2f}") for i, (n, t, s) in enumerate(side))
+    + f'<svg class="a" data-anim="draw .3 .4" style="left:0;top:0;z-index:40" width="1920" height="1080"><path d="{wobble(818, 216, 92, 36, 12)}" pathLength="1" fill="none" stroke="{RED}" stroke-width="6"/></svg>'
+    + a(f'<div style="width:130px;height:36px;background:rgba(236,226,200,.85);transform:rotate(-6deg);box-shadow:0 2px 4px rgba(0,0,0,.25)"></div>', 1380, 150, "z-index:41")
     + A(f'<div style="font:700 50px/1.1 Caveat;color:#7A2A20;transform:rotate(-2deg);width:600px">"The drains exist. The feed just never shows anything else."</div>', 110, 700, "fade .85 .95"),
     PARCH, "SOURCES: NFHS-5 VIA DECCAN HERALD (MAY 2022) · IQAIR WORLD AIR QUALITY REPORT 2025 VIA THE WIRE (REPORTED) · FSSAI, LOK SABHA REPLY (OTHER REPLIES DIFFER) · MICROSOFT GLOBAL TECH SUPPORT SCAM RESEARCH 2021"))
 
@@ -270,10 +301,12 @@ put("16_fakes", page(
 
 # ==== 5 SYNTHESIS =========================================================================================
 put("17_sowhat", page(
-    a(f'<div style="width:1920px;height:1080px;background:{BLK}"></div>', 0, 0)
-    + a('<div style="display:flex;justify-content:center;gap:70px;width:1920px">' + "".join(f'<div data-anim="slam {.15 + i * .25:.2f} {.18 + i * .25:.2f}" style="font:400 220px/1 Anton;color:#F3EFE6">{w}</div>' for i, w in enumerate(("SO.", "WHAT.", "NOW."))) + '</div>', 0, 400)
-    + chapter(6, "FIXING THE FEED"),
-    BLK, "PRINT FACTS", dark=True))
+    a(f'<div style="width:1920px;height:1080px;{DESK}"></div>', 0, 0) + chapter(6, "FIXING THE FEED")
+    + A(f'<div style="width:620px;background:#F4ECD8;padding:30px 34px;box-shadow:0 20px 36px rgba(0,0,0,.45);transform:rotate(-2deg)">'
+        f'<div style="font:700 54px/1.15 Caveat;color:{RED}">"The drains exist. The feed just never shows anything else."</div></div>', 160, 300, "fade 0 .05", "z-index:20")
+    + A(f'<div style="font:400 120px/1.12 Anton;color:#F3EFE6">HERE\'S WHAT<div style="margin-top:26px">IT <span style="background:{SIG};color:{INK};padding:0 14px;display:inline-block;line-height:1">LEAVES OUT</span></div></div>', 980, 330, "up .45 .6", "z-index:30")
+    + tag("OUTSIDE THE FRAME", 984, 740, 2, "snap .75 .75", True),
+    "#2A1D12", "BRIDGE TO THE SYNTHESIS · NOTE AND DESK DRAWN IN THE STUDIO", dark=True))
 
 put("18_softpower", page(
     chapter(6, "FIXING THE FEED")
@@ -295,10 +328,19 @@ put("19_notinterested", page(
     + tag("SOUND: ONE HEAVY THUNK", 1000, 700, 1.5, "snap .62 .62", True),
     "#0E1116", "MENU AND POST DRAWN IN THE STUDIO, MODELLED ON A GENERIC SOCIAL APP · NOT A SCREEN RECORDING", dark=True))
 
+EX = lambda lo: 1380 + (lo - 68) * 13.5
+EY = lambda la: 470 + (37.5 - la) * 13.5
+ring20 = "".join("M" + " L".join(f"{EX(lo) - 1340:.0f} {EY(la) - 430:.0f}" for lo, la in r) + "Z" for r in india_rings(20))
 put("20_end", page(
     a(f'<div style="width:1920px;height:1080px;{DESK}"></div>', 0, 0)
-    + card(f'<div style="font:400 58px/1.3 ISerif;color:#2A2118">India isn\'t a caricature. It\'s a country of about 1.4 billion people that the feed keeps editing down to one drain.</div>', 1300, 300, 260, "up 0 .2", -1, "#F4ECD8")
-    + A(f'<div style="font:700 60px/1.1 Caveat;color:{SIG};transform:rotate(-2deg)">"Gandhi already reviewed it. In 1927. One star."</div>', 340, 720, "fade .5 .7")
-    + tag("CALLBACK · SEE: DRAIN INSPECTOR, 1927", 1200, 880, 2, "snap .85 .85"),
-    "#2A1D12", "POPULATION: UN WORLD POPULATION PROSPECTS (ABOUT 1.4 BILLION; CHECK LATEST) · PRINT FACTS · SOURCES IN THE DESCRIPTION", dark=True))
+    + A(f'<div style="background:#EFE7D2;padding:0;box-shadow:14px 18px 0 rgba(0,0,0,.45);transform:rotate(2deg);width:500px;height:520px">'
+        f'<svg width="500" height="520"><path d="{ring20}" fill="{RED}" fill-opacity=".85" stroke="{INK}" stroke-width="1.5"/></svg>'
+        f'<div style="position:absolute;left:14px;bottom:10px;font:500 12px Plex;letter-spacing:2px;color:#7A6A4A">INDIA · OFFICIAL BOUNDARY</div></div>', 1340, 430, "up .25 .4", "z-index:15")
+    + a(f'<div style="width:140px;height:38px;background:rgba(236,226,200,.82);transform:rotate(-8deg)"></div>', 1520, 420, "z-index:16")
+    + card(f'<div style="font:400 58px/1.3 ISerif;color:#2A2118">India isn\'t a caricature. It\'s a country of about 1.4 billion people that the feed keeps editing down to one drain.</div>', 1100, 110, 110, "up 0 .2", -1, "#F4ECD8", "z-index:20")
+    + A(f'<div style="font:700 60px/1.1 Caveat;color:{SIG};transform:rotate(-2deg)">"Gandhi already reviewed it. In 1927. One star."</div>', 140, 720, "fade .5 .7", "z-index:30")
+    + f'<svg class="a" data-anim="draw .6 .78" style="left:0;top:0;z-index:31" width="1920" height="1080"><path d="M{EX(77.2):.0f} {EY(28.6):.0f} Q 1100 760 980 800" pathLength="1" fill="none" stroke="{RED}" stroke-width="4"/></svg>'
+    + A(f'<div style="width:24px;height:24px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff 0 12%,{RED} 30%,#7A1810 100%);box-shadow:3px 5px 4px rgba(0,0,0,.5)"></div>', EX(77.2) - 12, EY(28.6) - 12, "drop .55 .6", "z-index:32")
+    + tag("CALLBACK · SEE: DRAIN INSPECTOR, 1927", 200, 880, -2, "snap .85 .85"),
+    "#2A1D12", "POPULATION: UN WORLD POPULATION PROSPECTS (ABOUT 1.4 BILLION; CHECK LATEST) · INDIA: OFFICIAL BOUNDARY, DATAMEET (CC BY 4.0) · PRINT FACTS · SOURCES IN THE DESCRIPTION", dark=True))
 print("ok")

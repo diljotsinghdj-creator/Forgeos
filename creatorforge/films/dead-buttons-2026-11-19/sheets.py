@@ -1,5 +1,5 @@
-"""Contact sheets for QA: python3 sheets.py  ->  sheets/V1_n.jpg (2 columns, 960x540 thumbnails, 6 per sheet) and
-python3 sheets.py motion a b c d  ->  sheets/M_1.jpg (each frame at t = 0.2 / 0.45 / 0.7 / 1.0, from png/anim/)."""
+"""Contact sheets for QA: python3 sheets.py  ->  sheets/V2_n.jpg (2 columns, 960x540 thumbnails, 6 per sheet) and
+python3 sheets.py motion a b c d  ->  sheets/M_2.jpg (each frame at t = 0.2 / 0.45 / 0.7 / 1.0, from png/anim/)."""
 import sys
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
@@ -24,10 +24,14 @@ def sheet(items, out, cols=2):
     im.save(out, quality=86); print("sheet", out.name)
 
 
-if len(sys.argv) > 1 and sys.argv[1] == "motion":
+PFX = "V2"     # second pass (2026-11-19): less AI, more real
+MOUT = "M_2"
+if len(sys.argv) > 2 and sys.argv[1] == "pick":   # python3 sheets.py pick out.jpg 06_x 08_y ...  (QA of a few frames)
+    sheet([(n, D / "png" / f"{n}.jpg") for n in sys.argv[3:]], Path(sys.argv[2]))
+elif len(sys.argv) > 1 and sys.argv[1] == "motion":
     items = [(f"{n} @ t={t}", D / "png" / "anim" / f"{n}@{t:.2f}.jpg") for n in sys.argv[2:] for t in (.2, .45, .7, 1.0)]
-    sheet(items, S / "M_1.jpg", cols=4)
+    sheet(items, S / f"{MOUT}.jpg", cols=4)
 else:
     pngs = sorted((D / "png").glob("*.jpg"))
     for i in range(0, len(pngs), 6):
-        sheet([(p.stem, p) for p in pngs[i:i + 6]], S / f"V1_{i // 6 + 1}.jpg")
+        sheet([(p.stem, p) for p in pngs[i:i + 6]], S / f"{PFX}_{i // 6 + 1}.jpg")

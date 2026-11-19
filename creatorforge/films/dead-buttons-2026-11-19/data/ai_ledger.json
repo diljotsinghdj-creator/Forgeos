@@ -16,7 +16,8 @@
   "label_on_screen": "AI ILLUSTRATION",
   "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)",
   "no_real_because": "a metaphor canvas: no real control panel holds a crosswalk box, a lift panel and a thermostat side by side; searched Openverse for control panels (2026-11-19), none fit the trap. Every device on it is studio-drawn, and real photos of each device appear as cards.",
-  "used_in_keyframes": "backbone of 01-26 (all frames except 18 and 21)"
+  "used_in_keyframes": "none (retired 2026-11-19)",
+  "retired": "replaced by a studio-drawn panel (panel.py: HTML/CSS/SVG plates, rivets, sockets and worn paint on a real CC BY brushed-steel photo, TextureX.com via Openverse), same socket layout (2026-11-19)"
  },
  {
   "label": "K2",
@@ -35,7 +36,8 @@
   "label_on_screen": "AI ILLUSTRATION",
   "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)",
   "no_real_because": "Openverse searches 'empty open plan office' and 'empty office desks night' (2026-11-19) returned nothing usable (wrong subjects or people). Kept as backdrop only; the real thermostat photo ('PRESS FOR COOLER TEMPERATURE', CC BY) sits on top of it as the evidence card.",
-  "used_in_keyframes": "13_office (framed print)"
+  "used_in_keyframes": "none (retired 2026-11-19)",
+  "retired": "replaced by a real image: 'Office cubicle, circa 2001' by IN 30 MINUTES Guides, CC BY 2.0, via Openverse (2026-11-19)"
  },
  {
   "label": "K3",
@@ -54,7 +56,7 @@
   "label_on_screen": "AI ILLUSTRATION",
   "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)",
   "no_real_because": "a metaphor (the brain as a middle manager); no real photo can show it, and a real person must never play the 'bad' example.",
-  "used_in_keyframes": "18_manager"
+  "used_in_keyframes": "18_manager (the only AI plate left in the film)"
  },
  {
   "label": "K4",
@@ -73,6 +75,7 @@
   "label_on_screen": "AI ILLUSTRATION",
   "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)",
   "no_real_because": "a reconstruction of an unphotographed 1970s Connecticut nursing home; real windowsill photos exist on Openverse but would be passed off as the home. Labelled RECONSTRUCTION, NOT THE REAL HOME.",
-  "used_in_keyframes": "21_plant"
+  "used_in_keyframes": "none (retired 2026-11-19)",
+  "retired": "replaced by a real image: 'Free cute houseplant window image', rawpixel, CC0 1.0, via Openverse, captioned NOT THE 1976 HOME (2026-11-19)"
  }
 ]

@@ -12,7 +12,7 @@
  },
  "tiger_pb": {
   "file": "assets/real2/tiger_pb.jpg",
-  "use": "03b_tiger (alt)",
+  "use": "03_otherfeed (tiger tile)",
   "title": "bengal tiger, tiger, nature, animal, mammal, big cat, wild animal, wildlife, fauna, wilderness",
   "creator": "ignartonosbg",
   "licence": "Pixabay Content License",
@@ -23,7 +23,7 @@
  },
  "mangrove": {
   "file": "assets/real2/mangrove.jpg",
-  "use": "03b_tiger backdrop",
+  "use": "03b_tiger backdrop, 20b_edit",
   "title": "cone roots, nature, mangroves, flora, species, forest, roots, sundarbans, swamp, national park, unesco, heritage, ramsar site, india",
   "creator": "sarangib",
   "licence": "Pixabay Content License",
@@ -51,17 +51,6 @@
   "licence": "Pixabay Content License",
   "licence_url": null,
   "source": "https://pixabay.com/photos/slots-slot-slot-machine-5012428/",
-  "via": "Pixabay API",
-  "fetched": "2026-11-19"
- },
- "slots_old": {
-  "file": "assets/real2/slots_old.jpg",
-  "use": "11b_slot (alt)",
-  "title": "addiction, amusement, antique, bar, cash, casino, chance, coin, collection, entertainment, fruit, fun, gamble, gambler, gambling, game, gamer, gaming, jackpot, leisure, luck, lucky, machine, metal, money, old, plastic, play, random, reel, retro, risk, rust, rusty, slot, slot machine, success, toy, vegas, wheels, win, winner, jackpot, jackpot, jackpot, jackpot, jackpot, slot, slot machine, slot machine, slot machine",
-  "creator": "igorovsyannykov",
-  "licence": "Pixabay Content License",
-  "licence_url": null,
-  "source": "https://pixabay.com/photos/addiction-amusement-antique-bar-2974642/",
   "via": "Pixabay API",
   "fetched": "2026-11-19"
  },
@@ -185,5 +174,37 @@
   "source": "https://pixabay.com/photos/goa-india-beach-sunset-2355883/",
   "via": "Pixabay API",
   "fetched": "2026-11-19"
+ },
+ "tiger_ka_cut": {
+  "file": "assets/real2/tiger_ka_cut.png",
+  "use": "03b_tiger cut-out (BiRefNet, studio)",
+  "title": "Bengal tiger, Karnataka, India",
+  "creator": "Paul Mannix",
+  "licence": "CC BY 2.0",
+  "licence_url": "https://creativecommons.org/licenses/by/2.0/",
+  "source": "https://www.flickr.com/photos/19511776@N00/464051145",
+  "via": "Openverse (flickr)",
+  "fetched": "2026-11-19"
+ },
+ "thumbs_cut": {
+  "file": "assets/real2/thumbs_cut.png",
+  "use": "19b_button cut-out (BiRefNet, studio)",
+  "title": "smartphone, phone, typing, key in, telephone set, mobile, cell phone, screen, text message, send, call up, contact, gadget, digital, finger, technology, connection, conversation, message, errand, electronics, communication, to send, enter, dates, data, internet, information, input, cell phone, cell phone, cell phone, text message, text message, text message, text message, text message, send",
+  "creator": "niekverlaan",
+  "licence": "Pixabay Content License",
+  "licence_url": null,
+  "source": "https://pixabay.com/photos/smartphone-phone-typing-key-in-431231/",
+  "via": "Pixabay API",
+  "fetched": "2026-11-19"
+ },
+ "bluemarble_world": {
+  "file": "maps/bluemarble_world.jpg",
+  "use": "13_timing map table",
+  "title": "Blue Marble Next Generation",
+  "creator": "NASA Earth Observatory",
+  "licence": "Public domain (NASA)",
+  "source": "https://visibleearth.nasa.gov/collection/1484/blue-marble",
+  "via": "studio maps (taxonomy-2026-11-15)",
+  "fetched": "earlier"
  }
 }
