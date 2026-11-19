@@ -46,10 +46,10 @@ def path(pts):
     return "M" + " L".join(f"{x:.0f} {y:.0f}" for x, y in pts)
 
 
-def pin(x, y, label, side=1):
+def pin(x, y, label, side=1, dy=-16):
     return (f'<circle cx="{x:.0f}" cy="{y:.0f}" r="12" fill="{RED}" stroke="#FFF" stroke-width="2"/>',
             a(f'<div style="background:{PARCH};padding:4px 10px;font:500 18px Plex;letter-spacing:3px;color:{INK};box-shadow:0 6px 10px rgba(0,0,0,.35);white-space:nowrap">{label}</div>',
-              x + (18 if side > 0 else -18), y - 16, f"z-index:32;{'' if side > 0 else 'transform:translateX(-100%)'}"))
+              x + (18 if side > 0 else -18), y + dy, f"z-index:32;{'' if side > 0 else 'transform:translateX(-100%)'}"))
 
 
 def chart_base():
@@ -98,17 +98,17 @@ for tag, t in (("a", .05), ("b", .45), ("c", .97)):
     flip = "scaleX(-1)" if math.cos(math.radians(hd)) < 0 else ""
     pins_svg, labels = "", ""
     for (px, py), name, price, at in stops:
-        ps, lb = pin(px, py, name, -1 if name == "CALICUT" else 1)
+        ps, lb = pin(px, py, name, -1 if name == "CALICUT" else 1, 40 if name == "CALICUT" else (14 if name.startswith("ALEX") else -16))
         pins_svg += ps; labels += lb
         if t >= at:
             labels += a(f'<div style="background:{SIG};color:{INK};padding:6px 12px;font:700 34px Caveat;transform:rotate(-3deg);white-space:nowrap;box-shadow:0 6px 10px rgba(0,0,0,.35)">{price}</div>',
-                        px + (-260 if name == "CALICUT" else 30), py + 22, "z-index:33")
+                        px + (-260 if name == "CALICUT" else 30), py + (84 if name == "CALICUT" else 58 if name.startswith("ALEX") else 22), "z-index:33")
     end = t > .9
     put(f"s2_{tag}", page(chart_base()
                           + f'<svg class="a" style="left:0;top:0;z-index:30" width="1920" height="1080"><path d="{path(m_route)}" fill="none" stroke="{RED}" stroke-width="3" stroke-dasharray="10 10" opacity=".5"/>'
                             f'<path d="{path(sub(m_route, t))}" fill="none" stroke="{RED}" stroke-width="6"/>{pins_svg}</svg>' + labels
                           + a(ship(1.0, cargo=True), x - 60, y - 96, f"z-index:40;transform:{flip}")
-                          + chapter(5, "THE MARKUP")
+                          + chapter(5, "THE MARKUP").replace("left:70px;top:60px", "left:70px;top:870px")
                           + a(f'<div style="font:400 64px/1 Anton;color:#F3EFE6;text-shadow:0 4px 18px #000">FOLLOW THE PRICE</div>', 70, 930, "z-index:41")
                           + (a(f'<div style="background:{RED};color:#fff;padding:14px 22px;transform:rotate(-2deg)"><div style="font:400 60px/1 Anton">EUROPE: ~80 DUCATS / CWT</div>'
                                f'<div style="font:500 18px Plex;letter-spacing:3px">~25× THE PRICE AT CALICUT (UNESCO ESTIMATE, 15TH C.)</div></div>', 1180, 820, "z-index:41") if end else "")
@@ -139,5 +139,6 @@ for tag, t, date, spin in (("a", .08, "JULY 1497 · LEAVING LISBON", -5), ("b", 
     g = g.replace("</body>", f'<style>{FONTS}</style><div style="position:absolute;right:56px;top:44px;z-index:90">{logo_d(1.0)}</div>'
                   f'<div style="position:absolute;left:90px;top:860px;z-index:20;background:{SIG};color:{INK};padding:12px 20px;font:400 52px/1 Anton">{date}</div>'
                   f'<div style="position:absolute;left:90px;top:22px;z-index:20;background:{INK};color:{PARCH};padding:8px 16px;font:500 20px Plex;letter-spacing:5px">CHAPTER 6 · THE SHORTCUT</div></body>', 1)
+    g = g.replace(">GLOBE · 0%</div>", "></div>")  # the globe kit's spin readout, not for the film
     put(f"s3_{tag}", g)
 print("ok")

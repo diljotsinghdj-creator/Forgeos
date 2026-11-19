@@ -70,7 +70,7 @@ def sheet(P, inner_svg, extra=""):
     return (a(f'<div style="width:1920px;height:1080px;{DESK}"></div>', 0, 0)
             + a(f'<svg width="{SW}" height="{SH}" style="display:block">{land_svg(P, SW, SH)}{inner_svg}</svg>', SX, SY,
                 "box-shadow:0 30px 60px rgba(0,0,0,.6);overflow:hidden")
-            + tape(SX - 40, SY - 6, -32) + tape(SX + SW - 110, SY + SH - 30, -28) + extra)
+            + tape(SX - 50, SY + SH - 60, 32) + tape(SX + SW - 110, SY + SH - 30, -28) + extra)
 
 
 def pinsvg(x, y, r=13):
@@ -125,8 +125,8 @@ put("13a_relay", page(
     + cuts
     + A(f'<div style="background:{SIG};color:{INK};font:400 46px Anton;padding:6px 16px;box-shadow:6px 6px 0 rgba(0,0,0,.35)">~3 DUCATS</div>', x0 - 250, y0 - 100, "slam .1 .13", "z-index:35")
     + A(f'<div style="background:{INK};color:{SIG};font:400 46px Anton;padding:6px 16px;box-shadow:6px 6px 0 rgba(0,0,0,.35)">~80 DUCATS</div>', x4 + 10, y4 - 100, "slam .76 .79", "z-index:35")
-    + A(f'<div style="background:{INK};color:{PARCH};padding:16px 24px;box-shadow:8px 8px 0 rgba(0,0,0,.35)"><div style="font:400 66px/1 Anton">THE WORLD\'S LONGEST {blk("RELAY RACE")}</div>'
-        f'<div style="font:500 18px Plex;letter-spacing:3px;margin-top:8px;color:#CFC6B4">ONE HUNDREDWEIGHT OF PEPPER · 15TH CENTURY · UNESCO ESTIMATE</div></div>', 110, 760, "up 0 .1", "z-index:36")
+    + A(f'<div style="background:{INK};color:{PARCH};padding:16px 24px;box-shadow:8px 8px 0 rgba(0,0,0,.35)"><div style="font:400 66px/1.15 Anton">THE WORLD\'S LONGEST {blk("RELAY RACE")}</div>'
+        f'<div style="font:500 18px Plex;letter-spacing:3px;margin-top:14px;color:#CFC6B4">ONE HUNDREDWEIGHT OF PEPPER · 15TH CENTURY · UNESCO ESTIMATE</div></div>', 110, 760, "up 0 .1", "z-index:36")
     + A(f'<div style="background:{PARCH};color:{INK};border:2px solid {INK};padding:8px 14px;font:500 20px Plex;letter-spacing:4px;transform:rotate(1.5deg);box-shadow:6px 6px 0 rgba(0,0,0,.35);white-space:nowrap">EVERY RUNNER CHARGES FOR THE BATON</div>', 1240, 200, "snap .86 .86", "z-index:70")
     + chapter(5, "THE MARKUP"),
     "#2A1D12", "PRICES: ~3 DUCATS (CALICUT) AND ~80 (EUROPE) PER HUNDREDWEIGHT, 15TH C. (UNESCO SILK ROADS, 'THE ARAB MONOPOLY', ESTIMATE) · NO MIDDLE PRICES SHOWN: '+ CUT' MARKS EACH HAND-OFF · ROUTE AND PORTS PLACED BY HAND, APPROXIMATE · " + GEO_SRC, dark=True))
@@ -146,15 +146,15 @@ put("13b_shift", page(
     + pins(P2, [lisbon, cape, calicut, venice], .02, .03)
     + label(P2, *lisbon, "LISBON", left=True) + label(P2, *calicut, "CALICUT") + label(P2, *cape, "CAPE OF GOOD HOPE", dy=14) + label(P2, *venice, "VENICE", dy=-48)
     + handtag(max(30, x_l - 260), y_l + 100, "Casa da Índia,<br>Lisbon, c. 1500", -3, "drop .9 .96", PARCH, INK, 36).replace("white-space:nowrap", "line-height:1.05")
-    + A(f'<div style="background:{INK};color:{PARCH};padding:16px 24px;box-shadow:8px 8px 0 rgba(0,0,0,.35)"><div style="font:400 62px/1 Anton">WHAT IF YOU {blk("SKIPPED THE RELAY?")}</div>'
-        f'<div style="font:500 18px Plex;letter-spacing:3px;margin-top:8px;color:#CFC6B4">BY SEA, ROUND AFRICA · GAMA REACHES CALICUT, 20 MAY 1498</div></div>', 980, 820, "up .02 .12", "z-index:36")
+    + A(f'<div style="background:{INK};color:{PARCH};padding:16px 24px;box-shadow:8px 8px 0 rgba(0,0,0,.35)"><div style="font:400 62px/1.15 Anton">WHAT IF YOU {blk("SKIPPED THE RELAY?")}</div>'
+        f'<div style="font:500 18px Plex;letter-spacing:3px;margin-top:14px;color:#CFC6B4">BY SEA, ROUND AFRICA · GAMA REACHES CALICUT, 20 MAY 1498</div></div>', 980, 820, "up .02 .12", "z-index:36")
     + a(f'<div style="background:{INK};color:{PARCH};padding:8px 16px;font:500 20px Plex;letter-spacing:5px">CHAPTER 6 · THE SHORTCUT</div>', 70, 60, "z-index:40"),
     "#2A1D12", "OLD ROUTE: AS IN CHAPTER 5 (UNESCO; LANE 1968) · NEW ROUTE: GAMA 1497–98, THROUGH WAYPOINTS, APPROXIMATE (FORDHAM MODERN SOURCEBOOK) · CASA DA ÍNDIA c. 1500 (INFOPÉDIA) · " + GEO_SRC, dark=True))
 
 # ---- 15a: who grows it now, on the world map (5 · 6:46) --------------------------------------------------------------
 P3 = Proj(-120, 160, -62, 82, SW, SH)
 # (name, thousand tonnes, growing region (pin), circle centre (offset into open sea where circles would overlap))
-prod = [("VIETNAM", 257, (107.8, 14.5), (118.0, 24.0)), ("BRAZIL", 126.5, (-47.0, -10.0), (-47.0, -10.0)),
+prod = [("VIETNAM", 257, (107.8, 14.5), (118.0, 24.0)), ("BRAZIL", 126.5, (-47.0, -10.0), (-28.0, -12.0)),
         ("INDONESIA", 70.2, (105.0, -5.0), (98.0, -14.0)), ("INDIA (FAO)", 65.7, (75.8, 13.0), (64.0, 6.0))]
 bubbles = ""
 for i, (n, v, (plo, pla), (lo, la)) in enumerate(prod):
@@ -172,8 +172,8 @@ for i, (n, v, (plo, pla), (lo, la)) in enumerate(prod):
 xi, yi = onpage(P3, 76.0, 15.5)
 put("15a_world", page(
     sheet(P3, "") + bubbles
-    + A(f'<div style="background:{INK};color:{PARCH};padding:16px 24px;box-shadow:8px 8px 0 rgba(0,0,0,.35)"><div style="font:400 66px/1 Anton">WHO GROWS IT {blk("NOW")}</div>'
-        f'<div style="font:500 18px Plex;letter-spacing:3px;margin-top:8px;color:#CFC6B4">BLACK PEPPER · TONNES, 2023 · CIRCLE AREA ∝ TONNES</div></div>', 110, 130, "up 0 .1", "z-index:36")
+    + A(f'<div style="background:{INK};color:{PARCH};padding:16px 24px;box-shadow:8px 8px 0 rgba(0,0,0,.35)"><div style="font:400 66px/1.15 Anton">WHO GROWS IT {blk("NOW")}</div>'
+        f'<div style="font:500 18px Plex;letter-spacing:3px;margin-top:14px;color:#CFC6B4">BLACK PEPPER · TONNES, 2023 · CIRCLE AREA ∝ TONNES</div></div>', 110, 130, "up 0 .1", "z-index:36")
     + A(f'<div style="width:500px;background:{PARCH};padding:20px 24px;box-shadow:0 18px 30px rgba(0,0,0,.5);transform:rotate(-2deg)">'
         f'<div style="font:500 16px Plex;letter-spacing:3px;color:#7A6A4A">INSIDE INDIA · SPICES BOARD, 2023-24</div>'
         f'<div style="font:400 48px/1.05 Anton;color:{INK};margin-top:8px">KARNATAKA ~71%<br>KERALA ~22%</div>'

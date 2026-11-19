@@ -20,7 +20,8 @@ Rendered frames, photos and AI images are gitignored. This is how they were rebu
 - **Chart:** `assets/chart.jpg` is the Linschoten chart, from the `loc-chart` entry in `data/loc.json` (`loc_cands/malabar.json[0]`, pct:100).
 - **Cut-outs:** use `cutout.py` with **BiRefNet-lite**. The full BiRefNet-general model keeps the scale's lid, which doesn't match the sheets.
 - **AI plates P1–P6:** re-fetch them by generation ID from flow `UKqrgruhJAMbRscLiUYe` (`data/ai_ledger.json`) into `assets/ai_raw/`. Finish each with `ai_finish.py --channel pf` into `assets/ai/`.
-- **Order:** from inside the folder, run `frames.py`, `rome.py`, `rome_vox.py`, `ships.py`, `comedy.py` (it edits the other pages), then `ai_frames.py`.
+- **Real photos (2026-11-19 rework):** `data/photo_credits_2.json` lists every replacement (all AI plates retired). Fetch them into `assets/real2/`.
+- **Order:** from inside the folder, run `frames.py`, `rome.py`, `rome_vox.py`, `ships.py`, `comedy.py` (it edits the other pages), `ai_frames.py`, `real_frames.py`, then `motion_maps.py`. If the scripts differ, follow the order noted at the top of `real_frames.py`.
 - **Shoot:** run `shoot_http.py`. That gives 45 stills. The 17 motion builds are shot at t = 0.20, 0.45, 0.70 and 1.00 (`name@t`).
 
 ## Why India Is Mocked Online (`india-mocked-2026-11-17`)

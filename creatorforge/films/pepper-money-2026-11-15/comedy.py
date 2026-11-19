@@ -26,6 +26,7 @@ s = (H / "02_ransom.html").read_text()
 s = s.replace("</style>", "</style><style>body>*:not(script){}</style>", 1)
 s = s.replace("<body>", '<body><div style="position:absolute;inset:0;transform:scale(1.32);transform-origin:560px 640px">', 1)
 s = s.replace("</body>", "</div>" + FONT + tag("RECEIPT · ZOSIMUS 5.41", 1260, 120) + "</body>", 1)
+s = s.replace("font:700 56px/1.05 Caveat;color:#F7D046;width:520px", "font:700 56px/1.05 Caveat;color:#F7D046;width:520px;display:none", 1)  # the zoom would crop the note
 (H / "c02b_receipt.html").write_text(s)
 trousers = ('<svg data-anim="pop .5 .58" style="position:absolute;left:1240px;top:110px;z-index:68;filter:drop-shadow(10px 12px 0 rgba(0,0,0,.8))" width="260" height="330" viewBox="0 0 120 150">'
             '<path d="M20 6 L100 6 L104 146 L70 146 L60 56 L50 146 L16 146 Z" fill="#C0392B" stroke="#FFFFFF" stroke-width="4" stroke-linejoin="round"/>'

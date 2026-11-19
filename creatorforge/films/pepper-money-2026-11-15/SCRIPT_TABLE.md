@@ -12,7 +12,7 @@
     draft's "In 1960" is dropped from the voiceover.
 - **Structure and voice:** the Vox × Johnny Harris five beats, in the John Oliver voice: fact → receipt → simile → snap back.
 - **Canvas backbone:**
-  - **The cream desk** carries the receipts: the ransom page, the rent cards, the charter and the 2022 Act.
+  - **The walnut desk** (drawn in the studio; the AI desk plate is retired, 2026-11-19) carries the receipts: the ransom page, the rent cards, the charter and the 2022 Act.
   - **The 1596 Linschoten chart** (Library of Congress) is the map table that the ships sail across.
   - Rome, the chalkboard and the globe slide onto the same desk. Hard cuts are kept for comedy beats only.
 - **Palette:** cream #F4EFE6, charcoal #1A1A1A, crimson #D93829 for evidence, and yellow #F7D046 for highlighter sweeps only. The
@@ -29,15 +29,15 @@
   - `frame:` names the existing key frame (`html/`) that the row is built from.
 - **Status:** for approval. No video until "go"; the owner chooses the voice.
 
-**Timing (computed):** 101 shots · narration about 7:35 at ~150 WPM (music beds, holds and act breaks bring the cut to about 8½–9 min) · average hold 4.5 s · longest 7.0 s · pacing flags: none.
+**Timing (computed):** 102 shots · narration about 7:35 at ~150 WPM (music beds, holds and act breaks bring the cut to about 8½–9 min) · average hold 4.5 s · longest 7.0 s · pacing flags: none.
 
 ## 1 · Hook and question
 
 | Beat / Time | Voiceover (spoken) | Canvas layer (what's on screen) | Camera & motion cue |
 |---|---|---|---|
-| 1 · 0:00 | Look closely at this jar. There's one like it on almost every table in India. | Close-up photo of a pepper jar on the cream desk; a mono tag slides under it: `TABLE PEPPER · ANY KITCHEN · TODAY`. <br>`frame: 01_jar` | Locked macro at 2.2×, then a slow pull-out to 1.6×. `[SFX: room tone]` |
+| 1 · 0:00 | Look closely at this jar. There's one like it on almost every table in India. | Close-up photo of a pepper jar on the desk; a mono tag slides under it: `TABLE PEPPER · ANY KITCHEN · TODAY`. <br>`frame: 01_jar` | Locked macro at 2.2×, then a slow pull-out to 1.6×. `[SFX: room tone]` |
 | 1 · 0:06 | I had never given it a single thought. Then I found this: a list from the year 408. | **Shot 1:** the jar pull-out ends on the round lid. **Shot 2:** match cut from the lid to a round ink stain on the Zosimus ransom page, lying on the same desk. <br>`frame: 02_ransom` | Shot 1 pull-out ends · Shot 2 match cut on the circle. `[SFX: page turn]` `[HOLD 0.6s]` |
-| 1 · 0:13 | Rome is surrounded. The city is starving. | The ransom page in close-up; a crimson date tag: `ROME · 408 CE · UNDER SIEGE`. <br>`frame: 02_ransom` | Slow push-in 1.0× → 1.2×. `[SFX: low drone]` |
+| 1 · 0:13 | Rome is surrounded. The city is starving. | A real 19th-century engraving, ALARIC (public domain; labelled an artist's imagining), taped to the desk; a red marker circle on the city; a crimson date tag: `ROME · 408 CE · UNDER SIEGE`. <br>`frame: 02a_siege` | Slow push-in 1.0× → 1.2×; the circle draws on. `[SFX: low drone]` |
 | 1 · 0:16 | So it does what cities did back then. It pays the army to go away. | The list's heading highlights: the terms of the ransom. <br>`frame: 02_ransom` | Push continues 1.2× → 1.3×. Yellow sweep on the heading. |
 | 1 · 0:22 | Follow the list down. Five thousand pounds of gold. Thirty thousand pounds of silver. | Each line takes a yellow highlighter sweep as it is read. <br>`frame: c02b_receipt` | Tilt down the page, one line per beat. `[SFX: coin pour]` |
 | 1 · 0:28 | Four thousand silk tunics. Three thousand scarlet skins. | Two more lines take their sweeps. <br>`frame: c02b_receipt` | Tilt continues. `[SFX: cloth rustle]` |
@@ -58,7 +58,7 @@
 | 2 · 1:15 | Pepper basically has one personality and three outfits. | Same three cards. <br>`frame: 05_three` | Hard stop. `[HOLD 0.6s]` |
 | 2 · 1:19 | For most of history, if you wanted pepper, it came from this one coast. | Back on the chart: the pin glows crimson. <br>`frame: s1_a` | Whip-pan back to the chart. |
 | 2 · 1:24 | Which meant everybody who wanted it had to come here. | A red string draws from Malabar out toward the Red Sea. <br>`frame: s1_a` | Dashed route draws at constant speed. `[SFX: string pull]` |
-| 2 · 1:28 | Rome wanted it badly. Follow this ship. Roman crews waited for the summer monsoon at Berenike, | Blue Marble base; a drawn ship leaves Berenike; a wind arrow points to India: `SUMMER · SOUTH-WEST MONSOON`. <br>`frame: s1_b` | Smooth pan east with the ship. `[SFX: waves, wind]` |
+| 2 · 1:28 | Rome wanted it badly. Follow this ship. Roman crews waited for the summer monsoon at Berenike, | **Shot 1:** a real Roman merchant ship, the Portus relief (Torlonia collection, photo CC BY), taped to the desk; a red circle on the sail; `FOLLOW THIS SHIP`. **Shot 2:** back on the chart, the drawn ship leaves Berenike; a wind arrow points to India: `SUMMER · SOUTH-WEST MONSOON`. <br>`frame: 08a_ship` | Shot 1 push-in on the sail · Shot 2 smooth pan east with the ship. `[SFX: waves, wind]` |
 | 2 · 1:35 | rode it across the Arabian Sea to Muziris, and rode the winter wind back, loaded. | The ship reaches Muziris; the wind arrows flip: `WINTER · THE WIND TURNS`. <br>`frame: s1_c` | Pan continues; arrows flip at 12 fps. |
 | 2 · 1:41 | We know what Rome paid, because Pliny the Elder wrote the prices down, around 77 CE. | A marble bust on dark stone (labelled: Marcus Aurelius; no portrait of Pliny survives). Pliny's line types beside it. <br>`frame: r1_a` | Slow push 1.0× → 1.15×. `[SFX: typewriter]` |
 | 2 · 1:47 | Long pepper: fifteen denarii a pound. White: seven. Black: four. | Price bars rise from zero; the black-pepper bar lights yellow. <br>`frame: 06_pliny` | Bars grow one per number. `[SFX: projector click ×3]` |
@@ -81,7 +81,7 @@
 |---|---|---|---|
 | 3 · 3:00 | But there was one question left. Why would anyone accept pepper as payment? Think about what money needs to do. | **Shot 1:** the ransom card slides back on, `ITEM 5` circled again, with a new tag: `WHY?`. **Shot 2:** a chalkboard (film accent: Venetian ledger green), a blank three-line checklist. <br>`frame: 10_rules` | Shot 1 card slides in · Shot 2 whip-pan to the board. `[SFX: chalk]` |
 | 3 · 3:08 | One: it has to last. Dried pepper keeps for years. | ✓ IT LASTS. <br>`frame: 10_rules` | Chalk tick at 12 fps. `[SFX: chalk tick]` |
-| 3 · 3:12 | Two: it has to be worth a lot for its size. A sack of pepper is a fortune you can carry on your shoulder. | **Shot 1:** ✓ SMALL BUT VALUABLE. **Shot 2:** a sight gag (ILLUSTRATION): a paper silhouette carries one sack on its shoulder; a tag reads `CONTENTS: A FORTUNE`. <br>`frame: 10_rules` | Shot 1 chalk tick · Shot 2 the cut-out thuds on at 12 fps. |
+| 3 · 3:12 | Two: it has to be worth a lot for its size. A sack of pepper is a fortune you can carry on your shoulder. | **Shot 1:** ✓ SMALL BUT VALUABLE. **Shot 2:** a real photo of a sack of picked pepper (CC BY); a yellow marker circle; card `PFEFFERSACK · "pepper sack"`; tag `CONTENTS: A FORTUNE (APPROX.)`. <br>`frame: 10a_sack` | Shot 1 chalk tick · Shot 2 slow push into the sack; the card slides on. |
 | 3 · 3:22 | Three, the big one: other people have to want it. And everybody wanted pepper. | ✓ EVERYONE ACCEPTS IT. <br>`frame: 10_rules` | Chalk tick. `[SFX: music lift]` `[HOLD 0.6s]` |
 | 3 · 3:28 | Tick all three, and it doesn't matter that it's a berry. It works as money. And in medieval Europe, it did. | **Shot 1:** the three ticks glow on the board. **Shot 2:** a single peppercorn glows on the scale beside it. <br>`frame: 10_rules` | Shot 1 hold on the ticks · Shot 2 rack from the board to the peppercorn. |
 | 3 · 3:37 | In London, an old toll code says German merchants owed the king ten pounds of pepper at Christmas. | **Shot 1:** the toll text card slides on. **Shot 2:** close on "at Christmas". <br>`frame: 11_rents` | Shot 1 card slides in · Shot 2 push-in 1.0× → 1.3×. |
@@ -100,14 +100,14 @@
 | 3 · 4:42 | One estimate: a hundredweight of pepper cost about three ducats in Calicut, | Price tag pops at Calicut: ~3 DUCATS. <br>`frame: s2_b` | Ship sets off; dashed route draws. |
 | 3 · 4:47 | and about eighty by the time it was sold on in Europe. | The ship passes the Red Sea and Alexandria; a tag pops at each stop. <br>`frame: s2_c` | Pan with the ship. `[SFX: coin tap per stop]` |
 | 3 · 4:52 | Every port, every ship and every middleman took a cut, until the price was roughly twenty-five times the start. | **Shot 1:** price tags pop along the route, one per stop. **Shot 2:** card: `~25× ON THE WAY`; caption `MARKUP · PER HUNDREDWEIGHT · UNESCO ESTIMATE`. <br>`frame: 13_markup` | Shot 1 pull-out along the route · Shot 2 the card slides on. `[SFX: register]` `[HOLD 0.6s]` |
-| 3 · 5:00 | It's the world's longest relay race, where every runner charges you for the baton. | Comedy layer: a baton cut-out passes hand to hand along the route, a price tag on each hand. <br>`frame: c13_markup` | Cut-outs pop at 12 fps. |
+| 3 · 5:00 | It's the world's longest relay race, where every runner charges you for the baton. | The map table widens to a real map (Natural Earth; India in its official boundary): the red string runs Calicut → Aden → Cairo → Venice → Bruges; a `+ cut` tag pops at every hand-off, ~3 DUCATS at one end, ~80 at the other; tag `EVERY RUNNER CHARGES FOR THE BATON`. <br>`frame: 13a_relay` | The string draws at constant speed; tags pop at 12 fps. `[SFX: coin tap per hand-off]` |
 
 ## 4 · The stakes: what it did to the world ✂
 
 | Beat / Time | Voiceover (spoken) | Canvas layer (what's on screen) | Camera & motion cue |
 |---|---|---|---|
 | 4 · 5:06 | Venice sat at the end of that relay and got rich. | Venice glows at the end of the route. <br>`frame: c13_markup` | Push-in on Venice. |
-| 4 · 5:10 | Which gave everyone else an idea. What if you skipped the relay entirely? | A dotted line starts down the coast of Africa. <br>`frame: s3_a` | Dotted line draws south. `[SFX: riser]` |
+| 4 · 5:10 | Which gave everyone else an idea. What if you skipped the relay entirely? | Same map: the old relay greys out, Venice takes a red circle and a `BYPASSED` stamp; a new red string draws from Lisbon down the coast of Africa, round the Cape, to Calicut; tag `Casa da Índia, Lisbon, c. 1500`. <br>`frame: 13b_shift` | The old line fades · the new string draws south. `[SFX: riser]` |
 | 4 · 5:15 | On 20 May 1498, Vasco da Gama's ships reached the coast near Calicut, today's Kozhikode, | Globe: the ship sails Lisbon → Cape → Calicut; a date counter runs to 20 MAY 1498. <br>`frame: s3_b` | The globe turns with the ship. `[SFX: waves]` |
 | 4 · 5:21 | having sailed all the way round Africa. Look at the string. It has to go the long way round. | **Shot 1:** the red string wraps around the Cape. **Shot 2:** pull-out to the whole route, Lisbon to Calicut. <br>`frame: s3_c` | Shot 1 the string draws · Shot 2 smooth pull-out on the globe. |
 | 4 · 5:29 | Some histories say the pepper he brought home paid for the voyage sixty times over. | `60×?` with a REPORTED tag. <br>`frame: c_s3_c` | Tag lands. |
@@ -118,18 +118,18 @@
 | 4 · 6:01 | By the sixteen hundreds, pepper prices in Europe were falling. | An illustrative falling line (labelled ILLUSTRATIVE) draws across the ledger. <br>`frame: 14_fall` | Line draws at constant speed. `[SFX: glitch]` |
 | 4 · 6:05 | Remember rule three? Money only works while people really want it and can't easily get more. | The checklist returns; tick three flickers. <br>`frame: c14_fall` | Whip-pan to the board; the tick flickers at 12 fps. |
 | 4 · 6:11 | Once pepper was everywhere, it stopped being money and went back to being a spice. | The scale: the pepper pan rises, empty. <br>`frame: c14_fall` | `[SFX: scale creak]` |
-| 4 · 6:17 | The greatest demotion in culinary history. | Same frame. <br>`frame: c14_fall` | `[HOLD 0.6s]` |
+| 4 · 6:17 | The greatest demotion in culinary history. | A real 1936 watercolour of a pepper grinder (Index of American Design, NGA, CC0) and a photo of peppercorns on the desk; arrow: "former currency"; tag `FORMER CURRENCY · NOW SEASONING`. <br>`frame: 14a_demotion` | Slow push on the grinder. `[HOLD 0.6s]` |
 
 ## 5 · Synthesis
 
 | Beat / Time | Voiceover (spoken) | Canvas layer (what's on screen) | Camera & motion cue |
 |---|---|---|---|
-| 5 · 6:20 | Except it left one fossil behind. Look at this line in English law. | The 2022 Act text slides onto the desk. <br>`frame: 15_today` | Card slides in. |
-| 5 · 6:25 | A "peppercorn rent" is still a valid payment. One single peppercorn. | "one peppercorn" takes a red circle. <br>`frame: 15_today` | 1-frame smash-zoom 1.0 → 1.32. `[SFX: stamp]` `[HOLD 0.6s]` |
-| 5 · 6:30 | In one famous case, a British judge in the House of Lords said a peppercorn still counts, even if the person paid doesn't like pepper. | **Shot 1:** the quote card: *Chappell v Nestlé* [1960] AC 87 · LORD SOMERVELL. **Shot 2:** close on "even if the promisee does not like pepper". <br>`frame: 15_today` | Shot 1 card slides in · Shot 2 push-in, yellow sweep. `[CUT]` 0.2 s. |
-| 5 · 6:41 | Which is the most British sentence ever spoken in a court. | An archive tag thuds onto the card: `HOUSE OF LORDS · PEPPER PREFERENCES: IRRELEVANT`. <br>`frame: 15_today` | Tag lands at 12 fps. `[HOLD 0.6s]` |
-| 5 · 6:46 | Today Vietnam grows the most pepper, about a third of the world's crop. | Producer circles grow on the map (area ∝ tonnes; SOURCES DIFFER tag). <br>`frame: 15_today` | Circles grow from zero. |
-| 5 · 6:51 | In India, the top grower isn't Kerala, where it began, but Karnataka next door. | Karnataka / Kerala card. <br>`frame: 16_kochi` | Push-in on India. |
+| 5 · 6:20 | Except it left one fossil behind. Look at this line in English law. | The 2022 Act text slides onto the desk. <br>`frame: c14_fall` | Card slides in. |
+| 5 · 6:25 | A "peppercorn rent" is still a valid payment. One single peppercorn. | "one peppercorn" takes a red circle. <br>`frame: c14_fall` | 1-frame smash-zoom 1.0 → 1.32. `[SFX: stamp]` `[HOLD 0.6s]` |
+| 5 · 6:30 | In one famous case, a British judge in the House of Lords said a peppercorn still counts, even if the person paid doesn't like pepper. | **Shot 1:** the quote card: *Chappell v Nestlé* [1960] AC 87 · LORD SOMERVELL. **Shot 2:** close on "even if the promisee does not like pepper". <br>`frame: c14_fall` | Shot 1 card slides in · Shot 2 push-in, yellow sweep. `[CUT]` 0.2 s. |
+| 5 · 6:41 | Which is the most British sentence ever spoken in a court. | An archive tag thuds onto the card: `HOUSE OF LORDS · PEPPER PREFERENCES: IRRELEVANT`. <br>`frame: c14_fall` | Tag lands at 12 fps. `[HOLD 0.6s]` |
+| 5 · 6:46 | Today Vietnam grows the most pepper, about a third of the world's crop. | Producer circles grow on a real world map (Natural Earth; India in its official boundary), pinned to the growing regions (area ∝ tonnes; SOURCES DIFFER tag). <br>`frame: 15a_world` | Circles grow from zero, one per country. `[SFX: pop ×4]` |
+| 5 · 6:51 | In India, the top grower isn't Kerala, where it began, but Karnataka next door. | Karnataka / Kerala card slides onto the map. <br>`frame: 15a_world` | Push-in on India. |
 | 5 · 6:56 | In Kochi, a kilo trades at around seven hundred rupees. | Kochi tag: ₹695/kg (refresh before air). <br>`frame: 16_kochi` | Tag pops. `[SFX: market ambience]` |
 | 5 · 7:00 | So, back to the jar on your table. How does a spice become money? | The jar returns; match cut to the ransom list. <br>`frame: 17_end` | Match cut on the circle again. |
 | 5 · 7:06 | When it lasts, when it's worth a lot for its size, and when everybody agrees to want it. | The three ticks glow, one per clause: LASTS · SMALL BUT VALUABLE · EVERYONE WANTS IT. <br>`frame: 17_end` | One push per tick. `[SFX: three soft hits]` |

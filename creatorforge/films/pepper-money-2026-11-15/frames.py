@@ -33,7 +33,7 @@ def page(body, bg=PARCH, src="", dark=False, logo=True):
     col = "rgba(255,255,255,.62)" if dark else "rgba(20,20,20,.6)"
     return (f'<!doctype html><html><head><meta charset="utf-8"><style>{FONTS}body{{margin:0;width:1920px;height:1080px;overflow:hidden;background:{bg};position:relative}}'
             f'.a{{position:absolute}}</style></head><body>{body}{GRAIN}'
-            + (f'<div class="a" style="right:56px;top:44px;z-index:90">{logo_d(1.0, dark)}</div>' if logo else "")
+            + (f'<div class="a" style="right:46px;top:36px;z-index:90;{"background:rgba(20,16,10,.78);padding:8px 10px;border-radius:4px" if dark else ""}">{logo_d(1.0, dark)}</div>' if logo else "")
             + f'<div class="a" style="left:0;right:0;bottom:0;padding:12px 30px;z-index:90;{"background:linear-gradient(transparent,rgba(0,0,0,.6) 40%)" if dark else ""};'
               f'font:500 13px/1.5 Plex;letter-spacing:1px;color:{col}">{src}</div>'
             + ANIM_JS + '<script>document.fonts.ready.then(()=>window.READY=window.READY||!window.WAIT)</script></body></html>')
@@ -103,7 +103,9 @@ cut = lambda f, w, extra="": f'<img src="/assets/{f}" style="width:{w}px;display
 # ---- cold open --------------------------------------------------------------------------------------------------------
 put("01_jar", page(a(img("corns_spoon.jpg", 1920, 1080, "filter:brightness(.6) contrast(1.05)"), 0, 0)
                    + A('<div style="font:700 64px/1.1 Caveat;color:#F3EFE6;width:900px;transform:rotate(-2deg)">I\'d never given it a second thought.</div>', 1000, 760, "fade .35 .55")
-                   + A(f'<div style="font:500 22px Plex;letter-spacing:4px;color:{SIG}">ON ALMOST EVERY TABLE IN INDIA</div>', 1004, 700, "fade .1 .25"),
+                   + A(f'<div style="font:500 22px Plex;letter-spacing:4px;color:{SIG};background:rgba(13,12,10,.78);padding:6px 12px">ON ALMOST EVERY TABLE IN INDIA</div>', 994, 690, "fade .1 .25")
+                   + f'<svg class="a" data-anim="draw .6 .78" style="left:0;top:0;z-index:30" width="1920" height="1080"><path d="{wobble(420, 300, 390, 280, 2)}" pathLength="1" fill="none" stroke="{RED}" stroke-width="7"/></svg>'
+                   + A(f'<div style="font:700 46px Caveat;color:{RED};transform:rotate(-3deg);background:rgba(244,239,230,.9);padding:2px 12px">look closely.</div>', 640, 600, "fade .75 .85", "z-index:31"),
                    "#000", "PHOTO: PIXABAY", dark=True))
 
 ransom_rows = [("5,000 lb", "of gold"), ("30,000 lb", "of silver"), ("4,000", "silk tunics"), ("3,000", "scarlet skins"), ("3,000 lb", "of pepper")]
@@ -122,7 +124,7 @@ put("02_ransom", page(a(f'<div style="width:1920px;height:1080px;{DESK}"></div>'
 put("03_title", page(a(f'<div style="width:1920px;height:1080px;{DESK}"></div>', 0, 0)
                      + A(cut("scale.png", 760), 580, 120, "fade 0 .25")
                      + A(f'<div style="font:400 210px/0.86 Anton;color:#F3EFE6;text-align:center;width:1920px;text-shadow:0 10px 40px rgba(0,0,0,.6)">PEPPER<br>WAS {hl("<span style=\'color:#141414\'>MONEY</span>")}</div>', 0, 330, "slam .2 .24")
-                     + A('<div style="font:400 44px ISerif;color:#E8DCC2;text-align:center;width:1920px">so how does a spice become money?</div>', 0, 900, "fade .6 .8"),
+                     + A('<div style="text-align:center;width:1920px"><span style="font:400 44px ISerif;color:#E8DCC2;background:rgba(13,12,10,.82);padding:6px 22px">so how does a spice become money?</span></div>', 0, 945, "fade .6 .8", "z-index:40"),
                      "#2A1D12", "PHOTO: PIXABAY", dark=True))
 
 # ---- 1: the map table ------------------------------------------------------------------------------------------------
@@ -145,7 +147,9 @@ put("05_three", page(a(img("vine.jpg", 1920, 1080, "filter:brightness(.45) blur(
                      + chapter(1, "WHERE IT GROWS")
                      + A(f'<div style="font:400 92px/0.95 Anton;color:#F3EFE6">ONE VINE, THREE PEPPERS</div><div style="font:400 40px ISerif;color:#E8DCC2;margin-top:8px"><i>Piper nigrum</i>, from India\'s Western Ghats</div>', 90, 130, "up 0 .1")
                      + A(card("corns_spoon.jpg", "BLACK", "unripe, dried", -3), 160, 420, "drop .15 .27") + A(card("corns.jpg", "WHITE", "riper, outer skin removed", 2), 760, 400, "drop .4 .52")
-                     + A(card("green.jpg", "GREEN", "unripe, preserved", -2), 1360, 430, "drop .65 .77"),
+                     + A(card("green.jpg", "GREEN", "unripe, preserved", -2), 1360, 430, "drop .65 .77")
+                     + "".join(tape(x, y, r).replace('class="a"', f'class="a" data-anim="fade {t:.2f} {t + .03:.2f}"', 1) for x, y, r, t in ((285, 400, -6, .27), (885, 380, 4, .52), (1485, 410, -3, .77)))
+                     + A(f'<div style="font:700 46px Caveat;color:{SIG};transform:rotate(-2deg)">one personality, three outfits.</div>', 760, 930, "fade .82 .9"),
                      "#000", "BOTANY: ROYAL BOTANIC GARDENS KEW, PLANTS OF THE WORLD ONLINE · PHOTOS: PIXABAY", dark=True))
 
 # ---- 2: Pliny's prices -----------------------------------------------------------------------------------------------
@@ -168,22 +172,26 @@ sacks = "".join(f'<div style="position:absolute;left:{(i % 28) * 34}px;top:{(i /
 put("07_myth", page(chapter(2, "ROME PAYS BY THE POUND")
                     + a(f'<div style="font:400 84px/0.95 Anton;color:{INK};width:900px">"WORTH ITS WEIGHT IN GOLD"</div>', 90, 140)
                     + A(f'<div style="border:8px solid {RED};color:{RED};font:400 120px/1 Anton;letter-spacing:8px;padding:4px 30px;transform:rotate(-10deg);background:rgba(239,230,210,.7)">MYTH</div>', 1060, 110, "slam .9 .93")
-                    + A(cut("gold.png", 300), 110, 420, "pop .1 .2")
+                    + A(cut("real2/aureus_cut.png", 300), 110, 420, "pop .1 .2")
+                    + A(f'<div style="font:700 34px Caveat;color:#7A2A20;transform:rotate(-4deg)">one real aureus of Nero.<br>45 of these = 1 pound.</div>', 120, 300, "fade .12 .2")
                     + A(f'<div style="font:400 56px Anton;color:{INK}">1 POUND OF GOLD</div><div style="font:500 22px Plex;color:#555">≈ 1,125 denarii</div>', 110, 760, "fade .18 .26")
                     + A(f'<div style="font:400 64px Anton;color:{INK}">=</div>', 520, 520, "fade .26 .3")
                     + a(f'<div data-anim="fill .3 .78" style="position:relative;width:960px;height:340px">{sacks}</div>', 640, 400)
                     + A(f'<div style="font:400 56px Anton;color:{INK}">{hl("280")} POUNDS OF BLACK PEPPER</div><div style="font:500 22px Plex;color:#555">at 4 denarii a pound</div>', 640, 760, "fade .76 .82")
                     + A(f'<div style="font:700 46px Caveat;color:#7A2A20;transform:rotate(-2deg)">sold like gold. not priced like gold.</div>', 640, 870, "fade .82 .88"),
-                    PARCH, "GOLD: 45 AUREI TO THE ROMAN POUND AFTER NERO, 25 DENARII EACH: OUR CALCULATION · PEPPER: PLINY, NATURAL HISTORY 12.14 · ONE SQUARE = ONE POUND OF PEPPER"))
+                    PARCH, "GOLD: 45 AUREI TO THE ROMAN POUND AFTER NERO, 25 DENARII EACH: OUR CALCULATION · PEPPER: PLINY, NATURAL HISTORY 12.14 · ONE SQUARE = ONE POUND OF PEPPER · COIN: GOLD AUREUS OF NERO, THE MET (CC0)"))
 
 # ---- 2: the drain ----------------------------------------------------------------------------------------------------
 put("08_drain", page(chapter(2, "ROME PAYS BY THE POUND")
                      + A(f'<div style="font:400 40px ISerif;color:#CFC6B4">Every year, Pliny says, India took at least</div>', 130, 260, "fade 0 .1")
                      + a(f'<div style="font:400 230px/1 Anton;color:{SIG};text-shadow:0 0 40px rgba(247,208,70,.5)"><span data-anim="count .1 .6" data-to="50000000">50,000,000</span></div><div data-anim="fade .58 .66" style="font:400 64px Anton;color:#F3EFE6">SESTERCES</div>', 120, 330)
                      + A(f'<div style="font:500 24px/1.5 Plex;color:#CFC6B4;width:640px">out of the Roman Empire, "sold with us at a hundred times its prime cost".</div>', 120, 760, "fade .66 .8")
-                     + A(f'<div style="font:500 20px Plex;letter-spacing:4px;color:{SIG}">INDIA ALONE · NATURAL HISTORY 6.26</div>', 1250, 300, "fade .8 .9")
+                     + A(f'<div style="font:500 20px Plex;letter-spacing:4px;color:{SIG}">INDIA ALONE · NATURAL HISTORY 6.26</div>', 1250, 250, "fade .8 .9")
+                     + f'<svg class="a" data-anim="draw .6 .7" style="left:0;top:0;z-index:30" width="1920" height="1080"><path d="M130 668 Q 600 704 1150 664" pathLength="1" fill="none" stroke="{RED}" stroke-width="8" stroke-linecap="round"/></svg>'
+                     + A(cut("real2/aureus_cut.png", 330), 1330, 420, "pop .7 .78")
+                     + A(f'<div style="font:700 44px/1.1 Caveat;color:{SIG};transform:rotate(-3deg);width:520px">and the gold kept going east. Roman coins still turn up in Kerala.</div>', 1260, 790, "fade .82 .92")
                      + a(cut("corns_spoon.jpg", 1, "display:none"), 0, 0),
-                     "#0D0C0A", "SOURCE: PLINY, NATURAL HISTORY 6.26 (6.101), FORDHAM ANCIENT HISTORY SOURCEBOOK · AN OLDER TRANSLATION READS 550 MILLION; MODERN READINGS GIVE 50 MILLION", dark=True))
+                     "#0D0C0A", "SOURCE: PLINY, NATURAL HISTORY 6.26 (6.101), FORDHAM ANCIENT HISTORY SOURCEBOOK · AN OLDER TRANSLATION READS 550 MILLION; MODERN READINGS GIVE 50 MILLION · COIN: GOLD AUREUS OF NERO, THE MET (CC0) · KERALA FINDS: KOTTAYAM HOARD, 1847 (CHRE)", dark=True))
 
 # ---- 2: the receipt (Muziris papyrus) --------------------------------------------------------------------------------
 papy = (f'<div style="width:760px;height:600px;background:linear-gradient(135deg,#C9A970,#B48E52 60%,#A57E44);box-shadow:0 26px 50px rgba(0,0,0,.55);transform:rotate(2deg);'
@@ -291,7 +299,9 @@ put("16_kochi", page(a(img("sacks.jpg", 1920, 1080, "filter:brightness(.62) satu
 
 put("17_end", page(a(img("corns_spoon.jpg", 1920, 1080, "filter:brightness(.38) contrast(1.05)"), 0, 0)
                    + A(f'<div style="font:400 44px ISerif;color:#E8DCC2;width:1300px">It lasts. It\'s worth a lot for its size. Everyone agrees to want it.</div>', 120, 300, "fade .05 .22")
-                   + A(f'<div style="background:{SIG};color:{INK};padding:18px 30px;font:400 72px/1.05 Anton;width:1300px">WHAT ARE WE TREATING AS MONEY TODAY THAT PEOPLE WILL ONE DAY FIND JUST AS STRANGE?</div>', 120, 470, "wipe .35 .6"),
+                   + A(f'<div style="background:{SIG};color:{INK};padding:18px 30px;font:400 72px/1.05 Anton;width:1300px">WHAT ARE WE TREATING AS MONEY TODAY THAT PEOPLE WILL ONE DAY FIND JUST AS STRANGE?</div>', 120, 470, "wipe .35 .6")
+                   + A(f'<div style="background:{INK};color:{PARCH};border:2px solid {PARCH};padding:8px 14px;font:500 20px Plex;letter-spacing:4px;transform:rotate(-1.5deg);box-shadow:6px 6px 0 rgba(0,0,0,.35);white-space:nowrap">ITEM 5 · FILED UNDER: SEASONING · CASE REOPENED</div>', 120, 760, "snap .72 .72", "z-index:70")
+                   + f'<svg class="a" data-anim="draw .8 .92" style="left:0;top:0;z-index:30" width="1920" height="1080"><path d="{wobble(560, 130, 380, 120, 6)}" pathLength="1" fill="none" stroke="{RED}" stroke-width="6"/></svg>',
                    "#000", "PRINT FACTS · SOURCES IN THE DESCRIPTION · PHOTO: PIXABAY", dark=True))
 
 # ---- 6: the globe (route round Africa) -------------------------------------------------------------------------------

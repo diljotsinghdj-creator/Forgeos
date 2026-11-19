@@ -85,6 +85,20 @@
    "url": "https://upload.wikimedia.org/wikipedia/commons/9/97/Black_Pepper_IMG_4866_-_02.jpg",
    "downloaded": "1280px Commons thumbnail",
    "openverse_id": "2bb71ae9-7f76-4945-ba2b-70b4123f4d08"
+  },
+  {
+   "file": "assets/real2/aureus_nero_met.jpg",
+   "cut": "assets/real2/aureus_cut.png (circular crop, studio)",
+   "frame": "07_myth, 08_drain",
+   "role": "replaces branded Pixabay gold bars (brand rule) and adds evidence to 08_drain",
+   "title": "Gold aureus of Nero",
+   "author": "The Metropolitan Museum of Art",
+   "licence": "CC0 1.0",
+   "licence_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "page": "https://www.metmuseum.org/art/collection/search/246875",
+   "url": "https://images.metmuseum.org/CRDImages/gr/original/SF9935142f.jpg",
+   "downloaded": "original, 1624 px",
+   "openverse_id": "f5be1016-a4c4-4ff2-86b2-a4dcf887da75"
   }
  ],
  "geodata": [

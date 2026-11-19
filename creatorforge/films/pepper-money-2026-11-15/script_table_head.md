@@ -12,7 +12,7 @@
     draft's "In 1960" is dropped from the voiceover.
 - **Structure and voice:** the Vox × Johnny Harris five beats, in the John Oliver voice: fact → receipt → simile → snap back.
 - **Canvas backbone:**
-  - **The cream desk** carries the receipts: the ransom page, the rent cards, the charter and the 2022 Act.
+  - **The walnut desk** (drawn in the studio; the AI desk plate is retired, 2026-11-19) carries the receipts: the ransom page, the rent cards, the charter and the 2022 Act.
   - **The 1596 Linschoten chart** (Library of Congress) is the map table that the ships sail across.
   - Rome, the chalkboard and the globe slide onto the same desk. Hard cuts are kept for comedy beats only.
 - **Palette:** cream #F4EFE6, charcoal #1A1A1A, crimson #D93829 for evidence, and yellow #F7D046 for highlighter sweeps only. The
