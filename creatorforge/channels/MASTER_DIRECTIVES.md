@@ -200,6 +200,22 @@ As applied (Claude's reading, for the owner to confirm):
   of a real person (hard rule in section 6), and no AI faces passed off as real or private people.
 - A plate never stands in for evidence: documents, photos and footage that prove a fact stay real.
 
+### 8b. AI visuals on Dragon Psychology (owner, 2026-11-19)
+Owner's words: "In dragon psychology we can use AI visuals wherever required."
+
+As applied:
+- **Standing permission.** On Dragon Psychology, AI-generated images and video (collage plates, scenes, objects, backgrounds,
+  metaphors, experiment reconstructions) may be used wherever they serve the film, without asking each time. Print Facts
+  keeps §8: ask first.
+- **Labels.** Every AI visual is labelled ILLUSTRATION (or "AI ILLUSTRATION") on screen and logged in the film's asset ledger
+  with the model and prompt.
+- **Hard rules still in force:**
+  - No AI face or likeness of a real, identifiable person (§6).
+  - No AI image passed off as a real document, photo, study result or footage. Evidence stays real; reconstructions say so.
+  - Stick figures and silhouettes remain the default for real people in a story.
+- **Credits.** AI generation runs on the owner's ElevenLabs creative credits, so prefer the studio's free drawing where it does
+  the job as well, and use AI where it clearly adds something.
+
 ## 9. Free tools only (owner, 2026-11-13)
 The owner's words: "if something is paid, or we i have to pay later then drop it".
 - Nothing that costs money now or later: no paid APIs, credits, subscriptions or trials that turn paid. When a

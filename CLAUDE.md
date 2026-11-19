@@ -30,6 +30,7 @@ The essentials, in case nothing else is read:
   side is shown.
 - **All videos are in English** (both channels), faceless, no mascot.
 - **No images are created without asking the owner first.** ElevenLabs only with the owner's permission.
+  **Exception (owner, 2026-11-19): on Dragon Psychology, AI visuals may be used wherever required** (MASTER_DIRECTIVES §8b): labelled as illustration, never a real person's face, never passed off as evidence.
 - **Channel palettes (owner, 2026-11-16):**
   - **Print Facts:** cream #F4EFE6, charcoal #1A1A1A, crimson #D93829 and highlighter yellow #F7D046.
   - **Dragon Psychology:** slate #141824, lab-paper #F0F4F8, cobalt #2B6CB0 and amber #ED8936.

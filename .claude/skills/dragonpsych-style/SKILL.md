@@ -56,7 +56,7 @@ file for those, then apply the differences below. The owner's hard rules (CLAUDE
 | physics (Rapier) | biases as mechanisms | The block weights or ratios shown come from the study (e.g. λ ≈ 2.25), and the frame says so. |
 | `ffmpeg-skill` | cuts, 9:16 Shorts, loudness | Same as printfacts-style: −14 LUFS, house captions via `printfacts-style/captions.py`. |
 | `vox-method` | the production blueprint | Its Visual DNA names the study desk and the experiment device. |
-| `collage-explainer` | collage scenes | Real photos in black and white only, never of identifiable people as the "bad" example. AI image or video models only with the owner's explicit permission. |
+| `collage-explainer` | collage scenes | Real photos in black and white only, never of identifiable people as the "bad" example. **AI image and video models are allowed wherever required** (owner, 2026-11-19; MASTER_DIRECTIVES §8b): labelled ILLUSTRATION, logged with model and prompt, never a real person's face, never passed off as evidence. |
 | `dataviz` | effect sizes and replication results | Show the effect size with its uncertainty where the paper gives it. Original vs replication side by side. Bars from zero. |
 
 ## Never
