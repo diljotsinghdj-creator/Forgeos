@@ -14,7 +14,9 @@
   "credits": 190.4,
   "finish": "channels/design_kits/ai_finish.py --channel pfb",
   "label_on_screen": "AI ILLUSTRATION",
-  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)"
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)",
+  "used_in_keyframes_v1": "used: 01_navy, 02_receipt (background), 03_lighttable and 25_answer (clipping)",
+  "no_real_because": "Searched Openverse ('bolivian navy titicaca', 'armada boliviana', 'titicaca navy ship', 'tiquina') and Wikimedia Commons (2026-11-19): no licensed photo of the Bolivian navy's boats on Lake Titicaca found (Commons 'Bolivian Navy' category could not be checked: the API answered 429). Real lake photos (D-Stanley, uverhq) are used alongside it; if a licensed navy photo is found it replaces B1 in the hook."
  },
  {
   "label": "B2",
@@ -31,7 +33,9 @@
   "credits": 190.4,
   "finish": "channels/design_kits/ai_finish.py --channel pfb",
   "label_on_screen": "AI ILLUSTRATION",
-  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)"
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)",
+  "used_in_keyframes_v1": "used: 13_topater",
+  "no_real_because": "No photo of the Topáter bridge site near Calama found on Openverse; the 1879 clash predates usable photography of the site, and Commons searches were rate-limited (429)."
  },
  {
   "label": "B3",
@@ -48,7 +52,9 @@
   "credits": 190.4,
   "finish": "channels/design_kits/ai_finish.py --channel pfb",
   "label_on_screen": "AI ILLUSTRATION",
-  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)"
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)",
+  "used_in_keyframes_v1": "not used in key frames v1: replaced by a real photo of the Humberstone nitrate works (kevin dooley, CC BY 2.0) in 10_1878",
+  "no_real_because": "Real image found; AI plate kept on file only."
  },
  {
   "label": "B4",
@@ -65,7 +71,9 @@
   "credits": 190.4,
   "finish": "channels/design_kits/ai_finish.py --channel pfb",
   "label_on_screen": "AI ILLUSTRATION",
-  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)"
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)",
+  "used_in_keyframes_v1": "not used in key frames v1: replaced by a real historic FCALP locomotive photo (PDM) and a real Arica port photo (CC BY 2.0) in 18_arica",
+  "no_real_because": "Real images found; AI plate kept on file only."
  },
  {
   "label": "B5",
@@ -82,7 +90,9 @@
   "credits": 190.4,
   "finish": "channels/design_kits/ai_finish.py --channel pfb",
   "label_on_screen": "AI ILLUSTRATION",
-  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)"
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)",
+  "used_in_keyframes_v1": "used: 21_diadelmar",
+  "no_real_because": "Real Día del Mar photos show identifiable officials, crowds and flags (MASTER_DIRECTIVES §6: no flags as decoration, no private faces); none licensed and neutral found on Openverse. The plate shows an empty podium and wreath, no people."
  },
  {
   "label": "B6",
@@ -99,6 +109,8 @@
   "credits": 190.4,
   "finish": "channels/design_kits/ai_finish.py --channel pfb",
   "label_on_screen": "AI ILLUSTRATION",
-  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)"
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)",
+  "used_in_keyframes_v1": "not used in key frames v1: replaced by a real CC0 photo of the coast at Ilo, Peru (jimcintosh) in 23_boliviamar",
+  "no_real_because": "Real image found; AI plate kept on file only."
  }
 ]
