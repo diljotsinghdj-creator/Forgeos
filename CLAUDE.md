@@ -30,7 +30,7 @@ The essentials, in case nothing else is read:
   side is shown.
 - **All videos are in English** (both channels), faceless, no mascot.
 - **No images are created without asking the owner first.** ElevenLabs only with the owner's permission.
-  **Exception (owner, 2026-11-19): AI visuals may be used wherever they help, on both channels** (MASTER_DIRECTIVES §8b, §8c). They are labelled as illustration, never show a real person's face, and are never passed off as evidence. Charts and maps stay drawn from real data. **AI plates must look Vox × Johnny Harris** (flat paper collage, the palette, a studio finish), never glossy or photoreal.
+  **Exception (owner, 2026-11-19): AI visuals may be used wherever they help, on both channels** (MASTER_DIRECTIVES §8b, §8c). They are labelled as illustration, never show a real person's face, and are never passed off as evidence. Charts and maps stay drawn from real data. **Real first:** real photos, real maps and animated maps stay the backbone, and AI fills only the gaps where nothing real exists (§8c). **AI plates must look Vox × Johnny Harris** (flat paper collage, the palette, a studio finish), never glossy or photoreal.
 - **Channel palettes (owner, 2026-11-16):**
   - **Print Facts:** cream #F4EFE6, charcoal #1A1A1A, crimson #D93829 and highlighter yellow #F7D046.
   - **Dragon Psychology:** slate #141824, lab-paper #F0F4F8, cobalt #2B6CB0 and amber #ED8936.

@@ -141,3 +141,5 @@ Newest entries go at the bottom. Rules here are binding for both channels unless
   Glossy elements (e.g. 3D waving flags) are replaced by paper or archival versions.
 - **Winning Pattern:** Vox gives the explanation and honest charts; Johnny Harris gives the reporter's desk, the
   marker on the map and the feeling of following a trail.
+
+- **2026-11-19 · AI is a supplement, not the backbone.** After the AI-plate rounds, the owner said: "we just do not abandon real pictures, real maps, animated maps. we use ai where we have no choice. we use mix of everything." From now on, search for a real image first, use AI only for gaps (unphotographed moments, metaphors, sight gags), and log why in the ledger.

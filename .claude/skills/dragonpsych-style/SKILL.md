@@ -60,6 +60,10 @@ file for those, then apply the differences below. The owner's hard rules (CLAUDE
 | `dataviz` | effect sizes and replication results | Show the effect size with its uncertainty where the paper gives it. Original vs replication side by side. Bars from zero. |
 
 ## AI plates look like the channel, not like AI
+**Real first** (owner, 2026-11-19; MASTER_DIRECTIVES §8c): real photos, real documents, real maps and animated maps are the
+backbone. Search Openverse, Commons, Pixabay and the archives first. Use AI only where nothing real exists or fits, log why,
+and keep the film a mix of everything.
+
 This follows MASTER_DIRECTIVES §8c (owner, 2026-11-19). Every AI plate:
 - is flat paper collage, with halftone, grain and sticker edges, in the channel palette;
 - uses the §8c prompt ending;

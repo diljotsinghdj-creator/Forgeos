@@ -65,6 +65,10 @@ differs from this file, this file wins. The owner's hard rules (CLAUDE.md, MASTE
 | `dataviz` | charts | Bars from zero, the one key value in the channel's signal colour, the rest neutral grey. Source line always. Illustrative data labelled. |
 
 ## AI plates look like the channel, not like AI
+**Real first** (owner, 2026-11-19; MASTER_DIRECTIVES §8c): real photos, real documents, real maps and animated maps are the
+backbone. Search Openverse, Commons, Pixabay and the archives first. Use AI only where nothing real exists or fits, log why,
+and keep the film a mix of everything.
+
 This follows MASTER_DIRECTIVES §8c (owner, 2026-11-19). Every AI plate:
 - is flat paper collage, with halftone, grain and sticker edges, in the channel palette;
 - uses the §8c prompt ending;

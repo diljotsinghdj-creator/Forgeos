@@ -230,6 +230,16 @@ As applied:
 - **Print Facts evidence stays real.** Gate 3 (evidence first) is unchanged: a real document, photo or footage comes before the
   first explanation, and AI never stands in for it.
 - **Credits:** one take per plate by default. Options are made only where the owner asks to choose.
+- **Real first, AI only where there is no choice** (owner, 2026-11-19: "ai play good part in visuals but we just do not
+  abandon real pictures, real maps, animated maps. we use ai where we have no choice. we use mix of everything"):
+  - **The backbone of every film is real:** archive and licensed photos, real documents, real footage, real maps and animated
+    maps from real geodata, 3D terrain, and data charts.
+  - **Before any AI plate, search for a real one:** Openverse, Wikimedia Commons, Pixabay, NASA, LOC and other archives. Use
+    AI only when nothing real fits or exists, such as a 1954 living room nobody photographed, a metaphor, a sight gag, or a
+    reconstruction of an unseen moment.
+  - **Every AI plate in the ledger notes why a real image wasn't used** ("no_real_because").
+  - **The mix is the look:** each film blends real photos, real maps, animated maps, documents, charts, studio drawings and a
+    few AI plates. A film made mostly of AI plates fails the look.
 - **AI must look Vox × Johnny Harris, never "AI"** (owner, 2026-11-19: "make sure that our ai thing remains like vox style"):
   - **Look:**
     - flat paper collage: cut-out edges, a white sticker border, halftone dots and visible paper grain;
