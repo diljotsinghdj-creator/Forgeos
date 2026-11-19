@@ -216,6 +216,21 @@ As applied:
 - **Credits.** AI generation runs on the owner's ElevenLabs creative credits, so prefer the studio's free drawing where it does
   the job as well, and use AI where it clearly adds something.
 
+### 8c. AI visuals on both channels (owner, 2026-11-19)
+Owner's words: "wherever possible i dont mind using ai graphics, charts, visuals etc include anything and everything for both
+channels."
+
+As applied:
+- **§8b now covers Print Facts too.** AI plates, scenes, objects, backgrounds, sight gags and metaphors may be used on either
+  channel without asking each time. The labels, ledger and hard rules of §8b all still apply.
+- **Charts and maps stay drawn from data.** An AI model invents numbers and borders, so:
+  - every bar, line, figure and map shape comes from the dossier and real geodata, drawn by the studio;
+  - India is always drawn with the official boundary;
+  - AI may supply the paper, props and scenery around a chart, never the chart itself.
+- **Print Facts evidence stays real.** Gate 3 (evidence first) is unchanged: a real document, photo or footage comes before the
+  first explanation, and AI never stands in for it.
+- **Credits:** one take per plate by default. Options are made only where the owner asks to choose.
+
 ## 9. Free tools only (owner, 2026-11-13)
 The owner's words: "if something is paid, or we i have to pay later then drop it".
 - Nothing that costs money now or later: no paid APIs, credits, subscriptions or trials that turn paid. When a

@@ -1,9 +1,9 @@
-# Disgust Pays (working title): script draft 3, written for motion
+# Disgust Pays (working title): script draft 3.1, written for motion
 
 - **Format:** four-column, written for motion (printfacts-style, "Writing the script for motion"; MASTER_DIRECTIVES §10b).
 - **Pick:** the owner's own draft (2026-11-17), corrected against `reports/Why India is mocked online.md` (`pick.json`).
 - **Structure and voice:** the Vox × Johnny Harris five beats, in the John Oliver voice.
-- **Canvas backbone:** a dark walnut investigator's desk. Every document, phone, map and photo slides onto it. The 3D globe, relief,
+- **Canvas backbone:** a dark walnut investigator's desk (`[AI·1]`, one plate reused all film). Every document, phone, map and photo slides onto it. The 3D globe, relief,
   bars and satellite open as "windows" on the desk and close back onto it.
 - **Hard cuts:** only on comedy beats (marked `[CUT]`: 0.2 s music cut before a punchline, or a 1-frame smash).
 - **Signal colour:** one per moment. Crimson #D93829 for evidence (circles, routes, stamps). Yellow #F7D046 only for highlighter
@@ -27,6 +27,13 @@ The report's five corrections were already in draft 2: Macaulay instead of Kipli
 7. **"So. What. Now." is cut.** It played as a talk-show bit and a clunky transition (test 6, §10b), so it is replaced by a
    bridge on cause.
 8. **The closing "since 1857" joke had no source** and is replaced by a payoff of the 1927 drain-inspector callback.
+
+## Draft 3.1 (2026-11-19): the jokes aim at the feed, and the AI plates are added
+9. **The jokes no longer laugh at the people in the clips.** The film argues against the caricature, so the "street food with
+   structural confidence" and "man frying something questionable" lines are gone. The loop itself is now the joke (1 · 0:23) and
+   the algorithm is the punchline (1 · 0:53).
+10. **Six AI plates have been added** (owner, 2026-11-19; MASTER_DIRECTIVES §8c). They're marked `[AI·n]` and listed at the end.
+    Each is labelled AI ILLUSTRATION. None shows a person's face, and none stands in for a fact, chart or map.
 ---
 
 ## 1 · Hook and question
@@ -37,12 +44,12 @@ The report's five corrections were already in draft 2: Macaulay instead of Kipli
 | 1 · 0:03 | 138.54 million views, for 128 posts on X, all aimed at one group of people: Indians. | The rest of the key findings line slides into frame; "128 X posts" gets a yellow sweep. | Slow pull-out 2.4× → 1.6×. Highlighter sweep left to right. |
 | 1 · 0:11 | Somebody counted them. A research group, the Center for the Study of Organized Hate, in January 2025. | The report's title page slides in from the left, tilted, with the tag "RECEIPT · CSOH, 9 JAN 2025". | Pull-out continues to 1.0×. Title page drops in with a 12-frame ease-out. Tag snaps on. |
 | 1 · 0:19 | And if those posts were your only window on India… | A drawn phone slides onto the desk beside the report; its feed starts scrolling. (01_feed) | Smooth pan east onto the phone. Push-in 1.0× → 1.3×. |
-| 1 · 0:23 | …you'd think a country of about 1.4 billion people was four clips on a loop: traffic, a crowded train, and two men making street food with structural confidence. | Blurred stand-in clips scroll: TRAFFIC JAM · STREET FOOD · CROWDED TRAIN. Notification pills pop: "4,102 new reactions". | Feed scrolls at constant speed. Pills pop at 12 fps, one per clause. |
+| 1 · 0:23 | …you'd think a country of about 1.4 billion people was four clips on a loop: a traffic jam, a crowded train, a street stall, and then the traffic jam again, in case you missed it. | Blurred stand-in clips scroll: TRAFFIC JAM · CROWDED TRAIN · STREET STALL · TRAFFIC JAM (AGAIN). Notification pills pop: "4,102 new reactions". | Feed scrolls at constant speed. Pills pop at 12 fps, one per clause. |
 | 1 · 0:33 | That's not a country. | Scrolling freezes mid-swipe. | `[CUT]` music drops for 0.2 s. Impact freeze. |
 | 1 · 0:35 | That's a highlight reel edited by someone who hates you. | Archive tag slaps onto the phone: "RECONSTRUCTION · NO REAL PEOPLE". | `[HOLD 0.6s]` |
 | 1 · 0:39 | But follow the phone's edge, off the feed, and the desk is covered in things that never trend. | Three cards slide out from under the phone: CHANDRAYAAN-3 · 25.47 BN ⚠ · 3,682 tigers. (03_otherfeed) | Whip-pan right, off the phone. Cards slam in one per beat. |
 | 1 · 0:46 | A Moon landing. Billions of payments in one month. Three-quarters of the world's wild tigers. | The cards settle; the "NOT TRENDING" tag lands. | Slow drift down across the cards. |
-| 1 · 0:53 | None of it went viral. Apparently a tiger can't compete with a man frying something questionable. | The tiger card gets a yellow sweep under "3,682". | `[CUT]` 0.2 s. Highlighter sweep. `[HOLD 0.6s]` |
+| 1 · 0:53 | None of it went viral. Apparently a tiger is less engaging than a traffic jam. Which, if you've ever met a tiger, is a bold editorial choice. | The tiger card flips over to `[AI·2]`: a paper-cut tiger in the mangroves, with a "0 views" counter beside it. Yellow sweep under "3,682". | `[CUT]` 0.2 s. Highlighter sweep. `[HOLD 0.6s]` |
 | 1 · 1:00 | So why does the internet keep showing you the worst of India? | Title card drops onto the centre of the desk: "DISGUST PAYS". (04_title) | Push-in 1.0× → 1.15×. The title slams in a single frame. `[HOLD 0.6s]` |
 
 ## 2 · Map and history
@@ -90,8 +97,8 @@ The report's five corrections were already in draft 2: Macaulay instead of Kipli
 | 3 · 4:28 | Least used. Best paid. | Yellow sweep on "ANGRY = 5". | `[CUT]` 0.2 s. Highlighter sweep. `[HOLD 0.6s]` |
 | 3 · 4:31 | Now follow one video. Here, on the left, an ordinary market street, posted by the person who filmed it. | Two drawn phones on the desk; the left one is the original. (11_repost) | Pan to the left phone. Push-in 1.0× → 1.2×. |
 | 3 · 4:38 | Follow the arrow. Someone else reposts it with a caption we've blacked out. | A red arrow draws across; the right phone slides in with its caption blacked out. | Arrow draws at constant speed. Pan east. |
-| 3 · 4:44 | Since October 2024, X has paid creators by engagement from its Premium subscribers. Picture it: the original gets a few hundred views. | The view counter starts spinning. | The counter rolls up like a slot machine. |
-| 3 · 4:52 | The insult gets a salary. | The counter lands; tag: "ILLUSTRATIVE · DRAWN". | `[CUT]` 0.2 s. Impact freeze. `[HOLD 0.6s]` |
+| 3 · 4:44 | Since October 2024, X has paid creators by engagement from its Premium subscribers. Picture it: the original gets a few hundred views. | `[AI·3]` A paper-craft slot machine opens on the desk; its reels read OUTRAGE · OUTRAGE · OUTRAGE. The view counter spins. | The reels spin and lock one by one, at 12 fps. |
+| 3 · 4:52 | The insult gets a salary. | The counter lands and paper coins spill out of the machine. Tag: "ILLUSTRATIVE · DRAWN". | `[CUT]` 0.2 s. Impact freeze. `[HOLD 0.6s]` |
 | 3 · 4:55 | And look closely: some of this "proof" isn't even real. | Three blurred clip cards slide onto the desk. (16_fakes) | Pan down to the cards. |
 | 3 · 4:59 | Fact-checkers stamped them: AI-generated. Scripted. Not filmed in India at all. | A red stamp thuds onto each card. | Stamp per card at 12 fps, timed to each word. `[HOLD 0.6s]` |
 
@@ -103,7 +110,7 @@ The report's five corrections were already in draft 2: Macaulay instead of Kipli
 | 4 · 5:13 | About 542,360 anti-South Asian posts on X in eighteen months. Read the three lines underneath. | The three figures rise in turn: 45% · ~30% · +171%. | Slow tilt down, one line at a time. |
 | 4 · 5:21 | 45% call South Asians "invaders" or "job thieves". About 30% use a single slur, one that CNN traces back to 4chan. | Yellow sweeps on 45% and ~30%. | Highlighter sweep per figure. |
 | 4 · 5:30 | And the fastest-growing kind of insult, up 171%, is about hygiene. | Crimson underline on "+171%". | Push-in on the line. `[HOLD 0.6s]` |
-| 4 · 5:36 | The drain inspector has gone digital. With a blue tick. | Tag: "THE INTERNET, KEEPING RECEIPTS ON ITSELF". | `[CUT]` 0.2 s. Tag snaps on. |
+| 4 · 5:36 | The drain inspector has gone digital. With a blue tick. | `[AI·4]` A faceless 1920s paper cut-out inspector, seen from behind in a hat and coat, holds up a phone with a blue tick. Tag: "THE INTERNET, KEEPING RECEIPTS ON ITSELF". | `[CUT]` 0.2 s. Tag snaps on. |
 | 4 · 5:40 | But posts are just posts. Unless you follow the timeline off the screen. | A timeline line wipes across the desk. (13_timing) | Smooth pan east with the line. |
 | 4 · 5:46 | December 2024, the visa fight on X. Arguing about visas isn't racism; the slurs that rode along with it were. | The first event drops onto the line, with a split tag: `POLICY ARGUMENT` / `ETHNIC SLURS`. | A pin drops on each date, timed to the voice. |
 | 4 · 5:53 | July 2025, Tallaght, in Dublin: police record an assault on an Indian man as racially motivated. August, Australia: rally flyers single out Indian migration. | The next two events drop onto the line in date order. | A pin drops on each date, timed to the voice. |
@@ -136,8 +143,8 @@ The report's five corrections were already in draft 2: Macaulay instead of Kipli
 | 5 · 8:11 | And pull back: four of the world's 36 biodiversity hotspots. | The 3D relief of India rises, with the hotspots pinned. (relief_a–c) | Pull-out into the relief. Slow orbit 1.0× → 1.2×. `[HOLD 0.6s]` |
 | 5 · 8:19 | That's the country. Here's the feed. And this part's on us. | The phone slides back onto the desk, showing the hate-bait post. (19_notinterested) | Whip-pan back to the phone. Push-in. |
 | 5 · 8:25 | Right here, in the corner: three dots. "Not interested." | The menu opens; the cursor moves to "Not interested in this post". | The menu pops. The cursor glides over 12 frames. |
-| 5 · 8:30 | The cheapest act of good manners on the internet. | Tap. `[SFX: one heavy thunk]` | `[HOLD 0.6s]` |
-| 5 · 8:33 | India isn't a caricature. It's about 1.4 billion people, and the feed keeps editing them down to one drain. | The final card on the desk. (20_end) | Slow pull-out to the full desk: report, chart, *Minute*, book, phone. |
+| 5 · 8:30 | The cheapest act of good manners on the internet. | Tap. `[AI·6]` A huge paper finger, no face, presses a giant "Not interested" button; the feed behind it shrinks. `[SFX: one heavy thunk]` | `[HOLD 0.6s]` |
+| 5 · 8:33 | India isn't a caricature. It's about 1.4 billion people, and the feed keeps editing them down to one drain. | `[AI·5]` A film editor's cutting table: strips of landscape, rivers, mountains and cities snipped away until one frame is left, a drain. Then the final card. (20_end) | Slow pull-out to the full desk: report, chart, *Minute*, book, phone. |
 | 5 · 8:43 | And laughing at that edit? That review was written in 1927. It's had a very long run for a one-star book. | The handwritten line; callback tag: "SEE: DRAIN INSPECTOR, 1927". | `[CUT]` music out. `[SFX: old TV switching off]` Fade to charcoal. |
 
 ---
@@ -173,3 +180,25 @@ The report's five corrections were already in draft 2: Macaulay instead of Kipli
 3. **UPI 25.47 bn** (October 2026) and **IQAir 6th of 143**: these rest on press reports; refresh before air.
 4. **The population of about 1.4 billion:** check the latest UN WPP figure.
 5. **The 17_sowhat frame:** it is restaged on the desk, so the old three-word card is retired.
+
+## AI plates (draft 3.1)
+- **How they're made:**
+  - one take each, logged in `data/ai_ledger.json` with the model, prompt and credits;
+  - labelled AI ILLUSTRATION on screen;
+  - in the palette (cream, charcoal, crimson, yellow) and in paper-collage texture.
+
+| # | Beat | Plate | Why AI here |
+|---|------|-------|-------------|
+| AI·1 | all film | A top-down dark walnut desk with paper grain, empty, 16:9, lit from the top left | The backbone: one continuous surface the whole film lands on |
+| AI·2 | 1 · 0:53 | A paper-cut Bengal tiger in mangroves, with a "0 views" counter | The sight gag: the tiger loses to the traffic jam |
+| AI·3 | 3 · 4:44 | A paper-craft slot machine with OUTRAGE ×3 reels, spilling coins | The engagement-pay mechanism as an object |
+| AI·4 | 4 · 5:36 | A faceless 1920s inspector cut-out, from behind, holding a phone with a blue tick | The drain-inspector callback, gone digital |
+| AI·5 | 5 · 8:33 | An editing table: landscape film strips cut away down to one frame of a drain | The film's thesis as one image |
+| AI·6 | 5 · 8:30 | A huge paper finger pressing a giant "Not interested" button | The call to action, made physical |
+
+- **Hard rules:**
+  - No AI people with faces, and no likeness of any real person.
+  - No AI map of India.
+  - No AI chart or number.
+  - No AI "clip" made to look like real footage.
+- **Estimated credits:** about 1,150 for one take of all six (about 190 each).

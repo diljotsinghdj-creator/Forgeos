@@ -61,7 +61,7 @@ differs from this file, this file wins. The owner's hard rules (CLAUDE.md, MASTE
 | `ffmpeg-skill` | cuts, 9:16 refits, silence trim, loudness, final checks | Loudness −14 LUFS integrated, true peak −1 dBTP. Captions burned with our spec (`printfacts-style/captions.py`: exact word timing, house look, then −14 LUFS), never the tool's default yellow box or emoji. Shorts: 1080×1920, words inside the safe band (y 220–1560). |
 | `wordtimes.py` (faster-whisper) | caption timing | Pass the script line as `prompt` so names and numbers match the script. |
 | `vox-method` | the production blueprint | Use as written; its Visual DNA must name the accent colour and the map-table or evidence device. |
-| `collage-explainer` | collage look | **AI image and video models only with the owner's explicit permission for that film.** Default to real photos (Pixabay, archives) with BiRefNet cut-outs, halftone, white sticker edge, torn paper, colour disc. |
+| `collage-explainer` | collage look | **AI image and video models are allowed wherever they help (owner, 2026-11-19; MASTER_DIRECTIVES §8c).** Each one is labelled AI ILLUSTRATION and logged. No faces of real people, no AI charts or maps, and never as evidence. Default to real photos (Pixabay, archives) with BiRefNet cut-outs, halftone, white sticker edge, torn paper, colour disc. |
 | `dataviz` | charts | Bars from zero, the one key value in the channel's signal colour, the rest neutral grey. Source line always. Illustrative data labelled. |
 
 ## Never
