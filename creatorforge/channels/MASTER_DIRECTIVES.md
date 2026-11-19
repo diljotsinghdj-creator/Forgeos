@@ -238,6 +238,14 @@ As applied:
     AI only when nothing real fits or exists, such as a 1954 living room nobody photographed, a metaphor, a sight gag, or a
     reconstruction of an unseen moment.
   - **Every AI plate in the ledger notes why a real image wasn't used** ("no_real_because").
+  - **Targets per film** (owner, 2026-11-19: "we need more real pictures, animation, motion graphics etc and less ai"):
+    - **AI plates:** at most about 1 frame in 8 (≤ 4 in a 26-frame film), only where nothing real exists, such as an
+      unphotographed moment, a metaphor or a sight gag;
+    - **Real material:** at least 60% of frames carry real material (licensed or public-domain photos, documents, archive
+      art, footage, or maps and charts from real data);
+    - **Motion:** at least 8 motion builds per film: animated maps (routes, pins, borders), charts that build, kinetic type,
+      3D terrain or globe moves, and cut-out parallax;
+    - **Base:** a backdrop or desk is never AI when a drawn or real surface works.
   - **The mix is the look:** each film blends real photos, real maps, animated maps, documents, charts, studio drawings and a
     few AI plates. A film made mostly of AI plates fails the look.
 - **AI must look Vox × Johnny Harris, never "AI"** (owner, 2026-11-19: "make sure that our ai thing remains like vox style"):
