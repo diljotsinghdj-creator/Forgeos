@@ -1,7 +1,7 @@
 [
  {
   "label": "K1",
-  "use": "AI\u00b71 control panel (base plate, all film)",
+  "use": "AI·1 control panel (base plate, all film)",
   "generation_id": "6V1JRkdJZuJlYakSPxpf",
   "flow_id": "r6MnkggWG8WLhQGxOXU2",
   "model": "gpt-image-2.5-sunburst",
@@ -14,11 +14,13 @@
   "credits": 190.4,
   "finish": "channels/design_kits/ai_finish.py --channel dp",
   "label_on_screen": "AI ILLUSTRATION",
-  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)"
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)",
+  "no_real_because": "a metaphor canvas: no real control panel holds a crosswalk box, a lift panel and a thermostat side by side; searched Openverse for control panels (2026-11-19), none fit the trap. Every device on it is studio-drawn, and real photos of each device appear as cards.",
+  "used_in_keyframes": "backbone of 01-26 (all frames except 18 and 21)"
  },
  {
   "label": "K2",
-  "use": "AI\u00b72 the office thermostat",
+  "use": "AI·2 the office thermostat",
   "generation_id": "a3zgwPusJsNrlAywDKOS",
   "flow_id": "r6MnkggWG8WLhQGxOXU2",
   "model": "gpt-image-2.5-sunburst",
@@ -31,11 +33,13 @@
   "credits": 190.4,
   "finish": "channels/design_kits/ai_finish.py --channel dp",
   "label_on_screen": "AI ILLUSTRATION",
-  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)"
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)",
+  "no_real_because": "Openverse searches 'empty open plan office' and 'empty office desks night' (2026-11-19) returned nothing usable (wrong subjects or people). Kept as backdrop only; the real thermostat photo ('PRESS FOR COOLER TEMPERATURE', CC BY) sits on top of it as the evidence card.",
+  "used_in_keyframes": "13_office (framed print)"
  },
  {
   "label": "K3",
-  "use": "AI\u00b73 the middle manager (metaphor)",
+  "use": "AI·3 the middle manager (metaphor)",
   "generation_id": "otFjApkJuDIJ036ifYbY",
   "flow_id": "r6MnkggWG8WLhQGxOXU2",
   "model": "gpt-image-2.5-sunburst",
@@ -48,11 +52,13 @@
   "credits": 190.4,
   "finish": "channels/design_kits/ai_finish.py --channel dp",
   "label_on_screen": "AI ILLUSTRATION",
-  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)"
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)",
+  "no_real_because": "a metaphor (the brain as a middle manager); no real photo can show it, and a real person must never play the 'bad' example.",
+  "used_in_keyframes": "18_manager"
  },
  {
   "label": "K4",
-  "use": "AI\u00b74 the nursing-home windowsill",
+  "use": "AI·4 the nursing-home windowsill",
   "generation_id": "T0Gff2JVQhIMPVUgG2SG",
   "flow_id": "r6MnkggWG8WLhQGxOXU2",
   "model": "gpt-image-2.5-sunburst",
@@ -65,6 +71,8 @@
   "credits": 190.4,
   "finish": "channels/design_kits/ai_finish.py --channel dp",
   "label_on_screen": "AI ILLUSTRATION",
-  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)"
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)",
+  "no_real_because": "a reconstruction of an unphotographed 1970s Connecticut nursing home; real windowsill photos exist on Openverse but would be passed off as the home. Labelled RECONSTRUCTION, NOT THE REAL HOME.",
+  "used_in_keyframes": "21_plant"
  }
 ]
