@@ -104,3 +104,8 @@ the camera.
    - **Signal colour:** one per moment. For Print Facts that's crimson #D93829 for evidence and yellow #F7D046 only for highlighter
      sweeps. For Dragon Psychology it's amber #ED8936.
    - **Background:** muted paper or charcoal from the channel palette.
+
+## "DJ style" (owner, 2026-11-19)
+When the owner says **"DJ style"**, use the John Oliver script (MASTER_DIRECTIVES §10, written for motion as in §10b) **and** the
+Vox × Johnny Harris visuals and editing in this house style: animated maps, motion graphics, archival overlays, kinetic
+typography. It's a style shortcut. Every gate still applies, and it doesn't choose the voice.

@@ -35,6 +35,7 @@ The essentials, in case nothing else is read:
   - **Dragon Psychology:** slate #141824, lab-paper #F0F4F8, cobalt #2B6CB0 and amber #ED8936.
   - Each film may add one accent of its own.
 - **Scripts:** Vox × Johnny Harris structure and visuals, written in a John Oliver satirical voice (MASTER_DIRECTIVES §10), as a four-column table that writes for motion (§10b).
+- **"DJ style"** (owner, 2026-11-19) means the John Oliver script plus Vox × Johnny Harris visuals and editing, together (§10c). It is a style shortcut, not a skip of any gate.
 
 **The owner's five gates** (2026-11-11, enforced by `studio/gates.py` for both channels and every sample with
 `"sample_for"`). A gate stops the studio; it is never worked around:

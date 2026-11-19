@@ -94,3 +94,8 @@ the camera.
 9. **Colour:** the channel palette stays.
    - **Signal colour:** one per moment: amber #ED8936. No yellow.
    - **Background:** slate #141824 or lab-paper #F0F4F8, with cobalt #2B6CB0 for structure.
+
+## "DJ style" (owner, 2026-11-19)
+When the owner says **"DJ style"**, use the John Oliver script (MASTER_DIRECTIVES §10, written for motion as in §10b) **and** the
+Vox × Johnny Harris visuals and editing in this house style: animated maps, motion graphics, archival overlays, kinetic
+typography. It's a style shortcut. Every gate still applies, and it doesn't choose the voice.

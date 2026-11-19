@@ -68,6 +68,7 @@ owner's own narration if it's their voice. Everything else it finds.
 | `[BEAT]` | time cuts and number pops to the music beat | librosa (to add) |
 | `[REDO] <frame numbers>` | rebuild only those frames | |
 | `[CHECK]` | QA pass: facts, overlaps, pacing, licences, repeats, India boundary | QC + gates |
+| "DJ style" | the John Oliver script (sharp investigative comedy, absurd analogies, tight pacing, research-backed punchlines) plus Vox × Johnny Harris visuals and editing (animated maps, motion graphics, archival overlays, kinetic type). All gates still apply | MASTER_DIRECTIVES §10c |
 | `/pitch [channel] [topic]` | three documentary angles in the Vox × Johnny Harris arc: central question, key map and visual beats, satirical target (this is gate 1's three engines) | studio + dossier |
 | `/script [channel] [topic]` | broadcast-ready script, locked to the arc (hook → map context → mechanics → stakes → synthesis) in the John Oliver voice, with `[VISUAL / FOLEY]` cues and music hard cuts before punchlines (only after a `/pitch` pick) | MASTER_DIRECTIVES §10 |
 | `/scene [channel] [description]` | one self-contained HTML/SVG/CSS scene at 12 fps, bundled local fonts, no CDN, inline-SVG textures | house style skills |

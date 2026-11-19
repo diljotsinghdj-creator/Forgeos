@@ -269,3 +269,20 @@ Scripts are written as a four-column table (beat and time · voiceover · canvas
 
 The channel palettes and the John Oliver voice stay. The full rules are in the house-style skills (`printfacts-style`,
 `dragonpsych-style`), under "Writing the script for motion".
+
+### 10c. "DJ style" (owner, 2026-11-19)
+When the owner asks for **"DJ style"**, it means both of these, on either channel:
+1. **Script: the John Oliver style.** Sharp investigative comedy, absurd analogies, tight pacing, and satirical punchlines backed
+   by real research (§10, written for motion as in §10b).
+2. **Visuals and editing: the Vox × Johnny Harris style.** Animated maps, motion-graphics explainers, archival overlays, kinetic
+   typography and crisp visual storytelling, in the channel's house style (`printfacts-style` or `dragonpsych-style`).
+
+"DJ style" is a style shortcut only. It doesn't skip any gate:
+- three engines and a pick;
+- SEEN;
+- evidence first;
+- pacing;
+- PRESHOW;
+- no video before "go".
+
+It doesn't choose the voice either. The owner's ElevenLabs voice is still used only with the owner's permission.
