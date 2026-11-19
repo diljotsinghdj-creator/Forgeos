@@ -35,6 +35,11 @@ on a YouTube schedule. Until then nothing is uploaded.
 - **Scheduling comes later.** Uploading by API needs the owner to connect their YouTube channel. Until then, the owner uploads by
   hand from the finished files.
 
+## Work plan (owner, 2026-11-19)
+- **Until Friday:** write scripts on Opus 5.5 (pitch three engines, owner's pick, dossier, four-column John Oliver table). No video.
+- **Friday, before the 21:00 weekly reset:** render the videos for every script the owner has approved, using what's left of the week's usage. Each film still needs the owner's **go** and a **voice** choice, and its PRESHOW goes to the owner first.
+- Rendering is mostly local CPU (Playwright frames, ffmpeg). The model's usage goes into building and checking the code, so separate sessions can run films in parallel.
+
 ## Bank status
 | # | Film | Channel | Format | Script | Visuals | Video | Refresh before air | Status |
 |---|------|---------|--------|--------|---------|-------|--------------------|--------|
