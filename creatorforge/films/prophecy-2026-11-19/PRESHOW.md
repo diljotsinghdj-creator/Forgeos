@@ -44,3 +44,14 @@ at four moments of its animation (sheets `M_1`–`M_3`). There is no video, voic
 ## Still to decide
 - **Changes** to the frames or script.
 - **Go** for the video, and the **voice**: the Kokoro stand-in, your ElevenLabs voice (with your permission), or your cloned voice.
+
+## Added 2026-11-19: AI illustrations (owner's picks A1, B3, C1, D1, E2)
+- **01b_room (new frame, after the clock):** an AI paper-cut 1950s living room, stick figures and the prediction card. The three
+  researchers are in amber. The AI clock is corrected to 11:59.
+- **07_millerites:** the AI 1844 dawn scene of faceless silhouettes replaces my drawn broadsheet.
+- **15_box:** an AI archive box, with a "BOX 4" label set on it and labelled "not the real box".
+- **19_antelope:** the AI antelope-and-lion gag, with the tweed hand holding a microphone.
+- **24_end:** the AI night sky with the late saucer and the lit window, under the cracked clock.
+- **Labels and ledger:** every AI plate is labelled "AI ILLUSTRATION" on screen and logged in `data/ai_ledger.json`. No real person
+  is depicted, and none stands in for evidence.
+- **Credits:** about 3,800 ElevenLabs credits for the 20 options.
