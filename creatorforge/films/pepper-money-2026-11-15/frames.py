@@ -30,15 +30,6 @@ def logo_d(s=1.0, dark=True):
 
 
 def page(body, bg=PARCH, src="", dark=False, logo=True):
-    if "P1.jpg" in body:  # the cream desk plate: dark type, crimson handwriting, so nothing pale sits on cream
-        src += " · DESK: AI ILLUSTRATION"; dark = False
-        body = body.replace("Caveat;color:#F7D046", "Caveat;color:#D93829").replace("Caveat;color:{SIG}", "Caveat;color:#D93829")
-        def _ink(m):  # pale text turns charcoal, unless its own element sits on a dark background (chapter cards, tags)
-            st = body[body.rfind('style="', 0, m.start()):m.start()]
-            return m.group(0) if re.search(r"background:\s*(#1A1A1A|#111|#141414|#22302A|rgba\(0,0,0)", st) else "color:#1A1A1A"
-        body = re.sub(r"(?<![-\w])color:\s*(#F3EFE6|#F4EFE6|#fff|#FFF|#FFFFFF|#ffffff|white)(?![0-9A-Fa-f])", _ink, body)
-        body += ('<div class="a" style="left:1640px;top:34px;width:236px;height:46px;background:rgba(244,239,230,.92);border-radius:4px;z-index:89"></div>'
-                 '<div class="a" style="left:0;top:1030px;width:1920px;height:50px;background:rgba(244,239,230,.88);z-index:89"></div>')
     col = "rgba(255,255,255,.62)" if dark else "rgba(20,20,20,.6)"
     return (f'<!doctype html><html><head><meta charset="utf-8"><style>{FONTS}body{{margin:0;width:1920px;height:1080px;overflow:hidden;background:{bg};position:relative}}'
             f'.a{{position:absolute}}</style></head><body>{body}{GRAIN}'
@@ -83,6 +74,11 @@ def hl(t):
     return f'<span style="background:linear-gradient(transparent 50%,{SIG} 50%,{SIG} 92%,transparent 92%)">{t}</span>'
 
 
+def blk(t):
+    """Highlighter block for headlines on dark grounds: the whole word sits on yellow, set in charcoal."""
+    return f'<span style="background:{SIG};color:{INK};padding:0 12px;box-decoration-break:clone">{t}</span>'
+
+
 def wobble(cx, cy, rx, ry, seed=1):
     r = random.Random(seed); pts = []
     for i in range(80):
@@ -99,7 +95,8 @@ def tape(x, y, rot):
     return a(f'<div style="width:150px;height:40px;background:rgba(236,226,200,.85);transform:rotate({rot}deg);box-shadow:0 2px 4px rgba(0,0,0,.25)"></div>', x, y, "z-index:20")
 
 
-DESK = "background:#E9E1D2 url(/assets/ai/P1.jpg) center/cover"  # P1 cream desk plate (owner, 2026-11-19; MASTER_DIRECTIVES 8c), studio-finished by channels/design_kits/ai_finish.py
+DESK = ("background:#3A2A1C;background-image:repeating-linear-gradient(90deg,rgba(0,0,0,.08) 0 3px,transparent 3px 41px),"
+        "radial-gradient(ellipse at 40% 40%,#5A4128,#2A1D12 80%)")  # drawn walnut desk (2026-11-19: the AI desk plate P1 is retired, MASTER_DIRECTIVES 8c "never an AI desk")
 img = lambda f, w, h, extra="": f'<img src="/assets/{f}" style="width:{w}px;height:{h}px;object-fit:cover;display:block;{extra}">'
 cut = lambda f, w, extra="": f'<img src="/assets/{f}" style="width:{w}px;display:block;filter:drop-shadow(0 22px 22px rgba(0,0,0,.45));{extra}">'
 

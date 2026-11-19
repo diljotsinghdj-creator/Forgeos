@@ -49,6 +49,8 @@ else if(k==='pop'){st.opacity=Math.min(1,p*3);st.transform=`scale(${.4+.6*v+Math
 else if(k==='slam'){st.opacity=p>0?1:0;st.transform=`scale(${1+(1-p)*.6})`}
 else if(k==='snap')st.opacity=p>=1?1:0;
 else if(k==='grow'){st.transformOrigin='50% 100%';st.transform=`scaleY(${v})`}
+else if(k==='spin'){st.transform=`rotate(${-(1-v)*720}deg)`}
+else if(k==='push'){const x=Math.min(1,Math.max(0,(T-s)/(e-s)));st.transform=`scale(${1+.07*x})`;st.transformOrigin=st.transformOrigin||'50% 50%'}
 else if(k==='wipe')st.clipPath=`inset(-20px ${(1-v)*100}% -20px -20px)`;
 else if(k==='draw')el.querySelectorAll('[pathLength]').forEach(pa=>{pa.style.strokeDasharray=1;pa.style.strokeDashoffset=1-v;pa.style.opacity=p>0?1:0});
 else if(k==='flow')el.querySelectorAll('path').forEach(pa=>{pa.style.strokeDashoffset=-(T*s)})
