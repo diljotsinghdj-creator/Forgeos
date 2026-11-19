@@ -59,6 +59,16 @@ file for those, then apply the differences below. The owner's hard rules (CLAUDE
 | `collage-explainer` | collage scenes | Real photos in black and white only, never of identifiable people as the "bad" example. **AI image and video models are allowed wherever required** (owner, 2026-11-19; MASTER_DIRECTIVES §8b): labelled ILLUSTRATION, logged with model and prompt, never a real person's face, never passed off as evidence. |
 | `dataviz` | effect sizes and replication results | Show the effect size with its uncertainty where the paper gives it. Original vs replication side by side. Bars from zero. |
 
+## AI plates look like the channel, not like AI
+This follows MASTER_DIRECTIVES §8c (owner, 2026-11-19). Every AI plate:
+- is flat paper collage, with halftone, grain and sticker edges, in the channel palette;
+- uses the §8c prompt ending;
+- is finished in the studio: palette remap and grain, with every word and number added by the studio;
+- is cut out and placed on the canvas among the real and drawn pieces;
+- moves with studio parallax and camera moves, never AI morphing.
+
+Any plate that reads as "AI" at first glance is redone.
+
 ## Never
 - Pop-psychology claims without a study card.
 - Diagnosing the viewer or anyone else, or medical advice. Say "talk to a professional" where it matters.

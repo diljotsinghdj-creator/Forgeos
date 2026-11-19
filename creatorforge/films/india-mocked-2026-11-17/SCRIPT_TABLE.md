@@ -185,7 +185,9 @@ The report's five corrections were already in draft 2: Macaulay instead of Kipli
 - **How they're made:**
   - one take each, logged in `data/ai_ledger.json` with the model, prompt and credits;
   - labelled AI ILLUSTRATION on screen;
-  - in the palette (cream, charcoal, crimson, yellow) and in paper-collage texture.
+  - in the palette (cream, charcoal, crimson, yellow) and in paper-collage texture;
+  - built to the Vox look rule (MASTER_DIRECTIVES §8c): the §8c prompt ending, a studio finish (palette remap, grain, halftone),
+    cut out and placed on the desk, never full-screen gloss. Any plate that reads as "AI" is redone.
 
 | # | Beat | Plate | Why AI here |
 |---|------|-------|-------------|

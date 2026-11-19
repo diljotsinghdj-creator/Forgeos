@@ -64,6 +64,16 @@ differs from this file, this file wins. The owner's hard rules (CLAUDE.md, MASTE
 | `collage-explainer` | collage look | **AI image and video models are allowed wherever they help (owner, 2026-11-19; MASTER_DIRECTIVES §8c).** Each one is labelled AI ILLUSTRATION and logged. No faces of real people, no AI charts or maps, and never as evidence. Default to real photos (Pixabay, archives) with BiRefNet cut-outs, halftone, white sticker edge, torn paper, colour disc. |
 | `dataviz` | charts | Bars from zero, the one key value in the channel's signal colour, the rest neutral grey. Source line always. Illustrative data labelled. |
 
+## AI plates look like the channel, not like AI
+This follows MASTER_DIRECTIVES §8c (owner, 2026-11-19). Every AI plate:
+- is flat paper collage, with halftone, grain and sticker edges, in the channel palette;
+- uses the §8c prompt ending;
+- is finished in the studio: palette remap and grain, with every word and number added by the studio;
+- is cut out and placed on the canvas among the real and drawn pieces;
+- moves with studio parallax and camera moves, never AI morphing.
+
+Any plate that reads as "AI" at first glance is redone.
+
 ## Never
 - Copy Vox's or Johnny Harris's logos, intros, music, graphics or footage.
 - Draw on faces, or show AI faces of real people.

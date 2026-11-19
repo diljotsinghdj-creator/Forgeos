@@ -230,6 +230,28 @@ As applied:
 - **Print Facts evidence stays real.** Gate 3 (evidence first) is unchanged: a real document, photo or footage comes before the
   first explanation, and AI never stands in for it.
 - **Credits:** one take per plate by default. Options are made only where the owner asks to choose.
+- **AI must look Vox × Johnny Harris, never "AI"** (owner, 2026-11-19: "make sure that our ai thing remains like vox style"):
+  - **Look:**
+    - flat paper collage: cut-out edges, a white sticker border, halftone dots and visible paper grain;
+    - the channel palette only, plus the film's one accent;
+    - soft, flat light;
+    - never photoreal, never a glossy 3D render, never airbrushed fantasy art, and no lens flare, neon or HDR glow.
+  - **Prompt ending (every prompt):** "flat paper-collage editorial illustration, cut-out paper pieces with white sticker edges,
+    halftone print texture, visible paper grain, muted palette of [channel colours], soft flat light, no text, no faces, not
+    photorealistic, not 3D render".
+  - **Finish in the studio,** not in the model:
+    - the palette remap, grain, halftone and vignette are applied after the AI step, so the plate matches the drawn frames;
+    - text, labels, numbers and arrows are always added by the studio, never by AI.
+  - **Use AI as a piece of the collage,** not the whole shot. A plate is cut out and placed on the canvas (the desk, the grid)
+    among real documents and drawn elements.
+  - **Motion stays Vox:**
+    - the studio moves plates with parallax, slides, drops and camera pushes;
+    - AI video only for subtle paper motion, never morphing or melting;
+    - no AI motion on any element that carries a fact.
+  - **Reject and redo** any plate that fails the look:
+    - it reads as "AI" at first glance (plastic skin, too-smooth gradients, extra fingers, warped text);
+    - it breaks the palette;
+    - it doesn't sit next to the drawn frames on the contact sheet.
 
 ## 9. Free tools only (owner, 2026-11-13)
 The owner's words: "if something is paid, or we i have to pay later then drop it".
