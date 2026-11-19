@@ -9,9 +9,9 @@ from pathlib import Path
 
 D = Path(__file__).resolve().parent
 sys.path.insert(0, str(D))
-sys.path.insert(0, "/home/user/Forgeos/creatorforge/films/taxonomy-2026-11-15")
-sys.path.insert(0, "/home/user/Forgeos/creatorforge/films/vox-tools-2026-11-15")
-sys.path.insert(0, "/home/user/Forgeos/creatorforge/worker")
+sys.path.insert(0, "/home/user/forgeos/creatorforge/films/taxonomy-2026-11-15")
+sys.path.insert(0, "/home/user/forgeos/creatorforge/films/vox-tools-2026-11-15")
+sys.path.insert(0, "/home/user/forgeos/creatorforge/worker")
 sys.path.insert(0, str(D))                      # this folder first: its terrain/mask/relief write to ./maps
 import physics as PH          # noqa: E402  (vox-tools: HEAD / TAIL around a Rapier scene)
 import scenes3d as S3         # noqa: E402  (vox-tools: HEAD / TAIL around a bloom scene)

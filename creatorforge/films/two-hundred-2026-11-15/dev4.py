@@ -11,7 +11,7 @@ from collage2 import el, STILL, pin_dot, red_string, torn_label
 from dev2 import SIG, star4, torn_top, jag, H, outline
 
 D = Path(__file__).resolve().parent
-WORLD = json.load(open("/home/user/Forgeos/creatorforge/worker/creatorforge_worker/media/world.json"))
+WORLD = json.load(open("/home/user/forgeos/creatorforge/worker/creatorforge_worker/media/world.json"))
 INK, RED, CHALK = "#1C1C1C", "#C8312B", "#ECEADF"
 
 
@@ -549,7 +549,7 @@ def d_v_object_map(M, c, sc, typ, rnd):
     P = lambda lo, la: ((lo - box[0]) / (box[2] - box[0]) * 1000 + 40, (box[3] - la) / (box[3] - box[1]) * 800 + 380)
     if a["country"] == "India":
         import sys
-        sys.path.insert(0, "/home/user/Forgeos/creatorforge/worker")
+        sys.path.insert(0, "/home/user/forgeos/creatorforge/worker")
         from creatorforge_worker.media import maps
         rings = maps._find("India")["rings"]
         path = "".join("M" + " L".join("%.1f %.1f" % P(lo, la) for lo, la in r) + "Z" for r in rings if len(r) > 3)

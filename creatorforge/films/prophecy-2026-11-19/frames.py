@@ -8,7 +8,7 @@ from pathlib import Path
 
 D = Path(__file__).resolve().parent
 sys.path.insert(0, str(D))
-sys.path.insert(0, "/home/user/Forgeos/creatorforge/worker")
+sys.path.insert(0, "/home/user/forgeos/creatorforge/worker")
 import studio  # noqa: E402
 from studio import A, a, put, wobble  # noqa: E402
 
@@ -164,7 +164,7 @@ put("07_millerites", page(
     PAPER, "HISTORY: THE MILLERITE 'GREAT DISAPPOINTMENT', 22 OCT 1844 (WELL-ESTABLISHED); CITED BY FRS 1956 AS AN EARLIER CASE (KELLY 2025) · BROADSHEET IS A STUDIO RECONSTRUCTION"))
 
 # ---- the map: where it happened (Natural Earth) ---------------------------------------------------------------------------
-W = {c["n"]: c["r"] for c in json.load(open("/home/user/Forgeos/creatorforge/worker/creatorforge_worker/media/world.json"))["countries"]}
+W = {c["n"]: c["r"] for c in json.load(open("/home/user/forgeos/creatorforge/worker/creatorforge_worker/media/world.json"))["countries"]}
 LK = json.load(open(D / "data" / "lakes.json"))["lakes"]
 BOX = (-97.0, 39.5, -79.0, 49.5)
 PX = lambda lo, la: ((lo - BOX[0]) / (BOX[2] - BOX[0]) * 1920, (BOX[3] - la) / (BOX[3] - BOX[1]) * 1080)

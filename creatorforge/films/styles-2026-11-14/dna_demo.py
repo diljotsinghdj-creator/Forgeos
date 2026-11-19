@@ -1,7 +1,7 @@
 import json, subprocess, sys
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
-sys.path.insert(0, "/home/user/Forgeos/creatorforge/worker")
+sys.path.insert(0, "/home/user/forgeos/creatorforge/worker")
 D = Path(__file__).resolve().parent
 items = dict(json.load(open(D / "all_kinds.json")))
 KINDS = ["seats", "table", "flowchart", "bignumber", "pyramid"]

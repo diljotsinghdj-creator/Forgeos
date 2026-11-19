@@ -5,7 +5,7 @@ import math
 import sys
 from pathlib import Path
 
-sys.path.insert(0, "/home/user/Forgeos/creatorforge/channels/design_kits/collage")
+sys.path.insert(0, "/home/user/forgeos/creatorforge/channels/design_kits/collage")
 import collage2 as K
 from collage2 import el, STILL
 
@@ -22,7 +22,7 @@ def faces(*pairs):
 
 EXTRA = faces(("Plex", "ibm-plex-mono-latin-500-normal"), ("Caveat", "caveat-latin-700-normal"), ("Kalam", "kalam-latin-700-normal"),
               ("Mukta", "mukta-devanagari-800-normal"), ("Grotesk", "space-grotesk-latin-700-normal"), ("ISerif", "instrument-serif-latin-400-normal"))
-W = json.load(open("/home/user/Forgeos/creatorforge/worker/creatorforge_worker/media/world.json"))
+W = json.load(open("/home/user/forgeos/creatorforge/worker/creatorforge_worker/media/world.json"))
 raw = json.load(open(DATA / "raw.json"))
 
 

@@ -3,7 +3,7 @@ import json, math
 from pathlib import Path
 from PIL import Image, ImageDraw
 D = Path(__file__).resolve().parent
-W = json.load(open("/home/user/Forgeos/creatorforge/worker/creatorforge_worker/media/world.json"))
+W = json.load(open("/home/user/forgeos/creatorforge/worker/creatorforge_worker/media/world.json"))
 def merc(lon, lat):
     return (lon + 180) / 360, (1 - math.asinh(math.tan(math.radians(lat))) / math.pi) / 2
 def uv(name, lon, lat):

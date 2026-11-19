@@ -7,8 +7,8 @@ from pathlib import Path
 
 D = Path(__file__).resolve().parent
 sys.path.insert(0, str(D))
-sys.path.insert(0, "/home/user/Forgeos/creatorforge/films/taxonomy-2026-11-15")
-sys.path.insert(0, "/home/user/Forgeos/creatorforge/worker")
+sys.path.insert(0, "/home/user/forgeos/creatorforge/films/taxonomy-2026-11-15")
+sys.path.insert(0, "/home/user/forgeos/creatorforge/worker")
 H = D / "html"; H.mkdir(exist_ok=True)
 BLK, PARCH, RED, SIG, INK = "#1A1A1A", "#F4EFE6", "#D93829", "#F7D046", "#1A1A1A"
 FONTS = "".join(f"@font-face{{font-family:{n};src:url(/fonts/{f}.woff2)}}" for n, f in (

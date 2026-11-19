@@ -3,10 +3,10 @@
 word in signature yellow; then -14 LUFS via ffmpeg-skill. usage: captions.py in.mp4 out.mp4 [shorts|youtube] [script.txt] [printfacts|dragonpsych]"""
 import subprocess, sys, tempfile, wave
 from pathlib import Path
-sys.path.insert(0, "/home/user/Forgeos/creatorforge/worker")
+sys.path.insert(0, "/home/user/forgeos/creatorforge/worker")
 from creatorforge_worker.media.wordtimes import word_times
 
-FONTS = "/home/user/Forgeos/creatorforge/worker/creatorforge_worker/media/vendor/fonts"
+FONTS = "/home/user/forgeos/creatorforge/worker/creatorforge_worker/media/vendor/fonts"
 SKILL = Path(__file__).resolve().parent.parent / "ffmpeg-skill" / "scripts"
 src, out = sys.argv[1], sys.argv[2]
 plat = sys.argv[3] if len(sys.argv) > 3 else "youtube"

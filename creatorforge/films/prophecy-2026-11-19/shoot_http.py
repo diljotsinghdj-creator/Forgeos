@@ -8,9 +8,9 @@ class H(http.server.SimpleHTTPRequestHandler):
     def translate_path(self, path):
         p = path.split("?")[0]
         if p.startswith("/vendor/"):
-            return "/home/user/Forgeos/creatorforge/worker/creatorforge_worker/media" + p
+            return "/home/user/forgeos/creatorforge/worker/creatorforge_worker/media" + p
         if p.startswith("/fonts/"):
-            return "/home/user/Forgeos/creatorforge/worker/creatorforge_worker/media/vendor" + p
+            return "/home/user/forgeos/creatorforge/worker/creatorforge_worker/media/vendor" + p
         return str(D) + p
     def log_message(self, *a): pass
 srv = http.server.ThreadingHTTPServer(("127.0.0.1", 8765), H); threading.Thread(target=srv.serve_forever, daemon=True).start()

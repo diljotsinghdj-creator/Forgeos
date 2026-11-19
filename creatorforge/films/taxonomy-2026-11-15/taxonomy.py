@@ -5,7 +5,7 @@ import json, math, random
 from pathlib import Path
 D = Path(__file__).resolve().parent
 SIG = "#FFDD33"
-ICONS = json.load(open("/home/user/Forgeos/creatorforge/worker/creatorforge_worker/media/vendor/tabler_icons.json"))
+ICONS = json.load(open("/home/user/forgeos/creatorforge/worker/creatorforge_worker/media/vendor/tabler_icons.json"))
 FONTS = """@font-face{font-family:Anton;src:url(/fonts/anton-latin-400-normal.woff2)}@font-face{font-family:Plex;src:url(/fonts/ibm-plex-mono-latin-500-normal.woff2)}
 @font-face{font-family:ISerif;src:url(/fonts/instrument-serif-latin-400-italic.woff2)}@font-face{font-family:Grotesk;src:url(/fonts/space-grotesk-latin-700-normal.woff2)}
 @font-face{font-family:Caveat;src:url(/fonts/caveat-latin-700-normal.woff2)}@font-face{font-family:Playfair;src:url(/fonts/playfair-display-latin-900-normal.woff2)}"""

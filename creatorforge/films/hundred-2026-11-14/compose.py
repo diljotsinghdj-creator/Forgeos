@@ -7,7 +7,7 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageOps
 
-sys.path.insert(0, "/home/user/Forgeos/creatorforge/channels/design_kits/collage")
+sys.path.insert(0, "/home/user/forgeos/creatorforge/channels/design_kits/collage")
 import collage2 as K
 from collage2 import el, STILL
 from topics import DP, PF

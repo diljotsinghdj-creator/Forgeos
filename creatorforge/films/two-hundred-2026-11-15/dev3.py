@@ -9,7 +9,7 @@ from collage2 import el, STILL, pin_dot, torn_label, wood
 from dev2 import SIG, star4, torn_top, jag, H, outline
 
 D = Path(__file__).resolve().parent
-WORLD = json.load(open("/home/user/Forgeos/creatorforge/worker/creatorforge_worker/media/world.json"))
+WORLD = json.load(open("/home/user/forgeos/creatorforge/worker/creatorforge_worker/media/world.json"))
 AFRICA = {"Algeria", "Angola", "Benin", "Botswana", "Burkina Faso", "Burundi", "Cameroon", "Central African Rep.", "Chad", "Congo", "Côte d'Ivoire",
           "Dem. Rep. Congo", "Djibouti", "Egypt", "Eq. Guinea", "Eritrea", "Ethiopia", "Gabon", "Gambia", "Ghana", "Guinea", "Guinea-Bissau", "Kenya",
           "Lesotho", "Liberia", "Libya", "Madagascar", "Malawi", "Mali", "Mauritania", "Morocco", "Mozambique", "Namibia", "Niger", "Nigeria", "Rwanda",

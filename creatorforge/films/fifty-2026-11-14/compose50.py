@@ -7,8 +7,8 @@ import re
 import sys
 from pathlib import Path
 
-sys.path.insert(0, "/home/user/Forgeos/creatorforge/channels/design_kits/collage")
-sys.path.insert(0, "/home/user/Forgeos/creatorforge/worker")
+sys.path.insert(0, "/home/user/forgeos/creatorforge/channels/design_kits/collage")
+sys.path.insert(0, "/home/user/forgeos/creatorforge/worker")
 import collage2 as K
 from collage2 import el, STILL
 from concepts import C
@@ -190,7 +190,7 @@ def d_routemap(c, sc, typ, rnd):
     """A dark halftone country on grey, a white swath, a red marker route that wiggles to a blue pulse dot."""
     from creatorforge_worker.media import maps
     a = c[5]
-    W = json.load(open("/home/user/Forgeos/creatorforge/worker/creatorforge_worker/media/world.json"))
+    W = json.load(open("/home/user/forgeos/creatorforge/worker/creatorforge_worker/media/world.json"))
     if a["country"] == "World":
         box = (-20, -5, 135, 62)
         names = None

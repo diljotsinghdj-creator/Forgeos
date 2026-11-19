@@ -2,7 +2,7 @@ import sys
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 D = Path(__file__).resolve().parent
-F = "/home/user/Forgeos/creatorforge/worker/creatorforge_worker/media/vendor/fonts/"
+F = "/home/user/forgeos/creatorforge/worker/creatorforge_worker/media/vendor/fonts/"
 NAMES = {"map": "Route map", "globe": "Globe", "fly": "Fly-in (real OpenStreetMap)", "shade": "Shaded countries", "pinmap": "Pin on paper map",
          "route": "Dashed trade route", "clockmap": "Clock map", "heatmap": "Heat map", "arrows": "Movement arrows", "railmap": "Rail / corridor map",
          "sizemap": "True-size overlay", "borders": "Historical borders 1914 → today", "morph": "Zoom-morph", "shrink": "Shrinking shoreline",

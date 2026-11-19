@@ -10,7 +10,7 @@ from collage2 import el, STILL, red_string, pin_dot, torn_label
 FILMS = Path(__file__).resolve().parent.parent
 SIG = "#FFDD33"
 FACES2 = "<style>" + "".join(
-    f"@font-face{{font-family:{n};src:url({(Path('/home/user/Forgeos/creatorforge/worker/creatorforge_worker/media/vendor/fonts') / (p + '.woff2')).as_uri()})}}"
+    f"@font-face{{font-family:{n};src:url({(Path('/home/user/forgeos/creatorforge/worker/creatorforge_worker/media/vendor/fonts') / (p + '.woff2')).as_uri()})}}"
     for n, p in (("Caveat", "caveat-latin-700-normal"), ("Shadows", "shadows-into-light-latin-400-normal"), ("ISerifI", "instrument-serif-latin-400-italic"),
                  ("PlayfairI2", "playfair-display-latin-700-italic"), ("Grotesk5", "space-grotesk-latin-500-normal"))) + "</style>"
 

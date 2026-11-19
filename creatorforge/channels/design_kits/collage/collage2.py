@@ -8,7 +8,7 @@ import random
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-FONTS = Path("/home/user/Forgeos/creatorforge/worker/creatorforge_worker/media/vendor/fonts")
+FONTS = Path("/home/user/forgeos/creatorforge/worker/creatorforge_worker/media/vendor/fonts")
 INK, RED, SIG, CREAM, KHAKI = "#141414", "#C9302C", "#FFDD33", "#F4EEDF", "#B8A27A"
 
 

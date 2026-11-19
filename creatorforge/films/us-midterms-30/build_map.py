@@ -2,7 +2,7 @@
 import json, math
 from pathlib import Path
 D = Path(__file__).resolve().parent
-st = json.load(open("/home/user/Forgeos/creatorforge/worker/creatorforge_worker/media/states.json"))["United States of America"]
+st = json.load(open("/home/user/forgeos/creatorforge/worker/creatorforge_worker/media/states.json"))["United States of America"]
 p1, p2, p0, l0 = map(math.radians, (29.5, 45.5, 37.5, -96))
 n = (math.sin(p1) + math.sin(p2)) / 2; C = math.cos(p1) ** 2 + 2 * n * math.sin(p1); r0 = math.sqrt(C - 2 * n * math.sin(p0)) / n
 def proj(lon, lat):

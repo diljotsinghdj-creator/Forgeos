@@ -2,7 +2,7 @@
 import json, subprocess, sys
 from pathlib import Path
 D = Path(__file__).resolve().parent
-sys.path.insert(0, "/home/user/Forgeos/creatorforge/worker")
+sys.path.insert(0, "/home/user/forgeos/creatorforge/worker")
 from creatorforge_worker.studio import score
 durs = json.load(open(D / "durations.json")); ks = list(durs)
 starts, t = {}, 0.0
