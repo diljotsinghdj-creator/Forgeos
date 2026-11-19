@@ -29,6 +29,8 @@ def logo_d(s=1.0, dark=True):
 
 
 def page(body, bg=PARCH, src="", dark=False, logo=True):
+    if "AI1.jpg" in body:
+        src += " · DESK: AI ILLUSTRATION"
     col = "rgba(255,255,255,.62)" if dark else "rgba(20,20,20,.6)"
     return (f'<!doctype html><html><head><meta charset="utf-8"><style>{FONTS}body{{margin:0;width:1920px;height:1080px;overflow:hidden;background:{bg};position:relative}}'
             f'.a{{position:absolute}}</style></head><body>{body}{GRAIN}'
@@ -90,7 +92,7 @@ def tape(x, y, rot):
     return a(f'<div style="width:150px;height:40px;background:rgba(236,226,200,.85);transform:rotate({rot}deg);box-shadow:0 2px 4px rgba(0,0,0,.25)"></div>', x, y, "z-index:20")
 
 
-DESK = "background:#3A2A1C;background-image:repeating-linear-gradient(90deg,rgba(0,0,0,.08) 0 3px,transparent 3px 41px),radial-gradient(ellipse at 40% 40%,#5A4128,#2A1D12 80%)"
+DESK = "background:#3A2A1C url(/assets/ai/AI1.jpg) center/cover"  # AI·1 walnut desk plate (owner, 2026-11-19; MASTER_DIRECTIVES 8c), studio-finished by ai_finish.py
 img = lambda f, w, h, extra="": f'<img src="/assets/{f}" style="width:{w}px;height:{h}px;object-fit:cover;display:block;{extra}">'
 cut = lambda f, w, extra="": f'<img src="/assets/{f}" style="width:{w}px;display:block;filter:drop-shadow(0 22px 22px rgba(0,0,0,.45));{extra}">'
 

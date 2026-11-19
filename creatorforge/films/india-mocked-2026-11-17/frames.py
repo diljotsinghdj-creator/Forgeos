@@ -54,7 +54,7 @@ def post(label, views, h=250, cap=""):
 
 
 # ==== 1 HOOK =================================================================================================
-feed = "".join(post(l, v) for l, v in (("CLIP: TRAFFIC JAM", "1.2M"), ("CLIP: STREET FOOD", "4.1M"), ("CLIP: CROWDED TRAIN", "2.8M"), ("CLIP: MORE TRAFFIC", "900K"), ("CLIP: STREET FOOD, AGAIN", "3.3M")))
+feed = "".join(post(l, v) for l, v in (("CLIP: TRAFFIC JAM", "1.2M"), ("CLIP: CROWDED TRAIN", "2.8M"), ("CLIP: STREET STALL", "4.1M"), ("CLIP: TRAFFIC JAM (AGAIN)", "3.3M"), ("CLIP: TRAFFIC JAM (AGAIN, AGAIN)", "900K")))
 put("01_feed", page(
     a(f'<div style="width:1920px;height:1080px;background:#0E1116"></div>', 0, 0)
     + A(phone(f'<div data-anim="up 0 1" style="position:absolute;left:0;right:0;top:-40px">{feed}</div>'), 745, 110, "fade 0 .08")
@@ -298,7 +298,7 @@ put("19_notinterested", page(
 put("20_end", page(
     a(f'<div style="width:1920px;height:1080px;{DESK}"></div>', 0, 0)
     + card(f'<div style="font:400 58px/1.3 ISerif;color:#2A2118">India isn\'t a caricature. It\'s a country of about 1.4 billion people that the feed keeps editing down to one drain.</div>', 1300, 300, 260, "up 0 .2", -1, "#F4ECD8")
-    + A(f'<div style="font:700 60px/1.1 Caveat;color:{SIG};transform:rotate(-2deg)">"…a joke that hasn\'t been funny since 1857."</div>', 340, 720, "fade .5 .7")
+    + A(f'<div style="font:700 60px/1.1 Caveat;color:{SIG};transform:rotate(-2deg)">"Gandhi already reviewed it. In 1927. One star."</div>', 340, 720, "fade .5 .7")
     + tag("CALLBACK · SEE: DRAIN INSPECTOR, 1927", 1200, 880, 2, "snap .85 .85"),
     "#2A1D12", "POPULATION: UN WORLD POPULATION PROSPECTS (ABOUT 1.4 BILLION; CHECK LATEST) · PRINT FACTS · SOURCES IN THE DESCRIPTION", dark=True))
 print("ok")

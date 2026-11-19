@@ -101,3 +101,21 @@ should be checked too.
   stopped.
 - **Added instead:** the "Named, not viral" card now shows Kalpana Chawla and Sunita Williams. Williams is a NASA astronaut who
   commanded the International Space Station. Both are NASA portraits, public domain.
+
+## Added 2026-11-19: six AI plates for draft 3.1 (sheet `AI_PLATES_1`)
+- **What you'll see:**
+  - **03b_tiger:** a paper tiger in the mangroves with "0 VIEWS", above the real NTCA count (3,682).
+  - **11b_slot:** the OUTRAGE slot machine. The payout rule (TechCrunch) is on screen, and the view count is labelled illustrative.
+  - **13b_inspector:** the 1920s drain inspector, seen from behind, with a blue-tick phone. It's the Gandhi 1927 callback.
+  - **19b_button:** a paper finger pressing "NOT INTERESTED".
+  - **20b_edit:** the editing table, cut down to one frame of a drain: "1.4 billion people → one frame".
+  - **The desk (AI·1):** it now sits under every desk frame (02_receipt, 20_end and the rest), noted in each source line.
+- **Script fixes carried into the frames:**
+  - the feed now loops TRAFFIC JAM (AGAIN), with no street-food joke;
+  - the end line is now "Gandhi already reviewed it. In 1927. One star."
+- **House rules:**
+  - Every plate is labelled AI ILLUSTRATION and logged in `data/ai_ledger.json` with its prompt and generation id.
+  - There are no faces and no real people.
+  - No chart, number or map is AI. Every word on the plates was added by the studio.
+  - Each plate was finished in the studio (`ai_finish.py`: palette pull, grain, halftone).
+- **Credits:** 6 plates, one take each, about 1,142 ElevenLabs credits.
