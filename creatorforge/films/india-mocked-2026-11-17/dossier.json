@@ -232,5 +232,29 @@
   "source": "NASA biography",
   "status": "well-established; not re-fetched",
   "frames": "18b"
+ },
+ {
+  "claim": "Slurs aimed at Indian Americans, some starting on 4chan, are entering everyday language",
+  "source": "CNN, 16 Nov 2025 (edition.cnn.com/2025/11/16/us/indian-americans-racism-maga-cec)",
+  "status": "reported; origin attributed to CNN, no date claimed",
+  "frames": "12"
+ },
+ {
+  "claim": "How much of the Dec 2024 H-1B backlash was racist rather than policy objection is contested; H-1B critics include labour advocates arguing about wages",
+  "source": "CNBC 27 Dec 2024; reports/Why India is mocked online.md",
+  "status": "contested; film separates policy criticism from slurs",
+  "frames": "13"
+ },
+ {
+  "claim": "TRAI presentation slide titled 'Extraordinary Achievements of India'",
+  "source": "TRAI presentation, 31 May 2021 (trai.gov.in)",
+  "status": "to check: exact wording against the original slide",
+  "frames": "08b, 18"
+ },
+ {
+  "claim": "Facebook Papers Kerala test-account content was mostly domestic communal and anti-Pakistan hate, not foreign 'dirty India' content",
+  "source": "Al Jazeera 25 Oct 2021; AP",
+  "status": "reported",
+  "frames": "14"
  }
 ]
