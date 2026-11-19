@@ -1,5 +1,5 @@
 """AI plate frames for draft 3.1 (owner, 2026-11-19; MASTER_DIRECTIVES 8c). Runs after frames.py.
-Plates: assets/ai/AI1-6.jpg (raw in assets/ai_raw, finished by ai_finish.py), logged in data/ai_ledger.json.
+Plates: assets/ai/AI1-6.jpg (raw in assets/ai_raw, finished by channels/design_kits/ai_finish.py), logged in data/ai_ledger.json.
 Every word, number, tick and circle here is drawn by the studio; the plates carry no text."""
 from frames import tag, page, A, a, put, hl, wobble, RED, SIG, INK, PARCH  # noqa: F401  (frames.py re-renders first)
 

@@ -718,5 +718,25 @@
   "engine": "the feed audit",
   "look": "AI paper-collage plates finished in the studio: walnut desk, paper tiger with 0 VIEWS, OUTRAGE slot machine, faceless 1920s drain inspector with blue-tick phone, finger on NOT INTERESTED, editing table cut to one drain frame",
   "shots": 5
+ },
+ {
+  "id": "pepper-ai-plates",
+  "kind": "visuals",
+  "channel": "printfacts",
+  "date": "2026-11-19",
+  "topic": "pepper as money",
+  "engine": "pepper as money",
+  "look": "AI paper-collage plates finished in the studio: cream linen desk, Rome besieged 408, Roman monsoon ship, faceless merchant with glowing pepper sack, 15th-c. relay runners passing a pepper sack, crown falling off a peppercorn",
+  "shots": 5
+ },
+ {
+  "id": "prophecy-ai-plates-2",
+  "kind": "visuals",
+  "channel": "dragonpsych",
+  "date": "2026-11-19",
+  "topic": "When Prophecy Fails",
+  "engine": "the countdown",
+  "look": "AI paper-collage plates, Dragon Psychology palette: slate study desk, padlocked membership card, three ringing 1950s phones, peg-board task, leaning textbook stack, blank head silhouette with a pressure valve",
+  "shots": 5
  }
 ]

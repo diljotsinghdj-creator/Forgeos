@@ -15,11 +15,13 @@ from studio import A, a, put, wobble  # noqa: E402
 SL, PAPER, CO, AM, INKD = "#141824", "#F0F4F8", "#2B6CB0", "#ED8936", "#1F2633"
 studio.SIG = AM
 GRID = f"background:{PAPER};background-image:linear-gradient(rgba(43,108,176,.10) 1px,transparent 1px),linear-gradient(90deg,rgba(43,108,176,.10) 1px,transparent 1px);background-size:40px 40px"
-SLATE = f"background:{SL};background-image:radial-gradient(rgba(240,244,248,.05) 1px,transparent 1.5px);background-size:6px 6px"
+SLATE = f"background:{SL} url(/assets/ai/F1.jpg) center/cover"  # F1 slate study-desk plate (owner, 2026-11-19; MASTER_DIRECTIVES 8b/8c), finished by channels/design_kits/ai_finish.py --channel dp
 hl = lambda t: f'<span style="background:linear-gradient(transparent 52%,{AM} 52%,{AM} 92%,transparent 92%)">{t}</span>'
 
 
 def page(body, bg=PAPER, src="", dark=False):
+    if "F1.jpg" in body:
+        src += " · DESK: AI ILLUSTRATION"
     return studio.page(body, bg, src, dark=dark, logo=False)
 
 

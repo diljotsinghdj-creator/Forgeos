@@ -12,7 +12,7 @@
   ],
   "takes": 1,
   "credits": 190.4,
-  "finish": "ai_finish.py (palette pull 0.35, grain, halftone, vignette) -> assets/ai/AI1.jpg",
+  "finish": "channels/design_kits/ai_finish.py (palette pull 0.35, grain, halftone, vignette) -> assets/ai/AI1.jpg",
   "label_on_screen": "AI ILLUSTRATION (desk: in the source line)",
   "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8c)"
  },
@@ -29,7 +29,7 @@
   ],
   "takes": 1,
   "credits": 190.4,
-  "finish": "ai_finish.py (palette pull 0.35, grain, halftone, vignette) -> assets/ai/AI2.jpg",
+  "finish": "channels/design_kits/ai_finish.py (palette pull 0.35, grain, halftone, vignette) -> assets/ai/AI2.jpg",
   "label_on_screen": "AI ILLUSTRATION (desk: in the source line)",
   "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8c)"
  },
@@ -46,7 +46,7 @@
   ],
   "takes": 1,
   "credits": 190.4,
-  "finish": "ai_finish.py (palette pull 0.35, grain, halftone, vignette) -> assets/ai/AI3.jpg",
+  "finish": "channels/design_kits/ai_finish.py (palette pull 0.35, grain, halftone, vignette) -> assets/ai/AI3.jpg",
   "label_on_screen": "AI ILLUSTRATION (desk: in the source line)",
   "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8c)"
  },
@@ -63,7 +63,7 @@
   ],
   "takes": 1,
   "credits": 190.4,
-  "finish": "ai_finish.py (palette pull 0.35, grain, halftone, vignette) -> assets/ai/AI4.jpg",
+  "finish": "channels/design_kits/ai_finish.py (palette pull 0.35, grain, halftone, vignette) -> assets/ai/AI4.jpg",
   "label_on_screen": "AI ILLUSTRATION (desk: in the source line)",
   "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8c)"
  },
@@ -80,7 +80,7 @@
   ],
   "takes": 1,
   "credits": 190.4,
-  "finish": "ai_finish.py (palette pull 0.35, grain, halftone, vignette) -> assets/ai/AI5.jpg",
+  "finish": "channels/design_kits/ai_finish.py (palette pull 0.35, grain, halftone, vignette) -> assets/ai/AI5.jpg",
   "label_on_screen": "AI ILLUSTRATION (desk: in the source line)",
   "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8c)"
  },
@@ -97,7 +97,7 @@
   ],
   "takes": 1,
   "credits": 190.4,
-  "finish": "ai_finish.py (palette pull 0.35, grain, halftone, vignette) -> assets/ai/AI6.jpg",
+  "finish": "channels/design_kits/ai_finish.py (palette pull 0.35, grain, halftone, vignette) -> assets/ai/AI6.jpg",
   "label_on_screen": "AI ILLUSTRATION (desk: in the source line)",
   "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8c)"
  }

@@ -1,0 +1,104 @@
+[
+ {
+  "label": "P1",
+  "use": "cream desk (all desk frames)",
+  "generation_id": "CrbI6Wf5BVgu9DTccZ18",
+  "flow_id": "UKqrgruhJAMbRscLiUYe",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "Top-down view of an empty pale cream archival work desk covered in old linen bookbinding cloth, faint ink stains, a few scattered black peppercorns near one corner, soft light from the top left, gentle vignette, large empty space for documents to be placed later, filling the whole 16:9 frame. flat paper-collage editorial illustration, cut-out paper pieces with white sticker edges, halftone print texture, visible paper grain, muted palette of archival cream #F4EFE6, ink charcoal #1A1A1A, investigative crimson #D93829, highlighter yellow #F7D046, soft flat light, no text, no faces, not photorealistic, not 3D render",
+  "size": [
+   1280,
+   720
+  ],
+  "takes": 1,
+  "credits": 190.4,
+  "finish": "channels/design_kits/ai_finish.py --channel pf",
+  "label_on_screen": "AI ILLUSTRATION (desk: in the source line)",
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)"
+ },
+ {
+  "label": "P2",
+  "use": "02a_siege (1 \u00b7 0:13)",
+  "generation_id": "5zdw4NsSd1pe1LDjLWp9",
+  "flow_id": "UKqrgruhJAMbRscLiUYe",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "The walls and gates of ancient Rome at dusk in the year 408, seen from outside, encircled by a besieging army camp: rows of tents, campfire smoke and tiny distant soldier silhouettes with spears, no visible faces, the city behind the walls dim and quiet. Wide 16:9 composition with empty sky at the top. flat paper-collage editorial illustration, cut-out paper pieces with white sticker edges, halftone print texture, visible paper grain, muted palette of archival cream #F4EFE6, ink charcoal #1A1A1A, investigative crimson #D93829, highlighter yellow #F7D046, soft flat light, no text, no faces, not photorealistic, not 3D render",
+  "size": [
+   1280,
+   720
+  ],
+  "takes": 1,
+  "credits": 190.4,
+  "finish": "channels/design_kits/ai_finish.py --channel pf",
+  "label_on_screen": "AI ILLUSTRATION (desk: in the source line)",
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)"
+ },
+ {
+  "label": "P3",
+  "use": "08a_ship (2 \u00b7 1:28)",
+  "generation_id": "Qfi4OE89dHtiu0jHlqDN",
+  "flow_id": "UKqrgruhJAMbRscLiUYe",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "A single Roman merchant cargo ship of the 1st century, side view, one large square sail full of wind, amphorae and sacks on deck, isolated on a plain flat cream background with nothing else (to be cut out and placed on a map later), no people visible. 16:9 composition, ship centred, occupying the middle half. flat paper-collage editorial illustration, cut-out paper pieces with white sticker edges, halftone print texture, visible paper grain, muted palette of archival cream #F4EFE6, ink charcoal #1A1A1A, investigative crimson #D93829, highlighter yellow #F7D046, soft flat light, no text, no faces, not photorealistic, not 3D render",
+  "size": [
+   1280,
+   720
+  ],
+  "takes": 1,
+  "credits": 190.4,
+  "finish": "channels/design_kits/ai_finish.py --channel pf",
+  "label_on_screen": "AI ILLUSTRATION (desk: in the source line)",
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)"
+ },
+ {
+  "label": "P4",
+  "use": "10a_sack (3 \u00b7 3:12)",
+  "generation_id": "4IpE9Mk6VDCGhlio2ESV",
+  "flow_id": "UKqrgruhJAMbRscLiUYe",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "A medieval merchant seen entirely from behind, as a cut-out paper figure in a hooded cloak and boots, walking away while carrying one bulging burlap sack of black peppercorns on his shoulder; the sack gives off a soft golden glow like treasure, a few peppercorns spilling. Face not visible. Plain cream paper background. 16:9 composition, figure on the right third. flat paper-collage editorial illustration, cut-out paper pieces with white sticker edges, halftone print texture, visible paper grain, muted palette of archival cream #F4EFE6, ink charcoal #1A1A1A, investigative crimson #D93829, highlighter yellow #F7D046, soft flat light, no text, no faces, not photorealistic, not 3D render",
+  "size": [
+   1280,
+   720
+  ],
+  "takes": 1,
+  "credits": 190.4,
+  "finish": "channels/design_kits/ai_finish.py --channel pf",
+  "label_on_screen": "AI ILLUSTRATION (desk: in the source line)",
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)"
+ },
+ {
+  "label": "P5",
+  "use": "13a_relay (3 \u00b7 5:00); second take, the first (oC9mwmhAXrAT4dhHPJyG) rejected: anachronistic pharaoh headdress",
+  "generation_id": "21X7SkIRnx0StRGo2gla",
+  "flow_id": "UKqrgruhJAMbRscLiUYe",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "A relay race of five paper cut-out runners from the 1400s spice trade, shown as flat side-view silhouettes with no facial features, each in simple plain 15th-century working clothes (a tunic and sash, a long robe, a short cloak, a merchant's doublet and cap, a shopkeeper's apron), no royal or ancient costumes, passing one small sack of pepper from hand to hand like a baton across a long horizontal strip; each runner holds out an open palm for a coin. Plain cream background. Wide 16:9 composition. flat paper-collage editorial illustration, cut-out paper pieces with white sticker edges, halftone print texture, visible paper grain, muted palette of archival cream #F4EFE6, ink charcoal #1A1A1A, investigative crimson #D93829, highlighter yellow #F7D046, soft flat light, no text, no faces, not photorealistic, not 3D render",
+  "size": [
+   1280,
+   720
+  ],
+  "takes": 2,
+  "credits": 380.8,
+  "finish": "channels/design_kits/ai_finish.py --channel pf",
+  "label_on_screen": "AI ILLUSTRATION (desk: in the source line)",
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)"
+ },
+ {
+  "label": "P6",
+  "use": "14a_demotion (4 \u00b7 6:17)",
+  "generation_id": "3kxFscBoxiC8KBQA0moD",
+  "flow_id": "UKqrgruhJAMbRscLiUYe",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "A sight gag about a demotion: a small golden crown tumbling off a single large black peppercorn, which has slid down from a gilded throne onto an ordinary dinner plate beside a plain pepper shaker and a fork. The throne is now empty in the background. Plain cream paper background. 16:9 composition. flat paper-collage editorial illustration, cut-out paper pieces with white sticker edges, halftone print texture, visible paper grain, muted palette of archival cream #F4EFE6, ink charcoal #1A1A1A, investigative crimson #D93829, highlighter yellow #F7D046, soft flat light, no text, no faces, not photorealistic, not 3D render",
+  "size": [
+   1280,
+   720
+  ],
+  "takes": 1,
+  "credits": 190.4,
+  "finish": "channels/design_kits/ai_finish.py --channel pf",
+  "label_on_screen": "AI ILLUSTRATION (desk: in the source line)",
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)"
+ }
+]

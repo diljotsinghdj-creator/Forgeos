@@ -117,5 +117,5 @@ should be checked too.
   - Every plate is labelled AI ILLUSTRATION and logged in `data/ai_ledger.json` with its prompt and generation id.
   - There are no faces and no real people.
   - No chart, number or map is AI. Every word on the plates was added by the studio.
-  - Each plate was finished in the studio (`ai_finish.py`: palette pull, grain, halftone).
+  - Each plate was finished in the studio (`channels/design_kits/ai_finish.py`: palette pull, grain, halftone).
 - **Credits:** 6 plates, one take each, about 1,142 ElevenLabs credits.

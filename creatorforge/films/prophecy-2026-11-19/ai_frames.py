@@ -69,4 +69,47 @@ put("24_end", page(
     + A(f'<div style="font:400 50px/1.3 ISerif;color:{PAPER};text-align:center;width:1920px;text-shadow:0 2px 14px rgba(0,0,0,.8)">The aliens never came.<br>Seventy years later, <span style="color:{AM}">the truth did</span>, a little late.</div>', 0, 440, "fade .45 .65", "z-index:40")
     + LBL(1700, 1000),
     "#141824", "DRAGON PSYCHOLOGY · SOURCES IN THE DESCRIPTION · " + AISRC, dark=True))
+
+# ---- Round 2 plates (owner, 2026-11-19: "do the same"): F1 desk (via SLATE in frames.py), F2-F6 below -------------------------
+PLATE = lambda f: f'<img src="/assets/ai/{f}.jpg" style="width:1920px;height:1080px;display:block">'
+BAND = a(f'<div style="width:1920px;height:50px;background:rgba(240,244,248,.9)"></div>', 0, 1030, "z-index:89")
+panel = lambda inner, x, y, w, anim="up .1 .25": A(f'<div style="width:{w}px;background:{PAPER};padding:24px 30px;box-shadow:0 18px 34px rgba(10,14,24,.35);border-top:8px solid {CO}">{inner}</div>', x, y, anim, "z-index:40")
+H = lambda h, size=80: f'<div style="font:400 {size}px/0.95 Anton;color:{SL}">{h}</div>'
+T = lambda t, c=None: f'<div style="display:inline-block;margin-top:16px;background:{SL};color:{PAPER};font:500 18px Plex;letter-spacing:3px;padding:6px 10px">{t}</div>'
+head = lambda h, x, y, anim="up .1 .25", size=84, col=SL: A(f'<div style="font:400 {size}px/0.95 Anton;color:{col}">{h}</div>', x, y, anim, "z-index:40")
+
+# F6 · the membership card (2 · 1:21)
+put("06b_card", page(
+    a(PLATE("F6"), 0, 0) + BAND + chapter(2, "WHY BRAINS DEFEND BELIEFS")
+    + panel(H(f'A BELIEF IS A<br>{hl("MEMBERSHIP CARD")}', 72) + T("CANCELLATION: NOT OFFERED"), 110, 150, 560) + LBL(110, 990),
+    PAPER, "THEORY FRAMING: MERCIER & SPERBER (2011), DEBATED · METAPHOR · " + AISRC))
+
+# F2 · the phones (3 · 2:57)
+put("11b_phones", page(
+    a(PLATE("F2"), 0, 0) + BAND + chapter(3, "THE NIGHT")
+    + panel(H(f'SUDDENLY, {hl("PUBLICITY")}', 72) + '<div style="font:400 32px/1.3 ISerif;color:#3A4456;margin-top:12px">The group phoned the newspapers and started recruiting, according to the 1956 book.</div>' + T("THE BOOK'S VERSION · DISPUTED IN CHAPTER 4"), 110, 130, 760) + LBL(110, 990),
+    PAPER, "CLAIM: FESTINGER, RIECKEN & SCHACHTER, WHEN PROPHECY FAILS (1956); CONTESTED BY KELLY 2025 · " + AISRC))
+
+# F3 · the peg board (3 · 3:35)
+put("13b_pegs", page(
+    a(PLATE("F3"), 0, 0) + BAND
+    + panel(H(f'TURN EACH PEG<br>A QUARTER TURN.<br>{hl("REPEAT.")}', 64) + T("FESTINGER & CARLSMITH · 1959") + '<br>' + T("FUN LEVEL: STATISTICALLY ZERO"), 1240, 110, 560) + LBL(110, 990),
+    PAPER, "TASK: FESTINGER & CARLSMITH (1959), J. ABNORMAL & SOCIAL PSYCHOLOGY 58 · ILLUSTRATION OF THE TASK, NOT THE LAB · " + AISRC))
+
+# F5 · the textbooks (5 · 6:46)
+put("22b_textbooks", page(
+    a(PLATE("F5"), 0, 0) + BAND + chapter(5, "THE IRONY")
+    + head(f'THE STUDY ABOUT<br>DOUBLING DOWN…', 110, 170, "up .05 .2", 80)
+    + head(f'…GOT<br>{hl("DOUBLED DOWN ON")}', 110, 560, "slam .6 .62", 70)
+    + tag("70 YEARS OF TEXTBOOKS", 110, 400, -1.5, "snap .3 .3") + LBL(110, 990),
+    PAPER, "TEXTBOOKS ILLUSTRATIVE, NO REAL TITLES · " + AISRC))
+
+# F4 · the valve in your head (5 · 7:03)
+put("23b_head", page(
+    a(PLATE("F4"), 0, 0) + BAND
+    + head(f'THE SAME VALVE<br>{hl("SITS IN YOUR HEAD")}', 1080, 170, "up .1 .25", 80)
+    + "".join(A(f'<div style="background:{PAPER};color:{c};font:500 20px Plex;letter-spacing:3px;padding:6px 10px;box-shadow:4px 4px 0 rgba(0,0,0,.25)">{t}</div>', 1080, y, f"fade {s} {s + .08:.2f}", "z-index:40")
+              for t, y, s, c in (("CHANGE THE BELIEF", 470, .4, SL), ("IGNORE IT", 530, .5, SL), ("ADD A NEW STORY", 590, .6, AM)))
+    + tag("METAPHOR, NOT ANATOMY", 1080, 700, 1.5, "snap .2 .2") + LBL(110, 990),
+    PAPER, "METAPHOR, NOT ANATOMY · THE THREE OUTLETS FOLLOW DISSONANCE THEORY (FESTINGER 1957) · " + AISRC))
 print("ok")

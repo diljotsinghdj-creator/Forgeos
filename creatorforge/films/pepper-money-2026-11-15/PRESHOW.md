@@ -65,3 +65,19 @@ structure and puts the narration in a John Oliver satirical voice. There is no v
 ## Still to decide before the video
 - **Go** or changes.
 - **Voice:** the Kokoro stand-in (am_onyx), or your ElevenLabs voice with your permission.
+
+## Added 2026-11-19: six AI plates (sheet `AI_PLATES_1`)
+- **What you'll see:**
+  - **The cream desk (P1)** now sits under every desk frame, noted in the source line. To keep it readable, desk pages use dark type, crimson handwriting, a cream logo patch and a source band.
+  - **02a_siege:** Rome surrounded, 408.
+  - **08a_ship:** the monsoon ship, Berenike → Muziris.
+  - **10a_sack:** "a fortune you can carry on your shoulder".
+  - **13a_relay:** the relay race, ~3 → ~80 ducats (UNESCO). No middle prices were invented.
+  - **14a_demotion:** "the greatest demotion in culinary history".
+- **House rules:**
+  - Each plate is labelled AI ILLUSTRATION and logged in `data/ai_ledger.json`.
+  - No faces or real people. Runners and the merchant are faceless and illustrative.
+  - No AI chart, number or map. Every word is set by the studio.
+  - Each plate is finished with `channels/design_kits/ai_finish.py --channel pf`.
+- **One plate was redone:** the first relay take dressed a runner as a pharaoh, which is wrong for the 1400s. About 1,333 credits in all.
+- **Still to fix:** the title card's subtitle sits on a pan of the scale. I'll fix it at the video stage.

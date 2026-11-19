@@ -55,3 +55,18 @@ at four moments of its animation (sheets `M_1`–`M_3`). There is no video, voic
 - **Labels and ledger:** every AI plate is labelled "AI ILLUSTRATION" on screen and logged in `data/ai_ledger.json`. No real person
   is depicted, and none stands in for evidence.
 - **Credits:** about 3,800 ElevenLabs credits for the 20 options.
+
+## Added 2026-11-19: round 2 of AI plates (sheet `AI_PLATES_2`, motion sheet `MOTION_AI`)
+- **What you'll see:**
+  - **The slate study desk (F1)** now sits under every slate frame: the clock, title, midnight, two clocks and "your head".
+  - **06b_card:** the membership card, padlocked.
+  - **11b_phones:** the phones ringing, labelled as the book's version, which chapter 4 disputes.
+  - **13b_pegs:** the Festinger & Carlsmith peg task.
+  - **22b_textbooks:** "the study about doubling down got doubled down on".
+  - **23b_head:** "the same valve sits in your head", labelled metaphor, not anatomy.
+- **The five earlier picks** (A1, B3, C1, D1, E2) now get the studio finish (`ai_finish.py --channel dp`). The raw files are kept.
+- **House rules:**
+  - Each plate is labelled AI ILLUSTRATION and logged in `data/ai_ledger.json`.
+  - No faces: the head is a blank silhouette.
+  - No AI chart or number.
+- **Credits:** about 1,142.
