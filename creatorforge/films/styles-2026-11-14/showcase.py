@@ -8,7 +8,7 @@ import traceback
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 
-sys.path.insert(0, "/home/user/Forgeos/creatorforge/worker")
+sys.path.insert(0, "/home/user/forgeos/creatorforge/worker")
 D = Path(__file__).resolve().parent
 LOOKS = ['archive', 'newsprint', 'kraft', 'chart', 'sepia', 'engraving', 'field', 'editorial', 'intel', 'declassified', 'swiss', 'noir']
 

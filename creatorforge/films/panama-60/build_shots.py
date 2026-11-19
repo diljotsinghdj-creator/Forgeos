@@ -2,7 +2,7 @@
 import json, math
 from pathlib import Path
 D = Path(__file__).resolve().parent; A = (D / "assets").as_uri()
-MAPS = Path("/home/user/Forgeos/creatorforge/channels/design_kits/maps")
+MAPS = Path("/home/user/forgeos/creatorforge/channels/design_kits/maps")
 sc = {s["id"]: s for s in json.load(open(D / "script.json"))}
 SPLIT = {"s08": 3.3}
 def dur(i):

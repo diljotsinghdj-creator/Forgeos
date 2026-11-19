@@ -2,7 +2,7 @@
 """Build comparison stubs of recent films from CreatorForge's studio history, for blueprint_check.py --compare.
 
 Usage:
-  python3 history_stubs.py --repo /home/user/Forgeos --out ./compare_stubs [--last 3]
+  python3 history_stubs.py --repo /home/user/forgeos --out ./compare_stubs [--last 3]
   python3 blueprint_check.py blueprint.json --compare compare_stubs/1_*.json compare_stubs/2_*.json compare_stubs/3_*.json
 
 Sources, newest first:

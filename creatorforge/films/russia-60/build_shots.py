@@ -2,7 +2,7 @@
 import json, math
 from pathlib import Path
 D = Path(__file__).resolve().parent; A = (D / "assets").as_uri()
-W = json.load(open("/home/user/Forgeos/creatorforge/worker/creatorforge_worker/media/world.json"))
+W = json.load(open("/home/user/forgeos/creatorforge/worker/creatorforge_worker/media/world.json"))
 C = {c["n"]: c["r"] for c in W["countries"]}
 sc = {s["id"]: s for s in json.load(open(D / "script.json"))}
 SPLIT = {"s10": 4.1, "s11": 3.4}

@@ -3,7 +3,7 @@ Archives NAID 6922351), NASA TV footage and NASA photographs, all public domain;
 import sys
 from pathlib import Path
 
-sys.path.insert(0, "/home/user/Forgeos/creatorforge/channels/design_kits/collage")
+sys.path.insert(0, "/home/user/forgeos/creatorforge/channels/design_kits/collage")
 import collage2 as K
 from collage2 import el, STILL
 

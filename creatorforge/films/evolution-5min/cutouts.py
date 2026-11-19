@@ -1,7 +1,7 @@
 """Fossil cut-outs: BiRefNet removes the background; the fossil keeps its real colour (nothing redrawn)."""
 import sys
 from pathlib import Path
-sys.path.insert(0, "/home/user/Forgeos/creatorforge/worker")
+sys.path.insert(0, "/home/user/forgeos/creatorforge/worker")
 from PIL import Image, ImageFilter
 from creatorforge_worker.media import cutouts
 M = Path("/tmp/claude-0/-home-user-Forgeos/4511f341-cf91-5fed-ac10-e7043335b256/scratchpad/models/birefnet-lite.onnx")

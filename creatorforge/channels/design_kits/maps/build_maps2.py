@@ -3,7 +3,7 @@ and an extruded 3D region map with city tags. Both free; tiles cached under tile
 import json, math, urllib.request
 from pathlib import Path
 D = Path(__file__).resolve().parent; T = D / "tiles"; T.mkdir(exist_ok=True)
-M = Path("/home/user/Forgeos/creatorforge/worker/creatorforge_worker/media")
+M = Path("/home/user/forgeos/creatorforge/worker/creatorforge_worker/media")
 F = M / "vendor" / "fonts"
 FONTS = "".join(f"@font-face{{font-family:{n};src:url({(F / f).as_uri()})}}" for n, f in [
     ("Inter", "inter-latin-800-normal.woff2"), ("Oswald", "oswald-latin-600-normal.woff2"), ("Mono", "jetbrains-mono-latin-700-normal.woff2")])

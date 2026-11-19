@@ -1,6 +1,6 @@
 import json, sys
 from pathlib import Path
-sys.path.insert(0, "/home/user/Forgeos/creatorforge/worker")
+sys.path.insert(0, "/home/user/forgeos/creatorforge/worker")
 from taxonomy import box_plot, unit_grid, node_canvas, globe, ICONS
 D = Path(__file__).resolve().parent
 H = D / "html"; H.mkdir(exist_ok=True)

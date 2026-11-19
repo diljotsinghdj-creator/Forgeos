@@ -3,7 +3,7 @@ Approval stills for the map kit; every element can carry data-in/data-at like th
 import json, math
 from pathlib import Path
 D = Path(__file__).resolve().parent
-M = Path("/home/user/Forgeos/creatorforge/worker/creatorforge_worker/media")
+M = Path("/home/user/forgeos/creatorforge/worker/creatorforge_worker/media")
 W = json.load(open(M / "world.json")); C = {c["n"]: c["r"] for c in W["countries"]}
 ST = json.load(open(M / "states.json"))
 F = M / "vendor" / "fonts"

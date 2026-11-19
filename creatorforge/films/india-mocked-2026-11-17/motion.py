@@ -14,9 +14,9 @@ from pathlib import Path
 
 D = Path(__file__).resolve().parent
 sys.path.insert(0, str(D))
-sys.path.insert(0, "/home/user/Forgeos/creatorforge/films/taxonomy-2026-11-15")
-sys.path.insert(0, "/home/user/Forgeos/creatorforge/films/vox-tools-2026-11-15")
-sys.path.insert(0, "/home/user/Forgeos/creatorforge/worker")
+sys.path.insert(0, "/home/user/forgeos/creatorforge/films/taxonomy-2026-11-15")
+sys.path.insert(0, "/home/user/forgeos/creatorforge/films/vox-tools-2026-11-15")
+sys.path.insert(0, "/home/user/forgeos/creatorforge/worker")
 from studio import page, A, a, put, hl, chapter, logo_d, FONTS, DESK, PARCH, RED, SIG, INK, H  # noqa: E402
 from creatorforge_worker.media import maps  # noqa: E402
 

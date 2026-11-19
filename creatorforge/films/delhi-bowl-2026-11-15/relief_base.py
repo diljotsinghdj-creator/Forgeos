@@ -6,7 +6,7 @@ from mask import uv
 INDIA_UV = json.loads((Path(__file__).resolve().parent / "maps" / "north_india_uv.json").read_text())
 D = Path(__file__).resolve().parent
 V = "/vendor/three160"
-FONTS = "/home/user/Forgeos/creatorforge/worker/creatorforge_worker/media/vendor/fonts"
+FONTS = "/home/user/forgeos/creatorforge/worker/creatorforge_worker/media/vendor/fonts"
 
 
 def page(name, cfg):

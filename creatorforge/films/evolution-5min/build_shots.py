@@ -9,7 +9,7 @@ from pathlib import Path
 
 D = Path(__file__).resolve().parent
 AS = D / "assets"
-W = json.load(open("/home/user/Forgeos/creatorforge/worker/creatorforge_worker/media/world.json"))
+W = json.load(open("/home/user/forgeos/creatorforge/worker/creatorforge_worker/media/world.json"))
 LAND = [c["r"] for c in W["countries"]]
 sc = {s["id"]: s for s in json.load(open(D / "script.json"))}
 CRED = json.load(open(AS / "credits.json")) if (AS / "credits.json").exists() else {}

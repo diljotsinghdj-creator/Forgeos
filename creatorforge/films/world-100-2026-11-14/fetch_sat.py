@@ -4,7 +4,7 @@ import datetime as dt, io, json, sys
 from pathlib import Path
 import httpx, numpy as np
 from PIL import Image
-sys.path.insert(0, "/home/user/Forgeos/creatorforge/worker")
+sys.path.insert(0, "/home/user/forgeos/creatorforge/worker")
 from concepts import C
 D = Path(__file__).resolve().parent
 M = D / "maps"

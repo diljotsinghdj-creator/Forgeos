@@ -1,7 +1,7 @@
 import json, sys
 from pathlib import Path
 import httpx
-sys.path.insert(0, "/home/user/Forgeos/creatorforge/worker")
+sys.path.insert(0, "/home/user/forgeos/creatorforge/worker")
 D = Path(__file__).resolve().parent; A = D / "assets"; A.mkdir(exist_ok=True)
 REC = D / "data" / "assets.json"; rec = json.loads(REC.read_text()) if REC.is_file() else {}
 def cut(src, out):

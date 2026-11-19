@@ -5,7 +5,7 @@ from pathlib import Path
 from mask import uv
 D = Path(__file__).resolve().parent
 V = "/vendor/three160"
-FONTS = "/home/user/Forgeos/creatorforge/worker/creatorforge_worker/media/vendor/fonts"
+FONTS = "/home/user/forgeos/creatorforge/worker/creatorforge_worker/media/vendor/fonts"
 
 
 def page(name, cfg):

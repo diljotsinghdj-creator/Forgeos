@@ -1,7 +1,7 @@
 import json, math, sys
 from pathlib import Path
 from PIL import Image, ImageDraw
-sys.path.insert(0, "/home/user/Forgeos/creatorforge/worker")
+sys.path.insert(0, "/home/user/forgeos/creatorforge/worker")
 from creatorforge_worker.media import maps
 D = Path(__file__).resolve().parent
 def merc(lon, lat): return (lon + 180) / 360, (1 - math.asinh(math.tan(math.radians(lat))) / math.pi) / 2

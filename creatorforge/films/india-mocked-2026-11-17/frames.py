@@ -7,7 +7,7 @@ from pathlib import Path
 
 D = Path(__file__).resolve().parent
 sys.path.insert(0, str(D))
-sys.path.insert(0, "/home/user/Forgeos/creatorforge/worker")
+sys.path.insert(0, "/home/user/forgeos/creatorforge/worker")
 from studio import page, A, a, put, hl, wobble, chapter, tape, DESK, BLK, PARCH, RED, SIG, INK, FONTS  # noqa: E402
 
 ACC = "#2E86DE"   # film accent: screen blue (the feed, the phone, the platforms)
