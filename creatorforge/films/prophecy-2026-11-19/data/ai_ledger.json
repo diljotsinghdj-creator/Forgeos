@@ -11,7 +11,9 @@
   ],
   "credits": 190.4,
   "label_on_screen": "AI ILLUSTRATION",
-  "finish": "channels/design_kits/ai_finish.py --channel dp (applied 2026-11-19; raw kept in assets/ai_raw)"
+  "finish": "channels/design_kits/ai_finish.py --channel dp (applied 2026-11-19; raw kept in assets/ai_raw)",
+  "no_real_because": "no photo of the 1954 Oak Park living room exists; a reconstruction of an unseen moment, shown as a labelled print on the drawn grid",
+  "status": "in use (2026-11-19: one of 3 AI plates kept)"
  },
  {
   "label": "A2",
@@ -90,7 +92,9 @@
   ],
   "credits": 190.4,
   "label_on_screen": "AI ILLUSTRATION",
-  "finish": "channels/design_kits/ai_finish.py --channel dp (applied 2026-11-19; raw kept in assets/ai_raw)"
+  "finish": "channels/design_kits/ai_finish.py --channel dp (applied 2026-11-19; raw kept in assets/ai_raw)",
+  "retired": "replaced by real image or drawn frame (2026-11-19)",
+  "replaced_by": "24_end: real night-sky photo (Robin Mulligan, CC BY 2.0) under the drawn cracked clock and saucer"
  },
  {
   "label": "B4",
@@ -117,7 +121,9 @@
   ],
   "credits": 190.4,
   "label_on_screen": "AI ILLUSTRATION",
-  "finish": "channels/design_kits/ai_finish.py --channel dp (applied 2026-11-19; raw kept in assets/ai_raw)"
+  "finish": "channels/design_kits/ai_finish.py --channel dp (applied 2026-11-19; raw kept in assets/ai_raw)",
+  "retired": "replaced by real image or drawn frame (2026-11-19)",
+  "replaced_by": "07_millerites: the real 1843 Millerite chart (J. V. Himes, public domain, Wikimedia Commons)"
  },
  {
   "label": "C2",
@@ -170,7 +176,9 @@
   ],
   "credits": 190.4,
   "label_on_screen": "AI ILLUSTRATION",
-  "finish": "channels/design_kits/ai_finish.py --channel dp (applied 2026-11-19; raw kept in assets/ai_raw)"
+  "finish": "channels/design_kits/ai_finish.py --channel dp (applied 2026-11-19; raw kept in assets/ai_raw)",
+  "no_real_because": "a sight gag (the antelope-and-lion nature documentary): nothing real fits",
+  "status": "in use (2026-11-19: one of 3 AI plates kept)"
  },
  {
   "label": "D2",
@@ -236,7 +244,9 @@
   ],
   "credits": 190.4,
   "label_on_screen": "AI ILLUSTRATION",
-  "finish": "channels/design_kits/ai_finish.py --channel dp (applied 2026-11-19; raw kept in assets/ai_raw)"
+  "finish": "channels/design_kits/ai_finish.py --channel dp (applied 2026-11-19; raw kept in assets/ai_raw)",
+  "retired": "replaced by real image or drawn frame (2026-11-19)",
+  "replaced_by": "15_box: real photos of the Bentley Historical Library (Dwight Burdette, CC BY 3.0) and a real archive (sillygwailo, CC BY 2.0)"
  },
  {
   "label": "E3",
@@ -279,11 +289,13 @@
   "credits": 190.4,
   "finish": "channels/design_kits/ai_finish.py --channel dp",
   "label_on_screen": "AI ILLUSTRATION (desk: in the source line)",
-  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)"
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)",
+  "retired": "replaced by real image or drawn frame (2026-11-19)",
+  "replaced_by": "slate frames: the drawn slate (a backdrop is never AI, MASTER_DIRECTIVES 8c)"
  },
  {
   "label": "F2",
-  "use": "11b_phones (3 \u00b7 2:57)",
+  "use": "11b_phones (3 · 2:57)",
   "generation_id": "pbmcP1PjKOGVKFMzFjQM",
   "flow_id": "pQGk0bAw8kXDdsfofcfS",
   "model": "gpt-image-2.5-sunburst",
@@ -296,11 +308,13 @@
   "credits": 190.4,
   "finish": "channels/design_kits/ai_finish.py --channel dp",
   "label_on_screen": "AI ILLUSTRATION (desk: in the source line)",
-  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)"
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)",
+  "retired": "replaced by real image or drawn frame (2026-11-19)",
+  "replaced_by": "11b_phones: real 1950s desk phones (Phillip Pessar; nreijmersdal; CC BY 2.0)"
  },
  {
   "label": "F3",
-  "use": "13b_pegs (3 \u00b7 3:35)",
+  "use": "13b_pegs (3 · 3:35)",
   "generation_id": "8H4AeReO7zh4HCj50Unz",
   "flow_id": "pQGk0bAw8kXDdsfofcfS",
   "model": "gpt-image-2.5-sunburst",
@@ -313,11 +327,13 @@
   "credits": 190.4,
   "finish": "channels/design_kits/ai_finish.py --channel dp",
   "label_on_screen": "AI ILLUSTRATION (desk: in the source line)",
-  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)"
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)",
+  "retired": "replaced by real image or drawn frame (2026-11-19)",
+  "replaced_by": "13b_pegs dropped; 13_carlsmith (drawn) now carries a real peg-board photo (Eric M Martin, CC BY 2.0)"
  },
  {
   "label": "F4",
-  "use": "23b_head (5 \u00b7 7:03)",
+  "use": "23b_head (5 · 7:03)",
   "generation_id": "kI4ygAHnqirZZrF97qB4",
   "flow_id": "pQGk0bAw8kXDdsfofcfS",
   "model": "gpt-image-2.5-sunburst",
@@ -330,11 +346,13 @@
   "credits": 190.4,
   "finish": "channels/design_kits/ai_finish.py --channel dp",
   "label_on_screen": "AI ILLUSTRATION (desk: in the source line)",
-  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)"
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)",
+  "no_real_because": "a metaphor (the valve in your head), labelled metaphor, not anatomy; no real image fits",
+  "status": "in use (2026-11-19: one of 3 AI plates kept)"
  },
  {
   "label": "F5",
-  "use": "22b_textbooks (5 \u00b7 6:46)",
+  "use": "22b_textbooks (5 · 6:46)",
   "generation_id": "FgFbphNJD0A0WMoWyFTD",
   "flow_id": "pQGk0bAw8kXDdsfofcfS",
   "model": "gpt-image-2.5-sunburst",
@@ -347,11 +365,13 @@
   "credits": 190.4,
   "finish": "channels/design_kits/ai_finish.py --channel dp",
   "label_on_screen": "AI ILLUSTRATION (desk: in the source line)",
-  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)"
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)",
+  "retired": "replaced by real image or drawn frame (2026-11-19)",
+  "replaced_by": "22b_textbooks: a real stack of books (Wonderlane, CC BY 2.0) with kinetic type"
  },
  {
   "label": "F6",
-  "use": "06b_card (2 \u00b7 1:21)",
+  "use": "06b_card (2 · 1:21)",
   "generation_id": "xUwik6IGetfdqqzxjooD",
   "flow_id": "pQGk0bAw8kXDdsfofcfS",
   "model": "gpt-image-2.5-sunburst",
@@ -364,6 +384,8 @@
   "credits": 190.4,
   "finish": "channels/design_kits/ai_finish.py --channel dp",
   "label_on_screen": "AI ILLUSTRATION (desk: in the source line)",
-  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)"
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)",
+  "retired": "replaced by real image or drawn frame (2026-11-19)",
+  "replaced_by": "06b_card dropped; the drawn 06_membership carries a real padlock photo (andypowe11, CC BY 2.0)"
  }
 ]

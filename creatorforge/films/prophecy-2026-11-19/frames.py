@@ -410,9 +410,11 @@ spines = "".join(A(f'<div style="width:46px;height:{260 + (i * 37) % 90}px;backg
 put("22_irony", page(
     a(f'<div style="width:1920px;height:1080px;{GRID}"></div>', 0, 0) + chapter(5, "THE IRONY")
     + spines + A(f'<div style="width:1320px;height:6px;background:{SL}"></div>', 280, 640, "wipe 0 .1")
+    + photo("books_two.jpg", 250, 330, 1630, 200, "up .5 .62", 3, pos="40% 50%")
+    + caption("AND THE REAL THING", 1630, 560, "fade .58 .66")
     + A(f'<div style="font:500 20px Plex;letter-spacing:3px;color:#5B6576">1956 ················ SEVENTY YEARS OF TEXTBOOKS ················ 2025</div>', 300, 660, "fade .05 .15")
     + A(f'<div style="font:400 110px/0.9 Anton;color:{SL};text-align:center;width:1920px">THE STUDY ABOUT DOUBLING DOWN<br><span style="color:{AM}">GOT DOUBLED DOWN ON</span></div>', 0, 760, "slam .75 .77"),
-    PAPER, "BOOK SPINES DRAWN IN THE STUDIO · 'SEVENTY YEARS' = 1956-2025"))
+    PAPER, "BOOK SPINES DRAWN IN THE STUDIO · PHOTO: HORIA VARLAN / FLICKR, CC BY 2.0 (ILLUSTRATIVE) · 'SEVENTY YEARS' = 1956-2025"))
 
 kin = lambda word, x, y, s0, size=132, col=SL, tail="": a(f'<div style="font:400 {size}px/1 Anton;color:{col};white-space:nowrap">' + "".join(f'<span data-anim="drop {s0 + k * .035:.3f} {s0 + k * .035 + .06:.3f}" style="display:inline-block">{ch}</span>' for k, ch in enumerate(word)) + tail + '</div>', x, y, "z-index:40")
 put("22b_textbooks", page(

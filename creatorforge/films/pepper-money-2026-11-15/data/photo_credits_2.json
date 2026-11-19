@@ -1,0 +1,112 @@
+{
+ "date": "2026-11-19",
+ "why": "owner: 'we need more real pictures, animation, motion graphics etc and less ai' (MASTER_DIRECTIVES 8c, real first)",
+ "found_via": "Openverse API (license=cc0,pdm,by), anonymous; Wikimedia thumbnails fetched with back-off after 429s",
+ "folder": "assets/real2/ (gitignored)",
+ "photos": [
+  {
+   "file": "assets/real2/portus_ship.jpg",
+   "frame": "08a_ship",
+   "role": "replaces AI plate P3",
+   "title": "Portus relief (Torlonia MT 430) detail 016",
+   "author": "Mark Landon",
+   "licence": "BY 4.0",
+   "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+   "page": "https://commons.wikimedia.org/w/index.php?curid=170055908",
+   "url": "https://upload.wikimedia.org/wikipedia/commons/4/49/Portus_relief_%28Torlonia_MT_430%29_detail_016.jpg",
+   "downloaded": "1280px Commons thumbnail",
+   "openverse_id": "676988cb-c3e5-4c19-89c8-cf9dedbe5ce7",
+   "note": "Portus relief, Torlonia collection (MT 430): a Roman merchant ship at Rome's harbour. Labelled as a Roman merchantman, not a ship of the India run."
+  },
+  {
+   "file": "assets/real2/ostia_mosaic.jpg",
+   "frame": "not used yet (spare: Ostia ship mosaic)",
+   "role": "spare",
+   "title": "File:Ostia antica-08.jpg",
+   "author": "Patrick Denker",
+   "licence": "BY 2.0",
+   "licence_url": "https://creativecommons.org/licenses/by/2.0/",
+   "page": "https://commons.wikimedia.org/w/index.php?curid=1014854",
+   "url": "https://upload.wikimedia.org/wikipedia/commons/5/5c/Ostia_antica-08.jpg",
+   "downloaded": "1920px Commons thumbnail",
+   "openverse_id": "659417de-3a38-4967-9e12-12a321772dce"
+  },
+  {
+   "file": "assets/real2/alaric_engraving.jpg",
+   "frame": "02a_siege",
+   "role": "replaces AI plate P2",
+   "title": "Rome - Alaric",
+   "author": "History Maps",
+   "licence": "Public Domain Mark",
+   "licence_url": "https://creativecommons.org/publicdomain/mark/1.0/",
+   "page": "https://www.flickr.com/photos/136041510@N05/24810170316",
+   "url": "https://live.staticflickr.com/1586/24810170316_d493174db0_b.jpg",
+   "downloaded": "Flickr 'b' size, 1024 px",
+   "openverse_id": "7db25dbc-daf8-4dc3-a86f-ce837aab79fe",
+   "note": "19th-century book engraving captioned 'ALARIC' (uploader: History Maps). Shown as an artist's imagining, labelled on the frame; not evidence of the siege."
+  },
+  {
+   "file": "assets/real2/pepper_sack.jpg",
+   "frame": "10a_sack",
+   "role": "replaces AI plate P4",
+   "title": "Sack Of Picked Pepper Spikes",
+   "author": "Steenbergs",
+   "licence": "BY 2.0",
+   "licence_url": "https://creativecommons.org/licenses/by/2.0/",
+   "page": "https://www.flickr.com/photos/50310535@N03/6973281271",
+   "url": "https://live.staticflickr.com/7197/6973281271_cf8bf5a50c_b.jpg",
+   "downloaded": "Flickr 'b' size, 1024 px",
+   "openverse_id": "5b83ba52-9751-4b40-912a-40fe7618ce05",
+   "note": "Index of American Design watercolour, National Gallery of Art (CC0)."
+  },
+  {
+   "file": "assets/real2/grinder_nga.jpg",
+   "frame": "14a_demotion",
+   "role": "replaces AI plate P6",
+   "title": "Pepper Grinder",
+   "author": "Albert Camilli",
+   "licence": "CC0 1.0",
+   "licence_url": "https://creativecommons.org/publicdomain/zero/1.0/deed.en/",
+   "page": "https://commons.wikimedia.org/w/index.php?curid=82102099",
+   "url": "https://upload.wikimedia.org/wikipedia/commons/e/e0/Albert_Camilli%2C_Pepper_Grinder%2C_c._1936%2C_NGA_23502.jpg",
+   "downloaded": "1280px Commons thumbnail",
+   "openverse_id": "c19d1094-7d34-4b83-9865-016a30f61cd6",
+   "note": "Fresh pepper spikes in a sack (before drying), labelled as such."
+  },
+  {
+   "file": "assets/real2/peppercorns_hubertl.jpg",
+   "frame": "14a_demotion",
+   "role": "replaces AI plate P6 (with the grinder)",
+   "title": "Black Pepper IMG 4866 - 02",
+   "author": "Hubertl",
+   "licence": "BY 4.0",
+   "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+   "page": "https://commons.wikimedia.org/w/index.php?curid=36522276",
+   "url": "https://upload.wikimedia.org/wikipedia/commons/9/97/Black_Pepper_IMG_4866_-_02.jpg",
+   "downloaded": "1280px Commons thumbnail",
+   "openverse_id": "2bb71ae9-7f76-4945-ba2b-70b4123f4d08"
+  }
+ ],
+ "geodata": [
+  {
+   "what": "Natural Earth 1:50m admin-0 countries",
+   "licence": "public domain",
+   "file": "../bolivia-navy-2026-11-19/maps/ne_50m_admin_0_countries.geojson",
+   "frames": [
+    "13a_relay",
+    "13b_shift",
+    "15a_world"
+   ]
+  },
+  {
+   "what": "India, official boundary: DataMeet India composite",
+   "licence": "CC BY 4.0",
+   "file": "../india-mocked-2026-11-17/data/india-composite.geojson",
+   "frames": [
+    "13a_relay",
+    "13b_shift",
+    "15a_world"
+   ]
+  }
+ ]
+}

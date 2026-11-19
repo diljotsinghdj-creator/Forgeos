@@ -10,7 +10,8 @@ Rendered frames, photos and AI images are gitignored. This is how they were rebu
 ## The Night the World Didn't End (`prophecy-2026-11-19`)
 - AI picks A1, B3, C1, D1 and E2 are re-fetched by generation ID from the ElevenLabs flow `pQGk0bAw8kXDdsfofcfS` ("Dragon Psychology · The Night the World Didn't End · AI plates"). Use `creative_get_generations`, which spends no credits, then download `full_res_url`. They go in `assets/ai/<label>.jpg`. Never generate them again.
 - Round 2 plates F1–F6 come from the same flow (generation IDs in `data/ai_ledger.json`). Save the raws in `assets/ai_raw/`, then finish every used plate (A1, B3, C1, D1, E2, F1–F6) with `python3 -I ../../channels/design_kits/ai_finish.py assets/ai_raw/X assets/ai/X.jpg --channel dp`.
-- Then run `python3 frames.py && python3 ai_frames.py && python3 shoot_http.py`. The result is 30 frames.
+- **Real photos (2026-11-19 rework):** run `python3 -I real.py`, which re-fetches the credited photos in `data/photo_credits.json`. Only A1, D1 and F4 remain as AI plates.
+- Then run `python3 frames.py && python3 ai_frames.py && python3 shoot_http.py`. The result is 28 frames.
 
 ## Pepper Was Money (`pepper-money-2026-11-15`)
 - **Photos:**
@@ -35,4 +36,5 @@ Rendered frames, photos and AI images are gitignored. This is how they were rebu
 - **Terrain box:** India terrain is `terrain.heights("india", (67.0, 5.5, 98.5, 37.5), 6)`. The original box wasn't recorded; this one was chosen on 2026-11-19, so `relief_a/b/c` sit slightly differently from sheet `M_4_new`.
 - **AI plates AI1–AI6:** re-fetch them by generation ID from flow `TqEmfXfQP7ZvL79XUAW5` (`data/ai_ledger.json`) into `assets/ai_raw/`. Finish each with `ai_finish.py --channel pf` into `assets/ai/`.
 - **Paths:** the scripts expect the repo at `/home/user/forgeos`. If it's cloned as `/home/user/Forgeos`, add a symlink: `ln -s /home/user/Forgeos /home/user/forgeos`.
+- **Real photos (2026-11-19 rework):** `data/photo_credits_2.json` lists the replacements for every AI plate (all retired). Fetch them into `assets/real2/`.
 - **Build:** run `frames.py`, `faces.py`, `motion.py`, `ai_frames.py`, then `shoot_http.py`. That gives 42 frames.

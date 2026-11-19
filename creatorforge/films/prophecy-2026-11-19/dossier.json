@@ -113,5 +113,10 @@
   "claim": "The authors have died (Festinger 1989, Schachter 1997, Riecken 2012)",
   "source": "standard biographies",
   "status": "years to check before air; the frame says only 'have died'"
+ },
+ {
+  "claim": "The Millerites published a prophetic chart in 1843 ('A Chronological Chart of the Visions of Daniel & John', J. V. Himes, Boston) whose sums end in 1843; after 1843 passed, the date was revised to 22 Oct 1844",
+  "source": "the chart itself (public domain scan, Wikimedia Commons / Geographicus); standard history of the Millerite movement",
+  "status": "confirmed (the chart is a primary document; the 1844 revision is well-established)"
  }
 ]

@@ -1,7 +1,66 @@
 # Pre-show list: The Night the World Didn't End (key frames, DJ style)
 
-This sheet shows 24 key frames for Dragon Psychology, covering all five beats of `SCRIPT_TABLE.md` draft 1. Each frame is also shown
+The first round showed 24 key frames for Dragon Psychology, covering all five beats of `SCRIPT_TABLE.md` draft 1. Each frame is also shown
 at four moments of its animation (sheets `M_1`–`M_3`). There is no video, voice or music: video only after "go".
+
+## Updated 2026-11-19 (round 5): more real pictures and motion, less AI (sheets `V5_1`–`V5_4`, motion sheet `M_5`)
+Your rule: "we need more real pictures, animation, motion graphics etc and less ai" (MASTER_DIRECTIVES §8c).
+
+- **Counts:**
+
+  | | Before | Now |
+  |---|---|---|
+  | Frames | 30 | 28 |
+  | Frames with an AI plate | 15 (10 plates, plus the AI desk under 5 slate frames) | 3 (1 in 9) |
+  | Frames carrying real material | 1 (the map) | 17 (61%) |
+  | Motion builds on the motion sheet | the drawn builds only | 12 |
+
+- **What replaced each AI plate:**
+  - **F1 (desk):** the drawn slate is back under every slate frame.
+  - **C1:** `07_millerites` now uses the **real 1843 Millerite chart** ("A Chronological Chart of the Visions of Daniel & John", J. V. Himes, Boston; public domain). It shows the full sheet and a close-up of its sums, which end in 1843, with an amber circle. The line now reads "1843 passed; the date moved to 22 October 1844". That fact is added to the dossier.
+  - **E2:** `15_box` now uses a **real photo of the Bentley Historical Library** (Dwight Burdette, CC BY 3.0), with the sign circled, and a real archive photo (Toronto Archives, CC BY 2.0). The archive photo is labelled "not the Bentley, not the Festinger box". The pages are still drawn and labelled as reconstructions.
+  - **F2:** `11b_phones` now uses **real 1950s desk phones** (a Western Union Model 500 and a Bakelite set, both CC BY 2.0), labelled "not the group's own".
+  - **F5:** `22b_textbooks` now uses **a real stack of books** (CC BY 2.0, no titles shown), with kinetic type: "DOUBLED / DOWN ON." drops in letter by letter.
+  - **F3:** dropped. The drawn `13_carlsmith` now has a **real peg board** ("not the 1959 apparatus") and the $1 and $20 bars grow from a zero line. They still show the direction of the effect only.
+  - **F6:** dropped. The drawn `06_membership` is back, with a **real padlock** photo on the card.
+  - **B3:** `24_end` is a **real night sky over a house** ("not Oak Park, not 1954") under the drawn cracked clock and saucer.
+- **AI kept (3), only where nothing real exists:**
+  - **A1:** the 1954 living room nobody photographed. It is now a labelled print on the drawn grid, not a backdrop.
+  - **D1:** the antelope sight gag.
+  - **F4:** the valve-in-your-head metaphor.
+- **Other real material added:**
+  - Natural Earth locator maps on `01_clock` and `02_house`.
+  - The 1843 chart pinned at 1844 on the timeline.
+  - A real coin on `03_metal` and a real pressure gauge as the dissonance dial on `12_valve`.
+  - The Bentley photo on `16_kelly`, and archive boxes on `21_otherside`.
+  - `20_replications` counts up the Vaidis 2024 figures: 39 labs, 19 countries, 4,898 people. The dossier doesn't list the 19 countries, so there's no world map.
+- **Motion (sheet `M_5`):**
+  - the house plan drawing on;
+  - the metal items and the coin dropping in;
+  - the timeline wipe;
+  - a slow camera push on the chart;
+  - the Great Lakes route, drawn in story order (Minneapolis → Oak Park → East Lansing → Ann Arbor);
+  - the valve and gauge;
+  - the peg board and the bars growing from zero;
+  - the two clocks, whose hands now spin;
+  - the archive (the pages drop in, the arrow draws on);
+  - the count-up;
+  - the book spines growing;
+  - the "doubled down" kinetic type.
+- **The investigator layer:** amber circles and arrows sit on the chart, the coin, the gauge and the library sign; the photos are taped prints. Amber stays the only signal colour, and the chart is shown in black and white, so there's no yellow.
+- **Real photos** are black and white or cobalt duotone (`real.py`). No faces of the group or the researchers are shown anywhere. The banner with people in the Bentley photo is cropped out.
+- **Credits** are on screen in each frame's source line and listed in `data/photo_credits.json`:
+  - J. V. Himes chart (PD, Commons);
+  - Dwight Burdette (CC BY 3.0, Commons);
+  - Phillip Pessar, nreijmersdal, sillygwailo, Digital Game Museum, Wonderlane, Horia Varlan, Eric M Martin, wwarby, matthiasxc, andypowe11 and Robin Mulligan (all CC BY 2.0, Flickr via Openverse).
+  - Retired plates are marked in `data/ai_ledger.json`.
+  - No new AI images were made, and no ElevenLabs credits were spent.
+- **Not found:**
+  - No real photo of a 1950s Chicago-area street or house fits. The candidates were Australian or Frank Lloyd Wright houses, which would mislead, so A1 stays.
+  - No real lottery-ticket or spool photo was found for the peg task.
+- **Build:** `python3 -I real.py && python3 frames.py && python3 ai_frames.py && python3 shoot_http.py && python3 shoot_http.py $(python3 sheets.py --list) && python3 sheets.py`.
+
+> The sections below are the earlier rounds. Where they describe AI plates, round 5 replaces them.
 
 ## What you're about to see
 - **Hook:**
