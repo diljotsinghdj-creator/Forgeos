@@ -200,7 +200,7 @@
  {
   "claim": "Chile objected that the Court lacked jurisdiction (the matter was settled by the 1904 treaty); on 24 Sep 2015 the Court rejected the objection and found it had jurisdiction",
   "source": "ICJ judgment of 24 Sep 2015 (preliminary objection), https://www.icj-cij.org/case/153 ; lagen.nu copy, https://ferenda.lagen.nu/icj/153-20150924-JUD-01-00",
-  "status": "confirmed (primary, via search) ⚠ confirm date on the PDF",
+  "status": "confirmed (primary): the ICJ case page (icj-cij.org/case/153, read 2026-11-19) lists the judgment on preliminary objection as 153-20150924-JUD (24 Sep 2015) and Chile's written pleading of 15 Jul 2014; the PDFs sit behind a bot check, so the wording isn't read yet",
   "frames": "4 · 2015"
  },
  {

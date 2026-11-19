@@ -1,0 +1,70 @@
+[
+ {
+  "label": "K1",
+  "use": "AI\u00b71 control panel (base plate, all film)",
+  "generation_id": "6V1JRkdJZuJlYakSPxpf",
+  "flow_id": "r6MnkggWG8WLhQGxOXU2",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "A wide slate-grey metal control panel seen straight on, filling the whole 16:9 frame, with empty rectangular sockets and mounting plates for a crosswalk push-button box, a lift button panel, a wall thermostat, a row of toggle switches and two round dials, rivets and worn paint, all sockets empty and unlabelled. flat paper-collage editorial illustration, cut-out paper pieces with white sticker edges, halftone print texture, visible paper grain, muted palette of deep slate #141824, lab-paper #F0F4F8, cobalt blue #2B6CB0 and amber #ED8936, soft flat light, no text, no faces, not photorealistic, not 3D render",
+  "size": [
+   1280,
+   720
+  ],
+  "takes": 1,
+  "credits": 190.4,
+  "finish": "channels/design_kits/ai_finish.py --channel dp",
+  "label_on_screen": "AI ILLUSTRATION",
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)"
+ },
+ {
+  "label": "K2",
+  "use": "AI\u00b72 the office thermostat",
+  "generation_id": "a3zgwPusJsNrlAywDKOS",
+  "flow_id": "r6MnkggWG8WLhQGxOXU2",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "An empty open-plan office after hours: rows of desks and chairs, cardigans and blankets draped over chair backs, a small beige thermostat alone on the far wall, a cold blue window light, no people. Wide 16:9 composition, thermostat on the right third. flat paper-collage editorial illustration, cut-out paper pieces with white sticker edges, halftone print texture, visible paper grain, muted palette of deep slate #141824, lab-paper #F0F4F8, cobalt blue #2B6CB0 and amber #ED8936, soft flat light, no text, no faces, not photorealistic, not 3D render",
+  "size": [
+   1280,
+   720
+  ],
+  "takes": 1,
+  "credits": 190.4,
+  "finish": "channels/design_kits/ai_finish.py --channel dp",
+  "label_on_screen": "AI ILLUSTRATION",
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)"
+ },
+ {
+  "label": "K3",
+  "use": "AI\u00b73 the middle manager (metaphor)",
+  "generation_id": "otFjApkJuDIJ036ifYbY",
+  "flow_id": "r6MnkggWG8WLhQGxOXU2",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "A faceless paper cut-out office figure in a shirt and tie seen from behind, holding a clipboard and approvingly ticking it, standing in front of a huge wall covered in identical round push buttons, some lit amber at random. Metaphor style. 16:9 composition, figure on the left third. flat paper-collage editorial illustration, cut-out paper pieces with white sticker edges, halftone print texture, visible paper grain, muted palette of deep slate #141824, lab-paper #F0F4F8, cobalt blue #2B6CB0 and amber #ED8936, soft flat light, no text, no faces, not photorealistic, not 3D render",
+  "size": [
+   1280,
+   720
+  ],
+  "takes": 1,
+  "credits": 190.4,
+  "finish": "channels/design_kits/ai_finish.py --channel dp",
+  "label_on_screen": "AI ILLUSTRATION",
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)"
+ },
+ {
+  "label": "K4",
+  "use": "AI\u00b74 the nursing-home windowsill",
+  "generation_id": "T0Gff2JVQhIMPVUgG2SG",
+  "flow_id": "r6MnkggWG8WLhQGxOXU2",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "A 1970s nursing-home windowsill with one small potted plant in a clay pot, a net curtain and soft morning light, a small watering can beside it, no people. 16:9 composition, plant on the right third, calm and gentle. flat paper-collage editorial illustration, cut-out paper pieces with white sticker edges, halftone print texture, visible paper grain, muted palette of deep slate #141824, lab-paper #F0F4F8, cobalt blue #2B6CB0 and amber #ED8936, soft flat light, no text, no faces, not photorealistic, not 3D render",
+  "size": [
+   1280,
+   720
+  ],
+  "takes": 1,
+  "credits": 190.4,
+  "finish": "channels/design_kits/ai_finish.py --channel dp",
+  "label_on_screen": "AI ILLUSTRATION",
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)"
+ }
+]

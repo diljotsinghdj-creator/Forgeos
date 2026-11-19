@@ -1,0 +1,104 @@
+[
+ {
+  "label": "B1",
+  "use": "AI·1 navy on Titicaca (1 · 0:00, 4 · return)",
+  "generation_id": "XYeUHcyDW0jFj4DxglRe",
+  "flow_id": "5IgC4rGL4gsq1Rp2ULGa",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "A small grey river patrol boat on a dark, very high-altitude lake, three sailors in plain white uniforms seen only from behind at the rail, saluting, a ring of snow-capped peaks behind, thin cold air and a pale sky, no flags, no emblems, no visible faces. Wide 16:9 composition, boat in the lower middle, empty sky at the top. flat paper-collage editorial illustration, cut-out paper pieces with white sticker edges, halftone print texture, visible paper grain, muted palette of archival cream #F4EFE6, ink charcoal #1A1A1A, investigative crimson #D93829 and Pacific teal #2C7A8C, soft flat light, no text, no faces, not photorealistic, not 3D render",
+  "size": [
+   1280,
+   720
+  ],
+  "takes": 1,
+  "credits": 190.4,
+  "finish": "channels/design_kits/ai_finish.py --channel pfb",
+  "label_on_screen": "AI ILLUSTRATION",
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)"
+ },
+ {
+  "label": "B2",
+  "use": "AI·2 Topáter bridge",
+  "generation_id": "CvwPVYtGEMizxNGwGWRT",
+  "flow_id": "5IgC4rGL4gsq1Rp2ULGa",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "A small timber-and-stone bridge over a dry desert riverbed at dusk in the Atacama, tiny distant human silhouettes on the far bank, no faces, no weapons in close-up, quiet and dignified, long shadows. Wide 16:9 composition, bridge in the centre, empty sky above. flat paper-collage editorial illustration, cut-out paper pieces with white sticker edges, halftone print texture, visible paper grain, muted palette of archival cream #F4EFE6, ink charcoal #1A1A1A, investigative crimson #D93829 and Pacific teal #2C7A8C, soft flat light, no text, no faces, not photorealistic, not 3D render",
+  "size": [
+   1280,
+   720
+  ],
+  "takes": 1,
+  "credits": 190.4,
+  "finish": "channels/design_kits/ai_finish.py --channel pfb",
+  "label_on_screen": "AI ILLUSTRATION",
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)"
+ },
+ {
+  "label": "B3",
+  "use": "AI·3 nitrate sacks (1878)",
+  "generation_id": "fGJ7yBcIZ2F9V8rAHfSI",
+  "flow_id": "5IgC4rGL4gsq1Rp2ULGa",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "A tall stack of tied jute sacks of nitrate (saltpetre) on a weathered wooden dock beside a hand cart, a pale desert coast and calm sea behind, 1870s, no labels, no people. 16:9 composition, sacks on the left two-thirds. flat paper-collage editorial illustration, cut-out paper pieces with white sticker edges, halftone print texture, visible paper grain, muted palette of archival cream #F4EFE6, ink charcoal #1A1A1A, investigative crimson #D93829 and Pacific teal #2C7A8C, soft flat light, no text, no faces, not photorealistic, not 3D render",
+  "size": [
+   1280,
+   720
+  ],
+  "takes": 1,
+  "credits": 190.4,
+  "finish": "channels/design_kits/ai_finish.py --channel pfb",
+  "label_on_screen": "AI ILLUSTRATION",
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)"
+ },
+ {
+  "label": "B4",
+  "use": "AI·4 the 1913 train",
+  "generation_id": "C5I3HQYPi197ELnHb6AO",
+  "flow_id": "5IgC4rGL4gsq1Rp2ULGa",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "A small early-1900s steam train climbing a bare high Andean plateau toward distant snow mountains, a long trail of smoke, thin railway line curving across the altiplano, no people. Wide 16:9 composition. flat paper-collage editorial illustration, cut-out paper pieces with white sticker edges, halftone print texture, visible paper grain, muted palette of archival cream #F4EFE6, ink charcoal #1A1A1A, investigative crimson #D93829 and Pacific teal #2C7A8C, soft flat light, no text, no faces, not photorealistic, not 3D render",
+  "size": [
+   1280,
+   720
+  ],
+  "takes": 1,
+  "credits": 190.4,
+  "finish": "channels/design_kits/ai_finish.py --channel pfb",
+  "label_on_screen": "AI ILLUSTRATION",
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)"
+ },
+ {
+  "label": "B5",
+  "use": "AI·5 Día del Mar wreath and podium",
+  "generation_id": "J38W4bYAazd8jXdLd8zF",
+  "flow_id": "5IgC4rGL4gsq1Rp2ULGa",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "A ceremonial flower wreath on a wooden stand beside an empty wooden podium with a single microphone, in a quiet stone plaza under a high mountain sky, no people, no flags, no emblems, no banners. 16:9 composition. flat paper-collage editorial illustration, cut-out paper pieces with white sticker edges, halftone print texture, visible paper grain, muted palette of archival cream #F4EFE6, ink charcoal #1A1A1A, investigative crimson #D93829 and Pacific teal #2C7A8C, soft flat light, no text, no faces, not photorealistic, not 3D render",
+  "size": [
+   1280,
+   720
+  ],
+  "takes": 1,
+  "credits": 190.4,
+  "finish": "channels/design_kits/ai_finish.py --channel pfb",
+  "label_on_screen": "AI ILLUSTRATION",
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)"
+ },
+ {
+  "label": "B6",
+  "use": "AI·6 Boliviamar beach",
+  "generation_id": "wzFlYgWQMRadEWOr4Us6",
+  "flow_id": "5IgC4rGL4gsq1Rp2ULGa",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "An empty desert beach with low sand dunes, a calm grey Pacific sea and one blank wooden signpost stuck in the sand, no buildings, no people, a wide quiet sky. Wide 16:9 composition, signpost on the right third. flat paper-collage editorial illustration, cut-out paper pieces with white sticker edges, halftone print texture, visible paper grain, muted palette of archival cream #F4EFE6, ink charcoal #1A1A1A, investigative crimson #D93829 and Pacific teal #2C7A8C, soft flat light, no text, no faces, not photorealistic, not 3D render",
+  "size": [
+   1280,
+   720
+  ],
+  "takes": 1,
+  "credits": 190.4,
+  "finish": "channels/design_kits/ai_finish.py --channel pfb",
+  "label_on_screen": "AI ILLUSTRATION",
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)"
+ }
+]
