@@ -38,7 +38,8 @@ S, K = [], {}
 
 
 def shot(key, vo, pg, t=(0, 1), cam=None, beat=1, zone="", **kw):
-    s = {"id": f"0.{len(S) + 1:02d}", "beat": beat, "vo": vo, "page": pg, "t": [round(x, 4) for x in t], "cam": list(cam or [1.0, .5, .5, 1.05, .5, .5]), "zone": zone, **kw}
+    s = {"id": f"0.{len(S) + 1:02d}", "beat": beat, "vo": vo, "page": pg, "t": [round(x, 4) for x in t], "cam": list(cam or [1.0, .5, .5, 1.05, .5, .5]), "zone": zone,
+         "capbreak": True, **kw}      # captions go line by line: no group runs on into the next shot's words
     S.append(s); K[key] = s
 
 
@@ -54,7 +55,7 @@ shot("watch", "Watch this once.", "m_22_watch", (0, 1), [1.05, .5, .5, 1.1, .48,
 shot("clipa", "", "m_23_clip", (0, CLIP[0] / sum(CLIP)), [1.8, .47, .722, 1.8, .47, .4], beat=2, zone="gap", fix=CLIP[0])          # the camera follows the car and stops as it hits
 shot("clipb", "", "m_23_clip", (CLIP[0] / sum(CLIP), 1), [1.8, .47, .4, 2.6, .335, .292], beat=2, zone="gap", fix=CLIP[1])          # then pushes in on the bump; the triangle leaves the frame
 shot("witness", "Congratulations. You are now a witness.", "m_24_witness", (0, 1), [2.6, .335, .292, 2.45, .323, .292], beat=2, zone="gap", w=1.0, pre=AFTER / FPS)   # the clip's last 1.9 s are this shot's silent start
-shot("email", "Somewhere, the owner of the blue car that ran the stop sign is drafting a defensive email.", "m_25_email", (0, 1), [1.0, .5, .5, 1.1, .56, .6], beat=2, zone="gap", w=1.1)
+shot("email", "Somewhere, the owner of the blue car that ran the stop sign is drafting a defensive email.", "m_25_email", (0, 1), [1.0, .5, .5, 1.1, .56, .6], beat=2, zone="gap", w=1.1, nocap=True)   # plant 1 is never on screen, so this line carries no caption
 shot("bar", "That amber bar is your minute.", "m_26_bar", (0, 1), [1.0, .5, .5, 1.03, .53, .5], beat=2, zone="gap", w=.5)
 shot("rehearse", "Don't rehearse. I can't see you, but I'll know.", "m_27_rehearse", (0, 1), [1.03, .53, .5, 1.06, .5, .54], beat=2, zone="gap", w=.9)
 shot("sure", "Some of you are already sure you'll pass.", "m_28_sure", (0, 1), [1.0, .5, .5, 1.06, .44, .44], beat=2, zone="gap", w=.8)
@@ -137,7 +138,7 @@ REWIND = f'{int(K["w1"]["start"]) // 60}:{int(K["w1"]["start"]) % 60:02d}'
 
 OWN = ("zone", "w", "fix", "tail", "frames", "p0", "p1", "v", "L", "B", "start")
 (V / "shots.json").write_text(json.dumps({"slug": "false-memory-opening-test", "title": "Can I Give You a False Memory in 60 Seconds? (opening test)", "channel": "dragonpsych",
-                                          "voice": VOICE, "speed": SPEED, "treatment": "pulse", "guide": {}, "reload_pages": [],
+                                          "voice": VOICE, "speed": SPEED, "treatment": "pulse", "guide": {}, "reload_pages": [], "room_tone": -62,
                                           "shots": [{k: v for k, v in s.items() if k not in OWN} for s in S]}, indent=1))
 print(f"shots: {len(S)} · {start:.1f} s · list starts at {K['w1']['start']:.2f} s, test at {K['test1']['start']:.2f} s (gap {K['test1']['start'] - K['w1']['start']:.3f} s) · "
       f"spare time in the minute {spare:.2f} s · rewind tag {REWIND}" + (f" · NOT YET RECORDED (estimates): {guessed}" if guessed else " · every line timed from the recorded voice"))
@@ -261,7 +262,7 @@ put("m_22_watch", page(a(P.tray(1340, 840), 290, 110) + a(sheet(STMT, 1000, 620,
 # One continuous clip in three parts: the camera follows the car, stops on the bump, pushes in (the triangle leaves the frame) and holds. The triangle is in view for about two seconds.
 TC = sum(CLIP) / FPS
 ct = lambda sec: round(sec / TC, 4)
-put("m_23_clip", page(a(frame(P.road_scene(car_y=236, bump=True, drive=(700, ct(.15), ct(2.1), ct(2.12)))), 196, 76) + bar("clipa", "clipb"), "STUDIO PAPER CUT-OUT (NOT A REAL ACCIDENT)"))
+put("m_23_clip", page(a(frame(P.road_scene(car_y=236, bump=True, drive=(700, ct(.15), ct(1.95), ct(1.97)))), 196, 76) + bar("clipa", "clipb"), "STUDIO PAPER CUT-OUT (NOT A REAL ACCIDENT)"))
 put("m_24_witness", page(a(frame(P.road_scene(car_y=236, bump=True)), 196, 76)
                          + A(tag("WITNESS NO. 1 · YOU", 22, amber=True, rot=-4), 326, 206, an("slam", "witness", said("witness", .8), .1), "z-index:61") + bar("witness"), "STUDIO PAPER CUT-OUT (NOT A REAL ACCIDENT)"))
 
@@ -407,4 +408,5 @@ for pg in dict.fromkeys(s["page"] for s in S):
     for word in ("STOP SIGN", " STOP ", "GIVE WAY", "GIVE-WAY", "YIELD", "CAR CLIP"):
         assert word not in visible(pg), f"{word.strip()} is on {pg}: no sign is named on screen, and nothing points at the clip"
 assert not any("sleep" in s["vo"].lower() for s in S[:S.index(K["tw3"])]), '"sleep" is said before the third test word'
+assert all(s.get("nocap") for s in S if "stop sign" in s["vo"].lower()), "a line that says \"stop sign\" would be captioned: the plant is never on screen"
 print("pages written:", len({s["page"] for s in S}), "· trap rules hold: no \"sleep\" before the third test word, no study named before the reveal, no sign named on any page")

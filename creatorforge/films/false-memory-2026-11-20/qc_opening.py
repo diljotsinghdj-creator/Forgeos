@@ -71,3 +71,28 @@ for k in range(0, len(times), C * R):
     out = OUT / f"final_{k // (C * R) + 1:02d}.jpg"; sheet.save(out, quality=85); print(out)
 for f in ("_f.png", "_g.jpg", "mix.wav"):
     (OUT / f).unlink(missing_ok=True)
+
+# 7. the captions' own words (written by the engine from the script, timed line by line): is "sleep" captioned before the third test word?
+words = [tuple(w) for w in json.loads((V / "work" / "caption_words.json").read_text())]
+plain = [(r["start"], r["start"] + r["dur"]) for r in tl if sh[r["id"]].get("nocap")]
+hidden = lambda s, e: any(a <= (s + e) / 2 < b for a, b in plain)
+early = [(w, round(s, 2)) for w, s, e in words if "sleep" in w.lower() and s < third["start"] and not hidden(s, e)]
+shown = [w for w, s, e in words if not hidden(s, e)]
+print(f"caption words: {len(words)} in the script, {len(shown)} shown · \"sleep\" in a visible caption before the third test word: {early or 'never'}")
+print("not shown (the list, the test words, the plant line):", " ".join(w for w, s, e in words if hidden(s, e)))
+print("shown:", " ".join(shown))
+
+# 8. the caption groups exactly as the caption step builds them (four words, or fewer where a break falls): what is on screen, and from when
+breaks = json.loads((V / "work" / "caption_breaks.json").read_text())
+words = [(w, max(s, e - (.35 + .09 * len(w))), e) for w, s, e in words]
+centre = lambda k: (words[k][1] + words[k][2]) / 2
+groups, cur = [], []
+for i in range(len(words)):
+    if cur and (len(cur) == 4 or any(centre(cur[-1]) < b <= centre(i) for b in breaks)):
+        groups.append(cur); cur = []
+    cur.append(i)
+groups.append(cur)
+print("caption groups (first shown at · text; [hidden] = over the list or a test word):")
+for g in groups:
+    s0, e0 = words[g[0]][1], words[g[-1]][2]
+    print(f"  {int(s0) // 60}:{s0 % 60:05.2f}  {'[hidden] ' if hidden(words[g[0]][1], words[g[0]][2]) else ''}{' '.join(words[k][0] for k in g)}")

@@ -187,21 +187,29 @@ Newest entries go at the bottom. Rules here are binding for both channels unless
 - **Winning Pattern:** none yet.
 
 ### 2026-11-20: The false-memory opening test (my own catches while building it; not an owner correction)
-- **Mistake Logged:** three things would have broken the trap in the finished cut, and no gate checks for any of them:
+- **Mistake Logged:** five things would have broken the trap or the cut, and no gate checks for any of them:
   1. the key frames' small source lines named the study, the missing word, the road sign and "the first plant": an answer key in
      fine print;
-  2. the house captions grouped words in fours across cuts, so "Sleep." would have been captioned before it was asked;
-  3. the 60-second bar was drawn on each page, so it moved and left the frame whenever the camera zoomed.
+  2. the house captions grouped words in fours across cuts, so "Sleep." would have been captioned before it was asked, and
+     "And sleep?" a second and a half before it was said;
+  3. the 60-second bar was drawn on each page, so it moved and left the frame whenever the camera zoomed;
+  4. the captions were a transcription of the finished mix. One pass dropped seven words and heard "Nap." as "Now. Snap.";
+  5. captions put every spoken word on screen, so the planted "stop sign", which the script says is never on screen, would
+     have sat there as its own caption.
 - **New Permanent Rule (my reading, for any film that tests the viewer):**
   1. The builder itself asserts what may not be on screen before the reveal (`films/false-memory-2026-11-20/opening.py` ends with
      these checks). Before a reveal a source line names nothing; the sources come after it.
-  2. A shot whose word is the picture carries `nocap`, and no caption group crosses the edge of such a shot
-     (`captions.py … breaks.json`; the engine passes it).
+  2. The engine's captions are the script's own words, timed line by line on the clean voice; the mix is never transcribed.
+     A shot whose word is the picture, or whose words must stay off the screen, carries `nocap`. No caption group crosses the
+     edge of such a shot, the start of a `capbreak` shot, or a pause of half a second.
   3. A timer or timecode the viewer relies on is fixed to the screen (`data-hud`), never page content.
   4. An exact interval is built in two passes: record the voice, then set the pauses in whole frames from the recorded lengths.
   5. Animation times are written in seconds of the recorded line (`an(kind, shot, seconds)`), not as guessed fractions of a page.
   6. Before any render, `preview.py` shoots every shot's first and last frame through the engine's own camera. It caught eight
      framings that cut type at the frame edge and two shots that sat empty.
+  7. After a render, read the list of sound cues against the script. The crash in the clip had lost its sound to the engine's
+     rule that drops a cue in a shot's last 0.15 s.
+  8. A stretch with the music out gets a faint room tone (`"room_tone"` in the shot list), not digital silence.
 - **Used Mechanics (not to be repeated on the next film):** the live viewer trap; the 60-second bar; a word list on five paper
   treatments; the cut-out road clip; the card that flips to blank; a stamp landing on the last word of a line; the typed line that
   is struck through.

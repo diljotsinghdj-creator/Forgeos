@@ -12,7 +12,9 @@ usage: film_video.py <film_dir> [--check] [--voice-only] [--shots A:B] [--worker
             "pre": 0.0, "post": 0.3, "hold": 0.0,   # silence before the line, after it, and a still hold for silent beats
             "build": null,                           # seconds the timeline takes to run t0 -> t1 (default: the line's length)
             "cut": false,                            # true: 0.2 s music cut before the punchline ([CUT] in the script)
-            "mute": false, "nocap": false}]}         # mute: no score under this shot; nocap: no burned captions over this shot
+            "mute": false, "nocap": false,           # mute: no score under this shot; nocap: no burned captions over this shot
+            "capbreak": false}]}                     # capbreak: a caption group never runs on into this shot (a reveal, a beat)
+Optional at the top level: "room_tone": -56 (a faint room tone at that level in dBFS, so muted stretches are not digital silence).
 
 The picture: each shot opens its key-frame page (html/<page>.html) and runs the page's own timeline from t0 to t1, stepped at
 12 fps (house style), while the camera (a CSS transform, so type stays crisp) moves at 24 fps. Consecutive shots on one page
@@ -21,8 +23,9 @@ A page element with the attribute data-hud is held fixed to the screen while the
 
 The sound: the page's own animation kinds place the effects (slam, drop, draw, pop, snap, click, type, flipout; at most two a
 shot). "mute" shots fade the score out and back; "cut" is the hard 0.2 s drop.
-The captions: none over a "nocap" shot, and no caption group crosses the edge of one, so a word from the far side of that cut
-(a test word, a reveal) is never captioned before it is spoken.
+The captions: the script's own words, timed line by line on the clean voice (the mix is never transcribed, so no word is dropped
+or misheard). None over a "nocap" shot. No caption group crosses the edge of one, the start of a "capbreak" shot, or a pause of
+0.5 s between two lines, so a word from the far side (a test word, a reveal, the next beat) is never captioned before it is spoken.
 """
 import argparse
 import functools
@@ -43,6 +46,7 @@ MEDIA = WORKER / "creatorforge_worker" / "media"
 sys.path.insert(0, str(WORKER))
 FPS, STEP = 24, 12
 LIMIT_STILL, LIMIT_BUILD, LIMIT_MEAN = 4.5, 7.0, 5.0
+CAPTION_GAP = 0.5   # a pause this long between two lines ends the caption group, so the next line's words are not shown through the pause
 
 
 def wav_len(p):
@@ -323,10 +327,17 @@ def sound(film, cfg):
     hard = ",".join(f"volume=enable='between(t,{a:.3f},{b:.3f})':volume=0" for a, b in merged(cuts))
     soft = "*".join(f"(1-clip((t-{a - .1:.3f})/.1,0,1)*clip(({b + .35:.3f}-t)/.35,0,1))" for a, b in quiet)
     mute = ",".join(x for x in (hard, f"volume=volume='{soft}':eval=frame" if soft else "") if x)
-    g = (f"[1:a]volume=2.0{',' + mute if mute else ''}[m];[0:a]asplit[vo][key];[m][key]sidechaincompress=threshold=0.03:ratio=6:attack=20:release=400[md];"
-         f"[vo][md][2:a]amix=inputs=3:normalize=0,loudnorm=I=-15:TP=-1.5:LRA=11[a]")
+    tone, extra = [], ""
+    if cfg.get("room_tone") is not None:   # "room_tone": -56 puts a faint room tone at that level (dBFS) under the whole film, so muted stretches do not fall to digital silence
+        rt = work / "room_tone.wav"
+        subprocess.run(["ffmpeg", "-nostdin", "-loglevel", "error", "-y", "-f", "lavfi", "-i", f"anoisesrc=c=brown:r=48000:a=0.5:d={total:.3f}", "-af", "highpass=f=90,lowpass=f=1400", "-ac", "2", str(rt)], check=True)
+        seen = subprocess.run(["ffmpeg", "-nostdin", "-hide_banner", "-i", str(rt), "-af", "volumedetect", "-f", "null", "-"], capture_output=True, text=True).stderr
+        gain = float(cfg["room_tone"]) - float(re.search(r"mean_volume: (-?[\d.]+) dB", seen).group(1))
+        tone, extra = ["-i", str(rt)], f";[3:a]volume={gain:.1f}dB[rt]"
+    g = (f"[1:a]volume=2.0{',' + mute if mute else ''}[m];[0:a]asplit[vo][key];[m][key]sidechaincompress=threshold=0.03:ratio=6:attack=20:release=400[md]{extra};"
+         f"[vo][md][2:a]{'[rt]' if tone else ''}amix=inputs={4 if tone else 3}:normalize=0,loudnorm=I=-15:TP=-1.5:LRA=11[a]")
     mixed = work / "mix.wav"
-    subprocess.run(["ffmpeg", "-nostdin", "-loglevel", "error", "-y", "-i", str(vo), "-i", str(sc), "-i", str(sfx), "-filter_complex", g, "-map", "[a]", "-ar", "48000", str(mixed)], check=True)
+    subprocess.run(["ffmpeg", "-nostdin", "-loglevel", "error", "-y", "-i", str(vo), "-i", str(sc), "-i", str(sfx), *tone, "-filter_complex", g, "-map", "[a]", "-ar", "48000", str(mixed)], check=True)
     return mixed, len(cues), score.LAST_HOW, ncut
 
 
@@ -338,6 +349,31 @@ def merged(ranges):
             out[-1] = (out[-1][0], max(out[-1][1], b))
         else:
             out.append((a, b))
+    return out
+
+
+def caption_words(film, cfg):
+    """The captions' words: each line as written, timed on its own clean recording. If the aligner hears a different number of words
+    (a numeral, a joined pair), the written words are spread over the line by their length."""
+    sys.path.insert(0, str(WORKER))
+    from creatorforge_worker.media.wordtimes import word_times
+    out = []
+    for s in cfg["shots"]:
+        if not s["vo"]:
+            continue
+        t0, said = s["start"] + s["pre"], s["vo"].split()
+        try:
+            heard = word_times(film / "video" / "audio" / f"{s['n']:03d}.wav", s["vo"])
+        except Exception:
+            heard = []
+        if len(heard) == len(said):
+            out += [[w, round(t0 + a, 3), round(t0 + max(b, a + .05), 3)] for w, (_, a, b) in zip(said, heard)]
+        else:
+            a0, b0 = (heard[0][1], heard[-1][2]) if heard else (0.0, s["vdur"])
+            total, t = sum(len(w) + 1 for w in said), a0
+            for w in said:
+                d = (b0 - a0) * (len(w) + 1) / total
+                out.append([w, round(t0 + t, 3), round(t0 + t + d, 3)]); t += d
     return out
 
 
@@ -353,8 +389,15 @@ def assemble(film, cfg, mixed):
     out = v / f"{cfg['slug']}.mp4"
     chan = cfg.get("channel", "printfacts")
     plain = merged([(s["start"], s["start"] + s["dur"]) for s in cfg["shots"] if s.get("nocap")])
-    brk = work / "caption_breaks.json"; brk.write_text(json.dumps(sorted({round(x, 3) for a, b in plain for x in (a, b)})))   # no caption group spans the edge of a "nocap" shot
-    subprocess.run([sys.executable, str(REPO / ".claude/skills/printfacts-style/captions.py"), str(pre), str(out), "youtube", str(script), chan, str(brk)], check=True)
+    spoken = [s for s in cfg["shots"] if s["vo"]]
+    cuts = []   # no caption group spans: the edge of a "nocap" shot, the start of a "capbreak" shot, or a pause of CAPTION_GAP seconds. Each break sits mid-silence.
+    for a, b in zip(spoken, spoken[1:]):
+        end_a, start_b = a["start"] + a["pre"] + a["vdur"], b["start"] + b["pre"]
+        if bool(a.get("nocap")) != bool(b.get("nocap")) or b.get("capbreak") or start_b - end_a >= CAPTION_GAP:
+            cuts.append(round((end_a + start_b) / 2, 3))
+    brk = work / "caption_breaks.json"; brk.write_text(json.dumps(cuts))
+    cw = work / "caption_words.json"; cw.write_text(json.dumps(caption_words(film, cfg)))
+    subprocess.run([sys.executable, str(REPO / ".claude/skills/printfacts-style/captions.py"), str(pre), str(out), "youtube", str(script), chan, str(brk), str(cw)], check=True)
     if plain:  # "nocap": shots whose words are the picture itself (a list read out, a test word); the uncaptioned picture is laid back over them
         tmp = work / "nocap.mp4"
         en = "+".join(f"between(t,{a:.3f},{b:.3f})" for a, b in plain)

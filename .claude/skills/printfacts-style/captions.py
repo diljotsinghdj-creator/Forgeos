@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """House captions: exact word timing (media/wordtimes.py), 4-word groups on a dark box, Anton white with the current
-word in signature yellow; then -14 LUFS via ffmpeg-skill. usage: captions.py in.mp4 out.mp4 [shorts|youtube] [script.txt] [printfacts|dragonpsych] [breaks.json]
+word in signature yellow; then -14 LUFS via ffmpeg-skill. usage: captions.py in.mp4 out.mp4 [shorts|youtube] [script.txt] [printfacts|dragonpsych] [breaks.json] [words.json]
 breaks.json (optional): a list of times in seconds that no caption group may span, so a group never shows a word from the far side of that cut
-(a test word, a reveal) before it is spoken."""
+(a test word, a reveal) before it is spoken.
+words.json (optional): [[word, start_s, end_s], ...] already timed by the caller (its own script, line by line). The mix is then not transcribed,
+so no word can be dropped or misheard."""
 import json, subprocess, sys, tempfile, wave
 from pathlib import Path
 sys.path.insert(0, "/home/user/forgeos/creatorforge/worker")
@@ -20,7 +22,9 @@ W, H = (1080, 1920) if plat == "shorts" else (1920, 1080)
 size, marg = (64, 380) if plat == "shorts" else (54, 90)
 tmp = Path(tempfile.mkdtemp())
 subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", src, "-vn", "-ac", "1", "-ar", "16000", str(tmp / "a.wav")], check=True)
-words = word_times(tmp / "a.wav", prompt)
+given = json.loads(Path(sys.argv[7]).read_text()) if len(sys.argv) > 7 and sys.argv[7] else None
+words = [tuple(w) for w in given] if given else word_times(tmp / "a.wav", prompt)
+words = [(w, max(s, e - (.35 + .09 * len(w))), e) for w, s, e in words]   # a word cannot start long before it ends: the aligner sometimes stretches a start back across a silence
 ts = lambda t: f"{int(t // 3600)}:{int(t % 3600 // 60):02d}:{t % 60:05.2f}"
 ass = [f"[Script Info]\nScriptType: v4.00+\nPlayResX: {W}\nPlayResY: {H}\n\n[V4+ Styles]\n"
        "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding\n"

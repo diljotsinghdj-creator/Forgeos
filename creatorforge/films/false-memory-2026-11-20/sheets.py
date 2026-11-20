@@ -12,7 +12,7 @@ except Exception:
 
 
 def stills(tag="FM", per=8):
-    names = sorted(p.stem for p in (D / "html").glob("*.html"))
+    names = sorted(p.stem for p in (D / "html").glob("*.html") if p.stem[:2].isdigit())   # key frames only (01_hook ...); the video's own pages (m_, t_, r_, v_) are not key frames
     for old in OUT.glob(f"{tag}_*.jpg"):
         old.unlink()
     for k in range(0, len(names), per):
