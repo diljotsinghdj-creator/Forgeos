@@ -162,3 +162,10 @@ Newest entries go at the bottom. Rules here are binding for both channels unless
 - **Used Mechanics to Retire:** the countdown-clock frame story; stick-figure house plan as the main stage; study-card stacks;
   `am_fenrir` at 1.0.
 - **Winning Pattern:** none yet from this cut.
+
+### 2026-11-20: "Change the voice narration to the one I selected… Female voice more human"
+- **Mistake Logged:** Each film had its own male Kokoro voice at normal speed; the owner found them flat.
+- **New Permanent Rule:** The stand-in voice for every bank film on both channels is Kokoro `af_heart` at speed 1.1, the voice
+  the owner picked by ear on 2026-11-20. It replaces "rotate the stand-in voice" until the owner picks another. ElevenLabs still
+  needs the owner's permission.
+- **Used Mechanics to Retire:** `am_michael`, `bm_george`, `am_fenrir`, `am_eric`, `bm_daniel` as stand-ins.

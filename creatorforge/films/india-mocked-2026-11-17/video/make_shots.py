@@ -221,7 +221,7 @@ sh(5, P, (0, .5), (1.25, 700, 320, 1.0, *C), "And laughing at that edit? That re
 sh(5, P, (.5, .8), (1.25, 860, 640, 1.1, 960, 640), "It's had a very long run for a one-star book.")
 sh(5, P, (.8, .9), (1.1, 960, 640, 1.0, *C), "", hold=2.6)
 
-cfg = {"slug": "disgust-pays", "title": "Disgust Pays", "channel": "printfacts", "voice": "bm_george", "speed": 1.0, "treatment": "pulse",
+cfg = {"slug": "disgust-pays", "title": "Disgust Pays", "channel": "printfacts", "voice": "af_heart", "speed": 1.1, "treatment": "pulse",
        "guide": {"CSOH": "C S O H", "Jio": "Jee-oh", "Tallaght": "Talla", "Naatu": "Nah-too", "Chawla": "Chow-la", "Sanscrit": "Sanskrit",
                  "Sundarbans": "Soon-dar-bunns", "Gandak": "Gun-duck", "Yamuna": "Yum-oo-na"},
        "reload_pages": json.loads((V / "reload_pages.json").read_text()) if (V / "reload_pages.json").is_file() else [],
