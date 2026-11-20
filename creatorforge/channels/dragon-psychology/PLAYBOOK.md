@@ -1,5 +1,8 @@
 # Dragon Psychology: channel playbook
 
+> **The 20 video ideas in part 2 were retired by the owner's reset on 2026-11-20** (MASTER_DIRECTIVES §11). They are kept for
+> the record and are not pitched or reused unless the owner asks. The channel's scope and format are now the ones in §11.
+
 Version 1. Five parts: the blueprint, 20 video ideas, the content system, the analytics review and the money plan.
 Everything here can be changed.
 

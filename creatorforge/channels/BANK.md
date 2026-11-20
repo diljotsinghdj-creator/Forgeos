@@ -55,4 +55,8 @@ Older work waiting on the owner (not counted until approved in the current style
 - US midterms: awaits go;
 - the Delhi film: awaits go.
 
+**Owner's reset of Dragon Psychology, 2026-11-20 (MASTER_DIRECTIVES §11):** films 3 and 5 are retired. Their scripts, outlines and
+ideas are not reused, and they no longer count toward the bank. The files stay in `films/`; nothing was deleted. New Dragon
+Psychology films start from `PITCHES_2026-11-20_dragonpsych_reset.md`.
+
 **Count toward 20: 0 approved.**

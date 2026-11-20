@@ -1,5 +1,8 @@
 # Dragon Psychology: long-form topic scout (2026-11-19)
 
+> **Retired by the owner's reset on 2026-11-20** (MASTER_DIRECTIVES §11). Kept for the record. None of the ideas here is
+> pitched or reused unless the owner asks.
+
 **Goal:** the next long video (about 10–15 min). The channel's promise is "we check the science", in the Vox × Johnny Harris
 structure with the John Oliver voice. The script is written for motion (four-column table, MASTER_DIRECTIVES §10b).
 

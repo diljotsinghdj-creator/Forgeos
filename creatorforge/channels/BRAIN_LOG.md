@@ -169,3 +169,19 @@ Newest entries go at the bottom. Rules here are binding for both channels unless
   the owner picked by ear on 2026-11-20. It replaces "rotate the stand-in voice" until the owner picks another. ElevenLabs still
   needs the owner's permission.
 - **Used Mechanics to Retire:** `am_michael`, `bm_george`, `am_fenrir`, `am_eric`, `bm_daniel` as stand-ins.
+
+### 2026-11-20: Dragon Psychology reset ("We are starting completely fresh")
+- **Mistake Logged:** n/a (owner's brief; the text is in MASTER_DIRECTIVES §11). While pitching, two concepts on my first shortlist
+  turned out to match ideas in the old channel playbook (the spotlight effect; a slot-machine reel). They were dropped before the
+  owner saw them.
+- **New Permanent Rule:**
+  1. Every earlier Dragon Psychology script, outline and idea is retired: films 3 and 5 of the bank, the 20 ideas in
+     `dragon-psychology/PLAYBOOK.md` and the five in `TOPIC_SCOUT_2026-11-19.md`. None is pitched or reused unless the owner asks.
+     The files are kept; nothing was deleted.
+  2. Before a pitch goes to the owner, check every concept against those retired lists as well as SEEN.json.
+  3. Dragon Psychology scripts are two columns (Audio | Visuals), with a hook that sets the stakes in the first 15 s, open loops,
+     and a pattern interrupt every 30–45 s.
+  4. A pitch says what its demand evidence is and where it stops. On 2026-11-20 vidIQ had 0 credits (refill 3 Dec) and YouTube was
+     blocked from the session, so only public tracker pages were available.
+- **Used Mechanics to Retire:** everything from the two retired films.
+- **Winning Pattern:** none yet.

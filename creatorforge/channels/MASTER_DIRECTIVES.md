@@ -357,3 +357,28 @@ When the owner asks for **"DJ style"**, it means both of these, on either channe
 - no video before "go".
 
 It doesn't choose the voice either. The owner's ElevenLabs voice is still used only with the owner's permission.
+
+## 11. Dragon Psychology reset (owner, 2026-11-20)
+The owner's brief for the channel, in the owner's words:
+- **Reset:** "Disregard and dispose of all previous scripts, outlines, and ideas. We are starting completely fresh."
+- **Scope:** "Broad psychology—human behavior, dark psychology, cognitive biases, social dynamics, historical/modern case studies,
+  and everyday mental traps. Anything that hooks mass curiosity fits."
+- **Goal:** "Identify high-retention sub-niches and produce scripts engineered for high click-through rate (CTR), maximum average
+  view duration (AVD), and viral shareability."
+- **Format:** "Use the accessible, high-clarity explainer approach of the Ink Explainer YouTube channel as a structural starting
+  point, but execute everything strictly in our 'DJ Style'" (§10c).
+- **Retention and virality rules:**
+  1. **The 0–30 second hook:** "Open immediately with a bold claim, paradox, or relatable psychological trap. Establish the
+     curiosity gap and stakes in the first 15 seconds—no slow intros or 'welcome back.'"
+  2. **Open loops and pacing:** "Plant unanswered questions early and pay them off later. Build in a pattern interrupt (a joke,
+     visual shift, or twist) every 30–45 seconds."
+  3. **Zero fluff:** "Every sentence must either advance the story, deliver a punchline, or deepen the insight."
+- **Process:** three sub-angles, then five concepts (a high-CTR title, a simple thumbnail concept, a two-sentence premise), then
+  the owner picks one, then "the full script in a two-column format: Audio (John Oliver-style script) and Visuals (Vox/Johnny
+  Harris-style cues)."
+
+How this sits with the rest of this file (Claude's reading, for the owner to correct):
+- The reset covers scripts, outlines and ideas. The hard rules (§6), the gates and the house style stay.
+- For Dragon Psychology, the two-column table replaces the four-column one (§10b). Camera and motion cues go in the Visuals column.
+- The owner's pick among the five concepts is the gate-1 pick; each concept says how its story is told.
+- The pitches are in `channels/PITCHES_2026-11-20_dragonpsych_reset.md`.
