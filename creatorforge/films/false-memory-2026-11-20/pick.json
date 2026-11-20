@@ -16,5 +16,14 @@
  "engine_note": "under the owner's 2026-11-20 brief the concept pick is the gate-1 pick; each concept stated how its story is told",
  "voice_style": "John Oliver satirical voice, Vox x Johnny Harris visuals (DJ style); two columns: Audio | Visuals",
  "voice": "kokoro af_heart at 1.1 (standing stand-in until the owner picks another)",
- "pitches_file": "channels/PITCHES_2026-11-20_dragonpsych_reset.md"
+ "pitches_file": "channels/PITCHES_2026-11-20_dragonpsych_reset.md",
+ "visual_dna": {
+  "theme": "The evidence desk (archetype C, declassified archive, as a hybrid in the Dragon Psychology palette)",
+  "typography": "Archivo Black headlines; DM Mono for typewriter text and labels; Instrument Serif italic for quotes; Shadows Into Light for pencil notes. Kinetic system: stamp thuds, label-maker tape, typed strips, card flips; five paper treatments cycle through the word list",
+  "surface": "a slate cutting mat with a faint cobalt grid and a ruler edge; rigid paper with hard offset shadows; index cards, carbon-copy forms, exhibit tags",
+  "palette": "slate #141824, lab-paper #F0F4F8, cobalt #2B6CB0, amber #ED8936 (the one signal); film accent sign red #C53030 on road signs, the parked car and red ink only",
+  "camera": "overhead rostrum; hard cuts and whip-pans along the desk; stamps and typing stepped at 12 fps; slow pushes only on real photos",
+  "motif": "the intake stamp (RECEIVED, FILED, CERTAIN) and exhibit tags; the thin amber 60-second bar",
+  "differs_from": "film 3's looks: the lab-paper grid with clocks and a stick-figure house plan, then a white sheet on dotted slate set in Anton and Caveat"
+ }
 }

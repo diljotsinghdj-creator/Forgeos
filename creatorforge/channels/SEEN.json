@@ -738,5 +738,17 @@
   "engine": "the countdown",
   "look": "AI paper-collage plates, Dragon Psychology palette: slate study desk, padlocked membership card, three ringing 1950s phones, peg-board task, leaning textbook stack, blank head silhouette with a pressure valve",
   "shots": 5
+ },
+ {
+  "id": "false-memory-visuals",
+  "kind": "visuals",
+  "channel": "dragonpsych",
+  "date": "2026-11-20",
+  "topic": "false memory (the word-list illusion, flashbulb memories, implanted events, eyewitness error)",
+  "engine": "live-viewer-trap",
+  "hook": "give me sixty seconds: I'm going to put a memory in your head of something that never happened",
+  "opening_shot": "kinetic type GIVE ME 60 SECONDS on a slate cutting mat, with an index card stamped CERTAIN",
+  "look": "the evidence desk: slate cutting mat with a cobalt grid, index cards, label tape, typed strips, amber rubber stamps, exhibit tags, a paper cut-out road clip, study cards; Archivo Black + DM Mono; 7 real photos (Alamance County courthouse, NASA's Challenger liftoff, a lecture hall, a mall, a balloon, Thompson and Cotton) and a Natural Earth map of North Carolina; no AI",
+  "shots": 65
  }
 ]

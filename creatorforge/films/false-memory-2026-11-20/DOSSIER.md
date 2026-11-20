@@ -21,7 +21,7 @@ are blocked here; only search works), so anything marked ⚠ is checked against 
 ## Act 2 · Challenger
 | ID | Claim | Source | Status |
 |---|---|---|---|
-| D7 | 28 January 1986: the space shuttle Challenger broke apart 73 seconds after launch, with seven crew aboard. | NASA | known; ⚠ confirm wording at NASA |
+| D7 | 28 January 1986: the space shuttle Challenger lifted off at 11:38 a.m. EST with a crew of seven; an accident 73 seconds after liftoff claimed the crew and the vehicle. | NASA image record 51L-S-156 (its own description) | verified |
 | D8b | Vivid memories of how you heard shocking news are known as "flashbulb memories". | Brown & Kulik 1977 (the term); the title of Neisser & Harsch's chapter | textbook term; from memory |
 | D8 | The morning after, 106 Emory University psychology students wrote down how they had heard the news. About two and a half years later, 44 of them answered the same questions. Scored against their own first answers on a 7-point scale, the average was 2.95. Eleven scored zero and 22 scored 2 or less. Average confidence was 4.17 out of 5, and confidence was unrelated to accuracy. Shown their first answers in their own handwriting, most were surprised and most kept the new version. | Neisser & Harsch 1992, "Phantom flashbulbs", in Winograd & Neisser (eds.), *Affect and Accuracy in Recall* | verified through several summaries; ⚠ the chapter itself not seen |
 
@@ -56,6 +56,11 @@ shift toward "I saw it on TV".
 - **Sensitive material:** the 1984 crime is described as an attack, without detail. Challenger is shown plainly and briefly.
 - **What the film must not imply:** that witnesses or victims lie, or that memory is worthless. D18 and D11 carry the other side.
 - **Not advice:** nothing here is legal or medical advice.
+
+## Pictures
+- Credits and licences for every photo are in `data/photo_credits.json`.
+- **Licence to confirm with the owner:** the photo of Jennifer Thompson-Cannino and Ronald Cotton (PopTech 2010) is CC BY-SA 2.0. Share-alike is a different condition from the CC BY and CC0 photos used elsewhere.
+- **Courthouse:** the photo is the historic Alamance County Courthouse in Graham. The case was tried in Alamance County; which building the 1985 trial used is not confirmed, so frames name the courthouse and the county and do not call it the trial's own courtroom. ⚠
 
 ## Refresh before air
 D15 (Innocence Project counts), D10–D11 (the replication argument), D14 (replication status).
