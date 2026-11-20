@@ -1,0 +1,20 @@
+{
+ "film": "Can I Give You a False Memory in 60 Seconds?",
+ "channel": "dragonpsych",
+ "topic": "false memory: the word-list illusion, flashbulb memories, implanted events, eyewitness error",
+ "brief": "owner's Dragon Psychology reset, 2026-11-20 (MASTER_DIRECTIVES 11): Ink Explainer structure in DJ style, two-column script",
+ "pitched": {
+  "1": "People Used to Sleep Twice a Night. Then We Forgot. (one night, hour by hour)",
+  "2": "Can I Give You a False Memory in 60 Seconds? (the viewer is tested live, then shown the mechanism)",
+  "3": "The Man Who Named Stockholm Syndrome Never Spoke to the Hostage (the siege in order, then the diagnosis on trial)",
+  "4": "The Shock Experiment Proves the Opposite of What You Were Taught (the four scripted lines as a ladder)",
+  "5": "Why It's So Hard to Cancel Anything (one cancellation taken apart screen by screen)"
+ },
+ "pick": "2, Can I Give You a False Memory in 60 Seconds?",
+ "picked_by": "owner, 2026-11-20 (\"I'll go with your pick\")",
+ "engine": "live-viewer-trap",
+ "engine_note": "under the owner's 2026-11-20 brief the concept pick is the gate-1 pick; each concept stated how its story is told",
+ "voice_style": "John Oliver satirical voice, Vox x Johnny Harris visuals (DJ style); two columns: Audio | Visuals",
+ "voice": "kokoro af_heart at 1.1 (standing stand-in until the owner picks another)",
+ "pitches_file": "channels/PITCHES_2026-11-20_dragonpsych_reset.md"
+}
