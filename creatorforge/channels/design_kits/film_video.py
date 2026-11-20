@@ -193,7 +193,7 @@ def render_shot(pg, state, port, film, s, out, reload_pages):
                     pg.wait_for_timeout(120); state["page"] = None
                 pg.evaluate("window.__T = location.search")
             pg.evaluate(SET_JS, list(key))
-            buf = pg.screenshot(type="jpeg", quality=93); prev = key
+            buf = pg.screenshot(type="jpeg", quality=93, timeout=180000); prev = key
         ff.stdin.write(buf)
     ff.stdin.close()
     if ff.wait() != 0:
