@@ -1,0 +1,3055 @@
+{
+ "slug": "the-buttons-that-do-nothing",
+ "title": "The Buttons That Do Nothing",
+ "channel": "dragonpsych",
+ "voice": "bm_daniel",
+ "speed": 1.0,
+ "treatment": "pulse",
+ "guide": {
+  "Langer": "Langer"
+ },
+ "reload_pages": [
+  "16_reveal"
+ ],
+ "shots": [
+  {
+   "id": "1.01",
+   "beat": 1,
+   "vo": "Before anything else, a small test.",
+   "page": "01_press_v",
+   "t": [
+    0,
+    0.06
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.0,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "1.02",
+   "beat": 1,
+   "vo": "This is your button. When you're ready, press it. In your head.",
+   "page": "01_press_v",
+   "t": [
+    0.06,
+    0.3
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.1,
+    0.5,
+    0.52
+   ],
+   "post": 0.0
+  },
+  {
+   "id": "1.03",
+   "beat": 1,
+   "vo": "",
+   "page": "01_press_v",
+   "t": [
+    0.3,
+    0.84
+   ],
+   "cam": [
+    1.12,
+    0.5,
+    0.52,
+    1.12,
+    0.5,
+    0.52
+   ],
+   "hold": 4.0,
+   "build": 3.5913,
+   "post": 0
+  },
+  {
+   "id": "1.04",
+   "beat": 1,
+   "vo": "There. It heard you.",
+   "page": "01_press_v",
+   "t": [
+    0.84,
+    0.9
+   ],
+   "cam": [
+    1.2,
+    0.58,
+    0.5,
+    1.25,
+    0.6,
+    0.5
+   ],
+   "build": 0.15,
+   "post": 0.6
+  },
+  {
+   "id": "1.05",
+   "beat": 1,
+   "vo": "Again. Take your time. Whenever you like.",
+   "page": "02_again_v",
+   "t": [
+    0,
+    0.25
+   ],
+   "cam": [
+    1.1,
+    0.46,
+    0.5,
+    1.1,
+    0.53,
+    0.5
+   ],
+   "post": 0.0
+  },
+  {
+   "id": "1.06",
+   "beat": 1,
+   "vo": "",
+   "page": "02_again_v",
+   "t": [
+    0.25,
+    0.8
+   ],
+   "cam": [
+    1.16,
+    0.5,
+    0.5,
+    1.16,
+    0.5,
+    0.5
+   ],
+   "hold": 4.5,
+   "build": 4.1077,
+   "post": 0
+  },
+  {
+   "id": "1.07",
+   "beat": 1,
+   "vo": "Lovely. Very responsive, this button.",
+   "page": "02_again_v",
+   "t": [
+    0.8,
+    0.95
+   ],
+   "cam": [
+    1.2,
+    0.56,
+    0.46,
+    1.26,
+    0.58,
+    0.46
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "1.08",
+   "beat": 1,
+   "vo": "One last time. Press it… now.",
+   "page": "03_now_v",
+   "t": [
+    0,
+    0.53
+   ],
+   "cam": [
+    1.1,
+    0.5,
+    0.5,
+    1.2,
+    0.5,
+    0.5
+   ],
+   "post": 0.0
+  },
+  {
+   "id": "1.09",
+   "beat": 1,
+   "vo": "",
+   "page": "03_now_v",
+   "t": [
+    0.53,
+    0.64
+   ],
+   "cam": [
+    1.26,
+    0.5,
+    0.47,
+    1.26,
+    0.5,
+    0.47
+   ],
+   "hold": 1.6667,
+   "build": 1.375,
+   "post": 0
+  },
+  {
+   "id": "1.10",
+   "beat": 1,
+   "vo": "Hold on to that feeling. We're coming back for it.",
+   "page": "03_now_v",
+   "t": [
+    0.64,
+    0.9
+   ],
+   "cam": [
+    1.15,
+    0.54,
+    0.5,
+    1.25,
+    0.6,
+    0.52
+   ]
+  },
+  {
+   "id": "1.11",
+   "beat": 1,
+   "vo": "Because that button lives on a panel. And look what else is on it.",
+   "page": "04_panel",
+   "t": [
+    0,
+    0.62
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.03,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "1.12",
+   "beat": 1,
+   "vo": "A crosswalk button in New York.",
+   "page": "04_panel",
+   "t": [
+    0.62,
+    0.665
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.5,
+    0.13,
+    0.5
+   ]
+  },
+  {
+   "id": "1.13",
+   "beat": 1,
+   "vo": "The \"door close\" button in a lift.",
+   "page": "04_panel",
+   "t": [
+    0.665,
+    0.705
+   ],
+   "cam": [
+    1.5,
+    0.13,
+    0.5,
+    1.6,
+    0.31,
+    0.48
+   ]
+  },
+  {
+   "id": "1.14",
+   "beat": 1,
+   "vo": "The thermostat on the office wall that everyone fights over.",
+   "page": "04_panel",
+   "t": [
+    0.705,
+    0.78
+   ],
+   "cam": [
+    1.6,
+    0.6,
+    0.4,
+    1.7,
+    0.87,
+    0.27
+   ]
+  },
+  {
+   "id": "1.15",
+   "beat": 1,
+   "vo": "Each one makes the same promise: press me, and the world will do what you want.",
+   "page": "04_panel",
+   "t": [
+    0.78,
+    0.79
+   ],
+   "cam": [
+    1.45,
+    0.87,
+    0.3,
+    1.0,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "1.16",
+   "beat": 1,
+   "vo": "So how many of them are actually wired to anything?",
+   "page": "04_panel",
+   "t": [
+    0.79,
+    0.92
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.12,
+    0.56,
+    0.42
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "1.17",
+   "beat": 1,
+   "vo": "And if some aren't, why does pressing them still feel so good?",
+   "page": "04_panel",
+   "t": [
+    0.92,
+    0.93
+   ],
+   "cam": [
+    1.5,
+    0.87,
+    0.7,
+    2.2,
+    0.875,
+    0.79
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "1.18",
+   "beat": 1,
+   "vo": "I went back to the reports, the regulations and the original studies.",
+   "page": "04_panel",
+   "t": [
+    0.93,
+    0.94
+   ],
+   "cam": [
+    1.4,
+    0.57,
+    0.3,
+    1.7,
+    0.57,
+    0.3
+   ]
+  },
+  {
+   "id": "1.19a",
+   "beat": 1,
+   "vo": "Some of these buttons do nothing.",
+   "page": "24_recap",
+   "t": [
+    0,
+    0.01
+   ],
+   "cam": [
+    1.8,
+    0.12,
+    0.4,
+    2.0,
+    0.12,
+    0.62
+   ]
+  },
+  {
+   "id": "1.19b",
+   "beat": 1,
+   "vo": "Some do something very specific.",
+   "page": "24_recap",
+   "t": [
+    0.01,
+    0.02
+   ],
+   "cam": [
+    2.0,
+    0.31,
+    0.36,
+    2.0,
+    0.31,
+    0.56
+   ]
+  },
+  {
+   "id": "1.19c",
+   "beat": 1,
+   "vo": "And your brain can't tell which.",
+   "page": "24_recap",
+   "t": [
+    0.02,
+    0.04
+   ],
+   "cam": [
+    1.35,
+    0.5,
+    0.5,
+    1.0,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "1.20",
+   "beat": 1,
+   "vo": "",
+   "page": "05_title",
+   "t": [
+    0,
+    0.75
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.04,
+    0.5,
+    0.5
+   ],
+   "hold": 2.1,
+   "build": 1.5,
+   "post": 0
+  },
+  {
+   "id": "2.01",
+   "beat": 2,
+   "vo": "Start with the crosswalk box. Look closely at its face.",
+   "page": "06_crosswalk",
+   "t": [
+    0,
+    0.045
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.6,
+    0.15,
+    0.34
+   ]
+  },
+  {
+   "id": "2.02",
+   "beat": 2,
+   "vo": "In February 2004, the New York Times went counting these.",
+   "page": "06_crosswalk",
+   "t": [
+    0.045,
+    0.56
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.2,
+    0.62,
+    0.62
+   ],
+   "say": "In February two thousand and four, the New York Times went counting these."
+  },
+  {
+   "id": "2.03",
+   "beat": 2,
+   "vo": "City figures said about 3,250 walk buttons were left on the streets.",
+   "page": "07_count",
+   "t": [
+    0,
+    0.44
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.12,
+    0.58,
+    0.42
+   ],
+   "say": "City figures said about three thousand two hundred and fifty walk buttons were left on the streets."
+  },
+  {
+   "id": "2.04",
+   "beat": 2,
+   "vo": "More than 2,500 of them did nothing at all.",
+   "page": "07_count",
+   "t": [
+    0.44,
+    0.72
+   ],
+   "cam": [
+    1.3,
+    0.74,
+    0.4,
+    1.6,
+    0.7,
+    0.5
+   ],
+   "post": 0.6,
+   "say": "More than twenty-five hundred of them did nothing at all."
+  },
+  {
+   "id": "2.05",
+   "beat": 2,
+   "vo": "The paper's phrase for them: \"mechanical placebos\".",
+   "page": "08_placebo",
+   "t": [
+    0,
+    0.3
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.5,
+    0.6,
+    0.25
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "2.06",
+   "beat": 2,
+   "vo": "Which is a sugar pill, bolted to a lamppost.",
+   "page": "08_placebo",
+   "t": [
+    0.54,
+    0.6
+   ],
+   "cam": [
+    1.32,
+    0.24,
+    0.34,
+    1.42,
+    0.24,
+    0.33
+   ],
+   "cut": true,
+   "build": 0.25
+  },
+  {
+   "id": "2.07",
+   "beat": 2,
+   "vo": "So why were they there at all?",
+   "page": "08_placebo",
+   "t": [
+    0.6,
+    0.62
+   ],
+   "cam": [
+    1.25,
+    0.62,
+    0.3,
+    1.25,
+    0.52,
+    0.3
+   ]
+  },
+  {
+   "id": "2.08",
+   "beat": 2,
+   "vo": "A city traffic official said they went in when traffic was much lighter.",
+   "page": "08_placebo",
+   "t": [
+    0.62,
+    0.72
+   ],
+   "cam": [
+    1.3,
+    0.6,
+    0.48,
+    1.55,
+    0.6,
+    0.53
+   ]
+  },
+  {
+   "id": "2.09",
+   "beat": 2,
+   "vo": "Then the signals moved onto central, computer-controlled timing.",
+   "page": "08_placebo",
+   "t": [
+    0.72,
+    0.81
+   ],
+   "cam": [
+    1.45,
+    0.66,
+    0.62,
+    1.55,
+    0.68,
+    0.66
+   ]
+  },
+  {
+   "id": "2.10",
+   "beat": 2,
+   "vo": "The buttons stayed on the poles, connected to nothing.",
+   "page": "08_placebo",
+   "t": [
+    0.81,
+    0.95
+   ],
+   "cam": [
+    1.3,
+    0.5,
+    0.64,
+    1.8,
+    0.26,
+    0.63
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "2.11",
+   "beat": 2,
+   "vo": "About 750 still worked. So a press was worse than a one-in-four bet.",
+   "page": "07_count",
+   "t": [
+    0.72,
+    0.9
+   ],
+   "cam": [
+    1.4,
+    0.3,
+    0.5,
+    1.8,
+    0.75,
+    0.8
+   ],
+   "say": "About seven hundred and fifty still worked. So a press was worse than a one-in-four bet."
+  },
+  {
+   "id": "2.12",
+   "beat": 2,
+   "vo": "Worse than a coin toss. With extra walking.",
+   "page": "07_count",
+   "t": [
+    0.9,
+    1
+   ],
+   "cam": [
+    2.2,
+    0.72,
+    0.82,
+    2.3,
+    0.72,
+    0.82
+   ],
+   "cut": true,
+   "post": 0.6
+  },
+  {
+   "id": "2.13",
+   "beat": 2,
+   "vo": "And it isn't just New York. Follow the wire across the Atlantic.",
+   "page": "09_london",
+   "t": [
+    0,
+    0.5
+   ],
+   "cam": [
+    1.9,
+    0.2,
+    0.48,
+    1.9,
+    0.29,
+    0.56
+   ]
+  },
+  {
+   "id": "2.14",
+   "beat": 2,
+   "vo": "TfL told the BBC in 2013: at most London junctions, the button does control the green man.",
+   "page": "09_london",
+   "t": [
+    0.5,
+    0.5
+   ],
+   "cam": [
+    1.3,
+    0.75,
+    0.3,
+    1.6,
+    0.86,
+    0.24
+   ],
+   "say": "T F L told the B B C in twenty thirteen: at most London junctions, the button does control the green man."
+  },
+  {
+   "id": "2.15",
+   "beat": 2,
+   "vo": "If nobody presses, the lights skip the walking part.",
+   "page": "09_london",
+   "t": [
+    0.5,
+    0.5
+   ],
+   "cam": [
+    1.5,
+    0.66,
+    0.36,
+    1.75,
+    0.645,
+    0.38
+   ]
+  },
+  {
+   "id": "2.16a",
+   "beat": 2,
+   "vo": "But at busy junctions, the Department for Transport said,",
+   "page": "09_london",
+   "t": [
+    0.5,
+    0.64
+   ],
+   "cam": [
+    1.2,
+    0.7,
+    0.66,
+    1.45,
+    0.76,
+    0.74
+   ]
+  },
+  {
+   "id": "2.16b",
+   "beat": 2,
+   "vo": "the green man may come up every time anyway.",
+   "page": "09_london",
+   "t": [
+    0.64,
+    0.65
+   ],
+   "cam": [
+    1.8,
+    0.76,
+    0.78,
+    1.9,
+    0.78,
+    0.8
+   ]
+  },
+  {
+   "id": "2.17",
+   "beat": 2,
+   "vo": "Like a waiter who brings the bill regardless.",
+   "page": "09_london",
+   "t": [
+    0.86,
+    0.9
+   ],
+   "cam": [
+    1.8,
+    0.28,
+    0.86,
+    1.9,
+    0.28,
+    0.86
+   ],
+   "cut": true,
+   "build": 0.25
+  },
+  {
+   "id": "2.18",
+   "beat": 2,
+   "vo": "Then, in 2020, Sydney did something unusual. It admitted it.",
+   "page": "10_sydney",
+   "t": [
+    0,
+    0.5
+   ],
+   "cam": [
+    1.9,
+    0.2,
+    0.5,
+    1.9,
+    0.29,
+    0.56
+   ],
+   "post": 0.6,
+   "say": "Then, in twenty twenty, Sydney did something unusual. It admitted it."
+  },
+  {
+   "id": "2.19a",
+   "beat": 2,
+   "vo": "So nobody had to touch the buttons during COVID,",
+   "page": "10_sydney",
+   "t": [
+    0.5,
+    0.5
+   ],
+   "cam": [
+    1.5,
+    0.69,
+    0.28,
+    1.3,
+    0.69,
+    0.32
+   ]
+  },
+  {
+   "id": "2.19b",
+   "beat": 2,
+   "vo": "central Sydney's crossings were switched to automatic.",
+   "page": "10_sydney",
+   "t": [
+    0.5,
+    0.6
+   ],
+   "cam": [
+    1.4,
+    0.73,
+    0.66,
+    1.6,
+    0.73,
+    0.7
+   ]
+  },
+  {
+   "id": "2.20a",
+   "beat": 2,
+   "vo": "Some buttons even got covers.",
+   "page": "10_sydney",
+   "t": [
+    0.6,
+    0.69
+   ],
+   "cam": [
+    1.9,
+    0.69,
+    0.29,
+    2.1,
+    0.69,
+    0.29
+   ]
+  },
+  {
+   "id": "2.20b",
+   "beat": 2,
+   "vo": "Given the afternoon off, indefinitely.",
+   "page": "10_sydney",
+   "t": [
+    0.69,
+    0.75
+   ],
+   "cam": [
+    1.7,
+    0.9,
+    0.48,
+    1.85,
+    0.9,
+    0.48
+   ],
+   "cut": true,
+   "build": 0.25,
+   "post": 0.6
+  },
+  {
+   "id": "2.21a",
+   "beat": 2,
+   "vo": "Slide right, to the lift. Here's \"door close\".",
+   "page": "11_lift",
+   "t": [
+    0,
+    0.28
+   ],
+   "cam": [
+    2.0,
+    0.15,
+    0.3,
+    2.0,
+    0.15,
+    0.62
+   ]
+  },
+  {
+   "id": "2.21b",
+   "beat": 2,
+   "vo": "Everyone has pressed it. With feeling.",
+   "page": "11_lift",
+   "t": [
+    0.28,
+    0.68
+   ],
+   "cam": [
+    2.4,
+    0.14,
+    0.64,
+    2.6,
+    0.14,
+    0.64
+   ]
+  },
+  {
+   "id": "2.22",
+   "beat": 2,
+   "vo": "In 1990, the United States passed the Americans with Disabilities Act.",
+   "page": "11_lift",
+   "t": [
+    0.68,
+    0.68
+   ],
+   "cam": [
+    1.3,
+    0.7,
+    0.2,
+    1.55,
+    0.73,
+    0.17
+   ],
+   "say": "In nineteen ninety, the United States passed the Americans with Disabilities Act."
+  },
+  {
+   "id": "2.23",
+   "beat": 2,
+   "vo": "Its accessibility standards put a floor under how long lift doors stay open.",
+   "page": "11_lift",
+   "t": [
+    0.68,
+    0.69
+   ],
+   "cam": [
+    1.35,
+    0.72,
+    0.3,
+    1.35,
+    0.74,
+    0.42
+   ]
+  },
+  {
+   "id": "2.24",
+   "beat": 2,
+   "vo": "Read this line. The doors stay fully open for at least three seconds.",
+   "page": "11_lift",
+   "t": [
+    0.69,
+    0.69
+   ],
+   "cam": [
+    1.5,
+    0.74,
+    0.4,
+    1.95,
+    0.7,
+    0.46
+   ]
+  },
+  {
+   "id": "2.25",
+   "beat": 2,
+   "vo": "And your button isn't allowed to cut that short.",
+   "page": "11_lift",
+   "t": [
+    0.69,
+    0.78
+   ],
+   "cam": [
+    1.4,
+    0.75,
+    0.7,
+    1.5,
+    0.76,
+    0.76
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "2.26a",
+   "beat": 2,
+   "vo": "In 2016 the lift trade group told the Times",
+   "page": "12_lift_split",
+   "t": [
+    0,
+    0.19
+   ],
+   "cam": [
+    1.3,
+    0.2,
+    0.35,
+    1.5,
+    0.25,
+    0.35
+   ],
+   "say": "In twenty sixteen the lift trade group told the Times"
+  },
+  {
+   "id": "2.26b",
+   "beat": 2,
+   "vo": "working close buttons were phased out after the law.",
+   "page": "12_lift_split",
+   "t": [
+    0.19,
+    0.34
+   ],
+   "cam": [
+    2.0,
+    0.45,
+    0.36,
+    2.2,
+    0.47,
+    0.4
+   ]
+  },
+  {
+   "id": "2.27",
+   "beat": 2,
+   "vo": "But here's the other side, from the same industry.",
+   "page": "12_lift_split",
+   "t": [
+    0.34,
+    0.35
+   ],
+   "cam": [
+    1.2,
+    0.6,
+    0.3,
+    1.35,
+    0.66,
+    0.24
+   ]
+  },
+  {
+   "id": "2.28",
+   "beat": 2,
+   "vo": "Later, the same group said it isn't merely a placebo: it works, after the legal wait.",
+   "page": "12_lift_split",
+   "t": [
+    0.35,
+    0.82
+   ],
+   "cam": [
+    1.6,
+    0.78,
+    0.38,
+    1.9,
+    0.8,
+    0.42
+   ]
+  },
+  {
+   "id": "2.29a",
+   "beat": 2,
+   "vo": "So the honest answer is: it depends on the building.",
+   "page": "12_lift_split",
+   "t": [
+    0.82,
+    0.84
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.15,
+    0.6,
+    0.45
+   ]
+  },
+  {
+   "id": "2.29b",
+   "beat": 2,
+   "vo": "Owners choose how the button behaves.",
+   "page": "12_lift_split",
+   "t": [
+    0.84,
+    0.9
+   ],
+   "cam": [
+    1.6,
+    0.68,
+    0.76,
+    1.75,
+    0.68,
+    0.78
+   ]
+  },
+  {
+   "id": "2.30a",
+   "beat": 2,
+   "vo": "Pan down to the thermostat.",
+   "page": "13_office",
+   "t": [
+    0,
+    0.1
+   ],
+   "cam": [
+    1.3,
+    0.3,
+    0.2,
+    1.3,
+    0.3,
+    0.44
+   ]
+  },
+  {
+   "id": "2.30b",
+   "beat": 2,
+   "vo": "In January 2003, the Wall Street Journal reported many office thermostats are fakes.",
+   "page": "13_office",
+   "t": [
+    0.1,
+    0.29
+   ],
+   "cam": [
+    1.2,
+    0.28,
+    0.55,
+    1.4,
+    0.27,
+    0.7
+   ],
+   "say": "In January two thousand and three, the Wall Street Journal reported many office thermostats are fakes."
+  },
+  {
+   "id": "2.31",
+   "beat": 2,
+   "vo": "Plastic boxes on the wall, so people feel they've changed the temperature.",
+   "page": "13_office",
+   "t": [
+    0.29,
+    0.295
+   ],
+   "cam": [
+    1.6,
+    0.59,
+    0.32,
+    1.9,
+    0.59,
+    0.3
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "2.32",
+   "beat": 2,
+   "vo": "A heating trade magazine, ACHR News, ran an informal web poll of its readers that year.",
+   "page": "13_office",
+   "t": [
+    0.295,
+    0.42
+   ],
+   "cam": [
+    1.3,
+    0.8,
+    0.35,
+    1.5,
+    0.84,
+    0.3
+   ],
+   "say": "A heating trade magazine, A C H R News, ran an informal web poll of its readers that year."
+  },
+  {
+   "id": "2.33",
+   "beat": 2,
+   "vo": "Seventy replied. Fifty-one said yes, they had installed dummy thermostats.",
+   "page": "13_office",
+   "t": [
+    0.42,
+    0.6
+   ],
+   "cam": [
+    1.7,
+    0.84,
+    0.36,
+    1.95,
+    0.84,
+    0.38
+   ]
+  },
+  {
+   "id": "2.34a",
+   "beat": 2,
+   "vo": "Its own description: comfort for occupants,",
+   "page": "13_office",
+   "t": [
+    0.6,
+    0.74
+   ],
+   "cam": [
+    1.5,
+    0.82,
+    0.7,
+    1.7,
+    0.82,
+    0.71
+   ]
+  },
+  {
+   "id": "2.34b",
+   "beat": 2,
+   "vo": "without giving them a direct interface to the mechanical system.",
+   "page": "13_office",
+   "t": [
+    0.74,
+    0.75
+   ],
+   "cam": [
+    2.0,
+    0.8,
+    0.71,
+    2.2,
+    0.84,
+    0.72
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "2.35",
+   "beat": 2,
+   "vo": "Which is also how you'd describe a toddler's toy steering wheel.",
+   "page": "13_office",
+   "t": [
+    0.75,
+    0.76
+   ],
+   "cam": [
+    2.5,
+    0.56,
+    0.3,
+    2.6,
+    0.56,
+    0.3
+   ],
+   "cut": true
+  },
+  {
+   "id": "2.36",
+   "beat": 2,
+   "vo": "To be fair, that's seventy people who clicked, not a census.",
+   "page": "13_office",
+   "t": [
+    0.86,
+    0.9
+   ],
+   "cam": [
+    2.2,
+    0.65,
+    0.9,
+    2.4,
+    0.65,
+    0.9
+   ],
+   "build": 0.3,
+   "post": 0.6
+  },
+  {
+   "id": "3.01a",
+   "beat": 3,
+   "vo": "Psychologists named that feeling in 1975,",
+   "page": "14_langer",
+   "t": [
+    0,
+    0.05
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.1,
+    0.42,
+    0.42
+   ],
+   "say": "Psychologists named that feeling in nineteen seventy-five,"
+  },
+  {
+   "id": "3.01b",
+   "beat": 3,
+   "vo": "when Ellen Langer published a paper called \"The Illusion of Control\".",
+   "page": "14_langer",
+   "t": [
+    0.05,
+    0.18
+   ],
+   "cam": [
+    1.4,
+    0.27,
+    0.27,
+    1.7,
+    0.27,
+    0.27
+   ]
+  },
+  {
+   "id": "3.02a",
+   "beat": 3,
+   "vo": "Her definition, right here:",
+   "page": "14_langer",
+   "t": [
+    0.18,
+    0.36
+   ],
+   "cam": [
+    1.2,
+    0.66,
+    0.42,
+    1.4,
+    0.7,
+    0.42
+   ]
+  },
+  {
+   "id": "3.02b",
+   "beat": 3,
+   "vo": "an expectancy of personal success inappropriately higher than the objective probability would warrant.",
+   "page": "14_langer",
+   "t": [
+    0.36,
+    0.37
+   ],
+   "cam": [
+    1.6,
+    0.7,
+    0.42,
+    1.9,
+    0.72,
+    0.44
+   ]
+  },
+  {
+   "id": "3.03",
+   "beat": 3,
+   "vo": "In plain English: feeling in charge of things that are luck.",
+   "page": "14_langer",
+   "t": [
+    0.37,
+    0.62
+   ],
+   "cam": [
+    1.5,
+    0.66,
+    0.74,
+    1.7,
+    0.66,
+    0.8
+   ],
+   "build": 0.5
+  },
+  {
+   "id": "3.04a",
+   "beat": 3,
+   "vo": "Look at her lottery.",
+   "page": "15_lottery",
+   "t": [
+    0,
+    0.1
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.1,
+    0.5,
+    0.45
+   ]
+  },
+  {
+   "id": "3.04b",
+   "beat": 3,
+   "vo": "Office workers were offered a one-dollar ticket, printed with a football player.",
+   "page": "15_lottery",
+   "t": [
+    0.1,
+    0.19
+   ],
+   "cam": [
+    1.6,
+    0.2,
+    0.8,
+    1.9,
+    0.16,
+    0.8
+   ]
+  },
+  {
+   "id": "3.05",
+   "beat": 3,
+   "vo": "Twenty-seven people chose their own card. Twenty-six were handed one.",
+   "page": "15_lottery",
+   "t": [
+    0.19,
+    0.195
+   ],
+   "cam": [
+    1.7,
+    0.3,
+    0.42,
+    2.0,
+    0.26,
+    0.46
+   ]
+  },
+  {
+   "id": "3.06",
+   "beat": 3,
+   "vo": "Same price. Same odds. Same draw.",
+   "page": "15_lottery",
+   "t": [
+    0.195,
+    0.2
+   ],
+   "cam": [
+    1.45,
+    0.33,
+    0.34,
+    1.6,
+    0.33,
+    0.36
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "3.07",
+   "beat": 3,
+   "vo": "Then, before the draw, she asked: what would you sell your ticket back for?",
+   "page": "15_lottery",
+   "t": [
+    0.2,
+    0.21
+   ],
+   "cam": [
+    1.2,
+    0.46,
+    0.42,
+    1.5,
+    0.34,
+    0.3
+   ]
+  },
+  {
+   "id": "3.08",
+   "beat": 3,
+   "vo": "People who'd been handed a ticket asked, on average, about two dollars.",
+   "page": "15_lottery",
+   "t": [
+    0.21,
+    0.43
+   ],
+   "cam": [
+    1.3,
+    0.62,
+    0.45,
+    1.5,
+    0.6,
+    0.5
+   ]
+  },
+  {
+   "id": "3.09",
+   "beat": 3,
+   "vo": "People who'd picked their own asked for about eight sixty-seven.",
+   "page": "15_lottery",
+   "t": [
+    0.43,
+    0.73
+   ],
+   "cam": [
+    1.5,
+    0.66,
+    0.45,
+    1.6,
+    0.7,
+    0.36
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "3.10",
+   "beat": 3,
+   "vo": "Four times the price. For having pointed.",
+   "page": "15_lottery",
+   "t": [
+    0.84,
+    0.9
+   ],
+   "cam": [
+    1.8,
+    0.7,
+    0.42,
+    1.9,
+    0.7,
+    0.42
+   ],
+   "cut": true,
+   "build": 0.25
+  },
+  {
+   "id": "3.11",
+   "beat": 3,
+   "vo": "Langer's argument: luck borrows the costume of skill.",
+   "page": "14_langer",
+   "t": [
+    0.62,
+    0.9
+   ],
+   "cam": [
+    1.5,
+    0.22,
+    0.56,
+    1.7,
+    0.2,
+    0.58
+   ]
+  },
+  {
+   "id": "3.12",
+   "beat": 3,
+   "vo": "You'd never pay extra for pointing, of course. Back to your button.",
+   "page": "16_reveal",
+   "t": [
+    0,
+    0.04
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.15,
+    0.5,
+    0.52
+   ]
+  },
+  {
+   "id": "3.13",
+   "beat": 3,
+   "vo": "Here's what was behind the panel.",
+   "page": "16_reveal",
+   "t": [
+    0.04,
+    0.3
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.04,
+    0.5,
+    0.5
+   ],
+   "build": 1.2,
+   "post": 0.6
+  },
+  {
+   "id": "3.14a",
+   "beat": 3,
+   "vo": "The button was never connected.",
+   "page": "16_reveal",
+   "t": [
+    0.3,
+    0.62
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.12,
+    0.56,
+    0.46
+   ]
+  },
+  {
+   "id": "3.14b",
+   "beat": 3,
+   "vo": "Look: no wire.",
+   "page": "16_reveal",
+   "t": [
+    0.62,
+    0.76
+   ],
+   "cam": [
+    2.0,
+    0.49,
+    0.54,
+    2.1,
+    0.49,
+    0.53
+   ],
+   "build": 0.6,
+   "post": 0.6
+  },
+  {
+   "id": "3.15a",
+   "beat": 3,
+   "vo": "The lamps were on a timer.",
+   "page": "16_reveal",
+   "t": [
+    0.76,
+    0.76
+   ],
+   "cam": [
+    1.6,
+    0.5,
+    0.7,
+    1.8,
+    0.5,
+    0.76
+   ]
+  },
+  {
+   "id": "3.15b",
+   "beat": 3,
+   "vo": "Lamp one lit three and a half seconds after I asked.",
+   "page": "16_reveal",
+   "t": [
+    0.76,
+    0.8
+   ],
+   "cam": [
+    1.7,
+    0.86,
+    0.5,
+    1.9,
+    0.86,
+    0.48
+   ],
+   "build": 0.5
+  },
+  {
+   "id": "3.16",
+   "beat": 3,
+   "vo": "Lamp two lit four seconds after \"whenever you like\".",
+   "page": "16_reveal",
+   "t": [
+    0.8,
+    0.87
+   ],
+   "cam": [
+    1.9,
+    0.86,
+    0.54,
+    1.9,
+    0.86,
+    0.6
+   ],
+   "build": 0.5
+  },
+  {
+   "id": "3.17",
+   "beat": 3,
+   "vo": "And lamp three lit just after \"now\", because I'm the one who said when.",
+   "page": "16_reveal",
+   "t": [
+    0.87,
+    0.95
+   ],
+   "cam": [
+    1.9,
+    0.86,
+    0.64,
+    2.1,
+    0.86,
+    0.7
+   ],
+   "build": 0.5,
+   "post": 0.6
+  },
+  {
+   "id": "3.18",
+   "beat": 3,
+   "vo": "Every lamp would have lit if you'd been making a sandwich.",
+   "page": "17_sandwich",
+   "t": [
+    0,
+    0.78
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.08,
+    0.5,
+    0.5
+   ],
+   "cut": true
+  },
+  {
+   "id": "3.19",
+   "beat": 3,
+   "vo": "And yet, for a second, it felt like it answered you.",
+   "page": "17_sandwich",
+   "t": [
+    0.78,
+    0.8
+   ],
+   "cam": [
+    1.5,
+    0.72,
+    0.35,
+    1.8,
+    0.72,
+    0.32
+   ]
+  },
+  {
+   "id": "3.20",
+   "beat": 3,
+   "vo": "That isn't gullibility. It's a well-documented habit.",
+   "page": "17_sandwich",
+   "t": [
+    0.8,
+    0.81
+   ],
+   "cam": [
+    1.25,
+    0.7,
+    0.55,
+    1.35,
+    0.7,
+    0.6
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "3.21a",
+   "beat": 3,
+   "vo": "Run Langer's list over it. Choice: you decided when, mostly.",
+   "page": "14_langer",
+   "t": [
+    0.9,
+    1
+   ],
+   "cam": [
+    2.0,
+    0.11,
+    0.55,
+    2.2,
+    0.11,
+    0.55
+   ]
+  },
+  {
+   "id": "3.21b",
+   "beat": 3,
+   "vo": "Involvement: your thumb did something.",
+   "page": "14_langer",
+   "t": [
+    1,
+    1
+   ],
+   "cam": [
+    2.3,
+    0.13,
+    0.62,
+    2.5,
+    0.13,
+    0.62
+   ]
+  },
+  {
+   "id": "3.22",
+   "beat": 3,
+   "vo": "Then the world does what it was going to do anyway, right on schedule.",
+   "page": "16_reveal",
+   "t": [
+    0.95,
+    1
+   ],
+   "cam": [
+    1.8,
+    0.5,
+    0.72,
+    2.0,
+    0.5,
+    0.76
+   ]
+  },
+  {
+   "id": "3.23",
+   "beat": 3,
+   "vo": "Meet your brain, in its role as middle manager.",
+   "page": "18_manager",
+   "t": [
+    0,
+    0.22
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.1,
+    0.45,
+    0.5
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "3.24",
+   "beat": 3,
+   "vo": "It sees an action, then a result, and signs off: \"Great work, team.\"",
+   "page": "18_manager",
+   "t": [
+    0.22,
+    0.47
+   ],
+   "cam": [
+    1.4,
+    0.72,
+    0.3,
+    1.4,
+    0.66,
+    0.5
+   ]
+  },
+  {
+   "id": "3.25",
+   "beat": 3,
+   "vo": "It doesn't check the wiring. It checks the timing, and it takes the credit.",
+   "page": "18_manager",
+   "t": [
+    0.47,
+    0.68
+   ],
+   "cam": [
+    1.5,
+    0.76,
+    0.6,
+    1.7,
+    0.78,
+    0.6
+   ]
+  },
+  {
+   "id": "3.26",
+   "beat": 3,
+   "vo": "Which is most of corporate history, honestly, but in a skull.",
+   "page": "18_manager",
+   "t": [
+    0.83,
+    0.9
+   ],
+   "cam": [
+    1.5,
+    0.78,
+    0.72,
+    1.6,
+    0.78,
+    0.73
+   ],
+   "cut": true,
+   "build": 0.25,
+   "post": 0.6
+  },
+  {
+   "id": "4.01",
+   "beat": 4,
+   "vo": "But this channel checks the science. So: check Langer.",
+   "page": "19_replication",
+   "t": [
+    0,
+    0.14
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.4,
+    0.2,
+    0.3
+   ]
+  },
+  {
+   "id": "4.02",
+   "beat": 4,
+   "vo": "Her lottery was small. Fifty-three office workers, back in the 1970s.",
+   "page": "19_replication",
+   "t": [
+    0.14,
+    0.145
+   ],
+   "cam": [
+    1.9,
+    0.18,
+    0.3,
+    2.2,
+    0.16,
+    0.36
+   ],
+   "say": "Her lottery was small. Fifty-three office workers, back in the nineteen seventies."
+  },
+  {
+   "id": "4.03a",
+   "beat": 4,
+   "vo": "In 2021, a team ran seventeen experiments, nearly eleven thousand people:",
+   "page": "19_replication",
+   "t": [
+    0.145,
+    0.46
+   ],
+   "cam": [
+    1.4,
+    0.5,
+    0.3,
+    1.7,
+    0.5,
+    0.3
+   ],
+   "say": "In twenty twenty-one, a team ran seventeen experiments, nearly eleven thousand people:"
+  },
+  {
+   "id": "4.03b",
+   "beat": 4,
+   "vo": "does choosing make you think you'll win?",
+   "page": "19_replication",
+   "t": [
+    0.46,
+    0.47
+   ],
+   "cam": [
+    1.2,
+    0.5,
+    0.36,
+    1.25,
+    0.52,
+    0.4
+   ]
+  },
+  {
+   "id": "4.04",
+   "beat": 4,
+   "vo": "Mostly, no. Choice rarely made people feel luckier, unless it really did improve their odds.",
+   "page": "19_replication",
+   "t": [
+    0.47,
+    0.53
+   ],
+   "cam": [
+    1.3,
+    0.5,
+    0.55,
+    1.5,
+    0.51,
+    0.6
+   ],
+   "build": 0.4,
+   "post": 0.6
+  },
+  {
+   "id": "4.05",
+   "beat": 4,
+   "vo": "And a 2013 review pooling many studies says the illusion is real, on average.",
+   "page": "19_replication",
+   "t": [
+    0.58,
+    0.81
+   ],
+   "cam": [
+    1.6,
+    0.83,
+    0.36,
+    1.9,
+    0.83,
+    0.38
+   ],
+   "say": "And a twenty thirteen review pooling many studies says the illusion is real, on average."
+  },
+  {
+   "id": "4.06",
+   "beat": 4,
+   "vo": "So the feeling is real. Just smaller, and pickier, than the textbook story.",
+   "page": "19_replication",
+   "t": [
+    0.81,
+    0.97
+   ],
+   "cam": [
+    1.4,
+    0.5,
+    0.7,
+    1.0,
+    0.5,
+    0.5
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "4.07a",
+   "beat": 4,
+   "vo": "Is a fake button bad for you, though?",
+   "page": "20_glass",
+   "t": [
+    0,
+    0.12
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.1,
+    0.4,
+    0.45
+   ]
+  },
+  {
+   "id": "4.07b",
+   "beat": 4,
+   "vo": "In 1972, Glass and Singer blasted people with unpredictable noise.",
+   "page": "20_glass",
+   "t": [
+    0.12,
+    0.29
+   ],
+   "cam": [
+    1.5,
+    0.28,
+    0.38,
+    1.3,
+    0.5,
+    0.4
+   ],
+   "say": "In nineteen seventy-two, Glass and Singer blasted people with unpredictable noise."
+  },
+  {
+   "id": "4.08",
+   "beat": 4,
+   "vo": "Some were given a button that could stop the noise, and asked not to press it.",
+   "page": "20_glass",
+   "t": [
+    0.29,
+    0.33
+   ],
+   "cam": [
+    2.0,
+    0.3,
+    0.45,
+    2.4,
+    0.31,
+    0.46
+   ],
+   "build": 0.8
+  },
+  {
+   "id": "4.09a",
+   "beat": 4,
+   "vo": "Almost nobody pressed it.",
+   "page": "20_glass",
+   "t": [
+    0.33,
+    0.34
+   ],
+   "cam": [
+    1.3,
+    0.7,
+    0.3,
+    1.5,
+    0.72,
+    0.28
+   ]
+  },
+  {
+   "id": "4.09b",
+   "beat": 4,
+   "vo": "And afterwards, they did better on the next tasks than people with no button.",
+   "page": "20_glass",
+   "t": [
+    0.34,
+    0.62
+   ],
+   "cam": [
+    1.6,
+    0.66,
+    0.5,
+    1.8,
+    0.64,
+    0.52
+   ]
+  },
+  {
+   "id": "4.10a",
+   "beat": 4,
+   "vo": "A button nobody used, working purely by existing.",
+   "page": "20_glass",
+   "t": [
+    0.62,
+    0.63
+   ],
+   "cam": [
+    1.6,
+    0.26,
+    0.42,
+    1.6,
+    0.33,
+    0.44
+   ]
+  },
+  {
+   "id": "4.10b",
+   "beat": 4,
+   "vo": "Which is the crosswalk business model.",
+   "page": "06_crosswalk",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    2.2,
+    0.125,
+    0.66,
+    2.4,
+    0.125,
+    0.68
+   ],
+   "cut": true,
+   "post": 0.6
+  },
+  {
+   "id": "4.11",
+   "beat": 4,
+   "vo": "The other side: later experiments with formal consent procedures failed to replicate those after-effects.",
+   "page": "20_glass",
+   "t": [
+    0.7,
+    0.8
+   ],
+   "cam": [
+    1.3,
+    0.7,
+    0.7,
+    1.5,
+    0.72,
+    0.78
+   ],
+   "build": 0.5
+  },
+  {
+   "id": "4.12",
+   "beat": 4,
+   "vo": "Then 1976, a nursing home in Connecticut. Ellen Langer again, with Judith Rodin.",
+   "page": "21_plant",
+   "t": [
+    0,
+    0.2
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.25,
+    0.34,
+    0.34
+   ],
+   "say": "Then nineteen seventy-six, a nursing home in Connecticut. Ellen Langer again, with Judith Rodin."
+  },
+  {
+   "id": "4.13a",
+   "beat": 4,
+   "vo": "One floor heard a talk about taking charge,",
+   "page": "21_plant",
+   "t": [
+    0.2,
+    0.205
+   ],
+   "cam": [
+    1.7,
+    0.25,
+    0.3,
+    1.8,
+    0.27,
+    0.33
+   ]
+  },
+  {
+   "id": "4.13b",
+   "beat": 4,
+   "vo": "and each resident chose a plant to look after.",
+   "page": "21_plant",
+   "t": [
+    0.205,
+    0.21
+   ],
+   "cam": [
+    1.6,
+    0.8,
+    0.42,
+    2.0,
+    0.82,
+    0.42
+   ]
+  },
+  {
+   "id": "4.14",
+   "beat": 4,
+   "vo": "The comparison floor got plants too, cared for by the staff.",
+   "page": "21_plant",
+   "t": [
+    0.21,
+    0.22
+   ],
+   "cam": [
+    1.35,
+    0.62,
+    0.4,
+    1.35,
+    0.5,
+    0.42
+   ]
+  },
+  {
+   "id": "4.15",
+   "beat": 4,
+   "vo": "Eighteen months later, a follow-up reported fewer deaths in the take-charge group.",
+   "page": "21_plant",
+   "t": [
+    0.22,
+    0.44
+   ],
+   "cam": [
+    1.4,
+    0.26,
+    0.6,
+    1.7,
+    0.25,
+    0.64
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "4.16a",
+   "beat": 4,
+   "vo": "The two floors got different speeches from the administrator,",
+   "page": "21_plant",
+   "t": [
+    0.44,
+    0.64
+   ],
+   "cam": [
+    1.4,
+    0.78,
+    0.6,
+    1.7,
+    0.79,
+    0.63
+   ]
+  },
+  {
+   "id": "4.16b",
+   "beat": 4,
+   "vo": "so you can't pin the result on a plant.",
+   "page": "21_plant",
+   "t": [
+    0.64,
+    0.65
+   ],
+   "cam": [
+    1.9,
+    0.82,
+    0.4,
+    1.6,
+    0.82,
+    0.42
+   ]
+  },
+  {
+   "id": "4.17a",
+   "beat": 4,
+   "vo": "And the authors warned that more control isn't automatically better.",
+   "page": "21_plant",
+   "t": [
+    0.65,
+    0.66
+   ],
+   "cam": [
+    1.2,
+    0.6,
+    0.55,
+    1.35,
+    0.7,
+    0.6
+   ]
+  },
+  {
+   "id": "4.17b",
+   "beat": 4,
+   "vo": "Too much responsibility can hurt.",
+   "page": "21_plant",
+   "t": [
+    0.66,
+    0.67
+   ],
+   "cam": [
+    2.0,
+    0.79,
+    0.66,
+    2.2,
+    0.79,
+    0.68
+   ]
+  },
+  {
+   "id": "4.18",
+   "beat": 4,
+   "vo": "Nobody should be prescribing ferns.",
+   "page": "21_plant",
+   "t": [
+    0.84,
+    0.88
+   ],
+   "cam": [
+    1.8,
+    0.82,
+    0.25,
+    1.9,
+    0.82,
+    0.25
+   ],
+   "cut": true,
+   "build": 0.25,
+   "post": 0.6
+  },
+  {
+   "id": "4.19a",
+   "beat": 4,
+   "vo": "But across these studies, a sense of control seems to matter for stress.",
+   "page": "19_replication",
+   "t": [
+    0.97,
+    1
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.14,
+    0.5,
+    0.34
+   ]
+  },
+  {
+   "id": "4.19b",
+   "beat": 4,
+   "vo": "Even a borrowed one.",
+   "page": "20_glass",
+   "t": [
+    0.8,
+    0.82
+   ],
+   "cam": [
+    2.0,
+    0.3,
+    0.45,
+    2.3,
+    0.3,
+    0.45
+   ]
+  },
+  {
+   "id": "4.20a",
+   "beat": 4,
+   "vo": "That's the honest case for a placebo button.",
+   "page": "08_placebo",
+   "t": [
+    0.95,
+    1
+   ],
+   "cam": [
+    1.5,
+    0.24,
+    0.3,
+    1.65,
+    0.24,
+    0.32
+   ]
+  },
+  {
+   "id": "4.20b",
+   "beat": 4,
+   "vo": "Here's the honest case against.",
+   "page": "08_placebo",
+   "t": [
+    1,
+    1
+   ],
+   "cam": [
+    1.6,
+    0.24,
+    0.56,
+    2.0,
+    0.22,
+    0.63
+   ]
+  },
+  {
+   "id": "4.21a",
+   "beat": 4,
+   "vo": "If you can't see the signal, a dead button isn't a placebo.",
+   "page": "06_crosswalk",
+   "t": [
+    0.56,
+    0.6
+   ],
+   "cam": [
+    1.5,
+    0.46,
+    0.4,
+    1.8,
+    0.46,
+    0.4
+   ]
+  },
+  {
+   "id": "4.21b",
+   "beat": 4,
+   "vo": "It's a locked door.",
+   "page": "06_crosswalk",
+   "t": [
+    0.6,
+    0.6
+   ],
+   "cam": [
+    2.4,
+    0.125,
+    0.68,
+    2.6,
+    0.125,
+    0.68
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "4.22a",
+   "beat": 4,
+   "vo": "In 2020, a federal judge in New York ruled",
+   "page": "22_court",
+   "t": [
+    0,
+    0.2
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.2,
+    0.6,
+    0.4
+   ],
+   "say": "In twenty twenty, a federal judge in New York ruled"
+  },
+  {
+   "id": "4.22b",
+   "beat": 4,
+   "vo": "that the city's crosswalks broke the disability law.",
+   "page": "22_court",
+   "t": [
+    0.2,
+    0.24
+   ],
+   "cam": [
+    1.5,
+    0.76,
+    0.18,
+    1.7,
+    0.76,
+    0.17
+   ]
+  },
+  {
+   "id": "4.23a",
+   "beat": 4,
+   "vo": "At more than 95% of signalled intersections,",
+   "page": "22_court",
+   "t": [
+    0.24,
+    0.5
+   ],
+   "cam": [
+    1.9,
+    0.28,
+    0.5,
+    2.1,
+    0.26,
+    0.43
+   ],
+   "say": "At more than ninety-five percent of signalled intersections,"
+  },
+  {
+   "id": "4.23b",
+   "beat": 4,
+   "vo": "there was nothing to tell a blind pedestrian when to walk.",
+   "page": "22_court",
+   "t": [
+    0.5,
+    0.56
+   ],
+   "cam": [
+    2.3,
+    0.25,
+    0.44,
+    1.9,
+    0.28,
+    0.5
+   ]
+  },
+  {
+   "id": "4.24",
+   "beat": 4,
+   "vo": "The order that followed: accessible signals at about ten thousand intersections by the early 2030s.",
+   "page": "22_court",
+   "t": [
+    0.56,
+    0.57
+   ],
+   "cam": [
+    1.5,
+    0.72,
+    0.46,
+    1.8,
+    0.72,
+    0.46
+   ],
+   "say": "The order that followed: accessible signals at about ten thousand intersections by the early twenty thirties."
+  },
+  {
+   "id": "4.25a",
+   "beat": 4,
+   "vo": "These buttons do something.",
+   "page": "22_court",
+   "t": [
+    0.57,
+    0.572
+   ],
+   "cam": [
+    1.6,
+    0.9,
+    0.75,
+    1.8,
+    0.92,
+    0.78
+   ]
+  },
+  {
+   "id": "4.25b",
+   "beat": 4,
+   "vo": "Press one, and it tells you, in sound and vibration, when to cross.",
+   "page": "22_court",
+   "t": [
+    0.572,
+    0.575
+   ],
+   "cam": [
+    2.2,
+    0.935,
+    0.78,
+    2.6,
+    0.935,
+    0.78
+   ]
+  },
+  {
+   "id": "4.26",
+   "beat": 4,
+   "vo": "In 2024 alone, the city reported fitting them at 855 intersections.",
+   "page": "22_court",
+   "t": [
+    0.575,
+    0.82
+   ],
+   "cam": [
+    1.5,
+    0.73,
+    0.74,
+    1.7,
+    0.73,
+    0.76
+   ],
+   "say": "In twenty twenty-four alone, the city reported fitting them at eight hundred and fifty-five intersections."
+  },
+  {
+   "id": "4.27",
+   "beat": 4,
+   "vo": "New York's working buttons are being built for the people the dead ones failed.",
+   "page": "22_court",
+   "t": [
+    0.82,
+    0.95
+   ],
+   "cam": [
+    1.6,
+    0.73,
+    0.7,
+    1.0,
+    0.5,
+    0.5
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "4.28",
+   "beat": 4,
+   "vo": "And the lift's \"door close\"? It has one more job.",
+   "page": "23_fire",
+   "t": [
+    0,
+    0.04
+   ],
+   "cam": [
+    1.3,
+    0.25,
+    0.6,
+    1.6,
+    0.22,
+    0.66
+   ]
+  },
+  {
+   "id": "4.29a",
+   "beat": 4,
+   "vo": "In fire-service mode, the lift code makes firefighters",
+   "page": "23_fire",
+   "t": [
+    0.04,
+    0.3
+   ],
+   "cam": [
+    1.2,
+    0.7,
+    0.3,
+    1.4,
+    0.73,
+    0.3
+   ]
+  },
+  {
+   "id": "4.29b",
+   "beat": 4,
+   "vo": "hold that button down to close the doors.",
+   "page": "23_fire",
+   "t": [
+    0.3,
+    0.4
+   ],
+   "cam": [
+    1.7,
+    0.17,
+    0.7,
+    1.9,
+    0.17,
+    0.72
+   ]
+  },
+  {
+   "id": "4.30",
+   "beat": 4,
+   "vo": "The most ignored button in the building has an emergency contract.",
+   "page": "23_fire",
+   "t": [
+    0.78,
+    0.84
+   ],
+   "cam": [
+    1.5,
+    0.7,
+    0.6,
+    1.6,
+    0.7,
+    0.61
+   ],
+   "cut": true,
+   "build": 0.25,
+   "post": 0.6
+  },
+  {
+   "id": "5.01",
+   "beat": 5,
+   "vo": "So pull back out. Here's the whole panel again.",
+   "page": "24_recap",
+   "t": [
+    0.04,
+    0.045
+   ],
+   "cam": [
+    1.6,
+    0.5,
+    0.5,
+    1.0,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "5.02a",
+   "beat": 5,
+   "vo": "Crosswalk: in 2004 New York, mostly dead.",
+   "page": "24_recap",
+   "t": [
+    0.045,
+    0.13
+   ],
+   "cam": [
+    1.5,
+    0.13,
+    0.35,
+    1.8,
+    0.13,
+    0.32
+   ],
+   "say": "Crosswalk: in two thousand and four New York, mostly dead."
+  },
+  {
+   "id": "5.02b",
+   "beat": 5,
+   "vo": "In London, mostly live. In central Sydney, off duty by day.",
+   "page": "24_recap",
+   "t": [
+    0.13,
+    0.28
+   ],
+   "cam": [
+    1.9,
+    0.13,
+    0.38,
+    1.9,
+    0.13,
+    0.45
+   ]
+  },
+  {
+   "id": "5.03",
+   "beat": 5,
+   "vo": "Lift: working, but only once the law has had its seconds.",
+   "page": "24_recap",
+   "t": [
+    0.28,
+    0.38
+   ],
+   "cam": [
+    1.6,
+    0.31,
+    0.6,
+    2.4,
+    0.32,
+    0.9
+   ]
+  },
+  {
+   "id": "5.04",
+   "beat": 5,
+   "vo": "Thermostat: by one informal poll, plenty of installers admit to fitting dummies.",
+   "page": "24_recap",
+   "t": [
+    0.38,
+    0.48
+   ],
+   "cam": [
+    1.5,
+    0.85,
+    0.3,
+    1.7,
+    0.87,
+    0.36
+   ]
+  },
+  {
+   "id": "5.05",
+   "beat": 5,
+   "vo": "And the middle manager signs off on all of them the same way.",
+   "page": "18_manager",
+   "t": [
+    1,
+    1
+   ],
+   "cam": [
+    1.3,
+    0.32,
+    0.5,
+    1.5,
+    0.72,
+    0.6
+   ]
+  },
+  {
+   "id": "5.06",
+   "beat": 5,
+   "vo": "Its wiring went in when traffic was much lighter, too.",
+   "page": "08_placebo",
+   "t": [
+    1,
+    1
+   ],
+   "cam": [
+    2.2,
+    0.6,
+    0.54,
+    2.4,
+    0.6,
+    0.54
+   ],
+   "cut": true
+  },
+  {
+   "id": "5.07",
+   "beat": 5,
+   "vo": "So here's one useful habit. Before you press, ask what it's wired to.",
+   "page": "24_recap",
+   "t": [
+    0.48,
+    0.84
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.3,
+    0.58,
+    0.46
+   ]
+  },
+  {
+   "id": "5.08a",
+   "beat": 5,
+   "vo": "A timer? A sensor? A person?",
+   "page": "24_recap",
+   "t": [
+    0.84,
+    0.9
+   ],
+   "cam": [
+    1.8,
+    0.57,
+    0.5,
+    1.8,
+    0.6,
+    0.52
+   ]
+  },
+  {
+   "id": "5.08b",
+   "beat": 5,
+   "vo": "Or a facilities team hoping you'll stop emailing?",
+   "page": "24_recap",
+   "t": [
+    0.9,
+    1
+   ],
+   "cam": [
+    2.4,
+    0.68,
+    0.52,
+    2.6,
+    0.68,
+    0.52
+   ],
+   "cut": true
+  },
+  {
+   "id": "5.09a",
+   "beat": 5,
+   "vo": "And when it's real, use it.",
+   "page": "22_court",
+   "t": [
+    0.95,
+    1
+   ],
+   "cam": [
+    2.0,
+    0.93,
+    0.78,
+    2.2,
+    0.93,
+    0.78
+   ]
+  },
+  {
+   "id": "5.09b",
+   "beat": 5,
+   "vo": "In central Sydney, crossings run automatically from six a.m. to ten p.m.",
+   "page": "10_sydney",
+   "t": [
+    0.75,
+    1
+   ],
+   "cam": [
+    1.3,
+    0.74,
+    0.68,
+    1.5,
+    0.74,
+    0.7
+   ],
+   "say": "In central Sydney, crossings run automatically from six A M to ten P M."
+  },
+  {
+   "id": "5.10",
+   "beat": 5,
+   "vo": "After that, the button's back on duty. Press it.",
+   "page": "04_panel",
+   "t": [
+    1,
+    1
+   ],
+   "cam": [
+    2.3,
+    0.12,
+    0.68,
+    2.6,
+    0.12,
+    0.7
+   ]
+  },
+  {
+   "id": "5.11",
+   "beat": 5,
+   "vo": "Which leaves one last thing. Your button.",
+   "page": "25_last_v",
+   "t": [
+    0,
+    0.02
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.3,
+    0.5,
+    0.52
+   ]
+  },
+  {
+   "id": "5.12",
+   "beat": 5,
+   "vo": "Press it one more time. Whenever you're ready.",
+   "page": "25_last_v",
+   "t": [
+    0.02,
+    0.3
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.0,
+    0.5,
+    0.5
+   ],
+   "post": 0
+  },
+  {
+   "id": "5.13",
+   "beat": 5,
+   "vo": "",
+   "page": "25_last_v",
+   "t": [
+    0.3,
+    0.6
+   ],
+   "cam": [
+    1.12,
+    0.5,
+    0.5,
+    1.12,
+    0.5,
+    0.5
+   ],
+   "hold": 4.0,
+   "post": 0
+  },
+  {
+   "id": "5.14",
+   "beat": 5,
+   "vo": "Nothing. No lamp. Slightly offended? Notice that.",
+   "page": "25_last_v",
+   "t": [
+    0.6,
+    0.9
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.1,
+    0.45,
+    0.52
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "5.15",
+   "beat": 5,
+   "vo": "That little sting is the illusion leaving the room.",
+   "page": "16_reveal",
+   "t": [
+    1,
+    1
+   ],
+   "cam": [
+    1.5,
+    0.5,
+    0.5,
+    2.0,
+    0.5,
+    0.76
+   ]
+  },
+  {
+   "id": "5.16",
+   "beat": 5,
+   "vo": "To be fair, one button in this film worked every single time.",
+   "page": "26_pause",
+   "t": [
+    0,
+    0.28
+   ],
+   "cam": [
+    1.2,
+    0.5,
+    0.4,
+    1.0,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "5.17",
+   "beat": 5,
+   "vo": "It's down here, in the corner of your screen. The pause button.",
+   "page": "26_pause",
+   "t": [
+    0.28,
+    0.6
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.8,
+    0.1,
+    0.85
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "5.18",
+   "beat": 5,
+   "vo": "That one was always connected. To you.",
+   "page": "26_pause",
+   "t": [
+    0.6,
+    1
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.08,
+    0.5,
+    0.52
+   ],
+   "cut": true,
+   "post": 1.4
+  }
+ ]
+}

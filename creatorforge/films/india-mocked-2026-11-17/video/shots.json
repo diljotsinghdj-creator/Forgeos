@@ -1,0 +1,2722 @@
+{
+ "slug": "disgust-pays",
+ "title": "Disgust Pays",
+ "channel": "printfacts",
+ "voice": "bm_george",
+ "speed": 1.0,
+ "treatment": "pulse",
+ "guide": {
+  "CSOH": "C S O H",
+  "Jio": "Jee-oh",
+  "Tallaght": "Talla",
+  "Naatu": "Nah-too",
+  "Chawla": "Chow-la",
+  "Sanscrit": "Sanskrit",
+  "Sundarbans": "Soon-dar-bunns",
+  "Gandak": "Gun-duck",
+  "Yamuna": "Yum-oo-na"
+ },
+ "reload_pages": [],
+ "shots": [
+  {
+   "id": "1.01",
+   "beat": 1,
+   "vo": "Look closely at this number.",
+   "page": "02_receipt",
+   "t": [
+    0.56,
+    0.7
+   ],
+   "cam": [
+    2.4,
+    0.7063,
+    0.6324,
+    2.4,
+    0.7063,
+    0.6324
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "1.02",
+   "beat": 1,
+   "vo": "138.54 million views, for 128 posts on X,",
+   "page": "02_receipt",
+   "t": [
+    0.7,
+    0.7
+   ],
+   "cam": [
+    2.4,
+    0.7063,
+    0.6324,
+    1.9,
+    0.7552,
+    0.5926
+   ],
+   "say": "one hundred and thirty-eight point five four million views, for one hundred and twenty-eight posts on ex,"
+  },
+  {
+   "id": "1.03",
+   "beat": 1,
+   "vo": "all aimed at one group of people: Indians.",
+   "page": "02_receipt",
+   "t": [
+    0.7,
+    0.7
+   ],
+   "cam": [
+    1.9,
+    0.7552,
+    0.5926,
+    1.6,
+    0.651,
+    0.6019
+   ]
+  },
+  {
+   "id": "1.04",
+   "beat": 1,
+   "vo": "Somebody counted them. A research group,",
+   "page": "02_receipt",
+   "t": [
+    0.7,
+    0.72
+   ],
+   "cam": [
+    1.6,
+    0.651,
+    0.6019,
+    1.25,
+    0.4167,
+    0.4444
+   ]
+  },
+  {
+   "id": "1.05",
+   "beat": 1,
+   "vo": "the Center for the Study of Organized Hate, in January 2025.",
+   "page": "02_receipt",
+   "t": [
+    0.72,
+    0.74
+   ],
+   "cam": [
+    1.5,
+    0.3229,
+    0.2778,
+    1.0,
+    0.5,
+    0.5
+   ],
+   "say": "the Center for the Study of Organized Hate, in January twenty twenty-five."
+  },
+  {
+   "id": "1.06",
+   "beat": 1,
+   "vo": "And if those posts were your only window on India…",
+   "page": "01_feed",
+   "t": [
+    0,
+    0.08
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.3,
+    0.5,
+    0.463
+   ]
+  },
+  {
+   "id": "1.07",
+   "beat": 1,
+   "vo": "…you'd think a country of about 1.4 billion people was four clips on a loop:",
+   "page": "01_feed",
+   "t": [
+    0.08,
+    0.22
+   ],
+   "cam": [
+    1.3,
+    0.5,
+    0.463,
+    1.45,
+    0.5,
+    0.5
+   ],
+   "say": "…you'd think a country of about one point four billion people was four clips on a loop:"
+  },
+  {
+   "id": "1.08",
+   "beat": 1,
+   "vo": "a traffic jam, a crowded train, a street stall,",
+   "page": "01_feed",
+   "t": [
+    0.22,
+    0.42
+   ],
+   "cam": [
+    1.45,
+    0.526,
+    0.4815,
+    1.3,
+    0.5833,
+    0.4352
+   ]
+  },
+  {
+   "id": "1.09",
+   "beat": 1,
+   "vo": "and then the traffic jam again, in case you missed it.",
+   "page": "01_feed",
+   "t": [
+    0.42,
+    0.6
+   ],
+   "cam": [
+    1.3,
+    0.5833,
+    0.4352,
+    1.5,
+    0.5104,
+    0.4815
+   ]
+  },
+  {
+   "id": "1.10",
+   "beat": 1,
+   "vo": "That's not a country.",
+   "page": "01_feed",
+   "t": [
+    0.6,
+    0.6
+   ],
+   "cam": [
+    1.7,
+    0.5,
+    0.4444,
+    1.7,
+    0.5,
+    0.4444
+   ],
+   "cut": true
+  },
+  {
+   "id": "1.11",
+   "beat": 1,
+   "vo": "That's a highlight reel edited by someone who hates you.",
+   "page": "01_feed",
+   "t": [
+    0.6,
+    0.8
+   ],
+   "cam": [
+    1.2,
+    0.3229,
+    0.5185,
+    1.0,
+    0.5,
+    0.5
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "1.12",
+   "beat": 1,
+   "vo": "But follow the phone's edge, off the feed, and the desk is covered in things that never trend.",
+   "page": "03_otherfeed",
+   "t": [
+    0,
+    0.24
+   ],
+   "cam": [
+    1.25,
+    0.2708,
+    0.3519,
+    1.0,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "1.13",
+   "beat": 1,
+   "vo": "A Moon landing.",
+   "page": "03_otherfeed",
+   "t": [
+    0.24,
+    0.3
+   ],
+   "cam": [
+    1.5,
+    0.2188,
+    0.463,
+    1.55,
+    0.2083,
+    0.4815
+   ]
+  },
+  {
+   "id": "1.14",
+   "beat": 1,
+   "vo": "Billions of payments in one month.",
+   "page": "03_otherfeed",
+   "t": [
+    0.3,
+    0.46
+   ],
+   "cam": [
+    1.5,
+    0.5,
+    0.5,
+    1.55,
+    0.5104,
+    0.5185
+   ]
+  },
+  {
+   "id": "1.15",
+   "beat": 1,
+   "vo": "Three-quarters of the world's wild tigers.",
+   "page": "03_otherfeed",
+   "t": [
+    0.46,
+    0.88
+   ],
+   "cam": [
+    1.4,
+    0.8021,
+    0.5185,
+    1.5,
+    0.8125,
+    0.5556
+   ]
+  },
+  {
+   "id": "1.16",
+   "beat": 1,
+   "vo": "None of it went viral.",
+   "page": "03_otherfeed",
+   "t": [
+    0.88,
+    0.92
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.2,
+    0.651,
+    0.3889
+   ]
+  },
+  {
+   "id": "1.17",
+   "beat": 1,
+   "vo": "Apparently a tiger is less engaging than a traffic jam.",
+   "page": "03b_tiger",
+   "t": [
+    0,
+    0.38
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.15,
+    0.5469,
+    0.4815
+   ]
+  },
+  {
+   "id": "1.18",
+   "beat": 1,
+   "vo": "Which, if you've ever met a tiger, is a bold editorial choice.",
+   "page": "03b_tiger",
+   "t": [
+    0.38,
+    0.85
+   ],
+   "cam": [
+    1.35,
+    0.625,
+    0.4074,
+    1.1,
+    0.651,
+    0.5556
+   ],
+   "cut": true,
+   "post": 0.6
+  },
+  {
+   "id": "1.19",
+   "beat": 1,
+   "vo": "So why does the internet keep showing you the worst of India?",
+   "page": "04_title",
+   "t": [
+    0.1,
+    0.8
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.15,
+    0.5,
+    0.4815
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "2.01",
+   "beat": 2,
+   "vo": "The answer starts with a company.",
+   "page": "05_map",
+   "t": [
+    0,
+    0.1
+   ],
+   "cam": [
+    1.3,
+    0.5,
+    0.3889,
+    1.0,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "2.02",
+   "beat": 2,
+   "vo": "Follow this red line, out of London, in 1600:",
+   "page": "05_map",
+   "t": [
+    0.1,
+    0.26
+   ],
+   "cam": [
+    1.5,
+    0.1979,
+    0.2778,
+    1.35,
+    0.3229,
+    0.3333
+   ],
+   "say": "Follow this red line, out of London, in sixteen hundred:"
+  },
+  {
+   "id": "2.03",
+   "beat": 2,
+   "vo": "a royal charter to trade with the East.",
+   "page": "05_map",
+   "t": [
+    0.26,
+    0.72
+   ],
+   "cam": [
+    1.35,
+    0.3229,
+    0.3333,
+    1.15,
+    0.599,
+    0.537
+   ]
+  },
+  {
+   "id": "2.04",
+   "beat": 2,
+   "vo": "The ships didn't go straight.",
+   "page": "globe_a",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.25,
+    0.651,
+    0.4815
+   ]
+  },
+  {
+   "id": "2.05",
+   "beat": 2,
+   "vo": "Look how far south they had to swing.",
+   "page": "globe_b",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.3,
+    0.6641,
+    0.4444,
+    1.5,
+    0.7188,
+    0.7037
+   ]
+  },
+  {
+   "id": "2.06",
+   "beat": 2,
+   "vo": "Round Africa,",
+   "page": "globe_c",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.45,
+    0.599,
+    0.7037,
+    1.35,
+    0.7188,
+    0.463
+   ]
+  },
+  {
+   "id": "2.07",
+   "beat": 2,
+   "vo": "across the Indian Ocean,",
+   "page": "ship_a",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.25,
+    0.5729,
+    0.5556,
+    1.4,
+    0.651,
+    0.6667
+   ]
+  },
+  {
+   "id": "2.08",
+   "beat": 2,
+   "vo": "and here, at the top of the Bay of Bengal,",
+   "page": "ship_b",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.35,
+    0.7396,
+    0.8148,
+    1.5,
+    0.8333,
+    0.5926
+   ]
+  },
+  {
+   "id": "2.09",
+   "beat": 2,
+   "vo": "a settlement in 1690.",
+   "page": "ship_c",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.4,
+    0.8333,
+    0.5185,
+    1.6,
+    0.8438,
+    0.3704
+   ],
+   "say": "a settlement in sixteen ninety."
+  },
+  {
+   "id": "2.10",
+   "beat": 2,
+   "vo": "The settlement was called Calcutta.",
+   "page": "ship_c",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.8,
+    0.8125,
+    0.3056,
+    1.7,
+    0.7708,
+    0.3056
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "2.11",
+   "beat": 2,
+   "vo": "Its mission statement was \"trade\". Approximately.",
+   "page": "ship_c",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.7,
+    0.25,
+    0.8148,
+    1.6,
+    0.2708,
+    0.7963
+   ],
+   "cut": true
+  },
+  {
+   "id": "2.12",
+   "beat": 2,
+   "vo": "By 1858 the Crown ran the place directly,",
+   "page": "globe_c",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.5,
+    0.2708,
+    0.7963,
+    1.2,
+    0.4167,
+    0.6481
+   ],
+   "say": "By eighteen fifty-eight the Crown ran the place directly,"
+  },
+  {
+   "id": "2.13",
+   "beat": 2,
+   "vo": "and running someone else's country needs a story about why it's a favour.",
+   "page": "ship_c",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.3,
+    0.6771,
+    0.4815,
+    1.0,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "2.14",
+   "beat": 2,
+   "vo": "Here's one of the stories, in the author's own handwriting.",
+   "page": "06_macaulay",
+   "t": [
+    0,
+    0.3
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.25,
+    0.3333,
+    0.3148
+   ]
+  },
+  {
+   "id": "2.15",
+   "beat": 2,
+   "vo": "Read this line: \"a single shelf of a good European library",
+   "page": "06_macaulay",
+   "t": [
+    0.3,
+    0.35
+   ],
+   "cam": [
+    1.5,
+    0.3229,
+    0.2685,
+    1.5,
+    0.4271,
+    0.287
+   ]
+  },
+  {
+   "id": "2.16",
+   "beat": 2,
+   "vo": "was worth the whole native literature of India and Arabia.\"",
+   "page": "06_macaulay",
+   "t": [
+    0.35,
+    0.4
+   ],
+   "cam": [
+    1.5,
+    0.4271,
+    0.287,
+    1.35,
+    0.3646,
+    0.3148
+   ]
+  },
+  {
+   "id": "2.17",
+   "beat": 2,
+   "vo": "A confident review. Now drop down two lines.",
+   "page": "06_macaulay",
+   "t": [
+    0.4,
+    0.5
+   ],
+   "cam": [
+    1.6,
+    0.3542,
+    0.2963,
+    1.6,
+    0.3125,
+    0.3704
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "2.18",
+   "beat": 2,
+   "vo": "\"I have no knowledge of either Sanscrit or Arabic.\"",
+   "page": "z06_smash",
+   "t": [
+    0.5,
+    0.72
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.06,
+    0.3229,
+    0.463
+   ],
+   "cut": true
+  },
+  {
+   "id": "2.19",
+   "beat": 2,
+   "vo": "A one-star review of a library, by a reviewer who can't read the books.",
+   "page": "06_macaulay",
+   "t": [
+    0.7,
+    0.8
+   ],
+   "cam": [
+    1.3,
+    0.3646,
+    0.5741,
+    1.0,
+    0.5,
+    0.5
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "2.20",
+   "beat": 2,
+   "vo": "And that kind of review sold.",
+   "page": "07_drain",
+   "t": [
+    0,
+    0.14
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.2,
+    0.2917,
+    0.5
+   ]
+  },
+  {
+   "id": "2.21",
+   "beat": 2,
+   "vo": "In 1927 an American writer, Katherine Mayo, published Mother India,",
+   "page": "07_drain",
+   "t": [
+    0.14,
+    0.2
+   ],
+   "cam": [
+    1.5,
+    0.2083,
+    0.4444,
+    1.4,
+    0.2292,
+    0.5185
+   ],
+   "say": "In nineteen twenty-seven an American writer, Katherine Mayo, published Mother India,"
+  },
+  {
+   "id": "2.22",
+   "beat": 2,
+   "vo": "a bestseller about everything wrong with the country.",
+   "page": "07_drain",
+   "t": [
+    0.2,
+    0.26
+   ],
+   "cam": [
+    1.4,
+    0.2292,
+    0.5185,
+    1.15,
+    0.3333,
+    0.5185
+   ]
+  },
+  {
+   "id": "2.23",
+   "beat": 2,
+   "vo": "Look at what Gandhi wrote back.",
+   "page": "07_drain",
+   "t": [
+    0.26,
+    0.48
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.2,
+    0.6146,
+    0.5
+   ]
+  },
+  {
+   "id": "2.24",
+   "beat": 2,
+   "vo": "\"The report of a drain inspector,",
+   "page": "07_drain",
+   "t": [
+    0.48,
+    0.5
+   ],
+   "cam": [
+    1.5,
+    0.6771,
+    0.3704,
+    1.5,
+    0.75,
+    0.3889
+   ]
+  },
+  {
+   "id": "2.25",
+   "beat": 2,
+   "vo": "sent out with the one purpose of opening and examining the drains of the country.\"",
+   "page": "07_drain",
+   "t": [
+    0.5,
+    0.5
+   ],
+   "cam": [
+    1.5,
+    0.75,
+    0.3889,
+    1.3,
+    0.6979,
+    0.4259
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "2.26",
+   "beat": 2,
+   "vo": "A drain inspector.",
+   "page": "07_drain",
+   "t": [
+    0.5,
+    0.5
+   ],
+   "cam": [
+    1.9,
+    0.6562,
+    0.3426,
+    1.9,
+    0.6562,
+    0.3426
+   ],
+   "cut": true
+  },
+  {
+   "id": "2.27",
+   "beat": 2,
+   "vo": "Remember that phrase.",
+   "page": "07_drain",
+   "t": [
+    0.5,
+    0.62
+   ],
+   "cam": [
+    1.5,
+    0.7812,
+    0.2778,
+    1.4,
+    0.7552,
+    0.2407
+   ]
+  },
+  {
+   "id": "2.28",
+   "beat": 2,
+   "vo": "He named the genre ninety-eight years before the algorithm monetised it.",
+   "page": "07_drain",
+   "t": [
+    0.62,
+    0.9
+   ],
+   "cam": [
+    1.3,
+    0.6979,
+    0.7407,
+    1.15,
+    0.625,
+    0.6481
+   ]
+  },
+  {
+   "id": "2.29",
+   "beat": 2,
+   "vo": "But the vocabulary still needed an update.",
+   "page": "07_drain",
+   "t": [
+    0.9,
+    0.9
+   ],
+   "cam": [
+    1.15,
+    0.625,
+    0.6481,
+    1.0,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "2.30",
+   "beat": 2,
+   "vo": "And in 1952 it got one.",
+   "page": "08_worlds",
+   "t": [
+    0,
+    0.14
+   ],
+   "cam": [
+    1.25,
+    0.2917,
+    0.2963,
+    1.15,
+    0.3333,
+    0.3148
+   ],
+   "say": "And in nineteen fifty-two it got one."
+  },
+  {
+   "id": "2.31",
+   "beat": 2,
+   "vo": "Follow the three columns. First World, Second World,",
+   "page": "08_worlds",
+   "t": [
+    0.14,
+    0.24
+   ],
+   "cam": [
+    1.3,
+    0.2917,
+    0.2963,
+    1.3,
+    0.5208,
+    0.2963
+   ]
+  },
+  {
+   "id": "2.32",
+   "beat": 2,
+   "vo": "and the Third World: countries aligned with neither Cold War bloc.",
+   "page": "08_worlds",
+   "t": [
+    0.24,
+    0.4
+   ],
+   "cam": [
+    1.3,
+    0.5208,
+    0.2963,
+    1.4,
+    0.7708,
+    0.3148
+   ]
+  },
+  {
+   "id": "2.33",
+   "beat": 2,
+   "vo": "That's all it meant. Then Western usage quietly changed it to mean \"poor\".",
+   "page": "08_worlds",
+   "t": [
+    0.4,
+    0.72
+   ],
+   "cam": [
+    1.3,
+    0.7708,
+    0.3889,
+    1.25,
+    0.6979,
+    0.5741
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "2.34",
+   "beat": 2,
+   "vo": "A definition, updated without notice.",
+   "page": "08_worlds",
+   "t": [
+    0.72,
+    0.92
+   ],
+   "cam": [
+    1.5,
+    0.5729,
+    0.7407,
+    1.35,
+    0.5729,
+    0.6852
+   ],
+   "cut": true
+  },
+  {
+   "id": "3.01",
+   "beat": 3,
+   "vo": "And that's when the phones arrived.",
+   "page": "08b_data",
+   "t": [
+    0,
+    0.14
+   ],
+   "cam": [
+    1.25,
+    0.25,
+    0.2963,
+    1.05,
+    0.4479,
+    0.4444
+   ]
+  },
+  {
+   "id": "3.02",
+   "beat": 3,
+   "vo": "Look at the first bar: ₹269 a gigabyte in 2014.",
+   "page": "08b_data",
+   "t": [
+    0.14,
+    0.3
+   ],
+   "cam": [
+    1.2,
+    0.4688,
+    0.5741,
+    1.4,
+    0.4479,
+    0.5185
+   ],
+   "say": "Look at the first bar: two hundred and sixty-nine rupees a gigabyte in twenty fourteen."
+  },
+  {
+   "id": "3.03",
+   "beat": 3,
+   "vo": "Now watch it fall.",
+   "page": "08b_data",
+   "t": [
+    0.3,
+    0.68
+   ],
+   "cam": [
+    1.25,
+    0.5469,
+    0.5926,
+    1.15,
+    0.651,
+    0.6111
+   ],
+   "post": 1.4,
+   "build": 2.6
+  },
+  {
+   "id": "3.04",
+   "beat": 3,
+   "vo": "In 2016 a new 4G network, Jio, launched with free data.",
+   "page": "08b_data",
+   "t": [
+    0.68,
+    0.68
+   ],
+   "cam": [
+    1.5,
+    0.6354,
+    0.4259,
+    1.6,
+    0.6771,
+    0.3704
+   ],
+   "say": "In twenty sixteen a new four G network, Jio, launched with free data.",
+   "post": 0.6
+  },
+  {
+   "id": "3.05",
+   "beat": 3,
+   "vo": "Internet subscribers went from 239 million to 776 million.",
+   "page": "08b_data",
+   "t": [
+    0.68,
+    0.87
+   ],
+   "cam": [
+    1.4,
+    0.2708,
+    0.5741,
+    1.5,
+    0.2396,
+    0.6019
+   ],
+   "say": "Internet subscribers went from two hundred and thirty-nine million to seven hundred and seventy-six million."
+  },
+  {
+   "id": "3.06",
+   "beat": 3,
+   "vo": "Hundreds of millions of people, filming their own lives.",
+   "page": "08b_data",
+   "t": [
+    0.87,
+    0.88
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.1,
+    0.4688,
+    0.5185
+   ]
+  },
+  {
+   "id": "3.07",
+   "beat": 3,
+   "vo": "And the regulator gave its slide a modest title.",
+   "page": "08b_data",
+   "t": [
+    0.88,
+    0.92
+   ],
+   "cam": [
+    1.3,
+    0.6771,
+    0.3056,
+    1.5,
+    0.7292,
+    0.2407
+   ]
+  },
+  {
+   "id": "3.08",
+   "beat": 3,
+   "vo": "Fair title. The rest of the internet chose a different one.",
+   "page": "08b_data",
+   "t": [
+    0.92,
+    0.92
+   ],
+   "cam": [
+    1.6,
+    0.7292,
+    0.2315,
+    1.5,
+    0.7188,
+    0.25
+   ],
+   "cut": true,
+   "post": 0.6
+  },
+  {
+   "id": "3.09",
+   "beat": 3,
+   "vo": "Look at this dial. It measures what the feed actually rewards.",
+   "page": "09_dial",
+   "t": [
+    0,
+    0.3
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.25,
+    0.3438,
+    0.463
+   ]
+  },
+  {
+   "id": "3.10",
+   "beat": 3,
+   "vo": "A 2021 study of 2.73 million posts found that",
+   "page": "09_dial",
+   "t": [
+    0.3,
+    0.5
+   ],
+   "cam": [
+    1.2,
+    0.4688,
+    0.4259,
+    1.35,
+    0.7604,
+    0.3519
+   ],
+   "say": "A twenty twenty-one study of two point seven three million posts found that"
+  },
+  {
+   "id": "3.11",
+   "beat": 3,
+   "vo": "every word about the \"other side\" raised the odds of a share by about 67%.",
+   "page": "09_dial",
+   "t": [
+    0.5,
+    0.5
+   ],
+   "cam": [
+    1.5,
+    0.7656,
+    0.3704,
+    1.7,
+    0.7396,
+    0.4444
+   ],
+   "say": "every word about the \"other side\" raised the odds of a share by about sixty-seven percent."
+  },
+  {
+   "id": "3.12",
+   "beat": 3,
+   "vo": "Outrage isn't a bug in the feed. It's the fuel.",
+   "page": "09_dial",
+   "t": [
+    0.5,
+    0.85
+   ],
+   "cam": [
+    1.25,
+    0.625,
+    0.5926,
+    1.0,
+    0.5,
+    0.5
+   ],
+   "cut": true,
+   "post": 0.6
+  },
+  {
+   "id": "3.13",
+   "beat": 3,
+   "vo": "And for years one platform priced it. Look at these two stacks.",
+   "page": "10_angry",
+   "t": [
+    0,
+    0.5
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.3,
+    0.599,
+    0.7037
+   ]
+  },
+  {
+   "id": "3.14",
+   "beat": 3,
+   "vo": "From 2017, Facebook's feed counted an angry reaction as worth five likes,",
+   "page": "10_angry",
+   "t": [
+    0.5,
+    0.6
+   ],
+   "cam": [
+    1.45,
+    0.6979,
+    0.6852,
+    1.5,
+    0.7292,
+    0.6296
+   ],
+   "say": "From twenty seventeen, Facebook's feed counted an angry reaction as worth five likes,"
+  },
+  {
+   "id": "3.15",
+   "beat": 3,
+   "vo": "according to its own documents, reported by the Washington Post.",
+   "page": "10_angry",
+   "t": [
+    0.6,
+    0.9
+   ],
+   "cam": [
+    1.25,
+    0.3646,
+    0.6296,
+    1.15,
+    0.3229,
+    0.6667
+   ]
+  },
+  {
+   "id": "3.16",
+   "beat": 3,
+   "vo": "The weight was cut, and reached zero by the end of 2020.",
+   "page": "10_angry",
+   "t": [
+    0.9,
+    0.9
+   ],
+   "cam": [
+    1.6,
+    0.2396,
+    0.5926,
+    1.5,
+    0.2708,
+    0.6019
+   ],
+   "say": "The weight was cut, and reached zero by the end of twenty twenty."
+  },
+  {
+   "id": "3.17",
+   "beat": 3,
+   "vo": "Critics note \"angry\" was the least-used reaction.",
+   "page": "10_angry",
+   "t": [
+    0.9,
+    0.9
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.12,
+    0.5208,
+    0.5926
+   ]
+  },
+  {
+   "id": "3.18",
+   "beat": 3,
+   "vo": "Least used. Best paid.",
+   "page": "10_angry",
+   "t": [
+    0.9,
+    0.9
+   ],
+   "cam": [
+    1.8,
+    0.6719,
+    0.7407,
+    1.8,
+    0.6719,
+    0.7407
+   ],
+   "cut": true,
+   "post": 0.6
+  },
+  {
+   "id": "3.19",
+   "beat": 3,
+   "vo": "Now follow one video. Here, on the left, an ordinary market street,",
+   "page": "11_repost",
+   "t": [
+    0,
+    0.15
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.25,
+    0.2708,
+    0.5
+   ]
+  },
+  {
+   "id": "3.20",
+   "beat": 3,
+   "vo": "posted by the person who filmed it.",
+   "page": "11_repost",
+   "t": [
+    0.15,
+    0.18
+   ],
+   "cam": [
+    1.5,
+    0.224,
+    0.4259,
+    1.4,
+    0.224,
+    0.5556
+   ]
+  },
+  {
+   "id": "3.21",
+   "beat": 3,
+   "vo": "Follow the arrow. Someone else reposts it",
+   "page": "11_repost",
+   "t": [
+    0.18,
+    0.36
+   ],
+   "cam": [
+    1.3,
+    0.3646,
+    0.463,
+    1.3,
+    0.5312,
+    0.463
+   ]
+  },
+  {
+   "id": "3.22",
+   "beat": 3,
+   "vo": "with a caption we've blacked out.",
+   "page": "11_repost",
+   "t": [
+    0.36,
+    0.5
+   ],
+   "cam": [
+    1.5,
+    0.625,
+    0.4444,
+    1.7,
+    0.625,
+    0.3519
+   ]
+  },
+  {
+   "id": "3.23",
+   "beat": 3,
+   "vo": "Since October 2024, X has paid creators",
+   "page": "11_repost",
+   "t": [
+    0.5,
+    0.66
+   ],
+   "cam": [
+    1.3,
+    0.7708,
+    0.4815,
+    1.45,
+    0.8229,
+    0.4352
+   ],
+   "say": "Since October twenty twenty-four, ex has paid creators"
+  },
+  {
+   "id": "3.24",
+   "beat": 3,
+   "vo": "by engagement from its Premium subscribers.",
+   "page": "11_repost",
+   "t": [
+    0.66,
+    0.86
+   ],
+   "cam": [
+    1.5,
+    0.8333,
+    0.5185,
+    1.4,
+    0.8125,
+    0.5741
+   ]
+  },
+  {
+   "id": "3.25",
+   "beat": 3,
+   "vo": "Picture it: the original gets a few hundred views.",
+   "page": "11b_slot",
+   "t": [
+    0,
+    0.58
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.25,
+    0.6875,
+    0.5556
+   ]
+  },
+  {
+   "id": "3.26",
+   "beat": 3,
+   "vo": "The insult gets a salary.",
+   "page": "11b_slot",
+   "t": [
+    0.58,
+    0.86
+   ],
+   "cam": [
+    1.2,
+    0.2917,
+    0.5185,
+    1.08,
+    0.3646,
+    0.5185
+   ],
+   "cut": true,
+   "post": 0.9,
+   "build": 1.8
+  },
+  {
+   "id": "3.27",
+   "beat": 3,
+   "vo": "And look closely: some of this \"proof\" isn't even real.",
+   "page": "16_fakes",
+   "t": [
+    0,
+    0.1
+   ],
+   "cam": [
+    1.5,
+    0.3438,
+    0.1852,
+    1.25,
+    0.4167,
+    0.2963
+   ]
+  },
+  {
+   "id": "3.28",
+   "beat": 3,
+   "vo": "Fact-checkers stamped them: AI-generated.",
+   "page": "16_fakes",
+   "t": [
+    0.1,
+    0.3
+   ],
+   "cam": [
+    1.3,
+    0.3229,
+    0.463,
+    1.5,
+    0.1979,
+    0.463
+   ]
+  },
+  {
+   "id": "3.29",
+   "beat": 3,
+   "vo": "Scripted.",
+   "page": "16_fakes",
+   "t": [
+    0.3,
+    0.5
+   ],
+   "cam": [
+    1.5,
+    0.4948,
+    0.463,
+    1.55,
+    0.4948,
+    0.463
+   ],
+   "post": 0.4
+  },
+  {
+   "id": "3.30",
+   "beat": 3,
+   "vo": "Not filmed in India at all.",
+   "page": "16_fakes",
+   "t": [
+    0.5,
+    0.7
+   ],
+   "cam": [
+    1.5,
+    0.8021,
+    0.463,
+    1.0,
+    0.5,
+    0.5
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "4.01",
+   "beat": 4,
+   "vo": "So how big did it get? CSOH kept counting.",
+   "page": "12_count",
+   "t": [
+    0,
+    0.2
+   ],
+   "cam": [
+    1.3,
+    0.3229,
+    0.2778,
+    1.2,
+    0.3125,
+    0.2593
+   ]
+  },
+  {
+   "id": "4.02",
+   "beat": 4,
+   "vo": "About 542,360 anti-South Asian posts on X",
+   "page": "12_count",
+   "t": [
+    0.2,
+    0.28
+   ],
+   "cam": [
+    1.5,
+    0.2917,
+    0.2315,
+    1.4,
+    0.3125,
+    0.2778
+   ],
+   "say": "About five hundred and forty-two thousand, three hundred and sixty anti-South Asian posts on X"
+  },
+  {
+   "id": "4.03",
+   "beat": 4,
+   "vo": "in eighteen months. Read the three lines underneath.",
+   "page": "12_count",
+   "t": [
+    0.28,
+    0.72
+   ],
+   "cam": [
+    1.2,
+    0.3958,
+    0.3704,
+    1.2,
+    0.3958,
+    0.6481
+   ]
+  },
+  {
+   "id": "4.04",
+   "beat": 4,
+   "vo": "45% call South Asians \"invaders\" or \"job thieves\".",
+   "page": "12_count",
+   "t": [
+    0.72,
+    0.72
+   ],
+   "cam": [
+    1.5,
+    0.3229,
+    0.463,
+    1.5,
+    0.4479,
+    0.4722
+   ],
+   "say": "Forty-five percent call South Asians \"invaders\" or \"job thieves\"."
+  },
+  {
+   "id": "4.05",
+   "beat": 4,
+   "vo": "About 30% use a single slur, one that CNN traces back to 4chan.",
+   "page": "12_count",
+   "t": [
+    0.72,
+    0.72
+   ],
+   "cam": [
+    1.5,
+    0.3333,
+    0.6204,
+    1.5,
+    0.4583,
+    0.6296
+   ],
+   "say": "About thirty percent use a single slur, one that CNN traces back to four chan."
+  },
+  {
+   "id": "4.06",
+   "beat": 4,
+   "vo": "And the fastest-growing kind of insult, up 171%, is about hygiene.",
+   "page": "12_count",
+   "t": [
+    0.72,
+    0.82
+   ],
+   "cam": [
+    1.3,
+    0.3958,
+    0.7222,
+    1.6,
+    0.3125,
+    0.7685
+   ],
+   "say": "And the fastest-growing kind of insult, up one hundred and seventy-one percent, is about hygiene.",
+   "post": 0.6
+  },
+  {
+   "id": "4.07",
+   "beat": 4,
+   "vo": "The drain inspector has gone digital. With a blue tick.",
+   "page": "13b_inspector",
+   "t": [
+    0,
+    0.78
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.15,
+    0.599,
+    0.463
+   ],
+   "cut": true,
+   "post": 0.6,
+   "build": 3.0
+  },
+  {
+   "id": "4.08",
+   "beat": 4,
+   "vo": "But posts are just posts. Unless you follow the timeline off the screen.",
+   "page": "13_timing",
+   "t": [
+    0,
+    0.16
+   ],
+   "cam": [
+    1.2,
+    0.5,
+    0.3519,
+    1.0,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "4.09",
+   "beat": 4,
+   "vo": "December 2024, the visa fight on X.",
+   "page": "13_timing",
+   "t": [
+    0.16,
+    0.29
+   ],
+   "cam": [
+    1.4,
+    0.25,
+    0.4259,
+    1.5,
+    0.2083,
+    0.4815
+   ],
+   "say": "December twenty twenty-four, the visa fight on ex."
+  },
+  {
+   "id": "4.10",
+   "beat": 4,
+   "vo": "Arguing about visas isn't racism; the slurs that rode along with it were.",
+   "page": "13_timing",
+   "t": [
+    0.29,
+    0.33
+   ],
+   "cam": [
+    1.5,
+    0.2083,
+    0.5556,
+    1.35,
+    0.2708,
+    0.537
+   ]
+  },
+  {
+   "id": "4.11",
+   "beat": 4,
+   "vo": "July 2025, Tallaght, in Dublin:",
+   "page": "13_timing",
+   "t": [
+    0.33,
+    0.46
+   ],
+   "cam": [
+    1.5,
+    0.4688,
+    0.3519,
+    1.5,
+    0.5417,
+    0.3889
+   ],
+   "say": "July twenty twenty-five, Tallaght, in Dublin:"
+  },
+  {
+   "id": "4.12",
+   "beat": 4,
+   "vo": "police record an assault on an Indian man as racially motivated.",
+   "page": "13_timing",
+   "t": [
+    0.46,
+    0.48
+   ],
+   "cam": [
+    1.7,
+    0.5521,
+    0.3981,
+    1.4,
+    0.5208,
+    0.4259
+   ]
+  },
+  {
+   "id": "4.13",
+   "beat": 4,
+   "vo": "August, Australia: rally flyers single out Indian migration.",
+   "page": "13_timing",
+   "t": [
+    0.48,
+    0.64
+   ],
+   "cam": [
+    1.3,
+    0.6771,
+    0.6296,
+    1.4,
+    0.7812,
+    0.6852
+   ]
+  },
+  {
+   "id": "4.14",
+   "beat": 4,
+   "vo": "And here, in Canada, the police numbers.",
+   "page": "13_timing",
+   "t": [
+    0.64,
+    0.8
+   ],
+   "cam": [
+    1.4,
+    0.2708,
+    0.3704,
+    1.6,
+    0.1979,
+    0.3056
+   ]
+  },
+  {
+   "id": "4.15",
+   "beat": 4,
+   "vo": "Hate crimes against South Asians: 167, 196,",
+   "page": "bars_c",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.5,
+    0.625,
+    0.5741,
+    1.5,
+    0.6927,
+    0.5556
+   ],
+   "say": "Hate crimes against South Asians: one hundred and sixty-seven, one hundred and ninety-six,"
+  },
+  {
+   "id": "4.16",
+   "beat": 4,
+   "vo": "279, 324,",
+   "page": "bars_c",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.5,
+    0.7292,
+    0.5185,
+    1.6,
+    0.7917,
+    0.4815
+   ],
+   "say": "two hundred and seventy-nine, three hundred and twenty-four,"
+  },
+  {
+   "id": "4.17",
+   "beat": 4,
+   "vo": "and then 483.",
+   "page": "bars_c",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.7,
+    0.8542,
+    0.4444,
+    1.9,
+    0.8698,
+    0.4074
+   ],
+   "say": "and then four hundred and eighty-three.",
+   "post": 0.6
+  },
+  {
+   "id": "4.18",
+   "beat": 4,
+   "vo": "Up 49% in one year.",
+   "page": "bars_c",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.4,
+    0.3958,
+    0.2778,
+    1.25,
+    0.4167,
+    0.3148
+   ],
+   "say": "Up forty-nine percent in one year."
+  },
+  {
+   "id": "4.19",
+   "beat": 4,
+   "vo": "To be precise: no study shows a post caused an attack.",
+   "page": "bars_c",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.7,
+    0.2188,
+    0.6296,
+    1.55,
+    0.25,
+    0.6111
+   ]
+  },
+  {
+   "id": "4.20",
+   "beat": 4,
+   "vo": "What lines up is the timing.",
+   "page": "bars_c",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.25,
+    0.4688,
+    0.5185,
+    1.0,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "4.21",
+   "beat": 4,
+   "vo": "So who was supposed to stop it? Look at this page from 2019.",
+   "page": "14_classifier",
+   "t": [
+    0,
+    0.3
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.3,
+    0.3646,
+    0.3889
+   ],
+   "say": "So who was supposed to stop it? Look at this page from twenty nineteen."
+  },
+  {
+   "id": "4.22",
+   "beat": 4,
+   "vo": "A test account in Kerala, flooded in three weeks with hate,",
+   "page": "14_classifier",
+   "t": [
+    0.3,
+    0.3
+   ],
+   "cam": [
+    1.5,
+    0.2917,
+    0.3333,
+    1.5,
+    0.4167,
+    0.3611
+   ]
+  },
+  {
+   "id": "4.23",
+   "beat": 4,
+   "vo": "most of it aimed at other Indians, and much of it never flagged:",
+   "page": "14_classifier",
+   "t": [
+    0.3,
+    0.3
+   ],
+   "cam": [
+    1.5,
+    0.4167,
+    0.3611,
+    1.6,
+    0.4688,
+    0.3889
+   ]
+  },
+  {
+   "id": "4.24",
+   "beat": 4,
+   "vo": "no classifiers for Hindi or Bengali.",
+   "page": "14_classifier",
+   "t": [
+    0.3,
+    0.3
+   ],
+   "cam": [
+    1.7,
+    0.3958,
+    0.4259,
+    1.6,
+    0.3646,
+    0.4167
+   ]
+  },
+  {
+   "id": "4.25",
+   "beat": 4,
+   "vo": "Facebook says it added them in 2018 and 2020. Then check the corner.",
+   "page": "14_classifier",
+   "t": [
+    0.3,
+    0.58
+   ],
+   "cam": [
+    1.5,
+    0.3646,
+    0.4815,
+    1.3,
+    0.7396,
+    0.6481
+   ],
+   "say": "Facebook says it added them in twenty eighteen and twenty twenty. Then check the corner.",
+   "post": 0.6
+  },
+  {
+   "id": "4.26",
+   "beat": 4,
+   "vo": "Of the 128 posts CSOH logged, 125 were still up.",
+   "page": "14_classifier",
+   "t": [
+    0.58,
+    0.8
+   ],
+   "cam": [
+    1.5,
+    0.7656,
+    0.6481,
+    1.0,
+    0.5,
+    0.5
+   ],
+   "say": "Of the one hundred and twenty-eight posts CSOH logged, one hundred and twenty-five were still up.",
+   "cut": true,
+   "post": 0.6
+  },
+  {
+   "id": "4.27",
+   "beat": 4,
+   "vo": "But there's a catch, and we have to say it.",
+   "page": "15_drains",
+   "t": [
+    0,
+    0.1
+   ],
+   "cam": [
+    1.6,
+    0.25,
+    0.2778,
+    1.5,
+    0.2708,
+    0.2963
+   ]
+  },
+  {
+   "id": "4.28",
+   "beat": 4,
+   "vo": "The problems in those clips are real.",
+   "page": "15_drains",
+   "t": [
+    0.1,
+    0.2
+   ],
+   "cam": [
+    1.5,
+    0.2708,
+    0.2963,
+    1.35,
+    0.3125,
+    0.3704
+   ]
+  },
+  {
+   "id": "4.29",
+   "beat": 4,
+   "vo": "19% of households had no toilet in the last national survey.",
+   "page": "15_drains",
+   "t": [
+    0.2,
+    0.345
+   ],
+   "cam": [
+    1.4,
+    0.5208,
+    0.2778,
+    1.6,
+    0.5208,
+    0.25
+   ],
+   "say": "Nineteen percent of households had no toilet in the last national survey."
+  },
+  {
+   "id": "4.30",
+   "beat": 4,
+   "vo": "India ranks 6th of 143 for polluted air.",
+   "page": "15_drains",
+   "t": [
+    0.345,
+    0.47
+   ],
+   "cam": [
+    1.5,
+    0.8125,
+    0.25,
+    1.6,
+    0.8229,
+    0.25
+   ],
+   "say": "India ranks sixth of one hundred and forty-three for polluted air."
+  },
+  {
+   "id": "4.31",
+   "beat": 4,
+   "vo": "About one food sample in five failed a standard.",
+   "page": "15_drains",
+   "t": [
+    0.47,
+    0.62
+   ],
+   "cam": [
+    1.5,
+    0.5208,
+    0.5741,
+    1.6,
+    0.526,
+    0.5833
+   ]
+  },
+  {
+   "id": "4.32",
+   "beat": 4,
+   "vo": "And scam call centres exist. Indian police raid them,",
+   "page": "15_drains",
+   "t": [
+    0.62,
+    0.76
+   ],
+   "cam": [
+    1.25,
+    0.6667,
+    0.5185,
+    1.5,
+    0.8125,
+    0.5926
+   ]
+  },
+  {
+   "id": "4.33",
+   "beat": 4,
+   "vo": "and Indians get the most scam calls of anyone surveyed: 69%.",
+   "page": "15_drains",
+   "t": [
+    0.76,
+    0.76
+   ],
+   "cam": [
+    1.75,
+    0.7812,
+    0.5741,
+    1.6,
+    0.8125,
+    0.5926
+   ],
+   "say": "and Indians get the most scam calls of anyone surveyed: sixty-nine percent.",
+   "post": 0.6
+  },
+  {
+   "id": "4.34",
+   "beat": 4,
+   "vo": "So yes, the drains exist. The feed just never shows anything else.",
+   "page": "15_drains",
+   "t": [
+    0.76,
+    0.97
+   ],
+   "cam": [
+    1.4,
+    0.25,
+    0.7037,
+    1.25,
+    0.2917,
+    0.6667
+   ],
+   "cut": true
+  },
+  {
+   "id": "5.01",
+   "beat": 5,
+   "vo": "So if the feed only shows the drains, here's what it leaves out.",
+   "page": "17_sowhat",
+   "t": [
+    0,
+    0.78
+   ],
+   "cam": [
+    1.25,
+    0.3333,
+    0.4815,
+    1.0,
+    0.5,
+    0.5
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "5.02",
+   "beat": 5,
+   "vo": "First, look at what's sitting just outside the frame.",
+   "page": "18_softpower",
+   "t": [
+    0,
+    0.2
+   ],
+   "cam": [
+    1.2,
+    0.5208,
+    0.4444,
+    1.0,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "5.03",
+   "beat": 5,
+   "vo": "\"Naatu Naatu\" won an Oscar in 2023.",
+   "page": "18_softpower",
+   "t": [
+    0.2,
+    0.3
+   ],
+   "cam": [
+    1.5,
+    0.3438,
+    0.3704,
+    1.6,
+    0.3333,
+    0.3796
+   ],
+   "say": "\"Naatu Naatu\" won an Oscar in twenty twenty-three."
+  },
+  {
+   "id": "5.04",
+   "beat": 5,
+   "vo": "India's payments system handles billions of transactions a month.",
+   "page": "18_softpower",
+   "t": [
+    0.3,
+    0.5
+   ],
+   "cam": [
+    1.4,
+    0.6667,
+    0.4074,
+    1.6,
+    0.75,
+    0.3981
+   ]
+  },
+  {
+   "id": "5.05",
+   "beat": 5,
+   "vo": "Extraordinary achievements, as the regulator would say.",
+   "page": "08b_data",
+   "t": [
+    0.95,
+    0.95
+   ],
+   "cam": [
+    1.7,
+    0.7292,
+    0.2315,
+    1.6,
+    0.724,
+    0.2407
+   ],
+   "cut": true
+  },
+  {
+   "id": "5.06",
+   "beat": 5,
+   "vo": "Modestly.",
+   "page": "18_softpower",
+   "t": [
+    0.5,
+    0.82
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.2,
+    0.5729,
+    0.6296
+   ],
+   "post": 0.7,
+   "build": 1.0
+  },
+  {
+   "id": "5.07",
+   "beat": 5,
+   "vo": "Look at these names.",
+   "page": "18b_achievers",
+   "t": [
+    0,
+    0.14
+   ],
+   "cam": [
+    1.4,
+    0.2188,
+    0.2037,
+    1.1,
+    0.4167,
+    0.3889
+   ]
+  },
+  {
+   "id": "5.08",
+   "beat": 5,
+   "vo": "Kalpana Chawla, the first Indian-born woman in space, 1997.",
+   "page": "18b_achievers",
+   "t": [
+    0.14,
+    0.27
+   ],
+   "cam": [
+    1.5,
+    0.3958,
+    0.5,
+    1.6,
+    0.3906,
+    0.5741
+   ],
+   "say": "Kalpana Chawla, the first Indian-born woman in space, nineteen ninety-seven."
+  },
+  {
+   "id": "5.09",
+   "beat": 5,
+   "vo": "Sunita Williams, who commanded the space station.",
+   "page": "18b_achievers",
+   "t": [
+    0.27,
+    0.4
+   ],
+   "cam": [
+    1.5,
+    0.6198,
+    0.5,
+    1.6,
+    0.625,
+    0.5741
+   ]
+  },
+  {
+   "id": "5.10",
+   "beat": 5,
+   "vo": "Named. Not viral.",
+   "page": "18b_achievers",
+   "t": [
+    0.4,
+    0.9
+   ],
+   "cam": [
+    1.25,
+    0.4271,
+    0.2778,
+    1.1,
+    0.5,
+    0.3519
+   ],
+   "cut": true,
+   "post": 0.8,
+   "build": 1.5
+  },
+  {
+   "id": "5.11",
+   "beat": 5,
+   "vo": "And look at the people. Twelve Indians:",
+   "page": "18c_faces",
+   "t": [
+    0,
+    0.5
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.1,
+    0.5,
+    0.4815
+   ]
+  },
+  {
+   "id": "5.12",
+   "beat": 5,
+   "vo": "an officer, a scientist, a singer, a student.",
+   "page": "18c_faces",
+   "t": [
+    0.5,
+    0.8
+   ],
+   "cam": [
+    1.3,
+    0.375,
+    0.7037,
+    1.3,
+    0.6458,
+    0.7037
+   ]
+  },
+  {
+   "id": "5.13",
+   "beat": 5,
+   "vo": "None of them went viral.",
+   "page": "18c_faces",
+   "t": [
+    0.8,
+    0.86
+   ],
+   "cam": [
+    1.1,
+    0.5,
+    0.5185,
+    1.0,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "5.14",
+   "beat": 5,
+   "vo": "The algorithm looked at them and saw nothing to be angry about.",
+   "page": "18c_faces",
+   "t": [
+    0.86,
+    0.9
+   ],
+   "cam": [
+    1.5,
+    0.7812,
+    0.2222,
+    1.3,
+    0.7188,
+    0.2963
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "5.15",
+   "beat": 5,
+   "vo": "Now follow this river down from the Himalaya.",
+   "page": "rivers",
+   "t": [
+    0,
+    0.3
+   ],
+   "cam": [
+    1.25,
+    0.2708,
+    0.3333,
+    1.25,
+    0.3958,
+    0.4259
+   ]
+  },
+  {
+   "id": "5.16",
+   "beat": 5,
+   "vo": "Past the Yamuna, past the Gandak,",
+   "page": "rivers",
+   "t": [
+    0.3,
+    0.5
+   ],
+   "cam": [
+    1.4,
+    0.3333,
+    0.3889,
+    1.4,
+    0.5521,
+    0.4815
+   ]
+  },
+  {
+   "id": "5.17",
+   "beat": 5,
+   "vo": "to the Sundarbans, the largest mangrove forest on Earth.",
+   "page": "rivers",
+   "t": [
+    0.5,
+    0.85
+   ],
+   "cam": [
+    1.3,
+    0.625,
+    0.5926,
+    1.5,
+    0.7812,
+    0.7222
+   ]
+  },
+  {
+   "id": "5.18",
+   "beat": 5,
+   "vo": "And pull back:",
+   "page": "relief_a",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.35,
+    0.4688,
+    0.5741,
+    1.0,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "5.19",
+   "beat": 5,
+   "vo": "four of the world's 36 biodiversity hotspots.",
+   "page": "relief_c",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.2,
+    0.5208,
+    0.5185
+   ],
+   "say": "four of the world's thirty-six biodiversity hotspots.",
+   "post": 0.6
+  },
+  {
+   "id": "5.20",
+   "beat": 5,
+   "vo": "That's the country.",
+   "page": "relief_b",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.2,
+    0.5729,
+    0.4815,
+    1.0,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "5.21",
+   "beat": 5,
+   "vo": "Here's the feed. And this part's on us.",
+   "page": "19_notinterested",
+   "t": [
+    0,
+    0.28
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.3,
+    0.2917,
+    0.463
+   ]
+  },
+  {
+   "id": "5.22",
+   "beat": 5,
+   "vo": "Right here, in the corner: three dots. \"Not interested.\"",
+   "page": "19_notinterested",
+   "t": [
+    0.28,
+    0.62
+   ],
+   "cam": [
+    1.6,
+    0.2812,
+    0.3056,
+    1.75,
+    0.2812,
+    0.3519
+   ]
+  },
+  {
+   "id": "5.23",
+   "beat": 5,
+   "vo": "The cheapest act of good manners on the internet.",
+   "page": "19b_button",
+   "t": [
+    0,
+    0.9
+   ],
+   "cam": [
+    1.2,
+    0.7812,
+    0.463,
+    1.0,
+    0.5,
+    0.5
+   ],
+   "post": 0.8,
+   "build": 3.0
+  },
+  {
+   "id": "5.24",
+   "beat": 5,
+   "vo": "India isn't a caricature. It's about 1.4 billion people,",
+   "page": "20b_edit",
+   "t": [
+    0,
+    0.4
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.1,
+    0.4688,
+    0.5
+   ],
+   "say": "India isn't a caricature. It's about one point four billion people,"
+  },
+  {
+   "id": "5.25",
+   "beat": 5,
+   "vo": "and the feed keeps editing them down to one drain.",
+   "page": "20b_edit",
+   "t": [
+    0.4,
+    0.92
+   ],
+   "cam": [
+    1.1,
+    0.4688,
+    0.5,
+    1.3,
+    0.4479,
+    0.4815
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "5.26",
+   "beat": 5,
+   "vo": "And laughing at that edit? That review was written in 1927.",
+   "page": "20_end",
+   "t": [
+    0,
+    0.5
+   ],
+   "cam": [
+    1.25,
+    0.3646,
+    0.2963,
+    1.0,
+    0.5,
+    0.5
+   ],
+   "say": "And laughing at that edit? That review was written in nineteen twenty-seven.",
+   "cut": true
+  },
+  {
+   "id": "5.27",
+   "beat": 5,
+   "vo": "It's had a very long run for a one-star book.",
+   "page": "20_end",
+   "t": [
+    0.5,
+    0.8
+   ],
+   "cam": [
+    1.25,
+    0.4479,
+    0.5926,
+    1.1,
+    0.5,
+    0.5926
+   ]
+  },
+  {
+   "id": "5.28",
+   "beat": 5,
+   "vo": "",
+   "page": "20_end",
+   "t": [
+    0.8,
+    0.9
+   ],
+   "cam": [
+    1.1,
+    0.5,
+    0.5926,
+    1.0,
+    0.5,
+    0.5
+   ],
+   "hold": 2.6
+  }
+ ]
+}

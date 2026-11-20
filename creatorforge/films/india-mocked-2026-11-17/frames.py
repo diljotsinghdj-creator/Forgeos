@@ -57,12 +57,14 @@ def post(label, views, h=250, cap=""):
 feed = "".join(post(l, v) for l, v in (("CLIP: TRAFFIC JAM", "1.2M"), ("CLIP: CROWDED TRAIN", "2.8M"), ("CLIP: STREET STALL", "4.1M"), ("CLIP: TRAFFIC JAM (AGAIN)", "3.3M"), ("CLIP: TRAFFIC JAM (AGAIN, AGAIN)", "900K")))
 put("01_feed", page(
     a(f'<div style="width:1920px;height:1080px;background:#0E1116"></div>', 0, 0)
-    + A(phone(f'<div data-anim="up 0 1" style="position:absolute;left:0;right:0;top:-40px">{feed}</div>'), 745, 110, "fade 0 .08")
+    + A(phone(f'<div id="feedroll" data-anim="up 0 1" style="position:absolute;left:0;right:0;top:-40px">{feed}</div>'), 745, 110, "fade 0 .08")
     + "".join(A(f'<div style="background:{ACC};color:#fff;font:500 20px Plex;padding:10px 16px;border-radius:14px;box-shadow:0 10px 20px rgba(0,0,0,.4)">🔔 {t}</div>'.replace("🔔 ", "● "), x, y, f"pop {s} {s + .05}")
               for t, x, y, s in (("4,102 new reactions", 1240, 220, .2), ("Trending: India", 1260, 330, .35), ("You might like: more of this", 1220, 440, .5)))
     + A(f'<div style="font:700 52px/1.1 Caveat;color:#E8EDF2;width:560px;transform:rotate(-2deg)">"If the feed were your only window, you\'d think this was the whole country."</div>', 110, 380, "fade .6 .75")
-    + tag("RECONSTRUCTION · CLIPS DRAWN IN THE STUDIO · NO REAL PEOPLE", 110, 900, -1, "fade .05 .1"),
+    + tag("RECONSTRUCTION · CLIPS DRAWN IN THE STUDIO · NO REAL PEOPLE", 110, 840, -1, "fade .05 .1"),
     "#0E1116", "FEED, POSTS AND CLIPS DRAWN IN THE STUDIO AS STAND-INS · NO REAL VIDEO, ACCOUNT OR PERSON IS SHOWN", dark=True))
+# video stage (2026-11-20): the feed really scrolls through all five stand-in clips over the first 60% of the timeline
+(D / "html" / "01_feed.html").write_text((D / "html" / "01_feed.html").read_text().replace("</body>", "<script>document.addEventListener('DOMContentLoaded',()=>{const q=new URLSearchParams(location.search);const T=q.has('t')?parseFloat(q.get('t')):1;const e=document.getElementById('feedroll');if(e)e.style.top=(-40-Math.min(1,T/.6)*900)+'px'})</script>" + "</body>", 1))
 
 put("02_receipt", page(
     a(f'<div style="width:1920px;height:1080px;{DESK}"></div>', 0, 0)
@@ -144,7 +146,7 @@ put("07_drain", page(
     + A(f'<div style="font:700 56px/1.1 Caveat;color:{SIG};transform:rotate(-2deg);width:760px">"He named the genre ninety-eight years before the algorithm did."</div>', 1000, 760, "fade .7 .85")
     + A(f'<div style="background:#fff;padding:12px 12px 16px;box-shadow:12px 14px 0 rgba(0,0,0,.55);transform:rotate(3deg)"><img src="/assets/p_gandhi.jpg" style="width:270px;height:330px;object-fit:cover;object-position:50% 30%;display:block;filter:grayscale(1) contrast(1.1)">'
         f'<div style="font:500 13px Plex;letter-spacing:1px;color:{INK};margin-top:8px">M. K. GANDHI · 1931 · PUBLIC DOMAIN</div></div>', 600, 560, "up .3 .42", "z-index:24")
-    + tag("BOOK REVIEW · ONE STAR, APPROX.", 1000, 950, -2, "snap .55 .55")
+    + tag("BOOK REVIEW · ONE STAR, APPROX.", 1280, 140, -2, "snap .55 .55")
     + chapter(1, "THE PAPER TRAIL"),
     "#2A1D12", "QUOTE: GANDHI, 'DRAIN INSPECTOR'S REPORT', YOUNG INDIA (SEPT 1927; ISSUE DATE TO CHECK), VIA MKGANDHI.ORG · BOOK: MAYO, MOTHER INDIA (1927) · COVER IS A STUDIO DRAWING · PHOTO: GANDHI, 1931, WIKIMEDIA COMMONS (PUBLIC DOMAIN)", dark=True))
 
@@ -172,7 +174,7 @@ put("08b_data", page(
     + bars_ + a(f'<div style="width:1060px;height:4px;background:{INK}"></div>', 740, 880)
     + A(f'<div style="background:{PARCH};padding:8px 14px;font:700 34px Caveat;color:{RED};transform:rotate(-3deg);box-shadow:0 8px 14px rgba(0,0,0,.2);white-space:nowrap">2016: a new 4G network, Jio, launches with free data</div>', 980, 300, "drop .3 .38", "z-index:31")
     + card(f'<div style="font:500 17px Plex;letter-spacing:3px;color:#7A6A4A">INTERNET SUBSCRIBERS, 2014 → 2020</div><div style="font:400 84px/1 Anton;color:{INK};margin-top:8px">239M → <span data-anim="count .62 .85" data-to="776">776</span>M</div>', 560, 110, 500, "up .6 .7", -1.5)
-    + tag("SLIDE TITLE (REAL): \"EXTRAORDINARY ACHIEVEMENTS OF INDIA\"", 112, 960, -1.5, "snap .9 .9"),
+    + tag("SLIDE TITLE (REAL): \"EXTRAORDINARY ACHIEVEMENTS OF INDIA\"", 940, 215, -1.5, "snap .9 .9"),
     PARCH, "SOURCE: TRAI, PRESENTATION ON THE TELECOM SECTOR (31 MAY 2021), 'DATA COST TO SUBSCRIBER PER GB' AND INTERNET SUBSCRIBERS, TRAI.GOV.IN · CONFIRMED · JIO LAUNCH, SEPT 2016: WELL-ESTABLISHED · BARS START AT ZERO"))
 
 # ==== 3 MECHANICS ==========================================================================================
@@ -217,7 +219,7 @@ put("11_repost", page(
     + tag("ILLUSTRATIVE · DRAWN", 1450, 700, 2, "snap .3 .3"),
     "#0E1116", "PAYOUT RULE: TECHCRUNCH, 9 OCT 2024 · CONFIRMED · POSTS, VIEW COUNTS AND CAPTION ARE ILLUSTRATIVE STAND-INS, NOT A REAL CASE", dark=True))
 
-shares = [("45%", 45, "call South Asians \"invaders\", \"job thieves\" or a demographic threat", "OF POSTS"), ("~30%", 30, "use the slur that began on 4chan in 2015", "OF POSTS"),
+shares = [("45%", 45, "call South Asians \"invaders\", \"job thieves\" or a demographic threat", "OF POSTS"), ("~30%", 30, "use a single slur, one CNN traces back to 4chan", "OF POSTS"),
           ("+171%", 0, "rise in hygiene-based insults: the fastest-growing kind", "GROWTH")]
 rows_ = ""
 for i, (n, v, t, unit) in enumerate(shares):
@@ -261,6 +263,7 @@ put("13_timing", page(
                   f'<div style="font:400 24px/1.15 ISerif;color:#333">{t}</div></div>', MX(lo) + ox, MY(la) + oy, f"up {s0 + .03:.2f} {s0 + .1:.2f}", "z-index:41")
               for k, (lo, la, d, t, s0, (ox, oy)) in enumerate(pins13))
     + A(f'<div style="font:400 72px/0.95 Anton;color:#F3EFE6;text-shadow:0 4px 16px #000">SAME MONTHS, <span style="display:inline-block;margin-top:14px;background:{SIG};color:{INK};padding:4px 12px 0;text-shadow:none">SAME HEADLINES</span></div>', 520, 110, "up 0 .1", "z-index:50")
+    + tag("POLICY ARGUMENT", 150, 650, -1.5, "snap .3 .3", True) + tag("ETHNIC SLURS", 420, 655, 1.5, "snap .32 .32").replace(f"background:{INK}", f"background:{RED}")  # script 4 · 5:46: the visa fight is kept apart from the hostility
     + tag("TIMING, NOT CAUSE · NO STUDY LINKS A POST TO AN ATTACK", 980, 990, 1.5, "snap .9 .9"),
     "#2A1D12", "MAP: NASA BLUE MARBLE NEXT GENERATION (PUBLIC DOMAIN) · INDIA: OFFICIAL BOUNDARY, DATAMEET (CC BY 4.0) · PINS APPROXIMATE · SOURCES: CNBC 27 DEC 2024 · IRISH TIMES 26 JUL 2025 (GARDAÍ) · AL JAZEERA 1 SEP 2025 · STATISTICS CANADA TABLE 6 (22 JUL 2026; 2024 REVISED TO 324) · CONFIRMED", dark=True))
 
