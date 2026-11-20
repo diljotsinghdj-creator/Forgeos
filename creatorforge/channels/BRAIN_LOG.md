@@ -143,3 +143,22 @@ Newest entries go at the bottom. Rules here are binding for both channels unless
   marker on the map and the feeling of following a trail.
 
 - **2026-11-19 · AI is a supplement, not the backbone.** After the AI-plate rounds, the owner said: "we just do not abandon real pictures, real maps, animated maps. we use ai where we have no choice. we use mix of everything." From now on, search for a real image first, use AI only for gaps (unphotographed moments, metaphors, sight gags), and log why in the ledger.
+
+### 2026-11-20: Film 3 first cut: "Script is boring, visuals are boring, narration is boring"
+- **Mistake Logged:** The first finished video (The Night the World Didn't End, Kokoro) passed every gate and still bored the owner.
+  - **Script:** it explains in order, like a lecture. The twist is announced at 0:35 and not paid until minute 4. At 0:40 it leaves
+    the room for a 60-second evolution detour. About one joke per 30 s. The viewer has no stake until the last act.
+  - **Visuals:** 28 pages carry 136 shots, so the same page returns up to 10 times. Most frames are thin stick figures and small
+    cards on pale graph paper, mostly empty. Real material is on screen for well under a quarter of the film. The camera drifts
+    about 10% on almost every shot, so nothing feels like a cut.
+  - **Narration:** one Kokoro voice (`am_fenrir`) at speed 1.0, with even stress and a gap between every line.
+- **New Permanent Rule:**
+  1. A script approved on paper is not approved for the ear. Before a full render, the owner hears and sees the first 45 s as a test.
+  2. Open inside the strangest true scene; pay the promised twist by the midpoint; no background act before minute 2.
+  3. A page is shot at most 3 times. Every 20 s the screen changes kind (photo, map, document, chart, type), not just position.
+  4. Frames are filled: the subject takes at least a third of the frame. Stick figures on empty paper are not a shot.
+  5. Narration is read faster (about 1.1), with lines joined into phrases; the voice is auditioned by the owner on the hook first.
+  6. Passing the gates is the floor. The question for every cut is "would I keep watching at 0:30, 1:00, 2:00?"
+- **Used Mechanics to Retire:** the countdown-clock frame story; stick-figure house plan as the main stage; study-card stacks;
+  `am_fenrir` at 1.0.
+- **Winning Pattern:** none yet from this cut.
