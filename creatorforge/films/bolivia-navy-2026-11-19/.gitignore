@@ -3,3 +3,7 @@ png/
 __pycache__/
 maps/
 assets/
+video/clips/
+video/audio/
+video/work/
+video/*.mp4
