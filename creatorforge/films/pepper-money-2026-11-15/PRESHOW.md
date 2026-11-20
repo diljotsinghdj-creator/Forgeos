@@ -2,6 +2,23 @@
 
 These are 30 still key frames in story order, covering all five beats of SCRIPT_PLAN.md draft 4. That draft keeps the Vox × Johnny Harris
 structure and puts the narration in a John Oliver satirical voice. There is no video, voice or music yet; video comes only after "go".
+## Video, first cut (2026-11-20): `video/pepper-was-money.mp4`
+- **Length:** 7 min 15 s, 1920×1080, 24 fps, about 250 MB. 127 shots, average hold 3.42 s (gate 4 passes).
+- **Gate 3 (evidence first):** the film opens on a real photo of peppercorns, then the ransom list set from Zosimus, before any
+  explanation.
+- **Voice:** the free Kokoro voice `am_michael` at normal speed, reading script draft 5 word for word.
+- **Picture:** the approved frames, animated, with a camera move on every shot: the old map with sea routes drawing on, real
+  photos (peppercorns, the three peppers, the Roman forum, the coin, the scales), the globe route, the timelines and the world
+  map of growers. No AI images.
+- **Sound:** the studio's own synthesised score and 59 effects tied to on-screen events (`SFX_LOG.md`). Nothing licensed.
+- **Captions:** burned in, four words at a time, current word in yellow, on the darker box.
+- **Checked:** two contact sheets (a frame every 9 s).
+- **Weak spots I can see:**
+  - The narration is the same kind as film 3's, which you found boring: one even Kokoro voice at normal speed.
+  - Three stretches are thin on screen: the medieval timeline (about 3:20–3:50) is small text on a mostly empty page; "Then the
+    race was on" (about 5:10) is a title over an empty desk; the closing peppercorn photo holds for about 25 s.
+  - The Kochi sack photo still shows printed trade names (open item from the frames).
+
 
 ## What changed since draft 3
 - **The new Print Facts palette:**
