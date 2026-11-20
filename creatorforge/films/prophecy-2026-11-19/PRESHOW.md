@@ -3,6 +3,23 @@
 The first round showed 24 key frames for Dragon Psychology, covering all five beats of `SCRIPT_TABLE.md` draft 1. Each frame is also shown
 at four moments of its animation (sheets `M_1`–`M_3`). There is no video, voice or music: video only after "go".
 
+## Video, first cut (2026-11-20): `video/the-night-the-world-didnt-end.mp4`
+- **Length:** 6 min 28 s, 1920×1080, 24 fps, about 200 MB. 136 shots, average hold 2.85 s (gate 4 passes: no still over 4.5 s,
+  no build over 7 s).
+- **Voice:** the free Kokoro voice `am_fenrir`, reading script draft 1 word for word. "Riecken" and "Millerites" are respelled
+  for the voice only; the captions show the real spelling.
+- **Picture:** the approved frames, animated by their own timelines, with a camera push or pan on every shot. Nothing new was
+  drawn for the video. AI illustration: the same 3 plates as the frames (A1, D1, F4), labelled.
+- **Sound:** the studio's own synthesised score and 54 effects, each tied to an on-screen event (`SFX_LOG.md`). Nothing licensed.
+  The music cuts out for 0.2 s before 9 beats. Loudness −14.1 LUFS.
+- **Captions:** burned in, four words at a time, current word in amber.
+- **Checked:** two contact sheets (a frame every 8 s) and full frames. One fix made: the caption box was too faint on the light
+  paper, so it is now darker (this applies to every film).
+- **Known limits:**
+  - Kokoro is a stand-in voice: flat on the jokes, and it can't do the John Oliver rise.
+  - The score is synthesised, not composed for the film.
+  - The facts marked "to check" in "Things to know" below are still to check before posting.
+
 ## Updated 2026-11-19 (round 5): more real pictures and motion, less AI (sheets `V5_1`–`V5_4`, motion sheet `M_5`)
 Your rule: "we need more real pictures, animation, motion graphics etc and less ai" (MASTER_DIRECTIVES §8c).
 

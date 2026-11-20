@@ -21,7 +21,7 @@ words = word_times(tmp / "a.wav", prompt)
 ts = lambda t: f"{int(t // 3600)}:{int(t % 3600 // 60):02d}:{t % 60:05.2f}"
 ass = [f"[Script Info]\nScriptType: v4.00+\nPlayResX: {W}\nPlayResY: {H}\n\n[V4+ Styles]\n"
        "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding\n"
-       f"Style: C,Anton,{size},&H00FFFFFF,&H00FFFFFF,&HD20C0A0A,&HD20C0A0A,0,0,0,0,100,100,1,0,3,14,0,2,60,60,{marg},1\n\n[Events]\n"
+       f"Style: C,Anton,{size},&H00FFFFFF,&H00FFFFFF,&H380C0A0A,&H380C0A0A,0,0,0,0,100,100,1,0,3,14,0,2,60,60,{marg},1\n\n[Events]\n"
        "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n"]
 for i, (w, s, e) in enumerate(words):
     g0 = i - i % 4; grp = words[g0:g0 + 4]
