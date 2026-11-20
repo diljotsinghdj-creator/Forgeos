@@ -34,11 +34,12 @@ def pencil(length=520, snapped=False, col=AM):
 
 
 def tray(w=1340, h=840):
-    """An in-tray seen from above."""
-    return (f'<div style="width:{w}px;height:{h}px;box-sizing:border-box;border:30px solid #28324A;border-bottom-width:44px;background:#0D1019;'
-            f'box-shadow:inset 18px 22px 0 rgba(0,0,0,.45),16px 20px 0 rgba(5,7,12,.42),0 30px 60px rgba(5,7,12,.5);border-radius:10px;position:relative">'
-            f'<div style="position:absolute;left:{w // 2 - 150}px;bottom:-44px;width:240px;height:44px;background:{SL};border-radius:40px 40px 0 0"></div>'
-            f'<div style="position:absolute;left:28px;top:-24px;font:500 14px Mono;letter-spacing:4px;color:#7E8DA6">IN</div></div>')
+    """An in-tray seen from above: walls, a ribbed floor, a finger notch in the front wall and a label holder (so it does not read as a screen)."""
+    return (f'<div style="width:{w}px;height:{h}px;box-sizing:border-box;border:30px solid #2E3A56;border-bottom-width:48px;background:#1B2334;'
+            f'background-image:repeating-linear-gradient(90deg,rgba(240,244,248,.04) 0 2px,transparent 2px 46px);'
+            f'box-shadow:inset 20px 24px 0 rgba(0,0,0,.4),16px 20px 0 rgba(5,7,12,.42),0 30px 60px rgba(5,7,12,.5);border-radius:10px;position:relative">'
+            f'<div style="position:absolute;left:{w // 2 - 150}px;bottom:-48px;width:240px;height:48px;background:{SL};border-radius:40px 40px 0 0"></div>'
+            f'<div style="position:absolute;left:12px;bottom:-41px;background:{CARD};color:{SL};font:500 20px Mono;letter-spacing:5px;padding:3px 14px;border:2px solid {SL}">IN-TRAY</div></div>')
 
 
 def envelope(w=900, h=560, rot=-3):
@@ -118,7 +119,7 @@ def stop_sign(size=150):
             f'<text x="{s / 2}" y="{s * .62}" text-anchor="middle" font-family="Black" font-size="{s * .3:.0f}" fill="#FBFCFE">STOP</text></g>')
 
 
-def road_scene(car_y=560, bump=False, w=1500, h=860, ring_sign=False):
+def road_scene(car_y=560, bump=False, w=1500, h=860, ring_sign=False, drive=None):
     """Top view: a side road (the blue car's) meeting a main road. The give-way triangle stands at the junction, upper right of the side road."""
     road = "#3A4764"
     dash = "".join(f'<rect x="{w * .42 - 5:.0f}" y="{y}" width="10" height="44" fill="rgba(240,244,248,.6)"/>' for y in range(330, h, 96))
@@ -133,11 +134,16 @@ def road_scene(car_y=560, bump=False, w=1500, h=860, ring_sign=False):
                + f'<rect x="330" y="330" width="170" height="150" fill="#C9D6E4" stroke="#FBFCFE" stroke-width="6"/><rect x="352" y="352" width="126" height="106" fill="none" stroke="#9DB2CA" stroke-width="5"/>')
     parked = bay + f'<g transform="translate({w * .42 - 75:.0f},-27) rotate(90 75 145)">{car(RED, 150, 290)}</g>'
     blue = f'<g transform="translate({w * .42 - 75:.0f},{car_y})">{car(CO, 150, 290)}</g>'
+    if drive:  # (dy, t_start, t_end, t_bump): the car runs up the side road from dy lower, at constant speed, and bumps the parked car
+        dy, a0, a1, tb = drive
+        blue = f'<g transform="translate({w * .42 - 75:.0f},{car_y})"><g data-anim="move {a0} {a1}" data-dy="{dy}">{car(CO, 150, 290)}</g></g>'
     stars = ""
     if bump:
         cx, cy = w * .42, car_y - 6
         stars = "".join(f'<line x1="{cx + 70 * math.cos(a):.0f}" y1="{cy + 26 * math.sin(a):.0f}" x2="{cx + 150 * math.cos(a):.0f}" y2="{cy + 60 * math.sin(a) - 30:.0f}" stroke="{AM}" stroke-width="9" stroke-linecap="round"/>'
                         for a in (math.radians(d) for d in (200, 225, 250, 290, 315, 340)))
+        if drive:
+            stars = f'<g data-anim="slam {drive[3]} {drive[3]}">{stars}</g>'
     return (f'<svg width="{w}" height="{h}" viewBox="0 0 {w} {h}" style="display:block">'
             f'<rect width="{w}" height="{h}" fill="{CARD}"/><rect x="0" y="50" width="{w}" height="212" fill="{road}"/>'
             f'<rect x="{w * .42 - 140:.0f}" y="262" width="280" height="{h - 262}" fill="{road}"/>{dash}{dash2}{kerb}{scenery}{sign}{parked}{blue}{stars}</svg>')

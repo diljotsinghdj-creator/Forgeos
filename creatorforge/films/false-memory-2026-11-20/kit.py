@@ -57,7 +57,14 @@ else if(k==='push'){const x=Math.min(1,Math.max(0,(T-s)/(e-s)));st.transform=`sc
 else if(k==='wipe')st.clipPath=`inset(-20px ${(1-v)*100}% -20px -20px)`;
 else if(k==='draw')el.querySelectorAll('[pathLength]').forEach(pa=>{pa.style.strokeDasharray=1;pa.style.strokeDashoffset=1-v;pa.style.opacity=p>0?1:0});
 else if(k==='count'){el.textContent=(+el.dataset.to*v).toFixed(+(el.dataset.dp||0))}
-else if(k==='fill'){const ch=el.children;const n=Math.round(ch.length*v);for(let i=0;i<ch.length;i++)ch[i].style.opacity=i<n?1:0}});}
+else if(k==='fill'){const ch=el.children;const n=Math.round(ch.length*v);for(let i=0;i<ch.length;i++)ch[i].style.opacity=i<n?1:0}
+else if(k==='hide')st.opacity=p>=1?0:1;
+else if(k==='bar'){const x=e>s?Math.min(1,Math.max(0,(T-s)/(e-s))):1;st.width=((+el.dataset.p0+(+el.dataset.p1-+el.dataset.p0)*x)*+el.dataset.w)+'px'}
+else if(k==='move'){const x=e>s?Math.min(1,Math.max(0,(T-s)/(e-s))):(T>=s?1:0);st.transform=`translate(${(+el.dataset.dx||0)*(1-x)}px,${(+el.dataset.dy||0)*(1-x)}px)`}
+else if(k==='flipout'){st.transform=`scaleX(${1-p})`;st.opacity=p>=1?0:1}
+else if(k==='click')st.opacity=p>0?1:0;
+else if(k==='type'){const n=+el.dataset.n||1;const x=e>s?Math.min(1,Math.max(0,(T-s)/(e-s))):(T>=s?1:0);const c=Math.floor(x*n+1e-6);st.width=`calc(${c}ch + ${c*(+el.dataset.ls||0)}px)`}
+else if(k==='flipin'){st.transform=`scaleX(${p})`;st.opacity=p>0?1:0}});}
 document.addEventListener('DOMContentLoaded',run);})()</script>"""
 
 

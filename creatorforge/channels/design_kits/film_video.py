@@ -11,11 +11,18 @@ usage: film_video.py <film_dir> [--check] [--voice-only] [--shots A:B] [--worker
             "cam": [z0, cx0, cy0, z1, cx1, cy1],   # zoom and focus centre (0..1 of the frame); default a slow centre push
             "pre": 0.0, "post": 0.3, "hold": 0.0,   # silence before the line, after it, and a still hold for silent beats
             "build": null,                           # seconds the timeline takes to run t0 -> t1 (default: the line's length)
-            "cut": false}]}                          # true: 0.2 s music cut before the punchline ([CUT] in the script)
+            "cut": false,                            # true: 0.2 s music cut before the punchline ([CUT] in the script)
+            "mute": false, "nocap": false}]}         # mute: no score under this shot; nocap: no burned captions over this shot
 
 The picture: each shot opens its key-frame page (html/<page>.html) and runs the page's own timeline from t0 to t1, stepped at
 12 fps (house style), while the camera (a CSS transform, so type stays crisp) moves at 24 fps. Consecutive shots on one page
 continue its timeline, and every shot is a new camera set-up, which is what gate 4 (pacing) counts.
+A page element with the attribute data-hud is held fixed to the screen while the camera moves (a timer bar, a burned-in timecode).
+
+The sound: the page's own animation kinds place the effects (slam, drop, draw, pop, snap, click, type, flipout; at most two a
+shot). "mute" shots fade the score out and back; "cut" is the hard 0.2 s drop.
+The captions: none over a "nocap" shot, and no caption group crosses the edge of one, so a word from the far side of that cut
+(a test word, a reveal) is never captioned before it is spoken.
 """
 import argparse
 import functools
@@ -132,6 +139,7 @@ SET_JS = """([T, z, cx, cy]) => {
   let x = W / 2 - cx * W * z, y = H / 2 - cy * H * z;
   x = Math.min(0, Math.max(W - W * z, x)); y = Math.min(0, Math.max(H - H * z, y));
   b.style.transformOrigin = '0 0'; b.style.transform = `translate(${x}px,${y}px) scale(${z})`;
+  document.querySelectorAll('[data-hud]').forEach(e => { e.style.transformOrigin = '0 0'; e.style.transform = `translate(${-x / z}px,${-y / z}px) scale(${1 / z})`; });
   document.documentElement.style.overflow = 'hidden';
   document.documentElement.style.background = getComputedStyle(b).backgroundColor;
 }"""
@@ -236,7 +244,11 @@ def picture(film, cfg, workers, port, only):
 
 
 ACTS = {1: "hook", 2: "world", 3: "investigation", 4: "consequences", 5: "ending"}
-SFX_FOR = {"slam": ("impact_punch", -15), "drop": ("whoosh_paper", -17), "draw": ("scribble_pen", -21), "pop": ("whoosh_paper", -22), "snap": ("impact_punch", -22)}
+SFX_FOR = {"slam": ("impact_punch", -15), "drop": ("whoosh_paper", -17), "draw": ("scribble_pen", -21), "pop": ("whoosh_paper", -22), "snap": ("impact_punch", -22),
+           "click": ("click_projector", -13), "type": ("keys_clack", -17), "flipout": ("whoosh_paper", -15)}
+# sounds only this engine uses, synthesised with ffmpeg like the worker's built-ins (nothing licensed): a short run of typewriter keys
+EXTRA_SOUNDS = {"keys_clack": "aevalsrc='" + "+".join(f"0.55*(random(0)-0.5)*exp(-(t-{a})*150)*gte(t,{a})" for a in (0, .11, .2, .33, .42, .55, .63, .78, .86, .99, 1.1, 1.22))
+                + "':d=1.4:s=48000,highpass=f=350,lowpass=f=6500,volume=3.4"}
 
 
 def sound(film, cfg):
@@ -245,6 +257,11 @@ def sound(film, cfg):
     v = film / "video"; work = v / "work"; work.mkdir(exist_ok=True)
     total = cfg["total"]
     bank = {p.stem: p for p in sfx_builtin.ensure(work / "sfx")}
+    for name, graph in EXTRA_SOUNDS.items():
+        f = work / "sfx" / f"{name}.wav"
+        if not f.is_file():
+            subprocess.run(["ffmpeg", "-nostdin", "-loglevel", "error", "-y", "-f", "lavfi", "-i", graph, "-ac", "1", "-ar", "48000", "-c:a", "pcm_s16le", str(f)], check=True)
+        bank[name] = f
     cues = []
     for s in cfg["shots"]:
         html = (film / "html" / f"{s['page']}.html").read_text(errors="ignore")
@@ -301,12 +318,27 @@ def sound(film, cfg):
         acts[-1][2] += s["dur"]
     sc = score.compose([tuple(a) for a in acts], cfg.get("treatment", "pulse"), work / "score")
     cuts = [(max(0, s["start"] + s["pre"] - 0.2), s["start"] + s["pre"]) for s in cfg["shots"] if s["cut"]]
-    mute = ",".join(f"volume=enable='between(t,{a:.3f},{b:.3f})':volume=0" for a, b in cuts)
+    ncut = len(cuts)
+    quiet = merged([(s["start"], s["start"] + s["dur"]) for s in cfg["shots"] if s.get("mute")])   # "mute": the score drops out for the whole shot, with a short fade each side
+    hard = ",".join(f"volume=enable='between(t,{a:.3f},{b:.3f})':volume=0" for a, b in merged(cuts))
+    soft = "*".join(f"(1-clip((t-{a - .1:.3f})/.1,0,1)*clip(({b + .35:.3f}-t)/.35,0,1))" for a, b in quiet)
+    mute = ",".join(x for x in (hard, f"volume=volume='{soft}':eval=frame" if soft else "") if x)
     g = (f"[1:a]volume=2.0{',' + mute if mute else ''}[m];[0:a]asplit[vo][key];[m][key]sidechaincompress=threshold=0.03:ratio=6:attack=20:release=400[md];"
          f"[vo][md][2:a]amix=inputs=3:normalize=0,loudnorm=I=-15:TP=-1.5:LRA=11[a]")
     mixed = work / "mix.wav"
     subprocess.run(["ffmpeg", "-nostdin", "-loglevel", "error", "-y", "-i", str(vo), "-i", str(sc), "-i", str(sfx), "-filter_complex", g, "-map", "[a]", "-ar", "48000", str(mixed)], check=True)
-    return mixed, len(cues), score.LAST_HOW, len(cuts)
+    return mixed, len(cues), score.LAST_HOW, ncut
+
+
+def merged(ranges):
+    """Sorted time ranges with touching ones joined (keeps ffmpeg filter chains short)."""
+    out = []
+    for a, b in sorted(ranges):
+        if out and a <= out[-1][1] + 1e-3:
+            out[-1] = (out[-1][0], max(out[-1][1], b))
+        else:
+            out.append((a, b))
+    return out
 
 
 def assemble(film, cfg, mixed):
@@ -320,7 +352,15 @@ def assemble(film, cfg, mixed):
     script = work / "script.txt"; script.write_text(" ".join(s["vo"] for s in cfg["shots"] if s["vo"]))
     out = v / f"{cfg['slug']}.mp4"
     chan = cfg.get("channel", "printfacts")
-    subprocess.run([sys.executable, str(REPO / ".claude/skills/printfacts-style/captions.py"), str(pre), str(out), "youtube", str(script), chan], check=True)
+    plain = merged([(s["start"], s["start"] + s["dur"]) for s in cfg["shots"] if s.get("nocap")])
+    brk = work / "caption_breaks.json"; brk.write_text(json.dumps(sorted({round(x, 3) for a, b in plain for x in (a, b)})))   # no caption group spans the edge of a "nocap" shot
+    subprocess.run([sys.executable, str(REPO / ".claude/skills/printfacts-style/captions.py"), str(pre), str(out), "youtube", str(script), chan, str(brk)], check=True)
+    if plain:  # "nocap": shots whose words are the picture itself (a list read out, a test word); the uncaptioned picture is laid back over them
+        tmp = work / "nocap.mp4"
+        en = "+".join(f"between(t,{a:.3f},{b:.3f})" for a, b in plain)
+        subprocess.run(["ffmpeg", "-nostdin", "-loglevel", "error", "-y", "-i", str(out), "-i", str(pre), "-filter_complex", f"[0:v][1:v]overlay=enable='{en}'[v]", "-map", "[v]", "-map", "0:a",
+                        "-c:v", "libx264", "-crf", "18", "-preset", "medium", "-pix_fmt", "yuv420p", "-c:a", "copy", str(tmp)], check=True)
+        tmp.replace(out)
     return out
 
 
