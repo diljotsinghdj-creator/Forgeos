@@ -1,0 +1,65 @@
+# SFX_LOG: Pepper Was Money
+
+All sounds are the studio's built-in synthesised effects (ffmpeg, nothing licensed). Each cue comes from the shot's own animation event.
+
+| Time (s) | Shot | Sound | Level |
+|---|---|---|---|
+| 6.75 | 1.02a | scribble_pen | -21 dB |
+| 13.00 | 1.03 | scribble_pen | -21 dB |
+| 12.27 | 1.03 | impact_punch | -22 dB |
+| 31.13 | 1.07 | scribble_pen | -21 dB |
+| 31.95 | 1.07 | impact_punch | -22 dB |
+| 34.22 | 1.08 | impact_punch | -22 dB |
+| 45.91 | 1.10b | impact_punch | -15 dB |
+| 54.39 | 2.02 | whoosh_paper | -22 dB |
+| 56.20 | 2.02 | whoosh_paper | -22 dB |
+| 65.39 | 2.04 | whoosh_paper | -17 dB |
+| 66.20 | 2.04 | whoosh_paper | -17 dB |
+| 82.64 | 2.08a | scribble_pen | -21 dB |
+| 83.64 | 2.08b | scribble_pen | -21 dB |
+| 84.50 | 2.08b | impact_punch | -22 dB |
+| 114.92 | 2.13 | whoosh_paper | -22 dB |
+| 125.78 | 2.15 | impact_punch | -15 dB |
+| 143.39 | 2.18b | scribble_pen | -21 dB |
+| 144.07 | 2.18b | whoosh_paper | -22 dB |
+| 154.55 | 2.20 | impact_punch | -22 dB |
+| 182.91 | 3.02 | scribble_pen | -21 dB |
+| 185.56 | 3.03a | scribble_pen | -21 dB |
+| 188.51 | 3.03b | impact_punch | -15 dB |
+| 189.12 | 3.03b | scribble_pen | -21 dB |
+| 194.07 | 3.04b | scribble_pen | -21 dB |
+| 227.58 | 3.11a | whoosh_paper | -22 dB |
+| 228.96 | 3.11a | whoosh_paper | -22 dB |
+| 233.93 | 3.12 | impact_punch | -22 dB |
+| 242.27 | 3.14b | scribble_pen | -21 dB |
+| 250.54 | 3.16a | whoosh_paper | -17 dB |
+| 253.47 | 3.16b | scribble_pen | -21 dB |
+| 254.79 | 3.16b | whoosh_paper | -17 dB |
+| 261.79 | 3.17b | impact_punch | -22 dB |
+| 276.86 | 3.21a | scribble_pen | -21 dB |
+| 278.51 | 3.21a | whoosh_paper | -17 dB |
+| 281.56 | 3.21b | impact_punch | -15 dB |
+| 284.39 | 3.22a | scribble_pen | -21 dB |
+| 285.15 | 3.22a | whoosh_paper | -22 dB |
+| 287.04 | 3.22b | whoosh_paper | -22 dB |
+| 287.81 | 3.22b | whoosh_paper | -22 dB |
+| 292.84 | 4.02a | whoosh_paper | -22 dB |
+| 293.44 | 4.02a | whoosh_paper | -22 dB |
+| 295.42 | 4.02b | impact_punch | -15 dB |
+| 297.51 | 4.02b | whoosh_paper | -17 dB |
+| 317.13 | 4.05 | impact_punch | -22 dB |
+| 325.80 | 4.07a | whoosh_paper | -22 dB |
+| 327.33 | 4.07a | whoosh_paper | -22 dB |
+| 329.59 | 4.07b | whoosh_paper | -22 dB |
+| 332.53 | 4.07b | whoosh_paper | -22 dB |
+| 347.44 | 4.10 | scribble_pen | -21 dB |
+| 362.49 | 4.13 | whoosh_paper | -17 dB |
+| 363.71 | 4.13 | scribble_pen | -21 dB |
+| 369.50 | 5.01 | whoosh_paper | -22 dB |
+| 386.10 | 5.04 | impact_punch | -22 dB |
+| 388.90 | 5.05 | scribble_pen | -21 dB |
+| 389.94 | 5.05 | scribble_pen | -21 dB |
+| 397.62 | 5.06 | impact_punch | -22 dB |
+| 401.09 | 5.07 | impact_punch | -15 dB |
+| 429.68 | 5.13 | impact_punch | -22 dB |
+| 430.28 | 5.13 | scribble_pen | -21 dB |

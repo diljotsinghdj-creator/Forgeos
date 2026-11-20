@@ -11,6 +11,8 @@ All sounds are the studio's built-in synthesised effects (ffmpeg, nothing licens
 | 11.76 | 1.04 | impact_punch | -15 dB |
 | 13.48 | 1.05 | whoosh_paper | -22 dB |
 | 13.99 | 1.05 | whoosh_paper | -22 dB |
+| 16.42 | 1.06 | whoosh_paper | -22 dB |
+| 17.21 | 1.06 | whoosh_paper | -22 dB |
 | 18.95 | 1.07 | impact_punch | -15 dB |
 | 19.52 | 1.07 | impact_punch | -15 dB |
 | 21.95 | 1.08 | impact_punch | -15 dB |

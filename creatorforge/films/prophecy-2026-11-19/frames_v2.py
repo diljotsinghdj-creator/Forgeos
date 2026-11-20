@@ -73,8 +73,10 @@ put("v2_04_plan", page(
 put("v2_05_type", page(
     DESK
     + A(MONO("THE FOUNDING CASE OF A PHRASE YOU KNOW", 28, SL, PAPER), 130, 150, "up 0 .1")
-    + A(BIG("COGNITIVE", 330, PAPER), 120, 230, "slam .45 .5") + A(BIG("DISSONANCE", 330, AM), 120, 560, "slam .62 .67")
-    + A(HAND("(you've used it this week)", 70, PAPER, -3, 800), 1040, 930, "wipe .8 .95"),
+    + A(f'<div style="width:1250px;height:270px;background:#2A3142;border:5px dashed {AM}"></div>', 120, 262, "pop .1 .16") + A(f'<div style="width:1500px;height:270px;background:#2A3142;border:5px dashed {AM}"></div>', 120, 592, "pop .2 .26")
+    + A(HAND("two words. you know them.", 84, AM, -3, 900), 1040, 110, "wipe .26 .4")
+    + A(BIG("COGNITIVE", 330, PAPER, .92, f"background:{SL}"), 120, 230, "slam .45 .5") + A(BIG("DISSONANCE", 330, AM, .92, f"background:{SL}"), 120, 560, "slam .62 .67")
+    + "",
     SL, "WHEN PROPHECY FAILS (1956) IS WIDELY CITED AS THE FOUNDING CASE OF COGNITIVE DISSONANCE (SEE dossier.json)", dark=True))
 
 # 6 · FLOOD-DATE: a tear-off calendar page the size of the screen.
