@@ -214,3 +214,24 @@ Newest entries go at the bottom. Rules here are binding for both channels unless
   treatments; the cut-out road clip; the card that flips to blank; a stamp landing on the last word of a line; the typed line that
   is struck through.
 - **Winning Pattern:** none yet. The owner has not judged the cut.
+
+### 2026-11-20: False-memory opening test: "Im not happy" (the look)
+- **Mistake Logged:** The owner watched the 1:59 opening test and said "Im not happy". Asked what, the owner picked the look:
+  too much type and paper on a dark desk, not enough real photos, footage or maps, not Vox × Johnny Harris. What went wrong:
+  1. The cut was graphics, not collage. Drawn cards, a drawn car, a drawn tray on an empty slate mat. STYLE_REFERENCES opens
+     with "Collage, not graphics" and the constitution bans "sterile flat vector cartoons or slideshow decks".
+  2. Real material was on screen for 10% of the running time against the 60% rule (MASTER_DIRECTIVES §8c). I listed that as a
+     "weak spot" and sent the video anyway. A broken rule is not a weak spot.
+  3. The frames did not build until dense and the camera barely moved: one card on an empty mat for 21 s; "TIME." alone.
+  4. The key frames had passed as stills. Stills hid how empty the frames were in motion.
+  5. After the context was compacted I designed from my summary and did not re-read STYLE_REFERENCES.md or the constitution.
+- **New Permanent Rule:**
+  1. Before any frame is designed, and again after any context compaction, re-read STYLE_REFERENCES.md (the owner's reference
+     looks and the seven-point test) and PRODUCTION_CONSTITUTION.md. CLAUDE.md now lists STYLE_REFERENCES.md.
+  2. Every frame is checked against the seven-point test before it is shown. A cut that fails it, or the 60% real-material
+     rule, is rebuilt or raised as a blocker. It is never sent with the failure listed as a weak spot.
+  3. Every shot starts from a real thing: a photo cut-out, a document, a map or footage. Type and drawn paper sit on it.
+  4. A look is judged in motion before a full render: stills plus one short moving sample.
+- **Used Mechanics to Retire:** the slate cutting mat with single drawn cards; drawn vector props (car, tray, bus, folders,
+  envelope) as the subject of a shot.
+- **Winning Pattern:** none yet.

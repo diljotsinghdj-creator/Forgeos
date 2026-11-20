@@ -18,6 +18,9 @@ video, beat-by-beat skill use, zero-defect QA, the `[ACCESS / SYSTEM BLOCKER]` a
 Read **`creatorforge/channels/VIDEO_PLAYBOOK.md`** (2026-11-15): the owner's prompts and director commands for a
 Vox-style film, step by step, and which tool serves each beat.
 
+Read **`creatorforge/channels/STYLE_REFERENCES.md`** before designing any frame: the owner's own reference looks ("collage, not
+graphics"), how they move, and the seven-point Vox × Johnny Harris test every frame must pass. Re-read it after a context compaction.
+
 Then read **`creatorforge/channels/BRAIN_LOG.md`**: lessons from the owner's corrections, and the mechanics already
 used.
 
