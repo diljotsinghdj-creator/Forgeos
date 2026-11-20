@@ -40,9 +40,12 @@ PICKS = {
     "tag2": ("paper_tag_label_blank", 6, "cut", {"keep": True}),
     "typewriter": ("typewriter_vintage", 0, "cut", {}),
     "paper": ("paper_texture_old_white", 3, "plate", {"soft": True, "plain": True}),
-    "car_blue": ("blue_car_side_view", 6, "cut", {"tint": COBALT, "open": -60, "erase": [(.50, 0, 1, .46), (0, 0, .2, .3), (0, .3, .045, .75), (.955, .3, 1, .75)]}),
+    "car_blue": ("blue_car_side_view", 6, "white", {"tint": COBALT}),      # a see-through PNG: laid on white, then only the border's white goes
     "car_red": ("model_car_isolated_white", 6, "white", {"tint": RED}),
     "street": ("street_row_houses", 4, "plate", {}),
+    "courthouse": ("local:assets/real/raw/courthouse_front.jpg", "courthouse_front", "cut", {}),
+    "stopwatch": ("pocket_watch_isolated", 6, "white", {"box": (0, 0, .5, 1)}),      # the left of two watches: the stopwatch
+    "ball": ("crumpled_paper_ball", 2, "cut", {}),
 }
 
 
@@ -139,9 +142,25 @@ def ink(im, o):
     box = alpha.getbbox(); return sticker(rgb.crop(box), alpha.crop(box), o.get("edge", .01))
 
 
+def part(rgb, o):
+    """Only a part of the photo (fractions of its width and height), when it holds more than the one object."""
+    if "box" not in o:
+        return rgb
+    x0, y0, x1, y1 = o["box"]
+    return rgb.crop((int(x0 * rgb.width), int(y0 * rgb.height), int(x1 * rgb.width), int(y1 * rgb.height)))
+
+
 def build(slug):
-    key, idx, mode, o = PICKS[slug]; hit = next(h for h in BOOK[key]["hits"] if h["i"] == idx)
-    f = fetch(slug, hit); im = Image.open(f)
+    key, idx, mode, o = PICKS[slug]
+    if key.startswith("local:"):       # a photo the film already holds (its credit is in data/photo_credits.json)
+        old = {c["slug"]: c for c in json.loads((D / "data" / "photo_credits.json").read_text())}[idx]
+        hit = {"author": old.get("author", ""), "source": old.get("source", ""), "page": old.get("page", old.get("url", "")), "licence": old.get("licence", ""), "tags": old.get("title", idx)}
+        f = D / key[6:]
+    else:
+        hit = next(h for h in BOOK[key]["hits"] if h["i"] == idx); f = fetch(slug, hit)
+    im = Image.open(f)
+    if mode != "alpha" and (im.mode in ("RGBA", "LA", "PA") or "transparency" in im.info):     # a see-through PNG: lay it on white first (its hidden pixels are streaks)
+        rgba = im.convert("RGBA"); flat = Image.new("RGB", rgba.size, (255, 255, 255)); flat.paste(rgba.convert("RGB"), mask=rgba.getchannel("A")); im = flat
     if mode == "plate":
         rgb = im.convert("RGB"); rgb.thumbnail((2200, 2200)); g = grey(rgb, o.get("soft"), o.get("plain"))
         Image.fromarray((g * 255).astype(np.uint8)).save(OUT / f"{slug}.jpg", quality=92); kind = "plate"
@@ -154,7 +173,7 @@ def build(slug):
         arr = g[..., None] * (np.array(PAPER) - np.array(SLATE)) + np.array(SLATE)
         box = a.getbbox(); sticker(Image.fromarray(arr.astype(np.uint8)).crop(box), a.crop(box), o.get("edge", .01)).save(OUT / f"{slug}.png"); kind = "engraving"
     elif mode in ("sky", "white"):      # a plain backdrop: blue sky, or a white studio sweep
-        rgb = im.convert("RGB"); rgb.thumbnail((1500, 1500)); a = np.asarray(rgb, dtype=np.int16)
+        rgb = part(im.convert("RGB"), o); rgb.thumbnail((1500, 1500)); a = np.asarray(rgb, dtype=np.int16)
         back = (a[..., 2] > a[..., 0] + 18) & (a[..., 2] > 110) if mode == "sky" else (a.min(2) > 226)
         if mode == "white":             # only the white that touches the border is backdrop (the car has white parts too)
             from scipy import ndimage as nd
@@ -165,7 +184,7 @@ def build(slug):
     else:
         sys.path.insert(0, "/home/user/forgeos/creatorforge/worker")
         from creatorforge_worker.media import cutouts
-        rgb = im.convert("RGB"); rgb.thumbnail((1500, 1500)); m = cutouts._mask(rgb, None, False)
+        rgb = part(im.convert("RGB"), o); rgb.thumbnail((1500, 1500)); m = cutouts._mask(rgb, None, False)
         assert m is not None, f"{slug}: no cut-out"
         m = tidy(m, .05, o.get("open", 0))
         for x0, y0, x1, y1 in o.get("erase", ()):        # parts of the mask that are the picture's stretched margin, not the object

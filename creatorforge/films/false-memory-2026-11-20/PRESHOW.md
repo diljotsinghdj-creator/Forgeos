@@ -1,3 +1,83 @@
+# Pre-show list: look 2, the rebuild (stills and a moving sample, 2026-11-20)
+
+**You said you were not happy with the look.** This is the same opening, rebuilt from real material. The script, the voice and
+the timing are unchanged. Nothing but the sample below is rendered.
+
+| File | What it is |
+|---|---|
+| `sheets/LOOK2_01.jpg` to `LOOK2_03.jpg` | 27 frames across the whole 1:59, each as the camera frames it |
+| `video/false-memory-look2-sample.mp4` | 21 s in motion, with voice and sound: the hook, the courthouse, the instructions, the first five words |
+
+## What changed, and why
+| | Look 1 (the video you saw) | Look 2 (this) |
+|---|---|---|
+| What a shot is built from | drawn cards and type on a dark desk | a real engraving or photograph, cut out |
+| Real material | 1 photo; about 10% of the running time | all 50 shots carry a real piece; 25 pieces in all |
+| Ground | slate cutting mat | pale studio paper with window-light shadows; the room goes dark for the test and the lights come back on at "Not once." |
+| How a frame arrives | mostly complete | one piece per beat, each with a small overshoot, then a 12 fps paper jitter |
+| Camera | nearly still | moving on every shot |
+| Type | labels on cards | giant condensed capitals, partly behind the subject; one serif punch word; marker notes |
+| The idea that ties it together | an evidence desk | an engraved hand deals the cards: one into an engraved head, fifteen held up, three raised for the test |
+
+## The sample by the clock
+| Time | What happens |
+|---|---|
+| 0:00 | Empty paper. GIVE ME / 60 SECONDS slams in; a cobalt disc; the engraved head slides in; a hand brings it a card |
+| 0:03 | Close on the card: SUBJECT: NEVER HAPPENED is typed |
+| 0:05 | The card goes behind the head. CERTAIN is stamped on the brain |
+| 0:08 | The real courthouse rises on a disc; a paper map of where it stands; INNOCENT PEOPLE. IN PRISON. |
+| 0:11 | The instructions; a real pencil snaps; 15 WORDS |
+| 0:14 | BED, REST, AWAKE, TIRED, DREAM: the five ways a card is held, 1.42 s each, no music |
+
+## What is real
+| Piece | Source | Licence |
+|---|---|---|
+| Head with the brain showing; cross-section of the eye | Biblioteca Rector Machado y Nuñez (Flickr) | Public Domain Mark 1.0 |
+| The four hands; the lettered head on the SURE frame | rawpixel | CC0 1.0 |
+| Courthouse of Alamance County, N.C. | w_lemay | CC0 |
+| Pencil, tags, drawers, both cars, road sign, street, typewriter, crumpled paper, magnifier, stopwatch, paper stacks, bus, rubber stamp, crowd, envelope, paper texture | Pixabay (each author is in `data/photo_credits2.json`) | Pixabay Content License |
+| The locator map | Natural Earth state shapes, drawn by the studio | public domain |
+
+No AI image. No AI video. Nobody's face (the crowd is blurred by its own long exposure and shows no faces).
+
+## Checked
+| Check | Result |
+|---|---|
+| The sample file | 21.1 s, 1920x1080, 24 fps; frames pulled and looked at; no black frame, no silence of 0.4 s or more |
+| Sample loudness | -14.0 LUFS, true peak -1.4 dBTP |
+| Sample sound | 14 cues, each on its own event (the slam, the card, the stamp, the snap). I can't hear them: checked by the cue list and levels |
+| The trap's rules | The builder still stops on any breach: no "sleep" before the third test word, no study named before the reveal, no sign named on any page |
+| The minute | Still 1,440 frames from the first word to "Time." |
+| Pacing (gate 4) | Mean hold 2.38 s; longest shot 6.5 s (the email, a building shot) |
+| Every shot | First and last frame looked at through the camera, plus eight moments of the 20 shots I changed most |
+
+## Faults I found and fixed before sending
+1. **The blue car had lost its roof in my cut-out and read as a pickup.** The narration says "blue car", and the trap needs the
+   clip and the narration to differ in one detail only. Re-cut; it is a saloon again.
+2. **A scrap of the note "not on it." sat beside the SLEEP card** when the camera pushed in. Out of context it could be read
+   the wrong way round. The notes are gone from that shot.
+3. **Five headlines were cropped by the camera** (GIVE ME, WATCH, SURE., TIME., I NEVER SAID IT.). Reframed.
+4. **Several overlaps** (the pencil on the instructions, the note on the map, the hand on WATCH THIS ONCE, the bus on the cuff,
+   two labels and a stamp off the page). Moved.
+
+## Weak spots: yours to judge
+1. **Only 21 s is in motion.** The other 40 shots are stills. A still can hide an empty or slow shot; that is how look 1 got past me.
+2. **Each list card starts on empty paper for two frames** before the hand lands. I meant it as a dealing beat. Fifteen in a row
+   may read as a flicker.
+3. **The lettered head on the SURE frame is a phrenology chart,** with "Self-Esteem" ringed. It is a joke, and the source line
+   says "a sight gag, not evidence". If you don't want that joke on a channel that checks the science, it comes out.
+4. **Captions are unchanged.** On pale paper their dark box stands out more than it did on the dark desk.
+5. **The two bars on the warnings frame carry no numbers.** The dossier holds the direction, not the size. The frame says so.
+6. **Still open from before:** the CC BY-SA photo at frame 50; the pace of the list; the uncaptioned plant line; the voice.
+
+## What I need from you
+- **"Go"** and I render the full 1:59 in this look, check it, and send it with its own pre-show list.
+- Or tell me what is still wrong. A look, a frame, the joke, the pace.
+
+---
+
+*Below: the record of look 1 (the video sent earlier on 2026-11-20, not accepted for its look).*
+
 # Pre-show list: the opening test (video, 2026-11-20)
 
 **File:** `video/false-memory-opening-test.mp4` · 1:59 · 1920×1080 · 24 fps · 45 MB

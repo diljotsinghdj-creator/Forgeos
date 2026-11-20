@@ -18,12 +18,23 @@
  "voice": "kokoro af_heart at 1.1 (standing stand-in until the owner picks another)",
  "pitches_file": "channels/PITCHES_2026-11-20_dragonpsych_reset.md",
  "visual_dna": {
+  "theme": "The hand that deals the cards (reference styles E, editorial poster, and D, clean paper with window light, in the Dragon Psychology palette)",
+  "typography": "Bebas Neue in giant capitals, partly behind the subject; Fraunces Black for the punch word and the big numbers; DM Mono for typed cards and labels; Permanent Marker for the investigator's notes. Kinetic system: slams that settle, drops with overshoot, lines typed key by key, marker loops and arrows that draw on, rubber stamps inked twice",
+  "surface": "pale lab-paper studio sweep with a real crumpled-paper texture and window-blind shadows drifting over it; the room goes dark (slate) for the test and the lights come back on at the reveal; real black-and-white halftone photos and line engravings cut out with a white sticker edge and a hard offset shadow; cobalt discs, blocks and dashed rings behind the subject; torn white paper under headlines on photographs",
+  "palette": "slate #141824, lab-paper #F0F4F8, cobalt #2B6CB0, amber #ED8936 (the one signal); film accent sign red #C53030 on the road sign, the parked car and red ink only",
+  "camera": "moving on every shot: slow pushes and drifts, a close-up on the card, a follow then a push on the road clip, a push to the third card at the reveal. Pieces arrive one per beat and then jitter at 12 fps like stop-motion paper; the camera itself stays smooth",
+  "motif": "an engraved hand deals index cards: one into an engraved head (the planted memory), fifteen held up one word each, three raised for the test. The thin amber 60-second bar stays",
+  "differs_from": "look 1 of this film (see visual_dna_v1) and film 3's looks (a lab-paper grid with clocks and a stick-figure house plan; a white sheet on dotted slate set in Anton and Caveat)",
+  "status": "shown to the owner on 2026-11-20 as 27 stills and a 21 s moving sample; the full 1:59 is not rendered until the owner says go"
+ },
+ "visual_dna_v1": {
   "theme": "The evidence desk (archetype C, declassified archive, as a hybrid in the Dragon Psychology palette)",
   "typography": "Archivo Black headlines; DM Mono for typewriter text and labels; Instrument Serif italic for quotes; Shadows Into Light for pencil notes. Kinetic system: stamp thuds, label-maker tape, typed strips, card flips; five paper treatments cycle through the word list",
   "surface": "a slate cutting mat with a faint cobalt grid and a ruler edge; rigid paper with hard offset shadows; index cards, carbon-copy forms, exhibit tags",
   "palette": "slate #141824, lab-paper #F0F4F8, cobalt #2B6CB0, amber #ED8936 (the one signal); film accent sign red #C53030 on road signs, the parked car and red ink only",
   "camera": "overhead rostrum; hard cuts and whip-pans along the desk; stamps and typing stepped at 12 fps; slow pushes only on real photos",
   "motif": "the intake stamp (RECEIVED, FILED, CERTAIN) and exhibit tags; the thin amber 60-second bar",
-  "differs_from": "film 3's looks: the lab-paper grid with clocks and a stick-figure house plan, then a white sheet on dotted slate set in Anton and Caveat"
+  "differs_from": "film 3's looks: the lab-paper grid with clocks and a stick-figure house plan, then a white sheet on dotted slate set in Anton and Caveat",
+  "retired": "2026-11-20: the owner saw the opening test in this look and was not happy with the look. It was graphics, not collage: drawn cards on a dark desk, about 10% real material, frames that did not build, a camera that barely moved"
  }
 }

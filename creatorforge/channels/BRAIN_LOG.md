@@ -235,3 +235,27 @@ Newest entries go at the bottom. Rules here are binding for both channels unless
 - **Used Mechanics to Retire:** the slate cutting mat with single drawn cards; drawn vector props (car, tray, bus, folders,
   envelope) as the subject of a shot.
 - **Winning Pattern:** none yet.
+
+## False-memory look 2: the rebuild (my own catches before the owner saw it), 2026-11-20
+- **What was built:** the same 50 shots from real cut-outs (`films/false-memory-2026-11-20/ck.py`, `cut2.py`, `opening.py`):
+  25 real pieces, no AI, shown as 27 stills and a 21 s moving sample. The full re-render waits for the owner's go.
+- **Mistakes I caught in my own work:**
+  1. A cut-out fix had erased the blue car's roof, so it read as a pickup while the narration says "blue car". In a film whose
+     trap depends on one planted difference, every other detail of the clip must match the words.
+  2. A cropped scrap of a note ("ON IT.") sat beside the wrong card after a push-in. A fragment can say the opposite of the
+     whole note.
+  3. Five headlines were cropped by the camera's end position; none showed on the uncropped page stills.
+  4. A see-through PNG flattened without its alpha gave streaks, and the streak repair then damaged the object.
+- **New Rules:**
+  1. Check every shot's first and last frame through the engine's camera (`preview.py`), not on the full page. The page still
+     hides crops; the camera frame hides nothing.
+  2. After a push-in, read every scrap of text left in the frame on its own. Remove it or keep it whole.
+  3. In a memory or attention test, compare the picture with the narration noun by noun before anyone sees it.
+  4. Lay a see-through PNG on white before cutting it out (`cut2.py` now does this). Never repair a cut-out by erasing boxes.
+  5. A sound cue goes to the first two sounding events in a shot's page, in page order. Give the pieces that should stay
+     quiet a silent kind (`qslam`, `qdrop`, `qpop`, `qsnap` in `ck.py`) so the cue lands on the word that matters.
+- **Used Mechanics (look 2):** engraved hands holding cards; a head with the brain showing; cobalt discs, blocks and dashed
+  rings behind a cut-out; giant capitals half behind the subject; a real object doing the gag (the pencil snaps, the drafts
+  are crumpled, the stopwatch runs); a full-frame photo tinted to a proportion; lights down for the test, lights up at the
+  reveal on the same layout.
+- **Winning Pattern:** none yet. The owner has not ruled on look 2.

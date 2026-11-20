@@ -1,6 +1,6 @@
 {
  "slug": "false-memory-opening-test",
- "title": "Can I Give You a False Memory in 60 Seconds? (opening test)",
+ "title": "Can I Give You a False Memory in 60 Seconds? (opening test, look 2)",
  "channel": "dragonpsych",
  "voice": "af_heart",
  "speed": 1.1,
@@ -13,7 +13,7 @@
    "id": "0.01",
    "beat": 1,
    "vo": "Give me sixty seconds. I'm going to put a memory in your head.",
-   "page": "v_01_hook",
+   "page": "c_hook",
    "t": [
     0,
     0.29
@@ -23,8 +23,8 @@
     0.5,
     0.5,
     1.06,
-    0.48,
-    0.46
+    0.5,
+    0.5
    ],
    "capbreak": true,
    "post": 0.15
@@ -33,18 +33,18 @@
    "id": "0.02",
    "beat": 1,
    "vo": "Of something that never happened.",
-   "page": "v_01_hook",
+   "page": "c_hook",
    "t": [
     0.3,
     0.55
    ],
    "cam": [
-    1.5,
-    0.531,
-    0.542,
-    1.56,
-    0.531,
-    0.542
+    2.0,
+    0.308,
+    0.665,
+    2.12,
+    0.308,
+    0.665
    ],
    "capbreak": true,
    "post": 0.2
@@ -53,18 +53,18 @@
    "id": "0.03",
    "beat": 1,
    "vo": "If it works, you won't feel a thing. You'll just be sure.",
-   "page": "v_01_hook",
+   "page": "c_hook",
    "t": [
     0.55,
     1
    ],
    "cam": [
-    1.36,
-    0.585,
-    0.54,
-    1.4,
-    0.59,
-    0.545
+    1.12,
+    0.62,
+    0.48,
+    1.28,
+    0.7,
+    0.36
    ],
    "capbreak": true,
    "post": 0.4
@@ -73,7 +73,7 @@
    "id": "0.04",
    "beat": 1,
    "vo": "And this same glitch has helped put innocent people in prison.",
-   "page": "v_02_court",
+   "page": "c_court",
    "t": [
     0,
     1
@@ -83,7 +83,7 @@
     0.5,
     0.5,
     1.06,
-    0.56,
+    0.5,
     0.5
    ],
    "capbreak": true,
@@ -94,7 +94,7 @@
    "id": "0.05",
    "beat": 1,
    "vo": "Fifteen words. Don't write them down.",
-   "page": "v_03_instr",
+   "page": "c_instr",
    "t": [
     0,
     1
@@ -103,7 +103,7 @@
     1.0,
     0.5,
     0.5,
-    1.04,
+    1.05,
     0.5,
     0.5
    ],
@@ -114,7 +114,7 @@
    "id": "0.06",
    "beat": 2,
    "vo": "Bed.",
-   "page": "m_w01",
+   "page": "c_w01",
    "t": [
     0,
     1
@@ -123,7 +123,7 @@
     1.0,
     0.5,
     0.5,
-    1.0,
+    1.045,
     0.5,
     0.5
    ],
@@ -138,7 +138,7 @@
    "id": "0.07",
    "beat": 2,
    "vo": "Rest.",
-   "page": "m_w02",
+   "page": "c_w02",
    "t": [
     0,
     1
@@ -147,7 +147,7 @@
     1.0,
     0.5,
     0.5,
-    1.0,
+    1.045,
     0.5,
     0.5
    ],
@@ -162,7 +162,7 @@
    "id": "0.08",
    "beat": 2,
    "vo": "Awake.",
-   "page": "m_w03",
+   "page": "c_w03",
    "t": [
     0,
     1
@@ -171,7 +171,7 @@
     1.0,
     0.5,
     0.5,
-    1.0,
+    1.045,
     0.5,
     0.5
    ],
@@ -186,7 +186,7 @@
    "id": "0.09",
    "beat": 2,
    "vo": "Tired.",
-   "page": "m_w04",
+   "page": "c_w04",
    "t": [
     0,
     1
@@ -195,7 +195,7 @@
     1.0,
     0.5,
     0.5,
-    1.0,
+    1.045,
     0.5,
     0.5
    ],
@@ -210,7 +210,7 @@
    "id": "0.10",
    "beat": 2,
    "vo": "Dream.",
-   "page": "m_w05",
+   "page": "c_w05",
    "t": [
     0,
     1
@@ -219,7 +219,7 @@
     1.0,
     0.5,
     0.5,
-    1.0,
+    1.045,
     0.5,
     0.5
    ],
@@ -234,7 +234,7 @@
    "id": "0.11",
    "beat": 2,
    "vo": "Wake.",
-   "page": "m_w06",
+   "page": "c_w06",
    "t": [
     0,
     1
@@ -243,7 +243,7 @@
     1.0,
     0.5,
     0.5,
-    1.0,
+    1.045,
     0.5,
     0.5
    ],
@@ -258,7 +258,7 @@
    "id": "0.12",
    "beat": 2,
    "vo": "Snooze.",
-   "page": "m_w07",
+   "page": "c_w07",
    "t": [
     0,
     1
@@ -267,7 +267,7 @@
     1.0,
     0.5,
     0.5,
-    1.0,
+    1.045,
     0.5,
     0.5
    ],
@@ -282,7 +282,7 @@
    "id": "0.13",
    "beat": 2,
    "vo": "Blanket.",
-   "page": "m_w08",
+   "page": "c_w08",
    "t": [
     0,
     1
@@ -291,7 +291,7 @@
     1.0,
     0.5,
     0.5,
-    1.0,
+    1.045,
     0.5,
     0.5
    ],
@@ -306,7 +306,7 @@
    "id": "0.14",
    "beat": 2,
    "vo": "Doze.",
-   "page": "m_w09",
+   "page": "c_w09",
    "t": [
     0,
     1
@@ -315,7 +315,7 @@
     1.0,
     0.5,
     0.5,
-    1.0,
+    1.045,
     0.5,
     0.5
    ],
@@ -330,7 +330,7 @@
    "id": "0.15",
    "beat": 2,
    "vo": "Slumber.",
-   "page": "m_w10",
+   "page": "c_w10",
    "t": [
     0,
     1
@@ -339,7 +339,7 @@
     1.0,
     0.5,
     0.5,
-    1.0,
+    1.045,
     0.5,
     0.5
    ],
@@ -354,7 +354,7 @@
    "id": "0.16",
    "beat": 2,
    "vo": "Snore.",
-   "page": "m_w11",
+   "page": "c_w11",
    "t": [
     0,
     1
@@ -363,7 +363,7 @@
     1.0,
     0.5,
     0.5,
-    1.0,
+    1.045,
     0.5,
     0.5
    ],
@@ -378,7 +378,7 @@
    "id": "0.17",
    "beat": 2,
    "vo": "Nap.",
-   "page": "m_w12",
+   "page": "c_w12",
    "t": [
     0,
     1
@@ -387,7 +387,7 @@
     1.0,
     0.5,
     0.5,
-    1.0,
+    1.045,
     0.5,
     0.5
    ],
@@ -402,7 +402,7 @@
    "id": "0.18",
    "beat": 2,
    "vo": "Peace.",
-   "page": "m_w13",
+   "page": "c_w13",
    "t": [
     0,
     1
@@ -411,7 +411,7 @@
     1.0,
     0.5,
     0.5,
-    1.0,
+    1.045,
     0.5,
     0.5
    ],
@@ -426,7 +426,7 @@
    "id": "0.19",
    "beat": 2,
    "vo": "Yawn.",
-   "page": "m_w14",
+   "page": "c_w14",
    "t": [
     0,
     1
@@ -435,7 +435,7 @@
     1.0,
     0.5,
     0.5,
-    1.0,
+    1.045,
     0.5,
     0.5
    ],
@@ -450,7 +450,7 @@
    "id": "0.20",
    "beat": 2,
    "vo": "Drowsy.",
-   "page": "m_w15",
+   "page": "c_w15",
    "t": [
     0,
     1
@@ -459,7 +459,7 @@
     1.0,
     0.5,
     0.5,
-    1.0,
+    1.045,
     0.5,
     0.5
    ],
@@ -474,18 +474,18 @@
    "id": "0.21",
    "beat": 2,
    "vo": "Done. Put those away.",
-   "page": "m_21_done",
+   "page": "c_drawer",
    "t": [
     0,
-    1
+    0.5
    ],
    "cam": [
-    1.0,
-    0.5,
-    0.5,
-    1.05,
-    0.5,
-    0.5
+    1.1,
+    0.45,
+    0.55,
+    1.08,
+    0.46,
+    0.52
    ],
    "capbreak": true,
    "post": 0.958,
@@ -495,17 +495,17 @@
    "id": "0.22",
    "beat": 2,
    "vo": "Watch this once.",
-   "page": "m_22_watch",
+   "page": "c_drawer",
    "t": [
-    0,
+    0.5,
     1
    ],
    "cam": [
-    1.05,
+    1.08,
+    0.46,
+    0.52,
+    1.0,
     0.5,
-    0.5,
-    1.1,
-    0.48,
     0.5
    ],
    "capbreak": true,
@@ -516,18 +516,18 @@
    "id": "0.23",
    "beat": 2,
    "vo": "",
-   "page": "m_23_clip",
+   "page": "c_clip",
    "t": [
     0,
     0.6883
    ],
    "cam": [
-    1.8,
-    0.47,
-    0.722,
-    1.8,
-    0.47,
-    0.4
+    2.0,
+    0.25,
+    0.56,
+    2.0,
+    0.75,
+    0.56
    ],
    "capbreak": true,
    "hold": 2.2043,
@@ -538,18 +538,18 @@
    "id": "0.24",
    "beat": 2,
    "vo": "",
-   "page": "m_23_clip",
+   "page": "c_clip",
    "t": [
     0.6883,
     1
    ],
    "cam": [
-    1.8,
-    0.47,
-    0.4,
+    2.0,
+    0.75,
+    0.56,
     2.6,
-    0.335,
-    0.292
+    0.808,
+    0.64
    ],
    "capbreak": true,
    "hold": 0.996,
@@ -560,18 +560,18 @@
    "id": "0.25",
    "beat": 2,
    "vo": "Congratulations. You are now a witness.",
-   "page": "m_24_witness",
+   "page": "c_witness",
    "t": [
     0,
     1
    ],
    "cam": [
     2.6,
-    0.335,
-    0.292,
-    2.45,
-    0.323,
-    0.292
+    0.808,
+    0.64,
+    2.6,
+    0.808,
+    0.6
    ],
    "capbreak": true,
    "pre": 1.875,
@@ -582,7 +582,7 @@
    "id": "0.26",
    "beat": 2,
    "vo": "Somewhere, the owner of the blue car that ran the stop sign is drafting a defensive email.",
-   "page": "m_25_email",
+   "page": "c_email",
    "t": [
     0,
     1
@@ -591,9 +591,9 @@
     1.0,
     0.5,
     0.5,
-    1.1,
-    0.56,
-    0.6
+    1.14,
+    0.5,
+    0.34
    ],
    "capbreak": true,
    "nocap": true,
@@ -604,7 +604,7 @@
    "id": "0.27",
    "beat": 2,
    "vo": "That amber bar is your minute.",
-   "page": "m_26_bar",
+   "page": "c_bar",
    "t": [
     0,
     1
@@ -625,7 +625,7 @@
    "id": "0.28",
    "beat": 2,
    "vo": "Don't rehearse. I can't see you, but I'll know.",
-   "page": "m_27_rehearse",
+   "page": "c_rehearse",
    "t": [
     0,
     1
@@ -646,7 +646,7 @@
    "id": "0.29",
    "beat": 2,
    "vo": "Some of you are already sure you'll pass.",
-   "page": "m_28_sure",
+   "page": "c_sure",
    "t": [
     0,
     1
@@ -655,9 +655,9 @@
     1.0,
     0.5,
     0.5,
-    1.06,
-    0.44,
-    0.44
+    1.05,
+    0.52,
+    0.47
    ],
    "capbreak": true,
    "post": 0.964,
@@ -667,18 +667,18 @@
    "id": "0.30",
    "beat": 2,
    "vo": "Hold on to that feeling. We'll need it later.",
-   "page": "m_29_hold",
+   "page": "c_hold",
    "t": [
     0,
     1
    ],
    "cam": [
-    1.06,
-    0.44,
-    0.44,
-    1.08,
+    1.05,
+    0.52,
+    0.47,
+    1.02,
     0.5,
-    0.54
+    0.52
    ],
    "capbreak": true,
    "post": 1.1945,
@@ -688,7 +688,7 @@
    "id": "0.31",
    "beat": 2,
    "vo": "This trick has a lab behind it, and nearly seventy years of paperwork.",
-   "page": "m_30_folders",
+   "page": "c_folders",
    "t": [
     0,
     1
@@ -709,7 +709,7 @@
    "id": "0.32",
    "beat": 2,
    "vo": "You'll get all of it after you've fallen for it.",
-   "page": "m_31_later",
+   "page": "c_later",
    "t": [
     0,
     1
@@ -732,7 +732,7 @@
    "id": "0.33",
    "beat": 3,
    "vo": "Time. Three words. Was each one on my list?",
-   "page": "m_32_test",
+   "page": "c_test",
    "t": [
     0,
     0.5
@@ -741,9 +741,9 @@
     1.0,
     0.5,
     0.5,
-    1.04,
+    1.05,
     0.5,
-    0.52
+    0.5
    ],
    "capbreak": true,
    "post": 0.2,
@@ -753,18 +753,18 @@
    "id": "0.34",
    "beat": 3,
    "vo": "Yes or no, out loud. If you're on a bus, commit.",
-   "page": "m_32_test",
+   "page": "c_test",
    "t": [
     0.5,
     1
    ],
    "cam": [
-    1.04,
+    1.05,
     0.5,
-    0.52,
-    1.04,
     0.5,
-    0.46
+    1.08,
+    0.47,
+    0.5
    ],
    "capbreak": true,
    "post": 0.45,
@@ -774,7 +774,7 @@
    "id": "0.35",
    "beat": 3,
    "vo": "Dream.",
-   "page": "t_dream",
+   "page": "c_t_dream",
    "t": [
     0,
     1
@@ -783,7 +783,7 @@
     1.0,
     0.5,
     0.5,
-    1.0,
+    1.045,
     0.5,
     0.5
    ],
@@ -797,7 +797,7 @@
    "id": "0.36",
    "beat": 3,
    "vo": "Door.",
-   "page": "t_door",
+   "page": "c_t_door",
    "t": [
     0,
     1
@@ -806,7 +806,7 @@
     1.0,
     0.5,
     0.5,
-    1.0,
+    1.045,
     0.5,
     0.5
    ],
@@ -820,7 +820,7 @@
    "id": "0.37",
    "beat": 3,
    "vo": "Sleep.",
-   "page": "t_sleep",
+   "page": "c_t_sleep",
    "t": [
     0,
     1
@@ -829,7 +829,7 @@
     1.0,
     0.5,
     0.5,
-    1.0,
+    1.045,
     0.5,
     0.5
    ],
@@ -843,7 +843,7 @@
    "id": "0.38",
    "beat": 3,
    "vo": "Dream was on the list. Door wasn't.",
-   "page": "r_cards",
+   "page": "c_cards",
    "t": [
     0,
     1
@@ -852,9 +852,9 @@
     1.0,
     0.5,
     0.5,
-    1.04,
+    1.05,
     0.5,
-    0.5
+    0.46
    ],
    "capbreak": true,
    "post": 0.25,
@@ -864,18 +864,18 @@
    "id": "0.39",
    "beat": 3,
    "vo": "And sleep?",
-   "page": "r_cards",
+   "page": "c_reveal",
    "t": [
-    1,
-    1
+    0,
+    0
    ],
    "cam": [
-    1.6,
-    0.755,
-    0.47,
-    2.0,
-    0.755,
-    0.47
+    1.5,
+    0.82,
+    0.36,
+    1.9,
+    0.84,
+    0.36
    ],
    "capbreak": true,
    "post": 0.45,
@@ -885,18 +885,18 @@
    "id": "0.40",
    "beat": 3,
    "vo": "I never said it.",
-   "page": "r_reveal",
+   "page": "c_reveal",
    "t": [
     0,
-    0.5
+    1
    ],
    "cam": [
-    2.0,
-    0.755,
-    0.47,
-    2.1,
-    0.755,
-    0.47
+    1.9,
+    0.84,
+    0.36,
+    2.05,
+    0.84,
+    0.36
    ],
    "capbreak": true,
    "post": 0.3,
@@ -906,16 +906,16 @@
    "id": "0.41",
    "beat": 3,
    "vo": "Not once.",
-   "page": "r_reveal",
+   "page": "c_reveal2",
    "t": [
-    0.5,
-    0.7
+    0,
+    0.4
    ],
    "cam": [
     1.0,
     0.5,
     0.5,
-    1.04,
+    1.03,
     0.5,
     0.5
    ],
@@ -927,16 +927,16 @@
    "id": "0.42",
    "beat": 3,
    "vo": "Scroll back and check. I'm a video. I can wait.",
-   "page": "r_reveal",
+   "page": "c_reveal2",
    "t": [
-    0.7,
+    0.4,
     1
    ],
    "cam": [
-    1.04,
+    1.03,
     0.5,
     0.5,
-    1.08,
+    1.06,
     0.5,
     0.5
    ],
@@ -947,7 +947,7 @@
    "id": "0.43",
    "beat": 3,
    "vo": "Said yes? You're the majority.",
-   "page": "v_13_majority",
+   "page": "c_majority",
    "t": [
     0,
     0.2
@@ -957,7 +957,7 @@
     0.5,
     0.5,
     1.05,
-    0.42,
+    0.46,
     0.5
    ],
    "capbreak": true,
@@ -967,14 +967,14 @@
    "id": "0.44",
    "beat": 3,
    "vo": "When researchers tested this exact list, more than 80 percent of people said yes to \"sleep\".",
-   "page": "v_13_majority",
+   "page": "c_majority",
    "t": [
     0.2,
     0.9
    ],
    "cam": [
     1.05,
-    0.42,
+    0.46,
     0.5,
     1.08,
     0.5,
@@ -987,7 +987,7 @@
    "id": "0.45",
    "beat": 3,
    "vo": "And I warned you. It's in the title.",
-   "page": "v_14_title",
+   "page": "c_title",
    "t": [
     0,
     1
@@ -996,9 +996,9 @@
     1.0,
     0.5,
     0.5,
-    1.07,
-    0.52,
-    0.54
+    1.08,
+    0.5,
+    0.58
    ],
    "capbreak": true,
    "post": 0.6,
@@ -1008,7 +1008,7 @@
    "id": "0.46",
    "beat": 3,
    "vo": "Warnings shrink the effect. They don't remove it.",
-   "page": "v_15_warning",
+   "page": "c_warning",
    "t": [
     0,
     1
@@ -1028,18 +1028,18 @@
    "id": "0.47",
    "beat": 3,
    "vo": "If you said no, well done. It doesn't work on everyone.",
-   "page": "v_13_majority",
+   "page": "c_majority",
    "t": [
-    0.9,
+    0.901,
     1
    ],
    "cam": [
-    1.9,
-    0.83,
-    0.24,
-    2.0,
-    0.83,
-    0.2
+    1.7,
+    0.86,
+    0.5,
+    1.8,
+    0.86,
+    0.46
    ],
    "capbreak": true,
    "post": 0.35
@@ -1048,7 +1048,7 @@
    "id": "0.48",
    "beat": 3,
    "vo": "But I've already planted a second false memory in this video.",
-   "page": "v_16_envelope",
+   "page": "c_envelope",
    "t": [
     0,
     0.5
@@ -1068,18 +1068,18 @@
    "id": "0.49",
    "beat": 3,
    "vo": "It isn't a word. I'll collect it at the end.",
-   "page": "v_16_envelope",
+   "page": "c_envelope",
    "t": [
     0.5,
     1
    ],
    "cam": [
     1.3,
+    0.5,
     0.6,
-    0.66,
-    1.34,
-    0.6,
-    0.68
+    1.36,
+    0.5,
+    0.62
    ],
    "capbreak": true,
    "post": 0.35
@@ -1088,15 +1088,15 @@
    "id": "0.50",
    "beat": 3,
    "vo": "So how did I do that?",
-   "page": "v_16_envelope",
+   "page": "c_envelope",
    "t": [
     1,
     1
    ],
    "cam": [
-    1.34,
-    0.6,
-    0.68,
+    1.36,
+    0.5,
+    0.62,
     1.0,
     0.5,
     0.5

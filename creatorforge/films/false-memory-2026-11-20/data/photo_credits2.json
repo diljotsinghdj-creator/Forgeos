@@ -250,5 +250,32 @@
   "page": "https://pixabay.com/photos/dare-trip-engine-fiat-model-cars-1011114/",
   "licence": "Pixabay Content License",
   "title": "dare, trip, engine, fiat, model cars, collect, hobby, leisure time, italy, isolated, and e"
+ },
+ {
+  "slug": "courthouse",
+  "kind": "cut-out",
+  "author": "w_lemay",
+  "source": "flickr",
+  "page": "https://www.flickr.com/photos/59081381@N03/48950894652",
+  "licence": "CC0 1.0",
+  "title": "Alamance County Courthouse, Graham, NC"
+ },
+ {
+  "slug": "stopwatch",
+  "kind": "cut-out",
+  "author": "AlLes",
+  "source": "pixabay",
+  "page": "https://pixabay.com/photos/pocket-watch-mechanical-watch-arrows-2844871/",
+  "licence": "Pixabay Content License",
+  "title": "pocket watch, mechanical watch, arrows, clock face, time, accuracy, beautiful, clockwork, "
+ },
+ {
+  "slug": "ball",
+  "kind": "cut-out",
+  "author": "kascreates",
+  "source": "pixabay",
+  "page": "https://pixabay.com/photos/paper-screwed-up-paper-ball-crinkle-1484048/",
+  "licence": "Pixabay Content License",
+  "title": "paper, screwed up, paper ball, crinkle, screwed, ball, balled, crumpled, crumpled paper, b"
  }
 ]
