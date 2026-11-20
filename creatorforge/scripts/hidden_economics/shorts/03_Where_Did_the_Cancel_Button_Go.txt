@@ -1,0 +1,75 @@
+Where Did the Cancel Button Go
+On-screen hook: 1 TAP IN, 5 OUT?
+Title: 1 Tap to Join, 5 to Leave: Where Did the Cancel Button Go?
+Tags: #HiddenEconomics #darkpatterns #subscriptions #cancel #consumerrights
+Source: FTC, ICPEN and GPEN review of 642 subscription websites and apps, July 2024 (https://www.ftc.gov/news-events/news/press-releases/2024/07/ftc-icpen-gpen-announce-results-review-use-dark-patterns-affecting-subscription-services-privacy)
+
+One tap in. Five taps out. Why?
+Visual: A thumb tapping a single large join button on a smartphone, text unreadable
+Visual: Five blank sticky notes in a row on a desk, the last one bright red
+Text: 1 TAP IN · 5 TAPS OUT? · FICTIONAL APP
+Thought: Why is leaving this hard?
+
+Settings, account, manage plan, then a discount to stay.
+Visual: A hand-drawn paper flowchart of menu boxes on a desk, text unreadable
+Visual: A paper voucher offering half price clipped to a letter, text unreadable
+Text: SETTINGS › ACCOUNT › PLAN › 50% OFF?
+Steps: Settings → Account → Manage plan → Discount offer → Cancel | Five taps out
+
+Tap five, in tiny grey letters, finally lets you go.
+Visual: A thumb hovering over a tiny grey link at the bottom of a phone screen, text unreadable
+Visual: A tiny grey cancel link in the bottom corner of a printed web page, text unreadable
+Text: TAP 5: CANCEL
+Draw: arrow
+Big: TAP FIVE
+
+Clumsy design, or something common?
+Visual: Hands sketching app screen layouts on paper at a desk, seen from above
+Text: CLUMSY OR COMMON?
+Transition: whip
+Search: is a hidden cancel button normal? | Why is cancelling so hard? · Tricky design, explained
+
+In twenty twenty-four, regulators reviewed six hundred and forty-two subscription sites and apps.
+Visual: A government office building with flags outside, seen across a street
+Text: 642 SITES & APPS REVIEWED
+Cite: FTC, ICPEN & GPEN, July 2024
+Treat: halftone
+
+Three in four used a possible dark pattern. Two in three, several.
+Visual: Four phones laid on a desk, three of them circled in red pen
+Visual: Printed app pages on a desk with parts circled in red, text unreadable
+Chart: 76% vs 67% | at least one, two or more
+Cite: FTC, ICPEN & GPEN, July 2024
+Transition: flash
+
+Possible, not proven illegal. So where is the line?
+Visual: A judge's wooden gavel resting on a closed law book
+Visual: A courthouse's stone front steps on a grey day
+Text: POSSIBLE ≠ PROVEN ILLEGAL
+Big: NOT PROVEN
+Treat: duotone
+
+Checking it is really you is fair. Hiding the exit is not.
+Visual: A hand holding a smartphone showing a security code screen, text unreadable
+Visual: An emergency exit door half blocked by stacked cardboard boxes
+Text: FAIR: SECURITY · UNFAIR: HIDDEN EXIT
+Stock: emergency exit door
+Draw: cross
+Split: Fair | Not fair
+
+If joining took one tap, leaving should too.
+Visual: A finger pressing a single large round button on a lift panel
+Visual: A person seen from behind walking out onto a sunny street
+Text: 1 TAP IN · 1 TAP OUT
+Screen: Your plan | Premium · Change plan · *Cancel subscription
+
+So look past the discount offer for the tiny grey link.
+Visual: A thumb scrolling past a discount banner on a smartphone, text unreadable
+Visual: A fingertip on a small grey link at the bottom of a phone screen, text unreadable
+Text: SKIP THE OFFER · FIND THE GREY LINK
+Draw: underline
+
+Which subscription have you kept only because leaving felt hard?
+Visual: A person seen from behind at a desk at night holding a smartphone
+Visual: A printed bank statement with monthly payments underlined in pencil, text unreadable
+Text: KEPT IT BECAUSE LEAVING WAS HARD?

@@ -1,0 +1,25 @@
+THE EPSTEIN FILES - YOUR 14 PICTURES FOR CREATORFORGE
+
+1. In the app: Library -> ASSET LIBRARY -> + IMAGE. Upload all 14 files: ef02.png ... ef27.png.
+   Keep the names (ef02, ef04 ...): the script finds each picture by its name.
+2. Generate -> Script -> paste ALL of print_facts/long_form/04_The_Epstein_Files_Hindi.txt.
+3. Settings: 16:9 YouTube, template YouTube Documentary, Visual style Investigative desk, Fast cuts on,
+   a Hindi human voice (hindi_m_human or hindi_news_m_human), voice pace 1.0x.
+4. Each "Clip: ef12" line shows that picture on that line, whole, with a slow push-in.
+
+WHAT WAS LEFT OUT OF YOUR KIT, AND WHY (do not upload these)
+  01, 28  AI-made face of Epstein - a fake likeness of a real person.
+  03      AI-made Epstein next to AI-made Trump and Clinton - a meeting that picture invents. Defamation risk.
+  11      AI-made "photo" of Epstein and Maxwell embracing - a fabricated photograph.
+  14, 16  AI likeness of Epstein / AI courtroom portrait of Maxwell.
+  29      Invented faces presented as survivors.
+  07, 15  Fake newspaper front pages with made-up headlines.
+  09, 17, 18, 19, 20   Mock court papers, a mock flight log, a mock contact book, mock redactions.
+  21      A mock DOJ/FBI graphic using their seals.
+  The script uses real news pages (Article: lines, from the Source: links), the real public-record photos
+  CreatorForge finds by name, and drawn graphics instead.
+
+WHAT WAS FIXED IN THE 14 KEPT PICTURES
+  The storyboard labels ("05 2:00-2:30 | Private Jets...") and slivers of the neighbouring panels were cut off.
+  They are AI illustrations: the survivor silhouettes and the island carry "प्रतीकात्मक चित्र" (illustration) on
+  screen. Turn on YouTube's "altered or synthetic content" label when you upload.

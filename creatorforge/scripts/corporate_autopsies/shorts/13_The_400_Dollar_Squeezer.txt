@@ -1,0 +1,87 @@
+The $400 Squeezer
+On-screen hook: $400 MACHINE. BARE HANDS?
+Title: The $400 Juicer vs Bare Hands: What Happened to Juicero
+Tags: #CorporateAutopsies #juicero #startups #siliconvalley #business
+Source: Bloomberg, Silicon Valley's $400 Juicer May Be Feeling the Squeeze (Apr 2017), https://www.bloomberg.com/news/features/2017-04-19/silicon-valley-s-400-juicer-may-be-feeling-the-squeeze; NPR, Juicero CEO Says Luxury Juicer Is 'Much More' Than Juice; Internet Is Unimpressed (Apr 2017), https://www.npr.org/sections/thetwo-way/2017/04/21/525055713/juicero-ceo-says-luxury-juicer-is-much-more-than-juice-internet-is-unimpressed; Fortune, Juicero layoffs and lower prices (Jul 2017), https://fortune.com/2017/07/14/juicero-layoffs-lower-prices; The Register, Crushed Juicero now officially a fruitless endeavor (Sep 2017), https://www.theregister.co.uk/2017/09/01/juicero_now_a_fruitless_endeavor/; Bloomberg, Inside Juicero's Demise, From Prized Startup to Fire Sale (Sep 2017), https://www.bloomberg.com/news/features/2017-09-08/inside-juicero-s-demise-from-prized-startup-to-fire-sale
+
+Bare hands nearly matched a four-hundred-dollar juicer.
+Visual: A sleek white kitchen appliance standing alone on a marble counter
+Visual: Two bare hands held open over a kitchen counter, palms up
+Text: $400 VS BARE HANDS?
+
+And owners paid five to seven dollars for every pack.
+Visual: A hand dropping coins beside a single juice pouch on a counter
+Visual: A row of unopened juice pouches in a fridge door
+Text: PACKS: $5 TO $7 EACH
+Cite: Fortune, July 2017
+Transition: whip
+
+So did anyone need the machine?
+Visual: A countertop press beside an empty glass jug on a marble counter
+Visual: Two hands resting beside a sealed juice pouch on a counter
+Text: NEED THE MACHINE?
+
+Juicero sold a Wi-Fi press that squeezed sealed packs of chopped produce.
+Visual: A sealed plastic pouch of chopped fruit and vegetables on a counter
+Visual: A countertop press with its door open and an empty slot inside
+Visual: A smartphone beside a kitchen appliance, screen text unreadable
+Text: WI-FI PRESS + SEALED PACKS
+
+The press launched at about seven hundred dollars.
+Visual: A price tag hanging from a boxed kitchen appliance, numbers blurred
+Visual: A fridge shelf stacked with sealed juice pouches
+Text: LAUNCH PRICE $699 · LATER $399
+Cite: Bloomberg, April 2017
+
+Bloomberg reporters skipped the machine and squeezed the packs by hand.
+Visual: Two hands squeezing a plastic juice pouch over a glass jug
+Visual: Green juice trickling from a pouch corner into a glass
+Article: Silicon Valley's $400 Juicer May Be Feeling the Squeeze | Bloomberg, April 2017
+Cite: Bloomberg, April 2017
+
+Watch the numbers. Hands got seven and a half ounces in ninety seconds.
+Visual: A measuring jug of green juice on a counter, markings blurred
+Visual: A kitchen timer on a counter beside a squeezed empty pouch
+Text: BY HAND: 7.5 OZ · 1.5 MIN
+Big: BARE HANDS
+Treat: halftone
+
+The machine? Eight ounces, in about two minutes.
+Visual: A glass filling with juice under a countertop press spout
+Visual: A kitchen timer beside a full glass of green juice
+Chart: 7.5 oz vs 8 oz | by hand, by the machine
+Cite: Bloomberg, April 2017
+
+Juicero said it knew, and argued the machine was cleaner and more consistent.
+Visual: A spotless kitchen counter wiped clean beside a press, no logos
+Visual: Two identical glasses of green juice side by side on a counter
+Text: JUICERO: CLEANER, MORE CONSISTENT
+Cite: Bloomberg / NPR, April 2017
+
+The strange part? Bloomberg reported some investors were surprised it worked by hand.
+Visual: A boardroom table with empty chairs and scattered papers, text unreadable
+Visual: A hand holding a squeezed juice pouch over a meeting table
+Text: INVESTORS SURPRISED
+Thought: Wait, you don't need the machine?
+Treat: duotone
+
+By September twenty seventeen, Juicero had shut down and offered refunds.
+Visual: A darkened office with chairs stacked on desks at night
+Visual: A shipping box sealed with tape on an empty warehouse floor
+Text: SHUT DOWN · SEPT 2017
+Cite: The Register / Bloomberg, Sept 2017
+Draw: cross
+
+Need the four-hundred-dollar machine? Bloomberg's hands said barely.
+Visual: An unplugged kitchen press pushed to the back of a counter
+Visual: Two hands holding a squeezed juice pouch over a full glass
+Text: $400 MACHINE · 30 SECONDS SLOWER
+
+So try the simple way first.
+Visual: Two hands squeezing a sealed pouch over a glass on a kitchen counter
+Visual: An unopened gadget box pushed to the back of a cupboard
+Text: TRY THE SIMPLE WAY FIRST
+
+What gadget could your own hands replace?
+Visual: A kitchen drawer full of unused gadgets in their wrappers
+Visual: Two empty hands resting palms up on a wooden table

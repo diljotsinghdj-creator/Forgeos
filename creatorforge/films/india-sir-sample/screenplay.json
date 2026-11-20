@@ -1,0 +1,238 @@
+{
+ "id": "india-sir-sample",
+ "title": "Before any vote, a list",
+ "channel": "sample",
+ "sample_for": "print-facts",
+ "topic": "india-sir-voter-rolls",
+ "target_seconds": 60,
+ "subject": "politics",
+ "genre": "politics",
+ "native_material": "the Election Commission's own press note, voter-roll data, the newspaper report, the opposition's demand",
+ "engine": "reverse-autopsy",
+ "hook_mechanism": "open on the Commission's own press note at the end of the story, then rewind to how 13 crore names left the rolls",
+ "metaphors": [
+  "the list before the vote"
+ ],
+ "pick": {
+  "engine": "reverse-autopsy",
+  "pitched": [
+   "reverse-autopsy",
+   "historical-echo",
+   "trojan-horse"
+  ],
+  "owner_words": "\"now give sample video of 1 minutes on current indian politics and 1 minute video on american politics. lets see what we have learnt. again freehand.\" (the owner delegated the topic and the pick; live-viewer-trap excluded as the last film's engine)",
+  "date": "2026-11-13"
+ },
+ "language": "en",
+ "lang": "en-gb",
+ "voice": "bf_emma",
+ "transition_family": "wipes",
+ "concept": {
+  "logline": "India's voter-roll revision removed about 13 crore names from draft rolls; the Commission says it is cleaning the list, the opposition says voters are being lost.",
+  "central_question": "How did India's voter lists lose 13 crore names, and who says what about it?",
+  "claim": "The SIR removed about 13.3 crore draft-roll entries (mostly marked absent or shifted); critics and two commissioners objected; the Commission answers with camps and Form 6."
+ },
+ "thumbnail": "Statement: Before any vote, there is a *list*.",
+ "cutdowns": [],
+ "scenes": [
+  {
+   "id": "S1",
+   "act": "hook",
+   "purpose": "orient",
+   "delivery": "measured",
+   "pause": 0.1,
+   "role": "opening",
+   "narration": "India's Election Commission, September twenty-six.",
+   "graphic": "Photo: asset:P0021 | push | Election Commission of India, Press Note 120, 26 Sept 2026 | depth: flat | badge: verified",
+   "claims": [
+    "C5"
+   ]
+  },
+  {
+   "id": "S2",
+   "act": "hook",
+   "purpose": "explain",
+   "delivery": "grave",
+   "pause": 0.1,
+   "narration": "By then, about thirteen crore names had come off the draft voter rolls.",
+   "graphic": "Counter: 0 → 13.3 | crore names removed | draft voter rolls, Election Commission data, Sept 2026 | badge: verified",
+   "claims": [
+    "C1"
+   ],
+   "transition": "wipe"
+  },
+  {
+   "id": "S3",
+   "act": "world",
+   "purpose": "orient",
+   "delivery": "curious",
+   "pause": 0.1,
+   "narration": "How does a list lose that many names? Rewind.",
+   "graphic": "Tornsplit: newspaper + magnifying glass | 13 CRORE NAMES | Rewind",
+   "claims": [
+    "C1"
+   ],
+   "transition": "tear"
+  },
+  {
+   "id": "S4",
+   "act": "world",
+   "purpose": "explain",
+   "delivery": "measured",
+   "pause": 0.05,
+   "narration": "The revision freezes the roll, checks house to house, then publishes a draft.",
+   "graphic": "Steps: Freeze the roll → House-to-house check → Draft roll → Claims → Final roll | How the revision works",
+   "claims": [
+    "C3"
+   ],
+   "transition": "slide"
+  },
+  {
+   "id": "S5",
+   "act": "world",
+   "purpose": "explain",
+   "delivery": "measured",
+   "pause": 0.05,
+   "narration": "Nothing like it since two thousand two.",
+   "graphic": "Timeline: 2002 Last full revision → 2005 Revision ends → 2026 Revision across India | Voter-roll revisions",
+   "claims": [
+    "C3",
+    "C1"
+   ],
+   "transition": "wipe"
+  },
+  {
+   "id": "S6",
+   "act": "investigation",
+   "purpose": "explain",
+   "delivery": "measured",
+   "pause": 0.05,
+   "narration": "About seventy-one percent were marked absent or shifted.",
+   "graphic": "Pie: 71.5% | of deleted names marked absent, shifted or other",
+   "claims": [
+    "C2"
+   ],
+   "transition": "slide"
+  },
+  {
+   "id": "S7",
+   "act": "investigation",
+   "purpose": "explain",
+   "delivery": "measured",
+   "pause": 0.1,
+   "narration": "About 2.8 crore had died. About one crore were duplicates.",
+   "graphic": "Chart: 2.8 vs 1.01 | dead (crore), duplicates (crore)",
+   "claims": [
+    "C2"
+   ],
+   "transition": "wipe"
+  },
+  {
+   "id": "S8",
+   "act": "discovery",
+   "purpose": "explain",
+   "delivery": "grave",
+   "pause": 0.0,
+   "narration": "Then The Indian Express reported dissent inside the Commission.",
+   "graphic": "Clipping: 14 times in 10 months, two Election Commissioners objected on record to poll panel steps | The Indian Express, September 2026 | newspaper",
+   "claims": [
+    "C4"
+   ],
+   "transition": "tear"
+  },
+  {
+   "id": "S8b",
+   "act": "discovery",
+   "purpose": "explain",
+   "delivery": "grave",
+   "pause": 0.05,
+   "narration": "Two commissioners, it said, objected on record fourteen times.",
+   "graphic": "BigNumber: 14 | magnifying glass | objections on record, as reported | badge: reported",
+   "claims": [
+    "C4"
+   ],
+   "transition": "wipe"
+  },
+  {
+   "id": "S9",
+   "act": "discovery",
+   "purpose": "explain",
+   "delivery": "measured",
+   "pause": 0.1,
+   "narration": "The Commission says its key decisions were unanimous.",
+   "graphic": "Newscard: 23 September 2026 | Election Commission: key decisions were unanimous | it later called some objections suggestions | | Election Commission of India | badge: response",
+   "claims": [
+    "C4",
+    "C5"
+   ],
+   "transition": "slide"
+  },
+  {
+   "id": "S10",
+   "act": "consequences",
+   "purpose": "explain",
+   "delivery": "measured",
+   "pause": 0.05,
+   "narration": "The Congress wants every deleted name restored.",
+   "graphic": "Article: SIR: 13.3 crore names wiped out of draft voter lists so far, triggering Opposition backlash | Deccan Herald, September 2026",
+   "claims": [
+    "C7",
+    "C1"
+   ],
+   "transition": "wipe"
+  },
+  {
+   "id": "S11",
+   "act": "consequences",
+   "purpose": "explain",
+   "delivery": "measured",
+   "pause": 0.05,
+   "narration": "The press note promises special camps, for the homeless and the poor.",
+   "graphic": "Photo: asset:P0020 | push | Press Note 120, item ii | depth: flat | annotate: highlight 0.248,0.195,0.705,0.045 | badge: verified",
+   "claims": [
+    "C6"
+   ],
+   "transition": "page"
+  },
+  {
+   "id": "S12",
+   "act": "consequences",
+   "purpose": "explain",
+   "delivery": "measured",
+   "pause": 0.05,
+   "narration": "And it says the Supreme Court upheld the Form six declaration.",
+   "graphic": "Photo: asset:P0020 | pull | Press Note 120, item iii | depth: flat | annotate: highlight 0.248,0.318,0.705,0.046 | badge: verified",
+   "claims": [
+    "C6"
+   ],
+   "transition": "slide"
+  },
+  {
+   "id": "S13",
+   "act": "ending",
+   "purpose": "explain",
+   "delivery": "curious",
+   "pause": 0.1,
+   "narration": "Removed as absent or shifted? Form six is the way back.",
+   "graphic": "Desk: rubber stamp + newspaper | FORM 6 | absent or shifted? apply to be added again",
+   "claims": [
+    "C9"
+   ],
+   "transition": "wipe"
+  },
+  {
+   "id": "S14",
+   "act": "ending",
+   "purpose": "explain",
+   "delivery": "grave",
+   "pause": 0.5,
+   "role": "ending",
+   "narration": "Before any vote, there is a list.",
+   "graphic": "Statement: Before any vote, there is a *list*.",
+   "claims": [
+    "C3"
+   ],
+   "transition": "slide"
+  }
+ ]
+}

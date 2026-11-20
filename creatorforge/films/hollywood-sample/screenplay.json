@@ -1,0 +1,75 @@
+{
+ "id": "hollywood-sample",
+ "title": "Hollywood in 15 seconds",
+ "channel": "sample",
+ "subject": "culture",
+ "genre": "history",
+ "native_material": "dates, places, box-office figures",
+ "engine": "trojan-horse",
+ "hook_mechanism": "the video's own length",
+ "metaphors": [
+  "a ceremony as long as this video",
+  "a sign that was an advert"
+ ],
+ "language": "en",
+ "lang": "en-us",
+ "voice": "am_michael",
+ "concept": {
+  "logline": "Three Hollywood facts in fifteen seconds.",
+  "central_question": "How did Hollywood begin?",
+  "claim": "Hollywood's most famous name began as an advert for houses."
+ },
+ "thumbnail": "Statement: *HOLLYWOODLAND*",
+ "cutdowns": [],
+ "scenes": [
+  {
+   "id": "S1",
+   "act": "hook",
+   "purpose": "move",
+   "narration": "The first Oscars, in 1929? Fifteen minutes long.",
+   "graphic": "BigNumber: 15 min | trophy | the whole first Academy Awards ceremony, 1929 | badge: verified",
+   "claims": [
+    "C1"
+   ],
+   "pause": 0.12,
+   "delivery": "urgent"
+  },
+  {
+   "id": "S2",
+   "act": "discovery",
+   "purpose": "prove",
+   "narration": "And the sign first read Hollywoodland: an advert for houses.",
+   "graphic": "Globe: Los Angeles | 1923: the sign read HOLLYWOODLAND",
+   "claims": [
+    "C2"
+   ],
+   "pause": 0.12,
+   "delivery": "urgent"
+  },
+  {
+   "id": "S3",
+   "act": "consequences",
+   "purpose": "explain",
+   "narration": "Avatar's record: about 2.9 billion dollars, says Box Office Mojo.",
+   "graphic": "Counter: $0 → $2.9 billion | worldwide box office, Avatar (2009) | according to Box Office Mojo | badge: reported",
+   "claims": [
+    "C3"
+   ],
+   "pause": 0.12,
+   "delivery": "urgent"
+  },
+  {
+   "id": "S4",
+   "act": "ending",
+   "purpose": "move",
+   "narration": "Not bad for an advert.",
+   "graphic": "Statement: A name that began as an *advert*.",
+   "claims": [
+    "C2"
+   ],
+   "pause": 0.12,
+   "delivery": "urgent"
+  }
+ ],
+ "target_seconds": 15
+}

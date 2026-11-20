@@ -1,0 +1,10 @@
+html/
+png/
+__pycache__/
+assets/
+video/clips/
+video/audio/
+video/work/
+video/preview/
+video/qc/
+video/*.mp4

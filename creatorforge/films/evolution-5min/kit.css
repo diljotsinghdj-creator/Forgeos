@@ -1,0 +1,22 @@
+@font-face{font-family:Fraunces;src:url(file:///home/user/Forgeos/creatorforge/worker/creatorforge_worker/media/vendor/fonts/fraunces-latin-900-normal.woff2)}
+@font-face{font-family:FrauncesB;src:url(file:///home/user/Forgeos/creatorforge/worker/creatorforge_worker/media/vendor/fonts/fraunces-latin-700-normal.woff2)}
+@font-face{font-family:FrauncesI;src:url(file:///home/user/Forgeos/creatorforge/worker/creatorforge_worker/media/vendor/fonts/fraunces-latin-400-italic.woff2)}
+@font-face{font-family:Plex;src:url(file:///home/user/Forgeos/creatorforge/worker/creatorforge_worker/media/vendor/fonts/ibm-plex-mono-latin-500-normal.woff2)}
+@font-face{font-family:Hand;src:url(file:///home/user/Forgeos/creatorforge/worker/creatorforge_worker/media/vendor/fonts/shadows-into-light-latin-400-normal.woff2)}
+:root{--bone:#EAE2CF;--card:#F4EEE1;--coal:#1E1D1A;--ink:#2A2620;--moss:#6E8F3E;--ochre:#C4882C;--oxide:#A4442A;--sig:#FFDD33}
+body{margin:0;width:1920px;height:1080px;overflow:hidden;font-family:Plex}
+#cam{position:absolute;inset:0;transform-origin:50% 50%}
+.el{position:absolute}
+.disp{font-family:Fraunces;line-height:.95;letter-spacing:-2px;color:var(--ink)}
+.dispb{font-family:FrauncesB;line-height:1;letter-spacing:-1px;color:var(--ink)}
+.sp{font-family:FrauncesI;color:var(--ink)}
+.tag{font-family:Plex;letter-spacing:3px;text-transform:uppercase;color:var(--ink);white-space:nowrap}
+.hand{font-family:Hand;color:var(--oxide);white-space:nowrap}
+.card{background:var(--card);padding:16px;box-shadow:0 18px 40px rgba(0,0,0,.45);border:1px solid #CFC5AE}
+.label{background:#FBF8F1;border:2px solid var(--ink);padding:10px 16px;font-family:Plex;color:var(--ink)}
+.stamp{font-family:FrauncesB;color:var(--oxide);border:6px solid var(--oxide);padding:0 22px;letter-spacing:3px;text-transform:uppercase}
+.hl{background:linear-gradient(transparent 55%,var(--sig) 55%,var(--sig) 95%,transparent 95%);background-size:var(--hl,100%) 100%;background-repeat:no-repeat}
+.credit{position:absolute;left:30px;bottom:14px;font:500 12px Plex;letter-spacing:1px;text-transform:uppercase;max-width:1700px}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.5}
+.coal{background:radial-gradient(ellipse at 50% 40%,#2B2925 0%,#1E1D1A 60%,#141310 100%)}
+.paper{background:#EAE2CF;background-image:linear-gradient(rgba(42,38,32,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(42,38,32,.06) 1px,transparent 1px);background-size:48px 48px}

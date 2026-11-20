@@ -1,0 +1,271 @@
+{
+ "loc-brooklyn": {
+  "title": "New East River bridge from Brooklyn",
+  "date": "1900-01-01",
+  "url": "http://www.loc.gov/item/2016802198/",
+  "rights": "No known restrictions on publication.",
+  "size": [
+   2000,
+   2544
+  ]
+ },
+ "loc-quake": {
+  "title": "Ruins after San Francisco earthquake, 1906",
+  "date": "1906-01-01",
+  "url": "http://www.loc.gov/item/00652579/",
+  "rights": "No known restrictions on publication",
+  "size": [
+   2000,
+   1611
+  ]
+ },
+ "loc-fair": {
+  "title": "Scene around the Administration Building, World's Fair, Chicago, U.S.A.",
+  "date": "1893",
+  "url": "http://www.loc.gov/item/2023634891/",
+  "rights": "No known restrictions on publication.",
+  "size": [
+   940,
+   829
+  ]
+ },
+ "loc-tit1": {
+  "title": "Brochure for White Star Line's Two Ships \"Olympic\" and \"Titanic\".",
+  "date": "1911-01-01",
+  "url": "http://www.loc.gov/item/2021666878/",
+  "rights": "",
+  "size": [
+   6882,
+   5050
+  ],
+  "rights_note": "PUBLIC DOMAIN BY AGE (CREATED/PUBLISHED BEFORE 1931; LOC GIVES NO RIGHTS STATEMENT)"
+ },
+ "loc-tit2": {
+  "title": "The great Titanic disaster",
+  "date": "1912-01-01",
+  "url": "http://www.loc.gov/item/96514444/",
+  "rights": "No known restrictions on publication.",
+  "size": [
+   2000,
+   2233
+  ]
+ },
+ "loc-tit3": {
+  "title": "Titanic disaster",
+  "date": "1912",
+  "url": "http://www.loc.gov/item/mp73125400/",
+  "rights": "",
+  "size": [
+   2000,
+   1500
+  ],
+  "rights_note": "PUBLIC DOMAIN BY AGE (CREATED/PUBLISHED BEFORE 1931; LOC GIVES NO RIGHTS STATEMENT)"
+ },
+ "loc-tit4": {
+  "title": "Crowd awaiting TITANIC survivors",
+  "date": "1912-01-01",
+  "url": "http://www.loc.gov/item/2014690329/",
+  "rights": "No known restrictions on publication. For more information, see George Grantham Bain Collection - Rights and Restrictions Information https://www.loc.gov/rr/print/res/274_bain.html",
+  "size": [
+   2000,
+   1464
+  ]
+ },
+ "loc-steam-a": {
+  "title": "An American steam fire engine",
+  "date": "1872-01-01",
+  "url": "http://www.loc.gov/item/2003670954/",
+  "rights": "Rights status not evaluated. For general information see \"Copyright and Other Restrictions...\" (http://lcweb.loc.gov/rr/print/195_copr.html).",
+  "size": [
+   2000,
+   1203
+  ],
+  "rights_note": "PUBLIC DOMAIN BY AGE (CREATED/PUBLISHED BEFORE 1931; LOC GIVES NO RIGHTS STATEMENT)"
+ },
+ "loc-steam-b": {
+  "title": "The self-propelling steam fire-engine, \"J.C. Cary\"",
+  "date": "1858-01-01",
+  "url": "http://www.loc.gov/item/99614176/",
+  "rights": "No known restrictions on publication.",
+  "size": [
+   2000,
+   1275
+  ]
+ },
+ "loc-tel-a": {
+  "title": "General Operating Department, Western Union Telegraph Building, New York",
+  "date": "1875-01-01",
+  "url": "http://www.loc.gov/item/2002706683/",
+  "rights": "No known restrictions on publication.",
+  "size": [
+   2000,
+   1648
+  ]
+ },
+ "loc-tel-b": {
+  "title": "The Atlantic telegraph cable",
+  "date": "1865-01-01",
+  "url": "http://www.loc.gov/item/91795085/",
+  "rights": "No known restrictions on publication.",
+  "size": [
+   2000,
+   2491
+  ]
+ },
+ "loc-edison": {
+  "title": "[Thomas Edison, half-length portrait, facing front]",
+  "date": "1893-01-01",
+  "url": "http://www.loc.gov/item/89714702/",
+  "rights": "",
+  "size": [
+   2000,
+   3040
+  ],
+  "rights_note": "PUBLIC DOMAIN BY AGE (CREATED/PUBLISHED BEFORE 1931; LOC GIVES NO RIGHTS STATEMENT)"
+ },
+ "loc-curie": {
+  "title": "[Marie Sk\u0142odowska Curie, half-length portrait, seated, facing right]",
+  "date": "1890-01-01",
+  "url": "http://www.loc.gov/item/96512741/",
+  "rights": "No known restrictions on publication. No renewal found in Copyright office.",
+  "size": [
+   2000,
+   2969
+  ]
+ },
+ "loc-tesla": {
+  "title": "Nicola Tesla",
+  "date": "1900-01-01",
+  "url": "http://www.loc.gov/item/2014684845/",
+  "rights": "No known restrictions on publication. For more information, see George Grantham Bain Collection - Rights and Restrictions Information https://www.loc.gov/rr/print/res/274_bain.html",
+  "size": [
+   2000,
+   2746
+  ]
+ },
+ "loc-earhart": {
+  "title": "Amelia Earhart",
+  "date": "1928-01-01",
+  "url": "http://www.loc.gov/item/2004671909/",
+  "rights": "No known restrictions on publication. No copyright found; checked by staff December 2000.",
+  "size": [
+   2000,
+   2639
+  ]
+ },
+ "loc-bell": {
+  "title": "[Alexander Graham Bell]",
+  "date": "1904-01-01",
+  "url": "http://www.loc.gov/item/2016647791/",
+  "rights": "No known restrictions on publication.",
+  "size": [
+   2000,
+   2691
+  ]
+ },
+ "loc-bell-call": {
+  "title": "Alexander Graham Bell at the opening of the long-distance line from New York to Chicago",
+  "date": "1892",
+  "url": "http://www.loc.gov/item/00650383/",
+  "rights": "",
+  "size": [
+   2000,
+   2534
+  ],
+  "rights_note": "PUBLIC DOMAIN BY AGE (CREATED/PUBLISHED BEFORE 1931; LOC GIVES NO RIGHTS STATEMENT)"
+ },
+ "loc-washington": {
+  "title": "[George Washington, head-and-shoulders portrait, facing left]",
+  "date": "1859-01-01",
+  "url": "http://www.loc.gov/item/97504002/",
+  "rights": "",
+  "size": [
+   2000,
+   3316
+  ],
+  "rights_note": "PUBLIC DOMAIN BY AGE (CREATED/PUBLISHED BEFORE 1931; LOC GIVES NO RIGHTS STATEMENT)"
+ },
+ "loc-constitution": {
+  "title": "The Constitution of the United States of America:",
+  "date": "1828",
+  "url": "http://www.loc.gov/item/01009198/",
+  "rights": "",
+  "size": [
+   2325,
+   3974
+  ],
+  "rights_note": "PUBLIC DOMAIN BY AGE (CREATED/PUBLISHED BEFORE 1931; LOC GIVES NO RIGHTS STATEMENT)"
+ },
+ "loc-perry": {
+  "title": "[Commodore Matthew C. Perry, three-quarter length portrait, standing, facing slightly left",
+  "date": "1854-01-01",
+  "url": "http://www.loc.gov/item/2001695235/",
+  "rights": "No known restrictions on publication.",
+  "size": [
+   2000,
+   2488
+  ]
+ },
+ "loc-perry-print": {
+  "title": "Kita Amerika jinbutsu: Peruri z\u014d",
+  "date": "1854",
+  "url": "http://www.loc.gov/item/2002700123/",
+  "rights": "No known restrictions on publication.",
+  "size": [
+   2000,
+   2913
+  ]
+ },
+ "loc-jefferson": {
+  "title": "[Thomas Jefferson, half-length portrait]",
+  "date": "1900-01-01",
+  "url": "http://www.loc.gov/item/2016817257/",
+  "rights": "No known restrictions on publication.",
+  "size": [
+   2000,
+   2392
+  ]
+ },
+ "loc-declaration": {
+  "title": "Thomas Jefferson, June 1776, Rough Draft of the Declaration of Independence",
+  "date": "1776-06",
+  "url": "http://www.loc.gov/item/mtjbib000156/",
+  "rights": "No known restriction on use or reproduction.",
+  "size": [
+   1958,
+   2884
+  ]
+ },
+ "loc-orville": {
+  "title": "[Orville Wright, bust portrait, facing left]",
+  "date": "1928-01-01",
+  "url": "http://www.loc.gov/item/2005687268/",
+  "rights": "No known restrictions on publication.",
+  "size": [
+   2000,
+   2807
+  ]
+ },
+ "loc-telegram": {
+  "title": "Telegram, Orville Wright to Bishop Milton Wright announcing the first successful powered f",
+  "date": "1903-12-17",
+  "url": "http://www.loc.gov/item/mcc.061/",
+  "rights": "",
+  "size": [
+   3344,
+   2190
+  ],
+  "rights_note": "PUBLIC DOMAIN BY AGE (CREATED/PUBLISHED BEFORE 1931; LOC GIVES NO RIGHTS STATEMENT)"
+ },
+ "loc-earhart-2": {
+  "title": "[Amelia Earhart, three-quarter length portrait, standing facing front]",
+  "date": "1930",
+  "url": "http://www.loc.gov/item/90709840/",
+  "rights": "",
+  "size": [
+   2000,
+   2515
+  ],
+  "rights_note": "PUBLISHED 1930 OR EARLIER: US PUBLIC DOMAIN BY AGE (LOC GIVES NO RIGHTS STATEMENT)"
+ }
+}

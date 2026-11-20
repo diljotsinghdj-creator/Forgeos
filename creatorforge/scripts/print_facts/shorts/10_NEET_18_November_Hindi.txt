@@ -1,0 +1,67 @@
+NEET 18 November
+On-screen hook: 18 नवंबर। NEET पेपर लीक में अदालत का बड़ा दिन।
+Title: NEET 2026 Paper Leak: 18 November Ko Kya Hoga? #Shorts
+Tags: #PrintFacts #NEET #NEET2026 #PaperLeak #CBI #NTA #Shorts #हिंदी
+Source: The Hawk, NEET-UG 2026 paper leak: Rouse Avenue court fixes Nov 18 for order on framing of charges https://www.thehawk.in/news/india/neet-ug-2026-paper-leak-rouse-avenue-court-fixes-nov-18-for-order-on-framing-of-charges ; Deccan Herald, Supreme Court declines to consider plea seeking CBT-based test for NEET-UG 2026 re-exam https://www.deccanherald.com/amp/story/india/supreme-court-declines-to-consider-plea-seeking-cbt-based-test-for-neet-ug-2026-re-exam-4023363
+
+18 नवंबर। NEET पेपर लीक केस में अदालत का बड़ा दिन।
+Tone: dramatic
+Place: ROUSE AVENUE COURT · 18 NOV 2026
+Cite: The Hawk, Nov 2026
+
+पर पहले, ये कहानी शुरू कहाँ से हुई?
+Tone: question
+
+12 मई 2026. शिक्षा मंत्रालय की शिकायत पर CBI ने केस दर्ज किया।
+Tone: calm
+Place: CBI · 12 MAY 2026
+Cite: The Hawk, Nov 2026
+
+आरोप: NEET-UG का पेपर लीक हुआ।
+Tone: strong
+Text: आरोप · CBI जाँच
+Visual: A sealed exam question paper envelope on a desk with its seal broken, close up, text unreadable
+
+परीक्षा रद्द हुई। और 21 जून को दोबारा हुई, कड़ी सुरक्षा में।
+Tone: urgent
+Timeline: 12 MAY केस दर्ज | परीक्षा रद्द | 21 JUN दोबारा परीक्षा
+Cite: The Hawk, Nov 2026
+
+28 जुलाई. CBI ने 13 आरोपियों के ख़िलाफ़ चार्जशीट दाख़िल की।
+Tone: strong
+Big: 13 आरोपी
+Cite: The Hawk, Nov 2026
+
+CBI का दावा: पेपर एक नेटवर्क से लीक हुआ। NTA के सब्जेक्ट एक्सपर्ट, बिचौलिए, और कोचिंग चलाने वाले।
+Tone: dramatic
+Icons: NTA सब्जेक्ट एक्सपर्ट | बिचौलिए | कोचिंग ऑपरेटर
+Text: CBI का दावा · अदालत में साबित होना बाक़ी
+
+अक्टूबर में, चौदहवें आरोपी के ख़िलाफ़ भी चार्जशीट।
+Tone: calm
+Big: 14 आरोपी
+Cite: The Hawk, Nov 2026
+
+सुप्रीम कोर्ट में कंप्यूटर से दोबारा परीक्षा की माँग आई। कोर्ट ने उस पर तुरंत सुनवाई से मना कर दिया।
+Tone: calm
+Article: Supreme Court declines to consider plea seeking CBT-based test for NEET-UG 2026 re-exam | Deccan Herald
+
+अब 18 नवंबर को अदालत तय करेगी, आरोप तय होंगे या नहीं।
+Tone: strong
+Place: 18 NOV 2026
+Big: आरोप *तय होंगे?*
+
+अगर आरोप तय हुए, तो मुक़दमा आगे बढ़ेगा। फ़ैसला तब भी बाक़ी रहेगा।
+Tone: calm
+Steps: आरोप तय → गवाह और सबूत → बहस → फ़ैसला | आगे क्या होगा
+
+जब तक अदालत फ़ैसला न दे, हर आरोपी बेगुनाह माना जाता है।
+Tone: calm
+Statement: आरोपी ≠ *दोषी*
+
+एक पेपर। लाखों सपने। और अब, एक तारीख़।
+Tone: dramatic
+Statement: एक पेपर। लाखों सपने। अब, *एक तारीख़।*
+
+आप उस साल परीक्षा में बैठे थे? कमेंट में बताइए, दोबारा परीक्षा कैसी रही।
+Tone: warm

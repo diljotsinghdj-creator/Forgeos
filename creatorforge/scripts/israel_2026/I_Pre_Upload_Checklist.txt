@@ -1,0 +1,48 @@
+I - PRE-UPLOAD UPDATE CHECKLIST
+Israel 2026: The Election That Settled Nothing
+Do this on upload day. Research cut-off was 31 Oct 2026 - things will have moved.
+
+A. MOVING FACTS (re-check, then edit the script line and the evidence register row)
+  [ ] Certified results (bechirot.gov.il / CEC): every party's seats, bloc totals 53/48/19, turnout %.     F rows 2-4, 13
+      Lines: cold-open Pie, Part 1 two Charts, Part 3 Icons, halftime Pie, Part 5 seat Texts, Part 8 Text.
+  [ ] Did Herzog's consultations happen? Who did each party recommend? Who got the mandate, on what date?   F 21-22
+      If the mandate was given: update the Part 1 "Both camps reportedly expect..." line and the Part 8 close.
+  [ ] Fraud claims: any police/Shin Bet/CEC findings? Any court petition? Qatar response?                    F 15-18
+  [ ] Netanyahu trial / pardon / plea talks: any change?                                                     F 30-31
+  [ ] Oct 7 inquiry bill: any movement in the new Knesset?                                                    F 34-36
+  [ ] Gaza: latest MoH total and post-ceasefire deaths; latest UNICEF children figure; % of Strip under
+      Israeli control.                                                                                      F 45, 49-51
+  [ ] West Bank: newest OCHA settler-attack figures (replace the Jan-Jul numbers if a newer total exists).    F 60-61
+  [ ] E1 tender date and UK statement wording.                                                               F 66
+  [ ] ICC: warrants still in force? Any appeals decision?  ICJ: any new order?                                F 68-70
+  [ ] Iran: current status of the ceasefire/talks (script avoids a claim; add one line if something big happened). F 95
+  [ ] Lebanon: latest toll and ceasefire status.                                                              F 96-97
+  [ ] Budget: any new deficit/defence figures; any new US MOU news; any EU Council decision.                   F 98-103
+  [ ] Qatar-linked investigations: any indictments?                                                           F 106
+  [ ] Any statement from Ben-Gvir, Smotrich, Deri, UTJ, Ra'am, Joint List after the consultations (add if it
+      changes a red line described in Part 5).
+
+B. SOURCES
+  [ ] Open every URL in the Source: line and F; replace dead links.
+  [ ] Open the Wikipedia and Times of Israel pages directly (they could not be fetched during research).
+  [ ] Find the original Eisenkot X post and Bennett quote and link them.
+
+C. LEGAL AND FAIRNESS
+  [ ] Every allegation is attributed and paired with the response (Likud claim; Qatar; settler violence; Gaza figures).
+  [ ] No crime stated as fact except Ben-Gvir's 2007 conviction (a court finding).
+  [ ] "Denies all charges · No verdict" on screen in Part 2.
+  [ ] Gaza chapter: no jokes, no stick figures, no identifiable dead/injured, no children's faces.
+  [ ] No AI faces of real people; no cartoons over real faces; every real photo credited.
+  [ ] Logos used only for identification.
+  [ ] No scenario probabilities anywhere (script, title, thumbnail, description).
+
+D. TECHNICAL
+  [ ] Six parts rendered READY; joined file plays end to end; no black frames at the joins.
+  [ ] Loudness ≈ -14 LUFS; VO intelligible over music; Part 4 music dropped.
+  [ ] Captions match the final audio; names spelled correctly.
+  [ ] Chapters re-timed to the final cut, first at 0:00.
+  [ ] Thumbnail made from real photos with credits; text readable at mobile size.
+
+E. AFTER UPLOAD
+  [ ] Pin the comment from H. Turn on comment moderation for slurs (Hebrew, Arabic and English blocked-word lists).
+  [ ] Diary a 7-day and 28-day update check (mandate deadlines).

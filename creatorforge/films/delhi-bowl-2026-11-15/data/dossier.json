@@ -1,0 +1,9 @@
+{"film": "delhi-bowl", "date": "2026-11-15", "method": "search-result snippets restricted to official/major sources; earthobservatory.nasa.gov, science.nasa.gov and cpcb.nic.in were not reachable from the container, so pages were not read word for word",
+ "claims": [
+  {"id": "basin", "on_screen": "Haze is hemmed in between the Himalaya to the north and the Vindhya Range to the south", "status": "confirmed (snippet)", "source": "NASA Earth Observatory, 'Smoky Skies Over the Indo-Gangetic Plain', 3 Nov 2024", "url": "https://earthobservatory.nasa.gov/images/153540/smoky-skies-over-the-indo-gangetic-plain"},
+  {"id": "lid", "on_screen": "An inversion works like a lid: warmer air above traps pollution near the ground; common in Nov-Dec", "status": "confirmed (snippet)", "source": "NASA Earth Observatory, 3 Nov 2024 (same article)", "url": "https://earthobservatory.nasa.gov/images/153540/smoky-skies-over-the-indo-gangetic-plain"},
+  {"id": "still", "on_screen": "Falling temperatures and slow winds", "status": "confirmed (snippet, NASA EO 2019 and HT 13 Nov 2024); no IMD/IITM primary quote found", "source": "NASA Earth Observatory"},
+  {"id": "aqi", "on_screen": "494, Delhi's 24-hour average AQI, 18 Nov 2024", "status": "confirmed (snippet of the CPCB bulletin; The Wire citing it)", "source": "CPCB Delhi/NCR AQI bulletin 18-11-2024", "url": "https://cpcb.nic.in/uploads/AQM/AQ-NCR-18112024.pdf", "note": "CPCB label 'Severe'; CAQM's 'severe plus' is AQI above 450"},
+  {"id": "sat", "on_screen": "NASA satellite images, 3 Oct and 14 Nov 2024", "status": "primary imagery", "source": "NASA GIBS, MODIS Terra corrected reflectance (gaps filled from MODIS Aqua, same day)"}
+ ],
+ "not_used": ["'bowl' as a quoted term (news wording, not NASA's)", "a 9.8 m/s November wind figure (likely unit error)", "who-causes-how-much percentages (disputed; not this engine)"]}

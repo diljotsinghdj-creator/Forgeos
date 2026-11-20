@@ -1,0 +1,252 @@
+[
+ {
+  "claim": "The New York Times ran 'For Exercise in New York Futility, Push Button' by Michael Luo on 27 Feb 2004",
+  "source": "NYT, 27 Feb 2004 (original not reached; reproduced in Reason 'Buttons Down' https://reason.com/2004/02/27/buttons-down/ , Slashdot https://tech.slashdot.org/story/04/02/28/1722239/nyc-crosswalk-buttons-are-inoperative , and a city-hosted PDF https://media.alexandriava.gov/docs-archives/localmotion/info/pushbuttonarticle.pdf which was blocked from this session)",
+  "status": "confirmed (secondary)"
+ },
+ {
+  "claim": "'More than 2,500 of the 3,250 walk buttons that still exist function essentially as mechanical placebos, city figures show'",
+  "source": "NYT 27 Feb 2004 as quoted by Reason (2004) and design/observer coverage https://designobserver.com/information-design-and-the-placebo-effect ; Mel Magazine https://melmagazine.com/en-us/story/most-crosswalk-buttons-do-absolutely-nothing-and-the-world-is-a-desolate-lie",
+  "status": "confirmed (secondary) — exact wording to check against the NYT archive"
+ },
+ {
+  "claim": "The buttons were installed when traffic was much lighter (Michael Primeggia, NYC DOT deputy commissioner for traffic operations)",
+  "source": "NYT 27 Feb 2004, as reproduced (nsxprime thread https://nsxprime.com/threads/i-knew-it.30279 ; Reason 2004)",
+  "status": "confirmed (secondary) — paraphrase, not a direct quote"
+ },
+ {
+  "claim": "About 750 locations still had working buttons in 2004 (consistent with 3,250 minus 'more than 2,500')",
+  "source": "NYT 27 Feb 2004 as reproduced (Primeggia); Untapped Cities https://untappedcities.com/2013/07/24/cities-101-do-crosswalk-buttons-nycactually-work/",
+  "status": "confirmed (secondary)"
+ },
+ {
+  "claim": "As signals moved to centralised, computer-controlled timing, most NYC buttons were deactivated but left on the poles",
+  "source": "NYT 2016 (as reproduced) and 2004 coverage; Mel Magazine; Today I Found Out https://www.todayifoundout.com/?p=12077",
+  "status": "confirmed (secondary)"
+ },
+ {
+  "claim": "Later counts: about 100–120 working buttons in NYC by 2016–2018 (NYT 2016 / CNN 2018)",
+  "source": "Mel Magazine; Popular Science https://www.popsci.com/health/buttons-that-dont-do-anything/",
+  "status": "reported — counts conflict; NOT used in the script"
+ },
+ {
+  "claim": "Removing NYC's dead buttons would cost about $1 million / $400–500 each",
+  "source": "Secondary (Untapped Cities citing Kate Ascher 2005; others)",
+  "status": "to check — NOT used in the script"
+ },
+ {
+  "claim": "London (2013): TfL said at the majority of junctions the button controls the green man; if no one presses, the signals skip the pedestrian phase",
+  "source": "BBC News Magazine 2013, quoting Iain Blackmore (TfL), via mirrors (newssniffer https://www.newssniffer.co.uk/articles/1257211/diff/0/1 ; Laurie Winkless https://lauriewinkless.com/journal/does-pushing-the-button-at-a-crossing-actually-do-anything)",
+  "status": "confirmed (secondary) — dated 2013"
+ },
+ {
+  "claim": "UK Department for Transport: at busy junctions 'the pedestrian crossing may be programmed to come up every time even if no-one presses the button'",
+  "source": "BBC News Magazine 2013 via mirrors (as above)",
+  "status": "confirmed (secondary)"
+ },
+ {
+  "claim": "London has about 4,650 pedestrian crossings, about 2,500 at junctions (2013)",
+  "source": "BBC 2013 via mirrors",
+  "status": "reported — NOT used"
+ },
+ {
+  "claim": "March 2020: New South Wales automated pedestrian crossings in central Sydney so people did not have to touch the buttons (COVID-19)",
+  "source": "Time Out Sydney https://timeout.com/sydney/news/pedestrian-crossings-in-sydney-will-become-automated-so-you-wont-need-to-push-a-button-033120 ; Government News https://governmentnews.com.au/sydney-traffic-lights-automated-to-combat-COVID-19 ; Transport for NSW https://transportnsw.info/news/2021/automated-pedestrian-crossings-in-nsw",
+  "status": "confirmed (secondary; Transport for NSW page is primary but was not opened)"
+ },
+ {
+  "claim": "Covers were fitted over some Sydney push buttons (Aug 2020); later removed at health precincts while CBD crossings stayed automated",
+  "source": "inkl / SMH report https://inkl.com/news/covid-covers-to-be-removed-from-sydney-pedestrian-buttons-but-cbd-traffic-lights-remain-automated",
+  "status": "reported — date to check"
+ },
+ {
+  "claim": "Sydney CBD crossings currently run automatically 6am–10pm, seven days a week",
+  "source": "Transport for NSW https://transportnsw.info/news/2021/automated-pedestrian-crossings-in-nsw (via search summary)",
+  "status": "reported — refresh before air"
+ },
+ {
+  "claim": "Auckland Transport switched nearly all intersections to automatic pedestrian phases 7am–7pm from 8 April 2020",
+  "source": "Greater Auckland https://www.greaterauckland.org.nz/2020/07/03/weekly-roundup-04-july-2020/",
+  "status": "reported — NOT used"
+ },
+ {
+  "claim": "The Americans with Disabilities Act became law in 1990",
+  "source": "Public Law 101-336 (common knowledge); US Access Board https://www.access-board.gov/ada/",
+  "status": "confirmed (primary)"
+ },
+ {
+  "claim": "2010 ADA Standards §407.3.5 (Door Delay): elevator doors remain fully open in response to a car call for at least 3 seconds",
+  "source": "2010 ADA Standards §407.3.5 https://www.corada.com/documents/2010ADAStandards/407-3 ; US Access Board guide, ch. 4 https://www.access-board.gov/ada/guides/chapter-4-elevators-and-platform-lifts/",
+  "status": "confirmed (primary)"
+ },
+ {
+  "claim": "§407.3.4 (Door and Signal Timing): time from arrival notification to start of door closing is at least D/1.5 ft/s and never less than 5 seconds",
+  "source": "2010 ADA Standards §407.3.4; Access Board guide ch. 4",
+  "status": "confirmed (primary)"
+ },
+ {
+  "claim": "User activation (e.g. the door-close button) cannot reduce the minimum door-open and signal timing",
+  "source": "US Access Board guide to the ADA Standards, ch. 4 (elevators) https://www.access-board.gov/ada/guides/chapter-4-elevators-and-platform-lifts/",
+  "status": "confirmed (primary, Access Board guidance)"
+ },
+ {
+  "claim": "Earlier 1991 ADAAG also set door-delay and door-timing minimums",
+  "source": "1991 ADAAG 4.10.7–4.10.8 (from memory)",
+  "status": "to check — script says only 'its accessibility standards'"
+ },
+ {
+  "claim": "NYT (2016) quoted the National Elevator Industry Inc. (Karen Penafiel) as saying working close-door buttons were phased out after the ADA of 1990",
+  "source": "NYT 2016 (Christopher Mele) as reported by CBS Boston https://www.cbsnews.com/boston/news/door-close-elevator-button-dont-work-placebo and AOL https://www.aol.com/article/lifestyle/2016/11/02/door-close-buttons-on-most-elevators-don-t-work-for-a-reason/21597268/",
+  "status": "confirmed (secondary) — wording to check"
+ },
+ {
+  "claim": "The same trade-group head later told ABC7: 'People think it is merely a placebo button and it's not' — the button works, but only after the required delay",
+  "source": "ABC7 https://abc7news.com/technology/does-the-elevator-close-door-button-really-work/3187917/",
+  "status": "confirmed (secondary)"
+ },
+ {
+  "claim": "The UK Lift and Escalator Industry Association told the Times that not all lifts have the button, but where present they do work",
+  "source": "NYT 2016 via CBS Boston / AOL",
+  "status": "confirmed (secondary)"
+ },
+ {
+  "claim": "Whether the close button exists and whether it shortens the wait is set by the building owner (Otis representative)",
+  "source": "AOL/Yahoo 'Does the elevator door close button actually do anything?' https://www.aol.com/does-elevator-door-close-button-160000640.html",
+  "status": "confirmed (secondary)"
+ },
+ {
+  "claim": "A PBS NOVA team (2010) found elevators even in the same bank behaved differently when the close button was pressed",
+  "source": "PBS NOVA 'The great elevator button debate' https://www.pbs.org/wgbh/nova/insidenova/2010/11/door-close-button.html and part II https://www.pbs.org/wgbh/nova/insidenova/2010/12/the-great-elevator-button-debate-part-ii.html",
+  "status": "confirmed (secondary)"
+ },
+ {
+  "claim": "In firefighters' Phase II operation, ASME A17.1/CSA B44 requires open power doors to close only by continuous pressure on the door-close button",
+  "source": "ASME A17.1 Phase II text as quoted by IUEC alert https://iuec.org/wp-content/uploads/IUEC-Codes-Standards-Alert-Phase-II-Operation-1-1.pdf and 2007 code extract https://allstarce.com/wp-content/uploads/2015/08/2007-ASME-SAFETY-CODE-2.27.3-2.29.1.pdf",
+  "status": "confirmed (secondary; code text quoted, standard itself paywalled)"
+ },
+ {
+  "claim": "The ADA Standards incorporate ASME A17.1 (2000 edition with addenda) for elevators",
+  "source": "US Access Board elevators guide https://www.access-board.gov/files/ada/guides/elevators.pdf",
+  "status": "confirmed (primary)"
+ },
+ {
+  "claim": "Wall Street Journal (Jared Sandberg, Jan 2003) reported that many office thermostats are fakes meant to make occupants feel in control",
+  "source": "NPR Morning Edition 15/16 Jan 2003 https://www.npr.org/2003/01/16/922609/morning-edition-returns-ac-disclosure ; PlanSponsor https://www.plansponsor.com/thermostats-give-office-workers-cold-shoulder/",
+  "status": "reported (WSJ original not reached) — date to check"
+ },
+ {
+  "claim": "An HVAC expert estimated up to 90% of office thermostats are dummies; others said about 2%",
+  "source": "Secondary coverage of WSJ 2003 (Today I Found Out https://www.todayifoundout.com/?p=12106)",
+  "status": "reported, disputed — NOT used"
+ },
+ {
+  "claim": "ACHR News 'Placebo Stats' (2003): informal web poll, 70 responses, 51 said yes they had installed dummy thermostats, 19 said no",
+  "source": "ACHR News https://achrnews.com/articles/92414-placebo-stats (search snippet; site blocked from this session); dated ~31 Mar 2003 per reader letter https://www.achrnews.com/blogs/17-opinions/post/92850-reader-mail-05-12-2003",
+  "status": "confirmed (secondary) — date to check"
+ },
+ {
+  "claim": "ACHR: 'the intent of installing nonfunctional thermostats is to satisfy the comfort needs of building occupants without giving them a direct interface to the mechanical system'",
+  "source": "ACHR News 'Placebo Stats' (search snippet)",
+  "status": "confirmed (secondary) — wording to check"
+ },
+ {
+  "claim": "Langer (1975) 'The illusion of control', Journal of Personality and Social Psychology 32(2):311–328, six studies",
+  "source": "JPSP 1975 (copy https://www.scribd.com/document/711219100/Langer-1975 not opened); Clark & Wohl 2021 https://gamblingresearch.sites.olt.ubc.ca/files/2021/09/ClarkWohl_2021_LangersIoC_AAM.pdf",
+  "status": "confirmed (secondary)"
+ },
+ {
+  "claim": "Langer's definition: 'an expectancy of a personal success probability inappropriately higher than the objective probability would warrant'",
+  "source": "Langer 1975 as quoted in multiple reviews (e.g. https://pmc.ncbi.nlm.nih.gov/articles/PMC9292938/)",
+  "status": "confirmed (secondary)"
+ },
+ {
+  "claim": "Langer argued skill cues — competition, choice, familiarity, involvement — make people feel inappropriately confident in chance situations",
+  "source": "Langer 1975 as summarised in reviews (Clark & Wohl 2021)",
+  "status": "confirmed (secondary)"
+ },
+ {
+  "claim": "Lottery study: office workers offered a $1 ticket (football-player cards); 27 chose their ticket, 26 were handed one (yoked)",
+  "source": "Langer 1975 as described in PMC5399809 https://pmc.ncbi.nlm.nih.gov/articles/PMC5399809 and Clark & Wohl 2021",
+  "status": "confirmed (secondary) — experiment number to check"
+ },
+ {
+  "claim": "Mean resale prices asked: $8.67 (chose) vs $1.96 (assigned)",
+  "source": "PMC5399809 (2016 review citing Langer 1975)",
+  "status": "confirmed (secondary) — check against the original table before voice"
+ },
+ {
+  "claim": "Klusowski, Small & Simmons (2021), Psychological Science 32(2):159–172: 17 experiments, N = 10,825; choice rarely makes people feel more likely to get preferable outcomes unless it actually makes them more likely",
+  "source": "https://faculty.wharton.upenn.edu/wp-content/uploads/2016/11/36-Klusowski-Small-Simmons-2021.pdf ; Yale Insights https://insights.som.yale.edu/insights/does-having-choice-provide-an-illusion-of-control",
+  "status": "confirmed (primary abstract via search)"
+ },
+ {
+  "claim": "Klusowski et al.: where chosen options were rated higher, this reflected pre-existing beliefs that functionally identical options were not identical",
+  "source": "Klusowski, Small & Simmons 2021 (abstract)",
+  "status": "confirmed (secondary summary of abstract)"
+ },
+ {
+  "claim": "Eben et al.: online replication of Langer & Roth (1975), N = 289, found the effect but smaller (largest g_av = 0.49)",
+  "source": "https://serval.unil.ch/notice/serval:BIB_4C70470472CE",
+  "status": "confirmed (secondary)"
+ },
+ {
+  "claim": "Stefan & David (2013) meta-analysis, J. Applied Social Psychology: overall weighted mean effect size of illusion of control d = 0.62 (95% CI 0.49–0.75)",
+  "source": "Search summary of Stefan & David 2013",
+  "status": "confirmed (secondary) — check journal and CI"
+ },
+ {
+  "claim": "Presson & Benassi (1996) meta-analysis of illusion-of-control studies (J. Social Behavior and Personality)",
+  "source": "cited in later papers; details not found",
+  "status": "to check — NOT used"
+ },
+ {
+  "claim": "Glass & Singer (1972), Urban Stress: people exposed to loud unpredictable noise who had a button to stop it (but were asked not to use it) rarely pressed it and performed better on later tasks than people with no button",
+  "source": "Glass & Singer, Urban Stress (Academic Press 1972), as summarised by secondary sources (e.g. https://squashmagazine.com/2011/12/wills-world-control/ ; DTIC review https://apps.dtic.mil/sti/pdfs/ADA051829.pdf)",
+  "status": "confirmed (secondary) — task details to check"
+ },
+ {
+  "claim": "Later experiments using federal informed-consent procedures failed to replicate the noise after-effects; consent may itself give subjects a sense of control",
+  "source": "Search summary of a later study (Gardner 1978-era, citation to confirm) via https://www.doi.org/10.1207/S15327558IJBM0904_04 results",
+  "status": "reported — citation to check"
+ },
+ {
+  "claim": "Langer & Rodin (1976), JPSP 34(2):191–198: field experiment, 91 residents aged 65–90 in a Connecticut nursing home; one floor given a responsibility talk and choices (incl. a plant to care for)",
+  "source": "Search summaries (World Database of Happiness https://worlddatabaseofhappiness.eur.nl/hap_cor/desc_cor.php?sssid=3756)",
+  "status": "confirmed (secondary)"
+ },
+ {
+  "claim": "The comparison floor was also given plants, cared for by staff",
+  "source": "Standard textbook description of Langer & Rodin 1976",
+  "status": "to check"
+ },
+ {
+  "claim": "Rodin & Langer (1977) 18-month follow-up reported fewer deaths in the responsibility group",
+  "source": "Rodin & Langer 1977, JPSP 35(12) as summarised (secondary)",
+  "status": "confirmed (secondary) — exact percentages not verified, NOT used"
+ },
+ {
+  "claim": "Caveats: the two floors got different messages from the administrator (confound); the authors cautioned that more control is not unlimited good and too much responsibility can harm",
+  "source": "Secondary critiques and the authors' own discussion (search summaries)",
+  "status": "confirmed (secondary)"
+ },
+ {
+  "claim": "20 Oct 2020: Judge Paul Engelmayer (S.D.N.Y.) ruled in ACB of New York v. City of New York that the absence of non-visual crossing information at more than 95% of signalised intersections violated the ADA and Rehabilitation Act",
+  "source": "Opinion https://www.nysd.uscourts.gov/sites/default/files/2020-10/18-cv-5792%20ACBNY%20v.%20City%20of%20New%20York%20-%20Opinion%20%20Order_2.pdf ; Insurance Journal https://www.insurancejournal.com/news/east/2020/10/23/587756.htm",
+  "status": "confirmed (secondary; primary opinion located, not opened)"
+ },
+ {
+  "claim": "Dec 2021 remedial order: accessible pedestrian signals at about 10,000 of NYC's ~13,200 signalised intersections by the end of 2031 (reports differ: 9,000 additional / 10,000 total)",
+  "source": "Courthouse News https://www.courthousenews.com/judge-orders-10-year-plan-to-make-nyc-crosswalks-accessible/ ; Route Fifty https://route-fifty.com/management/2022/01/court-orders-crosswalk-upgrades-blind-pedestrians-new-york/360468 ; opinion https://www.nysd.uscourts.gov/sites/default/files/2021-12/18cv5792%20Opinion%20%20Order%2012.27.21.pdf",
+  "status": "confirmed (secondary) — exact count and date to check"
+ },
+ {
+  "claim": "NYC DOT installed accessible pedestrian signals at 855 intersections in 2024",
+  "source": "NYC Streets Plan update https://www.nyc.gov/html/dot/downloads/pdf/nyc-streets-plan-update.pdf ; City & State https://www.cityandstateny.com/policy/2025/03/nyc-dot-falls-far-short-24-targets-bike-and-bus-lanes-touts-progress/403707/",
+  "status": "confirmed (primary)"
+ },
+ {
+  "claim": "Accessible pedestrian signals give non-visual crossing information (audible tones or speech messages, vibrating surfaces)",
+  "source": "NYC DOT APS program reports https://www.nyc.gov/html/dot/downloads/pdf/2021-aps-program-status-report.pdf ; MUTCD §4E.09 (from memory)",
+  "status": "confirmed (secondary)"
+ }
+]

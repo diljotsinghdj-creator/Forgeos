@@ -1,0 +1,301 @@
+{
+ "title": "Fixture: why locks lift ships",
+ "channel": "print-facts",
+ "language": "en",
+ "runtime_target_s": 40,
+ "central_question": "How does a canal lift a ship?",
+ "answer": "With gravity and doors.",
+ "why_now": "fixture",
+ "engine": "trojan-horse",
+ "pick": {
+  "engine": "trojan-horse",
+  "pitched": [
+   "trojan-horse",
+   "reverse-autopsy",
+   "historical-echo"
+  ],
+  "owner_words": "fixture",
+  "date": "2026-11-12"
+ },
+ "hook": {
+  "mechanism": "anomaly",
+  "line": "This ship is climbing.",
+  "first_frame": "satellite of a lock"
+ },
+ "dna": {
+  "lead_technique": "map_2d",
+  "support_technique": "document_annotated",
+  "palette": {
+   "base": "#1B2A3A",
+   "accent": "#3FA7D6",
+   "signal": "#FFDD33",
+   "from_subject": "canal water and lock paint"
+  },
+  "typography": "grotesk display, serif captions",
+  "texture": "clean print",
+  "motion_language": "slow pushes, builds on the word",
+  "transition_family": "map_fly",
+  "sound_palette": "two cues: pulse, strings",
+  "opening_shot": "satellite",
+  "signature_device": "water-level bar"
+ },
+ "chapters": [
+  {
+   "id": "C1",
+   "title": "Lift",
+   "job": "mechanism",
+   "open_loop": "why doors?"
+  }
+ ],
+ "evidence_waiver": null,
+ "scenes": [
+  {
+   "id": "S1",
+   "chapter": "C1",
+   "start": 0,
+   "end": 3.5,
+   "narration": "This ship is climbing.",
+   "viewer_understands": "test understanding 1",
+   "purpose": "hook",
+   "claim_ids": [],
+   "visual_mode": "satellite",
+   "visual": "test visual 1",
+   "why_this_visual": "fixture",
+   "alternatives": [
+    "chart"
+   ],
+   "motion": "push in 5%",
+   "on_screen_text": "label 1",
+   "badge": "",
+   "sound": {
+    "music": "cue A",
+    "sfx": "tick",
+    "ambience": "",
+    "silence": false
+   },
+   "transition_out": {
+    "family": "cut",
+    "cause": "new idea"
+   },
+   "asset_ids": [
+    "A1"
+   ]
+  },
+  {
+   "id": "S2",
+   "chapter": "C1",
+   "start": 3.5,
+   "end": 7.5,
+   "narration": "The 1914 plan shows twelve steps.",
+   "viewer_understands": "test understanding 2",
+   "purpose": "prove",
+   "claim_ids": [
+    "c1"
+   ],
+   "visual_mode": "document_annotated",
+   "visual": "test visual 2",
+   "why_this_visual": "fixture",
+   "alternatives": [
+    "chart"
+   ],
+   "motion": "push in 5%",
+   "on_screen_text": "label 2",
+   "badge": "",
+   "sound": {
+    "music": "cue A",
+    "sfx": "tick",
+    "ambience": "",
+    "silence": false
+   },
+   "transition_out": {
+    "family": "push_through",
+    "cause": "new idea"
+   },
+   "asset_ids": [
+    "A2"
+   ]
+  },
+  {
+   "id": "S3",
+   "chapter": "C1",
+   "start": 7.5,
+   "end": 14,
+   "narration": "Each step is a room of water.",
+   "viewer_understands": "test understanding 3",
+   "purpose": "inform",
+   "claim_ids": [],
+   "visual_mode": "map_2d",
+   "visual": "test visual 3",
+   "why_this_visual": "fixture",
+   "alternatives": [
+    "chart"
+   ],
+   "motion": "push in 5%",
+   "on_screen_text": "label 3",
+   "badge": "",
+   "sound": {
+    "music": "cue A",
+    "sfx": "tick",
+    "ambience": "",
+    "silence": false
+   },
+   "transition_out": {
+    "family": "map_fly",
+    "cause": "new idea"
+   }
+  },
+  {
+   "id": "S4",
+   "chapter": "C1",
+   "start": 14,
+   "end": 20,
+   "narration": "Fill the room and the ship rises.",
+   "viewer_understands": "test understanding 4",
+   "purpose": "inform",
+   "claim_ids": [],
+   "visual_mode": "diagram",
+   "visual": "test visual 4",
+   "why_this_visual": "fixture",
+   "alternatives": [
+    "chart"
+   ],
+   "motion": "push in 5%",
+   "on_screen_text": "label 4",
+   "badge": "",
+   "sound": {
+    "music": "cue A",
+    "sfx": "tick",
+    "ambience": "",
+    "silence": false
+   },
+   "transition_out": {
+    "family": "morph",
+    "cause": "new idea"
+   }
+  },
+  {
+   "id": "S5",
+   "chapter": "C1",
+   "start": 20,
+   "end": 24,
+   "narration": "Workers built it by hand.",
+   "viewer_understands": "test understanding 5",
+   "purpose": "context",
+   "claim_ids": [],
+   "visual_mode": "archival_photo",
+   "visual": "test visual 5",
+   "why_this_visual": "fixture",
+   "alternatives": [
+    "chart"
+   ],
+   "motion": "push in 5%",
+   "on_screen_text": "label 5",
+   "badge": "",
+   "sound": {
+    "music": "cue A",
+    "sfx": "tick",
+    "ambience": "",
+    "silence": false
+   },
+   "transition_out": {
+    "family": "cut",
+    "cause": "new idea"
+   },
+   "asset_ids": [
+    "A5"
+   ]
+  },
+  {
+   "id": "S6",
+   "chapter": "C1",
+   "start": 24,
+   "end": 30,
+   "narration": "Water comes downhill from a lake.",
+   "viewer_understands": "test understanding 6",
+   "purpose": "inform",
+   "claim_ids": [],
+   "visual_mode": "map_2d",
+   "visual": "test visual 6",
+   "why_this_visual": "fixture",
+   "alternatives": [
+    "chart"
+   ],
+   "motion": "push in 5%",
+   "on_screen_text": "label 6",
+   "badge": "",
+   "sound": {
+    "music": "cue A",
+    "sfx": "tick",
+    "ambience": "",
+    "silence": false
+   },
+   "transition_out": {
+    "family": "map_fly",
+    "cause": "new idea"
+   }
+  },
+  {
+   "id": "S7",
+   "chapter": "C1",
+   "start": 30,
+   "end": 34,
+   "narration": "Each transit uses 200 million litres.",
+   "viewer_understands": "test understanding 7",
+   "purpose": "payoff",
+   "claim_ids": [
+    "c2"
+   ],
+   "visual_mode": "big_number",
+   "visual": "test visual 7",
+   "why_this_visual": "fixture",
+   "alternatives": [
+    "chart"
+   ],
+   "motion": "push in 5%",
+   "on_screen_text": "label 7",
+   "badge": "",
+   "sound": {
+    "music": "cue A",
+    "sfx": "tick",
+    "ambience": "",
+    "silence": false
+   },
+   "transition_out": {
+    "family": "cut",
+    "cause": "new idea"
+   }
+  },
+  {
+   "id": "S8",
+   "chapter": "C1",
+   "start": 34,
+   "end": 38,
+   "narration": "And the lake must refill.",
+   "viewer_understands": "test understanding 8",
+   "purpose": "emotion",
+   "claim_ids": [],
+   "visual_mode": "location_footage",
+   "visual": "test visual 8",
+   "why_this_visual": "fixture",
+   "alternatives": [
+    "chart"
+   ],
+   "motion": "push in 5%",
+   "on_screen_text": "label 8",
+   "badge": "",
+   "sound": {
+    "music": "cue A",
+    "sfx": "tick",
+    "ambience": "",
+    "silence": false
+   },
+   "transition_out": {
+    "family": "dip",
+    "cause": "new idea"
+   },
+   "asset_ids": [
+    "A8"
+   ]
+  }
+ ]
+}

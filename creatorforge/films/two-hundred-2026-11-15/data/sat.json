@@ -1,0 +1,121 @@
+{
+ "sundarbans": {
+  "layer": "Blue Marble NG"
+ },
+ "reef": {
+  "layer": "Blue Marble NG"
+ },
+ "deadsea": {
+  "layer": "Blue Marble NG"
+ },
+ "alpsat": {
+  "layer": "Blue Marble NG"
+ },
+ "nilesat": {
+  "layer": "Blue Marble NG"
+ },
+ "malacca": {
+  "layer": "MODIS Terra/Aqua",
+  "date": "2024-02-04"
+ },
+ "gibraltar": {
+  "layer": "MODIS Terra/Aqua",
+  "date": "2024-07-10"
+ },
+ "babel": {
+  "layer": "MODIS Terra/Aqua",
+  "date": "2024-01-06"
+ },
+ "rondonia_a": {
+  "layer": "MODIS Terra/Aqua",
+  "date": "2000-07-20"
+ },
+ "rondonia_b": {
+  "layer": "MODIS Terra/Aqua",
+  "date": "2024-07-20"
+ },
+ "palm_a": {
+  "layer": "MODIS Terra/Aqua",
+  "date": "2000-11-15"
+ },
+ "palm_b": {
+  "layer": "MODIS Terra/Aqua",
+  "date": "2024-11-15"
+ },
+ "indusflood_a": {
+  "layer": "MODIS Terra/Aqua",
+  "date": "2022-06-15"
+ },
+ "indusflood_b": {
+  "layer": "MODIS Terra/Aqua",
+  "date": "2022-09-02"
+ },
+ "hamun_a": {
+  "layer": "MODIS Terra/Aqua",
+  "date": "2000-04-15"
+ },
+ "hamun_b": {
+  "layer": "MODIS Terra/Aqua",
+  "date": "2023-04-15"
+ },
+ "nilenight": {
+  "layer": "VIIRS Black Marble 2016"
+ },
+ "gulfnight": {
+  "layer": "VIIRS Black Marble 2016"
+ },
+ "bosnywash": {
+  "layer": "VIIRS Black Marble 2016"
+ },
+ "japannight": {
+  "layer": "VIIRS Black Marble 2016"
+ },
+ "congo": {
+  "layer": "Blue Marble NG"
+ },
+ "arabia": {
+  "layer": "Blue Marble NG"
+ },
+ "mongolia": {
+  "layer": "Blue Marble NG"
+ },
+ "galapagos": {
+  "layer": "Blue Marble NG"
+ },
+ "socotra": {
+  "layer": "Blue Marble NG"
+ },
+ "antarctic": {
+  "layer": "Blue Marble NG"
+ },
+ "cyclone": {
+  "layer": "MODIS Terra/Aqua",
+  "date": "2023-05-13"
+ },
+ "smokeplume": {
+  "layer": "MODIS Terra/Aqua",
+  "date": "2020-09-09"
+ },
+ "dustplume": {
+  "layer": "MODIS Terra/Aqua",
+  "date": "2020-06-18"
+ },
+ "earhart": {
+  "layer": "Blue Marble NG"
+ },
+ "bell": {
+  "layer": "Blue Marble NG"
+ },
+ "pearl": {
+  "layer": "Blue Marble NG"
+ },
+ "dday": {
+  "layer": "Blue Marble NG"
+ },
+ "trafalgar": {
+  "layer": "Blue Marble NG"
+ },
+ "lebanon": {
+  "layer": "Blue Marble NG"
+ }
+}

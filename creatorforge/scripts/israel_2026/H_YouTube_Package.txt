@@ -1,0 +1,93 @@
+H - YOUTUBE PACKAGE
+Israel 2026: The Election That Settled Nothing
+
+FIVE TITLES (pick one; A/B test the first two)
+  1. Israel's Election Settled Nothing. Here's Why.
+  2. 120 Seats, No Government: Israel's 2026 Election Explained
+  3. Netanyahu vs Eisenkot: The Election Nobody Won
+  4. The Missing 61st Seat: Inside Israel's Deadlocked Election
+  5. Israel 2026: Trials, Gaza, Kingmakers and a Parliament With No Majority
+
+THREE THUMBNAIL CONCEPTS (real photos only, credited; no AI faces; no faces composited with cartoons)
+  A. "THE MISSING SEAT" - a single empty red theatre seat tagged 61 in the centre, the Knesset building blurred behind.
+     Big text: "61?"  Small text: "NOBODY GOT THERE". No people. Safest, strongest brand motif.
+  B. "53 vs 48" - split frame: left a real credited photo of Netanyahu, right a real credited photo of Eisenkot
+     (official/press photos, unaltered, neutral expressions), a crack down the middle. Big text: "53 vs 48".
+     Small text: "+19 KINGMAKERS". Make with: python -m creatorforge_worker.thumbs --left "Benjamin Netanyahu"
+     --right "Gadi Eisenkot" (real Wikipedia photos). Credit both photos in the description.
+  C. "THE CALCULATOR" - a pocket calculator on the Knesset seat chart showing "ERROR", red tape across it.
+     Big text: "NO MAJORITY".
+  Do NOT use: Gaza casualty images, hostages, children, flags burning, or any "shock" image.
+
+SEO DESCRIPTION (paste; update numbers if certified results change)
+  On 27 October 2026, Israel held its first election since the October 7 attack and the Gaza war. Turnout was the
+  highest in a generation. The result: Netanyahu's bloc 53 seats, Gadi Eisenkot's bloc 48, Arab-led parties a
+  record 19, and no one near the 61 seats needed to govern.
+
+  In this investigative documentary we explain what happened, the fraud allegations and what officials say about
+  them, Netanyahu's corruption trial and pardon request, why there is still no state inquiry into October 7, how
+  Israel's coalition system works, what the election means for Gaza, the West Bank and Palestinians, the kingmakers
+  (Eisenkot, Bennett, Lieberman, Ben-Gvir, Smotrich, the Haredi parties, Ra'am and the Joint List, President Herzog),
+  the money and the wars (Iran, Lebanon, the budget, US aid, Trump's endorsement, the EU and Saudi Arabia), and five
+  ways this could end.
+
+  Research cut-off: 31 October 2026. Allegations are labelled as allegations. Netanyahu denies all charges against
+  him; there is no verdict. Sources for every claim are listed below and in the pinned comment.
+
+  CHAPTERS
+  (paste the chapter list below)
+
+  SOURCES
+  (paste the "Source:" line from the script, one link per line; full register available on request)
+
+  PHOTO CREDITS
+  (paste the credits list from each render part's provenance file)
+
+  Illustrations are labelled. This video contains no AI-generated images of real people.
+
+CHAPTERS (CreatorForge pace; RE-TIME after the final edit - YouTube needs the first chapter at 0:00 and each ≥10 s)
+  0:00 Cold open: 120 seats, no government
+  1:43 Part 1: What Actually Happened
+  6:52 Part 2: The Survivor
+  12:33 Part 3: The Machine
+  15:38 Part 4: Gaza, the West Bank, and the People Not on the Ballot
+  24:58 Part 5: The Kingmakers
+  32:24 Part 6: Money, Missiles, and the Man in Washington
+  38:24 Part 7: Five Ways This Ends
+  42:01 Part 8: What It Settled
+
+KEYWORDS
+  Israel election 2026; Israeli election results; Knesset 2026; Netanyahu; Gadi Eisenkot; Yashar party; Naftali Bennett;
+  Yair Lapid; Beyachad; Avigdor Lieberman; Itamar Ben-Gvir; Bezalel Smotrich; Haredi draft; Shas; United Torah Judaism;
+  Ra'am; Mansour Abbas; Joint List; Isaac Herzog; coalition talks; Israel caretaker government; Netanyahu trial;
+  Netanyahu pardon; October 7 inquiry; Gaza ceasefire; West Bank settlements; E1; ICC Netanyahu; ICJ South Africa;
+  Iran war 2026; Lebanon Hezbollah 2026; Israel budget; US military aid Israel; Trump Netanyahu endorsement; Saudi
+  normalization; Israel explained
+
+TAGS (YouTube tag box, under 500 characters)
+  Israel election 2026, Israel election explained, Knesset, Netanyahu, Eisenkot, Israel coalition, Israeli politics,
+  Netanyahu trial, Gaza ceasefire, West Bank, Herzog, Bennett, Lieberman, Ben-Gvir, Smotrich, Haredi draft, Raam,
+  Joint List, Middle East news, documentary
+
+HASHTAGS (first three show above the title)
+  #Israel #IsraelElection #Knesset
+
+PINNED COMMENT
+  Sources, corrections and updates for this video.
+  - Research cut-off: 31 Oct 2026. Coalition talks start in early November; we'll pin updates here.
+  - Seat numbers are the Central Elections Committee figures as reported on 30 Oct. If the certified results change
+    any number, the correction will be listed here with a timestamp.
+  - Likud's claim that the election was "stolen" is an allegation; police and election officials said there was no
+    evidence. Netanyahu denies all charges in his trial; there is no verdict.
+  - Gaza casualty figures come from Gaza's Health Ministry (disputed by Israel) and UNICEF, as stated on screen.
+  - Found an error? Reply with a source. We check every one.
+  CORRECTIONS: none yet.
+
+END SCREEN
+  Left: "Subscribe for the update when a government forms (or doesn't)". Right: best related video / playlist.
+
+AUDIENCE AND SETTINGS
+  Not made for kids. Category: News & Politics. Language: English. Captions: upload SRT.
+  Altered or synthetic content: ON only if a realistic AI image remains in the final cut (stick figures don't count).
+  Expect limited ads (war content); that is normal. Do not add a sensitive-content warning that hides the video
+  unless YouTube asks for one.

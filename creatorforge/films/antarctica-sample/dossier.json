@@ -1,0 +1,25 @@
+{
+ "topic": "Antarctica: a 15-second sample",
+ "researched": "2026-11-11",
+ "method": "Well-documented figures; links not re-opened from this container (blocked here). Check before publishing.",
+ "claims": [
+  {"id": "C1", "claim": "The lowest air temperature ever recorded on Earth is minus 89.2 °C, at Vostok Station, Antarctica, on 21 July 1983.", "status": "verified", "confidence": "high",
+   "figures": ["89.2", "−89.2", "-89.2", "1983"],
+   "sources": [{"title": "World Meteorological Organization: Archive of Weather and Climate Extremes (world lowest temperature)", "url": "https://wmo.asu.edu/content/world-lowest-temperature", "quote": "[summary] -89.2 °C, Vostok, Antarctica, 21 July 1983"},
+               {"title": "British Antarctic Survey: Antarctic climate", "url": "https://www.bas.ac.uk/about/antarctica/climate/", "quote": "[summary] the lowest recorded temperature, -89.2 °C at Vostok in 1983"}]},
+  {"id": "C2", "claim": "The Antarctic ice sheet is up to 4,897 m thick at its thickest point (almost five kilometres).", "status": "verified", "confidence": "high",
+   "figures": ["4,897", "4897", "five"],
+   "sources": [{"title": "Fretwell et al. 2013, Bedmap2, The Cryosphere 7", "url": "https://tc.copernicus.org/articles/7/375/2013/", "quote": "[summary] maximum ice thickness 4,897 m"},
+               {"title": "British Antarctic Survey: Bedmap2", "url": "https://www.bas.ac.uk/project/bedmap-2/", "quote": "[summary] the thickest ice measured is 4,897 m"}]},
+  {"id": "C3", "claim": "If all of Antarctica's ice melted, global sea level would rise by about 58 m.", "status": "verified", "confidence": "high",
+   "figures": ["58"],
+   "sources": [{"title": "Fretwell et al. 2013, Bedmap2, The Cryosphere 7", "url": "https://tc.copernicus.org/articles/7/375/2013/", "quote": "[summary] sea-level equivalent of the ice sheet: 58 m"},
+               {"title": "NSIDC: Quick facts on ice sheets", "url": "https://nsidc.org/learn/parts-cryosphere/ice-sheets/ice-sheet-quick-facts", "quote": "[summary] the Antarctic ice sheet would raise sea level about 58 m"}]},
+  {"id": "C4", "claim": "The Burj Khalifa is 828 m tall.", "status": "verified", "confidence": "high", "figures": ["828"],
+   "sources": [{"title": "CTBUH Skyscraper Center: Burj Khalifa", "url": "https://www.skyscrapercenter.com/building/burj-khalifa/3", "quote": "[summary] height 828 m"},
+               {"title": "Encyclopaedia Britannica: Burj Khalifa", "url": "https://www.britannica.com/topic/Burj-Khalifa", "quote": "[summary] 828 metres"}]},
+  {"id": "C5", "claim": "The Elizabeth Tower (Big Ben's tower) is 96 m tall.", "status": "verified", "confidence": "high", "figures": ["96"],
+   "sources": [{"title": "UK Parliament: the Elizabeth Tower", "url": "https://www.parliament.uk/about/living-heritage/building/palace/big-ben/", "quote": "[summary] the tower is 96 metres tall"},
+               {"title": "Encyclopaedia Britannica: Big Ben", "url": "https://www.britannica.com/topic/Big-Ben-clock-London", "quote": "[summary] the tower stands 96 metres"}]}
+ ]
+}

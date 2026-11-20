@@ -1,0 +1,3787 @@
+"""The Vox look: editorial collage scenes drawn as smooth vector animation (SVG in headless Chromium, like motion.py),
+with one shared style kit so every scene of every video looks like the same designed magazine:
+
+- printed paper (fine grain, soft mottling) in one paper tone, black ink and ONE accent colour per video
+- real cut-out photos (cutouts.py: halftone black-and-white with a white paper edge and a soft shadow), big:
+  the subject fills 50-70% of the frame
+- type: Anton (big words), Playfair Display (black-box serif headlines), Inter (tags), JetBrains Mono (notes)
+- black boxes with white type, small tags, highlighter sweeps, brush strokes, accent discs and bars
+- the big word sits BEHIND the subject (depth), blurred accent orb, vertical side text, a mono date/place line,
+  crosshair marks, thin leader-line callouts
+- motion the Vox way: pieces drop, slide or snap in on a 12 fps "stutter" while the camera pushes in smoothly with
+  a little parallax (the background moves less than the subject)
+
+Scenes (one per script line):
+    Hero: gavel | THE VERDICT | 2019 · Supreme Court | five judges, one voice
+          subject(s) "a + b" or person:Name | headline | tags (·) | a note with a leader line
+"""
+from __future__ import annotations
+
+import functools
+import hashlib
+import base64
+import json
+import math
+import os
+import re
+from pathlib import Path
+
+from .ff import MediaError
+
+FONTS = Path(__file__).parent / "vendor" / "fonts"
+# The channel's signature colour (the owner's pick, 2026-11-11: "Vox style yellow is my pick"): fixed in every film for
+# the highlighter, key numbers on dark scenes, and the signal; each film's own accent changes, the signature does not.
+SIGNATURE = "#FFDD33"
+ACCENTS = {"yellow": "#F2C200", "red": "#D7262B", "blue": "#2D6BDB", "orange": "#F07A1A", "teal": "#14968A",
+           "green": "#2E9B4F"}
+PAPERS = {"cream": "#EFE8DA", "grey": "#E5E3DE", "white": "#F4F2EE", "dark": "#1B1B1D", "kraft": "#C9A777", "crumple": "#EADFC9", "atlas": "#E9E1C8",
+          "grid": "#F1F0EC"}
+INK = "#141414"
+
+# Visual DNA (owner's constitution, 2026-11-14): a film's own face, beyond the paper tint and three fonts of a LOOK.
+# It sets the surface (colour + pattern), ink, accent, the four type roles (headline, big numbers, handwriting and the
+# small label face every scene uses), the title device, the framing and the finish. The owner's signal yellow stays
+# the highlighter in every DNA. Chosen per film ("…/dna:blueprint" in the theme); no DNA = the classic look.
+DNAS = {
+    "ledger":    {"surface": "#EFE6D2", "dark": False, "pattern": "ruled", "ink": "#2B1D12", "accent": "#9E1B1B",
+                  "fonts": {"head": "Playfair", "big": "Anton", "hand": "Caveat", "label": "Plex"}, "tag": "underline",
+                  "frame": "centre", "grain": .55, "vignette": 1.2, "sea": "#C9D4CF", "land": "#EFE3C2", "edge": "#6E5A3C"},
+    "blueprint": {"surface": "#123B6B", "dark": True, "pattern": "blueprint", "ink": "#0E1726", "fg": "#F4F4F0", "accent": "#FF7A1A",
+                  "fonts": {"head": "Grotesk", "big": "Bebas", "hand": "Shadows", "label": "DMMono"}, "tag": "outline",
+                  "frame": "tight", "grain": .12, "vignette": 0.35, "sea": "#0E3159", "land": "#1D4C80", "edge": "#9FC0E6"},
+    "riso":      {"surface": "#F6F1E7", "dark": False, "pattern": "dots", "ink": "#1F2A5A", "accent": "#FF48B0",
+                  "fonts": {"head": "Archivo", "big": "Archivo", "hand": "Marker", "label": "Grotesk"}, "tag": "solid",
+                  "frame": "tilt", "grain": .35, "vignette": 0.4, "sea": "#BFD6EA", "land": "#F9E3EE", "edge": "#1F2A5A"},
+    "noir":      {"surface": "#1C1F24", "dark": True, "pattern": "scan", "ink": "#141414", "fg": "#EDE7DA", "accent": "#3FB6A8",
+                  "fonts": {"head": "ISerif", "big": "Oswald", "hand": "Caveat", "label": "Plex"}, "tag": "highlight",
+                  "frame": "low", "grain": .3, "vignette": 1.6, "sea": "#14171B", "land": "#2A3038", "edge": "#6F7A86"},
+    "newsprint": {"surface": "#E6E3DC", "dark": False, "pattern": "lines", "ink": "#111111", "accent": "#1F4FB8",
+                  "fonts": {"head": "DMSerif", "big": "Bebas", "hand": "Kalam", "label": "Mono"}, "tag": "inkblock",
+                  "frame": "left", "grain": .7, "vignette": 0.8, "sea": "#C3CFD3", "land": "#F3EFE4", "edge": "#6F6F6A"},
+    "kraftdesk": {"surface": "#C9A777", "dark": False, "pattern": "none", "ink": "#1E1A14", "accent": "#2E7D32",
+                  "fonts": {"head": "Fraunces", "big": "Anton", "hand": "Kalam", "label": "DMMono"}, "tag": "stamp",
+                  "frame": "dutch", "grain": .6, "vignette": 1.0, "sea": "#9FB4B0", "land": "#E9DCBC", "edge": "#5E4E33"},
+}
+FRAMES = {"centre": "none", "tight": "scale(1.12)", "tilt": "perspective(2400px) rotateX(9deg) rotateZ(-2deg) scale(1.08)",
+          "low": "translate(0,4%) scale(1.06)", "left": "translate(-4%,0) scale(1.08)", "dutch": "rotate(2.6deg) scale(1.1)"}
+
+
+def choose_dna(text: str, last: str = "") -> str:
+    """A film's Visual DNA when its brand kit names none: picked from the script (the same script always gets the
+    same DNA) but never the previous film's, so two films in a row never share a face."""
+    names = [k for k in DNAS if k != last] or list(DNAS)
+    return names[_seed("dna", text) % len(names)]
+
+
+def dna_of(theme: str) -> dict | None:
+    """'editorial@red/kraft//dna:blueprint' -> that film's Visual DNA (None: the classic look)."""
+    m = re.search(r"dna[:=]([a-z0-9_-]+)", theme or "", re.I)
+    return DNAS.get(m.group(1).lower()) if m else None
+
+
+LAYOUTS = ("word", "disc", "box", "bars", "grid")
+# symbolic props laid over a real photo (opt-in editorial cartoons; the face itself is never changed)
+PROPS = ("blindfold", "mask", "zip", "crown", "strings", "chains", "megaphone")
+FACE_PROPS = ("blindfold", "mask", "zip", "crown")
+KINDS = ("hero", "desk", "pinboard", "opener", "reveal", "clipping", "pinmap", "bignumber",
+         "seats", "stack", "stand", "fan", "trend", "slice", "route", "compare", "photoline", "tv",
+         "clockmap", "tornsplit", "newscard", "blueprint", "pyramid", "flowchart", "linkmap", "orgchart", "heatmap",
+         "courtdoc", "table", "interview", "endcard", "polltrack", "area", "candles", "arrows", "railmap", "sizemap",
+         "borders", "morph", "shrink", "photo", "photos", "footage", "satellite", "flowmap", "columns", "dots", "myth", "counter", "staircase", "scale", "units", "reel", "conveyor", "tiles", "pile", "wash", "grids", "frame", "poster", "mapdesk", "assemble")
+
+
+# A look per video, so no two films share one face: paper, type, map colours and marker pen differ, the method doesn't.
+# head = headline serif, big = condensed number face, hand = marker handwriting.
+LOOKS = {
+    "archive":   {"paper": "#EFE8DA", "head": "Playfair", "big": "Anton", "hand": "Caveat", "mark": "#D7262B",
+                  "sea": "#B8CDD1", "land": "#EFE3C2", "edge": "#8E7E5C", "accent": "yellow"},
+    "newsprint": {"paper": "#E5E3DE", "head": "DMSerif", "big": "Bebas", "hand": "Kalam", "mark": "#1F4FB8",
+                  "sea": "#C3CFD3", "land": "#F3EFE4", "edge": "#6F6F6A", "accent": "red"},
+    "kraft":     {"paper": "#D8C39C", "head": "Archivo", "big": "Oswald", "hand": "Marker", "mark": "#111111",
+                  "sea": "#9FB4B0", "land": "#E9DCBC", "edge": "#5E4E33", "accent": "orange"},
+    "chart":     {"paper": "#F4F2EE", "head": "Inter", "big": "Archivo", "hand": "Caveat", "mark": "#E0442C",
+                  "sea": "#A9C6E0", "land": "#F7F4EC", "edge": "#7C8A99", "accent": "blue"},
+    "sepia":     {"paper": "#E8DCC0", "head": "Playfair", "big": "Bebas", "hand": "Kalam", "mark": "#8B1E1E",
+                  "sea": "#C7C1A6", "land": "#EDE3C8", "edge": "#7A6A48", "accent": "#A8652A"},
+    "engraving": {"paper": "#E6E4DC", "head": "Playfair", "big": "Oswald", "hand": "Caveat", "mark": "#1C1C1C",
+                  "sea": "#AEB9BC", "land": "#ECE6D6", "edge": "#55524A", "accent": "#7B2D26"},
+    "field":     {"paper": "#E9EDE4", "head": "DMSerif", "big": "Anton", "hand": "Marker", "mark": "#C2410C",
+                  "sea": "#B5D0C8", "land": "#EEE9D6", "edge": "#6E7B66", "accent": "teal"},
+    # the owner's five archetypes (VOX_PRODUCTION_SYSTEM.md section 2), as film looks. B and E are dark in the owner's
+    # system; the film renderer draws ink on light paper, so they run on a light variant of their own palette until
+    # it has a dark-ink mode (PRESHOW says so).
+    "editorial": {"paper": "#F4F1EA", "head": "Playfair", "big": "Playfair", "hand": "Caveat", "mark": "#1C1C1C",
+                  "sea": "#C9D6D8", "land": "#F7F3EA", "edge": "#7A7770", "accent": "#D9534F"},
+    "intel":     {"paper": "#E3E7EC", "head": "Oswald", "big": "Bebas", "hand": "Kalam", "mark": "#EF4444",
+                  "sea": "#B9CBD8", "land": "#EEF1F4", "edge": "#475569", "accent": "#0E7490"},
+    "declassified": {"paper": "#E5DEC9", "head": "Mono", "big": "Oswald", "hand": "Marker", "mark": "#B91C1C",
+                  "sea": "#C2C6B6", "land": "#EDE6D2", "edge": "#6B604A", "accent": "#1D4ED8"},
+    "swiss":     {"paper": "#F8F9FA", "head": "Inter", "big": "Archivo", "hand": "Caveat", "mark": "#F97316",
+                  "sea": "#BFD3EA", "land": "#FAFAFA", "edge": "#0F172A", "accent": "#2563EB"},
+    "noir":      {"paper": "#D6D3D1", "head": "Playfair", "big": "DMSerif", "hand": "Caveat", "mark": "#E11D48",
+                  "sea": "#B4AFAA", "land": "#E2DEDA", "edge": "#44403C", "accent": "#B45309"},
+}
+
+
+# Layouts per graphic type, rotated through a video so the same kind never gets the same layout twice in a row.
+# base = the scene as designed; mirror = the composition flipped (words and photos stay readable, never for maps,
+# timelines, parliaments or before/after, where left and right mean something); card = the whole graphic printed on a
+# paper card lying on a desk; side = BigNumber's own second layout.
+_FLIP = ("hero", "opener", "newscard", "tornsplit", "desk", "pinboard", "clipping", "tv", "blueprint", "reveal",
+         "interview")
+LAYOUT_SETS = {k: (["base", "mirror", "card"] if k in _FLIP else ["base", "card"]) for k in KINDS}
+LAYOUT_SETS["bignumber"] = ["base", "side", "card"]
+LAYOUT_SETS["frame"] = ["base"]
+LAYOUT_SETS["poster"] = ["base"]
+LAYOUT_SETS["assemble"] = ["base"]
+LAYOUT_SETS["mapdesk"] = ["base"]         # a full-bleed poster: never put on a card or mirrored          # the frame is already a full composition; it mirrors itself from its seed
+for _k in ("photo", "photos", "footage", "satellite"):
+    LAYOUT_SETS[_k] = ["base"]          # a photograph or footage is the frame itself: never mirrored or put on a card
+DESKS = ("#3B2F25", "#5A4632", "#2E3A40", "#6B5B4B", "#262626")
+
+
+CAMERAS = {"still": -1, "push": 0, "pull": 1, "drift": 2, "focus": 3}
+# "| badge: alleged" on any scene: the standing of what is on screen, said plainly in the corner
+BADGES = {"recreation": ("RECREATION", "#5A5A5A"), "verified": ("VERIFIED", "#1F7A4D"), "record": ("ON RECORD", "#1F7A4D"), "court": ("COURT RECORD", "#1F4FB8"),
+          "official": ("OFFICIAL DATA", "#1F4FB8"), "illustrative": ("ILLUSTRATIVE", "#5A5A5A"), "reported": ("REPORTED", "#5A5A5A"), "alleg": ("ALLEGED", "#C2410C"),
+          "claim": ("CLAIM", "#C2410C"), "denie": ("DENIED", "#5A5A5A"), "response": ("RESPONSE", "#5A5A5A"),
+          "unverified": ("UNVERIFIED", "#B3261E"), "opinion": ("OPINION", "#7A3E8C"), "estimate": ("ESTIMATE", "#5A5A5A")}
+FX = ("dust", "embers", "snow", "rain", "confetti", "sparks")       # "| fx: embers": particles over the scene
+EXITS = ("rise", "fall", "side", "shrink")                           # how a scene leaves; rotated, or "| exit: none"
+
+
+def wants_voice(kind: str, spec: str) -> bool:
+    """Scenes whose graphics move with the narration: an interview always, any scene that says '| voice'."""
+    return kind == "interview" or bool(re.search(r"\|\s*voice\s*(\||$)", spec or "", re.I))
+
+
+def layout_for(kind: str, turn: int, seed: int) -> str:
+    """The layout of this kind's `turn`-th graphic (0, 1, 2...) in a video with this seed."""
+    opts = LAYOUT_SETS.get(kind, ["base"])
+    return opts[(turn + seed + _seed("lay", kind)) % len(opts)]
+
+
+def plan_layouts(kinds: list[str], seed: int) -> list[str]:
+    """A layout for every graphic of a video, in order: each kind takes turns through its layouts, and a shot never
+    has the same layout as the shot before it when its kind has another one ('' for a line that isn't a Vox kind)."""
+    turn: dict[str, int] = {}
+    out: list[str] = []
+    for k in kinds:
+        if k not in KINDS:
+            out.append("")
+            continue
+        opts = LAYOUT_SETS.get(k, ["base"])
+        lay = layout_for(k, turn.get(k, 0), seed)
+        if out and out[-1] == lay and len(opts) > 1:
+            turn[k] = turn.get(k, 0) + 1
+            lay = layout_for(k, turn[k], seed)
+        turn[k] = turn.get(k, 0) + 1
+        out.append(lay)
+    return out
+
+
+def _lum(hex_: str) -> float:
+    c = [int(hex_[i:i + 2], 16) / 255 for i in (1, 3, 5)]
+    c = [x / 12.92 if x <= 0.03928 else ((x + 0.055) / 1.055) ** 2.4 for x in c]
+    return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]
+
+
+def contrast(a: str, b: str) -> float:
+    """WCAG contrast ratio of two colours (1 = the same, 21 = black on white)."""
+    la, lb = sorted((_lum(a), _lum(b)), reverse=True)
+    return (la + 0.05) / (lb + 0.05)
+
+
+def readable(colour: str, paper: str, least: float = 2.6) -> str:
+    """The colour, darkened just enough to be read as large type on this paper (yellow on cream becomes mustard).
+    Blocks, discs and bars keep the true accent; only type set straight on the paper uses this."""
+    c = colour
+    for _ in range(24):
+        if contrast(c, paper) >= least:
+            break
+        r, g, b = (int(c[i:i + 2], 16) for i in (1, 3, 5))
+        c = "#%02X%02X%02X" % (int(r * 0.93), int(g * 0.93), int(b * 0.93))
+    return c
+
+
+ARCHETYPE_LOOKS = ("editorial", "intel", "declassified", "swiss", "noir")   # chosen by the art direction, never at random
+
+
+def look_of(theme: str) -> dict:
+    """'editorial~2@red/kraft' -> the kraft look (default: archive, the original look)."""
+    name = ((theme or "").split("/") + ["", ""])[1]
+    return LOOKS.get(name.strip().lower(), LOOKS["archive"])
+
+
+def choose_look(text: str, era: int | None = None) -> str:
+    """The look for a video: an old story (before 1950) gets sepia; otherwise one picked from the script itself, so
+    the same script always gets the same look and two scripts rarely share one."""
+    if era is not None and era < 1950:
+        return "sepia"
+    names = [k for k in LOOKS if k not in ("sepia", "engraving") and k not in ARCHETYPE_LOOKS]
+    return names[_seed("look", text) % len(names)]
+
+
+def era_of(text: str) -> int | None:
+    """The year the story is set in: the middle of the years the script names (1500-2099), so one look back at 1914
+    in a story about 2018 doesn't turn the whole video sepia. None when it names no year."""
+    ys = sorted(int(y) for y in re.findall(r"(?<!\d)(1[5-9]\d\d|20\d\d)(?!\d)", text or ""))
+    return ys[(len(ys) - 1) // 2] if ys else None
+
+
+def accent_of(theme: str) -> str:
+    """'editorial~2@red' -> the red accent; a hex colour is used as given; default yellow."""
+    _, _, acc = (theme or "").partition("@")
+    acc = acc.partition("/")[0].strip()
+    if re.fullmatch(r"#[0-9A-Fa-f]{6}", acc):
+        return acc
+    return ACCENTS.get(acc.lower(), ACCENTS["yellow"])
+
+
+def _seed(*parts) -> int:
+    return int(hashlib.sha1("|".join(map(str, parts)).encode()).hexdigest()[:8], 16)
+
+
+# ---- reading a scene line -------------------------------------------------------------------------------------------
+def parse_hero(spec: str) -> dict | None:
+    """'gavel + crowd | THE VERDICT | 2019 · Supreme Court | note' -> plan (no pictures yet)."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if not parts or not parts[0]:
+        return None
+    opts = {}
+    keep = []
+    for p in parts[1:]:
+        m = re.fullmatch(r"(style|layout|word|date|place|side|prop)\s*[:=]\s*(.+)", p, re.I)
+        if m:
+            opts[m.group(1).lower()] = m.group(2).strip()
+        else:
+            keep.append(p)
+    subjects = [s.strip() for s in re.split(r"\s+\+\s+|\s*&\s*", parts[0]) if s.strip()][:3]
+    headline = keep[0] if keep else ""
+    tags = [t.strip() for t in re.split(r"·|•|;", keep[1]) if t.strip()][:5] if len(keep) > 1 else []
+    note = keep[2] if len(keep) > 2 else ""
+    layout = (opts.get("style") or opts.get("layout") or "").lower()
+    if layout not in LAYOUTS:
+        layout = LAYOUTS[_seed(spec) % len(LAYOUTS)]
+    word = opts.get("word") or ""
+    if not word and layout == "word":
+        # the big word behind the subject: the headline when short, else its strongest word
+        hw = re.sub(r"[^\w\s'-]", "", headline).split()
+        word = headline if 0 < len(hw) <= 2 else (max(hw, key=len) if hw else subjects[0].split(":")[-1])
+    meta = [x for x in (opts.get("date", ""), opts.get("place", "")) if x]
+    prop = opts.get("prop", "").strip().lower()
+    return {"type": "hero", "subjects": subjects, "headline": headline, "tags": tags, "note": note,
+            "layout": layout, "word": word.upper()[:14], "meta": meta, "side": opts.get("side", ""),
+            "prop": prop if prop in PROPS else "",
+            "seed": _seed(spec) % 10000}
+
+
+_DATE = re.compile(r"^(?:(\d{1,2})\s+)?([A-Za-z]{3,9})\.?\s+(?:(\d{1,2}),?\s+)?(\d{4})$")
+
+
+def _item(text: str) -> dict:
+    """An evidence item: a date card, a photo (object or person:Name) or a word card."""
+    from . import cutouts
+    t = text.strip()
+    m = _DATE.match(t)
+    if m:
+        return {"kind": "date", "mon": m.group(2)[:3].upper(), "day": m.group(1) or m.group(3) or "", "year": m.group(4)}
+    if t.lower().startswith("person:") or cutouts.known(t):
+        return {"kind": "photo", "name": t}
+    return {"kind": "word", "text": t.upper()[:22]}
+
+
+def _split_list(s: str) -> list[str]:
+    return [x.strip() for x in re.split(r"\s+\+\s+|·|•|;", s or "") if x.strip()]
+
+
+def parse_desk(spec: str) -> dict | None:
+    """'Desk: dna + documents + pen | Methylated DNA | note' - photos and props on grid paper."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    subs = _split_list(parts[0])[:4]
+    if not subs:
+        return None
+    return {"type": "desk", "subjects": subs, "label": parts[1] if len(parts) > 1 else "",
+            "note": parts[2] if len(parts) > 2 else "", "seed": _seed(spec) % 10000}
+
+
+def parse_evidence(spec: str) -> dict | None:
+    """'Evidence: person:Name · old phone · DEC 20 1962 · SOLVED | title' - the first item in the middle."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    items = [_item(x) for x in re.split(r"·|•|;", parts[0]) if x.strip()][:6]
+    if len(items) < 2:
+        return None
+    return {"type": "evidence", "items": items, "title": parts[1] if len(parts) > 1 else "",
+            "subjects": [i["name"] for i in items if i["kind"] == "photo"], "tone": "kraft", "seed": _seed(spec) % 10000}
+
+
+def parse_opener(spec: str) -> dict | None:
+    """'Opener: person:Name | He noticed *something strange* | Chapter 2' - colour panel + photo."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if len(parts) < 2 or not parts[0] or not parts[1]:
+        return None
+    return {"type": "opener", "subjects": [parts[0]], "headline": parts[1], "kicker": parts[2] if len(parts) > 2 else "",
+            "seed": _seed(spec) % 10000}
+
+
+def parse_reveal(spec: str) -> dict | None:
+    """'Reveal: line · line · line | title | the phrase to highlight' - a magnifier sweeps a document."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    rows = [x.strip() for x in re.split(r"·|•|;", parts[0]) if x.strip()][:7]
+    if not rows:
+        return None
+    return {"type": "reveal", "rows": rows, "title": parts[1] if len(parts) > 1 else "",
+            "mark": parts[2] if len(parts) > 2 else "", "subjects": ["hand holding"], "seed": _seed(spec) % 10000}
+
+
+def parse_headline(spec: str) -> dict | None:
+    """'Headline: Manufacturers may sack workers | The Hindu, Jan 2024 | factory + crowd | 02'."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if not parts or not parts[0]:
+        return None
+    num = next((p for p in parts[2:] if re.fullmatch(r"\d{1,3}", p)), "")
+    subs = next((_split_list(p) for p in parts[2:] if p and p != num), [])[:3]
+    return {"type": "headline", "text": parts[0][:110], "source": parts[1] if len(parts) > 1 else "",
+            "subjects": subs, "number": num, "seed": _seed(spec) % 10000}
+
+
+def parse_pinmap(spec: str) -> dict | None:
+    """'Pinmap: Kota | Amit Shah's speech to IT cell volunteers | Hindustan Times, Sep 2018'."""
+    from . import maps
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if not parts or not parts[0]:
+        return None
+    f = maps._find(parts[0])
+    if not f:
+        return None
+    if f["kind"] == "country":
+        country, pin = f, None
+    else:
+        pin = (f["lon"], f["lat"])
+        # the country around the place: the one whose borders contain it (India first, the most common case)
+        country = None
+        if 6 <= f["lat"] <= 37 and 68 <= f["lon"] <= 98:
+            ind = maps._find("India")
+            if ind and _inside(f["lon"], f["lat"], ind["rings"]):
+                country = ind
+        if country is None:
+            for c in maps._world()["countries"]:
+                if _inside(f["lon"], f["lat"], c["r"]):
+                    country = {"kind": "country", "name": c["n"], "rings": c["r"]}
+                    break
+        if country is None:
+            return None
+    rings = [r for r in country["rings"] if len(r) > 3]
+    xs = [x for r in rings for x, _ in r]
+    ys = [y for r in rings for _, y in r]
+    lon0, lon1, lat0, lat1 = min(xs), max(xs), min(ys), max(ys)
+    k = math.cos(math.radians((lat0 + lat1) / 2))
+    def norm(lon, lat):
+        return [round((lon - lon0) * k, 4), round(lat1 - lat, 4)]
+    span = max((lon1 - lon0) * k, lat1 - lat0)
+    shapes = [[[round(v / span, 4) for v in norm(x, y)] for x, y in r[:: max(1, len(r) // 400)]] for r in rings]
+    atlas = any(re.fullmatch(r"(style\s*[:=]\s*)?atlas", x.strip(), re.I) for x in parts[1:])
+    parts = [x for x in parts if not re.fullmatch(r"(style\s*[:=]\s*)?atlas", x.strip(), re.I)]
+    pen = any(re.fullmatch(r"(style\s*[:=]\s*)?pen", x.strip(), re.I) for x in parts[1:])
+    parts = [x for x in parts if not re.fullmatch(r"(style\s*[:=]\s*)?pen", x.strip(), re.I)]
+    pinned = next((x for x in parts[1:] if x.lower().startswith("person:")), "")
+    parts = [x for x in parts if x != pinned]
+    out = {"type": "pinmap", "place": f.get("name", parts[0]), "shapes": shapes, "atlas": atlas, "tone": "atlas" if atlas else "",
+           "subjects": [pinned] if pinned else [], "pen": pen,
+           "box": [round((lon1 - lon0) * k / span, 4), round((lat1 - lat0) / span, 4)],
+           "headline": parts[1] if len(parts) > 1 else "", "source": parts[2] if len(parts) > 2 else "",
+           "country": country.get("name", ""), "seed": _seed(spec) % 10000}
+    if pin:
+        out["pin"] = [round(v / span, 4) for v in norm(*pin)]
+    return out
+
+
+def parse_number(spec: str) -> dict | None:
+    """'Number: 1984 | television | War is peace | George Orwell' - a huge number the subject breaks out of."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if not parts or not re.search(r"\d", parts[0]):
+        return None
+    # a figure is never cut short (₹1,737.68 must not become ₹1,737.6): too long for the big type, the line is
+    # refused so the writer uses Counter instead
+    if len(parts[0]) > (16 if re.search(r"[\u0900-\u097F]", parts[0]) else 12):
+        return None
+    return {"type": "number", "number": parts[0], "subjects": _split_list(parts[1])[:1] if len(parts) > 1 else [],
+            "caption": parts[2] if len(parts) > 2 else "", "kicker": parts[3] if len(parts) > 3 else "",
+            "seed": _seed(spec) % 10000}
+
+
+_NUM = re.compile(r"([₹$£€]?)\s*(-?\d[\d,]*(?:\.\d+)?)\s*(%|cr(?:ore)?|lakh|k|m|bn|b|million|billion|kt|seats)?", re.I)
+
+
+def _pairs(text: str) -> list[dict]:
+    """'NDA 293, INDIA 234' / 'UP ₹40 crore; Bihar 25' -> [{label, value, shown}] (label may come after)."""
+    out = []
+    for part in re.split(r",(?!\d{2,3}\b)|;|·|•", text or ""):
+        part = part.strip()
+        m = None
+        for m in _NUM.finditer(part):
+            pass
+        if not part or m is None:
+            continue
+        label = (part[:m.start()] + part[m.end():]).strip(" :-=")
+        try:
+            v = float(m.group(2).replace(",", ""))
+        except ValueError:
+            continue
+        out.append({"label": label[:28], "value": v, "shown": m.group(0).strip()})
+    return out
+
+
+def parse_seats(spec: str) -> dict | None:
+    """'Seats: NDA 293, INDIA 234, Others 16 | Lok Sabha 2024' - a parliament of dots; majority line drawn."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    groups = [g for g in _pairs(parts[0]) if g["value"] > 0][:8]
+    if not groups:
+        return None
+    total = int(sum(g["value"] for g in groups))
+    if not 3 <= total <= 1200:
+        return None
+    return {"type": "seats", "groups": groups, "total": total, "majority": total // 2 + 1,
+            "title": parts[1] if len(parts) > 1 else "", "seed": _seed(spec) % 10000}
+
+
+MATERIALS = ("coins", "pillars", "chimneys", "buildings", "books", "bars")
+
+
+def parse_stack(spec: str) -> dict | None:
+    """'Stack: coins | UP 40, Bihar 25, MP 12 | Seats by state' - bars drawn as real things."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if len(parts) < 2:
+        return None
+    mat = parts[0].lower().rstrip("s") + "s" if parts[0] else "bars"
+    mat = next((m for m in MATERIALS if m.startswith(mat[:4])), "bars")
+    vals = [v for v in _pairs(parts[1]) if v["value"] >= 0][:7]
+    if len(vals) < 2:
+        return None
+    return {"type": "stack", "material": mat, "values": vals, "title": parts[2] if len(parts) > 2 else "",
+            "seed": _seed(spec) % 10000}
+
+
+def parse_stand(spec: str) -> dict | None:
+    """'Stand: farmer ₹10,218 vs CEO ₹4,24,114 | 2024 | per month' - figures standing on their bars."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    sides = [x.strip() for x in re.split(r"\s+vs\.?\s+", parts[0], flags=re.I) if x.strip()][:3]
+    vals = []
+    for sd in sides:
+        pr = _pairs(sd)
+        if not pr:
+            return None
+        vals.append(pr[0])
+    if len(vals) < 2:
+        return None
+    from .cutouts import figure
+    return {"type": "stand", "values": vals, "subjects": [figure(v["label"]) for v in vals],
+            "title": parts[1] if len(parts) > 1 else "", "note": parts[2] if len(parts) > 2 else "",
+            "seed": _seed(spec) % 10000}
+
+
+def parse_fan(spec: str) -> dict | None:
+    """'Fan: Hotels $378M, Tokens $57M, Licensing $31M | Trump's $600M year | person:Donald Trump'."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    vals = [v for v in _pairs(parts[0]) if v["value"] > 0][:8]
+    if len(vals) < 2:
+        return None
+    return {"type": "fan", "values": sorted(vals, key=lambda v: -v["value"]), "title": parts[1] if len(parts) > 1 else "",
+            "subjects": [parts[2]] if len(parts) > 2 and parts[2] else [], "seed": _seed(spec) % 10000}
+
+
+def parse_trend(spec: str) -> dict | None:
+    """'Trend: 1990 100, 2000 62, 2010 31, 2024 12 | What ₹100 buys | rupee note' - the picture fills under the line."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    pts = []
+    for part in re.split(r",(?!\d{2,3}\b)|;|·", parts[0]):
+        m = re.match(r"\s*(\d{4}|[A-Za-z]{3,9}\s*\d{0,4})\s*[:=]?\s*([₹$£€]?)\s*(-?\d[\d,]*(?:\.\d+)?)\s*(%|cr|crore|lakh|k|m|bn)?", part)
+        if m:
+            pts.append({"x": m.group(1).strip(), "value": float(m.group(3).replace(",", "")),
+                        "shown": f"{m.group(2)}{m.group(3)}{m.group(4) or ''}"})
+    if len(pts) < 2:
+        return None
+    return {"type": "trend", "points": pts[:12], "title": parts[1] if len(parts) > 1 else "",
+            "subjects": [parts[2]] if len(parts) > 2 and parts[2] else [], "seed": _seed(spec) % 10000}
+
+
+def parse_slice(spec: str) -> dict | None:
+    """'Slice: 12% | brain | activated' - a wedge of the real object, in the accent colour."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    m = re.search(r"(\d+(?:\.\d+)?)\s*%", parts[0] if parts else "")
+    if not m or len(parts) < 2 or not parts[1]:
+        return None
+    return {"type": "slice", "pct": min(100.0, float(m.group(1))), "shown": m.group(0), "subjects": [parts[1]],
+            "label": parts[2] if len(parts) > 2 else "", "seed": _seed(spec) % 10000}
+
+
+def _geo(names: list[str]) -> list[dict]:
+    from . import maps
+    out = []
+    for n in names:
+        # "North of Scotland @ 59.5, -1.0": a named point at exact coordinates (lat, lon), for places the gazetteer lacks
+        m = re.match(r"\s*(.+?)\s*@\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*$", n)
+        if m and -90 <= float(m.group(2)) <= 90 and -180 <= float(m.group(3)) <= 180:
+            out.append({"name": m.group(1), "lon": float(m.group(3)), "lat": float(m.group(2))})
+            continue
+        f = maps._find(n)
+        if not f:
+            return []
+        if f["kind"] == "city":
+            out.append({"name": f["name"], "lon": f["lon"], "lat": f["lat"]})
+        else:
+            big = max(f["rings"], key=len)          # the mainland: a box round every island puts Russia in the Atlantic
+            xs, ys = [x for x, _ in big], [y for _, y in big]
+            out.append({"name": f["name"], "lon": (min(xs) + max(xs)) / 2, "lat": (min(ys) + max(ys)) / 2})
+    return out
+
+
+def parse_route(spec: str) -> dict | None:
+    """'Route: New Delhi → Dubai → London | The escape route | plane' - a paper map, dashed routes drawn on, the
+    plane (or ship/car/train) travelling them, pins at every stop."""
+    from . import maps
+    parts = [p.strip() for p in (spec or "").split("|")]
+    stops = _geo([x.strip() for x in re.split(r"→|->|\bto\b", parts[0]) if x.strip()][:6])
+    if len(stops) < 2:
+        return None
+    vehicle = next((p.lower() for p in parts[2:] if p and "atlas" not in p.lower() and p.strip().lower() not in ("pen", "style: pen")), "plane")
+    vehicle = next((v for v in ("plane", "ship", "car", "train", "truck", "bus") if v in vehicle), "plane")
+    lons = [s["lon"] for s in stops]
+    lats = [s["lat"] for s in stops]
+    paths = []
+    if vehicle == "ship":
+        # a ship goes by sea: round the capes, through the canals (searoute); a leg with no sea way stays an arc
+        from . import searoute
+        shift = 0.0
+        for a, b in zip(stops, stops[1:]):
+            sp = [[x + shift, y] for x, y in searoute.path(a["lon"] - shift, a["lat"], b["lon"], b["lat"])]
+            if sp:
+                shift = round((sp[-1][0] - b["lon"]) / 360) * 360     # past the date line the map carries on, unwrapped
+                b["lon"] = sp[-1][0]
+            paths.append(sp[:: max(1, len(sp) // 90)] + ([sp[-1]] if sp else []))
+        lons = [s["lon"] for s in stops] + [q[0] for sp in paths for q in sp]
+        lats = lats + [q[1] for sp in paths for q in sp]
+    pad_x = max(8.0, (max(lons) - min(lons)) * 0.35)
+    pad_y = max(6.0, (max(lats) - min(lats)) * 0.45)
+    box = [min(lons) - pad_x, min(lats) - pad_y, max(lons) + pad_x, max(lats) + pad_y]
+    # the visible box keeps the frame's shape; countries that touch it are drawn
+    w = maps._world()
+    shapes = []
+    offs = [o for o in (-360, 0, 360) if box[0] - 60 <= 180 + o and box[2] + 60 >= -180 + o]   # past the date line too
+    for c in w["countries"]:
+        for r in c["r"]:
+            for off in offs:
+                if any(box[0] - 60 <= x + off <= box[2] + 60 and box[1] - 40 <= y <= box[3] + 40 for x, y in r[:: max(1, len(r) // 30)]):
+                    shapes.append([[round(x + off, 2), round(y, 2)] for x, y in r[:: max(1, len(r) // 160)]])
+    from .scene_anim import icon_nodes, find_icon
+    atlas = any(re.fullmatch(r"(style\s*[:=]\s*)?atlas", x.strip(), re.I) for x in parts[1:])
+    pen = any(re.fullmatch(r"(style\s*[:=]\s*)?pen", x.strip(), re.I) for x in parts[1:])
+    parts = [x for x in parts if not re.fullmatch(r"(style\s*[:=]\s*)?pen", x.strip(), re.I)]
+    return {"type": "route", "pen": pen, "stops": stops, "box": box, "paths": paths, "shapes": shapes[:700], "title": parts[1] if len(parts) > 1 and not
+            re.fullmatch(r"(style\s*[:=]\s*)?atlas", parts[1], re.I) else "",
+            "vehicle": vehicle, "icon": icon_nodes(find_icon(vehicle) or "plane"), "pin": icon_nodes("map-pin"),
+            "atlas": atlas, "tone": "atlas" if atlas else "crumple", "seed": _seed(spec) % 10000}
+
+
+def parse_compare(spec: str) -> dict | None:
+    """'Compare: rupee note | 1991 | 2024' (one picture, before/after) or 'Compare: a + b | before | after'."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if len(parts) < 3 or not parts[0]:
+        return None
+    subs = _split_list(parts[0])[:2]
+    return {"type": "compare", "subjects": subs, "left": parts[1], "right": parts[2],
+            "title": parts[3] if len(parts) > 3 else "", "seed": _seed(spec) % 10000}
+
+
+def parse_photoline(spec: str) -> dict | None:
+    """'Photoline: 1935 Laws enacted (documents) → 1939 War begins (soldier) → 1941 Pearl Harbor (ship) | title'."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    items = []
+    for x in re.split(r"→|->", parts[0]):
+        m = re.match(r"\s*(\d{3,4}|[A-Za-z]{3}\s+\d{4})\s+([^()]+?)\s*(?:\(([^)]+)\))?\s*$", x)
+        if m:
+            items.append({"when": m.group(1), "what": m.group(2).strip()[:40], "pic": (m.group(3) or "").strip()})
+    if len(items) < 2:
+        return None
+    return {"type": "photoline", "items": items[:5], "subjects": [i["pic"] for i in items[:5] if i["pic"]],
+            "title": parts[1] if len(parts) > 1 else "", "tone": "grid", "seed": _seed(spec) % 10000}
+
+
+def parse_tv(spec: str) -> dict | None:
+    """'Tv: person:Name | 1975 broadcast | the Emergency is declared' - a picture inside an old TV set."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if not parts or not parts[0]:
+        return None
+    return {"type": "tv", "subjects": [parts[0]], "label": parts[1] if len(parts) > 1 else "",
+            "caption": parts[2] if len(parts) > 2 else "", "seed": _seed(spec) % 10000}
+
+
+def _region(points: list[tuple[float, float]], pad: float = 0.35) -> tuple[list, list]:
+    """Country shapes around some lon/lat points, and the box to show."""
+    from . import maps
+    lons = [p[0] for p in points]
+    lats = [p[1] for p in points]
+    px = max(3.0, (max(lons) - min(lons)) * pad)
+    py = max(2.5, (max(lats) - min(lats)) * pad)
+    box = [min(lons) - px, min(lats) - py, max(lons) + px, max(lats) + py]
+    shapes = []
+    for c in maps._world()["countries"]:
+        for r in c["r"]:
+            if any(box[0] - 40 <= x <= box[2] + 40 and box[1] - 25 <= y <= box[3] + 25 for x, y in r[:: max(1, len(r) // 30)]):
+                shapes.append({"n": c["n"], "r": [[round(x, 2), round(y, 2)] for x, y in r[:: max(1, len(r) // 220)]]})
+    return box, shapes[:450]
+
+
+def _inside(x: float, y: float, rings: list) -> bool:
+    """Point in any of a country's rings (ray casting)."""
+    for r in rings:
+        inside = False
+        for (x1, y1), (x2, y2) in zip(r, r[1:] + r[:1]):
+            if (y1 > y) != (y2 > y) and x < (x2 - x1) * (y - y1) / ((y2 - y1) or 1e-9) + x1:
+                inside = not inside
+        if inside:
+            return True
+    return False
+
+
+def parse_clockmap(spec: str) -> dict | None:
+    """'Clockmap: Mumbai 9:30, Delhi 9:30, Kolkata 9:30, Guwahati 9:30 | One country, one clock | IST' - a clock at
+    every city, joined by lines, the time in a big box."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    cities = []
+    for x in re.split(r",|;|·", parts[0] if parts else ""):
+        m = re.match(r"\s*(.+?)\s+(\d{1,2})(?::(\d{2}))?\s*(am|pm)?\s*$", x.strip(), re.I)
+        if not m:
+            continue
+        g = _geo([m.group(1)])
+        if not g:
+            return None
+        h = int(m.group(2)) % 12 + (12 if (m.group(4) or "").lower() == "pm" else 0)
+        cities.append({**g[0], "h": h, "m": int(m.group(3) or 0), "shown": f"{m.group(2)}:{m.group(3) or '00'}"})
+    if len(cities) < 2:
+        return None
+    box, shapes = _region([(c["lon"], c["lat"]) for c in cities])
+    from . import maps
+    home = ""
+    for c in maps._world()["countries"]:
+        if c["n"] in {sh["n"] for sh in shapes} and _inside(cities[0]["lon"], cities[0]["lat"], c["r"]):
+            home = c["n"]
+            break
+    return {"type": "clockmap", "cities": cities[:10], "box": box, "shapes": shapes, "home": home,
+            "title": parts[1] if len(parts) > 1 else "",
+            "zone": parts[2] if len(parts) > 2 else "", "tone": "white", "seed": _seed(spec) % 10000}
+
+
+def parse_tornsplit(spec: str) -> dict | None:
+    """'Tornsplit: ship + crane | One steel box | 1956' - a big condensed headline, a cut-out on the paper side, a
+    torn accent panel with halftone dots and a second cut-out on it."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if len(parts) < 2 or not parts[0] or not parts[1]:
+        return None
+    return {"type": "tornsplit", "subjects": _split_list(parts[0])[:2], "headline": parts[1][:40],
+            "kicker": parts[2] if len(parts) > 2 else "", "seed": _seed(spec) % 10000}
+
+
+def parse_units(spec: str) -> dict | None:
+    """'Units: Congress-linked 687 vs BJP-leaning 15 | Facebook takedowns, 2019 | one square = one page' - a unit
+    chart: one square per item, each group filling in its own colour while its count runs, so a ratio is seen whole."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    sides = [x.strip() for x in re.split(r"\s+vs\.?\s+|,\s+(?=\D)", parts[0], flags=re.I) if x.strip()][:3]
+    vals = []
+    for sd in sides:
+        pr = _pairs(sd)
+        if not pr:
+            return None
+        vals.append(pr[0])
+    total = sum(v["value"] for v in vals)
+    if len(vals) < 2 or not (2 <= total <= 2500) or any(v["value"] != int(v["value"]) for v in vals):
+        return None              # whole things only, and few enough to draw one by one
+    return {"type": "units", "values": vals, "title": parts[1] if len(parts) > 1 else "",
+            "note": parts[2] if len(parts) > 2 else "", "seed": _seed(spec) % 10000}
+
+
+def parse_reel(spec: str) -> dict | None:
+    """'Reel: rap | Just a *catchy reel*?' - a recreated short-video post on a phone (never a real post): the screen's
+    waveform pulses, caption lines type on, the side buttons pop. Always labelled RECREATION."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if not parts or not parts[0]:
+        return None
+    return {"type": "reel", "style": parts[0][:20].lower(), "title": parts[1][:60] if len(parts) > 1 else "",
+            "badge": BADGES["recreation"], "seed": _seed(spec) % 10000}
+
+
+def parse_conveyor(spec: str) -> dict | None:
+    """'Conveyor: APPROVED | 6 | In Delhi, one official signs off every post | Every post, *one sign-off*' - cards ride
+    a belt under one stamp; each card leaves with the stamp's mark on it."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if len(parts) < 2 or not parts[0] or not re.fullmatch(r"\d{1,2}", parts[1]):
+        return None
+    return {"type": "conveyor", "stamp": parts[0][:14].upper(), "n": max(3, min(12, int(parts[1]))),
+            "caption": parts[2][:90] if len(parts) > 2 else "", "title": parts[3][:60] if len(parts) > 3 else "",
+            "seed": _seed(spec) % 10000}
+
+
+def parse_tiles(spec: str) -> dict | None:
+    """'Tiles: Bihar | 72 | 1 tile = 1,000 groups | Bihar, 2020: *72,000* groups' - a state, its neighbours around it,
+    filled tile by tile while the total counts up. Tiles are spread evenly over the shape: the placement is
+    illustrative, and the scene says so."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if len(parts) < 3 or not re.fullmatch(r"\d{1,3}", parts[1]):
+        return None
+    n = int(parts[1])
+    per = re.search(r"=\s*([\d,]+)", parts[2])
+    if not (2 <= n <= 200) or not per:
+        return None
+    hit = None
+    for country, sts in _states().items():
+        for st in sts:
+            if _fold(st["n"]) == _fold(parts[0]) or any(_fold(a) == _fold(parts[0]) for a in st.get("a", [])):
+                hit = (country, st)
+                break
+        if hit:
+            break
+    if not hit:
+        return None
+    country, st = hit
+    ring = max(st["r"], key=len)
+    xs, ys = [q[0] for q in ring], [q[1] for q in ring]
+    padx, pady = (max(xs) - min(xs)) * .3, (max(ys) - min(ys)) * .3
+    box = [min(xs) - padx, min(ys) - pady, max(xs) + padx, max(ys) + pady]
+
+    def near(r):
+        return any(box[0] <= q[0] <= box[2] and box[1] <= q[1] <= box[3] for q in r[::3])
+    others = [[[round(x, 3), round(y, 3)] for x, y in r] for o in _states()[country] if o is not st for r in o["r"] if near(r)]
+
+    def inside(x, y):
+        c = False
+        for i in range(len(ring)):
+            (x1, y1), (x2, y2) = ring[i], ring[i - 1]
+            if (y1 > y) != (y2 > y) and x < (x2 - x1) * (y - y1) / (y2 - y1) + x1:
+                c = not c
+        return c
+    cand, k = [], 4.0
+    while k < 400 and len(cand) < n * 1.6:
+        cand = []
+        sx, sy = (max(xs) - min(xs)) / k, (max(ys) - min(ys)) / k
+        y = min(ys) + sy / 2
+        while y < max(ys):
+            x = min(xs) + sx / 2
+            while x < max(xs):
+                if inside(x, y):
+                    cand.append((x, y))
+                x += sx
+            y += sy
+        k *= 1.25
+    pts = [cand[round(i * (len(cand) - 1) / max(1, n - 1))] for i in range(n)] if len(cand) >= n else cand
+    return {"type": "tiles", "name": st["n"], "n": n, "per": int(per.group(1).replace(",", "")), "unit": parts[2][:40],
+            "ring": [[round(x, 3), round(y, 3)] for x, y in ring], "others": others, "box": box,
+            "pts": [[round(x, 3), round(y, 3)] for x, y in pts], "title": parts[3][:60] if len(parts) > 3 else "",
+            "caption": parts[4][:120] if len(parts) > 4 else "", "seed": _seed(spec) % 10000}
+
+
+def parse_pile(spec: str) -> dict | None:
+    """'Pile: 17 | FALSE, MISLEADING | Flagged *17 times* | posts flagged by fact-checkers' - cards land one by one on a
+    pile, each stamped, while the count runs."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if not parts or not re.fullmatch(r"\d{1,2}", parts[0]):
+        return None
+    n = int(parts[0])
+    if not 2 <= n <= 40:
+        return None
+    stamps = [x.strip().upper()[:12] for x in (parts[1].split(",") if len(parts) > 1 else []) if x.strip()] or ["FLAGGED"]
+    return {"type": "pile", "n": n, "stamps": stamps[:3], "title": parts[2][:60] if len(parts) > 2 else "",
+            "caption": parts[3][:110] if len(parts) > 3 else "", "seed": _seed(spec) % 10000}
+
+
+def parse_wash(spec: str) -> dict | None:
+    """'Wash: Bihar, Jharkhand, West Bengal | hi: Bihar | East India | note' - a painted map (p5.brush, MIT):
+    watercolour washes with bleeding edges and pencil outlines, the highlighted place in the signature yellow with
+    ink hatching, revealed as if brushed on from left to right. Places are states of one country, or countries."""
+    from . import maps
+    parts = [p.strip() for p in (spec or "").split("|")]
+    names = [x.strip() for x in parts[0].split(",") if x.strip()][:8] if parts else []
+    if not names:
+        return None
+    hi = next((re.sub(r"^hi\s*[:=]\s*", "", p) for p in parts[1:] if re.match(r"^hi\s*[:=]", p, re.I)), "")
+    rest = [p for p in parts[1:] if not re.match(r"^hi\s*[:=]", p, re.I)]
+
+    def thin(r, most=220):
+        k = max(1, len(r) // most)
+        return [[round(x, 3), round(y, 3)] for x, y in r[::k]]
+    shapes, context = [], []
+    st = _state_heat([{"label": n} for n in names])
+    if st and len(st[1]) == len(names):
+        country, hits = st
+        for s_, _ in hits:
+            shapes.append({"name": s_["n"], "rings": [thin(r) for r in s_["r"] if len(r) > 3]})
+        named = {s_["n"] for s_, _ in hits}
+        context = [thin(r, 120) for o in _states()[country] if o["n"] not in named for r in o["r"] if len(r) > 3]
+    else:
+        for n in names:
+            f = maps._find(n)
+            if not f or f["kind"] != "country":
+                return None
+            shapes.append({"name": f["name"], "rings": [thin(r) for r in f["rings"] if len(r) > 3]})
+    pts = [q for sh in shapes for r in sh["rings"] for q in r]
+    xs, ys = [q[0] for q in pts], [q[1] for q in pts]
+    px, py = (max(xs) - min(xs)) * .12 + .2, (max(ys) - min(ys)) * .12 + .2
+    box = [min(xs) - px, min(ys) - py, max(xs) + px, max(ys) + py]
+    context = [r for r in context if any(box[0] <= q[0] <= box[2] and box[1] <= q[1] <= box[3] for q in r)]
+    return {"type": "wash", "shapes": shapes, "context": context, "box": box,
+            "hi": next((sh["name"] for sh in shapes if _fold(sh["name"]) == _fold(hi)), ""),
+            "title": rest[0][:60] if rest else "", "note": rest[1][:90] if len(rest) > 1 else "", "seed": _seed(spec) % 10000}
+
+
+def parse_grids(spec: str) -> dict | None:
+    """'Grids: pro-BJP pages 28, pro-Congress pages 21 | It isn't *one party* | junk news per 100 links, 2019' - two
+    or three 10x10 grids side by side, each filling square by square in the signature yellow while its count runs:
+    shares out of 100, compared at a glance."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    head = re.sub(r"\s+vs\.?\s+", ", ", parts[0] if parts else "", flags=re.I)
+    vals = _pairs(head)
+    if not 2 <= len(vals) <= 3 or any(not 0 <= v["value"] <= 100 for v in vals):
+        return None
+    return {"type": "grids", "values": [{"label": v["label"][:28], "value": round(v["value"]), "shown": v["shown"]} for v in vals],
+            "title": parts[1][:60] if len(parts) > 1 else "", "note": parts[2][:90] if len(parts) > 2 else "",
+            "seed": _seed(spec) % 10000}
+
+
+def parse_newscard(spec: str) -> dict | None:
+    """'Newscard: 29 Aug 2024 | The headline | the line under it | person:Name | Publisher' - a news card on grid
+    paper: red date box, the headline highlighted as it is read, the person beside it, the publisher's name in type."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if len(parts) < 2 or not parts[1]:
+        return None
+    from . import cutouts
+    rest = parts[2:]
+    subject = next((x for x in rest if x.lower().startswith("person:") or cutouts.known(x)), "")
+    others = [x for x in rest if x and x != subject]
+    return {"type": "newscard", "date": parts[0][:24], "headline": parts[1][:120], "sub": others[0][:160] if others else "",
+            "source": others[1][:40] if len(others) > 1 else "", "subjects": [subject] if subject else [],
+            "tone": "grid", "seed": _seed(spec) % 10000}
+
+
+def parse_blueprint(spec: str) -> dict | None:
+    """'Blueprint: factory | Factory production | 3 shifts · 1,200 workers · 40 trucks a day' - a cut-out on a blue
+    grid card, an arrow pointing at it, a few bullet lines."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if len(parts) < 2 or not parts[0]:
+        return None
+    pts = [x.strip() for x in re.split(r"·|•|;", parts[2]) if x.strip()][:4] if len(parts) > 2 else []
+    return {"type": "blueprint", "subjects": [parts[0]], "title": parts[1][:40], "points": pts, "seed": _seed(spec) % 10000}
+
+
+# drawn illustrations (vendor/illustrations.js) for subjects without a photo: script word -> drawing
+ILLUS = {"ship": "ship", "container ship": "ship", "cargo ship": "ship", "vessel": "ship", "boat": "ship",
+         "container": "container", "shipping container": "container", "crane": "crane", "truck": "truck",
+         "lorry": "truck", "factory": "factory", "factory chimney": "factory", "warehouse": "warehouse",
+         "coins": "coins", "coin": "coins", "rupee coin": "coins", "cash": "banknote", "money": "banknote",
+         "banknote": "banknote", "rupee note": "banknote", "notes": "banknote", "money bag": "moneybag",
+         "smartphone": "smartphone", "phone": "smartphone", "mobile": "smartphone", "hand phone": "smartphone",
+         "laptop": "laptop", "computer": "laptop", "television": "television", "tv": "television",
+         "newspaper": "newspaper", "old newspaper": "newspaper", "news": "newspaper", "documents": "documents",
+         "document": "documents", "file folder": "documents", "report": "documents", "skyscraper": "skyscraper",
+         "office building": "skyscraper", "skyline": "skyscraper", "building": "building", "parliament": "building",
+         "new parliament": "building", "supreme court": "building", "bank": "building", "column": "building",
+         "house": "house", "home": "house", "village": "house", "plane": "plane", "airplane": "plane",
+         "flight": "plane", "train": "train", "car": "car", "tractor": "tractor", "farmer standing": "person",
+         "oil barrel": "oil barrel", "oil": "oil barrel", "globe": "globe", "world": "globe", "person": "person",
+         "man standing": "person", "woman standing": "person", "businessman": "person", "worker": "person",
+         "student": "person", "doctor": "person", "crowd": "crowd", "people": "crowd", "protest": "crowd",
+         "queue": "crowd", "megaphone": "megaphone", "gavel": "gavel", "scales of justice": "gavel",
+         "ballot box": "ballot box", "evm": "ballot box", "light bulb": "light bulb", "padlock": "padlock",
+         "book": "book", "books": "book", "briefcase": "briefcase", "pill": "pill", "power tower": "tower",
+         "tower": "tower", "chart": "chart", "stock chart": "chart", "port": "port", "harbour": "port",
+         "auto rickshaw": "auto rickshaw", "auto": "auto rickshaw", "rickshaw": "auto rickshaw", "scooter": "scooter",
+         "bike": "scooter", "motorcycle": "scooter", "bus": "bus", "india gate": "arch", "gateway of india": "arch",
+         "monument": "arch", "arch": "arch", "round parliament": "round parliament", "temple": "temple",
+         "mandir": "temple", "hut": "hut", "farm": "hut", "chai": "chai", "tea": "chai", "cup": "chai",
+         "cricket": "cricket bat", "cricket bat": "cricket bat", "scales": "scales", "justice": "scales",
+         "law": "scales", "handcuffs": "handcuffs", "arrest": "handcuffs", "microphone": "microphone",
+         "speech": "microphone", "camera": "camera", "photo": "camera", "rocket": "rocket", "isro": "rocket",
+         "satellite": "satellite", "space": "rocket", "solar panel": "solar panel", "solar": "solar panel",
+         "wind turbine": "wind turbine", "wind": "wind turbine", "hospital": "hospital", "school": "school",
+         "education": "school", "bridge": "bridge", "dam": "dam", "hourglass": "hourglass", "deadline": "hourglass",
+         "time": "hourglass", "key": "key", "freedom": "key", "calendar": "calendar", "date": "calendar",
+         "man": "man", "man standing": "man", "worker": "man", "farmer standing": "man", "voter": "man",
+         "woman": "woman", "woman standing": "woman", "women": "woman"}
+
+
+# Objects that looked different in another era: (before this year, the period drawing, the photo to search for).
+# A 1914 story gets a steamship, not a container ship.
+ERA_ILLUS = {"ship": (1950, "steamer", "steamship"), "train": (1960, "steamtrain", "steam locomotive"),
+             "plane": (1940, "biplane", "biplane"), "smartphone": (1995, "rotaryphone", "rotary telephone"),
+             "car": (1940, "oldcar", "vintage car"), "television": (1940, "newspaper", "old newspaper")}
+
+
+def illustration(name: str, era: int | None = None) -> str | None:
+    from .cutouts import resolve
+    n = (name or "").strip().lower()
+    key = ILLUS.get(n) or ILLUS.get(resolve(n) or "") or ILLUS.get(n.rstrip("s"))
+    return period(key, era)[0] if key else None
+
+
+def period(key: str | None, era: int | None) -> tuple[str | None, str | None]:
+    """(drawing, photo search) for an object in the story's era; the modern ones when the era is unknown or recent."""
+    if key and era and key in ERA_ILLUS and era < ERA_ILLUS[key][0]:
+        return ERA_ILLUS[key][1], ERA_ILLUS[key][2]
+    return key, None
+
+
+def era_in(theme: str) -> int | None:
+    """'editorial~1@red/sepia/1914' -> 1914."""
+    bits = (theme or "").split("/")
+    return int(bits[2]) if len(bits) > 2 and bits[2].strip().isdigit() else None
+
+
+def parse_pyramid(spec: str) -> dict | None:
+    """'Pyramid: India, 2021 | 0-14 13.4/12.2; 15-29 14/12.9; 30-44 11/10.4; 45-59 7.6/7.3; 60+ 4.9/5.2 | Men, Women'
+    - a population pyramid: one band per age group, left and right bars growing out from the middle."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if len(parts) < 2:
+        return None
+    bands = []
+    for chunk in re.split(r";|,(?!\d)", parts[1]):
+        m = re.match(r"\s*(.+?)\s+([\d.]+)\s*%?\s*/\s*([\d.]+)\s*%?\s*$", chunk)
+        if m:
+            bands.append({"label": m.group(1).strip()[:10], "l": float(m.group(2)), "r": float(m.group(3)),
+                          "ls": m.group(2), "rs": m.group(3)})
+    if len(bands) < 2:
+        return None
+    sides = [x.strip() for x in re.split(r",|/", parts[2])][:2] if len(parts) > 2 and parts[2] else []
+    sides += ["Men", "Women"][len(sides):]
+    return {"type": "pyramid", "title": parts[0][:44], "bands": bands[:12], "left": sides[0][:14], "right": sides[1][:14],
+            "unit": parts[3][:16] if len(parts) > 3 else "", "tone": "grid", "seed": _seed(spec) % 10000}
+
+
+def parse_flow(spec: str) -> dict | None:
+    """'Flowchart: Donor → Electoral trust (₹5 crore) → Party → Ad agency | How the money moved' - boxes joined by
+    arrows that draw one after another; a token travels the chain. A note in brackets sits under the name."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    nodes = []
+    for x in re.split(r"→|->|=>", parts[0]):
+        x = x.strip()
+        if not x:
+            continue
+        m = re.match(r"(.+?)\s*\((.+)\)\s*$", x)
+        nodes.append({"name": (m.group(1) if m else x).strip()[:30], "note": (m.group(2).strip()[:26] if m else "")})
+    if not 2 <= len(nodes) <= 6:
+        return None
+    return {"type": "flowchart", "nodes": nodes, "title": parts[1][:48] if len(parts) > 1 else "", "tone": "grid",
+            "seed": _seed(spec) % 10000}
+
+
+def parse_linkmap(spec: str) -> dict | None:
+    """'Linkmap: Shell company | Director: funds; Bank: loans; Minister: licence; Auditor: signed off | Who is linked'
+    - a relationship map: the subject in the middle, the others round it, each link drawn and labelled."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if len(parts) < 2 or not parts[0]:
+        return None
+    nodes = []
+    for x in re.split(r";|,(?!\d{3}\b)", parts[1]):          # "34,884" stays one number
+        name, _, how = x.partition(":")
+        if name.strip():
+            if len(name.strip()) > 28 or len(how.strip()) > 28:
+                return None                                      # never cut a label (or its figure) short
+            nodes.append({"name": name.strip(), "how": how.strip()})
+    if not 2 <= len(nodes) <= 8:
+        return None
+    return {"type": "linkmap", "centre": parts[0][:26], "nodes": nodes, "title": parts[2][:48] if len(parts) > 2 else "",
+            "tone": "crumple", "seed": _seed(spec) % 10000}
+
+
+def parse_orgchart(spec: str) -> dict | None:
+    """'Orgchart: Prime Minister | Home, Finance, Defence, External Affairs | The cabinet' - who reports to whom:
+    the top box, a row of boxes under it, connectors drawn down. A third part 'A > x, y' hangs boxes under A."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if len(parts) < 2 or not parts[0]:
+        return None
+    kids = [{"name": x.strip()[:22], "kids": []} for x in parts[1].split(",") if x.strip()][:6]
+    if len(kids) < 2:
+        return None
+    title = ""
+    for extra in parts[2:]:
+        if ">" in extra:
+            par, _, sub = extra.partition(">")
+            k = next((c for c in kids if c["name"].lower() == par.strip().lower()), None)
+            if k:
+                k["kids"] = [x.strip()[:20] for x in sub.split(",") if x.strip()][:3]
+        elif not title:
+            title = extra[:48]
+    return {"type": "orgchart", "top": parts[0][:26], "kids": kids, "title": title, "tone": "grid",
+            "seed": _seed(spec) % 10000}
+
+
+_COUNTRY_ALIAS = {"usa": "united states of america", "us": "united states of america", "america": "united states of america",
+                  "united states": "united states of america", "uk": "united kingdom", "britain": "united kingdom",
+                  "uae": "united arab emirates", "russia": "russia", "south korea": "south korea", "drc": "dem. rep. congo",
+                  "czech republic": "czechia", "ivory coast": "côte d'ivoire", "burma": "myanmar"}
+
+
+def _country(name: str) -> dict | None:
+    from . import maps
+    n = maps._norm(_COUNTRY_ALIAS.get(name.strip().lower(), name))
+    cs = maps._world()["countries"]
+    return next((c for c in cs if maps._norm(c["n"]) == n), None) or \
+        next((c for c in cs if n and maps._norm(c["n"]).startswith(n)), None)
+
+
+_STATE_ALIAS = {"up": "uttar pradesh", "mp": "madhya pradesh", "ap": "andhra pradesh", "hp": "himachal pradesh",
+                "tn": "tamil nadu", "wb": "west bengal", "j&k": "jammu and kashmir", "jk": "jammu and kashmir",
+                "orissa": "odisha", "uttaranchal": "uttarakhand", "bengal": "west bengal", "nyc": "new york"}
+
+
+@functools.lru_cache(maxsize=1)
+def _states() -> dict:
+    """States and provinces of every country (Natural Earth admin-1, public domain): the nine largest countries at
+    1:50m, the rest thinned from 1:10m, with their local and alternative names under "a"."""
+    return json.loads((Path(__file__).with_name("states.json")).read_text(encoding="utf-8"))
+
+
+def _fold(name: str) -> str:
+    """'Québec' -> 'quebec': accents folded, then the map lookup's own normalising."""
+    import unicodedata
+    from . import maps
+    return maps._norm("".join(c for c in unicodedata.normalize("NFKD", name) if not unicodedata.combining(c)))
+
+
+def _state_heat(vals: list[dict]) -> tuple[str, list] | None:
+    """(country, [(state, value)]) when the labels are states of one country."""
+    from . import maps
+    best = None
+    for country, sts in _states().items():
+        idx = {_fold(a): st for st in sts for a in st.get("a", [])}     # local and alternative names
+        idx.update({_fold(st["n"]): st for st in sts})
+        hit = [(idx[n], v) for v in vals for n in [_fold(_STATE_ALIAS.get(v["label"].strip().lower(), v["label"]))] if n in idx]
+        if len(hit) >= 2 and (best is None or len(hit) > len(best[1]) or (len(hit) == len(best[1]) and country == "India")):
+            best = (country, hit)
+    return best
+
+
+def parse_heatmap(spec: str) -> dict | None:
+    """'Heatmap: India 1.9, China 8.0, USA 14.9, Brazil 2.2, Germany 8.1 | CO2 per person | tonnes, 2022' - countries
+    shaded by their number (darker = more), each labelled, with a scale; the rest of the map stays pale."""
+    from . import maps
+    parts = [p.strip() for p in (spec or "").split("|")]
+    vals = []
+    pairs = _pairs(parts[0])
+    for v in pairs:
+        c = _country(v["label"])
+        if c:
+            vals.append((c, v))
+    world = maps._world()["countries"]
+    st = _state_heat(pairs) if len(vals) < 2 or len(vals) < len(pairs) / 2 else None
+    if st:
+        # states of one country: its other states stay pale, the rest of the world paler still
+        vals = st[1]
+        world = [{"n": x["n"], "r": x["r"]} for x in _states()[st[0]] if x["n"] not in {c["n"] for c, _ in vals}] + \
+            [c for c in world if c["n"] != st[0]]
+    mapcredit = ""
+    if len(vals) < 2 or len(vals) < len(pairs) / 2:
+        # districts (downloaded per country, see media/districts.py): the country's other districts stay pale
+        from . import districts
+        dd = districts.find([v["label"] for v in pairs])
+        if dd:
+            vals = [({"n": u["n"], "r": u["r"]}, v) for u, v in zip(dd[1], pairs) if u]
+            world = [{"n": u["n"], "r": u["r"]} for u in dd[2]]
+            mapcredit = dd[3]
+    if len(vals) < 2:
+        return None
+    pts = [(x, y) for c, _ in vals for r in sorted(c["r"], key=len)[-1:] for x, y in r]
+    xs, ys = [q[0] for q in pts], [q[1] for q in pts]
+    box = [min(xs), max(-56.0, min(ys)), max(xs), min(78.0, max(ys))]
+    named = {c["n"] for c, _ in vals}
+    items = []
+    for c, v in vals[:14]:
+        big = max(c["r"], key=len)
+        rings = [[[round(x, 2), round(y, 2)] for x, y in r[:: max(1, len(r) // 140)]] for r in c["r"] if len(r) >= 8 or r is big]
+        items.append({"name": c["n"], "label": v["label"], "value": v["value"], "shown": v["shown"], "rings": rings[:12],
+                      "at": [round(sum(q[0] for q in big) / len(big), 2), round(sum(q[1] for q in big) / len(big), 2)]})
+    others = []
+    for c in world:
+        if c["n"] in named:
+            continue
+        for r in c["r"]:
+            if len(r) >= (4 if mapcredit else 12) and any(box[0] - 40 <= x <= box[2] + 40 and box[1] - 30 <= y <= box[3] + 30 for x, y in r[:: max(1, len(r) // 20)]):
+                others.append([[round(x, 1), round(y, 1)] for x, y in r[:: max(1, len(r) // 70)]])
+    return {"type": "heatmap", "items": items, "others": others[:420], "box": box, "title": parts[1][:48] if len(parts) > 1 else "",
+            "unit": parts[2][:26] if len(parts) > 2 else "", "tone": "atlas", "mapcredit": mapcredit,
+            "seed": _seed(spec) % 10000}
+
+
+def _map_frame(pts: list[tuple[float, float]], pad: float = 0.35) -> tuple[list[float], list]:
+    """(visible box, the country outlines that touch it) round some lon/lat points."""
+    from . import maps
+    lons, lats = [q[0] for q in pts], [q[1] for q in pts]
+    px = max(6.0, (max(lons) - min(lons)) * pad)
+    py = max(4.0, (max(lats) - min(lats)) * pad)
+    box = [min(lons) - px, max(-58.0, min(lats) - py), max(lons) + px, min(80.0, max(lats) + py)]
+    shapes = []
+    for c in maps._world()["countries"]:
+        for r in c["r"]:
+            if any(box[0] - 50 <= x <= box[2] + 50 and box[1] - 35 <= y <= box[3] + 35 for x, y in r[:: max(1, len(r) // 30)]):
+                shapes.append([[round(x, 2), round(y, 2)] for x, y in r[:: max(1, len(r) // 150)]])
+    return box, shapes[:420]
+
+
+def parse_courtdoc(spec: str) -> dict | None:
+    """'Courtdoc: Supreme Court of India | M. Siddiq v. Mahant Suresh Das | "the finding, in the court's words" |
+    para 788 · 9 Nov 2019' - the page of a judgment: the court, the case, the quoted paragraph highlighted as read."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if len(parts) < 3 or not parts[2].strip(' "“”'):
+        return None
+    return {"type": "courtdoc", "court": parts[0][:60], "case": parts[1][:80], "quote": parts[2].strip(' "“”')[:260],
+            "ref": parts[3][:60] if len(parts) > 3 else "", "badge": BADGES["court"], "tone": "grid",
+            "seed": _seed(spec) % 10000}
+
+
+def parse_table(spec: str) -> dict | None:
+    """'Table: State, Seats, Vote % | UP, 62, 49.6; Bihar, 39, 53.3; MP, 28, 58.0 | 2019 result | highlight: 2'
+    - a data table that fills row by row; one row can be picked out."""
+    hl = 0
+    m = re.search(r"\|\s*highlight\s*[:=]\s*(\d+)", spec or "", re.I)
+    if m:
+        hl = int(m.group(1))
+        spec = spec[:m.start()] + spec[m.end():]
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if len(parts) < 2:
+        return None
+    head = [h.strip() for h in parts[0].split(",") if h.strip()][:5]
+    rows = [[c.strip() for c in re.split(r",(?!\d{2,3}\b)", r)][:len(head)] for r in parts[1].split(";") if r.strip()][:8]
+    # a cell is never cut short (the figure or the label would change): too long, the line is refused
+    if any(len(h) > 28 for h in head) or any(len(c) > 40 for r in rows for c in r):
+        return None
+    rows = [r for r in rows if len(r) == len(head)]
+    if len(head) < 2 or len(rows) < 2:
+        return None
+    return {"type": "table", "head": head, "rows": rows, "title": parts[2][:48] if len(parts) > 2 else "",
+            "source": parts[3][:50] if len(parts) > 3 else "", "hl": hl if 1 <= hl <= len(rows) else 0, "tone": "grid",
+            "seed": _seed(spec) % 10000}
+
+
+def parse_interview(spec: str) -> dict | None:
+    """'Interview: person:Raghuram Rajan | "the words they said" | Former RBI Governor · 2019, The Hindu' - the
+    speaker's photo, a lower third with name and role, the pull quote typed beside them."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if len(parts) < 2 or not parts[0]:
+        return None
+    who = parts[0] if parts[0].lower().startswith("person:") else "person:" + parts[0]
+    return {"type": "interview", "subjects": [who], "name": who.split(":", 1)[1].strip()[:40],
+            "quote": parts[1].strip(' "“”')[:200], "role": parts[2][:70] if len(parts) > 2 else "",
+            "seed": _seed(spec) % 10000}
+
+
+def parse_endcard(spec: str) -> dict | None:
+    """'Endcard: The canal that changed trade | Watch next: the Suez story | Sources: ACP · Lloyd's List · UNCTAD'"""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if not parts or not parts[0]:
+        return None
+    src = next((p.split(":", 1)[1] for p in parts[1:] if p.lower().startswith(("sources:", "source:"))), "")
+    rest = [p for p in parts[1:] if not p.lower().startswith(("sources:", "source:"))]
+    return {"type": "endcard", "title": parts[0][:60], "line": rest[0][:70] if rest else "",
+            "sources": [x.strip()[:34] for x in re.split(r"·|;|,", src) if x.strip()][:6], "seed": _seed(spec) % 10000}
+
+
+def parse_polltrack(spec: str) -> dict | None:
+    """'Polltrack: Jan 38, Feb 41, Mar 39, Apr 44, May 47 | Approval rating | ±3 | %' - a poll line with its margin
+    of error as a band; the last reading is the big number."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    pts = _pairs(parts[0])
+    if len(pts) < 3:
+        return None
+    m = re.search(r"([\d.]+)", parts[2]) if len(parts) > 2 else None
+    return {"type": "polltrack", "points": pts[:14], "title": parts[1][:48] if len(parts) > 1 else "",
+            "moe": float(m.group(1)) if m else 0.0, "unit": parts[3][:6] if len(parts) > 3 else "", "tone": "grid",
+            "seed": _seed(spec) % 10000}
+
+
+def parse_area(spec: str) -> dict | None:
+    """'Area: 2019, 2020, 2021, 2022 | Coal: 60, 58, 55, 50; Solar: 5, 9, 14, 22; Wind: 6, 8, 9, 11 | Power mix'
+    - a stacked area chart that fills from left to right."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if len(parts) < 2:
+        return None
+    xs = [x.strip()[:8] for x in parts[0].split(",") if x.strip()]
+    series = []
+    for chunk in parts[1].split(";"):
+        name, _, vals = chunk.partition(":")
+        try:
+            v = [float(x) for x in vals.split(",") if x.strip()]
+        except ValueError:
+            return None
+        if name.strip() and len(v) == len(xs):
+            series.append({"name": name.strip()[:16], "v": v})
+    if len(xs) < 2 or not 2 <= len(series) <= 5:
+        return None
+    return {"type": "area", "xs": xs[:12], "series": series, "title": parts[2][:48] if len(parts) > 2 else "",
+            "unit": parts[3][:14] if len(parts) > 3 else "", "tone": "grid", "seed": _seed(spec) % 10000}
+
+
+def parse_candles(spec: str) -> dict | None:
+    """'Candles: Mon 100/112/96/108; Tue 108/115/104/106; Wed 106/107/90/93 | Share price | ₹' - open/high/low/close
+    candles drawn one by one; up days in the accent, down days in ink."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    cs = []
+    for chunk in parts[0].split(";"):
+        m = re.match(r"\s*(.*?)\s*([\d.]+)\s*/\s*([\d.]+)\s*/\s*([\d.]+)\s*/\s*([\d.]+)\s*$", chunk)
+        if m:
+            o, h, lo, c = (float(m.group(i)) for i in (2, 3, 4, 5))
+            if lo <= min(o, c) and h >= max(o, c):
+                cs.append({"label": m.group(1)[:8], "o": o, "h": h, "l": lo, "c": c})
+    if not cs:
+        return None                      # one day's candle is a graphic too ("opened at..., closed at...")
+    return {"type": "candles", "candles": cs[:24], "title": parts[1][:48] if len(parts) > 1 else "",
+            "unit": parts[2][:6] if len(parts) > 2 else "", "tone": "grid", "seed": _seed(spec) % 10000}
+
+
+def parse_arrows(spec: str) -> dict | None:
+    """'Arrows: Belarus → Kyiv (north); Russia → Kharkiv (east); Crimea → Kherson | February 2022' - movement on a
+    map (armies, migration, trade): broad arrows that sweep from one place to the next, each one named."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    arrows = []
+    for chunk in parts[0].split(";"):
+        m = re.match(r"\s*(.+?)\s*(?:→|->)\s*(.+?)\s*(?:\((.+)\))?\s*$", chunk)
+        if not m:
+            continue
+        g = _geo([m.group(1), m.group(2)])
+        if len(g) == 2:
+            arrows.append({"a": g[0], "b": g[1], "label": (m.group(3) or "").strip()[:22]})
+    if not arrows:
+        return None
+    box, shapes = _map_frame([(e["lon"], e["lat"]) for a in arrows for e in (a["a"], a["b"])], 0.45)
+    return {"type": "arrows", "arrows": arrows[:6], "box": box, "shapes": shapes, "title": parts[1][:48] if len(parts) > 1 else "",
+            "tone": "atlas", "seed": _seed(spec) % 10000}
+
+
+def parse_railmap(spec: str) -> dict | None:
+    """'Railmap: Delhi - Kanpur - Patna - Kolkata; Delhi - Jaipur - Ahmedabad - Mumbai | Freight corridors' - a
+    transport network: each line draws through its stations, a different colour per line, stations named once."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    lines = []
+    for chunk in parts[0].split(";"):
+        name, sep, rest = chunk.partition(":")
+        stops = _geo([x.strip() for x in re.split(r"\s+-\s+|→|->|–|—", rest if sep else chunk) if x.strip()][:9])
+        if len(stops) >= 2:
+            lines.append({"name": name.strip()[:18] if sep else "", "stops": stops})
+    if not lines:
+        return None
+    box, shapes = _map_frame([(s["lon"], s["lat"]) for ln in lines for s in ln["stops"]], 0.3)
+    return {"type": "railmap", "lines": lines[:5], "box": box, "shapes": shapes, "title": parts[1][:48] if len(parts) > 1 else "",
+            "tone": "atlas", "seed": _seed(spec) % 10000}
+
+
+def _ring_area_km2(r: list) -> float:
+    import math
+    a = 0.0
+    for (x1, y1), (x2, y2) in zip(r, r[1:] + r[:1]):
+        a += math.radians(x2 - x1) * (2 + math.sin(math.radians(y1)) + math.sin(math.radians(y2)))
+    return abs(a) * 6371.0088 ** 2 / 2
+
+
+def parse_sizemap(spec: str) -> dict | None:
+    """'Sizemap: India vs Germany | How big is it really?' - two countries at the same scale: the first is drawn,
+    morphs into the second, then both outlines sit together with how many times bigger one is."""
+    import math
+    parts = [p.strip() for p in (spec or "").split("|")]
+    names = [x.strip() for x in re.split(r"\s+vs\.?\s+", parts[0], flags=re.I) if x.strip()]
+    cs = [_country(n) for n in names[:2]]
+    if len(cs) != 2 or not all(cs) or cs[0] is cs[1]:
+        return None
+    items = []
+    for c, n in zip(cs, names):
+        big = max(c["r"], key=_ring_area_km2)
+        lat0 = sum(y for _, y in big) / len(big)
+        lon0 = sum(x for x, _ in big) / len(big)
+        k = math.cos(math.radians(lat0))
+        step = max(1, len(big) // 200)
+        items.append({"name": n[:22], "km2": round(sum(_ring_area_km2(r) for r in c["r"])),
+                      "ring": [[round((x - lon0) * k * 111.32, 1), round(-(y - lat0) * 110.57, 1)] for x, y in big[::step]]})
+    return {"type": "sizemap", "items": items, "title": parts[1][:48] if len(parts) > 1 else "", "tone": "grid",
+            "seed": _seed(spec) % 10000}
+
+
+REGIONS = {"europe": [-12, 34, 45, 71], "world": [-170, -56, 180, 78], "asia": [25, -10, 150, 60],
+           "south asia": [58, 4, 100, 40], "middle east": [24, 10, 66, 44], "africa": [-20, -36, 54, 38],
+           "north america": [-140, 8, -52, 62], "south america": [-84, -56, -32, 14], "east asia": [95, 15, 150, 55],
+           "southeast asia": [90, -12, 142, 28], "balkans": [12, 34, 32, 49]}
+
+
+def parse_borders(spec: str) -> dict | None:
+    """'Borders: 1914 → today | Europe | The map before the war' - the borders of a past year (history.py), then
+    the map redraws itself as it is now; the old lines stay as a dashed ghost and the year counts across.
+    'Borders: 1914 | Europe' shows the one year. Needs the dated maps on the worker (see media/history.py)."""
+    from . import history, maps
+    parts = [p.strip() for p in (spec or "").split("|")]
+    ys = re.findall(r"(?<!\d)(1[5-9]\d\d|20\d\d)(?!\d)", parts[0])
+    if not ys:
+        return None
+    ya = int(ys[0])
+    yb = int(ys[1]) if len(ys) > 1 else (0 if re.search(r"today|now|present", parts[0], re.I) else None)
+    fa = history.nearest(ya)
+    if fa is None:
+        return None                                   # no dated maps on this worker: never today's map with an old date
+    region = (parts[1] if len(parts) > 1 else "world").strip().lower()
+    box = REGIONS.get(region)
+    if box is None:
+        f = maps._find(region)
+        if not f:
+            return None
+        if f["kind"] == "city":
+            box = [f["lon"] - 9, f["lat"] - 6, f["lon"] + 9, f["lat"] + 6]
+        else:
+            big = max(f["rings"], key=len)
+            xs, ys2 = [x for x, _ in big], [y for _, y in big]
+            px, py = max(4.0, (max(xs) - min(xs)) * .5), max(3.0, (max(ys2) - min(ys2)) * .5)
+            box = [min(xs) - px, min(ys2) - py, max(xs) + px, max(ys2) + py]
+
+    def clip(cs):
+        out = []
+        for c in cs:
+            rings = [r for r in c["r"] if any(box[0] - 12 <= x <= box[2] + 12 and box[1] - 8 <= y <= box[3] + 8
+                                              for x, y in r[:: max(1, len(r) // 24)])]
+            if rings:
+                big = max(rings, key=len)
+                inside = [q for q in big if box[0] <= q[0] <= box[2] and box[1] <= q[1] <= box[3]]
+                xs, ys2 = [q[0] for q in big], [q[1] for q in big]
+                out.append({"n": c["n"], "r": [[[round(x, 2), round(y, 2)] for x, y in r[:: max(1, len(r) // 150)]] for r in rings[:8]],
+                            "size": (max(xs) - min(xs)) * (max(ys2) - min(ys2)) * (len(inside) / max(1, len(big))),
+                            "at": [round(sum(q[0] for q in inside) / len(inside), 2), round(sum(q[1] for q in inside) / len(inside), 2)]
+                            if inside else None})
+        return out
+    then = clip(history.load(fa))
+    if not then:
+        return None
+    if yb is None:
+        now = []
+    elif yb == 0 or yb >= 2011 or history.nearest(yb) in (None, fa):
+        now = clip(maps._world()["countries"])
+        yb = yb or 0
+    else:
+        now = clip(history.load(history.nearest(yb)))
+    for group in (then, now):
+        for c in sorted(group, key=lambda c: -c["size"])[:9]:
+            c["label"] = bool(c["at"] and c["n"])
+    return {"type": "borders", "then": then[:160], "now": now[:160], "ya": ya, "yb": yb, "box": box,
+            "title": parts[2][:48] if len(parts) > 2 else "", "tone": "atlas", "mapcredit": history.CREDIT,
+            "seed": _seed(spec) % 10000}
+
+
+def _basic_shape(name: str) -> list | None:
+    """Plain shapes for Morph: unit-box outlines (y down)."""
+    import math
+    n = name.strip().lower()
+    poly = {"triangle": 3, "square": 4, "diamond": 4, "pentagon": 5, "hexagon": 6, "octagon": 8, "circle": 72}
+    if n in poly:
+        k, rot = poly[n], {"square": math.pi / 4, "triangle": -math.pi / 2, "pentagon": -math.pi / 2}.get(n, 0.0)
+        return [[math.cos(rot + i / k * 2 * math.pi), math.sin(rot + i / k * 2 * math.pi)] for i in range(k)]
+    if n == "star":
+        return [[(1 if i % 2 == 0 else .42) * math.cos(-math.pi / 2 + i / 10 * 2 * math.pi),
+                 (1 if i % 2 == 0 else .42) * math.sin(-math.pi / 2 + i / 10 * 2 * math.pi)] for i in range(10)]
+    if n == "heart":
+        return [[16 * math.sin(t) ** 3 / 17, -(13 * math.cos(t) - 5 * math.cos(2 * t) - 2 * math.cos(3 * t) - math.cos(4 * t)) / 17]
+                for t in (i / 80 * 2 * math.pi for i in range(80))]
+    if n in ("drop", "droplet"):
+        return [[.72 * math.sin(t) * (1 - math.cos(t)) / 1.3 * 1.0, -math.cos(t) * .95 - .05] for t in (i / 70 * 2 * math.pi for i in range(70))]
+    if n == "arrow":
+        return [[-1, -.3], [.2, -.3], [.2, -.75], [1, 0], [.2, .75], [.2, .3], [-1, .3]]
+    return None
+
+
+def _outline(name: str) -> dict | None:
+    """A named shape as one closed outline in a unit box: a plain shape, a country, or a state / province."""
+    import math
+    r = _basic_shape(name)
+    label = name.strip()
+    if r is None:
+        c = _country(name)
+        if c is None:
+            key = _fold(_STATE_ALIAS.get(name.strip().lower(), name))
+            c = next((st for sts in [_states().get("India", [])] + list(_states().values()) for st in sts
+                      if _fold(st["n"]) == key or key in [_fold(a) for a in st.get("a", [])]), None)
+        if c is None:
+            return None
+        big = max(c["r"], key=_ring_area_km2)
+        lat0 = sum(y for _, y in big) / len(big)
+        k = math.cos(math.radians(lat0))
+        r = [[x * k, -y] for x, y in big[:: max(1, len(big) // 220)]]
+        label = c["n"]
+    xs, ys = [q[0] for q in r], [q[1] for q in r]
+    sc = 2 / max(max(xs) - min(xs), max(ys) - min(ys), 1e-9)
+    cx, cy = (max(xs) + min(xs)) / 2, (max(ys) + min(ys)) / 2
+    return {"name": label[:24], "ring": [[round((x - cx) * sc, 4), round((y - cy) * sc, 4)] for x, y in r]}
+
+
+def parse_morph(spec: str) -> dict | None:
+    """'Morph: India → drop → Bihar | Where the water goes' - one shape flows into the next (2-4 shapes): countries,
+    states and provinces, or plain shapes (circle, square, triangle, diamond, pentagon, hexagon, octagon, star,
+    heart, drop, arrow). Each is drawn to fill the frame; for true relative size use Sizemap."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    shapes = [_outline(x) for x in re.split(r"→|->|=>", parts[0]) if x.strip()][:4]
+    if len(shapes) < 2 or not all(shapes):
+        return None
+    return {"type": "morph", "shapes": shapes, "title": parts[1][:48] if len(parts) > 1 else "",
+            "caption": parts[2][:60] if len(parts) > 2 else "", "seed": _seed(spec) % 10000}
+
+
+@functools.lru_cache(maxsize=1)
+def _lakes() -> dict:
+    """Natural Earth 1:10m lakes (public domain): {"historic": {name: lake}, "current": {name: lake}} where a lake is
+    {"a": alt names, "km2": area measured from the outline, "r": rings}. The historic set is lakes as they were before
+    recent change (the Aral Sea's pre-1960s extent among them)."""
+    return json.loads((Path(__file__).with_name("lakes.json")).read_text(encoding="utf-8"))
+
+
+def parse_shrink(spec: str) -> dict | None:
+    """'Shrink: Aral Sea | 1960 -> today | The sea that left | pins: Moynaq, Aralsk' - a lake as it was (Natural Earth's
+    historic outline) drains to its outline now: the old shoreline stays as a ghost, the area counts down (measured
+    from the outlines), towns on the old shore are pinned."""
+    from . import maps
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if not parts or not parts[0]:
+        return None
+    lk = _lakes()
+    key = _fold(parts[0])
+    then = next((v | {"n": n} for n, v in lk["historic"].items() if _fold(n) == key or key in [_fold(a) for a in v["a"]]), None)
+    if then is None:
+        return None
+    base = key.replace(" sea", "").replace("lake ", "").strip()
+    now = [v | {"n": n} for n, v in lk["current"].items() if base and (base in _fold(n) or any(base in _fold(a) for a in v["a"]))]
+    pts = [q for r in then["r"] for q in r]
+    xs, ys = [q[0] for q in pts], [q[1] for q in pts]
+    px, py = (max(xs) - min(xs)) * .4, (max(ys) - min(ys)) * .3
+    box = [min(xs) - px, min(ys) - py, max(xs) + px, max(ys) + py]
+    shapes = []
+    for c in maps._world()["countries"]:
+        for r in c["r"]:
+            if any(box[0] - 12 <= x <= box[2] + 12 and box[1] - 8 <= y <= box[3] + 8 for x, y in r[:: max(1, len(r) // 30)]):
+                shapes.append([[round(x, 2), round(y, 2)] for x, y in r[:: max(1, len(r) // 160)]])
+    years = re.findall(r"\d{4}|today|now", parts[1] if len(parts) > 1 else "", re.I)
+    pins = []
+    for p in parts[2:]:
+        k, _, v = p.partition(":")
+        if k.strip().lower() == "pins":
+            for nm in [x.strip() for x in v.split(",") if x.strip()][:5]:
+                f = maps._find(nm)
+                if f and f["kind"] == "city":
+                    pins.append({"name": nm[:20], "lon": f["lon"], "lat": f["lat"]})
+    title = next((p for p in parts[2:] if ":" not in p), "")
+    return {"type": "shrink", "name": then["n"], "then": then["r"], "now": [r for v in now for r in v["r"]],
+            "nowNames": [v["n"] for v in now], "km2": [then["km2"], sum(v["km2"] for v in now)],
+            "years": [years[0] if years else "", years[1] if len(years) > 1 else "today"], "box": box, "shapes": shapes[:300],
+            "pins": pins, "title": title[:48], "tone": "atlas", "mapcredit": "Outlines: Natural Earth 1:10m lakes (public domain); areas measured from them",
+            "seed": _seed(spec) % 10000}
+
+
+def parse_myth(spec: str) -> dict | None:
+    """Myth: <the wrong idea> | <what is true> | <stamp word, default MYTH>: a myth turned over."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if len(parts) < 2 or not parts[0] or not parts[1]:
+        return None
+    return {"type": "myth", "wrong": parts[0][:110], "right": parts[1][:120],
+            "label": (parts[2] if len(parts) > 2 and parts[2] else "MYTH")[:14], "seed": _seed(spec) % 10000}
+
+
+def parse_counter(spec: str) -> dict | None:
+    """Counter: <from> → <to> | <unit> | <caption>: a number counting up or down in steady digits, then holding."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    m = re.match(r"\s*([^\d\-]*)(-?[\d,]*\.?\d+)\s*(?:→|->|to)\s*([^\d\-]*)(-?[\d,]*\.?\d+)\s*(\S*)\s*$", parts[0] if parts else "")
+    if not m:
+        return None
+    a, b = m.group(2).replace(",", ""), m.group(4).replace(",", "")
+    dec = max(len(a.split(".")[1]) if "." in a else 0, len(b.split(".")[1]) if "." in b else 0)
+    return {"type": "counter", "from": float(a), "to": float(b), "dec": dec, "comma": "," in m.group(4),
+            "pre": (m.group(3) or m.group(1)).strip()[:3], "post": m.group(5)[:10],
+            "unit": parts[1][:60] if len(parts) > 1 else "", "caption": parts[2][:80] if len(parts) > 2 else "",
+            "seed": _seed(spec) % 10000}
+
+
+def parse_staircase(spec: str) -> dict | None:
+    """Staircase: <step>; <step>; <step> | <title>: steps that light up one after another as the story climbs them."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    steps = [x.strip()[:48] for x in re.split(r";|→|->", parts[0] if parts else "") if x.strip()][:6]
+    if len(steps) < 2:
+        return None
+    return {"type": "staircase", "steps": steps, "title": parts[1][:60] if len(parts) > 1 else "", "seed": _seed(spec) % 10000}
+
+
+def parse_scale(spec: str) -> dict | None:
+    """Scale: <weight>, <weight>, ... | <the other side> | <verdict>: a balance tipping as weights pile on one pan."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    left = [x.strip()[:34] for x in re.split(r",|;|·", parts[0] if parts else "") if x.strip()][:5]
+    if not left or len(parts) < 2 or not parts[1]:
+        return None
+    return {"type": "scale", "left": left, "right": parts[1][:34], "verdict": parts[2][:40] if len(parts) > 2 else "",
+            "seed": _seed(spec) % 10000}
+
+
+def _photo_parser(kind):
+    def parse(spec: str) -> dict | None:
+        from . import photo
+        return photo.parse(kind, spec)
+    return parse
+
+
+PARSERS = {"photo": _photo_parser("photo"), "photos": _photo_parser("photos"), "footage": _photo_parser("footage"),
+           "shrink": parse_shrink, "morph": parse_morph, "borders": parse_borders, "courtdoc": parse_courtdoc, "table": parse_table, "interview": parse_interview, "endcard": parse_endcard,
+           "polltrack": parse_polltrack, "area": parse_area, "candles": parse_candles, "arrows": parse_arrows,
+           "railmap": parse_railmap, "sizemap": parse_sizemap,
+           "pyramid": parse_pyramid, "flowchart": parse_flow, "linkmap": parse_linkmap, "orgchart": parse_orgchart,
+           "heatmap": parse_heatmap, "hero": parse_hero, "desk": parse_desk, "pinboard": parse_evidence, "opener": parse_opener,
+           "reveal": parse_reveal, "clipping": parse_headline, "pinmap": parse_pinmap, "bignumber": parse_number,
+           "seats": parse_seats, "stack": parse_stack, "stand": parse_stand, "fan": parse_fan, "trend": parse_trend,
+           "slice": parse_slice, "route": parse_route, "compare": parse_compare, "photoline": parse_photoline,
+           "tv": parse_tv, "clockmap": parse_clockmap, "tornsplit": parse_tornsplit, "newscard": parse_newscard,
+           "blueprint": parse_blueprint, "units": parse_units, "reel": parse_reel,
+           "conveyor": parse_conveyor, "tiles": parse_tiles, "pile": parse_pile, "wash": parse_wash, "grids": parse_grids}
+
+
+def _ext_parser(mod: str, kind: str):
+    def parse(spec: str) -> dict | None:
+        from importlib import import_module
+        m = import_module(f".{mod}", __package__)
+        return m.parse(spec) if mod == "satellite" else m.parse(kind, spec)
+    return parse
+
+
+# data maps drawn with deck.gl (media/datamap.py) and dated satellite imagery (media/satellite.py)
+DATAMAP_KINDS = ("flowmap", "columns", "dots")
+PARSERS.update({k: _ext_parser("datamap", k) for k in DATAMAP_KINDS})
+PARSERS["satellite"] = _ext_parser("satellite", "satellite")
+PARSERS["myth"] = parse_myth
+PARSERS.update({"counter": parse_counter, "staircase": parse_staircase, "scale": parse_scale})
+
+
+_LOGOS: dict | None = None
+
+
+# Party symbols, only to identify a party the line names (never as decoration; MASTER_DIRECTIVES §6). They are the
+# official, unaltered symbols: a file the pod downloads into <data>/symbols/<key>.png|svg (credited). Until it is
+# there, the frame shows a labelled empty slot: the engine never redraws a symbol itself.
+PARTIES = {"bjp": ("BJP", "Bharatiya Janata Party", "#F97D09"), "congress": ("INC", "Indian National Congress", "#19AAED"),
+           "aap": ("AAP", "Aam Aadmi Party", "#0066A4")}
+
+
+def _symbol(key: str) -> dict:
+    short, title, hexc = PARTIES[key]
+    d = Path(os.environ.get("CF_DATA_DIR", "./creatorforge-data")) / "symbols"
+    out = {"title": title, "short": short, "hex": hexc, "party": True, "d": "", "credit": "Symbol: Election Commission of India"}
+    for ext, mime in (("png", "image/png"), ("svg", "image/svg+xml")):
+        f = d / f"{key}.{ext}"
+        if f.is_file():
+            out["img"] = f"data:{mime};base64," + base64.b64encode(f.read_bytes()).decode()
+            break
+    return out
+
+
+def logos() -> dict:
+    """Official brand marks (Simple Icons, CC0 data) by key: {title, hex, d}; party symbols as {party: True, img?}."""
+    global _LOGOS
+    if _LOGOS is None:
+        try:
+            _LOGOS = json.loads((Path(__file__).parent / "vendor" / "logos.json").read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            _LOGOS = {}
+    return {**_LOGOS, **{k: _symbol(k) for k in PARTIES}}
+
+
+LOGO_WORDS = {"bjp": "bjp", "bharatiya janata party": "bjp", "congress": "congress", "inc": "congress",
+              "indian national congress": "congress", "aap": "aap", "aam aadmi party": "aap", "whatsapp": "whatsapp", "व्हाट्सऐप": "whatsapp", "व्हाट्सएप": "whatsapp", "facebook": "facebook",
+              "फ़ेसबुक": "facebook", "फेसबुक": "facebook", "instagram": "instagram", "इंस्टाग्राम": "instagram",
+              "twitter": "x", "ट्विटर": "x", "एक्स": "x", "youtube": "youtube", "यूट्यूब": "youtube", "telegram": "telegram",
+              "टेलीग्राम": "telegram", "google": "google", "गूगल": "google", "meta": "meta", "मेटा": "meta",
+              "snapchat": "snapchat", "स्नैपचैट": "snapchat", "tiktok": "tiktok", "टिकटॉक": "tiktok", "jio": "jio",
+              "जियो": "jio", "paytm": "paytm", "पेटीएम": "paytm", "phonepe": "phonepe", "फ़ोनपे": "phonepe",
+              "फोनपे": "phonepe", "google pay": "googlepay", "गूगल पे": "googlepay", "zomato": "zomato", "ज़ोमैटो": "zomato",
+              "swiggy": "swiggy", "स्विगी": "swiggy", "airtel": "airtel", "एयरटेल": "airtel", "netflix": "netflix",
+              "नेटफ्लिक्स": "netflix", "spotify": "spotify", "wikipedia": "wikipedia", "विकिपीडिया": "wikipedia",
+              "android": "android", "एंड्रॉयड": "android", "apple": "apple", "एप्पल": "apple", "iphone": "apple",
+              "samsung": "samsung", "सैमसंग": "samsung", "tesla": "tesla", "टेस्ला": "tesla", "uber": "uber", "उबर": "uber",
+              "signal": "signal", "सिग्नल": "signal", "threads": "threads", "reddit": "reddit", "gmail": "gmail",
+              "google maps": "googlemaps", "nvidia": "nvidia", "एनवीडिया": "nvidia", "intel": "intel", "visa": "visa",
+              "mastercard": "mastercard", "bitcoin": "bitcoin", "बिटकॉइन": "bitcoin", "tata": "tata", "टाटा": "tata",
+              "infosys": "infosys", "इंफ़ोसिस": "infosys", "wipro": "wipro", "xiaomi": "xiaomi", "oneplus": "oneplus",
+              "vivo": "vivo", "oppo": "oppo", "zoom": "zoom", "discord": "discord", "messenger": "messenger",
+              "wechat": "wechat", "hdfc": "hdfcbank", "icici": "icicibank", "bluesky": "bluesky", "pinterest": "pinterest"}
+
+
+def logo_key(word: str) -> str:
+    w = (word or "").strip().lower().removeprefix("logo:").removesuffix(" logo").removesuffix(" app").strip()
+    k = LOGO_WORDS.get(w, w.replace(" ", ""))
+    return k if k in logos() else ""
+
+
+def plan_for(kind: str, spec: str) -> dict | None:
+    fn = PARSERS.get(kind)
+    if not fn:
+        return None
+    # "| marker: <note>" on any scene: a hand-drawn marker circle round the subject and a handwritten note
+    marks = []
+    lg = re.search(r"\|\s*logos?\s*[:=]\s*([^|]+)", spec or "", re.I)
+    if lg:
+        marks = [k for k in (logo_key(x) for x in re.split(r",|\+|·", lg.group(1))) if k][:3]
+        spec = (spec[:lg.start()] + spec[lg.end():]).strip()
+    comp = ""
+    w = re.search(r"\|\s*with\s*[:=]\s*([^|]+)", spec or "", re.I)
+    if w:
+        comp = w.group(1).strip()[:60]
+        spec = (spec[:w.start()] + spec[w.end():]).strip()
+    note = ""
+    m = re.search(r"\|\s*marker\s*[:=]\s*([^|]+)", spec or "", re.I)
+    if m:
+        note = m.group(1).strip()[:60]
+        spec = (spec[:m.start()] + spec[m.end():]).strip()
+    spec = re.sub(r"\|\s*voice\s*(?=\||$)", "", spec or "", flags=re.I).strip()     # "| voice": see wants_voice
+    opts = {}
+    for key in ("badge", "fx", "inset", "exit", "camera", "src"):
+        mm = re.search(rf"\|\s*{key}\s*[:=]\s*([^|]+)", spec or "", re.I)
+        if mm:
+            opts[key] = mm.group(1).strip()[:60]
+            spec = (spec[:mm.start()] + spec[mm.end():]).strip()
+    plan = fn(spec)
+    if plan is not None:
+        b = opts.get("badge", "").lower()
+        if b:
+            # how sure we are, on screen: a fact from a record, a report, an allegation, a response, an opinion
+            plan["badge"] = next((v for k, v in BADGES.items() if b.startswith(k)), "") or plan.get("badge", "")
+        if opts.get("fx", "").lower() in FX:
+            plan["fx"] = opts["fx"].lower()
+        if opts.get("exit", "").lower() in EXITS + ("none",):
+            plan["exit"] = opts["exit"].lower()
+        if opts.get("inset"):
+            plan["inset"] = opts["inset"]
+        if opts.get("camera", "").lower() in CAMERAS:
+            plan["camera"] = opts["camera"].lower()       # the director's camera for this shot (still for evidence...)
+        if opts.get("src"):
+            plan["src"] = opts["src"]                      # the source, in small type on the frame
+    if plan is not None and note:
+        plan["marker"] = note
+    if plan is not None and marks:
+        # a party symbol is shown only as the official file; without it the shot carries no stand-in tile
+        # (storyboards can still mark the empty slot with CF_SYMBOL_SLOTS=1)
+        lg = logos()
+        plan["logos"] = [dict(lg[k], key=k) for k in marks
+                         if not lg[k].get("party") or lg[k].get("img") or os.environ.get("CF_SYMBOL_SLOTS") == "1"]
+    if plan is not None and comp:
+        plan["with"] = comp if comp.lower().startswith("person:") else "person:" + comp
+    return plan
+
+
+def parse_frame(spec: str) -> dict | None:
+    """'Frame: <background: asset:P0001 or words to search> | <subject: object or person:Name, or -> | <HEADLINE, *word*
+    highlighted> | <kicker> | <number or year>' - the layered Vox key frame: a real photograph full-bleed and graded,
+    a torn paper panel carrying big type, the subject as a halftone cut-out breaking out of the panel, a data chip."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if len(parts) < 3 or not parts[0] or not parts[2]:
+        return None
+    subj = parts[1] if parts[1] and parts[1] != "-" else ""
+    return {"type": "frame", "bgq": parts[0][:120], "subjects": [subj] if subj else [], "headline": parts[2][:70],
+            "kicker": parts[3][:60] if len(parts) > 3 else "", "number": parts[4][:14] if len(parts) > 4 else "",
+            "seed": _seed("frame", spec) % 10000}
+
+
+def _background(query: str, fetch: bool = True, timeout: float = 30) -> dict | None:
+    """A real photograph for a frame's background: a ledger asset, or the first good landscape photo for the words
+    (Wikimedia Commons first, then the stock libraries). Never one with a recognisable face: a background must not put
+    a private person on screen. Cached with its credit."""
+    from . import cutouts
+    from PIL import Image
+    q = query.strip()
+    if q.lower().startswith("asset:"):
+        from ..studio.assets import Ledger, default_ledger
+        led = Ledger(Path(os.environ.get("CF_ASSET_LEDGER") or default_ledger()))
+        r = led.get(q.split(":", 1)[1].strip())
+        if not r or not Path(r.get("file", "")).is_file():
+            return None
+        with Image.open(r["file"]) as im:
+            w, h = im.size
+        return {"img": Path(r["file"]).resolve().as_uri(), "w": w, "h": h, "credit": r.get("credit") or r.get("attribution", "")}
+    d = cutouts.library_dir(None) / "backgrounds"
+    d.mkdir(parents=True, exist_ok=True)
+    slug = re.sub(r"[^a-z0-9]+", "-", q.lower()).strip("-")[:60]
+    jf, img = d / f"{slug}.json", d / f"{slug}.jpg"
+    if jf.is_file() and img.is_file():
+        meta = json.loads(jf.read_text(encoding="utf-8"))
+        return {"img": img.as_uri(), **meta}
+    if not fetch or (d / f"{slug}.miss").is_file():
+        return None
+    results = []
+    try:
+        from ..providers.archive_photo import search
+        results += search(q, timeout=timeout, limit=10)[:6]
+    except Exception:  # noqa: BLE001
+        pass
+    try:
+        from ..providers import stock_photo
+        for provider, key in cutouts.env_sources():
+            if provider in ("pixabay", "pexels", "unsplash") and key:
+                try:
+                    results += stock_photo.search(provider, key, q, portrait=False, timeout=timeout)[:5]
+                except Exception:  # noqa: BLE001
+                    pass
+    except Exception:  # noqa: BLE001
+        pass
+    from ..providers.stock_video import relevant
+    for r in results[:12]:
+        if not relevant(q, " ".join(str(r.get(k, "")) for k in ("title", "about"))):
+            continue                                  # a loosely ranked hit of another place: never shown as this one
+        try:
+            raw = cutouts._download(r["url"], d, timeout)
+            with Image.open(raw) as im:
+                im = im.convert("RGB")
+                w, h = im.size
+                if w < 1200 or w < h * 1.15:          # a landscape picture big enough to fill the frame
+                    continue
+                if w > 2600:
+                    im = im.resize((2600, int(h * 2600 / w)), Image.LANCZOS)
+                im.save(img, quality=90)
+            if cutouts.has_face(img):
+                img.unlink(missing_ok=True)
+                continue
+            with Image.open(img) as im:
+                w, h = im.size
+            meta = {"w": w, "h": h, "credit": r.get("credit", ""), "source": r.get("url", "")}
+            jf.write_text(json.dumps(meta), encoding="utf-8")
+            return {"img": img.as_uri(), **meta}
+        except Exception:  # noqa: BLE001
+            continue
+    (d / f"{slug}.miss").write_text("", encoding="utf-8")
+    return None
+
+
+PARSERS["frame"] = parse_frame
+
+
+def parse_poster(spec: str) -> dict | None:
+    """'Poster: <hero cut-out: object or person:Name> [+ <second piece, printed in the spot colour>] | <BIG WORD(S)> |
+    <small line> | <disc|burst|torn|flat>' - the editorial collage poster: a light or flat-colour ground, one big
+    black-and-white halftone cut-out, a flat shape behind it, huge type it overlaps, one piece in spot colour, doodles."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if len(parts) < 2 or not parts[0] or not parts[1]:
+        return None
+    subs = [x.strip() for x in parts[0].split("+") if x.strip()][:3]
+    shape = next((x.lower() for x in parts[3:4] if x.lower() in ("disc", "burst", "torn", "flat")), "")
+    seed = _seed("poster", spec) % 10000
+    return {"type": "poster", "subjects": subs, "word": parts[1][:28], "line": parts[2][:70] if len(parts) > 2 else "",
+            "shape": shape or ("disc", "burst", "torn", "flat")[seed % 4], "seed": seed}
+
+
+PARSERS["poster"] = parse_poster
+
+
+def parse_assemble(spec: str) -> dict | None:
+    """'Assemble: <poster: asset:P0001 or a file> | <label> | pieces: x0 y0 x1 y1; ... | illustrative' - the build-on
+    assembly: the finished collage poster cut into its pieces, which land back in place one by one, back to front, all
+    down by about 60% of the shot, then a living hold. Boxes are fractions of the poster; without them the split is
+    automatic (and a poster that will not split cleanly is a slow push instead)."""
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if not parts or not parts[0]:
+        return None
+    from .assemble import boxes_from
+    label, boxes, illus = "", [], False
+    for p in parts[1:]:
+        k, sep, v = p.partition(":")
+        if sep and k.strip().lower() == "pieces":
+            boxes = boxes_from(v)
+        elif p.strip().lower() == "illustrative":
+            illus = True
+        elif p.strip() and not label:
+            label = p.strip()[:60]
+    return {"type": "assemble", "file": parts[0][:300], "label": label, "boxes": boxes, "illustrative": illus,
+            "seed": _seed("assemble", spec) % 10000}
+
+
+PARSERS["assemble"] = parse_assemble
+
+def parse_mapdesk(spec: str) -> dict | None:
+    """'Mapdesk: Switzerland | gold bars + banknote + rubber stamp | NEUTRALITY | Europe, 1934 | arrows: 6' - the map
+    desk: an aged paper map of the region (neighbours, sea, spaced serif names), the country glowing red, black paper
+    arrows closing in, real cut-out props dropped on the map with red string pinned to the country, a stamp."""
+    from . import maps
+    parts = [p.strip() for p in (spec or "").split("|")]
+    if not parts or not parts[0]:
+        return None
+    f = maps._find(parts[0])
+    if not f or f["kind"] != "country":
+        return None
+    arrows = 0
+    for x in parts[1:]:
+        m = re.fullmatch(r"arrows?\s*[:=]\s*(\d+)", x, re.I)
+        if m:
+            arrows = min(10, int(m.group(1)))
+    parts = [x for x in parts if not re.fullmatch(r"arrows?\s*[:=]\s*\d+", x, re.I)]
+    rings = [r for r in f["rings"] if len(r) > 3]
+    xs = [x for r in rings for x, _ in r]
+    ys = [y for r in rings for _, y in r]
+    cx, cy = (min(xs) + max(xs)) / 2, (min(ys) + max(ys)) / 2
+    span = max(max(xs) - min(xs), (max(ys) - min(ys)) * 1.3, 6.0) * 2.4    # the region around it, not just the country
+    k = math.cos(math.radians(cy))
+    vx0, vx1, vy0, vy1 = cx - span * .9, cx + span * .9, cy - span * .55, cy + span * .55
+    def proj(r):
+        return [[round((x - cx) * k, 3), round(cy - y, 3)] for x, y in r[:: max(1, len(r) // 300)]]
+    lands, labels = [], []
+    for c in maps._world()["countries"]:
+        crs = [r for r in c["r"] if len(r) > 3]
+        bx = [x for r in crs for x, _ in r]
+        by = [y for r in crs for _, y in r]
+        if not bx or max(bx) < vx0 or min(bx) > vx1 or max(by) < vy0 or min(by) > vy1:
+            continue
+        me = c["n"] == f["name"]
+        lands.append({"me": me, "rings": [proj(r) for r in crs]})
+        big = max(crs, key=len)
+        lx, ly = sum(x for x, _ in big) / len(big), sum(y for _, y in big) / len(big)
+        if not me and vx0 < lx < vx1 and vy0 < ly < vy1 and (max(bx) - min(bx)) > span * .12:
+            labels.append({"name": c["n"].upper(), "x": round((lx - cx) * k, 3), "y": round(cy - ly, 3)})
+    props = [x.strip() for x in parts[1].split("+") if x.strip()][:4] if len(parts) > 1 and parts[1] != "-" else []
+    return {"type": "mapdesk", "name": f["name"], "lands": lands, "labels": labels[:8], "half": [round(span * .9 * k, 3), round(span * .55, 3)],
+            "subjects": props, "stamp": parts[2][:18] if len(parts) > 2 else "", "kicker": parts[3][:50] if len(parts) > 3 else "",
+            "arrows": arrows or 6, "seed": _seed("mapdesk", spec) % 10000}
+
+
+PARSERS["mapdesk"] = parse_mapdesk
+
+
+
+
+# ---- pictures -------------------------------------------------------------------------------------------------------
+def _pictures(plan: dict, lib: Path | None, model: Path | None, fetch: bool,
+              sources: list[tuple[str, str]] | None = None, era: int | None = None) -> None:
+    """Each subject: a cut-out photo {img, w, h, credit} or the vector icon {o} when there's no photo."""
+    from . import cutouts
+    from .scene_anim import find_icon, icon_nodes
+    out = []
+    for s in plan.get("subjects", []):
+        name = s if s.lower().startswith("person:") else s.lower()
+        if name.startswith("logo:") or (logo_key(name) and not cutouts.resolve(name)):
+            k = logo_key(name)
+            if k:
+                out.append({"name": s, "logo": dict(logos()[k], key=k)})
+                continue
+        old_draw, old_photo = period(illustration(name), era) if not name.startswith("person:") else (None, None)
+        if old_photo:
+            # a period object: a photo of the old one, else its period drawing; never today's version in 1914
+            c = cutouts.get(old_photo, lib, model=model, fetch=fetch, sources=sources)
+            if c is None:
+                out.append({"name": s, "draw": old_draw})
+                continue
+        else:
+            c = cutouts.get(name, lib, model=model, fetch=fetch, sources=sources)
+        if c is not None:
+            from PIL import Image
+            with Image.open(c.path) as im:
+                w, h = im.size
+            pic = {"name": s, "img": c.path.as_uri(), "w": w, "h": h, "credit": c.credit}
+            if plan.get("prop") in FACE_PROPS and not out:
+                pic["face"] = face_box(c.path)
+            out.append(pic)
+        elif name.startswith("person:"):
+            # no photo of this person (yet): a plain drawn figure, never a made-up face; the name stays in the tags
+            out.append({"name": s, "draw": "person"})
+        else:
+            # a timeline card draws its object as it looked in that card's year (a 1903 plane is a biplane)
+            when = next((int(re.findall(r"\d{4}", str(i.get("when")))[0]) for i in plan.get("items", [])
+                         if i.get("pic") == s and re.findall(r"\d{4}", str(i.get("when", "")))), era)
+            drawn = illustration(name, when)
+            if drawn:
+                out.append({"name": s, "draw": drawn})           # a drawn illustration, never a placeholder
+            else:
+                icon = find_icon(name.split()[-1]) or find_icon(name)
+                if icon:
+                    out.append({"name": s, "o": icon_nodes(icon)})
+                else:   # no photo, drawing or icon: never a blank circle in its place (BRAIN_LOG 2026-11-11); PRESHOW lists it
+                    plan.setdefault("missing", []).append(s)
+    plan["pics"] = out
+    if plan.get("with"):
+        c = cutouts.get(plan["with"], lib, model=model, fetch=fetch, sources=sources)
+        if c is not None:
+            from PIL import Image
+            with Image.open(c.path) as im:
+                w, h = im.size
+            plan["comp"] = {"name": plan["with"], "img": c.path.as_uri(), "w": w, "h": h, "credit": c.credit}
+            out = out + [plan["comp"]]
+        else:
+            plan["comp"] = {"name": plan["with"], "draw": "person"}
+    if plan.get("inset"):
+        nm = plan["inset"] if plan["inset"].lower().startswith("person:") else plan["inset"].lower()
+        c = cutouts.get(nm, lib, model=model, fetch=fetch, sources=sources)
+        if c is not None:
+            from PIL import Image
+            with Image.open(c.path) as im:
+                w, h = im.size
+            plan["insetpic"] = {"name": plan["inset"], "img": c.path.as_uri(), "w": w, "h": h, "credit": c.credit}
+            out = out + [plan["insetpic"]]
+        else:
+            drawn = "person" if nm.startswith("person:") else illustration(nm, era)
+            plan["insetpic"] = {"name": plan["inset"], "draw": drawn} if drawn else None
+    credits = sorted({p["credit"] for p in out if p.get("credit")})
+    plan["credit"] = ("Photo: " + "; ".join(credits))[:120] if credits else ""
+
+
+def face_box(path: Path) -> list[float] | None:
+    """The main face in a cut-out photo as [x, y, w, h] (0-1 of the picture), or None (OpenCV's face finder)."""
+    try:
+        import cv2
+        import numpy as np
+        from PIL import Image
+        with Image.open(path) as im:
+            g = np.asarray(im.convert("L"))
+        casc = cv2.CascadeClassifier(str(Path(cv2.data.haarcascades) / "haarcascade_frontalface_default.xml"))
+        faces = casc.detectMultiScale(g, scaleFactor=1.08, minNeighbors=6, minSize=(max(24, g.shape[1] // 12),) * 2)
+        if len(faces) == 0:
+            return None
+        x, y, w, h = max(faces, key=lambda f: f[2] * f[3])
+        return [round(x / g.shape[1], 4), round(y / g.shape[0], 4), round(w / g.shape[1], 4), round(h / g.shape[0], 4)]
+    except Exception:  # noqa: BLE001 - no OpenCV / unreadable: face props are left out
+        return None
+
+
+# ---- paper and grain (baked once per size/tone) ---------------------------------------------------------------------
+def paper(tone: str, w: int, h: int, work: Path, vignette: float = 1.0) -> tuple[Path, Path]:
+    """(paper background PNG, transparent fine-grain overlay PNG)."""
+    import numpy as np
+    from PIL import Image, ImageFilter
+    work.mkdir(parents=True, exist_ok=True)
+    bg, gr = work / f"vox_paper_{tone[1:]}_{w}x{h}_v{vignette:.2f}.png", work / f"vox_grain_{w}x{h}.png"
+    if not bg.is_file():
+        rng = np.random.default_rng(7)
+        base = np.array([int(tone[i:i + 2], 16) for i in (1, 3, 5)], np.float32)
+        small = Image.fromarray((rng.random((max(2, h // 40), max(2, w // 40))) * 255).astype("uint8"), "L")
+        mottle = np.asarray(small.resize((w, h), Image.BICUBIC).filter(ImageFilter.GaussianBlur(w / 60)),
+                            np.float32) / 255 - 0.5
+        fine = rng.normal(0, 1, (h, w)).astype(np.float32)
+        yy, xx = np.mgrid[0:h, 0:w].astype(np.float32)
+        vig = ((xx / w - 0.5) ** 2 + (yy / h - 0.5) ** 2)
+        dark = base.mean() < 90
+        img = base[None, None, :] + (mottle * 10)[..., None] + (fine * 3.2)[..., None] - (vig * (18 if not dark else 10) * vignette)[..., None]
+        if tone.upper() == PAPERS["crumple"].upper():
+            # crumpled paper: a web of soft creases, each a light ridge beside a dark fold
+            from PIL import ImageDraw
+            crease = Image.new("L", (w, h), 128)
+            d = ImageDraw.Draw(crease)
+            for _ in range(70):
+                x, y = rng.random() * w, rng.random() * h
+                for _ in range(int(rng.integers(3, 8))):
+                    nx, ny = x + rng.normal(0, w * .09), y + rng.normal(0, h * .09)
+                    d.line([(x, y), (nx, ny)], fill=int(rng.choice([70, 190])), width=max(1, w // 900))
+                    x, y = nx, ny
+            c = np.asarray(crease.filter(ImageFilter.GaussianBlur(max(1.0, w / 700))), np.float32) - 128
+            facets = np.asarray(Image.fromarray((rng.random((max(2, h // 120), max(2, w // 120))) * 255).astype("uint8"), "L")
+                                .resize((w, h), Image.NEAREST).filter(ImageFilter.GaussianBlur(w / 400)), np.float32) / 255 - .5
+            img = img + (c * 0.35 + facets * 14)[..., None]
+        Image.fromarray(np.clip(img, 0, 255).astype("uint8"), "RGB").save(bg)
+    if not gr.is_file():
+        rng = np.random.default_rng(11)
+        n = rng.normal(0, 1, (h, w)).astype(np.float32)
+        a = np.clip(np.abs(n) * 26, 0, 70).astype("uint8")
+        v = np.where(n > 0, 255, 0).astype("uint8")
+        Image.fromarray(np.dstack([v, v, v, a]), "RGBA").save(gr)
+    return bg, gr
+
+
+def _font_css() -> str:
+    faces = [("Anton", "anton-latin-400-normal", 400, "normal"), ("Bebas", "bebas-neue-latin-400-normal", 400, "normal"),
+             ("Playfair", "playfair-display-latin-400-normal", 400, "normal"),
+             ("Playfair", "playfair-display-latin-700-normal", 700, "normal"),
+             ("Playfair", "playfair-display-latin-900-normal", 900, "normal"),
+             ("Playfair", "playfair-display-latin-700-italic", 700, "italic"),
+             ("DMSerif", "dm-serif-display-latin-400-normal", 400, "normal"),
+             ("Inter", "inter-latin-400-normal", 400, "normal"), ("Inter", "inter-latin-600-normal", 600, "normal"),
+             ("Inter", "inter-latin-800-normal", 800, "normal"),
+             ("Mono", "jetbrains-mono-latin-400-normal", 400, "normal"),
+             ("Mono", "jetbrains-mono-latin-700-normal", 700, "normal"),
+             ("Oswald", "oswald-latin-600-normal", 600, "normal"), ("Archivo", "archivo-black-latin-400-normal", 400, "normal"),
+             ("Caveat", "caveat-latin-700-normal", 700, "normal"), ("Marker", "permanent-marker-latin-400-normal", 400, "normal"),
+             ("Kalam", "kalam-latin-700-normal", 700, "normal"), ("Kalam", "kalam-devanagari-700-normal", 700, "normal"),
+             ("Fraunces", "fraunces-latin-900-normal", 400, "normal"), ("Fraunces", "fraunces-latin-900-normal", 800, "normal"),
+             ("ISerif", "instrument-serif-latin-400-normal", 400, "normal"), ("ISerif", "instrument-serif-latin-400-normal", 800, "normal"),
+             ("Grotesk", "space-grotesk-latin-500-normal", 400, "normal"), ("Grotesk", "space-grotesk-latin-700-normal", 600, "normal"),
+             ("Grotesk", "space-grotesk-latin-700-normal", 800, "normal"), ("DMMono", "dm-mono-latin-500-normal", 400, "normal"),
+             ("DMMono", "dm-mono-latin-500-normal", 600, "normal"), ("DMMono", "dm-mono-latin-500-normal", 800, "normal"),
+             ("Plex", "ibm-plex-mono-latin-500-normal", 400, "normal"), ("Plex", "ibm-plex-mono-latin-500-normal", 600, "normal"),
+             ("Plex", "ibm-plex-mono-latin-500-normal", 800, "normal"), ("Shadows", "shadows-into-light-latin-400-normal", 700, "normal")]
+    # Hindi under the same family names and the same weights (unicode-range: Devanagari only), so a Hindi headline
+    # is set in a display face of the same character as the Latin one instead of falling back to a system font
+    hindi = {"Playfair": "rozha-one-devanagari-400-normal", "DMSerif": "rozha-one-devanagari-400-normal",
+             "Anton": "teko-devanagari-700-normal", "Bebas": "teko-devanagari-700-normal",
+             "Oswald": "teko-devanagari-700-normal", "Archivo": "teko-devanagari-700-normal",
+             "Mono": "mukta-devanagari-600-normal", "Caveat": "kalam-devanagari-700-normal",
+             "Marker": "kalam-devanagari-700-normal"}
+    for fam, _, wt, st in list(faces):
+        if fam == "Inter":
+            faces.append((fam, f"mukta-devanagari-{800 if wt >= 800 else 600}-normal", wt, st))
+        elif fam in hindi:
+            faces.append((fam, hindi[fam], wt, st))
+    out = []
+    for fam, f, wt, st in faces:
+        p = FONTS / f"{f}.woff2"
+        if p.is_file():
+            rng = ";unicode-range:U+0900-097F,U+1CD0-1CF9,U+200C-200D,U+20B9,U+25CC,U+A830-A839,U+A8E0-A8FF" \
+                if "devanagari" in f else ""
+            out.append(f"@font-face{{font-family:'{fam}';src:url('{p.as_uri()}') format('woff2');"
+                       f"font-weight:{wt};font-style:{st}{rng}}}")
+    return "\n".join(out)
+
+
+# ---- the page -------------------------------------------------------------------------------------------------------
+_PAGE = r"""<!doctype html><html><head><meta charset="utf-8"><style>
+%FONTS%
+html,body{margin:0;padding:0;background:%PAPER%;overflow:hidden}
+svg{display:block}
+</style><script>%SVGJS%</script><script>%HAND%</script><script>%ILLU%</script>%BRUSH%</head><body><script>
+const P=%PLAN%, W=%W%, H=%H%, DUR=%DUR%, K=%KIT%;
+const TALL=H>W, VERT=TALL||W<H*1.35, U=Math.min(W,H), ACC=K.acc, INK=K.ink, PAPER=K.paper, DARK=K.dark, SIG=K.sig||'#FFDD33', ACC2='#C8202D';   // ACC2: stamp ink
+// money drawings carry the currency the graphic's own figures are in (a dollar story never shows a rupee note)
+window.CUR=(JSON.stringify(P).match(/[$£€¥₹]/)||['₹'])[0];
+const ACT=K.dark?K.acc:(K.accText||K.acc);   // the accent as type on the paper: dark enough to read
+const FG=K.fg||(DARK?'#F3EFE6':INK);   // type straight on the surface; INK stays dark for type on cards
+const draw=SVG().addTo('body').size(W,H);
+const tracks=[], cam=[];
+const E={out:t=>1-Math.pow(1-t,3), back:t=>{const c=1.6,c3=c+1;return 1+c3*Math.pow(t-1,3)+c*Math.pow(t-1,2)},
+  inout:t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2, snap:t=>1-Math.pow(1-t,5), lin:t=>t};
+function at(start,dur,fn,e){tracks.push({start,dur,fn,e:e||E.out})}
+let seed=P.seed||1;function rnd(){seed=(seed*16807)%2147483647;return (seed-1)/2147483646}
+// ---- layers (back to front) and the camera ----
+const L={};L.paper=draw.group();const CONTENT=draw.group();const STAGE=CONTENT.group();   // STAGE: the layout's frame
+['back','mid','hero','front'].forEach(k=>L[k]=STAGE.group());L.side=draw.group();L.grain=draw.group();
+draw.defs().svg(`<filter id="shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="${U*.004}" dy="${U*.012}" stdDeviation="${U*.011}" flood-color="#000" flood-opacity=".32"/></filter>
+<filter id="softshadow" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="${U*.006}" stdDeviation="${U*.006}" flood-color="#000" flood-opacity=".22"/></filter>
+<filter id="blur" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="${U*.035}"/></filter>
+<pattern id="ildots" width="5" height="5" patternUnits="userSpaceOnUse"><circle cx="2.5" cy="2.5" r="1.1" fill="#000" fill-opacity=".22"/></pattern>
+<filter id="dof" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="${U*.006}"/></filter>
+<filter id="mono"><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="linear" slope="1.25" intercept="-.08"/><feFuncG type="linear" slope="1.25" intercept="-.08"/><feFuncB type="linear" slope="1.25" intercept="-.08"/></feComponentTransfer></filter>
+<filter id="spot"><feColorMatrix type="saturate" values="0" result="g"/><feFlood flood-color="${K.acc}" result="f"/><feComposite in="f" in2="SourceAlpha" operator="in" result="fa"/><feBlend in="g" in2="fa" mode="multiply"/></filter>
+<filter id="glowred" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="${U*.012}" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<filter id="tint"><feFlood flood-color="${K.acc2||'#E0442C'}"/><feComposite in2="SourceAlpha" operator="in"/></filter>
+<filter id="redch"><feColorMatrix type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .55 0"/></filter>
+<filter id="cyanch"><feColorMatrix type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 .55 0"/></filter>`);
+L.paper.image(K.bg).size(W,H);
+{const pc=DARK?'rgba(255,255,255,':'rgba(0,0,0,',pats={grid:`<pattern id="surf" width="${U*.05}" height="${U*.05}" patternUnits="userSpaceOnUse"><path d="M ${U*.05} 0 L 0 0 0 ${U*.05}" fill="none" stroke="${pc}.08)" stroke-width="1"/></pattern>`,
+  blueprint:`<pattern id="surf" width="${U*.04}" height="${U*.04}" patternUnits="userSpaceOnUse"><path d="M ${U*.04} 0 L 0 0 0 ${U*.04}" fill="none" stroke="${pc}.13)" stroke-width="1"/></pattern>`,
+  ruled:`<pattern id="surf" width="${W}" height="${U*.045}" patternUnits="userSpaceOnUse"><line x1="0" y1="${U*.044}" x2="${W}" y2="${U*.044}" stroke="rgba(60,90,140,.16)" stroke-width="1"/></pattern>`,
+  lines:`<pattern id="surf" width="${W}" height="4" patternUnits="userSpaceOnUse"><line x1="0" y1="3" x2="${W}" y2="3" stroke="${pc}.05)" stroke-width="1"/></pattern>`,
+  scan:`<pattern id="surf" width="${W}" height="3" patternUnits="userSpaceOnUse"><line x1="0" y1="2" x2="${W}" y2="2" stroke="${pc}.06)" stroke-width="1"/></pattern>`,
+  dots:`<pattern id="surf" width="${U*.012}" height="${U*.012}" patternUnits="userSpaceOnUse"><circle cx="${U*.006}" cy="${U*.006}" r="${U*.0016}" fill="${K.acc}" fill-opacity=".35"/></pattern>`};
+ if(K.pattern&&pats[K.pattern]){draw.defs().svg(pats[K.pattern]);L.paper.rect(W,H).fill('url(#surf)')}}
+L.grain.image(K.grain).size(W,H).attr({style:'mix-blend-mode:multiply'}).opacity(K.grainOp!=null?K.grainOp:(DARK?.25:.55));
+if(K.frame&&K.frame!=='none'){draw.node.style.transformOrigin='50% 50%';draw.node.style.transform=K.frame}
+const DEPTH={paper:.012,back:.03,mid:.045,hero:.07,front:.055,side:.08};
+// camera moves (one per shot, rotated through a video): 0 push in, 1 pull back, 2 slow lateral drift, 3 push in on the
+// focus (the circled thing), so cut after cut the eye doesn't get the same move
+// the exit: in the last moments the layers leave one after another (rise, fall, side or shrink), front first
+const XORDER=['front','hero','mid','back'];
+function exitOf(k,t){if(K.exit==='none'||k==='paper')return null;const i=XORDER.indexOf(k==='side'?'front':k);if(i<0)return null;
+  const q=Math.max(0,Math.min(1,(t-(DUR-.62)-i*.05)/.3));if(q<=0)return null;const e=q*q;
+  return {o:1-e,tx:K.exit==='side'?(K.dir||1)*W*.14*e:0,ty:K.exit==='rise'?-H*.1*e:K.exit==='fall'?H*.1*e:0,s:K.exit==='shrink'?1-.1*e:1}}
+function camera(t){const p=E.inout(Math.min(1,t/Math.max(DUR,.1)));const m=K.cam||0;
+  if(m===-1){for(const k in DEPTH){const x=exitOf(k,t),zz=x?x.s:1;L[k].attr({transform:`translate(${W/2*(1-zz)+(x?x.tx:0)},${H*.46*(1-zz)+(x?x.ty:0)}) scale(${zz})`,opacity:x?x.o:1})}return}   // still: the frame holds
+  const fx=(m===3&&FOCUS)?Math.max(W*.3,Math.min(W*.7,FOCUS.x)):W/2,fy=(m===3&&FOCUS)?Math.max(H*.3,Math.min(H*.65,FOCUS.y)):H*.46;
+  for(const k in DEPTH){const d=DEPTH[k]*(m===3?1.3:1);const q=m===1?1-p:p;const z=1+d*q;
+    const dx=m===2?(p-.5)*(W*.03+d*W*.12)*(K.dir||1):0;   // layers travel together: labels stay on their bars
+    const x=exitOf(k,t),zz=(m===2?1+d*.4:z)*(x?x.s:1);
+    L[k].attr({transform:`translate(${fx*(1-zz)+dx+(x?x.tx:0)},${fy*(1-zz)+(x?x.ty:0)}) scale(${zz})`,opacity:x?x.o:1})}}
+// ---- the style kit ----
+// the phone floor: nothing the viewer must read is set under 3.1% of the frame's short side (2.6% once a card layout
+// has shrunk it); credits and source lines are fine print and exempt
+const FLOOR=U*.031/(P.comp?(TALL?.72:.78):1),FINE=/^(SOURCE|PHOTO|IMAGERY|MAP|DATA|OUTLINES?)[: ]|©/i;
+function T(g,s,size,x,y,o){o=o||{};if(!o.fine&&!FINE.test(String(s))&&String(s).trim())size=Math.max(size,FLOOR);const t=g.text(String(s)).font({family:(K.fam||{})[o.family]||o.family||'Inter',size:size,weight:o.weight||600,
+  anchor:o.anchor||'middle',style:o.italic?'italic':'normal'}).fill(o.fill||FG).attr({x:x,y:y,'dominant-baseline':'central'});
+  if(o.ls&&!/[\u0900-\u097F]/.test(String(s)))t.attr({'letter-spacing':o.ls});return t}   // tracking breaks Devanagari conjuncts
+function fit(t,maxw){const w=t.bbox().width;if(w>maxw)t.font({size:t.font('size')*maxw/w});return t}
+function lines(s,size,maxw,family,weight,most){const words=String(s).split(/\s+/).filter(Boolean),out=[];let cur='';
+  const pr=draw.text('').font({family:(K.fam||{})[family]||family,size:size,weight:weight});
+  for(const w of words){const tr=cur?cur+' '+w:w;pr.text(tr);if(cur&&pr.bbox().width>maxw){out.push(cur);cur=w}else cur=tr}
+  if(cur)out.push(cur);pr.remove();const n=most||3;if(out.length>n)DROPPED.push(out.slice(n).join(' ').slice(0,40));   // words that don't fit are reported, never lost quietly
+  return out.slice(0,n)}
+const DROPPED=[];
+function boxText(g,s,size,x,y,o){ // black box(es), white serif type - one box per line, like a cut label
+  o=o||{};const ls=lines(String(s).toUpperCase(),size,o.maxw||W*.4,o.family||'Playfair',900,o.most||3);const grp=g.group();const pad=size*.28;
+  let yy=y;const anchor=o.anchor||'start';
+  ls.forEach((ln,i)=>{const row=grp.group().addClass('keep');const t=T(row,ln,size,0,0,{family:o.family||'Playfair',weight:900,anchor:'start',fill:o.ink||'#FFFFFF',ls:'0.02em'});
+    const bb=t.bbox();const r=row.rect(bb.width+pad*2,bb.height+pad*1.1).move(bb.x-pad,bb.y-pad*.55).fill(o.bg||'#111111').back();
+    const w=bb.width+pad*2;const x0=anchor==='middle'?x-w/2+pad:anchor==='end'?x-w+pad:x+pad;
+    row.attr({transform:`translate(${x0+(o.stagger?(i%2)*size*.9:0)},${yy})`});row.data('x',x0+(o.stagger?(i%2)*size*.9:0)).data('y',yy);yy+=bb.height+pad*1.5});
+  return grp}
+function tag(g,s,x,y,o){o=o||{};const grp=g.group();const size=o.size||U*.021,st=o.bg?'box':(K.tagstyle||'box');
+  const tink=st==='solid'||st==='inkblock'?(st==='solid'?'#FFFFFF':(DARK?'#F3EFE6':PAPER)):(o.ink||(DARK&&(st==='outline'||st==='underline'||st==='stamp')?FG:INK));
+  const t=T(grp,String(s).toUpperCase(),size,0,0,{family:'Inter',weight:800,anchor:'start',fill:tink,ls:'0.14em'});
+  const bb=t.bbox(),pad=size*.55,bw=bb.width+pad*2,bh=bb.height+pad*1.2,bx=bb.x-pad,by=bb.y-pad*.6;
+  if(st==='box')grp.rect(bw,bh).move(bx,by).fill(o.bg||'#FFFFFF').stroke({color:o.ink||INK,width:Math.max(1,size*.07)}).back();
+  else if(st==='solid')grp.rect(bw,bh).move(bx,by).fill(ACC).back();
+  else if(st==='inkblock')grp.rect(bw,bh).move(bx,by).fill(INK).back();
+  else if(st==='outline')grp.rect(bw,bh).move(bx,by).fill('none').stroke({color:FG,width:Math.max(1,size*.08),dasharray:`${size*.5} ${size*.25}`}).back();
+  else if(st==='highlight')grp.rect(bw,bh*.62).move(bx,by+bh*.34).fill(SIG).back();
+  else if(st==='underline')grp.rect(bw,Math.max(2,size*.18)).move(bx,by+bh).fill(ACC);
+  else if(st==='stamp'){grp.rect(bw,bh).move(bx,by).fill('none').stroke({color:ACC,width:Math.max(2,size*.12)}).back();t.fill(ACC);grp.rotate(-4)}
+  grp.attr({transform:`translate(${x},${y})`});grp.data('w',bb.width+pad*2);return grp}
+function highlight(g,bb,start,color){const r=g.rect(0,bb.height*.9).move(bb.x-bb.height*.12,bb.y+bb.height*.08).fill(color||SIG).back();   // the signature highlighter
+  at(start,.45,p=>r.width(Math.max(.1,(bb.width+bb.height*.24)*p)),E.inout);return r}
+function brush(g,x,y,w,h,color,angle){ // a dry-brush stroke: ragged ends, streaky body
+  const grp=g.group();const n=26;
+  for(let k=0;k<7;k++){const yy=y+h*(k/7)+rnd()*h*.06;const th=h/7*(1.25+rnd()*.5);const x0=x+rnd()*w*.05;const x1=x+w*(.9+rnd()*.1);
+    grp.rect(x1-x0,th).move(x0,yy).radius(th/2).fill(color||ACC).opacity(.86+rnd()*.14)}
+  for(let k=0;k<n;k++){grp.circle(h*(.05+rnd()*.07)).center(x+w*(rnd()<.5?rnd()*.06:.94+rnd()*.06),y+rnd()*h).fill(color||ACC)}
+  grp.attr({transform:`rotate(${angle||-6},${x+w/2},${y+h/2})`});return grp}
+function disc(g,cx,cy,r,color){return g.circle(r*2).center(cx,cy).fill(color||ACC)}
+function orb(g,cx,cy,r){return g.circle(r*2).center(cx,cy).fill(ACC).opacity(.85).attr({filter:'url(#blur)'})}
+function cross(g,x,y,s){const c=g.group();c.line(x-s,y,x+s,y).stroke({color:FG,width:Math.max(1,U*.0016)});
+  c.line(x,y-s,x,y+s).stroke({color:FG,width:Math.max(1,U*.0016)});c.circle(s*.9).center(x,y).fill('none').stroke({color:FG,width:Math.max(1,U*.0016)});return c}
+function side(g,s){if(!s)return;const t=T(g,String(s),U*.019,0,0,{family:'Inter',weight:600,anchor:'middle',ls:'0.18em'});
+  t.attr({transform:`translate(${W-U*.035},${H*.42}) rotate(90)`});return t}
+function mono(g,s,x,y,o){o=o||{};const t=T(g,s,o.size||U*.019,x,y,{family:'Mono',weight:o.weight||400,anchor:o.anchor||'start',fill:o.fill||FG});
+  if(o.type)typeIn(t,String(s),o.at||.6);return t}
+function typeIn(t,full,start){ // the typewriter: letters appear one by one with a block cursor
+  t.text('');at(start,Math.min(1.4,.1+full.length*.035),p=>{const n=Math.round(full.length*p);t.text(full.slice(0,n)+(p<1?'▌':''))},E.lin)}
+function callout(g,x1,y1,x2,y2,s,start){ // dot on the subject, an elbow line, a mono note
+  const dot=g.circle(U*.012).center(x1,y1).fill(ACC).stroke({color:INK,width:Math.max(1,U*.002)});
+  const ln=g.polyline([[x1,y1],[x1,y1]]).fill('none').stroke({color:FG,width:Math.max(1,U*.0018)});
+  const ls=lines(s,U*.027,W*.24,'Mono',400,3);const tg=g.group();const right=x2>x1;
+  ls.forEach((l,i)=>mono(tg,l,x2+(right?U*.012:-U*.012),y2+i*U*.036,{size:U*.027,anchor:right?'start':'end',type:true,at:start+.5+i*.3}));
+  [dot,tg].forEach(e=>e.opacity(0));
+  at(start,.6,p=>{dot.opacity(Math.min(1,p*3));const mx=x1+(x2-x1)*.35;
+    const pts=[[x1,y1],[mx,y2],[x2,y2]];const seg=p<.5?[[x1,y1],[x1+(mx-x1)*p*2,y1+(y2-y1)*p*2]]:[pts[0],pts[1],[mx+(x2-mx)*(p-.5)*2,y2]];
+    ln.plot(seg);tg.opacity(p>.8?(p-.8)*5:0)},E.inout)}
+function picture(g,pic,x,y,h,o){ // a cut-out photo (or its icon) with its height h, centred at x, bottom at y
+  o=o||{};const grp=g.group();
+  if(pic&&pic.img){const w=h*pic.w/pic.h;
+    if(o.offset){grp.image(pic.img).size(w,h).move(x-w/2+U*.014,y-h+U*.01).attr({filter:'url(#tint)'})}   // a printed colour offset
+    grp.image(pic.img).size(w,h).move(x-w/2,y-h).attr({filter:o.offset?'none':'url(#shadow)'});grp.data('w',w)}
+  else if(pic&&pic.logo){const t=logoTile(grp,pic.logo,x,y-h/2,h);grp.data('w',h)}
+  else if(pic&&/^person:/i.test(pic.name||'')){const w=h*.72,nm=pic.name.replace(/^person:/i,'');
+    grp.rect(w,h).move(x-w/2,y-h).fill('#E9E4D8').stroke({color:INK,width:U*.004,dasharray:`${U*.014} ${U*.01}`});
+    T(grp,'PHOTO',Math.max(U*.03,Math.min(w*.16,U*.05)),x,y-h*.6,{family:'Mono',weight:700,fill:'#C0262D'});
+    const nl=lines(nm,Math.max(U*.03,Math.min(w*.13,U*.04)),w*.9,'Inter',800,2);nl.forEach((l,i)=>T(grp,l,Math.max(U*.03,Math.min(w*.13,U*.04)),x,y-h*.46+i*U*.045,{family:'Inter',weight:800}));
+    grp.data('w',w)}
+  else if(pic&&pic.draw&&window.ILLU&&ILLU[pic.draw]){const [bw,bh,fn]=ILLU[pic.draw];const k=h/bh;const ig=grp.group();
+    fn(ig,ACC);ig.attr({transform:`translate(${x-bw*k/2},${y-h}) scale(${k})`,filter:'url(#shadow)'});grp.data('w',bw*k)}
+  else{const r=h*.42;grp.circle(r*2).center(x,y-h/2).fill(o.iconBg||'#FFFFFF').stroke({color:INK,width:U*.005}).attr({filter:'url(#softshadow)'});
+    const ig=grp.group().addClass('keep');for(const nd of ((pic&&pic.o)||[])){try{ig.element(nd[0]).attr(nd[1])}catch(e){}}
+    const k=r*1.15/24;ig.attr({fill:'none',stroke:INK,'stroke-width':1.6,'stroke-linecap':'round','stroke-linejoin':'round',
+      transform:`translate(${x-12*k},${y-h/2-12*k}) scale(${k})`});grp.data('w',r*2)}
+  return grp}
+// ---- motion kit (the stutter: these run on 12 fps steps) ----
+function drop(el,start,dist,rot){el.opacity(0);const base=el.attr('transform')||'';const mb=mblur(el);
+  at(start,.55,p=>{el.opacity(p>0?1:0);mb(Math.min(1,p),0,dist||H*.25);el.attr({transform:`translate(0,${-(dist||H*.25)*(1-p)}) rotate(${(rot||0)*(1-p)},${W/2},${H/2}) ${base}`})},E.back)}
+// motion blur: while something travels it smears along its path, and snaps sharp when it lands
+let MBN=0;function mblur(el){const id='mb'+(MBN++);const f=draw.defs().element('filter').attr({id:id,x:'-30%',y:'-30%',width:'160%',height:'160%'});
+  const gb=f.element('feGaussianBlur').attr({stdDeviation:'0 0'});const w=document.createElementNS('http://www.w3.org/2000/svg','g');
+  el.node.parentNode.insertBefore(w,el.node);w.appendChild(el.node);let last=0;
+  return function(p,dx,dy){const v=Math.max(0,p-last);last=p;const sx=Math.min(U*.03,Math.abs(dx)*v*.9),sy=Math.min(U*.03,Math.abs(dy)*v*.9);
+    if(p>=1||sx+sy<.4){w.removeAttribute('filter')}else{gb.attr({stdDeviation:sx.toFixed(1)+' '+sy.toFixed(1)});w.setAttribute('filter','url(#'+id+')')}}}
+function slide(el,start,dx,dy){el.opacity(0);const base=el.attr('transform')||'';const mb=(Math.abs(dx||0)+Math.abs(dy||0))>U*.04?mblur(el):null;
+  at(start,.45,p=>{el.opacity(Math.min(1,p*2));el.attr({transform:`translate(${(dx||0)*(1-p)},${(dy||0)*(1-p)}) ${base}`});if(mb)mb(p,dx||0,dy||0)},E.snap)}
+function popIn(el,cx,cy,start,d){el.opacity(0);const base=el.attr('transform')||'';
+  at(start,d||.42,p=>{const s=.4+.6*p;el.opacity(Math.min(1,p*2.5));el.attr({transform:`translate(${cx*(1-s)},${cy*(1-s)}) scale(${s}) ${base}`})},E.back)}
+function wipe(el,start){el.opacity(0);at(start,.35,p=>el.opacity(p),E.lin)}
+
+// ---- scenes ----
+function propOver(g,pic,x,y,h){ // a symbolic prop laid over the photo (never changing the face itself)
+  const w=h*(pic.w||1)/(pic.h||1),x0=x-w/2,y0=y-h;const f=pic.face;const grp=L.hero.group();const red='#D32F2F';
+  if(['blindfold','mask','zip','crown'].includes(P.prop)&&!f)return null;
+  if(f){const fx=x0+f[0]*w,fy=y0+f[1]*h,fw=f[2]*w,fh=f[3]*h;
+    if(P.prop==='blindfold'){const by=fy+fh*.36,bw=fw*1.5,bh=fh*.2;grp.rect(bw,bh).move(fx+fw/2-bw/2,by).radius(bh*.25).fill(red)
+        .attr({transform:`rotate(-3,${fx+fw/2},${by})`});grp.polygon([[fx+fw*1.2,by+bh*.4],[fx+fw*1.55,by+bh*1.8],[fx+fw*1.35,by+bh*1.9]].map(p=>p.join(',')).join(' ')).fill(red)}
+    if(P.prop==='mask'){const by=fy+fh*.32,mw=fw*1.15,mh=fh*.26;grp.ellipse(mw,mh).center(fx+fw/2,by+mh/2).fill('#111');
+      grp.ellipse(mw*.28,mh*.42).center(fx+fw*.3,by+mh/2).fill('#FFF').opacity(.0)}
+    if(P.prop==='zip'){const zy=fy+fh*.82,zw=fw*.6;grp.rect(zw,fh*.07).move(fx+fw/2-zw/2,zy-fh*.035).fill('#C9A24A').stroke({color:'#6B5114',width:U*.002});
+      for(let k=0;k<9;k++)grp.line(fx+fw/2-zw/2+zw*k/8,zy-fh*.035,fx+fw/2-zw/2+zw*k/8,zy+fh*.035).stroke({color:'#6B5114',width:U*.002});
+      grp.rect(fh*.08,fh*.14).move(fx+fw/2+zw/2-fh*.02,zy-fh*.02).fill('#9C7A2A')}
+    if(P.prop==='crown'){const cy=fy-fh*.42,cw=fw*.9;const pts=[[0,1],[0,.3],[.2,.6],[.35,0],[.5,.55],[.65,0],[.8,.6],[1,.3],[1,1]];
+      grp.polygon(pts.map(p=>[fx+fw/2-cw/2+p[0]*cw,cy+p[1]*fh*.38].join(',')).join(' ')).fill('#E2B13C').stroke({color:'#7A5A12',width:U*.003})}}
+  if(P.prop==='strings'){[.18,.5,.82].forEach(k=>{const sx=x0+w*k,sy=y0+h*(k===.5?.08:.3);grp.line(sx,U*.06,sx,sy).stroke({color:'#2A2A2A',width:Math.max(1.5,U*.0028)})});
+    grp.rect(w*.9,U*.02).move(x0+w*.05,U*.05).fill('#5B3A1E').radius(U*.006)}
+  if(P.prop==='chains'){for(let k=0;k<12;k++){const cx=x0+w*(.05+k*.08),cy=y0+h*.72+Math.sin(k)*h*.01;grp.ellipse(w*.1,h*.04).center(cx,cy).fill('none')
+      .stroke({color:'#777',width:U*.008}).attr({transform:`rotate(${k%2?0:90},${cx},${cy})`})}}
+  if(P.prop==='megaphone'){const mx=x0+w*.85,my=y0+h*.45;grp.polygon([[mx,my-h*.04],[mx+w*.35,my-h*.12],[mx+w*.35,my+h*.12],[mx,my+h*.04]].map(p=>p.join(',')).join(' ')).fill(red)}
+  grp.attr({style:'filter:drop-shadow(0 2px 3px rgba(0,0,0,.35))'});return grp}
+function hit(a,b){return a.x<b.x+b.w&&b.x<a.x+a.w&&a.y<b.y+b.h&&b.y<a.y+a.h}
+function free(r,taken){return r.x>=U*.03&&r.x+r.w<=W-U*.03&&r.y>=U*.03&&r.y+r.h<=(TALL?H*.6:H*.77)&&!taken.some(t=>hit(r,t))}
+function hero(){
+  const pics=P.pics||[], lay=P.layout, taken=[];
+  const BOT=TALL?H*.62:H*.78;                       // above the captions
+  let HH=TALL?H*.40:H*.66;                          // the subject fills most of the frame height
+  const main=pics[0]||{};const ar=main.img?main.w/main.h:(main.draw&&window.ILLU&&ILLU[main.draw]?ILLU[main.draw][0]/ILLU[main.draw][1]:.84);
+  const maxW=W*(TALL?(lay==='word'?.7:.86):(lay==='box'?.46:lay==='word'?.36:.6));   // 'word': the word must show both sides
+  if(HH*ar>maxW)HH=maxW/ar;                         // a wide subject: as big as the width allows
+  const MW=HH*ar;
+  let cx=(lay==='box'&&!TALL)?W*.31:W/2;
+  cx=Math.max(U*.05+MW/2,Math.min(W-U*.05-MW/2,cx));
+  const heroBox={x:cx-MW/2,y:BOT-HH,w:MW,h:HH};FOCUS={x:cx,y:BOT-HH*.52,rx:Math.min(MW*.56,U*.42),ry:Math.min(HH*.58,U*.36)};
+  const core={x:cx-MW*.3,y:BOT-HH*.85,w:MW*.6,h:HH*.7};taken.push(core);
+  // back: the accent shape and the big word sit behind the subject
+  if(lay==='disc'){const r=Math.max(HH*.46,MW*.48);const dx=cx+MW*.1,dy=BOT-HH*.62;const d=disc(L.back,dx,dy,r);popIn(d,dx,dy,.05,.5)}
+  if(lay==='bars'){const bw=Math.max(MW*.22,W*(TALL?.12:.06));[[-.52,0,ACC],[.42,.12,INK]].forEach(([k,dy,c],i)=>{
+      const x=cx+k*MW;const bh=HH*(1.04-dy);
+      const b=L.back.rect(bw,bh).move(x-bw/2,BOT-bh).fill(c).opacity(i?0.92:1).attr({transform:`rotate(${i?4:-5},${x},${BOT})`});
+      slide(b,.05+i*.12,0,H*.4)})}
+  if(lay==='box'&&!TALL){const b=brush(L.back,cx-MW*.62,BOT-HH*.45,MW*1.24,HH*.22,ACC,-8);wipe(b,.1)}
+  if(lay==='grid'){const gw=MW*1.5,gh=HH*1.02,gx=cx-gw/2,gy=BOT-gh;const gg=L.back.group();const st=U*.045;
+    for(let x=gx;x<=gx+gw+1;x+=st)gg.line(x,gy,x,gy+gh).stroke({color:FG,width:Math.max(1,U*.0012)}).opacity(.45);
+    for(let y=gy;y<=gy+gh+1;y+=st)gg.line(gx,y,gx+gw,y).stroke({color:FG,width:Math.max(1,U*.0012)}).opacity(.45);wipe(gg,.05)}
+  if(lay==='word'){
+    const word=P.word||(P.headline||'').toUpperCase();
+    // widescreen: behind the subject's upper half (the subject cuts through it); Shorts: across the top, the
+    // subject rising into its lower edge
+    const t=TALL?T(L.back,word,W*.3,W/2,BOT-HH-W*.06,{family:'Anton',weight:400,fill:FG})
+                :T(L.back,word,H*.5,W/2,BOT-HH*.66,{family:'Anton',weight:400,fill:FG,ls:'0.01em'});
+    fit(t,W*.92);slide(t,.15,0,H*.06);const bb=t.bbox();taken.push({x:bb.x,y:bb.y,w:bb.width,h:bb.height})}
+  orb(L.back,cx+(rnd()<.5?-1:1)*MW*.45,BOT-HH*.22,U*.075);
+  // the subject(s): main one big, the others smaller at its sides
+  pics.forEach((pic,i)=>{const isMain=i===0;const h=isMain?HH:HH*.46;
+    const side=i===1?1:-1;const x=isMain?cx:Math.max(U*.12,Math.min(W-U*.12,cx+side*(MW*.5+HH*.22)));const y=isMain?BOT:BOT-HH*.02;
+    const g=picture(isMain?L.hero:L.mid,pic,x,y,h,{offset:lay==='grid'});
+    if(!isMain)taken.push({x:x-h*.4,y:y-h,w:h*.8,h:h});
+    if(isMain&&P.prop&&K.props){const pg=propOver(g,pic,x,y,h);if(pg)drop(pg,.35,H*.3,-3)}
+    drop(g,isMain?.35:.6+i*.15,H*.3,isMain?-3:4)});
+  if(P.prop&&K.props){const it=tag(L.front,'ILLUSTRATION · OPINION',0,0,{size:U*.018,bg:'#111',ink:'#FFF'});
+    const bb=it.bbox();it.attr({transform:`translate(${W-U*.05-bb.width},${U*.09})`});wipe(it,.5)}
+  // headline: black boxes, serif
+  if(P.headline&&!(lay==='word'&&P.word&&P.word===P.headline.toUpperCase())){
+    let g;
+    if(lay==='box'&&!TALL){g=boxText(L.front,P.headline,U*.075,Math.min(W*.6,cx+MW/2+U*.04),H*.28,{maxw:W*.34,stagger:true});
+      g.children().forEach((row,i)=>slide(row,.75+i*.18,W*.06,0))}
+    else{g=boxText(L.front,P.headline,U*(TALL?.055:.052),W/2,TALL?H*.11:H*.085,{anchor:'middle',maxw:W*.8,most:2});
+      g.children().forEach((row,i)=>slide(row,.7+i*.15,0,-H*.05))}
+    const bb=g.rbox(draw);taken.push({x:bb.x-U*.02,y:bb.y-U*.02,w:bb.width+U*.04,h:bb.height+U*.04})}
+  // tags: around the subject's edges, never on the headline, the subject's middle or each other
+  const cand=[];const ys=[.18,.42,.66,.3,.54,.06];
+  for(const fy of ys){cand.push([heroBox.x-U*.02,BOT-HH*(1-fy),'end']);cand.push([heroBox.x+MW+U*.02,BOT-HH*(1-fy),'start'])}
+  (P.tags||[]).forEach((s,i)=>{const g=tag(L.front,s,0,0,lay==='grid'?{bg:ACC,size:U*.026}:{});const bb=g.bbox();const tw=bb.width,th=bb.height;
+    let spot=null;for(let k=0;k<cand.length&&!spot;k++){const [x,y,an]=cand[(k+i)%cand.length];
+      const r={x:an==='end'?x-tw:x,y:y-th/2,w:tw,h:th};if(free(r,taken))spot=r}
+    if(!spot){g.remove();return}
+    taken.push({x:spot.x-U*.01,y:spot.y-U*.01,w:spot.w+U*.02,h:spot.h+U*.02});
+    g.attr({transform:`translate(${spot.x-bb.x},${spot.y-bb.y})`});slide(g,1.0+i*.22,(spot.x<cx?-1:1)*W*.05,0)});
+  // note with a leader line from the subject
+  if(P.note){const right=cx<W*.55;const x1=cx+(right?MW*.12:-MW*.12),y1=BOT-HH*.6;
+    let x2=right?Math.min(W*.72,heroBox.x+MW+U*.08):Math.max(W*.28,heroBox.x-U*.08),y2=TALL?H*.68:H*.62;
+    const roomBeside=right?W-(heroBox.x+MW):heroBox.x;
+    if(roomBeside<W*.22){x2=Math.min(W*.66,cx+MW*.2);y2=Math.max(H*.2,heroBox.y-U*.07)}   // a wide subject: the note goes above it
+    callout(L.front,x1,y1,x2,y2,P.note,1.3)}
+  // the small print: crosshairs, the mono date/place line, side text, the photo credit
+  const c=U*.016;[[U*.05,U*.05],[W-U*.05,U*.05]].forEach(([x,y])=>cross(L.front,x,y,c));
+  if(P.meta&&P.meta.length){mono(L.front,P.meta.join('  ·  ').toUpperCase(),U*.05,TALL?H*.66:H*.75,{weight:700,type:true,at:.9})}
+  if(P.side)side(L.front,P.side.toUpperCase());
+  if(P.credit){mono(L.front,P.credit,W-U*.03,H-U*.025,{size:U*.014,anchor:'end',fill:DARK?'#BBBBBB':'#555555'})}
+}
+
+// ---- more kit: torn paper, tape, pins, prints ----
+function torn(g,x,y,w,h,fill,o){o=o||{};const pts=[];const st=Math.max(6,Math.round(w/(U*.018)));const j=U*.006;
+  for(let i=0;i<=st;i++)pts.push([x+w*i/st,y+(rnd()-.5)*j*(o.top===false?0:1)]);
+  const sv=Math.max(4,Math.round(h/(U*.018)));for(let i=1;i<=sv;i++)pts.push([x+w+(rnd()-.5)*j*(o.side===false?0:1),y+h*i/sv]);
+  for(let i=st;i>=0;i--)pts.push([x+w*i/st,y+h+(rnd()-.5)*j*2.2]);
+  for(let i=sv;i>0;i--)pts.push([x+(rnd()-.5)*j*(o.side===false?0:1),y+h*i/sv]);
+  return g.polygon(pts.map(q=>q.join(',')).join(' ')).fill(fill||'#F4F0E6')}
+function tape(g,x,y,w,ang){const t=g.rect(w,w*.32).move(x-w/2,y-w*.16).fill('#EFE6C9').opacity(.82)
+  .attr({transform:`rotate(${ang||0},${x},${y})`});return t}
+function pinAt(g,x,y){const p=g.group();p.circle(U*.026).center(x,y).fill('#B88A2E').stroke({color:'#6B4E14',width:Math.max(1,U*.002)});
+  p.circle(U*.009).center(x-U*.004,y-U*.004).fill('#F2D58A');p.attr({filter:'url(#softshadow)'});return p}
+function printCard(g,pic,x,y,h,ang,o){ // a photo print: white card with the cut-out (or its name) on it
+  o=o||{};const grp=g.group();const ar=pic&&pic.img?pic.w/pic.h:1;const iw=Math.min(h*ar,h*1.5),ih=iw/ar;const pad=h*.06;
+  grp.rect(iw+pad*2,ih+pad*2+(o.caption?h*.14:0)).move(x-iw/2-pad,y-ih/2-pad).fill('#FBFAF6').attr({filter:'url(#shadow)'});
+  if(pic&&pic.img)grp.image(pic.img).size(iw,ih).move(x-iw/2,y-ih/2);
+  else if(pic&&(pic.o||pic.draw)){const sub=picture(grp,pic,x,y+ih/2,ih*.9)}
+  else T(grp,(o.label||'').toUpperCase(),h*.12,x,y,{family:'Archivo',weight:400,fill:INK});
+  if(o.caption)T(grp,o.caption.toUpperCase(),h*.07,x,y+ih/2+pad+h*.06,{family:'Mono',weight:700,fill:INK});
+  grp.attr({transform:`rotate(${ang||0},${x},${y})`});return grp}
+function picOf(name){return (P.pics||[]).find(p=>p.name===name)}
+function rich(g,s,size,x,y,o){ // a headline where *words* get the accent highlighter
+  o=o||{};const parts=String(s).split(/(\*[^*]+\*)/).filter(Boolean);const grp=g.group().addClass('keep');let cx=0;const marks=[];
+  parts.forEach(pt=>{const hl=pt.startsWith('*');const t=T(grp,pt.replace(/\*/g,''),size,cx,0,{family:o.family||'Playfair',weight:o.weight||900,anchor:'start',fill:o.fill||FG});
+    const bb=t.bbox();if(hl)marks.push(bb);cx+=bb.width+size*.18});
+  marks.forEach((bb,i)=>highlight(grp,bb,(o.start||.6)+.15*i,o.mark||SIG));
+  const w=cx-size*.18;grp.attr({transform:`translate(${o.anchor==='middle'?x-w/2:x},${y})`});grp.data('w',w);return grp}
+
+// ---- round 2 scenes ----
+function desk(){ // grid paper, a pen, stacked photo prints, a paperclip and a label strip
+  const g=L.paper.group().opacity(.55);const st=Math.round(U/22);
+  for(let x=0;x<W;x+=st)g.line(x,0,x,H).stroke({color:'#9DB7CF',width:1});for(let y=0;y<H;y+=st)g.line(0,y,W,y).stroke({color:'#9DB7CF',width:1});
+  const pen=L.back.group();pen.rect(U*.42,U*.03).move(-U*.21,-U*.015).radius(U*.015).fill('#1E2A44');pen.rect(U*.06,U*.034).move(U*.17,-U*.017).fill('#111');
+  pen.attr({transform:`translate(${W*.12},${H*.2}) rotate(-38)`});slide(pen,.05,-W*.1,0);
+  const subs=P.subjects||[];const cx=W*.5,cy=TALL?H*.36:H*.44,h=TALL?H*.26:H*.46;
+  subs.forEach((n,i)=>{const k=subs.length-1-i;const pic=picOf(n);const ang=[-4,3,-2,5][i%4];
+    const c=printCard(L.hero,pic,cx+(k-(subs.length-1)/2)*h*.28,cy+k*h*.04,h*(i===0?1:.82),ang,{label:n});
+    drop(c,.2+k*.18,H*.25,ang*2)});
+  if(P.label){const strip=L.front.group();const lb=T(strip,P.label.toUpperCase(),U*.05,0,0,{family:'Bebas',weight:400,anchor:'start',fill:INK,ls:'0.04em'});
+    const bb=lb.bbox();strip.rect(bb.width+U*.06,bb.height+U*.02).move(bb.x-U*.03,bb.y-U*.01).fill(ACC).back();
+    const x=cx-h*.55,y=cy+h*.58;strip.attr({transform:`translate(${x},${y}) rotate(-3)`});slide(strip,.95,-W*.1,0)}
+  const clip=L.front.group();clip.path(`M0 ${U*.12} L0 ${U*.02} Q0 0 ${U*.018} 0 Q${U*.036} 0 ${U*.036} ${U*.02} L${U*.036} ${U*.1}`).fill('none')
+    .stroke({color:'#9AA0A6',width:U*.006,linecap:'round'});clip.attr({transform:`translate(${cx-h*.48},${cy-h*.56})`});wipe(clip,.9);
+  if(P.note){const side=!TALL&&W-(cx+h*.62)-U*.05>U*.34,nx=side?cx+h*.62:W*.12,ny=side?cy-h*.4:Math.min(H*.93,cy+h*.95);const t=T(L.front,P.note,U*.032,nx,ny,{family:'Mono',weight:700,anchor:'start',fill:INK});fit(t,W-nx-U*.05);wipe(t,1.2);
+    const u=L.front.line(nx,ny+U*.04,nx,ny+U*.04).stroke({color:INK,width:U*.004});
+    at(1.3,.5,p=>u.plot(nx,ny+U*.04,nx+t.bbox().width*p,ny+U*.04),E.inout)}}
+
+function evidence(){ // a pinned board on kraft paper: cards, red string pin to pin, tape, an EVIDENCE tag
+  const it=P.items, n=it.length;const cx=W/2,cy=TALL?H*.36:H*.43;const R=TALL?[W*.34,H*.2]:[W*.32,H*.27];
+  const pos=[[cx,cy]];for(let i=1;i<n;i++){const a=-Math.PI*.82+(i-1)*(Math.PI*1.64/Math.max(1,n-2))*(n>2?1:0)+(n===2?Math.PI*.82:0);
+    pos.push([cx+Math.cos(a)*R[0],cy+Math.sin(a)*R[1]*1.05])}
+  const sz=TALL?U*.3:U*.3;const pins=[];
+  it.forEach((x,i)=>{const [px,py]=pos[i];const ang=(rnd()-.5)*8;const h=i===0?sz*1.25:sz*.78;let card;
+    if(x.kind==='photo'){const pic=picOf(x.name);card=printCard(L.hero,pic||null,px,py,h,ang,{label:x.name.replace(/^person:/i,''),
+        caption:x.name.toLowerCase().startsWith('person:')?x.name.slice(7):''});}
+    else if(x.kind==='date'){card=L.hero.group();const w=h*.62,hh=h*.75;torn(card,px-w/2,py-hh/2,w,hh,'#F6F2E7');
+      T(card,x.mon,hh*.16,px,py-hh*.28,{family:'Archivo',weight:400,fill:INK});T(card,x.day||'',hh*.36,px,py+hh*.02,{family:'Archivo',weight:400,fill:INK});
+      T(card,x.year,hh*.14,px,py+hh*.32,{family:'Archivo',weight:400,fill:INK});card.attr({transform:`rotate(${ang},${px},${py})`,filter:'url(#shadow)'})}
+    else{card=L.hero.group();const t=T(card,x.text,h*.2,px,py,{family:'Archivo',weight:400,fill:INK});const bb=t.bbox();
+      torn(card,bb.x-h*.08,bb.y-h*.06,bb.width+h*.16,bb.height+h*.12,'#F6F2E7').back();card.attr({transform:`rotate(${ang},${px},${py})`,filter:'url(#shadow)'})}
+    const bb=card.rbox(draw);const pinY=bb.y+U*.02;pins.push([px,pinY]);
+    drop(card,.15+i*.22,H*.2,ang);const pn=pinAt(L.front,px,pinY);popIn(pn,px,pinY,.35+i*.22,.3);
+    if(i>0)tape(L.front,bb.x+bb.width*.15,bb.y+bb.height*.92,U*.07,-20)});
+  for(let i=1;i<n;i++){const [x1,y1]=pins[0],[x2,y2]=pins[i];const ln=L.mid.line(x1,y1,x1,y1).stroke({color:'#C0262D',width:U*.004});
+    at(.5+i*.25,.45,p=>ln.plot(x1,y1,x1+(x2-x1)*p,y1+(y2-y1)*p),E.inout)}
+  const casey=/\?|case|evidence|crime|murder|scam|who|mystery|probe|investigat/i.test(P.title||'');
+  if(casey){const ev=tag(L.front,'EVIDENCE',0,0,{size:U*.026});const eb=ev.bbox();ev.attr({transform:`translate(${cx-eb.width/2},${TALL?H*.6:H*.74})`});wipe(ev,1.4)}
+  if(P.title){const g=boxText(L.front,P.title,U*.05,W/2,TALL?H*.08:H*.06,{anchor:'middle',maxw:W*.8,most:1});g.children().forEach((r,i)=>slide(r,.1,0,-H*.05))}
+  if(casey){const q=L.front.group();q.circle(U*.09).center(W-U*.12,TALL?H*.6:H*.72).fill('none').stroke({color:'#C0262D',width:U*.006});
+  T(q,'?',U*.06,W-U*.12,TALL?H*.6:H*.72,{family:'Archivo',weight:400,fill:'#C0262D'});wipe(q,1.6)}}
+
+function opener(){ // a colour panel with the headline, the photo beside it
+  const real=((P.pics||[])[0]||{}).img||((P.pics||[])[0]||{}).draw;if(!real)P.pics=[];
+  const left=!TALL&&!!real;const pw=left?W*.46:W,ph=left?H:(real?H*.42:H);const pan=L.back.rect(pw,ph).move(0,0).fill(ACC);
+  slide(pan,0,left?-pw:0,left?0:-ph);
+  const pic=(P.pics||[])[0];
+  if(pic){const h=left?H*.86:H*.46;const x=left?W*.72:W/2;const y=left?H*.97:H*.94;const g=picture(L.hero,pic,x,y,h);drop(g,.3,H*.2,-2)}
+  const size=left?U*.1:U*.12;const ls=lines(P.headline.replace(/\*/g,''),size,(left?pw:W)*.84,'Playfair',900,3);
+  const words=P.headline.split(/(\*[^*]+\*)/).filter(Boolean);const hi=new Set();words.forEach(w=>{if(w.startsWith('*'))w.replace(/\*/g,'').split(/\s+/).forEach(x=>hi.add(x))});
+  const x0=left?W*.05:W*.08;let y=left?H*.5-ls.length*size*.6:(real?H*.12:H*.46-ls.length*size*.55);
+  if(P.kicker){const k=T(L.front,P.kicker.toUpperCase(),U*.03,x0,y-size*.75,{family:'Inter',weight:800,anchor:'start',fill:INK,ls:'0.16em'});wipe(k,.3)}
+  ls.forEach((ln,i)=>{const row=L.front.group().addClass('keep');let cx=0;ln.split(' ').forEach(w=>{const t=T(row,w,size,cx,0,{family:'Playfair',weight:900,anchor:'start',fill:hi.has(w)?'#FFFFFF':INK});cx+=t.bbox().width+size*.22});
+    row.attr({transform:`translate(${x0},${y+i*size*1.1})`});slide(row,.45+i*.15,-W*.05,0)})}
+
+function reveal(){ // a document; a magnifier sweeps it and the beam shows the text big and sharp
+  const docW=TALL?W*.84:W*.56,docH=TALL?H*.4:H*.58,dx=W/2-docW/2,dy=TALL?H*.16:H*.16;
+  const doc=L.back.group();torn(doc,dx,dy,docW,docH,'#FBF9F3');doc.attr({filter:'url(#shadow)'});slide(doc,0,0,H*.1);
+  const hlg=L.back.group();slide(hlg,0,0,H*.1);   // highlights above the page, under the words
+  const rows=P.rows;const rs=docH/(rows.length+2.2);
+  // one type size for every line, the largest at which the longest line still sits inside the page
+  let fs=rs*.42;rows.forEach(r=>{const pr=T(L.back,r,fs,0,0,{family:'Mono',weight:700,anchor:'start'});const w=pr.bbox().width;pr.remove();if(w>docW*.84)fs*=docW*.84/w});
+  rows.forEach((r,i)=>{const t=T(L.back,r,fs,dx+docW*.08,dy+rs*(i+1.4),{family:'Mono',weight:700,anchor:'start',fill:'#3A3A3A'});wipe(t,.15+i*.05);
+    if(P.mark&&r.toLowerCase().includes(P.mark.toLowerCase()))highlight(hlg,t.bbox(),1.6,SIG)});
+  if(P.title){const g=boxText(L.front,P.title,U*.05,W/2,TALL?H*.07:H*.075,{anchor:'middle',maxw:W*.8,most:1});g.children().forEach(r=>slide(r,.1,0,-H*.04))}
+  // the lens: a magnified copy of the document inside a circle that sweeps down
+  const R=U*(TALL?.17:.15);const lens=L.front.group();const clipC=draw.clip().add(draw.circle(R*2).center(0,0));
+  const mag=lens.group().clipWith(clipC);const inner=mag.group();
+  inner.rect(docW,docH).move(dx,dy).fill('#FFFFFF');
+  rows.forEach((r,i)=>T(inner,r,fs,dx+docW*.08,dy+rs*(i+1.4),{family:'Mono',weight:700,anchor:'start',fill:'#111'}));
+  lens.circle(R*2).center(0,0).fill('none').stroke({color:'#222',width:U*.012});
+  const handle=lens.rect(U*.03,U*.16).move(R*.62,R*.62).radius(U*.01).fill('#2A2A2A').attr({transform:`rotate(-45,${R*.62},${R*.62})`});
+  const hand=(P.pics||[])[0];if(hand&&hand.img){const hh=U*.22;lens.image(hand.img).size(hh*hand.w/hand.h,hh).move(R*.8,R*.75)}
+  lens.attr({filter:'url(#shadow)'});lens.opacity(0);
+  const path=[[dx+docW*.25,dy+rs*1.2],[dx+docW*.62,dy+rs*2.5],[dx+docW*.35,dy+rs*(rows.length*.8+1)]];
+  at(.5,Math.max(1.5,DUR-.9),p=>{lens.opacity(Math.min(1,p*6));const q=p*(path.length-1),i=Math.min(path.length-2,Math.floor(q)),f=q-i;
+    const x=path[i][0]+(path[i+1][0]-path[i][0])*f,y=path[i][1]+(path[i+1][1]-path[i][1])*f;
+    lens.attr({transform:`translate(${x},${y})`});const z=1.8;inner.attr({transform:`translate(${-x*z},${-y*z}) scale(${z})`})},E.inout)}
+
+function newsprint(){ // a pile of newspaper scraps behind: columns of grey type lines, no readable words
+  const g=L.paper.group().opacity(DARK?.25:.5);
+  for(let k=0;k<16;k++){const w=U*(.35+rnd()*.4),h=U*(.25+rnd()*.35),x=rnd()*W-w*.2,y=rnd()*H-h*.2,a=(rnd()-.5)*14;
+    const sc=g.group();torn(sc,x,y,w,h,['#E9E4D8','#DCD6C8','#F1EDE3'][k%3]);const cols=2+Math.floor(rnd()*2);
+    for(let c=0;c<cols;c++)for(let r=0;r<Math.floor(h/(U*.022));r++){const lw=(w/cols-U*.03)*(.6+rnd()*.4);
+      sc.rect(lw,U*.008).move(x+U*.02+c*w/cols,y+U*.03+r*U*.022).fill('#9A958A').opacity(.7)}
+    if(rnd()<.6)sc.rect(w*.8,U*.035).move(x+U*.02,y+U*.012).fill('#555').opacity(.8);
+    sc.attr({transform:`rotate(${a},${x+w/2},${y+h/2})`})}}
+function headline(){ // a torn newspaper headline with cut-outs around it, a big chapter number
+  newsprint();
+  const cw=VERT?W*.82:W*.44,ch=VERT?H*.2:H*.36,cx=W/2-cw/2+(VERT?0:W*.04),cy=VERT?H*.34:H*.42;
+  if(P.number){const n=T(L.back,P.number,VERT?W*.38:H*.42,VERT?W/2:W*.2,VERT?H*.16:H*.36,{family:'Inter',weight:800,fill:DARK?'#F3EFE6':'#FFFFFF'});
+    n.attr({style:'paint-order:stroke',stroke:DARK?'none':'#00000010'});slide(n,.05,-W*.05,0)}
+  disc(L.back,cx+cw*.85,cy-ch*.05,U*.12,ACC);
+  const subs=P.subjects||[];subs.forEach((nm,i)=>{const pic=picOf(nm);if(!pic)return;const h=VERT?H*.24:H*.5;
+    const x=[cx+cw*.5,cx-cw*.02,cx+cw*1.02][i%3],y=cy+(i===0?ch*.05:ch*.75);const g=picture(L.mid,pic,x,y,i===0?h:h*.6);drop(g,.25+i*.2,H*.25,i?4:-3)});
+  const card=L.hero.group();torn(card,cx,cy,cw,ch,'#EEE9DC');card.attr({filter:'url(#shadow)'});
+  // a real headline is never cut: the type steps down (to 60%) until every word fits in three lines
+  let size=Math.min(ch*.26,U*.065);const nw=String(P.text).split(/\s+/).filter(Boolean).length,
+    fits=z=>{const d=DROPPED.length,r=lines(P.text,z,cw*.86,'Playfair',700,99);DROPPED.length=d;return r.length<=3};
+  for(let k=0;k<6&&!fits(size);k++)size*=.9;const ls=lines(P.text,size,cw*.86,'Playfair',700,3);
+  ls.forEach((l,i)=>T(card,l,size,cx+cw*.07,cy+ch*.2+i*size*1.12,{family:'Playfair',weight:700,anchor:'start',fill:'#1A1A1A'}));
+  if(P.source)T(card,P.source.toUpperCase(),U*.018,cx+cw*.07,cy+ch*.9,{family:'Mono',weight:700,anchor:'start',fill:'#555'});
+  drop(card,.6,H*.2,-4);tape(L.front,cx+cw*.1,cy+U*.01,U*.09,-12);
+}
+
+function pinmap(){ // the country outline; the place highlighted; the headline clipping drops on the pin
+  const bx=P.box,ms=Math.min((VERT?W*.86:W*.5)/bx[0],(VERT?H*.42:H*.72)/bx[1]);const ox=(VERT?W/2:W*.34)-bx[0]*ms/2,oy=Math.max(U*.1,(VERT?H*.28:H*.42)-bx[1]*ms/2);
+  if(P.atlas)atlasSea();
+  const m=L.back.group();P.shapes.forEach(r=>{m.polygon(r.map(q=>[ox+q[0]*ms,oy+q[1]*ms].join(',')).join(' ')).fill(P.pen?'#EFE3C2':P.atlas?(P.pin?'#EFE3C2':'#D9542C'):(P.pin?'#E2DBCC':ACC))
+    .stroke({color:P.atlas?'#8E7E5C':'#9A9282',width:Math.max(1,U*.0016)})});if(P.atlas)depthOfField(m);m.opacity(0);at(0,.6,p=>m.opacity(p));
+  if(P.country){const c=T(L.back,P.country.toUpperCase(),U*.03,ox+bx[0]*ms/2,oy-U*.03,{family:'Inter',weight:800,ls:'0.3em',fill:'#8C8577'});wipe(c,.3)}
+  let px=ox+bx[0]*ms*(P.pin?.5:.92),py=oy+bx[1]*ms/2;   // no pin: the card goes beside the country, not on it
+  if(P.pen&&!P.pin)P.shapes.forEach(r=>penHatch(L.mid,r.map(q=>[ox+q[0]*ms,oy+q[1]*ms]),.4));
+  if(P.pen&&P.pin)penCircle(L.front,ox+P.pin[0]*ms,oy+P.pin[1]*ms,U*.06,.9);
+  if(P.pin){px=ox+P.pin[0]*ms;py=oy+P.pin[1]*ms;FOCUS={x:px,y:py,rx:U*.07,ry:U*.06};const ring=L.mid.circle(U*.05).center(px,py).fill(ACC).opacity(.5);popIn(ring,px,py,.5);
+    const dot=L.mid.circle(U*.02).center(px,py).fill('#C0262D').stroke({color:'#FFFFFF',width:U*.004});popIn(dot,px,py,.55);
+    const lb=tag(L.front,P.place,px+U*.025,py-U*.05);slide(lb,.7,W*.03,0)}
+  const who=(P.pics||[])[0];   // a real photo pinned beside the place, like evidence on a map
+  if(who){const h=VERT?H*.2:H*.34,x=VERT?Math.min(W*.78,px+W*.22):Math.max(W*.14,px-W*.2),y=VERT?Math.max(H*.2,py-H*.1):Math.max(H*.26,py-H*.05);
+    const card=printCard(L.hero,who,x,y,h,-4,{caption:(who.name||'').replace(/^person:/i,'')});drop(card,.7,H*.2,-6);
+    pinAt(L.front,x,y-h*.5+U*.012);const ln=L.mid.line(x,y,px,py).stroke({color:'#C0262D',width:U*.003});wipe(ln,1.0)}
+  if(P.headline){const cw=VERT?W*.8:W*.38,ch=VERT?H*.16:H*.26;let cx=VERT?W*.1:Math.min(W-cw-U*.04,px+U*.24),cy=VERT?H*.58:Math.max(H*.14,py-ch*.4);
+    // the headline card never covers the place's own label: right of the label, or else below the pin
+    const tagR=P.pin?px+U*.025+String(P.place||'').length*U*.017+U*.06:0;
+    if(!TALL&&P.pin&&cx<tagR){if(tagR+cw<W-U*.03)cx=tagR;else cy=Math.min(H-ch-U*.05,py+U*.07)}
+    const card=L.hero.group();torn(card,cx,cy,cw,ch,'#F3EFE4');const size=Math.min(ch*.24,U*.05);
+    lines(P.headline,size,cw*.86,'Playfair',700,3).forEach((l,i)=>T(card,l,size,cx+cw*.07,cy+ch*.22+i*size*1.12,{family:'Playfair',weight:700,anchor:'start',fill:'#1A1A1A'}));
+    if(P.source)T(card,P.source.toUpperCase(),U*.017,cx+cw*.07,cy+ch*.88,{family:'Mono',weight:700,anchor:'start',fill:'#555'});
+    card.attr({filter:'url(#shadow)'});drop(card,1.0,H*.2,-3);const pn=pinAt(L.front,cx+cw/2,cy+U*.015);popIn(pn,cx+cw/2,cy+U*.015,1.4,.3)}}
+
+function myth(){ // a myth turned over: the wrong idea struck through in marker, a stamp, the true line printed over it
+  const big=VERT?U*.075:U*.068,red=K.mark||'#D7262B',g=L.hero.group();const ls=lines(P.wrong,big,W*.8,'Playfair',700,3);
+  const y0=(VERT?H*.46:H*.5)-((ls.length-1)*big*1.3+big*1.6)/2,wr=ls.map((ln,i)=>{const t=T(g,ln,big,W/2,y0+i*big*1.3,{family:'Playfair',weight:700,fill:FG});t.opacity(0);return t});
+  wr.forEach((t,i)=>{at(.12+i*.09,.4,p=>t.opacity(p),E.snap);const bb=t.bbox();
+    penLine(g,[[bb.x-U*.015,bb.y+bb.height*.58],[bb.x+bb.width*.5,bb.y+bb.height*.5],[bb.x+bb.width+U*.015,bb.y+bb.height*.46]],1.05+i*.16,.3,red,U*.011);
+    at(1.55+i*.05,.35,p=>t.opacity(1-.62*p),E.lin)});
+  const stp=L.front.group(),word=T(stp,String(P.label).toUpperCase(),U*.06,0,0,{family:'Anton',weight:400,fill:red,ls:'.08em'}),sb=word.bbox();
+  stp.rect(sb.width+U*.045,sb.height+U*.02).move(sb.x-U*.0225,sb.y-U*.01).fill('none').stroke({color:red,width:U*.006}).radius(U*.006);
+  const sx=W*(VERT?.68:.76),sy=y0-big*1.05;stp.attr({transform:`translate(${sx},${sy}) rotate(-8)`});popIn(stp,sx,sy,1.32,.2);
+  const ty=y0+ls.length*big*1.3+U*.05,tr=boxText(L.front,P.right,VERT?U*.058:U*.052,W/2,ty,{anchor:'middle',maxw:W*.86,most:3});
+  tr.opacity(0);at(1.95,.3,p=>tr.opacity(p),E.snap);FOCUS={x:W/2,y:ty+U*.04,rx:W*.32,ry:U*.08}}
+function counter(){ // a number counting in steady digits (each digit in its own fixed slot, so nothing jitters), then holding
+  const big=VERT?W*.24:H*.3,g=L.hero.group(),num=v=>{let s=Math.abs(v).toFixed(P.dec);if(P.comma){const [i,f]=s.split('.');s=i.replace(/\B(?=(\d{3})+(?!\d))/g,',')+(f?'.'+f:'')}
+    return (v<0?'-':'')+s};
+  const probe=T(g,'0',big,0,0,{family:'Anton',weight:400});const adv=probe.bbox().width*1.04;probe.remove();
+  const n=Math.max(num(P.from).length,num(P.to).length),y=VERT?H*.42:H*.46;
+  const pre=P.pre?T(g,P.pre,big,0,y,{family:'Anton',weight:400,fill:ACT,anchor:'end'}):null,post=P.post?T(g,P.post,big*(P.post.length>2?.5:1),0,y,{family:'Anton',weight:400,fill:ACT,anchor:'start'}):null;
+  // a decimal point or a comma gets a narrow slot (its place from the right never moves), digits a full one
+  const ref=num(Math.abs(P.to)>=Math.abs(P.from)?P.to:P.from).padStart(n,' '),sw=[...ref].map(c=>c==='.'||c===','?adv*.42:adv),
+        off=sw.map((w,i)=>sw.slice(0,i).reduce((a,b)=>a+b,0)),tot=sw.reduce((a,b)=>a+b,0);
+  const pw=pre?pre.bbox().width:0,qw=post?post.bbox().width+big*.06:0,x0=W/2-(tot+pw+qw)/2+pw;
+  if(pre)pre.attr({x:x0});if(post)post.attr({x:x0+tot+big*.06});
+  const slots=[];for(let i=0;i<n;i++)slots.push(T(g,'',big,x0+off[i]+sw[i]/2,y,{family:'Anton',weight:400,fill:ACT}));
+  const show=v=>{const s=num(v).padStart(n,' ');for(let i=0;i<n;i++){const c=s[i]===' '?'':s[i];if(slots[i].text()!==c)slots[i].text(c)}
+    if(pre){const lead=s.length-s.trimStart().length;pre.attr({x:x0+(off[lead]||0)})}};   // the currency sign stays against the first digit
+  show(P.from);const span=Math.min(1.6,Math.max(1.2,DUR*.3));
+  const tw=pw+tot+qw;if(tw>W*.9){const k=W*.9/tw;g.attr({transform:`translate(${W/2},${y}) scale(${k}) translate(${-W/2},${-y})`})}   // the full figure, unit included, fits the frame
+  TICKS.push(t=>{const p=Math.max(0,Math.min(1,(t-.35)/span)),e=1-Math.pow(1-p,4);show(P.from+(P.to-P.from)*e)});
+  if(P.unit){const u=T(L.front,P.unit.toUpperCase(),U*.03,W/2,y+big*.62,{family:'Mono',weight:700,fill:FG,ls:'.2em'});fit(u,W*.86);wipe(u,.4)}
+  if(P.caption){const c=boxText(L.front,P.caption,U*.045,W/2,VERT?H*.72:H*.8,{anchor:'middle',maxw:W*.84,most:2});c.opacity(0);at(.35+span+.15,.3,p=>c.opacity(p),E.snap)}
+  FOCUS={x:W/2,y:y-big*.35,rx:Math.min(W*.4,(tot+pw+qw)*.62),ry:big*.55}}
+function assembleScene(){ // the build-on assembly: the poster's pieces land back in place, back to front
+  const A=P.asm;if(!A)return;const ar=A.w/A.h;let w=W,h=W/ar;if(h<H){h=H;w=H*ar}const ox=(W-w)/2,oy=(H-h)/2;
+  const G=L.mid.group();G.image(A.bd).size(w,h).move(ox,oy);
+  const n=A.pieces.length,first=.12,last=Math.max(first+.3,DUR*.6-.45),step=n>1?(last-first)/(n-1):0;
+  A.pieces.forEach((pc,i)=>{const pw=pc.w*w,ph=pc.h*h,x=ox+pc.x*w,y=oy+pc.y*h,cx=x+pw/2,cy=y+ph/2;
+    const g=G.group();g.image(pc.img).size(pw,ph).move(x,y);g.attr({filter:'url(#shadow)'});g.opacity(0);
+    const t0=first+step*i,d=.42,kind=(P.seed+i*7)%3,ph0=rnd()*6.28,amp=.35+rnd()*.35;
+    // where it comes from: off the nearest edge (fly), from above (drop) or in place, enlarged (pop)
+    const ex=cx<W/2?-(cx+pw*.6):(W-cx+pw*.6),ey=cy<H/2?-(cy+ph*.6):(H-cy+ph*.6),fromX=Math.abs(ex)<Math.abs(ey)*1.2;
+    const rot0=(rnd()-.5)*24;
+    at(0,DUR,p=>{const t=p*DUR,q=Math.min(1,Math.max(0,(t-t0)/d));let dx=0,dy=0,s=1,r=0,o=1;
+      if(t<t0){g.opacity(0);return}
+      if(kind===0){const e=E.back(q);dx=fromX?ex*(1-e):0;dy=fromX?0:ey*(1-e);r=rot0*(1-E.out(q));o=Math.min(1,q*4)}
+      else if(kind===1){dy=-(cy+ph*.6)*(1-E.back(q));o=Math.min(1,q*5)}
+      else{s=1+.35*(1-E.out(q));o=Math.min(1,q*3)}
+      const life=Math.max(0,t-t0-d);r+=Math.sin(life*1.7+ph0)*amp*Math.min(1,life*2);   // settled, but alive
+      g.opacity(o).attr({transform:`translate(${dx},${dy}) rotate(${r},${cx},${cy}) translate(${cx},${cy}) scale(${s}) translate(${-cx},${-cy})`})},E.lin)});
+  TICKS.push(t=>{const p=Math.min(1,t/DUR);G.attr({transform:`translate(${W/2},${H/2}) scale(${1+p*.045}) translate(${-W/2},${-H/2})`})});   // the camera smooth, the pieces on 12 fps
+}
+function voxFrame(){ // the layered Vox key frame: real photo -> paper -> type -> cut-out -> chip (notes, badge, source on top)
+  const flip=(P.seed||0)%2===1&&!TALL,bg=P.bgpic;
+  if(bg){const ar=bg.w/bg.h;let w=W*1.1,h=w/ar;if(h<H*1.1){h=H*1.1;w=h*ar}
+    const g=L.back.group();g.image(bg.img).size(w,h).move((W-w)/2,(H-h)/2).attr({filter:'url(#mono)'});
+    g.rect(W,H).fill(ACC).opacity(.42).attr({style:'mix-blend-mode:multiply'});
+    const pat=draw.pattern(U*.011,U*.011,a=>a.circle(U*.0042).center(U*.0055,U*.0055).fill('#000').opacity(.2));g.rect(W,H).fill(pat);
+    const gr=draw.gradient('linear',st=>{st.stop(0,'#000',.55);st.stop(.55,'#000',.08);st.stop(1,'#000',0)});if(flip)gr.from(1,0).to(0,0);
+    g.rect(W,H).fill(gr);at(0,DUR,p=>g.attr({transform:`translate(${W/2},${H/2}) scale(${1+p*.04}) translate(${-W/2},${-H/2})`}),E.lin||(t=>t))}
+  // the torn paper panel, taped, on the photo's quiet side
+  const pw=TALL?W*.88:W*.47,ph=TALL?H*.36:H*.62,px=TALL?W*.06:(flip?W*.485:W*.045),py=TALL?H*.1:H*.14;
+  const panel=L.mid.group();torn(panel,px,py,pw,ph,'#F3EEE2');panel.attr({filter:'url(#shadow)'});
+  const ang=flip?1.4:-1.4;panel.attr({transform:`rotate(${ang},${px+pw/2},${py+ph/2})`});
+  tape(L.mid,px+pw*.14,py+U*.004,U*.13,-12);tape(L.mid,px+pw*.88,py+ph-U*.004,U*.11,9);slide(panel,.05,flip?W*.45:-W*.45,0);
+  const pad=pw*.08,inner=pw-pad*2;let y=py+pad*.9;
+  if(P.kicker){const k=mono(L.mid,P.kicker.toUpperCase(),px+pad,y+U*.02,{anchor:'start',size:U*.02,weight:700});fit(k,inner);wipe(k,.3);y+=U*.055}
+  // the headline, wrapped to the panel; *words* keep their highlighter on whichever line they land
+  const hot=new Set((String(P.headline).match(/\*[^*]+\*/g)||[]).join(' ').replace(/\*/g,'').toUpperCase().split(/\s+/).filter(Boolean));
+  const plain=String(P.headline).replace(/\*/g,'').toUpperCase();let size=TALL?W*.1:H*.105,ls;
+  for(let k=0;k<7;k++){ls=lines(plain,size,inner,'Anton',400,9);if(ls.length<=3&&ls.length*size*1.05<ph*(P.number?.5:.68))break;size*=.9}
+  ls=lines(plain,size,inner,'Anton',400,3);
+  ls.forEach((ln,i)=>{const marked=ln.split(' ').map(w=>hot.has(w)?'*'+w+'*':w).join(' ').replace(/\* \*/g,' ');
+    const t=rich(L.mid,marked,size,px+pad,y+size*.86+i*size*1.04,{family:'Anton',weight:400,fill:INK,start:.75+.12*i});wipe(t,.35+.1*i)});
+  y+=ls.length*size*1.04+U*.02;
+  // the data chip: the number in the film's accent, half off the panel's lower edge
+  if(P.number){const cs=TALL?W*.12:H*.13,cg=L.hero.group();const t=T(cg,P.number,cs,0,0,{family:'Anton',weight:400,fill:'#FFFFFF',anchor:'start'});
+    const bb=t.bbox();cg.rect(bb.width+cs*.5,bb.height+cs*.28).move(bb.x-cs*.25,bb.y-cs*.14).fill(ACC).back();
+    const cx=px+pad,cy=y+U*.03+bb.height*.92;cg.attr({transform:`translate(${cx+cs*.25},${cy}) rotate(${flip?2:-2})`,filter:'url(#shadow)'});popIn(cg,cx+bb.width/2,cy-bb.height/2,.9,.35)}
+  // the subject, big, printed with a colour offset, breaking the bottom of the frame
+  const pic=(P.pics||[])[0];
+  if(pic){const ar=pic.img?pic.w/pic.h:(pic.draw&&window.ILLU&&ILLU[pic.draw]?ILLU[pic.draw][0]/ILLU[pic.draw][1]:.8);
+    const maxw=TALL?W*.86:W*.44;let h=TALL?H*.5:H*.94;if(h*ar>maxw)h=maxw/ar;
+    const cx=TALL?W*.5:(flip?W*.27:W*.73),by=H+(pic.img?U*.01:-H*.06);
+    const g=picture(L.hero,pic,cx,by,h,{offset:!!pic.img});drop(g,.25,H*.3,flip?3:-3);
+    const w=g.data('w')||h*ar;FOCUS={x:cx,y:by-h*.62,rx:Math.min(w*.42,U*.3),ry:Math.min(h*.3,U*.26)}}
+  else FOCUS={x:TALL?W*.5:(flip?W*.24:W*.76),y:TALL?H*.72:H*.55,rx:TALL?W*.3:W*.15,ry:TALL?H*.12:H*.2};   // no subject: the note circles the photo itself
+  // the hand-written note lives on the photo, in the top corner over the subject, never on the panel
+  if(!bg&&!pic)P.marker='';   // nothing real to point at: no circle drawn round empty paper
+  if(P.marker&&FOCUS&&!TALL){const red=/^#(1|2)[0-9A-F]/i.test(K.mark||'')?'#D7262B':(K.mark||'#D7262B'),mg=L.front.group(),f=FOCUS,n=48,pts=[];
+    for(let i=0;i<=n;i++){const a=-Math.PI*.6+i/n*Math.PI*2*1.12,j=1+(rnd()-.5)*.06+(i/n)*.06;pts.push([f.x+Math.cos(a)*f.rx*j,f.y+Math.sin(a)*f.ry*j])}
+    penLine(mg,pts,1.0,.55,red,U*.008);
+    const right=!flip,nx=right?W-U*.1:U*.1,ny=U*.14;   // inside the slow push's crop
+    const t=T(mg,P.marker,U*.056,nx,ny,{family:'Caveat',weight:700,fill:red,anchor:right?'end':'start'});fit(t,W*.34);
+    t.attr({transform:`rotate(${right?3:-3},${nx},${ny})`});const tb=t.bbox();
+    const sx=tb.x+tb.width/2,sy=tb.y+tb.height+U*.012,ex=f.x+(right?1:-1)*f.rx*.35,ey=f.y-f.ry*.95;
+    const q=[];for(let i=0;i<=14;i++){const u=i/14,mx=(sx+ex)/2+(right?1:-1)*U*.05;q.push([(1-u)*(1-u)*sx+2*(1-u)*u*mx+u*u*ex,(1-u)*(1-u)*sy+2*(1-u)*u*((sy+ey)/2)+u*u*ey])}
+    penLine(mg,q,1.35,.35,red,U*.005);wipe(t,1.2);P.marker='';mg.addClass('keep')}
+  // the credit, light on the dark photo: always readable
+  if(P.credit){const items=('PHOTOS: '+P.credit).toUpperCase().split(' · '),cs=U*.016,maxw=W*.5,rows=[];let cur='';
+    const maxc=Math.floor(maxw/(cs*.62));   // a monospace face: about .6 em per letter, measured without waiting for the font
+    items.forEach(it=>{const tr=cur?cur+' · '+it:it;if(cur&&tr.length>maxc){rows.push(cur);cur=it}else cur=tr});if(cur)rows.push(cur);
+    rows.forEach((r,i)=>{const y=H-U*.07-(rows.length-1-i)*cs*1.55;const t=T(L.front,r.length>maxc+8?r.slice(0,maxc+6)+'…':r,cs,flip?W-U*.12:U*.12,y,{family:'Mono',anchor:flip?'end':'start',weight:700,fill:'#F3EEE2',fine:1});
+      t.addClass('keep');t.opacity(.92);const bb=t.bbox();L.front.rect(bb.width+U*.02,bb.height+U*.01).move(bb.x-U*.01,bb.y-U*.005).fill('#000').opacity(.45).back()})}}
+function poster(){ // the editorial collage poster: ground -> flat shape -> huge type -> halftone hero -> spot-colour piece -> doodles
+  const sd=P.seed||0,flat=P.shape==='flat',ground=flat?ACC:'#EFEAE0',ink=flat?'#F7F2E8':INK;
+  L.back.rect(W,H).fill(ground);
+  const pat=draw.pattern(U*.012,U*.012,a=>a.circle(U*.0035).center(U*.006,U*.006).fill('#000').opacity(flat?.08:.05));L.back.rect(W,H).fill(pat);
+  const cx=TALL?W*.5:W*(sd%3===0?.5:sd%3===1?.42:.58),cy=H*.54,R=Math.min(W,H)*(TALL?.42:.4);
+  // the flat shape behind the hero
+  const sh=L.back.group();
+  if(P.shape==='disc'){sh.circle(R*2).center(cx+R*.18,cy-R*.05).fill(ACC)}
+  else if(P.shape==='burst'){const n=22,pts=[];for(let i=0;i<n*2;i++){const a=i/(n*2)*Math.PI*2,r=i%2?R*.72:R*1.08;pts.push([cx+Math.cos(a)*r,cy+Math.sin(a)*r])}
+    sh.polygon(pts.map(q=>q.join(',')).join(' ')).fill(SIG)}
+  else if(P.shape==='torn'){torn(sh,cx-R*1.1,cy-R*.9,R*2.2,R*1.6,ACC);sh.attr({transform:`rotate(${sd%2?-4:4},${cx},${cy})`})}
+  if(!flat)popIn(sh,cx,cy,.05,.4);
+  // huge type, behind the hero: the hero's head breaks it
+  const word=String(P.word).toUpperCase(),fam=['Anton','Playfair','Bebas'][sd%3],wt=fam==='Playfair'?900:400;
+  let size=TALL?W*.32:H*.42;const probe=T(L.back,word,size,0,0,{family:fam,weight:wt});const bw=probe.bbox().width;probe.remove();
+  if(bw>W*.94)size*=W*.94/bw;
+  const ty=TALL?H*.24:H*.3+size*.36;const tw=T(L.back,word,size,W/2,ty,{family:fam,weight:wt,fill:flat?ink:INK});tw.attr({'letter-spacing':fam==='Playfair'?'-.02em':'0'});wipe(tw,.25);
+  // the hero: one big black-and-white halftone cut-out
+  const pics=P.pics||[],hero=pics[0];
+  if(hero){const ar=hero.img?hero.w/hero.h:(hero.draw&&window.ILLU&&ILLU[hero.draw]?ILLU[hero.draw][0]/ILLU[hero.draw][1]:.8);
+    let h=TALL?H*.58:H*.72;if(h*ar>W*.56)h=W*.56/ar;   // the head breaks into the bottom of the word, the word stays readable
+    const g=picture(L.hero,hero,cx,H+U*.02,h,{});if(hero.img)g.attr({filter:'url(#mono)'});drop(g,.3,H*.25,sd%2?2:-2);
+    FOCUS={x:cx,y:H-h*.62,rx:Math.min(h*ar*.4,U*.3),ry:h*.28}}
+  // the second piece in spot colour, cut in at an angle
+  const two=pics[1];if(two){const ar=two.img?two.w/two.h:1;let h=TALL?H*.24:H*.34;if(h*ar>W*.3)h=W*.3/ar;
+    const sx=cx+(sd%2?-1:1)*(TALL?W*.28:W*.26),sy=TALL?H*.82:H*.62;const g=picture(L.hero,two,sx,sy,h,{});if(two.img)g.attr({filter:'url(#spot)'});
+    g.attr({transform:`rotate(${sd%2?8:-8},${sx},${sy-h/2})`});drop(g,.55,H*.2,0)}
+  // doodles: a scribbled arrow to the hero, a few sparks
+  const red=K.mark&&!/^#(1|2)[0-9A-F]/i.test(K.mark)?K.mark:'#D7262B';const dg=L.front.group();
+  const ax=sd%2?W*.84:W*.16,ay=H*.2,bx=cx+(sd%2?1:-1)*U*.18,by=H*.36;const ap=[];for(let i=0;i<=12;i++){const u=i/12;ap.push([ax+(bx-ax)*u+Math.sin(u*3.1)*U*.03,ay+(by-ay)*u-Math.sin(u*3.1)*U*.05])}
+  penLine(dg,ap,1.1,.45,flat?'#F7F2E8':red,U*.007);
+  const ang=Math.atan2(by-ap[10][1],bx-ap[10][0]);penLine(dg,[[bx-Math.cos(ang-.5)*U*.04,by-Math.sin(ang-.5)*U*.04],[bx,by],[bx-Math.cos(ang+.5)*U*.04,by-Math.sin(ang+.5)*U*.04]],1.5,.15,flat?'#F7F2E8':red,U*.007);
+  for(let k=0;k<3;k++){const sx2=(sd%2?W*.12:W*.88)+(k-1)*U*.05,sy2=H*(.72+k*.06),l=U*.025;penLine(dg,[[sx2-l,sy2],[sx2+l,sy2]],1.6+k*.08,.1,flat?'#F7F2E8':INK,U*.005);penLine(dg,[[sx2,sy2-l],[sx2,sy2+l]],1.65+k*.08,.1,flat?'#F7F2E8':INK,U*.005)}
+  // the small line: a black label, low on the quiet side
+  if(P.line){const b=boxText(L.front,P.line,TALL?W*.04:U*.034,sd%2?W-U*.1:U*.1,TALL?H*.9:H*.84,{anchor:sd%2?'end':'start',maxw:TALL?W*.8:W*.42,most:2,family:'Mono'});wipe(b,.8)}
+  if(P.credit)P.credit=P.credit.replace(/^Photos?:\s*/i,'');photoCredit()}
+function mapdesk(){ // the map desk: aged map -> red country -> paper arrows -> props with red string -> stamp, camera pushing in
+  const sd=P.seed||0,[hx,hy]=P.half,sc=Math.max(W/(2*hx),H/(2*hy))*1.02,ox=W/2,oy=H/2;
+  const world=L.back.group(),pt=q=>[ox+q[0]*sc,oy+q[1]*sc];
+  world.rect(W*1.4,H*1.4).move(-W*.2,-H*.2).fill('#B7C2B0');   // the sea, faded print
+  const hatch=draw.pattern(U*.016,U*.016,a=>a.line(0,U*.016,U*.016,0).stroke({color:'#8FA095',width:U*.0012}));world.rect(W*1.4,H*1.4).move(-W*.2,-H*.2).fill(hatch).opacity(.5);
+  let tgt=null;
+  P.lands.forEach(l=>{const d=l.rings.map(r=>'M'+r.map(q=>pt(q).map(v=>v.toFixed(1)).join(',')).join('L')+'Z').join('');
+    const sh=world.path(d).fill(l.me?'#EBDFC2':'#EBDFC2').stroke({color:'#8C7A55',width:U*.0018});if(l.me)tgt={d,sh}});
+  P.labels.forEach(lb=>{let [x,y]=pt([lb.x,lb.y]);const t=T(world,lb.name,U*.026,x,y,{family:'Playfair',weight:400,fill:'#6B5838',ls:'.32em'});
+    const bb=t.bbox(),m=U*.1;if(y<m||y>H-m){t.remove();return}   // a name half off the top or bottom is dropped
+    const dx=Math.max(0,m-bb.x)-Math.max(0,bb.x+bb.width-(W-m));if(dx)t.attr({x:x+dx})});   // kept inside the frame
+  // stains, folds and a dark edge: an old paper map on a desk
+  const st=draw.gradient('radial',g=>{g.stop(0,'#7A5A2E',0);g.stop(.7,'#7A5A2E',.06);g.stop(1,'#3B2A12',.45)});L.back.rect(W,H).fill(st);
+  L.back.line(W*.5,0,W*.5,H).stroke({color:'#FFFFFF',width:U*.003,opacity:.25});L.back.line(0,H*.5,W,H*.5).stroke({color:'#5A4422',width:U*.002,opacity:.18});
+  at(0,DUR,p=>world.attr({transform:`translate(${ox},${oy}) scale(${1+p*.07}) translate(${-ox},${-oy})`}),E.lin);
+  // the country: red, glowing, its name on it
+  let cxy=[ox,oy];if(tgt){const g=L.mid.group();const red=g.path(tgt.d).fill('#C8372D').stroke({color:'#7E1B14',width:U*.003}).attr({filter:'url(#glowred)'});
+    g.opacity(0);at(.15,.5,p=>g.opacity(p*.92),E.out);const bb=red.bbox();cxy=[bb.cx,bb.cy];
+    at(0,DUR,p=>g.attr({transform:`translate(${ox},${oy}) scale(${1+p*.07}) translate(${-ox},${-oy})`}),E.lin);
+    const nm=T(L.mid,P.name.toUpperCase(),U*.024,bb.cx,bb.cy+U*.01,{family:'Mono',weight:700,fill:'#FFF4E6',ls:'.12em'});wipe(nm,.6)}
+  const [tx,ty]=cxy;FOCUS={x:tx,y:ty,rx:U*.14,ry:U*.1};
+  // black paper arrows closing in from all sides
+  const stampAng=Math.atan2(H*.82-ty,W*(sd%2?.66:.34)-tx);   // no arrow comes from where the stamp lands
+  // evenly spaced round the country, with one slot left empty where the stamp lands (stamp direction seen from the country)
+  const slots=P.stamp?P.arrows+1:P.arrows,angs=[];
+  for(let j=0;j<slots;j++)angs.push(stampAng+Math.PI+(j+(P.stamp?1:0))/slots*Math.PI*2);
+  for(let i=0;i<P.arrows;i++){const a=angs[i];
+    const r0=U*.5,r1=U*.13,len=r0-r1,wd=U*.034;
+    const g=L.mid.group(),ang=a*180/Math.PI;
+    g.polygon(`0,${-wd/2} ${len-wd*1.6},${-wd/2} ${len-wd*1.6},${-wd*1.2} ${len},0 ${len-wd*1.6},${wd*1.2} ${len-wd*1.6},${wd/2} 0,${wd/2}`).fill('#1C1A17').attr({filter:'url(#shadow)'});
+    const sx=tx-Math.cos(a)*r0,sy=ty-Math.sin(a)*r0;g.attr({transform:`translate(${sx},${sy}) rotate(${ang})`});
+    g.opacity(0);at(.45+i*.08,.35,p=>{const e=E.back(p),d=(1-e)*U*.08;g.opacity(Math.min(1,p*3));g.attr({transform:`translate(${sx-Math.cos(a)*d},${sy-Math.sin(a)*d}) rotate(${ang})`})},E.lin)}
+  // real props dropped on the map, each tied to the country with red string
+  const spots=[[W*.15,H*.28],[W*.84,H*.26],[W*.16,H*.76],[W*.85,H*.74]];
+  (P.pics||[]).filter(q=>q.img).slice(0,4).forEach((pic,i)=>{const [x,y]=spots[(i+sd)%4],h=U*.24;   // real photos only: no icon stand-ins on the map
+    const g=picture(L.hero,pic,x,y+h/2,h,{});g.attr({transform:`rotate(${(i%2?1:-1)*(4+i*2)},${x},${y})`});drop(g,1.0+i*.18,H*.2,0);
+    const sg=L.hero.group().back();penLine(sg,[[x,y],[(x+tx)/2,(y+ty)/2+U*.02],[tx,ty]],1.3+i*.18,.4,'#B3261E',U*.0032);
+    const pn=pinAt(L.front,x,y-h*.3);pn.opacity(0);at(1.25+i*.18,.15,p=>pn.opacity(p),E.lin)});
+  pinAt(L.front,tx,ty-U*.035);
+  // the stamp slams down
+  if(P.stamp){const g=L.front.group(),sz=U*.07,t=T(g,P.stamp.toUpperCase(),sz,0,0,{family:'Mono',weight:700,fill:'#A3221B',ls:'.08em'});
+    const bb=t.bbox();g.rect(bb.width+sz*.6,bb.height+sz*.5).move(bb.x-sz*.3,bb.y-sz*.25).fill('none').stroke({color:'#A3221B',width:U*.006}).radius(U*.006);
+    const sx=W*(sd%2?.66:.34),sy=H*.82;g.opacity(0);g.attr({style:'mix-blend-mode:multiply'});
+    at(2.0,.22,p=>{const k=1.8-.8*E.out(p);g.opacity(Math.min(.88,p*2));g.attr({transform:`translate(${sx},${sy}) rotate(-8) scale(${k})`})},E.lin)}
+  if(P.kicker){const b=boxText(L.front,P.kicker,U*.026,U*.07,U*.09,{anchor:'start',maxw:W*.4,most:1,family:'Mono'});wipe(b,.3)}
+  creditBlock(W-U*.06,U*.06,'end')}
+function creditBlock(x,y,anchor){ // the photo credits, wrapped on a dark band so every name can be read
+  if(!P.credit)return;const items=('PHOTOS: '+P.credit.replace(/^Photos?:\s*/i,'')).toUpperCase().split(/\s*[;·]\s*/),cs=U*.014,maxc=Math.floor(W*.36/(cs*.62)),rows=[];let cur='';
+  items.forEach(it=>{const tr=cur?cur+' · '+it:it;if(cur&&tr.length>maxc){rows.push(cur);cur=it}else cur=tr});if(cur)rows.push(cur);
+  rows.forEach((r,i)=>{const t=T(L.front,r,cs,x,y+i*cs*1.6,{family:'Mono',anchor:anchor||'end',weight:700,fill:'#F3EEE2',fine:1});t.addClass('keep');
+    const bb=t.bbox();L.front.rect(bb.width+U*.016,bb.height+U*.008).move(bb.x-U*.008,bb.y-U*.004).fill('#000').opacity(.55).back()})}
+function staircase(){ // isometric steps rising left to right; each one lights up as the story climbs it, the last in red
+  const n=P.steps.length,top=VERT?H*.3:H*.24,bot=VERT?H*.82:H*.86,left=W*.08,right=W*.92,sw=(right-left)/n,sh=(bot-top)/n,d=Math.min(sw,sh)*.35;
+  const g=L.hero.group(),red=K.mark||'#D7262B',seg=Math.max(.7,(DUR-1.6)/n),tops=[];
+  for(let i=0;i<n;i++){const x=left+i*sw,y=bot-(i+1)*sh;const st=g.group();
+    st.polygon([[x,y],[x+sw,y],[x+sw+d,y-d*.6],[x+d,y-d*.6]]).fill(DARK?'#2A2E36':'#FFFFFF').stroke({color:INK,width:U*.003});
+    const face=st.rect(sw,bot-y).move(x,y).fill(DARK?'#1A1D24':'#ECE7DC').stroke({color:INK,width:U*.003});
+    st.polygon([[x+sw,y],[x+sw+d,y-d*.6],[x+sw+d,bot-d*.6],[x+sw,bot]]).fill(DARK?'#11141A':'#D6D0C3').stroke({color:INK,width:U*.003});
+    slide(st,.1+i*.07,0,H*.05);tops.push({x,y,face});
+    const lit=st.rect(sw,sh*.18).move(x,y).fill(i===n-1?red:ACC).opacity(0);const t0=.8+i*seg;at(t0,.3,p=>lit.opacity(p),E.snap);
+    const lab=T(L.front,P.steps[i],U*.034,x+sw*.06,y+sh*.55,{family:'Inter',weight:800,fill:i===n-1?red:FG,anchor:'start'});fit(lab,sw*.9);
+    lab.opacity(0);at(t0+.1,.3,p=>lab.opacity(p),E.snap);const num=T(L.front,String(i+1).padStart(2,'0'),U*.028,x+sw*.06,y+sh*.25,{family:'Mono',weight:700,fill:FG});
+    num.opacity(0);at(t0,.2,p=>num.opacity(p),E.lin)}
+  if(P.title)chartTitle(P.title);const last=tops[n-1];FOCUS={x:last.x+sw/2,y:last.y+sh*.3,rx:sw*.7,ry:sh*.7}}
+function scale(){ // a balance: weights drop one by one onto the left pan, the beam tips, the other side is thrown off
+  const cx=W/2,py=VERT?H*.42:H*.4,arm=Math.min(W*.36,U*.62),g=L.hero.group(),red=K.mark||'#D7262B',n=P.left.length;
+  g.polygon([[cx-U*.05,H*.86],[cx+U*.05,H*.86],[cx,py]]).fill(INK);g.rect(U*.2,U*.018).move(cx-U*.1,H*.86).fill(INK);
+  const beam=g.group();beam.rect(arm*2,U*.014).move(cx-arm,py-U*.007).fill(INK);beam.circle(U*.03).center(cx,py).fill(ACC);
+  const panL=beam.group(),panR=beam.group();
+  const pan=(grp,x)=>{grp.line(x,py,x-U*.07,py+U*.16).stroke({color:INK,width:U*.003});grp.line(x,py,x+U*.07,py+U*.16).stroke({color:INK,width:U*.003});
+    grp.path(`M${x-U*.1} ${py+U*.16} Q${x} ${py+U*.22} ${x+U*.1} ${py+U*.16} Z`).fill(DARK?'#2A2E36':'#FFFFFF').stroke({color:INK,width:U*.004})};
+  pan(panL,cx-arm);pan(panR,cx+arm);
+  const rb=tag(panR,P.right,0,0,{size:U*.033,bg:'#FFFFFF'}),rw=rb.data('w')||U*.2,rs=Math.min(1,arm*.9/rw),rx=cx+arm-rw*rs/2+U*.02,ry=py+U*.095;rb.attr({transform:`translate(${rx},${ry}) scale(${rs})`});
+  const each=Math.max(.35,(DUR*.55)/n),tags=[];
+  P.left.forEach((w,i)=>{const tg=tag(panL,w,0,0,{size:U*.033,bg:ACC,ink:INK}),tw=tg.data('w')||U*.2,ts=Math.min(1,arm*.9/tw);tg.attr({transform:`translate(${cx-arm-tw*ts/2+U*.02},${py+U*.095-i*U*.065}) scale(${ts})`});drop(tg,.4+i*each,H*.3,((i*37)%9)-4);tags.push(tg)});
+  const tipAt=.4+n*each,ang=-14;
+  TICKS.push(t=>{const tq=Math.floor(t*12+1e-6)/12;const fill=Math.max(0,Math.min(1,(tq-.4)/(n*each)));
+    const settle=tq<tipAt?0:Math.min(1,(tq-tipAt)/.5);const a=ang*(fill*.35+ (settle>0?.65*(1-Math.pow(1-settle,3))*(1+.12*Math.sin(settle*9)*(1-settle)):0));
+    beam.attr({transform:`rotate(${a.toFixed(2)},${cx},${py})`});panL.attr({transform:`rotate(${(-a).toFixed(2)},${cx-arm},${py})`});
+    panR.attr({transform:`rotate(${(-a).toFixed(2)},${cx+arm},${py})`});
+    const fly=Math.max(0,Math.min(1,(tq-tipAt-.15)/.6));if(fly>0)rb.attr({transform:`translate(${rx+fly*W*.25},${ry-fly*H*.5}) rotate(${fly*40}) scale(${rs})`});rb.opacity(1-fly)});
+  if(P.verdict){const v=L.front.group(),word=T(v,P.verdict.toUpperCase(),U*.045,0,0,{family:'Anton',weight:400,fill:red,ls:'.06em'}),bb=word.bbox();
+    v.rect(bb.width+U*.04,bb.height+U*.02).move(bb.x-U*.02,bb.y-U*.01).fill('none').stroke({color:red,width:U*.005});
+    const vx=cx,vy=VERT?H*.2:H*.17;v.attr({transform:`translate(${vx},${vy}) rotate(-5)`});popIn(v,vx,vy,tipAt+.5,.22)}
+  FOCUS={x:cx-arm,y:py+U*.08,rx:U*.14,ry:U*.16}}
+function number(){ // a huge number; the subject breaks out of it
+  const pic=(((P.pics||[])[0]||{}).img||((P.pics||[])[0]||{}).draw)?(P.pics||[])[0]:null;
+  if(pic&&!TALL&&K.lay==='side')return numberSide(pic);const big=T(L.back,P.number,VERT?W*.42:H*(pic?.5:.56),W/2,pic?(VERT?H*.22:H*.3):(VERT?H*.34:H*.4),{family:'Anton',weight:400,fill:DARK?SIG:INK});fit(big,W*.92);
+  if(!DARK){const bb=big.bbox(),bar=L.back.rect(0,bb.height*.42).move(bb.x-U*.02,bb.y+bb.height*.5).fill(SIG).back();
+    at(.35,.5,p=>bar.width(Math.max(.1,(bb.width+U*.04)*p)),E.inout)}   // the signature bar under the figure
+  slide(big,.05,0,H*.06);
+  if(pic){const d0=pic.draw&&window.ILLU[pic.draw],ar0=pic.img?pic.w/pic.h:d0?d0[0]/d0[1]:1;
+    const h=VERT?H*.36:Math.min(H*.56,W*.42/ar0,H*.46*(ar0>1.3?1:1.22));   // a wide subject stays under the figure, not over it
+    const g=picture(L.hero,pic,W/2,VERT?H*.64:H*.86,h);drop(g,.35,H*.25,-2);
+    FOCUS=FOCUS||{x:W/2,y:(VERT?H*.64:H*.86)-h*.45,rx:Math.min(U*.3,(g.data('w')||h)*.6),ry:h*.42}}   // marker and logos go by the subject, off the figure
+  if(P.caption){const c=pic?fit(T(L.front,P.caption,U*.04,W/2,VERT?H*.7:H*.92,{family:'Inter',weight:800,fill:'#C0262D'}),W*.9)
+      :boxText(L.front,P.caption,U*.055,W/2,VERT?H*.56:H*.8,{anchor:'middle',maxw:W*.86,most:2});wipe(c,.9)}   // under the figure, clear of it
+  if(P.kicker){const k=T(L.front,P.kicker.toUpperCase(),U*.024,W/2,VERT?H*.08:H*.08,{family:'Inter',weight:800,fill:'#C0262D',ls:'0.45em'});wipe(k,.2)}}
+
+function numberSide(pic){ // second layout: the number and its words on the left, the subject standing on the right
+  // the number across the top, the subject lower right, the words lower left: nothing overlaps the figure
+  const big=T(L.back,P.number,H*.34,W*.05,H*.24,{family:'Anton',weight:400,fill:ACT,anchor:'start'});fit(big,W*.9);slide(big,.05,-W*.05,0);
+  const d=pic.draw&&window.ILLU[pic.draw],ar=pic.img?pic.w/pic.h:d?d[0]/d[1]:1;   // tall subjects stand taller
+  const ph=Math.min(H*.74,W*.5/ar),g=picture(L.hero,pic,ar<1?W*.72:W*.66,H*.95,ph);drop(g,.35,H*.25,2);FOCUS=FOCUS||{x:W*.32,y:H*.4,rx:W*.26,ry:H*.2};
+  if(P.caption){const c=boxText(L.front,P.caption,U*.05,W*.05,H*.66,{anchor:'start',maxw:W*.36,most:3});wipe(c,.9)}
+  if(P.kicker){const k=T(L.front,P.kicker.toUpperCase(),U*.024,W*.05,H*.06,{family:'Inter',weight:800,fill:'#C0262D',ls:'0.45em',anchor:'start'});wipe(k,.2)}}
+
+// ---- round 3: charts made of objects ----
+function chartTitle(s){if(!s)return;const g=boxText(L.front,s,U*.05,W/2,VERT?H*.07:H*.075,{anchor:'middle',maxw:W*.84,most:2});
+  enterTitle(g)}
+// titles enter in one of several ways (by the scene's seed, so a film doesn't repeat one entrance), then land dead still
+function enterTitle(g){const st=((P.seed||1)+(K.titleIn||0))%3,rows=g.children();
+  if(st===0)rows.forEach((r,i)=>slide(r,.05+i*.1,0,-H*.04));
+  else if(st===1)rows.forEach((r,i)=>{r.opacity(0);at(.05+i*.067,.18,p=>{r.opacity(p);r.attr({style:p<1?`filter:blur(${(8*(1-p)).toFixed(1)}px)`:''})},E.snap)});
+  else rows.forEach((r,i)=>{const bb=r.bbox(),cl=draw.clip(),m=cl.rect(0,bb.height+U*.02).move(bb.x,bb.y-U*.01);r.clipWith(cl);
+    at(.05+i*.09,.32,p=>m.width(Math.max(.1,(bb.width+U*.01)*p)),E.inout)})}
+function valLabel(g,s,x,y,o){o=o||{};const t=T(g,s,o.size||U*.045,x,y,{family:'Anton',weight:400,fill:o.fill||FG,anchor:o.anchor||'middle'});return t}
+function seats(){ // the semicircle of dots, filled in party order; the majority line
+  chartTitle(P.title);const n=P.total;const cx=W/2,cy=VERT?H*.5:VERT?H*.62:H*.7;const R1=VERT?W*.44:Math.min(W*.36,H*.52),R0=R1*.42;
+  let rows=1;while(true){let cap=0;for(let r=0;r<rows;r++){const rr=R0+(R1-R0)*(r+.5)/rows;cap+=Math.floor(Math.PI*rr/((R1-R0)/rows))}if(cap>=n||rows>30)break;rows++}
+  const pts=[];for(let r=0;r<rows;r++){const rr=R0+(R1-R0)*(r+.5)/rows;const k=Math.floor(Math.PI*rr/((R1-R0)/rows));for(let i=0;i<k;i++){const a=Math.PI-(Math.PI*(i+.5)/k);pts.push([a,cx+Math.cos(a)*rr,cy-Math.sin(a)*rr])}}
+  pts.sort((p,q)=>q[0]-p[0]);const dot=(R1-R0)/rows*.78;
+  const cols=[ACC,DARK?'#E8E2D4':'#2B2B2B','#9A9A9A','#C9C1B0','#6E8CA8','#B5735A','#7A9A6E','#B9A35E'];
+  let k=0;P.groups.forEach((g,gi)=>{const c=cols[gi%cols.length];const cnt=Math.round(g.value);const st=.3+gi*.45;
+    for(let i=0;i<cnt&&k<pts.length;i++,k++){const p=pts[k];const d=L.hero.circle(dot).center(p[1],p[2]).fill(c);d.opacity(0);const t0=st+i/cnt*.9;at(t0,.08,q=>d.opacity(q),E.lin)}
+    const lx=VERT?W*.1:VERT?W*(gi%2?.54:.08):(gi%2?cx+R1+U*.04:cx-R1-U*.04),ly=VERT?cy+U*.08+gi*U*.07:VERT?cy+U*.09+Math.floor(gi/2)*U*.07:cy-R1*.75+Math.floor(gi/2)*U*.12;
+    const lg=L.front.group();lg.rect(U*.03,U*.03).move(0,-U*.015).fill(c);
+    const tt=T(lg,`${g.label} — ${g.shown}`.toUpperCase(),U*.03,U*.045,0,{family:'Inter',weight:800,anchor:'start'});
+    const an=(VERT||gi%2)?'start':'end';fit(tt,VERT&&!VERT?W*.36:W);if(an==='end'){lg.attr({transform:`translate(${lx-tt.bbox().width-U*.045},${ly})`})}else lg.attr({transform:`translate(${lx},${ly})`});
+    wipe(lg,st+.4)});
+  const ml=L.front.line(cx,cy-R1-U*.02,cx,cy-R0+U*.01).stroke({color:FG,width:U*.003,dasharray:`${U*.008} ${U*.006}`});wipe(ml,1.6);
+  const mt=T(L.front,`MAJORITY ${P.majority}`,U*.024,cx,cy-R1-U*.045,{family:'Mono',weight:700});wipe(mt,1.7);
+  const tot=T(L.front,String(P.total),U*.075,cx,cy-U*.06,{family:'Anton',weight:400});const ts=T(L.front,'SEATS',U*.022,cx,cy-U*.005,{family:'Inter',weight:800,ls:'.2em'});wipe(tot,.2);wipe(ts,.25)}
+function material(g,mat,x,y,w,h,color,i){ // one bar as a real thing; x,y = bottom-left
+  if(mat==='coins'){const ch=w*.16;const n=Math.max(1,Math.round(h/ch));for(let k=0;k<n;k++){const yy=y-(k+1)*ch;
+      g.ellipse(w,ch*1.1).move(x,yy).fill(k%2?'#C9A24A':'#D9B55A').stroke({color:'#8A6A22',width:Math.max(1,U*.0015)})}
+    g.ellipse(w,ch*1.1).move(x,y-n*ch-ch*.55).fill('#E8C86E').stroke({color:'#8A6A22',width:Math.max(1,U*.0015)});return}
+  if(mat==='pillars'){g.rect(w*1.2,w*.14).move(x-w*.1,y-w*.14).fill('#DCD6CA');const sh=h-w*.36;
+    g.rect(w,sh).move(x,y-w*.14-sh).fill('#EDE8DE');for(let k=1;k<6;k++)g.line(x+w*k/6,y-w*.14-sh,x+w*k/6,y-w*.14).stroke({color:'#B9B1A1',width:Math.max(1,w*.02)});
+    g.rect(w*1.25,w*.22).move(x-w*.125,y-h).fill('#DCD6CA');g.rect(w*1.25,h).move(x-w*.125,y-h).fill('none').stroke({color:'#00000010'});return}
+  if(mat==='chimneys'){const top=y-h;g.polygon([[x+w*.1,y],[x+w*.9,y],[x+w*.8,top],[x+w*.2,top]].map(p=>p.join(',')).join(' ')).fill(color);
+    for(let k=1;k<4;k++){const yy=top+h*k/4;g.rect(w*.66,h*.03).move(x+w*.17,yy).fill('#00000022')}
+    g.rect(w*.7,w*.12).move(x+w*.15,top-w*.06).fill('#333');
+    const sm=g.group();for(let k=0;k<5;k++)sm.circle(w*(.5+k*.18)).center(x+w*.5+k*w*.18,top-w*.3-k*w*.28).fill('#2A2A2A').opacity(.55-k*.07);
+    sm.attr({filter:'url(#blur)'}).opacity(.9);return}
+  if(mat==='buildings'){g.rect(w,h).move(x,y-h).fill(color);const cw=w/5,rh=w/5;for(let r=0;r*rh<h-rh;r++)for(let c=0;c<4;c++)
+      g.rect(cw*.55,rh*.5).move(x+cw*(c+.6),y-h+rh*(r+.4)).fill(i%2?'#F3E9C8':'#FFFFFF').opacity(.75);
+    g.rect(w*.06,h*.12).move(x+w*.47,y-h-h*.12).fill(color);return}
+  if(mat==='books'){const cols2=['#7A2E26','#E2B13C','#1F4E3D','#7B5233','#222','#2C3E66','#8B3A2B'];g.rect(w,h).move(x,y-h).fill(cols2[i%cols2.length]).radius(w*.04);
+    g.rect(w,h*.04).move(x,y-h*.9).fill('#D8B65A').opacity(.8);g.rect(w,h*.04).move(x,y-h*.12).fill('#D8B65A').opacity(.8);return}
+  g.rect(w,h).move(x,y-h).fill(color)}
+function stack(){
+  chartTitle(P.title);const vs=P.values,n=vs.length,mx=Math.max(...vs.map(v=>v.value));
+  const base=VERT?H*.66:H*.82,area=W*(VERT?.84:.7),maxh=VERT?H*.42:H*.56,gap=area/n,bw=Math.min(gap*.56,U*.2);
+  L.mid.line(W/2-area/2,base,W/2+area/2,base).stroke({color:FG,width:U*.004});
+  vs.forEach((v,i)=>{const x=W/2-area/2+gap*(i+.5)-bw/2;const h=Math.max(U*.02,maxh*v.value/mx);const g=L.hero.group();
+    material(g,P.material,x,base,bw,h,v.value===mx?ACC:'#3A3A3A',i);const clip=draw.clip().add(draw.rect(W,H).move(0,0));
+    const st=.25+i*.25;g.opacity(0);at(st,.6,p=>{g.opacity(1);g.attr({transform:`translate(0,${h*(1-p)})`})},E.back);
+    if(v.value===mx)FOCUS={x:x+bw/2,y:base-h*.55,rx:bw*.95,ry:Math.max(h*.6,U*.08)};
+    const lm=(P.logos||[]).find(m=>!m.used&&v.label&&(m.title.toLowerCase()===v.label.toLowerCase()||m.key===v.label.toLowerCase()));
+    if(lm){lm.used=true;const sz=Math.min(bw*.8,U*.1);let tx=x+bw/2,ty=base-h-U*.12-sz/2;if(ty-sz/2<(VERT?H*.16:H*.2)){tx=x+bw+sz*.75;ty=base-h+sz*.7}   // a tall bar: beside its top, clear of the title
+      const t=logoTile(L.front,lm,tx,ty,sz);popIn(t,tx,ty,st+.55,.35)}
+    const lb=valLabel(L.front,v.shown,x+bw/2,base-h-U*.05,{fill:v.value===mx?FG:FG});wipe(lb,st+.5);
+    if(v.label){const t=T(L.front,v.label.toUpperCase(),U*.026,x+bw/2,base+U*.035,{family:'Inter',weight:800,ls:'.08em'});fit(t,gap*.95);wipe(t,st+.3)}})}
+function stand(){ // figures standing on their bars, value boxes beside them
+  chartTitle(P.title);const vs=P.values,n=vs.length,mx=Math.max(...vs.map(v=>v.value));const pics=P.pics||[];
+  const base=VERT?H*.72:H*.86,area=W*(VERT?.86:.62),maxh=VERT?H*.34:H*.42,gap=area/n,bw=gap*.62;
+  vs.forEach((v,i)=>{const x=W/2-area/2+gap*(i+.5)-bw/2;const h=Math.max(U*.05,maxh*Math.sqrt(v.value/mx));const st=.2+i*.4;
+    const b=L.mid.rect(bw,h).move(x,base-h).fill(i===n-1?'#3E4A55':'#56626C');slide(b,st,0,h);
+    const fh=VERT?H*.16:H*.24;const pic=pics[i];let fig;
+    if(pic&&pic.img){fig=picture(L.hero,pic,x+bw/2,base-h,fh)}
+    else{fig=L.hero.group();const cx=x+bw/2,top=base-h-fh;fig.circle(fh*.18).center(cx,top+fh*.1).fill(INK);
+      fig.rect(fh*.22,fh*.42).move(cx-fh*.11,top+fh*.2).radius(fh*.05).fill(INK);fig.rect(fh*.07,fh*.4).move(cx-fh*.1,top+fh*.6).fill(INK);fig.rect(fh*.07,fh*.4).move(cx+fh*.03,top+fh*.6).fill(INK)}
+    drop(fig,st+.35,H*.15,0);
+    const box=L.front.group();const t=T(box,v.shown,U*.05,0,0,{family:'Anton',weight:400,anchor:'start',fill:'#FFFFFF'});const bb=t.bbox();
+    box.rect(bb.width+U*.04,bb.height+U*.02).move(bb.x-U*.02,bb.y-U*.01).fill('#C24A2B').back();
+    const lb=T(box,(v.label||'').toUpperCase(),U*.022,0,-bb.height*.85,{family:'Inter',weight:800,anchor:'start',ls:'.1em'});
+    const bx=VERT?x+bw*.05:x+bw+U*.03,by=VERT?base-h+U*.1:base-h+U*.05;box.attr({transform:`translate(${bx},${by})`});slide(box,st+.6,W*.03,0)});
+  if(P.note){const t=T(L.front,P.note.toUpperCase(),U*.02,W/2,base+U*.035,{family:'Mono',weight:700});wipe(t,1.5)}}
+function units(){ // one square per item: each group fills in its own colour as its count runs
+  chartTitle(P.title);const vs=P.values,tot=vs.reduce((a,v)=>a+v.value,0);
+  const gx=VERT?W*.08:W*.06,gw=VERT?W*.84:W*.49,gy=VERT?H*.2:H*.2,gh=VERT?H*.44:H*.6;
+  let cols=Math.max(4,Math.ceil(Math.sqrt(tot*gw/gh)));let rows=Math.ceil(tot/cols);const cell=Math.min(gw/cols,gh/rows),sq=cell*.8;
+  const ox=gx+(gw-cols*cell)/2,oy=gy+(gh-rows*cell)/2;const cols2=['#56626C',ACC==='#56626C'?'#C24A2B':ACC,'#B9A27A'];
+  const fillDur=Math.min(2.6,Math.max(1.2,DUR*.45));let k=0;
+  vs.forEach((v,i)=>{const g=L.mid.group();for(let j=0;j<v.value;j++,k++){const c=k%cols,r=Math.floor(k/cols);
+      g.rect(sq,sq).move(ox+c*cell,oy+r*cell).radius(sq*.14).fill(cols2[i%3])}
+    const st=.35+fillDur*(k-v.value)/tot,du=Math.max(.35,fillDur*v.value/tot);const kids=g.children();kids.forEach(q=>q.opacity(0));
+    at(st,du,p=>{const m=Math.round(p*kids.length);for(let j=0;j<kids.length;j++)kids[j].opacity(j<m?1:0)},E.lin);
+    const lx=VERT?W*(.12+i*.42):W*.69,ly=VERT?H*.74:H*(.32+i*.25);
+    const sw=L.front.rect(U*.03,U*.03).move(lx,ly-U*.085).radius(U*.005).fill(cols2[i%3]);wipe(sw,st);
+    const n=T(L.front,'0',U*.085,lx+U*.05,ly,{family:'Anton',weight:400,anchor:'start',fill:i?cols2[1]:INK});
+    count(n,v.value,st,du,x=>Math.round(x).toLocaleString('en-US'));
+    const lb=T(L.front,(v.label||'').toUpperCase(),U*.026,lx,ly+U*.05,{family:'Inter',weight:800,anchor:'start',ls:'.08em'});wipe(lb,st+.1)});
+  if(P.note){const t=T(L.front,P.note.toUpperCase(),U*.022,W/2,VERT?H*.86:H*.9,{family:'Mono',weight:700});wipe(t,fillDur+.5)}}
+
+// ---- the Short's pieces: a recreated reel, a stamp conveyor, a state filled with tiles, a stamped pile ----
+function sceneTitle(){if(!P.title)return null;const size=VERT?W*.075:H*.075,y=VERT?H*.185:H*.17;   // under the corner badge, never beside it
+  const g=rich(L.front,P.title,size,W/2,y,{anchor:'middle'});
+  if(g.data('w')>W*.9){g.attr({transform:`translate(${W*.05},${y}) scale(${W*.9/g.data('w')})`})}slide(g,.05,0,-H*.02);return g}
+function reel(){sceneTitle();
+  const pw=VERT?Math.min(W*.5,H*.26):H*.33,ph=pw*2.0,cx=W/2,cy=VERT?H*.58:H*.58,x0=cx-pw/2,y0=cy-ph/2,g=L.hero.group();
+  const grad=draw.gradient('linear',a=>{a.stop(0,'#FF4F9A');a.stop(.55,'#7B2FF7');a.stop(1,'#1D1D6B')}).from(0,0).to(.35,1);
+  g.rect(pw,ph).move(x0,y0).radius(pw*.13).fill('#0E0E10');
+  const sx=x0+pw*.045,sy=y0+pw*.045,sw=pw*.91,sh=ph-pw*.09;g.rect(sw,sh).move(sx,sy).radius(pw*.1).fill(grad);
+  const notes=T(g,'♪ ♫ ♪',pw*.16,cx,sy+sh*.16,{family:'Anton',weight:400,fill:'#FFFFFF',fine:1});
+  const N=15,bw=sw*.045,gap=(sw*.8-N*bw)/(N-1),bars=[];for(let i=0;i<N;i++){bars.push(g.rect(bw,10).radius(bw/2).fill(SIG))}
+  const caps=[.78,.56,.36].map((f,i)=>g.rect(1,sw*.05).radius(sw*.025).fill('#FFFFFF').opacity(1-i*.2).move(sx+sw*.07,sy+sh*.74+i*sw*.085));
+  const btns=[0,1,2].map(i=>{const c=g.circle(sw*.11).center(sx+sw*.88,sy+sh*.5+i*sw*.17).fill('#FFFFFF').opacity(.9);popIn(c,sx+sw*.88,sy+sh*.5+i*sw*.17,.6+i*.12,.3);return c});
+  g.attr({transform:`rotate(-3 ${cx} ${cy})`});drop(g,.1,H*.2,-4);
+  at(0,DUR,p=>{const t=p*DUR;bars.forEach((b,i)=>{const h=sh*.06+sh*.16*Math.abs(Math.sin(t*5.2+i*.7))*(.6+.4*Math.sin(i*1.3));
+      b.size(bw,h).move(sx+sw*.1+i*(bw+gap),sy+sh*.42-h/2)});
+    notes.attr({transform:`translate(0,${Math.sin(t*3)*pw*.03})`});
+    caps.forEach((c,i)=>c.width(Math.max(1,sw*[.78,.56,.36][i]*Math.min(1,Math.max(0,(t-.8-i*.35)/.6)))))},E.lin);
+  FOCUS={x:cx,y:cy,rx:pw*.7,ry:ph*.55}}
+function conveyor(){sceneTitle();
+  const by=VERT?H*.62:H*.74,cw=VERT?W*.26:W*.1,chh=cw*1.3,sp=cw*1.35,g=L.mid.group();
+  g.rect(W*.9,U*.018).move(W*.05,by).fill(INK);for(let x=W*.06;x<W*.95;x+=U*.06)g.circle(U*.012).center(x,by+U*.009).fill('#777');   // the belt stays on the page
+  const lane=L.hero.group().clipWith(draw.clip().add(draw.rect(W*.9,H).move(W*.05,0)));   // cards enter and leave inside the frame
+  const cards=[];for(let i=0;i<P.n;i++){const c=lane.group();c.rect(cw,chh).radius(cw*.08).fill('#FFFFFF').stroke({color:'#D6D0C3',width:2});
+    c.rect(cw*.8,chh*.42).move(cw*.1,chh*.1).radius(cw*.04).fill('#D8D2C4');c.rect(cw*.7,cw*.07).move(cw*.1,chh*.62).radius(cw*.03).fill('#BBB');
+    const mk=c.group().opacity(0);mk.rect(cw*.86,cw*.26).move(cw*.07,chh*.7).fill('none').stroke({color:ACC2,width:cw*.03});
+    T(mk,P.stamp,cw*.17,cw*.5,chh*.72+cw*.17,{family:'Anton',weight:400,fill:ACC2,fine:1});mk.attr({transform:`rotate(-8 ${cw/2} ${chh*.84})`});
+    cards.push({c,mk,done:false})}
+  const st=L.front.group(),sw=VERT?W*.56:W*.2,shh=sw*.32;st.rect(sw,shh).fill('none').stroke({color:ACC2,width:U*.012});
+  T(st,P.stamp,shh*.62,sw/2,shh*.72,{family:'Anton',weight:400,fill:ACC2,fine:1});
+  const arm=L.mid.rect(U*.02,U*.1).fill('#333');   // a short handle, clear of the headline
+  const speed=(W+sp*P.n)/(DUR*.95),x0=-cw;
+  at(0,DUR,p=>{const t=p*DUR;let hit=0;
+    cards.forEach((k,i)=>{const x=x0+t*speed-i*sp;k.c.attr({transform:`translate(${x},${by-chh})`});
+      const d=Math.abs(x+cw/2-W/2);if(d<cw*.6)hit=Math.max(hit,1-d/(cw*.6));if(!k.done&&x+cw/2>W/2){k.done=true;k.mk.opacity(1)}});
+    const top=by-chh-shh-U*.06,lift=U*.09*(1-hit);st.attr({transform:`translate(${W/2-sw/2},${top-lift}) rotate(-6 ${sw/2} ${shh/2})`});
+    arm.move(W/2-U*.01,top-lift-U*.1)},E.lin);
+  if(P.caption){const c=boxText(L.front,P.caption,U*.04,W/2,VERT?H*.74:H*.88,{anchor:'middle',maxw:W*.86,most:3});wipe(c,1.0)}}
+function tiles(){sceneTitle();const SQ0=VERT&&!TALL;
+  const [b0,b1,b2,b3]=P.box,kx=Math.cos((b1+b3)/2*Math.PI/180),aw=TALL?W*.88:W*.56,ah=TALL?H*.42:H*.66,
+    s=Math.min(aw/((b2-b0)*kx),ah/(b3-b1)),ox=(TALL?W/2:W*.34)-(b2-b0)*kx*s/2,oy=(TALL?H*.26:H*.24)+(ah-(b3-b1)*s)/2,
+    pr=(lo,la)=>[ox+(lo-b0)*kx*s,oy+(b3-la)*s],poly=r=>r.map(q=>pr(q[0],q[1]).map(v=>v.toFixed(1)).join(',')).join(' ');
+  const clip=draw.clip().add(draw.rect(aw*1.06,ah*1.04).move((TALL?W/2:W*.34)-aw*.53,(TALL?H*.26:H*.24)-ah*.02));
+  const map=L.back.group().clipWith(clip);P.others.forEach(r=>map.polygon(poly(r)).fill('#D9D3C5').stroke({color:PAPER,width:2}));
+  const shape=L.mid.polygon(poly(P.ring)).fill(INK).stroke({color:PAPER,width:3});wipe(map,.1);wipe(shape,.3);
+  const xs=P.ring.map(q=>pr(q[0],q[1])[0]),ys=P.ring.map(q=>pr(q[0],q[1])[1]);
+  const nm=T(L.front,P.name.toUpperCase(),U*.035,Math.min(...xs),Math.min(...ys)-U*.025,{family:'Inter',weight:800,anchor:'start'});wipe(nm,.4);
+  const area=(Math.max(...xs)-Math.min(...xs))*(Math.max(...ys)-Math.min(...ys)),tw=Math.max(U*.012,Math.min(U*.05,Math.sqrt(area/P.n)*.55)),th=tw*.75;
+  const t0=.7,t1=Math.max(t0+.8,DUR*.62);
+  P.pts.forEach((q,i)=>{const [x,y]=pr(q[0],q[1]);const g=L.hero.group();g.rect(tw,th).move(x-tw/2,y-th/2).radius(th*.3).fill(SIG).stroke({color:INK,width:Math.max(1.5,tw*.07)});
+    g.polygon([[x-tw*.25,y+th/2],[x-tw*.4,y+th*.85],[x+tw*.05,y+th/2]].map(z=>z.join(',')).join(' ')).fill(INK);popIn(g,x,y,t0+(t1-t0)*i/P.n,.22)});
+  const tot=T(L.front,'0',TALL?W*.13:H*.13,TALL?W*.94:W*.92,TALL?H*.74:H*.5,{family:'Anton',weight:400,anchor:'end'});
+  count(tot,P.n*P.per,t0,t1-t0,v=>Math.round(v).toLocaleString('en-US'));
+  const un=T(L.front,P.unit.toUpperCase()+' · PLACEMENT ILLUSTRATIVE',U*.02,TALL?W*.06:W*.06,TALL?H*.7:SQ0?H*.7:H*.8,{family:'Mono',weight:700,anchor:'start'});wipe(un,1.2);
+  const SQ=VERT&&!TALL;if(P.caption){const c=boxText(L.front,P.caption,U*.032,TALL?W/2:SQ?W*.58:W*.78,TALL?H*.8:SQ?H*.79:H*.66,{anchor:'middle',maxw:TALL?W*.86:SQ?W*.7:W*.36,most:TALL?4:3});wipe(c,t1)}
+  FOCUS={x:(Math.min(...xs)+Math.max(...xs))/2,y:(Math.min(...ys)+Math.max(...ys))/2,rx:(Math.max(...xs)-Math.min(...xs))*.6,ry:(Math.max(...ys)-Math.min(...ys))*.6}}
+function pile(){sceneTitle();
+  const cols=TALL?3:VERT?5:6,cw=TALL?W*.27:VERT?W*.175:W*.12,chh=cw*.62,gx=TALL?W*.04:W*.02,gy=chh*.18,rows=Math.ceil(P.n/cols),
+    x0=W/2-(cols*cw+(cols-1)*gx)/2,y0=TALL?H*.28:VERT?H*.32:H*.27,t0=.5,t1=Math.max(t0+.8,DUR*.6);
+  for(let i=0;i<P.n;i++){const r=Math.floor(i/cols),c=i%cols,x=x0+c*(cw+gx),y=y0+r*(chh+gy),rot=((i*37)%7)-3,g=L.hero.group();
+    g.rect(cw,chh).radius(cw*.06).fill('#FFFFFF').stroke({color:'#D6D0C3',width:2});g.rect(cw*.8,cw*.05).move(cw*.1,chh*.16).radius(cw*.025).fill('#CCC');
+    g.rect(cw*.5,cw*.05).move(cw*.1,chh*.3).radius(cw*.025).fill('#DDD');const sTxt=P.stamps[i%P.stamps.length];
+    const sg=g.group();const tt=T(sg,sTxt,cw*(VERT&&!TALL?.18:.15),cw*.55,chh*.8,{family:'Anton',weight:400,fill:ACC2,fine:1});const bb=tt.bbox();
+    sg.rect(bb.width+cw*.06,bb.height*.95).move(bb.x-cw*.03,bb.y).fill('none').stroke({color:ACC2,width:cw*.02});sg.attr({transform:`rotate(-7 ${cw*.55} ${chh*.7})`});
+    g.attr({transform:`translate(${x},${y}) rotate(${rot} ${cw/2} ${chh/2})`});drop(g,t0+(t1-t0)*i/P.n,H*.12,rot)}
+  const n=T(L.front,'0',VERT?W*.16:H*.16,VERT?W*.94:W*.95,VERT?H*.27:H*.25,{family:'Anton',weight:400,anchor:'end',fill:INK});
+  count(n,P.n,t0,t1-t0,v=>String(Math.round(v)));
+  const SQ=VERT&&!TALL;if(P.caption){const c=boxText(L.front,P.caption,U*.032,SQ?W*.62:W/2,y0+rows*(chh+gy)+U*.07,{anchor:'middle',maxw:SQ?W*.6:W*.86,most:3});wipe(c,t1)}}
+function grids(){sceneTitle(); // two (or three) 10x10 grids filling in the signature yellow while their counts run
+  const SQ=VERT&&!TALL,vs=P.values,n=vs.length,gapG=TALL?W*.07:W*.06,aw=(TALL?W*.88:SQ?W*.8:W*.62)-(n-1)*gapG,top=TALL?H*.27:H*.26,
+    cell=Math.min(aw/n/10,(TALL?H*.36:SQ?H*.3:H*.36)/10),sq=cell*.82,gw=cell*10,x0=W/2-(n*gw+(n-1)*gapG)/2,t0=.5,t1=Math.max(t0+1,DUR*.62),
+    big=TALL?W*.17:SQ?H*.12:H*.13,lab=U*.026;
+  vs.forEach((v,gi)=>{const gx=x0+gi*(gw+gapG),cells=[];
+    for(let k=0;k<100;k++){const r=9-Math.floor(k/10),c=k%10;   // filled from the bottom row up, left to right
+      const q=L.mid.rect(sq,sq).move(gx+c*cell,top+r*cell).radius(sq*.16).fill('#D5CEBF');cells.push(q)}
+    const on=cells.slice(0,v.value).map(q=>{const y=L.hero.rect(sq,sq).move(q.x(),q.y()).radius(sq*.16).fill(SIG).stroke({color:INK,width:Math.max(1.5,sq*.07)});y.opacity(0);return y});
+    at(t0,t1-t0,p=>{const m=Math.round(p*on.length);on.forEach((y,i)=>y.opacity(i<m?1:0))},E.lin);
+    const base=top+gw+cell*.6+big*.86,num=T(L.front,'0',big,gx,base,{family:'Anton',weight:400,anchor:'start'});
+    count(num,v.value,t0,t1-t0,x=>String(Math.round(x)));
+    const per=T(L.front,'IN 100',big*.32,gx+big*.95,base,{family:'Anton',weight:400,anchor:'start'});wipe(per,t0);
+    const lb=T(L.front,v.label.toUpperCase(),lab,gx,base+big*.42+lab*1.3,{family:'Inter',weight:800,anchor:'start',ls:'.06em'});wipe(lb,t0+.2)});
+  const after=top+gw+cell*.6+big*.86+big*.42+lab*2.2;
+  // the platform's logo goes where nothing else is: under the grids on a tall frame, beside them otherwise
+  (P.logos||[]).forEach((m,i)=>{m.used=true;const sz=U*(TALL?.12:.11),lx=TALL?W/2+(i-(P.logos.length-1)/2)*sz*1.3:W-sz*.85,ly=TALL?after+sz*.9:top+sz*(.7+i*1.3);
+    const t=logoTile(L.front,m,lx,ly,sz);popIn(t,lx,ly,.55+i*.15,.4)});
+  if(P.note){const t=boxText(L.front,P.note,U*.03,TALL?W/2:W*.6,TALL?H*.86:SQ?H*.87:H*.91,{anchor:'middle',maxw:TALL?W*.86:W*.62,most:SQ?3:2});wipe(t,t1)}   // clear of the corner badge
+  FOCUS={x:W/2,y:top+gw/2,rx:(n*gw)/2,ry:gw/2}}
+function wash(){sceneTitle(); // a painted map: p5.brush watercolour washes and pencil, brushed on from left to right
+  const [b0,b1,b2,b3]=P.box,kx=Math.cos((b1+b3)/2*Math.PI/180),aw=VERT?W*.9:W*.8,ah=VERT?H*.56:H*.7,
+    s=Math.min(aw/((b2-b0)*kx),ah/(b3-b1)),ox=W/2-(b2-b0)*kx*s/2,oy=(VERT?H*.26:H*.24)+(ah-(b3-b1)*s)/2,
+    pr=(lo,la)=>[ox+(lo-b0)*kx*s,oy+(b3-la)*s];
+  const pigments=['#8FA9C4','#A9B98F','#C4A28F','#9F94B8','#8FB8B0','#C2B07A','#B88F9F'];
+  let cv=null;try{cv=window.PB&&PB.createCanvas(W,H)}catch(e){cv=null}
+  if(cv){cv.style.cssText='position:absolute;left:-99999px;top:0';   // painted off-screen, then laid into the page as an image
+    PB.seed(P.seed);PB.noiseSeed(P.seed);PB.scaleBrushes(U/380);
+    const c=q=>{const [x,y]=pr(q[0],q[1]);return [x-W/2,y-H/2]};
+    PB.noFill();PB.set('HB','#8A8478',1.0);P.context.forEach(r=>PB.polygon(r.map(c)));   // the rest of the country, in pencil
+    P.shapes.forEach((sh,i)=>{const hi=sh.name===P.hi;sh.rings.forEach(r=>{const pts=r.map(c);
+      PB.noStroke();PB.noHatch();PB.fill(hi?SIG:pigments[i%pigments.length],hi?170:125);PB.fillBleed(hi?.16:.24);PB.fillTexture(.55,.35);PB.polygon(pts);
+      PB.noFill();if(hi){PB.set('rotring',INK,.7);PB.hatch(Math.max(6,U*.012),.7);PB.polygon(pts);PB.noHatch()}
+      PB.set('2B',INK,1.9);PB.polygon(pts)})});
+    PB.render();
+    let url='';try{url=cv.toDataURL('image/png')}catch(e){url=''}
+    if(url){const rv=draw.rect(0,H).move(0,0),cl=draw.clip().add(rv);const im=L.mid.image(url).size(W,H).move(0,0).clipWith(cl);
+      im.node.style.mixBlendMode='multiply';   // the paper shows through the wash, as on real paper
+      at(.15,1.5,p=>rv.width(Math.max(.1,W*p)),E.inout)}}   // brushed on from left to right
+  else{P.shapes.forEach((sh,i)=>sh.rings.forEach(r=>{const g=L.mid.polygon(r.map(q=>pr(q[0],q[1]).join(',')).join(' ')).fill(sh.name===P.hi?SIG:pigments[i%pigments.length]).opacity(.75).stroke({color:INK,width:2});wipe(g,.3)}))}
+  const taken=[];   // name tags at each place's centre, nudged apart so no two overlap
+  P.shapes.forEach((sh,i)=>{const big=sh.rings.reduce((a,r)=>r.length>a.length?r:a,[]);const pp=big.map(q=>pr(q[0],q[1]));
+    const cx=pp.reduce((a,q)=>a+q[0],0)/pp.length;let cy=pp.reduce((a,q)=>a+q[1],0)/pp.length;
+    const g=L.front.group(),t=T(g,sh.name.toUpperCase(),U*.026,cx,cy,{family:'Inter',weight:800,ls:'.1em',fill:'#FFFFFF'}),bb=t.bbox();
+    g.rect(bb.width+U*.02,bb.height+U*.008).move(bb.x-U*.01,bb.y-U*.004).fill(INK).back();
+    let box=g.bbox(),tries=0;const hit=b=>taken.some(o=>!(b.x2<o.x||b.x>o.x2||b.y2<o.y||b.y>o.y2));
+    while(hit(box)&&tries++<8){const dy=(box.height+U*.008)*(tries%2?1:-1)*Math.ceil(tries/2);g.attr({transform:`translate(0,${dy})`});box=g.rbox(draw)}
+    taken.push(box);wipe(g,1.0+i*.15);if(sh.name===P.hi)FOCUS={x:cx,y:cy,rx:U*.12,ry:U*.1}});
+  if(P.note){const t=T(L.front,P.note.toUpperCase(),U*.02,W*.06,VERT?H*.86:H*.92,{family:'Mono',weight:700,anchor:'start'});wipe(t,1.6)}}
+function fan(){ // curved bars around a photo disc, longest first
+  const vs=P.values,mx=vs[0].value;const cx=VERT?W/2:W*.4,cy=VERT?H*.42:H*.5,room=Math.min(cx,W-cx,cy,H-cy)-U*.05-Math.max(...vs.map(v=>String(v.label||'').length))*U*.022*.78,rmax=Math.min(VERT?W*.34:H*.44,room),r0=Math.min(VERT?W*.17:H*.2,rmax*.5);
+  const a0=-Math.PI*.95,span=Math.PI*1.3,seg=span/vs.length;
+  vs.forEach((v,i)=>{const r1=r0+(rmax-r0)*Math.sqrt(v.value/mx);const s0=a0+i*seg+seg*.04,s1=a0+(i+1)*seg-seg*.04;
+    const arc=(rr,a)=>[cx+Math.cos(a)*rr,cy+Math.sin(a)*rr];const st=.3+i*.2;
+    const pth=L.back.path('').fill(i===0?ACC:(i%2?'#D9532C':'#E7703F'));
+    at(st,.6,p=>{const r=r0+(r1-r0)*p;const A=arc(r0,s0),B=arc(r,s0),C=arc(r,s1),D=arc(r0,s1);
+      pth.plot(`M${A} L${B} A${r} ${r} 0 0 1 ${C} L${D} A${r0} ${r0} 0 0 0 ${A}`.replace(/,/g,' '))},E.out);
+    const mid=(s0+s1)/2;const lx=cx+Math.cos(mid)*(r1+U*.02),ly=cy+Math.sin(mid)*(r1+U*.02);
+    const vl=T(L.front,v.shown,U*(i===0?.05:.032),cx+Math.cos(mid)*(r0+(r1-r0)*.62),cy+Math.sin(mid)*(r0+(r1-r0)*.62),{family:'Anton',weight:400,fill:'#FFFFFF'});wipe(vl,st+.5);
+    const lt=T(L.front,(v.label||'').toUpperCase(),U*.022,lx,ly,{family:'Inter',weight:800,anchor:Math.cos(mid)>=0?'start':'end',ls:'.08em'});
+    lt.attr({transform:`rotate(${(Math.cos(mid)>=0?mid:mid+Math.PI)*180/Math.PI},${lx},${ly})`});wipe(lt,st+.5)});
+  const d=L.mid.circle(r0*1.9).center(cx,cy).fill(DARK?'#EEE':'#1C1C1C');popIn(d,cx,cy,.1);
+  const pic=(P.pics||[])[0];if(pic&&pic.img){const g=picture(L.hero,pic,cx,cy+r0*1.05,r0*2.1);drop(g,.3,H*.2,0)}
+  if(P.title){const g=boxText(L.front,P.title,U*.06,VERT?W/2:W*.04,VERT?H*.84:H*.8,{anchor:VERT?'middle':'start',maxw:VERT?W*.86:W*.4,most:2});g.children().forEach((r,i)=>slide(r,.9+i*.15,-W*.05,0))}}
+function trend(){ // the line chart; the picture fills the area under the line; labelled points
+  chartTitle(P.title);const pts=P.points,n=pts.length,mx=Math.max(...pts.map(p=>p.value)),mn=0;
+  const L0=W*(TALL?.1:.12),R0=W*(TALL?.9:.88),T0=TALL?H*.2:H*.22,B0=TALL?H*.62:H*.8;
+  const xy=pts.map((p,i)=>[L0+(R0-L0)*i/(n-1),B0-(B0-T0)*(p.value-mn)/(mx-mn||1)]);
+  const area=[[L0,B0],...xy,[R0,B0]];const pic=(P.pics||[])[0];
+  const clipEl=draw.clip().add(draw.polygon(area.map(p=>p.join(',')).join(' ')));
+  const fill=L.back.group().clipWith(clipEl);
+  if(pic&&pic.img){const iw=R0-L0,ih=iw*pic.h/pic.w;fill.image(pic.img).size(Math.max(iw,(B0-T0)*pic.w/pic.h),Math.max(ih,B0-T0)).move(L0,T0).opacity(.95)}
+  else fill.rect(R0-L0,B0-T0).move(L0,T0).fill(ACC).opacity(.85);
+  const cover=L.back.rect(R0-L0,B0-T0+U*.01).move(L0,T0).fill(PAPER);at(.3,Math.min(2.2,DUR*.55),p=>cover.width(Math.max(.1,(R0-L0)*(1-p))).x(L0+(R0-L0)*p),E.inout);
+  L.mid.line(L0,B0,R0,B0).stroke({color:FG,width:U*.004});
+  const line=L.mid.polyline(xy.map(p=>p.join(',')).join(' ')).fill('none').stroke({color:FG,width:U*.006,linejoin:'round'});
+  const len=line.node.getTotalLength();line.attr({'stroke-dasharray':len,'stroke-dashoffset':len});at(.3,Math.min(2.2,DUR*.55),p=>line.attr({'stroke-dashoffset':len*(1-p)}),E.inout);
+  xy.forEach((q,i)=>{const s0=.3+Math.min(2.2,DUR*.55)*i/(n-1);const c=L.front.circle(U*.022).center(q[0],q[1]).fill('#FFFFFF').stroke({color:FG,width:U*.004});popIn(c,q[0],q[1],s0,.3);
+    const v=T(L.front,pts[i].shown,U*.034,q[0],q[1]-U*.04,{family:'Anton',weight:400});wipe(v,s0+.1);
+    const x=T(L.front,pts[i].x,U*.024,q[0],B0+U*.035,{family:'Mono',weight:700});wipe(x,s0)})}
+function slice(){ // the real object with a wedge in the accent colour and a callout
+  const pic=(P.pics||[])[0];let h=TALL?H*.42:H*.62;if(pic&&pic.img&&h*pic.w/pic.h>W*(TALL?.84:.6))h=W*(TALL?.84:.6)*pic.h/pic.w;
+  const cx=TALL?W/2:W*.42,by=TALL?H*.66:H*.84;
+  let g;if(pic)g=picture(L.hero,pic,cx,by,h);drop(g||L.hero.group(),.2,H*.2,0);
+  const r=h*.45,cy=by-h*.55;const a0=-Math.PI/2,a1=a0+Math.PI*2*P.pct/100;const wedge=L.front.path('').fill(ACC).opacity(.92).stroke({color:'#FFFFFF',width:U*.004});
+  at(.8,.6,p=>{const a=a0+(a1-a0)*p;const large=(a-a0)>Math.PI?1:0;wedge.plot(`M${cx} ${cy} L${cx+Math.cos(a0)*r} ${cy+Math.sin(a0)*r} A${r} ${r} 0 ${large} 1 ${cx+Math.cos(a)*r} ${cy+Math.sin(a)*r} Z`)},E.inout);
+  const am=(a0+a1)/2;const x1=cx+Math.cos(am)*r*.7,y1=cy+Math.sin(am)*r*.7;const x2=TALL?W*.82:W*.8,y2=TALL?H*.18:H*.2;
+  const ln=L.front.polyline([[x1,y1],[x1,y1]]).fill('none').stroke({color:FG,width:U*.003});
+  at(1.3,.5,p=>ln.plot([[x1,y1],[x1+(x2-x1)*p,y1+(y2-y1)*p]]),E.inout);
+  const big=T(L.front,P.shown,U*.07,x2,y2-U*.06,{family:'Anton',weight:400,anchor:'end',fill:ACC==='#F2C200'?FG:ACC});wipe(big,1.7);
+  if(P.label){const t=T(L.front,P.label.toUpperCase(),U*.028,x2,y2+U*.005,{family:'Inter',weight:800,anchor:'end',ls:'.08em'});wipe(t,1.8)}}
+
+// ---- atlas look: pale sea with engraved hatching, cream land, serif labels, shallow depth of field ----
+function atlasSea(){const g=L.paper.group();g.rect(W,H).fill('#B8CDD1');const st=U*.012;
+  for(let y=0;y<H;y+=st)g.line(0,y,W,y).stroke({color:'#9DB6BC',width:Math.max(1,U*.0012)});return g}
+function depthOfField(grp){ // the edges go soft: a blurred copy under, the sharp map faded out towards the edges
+  const soft=grp.clone();L.paper.add(soft);soft.attr({filter:'url(#dof)'});
+  const gr=draw.gradient('radial',a=>{a.stop(0,'#fff');a.stop(.55,'#fff');a.stop(1,'#000')});
+  const m=draw.mask().add(draw.rect(W,H).fill(gr));grp.maskWith(m)}
+
+// ---- Johnny Harris pen: a shaky red marker line along any path, drawn on as the narration goes ----
+// ---- hand-drawn ink: perfect-freehand pen strokes (tapered like a real marker) that draw on cue and then "boil" ----
+// the outline is re-posed 6 times a second from a seeded hash, so it lives while it holds still and every render matches
+function hsh(a){const v=Math.sin(a*12.9898+78.233)*43758.5453;return v-Math.floor(v)}
+function inkPath(pts,size){if(!window.PF||pts.length<2)return '';const o=PF.getStroke(pts,{size,thinning:.5,smoothing:.55,streamline:.35,
+  simulatePressure:true,start:{taper:size*2.5},end:{taper:size*3.5}});return o.length?'M'+o.map(q=>q[0].toFixed(1)+' '+q[1].toFixed(1)).join(' L')+' Z':''}
+function penLine(g,pts,start,dur,color,width){ // pts: [[x,y],...] - a marker stroke through them
+  const out=[];for(let i=0;i<pts.length-1;i++){const [a,b]=[pts[i],pts[i+1]];const n=Math.max(4,Math.round(Math.hypot(b[0]-a[0],b[1]-a[1])/(U*.012)));
+    for(let k=0;k<n;k++){const t=k/n;out.push([a[0]+(b[0]-a[0])*t+(rnd()-.5)*U*.003,a[1]+(b[1]-a[1])*t+(rnd()-.5)*U*.003])}}
+  out.push(pts[pts.length-1]);const col=color||K.mark||'#D7262B',size=(width||U*.008)*1.35,sd=rnd()*1000;
+  if(!window.PF){const pl=g.path('M'+out.map(q=>q.join(' ')).join(' L')).fill('none').stroke({color:col,width:width||U*.008,linecap:'round',linejoin:'round'}).opacity(.92);
+    const len=pl.node.getTotalLength();pl.attr({'stroke-dasharray':len,'stroke-dashoffset':len});at(start,dur,p=>pl.attr({'stroke-dashoffset':len*(1-p)}),E.inout);return pl}
+  const el=g.path('M0 0').fill(col).opacity(.93);const st={n:-1,k:-1};
+  TICKS.push(t=>{const tq=Math.floor(t*12+1e-6)/12,p=Math.max(0,Math.min(1,(tq-start)/dur)),n=Math.round(E.inout(p)*out.length);
+    const k=K.boil===false?0:Math.floor(tq*6);if(n===st.n&&k===st.k)return;st.n=n;st.k=k;
+    if(n<2){el.plot('M0 0');return}const a=size*.18;
+    el.plot(inkPath(out.slice(0,n).map((q,i)=>[q[0]+(hsh(sd+k*131+i*7.1)-.5)*a,q[1]+(hsh(sd+k*173+i*3.7)-.5)*a]),size))});
+  return el}
+function roughShape(g,make,start,dur,color,width){ // a Rough.js sketch (box, ellipse, line) that draws on cue and boils
+  if(!window.rough)return null;const gen=rough.generator(),sd=Math.floor(rnd()*1e6)+1;
+  const vars=[0,1,2].map(i=>{const grp=g.group();gen.toPaths(make(gen,{seed:sd+i,roughness:1.3,bowing:1.3,stroke:color,strokeWidth:width}))
+    .forEach(pi=>{const p=grp.path(pi.d).fill('none').stroke({color:pi.stroke||color,width:pi.strokeWidth||width,linecap:'round',linejoin:'round'});
+      const len=Math.max(1,p.node.getTotalLength());p.attr({'stroke-dasharray':len,'stroke-dashoffset':len});p.data('len',len)});grp.opacity(i?0:1);return grp});
+  const st={p:-1,k:-1};
+  TICKS.push(t=>{const tq=Math.floor(t*12+1e-6)/12,p=E.inout(Math.max(0,Math.min(1,(tq-start)/dur)));const k=p<1||K.boil===false?0:Math.floor(tq*6)%3;
+    if(p===st.p&&k===st.k)return;st.p=p;st.k=k;vars.forEach((v,i)=>{v.opacity(i===k?1:0);v.children().forEach(c=>c.attr({'stroke-dashoffset':c.data('len')*(1-p)}))})});
+  return vars[0]}
+function penCircle(g,x,y,r,start){const pts=[];for(let i=0;i<=26;i++){const a=-1.9+i/26*Math.PI*2.2;const j=1+(rnd()-.5)*.12;pts.push([x+Math.cos(a)*r*j,y+Math.sin(a)*r*j*.85])}
+  return penLine(g,pts,start,.45)}
+function penHatch(g,poly,start){ // marker hatching inside a shape (a country, a region)
+  const xs=poly.map(q=>q[0]),ys=poly.map(q=>q[1]);const x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);
+  const cl=draw.clip().add(draw.polygon(poly.map(q=>q.join(',')).join(' ')));const h=g.group().clipWith(cl);const st=U*.018;let i=0;
+  for(let d=-(y1-y0);d<x1-x0;d+=st,i++){h.line(x0+d,y1,x0+d+(y1-y0),y0).stroke({color:K.mark||'#D7262B',width:U*.004,linecap:'round'}).opacity(0)
+    .attr({'data-i':i})}
+  const ls=h.children();at(start,.9,p=>ls.forEach((l,k)=>l.opacity(k/ls.length<p?.55:0)),E.lin);return h}
+
+// ---- round 5 ----
+function route(){ // a paper map; dashed routes draw themselves; the vehicle travels them; pins at each stop
+  const [x0,y0,x1,y1]=P.box;const kx=Math.cos((y0+y1)/2*Math.PI/180);
+  const ls=P.stops.map(q=>q.lon),as=P.stops.map(q=>q.lat);const sx=Math.max(4,(Math.max(...ls)-Math.min(...ls))*kx),sy=Math.max(3,Math.max(...as)-Math.min(...as));
+  const s=Math.min(W*(TALL?.7:.72)/sx,H*(TALL?.4:.56)/sy);const cxl=(Math.max(...ls)+Math.min(...ls))/2,cyl=(Math.max(...as)+Math.min(...as))/2;
+  const ox=W/2-cxl*kx*s,oy=H*(TALL?.4:.5)+cyl*s;
+  const pr=(lon,lat)=>[ox+lon*kx*s,oy-lat*s];
+  if(P.atlas)atlasSea();
+  const land=L.back.group();P.shapes.forEach(r=>land.polygon(r.map(q=>pr(q[0],q[1]).join(',')).join(' ')).fill(P.atlas?'#EFE3C2':'#9C5B2E')
+    .opacity(P.atlas?1:.88).stroke(P.atlas?{color:'#8E7E5C',width:Math.max(1,U*.0015)}:{width:0}));
+  if(!P.atlas)land.attr({style:'mix-blend-mode:multiply'});else depthOfField(land);wipe(land,0);
+  if(P.title){const g=boxText(L.front,P.title,U*.05,W/2,TALL?H*.07:H*.075,{anchor:'middle',maxw:W*.84,most:1});g.children().forEach(r=>slide(r,.1,0,-H*.04))}
+  const pts=P.stops.map(st=>pr(st.lon,st.lat));{const e=pts.length>=3?pts[Math.floor(pts.length/2)]:pts[pts.length-1];FOCUS={x:e[0],y:e[1],rx:U*.07,ry:U*.06}}   // a waypoint is the story
+  // compass rose
+  const cr=L.mid.group(),cx=U*.13,cy=TALL?H*.62:H*.68,R=U*.07;cr.circle(R*2).center(cx,cy).fill('none').stroke({color:'#3A2A1A',width:U*.002});
+  [[0,-1],[1,0],[0,1],[-1,0]].forEach(([a,b],i)=>cr.polygon([[cx+a*R,cy+b*R],[cx+b*R*.18,cy-a*R*.18],[cx-b*R*.18,cy+a*R*.18]].map(p=>p.join(',')).join(' ')).fill(i%2?'#7A5230':'#3A2A1A'));
+  T(cr,'N',U*.022,cx,cy-R-U*.02,{family:'Playfair',weight:700,fill:'#3A2A1A'});wipe(cr,.2);
+  const legs=[];for(let i=0;i<pts.length-1;i++){const [ax,ay]=pts[i],[bx,by]=pts[i+1];const mx=(ax+bx)/2,my=Math.min(ay,by)-Math.hypot(bx-ax,by-ay)*.22;legs.push([ax,ay,mx,my,bx,by])}
+  // a sea leg follows its charted path (smoothed through the midpoints); any other leg is an arc
+  const legD=(l,i)=>{const sp=(P.paths||[])[i];if(!sp||sp.length<3)return `M${l[0]} ${l[1]} Q${l[2]} ${l[3]} ${l[4]} ${l[5]}`;
+    const q=sp.map(z=>pr(z[0],z[1]));let d=`M${q[0][0].toFixed(1)} ${q[0][1].toFixed(1)}`;
+    for(let k=1;k<q.length-1;k++){const mx=(q[k][0]+q[k+1][0])/2,my=(q[k][1]+q[k+1][1])/2;d+=` Q${q[k][0].toFixed(1)} ${q[k][1].toFixed(1)} ${mx.toFixed(1)} ${my.toFixed(1)}`}
+    const e=q[q.length-1];return d+` L${e[0].toFixed(1)} ${e[1].toFixed(1)}`};
+  const per=Math.max(.6,(DUR-1.2)/Math.max(1,legs.length));
+  pts.forEach((p,i)=>{const pin=L.front.group();const k=U*.05/24;const ig=pin.group();for(const nd of P.pin){try{ig.element(nd[0]).attr(nd[1])}catch(e){}}
+    ig.attr({fill:'#2A1A10',stroke:'#F3E9D4','stroke-width':1.2,transform:`translate(${p[0]-12*k},${p[1]-22*k}) scale(${k})`});popIn(pin,p[0],p[1],.3+i*per,.35);
+    const lb=tag(L.front,P.stops[i].name,0,0,{size:U*.02});const bb=lb.bbox();const left=p[0]+U*.02+bb.width>W-U*.03;
+    lb.attr({transform:`translate(${left?p[0]-U*.02-bb.width-bb.x:p[0]+U*.02-bb.x},${p[1]+U*.02})`});slide(lb,.4+i*per,(left?-1:1)*W*.02,0)});
+  legs.forEach((l,i)=>{const path=L.mid.path(legD(l,i)).fill('none').stroke({color:'#2A1A10',width:U*.004,dasharray:`${U*.012} ${U*.01}`});
+    if(P.atlas)path.stroke({color:'#0F7C7A',width:U*.006,dasharray:'none'});
+    if(P.pen){path.opacity(0);const q=[];const pl=path.node.getTotalLength();for(let k=0;k<=24;k++){const pt=path.node.getPointAtLength(pl*k/24);q.push([pt.x,pt.y])}
+      penLine(L.mid,q,.5+i*per,per*.9);penCircle(L.front,l[4],l[5],U*.045,.5+(i+1)*per)}
+    const len=path.node.getTotalLength();const mask=draw.mask().add(draw.path(legD(l,i)).fill('none').stroke({color:'#fff',width:U*.02}));
+    const mp=mask.children()[0];mp.attr({'stroke-dasharray':len,'stroke-dashoffset':len});path.maskWith(mask);
+    const v=L.front.group();const vk=U*.1/24;v.circle(U*.085).center(0,0).fill('#F3E9D4').stroke({color:'#2A1A10',width:U*.003});
+    const vg=v.group();for(const nd of P.icon){try{vg.element(nd[0]).attr(nd[1])}catch(e){}}
+    vg.attr({fill:'none',stroke:'#2A1A10','stroke-width':1.8,'stroke-linecap':'round','stroke-linejoin':'round',transform:`translate(${-12*vk*.62},${-12*vk*.62}) scale(${vk*.62})`});v.opacity(0);
+    const st=.5+i*per;
+    at(st,per*.9,p=>{mp.attr({'stroke-dashoffset':len*(1-p)});const q=path.node.getPointAtLength(len*p),q2=path.node.getPointAtLength(Math.min(len,len*p+2));
+      const ang=Math.atan2(q2.y-q.y,q2.x-q.x)*180/Math.PI;v.opacity(p>0&&p<.97?1:0);
+      v.attr({transform:`translate(${q.x},${q.y}) rotate(${ang+45})`})},E.inout)})}
+function compare(){ // one picture split by a yellow line: the left half faded "before", the right half "after"
+  const pics=P.pics||[];const a=pics[0],b=pics[1]||pics[0];const h=TALL?H*.6:H*.86;const cx=W/2,by=TALL?H*.72:H*.95;
+  if(a){const ga=picture(L.mid,a,cx,by,h);ga.attr({style:'filter:grayscale(1) contrast(.8) brightness(1.15)'})}
+  const clip=draw.clip().add(draw.rect(W,H).move(W/2,0));const crect=clip.children()[0];
+  if(b){const gb=picture(L.hero,b,cx,by,h);gb.clipWith(clip)}
+  const line=L.front.rect(U*.012,H).move(W/2-U*.006,0).fill(ACC);
+  at(.3,1.2,p=>{const x=W*(1-p*.5);crect.x(x);line.x(x-U*.006)},E.inout);
+  const l=T(L.front,P.left,U*.075,W*.27,TALL?H*.5:H*.62,{family:'Playfair',weight:700,italic:true,fill:'#FFFFFF'});l.attr({style:'paint-order:stroke',stroke:'#111','stroke-width':U*.006});
+  const r=T(L.front,P.right,U*.09,W*.72,TALL?H*.5:H*.62,{family:'Playfair',weight:700,italic:true,fill:'#FFFFFF'});r.attr({style:'paint-order:stroke',stroke:'#111','stroke-width':U*.006});
+  wipe(l,.4);wipe(r,1.3);if(P.title){const g=boxText(L.front,P.title,U*.05,W/2,TALL?H*.07:H*.075,{anchor:'middle',maxw:W*.84,most:1});g.children().forEach(q=>slide(q,.1,0,-H*.04))}}
+function photoline(){ // a timeline of photo cards with yellow tags and a highlighter rule
+  const it=P.items,n=it.length;if(P.title){const g=boxText(L.front,P.title,U*.06,W/2,TALL?H*.07:H*.09,{anchor:'middle',maxw:W*.84,most:1});g.children().forEach(q=>slide(q,.1,0,-H*.04))}
+  const ly=TALL?H*.6:H*.72;const rule=L.back.rect(0,U*.022).move(W*.05,ly).fill(ACC).opacity(.85);at(.2,.8,p=>rule.width(W*.9*p),E.inout);
+  const gap=(TALL?W*.92:W*.86)/n;
+  it.forEach((x,i)=>{const cx=W/2+(i-(n-1)/2)*gap,cw=Math.min(gap*.82,U*.42),ch=cw*.72,cy=ly-U*.08-ch;const st=.35+i*.35;const card=L.hero.group();
+    card.rect(cw+U*.02,ch+U*.02).move(cx-cw/2-U*.01,cy-U*.01).fill(ACC);
+    const pic=x.pic?picOf(x.pic):null;if(pic&&pic.img){const r=Math.min(cw/pic.w,ch/pic.h);card.rect(cw,ch).move(cx-cw/2,cy).fill('#E9E4D8');card.image(pic.img).size(pic.w*r,pic.h*r).move(cx-pic.w*r/2,cy+ch-pic.h*r)}
+    else if(pic){card.rect(cw,ch).move(cx-cw/2,cy).fill('#F3EFE6');picture(card,pic,cx,cy+ch*.95,ch*.8)}else card.rect(cw,ch).move(cx-cw/2,cy).fill('#F3EFE6');
+    const lab=tag(card,x.what,0,0,{bg:ACC,size:U*(TALL?.02:.022)});const lb=lab.bbox();lab.attr({transform:`translate(${cx-lb.width/2},${cy+ch-lb.height*.2})`});
+    card.attr({filter:'url(#shadow)'});drop(card,st,H*.2,0);
+    card.polygon([[cx-U*.015,ly-U*.03],[cx+U*.015,ly-U*.03],[cx,ly-U*.005]].map(p=>p.join(',')).join(' ')).fill(INK);
+    const yr=T(L.front,x.when,U*.07,cx,ly+U*.09,{family:'Playfair',weight:900});wipe(yr,st+.2)})}
+function tv(){ // an old TV set: the picture inside with scan lines and a colour fringe
+  const tw=TALL?W*.86:Math.min(W*.56,H*.62/.78),th=tw*.78,tx=W/2-tw/2,ty=TALL?H*.18:H*.1;const set=L.hero.group();
+  set.rect(tw,th).move(tx,ty).radius(U*.03).fill('#3B2E25').stroke({color:'#1C1410',width:U*.006});
+  const sw=tw*.74,sh=th*.78,sx=tx+tw*.05,sy=ty+th*.11;set.rect(sw,sh).move(sx,sy).radius(U*.05).fill('#0E0E0E');
+  for(let k=0;k<3;k++)set.circle(U*.045).center(tx+tw*.9,ty+th*(.25+k*.2)).fill('#8C7A62').stroke({color:'#222',width:U*.003});
+  for(let k=0;k<8;k++)set.line(tx+tw*.84,ty+th*(.75+k*.025),tx+tw*.96,ty+th*(.75+k*.025)).stroke({color:'#222',width:U*.003});
+  set.rect(tw*.06,U*.06).move(tx+tw*.12,ty+th).fill('#1C1410');set.rect(tw*.06,U*.06).move(tx+tw*.82,ty+th).fill('#1C1410');
+  const scr=draw.clip().add(draw.rect(sw,sh).move(sx,sy).radius(U*.05));const inner=L.hero.group().clipWith(scr);
+  inner.rect(sw,sh).move(sx,sy).fill('#CFC8B8');const pic=(P.pics||[])[0];
+  if(pic&&pic.img){const r=Math.max(sw/pic.w,sh/pic.h)*.95;const iw=pic.w*r,ih=pic.h*r,ix=sx+sw/2-iw/2,iy=sy+sh-ih;
+    inner.image(pic.img).size(iw,ih).move(ix-U*.006,iy).attr({filter:'url(#redch)'});inner.image(pic.img).size(iw,ih).move(ix+U*.006,iy).attr({filter:'url(#cyanch)'});
+    inner.image(pic.img).size(iw,ih).move(ix,iy).opacity(.6)}
+  else if(pic)picture(inner,pic,sx+sw/2,sy+sh*.95,sh*.8);
+  for(let y=sy;y<sy+sh;y+=U*.006)inner.rect(sw,U*.0025).move(sx,y).fill('#000').opacity(.18);
+  const glare=inner.rect(sw,sh).move(sx,sy).fill('#FFFFFF').opacity(.06);
+  set.opacity(0);at(0,.3,p=>set.opacity(p));inner.opacity(0);at(.35,.25,p=>inner.opacity(p>.5?1:p*2*(p*10%1>.5?1:.3)),E.lin);
+  if(P.label){const t=tag(L.front,P.label,tx,ty-U*.05,{bg:ACC,size:U*.026});slide(t,.6,-W*.04,0)}
+  if(P.caption){const c=boxText(L.front,P.caption,U*.045,W/2,ty+th+U*.12,{anchor:'middle',maxw:W*.86,most:2});c.children().forEach((q,i)=>slide(q,.9+i*.12,0,H*.04))}}
+
+// ---- round 6 ----
+function clockFace(g,x,y,r,h,m,start){ // a station clock; its hands sweep to the time
+  const c=g.group();c.circle(r*2).center(x,y).fill('#FFFFFF').stroke({color:'#1E5C78',width:r*.14});
+  for(let k=0;k<12;k++){const a=k*Math.PI/6;c.line(x+Math.sin(a)*r*.72,y-Math.cos(a)*r*.72,x+Math.sin(a)*r*.86,y-Math.cos(a)*r*.86).stroke({color:'#111',width:r*(k%3?.05:.1)})}
+  const hh=c.line(x,y,x,y-r*.5).stroke({color:'#111',width:r*.12,linecap:'round'}),mm=c.line(x,y,x,y-r*.78).stroke({color:'#111',width:r*.08,linecap:'round'});
+  c.circle(r*.14).center(x,y).fill('#C62828');
+  at(start,.9,p=>{const ha=((h%12)+m/60)*Math.PI/6*p+(1-p)*-Math.PI/2,ma=(m/60)*Math.PI*2*p+(1-p)*Math.PI;
+    hh.plot(x,y,x+Math.sin(ha)*r*.5,y-Math.cos(ha)*r*.5);mm.plot(x,y,x+Math.sin(ma)*r*.78,y-Math.cos(ma)*r*.78)},E.inout);
+  c.attr({filter:'url(#softshadow)'});return c}
+function clockmap(){ // a light map, a clock at every city, joined by lines, the time in a big red box
+  const [x0,y0,x1,y1]=P.box;const kx=Math.cos((y0+y1)/2*Math.PI/180);const bw=(x1-x0)*kx,bh=y1-y0;
+  const s=Math.min(W*.86/bw,H*(TALL?.5:.74)/bh);const ox=W/2-(x0+x1)/2*kx*s,oy=H*(TALL?.42:.53)+(y0+y1)/2*s;const pr=(lon,lat)=>[ox+lon*kx*s,oy-lat*s];
+  L.paper.rect(W,H).fill('#E7EEF1');
+  const land=L.back.group();const home=P.cities.length?null:null;
+  P.shapes.forEach(sh=>{const home=sh.n===P.home;land.polygon(sh.r.map(q=>pr(q[0],q[1]).join(',')).join(' ')).fill(home?'#FBFAF6':'#EEECE6')
+    .stroke({color:home?'#D04A3A':'#B9B5AC',width:Math.max(1.2,U*(home?.003:.0015))}).back().opacity(1)});
+  land.children().filter(c=>c.attr('stroke')==='#D04A3A').forEach(c=>c.front());wipe(land,0);
+  const pts=P.cities.map(c=>pr(c.lon,c.lat));FOCUS={x:pts[0][0],y:pts[0][1],rx:U*.06,ry:U*.06};const r=Math.min(U*.045,Math.max(U*.026,U*.3/P.cities.length));
+  for(let i=1;i<pts.length;i++){const a=pts[i-1],b=pts[i];const ln=L.mid.line(a[0],a[1],a[0],a[1]).stroke({color:'#4B6E7E',width:U*.004});
+    at(.4+i*.18,.4,p=>ln.plot(a[0],a[1],a[0]+(b[0]-a[0])*p,a[1]+(b[1]-a[1])*p),E.inout)}
+  pts.forEach((q,i)=>{const st=.25+i*.18;const c=clockFace(L.hero,q[0],q[1],r,P.cities[i].h,P.cities[i].m,st+.2);popIn(c,q[0],q[1],st,.35);
+    const t=T(L.front,P.cities[i].name.toUpperCase(),U*.02,q[0],q[1]-r-U*.02,{family:'Inter',weight:800,ls:'.06em'});
+    t.attr({style:'paint-order:stroke',stroke:'#E7EEF1','stroke-width':U*.006});wipe(t,st+.2)});
+  const tb=L.front.group();const hh=String(P.cities[0].shown).split(':');const big=T(tb,hh[0],U*.09,0,0,{family:'Archivo',weight:400,fill:'#FFFFFF',anchor:'start'});
+  const bb=big.bbox();const mn=T(tb,':'+(hh[1]||'00'),U*.045,bb.x+bb.width+U*.012,0,{family:'Archivo',weight:400,fill:'#FFFFFF',anchor:'start'});
+  const mb=mn.bbox();tb.rect(mb.x+mb.width-bb.x+U*.04,bb.height+U*.02).move(bb.x-U*.02,bb.y-U*.01).radius(U*.01).fill('#D32F2F').back();
+  tb.attr({transform:`translate(${TALL?W*.08:W*.06},${TALL?H*.12:H*.14})`});popIn(tb,W*.1,H*.14,.15);
+  if(P.zone){const z=tag(L.front,P.zone,TALL?W*.08:W*.06,TALL?H*.19:H*.25,{bg:'#FFFFFF'});wipe(z,.5)}
+  if(P.title){const g=boxText(L.front,P.title,U*.05,TALL?W*.58:W/2,TALL?H*.06:H*.075,{anchor:'middle',maxw:TALL?W*.68:W*.6,most:2});g.children().forEach(q=>slide(q,.1,0,-H*.04))}}
+function tornsplit(){ // a big condensed headline, a cut-out on paper, a torn accent panel with halftone dots, a navy corner
+  const navy='#1E2B4A';const pat=draw.pattern(U*.014,U*.014,a=>a.circle(U*.006).center(U*.007,U*.007).fill('#000').opacity(.18));
+  const ex=TALL?[[W*.0,H*.62],[W,H*.48]]:[[W*.66,0],[W*.54,H]];const pts=[];const n=40;
+  for(let i=0;i<=n;i++){const t=i/n;pts.push([ex[0][0]+(ex[1][0]-ex[0][0])*t+(rnd()-.5)*U*.02,ex[0][1]+(ex[1][1]-ex[0][1])*t+(rnd()-.5)*U*.02])}
+  const poly=TALL?pts.concat([[W,H],[0,H]]):pts.concat([[W,H],[W,0]]);
+  const panel=L.back.group();panel.polygon(poly.map(q=>q.join(',')).join(' ')).fill(ACC);panel.polygon(poly.map(q=>q.join(',')).join(' ')).fill(pat);
+  panel.polyline(pts.map(q=>q.join(',')).join(' ')).fill('none').stroke({color:'#F7F2E6',width:U*.012});slide(panel,.05,TALL?0:W*.3,TALL?H*.2:0);
+  const corner=L.back.group();const cp=[[0,H*.72],[W*.12,H*.8],[W*.16,H],[0,H]];corner.polygon(cp.map(q=>q.join(',')).join(' ')).fill(navy);if(!TALL)slide(corner,.1,-W*.1,0);else corner.remove();
+  const pics=P.pics||[];
+  const fitH=(pic,h,maxw)=>{const ar=pic.img?pic.w/pic.h:(pic.draw&&ILLU[pic.draw]?ILLU[pic.draw][0]/ILLU[pic.draw][1]:1);return Math.min(h,maxw/ar)};
+  // the first cut-out stands below the headline block (headline, bar, kicker), never across it
+  const hs=TALL?W*.17:H*.2,nl=lines(P.headline.toUpperCase(),hs,TALL?W*.9:W*.56,'Anton',400,2).length,kb=(TALL?H*.1:H*.17)+nl*hs*1.02+(P.kicker?U*.05:0);
+  if(pics[0]){const h=fitH(pics[0],Math.min(TALL?H*.3:H*.56,(TALL?H*.6:H*.92)-kb),TALL?W*.8:W*.46);const g=picture(L.hero,pics[0],TALL?W*.42:W*.3,TALL?H*.6:H*.92,h);drop(g,.35,H*.25,-2)}
+  if(pics[1]){const h=fitH(pics[1],TALL?H*.3:H*.62,TALL?W*.6:W*.36);const g=picture(L.mid,pics[1],TALL?W*.62:W*.8,TALL?H*.95:H*.86,h);drop(g,.55,H*.25,2)}
+  const size=TALL?W*.17:H*.2;const ls=lines(P.headline.toUpperCase(),size,TALL?W*.9:W*.56,'Anton',400,2);
+  ls.forEach((l,i)=>{const t=T(L.front,l,size,W*.04,(TALL?H*.1:H*.17)+i*size*1.02,{family:'Anton',weight:400,anchor:'start',fill:navy});slide(t,.2+i*.12,-W*.05,0)});
+  const bar=L.front.rect(0,U*.016).move(W*.04,(TALL?H*.1:H*.17)+ls.length*size*1.02-size*.35).fill(ACC==='#D7262B'?navy:'#E0442C');at(.7,.4,p=>bar.width(Math.max(.1,W*.2*p)),E.inout);
+  if(P.kicker){const k=T(L.front,P.kicker.toUpperCase(),U*.026,W*.04,(TALL?H*.1:H*.17)+ls.length*size*1.02-size*.05,{family:'Mono',weight:700,anchor:'start',fill:navy});wipe(k,.9)}}
+function newscard(){ // a news card on grid paper: red date box, the headline highlighted as it is read, the person beside it
+  const g=L.paper.group().opacity(.5);const st=Math.round(U/18);
+  for(let x=0;x<W;x+=st)g.line(x,0,x,H).stroke({color:'#8E8672',width:1});for(let y=0;y<H;y+=st)g.line(0,y,W,y).stroke({color:'#8E8672',width:1});
+  const pic=(((P.pics||[])[0]||{}).img||((P.pics||[])[0]||{}).draw)?(P.pics||[])[0]:null;const left=W*.06,maxw=pic&&!TALL?W*.44:W*.86;let y=TALL?H*.12:H*.16;
+  const db=L.front.group();const dt=T(db,P.date,U*.034,0,0,{family:'Inter',weight:600,anchor:'start',fill:'#FFFFFF'});const bb=dt.bbox();
+  db.rect(bb.width+U*.04,bb.height+U*.024).move(bb.x-U*.02,bb.y-U*.012).fill('#D32F2F').back();db.attr({transform:`translate(${left+U*.02},${y})`});slide(db,.1,-W*.05,0);
+  y+=U*.1;const hs=U*(TALL?.058:.052);const hl=lines(P.headline,hs,maxw,'Inter',800,3);
+  hl.forEach((l,i)=>{const t=T(L.front,l,hs,left,y+i*hs*1.25,{family:'Inter',weight:800,anchor:'start',fill:INK});wipe(t,.3+i*.1);highlight(L.mid,t.bbox(),.8+i*.35,SIG)});
+  y+=hl.length*hs*1.25+U*.03;
+  if(P.sub){const ss=U*.03;lines(P.sub,ss,maxw,'Inter',400,3).forEach((l,i)=>{const t=T(L.front,l,ss,left+U*.03,y+i*ss*1.4,{family:'Inter',weight:400,anchor:'start',fill:'#333'});wipe(t,1.2+i*.1)});y+=U*.16}
+  if(P.source){const ln=L.front.line(left,y,left,y).stroke({color:INK,width:U*.003});at(1.5,.5,p=>ln.plot(left,y,left+W*.24*p,y),E.inout);
+    const t=T(L.front,P.source,U*.045,left+W*.26,y,{family:'Playfair',weight:700,italic:true,anchor:'start',fill:INK});wipe(t,1.8)}
+  if(pic){const h=TALL?H*.36:H*.86;const g=picture(L.hero,pic,TALL?W*.6:W*.8,TALL?H*.98:H*1.0,h);drop(g,.4,H*.2,0)}}
+function blueprint(){ // a blue card with a white grid; the cut-out; an arrow that points at it; a few bullet lines
+  const bg=L.paper.group();bg.rect(W,H).fill('#2F6FD6');const st=Math.round(U/16);
+  for(let x=0;x<W;x+=st)bg.line(x,0,x,H).stroke({color:'#FFFFFF',width:1}).opacity(.28);for(let y=0;y<H;y+=st)bg.line(0,y,W,y).stroke({color:'#FFFFFF',width:1}).opacity(.28);
+  const pic=(P.pics||[])[0];const cx=TALL?W*.5:W*.66,by=TALL?H*.6:H*.82,h=TALL?H*.3:H*.5;
+  if(pic){const g=picture(L.hero,pic,cx,by,h);drop(g,.3,H*.2,0)}
+  const tx=TALL?W*.08:W*.07;const t=T(L.front,P.title,U*.065,tx,TALL?H*.12:H*.2,{family:'Inter',weight:800,anchor:'start',fill:'#FFFFFF'});fit(t,TALL?W*.84:W*.42);slide(t,.15,-W*.05,0);
+  (P.points||[]).forEach((pt,i)=>{const y=(TALL?H*.68:H*.36)+i*U*.075;const d=L.front.polygon([[0,-U*.012],[U*.018,0],[0,U*.012]].map(q=>q.join(',')).join(' ')).fill('#FFFFFF');
+    d.attr({transform:`translate(${tx},${y})`});const l=T(L.front,pt,U*.034,tx+U*.035,y,{family:'Inter',weight:600,anchor:'start',fill:'#FFFFFF'});fit(l,TALL?W*.8:W*.38);wipe(d,.7+i*.2);wipe(l,.75+i*.2)});
+  const ax=TALL?W*.7:W*.5,ay=TALL?H*.24:H*.2,bx=cx+(TALL?0:-h*.15),bY=by-h*.95;
+  const arrow=L.front.path(`M${ax} ${ay} Q${ax+U*.2} ${ay-U*.08} ${bx} ${bY}`).fill('none').stroke({color:'#FFFFFF',width:U*.006,linecap:'round'});
+  const len=arrow.node.getTotalLength();arrow.attr({'stroke-dasharray':len,'stroke-dashoffset':len});at(.9,.6,p=>arrow.attr({'stroke-dashoffset':len*(1-p)}),E.inout);
+  const q=arrow.node.getPointAtLength(len),q2=arrow.node.getPointAtLength(len-2);const ang=Math.atan2(q.y-q2.y,q.x-q2.x)*180/Math.PI;
+  const head=L.front.polygon([[0,0],[-U*.03,-U*.018],[-U*.03,U*.018]].map(z=>z.join(',')).join(' ')).fill('#FFFFFF');head.attr({transform:`translate(${q.x},${q.y}) rotate(${ang})`});wipe(head,1.45)}
+
+// ---- brand marks: the platform the line names, as its own app tile (official mark, own colour) ----
+function logoTile(g,m,cx,cy,size){const t=g.group();const r=size*.22;
+  if(m.party){   // a party symbol: the official file on white, or a labelled empty slot until it is downloaded
+    t.rect(size,size).move(cx-size/2,cy-size/2).radius(r).fill('#FFFFFF').stroke({color:m.img?'#FFFFFF':INK,width:size*.04,dasharray:m.img?'':`${size*.08} ${size*.06}`});
+    if(m.img)t.image(m.img).size(size*.78,size*.78).move(cx-size*.39,cy-size*.39);
+    else{T(t,m.short,size*.32,cx,cy-size*.1,{family:'Inter',weight:800,fine:1});T(t,'SYMBOL',size*.19,cx,cy+size*.24,{family:'Mono',weight:700,fine:1,fill:'#C0262D'})}
+    t.attr({filter:'url(#shadow)'});return t}
+  t.rect(size,size).move(cx-size/2,cy-size/2).radius(r).fill(m.hex).stroke({color:'#FFFFFF',width:size*.04});
+  const k=size*.6/24;t.path(m.d).fill('#FFFFFF').attr({transform:`translate(${cx-12*k},${cy-12*k}) scale(${k})`});
+  t.attr({filter:'url(#shadow)'});return t}
+function logoLayer(){const ms=(P.logos||[]).filter(m=>!m.used);if(!ms.length)return;
+  const f=FOCUS||{x:W*.7,y:H*.35,rx:U*.1,ry:U*.1};const size=U*(TALL?.13:.12);
+  // a logo never covers words: try spots round the subject, then the frame's corners, and take the first that is clear
+  const words=[];document.querySelectorAll('text').forEach(el=>{const r=el.getBoundingClientRect();if(r.width>1&&r.height>1)words.push(r)});
+  const taken=[],h=size*.62;const clear=(x,y)=>[...words,...taken].every(r=>x+h<r.left-4||x-h>r.right+4||y+h<r.top-4||y-h>r.bottom+4);
+  ms.forEach((m,i)=>{const c=[[f.x+f.rx*.85,f.y-f.ry*.85],[f.x-f.rx*.85,f.y-f.ry*.85],[f.x+f.rx*1.1,f.y],[f.x-f.rx*1.1,f.y],[f.x+f.rx*.85,f.y+f.ry*.85],
+      [W-size*1.2,H*.22],[W-size*1.2,H*.5],[W-size*1.2,H-size*1.6],[size*1.2,H*.22],[size*1.2,H-size*1.6]].map(([x,y])=>[Math.min(W-size*.9,Math.max(size*.9,x+i*size*1.15)),Math.min(H-size*.9,Math.max(size*.9,y))]);
+    const [x,y]=c.find(([x,y])=>clear(x,y))||c[0];taken.push({left:x-h,right:x+h,top:y-h,bottom:y+h});
+    const t=logoTile(L.front,m,x,y,size);t.attr({transform:`rotate(${i%2?6:-6},${x},${y})`});popIn(t,x,y,.55+i*.15,.4)})}
+
+// ---- the papercut companion: a public figure named in the line, cut out of a real photo, beside the infographic ----
+function companion(){const c=P.comp;if(!c)return;
+  // the infographic steps aside: it shrinks a little and moves away from the side the person stands on
+  const h=TALL?H*.38:H*.96, y=H;
+  const ar=c.img?c.w/c.h:(window.ILLU&&ILLU.person?ILLU.person[0]/ILLU.person[1]:.4);const ww=Math.min(h*ar,TALL?W*.56:W*.3);const hh=ww/ar;
+  const x=TALL?W*.3:ww/2+U*.02;
+  if(TALL){const k=.72;CONTENT.attr({transform:`translate(${W*(1-k)/2},${H*.01}) scale(${k})`})}
+  else{const right=ww+U*.05,k=Math.min(.8,(W-right)/W);CONTENT.attr({transform:`translate(${right},${H*(1-k)/2}) scale(${k})`})}
+  const disc=L.side.circle(hh*.62).center(x,y-hh*.62).fill(ACC);popIn(disc,x,y-hh*.62,.15,.45);
+  const g=picture(L.side,c,x,y,hh,{offset:true});slide(g,.25,-W*.25,0);
+  const nm=(c.name||'').replace(/^person:/i,'');
+  if(nm){const t=tag(L.side,nm,0,0,{bg:ACC,size:U*.024});const bb=t.bbox();
+    t.attr({transform:`translate(${Math.max(U*.03,x-bb.width/2)},${TALL?H*.6:Math.max(U*.05,y-hh-U*.06)})`});slide(t,.6,-W*.1,0)}
+  if(c.credit)mono(L.side,'Photo: '+c.credit,U*.03,H-U*.025,{size:U*.013,fill:DARK?'#BBBBBB':'#555555'})}
+
+// ---- the Johnny Harris layer: a red marker circle scribbled round the subject, an arrow, a handwritten note ----
+let FOCUS=null;   // {x,y,rx,ry} set by a scene: what the marker circles
+function markerLayer(){if(!P.marker)return;const f=FOCUS||{x:W/2,y:H*.45,rx:U*.2,ry:U*.16};const red=K.mark||'#D7262B',g=L.front.group();
+  const n=48,pts=[];const turns=1.12,a0=-Math.PI*.6;
+  for(let i=0;i<=n;i++){const a=a0+i/n*Math.PI*2*turns;const j=1+(rnd()-.5)*.06+(i/n)*.06;pts.push([f.x+Math.cos(a)*f.rx*j,f.y+Math.sin(a)*f.ry*j])}
+  penLine(g,pts,1.0,.55,red,U*.008);
+  // the note goes where there is room: beside the circle, else above or below it
+  const roomR=W-(f.x+f.rx),roomL=f.x-f.rx,probe=T(g,P.marker,U*.058,0,0,{family:'Caveat',weight:700});const need=probe.bbox().width+U*.12;probe.remove();
+  let right=roomR>=roomL,nx,ny;
+  if(Math.max(roomR,roomL)>=Math.min(need,W*.3)){nx=right?f.x+f.rx+U*.08:f.x-f.rx-U*.08;ny=Math.max(H*.2,f.y-f.ry-U*.04)}
+  else{right=true;nx=Math.max(U*.06,Math.min(W-need,f.x-need/2));ny=f.y+f.ry+U*.1<(TALL?H*.6:H*.76)?f.y+f.ry+U*.1:Math.max(H*.14,f.y-f.ry-U*.06)}
+  const t=T(g,P.marker,U*.058,nx,ny,{family:'Caveat',weight:700,fill:red,anchor:right?'start':'end'});fit(t,right?W-nx-U*.04:nx-U*.04);
+  t.attr({transform:`rotate(${right?-4:4},${nx},${ny})`});const tb=t.bbox();
+  const sx=right?tb.x-U*.01:tb.x+tb.width+U*.01,sy=ny+U*.02,ex=f.x+(right?1:-1)*f.rx*.72,ey=f.y-f.ry*.72;
+  const cx=(sx+ex)/2,cy=Math.min(sy,ey)-U*.06;const qp=[];for(let i=0;i<=14;i++){const u=i/14;qp.push([(1-u)*(1-u)*sx+2*(1-u)*u*cx+u*u*ex,(1-u)*(1-u)*sy+2*(1-u)*u*cy+u*u*ey])}
+  penLine(g,qp,1.5,.4,red,U*.006);const ang=Math.atan2(ey-qp[13][1],ex-qp[13][0]);const q={x:ex,y:ey};
+  penLine(g,[[q.x-Math.cos(ang-0.5)*U*.03,q.y-Math.sin(ang-0.5)*U*.03],[q.x,q.y],[q.x-Math.cos(ang+0.5)*U*.03,q.y-Math.sin(ang+0.5)*U*.03]],1.86,.18,red,U*.006);t.opacity(0);at(1.6,.3,p=>t.opacity(p),E.lin)}
+
+// ---- the film: gate weave, dust and scratches on every frame, a warm light leak on openers (Johnny Harris) ----
+function filmLayer(){if(K.film===false)return()=>{};const g=L.grain.group();let last=-1;
+  const leak=['opener','tornsplit','number','headline'].includes(P.type)||P.leak;
+  let lk=null;if(leak){const gr=draw.gradient('radial',a=>{a.stop(0,'#FFB347',.9);a.stop(.45,'#FF6A2A',.45);a.stop(1,'#FF6A2A',0)});
+    lk=L.grain.circle(U*1.3).center(-U*.2,H*.2).fill(gr).attr({style:'mix-blend-mode:screen'}).opacity(0)}
+  return function(t,tq){
+    if(lk){const p=Math.min(1,t/1.6);lk.center(-U*.2+W*.5*p,H*(.2+.1*p)).opacity(Math.max(0,Math.sin(Math.PI*Math.min(1,t/1.8)))*.55)}
+    const tick=Math.round(tq*12);if(tick===last)return;last=tick;g.clear();
+    let sd=tick*9301+P.seed;const r=()=>{sd=(sd*16807)%2147483647;return (sd-1)/2147483646};
+    const n=3+Math.floor(r()*5);for(let i=0;i<n;i++){g.circle(U*(.002+r()*.004)).center(r()*W,r()*H).fill(r()<.5?'#000':'#FFF').opacity(.25+r()*.3)}
+    if(r()<.22){const x=r()*W;g.line(x,0,x+(r()-.5)*U*.02,H).stroke({color:'#000',width:Math.max(1,U*.0012)}).opacity(.12)}
+    if(r()<.06){const x=r()*W,y=r()*H;g.path(`M${x} ${y} q ${U*.02} ${U*.01} ${U*.04} ${-U*.005} t ${U*.03} ${U*.02}`).fill('none').stroke({color:'#000',width:1.2}).opacity(.35)}
+    const dx=(r()-.5)*U*.0024,dy=(r()-.5)*U*.0024;draw.node.style.transform=`translate(${dx}px,${dy}px) scale(1.004)`}}   // gate weave
+
+// ---- standing of the evidence, particles, an inset picture ----
+function srcLayer(){if(!P.src)return;const t=mono(L.front,('SOURCE: '+P.src).toUpperCase(),W-U*.04,H-U*.055,{anchor:'end',size:U*.015,weight:700});
+  t.addClass('keep');fit(t,W*.6);wipe(t,.9)}
+function badgeLayer(){if(!P.badge||!P.badge[0])return;const [txt,col]=P.badge;const g=L.front.group().addClass('keep');
+  const cb=K.capBox;   // a photo or footage caption sits bottom-left: the badge goes just above it, never across it
+  const x=cb&&!TALL?cb.x:P.comp&&!TALL?W*.33:U*.05,y=cb&&!TALL?cb.y-U*.04:TALL?H*.135:H*.9;const t=T(g,txt,U*.024,x+U*.03,y,{family:'Mono',weight:700,anchor:'start',fill:col,ls:'.14em'});const bb=t.bbox();
+  g.rect(bb.width+U*.05,bb.height+U*.022).move(x-U*.004,y-bb.height/2-U*.011).fill('#FBF8F0').stroke({color:col,width:U*.004}).back();
+  g.circle(U*.012).center(x+U*.012,y).fill(col);g.attr({transform:`rotate(-2,${x},${y})`});popIn(g,x,y,.9,.3)}
+function insetLayer(){const pic=P.insetpic;if(!pic)return;const w=TALL?W*.3:W*.17,h=w*1.18,x=W-w-U*.05,y=TALL?H*.6:H-h-U*.11;   // low in the corner: clear of headlines
+  const g=L.front.group().addClass('keep');
+  g.rect(w+U*.016,h+U*.016).move(x-U*.008+U*.008,y-U*.008+U*.008).fill(INK);g.rect(w+U*.016,h+U*.016).move(x-U*.008,y-U*.008).fill('#FBF8F0').stroke({color:INK,width:U*.003});
+  const cl=draw.clip();cl.rect(w,h).move(x,y);const inner=g.group();inner.rect(w,h).move(x,y).fill(ACC);
+  const ph=pic.img?Math.max(h,w*pic.h/pic.w):h*.92;picture(inner,pic,x+w/2,y+h+(pic.img?ph-h:0)*.0,ph,{});inner.clipWith(cl);
+  const nm=String(pic.name||'').replace(/^person:/i,'');if(nm){const t=T(g,nm.toUpperCase(),U*.017,x+w/2,y+h+U*.03,{family:'Mono',weight:700});fit(t,w*1.2)}
+  g.attr({transform:`rotate(2.5,${x+w/2},${y+h/2})`});drop(g,.7,H*.2,3)}
+function voiceLayer(){const lv=P.levels;if(!lv||!lv.length)return()=>{};const n=TALL?22:28,bw=U*.012,gap=U*.008,tot=n*(bw+gap);
+  const x0=P.type==='interview'&&!TALL?W*.52:(W-tot)/2,y=P.type==='interview'?(TALL?H*.93:H*.86):H*.95,g=L.front.group();
+  const bars=[];for(let i=0;i<n;i++)bars.push(g.rect(bw,2).move(x0+i*(bw+gap),y-1).fill(i%5===2?(K.mark||'#D7262B'):FG).radius(bw*.3));
+  let sd=(P.seed||1)+11;const ph=bars.map(()=>{sd=(sd*16807)%2147483647;return sd/2147483647*6.28});
+  return function(t){const f=t*12,i=Math.min(lv.length-1,Math.floor(f)),a=lv[i]||0,b=lv[Math.min(lv.length-1,i+1)]||0,v=a+(b-a)*(f-i);
+    bars.forEach((r,k)=>{const h=Math.max(2,U*.07*v*(.35+.65*Math.abs(Math.sin(ph[k]+t*7+k*.6))));r.height(h).y(y-h/2)})}}
+function fxLayer(){const kind=P.fx;if(!kind)return()=>{};const g=draw.group();g.insertBefore(L.grain);const n={dust:46,embers:40,snow:70,rain:90,confetti:60,sparks:36}[kind];
+  let sd=(P.seed||1)*7+3;const r=()=>{sd=(sd*16807)%2147483647;return (sd-1)/2147483646};const ps=[];
+  const cols={dust:['#FFFFFF'],embers:['#FF8A2A','#FFC14D','#E0442C'],snow:['#FFFFFF'],rain:['#DDE8EE'],confetti:[ACC,'#E0442C','#2D6BDB','#14968A','#FFFFFF'],sparks:['#FFE08A','#FFFFFF']}[kind];
+  for(let i=0;i<n;i++){const o={x:r()*W,y:r()*H,v:.3+r()*.7,ph:r()*6.28,sz:U*(.003+r()*.006),c:cols[Math.floor(r()*cols.length)]};
+    o.el=kind==='rain'?g.line(0,0,-U*.006,U*.03).stroke({color:o.c,width:Math.max(1,U*.0016)}).opacity(.5)
+      :kind==='confetti'?g.rect(o.sz*2.4,o.sz*1.2).fill(o.c):g.circle(o.sz*2).fill(o.c).opacity(kind==='dust'?.35:.85);ps.push(o)}
+  return function(t){ps.forEach(o=>{let x,y,a=1;
+    if(kind==='dust'){x=o.x+Math.sin(t*.4*o.v+o.ph)*U*.03;y=o.y+Math.cos(t*.3*o.v+o.ph)*U*.02;a=.2+.25*Math.sin(t*o.v+o.ph)**2}
+    else if(kind==='embers'||kind==='sparks'){const life=((t*o.v*.35+o.ph/6.28)%1);x=o.x+Math.sin(t*1.3+o.ph)*U*.03;y=H*1.05-life*H*1.15;a=1-life}
+    else{const sp=kind==='rain'?2.2:kind==='snow'?.16:.3;y=((o.y+t*H*sp*o.v)%(H*1.1))-H*.05;x=o.x+(kind==='rain'?-(y/H)*U*.12:Math.sin(t*1.1*o.v+o.ph)*U*.03)}
+    if(kind==='rain')o.el.attr({transform:`translate(${x},${y})`});else if(kind==='confetti')o.el.attr({transform:`translate(${x},${y}) rotate(${(t*200*o.v+o.ph*57)%360})`});
+    else o.el.center(x,y).opacity(Math.max(0,a))})}}
+
+// ---- layouts: the same scene, composed another way ----
+function keepReadable(root){ // under a mirror, every word, photo and logo flips back in place so nothing reads backwards
+  const els=[];root.node.querySelectorAll('text,image,.keep').forEach(n=>{if(!n.parentNode.closest||!n.parentNode.closest('.keep'))els.push(n)});
+  els.forEach(n=>{const w=document.createElementNS('http://www.w3.org/2000/svg','g');n.parentNode.insertBefore(w,n);w.appendChild(n);
+    FLIPS.push([n,w])});reflip()}
+// the flip-back axis follows the element: an animated word (sliding in) is re-centred every frame, so it lands where
+// the mirrored design puts it instead of where it started
+const FLIPS=[];
+function reflip(){FLIPS.forEach(([n,w])=>{let b;try{b=n.getBBox()}catch(e){return}let cx=b.x+b.width/2;const cy=b.y+b.height/2;
+  const m=n.transform&&n.transform.baseVal.consolidate();if(m){const q=m.matrix;cx=q.a*(b.x+b.width/2)+q.c*cy+q.e}
+  w.setAttribute('transform',`matrix(-1,0,0,1,${2*cx},0)`)})}
+function layout(){const lay=K.lay||'base';
+  if(lay==='mirror'){STAGE.attr({transform:`matrix(-1,0,0,1,${W},0)`});keepReadable(STAGE);if(FOCUS)FOCUS.x=W-FOCUS.x}
+  else if(lay==='card'){ // the graphic printed on a card, lying a little crooked on a desk
+    const k=.84,rot=((P.seed||0)%2?1.4:-1.4),tr=`rotate(${rot},${W/2},${H/2}) translate(${W*(1-k)/2},${H*(1-k)/2}) scale(${k})`;
+    const card=CONTENT.group();card.back();card.rect(W,H).fill(PAPER).attr({filter:'url(#shadow)'});
+    L.paper.children().forEach(c=>card.add(c));card.attr({transform:tr});STAGE.attr({transform:tr});
+    L.paper.rect(W,H).fill(K.desk||'#3B2F25');const d=L.paper.group().opacity(.18);const st=Math.round(U/30);
+    for(let y=0;y<H;y+=st)d.line(0,y,W,y+(((y/st)%3)-1)*U*.004).stroke({color:'#000',width:Math.max(1,U*.002)});   // wood grain
+    if(FOCUS){FOCUS=Object.assign({},FOCUS,{x:W*(1-k)/2+FOCUS.x*k,y:H*(1-k)/2+FOCUS.y*k,rx:FOCUS.rx*k,ry:FOCUS.ry*k})}}}
+
+// ---- data and structure diagrams ----
+function mix(a,b,t){const h=c=>[1,3,5].map(i=>parseInt(c.slice(i,i+2),16));const x=h(a),y=h(b);
+  return '#'+x.map((v,i)=>Math.round(v+(y[i]-v)*t).toString(16).padStart(2,'0')).join('')}
+function count(t,to,start,dur,fmt){at(start,dur,p=>{t.node.textContent=fmt(to*p)},E.out)}   // a number that counts up
+function pyramid(){ // population pyramid: bands from the youngest at the bottom, two sides growing from the middle
+  chartTitle(P.title);const bs=P.bands,n=bs.length,mx=Math.max(...bs.map(b=>Math.max(b.l,b.r)));
+  const rh0=((TALL?H*.8:H*.9)-(TALL?H*.2:H*.24))/n,rh=Math.min(rh0,U*.11),mid=TALL?H*.5:H*.57,top=mid-rh*n/2,bot=mid+rh*n/2,bar=rh*.76,cx=W/2,gc=U*.075,mw=W*(TALL?.3:.3);   // few bands: slim bars, the chart sits low
+  const dec=v=>(String(v).split('.')[1]||'').length;
+  [[P.left,cx-gc-mw*.5,'#3E4A55'],[P.right,cx+gc+mw*.5,ACC]].forEach(([s,x,c],i)=>{const t=T(L.front,s.toUpperCase(),U*.03,x,top-U*.04,{family:'Inter',weight:800,ls:'.14em'});
+    const sw=L.front.rect(U*.02,U*.02).center(x-t.bbox().width/2-U*.025,top-U*.04).fill(c);wipe(t,.15+i*.1);wipe(sw,.15+i*.1)});
+  bs.forEach((b,i)=>{const y=bot-(i+1)*rh+(rh-bar)/2,lw=mw*b.l/mx,rw=mw*b.r/mx,st=.3+i*.11;
+    const lr=L.hero.rect(.1,bar).move(cx-gc,y).fill('#3E4A55');at(st,.7,p=>{lr.width(Math.max(.1,lw*p)).x(cx-gc-lw*p)});
+    const rr=L.hero.rect(.1,bar).move(cx+gc,y).fill(ACC);at(st,.7,p=>rr.width(Math.max(.1,rw*p)));
+    wipe(T(L.front,b.label,Math.min(U*.028,bar*.6),cx,y+bar/2,{family:'Mono',weight:700}),st);
+    const fs=Math.min(U*.026,bar*.58);
+    const lv=T(L.front,'0',fs,cx-gc-lw-U*.022,y+bar/2,{family:'Inter',weight:800,anchor:'end'});lv.opacity(0);at(st+.1,.2,p=>lv.opacity(p));count(lv,b.l,st,.8,v=>v.toFixed(dec(b.ls)));
+    const rv=T(L.front,'0',fs,cx+gc+rw+U*.022,y+bar/2,{family:'Inter',weight:800,anchor:'start'});rv.opacity(0);at(st+.1,.2,p=>rv.opacity(p));count(rv,b.r,st,.8,v=>v.toFixed(dec(b.rs)));
+    if(Math.max(b.l,b.r)===mx)FOCUS={x:b.l>=b.r?cx-gc-lw/2:cx+gc+rw/2,y:y+bar/2,rx:Math.max(lw,rw)*.62,ry:bar*.95}});
+  L.mid.line(cx-gc,top-U*.01,cx-gc,bot).stroke({color:FG,width:U*.002}).opacity(.5);L.mid.line(cx+gc,top-U*.01,cx+gc,bot).stroke({color:FG,width:U*.002}).opacity(.5);
+  if(P.unit)wipe(mono(L.front,P.unit.toUpperCase(),W-U*.05,bot+U*.03,{anchor:'end',weight:700}),.6)}
+function nodeBox(g,name,note,x,y,bw,bh,fill){const b=g.group();
+  b.rect(bw,bh).move(x-bw/2+U*.008,y-bh/2+U*.008).fill(INK);b.rect(bw,bh).move(x-bw/2,y-bh/2).fill(fill||'#FBF8F0').stroke({color:INK,width:U*.004});
+  const fs=Math.min(U*.03,bh*.3),ls=lines(name,fs,bw*.88,'Inter',800,2),oy=note?-fs*.45:0;
+  ls.forEach((l,k)=>fit(T(b,l,fs,x,y+oy+(k-(ls.length-1)/2)*fs*1.15,{family:'Inter',weight:800,fill:INK}),bw*.9));
+  if(note)fit(T(b,note,fs*.68,x,y+bh/2-fs*.62,{family:'Mono',weight:700,fill:'#3A3A3A'}),bw*.9);return b}
+function arrowHead(g,x,y,ang,start){const s=U*.022;const h=g.path(`M${x-Math.cos(ang-.5)*s} ${y-Math.sin(ang-.5)*s} L${x} ${y} L${x-Math.cos(ang+.5)*s} ${y-Math.sin(ang+.5)*s}`)
+  .fill('none').stroke({color:K.mark||'#D7262B',width:U*.007,linecap:'round',linejoin:'round'});wipe(h,start);return h}
+function flow(){ // boxes joined by arrows drawn one after another; a token travels the chain
+  chartTitle(P.title);const ns=P.nodes,n=ns.length,hz=!TALL;
+  const span=hz?W*.9:H*.66,step=span/n,bw=hz?Math.min(step*.74,U*.42):W*.62,bh=hz?U*.19:Math.min(step*.62,U*.15);
+  const pos=ns.map((_,i)=>hz?[W*.05+step*(i+.5),H*.54+(i%2?U*.05:-U*.05)]:[W/2,H*.19+step*(i+.5)]);
+  ns.forEach((nd,i)=>{const [x,y]=pos[i],st=.25+i*.6,last=i===n-1;const g=nodeBox(L.hero,nd.name,nd.note,x,y,bw,bh,last?ACC:null);popIn(g,x,y,st,.35);
+    if(!last){const [x2,y2]=pos[i+1];const a=hz?[x+bw/2+U*.012,y]:[x,y+bh/2+U*.012],b=hz?[x2-bw/2-U*.018,y2]:[x2,y2-bh/2-U*.018];
+      penLine(L.mid,[a,b],st+.3,.3);arrowHead(L.mid,b[0],b[1],Math.atan2(b[1]-a[1],b[0]-a[0]),st+.56)}
+    const num=T(L.front,String(i+1),U*.024,x-bw/2+U*.004,y-bh/2-U*.004,{family:'Mono',weight:700,fill:'#FFFFFF'});const bb=num.bbox();
+    const tag=L.front.circle(U*.04).center(bb.cx,bb.cy).fill(INK);num.front();popIn(tag,bb.cx,bb.cy,st+.1,.25);wipe(num,st+.15)});
+  const dot=L.front.circle(U*.028).fill(K.mark||'#D7262B').stroke({color:'#FFFFFF',width:U*.005}).opacity(0);
+  at(.5,(n-1)*.6,p=>{const f=p*(n-1),i=Math.min(n-2,Math.floor(f)),t=f-i;dot.opacity(p>0&&p<1?1:0).center(pos[i][0]+(pos[i+1][0]-pos[i][0])*t,pos[i][1]+(pos[i+1][1]-pos[i][1])*t-(hz?bh*.62:0)+(hz?0:0))},E.lin);
+  const e=pos[n-1];FOCUS={x:e[0],y:e[1],rx:bw*.62,ry:bh*.8}}
+function linkmap(){ // the subject in the middle, the others round it; every link is drawn and named
+  chartTitle(P.title);const ns=P.nodes,n=ns.length,cx=W/2,cy=TALL?H*.5:H*.56,rx=W*(TALL?.34:.34),ry=H*(TALL?.28:.3);
+  const cr=U*.12;const cg=L.hero.group();cg.circle(cr*2).center(cx+U*.008,cy+U*.008).fill(INK);cg.circle(cr*2).center(cx,cy).fill(ACC).stroke({color:INK,width:U*.005});
+  const cl=lines(P.centre,U*.032,cr*1.7,'Inter',800,3);cl.forEach((l,k)=>fit(T(cg,l.toUpperCase(),U*.032,cx,cy+(k-(cl.length-1)/2)*U*.038,{family:'Inter',weight:800,fill:INK}),cr*1.8));
+  popIn(cg,cx,cy,.15,.4);FOCUS={x:cx,y:cy,rx:cr*1.25,ry:cr*1.25};
+  ns.forEach((nd,i)=>{const a=-Math.PI/2+(i+.5)/n*Math.PI*2,x=cx+Math.cos(a)*rx,y=cy+Math.sin(a)*ry,st=.55+i*.38;
+    const bw=Math.min(U*.3,W*.24),bh=U*.085;const g=nodeBox(L.hero,nd.name,'',x,y,bw,bh,'#FBF8F0');
+    const d=Math.hypot(x-cx,y-cy),ux=(x-cx)/d,uy=(y-cy)/d;const p1=[cx+ux*cr*1.06,cy+uy*cr*1.06],p2=[x-ux*Math.min(bw*.5,bh*.9/Math.max(.2,Math.abs(uy))),y-uy*bh*.62];
+    penLine(L.mid,[p1,p2],st,.35,INK,U*.005);popIn(g,x,y,st+.3,.3);
+    if(nd.how){const mx2=(p1[0]+p2[0])/2,my=(p1[1]+p2[1])/2;const t=T(L.front,nd.how,U*.021,mx2,my,{family:'Mono',weight:700,fill:'#FFFFFF'});const bb=t.bbox();
+      const tg=L.front.rect(bb.width+U*.02,bb.height+U*.008).center(mx2,my).fill(K.mark||'#D7262B');t.front();wipe(tg,st+.4);wipe(t,st+.45)}})}
+function orgchart(){ // who reports to whom: the top box, the row under it, connectors drawn down
+  chartTitle(P.title);const ks=P.kids,n=ks.length,deep=ks.some(k=>k.kids.length);
+  const ty=TALL?H*.24:H*.28,ky=TALL?H*.46:(deep?H*.52:H*.62),area=W*.92,gap=area/n,bw=Math.min(gap*.86,U*.36),bh=U*.11;
+  const top=nodeBox(L.hero,P.top,'',W/2,ty,Math.min(W*.4,U*.5),bh*1.15,ACC);popIn(top,W/2,ty,.15,.4);FOCUS={x:W/2,y:ty,rx:Math.min(W*.24,U*.3),ry:bh};
+  const busY=(ty+ky)/2;penLine(L.mid,[[W/2,ty+bh*.6],[W/2,busY]],.5,.2,INK,U*.005);
+  penLine(L.mid,[[W*.04+gap*.5,busY],[W*.04+gap*(n-.5),busY]],.65,.35,INK,U*.005);
+  ks.forEach((k,i)=>{const x=W*.04+gap*(i+.5),st=.95+i*.2;penLine(L.mid,[[x,busY],[x,ky-bh*.55]],st,.2,INK,U*.005);
+    const g=nodeBox(L.hero,k.name,'',x,ky,bw,bh,null);popIn(g,x,ky,st+.15,.3);
+    k.kids.forEach((c,j)=>{const cy2=ky+bh*1.25+j*bh*.95,s2=st+.5+j*.15;penLine(L.mid,[[x-bw*.4,ky+bh*.5],[x-bw*.4,cy2],[x-bw*.3,cy2]],s2,.2,INK,U*.004);
+      const t=T(L.front,c,Math.min(U*.024,bh*.3),x-bw*.27,cy2,{family:'Inter',weight:600,anchor:'start'});fit(t,bw*.8);wipe(t,s2+.15)})})}
+function heatmap(){ // countries shaded by their number, labelled, with a scale
+  chartTitle(P.title);const [x0,y0,x1,y1]=P.box,kx=Math.cos((y0+y1)/2*Math.PI/180);
+  const s=Math.min(W*.84/Math.max(8,(x1-x0)*kx),H*(TALL?.5:.62)/Math.max(6,y1-y0)),cxl=(x0+x1)/2,cyl=(y0+y1)/2,ox=W/2-cxl*kx*s,oy=H*(TALL?.46:.53)+cyl*s;
+  const pr=(lon,lat)=>[ox+lon*kx*s,oy-lat*s];atlasSea();
+  const bg=L.back.group();P.others.forEach(r=>bg.polygon(r.map(q=>pr(q[0],q[1]).join(',')).join(' ')).fill('#EFE3C2').stroke({color:'#8E7E5C',width:Math.max(1,U*.0012)}));
+  const vs=P.items.map(i=>i.value),mn=Math.min(...vs),mx=Math.max(...vs),lo=mix('#EFE3C2',ACC,.22);
+  const order=P.items.slice().sort((a,b)=>a.value-b.value);const placed=[];
+  order.forEach((it,i)=>{const f=mx>mn?(it.value-mn)/(mx-mn):1,col=mix(lo,ACC,f),st=.4+i*.3;const g=L.hero.group();
+    it.rings.forEach(r=>g.polygon(r.map(q=>pr(q[0],q[1]).join(',')).join(' ')).fill('#EFE3C2').stroke({color:INK,width:Math.max(1,U*.002)}));
+    at(st,.6,p=>g.children().forEach(c=>c.fill(mix('#EFE3C2',col,p))),E.inout);
+    const [px,py]=pr(it.at[0],it.at[1]);const lab=L.front.group();const t=T(lab,it.shown,U*.034,px,py,{family:'Anton',weight:400,fill:'#FFFFFF'});
+    const nm=T(lab,it.label.toUpperCase(),U*.017,px,py+U*.034,{family:'Inter',weight:800,fill:'#FFFFFF',ls:'.1em'});const bb=lab.bbox();
+    lab.rect(bb.width+U*.024,bb.height+U*.014).center(bb.cx,bb.cy).fill(INK).back();
+    // neighbours' labels step apart (down, up, further down...) and keep a leader line to their place
+    const bw=bb.width+U*.03,bh=bb.height+U*.02;let dy=0;const hit=d=>placed.some(q=>Math.abs(q[0]-px)<(q[2]+bw)/2&&Math.abs(q[1]-(py+d))<(q[3]+bh)/2);
+    for(const d of [0,1,-1,2,-2,3,-3]){if(!hit(d*bh)){dy=d*bh;break}}
+    placed.push([px,py+dy,bw,bh]);if(dy){L.front.line(px,py,px,py+dy).stroke({color:INK,width:U*.003}).back();L.front.circle(U*.01).center(px,py).fill(INK);lab.attr({transform:`translate(0,${dy})`})}
+    popIn(lab,px,py+dy,st+.35,.3);
+    if(it.value===mx)FOCUS={x:px,y:py+dy,rx:Math.max(U*.09,bb.width*.8),ry:Math.max(U*.07,bb.height)}});
+  const lw=W*(TALL?.5:.26),lx=W-lw-U*.09,ly=H-U*.13,gr=draw.gradient('linear',a=>{a.stop(0,lo);a.stop(1,ACC)});
+  const lg=L.front.group();lg.rect(lw,U*.02).move(lx,ly).fill(gr).stroke({color:INK,width:U*.002});
+  T(lg,String(mn),U*.02,lx,ly+U*.04,{family:'Mono',weight:700,anchor:'start'});T(lg,String(mx),U*.02,lx+lw,ly+U*.04,{family:'Mono',weight:700,anchor:'end'});
+  if(P.unit)T(lg,P.unit.toUpperCase(),U*.018,lx+lw/2,ly-U*.022,{family:'Inter',weight:800,ls:'.12em'});wipe(lg,.3);
+  if(P.mapcredit)wipe(mono(L.front,P.mapcredit.toUpperCase(),U*.04,H-U*.03,{size:U*.013}),.8)}
+
+// ---- evidence, tables, interviews, end card ----
+function greek(g,x,y,w,rows,rh,col){for(let i=0;i<rows;i++){const ww=w*(i===rows-1?.55:.86+((i*37)%13)/100);g.rect(ww,rh*.34).move(x,y+i*rh).fill(col||'#B9B4A8')}}
+function courtdoc(){ // a page of the judgment: court, case, the paragraph in its own words, highlighted as it is read
+  const pw=VERT?W*.86:Math.min(W*.56,H*1.0),ph=VERT?H*.74:H*.9,px=VERT?(W-pw)/2:W*.07,py=VERT?H*.16:H*.07;const page=L.hero.group();
+  page.rect(pw,ph).move(px+U*.012,py+U*.012).fill('#00000030');page.rect(pw,ph).move(px,py).fill('#FBF9F3').stroke({color:'#B9B4A8',width:U*.002});
+  const cx=px+pw/2,m=pw*.09;fit(T(page,P.court.toUpperCase(),U*.026,cx,py+ph*.07,{family:'Playfair',weight:700,fill:'#1A1A1A',ls:'.12em'}),pw*.82);
+  page.line(px+m,py+ph*.105,px+pw-m,py+ph*.105).stroke({color:'#1A1A1A',width:U*.002});page.line(px+m,py+ph*.112,px+pw-m,py+ph*.112).stroke({color:'#1A1A1A',width:U*.001});
+  const cs=lines(P.case,U*.022,pw*.8,'Playfair',700,2);cs.forEach((l,i)=>T(page,l,U*.022,cx,py+ph*.155+i*U*.028,{family:'Playfair',weight:700,fill:'#1A1A1A',italic:true}));
+  let y=py+ph*.25;const rh=U*.03;greek(page,px+m,y,pw-2*m,3,rh);y+=rh*3.6;
+  const qs=VERT?U*.036:U*.03,ql=lines(P.quote,qs,pw-2*m-U*.05,'Playfair',400,7);const q0=y;
+  ql.forEach((l,i)=>{const t=T(L.front,l,qs,px+m+U*.05,y+i*qs*1.42,{family:'Playfair',weight:400,anchor:'start',fill:'#111'});const bb=t.bbox();
+    highlight(L.front,bb,1.0+i*.42,SIG);t.front()});
+  const num=(P.ref.match(/(?:para(?:graph)?\.?\s*)(\d+)/i)||[])[1];if(num)T(page,num+'.',qs*.8,px+m,q0,{family:'Playfair',weight:700,anchor:'start',fill:'#1A1A1A'});
+  y+=ql.length*qs*1.42+rh*.6;const left=Math.max(0,Math.min(6,Math.floor((py+ph*.9-y)/rh)));greek(page,px+m,y,pw-2*m,left,rh);
+  if(P.ref)T(page,P.ref.toUpperCase(),U*.016,px+pw-m,py+ph*.955,{family:'Mono',weight:700,anchor:'end',fill:'#555'});
+  page.attr({transform:`rotate(-1.2,${cx},${py+ph/2})`});drop(page,.1,H*.3,-3);
+  FOCUS={x:cx,y:q0+ql.length*qs*.7,rx:pw*.5,ry:Math.max(U*.08,ql.length*qs*.9)};
+  if(!VERT){const sx=px+pw+W*.05,sw=W-sx-W*.05;const k=T(L.front,'IN THE COURT\'S WORDS',U*.022,sx,H*.3,{family:'Inter',weight:800,anchor:'start',ls:'.16em',fill:K.mark||'#C0262D'});wipe(k,.6);
+    const b=boxText(L.front,(P.case||P.court).split(/ v\.? /i)[0],U*.05,sx,H*.4,{anchor:'start',maxw:sw,most:3});wipe(b,.8)}}
+function table(){ // a data table that fills row by row
+  chartTitle(P.title);const hd=P.head,rows=P.rows,nc=hd.length,nr=rows.length;const tw=W*(TALL?.9:.74),x0=(W-tw)/2,y0=TALL?H*.2:H*.22;
+  const rh=Math.min(U*.09,(H*(TALL?.6:.66))/(nr+1)),fs=Math.min(U*.034,rh*.42);const num=c=>rows.every(r=>/^[\s₹$€£]?[\d.,]+\s*%?\w{0,6}$/.test(r[c]));
+  const cw=hd.map((_,c)=>c===0?1.5:1),tot=cw.reduce((a,b)=>a+b,0);let acc=0;const cx=cw.map(w=>{const x=x0+tw*acc/tot;acc+=w;return [x,tw*w/tot]});
+  const hb=L.hero.rect(tw,rh).move(x0,y0).fill(INK);wipe(hb,.15);
+  hd.forEach((h,c)=>{const r=c>0&&num(c);const t=T(L.front,h.toUpperCase(),fs*.72,r?cx[c][0]+cx[c][1]-rh*.3:cx[c][0]+rh*.3,y0+rh/2,{family:'Inter',weight:800,anchor:r?'end':'start',fill:'#FFFFFF',ls:'.1em'});fit(t,cx[c][1]*.9);wipe(t,.2)});
+  rows.forEach((rw,i)=>{const y=y0+rh*(i+1),st=.45+i*.22,hl=P.hl===i+1;const g=L.hero.group();
+    g.rect(tw,rh).move(x0,y).fill(hl?ACC:(i%2?'#00000010':'#FFFFFF90'));g.line(x0,y+rh,x0+tw,y+rh).stroke({color:INK,width:U*.0015});
+    rw.forEach((v,c)=>{const r=c>0&&num(c);const t=T(g,v,fs,r?cx[c][0]+cx[c][1]-rh*.3:cx[c][0]+rh*.3,y+rh/2,{family:c===0?'Inter':'Mono',weight:c===0||hl?800:700,anchor:r?'end':'start',fill:INK});fit(t,cx[c][1]*.9)});
+    slide(g,st,-W*.03,0);if(hl)FOCUS={x:W/2,y:y+rh/2,rx:tw*.53,ry:rh*.8}});
+  L.mid.rect(tw,rh*(nr+1)).move(x0,y0).fill('none').stroke({color:INK,width:U*.003});
+  if(P.source)wipe(mono(L.front,('SOURCE: '+P.source).toUpperCase(),x0,y0+rh*(nr+1)+U*.035,{weight:700}),.5+nr*.22)}
+function interview(){ // the speaker, a lower third with name and role, the pull quote typed beside them
+  const pic=(P.pics||[])[0];const px=TALL?W*.5:W*.26,ph=TALL?H*.46:H*.88,base=TALL?H*.56:H;
+  const disc=L.back.circle(U*.62).center(px,base-ph*.5).fill(ACC).opacity(.9);popIn(disc,px,base-ph*.5,.05,.5);
+  const g=picture(L.hero,pic,px,base,ph);drop(g,.2,H*.2,-2);
+  const lw=TALL?W*.88:Math.max(W*.42,U*.62),ns=U*.036,rs=U*.028,nl=lines(P.name.toUpperCase(),ns,lw*.86,'Inter',800,2),
+    rl=P.role?lines(P.role,rs,lw*.8,'Mono',700,2):[],nh=U*.04+nl.length*ns*1.15,rh=rl.length?U*.022+rl.length*rs*1.3:0;
+  const ly=TALL?H*.565:Math.min(H*.8,H*.97-nh-rh),lx=TALL?W*.06:W*.05;const lt=L.front.group().addClass('keep');
+  lt.rect(lw,nh).move(lx,ly).fill(INK);lt.rect(U*.012,nh).move(lx,ly).fill(ACC);
+  nl.forEach((l,i)=>fit(T(lt,l,ns,lx+U*.035,ly+U*.02+ns*.58+i*ns*1.15,{family:'Inter',weight:800,anchor:'start',fill:'#FFFFFF',ls:'.04em'}),lw*.9));
+  if(rl.length){lt.rect(lw*.92,rh).move(lx,ly+nh).fill('#FBF8F0').stroke({color:INK,width:U*.002});
+    rl.forEach((l,i)=>fit(T(lt,l,rs,lx+U*.035,ly+nh+U*.011+rs*.65+i*rs*1.3,{family:'Mono',weight:700,anchor:'start',fill:INK}),lw*.86))}
+  slide(lt,.7,-W*.12,0);
+  const qs=TALL?U*.05:U*.052,qx=TALL?W*.08:W*.52,qy=TALL?Math.max(H*.68,ly+nh+rh+qs*2.6):H*.26,qw=TALL?W*.84:W*.42;   // the quote starts below the name box
+  const mk=T(L.front,'“',qs*3.2,qx-U*.008,qy,{family:'Playfair',weight:900,anchor:'start',fill:ACC});wipe(mk,.9);
+  const ql=lines(P.quote,qs,qw,'Playfair',700,TALL?5:6);
+  ql.forEach((l,i)=>{const t=T(L.front,l,qs,qx,qy+qs*1.1+i*qs*1.28,{family:'Playfair',weight:700,anchor:'start'});typeIn(t,l,1.1+i*.5)});
+  FOCUS={x:px,y:base-ph*.62,rx:U*.2,ry:U*.22}}
+function endcard(){ // the closing slate: title, one line, the sources
+  const bar=L.back.rect(W,H*.012).move(0,H*.5).fill(ACC);at(.1,.6,p=>bar.width(Math.max(.1,W*p)),E.inout);
+  const ts=TALL?U*.085:U*.1,tl=lines(P.title,ts,W*.84,'Playfair',900,3);tl.forEach((l,i)=>{const t=T(L.front,l,ts,W/2,H*.45-(tl.length-1-i)*ts*1.1-ts*.6,{family:'Playfair',weight:900});slide(t,.3+i*.15,0,H*.05)});
+  if(P.line){const b=boxText(L.front,P.line,U*.04,W/2,H*.57,{anchor:'middle',maxw:W*.8,most:2});wipe(b,1.0)}
+  if(P.sources.length){const k=T(L.front,'SOURCES',U*.02,W/2,H*(TALL?.74:.76),{family:'Inter',weight:800,ls:'.3em',fill:K.mark||'#C0262D'});wipe(k,1.3);
+    const per=TALL?2:3;P.sources.forEach((s2,i)=>{const row=Math.floor(i/per),col=i%per,n=Math.min(per,P.sources.length-row*per);
+      const t=T(L.front,s2,U*.022,W/2+(col-(n-1)/2)*W*(TALL?.42:.28),H*(TALL?.78:.81)+row*U*.04,{family:'Mono',weight:700});fit(t,W*(TALL?.4:.26));wipe(t,1.45+i*.1)})}}
+// ---- more charts ----
+function axes(L0,R0,T0,B0,mn,mx,unit,ticks){const g=L.mid.group();for(let i=0;i<=ticks;i++){const v=mn+(mx-mn)*i/ticks,y=B0-(B0-T0)*i/ticks;
+  g.line(L0,y,R0,y).stroke({color:FG,width:U*.0012}).opacity(i?.25:.9);T(g,(Math.abs(v)>=100?Math.round(v):+v.toFixed(1))+(unit?(unit.length>1?' ':'')+unit:''),U*.019,L0-U*.02,y,{family:'Mono',weight:700,anchor:'end'})}wipe(g,.15);return g}
+function revealClip(L0,R0,start,dur){const c=draw.clip();const r=c.rect(.1,H).move(L0-U*.02,0);at(start,dur,p=>r.width(Math.max(.1,(R0-L0+U*.04)*p)),E.inout);return c}
+function polltrack(){ // a poll line, its margin of error as a band, the latest reading large
+  chartTitle(P.title);const pts=P.points,n=pts.length,vs=pts.map(p=>p.value),m=P.moe||0;let mn=Math.min(...vs)-m,mx=Math.max(...vs)+m;const pad=(mx-mn)*.18||1;mn=Math.max(0,mn-pad);mx+=pad;
+  const L0=W*(TALL?.16:.14),R0=W*(TALL?.9:.8),T0=TALL?H*.24:H*.24,B0=TALL?H*.62:H*.8;axes(L0,R0,T0,B0,mn,mx,P.unit,4);
+  const X=i=>L0+(R0-L0)*i/(n-1),Y=v=>B0-(B0-T0)*(v-mn)/(mx-mn);const clip=revealClip(L0,R0,.4,1.5);const g=L.hero.group().clipWith(clip);
+  if(m){g.polygon(pts.map((p,i)=>[X(i),Y(p.value+m)]).concat(pts.map((p,i)=>[X(i),Y(p.value-m)]).reverse()).map(q=>q.join(',')).join(' ')).fill(ACC).opacity(.28)}
+  g.polyline(pts.map((p,i)=>[X(i),Y(p.value)].join(',')).join(' ')).fill('none').stroke({color:ACC,width:U*.009,linejoin:'round',linecap:'round'});
+  pts.forEach((p,i)=>{const st=.4+1.5*i/(n-1);const d=L.front.circle(U*.022).center(X(i),Y(p.value)).fill('#FFFFFF').stroke({color:INK,width:U*.005});popIn(d,X(i),Y(p.value),st,.25);
+    if(p.label){const t=T(L.front,p.label.toUpperCase(),U*.019,X(i),B0+U*.035,{family:'Inter',weight:800});fit(t,(R0-L0)/n*.95);wipe(t,st)}});
+  const last=pts[n-1],lx=X(n-1),ly=Y(last.value);const big=T(L.front,last.shown+(P.unit&&!last.shown.includes(P.unit)?P.unit:''),U*.09,TALL?W/2:R0+U*.03,TALL?H*.72:ly,{family:'Anton',weight:400,anchor:TALL?'middle':'start'});fit(big,TALL?W*.8:W-R0-U*.06);slide(big,2.0,U*.04,0);
+  if(m){const t=T(L.front,'±'+m+' margin of error',U*.02,TALL?W/2:R0+U*.03,(TALL?H*.72:ly)+U*.07,{family:'Mono',weight:700,anchor:TALL?'middle':'start'});fit(t,TALL?W*.8:W-R0-U*.05);wipe(t,2.2)}
+  FOCUS={x:lx,y:ly,rx:U*.06,ry:U*.06}}
+function area(){ // stacked areas filling from the left
+  chartTitle(P.title);const xs=P.xs,n=xs.length,ser=P.series;const tot=xs.map((_,i)=>ser.reduce((a,s2)=>a+s2.v[i],0)),mx=Math.max(...tot)*1.08;
+  const L0=W*(TALL?.16:.13),R0=W*(TALL?.92:.76),T0=TALL?H*.22:H*.24,B0=TALL?H*.6:H*.8;axes(L0,R0,T0,B0,0,mx,P.unit,4);
+  const X=i=>L0+(R0-L0)*i/(n-1),Y=v=>B0-(B0-T0)*v/mx;const clip=revealClip(L0,R0,.4,1.7);const g=L.hero.group().clipWith(clip);
+  const cols=[ACC,'#3E4A55',mix(ACC,'#FFFFFF',.5),'#8C8577',mix(ACC,'#000000',.45)];let base=xs.map(()=>0);
+  ser.forEach((s2,k)=>{const top=base.map((b,i)=>b+s2.v[i]);g.polygon(top.map((v,i)=>[X(i),Y(v)]).concat(base.map((v,i)=>[X(i),Y(v)]).reverse()).map(q=>q.join(',')).join(' ')).fill(cols[k%cols.length]).stroke({color:PAPER,width:U*.003});
+    const ly=TALL?H*.68+k*U*.055:Y((top[n-1]+base[n-1])/2),lx=TALL?W*.2:R0+U*.03;const lg=L.front.group();if(TALL)lg.rect(U*.03,U*.03).move(lx-U*.05,ly-U*.015).fill(cols[k%cols.length]);
+    const t=T(lg,s2.name.toUpperCase()+'  '+s2.v[n-1],U*.026,lx,ly,{family:'Inter',weight:800,anchor:'start'});fit(t,TALL?W*.7:W-R0-U*.05);wipe(lg,1.6+k*.2);base=top});
+  xs.forEach((x,i)=>{if(n>7&&i%2)return;const t=T(L.front,x,U*.02,X(i),B0+U*.035,{family:'Mono',weight:700});wipe(t,.4+1.7*i/(n-1))})}
+function candles(){ // open / high / low / close, one candle at a time
+  chartTitle(P.title);const cs=P.candles,n=cs.length;let mn=Math.min(...cs.map(c=>c.l)),mx=Math.max(...cs.map(c=>c.h));const pad=(mx-mn)*.1||1;mn-=pad;mx+=pad;
+  const L0=W*(TALL?.18:.14),R0=W*(TALL?.94:.88),T0=TALL?H*.24:H*.24,B0=TALL?H*.66:H*.8;axes(L0,R0,T0,B0,mn,mx,'',4);
+  const gap=(R0-L0)/n,bw=Math.min(gap*.6,U*.06),Y=v=>B0-(B0-T0)*(v-mn)/(mx-mn);
+  cs.forEach((c,i)=>{const x=L0+gap*(i+.5),up=c.c>=c.o,col=up?ACC:INK,st=.35+i*(1.8/n);const g=L.hero.group();
+    g.line(x,Y(c.h),x,Y(c.l)).stroke({color:INK,width:U*.003});const top=Y(Math.max(c.o,c.c)),hh=Math.max(U*.004,Math.abs(Y(c.o)-Y(c.c)));
+    g.rect(bw,hh).move(x-bw/2,top).fill(col).stroke({color:INK,width:U*.002});popIn(g,x,Y((c.h+c.l)/2),st,.25);
+    if(c.label&&(n<=10||i%2===0)){const t=T(L.front,c.label.toUpperCase(),U*.018,x,B0+U*.035,{family:'Mono',weight:700});fit(t,gap*1.6);wipe(t,st)}});
+  const a=cs[0].o,b=cs[n-1].c,ch=(b-a)/a*100;const big=T(L.front,(ch>=0?'+':'')+ch.toFixed(1)+'%',U*.075,R0,T0-U*.02,{family:'Anton',weight:400,anchor:'end',fill:ch>=0?ACT:(K.mark||'#C0262D')});slide(big,2.3,U*.04,0);
+  const sub=T(L.front,(P.unit||'')+a+' → '+(P.unit||'')+b,U*.022,R0,T0+U*.035,{family:'Mono',weight:700,anchor:'end'});wipe(sub,2.5);
+  FOCUS={x:L0+gap*(n-.5),y:Y((cs[n-1].h+cs[n-1].l)/2),rx:Math.max(bw,U*.05),ry:Math.max(U*.07,(Y(cs[n-1].l)-Y(cs[n-1].h))*.7)}}
+// ---- more maps ----
+function mapFrame(fw,fh){const [x0,y0,x1,y1]=P.box,kx=Math.cos((y0+y1)/2*Math.PI/180);
+  const s=Math.min(W*fw/Math.max(4,(x1-x0)*kx),H*fh/Math.max(3,y1-y0)),ox=W/2-(x0+x1)/2*kx*s,oy=H*(TALL?.46:.53)+(y0+y1)/2*s;
+  const pr=(lon,lat)=>[ox+lon*kx*s,oy-lat*s];atlasSea();const land=L.back.group();
+  P.shapes.forEach(r=>land.polygon(r.map(q=>pr(q[0],q[1]).join(',')).join(' ')).fill('#EFE3C2').stroke({color:'#8E7E5C',width:Math.max(1,U*.0015)}));depthOfField(land);return pr}
+function placeTag(g,name,x,y,start,dy){const t=T(g,name.toUpperCase(),U*.028,x,y+(dy||-U*.035),{family:'Inter',weight:800,ls:'.1em',fill:'#FFFFFF'});const bb=t.bbox();
+  const r=g.rect(bb.width+U*.018,bb.height+U*.008).center(bb.cx,bb.cy).fill(INK);t.front();wipe(r,start);wipe(t,start);return bb}
+function arrows(){ // broad arrows sweeping from place to place: armies, migration, trade
+  chartTitle(P.title);const pr=mapFrame(TALL?.8:.7,TALL?.5:.6);const col=K.mark||'#C0262D';const seen={};
+  P.arrows.forEach((a,i)=>{const [x1,y1]=pr(a.a.lon,a.a.lat),[x2,y2]=pr(a.b.lon,a.b.lat),st=.5+i*.55;const d=Math.hypot(x2-x1,y2-y1)||1,nx=-(y2-y1)/d,ny=(x2-x1)/d,bend=d*.18*(i%2?-1:1);
+    const cxm=(x1+x2)/2+nx*bend,cym=(y1+y2)/2+ny*bend;const N=28,wid=Math.min(U*.03,d*.09);const q=t=>[(1-t)*(1-t)*x1+2*(1-t)*t*cxm+t*t*x2,(1-t)*(1-t)*y1+2*(1-t)*t*cym+t*t*y2];
+    const g=L.hero.group();const body=g.path('').fill(col).opacity(.88).stroke({color:'#FFFFFF',width:U*.003,linejoin:'round'});
+    at(st,.7,p=>{const te=Math.max(.02,p*.86);const Lp=[],Rp=[];for(let k=0;k<=N;k++){const t=te*k/N,[x,y]=q(t),[xa,ya]=q(Math.min(1,t+.01));const dd=Math.hypot(xa-x,ya-y)||1,px=-(ya-y)/dd,py=(xa-x)/dd,w=wid*(.35+.65*k/N);Lp.push([x+px*w,y+py*w]);Rp.push([x-px*w,y-py*w])}
+      const [hx,hy]=q(te),[tx,ty]=q(Math.min(1,te+.14)),[bx,by]=q(te-.01);const dd=Math.hypot(hx-bx,hy-by)||1,px=-(hy-by)/dd,py=(hx-bx)/dd;
+      const pts=[...Lp,[hx+px*wid*2.1,hy+py*wid*2.1],[tx,ty],[hx-px*wid*2.1,hy-py*wid*2.1],...Rp.reverse()];body.plot('M'+pts.map(z=>z[0].toFixed(1)+' '+z[1].toFixed(1)).join(' L')+' Z')},E.inout);
+    [[a.a,x1,y1,st],[a.b,x2,y2,st+.6]].forEach(([e,x,y,s2])=>{if(seen[e.name])return;seen[e.name]=1;const dt=L.mid.circle(U*.016).center(x,y).fill(INK).stroke({color:'#FFFFFF',width:U*.003});popIn(dt,x,y,s2,.25);placeTag(L.front,e.name,x,y,s2+.1,y<H*.2?U*.035:-U*.035)});
+    if(a.label){const [mx2,my]=q(.45),sg=(nx*(W/2-mx2)+ny*(H/2-my))>=0?1:-1,off=wid*1.7+U*.015,lx=mx2+nx*sg*off,ly=my+ny*sg*off;   // beside the arrow, on the side toward the frame's centre, never on it
+      const t=T(L.front,a.label,U*.032,lx,ly,{family:'Caveat',weight:700,fill:col,anchor:nx*sg>=0?'start':'end'});wipe(t,st+.5)}
+    if(i===P.arrows.length-1)FOCUS={x:x2,y:y2,rx:U*.08,ry:U*.07}})}
+function railmap(){ // a transport network: each line draws through its stations
+  chartTitle(P.title);const pr=mapFrame(TALL?.8:.7,TALL?.5:.6);const cols=[K.mark||'#C0262D','#1F4FB8','#1F7A4D','#B8860B','#7A3E8C'];const seen={};let t0=.4;
+  P.lines.forEach((ln,i)=>{const col=cols[i%cols.length],pts=ln.stops.map(s2=>pr(s2.lon,s2.lat));const dur=.5+pts.length*.22;
+    const cas=L.mid.polyline(pts.map(q=>q.join(',')).join(' ')).fill('none').stroke({color:'#FFFFFF',width:U*.016,linejoin:'round',linecap:'round'});
+    const pl=L.mid.polyline(pts.map(q=>q.join(',')).join(' ')).fill('none').stroke({color:col,width:U*.009,linejoin:'round',linecap:'round'});
+    [cas,pl].forEach(e=>{const len=e.node.getTotalLength();e.attr({'stroke-dasharray':len,'stroke-dashoffset':len});at(t0,dur,p=>e.attr({'stroke-dashoffset':len*(1-p)}),E.inout)});
+    ln.stops.forEach((s2,k)=>{const [x,y]=pts[k],st=t0+dur*k/(pts.length-1);const d=L.hero.circle(U*.022).center(x,y).fill('#FFFFFF').stroke({color:col,width:U*.006});popIn(d,x,y,st,.22);
+      if(!seen[s2.name]){seen[s2.name]=1;placeTag(L.front,s2.name,x,y,st+.05,(k+i)%2?U*.036:-U*.036)}});
+    if(ln.name){const lg=L.front.group();const y=H*(TALL?.84:.9)-i*U*.045;lg.line(U*.06,y,U*.12,y).stroke({color:col,width:U*.009,linecap:'round'});T(lg,ln.name.toUpperCase(),U*.02,U*.14,y,{family:'Inter',weight:800,anchor:'start',ls:'.08em'});wipe(lg,t0)}
+    t0+=dur*.7;const e=pts[pts.length-1];FOCUS={x:e[0],y:e[1],rx:U*.07,ry:U*.06}})}
+function resample(r,n){const d=[0];for(let i=1;i<=r.length;i++){const a=r[i-1],b=r[i%r.length];d.push(d[i-1]+Math.hypot(b[0]-a[0],b[1]-a[1]))}const tot=d[r.length],o=[];let j=0;
+  for(let k=0;k<n;k++){const t=tot*k/n;while(d[j+1]<t)j++;const a=r[j],b=r[(j+1)%r.length],f=(t-d[j])/Math.max(1e-9,d[j+1]-d[j]);o.push([a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f])}
+  let bi=0,bv=1e18;o.forEach((q,i)=>{const v=q[1]*1e3-q[0];if(v<bv){bv=v;bi=i}});return o.slice(bi).concat(o.slice(0,bi))}   // both start at their northernmost point
+function sizemap(){ // two countries at one scale: the first morphs into the second, then both sit together
+  chartTitle(P.title);const [A,B]=P.items,N=180;const ext=r=>{const xs=r.map(q=>q[0]),ys=r.map(q=>q[1]);return [Math.max(...xs)-Math.min(...xs),Math.max(...ys)-Math.min(...ys),(Math.max(...xs)+Math.min(...xs))/2,(Math.max(...ys)+Math.min(...ys))/2]};
+  const ea=ext(A.ring),eb=ext(B.ring);const s=Math.min(W*(TALL?.8:.5)/Math.max(ea[0],eb[0]),H*(TALL?.42:.58)/Math.max(ea[1],eb[1]));const cx=W/2,cy=H*(TALL?.45:.52);
+  const ra=resample(A.ring.map(q=>[(q[0]-ea[2])*s+cx,(q[1]-ea[3])*s+cy]),N),rb=resample(B.ring.map(q=>[(q[0]-eb[2])*s+cx,(q[1]-eb[3])*s+cy]),N);
+  const str=r=>r.map(q=>q[0].toFixed(1)+','+q[1].toFixed(1)).join(' ');const big=A.km2>=B.km2;
+  const ghost=L.mid.polygon(str(ra)).fill('none').stroke({color:INK,width:U*.004,dasharray:`${U*.012} ${U*.01}`}).opacity(0);
+  const shape=L.hero.polygon(str(ra)).fill(ACC).stroke({color:INK,width:U*.004,linejoin:'round'});popIn(shape,cx,cy,.2,.5);
+  at(1.5,.9,p=>{shape.plot(str(ra.map((q,i)=>[q[0]+(rb[i][0]-q[0])*p,q[1]+(rb[i][1]-q[1])*p])));shape.fill(mix(ACC,'#3E4A55',p));ghost.opacity(p)},E.inout);
+  const na=T(L.front,A.name.toUpperCase(),U*.034,cx,cy-Math.max(ea[1],eb[1])*s/2-U*.05,{family:'Inter',weight:800,ls:'.1em'});wipe(na,.5);
+  at(1.5,.9,p=>{na.node.textContent=(p<.5?A.name:B.name).toUpperCase();na.opacity(Math.abs(p-.5)*2)},E.lin);
+  const ratio=Math.max(A.km2,B.km2)/Math.min(A.km2,B.km2),fmt=v=>v>=1e6?(v/1e6).toFixed(2)+' million km²':Math.round(v/1e3)+',000 km²';
+  const y=H*(TALL?.76:.88);const t=boxText(L.front,(big?A.name:B.name)+' is '+(ratio>=10?Math.round(ratio):ratio.toFixed(1))+'× bigger',U*.045,W/2,y-U*.05,{anchor:'middle',maxw:W*.86,most:2});wipe(t,2.6);
+  const sub=T(L.front,A.name+' '+fmt(A.km2)+'  ·  '+B.name+' '+fmt(B.km2),U*.02,W/2,y+U*.05,{family:'Mono',weight:700});fit(sub,W*.9);wipe(sub,2.8);
+  const sc=L.front.group();const km=[100,200,500,1000,2000].find(v=>v*s>U*.12)||2000;sc.line(U*.06,H*.93,U*.06+km*s,H*.93).stroke({color:FG,width:U*.004});T(sc,km+' km',U*.018,U*.06+km*s/2,H*.93-U*.022,{family:'Mono',weight:700});wipe(sc,.6);
+  FOCUS={x:cx,y:cy,rx:Math.min(ea[0],eb[0])*s*.55,ry:Math.min(ea[1],eb[1])*s*.55}}
+
+function borders(){ // the borders of a past year; then the map redraws as it is now, the old lines left as a dashed ghost
+  chartTitle(P.title);const [x0,y0,x1,y1]=P.box,kx=Math.cos((y0+y1)/2*Math.PI/180);const s=Math.min(W/Math.max(4,(x1-x0)*kx),H*(TALL?.62:.86)/Math.max(3,y1-y0))*1.1;   // the whole region in view
+  const ox=W/2-(x0+x1)/2*kx*s,oy=H*(TALL?.48:.54)+(y0+y1)/2*s,pr=(lon,lat)=>[ox+lon*kx*s,oy-lat*s];atlasSea();
+  const tones=['#EFE3C2',mix('#EFE3C2',ACC,.16),mix('#EFE3C2','#8E7E5C',.2),mix('#EFE3C2',ACC,.3),mix('#EFE3C2','#3E4A55',.14)];
+  const layer=(cs,g,stroke)=>cs.forEach((c,i)=>c.r.forEach(r=>g.polygon(r.map(q=>pr(q[0],q[1]).join(',')).join(' ')).fill(tones[(c.n.length+i)%tones.length]).stroke({color:stroke,width:Math.max(1,U*.0022),linejoin:'round'})));
+  const labels=(cs,g,start)=>cs.filter(c=>c.label).forEach((c,i)=>{const [x,y]=pr(c.at[0],c.at[1]);if(x<W*.06||x>W*.94||y<H*.16||y>H*.92)return;
+    const ls=lines(c.n.toUpperCase(),U*.019,U*.26,'Playfair',700,2);const lg=g.group();ls.forEach((l,k)=>T(lg,l,U*.019,x,y+(k-(ls.length-1)/2)*U*.024,{family:'Playfair',weight:700,fill:'#2A2218',ls:'.12em'}));wipe(lg,start+i*.07)});
+  const gThen=L.back.group(),lThen=L.mid.group();layer(P.then,gThen,'#5E4E33');labels(P.then,lThen,.5);wipe(gThen,.05);
+  const two=P.now&&P.now.length;const yx=TALL?W/2:W*.1,yy=TALL?H*.14:H*.86;
+  const ys=TALL?U*.11:U*.12,yw=ys*2.9,yg=L.front.group();yg.rect(yw,ys*1.15).move(TALL?yx-yw/2:yx-ys*.2,yy-ys*.6).fill(INK);
+  const yr=T(yg,String(P.ya),ys,TALL?yx:yx+yw/2-ys*.2,yy,{family:'Anton',weight:400,anchor:'middle',fill:'#FFFFFF'});slide(yg,.2,0,H*.04);
+  if(two){const gNow=L.back.group(),lNow=L.mid.group();layer(P.now,gNow,'#5E4E33');labels(P.now,lNow,2.6);gNow.opacity(0);
+    const ghost=L.hero.group();P.then.forEach(c=>c.r.slice(0,3).forEach(r=>ghost.polygon(r.map(q=>pr(q[0],q[1]).join(',')).join(' ')).fill('none').stroke({color:K.mark||'#C0262D',width:Math.max(1.2,U*.003),dasharray:`${U*.01} ${U*.008}`,linejoin:'round'})));ghost.opacity(0);
+    const end=P.yb||new Date().getFullYear();
+    at(1.7,1.1,p=>{gNow.opacity(p);gThen.opacity(1-p);lThen.opacity(Math.max(0,1-p*2.5));ghost.opacity(p*.9);yr.node.textContent=(P.yb===0&&p>=1)?'TODAY':String(Math.round(P.ya+(end-P.ya)*p))},E.inout);
+    const key=L.front.group();const kx2=TALL?W*.1:W*.1,ky=TALL?H*.9:H*.94;key.line(kx2,ky,kx2+U*.07,ky).stroke({color:K.mark||'#C0262D',width:U*.004,dasharray:`${U*.01} ${U*.008}`});
+    T(key,'BORDERS IN '+P.ya,U*.018,kx2+U*.085,ky,{family:'Mono',weight:700,anchor:'start'});wipe(key,2.4)}
+  wipe(mono(L.front,P.mapcredit.toUpperCase(),W-U*.04,H-U*.03,{anchor:'end',size:U*.013}),.8)}
+
+function morph(){ // one outline flows into the next; the name changes with it
+  chartTitle(P.title);const N=200,R=Math.min(W*(TALL?.38:.24),H*(TALL?.26:(P.caption?.26:.32))),cx=W/2,cy=H*(TALL?.46:(P.caption?.45:.52));
+  const rs=P.shapes.map(sh=>resample(sh.ring.map(q=>[cx+q[0]*R,cy+q[1]*R]),N)),k=rs.length;
+  // start every outline at its top point and run it the same way round, so shapes don't turn inside out
+  const turn=r=>{let a=0;for(let i=0;i<r.length;i++){const p=r[i],q=r[(i+1)%r.length];a+=p[0]*q[1]-q[0]*p[1]}return a};
+  rs.forEach((r,i)=>{if(turn(r)<0){const f=r[0];rs[i]=[f].concat(r.slice(1).reverse())}});
+  const str=r=>r.map(q=>q[0].toFixed(1)+','+q[1].toFixed(1)).join(' ');const cols=[ACC,'#3E4A55',K.mark||'#D7262B',mix(ACC,'#000000',.4)];
+  const sh=L.hero.polygon(str(rs[0])).fill(cols[0]).stroke({color:INK,width:U*.005,linejoin:'round'});const shadow=L.mid.polygon(str(rs[0])).fill(INK).opacity(.18).attr({transform:`translate(${U*.012},${U*.014})`});
+  popIn(sh,cx,cy,.15,.5);wipe(shadow,.5);
+  const nm=T(L.front,P.shapes[0].name.toUpperCase(),U*.04,cx,cy+R+U*.08,{family:'Inter',weight:800,ls:'.12em'});wipe(nm,.5);
+  // one track for the whole chain (separate tracks would each reset the outline to their own start)
+  const each=Math.max(.9,(DUR-1.7)/(k-1)),mv=Math.min(1.0,each*.7);
+  at(.9,each*(k-1),q=>{const tt=q*each*(k-1),i=Math.min(k-2,Math.floor(tt/each)),p=E.inout(Math.min(1,(tt-i*each)/mv)),a=rs[i],b=rs[i+1];
+    const m=a.map((v,j)=>[v[0]+(b[j][0]-v[0])*p,v[1]+(b[j][1]-v[1])*p]);sh.plot(str(m));shadow.plot(str(m));sh.fill(mix(cols[i%cols.length],cols[(i+1)%cols.length],p));
+    nm.node.textContent=(p<.5?P.shapes[i].name:P.shapes[i+1].name).toUpperCase();nm.opacity(Math.max(.001,Math.abs(p-.5)*2))},E.lin);
+  if(P.caption){const c=boxText(L.front,P.caption,U*.04,cx,cy+R+U*.16,{anchor:'middle',maxw:W*.8,most:2});wipe(c,1.1)}
+  FOCUS={x:cx,y:cy,rx:R*1.05,ry:R*1.05}}
+
+function shrink(){ // a lake as it was drains to what is left; the old shore stays as a ghost; the area counts down
+  chartTitle(P.title);const pr=mapFrame(TALL?.86:.62,TALL?.52:.66);
+  const str=r=>r.map(q=>pr(q[0],q[1]).map(v=>v.toFixed(1)).join(',')).join(' '),wcol=K.sea||'#7FA7B5';
+  const then=L.mid.group();P.then.forEach(r=>then.polygon(str(r)).fill(wcol).stroke({color:mix(wcol,'#000000',.35),width:U*.003}));
+  const ghost=L.hero.group();P.then.forEach(r=>ghost.polygon(str(r)).fill('none').stroke({color:K.mark||'#C0262D',width:U*.0035,dasharray:`${U*.012} ${U*.009}`}));ghost.opacity(0);
+  const now=L.mid.group();P.now.forEach(r=>now.polygon(str(r)).fill(wcol).stroke({color:mix(wcol,'#000000',.4),width:U*.003}));now.opacity(0);
+  wipe(then,.2);const T0=1.3,T1=Math.max(T0+1.2,DUR-1.5);
+  at(T0,T1-T0,p=>{then.opacity(1-p);now.opacity(p);ghost.opacity(Math.min(1,p*1.6))},E.inout);
+  const yb=L.front.group().addClass('keep');const yx=TALL?W/2:W*.08,yy=TALL?H*.16:H*.2;const ys=TALL?U*.1:U*.085;yb.rect(ys*3.1,ys*1.15).move(TALL?yx-ys*1.55:yx,yy-ys*.58).fill(INK);
+  const yt=T(yb,P.years[0]||'',ys,TALL?yx:yx+ys*1.55,yy,{family:'Anton',weight:400,fill:'#FFFFFF'});wipe(yb,.3);
+  const y0=parseInt(P.years[0]),y1=/^\d{4}$/.test(P.years[1])?parseInt(P.years[1]):null;
+  const kb=L.front.group().addClass('keep');const kx=TALL?W/2:W*.08,ky=yy+ys*1.2;
+  const kt=T(kb,'',U*.04,TALL?kx:kx,ky,{family:'Anton',weight:400,anchor:TALL?'middle':'start'});const ku=T(kb,'KM² OF WATER',U*.018,TALL?kx:kx,ky+U*.042,{family:'Inter',weight:800,anchor:TALL?'middle':'start',ls:'.12em'});wipe(kb,.5);
+  const fmt=v=>Math.round(v/100)*100,num=v=>fmt(v).toLocaleString('en-US');kt.node.textContent=num(P.km2[0]);
+  at(T0,T1-T0,p=>{kt.node.textContent=num(P.km2[0]+(P.km2[1]-P.km2[0])*p);
+    yt.node.textContent=p>=1?(y1?String(y1):String(P.years[1]).toUpperCase()):(y1&&y0?String(Math.round(y0+(y1-y0)*p)):(p<.5?String(y0||''):'…'))},E.inout);
+  (P.pins||[]).forEach((pn,i)=>{const [x,y]=pr(pn.lon,pn.lat);const d=L.front.circle(U*.016).center(x,y).fill(INK).stroke({color:'#FFFFFF',width:U*.003});popIn(d,x,y,.6+i*.15,.25);placeTag(L.front,pn.name,x,y,.7+i*.15,-U*.035)});
+  const lg=L.front.group();const lx=TALL?W*.1:W*.08,ly=TALL?H*.9:H*.9;lg.line(lx,ly,lx+U*.06,ly).stroke({color:K.mark||'#C0262D',width:U*.004,dasharray:`${U*.012} ${U*.009}`});
+  T(lg,('SHORELINE '+(P.years[0]||'THEN')).toUpperCase(),U*.017,lx+U*.075,ly,{family:'Mono',weight:700,anchor:'start'});wipe(lg,T1-.3);
+  wipe(mono(L.front,P.mapcredit.toUpperCase(),W-U*.04,H-U*.03,{anchor:'end',size:U*.012}),.8);
+  const c=P.then[0],cx=c.reduce((a,q)=>a+q[0],0)/c.length,cy=c.reduce((a,q)=>a+q[1],0)/c.length,[fx,fy]=pr(cx,cy);FOCUS={x:fx,y:fy,rx:W*.14,ry:H*.18}}
+
+// ---- real photographs and footage ----
+const TICKS=[];   // run on every real frame (not the 12 fps drawn cadence): the camera on a photograph, footage frames
+const GRADE={none:'',mono:'grayscale(1) contrast(1.12)',warm:'sepia(.22) saturate(1.08) contrast(1.04)',cool:'saturate(.85) hue-rotate(-8deg) contrast(1.05)',
+  archive:'sepia(.65) contrast(1.18) brightness(.97)'};
+function frameFor(g,x,y,w,h,style,caption){ // the print around a photograph
+  if(style==='print'||style==='taped'||style==='polaroid'){const b=U*.014,bb=style==='polaroid'?U*.09:b;
+    g.rect(w+b*2,h+b+bb).move(x-b+U*.01,y-b+U*.012).fill('#00000040');g.rect(w+b*2,h+b+bb).move(x-b,y-b).fill('#FBF9F3');
+    if(style==='taped')[[x+w*.12,y-b],[x+w*.82,y-b]].forEach(([tx,ty],i)=>g.rect(U*.12,U*.035).center(tx,ty).fill('#E8DDBF').opacity(.85).attr({transform:`rotate(${i?6:-5},${tx},${ty})`}));
+    if(style==='polaroid'&&caption)fit(T(g,caption,U*.03,x+w/2,y+h+bb*.55,{family:'Caveat',weight:700,fill:INK}),w*.9)}}
+function annoLayer(g,list,x0,y0,iw,ih,start){const col=K.mark||'#D7262B',halo=t=>t.attr({stroke:'#FFFFFF','stroke-width':U*.007,'stroke-linejoin':'round','paint-order':'stroke'});   // marker notes stay readable over any photo
+  (list||[]).forEach((a,i)=>{const st=start+i*.45,X=v=>x0+v*iw,Y=v=>y0+v*ih;
+    if(a.kind==='circle'){const [cx,cy,r]=a.p;penCircle(g,X(cx),Y(cy),r*iw,st);if(a.label){const t=halo(T(g,a.label,U*.05,X(cx)+r*iw*1.15,Y(cy)-r*ih*.8,{family:'Caveat',weight:700,fill:col,anchor:'start'}));wipe(t,st+.35)}}
+    else if(a.kind==='arrow'){const [x1,y1,x2,y2]=a.p;penLine(g,[[X(x1),Y(y1)],[X(x2),Y(y2)]],st,.4,col,U*.007);arrowHead(g,X(x2),Y(y2),Math.atan2(Y(y2)-Y(y1),X(x2)-X(x1)),st+.38);
+      if(a.label){const t=halo(T(g,a.label,U*.048,X(x1),Y(y1)-U*.03,{family:'Caveat',weight:700,fill:col}));wipe(t,st)}}
+    else if(a.kind==='box'){const [bx,by,bw,bh]=a.p;const r=roughShape(g,(gen,o)=>gen.rectangle(X(bx),Y(by),bw*iw,bh*ih,o),st,.45,col,U*.005)||g.rect(bw*iw,bh*ih).move(X(bx),Y(by)).fill('none').stroke({color:col,width:U*.006});if(!window.rough)wipe(r,st);
+      if(a.label){const t=T(g,a.label.toUpperCase(),U*.028,X(bx),Y(by)-U*.024,{family:'Inter',weight:800,anchor:'start',fill:'#FFFFFF'});const bb=t.bbox();
+        g.rect(bb.width+U*.02,bb.height+U*.01).center(bb.cx,bb.cy).fill(col);t.front();wipe(t,st)}}
+    else if(a.kind==='highlight'){const [bx,by,bw,bh]=a.p;   // the key line of a real document: the yellow marker sweeps it, under the ink
+      const r=g.rect(1,bh*ih).move(X(bx),Y(by)).fill(SIG).opacity(0).attr({style:'mix-blend-mode:multiply'});at(st,.6,p=>r.width(Math.max(1,bw*iw*p)).opacity(p>0?.62:0),E.inout)}
+    else if(a.kind==='label'){const [lx,ly]=a.p;placeTag(g,a.label,X(lx),Y(ly),st,0)}})}
+function photoCredit(){if(P.credit){const t=mono(L.front,(((P.creditLabel||'PHOTO')+': ')+P.credit).toUpperCase(),W-U*.04,H-U*.03,{anchor:'end',size:U*.013,weight:700});t.addClass('keep');fit(t,W*.6);t.opacity(.85)}}
+function photo(){ // one photograph as a moving composition: depth layers, a deliberate camera, annotations, a handover
+  const framed=P.frame&&P.frame!=='none',k=framed?Math.min(W*.74/P.w,H*.72/P.h):Math.max(W/P.w,H/P.h)*1.1;
+  const iw=P.w*k,ih=P.h*k,x0=(W-iw)/2,y0=framed?(H-ih)/2-U*.02:(H-ih)/2;
+  let pr=null;const th=P.then||null;if(th&&th.kind==='pin'&&P.box){pr=mapFrame(TALL?.86:.62,TALL?.52:.66)}
+  const cover=L.back.rect(W,H).fill(PAPER);if(!th||th.kind!=='pin')cover.opacity(0);
+  const G=L.back.group();if(framed)frameFor(G,x0,y0,iw,ih,P.frame,P.title);const ph=G.group(),pcl=draw.clip();pcl.rect(iw,ih).move(x0,y0);ph.clipWith(pcl);   // layers never leave the picture's own edge
+  const filt=GRADE[P.grade]||'';const base=ph.image(P.far||P.img).size(iw,ih).move(x0,y0);if(filt)base.attr({style:'filter:'+filt});
+  const lays=(P.layers||[]).map(l=>{const im=ph.image(l.img).size(iw,ih).move(x0,y0);if(filt)im.attr({style:'filter:'+filt});return {im,d:l.depth}});
+  const ann=G.group();annoLayer(ann,P.annotate,x0,y0,iw,ih,.9);
+  // the move: scale and drift over the shot; near layers move more than far ones (2.5D parallax)
+  const mv=P.move||'push';let s0=1,s1=1.09,dx0=0,dx1=0,dy0=0,dy1=0;
+  if(mv==='pull'){s0=1.12;s1=1.0}else if(mv==='pan-left'){dx0=iw*.04;dx1=-iw*.04;s0=s1=1.05}else if(mv==='pan-right'){dx0=-iw*.04;dx1=iw*.04;s0=s1=1.05}
+  else if(mv==='tilt-up'){dy0=ih*.035;dy1=-ih*.035;s0=s1=1.05}else if(mv==='tilt-down'){dy0=-ih*.035;dy1=ih*.035;s0=s1=1.05}else if(mv==='still'){s1=1.0}
+  // subject-aware framing: a push or pull pivots toward the subject the cut-out found, and never crops its head
+  // annotated points come first: the move keeps every circle, arrow and box (and its label) in the frame
+  const an=(P.annotate||[]).map(a=>a.kind==='circle'?[a.p[0],a.p[1],a.p[2]]:(a.kind==='box'||a.kind==='highlight')?[a.p[0]+a.p[2]/2,a.p[1]+a.p[3]/2,Math.max(a.p[2],a.p[3])/2]:[a.p[0],a.p[1],.03]);
+  const focus=an.length?[an.reduce((v,a)=>v+a[0],0)/an.length,an.reduce((v,a)=>v+a[1],0)/an.length,Math.min(...an.map(a=>a[1]-a[2]))-.08,Math.max(...an.map(a=>a[1]+a[2]))+.06]:P.subj;
+  if(an.length&&mv==='push')s1=Math.min(s1,1.06);
+  if(focus&&(mv==='push'||mv==='pull')){const C=[W/2,H/2],sp=[x0+focus[0]*iw,y0+focus[1]*ih],top=y0+focus[2]*ih,bot=y0+focus[3]*ih;
+    const aim=(s,o)=>{let ox=(sp[0]-C[0])*(1-s)*.75,oy=(sp[1]-C[1])*(1-s)*.75;
+      const ty=C[1]+oy+s*(top-C[1]),by=C[1]+oy+s*(bot-C[1]);if(ty<H*.05)oy+=H*.05-ty;else if(by>H*1.02&&ty-(by-H*1.02)>H*.05)oy-=Math.min(by-H*1.02,ty-H*.05);
+      const ix0=C[0]+ox+s*(x0-C[0]),ix1=C[0]+ox+s*(x0+iw-C[0]),iy0=C[1]+oy+s*(y0-C[1]),iy1=C[1]+oy+s*(y0+ih-C[1]);   // never show past the photo's edge
+      if(ix0>0)ox-=ix0;if(ix1<W)ox+=W-ix1;if(iy0>0)oy-=iy0;if(iy1<H)oy+=H-iy1;return [ox,oy]};
+    [dx0,dy0]=aim(s0);[dx1,dy1]=aim(s1)}
+  let spot=null,spotFr=null;if(mv==='detail'&&P.at){const [ax,ay,aw,ah]=P.at;const cx=x0+(ax+aw/2)*iw,cy=y0+(ay+ah/2)*ih;s1=Math.min(2.6,Math.max(1.3,.6*Math.min(W/(aw*iw),H/(ah*ih))));
+    dx1=(W/2-cx);dy1=(H/2-cy);
+    const m=draw.mask();m.rect(W*4,H*4).move(-W*1.5,-H*1.5).fill('#fff');m.rect(aw*iw,ah*ih).move(x0+ax*iw,y0+ay*ih).fill('#000').radius(U*.01);
+    spot=G.rect(W*4,H*4).move(-W*1.5,-H*1.5).fill('#000').opacity(0).maskWith(m);
+    spotFr=G.rect(aw*iw,ah*ih).move(x0+ax*iw,y0+ay*ih).fill('none').stroke({color:K.mark||'#D7262B',width:U*.004}).opacity(0)}
+  const T1=th?Math.max(1.4,DUR*.55):DUR;
+  TICKS.push(t=>{const p=E.inout(Math.min(1,t/Math.max(.5,T1))),s=s0+(s1-s0)*p,dx=dx0+(dx1-dx0)*p,dy=dy0+(dy1-dy0)*p;
+    const tf=(sc,ox,oy)=>`translate(${W/2+ox},${H/2+oy}) scale(${sc}) translate(${-W/2},${-H/2})`;
+    let hs=1,hx=0,hy=0,ho=1;if(th){const q=E.inout(Math.max(0,Math.min(1,(t-T1)/.9)));
+      if(th.kind==='pin'&&pr&&th.at){const [px,py]=pr(th.at[0],th.at[1]);const card=Math.min(W*.24,H*.3)/Math.max(iw,ih);hs=1+(card-1)*q;hx=(px-W/2)*q;hy=(py-H/2-ih*card*.72)*q;cover.opacity(1-q)}   // the photo becomes a card pinned above its place
+      else if(th.kind==='number'){base.attr({style:`filter:${filt} grayscale(${q}) brightness(${1-.55*q})`});lays.forEach(l=>l.im.attr({style:`filter:${filt} grayscale(${q}) brightness(${1-.55*q})`}))}}
+    G.attr({transform:`translate(${hx},${hy}) `+tf(s*hs,dx*hs,dy*hs)});
+    const calm=th?Math.max(0,1-Math.max(0,t-T1)/.6):1;lays.forEach(l=>{const par=(l.d-.35)*(p-.5)*calm;l.im.attr({transform:`translate(${-(dx1-dx0)*.06*par*4+(mv==='push'?0:0)},${-(dy1-dy0)*.06*par*4}) `+
+      `translate(${W/2},${H/2}) scale(${1+(s1-s0)*.35*l.d*p*calm}) translate(${-W/2},${-H/2})`})});
+    if(spot){const out=th?Math.max(0,1-(t-T1)/.5):1;spot.opacity(.55*Math.min(1,Math.max(0,(t-.6)/.6))*Math.min(1,out));spotFr.opacity(Math.min(1,Math.max(0,(t-.9)/.4))*Math.min(1,out))}});
+  if(P.light==='sweep'){const gr=draw.gradient('linear',a=>{a.stop(0,'#FFFFFF',0);a.stop(.5,'#FFF6E0',.55);a.stop(1,'#FFFFFF',0)});
+    const sw=L.front.rect(W*.35,H*1.6).fill(gr).attr({style:'mix-blend-mode:screen'}).opacity(.7);TICKS.push(t=>{const q=Math.min(1,t/DUR);sw.attr({transform:`translate(${-W*.4+W*1.5*q},${-H*.3}) rotate(14,${W*.17},${H*.8})`})})}
+  if(P.title&&!framed){const b=boxText(L.front,P.title,U*.05,U*.06,H-U*.16,{anchor:'start',maxw:W*.6,most:2});K.capBox=b.bbox();wipe(b,.5)}
+  if(th&&th.kind==='pin'&&pr&&th.at){const [px,py]=pr(th.at[0],th.at[1]);const pn=L.front.group();pn.circle(U*.02).center(px,py).fill(INK).stroke({color:'#FFFFFF',width:U*.004});
+    pn.opacity(0);at(T1+.7,.3,q=>pn.opacity(q));placeTag(L.front,th.place,px,py+U*.11,T1+.9,0);FOCUS={x:px,y:py,rx:U*.1,ry:U*.1}}
+  if(th&&th.kind==='number'){const n=T(L.front,th.figure,TALL?W*.32:H*.36,W/2,H*.44,{family:'Anton',weight:400,fill:'#FFFFFF'});fit(n,W*.85);n.opacity(0);at(T1+.3,.5,q=>n.opacity(q));
+    if(th.caption){const c=boxText(L.front,th.caption,U*.045,W/2,H*.7,{anchor:'middle',maxw:W*.8,most:2});c.opacity(0);at(T1+.6,.4,q=>c.opacity(q))}}
+  if(!FOCUS&&P.annotate&&P.annotate.length){const a=P.annotate[0];FOCUS={x:x0+a.p[0]*iw,y:y0+a.p[1]*ih,rx:U*.1,ry:U*.1}}
+  photoCredit()}
+function photos(){ // several photographs: side by side, a collage of prints, or one after another
+  const ims=P.imgs,n=ims.length,filt=GRADE[P.grade]||'';
+  if(P.mode==='split'){const pw=W/n;ims.forEach((im,i)=>{const g=L.back.group(),cl=draw.clip();cl.rect(pw-U*.006,H).move(i*pw,0);
+      const k=Math.max(pw/im.w,H/im.h)*1.08,iw=im.w*k,ih=im.h*k;const el=g.image(im.img).size(iw,ih).move(i*pw+(pw-iw)/2,(H-ih)/2);if(filt)el.attr({style:'filter:'+filt});g.clipWith(cl);
+      TICKS.push(t=>{const s=1+.05*Math.min(1,t/DUR);el.attr({transform:`translate(${i*pw+pw/2},${H/2}) scale(${s}) translate(${-(i*pw+pw/2)},${-H/2})`})});slide(g,.1+i*.2,0,i%2?H*.06:-H*.06);
+      const lb=P.labels[i];if(lb){const t=boxText(L.front,lb,U*.04,i*pw+pw/2,H*.1,{anchor:'middle',maxw:pw*.85,most:2});wipe(t,.5+i*.2)}});
+    for(let i=1;i<n;i++){const ln=L.mid.rect(U*.008,H).move(i*W/n-U*.004,0).fill(PAPER);wipe(ln,.2)}}
+  else if((P.mode==='swipe'||P.mode==='fade')&&n>=2){ // before / after: the same frame, the later picture wiped or dissolved over the earlier
+    const im0=ims[0],k=Math.max(W/im0.w,H/im0.h)*1.04,iw=im0.w*k,ih=im0.h*k,ix=(W-iw)/2,iy=(H-ih)/2;
+    const a=L.back.image(ims[0].img).size(iw,ih).move(ix,iy),gb=L.back.group(),b=gb.image(ims[1].img).size(iw,ih).move(ix,iy);if(filt){a.attr({style:'filter:'+filt});b.attr({style:'filter:'+filt})}
+    const T0=DUR*.3,T1=Math.min(DUR-.6,T0+Math.max(1.2,DUR*.3));
+    TICKS.push(t=>{const s=1+.04*Math.min(1,t/DUR),tr=`translate(${W/2},${H/2}) scale(${s}) translate(${-W/2},${-H/2})`;a.attr({transform:tr});b.attr({transform:tr})});
+    const la=P.labels[0]?boxText(L.front,P.labels[0],U*.045,U*.06,H-U*.12,{anchor:'start',maxw:W*.4,most:1}):null,lb=P.labels[1]?boxText(L.front,P.labels[1],U*.045,W-U*.06,H-U*.12,{anchor:'end',maxw:W*.4,most:1}):null;
+    if(la)wipe(la,.3);if(lb){lb.opacity(0)}
+    if(P.mode==='swipe'){const cl=draw.clip(),cr=cl.rect(W,H).move(W,0);gb.clipWith(cl);const ln=L.mid.group();ln.rect(U*.006,H).move(-U*.003,0).fill('#FFFFFF');
+      ln.circle(U*.05).center(0,H/2).fill('#FFFFFF').stroke({color:INK,width:U*.004});ln.path(`M${-U*.012} ${H/2-U*.01} l${-U*.008} ${U*.01} l${U*.008} ${U*.01} M${U*.012} ${H/2-U*.01} l${U*.008} ${U*.01} l${-U*.008} ${U*.01}`).fill('none').stroke({color:INK,width:U*.004});
+      TICKS.push(t=>{const p=E.inout(Math.max(0,Math.min(1,(t-T0)/(T1-T0))));const xx=W*(1-p);cr.move(xx,0);ln.attr({transform:`translate(${xx},0)`});ln.opacity(p>0&&p<1?1:p>=1?Math.max(0,1-(t-T1)/.4):0);
+        if(la)la.opacity(p<.98?1:Math.max(0,1-(t-T1)/.3));if(lb)lb.opacity(Math.min(1,p*1.5))})}
+    else{b.opacity(0);TICKS.push(t=>{const p=E.inout(Math.max(0,Math.min(1,(t-T0)/(T1-T0))));b.opacity(p);if(la)la.opacity(1-p);if(lb)lb.opacity(p)})}}
+  else if(P.mode==='sequence'){const each=DUR/n;const els=ims.map((im,i)=>{const k=Math.max(W/im.w,H/im.h)*1.08;const el=L.back.image(im.img).size(im.w*k,im.h*k).move((W-im.w*k)/2,(H-im.h*k)/2);if(filt)el.attr({style:'filter:'+filt});el.opacity(i?0:1);return el});
+    TICKS.push(t=>{els.forEach((el,i)=>{const a=t-i*each,o=i===0?(a<each-.25?1:Math.max(0,1-(a-each+.25)/.35)):(a<0?0:a<.35?a/.35:a<each-.25||i===n-1?1:Math.max(0,1-(a-each+.25)/.35));el.opacity(o);
+      const s=1+.07*Math.max(0,Math.min(1,a/each));el.attr({transform:`translate(${W/2},${H/2}) scale(${s}) translate(${-W/2},${-H/2})`})})});
+    P.labels.forEach((lb,i)=>{const b=boxText(L.front,lb,U*.045,U*.06,H-U*.15,{anchor:'start',maxw:W*.6,most:1});b.opacity(0);at(i*each+.3,.3,q=>b.opacity(i===n-1?q:q))})}
+  else{const cols=Math.min(3,n),rows=Math.ceil(n/cols),cw=W*.8/cols,ch=H*.74/rows;ims.forEach((im,i)=>{const c=i%cols,r=Math.floor(i/cols);
+      const k=Math.min(cw*.86/im.w,ch*.8/im.h),iw=im.w*k,ih=im.h*k,cx=W*.1+cw*(c+.5),cy=H*.16+ch*(r+.5);const g=L.hero.group();
+      frameFor(g,cx-iw/2,cy-ih/2,iw,ih,'print','');const el=g.image(im.img).size(iw,ih).move(cx-iw/2,cy-ih/2);if(filt)el.attr({style:'filter:'+filt});
+      g.attr({transform:`rotate(${((i*37)%9)-4},${cx},${cy})`});drop(g,.15+i*.25,H*.25,((i*53)%11)-5);
+      const lb=P.labels[i];if(lb)placeTag(L.front,lb,cx,cy+ih/2+U*.05,.6+i*.25,0)})}
+  if(P.title&&P.mode!=='split'){chartTitle(P.title)}photoCredit()}
+function footage(){ // moving footage, frame by frame, with the same annotations and titles as a photograph
+  // cutout: the rotoscoped subject (white paper edge) moves on the paper, a little smaller, with a shadow
+  const cut=!!P.cutout,k=cut?.86:1,el=(cut?L.hero:L.back).image(P.frames[0]).size(W*k,H*k).move(W*(1-k)/2,H*(1-k)/2+(cut?H*.03:0));
+  if(cut)el.attr({filter:'url(#shadow)'});const filt=GRADE[P.grade]||'';if(filt)el.attr({style:'filter:'+filt});let cur=-1;
+  if(P.track&&P.follow!==undefined&&P.follow!==''){const mk=L.front.group(),col=K.mark||'#D7262B';
+    const ring=mk.ellipse(10,10).fill('none').stroke({color:col,width:U*.007});const note=P.follow.trim()?T(mk,P.follow.trim(),U*.045,0,0,{family:'Caveat',weight:700,fill:col,anchor:'start'}):null;
+    mk.opacity(0);at(.6,.4,q=>mk.opacity(q));
+    TICKS.push(t=>{const i=Math.min(P.track.length-1,Math.floor(t*P.ffps+1e-6)),b=P.trackBox[i],[cx,cy]=P.track[i];
+      const X=v=>W*(1-k)/2+v*W*k,Y=v=>H*(1-k)/2+(cut?H*.03:0)+v*H*k,rx=Math.max(U*.05,(b[2]-b[0])*W*k*.62),ry=Math.max(U*.05,(b[3]-b[1])*H*k*.62);
+      ring.size(rx*2,ry*2).center(X(cx),Y(cy));if(note)note.attr({x:X(cx)+rx+U*.02,y:Y(cy)-ry*.7});return null})}
+  TICKS.push(t=>{const i=Math.min(P.frames.length-1,Math.floor(t*P.ffps+1e-6));if(i===cur)return null;cur=i;
+    return new Promise(res=>{el.node.addEventListener('load',()=>res(),{once:true});setTimeout(res,250);el.attr({href:P.frames[i]})})});
+  const ann=L.mid.group();annoLayer(ann,P.annotate,0,0,W,H,.9);
+  if(!cut){const vg=draw.gradient('radial',a=>{a.stop(.55,'#000',0);a.stop(1,'#000',.45)});L.mid.rect(W,H).fill(vg)}
+  if(P.title){const b=boxText(L.front,P.title,U*.05,U*.06,H-U*.16,{anchor:'start',maxw:W*.6,most:2});K.capBox=b.bbox();wipe(b,.5)}
+  if(P.annotate&&P.annotate.length){const a=P.annotate[0];FOCUS={x:a.p[0]*W,y:a.p[1]*H,rx:U*.1,ry:U*.1}}
+  photoCredit()}
+
+const SCENES={frame:voxFrame,poster,mapdesk,assemble:assembleScene,grids,wash,reel,conveyor,tiles,pile,units,myth,counter,staircase,scale,photo,photos,footage,shrink,morph,borders,courtdoc,table,interview,endcard,polltrack,area,candles,arrows,railmap,sizemap,pyramid,flowchart:flow,linkmap,orgchart,heatmap,hero,desk,evidence,opener,reveal,headline,pinmap,number,seats,stack,stand,fan,trend,slice,route,compare,photoline,tv,
+  clockmap,tornsplit,newscard,blueprint};
+async function boot(){
+  try{await Promise.all(Array.from(document.fonts).map(f=>f.load()))}catch(e){}
+  const imgs=[];const pre=u=>imgs.push(new Promise(r=>{const i=new Image();i.onload=i.onerror=r;i.src=u}));
+  (P.pics||[]).forEach(p=>{if(p.img)pre(p.img)});[P.img,P.far].concat((P.layers||[]).map(l=>l.img),(P.imgs||[]).map(x=>x.img),P.frames||[]).forEach(u=>{if(u)pre(u)});
+  await Promise.all(imgs);
+  (SCENES[P.type]||hero)();logoLayer();markerLayer();badgeLayer();srcLayer();insetLayer();layout();companion();
+  const film=filmLayer(),fx=fxLayer(),voice=voiceLayer();
+  window.frame=function(t){camera(t);const tq=Math.floor(t*12+1e-6)/12;   // the hand-made 12 fps stutter
+    for(const k of tracks){const p=Math.max(0,Math.min(1,(tq-k.start)/k.dur));k.fn(k.e(p))}if(FLIPS.length)reflip();film(t,tq);fx(t);voice(t);
+    const w=TICKS.map(f=>f(t)).filter(Boolean);return w.length?Promise.all(w):undefined};   // photo / footage: every real frame
+  // the page measures what the viewer will read (motion.capture calls it once everything has landed):
+  // text under 2.6% of the frame's short side is too small on a phone; text past the frame edge is cut off
+  window.QA=function(){const small=[],cut=[],floor=U*.026;
+    document.querySelectorAll('text').forEach(el=>{const s=(el.textContent||'').trim();if(!s||/^(SOURCES?|PHOTO|IMAGERY|MAPS?|DATA|OUTLINES|CREDIT)[: ]|©/i.test(s))return;
+      let o=1;for(let n=el;n&&n.getAttribute;n=n.parentNode){const v=n.getAttribute('opacity');if(v!==null)o*=parseFloat(v)||0;
+        const st=n.style&&n.style.opacity;if(st!=='')o*=parseFloat(st)}
+      if(o<.5||el.closest('[clip-path]'))return;const r=el.getBoundingClientRect();   // clipped copies (a lens) are only seen inside the clip
+if(r.width<1||r.height<1)return;
+      const m=el.getScreenCTM(),fs=parseFloat(el.getAttribute('font-size')||getComputedStyle(el).fontSize)||0,px=fs*(m?Math.hypot(m.a,m.b):1);
+      if(px&&px<floor)small.push(s.slice(0,40)+' ('+px.toFixed(0)+'px)');
+      // the ink, not the font's line box: tall display faces (Anton, Oswald) carry a lot of empty ascent
+      let top=r.top,bot=r.bottom;try{const cs=getComputedStyle(el),c=QA.cx||(QA.cx=document.createElement('canvas').getContext('2d'));
+        c.font=`${cs.fontStyle} ${cs.fontWeight} 100px ${cs.fontFamily}`;const mm=c.measureText(s),fa=mm.fontBoundingBoxAscent,fd=mm.fontBoundingBoxDescent;
+        if(fa&&fd){const k=r.height/(fa+fd),base=r.top+fa*k;top=base-mm.actualBoundingBoxAscent*k;bot=base+mm.actualBoundingBoxDescent*k}}catch(e){}
+      if(r.left<-2||top<-2||r.right>W+2||bot>H+2)cut.push(s.slice(0,40))});
+    // words sitting on other words: two visible lines whose ink boxes overlap by more than a quarter of the smaller
+    const seen=[];document.querySelectorAll('text').forEach(el=>{const s=(el.textContent||'').trim();if(!s||el.closest('[clip-path]'))return;
+      let o=1;for(let n=el;n&&n.getAttribute;n=n.parentNode){const v=n.getAttribute('opacity');if(v!==null)o*=parseFloat(v)||0}
+      if(o<.5)return;const r=el.getBoundingClientRect();if(r.width<=1||r.height<=1)return;let top=r.top,bot=r.bottom;
+      try{const cs=getComputedStyle(el),c=QA.cx||(QA.cx=document.createElement('canvas').getContext('2d'));c.font=`${cs.fontStyle} ${cs.fontWeight} 100px ${cs.fontFamily}`;
+        const mm=c.measureText(s),fa=mm.fontBoundingBoxAscent,fd=mm.fontBoundingBoxDescent;if(fa&&fd){const k=r.height/(fa+fd),base=r.top+fa*k;top=base-mm.actualBoundingBoxAscent*k;bot=base+mm.actualBoundingBoxDescent*k}}catch(e){}
+      seen.push([s,{left:r.left,right:r.right,top,bottom:bot,width:r.width,height:Math.max(1,bot-top)}])});   // the ink, as for the cut-off test
+    const over=[];for(let i=0;i<seen.length;i++)for(let j=i+1;j<seen.length;j++){const a=seen[i][1],b=seen[j][1];
+      const w=Math.min(a.right,b.right)-Math.max(a.left,b.left),h=Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top);
+      if(w>0&&h>0&&w*h>.25*Math.min(a.width*a.height,b.width*b.height))over.push(seen[i][0].slice(0,24)+' / '+seen[j][0].slice(0,24))}
+    return {text_below_floor:small.slice(0,8),text_cut_off:cut.concat(DROPPED.map(d=>'dropped: '+d)).slice(0,8),text_overlap:over.slice(0,8)}};
+  window.frame(0);window.READY=true}
+boot();
+</script></body></html>"""
+
+
+def render(kind: str, spec: str, theme: str, width: int, height: int, seconds: float, out: Path, work: Path,
+           lib: Path | None = None, model: Path | None = None, fetch: bool = True, fps: int | None = None,
+           tone: str = "cream", sources: list[tuple[str, str]] | None = None, props: bool = False,
+           layout: str = "", levels: list[float] | None = None) -> Path:
+    """Draws one Vox scene into `out` (H.264). `layout` is one of LAYOUT_SETS[kind] (default: picked from the spec)."""
+    from . import motion
+    if not motion.enabled():
+        raise MediaError("vox scenes need the animation engine (Chromium + Playwright)")
+    if kind in DATAMAP_KINDS:
+        from . import datamap
+        return datamap.render(kind, spec, theme, width, height, seconds, out, work, fps=fps)
+    sat_credit = ""
+    if kind == "satellite":
+        # dated imagery downloaded, then shown as a before / after of two photographs (swipe, dissolve or side by side)
+        from . import satellite
+        spec, sat_credit, _ = satellite.prepare(spec, work, width, height)
+        kind = "photos"
+    plan = plan_for(kind, spec)
+    if plan is None:
+        raise MediaError(f"vox: nothing to draw from {spec!r}")
+    if plan["type"] in ("photo", "photos", "footage"):
+        # a real photograph or footage: prepared into layers / frames; the shot moves itself (the page camera holds)
+        from . import photo as _photo
+        _photo.prepare(plan, work, model, width, height)
+        if sat_credit:
+            plan["credit"], plan["creditLabel"] = sat_credit, "IMAGERY"
+        plan.setdefault("camera", "still")
+        if plan.get("illustrative"):
+            plan["badge"] = BADGES["illustrative"]
+        th = plan.get("then") or {}
+        if th.get("kind") == "pin":
+            g = _geo([th["place"]])
+            if g:
+                th["at"] = [g[0]["lon"], g[0]["lat"]]
+                plan["box"], plan["shapes"] = _map_frame([(g[0]["lon"] - 9, g[0]["lat"] - 6), (g[0]["lon"] + 9, g[0]["lat"] + 6)], 0.2)
+            else:
+                plan.pop("then")
+    elif plan["type"] == "assemble":
+        from . import assemble as _asm, cutouts as _cut, photo as _photo
+        try:
+            f, rec = _photo.resolve(plan["file"])
+        except MediaError:
+            raise MediaError(f"vox: assemble needs a poster image: {plan['file']} was not found")
+        cut = _asm.pieces(Path(f), work, plan.get("boxes") or None, lambda im: _cut._mask(im, model, False))
+        plan["asm"] = {"bd": Path(cut["bd"]).resolve().as_uri(), "w": cut["w"], "h": cut["h"], "mode": cut["mode"],
+                       "pieces": [{**{k: v for k, v in pc.items() if k != "file"}, "img": Path(pc["file"]).resolve().as_uri()}
+                                  for pc in cut["pieces"]]}
+        if rec.get("illustrative") or rec.get("ai_generated") or plan.get("illustrative"):
+            plan["badge"] = BADGES["illustrative"]
+        if rec.get("credit") and not rec.get("ai_generated"):
+            plan["credit"] = rec["credit"][:110]
+        plan["pics"], plan["camera"] = [], "still"
+    else:
+        _pictures(plan, lib, model, fetch, sources, era_in(theme))
+    if plan["type"] == "frame":
+        plan["bgpic"] = _background(plan["bgq"], fetch)
+        if plan["bgpic"] is None:
+            plan.setdefault("missing", []).append(f"background photo: {plan['bgq']}")
+        else:
+            cr = plan["bgpic"].get("credit", "")
+            rest = plan.get("credit", "").split(": ", 1)[-1] if plan.get("credit") else ""
+            short = lambda c: re.sub(r"\s*/\s*Wikimedia Commons", " / Wikimedia", re.sub(r"\(per [^)]*\)\s*", "", c)).strip()
+            plan["credit"] = " · ".join(short(x) for x in (cr, rest) if x)[:110]
+    # asset check before the render: a photo much smaller than the size it is shown at will look soft
+    soft = [f"{p.get('name')}: {p['w']}x{p['h']} px shown about {int(height * (0.4 if height > width else 0.6))} px tall"
+            for p in plan.get("pics", []) if p.get("img") and p.get("h", 9999) < height * (0.4 if height > width else 0.6) * 0.55]
+    sidecar = {k: v for k, v in (("low_resolution", soft), ("no_picture", plan.get("missing", []))) if v}
+    if sidecar:
+        out.with_suffix(".qa.json").write_text(json.dumps(sidecar), encoding="utf-8")
+    if levels and wants_voice(kind, spec):
+        plan["levels"] = [float(v) for v in levels][:1200]     # the voice, 12 readings a second: the bars move with it
+    if plan["type"] == "hero" and not plan["pics"]:
+        raise MediaError("vox: no picture or icon for the subject" + (f" ({', '.join(plan['missing'])})" if plan.get("missing") else ""))
+    fps = int(fps or os.environ.get("CF_MOTION_FPS") or (60 if os.environ.get("CF_FPS") == "60" else 30))
+    seconds = max(1.5, float(seconds))
+    look = look_of(theme)
+    tone = plan.get("tone") or ("grid" if plan["type"] in ("desk", "reveal", "newscard") else tone)
+    paper_hex = look["paper"] if tone == "cream" else PAPERS.get(tone, PAPERS["cream"])
+    dna = dna_of(theme)
+    if dna:
+        paper_hex = dna["surface"]
+        theme = re.sub(r"@[^/]*", "@" + dna["accent"], theme, count=1) if "@" in theme else theme + "@" + dna["accent"]
+    bg, grain = paper(paper_hex, width, height, work, dna["vignette"] if dna else 1.0)
+    kit = {"sig": SIGNATURE, "acc": accent_of(theme), "accText": readable(accent_of(theme), paper_hex), "acc2": "#E0442C" if accent_of(theme) != ACCENTS["red"] else "#F2C200", "ink": INK, "paper": paper_hex, "dark": tone == "dark", "tone": tone, "props": props,
+           "bg": bg.as_uri(), "grain": grain.as_uri(),
+           "mark": look["mark"], "cam": CAMERAS[plan["camera"]] if plan.get("camera") in CAMERAS else _seed("cam", spec, theme) % 4, "exit": plan.get("exit") or EXITS[_seed("exit", spec, theme) % len(EXITS)], "lay": layout if layout in LAYOUT_SETS.get(kind, ()) else
+           layout_for(kind, 0, _seed("layout", spec, theme)), "desk": DESKS[_seed("desk", theme) % len(DESKS)], "dir": 1 if _seed("dir", spec) % 2 else -1, "fam": {"Playfair": look["head"], "Anton": look["big"], "Caveat": look["hand"]}}
+    if dna:
+        f = dna["fonts"]
+        kit.update({"ink": dna["ink"], "fg": dna.get("fg"), "dark": dna["dark"], "fam": {"Playfair": f["head"], "Anton": f["big"], "Caveat": f["hand"], "Inter": f["label"]},
+                    "tagstyle": dna["tag"], "frame": FRAMES.get(dna["frame"], "none"), "pattern": dna["pattern"], "grainOp": dna["grain"]})
+        look = {**look, "sea": dna["sea"], "land": dna["land"], "edge": dna["edge"]}
+    js = _PAGE
+    for old, new in (("#B8CDD1", look["sea"]), ("#EFE3C2", look["land"]), ("#8E7E5C", look["edge"])):
+        js = js.replace(old, new)
+    page = (js.replace("%SVGJS%", motion.VENDOR.read_text(encoding="utf-8")).replace("%FONTS%", _font_css())
+            .replace("%HAND%", (Path(__file__).parent / "vendor" / "hand.js").read_text(encoding="utf-8"))
+            .replace("%ILLU%", (Path(__file__).parent / "vendor" / "illustrations.js").read_text(encoding="utf-8"))
+            .replace("%BRUSH%", "<script>" + (Path(__file__).parent / "vendor" / "p5brush.js").read_text(encoding="utf-8")
+                     + "</script><script>window.PB=window.brush;</script>"    # kept as PB: the page has its own brush()
+                     if plan.get("type") == "wash" else "")   # p5.brush (MIT) only where a scene paints
+            .replace("%PAPER%", paper_hex).replace("%PLAN%", json.dumps(plan, ensure_ascii=False))
+            .replace("%W%", str(width)).replace("%H%", str(height)).replace("%DUR%", f"{seconds:.3f}")
+            .replace("%KIT%", json.dumps(kit)))
+    work.mkdir(parents=True, exist_ok=True)
+    html = work / f"vox_{out.stem}.html"
+    html.write_text(page, encoding="utf-8")
+    return motion.capture(html, width, height, seconds, fps, out)

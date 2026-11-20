@@ -1,0 +1,2349 @@
+{
+ "slug": "pepper-was-money",
+ "title": "Pepper Was Money",
+ "channel": "printfacts",
+ "voice": "af_heart",
+ "speed": 1.1,
+ "treatment": "pulse",
+ "guide": {
+  "Muziris": "Moo-ziris",
+  "Berenike": "Berry-nee-kay",
+  "Piper nigrum": "Pie-per nye-grum",
+  "Horrea Piperataria": "Hor-ray-ah Pipper-ah-tar-ia",
+  "Pfeffersack": "Feffer-zack",
+  "Kozhikode": "Koh-zhi-kode",
+  "sesterces": "sess-ter-seez",
+  "denarii": "deh-nar-ee-eye",
+  "Pliny": "Plinny"
+ },
+ "reload_pages": [],
+ "shots": [
+  {
+   "id": "1.01a",
+   "beat": 1,
+   "vo": "Look closely at this jar.",
+   "page": "01_jar",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    2.2,
+    0.22,
+    0.28,
+    2.05,
+    0.23,
+    0.29
+   ]
+  },
+  {
+   "id": "1.01b",
+   "beat": 1,
+   "vo": "There's one like it on almost every table in India.",
+   "page": "01_jar",
+   "t": [
+    0,
+    0.3
+   ],
+   "cam": [
+    1.9,
+    0.26,
+    0.33,
+    1.3,
+    0.5,
+    0.52
+   ]
+  },
+  {
+   "id": "1.02a",
+   "beat": 1,
+   "vo": "I had never given it a single thought.",
+   "page": "01_jar",
+   "t": [
+    0.3,
+    0.9
+   ],
+   "cam": [
+    1.3,
+    0.45,
+    0.55,
+    1.0,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "1.02b",
+   "beat": 1,
+   "vo": "Then I found this: a list from the year 408.",
+   "page": "02_ransom",
+   "t": [
+    0,
+    0.13
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.18,
+    0.33,
+    0.4
+   ],
+   "post": 0.6,
+   "say": "Then I found this: a list from the year four oh eight."
+  },
+  {
+   "id": "1.03",
+   "beat": 1,
+   "vo": "Rome is surrounded. The city is starving.",
+   "page": "02a_siege",
+   "t": [
+    0,
+    0.82
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.05,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "1.04",
+   "beat": 1,
+   "vo": "So it does what cities did back then. It pays the army to go away.",
+   "page": "02a_siege",
+   "t": [
+    0.82,
+    1
+   ],
+   "cam": [
+    1.6,
+    0.2,
+    0.52,
+    1.35,
+    0.26,
+    0.5
+   ]
+  },
+  {
+   "id": "1.05a",
+   "beat": 1,
+   "vo": "Follow the list down.",
+   "page": "c02b_receipt",
+   "t": [
+    0.12,
+    0.13
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.2,
+    0.36,
+    0.3
+   ]
+  },
+  {
+   "id": "1.05b",
+   "beat": 1,
+   "vo": "Five thousand pounds of gold. Thirty thousand pounds of silver.",
+   "page": "c02b_receipt",
+   "t": [
+    0.13,
+    0.36
+   ],
+   "cam": [
+    1.3,
+    0.34,
+    0.24,
+    1.3,
+    0.34,
+    0.36
+   ]
+  },
+  {
+   "id": "1.06",
+   "beat": 1,
+   "vo": "Four thousand silk tunics. Three thousand scarlet skins.",
+   "page": "c02b_receipt",
+   "t": [
+    0.36,
+    0.6
+   ],
+   "cam": [
+    1.35,
+    0.34,
+    0.42,
+    1.35,
+    0.34,
+    0.52
+   ]
+  },
+  {
+   "id": "1.07",
+   "beat": 1,
+   "vo": "And three thousand pounds of pepper.",
+   "page": "c02b_receipt",
+   "t": [
+    0.6,
+    0.86
+   ],
+   "cam": [
+    1.55,
+    0.34,
+    0.6,
+    1.65,
+    0.34,
+    0.6
+   ],
+   "cut": true,
+   "post": 0.6
+  },
+  {
+   "id": "1.08",
+   "beat": 1,
+   "vo": "Pepper. In a ransom. Listed right next to the gold.",
+   "page": "c02_ransom",
+   "t": [
+    0.87,
+    0.93
+   ],
+   "cam": [
+    1.25,
+    0.3,
+    0.62,
+    1.38,
+    0.28,
+    0.68
+   ]
+  },
+  {
+   "id": "1.09",
+   "beat": 1,
+   "vo": "Like a hostage-taker going \"and, if it's not too much trouble, something for the soup.\"",
+   "page": "c02_ransom",
+   "t": [
+    0.93,
+    1.0
+   ],
+   "cam": [
+    1.6,
+    0.2,
+    0.78,
+    1.35,
+    0.4,
+    0.72
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "1.10a",
+   "beat": 1,
+   "vo": "That's strange.",
+   "page": "c02_ransom",
+   "t": [
+    1,
+    1
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.06,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "1.10b",
+   "beat": 1,
+   "vo": "Unless, for a very long time, pepper wasn't really a spice at all.",
+   "page": "03_title",
+   "t": [
+    0,
+    0.3
+   ],
+   "cam": [
+    1.14,
+    0.5,
+    0.5,
+    1.0,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "1.11",
+   "beat": 1,
+   "vo": "So I went looking. How does a spice become money?",
+   "page": "03_title",
+   "t": [
+    0.3,
+    0.85
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.1,
+    0.5,
+    0.58
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "2.01",
+   "beat": 2,
+   "vo": "I started where the pepper starts. On a map.",
+   "page": "04_maptable",
+   "t": [
+    0,
+    0.04
+   ],
+   "cam": [
+    1.8,
+    0.76,
+    0.3,
+    1.0,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "2.02",
+   "beat": 2,
+   "vo": "Right here, on this coast, a red pin goes in: Malabar.",
+   "page": "04_maptable",
+   "t": [
+    0.04,
+    0.2
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.5,
+    0.47,
+    0.6
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "2.03a",
+   "beat": 2,
+   "vo": "Black pepper is a berry from a climbing vine,",
+   "page": "04_maptable",
+   "t": [
+    0.2,
+    0.2
+   ],
+   "cam": [
+    1.95,
+    0.5,
+    0.63,
+    1.7,
+    0.48,
+    0.6
+   ]
+  },
+  {
+   "id": "2.03b",
+   "beat": 2,
+   "vo": "Piper nigrum, native to the Western Ghats of India.",
+   "page": "05_three",
+   "t": [
+    0,
+    0.12
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.3,
+    0.3,
+    0.25
+   ]
+  },
+  {
+   "id": "2.04",
+   "beat": 2,
+   "vo": "Black, white, green. Same plant, picked and treated differently.",
+   "page": "05_three",
+   "t": [
+    0.12,
+    0.8
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.06,
+    0.5,
+    0.56
+   ],
+   "build": 2.2
+  },
+  {
+   "id": "2.05",
+   "beat": 2,
+   "vo": "Pepper basically has one personality and three outfits.",
+   "page": "05_three",
+   "t": [
+    0.8,
+    0.92
+   ],
+   "cam": [
+    1.06,
+    0.5,
+    0.58,
+    1.14,
+    0.51,
+    0.66
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "2.06",
+   "beat": 2,
+   "vo": "For most of history, if you wanted pepper, it came from this one coast.",
+   "page": "s1_a",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.6,
+    0.45,
+    0.5,
+    1.6,
+    0.7,
+    0.6
+   ]
+  },
+  {
+   "id": "2.07",
+   "beat": 2,
+   "vo": "Which meant everybody who wanted it had to come here.",
+   "page": "s1_a",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.5,
+    0.68,
+    0.6,
+    1.0,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "2.08a",
+   "beat": 2,
+   "vo": "Rome wanted it badly.",
+   "page": "08a_ship",
+   "t": [
+    0,
+    0.5
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.6,
+    0.3,
+    0.47
+   ]
+  },
+  {
+   "id": "2.08b",
+   "beat": 2,
+   "vo": "Follow this ship.",
+   "page": "08a_ship",
+   "t": [
+    0.5,
+    0.9
+   ],
+   "cam": [
+    1.25,
+    0.75,
+    0.62,
+    1.1,
+    0.6,
+    0.55
+   ]
+  },
+  {
+   "id": "2.08c",
+   "beat": 2,
+   "vo": "Roman crews waited for the summer monsoon at Berenike,",
+   "page": "s1_a",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.7,
+    0.2,
+    0.28,
+    1.4,
+    0.3,
+    0.4
+   ]
+  },
+  {
+   "id": "2.09a",
+   "beat": 2,
+   "vo": "rode it across the Arabian Sea to Muziris,",
+   "page": "s1_b",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.5,
+    0.3,
+    0.6,
+    1.5,
+    0.62,
+    0.68
+   ]
+  },
+  {
+   "id": "2.09b",
+   "beat": 2,
+   "vo": "and rode the winter wind back, loaded.",
+   "page": "s1_c",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.4,
+    0.68,
+    0.7,
+    1.15,
+    0.6,
+    0.5
+   ]
+  },
+  {
+   "id": "2.10a",
+   "beat": 2,
+   "vo": "We know what Rome paid,",
+   "page": "r1_a",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    2.0,
+    0.12,
+    0.3,
+    2.1,
+    0.12,
+    0.3
+   ]
+  },
+  {
+   "id": "2.10b",
+   "beat": 2,
+   "vo": "because Pliny the Elder wrote the prices down, around 77 CE.",
+   "page": "r1_a",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.12,
+    0.45,
+    0.5
+   ],
+   "say": "because Pliny the Elder wrote the prices down, around seventy-seven C E."
+  },
+  {
+   "id": "2.11",
+   "beat": 2,
+   "vo": "Long pepper: fifteen denarii a pound. White: seven. Black: four.",
+   "page": "06_pliny",
+   "t": [
+    0.3,
+    0.9
+   ],
+   "cam": [
+    1.62,
+    0.7,
+    0.56,
+    1.55,
+    0.7,
+    0.55
+   ]
+  },
+  {
+   "id": "2.12a",
+   "beat": 2,
+   "vo": "And look at this line.",
+   "page": "r1_b",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.12,
+    0.6,
+    0.45
+   ]
+  },
+  {
+   "id": "2.12b",
+   "beat": 2,
+   "vo": "He grumbled that Romans bought pepper by weight, \"as if it were gold or silver.\"",
+   "page": "r1_b",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.15,
+    0.6,
+    0.4,
+    1.45,
+    0.68,
+    0.37
+   ]
+  },
+  {
+   "id": "2.13",
+   "beat": 2,
+   "vo": "You've heard pepper was \"worth its weight in gold.\"",
+   "page": "07_myth",
+   "t": [
+    0,
+    0.2
+   ],
+   "cam": [
+    1.25,
+    0.3,
+    0.4,
+    1.4,
+    0.25,
+    0.42
+   ],
+   "cut": true,
+   "post": 0.6
+  },
+  {
+   "id": "2.14a",
+   "beat": 2,
+   "vo": "It wasn't.",
+   "page": "r2_a",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.08,
+    0.5,
+    0.55
+   ]
+  },
+  {
+   "id": "2.14b",
+   "beat": 2,
+   "vo": "By Pliny's own prices, one pound of gold",
+   "page": "r2_a",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.5,
+    0.27,
+    0.68,
+    1.65,
+    0.27,
+    0.7
+   ]
+  },
+  {
+   "id": "2.14c",
+   "beat": 2,
+   "vo": "bought about two hundred and eighty pounds of black pepper.",
+   "page": "07_myth",
+   "t": [
+    0.2,
+    0.84
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.05,
+    0.5,
+    0.55
+   ]
+  },
+  {
+   "id": "2.15",
+   "beat": 2,
+   "vo": "That isn't \"worth its weight in gold.\"",
+   "page": "07_myth",
+   "t": [
+    0.84,
+    0.95
+   ],
+   "cam": [
+    1.2,
+    0.55,
+    0.4,
+    1.05,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "2.16",
+   "beat": 2,
+   "vo": "That's \"worth its weight in a large, reasonably priced bag.\"",
+   "page": "r2_c",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.35,
+    0.7,
+    0.62,
+    1.55,
+    0.72,
+    0.66
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "2.17a",
+   "beat": 2,
+   "vo": "So pepper wasn't priced like gold.",
+   "page": "r2_c",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.15,
+    0.5,
+    0.3
+   ]
+  },
+  {
+   "id": "2.17b",
+   "beat": 2,
+   "vo": "It was traded like gold: weighed, stored, counted.",
+   "page": "r2v",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.06,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "2.17c",
+   "beat": 2,
+   "vo": "Hold on to that.",
+   "page": "r2v",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.7,
+    0.42,
+    0.24,
+    1.8,
+    0.42,
+    0.24
+   ]
+  },
+  {
+   "id": "2.18a",
+   "beat": 2,
+   "vo": "Rome bought so much that Pliny complained",
+   "page": "08_drain",
+   "t": [
+    0,
+    0.3
+   ],
+   "cam": [
+    1.35,
+    0.25,
+    0.5,
+    1.2,
+    0.28,
+    0.5
+   ]
+  },
+  {
+   "id": "2.18b",
+   "beat": 2,
+   "vo": "India took fifty million sesterces out of the empire every year.",
+   "page": "08_drain",
+   "t": [
+    0.3,
+    0.92
+   ],
+   "cam": [
+    1.15,
+    0.3,
+    0.55,
+    1.0,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "2.19a",
+   "beat": 2,
+   "vo": "They even built warehouses just for it.",
+   "page": "r3_b",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.07,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "2.19b",
+   "beat": 2,
+   "vo": "The Horrea Piperataria.",
+   "page": "r3_b",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.3,
+    0.75,
+    0.6,
+    1.5,
+    0.8,
+    0.56
+   ]
+  },
+  {
+   "id": "2.20",
+   "beat": 2,
+   "vo": "A government building dedicated to pepper. Imagine the job title.",
+   "page": "c_r3v",
+   "t": [
+    0.3,
+    0.9
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.05,
+    0.48,
+    0.55
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "2.21a",
+   "beat": 2,
+   "vo": "And then I found a receipt.",
+   "page": "09_papyrus",
+   "t": [
+    0,
+    0.3
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.2,
+    0.35,
+    0.45
+   ]
+  },
+  {
+   "id": "2.21b",
+   "beat": 2,
+   "vo": "A papyrus in Vienna lists one ship's cargo from Muziris:",
+   "page": "09_papyrus",
+   "t": [
+    0.3,
+    0.3
+   ],
+   "cam": [
+    1.85,
+    0.24,
+    0.48,
+    1.7,
+    0.25,
+    0.5
+   ]
+  },
+  {
+   "id": "2.22a",
+   "beat": 2,
+   "vo": "about eleven hundred and fifty talents.",
+   "page": "09_papyrus",
+   "t": [
+    0.3,
+    0.55
+   ],
+   "cam": [
+    1.2,
+    0.7,
+    0.48,
+    1.35,
+    0.73,
+    0.48
+   ]
+  },
+  {
+   "id": "2.22b",
+   "beat": 2,
+   "vo": "Historians think most of it was pepper.",
+   "page": "09_papyrus",
+   "t": [
+    0.55,
+    0.8
+   ],
+   "cam": [
+    1.5,
+    0.72,
+    0.52,
+    1.6,
+    0.7,
+    0.54
+   ]
+  },
+  {
+   "id": "2.23a",
+   "beat": 2,
+   "vo": "And the money flowed the other way.",
+   "page": "s1_b",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.4,
+    0.35,
+    0.6,
+    1.4,
+    0.62,
+    0.62
+   ]
+  },
+  {
+   "id": "2.23b",
+   "beat": 2,
+   "vo": "Roman gold coins keep turning up in the soil of Kerala.",
+   "page": "08_drain",
+   "t": [
+    1,
+    1
+   ],
+   "cam": [
+    2.3,
+    0.82,
+    0.6,
+    2.3,
+    0.82,
+    0.64
+   ]
+  },
+  {
+   "id": "3.01a",
+   "beat": 3,
+   "vo": "But there was one question left.",
+   "page": "c02_ransom",
+   "t": [
+    1,
+    1
+   ],
+   "cam": [
+    1.9,
+    0.3,
+    0.6,
+    1.5,
+    0.27,
+    0.68
+   ]
+  },
+  {
+   "id": "3.01b",
+   "beat": 3,
+   "vo": "Why would anyone accept pepper as payment?",
+   "page": "c02_ransom",
+   "t": [
+    1,
+    1
+   ],
+   "cam": [
+    1.2,
+    0.7,
+    0.55,
+    1.35,
+    0.74,
+    0.6
+   ]
+  },
+  {
+   "id": "3.01c",
+   "beat": 3,
+   "vo": "Think about what money needs to do.",
+   "page": "10_rules",
+   "t": [
+    0,
+    0.12
+   ],
+   "cam": [
+    1.3,
+    0.3,
+    0.2,
+    1.1,
+    0.4,
+    0.35
+   ]
+  },
+  {
+   "id": "3.02",
+   "beat": 3,
+   "vo": "One: it has to last. Dried pepper keeps for years.",
+   "page": "10_rules",
+   "t": [
+    0.12,
+    0.5
+   ],
+   "cam": [
+    1.3,
+    0.25,
+    0.32,
+    1.45,
+    0.25,
+    0.32
+   ]
+  },
+  {
+   "id": "3.03a",
+   "beat": 3,
+   "vo": "Two: it has to be worth a lot for its size.",
+   "page": "10_rules",
+   "t": [
+    0.5,
+    0.7
+   ],
+   "cam": [
+    1.6,
+    0.24,
+    0.46,
+    1.35,
+    0.3,
+    0.44
+   ]
+  },
+  {
+   "id": "3.03b",
+   "beat": 3,
+   "vo": "A sack of pepper is a fortune you can carry on your shoulder.",
+   "page": "10a_sack",
+   "t": [
+    0,
+    0.6
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.06,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "3.04a",
+   "beat": 3,
+   "vo": "Three, the big one: other people have to want it.",
+   "page": "10_rules",
+   "t": [
+    0.7,
+    0.83
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.3,
+    0.28,
+    0.56
+   ]
+  },
+  {
+   "id": "3.04b",
+   "beat": 3,
+   "vo": "And everybody wanted pepper.",
+   "page": "10_rules",
+   "t": [
+    0.83,
+    0.92
+   ],
+   "cam": [
+    1.5,
+    0.26,
+    0.6,
+    1.6,
+    0.26,
+    0.6
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "3.05a",
+   "beat": 3,
+   "vo": "Tick all three, and it doesn't matter that it's a berry.",
+   "page": "10_rules",
+   "t": [
+    0.92,
+    1
+   ],
+   "cam": [
+    1.25,
+    0.28,
+    0.4,
+    1.1,
+    0.4,
+    0.42
+   ]
+  },
+  {
+   "id": "3.05b",
+   "beat": 3,
+   "vo": "It works as money.",
+   "page": "10_rules",
+   "t": [
+    1,
+    1
+   ],
+   "cam": [
+    1.7,
+    0.8,
+    0.5,
+    1.85,
+    0.8,
+    0.5
+   ]
+  },
+  {
+   "id": "3.05c",
+   "beat": 3,
+   "vo": "And in medieval Europe, it did.",
+   "page": "c11_rents",
+   "t": [
+    0,
+    0.12
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.15,
+    0.4,
+    0.3
+   ]
+  },
+  {
+   "id": "3.06a",
+   "beat": 3,
+   "vo": "In London, an old toll code says German merchants",
+   "page": "c11_rents",
+   "t": [
+    0.12,
+    0.24
+   ],
+   "cam": [
+    1.5,
+    0.2,
+    0.7,
+    1.6,
+    0.14,
+    0.7
+   ]
+  },
+  {
+   "id": "3.06b",
+   "beat": 3,
+   "vo": "owed the king ten pounds of pepper at Christmas.",
+   "page": "c11_rents",
+   "t": [
+    0.24,
+    0.24
+   ],
+   "cam": [
+    1.9,
+    0.13,
+    0.72,
+    2.05,
+    0.13,
+    0.73
+   ]
+  },
+  {
+   "id": "3.07",
+   "beat": 3,
+   "vo": "And again at Easter.",
+   "page": "c11_rents",
+   "t": [
+    0.24,
+    0.24
+   ],
+   "cam": [
+    2.5,
+    0.12,
+    0.74,
+    2.6,
+    0.12,
+    0.74
+   ]
+  },
+  {
+   "id": "3.08",
+   "beat": 3,
+   "vo": "The king's seasonal greetings were, apparently, \"pepper, please.\"",
+   "page": "c11_rents",
+   "t": [
+    0.24,
+    0.24
+   ],
+   "cam": [
+    1.3,
+    0.2,
+    0.62,
+    1.12,
+    0.35,
+    0.55
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "3.09",
+   "beat": 3,
+   "vo": "In Genoa, in 1156, you could repay a debt in pepper or in coin. Your choice.",
+   "page": "c11_rents",
+   "t": [
+    0.24,
+    0.4
+   ],
+   "cam": [
+    1.5,
+    0.2,
+    0.68,
+    1.5,
+    0.32,
+    0.68
+   ],
+   "say": "In Genoa, in eleven fifty-six, you could repay a debt in pepper or in coin. Your choice."
+  },
+  {
+   "id": "3.10",
+   "beat": 3,
+   "vo": "Like a card machine that also accepts condiments.",
+   "page": "c11_rents",
+   "t": [
+    0.4,
+    0.4
+   ],
+   "cam": [
+    1.95,
+    0.32,
+    0.72,
+    1.7,
+    0.32,
+    0.7
+   ]
+  },
+  {
+   "id": "3.11a",
+   "beat": 3,
+   "vo": "In 1194, an English abbey's yearly rent",
+   "page": "c11_rents",
+   "t": [
+    0.4,
+    0.5
+   ],
+   "cam": [
+    1.7,
+    0.33,
+    0.7,
+    1.7,
+    0.5,
+    0.7
+   ],
+   "say": "In eleven ninety-four, an English abbey's yearly rent"
+  },
+  {
+   "id": "3.11b",
+   "beat": 3,
+   "vo": "was a thousand eels, two pounds of pepper, two of ginger…",
+   "page": "c11_rents",
+   "t": [
+    0.5,
+    0.5
+   ],
+   "cam": [
+    1.6,
+    0.5,
+    0.7,
+    1.85,
+    0.5,
+    0.72
+   ]
+  },
+  {
+   "id": "3.12",
+   "beat": 3,
+   "vo": "…and a pair of scarlet trousers.",
+   "page": "c11_rents",
+   "t": [
+    0.5,
+    0.62
+   ],
+   "cam": [
+    2.1,
+    0.76,
+    0.3,
+    2.2,
+    0.76,
+    0.3
+   ],
+   "cut": true,
+   "post": 0.6,
+   "build": 0.6,
+   "say": "and a pair of scarlet trousers."
+  },
+  {
+   "id": "3.13",
+   "beat": 3,
+   "vo": "Nobody in the record explains the trousers. I checked.",
+   "page": "c11_rents",
+   "t": [
+    0.62,
+    0.82
+   ],
+   "cam": [
+    1.12,
+    0.56,
+    0.48,
+    1.0,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "3.14a",
+   "beat": 3,
+   "vo": "In Kent, around 1270,",
+   "page": "12_charter",
+   "t": [
+    0,
+    0.2
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.2,
+    0.32,
+    0.5
+   ],
+   "say": "In Kent, around twelve seventy,"
+  },
+  {
+   "id": "3.14b",
+   "beat": 3,
+   "vo": "a plot of land rented for half a pound of pepper a year.",
+   "page": "12_charter",
+   "t": [
+    0.2,
+    0.62
+   ],
+   "cam": [
+    1.2,
+    0.32,
+    0.48,
+    1.3,
+    0.6,
+    0.42
+   ]
+  },
+  {
+   "id": "3.15",
+   "beat": 3,
+   "vo": "The charter still exists. It's in Oxford. I looked it up.",
+   "page": "12_charter",
+   "t": [
+    0.62,
+    0.9
+   ],
+   "cam": [
+    1.4,
+    0.74,
+    0.6,
+    1.5,
+    0.75,
+    0.63
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "3.16a",
+   "beat": 3,
+   "vo": "London's pepper dealers had organised by 1180.",
+   "page": "v_pepperers",
+   "t": [
+    0,
+    0.4
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.25,
+    0.32,
+    0.42
+   ],
+   "say": "London's pepper dealers had organised by eleven eighty."
+  },
+  {
+   "id": "3.16b",
+   "beat": 3,
+   "vo": "As the Pepperers, they became the Grocers' Company, which still exists.",
+   "page": "v_pepperers",
+   "t": [
+    0.4,
+    0.92
+   ],
+   "cam": [
+    1.3,
+    0.4,
+    0.6,
+    1.3,
+    0.68,
+    0.64
+   ]
+  },
+  {
+   "id": "3.17a",
+   "beat": 3,
+   "vo": "In German, a rich merchant got a nickname.",
+   "page": "10a_sack",
+   "t": [
+    0.6,
+    0.6
+   ],
+   "cam": [
+    1.9,
+    0.64,
+    0.5,
+    1.7,
+    0.64,
+    0.5
+   ]
+  },
+  {
+   "id": "3.17b",
+   "beat": 3,
+   "vo": "Pfeffersack. Pepper sack.",
+   "page": "10a_sack",
+   "t": [
+    0.6,
+    0.9
+   ],
+   "cam": [
+    1.5,
+    0.26,
+    0.7,
+    1.0,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "3.18a",
+   "beat": 3,
+   "vo": "So somebody was making a fortune moving it.",
+   "page": "s2_a",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.25,
+    0.62,
+    0.4
+   ]
+  },
+  {
+   "id": "3.18b",
+   "beat": 3,
+   "vo": "I followed the money, port by port.",
+   "page": "s2_a",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.75,
+    0.68,
+    0.62,
+    1.5,
+    0.65,
+    0.66
+   ]
+  },
+  {
+   "id": "3.19",
+   "beat": 3,
+   "vo": "One estimate: a hundredweight of pepper cost about three ducats in Calicut,",
+   "page": "s2_b",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.5,
+    0.66,
+    0.66,
+    1.4,
+    0.4,
+    0.66
+   ]
+  },
+  {
+   "id": "3.20",
+   "beat": 3,
+   "vo": "and about eighty by the time it was sold on in Europe.",
+   "page": "s2_c",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.5,
+    0.2,
+    0.25,
+    1.45,
+    0.78,
+    0.7
+   ]
+  },
+  {
+   "id": "3.21a",
+   "beat": 3,
+   "vo": "Every port, every ship and every middleman took a cut,",
+   "page": "c13_markup",
+   "t": [
+    0,
+    0.7
+   ],
+   "cam": [
+    1.5,
+    0.45,
+    0.65,
+    1.1,
+    0.35,
+    0.4
+   ]
+  },
+  {
+   "id": "3.21b",
+   "beat": 3,
+   "vo": "until the price was roughly twenty-five times the start.",
+   "page": "c13_markup",
+   "t": [
+    0.7,
+    0.8
+   ],
+   "cam": [
+    1.2,
+    0.7,
+    0.7,
+    1.5,
+    0.76,
+    0.8
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "3.22a",
+   "beat": 3,
+   "vo": "It's the world's longest relay race,",
+   "page": "13a_relay",
+   "t": [
+    0,
+    0.4
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.06,
+    0.5,
+    0.55
+   ]
+  },
+  {
+   "id": "3.22b",
+   "beat": 3,
+   "vo": "where every runner charges you for the baton.",
+   "page": "13a_relay",
+   "t": [
+    0.4,
+    0.9
+   ],
+   "cam": [
+    1.3,
+    0.3,
+    0.32,
+    1.0,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "4.01",
+   "beat": 4,
+   "vo": "Venice sat at the end of that relay and got rich.",
+   "page": "13a_relay",
+   "t": [
+    0.9,
+    1
+   ],
+   "cam": [
+    1.2,
+    0.4,
+    0.4,
+    1.7,
+    0.26,
+    0.3
+   ]
+  },
+  {
+   "id": "4.02a",
+   "beat": 4,
+   "vo": "Which gave everyone else an idea.",
+   "page": "13b_shift",
+   "t": [
+    0,
+    0.3
+   ],
+   "cam": [
+    1.5,
+    0.3,
+    0.3,
+    1.4,
+    0.33,
+    0.33
+   ]
+  },
+  {
+   "id": "4.02b",
+   "beat": 4,
+   "vo": "What if you skipped the relay entirely?",
+   "page": "13b_shift",
+   "t": [
+    0.3,
+    0.97
+   ],
+   "cam": [
+    1.2,
+    0.35,
+    0.4,
+    1.0,
+    0.5,
+    0.5
+   ],
+   "build": 2.8,
+   "post": 1.2
+  },
+  {
+   "id": "4.03a",
+   "beat": 4,
+   "vo": "On 20 May 1498, Vasco da Gama's ships",
+   "page": "s3_c",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.08,
+    0.48,
+    0.55
+   ],
+   "say": "On the twentieth of May, fourteen ninety-eight, Vasco da Gama's ships"
+  },
+  {
+   "id": "4.03b",
+   "beat": 4,
+   "vo": "reached the coast near Calicut, today's Kozhikode,",
+   "page": "s3_c",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.5,
+    0.78,
+    0.56,
+    1.8,
+    0.8,
+    0.58
+   ]
+  },
+  {
+   "id": "4.04a",
+   "beat": 4,
+   "vo": "having sailed all the way round Africa.",
+   "page": "s3_b",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.1,
+    0.52,
+    0.56
+   ]
+  },
+  {
+   "id": "4.04b",
+   "beat": 4,
+   "vo": "Look at the string. It has to go the long way round.",
+   "page": "v18_globe",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.5,
+    0.75,
+    0.62
+   ]
+  },
+  {
+   "id": "4.05",
+   "beat": 4,
+   "vo": "Some histories say the pepper he brought home paid for the voyage sixty times over.",
+   "page": "c_s3_c",
+   "t": [
+    0.5,
+    0.9
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.12,
+    0.45,
+    0.6
+   ]
+  },
+  {
+   "id": "4.06a",
+   "beat": 4,
+   "vo": "Nobody has the original accounts,",
+   "page": "c_s3_c",
+   "t": [
+    0.9,
+    1
+   ],
+   "cam": [
+    1.75,
+    0.8,
+    0.57,
+    1.85,
+    0.8,
+    0.55
+   ]
+  },
+  {
+   "id": "4.06b",
+   "beat": 4,
+   "vo": "so we'll file that under \"people bragging in the 1500s.\"",
+   "page": "c_s3_c",
+   "t": [
+    1,
+    1
+   ],
+   "cam": [
+    1.6,
+    0.22,
+    0.74,
+    1.8,
+    0.22,
+    0.73
+   ],
+   "post": 0.6,
+   "say": "so we'll file that under \"people bragging in the fifteen hundreds.\""
+  },
+  {
+   "id": "4.07a",
+   "beat": 4,
+   "vo": "Then the race was on. A Portuguese royal monopoly.",
+   "page": "v_race",
+   "t": [
+    0,
+    0.46
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.3,
+    0.28,
+    0.5
+   ]
+  },
+  {
+   "id": "4.07b",
+   "beat": 4,
+   "vo": "The English East India Company in 1600. The Dutch company in 1602.",
+   "page": "v_race",
+   "t": [
+    0.46,
+    0.86
+   ],
+   "cam": [
+    1.72,
+    0.71,
+    0.6,
+    1.85,
+    0.71,
+    0.62
+   ],
+   "say": "The English East India Company in sixteen hundred. The Dutch company in sixteen oh two."
+  },
+  {
+   "id": "4.08",
+   "beat": 4,
+   "vo": "Empires, chartered companies and fleets, organised in large part around a seasoning.",
+   "page": "v_race",
+   "t": [
+    0.86,
+    1
+   ],
+   "cam": [
+    1.25,
+    0.7,
+    0.58,
+    1.0,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "4.09a",
+   "beat": 4,
+   "vo": "More ships, more routes, more pepper.",
+   "page": "v18_globe",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.7,
+    0.8,
+    0.45,
+    1.5,
+    0.75,
+    0.6
+   ]
+  },
+  {
+   "id": "4.09b",
+   "beat": 4,
+   "vo": "And you can probably guess what happens next.",
+   "page": "v18_globe",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.04,
+    0.55,
+    0.5
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "4.10",
+   "beat": 4,
+   "vo": "By the sixteen hundreds, pepper prices in Europe were falling.",
+   "page": "c14_fall",
+   "t": [
+    0,
+    0.5
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.12,
+    0.3,
+    0.55
+   ]
+  },
+  {
+   "id": "4.11a",
+   "beat": 4,
+   "vo": "Remember rule three?",
+   "page": "10_rules",
+   "t": [
+    1,
+    1
+   ],
+   "cam": [
+    1.3,
+    0.3,
+    0.5,
+    1.6,
+    0.26,
+    0.58
+   ]
+  },
+  {
+   "id": "4.11b",
+   "beat": 4,
+   "vo": "Money only works while people really want it and can't easily get more.",
+   "page": "10_rules",
+   "t": [
+    1,
+    1
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.12,
+    0.45,
+    0.5
+   ]
+  },
+  {
+   "id": "4.12",
+   "beat": 4,
+   "vo": "Once pepper was everywhere, it stopped being money and went back to being a spice.",
+   "page": "c14_fall",
+   "t": [
+    0.5,
+    0.5
+   ],
+   "cam": [
+    1.4,
+    0.25,
+    0.25,
+    1.25,
+    0.28,
+    0.4
+   ]
+  },
+  {
+   "id": "4.13",
+   "beat": 4,
+   "vo": "The greatest demotion in culinary history.",
+   "page": "14a_demotion",
+   "t": [
+    0,
+    0.9
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.04,
+    0.49,
+    0.5
+   ],
+   "post": 0.9,
+   "build": 2.6
+  },
+  {
+   "id": "5.01",
+   "beat": 5,
+   "vo": "Except it left one fossil behind. Look at this line in English law.",
+   "page": "c14_fall",
+   "t": [
+    0.5,
+    0.66
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.6,
+    0.76,
+    0.4
+   ]
+  },
+  {
+   "id": "5.02a",
+   "beat": 5,
+   "vo": "A \"peppercorn rent\" is still a valid payment.",
+   "page": "c14_fall",
+   "t": [
+    0.66,
+    0.66
+   ],
+   "cam": [
+    1.75,
+    0.73,
+    0.36,
+    1.9,
+    0.72,
+    0.36
+   ]
+  },
+  {
+   "id": "5.02b",
+   "beat": 5,
+   "vo": "One single peppercorn.",
+   "page": "c14_fall",
+   "t": [
+    0.66,
+    0.74
+   ],
+   "cam": [
+    2.4,
+    0.63,
+    0.38,
+    2.5,
+    0.63,
+    0.38
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "5.03a",
+   "beat": 5,
+   "vo": "In one famous case, a British judge in the House of Lords",
+   "page": "c14_fall",
+   "t": [
+    0.74,
+    0.74
+   ],
+   "cam": [
+    1.65,
+    0.76,
+    0.42,
+    1.75,
+    0.76,
+    0.44
+   ]
+  },
+  {
+   "id": "5.03b",
+   "beat": 5,
+   "vo": "said a peppercorn still counts, even if the person paid doesn't like pepper.",
+   "page": "c14_fall",
+   "t": [
+    0.74,
+    0.74
+   ],
+   "cam": [
+    1.7,
+    0.72,
+    0.42,
+    2.0,
+    0.75,
+    0.42
+   ],
+   "cut": true
+  },
+  {
+   "id": "5.04",
+   "beat": 5,
+   "vo": "Which is the most British sentence ever spoken in a court.",
+   "page": "c14_fall",
+   "t": [
+    0.74,
+    0.9
+   ],
+   "cam": [
+    1.5,
+    0.76,
+    0.5,
+    1.6,
+    0.76,
+    0.58
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "5.05",
+   "beat": 5,
+   "vo": "Today Vietnam grows the most pepper, about a third of the world's crop.",
+   "page": "15a_world",
+   "t": [
+    0,
+    0.7
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.05,
+    0.55,
+    0.5
+   ]
+  },
+  {
+   "id": "5.06",
+   "beat": 5,
+   "vo": "In India, the top grower isn't Kerala, where it began, but Karnataka next door.",
+   "page": "15a_world",
+   "t": [
+    0.7,
+    0.95
+   ],
+   "cam": [
+    1.2,
+    0.62,
+    0.6,
+    1.3,
+    0.68,
+    0.75
+   ]
+  },
+  {
+   "id": "5.07",
+   "beat": 5,
+   "vo": "In Kochi, a kilo trades at around seven hundred rupees.",
+   "page": "v16_kochi",
+   "t": [
+    0.3,
+    0.6
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.04,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "5.08a",
+   "beat": 5,
+   "vo": "So, back to the jar on your table.",
+   "page": "01_jar",
+   "t": [
+    1,
+    1
+   ],
+   "cam": [
+    1.9,
+    0.22,
+    0.28,
+    1.6,
+    0.22,
+    0.28
+   ]
+  },
+  {
+   "id": "5.08b",
+   "beat": 5,
+   "vo": "How does a spice become money?",
+   "page": "17_end",
+   "t": [
+    0,
+    0
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.1,
+    0.45,
+    0.4
+   ]
+  },
+  {
+   "id": "5.09",
+   "beat": 5,
+   "vo": "When it lasts, when it's worth a lot for its size, and when everybody agrees to want it.",
+   "page": "17_end",
+   "t": [
+    0,
+    0.25
+   ],
+   "cam": [
+    1.2,
+    0.4,
+    0.3,
+    1.35,
+    0.4,
+    0.3
+   ]
+  },
+  {
+   "id": "5.10",
+   "beat": 5,
+   "vo": "For fifteen hundred years, people agreed on a dried berry from the Western Ghats.",
+   "page": "17_end",
+   "t": [
+    0.25,
+    0.25
+   ],
+   "cam": [
+    1.6,
+    0.5,
+    0.2,
+    1.1,
+    0.5,
+    0.4
+   ]
+  },
+  {
+   "id": "5.11a",
+   "beat": 5,
+   "vo": "Rome filed it next to the gold.",
+   "page": "c02_ransom",
+   "t": [
+    1,
+    1
+   ],
+   "cam": [
+    1.3,
+    0.3,
+    0.5,
+    1.45,
+    0.28,
+    0.62
+   ]
+  },
+  {
+   "id": "5.11b",
+   "beat": 5,
+   "vo": "An abbey filed it next to the trousers.",
+   "page": "c11_rents",
+   "t": [
+    1,
+    1
+   ],
+   "cam": [
+    2.2,
+    0.76,
+    0.31,
+    2.1,
+    0.76,
+    0.3
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "5.12",
+   "beat": 5,
+   "vo": "Which raises a question worth sitting with.",
+   "page": "17_end",
+   "t": [
+    0.25,
+    0.3
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.06,
+    0.5,
+    0.55
+   ]
+  },
+  {
+   "id": "5.13",
+   "beat": 5,
+   "vo": "What are we treating as money today that people will one day find just as strange?",
+   "page": "17_end",
+   "t": [
+    0.3,
+    0.95
+   ],
+   "cam": [
+    1.25,
+    0.42,
+    0.58,
+    1.0,
+    0.5,
+    0.5
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "5.14",
+   "beat": 5,
+   "vo": "",
+   "page": "17_end",
+   "t": [
+    1,
+    1
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.05,
+    0.5,
+    0.5
+   ],
+   "hold": 2.5
+  }
+ ]
+}

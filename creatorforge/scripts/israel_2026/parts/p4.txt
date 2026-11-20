@@ -1,0 +1,247 @@
+
+Chapter: Part 5 | The Kingmakers
+
+So who actually decides what happens next? Not the voters. They've done their part. It's now down to a handful of people, each with a red line, and each line drawn through somebody else.
+Tone: question
+Visual: A chess king piece standing alone on a board
+Visual: Red tape stretched across a doorway
+Animate: five people stand in a circle, each points at another one and shakes their head
+
+Start with the man most likely to go first. Gadi Eisenkot. Former chief of staff. He lost his son in Gaza, and his nephew, in the war. He entered politics with Benny Gantz, served in the emergency war cabinet, quit, and built his own party.
+Tone: calm
+Visual: A military parade ground with flags at dawn, no people
+Visual: An army cemetery with rows of white headstones in Jerusalem
+Text: GADI EISENKOT · YASHAR · 21 SEATS
+Cite: Al Jazeera, 17 Oct 2026; Times of Israel
+
+His platform puts security first and Haredi military service right behind it. Critics on the left point out that he is the general associated with the Dahiya doctrine, the idea of using overwhelming force against areas from which attacks are launched. His supporters call him the most credible security voice in the race.
+Tone: calm
+Visual: A soldier's helmet on a folded flag
+Visual: A city skyline at night seen from a distance
+Split: Critics: author of the Dahiya doctrine | Supporters: the credible general
+Cite: Al-Monitor; TRT; Jerusalem Post, Oct 2026
+
+His problem is arithmetic. Forty-eight seats. To get to sixty-one he needs either Arab-led parties inside or behind his coalition, or people from Netanyahu's side.
+Tone: strong
+Visual: A blackboard with a sum written in chalk, numbers smudged
+Visual: A ruler laid across an unfinished bridge model
+Text: 48 + ? = 61
+
+On the Arab parties, reports say Eisenkot has set conditions, including recognising Israel as a Jewish state and condemning Hamas as a terrorist organisation. In a September interview, he said the parties didn't meet them. Since the election, he has been carefully vague. Which in coalition talks is not a weakness. It's a negotiating position wearing a disguise.
+Tone: strong
+Visual: A man's hand holding a pair of sunglasses and a fake moustache on a table
+Visual: A fogged-up window with a city behind it
+Cite: Arab Center DC; Channel 12 via Ynet, 2026
+
+Next, Naftali Bennett. Former prime minister. Leader of the Beyachad list. He was prime minister in 2021, in the only Israeli government that ever had an Arab party inside it, Ra'am. It lasted about a year.
+Tone: calm
+Visual: The Prime Minister's Office in Jerusalem
+Visual: A wall calendar with exactly one year marked in highlighter
+Text: NAFTALI BENNETT · BEYACHAD · 12 SEATS
+Cite: Times of Israel
+
+This time, Bennett has said: the Arab parties are not Zionist, therefore we will not rely on them. Which is a fascinating position for a man whose last government relied on one.
+Tone: strong
+Visual: A bridge someone has already crossed, with a sign saying closed
+Visual: A pair of muddy boots by a door
+Quote: The Arab parties are not Zionist, therefore we will not rely on them | Naftali Bennett, 2026
+Cite: Times of Israel; Jewish News, 2026
+
+Avigdor Lieberman of Yisrael Beytenu, seven seats, is even firmer. He has said he will not support any coalition in which Arab parties take part, not even if they just abstain in the confidence vote. Lieberman, for the record, also wants the Haredim drafted, and says no to Netanyahu. He has a lot of no.
+Tone: strong
+Visual: A rubber stamp reading no on a stack of papers
+Visual: A door with three locks
+Text: LIEBERMAN: NO ARAB PARTIES · NO HAREDI EXEMPTION · NO NETANYAHU
+Cite: Kuwait Times; Times of Israel, Oct 2026
+
+Then the Democrats' Yair Golan, eight seats, the most left-leaning voice in the bloc. He has openly urged a coalition with Arab parties. So inside one camp, you have one leader saying yes, two saying no, and the man in charge saying, let's talk.
+Tone: calm
+Visual: Four signposts pointing in different directions at a crossroads
+Visual: A meeting room whiteboard with arrows crossed out
+Cite: Times of Israel, 2026
+
+Now the Arab-led parties themselves. Mansour Abbas of Ra'am, eight seats, has said he is willing to back an Eisenkot government, with conditions. Abbas is a pragmatist. His pitch has long been budgets for Arab towns, fighting crime in Arab communities, and recognition for Bedouin villages.
+Tone: calm
+Visual: A Bedouin village of corrugated homes in the Negev desert
+Visual: A police car parked outside a shop in an Arab town at night
+Text: MANSOUR ABBAS · RA'AM · 8 SEATS
+Cite: Times of Israel (French); i24NEWS, Oct 2026
+
+During the campaign he also raised Palestinian statehood in a speech, and was rebuked for it by both Eisenkot and Netanyahu. Which tells you how narrow the lane is: the pragmatic Arab party is criticised for being too Palestinian, and the Palestinian question is criticised for being raised at all.
+Tone: strong
+Visual: A narrow alley between two tall walls
+Visual: A microphone switched off on a stand
+Cite: i24NEWS, 2026
+
+The Joint List, eleven seats, is more sceptical of joining any Israeli government, and its leaders have campaigned on equality, ending the war, and a Palestinian state. Its leadership reportedly argued that high Arab turnout could block Netanyahu's return. On that, at least, the numbers proved them right.
+Tone: calm
+Visual: A crowd of voters seen from behind at a rally in an Arab town, flags not visible
+Visual: A ballot box being carried by two officials, hands only
+Text: JOINT LIST · 11 SEATS
+Cite: Türkiye Today; New Arab, 2026
+
+Now the other camp's kingmakers. Itamar Ben-Gvir of Otzma Yehudit, seven seats, the national security minister who controls the police. He was once convicted of incitement to racism and supporting a terrorist organisation. He'd be part of any Netanyahu government, and of no other.
+Tone: strong
+Visual: The Ministry of Public Security building sign in Jerusalem, out of focus
+Visual: A police officer's cap on a desk
+Text: ITAMAR BEN-GVIR · OTZMA YEHUDIT · 7 SEATS
+Cite: Jerusalem Magistrates' Court, 2007, as reported by Times of Israel
+
+Bezalel Smotrich of Religious Zionism, six seats, is finance minister and also holds powers over civilian life in the West Bank. He has made annexation his central cause. He'd also sit only with Netanyahu.
+Tone: strong
+Visual: A finance ministry building with flags in Jerusalem
+Visual: A stack of coins next to a hilltop map
+Text: BEZALEL SMOTRICH · RELIGIOUS ZIONISM · 6 SEATS
+Cite: Times of Israel; Peace Now
+
+And then the parties that might, in theory, be persuaded to cross: the Haredi parties. Shas, led by Aryeh Deri, and United Torah Judaism. Thirteen seats between them.
+Tone: question
+Visual: A yeshiva study hall with rows of books and empty benches
+Visual: A street in Bnei Brak with men walking, seen from behind at a distance
+Text: SHAS 6 + UTJ 7 = 13
+Cite: Central Elections Committee, Oct 2026
+
+Their red line is the draft. Deri has said Shas will not join any government unless the Haredi exemption from military service is written into law. United Torah Judaism has said the same, in one word: period.
+Tone: strong
+Visual: A draft notice envelope on a doormat, text unreadable
+Visual: A full stop drawn huge in black ink on white paper
+Quote: Will not enter a government that does not pass the law. Period. | UTJ chair Yaakov Asher, 2026
+Cite: Times of Israel; Kikar HaShabbat, 2026
+
+In July 2026, the outgoing government passed a temporary law barring the arrest of draft evaders. The High Court froze it. Polls through the war showed most Jewish Israelis support drafting Haredi men, and so does almost every party in Eisenkot's camp.
+Tone: calm
+Visual: The Supreme Court building in Jerusalem
+Visual: A soldier's duffel bag next to a pair of civilian shoes
+Text: TEMPORARY LAW · FROZEN BY HIGH COURT
+Cite: Times of Israel; Israel Democracy Institute polling
+
+So here's the trap. The Haredi parties could give Eisenkot a majority, but only for an exemption his voters hate. The Arab parties could give him a majority, but two of his partners won't sit with them. Every key unlocks a door that someone else has welded shut.
+Tone: strong
+Visual: A heavy door with a welded seam across the lock
+Visual: A ring of keys hanging on a nail
+Animate: a man tries three keys in a door, one by one, then sits down on the floor
+
+One Channel 12 report said United Torah Judaism would not oppose a government led by Eisenkot. Not join. Not oppose. In Israeli politics, that difference is worth an entire ministry.
+Tone: calm
+Visual: A chair pulled slightly back from a table, not occupied
+Visual: A half-open door with light coming through
+Cite: Channel 12 via Times of Israel, 2026
+
+And above all of them sits President Herzog, a man with no executive power, whose main job for the next few weeks is to pick the person most likely to fail slowest. He has asked everyone to avoid another election. He can't force them to.
+Tone: calm
+Visual: A grand empty reception hall with a single chair at the end
+Visual: A pocket watch lying open on a desk
+Cite: Jewish News; Kuwait Times, Oct 2026
+
+There was one more voter in this election, by the way. He doesn't live in Israel.
+Tone: question
+Visual: The White House seen through a fence at night
+Visual: A smartphone screen glowing in a dark room, text unreadable
+
+Chapter: Part 6 | Money, Missiles, and the Man in Washington
+
+On the eighteenth of October, nine days before the vote, Donald Trump endorsed Netanyahu. He called him a, quote, Great Warrior Prime Minister, and Likud turned the post into a campaign video.
+Tone: strong
+Visual: A smartphone showing a social media post, text unreadable
+Visual: A campaign video being edited on a laptop screen, no faces
+Quote: Great Warrior Prime Minister | Donald Trump, 18 Oct 2026
+Cite: AP via OPB, 19 Oct 2026
+
+In the same post, Trump suggested that if Netanyahu lost, America might not finish the job against Iran, saying America would have to do this work itself, and he was not inclined to. Eisenkot's reply: only Israelis can choose who runs their country.
+Tone: strong
+Visual: A wall map of the Persian Gulf with pins in it
+Visual: A ballot slip held up against a window
+Split: Trump: vote Netanyahu | Eisenkot: Israelis choose
+Cite: AP via OPB, 19 Oct 2026
+
+Endorsing a foreign leader days before a vote is unusual. Whether it moved votes is impossible to prove. What we can say is that the bloc he endorsed got fifty-three seats, and the job against Iran is apparently still pending.
+Tone: calm
+Visual: A to-do list on a notepad with one item unchecked, text unreadable
+Visual: An office in-tray full of papers
+
+Because this was also the year of the Iran war. On the twenty-eighth of February 2026, the United States and Israel launched massive strikes on Iran. Iran's supreme leader, Ayatollah Ali Khamenei, was killed. His son Mojtaba succeeded him.
+Tone: dramatic
+Visual: A night sky over a city with streaks of light, seen from far away
+Visual: A large empty ceremonial hall with a single portrait frame, empty
+Text: 28 FEB 2026 · US-ISRAEL STRIKES ON IRAN
+Cite: Bloomberg Government; Iranian state media, 1 Mar 2026
+
+Iran fired missiles at Israel and at Gulf countries hosting American bases. The Strait of Hormuz, the route for about a fifth of the world's oil, was effectively closed. In April, with Pakistan's help, a two-week ceasefire took hold, followed by talks, extensions, and an interim deal in June, the details of which are still disputed.
+Tone: strong
+Visual: An oil tanker at anchor in calm water at dusk
+Visual: A conference table with flags removed and water glasses half full
+Timeline: 28 Feb strikes begin | 7-8 Apr two-week ceasefire | Apr Islamabad talks | Jun interim deal reported
+Cite: AP; Al Jazeera; Wikipedia (2026 Iran war ceasefire), 2026
+
+The war spread north. Hezbollah fired on Israel in March. Israel answered with an air campaign and a ground invasion of southern Lebanon. A Reuters-based tally put more than three thousand nine hundred people killed in Lebanon. Israel reported thirty-six dead on its side.
+Tone: strong
+Visual: A southern Lebanese village on a hillside with damaged buildings, seen from far
+Visual: An Israeli northern town street with closed shops and sandbags
+Text: LEBANON: 3,900+ KILLED · ISRAEL: 36 · AS REPORTED
+Cite: Reuters via Aaj News; Wikipedia (2026 Lebanon war)
+
+Ceasefires were agreed in April and again in June. Israeli strikes have continued in Lebanon since, which Israel says target Hezbollah threats, and which Lebanon and Hezbollah call violations.
+Tone: calm
+Visual: A UN peacekeeper's blue helmet resting on a sandbag wall
+Visual: A border fence on a green hillside in the north
+Cite: L'Orient Today; Asharq Al-Awsat, 2026
+
+Wars cost money. Israel's 2026 budget is the most militarised in its history. Defence spending is expected to reach almost eight percent of the economy, compared with about four percent in 2022.
+Tone: strong
+Visual: Stacks of Israeli shekel banknotes on a table
+Visual: A military supply depot with crates stacked high
+Chart: Defence spend, % of GDP | 2022: 4.2 | 2026: ~8
+Cite: Czech Embassy Tel Aviv / BusinessInfo.cz; Times of Israel, 2026
+
+The Bank of Israel estimated the total cost of the war at about three hundred and fifty billion shekels. The deficit target was raised to over five percent, and the central bank warned that debt could reach around seventy percent of GDP, and criticised the government for keeping coalition funds while cutting elsewhere.
+Tone: strong
+Visual: The Bank of Israel building in Jerusalem
+Visual: A calculator next to a stack of unpaid bills, numbers unreadable
+Text: WAR COST ~NIS 350BN · DEFICIT TARGET 5.1% · DEBT ~70% OF GDP
+Cite: Bank of Israel Annual Report 2025; Globes, 2026
+
+Coalition funds are money set aside for the small parties' priorities, the price of sixty-one. When the bill for a war comes in, and the bill for coalition politics still gets paid, voters notice. Many of them are the same reservists who were called up again and again.
+Tone: strong
+Visual: A wallet on a kitchen table with a military ID card next to it, name unreadable
+Visual: An envelope labelled with a coalition party colour, text unreadable
+Receipt: War | Reservist call-ups | Coalition funds | Total: someone else pays
+
+Then there's American aid. Since 2019, a ten-year agreement has given Israel three point eight billion dollars a year in US military aid, three point three billion in grants for weapons and five hundred million for missile defence. It expires in 2028.
+Tone: calm
+Visual: A pallet of crates on an airfield at dawn
+Visual: An air-defence battery silhouetted against an evening sky
+Text: $3.8BN A YEAR · MOU 2019-2028
+Cite: US State Department; Jewish Insider
+
+In June 2026, the two governments opened talks on what comes next. Netanyahu himself has floated phasing out US aid over time. Washington has signalled a shift toward trade and joint projects rather than grants. The next prime minister will negotiate the next decade.
+Tone: calm
+Visual: Two pens lying on an unsigned agreement on a conference table
+Visual: A cargo ship being loaded at a port
+Cite: Jewish Insider; FDD, Jun 2026
+
+Europe, Israel's biggest trading partner, has been angrier but slower. In September 2025, the European Commission proposed suspending trade parts of the EU-Israel Association Agreement. By April 2026 there was still no majority of member states to do it. Germany and Italy held out. Spain and Belgium pushed.
+Tone: calm
+Visual: The European Commission Berlaymont building in Brussels
+Visual: A row of EU flags on poles in wind
+Split: Spain, Belgium: suspend | Germany, Italy: hold
+Cite: JURIST; Al-Monitor, Apr 2026
+
+And the Gulf? The big prize Netanyahu has chased for years is normalisation with Saudi Arabia. Saudi Arabia's position, repeated in May 2026, hasn't moved: no normal ties without an irreversible path to a Palestinian state.
+Tone: strong
+Visual: The Riyadh skyline at dusk
+Visual: A closed door with an ornate handle
+Quote: An irreversible pathway to a Palestinian state | Saudi position, May 2026
+Cite: Al Arabiya, 25 May 2026
+
+Which lands us back on the Israeli consensus from Part Four. Both leading candidates say no Palestinian state. Saudi Arabia says no deal without one. So the most coveted handshake in the region is waiting on the one question the election avoided.
+Tone: strong
+Visual: Two hands reaching toward each other but not touching
+Visual: A circle drawn on a map, then a question mark next to it
+Statement: The prize needs the *question nobody asked*.
+
+A note on foreign influence, since it came up. Qatar has been accused, in Israeli politics, of funding influence efforts. Qatar denies it. Investigations into contacts between Netanyahu aides and Qatar-linked work were ongoing in 2025 and 2026, and nobody in those cases has been convicted. We'll stick to what's documented, and that's what's documented.
+Tone: calm
+Visual: A Doha skyline at night across the water
+Visual: A closed case file on a desk tied with string
+Text: INVESTIGATION · NO CONVICTIONS
+Cite: Times of Israel; Haaretz, 2025-2026

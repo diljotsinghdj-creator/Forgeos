@@ -1,0 +1,10 @@
+[
+ {"shot": "F1", "t": [0, 4], "text": "July 1969. Two men walk on the Moon.", "facts": ["N5"]},
+ {"shot": "F2", "t": [4, 9], "text": "Two days before the landing, White House speechwriter William Safire sent this memo.", "facts": ["M1", "M7", "N5"]},
+ {"shot": "F3", "t": [9, 12], "text": "Its title: In Event of Moon Disaster.", "facts": ["M1"]},
+ {"shot": "F4", "t": [12, 21], "text": "A speech for the President, in case Armstrong and Aldrin could not come home. \"Fate has ordained that the men who went to the moon to explore in peace will stay on the moon to rest in peace.\"", "facts": ["M2", "M3"]},
+ {"shot": "F5", "t": [21, 32], "text": "And a plan. First, the President calls each of the widows-to-be. Then, when NASA ends communications with the men, a clergyman commends their souls to the deepest of the deep, as in a burial at sea.", "facts": ["M4", "M5"]},
+ {"shot": "F6", "t": [32, 38], "text": "History had a second draft, typed and waiting.", "facts": []},
+ {"shot": "F7", "t": [38, 48], "text": "On July twenty-first, after twenty-one hours on the surface, the ascent engine fired. Three days later, the crew splashed down.", "facts": ["N2", "N3", "N4"]},
+ {"shot": "F8", "t": [48, 60], "text": "The speech was never read. But its last line still holds: some corner of another world is forever mankind.", "facts": ["M6"]}
+]

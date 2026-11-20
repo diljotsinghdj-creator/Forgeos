@@ -1,0 +1,8 @@
+assets/
+html/
+png/
+__pycache__/
+video/clips/
+video/audio/
+video/work/
+video/*.mp4

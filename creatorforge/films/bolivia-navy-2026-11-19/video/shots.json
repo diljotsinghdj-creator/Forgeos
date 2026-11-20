@@ -1,0 +1,2758 @@
+{
+ "slug": "bolivia-navy",
+ "title": "Why does landlocked Bolivia have a navy?",
+ "channel": "printfacts",
+ "voice": "af_heart",
+ "speed": 1.1,
+ "treatment": "pulse",
+ "evidence_waiver": "owner told 2026-11-19/20; treaty page is a labelled reconstruction, scan still to be sourced",
+ "guide": {
+  "dominio absoluto y perpetuo": "doh-meen-yo ahb-so-loo-toh ee pair-pet-woe",
+  "a perpetuidad": "ah pair-pet-wee-dahd",
+  "irrenunciable e imprescriptible": "ee-ray-noon-see-ah-blay eh eem-press-creep-tee-blay",
+  "Día del Mar": "dee-ah del mar",
+  "Topáter": "toh-pah-tair",
+  "Abaroa": "ah-bah-roh-ah",
+  "Antofagasta": "antofa-gasta",
+  "Titicaca": "titi-kahka",
+  "Tiquina": "tee-kee-nah",
+  "Ancón": "ahn-cone",
+  "Arica's": "ah-ree-kah's",
+  "Arica": "ah-ree-kah",
+  "Ilo": "ee-loh",
+  "La Paz": "lah pahss",
+  "Litoral": "lee-toh-rahl"
+ },
+ "reload_pages": [],
+ "shots": [
+  {
+   "id": "1.01a",
+   "beat": 1,
+   "vo": "This is a navy.",
+   "page": "01_navy",
+   "t": [
+    0,
+    0.12
+   ],
+   "cam": [
+    1.2,
+    0.3958,
+    0.5926,
+    1.25,
+    0.401,
+    0.5926
+   ],
+   "pre": 0.5
+  },
+  {
+   "id": "1.02a",
+   "beat": 1,
+   "vo": "Look at the altitude.",
+   "page": "01_navy",
+   "t": [
+    0.12,
+    0.85
+   ],
+   "cam": [
+    1.25,
+    0.6771,
+    0.5926,
+    1.25,
+    0.7292,
+    0.3889
+   ],
+   "build": 1.9,
+   "post": 0.6
+  },
+  {
+   "id": "1.03a",
+   "beat": 1,
+   "vo": "Most navies measure depth.",
+   "page": "01_navy",
+   "t": [
+    0.85,
+    0.86
+   ],
+   "cam": [
+    1.12,
+    0.5,
+    0.5741,
+    1.16,
+    0.5208,
+    0.5926
+   ]
+  },
+  {
+   "id": "1.03b",
+   "beat": 1,
+   "vo": "This one mostly measures height.",
+   "page": "01_navy",
+   "t": [
+    0.86,
+    0.95
+   ],
+   "cam": [
+    1.3,
+    0.7292,
+    0.5556,
+    1.36,
+    0.7396,
+    0.5648
+   ],
+   "cut": true
+  },
+  {
+   "id": "1.04a",
+   "beat": 1,
+   "vo": "Navies need a sea.",
+   "page": "01_navy",
+   "t": [
+    0.95,
+    1
+   ],
+   "cam": [
+    1.2,
+    0.4688,
+    0.6111,
+    1.0,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "1.04b",
+   "beat": 1,
+   "vo": "So I went looking for this one's, and I found its autopsy report instead.",
+   "page": "02_receipt",
+   "t": [
+    0,
+    0.2
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.05,
+    0.5,
+    0.5185
+   ]
+  },
+  {
+   "id": "1.05a",
+   "beat": 1,
+   "vo": "Look closely at this line.",
+   "page": "02_receipt",
+   "t": [
+    0.2,
+    0.45
+   ],
+   "cam": [
+    1.06,
+    0.4688,
+    0.5,
+    1.18,
+    0.4375,
+    0.5185
+   ]
+  },
+  {
+   "id": "1.05b",
+   "beat": 1,
+   "vo": "The coast belongs to Chile, it says, with \"dominio absoluto y perpetuo\".",
+   "page": "02_receipt",
+   "t": [
+    0.45,
+    0.8
+   ],
+   "cam": [
+    1.3,
+    0.3844,
+    0.537,
+    1.33,
+    0.375,
+    0.5463
+   ],
+   "say": "The coast belongs to Chile, it says, with doh-meen-yo ahb-so-loo-toh ee pair-pet-woe.",
+   "post": 0.6
+  },
+  {
+   "id": "1.06a",
+   "beat": 1,
+   "vo": "Absolute. And perpetual. Treaty writers don't hedge.",
+   "page": "02_receipt",
+   "t": [
+    0.8,
+    0.92
+   ],
+   "cam": [
+    1.2,
+    0.3646,
+    0.5556,
+    1.24,
+    0.3646,
+    0.5648
+   ],
+   "cut": true
+  },
+  {
+   "id": "1.07a",
+   "beat": 1,
+   "vo": "Lake Titicaca sits about three thousand eight hundred metres up,",
+   "page": "03_lighttable",
+   "t": [
+    0,
+    0.42
+   ],
+   "cam": [
+    1.5,
+    0.4167,
+    0.3981,
+    1.2,
+    0.4479,
+    0.4444
+   ],
+   "say": "Lake titi-kahka sits about three thousand eight hundred metres up,"
+  },
+  {
+   "id": "1.07b",
+   "beat": 1,
+   "vo": "the highest lake on Earth that big ships can sail.",
+   "page": "03_lighttable",
+   "t": [
+    0.42,
+    0.7
+   ],
+   "cam": [
+    1.1,
+    0.625,
+    0.5741,
+    1.25,
+    0.7188,
+    0.6296
+   ]
+  },
+  {
+   "id": "1.08a",
+   "beat": 1,
+   "vo": "Follow this line west.",
+   "page": "03_lighttable",
+   "t": [
+    0.7,
+    1
+   ],
+   "cam": [
+    1.3,
+    0.599,
+    0.4444,
+    1.3,
+    0.3958,
+    0.4815
+   ]
+  },
+  {
+   "id": "1.08b",
+   "beat": 1,
+   "vo": "The country that owns this navy has no coast at all, and that treaty is why.",
+   "page": "04_nocoast",
+   "t": [
+    0,
+    0.42
+   ],
+   "cam": [
+    1.15,
+    0.6771,
+    0.4444,
+    1.15,
+    0.4688,
+    0.5556
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "1.09a",
+   "beat": 1,
+   "vo": "So why does a country with no sea",
+   "page": "04_nocoast",
+   "t": [
+    0.42,
+    0.66
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.3,
+    0.5,
+    0.787
+   ]
+  },
+  {
+   "id": "1.09b",
+   "beat": 1,
+   "vo": "keep a navy on a lake in the clouds?",
+   "page": "04_nocoast",
+   "t": [
+    0.66,
+    0.9
+   ],
+   "cam": [
+    1.12,
+    0.3646,
+    0.4815,
+    1.04,
+    0.4479,
+    0.5
+   ]
+  },
+  {
+   "id": "1.10a",
+   "beat": 1,
+   "vo": "To answer that, I'm going to run this backwards.",
+   "page": "05_title",
+   "t": [
+    0,
+    0.3
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.06,
+    0.5,
+    0.4815
+   ]
+  },
+  {
+   "id": "1.10b",
+   "beat": 1,
+   "vo": "Date by date, to the day the coast went missing.",
+   "page": "05_title",
+   "t": [
+    0.3,
+    0.8
+   ],
+   "cam": [
+    1.12,
+    0.3646,
+    0.4167,
+    1.04,
+    0.4688,
+    0.4815
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "2.11a",
+   "beat": 2,
+   "vo": "The stamp stops at January 1963.",
+   "page": "06_1963",
+   "t": [
+    0,
+    0.06
+   ],
+   "cam": [
+    1.6,
+    0.1562,
+    0.1852,
+    1.5,
+    0.1771,
+    0.2037
+   ],
+   "say": "The stamp stops at January nineteen sixty-three."
+  },
+  {
+   "id": "2.11b",
+   "beat": 2,
+   "vo": "That's when Bolivia set up a River and Lake Force.",
+   "page": "06_1963",
+   "t": [
+    0.06,
+    0.3
+   ],
+   "cam": [
+    1.1,
+    0.3646,
+    0.4815,
+    1.18,
+    0.3438,
+    0.5
+   ]
+  },
+  {
+   "id": "2.12a",
+   "beat": 2,
+   "vo": "Follow its name. River and lake. Not sea.",
+   "page": "06_1963",
+   "t": [
+    0.3,
+    0.82
+   ],
+   "cam": [
+    1.05,
+    0.5,
+    0.4444,
+    1.3,
+    0.5104,
+    0.4074
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "2.13a",
+   "beat": 2,
+   "vo": "So the navy is younger than the problem. Keep rewinding.",
+   "page": "06_1963",
+   "t": [
+    0.82,
+    1
+   ],
+   "cam": [
+    1.25,
+    0.6771,
+    0.6481,
+    1.25,
+    0.5208,
+    0.5926
+   ]
+  },
+  {
+   "id": "2.14a",
+   "beat": 2,
+   "vo": "October 1904.",
+   "page": "07_1904",
+   "t": [
+    0,
+    0.1
+   ],
+   "cam": [
+    1.5,
+    0.1875,
+    0.2222,
+    1.4,
+    0.2083,
+    0.2407
+   ],
+   "say": "October nineteen oh four."
+  },
+  {
+   "id": "2.14b",
+   "beat": 2,
+   "vo": "The treaty we just read is signed in Santiago, twenty years after the shooting stopped.",
+   "page": "07_1904",
+   "t": [
+    0.1,
+    0.6
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.14,
+    0.5208,
+    0.4352
+   ]
+  },
+  {
+   "id": "2.15a",
+   "beat": 2,
+   "vo": "It didn't take the coast. It made a loss that had already happened permanent.",
+   "page": "07_1904",
+   "t": [
+    0.6,
+    0.9
+   ],
+   "cam": [
+    1.2,
+    0.651,
+    0.5741,
+    1.3,
+    0.7188,
+    0.6481
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "2.16a",
+   "beat": 2,
+   "vo": "Rewind again. April 1884.",
+   "page": "08_1884",
+   "t": [
+    0,
+    0.16
+   ],
+   "cam": [
+    1.4,
+    0.2083,
+    0.2778,
+    1.3,
+    0.2188,
+    0.3056
+   ],
+   "say": "Rewind again. April eighteen eighty-four."
+  },
+  {
+   "id": "2.16b",
+   "beat": 2,
+   "vo": "A truce: the fighting stops, and Chile keeps running the coast it holds.",
+   "page": "08_1884",
+   "t": [
+    0.16,
+    0.5
+   ],
+   "cam": [
+    1.1,
+    0.4167,
+    0.463,
+    1.25,
+    0.4688,
+    0.4815
+   ]
+  },
+  {
+   "id": "2.17a",
+   "beat": 2,
+   "vo": "That truce lasted twenty years,",
+   "page": "08_1884",
+   "t": [
+    0.5,
+    0.6
+   ],
+   "cam": [
+    1.5,
+    0.5312,
+    0.463,
+    1.55,
+    0.5417,
+    0.4815
+   ]
+  },
+  {
+   "id": "2.17b",
+   "beat": 2,
+   "vo": "which is a long time to leave something on \"pending\".",
+   "page": "08_1884",
+   "t": [
+    0.6,
+    0.9
+   ],
+   "cam": [
+    1.3,
+    0.651,
+    0.6481,
+    1.36,
+    0.6771,
+    0.6852
+   ],
+   "say": "which is a long time to leave something on pending.",
+   "cut": true,
+   "post": 0.6
+  },
+  {
+   "id": "2.18a",
+   "beat": 2,
+   "vo": "Keep going. The stamp slows down,",
+   "page": "09_1879",
+   "t": [
+    0,
+    0.1
+   ],
+   "cam": [
+    1.5,
+    0.1979,
+    0.2315,
+    1.4,
+    0.2188,
+    0.2593
+   ]
+  },
+  {
+   "id": "2.18b",
+   "beat": 2,
+   "vo": "because this is where the coast actually leaves.",
+   "page": "09_1879",
+   "t": [
+    0.1,
+    0.12
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.2,
+    0.5208,
+    0.5185
+   ]
+  },
+  {
+   "id": "2.19a",
+   "beat": 2,
+   "vo": "Fourteenth of February, 1879.",
+   "page": "09_1879",
+   "t": [
+    0.12,
+    0.2
+   ],
+   "cam": [
+    1.3,
+    0.2604,
+    0.3056,
+    1.2,
+    0.2917,
+    0.3519
+   ],
+   "say": "Fourteenth of February, eighteen seventy-nine."
+  },
+  {
+   "id": "2.19b",
+   "beat": 2,
+   "vo": "Chilean troops land at the port of Antofagasta. There's no resistance.",
+   "page": "09_1879",
+   "t": [
+    0.2,
+    0.5
+   ],
+   "cam": [
+    1.2,
+    0.2604,
+    0.4444,
+    1.2,
+    0.5469,
+    0.5926
+   ],
+   "say": "Chilean troops land at the port of antofa-gasta. There's no resistance."
+  },
+  {
+   "id": "2.20a",
+   "beat": 2,
+   "vo": "And that's the day the coast started to come off the map.",
+   "page": "09_1879",
+   "t": [
+    0.5,
+    0.8
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.25,
+    0.4167,
+    0.5556
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "2.21a",
+   "beat": 2,
+   "vo": "But why? Rewind one more year, to a tax.",
+   "page": "10_1878",
+   "t": [
+    0,
+    0.16
+   ],
+   "cam": [
+    1.3,
+    0.6771,
+    0.3704,
+    1.2,
+    0.3333,
+    0.4259
+   ]
+  },
+  {
+   "id": "2.22a",
+   "beat": 2,
+   "vo": "In 1878 Bolivia's assembly approves a tax of ten centavos",
+   "page": "10_1878",
+   "t": [
+    0.16,
+    0.2
+   ],
+   "cam": [
+    1.3,
+    0.2917,
+    0.4074,
+    1.5,
+    0.2708,
+    0.4167
+   ],
+   "say": "In eighteen seventy-eight Bolivia's assembly approves a tax of ten centavos"
+  },
+  {
+   "id": "2.22b",
+   "beat": 2,
+   "vo": "on every quintal of nitrate a Chilean company ships out.",
+   "page": "10_1878",
+   "t": [
+    0.2,
+    0.4
+   ],
+   "cam": [
+    1.1,
+    0.5729,
+    0.3889,
+    1.15,
+    0.651,
+    0.3704
+   ]
+  },
+  {
+   "id": "2.23a",
+   "beat": 2,
+   "vo": "A quintal is about forty-six kilos. Ten centavos.",
+   "page": "10_1878",
+   "t": [
+    0.4,
+    0.72
+   ],
+   "cam": [
+    1.32,
+    0.625,
+    0.5741,
+    1.4,
+    0.6667,
+    0.6111
+   ]
+  },
+  {
+   "id": "2.24a",
+   "beat": 2,
+   "vo": "The most expensive ten cents in South American history.",
+   "page": "10_1878",
+   "t": [
+    0.72,
+    0.9
+   ],
+   "cam": [
+    1.15,
+    0.5729,
+    0.6481,
+    1.22,
+    0.6042,
+    0.7037
+   ],
+   "cut": true,
+   "post": 0.6
+  },
+  {
+   "id": "2.25a",
+   "beat": 2,
+   "vo": "Here's Chile's side.",
+   "page": "11_sides",
+   "t": [
+    0,
+    0.1
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.08,
+    0.4167,
+    0.463
+   ]
+  },
+  {
+   "id": "2.25b",
+   "beat": 2,
+   "vo": "A treaty in 1874 had promised no new taxes on Chilean companies there for twenty-five years.",
+   "page": "11_sides",
+   "t": [
+    0.1,
+    0.4
+   ],
+   "cam": [
+    1.15,
+    0.3333,
+    0.463,
+    1.3,
+    0.3125,
+    0.4815
+   ],
+   "say": "A treaty in eighteen seventy-four had promised no new taxes on Chilean companies there for twenty-five years."
+  },
+  {
+   "id": "2.26a",
+   "beat": 2,
+   "vo": "Here's Bolivia's. This was Bolivian soil, and a sovereign country taxes its own soil.",
+   "page": "11_sides",
+   "t": [
+    0.4,
+    0.7
+   ],
+   "cam": [
+    1.15,
+    0.625,
+    0.463,
+    1.3,
+    0.6771,
+    0.4815
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "2.27a",
+   "beat": 2,
+   "vo": "The company refused to pay.",
+   "page": "12_trigger",
+   "t": [
+    0,
+    0.2
+   ],
+   "cam": [
+    1.1,
+    0.2604,
+    0.3889,
+    1.25,
+    0.2396,
+    0.3704
+   ]
+  },
+  {
+   "id": "2.27b",
+   "beat": 2,
+   "vo": "Bolivia moved to seize and auction its property, on the fourteenth of February.",
+   "page": "12_trigger",
+   "t": [
+    0.2,
+    0.4
+   ],
+   "cam": [
+    1.45,
+    0.2604,
+    0.4074,
+    1.3,
+    0.2292,
+    0.3333
+   ]
+  },
+  {
+   "id": "2.28a",
+   "beat": 2,
+   "vo": "The same day Chile's troops landed.",
+   "page": "12_trigger",
+   "t": [
+    0.4,
+    0.62
+   ],
+   "cam": [
+    1.08,
+    0.4688,
+    0.4815,
+    1.15,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "2.28b",
+   "beat": 2,
+   "vo": "Historians list deeper causes: nitrate wealth, a secret alliance, a vague border.",
+   "page": "12_trigger",
+   "t": [
+    0.62,
+    0.8
+   ],
+   "cam": [
+    1.3,
+    0.2604,
+    0.7407,
+    1.36,
+    0.2708,
+    0.7407
+   ]
+  },
+  {
+   "id": "2.28c",
+   "beat": 2,
+   "vo": "But the trigger was an auction.",
+   "page": "12_trigger",
+   "t": [
+    0.8,
+    1
+   ],
+   "cam": [
+    1.35,
+    0.25,
+    0.3056,
+    1.45,
+    0.2396,
+    0.2778
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "3.29a",
+   "beat": 3,
+   "vo": "So I pressed play.",
+   "page": "13_topater",
+   "t": [
+    0,
+    0.06
+   ],
+   "cam": [
+    1.5,
+    0.1771,
+    0.213,
+    1.5,
+    0.2708,
+    0.2407
+   ]
+  },
+  {
+   "id": "3.30a",
+   "beat": 3,
+   "vo": "Twenty-third of March, 1879.",
+   "page": "13_topater",
+   "t": [
+    0.06,
+    0.12
+   ],
+   "cam": [
+    1.3,
+    0.3125,
+    0.3333,
+    1.2,
+    0.3646,
+    0.3889
+   ],
+   "say": "Twenty-third of March, eighteen seventy-nine."
+  },
+  {
+   "id": "3.30b",
+   "beat": 3,
+   "vo": "Near Calama, a small Bolivian force holds a bridge at a place called Topáter.",
+   "page": "13_topater",
+   "t": [
+    0.12,
+    0.28
+   ],
+   "cam": [
+    1.05,
+    0.5208,
+    0.5,
+    1.15,
+    0.5417,
+    0.5185
+   ],
+   "say": "Near Calama, a small Bolivian force holds a bridge at a place called toh-pah-tair."
+  },
+  {
+   "id": "3.31a",
+   "beat": 3,
+   "vo": "Its best-known defender, a civilian named Eduardo Abaroa, is killed there.",
+   "page": "13_topater",
+   "t": [
+    0.28,
+    0.3
+   ],
+   "cam": [
+    1.3,
+    0.5729,
+    0.5185,
+    1.3,
+    0.5104,
+    0.5556
+   ],
+   "say": "Its best-known defender, a civilian named Eduardo ah-bah-roh-ah, is killed there."
+  },
+  {
+   "id": "3.31b",
+   "beat": 3,
+   "vo": "It's the first battle of the war.",
+   "page": "13_topater",
+   "t": [
+    0.3,
+    0.5
+   ],
+   "cam": [
+    1.15,
+    0.3125,
+    0.5926,
+    1.2,
+    0.2812,
+    0.6296
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "3.32a",
+   "beat": 3,
+   "vo": "Remember that date. Twenty-third of March. It comes back.",
+   "page": "13_topater",
+   "t": [
+    0.5,
+    0.75
+   ],
+   "cam": [
+    1.3,
+    0.5208,
+    0.3704,
+    1.6,
+    0.5573,
+    0.3148
+   ]
+  },
+  {
+   "id": "3.33a",
+   "beat": 3,
+   "vo": "Peru joins on Bolivia's side.",
+   "page": "14_peel_v",
+   "t": [
+    0,
+    0.05
+   ],
+   "cam": [
+    1.4,
+    0.4271,
+    0.4815,
+    1.3,
+    0.4479,
+    0.5185
+   ]
+  },
+  {
+   "id": "3.33b",
+   "beat": 3,
+   "vo": "The war runs until 1884, and when it ends, look at the map.",
+   "page": "14_peel_v",
+   "t": [
+    0.05,
+    0.15
+   ],
+   "cam": [
+    1.3,
+    0.4479,
+    0.5185,
+    1.0,
+    0.5,
+    0.5
+   ],
+   "say": "The war runs until eighteen eighty-four, and when it ends, look at the map."
+  },
+  {
+   "id": "3.34a",
+   "beat": 3,
+   "vo": "Peru loses a province. Bolivia loses all of its coast: the department of Litoral.",
+   "page": "14_peel_v",
+   "t": [
+    0.15,
+    0.52
+   ],
+   "cam": [
+    1.15,
+    0.4688,
+    0.5926,
+    1.3,
+    0.3958,
+    0.5185
+   ],
+   "say": "Peru loses a province. Bolivia loses all of its coast: the department of lee-toh-rahl.",
+   "post": 0.6
+  },
+  {
+   "id": "3.35a",
+   "beat": 3,
+   "vo": "Bolivia's government puts it at about four hundred kilometres of shore,",
+   "page": "14_peel_v",
+   "t": [
+    0.52,
+    0.62
+   ],
+   "cam": [
+    1.5,
+    0.2083,
+    0.3333,
+    1.6,
+    0.1771,
+    0.3056
+   ]
+  },
+  {
+   "id": "3.35b",
+   "beat": 3,
+   "vo": "and some hundred and twenty thousand square kilometres of land.",
+   "page": "14_peel_v",
+   "t": [
+    0.62,
+    0.62
+   ],
+   "cam": [
+    1.5,
+    0.1875,
+    0.3148,
+    1.35,
+    0.2917,
+    0.4815
+   ]
+  },
+  {
+   "id": "3.36a",
+   "beat": 3,
+   "vo": "Bolivia had a beach. Now it has a lake. A very high one.",
+   "page": "14_peel_v",
+   "t": [
+    0.62,
+    0.68
+   ],
+   "cam": [
+    1.2,
+    0.3646,
+    0.5741,
+    1.3,
+    0.3333,
+    0.6296
+   ],
+   "cut": true,
+   "post": 0.6
+  },
+  {
+   "id": "3.37a",
+   "beat": 3,
+   "vo": "Peru signs its peace with Chile at Ancón on the twentieth of October, 1883.",
+   "page": "14_peel_v",
+   "t": [
+    0.68,
+    0.79
+   ],
+   "cam": [
+    1.25,
+    0.7292,
+    0.3889,
+    1.4,
+    0.8125,
+    0.3519
+   ],
+   "say": "Peru signs its peace with Chile at ahn-cone on the twentieth of October, eighteen eighty-three."
+  },
+  {
+   "id": "3.38a",
+   "beat": 3,
+   "vo": "Bolivia's treaty, twenty-one years later, is signed on the twentieth of October too.",
+   "page": "14_peel_v",
+   "t": [
+    0.79,
+    0.88
+   ],
+   "cam": [
+    1.4,
+    0.8125,
+    0.463,
+    1.45,
+    0.8333,
+    0.5556
+   ]
+  },
+  {
+   "id": "3.38b",
+   "beat": 3,
+   "vo": "Same date. Different decade.",
+   "page": "14_peel_v",
+   "t": [
+    0.88,
+    0.95
+   ],
+   "cam": [
+    1.6,
+    0.8438,
+    0.6667,
+    1.7,
+    0.8438,
+    0.6852
+   ],
+   "cut": true,
+   "post": 0.6
+  },
+  {
+   "id": "3.39a",
+   "beat": 3,
+   "vo": "Which brings us back to the 1904 treaty.",
+   "page": "15_railway",
+   "t": [
+    0,
+    0.1
+   ],
+   "cam": [
+    1.5,
+    0.1875,
+    0.2222,
+    1.3,
+    0.2188,
+    0.2778
+   ],
+   "say": "Which brings us back to the nineteen oh four treaty."
+  },
+  {
+   "id": "3.39b",
+   "beat": 3,
+   "vo": "Because it isn't only about what Bolivia gave up.",
+   "page": "15_railway",
+   "t": [
+    0.1,
+    0.13
+   ],
+   "cam": [
+    1.2,
+    0.2604,
+    0.3333,
+    1.3,
+    0.2292,
+    0.3056
+   ]
+  },
+  {
+   "id": "3.40a",
+   "beat": 3,
+   "vo": "Follow the tabs.",
+   "page": "15_railway",
+   "t": [
+    0.13,
+    0.13
+   ],
+   "cam": [
+    1.5,
+    0.1979,
+    0.287,
+    1.6,
+    0.1979,
+    0.287
+   ]
+  },
+  {
+   "id": "3.40b",
+   "beat": 3,
+   "vo": "Article three: Chile builds a railway from the port of Arica up to La Paz,",
+   "page": "15_railway",
+   "t": [
+    0.13,
+    0.6
+   ],
+   "cam": [
+    1.3,
+    0.4688,
+    0.5926,
+    1.3,
+    0.651,
+    0.3704
+   ],
+   "say": "Article three: Chile builds a railway from the port of ah-ree-kah up to lah pahss,"
+  },
+  {
+   "id": "3.40c",
+   "beat": 3,
+   "vo": "at its own expense.",
+   "page": "15_railway",
+   "t": [
+    0.6,
+    0.6
+   ],
+   "cam": [
+    1.7,
+    0.1719,
+    0.3333,
+    1.8,
+    0.1562,
+    0.3611
+   ]
+  },
+  {
+   "id": "3.41a",
+   "beat": 3,
+   "vo": "Fifteen years after it's finished, the Bolivian section is handed to Bolivia.",
+   "page": "15_railway",
+   "t": [
+    0.6,
+    0.7
+   ],
+   "cam": [
+    1.3,
+    0.6771,
+    0.6481,
+    1.4,
+    0.7031,
+    0.7222
+   ]
+  },
+  {
+   "id": "3.42a",
+   "beat": 3,
+   "vo": "Article four: three hundred thousand pounds sterling, in two payments.",
+   "page": "15_railway",
+   "t": [
+    0.7,
+    0.92
+   ],
+   "cam": [
+    1.5,
+    0.2083,
+    0.6852,
+    1.6,
+    0.1875,
+    0.6944
+   ]
+  },
+  {
+   "id": "3.43a",
+   "beat": 3,
+   "vo": "Article six. And look at this phrase.",
+   "page": "16_forever",
+   "t": [
+    0,
+    0.27
+   ],
+   "cam": [
+    1.15,
+    0.5729,
+    0.4074,
+    1.4,
+    0.724,
+    0.3704
+   ]
+  },
+  {
+   "id": "3.44a",
+   "beat": 3,
+   "vo": "Chile grants Bolivia, \"a perpetuidad\",",
+   "page": "16_forever",
+   "t": [
+    0.27,
+    0.27
+   ],
+   "cam": [
+    1.6,
+    0.7812,
+    0.3704,
+    1.75,
+    0.7969,
+    0.3519
+   ],
+   "say": "Chile grants Bolivia, ah pair-pet-wee-dahd,"
+  },
+  {
+   "id": "3.44b",
+   "beat": 3,
+   "vo": "the widest and freest right of commercial transit through its territory and ports.",
+   "page": "16_forever",
+   "t": [
+    0.27,
+    0.27
+   ],
+   "cam": [
+    1.45,
+    0.724,
+    0.3981,
+    1.35,
+    0.724,
+    0.4259
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "3.45a",
+   "beat": 3,
+   "vo": "So the treaty uses forever twice.",
+   "page": "16_forever",
+   "t": [
+    0.27,
+    0.4
+   ],
+   "cam": [
+    1.35,
+    0.724,
+    0.4259,
+    1.0,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "3.45b",
+   "beat": 3,
+   "vo": "Once for Chile's land, and once for Bolivia's passage across it.",
+   "page": "16_forever",
+   "t": [
+    0.4,
+    0.82
+   ],
+   "cam": [
+    1.12,
+    0.3646,
+    0.4444,
+    1.12,
+    0.6354,
+    0.4815
+   ]
+  },
+  {
+   "id": "3.46a",
+   "beat": 3,
+   "vo": "It's like selling your house and getting, in writing, eternal rights to the hallway.",
+   "page": "17_hallway",
+   "t": [
+    0,
+    0.78
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.1,
+    0.5208,
+    0.5185
+   ],
+   "cut": true,
+   "post": 0.6
+  },
+  {
+   "id": "3.47a",
+   "beat": 3,
+   "vo": "Article seven adds Bolivian customs agents in the ports.",
+   "page": "15_railway",
+   "t": [
+    1,
+    1
+   ],
+   "cam": [
+    1.4,
+    0.651,
+    0.3704,
+    1.4,
+    0.5,
+    0.5926
+   ]
+  },
+  {
+   "id": "3.47b",
+   "beat": 3,
+   "vo": "And to be fair to the hallway, it's a busy one.",
+   "page": "17_hallway",
+   "t": [
+    0.78,
+    1
+   ],
+   "cam": [
+    1.25,
+    0.5469,
+    0.6667,
+    1.3,
+    0.5729,
+    0.7037
+   ]
+  },
+  {
+   "id": "3.48a",
+   "beat": 3,
+   "vo": "The railway opened in 1913.",
+   "page": "18_arica",
+   "t": [
+    0,
+    0.2
+   ],
+   "cam": [
+    1.2,
+    0.3646,
+    0.3056,
+    1.25,
+    0.5208,
+    0.2778
+   ],
+   "say": "The railway opened in nineteen thirteen."
+  },
+  {
+   "id": "3.48b",
+   "beat": 3,
+   "vo": "Today, about three-quarters of the cargo moving through Arica's port is Bolivian.",
+   "page": "18_arica",
+   "t": [
+    0.2,
+    0.62
+   ],
+   "cam": [
+    1.3,
+    0.25,
+    0.4815,
+    1.4,
+    0.2292,
+    0.5
+   ],
+   "say": "Today, about three-quarters of the cargo moving through ah-ree-kah's port is Bolivian."
+  },
+  {
+   "id": "3.49a",
+   "beat": 3,
+   "vo": "So Bolivia trades through the sea every day.",
+   "page": "18_arica",
+   "t": [
+    0.62,
+    0.62
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.4,
+    0.7292,
+    0.6481
+   ]
+  },
+  {
+   "id": "3.49b",
+   "beat": 3,
+   "vo": "It just can't put a flag on any of it.",
+   "page": "18_arica",
+   "t": [
+    0.62,
+    0.92
+   ],
+   "cam": [
+    1.5,
+    0.2083,
+    0.7593,
+    1.6,
+    0.1979,
+    0.7963
+   ],
+   "cut": true,
+   "post": 0.6
+  },
+  {
+   "id": "3.50a",
+   "beat": 3,
+   "vo": "And Chile's view of all this is simple:",
+   "page": "19_positions",
+   "t": [
+    0,
+    0.12
+   ],
+   "cam": [
+    1.1,
+    0.3646,
+    0.4074,
+    1.2,
+    0.2917,
+    0.3889
+   ]
+  },
+  {
+   "id": "3.50b",
+   "beat": 3,
+   "vo": "a treaty signed two decades after the war, ratified by both, and honoured.",
+   "page": "19_positions",
+   "t": [
+    0.12,
+    0.32
+   ],
+   "cam": [
+    1.4,
+    0.2708,
+    0.3704,
+    1.5,
+    0.2604,
+    0.3889
+   ]
+  },
+  {
+   "id": "3.51a",
+   "beat": 3,
+   "vo": "Bolivia's view:",
+   "page": "19_positions",
+   "t": [
+    0.32,
+    0.52
+   ],
+   "cam": [
+    1.1,
+    0.6771,
+    0.4259,
+    1.2,
+    0.7292,
+    0.4074
+   ]
+  },
+  {
+   "id": "3.51b",
+   "beat": 3,
+   "vo": "a treaty signed by a country that had already lost a war, on terms it couldn't refuse.",
+   "page": "19_positions",
+   "t": [
+    0.52,
+    0.72
+   ],
+   "cam": [
+    1.4,
+    0.7396,
+    0.4074,
+    1.5,
+    0.7396,
+    0.4259
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "3.52a",
+   "beat": 3,
+   "vo": "Both sides have also argued, for years, over whether Chile's port rules respect that article six.",
+   "page": "19_positions",
+   "t": [
+    0.72,
+    0.92
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.25,
+    0.5,
+    0.6481
+   ]
+  },
+  {
+   "id": "3.52b",
+   "beat": 3,
+   "vo": "Chile says it does.",
+   "page": "19_positions",
+   "t": [
+    0.92,
+    1
+   ],
+   "cam": [
+    1.7,
+    0.25,
+    0.4352,
+    1.8,
+    0.2448,
+    0.4444
+   ]
+  },
+  {
+   "id": "3.53a",
+   "beat": 3,
+   "vo": "Which is where the navy comes in.",
+   "page": "19_positions",
+   "t": [
+    1,
+    1
+   ],
+   "cam": [
+    1.2,
+    0.5,
+    0.5185,
+    1.0,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "3.53b",
+   "beat": 3,
+   "vo": "Because the treaty settled the coast. It didn't settle the feeling.",
+   "page": "03_lighttable",
+   "t": [
+    1,
+    1
+   ],
+   "cam": [
+    1.3,
+    0.4688,
+    0.463,
+    1.0,
+    0.5,
+    0.5
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "4.54a",
+   "beat": 4,
+   "vo": "So what does a landlocked navy actually do all day?",
+   "page": "20_rivers",
+   "t": [
+    0,
+    0.05
+   ],
+   "cam": [
+    1.3,
+    0.6771,
+    0.3704,
+    1.5,
+    0.2917,
+    0.5741
+   ]
+  },
+  {
+   "id": "4.54b",
+   "beat": 4,
+   "vo": "Quite a lot, it turns out.",
+   "page": "20_rivers",
+   "t": [
+    0.05,
+    0.1
+   ],
+   "cam": [
+    1.2,
+    0.3646,
+    0.5185,
+    1.1,
+    0.4479,
+    0.5
+   ]
+  },
+  {
+   "id": "4.55a",
+   "beat": 4,
+   "vo": "Follow the water out of the mountains.",
+   "page": "20_rivers",
+   "t": [
+    0.1,
+    0.2
+   ],
+   "cam": [
+    1.3,
+    0.3958,
+    0.5185,
+    1.3,
+    0.5208,
+    0.4259
+   ]
+  },
+  {
+   "id": "4.55b",
+   "beat": 4,
+   "vo": "Bolivia's rivers run east, down into the Amazon basin.",
+   "page": "20_rivers",
+   "t": [
+    0.2,
+    0.3
+   ],
+   "cam": [
+    1.15,
+    0.5208,
+    0.3889,
+    1.15,
+    0.6771,
+    0.3519
+   ]
+  },
+  {
+   "id": "4.56a",
+   "beat": 4,
+   "vo": "The navy patrols the lake and those rivers.",
+   "page": "20_rivers",
+   "t": [
+    0.3,
+    0.36
+   ],
+   "cam": [
+    1.4,
+    0.599,
+    0.3148,
+    1.5,
+    0.6146,
+    0.2963
+   ]
+  },
+  {
+   "id": "4.56b",
+   "beat": 4,
+   "vo": "It chases smugglers, carries supplies to remote towns,",
+   "page": "20_rivers",
+   "t": [
+    0.36,
+    0.44
+   ],
+   "cam": [
+    1.5,
+    0.625,
+    0.4074,
+    1.6,
+    0.6354,
+    0.4444
+   ]
+  },
+  {
+   "id": "4.56c",
+   "beat": 4,
+   "vo": "and pulls people out of floods.",
+   "page": "20_rivers",
+   "t": [
+    0.44,
+    0.55
+   ],
+   "cam": [
+    1.5,
+    0.5938,
+    0.5741,
+    1.6,
+    0.5833,
+    0.6019
+   ]
+  },
+  {
+   "id": "4.57a",
+   "beat": 4,
+   "vo": "Reports put it at around five thousand people, with its main lake base at Tiquina.",
+   "page": "20_rivers",
+   "t": [
+    0.55,
+    0.66
+   ],
+   "cam": [
+    1.2,
+    0.3646,
+    0.6481,
+    1.45,
+    0.25,
+    0.6852
+   ],
+   "say": "Reports put it at around five thousand people, with its main lake base at tee-kee-nah."
+  },
+  {
+   "id": "4.58a",
+   "beat": 4,
+   "vo": "And some of its officers do get to sea, by training on other countries' ships.",
+   "page": "20_rivers",
+   "t": [
+    0.66,
+    0.81
+   ],
+   "cam": [
+    1.25,
+    0.3646,
+    0.5926,
+    1.25,
+    0.7292,
+    0.6852
+   ]
+  },
+  {
+   "id": "4.59a",
+   "beat": 4,
+   "vo": "Which is the naval version of learning to swim at a friend's house.",
+   "page": "20_rivers",
+   "t": [
+    0.81,
+    0.92
+   ],
+   "cam": [
+    1.4,
+    0.8125,
+    0.6481,
+    1.5,
+    0.8333,
+    0.6481
+   ],
+   "cut": true,
+   "post": 0.6
+  },
+  {
+   "id": "4.60a",
+   "beat": 4,
+   "vo": "But the navy also has a second job.",
+   "page": "20_rivers",
+   "t": [
+    0.92,
+    1
+   ],
+   "cam": [
+    1.2,
+    0.3125,
+    0.5741,
+    1.1,
+    0.4167,
+    0.5185
+   ]
+  },
+  {
+   "id": "4.60b",
+   "beat": 4,
+   "vo": "And for that, look at the calendar.",
+   "page": "21_diadelmar",
+   "t": [
+    0,
+    0.14
+   ],
+   "cam": [
+    1.5,
+    0.7812,
+    0.3056,
+    1.7,
+    0.8542,
+    0.2685
+   ]
+  },
+  {
+   "id": "4.61a",
+   "beat": 4,
+   "vo": "Every twenty-third of March, the date Abaroa died,",
+   "page": "21_diadelmar",
+   "t": [
+    0.14,
+    0.16
+   ],
+   "cam": [
+    1.9,
+    0.875,
+    0.25,
+    2.0,
+    0.8854,
+    0.2315
+   ],
+   "say": "Every twenty-third of March, the date ah-bah-roh-ah died,"
+  },
+  {
+   "id": "4.61b",
+   "beat": 4,
+   "vo": "Bolivia marks the Día del Mar. The Day of the Sea.",
+   "page": "21_diadelmar",
+   "t": [
+    0.16,
+    0.3
+   ],
+   "cam": [
+    1.15,
+    0.2604,
+    0.5185,
+    1.3,
+    0.2188,
+    0.5556
+   ],
+   "say": "Bolivia marks the dee-ah del mar. The Day of the Sea.",
+   "post": 0.6
+  },
+  {
+   "id": "4.62a",
+   "beat": 4,
+   "vo": "There are speeches, wreaths, and parades. And marching through them, the navy.",
+   "page": "21_diadelmar",
+   "t": [
+    0.3,
+    0.3
+   ],
+   "cam": [
+    1.5,
+    0.2083,
+    0.7037,
+    1.5,
+    0.5208,
+    0.6852
+   ]
+  },
+  {
+   "id": "4.63a",
+   "beat": 4,
+   "vo": "A ceremony with one guest of honour who can never attend.",
+   "page": "21_diadelmar",
+   "t": [
+    0.3,
+    0.85
+   ],
+   "cam": [
+    1.3,
+    0.6771,
+    0.6481,
+    1.4,
+    0.7083,
+    0.6852
+   ],
+   "cut": true,
+   "post": 0.6
+  },
+  {
+   "id": "4.64a",
+   "beat": 4,
+   "vo": "And it isn't only ceremony. It's in the constitution.",
+   "page": "22_art267",
+   "t": [
+    0,
+    0.14
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.1,
+    0.3646,
+    0.463
+   ]
+  },
+  {
+   "id": "4.64b",
+   "beat": 4,
+   "vo": "Look at article two six seven, from 2009.",
+   "page": "22_art267",
+   "t": [
+    0.14,
+    0.25
+   ],
+   "cam": [
+    1.2,
+    0.2917,
+    0.4074,
+    1.4,
+    0.2917,
+    0.4074
+   ],
+   "say": "Look at article two six seven, from two thousand nine."
+  },
+  {
+   "id": "4.65a",
+   "beat": 4,
+   "vo": "Bolivia declares its right to the territory that gives it access to the Pacific",
+   "page": "22_art267",
+   "t": [
+    0.25,
+    0.25
+   ],
+   "cam": [
+    1.5,
+    0.2917,
+    0.5185,
+    1.5,
+    0.3333,
+    0.5556
+   ]
+  },
+  {
+   "id": "4.65b",
+   "beat": 4,
+   "vo": "\"irrenunciable e imprescriptible\".",
+   "page": "22_art267",
+   "t": [
+    0.25,
+    0.55
+   ],
+   "cam": [
+    1.1,
+    0.5,
+    0.4444,
+    1.15,
+    0.5729,
+    0.4074
+   ],
+   "say": "ee-ray-noon-see-ah-blay eh eem-press-creep-tee-blay.",
+   "post": 0.6
+  },
+  {
+   "id": "4.66a",
+   "beat": 4,
+   "vo": "Which is the 1904 treaty's forever, answered with a forever of its own.",
+   "page": "22_art267",
+   "t": [
+    0.55,
+    0.92
+   ],
+   "cam": [
+    1.2,
+    0.6771,
+    0.5185,
+    1.35,
+    0.75,
+    0.6111
+   ],
+   "say": "Which is the nineteen oh four treaty's forever, answered with a forever of its own."
+  },
+  {
+   "id": "4.67a",
+   "beat": 4,
+   "vo": "There was another attempt, from the other neighbour.",
+   "page": "23_boliviamar",
+   "t": [
+    0,
+    0.12
+   ],
+   "cam": [
+    1.2,
+    0.625,
+    0.5185,
+    1.1,
+    0.4688,
+    0.4815
+   ]
+  },
+  {
+   "id": "4.67b",
+   "beat": 4,
+   "vo": "In 1992, Peru granted Bolivia a strip of beach near the port of Ilo.",
+   "page": "23_boliviamar",
+   "t": [
+    0.12,
+    0.44
+   ],
+   "cam": [
+    1.3,
+    0.25,
+    0.4259,
+    1.4,
+    0.2292,
+    0.4815
+   ],
+   "say": "In nineteen ninety-two, Peru granted Bolivia a strip of beach near the port of ee-loh."
+  },
+  {
+   "id": "4.68a",
+   "beat": 4,
+   "vo": "A free zone was promised. Decades later, reports say, it's still mostly sand.",
+   "page": "23_boliviamar",
+   "t": [
+    0.44,
+    0.44
+   ],
+   "cam": [
+    1.5,
+    0.5729,
+    0.6111,
+    1.5,
+    0.7812,
+    0.6481
+   ]
+  },
+  {
+   "id": "4.69a",
+   "beat": 4,
+   "vo": "Five kilometres of coast, for ninety-nine years.",
+   "page": "23_boliviamar",
+   "t": [
+    0.44,
+    0.44
+   ],
+   "cam": [
+    1.5,
+    0.2292,
+    0.6667,
+    1.6,
+    0.2292,
+    0.6759
+   ]
+  },
+  {
+   "id": "4.69b",
+   "beat": 4,
+   "vo": "So far, the main tenant is the sand.",
+   "page": "23_boliviamar",
+   "t": [
+    0.44,
+    0.9
+   ],
+   "cam": [
+    1.3,
+    0.7292,
+    0.3333,
+    1.4,
+    0.7292,
+    0.2963
+   ],
+   "cut": true,
+   "post": 0.6
+  },
+  {
+   "id": "4.70a",
+   "beat": 4,
+   "vo": "So in 2013 Bolivia tried a court.",
+   "page": "24a_filing",
+   "t": [
+    0,
+    0.06
+   ],
+   "cam": [
+    1.5,
+    0.1875,
+    0.2222,
+    1.4,
+    0.2188,
+    0.2593
+   ],
+   "say": "So in twenty thirteen Bolivia tried a court."
+  },
+  {
+   "id": "4.70b",
+   "beat": 4,
+   "vo": "It asked the International Court of Justice to say that Chile must negotiate sea access.",
+   "page": "24a_filing",
+   "t": [
+    0.06,
+    0.2
+   ],
+   "cam": [
+    1.1,
+    0.3333,
+    0.4259,
+    1.25,
+    0.2917,
+    0.4074
+   ]
+  },
+  {
+   "id": "4.71a",
+   "beat": 4,
+   "vo": "Not hand over the coast. Just negotiate.",
+   "page": "24a_filing",
+   "t": [
+    0.2,
+    0.2
+   ],
+   "cam": [
+    1.7,
+    0.2344,
+    0.4074,
+    1.8,
+    0.2292,
+    0.4167
+   ]
+  },
+  {
+   "id": "4.71b",
+   "beat": 4,
+   "vo": "The argument was that decades of talks had created a duty to keep talking.",
+   "page": "24a_filing",
+   "t": [
+    0.2,
+    0.52
+   ],
+   "cam": [
+    1.2,
+    0.651,
+    0.3333,
+    1.3,
+    0.6771,
+    0.3148
+   ]
+  },
+  {
+   "id": "4.72a",
+   "beat": 4,
+   "vo": "Chile argued the court couldn't even hear it, because the 1904 treaty had already settled the matter.",
+   "page": "24a_filing",
+   "t": [
+    0.52,
+    0.68
+   ],
+   "cam": [
+    1.15,
+    0.625,
+    0.5926,
+    1.3,
+    0.6979,
+    0.6667
+   ],
+   "say": "Chile argued the court couldn't even hear it, because the nineteen oh four treaty had already settled the matter."
+  },
+  {
+   "id": "4.73a",
+   "beat": 4,
+   "vo": "In 2015 the court disagreed on that point, and said it would hear the case.",
+   "page": "24a_filing",
+   "t": [
+    0.68,
+    0.86
+   ],
+   "cam": [
+    1.4,
+    0.6979,
+    0.6667,
+    1.5,
+    0.7188,
+    0.7037
+   ],
+   "say": "In twenty fifteen the court disagreed on that point, and said it would hear the case."
+  },
+  {
+   "id": "4.74a",
+   "beat": 4,
+   "vo": "First of October, 2018. The judgment comes back.",
+   "page": "24_icj_v",
+   "t": [
+    0.1,
+    0.24
+   ],
+   "cam": [
+    1.2,
+    0.3125,
+    0.3704,
+    1.1,
+    0.3333,
+    0.3889
+   ],
+   "say": "First of October, twenty eighteen. The judgment comes back.",
+   "build": 0.8,
+   "post": 0.6
+  },
+  {
+   "id": "4.75a",
+   "beat": 4,
+   "vo": "By twelve votes to three,",
+   "page": "24_icj_v",
+   "t": [
+    0.24,
+    0.4
+   ],
+   "cam": [
+    1.6,
+    0.25,
+    0.3333,
+    1.7,
+    0.2292,
+    0.3241
+   ]
+  },
+  {
+   "id": "4.75b",
+   "beat": 4,
+   "vo": "the court finds Chile did not take on a legal obligation to negotiate.",
+   "page": "24_icj_v",
+   "t": [
+    0.4,
+    0.6
+   ],
+   "cam": [
+    1.25,
+    0.6771,
+    0.4074,
+    1.35,
+    0.6979,
+    0.3889
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "4.76a",
+   "beat": 4,
+   "vo": "That's Chile's side, confirmed by the court.",
+   "page": "24_icj_v",
+   "t": [
+    0.6,
+    0.6
+   ],
+   "cam": [
+    1.4,
+    0.2917,
+    0.3704,
+    1.4,
+    0.2917,
+    0.4074
+   ]
+  },
+  {
+   "id": "4.76b",
+   "beat": 4,
+   "vo": "And then, near the end, the judges add a paragraph.",
+   "page": "24_icj_v",
+   "t": [
+    0.6,
+    0.6
+   ],
+   "cam": [
+    1.4,
+    0.2917,
+    0.4074,
+    2.0,
+    0.2604,
+    0.4722
+   ]
+  },
+  {
+   "id": "4.77a",
+   "beat": 4,
+   "vo": "Their finding, they say, shouldn't stop the two countries continuing their dialogue,",
+   "page": "24_icj_v",
+   "t": [
+    0.6,
+    0.6
+   ],
+   "cam": [
+    2.0,
+    0.2292,
+    0.4722,
+    2.0,
+    0.2917,
+    0.4769
+   ]
+  },
+  {
+   "id": "4.77b",
+   "beat": 4,
+   "vo": "in a spirit of good neighbourliness.",
+   "page": "24_icj_v",
+   "t": [
+    0.6,
+    0.6
+   ],
+   "cam": [
+    2.4,
+    0.3229,
+    0.4907,
+    2.5,
+    0.3281,
+    0.4907
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "4.78a",
+   "beat": 4,
+   "vo": "Nobody has to talk. But everyone is welcome to.",
+   "page": "24_icj_v",
+   "t": [
+    0.6,
+    0.72
+   ],
+   "cam": [
+    1.3,
+    0.5312,
+    0.7407,
+    1.4,
+    0.5312,
+    0.7963
+   ],
+   "cut": true
+  },
+  {
+   "id": "4.79a",
+   "beat": 4,
+   "vo": "Bolivia's government pointed to that paragraph as a reason to keep talking.",
+   "page": "24_icj_v",
+   "t": [
+    0.72,
+    0.94
+   ],
+   "cam": [
+    1.6,
+    0.6354,
+    0.6759,
+    1.7,
+    0.6458,
+    0.6833
+   ]
+  },
+  {
+   "id": "4.80a",
+   "beat": 4,
+   "vo": "Chile's government said it was open to dialogue, but not about its sovereignty.",
+   "page": "24_icj_v",
+   "t": [
+    0.94,
+    1
+   ],
+   "cam": [
+    1.45,
+    0.7083,
+    0.7315,
+    1.35,
+    0.6771,
+    0.6481
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "5.81a",
+   "beat": 5,
+   "vo": "So, back to the lake. Why does landlocked Bolivia have a navy?",
+   "page": "25_answer",
+   "t": [
+    0,
+    0.1
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.2,
+    0.4688,
+    0.3704
+   ]
+  },
+  {
+   "id": "5.82a",
+   "beat": 5,
+   "vo": "Part of the answer is plain geography.",
+   "page": "25_answer",
+   "t": [
+    0.1,
+    0.2
+   ],
+   "cam": [
+    1.25,
+    0.6771,
+    0.3333,
+    1.3,
+    0.7292,
+    0.3056
+   ]
+  },
+  {
+   "id": "5.82b",
+   "beat": 5,
+   "vo": "A big lake and a lot of river need boats and people who can run them.",
+   "page": "25_answer",
+   "t": [
+    0.2,
+    0.3
+   ],
+   "cam": [
+    1.4,
+    0.4688,
+    0.3889,
+    1.4,
+    0.651,
+    0.463
+   ]
+  },
+  {
+   "id": "5.83a",
+   "beat": 5,
+   "vo": "The other part is paperwork.",
+   "page": "25_answer",
+   "t": [
+    0.3,
+    0.3
+   ],
+   "cam": [
+    1.8,
+    0.8854,
+    0.2407,
+    1.9,
+    0.9062,
+    0.25
+   ]
+  },
+  {
+   "id": "5.83b",
+   "beat": 5,
+   "vo": "A tax of ten centavos, an auction, a war, and a treaty that says forever twice.",
+   "page": "25_answer",
+   "t": [
+    0.3,
+    0.6
+   ],
+   "cam": [
+    1.5,
+    0.2083,
+    0.7778,
+    1.5,
+    0.599,
+    0.7778
+   ]
+  },
+  {
+   "id": "5.84a",
+   "beat": 5,
+   "vo": "None of which changes the law. The treaty is in force, and the court has ruled.",
+   "page": "25_answer",
+   "t": [
+    0.6,
+    0.74
+   ],
+   "cam": [
+    1.5,
+    0.6771,
+    0.7593,
+    1.6,
+    0.7812,
+    0.7778
+   ]
+  },
+  {
+   "id": "5.85a",
+   "beat": 5,
+   "vo": "In my reading, the navy is a sentence in the constitution that learned to march.",
+   "page": "25_answer",
+   "t": [
+    0.74,
+    0.88
+   ],
+   "cam": [
+    1.3,
+    0.7812,
+    0.4444,
+    1.5,
+    0.8854,
+    0.463
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "5.86a",
+   "beat": 5,
+   "vo": "Chile holds the coast, and the court agreed it doesn't have to negotiate.",
+   "page": "24_icj_v",
+   "t": [
+    1,
+    1
+   ],
+   "cam": [
+    1.2,
+    0.4167,
+    0.3889,
+    1.3,
+    0.4688,
+    0.3889
+   ]
+  },
+  {
+   "id": "5.86b",
+   "beat": 5,
+   "vo": "Bolivia holds a claim it says can't expire.",
+   "page": "22_art267",
+   "t": [
+    0.55,
+    0.55
+   ],
+   "cam": [
+    1.3,
+    0.6771,
+    0.3704,
+    1.4,
+    0.7396,
+    0.2963
+   ]
+  },
+  {
+   "id": "5.87a",
+   "beat": 5,
+   "vo": "And a navy on a lake",
+   "page": "01_navy",
+   "t": [
+    0.12,
+    0.12
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.5,
+    0.4479,
+    0.6481
+   ]
+  },
+  {
+   "id": "5.87b",
+   "beat": 5,
+   "vo": "is how you keep a claim like that from gathering dust.",
+   "page": "01_navy",
+   "t": [
+    0.12,
+    0.12
+   ],
+   "cam": [
+    1.9,
+    0.4479,
+    0.6296,
+    1.7,
+    0.4167,
+    0.5926
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "5.88a",
+   "beat": 5,
+   "vo": "Look at the altitude again.",
+   "page": "26_end",
+   "t": [
+    0,
+    0.12
+   ],
+   "cam": [
+    1.3,
+    0.7812,
+    0.5185,
+    1.3,
+    0.7812,
+    0.3056
+   ]
+  },
+  {
+   "id": "5.89a",
+   "beat": 5,
+   "vo": "Three thousand eight hundred metres up. And zero kilometres of coast.",
+   "page": "26_end",
+   "t": [
+    0.12,
+    0.38
+   ],
+   "cam": [
+    1.6,
+    0.8542,
+    0.2778,
+    1.7,
+    0.8646,
+    0.3519
+   ]
+  },
+  {
+   "id": "5.90a",
+   "beat": 5,
+   "vo": "Most navies measure depth.",
+   "page": "26_end",
+   "t": [
+    0.38,
+    0.56
+   ],
+   "cam": [
+    1.15,
+    0.3958,
+    0.3704,
+    1.2,
+    0.3646,
+    0.3519
+   ]
+  },
+  {
+   "id": "5.90b",
+   "beat": 5,
+   "vo": "This one measures how long a country can remember.",
+   "page": "26_end",
+   "t": [
+    0.56,
+    0.85
+   ],
+   "cam": [
+    1.15,
+    0.3333,
+    0.5556,
+    1.2,
+    0.3125,
+    0.5926
+   ],
+   "cut": true,
+   "post": 0.6
+  },
+  {
+   "id": "5.91a",
+   "beat": 5,
+   "vo": "Every twenty-third of March, it gets measured again.",
+   "page": "26_end",
+   "t": [
+    0.85,
+    1
+   ],
+   "cam": [
+    1.5,
+    0.8125,
+    0.6111,
+    1.0,
+    0.5,
+    0.5
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "5.end",
+   "beat": 5,
+   "vo": "",
+   "hold": 2.0,
+   "post": 0.0,
+   "page": "26_end",
+   "t": [
+    1,
+    1
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.0,
+    0.5,
+    0.5
+   ]
+  }
+ ]
+}

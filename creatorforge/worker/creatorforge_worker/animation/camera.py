@@ -1,0 +1,305 @@
+"""A camera director for the 2D stage. From a recorded performance (qc.record) it decides, moment by moment:
+
+* who matters - characters doing something (an action > moving > feeling) and props in flight or in hand;
+* the shot size - wide with lead room for action, full figure for walking and staging, medium (closer, from the
+  hips up) for emotional beats with one or two people;
+* where to point - the subject box centred, with room ahead of a moving subject (lead room), heads kept in the
+  safe area and the ground line kept in frame when it can be;
+* how to move - a critically damped follow (no overshoot) whose stiffness depends on the style (action reacts
+  quickly, drama drifts), a pan-speed limit, a dead zone so small shifts don't move the camera, and a cut instead
+  of a whip pan when the subject jumps across the stage. In a side-on 2D stage the screen direction never flips.
+
+Returns CamKeys (linear between dense keys) for Scene.cams."""
+from __future__ import annotations
+
+import math
+
+from .scene2d import CamKey
+from .stick import Actor
+
+STYLE = {                      # spring frequency (1/s), max pan (frame widths / s), activity weights
+    "action": dict(omega=4.5, pan=1.2, wide=1.5),
+    "comedy": dict(omega=3.0, pan=0.8, wide=1.2),
+    "explainer": dict(omega=2.2, pan=0.6, wide=1.1),
+    "satire": dict(omega=2.2, pan=0.6, wide=1.1),
+    "drama": dict(omega=1.4, pan=0.4, wide=1.0),
+}
+BIG = ("jump", "climb", "trip_roll", "knockback", "kick", "throw", "pain_hop", "crawl")
+
+
+def _activity(R, i, n, win):
+    """How much character i is doing around frame n."""
+    lo, hi = max(0, n - win), min(len(R.times) - 1, n + win)
+    act = any(R.acting[i][k] for k in (lo, n, hi))
+    big = any(R.acting[i][k] in BIG for k in (lo, n, hi))
+    J0, J1 = R.joints[i][lo], R.joints[i][hi]
+    move = abs(J1["hip"][0] - J0["hip"][0]) / max(1e-6, R.times[hi] - R.times[lo])
+    feel = R.feeling[i][n]
+    return (3.0 if big else 2.0 if act else 0.0) + min(2.0, move) + (1.2 if feel else 0.0), move, big, feel
+
+
+PUNCH = {"!": 0.32, "#@!": 0.32}      # how far a reaction pushes in (x the zoom); "?" and "..." are quiet beats
+MAX_WIDEN = 0.6                                               # the stage may be drawn up to this much smaller
+
+
+def punches(R, sc) -> list:
+    """Accent moments the camera punches in on: a take or double take, a "!" or "#@!" over a head,
+    and any the document asks for (sc.punch: [(t, name)]). -> [(t, actor index, strength)]"""
+    out = []
+    for i, a in enumerate(R.actors):
+        if getattr(a, "z", 1.0) != 1.0:
+            continue
+        for t0, _, sym in getattr(a, "symbols", []):
+            if sym in PUNCH:
+                out.append((t0 - 0.05, i, PUNCH[sym]))
+        prev = ""
+        for n, name in enumerate(R.acting[i]):
+            if name in ("take",) and prev != name:
+                out.append((R.times[n], i, 0.28))
+            prev = name
+    names = {a.look.name: i for i, a in enumerate(R.actors)}
+    for t, who in getattr(sc, "punch", []) or []:
+        if who in names:
+            out.append((t, names[who], 0.3))
+    out.sort()
+    merged = []
+    for p in out:                                    # one punch per beat (a take's "!" and the take itself)
+        if merged and p[0] - merged[-1][0] < 0.9:
+            if p[2] > merged[-1][2]:
+                merged[-1] = (merged[-1][0], p[1], p[2])
+            continue
+        merged.append(p)
+    return merged
+
+
+def _punch_env(dt: float) -> float:
+    """A crash zoom: snaps in over 0.1 s, holds the reaction, eases back out."""
+    if dt < 0 or dt > 1.55:
+        return 0.0
+    if dt < 0.1:
+        u = dt / 0.1
+        return 1 - (1 - u) ** 3
+    if dt < 0.95:
+        return 1.0
+    u = (dt - 0.95) / 0.6
+    return 1 - u * u * (3 - 2 * u)
+
+
+def establishing(R, sc):
+    """(until, (cx, cy, zoom)) for a scene that opens on a building: the whole structure and its name plaque in
+    frame (as much as the stage allows), or None."""
+    hold = getattr(sc, "establish", 0.0)
+    if not hold:
+        return None
+    builds = [(k, p) for k, p in enumerate(R.prop_objs) if (getattr(p, "data", {}) or {}).get("structure")]
+    if not builds:
+        return None
+    k, p = max(builds, key=lambda kp: kp[1].w * kp[1].h)
+    x, y, _ = R.props[k][0]
+    z = getattr(p, "z", 1.0)
+    H = sc.height
+    sz = sc.ppm / z                                   # output pixels per metre on the building's layer
+    base = sc.horizon * H + (sc.ground - sc.horizon) * H / z
+    need = (0.07 * H - base) / sz + p.h               # raise the view until the roof is in frame
+    room = (0.93 * H - base) / sz                     # ...but keep its foot on screen
+    cy = max(0.0, min(need, room))
+    return hold, (x, cy, 1.0)
+
+
+def direct(R, sc, style: str = "explainer", margin: float = 1.0, every: int = 2) -> list:
+    """sc.focus (optional): [(t0, t1, [names])] - who the narration is about at each moment; they are always
+    framed (with whoever they are dealing with), however busy anyone else is. sc.show (optional):
+    [(t0, t1, x0, x1, y0, y1)] - world boxes (a diagram, a document) that must be in the shot while shown."""
+    S = STYLE.get(style, STYLE["explainer"])
+    zf = getattr(sc, "_zoom_base", 1.0)               # > 1 once the stage is drawn smaller to fit a group
+    ZMAX, ZFEEL = 1.9 * zf, 1.65 * zf
+    needs = []                                        # the zoom each moment needs to hold everyone (< 1: can't)
+    hints = getattr(sc, "focus", None) or []
+    W_m, H_m = sc.width / sc.ppm, sc.height / sc.ppm
+    ground_y = (sc.ground - 0.5) * H_m           # world y of the screen centre at cy=0, zoom 1 (relative)
+    win = int(0.6 * R.fps)
+    targets = []
+    for n, t in enumerate(R.times):
+        acts = [(_activity(R, i, n, win), i) for i, a in enumerate(R.actors) if getattr(a, "z", 1.0) == 1.0]
+        named_now = next((names for h0, h1, names in hints if h0 <= t <= h1), None) or []
+        beasts = []                                       # creatures that move, act or are named: subjects too
+        for k, p in enumerate(R.prop_objs):
+            if not (getattr(p, "data", {}) or {}).get("creature") or getattr(p, "z", 1.0) != 1.0:
+                continue
+            x, y, _ = R.props[k][n]
+            px_, py_, _ = R.props[k][max(0, n - win)]
+            nx_, ny_, _ = R.props[k][min(len(R.times) - 1, n + win)]
+            moving = math.dist((px_, py_), (nx_, ny_)) > 0.15
+            acting = any(a0 <= t <= a1 for a0, a1, _ in p.data.get("acts", []))
+            if moving or acting or any(getattr(p, "name", "").startswith(nm) for nm in named_now):
+                beasts.append((0 if moving else 1, -p.w * p.h, x, y, p))
+        beasts = [b[2:] for b in sorted(beasts, key=lambda b: b[:2])]   # moving first, bigger first
+        if not acts:
+            if beasts:                                    # a creature-only shot: the movers, then whoever fits
+                keep = [beasts[0]]
+                for b in beasts[1:]:
+                    xs_ = [q[0] - q[2].w / 2 for q in keep + [b]] + [q[0] + q[2].w / 2 for q in keep + [b]]
+                    ys_ = [q[1] for q in keep + [b]] + [q[1] + q[2].h for q in keep + [b]]
+                    if max(xs_) - min(xs_) + 2.0 * margin <= W_m and max(ys_) - min(ys_) + 1.0 * margin <= H_m:
+                        keep.append(b)
+                xs = [b[0] - b[2].w / 2 for b in keep] + [b[0] + b[2].w / 2 for b in keep]
+                ys = [b[1] for b in keep] + [b[1] + b[2].h for b in keep]
+                bw, bh = max(xs) - min(xs) + 2.0 * margin, max(ys) - min(ys) + 1.0 * margin
+                zoom = max(1.0, min(ZMAX, W_m / bw, H_m / bh))
+                hh = H_m / (2 * zoom)
+                floor = min(min(ys), 0.0)                 # the ground near the bottom, like a shot of people
+                yc = max(max(ys) + 0.4 * margin - hh, min(floor - 0.35 + hh, min(ys) - 0.25 + hh))
+                targets.append(((min(xs) + max(xs)) / 2, yc - ground_y, zoom))
+            else:
+                targets.append((0.0, 0.0, 1.0))
+            continue
+        talking = [i for _, i in acts if any(b0 - 0.6 <= t <= b1 + 0.3 for b0, b1, _ in
+                                             getattr(R.actors[i], "bubbles", []))]
+        if talking:                                       # a conversation: the speaker and whoever they talk to
+            sx = [R.joints[i][n]["hip"][0] for i in talking]
+            acts = [((s_[0] + (2.5 if i in talking else 2.0 if min(abs(R.joints[i][n]["hip"][0] - x) for x in sx)
+                                < 4.0 else 0.0),) + s_[1:], i) for s_, i in acts]
+        named = next((names for h0, h1, names in hints if h0 <= t <= h1), None)
+        if named:                                         # the narration's subject leads the frame...
+            lead = [i for _, i in acts if any(R.actors[i].look.name.startswith(nm) for nm in named)]
+            lx = [R.joints[i][n]["hip"][0] for i in lead]
+
+            def boost(i):
+                if i in lead:
+                    return 6.0
+                near = lx and min(abs(R.joints[i][n]["hip"][0] - x) for x in lx) < 4.0
+                return 6.0 if near else 0.0               # ...with whoever they are dealing with (a two-shot)
+            acts = [((s[0] + boost(i),) + s[1:], i) for s, i in acts]
+        top = max(s[0] for s, _ in acts)
+        focus = [(s, i) for s, i in acts if s[0] >= max(0.5, 0.45 * top)] or [max(acts)]
+        fx_ = [R.joints[i][n]["hip"][0] for _, i in focus]
+        focus += [(s, i) for s, i in acts if (s, i) not in focus and                 # someone right beside the
+                  min(abs(R.joints[i][n]["hip"][0] - x) for x in fx_) < 2.6]    # subject is in the shot, not half cut
+        grown = True
+        while grown:                                      # a group doing something together is one subject:
+            grown = False                                 # whoever is busy next to anyone in the shot joins it
+            fx_ = [R.joints[i][n]["hip"][0] for _, i in focus]
+            for s_, i in acts:
+                if (s_, i) not in focus and s_[0] > 0.3 and min(abs(R.joints[i][n]["hip"][0] - x) for x in fx_) < 2.6:
+                    focus.append((s_, i))
+                    grown = True
+        xs, ys, lead = [], [], 0.0
+        any_big = any(s[2] for s, _ in focus)
+        moving = [s[1] for s, _ in focus]
+        feeling = any(s[3] for s, _ in focus) and not any_big and max(moving) < 0.3
+        for s, i in focus:
+            J = R.joints[i][n]
+            pts = [J["head"], J["hip"]] + [l[2] for l in J["legs"]] + [w[2] for w in J["arms"]]
+            xs += [p[0] for p in pts]
+            ys += [p[1] for p in pts] + [J["head"][1] + R.actors[i].r_head]
+            if s[1] > 0.3:                                # room ahead of a moving subject
+                nxt = R.joints[i][min(len(R.times) - 1, n + win)]["hip"][0]
+                lead += math.copysign(min(1.2, 0.5 * s[1]), nxt - J["hip"][0]) / len(focus)
+        for k, p in enumerate(R.prop_objs):              # a thrown or carried prop is part of the action
+            if (getattr(p, "data", {}) or {}).get("creature"):
+                continue                                  # creatures: only if the shot can hold them (below)
+            x, y, _ = R.props[k][n]
+            near = any(abs(x - R.joints[i][n]["hip"][0]) < 3.0 for _, i in focus)
+            prev = R.props[k][max(0, n - 3)]
+            if near and math.dist((x, y), prev[:2]) > 0.02:
+                xs.append(x)
+                ys.append(y + getattr(p, "h", 0.2))
+        for x, y, p in beasts:                            # a creature in the action joins the shot - if the
+            nx = xs + [x - p.w / 2, x + p.w / 2]          # shot can hold it without losing the people
+            ny = ys + [y, y + p.h]
+            if max(nx) - min(nx) + 1.8 * margin <= W_m * 0.98 and max(ny) - min(ny) + 0.9 * margin <= H_m * 0.98:
+                xs, ys = nx, ny
+                feeling = False
+        for r0, r1, bx0, bx1, by0, by1 in getattr(sc, "show", []):   # a visual on screen: frame it with the cast
+            if r0 <= t <= r1:
+                xs += [bx0, bx1]
+                ys += [by0, by1]
+                feeling = False
+        x0, x1 = min(xs), max(xs)
+        y0, y1 = min(ys), max(ys)
+        if feeling and len(focus) <= 2:                   # medium shot: hips up
+            pad_x, pad_top, pad_bot = 0.6 * margin, 0.35 * margin, -0.15
+            y0 = min(J["hip"][1] for J in (R.joints[i][n] for _, i in focus)) - 0.25
+        elif any_big:                                     # wide: the whole move and where it goes
+            pad_x, pad_top, pad_bot = S["wide"] * margin, 0.6 * margin, 0.25
+        else:
+            pad_x, pad_top, pad_bot = 0.9 * margin, 0.45 * margin, 0.2
+        bw = (x1 - x0) + 2 * pad_x + abs(lead)
+        bh = (y1 - y0) + pad_top + pad_bot
+        needs.append(min(W_m / bw, H_m / bh) if not feeling else 1.0)
+        zoom = max(1.0, min(ZFEEL if feeling else ZMAX, min(W_m / bw, H_m / bh)))
+        cx = (x0 + x1) / 2 + lead / 2
+        hh = H_m / (2 * zoom)
+        lo, hi = y0 - pad_bot, y1 + pad_top
+        if hi - lo > 2 * hh:                              # can't fit it all: the heads matter most
+            yc = hi - hh
+        elif feeling and len(focus) <= 2:
+            yc = (lo + hi) / 2
+        else:                                             # the floor near the bottom of the frame, not a slab
+            floor = min(R.actors[i]._floor(R.joints[i][n]["hip"][0]) for _, i in focus)
+            yc = max(hi - hh, min(lo + hh, floor - 0.3 + hh))
+        cy = yc - ground_y                                # Scene.cy: metres the view is raised
+        targets.append((cx, cy, zoom))
+    if needs and min(needs) < 0.97 and zf == 1.0:
+        # a group or a big move doesn't fit even the widest shot: draw the whole stage smaller (scene-wide, so the
+        # characters' size never pops) and direct again, the closer shots zooming in that much more
+        f = max(MAX_WIDEN, min(needs) * 0.97)
+        sc.ppm *= f
+        sc._zoom_base = 1.0 / f
+        for L in list(getattr(sc, "layers", [])) + list(getattr(sc, "front", [])):
+            L._img = None
+        return direct(R, sc, style, margin, every)
+    est = establishing(R, sc)
+    if est:                                           # a new place: open wide on its building, then push in
+        until, shot = est
+        for n, t in enumerate(R.times):
+            if t <= until:
+                targets[n] = shot
+        sc.establish_until = until + 1.0              # the framing check leaves the opening alone
+    # follow: dead zone, critically damped spring, pan limit, cuts for big jumps
+    keys = []
+    x, y, z = targets[0]
+    vx = vy = vz = 0.0
+    dt = 1 / R.fps
+    w = S["omega"]
+    still = 0.0
+    hits = punches(R, sc) if style != "drama" or getattr(sc, "punch", None) else []
+    for n, (tx, ty, tz) in enumerate(targets):
+        half = W_m / (2 * z)
+        if n and math.dist(targets[n][:2], targets[n - 1][:2]) < 0.01 and abs(vx) < 0.05:
+            still += dt                                   # a held shot: creep in slowly so the picture lives
+        else:
+            still = 0.0
+        if still > 1.2:
+            tz = min(ZMAX, tz * (1.0 + min(0.09, 0.018 * (still - 1.2))))
+        if abs(tx - x) > 1.6 * half:                     # the subject is somewhere else entirely: cut
+            x, y, z, vx, vy, vz = tx, ty, tz, 0.0, 0.0, 0.0
+            keys.append(CamKey(max(0.0, R.times[n] - 1e-3), keys[-1].x if keys else x,
+                               keys[-1].y if keys else y, keys[-1].zoom if keys else z, ease="linear"))
+            keys.append(CamKey(R.times[n], x, y, z, ease="linear"))
+            continue
+        if abs(tx - x) < 0.12 * half:                    # dead zone: hold still for small shifts
+            tx = x
+        for val, tgt, vel, name in ((x, tx, vx, "x"), (y, ty, vy, "y"), (z, tz, vz, "z")):
+            a = w * w * (tgt - val) - 2 * w * vel
+            vel += a * dt
+            if name == "x":
+                vel = max(-S["pan"] * 2 * half, min(S["pan"] * 2 * half, vel))
+                vx, x = vel, val + vel * dt
+            elif name == "y":
+                vy, y = vel, val + vel * dt
+            else:
+                vz, z = vel, max(1.0, min(ZMAX, val + vel * dt))
+        px, py, pz = x, y, z
+        for t0, i, amt in hits:                          # a crash zoom on the reaction: punch in on the face
+            k = _punch_env(R.times[n] - t0)
+            if k > 0:
+                J = R.joints[i][n]
+                hx, hy = J["head"]
+                px = x + (hx - x) * 0.6 * k
+                py = y + ((hy - 0.3 - ground_y) - y) * 0.6 * k
+                pz = min(ZMAX * 1.3, z * (1 + amt * k))
+                break
+        if n % every == 0 or any(0 <= R.times[n] - t0 < 0.12 for t0, _, _ in hits):
+            keys.append(CamKey(R.times[n], px, py, pz, ease="linear"))
+    return keys

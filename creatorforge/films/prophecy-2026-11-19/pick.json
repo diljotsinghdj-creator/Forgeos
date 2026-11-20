@@ -1,0 +1,27 @@
+{
+ "film": "The Night the World Didn't End (working title)",
+ "channel": "dragonpsych",
+ "topic": "cognitive dissonance and When Prophecy Fails (1956), re-examined with the 2025 archive",
+ "pitched": {
+  "A": "The Countdown: the film runs on a clock to the 1954 midnight, then a second clock (2025 archive)",
+  "B": "The Archive Box: open the unsealed papers, the story told twice",
+  "C": "Your Brain Takes the Test: viewer commits to a prediction (close to the live-viewer-trap engine, so not recommended)"
+ },
+ "pick": "A, with B's archive receipts folded into act 4",
+ "picked_by": "owner, 2026-11-19 (\"I'll go with your picks\")",
+ "engine": "countdown",
+ "voice_style": "John Oliver satirical voice inside the Vox x Johnny Harris five beats; four-column motion script (MASTER_DIRECTIVES 10, 10b)",
+ "remake_2026_11_20": {
+  "why": "owner on the first cut: 'Script is boring, visuals are boring, narration is boring'",
+  "pitched": {
+   "A": "The Infiltration: a spy story, scientists undercover in the group",
+   "B": "The Red Pen: the textbook paragraph struck line by line",
+   "C": "Play It Twice: the famous version, rewind, the notes version"
+  },
+  "pick": "A, The Infiltration",
+  "picked_by": "owner, 2026-11-20 (question dialog)",
+  "engine": "infiltration",
+  "voice": "kokoro af_heart at 1.1 (owner's pick from three tests)",
+  "pitches_file": "channels/PITCHES_2026-11-20_prophecy_remake.md"
+ }
+}

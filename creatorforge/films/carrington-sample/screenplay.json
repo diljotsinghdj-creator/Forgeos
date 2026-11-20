@@ -1,0 +1,149 @@
+{
+ "id": "carrington-sample",
+ "title": "The 1859 storm in 30 seconds",
+ "channel": "sample",
+ "sample_for": "print-facts",
+ "topic": "carrington-event",
+ "target_seconds": 30,
+ "subject": "space weather",
+ "genre": "science",
+ "native_material": "Carrington's 1859 drawing, telegraph lines, auroras, solar storm records",
+ "engine": "live-viewer-trap",
+ "hook_mechanism": "the viewer guesses what Carrington's 1859 drawing broke, then what it would break today",
+ "metaphors": [
+  "the viewer's own guess, asked twice: 1859 and today"
+ ],
+ "pick": {
+  "engine": "live-viewer-trap",
+  "pitched": [
+   "historical-echo",
+   "live-viewer-trap",
+   "trojan-horse"
+  ],
+  "owner_words": "\"Live Viewer Trap\" (re-pitched after gate 1 stopped the first pitch, whose third option was not a house engine; Reverse Autopsy excluded as the last piece's engine; Trojan Horse flagged as retired for samples)",
+  "date": "2026-11-12"
+ },
+ "language": "en",
+ "lang": "en-gb",
+ "voice": "bm_lewis",
+ "concept": {
+  "logline": "The worst solar storm on record, and the one that missed us in 2012.",
+  "central_question": "What would the 1859 storm do today?",
+  "claim": "In 1859 a solar storm set telegraph offices on fire; in 2012 a storm as strong missed Earth by about a week."
+ },
+ "thumbnail": "Statement: What would it break *today*?",
+ "cutdowns": [],
+ "scenes": [
+  {
+   "id": "S1",
+   "act": "hook",
+   "purpose": "orient",
+   "delivery": "urgent",
+   "pause": 0.15,
+   "narration": "Here's a drawing from 1859.",
+   "graphic": "Photo: asset:P0001 | push | Carrington's drawing, 1859 | badge: verified",
+   "claims": [
+    "C1"
+   ]
+  },
+  {
+   "id": "S2",
+   "act": "hook",
+   "purpose": "move",
+   "delivery": "curious",
+   "pause": 0.25,
+   "narration": "Guess what it broke.",
+   "graphic": "Statement: Guess what it *broke*",
+   "claims": [],
+   "transition": "match"
+  },
+  {
+   "id": "S3",
+   "act": "discovery",
+   "purpose": "explain",
+   "delivery": "urgent",
+   "pause": 0.1,
+   "narration": "Richard Carrington saw these sunspots flash white.",
+   "graphic": "Photo: asset:P0001 | pan-right | The flare he saw | badge: verified",
+   "claims": [
+    "C1"
+   ],
+   "transition": "match"
+  },
+  {
+   "id": "S4",
+   "act": "discovery",
+   "purpose": "explain",
+   "delivery": "urgent",
+   "pause": 0.1,
+   "narration": "By NASA's account, it hit Earth within days.",
+   "graphic": "Photo: asset:P0003 | push | A solar storm (SOHO) | illustrative",
+   "claims": [
+    "C2"
+   ],
+   "transition": "dissolve"
+  },
+  {
+   "id": "S5",
+   "act": "discovery",
+   "purpose": "explain",
+   "delivery": "urgent",
+   "pause": 0.1,
+   "narration": "Telegraph lines sparked. Some offices caught fire.",
+   "graphic": "Photo: asset:P0006 | push | A telegraph operator (A. Waud) | illustrative",
+   "claims": [
+    "C3"
+   ]
+  },
+  {
+   "id": "S6",
+   "act": "discovery",
+   "purpose": "explain",
+   "delivery": "urgent",
+   "pause": 0.1,
+   "narration": "Auroras were reported as far south as Cuba.",
+   "graphic": "Globe: Cuba | Northern lights reported this far south, 1859",
+   "claims": [
+    "C2"
+   ],
+   "transition": "match"
+  },
+  {
+   "id": "S7",
+   "act": "consequences",
+   "purpose": "move",
+   "delivery": "curious",
+   "pause": 0.3,
+   "narration": "Now guess: what would it break today?",
+   "graphic": "Statement: What would it break *today*?",
+   "claims": []
+  },
+  {
+   "id": "S8",
+   "act": "consequences",
+   "purpose": "explain",
+   "delivery": "urgent",
+   "pause": 0.05,
+   "narration": "In July 2012, one that strong missed us by a week.",
+   "graphic": "Photo: asset:P0004 | push | A flare seen by NASA's SDO | illustrative",
+   "claims": [
+    "C4"
+   ],
+   "transition": "fade"
+  },
+  {
+   "id": "S9",
+   "act": "ending",
+   "purpose": "move",
+   "delivery": "grave",
+   "pause": 0.5,
+   "narration": "Analysts say it could knock out everything we plug in.",
+   "graphic": "Photo: asset:P0005 | pull | Earth at night (NASA) | badge: estimate",
+   "claims": [
+    "C6"
+   ],
+   "transition": "match"
+  }
+ ],
+ "transition_family": "match cuts"
+}

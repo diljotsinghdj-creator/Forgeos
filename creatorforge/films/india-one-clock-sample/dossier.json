@@ -1,0 +1,119 @@
+{
+ "topic": "India's one clock: a 15-second sample",
+ "researched": "2026-11-11",
+ "method": "Sunrise times computed with NOAA's general solar position equations (media/sunrise.py) for 21 June 2026. Other links not re-opened from this container (blocked here). Check before publishing.",
+ "claims": [
+  {
+   "id": "C1",
+   "claim": "On 21 June 2026 the Sun rises at about 4:05 a.m. IST at Dong, Arunachal Pradesh (97.0°E), and about 6:08 a.m. IST in western Kutch, Gujarat (68.8°E): just over two hours apart, although both keep the same clock.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "4:30",
+    "4:05",
+    "6:08",
+    "two",
+    "21",
+    "2026",
+    "3:50",
+    "6:15",
+    "30",
+    "50",
+    "15",
+    "5.5",
+    "97.02",
+    "28.17",
+    "68.8",
+    "23.8",
+    "72.58",
+    "23.03",
+    "77.21",
+    "28.61",
+    "88.36",
+    "22.57",
+    "91.74",
+    "26.14",
+    "5:15",
+    "4:31",
+    "4:52",
+    "5:23",
+    "5:54"
+   ],
+   "sources": [
+    {
+     "title": "NOAA Global Monitoring Laboratory: Solar Calculator",
+     "url": "https://gml.noaa.gov/grad/solcalc/",
+     "quote": "[computed] the same equations, run in media/sunrise.py",
+     "primary": true
+    },
+    {
+     "title": "NOAA: General Solar Position Calculations",
+     "url": "https://gml.noaa.gov/grad/solcalc/solareqns.PDF",
+     "quote": "[method] declination, equation of time, hour angle; sunrise at -0.833°"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Sunrise in Dong is often reported as 'around 4 a.m.' in summer; the computed 4:05 agrees. Pin coordinates (Dong 97.02E 28.17N; western Kutch 68.8E 23.8N) and the clock range shown (3:50 to 6:15 IST, offset 5.5 h) are the inputs of the calculation. City clocks: Ahmedabad 72.58E 23.03N, Delhi 77.21E 28.61N, Kolkata 88.36E 22.57N, Guwahati 91.74E 26.14N. Computed sunrise on 21 June 2026 (IST): Guwahati 4:31, Kolkata 4:52, Delhi 5:23, Ahmedabad 5:54."
+  },
+  {
+   "id": "C2",
+   "claim": "After independence in 1947 India adopted one standard time, IST (UTC+5:30, set by the 82.5°E meridian), for the whole country. Bombay kept its own local time until 1955.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "1947",
+    "5:30",
+    "82.5",
+    "1955",
+    "4:30",
+    "30"
+   ],
+   "sources": [
+    {
+     "title": "Indian Standard Time (Wikipedia)",
+     "url": "https://en.wikipedia.org/wiki/Indian_Standard_Time",
+     "quote": "[summary] adopted 1947; Bombay Time until 1955"
+    },
+    {
+     "title": "CSIR-National Physical Laboratory: Indian Standard Time",
+     "url": "https://www.nplindia.org/",
+     "quote": "[summary] NPL keeps and disseminates IST"
+    }
+   ],
+   "contradictions": [
+    "Calcutta kept its own time until 1948 by some accounts."
+   ],
+   "notes": "Say 'chosen in 1947', not 'since 1947'."
+  },
+  {
+   "id": "C3",
+   "claim": "In 2018 researchers at CSIR-National Physical Laboratory, India's timekeeper, proposed in Current Science two time zones: IST-I (UTC+5:30) and IST-II (UTC+6:30) for the north-east, divided at 89°52′E. India still keeps one.",
+   "status": "verified",
+   "confidence": "medium",
+   "figures": [
+    "2018",
+    "5:30",
+    "6:30",
+    "89.87",
+    "89",
+    "52",
+    "two",
+    "30"
+   ],
+   "sources": [
+    {
+     "title": "Current Science (2018): two time zones for India, CSIR-NPL researchers",
+     "url": "https://www.currentscience.ac.in/",
+     "quote": "[summary] IST-I UTC+5:30, IST-II UTC+6:30, boundary 89°52'E"
+    },
+    {
+     "title": "Reporting on the NPL proposal (The Hindu, 2018)",
+     "url": "https://www.thehindu.com/sci-tech/science/",
+     "quote": "[summary] two time zones proposed by NPL scientists"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Which states fall in IST-II (the Andaman and Nicobar Islands, Sikkim) must be checked against the paper before publishing; the map shades states by their centre against the boundary line."
+  }
+ ]
+}

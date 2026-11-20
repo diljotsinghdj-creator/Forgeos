@@ -1,0 +1,69 @@
+Rome Ka Sabse Mehenga Sauce
+On-screen hook: सड़ी मछली से बना सॉस, जो इत्र जितना महँगा था।
+Title: Rome Ka Sabse Mehenga Sauce: Sadi Machhli Se Bana 'Garum' | Itihaas Ki Ajeeb Kahaniyan
+Tags: #History #AncientRome #Garum #Pompeii #RomanFood #Itihaas #Hindi
+Source: Pliny the Elder, Natural History, Book 31 (on garum) https://www.perseus.tufts.edu/hopper/text?doc=Plin.+Nat.+31.43 ; Pompeii, House of Aulus Umbricius Scaurus (garum jar mosaics) https://pompeiisites.org/
+
+दो हज़ार साल पहले, रोम में एक सॉस था। जो हर अमीर की थाली में होता था।
+Tone: warm
+Visual: Marcus, a Roman stickman merchant, proudly holds up a small clay jar in a sunny courtyard by the blue Mediterranean sea
+Place: ROME · 1st CENTURY
+
+इसका नाम था, गारुम।
+Tone: dramatic
+Big: गारुम
+
+पर ये बनता कैसे था? सुनकर आप नाक सिकोड़ लेंगे।
+Tone: question
+Visual: Marcus pinches his nose and frowns, leaning over a row of huge clay jars in the sun
+
+मछलियों की आँतें, छोटी मछलियाँ, और ढेर सारा नमक। बड़े-बड़े मटकों में भरकर, धूप में छोड़ दिया जाता था।
+Tone: calm
+Visual: Workers in tunics pour salt over small fish and fish guts into large open clay jars on a stone terrace by the sea
+Steps: मछली और आँतें → नमक → धूप में मटके → कई हफ़्ते | गारुम बनाने का तरीक़ा
+
+हफ़्तों तक मछली सड़ती रहती। और ऊपर जमा होता, एक साफ़, सुनहरा रस।
+Tone: calm
+Visual: Close-up of a clay jar with a clear golden liquid glowing on top of the fermenting fish, flies buzzing around
+
+यही था गारुम। और नीचे बचे गाढ़े कीचड़ को कहते थे, अल्लेक। वो ग़रीबों के हिस्से आता था।
+Tone: strong
+Split: गारुम · ऊपर का सुनहरा रस | अल्लेक · नीचे का गाढ़ा कीचड़
+
+इसकी बदबू इतनी तेज़ थी, कि इसके कारख़ाने अक्सर शहर से दूर, समुद्र किनारे बनाए जाते थे।
+Tone: question
+Visual: A busy fish-sauce workshop on a rocky coast far from a distant Roman town, stickman workers holding their noses beside rows of stone tanks
+
+पर स्वाद? रोमन लोग दीवाने थे। मांस, सब्ज़ी, यहाँ तक कि मिठाई में भी डालते थे।
+Tone: warm
+Visual: A Roman stickman family at a low dining table happily drizzling golden sauce from tiny jars over plates of food, warm lamp light
+
+रोम के लेखक प्लिनी ने लिखा, इत्र को छोड़कर, शायद ही कोई तरल इतना क़ीमती माना गया।
+Tone: dramatic
+Quote: Scarcely any liquid except perfumes has come to be more highly valued | Pliny the Elder, Natural History, Book 31
+
+पोम्पेई में, एक गारुम व्यापारी इतना अमीर हुआ, कि उसने अपने घर के फ़र्श पर, गारुम के मटकों की तस्वीरें बनवाईं।
+Tone: strong
+Visual: Marcus stands proudly in a grand Roman house pointing down at a black and white floor mosaic showing jars of sauce
+Place: POMPEII
+
+उसका नाम था, औलुस उम्ब्रिशियस स्कॉरस।
+Tone: calm
+Text: औलुस उम्ब्रिशियस स्कॉरस · गारुम व्यापारी, पोम्पेई
+
+सोचिए। सड़ी मछली से, एक पूरा साम्राज्य चल रहा था।
+Tone: dramatic
+Visual: Roman cargo ships loaded with stacked clay amphorae sail across a sparkling sea at sunset
+Statement: सड़ी मछली से, *एक साम्राज्य।*
+
+और मज़े की बात? आज की फ़िश सॉस, उसी पुराने तरीक़े की याद दिलाती है।
+Tone: warm
+Visual: A modern kitchen shelf with a bottle of fish sauce beside a small clay Roman jar, warm morning light
+
+अगली बार खाने में कोई अजीब स्वाद आए, तो सोचिएगा। शायद रोमन लोग, उसे पहले ही चख चुके थे।
+Tone: warm
+Visual: Marcus winks and raises his little clay jar in a toast, sunset over the sea behind him
+
+ऐसी और अजीब कहानियाँ चाहिए? चैनल को सब्सक्राइब कीजिए।
+Tone: warm
+Visual: Marcus waves goodbye from the courtyard as the sun sets over the sea

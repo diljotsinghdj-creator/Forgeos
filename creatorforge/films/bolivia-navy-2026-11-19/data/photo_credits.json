@@ -1,0 +1,81 @@
+{
+ "rail": {
+  "file": "assets/real/rail_pdm.jpg",
+  "title": "ferrocarril-arica-la-paz",
+  "author": "rperez1981 (Flickr)",
+  "licence": "Public Domain Mark 1.0",
+  "via": "Openverse / Flickr",
+  "url": "https://www.flickr.com/photos/186528366@N05/49414186306",
+  "image_url": "https://live.staticflickr.com/65535/49414186306_61953720c0_b.jpg",
+  "what": "historic photo of an FCALP (Ferrocarril de Arica a La Paz) steam locomotive on a turntable; date and original photographer unknown (to check)",
+  "frames": [
+   "18_arica"
+  ]
+ },
+ "arica": {
+  "file": "assets/real/arica_port.jpg",
+  "title": "Arica port (Jan. 2008)",
+  "author": "exrorro",
+  "licence": "CC BY 2.0",
+  "via": "Openverse / Wikimedia Commons",
+  "url": "https://commons.wikimedia.org/w/index.php?curid=6829745",
+  "image_url": "https://upload.wikimedia.org/wikipedia/commons/f/f7/Arica_port_%28Jan._2008%29.jpg",
+  "what": "the port of Arica, Chile, seen from the Morro, January 2008",
+  "frames": [
+   "18_arica"
+  ]
+ },
+ "humberstone": {
+  "file": "assets/real/humberstone.jpg",
+  "title": "Humberstone and Santa Laura Saltpeter Works",
+  "author": "kevin dooley",
+  "licence": "CC BY 2.0",
+  "via": "Openverse / Flickr",
+  "url": "https://www.flickr.com/photos/12836528@N00/17599642679",
+  "image_url": "https://live.staticflickr.com/8741/17599642679_66ac8d98b9_b.jpg",
+  "what": "ruins at the Humberstone nitrate works (Atacama, Chile), today; cropped above the photographer's hand",
+  "frames": [
+   "10_1878"
+  ]
+ },
+ "ilo": {
+  "file": "assets/real/ilo_cc0.jpg",
+  "title": "Ilo, Perú",
+  "author": "jimcintosh",
+  "licence": "CC0 1.0",
+  "via": "Openverse / Flickr",
+  "url": "https://www.flickr.com/photos/8105696@N05/3671525941",
+  "image_url": "https://live.staticflickr.com/3331/3671525941_09c539fbb5_b.jpg",
+  "what": "a beach on the coast at Ilo, Peru (not identified as the Boliviamar strip itself); small distant figures, no identifiable faces",
+  "frames": [
+   "23_boliviamar"
+  ]
+ },
+ "titicaca": {
+  "file": "assets/real/titicaca_stanley.jpg",
+  "title": "Lake Titicaca",
+  "author": "D-Stanley",
+  "licence": "CC BY 2.0",
+  "via": "Openverse / Flickr",
+  "url": "https://www.flickr.com/photos/79721788@N00/7640966072",
+  "image_url": "https://live.staticflickr.com/7117/7640966072_df8ed67e00_b.jpg",
+  "what": "reeds and open water on Lake Titicaca, no people",
+  "frames": [
+   "03_lighttable",
+   "26_end"
+  ]
+ },
+ "tiquina": {
+  "file": "assets/real/tiquina_uverhq.jpg",
+  "title": "Estrecho Tiquina",
+  "author": "uverhq",
+  "licence": "CC BY 2.0",
+  "via": "Openverse / Flickr",
+  "url": "https://www.flickr.com/photos/71242267@N03/7508524576",
+  "image_url": "https://live.staticflickr.com/7263/7508524576_5093400fb8_b.jpg",
+  "what": "the Strait of Tiquina on Lake Titicaca (site of the navy's main lake base); no identifiable people",
+  "frames": [
+   "20_rivers"
+  ]
+ }
+}

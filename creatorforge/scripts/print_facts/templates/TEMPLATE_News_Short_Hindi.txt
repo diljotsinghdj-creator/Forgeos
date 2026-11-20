@@ -1,0 +1,41 @@
+[TITLE - e.g. 30 Second Mein Khatam]
+On-screen hook: [3-5 SHOCK WORDS]?
+Title: 🔥 [Name] Ka [Shock Word]! [Short question]?
+Tags: #PrintFacts #[Name] #[Topic] #Shorts #हिंदी #BreakingNews
+Source: [Publisher 1], [headline 1] [link 1] ; [Publisher 2], [headline 2] [link 2]
+
+[हुक: सबसे चौंकाने वाली बात, 8 शब्दों से कम]
+Tone: dramatic
+Visual: [one concrete, real-looking scene of the place or event, no writing]
+Visual: [a second scene]
+Text: [THE NUMBER OR 3 WORDS]
+
+[कौन? असली नाम, कहाँ, कब]
+Tone: urgent
+Visual: [the place where it happened]
+Place: [CITY · DATE]
+
+[क्या कहा? सीधा कोट या आँकड़ा]
+Tone: strong
+Visual: [a phone in a crowd, screen out of focus]
+Quote: [exact words] | [Name] on X, [date]
+
+[क्यों अभी? एक लाइन का संदर्भ]
+Tone: calm
+Visual: [a real scene from the background story]
+Article: [exact headline of link 1] | [Publisher], [Month Year]
+
+[दूसरा पक्ष: आयोग / बीजेपी / सरकार का जवाब]
+Tone: calm
+Visual: [the institution's building]
+Text: [WHO]: "[THEIR SHORT ANSWER]"
+
+[आपके लिए इसका मतलब]
+Tone: strong
+Visual: [ordinary people affected - a queue, a market, voters - seen from behind]
+Stock: [2-4 word search, e.g. voters queue India]
+
+[सवाल: आप क्या सोचते हैं? पूरी कहानी लंबे वीडियो में।]
+Tone: question
+Visual: [a phone in hands on a train, screen out of focus, face out of frame]
+Text: पूरी कहानी 👉 लंबा वीडियो

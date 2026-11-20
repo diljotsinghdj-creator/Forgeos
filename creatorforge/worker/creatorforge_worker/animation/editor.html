@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stickman Editor</title>
+<style>
+:root{--bg:#f6f5f1;--panel:#fff;--ink:#1c1c22;--mute:#6b6b75;--line:#e2e0d8;--acc:#e0731e;--acc2:#2d6cc4;--bad:#c0392b;--ok:#2e8b57}
+@media (prefers-color-scheme:dark){:root{--bg:#16161a;--panel:#202026;--ink:#ececf0;--mute:#9a9aa6;--line:#33333c;--acc:#f08a3a;--acc2:#5d93e6}}
+*{box-sizing:border-box}body{margin:0;font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+header{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:10px 16px;border-bottom:1px solid var(--line);background:var(--panel);position:sticky;top:0;z-index:5}
+header h1{font-size:16px;margin:0 12px 0 0}
+button,select,input,textarea{font:inherit;color:inherit}
+button{border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:6px 10px;cursor:pointer}
+button.primary{background:var(--acc);border-color:var(--acc);color:#fff}button:disabled{opacity:.45;cursor:default}
+input,select,textarea{border:1px solid var(--line);background:var(--bg);border-radius:6px;padding:5px 7px;min-width:0}
+textarea{width:100%;font-family:ui-monospace,Menlo,monospace;font-size:12px}
+main{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:14px;padding:14px 16px;max-width:1500px;margin:0 auto}
+@media (max-width:900px){main{grid-template-columns:1fr}}
+section{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px;min-width:0}
+h2{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute);margin:0 0 8px}
+.row{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:6px 0}
+.timeline{display:flex;gap:4px;overflow-x:auto;padding-bottom:6px}
+.clip{flex:0 0 auto;min-width:64px;border:2px solid var(--line);border-radius:8px;padding:6px;cursor:pointer;background:var(--bg);font-size:12px}
+.clip.sel{border-color:var(--acc)}.clip small{display:block;color:var(--mute)}.clip.bad{box-shadow:inset 0 -3px 0 var(--bad)}
+table{width:100%;border-collapse:collapse;font-size:12px}td,th{border-bottom:1px solid var(--line);padding:4px;text-align:left;vertical-align:top}
+td input{width:100%}.mute{color:var(--mute)}.bad{color:var(--bad)}.ok{color:var(--ok)}
+video{width:100%;border-radius:8px;background:#000}
+.tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px}.tabs button.on{border-color:var(--acc);color:var(--acc)}
+.hidden{display:none}#log{font-size:12px;max-height:160px;overflow:auto}
+.pill{display:inline-block;padding:1px 7px;border-radius:999px;border:1px solid var(--line);font-size:11px;margin:1px}
+</style>
+</head>
+<body>
+<header>
+  <h1>Stickman Editor</h1>
+  <input id="token" type="password" placeholder="worker token" style="width:150px" aria-label="worker token">
+  <select id="docs" aria-label="production"><option value="">- open a production -</option></select>
+  <button id="undo" disabled>Undo</button><button id="redo" disabled>Redo</button>
+  <button id="save" disabled>Save version</button><select id="versions" aria-label="versions"><option value="">versions</option></select>
+  <span id="status" class="mute"></span>
+</header>
+<main>
+<div>
+  <section>
+    <h2>New from a script</h2>
+    <input id="title" placeholder="title" style="width:100%;margin-bottom:6px">
+    <textarea id="script" rows="4" placeholder="Paste a script. The director drafts the film; you edit every decision."></textarea>
+    <div class="row"><label>Narration <select id="voice"><option value="">subtitles only</option><option value="en">English voice</option><option value="hi">Hindi / Hinglish voice</option></select></label>
+      <button class="primary" id="direct">Direct it</button></div>
+    <div id="notes" class="mute"></div>
+  </section>
+  <section style="margin-top:14px">
+    <h2>Timeline</h2>
+    <div class="timeline" id="timeline"></div>
+    <div class="row"><button id="left">&larr; Move</button><button id="right">Move &rarr;</button><button id="dup">Duplicate scene</button><button id="del">Delete scene</button></div>
+  </section>
+  <section style="margin-top:14px">
+    <h2>Scene</h2>
+    <div class="tabs" id="tabs"></div>
+    <div id="pane"></div>
+  </section>
+</div>
+<div>
+  <section>
+    <h2>Preview &amp; export</h2>
+    <div class="row"><button class="primary" id="preview" disabled>Render preview (480p)</button><button id="final" disabled>Render final (1080p)</button>
+      <a id="dl" class="hidden" download>Download</a><a id="dla" class="hidden" download>Android copy</a></div>
+    <video id="video" controls playsinline></video>
+    <div id="report" style="margin-top:8px"></div>
+  </section>
+  <section style="margin-top:14px">
+    <h2>Assets</h2>
+    <div class="row"><input id="adesc" placeholder="e.g. a small red car, a tree, a dog" style="flex:1"><button id="agen">Generate</button></div>
+    <div id="alist"></div>
+  </section>
+  <section style="margin-top:14px"><h2>History</h2><div id="log" class="mute"></div></section>
+</div>
+</main>
+<script>
+const $ = s => document.querySelector(s);
+let token = ""; try { token = sessionStorage.getItem("cf_token") || ""; } catch (e) {}
+$("#token").value = token;
+let doc = null, docId = "", sel = 0, tab = "steps", vocab = null, check = null, poll = null;
+const api = async (path, opt = {}) => {
+  const r = await fetch(path, {...opt, headers: {"Authorization": "Bearer " + token, "Content-Type": "application/json", ...(opt.headers || {})}});
+  if (!r.ok) { const t = await r.text(); let m = t; try { m = JSON.parse(t).detail; } catch (e) {} throw new Error(m || r.status); }
+  return r.headers.get("content-type")?.includes("json") ? r.json() : r;
+};
+const say = (m, bad) => { $("#status").textContent = m; $("#status").className = bad ? "bad" : "mute"; };
+const log = m => { const d = document.createElement("div"); d.textContent = new Date().toLocaleTimeString() + "  " + m; $("#log").prepend(d); };
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
+
+$("#token").onchange = async e => { token = e.target.value.trim(); try { sessionStorage.setItem("cf_token", token); } catch (x) {} await boot(); };
+async function boot() {
+  try { vocab = await api("/v1/animation/vocab"); } catch (e) { say("token needed: " + e.message, true); return; }
+  const list = await api("/v1/animation/docs");
+  $("#docs").innerHTML = '<option value="">- open a production -</option>' + list.map(d => `<option value="${d.id}">${esc(d.title)} (${d.scenes} scenes)</option>`).join("");
+  if (docId) $("#docs").value = docId;
+  refreshAssets(); say("ready");
+}
+$("#docs").onchange = e => e.target.value && open(e.target.value);
+async function open(id) { docId = id; const r = await api(`/v1/animation/docs/${id}`); apply(r); loadVersions(); }
+function apply(r) {
+  doc = r.doc; if (r.check) check = r.check;
+  sel = Math.min(sel, doc.scenes.length - 1);
+  $("#undo").disabled = !(r.history || []).length; $("#redo").disabled = !r.can_redo; $("#save").disabled = false;
+  $("#preview").disabled = $("#final").disabled = false;
+  if (r.notes) showNotes(r.notes);
+  drawTimeline(); drawPane();
+}
+async function op(name, args, label) {
+  try { const r = await api(`/v1/animation/docs/${docId}/ops`, {method: "POST", body: JSON.stringify({op: name, args})}); apply(r); log(label || name); say("saved"); }
+  catch (e) { say(e.message, true); log("refused: " + e.message); }
+}
+$("#undo").onclick = async () => { const r = await api(`/v1/animation/docs/${docId}/undo`, {method: "POST"}); apply(r); log("undo " + r.undone); };
+$("#redo").onclick = async () => { const r = await api(`/v1/animation/docs/${docId}/redo`, {method: "POST"}); apply(r); log("redo " + r.redone); };
+$("#save").onclick = async () => { const m = prompt("Version note", "checkpoint"); if (m === null) return; await api(`/v1/animation/docs/${docId}/versions`, {method: "POST", body: JSON.stringify({message: m})}); loadVersions(); log("saved version: " + m); };
+async function loadVersions() { const v = await api(`/v1/animation/docs/${docId}/versions`); $("#versions").innerHTML = '<option value="">versions</option>' + v.map(x => `<option value="${x.id}">${esc(x.message)} - ${x.id.slice(0, 15)}</option>`).join(""); }
+$("#versions").onchange = async e => { if (!e.target.value || !confirm("Restore this version? (undo can bring the current one back)")) return; apply(await api(`/v1/animation/docs/${docId}/versions/${e.target.value}/restore`, {method: "POST"})); log("restored " + e.target.value); };
+
+$("#direct").onclick = async () => {
+  const v = $("#voice").value; say("directing...");
+  try { const r = await api("/v1/animation/docs/from-script", {method: "POST", body: JSON.stringify({script: $("#script").value, title: $("#title").value, voice: v ? {lang: v} : null})});
+    docId = r.id; await boot(); apply({...r, history: [], can_redo: false}); log("directed " + (r.doc.title || "")); }
+  catch (e) { say(e.message, true); }
+};
+function showNotes(n) {
+  $("#notes").innerHTML = `<div>domain: <b>${esc(n.domain)}</b></div>` +
+    (n.limitations.length ? `<div class="bad">Limitations (${n.limitations.length}):</div><ul>${n.limitations.map(x => `<li>${esc(x)}</li>`).join("")}</ul>` : '<div class="ok">no limitations reported</div>') +
+    (n.decisions.length ? `<details><summary>${n.decisions.length} decisions</summary><ul>${n.decisions.map(x => `<li>${esc(x)}</li>`).join("")}</ul></details>` : "");
+}
+function drawTimeline() {
+  const secs = Object.fromEntries((check?.scenes || []).map(s => [s.id, s]));
+  $("#timeline").innerHTML = doc.scenes.map((s, i) => {
+    const c = secs[s.id], w = Math.max(64, Math.min(260, (c?.seconds || 6) * 14));
+    const bad = c && !(c.qc || "").startsWith("clean") && !(c.qc || "").startsWith("real");
+    return `<div class="clip ${i === sel ? "sel" : ""} ${bad ? "bad" : ""}" style="width:${w}px" data-i="${i}" title="${esc(c?.qc || "")}">${esc(s.name || s.id)}<small>${c ? c.seconds + " s" : ""} ${s.footage ? "footage" : ""}${s.transition ? " ↔ " + s.transition.kind : ""}</small></div>`;
+  }).join("");
+  document.querySelectorAll(".clip").forEach(el => el.onclick = () => { sel = +el.dataset.i; drawTimeline(); drawPane(); });
+}
+const cur = () => doc.scenes[sel];
+$("#left").onclick = () => sel > 0 && op("move_scene", {sid: cur().id, to: sel - 1}, "move scene").then(() => sel--);
+$("#right").onclick = () => sel < doc.scenes.length - 1 && op("move_scene", {sid: cur().id, to: sel + 1}, "move scene").then(() => sel++);
+$("#del").onclick = () => confirm("Delete this scene?") && op("delete_scene", {sid: cur().id}, "delete scene");
+$("#dup").onclick = () => { const s = JSON.parse(JSON.stringify(cur())); s.id = s.id + "b" + Date.now() % 1000; s.name = (s.name || "") + " (copy)"; op("add_scene", {scene: s, at: sel + 1}, "duplicate scene"); };
+
+const TABS = {steps: "Steps", subtitles: "Subtitles", cast: "Cast", camera: "Camera", look: "Light & weather", props: "Props"};
+function drawPane() {
+  $("#tabs").innerHTML = Object.entries(TABS).map(([k, v]) => `<button class="${k === tab ? "on" : ""}" data-t="${k}">${v}</button>`).join("");
+  document.querySelectorAll("#tabs button").forEach(b => b.onclick = () => { tab = b.dataset.t; drawPane(); });
+  const s = cur(); if (!s) { $("#pane").innerHTML = ""; return; }
+  if (s.footage) { $("#pane").innerHTML = `<p>Real footage: <b>${esc(s.footage.split("/").pop())}</b>, ${s.dur || ""} s, credit: ${esc(s.credit)}</p>`; return; }
+  ({steps: paneSteps, subtitles: paneSubs, cast: paneCast, camera: paneCamera, look: paneLook, props: paneProps})[tab](s);
+}
+function paneSteps(s) {
+  const who = (s.cast || []).map(c => c.name);
+  $("#pane").innerHTML = `<table><tr><th>#</th><th>when</th><th>who</th><th>do</th><th>details</th><th></th></tr>${(s.steps || []).map((st, i) => {
+    const {t, who: w, do: d, ...rest} = st;
+    return `<tr><td>${i}</td><td><input data-i="${i}" data-k="t" value="${esc(t)}" size="4"></td><td><input data-i="${i}" data-k="who" value="${esc(w || "")}" size="6"></td><td>${esc(d)}</td><td><input data-i="${i}" data-k="_rest" value='${esc(JSON.stringify(rest))}'></td><td><button data-del="${i}" title="delete">✕</button></td></tr>`; }).join("")}</table>
+  <div class="row"><select id="nsdo">${vocab.steps.map(x => `<option>${x}</option>`).join("")}</select><select id="nswho"><option value="">(no one)</option>${who.map(x => `<option>${esc(x)}</option>`).join("")}</select>
+  <input id="nsargs" placeholder='{"name":"wave","dur":1.5}' style="flex:1"><button id="nsadd">Add step</button></div>
+  <div class="row">Expression: <select id="exwho">${who.map(x => `<option>${esc(x)}</option>`).join("")}</select><input id="ext" value="1.0" size="4"> s <select id="exface">${vocab.expressions.map(x => `<option>${x}</option>`).join("")}</select><button id="exadd">Set expression</button></div>
+  <div class="row">Pose keys: <select id="pwho">${who.map(x => `<option>${esc(x)}</option>`).join("")}</select><input id="pt" value="1.0" size="4"> s <input id="pkeys" style="flex:1" value='[[0.4, {"lean": 0.3, "au": 1.4}, "out"], [0.9, {"lean": 0, "au": 0.3}, "settle"]]'><button id="padd">Add pose</button></div>
+  <p class="mute">Gestures: ${vocab.gestures.join(", ")}</p>`;
+  document.querySelectorAll("#pane input[data-i]").forEach(el => el.onchange = () => {
+    const i = +el.dataset.i, k = el.dataset.k;
+    let changes = {};
+    if (k === "_rest") { try { changes = JSON.parse(el.value); } catch (e) { say("details must be JSON", true); return; } }
+    else changes[k] = k === "t" && !/^[+-]/.test(el.value) ? parseFloat(el.value) : el.value;
+    op("update_step", {sid: s.id, index: i, ...changes}, `edit step ${i}`);
+  });
+  document.querySelectorAll("#pane button[data-del]").forEach(b => b.onclick = () => op("delete_step", {sid: s.id, index: +b.dataset.del}, "delete step"));
+  $("#nsadd").onclick = () => { let a = {}; try { a = JSON.parse($("#nsargs").value || "{}"); } catch (e) { say("arguments must be JSON", true); return; }
+    const st = {t: "+0.2", do: $("#nsdo").value, ...a}; if ($("#nswho").value) st.who = $("#nswho").value;
+    op("insert_step", {sid: s.id, index: (s.steps || []).length, step: st}, "add step " + st.do); };
+  $("#exadd").onclick = () => op("set_expression", {sid: s.id, who: $("#exwho").value, t: parseFloat($("#ext").value), face: $("#exface").value}, "expression");
+  $("#padd").onclick = () => { let k; try { k = JSON.parse($("#pkeys").value); } catch (e) { say("pose keys must be JSON", true); return; }
+    op("set_pose", {sid: s.id, who: $("#pwho").value, t: parseFloat($("#pt").value), keys: k}, "pose"); };
+}
+function paneSubs(s) {
+  const rows = (s.steps || []).map((st, i) => [st, i]).filter(([st]) => st.do === "caption" || st.do === "visual");
+  $("#pane").innerHTML = rows.length ? `<table><tr><th>#</th><th>subtitle</th><th>spoken</th><th>sync</th></tr>${rows.map(([st, i]) => `<tr><td>${i}</td><td><input data-i="${i}" data-k="text" value="${esc(st.text)}"></td><td><input data-i="${i}" data-k="say" value="${esc(st.voice?.say || "")}" placeholder="(no voice)"></td><td><input data-i="${i}" data-k="offset" value="${st.offset || 0}" size="4" title="seconds earlier(-) / later(+)"></td></tr>`).join("")}</table>
+  <p class="mute">Change "spoken" for a different voice text (Hinglish: Devanagari to speak, Roman to show). Sync moves the line's start.</p>` : "<p class='mute'>No narration in this scene.</p>";
+  document.querySelectorAll("#pane input[data-i]").forEach(el => el.onchange = () => {
+    const i = +el.dataset.i, st = s.steps[i];
+    if (el.dataset.k === "text") op("update_step", {sid: s.id, index: i, text: el.value}, "subtitle text");
+    else if (el.dataset.k === "say") op("update_step", {sid: s.id, index: i, voice: el.value ? {...(st.voice || {lang: "en"}), say: el.value} : null}, "voice text");
+    else { const t = typeof st.t === "number" ? st.t + parseFloat(el.value || 0) : st.t; op("update_step", {sid: s.id, index: i, t, offset: parseFloat(el.value || 0)}, "subtitle sync"); }
+  });
+}
+function paneCast(s) {
+  $("#pane").innerHTML = `<table><tr><th>name</th><th>colour</th><th>face</th><th>personality</th><th>height</th></tr>${(s.cast || []).map(c => `<tr><td>${esc(c.name)}${c.crowd ? " ×" + c.crowd : ""}</td>
+  <td><input type="color" data-n="${esc(c.name)}" data-k="body" value="#${(c.body || [40, 40, 40]).map(v => v.toString(16).padStart(2, "0")).join("")}"></td>
+  <td><input type="checkbox" data-n="${esc(c.name)}" data-k="faceless" ${c.faceless === false ? "checked" : ""}></td>
+  <td><select data-n="${esc(c.name)}" data-k="personality">${["kind", "timid", "energetic", "calm", "grumpy", "cheerful"].map(p => `<option ${p === c.personality ? "selected" : ""}>${p}</option>`).join("")}</select></td>
+  <td><input data-n="${esc(c.name)}" data-k="height" value="${c.height || 1.75}" size="4"></td></tr>`).join("")}</table>`;
+  document.querySelectorAll("#pane [data-n]").forEach(el => el.onchange = () => {
+    let v = el.value; const k = el.dataset.k;
+    if (k === "body") v = [1, 3, 5].map(j => parseInt(el.value.slice(j, j + 2), 16));
+    if (k === "faceless") { v = !el.checked; op("set_cast", {sid: s.id, name: el.dataset.n, faceless: v, skin: el.checked ? [226, 186, 150] : null}, "face"); return; }
+    if (k === "height") v = parseFloat(v);
+    op("set_cast", {sid: s.id, name: el.dataset.n, [k]: v}, "cast " + k);
+  });
+}
+function paneCamera(s) {
+  const c = s.camera || {};
+  $("#pane").innerHTML = `<div class="row">Style <select id="cstyle">${vocab.camera_styles.map(x => `<option ${x === c.style ? "selected" : ""}>${x}</option>`).join("")}</select>
+  Transition in <select id="ctr"><option value="">cut</option>${vocab.transitions.map(x => `<option ${x === s.transition?.kind ? "selected" : ""}>${x}</option>`).join("")}</select></div>
+  <p class="mute">Hand-set keys replace the automatic director for this scene: [[time, x, height, zoom], ...]. Leave empty for automatic.</p>
+  <textarea id="ckeys" rows="4">${c.keys ? esc(JSON.stringify(c.keys)) : ""}</textarea><div class="row"><button id="capply">Apply camera</button></div>`;
+  $("#capply").onclick = async () => { let k = null; const v = $("#ckeys").value.trim(); if (v) { try { k = JSON.parse(v); } catch (e) { say("keys must be JSON", true); return; } }
+    await op("set_camera", {sid: s.id, style: $("#cstyle").value, keys: k}, "camera");
+    const tr = $("#ctr").value; if ((s.transition?.kind || "") !== tr) {
+      const sc2 = JSON.parse(JSON.stringify(cur())); if (tr) sc2.transition = {kind: tr, dur: 0.6}; else delete sc2.transition;
+      await op("delete_scene", {sid: s.id}, "transition"); await op("add_scene", {scene: sc2, at: sel}, "transition " + (tr || "cut")); } };
+}
+function paneLook(s) {
+  const L = s.layers || {};
+  $("#pane").innerHTML = `<div class="row">Time of day <select id="lt"><option value="">(none)</option>${vocab.light.map(x => `<option>${x}</option>`).join("")}</select>
+  Weather <select id="lw"><option value="">(none)</option>${vocab.weather.map(x => `<option>${x}</option>`).join("")}</select> Wind <input id="lwind" value="${L.wind || 0}" size="3"></div>
+  <div class="row">Mood <select id="lm"><option value="">(none)</option><option>anxious</option><option>calm</option></select> Label <input id="ltag" value="${esc(L.tag || "")}" placeholder="Illustration / Satire"></div>
+  <div class="row"><button id="lapply">Apply</button></div><pre class="mute">${esc(JSON.stringify(L, null, 1))}</pre>`;
+  $("#lapply").onclick = () => { const a = {sid: s.id};
+    if ($("#lt").value) a.light = [[0, $("#lt").value]];
+    if ($("#lw").value) a.weather = [[0, 999, $("#lw").value, 1.0]];
+    a.wind = parseFloat($("#lwind").value || 0);
+    if ($("#lm").value) a.mood = $("#lm").value;
+    a.tag = $("#ltag").value || null;
+    op("set_layer", a, "light & weather"); };
+}
+function paneProps(s) {
+  $("#pane").innerHTML = (s.props || []).length ? `<table><tr><th>name</th><th>kind / asset</th><th>replace with asset id</th></tr>${s.props.map(p => `<tr><td>${esc(p.name)}</td><td>${esc(p.asset || p.kind)}</td><td><input data-p="${esc(p.name)}" placeholder="e.g. car, tree, or an id"></td></tr>`).join("")}</table>` : "<p class='mute'>No props listed in this scene (things named by the script are placed by the director).</p>";
+  document.querySelectorAll("#pane input[data-p]").forEach(el => el.onchange = () => op("replace_asset", {sid: s.id, prop: el.dataset.p, asset_id: el.value}, "replace asset"));
+}
+async function refreshAssets() {
+  const a = await api("/v1/animation/assets");
+  $("#alist").innerHTML = a.map(x => `<span class="pill" title="${esc(x.uses.join(", "))}">${esc(x.id)} - ${esc(x.name)}</span>`).join(" ");
+}
+$("#agen").onclick = async () => { try { const r = await api("/v1/animation/assets", {method: "POST", body: JSON.stringify({description: $("#adesc").value})});
+  log(`asset ${r.id} (${r.how})${r.warnings.length ? " - " + r.warnings.map(w => w.detail).join("; ") : ""}`); refreshAssets(); } catch (e) { say(e.message, true); } };
+
+async function render(q) {
+  await api(`/v1/animation/docs/${docId}/render?quality=${q}`, {method: "POST"}); say("rendering " + q + "...");
+  clearInterval(poll); poll = setInterval(async () => {
+    const st = await api(`/v1/animation/docs/${docId}/render`);
+    if (st.state === "running") return; clearInterval(poll);
+    if (st.state === "failed") { say("render failed", true); $("#report").innerHTML = `<pre class="bad">${esc(st.error)}</pre>`; return; }
+    say("rendered"); showReport(st.report);
+    const blob = await (await api(`/v1/animation/docs/${docId}/files/${q}.mp4`)).blob();
+    const u = URL.createObjectURL(blob); $("#video").src = u; $("#dl").href = u; $("#dl").download = `${q}.mp4`; $("#dl").classList.remove("hidden");
+    try { const b2 = await (await api(`/v1/animation/docs/${docId}/files/${q}_android.mp4`)).blob(); const u2 = URL.createObjectURL(b2); $("#dla").href = u2; $("#dla").download = `${q}_android.mp4`; $("#dla").classList.remove("hidden"); } catch (e) {}
+  }, 2000);
+}
+$("#preview").onclick = () => render("preview"); $("#final").onclick = () => render("final");
+function showReport(r) {
+  const v = r.video || {}, d = r.delivery || {}, sub = r.subtitles || {};
+  const okv = !v.missing && !(v.black || []).length;
+  $("#report").innerHTML = `<div class="${okv ? "ok" : "bad"}">frames ${v.frames}/${v.expected}${(v.frozen || []).length ? `, ${v.frozen.length} frozen stretch(es)` : ""}</div>
+  <div class="${d.sync_ok ? "ok" : "bad"}">audio/video ${d.sync_ok ? "in sync" : "out of sync"} (${d.audio_minus_video_s} s), ${d.size?.join("x")} @ ${d.fps} fps</div>
+  <div class="${sub.issues?.length ? "bad" : "ok"}">${sub.count || 0} subtitles, fastest ${sub.max_cps || 0} chars/s${sub.issues?.length ? ", " + sub.issues.length + " issue(s)" : ""}</div>
+  <table><tr><th>scene</th><th>s</th><th>motion QC</th><th>framing</th><th>cache</th></tr>${(r.scenes || []).map(s => `<tr><td>${esc(s.id)}</td><td>${s.seconds}</td><td>${esc(s.qc)}</td><td>${(s.camera?.framing || []).length ? s.camera.framing.length + " edge" : "ok"}</td><td>${s.cached ? "hit" : "new"}</td></tr>`).join("")}</table>
+  <p class="mute">These are measurements, not a verdict on the acting or the story - watch it.</p>`;
+}
+if (token) boot();
+</script>
+</body>
+</html>

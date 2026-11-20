@@ -1,0 +1,237 @@
+{
+ "id": "us-midterms-sample",
+ "title": "Twenty years on, the midterms rhymed",
+ "channel": "sample",
+ "sample_for": "print-facts",
+ "topic": "us-midterms-2026",
+ "target_seconds": 60,
+ "subject": "politics",
+ "genre": "politics",
+ "native_material": "the Capitol, Senate seat counts, the flipped states, the 2006 precedent",
+ "engine": "historical-echo",
+ "hook_mechanism": "the 2026 flip of both houses, echoed by the 2006 flip under the last Republican president to lose both",
+ "metaphors": [
+  "history rhyming at the midterms"
+ ],
+ "pick": {
+  "engine": "historical-echo",
+  "pitched": [
+   "historical-echo",
+   "reverse-autopsy",
+   "live-viewer-trap"
+  ],
+  "owner_words": "\"now give sample video of 1 minutes on current indian politics and 1 minute video on american politics. lets see what we have learnt. again freehand.\" (the owner delegated the topic and the pick; reverse-autopsy excluded as the India film's engine)",
+  "date": "2026-11-13"
+ },
+ "language": "en",
+ "lang": "en-us",
+ "voice": "am_michael",
+ "transition_family": "match cuts",
+ "concept": {
+  "logline": "In 2026 a Republican president lost both houses of Congress for the first time since 2006; the midterm swing repeated itself.",
+  "central_question": "Why did 2026 look like 2006?",
+  "claim": "Democrats took both houses on 3 November 2026; the last time a Republican president lost both was Bush in 2006, and the president's party usually loses House seats at midterms."
+ },
+ "thumbnail": "Statement: Twenty years on, the midterms *rhymed*.",
+ "cutdowns": [],
+ "scenes": [
+  {
+   "id": "S1",
+   "act": "hook",
+   "purpose": "orient",
+   "delivery": "grave",
+   "pause": 0.1,
+   "role": "opening",
+   "narration": "November third, twenty twenty-six. Both houses of Congress flip.",
+   "graphic": "Poster: ballot box | FLIPPED | both houses of Congress, 3 November 2026 | burst",
+   "claims": [
+    "U1"
+   ]
+  },
+  {
+   "id": "S2",
+   "act": "hook",
+   "purpose": "explain",
+   "delivery": "measured",
+   "pause": 0.05,
+   "narration": "Democrats win the House and the Senate.",
+   "graphic": "Photo: asset:P0018 | push | The US Capitol",
+   "claims": [
+    "U1"
+   ],
+   "transition": "dissolve"
+  },
+  {
+   "id": "S3",
+   "act": "world",
+   "purpose": "explain",
+   "delivery": "measured",
+   "pause": 0.05,
+   "narration": "Going in, Republicans held the Senate, fifty-three to forty-seven.",
+   "graphic": "Seats: Republicans 53, Democrats 45, Independents 2 | The Senate before the vote",
+   "claims": [
+    "U3"
+   ],
+   "transition": "match"
+  },
+  {
+   "id": "S4",
+   "act": "world",
+   "purpose": "explain",
+   "delivery": "curious",
+   "pause": 0.05,
+   "narration": "Control takes fifty-one. Democrats passed it.",
+   "graphic": "BigNumber: 51 | ballot box | Senate seats for control | badge: verified",
+   "claims": [
+    "U4"
+   ],
+   "transition": "dissolve"
+  },
+  {
+   "id": "S5",
+   "act": "investigation",
+   "purpose": "explain",
+   "delivery": "measured",
+   "pause": 0.05,
+   "narration": "They flipped seats in Texas, Kansas, Iowa, South Carolina and Maine.",
+   "graphic": "Heatmap: Texas 1, Kansas 1, Iowa 1, South Carolina 1, Maine 1 | Senate seats Democrats flipped | seats, 2026",
+   "claims": [
+    "U6",
+    "U1"
+   ],
+   "transition": "fade"
+  },
+  {
+   "id": "S6",
+   "act": "investigation",
+   "purpose": "explain",
+   "delivery": "curious",
+   "pause": 0.1,
+   "narration": "In Kansas, the first Democratic senator since 1932.",
+   "graphic": "Poster: ballot box | KANSAS | its first Democratic senator since 1932 | disc",
+   "claims": [
+    "U5"
+   ],
+   "transition": "match"
+  },
+  {
+   "id": "S7a",
+   "act": "discovery",
+   "purpose": "orient",
+   "delivery": "curious",
+   "pause": 0.05,
+   "narration": "We have seen this before.",
+   "graphic": "Statement: We have seen this *before*.",
+   "claims": [
+    "U2"
+   ],
+   "transition": "fade"
+  },
+  {
+   "id": "S7",
+   "act": "discovery",
+   "purpose": "orient",
+   "delivery": "curious",
+   "pause": 0.1,
+   "narration": "The last Republican president to lose both houses: George W. Bush, in two thousand six.",
+   "graphic": "Compare: person:George W. Bush + person:Donald Trump | 2006 | 2026 | Lost both houses of Congress",
+   "claims": [
+    "U2"
+   ],
+   "transition": "dissolve"
+  },
+  {
+   "id": "S8",
+   "act": "discovery",
+   "purpose": "explain",
+   "delivery": "measured",
+   "pause": 0.05,
+   "narration": "That year, Republicans fell from 232 House seats to 202.",
+   "graphic": "Chart: 232 vs 202 | Republican House seats before 2006, after 2006",
+   "claims": [
+    "U7"
+   ],
+   "transition": "match"
+  },
+  {
+   "id": "S9",
+   "act": "discovery",
+   "purpose": "explain",
+   "delivery": "measured",
+   "pause": 0.05,
+   "narration": "Twenty years apart, the same swing.",
+   "graphic": "Photoline: 2006 Bush loses Congress (ballot box) → 2026 Trump loses Congress (ballot box) | Twenty years apart",
+   "claims": [
+    "U2"
+   ],
+   "transition": "dissolve"
+  },
+  {
+   "id": "S10",
+   "act": "consequences",
+   "purpose": "explain",
+   "delivery": "measured",
+   "pause": 0.05,
+   "narration": "Al Jazeera reports the president's party usually loses at the midterms.",
+   "graphic": "Timeline: 1946 First postwar midterm → 2006 Bush loses Congress → 2026 Trump loses Congress | Midterms since 1946",
+   "claims": [
+    "U8",
+    "U2"
+   ],
+   "transition": "fade"
+  },
+  {
+   "id": "S10b",
+   "act": "consequences",
+   "purpose": "explain",
+   "delivery": "grave",
+   "pause": 0.05,
+   "narration": "Eighteen of twenty since 1946, it says.",
+   "graphic": "Statement: *18* of 20 midterms since 1946",
+   "claims": [
+    "U8"
+   ],
+   "transition": "fade"
+  },
+  {
+   "id": "S11",
+   "act": "consequences",
+   "purpose": "explain",
+   "delivery": "measured",
+   "pause": 0.05,
+   "narration": "About a hundred and twenty-four million people voted, by a preliminary count.",
+   "graphic": "Counter: 0 → 124 | million votes | preliminary, University of Florida Election Lab | badge: estimate",
+   "claims": [
+    "U9"
+   ],
+   "transition": "match"
+  },
+  {
+   "id": "S12",
+   "act": "ending",
+   "purpose": "explain",
+   "delivery": "measured",
+   "pause": 0.05,
+   "narration": "The new Congress meets on January third.",
+   "graphic": "Frame: asset:P0018 | - | A *new* Congress | meets 3 January | 2027",
+   "claims": [
+    "U10"
+   ],
+   "transition": "dissolve"
+  },
+  {
+   "id": "S13",
+   "act": "ending",
+   "purpose": "explain",
+   "delivery": "grave",
+   "pause": 0.5,
+   "role": "ending",
+   "narration": "Twenty years on, the midterms rhymed.",
+   "graphic": "Statement: Twenty years on, the midterms *rhymed*.",
+   "claims": [
+    "U2"
+   ],
+   "transition": "fade"
+  }
+ ]
+}

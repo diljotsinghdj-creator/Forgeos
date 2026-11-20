@@ -1,0 +1,68 @@
+Gyanesh Kumar Kaun Hain
+On-screen hook: 13 करोड़ नाम कटे। ये अफ़सर कौन है?
+Title: 🔥 Gyanesh Kumar Kaun Hain? IAS Se CEC Tak - 45 Second Mein #Shorts
+Tags: #PrintFacts #GyaneshKumar #ElectionCommission #CEC #SIR #VoterList #Shorts #हिंदी
+Source: Gulf News, Gyanesh Kumar, IAS officer from the Kerala cadre, appointed as India's new Chief Election Commissioner https://gulfnews.com/world/asia/india/gyanesh-kumar-ias-officer-from-the-kerala-cadre-appointed-as-india-s-chief-election-commissioner-1.500039955 ; Indian Cooperative, Former co-op secretary takes over as CEC https://indiancooperative.com/co-op-news-snippets/former-co-op-secretary-takes-over-as-cec ; NewsOnAIR, Retired IAS officers Gyanesh Kumar and Sukhbir Singh Sandhu appointed Election Commissioners https://newsonair.gov.in/retired-ias-officers-gyanesh-kumar-and-sukhbir-singh-sandhu-appointed-election-commissioners ; Tribune, Gyanesh Kumar to take over as 26th CEC on Feb 19 https://www.tribuneindia.com/news/india/gyanesh-kumar-to-take-over-as-26th-cec-on-feb-19 ; Scroll, Gyanesh Kumar named chief poll commissioner overruling Rahul Gandhi's dissent https://scroll.in/latest/1079285/gyanesh-kumar-named-chief-poll-commissioner-overruling-rahul-gandhis-dissent ; Deccan Herald, SIR: 13.3 crore names wiped out of draft voter lists so far https://www.deccanherald.com/india/sir-133-crore-names-wiped-out-of-draft-voter-lists-so-far-triggering-opposition-backlash-4164836 ; Reuters via Kathmandu Post, Why India's tens of millions of voter deletions have led to widespread protests, 9 Oct 2026 https://kathmandupost.com/world/2026/10/09/why-india-s-tens-of-millions-of-voter-deletions-have-led-to-widespread-protests ; India.com, CEC can be removed only like SC judge: what did ECI tell apex court about Gyanesh Kumar https://www.india.com/news/india/cec-can-be-removed-only-like-sc-judge-what-did-eci-tell-apex-court-about-gyanesh-kumar-8539526/
+
+13 करोड़ नाम कटे, इस्तीफ़े की माँग... पर ज्ञानेश कुमार हैं कौन?
+Tone: dramatic
+Visual: A long queue of Indian voters outside a polling booth at sunrise, seen from behind
+Visual: The Election Commission of India building in New Delhi at dusk, windows lit
+Stock: Election Commission of India
+Text: ज्ञानेश कुमार · CEC
+
+1988 बैच, केरल कैडर के IAS अफ़सर।
+Tone: calm
+Visual: An old government file tied with red tape on a wooden desk, text unreadable
+Visual: Green paddy fields and coconut palms in Kerala at morning
+Text: IAS · 1988 · KERALA CADRE
+Cite: Gulf News, Feb 2025
+
+रिटायरमेंट से पहले, सहकारिता मंत्रालय के सचिव।
+Tone: calm
+Visual: The sandstone facade of a central government ministry building in New Delhi
+Visual: A nameplate-free office door in a government corridor, seen from a distance
+Text: SECRETARY · MINISTRY OF COOPERATION
+Cite: Indian Cooperative
+
+मार्च 2024 में चुनाव आयुक्त। फ़रवरी 2025 में छब्बीसवें मुख्य चुनाव आयुक्त।
+Tone: strong
+Visual: A ballot box being sealed with wax by an official's hands
+Visual: Rows of electronic voting machines on a counting-hall table in India
+Timeline: Mar 2024 चुनाव आयुक्त → 19 Feb 2025 26वें CEC | IAS से CEC तक
+Cite: NewsOnAIR; Tribune
+
+2023 के नए क़ानून से चुने गए पहले CEC। विपक्ष के नेता राहुल गांधी ने लिखित असहमति दी।
+Tone: strong
+Visual: A fountain pen resting on a closed leather folder
+Visual: A wall clock above a government office door, hands near midnight
+Article: Gyanesh Kumar named chief poll commissioner overruling Rahul Gandhi's dissent | Scroll, February 2025
+
+फिर वोटर लिस्ट की गहन जाँच, SIR। ड्राफ़्ट लिस्ट से 13.3 करोड़ नाम कटे।
+Tone: dramatic
+Visual: A thick Indian voter register open on a desk, names unreadable
+Visual: A red pen striking line after line through a printed voter list, text unreadable
+Chart: 13.3 करोड़ | ड्राफ़्ट वोटर लिस्ट से कटे नाम
+Cite: Deccan Herald, 30 Sep 2026
+
+आयोग का कहना: मृत, डुप्लीकेट, शिफ़्ट हुए वोटर। विपक्ष का आरोप: असली वोटर भी कटे।
+Tone: calm
+Visual: A clerk's hands sorting voter forms into stacks, face out of frame
+Visual: An elderly Indian voter holding an ID card, seen from behind, card unreadable
+Split: आयोग: सफ़ाई | विपक्ष का आरोप: असली वोटर कटे
+Text: आरोप · अदालत में तय नहीं
+Cite: Reuters, 9 Oct 2026
+
+सुप्रीम कोर्ट में आयोग ने कहा: CEC को सिर्फ़ जज की तरह ही हटाया जा सकता है।
+Tone: strong
+Visual: The Supreme Court of India building in New Delhi in morning light
+Visual: A stack of legal files on a courtroom table, text unreadable
+Quote: CEC can be removed only like a Supreme Court judge | ECI affidavit, as reported
+Cite: India.com, Oct 2026
+
+कार्यकाल जनवरी 2029 तक। सवाल ये: रेफ़री पर भरोसा कैसे लौटे? आप बताइए।
+Tone: question
+Visual: A referee's whistle lying on a white ballot paper, text unreadable
+Visual: A long queue of Indian voters outside a polling booth at sunrise, seen from behind
+Text: कार्यकाल: जनवरी 2029 तक
+Cite: Tribune

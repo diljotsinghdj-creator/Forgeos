@@ -1,0 +1,2078 @@
+{
+ "salt": {
+  "device": "hand",
+  "scheme": [
+   "#9E1B22",
+   "#F2C200",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.92 Anton",
+   "Plex"
+  ]
+ },
+ "lithium": {
+  "device": "hand",
+  "scheme": [
+   "#5C1A33",
+   "#F7B32B",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.95 Bebas",
+   "DMono"
+  ]
+ },
+ "scroll": {
+  "device": "hand",
+  "scheme": [
+   "#B23A48",
+   "#FCD581",
+   "#F4EFE6"
+  ],
+  "type": [
+   "600 {s}px/0.95 Oswald",
+   "DMono"
+  ]
+ },
+ "kharif": {
+  "device": "sundisc",
+  "scheme": [
+   "#E8E1D3",
+   "#D7262B",
+   "#141414"
+  ],
+  "type": [
+   "900 {s}px/0.95 Playfair",
+   "Mono"
+  ]
+ },
+ "sugar": {
+  "device": "sundisc",
+  "scheme": [
+   "#F1E3C8",
+   "#3A7D44",
+   "#141414"
+  ],
+  "type": [
+   "400 {s}px/1 ISerif",
+   "Plex"
+  ]
+ },
+ "cotton": {
+  "device": "sundisc",
+  "scheme": [
+   "#14304F",
+   "#F2C200",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/1 FrauncesI",
+   "Grotesk"
+  ]
+ },
+ "railway": {
+  "device": "diorama",
+  "scheme": [
+   "#EDE6DA",
+   "#2E86AB",
+   "#141414"
+  ],
+  "type": [
+   "700 {s}px/0.95 Grotesk",
+   "Plex"
+  ]
+ },
+ "unread": {
+  "device": "diorama",
+  "scheme": [
+   "#0F0F10",
+   "#FF6A1A",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.95 Archivo",
+   "Mono"
+  ]
+ },
+ "generic": {
+  "device": "diorama",
+  "scheme": [
+   "#0B3C5D",
+   "#F2545B",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.92 Anton",
+   "Plex"
+  ]
+ },
+ "mosquito": {
+  "device": "scale",
+  "scheme": [
+   "#EAEAEA",
+   "#FF4F00",
+   "#141414"
+  ],
+  "type": [
+   "400 {s}px/0.95 Bebas",
+   "DMono"
+  ]
+ },
+ "bees": {
+  "device": "scale",
+  "scheme": [
+   "#2B2D42",
+   "#EF8354",
+   "#F4EFE6"
+  ],
+  "type": [
+   "600 {s}px/0.95 Oswald",
+   "DMono"
+  ]
+ },
+ "overwhelm": {
+  "device": "scale",
+  "scheme": [
+   "#22333B",
+   "#E9C46A",
+   "#F4EFE6"
+  ],
+  "type": [
+   "900 {s}px/0.95 Playfair",
+   "Mono"
+  ]
+ },
+ "cashcard": {
+  "device": "split",
+  "scheme": [
+   "#1E5E4E",
+   "#F4D35E",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/1 ISerif",
+   "Plex"
+  ]
+ },
+ "trainplane": {
+  "device": "split",
+  "scheme": [
+   "#1B1B1B",
+   "#E63946",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/1 FrauncesI",
+   "Grotesk"
+  ]
+ },
+ "staygo": {
+  "device": "split",
+  "scheme": [
+   "#F4F2EA",
+   "#E5A91A",
+   "#141414"
+  ],
+  "type": [
+   "700 {s}px/0.95 Grotesk",
+   "Plex"
+  ]
+ },
+ "gtroad": {
+  "device": "routemap",
+  "scheme": [
+   "#3D2C8D",
+   "#FFD23F",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.95 Archivo",
+   "Mono"
+  ]
+ },
+ "amazonboat": {
+  "device": "routemap",
+  "scheme": [
+   "#9E1B22",
+   "#F2C200",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.92 Anton",
+   "Plex"
+  ]
+ },
+ "caravan": {
+  "device": "routemap",
+  "scheme": [
+   "#5C1A33",
+   "#F7B32B",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.95 Bebas",
+   "DMono"
+  ]
+ },
+ "indus": {
+  "device": "routemap",
+  "scheme": [
+   "#B23A48",
+   "#FCD581",
+   "#F4EFE6"
+  ],
+  "type": [
+   "600 {s}px/0.95 Oswald",
+   "DMono"
+  ]
+ },
+ "sundarbans": {
+  "device": "satellite",
+  "scheme": [
+   "#E8E1D3",
+   "#D7262B",
+   "#141414"
+  ],
+  "type": [
+   "900 {s}px/0.95 Playfair",
+   "Mono"
+  ]
+ },
+ "reef": {
+  "device": "satellite",
+  "scheme": [
+   "#F1E3C8",
+   "#3A7D44",
+   "#141414"
+  ],
+  "type": [
+   "400 {s}px/1 ISerif",
+   "Plex"
+  ]
+ },
+ "deadsea": {
+  "device": "satellite",
+  "scheme": [
+   "#14304F",
+   "#F2C200",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/1 FrauncesI",
+   "Grotesk"
+  ]
+ },
+ "alpsat": {
+  "device": "satellite",
+  "scheme": [
+   "#EDE6DA",
+   "#2E86AB",
+   "#141414"
+  ],
+  "type": [
+   "700 {s}px/0.95 Grotesk",
+   "Plex"
+  ]
+ },
+ "nilesat": {
+  "device": "satellite",
+  "scheme": [
+   "#0F0F10",
+   "#FF6A1A",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.95 Archivo",
+   "Mono"
+  ]
+ },
+ "eightbn": {
+  "device": "counter",
+  "scheme": [
+   "#0B3C5D",
+   "#F2545B",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.92 Anton",
+   "Plex"
+  ]
+ },
+ "remit": {
+  "device": "counter",
+  "scheme": [
+   "#EAEAEA",
+   "#FF4F00",
+   "#141414"
+  ],
+  "type": [
+   "400 {s}px/0.95 Bebas",
+   "DMono"
+  ]
+ },
+ "japan65": {
+  "device": "counter",
+  "scheme": [
+   "#2B2D42",
+   "#EF8354",
+   "#F4EFE6"
+  ],
+  "type": [
+   "600 {s}px/0.95 Oswald",
+   "DMono"
+  ]
+ },
+ "mobiles": {
+  "device": "counter",
+  "scheme": [
+   "#22333B",
+   "#E9C46A",
+   "#F4EFE6"
+  ],
+  "type": [
+   "900 {s}px/0.95 Playfair",
+   "Mono"
+  ]
+ },
+ "decision": {
+  "device": "notebook",
+  "scheme": [
+   "#1E5E4E",
+   "#F4D35E",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/1 ISerif",
+   "Plex"
+  ]
+ },
+ "imposter": {
+  "device": "notebook",
+  "scheme": [
+   "#1B1B1B",
+   "#E63946",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/1 FrauncesI",
+   "Grotesk"
+  ]
+ },
+ "gratitude": {
+  "device": "notebook",
+  "scheme": [
+   "#F4F2EA",
+   "#E5A91A",
+   "#141414"
+  ],
+  "type": [
+   "700 {s}px/0.95 Grotesk",
+   "Plex"
+  ]
+ },
+ "boredom": {
+  "device": "kinetic",
+  "scheme": [
+   "#3D2C8D",
+   "#FFD23F",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.95 Archivo",
+   "Mono"
+  ]
+ },
+ "memoryre": {
+  "device": "kinetic",
+  "scheme": [
+   "#9E1B22",
+   "#F2C200",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.92 Anton",
+   "Plex"
+  ]
+ },
+ "fearsells": {
+  "device": "kinetic",
+  "scheme": [
+   "#5C1A33",
+   "#F7B32B",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.95 Bebas",
+   "DMono"
+  ]
+ },
+ "silence": {
+  "device": "kinetic",
+  "scheme": [
+   "#B23A48",
+   "#FCD581",
+   "#F4EFE6"
+  ],
+  "type": [
+   "600 {s}px/0.95 Oswald",
+   "DMono"
+  ]
+ },
+ "deadline": {
+  "device": "clockface",
+  "scheme": [
+   "#E8E1D3",
+   "#D7262B",
+   "#141414"
+  ],
+  "type": [
+   "900 {s}px/0.95 Playfair",
+   "Mono"
+  ]
+ },
+ "pomodoro": {
+  "device": "clockface",
+  "scheme": [
+   "#F1E3C8",
+   "#3A7D44",
+   "#141414"
+  ],
+  "type": [
+   "400 {s}px/1 ISerif",
+   "Plex"
+  ]
+ },
+ "nightowl": {
+  "device": "clockface",
+  "scheme": [
+   "#14304F",
+   "#F2C200",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/1 FrauncesI",
+   "Grotesk"
+  ]
+ },
+ "goldenhr": {
+  "device": "clockface",
+  "scheme": [
+   "#EDE6DA",
+   "#2E86AB",
+   "#141414"
+  ],
+  "type": [
+   "700 {s}px/0.95 Grotesk",
+   "Plex"
+  ]
+ },
+ "wildfire": {
+  "device": "haze",
+  "scheme": [
+   "#0F0F10",
+   "#FF6A1A",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.95 Archivo",
+   "Mono"
+  ]
+ },
+ "brainfog": {
+  "device": "haze",
+  "scheme": [
+   "#0B3C5D",
+   "#F2545B",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.92 Anton",
+   "Plex"
+  ]
+ },
+ "diyas": {
+  "device": "haze",
+  "scheme": [
+   "#EAEAEA",
+   "#FF4F00",
+   "#141414"
+  ],
+  "type": [
+   "400 {s}px/0.95 Bebas",
+   "DMono"
+  ]
+ },
+ "cricket": {
+  "device": "sticker",
+  "scheme": [
+   "#2B2D42",
+   "#EF8354",
+   "#F4EFE6"
+  ],
+  "type": [
+   "600 {s}px/0.95 Oswald",
+   "DMono"
+  ]
+ },
+ "chai": {
+  "device": "sticker",
+  "scheme": [
+   "#22333B",
+   "#E9C46A",
+   "#F4EFE6"
+  ],
+  "type": [
+   "900 {s}px/0.95 Playfair",
+   "Mono"
+  ]
+ },
+ "rickshaw": {
+  "device": "sticker",
+  "scheme": [
+   "#1E5E4E",
+   "#F4D35E",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/1 ISerif",
+   "Plex"
+  ]
+ },
+ "brandbehind": {
+  "device": "tornhole",
+  "scheme": [
+   "#1B1B1B",
+   "#E63946",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/1 FrauncesI",
+   "Grotesk"
+  ]
+ },
+ "undersea": {
+  "device": "tornhole",
+  "scheme": [
+   "#F4F2EA",
+   "#E5A91A",
+   "#141414"
+  ],
+  "type": [
+   "700 {s}px/0.95 Grotesk",
+   "Plex"
+  ]
+ },
+ "inscreen": {
+  "device": "tornhole",
+  "scheme": [
+   "#3D2C8D",
+   "#FFD23F",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.95 Archivo",
+   "Mono"
+  ]
+ },
+ "bridge": {
+  "device": "archival",
+  "scheme": [
+   "#9E1B22",
+   "#F2C200",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.92 Anton",
+   "Plex"
+  ]
+ },
+ "fair1893": {
+  "device": "archival",
+  "scheme": [
+   "#5C1A33",
+   "#F7B32B",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.95 Bebas",
+   "DMono"
+  ]
+ },
+ "quake1906": {
+  "device": "archival",
+  "scheme": [
+   "#B23A48",
+   "#FCD581",
+   "#F4EFE6"
+  ],
+  "type": [
+   "600 {s}px/0.95 Oswald",
+   "DMono"
+  ]
+ },
+ "titanic": {
+  "device": "spotboard",
+  "scheme": [
+   "#E8E1D3",
+   "#D7262B",
+   "#141414"
+  ],
+  "type": [
+   "900 {s}px/0.95 Playfair",
+   "Mono"
+  ]
+ },
+ "readreceipt": {
+  "device": "pinnote",
+  "scheme": [
+   "#F1E3C8",
+   "#3A7D44",
+   "#141414"
+  ],
+  "type": [
+   "400 {s}px/1 ISerif",
+   "Plex"
+  ]
+ },
+ "unsub": {
+  "device": "pinnote",
+  "scheme": [
+   "#14304F",
+   "#F2C200",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/1 FrauncesI",
+   "Grotesk"
+  ]
+ },
+ "password": {
+  "device": "pinnote",
+  "scheme": [
+   "#EDE6DA",
+   "#2E86AB",
+   "#141414"
+  ],
+  "type": [
+   "700 {s}px/0.95 Grotesk",
+   "Plex"
+  ]
+ },
+ "gigwork": {
+  "device": "barstack",
+  "scheme": [
+   "#0F0F10",
+   "#FF6A1A",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.95 Archivo",
+   "Mono"
+  ]
+ },
+ "sidehustle": {
+  "device": "barstack",
+  "scheme": [
+   "#0B3C5D",
+   "#F2545B",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.92 Anton",
+   "Plex"
+  ]
+ },
+ "malacca": {
+  "device": "satroute",
+  "scheme": [
+   "#EAEAEA",
+   "#FF4F00",
+   "#141414"
+  ],
+  "type": [
+   "400 {s}px/0.95 Bebas",
+   "DMono"
+  ]
+ },
+ "gibraltar": {
+  "device": "satroute",
+  "scheme": [
+   "#2B2D42",
+   "#EF8354",
+   "#F4EFE6"
+  ],
+  "type": [
+   "600 {s}px/0.95 Oswald",
+   "DMono"
+  ]
+ },
+ "babel": {
+  "device": "satroute",
+  "scheme": [
+   "#22333B",
+   "#E9C46A",
+   "#F4EFE6"
+  ],
+  "type": [
+   "900 {s}px/0.95 Playfair",
+   "Mono"
+  ]
+ },
+ "timbuktu": {
+  "device": "mapdiorama",
+  "scheme": [
+   "#1E5E4E",
+   "#F4D35E",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/1 ISerif",
+   "Plex"
+  ]
+ },
+ "samarkand": {
+  "device": "mapdiorama",
+  "scheme": [
+   "#1B1B1B",
+   "#E63946",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/1 FrauncesI",
+   "Grotesk"
+  ]
+ },
+ "istanbul": {
+  "device": "mapdiorama",
+  "scheme": [
+   "#F4F2EA",
+   "#E5A91A",
+   "#141414"
+  ],
+  "type": [
+   "700 {s}px/0.95 Grotesk",
+   "Plex"
+  ]
+ },
+ "daydream": {
+  "device": "openhead",
+  "scheme": [
+   "#3D2C8D",
+   "#FFD23F",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.95 Archivo",
+   "Mono"
+  ]
+ },
+ "rumination": {
+  "device": "openhead",
+  "scheme": [
+   "#9E1B22",
+   "#F2C200",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.92 Anton",
+   "Plex"
+  ]
+ },
+ "ahamoment": {
+  "device": "openhead",
+  "scheme": [
+   "#5C1A33",
+   "#F7B32B",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.95 Bebas",
+   "DMono"
+  ]
+ },
+ "doomscroll": {
+  "device": "statue",
+  "scheme": [
+   "#B23A48",
+   "#FCD581",
+   "#F4EFE6"
+  ],
+  "type": [
+   "600 {s}px/0.95 Oswald",
+   "DMono"
+  ]
+ },
+ "perfection": {
+  "device": "statue",
+  "scheme": [
+   "#E8E1D3",
+   "#D7262B",
+   "#141414"
+  ],
+  "type": [
+   "900 {s}px/0.95 Playfair",
+   "Mono"
+  ]
+ },
+ "burnout": {
+  "device": "statue",
+  "scheme": [
+   "#F1E3C8",
+   "#3A7D44",
+   "#141414"
+  ],
+  "type": [
+   "400 {s}px/1 ISerif",
+   "Plex"
+  ]
+ },
+ "phishing": {
+  "device": "ransom",
+  "scheme": [
+   "#14304F",
+   "#F2C200",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/1 FrauncesI",
+   "Grotesk"
+  ]
+ },
+ "clickbait": {
+  "device": "ransom",
+  "scheme": [
+   "#EDE6DA",
+   "#2E86AB",
+   "#141414"
+  ],
+  "type": [
+   "700 {s}px/0.95 Grotesk",
+   "Plex"
+  ]
+ },
+ "forward": {
+  "device": "ransom",
+  "scheme": [
+   "#0F0F10",
+   "#FF6A1A",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.95 Archivo",
+   "Mono"
+  ]
+ },
+ "rti": {
+  "device": "placards",
+  "scheme": [
+   "#0B3C5D",
+   "#F2545B",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.92 Anton",
+   "Plex"
+  ]
+ },
+ "plasticban": {
+  "device": "placards",
+  "scheme": [
+   "#EAEAEA",
+   "#FF4F00",
+   "#141414"
+  ],
+  "type": [
+   "400 {s}px/0.95 Bebas",
+   "DMono"
+  ]
+ },
+ "ladakh": {
+  "device": "postcard",
+  "scheme": [
+   "#2B2D42",
+   "#EF8354",
+   "#F4EFE6"
+  ],
+  "type": [
+   "600 {s}px/0.95 Oswald",
+   "DMono"
+  ]
+ },
+ "backwaters": {
+  "device": "postcard",
+  "scheme": [
+   "#22333B",
+   "#E9C46A",
+   "#F4EFE6"
+  ],
+  "type": [
+   "900 {s}px/0.95 Playfair",
+   "Mono"
+  ]
+ },
+ "patagonia": {
+  "device": "postcard",
+  "scheme": [
+   "#1E5E4E",
+   "#F4D35E",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/1 ISerif",
+   "Plex"
+  ]
+ },
+ "steam": {
+  "device": "engraving",
+  "scheme": [
+   "#1B1B1B",
+   "#E63946",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/1 FrauncesI",
+   "Grotesk"
+  ]
+ },
+ "telegraph": {
+  "device": "engraving",
+  "scheme": [
+   "#F4F2EA",
+   "#E5A91A",
+   "#141414"
+  ],
+  "type": [
+   "700 {s}px/0.95 Grotesk",
+   "Plex"
+  ]
+ },
+ "housing": {
+  "device": "handstack",
+  "scheme": [
+   "#3D2C8D",
+   "#FFD23F",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.95 Archivo",
+   "Mono"
+  ]
+ },
+ "ports": {
+  "device": "handstack",
+  "scheme": [
+   "#9E1B22",
+   "#F2C200",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.92 Anton",
+   "Plex"
+  ]
+ },
+ "rondonia": {
+  "device": "beforeafter",
+  "scheme": [
+   "#5C1A33",
+   "#F7B32B",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.95 Bebas",
+   "DMono"
+  ]
+ },
+ "palm": {
+  "device": "beforeafter",
+  "scheme": [
+   "#B23A48",
+   "#FCD581",
+   "#F4EFE6"
+  ],
+  "type": [
+   "600 {s}px/0.95 Oswald",
+   "DMono"
+  ]
+ },
+ "indusflood": {
+  "device": "beforeafter",
+  "scheme": [
+   "#E8E1D3",
+   "#D7262B",
+   "#141414"
+  ],
+  "type": [
+   "900 {s}px/0.95 Playfair",
+   "Mono"
+  ]
+ },
+ "hamun": {
+  "device": "beforeafter",
+  "scheme": [
+   "#F1E3C8",
+   "#3A7D44",
+   "#141414"
+  ],
+  "type": [
+   "400 {s}px/1 ISerif",
+   "Plex"
+  ]
+ },
+ "nilenight": {
+  "device": "nightlights",
+  "scheme": [
+   "#14304F",
+   "#F2C200",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/1 FrauncesI",
+   "Grotesk"
+  ]
+ },
+ "gulfnight": {
+  "device": "nightlights",
+  "scheme": [
+   "#EDE6DA",
+   "#2E86AB",
+   "#141414"
+  ],
+  "type": [
+   "700 {s}px/0.95 Grotesk",
+   "Plex"
+  ]
+ },
+ "bosnywash": {
+  "device": "nightlights",
+  "scheme": [
+   "#0F0F10",
+   "#FF6A1A",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.95 Archivo",
+   "Mono"
+  ]
+ },
+ "japannight": {
+  "device": "nightlights",
+  "scheme": [
+   "#0B3C5D",
+   "#F2545B",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.92 Anton",
+   "Plex"
+  ]
+ },
+ "russia": {
+  "device": "globe",
+  "scheme": [
+   "#EAEAEA",
+   "#FF4F00",
+   "#141414"
+  ],
+  "type": [
+   "400 {s}px/0.95 Bebas",
+   "DMono"
+  ]
+ },
+ "indonesia": {
+  "device": "globe",
+  "scheme": [
+   "#2B2D42",
+   "#EF8354",
+   "#F4EFE6"
+  ],
+  "type": [
+   "600 {s}px/0.95 Oswald",
+   "DMono"
+  ]
+ },
+ "brazil": {
+  "device": "globe",
+  "scheme": [
+   "#22333B",
+   "#E9C46A",
+   "#F4EFE6"
+  ],
+  "type": [
+   "900 {s}px/0.95 Playfair",
+   "Mono"
+  ]
+ },
+ "australia": {
+  "device": "globe",
+  "scheme": [
+   "#1E5E4E",
+   "#F4D35E",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/1 ISerif",
+   "Plex"
+  ]
+ },
+ "toytrain": {
+  "device": "ticket",
+  "scheme": [
+   "#1B1B1B",
+   "#E63946",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/1 FrauncesI",
+   "Grotesk"
+  ]
+ },
+ "transmongol": {
+  "device": "ticket",
+  "scheme": [
+   "#F4F2EA",
+   "#E5A91A",
+   "#141414"
+  ],
+  "type": [
+   "700 {s}px/0.95 Grotesk",
+   "Plex"
+  ]
+ },
+ "glacierexp": {
+  "device": "ticket",
+  "scheme": [
+   "#3D2C8D",
+   "#FFD23F",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.95 Archivo",
+   "Mono"
+  ]
+ },
+ "asiapass": {
+  "device": "passport",
+  "scheme": [
+   "#9E1B22",
+   "#F2C200",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.92 Anton",
+   "Plex"
+  ]
+ },
+ "africapass": {
+  "device": "passport",
+  "scheme": [
+   "#5C1A33",
+   "#F7B32B",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.95 Bebas",
+   "DMono"
+  ]
+ },
+ "oldafrica": {
+  "device": "lens",
+  "scheme": [
+   "#B23A48",
+   "#FCD581",
+   "#F4EFE6"
+  ],
+  "type": [
+   "600 {s}px/0.95 Oswald",
+   "DMono"
+  ]
+ },
+ "seachart": {
+  "device": "lens",
+  "scheme": [
+   "#E8E1D3",
+   "#D7262B",
+   "#141414"
+  ],
+  "type": [
+   "900 {s}px/0.95 Playfair",
+   "Mono"
+  ]
+ },
+ "oldcity": {
+  "device": "lens",
+  "scheme": [
+   "#F1E3C8",
+   "#3A7D44",
+   "#141414"
+  ],
+  "type": [
+   "400 {s}px/1 ISerif",
+   "Plex"
+  ]
+ },
+ "hawamahal": {
+  "device": "stamp",
+  "scheme": [
+   "#14304F",
+   "#F2C200",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/1 FrauncesI",
+   "Grotesk"
+  ]
+ },
+ "iguazu": {
+  "device": "stamp",
+  "scheme": [
+   "#EDE6DA",
+   "#2E86AB",
+   "#141414"
+  ],
+  "type": [
+   "700 {s}px/0.95 Grotesk",
+   "Plex"
+  ]
+ },
+ "uluru": {
+  "device": "stamp",
+  "scheme": [
+   "#0F0F10",
+   "#FF6A1A",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.95 Archivo",
+   "Mono"
+  ]
+ },
+ "kilimanjaro": {
+  "device": "stamp",
+  "scheme": [
+   "#0B3C5D",
+   "#F2545B",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.92 Anton",
+   "Plex"
+  ]
+ },
+ "breakfasts": {
+  "device": "clothesline",
+  "scheme": [
+   "#EAEAEA",
+   "#FF4F00",
+   "#141414"
+  ],
+  "type": [
+   "400 {s}px/0.95 Bebas",
+   "DMono"
+  ]
+ },
+ "boats": {
+  "device": "clothesline",
+  "scheme": [
+   "#2B2D42",
+   "#EF8354",
+   "#F4EFE6"
+  ],
+  "type": [
+   "600 {s}px/0.95 Oswald",
+   "DMono"
+  ]
+ },
+ "hats": {
+  "device": "clothesline",
+  "scheme": [
+   "#22333B",
+   "#E9C46A",
+   "#F4EFE6"
+  ],
+  "type": [
+   "900 {s}px/0.95 Playfair",
+   "Mono"
+  ]
+ },
+ "countnight": {
+  "device": "tv",
+  "scheme": [
+   "#1E5E4E",
+   "#F4D35E",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/1 ISerif",
+   "Plex"
+  ]
+ },
+ "cricketfinal": {
+  "device": "tv",
+  "scheme": [
+   "#1B1B1B",
+   "#E63946",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/1 FrauncesI",
+   "Grotesk"
+  ]
+ },
+ "launch": {
+  "device": "tv",
+  "scheme": [
+   "#F4F2EA",
+   "#E5A91A",
+   "#141414"
+  ],
+  "type": [
+   "700 {s}px/0.95 Grotesk",
+   "Plex"
+  ]
+ },
+ "rivers": {
+  "device": "triptych",
+  "scheme": [
+   "#3D2C8D",
+   "#FFD23F",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.95 Archivo",
+   "Mono"
+  ]
+ },
+ "deserts": {
+  "device": "triptych",
+  "scheme": [
+   "#9E1B22",
+   "#F2C200",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.92 Anton",
+   "Plex"
+  ]
+ },
+ "portsthree": {
+  "device": "triptych",
+  "scheme": [
+   "#5C1A33",
+   "#F7B32B",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.95 Bebas",
+   "DMono"
+  ]
+ },
+ "lehavre": {
+  "device": "swiss",
+  "scheme": [
+   "#B23A48",
+   "#FCD581",
+   "#F4EFE6"
+  ],
+  "type": [
+   "600 {s}px/0.95 Oswald",
+   "DMono"
+  ]
+ },
+ "shibuya": {
+  "device": "swiss",
+  "scheme": [
+   "#E8E1D3",
+   "#D7262B",
+   "#141414"
+  ],
+  "type": [
+   "900 {s}px/0.95 Playfair",
+   "Mono"
+  ]
+ },
+ "bauhaus": {
+  "device": "swiss",
+  "scheme": [
+   "#F1E3C8",
+   "#3A7D44",
+   "#141414"
+  ],
+  "type": [
+   "400 {s}px/1 ISerif",
+   "Plex"
+  ]
+ },
+ "hillstations": {
+  "device": "polaroids",
+  "scheme": [
+   "#14304F",
+   "#F2C200",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/1 FrauncesI",
+   "Grotesk"
+  ]
+ },
+ "olddelhi": {
+  "device": "polaroids",
+  "scheme": [
+   "#EDE6DA",
+   "#2E86AB",
+   "#141414"
+  ],
+  "type": [
+   "700 {s}px/0.95 Grotesk",
+   "Plex"
+  ]
+ },
+ "lisbon": {
+  "device": "polaroids",
+  "scheme": [
+   "#0F0F10",
+   "#FF6A1A",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.95 Archivo",
+   "Mono"
+  ]
+ },
+ "windowseat": {
+  "device": "window",
+  "scheme": [
+   "#0B3C5D",
+   "#F2545B",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.92 Anton",
+   "Plex"
+  ]
+ },
+ "officeview": {
+  "device": "window",
+  "scheme": [
+   "#EAEAEA",
+   "#FF4F00",
+   "#141414"
+  ],
+  "type": [
+   "400 {s}px/0.95 Bebas",
+   "DMono"
+  ]
+ },
+ "seaview": {
+  "device": "window",
+  "scheme": [
+   "#2B2D42",
+   "#EF8354",
+   "#F4EFE6"
+  ],
+  "type": [
+   "600 {s}px/0.95 Oswald",
+   "DMono"
+  ]
+ },
+ "edison": {
+  "device": "portrait_board",
+  "scheme": [
+   "#22333B",
+   "#E9C46A",
+   "#F4EFE6"
+  ],
+  "type": [
+   "900 {s}px/0.95 Playfair",
+   "Mono"
+  ]
+ },
+ "curie": {
+  "device": "portrait_board",
+  "scheme": [
+   "#1E5E4E",
+   "#F4D35E",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/1 ISerif",
+   "Plex"
+  ]
+ },
+ "tesla": {
+  "device": "portrait_board",
+  "scheme": [
+   "#1B1B1B",
+   "#E63946",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/1 FrauncesI",
+   "Grotesk"
+  ]
+ },
+ "congo": {
+  "device": "map_fill",
+  "scheme": [
+   "#F4F2EA",
+   "#E5A91A",
+   "#141414"
+  ],
+  "type": [
+   "700 {s}px/0.95 Grotesk",
+   "Plex"
+  ]
+ },
+ "arabia": {
+  "device": "map_fill",
+  "scheme": [
+   "#3D2C8D",
+   "#FFD23F",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.95 Archivo",
+   "Mono"
+  ]
+ },
+ "mongolia": {
+  "device": "map_fill",
+  "scheme": [
+   "#9E1B22",
+   "#F2C200",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.92 Anton",
+   "Plex"
+  ]
+ },
+ "indiapop": {
+  "device": "bar_photo",
+  "scheme": [
+   "#5C1A33",
+   "#F7B32B",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.95 Bebas",
+   "DMono"
+  ]
+ },
+ "maldives": {
+  "device": "bar_photo",
+  "scheme": [
+   "#B23A48",
+   "#FCD581",
+   "#F4EFE6"
+  ],
+  "type": [
+   "600 {s}px/0.95 Oswald",
+   "DMono"
+  ]
+ },
+ "electric": {
+  "device": "bar_photo",
+  "scheme": [
+   "#E8E1D3",
+   "#D7262B",
+   "#141414"
+  ],
+  "type": [
+   "900 {s}px/0.95 Playfair",
+   "Mono"
+  ]
+ },
+ "otp": {
+  "device": "spot_sticker",
+  "scheme": [
+   "#F1E3C8",
+   "#3A7D44",
+   "#141414"
+  ],
+  "type": [
+   "400 {s}px/1 ISerif",
+   "Plex"
+  ]
+ },
+ "parcel": {
+  "device": "spot_sticker",
+  "scheme": [
+   "#14304F",
+   "#F2C200",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/1 FrauncesI",
+   "Grotesk"
+  ]
+ },
+ "qrcode": {
+  "device": "spot_sticker",
+  "scheme": [
+   "#EDE6DA",
+   "#2E86AB",
+   "#141414"
+  ],
+  "type": [
+   "700 {s}px/0.95 Grotesk",
+   "Plex"
+  ]
+ },
+ "rumour": {
+  "device": "chalk_node",
+  "scheme": [
+   "#0F0F10",
+   "#FF6A1A",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.95 Archivo",
+   "Mono"
+  ]
+ },
+ "silkcities": {
+  "device": "chalk_node",
+  "scheme": [
+   "#0B3C5D",
+   "#F2545B",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.92 Anton",
+   "Plex"
+  ]
+ },
+ "veniceframes": {
+  "device": "strips",
+  "scheme": [
+   "#EAEAEA",
+   "#FF4F00",
+   "#141414"
+  ],
+  "type": [
+   "400 {s}px/0.95 Bebas",
+   "DMono"
+  ]
+ },
+ "mumbaiframes": {
+  "device": "strips",
+  "scheme": [
+   "#2B2D42",
+   "#EF8354",
+   "#F4EFE6"
+  ],
+  "type": [
+   "600 {s}px/0.95 Oswald",
+   "DMono"
+  ]
+ },
+ "qutub": {
+  "device": "monument_card",
+  "scheme": [
+   "#22333B",
+   "#E9C46A",
+   "#F4EFE6"
+  ],
+  "type": [
+   "900 {s}px/0.95 Playfair",
+   "Mono"
+  ]
+ },
+ "pisa": {
+  "device": "monument_card",
+  "scheme": [
+   "#1E5E4E",
+   "#F4D35E",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/1 ISerif",
+   "Plex"
+  ]
+ },
+ "bigben": {
+  "device": "monument_card",
+  "scheme": [
+   "#1B1B1B",
+   "#E63946",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/1 FrauncesI",
+   "Grotesk"
+  ]
+ },
+ "galapagos": {
+  "device": "portal",
+  "scheme": [
+   "#F4F2EA",
+   "#E5A91A",
+   "#141414"
+  ],
+  "type": [
+   "700 {s}px/0.95 Grotesk",
+   "Plex"
+  ]
+ },
+ "socotra": {
+  "device": "portal",
+  "scheme": [
+   "#3D2C8D",
+   "#FFD23F",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.95 Archivo",
+   "Mono"
+  ]
+ },
+ "antarctic": {
+  "device": "portal",
+  "scheme": [
+   "#9E1B22",
+   "#F2C200",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.92 Anton",
+   "Plex"
+  ]
+ },
+ "threedelhis": {
+  "device": "panorama",
+  "scheme": [
+   "#5C1A33",
+   "#F7B32B",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.95 Bebas",
+   "DMono"
+  ]
+ },
+ "tokyolayers": {
+  "device": "panorama",
+  "scheme": [
+   "#B23A48",
+   "#FCD581",
+   "#F4EFE6"
+  ],
+  "type": [
+   "600 {s}px/0.95 Oswald",
+   "DMono"
+  ]
+ },
+ "charminar": {
+  "device": "strip_monument",
+  "scheme": [
+   "#E8E1D3",
+   "#D7262B",
+   "#141414"
+  ],
+  "type": [
+   "900 {s}px/0.95 Playfair",
+   "Mono"
+  ]
+ },
+ "sagrada": {
+  "device": "strip_monument",
+  "scheme": [
+   "#F1E3C8",
+   "#3A7D44",
+   "#141414"
+  ],
+  "type": [
+   "400 {s}px/1 ISerif",
+   "Plex"
+  ]
+ },
+ "cyclone": {
+  "device": "hud",
+  "scheme": [
+   "#14304F",
+   "#F2C200",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/1 FrauncesI",
+   "Grotesk"
+  ]
+ },
+ "smokeplume": {
+  "device": "hud",
+  "scheme": [
+   "#EDE6DA",
+   "#2E86AB",
+   "#141414"
+  ],
+  "type": [
+   "700 {s}px/0.95 Grotesk",
+   "Plex"
+  ]
+ },
+ "dustplume": {
+  "device": "hud",
+  "scheme": [
+   "#0F0F10",
+   "#FF6A1A",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.95 Archivo",
+   "Mono"
+  ]
+ },
+ "earhart": {
+  "device": "doc_board",
+  "scheme": [
+   "#0B3C5D",
+   "#F2545B",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.92 Anton",
+   "Plex"
+  ]
+ },
+ "bell": {
+  "device": "doc_board",
+  "scheme": [
+   "#EAEAEA",
+   "#FF4F00",
+   "#141414"
+  ],
+  "type": [
+   "400 {s}px/0.95 Bebas",
+   "DMono"
+  ]
+ },
+ "staticballoon": {
+  "device": "doodle",
+  "scheme": [
+   "#2B2D42",
+   "#EF8354",
+   "#F4EFE6"
+  ],
+  "type": [
+   "600 {s}px/0.95 Oswald",
+   "DMono"
+  ]
+ },
+ "kettle": {
+  "device": "doodle",
+  "scheme": [
+   "#22333B",
+   "#E9C46A",
+   "#F4EFE6"
+  ],
+  "type": [
+   "900 {s}px/0.95 Playfair",
+   "Mono"
+  ]
+ },
+ "snooze": {
+  "device": "doodle",
+  "scheme": [
+   "#1E5E4E",
+   "#F4D35E",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/1 ISerif",
+   "Plex"
+  ]
+ },
+ "pearl": {
+  "device": "map_event",
+  "scheme": [
+   "#1B1B1B",
+   "#E63946",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/1 FrauncesI",
+   "Grotesk"
+  ]
+ },
+ "dday": {
+  "device": "map_event",
+  "scheme": [
+   "#F4F2EA",
+   "#E5A91A",
+   "#141414"
+  ],
+  "type": [
+   "700 {s}px/0.95 Grotesk",
+   "Plex"
+  ]
+ },
+ "trafalgar": {
+  "device": "map_event",
+  "scheme": [
+   "#3D2C8D",
+   "#FFD23F",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.95 Archivo",
+   "Mono"
+  ]
+ },
+ "lebanon": {
+  "device": "map_event",
+  "scheme": [
+   "#9E1B22",
+   "#F2C200",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.92 Anton",
+   "Plex"
+  ]
+ },
+ "washington": {
+  "device": "flag_paper",
+  "scheme": [
+   "#5C1A33",
+   "#F7B32B",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.95 Bebas",
+   "DMono"
+  ]
+ },
+ "perry": {
+  "device": "flag_paper",
+  "scheme": [
+   "#B23A48",
+   "#FCD581",
+   "#F4EFE6"
+  ],
+  "type": [
+   "600 {s}px/0.95 Oswald",
+   "DMono"
+  ]
+ },
+ "jefferson": {
+  "device": "portrait_doc",
+  "scheme": [
+   "#E8E1D3",
+   "#D7262B",
+   "#141414"
+  ],
+  "type": [
+   "900 {s}px/0.95 Playfair",
+   "Mono"
+  ]
+ },
+ "wright": {
+  "device": "portrait_doc",
+  "scheme": [
+   "#F1E3C8",
+   "#3A7D44",
+   "#141414"
+  ],
+  "type": [
+   "400 {s}px/1 ISerif",
+   "Plex"
+  ]
+ },
+ "vtea": {
+  "device": "v_object_map",
+  "scheme": [
+   "#14304F",
+   "#F2C200",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/1 FrauncesI",
+   "Grotesk"
+  ]
+ },
+ "vcoffee": {
+  "device": "v_object_map",
+  "scheme": [
+   "#EDE6DA",
+   "#2E86AB",
+   "#141414"
+  ],
+  "type": [
+   "700 {s}px/0.95 Grotesk",
+   "Plex"
+  ]
+ },
+ "vcocoa": {
+  "device": "v_object_map",
+  "scheme": [
+   "#0F0F10",
+   "#FF6A1A",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.95 Archivo",
+   "Mono"
+  ]
+ },
+ "vpepper": {
+  "device": "v_object_map",
+  "scheme": [
+   "#0B3C5D",
+   "#F2545B",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/0.92 Anton",
+   "Plex"
+  ]
+ },
+ "vlion": {
+  "device": "v_depth",
+  "scheme": [
+   "#EAEAEA",
+   "#FF4F00",
+   "#141414"
+  ],
+  "type": [
+   "400 {s}px/0.95 Bebas",
+   "DMono"
+  ]
+ },
+ "vzebra": {
+  "device": "v_depth",
+  "scheme": [
+   "#2B2D42",
+   "#EF8354",
+   "#F4EFE6"
+  ],
+  "type": [
+   "600 {s}px/0.95 Oswald",
+   "DMono"
+  ]
+ },
+ "vowl": {
+  "device": "v_depth",
+  "scheme": [
+   "#22333B",
+   "#E9C46A",
+   "#F4EFE6"
+  ],
+  "type": [
+   "900 {s}px/0.95 Playfair",
+   "Mono"
+  ]
+ },
+ "vpenguin": {
+  "device": "v_depth",
+  "scheme": [
+   "#1E5E4E",
+   "#F4D35E",
+   "#F4EFE6"
+  ],
+  "type": [
+   "400 {s}px/1 ISerif",
+   "Plex"
+  ]
+ }
+}

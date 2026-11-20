@@ -1,0 +1,19 @@
+CORPORATE AUTOPSIES - 30 Shorts (CreatorForge format)
+Every fact was checked against public sources through web search; the sources are in each script's Source: line.
+The primary pages themselves (sec.gov, justice.gov, nejm.org, nasa.gov and others) could not be opened from the
+machine that wrote these, so open each Source: link once before publishing. Specific items to check by hand:
+
+01 Enron        - the DOJ "Braveheart" release URL (06_crm_338) was taken from search results.
+03 ZZZZ Best    - the 86% revenue share and ~$100m loss figures (Wikipedia); Sacramento and the $50 to the guard come
+                  from Minkow's own 60 Minutes account. Pronunciation: "Zee Best".
+06 Pinto memo   - the memo figures come from secondary texts quoting the 1973 NHTSA submission.
+07 Challenger   - the exact wording of "take off your engineering hat and put on your management hat" (Rogers report).
+09 Boeing       - the DOJ wording quoted on the Document card.
+10 Deepwater    - the commission quote on the Document card (from press summaries).
+13/24 etc.      - Bloomberg / ITV figures (124,000 "destroy" vs 28,000 "donate" items) - check the original reports.
+18 J&J talc     - the Reuters headline wording (as quoted by AP).
+19 Vioxx        - the exact title/wording of the NEJM Expression of Concern.
+27 Madoff       - the DOJ archive URL in Source:.
+30 RealPage     - whether the May 2026 court approval was preliminary or final (script says only "approved").
+Ongoing matters (Boeing families' appeal, 401(k) forfeiture suits, J&J talc litigation, RealPage state case) can
+change - re-check status on the day you publish.

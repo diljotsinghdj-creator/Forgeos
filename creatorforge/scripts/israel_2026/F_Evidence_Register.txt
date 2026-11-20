@@ -1,0 +1,152 @@
+F - EVIDENCE / FACT-CHECK REGISTER
+Israel 2026: The Election That Settled Nothing
+Research cut-off: 31 Oct 2026. Verification date for every row: 31 Oct 2026 (web search; en.wikipedia.org and timesofisrael.com pages could not be opened directly in this session, so rows citing them rest on search snippets and must be re-opened before upload).
+
+STATUS KEY
+  VERIFIED     two or more independent sources agree, or a primary document
+  REPORTED     one credible outlet, or several outlets relaying the same single source; attribute on screen
+  DISPUTED     sources disagree; the script says so or uses the conservative figure
+  ALLEGATION   a claim by a party; the script labels it as a claim and gives the response
+  RE-CHECK     moving fact; must be re-verified the day of upload (see I_Pre_Upload_Checklist)
+
+Format: # | Claim as used in the script | Source(s) + URL | Source date | Evidence | Status | Contradictions / notes
+
+---------------------------------------------------------------------------------------------------
+PART 1 - WHAT HAPPENED
+---------------------------------------------------------------------------------------------------
+1 | Election held 27 Oct 2026 | Israel Hayom https://www.israelhayom.com/2026/10/27/israel-election-2026-exit-polls-full-results/ ; Al Jazeera https://www.aljazeera.com/news/2026/10/28/can-israeli-leader-eisenkot-ally-with-arab-parties-to-unseat-netanyahu | 27-28 Oct 2026 | Live results coverage | VERIFIED | -
+2 | Turnout "almost four in five", "~78%", "highest in a generation / since 1999" | Israel National News https://www.israelnationalnews.com/news/435215 (77.7%); earlier CEC-based reports 77.9%, 5,716,665 votes; Ummid https://ummid.com/news/2026/10/28/arab-parties-emerge-as-king-maker-in-2026-israel-elections.html ("highest since 1998") | 27-30 Oct 2026 | CEC figures as reported | DISPUTED (77.7 vs 77.9; "since 1999" vs "since 1998") | Script deliberately says "~78%" and "highest in a generation". On-screen Part 8 says "HIGHEST SINCE 1999": 1999 turnout was 78.7%, so 2026 is the highest SINCE then - re-check on the CEC site (bechirot.gov.il) before upload.
+3 | Final seats: Likud 27, Yashar 21, Beyachad 12, Joint List 11, Ra'am 8, Democrats 8, UTJ 7, Otzma 7, Yisrael Beytenu 7, Shas 6, Religious Zionism 6 = 120 | CEC final results as reported by Israel Hayom, Times of Israel, Israel National News, 30 Oct 2026 | 30 Oct 2026 | Totals add to 120; bloc totals 53/48/19 | RE-CHECK | Some reports gave Likud 26; one count gave Beyachad 11 (i24NEWS); Ummid gave Joint List 12 / Ra'am 4 (early count, superseded). Exit poll (i24): Likud 27, Yashar 20. Certified CEC results go to Herzog in early Nov - update the Chart/Pie lines if any number moves.
+4 | Blocs 53 / 48 / 19 | Al Jazeera 28 Oct; political.org https://political.org/2026/10/28/whats-next-for-israel-as-elections-leave-neither-netanyahu-nor-eisenkot-with-a-clear-majority/ ; Arab Center DC https://arabcenterdc.org/resource/israels-election-and-eisenkots-arab-coalition-dilemma/ | 28 Oct 2026 | Multiple outlets | VERIFIED (re-check with certified) | Some early reports 54/47.
+5 | Majority = 61 of 120 | Basic Law: The Knesset | - | Constitutional | VERIFIED | Confidence vote technically needs more FOR than AGAINST (row 40).
+6 | Knesset dissolved July 2026; 27 Oct the latest legal date; Haredi draft dispute central | Times of Israel; Jerusalem Post (2026) | Jul-Oct 2026 | Reported | REPORTED | -
+7 | Haredi parties walked out of the government in 2025 over the draft | Times of Israel https://www.timesofisrael.com/deri-says-like-utj-shas-wont-join-next-government-without-a-draft-exemption-law/ ; JPost election coverage | 2025-2026 | Reported | VERIFIED | Precise form differed (UTJ left the coalition; Shas left government posts). Script says "walked out of the government" - accurate for both.
+8 | Beyachad = Bennett + Lapid merged list, Bennett at top (April 2026) | Times of Israel; i24NEWS | Apr 2026 | Reported | REPORTED | -
+9 | Democrats led by Yair Golan; merged Labor + Meretz | Times of Israel | 2024-2026 | Established | VERIFIED | -
+10 | Ra'am first Arab party in a governing coalition (2021) | Times of Israel; Al Jazeera | 2021 | Established | VERIFIED | Arab parties backed Rabin 1992 from outside only (row 52).
+11 | Joint List revived (Jan 2026) | New Arab https://www.newarab.com/news/israel-arab-parties-revive-joint-list-ahead-election ; J Street https://jstreet.org/arab-israeli-politics-and-society-ahead-of-the-2026-israeli-election/ | Jan-Feb 2026 | Reported | VERIFIED | -
+12 | Shas "historic low" | Israel National News | 30 Oct 2026 | Reported | REPORTED | Attributed: "what reports called".
+13 | Reservists list 2.7%, threshold 3.25% | CEC via Times of Israel | 30 Oct 2026 | Reported | RE-CHECK | Also below threshold: Amcha Yisrael 1.7%, Charedi Public 0.2% (not used).
+14 | Arab-led 19 seats, previous record 15 | JPost https://www.jpost.com/israel-election-2026/article-913066 ; Al-Ahram https://english.ahram.org.eg/News/581127.aspx | 28-30 Oct 2026 | Reported | VERIFIED | Record 15 = Joint List, March 2020.
+15 | ALLEGATION: Likud says the election was "stolen by Arab parties"; bribery, intimidation, forgery; hundreds of testimonies to police, Shin Bet, CEC | Ynet https://www.ynetnews.com/article/pwis1uhpa ; i24NEWS https://www.i24news.tv/en/news/israeli-elections/artc-likud-claims-election-stolen-demands-probe-into-alleged-voting-fraud ; Cyprus Mail https://cyprus-mail.com/2026/10/28/netanyahus-party-claims-arabs-stole-israeli-election | 28 Oct 2026 | Party statement; no evidence published | ALLEGATION | Likud also cited 1,183 complaints (not used in VO). Script labels "ALLEGATION · NOT PROVEN".
+16 | CEC official: fraud claims baseless; police: no evidence election stolen | Channel 12 via Jewish News https://www.jewishnews.co.uk/liveblog_entry/arab-party-leader-accuses-israeli-opposition-of-racism-over-coalition-deadlock/ ; Ynet; JTA (30 Oct) | 28-30 Oct 2026 | Officials quoted | REPORTED | Acting CEC DG Dean Livne named in some reports. Police statement wording to be re-opened.
+17 | Sohlberg asked Shin Bet to look at possible foreign (reportedly Qatari) funding; said he could not verify; Shin Bet probe "limited"; Qatar denies | Calcalist; Ynet; ABC; JTA | 29-30 Oct 2026 | Reported | REPORTED | Some reports mention possible Turkish funding too - not used. No findings published.
+18 | Right-wing MKs/ministers wrote asking that all Ra'am votes be disqualified | Jewish News liveblog (as above); Ynet | 28 Oct 2026 | Reported letter | REPORTED | -
+19 | Arab party leaders called the campaign racist | Jewish News liveblog headline; JTA | 28-30 Oct 2026 | Reported | VERIFIED | -
+20 | Arab citizens ~1 in 5 Israeli citizens | Israel Central Bureau of Statistics (≈21% of population) | 2025-26 | Official statistics | VERIFIED | -
+21 | Herzog receives results early Nov; consults all parties; must assign within 7 days of publication; 28 days + up to 14; second candidate; Knesset 21-day window with 61 signatures; then election | Basic Law: The Government ss. 7-11; Kuwait Times https://kuwaittimes.com/article/52563/top-stories/zionist-entitys-unassuming-president-herzog-holds-keys-to-next-government/ | - | Law | VERIFIED | Results to Herzog reported for 4 Nov; Knesset swearing-in 10 Nov (re-check).
+22 | Both blocs expect Eisenkot to get first mandate; Herzog urged open mind / avoid another election | Ynet; Jewish News https://www.jewishnews.co.uk/liveblog_entry/eisenkot-bloc-reportedly-seeking-to-replace-knesset-speaker-with-arab-parties-support/ | 29-30 Oct 2026 | Reported | REPORTED | -
+23 | Five elections 2019-2022 | Knesset (Apr 2019, Sep 2019, Mar 2020, Mar 2021, Nov 2022) | - | Record | VERIFIED | -
+24 | Netanyahu remains caretaker PM | Basic Law: The Government s. 30 | - | Law | VERIFIED | -
+
+---------------------------------------------------------------------------------------------------
+PART 2 - THE SURVIVOR
+---------------------------------------------------------------------------------------------------
+25 | Longest-serving PM, longer than Ben-Gurion; first took office 1996 | Knesset; PMO | - | Record | VERIFIED | Passed Ben-Gurion in 2019.
+26 | Indicted 2019 (formally filed Jan 2020) in Cases 1000, 2000, 4000; bribery (4000), fraud and breach of trust | Attorney General's indictment; Times of Israel; Reuters | 2019-2020 | Primary document | VERIFIED | Bribery charge is in Case 4000 only - script lists the charges collectively, which is accurate.
+27 | Case summaries (gifts; talks with publisher; regulatory benefits for telecoms owner in return for coverage) | Indictment as reported | 2020 | Primary | VERIFIED | Wording kept neutral: "alleges".
+28 | He denies all charges; no verdict | Reuters; Times of Israel | 2026 | Reported | VERIFIED | -
+29 | Trial began 2020; his testimony began Dec 2024 | Times of Israel; Reuters | 2020; Dec 2024 | Reported | VERIFIED | -
+30 | Pardon request Nov 2025; no precedent mid-trial; Trump called for a pardon | Al-Monitor/AP https://www.al-monitor.com/originals/2026/04/israels-president-says-he-wants-deal-reached-netanyahu-case-pardon-decision ; American Israelite https://americanisraelite.com/?p=123117 | Nov 2025 - Apr 2026 | Reported | VERIFIED | -
+31 | Herzog deferred (26 Apr 2026), seeks plea deal; invited parties (28 Apr); experts say plea should require leaving public life; no deal/pardon as of cut-off | Algemeiner https://www.algemeiner.com/2026/04/26/president-herzog-doesnt-plan-to-pardon-netanyahu-intends-to-pursue-a-plea-deal/ ; Israel Hayom https://www.israelhayom.com/2026/04/28/herzog-invites-parties-in-netanyahu-trial-to-discuss-plea-bargain/ ; Spokesman-Review https://www.spokesman.com/stories/2026/apr/26/israels-president-putting-off-decision-on-pardon-f/ | 26 Apr - 5 May 2026 | Reported | VERIFIED / RE-CHECK | No later development found up to 31 Oct - re-check before upload.
+32 | Oct 7 2023: ~1,200 killed, mostly civilians; 251 hostages | Israeli government; AP | 2023-24 | Official | VERIFIED | -
+33 | No state commission of inquiry as of Oct 2026 | JusticeInfo https://www.justiceinfo.net/en/161462-israel-parliament-advances-bill-for-inquiry-into-oct-7-failures.html | Jul 2026 | Reported | VERIFIED | -
+34 | July 2026 first reading of "state-national" commission bill; six members chosen by Knesset; 59-0, opposition boycott | JusticeInfo; Arab News https://www.arabnews.com/node/2649901/middle-east ; CTV | 6 Jul 2026 | Reported (Reuters) | VERIFIED | A 53-48 figure belongs to the Dec 2025 preliminary reading (Media Line, JNS). Script uses 59-0 for the first reading.
+35 | October Council called the bill a whitewash; opposition promised a real state commission | JusticeInfo; Times of Israel | Jul 2026 | Reported | VERIFIED | Lapid quote: "In the first month of the next government, we will establish a genuine state commission of inquiry" (not used verbatim).
+36 | Bill can carry over (continuity rule) | JusticeInfo | Jul 2026 | Reported | REPORTED | -
+37 | Netanyahu's 1999 loss, 2009 return, 2021 ouster, 2022 return; Bennett-Lapid government ~18 months | Knesset records | - | Record | VERIFIED | -
+38 | 2023 judicial overhaul; mass protests; reservists' volunteering threats | Reuters; Times of Israel 2023 | 2023 | Established | VERIFIED | Both sides' framing given.
+
+---------------------------------------------------------------------------------------------------
+PART 3 - THE MACHINE
+---------------------------------------------------------------------------------------------------
+39 | One nationwide constituency, closed party lists, threshold 3.25% (≈4 seats) | Knesset Elections Law | - | Law | VERIFIED | -
+40 | Confidence: more votes for than against; minority government possible with abstentions | Basic Law: The Government s. 13(d) | - | Law | VERIFIED | -
+41 | No party has ever won 61 alone | Knesset records (max 56, Alignment 1969) | - | Record | VERIFIED | -
+42 | Lieberman: no coalition with Arab parties, even if they only abstain | Kuwait Times; Times of Israel | Oct 2026 | Reported | VERIFIED | -
+43 | Caretakers have fought wars/run budgets | Israel Democracy Institute | - | Analysis | VERIFIED | Phrased generally.
+
+---------------------------------------------------------------------------------------------------
+PART 4 - GAZA, WEST BANK, PALESTINIANS
+---------------------------------------------------------------------------------------------------
+44 | ~2.1M in Gaza, ~3M in West Bank (incl. or excl. East Jerusalem varies); no Knesset vote | UN OCHA; PCBS | 2025-26 | Statistics | VERIFIED | East Jerusalem Palestinians are mostly residents, not citizens; script says "could not vote in this election" for Gaza and "West Bank" - accurate.
+45 | Gaza Health Ministry: 74,000+ killed since Oct 2023; UN generally considers it reliable; Israel disputes; no civilian/combatant split | Gaza MoH via Reuters (≈74,382 by ~12 Oct 2026); UNICEF Jun 2026 https://edition.mv/world/51834 ; OIC relay 73,702 | Oct 2026 | Ministry figure | REPORTED / RE-CHECK | June 2026 figure 73,016. Use "74,000+" only if the latest MoH update still supports it.
+46 | Most buildings damaged/destroyed; most people displaced; famine declared in parts of Gaza 2025 (IPC, Aug 2025); Israel rejected | UN OCHA; UNOSAT; IPC Famine Review Committee Aug 2025 | 2025 | UN data | VERIFIED | Israel/COGAT rejected the IPC finding.
+47 | Ceasefire took effect 10 Oct 2025 (Trump plan); all 20 living hostages returned Oct 2025; last deceased hostage Ran Gvili returned Jan 2026; none remain | Times of Israel; AP | Oct 2025 - Jan 2026 | Reported | VERIFIED | Gvili recovered 26 Jan 2026 per earlier research - re-open source.
+48 | UNSC Resolution 2803 endorsed the plan; Board of Peace chaired by Trump | UN press (Nov 2025) | Nov 2025 | Primary | VERIFIED | -
+49 | Israeli control ~65% of Strip (up from 53%) | Times of Israel; Reuters | Oct 2026 | Reported | REPORTED | On screen "REPORTED".
+50 | UNICEF: 340+ children killed since ceasefire announced | UNICEF via The Vibes https://www.thevibes.com/articles/world/128440/more-than-340-children-killed-in-gaza-despite-israel-hamas-ceasefire-unicef-says ; UNICEF press https://www.unicef.org/press-releases/during-gazas-ceasefire-children-keep-being-killed | 17 Oct 2026 | UN agency | VERIFIED | UNSC 15 Oct cited ~1,500 total incl. 320+ children (different date/basis).
+51 | ~1,500 killed since ceasefire (MoH); 5 Israeli soldiers killed | Gaza MoH (1,493 by 12 Oct); UNSC 15 Oct; IDF | Oct 2026 | Reported | REPORTED | -
+52 | 100+ NGOs: ceasefire "in name only"; PHRI: no hospital at full capacity | Amnesty International 9 Oct 2026; PHRI | Oct 2026 | NGO statements | REPORTED | Quote attributed to the NGOs.
+53 | Foreign press access to Gaza restricted | FPA statements; Israeli Supreme Court petitions | 2023-2026 | Established | VERIFIED | -
+54 | Hostage families' campaign, Hostages Square; families vs government framing | Hostages and Missing Families Forum; Times of Israel | 2024-2025 | Established | VERIFIED | Both sides given.
+55 | Daily life: tents, trucked water, schools as shelters; crossings unpredictable; Israel says aid flows and Hamas diverts; agencies dispute | UN OCHA; COGAT; UNICEF | 2026 | Reported | REPORTED | General description; no numbers.
+56 | Netanyahu: Hamas will not rule Gaza; Israeli security control; opposes PA role | Netanyahu statements | 2025-26 | Statements | VERIFIED | -
+57 | Eisenkot: end Hamas rule within 18 months | Times of Israel liveblog https://www.timesofisrael.com/liveblog_entry/eisenkot-vows-to-end-hamas-rule-in-gaza-within-18-months-of-becoming-pm/ | 2026 | Reported | VERIFIED | -
+58 | Eisenkot: no annexation/settlements in Gaza; reformed PA preferable to Hamas; disarm before withdrawal | JPost https://www.jpost.com/israel-election-2026/article-911464 ; Al-Monitor https://al-monitor.com/originals/2026/10/eisenkot-offers-hawkish-alternative-netanyahu-israeli-pm | Oct 2026 | Reported | REPORTED | Script says "Reports say".
+59 | Eisenkot on X: "There is no Palestinian state, and under a government we form, no Palestinian state will be established." | Jewish News https://www.jewishnews.co.uk/israeli-election-rivals-netanyahu-and-eisenkot-both-reject-palestinian-statehood/amp/ | 2026 | Quoted post | VERIFIED (locate the original post before upload) | -
+60 | OCHA: 1,330+ settler attacks with casualties/damage, Jan - 20 Jul 2026, ~250 communities; "roughly six a day" | UN Palestine https://palestine.un.org/en/node/309094 ; UNA-OIC relay https://una-oic.org/en/palestinians/2026/07/28/OCHA-1330-attacks-by-Israeli-settlers-in-B/ | 20-28 Jul 2026 | UN data | VERIFIED | "Six a day" is our arithmetic (1,330 / ~200 days = 6.6). Other reports: 1,600+ (no as-of date).
+61 | 18 Palestinians killed in settler-linked incidents by 20 Jul 2026 (vs 17 in all 2025); 2,300+ displaced | UN OCHA via UN Palestine | Jul 2026 | UN data | VERIFIED | -
+62 | HRW report on settler violence, 20 Aug 2026 | Human Rights Watch | 20 Aug 2026 | NGO report | REPORTED | Re-open URL on hrw.org.
+63 | Government says it enforces law; rights groups say prosecutions rare | Israeli government; Yesh Din data | - | Statements/data | VERIFIED | Both sides.
+64 | Feb 2026 cabinet decisions extending authority; OHCHR warning | UN OHCHR | Feb 2026 | UN statement | REPORTED | -
+65 | Katz: 104 new settlements approved | Israel Katz statements as reported | 2026 | Reported | REPORTED | Attributed to Katz on screen.
+66 | E1 building tenders reported Aug 2026 (18 Aug); UK called it a red line | Times of Israel; UK FCDO statement | Aug 2026 | Reported | RE-CHECK | E1 plan approved 20 Aug 2025 (Higher Planning Council). Palestinian Wall & Colonization Commission counts tenders incl. E1. Confirm the tender date and the UK wording.
+67 | Eisenkot criticised E1 tenders; Smotrich attacked him | JNS https://www.jns.org/es/noticias/noticias-de-israel/eisenkot-rechaza-las-licitaciones-para-la-construccion-de-e1-lo-que-provoca-una-fuerte-critica-de-smotrich | 2026 | Reported | REPORTED | -
+68 | ICC warrants 21 Nov 2024, Netanyahu and Gallant; Israel rejects jurisdiction; Netanyahu called it antisemitic | ICC press release 21 Nov 2024; NBC https://www.nbcnews.com/news/world/arrest-netanyahu-icc-warrant-divides-world-israel-gaza-rcna181320 | Nov 2024 | Primary | VERIFIED | -
+69 | Deif warrant withdrawn after death confirmed; Israel asked to withdraw warrants; they stand as of cut-off | ICC (Feb 2025); Liga.net; Tehran Times (Sep 2026) | 2025-26 | Reported | RE-CHECK | Tehran Times is a state-aligned outlet - confirm on icc-cpi.int that the warrants remain in force.
+70 | ICJ South Africa v Israel: Israel counter-memorial Mar 2026; SA reply due 22 Nov 2027; Israel rejoinder 22 May 2029 | ICJ orders | 2026 | Primary | VERIFIED (re-open icj-cij.org) | Colombia withdrew its intervention (Sep 2026) - not used.
+71 | Tens of thousands evacuated from border towns; Iranian missiles hit Israeli cities 2025 and 2026 | Israeli government; AP | 2023-26 | Established | VERIFIED | -
+72 | Record murders in Arab communities (Abraham Initiatives) | Abraham Initiatives; Times of Israel | 2024-26 | NGO data | VERIFIED | No number used on purpose.
+
+---------------------------------------------------------------------------------------------------
+PART 5 - KINGMAKERS
+---------------------------------------------------------------------------------------------------
+73 | Eisenkot: ex-chief of staff; lost son Gal and nephew Maor in Gaza (Dec 2023); joined Gantz; war cabinet observer; quit; founded Yashar | Al Jazeera https://aljazeera.com/news/2026/10/17/the-israeli-politicians-seeking-to-replace-netanyahu ; Times of Israel | 2023-2026 | Established | VERIFIED | -
+74 | Associated with the Dahiya doctrine; supporters call him the credible security voice | TRT https://trtworld.com/article/a94cbe7e4c14 ; Al-Monitor | Oct 2026 | Analysis | VERIFIED | Framed as critics' view vs supporters' view.
+75 | Eisenkot conditions for Arab parties (recognise Jewish state; Hamas as terrorist); Sept interview said they don't meet them; vague since | Arab Center DC; Channel 12 via Ynet | Sep-Oct 2026 | Reported | DISPUTED | Sources conflict (conditions vs "not viable partners"). Script reports both.
+76 | Bennett PM 2021 with Ra'am in coalition; quote "The Arab parties are not Zionist, therefore we will not rely on them" | Times of Israel; Jewish News | 2026 | Quoted | REPORTED | Locate original interview.
+77 | Golan urged coalition with Arab parties | Times of Israel | 2026 | Reported | REPORTED | -
+78 | Abbas willing to back Eisenkot with conditions; pitch: budgets, crime, Bedouin villages | Times of Israel (French) https://fr.timesofisrael.com/liveblog_entry/mansour-abbas-tout-le-monde-nous-parle-et-pas-seulement-le-bloc-du-changement/ ; Israel National News | Oct 2026 | Reported | REPORTED | -
+79 | Abbas raised Palestinian statehood; rebuked by Eisenkot and Netanyahu | i24NEWS https://www.i24news.tv/en/news/israel/politics/artc-abbas-brings-palestinian-statehood-into-election-pitch-drawing-eisenkot-netanyahu-rebukes | 2026 | Reported | VERIFIED | -
+80 | Joint List leadership: high Arab turnout could block Netanyahu | Türkiye Today https://www.turkiyetoday.com/region/arab-turnout-above-70-could-block-netanyahus-return-joint-list-leader-says-3230015 | 2026 | Reported | REPORTED | Leader named as Yousef Jabareen in that report - not named in VO until confirmed.
+81 | Ben-Gvir: national security minister; 2007 conviction for incitement to racism and support for a terrorist organisation | Jerusalem Magistrates' Court 2007 as reported by Times of Israel | 2007 | Court record | VERIFIED | A court finding - the only crime stated as fact in the film.
+82 | Smotrich: finance minister; powers over civilian West Bank affairs; annexation his central cause | Times of Israel; Peace Now | 2023-26 | Established | VERIFIED | -
+83 | Deri: Shas won't join without exemption law; UTJ's Asher: "...Period." | Times of Israel; Kikar HaShabbat | 2026 | Quoted | VERIFIED | -
+84 | July 2026 temporary law barring arrests of draft evaders; frozen by High Court | Times of Israel; JPost | Jul 2026 | Reported | REPORTED | -
+85 | Most Jewish Israelis support drafting Haredim (polls) | Israel Democracy Institute surveys | 2024-26 | Polling | VERIFIED | No number used.
+86 | Haredim ~14% of population; >1 million | IDI Haredi Society statistical report | 2024-25 | Statistics | VERIFIED | -
+87 | Channel 12: UTJ would not oppose an Eisenkot-led government | Times of Israel liveblog | 2026 | Reported | REPORTED | -
+88 | 1992: Arab parties backed Rabin from outside | Knesset archives | 1992 | Record | VERIFIED | -
+89 | Netanyahu 2015: "Arab voters are moving in droves to the polling stations"; later apologised | Times of Israel; Haaretz | 2015 | Video + apology | VERIFIED | -
+
+---------------------------------------------------------------------------------------------------
+PART 6 - MONEY, MILITARY, INTERNATIONAL
+---------------------------------------------------------------------------------------------------
+90 | Trump endorsement 18 Oct 2026, "Great Warrior Prime Minister"; Likud video; Iran "not inclined" line; Eisenkot reply | AP via OPB https://www.opb.org/article/2026/10/19/trump-endorses-embattled-israeli-pm-netanyahu-for-reelection/ ; Al-Ahram https://english.ahram.org.eg/News/580275.aspx | 18-19 Oct 2026 | AP | VERIFIED | -
+91 | Trump criticised Israel's strike on an Iranian gas field early in the 2026 war | AP via OPB | Oct 2026 | AP | REPORTED | -
+92 | June 2025 twelve-day war: Israel strikes 13 Jun; US strikes Fordow etc. 22 Jun; ceasefire 24 Jun | Reuters; AP | Jun 2025 | Established | VERIFIED | -
+93 | 28 Feb 2026 US-Israel strikes on Iran; Khamenei killed (confirmed 1 Mar); Mojtaba Khamenei successor | Bloomberg Government https://news.bloomberglaw.com/bloomberg-government-news/us-israel-start-attacks-on-iran-in-war-thats-engulfing-region ; Daily Signal https://www.dailysignal.com/2026/02/28/iranian-leader-khamenei-killed-in-strikes-israel-says/ ; Cape Argus | 28 Feb - 1 Mar 2026 | Multiple outlets | VERIFIED | -
+94 | Iran fired missiles at Israel and Gulf states hosting US bases; Hormuz effectively closed; ~1/5 of world oil | Bloomberg; Jamaica Gleaner; EIA (≈20% of oil consumption) | Mar-Apr 2026 | Reported | VERIFIED | -
+95 | Two-week ceasefire 7-8 Apr via Pakistan; Islamabad talks 11-12 Apr; extensions; interim deal June | Jamaica Gleaner https://jamaica-gleaner.com/article/world-news/20260407/us-iran-have-agreed-two-week-ceasefire ; Wikipedia 2026 Iran war ceasefire https://en.wikipedia.org/wiki/2026_Iran_war_ceasefire | Apr-Jun 2026 | Reported | DISPUTED / RE-CHECK | June deal terms and dates unclear (11 vs 17 June). Status in Oct 2026 NOT confirmed - script avoids claiming a current status beyond "still pending" per Trump's own post.
+96 | Hezbollah fired on Israel early March 2026; Israeli air campaign + ground invasion; Lebanon toll 3,900+ (Reuters-based); Israel 36 dead | Wikipedia 2026 Lebanon war https://en.wikipedia.org/wiki/2026_Lebanon_war ; Aaj/Reuters | Mar-Jun 2026 | Reported | REPORTED / RE-CHECK | Date of the 3,912 tally unknown; use "as reported".
+97 | Ceasefires April (16/17) and 19 June; strikes continued | L'Orient Today https://today.lorientlejour.com/article/1538697/israel-hezbollah-agree-to-cease-fire-in-lebanon-us-official-says.html ; Asharq Al-Awsat https://english.aawsat.com/node/5286318 ; Bol News 18 Oct | Apr-Oct 2026 | Reported | VERIFIED | -
+98 | Defence ~8% of GDP in 2026 vs ~4.2% in 2022 | BusinessInfo.cz https://www.businessinfo.cz/clanky/izrael-ma-rekordni-valecny-rozpocet-na-rok-2026/ ; Czech MFA | 2026 | Reported | REPORTED | -
+99 | War cost ~NIS 350bn (Bank of Israel); deficit target 5.1%; debt ~70% of GDP; BoI criticised coalition funds | Bank of Israel Annual Report 2025 ch.6 https://www.boi.org.il/media/5bjix5v4/2025-chap-6e.pdf ; Globes https://en.globes.co.il/en/article-1001537337 ; Globes https://en.globes.co.il/en/article-1001537235 | Mar-May 2026 | Central bank | VERIFIED | Deficit figures vary 4.9-5.3%; script uses the amended 5.1% target.
+100 | Defence officials sought ~NIS 40bn more; finance-defence clash | Al Jazeera https://aljazeera.com/news/2026/9/1/israels-multiple-wars-see-finance-defence-ministries-clash-over-spending | 1 Sep 2026 | Reported | REPORTED | -
+101 | US MOU: $3.8bn/yr FY2019-2028 ($3.3bn FMF + $500m missile defence) | US State Department; Jewish Insider https://jewishinsider.com/2025/11/israel-u-s-memorandum-of-understanding-foreign-aid/ | - | Agreement | VERIFIED | -
+102 | Formal talks on successor launched June 2026; Netanyahu floated phase-out; US signals shift to trade/joint projects | FDD https://www.fdd.org/analysis/2026/06/09/on-u-s-military-aid-phase-out-for-israel-go-smartly-not-quickly/ ; Yeni Safak | Jun 2026 | Reported | REPORTED | -
+103 | EU: Commission proposed suspending trade parts Sept 2025 (~€5.8bn exports); April 2026 no majority; Germany/Italy vs Spain/Belgium | JURIST https://www.jurist.org/news/2026/04/eu-declines-to-suspend-israel-trade-agreement-despite-international-pleas/ ; Al-Monitor https://www.al-monitor.com/originals/2026/04/eu-divided-suspension-israel-pact-spain-pushes-action | Apr 2026 | Reported | VERIFIED / RE-CHECK | Nothing found after April - check for later Council decisions.
+104 | Saudi: no normalisation without an irreversible path to a Palestinian state (May 2026) | Al Arabiya https://english.alarabiya.net/amp/News/saudi-arabia/2026/05/25/saudi-position-on-palestinian-issue-remains-unchanged-source | 25 May 2026 | Reported | VERIFIED | -
+105 | Abraham Accords 2020 (UAE, Bahrain, Morocco) survived the war under strain | US State Department; reporting | 2020-26 | Established | VERIFIED | Sudan also signed - not mentioned.
+106 | Qatar accused of funding influence; denies; investigations into Netanyahu aides' Qatar-linked work 2025-26; no convictions | Times of Israel; Haaretz | 2025-26 | Reported | REPORTED / RE-CHECK | Netanyahu himself was not named a suspect as of 2025 - script does not suggest he was. Check for indictments before upload.
+
+---------------------------------------------------------------------------------------------------
+UNUSED / UNVERIFIED (kept out of the script on purpose)
+---------------------------------------------------------------------------------------------------
+- Lapid "a win is a win" - only in one aggregator headline. NOT USED.
+- Ben-Gvir and Smotrich post-election statements - none found. NOT QUOTED.
+- Haaretz report that a UAE warning before Oct 7 was not passed on - single outlet. NOT USED.
+- Exact Arab turnout percentage - figures differ. NOT USED (only "sharp rise").
+- Supreme Court overturning an Arab list disqualification (2 Oct) - unclear which list. NOT USED.
+- Any probability for scenarios - deliberately none.

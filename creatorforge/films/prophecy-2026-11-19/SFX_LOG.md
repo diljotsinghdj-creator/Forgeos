@@ -1,0 +1,60 @@
+# SFX_LOG: The Night the World Didn't End
+
+All sounds are the studio's built-in synthesised effects (ffmpeg, nothing licensed). Each cue comes from the shot's own animation event.
+
+| Time (s) | Shot | Sound | Level |
+|---|---|---|---|
+| 12.41 | 1.04a | whoosh_paper | -17 dB |
+| 12.98 | 1.04a | whoosh_paper | -17 dB |
+| 17.44 | 1.04b | impact_punch | -22 dB |
+| 22.32 | 1.05b | impact_punch | -22 dB |
+| 35.29 | 1.09a | impact_punch | -15 dB |
+| 39.67 | 1.09b | impact_punch | -15 dB |
+| 56.11 | 2.03a | whoosh_paper | -22 dB |
+| 61.15 | 2.04b | whoosh_paper | -17 dB |
+| 61.82 | 2.04b | whoosh_paper | -17 dB |
+| 75.53 | 2.06b | scribble_pen | -21 dB |
+| 76.21 | 2.06b | scribble_pen | -21 dB |
+| 78.96 | 2.07b | impact_punch | -22 dB |
+| 80.19 | 2.07b | impact_punch | -15 dB |
+| 85.79 | 2.07c | impact_punch | -22 dB |
+| 92.47 | 2.08b | whoosh_paper | -22 dB |
+| 93.04 | 2.08b | scribble_pen | -21 dB |
+| 96.66 | 2.09a | whoosh_paper | -22 dB |
+| 97.15 | 2.09a | scribble_pen | -21 dB |
+| 99.22 | 2.09b | whoosh_paper | -22 dB |
+| 108.67 | 3.02 | impact_punch | -22 dB |
+| 109.78 | 3.03 | impact_punch | -22 dB |
+| 128.34 | 3.07a | impact_punch | -22 dB |
+| 142.75 | 3.09a | whoosh_paper | -17 dB |
+| 146.11 | 3.09b | impact_punch | -22 dB |
+| 146.79 | 3.10a | whoosh_paper | -22 dB |
+| 147.66 | 3.10a | whoosh_paper | -22 dB |
+| 151.10 | 3.11a | whoosh_paper | -22 dB |
+| 154.01 | 3.11b | scribble_pen | -21 dB |
+| 152.60 | 3.11b | scribble_pen | -21 dB |
+| 154.94 | 3.11c | scribble_pen | -21 dB |
+| 155.42 | 3.11c | scribble_pen | -21 dB |
+| 166.80 | 3.13b | whoosh_paper | -22 dB |
+| 167.26 | 3.14a | whoosh_paper | -22 dB |
+| 167.82 | 3.14a | whoosh_paper | -22 dB |
+| 190.90 | 3.17b | impact_punch | -22 dB |
+| 198.94 | 3.18b | impact_punch | -15 dB |
+| 205.92 | 4.01b | scribble_pen | -21 dB |
+| 205.15 | 4.01b | whoosh_paper | -17 dB |
+| 208.07 | 4.02a | whoosh_paper | -17 dB |
+| 208.87 | 4.02a | whoosh_paper | -17 dB |
+| 230.36 | 4.05 | scribble_pen | -21 dB |
+| 247.73 | 4.08 | impact_punch | -15 dB |
+| 269.48 | 4.11b | impact_punch | -22 dB |
+| 277.11 | 4.12b | impact_punch | -22 dB |
+| 297.34 | 4.15b | impact_punch | -15 dB |
+| 320.49 | 4.19b | impact_punch | -22 dB |
+| 342.62 | 5.03b | whoosh_paper | -17 dB |
+| 343.11 | 5.03b | whoosh_paper | -17 dB |
+| 345.17 | 5.04a | whoosh_paper | -22 dB |
+| 346.28 | 5.04b | impact_punch | -22 dB |
+| 348.02 | 5.05a | whoosh_paper | -17 dB |
+| 349.42 | 5.05b | whoosh_paper | -17 dB |
+| 351.26 | 5.05c | whoosh_paper | -17 dB |
+| 359.75 | 5.07 | impact_punch | -15 dB |

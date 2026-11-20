@@ -1,0 +1,391 @@
+[
+ {
+  "label": "A1",
+  "scene": "LIVING ROOM",
+  "generation_id": "nsoURn4NyJofpJrIyk7D",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "Paper-cut collage illustration of a modest 1950s American living room at night, seen straight on like a stage set: an armchair, a floor lamp with a warm glow, a console radio, a wall clock reading 11:",
+  "size": [
+   1280,
+   720
+  ],
+  "credits": 190.4,
+  "label_on_screen": "AI ILLUSTRATION",
+  "finish": "channels/design_kits/ai_finish.py --channel dp (applied 2026-11-19; raw kept in assets/ai_raw)",
+  "no_real_because": "no photo of the 1954 Oak Park living room exists; a reconstruction of an unseen moment, shown as a labelled print on the drawn grid",
+  "status": "in use (2026-11-19: one of 3 AI plates kept)"
+ },
+ {
+  "label": "A2",
+  "scene": "LIVING ROOM",
+  "generation_id": "dBt4cOGYEbvUg1BXfX79",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "Paper-cut collage illustration of a modest 1950s American living room at night, seen straight on like a stage set: an armchair, a floor lamp with a warm glow, a console radio, a wall clock reading 11:",
+  "size": [
+   1280,
+   720
+  ],
+  "credits": 190.4,
+  "label_on_screen": "AI ILLUSTRATION"
+ },
+ {
+  "label": "A3",
+  "scene": "LIVING ROOM",
+  "generation_id": "Nlti5tFQFJh5H4AtYKQN",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "Paper-cut collage illustration of a modest 1950s American living room at night, seen straight on like a stage set: an armchair, a floor lamp with a warm glow, a console radio, a wall clock reading 11:",
+  "size": [
+   1280,
+   720
+  ],
+  "credits": 190.4,
+  "label_on_screen": "AI ILLUSTRATION"
+ },
+ {
+  "label": "A4",
+  "scene": "LIVING ROOM",
+  "generation_id": "QACpJM0d2SovjighyJxU",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "Paper-cut collage illustration of a modest 1950s American living room at night, seen straight on like a stage set: an armchair, a floor lamp with a warm glow, a console radio, a wall clock reading 11:",
+  "size": [
+   1280,
+   720
+  ],
+  "credits": 190.4,
+  "label_on_screen": "AI ILLUSTRATION"
+ },
+ {
+  "label": "B1",
+  "scene": "NIGHT SKY",
+  "generation_id": "H89JqYceZVR3dm25LuFb",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "Paper-cut collage illustration of a night sky over the rooftop of a small 1950s suburban house, wide 16:9: layered torn-paper clouds, a few paper stars, bare winter trees, a tiny flat paper flying sau",
+  "size": [
+   1280,
+   720
+  ],
+  "credits": 190.4,
+  "label_on_screen": "AI ILLUSTRATION"
+ },
+ {
+  "label": "B2",
+  "scene": "NIGHT SKY",
+  "generation_id": "RWGMW3tYjRdjyFAYouox",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "Paper-cut collage illustration of a night sky over the rooftop of a small 1950s suburban house, wide 16:9: layered torn-paper clouds, a few paper stars, bare winter trees, a tiny flat paper flying sau",
+  "size": [
+   1280,
+   720
+  ],
+  "credits": 190.4,
+  "label_on_screen": "AI ILLUSTRATION"
+ },
+ {
+  "label": "B3",
+  "scene": "NIGHT SKY",
+  "generation_id": "eQHhppMYDTaJDNlUUz54",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "Paper-cut collage illustration of a night sky over the rooftop of a small 1950s suburban house, wide 16:9: layered torn-paper clouds, a few paper stars, bare winter trees, a tiny flat paper flying sau",
+  "size": [
+   1280,
+   720
+  ],
+  "credits": 190.4,
+  "label_on_screen": "AI ILLUSTRATION",
+  "finish": "channels/design_kits/ai_finish.py --channel dp (applied 2026-11-19; raw kept in assets/ai_raw)",
+  "retired": "replaced by real image or drawn frame (2026-11-19)",
+  "replaced_by": "24_end: real night-sky photo (Robin Mulligan, CC BY 2.0) under the drawn cracked clock and saucer"
+ },
+ {
+  "label": "B4",
+  "scene": "NIGHT SKY",
+  "generation_id": "W2K7q23NdkKIqdMX3itE",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "Paper-cut collage illustration of a night sky over the rooftop of a small 1950s suburban house, wide 16:9: layered torn-paper clouds, a few paper stars, bare winter trees, a tiny flat paper flying sau",
+  "size": [
+   1280,
+   720
+  ],
+  "credits": 190.4,
+  "label_on_screen": "AI ILLUSTRATION"
+ },
+ {
+  "label": "C1",
+  "scene": "1844 MILLERITES",
+  "generation_id": "PVkgZq2ADYGJCiOQcY3M",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "Paper-cut collage illustration in 1840s American style: a crowd of faceless silhouette figures in period dress (bonnets, top hats, shawls) standing on a hill at dawn looking up at an empty sky, waitin",
+  "size": [
+   1280,
+   720
+  ],
+  "credits": 190.4,
+  "label_on_screen": "AI ILLUSTRATION",
+  "finish": "channels/design_kits/ai_finish.py --channel dp (applied 2026-11-19; raw kept in assets/ai_raw)",
+  "retired": "replaced by real image or drawn frame (2026-11-19)",
+  "replaced_by": "07_millerites: the real 1843 Millerite chart (J. V. Himes, public domain, Wikimedia Commons)"
+ },
+ {
+  "label": "C2",
+  "scene": "1844 MILLERITES",
+  "generation_id": "G3kcl0yuioouzg0wo3LW",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "Paper-cut collage illustration in 1840s American style: a crowd of faceless silhouette figures in period dress (bonnets, top hats, shawls) standing on a hill at dawn looking up at an empty sky, waitin",
+  "size": [
+   1280,
+   720
+  ],
+  "credits": 190.4,
+  "label_on_screen": "AI ILLUSTRATION"
+ },
+ {
+  "label": "C3",
+  "scene": "1844 MILLERITES",
+  "generation_id": "uUR6M8K8Nn5bZOWFNG2K",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "Paper-cut collage illustration in 1840s American style: a crowd of faceless silhouette figures in period dress (bonnets, top hats, shawls) standing on a hill at dawn looking up at an empty sky, waitin",
+  "size": [
+   1280,
+   720
+  ],
+  "credits": 190.4,
+  "label_on_screen": "AI ILLUSTRATION"
+ },
+ {
+  "label": "C4",
+  "scene": "1844 MILLERITES",
+  "generation_id": "XRYCCfaYzZzQ4YkoOLuq",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "Paper-cut collage illustration in 1840s American style: a crowd of faceless silhouette figures in period dress (bonnets, top hats, shawls) standing on a hill at dawn looking up at an empty sky, waitin",
+  "size": [
+   1280,
+   720
+  ],
+  "credits": 190.4,
+  "label_on_screen": "AI ILLUSTRATION"
+ },
+ {
+  "label": "D1",
+  "scene": "ANTELOPE & LION",
+  "generation_id": "nmb0gObFf5zrb4E1Yu2r",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "Comic paper-cut collage, wide 16:9: a cartoon antelope mid-air, tossed in a high arc from the left toward a surprised cartoon lion on the right, savanna grass in torn paper along the bottom. On the fa",
+  "size": [
+   1280,
+   720
+  ],
+  "credits": 190.4,
+  "label_on_screen": "AI ILLUSTRATION",
+  "finish": "channels/design_kits/ai_finish.py --channel dp (applied 2026-11-19; raw kept in assets/ai_raw)",
+  "no_real_because": "a sight gag (the antelope-and-lion nature documentary): nothing real fits",
+  "status": "in use (2026-11-19: one of 3 AI plates kept)"
+ },
+ {
+  "label": "D2",
+  "scene": "ANTELOPE & LION",
+  "generation_id": "t2iffqZ7OubjQYriLu3z",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "Comic paper-cut collage, wide 16:9: a cartoon antelope mid-air, tossed in a high arc from the left toward a surprised cartoon lion on the right, savanna grass in torn paper along the bottom. On the fa",
+  "size": [
+   1280,
+   720
+  ],
+  "credits": 190.4,
+  "label_on_screen": "AI ILLUSTRATION"
+ },
+ {
+  "label": "D3",
+  "scene": "ANTELOPE & LION",
+  "generation_id": "IlZSom3iD6chocEoa4VD",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "Comic paper-cut collage, wide 16:9: a cartoon antelope mid-air, tossed in a high arc from the left toward a surprised cartoon lion on the right, savanna grass in torn paper along the bottom. On the fa",
+  "size": [
+   1280,
+   720
+  ],
+  "credits": 190.4,
+  "label_on_screen": "AI ILLUSTRATION"
+ },
+ {
+  "label": "D4",
+  "scene": "ANTELOPE & LION",
+  "generation_id": "aZwGKDdP15fdAr24JbMj",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "Comic paper-cut collage, wide 16:9: a cartoon antelope mid-air, tossed in a high arc from the left toward a surprised cartoon lion on the right, savanna grass in torn paper along the bottom. On the fa",
+  "size": [
+   1280,
+   720
+  ],
+  "credits": 190.4,
+  "label_on_screen": "AI ILLUSTRATION"
+ },
+ {
+  "label": "E1",
+  "scene": "ARCHIVE BOX",
+  "generation_id": "p6aQPSrLmAMc85iP6AxZ",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "Realistic but slightly stylised photograph-like illustration of an open cardboard archival box on a pale grey archive table, overhead three-quarter view, with manila folders, a few typewritten pages, ",
+  "size": [
+   1280,
+   720
+  ],
+  "credits": 190.4,
+  "label_on_screen": "AI ILLUSTRATION"
+ },
+ {
+  "label": "E2",
+  "scene": "ARCHIVE BOX",
+  "generation_id": "PsILnCyeP1s6OhETeXyQ",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "Realistic but slightly stylised photograph-like illustration of an open cardboard archival box on a pale grey archive table, overhead three-quarter view, with manila folders, a few typewritten pages, ",
+  "size": [
+   1280,
+   720
+  ],
+  "credits": 190.4,
+  "label_on_screen": "AI ILLUSTRATION",
+  "finish": "channels/design_kits/ai_finish.py --channel dp (applied 2026-11-19; raw kept in assets/ai_raw)",
+  "retired": "replaced by real image or drawn frame (2026-11-19)",
+  "replaced_by": "15_box: real photos of the Bentley Historical Library (Dwight Burdette, CC BY 3.0) and a real archive (sillygwailo, CC BY 2.0)"
+ },
+ {
+  "label": "E3",
+  "scene": "ARCHIVE BOX",
+  "generation_id": "9DP5lL7HL8HI3QqetCqR",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "Realistic but slightly stylised photograph-like illustration of an open cardboard archival box on a pale grey archive table, overhead three-quarter view, with manila folders, a few typewritten pages, ",
+  "size": [
+   1280,
+   720
+  ],
+  "credits": 190.4,
+  "label_on_screen": "AI ILLUSTRATION"
+ },
+ {
+  "label": "E4",
+  "scene": "ARCHIVE BOX",
+  "generation_id": "qfeM133ZQ3hTc0q0wa1f",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "Realistic but slightly stylised photograph-like illustration of an open cardboard archival box on a pale grey archive table, overhead three-quarter view, with manila folders, a few typewritten pages, ",
+  "size": [
+   1280,
+   720
+  ],
+  "credits": 190.4,
+  "label_on_screen": "AI ILLUSTRATION"
+ },
+ {
+  "label": "F1",
+  "use": "slate study desk (SLATE frames)",
+  "generation_id": "iBNGNOhNmsRLDMtUI0LE",
+  "flow_id": "pQGk0bAw8kXDdsfofcfS",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "Top-down view of an empty dark slate-grey researcher's study desk, matte painted wood with faint pencil marks, a few loose sheets of pale blue-grey lab graph paper at the edges, soft light from the top left, gentle vignette, large empty centre for cards to be placed later, filling the whole 16:9 frame. flat paper-collage editorial illustration, cut-out paper pieces with white sticker edges, halftone print texture, visible paper grain, muted palette of deep slate #141824, lab-paper #F0F4F8, cobalt blue #2B6CB0 and amber #ED8936, soft flat light, no text, no faces, not photorealistic, not 3D render",
+  "size": [
+   1280,
+   720
+  ],
+  "takes": 1,
+  "credits": 190.4,
+  "finish": "channels/design_kits/ai_finish.py --channel dp",
+  "label_on_screen": "AI ILLUSTRATION (desk: in the source line)",
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)",
+  "retired": "replaced by real image or drawn frame (2026-11-19)",
+  "replaced_by": "slate frames: the drawn slate (a backdrop is never AI, MASTER_DIRECTIVES 8c)"
+ },
+ {
+  "label": "F2",
+  "use": "11b_phones (3 · 2:57)",
+  "generation_id": "pbmcP1PjKOGVKFMzFjQM",
+  "flow_id": "pQGk0bAw8kXDdsfofcfS",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "Three 1950s rotary telephones made of cut paper on a small table, all ringing at once with little shake lines, receivers lifted, coiled cords tangled, beside a tall stack of folded blank newspapers (no headlines, no text). Lab-paper background. 16:9 composition. No people. flat paper-collage editorial illustration, cut-out paper pieces with white sticker edges, halftone print texture, visible paper grain, muted palette of deep slate #141824, lab-paper #F0F4F8, cobalt blue #2B6CB0 and amber #ED8936, soft flat light, no text, no faces, not photorealistic, not 3D render",
+  "size": [
+   1280,
+   720
+  ],
+  "takes": 1,
+  "credits": 190.4,
+  "finish": "channels/design_kits/ai_finish.py --channel dp",
+  "label_on_screen": "AI ILLUSTRATION (desk: in the source line)",
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)",
+  "retired": "replaced by real image or drawn frame (2026-11-19)",
+  "replaced_by": "11b_phones: real 1950s desk phones (Phillip Pessar; nreijmersdal; CC BY 2.0)"
+ },
+ {
+  "label": "F3",
+  "use": "13b_pegs (3 · 3:35)",
+  "generation_id": "8H4AeReO7zh4HCj50Unz",
+  "flow_id": "pQGk0bAw8kXDdsfofcfS",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "A 1950s psychology lab task: a square wooden peg board with 48 square pegs in rows, and a tray of wooden spools beside it, seen from slightly above on a plain table; only one hand and a shirt cuff enter from the side, slowly turning a single peg a quarter turn. A plain wall clock above shows boredom. No face, no body. Lab-paper background. 16:9 composition. flat paper-collage editorial illustration, cut-out paper pieces with white sticker edges, halftone print texture, visible paper grain, muted palette of deep slate #141824, lab-paper #F0F4F8, cobalt blue #2B6CB0 and amber #ED8936, soft flat light, no text, no faces, not photorealistic, not 3D render",
+  "size": [
+   1280,
+   720
+  ],
+  "takes": 1,
+  "credits": 190.4,
+  "finish": "channels/design_kits/ai_finish.py --channel dp",
+  "label_on_screen": "AI ILLUSTRATION (desk: in the source line)",
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)",
+  "retired": "replaced by real image or drawn frame (2026-11-19)",
+  "replaced_by": "13b_pegs dropped; 13_carlsmith (drawn) now carries a real peg-board photo (Eric M Martin, CC BY 2.0)"
+ },
+ {
+  "label": "F4",
+  "use": "23b_head (5 · 7:03)",
+  "generation_id": "kI4ygAHnqirZZrF97qB4",
+  "flow_id": "pQGk0bAw8kXDdsfofcfS",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "A plain human head silhouette in side profile made of layered cut paper with no facial features at all (smooth blank outline only), cut open like a diagram to show inside it a brass pressure valve with a round gauge and three outlet pipes, one outlet glowing amber, small steam puffs. Metaphor diagram style, not anatomy. Lab-paper background. 16:9 composition, head on the left half. flat paper-collage editorial illustration, cut-out paper pieces with white sticker edges, halftone print texture, visible paper grain, muted palette of deep slate #141824, lab-paper #F0F4F8, cobalt blue #2B6CB0 and amber #ED8936, soft flat light, no text, no faces, not photorealistic, not 3D render",
+  "size": [
+   1280,
+   720
+  ],
+  "takes": 1,
+  "credits": 190.4,
+  "finish": "channels/design_kits/ai_finish.py --channel dp",
+  "label_on_screen": "AI ILLUSTRATION (desk: in the source line)",
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)",
+  "no_real_because": "a metaphor (the valve in your head), labelled metaphor, not anatomy; no real image fits",
+  "status": "in use (2026-11-19: one of 3 AI plates kept)"
+ },
+ {
+  "label": "F5",
+  "use": "22b_textbooks (5 · 6:46)",
+  "generation_id": "FgFbphNJD0A0WMoWyFTD",
+  "flow_id": "pQGk0bAw8kXDdsfofcfS",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "A tall, slightly wobbly stack of thick hardback university textbooks made of cut paper, spines facing the viewer, all spines blank with no titles (labels will be added later), getting newer in colour from bottom to top, the stack leaning and taller than it should be, a small reading lamp beside it. Lab-paper background. 16:9 composition, stack in the centre. No people. flat paper-collage editorial illustration, cut-out paper pieces with white sticker edges, halftone print texture, visible paper grain, muted palette of deep slate #141824, lab-paper #F0F4F8, cobalt blue #2B6CB0 and amber #ED8936, soft flat light, no text, no faces, not photorealistic, not 3D render",
+  "size": [
+   1280,
+   720
+  ],
+  "takes": 1,
+  "credits": 190.4,
+  "finish": "channels/design_kits/ai_finish.py --channel dp",
+  "label_on_screen": "AI ILLUSTRATION (desk: in the source line)",
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)",
+  "retired": "replaced by real image or drawn frame (2026-11-19)",
+  "replaced_by": "22b_textbooks: a real stack of books (Wonderlane, CC BY 2.0) with kinetic type"
+ },
+ {
+  "label": "F6",
+  "use": "06b_card (2 · 1:21)",
+  "generation_id": "xUwik6IGetfdqqzxjooD",
+  "flow_id": "pQGk0bAw8kXDdsfofcfS",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "A small cut-paper membership card lying on a table, cobalt blue with a tiny emblem of a ring of simple stick figures holding hands, a gold-amber seal stamp in the corner, the card held down by a heavy padlock and chain as if the owner could never let it go. All text areas blank. Lab-paper background. 16:9 composition. No people. flat paper-collage editorial illustration, cut-out paper pieces with white sticker edges, halftone print texture, visible paper grain, muted palette of deep slate #141824, lab-paper #F0F4F8, cobalt blue #2B6CB0 and amber #ED8936, soft flat light, no text, no faces, not photorealistic, not 3D render",
+  "size": [
+   1280,
+   720
+  ],
+  "takes": 1,
+  "credits": 190.4,
+  "finish": "channels/design_kits/ai_finish.py --channel dp",
+  "label_on_screen": "AI ILLUSTRATION (desk: in the source line)",
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8b/8c)",
+  "retired": "replaced by real image or drawn frame (2026-11-19)",
+  "replaced_by": "06b_card dropped; the drawn 06_membership carries a real padlock photo (andypowe11, CC BY 2.0)"
+ }
+]

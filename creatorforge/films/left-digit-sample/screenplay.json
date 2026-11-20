@@ -1,0 +1,144 @@
+{
+ "id": "left-digit-sample",
+ "title": "Read the whole number",
+ "channel": "sample",
+ "sample_for": "dragon-psychology",
+ "topic": "left-digit-effect",
+ "target_seconds": 30,
+ "subject": "mind",
+ "genre": "psychology",
+ "native_material": "price tags, odometers, the 2005 experiments and the 22-million-car auction study",
+ "engine": "live-viewer-trap",
+ "hook_mechanism": "the viewer is asked which price is bigger and feels the pull of the 2 before the answer",
+ "metaphors": [
+  "the left digit as the price your brain actually pays attention to"
+ ],
+ "pick": {
+  "engine": "live-viewer-trap",
+  "pitched": [
+   "live-viewer-trap",
+   "reverse-autopsy",
+   "historical-echo"
+  ],
+  "owner_words": "\"give me video of anything. free hand, do not ask me. choose any topic. 30 seconds\" (the owner delegated the topic and the pick; historical-echo excluded as the last film's engine, reverse-autopsy as the one before)",
+  "date": "2026-11-13"
+ },
+ "language": "en",
+ "lang": "en-us",
+ "voice": "af_heart",
+ "transition_family": "hard cuts",
+ "concept": {
+  "logline": "Your eyes reach the left digit first, so $2.99 feels like two dollars and a car at 50,000 miles feels older than one at 49,999.",
+  "central_question": "Why does $2.99 feel so much cheaper than $3?",
+  "claim": "People anchor on the leftmost digit (Thomas and Morwitz 2005); the same bias moves used-car prices at every 10,000-mile mark (Lacetera, Pope and Sydnor 2012)."
+ },
+ "thumbnail": "Statement: Read the *whole* number.",
+ "cutdowns": [],
+ "scenes": [
+  {
+   "id": "S1",
+   "act": "hook",
+   "purpose": "orient",
+   "delivery": "curious",
+   "pause": 0.05,
+   "role": "opening",
+   "narration": "Quick. Which costs more: two ninety-nine, or three dollars?",
+   "graphic": "Footage: asset:V0015 | | | in: 3 | illustrative",
+   "claims": [
+    "C1"
+   ]
+  },
+  {
+   "id": "S2",
+   "act": "world",
+   "purpose": "explain",
+   "delivery": "measured",
+   "pause": 0.05,
+   "narration": "Three dollars. But your eyes read from the left.",
+   "graphic": "Counter: $3.00 → $2.99 | one cent apart | the same price, read left to right",
+   "claims": [
+    "C1"
+   ],
+   "transition": "cut"
+  },
+  {
+   "id": "S3",
+   "act": "investigation",
+   "purpose": "explain",
+   "delivery": "curious",
+   "pause": 0.05,
+   "narration": "They land on the two first, and your brain files the price as about two.",
+   "graphic": "Footage: asset:V0016 | | | illustrative",
+   "claims": [
+    "C1"
+   ],
+   "transition": "flash"
+  },
+  {
+   "id": "S4",
+   "act": "discovery",
+   "purpose": "explain",
+   "delivery": "measured",
+   "pause": 0.1,
+   "narration": "Experiments in 2005 gave it a name: the left-digit effect.",
+   "graphic": "BigNumber: 2005 | magnifying glass | Thomas and Morwitz experiments | badge: verified",
+   "claims": [
+    "C1"
+   ],
+   "transition": "cut"
+  },
+  {
+   "id": "S5",
+   "act": "consequences",
+   "purpose": "explain",
+   "delivery": "measured",
+   "pause": 0.05,
+   "narration": "It moves car prices too: over twenty-two million wholesale sales.",
+   "graphic": "Footage: asset:V0017 | | | in: 1 | illustrative",
+   "claims": [
+    "C2"
+   ],
+   "transition": "dissolve"
+  },
+  {
+   "id": "S6",
+   "act": "consequences",
+   "purpose": "explain",
+   "delivery": "curious",
+   "pause": 0.05,
+   "narration": "Roll the odometer one mile past a ten-thousand mark...",
+   "graphic": "Counter: 49,999 → 50,000 | miles | one mile, a new left digit",
+   "claims": [
+    "C2"
+   ],
+   "transition": "cut"
+  },
+  {
+   "id": "S7",
+   "act": "consequences",
+   "purpose": "explain",
+   "delivery": "grave",
+   "pause": 0.15,
+   "narration": "and the car sold for about a hundred and fifty to two hundred dollars less.",
+   "graphic": "BigNumber: $200 | car | about $150 to $200 less (Lacetera, Pope, Sydnor, 2012) | badge: verified",
+   "claims": [
+    "C2"
+   ],
+   "transition": "cut"
+  },
+  {
+   "id": "S8",
+   "act": "ending",
+   "purpose": "explain",
+   "delivery": "grave",
+   "pause": 0.5,
+   "narration": "Next time, read the whole number.",
+   "graphic": "Statement: Read the *whole* number.",
+   "claims": [
+    "C1"
+   ],
+   "role": "ending",
+   "transition": "cut"
+  }
+ ]
+}

@@ -1,0 +1,57 @@
+{
+  "title": "<working title>",
+  "channel": "print-facts | dragon-psychology",
+  "language": "en",
+  "runtime_target_s": 600,
+  "central_question": "<one question a curious viewer would actually ask>",
+  "answer": "<the one-sentence answer the film earns, with its surprise>",
+  "why_now": "<the news peg or the reason this matters to the viewer today>",
+  "engine": "<reverse-autopsy | live-viewer-trap | trojan-horse | historical-echo | other named engine>",
+  "pick": {"engine": "<owner's pick>", "pitched": ["<a>", "<b>", "<c>"], "owner_words": "<verbatim>", "date": "YYYY-MM-DD"},
+  "hook": {"mechanism": "<what kind of hook>", "line": "<first spoken line>", "first_frame": "<what the first frame shows>"},
+  "subject_profile": {
+    "domains": ["<geography | economics | history | technology | science | politics | culture | psychology | human-interest>"],
+    "native_material": "<what this subject is physically made of on screen: documents, terrain, interfaces, molecules...>",
+    "proof_types": ["<what kinds of evidence exist for it>"]
+  },
+  "dna": {
+    "lead_technique": "<a visual_mode from the vocabulary>",
+    "support_technique": "<a different visual_mode>",
+    "palette": {"base": "#RRGGBB", "accent": "#RRGGBB", "signal": "#FFDD33", "from_subject": "<where the hues come from>"},
+    "typography": "<display + text faces and treatment>",
+    "texture": "<paper, print, grain, clean digital... and why>",
+    "motion_language": "<cut rhythm, camera grammar, easing>",
+    "transition_family": "<one family from the vocabulary + its cause>",
+    "sound_palette": "<music cues (more than one), sfx family, ambience>",
+    "opening_shot": "<shot type of the first frame>",
+    "signature_device": "<the one recurring visual device this film owns>"
+  },
+  "chapters": [
+    {"id": "C1", "title": "<on-screen chapter title>", "job": "<what this chapter makes the viewer understand>", "open_loop": "<question carried into the next chapter>"}
+  ],
+  "scenes": [
+    {
+      "id": "S1",
+      "chapter": "C1",
+      "start": 0.0,
+      "end": 3.5,
+      "narration": "<the exact words spoken over this shot>",
+      "viewer_understands": "<the one thing the viewer must take from this shot>",
+      "purpose": "hook | inform | context | prove | emotion | turn | payoff | transition",
+      "claim_ids": ["<dossier claim id for every fact or figure spoken or shown>"],
+      "visual_mode": "<from the vocabulary in references/visual_decision_engine.md>",
+      "visual": "<exactly what is on screen: subject, framing, layers, colour roles>",
+      "why_this_visual": "<why this beats the alternatives considered; name them>",
+      "alternatives": ["<mode considered and rejected>"],
+      "motion": "<camera move + what builds on screen, in the order the narration names it>",
+      "on_screen_text": "<labels, numbers, highlight words, source line>",
+      "badge": "<'' | VERIFIED | REPORTED | ESTIMATE | DISPUTED | ALLEGATION | PARTY CLAIM | OPINION | ILLUSTRATIVE | RECREATION>",
+      "asset_ids": ["<asset register ids>"],
+      "asset_needed": "<what must be found or made, and from where, if not yet in hand>",
+      "sound": {"music": "<cue id + what it does here>", "sfx": "<sync points>", "ambience": "<bed>", "silence": false},
+      "effects": ["<named effects, each used at most 3 times a film>"],
+      "transition_out": {"family": "<from the vocabulary>", "cause": "<why the cut happens here>"}
+    }
+  ],
+  "evidence_waiver": null
+}

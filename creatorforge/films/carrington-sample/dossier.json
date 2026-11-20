@@ -1,0 +1,136 @@
+{
+ "topic": "The 1859 Carrington storm and the 2012 near miss: a 30-second sample",
+ "researched": "2026-11-12",
+ "method": "Claims C1-C6 read on NASA Science's article (full page, 2026-11-12) and the Commons file record. The Lloyd's 2013 cost estimate was left out because its report did not open.",
+ "claims": [
+  {
+   "id": "C1",
+   "claim": "In September 1859 the English astronomer Richard Carrington saw a solar flare with his own eyes while drawing a sunspot group; his drawing of the sunspots is dated 1 September 1859, and the letters A-D mark where the white light appeared.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "1859",
+    "1"
+   ],
+   "sources": [
+    {
+     "title": "NASA Science: Near Miss: The Solar Superstorm of July 2012 (22 Jul 2014)",
+     "url": "https://science.nasa.gov/science-news/science-at-nasa/2014/23jul_superstorm/",
+     "quote": "[read 2026-11-12] Carrington ... actually saw the instigating flare with his own eyes"
+    },
+    {
+     "title": "Wikimedia Commons: Carrington Richard drawing of 1859 sunspots (file metadata: date 1859-09-01, public domain)",
+     "url": "https://commons.wikimedia.org/wiki/File:Carrington_Richard_drawing_of_1859_sunspots.jpeg",
+     "quote": "[read 2026-11-12] Drawing of sunspots by Richard Carrington ... Date 1 September 1859"
+    },
+    {
+     "title": "Carrington, R. C. (1859) Description of a Singular Appearance seen in the Sun on September 1, 1859. MNRAS 20, 13",
+     "url": "https://doi.org/10.1093/mnras/20.1.13",
+     "quote": "[record confirmed via Crossref 2026-11-12: MNRAS, 11 Nov 1859] the original paper"
+    }
+   ],
+   "contradictions": [],
+   "notes": "What A-D mark comes from Carrington's paper as summarised by secondary sources; the narration only says the sunspots flashed white."
+  },
+  {
+   "id": "C2",
+   "claim": "In the days after Carrington's observation, powerful CMEs hit Earth, and Northern Lights were seen as far south as Cuba.",
+   "status": "reported",
+   "confidence": "high",
+   "figures": [
+    "1859"
+   ],
+   "sources": [
+    {
+     "title": "NASA Science: Near Miss: The Solar Superstorm of July 2012 (22 Jul 2014)",
+     "url": "https://science.nasa.gov/science-news/science-at-nasa/2014/23jul_superstorm/",
+     "quote": "[read 2026-11-12] ignited Northern Lights as far south as Cuba"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Reported on NASA's account. The primary 1859-60 accounts (Loomis, 'The great auroral exhibition of August 28th to September 4th, 1859', American Journal of Science, 1860, doi:10.2475/ajs.s2-29.85.92 and later parts) were found but not read: read them before calling this verified."
+  },
+  {
+   "id": "C3",
+   "claim": "The 1859 storm caused telegraph lines around the world to spark, setting fire to some telegraph offices.",
+   "status": "reported",
+   "confidence": "high",
+   "figures": [
+    "1859"
+   ],
+   "sources": [
+    {
+     "title": "NASA Science: Near Miss: The Solar Superstorm of July 2012 (22 Jul 2014)",
+     "url": "https://science.nasa.gov/science-news/science-at-nasa/2014/23jul_superstorm/",
+     "quote": "[read 2026-11-12] caused global telegraph lines to spark, setting fire to some telegraph offices"
+    }
+   ],
+   "contradictions": [],
+   "notes": "How many offices burned is not documented; the narration says 'some'. Reported on NASA's account. The primary 1859-60 accounts (Loomis, 'The great auroral exhibition of August 28th to September 4th, 1859', American Journal of Science, 1860, doi:10.2475/ajs.s2-29.85.92 and later parts) were found but not read: read them before calling this verified."
+  },
+  {
+   "id": "C4",
+   "claim": "On 23 July 2012 an extreme solar storm, comparable to Carrington's, crossed Earth's orbit and missed; had it erupted one week earlier, Earth would have been in the line of fire (Daniel Baker, University of Colorado).",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "2012",
+    "23",
+    "one week",
+    "a week"
+   ],
+   "sources": [
+    {
+     "title": "NASA Science: Near Miss: The Solar Superstorm of July 2012 (22 Jul 2014)",
+     "url": "https://science.nasa.gov/science-news/science-at-nasa/2014/23jul_superstorm/",
+     "quote": "[read 2026-11-12] If the eruption had occurred only one week earlier, Earth would have been in the line of fire"
+    },
+    {
+     "title": "Baker, D. N. et al. (2013) A major solar eruptive event in July 2012: Defining extreme space weather scenarios. Space Weather 11",
+     "url": "https://doi.org/10.1002/swe.20097",
+     "quote": "[record confirmed via Crossref 2026-11-12] the study NASA reports, by the scientist quoted"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Other outlets say the CME left the Sun on 22 July; the orbit crossing is 23 July."
+  },
+  {
+   "id": "C5",
+   "claim": "Pete Riley (2012) calculated a 12% chance that a Carrington-class storm would hit Earth in the following ten years.",
+   "status": "estimate",
+   "confidence": "medium",
+   "figures": [
+    "12",
+    "2012",
+    "ten"
+   ],
+   "sources": [
+    {
+     "title": "NASA Science: Near Miss: The Solar Superstorm of July 2012 (22 Jul 2014)",
+     "url": "https://science.nasa.gov/science-news/science-at-nasa/2014/23jul_superstorm/",
+     "quote": "[read 2026-11-12] he calculated the odds that a Carrington-class storm would hit Earth in the next ten years. The answer: 12%"
+    }
+   ],
+   "contradictions": [],
+   "notes": "A 2012 statistical estimate for 2012-2022, shown with an ESTIMATE badge and the study year."
+  },
+  {
+   "id": "C6",
+   "claim": "Analysts believe a direct hit by an extreme CME like July 2012's could cause widespread blackouts, disabling everything that plugs into a wall socket.",
+   "status": "estimate",
+   "confidence": "medium",
+   "figures": [
+    "1859"
+   ],
+   "sources": [
+    {
+     "title": "NASA Science: Near Miss: The Solar Superstorm of July 2012 (22 Jul 2014)",
+     "url": "https://science.nasa.gov/science-news/science-at-nasa/2014/23jul_superstorm/",
+     "quote": "[read 2026-11-12] could cause widespread power blackouts, disabling everything that plugs into a wall socket"
+    }
+   ],
+   "contradictions": [],
+   "notes": "A projection, said as 'could'."
+  }
+ ]
+}

@@ -1,0 +1,68 @@
+{
+ "topic": "The left-digit effect: why $2.99 feels cheaper than $3 (30-second sample)",
+ "researched": "2026-11-13",
+ "method": "Peer-reviewed papers (abstracts and NBER working paper summaries) cross-checked with press summaries.",
+ "claims": [
+  {
+   "id": "C1",
+   "claim": "In five experiments, Thomas and Morwitz (2005) showed that a price ending in 9 is judged as smaller than a price one cent higher when the leftmost digit changes, as with $2.99 against $3.00: people anchor on the left digit.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "2005",
+    "2.99",
+    "3.00",
+    "2",
+    "3",
+    "1",
+    "9",
+    "99"
+   ],
+   "sources": [
+    {
+     "title": "Thomas, M. & Morwitz, V. (2005) Penny Wise and Pound Foolish: The Left-Digit Effect in Price Cognition. Journal of Consumer Research 32(1):54-64",
+     "url": "https://doi.org/10.1086/429600",
+     "primary": true,
+     "quote": "nine-ending prices are perceived to be smaller than a price one cent higher ... only when the leftmost digits of the prices differ (e.g., $2.99 vs. $3.00)"
+    },
+    {
+     "title": "ScienceDaily: The left-digit effect (7 June 2005)",
+     "url": "https://sciencedaily.com/releases/2005/06/050607030351.htm",
+     "quote": "[summary] $2.99 vs $3.00"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Replication: robust in lab and field (see C2)."
+  },
+  {
+   "id": "C2",
+   "claim": "In more than 22 million wholesale used-car sales, prices dropped sharply at each 10,000-mile odometer mark; cars just over a mark sold for roughly $150 to $200 less than cars just under it.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "22",
+    "10,000",
+    "150",
+    "200",
+    "49,999",
+    "50,000",
+    "2012"
+   ],
+   "sources": [
+    {
+     "title": "Lacetera, N., Pope, D. G. & Sydnor, J. R. (2012) Heuristic Thinking and Limited Attention in the Car Market. American Economic Review 102(5):2206-36",
+     "url": "https://www.nber.org/papers/w17030",
+     "primary": true,
+     "quote": "over 22 million wholesale used-car transactions ... large and discontinuous drops in sale prices at 10,000-mile thresholds"
+    },
+    {
+     "title": "NBER Digest summary of Lacetera, Pope and Sydnor",
+     "url": "https://www.nber.org/papers/w17030",
+     "quote": "[summary] prices just over a 10,000-mile threshold were $150 to $200 lower"
+    }
+   ],
+   "contradictions": [],
+   "notes": "Retail replication by Busse et al.; German listings replication."
+  }
+ ]
+}

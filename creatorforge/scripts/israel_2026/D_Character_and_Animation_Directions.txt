@@ -1,0 +1,47 @@
+D - CHARACTER AND ANIMATION DIRECTIONS
+Israel 2026: The Election That Settled Nothing
+
+PRINCIPLE
+  Real people appear ONLY as real, credited photographs. Animation is used for ideas, never for real individuals.
+  Stick figures are anonymous ("a man", "two people") - they never wear a real politician's face, name tag, or
+  signature costume, and they never appear in the Gaza / West Bank chapter.
+
+LOOK
+  Template: YouTube Documentary (youtube_longform), 16:9, Visual style: Investigative desk, Faceless, Fast cuts.
+  Graphics palette: off-white paper, ink black, one accent red (seat 61, red lines), muted blue for the Knesset.
+  Stick-figure scenes: "explainer" style, white background, no colour except the accent red on props.
+
+THE EIGHT ANIMATED GAGS (the Animate: lines in the script, in order)
+  1. Cold open - two people sit at a table, turn their chairs away, fold their arms. (Coalition talks in one image.)
+  2. Cold open - musical chairs: music stops, everyone stands, nobody has a chair. (Seat 61 set-up.)
+  3. Part 1 - a man erases numbers from a blackboard, another looks shocked. (Disqualify-the-votes letter.)
+     Note: the eraser is the joke, not the voters. Do not show any Arab-coded character.
+  4. Part 2 - a man writes, crumples, throws, starts again. (Netanyahu political obituaries.)
+  5. Part 2 - a man sits proudly in a big chair that slowly sinks. (Largest bloc that isn't a majority.)
+  6. Part 3 - a man closes a door, a window, and a small hatch, dusts off his hands. (Lieberman's red line.)
+  7. Part 5 - five people in a circle each point at another and shake their heads. (Red lines.)
+  8. Part 5 - a man tries three keys in a door, then sits on the floor. (Every key welded shut.)
+  (Optional ninth: the Seat 61 runner can use Animate: "a torch beam searches an empty theatre".)
+
+RUNNING VISUAL MOTIFS (graphics, not characters)
+  - SEAT 61: a single empty theatre seat with a red tag "61". Appears in the cold open, in the Part 3 maths,
+    in the halftime recap and as the final image ("61 · STILL MISSING"). Same framing every time.
+  - THE CALCULATOR: a pocket calculator showing 53 / 48 / 19 - never 61. Used at each recap.
+  - RED TAPE: every red line is literally a strip of red tape across a doorway on that leader's slide.
+  - THE CLOCK: Herzog's mandate countdown (28 + 14 days) as an hourglass; reused in Part 7.
+
+TONE BY CHAPTER
+  Cold open, 1, 2, 3, 5, 6 - dry, satirical; jokes aimed at the powerful, at procedure and at hypocrisy.
+  4 (Gaza / West Bank) - NO jokes, NO stick figures, NO sound-effect stings. Slow cuts (3-4 s per picture),
+    candles, empty places, objects. Music drops to a single sustained tone or silence.
+  7 - neutral, explanatory. 8 - quiet, the only callback joke is the last line.
+
+COMEDY RULES (from the directive, applied)
+  1. Punch up: politicians, parties, procedures, hypocrisy. Never punch at victims, voters, ethnic or religious groups.
+  2. No joke within 30 seconds of a casualty figure, in any chapter.
+  3. No jokes about the Holocaust, October 7 victims, hostages or Gaza's dead. Ever.
+  4. Haredi and Arab citizens: their politics can be analysed; their identity is never the joke.
+  5. Every joke must be true underneath: the gag only exaggerates a sourced fact (e.g. Bennett relied on Ra'am, now says
+     he won't rely on Arab parties).
+  6. No impressions, no mock accents, no fake quotes. Quotes are real or not used.
+  7. Our own voice, not a borrowed one: no catchphrases, desk-bit structure, or segment names from existing shows.

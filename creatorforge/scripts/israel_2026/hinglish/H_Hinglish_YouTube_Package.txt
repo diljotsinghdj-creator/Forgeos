@@ -1,0 +1,73 @@
+H - YOUTUBE PACKAGE (HINGLISH)
+Israel 2026: Woh Chunav Jisne Kuch Tay Nahin Kiya
+
+5 TITLES (Hinglish, under 100 characters)
+  1. Israel Ka Chunav: 120 Seats, Sarkar ZERO! Netanyahu vs Eisenkot Explained
+  2. 61 Seats Kisi Ko Nahin Mili! Israel Mein Ab Kya Hoga? | Full Documentary
+  3. Netanyahu Bach Jayenge? Israel Ke Chunav Ka Poora Sach (Hindi)
+  4. Woh Ek Seat Jo Gayab Hai: Israel 2026 Election Explained in Hindi
+  5. Israel 2026: Case, Gaza, Kingmakers Aur Ek Sansad Jismein Majority Nahin
+
+3 THUMBNAIL CONCEPTS (real photos only, credited; no AI faces; no cartoons on real faces)
+  A. "GAYAB SEAT": an empty red theatre seat tagged 61, the Knesset blurred behind. Big text: "61 KAHAN HAI?"
+  B. "53 vs 48": real credited photos of Netanyahu (left) and Eisenkot (right), unaltered, a crack down the middle.
+     Big text: "53 vs 48". Small text: "+19 KINGMAKER". python -m creatorforge_worker.thumbs --left "Benjamin Netanyahu" --right "Gadi Eisenkot"
+  C. "CALCULATOR": a pocket calculator on the seat chart showing "ERROR". Big text: "MAJORITY NAHIN!"
+  Never: Gaza casualty photos, hostages, children, burning flags.
+
+DESCRIPTION (Hinglish - paste; update numbers if certified results change)
+  27 October 2026 ko Israel mein 7 October hamle aur Gaza jung ke baad pehla chunav hua. Turnout ek peedhi mein
+  sabse zyada raha. Nateeja: Netanyahu ke bloc ko 53 seats, Gadi Eisenkot ke bloc ko 48, Arab netritva wali
+  partiyon ko record 19, aur sarkar banane ke liye zaroori 61 ke paas koi nahin.
+
+  Is investigative documentary mein: kya hua, dhandhli ke aarop aur adhikari kya kehte hain, Netanyahu ka
+  corruption case aur pardon ki maang, 7 October ki state inquiry ab tak kyon nahin, Israel ka coalition system
+  kaise chalta hai, Gaza, West Bank aur Palestiniyon ke liye is chunav ka matlab, kingmakers (Eisenkot, Bennett,
+  Lieberman, Ben-Gvir, Smotrich, Haredi partiyan, Ra'am aur Joint List, President Herzog), paisa aur jungein
+  (Iran, Lebanon, budget, America ki madad, Trump ka samarthan, EU aur Saudi Arab), aur yeh khel paanch tarah
+  kaise khatam ho sakta hai.
+
+  Research cut-off: 31 October 2026. Aarop saboot nahin hote - hum dono paksh dikhate hain. Netanyahu sabhi
+  aaropon se inkaar karte hain; koi faisla nahin aaya hai. Har daave ka source neeche aur pinned comment mein hai.
+
+  CHAPTERS
+  0:00 Cold open: 120 seats, sarkar zero
+  1:50 Part 1: Asal Mein Hua Kya
+  7:11 Part 2: Netanyahu: Jo Har Baar Bach Nikalte Hain
+  13:23 Part 3: Israel Ki Siyasi Machine
+  16:48 Part 4: Gaza, West Bank Aur Woh Log Jo Ballot Par Nahin The
+  27:27 Part 5: Kingmakers
+  35:49 Part 6: Paisa, Missiles Aur Washington Wale Sahab
+  42:33 Part 7: Yeh Khel Paanch Tarah Khatam Ho Sakta Hai
+  46:36 Part 8: Aakhir Tay Kya Hua
+  (CreatorForge timing - RE-TIME after the final edit; first chapter must be 0:00.)
+
+  SOURCES
+  (paste the Source: line from the script, one link per line)
+
+  PHOTO CREDITS
+  (paste the credits from each part's provenance file)
+
+  Illustrations par ILLUSTRATION likha hai. Is video mein kisi asli insaan ki AI-generated tasveer nahin hai.
+
+TAGS
+  Israel election 2026, Israel election Hindi, Israel news Hindi, Netanyahu, Eisenkot, Knesset, Israel coalition,
+  Gaza ceasefire, West Bank, Netanyahu case, Israel explained Hindi, Middle East Hindi, Hinglish documentary
+
+HASHTAGS
+  #Israel #IsraelElection #HindiNews
+
+PINNED COMMENT (Hinglish)
+  Sources, corrections aur updates yahan milenge.
+  - Research cut-off: 31 Oct 2026. Coalition ki baatcheet November ki shuruaat mein shuru hogi - update yahin pin karenge.
+  - Seats ke number Central Elections Committee ke 30 Oct ke reported figures hain. Certified result mein badlaav hua
+    to correction yahan timestamp ke saath likhenge.
+  - Likud ka "chunav chura liya" wala daava ek AAROP hai; police aur chunav adhikariyon ne kaha koi saboot nahin.
+    Netanyahu apne case mein sabhi aaropon se inkaar karte hain; koi faisla nahin aaya.
+  - Gaza ke aankde Gaza Health Ministry (jinhein Israel chunauti deta hai) aur UNICEF ke hain, jaisa screen par likha hai.
+  - Koi galti dikhi? Source ke saath reply kariye. Hum har ek check karte hain.
+  CORRECTIONS: abhi koi nahin.
+
+SETTINGS
+  Language: Hindi. Captions: Hindi (upload the SRT; check the burnt-in Devanagari captions render correctly in the first part before rendering all six).
+  Category News & Politics. Not made for kids. Altered/synthetic switch ON only if a realistic AI image remains.

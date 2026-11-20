@@ -1,0 +1,61 @@
+"""50 compositions in the owner's 2026-11-14 reference style (photo collage: giant B&W hands, colour cut-outs, sun
+discs, colour blocking, one symbolic prop; halftone maps with a marker route and a pulse dot; satellite maps with a
+bold outlined label). Titles are themes, never claims. Photos: Pixabay (free licence) unless noted; maps: Natural
+Earth outlines with India's official boundary; satellite: NASA GIBS (public domain)."""
+
+# (id, channel, title, kicker, device, assets)   assets: role -> Pixabay search
+C = [
+ # ---------------- Print Facts ----------------
+ ("lever", "pf", "Who Pulls the Lever", "oil, money, power", "hand", {"subject": "oil pump jack isolated", "ground": "desert sand dunes", "hand": "hand pinch fingers isolated white"}),
+ ("routeindia", "pf", "One Vote, Many Miles", "the long road to the booth", "routemap", {"country": "India", "from": "Delhi", "to": "Guwahati"}),
+ ("container", "pf", "Made Somewhere Else", "the box that moved the world", "diorama", {"subject": "shipping container isolated white", "facade": "colorful building facade", "hand": "hand holding object isolated white"}),
+ ("bread", "pf", "The Price of Bread", "when food becomes politics", "sundisc", {"subject": "bread loaf isolated white", "second": "wheat ears isolated white"}),
+ ("money", "pf", "Just a Piece of Paper", "what makes money money", "tornhole", {"subject": "banknote closeup", "second": "money roll isolated white"}),
+ ("cctv", "pf", "Always Watching", "the camera on every corner", "scale", {"subject": "cctv camera isolated white", "tiny": "man walking silhouette isolated", "ground": "city street night"}),
+ ("indiasat", "pf", "India", "from orbit", "satellite", {"country": "India", "bbox": (66, 5, 99, 37.5)}),
+ ("nile", "pf", "The Nile", "a green line through the desert", "satellite", {"country": "Egypt", "bbox": (24, 21, 37, 32)}),
+ ("smoke", "pf", "Smoke Stacks", "CO2 at Mauna Loa, annual mean, 2025", "counter", {"subject": "factory chimney isolated", "number": "427 ppm", "src": "NOAA GLOBAL MONITORING LABORATORY"}),
+ ("wall", "pf", "Built by Hand", "one floor at a time", "handstack", {"subject": "skyscraper isolated white", "second": "construction crane isolated", "hand": "hand pinch fingers isolated white"}),
+ ("bigtech", "pf", "Accept All", "the terms nobody reads", "pinnote", {"word": "Accept all", "small": "terms of service", "paper": "old torn paper isolated", "second": "fountain pen isolated white"}),
+ ("arms", "pf", "The Arms Race", "nuclear warheads in the world, start of 2026", "counter", {"subject": "toy tank isolated white", "number": "12,187", "src": "FEDERATION OF AMERICAN SCIENTISTS (ESTIMATE)"}),
+ ("debt", "pf", "The Weight of Debt", "total US public debt outstanding", "counter", {"subject": "stack of coins isolated white", "number": "$40.6 trillion", "src": "US TREASURY, DEBT TO THE PENNY, 12 NOV 2026"}),
+ ("suez", "pf", "The Shortcut", "the canal between two seas", "satroute", {"bbox": (30.67, 29.5, 34.4, 31.6), "route": [(32.316, 31.24), (32.322, 30.93), (32.34, 30.64), (32.37, 30.40), (32.47, 30.28), (32.54, 30.10), (32.55, 29.96)], "from": "PORT SAID", "to": "SUEZ"}),
+ ("oilwater", "pf", "Oil and Water", "two resources, one fight", "split", {"subject": "oil barrel isolated white", "second": "water drop isolated"}),
+ ("shipping", "pf", "The Long Way Round", "the sea lanes of trade", "routemap", {"country": "World", "from": "Shanghai", "to": "Rotterdam", "skyline": "port cranes silhouette isolated"}),
+ ("rising", "pf", "The Street, Then", "Fifth Avenue at 42nd Street, New York", "archival", {"loc": "loc-street"}),
+ ("court", "pf", "Order in Court", "the oldest way to settle a fight", "engraving", {"figs": ["loc-judge", "loc-jurors"]}),
+ ("himalaya", "pf", "The Himalaya", "the wall of water", "satellite", {"country": "Nepal", "bbox": (74, 25, 96, 37)}),
+ ("rome", "pf", "All Roads", "an empire built on roads", "mapdiorama", {"paper": "antique map italy", "subject": "colosseum rome", "second": "roman arch ruins"}),
+ ("censor", "pf", "The Paper Trail", "how an investigation is built", "spotboard", {"docs": ["louisiana", "nineteenth", "marshall", "moonmemo"]}),
+ ("water", "pf", "Every Last Drop", "the coming water fights", "scale", {"subject": "water tap faucet isolated white", "tiny": "man walking silhouette isolated", "ground": "cracked dry earth"}),
+ ("wages", "pf", "Who Gets the Raise", "wages, profits and the gap", "barstack", {"subject": "construction worker isolated white", "second": "dollar bills stack isolated"}),
+ ("chad", "pf", "Lake Chad", "a lake on the edge of the Sahara", "satellite", {"country": "Chad", "bbox": (10, 9, 19, 17)}),
+ ("ballot", "pf", "The Box", "where power changes hands", "placards", {"ground": "civic building", "signs": ["ONE PERSON", "ONE VOTE"]}),
+ # ---------------- Dragon Psychology ----------------
+ ("puppet", "dp", "Pulled by Strings", "who moves you", "hand", {"subject": "marionette puppet isolated", "ground": "theater stage curtain", "hand": "hand reaching down"}),
+ ("overthink", "dp", "Overthinking", "the loop that never closes", "sundisc", {"subject": "human brain model isolated"}),
+ ("compare", "dp", "The Comparison Trap", "their highlight, your behind-the-scenes", "split", {"subject": "red apple isolated white", "second": "golden apple isolated"}),
+ ("slot", "dp", "The Slot Machine in Your Pocket", "variable rewards", "scale", {"subject": "slot machine isolated", "tiny": "man walking silhouette isolated", "ground": "casino lights"}),
+ ("fear", "dp", "Fear", "the oldest alarm", "sundisc", {"subject": "candle flame isolated black", "second": "shadow hand"}),
+ ("memory", "dp", "Memory Is a Copy", "of a copy of a copy", "diorama", {"subject": "vintage camera isolated white", "facade": "old house facade", "hand": "hand holding key isolated"}),
+ ("habit", "dp", "The Habit Loop", "cue, routine, reward", "notebook", {"subject": "coin isolated white", "word": "cue → routine → reward", "paper": "dotted notebook paper"}),
+ ("anxiety", "dp", "Anxiety", "the storm before the storm", "scale", {"subject": "umbrella isolated", "tiny": "man walking silhouette isolated", "ground": "storm cloud isolated"}),
+ ("choice", "dp", "Two Roads", "why choosing hurts", "split", {"subject": "door isolated white", "second": "open door isolated"}),
+ ("ego", "dp", "The Ego", "a crown you made yourself", "ransom", {"subject": "crown isolated white", "second": "mirror isolated white", "word": "EGO"}),
+ ("timeblind", "dp", "Time Blindness", "seconds in every day", "counter", {"subject": "hourglass isolated white", "number": "86,400", "src": "24 × 60 × 60"}),
+ ("lonely", "dp", "Alone in a Crowd", "the quiet hunger", "haze", {"ground": "concert crowd"}),
+ ("status", "dp", "One Upgrade", "the status game", "sticker", {"subject": "sports car isolated white", "second": "tractor isolated white", "ground": "showroom"}),
+ ("attention", "dp", "Attention", "is the price of everything free", "kinetic", {"subject": "magnifying glass isolated white", "lines": ["Attention", "IS THE", "price"]}),
+ ("impulse", "dp", "Just One More", "the impulse that wins", "hand", {"subject": "donut isolated white", "ground": "pink background", "hand": "hand reaching isolated white"}),
+ ("mask", "dp", "The Mask", "the self we show", "sundisc", {"subject": "venetian mask isolated white", "second": "theater mask isolated"}),
+ ("critic", "dp", "The Inner Critic", "the voice that is never kind", "openhead", {"subject": "marble bust statue isolated", "second": "megaphone isolated white"}),
+ ("wait", "dp", "Wait for It", "the power of later", "notebook", {"subject": "marshmallow isolated white", "word": "later", "paper": "notebook paper yellow"}),
+ ("trust", "dp", "Trust", "a bet on another mind", "kinetic", {"subject": "handshake isolated white", "lines": ["Trust is", "A BET", "on another mind"]}),
+ ("escape", "dp", "Escapism", "the door out of now", "postcard", {"subject": "hot air balloon isolated", "ground": "sea waves", "label": "you can't stay here forever"}),
+ ("overload", "dp", "Too Much Information", "the mind's full inbox", "statue", {"subject": "marble statue man isolated", "second": "smartphone isolated white"}),
+ ("nostalgia", "dp", "Nostalgia", "the past, edited", "diorama", {"subject": "cassette tape isolated white", "facade": "old storefront facade"}),
+ ("risk", "dp", "One Wrong Move", "how we judge risk", "hand", {"subject": "jenga tower isolated white", "ground": "wooden table", "hand": "hand pointing finger isolated white"}),
+ ("envy", "dp", "Greener Grass", "the envy machine", "split", {"subject": "wooden fence isolated", "second": "green grass isolated white"}),
+ ("sleep", "dp", "The Lost Hours", "what sleep does at night", "clockface", {"word": "SLEEP", "small": "doesn't wait"}),
+]
+assert len(C) == 50 and len({c[0] for c in C}) == 50

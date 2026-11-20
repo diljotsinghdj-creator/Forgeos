@@ -1,0 +1,139 @@
+{
+ "topic": "Why every Indian party has a picture symbol (30-second sample)",
+ "researched": "2026-11-13",
+ "method": "Reference and press summaries via web search, cross-checked; the 1952 photograph and the EVM photograph are primary records; Election Commission figures for 2024.",
+ "claims": [
+  {
+   "id": "C1",
+   "claim": "India's first general election, held in 1951-52, had about 173 million registered voters.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "1951",
+    "1952",
+    "173",
+    "1951-52",
+    "52"
+   ],
+   "sources": [
+    {
+     "title": "Business Standard: Remembering India's first general election (19 April 2024)",
+     "url": "https://business-standard.com/elections/lok-sabha-election/remembering-india-s-first-general-election-challenges-triumphs-and-more-124041900252_1.html",
+     "quote": "173.2 million voters, excluding Jammu and Kashmir, were registered"
+    },
+    {
+     "title": "1951–52 Indian general election (Wikipedia)",
+     "url": "https://en.wikipedia.org/wiki/1951%E2%80%9352_Indian_general_election",
+     "quote": "173,212,343 registered voters"
+    }
+   ],
+   "contradictions": [
+    "Some sources give about 176 million (different scope)."
+   ],
+   "notes": ""
+  },
+  {
+   "id": "C2",
+   "claim": "About 18 per cent of Indians could read at the 1951 census.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "18",
+    "1951"
+   ],
+   "sources": [
+    {
+     "title": "Drishti IAS: First General Election 1951-52 (13 April 2024)",
+     "url": "https://www.drishtiias.com/daily-updates/daily-news-analysis/first-general-election-1951-52",
+     "quote": "India's literacy rate of 18.33% in 1951"
+    },
+    {
+     "title": "Census of India 1951 literacy (Wikipedia: Literacy in India)",
+     "url": "https://en.wikipedia.org/wiki/Literacy_in_India",
+     "quote": "1951: 18.33%"
+    }
+   ],
+   "contradictions": [],
+   "notes": ""
+  },
+  {
+   "id": "C3",
+   "claim": "In 1951-52 each candidate had a separate ballot box at the polling station, marked with the candidate's election symbol; voters dropped their ballot paper into the box of their choice.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "1951-52",
+    "1952",
+    "52"
+   ],
+   "sources": [
+    {
+     "title": "1951–52 Indian general election (Wikipedia)",
+     "url": "https://en.wikipedia.org/wiki/1951%E2%80%9352_Indian_general_election",
+     "quote": "separate ballot boxes for each candidate with the candidate's symbol"
+    },
+    {
+     "title": "Drishti IAS: First General Election 1951-52 (13 April 2024)",
+     "url": "https://www.drishtiias.com/daily-updates/daily-news-analysis/first-general-election-1951-52",
+     "quote": "separate ballot boxes for each candidate at all booths, with the candidate's election symbol on it"
+    },
+    {
+     "title": "Wikimedia Commons: Indian election 1952 ballot boxes (photograph)",
+     "url": "https://commons.wikimedia.org/wiki/File:Indian_election_1952_ballot_boxes.jpeg",
+     "quote": "[the photograph] a row of ballot boxes, each with a picture symbol",
+     "primary": true
+    }
+   ],
+   "contradictions": [],
+   "notes": ""
+  },
+  {
+   "id": "C4",
+   "claim": "Indian voters today vote on electronic voting machines, whose ballot unit shows each candidate's name and party symbol beside a button.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [],
+   "sources": [
+    {
+     "title": "Election Commission of India: EVM (FAQ)",
+     "url": "https://www.eci.gov.in/evm/",
+     "quote": "ballot unit ... name and symbol of candidates",
+     "primary": true
+    },
+    {
+     "title": "Electronic voting in India (Wikipedia)",
+     "url": "https://en.wikipedia.org/wiki/Electronic_voting_in_India",
+     "quote": "the ballot unit lists candidates' names and symbols"
+    }
+   ],
+   "contradictions": [],
+   "notes": ""
+  },
+  {
+   "id": "C5",
+   "claim": "The 2024 Lok Sabha election had about 980 million (97.98 crore) registered electors, according to Election Commission data.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "2024",
+    "980",
+    "97.98"
+   ],
+   "sources": [
+    {
+     "title": "Election Commission of India: Atlas 2024",
+     "url": "https://www.eci.gov.in/EBooks/atlas-2024/files/basic-html/page27.html",
+     "quote": "97,97,51,847 electors",
+     "primary": true
+    },
+    {
+     "title": "Drishti IAS: Data of Lok Sabha Elections 2024",
+     "url": "https://www.drishtiias.com/daily-updates/daily-news-analysis/data-of-lok-sabha-elections-2024",
+     "quote": "[summary] 97.98 crore electors"
+    }
+   ],
+   "contradictions": [],
+   "notes": ""
+  }
+ ]
+}

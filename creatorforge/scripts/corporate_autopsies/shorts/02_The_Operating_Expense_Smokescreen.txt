@@ -1,0 +1,83 @@
+The Operating Expense Smokescreen
+On-screen hook: EXPENSES TURNED INTO PROFIT?
+Title: How WorldCom Turned Everyday Expenses Into Profit, and Who Caught It
+Tags: #CorporateAutopsies #WorldCom #accountingfraud #whistleblower #business
+Source: SEC Litigation Release No. 17588, SEC v. WorldCom (June 2002), https://www.sec.gov/litigation/litreleases/2002/lr17588.htm; WorldCom statement to the SEC on Cynthia Cooper's memorandum (2002), https://www.sec.gov/news/extra/wcresponserev.htm; Congressional Research Service, WorldCom: The Accounting Scandal (2002), https://www.everycrsreport.com/reports/RS21253.html; CNN Money, WorldCom files largest bankruptcy ever (July 2002), https://money.cnn.com/2002/07/19/news/worldcom_bankruptcy/; NBC News, Ebbers sentenced to 25 years in prison (July 2005), https://www.nbcnews.com/id/wbna8474930; CNN, Time names whistleblowers Persons of the Year (Dec 2002), https://edition.cnn.com/2002/US/12/23/time.persons.of.year/index.html
+
+WorldCom turned everyday expenses into profit. How?
+Visual: A stack of telephone company invoices on an office desk, text unreadable
+Visual: A hand flipping through a thick binder of bills, text unreadable
+Text: WORLDCOM · 2001-2002
+Big: EXPENSES?
+
+About three point eight billion dollars of costs vanished, the SEC said.
+Visual: A printed income statement with the costs line circled in red, text unreadable
+Visual: A calculator showing a long row of zeros on a desk
+Text: $3.8 BILLION MOVED · 2001 TO Q1 2002
+Cite: SEC, June 2002
+Treat: halftone
+
+And who caught it? Someone told to wait.
+Visual: An office wall clock above a desk piled with audit files, text unreadable
+Visual: A closed office door at the end of a quiet corridor
+Text: WHO CAUGHT IT?
+Transition: slide
+
+WorldCom paid other carriers billions to carry its calls. A running cost.
+Visual: Bundles of telephone cables running along a utility pole on a grey day
+Visual: Rows of humming network equipment racks in a dim data room
+Text: LINE COSTS = OPERATING EXPENSE
+Cite: CRS, 2002
+
+But here's the trick: it booked those costs as long-term assets instead.
+Visual: A hand moving a printed invoice from one ledger tray to another, text unreadable
+Visual: A pencil drawing an arrow between two columns on a balance sheet, text unreadable
+Steps: Line costs → Relabel as assets → Spread over years → Profit up | The trick
+Cite: SEC complaint, 2002
+
+Here's who: WorldCom's own internal audit chief, Cynthia Cooper.
+Visual: A woman seen from behind at an office desk, reading printouts
+Visual: A desk lamp lighting a laptop and a pile of audit files, text unreadable
+Text: CYNTHIA COOPER · INTERNAL AUDIT
+Transition: whip
+
+Watch what happened next. Finance chief Scott Sullivan asked her to delay.
+Visual: An office door half open onto a dark corner office
+Visual: A wall calendar with a later month circled in red pen, text unreadable
+Text: ASKED: DELAY IT TO THE THIRD QUARTER
+Cite: WorldCom statement to the SEC, 2002
+
+She kept going, and took it to the board's audit committee.
+Visual: A woman seen from behind walking down a long office corridor with a folder
+Visual: An empty boardroom table with name cards and water glasses, text unreadable
+Statement: She *kept* going.
+
+The result? WorldCom came clean in June two thousand two, then went bankrupt.
+Visual: Reporters' microphones bunched on a lectern in an empty press room
+Visual: Office chairs stacked in an emptied open-plan office
+Text: JULY 2002 · THEN THE BIGGEST U.S. BANKRUPTCY
+Cite: CNN Money, July 2002
+Draw: underline
+
+Sullivan pleaded guilty. A jury convicted boss Bernie Ebbers: twenty-five years.
+Visual: A federal courthouse's columns on an overcast morning
+Visual: A wooden gavel on a judge's bench beside a closed file
+Text: TOTAL FRAUD LATER PUT AT ABOUT $11BN
+Article: Ebbers sentenced to 25 years in prison | NBC News, July 2005
+Cite: NBC News, 2005
+
+Expenses into profit? Call them assets, until someone checks.
+Visual: A hand with a red pen ticking the last page of an audit report, text unreadable
+Visual: A closed binder labelled with a blank sticker on an empty desk
+Text: ONE AUDITOR CHECKED
+Treat: duotone
+
+The real safeguard was one auditor who kept going.
+Visual: A woman seen from behind carrying a thick binder down an office corridor
+Visual: A desk lamp still on in an empty office late at night
+Text: ONE AUDITOR KEPT GOING
+
+If someone senior asked you to wait, would you?
+Visual: An office chair facing a closed boardroom door
+Visual: A hand resting on a closed binder on a meeting table, text unreadable
+Text: WOULD YOU WAIT?

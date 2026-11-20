@@ -1,0 +1,15 @@
+{
+ "channel": "printfacts",
+ "format": "YouTube long video, 16:9, 8-12 min (+ 9:16 cutdowns)",
+ "topic": "Black pepper, the spice that redrew the world map",
+ "pitched": {
+  "3A": "Follow one peppercorn: route map Malabar - Muziris - Rome - Venice - Lisbon",
+  "3B": "Pepper as money: rent, ransom and tax paid in pepper; 'peppercorn rent'",
+  "3C": "The ship that came for it: Vasco da Gama at Kozhikode, 1498"
+ },
+ "pick": "3B",
+ "engine": "pepper-as-money",
+ "non_political": true,
+ "date": "2026-11-15",
+ "status": "script draft 5 (four-column SCRIPT_TABLE.md, 2026-11-19) for the owner's approval; no video until approved, 'go' and a voice"
+}

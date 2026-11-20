@@ -1,0 +1,110 @@
+PRINT FACTS - CHECK BEFORE PUBLISHING (facts checked 13 Oct 2026)
+
+Every number below is in the script's Source: line with a link. Re-check anything time-sensitive on publish day.
+
+01 THE MUSEUM HEIST
+[ ] British Museum: ~6.5 million visitors in 2024, UK's most-visited attraction (ALVA / The Art Newspaper).
+[ ] Benin, Feb 1897: British punitive expedition after the Phillips party was ambushed; city burned, palace looted;
+    Oba Ovonramwen deposed and exiled to Calabar; 3,000-5,000+ objects taken; many auctioned by the Admiralty to help
+    cover the expedition's costs (National Museums Scotland, Royal Museums Greenwich).
+[ ] Germany agreed (July 2022) to return 1,130 Benin objects; the Horniman transferred ownership of 72 (2022).
+[ ] British Museum Act 1963 limits giving objects away; UK government (2022): no plans to change the law. A long-term
+    Parthenon loan is under discussion; Greece wants ownership.
+[ ] 2002 "universal museums" declaration, 18 directors; the British Museum's director supported its intent.
+[ ] Acropolis Museum opened 2009 with a gallery designed for the Parthenon sculptures.
+[ ] "Crime scene" / "receivers of stolen goods" are presented as critics' views ("an argument, not a legal ruling").
+    "Curated by the thieves" is the narrator's opinion, introduced as such. Keep it that way.
+
+02 THE BAD SCIENCE EPIDEMIC
+[ ] Wine = gym: 2012 University of Alberta resveratrol study in rodents (no wine, no humans); the university corrected
+    the coverage; matching the dose = 100-1,000 bottles a day.
+[ ] Chocolate hoax (2015, John Bohannon): 15 paid participants, 3 groups, 18 measurements, 10% faster weight loss,
+    a journal that skipped peer review for a fee; picked up by Bild and Huffington Post sites.
+[ ] Schoenfeld & Ioannidis: 40 of 50 random cookbook ingredients had studies linking them to cancer; most weak.
+[ ] Ioannidis (2005), "Why Most Published Research Findings Are False": presented as his argument.
+[ ] Illustrations (50 foods x 50 conditions, "tested on 6 mice") are labelled ILLUSTRATION / EXAMPLE on screen.
+
+03 THE CULT OF THE PYRAMID
+[ ] AARP Foundation 2018 (601 people): ~47% lost money, 27% broke even, ~25% profited, over half of those < $5,000.
+[ ] US direct selling (MLMs included): ~$36.7bn retail sales, ~6.1m sellers in 2023 (Direct Selling Association).
+[ ] FTC warned 12 MLM companies over COVID-era income claims (2020).
+[ ] MLMs are legal. The script says "cult-like tactics critics and former members describe", never calls MLMs cults,
+    frauds or pyramid schemes as fact, and names no company. Keep any edits that way.
+
+SHORT 01 THE BEAUTY PAGEANT MATH ILLUSION
+[ ] Miss America's website: $45m in scholarships "made available" a year.
+[ ] John Oliver's team (Sept 2014): IRS 990s for 33 states, generous assumptions -> under $4m.
+[ ] AP, about a year later: Miss America and state organisations gave just over $5.9m in cash/tuition waivers.
+[ ] "About an eighth" (6 of 45). The $10,000 x 4 example is labelled as an illustration of how offers were counted.
+
+PICTURES
+- Stock: lines (British Museum, Rosetta Stone, Parthenon, Acropolis Museum) fetch real photos. Check them in the
+  storyboard review. No real logos (no Miss America or MLM brand logos), no AI faces of real people.
+- Endings are questions to the viewer. Add your "subscribe" end screen in YouTube, not in the narration.
+
+
+CHECK BEFORE PUBLISHING - The Epstein Files (long form 04, Hindi)
+
+Checked 26 Oct 2026 through search results. Open each Source: link once. The story is still moving: re-check the
+last chapter (the court fight over the files) on the day you publish.
+
+FIRST: upload the 14 pictures (epstein_images/, or Epstein_Files_Images_for_CreatorForge.zip) to the Asset Library
+as images, keeping their names ef02 ... ef27. 15 of the kit's 29 pictures were left out - see HOW_TO_USE.txt.
+
+FACTS VERIFIED
+[ ] Mar 2005 Palm Beach police probe after a 14-year-old's family complained (PBS/AP timeline).
+[ ] 2007 non-prosecution agreement (US Attorney Alex Acosta's office); June 2008 guilty plea to two state charges;
+    18-month sentence, about 13 months served, mostly on work release.
+[ ] Feb 2019: Judge Kenneth Marra - prosecutors violated the Crime Victims' Rights Act by not telling victims.
+[ ] Miami Herald "Perversion of Justice" (Julie K. Brown), Nov 2018. Acosta resigned as Labor Secretary, July 2019.
+[ ] Arrested 6 Jul 2019 (Teterboro, NJ), federal sex-trafficking charges; died 10 Aug 2019, MCC New York; ME: suicide.
+[ ] DOJ Inspector General, June 2023: negligence, broken cameras, missed counts, falsified records; no evidence of
+    homicide.
+[ ] Maxwell: convicted Dec 2021 on 5 of 6 counts; 20 years, 28 Jun 2022; Supreme Court declined appeal 6 Oct 2025.
+[ ] Virginia Giuffre died April 2025 aged 41; memoir "Nobody's Girl", Oct 2025.
+[ ] DOJ/FBI memo, July 2025: no "client list", no credible evidence of blackmail, suicide; 1,000+ victims.
+[ ] Epstein Files Transparency Act, Nov 2025; first release 19 Dec 2025 (heavily redacted); 30 Jan 2026: 3 million+
+    pages, 2,000+ videos, 180,000 images.
+[ ] 25 Jun 2026: Judge Emmet Sullivan - DOJ likely violated the Act; 2 Jul 2026: DOJ declined further release,
+    citing victims' identities and investigations. CHECK whether he has ruled since.
+[ ] Banks (no admission of liability): JPMorgan ~$290M to victims (2023), $75M to the US Virgin Islands (2023);
+    Deutsche Bank $75M to victims (2023).
+
+HAND-CHECK
+[ ] "Nearly unanimous" vote for the Transparency Act (reported 427-1 in the House) - confirm the final vote.
+[ ] No other names are put to the files on screen. Keep it that way: a name in a log or contact book is not a crime.
+[ ] YouTube: turn on "altered or synthetic content" (the 14 pictures are AI illustrations).
+
+
+CHECK BEFORE PUBLISHING - Gyanesh Kumar Ka Poora Sach (long form 05) + Short 05 "30 Second Mein Khatam"
+
+Checked 29 Oct 2026 through search results. This story is LIVE (rally on 1 Nov): re-check the last chapter the day
+you publish, and publish BEFORE 1 Nov if you can - interest peaks before the rally.
+
+VERIFIED
+[ ] Mar 2023 Anoop Baranwal: panel of PM, LoP, CJI until Parliament made a law; Dec 2023 Act replaced CJI with a
+    minister picked by the PM; SC refused to stay it, 21 Mar 2024; Sep 2026 petitions placed before the CJI.
+[ ] Gyanesh Kumar: IAS 1988 Kerala cadre; MHA Kashmir division (Article 370 follow-up); Ram temple trust set-up;
+    EC from Mar 2024; named CEC late on 17 Feb 2025 by a panel of Modi, Amit Shah, Rahul Gandhi (Rahul dissented);
+    first CEC under the 2023 law. Rahul's "midnight decision" wording: confirm on his 18 Feb 2025 post.
+[ ] 7 Aug 2025 Mahadevapura claim, 1,00,250 votes (a claim). 17 Aug 2025: CEC - affidavit in 7 days or apologise,
+    "no third option". The Hindi wording on the Quote: card is as widely reported - confirm against a video.
+[ ] 18 Sep 2025 Aland claim, ~6,018 names; CID's 18 letters is Rahul's claim; EC: "incorrect and baseless".
+[ ] Bihar SIR: ~65 lakh off the draft (22.34 lakh dead, 36.28 lakh shifted/absent, 7.01 lakh duplicate);
+    SC 8 Sep 2025: Aadhaar as 12th document; Nov 2025 NDA 202/243, turnout 67.13%.
+[ ] 2026 SIR: 13.3 crore off draft rolls (2.7 crore dead, 1.01 crore duplicates, ~9.5 crore absent/shifted/other).
+[ ] Removal notices against the CEC in both Houses rejected 6 Apr 2026.
+[ ] Indian Express (Sep 2026): two ECs recorded objections 14 times in 10 months (secondary reports - open the
+    original); EC told SC on 26 Oct 2026 the SIR orders were unanimous (secondary report - confirm).
+[ ] 6 Oct 2026 march; Akhilesh Yadav, Abhishek Banerjee, Derek O'Brien among those detained; Rahul's X post
+    "Gyanesh it's done bro. Time to resign".
+[ ] 10-11 Oct 2026: Delhi lockdown, CJP says thousands detained; founder Abhijeet Dipke released by court next day;
+    CPJ: at least 37 journalists detained (a later CPJ version says 43).
+[ ] SC: notice to the Centre, preserve protest videos - check the order's date on Bar & Bench.
+[ ] 26 Oct 2026 Rahul's post to traders (the Quote: card uses Deccan Herald's wording - check the post itself).
+[ ] 1 Nov rally at Ramlila Maidan cleared with six conditions; ~3,500 police.
+
+PICTURES
+  Real photos are found by name (Gyanesh Kumar, Rahul Gandhi, Modi, Akhilesh Yadav, Om Birla...), article pages
+  come from the Source: links, and Stock: lines (voting queues, Delhi protests) need your Pixabay key and your
+  Unsplash key in the app's Settings. Check the storyboard before rendering and swap any picture that is wrong.

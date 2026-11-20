@@ -1,0 +1,443 @@
+The Bad Science Epidemic
+On-screen hook: WINE BEATS THE GYM?
+Title: A Glass of Wine Equals an Hour at the Gym? Inside the Bad Science Epidemic
+Tags: #PrintFacts #science #badscience #phacking #medialiteracy #statistics
+Source: Ioannidis, Why Most Published Research Findings Are False, PLOS Medicine 2(8) e124, 2005, https://doi.org/10.1371/journal.pmed.0020124; Palate Press on the University of Alberta resveratrol study and the "wine equals the gym" headlines (Journal of Physiology, 2012), https://palatepress.com/?p=27381; Nutrition Over Easy, Don't cancel that gym membership just yet, Dec 2015, https://nutritionovereasy.com/2015/12/dont-cancel-that-gym-membership-just-yet/; FoodNavigator-USA on Schoenfeld and Ioannidis, Is everything we eat associated with cancer?, American Journal of Clinical Nutrition, Dec 2012, https://www.foodnavigator-usa.com/Article/2012/12/20/Are-all-foods-linked-to-cancer-Yes-but-don-t-worry-say-researchers; NPR, What Junk Food Can Teach Us About Junk Science, June 2015, https://www.npr.org/sections/13.7/2015/06/08/412825282/what-junk-food-can-teach-us-about-junk-science; Bangor Daily News, Journalist tests media on false study touting chocolate makes you thin, May 2015, https://www.bangordailynews.com/2015/05/28/news/journalist-tests-media-on-false-study-touting-chocolate-makes-you-thin/
+
+One glass of wine equals an hour's workout?
+Visual: A glass of red wine standing next to a pair of gym dumbbells
+Visual: A stack of generic newspapers on a café table, headlines blurred
+Text: A GLASS OF WINE = AN HOUR AT THE GYM!
+Draw: underline
+
+Yet headlines like that shape what you eat, drink and fear.
+Visual: A shopping basket of red wine, dark chocolate and coffee beans
+Visual: A person seen from behind reading a newspaper at a kitchen table
+
+By the end, you'll know the one number that exposes them.
+Visual: A magnifying glass resting on a printed research paper, text unreadable
+Visual: A single handwritten number circled in red on a notepad, digits blurred
+Text: ONE NUMBER EXPOSES THEM
+Big: ONE NUMBER
+
+Coffee? Headlines have flipped on it, again and again.
+Visual: A steaming cup of black coffee on a folded newspaper, text unreadable
+Visual: An old typewriter with a sheet of paper half typed, text unreadable
+Text: COFFEE: GOOD? BAD? GOOD AGAIN?
+Transition: flash
+
+Even the food in your kitchen gets linked to cancer.
+Visual: An open kitchen cupboard full of jars, tins and spice pots
+Visual: A wooden chopping board with tomatoes, onions and a bread loaf
+
+In two thousand five, a Stanford scientist made a startling argument.
+Visual: Sandstone university arches with a long shaded walkway
+Visual: A person seen from behind typing at a desk piled with journals
+Text: JOHN IOANNIDIS · STANFORD · 2005
+Place: STANFORD, CALIFORNIA · 2005
+
+Why most published research findings are false. That was his title.
+Visual: A printed journal article on a desk with a highlighter beside it
+Article: Why Most Published Research Findings Are False | PLOS Medicine, 2005
+
+So we're told to trust the science. But which science?
+Visual: A tall stack of scientific journals on a library table
+Visual: Two newspapers lying side by side with opposite headlines, text unreadable
+Text: TRUST THE SCIENCE? WHICH ONE?
+
+The real problem has a name. Scientists call it P-hacking.
+Visual: A laptop screen showing a spreadsheet full of numbers, figures blurred
+Visual: A hand dragging a computer mouse across a cluttered desk
+Text: P-HACKING
+
+So where did the wine headline actually come from?
+Visual: A wine glass on a laboratory bench beside a rack of test tubes
+Visual: A rolled newspaper tucked under a person's arm, seen from behind
+Text: WHERE DID IT COME FROM?
+Chapter: Part 1 | One glass of wine
+
+Here's how a lab study became a gym fantasy.
+Visual: A laboratory bench with test tubes in a metal rack
+Visual: A row of treadmills in an empty gym at night
+Transition: tear
+
+In twenty twelve, University of Alberta researchers studied resveratrol.
+Visual: A modern university science building on a cold, bright day
+Visual: A gloved hand holding a pipette over a test tube
+Text: UNIVERSITY OF ALBERTA · 2012
+Cite: Journal of Physiology, 2012
+Stock: laboratory test tubes
+
+It's only one compound, found in grape skins and red wine.
+Visual: A bunch of dark red grapes on a wooden board
+Visual: A small glass vial of white powder on a lab scale
+Text: RESVERATROL
+
+But here's the catch. They gave it to rodents.
+Visual: A pair of white lab mice in a clear plastic cage
+Visual: A small running wheel inside a laboratory cage
+Text: TESTED ON RODENTS
+Draw: circle
+
+No red wine. No humans. Not one gym membership.
+Visual: An unopened bottle of red wine on an empty table
+Visual: A gym membership card lying face down on a bench
+Statement: No wine. No *humans*.
+
+Here's why that matters. Mice are not tiny humans.
+Visual: A white lab mouse sitting in the palm of a gloved hand
+Visual: A small mouse cage beside an adult's trainers on a lab floor
+
+Still, the story spread as wine equals an hour at the gym.
+Visual: A pile of generic newspapers on a doorstep, headlines blurred
+Visual: A phone screen showing a news feed, text unreadable
+Text: "WINE = AN HOUR AT THE GYM"
+
+Then came the twist. The university issued a correction.
+Visual: A printed press release on a desk with a red pen, text unreadable
+Text: CORRECTION
+Draw: box
+
+One glass of wine is not equivalent to an hour at the gym.
+Visual: A single glass of red wine beside a kettlebell on a gym floor
+Visual: A person seen from behind lifting weights in a gym
+
+Matching that dose would take a hundred to a thousand bottles a day.
+Visual: Rows of wine bottles stacked floor to ceiling in a cellar
+Chart: 100 → 1,000 | bottles a day to match the dose
+Cite: University of Alberta correction
+
+Which is a lot of wine before breakfast.
+Visual: A breakfast table crowded with dozens of wine bottles
+Visual: A bowl of cereal beside a corkscrew on a kitchen counter
+Big: BEFORE BREAKFAST
+
+So why would a rodent study ever become a headline?
+Visual: A newspaper printing press running at speed
+Visual: A lab mouse sniffing at the edge of a folded newspaper
+Text: WHY DID IT BECOME A HEADLINE?
+Chapter: Part 2 | Science is a business
+
+Here's the part nobody likes to say. Science runs on money.
+Visual: A stack of banknotes on a laboratory bench next to a microscope
+Visual: A grant application form on a desk with a pen, text unreadable
+Transition: tear
+
+Three groups need attention. Researchers, journals and universities.
+Visual: A person seen from behind at a lab bench in a white coat
+Visual: A shelf of bound scientific journals in a university library
+
+Critics argue all three reward the same thing. Surprise.
+Visual: A university press office with desks and phones, nobody seated
+Steps: Study → Journal → Press release → Headline | Who rewards surprise?
+
+Here's the joke. Nobody gets a grant for proving cabbage is cabbage.
+Visual: A single green cabbage on a stainless steel lab bench
+Visual: A rejected grant letter folded on a desk, text unreadable
+Big: CABBAGE
+
+So a shocking result can mean citations, funding, even a career.
+Visual: A framed certificate and a trophy on an office shelf, text unreadable
+Visual: A person seen from behind walking up the steps of a lecture hall
+
+One boring result stays in a drawer. One surprise gets a press release.
+Visual: A metal filing cabinet drawer half open, full of papers
+Visual: A press release fanned out on a desk under bright lights, text unreadable
+Split: Boring result | Shocking result
+
+Researchers even have a name for it. The file drawer problem.
+Visual: A hand closing a grey filing cabinet drawer on a stack of papers
+Text: THE FILE DRAWER PROBLEM
+
+Even journals, it turns out, compete for attention like any publisher.
+Visual: Glossy journal covers laid out in a row on a table, text unreadable
+Visual: A newsstand rack full of magazines, covers blurred
+
+Then press offices write the catchiest version they can.
+Visual: A person seen from behind typing a press release on a laptop, text unreadable
+Visual: A red pen crossing out a dull headline on a printed draft, text unreadable
+
+So what happens when your own results are boring?
+Visual: A person seen from behind staring at a flat graph on a monitor
+Visual: A coffee mug beside a printout of a flat line chart, figures blurred
+Text: WHAT IF THE RESULTS ARE BORING?
+Chapter: Part 3 | The P-hacking trick
+
+Here's the trick critics warn about. Keep slicing the data.
+Visual: A large spreadsheet of numbers printed out across a desk, figures blurred
+Visual: A pair of scissors resting on a printed data table, figures blurred
+Transition: tear
+
+Imagine fifty foods, fifty health conditions, and just fifteen mice.
+Visual: Fifty small bowls of different foods laid out in a grid
+Visual: Fifteen white lab mice in a row of clear cages
+Text: ILLUSTRATION: 50 FOODS × 50 CONDITIONS
+
+Watch. That's two thousand five hundred possible links to test.
+Visual: A laptop showing a huge grid of spreadsheet cells, figures blurred
+Chart: 50 × 50 = 2,500 | possible links to test (illustration)
+
+Scientists usually call a result significant when p falls below point zero five.
+Visual: A printed statistics table with one column highlighted, figures blurred
+Text: SIGNIFICANT = p < 0.05
+
+With no real effect, luck still crosses that line one time in twenty.
+Visual: A hand rolling a twenty-sided die across a wooden desk
+Pie: 5% | of tests on a false link look significant
+
+So test two thousand five hundred links, and luck hands you winners.
+Visual: A hand pulling one ticket out of a large glass raffle drum
+Visual: A row of dice all landing on the same number
+
+The result? About a hundred and twenty-five fake breakthroughs, from chance alone.
+Visual: A wall of sticky notes, each with a tick, text unreadable
+Chart: 2,500 × 5% = 125 | false positives by chance alone (illustration)
+
+Now report only the one that sounds amazing.
+Visual: A yellow highlighter marking one row of a printed spreadsheet, figures blurred
+Visual: A single sheet of paper pinned to an empty corkboard, text unreadable
+Draw: circle
+
+Cabbage boosts memory? That's P-hacking in one fake headline.
+Visual: A cabbage sitting on top of a pile of newspapers, headlines blurred
+Text: "CABBAGE BOOSTS MEMORY!" (ILLUSTRATION)
+
+Run many analyses, then report only the ones that cross the line.
+Visual: A computer screen with many chart windows open, figures blurred
+Visual: A rubbish bin overflowing with crumpled printouts
+Statement: Test everything. Report *only* the winners.
+
+And the other two thousand four hundred results? Never mentioned.
+Visual: A filing cabinet drawer stuffed with unread printouts, text unreadable
+Visual: A shredder with strips of paper spilling out
+
+Each test looks honest. The trick is hiding the rest.
+Visual: A single neat printout lying on top of a messy pile of papers
+Visual: A hand sliding a folder into a locked desk drawer
+
+So does this really show up in the research? Look in your kitchen.
+Visual: An open cookbook on a kitchen counter beside fresh vegetables
+Visual: A spice rack with rows of small glass jars
+
+In twenty twelve, two researchers picked fifty random cookbook ingredients.
+Visual: A hand flipping through the pages of a thick cookbook, text unreadable
+Visual: Fifty small labelled jars of ingredients on a shelf, labels unreadable
+Text: SCHOENFELD & IOANNIDIS
+Cite: American Journal of Clinical Nutrition
+
+Then they searched for studies linking each one to cancer.
+Visual: A person seen from behind at a library computer, screen unreadable
+Visual: A stack of printed medical studies held with a bulldog clip, text unreadable
+
+Forty of the fifty had studies linking them to cancer risk.
+Visual: Rows of ingredient jars, most of them marked with red stickers
+Chart: 40 of 50 | ingredients linked to cancer risk
+Cite: Schoenfeld & Ioannidis, AJCN
+
+Some foods raised risk in one study and lowered it in another.
+Visual: Two printed studies placed side by side on a desk, text unreadable
+Visual: A tomato balanced on an old brass weighing scale
+Split: Raises risk | Lowers risk
+
+The catch? Most of those links were weak.
+Visual: A thin cracked pencil line on a sheet of graph paper
+Text: MOST ASSOCIATIONS WERE WEAK
+Draw: underline
+Cite: Schoenfeld & Ioannidis, AJCN
+
+Weak evidence, strong headlines. So could someone fool the system on purpose?
+Visual: A newspaper with a huge blurred headline on a café table
+Visual: A person seen from behind holding a phone over a newspaper
+Text: COULD YOU FOOL IT ON PURPOSE?
+Chapter: Part 4 | The chocolate experiment
+
+In twenty fifteen, one journalist decided to find out.
+Visual: A person seen from behind at a desk with a notebook and laptop
+Visual: A reporter's notepad and pen beside a cup of coffee
+Text: JOHN BOHANNON · 2015
+Transition: tear
+
+His trick? He posed as a diet researcher named Johannes Bohannon.
+Visual: A white lab coat hanging on the back of an office door
+Visual: A blank name badge clipped to a coat pocket
+Text: "JOHANNES BOHANNON"
+
+He even invented an institute, the Institute of Diet and Health.
+Visual: A blank brass office plaque on a plain wall, text unreadable
+Visual: A printed letterhead on a desk, text unreadable
+Text: "INSTITUTE OF DIET AND HEALTH" (FAKE)
+
+Then he recruited just fifteen people, paid, told it was for a documentary.
+Visual: A small waiting room with fifteen empty plastic chairs
+Visual: A video camera on a tripod in a plain room
+Icons: 15 of 15 | people | in the whole study
+Cite: NPR, 2015
+
+The strange part? The study was real. Real people, real chocolate.
+Visual: A dark chocolate bar on a bathroom scale
+Visual: A clipboard with a blank measurement form, text unreadable
+
+Three groups. One went low-carb, plus a daily dark chocolate bar.
+Visual: Three paper plates in a row, one holding squares of dark chocolate
+Visual: A hand breaking a bar of dark chocolate in half
+Text: 3 GROUPS
+
+One just went low-carb, and one changed nothing.
+Visual: A plate of grilled chicken and salad on a table
+Visual: An ordinary plate of pasta beside a glass of water
+
+Here's the trick. He measured eighteen different things.
+Visual: A blood pressure cuff, a tape measure and a scale on a table
+Visual: A clipboard with a long list of tick boxes, text unreadable
+Text: 18 MEASUREMENTS
+
+Fifteen people, eighteen measurements. Something was bound to look significant.
+Visual: A pair of dice tumbling across a laboratory bench
+Statement: Something was *bound* to win.
+
+And something did. The chocolate group lost weight ten percent faster.
+Visual: A bathroom scale with a dark chocolate bar resting on it
+Visual: A tape measure loosely wrapped around a chocolate bar
+Text: LOST WEIGHT 10% FASTER
+Draw: circle
+Big: 10%
+
+Then he paid a journal that skipped peer review.
+Visual: A hand passing banknotes across a desk next to a manuscript, text unreadable
+Visual: A rubber stamp hovering over a document, text unreadable
+Text: FEE PAID · NO PEER REVIEW
+Cite: NPR, 2015
+
+Now watch what happened next.
+Visual: A newspaper rolling off a printing press
+Transition: whip
+
+So outlets ran it, including Germany's Bild and Huffington Post sites.
+Visual: A newspaper stand on a German street corner, headlines blurred
+Map: Germany | Bild ran the chocolate story
+Cite: Bangor Daily News, 2015
+
+The catch? It was junk science, built that way on purpose.
+Visual: A dark chocolate bar unwrapped on a pile of newspapers
+Visual: A person seen from behind tearing a newspaper page in half
+Text: JUNK SCIENCE, BY DESIGN
+
+Then Bohannon revealed it himself, to show how easily junk spreads.
+Visual: A person seen from behind at a laptop, a long article on screen, text unreadable
+Visual: A chocolate wrapper crumpled in a waste paper bin
+Text: HE REVEALED THE HOAX HIMSELF
+
+But why did so many people want to believe it?
+Visual: A crowd of commuters seen from behind, all looking at phones
+Visual: A chocolate bar beside a phone showing a news feed, text unreadable
+Text: WHY DID WE WANT TO BELIEVE IT?
+Chapter: Part 5 | Why we fall for it
+
+Here's the twist. We wanted it to be true.
+Visual: A person seen from behind on a sofa holding a glass of red wine
+Visual: A half-eaten chocolate bar on a sofa cushion
+Transition: tear
+
+Psychologists have a name for it, confirmation bias. And it's real.
+Visual: A psychology textbook open on a library desk, text unreadable
+Text: CONFIRMATION BIAS
+
+We even accept weak claims when they flatter what we want.
+Visual: A person seen from behind nodding at a phone screen, text unreadable
+Statement: We believe what we *want* to.
+
+Your worst habits, secretly good for you? Who wouldn't click?
+Visual: A thumb hovering over a phone screen, text unreadable
+Visual: A glass of wine and a chocolate bar on a bedside table
+
+Who shares a story called wine, probably neutral, more research needed?
+Visual: A plain grey printed report on a desk, text unreadable
+Visual: A phone with a share button greyed out, text unreadable
+
+So every click tells editors one thing. More of this, please.
+Visual: A busy newsroom with rows of screens, people seen from behind
+Visual: A screen full of rising line graphs, figures blurred
+
+Then the next headline is written to win that click.
+Visual: A person seen from behind typing a headline on a laptop, text unreadable
+Visual: A wall clock above a row of busy newsroom desks
+
+Which brings us back to Stanford.
+Visual: Sandstone university arches with palm trees in front
+Stock: stanford university campus
+
+Why? Ioannidis blamed small samples, small effects and flexible analysis.
+Visual: A researcher seen from behind writing on a whiteboard, text unreadable
+Steps: Small samples → Small effects → Flexible analysis → False findings | Ioannidis's argument
+Cite: PLOS Medicine, 2005
+
+Fifteen mice. Fifteen people. Sound familiar?
+Visual: A row of small lab cages next to a row of empty chairs
+Visual: A dark chocolate bar beside a lab mouse cage
+
+So here's what those headlines should really have said.
+Visual: An old typewriter with a fresh sheet of paper loaded
+Visual: A hand pressing a typewriter key in close-up
+Transition: flash
+
+Wine equals the gym? Tested on rodents. No wine involved.
+Visual: A newspaper headline with a handwritten correction in red pen, text unreadable
+Visual: A white lab mouse beside a full glass of red wine
+Text: TESTED ON RODENTS · NO WINE
+Cite: University of Alberta, 2012
+
+Chocolate melts fat? Fifteen people, eighteen measurements, no peer review.
+Visual: A chocolate bar on a scale beside a red-pen note, text unreadable
+Text: 15 PEOPLE · 18 MEASURES · NO PEER REVIEW
+
+Cabbage boosts memory? Example only, tested on six mice.
+Visual: A cabbage next to a small cage holding six white mice
+Text: EXAMPLE: TESTED ON 6 MICE
+
+Suddenly, every miracle looks a lot smaller, doesn't it?
+Visual: A tiny chocolate square on a huge empty white plate
+Visual: A newspaper folded down to a small square, text unreadable
+
+So here's one habit worth keeping.
+Visual: A person seen from behind reading a newspaper with a pen in hand
+Visual: A pen circling a small number at the bottom of an article, text unreadable
+
+Never stop at the headline. Look at the sample size.
+Visual: A magnifying glass held over the small print of a printed study, text unreadable
+Statement: Look at the *sample size*.
+
+Then ask three questions. How many? In what? Compared to what?
+Visual: Three index cards laid out in a row on a desk, text unreadable
+Text: HOW MANY? IN WHAT? COMPARED TO WHAT?
+
+Mice aren't people, and fifteen people aren't a population.
+Visual: A lab mouse in a cage beside a busy city street scene
+Visual: A huge crowd seen from far above in a city square
+
+Remember Ioannidis? He never said science is worthless.
+Visual: Sandstone university arches at sunset
+Visual: A tall shelf of scientific journals in a quiet library
+
+His point was that one flashy study proves very little.
+Visual: A single thin research paper on a large empty desk, text unreadable
+Visual: A person seen from behind returning a journal to a shelf
+
+Only big samples and repeated results earn big claims.
+Visual: A packed lecture theatre seen from the back row, faces hidden
+Visual: Several identical journal articles stacked neatly on a desk, text unreadable
+
+Real science repeats, checks itself, and slowly gets it right.
+Visual: Rows of identical test tubes being filled one by one
+Visual: A hand ticking a long checklist on a clipboard, text unreadable
+
+Science is the pursuit of truth. Publishing? That's a business.
+Visual: A laboratory bench at night lit by a single lamp
+Statement: Publishing is a *business*.
+
+Now you know the one number to check first.
+Visual: A pen circling the sample size line of a printed study, text unreadable
+Text: CHECK THE SAMPLE SIZE
+
+So what's the craziest scientific fact you used to believe?
+Visual: A person seen from behind at a kitchen table with a newspaper and coffee
+Big: YOUR TURN?

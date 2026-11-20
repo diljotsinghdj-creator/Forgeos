@@ -1,0 +1,34 @@
+GYANESH KUMAR LONG FORMS (05 and 06) - VISUAL PLAN, AND REAL CLIPS YOU CAN ADD
+
+WHAT IS ON SCREEN NOW (no extra work needed)
+  Real people     Real, credited photos from Wikipedia/Wikimedia, triggered by the names in the narration:
+                  Gyanesh Kumar, Narendra Modi, Amit Shah, Rahul Gandhi, Priyanka Gandhi, Abhishek Banerjee,
+                  Ramdas Athawale (06); plus Kharge, Om Birla, C. P. Radhakrishnan, Akhilesh Yadav, Derek O'Brien,
+                  Sukhbir Singh Sandhu (05). No AI faces of real people anywhere.
+  Real documents  Article: lines show the REAL news page (headline highlighted) from the Source: links:
+                  Scroll (selection, Feb 2025), Moneylife (14 objections), Deccan Herald (ECI: unanimous; 13.3 crore),
+                  Onmanorama (Jiji Thomson; notices rejected), The Wire (nine charges), The Week (BJP defence;
+                  affidavit), Oneindia (Resign vs Padma Bhushan).
+  Law text        Document: lines show the exact legal words: Article 324(1), Article 324(5), Act 2023 Section 16.
+  Real places     Nirvachan Sadan (ECI HQ), Supreme Court, new Parliament House, Lok Sabha / Rajya Sabha chambers,
+                  North Block, Rashtrapati Bhavan, BJP and Congress headquarters, polling stations, BLO verification.
+  Numbers         Chart / Icons / Timeline / Steps graphics, drawn by CreatorForge, spelled correctly.
+  Removed         Symbolic filler: referee whistles, chessboards, gavels, empty chairs, clocks, padlocks, forest paths.
+
+BEFORE RENDERING: open the storyboard review and check every real photo is the right person and a real photo.
+
+REAL CLIPS THAT WOULD MAKE IT STRONGER (optional)
+  Upload each clip in the app: Library -> ASSET LIBRARY -> + VIDEO, using EXACTLY the name below, then add the
+  "Clip:" line under the spoken line shown. Its sound is removed; only the part that fits the line plays.
+  Use only footage you recorded yourself or have the right to use. Check the licence of any official channel
+  before using its video. Never use another news channel's footage (copyright strikes).
+
+  Clip name                    Add under the line that starts with                       Where to get it
+  cec press conference aug25   और पाँचवाँ: अगस्त 2025।                                   Election Commission's official channel (check its terms)
+  parliament notice mps        तो असली सवाल ये है कि बीजेपी हटाने के प्रस्ताव           Sansad TV (check its terms) or your own footage
+  nirvachan sadan exterior     ज्ञानेश कुमार इस्तीफ़ा क्यों नहीं देते?                    Your own footage of the building (public road)
+  voter list check phone       और आप क्या कर सकते हैं?                                   Screen recording of voters.eci.gov.in on your phone
+  ramlila rally nov1           (05) पर रैली तय है।                                       Your own footage from the ground
+
+  Example, under the affidavit line:
+      Clip: cec press conference aug25 @ 0:45

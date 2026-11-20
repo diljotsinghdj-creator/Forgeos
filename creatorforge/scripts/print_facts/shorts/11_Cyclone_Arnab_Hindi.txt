@@ -1,0 +1,67 @@
+Cyclone Arnab
+On-screen hook: 1.8 लाख लोग घर छोड़कर निकले। चक्रवात अर्नब।
+Title: Cyclone Arnab: Andhra Pradesh Mein Kitna Nuksaan? Numbers Mein #Shorts
+Tags: #PrintFacts #CycloneArnab #AndhraPradesh #Cyclone #Odisha #Shorts #हिंदी
+Source: Al Jazeera, At least 3 dead after Cyclone Arnab hits southern India https://www.aljazeera.com/news/2026/10/28/cyclone-arnab-makes-landfall-in-indias-andhra-pradesh ; AP via NY1, Cyclone Arnab hits India's Andhra Pradesh state as tens of thousands evacuate https://ny1.com/nyc/all-boroughs/ap-top-news/2026/10/28/cyclone-arnab-hits-indias-andhra-pradesh-state-as-tens-of-thousands-evacuate ; Onmanorama, Very severe Cyclone Arnab inches along Andhra coast during landfall https://www.onmanorama.com/news/india/2026/10/28/very-severe-cyclone-arnab-andhra-coast-landfall.html ; The Week, Cyclone Arnab brings heavy rain to Andhra, Odisha https://www.theweek.in/news/india/2026/10/28/cyclone-arnab-hits-andhra-pradesh-deaths.amp.html ; Free Press Journal, Cyclone Arnab leaves 5 dead in Andhra Pradesh, uproots thousands of trees and electric poles https://www.freepressjournal.in/india/cyclone-arnab-leaves-5-dead-in-andhra-pradesh-uproots-thousands-of-trees-electric-poles ; Daily Pioneer, Cyclone Arnab leaves 7 dead, causes Rs 4,600 crore loss in Andhra Pradesh; 3.45 lakh farmers affected https://dailypioneer.com/india/cyclone-arnab-leaves-7-dead-causes-rs-4600-crore-loss-in-andhra-pradesh-345-lakh-farmers-affected
+
+28 अक्टूबर। आंध्र प्रदेश के तट पर चक्रवात अर्नब।
+Tone: dramatic
+Place: ANDHRA PRADESH COAST · 28 OCT 2026
+Visual: Huge storm waves hitting a coastal road in heavy rain, palm trees bending in the wind
+Cite: Al Jazeera, Oct 2026
+
+मौसम विभाग के मुताबिक़, बहुत गंभीर चक्रवाती तूफ़ान।
+Tone: urgent
+Article: Very severe Cyclone Arnab inches along Andhra coast during landfall | Onmanorama, October 2026
+
+तट से टकराने से पहले, 1.8 लाख लोगों को सुरक्षित जगहों पर ले जाया गया।
+Tone: strong
+Big: 1.8 लाख
+Text: लोग सुरक्षित जगहों पर
+Cite: AP, Oct 2026
+
+कितनी जानें गईं? पहले दिन रिपोर्टों में तीन से नौ तक के आँकड़े आए।
+Tone: question
+Text: आँकड़े अलग-अलग · स्रोत के हिसाब से
+Cite: Al Jazeera; The Week, Oct 2026
+
+बाद की एक रिपोर्ट के मुताबिक़, सात लोगों की मौत।
+Tone: sad
+Big: 7
+Cite: Daily Pioneer, Oct 2026
+
+दो ज़िलों में क़रीब पंद्रह हज़ार बिजली के खंभे और पचास हज़ार पेड़ उखड़ गए।
+Tone: strong
+Icons: 15,000 बिजली के खंभे | 50,000 पेड़
+Cite: Free Press Journal, Oct 2026
+
+सबसे बड़ी चोट, किसानों पर। 2.24 लाख हेक्टेयर फ़सल, और 3.45 लाख किसान प्रभावित।
+Tone: sad
+Big: 3.45 लाख किसान
+Visual: A flooded paddy field with flattened rice plants under a grey sky after a storm
+Cite: Daily Pioneer, Oct 2026
+
+अनुमानित नुक़सान: 4,600 करोड़ रुपये।
+Tone: dramatic
+Big: ₹4,600 करोड़
+Cite: Daily Pioneer, Oct 2026
+
+ओडिशा के दक्षिणी हिस्सों में भी बारिश और तेज़ हवाएँ।
+Tone: calm
+Place: SOUTHERN ODISHA
+Cite: The Week, Oct 2026
+
+मुख्यमंत्री चंद्रबाबू नायडू ने कहा, केंद्र की टीमें नुक़सान का आकलन करने आएँगी।
+Tone: calm
+Cite: Daily Pioneer, Oct 2026
+
+ये आँकड़े शुरुआती हैं। आकलन के बाद ये बदल सकते हैं।
+Tone: calm
+Statement: शुरुआती आँकड़े · *बदल सकते हैं*
+
+एक तूफ़ान। एक रात। और महीनों का नुक़सान।
+Tone: dramatic
+Statement: एक तूफ़ान। एक रात। *महीनों का नुक़सान।*
+
+आप आंध्र या ओडिशा से हैं? कमेंट में बताइए, आपके इलाक़े में क्या हाल है।
+Tone: warm

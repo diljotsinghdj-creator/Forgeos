@@ -1,0 +1,21 @@
+{"topic": "In Event of Moon Disaster: the speech written in case Apollo 11's crew could not return",
+ "channel": "print-facts", "date": "2026-11-14",
+ "facts": [
+  {"id": "M1", "claim": "A memo dated July 18, 1969, To: H. R. Haldeman, From: Bill Safire, titled 'IN EVENT OF MOON DISASTER:'", "status": "verified",
+   "source": "The memo itself, page 1: National Archives Catalog NAID 6922351 (Nixon Library, H. R. Haldeman's Files), access and use 'Unrestricted'. https://catalog.archives.gov/id/6922351"},
+  {"id": "M2", "claim": "Quote: 'Fate has ordained that the men who went to the moon to explore in peace will stay on the moon to rest in peace.'", "status": "verified", "source": "Memo page 1 (NAID 6922351)"},
+  {"id": "M3", "claim": "The speech names Neil Armstrong and Edwin Aldrin", "status": "verified", "source": "Memo page 1"},
+  {"id": "M4", "claim": "'PRIOR TO THE PRESIDENT'S STATEMENT: The President should telephone each of the widows-to-be.'", "status": "verified", "source": "Memo page 2"},
+  {"id": "M5", "claim": "'AFTER THE PRESIDENT'S STATEMENT, AT THE POINT WHEN NASA ENDS COMMUNICATIONS WITH THE MEN: A clergyman should adopt the same procedure as a burial at sea, commending their souls to \"the deepest of the deep,\" concluding with the Lord's Prayer.'", "status": "verified", "source": "Memo page 2"},
+  {"id": "M6", "claim": "Last line: 'some corner of another world that is forever mankind.'", "status": "verified", "source": "Memo page 2"},
+  {"id": "M7", "claim": "William Safire was a speechwriter (NARA titles it 'Memorandum from Speechwriter William Safire to President Nixon')", "status": "verified", "source": "NARA catalog record NAID 6922351"},
+  {"id": "N1", "claim": "Apollo 11 launched July 16, 1969, 9:32 a.m. EDT, Launch Pad 39A", "status": "verified", "source": "NASA, Apollo 11 Mission Overview, https://www.nasa.gov/history/apollo-11-mission-overview/"},
+  {"id": "N2", "claim": "Eagle landed in the Sea of Tranquility; Armstrong and Aldrin spent 21 hours, 36 minutes on the Moon's surface", "status": "verified", "source": "NASA, Apollo 11 Mission Overview"},
+  {"id": "N3", "claim": "The ascent stage engine fired at 124 hours, 22 minutes into the mission (July 21, 1969)", "status": "verified (date computed from launch time + mission elapsed time)", "source": "NASA, Apollo 11 Mission Overview"},
+  {"id": "N4", "claim": "Splashdown July 24, 1969", "status": "verified", "source": "NASA, Apollo 11 mission page, https://www.nasa.gov/mission/apollo-11/"},
+  {"id": "N5", "claim": "The landing was on July 20, 1969", "status": "verified", "source": "NASA, '55 Years Ago: Apollo 11's One Small Step, One Giant Leap' (nasa.gov)"}],
+ "not_used": [
+  {"claim": "When and how the memo became public (often said: Safire, 1999)", "why": "not verified from a reachable primary source today; left out"},
+  {"claim": "The ascent engine had no backup", "why": "not checked against a NASA source today; left out"},
+  {"claim": "Audience size for the moonwalk", "why": "figures vary; not needed"}],
+ "people": "Real people appear only in NASA's own photographs and TV footage (public domain, credited). No AI faces, no voice imitation of Nixon (the speech is shown as a document, never performed)."}

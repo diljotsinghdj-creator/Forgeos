@@ -1,0 +1,15 @@
+{"date": "2026-11-14", "frames": {
+ "01_louisiana": [{"claim": "Treaty signed April 30, 1803; 828,000 square miles west of the Mississippi for $15 million; the US doubled its size", "status": "verified", "source": "NARA Milestone Documents, Louisiana Purchase Treaty; scan NAID 299807 (use unrestricted)"},
+                  {"claim": "'roughly 4 cents an acre' (NARA) not shown: $15M / 828,000 sq mi is about 2.8 cents; the source does not explain the difference", "status": "excluded"}],
+ "02_nineteenth": [{"claim": "Passed by Congress June 4, 1919; Tennessee the 36th state on August 18, 1920; three-fourths of the states", "status": "verified", "source": "NARA Milestone Documents, 19th Amendment; scan NAID 596314"},
+                   {"claim": "48 states (36 = three-fourths of 48)", "status": "derived from the source's three-fourths and 36th"}],
+ "03_marshall": [{"claim": "Act signed April 3, 1948; Congress appropriated $13.3 billion over the next four years", "status": "verified", "source": "NARA Milestone Documents, Marshall Plan; scan NAID 299857"},
+                 {"claim": "No per-country amounts shown", "status": "not sourced, so not drawn"}],
+ "04_gerrymander": [{"claim": "Cartoon 'The Gerry-mander, a new species of monster which appeared in Essex South district in January last', [1812]", "status": "verified", "source": "Library of Congress P&P 2022637334 (record title and date); public domain by age"}],
+ "05_aral": [{"claim": "NASA Terra/MODIS pair: 2000 and 2014, black line = 1960 extent; the Aral was once the fourth-largest lake in the world", "status": "verified", "source": "NASA image GSFC_20171208_Archive_e000965 and its caption"}],
+ "06_debt": [{"claim": "Total public debt outstanding $40,608,506,856,903.25 on 2026-11-12; held by the public $32.82T; intragovernmental $7.78T; $5.75T (2000-01-03), $12.29T (2010-01-04), $23.17T (2020-01-02)", "status": "verified", "source": "US Treasury Fiscal Data API, Debt to the Penny"}],
+ "07_population": [{"claim": "World Bank SP.POP.TOTL: India 1,414,203,896 vs China 1,412,360,000 in 2021, first year India is higher in this series", "status": "verified (World Bank estimates; other series, e.g. UN press dates, may differ)", "source": "World Bank API, CC BY 4.0"}],
+ "08_co2": [{"claim": "Mauna Loa annual mean CO2: 315.98 ppm (1959) to 427.35 ppm (2025)", "status": "verified", "source": "NOAA GML co2_annmean_mlo.txt"},
+            {"claim": "Headline 'The pen has never turned down': true of the annual means in this file", "status": "checked against the series"}],
+ "09_nuclear": [{"claim": "~12,187 warheads in nine countries at the start of 2026; ~9,745 in military stockpiles; ~3,912 deployed; ~2,100 on high alert; US and Russia ~86% of the total", "status": "verified (FAS estimates)", "source": "FAS, Status of World Nuclear Forces 2026"}],
+ "10_milex": [{"claim": "Military expenditure 2024, current US$: world $2.67 trillion; US $1,004.9 bn; China $311.9 bn; Russia $149.4 bn; UK $89.8 bn; Germany $86.1 bn; India $85.6 bn", "status": "verified", "source": "World Bank MS.MIL.XPND.CD (from SIPRI), CC BY 4.0"}]}}

@@ -1,0 +1,139 @@
+Israel 2026 The Election That Settled Nothing - part 5 of 6
+On-screen hook: 120 seats. 61 to govern. Nobody got there.
+Title: Israel 2026: The Election That Settled Nothing (part 5 of 6)
+Tags: #Israel #IsraelElection #Netanyahu #Eisenkot #Knesset
+
+Chapter: Part 6 | Money, Missiles, and the Man in Washington
+
+On the eighteenth of October, nine days before the vote, Donald Trump endorsed Netanyahu. He called him a, quote, Great Warrior Prime Minister, and Likud turned the post into a campaign video.
+Tone: strong
+Visual: A smartphone showing a social media post, text unreadable
+Visual: A campaign video being edited on a laptop screen, no faces
+Quote: Great Warrior Prime Minister | Donald Trump, 18 Oct 2026
+Cite: AP via OPB, 19 Oct 2026
+
+In the same post, Trump suggested that if Netanyahu lost, America might not finish the job against Iran, saying America would have to do this work itself, and he was not inclined to. Eisenkot's reply: only Israelis can choose who runs their country.
+Tone: strong
+Visual: A wall map of the Persian Gulf with pins in it
+Visual: A ballot slip held up against a window
+Split: Trump: vote Netanyahu | Eisenkot: Israelis choose
+Cite: AP via OPB, 19 Oct 2026
+
+Endorsing a foreign leader days before a vote is unusual. Whether it moved votes is impossible to prove. What we can say is that the bloc he endorsed got fifty-three seats, and the job against Iran is apparently still pending.
+Tone: calm
+Visual: A to-do list on a notepad with one item unchecked, text unreadable
+Visual: An office in-tray full of papers
+
+To understand that sentence, you have to go back to June 2025. Israel launched a surprise air campaign on Iran's nuclear programme and military leadership. Iran fired hundreds of ballistic missiles at Israeli cities. The United States joined in with strikes on nuclear sites, including Fordow. After twelve days, a ceasefire was declared.
+Tone: strong
+Visual: A mountain range in Iran at dusk seen from far away
+Visual: A missile interceptor trail in a night sky over a city
+Timeline: 13 Jun 2025 Israel strikes Iran | 22 Jun 2025 US strikes Fordow | 24 Jun 2025 ceasefire
+Cite: Reuters; AP, June 2025
+
+Because this was also the year of the Iran war. On the twenty-eighth of February 2026, the United States and Israel launched massive strikes on Iran. Iran's supreme leader, Ayatollah Ali Khamenei, was killed. His son Mojtaba succeeded him.
+Tone: dramatic
+Visual: A night sky over a city with streaks of light, seen from far away
+Visual: A large empty ceremonial hall with a single portrait frame, empty
+Text: 28 FEB 2026 · US-ISRAEL STRIKES ON IRAN
+Cite: Bloomberg Government; Iranian state media, 1 Mar 2026
+
+Iran fired missiles at Israel and at Gulf countries hosting American bases. The Strait of Hormuz, the route for about a fifth of the world's oil, was effectively closed. In April, with Pakistan's help, a two-week ceasefire took hold, followed by talks, extensions, and an interim deal in June, the details of which are still disputed.
+Tone: strong
+Visual: An oil tanker at anchor in calm water at dusk
+Visual: A conference table with flags removed and water glasses half full
+Timeline: 28 Feb strikes begin | 7-8 Apr two-week ceasefire | Apr Islamabad talks | Jun interim deal reported
+Cite: AP; Al Jazeera; Wikipedia (2026 Iran war ceasefire), 2026
+
+The war spread north. Hezbollah fired on Israel in March. Israel answered with an air campaign and a ground invasion of southern Lebanon. A Reuters-based tally put more than three thousand nine hundred people killed in Lebanon. Israel reported thirty-six dead on its side.
+Tone: strong
+Visual: A southern Lebanese village on a hillside with damaged buildings, seen from far
+Visual: An Israeli northern town street with closed shops and sandbags
+Text: LEBANON: 3,900+ KILLED · ISRAEL: 36 · AS REPORTED
+Cite: Reuters via Aaj News; Wikipedia (2026 Lebanon war)
+
+Ceasefires were agreed in April and again in June. Israeli strikes have continued in Lebanon since, which Israel says target Hezbollah threats, and which Lebanon and Hezbollah call violations.
+Tone: calm
+Visual: A UN peacekeeper's blue helmet resting on a sandbag wall
+Visual: A border fence on a green hillside in the north
+Cite: L'Orient Today; Asharq Al-Awsat, 2026
+
+And not every disagreement was between enemies. Reports say Trump publicly criticised Israel's strike on a key Iranian gas field in the first weeks of the 2026 war. So the most pro-Netanyahu American president in history is also the one who, from time to time, tells him off in public. It's a relationship. It's complicated. Most relationships with a superpower are.
+Tone: strong
+Visual: A gas processing plant with flares at night
+Visual: Two coffee mugs on a table, one turned away from the other
+Cite: AP via OPB, Oct 2026
+
+Wars cost money. Israel's 2026 budget is the most militarised in its history. Defence spending is expected to reach almost eight percent of the economy, compared with about four percent in 2022.
+Tone: strong
+Visual: Stacks of Israeli shekel banknotes on a table
+Visual: A military supply depot with crates stacked high
+Chart: Defence spend, % of GDP | 2022: 4.2 | 2026: ~8
+Cite: Czech Embassy Tel Aviv / BusinessInfo.cz; Times of Israel, 2026
+
+The Bank of Israel estimated the total cost of the war at about three hundred and fifty billion shekels. The deficit target was raised to over five percent, and the central bank warned that debt could reach around seventy percent of GDP, and criticised the government for keeping coalition funds while cutting elsewhere.
+Tone: strong
+Visual: The Bank of Israel building in Jerusalem
+Visual: A calculator next to a stack of unpaid bills, numbers unreadable
+Text: WAR COST ~NIS 350BN · DEFICIT TARGET 5.1% · DEBT ~70% OF GDP
+Cite: Bank of Israel Annual Report 2025; Globes, 2026
+
+There's a fight inside the government over that money, too. Reports in September described the finance and defence ministries clashing over how much the army needs, with defence officials seeking about forty billion more shekels for Gaza, Lebanon, Syria, readiness for Iran, and more troops in the West Bank.
+Tone: calm
+Visual: Two office doors facing each other across a corridor in a ministry
+Visual: A spreadsheet printed on paper with columns of numbers, unreadable
+Text: DEFENCE ASKS +NIS 40BN · REPORTED
+Cite: Al Jazeera, 1 Sep 2026; Israeli media reports
+
+Coalition funds are money set aside for the small parties' priorities, the price of sixty-one. When the bill for a war comes in, and the bill for coalition politics still gets paid, voters notice. Many of them are the same reservists who were called up again and again.
+Tone: strong
+Visual: A wallet on a kitchen table with a military ID card next to it, name unreadable
+Visual: An envelope labelled with a coalition party colour, text unreadable
+Receipt: War | Reservist call-ups | Coalition funds | Total: someone else pays
+
+Then there's American aid. Since 2019, a ten-year agreement has given Israel three point eight billion dollars a year in US military aid, three point three billion in grants for weapons and five hundred million for missile defence. It expires in 2028.
+Tone: calm
+Visual: A pallet of crates on an airfield at dawn
+Visual: An air-defence battery silhouetted against an evening sky
+Text: $3.8BN A YEAR · MOU 2019-2028
+Cite: US State Department; Jewish Insider
+
+In June 2026, the two governments opened talks on what comes next. Netanyahu himself has floated phasing out US aid over time. Washington has signalled a shift toward trade and joint projects rather than grants. The next prime minister will negotiate the next decade.
+Tone: calm
+Visual: Two pens lying on an unsigned agreement on a conference table
+Visual: A cargo ship being loaded at a port
+Cite: Jewish Insider; FDD, Jun 2026
+
+Europe, Israel's biggest trading partner, has been angrier but slower. In September 2025, the European Commission proposed suspending trade parts of the EU-Israel Association Agreement. By April 2026 there was still no majority of member states to do it. Germany and Italy held out. Spain and Belgium pushed.
+Tone: calm
+Visual: The European Commission Berlaymont building in Brussels
+Visual: A row of EU flags on poles in wind
+Split: Spain, Belgium: suspend | Germany, Italy: hold
+Cite: JURIST; Al-Monitor, Apr 2026
+
+And the Gulf? The big prize Netanyahu has chased for years is normalisation with Saudi Arabia. Saudi Arabia's position, repeated in May 2026, hasn't moved: no normal ties without an irreversible path to a Palestinian state.
+Tone: strong
+Visual: The Riyadh skyline at dusk
+Visual: A closed door with an ornate handle
+Quote: An irreversible pathway to a Palestinian state | Saudi position, May 2026
+Cite: Al Arabiya, 25 May 2026
+
+It's worth being precise about the Gulf. The UAE, Bahrain and Morocco normalised ties with Israel in 2020 under the Abraham Accords, and those ties have survived the war, under strain. The countries that haven't joined have mostly said the same thing as Riyadh: show us the path to a Palestinian state first.
+Tone: calm
+Visual: The Abu Dhabi skyline at sunset
+Visual: Three national flags on poles outside a conference centre, flags unidentifiable in wind
+Timeline: 2020 Abraham Accords | 2023-2025 ties strained by war | 2026 Saudi still waiting
+Cite: US State Department; Al Arabiya, 2026
+
+Which lands us back on the Israeli consensus from Part Four. Both leading candidates say no Palestinian state. Saudi Arabia says no deal without one. So the most coveted handshake in the region is waiting on the one question the election avoided.
+Tone: strong
+Visual: Two hands reaching toward each other but not touching
+Visual: A circle drawn on a map, then a question mark next to it
+Statement: The prize needs the *question nobody asked*.
+
+A note on foreign influence, since it came up. Qatar has been accused, in Israeli politics, of funding influence efforts. Qatar denies it. Investigations into contacts between Netanyahu aides and Qatar-linked work were ongoing in 2025 and 2026, and nobody in those cases has been convicted. We'll stick to what's documented, and that's what's documented.
+Tone: calm
+Visual: A Doha skyline at night across the water
+Visual: A closed case file on a desk tied with string
+Text: INVESTIGATION · NO CONVICTIONS
+Cite: Times of Israel; Haaretz, 2025-2026

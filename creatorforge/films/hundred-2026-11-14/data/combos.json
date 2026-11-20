@@ -1,0 +1,802 @@
+{
+ "ballot": {
+  "frame": "stamp",
+  "treatment": "tint",
+  "surface": "blueprint",
+  "type": 7,
+  "layout": "behind",
+  "prop": "clip"
+ },
+ "suffrage": {
+  "frame": "mirror",
+  "treatment": "posterize",
+  "surface": "black",
+  "type": 0,
+  "layout": "centre",
+  "prop": "highlight"
+ },
+ "border": {
+  "frame": "torn",
+  "treatment": "riso",
+  "surface": "cork",
+  "type": 6,
+  "layout": "left",
+  "prop": "postmark"
+ },
+ "immigration": {
+  "frame": "polaroid",
+  "treatment": "duotone",
+  "surface": "kraft",
+  "type": 1,
+  "layout": "top",
+  "prop": "tape"
+ },
+ "propaganda": {
+  "frame": "ticket",
+  "treatment": "greyhi",
+  "surface": "linen",
+  "type": 3,
+  "layout": "corner",
+  "prop": "none"
+ },
+ "warbonds": {
+  "frame": "rect",
+  "treatment": "natural",
+  "surface": "solid",
+  "type": 2,
+  "layout": "right",
+  "prop": "index"
+ },
+ "ration": {
+  "frame": "bleed",
+  "treatment": "sepia",
+  "surface": "grid",
+  "type": 13,
+  "layout": "left",
+  "prop": "ruler"
+ },
+ "strike": {
+  "frame": "arch",
+  "treatment": "cyanotype",
+  "surface": "slate",
+  "type": 9,
+  "layout": "corner",
+  "prop": "pin"
+ },
+ "union": {
+  "frame": "disc",
+  "treatment": "halftone",
+  "surface": "cream",
+  "type": 5,
+  "layout": "behind",
+  "prop": "tape"
+ },
+ "childlabor": {
+  "frame": "gate",
+  "treatment": "posterize",
+  "surface": "newsprint",
+  "type": 10,
+  "layout": "right",
+  "prop": "clip"
+ },
+ "mine": {
+  "frame": "stack",
+  "treatment": "halftone",
+  "surface": "solid",
+  "type": 12,
+  "layout": "centre",
+  "prop": "pin"
+ },
+ "factory": {
+  "frame": "oval",
+  "treatment": "sepia",
+  "surface": "blueprint",
+  "type": 4,
+  "layout": "top",
+  "prop": "highlight"
+ },
+ "breadline": {
+  "frame": "torn",
+  "treatment": "natural",
+  "surface": "cork",
+  "type": 11,
+  "layout": "centre",
+  "prop": "index"
+ },
+ "dustbowl": {
+  "frame": "polaroid",
+  "treatment": "greyhi",
+  "surface": "kraft",
+  "type": 8,
+  "layout": "corner",
+  "prop": "none"
+ },
+ "migrant": {
+  "frame": "arch",
+  "treatment": "tint",
+  "surface": "black",
+  "type": 12,
+  "layout": "behind",
+  "prop": "postmark"
+ },
+ "bank": {
+  "frame": "oval",
+  "treatment": "duotone",
+  "surface": "linen",
+  "type": 8,
+  "layout": "right",
+  "prop": "ruler"
+ },
+ "exchange": {
+  "frame": "stack",
+  "treatment": "cyanotype",
+  "surface": "newsprint",
+  "type": 0,
+  "layout": "top",
+  "prop": "postmark"
+ },
+ "printing": {
+  "frame": "ticket",
+  "treatment": "riso",
+  "surface": "grid",
+  "type": 6,
+  "layout": "left",
+  "prop": "ruler"
+ },
+ "newsboy": {
+  "frame": "rect",
+  "treatment": "greyhi",
+  "surface": "cream",
+  "type": 5,
+  "layout": "behind",
+  "prop": "index"
+ },
+ "telegraph": {
+  "frame": "mirror",
+  "treatment": "cyanotype",
+  "surface": "slate",
+  "type": 3,
+  "layout": "corner",
+  "prop": "tape"
+ },
+ "switchboard": {
+  "frame": "disc",
+  "treatment": "sepia",
+  "surface": "blueprint",
+  "type": 4,
+  "layout": "right",
+  "prop": "pin"
+ },
+ "railroad": {
+  "frame": "gate",
+  "treatment": "posterize",
+  "surface": "grid",
+  "type": 2,
+  "layout": "left",
+  "prop": "none"
+ },
+ "canal": {
+  "frame": "stamp",
+  "treatment": "cyanotype",
+  "surface": "black",
+  "type": 13,
+  "layout": "centre",
+  "prop": "highlight"
+ },
+ "dam": {
+  "frame": "bleed",
+  "treatment": "duotone",
+  "surface": "linen",
+  "type": 9,
+  "layout": "top",
+  "prop": "none"
+ },
+ "oil": {
+  "frame": "polaroid",
+  "treatment": "tint",
+  "surface": "cream",
+  "type": 7,
+  "layout": "behind",
+  "prop": "clip"
+ },
+ "port": {
+  "frame": "oval",
+  "treatment": "natural",
+  "surface": "cork",
+  "type": 10,
+  "layout": "right",
+  "prop": "postmark"
+ },
+ "capitol": {
+  "frame": "disc",
+  "treatment": "sepia",
+  "surface": "newsprint",
+  "type": 1,
+  "layout": "left",
+  "prop": "highlight"
+ },
+ "court": {
+  "frame": "arch",
+  "treatment": "duotone",
+  "surface": "slate",
+  "type": 11,
+  "layout": "centre",
+  "prop": "tape"
+ },
+ "whitehouse": {
+  "frame": "gate",
+  "treatment": "tint",
+  "surface": "kraft",
+  "type": 4,
+  "layout": "top",
+  "prop": "clip"
+ },
+ "prohibition": {
+  "frame": "torn",
+  "treatment": "riso",
+  "surface": "solid",
+  "type": 8,
+  "layout": "corner",
+  "prop": "ruler"
+ },
+ "police": {
+  "frame": "mirror",
+  "treatment": "greyhi",
+  "surface": "blueprint",
+  "type": 11,
+  "layout": "behind",
+  "prop": "pin"
+ },
+ "prison": {
+  "frame": "stamp",
+  "treatment": "posterize",
+  "surface": "black",
+  "type": 9,
+  "layout": "centre",
+  "prop": "index"
+ },
+ "statue": {
+  "frame": "ticket",
+  "treatment": "cyanotype",
+  "surface": "linen",
+  "type": 6,
+  "layout": "left",
+  "prop": "ruler"
+ },
+ "flag": {
+  "frame": "bleed",
+  "treatment": "natural",
+  "surface": "grid",
+  "type": 3,
+  "layout": "top",
+  "prop": "index"
+ },
+ "protest": {
+  "frame": "rect",
+  "treatment": "posterize",
+  "surface": "kraft",
+  "type": 7,
+  "layout": "corner",
+  "prop": "pin"
+ },
+ "speech": {
+  "frame": "stack",
+  "treatment": "riso",
+  "surface": "grid",
+  "type": 1,
+  "layout": "right",
+  "prop": "highlight"
+ },
+ "map": {
+  "frame": "arch",
+  "treatment": "duotone",
+  "surface": "slate",
+  "type": 0,
+  "layout": "centre",
+  "prop": "none"
+ },
+ "empire": {
+  "frame": "rect",
+  "treatment": "sepia",
+  "surface": "cream",
+  "type": 12,
+  "layout": "left",
+  "prop": "clip"
+ },
+ "spy": {
+  "frame": "disc",
+  "treatment": "halftone",
+  "surface": "solid",
+  "type": 13,
+  "layout": "top",
+  "prop": "postmark"
+ },
+ "nuclear": {
+  "frame": "oval",
+  "treatment": "cyanotype",
+  "surface": "cork",
+  "type": 2,
+  "layout": "right",
+  "prop": "tape"
+ },
+ "moon": {
+  "frame": "polaroid",
+  "treatment": "tint",
+  "surface": "newsprint",
+  "type": 5,
+  "layout": "behind",
+  "prop": "highlight"
+ },
+ "earth": {
+  "frame": "mirror",
+  "treatment": "natural",
+  "surface": "solid",
+  "type": 10,
+  "layout": "corner",
+  "prop": "pin"
+ },
+ "cities": {
+  "frame": "ticket",
+  "treatment": "greyhi",
+  "surface": "cork",
+  "type": 11,
+  "layout": "left",
+  "prop": "postmark"
+ },
+ "hurricane": {
+  "frame": "torn",
+  "treatment": "natural",
+  "surface": "black",
+  "type": 9,
+  "layout": "behind",
+  "prop": "ruler"
+ },
+ "fire": {
+  "frame": "stack",
+  "treatment": "sepia",
+  "surface": "cream",
+  "type": 12,
+  "layout": "centre",
+  "prop": "clip"
+ },
+ "ice": {
+  "frame": "stamp",
+  "treatment": "cyanotype",
+  "surface": "linen",
+  "type": 8,
+  "layout": "right",
+  "prop": "index"
+ },
+ "satellite": {
+  "frame": "bleed",
+  "treatment": "posterize",
+  "surface": "slate",
+  "type": 7,
+  "layout": "corner",
+  "prop": "none"
+ },
+ "station": {
+  "frame": "gate",
+  "treatment": "riso",
+  "surface": "kraft",
+  "type": 6,
+  "layout": "top",
+  "prop": "clip"
+ },
+ "rocket": {
+  "frame": "torn",
+  "treatment": "tint",
+  "surface": "newsprint",
+  "type": 3,
+  "layout": "corner",
+  "prop": "tape"
+ },
+ "desert": {
+  "frame": "rect",
+  "treatment": "duotone",
+  "surface": "blueprint",
+  "type": 5,
+  "layout": "top",
+  "prop": "ruler"
+ },
+ "confirmation": {
+  "frame": "stack",
+  "treatment": "cyanotype",
+  "surface": "cream",
+  "type": 2,
+  "layout": "left",
+  "prop": "pin"
+ },
+ "loss": {
+  "frame": "ticket",
+  "treatment": "duotone",
+  "surface": "newsprint",
+  "type": 10,
+  "layout": "centre",
+  "prop": "postmark"
+ },
+ "spotlight": {
+  "frame": "disc",
+  "treatment": "sepia",
+  "surface": "cork",
+  "type": 1,
+  "layout": "behind",
+  "prop": "highlight"
+ },
+ "sunk": {
+  "frame": "polaroid",
+  "treatment": "tint",
+  "surface": "solid",
+  "type": 4,
+  "layout": "right",
+  "prop": "none"
+ },
+ "socialproof": {
+  "frame": "mirror",
+  "treatment": "greyhi",
+  "surface": "kraft",
+  "type": 0,
+  "layout": "corner",
+  "prop": "index"
+ },
+ "bystander": {
+  "frame": "gate",
+  "treatment": "cyanotype",
+  "surface": "blueprint",
+  "type": 13,
+  "layout": "behind",
+  "prop": "tape"
+ },
+ "impostor": {
+  "frame": "oval",
+  "treatment": "posterize",
+  "surface": "slate",
+  "type": 3,
+  "layout": "left",
+  "prop": "tape"
+ },
+ "dark": {
+  "frame": "arch",
+  "treatment": "natural",
+  "surface": "grid",
+  "type": 10,
+  "layout": "right",
+  "prop": "none"
+ },
+ "dejavu": {
+  "frame": "stamp",
+  "treatment": "tint",
+  "surface": "linen",
+  "type": 11,
+  "layout": "centre",
+  "prop": "pin"
+ },
+ "nostalgia": {
+  "frame": "ticket",
+  "treatment": "halftone",
+  "surface": "black",
+  "type": 5,
+  "layout": "top",
+  "prop": "clip"
+ },
+ "envy": {
+  "frame": "bleed",
+  "treatment": "posterize",
+  "surface": "grid",
+  "type": 8,
+  "layout": "behind",
+  "prop": "postmark"
+ },
+ "shame": {
+  "frame": "stack",
+  "treatment": "cyanotype",
+  "surface": "slate",
+  "type": 1,
+  "layout": "right",
+  "prop": "ruler"
+ },
+ "curiosity": {
+  "frame": "gate",
+  "treatment": "sepia",
+  "surface": "solid",
+  "type": 2,
+  "layout": "top",
+  "prop": "highlight"
+ },
+ "boredom": {
+  "frame": "arch",
+  "treatment": "natural",
+  "surface": "black",
+  "type": 6,
+  "layout": "corner",
+  "prop": "index"
+ },
+ "habit": {
+  "frame": "bleed",
+  "treatment": "duotone",
+  "surface": "blueprint",
+  "type": 0,
+  "layout": "centre",
+  "prop": "postmark"
+ },
+ "memory": {
+  "frame": "disc",
+  "treatment": "greyhi",
+  "surface": "kraft",
+  "type": 7,
+  "layout": "left",
+  "prop": "tape"
+ },
+ "dreams": {
+  "frame": "rect",
+  "treatment": "tint",
+  "surface": "cream",
+  "type": 13,
+  "layout": "behind",
+  "prop": "pin"
+ },
+ "attention": {
+  "frame": "stamp",
+  "treatment": "posterize",
+  "surface": "linen",
+  "type": 4,
+  "layout": "centre",
+  "prop": "index"
+ },
+ "halo": {
+  "frame": "oval",
+  "treatment": "riso",
+  "surface": "newsprint",
+  "type": 9,
+  "layout": "top",
+  "prop": "highlight"
+ },
+ "groupthink": {
+  "frame": "polaroid",
+  "treatment": "sepia",
+  "surface": "cream",
+  "type": 12,
+  "layout": "corner",
+  "prop": "clip"
+ },
+ "obedience": {
+  "frame": "mirror",
+  "treatment": "duotone",
+  "surface": "cork",
+  "type": 5,
+  "layout": "right",
+  "prop": "none"
+ },
+ "superstition": {
+  "frame": "torn",
+  "treatment": "cyanotype",
+  "surface": "slate",
+  "type": 3,
+  "layout": "left",
+  "prop": "ruler"
+ },
+ "procrastination": {
+  "frame": "stamp",
+  "treatment": "natural",
+  "surface": "blueprint",
+  "type": 0,
+  "layout": "centre",
+  "prop": "index"
+ },
+ "jealousy": {
+  "frame": "stack",
+  "treatment": "greyhi",
+  "surface": "newsprint",
+  "type": 2,
+  "layout": "right",
+  "prop": "ruler"
+ },
+ "grief": {
+  "frame": "ticket",
+  "treatment": "posterize",
+  "surface": "linen",
+  "type": 9,
+  "layout": "left",
+  "prop": "highlight"
+ },
+ "love": {
+  "frame": "torn",
+  "treatment": "natural",
+  "surface": "grid",
+  "type": 7,
+  "layout": "top",
+  "prop": "tape"
+ },
+ "anger": {
+  "frame": "mirror",
+  "treatment": "greyhi",
+  "surface": "black",
+  "type": 10,
+  "layout": "behind",
+  "prop": "clip"
+ },
+ "loneliness": {
+  "frame": "bleed",
+  "treatment": "tint",
+  "surface": "solid",
+  "type": 13,
+  "layout": "corner",
+  "prop": "none"
+ },
+ "hope": {
+  "frame": "oval",
+  "treatment": "cyanotype",
+  "surface": "cork",
+  "type": 11,
+  "layout": "right",
+  "prop": "postmark"
+ },
+ "pride": {
+  "frame": "rect",
+  "treatment": "duotone",
+  "surface": "kraft",
+  "type": 12,
+  "layout": "corner",
+  "prop": "clip"
+ },
+ "greed": {
+  "frame": "gate",
+  "treatment": "sepia",
+  "surface": "cork",
+  "type": 1,
+  "layout": "behind",
+  "prop": "pin"
+ },
+ "trust": {
+  "frame": "polaroid",
+  "treatment": "greyhi",
+  "surface": "grid",
+  "type": 8,
+  "layout": "top",
+  "prop": "postmark"
+ },
+ "lies": {
+  "frame": "arch",
+  "treatment": "posterize",
+  "surface": "linen",
+  "type": 4,
+  "layout": "left",
+  "prop": "index"
+ },
+ "persona": {
+  "frame": "disc",
+  "treatment": "natural",
+  "surface": "cream",
+  "type": 6,
+  "layout": "centre",
+  "prop": "pin"
+ },
+ "mirror": {
+  "frame": "ticket",
+  "treatment": "tint",
+  "surface": "slate",
+  "type": 0,
+  "layout": "top",
+  "prop": "none"
+ },
+ "placebo": {
+  "frame": "stamp",
+  "treatment": "sepia",
+  "surface": "black",
+  "type": 5,
+  "layout": "behind",
+  "prop": "highlight"
+ },
+ "optimism": {
+  "frame": "torn",
+  "treatment": "duotone",
+  "surface": "solid",
+  "type": 12,
+  "layout": "corner",
+  "prop": "ruler"
+ },
+ "choice": {
+  "frame": "disc",
+  "treatment": "cyanotype",
+  "surface": "kraft",
+  "type": 8,
+  "layout": "right",
+  "prop": "tape"
+ },
+ "status": {
+  "frame": "oval",
+  "treatment": "natural",
+  "surface": "blueprint",
+  "type": 2,
+  "layout": "left",
+  "prop": "ruler"
+ },
+ "revenge": {
+  "frame": "stack",
+  "treatment": "cyanotype",
+  "surface": "newsprint",
+  "type": 13,
+  "layout": "centre",
+  "prop": "postmark"
+ },
+ "gratitude": {
+  "frame": "rect",
+  "treatment": "sepia",
+  "surface": "cork",
+  "type": 6,
+  "layout": "top",
+  "prop": "highlight"
+ },
+ "awe": {
+  "frame": "polaroid",
+  "treatment": "greyhi",
+  "surface": "newsprint",
+  "type": 1,
+  "layout": "right",
+  "prop": "tape"
+ },
+ "disgust": {
+  "frame": "gate",
+  "treatment": "posterize",
+  "surface": "linen",
+  "type": 7,
+  "layout": "centre",
+  "prop": "none"
+ },
+ "mob": {
+  "frame": "mirror",
+  "treatment": "tint",
+  "surface": "grid",
+  "type": 3,
+  "layout": "left",
+  "prop": "clip"
+ },
+ "gambler": {
+  "frame": "bleed",
+  "treatment": "duotone",
+  "surface": "black",
+  "type": 4,
+  "layout": "behind",
+  "prop": "pin"
+ },
+ "uncanny": {
+  "frame": "arch",
+  "treatment": "greyhi",
+  "surface": "linen",
+  "type": 9,
+  "layout": "corner",
+  "prop": "index"
+ },
+ "flow": {
+  "frame": "mirror",
+  "treatment": "duotone",
+  "surface": "cream",
+  "type": 10,
+  "layout": "centre",
+  "prop": "none"
+ },
+ "daydream": {
+  "frame": "oval",
+  "treatment": "cyanotype",
+  "surface": "kraft",
+  "type": 11,
+  "layout": "left",
+  "prop": "highlight"
+ },
+ "nightmare": {
+  "frame": "stack",
+  "treatment": "posterize",
+  "surface": "blueprint",
+  "type": 7,
+  "layout": "corner",
+  "prop": "clip"
+ },
+ "selfcontrol": {
+  "frame": "arch",
+  "treatment": "sepia",
+  "surface": "slate",
+  "type": 6,
+  "layout": "behind",
+  "prop": "index"
+ }
+}

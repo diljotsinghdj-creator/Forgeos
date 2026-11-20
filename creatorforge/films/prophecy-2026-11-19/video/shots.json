@@ -1,0 +1,2511 @@
+{
+ "slug": "the-night-the-world-didnt-end",
+ "title": "The Night the World Didn't End",
+ "channel": "dragonpsych",
+ "voice": "am_fenrir",
+ "speed": 1.0,
+ "treatment": "pulse",
+ "guide": {
+  "Riecken": "Reeken",
+  "Millerites": "Miller-ites"
+ },
+ "reload_pages": [],
+ "shots": [
+  {
+   "id": "1.01",
+   "beat": 1,
+   "vo": "Look closely at this minute.",
+   "page": "01_clock",
+   "t": [
+    0.1,
+    0.2
+   ],
+   "cam": [
+    2.6,
+    0.5,
+    0.43,
+    2.5,
+    0.5,
+    0.44
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "1.02a",
+   "beat": 1,
+   "vo": "In a living room outside Chicago,",
+   "page": "01_clock",
+   "t": [
+    0.2,
+    0.7
+   ],
+   "cam": [
+    2.4,
+    0.5,
+    0.46,
+    1.25,
+    0.58,
+    0.56
+   ]
+  },
+  {
+   "id": "1.02b",
+   "beat": 1,
+   "vo": "a small group is waiting for a flying saucer.",
+   "page": "02_house",
+   "t": [
+    0,
+    0.36
+   ],
+   "cam": [
+    1.6,
+    0.36,
+    0.55,
+    1.15,
+    0.45,
+    0.52
+   ]
+  },
+  {
+   "id": "1.03a",
+   "beat": 1,
+   "vo": "They've been told the world floods tomorrow,",
+   "page": "01b_room",
+   "t": [
+    0,
+    0.44
+   ],
+   "cam": [
+    1.25,
+    0.45,
+    0.5,
+    1.5,
+    0.78,
+    0.3
+   ],
+   "say": "They've been told the world floods tomorrow,"
+  },
+  {
+   "id": "1.03b",
+   "beat": 1,
+   "vo": "and that the aliens will collect the faithful tonight.",
+   "page": "01b_room",
+   "t": [
+    0.44,
+    0.7
+   ],
+   "cam": [
+    1.5,
+    0.4,
+    0.62,
+    1.2,
+    0.5,
+    0.55
+   ]
+  },
+  {
+   "id": "1.04a",
+   "beat": 1,
+   "vo": "They have removed every bit of metal from their clothes,",
+   "page": "03_metal",
+   "t": [
+    0.12,
+    0.6
+   ],
+   "cam": [
+    1.5,
+    0.3,
+    0.62,
+    1.35,
+    0.42,
+    0.58
+   ]
+  },
+  {
+   "id": "1.04b",
+   "beat": 1,
+   "vo": "because the spacemen apparently have opinions about zips.",
+   "page": "03_metal",
+   "t": [
+    0.6,
+    0.95
+   ],
+   "cam": [
+    1.3,
+    0.7,
+    0.42,
+    1.0,
+    0.5,
+    0.5
+   ],
+   "cut": true
+  },
+  {
+   "id": "1.05a",
+   "beat": 1,
+   "vo": "And sitting among them, taking notes in the bathroom,",
+   "page": "02_house",
+   "t": [
+    0.36,
+    0.52
+   ],
+   "cam": [
+    1.5,
+    0.42,
+    0.6,
+    1.7,
+    0.34,
+    0.66
+   ]
+  },
+  {
+   "id": "1.05b",
+   "beat": 1,
+   "vo": "are three psychologists.",
+   "page": "02_house",
+   "t": [
+    0.52,
+    0.88
+   ],
+   "cam": [
+    2.0,
+    0.27,
+    0.7,
+    2.15,
+    0.26,
+    0.71
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "1.06a",
+   "beat": 1,
+   "vo": "Because what happens after this clock passes midnight",
+   "page": "01_clock",
+   "t": [
+    0.7,
+    1
+   ],
+   "cam": [
+    1.6,
+    0.5,
+    0.8,
+    1.6,
+    0.5,
+    0.43
+   ]
+  },
+  {
+   "id": "1.06b",
+   "beat": 1,
+   "vo": "will become one of the most famous ideas in psychology.",
+   "page": "01_clock",
+   "t": [
+    1,
+    1
+   ],
+   "cam": [
+    1.9,
+    0.47,
+    0.44,
+    2.3,
+    0.5,
+    0.43
+   ]
+  },
+  {
+   "id": "1.07",
+   "beat": 1,
+   "vo": "You've used it. \"Cognitive dissonance.\"",
+   "page": "04_title",
+   "t": [
+    0,
+    0.2
+   ],
+   "cam": [
+    1.6,
+    0.5,
+    0.24,
+    1.8,
+    0.5,
+    0.23
+   ]
+  },
+  {
+   "id": "1.08",
+   "beat": 1,
+   "vo": "And there's one problem with it, which we'll get to.",
+   "page": "04_title",
+   "t": [
+    0.2,
+    0.28
+   ],
+   "cam": [
+    2.3,
+    0.58,
+    0.23,
+    2.0,
+    0.5,
+    0.26
+   ],
+   "cut": true,
+   "post": 0.6
+  },
+  {
+   "id": "1.09a",
+   "beat": 1,
+   "vo": "It's possible the most famous study of people who couldn't admit they were wrong…",
+   "page": "04_title",
+   "t": [
+    0.28,
+    0.5
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.1,
+    0.5,
+    0.54
+   ]
+  },
+  {
+   "id": "1.09b",
+   "beat": 1,
+   "vo": "was wrong.",
+   "page": "04_title",
+   "t": [
+    0.5,
+    0.8
+   ],
+   "cam": [
+    1.5,
+    0.8,
+    0.78,
+    1.7,
+    0.83,
+    0.8
+   ],
+   "post": 0.6,
+   "build": 0.5
+  },
+  {
+   "id": "2.01a",
+   "beat": 2,
+   "vo": "To understand that room, start much earlier,",
+   "page": "05_timeline",
+   "t": [
+    0,
+    0.2
+   ],
+   "cam": [
+    1.4,
+    0.62,
+    0.5,
+    1.4,
+    0.25,
+    0.5
+   ]
+  },
+  {
+   "id": "2.01b",
+   "beat": 2,
+   "vo": "with a brain that evolved in groups of a few dozen people.",
+   "page": "05_timeline",
+   "t": [
+    0.2,
+    0.24
+   ],
+   "cam": [
+    1.7,
+    0.16,
+    0.46,
+    2.0,
+    0.15,
+    0.44
+   ]
+  },
+  {
+   "id": "2.02a",
+   "beat": 2,
+   "vo": "One influential theory says reasoning didn't evolve to find the truth.",
+   "page": "05_timeline",
+   "t": [
+    0.5,
+    0.74
+   ],
+   "cam": [
+    1.3,
+    0.72,
+    0.32,
+    1.5,
+    0.78,
+    0.26
+   ]
+  },
+  {
+   "id": "2.02b",
+   "beat": 2,
+   "vo": "It evolved to win arguments.",
+   "page": "05_timeline",
+   "t": [
+    0.74,
+    0.8
+   ],
+   "cam": [
+    1.9,
+    0.8,
+    0.27,
+    2.1,
+    0.8,
+    0.28
+   ]
+  },
+  {
+   "id": "2.03a",
+   "beat": 2,
+   "vo": "In a small tribe, being wrong in public could cost you allies.",
+   "page": "06_membership",
+   "t": [
+    0,
+    0.3
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.4,
+    0.28,
+    0.55
+   ]
+  },
+  {
+   "id": "2.03b",
+   "beat": 2,
+   "vo": "Being stubborn cost you very little.",
+   "page": "06_membership",
+   "t": [
+    0.3,
+    0.5
+   ],
+   "cam": [
+    1.4,
+    0.72,
+    0.55,
+    1.5,
+    0.74,
+    0.56
+   ]
+  },
+  {
+   "id": "2.04a",
+   "beat": 2,
+   "vo": "So the brain treats a belief less like a fact",
+   "page": "06_membership",
+   "t": [
+    0.5,
+    0.58
+   ],
+   "cam": [
+    1.15,
+    0.5,
+    0.5,
+    1.0,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "2.04b",
+   "beat": 2,
+   "vo": "and more like a membership card.",
+   "page": "06_membership",
+   "t": [
+    0.58,
+    0.85
+   ],
+   "cam": [
+    1.6,
+    0.8,
+    0.8,
+    1.9,
+    0.82,
+    0.82
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "2.05a",
+   "beat": 2,
+   "vo": "Which is why, when a prediction fails, the interesting question isn't \"were they wrong?\"",
+   "page": "05_timeline",
+   "t": [
+    0.8,
+    0.9
+   ],
+   "cam": [
+    1.4,
+    0.25,
+    0.5,
+    1.4,
+    0.5,
+    0.46
+   ]
+  },
+  {
+   "id": "2.05b",
+   "beat": 2,
+   "vo": "It's \"what happens next?\"",
+   "page": "05_timeline",
+   "t": [
+    0.9,
+    0.92
+   ],
+   "cam": [
+    1.5,
+    0.46,
+    0.46,
+    1.7,
+    0.44,
+    0.42
+   ]
+  },
+  {
+   "id": "2.06a",
+   "beat": 2,
+   "vo": "Follow the line to 1844.",
+   "page": "05_timeline",
+   "t": [
+    0.92,
+    0.95
+   ],
+   "cam": [
+    1.9,
+    0.5,
+    0.56,
+    2.3,
+    0.44,
+    0.34
+   ],
+   "say": "Follow the line to eighteen forty-four."
+  },
+  {
+   "id": "2.06b",
+   "beat": 2,
+   "vo": "Thousands of Americans, the Millerites, expected the world to end on 22 October.",
+   "page": "07_millerites",
+   "t": [
+    0,
+    0.48
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.3,
+    0.38,
+    0.56
+   ],
+   "say": "Thousands of Americans, the Millerites, expected the world to end on the twenty-second of October."
+  },
+  {
+   "id": "2.07a",
+   "beat": 2,
+   "vo": "It didn't.",
+   "page": "07_millerites",
+   "t": [
+    0.48,
+    0.49
+   ],
+   "cam": [
+    1.8,
+    0.41,
+    0.68,
+    2.0,
+    0.41,
+    0.7
+   ]
+  },
+  {
+   "id": "2.07b",
+   "beat": 2,
+   "vo": "Historians call that day \"the Great Disappointment\",",
+   "page": "07_millerites",
+   "t": [
+    0.49,
+    0.6
+   ],
+   "cam": [
+    1.4,
+    0.76,
+    0.4,
+    1.6,
+    0.76,
+    0.36
+   ],
+   "cut": true
+  },
+  {
+   "id": "2.07c",
+   "beat": 2,
+   "vo": "which is the most restrained name ever given to the end of the world not happening.",
+   "page": "07_millerites",
+   "t": [
+    0.6,
+    0.92
+   ],
+   "cam": [
+    1.3,
+    0.75,
+    0.5,
+    1.3,
+    0.75,
+    0.68
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "2.08a",
+   "beat": 2,
+   "vo": "A century later, a young psychologist named Leon Festinger",
+   "page": "05_timeline",
+   "t": [
+    0.95,
+    1
+   ],
+   "cam": [
+    1.6,
+    0.42,
+    0.5,
+    1.6,
+    0.66,
+    0.54
+   ]
+  },
+  {
+   "id": "2.08b",
+   "beat": 2,
+   "vo": "wanted to watch a disappointment like that happen live.",
+   "page": "08_map",
+   "t": [
+    0,
+    0.2
+   ],
+   "cam": [
+    1.5,
+    0.3,
+    0.45,
+    1.7,
+    0.22,
+    0.44
+   ]
+  },
+  {
+   "id": "2.09a",
+   "beat": 2,
+   "vo": "So when a newspaper story appeared about a woman in Illinois predicting a flood,",
+   "page": "08_map",
+   "t": [
+    0.2,
+    0.48
+   ],
+   "cam": [
+    1.5,
+    0.3,
+    0.5,
+    1.6,
+    0.5,
+    0.72
+   ]
+  },
+  {
+   "id": "2.09b",
+   "beat": 2,
+   "vo": "he and two colleagues went undercover.",
+   "page": "08_map",
+   "t": [
+    0.48,
+    0.74
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.2,
+    0.38,
+    0.62
+   ]
+  },
+  {
+   "id": "2.10a",
+   "beat": 2,
+   "vo": "Their plan: join the group, wait for the failure,",
+   "page": "02_house",
+   "t": [
+    0.88,
+    1
+   ],
+   "cam": [
+    1.5,
+    0.3,
+    0.66,
+    1.0,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "2.10b",
+   "beat": 2,
+   "vo": "and write down every reaction.",
+   "page": "02_house",
+   "t": [
+    1,
+    1
+   ],
+   "cam": [
+    1.8,
+    0.64,
+    0.45,
+    2.0,
+    0.65,
+    0.44
+   ]
+  },
+  {
+   "id": "3.01",
+   "beat": 3,
+   "vo": "Back to the clock. Eleven fifty-nine.",
+   "page": "01_clock",
+   "t": [
+    1,
+    1
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.9,
+    0.46,
+    0.44
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "3.02",
+   "beat": 3,
+   "vo": "Midnight.",
+   "page": "09_midnight",
+   "t": [
+    0.05,
+    0.35
+   ],
+   "cam": [
+    1.25,
+    0.5,
+    0.48,
+    1.3,
+    0.5,
+    0.5
+   ],
+   "cut": true,
+   "build": 0.3,
+   "post": 0.5
+  },
+  {
+   "id": "3.03",
+   "beat": 3,
+   "vo": "Nothing.",
+   "page": "09_midnight",
+   "t": [
+    0.6,
+    0.7
+   ],
+   "cam": [
+    1.7,
+    0.5,
+    0.78,
+    1.8,
+    0.5,
+    0.8
+   ],
+   "build": 0.3,
+   "post": 0.9
+  },
+  {
+   "id": "3.04a",
+   "beat": 3,
+   "vo": "Over the next hours, the group sits in stunned silence.",
+   "page": "02_house",
+   "t": [
+    1,
+    1
+   ],
+   "cam": [
+    1.25,
+    0.35,
+    0.45,
+    1.4,
+    0.35,
+    0.5
+   ]
+  },
+  {
+   "id": "3.04b",
+   "beat": 3,
+   "vo": "Some people walk away from the gathering.",
+   "page": "02_house",
+   "t": [
+    1,
+    1
+   ],
+   "cam": [
+    1.6,
+    0.6,
+    0.6,
+    1.6,
+    0.7,
+    0.72
+   ]
+  },
+  {
+   "id": "3.05a",
+   "beat": 3,
+   "vo": "Then, before dawn on 21 December,",
+   "page": "10_christmas",
+   "t": [
+    0,
+    0.15
+   ],
+   "cam": [
+    1.9,
+    0.13,
+    0.34,
+    2.1,
+    0.13,
+    0.36
+   ],
+   "say": "Then, before dawn on the twenty-first of December,"
+  },
+  {
+   "id": "3.05b",
+   "beat": 3,
+   "vo": "their leader receives a new message.",
+   "page": "10_christmas",
+   "t": [
+    0.15,
+    0.4
+   ],
+   "cam": [
+    1.3,
+    0.55,
+    0.32,
+    1.4,
+    0.57,
+    0.3
+   ]
+  },
+  {
+   "id": "3.06a",
+   "beat": 3,
+   "vo": "The group has spread so much light that the flood has been called off.",
+   "page": "10_christmas",
+   "t": [
+    0.4,
+    0.6
+   ],
+   "cam": [
+    1.7,
+    0.5,
+    0.3,
+    1.9,
+    0.6,
+    0.31
+   ]
+  },
+  {
+   "id": "3.06b",
+   "beat": 3,
+   "vo": "The world is saved.",
+   "page": "10_christmas",
+   "t": [
+    0.6,
+    0.65
+   ],
+   "cam": [
+    1.15,
+    0.5,
+    0.42,
+    1.1,
+    0.5,
+    0.45
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "3.07a",
+   "beat": 3,
+   "vo": "Which, as excuses go, is incredibly efficient.",
+   "page": "10_christmas",
+   "t": [
+    0.65,
+    0.75
+   ],
+   "cam": [
+    1.8,
+    0.5,
+    0.62,
+    2.0,
+    0.5,
+    0.63
+   ],
+   "cut": true
+  },
+  {
+   "id": "3.07b",
+   "beat": 3,
+   "vo": "You didn't miss the deadline; you were so good the deadline cancelled itself.",
+   "page": "10_christmas",
+   "t": [
+    0.75,
+    1
+   ],
+   "cam": [
+    1.5,
+    0.55,
+    0.75,
+    1.6,
+    0.56,
+    0.77
+   ]
+  },
+  {
+   "id": "3.08a",
+   "beat": 3,
+   "vo": "And according to the book the psychologists published in 1956, When Prophecy Fails,",
+   "page": "11_book",
+   "t": [
+    0,
+    0.2
+   ],
+   "cam": [
+    1.3,
+    0.4,
+    0.5,
+    1.5,
+    0.25,
+    0.5
+   ],
+   "say": "And according to the book the psychologists published in nineteen fifty-six, When Prophecy Fails,"
+  },
+  {
+   "id": "3.08b",
+   "beat": 3,
+   "vo": "here's the twist.",
+   "page": "11_book",
+   "t": [
+    0.2,
+    0.24
+   ],
+   "cam": [
+    2.0,
+    0.2,
+    0.42,
+    2.2,
+    0.2,
+    0.4
+   ]
+  },
+  {
+   "id": "3.09a",
+   "beat": 3,
+   "vo": "The group, which had avoided publicity,",
+   "page": "11b_phones",
+   "t": [
+    0,
+    0.3
+   ],
+   "cam": [
+    1.4,
+    0.25,
+    0.56,
+    1.5,
+    0.27,
+    0.52
+   ]
+  },
+  {
+   "id": "3.09b",
+   "beat": 3,
+   "vo": "suddenly phoned the newspapers and started recruiting.",
+   "page": "11b_phones",
+   "t": [
+    0.3,
+    0.75
+   ],
+   "cam": [
+    1.1,
+    0.55,
+    0.5,
+    1.2,
+    0.62,
+    0.5
+   ]
+  },
+  {
+   "id": "3.10a",
+   "beat": 3,
+   "vo": "The failure didn't weaken their belief.",
+   "page": "11_book",
+   "t": [
+    0.24,
+    0.66
+   ],
+   "cam": [
+    1.3,
+    0.7,
+    0.5,
+    1.4,
+    0.72,
+    0.52
+   ]
+  },
+  {
+   "id": "3.10b",
+   "beat": 3,
+   "vo": "It made them double down.",
+   "page": "11_book",
+   "t": [
+    0.66,
+    0.9
+   ],
+   "cam": [
+    1.5,
+    0.76,
+    0.7,
+    1.7,
+    0.78,
+    0.76
+   ]
+  },
+  {
+   "id": "3.11a",
+   "beat": 3,
+   "vo": "Look at the valve.",
+   "page": "12_valve",
+   "t": [
+    0,
+    0.3
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.2,
+    0.45,
+    0.5
+   ]
+  },
+  {
+   "id": "3.11b",
+   "beat": 3,
+   "vo": "When what you believe and what just happened collide,",
+   "page": "12_valve",
+   "t": [
+    0.3,
+    0.46
+   ],
+   "cam": [
+    1.5,
+    0.3,
+    0.5,
+    1.7,
+    0.45,
+    0.5
+   ]
+  },
+  {
+   "id": "3.11c",
+   "beat": 3,
+   "vo": "the pressure has to go somewhere.",
+   "page": "12_valve",
+   "t": [
+    0.46,
+    0.76
+   ],
+   "cam": [
+    1.5,
+    0.6,
+    0.5,
+    1.35,
+    0.68,
+    0.5
+   ]
+  },
+  {
+   "id": "3.12a",
+   "beat": 3,
+   "vo": "Changing your mind is the expensive option.",
+   "page": "12_valve",
+   "t": [
+    0.76,
+    0.8
+   ],
+   "cam": [
+    1.9,
+    0.8,
+    0.36,
+    2.0,
+    0.82,
+    0.35
+   ]
+  },
+  {
+   "id": "3.12b",
+   "beat": 3,
+   "vo": "Adding a new story is cheap.",
+   "page": "12_valve",
+   "t": [
+    0.8,
+    1
+   ],
+   "cam": [
+    1.7,
+    0.8,
+    0.68,
+    1.8,
+    0.8,
+    0.74
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "3.13a",
+   "beat": 3,
+   "vo": "A year later, Festinger turned it into a full theory,",
+   "page": "12_valve",
+   "t": [
+    1,
+    1
+   ],
+   "cam": [
+    1.3,
+    0.5,
+    0.52,
+    1.0,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "3.13b",
+   "beat": 3,
+   "vo": "and in 1959 he tested it in a lab.",
+   "page": "13_carlsmith",
+   "t": [
+    0,
+    0.1
+   ],
+   "cam": [
+    1.5,
+    0.26,
+    0.26,
+    1.7,
+    0.26,
+    0.25
+   ],
+   "say": "and in nineteen fifty-nine he tested it in a lab."
+  },
+  {
+   "id": "3.14a",
+   "beat": 3,
+   "vo": "Students did a deliberately boring task, turning pegs on a board,",
+   "page": "13_carlsmith",
+   "t": [
+    0.1,
+    0.37
+   ],
+   "cam": [
+    1.7,
+    0.34,
+    0.55,
+    1.9,
+    0.35,
+    0.56
+   ]
+  },
+  {
+   "id": "3.14b",
+   "beat": 3,
+   "vo": "then were paid to tell the next person it was fun.",
+   "page": "13_carlsmith",
+   "t": [
+    0.37,
+    0.4
+   ],
+   "cam": [
+    1.35,
+    0.3,
+    0.45,
+    1.2,
+    0.38,
+    0.5
+   ]
+  },
+  {
+   "id": "3.15a",
+   "beat": 3,
+   "vo": "Some got twenty dollars. Some got one dollar.",
+   "page": "13_carlsmith",
+   "t": [
+    0.4,
+    0.52
+   ],
+   "cam": [
+    1.5,
+    0.68,
+    0.6,
+    1.6,
+    0.66,
+    0.62
+   ]
+  },
+  {
+   "id": "3.15b",
+   "beat": 3,
+   "vo": "Guess who later said the task was actually enjoyable.",
+   "page": "13_carlsmith",
+   "t": [
+    0.52,
+    0.54
+   ],
+   "cam": [
+    1.3,
+    0.7,
+    0.5,
+    1.4,
+    0.72,
+    0.46
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "3.16a",
+   "beat": 3,
+   "vo": "The one-dollar people.",
+   "page": "13_carlsmith",
+   "t": [
+    0.54,
+    0.7
+   ],
+   "cam": [
+    1.7,
+    0.78,
+    0.56,
+    1.8,
+    0.8,
+    0.52
+   ]
+  },
+  {
+   "id": "3.16b",
+   "beat": 3,
+   "vo": "Twenty dollars is a reason to lie.",
+   "page": "13_carlsmith",
+   "t": [
+    0.7,
+    0.72
+   ],
+   "cam": [
+    1.9,
+    0.62,
+    0.7,
+    2.0,
+    0.62,
+    0.72
+   ]
+  },
+  {
+   "id": "3.16c",
+   "beat": 3,
+   "vo": "One dollar isn't, so your brain quietly rewrites the task.",
+   "page": "13_carlsmith",
+   "t": [
+    0.72,
+    0.8
+   ],
+   "cam": [
+    1.3,
+    0.68,
+    0.6,
+    1.15,
+    0.6,
+    0.6
+   ]
+  },
+  {
+   "id": "3.17a",
+   "beat": 3,
+   "vo": "Which is the brain as a middle manager:",
+   "page": "13_carlsmith",
+   "t": [
+    0.8,
+    0.86
+   ],
+   "cam": [
+    1.6,
+    0.2,
+    0.6,
+    1.7,
+    0.2,
+    0.62
+   ]
+  },
+  {
+   "id": "3.17b",
+   "beat": 3,
+   "vo": "it can't admit the project failed, so it updates the project description.",
+   "page": "13_carlsmith",
+   "t": [
+    0.86,
+    0.95
+   ],
+   "cam": [
+    1.7,
+    0.22,
+    0.82,
+    1.9,
+    0.22,
+    0.85
+   ],
+   "cut": true
+  },
+  {
+   "id": "3.18a",
+   "beat": 3,
+   "vo": "For seventy years, this story was taught in almost every psychology course.",
+   "page": "14_twoclocks",
+   "t": [
+    0,
+    0.33
+   ],
+   "cam": [
+    1.6,
+    0.3,
+    0.42,
+    1.6,
+    0.34,
+    0.42
+   ]
+  },
+  {
+   "id": "3.18b",
+   "beat": 3,
+   "vo": "And that's when the second clock starts.",
+   "page": "14_twoclocks",
+   "t": [
+    0.33,
+    0.85
+   ],
+   "cam": [
+    1.6,
+    0.36,
+    0.42,
+    1.2,
+    0.62,
+    0.5
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "4.01a",
+   "beat": 4,
+   "vo": "In 2025, a box of Festinger's private papers",
+   "page": "15_box",
+   "t": [
+    0,
+    0.17
+   ],
+   "cam": [
+    1.3,
+    0.25,
+    0.45,
+    1.45,
+    0.24,
+    0.42
+   ],
+   "say": "In twenty twenty-five, a box of Festinger's private papers"
+  },
+  {
+   "id": "4.01b",
+   "beat": 4,
+   "vo": "at the University of Michigan was unsealed.",
+   "page": "15_box",
+   "t": [
+    0.17,
+    0.38
+   ],
+   "cam": [
+    1.4,
+    0.3,
+    0.6,
+    1.2,
+    0.45,
+    0.5
+   ]
+  },
+  {
+   "id": "4.02a",
+   "beat": 4,
+   "vo": "Look inside: transcripts, phone logs, research notes,",
+   "page": "15_box",
+   "t": [
+    0.38,
+    0.68
+   ],
+   "cam": [
+    1.6,
+    0.8,
+    0.65,
+    1.8,
+    0.82,
+    0.68
+   ]
+  },
+  {
+   "id": "4.02b",
+   "beat": 4,
+   "vo": "and messages the group believed came from space.",
+   "page": "15_box",
+   "t": [
+    0.68,
+    0.8
+   ],
+   "cam": [
+    1.9,
+    0.86,
+    0.75,
+    1.7,
+    0.8,
+    0.78
+   ]
+  },
+  {
+   "id": "4.03a",
+   "beat": 4,
+   "vo": "A researcher named Thomas Kelly read them.",
+   "page": "16_kelly",
+   "t": [
+    0,
+    0.13
+   ],
+   "cam": [
+    1.5,
+    0.28,
+    0.27,
+    1.7,
+    0.27,
+    0.26
+   ]
+  },
+  {
+   "id": "4.03b",
+   "beat": 4,
+   "vo": "His paper came out in November 2025,",
+   "page": "16_kelly",
+   "t": [
+    0.13,
+    0.2
+   ],
+   "cam": [
+    1.2,
+    0.5,
+    0.3,
+    1.25,
+    0.6,
+    0.28
+   ],
+   "say": "His paper came out in November twenty twenty-five,"
+  },
+  {
+   "id": "4.03c",
+   "beat": 4,
+   "vo": "and it says the book got the story backwards.",
+   "page": "16_kelly",
+   "t": [
+    0.2,
+    0.24
+   ],
+   "cam": [
+    1.9,
+    0.3,
+    0.3,
+    2.1,
+    0.3,
+    0.33
+   ]
+  },
+  {
+   "id": "4.04a",
+   "beat": 4,
+   "vo": "First claim. According to Kelly, the group wasn't shy before midnight.",
+   "page": "16_kelly",
+   "t": [
+    0.24,
+    0.38
+   ],
+   "cam": [
+    1.4,
+    0.3,
+    0.6,
+    1.5,
+    0.3,
+    0.62
+   ]
+  },
+  {
+   "id": "4.04b",
+   "beat": 4,
+   "vo": "They planned a book, wrote to magazines, and welcomed visitors.",
+   "page": "16_kelly",
+   "t": [
+    0.38,
+    0.55
+   ],
+   "cam": [
+    1.5,
+    0.72,
+    0.6,
+    1.6,
+    0.74,
+    0.62
+   ]
+  },
+  {
+   "id": "4.05",
+   "beat": 4,
+   "vo": "So the \"sudden\" recruiting after the failure wasn't sudden.",
+   "page": "16_kelly",
+   "t": [
+    0.55,
+    0.78
+   ],
+   "cam": [
+    1.25,
+    0.6,
+    0.58,
+    1.35,
+    0.7,
+    0.6
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "4.06a",
+   "beat": 4,
+   "vo": "Second claim. After the Christmas message, Kelly says, the belief didn't survive.",
+   "page": "10_christmas",
+   "t": [
+    1,
+    1
+   ],
+   "cam": [
+    1.4,
+    0.55,
+    0.3,
+    1.2,
+    0.5,
+    0.4
+   ]
+  },
+  {
+   "id": "4.06b",
+   "beat": 4,
+   "vo": "The leader recanted. The group broke up.",
+   "page": "17_empty",
+   "t": [
+    0,
+    0.3
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.25,
+    0.45,
+    0.45
+   ]
+  },
+  {
+   "id": "4.07a",
+   "beat": 4,
+   "vo": "Which is the opposite of doubling down.",
+   "page": "17_empty",
+   "t": [
+    0.3,
+    0.6
+   ],
+   "cam": [
+    1.7,
+    0.37,
+    0.66,
+    1.8,
+    0.36,
+    0.68
+   ]
+  },
+  {
+   "id": "4.07b",
+   "beat": 4,
+   "vo": "It's what you'd expect from people who were simply… disappointed.",
+   "page": "17_empty",
+   "t": [
+    0.6,
+    1
+   ],
+   "cam": [
+    1.8,
+    0.52,
+    0.65,
+    2.0,
+    0.56,
+    0.68
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "4.08",
+   "beat": 4,
+   "vo": "And third, the part that made Kelly's paper famous.",
+   "page": "16_kelly",
+   "t": [
+    0.78,
+    0.9
+   ],
+   "cam": [
+    1.3,
+    0.6,
+    0.4,
+    1.6,
+    0.62,
+    0.36
+   ]
+  },
+  {
+   "id": "4.09a",
+   "beat": 4,
+   "vo": "One of the three psychologists, Henry Riecken,",
+   "page": "18_riecken",
+   "t": [
+    0.44,
+    0.62
+   ],
+   "cam": [
+    1.6,
+    0.45,
+    0.62,
+    1.9,
+    0.6,
+    0.52
+   ]
+  },
+  {
+   "id": "4.09b",
+   "beat": 4,
+   "vo": "was treated by the group as a spiritual figure.",
+   "page": "18_riecken",
+   "t": [
+    0.62,
+    0.64
+   ],
+   "cam": [
+    2.3,
+    0.65,
+    0.47,
+    2.5,
+    0.65,
+    0.46
+   ]
+  },
+  {
+   "id": "4.09c",
+   "beat": 4,
+   "vo": "Kelly says Riecken wrote fake messages from space to steer them.",
+   "page": "18_riecken",
+   "t": [
+    0.64,
+    0.7
+   ],
+   "cam": [
+    1.8,
+    0.6,
+    0.6,
+    1.6,
+    0.5,
+    0.62
+   ]
+  },
+  {
+   "id": "4.10a",
+   "beat": 4,
+   "vo": "Here's a line Kelly quotes from Riecken's own notes that night:",
+   "page": "18_riecken",
+   "t": [
+    0.7,
+    0.72
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.3,
+    0.68,
+    0.3
+   ]
+  },
+  {
+   "id": "4.10b",
+   "beat": 4,
+   "vo": "that he had \"precipitated what seems to have been quite a scene inside of the house.\"",
+   "page": "18_riecken",
+   "t": [
+    0.72,
+    0.8
+   ],
+   "cam": [
+    1.5,
+    0.74,
+    0.2,
+    1.7,
+    0.74,
+    0.2
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "4.11a",
+   "beat": 4,
+   "vo": "So the scientists watching the experiment",
+   "page": "18_riecken",
+   "t": [
+    0.8,
+    0.84
+   ],
+   "cam": [
+    1.4,
+    0.55,
+    0.6,
+    1.2,
+    0.5,
+    0.55
+   ]
+  },
+  {
+   "id": "4.11b",
+   "beat": 4,
+   "vo": "may have been running the experiment.",
+   "page": "18_riecken",
+   "t": [
+    0.84,
+    0.9
+   ],
+   "cam": [
+    1.7,
+    0.27,
+    0.86,
+    1.9,
+    0.27,
+    0.88
+   ],
+   "cut": true
+  },
+  {
+   "id": "4.12a",
+   "beat": 4,
+   "vo": "It's like a nature documentary where the narrator throws the antelope at the lion",
+   "page": "19_antelope",
+   "t": [
+    0,
+    0.5
+   ],
+   "cam": [
+    1.5,
+    0.2,
+    0.6,
+    1.3,
+    0.6,
+    0.55
+   ]
+  },
+  {
+   "id": "4.12b",
+   "beat": 4,
+   "vo": "and then says, \"Fascinating.\"",
+   "page": "19_antelope",
+   "t": [
+    0.5,
+    0.9
+   ],
+   "cam": [
+    1.6,
+    0.2,
+    0.3,
+    1.1,
+    0.5,
+    0.4
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "4.13a",
+   "beat": 4,
+   "vo": "And there were warnings for decades.",
+   "page": "20_replications",
+   "t": [
+    0,
+    0.16
+   ],
+   "cam": [
+    1.5,
+    0.2,
+    0.25,
+    1.5,
+    0.3,
+    0.25
+   ]
+  },
+  {
+   "id": "4.13b",
+   "beat": 4,
+   "vo": "When other scholars watched other groups whose prophecies failed,",
+   "page": "20_replications",
+   "t": [
+    0.16,
+    0.4
+   ],
+   "cam": [
+    1.4,
+    0.36,
+    0.26,
+    1.4,
+    0.6,
+    0.26
+   ]
+  },
+  {
+   "id": "4.13c",
+   "beat": 4,
+   "vo": "most didn't double down.",
+   "page": "20_replications",
+   "t": [
+    0.4,
+    0.44
+   ],
+   "cam": [
+    2.0,
+    0.5,
+    0.3,
+    2.2,
+    0.5,
+    0.33
+   ]
+  },
+  {
+   "id": "4.14a",
+   "beat": 4,
+   "vo": "The lab side has wobbled too.",
+   "page": "20_replications",
+   "t": [
+    0.44,
+    0.6
+   ],
+   "cam": [
+    1.2,
+    0.5,
+    0.5,
+    1.4,
+    0.52,
+    0.62
+   ]
+  },
+  {
+   "id": "4.14b",
+   "beat": 4,
+   "vo": "In 2024, 39 labs in 19 countries, nearly five thousand people,",
+   "page": "20_replications",
+   "t": [
+    0.6,
+    0.78
+   ],
+   "cam": [
+    1.9,
+    0.4,
+    0.68,
+    2.1,
+    0.44,
+    0.69
+   ],
+   "say": "In twenty twenty-four, thirty-nine labs in nineteen countries, nearly five thousand people,"
+  },
+  {
+   "id": "4.14c",
+   "beat": 4,
+   "vo": "tried a classic dissonance experiment.",
+   "page": "20_replications",
+   "t": [
+    0.78,
+    0.785
+   ],
+   "cam": [
+    1.5,
+    0.52,
+    0.6,
+    1.4,
+    0.52,
+    0.62
+   ]
+  },
+  {
+   "id": "4.15a",
+   "beat": 4,
+   "vo": "The key effect, choice changing your attitude,",
+   "page": "20_replications",
+   "t": [
+    0.785,
+    0.79
+   ],
+   "cam": [
+    1.6,
+    0.5,
+    0.64,
+    1.7,
+    0.5,
+    0.6
+   ]
+  },
+  {
+   "id": "4.15b",
+   "beat": 4,
+   "vo": "didn't show up.",
+   "page": "20_replications",
+   "t": [
+    0.79,
+    0.9
+   ],
+   "cam": [
+    1.7,
+    0.72,
+    0.82,
+    1.9,
+    0.72,
+    0.84
+   ],
+   "post": 0.6,
+   "build": 0.5
+  },
+  {
+   "id": "4.16",
+   "beat": 4,
+   "vo": "Now, the other side, because that's the whole point of this channel.",
+   "page": "21_otherside",
+   "t": [
+    0,
+    0.14
+   ],
+   "cam": [
+    1.6,
+    0.2,
+    0.3,
+    1.3,
+    0.25,
+    0.4
+   ]
+  },
+  {
+   "id": "4.17a",
+   "beat": 4,
+   "vo": "Kelly's paper is one scholar's reading of the archive,",
+   "page": "21_otherside",
+   "t": [
+    0.14,
+    0.27
+   ],
+   "cam": [
+    1.7,
+    0.5,
+    0.24,
+    1.9,
+    0.5,
+    0.24
+   ]
+  },
+  {
+   "id": "4.17b",
+   "beat": 4,
+   "vo": "and the three authors died decades ago, so they can't answer.",
+   "page": "21_otherside",
+   "t": [
+    0.27,
+    0.42
+   ],
+   "cam": [
+    1.7,
+    0.8,
+    0.24,
+    1.9,
+    0.8,
+    0.24
+   ]
+  },
+  {
+   "id": "4.18a",
+   "beat": 4,
+   "vo": "I found no formal rebuttal yet.",
+   "page": "21_otherside",
+   "t": [
+    0.42,
+    0.57
+   ],
+   "cam": [
+    1.7,
+    0.5,
+    0.63,
+    1.9,
+    0.5,
+    0.63
+   ]
+  },
+  {
+   "id": "4.18b",
+   "beat": 4,
+   "vo": "And Kelly put his documents online, so anyone can check his work.",
+   "page": "21_otherside",
+   "t": [
+    0.57,
+    0.58
+   ],
+   "cam": [
+    1.5,
+    0.2,
+    0.72,
+    1.6,
+    0.2,
+    0.75
+   ]
+  },
+  {
+   "id": "4.19a",
+   "beat": 4,
+   "vo": "And dissonance itself isn't dead.",
+   "page": "21_otherside",
+   "t": [
+    0.58,
+    0.72
+   ],
+   "cam": [
+    1.7,
+    0.8,
+    0.63,
+    1.9,
+    0.8,
+    0.63
+   ]
+  },
+  {
+   "id": "4.19b",
+   "beat": 4,
+   "vo": "Plenty of other studies still find that people justify what they've already done.",
+   "page": "21_otherside",
+   "t": [
+    0.72,
+    0.9
+   ],
+   "cam": [
+    1.2,
+    0.6,
+    0.5,
+    1.0,
+    0.5,
+    0.5
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "4.20a",
+   "beat": 4,
+   "vo": "What's collapsing is the famous origin story.",
+   "page": "14_twoclocks",
+   "t": [
+    1,
+    1
+   ],
+   "cam": [
+    1.25,
+    0.5,
+    0.45,
+    1.7,
+    0.3,
+    0.42
+   ]
+  },
+  {
+   "id": "4.20b",
+   "beat": 4,
+   "vo": "The theory may survive, but its founding myth might not.",
+   "page": "24_end",
+   "t": [
+    0.02,
+    0.3
+   ],
+   "cam": [
+    2.0,
+    0.5,
+    0.3,
+    2.4,
+    0.5,
+    0.29
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "5.01a",
+   "beat": 5,
+   "vo": "Which leaves us with a magnificent irony.",
+   "page": "05_timeline",
+   "t": [
+    1,
+    1
+   ],
+   "cam": [
+    1.3,
+    0.3,
+    0.5,
+    1.3,
+    0.7,
+    0.52
+   ]
+  },
+  {
+   "id": "5.01b",
+   "beat": 5,
+   "vo": "Look at the timeline again.",
+   "page": "22_irony",
+   "t": [
+    0,
+    0.15
+   ],
+   "cam": [
+    1.4,
+    0.3,
+    0.6,
+    1.5,
+    0.3,
+    0.62
+   ]
+  },
+  {
+   "id": "5.02a",
+   "beat": 5,
+   "vo": "For seventy years, the field kept teaching a study",
+   "page": "22_irony",
+   "t": [
+    0.15,
+    0.42
+   ],
+   "cam": [
+    1.5,
+    0.3,
+    0.45,
+    1.5,
+    0.5,
+    0.45
+   ]
+  },
+  {
+   "id": "5.02b",
+   "beat": 5,
+   "vo": "about people who wouldn't let go of a belief,",
+   "page": "22_irony",
+   "t": [
+    0.42,
+    0.7
+   ],
+   "cam": [
+    1.25,
+    0.55,
+    0.45,
+    1.35,
+    0.68,
+    0.42
+   ]
+  },
+  {
+   "id": "5.02c",
+   "beat": 5,
+   "vo": "even as the evidence piled up against it.",
+   "page": "22b_textbooks",
+   "t": [
+    0,
+    0.14
+   ],
+   "cam": [
+    1.8,
+    0.25,
+    0.5,
+    2.0,
+    0.25,
+    0.48
+   ]
+  },
+  {
+   "id": "5.03a",
+   "beat": 5,
+   "vo": "The study about doubling down…",
+   "page": "22b_textbooks",
+   "t": [
+    0.14,
+    0.36
+   ],
+   "cam": [
+    1.5,
+    0.7,
+    0.3,
+    1.6,
+    0.7,
+    0.3
+   ]
+  },
+  {
+   "id": "5.03b",
+   "beat": 5,
+   "vo": "got doubled down on.",
+   "page": "22b_textbooks",
+   "t": [
+    0.36,
+    0.92
+   ],
+   "cam": [
+    1.5,
+    0.7,
+    0.55,
+    1.4,
+    0.68,
+    0.58
+   ],
+   "cut": true,
+   "post": 0.6
+  },
+  {
+   "id": "5.04a",
+   "beat": 5,
+   "vo": "And before we get smug,",
+   "page": "23_you",
+   "t": [
+    0,
+    0.42
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.15,
+    0.5,
+    0.48
+   ]
+  },
+  {
+   "id": "5.04b",
+   "beat": 5,
+   "vo": "the same valve sits in your head.",
+   "page": "23b_head",
+   "t": [
+    0,
+    0.7
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.4,
+    0.35,
+    0.5
+   ]
+  },
+  {
+   "id": "5.05a",
+   "beat": 5,
+   "vo": "The stock you won't sell.",
+   "page": "23_you",
+   "t": [
+    0.42,
+    0.53
+   ],
+   "cam": [
+    1.6,
+    0.2,
+    0.3,
+    1.7,
+    0.2,
+    0.3
+   ]
+  },
+  {
+   "id": "5.05b",
+   "beat": 5,
+   "vo": "The team you defend.",
+   "page": "23_you",
+   "t": [
+    0.53,
+    0.63
+   ],
+   "cam": [
+    1.6,
+    0.82,
+    0.28,
+    1.7,
+    0.82,
+    0.27
+   ]
+  },
+  {
+   "id": "5.05c",
+   "beat": 5,
+   "vo": "The prediction you made at dinner and now refuse to revisit.",
+   "page": "23_you",
+   "t": [
+    0.63,
+    0.74
+   ],
+   "cam": [
+    1.5,
+    0.8,
+    0.72,
+    1.6,
+    0.82,
+    0.74
+   ]
+  },
+  {
+   "id": "5.06a",
+   "beat": 5,
+   "vo": "Changing your mind feels like losing.",
+   "page": "23_you",
+   "t": [
+    0.74,
+    0.78
+   ],
+   "cam": [
+    1.3,
+    0.5,
+    0.45,
+    1.5,
+    0.5,
+    0.46
+   ]
+  },
+  {
+   "id": "5.06b",
+   "beat": 5,
+   "vo": "In a small tribe, it might have been.",
+   "page": "06_membership",
+   "t": [
+    1,
+    1
+   ],
+   "cam": [
+    1.9,
+    0.82,
+    0.8,
+    1.6,
+    0.76,
+    0.75
+   ],
+   "post": 0.6
+  },
+  {
+   "id": "5.07",
+   "beat": 5,
+   "vo": "But here's the escape hatch, and it's a cheap one.",
+   "page": "23_you",
+   "t": [
+    0.78,
+    0.9
+   ],
+   "cam": [
+    1.5,
+    0.6,
+    0.55,
+    1.9,
+    0.6,
+    0.62
+   ]
+  },
+  {
+   "id": "5.08a",
+   "beat": 5,
+   "vo": "Treat being wrong as information, not as an identity crisis.",
+   "page": "23_you",
+   "t": [
+    0.9,
+    1
+   ],
+   "cam": [
+    1.9,
+    0.6,
+    0.6,
+    1.2,
+    0.5,
+    0.5
+   ]
+  },
+  {
+   "id": "5.08b",
+   "beat": 5,
+   "vo": "Go back to the original. Check the box.",
+   "page": "15_box",
+   "t": [
+    1,
+    1
+   ],
+   "cam": [
+    1.3,
+    0.6,
+    0.4,
+    1.6,
+    0.68,
+    0.32
+   ]
+  },
+  {
+   "id": "5.09a",
+   "beat": 5,
+   "vo": "That's what Kelly did. It's what science is supposed to do.",
+   "page": "16_kelly",
+   "t": [
+    1,
+    1
+   ],
+   "cam": [
+    1.6,
+    0.28,
+    0.27,
+    1.4,
+    0.3,
+    0.3
+   ]
+  },
+  {
+   "id": "5.09b",
+   "beat": 5,
+   "vo": "And it took seventy years, so be patient with yourself.",
+   "page": "14_twoclocks",
+   "t": [
+    1,
+    1
+   ],
+   "cam": [
+    1.6,
+    0.7,
+    0.43,
+    1.35,
+    0.5,
+    0.4
+   ]
+  },
+  {
+   "id": "5.10",
+   "beat": 5,
+   "vo": "One more thing about that night in 1954.",
+   "page": "09_midnight",
+   "t": [
+    0.1,
+    0.1
+   ],
+   "cam": [
+    1.2,
+    0.5,
+    0.42,
+    1.9,
+    0.5,
+    0.39
+   ],
+   "post": 0.6,
+   "say": "One more thing about that night in nineteen fifty-four."
+  },
+  {
+   "id": "5.11a",
+   "beat": 5,
+   "vo": "The aliens never came.",
+   "page": "24_end",
+   "t": [
+    0.3,
+    0.42
+   ],
+   "cam": [
+    1.8,
+    0.5,
+    0.3,
+    1.5,
+    0.5,
+    0.38
+   ],
+   "cut": true
+  },
+  {
+   "id": "5.11b",
+   "beat": 5,
+   "vo": "But seventy years later, the truth finally did,",
+   "page": "24_end",
+   "t": [
+    0.42,
+    0.68
+   ],
+   "cam": [
+    1.3,
+    0.5,
+    0.5,
+    1.15,
+    0.5,
+    0.54
+   ]
+  },
+  {
+   "id": "5.11c",
+   "beat": 5,
+   "vo": "a little late, like the best rescue parties.",
+   "page": "24_end",
+   "t": [
+    0.68,
+    0.97
+   ],
+   "cam": [
+    1.5,
+    0.22,
+    0.25,
+    1.3,
+    0.3,
+    0.3
+   ]
+  },
+  {
+   "id": "5.12",
+   "beat": 5,
+   "vo": "",
+   "page": "24_end",
+   "t": [
+    0.97,
+    1
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.06,
+    0.5,
+    0.5
+   ],
+   "hold": 2.5,
+   "post": 0
+  }
+ ]
+}

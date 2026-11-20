@@ -1,0 +1,116 @@
+[
+ {
+  "label": "AI1",
+  "use": "desk (backbone, all desk frames)",
+  "generation_id": "V2AI9fE9Xvw8EWghMjkL",
+  "flow_id": "TqEmfXfQP7ZvL79XUAW5",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "Top-down view of an empty dark walnut investigator's desk surface filling the whole 16:9 frame, rich wood grain, a few faint coffee rings and worn scratches, soft light from the top left with a gentle vignette toward the corners, nothing on the desk, large empty space for papers to be placed later. flat paper-collage editorial illustration, cut-out paper pieces with white sticker edges, halftone print texture, visible paper grain, muted palette of archival cream #F4EFE6, ink charcoal #1A1A1A, investigative crimson #D93829, highlighter yellow #F7D046, soft flat light, no text, no faces, not photorealistic, not 3D render",
+  "size": [
+   1280,
+   720
+  ],
+  "takes": 1,
+  "credits": 190.4,
+  "finish": "channels/design_kits/ai_finish.py (palette pull 0.35, grain, halftone, vignette) -> assets/ai/AI1.jpg",
+  "label_on_screen": "AI ILLUSTRATION (desk: in the source line)",
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8c)",
+  "retired": "replaced by the drawn walnut desk (studio CSS, no AI) (2026-11-19)",
+  "retired_detail": "replaced by the drawn walnut desk (studio CSS, no AI) (2026-11-19)"
+ },
+ {
+  "label": "AI2",
+  "use": "03b_tiger (1 · 0:53)",
+  "generation_id": "HHSySAbpWWGl0ASsaWCd",
+  "flow_id": "TqEmfXfQP7ZvL79XUAW5",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "A Bengal tiger made of layered cut paper, standing calmly among mangrove roots and shallow water in the Sundarbans, side view, dignified and slightly unimpressed, on a cream paper background, with an empty blank rounded rectangle badge floating beside it (left blank for a counter to be added later). 16:9 composition, tiger on the left two-thirds. flat paper-collage editorial illustration, cut-out paper pieces with white sticker edges, halftone print texture, visible paper grain, muted palette of archival cream #F4EFE6, ink charcoal #1A1A1A, investigative crimson #D93829, highlighter yellow #F7D046, soft flat light, no text, no faces, not photorealistic, not 3D render",
+  "size": [
+   1280,
+   720
+  ],
+  "takes": 1,
+  "credits": 190.4,
+  "finish": "channels/design_kits/ai_finish.py (palette pull 0.35, grain, halftone, vignette) -> assets/ai/AI2.jpg",
+  "label_on_screen": "AI ILLUSTRATION (desk: in the source line)",
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8c)",
+  "retired": "replaced by real image (2026-11-19)",
+  "retired_detail": "replaced by real image (2026-11-19): Bengal tiger, Karnataka (Paul Mannix, CC BY 2.0) cut out over a real Sundarbans mangrove photo (sarangib, Pixabay)"
+ },
+ {
+  "label": "AI3",
+  "use": "11b_slot (3 · 4:44)",
+  "generation_id": "iw0D5aO0q34P6TZjHQQr",
+  "flow_id": "TqEmfXfQP7ZvL79XUAW5",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "A vintage casino slot machine built from cut paper and cardboard, front view, three blank reel windows (left empty, no symbols, labels will be added later), a pull lever on the right, a pile of plain blank paper coins spilling from the payout tray onto a cream paper surface. 16:9 composition, machine centred. flat paper-collage editorial illustration, cut-out paper pieces with white sticker edges, halftone print texture, visible paper grain, muted palette of archival cream #F4EFE6, ink charcoal #1A1A1A, investigative crimson #D93829, highlighter yellow #F7D046, soft flat light, no text, no faces, not photorealistic, not 3D render",
+  "size": [
+   1280,
+   720
+  ],
+  "takes": 1,
+  "credits": 190.4,
+  "finish": "channels/design_kits/ai_finish.py (palette pull 0.35, grain, halftone, vignette) -> assets/ai/AI3.jpg",
+  "label_on_screen": "AI ILLUSTRATION (desk: in the source line)",
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8c)",
+  "retired": "replaced by real image (2026-11-19)",
+  "retired_detail": "replaced by real image (2026-11-19): slot-machine photo (AidanHowe, Pixabay), reels relabelled in the studio"
+ },
+ {
+  "label": "AI4",
+  "use": "13b_inspector (4 · 5:36)",
+  "generation_id": "ikZR9UMjrmFQo2ImdNKN",
+  "flow_id": "TqEmfXfQP7ZvL79XUAW5",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "A 1920s sanitary drain inspector seen entirely from behind, as a cut-out paper figure: long charcoal overcoat, flat cap, rubber boots, a lantern hanging from one hand, standing beside an open street drain cover, holding up a modern smartphone in the other hand with a blank glowing screen (left empty). Head turned away, face not visible. Cream paper background. 16:9 composition, figure on the right third. flat paper-collage editorial illustration, cut-out paper pieces with white sticker edges, halftone print texture, visible paper grain, muted palette of archival cream #F4EFE6, ink charcoal #1A1A1A, investigative crimson #D93829, highlighter yellow #F7D046, soft flat light, no text, no faces, not photorealistic, not 3D render",
+  "size": [
+   1280,
+   720
+  ],
+  "takes": 1,
+  "credits": 190.4,
+  "finish": "channels/design_kits/ai_finish.py (palette pull 0.35, grain, halftone, vignette) -> assets/ai/AI4.jpg",
+  "label_on_screen": "AI ILLUSTRATION (desk: in the source line)",
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8c)",
+  "retired": "replaced by real image (2026-11-19)",
+  "retired_detail": "replaced by real image (2026-11-19): real street storm-drain photo (Fried Dough, Flickr, PDM) in a drawn verified-account phone, Gandhi 1927 quote card"
+ },
+ {
+  "label": "AI5",
+  "use": "20b_edit (5 · 8:33)",
+  "generation_id": "56ZkLBaBgOyvCBbvfveE",
+  "flow_id": "TqEmfXfQP7ZvL79XUAW5",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "Top-down view of a film editor's cutting table: a pair of scissors and many snipped strips of 35mm film lying scattered, each film frame showing a tiny landscape (snowy mountains, a wide river, green forest, a city skyline, a desert, a beach), while one short remaining strip in the centre holds a single frame showing an open street drain grate. Cream paper table surface. 16:9 composition. No people. flat paper-collage editorial illustration, cut-out paper pieces with white sticker edges, halftone print texture, visible paper grain, muted palette of archival cream #F4EFE6, ink charcoal #1A1A1A, investigative crimson #D93829, highlighter yellow #F7D046, soft flat light, no text, no faces, not photorealistic, not 3D render",
+  "size": [
+   1280,
+   720
+  ],
+  "takes": 1,
+  "credits": 190.4,
+  "finish": "channels/design_kits/ai_finish.py (palette pull 0.35, grain, halftone, vignette) -> assets/ai/AI5.jpg",
+  "label_on_screen": "AI ILLUSTRATION (desk: in the source line)",
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8c)",
+  "retired": "replaced by real image (2026-11-19)",
+  "retired_detail": "replaced by real image (2026-11-19): motion graphic of 12 real India photos on drawn film strips, snipped away to one real drain frame"
+ },
+ {
+  "label": "AI6",
+  "use": "19b_button (5 · 8:30)",
+  "generation_id": "TAxfpgVcQ2GiLbSwxj2B",
+  "flow_id": "TqEmfXfQP7ZvL79XUAW5",
+  "model": "gpt-image-2.5-sunburst",
+  "prompt": "A giant cut-paper index finger and hand entering from the top right, pressing down on a large chunky round push button set in a paper panel; the button is blank (no label, text added later). A small paper smartphone lies beside the panel. Only the hand and part of a shirt cuff are visible, no body, no face. Cream paper background. 16:9 composition. flat paper-collage editorial illustration, cut-out paper pieces with white sticker edges, halftone print texture, visible paper grain, muted palette of archival cream #F4EFE6, ink charcoal #1A1A1A, investigative crimson #D93829, highlighter yellow #F7D046, soft flat light, no text, no faces, not photorealistic, not 3D render",
+  "size": [
+   1280,
+   720
+  ],
+  "takes": 1,
+  "credits": 190.4,
+  "finish": "channels/design_kits/ai_finish.py (palette pull 0.35, grain, halftone, vignette) -> assets/ai/AI6.jpg",
+  "label_on_screen": "AI ILLUSTRATION (desk: in the source line)",
+  "approved": "owner, 2026-11-19 (MASTER_DIRECTIVES 8c)",
+  "retired": "replaced by real image (2026-11-19)",
+  "retired_detail": "replaced by real image (2026-11-19): real hands holding a smartphone (niekverlaan, Pixabay), cut out; menu drawn on the screen"
+ }
+]

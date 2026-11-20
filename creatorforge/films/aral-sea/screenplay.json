@@ -1,0 +1,537 @@
+{
+ "id": "aral-sea",
+ "title": "The Sea That Was Switched Off",
+ "genre": "environment",
+ "language": "en",
+ "voice": "af_heart",
+ "lang": "en-us",
+ "concept": {
+  "logline": "The fourth-largest lake on Earth vanished in one lifetime. Not to a drought, but to a decision about where its rivers should go. And one dike shows part of it can be switched back on.",
+  "central_question": "How do you lose a sea, and once it is gone, can you get it back?",
+  "conflict": "Cotton against a sea: two rivers could feed the fields or the Aral, not both.",
+  "discovery": "The sea was not lost to nature but to plumbing, and plumbing can be partly reversed: a 13 km dike brought the northern sea and its fish back.",
+  "unanswered": "Whether Soviet planners expected to lose the sea is still disputed; whether the northern recovery can last is uncertain.",
+  "consequences": "A fishing economy gone, a new salt desert, dust that residents blame for illness.",
+  "implications": "Water is allocated, not just available: the same choice faces every river basin that is over-drawn.",
+  "structure": "investigative",
+  "structure_note": "a mystery opened on the ships in the sand, solved by following the water upstream, turned by the dike",
+  "visual_concept": "Measured geography: real outlines and real terrain carry the story; the water is the accent; evidence is held still",
+  "footage_strategy": "Archive photographs of Moynaq and the fleet where a licence allows (on the pod); here every place is a measured map or a labelled drawing"
+ },
+ "act_titles": {
+  "hook": "The ships in the sand",
+  "world": "A sea with no way out",
+  "investigation": "Following the water",
+  "discovery": "Plumbing",
+  "consequences": "What the sea took with it",
+  "ending": "Switching it back on"
+ },
+ "pronunciation": {
+  "Moynaq": "Moy-nahk",
+  "Aralkum": "Arral-koom",
+  "Amu Darya": "Ah-moo Dar-yah",
+  "Syr Darya": "Seer Dar-yah",
+  "Kok-Aral": "Kok Arral",
+  "Aralsk": "Arralsk",
+  "Uzbekistan": "Ooz-beck-is-tan"
+ },
+ "scenes": [
+  {
+   "id": "S01",
+   "act": "hook",
+   "role": "opening",
+   "narration": "In the desert of western Uzbekistan, there is a town with a harbour, and fishing boats rusting in the sand.",
+   "delivery": "quiet, curious",
+   "pause": 0.7,
+   "emphasis": [
+    "sand"
+   ],
+   "claims": [
+    "C17"
+   ],
+   "graphic": "Hero: ship | SHIPS IN THE SAND | Moynaq · Uzbekistan | the old harbour | fx: dust | camera: still"
+  },
+  {
+   "id": "S02",
+   "act": "hook",
+   "narration": "The nearest water is now about a hundred kilometres away. Some say more.",
+   "delivery": "measured",
+   "pause": 0.8,
+   "emphasis": [
+    "hundred"
+   ],
+   "claims": [
+    "C18"
+   ],
+   "graphic": "BigNumber: 100 km | ship | to the nearest water | Moynaq, Uzbekistan | badge: estimate"
+  },
+  {
+   "id": "S03",
+   "act": "hook",
+   "narration": "Because this town was a port, on what was once the fourth largest lake on Earth.",
+   "delivery": "measured",
+   "pause": 0.6,
+   "emphasis": [
+    "port"
+   ],
+   "claims": [
+    "C17",
+    "C01"
+   ],
+   "graphic": "Pinmap: Moynaq | Once a port | atlas | marker: the old shore"
+  },
+  {
+   "id": "S04",
+   "act": "hook",
+   "role": "question",
+   "narration": "So how do you lose a sea? And once it is gone, can you get it back?",
+   "delivery": "slow, curious",
+   "pause": 1.0,
+   "emphasis": [
+    "lose",
+    "back"
+   ],
+   "claims": [
+    "C01"
+   ],
+   "graphic": "Title3d: LOSING A SEA | The Aral Sea · 1960 to today"
+  },
+  {
+   "id": "S05",
+   "act": "world",
+   "narration": "The Aral Sea sits on the border of Kazakhstan and Uzbekistan, in the heart of Central Asia.",
+   "delivery": "neutral",
+   "pause": 0.4,
+   "claims": [
+    "C01"
+   ],
+   "graphic": "Pinmap: Aral Sea | The Aral Sea | atlas"
+  },
+  {
+   "id": "S06",
+   "act": "world",
+   "narration": "It has no way out to the ocean. Two rivers fill it, the Amu Darya and the Syr Darya, and the sun takes the water away.",
+   "delivery": "neutral, explanatory",
+   "pause": 0.5,
+   "emphasis": [
+    "no way out"
+   ],
+   "claims": [
+    "C27"
+   ],
+   "graphic": "Flowchart: Mountain snow → Two rivers → Aral Sea → Evaporation | A sea with no outlet"
+  },
+  {
+   "id": "S07",
+   "act": "world",
+   "narration": "As long as the rivers brought in what the sun took, the sea held its size. In 1960, it covered about 68,000 square kilometres.",
+   "delivery": "warm",
+   "pause": 0.6,
+   "emphasis": [
+    "held"
+   ],
+   "claims": [
+    "C27",
+    "C01"
+   ],
+   "graphic": "BigNumber: 68,000 km² | steamer | the Aral Sea in 1960 | Fourth-largest lake on Earth"
+  },
+  {
+   "id": "S08",
+   "act": "investigation",
+   "narration": "Then, from the 1960s, the Soviet Union began taking that river water for something else.",
+   "delivery": "measured",
+   "pause": 0.5,
+   "emphasis": [
+    "something else"
+   ],
+   "claims": [
+    "C02"
+   ],
+   "graphic": "Hero: tractor | THE PLAN | Soviet Union · 1960s | irrigation | style: box | camera: push"
+  },
+  {
+   "id": "S09",
+   "act": "investigation",
+   "narration": "The plan was cotton. Canals carried the rivers out into the desert to water the fields.",
+   "delivery": "neutral",
+   "pause": 0.5,
+   "emphasis": [
+    "cotton"
+   ],
+   "claims": [
+    "C02"
+   ],
+   "graphic": "Flowchart: River → Canal → Cotton field → Export | Where the water went"
+  },
+  {
+   "id": "S10",
+   "act": "investigation",
+   "narration": "According to one account, the water taken from the rivers doubled between 1960 and 1980, and cotton production nearly doubled with it.",
+   "delivery": "measured",
+   "pause": 0.6,
+   "emphasis": [
+    "doubled"
+   ],
+   "claims": [
+    "C03"
+   ],
+   "graphic": "BigNumber: ×2 | cotton | water taken from the rivers, 1960 to 1980 | One account | badge: reported"
+  },
+  {
+   "id": "S11",
+   "act": "investigation",
+   "narration": "Some estimates say only a fifth to a quarter of that water ever reached the crops.",
+   "delivery": "measured",
+   "pause": 0.7,
+   "emphasis": [
+    "a quarter"
+   ],
+   "claims": [
+    "C04"
+   ],
+   "graphic": "Slice: 25% | water | at most reached the crops | badge: estimate"
+  },
+  {
+   "id": "S12",
+   "act": "investigation",
+   "narration": "And the sea began to fall. According to the geographer Philip Micklin's figures, the southern sea's surface dropped from 53.4 metres above sea level in 1960 to 26.5 by 2009.",
+   "delivery": "grave",
+   "pause": 0.7,
+   "emphasis": [
+    "fall"
+   ],
+   "claims": [
+    "C20"
+   ],
+   "graphic": "Trend: 1960 53.4, 2009 26.5 | Water level of the South Aral, metres | water | src: P. Micklin"
+  },
+  {
+   "id": "S13",
+   "act": "investigation",
+   "narration": "In the late 1980s, it broke in two: a small sea in the north, a large one in the south.",
+   "delivery": "measured",
+   "pause": 0.5,
+   "emphasis": [
+    "two"
+   ],
+   "claims": [
+    "C05"
+   ],
+   "graphic": "Pinmap: North Aral Sea | The sea splits | atlas | marker: late 1980s"
+  },
+  {
+   "id": "S14",
+   "act": "discovery",
+   "role": "climax",
+   "narration": "Put the old shoreline over today's, and the scale of it is hard to take in.",
+   "delivery": "slow",
+   "pause": 1.2,
+   "emphasis": [
+    "scale"
+   ],
+   "claims": [
+    "C25",
+    "C01"
+   ],
+   "graphic": "Shrink: Aral Sea | 1960 -> today | The sea that left | pins: Moynaq, Aralsk"
+  },
+  {
+   "id": "S15",
+   "act": "discovery",
+   "narration": "Measured from public map outlines, about 67,500 square kilometres of water is down to around 6,800. NASA puts the loss at roughly ninety percent.",
+   "delivery": "grave",
+   "pause": 0.8,
+   "emphasis": [
+    "ninety percent"
+   ],
+   "claims": [
+    "C25",
+    "C08",
+    "C01"
+   ],
+   "graphic": "Bars3d: 1960 67,500, Today 6,800 | Water, square kilometres | km² "
+  },
+  {
+   "id": "S16",
+   "act": "discovery",
+   "narration": "In 2014, NASA's satellites showed the eastern half of the southern sea completely dry, for the first time in modern history.",
+   "delivery": "measured",
+   "pause": 0.6,
+   "emphasis": [
+    "completely dry"
+   ],
+   "claims": [
+    "C06"
+   ],
+   "graphic": "Calendar: AUG 2014 | The eastern basin runs dry"
+  },
+  {
+   "id": "S17",
+   "act": "discovery",
+   "narration": "What it left behind has a name: the Aralkum, often called the youngest desert in the world.",
+   "delivery": "quiet",
+   "pause": 0.8,
+   "emphasis": [
+    "youngest"
+   ],
+   "claims": [
+    "C09",
+    "C26"
+   ],
+   "graphic": "Terrain3d: Aral Sea | The Aralkum | 520 km | pins: Moynaq, Aralsk"
+  },
+  {
+   "id": "S18",
+   "act": "discovery",
+   "narration": "So the sea was not lost to a drought. It was lost to plumbing, to choices, repeated every season, about where the rivers should go.",
+   "delivery": "firm, slow",
+   "pause": 1.0,
+   "emphasis": [
+    "plumbing"
+   ],
+   "claims": [
+    "C29",
+    "C02"
+   ],
+   "graphic": "Opener: water | Not a drought. *Plumbing.* | The turn"
+  },
+  {
+   "id": "S19",
+   "act": "consequences",
+   "narration": "Researchers measured the water getting saltier as it shrank: about ten grams of salt per litre in 1947, and about ninety by 2002. The ocean is around thirty-five.",
+   "delivery": "neutral",
+   "pause": 0.6,
+   "emphasis": [
+    "saltier"
+   ],
+   "claims": [
+    "C11"
+   ],
+   "graphic": "Stack: bars | 1947 10, 2002 90, Ocean 35 | Salt, grams per litre | src: Univ. of Marburg"
+  },
+  {
+   "id": "S20",
+   "act": "consequences",
+   "narration": "Then the dust. Researchers say the storms lift salt and farm chemicals off the old seabed, and one study found the dust nearly doubled between 1984 and 2015.",
+   "delivery": "measured",
+   "pause": 0.6,
+   "emphasis": [
+    "dust"
+   ],
+   "claims": [
+    "C12"
+   ],
+   "graphic": "Explode: Dust storm | Salt, Fertiliser residue, Pesticide residue, Sand | What the wind lifts"
+  },
+  {
+   "id": "S21",
+   "act": "consequences",
+   "narration": "People here have long blamed that dust for illness. The medical evidence is still debated.",
+   "delivery": "quiet",
+   "pause": 0.8,
+   "claims": [
+    "C13"
+   ],
+   "graphic": "Linkmap: The dust | Lungs: blamed; Eyes: blamed; Children: blamed; Water: blamed | What residents blame | badge: disputed"
+  },
+  {
+   "id": "S22",
+   "act": "consequences",
+   "narration": "The sea had fed a whole industry. In 1957, according to local accounts, its fishermen landed about 48,000 tonnes of fish.",
+   "delivery": "warm",
+   "pause": 0.6,
+   "emphasis": [
+    "industry"
+   ],
+   "claims": [
+    "C14"
+   ],
+   "graphic": "Hero: steamer | THE CATCH | 1957 · 48,000 tonnes | local accounts | style: disc | badge: reported"
+  },
+  {
+   "id": "S23",
+   "act": "consequences",
+   "narration": "Estimates of how many people worked in those fisheries run from thirty thousand to sixty thousand.",
+   "delivery": "measured",
+   "pause": 0.5,
+   "claims": [
+    "C15"
+   ],
+   "graphic": "Table: Estimate, People | Lowest, 30,000; Often cited, 40,000; Highest, 60,000 | Fishery jobs: the estimates | local histories | badge: disputed"
+  },
+  {
+   "id": "S24",
+   "act": "consequences",
+   "narration": "By one account, the cannery in Moynaq ended up processing fish brought in from the Baltic and the Pacific, until it closed around 1990.",
+   "delivery": "wry, quiet",
+   "pause": 0.8,
+   "emphasis": [
+    "Baltic",
+    "Pacific"
+   ],
+   "claims": [
+    "C16"
+   ],
+   "graphic": "Arrows: Latvia → Moynaq (Baltic fish) | Fish from far away | badge: reported"
+  },
+  {
+   "id": "S25",
+   "act": "consequences",
+   "narration": "Whether Soviet planners expected to lose the sea is still argued over. What it cost the people on its shore is not.",
+   "delivery": "firm",
+   "pause": 1.0,
+   "claims": [
+    "C24",
+    "C17"
+   ],
+   "graphic": "Hero: documents | WHO KNEW? | Soviet planners · 1960s | still debated | style: box | badge: disputed | camera: still"
+  },
+  {
+   "id": "S26",
+   "act": "ending",
+   "narration": "But if the sea was lost to plumbing, could plumbing bring some of it back?",
+   "delivery": "curious",
+   "pause": 0.8,
+   "emphasis": [
+    "back"
+   ],
+   "claims": [
+    "C29"
+   ],
+   "graphic": "Morph: drop → circle → drop | Can it come back?"
+  },
+  {
+   "id": "S27",
+   "act": "ending",
+   "narration": "In 2005, Kazakhstan finished a dike about thirteen kilometres long, built with the World Bank's help, to hold the river in the small northern sea.",
+   "delivery": "measured",
+   "pause": 0.6,
+   "emphasis": [
+    "dike"
+   ],
+   "claims": [
+    "C19"
+   ],
+   "graphic": "Pinmap: Kok-Aral | The Kok-Aral dike | atlas | marker: the dike, 2005"
+  },
+  {
+   "id": "S28",
+   "act": "ending",
+   "narration": "The northern sea rose. By 2008, according to researchers' figures, it stood at about 42 metres, while the south kept falling.",
+   "delivery": "warm",
+   "pause": 0.6,
+   "emphasis": [
+    "rose"
+   ],
+   "claims": [
+    "C20",
+    "C28"
+   ],
+   "graphic": "Bars3d: 1960 53.4, North 2008 42, South 2009 26.5 | Water level, metres above sea level | m"
+  },
+  {
+   "id": "S29",
+   "act": "ending",
+   "narration": "And the fish came back. Kazakhstan's fisheries institute reports the catch grew from 695 tonnes in 2005 to 5,595 in 2014.",
+   "delivery": "warm",
+   "pause": 0.6,
+   "emphasis": [
+    "fish came back"
+   ],
+   "claims": [
+    "C21"
+   ],
+   "graphic": "Trend: 2005 695, 2014 5,595 | North Aral fish catch, tonnes | fish | src: Kazakh fisheries institute via Eurasianet"
+  },
+  {
+   "id": "S30",
+   "act": "ending",
+   "narration": "It is fragile. A 2026 report says the catch fell by half in 2025, from about 7,800 tonnes to 3,900, and officials now plan to raise the dike and the sea to 44 metres.",
+   "delivery": "measured",
+   "pause": 0.7,
+   "emphasis": [
+    "fragile"
+   ],
+   "claims": [
+    "C22",
+    "C23",
+    "C21"
+   ],
+   "graphic": "Table: Year, Catch (tonnes) | 2014, 5,595; Before 2025, 7,800; 2025, 3,900 | Up, then down | Kazakh data via Eurasianet, Global Voices | highlight: 3"
+  },
+  {
+   "id": "S31",
+   "act": "ending",
+   "narration": "The southern sea has no such dike. It is still drying.",
+   "delivery": "quiet",
+   "pause": 1.0,
+   "claims": [
+    "C28",
+    "C25",
+    "C01"
+   ],
+   "graphic": "Shrink: Aral Sea | 1960 -> today | Still drying | pins: Moynaq"
+  },
+  {
+   "id": "S32",
+   "act": "ending",
+   "role": "ending",
+   "narration": "So how do you lose a sea? The evidence suggests not with a drought, but with a decision. And the north shows that some decisions can be taken back.",
+   "delivery": "slow, warm",
+   "pause": 1.6,
+   "emphasis": [
+    "decision",
+    "taken back"
+   ],
+   "claims": [
+    "C29"
+   ],
+   "graphic": "Endcard: The Sea That Was Switched Off | Some decisions can be taken back | Sources: NASA · World Bank · Eurasianet · Natural Earth"
+  }
+ ],
+ "thumbnail": "BigNumber: 90% | ship | of a sea, gone | The Aral Sea",
+ "cutdowns": [
+  {
+   "title": "How do you lose a sea? (the hook and the turn)",
+   "scenes": [
+    "S01",
+    "S02",
+    "S03",
+    "S04",
+    "S14",
+    "S15",
+    "S18"
+   ]
+  },
+  {
+   "title": "The dike that brought the fish back",
+   "scenes": [
+    "S26",
+    "S27",
+    "S28",
+    "S29",
+    "S30"
+   ]
+  }
+ ],
+ "seo": {
+  "title": "How Do You Lose a Sea? The Aral Sea, Switched Off",
+  "keywords": [
+   "Aral Sea",
+   "Aralkum",
+   "Moynaq",
+   "Kok-Aral dam",
+   "Kazakhstan",
+   "Uzbekistan",
+   "Amu Darya",
+   "Syr Darya",
+   "Soviet cotton",
+   "water crisis",
+   "documentary",
+   "explainer",
+   "environment",
+   "Central Asia"
+  ]
+ }
+}

@@ -1,0 +1,87 @@
+The Omitted System
+On-screen hook: ONE SENSOR. NOT IN MANUALS.
+Title: The Omitted System: How MCAS Was Left Out of 737 MAX Pilot Manuals
+Tags: #CorporateAutopsies #Boeing #737MAX #aviation #safety
+Source: House Committee on Transportation and Infrastructure, Final Committee Report on the Design, Development and Certification of the Boeing 737 MAX, Sept 2020 (https://democrats-transportation.house.gov/imo/media/doc/final_boeing_737_max_report.pdf); US DOJ, Boeing Charged with 737 Max Fraud Conspiracy and Agrees to Pay over $2.5 Billion, Jan 7 2021 (https://www.justice.gov/archives/opa/pr/boeing-charged-737-max-fraud-conspiracy-and-agrees-pay-over-25-billion); The Daily Star / Reuters, US House report blasts failures of Boeing, FAA (https://www.thedailystar.net/business/news/us-house-report-blasts-failures-boeing-faa-737-max-certification-1962633); NBC News, Judge dismisses case against Boeing over deadly 737 Max plane crashes, Nov 2025 (https://www.nbcnews.com/news/us-news/criminal-case-boeing-deadly-737-max-plane-crashes-dismissed-us-judge-rcna242365); ch-aviation, US court blocks families' challenge of Boeing MAX deal, 2026 (https://www.ch-aviation.com/news/165476-us-court-blocks-families-challenge-of-boeing-max-deal)
+
+A hidden system, missing from pilot manuals.
+Visual: An empty airliner cockpit seen from the jump seat, instruments unreadable
+Visual: A thick pilot manual lying open on a cockpit seat, text unreadable
+Text: NOT IN THE MANUAL?
+
+Two crashes, in twenty eighteen and twenty nineteen, killed three hundred forty-six people.
+Visual: A row of empty airport gate seats at dusk
+Visual: Flowers laid along an airport terminal window ledge
+Text: 2 CRASHES · 346 LIVES
+Timeline: 2018 Lion Air 610 → 2019 Ethiopian 302 | Two crashes, 346 lives
+Cite: US DOJ, Jan 2021
+Treat: duotone
+
+So why weren't pilots told?
+Visual: A pilot's cap resting on an empty cockpit seat
+Text: WHY WEREN'T PILOTS TOLD?
+Transition: whip
+
+The system, MCAS, could push a seven thirty-seven MAX's nose down.
+Visual: A narrow-body jet parked at an airport gate, markings hidden
+Visual: A pilot's hand on a control column, seen from behind
+Text: MCAS · AUTOMATIC NOSE-DOWN
+
+But here's the catch. It could fire from one sensor.
+Visual: A small angle-of-attack vane on the side of an aircraft nose
+Visual: A technician's gloved finger pointing at the vane on the fuselage
+Text: ONE SENSOR
+Cite: House T&I Committee, Sept 2020
+Big: ONE SENSOR
+
+The DOJ said Boeing employees misled the FAA about MCAS.
+Visual: A federal office building exterior on a clear day
+Visual: Stacked binders on a regulator's desk, text unreadable
+Text: FAA MISLED ABOUT MCAS — DOJ
+Cite: US DOJ, Jan 2021
+
+So manuals and pilot training for US airlines lacked it.
+Visual: A pilot training binder open on a classroom desk, text unreadable
+Visual: A flight simulator cockpit seen from behind, screens unreadable
+Document: airplane manuals and pilot-training materials for U.S.-based airlines lacked information about MCAS | US DOJ, Jan 2021
+Cite: US DOJ, Jan 2021
+
+And then a House report blamed Boeing's design and FAA oversight.
+Visual: The domed Capitol building on an overcast day
+Visual: A thick report bound with black clips on a table, text unreadable
+Text: BOEING DESIGN · FAA OVERSIGHT
+Draw: underline
+Cite: House T&I Committee, Sept 2020
+
+Not one failure, it found, but a series.
+Visual: Several printed engineering memos spread across a table, text unreadable
+Statement: Not a *singular* failure.
+Cite: House T&I Committee, Sept 2020
+
+How did it end? In twenty twenty-five, a judge dismissed the criminal case.
+Visual: A federal courthouse in Texas seen across a quiet street
+Visual: A judge's gavel resting on a stack of case files
+Text: CRIMINAL CASE DISMISSED · NOV 2025
+Cite: NBC News, Nov 2025
+Treat: halftone
+
+Boeing agreed to pay or invest about one point one billion.
+Visual: A stack of signed agreement pages with a pen on top, text unreadable
+Visual: Aircraft assembly line in a vast hangar, markings hidden
+Text: ~$1.1BN · FINES, FAMILIES, SAFETY
+Cite: NBC News, Nov 2025
+
+Not told then? Today it checks two sensors.
+Visual: Two angle-of-attack vanes on either side of an aircraft nose
+Visual: A narrow-body jet taking off into a clear sky, markings hidden
+Text: NOW: TWO SENSORS, NOT ONE
+Draw: tick
+
+Safety only works when people are told.
+Visual: A pilot's hands resting on cockpit controls, seen from behind the seat
+Visual: A thick flight manual open on a cockpit seat, text unreadable
+Text: SAFETY = KNOWING
+
+What at your work did nobody explain?
+Visual: A row of humming server cabinets in a dim room
+Visual: A control panel with unlabelled switches on a factory wall

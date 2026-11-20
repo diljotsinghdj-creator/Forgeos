@@ -1,0 +1,139 @@
+{
+ "topic": "The Avengers films: a 30-second sample",
+ "researched": "2026-11-12",
+ "method": "Box-office figures from Box Office Mojo (worldwide, current totals); sources differ slightly by data date and re-releases. Release date from Disney's film page, checked 2026-11-12. Pages not re-opened from this container. Check before publishing.",
+ "claims": [
+  {
+   "id": "C1",
+   "claim": "The Avengers (2012) was the first Marvel Studios film to bring its separate heroes together in one film. It grossed about $1.52 billion worldwide ($1,518,812,988).",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "2012",
+    "1.52",
+    "1,518,812,988",
+    "0"
+   ],
+   "sources": [
+    {
+     "title": "Box Office Mojo: The Avengers franchise",
+     "url": "https://www.boxofficemojo.com/showdown/sd3795580420",
+     "quote": "[summary] worldwide grosses by film"
+    },
+    {
+     "title": "The Numbers: Box office history for Avengers movies",
+     "url": "https://the-numbers.com/movies/franchise/Avengers",
+     "quote": "[summary] worldwide grosses by film"
+    }
+   ],
+   "contradictions": [],
+   "notes": ""
+  },
+  {
+   "id": "C2",
+   "claim": "Avengers: Age of Ultron (2015) grossed about $1.40 billion worldwide; Avengers: Infinity War (2018) about $2.05 billion.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "2015",
+    "1.40",
+    "1.4",
+    "2018",
+    "2.05"
+   ],
+   "sources": [
+    {
+     "title": "Box Office Mojo: The Avengers franchise",
+     "url": "https://www.boxofficemojo.com/showdown/sd3795580420",
+     "quote": "[summary] worldwide grosses by film"
+    },
+    {
+     "title": "The Numbers: Box office history for Avengers movies",
+     "url": "https://the-numbers.com/movies/franchise/Avengers",
+     "quote": "[summary] worldwide grosses by film"
+    }
+   ],
+   "contradictions": [
+    "Some outlets round Infinity War to $2.1 billion."
+   ],
+   "notes": ""
+  },
+  {
+   "id": "C3",
+   "claim": "Avengers: Endgame (2019) grossed about $2.8 billion worldwide ($2,799,439,100, Box Office Mojo), one of the highest-grossing films ever.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "2019",
+    "2.8",
+    "2.80",
+    "2,799,439,100"
+   ],
+   "sources": [
+    {
+     "title": "Box Office Mojo: The Avengers franchise",
+     "url": "https://www.boxofficemojo.com/showdown/sd3795580420",
+     "quote": "[summary] worldwide grosses by film"
+    },
+    {
+     "title": "The Numbers: Box office history for Avengers movies",
+     "url": "https://the-numbers.com/movies/franchise/Avengers",
+     "quote": "[summary] worldwide grosses by film"
+    }
+   ],
+   "contradictions": [
+    "The Numbers and DIRECTV list about $2.72 billion; the gap is data dates and re-release totals."
+   ],
+   "notes": "Say 'about $2.8 billion' and 'one of the biggest', not 'the biggest'."
+  },
+  {
+   "id": "C4",
+   "claim": "Together the four Avengers films grossed about $7.8 billion worldwide (the sum of C1 to C3: $7.77 billion).",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "7.8",
+    "7.77",
+    "four"
+   ],
+   "sources": [
+    {
+     "title": "Box Office Mojo: The Avengers franchise",
+     "url": "https://www.boxofficemojo.com/showdown/sd3795580420",
+     "quote": "[computed] 1.519 + 1.403 + 2.052 + 2.799 = 7.773",
+     "primary": true
+    }
+   ],
+   "contradictions": [],
+   "notes": ""
+  },
+  {
+   "id": "C5",
+   "claim": "Avengers: Doomsday is due in cinemas on 18 December 2026 (United States), moved from 1 May 2026; Avengers: Secret Wars is due on 17 December 2027.",
+   "status": "verified",
+   "confidence": "high",
+   "figures": [
+    "18",
+    "December",
+    "2026",
+    "DEC"
+   ],
+   "sources": [
+    {
+     "title": "Disney: Avengers: Doomsday",
+     "url": "https://movies.disney.com/avengers-doomsday",
+     "quote": "[summary] Release Date: December 18, 2026"
+    },
+    {
+     "title": "Variety: Marvel pushes Doomsday and Secret Wars to December 2026 and 2027",
+     "url": "https://au.variety.com/2025/film/news/avengers-delayed-doomsday-secret-wars-december-2-22910",
+     "quote": "[summary] December 18, 2026"
+    }
+   ],
+   "contradictions": [
+    "Some cinemas outside the US list 16 December 2026."
+   ],
+   "notes": ""
+  }
+ ]
+}
