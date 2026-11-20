@@ -1,0 +1,340 @@
+{
+ "slug": "infiltration-opening-test",
+ "title": "The Infiltration: opening test",
+ "channel": "dragonpsych",
+ "voice": "af_heart",
+ "speed": 1.1,
+ "treatment": "pulse",
+ "guide": {
+  "Riecken": "Reeken",
+  "Millerites": "Miller-ites"
+ },
+ "reload_pages": [],
+ "shots": [
+  {
+   "id": "1.01",
+   "beat": 1,
+   "vo": "December 1954. A scientist is taking secret notes in a stranger's house.",
+   "page": "v2_01_house",
+   "t": [
+    0,
+    0.45
+   ],
+   "cam": [
+    1.5,
+    0.3,
+    0.3,
+    1.0,
+    0.5,
+    0.5
+   ],
+   "post": 0.12
+  },
+  {
+   "id": "1.02",
+   "beat": 1,
+   "vo": "The people around him are waiting for a flying saucer.",
+   "page": "v2_01_house",
+   "t": [
+    0.5,
+    0.85
+   ],
+   "cam": [
+    1.25,
+    0.7,
+    0.6,
+    1.6,
+    0.78,
+    0.34
+   ],
+   "post": 0.12
+  },
+  {
+   "id": "1.03",
+   "beat": 1,
+   "vo": "He's waiting for it not to come.",
+   "page": "v2_02_notebook",
+   "t": [
+    0.05,
+    0.95
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.5,
+    0.68,
+    0.56
+   ],
+   "post": 0.35,
+   "cut": true
+  },
+  {
+   "id": "1.04",
+   "beat": 1,
+   "vo": "He isn't a believer. He's a researcher. Undercover.",
+   "page": "v2_03_casefile",
+   "t": [
+    0,
+    0.7
+   ],
+   "cam": [
+    1.35,
+    0.38,
+    0.4,
+    1.1,
+    0.48,
+    0.55
+   ],
+   "post": 0.12
+  },
+  {
+   "id": "1.05",
+   "beat": 1,
+   "vo": "And he's not the only spy in this group.",
+   "page": "v2_04_plan",
+   "t": [
+    0.2,
+    0.9
+   ],
+   "cam": [
+    1.5,
+    0.72,
+    0.42,
+    1.0,
+    0.5,
+    0.5
+   ],
+   "post": 0.3
+  },
+  {
+   "id": "1.06",
+   "beat": 1,
+   "vo": "What they wrote down became the founding case of a phrase you know.",
+   "page": "v2_05_type",
+   "t": [
+    0,
+    0.4
+   ],
+   "cam": [
+    1.9,
+    0.25,
+    0.16,
+    1.25,
+    0.4,
+    0.3
+   ],
+   "post": 0.12
+  },
+  {
+   "id": "1.07",
+   "beat": 1,
+   "vo": "Cognitive dissonance.",
+   "page": "v2_05_type",
+   "t": [
+    0.44,
+    0.8
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.08,
+    0.5,
+    0.52
+   ],
+   "post": 0.5
+  },
+  {
+   "id": "1.08",
+   "beat": 1,
+   "vo": "Dorothy Martin had predicted a flood for 21 December.",
+   "page": "v2_06_date",
+   "t": [
+    0,
+    0.95
+   ],
+   "cam": [
+    1.45,
+    0.3,
+    0.5,
+    1.0,
+    0.5,
+    0.5
+   ],
+   "post": 0.12
+  },
+  {
+   "id": "1.09a",
+   "beat": 1,
+   "vo": "North America would go under.",
+   "page": "v2_07_floodmap",
+   "t": [
+    0,
+    0.6
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.2,
+    0.5,
+    0.42
+   ],
+   "post": 0.12
+  },
+  {
+   "id": "1.09b",
+   "beat": 1,
+   "vo": "Believers would be picked up the day before.",
+   "page": "v2_07_floodmap",
+   "t": [
+    0.6,
+    1
+   ],
+   "cam": [
+    1.3,
+    0.68,
+    0.7,
+    1.45,
+    0.7,
+    0.74
+   ],
+   "post": 0.12
+  },
+  {
+   "id": "1.10a",
+   "beat": 1,
+   "vo": "Boarding rules. Remove all metal.",
+   "page": "v2_08_metal",
+   "t": [
+    0,
+    0.45
+   ],
+   "cam": [
+    1.5,
+    0.25,
+    0.5,
+    1.3,
+    0.3,
+    0.55
+   ],
+   "post": 0.12
+  },
+  {
+   "id": "1.10b",
+   "beat": 1,
+   "vo": "Bring a stamped envelope as a passport.",
+   "page": "v2_08_metal",
+   "t": [
+    0.5,
+    1
+   ],
+   "cam": [
+    1.4,
+    0.74,
+    0.5,
+    1.15,
+    0.62,
+    0.55
+   ],
+   "post": 0.12
+  },
+  {
+   "id": "1.11",
+   "beat": 1,
+   "vo": "And the password is \"I left my hat at home.\"",
+   "page": "v2_09_password",
+   "t": [
+    0,
+    0.5
+   ],
+   "cam": [
+    1.25,
+    0.4,
+    0.36,
+    1.05,
+    0.48,
+    0.45
+   ],
+   "post": 0.25
+  },
+  {
+   "id": "1.12",
+   "beat": 1,
+   "vo": "Interstellar travel. Still gated by a hat-check desk.",
+   "page": "v2_09_password",
+   "t": [
+    0.58,
+    0.7
+   ],
+   "cam": [
+    1.7,
+    0.72,
+    0.76,
+    1.45,
+    0.7,
+    0.72
+   ],
+   "post": 0.4,
+   "cut": true
+  },
+  {
+   "id": "1.13",
+   "beat": 1,
+   "vo": "That's how the 1956 book tells it.",
+   "page": "v2_10_book",
+   "t": [
+    0,
+    0.6
+   ],
+   "cam": [
+    1.5,
+    0.25,
+    0.45,
+    1.0,
+    0.5,
+    0.5
+   ],
+   "post": 0.12
+  },
+  {
+   "id": "1.14",
+   "beat": 1,
+   "vo": "You'd have believed the scientists too. They were in the room.",
+   "page": "v2_04_plan",
+   "t": [
+    0.95,
+    1
+   ],
+   "cam": [
+    1.0,
+    0.5,
+    0.5,
+    1.7,
+    0.76,
+    0.47
+   ],
+   "post": 0.12
+  },
+  {
+   "id": "1.15",
+   "beat": 1,
+   "vo": "A 2025 paper says one of them did more than take notes.",
+   "page": "v2_11_kelly",
+   "t": [
+    0,
+    0.8
+   ],
+   "cam": [
+    1.3,
+    0.6,
+    0.35,
+    1.25,
+    0.42,
+    0.68
+   ],
+   "post": 0.8
+  }
+ ]
+}

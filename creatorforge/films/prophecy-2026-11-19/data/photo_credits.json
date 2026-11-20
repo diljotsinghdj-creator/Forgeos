@@ -195,6 +195,46 @@
    "treatment": "real.py: black and white / cobalt duotone on the channel ramp, page grain",
    "note": "a real night sky over a house; not Oak Park, not 1954",
    "on_screen": "PHOTO: ROBIN MULLIGAN / FLICKR, CC BY 2.0"
+  },
+  {
+   "file": "assets/real/notebook.jpg",
+   "raw": "assets/real/raw/notebook_b.jpg",
+   "frame": "v2_02_notebook",
+   "title": "Person writing with a pencil in a notebook",
+   "creator": "rawpixel",
+   "license": "CC0",
+   "license_url": "https://www.rawpixel.com/image/3283992/free-photo-image-writing-write-pencil",
+   "note": "Illustrative; a modern photo, not the observer's notebook. Hands only, no face."
+  },
+  {
+   "file": "assets/real/envelope.jpg",
+   "raw": "assets/real/raw/envelope.jpg",
+   "frame": "v2_08_metal",
+   "title": "30c Alexander Hamilton stamped envelope",
+   "creator": "Smithsonian National Postal Museum via rawpixel",
+   "license": "CC0",
+   "license_url": "https://www.rawpixel.com/image/9066686/30c-alexander-hamilton-stamped-envelope",
+   "note": "Illustrative: a real US stamped envelope, not one from the group."
+  },
+  {
+   "file": "assets/real/zip_teeth.jpg",
+   "raw": "assets/real/raw/zip_a.jpg",
+   "frame": "v2_08_metal",
+   "title": "Zipper",
+   "creator": "Kinchan1 / Flickr",
+   "license": "CC BY 2.0",
+   "license_url": "https://www.flickr.com/photos/43515091@N08/5437964841",
+   "note": "Illustrative; made black and white."
+  },
+  {
+   "file": "assets/real/zip_snaps.jpg",
+   "raw": "assets/real/raw/zip_c.jpg",
+   "frame": "v2_08_metal",
+   "title": "4 - 365 My jacket's zipper",
+   "creator": "LeahLikesLemon / Flickr",
+   "license": "CC BY 2.0",
+   "license_url": "https://www.flickr.com/photos/57793456@N05/5330397385",
+   "note": "Illustrative; cropped and made black and white."
   }
  ]
 }
