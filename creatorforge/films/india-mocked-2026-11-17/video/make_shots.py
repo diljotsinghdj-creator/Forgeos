@@ -10,7 +10,7 @@ SAY = [  # (pattern, spoken) applied in order to make "say"; meaning never chang
     ("138.54 million", "one hundred and thirty-eight point five four million"), ("128 posts", "one hundred and twenty-eight posts"),
     ("1.4 billion", "one point four billion"), ("in 1600", "in sixteen hundred"), ("1690", "sixteen ninety"), ("1858", "eighteen fifty-eight"),
     ("1927", "nineteen twenty-seven"), ("1952", "nineteen fifty-two"), ("₹269 a gigabyte in 2014", "two hundred and sixty-nine rupees a gigabyte in twenty fourteen"),
-    ("In 2016", "In twenty sixteen"), ("4G", "four G"), ("239 million to 776 million", "two hundred and thirty-nine million to seven hundred and seventy-six million"),
+    ("In 2016", "In twenty sixteen"), ("4G", "four G"), ("239 million", "two hundred and thirty-nine million"), ("776 million", "seven hundred and seventy-six million"),
     ("A 2021 study of 2.73 million", "A twenty twenty-one study of two point seven three million"), ("67%", "sixty-seven percent"),
     ("From 2017", "From twenty seventeen"), ("end of 2020", "end of twenty twenty"), ("October 2024", "October twenty twenty-four"),
     ("January 2025", "January twenty twenty-five"), ("542,360", "five hundred and forty-two thousand, three hundred and sixty"),
@@ -39,7 +39,8 @@ C = (960, 540)
 # ---- 1 · hook and question -----------------------------------------------------------------------------------------------
 P = "02_receipt"
 sh(1, P, (.56, .70), (2.4, 1356, 683, 2.4, 1356, 683), "Look closely at this number.", post=.6)
-sh(1, P, (.70, .70), (2.4, 1356, 683, 1.9, 1450, 640), "138.54 million views, for 128 posts on X,")
+sh(1, P, (.70, .70), (2.4, 1356, 683, 2.1, 1380, 670), "138.54 million views,")
+sh(1, P, (.70, .70), (2.1, 1560, 610, 1.9, 1450, 640), "for 128 posts on X,")
 sh(1, P, (.70, .70), (1.9, 1450, 640, 1.6, 1250, 650), "all aimed at one group of people: Indians.")
 sh(1, P, (.70, .72), (1.6, 1250, 650, 1.25, 800, 480), "Somebody counted them. A research group,")
 sh(1, P, (.72, .74), (1.5, 620, 300, 1.0, *C), "the Center for the Study of Organized Hate, in January 2025.")
@@ -107,7 +108,8 @@ sh(3, P, (0, .14), (1.25, 480, 320, 1.05, 860, 480), "And that's when the phones
 sh(3, P, (.14, .3), (1.2, 900, 620, 1.4, 860, 560), "Look at the first bar: ₹269 a gigabyte in 2014.")
 sh(3, P, (.3, .68), (1.25, 1050, 640, 1.15, 1250, 660), "Now watch it fall.", post=1.4, build=2.6)
 sh(3, P, (.68, .68), (1.5, 1220, 460, 1.6, 1300, 400), "In 2016 a new 4G network, Jio, launched with free data.", post=.6)
-sh(3, P, (.68, .87), (1.4, 520, 620, 1.5, 460, 650), "Internet subscribers went from 239 million to 776 million.")
+sh(3, P, (.68, .72), (1.3, 560, 600, 1.4, 500, 640), "Internet subscribers went from 239 million")
+sh(3, P, (.72, .87), (1.6, 480, 650, 1.7, 520, 660), "to 776 million.", post=.5, build=1.6)
 sh(3, P, (.87, .88), (1.0, *C, 1.1, 900, 560), "Hundreds of millions of people, filming their own lives.")
 sh(3, P, (.88, .92), (1.3, 1300, 330, 1.5, 1400, 260), "And the regulator gave its slide a modest title.")
 sh(3, P, (.92, .92), (1.6, 1400, 250, 1.5, 1380, 270), "Fair title. The rest of the internet chose a different one.", cut=True, post=.6)
@@ -142,7 +144,8 @@ sh(3, P, (.5, .7), (1.5, 1540, 500, 1.0, *C), "Not filmed in India at all.", pos
 # ---- 4 · stakes ----------------------------------------------------------------------------------------------------------
 P = "12_count"
 sh(4, P, (0, .2), (1.3, 620, 300, 1.2, 600, 280), "So how big did it get? CSOH kept counting.")
-sh(4, P, (.2, .28), (1.5, 560, 250, 1.4, 600, 300), "About 542,360 anti-South Asian posts on X")
+sh(4, P, (.2, .27), (1.6, 520, 250, 1.5, 560, 270), "About 542,360")
+sh(4, P, (.27, .28), (1.4, 640, 300, 1.3, 700, 330), "anti-South Asian posts on X")
 sh(4, P, (.28, .72), (1.2, 760, 400, 1.2, 760, 700), "in eighteen months. Read the three lines underneath.")
 sh(4, P, (.72, .72), (1.5, 620, 500, 1.5, 860, 510), "45% call South Asians \"invaders\" or \"job thieves\".")
 sh(4, P, (.72, .72), (1.5, 640, 670, 1.5, 880, 680), "About 30% use a single slur, one that CNN traces back to 4chan.")
@@ -169,7 +172,8 @@ sh(4, P, (.3, .3), (1.5, 560, 360, 1.5, 800, 390), "A test account in Kerala, fl
 sh(4, P, (.3, .3), (1.5, 800, 390, 1.6, 900, 420), "most of it aimed at other Indians, and much of it never flagged:")
 sh(4, P, (.3, .3), (1.7, 760, 460, 1.6, 700, 450), "no classifiers for Hindi or Bengali.")
 sh(4, P, (.3, .58), (1.5, 700, 520, 1.3, 1420, 700), "Facebook says it added them in 2018 and 2020. Then check the corner.", post=.6)
-sh(4, P, (.58, .8), (1.5, 1470, 700, 1.0, *C), "Of the 128 posts CSOH logged, 125 were still up.", cut=True, post=.6)
+sh(4, P, (.58, .6), (1.6, 1480, 690, 1.5, 1470, 700), "Of the 128 posts CSOH logged,", cut=True)
+sh(4, P, (.6, .8), (1.5, 1470, 700, 1.0, *C), "125 were still up.", post=.8, build=1.6)
 P = "15_drains"
 sh(4, P, (0, .1), (1.6, 480, 300, 1.5, 520, 320), "But there's a catch, and we have to say it.")
 sh(4, P, (.1, .2), (1.5, 520, 320, 1.35, 600, 400), "The problems in those clips are real.")

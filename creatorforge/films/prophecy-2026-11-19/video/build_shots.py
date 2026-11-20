@@ -21,7 +21,7 @@ sh("1.03a", 1, "They've been told the world floods tomorrow,", "01b_room", (0, .
    say="They've been told the world floods tomorrow,")
 sh("1.03b", 1, "and that the aliens will collect the faithful tonight.", "01b_room", (.44, .7), (1.5, .4, .62, 1.2, .5, .55))
 sh("1.04a", 1, "They have removed every bit of metal from their clothes,", "03_metal", (.12, .6), (1.5, .3, .62, 1.35, .42, .58))
-sh("1.04b", 1, "because the spacemen apparently have opinions about zips.", "03_metal", (.6, .95), (1.3, .7, .42, 1.15, .62, .52), cut=True)
+sh("1.04b", 1, "because the spacemen apparently have opinions about zips.", "03_metal", (.6, .95), (1.3, .7, .42, 1.0, .5, .5), cut=True)
 sh("1.05a", 1, "And sitting among them, taking notes in the bathroom,", "02_house", (.36, .52), (1.5, .42, .6, 1.7, .34, .66))
 sh("1.05b", 1, "are three psychologists.", "02_house", (.52, .88), (2.0, .27, .7, 2.15, .26, .71), post=.6)
 sh("1.06a", 1, "Because what happens after this clock passes midnight", "01_clock", (.7, 1), (1.6, .5, .8, 1.6, .5, .43))
