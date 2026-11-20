@@ -15,13 +15,14 @@ are blocked here; only search works), so anything marked ⚠ is checked against 
 | D3 | James Deese found the effect in 1959 with 36 lists of 12 words. It was largely overlooked for 36 years until Roediger and McDermott revived it; hence "DRM". | Deese 1959, *J. Exp. Psychol.*; Roediger & McDermott 1995 | verified |
 | D4 | Warning people in advance reduces the illusion but does not remove it. | Gallo, Roberts & Seamon 1997, *Psychonomic Bulletin & Review*; McDermott & Roediger 1998, *J. Memory and Language* | verified (abstracts) |
 | D5 | Quote: "Memory works a little bit more like a Wikipedia page: you can go in there and change it, but so can other people." | Elizabeth Loftus, TEDGlobal 2013, "How reliable is your memory?" (transcript) | verified |
-| D6 | People with highly superior autobiographical memory (20 of them, against 38 matched controls) were as susceptible to false memories as everyone else, including on word lists. The authors' conclusion: they "have reconstructive memories like the rest of us". | Patihis et al. 2013, *PNAS* | verified |
+| D6 | People with highly superior autobiographical memory (20 of them, against 38 matched controls) were as susceptible to false memories as everyone else, including on word lists. The authors' conclusion, paraphrased (not a quotation): memories like theirs are rebuilt, as everyone's are. | Patihis et al. 2013, *PNAS* | verified |
 | D19 | Why it happens, in plain terms: memory keeps the gist more than the exact words, and it is poor at telling "I heard it" from "I thought it". | Fuzzy-trace theory (Brainerd & Reyna); source monitoring (Johnson, Hashtroudi & Lindsay 1993) | textbook; keep it general, name no numbers |
 
 ## Act 2 · Challenger
 | ID | Claim | Source | Status |
 |---|---|---|---|
 | D7 | 28 January 1986: the space shuttle Challenger broke apart 73 seconds after launch, with seven crew aboard. | NASA | known; ⚠ confirm wording at NASA |
+| D8b | Vivid memories of how you heard shocking news are known as "flashbulb memories". | Brown & Kulik 1977 (the term); the title of Neisser & Harsch's chapter | textbook term; from memory |
 | D8 | The morning after, 106 Emory University psychology students wrote down how they had heard the news. About two and a half years later, 44 of them answered the same questions. Scored against their own first answers on a 7-point scale, the average was 2.95. Eleven scored zero and 22 scored 2 or less. Average confidence was 4.17 out of 5, and confidence was unrelated to accuracy. Shown their first answers in their own handwriting, most were surprised and most kept the new version. | Neisser & Harsch 1992, "Phantom flashbulbs", in Winograd & Neisser (eds.), *Affect and Accuracy in Recall* | verified through several summaries; ⚠ the chapter itself not seen |
 
 **Not used (could not be confirmed):** the quote "That's my handwriting, but that's not what happened"; "three perfect scores"; the

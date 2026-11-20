@@ -55,6 +55,12 @@ Older work waiting on the owner (not counted until approved in the current style
 - US midterms: awaits go;
 - the Delhi film: awaits go.
 
+**After the reset (two-column scripts, MASTER_DIRECTIVES §11):**
+
+| # | Film | Channel | Format | Script | Visuals | Video | Refresh before air | Status |
+|---|------|---------|--------|--------|---------|-------|--------------------|--------|
+| 6 | Can I Give You a False Memory in 60 Seconds? (`films/false-memory-2026-11-20`) | Dragon Psychology | long, 16:9, about 9:50 | draft 1, two-column `SCRIPT.md` (2026-11-20), 1,433 words, 155 rows; dossier with 4 ⚠ items | not started | not made | Innocence Project counts; the replication argument; the 2025 replication | concept 2 picked by the owner 2026-11-20; script for the owner's approval; then go and an opening test |
+
 **Owner's reset of Dragon Psychology, 2026-11-20 (MASTER_DIRECTIVES §11):** films 3 and 5 are retired. Their scripts, outlines and
 ideas are not reused, and they no longer count toward the bank. The files stay in `films/`; nothing was deleted. New Dragon
 Psychology films start from `PITCHES_2026-11-20_dragonpsych_reset.md`.
